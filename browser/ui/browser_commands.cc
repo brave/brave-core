@@ -10,7 +10,6 @@
 #include "base/files/file_path.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
-#include "brave/browser/net/brave_query_filter.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -19,6 +18,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/browser/debounce_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/query_filter/utils.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -212,7 +212,7 @@ void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url) {
     final_url = url;
   }
   // Apply query filters.
-  auto filtered_url = ApplyQueryFilter(final_url);
+  auto filtered_url = query_filter::ApplyQueryFilter(final_url);
   if (filtered_url.has_value()) {
     final_url = filtered_url.value();
   }
