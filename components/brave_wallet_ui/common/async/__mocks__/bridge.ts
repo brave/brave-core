@@ -164,7 +164,10 @@ export class MockedWalletApiProxy {
     sellTokenToEthRate: '1',
     buyTokenToEthRate: '1720.180416',
     estimatedPriceImpact: '0.0782',
-    sources: []
+    sources: [],
+    fees: {
+      zeroExFee: undefined
+    }
   }
 
   mockTransaction = {
@@ -186,7 +189,10 @@ export class MockedWalletApiProxy {
     sellTokenToEthRate: '1',
     buyTokenToEthRate: '1',
     estimatedPriceImpact: '0.0782',
-    sources: []
+    sources: [],
+    fees: {
+      zeroExFee: undefined
+    }
   }
 
   transactionInfos: BraveWallet.TransactionInfo[] = [
