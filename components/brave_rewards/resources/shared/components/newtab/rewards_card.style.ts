@@ -197,12 +197,27 @@ export const balanceInfo = styled.div`
   margin-top: 18px;
 
   .tooltip {
-    position: absolute;
-    right: -93px;
-    width: 260px;
-    padding-top: 8px;
     visibility: hidden;
     transition: visibility 0s linear 300ms;
+  }
+
+  .tooltip-arrow {
+    content: '';
+    position: absolute;
+    top: 29px;
+    left: 4px;
+    background: ${leo.color.white};
+    height: 15px;
+    width: 15px;
+    transform: rotate(45deg);
+    z-index: 2;
+  }
+
+  .tooltip-bubble {
+    position: fixed;
+    right: 12px;
+    width: 260px;
+    padding-top: 8px;
     z-index: 1;
   }
 
@@ -221,17 +236,6 @@ export const balanceTooltip = styled.div`
   font-size: 12px;
   line-height: 18px;
   font-weight: 400;
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: -3px;
-    left: 147px;
-    background: inherit;
-    height: 15px;
-    width: 15px;
-    transform: rotate(45deg);
-  }
 `
 
 export const balanceExchange = styled.div`
