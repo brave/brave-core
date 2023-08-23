@@ -1563,11 +1563,13 @@ public abstract class BraveActivity extends ChromeActivity
             if (mWalletModel == null) {
                 mWalletModel = new WalletModel(getApplicationContext(), mKeyringService,
                         mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
-                        mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService, mSwapService);
+                        mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService,
+                        mSwapService);
             } else {
                 mWalletModel.resetServices(getApplicationContext(), mKeyringService,
                         mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
-                        mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService, mSwapService);
+                        mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService,
+                        mSwapService);
             }
             setupObservers();
         });

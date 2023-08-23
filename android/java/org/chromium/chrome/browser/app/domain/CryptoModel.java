@@ -10,7 +10,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.brave_wallet.mojom.AccountInfo;
@@ -27,7 +26,6 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
-import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -37,7 +35,6 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.mojo.bindings.Callbacks.Callback1;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
