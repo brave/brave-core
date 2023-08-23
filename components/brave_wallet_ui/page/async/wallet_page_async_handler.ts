@@ -16,10 +16,8 @@ import {
 import {
   CreateWalletPayloadType,
   UpdateSelectedAssetType,
-  ImportAccountPayloadType,
   ImportAccountFromJsonPayloadType,
   ImportFromExternalWalletPayloadType,
-  ImportFilecoinAccountPayloadType,
   RestoreWalletPayloadType,
   ImportWalletErrorPayloadType,
   ShowRecoveryPhrasePayload,
@@ -135,44 +133,19 @@ handler.on(WalletPageActions.selectAsset.type, async (store: Store, payload: Upd
   }
 })
 
-handler.on(WalletPageActions.importAccount.type, async (store: Store, payload: ImportAccountPayloadType) => {
-  const keyringService = getWalletPageApiProxy().keyringService
-  const result = await keyringService.importAccount(payload.accountName, payload.privateKey, payload.coin)
-  if (result.account) {
-    store.dispatch(WalletPageActions.setImportAccountError(false))
-    store.dispatch(WalletPageActions.setShowAddModal(false))
-  } else {
-    store.dispatch(WalletPageActions.setImportAccountError(true))
-  }
-})
-
-handler.on(WalletPageActions.importFilecoinAccount.type, async (store: Store, payload: ImportFilecoinAccountPayloadType) => {
-  const { keyringService } = getWalletPageApiProxy()
-  const result = await keyringService.importFilecoinAccount(payload.accountName, payload.privateKey, payload.network)
-
-  if (result.account) {
-    store.dispatch(WalletPageActions.setImportAccountError(false))
-    store.dispatch(WalletPageActions.setShowAddModal(false))
-  } else {
-    store.dispatch(WalletPageActions.setImportAccountError(true))
-  }
-})
-
 handler.on(WalletPageActions.importAccountFromJson.type, async (store: Store, payload: ImportAccountFromJsonPayloadType) => {
   const keyringService = getWalletPageApiProxy().keyringService
   const result = await keyringService.importAccountFromJson(payload.accountName, payload.password, payload.json)
   if (result.account) {
-    store.dispatch(WalletPageActions.setImportAccountError(false))
-    store.dispatch(WalletPageActions.setShowAddModal(false))
+    store.dispatch(WalletActions.setImportAccountError(false))
   } else {
-    store.dispatch(WalletPageActions.setImportAccountError(true))
+    store.dispatch(WalletActions.setImportAccountError(true))
   }
 })
 
 handler.on(WalletPageActions.addHardwareAccounts.type, async (store: Store, accounts: BraveWallet.HardwareWalletAccount[]) => {
   const keyringService = getWalletPageApiProxy().keyringService
   keyringService.addHardwareAccounts(accounts)
-  store.dispatch(WalletPageActions.setShowAddModal(false))
 })
 
 handler.on(WalletPageActions.checkWalletsToImport.type, async (store) => {

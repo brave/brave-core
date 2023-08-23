@@ -21,7 +21,7 @@ import {
 } from '../../../../constants/types'
 
 // actions
-import { WalletPageActions } from '../../../../page/actions'
+import { WalletActions } from '../../../../common/actions'
 
 // components
 import { DividerLine } from '../../../extension/divider/index'
@@ -75,7 +75,7 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
 
   // methods
   const setImportError = React.useCallback((hasError: ImportAccountErrorType) => {
-    dispatch(WalletPageActions.setImportAccountError(hasError))
+    dispatch(WalletActions.setImportAccountError(hasError))
   }, [])
 
   const closeModal = React.useCallback(() => {

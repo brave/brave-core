@@ -9,7 +9,6 @@ type State = Omit<WalletPageState, 'wallet'>
 
 // safe selectors (primitive return types only)
 export const hasInitialized = ({ page }: State) => page.hasInitialized
-export const importAccountError = ({ page }: State) => page.importAccountError
 export const importWalletAttempts = ({ page }: State) => page.importWalletAttempts
 export const invalidMnemonic = ({ page }: State) => page.invalidMnemonic
 export const isCryptoWalletsInitialized = ({ page }: State) => page.isCryptoWalletsInitialized
@@ -20,7 +19,6 @@ export const mnemonic = ({ page }: State) => page.mnemonic
 export const hasMnemonic = ({ page }: State) => !!page.mnemonic
 export const selectedTimeline = ({ page }: State) => page.selectedTimeline
 export const setupStillInProgress = ({ page }: State) => page.setupStillInProgress
-export const showAddModal = ({ page }: State) => page.showAddModal
 export const showIsRestoring = ({ page }: State) => page.showIsRestoring
 export const showRecoveryPhrase = ({ page }: State) => page.showRecoveryPhrase
 export const walletTermsAcknowledged = ({ page }: State) => page.walletTermsAcknowledged

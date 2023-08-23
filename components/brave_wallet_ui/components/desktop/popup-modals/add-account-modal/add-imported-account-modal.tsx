@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
 
 // utils
@@ -19,7 +19,6 @@ import { CreateAccountOptions } from '../../../../options/create-account-options
 import {
   BraveWallet,
   CreateAccountOptionsType,
-  PageState,
   WalletRoutes,
   ImportAccountErrorType,
   FilecoinNetwork,
@@ -29,6 +28,7 @@ import {
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
+import { WalletActions } from '../../../../common/actions'
 
 // components
 import { Select } from 'brave-ui/components'
@@ -82,6 +82,8 @@ export const ImportAccountModal = () => {
   // redux
   const isFilecoinEnabled = useSafeWalletSelector(WalletSelectors.isFilecoinEnabled)
   const isSolanaEnabled = useSafeWalletSelector(WalletSelectors.isSolanaEnabled)
+  const hasImportError =
+    useSafeWalletSelector(WalletSelectors.importAccountError)
 
   // memos
   const createAccountOptions = React.useMemo(() => {
@@ -108,11 +110,10 @@ export const ImportAccountModal = () => {
 
   // redux
   const dispatch = useDispatch()
-  const hasImportError = useSelector(({ page }: { page: PageState }) => page.importAccountError)
 
   // methods
   const setImportError = React.useCallback((hasError: ImportAccountErrorType) => {
-    dispatch(WalletPageActions.setImportAccountError(hasError))
+    dispatch(WalletActions.setImportAccountError(hasError))
   }, [])
 
   const onClickClose = React.useCallback(() => {
@@ -121,12 +122,21 @@ export const ImportAccountModal = () => {
   }, [setImportError])
 
   const importAccount = React.useCallback((accountName: string, privateKey: string, coin: BraveWallet.CoinType) => {
-    dispatch(WalletPageActions.importAccount({ accountName, privateKey, coin }))
+    dispatch(WalletActions.importAccount({ accountName, privateKey, coin }))
   }, [])
 
-  const importFilecoinAccount = React.useCallback((accountName: string, privateKey: string, network: string) => {
-    dispatch(WalletPageActions.importFilecoinAccount({ accountName, privateKey, network }))
-  }, [])
+  const importFilecoinAccount = React.useCallback(
+    (
+      accountName: string,
+      privateKey: string,
+      coin: BraveWallet.CoinType,
+      network: FilecoinNetwork
+    ) => {
+      dispatch(
+        WalletActions
+          .importAccount({ accountName, privateKey, coin, network })
+      )
+    }, [])
 
   const importAccountFromJson = React.useCallback((accountName: string, password: string, json: string) => {
     dispatch(WalletPageActions.importAccountFromJson({ accountName, password, json }))
@@ -166,7 +176,12 @@ export const ImportAccountModal = () => {
   const onClickCreateAccount = React.useCallback(() => {
     if (importOption === 'key') {
       if (selectedAccountType?.coin === BraveWallet.CoinType.FIL) {
-        importFilecoinAccount(accountName, privateKey, filecoinNetwork)
+        importFilecoinAccount(
+          accountName,
+          privateKey,
+          BraveWallet.CoinType.FIL,
+          filecoinNetwork
+        )
       } else {
         importAccount(accountName, privateKey, selectedAccountType?.coin || BraveWallet.CoinType.ETH)
       }

@@ -29,7 +29,6 @@ import {
 } from '../../../../constants/types'
 
 // actions
-import { WalletPageActions } from '../../../../page/actions'
 import { WalletActions } from '../../../../common/actions'
 
 // components
@@ -113,7 +112,7 @@ export const CreateAccountModal = () => {
 
   // methods
   const setImportAccountError = React.useCallback((hasError: ImportAccountErrorType) => {
-    dispatch(WalletPageActions.setImportAccountError(hasError))
+    dispatch(WalletActions.setImportAccountError(hasError))
   }, [])
 
   const onClickClose = React.useCallback(() => {
