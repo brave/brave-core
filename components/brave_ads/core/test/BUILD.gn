@@ -545,7 +545,7 @@ source_set("brave_ads_unit_tests") {
 
   deps = [
     "//base/test:test_support",
-    "//brave/components/brave_ads/common",
+    "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core/internal",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/common",

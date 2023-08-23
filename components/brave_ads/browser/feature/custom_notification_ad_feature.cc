@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
+#include "brave/components/brave_ads/browser/feature/custom_notification_ad_feature.h"
 
 #include "base/feature_list.h"
 

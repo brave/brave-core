@@ -16,7 +16,6 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/common",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_search/common",
     "//components/schema_org/common:mojom",
@@ -28,7 +27,7 @@ static_library("browser") {
   ]
 
   public_deps = [
-    "//brave/components/brave_ads/common/interfaces",
+    "//brave/components/brave_ads/core/mojom",
     "//third_party/blink/public/mojom:mojom_platform_headers",
   ]
 }

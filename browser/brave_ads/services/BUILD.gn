@@ -14,7 +14,7 @@ source_set("services") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/common",
+    "//brave/components/brave_ads/core",
     "//brave/components/services/bat_ads:lib",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",

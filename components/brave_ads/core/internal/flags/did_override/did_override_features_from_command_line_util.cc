@@ -13,9 +13,6 @@
 #include "base/containers/flat_set.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
-#include "brave/components/brave_ads/common/notification_ad_feature.h"
-#include "brave/components/brave_ads/common/search_result_ad_feature.h"
-#include "brave/components/brave_ads/common/user_attention_feature.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_feature.h"
@@ -30,6 +27,9 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
+#include "brave/components/brave_ads/core/public/feature/notification_ad_feature.h"
+#include "brave/components/brave_ads/core/public/feature/search_result_ad_feature.h"
+#include "brave/components/brave_ads/core/public/feature/user_attention_feature.h"
 
 namespace brave_ads {
 

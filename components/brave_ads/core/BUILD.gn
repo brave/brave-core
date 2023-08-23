@@ -3,16 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-static_library("core") {
-  deps = [
-    "//base",
-    "//brave/components/brave_ads/core/internal",
-    "//brave/components/brave_search/common/",
-    "//url",
-  ]
+group("core") {
+  deps = [ "//brave/components/brave_ads/core/internal" ]
 
-  public_deps = [
-    "//brave/components/brave_ads/core/public:headers",
-    "//components/schema_org/common:mojom",
-  ]
+  public_deps = [ "//brave/components/brave_ads/core/public:headers" ]
 }

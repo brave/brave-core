@@ -9,9 +9,9 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 
 namespace brave_ads::database::table {

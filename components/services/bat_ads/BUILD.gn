@@ -23,7 +23,7 @@ static_library("lib") {
 
   public_deps = [
     "public/interfaces",
-    "//brave/components/brave_ads/common/interfaces",
+    "//brave/components/brave_ads/core/mojom",
   ]
 
   deps = [

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_COMMON_NOTIFICATION_AD_CONSTANTS_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_COMMON_NOTIFICATION_AD_CONSTANTS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_FEATURE_NOTIFICATION_AD_CONSTANTS_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_FEATURE_NOTIFICATION_AD_CONSTANTS_H_
 
 #include <cstdint>
 
@@ -27,4 +27,4 @@ constexpr bool kDefaultCanFallbackToCustomNotificationAds = false;
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_COMMON_NOTIFICATION_AD_CONSTANTS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_FEATURE_NOTIFICATION_AD_CONSTANTS_H_

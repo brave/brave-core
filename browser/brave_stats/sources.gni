@@ -20,7 +20,7 @@ brave_browser_brave_stats_updater_deps = [
   "//brave/browser:browser_process",
   "//brave/browser/brave_stats:buildflags",
   "//brave/common",
-  "//brave/components/brave_ads/common",
+  "//brave/components/brave_ads/core",
   "//brave/components/brave_referrals/common",
   "//brave/components/brave_stats/browser",
   "//brave/components/brave_wallet/browser",

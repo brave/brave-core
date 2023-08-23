@@ -13,7 +13,7 @@
 #include "base/task/single_thread_task_runner_thread_mode.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_ads/services/service_sandbox_type.h"  // IWYU pragma: keep
-#include "brave/components/brave_ads/common/brave_ads_feature.h"
+#include "brave/components/brave_ads/core/public/feature/brave_ads_feature.h"
 #include "brave/components/services/bat_ads/bat_ads_service_impl.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "content/public/browser/browser_thread.h"

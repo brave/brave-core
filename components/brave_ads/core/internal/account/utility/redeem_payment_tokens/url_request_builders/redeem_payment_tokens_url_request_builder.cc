@@ -12,11 +12,11 @@
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token_preimage.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 

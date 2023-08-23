@@ -36,7 +36,7 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/logging.h"

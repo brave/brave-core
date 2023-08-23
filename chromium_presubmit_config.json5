@@ -147,6 +147,7 @@
     // A temporary fix to silence a failing presubmit check on file renames.
     "CheckStableMojomChanges": [
       "components/brave_rewards/common/mojom/.*",
+      "components/services/bat_ads/public/interfaces/bat_ads\\.mojom",
       "components/services/bat_ledger/public/interfaces/.*",
       "components/services/bat_rewards/public/interfaces/.*",
     ],

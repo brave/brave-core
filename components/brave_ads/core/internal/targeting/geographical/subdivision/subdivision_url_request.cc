@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -18,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_url_request_json_reader_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/export.h"
 #include "brave/components/brave_ads/core/public/history/history_filter_types.h"

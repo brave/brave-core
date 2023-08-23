@@ -133,7 +133,7 @@ brave_chrome_browser_deps = [
   "//brave/common",
   "//brave/components/ai_chat/common/buildflags",
   "//brave/components/brave_ads/browser",
-  "//brave/components/brave_ads/common",
+  "//brave/components/brave_ads/core",
   "//brave/components/brave_component_updater/browser",
   "//brave/components/brave_federated",
   "//brave/components/brave_new_tab_ui:mojom",

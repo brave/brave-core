@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resources_util_impl.h"
@@ -16,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/resource/text_embedding_resource_constants.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_feature.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 
 namespace brave_ads {

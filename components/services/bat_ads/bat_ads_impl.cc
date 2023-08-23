@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads/inline_content_ad_value_util.h"

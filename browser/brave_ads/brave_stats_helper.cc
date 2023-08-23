@@ -9,7 +9,7 @@
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_stats/first_run_util.h"
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/pref_names.h"

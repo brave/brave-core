@@ -9,10 +9,10 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/url_request_builder_interface.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 class GURL;
 

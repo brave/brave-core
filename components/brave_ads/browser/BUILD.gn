@@ -19,6 +19,9 @@ static_library("browser") {
     "component_updater/resource_component.h",
     "component_updater/resource_component_observer.h",
     "component_updater/resource_info.h",
+    "feature/custom_notification_ad_constants.h",
+    "feature/custom_notification_ad_feature.cc",
+    "feature/custom_notification_ad_feature.h",
     "frequency_capping_helper.cc",
     "frequency_capping_helper.h",
     "reminder_util.cc",
@@ -30,7 +33,6 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/brave_adaptive_captcha",
-    "//brave/components/brave_ads/common",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/resources",
     "//brave/components/brave_component_updater/browser",
@@ -46,7 +48,7 @@ static_library("browser") {
     "//url",
   ]
 
-  public_deps = [ "//brave/components/brave_ads/common/interfaces" ]
+  public_deps = [ "//brave/components/brave_ads/core/mojom" ]
 
   # TODO(https://github.com/brave/brave-browser/issues/24163)
   check_includes = false

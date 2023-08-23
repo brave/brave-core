@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
@@ -20,6 +19,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_item_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"

@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
+#include "brave/components/brave_ads/browser/feature/custom_notification_ad_feature.h"
 #include "build/build_config.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/native_theme/native_theme.h"

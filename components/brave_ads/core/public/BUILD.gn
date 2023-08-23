@@ -33,6 +33,11 @@ source_set("headers") {
     "confirmation_type.h",
     "database/database.h",
     "export.h",
+    "feature/brave_ads_feature.h",
+    "feature/notification_ad_constants.h",
+    "feature/notification_ad_feature.h",
+    "feature/search_result_ad_feature.h",
+    "feature/user_attention_feature.h",
     "flags/flags_util.h",
     "history/ad_content_info.h",
     "history/ad_content_value_util.h",
@@ -42,6 +47,7 @@ source_set("headers") {
     "history/history_item_info.h",
     "history/history_item_value_util.h",
     "history/history_sort_types.h",
+    "prefs/pref_names.h",
     "targeting/geographical/subdivision/supported_subdivisions.h",
     "user_attention/page_transition_types.h",
   ]
@@ -53,7 +59,7 @@ source_set("headers") {
   ]
 
   public_deps = [
-    "//brave/components/brave_ads/common/interfaces",
+    "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_federated/public/interfaces",
   ]
 }

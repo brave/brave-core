@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/confirmations_issuer_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
@@ -14,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/payments_issuer_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/public_key_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
 

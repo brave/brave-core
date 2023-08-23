@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ad_type.h"
 #include "brave/components/brave_ads/core/public/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/export.h"
