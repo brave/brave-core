@@ -1559,16 +1559,18 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void setupWalletModel() {
-        if (mWalletModel == null) {
-            mWalletModel = new WalletModel(getApplicationContext(), mKeyringService,
-                    mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
-                    mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService, mSwapService);
-        } else {
-            mWalletModel.resetServices(getApplicationContext(), mKeyringService,
-                    mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
-                    mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService, mSwapService);
-        }
-        setupObservers();
+        PostTask.postTask(TaskTraits.UI_DEFAULT, () -> {
+            if (mWalletModel == null) {
+                mWalletModel = new WalletModel(getApplicationContext(), mKeyringService,
+                        mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
+                        mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService, mSwapService);
+            } else {
+                mWalletModel.resetServices(getApplicationContext(), mKeyringService,
+                        mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
+                        mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService, mSwapService);
+            }
+            setupObservers();
+        });
     }
 
     @MainThread
