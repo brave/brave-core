@@ -17,6 +17,7 @@ extern const char kIPFSResolveMethod[];
 extern const char kIpfsStorageMax[];
 extern const char kIPFSPinnedCids[];
 extern const char kIPFSAutoFallbackToGateway[];
+extern const char kShowIPFSPromoInfobar[];
 
 // Deprecated, use kIPFSAutoRedirectToConfiguredGateway instead
 extern const char kIPFSAutoRedirectDNSLink[];
