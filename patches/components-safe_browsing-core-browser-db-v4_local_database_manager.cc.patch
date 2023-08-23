@@ -1,5 +1,5 @@
 diff --git a/components/safe_browsing/core/browser/db/v4_local_database_manager.cc b/components/safe_browsing/core/browser/db/v4_local_database_manager.cc
-index ad9ee69a50f2efe1044cf0a5c7bba0939461f3e8..c644d73a8268c964fa9ede6908e5a759ab59b22b 100644
+index 29d6a3f47f19abd54adf670264cbac5f319f94eb..8343f2ce04680ff46ea954e2fc226081fa5544c5 100644
 --- a/components/safe_browsing/core/browser/db/v4_local_database_manager.cc
 +++ b/components/safe_browsing/core/browser/db/v4_local_database_manager.cc
 @@ -109,7 +109,7 @@ ListInfos GetListInfos() {
