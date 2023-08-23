@@ -722,6 +722,7 @@ public class BrowserViewController: UIViewController {
     if let tab = tabManager.selectedTab, tab.isPrivate {
       webViewContainerBackdrop.alpha = 1
       webViewContainer.alpha = 0
+      activeNewTabPageViewController?.view.alpha = 0
       header.contentView.alpha = 0
       presentedViewController?.popoverPresentationController?.containerView?.alpha = 0
       presentedViewController?.view.alpha = 0
@@ -751,6 +752,7 @@ public class BrowserViewController: UIViewController {
       animations: {
         self.webViewContainer.alpha = 1
         self.header.contentView.alpha = 1
+        self.activeNewTabPageViewController?.view.alpha = 1
         self.presentedViewController?.popoverPresentationController?.containerView?.alpha = 1
         self.presentedViewController?.view.alpha = 1
         self.view.backgroundColor = .clear
