@@ -114,7 +114,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
         }
         
         if (target.constructor.name == 'HTMLSourceElement') {
-          if (target.closest('video')) {
+          if (target.parentNode.constructor.name == "HTMLVideoElement") {
             type = 'video'
           } else {
             type = 'audio'
@@ -127,14 +127,14 @@ window.__firefox__.includeOnce("Playlist", function($) {
         sendMessage(name, target, target, type, detected);
       }
       else {
-        target.querySelectorAll('source').forEach(function(node) {
-          if (node.src && node.src !== "") {
-            if ((node.closest('video') === target) || (node.closest('audio') === target)) {
+        for (node of target.children) {
+          if (node.constructor.name == "HTMLSourceElement") {
+            if (node.src && node.src !== "") {
               tagNode(target);
-              sendMessage(name, target, target, type, detected);
+              sendMessage(name, node, target, type, detected);
             }
           }
-        });
+        }
       }
     }
   }
@@ -287,7 +287,8 @@ window.__firefox__.includeOnce("Playlist", function($) {
           function processNode(node) {
             // Observe video or audio elements
             let isVideoElement = (node.constructor.name == "HTMLVideoElement");
-            if (isVideoElement || (node.constructor.name == "HTMLAudioElement")) {
+            let isAudioElement = (node.constructor.name == "HTMLAudioElement");
+            if (isVideoElement || isAudioElement) {
               let type = isVideoElement ? 'video' : 'audio';
               node.observer = new MutationObserver(function (mutations) {
                 notify(node, type, true);
@@ -435,6 +436,20 @@ window.__firefox__.includeOnce("Playlist", function($) {
         function() {
           checkPageForVideos(true);
         }
+      });
+      
+      // Needed for pages like Bichute and Soundcloud and Youtube that do NOT reload the page
+      // They instead alter the history or document and update the href that way
+      window.addEventListener("load", () => {
+        let lastLocation = document.location.href;
+        const body = document.querySelector("body");
+        const observer = new MutationObserver(mutations => {
+          if (lastLocation !== document.location.href) {
+            lastLocation = document.location.href;
+            checkPageForVideos(false);
+          }
+        });
+        observer.observe(body, { childList: true, subtree: true });
       });
       
       checkPageForVideos(false);
