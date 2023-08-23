@@ -69,8 +69,14 @@ import {
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
 import { useHasAccount } from '../common/hooks/has-account'
-import { isSolanaTransaction } from '../utils/tx-utils'
+import {
+  isBitcoinTransaction,
+  isEthereumTransaction,
+  isFilecoinTransaction,
+  isSolanaTransaction
+} from '../utils/tx-utils'
 import { ConfirmSolanaTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-solana-transaction-panel'
+import { ConfirmBitcoinTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-bitcoin-transaction-panel'
 import { SignTransactionPanel } from '../components/extension/sign-panel/sign-transaction-panel'
 import { useDispatch } from 'react-redux'
 import { SelectCurrency } from '../components/buy-send-swap/select-currency/select-currency'
@@ -408,10 +414,14 @@ function Container () {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
-          {isSolanaTransaction(selectedPendingTransaction)
-            ? <ConfirmSolanaTransactionPanel />
-            : <ConfirmTransactionPanel />
-          }
+          {isBitcoinTransaction(selectedPendingTransaction) ? (
+            <ConfirmBitcoinTransactionPanel />
+          ) : isSolanaTransaction(selectedPendingTransaction) ? (
+            <ConfirmSolanaTransactionPanel />
+          ) : isEthereumTransaction(selectedPendingTransaction) ||
+            isFilecoinTransaction(selectedPendingTransaction) ? (
+            <ConfirmTransactionPanel />
+          ) : null}
         </LongWrapper>
       </PanelWrapper>
     )

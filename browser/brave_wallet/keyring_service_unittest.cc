@@ -4758,9 +4758,9 @@ TEST_F(KeyringServiceUnitTest, BitcoinReceiveChangeAddresses) {
   EXPECT_EQ(service.GetBitcoinAddresses(*btc_acc->account_id)->at(0).second,
             mojom::BitcoinKeyId::New(0, 0, 0));
 
-  EXPECT_EQ(service.GetBitcoinAddresses(*btc_acc->account_id)->at(30).first,
+  EXPECT_EQ(service.GetBitcoinAddresses(*btc_acc->account_id)->at(5).first,
             "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el");
-  EXPECT_EQ(service.GetBitcoinAddresses(*btc_acc->account_id)->at(30).second,
+  EXPECT_EQ(service.GetBitcoinAddresses(*btc_acc->account_id)->at(5).second,
             mojom::BitcoinKeyId::New(0, 1, 0));
 }
 

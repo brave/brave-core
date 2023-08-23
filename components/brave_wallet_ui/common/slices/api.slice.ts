@@ -19,6 +19,7 @@ import {
   ER20TransferParams,
   ERC721TransferFromParams,
   ETHFilForwarderTransferFromParams,
+  SendBtcTransactionParams,
   SendEthTransactionParams,
   SendFilTransactionParams,
   SendSolTransactionParams,
@@ -894,15 +895,15 @@ export function createWalletApi () {
                     accountId
                   )
 
-                if (errorMessage) {
+                if (errorMessage || balance === null) {
                   console.log(`getBalance error: ${errorMessage}`)
                   return {
-                    error: errorMessage
+                    error: errorMessage || 'Unknown error'
                   }
                 }
 
                 return {
-                  data: Amount.normalize(balance.toString())
+                  data: Amount.normalize(balance.totalBalance.toString())
                 }
               }
               default: {
@@ -1716,11 +1717,60 @@ export function createWalletApi () {
                 chainId: null
               })
       }),
+      sendBtcTransaction: mutation<
+        { success: boolean },
+        SendBtcTransactionParams
+      >({
+        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+          try {
+            const { txService } = baseQuery(undefined).data
+
+            const btcTxData: BraveWallet.BtcTxData = {
+              to: payload.to,
+              amount: BigInt(payload.value),
+              fee: BigInt(0),
+              inputs: [],
+              outputs: []
+            }
+
+            const { errorMessage, success } =
+              await txService.addUnapprovedTransaction(
+                toTxDataUnion({ btcTxData }),
+                payload.fromAccount.accountId,
+                null,
+                null
+              )
+
+            if (!success && errorMessage) {
+              return {
+                error: `Failed to send Btc transaction: ${
+                  errorMessage || 'unknown error'
+                }`
+              }
+            }
+
+            return {
+              data: { success }
+            }
+          } catch (error) {
+            return { error: 'Failed to send Btc transaction' }
+          }
+        },
+        invalidatesTags: (res, err, arg) =>
+          err
+            ? []
+            : TX_CACHE_TAGS.LISTS({
+                coin: arg.fromAccount.accountId.coin,
+                fromAccountId: arg.fromAccount.accountId,
+                chainId: null
+              })
+      }),
       sendTransaction: mutation<
         { success: boolean },
         | SendEthTransactionParams
         | SendFilTransactionParams
         | SendSolTransactionParams
+        | SendBtcTransactionParams
       >({
         queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
           try {
@@ -1750,6 +1800,16 @@ export function createWalletApi () {
                 const result: { success: boolean } = await dispatch(
                   walletApi.endpoints.sendEthTransaction.initiate(
                     payload as SendEthTransactionParams
+                  )
+                ).unwrap()
+                return {
+                  data: result
+                }
+              }
+              case BraveWallet.CoinType.BTC: {
+                const result: { success: boolean } = await dispatch(
+                  walletApi.endpoints.sendBtcTransaction.initiate(
+                    payload as SendBtcTransactionParams
                   )
                 ).unwrap()
                 return {

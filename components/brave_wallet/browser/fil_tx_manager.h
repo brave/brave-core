@@ -130,6 +130,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
       const absl::optional<std::string>& chain_id) override;
 
   std::unique_ptr<FilNonceTracker> nonce_tracker_;
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   raw_ptr<AccountResolverDelegate> account_resolver_delegate_ = nullptr;
   base::WeakPtrFactory<FilTxManager> weak_factory_{this};
 };

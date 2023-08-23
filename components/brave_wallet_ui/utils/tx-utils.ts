@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { assert, assertNotReached } from 'chrome://resources/js/assert_ts.js';
+
 import { EntityState } from '@reduxjs/toolkit'
 
 // types
@@ -45,7 +47,6 @@ import {
   getAddressLabel
 } from './account-utils'
 import { makeSerializableTimeDelta } from './model-serialization-utils'
-import { weiToEther } from './web3-utils'
 
 export type EIP1559TransactionInfo = TransactionInfo & {
   txDataUnion: {
@@ -91,7 +92,6 @@ export interface ParsedTransaction
     Pick<BraveWallet.TransactionInfo, 'txType'> {
   // Common fields
   id: string
-  accountAddress: string
   hash: string
   nonce: string
   createdTime: SerializableTimeDelta
@@ -218,6 +218,15 @@ export function isSolanaTransaction(
     SolanaTransactionTypes.includes(txType) ||
     (txType === BraveWallet.TransactionType.Other && solanaTxData !== undefined)
   )
+}
+
+export function isBitcoinTransaction(
+  tx?: Pick<TransactionInfo, 'txDataUnion'>
+) {
+  if (!tx) {
+    return false
+  }
+  return tx.txDataUnion.btcTxData !== undefined
 }
 
 export function isEthereumTransaction (tx?: TransactionInfo) {
@@ -547,7 +556,15 @@ export function getTransactionBaseValue (tx: TransactionInfo) {
     return tx.txDataUnion.filTxData.value || ''
   }
 
-  return tx.txDataUnion.ethTxData1559?.baseData.value || ''
+  if (isEthereumTransaction(tx)) {
+    return tx.txDataUnion.ethTxData1559?.baseData.value || ''
+  }
+
+  if (isBitcoinTransaction(tx)) {
+    return tx.txDataUnion.btcTxData?.amount.toString() ?? ''
+  }
+
+  assertNotReached('Unknown transaction type')
 }
 
 interface GetTransactionTransferredValueArgs {
@@ -664,7 +681,9 @@ export function getFormattedTransactionTransferredValue (
   }
 }
 
-export function getTransactionGasLimit (transaction: TransactionInfo) {
+export function getTransactionGasLimit(transaction: TransactionInfo) {
+  assert(isEthereumTransaction(transaction) || isFilecoinTransaction(transaction))
+
   return isFilecoinTransaction(transaction)
     ? transaction.txDataUnion.filTxData.gasLimit
     : transaction.txDataUnion.ethTxData1559?.baseData.gasLimit || ''
@@ -677,6 +696,8 @@ export const getTransactionGas = (
   maxFeePerGas: string
   maxPriorityFeePerGas: string
 } => {
+  assert(isEthereumTransaction(transaction) || isFilecoinTransaction(transaction))
+
   if (isFilecoinTransaction(transaction)) {
     const { filTxData } = transaction.txDataUnion
     return {
@@ -708,9 +729,17 @@ export const isEIP1559Transaction = (transaction: TransactionInfo): transaction 
  * @param solFeeEstimates [FIXME] - Extract actual fees used in the Solana transaction, instead of populating current estimates.
  * @returns string value of the gas fee
  */
-export const getTransactionGasFee = (
-  transaction: TransactionInfo,
-): string => {
+export const getTransactionGasFee = (transaction: TransactionInfo): string => {
+  assert(
+    isEthereumTransaction(transaction) ||
+    isFilecoinTransaction(transaction) ||
+    isBitcoinTransaction(transaction)
+  )
+
+  if (isBitcoinTransaction(transaction)) {
+    return transaction.txDataUnion.btcTxData?.fee.toString() || ''
+  }
+
   const { maxFeePerGas, gasPrice } = getTransactionGas(transaction)
   const gasLimit = getTransactionGasLimit(transaction)
 
@@ -736,30 +765,55 @@ export const isTransactionGasLimitMissing = (tx: TransactionInfo): boolean => {
     return false
   }
 
-  const gasLimit = getTransactionGasLimit(tx)
-  return (gasLimit === '' || Amount.normalize(gasLimit) === '0')
+  if (isBitcoinTransaction(tx)) {
+    return false;
+  }
+
+  if (isEthereumTransaction(tx) || isFilecoinTransaction(tx)) {
+    const gasLimit = getTransactionGasLimit(tx)
+    return (gasLimit === '' || Amount.normalize(gasLimit) === '0')
+  }
+
+  assertNotReached('Unknown transaction type')
 }
 
 export const parseTransactionFeesWithoutPrices = (
   tx: TransactionInfo
 ) => {
-  const gasLimit = getTransactionGasLimit(tx)
-  const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } = getTransactionGas(tx)
-
-  return {
-    gasLimit: Amount.normalize(gasLimit),
-    gasPrice: Amount.normalize(gasPrice),
-    maxFeePerGas: Amount.normalize(maxFeePerGas),
-    maxPriorityFeePerGas: Amount.normalize(maxPriorityFeePerGas),
-    isEIP1559Transaction: isEIP1559Transaction(tx),
-    isMissingGasLimit: isTransactionGasLimitMissing(tx),
-    gasPremium: isFilecoinTransaction(tx)
-      ? new Amount(tx.txDataUnion.filTxData.gasPremium).format()
-      : '',
-    gasFeeCap: isFilecoinTransaction(tx)
-      ? new Amount(tx.txDataUnion.filTxData.gasFeeCap).format()
-      : ''
+  if (isSolanaTransaction(tx) || isBitcoinTransaction(tx)) {
+    return {
+      gasLimit: '',
+      gasPrice: '',
+      maxFeePerGas: '',
+      maxPriorityFeePerGas: '',
+      isEIP1559Transaction: false,
+      isMissingGasLimit: false,
+      gasPremium: '',
+      gasFeeCap: ''
+    }
   }
+
+  if (isEthereumTransaction(tx) || isFilecoinTransaction(tx)) {
+    const gasLimit = getTransactionGasLimit(tx)
+    const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } = getTransactionGas(tx)
+
+    return {
+      gasLimit: Amount.normalize(gasLimit),
+      gasPrice: Amount.normalize(gasPrice),
+      maxFeePerGas: Amount.normalize(maxFeePerGas),
+      maxPriorityFeePerGas: Amount.normalize(maxPriorityFeePerGas),
+      isEIP1559Transaction: isEIP1559Transaction(tx),
+      isMissingGasLimit: isTransactionGasLimitMissing(tx),
+      gasPremium: isFilecoinTransaction(tx)
+        ? new Amount(tx.txDataUnion.filTxData.gasPremium).format()
+        : '',
+      gasFeeCap: isFilecoinTransaction(tx)
+        ? new Amount(tx.txDataUnion.filTxData.gasFeeCap).format()
+        : ''
+    }
+  }
+
+  assertNotReached('Unknown transaction type')
 }
 
 export const getTransactionApprovalTargetAddress = (tx: TransactionInfo): string => {
@@ -1218,94 +1272,6 @@ export const isSwapTransaction = (tx: TransactionInfo) => {
   ].includes(tx.txType)
 }
 
-export const getTransactionFormattedNativeCurrencyTotal = ({
-  gasFee,
-  normalizedTransferredValue,
-  sellAmountWei,
-  sellToken,
-  token,
-  transferredValueWei,
-  tx,
-  txNetwork
-}: {
-  gasFee: string
-  normalizedTransferredValue: string
-  sellAmountWei?: string
-  sellToken?: BraveWallet.BlockchainToken
-  token?: BraveWallet.BlockchainToken
-  transferredValueWei?: string
-  tx: TransactionInfo
-  txNetwork?: BraveWallet.NetworkInfo
-}): string => {
-  // Solana Dapps
-  if (isSolanaDappTransaction(tx)) {
-    const transferredAmount = txNetwork
-      ? weiToEther(transferredValueWei || '', txNetwork.decimals)
-      : Amount.empty()
-
-    return transferredAmount.formatAsAsset(6, txNetwork?.symbol)
-  }
-
-  // ERC20 Transfer
-  if (tx.txType === BraveWallet.TransactionType.ERC20Transfer) {
-    const [, amount] = tx.txArgs // (address recipient, uint256 amount) → bool
-
-    const sendAmount = weiToEther(amount, token?.decimals ?? 18)
-
-    return sendAmount
-      .formatAsAsset(6, txNetwork?.symbol)
-  }
-
-  // ERC721 TransferFrom
-  if (
-    tx.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
-    tx.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
-  ) {
-    // The owner of the ERC721 must not be confused with the
-    // caller (fromAddress).
-    const normalizedGasFee = txNetwork
-      ? new Amount(gasFee).divideByDecimals(txNetwork.decimals)
-      : new Amount('')
-    return normalizedGasFee.formatAsAsset(
-      6,
-      txNetwork?.symbol
-    )
-  }
-
-  // ERC20 Approve
-  if (tx.txType === BraveWallet.TransactionType.ERC20Approve) {
-    return Amount.zero().formatAsAsset(
-      2,
-      txNetwork?.symbol
-    )
-  }
-
-  // SPL
-  if (isSolanaSplTransaction(tx)) {
-    return new Amount(normalizedTransferredValue)
-      .formatAsAsset(6, txNetwork?.symbol)
-  }
-
-  // ETH SWAP
-  if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
-    const sellAmount =
-      sellToken && sellAmountWei
-        ? weiToEther(sellAmountWei, sellToken.decimals)
-        : Amount.empty()
-
-    return sellAmount
-      .formatAsAsset(6, txNetwork?.symbol)
-  }
-
-  // DEFAULT
-  const sendAmount = txNetwork
-    ? weiToEther(getTransactionBaseValue(tx) || '', txNetwork.decimals)
-    : Amount.empty()
-
-  return sendAmount
-    .formatAsAsset(6, txNetwork?.symbol)
-}
-
 export const getTransactionFormattedSendCurrencyTotal = ({
   normalizedTransferredValue,
   sellToken,
@@ -1620,7 +1586,6 @@ export const parseTransactionWithoutPrices = ({
   })
 
   return {
-    accountAddress: transactionAccount.address || '',
     approvalTarget,
     approvalTargetLabel,
     buyToken,

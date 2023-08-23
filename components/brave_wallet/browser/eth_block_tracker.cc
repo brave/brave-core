@@ -16,7 +16,7 @@
 namespace brave_wallet {
 
 EthBlockTracker::EthBlockTracker(JsonRpcService* json_rpc_service)
-    : BlockTracker(json_rpc_service), weak_factory_(this) {}
+    : json_rpc_service_(json_rpc_service), weak_factory_(this) {}
 
 EthBlockTracker::~EthBlockTracker() = default;
 

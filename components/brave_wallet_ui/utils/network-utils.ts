@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { assertNotReached } from 'chrome://resources/js/assert_ts.js';
+
 // types
 import {
   BraveWallet,
@@ -74,13 +76,16 @@ export type TxDataPresence = {
     | SerializableSolanaTxData
     | undefined
   filTxData?: Partial<BraveWallet.TxDataUnion['filTxData']> | undefined
+  btcTxData?: Partial<BraveWallet.TxDataUnion['btcTxData']> | undefined
 }
 
-export const getCoinFromTxDataUnion = <T extends TxDataPresence> (txDataUnion: T): BraveWallet.CoinType => {
+export const getCoinFromTxDataUnion = <T extends TxDataPresence>(txDataUnion: T): BraveWallet.CoinType => {
+  if (txDataUnion.ethTxData || txDataUnion.ethTxData1559) { return BraveWallet.CoinType.ETH }
   if (txDataUnion.filTxData) { return BraveWallet.CoinType.FIL }
   if (txDataUnion.solanaTxData) { return BraveWallet.CoinType.SOL }
-  // TODO(apaymyshev): bitcoin support
-  return BraveWallet.CoinType.ETH
+  if (txDataUnion.btcTxData) { return BraveWallet.CoinType.BTC }
+
+  assertNotReached('Unknown transaction coin')
 }
 
 const EIP1559_SUPPORTED_ACCOUNT_TYPE_NAMES = [

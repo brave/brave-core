@@ -23,11 +23,12 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
-class BitcoinTransactionDatabase;
-class BitcoinDatabaseSynchronizer;
-struct SendToContext;
+class GetBalanceContext;
+class GetUtxosContext;
+class CreateTransactionTask;
 
 class BitcoinWalletService : public KeyedService,
                              public mojom::BitcoinWalletService,
@@ -42,59 +43,88 @@ class BitcoinWalletService : public KeyedService,
   mojo::PendingRemote<mojom::BitcoinWalletService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BitcoinWalletService> receiver);
 
-  void GetBalance(const std::string& network_id,
+  void GetBalance(const std::string& chain_id,
                   mojom::AccountIdPtr account_id,
                   GetBalanceCallback callback) override;
-
-  void GetBitcoinAccountInfo(const std::string& network_id,
+  void GetBitcoinAccountInfo(const std::string& chain_id,
                              mojom::AccountIdPtr account_id,
                              GetBitcoinAccountInfoCallback callback) override;
   mojom::BitcoinAccountInfoPtr GetBitcoinAccountInfoSync(
-      const std::string& network_id,
+      const std::string& chain_id,
       mojom::AccountIdPtr account_id);
 
-  void SendTo(const std::string& network_id,
+  void SendTo(const std::string& chain_id,
               mojom::AccountIdPtr account_id,
               const std::string& address_to,
               uint64_t amount,
               uint64_t fee,
               SendToCallback callback) override;
 
-  BitcoinRpc& bitcoin_rpc() { return *bitcoin_rpc_; }
+  using UtxoMap =
+      std::map<std::string, std::vector<bitcoin_rpc::UnspentOutput>>;
+  using GetUtxosCallback =
+      base::OnceCallback<void(base::expected<UtxoMap, std::string>)>;
+  void GetUtxos(const std::string& chain_id,
+                mojom::AccountIdPtr account_id,
+                GetUtxosCallback callback);
 
- private:
-  // KeyringServiceObserverBase:
-  void AccountsAdded(std::vector<mojom::AccountInfoPtr> accounts) override;
+  using CreateTransactionCallback =
+      base::OnceCallback<void(base::expected<BitcoinTransaction, std::string>)>;
+  void CreateTransaction(const std::string& chain_id,
+                         mojom::AccountIdPtr account_id,
+                         const std::string& address_to,
+                         uint64_t amount,
+                         CreateTransactionCallback callback);
+  void CreateTransactionTaskDone(CreateTransactionTask* task);
 
-  void StartDatabaseSynchronizer(const std::string& network_id,
-                                 const mojom::AccountId& account_id);
+  using SignAndPostTransactionCallback =
+      base::OnceCallback<void(std::string, BitcoinTransaction, std::string)>;
+  void SignAndPostTransaction(const std::string& chain_id,
+                              const mojom::AccountIdPtr& account_id,
+                              BitcoinTransaction bitcoin_transaction,
+                              SignAndPostTransactionCallback callback);
+
+  using GetTransactionStatusCallback =
+      base::OnceCallback<void(base::expected<bool, std::string>)>;
+  void GetTransactionStatus(const std::string& chain_id,
+                            const std::string& txid,
+                            GetTransactionStatusCallback callback);
+
+  bitcoin_rpc::BitcoinRpc& bitcoin_rpc() { return *bitcoin_rpc_; }
 
   absl::optional<std::string> GetUnusedChangeAddress(
       const mojom::AccountId& account_id);
 
-  bool FillUtxoList(SendToContext& context);
-  bool PickInputs(SendToContext& context);
-  bool PrepareOutputs(SendToContext& context);
-  bool FillInputTransactions(std::unique_ptr<SendToContext> context);
-  void OnFetchTransactionForSendTo(std::unique_ptr<SendToContext> context,
-                                   std::string txid,
-                                   base::Value transaction);
-  bool FillSignature(SendToContext& context, uint32_t input_index);
-  bool FillSignatures(SendToContext& context);
-  bool SerializeTransaction(SendToContext& context);
-  void PostTransaction(std::unique_ptr<SendToContext> context);
-  void OnPostTransaction(std::unique_ptr<SendToContext> context,
-                         base::expected<std::string, std::string> result);
-  void WorkOnSendTo(std::unique_ptr<SendToContext> context);
+ private:
+  void OnGetAddressStatsForBalance(
+      scoped_refptr<GetBalanceContext> context,
+      std::string address,
+      base::expected<bitcoin_rpc::AddressStats, std::string> stats);
+  void WorkOnGetBalance(scoped_refptr<GetBalanceContext> context);
+
+  void OnGetUtxos(scoped_refptr<GetUtxosContext> context,
+                  std::string address,
+                  base::expected<std::vector<bitcoin_rpc::UnspentOutput>,
+                                 std::string> utxos);
+  void WorkOnGetUtxos(scoped_refptr<GetUtxosContext> context);
+
+  void OnPostTransaction(BitcoinTransaction bitcoin_transaction,
+                         SignAndPostTransactionCallback callback,
+                         base::expected<std::string, std::string> txid);
+
+  void OnGetTransaction(
+      const std::string& txid,
+      GetTransactionStatusCallback callback,
+      base::expected<bitcoin_rpc::Transaction, std::string> transaction);
+
+  bool SignTransactionInternal(BitcoinTransaction& tx,
+                               const mojom::AccountIdPtr& account_id);
 
   raw_ptr<KeyringService> keyring_service_;
-  std::map<std::string, std::unique_ptr<BitcoinTransactionDatabase>>
-      transaction_database_;
-  std::map<std::string, std::unique_ptr<BitcoinDatabaseSynchronizer>>
-      database_synchronizer_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  std::list<std::unique_ptr<CreateTransactionTask>> create_transaction_tasks_;
   mojo::ReceiverSet<mojom::BitcoinWalletService> receivers_;
-  std::unique_ptr<BitcoinRpc> bitcoin_rpc_;
+  std::unique_ptr<bitcoin_rpc::BitcoinRpc> bitcoin_rpc_;
   base::WeakPtrFactory<BitcoinWalletService> weak_ptr_factory_{this};
 };
 

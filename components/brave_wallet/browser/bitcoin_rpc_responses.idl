@@ -1,0 +1,44 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+// Bitcoin RPC structres.
+namespace bitcoin_rpc {
+  dictionary TransactionStatus {
+    boolean confirmed;
+  };
+
+  dictionary Transaction {
+    DOMString txid;
+    TransactionStatus status;
+  };
+
+  dictionary AddressChainStats {
+    // uint32_t
+    DOMString tx_count;
+    // uint64_t
+    DOMString funded_txo_sum;
+    // uint64_t
+    DOMString spent_txo_sum;
+  };
+
+  dictionary AddressStats {
+    DOMString address;
+    AddressChainStats chain_stats;
+    AddressChainStats mempool_stats;
+  };
+
+  dictionary UnspentOutputStatus {
+    boolean confirmed;
+  };
+
+  dictionary UnspentOutput {
+    DOMString txid;
+    // uint32_t
+    DOMString vout;
+    // uint64_t
+    DOMString value;
+    UnspentOutputStatus status;
+  };
+};

@@ -67,7 +67,8 @@ export const getMockedTransactionInfo =
         },
         ethTxData: {} as any,
         filTxData: undefined,
-        solanaTxData: undefined
+        solanaTxData: undefined,
+        btcTxData: undefined
       },
       txStatus: BraveWallet.TransactionStatus.Approved,
       txType: BraveWallet.TransactionType.Other,
@@ -387,6 +388,7 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
     ethTxData: undefined,
     ethTxData1559: undefined,
     filTxData: undefined,
+    btcTxData: undefined,
     solanaTxData: {
       recentBlockhash: 'B7Kg79jDm48LMdB4JB2hu82Yfsuz5xYm2cQDBYmKdDSn',
       lastValidBlockHeight: 0 as unknown as bigint,
@@ -448,6 +450,7 @@ export const mockSolDappSignAndSendTransactionRequest: SerializableTransactionIn
     ethTxData: undefined,
     ethTxData1559: undefined,
     filTxData: undefined,
+    btcTxData: undefined,
     solanaTxData: {
       recentBlockhash: 'C115cyMDVoGGYNd4r8vFy5qPJEUdoJQQCXMYYKQTQimn',
       lastValidBlockHeight: '0',
@@ -541,6 +544,7 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
       ethTxData: undefined,
       ethTxData1559: undefined,
       filTxData: undefined,
+      btcTxData: undefined,
       solanaTxData: {
         recentBlockhash: '8Yq6DGZBh9oEJsCVhUjTqN9kPiLoeYJ7J4n9TnpPYjqW',
         lastValidBlockHeight: 0 as unknown as bigint,
@@ -588,6 +592,7 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
       ethTxData: undefined,
       ethTxData1559: undefined,
       filTxData: undefined,
+      btcTxData: undefined,
       solanaTxData: {
         recentBlockhash: '8Yq6DGZBh9oEJsCVhUjTqN9kPiLoeYJ7J4n9TnpPYjqW',
         lastValidBlockHeight: 0 as unknown as bigint,
