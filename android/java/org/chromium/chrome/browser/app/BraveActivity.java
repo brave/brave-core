@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -1570,6 +1571,7 @@ public abstract class BraveActivity extends ChromeActivity
         setupObservers();
     }
 
+    @MainThread
     private void setupObservers() {
         clearObservers();
         mWalletModel.getCryptoModel().getPendingTxHelper().mSelectedPendingRequest.observe(
@@ -1596,7 +1598,7 @@ public abstract class BraveActivity extends ChromeActivity
                 });
 
         mWalletModel.getDappsModel().mWalletIconNotificationVisible.observe(
-                this, visible -> { setWalletBadgeVisibility(visible); });
+                this, this::setWalletBadgeVisibility);
 
         mWalletModel.getDappsModel().mPendingWalletAccountCreationRequest.observe(this, request -> {
             if (request == null) return;
@@ -1649,6 +1651,7 @@ public abstract class BraveActivity extends ChromeActivity
                 });
     }
 
+    @MainThread
     private void clearObservers() {
         mWalletModel.getCryptoModel().getPendingTxHelper().mSelectedPendingRequest.removeObservers(
                 this);

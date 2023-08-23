@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -175,6 +176,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         }
     }
 
+    @MainThread
     private void setUpObservers() {
         if (mWalletModel == null) return;
         getNetworkModel().mCryptoNetworks.observe(
