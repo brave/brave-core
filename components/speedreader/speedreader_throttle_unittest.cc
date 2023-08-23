@@ -63,6 +63,7 @@ class SpeedreaderThrottleTest : public testing::Test {
 
   void TearDown() override {
     web_contents_.reset();
+    profile_ = nullptr;
     profile_manager_->DeleteTestingProfile(kTestProfileName);
   }
 
