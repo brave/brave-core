@@ -614,6 +614,7 @@ struct BraveSwapFeeResponse {
   string discount_on_brave_fee_pct;
   string effective_fee_pct;
   DiscountCode discount_code;
+  bool has_brave_fee;
 };
 
 const string kLedgerHardwareVendor = "Ledger";

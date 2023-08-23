@@ -104,10 +104,10 @@ brave_wallet::mojom::BraveSwapFeeResponsePtr GetBraveFeeInternal(
     // Jupiter API v6 will take 20% of the platform fee charged by integrators.
     // TODO(onyb): update the multipliers below during migration to Jupiter API
     // v6.
-    auto protocol_fee_pct = percentage_fee.value() * 0;
-    auto brave_fee_pct = percentage_fee.value() * 1;
-    auto discount_on_brave_fee_pct = has_fees ? 0 : 100;
-    auto discount_on_prototcol_fee_pct = has_fees ? 0 : 100;
+    auto protocol_fee_pct = percentage_fee.value() * 0.0;
+    auto brave_fee_pct = percentage_fee.value() * 1.0;
+    auto discount_on_brave_fee_pct = has_fees ? 0.0 : 100.0;
+    auto discount_on_prototcol_fee_pct = has_fees ? 0.0 : 100.0;
 
     response->brave_fee_pct = base::NumberToString(brave_fee_pct);
 
@@ -115,18 +115,20 @@ brave_wallet::mojom::BraveSwapFeeResponsePtr GetBraveFeeInternal(
         base::NumberToString(discount_on_brave_fee_pct);
 
     response->protocol_fee_pct = base::NumberToString(
-        (100 - discount_on_prototcol_fee_pct) / 100 * protocol_fee_pct);
+        (100.0 - discount_on_prototcol_fee_pct) / 100.0 * protocol_fee_pct);
 
     response->effective_fee_pct = base::NumberToString(
-        (100 - discount_on_brave_fee_pct) / 100 * brave_fee_pct);
+        (100.0 - discount_on_brave_fee_pct) / 100.0 * brave_fee_pct);
 
     // Jupiter swap fee is specified in basis points
     response->fee_param =
-        base::NumberToString(static_cast<int>(percentage_fee.value() * 100));
+        base::NumberToString(static_cast<int>(percentage_fee.value() * 100.0));
 
     response->discount_code =
         has_fees ? brave_wallet::mojom::DiscountCode::kNone
                  : brave_wallet::mojom::DiscountCode::kUnknownJupiterOutputMint;
+
+    response->has_brave_fee = has_fees;
 
     return response;
   }
@@ -136,7 +138,7 @@ brave_wallet::mojom::BraveSwapFeeResponsePtr GetBraveFeeInternal(
         brave_wallet::mojom::BraveSwapFeeResponse::New();
 
     // We currently do not offer discounts on 0x Brave fees.
-    auto discount_on_brave_fee_pct = 0;
+    auto discount_on_brave_fee_pct = 0.0;
 
     // This indicates the 0x Swap fee of 15 bps on select tokens. It should
     // only be surfaced to the users if quote has a non-null zeroExFee field.
@@ -147,13 +149,14 @@ brave_wallet::mojom::BraveSwapFeeResponsePtr GetBraveFeeInternal(
         base::NumberToString(discount_on_brave_fee_pct);
 
     auto effective_fee_pct =
-        (100 - discount_on_brave_fee_pct) / 100 * percentage_fee.value();
+        (100.0 - discount_on_brave_fee_pct) / 100.0 * percentage_fee.value();
     response->effective_fee_pct = base::NumberToString(effective_fee_pct);
 
     // 0x swap fee is specified as a multiplier
-    response->fee_param = base::NumberToString(effective_fee_pct / 100);
+    response->fee_param = base::NumberToString(effective_fee_pct / 100.0);
 
     response->discount_code = brave_wallet::mojom::DiscountCode::kNone;
+    response->has_brave_fee = effective_fee_pct > 0.0;
 
     return response;
   }
@@ -187,10 +190,7 @@ GURL Append0xSwapParams(const GURL& swap_url,
   brave_swap_fee_params->input_token = params.sell_token;
   brave_swap_fee_params->output_token = params.buy_token;
   const auto& brave_fee = GetBraveFeeInternal(std::move(brave_swap_fee_params));
-  double effective_fee_pct;
-  if (brave_fee &&
-      base::StringToDouble(brave_fee->effective_fee_pct, &effective_fee_pct) &&
-      effective_fee_pct > 0) {
+  if (brave_fee && brave_fee->has_brave_fee) {
     url = net::AppendQueryParameter(url, "buyTokenPercentageFee",
                                     brave_fee->fee_param);
   }
@@ -240,10 +240,7 @@ GURL AppendJupiterQuoteParams(
   brave_swap_fee_params->input_token = params.input_mint;
   brave_swap_fee_params->output_token = params.output_mint;
   const auto& brave_fee = GetBraveFeeInternal(std::move(brave_swap_fee_params));
-  double effective_fee_pct;
-  if (brave_fee &&
-      base::StringToDouble(brave_fee->effective_fee_pct, &effective_fee_pct) &&
-      effective_fee_pct > 0) {
+  if (brave_fee && brave_fee->has_brave_fee) {
     url = net::AppendQueryParameter(url, "feeBps", brave_fee->fee_param);
   }
 
@@ -552,11 +549,7 @@ void SwapService::GetJupiterSwapTransactions(
   brave_swap_fee_params->input_token = params->input_mint;
   brave_swap_fee_params->output_token = params->output_mint;
   const auto& brave_fee = GetBraveFeeInternal(std::move(brave_swap_fee_params));
-  double effective_fee_pct;
-  bool has_fee =
-      brave_fee &&
-      base::StringToDouble(brave_fee->effective_fee_pct, &effective_fee_pct) &&
-      effective_fee_pct > 0;
+  bool has_fee = brave_fee && brave_fee->has_brave_fee;
 
   auto encoded_params =
       EncodeJupiterTransactionParams(std::move(params), has_fee);

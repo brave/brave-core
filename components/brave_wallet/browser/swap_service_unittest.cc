@@ -1075,6 +1075,7 @@ TEST_F(SwapServiceUnitTest, GetBraveFee) {
   expected_response->discount_on_brave_fee_pct = "0";
   expected_response->effective_fee_pct = "0.875";
   expected_response->discount_code = mojom::DiscountCode::kNone;
+  expected_response->has_brave_fee = true;
 
   base::MockCallback<mojom::SwapService::GetBraveFeeCallback> callback;
   EXPECT_CALL(callback, Run(EqualsMojo(expected_response), ""));
@@ -1096,6 +1097,7 @@ TEST_F(SwapServiceUnitTest, GetBraveFee) {
   expected_response->effective_fee_pct = "0";
   expected_response->discount_code =
       mojom::DiscountCode::kUnknownJupiterOutputMint;
+  expected_response->has_brave_fee = false;
 
   EXPECT_CALL(callback, Run(EqualsMojo(expected_response), ""));
   swap_service_->GetBraveFee(params->Clone(), callback.Get());
@@ -1115,6 +1117,7 @@ TEST_F(SwapServiceUnitTest, GetBraveFee) {
   expected_response->discount_on_brave_fee_pct = "0";
   expected_response->effective_fee_pct = "0.85";
   expected_response->discount_code = mojom::DiscountCode::kNone;
+  expected_response->has_brave_fee = true;
 
   EXPECT_CALL(callback, Run(EqualsMojo(expected_response), ""));
   swap_service_->GetBraveFee(params->Clone(), callback.Get());

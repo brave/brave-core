@@ -279,7 +279,7 @@ export const QuoteInfo = (props: Props) => {
 
               {braveFee.discountCode !== BraveWallet.DiscountCode.kNone && (
                 <>
-                  {new Amount(braveFee.effectiveFeePct).isZero()
+                  {!braveFee.hasBraveFee
                     ? (
                       <Text textSize='14px' textColor='success' isBold={true}>
                         {getLocale('braveSwapFree')}
@@ -296,7 +296,7 @@ export const QuoteInfo = (props: Props) => {
                     {new Amount(braveFee.braveFeePct).format(6)}%
                   </BraveFeeDiscounted>
 
-                  {!new Amount(braveFee.effectiveFeePct).isZero() &&
+                  {braveFee.hasBraveFee &&
                     <Text textSize='14px'>
                      (-{new Amount(braveFee.discountOnBraveFeePct).format(6)}%)
                     </Text>
