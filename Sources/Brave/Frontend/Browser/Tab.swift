@@ -175,8 +175,29 @@ class Tab: NSObject {
     willSet {
       url = newValue
       previousComittedURL = committedURL
+      
+      // Clear the current request url and the redirect source url
+      // We don't need these values after the request has been comitted
+      currentRequestURL = nil
+      redirectSourceURL = nil
+      isInternalRedirect = false
     }
   }
+  
+  /// This is the url for the current request
+  var currentRequestURL: URL? {
+    willSet {
+      // Lets push the value as a redirect value
+      redirectSourceURL = currentRequestURL
+    }
+  }
+  
+  /// This tells us if we internally redirected while navigating (i.e. debounce or query stripping)
+  var isInternalRedirect: Bool = false
+  
+  // If the current reqest wasn't comitted and a new one was set
+  // we were redirected and therefore this is set
+  var redirectSourceURL: URL?
   
   /// The previous url that was set before `comittedURL` was set again
   private(set) var previousComittedURL: URL?
