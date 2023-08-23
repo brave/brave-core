@@ -13,7 +13,6 @@ import androidx.preference.PreferenceCategory;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
-import org.chromium.brave_shields.mojom.CookieListOptInPageAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListConstants;
 import org.chromium.chrome.R;
@@ -32,7 +31,6 @@ import org.chromium.chrome.browser.settings.BraveDialogPreference;
 import org.chromium.chrome.browser.settings.BravePreferenceDialogFragment;
 import org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreference;
 import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
-import org.chromium.chrome.browser.shields.CookieListOptInServiceFactory;
 import org.chromium.chrome.browser.shields.FilterListServiceFactory;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -182,14 +180,11 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mClearBrowsingDataOnExit;
     private Preference mUstoppableDomains;
     private ChromeSwitchPreference mFingerprntLanguagePref;
-    private CookieListOptInPageAndroidHandler mCookieListOptInPageAndroidHandler;
     private FilterListAndroidHandler mFilterListAndroidHandler;
 
     @Override
     public void onConnectionError(MojoException e) {
-        mCookieListOptInPageAndroidHandler = null;
         mFilterListAndroidHandler = null;
-        initCookieListOptInPageAndroidHandler();
         initFilterListAndroidHandler();
     }
 
@@ -202,21 +197,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 FilterListServiceFactory.getInstance().getFilterListAndroidHandler(this);
     }
 
-    private void initCookieListOptInPageAndroidHandler() {
-        if (mCookieListOptInPageAndroidHandler != null) {
-            return;
-        }
-
-        mCookieListOptInPageAndroidHandler =
-                CookieListOptInServiceFactory.getInstance().getCookieListOptInPageAndroidHandler(
-                        this);
-    }
-
     @Override
     public void onDestroy() {
-        if (mCookieListOptInPageAndroidHandler != null) {
-            mCookieListOptInPageAndroidHandler.close();
-        }
         if (mFilterListAndroidHandler != null) {
             mFilterListAndroidHandler.close();
         }
@@ -232,7 +214,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
 
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_privacy_preferences);
 
-        initCookieListOptInPageAndroidHandler();
         initFilterListAndroidHandler();
 
         mHttpsePref = (ChromeSwitchPreference) findPreference(PREF_HTTPSE);
@@ -387,6 +368,15 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     return false;
                 });
             }
+        }
+
+        if (mFilterListAndroidHandler != null) {
+            mFilterListAndroidHandler.isFilterListEnabled(
+                    FilterListConstants.COOKIE_LIST_UUID, isEnabled -> {
+                        if (!isEnabled) {
+                            removePreferenceIfPresent(PREF_BLOCK_COOKIE_CONSENT_NOTICES);
+                        }
+                    });
         }
 
         updateBravePreferences();
