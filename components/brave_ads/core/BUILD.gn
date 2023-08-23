@@ -4,13 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 static_library("core") {
-  sources = [
-    "search_result_ad/search_result_ad_converting_util.cc",
-    "search_result_ad/search_result_ad_converting_util.h",
-    "search_result_ad/search_result_ad_util.cc",
-    "search_result_ad/search_result_ad_util.h",
-  ]
-
   deps = [
     "//base",
     "//brave/components/brave_ads/core/internal",

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_SEARCH_RESULT_AD_TEST_WEB_PAGE_UTIL_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_SEARCH_RESULT_AD_TEST_WEB_PAGE_UTIL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_SEARCH_RESULT_AD_TEST_WEB_PAGE_UTIL_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_SEARCH_RESULT_AD_TEST_WEB_PAGE_UTIL_H_
 
 #include <vector>
 
@@ -20,4 +20,4 @@ std::vector<::schema_org::mojom::EntityPtr> CreateTestWebPageEntities(
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_SEARCH_RESULT_AD_TEST_WEB_PAGE_UTIL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_SEARCH_RESULT_AD_TEST_WEB_PAGE_UTIL_H_
