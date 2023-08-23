@@ -1687,7 +1687,7 @@ public class BraveRewardsPanel
             return mActivity.getResources().getString(R.string.uphold);
         } else if (walletType.equals(BraveWalletProvider.GEMINI)) {
             return mActivity.getResources().getString(R.string.gemini);
-        } else if (walletType.equals(BraveWalletProvider.BITFLYER){
+        } else if (walletType.equals(BraveWalletProvider.BITFLYER)) {
             return mActivity.getResources().getString(R.string.bitflyer);
         } else {
             return mActivity.getResources().getString(R.string.zebpay);
@@ -2102,7 +2102,7 @@ public class BraveRewardsPanel
         } else if (walletType.equals(BraveWalletProvider.BITFLYER)) {
             return R.drawable.ic_logo_bitflyer;
         } else {
-            return R.drawable.ic_logo_zebpay;
+            return R.drawable.ic_logo_zebpay_white;
         }
     }
 }

@@ -1453,7 +1453,7 @@ Are you sure you want to do this?
         Gemini
       </message>
       <message name="IDS_ZEBPAY">
-        Zebpay
+        ZebPay
       </message>
       <message name="IDS_VERIFY_WALLET_PROVIDER_NOTE1">
         Uphold may require you to verify your identity based on services requested.
