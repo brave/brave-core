@@ -6,7 +6,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
 // Types
-import { QuoteOption, SwapParams, SwapFee } from '../constants/types'
+import { QuoteOption, SwapParams } from '../constants/types'
 import { BraveWallet } from '../../../../constants/types'
 
 // Constants
@@ -49,30 +49,14 @@ export function useJupiter (params: SwapParams) {
   const [selectedRoute, setSelectedRoute] = useState<BraveWallet.JupiterRoute | undefined>(
     undefined
   )
-  const [braveFee, setBraveFee] = useState<SwapFee | undefined>(undefined)
+  const [braveFee, setBraveFee] =
+    useState<BraveWallet.BraveSwapFeeResponse | undefined>(undefined)
   const [abortController, setAbortController] = useState<AbortController | undefined>(undefined)
 
   // Custom hooks
   // FIXME(josheleonard): use slices API
   const { getSwapService, sendSolanaSerializedTransaction } = useLib()
   const swapService = getSwapService()
-
-  // FIXME(josheleonard): convert to slices
-  const getBraveFeeForAsset = useCallback(
-    async (token: BraveWallet.BlockchainToken) => {
-      if (token.coin !== BraveWallet.CoinType.SOL) {
-        throw Error('Unsupported coin type')
-      }
-
-      const hasFee = (await swapService.hasJupiterFeesForTokenMint(token.contractAddress)).result
-
-      return {
-        fee: '0.85',
-        discount: hasFee ? '0' : '100'
-      } as SwapFee
-    },
-    [swapService]
-  )
 
   const reset = useCallback(
     async (callback?: () => Promise<void>) => {
@@ -103,7 +87,10 @@ export function useJupiter (params: SwapParams) {
       }
 
       // Perform data validation and early-exit
-      if (selectedNetwork?.coin !== BraveWallet.CoinType.SOL) {
+      if (
+        !selectedNetwork ||
+        selectedNetwork.coin !== BraveWallet.CoinType.SOL
+      ) {
         return
       }
       if (!overriddenParams.fromToken || !overriddenParams.toToken) {
@@ -136,8 +123,17 @@ export function useJupiter (params: SwapParams) {
       setLoading(true)
 
       try {
-        const fee = await getBraveFeeForAsset(overriddenParams.toToken)
-        setBraveFee(fee)
+        const { response: braveFeeResponse } = await swapService.getBraveFee({
+          chainId: selectedNetwork.chainId,
+          inputToken:
+            overriddenParams.fromToken.contractAddress ||
+            WRAPPED_SOL_CONTRACT_ADDRESS,
+          outputToken:
+            overriddenParams.toToken.contractAddress ||
+            WRAPPED_SOL_CONTRACT_ADDRESS,
+          taker: overriddenParams.fromAddress,
+        })
+        setBraveFee(braveFeeResponse || undefined)
       } catch (e) {
         console.log(
           `Error getting Brave fee (Jupiter): ${
@@ -189,7 +185,7 @@ export function useJupiter (params: SwapParams) {
       // Return undefined if response is null.
       return jupiterQuoteResponse?.response || undefined
     },
-    [selectedNetwork?.coin, params, reset, swapService, getBraveFeeForAsset]
+    [selectedNetwork?.coin, params, reset, swapService]
   )
 
   const exchange = useCallback(
@@ -201,7 +197,7 @@ export function useJupiter (params: SwapParams) {
       if (selectedNetwork?.coin !== BraveWallet.CoinType.SOL) {
         return
       }
-      if (!params.toToken) {
+      if (!params.toToken || !params.fromToken) {
         return
       }
       if (!selectedAccount) {
@@ -211,11 +207,15 @@ export function useJupiter (params: SwapParams) {
       setLoading(true)
       let jupiterTransactionsPayloadResponse
       try {
-        jupiterTransactionsPayloadResponse = await swapService.getJupiterSwapTransactions({
-          userPublicKey: selectedAccount.address,
-          route: selectedRoute || quote.routes[0],
-          outputMint: params.toToken.contractAddress || WRAPPED_SOL_CONTRACT_ADDRESS
-        })
+        jupiterTransactionsPayloadResponse =
+          await swapService.getJupiterSwapTransactions({
+            userPublicKey: selectedAccount.address,
+            route: selectedRoute || quote.routes[0],
+            inputMint: params.fromToken.contractAddress ||
+              WRAPPED_SOL_CONTRACT_ADDRESS,
+            outputMint: params.toToken.contractAddress ||
+              WRAPPED_SOL_CONTRACT_ADDRESS
+          })
       } catch (e) {
         console.log(`Error getting Jupiter swap transactions: ${e}`)
       }

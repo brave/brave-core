@@ -161,20 +161,12 @@ export const QuoteInfo = (props: Props) => {
       .formatAsAsset(6, selectedQuoteOption.toToken.symbol)
   }, [selectedQuoteOption])
 
-  const realBraveFee = React.useMemo(() => {
-    if (!selectedQuoteOption) {
-      return
+  const braveFee = React.useMemo(() => {
+    if (selectedQuoteOption === undefined) {
+      return undefined
     }
 
-    const { braveFee } = selectedQuoteOption
-    if (!braveFee) {
-      return
-    }
-
-    return new Amount(100)
-      .minus(braveFee.discount)
-      .div(100)
-      .times(braveFee.fee)
+    return selectedQuoteOption.braveFee
   }, [selectedQuoteOption])
 
   return (
@@ -274,23 +266,56 @@ export const QuoteInfo = (props: Props) => {
           </Bubble>
         </Row>
       )}
-      {selectedQuoteOption?.braveFee && realBraveFee && (
-        <Row rowWidth='full' marginBottom={16} horizontalPadding={16}>
+      {braveFee && (
+        <Row rowWidth='full' marginBottom={8} horizontalPadding={16}>
           <Text textSize='14px'>{getLocale('braveSwapBraveFee')}</Text>
           <Text textSize='14px'>
             <BraveFeeContainer>
-              {realBraveFee.isZero() && (
-                <Text textSize='14px' textColor='success' isBold={true}>
-                  {getLocale('braveSwapFree')}
+              {braveFee.discountCode === BraveWallet.DiscountCode.kNone && (
+                <Text textSize='14px'>
+                  {new Amount(braveFee.effectiveFeePct).format(6)}%
                 </Text>
               )}
-              {realBraveFee.isZero() ? (
-                <BraveFeeDiscounted textSize='14px' textColor='text03'>
-                  {`${selectedQuoteOption.braveFee.fee}%`}
-                </BraveFeeDiscounted>
-              ) : (
-                <Text textSize='14px'>{`${realBraveFee.format()}%`}</Text>
+
+              {braveFee.discountCode !== BraveWallet.DiscountCode.kNone && (
+                <>
+                  {new Amount(braveFee.effectiveFeePct).isZero()
+                    ? (
+                      <Text textSize='14px' textColor='success' isBold={true}>
+                        {getLocale('braveSwapFree')}
+                      </Text>
+                    )
+                    : (
+                      <Text textSize='14px'>
+                        {new Amount(braveFee.effectiveFeePct).format(6)}%
+                      </Text>
+                    )
+                  }
+
+                  <BraveFeeDiscounted textSize='14px' textColor='text03'>
+                    {new Amount(braveFee.braveFeePct).format(6)}%
+                  </BraveFeeDiscounted>
+
+                  {!new Amount(braveFee.effectiveFeePct).isZero() &&
+                    <Text textSize='14px'>
+                     (-{new Amount(braveFee.discountOnBraveFeePct).format(6)}%)
+                    </Text>
+                  }
+                </>
               )}
+            </BraveFeeContainer>
+          </Text>
+        </Row>
+      )}
+
+      {braveFee && !new Amount(braveFee.protocolFeePct).isZero() && (
+        <Row rowWidth='full' marginBottom={16} horizontalPadding={16}>
+          <Text textSize='14px'>{getLocale('braveSwapProtocolFee')}</Text>
+          <Text textSize='14px'>
+            <BraveFeeContainer>
+              <Text textSize='14px'>
+                {new Amount(braveFee.protocolFeePct).format(6)}%
+              </Text>
             </BraveFeeContainer>
           </Text>
         </Row>

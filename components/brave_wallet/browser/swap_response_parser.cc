@@ -46,6 +46,33 @@ absl::optional<double> ParsePriceImpactPct(const base::Value& value) {
 
 namespace brave_wallet {
 
+namespace {
+mojom::ZeroExFeePtr ParseZeroExFee(const base::Value& value) {
+  if (value.is_none()) {
+    return nullptr;
+  }
+
+  if (!value.is_dict()) {
+    return nullptr;
+  }
+
+  auto zero_ex_fee_value =
+      swap_responses::ZeroExFee::FromValue(value.GetDict());
+  if (!zero_ex_fee_value) {
+    return nullptr;
+  }
+
+  auto zero_ex_fee = mojom::ZeroExFee::New();
+  zero_ex_fee->fee_type = zero_ex_fee_value->fee_type;
+  zero_ex_fee->fee_token = zero_ex_fee_value->fee_token;
+  zero_ex_fee->fee_amount = zero_ex_fee_value->fee_amount;
+  zero_ex_fee->billing_type = zero_ex_fee_value->billing_type;
+
+  return zero_ex_fee;
+}
+
+}  // namespace
+
 mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
                                          bool expect_transaction_data) {
   // {
@@ -81,7 +108,15 @@ mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
   //       "name": "Curve",
   //       "proportion": "0",
   //     }
-  //   ]
+  //   ],
+  //   "fees": {
+  //     "zeroExFee": {
+  //       "feeType": "volume",
+  //       "feeToken": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+  //       "feeAmount": "148470027512868522",
+  //       "billingType": "on-chain"
+  //     }
+  //   }
   // }
 
   auto swap_response_value =
@@ -133,6 +168,13 @@ mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
     swap_response->sources.push_back(
         mojom::ZeroExSource::New(source_value.name, source_value.proportion));
   }
+
+  auto fees = mojom::ZeroExFees::New();
+  if (auto zero_ex_fee = ParseZeroExFee(swap_response_value->fees.zero_ex_fee);
+      zero_ex_fee) {
+    fees->zero_ex_fee = std::move(zero_ex_fee);
+  }
+  swap_response->fees = std::move(fees);
 
   return swap_response;
 }

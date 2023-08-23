@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -66,24 +67,16 @@ bool HasRFQTLiquidity(const std::string& chain_id) {
           chain_id == brave_wallet::mojom::kPolygonMainnetChainId);
 }
 
-std::string GetFee(const std::string& chain_id) {
+absl::optional<double> GetFeePercentage(const std::string& chain_id) {
   if (IsEVMNetworkSupported(chain_id)) {
-    return brave_wallet::kBuyTokenPercentageFee;
-  } else if (IsSolanaNetworkSupported(chain_id)) {
-    return brave_wallet::kSolanaBuyTokenFeeBps;
+    return brave_wallet::k0xBuyTokenFeePercentage;
   }
 
-  return "";
-}
-
-std::string GetFeeRecipient(const std::string& chain_id) {
-  if (IsEVMNetworkSupported(chain_id)) {
-    return brave_wallet::kEVMFeeRecipient;
-  } else if (IsSolanaNetworkSupported(chain_id)) {
-    return brave_wallet::kSolanaFeeRecipient;
+  if (IsSolanaNetworkSupported(chain_id)) {
+    return brave_wallet::kSolanaBuyTokenFeePercentage;
   }
 
-  return "";
+  return absl::nullopt;
 }
 
 std::string GetAffiliateAddress(const std::string& chain_id) {
@@ -92,6 +85,80 @@ std::string GetAffiliateAddress(const std::string& chain_id) {
   }
 
   return "";
+}
+
+brave_wallet::mojom::BraveSwapFeeResponsePtr GetBraveFeeInternal(
+    brave_wallet::mojom::BraveSwapFeeParamsPtr params) {
+  const auto& percentage_fee = GetFeePercentage(params->chain_id);
+  if (!percentage_fee) {
+    return nullptr;
+  }
+
+  if (IsSolanaNetworkSupported(params->chain_id)) {
+    brave_wallet::mojom::BraveSwapFeeResponsePtr response =
+        brave_wallet::mojom::BraveSwapFeeResponse::New();
+
+    bool has_fees =
+        brave_wallet::HasJupiterFeesForTokenMint(params->output_token);
+
+    // Jupiter API v6 will take 20% of the platform fee charged by integrators.
+    // TODO(onyb): update the multipliers below during migration to Jupiter API
+    // v6.
+    auto protocol_fee_pct = percentage_fee.value() * 0;
+    auto brave_fee_pct = percentage_fee.value() * 1;
+    auto discount_on_brave_fee_pct = has_fees ? 0 : 100;
+    auto discount_on_prototcol_fee_pct = has_fees ? 0 : 100;
+
+    response->brave_fee_pct = base::NumberToString(brave_fee_pct);
+
+    response->discount_on_brave_fee_pct =
+        base::NumberToString(discount_on_brave_fee_pct);
+
+    response->protocol_fee_pct = base::NumberToString(
+        (100 - discount_on_prototcol_fee_pct) / 100 * protocol_fee_pct);
+
+    response->effective_fee_pct = base::NumberToString(
+        (100 - discount_on_brave_fee_pct) / 100 * brave_fee_pct);
+
+    // Jupiter swap fee is specified in basis points
+    response->fee_param =
+        base::NumberToString(static_cast<int>(percentage_fee.value() * 100));
+
+    response->discount_code =
+        has_fees ? brave_wallet::mojom::DiscountCode::kNone
+                 : brave_wallet::mojom::DiscountCode::kUnknownJupiterOutputMint;
+
+    return response;
+  }
+
+  if (IsEVMNetworkSupported(params->chain_id)) {
+    brave_wallet::mojom::BraveSwapFeeResponsePtr response =
+        brave_wallet::mojom::BraveSwapFeeResponse::New();
+
+    // We currently do not offer discounts on 0x Brave fees.
+    auto discount_on_brave_fee_pct = 0;
+
+    // This indicates the 0x Swap fee of 15 bps on select tokens. It should
+    // only be surfaced to the users if quote has a non-null zeroExFee field.
+    response->protocol_fee_pct =
+        base::NumberToString(brave_wallet::k0xProtocolFeePercentage);
+    response->brave_fee_pct = base::NumberToString(percentage_fee.value());
+    response->discount_on_brave_fee_pct =
+        base::NumberToString(discount_on_brave_fee_pct);
+
+    auto effective_fee_pct =
+        (100 - discount_on_brave_fee_pct) / 100 * percentage_fee.value();
+    response->effective_fee_pct = base::NumberToString(effective_fee_pct);
+
+    // 0x swap fee is specified as a multiplier
+    response->fee_param = base::NumberToString(effective_fee_pct / 100);
+
+    response->discount_code = brave_wallet::mojom::DiscountCode::kNone;
+
+    return response;
+  }
+
+  return nullptr;
 }
 
 GURL Append0xSwapParams(const GURL& swap_url,
@@ -113,15 +180,28 @@ GURL Append0xSwapParams(const GURL& swap_url,
   if (!params.sell_token.empty()) {
     url = net::AppendQueryParameter(url, "sellToken", params.sell_token);
   }
-  url =
-      net::AppendQueryParameter(url, "buyTokenPercentageFee", GetFee(chain_id));
+
+  auto brave_swap_fee_params = brave_wallet::mojom::BraveSwapFeeParams::New();
+  brave_swap_fee_params->chain_id = chain_id;
+  brave_swap_fee_params->taker = params.taker_address;
+  brave_swap_fee_params->input_token = params.sell_token;
+  brave_swap_fee_params->output_token = params.buy_token;
+  const auto& brave_fee = GetBraveFeeInternal(std::move(brave_swap_fee_params));
+  double effective_fee_pct;
+  if (brave_fee &&
+      base::StringToDouble(brave_fee->effective_fee_pct, &effective_fee_pct) &&
+      effective_fee_pct > 0) {
+    url = net::AppendQueryParameter(url, "buyTokenPercentageFee",
+                                    brave_fee->fee_param);
+  }
+
   url = net::AppendQueryParameter(
       url, "slippagePercentage",
       base::StringPrintf("%.6f", params.slippage_percentage));
-  std::string fee_recipient = GetFeeRecipient(chain_id);
-  if (!fee_recipient.empty()) {
-    url = net::AppendQueryParameter(url, "feeRecipient", fee_recipient);
-  }
+
+  url = net::AppendQueryParameter(url, "feeRecipient",
+                                  brave_wallet::kEVMFeeRecipient);
+
   std::string affiliate_address = GetAffiliateAddress(chain_id);
   if (!affiliate_address.empty()) {
     url = net::AppendQueryParameter(url, "affiliateAddress", affiliate_address);
@@ -154,8 +234,17 @@ GURL AppendJupiterQuoteParams(
   url = net::AppendQueryParameter(
       url, "slippageBps", base::StringPrintf("%d", params.slippage_bps));
 
-  if (brave_wallet::HasJupiterFeesForTokenMint(params.output_mint)) {
-    url = net::AppendQueryParameter(url, "feeBps", GetFee(chain_id));
+  auto brave_swap_fee_params = brave_wallet::mojom::BraveSwapFeeParams::New();
+  brave_swap_fee_params->chain_id = chain_id;
+  brave_swap_fee_params->taker = params.user_public_key;
+  brave_swap_fee_params->input_token = params.input_mint;
+  brave_swap_fee_params->output_token = params.output_mint;
+  const auto& brave_fee = GetBraveFeeInternal(std::move(brave_swap_fee_params));
+  double effective_fee_pct;
+  if (brave_fee &&
+      base::StringToDouble(brave_fee->effective_fee_pct, &effective_fee_pct) &&
+      effective_fee_pct > 0) {
+    url = net::AppendQueryParameter(url, "feeBps", brave_fee->fee_param);
   }
 
   // TODO(onyb): append userPublicKey to get information on fees and ATA
@@ -448,15 +537,29 @@ void SwapService::OnGetJupiterQuote(GetJupiterQuoteCallback callback,
 void SwapService::GetJupiterSwapTransactions(
     mojom::JupiterSwapParamsPtr params,
     GetJupiterSwapTransactionsCallback callback) {
-  if (!IsSolanaNetworkSupported(json_rpc_service_->GetChainIdSync(
-          mojom::CoinType::SOL, absl::nullopt))) {
+  const auto& chain_id =
+      json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL, absl::nullopt);
+  if (!IsSolanaNetworkSupported(chain_id)) {
     std::move(callback).Run(
         nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
     return;
   }
 
-  auto encoded_params = EncodeJupiterTransactionParams(std::move(params));
+  auto brave_swap_fee_params = brave_wallet::mojom::BraveSwapFeeParams::New();
+  brave_swap_fee_params->chain_id = chain_id;
+  brave_swap_fee_params->taker = params->user_public_key;
+  brave_swap_fee_params->input_token = params->input_mint;
+  brave_swap_fee_params->output_token = params->output_mint;
+  const auto& brave_fee = GetBraveFeeInternal(std::move(brave_swap_fee_params));
+  double effective_fee_pct;
+  bool has_fee =
+      brave_fee &&
+      base::StringToDouble(brave_fee->effective_fee_pct, &effective_fee_pct) &&
+      effective_fee_pct > 0;
+
+  auto encoded_params =
+      EncodeJupiterTransactionParams(std::move(params), has_fee);
   if (!encoded_params) {
     std::move(callback).Run(
         nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -499,10 +602,15 @@ void SwapService::OnGetJupiterSwapTransactions(
   }
 }
 
-void SwapService::HasJupiterFeesForTokenMint(
-    const std::string& mint,
-    HasJupiterFeesForTokenMintCallback callback) {
-  std::move(callback).Run(brave_wallet::HasJupiterFeesForTokenMint(mint));
+void SwapService::GetBraveFee(mojom::BraveSwapFeeParamsPtr params,
+                              GetBraveFeeCallback callback) {
+  if (auto response = GetBraveFeeInternal(std::move(params))) {
+    std::move(callback).Run(std::move(response), "");
+    return;
+  }
+
+  std::move(callback).Run(nullptr,
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 }  // namespace brave_wallet
