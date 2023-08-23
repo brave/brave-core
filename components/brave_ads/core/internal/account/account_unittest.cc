@@ -8,9 +8,6 @@
 #include <utility>
 
 #include "base/test/mock_callback.h"
-#include "brave/components/brave_ads/core/ad_type.h"
-#include "brave/components/brave_ads/core/ads_callback.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
@@ -37,6 +34,9 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

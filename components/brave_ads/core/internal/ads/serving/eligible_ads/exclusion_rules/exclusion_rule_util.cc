@@ -7,8 +7,8 @@
 
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 namespace brave_ads {
 

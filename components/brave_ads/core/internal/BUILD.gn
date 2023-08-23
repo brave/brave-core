@@ -527,12 +527,6 @@ source_set("internal") {
     "ads/serving/targeting/user_model_builder.h",
     "ads/serving/targeting/user_model_info.cc",
     "ads/serving/targeting/user_model_info.h",
-    "ads_client_helper.cc",
-    "ads_client_helper.h",
-    "ads_client_notifier.cc",
-    "ads_client_notifier_observer.cc",
-    "ads_client_notifier_queue.cc",
-    "ads_client_notifier_queue.h",
     "ads_impl.cc",
     "ads_impl.h",
     "ads_util.cc",
@@ -604,6 +598,12 @@ source_set("internal") {
     "catalog/catalog_url_request_json_reader.h",
     "catalog/catalog_util.cc",
     "catalog/catalog_util.h",
+    "client/ads_client_helper.cc",
+    "client/ads_client_helper.h",
+    "client/ads_client_notifier.cc",
+    "client/ads_client_notifier_observer.cc",
+    "client/ads_client_notifier_queue.cc",
+    "client/ads_client_notifier_queue.h",
     "common/calendar/calendar_leap_year_util.cc",
     "common/calendar/calendar_leap_year_util.h",
     "common/calendar/calendar_util.cc",
@@ -1253,7 +1253,6 @@ source_set("internal") {
   deps = [
     "//base",
     "//brave/components/brave_ads/common",
-    "//brave/components/brave_ads/core:headers",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/core",
@@ -1278,7 +1277,7 @@ source_set("internal") {
 
   public_deps = [
     "//brave/components/brave_ads/common/interfaces",
-    "//brave/components/brave_ads/core:headers",
+    "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_federated/public/interfaces",
   ]
 }

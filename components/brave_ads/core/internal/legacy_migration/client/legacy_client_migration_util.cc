@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_util.h"
 
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 
 namespace brave_ads {
 

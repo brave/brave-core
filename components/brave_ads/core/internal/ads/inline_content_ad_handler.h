@@ -11,11 +11,11 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_delegate.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

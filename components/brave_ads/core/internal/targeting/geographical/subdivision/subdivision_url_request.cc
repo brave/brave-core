@@ -9,7 +9,7 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"

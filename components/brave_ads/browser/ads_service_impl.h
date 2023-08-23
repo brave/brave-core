@@ -24,7 +24,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/ads_callback.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/history/core/browser/history_service.h"

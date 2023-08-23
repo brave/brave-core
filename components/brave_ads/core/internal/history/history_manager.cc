@@ -9,9 +9,6 @@
 
 #include "base/containers/circular_deque.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/ad_content_info.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
@@ -20,9 +17,12 @@
 #include "brave/components/brave_ads/core/internal/history/history_util.h"
 #include "brave/components/brave_ads/core/internal/history/sorts/history_sort_factory.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/notification_ad_info.h"
-#include "brave/components/brave_ads/core/promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/history/ad_content_info.h"
 
 namespace brave_ads {
 

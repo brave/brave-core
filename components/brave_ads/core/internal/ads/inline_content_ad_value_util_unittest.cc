@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/inline_content_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_value_util.h"
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

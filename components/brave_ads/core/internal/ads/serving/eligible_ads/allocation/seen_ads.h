@@ -9,10 +9,10 @@
 #include <map>
 #include <string>
 
-#include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/allocation/round_robin_ads.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
 
 namespace brave_ads {
 

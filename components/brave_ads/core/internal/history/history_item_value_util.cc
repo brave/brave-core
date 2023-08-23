@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/history_item_value_util.h"
+#include "brave/components/brave_ads/core/public/history/history_item_value_util.h"
 
 #include <utility>
 
 #include "base/json/values_util.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_ads/core/ad_content_value_util.h"
-#include "brave/components/brave_ads/core/category_content_value_util.h"
+#include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
+#include "brave/components/brave_ads/core/public/history/category_content_value_util.h"
 
 namespace brave_ads {
 

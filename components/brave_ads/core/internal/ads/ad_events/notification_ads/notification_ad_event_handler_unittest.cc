@@ -7,8 +7,6 @@
 
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/ad_type.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
@@ -17,7 +15,9 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
-#include "brave/components/brave_ads/core/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

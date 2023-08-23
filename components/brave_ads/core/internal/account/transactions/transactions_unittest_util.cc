@@ -9,13 +9,13 @@
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
-#include "brave/components/brave_ads/core/ad_type.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 namespace brave_ads {
 

@@ -7,10 +7,10 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_QUEUE_CONFIRMATION_QUEUE_H_
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
 

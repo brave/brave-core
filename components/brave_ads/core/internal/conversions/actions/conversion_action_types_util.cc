@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types_util.h"
 
 #include "base/notreached.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types_constants.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 namespace brave_ads {
 

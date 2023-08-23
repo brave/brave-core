@@ -7,7 +7,6 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
@@ -27,6 +26,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 #include "url/gurl.h"
 
 namespace brave_ads {

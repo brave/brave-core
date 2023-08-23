@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pacing/pacing_random_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
@@ -21,6 +20,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

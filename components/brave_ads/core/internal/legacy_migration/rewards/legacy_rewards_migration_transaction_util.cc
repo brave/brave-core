@@ -7,12 +7,12 @@
 
 #include "base/time/time.h"
 #include "base/uuid.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_payments_util.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_constants.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 namespace brave_ads::rewards {
 

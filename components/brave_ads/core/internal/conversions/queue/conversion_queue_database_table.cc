@@ -11,7 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/containers/container_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"

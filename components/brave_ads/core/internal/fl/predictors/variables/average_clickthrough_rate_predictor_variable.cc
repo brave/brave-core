@@ -7,9 +7,9 @@
 
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/predictor_variable_constants.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
 
 namespace brave_ads {
 

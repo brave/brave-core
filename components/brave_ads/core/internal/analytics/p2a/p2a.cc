@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/analytics/p2a/p2a.h"
 
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/p2a_value_util.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 
 namespace brave_ads::p2a {
 

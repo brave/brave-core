@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
@@ -25,7 +25,7 @@
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
 
 namespace brave_ads {
 

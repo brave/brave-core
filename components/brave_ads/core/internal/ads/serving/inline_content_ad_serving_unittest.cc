@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_feature_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
@@ -18,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

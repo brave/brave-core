@@ -11,7 +11,7 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_ads/android/jni_headers/BraveAdsNativeHelper_jni.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/ads_util.h"
+#include "brave/components/brave_ads/core/public/ads_util.h"
 #include "chrome/browser/profiles/profile_android.h"
 #include "components/prefs/pref_service.h"
 

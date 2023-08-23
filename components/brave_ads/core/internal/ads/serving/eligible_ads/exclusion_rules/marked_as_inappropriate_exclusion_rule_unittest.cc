@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/marked_as_inappropriate_exclusion_rule.h"
 
-#include "brave/components/brave_ads/core/ad_content_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
+#include "brave/components/brave_ads/core/public/history/ad_content_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

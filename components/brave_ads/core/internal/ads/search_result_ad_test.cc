@@ -8,8 +8,6 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/ad_type.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
@@ -17,6 +15,8 @@
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

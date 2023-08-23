@@ -10,9 +10,9 @@
 
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_info.h"
 
 namespace brave_ads {
 

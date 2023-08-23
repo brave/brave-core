@@ -7,8 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_BROWSER_BROWSER_MANAGER_H_
 
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
 

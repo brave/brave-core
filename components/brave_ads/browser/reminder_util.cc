@@ -7,7 +7,7 @@
 
 #include "base/notreached.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/notification_ad_constants.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "url/gurl.h"

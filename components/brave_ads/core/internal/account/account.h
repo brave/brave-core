@@ -12,8 +12,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/core/ads_callback.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_delegate.h"
@@ -21,6 +19,8 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

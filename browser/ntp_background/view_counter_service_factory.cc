@@ -14,7 +14,7 @@
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/core/ads_util.h"
+#include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"

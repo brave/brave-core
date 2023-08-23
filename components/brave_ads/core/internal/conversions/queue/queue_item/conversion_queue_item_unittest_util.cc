@@ -7,8 +7,6 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/ad_info.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
@@ -19,6 +17,8 @@
 #include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_builder.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
+#include "brave/components/brave_ads/core/public/ad_info.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 namespace brave_ads {
 

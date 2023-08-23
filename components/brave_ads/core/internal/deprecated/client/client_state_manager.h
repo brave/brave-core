@@ -11,8 +11,6 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/ads_callback.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_advertiser_info.h"
@@ -20,6 +18,8 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/flagged_ad_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

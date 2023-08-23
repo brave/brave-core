@@ -8,8 +8,8 @@
 
 #include <memory>
 
-#include "brave/components/brave_ads/core/history_sort_types.h"
 #include "brave/components/brave_ads/core/internal/history/sorts/history_sort_interface.h"
+#include "brave/components/brave_ads/core/public/history/history_sort_types.h"
 
 namespace brave_ads {
 

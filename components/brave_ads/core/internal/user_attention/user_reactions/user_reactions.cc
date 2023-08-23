@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_reactions/user_reactions.h"
 
-#include "brave/components/brave_ads/core/ad_content_info.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/history/ad_content_info.h"
 
 namespace brave_ads {
 

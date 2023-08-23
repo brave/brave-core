@@ -11,7 +11,6 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
@@ -27,10 +26,11 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 
 namespace brave_ads {

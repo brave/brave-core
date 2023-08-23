@@ -7,7 +7,7 @@
 
 #include "base/containers/contains.h"
 #include "base/strings/string_piece.h"
-#include "brave/components/brave_ads/core/supported_subdivisions.h"
+#include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
 
 namespace brave_ads {
 

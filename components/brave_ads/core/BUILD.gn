@@ -12,62 +12,7 @@ static_library("core") {
   ]
 
   public_deps = [
-    ":headers",
+    "//brave/components/brave_ads/core/public:headers",
     "//components/schema_org/common:mojom",
-  ]
-}
-
-source_set("headers") {
-  sources = [
-    "ad_constants.h",
-    "ad_content_info.h",
-    "ad_content_value_util.h",
-    "ad_event_history.h",
-    "ad_info.h",
-    "ad_type.h",
-    "ads.h",
-    "ads_callback.h",
-    "ads_client.h",
-    "ads_client_callback.h",
-    "ads_client_notifier.h",
-    "ads_client_notifier_observer.h",
-    "ads_util.h",
-    "category_content_info.h",
-    "category_content_value_util.h",
-    "confirmation_type.h",
-    "database.h",
-    "export.h",
-    "flags_util.h",
-    "history_filter_types.h",
-    "history_item_info.h",
-    "history_item_value_util.h",
-    "history_sort_types.h",
-    "inline_content_ad_constants.h",
-    "inline_content_ad_info.h",
-    "inline_content_ad_value_util.h",
-    "new_tab_page_ad_constants.h",
-    "new_tab_page_ad_info.h",
-    "new_tab_page_ad_value_util.h",
-    "new_tab_page_ad_wallpaper_focal_point_info.h",
-    "new_tab_page_ad_wallpaper_info.h",
-    "notification_ad_constants.h",
-    "notification_ad_info.h",
-    "notification_ad_value_util.h",
-    "page_transition_types.h",
-    "promoted_content_ad_constants.h",
-    "promoted_content_ad_info.h",
-    "promoted_content_ad_value_util.h",
-    "supported_subdivisions.h",
-  ]
-
-  deps = [
-    "//base",
-    "//sql",
-    "//url",
-  ]
-
-  public_deps = [
-    "//brave/components/brave_ads/common/interfaces",
-    "//brave/components/brave_federated/public/interfaces",
   ]
 }

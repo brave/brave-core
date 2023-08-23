@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/inline_content_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_value_util.h"
 
-#include "brave/components/brave_ads/core/inline_content_ad_constants.h"
-#include "brave/components/brave_ads/core/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_constants.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
 
 namespace brave_ads {
 

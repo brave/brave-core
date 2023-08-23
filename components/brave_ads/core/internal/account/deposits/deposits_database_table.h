@@ -10,10 +10,10 @@
 
 #include "base/functional/callback_forward.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/ads_client_callback.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::database::table {

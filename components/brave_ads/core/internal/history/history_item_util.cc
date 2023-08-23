@@ -6,11 +6,11 @@
 #include "brave/components/brave_ads/core/internal/history/history_item_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/ad_info.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/history/ad_content_util.h"
 #include "brave/components/brave_ads/core/internal/history/category_content_util.h"
+#include "brave/components/brave_ads/core/public/ad_info.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
 
 namespace brave_ads {
 

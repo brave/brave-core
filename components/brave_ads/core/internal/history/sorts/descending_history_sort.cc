@@ -7,7 +7,7 @@
 
 #include "base/ranges/algorithm.h"
 #include "base/ranges/functional.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
 
 namespace brave_ads {
 

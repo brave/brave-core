@@ -6,14 +6,14 @@
 #include "brave/components/brave_ads/core/internal/history/history_util.h"
 
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/history/history_constants.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
-#include "brave/components/brave_ads/core/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

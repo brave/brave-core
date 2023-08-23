@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_json_reader.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"

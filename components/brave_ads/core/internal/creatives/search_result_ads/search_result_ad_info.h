@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_info.h"
 
 namespace brave_ads {
 
