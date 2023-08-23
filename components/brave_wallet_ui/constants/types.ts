@@ -264,7 +264,8 @@ export interface WalletState {
   filteredOutPortfolioAccountAddresses: string[]
   hidePortfolioSmallBalances: boolean
   showNetworkLogoOnNfts: boolean,
-  isRefreshingNetworksAndTokens: boolean
+  isRefreshingNetworksAndTokens: boolean,
+  importAccountError: ImportAccountErrorType
 }
 
 export interface PanelState {
@@ -300,9 +301,7 @@ export interface PageState {
   mnemonic?: string
   setupStillInProgress: boolean
   showIsRestoring: boolean
-  importAccountError: ImportAccountErrorType
   importWalletError: ImportWalletError
-  showAddModal: boolean
   isCryptoWalletsInitialized: boolean
   isMetaMaskInitialized: boolean
   isImportWalletsCheckComplete: boolean

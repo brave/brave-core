@@ -5,6 +5,7 @@
 
 import {
   BraveWallet,
+  FilecoinNetwork
 } from '../../constants/types'
 
 export type CreateWalletPayloadType = {
@@ -21,12 +22,7 @@ export type ImportAccountPayloadType = {
   accountName: string
   privateKey: string
   coin: BraveWallet.CoinType
-}
-
-export type ImportFilecoinAccountPayloadType = {
-  accountName: string
-  privateKey: string
-  network: string
+  network?: FilecoinNetwork
 }
 
 export type ImportAccountFromJsonPayloadType = {

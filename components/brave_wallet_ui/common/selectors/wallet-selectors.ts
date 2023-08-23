@@ -45,6 +45,8 @@ export const hidePortfolioSmallBalances = ({ wallet }: State) =>
 export const showNetworkLogoOnNfts = ({ wallet }: State) => wallet.showNetworkLogoOnNfts
 export const isPanelV2FeatureEnabled = ({ wallet }: State) =>
   wallet.isPanelV2FeatureEnabled
+export const importAccountError = ({ wallet }: State) =>
+  wallet.importAccountError
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects and lists)
 export const accounts = ({ wallet }: State) => wallet.accounts
