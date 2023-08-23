@@ -65,12 +65,4 @@ public class PortfolioFragmentStateAdapter extends FragmentStateAdapter {
     public CharSequence getPageTitle(final int position) {
         return mTitles.get(position);
     }
-
-    @NonNull
-    public AssetsFragment getAssetsFragment() {
-        if (mAssetsFragment == null) {
-            mAssetsFragment = AssetsFragment.newInstance();
-        }
-        return mAssetsFragment;
-    }
 }

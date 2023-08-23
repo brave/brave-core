@@ -37,8 +37,6 @@ import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.TransactionInfo;
-import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.NetworkModel;
@@ -78,8 +76,6 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
     private int mPreviousCheckedRadioId;
     private int mCurrentTimeframeType;
     private WalletModel mWalletModel;
-    private List<TransactionInfo> mPendingTxs;
-    private TransactionInfo mCurrentPendingTx;
 
     PortfolioHelper mPortfolioHelper;
     private RecyclerView mRvCoins;
@@ -182,17 +178,6 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
                     mBtnChangeNetwork.setText(
                             Utils.getShortNameOfNetwork(localNetworkInfo.chainName));
                     updatePortfolioGetPendingTx();
-                });
-        // Show pending transactions fab to process pending txs
-        mWalletModel.getCryptoModel().getPendingTransactions().observe(
-                getViewLifecycleOwner(), transactionInfos -> {
-                    mPendingTxs = transactionInfos;
-                    if (mCurrentPendingTx == null && mPendingTxs.size() > 0) {
-                        mCurrentPendingTx = mPendingTxs.get(0);
-                    } else if (mPendingTxs.size() == 0) {
-                        mCurrentPendingTx = null;
-                    }
-                    updatePendingTxNotification();
                 });
         mWalletModel.getCryptoModel().getPortfolioModel().mIsDiscoveringUserAssets.observe(
                 getViewLifecycleOwner(), isDiscoveringUserAssets -> {
@@ -371,23 +356,7 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
 
     @Override
     public void onTxApprovedRejected(boolean approved, String accountName, String txId) {
-        updatePendingTxNotification();
-        updateNextPendingTx();
-        callAnotherApproveDialog();
-    }
-
-    public void callAnotherApproveDialog() {
-        if (!hasPendingTx() || mWalletModel == null) {
-            return;
-        }
-        ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment =
-                ApproveTxBottomSheetDialogFragment.newInstance(mCurrentPendingTx,
-                        mWalletModel.getCryptoModel()
-                                .getPendingTxHelper()
-                                .getAccountNameForTransaction(mCurrentPendingTx));
-        approveTxBottomSheetDialogFragment.setApprovedTxObserver(this);
-        approveTxBottomSheetDialogFragment.show(
-                getParentFragmentManager(), ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
+        /* No op. */
     }
 
     private void showEditVisibleDialog() {
@@ -408,32 +377,6 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
 
         bottomSheetDialogFragment.show(getParentFragmentManager(),
                 EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
-    }
-
-    private void updateNextPendingTx() {
-        if (mCurrentPendingTx != null) {
-            for (TransactionInfo info : mPendingTxs) {
-                if (!mCurrentPendingTx.id.equals(info.id)
-                        && info.txStatus == TransactionStatus.UNAPPROVED) {
-                    mCurrentPendingTx = info;
-                    return;
-                }
-            }
-            mCurrentPendingTx = null;
-        } else if (mPendingTxs.size() > 0) {
-            mCurrentPendingTx = mPendingTxs.get(0);
-        }
-    }
-
-    private boolean hasPendingTx() {
-        return mCurrentPendingTx != null;
-    }
-
-    private void updatePendingTxNotification() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            ((BraveWalletActivity) activity).showPendingTxNotification(hasPendingTx());
-        }
     }
 
     private NetworkModel getNetworkModel() {
