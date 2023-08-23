@@ -45,6 +45,7 @@ _PAGE_GRAPH_TRACKED_ITEMS = {
         "toBlob",
         "toDataURL",
     },
+    "Location": {"*"},
     "Navigator": {"*"},
     "Performance": {"*"},
     "PerformanceObserver": {"*"},
