@@ -1001,6 +1001,18 @@ GURL BraveContentBrowserClient::GetEffectiveURL(
 bool BraveContentBrowserClient::HandleURLOverrideRewrite(
     GURL* url,
     content::BrowserContext* browser_context) {
+  // Some of these rewrites are for WebUI pages with URL that has moved.
+  // After rewrite happens, GetWebUIFactoryFunction() will work as expected.
+  // (see browser\ui\webui\brave_web_ui_controller_factory.cc for more info)
+  //
+  // Scope of schema is intentionally narrower than content::HasWebUIScheme(url)
+  // which also allows both `chrome-untrusted` and `chrome-devtools`.
+  if (!url->SchemeIs(content::kBraveUIScheme) &&
+      !url->SchemeIs(content::kChromeUIScheme)) {
+    return false;
+  }
+
+  // brave://sync => brave://settings/braveSync
   if (url->host() == chrome::kChromeUISyncHost) {
     GURL::Replacements replacements;
     replacements.SetSchemeStr(content::kChromeUIScheme);
@@ -1011,6 +1023,7 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
   }
 
 #if !BUILDFLAG(IS_ANDROID)
+  // brave://adblock => brave://settings/shields/filters
   if (url->host() == kAdblockHost) {
     GURL::Replacements replacements;
     replacements.SetSchemeStr(content::kChromeUIScheme);
