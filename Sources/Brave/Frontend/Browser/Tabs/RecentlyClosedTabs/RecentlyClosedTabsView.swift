@@ -19,6 +19,7 @@ struct RecentlyClosedTabsView: View {
   
   @State private var showClearDataPrompt: Bool = false
   var onRecentlyClosedSelected: ((RecentlyClosed) -> Void)?
+  var onClearAllRecentlyClosed: (() -> Void)?
   
   private let tabManager: TabManager?
 
@@ -30,13 +31,14 @@ struct RecentlyClosedTabsView: View {
     .foregroundColor(Color(.braveBlurpleTint))
     .actionSheet(isPresented: $showClearDataPrompt) {
       .init(title: Text(Strings.RecentlyClosed.recentlyClosedClearActionConfirmation),
-        buttons: [
-          .destructive(Text(Strings.RecentlyClosed.recentlyClosedClearActionTitle), action: {
-            RecentlyClosed.removeAll()
-            dismissView()
-          }),
-          .cancel()
-        ]
+            buttons: [
+              .destructive(Text(Strings.RecentlyClosed.recentlyClosedClearActionTitle), action: {
+                RecentlyClosed.removeAll()
+                onClearAllRecentlyClosed?()
+                dismissView()
+              }),
+              .cancel()
+            ]
       )
     }
   }

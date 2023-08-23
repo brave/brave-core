@@ -312,14 +312,21 @@ extension BrowserViewController: TabManagerDelegate {
             // After opening the Recently Closed in a new tab delete it from list
             RecentlyClosed.remove(with: recentlyClosed.url)
           }
+
+          recentlyClosedTabsView.onClearAllRecentlyClosed = { [weak self] in
+            // After clearing tabs need to remove button actions from the tab bar controls
+            guard let self = self else { return }
+
+            DispatchQueue.main.async {
+              self.updateToolbarUsingTabManager(tabManager)
+            }
+          }
           
           self.present(UIHostingController(rootView: recentlyClosedTabsView), animated: true)
         })
-      
-      recentlyClosedMenuChildren.append(viewRecentlyClosedTabs)
-      
       // Fetch last item in Recently Closed
       if let recentlyClosedTab = RecentlyClosed.all().first {
+        recentlyClosedMenuChildren.append(viewRecentlyClosedTabs)
         let reopenLastClosedTab = UIAction(
           title: Strings.RecentlyClosed.recentlyClosedReOpenLastActionTitle,
           image: UIImage(braveSystemNamed: "leo.browser.mobile-tab-ntp"),
