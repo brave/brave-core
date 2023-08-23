@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -23,9 +23,10 @@ std::string TestParamToString(::testing::TestParamInfo<int> test_param) {
 
 }  // namespace
 
-class BraveAdsDatabaseMigrationTest : public UnitTestBase,
-                                      public ::testing::WithParamInterface<int>,
-                                      public DatabaseManagerObserver {
+class BraveAdsInvalidDatabaseMigrationTest
+    : public UnitTestBase,
+      public ::testing::WithParamInterface<int>,
+      public DatabaseManagerObserver {
  protected:
   void SetUpMocks() override {
     MaybeMockDatabase();
@@ -41,23 +42,9 @@ class BraveAdsDatabaseMigrationTest : public UnitTestBase,
 
   static int GetSchemaVersion() { return GetParam(); }
 
-  static bool ShouldCreateDatabase() { return GetSchemaVersion() == 0; }
-
-  static bool IsMostRecentSchemaVersion() {
-    return GetSchemaVersion() == database::kVersion;
-  }
-
-  static bool ShouldMigrateDatabase() {
-    return !ShouldCreateDatabase() && !IsMostRecentSchemaVersion();
-  }
-
   void MaybeMockDatabase() {
-    if (ShouldCreateDatabase()) {
-      return;
-    }
-
     const std::string database_filename = base::StringPrintf(
-        "database/database_schema_%d.sqlite", GetSchemaVersion());
+        "database/invalid_database_schema_%d.sqlite", GetSchemaVersion());
     ASSERT_TRUE(
         CopyFileFromTestPathToTempPath(database_filename, kDatabaseFilename));
   }
@@ -83,21 +70,21 @@ class BraveAdsDatabaseMigrationTest : public UnitTestBase,
   bool database_is_ready_ = false;
 };
 
-TEST_P(BraveAdsDatabaseMigrationTest, MigrateFromSchema) {
+TEST_P(BraveAdsInvalidDatabaseMigrationTest, MigrateFromSchema) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_EQ(ShouldCreateDatabase(), did_create_database_);
-  EXPECT_EQ(ShouldMigrateDatabase(), did_migrate_database_);
+  EXPECT_TRUE(did_create_database_);
+  EXPECT_FALSE(did_migrate_database_);
   EXPECT_FALSE(failed_to_migrate_database_);
   EXPECT_TRUE(database_is_ready_);
 }
 
 INSTANTIATE_TEST_SUITE_P(,
-                         BraveAdsDatabaseMigrationTest,
-                         ::testing::Range(0, database::kVersion + 1),
+                         BraveAdsInvalidDatabaseMigrationTest,
+                         ::testing::Range(1, database::kVersion + 1),
                          TestParamToString);
 
 }  // namespace brave_ads

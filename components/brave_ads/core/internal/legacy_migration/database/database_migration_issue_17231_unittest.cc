@@ -21,8 +21,8 @@ namespace brave_ads {
 class BraveAdsDatabaseMigrationIssue17231Test : public UnitTestBase {
  protected:
   void SetUpMocks() override {
-    ASSERT_TRUE(CopyFileFromTestPathToTempPath("database_issue_17231.sqlite",
-                                               kDatabaseFilename));
+    ASSERT_TRUE(CopyFileFromTestPathToTempPath(
+        "database/database_issue_17231.sqlite", kDatabaseFilename));
   }
 };
 
