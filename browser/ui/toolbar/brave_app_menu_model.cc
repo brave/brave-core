@@ -13,9 +13,11 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/ui_features.h"
+#include "chrome/grit/chromium_strings.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/ui_base_features.h"
 
@@ -43,6 +45,25 @@
 #endif
 
 namespace {
+
+class BraveHelpMenuModel : public ui::SimpleMenuModel {
+ public:
+  explicit BraveHelpMenuModel(ui::SimpleMenuModel::Delegate* delegate)
+      : SimpleMenuModel(delegate) {
+    Build();
+  }
+  BraveHelpMenuModel(const BraveHelpMenuModel&) = delete;
+  BraveHelpMenuModel& operator=(const BraveHelpMenuModel&) = delete;
+  ~BraveHelpMenuModel() override = default;
+
+ private:
+  void Build() {
+    AddItemWithStringId(IDC_ABOUT, IDS_ABOUT);
+    AddItemWithStringId(IDC_HELP_PAGE_VIA_MENU, IDS_HELP_PAGE);
+    AddItemWithStringId(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER,
+                        IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER);
+  }
+};
 
 #if defined(TOOLKIT_VIEWS)
 using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
@@ -152,115 +173,57 @@ BraveAppMenuModel::BraveAppMenuModel(
 BraveAppMenuModel::~BraveAppMenuModel() = default;
 
 void BraveAppMenuModel::Build() {
-  // Insert brave items after build chromium items.
-  AppMenuModel::Build();
-  InsertBraveMenuItems();
-  InsertAlternateProfileItems();
-}
-
-void BraveAppMenuModel::InsertBraveMenuItems() {
+  // Customize items after build chromium items.
   // Insert & reorder brave menus based on corresponding commands enable status.
   // If we you want to add/remove from app menu, adjust commands enable status
   // at BraveBrowserCommandController.
+  AppMenuModel::Build();
 
-  // Step 1. Configure tab & windows section.
+  RemoveUpstreamMenus();
+  BuildTabsAndWindowsSection();
+  BuildBraveProductsSection();
+  BuildBrowserSection();
+  BuildMoreToolsSubMenu();
+  BuildHelpSubMenu();
+}
+
+void BraveAppMenuModel::BuildTabsAndWindowsSection() {
   if (IsCommandIdEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE)) {
     InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_NEW_WINDOW).value(),
                              IDC_NEW_TOR_CONNECTION_FOR_SITE,
                              IDS_NEW_TOR_CONNECTION_FOR_SITE);
   }
+
   if (IsCommandIdEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR)) {
     InsertItemWithStringIdAt(
         GetIndexOfCommandId(IDC_NEW_INCOGNITO_WINDOW).value() + 1,
         IDC_NEW_OFFTHERECORD_WINDOW_TOR, IDS_NEW_OFFTHERECORD_WINDOW_TOR);
   }
+}
 
-  // Step 2. Configure second section that includes history, downloads and
-  // bookmark. Then, insert brave items.
-
-  // First, reorder original menus We want to move them in order of bookmark,
-  // download and extensions.
-  absl::optional<size_t> bookmark_item_index =
-      GetIndexOfCommandId(IDC_BOOKMARKS_MENU);
-  // If bookmark is not used, we don't need to adjust download item.
-  if (bookmark_item_index.has_value()) {
-    // Place download menu under bookmark.
-    DCHECK(IsCommandIdEnabled(IDC_SHOW_DOWNLOADS));
-    RemoveItemAt(GetIndexOfCommandId(IDC_SHOW_DOWNLOADS).value());
-    InsertItemWithStringIdAt(bookmark_item_index.value(), IDC_SHOW_DOWNLOADS,
-                             IDS_SHOW_DOWNLOADS);
-  }
-
-  // Hide upstream's extensions item and move extensions menu under download.
-  // Based on feature flags, more tools sub menu includes it or there is
-  // extensions sub menu.
-  if (base::FeatureList::IsEnabled(features::kExtensionsMenuInAppMenu) ||
-      features::IsChromeRefresh2023()) {
-    // Hide extensions sub menu.
-    DCHECK(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).has_value());
-    RemoveItemAt(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).value());
-  } else {
-    // Hide extensions item from more tools sub menu.
-    ui::SimpleMenuModel* model = static_cast<ui::SimpleMenuModel*>(
-        GetSubmenuModelAt(GetIndexOfCommandId(IDC_MORE_TOOLS_MENU).value()));
-    DCHECK(model);
-    DCHECK(model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS).has_value());
-    model->RemoveItemAt(
-        model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS).value());
-  }
-
-  if (IsCommandIdEnabled(IDC_MANAGE_EXTENSIONS)) {
-    InsertItemWithStringIdAt(
-        GetIndexOfCommandId(IDC_SHOW_DOWNLOADS).value() + 1,
-        IDC_MANAGE_EXTENSIONS, IDS_SHOW_EXTENSIONS);
-  }
-
-  if (IsCommandIdEnabled(IDC_SHOW_BRAVE_REWARDS)) {
-    InsertItemWithStringIdAt(GetIndexOfBraveRewardsItem(),
-                             IDC_SHOW_BRAVE_REWARDS, IDS_SHOW_BRAVE_REWARDS);
-  }
-
-  // Insert wallet menu after download menu.
+void BraveAppMenuModel::BuildBraveProductsSection() {
+  // Needs to add separator as this section is brave specific section.
+  bool need_separator = false;
   if (IsCommandIdEnabled(IDC_SHOW_BRAVE_WALLET)) {
-    InsertItemWithStringIdAt(
-        GetIndexOfCommandId(IDC_SHOW_DOWNLOADS).value() + 1,
-        IDC_SHOW_BRAVE_WALLET, IDS_SHOW_BRAVE_WALLET);
+    InsertItemWithStringIdAt(GetNextIndexOfBraveProductsSection(),
+                             IDC_SHOW_BRAVE_WALLET, IDS_SHOW_BRAVE_WALLET);
+    need_separator = true;
   }
-
-  // Insert sync menu
-  if (IsCommandIdEnabled(IDC_SHOW_BRAVE_SYNC)) {
-    InsertItemWithStringIdAt(GetIndexOfBraveSyncItem(), IDC_SHOW_BRAVE_SYNC,
-                             IDS_SHOW_BRAVE_SYNC);
-  }
-
-#if defined(TOOLKIT_VIEWS)
-  if (sidebar::CanUseSidebar(browser())) {
-    sub_menus_.push_back(std::make_unique<SidebarMenuModel>(browser()));
-    InsertSubMenuWithStringIdAt(
-        GetIndexOfBraveSidebarItem(), IDC_SIDEBAR_SHOW_OPTION_MENU,
-        IDS_SIDEBAR_SHOW_OPTION_TITLE, sub_menus_.back().get());
-  }
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  const bool show_menu_item = IsCommandIdEnabled(IDC_BRAVE_VPN_MENU);
-  const bool show_panel_item = IsCommandIdEnabled(IDC_SHOW_BRAVE_VPN_PANEL);
-
-  if (show_menu_item) {
+  if (IsCommandIdEnabled(IDC_BRAVE_VPN_MENU)) {
     sub_menus_.push_back(std::make_unique<BraveVPNMenuModel>(
         browser(), browser()->profile()->GetPrefs()));
-    InsertSubMenuWithStringIdAt(GetIndexOfBraveVPNItem(), IDC_BRAVE_VPN_MENU,
-                                IDS_BRAVE_VPN_MENU, sub_menus_.back().get());
-  } else if (show_panel_item) {
-    InsertItemWithStringIdAt(GetIndexOfBraveVPNItem(), IDC_SHOW_BRAVE_VPN_PANEL,
-                             IDS_BRAVE_VPN_MENU);
+    InsertSubMenuWithStringIdAt(GetNextIndexOfBraveProductsSection(),
+                                IDC_BRAVE_VPN_MENU, IDS_BRAVE_VPN_MENU,
+                                sub_menus_.back().get());
+    need_separator = true;
+  } else if (IsCommandIdEnabled(IDC_SHOW_BRAVE_VPN_PANEL)) {
+    InsertItemWithStringIdAt(GetNextIndexOfBraveProductsSection(),
+                             IDC_SHOW_BRAVE_VPN_PANEL, IDS_BRAVE_VPN_MENU);
+    need_separator = true;
   }
 #endif
-
-  // Insert webcompat reporter item.
-  InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_ABOUT).value(),
-                           IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER,
-                           IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER);
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   if (IsCommandIdEnabled(IDC_APP_MENU_IPFS)) {
@@ -284,9 +247,7 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
                             IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER,
                             keys_command_index);
     }
-    int index = IsCommandIdEnabled(IDC_SHOW_BRAVE_SYNC)
-                    ? GetIndexOfBraveSyncItem() + 1
-                    : GetLastIndexOfSecondSection();
+    const int index = GetNextIndexOfBraveProductsSection();
     InsertSubMenuWithStringIdAt(index, IDC_APP_MENU_IPFS, IDS_APP_MENU_IPFS,
                                 &ipfs_submenu_model_);
 
@@ -294,8 +255,183 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
     const auto& ipfs_logo = *bundle.GetImageSkiaNamed(IDR_BRAVE_IPFS_LOGO);
     ui::ImageModel image_model = ui::ImageModel::FromImageSkia(ipfs_logo);
     SetIcon(index, image_model);
+    need_separator = true;
   }
 #endif
+
+  if (need_separator) {
+    InsertSeparatorAt(GetNextIndexOfBraveProductsSection(),
+                      ui::NORMAL_SEPARATOR);
+  }
+}
+
+void BraveAppMenuModel::BuildBrowserSection() {
+  // The items are currently arranged as
+  // History
+  // Downloads
+  // Bookmarks
+  // ...
+  // Extensions (from more tools sub menu)
+  // and we want to rearrange to
+  // History
+  // Bookmarks
+  // Downloads
+  // Extensions
+  absl::optional<size_t> bookmark_item_index =
+      GetIndexOfCommandId(IDC_BOOKMARKS_MENU);
+
+  // If bookmark is not used, we don't need to adjust download item.
+  if (bookmark_item_index.has_value()) {
+    // Place download menu under bookmark.
+    DCHECK(IsCommandIdEnabled(IDC_SHOW_DOWNLOADS));
+    RemoveItemAt(GetIndexOfCommandId(IDC_SHOW_DOWNLOADS).value());
+    InsertItemWithStringIdAt(bookmark_item_index.value(), IDC_SHOW_DOWNLOADS,
+                             IDS_SHOW_DOWNLOADS);
+  }
+
+  if (IsCommandIdEnabled(IDC_MANAGE_EXTENSIONS)) {
+    InsertItemWithStringIdAt(
+        GetIndexOfCommandId(IDC_SHOW_DOWNLOADS).value() + 1,
+        IDC_MANAGE_EXTENSIONS, IDS_SHOW_EXTENSIONS);
+  }
+}
+
+void BraveAppMenuModel::BuildMoreToolsSubMenu() {
+  ui::SimpleMenuModel* more_tools_menu_model =
+      static_cast<ui::SimpleMenuModel*>(
+          GetSubmenuModelAt(GetIndexOfCommandId(IDC_MORE_TOOLS_MENU).value()));
+  DCHECK(more_tools_menu_model);
+
+  size_t next_target_index = 0;
+  bool need_separator = false;
+
+  // Create New Profile
+  if (IsCommandIdEnabled(IDC_ADD_NEW_PROFILE)) {
+    more_tools_menu_model->InsertItemWithStringIdAt(
+        next_target_index++, IDC_ADD_NEW_PROFILE, IDS_ADD_NEW_PROFILE);
+    need_separator = true;
+  }
+
+  // Open Guest Window
+  if (IsCommandIdEnabled(IDC_OPEN_GUEST_PROFILE)) {
+    more_tools_menu_model->InsertItemWithStringIdAt(
+        next_target_index++, IDC_OPEN_GUEST_PROFILE, IDS_OPEN_GUEST_PROFILE);
+    need_separator = true;
+  }
+
+  if (need_separator) {
+    more_tools_menu_model->InsertSeparatorAt(next_target_index++,
+                                             ui::NORMAL_SEPARATOR);
+    need_separator = false;
+  }
+
+#if defined(TOOLKIT_VIEWS)
+  if (sidebar::CanUseSidebar(browser())) {
+    sub_menus_.push_back(std::make_unique<SidebarMenuModel>(browser()));
+    more_tools_menu_model->InsertSubMenuWithStringIdAt(
+        next_target_index++, IDC_SIDEBAR_SHOW_OPTION_MENU,
+        IDS_SIDEBAR_SHOW_OPTION_TITLE, sub_menus_.back().get());
+    more_tools_menu_model->InsertSeparatorAt(next_target_index++,
+                                             ui::NORMAL_SEPARATOR);
+  }
+#endif
+
+  if (media_router::MediaRouterEnabled(browser()->profile())) {
+    more_tools_menu_model->InsertItemWithStringIdAt(
+        next_target_index++, IDC_ROUTE_MEDIA, IDS_MEDIA_ROUTER_MENU_ITEM_TITLE);
+    need_separator = true;
+  }
+
+  // Insert sync menu
+  if (IsCommandIdEnabled(IDC_SHOW_BRAVE_SYNC)) {
+    more_tools_menu_model->InsertItemWithStringIdAt(
+        next_target_index++, IDC_SHOW_BRAVE_SYNC, IDS_SHOW_BRAVE_SYNC);
+    need_separator = true;
+  }
+
+  if (need_separator) {
+    more_tools_menu_model->InsertSeparatorAt(next_target_index++,
+                                             ui::NORMAL_SEPARATOR);
+    need_separator = false;
+  }
+
+  if (auto index =
+          more_tools_menu_model->GetIndexOfCommandId(IDC_TASK_MANAGER)) {
+    more_tools_menu_model->InsertItemWithStringIdAt(*index, IDC_DEV_TOOLS,
+                                                    IDS_DEV_TOOLS);
+  }
+}
+
+void BraveAppMenuModel::BuildHelpSubMenu() {
+  // Put help sub menu above the settings menu.
+  if (const auto index = GetIndexOfCommandId(IDC_OPTIONS)) {
+    sub_menus_.push_back(std::make_unique<BraveHelpMenuModel>(this));
+    InsertSubMenuWithStringIdAt(*index, IDC_HELP_MENU, IDS_HELP_MENU,
+                                sub_menus_.back().get());
+  }
+}
+
+void BraveAppMenuModel::RemoveUpstreamMenus() {
+  ui::SimpleMenuModel* more_tools_model = static_cast<ui::SimpleMenuModel*>(
+      GetSubmenuModelAt(GetIndexOfCommandId(IDC_MORE_TOOLS_MENU).value()));
+  DCHECK(more_tools_model);
+
+  // Remove upstream's extensions item. It'll be added into top level third
+  // section.
+  if (base::FeatureList::IsEnabled(features::kExtensionsMenuInAppMenu) ||
+      features::IsChromeRefresh2023()) {
+    // Hide extensions sub menu.
+    DCHECK(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).has_value());
+    RemoveItemAt(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).value());
+  } else {
+    // Hide extensions item from more tools sub menu.
+    DCHECK(more_tools_model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS)
+               .has_value());
+    more_tools_model->RemoveItemAt(
+        more_tools_model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS).value());
+  }
+
+  // Remove upstream's cast item. It'll be added into more tools sub menu.
+  if (media_router::MediaRouterEnabled(browser()->profile())) {
+    SimpleMenuModel* parent_model_for_cast = this;
+    if (features::IsChromeRefresh2023()) {
+      DCHECK(GetIndexOfCommandId(IDC_SAVE_AND_SHARE_MENU).has_value());
+      parent_model_for_cast = static_cast<SimpleMenuModel*>(GetSubmenuModelAt(
+          GetIndexOfCommandId(IDC_SAVE_AND_SHARE_MENU).value()));
+    }
+
+    DCHECK(parent_model_for_cast->GetIndexOfCommandId(IDC_ROUTE_MEDIA)
+               .has_value());
+    parent_model_for_cast->RemoveItemAt(
+        GetIndexOfCommandId(IDC_ROUTE_MEDIA).value());
+  }
+
+  // Remove upstream's clear browsing data. It'll be added into history sub
+  // menu at RecentTabsSubMenuModel::Build().
+  if (const auto index =
+          more_tools_model->GetIndexOfCommandId(IDC_CLEAR_BROWSING_DATA)) {
+    more_tools_model->RemoveItemAt(*index);
+  }
+
+  // Remove upstream's dev tools menu and associated separator.
+  // It'll be changed its position in more tools.
+  if (const auto index = more_tools_model->GetIndexOfCommandId(IDC_DEV_TOOLS)) {
+    // If task manager is not existed, just remove separator above the dev tools
+    // item. Otherwise, remove separator and item both.
+    DCHECK_EQ(ui::MenuModel::TYPE_SEPARATOR,
+              more_tools_model->GetTypeAt((*index) - 1));
+    if (!more_tools_model->GetIndexOfCommandId(IDC_TASK_MANAGER).has_value()) {
+      more_tools_model->RemoveItemAt((*index) - 1);
+    } else {
+      more_tools_model->RemoveItemAt(*index);
+      more_tools_model->RemoveItemAt((*index) - 1);
+    }
+  }
+
+  // Remove upstream's about menu. It's moved into help sub menu.
+  if (const auto index = GetIndexOfCommandId(IDC_ABOUT)) {
+    RemoveItemAt(*index);
+  }
 }
 
 void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
@@ -398,6 +534,7 @@ int BraveAppMenuModel::GetSelectedIPFSCommandId(int id) const {
   }
   return -1;
 }
+
 int BraveAppMenuModel::AddIpfsImportMenuItem(int action_command_id,
                                              int string_id,
                                              int keys_command_id) {
@@ -419,79 +556,33 @@ int BraveAppMenuModel::AddIpfsImportMenuItem(int action_command_id,
   return items_added;
 }
 #endif
-void BraveAppMenuModel::InsertAlternateProfileItems() {
-  // Insert Open Guest Window and Create New Profile items just above
-  // the zoom item unless these items are disabled.
 
-  const size_t zoom_index = GetIndexOfCommandId(IDC_ZOOM_MENU).value();
-  DCHECK_GT(zoom_index, 0u);
-  const size_t index = zoom_index - 1;
-
-  // Open Guest Window
-  if (IsCommandIdEnabled(IDC_OPEN_GUEST_PROFILE)) {
-    InsertItemWithStringIdAt(index, IDC_OPEN_GUEST_PROFILE,
-                             IDS_OPEN_GUEST_PROFILE);
-  }
-
-  // Create New Profile
-  if (IsCommandIdEnabled(IDC_ADD_NEW_PROFILE)) {
-    InsertItemWithStringIdAt(index, IDC_ADD_NEW_PROFILE, IDS_ADD_NEW_PROFILE);
-  }
-
-  if (zoom_index != GetIndexOfCommandId(IDC_ZOOM_MENU).value())
-    InsertSeparatorAt(index, ui::NORMAL_SEPARATOR);
-}
-
-size_t BraveAppMenuModel::GetLastIndexOfSecondSection() const {
-  // Insert as a last item in second section.
-  std::vector<int> commands_to_check = {IDC_SHOW_BRAVE_VPN_PANEL,
+size_t BraveAppMenuModel::GetNextIndexOfBraveProductsSection() const {
+  std::vector<int> commands_to_check = {IDC_APP_MENU_IPFS,
+                                        IDC_SHOW_BRAVE_VPN_PANEL,
                                         IDC_BRAVE_VPN_MENU,
-                                        IDC_SIDEBAR_SHOW_OPTION_MENU,
-                                        IDC_SHOW_BRAVE_SYNC,
-                                        IDC_MANAGE_EXTENSIONS,
                                         IDC_SHOW_BRAVE_WALLET,
-                                        IDC_SHOW_DOWNLOADS};
+                                        IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+                                        IDC_NEW_INCOGNITO_WINDOW,
+                                        IDC_NEW_WINDOW};
+  const auto last_index_of_second_section =
+      GetProperItemIndex(commands_to_check, false).value();
+  const auto last_cmd_id_of_second_section =
+      GetCommandIdAt(last_index_of_second_section);
 
-  return GetProperItemIndex(commands_to_check, true).value();
+  // If |last_cmd_id_of_second_section| is from new tab & windows section,
+  // no item is added to second section yet.
+  if (last_cmd_id_of_second_section == IDC_NEW_OFFTHERECORD_WINDOW_TOR ||
+      last_cmd_id_of_second_section == IDC_NEW_INCOGNITO_WINDOW ||
+      last_cmd_id_of_second_section == IDC_NEW_WINDOW) {
+    // Used additional "+1" to skip separator.
+    DCHECK_EQ(ui::MenuModel::TYPE_SEPARATOR,
+              GetTypeAt(last_index_of_second_section + 1));
+    return last_index_of_second_section + 2;
+  }
+
+  return last_index_of_second_section + 1;
 }
-
-size_t BraveAppMenuModel::GetIndexOfBraveRewardsItem() const {
-  // Insert rewards menu at first of this section. If history menu is not
-  // available, check below items.
-  std::vector<int> commands_to_check = {IDC_RECENT_TABS_MENU,
-                                        IDC_BOOKMARKS_MENU, IDC_SHOW_DOWNLOADS};
-
-  return GetProperItemIndex(commands_to_check, false).value();
-}
-
-size_t BraveAppMenuModel::GetIndexOfBraveSyncItem() const {
-  // Insert sync menu under extensions menu. If extensions menu is not
-  // available, check above items.
-  std::vector<int> commands_to_check = {
-      IDC_MANAGE_EXTENSIONS, IDC_SHOW_BRAVE_WALLET, IDC_SHOW_DOWNLOADS};
-
-  return GetProperItemIndex(commands_to_check, true).value();
-}
-
-#if defined(TOOLKIT_VIEWS)
-size_t BraveAppMenuModel::GetIndexOfBraveSidebarItem() const {
-  std::vector<int> commands_to_check = {
-      IDC_SHOW_BRAVE_SYNC, IDC_MANAGE_EXTENSIONS, IDC_SHOW_BRAVE_WALLET,
-      IDC_SHOW_DOWNLOADS};
-
-  return GetProperItemIndex(commands_to_check, true).value();
-}
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-size_t BraveAppMenuModel::GetIndexOfBraveVPNItem() const {
-  std::vector<int> commands_to_check = {
-      IDC_SIDEBAR_SHOW_OPTION_MENU, IDC_SHOW_BRAVE_SYNC, IDC_MANAGE_EXTENSIONS,
-      IDC_SHOW_BRAVE_WALLET, IDC_SHOW_DOWNLOADS};
-
-  return GetProperItemIndex(commands_to_check, true).value();
-}
-#endif
 
 absl::optional<size_t> BraveAppMenuModel::GetProperItemIndex(
     std::vector<int> commands_to_check,

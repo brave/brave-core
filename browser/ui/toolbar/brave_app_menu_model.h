@@ -46,17 +46,26 @@ class BraveAppMenuModel : public AppMenuModel {
   absl::optional<size_t> GetProperItemIndex(std::vector<int> commands_to_check,
                                             bool insert_next) const;
 
-  void InsertBraveMenuItems();
-  void InsertAlternateProfileItems();
-  size_t GetIndexOfBraveRewardsItem() const;
-  size_t GetLastIndexOfSecondSection() const;
-  size_t GetIndexOfBraveSyncItem() const;
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  size_t GetIndexOfBraveVPNItem() const;
-#endif
-#if defined(TOOLKIT_VIEWS)
-  size_t GetIndexOfBraveSidebarItem() const;
-#endif
+  void BuildTabsAndWindowsSection();
+
+  // Leo(not yet added), Wallet, VPN and IPFS.
+  void BuildBraveProductsSection();
+  size_t GetNextIndexOfBraveProductsSection() const;
+
+  // History, bookmarks, downloads and extensions.
+  void BuildBrowserSection();
+
+  // Insert profile, sidebar, sync and cast entries into existing more tools sub
+  // menu.
+  void BuildMoreToolsSubMenu();
+
+  // About brave, help center and report broken site items.
+  void BuildHelpSubMenu();
+
+  // We relocate some upstream items. Need to remove them before adding them to
+  // another location.
+  void RemoveUpstreamMenus();
+
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   int AddIpnsKeysToSubMenu(ui::SimpleMenuModel* submenu,
                            ipfs::IpnsKeysManager* manager,

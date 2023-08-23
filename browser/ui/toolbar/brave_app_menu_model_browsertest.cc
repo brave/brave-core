@@ -137,6 +137,56 @@ void CheckCommandsAreInOrderInMenuModel(
   CheckCommandsAreInOrderInMenuModel(&model, commands_in_order);
 }
 
+void CheckMoreToolsCommandsAreInOrderInMenuModel(
+    Browser* browser,
+    const std::vector<int>& more_tools_commands_in_order) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  BraveAppMenuModel model(browser_view->toolbar(), browser);
+  model.Init();
+  ui::SimpleMenuModel* more_tools_model =
+      static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
+          model.GetIndexOfCommandId(IDC_MORE_TOOLS_MENU).value()));
+  CheckCommandsAreInOrderInMenuModel(more_tools_model,
+                                     more_tools_commands_in_order);
+}
+
+void CheckMoreToolsCommandsAreDisabledInMenuModel(
+    Browser* browser,
+    const std::vector<int>& more_tools_disabled_commands) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  BraveAppMenuModel model(browser_view->toolbar(), browser);
+  model.Init();
+  ui::SimpleMenuModel* more_tools_model =
+      static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
+          model.GetIndexOfCommandId(IDC_MORE_TOOLS_MENU).value()));
+  CheckCommandsAreDisabledInMenuModel(more_tools_model,
+                                      more_tools_disabled_commands);
+}
+
+void CheckHelpCommandsAreInOrderInMenuModel(
+    Browser* browser,
+    const std::vector<int>& help_commands_in_order) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  BraveAppMenuModel model(browser_view->toolbar(), browser);
+  model.Init();
+  ui::SimpleMenuModel* help_model =
+      static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
+          model.GetIndexOfCommandId(IDC_HELP_MENU).value()));
+  CheckCommandsAreInOrderInMenuModel(help_model, help_commands_in_order);
+}
+
+void CheckHistoryCommandsAreInOrderInMenuModel(
+    Browser* browser,
+    const std::vector<int>& history_commands_in_order) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  BraveAppMenuModel model(browser_view->toolbar(), browser);
+  model.Init();
+  ui::SimpleMenuModel* history_model =
+      static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
+          model.GetIndexOfCommandId(IDC_RECENT_TABS_MENU).value()));
+  CheckCommandsAreInOrderInMenuModel(history_model, history_commands_in_order);
+}
+
 // Test brave menu order test.
 // Brave menu is inserted based on corresponding commands enable status.
 // So, this doesn't test for each profiles(normal, private, tor and guest).
@@ -149,35 +199,55 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(ENABLE_TOR)
     IDC_NEW_OFFTHERECORD_WINDOW_TOR,
 #endif
-    IDC_SHOW_BRAVE_REWARDS,
-    IDC_RECENT_TABS_MENU,
-    IDC_BOOKMARKS_MENU,
-    IDC_SHOW_DOWNLOADS,
     IDC_SHOW_BRAVE_WALLET,
-    IDC_MANAGE_EXTENSIONS,
-    IDC_SHOW_BRAVE_SYNC,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     IDC_SHOW_BRAVE_VPN_PANEL,
 #endif
-    IDC_ADD_NEW_PROFILE,
-    IDC_OPEN_GUEST_PROFILE,
-    IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER
+    IDC_RECENT_TABS_MENU,
+    IDC_BOOKMARKS_MENU,
+    IDC_SHOW_DOWNLOADS,
+    IDC_MANAGE_EXTENSIONS,
+    IDC_ZOOM_MENU,
+    IDC_PRINT,
+    IDC_FIND,
+    IDC_MORE_TOOLS_MENU,
+    IDC_EDIT_MENU,
+    IDC_HELP_MENU,
+    IDC_OPTIONS,
   };
+
   std::vector<int> commands_disabled_for_normal_profile = {
       IDC_NEW_TOR_CONNECTION_FOR_SITE,
   };
-  if (!syncer::IsSyncAllowedByFlag()) {
-    commands_in_order_for_normal_profile.erase(
-        std::remove(commands_in_order_for_normal_profile.begin(),
-                    commands_in_order_for_normal_profile.end(),
-                    IDC_SHOW_BRAVE_SYNC),
-        commands_in_order_for_normal_profile.end());
-    commands_disabled_for_normal_profile.push_back(IDC_SHOW_BRAVE_SYNC);
-  }
   CheckCommandsAreInOrderInMenuModel(browser(),
                                      commands_in_order_for_normal_profile);
   CheckCommandsAreDisabledInMenuModel(browser(),
                                       commands_disabled_for_normal_profile);
+
+  // Same help menu is used for all profiles.
+  std::vector<int> help_commands_in_order = {
+      IDC_ABOUT,
+      IDC_HELP_PAGE_VIA_MENU,
+      IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER,
+  };
+  CheckHelpCommandsAreInOrderInMenuModel(browser(), help_commands_in_order);
+  CheckHistoryCommandsAreInOrderInMenuModel(
+      browser(), {IDC_SHOW_HISTORY, IDC_CLEAR_BROWSING_DATA});
+
+  std::vector<int> more_tools_in_order = {
+      IDC_ADD_NEW_PROFILE, IDC_OPEN_GUEST_PROFILE, IDC_SIDEBAR_SHOW_OPTION_MENU,
+      IDC_SHOW_BRAVE_SYNC, IDC_DEV_TOOLS,          IDC_TASK_MANAGER,
+  };
+
+  if (!syncer::IsSyncAllowedByFlag()) {
+    more_tools_in_order.erase(
+        std::remove(more_tools_in_order.begin(), more_tools_in_order.end(),
+                    IDC_SHOW_BRAVE_SYNC),
+        commands_in_order_for_normal_profile.end());
+    more_tools_in_order.push_back(IDC_SHOW_BRAVE_SYNC);
+  }
+
+  CheckMoreToolsCommandsAreInOrderInMenuModel(browser(), more_tools_in_order);
 
   auto* private_browser = CreateIncognitoBrowser();
   std::vector<int> commands_in_order_for_private_profile = {
@@ -187,16 +257,19 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(ENABLE_TOR)
     IDC_NEW_OFFTHERECORD_WINDOW_TOR,
 #endif
-    IDC_SHOW_BRAVE_REWARDS,
+    IDC_SHOW_BRAVE_WALLET,
     IDC_BOOKMARKS_MENU,
     IDC_SHOW_DOWNLOADS,
-    IDC_SHOW_BRAVE_WALLET,
     IDC_MANAGE_EXTENSIONS,
-    IDC_SHOW_BRAVE_SYNC,
-    IDC_ADD_NEW_PROFILE,
-    IDC_OPEN_GUEST_PROFILE,
-    IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER
+    IDC_ZOOM_MENU,
+    IDC_PRINT,
+    IDC_FIND,
+    IDC_MORE_TOOLS_MENU,
+    IDC_EDIT_MENU,
+    IDC_HELP_MENU,
+    IDC_OPTIONS,
   };
+
   std::vector<int> commands_disabled_for_private_profile = {
     IDC_NEW_TOR_CONNECTION_FOR_SITE,
     IDC_RECENT_TABS_MENU,
@@ -204,18 +277,15 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
     IDC_SHOW_BRAVE_VPN_PANEL,
 #endif
   };
-  if (!syncer::IsSyncAllowedByFlag()) {
-    commands_in_order_for_private_profile.erase(
-        std::remove(commands_in_order_for_private_profile.begin(),
-                    commands_in_order_for_private_profile.end(),
-                    IDC_SHOW_BRAVE_SYNC),
-        commands_in_order_for_private_profile.end());
-    commands_disabled_for_private_profile.push_back(IDC_SHOW_BRAVE_SYNC);
-  }
+
   CheckCommandsAreInOrderInMenuModel(private_browser,
                                      commands_in_order_for_private_profile);
   CheckCommandsAreDisabledInMenuModel(private_browser,
                                       commands_disabled_for_private_profile);
+  CheckHelpCommandsAreInOrderInMenuModel(private_browser,
+                                         help_commands_in_order);
+  CheckMoreToolsCommandsAreInOrderInMenuModel(private_browser,
+                                              more_tools_in_order);
 
   ui_test_utils::BrowserChangeObserver browser_creation_observer(
       nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
@@ -225,8 +295,11 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
   DCHECK(guest_browser);
   EXPECT_TRUE(guest_browser->profile()->IsGuestSession());
   std::vector<int> commands_in_order_for_guest_profile = {
-      IDC_NEW_TAB, IDC_NEW_WINDOW, IDC_SHOW_DOWNLOADS,
-      IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER};
+      IDC_NEW_TAB,   IDC_NEW_WINDOW, IDC_SHOW_DOWNLOADS,  IDC_ZOOM_MENU,
+      IDC_PRINT,     IDC_FIND,       IDC_MORE_TOOLS_MENU, IDC_EDIT_MENU,
+      IDC_HELP_MENU, IDC_OPTIONS,
+  };
+
   CheckCommandsAreInOrderInMenuModel(guest_browser,
                                      commands_in_order_for_guest_profile);
   std::vector<int> commands_disabled_for_guest_profile = {
@@ -234,19 +307,34 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(ENABLE_TOR)
     IDC_NEW_OFFTHERECORD_WINDOW_TOR,
 #endif
+    IDC_SHOW_BRAVE_WALLET,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     IDC_SHOW_BRAVE_VPN_PANEL,
 #endif
-    IDC_SHOW_BRAVE_REWARDS,
     IDC_RECENT_TABS_MENU,
     IDC_BOOKMARKS_MENU,
-    IDC_SHOW_BRAVE_WALLET,
     IDC_MANAGE_EXTENSIONS,
-    IDC_ADD_NEW_PROFILE,
-    IDC_OPEN_GUEST_PROFILE,
   };
+
   CheckCommandsAreDisabledInMenuModel(guest_browser,
                                       commands_disabled_for_guest_profile);
+  CheckHelpCommandsAreInOrderInMenuModel(guest_browser, help_commands_in_order);
+
+  std::vector<int> more_tools_in_order_for_guest_profile = {
+      IDC_SIDEBAR_SHOW_OPTION_MENU,
+      IDC_DEV_TOOLS,
+      IDC_TASK_MANAGER,
+  };
+  CheckMoreToolsCommandsAreInOrderInMenuModel(
+      guest_browser, more_tools_in_order_for_guest_profile);
+
+  std::vector<int> more_tools_disabled_for_guest_profile = {
+      IDC_ADD_NEW_PROFILE,
+      IDC_OPEN_GUEST_PROFILE,
+      IDC_SHOW_BRAVE_SYNC,
+  };
+  CheckMoreToolsCommandsAreDisabledInMenuModel(
+      guest_browser, more_tools_disabled_for_guest_profile);
 
 #if BUILDFLAG(ENABLE_TOR)
   ui_test_utils::BrowserChangeObserver tor_browser_creation_observer(
@@ -261,32 +349,31 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
       IDC_NEW_WINDOW,
       IDC_NEW_INCOGNITO_WINDOW,
       IDC_NEW_OFFTHERECORD_WINDOW_TOR,
-      IDC_SHOW_BRAVE_REWARDS,
+      IDC_SHOW_BRAVE_WALLET,
       IDC_BOOKMARKS_MENU,
       IDC_SHOW_DOWNLOADS,
-      IDC_SHOW_BRAVE_WALLET,
-      IDC_SHOW_BRAVE_SYNC,
-      IDC_ADD_NEW_PROFILE,
-      IDC_OPEN_GUEST_PROFILE,
-      IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER};
+      IDC_MANAGE_EXTENSIONS,
+      IDC_ZOOM_MENU,
+      IDC_PRINT,
+      IDC_FIND,
+      IDC_MORE_TOOLS_MENU,
+      IDC_EDIT_MENU,
+      IDC_HELP_MENU,
+      IDC_OPTIONS,
+  };
   std::vector<int> commands_disabled_for_tor_profile = {
     IDC_RECENT_TABS_MENU,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     IDC_SHOW_BRAVE_VPN_PANEL,
 #endif
   };
-  if (!syncer::IsSyncAllowedByFlag()) {
-    commands_in_order_for_tor_profile.erase(
-        std::remove(commands_in_order_for_tor_profile.begin(),
-                    commands_in_order_for_tor_profile.end(),
-                    IDC_SHOW_BRAVE_SYNC),
-        commands_in_order_for_tor_profile.end());
-    commands_disabled_for_tor_profile.push_back(IDC_SHOW_BRAVE_SYNC);
-  }
   CheckCommandsAreInOrderInMenuModel(tor_browser,
                                      commands_in_order_for_tor_profile);
   CheckCommandsAreDisabledInMenuModel(tor_browser,
                                       commands_disabled_for_tor_profile);
+  CheckHelpCommandsAreInOrderInMenuModel(tor_browser, help_commands_in_order);
+  CheckMoreToolsCommandsAreInOrderInMenuModel(tor_browser, more_tools_in_order);
+
 #endif
 }
 
