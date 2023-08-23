@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -27,20 +27,20 @@ std::string TestParamToString(::testing::TestParamInfo<int> test_param) {
 
 }  // namespace
 
-class BraveAdsDatabaseMigrationTest
+class BraveAdsInvalidDatabaseMigrationTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<int> {
  protected:
   void SetUpMocks() override {
     const std::string database_filename = base::StringPrintf(
-        "database/database_schema_%d.sqlite", GetSchemaVersion());
+        "database/invalid_database_schema_%d.sqlite", GetSchemaVersion());
     CopyFileFromTestPathToTempPath(database_filename, kDatabaseFilename);
   }
 
   static int GetSchemaVersion() { return GetParam() + 1; }
 };
 
-TEST_P(BraveAdsDatabaseMigrationTest, MigrateFromSchema) {
+TEST_P(BraveAdsInvalidDatabaseMigrationTest, MigrateFromSchema) {
   // Arrange
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_uuids*/ true);
@@ -62,8 +62,8 @@ TEST_P(BraveAdsDatabaseMigrationTest, MigrateFromSchema) {
 }
 
 INSTANTIATE_TEST_SUITE_P(,
-                         BraveAdsDatabaseMigrationTest,
-                         testing::Range(0, database::kVersion),
+                         BraveAdsInvalidDatabaseMigrationTest,
+                         ::testing::Range(1, database::kVersion),
                          TestParamToString);
 
 }  // namespace brave_ads

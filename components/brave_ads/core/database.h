@@ -52,6 +52,10 @@ class ADS_EXPORT Database final {
   mojom::DBCommandResponseInfo::StatusType Migrate(int version,
                                                    int compatible_version);
 
+  bool ShouldCreateTables();
+
+  int GetTablesCount();
+
   void ErrorCallback(int error, sql::Statement* statement);
 
   void MemoryPressureListenerCallback(
