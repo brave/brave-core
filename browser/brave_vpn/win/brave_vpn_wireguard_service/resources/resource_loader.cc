@@ -45,7 +45,7 @@ void LoadLocaleResources() {
   base::PathService::Get(base::DIR_ASSETS, &assets_path);
   auto pak_path =
       FindPakFilePath(assets_path, base::i18n::GetConfiguredLocale());
-  DCHECK(base::PathExists(pak_path));
+  CHECK(base::PathExists(pak_path));
   ui::ResourceBundle::InitSharedInstanceWithPakPath(pak_path);
 }
 

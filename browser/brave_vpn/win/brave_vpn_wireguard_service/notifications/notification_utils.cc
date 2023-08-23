@@ -13,6 +13,7 @@
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
+#include "base/types/expected.h"
 #include "base/win/com_init_util.h"
 #include "base/win/core_winrt_util.h"
 #include "base/win/scoped_hstring.h"
@@ -29,7 +30,6 @@ namespace {
 constexpr wchar_t kNotificationTemplate[] =
     L"<toast><visual><binding "
     L"template='ToastGeneric'><text>{text}</text></binding></visual></toast>";
-}  // namespace
 
 // Templated wrapper for winfoundtn::GetActivationFactory().
 template <unsigned int size>
@@ -89,7 +89,8 @@ mswr::ComPtr<winui::Notifications::IToastNotification> GetToastNotification(
   return toast_notification;
 }
 
-void ShowDesktopNotification(const std::wstring& text) {
+base::expected<void, std::string> ShowDesktopNotificationImpl(
+    const std::wstring& content) {
   base::win::AssertComInitialized();
 
   mswr::ComPtr<winui::Notifications::IToastNotificationManagerStatics>
@@ -98,9 +99,7 @@ void ShowDesktopNotification(const std::wstring& text) {
       RuntimeClass_Windows_UI_Notifications_ToastNotificationManager,
       IID_PPV_ARGS(&toast_manager));
   if (FAILED(hr)) {
-    VLOG(1) << "Failed to create ToastNotificationManager, code: " << std::hex
-            << hr;
-    return;
+    return base::unexpected("Failed to create ToastNotificationManager");
   }
 
   mswr::ComPtr<winui::Notifications::IToastNotifier> notifier;
@@ -109,29 +108,35 @@ void ShowDesktopNotification(const std::wstring& text) {
   hr =
       toast_manager->CreateToastNotifierWithId(application_id.get(), &notifier);
   if (FAILED(hr)) {
-    VLOG(1) << "Failed to create IToastNotifier, code: " << std::hex << hr;
-    return;
+    return base::unexpected("Failed to create IToastNotifier");
   }
 
   winui::Notifications::NotificationSetting setting;
   hr = notifier->get_Setting(&setting);
   if (setting != ABI::Windows::UI::Notifications::NotificationSetting_Enabled) {
-    VLOG(1) << "Notifications disabled for app";
-    return;
+    return base::unexpected("Notifications disabled for app");
   }
 
-  std::wstring content(kNotificationTemplate);
-  base::ReplaceSubstringsAfterOffset(&content, 0, L"{text}", text);
   mswr::ComPtr<winui::Notifications::IToastNotification> toast =
       GetToastNotification(content);
   if (!toast) {
-    VLOG(1) << "Failed to create IToastNotification";
-    return;
+    return base::unexpected("Failed to create IToastNotification");
   }
   hr = notifier->Show(toast.Get());
   if (FAILED(hr)) {
-    VLOG(1) << "Failed to create IToastNotification, code: " << std::hex << hr;
-    return;
+    return base::unexpected("Failed to show IToastNotification");
+  }
+  return base::ok();
+}
+
+}  // namespace
+
+void ShowDesktopNotification(const std::wstring& text) {
+  std::wstring content(kNotificationTemplate);
+  base::ReplaceSubstringsAfterOffset(&content, 0, L"{text}", text);
+  auto result = ShowDesktopNotificationImpl(content);
+  if (!result.has_value()) {
+    VLOG(1) << result.error();
   }
 }
 
