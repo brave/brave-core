@@ -34,8 +34,8 @@ public class BraveShieldsContentSettings {
     static public final String ALLOW_RESOURCE = "allow";
     static public final String AGGRESSIVE = "aggressive";
 
-    public static final int ASK = 0;
-    public static final int ALWAYS = 1;
+    public static final int ALWAYS = 0;
+    public static final int ASK = 1;
     public static final int NEVER = 2;
 
     private long mNativeBraveShieldsContentSettings;
