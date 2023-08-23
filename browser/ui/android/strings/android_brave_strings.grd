@@ -1509,6 +1509,11 @@ Are you sure you want to do this?
       <message name="IDS_LEARN_MORE_ABOUT_SPONSORED_IMAGES" desc="Title for brave rewards bottom sheet.">
         Learn more about sponsored images
       </message>
+      <message name="IDS_REWARDS_PANEL_PAYOUT_PENDING_TEXT" desc="Text for rewards panel payout pending text">
+        The payout for <ph name="DATA">%1$s</ph> rewards will begin processing by <ph name="DATA_TEXT">%2$s</ph>.
+      </message>
+
+
       <message name="IDS_SPONSORED_IMAGES_BOTTOM_SHEET_TEXT" desc="Text for SI bottom sheet.">
         For every sponsored image you view, you receive 70% of the revenue in tokens. With Brave Ads, you're always in control of the ads you see.
       </message>
