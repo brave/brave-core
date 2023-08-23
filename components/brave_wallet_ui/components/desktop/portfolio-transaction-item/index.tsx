@@ -482,12 +482,12 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                 ? getLocale('braveWalletTransactionApproveUnlimited')
                 : normalizedTransferredValue}{' '}
               <AddressOrAsset
-                onClick={() => onAssetClick(txSymbol, txToken?.contractAddress)}
+                onClick={onAssetClick(txSymbol, txToken?.contractAddress)}
               >
                 {txSymbol}
               </AddressOrAsset>{' '}
               -{' '}
-              <AddressOrAsset onClick={() => onAddressClick(approvalTarget)}>
+              <AddressOrAsset onClick={onAddressClick(approvalTarget)}>
                 {approvalTargetLabel}
               </AddressOrAsset>
             </DetailTextDark>
@@ -501,7 +501,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             <DetailTextDark>
               {sellAmount?.format(6)}{' '}
               <AddressOrAsset
-                onClick={() => onAssetClick(
+                onClick={onAssetClick(
                   sellToken?.symbol,
                   sellToken?.contractAddress
                 )}
@@ -513,7 +513,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             <DetailTextDark>
               {buyAmount?.format(6)}{' '}
               <AddressOrAsset
-                onClick={() => onAssetClick(
+                onClick={onAssetClick(
                   buyToken?.symbol,
                   buyToken?.contractAddress
                 )}
@@ -532,14 +532,14 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             <DetailTextDark>
               {normalizedTransferredValue}{' '}
               <AddressOrAsset
-                onClick={() => onAssetClick(txSymbol, txToken?.contractAddress)}
+                onClick={onAssetClick(txSymbol, txToken?.contractAddress)}
               >
                 {txSymbol}
               </AddressOrAsset>
             </DetailTextDark>
             <ArrowIcon />
             <DetailTextDark>
-              <AddressOrAsset onClick={() => onAddressClick(recipient)}>
+              <AddressOrAsset onClick={onAddressClick(recipient)}>
                 {recipientLabel}
               </AddressOrAsset>
             </DetailTextDark>
@@ -563,7 +563,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             </DetailTextDark>
             <ArrowIcon />
             <DetailTextDark>
-              <AddressOrAsset onClick={() => onAddressClick(recipient)}>
+              <AddressOrAsset onClick={onAddressClick(recipient)}>
                 {recipientLabel}
               </AddressOrAsset>
             </DetailTextDark>
@@ -606,7 +606,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             ).toLocaleUpperCase()}{' '}
           </strong>
           <AddressOrAsset
-            onClick={() => onAssetClick(txSymbol, txToken?.contractAddress)}
+            onClick={onAssetClick(txSymbol, txToken?.contractAddress)}
           >
             {txSymbol}
           </AddressOrAsset>
@@ -625,7 +625,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
             transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
           }
-          onClick={() => onAssetClick(txSymbol, txToken?.contractAddress)}
+          onClick={onAssetClick(txSymbol, txToken?.contractAddress)}
         >
           {txSymbol}
           {
@@ -785,7 +785,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
               ].includes(transaction.txStatus) && (
                 <>
                   <TransactionPopupItem
-                    onClick={() => onClickViewOnBlockExplorer(
+                    onClick={onClickViewOnBlockExplorer(
                       'tx',
                       transaction.txHash
                     )}

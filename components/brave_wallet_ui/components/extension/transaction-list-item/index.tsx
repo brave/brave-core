@@ -140,7 +140,7 @@ export const TransactionsListItem = ({
   const gasFee = isSolTx ? solEstimatedFee : getTransactionGasFee(transaction)
 
   const transactionDetails = React.useMemo(() => {
-    if (!transactionsNetwork || !transactionAccount || !accounts)
+    if (!spotPriceRegistry || !transactionsNetwork || !transactionAccount || !accounts)
       return undefined
 
     return parseTransactionWithPrices({

@@ -388,7 +388,6 @@ handler.on(PanelActions.signTransactionHardware.type, async (store, messageData:
   assert(info)
 
   const signed = await signRawTransactionWithHardwareKeyring(
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     info.vendor as HardwareVendor,
     info.path,
     messageData.request.rawMessage,
@@ -460,7 +459,6 @@ handler.on(PanelActions.signAllTransactionsHardware.type, async (store, messageD
   const payload: SignAllTransactionsProcessedPayload = { approved: true, id: messageData.request.id, signatures: [] }
   for (const rawMessage of messageData.request.rawMessages) {
     const signed = await signRawTransactionWithHardwareKeyring(
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
       info.vendor as HardwareVendor,
       info.path,
       rawMessage,

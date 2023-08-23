@@ -570,8 +570,10 @@ export const usePendingTransactions = () => {
       return
     }
 
-    if (!txAccount){
-      return
+    if (!txAccount) {
+      return () => {
+        subscribed = false
+      }
     }
 
     getERC20Allowance(
