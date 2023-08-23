@@ -162,11 +162,19 @@ export const QuoteInfo = (props: Props) => {
   }, [selectedQuoteOption])
 
   const braveFee = React.useMemo(() => {
-    if (selectedQuoteOption === undefined) {
+    if (!selectedQuoteOption?.braveFee) {
       return undefined
     }
 
-    return selectedQuoteOption.braveFee
+    const { braveFee: braveFeeOriginal } = selectedQuoteOption
+
+    return {
+      ...braveFeeOriginal,
+      effectiveFeePct: new Amount(braveFeeOriginal.effectiveFeePct).format(6),
+      protocolFeePct: new Amount(braveFeeOriginal.protocolFeePct),
+      discountOnBraveFeePct: new Amount(braveFeeOriginal.discountOnBraveFeePct).format(6),
+      braveFeePct: new Amount(braveFeeOriginal.braveFeePct).format(6)
+    }
   }, [selectedQuoteOption])
 
   return (
@@ -273,7 +281,7 @@ export const QuoteInfo = (props: Props) => {
             <BraveFeeContainer>
               {braveFee.discountCode === BraveWallet.DiscountCode.kNone && (
                 <Text textSize='14px'>
-                  {new Amount(braveFee.effectiveFeePct).format(6)}%
+                  {braveFee.effectiveFeePct}%
                 </Text>
               )}
 
@@ -287,18 +295,18 @@ export const QuoteInfo = (props: Props) => {
                     )
                     : (
                       <Text textSize='14px'>
-                        {new Amount(braveFee.effectiveFeePct).format(6)}%
+                        {braveFee.effectiveFeePct}%
                       </Text>
                     )
                   }
 
                   <BraveFeeDiscounted textSize='14px' textColor='text03'>
-                    {new Amount(braveFee.braveFeePct).format(6)}%
+                    {braveFee.braveFeePct}%
                   </BraveFeeDiscounted>
 
                   {braveFee.hasBraveFee &&
                     <Text textSize='14px'>
-                     (-{new Amount(braveFee.discountOnBraveFeePct).format(6)}%)
+                     (-{braveFee.discountOnBraveFeePct}%)
                     </Text>
                   }
                 </>
@@ -308,13 +316,13 @@ export const QuoteInfo = (props: Props) => {
         </Row>
       )}
 
-      {braveFee && !new Amount(braveFee.protocolFeePct).isZero() && (
+      {braveFee && !braveFee.protocolFeePct.isZero() && (
         <Row rowWidth='full' marginBottom={16} horizontalPadding={16}>
           <Text textSize='14px'>{getLocale('braveSwapProtocolFee')}</Text>
           <Text textSize='14px'>
             <BraveFeeContainer>
               <Text textSize='14px'>
-                {new Amount(braveFee.protocolFeePct).format(6)}%
+                {braveFee.protocolFeePct.format(6)}%
               </Text>
             </BraveFeeContainer>
           </Text>
