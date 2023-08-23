@@ -42,9 +42,9 @@ class WeeklyEventStorageTest : public ::testing::Test {
   }
 
  protected:
-  raw_ptr<base::SimpleTestClock> clock_ = nullptr;
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<WeeklyEventStorage> state_;
+  raw_ptr<base::SimpleTestClock> clock_ = nullptr;
 };
 
 TEST_F(WeeklyEventStorageTest, StartsEmpty) {
@@ -109,10 +109,7 @@ TEST_F(WeeklyEventStorageTest, SerializationOrder) {
   EXPECT_EQ(state_->GetLatest(),
             absl::optional<TestValues>(TestValues::kBrave));
 
-  // Drop the WeeklyEventStorage object.
-  state_.reset();
-
-  // Create a new one.
+  // Create a new WeeklyEventStorage object.
   CreateWeeklyEventStorage();
 
   // Most recently added event should still be the latest.
