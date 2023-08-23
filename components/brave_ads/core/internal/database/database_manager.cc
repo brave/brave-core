@@ -147,14 +147,6 @@ void DatabaseManager::MigrateFromVersionCallback(const int from_version,
   const int to_version = database::kVersion;
 
   if (!success) {
-    {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-      // migration failure dumps.
-      SCOPED_CRASH_KEY_NUMBER("FromVersion", "value", from_version);
-      SCOPED_CRASH_KEY_NUMBER("ToVersion", "value", to_version);
-      base::debug::DumpWithoutCrashing();
-    }
-
     BLOG(1, "Failed to migrate database from schema version "
                 << from_version << " to schema version " << to_version);
     NotifyFailedToMigrateDatabase(from_version, to_version);
