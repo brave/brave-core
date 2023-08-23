@@ -67,8 +67,9 @@ namespace {
 }
 
 + (NSString*)pemEncodeCertificate:(SecCertificateRef)certificate {
-  base::ScopedCFTypeRef<CFDataRef> cert_data =
-      base::ScopedCFTypeRef<CFDataRef>(SecCertificateCopyData(certificate));
+  base::apple::ScopedCFTypeRef<CFDataRef> cert_data =
+      base::apple::ScopedCFTypeRef<CFDataRef>(
+          SecCertificateCopyData(certificate));
   if (!cert_data) {
     return nil;
   }
@@ -91,8 +92,9 @@ namespace {
 }
 
 + (NSData*)hashCertificateSPKI:(SecCertificateRef)certificate {
-  base::ScopedCFTypeRef<CFDataRef> cert_data =
-      base::ScopedCFTypeRef<CFDataRef>(SecCertificateCopyData(certificate));
+  base::apple::ScopedCFTypeRef<CFDataRef> cert_data =
+      base::apple::ScopedCFTypeRef<CFDataRef>(
+          SecCertificateCopyData(certificate));
   if (!cert_data) {
     return nil;
   }
@@ -141,9 +143,9 @@ namespace {
       return nullptr;
     }
 
-    std::vector<base::ScopedCFTypeRef<SecCertificateRef>> intermediates;
+    std::vector<base::apple::ScopedCFTypeRef<SecCertificateRef>> intermediates;
 
-    base::ScopedCFTypeRef<CFArrayRef> certificateChain(
+    base::apple::ScopedCFTypeRef<CFArrayRef> certificateChain(
         SecTrustCopyCertificateChain(trust));
     for (CFIndex i = 1; i < cert_count; i++) {
       SecCertificateRef secCertificate =
@@ -155,8 +157,8 @@ namespace {
         base::apple::CFCastStrict<SecCertificateRef>(
             CFArrayGetValueAtIndex(certificateChain, 0));
     return net::x509_util::CreateX509CertificateFromSecCertificate(
-        base::ScopedCFTypeRef<SecCertificateRef>(secCertificate,
-                                                 base::scoped_policy::RETAIN),
+        base::apple::ScopedCFTypeRef<SecCertificateRef>(
+            secCertificate, base::scoped_policy::RETAIN),
         intermediates);
   };
 

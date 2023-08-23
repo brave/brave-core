@@ -66,7 +66,8 @@ std::vector<std::string> GetTextFromImage(const SkBitmap& image) {
     }
 
     NSError* error = nil;
-    base::ScopedCFTypeRef<CGImageRef> cg_image(SkCreateCGImageRef(image));
+    base::apple::ScopedCFTypeRef<CGImageRef> cg_image(
+        SkCreateCGImageRef(image));
     VNImageRequestHandler* requestHandler =
         [[VNImageRequestHandler alloc] initWithCGImage:cg_image.get()
                                                options:@{}];
