@@ -90,8 +90,6 @@ class ConfirmBubble : public PlaylistActionBubbleView,
   void RemoveFromPlaylist();
   void MoreMediaInContents();
 
-  raw_ptr<Row> added_folder_row_ = nullptr;
-
   base::ScopedObservation<playlist::PlaylistTabHelper,
                           playlist::PlaylistTabHelperObserver>
       playlist_tab_helper_observation_{this};
@@ -173,7 +171,7 @@ void ConfirmBubble::ResetChildViews() {
   RemoveAllChildViews();
 
   constexpr int kIconSize = 16;
-  added_folder_row_ = AddChildView(std::make_unique<Row>(
+  AddChildView(std::make_unique<Row>(
       l10n_util::GetStringFUTF16(IDS_PLAYLIST_ADDED_TO_PLAYLIST_FOLDER,
                                  playlist_tab_helper_->GetSavedFolderName()),
       ui::ImageModel::FromVectorIcon(kLeoCheckCircleFilledIcon,
