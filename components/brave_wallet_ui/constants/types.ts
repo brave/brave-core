@@ -7,6 +7,7 @@ import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
 import { NftsPinningStatusType } from '../page/constants/action_types'
+import { BlowfishWarningKind } from '../common/constants/blowfish'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
 // path of generated mojom files.
@@ -1070,3 +1071,267 @@ export type SwapAndSend = {
   label: string
   name: string
 }
+
+export type TxSimulationOptInStatus = 'allowed' | 'denied' | 'unset'
+
+/**
+ * A value specifying the suggested action for a wallet to take.
+ * Possible values:
+ * - BLOCK: Show the user a block screen instead of the signing UI,
+ * since this is highly likely to be a malicious transaction.
+ * Suggest still having a greyed out link allowing the user to proceed
+ * if they really think they know better
+ * - WARN: Show the user the supplied warnings.
+ * - NONE: Show the signing UI without modification.
+ */
+export type BlowfishWarningActionKind = 'BLOCK' | 'WARN' | 'NONE'
+
+/**
+ * The error that caused us to be unable to run transaction simulation for this
+ * request.
+ * - SIMULATION_TIMED_OUT is returned if the simulation took too long and timed
+ *   out.
+ * - BAD_REQUEST is returned if the transaction(s) or user_account submitted
+ *   were invalid (this is similar to a 400 bad request).
+ * - TOO_MANY_TRANSACTIONS is returned if a request includes too many
+ *   transactions (current max: 100 txs).
+ * - SIMULATION_FAILED is returned if simulation failed because of a dependent
+ *   RPC failure or internal server error during simulation execution.
+ */
+export type BlowfishErrorKind =
+  | 'SIMULATION_FAILED'
+  | 'SIMULATION_TIMED_OUT'
+  | 'TOO_MANY_TRANSACTIONS'
+  | 'BAD_REQUEST'
+
+/**
+ * warning severity level.
+ * UI should display:
+ * - a yellow message if "WARNING"
+ * - a red message if "CRITICAL".
+ */
+export type BlowfishWarningSeverity = 'CRITICAL' | 'WARNING'
+
+export type SafeBlowfishWarning = {
+  severity: BlowfishWarningSeverity
+  kind: BlowfishWarningKind
+  /**
+   * human-readable message to present to the end-user
+   */
+  message: string
+}
+
+/**
+ * `ANY_NFT_FROM_COLLECTION_TRANSFER` is
+ *  a "wildcard" NFT transfer representing the transfer
+ *  of any NFT from a given collection (eg. Opensea collection offers)
+ */
+type EvmTransferKind =
+  | 'ANY_NFT_FROM_COLLECTION_TRANSFER'
+  | 'ERC20_TRANSFER'
+  | 'ERC721_TRANSFER'
+  | 'ERC1155_TRANSFER'
+  | 'NATIVE_ASSET_TRANSFER'
+
+type EvmApprovalKind =
+  | 'ERC20_APPROVAL'
+  | 'ERC721_APPROVAL'
+  | 'ERC721_APPROVAL_FOR_ALL'
+  | 'ERC1155_APPROVAL_FOR_ALL'
+
+type SolanaTransferKind =
+  | 'SOL_TRANSFER'
+  | 'SPL_TRANSFER'
+
+export type EvmStateChangeKind =
+  | EvmTransferKind
+  | EvmApprovalKind
+
+export type SolanaStateChangeKind =
+  | SolanaTransferKind
+  | 'SPL_APPROVAL'
+  | 'SOL_STAKE_AUTHORITY_CHANGE'
+  | 'USER_ACCOUNT_OWNER_CHANGE'
+
+export type MetaplexTokenStandard =
+  | 'non_fungible'
+  | 'fungible_asset'
+  | 'fungible'
+  | 'non_fungible_edition'
+  | 'unknown'
+
+export type PriceSource =
+  | 'Simplehash'
+  | 'Defillama'
+  | 'Coingecko'
+
+export type BlowfishStateChangeKind = EvmStateChangeKind | SolanaStateChangeKind
+
+interface SafeBlowfishError {
+  kind: string
+  humanReadableError: string
+}
+
+/* Suggested text color when presenting the diff to end-users */
+export type BlowfishSuggestedColor = 'CREDIT' | 'DEBIT'
+
+export type SafeERC20ApprovalEvent = SafeEVMStateChange<
+  'ERC20_APPROVAL',
+  'erc20ApprovalData'
+>
+
+export type SafeERC721ApprovalEvent = SafeEVMStateChange<
+  'ERC721_APPROVAL',
+  'erc721ApprovalData'
+>
+
+export type SafeERC721ApprovalForAllEvent = SafeEVMStateChange<
+  'ERC721_APPROVAL_FOR_ALL',
+  'erc721ApprovalForAllData'
+>
+
+export type SafeERC1155ApprovalForAllEvent = SafeEVMStateChange<
+  'ERC1155_APPROVAL_FOR_ALL',
+  'erc1155ApprovalForAllData'
+>
+
+export type SafeERC20TransferEvent = SafeEVMStateChange<
+  'ERC20_TRANSFER',
+  'erc20TransferData'
+>
+
+export type SafeERC721TransferEvent = SafeEVMStateChange<
+  'ERC721_TRANSFER',
+  'erc721TransferData'
+>
+
+export type SafeERC1155TransferEvent = SafeEVMStateChange<
+  'ERC1155_TRANSFER',
+  'erc1155TransferData'
+>
+
+export type SafeNativeTransferEvent = SafeEVMStateChange<
+  'NATIVE_ASSET_TRANSFER',
+  'nativeAssetTransferData'
+>
+
+export type SafeEvmTransferEvent =
+  | SafeERC20TransferEvent
+  | SafeERC721TransferEvent
+  | SafeERC1155TransferEvent
+  | SafeNativeTransferEvent
+
+export type SafeEvmApprovalEvent =
+  | SafeERC20ApprovalEvent
+  | SafeERC721ApprovalEvent
+  | SafeERC721ApprovalForAllEvent
+  | SafeERC1155ApprovalForAllEvent
+
+export type SafeEvmEvent = SafeEvmApprovalEvent | SafeEvmTransferEvent
+
+export type SafeSplApprovalEvent = SafeSolanaStateChange<
+  'SPL_APPROVAL',
+  'splApprovalData'
+>
+
+export type SafeSolanaStakeChangeEvent = SafeSolanaStateChange<
+  'SOL_STAKE_AUTHORITY_CHANGE',
+  'solStakeAuthorityChangeData'
+>
+
+export type SafeSolanaAccountOwnerChangeEvent = SafeSolanaStateChange<
+  'USER_ACCOUNT_OWNER_CHANGE',
+  'solStakeAuthorityChangeData' // TODO: not implemented in core
+>
+
+export type SafeSolTransferEvent = SafeSolanaStateChange<
+  'SOL_TRANSFER',
+  'solTransferData'
+>
+
+export type SafeSplTransferEvent = SafeSolanaStateChange<
+  'SPL_TRANSFER',
+  'splTransferData'
+>
+
+type SafeSolanaEvent =
+  | SafeSolTransferEvent
+  | SafeSplApprovalEvent
+  | SafeSplTransferEvent
+  | SafeSolanaStakeChangeEvent
+  | SafeSolanaAccountOwnerChangeEvent
+
+export interface SafeEVMSimulationResults {
+  error: SafeBlowfishError | undefined
+  expectedStateChanges: SafeEvmEvent[]
+};
+
+export interface SafeSolanaSimulationResults {
+  isRecentBlockhashExpired: boolean
+  error: SafeBlowfishError | undefined
+  expectedStateChanges: SafeSolanaEvent[]
+};
+
+type ChangesDataUnionForKind<KIND extends BlowfishStateChangeKind> =
+  KIND extends EvmStateChangeKind
+    ? Partial<BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion>
+    : Partial<BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion>
+
+type SafeRawInfo<
+  KIND extends BlowfishStateChangeKind,
+  DATA_UNION extends ChangesDataUnionForKind<KIND>
+> = {
+  kind: KIND
+  data: Record<
+    keyof DATA_UNION,
+    Exclude<DATA_UNION[keyof DATA_UNION], undefined>
+  >
+}
+
+export type SafeEVMStateChange<
+  KIND extends EvmStateChangeKind = EvmStateChangeKind,
+  UNION_KEY extends //
+  keyof BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion //
+  = keyof BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion
+> = {
+  humanReadableDiff: string
+  rawInfo: SafeRawInfo<
+    KIND,
+    Pick<BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion, UNION_KEY>
+  > & { data: Partial<BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion> }
+}
+
+export type SafeSolanaStateChange<
+  KIND extends SolanaStateChangeKind = SolanaStateChangeKind,
+  UNION_KEY extends //
+  keyof BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion //
+  = keyof BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion
+> = {
+  humanReadableDiff: string
+  rawInfo: SafeRawInfo<
+    KIND,
+    Pick<BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion, UNION_KEY>
+  > & { data: Partial<BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion> }
+  suggestedColor: BlowfishSuggestedColor
+}
+
+export type BlowfishSimulationResponse =
+  | BraveWallet.SolanaSimulationResponse
+  | BraveWallet.EVMSimulationResponse
+
+export type SafeBlowfishResponseBase = {
+  action: BlowfishWarningActionKind
+  warnings: SafeBlowfishWarning[]
+}
+
+export type SafeBlowfishEvmResponse = SafeBlowfishResponseBase & {
+  simulationResults: SafeEVMSimulationResults
+}
+
+export type SafeBlowfishSolanaResponse = SafeBlowfishResponseBase & {
+  simulationResults: SafeSolanaSimulationResults
+}
+
+export type SafeBlowfishSimulationResponse =
+  | SafeBlowfishEvmResponse
+  | SafeBlowfishSolanaResponse
