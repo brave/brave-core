@@ -46,7 +46,6 @@ public class BraveRewards: NSObject {
     if Preferences.Rewards.adsEnabledTimestamp.value == nil, ads.isEnabled {
       Preferences.Rewards.adsEnabledTimestamp.value = Date()
     }
-    reportLastAdsUsageP3A()
   }
 
   func startRewardsService(_ completion: (() -> Void)?) {
@@ -130,7 +129,6 @@ public class BraveRewards: NSObject {
         } else if wasEnabled && !newValue {
           Preferences.Rewards.adsDisabledTimestamp.value = Date()
         }
-        self.reportLastAdsUsageP3A()
         if !newValue {
           self.ads.isEnabled = newValue
           self.proposeAdsShutdown()
@@ -254,47 +252,6 @@ public class BraveRewards: NSObject {
 
   private func tabRetrieved(_ tabId: Int, url: URL, html: String?) {
     rewardsAPI?.fetchPublisherActivity(from: url, faviconURL: nil, publisherBlob: html, tabId: UInt64(tabId))
-  }
-  
-  // MARK: - P3A
-  
-  func reportLastAdsUsageP3A() {
-    enum Answer: Int, CaseIterable {
-      case neverOn = 0
-      case stillOn = 1
-      case lessThanThreeHours = 2
-      case lessThanThreeDays = 3
-      case lessThanThreeWeeks = 4
-      case lessThanThreeMonths = 5
-      case moreThanThreeMonths = 6
-    }
-    var answer: Answer = .neverOn
-    if ads.isEnabled {
-      answer = .stillOn
-    } else if let start = Preferences.Rewards.adsEnabledTimestamp.value,
-              let end = Preferences.Rewards.adsDisabledTimestamp.value, end > start {
-      let components = Calendar.current.dateComponents(
-        [.hour, .day, .weekOfYear, .month],
-        from: start,
-        to: end
-      )
-      let (month, week, day, hour) = (components.month ?? 0,
-                                      components.weekOfYear ?? 0,
-                                      components.day ?? 0,
-                                      components.hour ?? 0)
-      if month >= 3 {
-        answer = .moreThanThreeMonths
-      } else if week >= 3 {
-        answer = .lessThanThreeMonths
-      } else if day >= 3 {
-        answer = .lessThanThreeWeeks
-      } else if hour >= 3 {
-        answer = .lessThanThreeDays
-      } else {
-        answer = .lessThanThreeHours
-      }
-    }
-    UmaHistogramEnumeration("Brave.Rewards.AdsEnabledDuration", sample: answer)
   }
 }
 
