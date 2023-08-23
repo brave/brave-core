@@ -88,7 +88,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
     <Container className={className}>
       <div>
         <Control
-          iconName='start-outline'
+          iconName='previous-outline'
           size='jumbo'
           onClick={() => getPlayerActions().playPreviousItem()}
         ></Control>
@@ -116,7 +116,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
           onClick={() => videoElement && (videoElement.currentTime += 15)}
         ></Control>
         <Control
-          iconName='end-outline'
+          iconName='next-outline'
           size='jumbo'
           onClick={() => getPlayerActions().playNextItem()}
         ></Control>
