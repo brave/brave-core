@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.app.domain;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -42,7 +43,7 @@ import java.util.stream.Collectors;
 
 public class CryptoModel {
     private TxService mTxService;
-    private PendingTxHelper mPendingTxHelper;
+    private final PendingTxHelper mPendingTxHelper;
     private KeyringService mKeyringService;
     private BlockchainRegistry mBlockchainRegistry;
     private JsonRpcService mJsonRpcService;
@@ -53,7 +54,6 @@ public class CryptoModel {
     private SwapService mSwapService;
     private CryptoSharedActions mCryptoSharedActions;
     private CryptoSharedData mSharedData;
-    private LiveData<List<TransactionInfo>> mPendingTransactions;
     private final MutableLiveData<Integer> _mCoinTypeMutableLiveData =
             new MutableLiveData<>(CoinType.ETH);
     public final LiveData<Integer> mCoinTypeMutableLiveData = _mCoinTypeMutableLiveData;
@@ -122,75 +122,52 @@ public class CryptoModel {
 
     public void init() {
         synchronized (mLock) {
-            if (mKeyringService == null || mPendingTxHelper == null) {
+            if (mKeyringService == null) {
                 return;
             }
             refreshTransactions();
-
-            // Filter out a separate list of unapproved transactions
-            mPendingTransactions =
-                    Transformations.map(mPendingTxHelper.mTransactionInfoLd, transactionInfos -> {
-                        List<TransactionInfo> pendingTransactionInfo = new ArrayList<>();
-                        for (TransactionInfo info : transactionInfos) {
-                            if (info.txStatus == TransactionStatus.UNAPPROVED) {
-                                pendingTransactionInfo.add(info);
-                            }
-                        }
-                        return pendingTransactionInfo;
-                    });
             updateCoinType();
             mNetworkModel.init();
         }
     }
 
     public void getPublicEncryptionRequest(Callback1<GetEncryptionPublicKeyRequest> onResult) {
-        synchronized (mLock) {
-            if (mBraveWalletService == null) {
-                return;
-            }
-            mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
-                GetEncryptionPublicKeyRequest request = null;
-                if (requests != null && requests.length > 0) {
-                    request = requests[0];
-                }
-                onResult.call(request);
-            });
+        if (mBraveWalletService == null) {
+            return;
         }
+        mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
+            GetEncryptionPublicKeyRequest request = null;
+            if (requests != null && requests.length > 0) {
+                request = requests[0];
+            }
+            onResult.call(request);
+        });
     }
 
     public void getDecryptMessageRequest(Callback1<DecryptRequest> onResult) {
-        synchronized (mLock) {
-            if (mBraveWalletService == null) {
-                return;
-            }
-            mBraveWalletService.getPendingDecryptRequests(requests -> {
-                DecryptRequest request = null;
-                if (requests != null && requests.length > 0) {
-                    request = requests[0];
-                }
-                onResult.call(request);
-            });
+        if (mBraveWalletService == null) {
+            return;
         }
+        mBraveWalletService.getPendingDecryptRequests(requests -> {
+            DecryptRequest request = null;
+            if (requests != null && requests.length > 0) {
+                request = requests[0];
+            }
+            onResult.call(request);
+        });
     }
 
     public void refreshTransactions() {
-        synchronized (mLock) {
-            if (mKeyringService == null || mPendingTxHelper == null) {
-                return;
-            }
-
-            mKeyringService.getAllAccounts(
-                    allAccounts -> { mPendingTxHelper.setAccountInfos(allAccounts.accounts); });
+        if (mKeyringService == null) {
+            return;
         }
+
+        mKeyringService.getAllAccounts(
+                allAccounts -> mPendingTxHelper.setAccountInfos(allAccounts.accounts));
     }
 
     public LiveData<TransactionInfo> getSelectedPendingRequest() {
-        synchronized (mLock) {
-            if (mPendingTxHelper == null) {
-                return new MutableLiveData<>();
-            }
-            return mPendingTxHelper.mSelectedPendingRequest;
-        }
+        return mPendingTxHelper.mSelectedPendingRequest;
     }
 
     public LiveData<List<TransactionInfo>> getPendingTransactions() {
@@ -198,12 +175,7 @@ public class CryptoModel {
     }
 
     public LiveData<List<TransactionInfo>> getAllTransactions() {
-        synchronized (mLock) {
-            if (mPendingTxHelper == null) {
-                return new MutableLiveData<>(Collections.emptyList());
-            }
-            return mPendingTxHelper.mTransactionInfoLd;
-        }
+        return mPendingTxHelper.mTransactionInfoLd;
     }
 
     public List<CryptoAccountTypeInfo> getSupportedCryptoAccountTypes() {
@@ -227,6 +199,7 @@ public class CryptoModel {
         return cryptoAccountTypeInfos;
     }
 
+    @NonNull
     public PendingTxHelper getPendingTxHelper() {
         return mPendingTxHelper;
     }
