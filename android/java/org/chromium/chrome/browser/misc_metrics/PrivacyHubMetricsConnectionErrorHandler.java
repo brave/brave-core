@@ -13,7 +13,7 @@ import org.chromium.mojo.system.MojoException;
  */
 public class PrivacyHubMetricsConnectionErrorHandler implements ConnectionErrorHandler {
     /**
-     *This is a delegate that is implemented in the object where the connection is created
+     * This is a delegate that is implemented in the object where the connection is created
      */
     public interface PrivacyHubMetricsConnectionErrorHandlerDelegate {
         default void initPrivacyHubMetrics() {}
@@ -23,7 +23,7 @@ public class PrivacyHubMetricsConnectionErrorHandler implements ConnectionErrorH
     private PrivacyHubMetricsConnectionErrorHandlerDelegate
             mPrivacyHubMetricsConnectionErrorHandlerDelegate;
     private static final Object sLock = new Object();
-    private static PrivacyHubMetricsConnectionErrorHandler sInstance;
+    private static volatile PrivacyHubMetricsConnectionErrorHandler sInstance;
 
     public static PrivacyHubMetricsConnectionErrorHandler getInstance() {
         synchronized (sLock) {

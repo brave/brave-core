@@ -13,7 +13,7 @@ import org.chromium.mojo.system.MojoException;
  */
 public class BraveNewsConnectionErrorHandler implements ConnectionErrorHandler {
     /**
-     *This is a delegate that is implemented in the object where the connection is created
+     * This is a delegate that is implemented in the object where the connection is created
      */
     public interface BraveNewsConnectionErrorHandlerDelegate {
         default void initBraveNewsController() {}
@@ -22,7 +22,7 @@ public class BraveNewsConnectionErrorHandler implements ConnectionErrorHandler {
 
     private BraveNewsConnectionErrorHandlerDelegate mBraveNewsConnectionErrorHandlerDelegate;
     private static final Object sLock = new Object();
-    private static BraveNewsConnectionErrorHandler sInstance;
+    private static volatile BraveNewsConnectionErrorHandler sInstance;
 
     public static BraveNewsConnectionErrorHandler getInstance() {
         synchronized (sLock) {
