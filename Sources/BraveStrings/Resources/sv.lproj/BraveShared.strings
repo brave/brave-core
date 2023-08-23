@@ -52,17 +52,8 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "På";
 
-/* Label for the Face ID/Passcode item in Settings */
-"AuthenticationFaceIDPasscodeSetting" = "Face ID och lösenord";
-
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "Detta autentiserar din åtkomst till Brave";
-
-/* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "Lösenord";
-
-/* Label for the Touch ID/Passcode item in Settings */
-"AuthenticationTouchIDPasscodeSetting" = "Touch ID och lösenord";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Avbryt";
@@ -115,14 +106,17 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Det gick inte att spara inställningen. Försök igen.";
 
-/* A title for a toggle that allows user to block cookie consent notices */
+/* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Blockera meddelanden om godkännande av cookies";
 
-/* A description for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupDescription" = "Brave blockerar redan cookies från tredje part. Vi kan även blockera meddelanden om godkännande av cookies.";
+/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesDismissButtonTitle" = "Uppfattat";
 
-/* A title for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "Har du tröttnat på meddelanden om cookies?";
+/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
+"BlockCookieConsentNoticesPopupDescription" = "Brave blockerar redan skadliga cookies. Nu blockerar vi även automatiskt de irriterande meddelandena om godkännande av cookies.";
+
+/* A title for a popup that informs the user that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Brave blockerar meddelanden om godkännande av cookies";
 
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Hindrar webbplatser från att lagra information om dina tidigare besök.";
@@ -253,23 +247,11 @@
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave-samtal";
 
-/* Setting to enable the browser lock privacy feature */
+/* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Webbläsarlås";
 
-/* No comment provided by engineer. */
+/* Description for setting to enable the browser lock privacy feature */
 "BrowserLockDescription" = "Lås upp Brave med Touch ID, Face ID eller systemets lösenord.";
-
-/* A button title for the action to move to the next step of the browser lock migration process. */
-"browserLockMigrationContinueButtonTitle" = "Fortsätt";
-
-/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
-"browserLockMigrationNoPasscodeSetup" = "Har du inte skapat ett ID eller en lösenordskod? Öppna Inställningar och tryck på \"%@\"";
-
-/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationSubtitle" = "Vi har förenklat Brave-lösenord. Du kan nu komma åt Brave med samma ID eller lösenord som du använder på din telefon.";
-
-/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationTitle" = "Öppna Brave med ditt Apple Face ID, Touch ID eller lösenord";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Webbläsarhistorik";
@@ -1013,7 +995,7 @@
 "login.loginListSearchBarPlaceHolderTitle" = "Filtrera";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "Om du vill konfigurera synkroniseringskedjan eller visa inställningarna måste du först ange en lösenkod på enheten.";
+"login.syncSetPasscodeAlertDescription" = "Om du vill lägga till en enhet i en synkroniseringskedja eller växla lösenordssynkroniseringen måste du först konfigurera en lösenkod på enheten.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Senast ändrad %@";
@@ -1090,11 +1072,17 @@
 /* Title for adding new folder */
 "NewFolderTitle" = "Ny mapp";
 
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "Nytt inkognitofönster";
+
 /* New sync code button title */
 "NewSyncCode" = "Starta en ny synkroniseringskedja";
 
 /* New Tab title */
 "NewTab" = "Ny flik";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "Nytt fönster";
 
 /* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
 "nightMode.modeTitle" = "Läge";
@@ -1119,9 +1107,6 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "För få ord";
-
-/* An action (button title) that does not block cookie consent notices and dismisses the popup */
-"NoThanks" = "Nej";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Omdirigerar automatiskt NPR-länkar till deras textbaserade version (på text.npr.org).";
@@ -1336,6 +1321,12 @@
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Öppna bild i ny flik";
 
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "Öppna i nytt privat fönster";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "Öppna i nytt fönster";
+
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Öppna i ny privat flik";
 
@@ -1510,6 +1501,15 @@
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Lösenord";
 
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "Kontinuerlig privat surfning";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "Tillåter Brave att återställa flikar för privat surfning, även om du stänger och öppnar appen igen";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "Återställ privata flikar";
+
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Foto av %@";
 
@@ -1558,6 +1558,12 @@
 /* Text indicator on the table cell If a video is expired */
 "playList.expiredLabelTitle" = "Utgången";
 
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "%d objekt";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "%d objekt";
+
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Det uppstod ett problem med att läsa in resursen!";
 
@@ -1587,6 +1593,12 @@
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "Tyvärr uppstod ett fel när bild i bild skulle visas.";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "Spellistan är redan aktiv i ett annat fönster";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "Tyvärr";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionFooterText" = "Det här alternativet aktiverar/inaktiverar automatisk uppspelning när Playlist är öppen. Det här alternativet kommer dock inte att påverka automatisk uppspelning när nästa video i listan läses in.";
@@ -1888,6 +1900,9 @@
 /* Settings privacy section title */
 "Privacy" = "Integritet";
 
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "Om du vill växla privat surfläge måste du först konfigurera en lösenkod på enheten.";
+
 /* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
 "privacyHub.allTimeListsButtonText" = "Listor för all tid";
 
@@ -2125,6 +2140,9 @@
 /* Open Tab action title */
 "recently.closed.open" = "Öppna";
 
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "Återöppna den senast stängda fliken";
+
 /* Description for alert to ask user for opening last closed tab in list */
 "recently.closed.shake.description" = "Vill du öppna den senast stängda fliken?";
 
@@ -2219,16 +2237,16 @@
 "RestoredFavoritesFolderName" = "Återställda favoriter";
 
 /* Restore Tabs Affirmative Action */
-"RestoreTabAffirmativeButtonTitle" = "Okej";
+"RestoreTabAffirmativeButtonTitle" = "Ja";
 
 /* Restore Tabs Negative Action */
 "RestoreTabNegativeButtonTitle" = "Nej";
 
 /* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "Det verkar som att Brave kraschade förut. Vill du återställa dina flikar?";
+"RestoreTabOnCrashAlertMessage" = "Tyvärr kraschade Brave eller avslutades inte korrekt.\nVill du återställa flikarna?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Oj, det här var ju pinsamt.";
+"RestoreTabOnCrashAlertTitle" = "Brave avslutades oväntat.";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Med Brave Rewards kan du se sekretessbevarande annonser från Brave Ads-nätverket. Inga spårare. Inga kapacitetssänkningar. Och dina data förblir helt säkra.";
@@ -3112,6 +3130,24 @@
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "På";
 
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "Håll flikarna för privat surfning öppna när du stänger appen, så att privata surfningssessioner fortsätter sömlöst.";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "Behåll privata flikar";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "Kräv Face ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "Kräv pinkod";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "Kräv Touch ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "Privata flikar";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Navigationsfältet";
 
@@ -3532,6 +3568,9 @@
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problem med anslutningstillförlitlighet";
 
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Välj den kategori som beskriver problemet.";
+
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Inget internet när jag är ansluten";
 
@@ -3876,9 +3915,6 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ja";
-
-/* An action (button title) that enables cookie consent blocking and dismisses the popup */
-"YesBlockCookieConsentNotices" = "Ja, blockera meddelanden om cookies";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Ja, ta bort";

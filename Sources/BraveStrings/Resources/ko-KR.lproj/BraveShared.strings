@@ -52,17 +52,8 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "켬";
 
-/* Label for the Face ID/Passcode item in Settings */
-"AuthenticationFaceIDPasscodeSetting" = "Face ID 및 암호";
-
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "이 방법으로 Brave 액세스를 인증합니다.";
-
-/* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "패스코드";
-
-/* Label for the Touch ID/Passcode item in Settings */
-"AuthenticationTouchIDPasscodeSetting" = "Touch ID 및 암호";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "취소";
@@ -115,14 +106,17 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "환경 설정을 설정하는 데 실패했습니다. 다시 시도하십시오.";
 
-/* A title for a toggle that allows user to block cookie consent notices */
+/* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "쿠키 동의 문구 차단";
 
-/* A description for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupDescription" = "Brave는 타사 쿠키를 기본으로 차단합니다. 쿠키 동의 문구도 차단할 수 있습니다.";
+/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesDismissButtonTitle" = "확인";
 
-/* A title for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "쿠키 동의 문구를 보면 지치시지요?";
+/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
+"BlockCookieConsentNoticesPopupDescription" = "Brave는 유해한 코키를 사전 차단합니다. 이제 쿠키 동의 등 짜증 나는 쿠키도 자동 차단합니다.";
+
+/* A title for a popup that informs the user that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Brave, 쿠키 동의 문구 차단";
 
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "웹사이트에 이전 방문에 대한 정보가 저장되지 않도록 차단합니다.";
@@ -253,23 +247,11 @@
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
 
-/* Setting to enable the browser lock privacy feature */
+/* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "브라우저 잠금";
 
-/* No comment provided by engineer. */
+/* Description for setting to enable the browser lock privacy feature */
 "BrowserLockDescription" = "Touch ID, Face ID 또는 시스템 패스코드로 Brave를 잠금 해제합니다.";
-
-/* A button title for the action to move to the next step of the browser lock migration process. */
-"browserLockMigrationContinueButtonTitle" = "계속";
-
-/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
-"browserLockMigrationNoPasscodeSetup" = "ID나 패스코드를 설정하지 않으셨나요? 설정을 열고 \"%@\"를 탭하세요.";
-
-/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationSubtitle" = "Brave 패스코드가 간편해졌습니다. 휴대전화에서 사용하는 것과 동일한 ID 또는 패스코드로 Brave에 액세스할 수 있습니다.";
-
-/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationTitle" = "Apple Face ID, Touch ID, 또는 패스코드로 Brave 열기";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "방문 기록";
@@ -1013,7 +995,7 @@
 "login.loginListSearchBarPlaceHolderTitle" = "필터";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "동기화 체인을 설정하거나 기존 설정을 확인하려면 먼저 기기에서 패스코드를 설정해야 합니다.";
+"login.syncSetPasscodeAlertDescription" = "기기를 동기화 체인에 추가하거나 비밀번호 동기화를 토글하려면 먼저 기기에서 패스코드를 설정해야 합니다.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "최종 수정 %@";
@@ -1090,11 +1072,17 @@
 /* Title for adding new folder */
 "NewFolderTitle" = "새 폴더";
 
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "새 시크릿 창";
+
 /* New sync code button title */
 "NewSyncCode" = "새로운 동기화 체인 시작";
 
 /* New Tab title */
 "NewTab" = "새 탭";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "새 창";
 
 /* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
 "nightMode.modeTitle" = "모드";
@@ -1119,9 +1107,6 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "단어가 충분하지 않음";
-
-/* An action (button title) that does not block cookie consent notices and dismisses the popup */
-"NoThanks" = "아니요";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "NPR 링크를 텍스트 기반 버전(text.npr.org)으로 자동 리디렉션합니다.";
@@ -1336,6 +1321,12 @@
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "새 탭에서 이미지 열기";
 
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "새 비공개 창에서 열기";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "새 창에서 열기";
+
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "새 비공개 탭에서 열기";
 
@@ -1510,6 +1501,15 @@
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "비밀번호";
 
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "비공개 브라우징 자동 복원";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "앱을 닫고 새로 열었을 때 Brave가 비공개 브라우징 탭을 복원합니다.";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "비공개 탭 복원";
+
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "사진 제공: %@";
 
@@ -1558,6 +1558,12 @@
 /* Text indicator on the table cell If a video is expired */
 "playList.expiredLabelTitle" = "만료됨";
 
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "%d개 항목";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "%d개 항목";
+
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "리소스를 로드하는 중에 문제가 발생했습니다.";
 
@@ -1587,6 +1593,12 @@
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "PIP(Picture-In-Picture)를 표시하려는 중에 오류가 발생했습니다.";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "이미 다른 창에 재생목록이 활성화되어 있음";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "죄송합니다";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionFooterText" = "재생목록이 열렸을 때 자동 재생을 활성화/비활성화하는 옵션입니다. 이 옵션은 목록 내 다음 동영상을 로드할 때 자동 재생에는 영향을 미치지 않습니다.";
@@ -1888,6 +1900,9 @@
 /* Settings privacy section title */
 "Privacy" = "개인정보";
 
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "비공개 브라우징 모드를 전환하려면 먼저 기기에서 패스코드를 설정해야 합니다.";
+
 /* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
 "privacyHub.allTimeListsButtonText" = "올타임 목록";
 
@@ -2125,6 +2140,9 @@
 /* Open Tab action title */
 "recently.closed.open" = "열기";
 
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "마지막으로 닫은 탭 다시 열기";
+
 /* Description for alert to ask user for opening last closed tab in list */
 "recently.closed.shake.description" = "최근에 닫은 탭을 여시겠습니까?";
 
@@ -2219,16 +2237,16 @@
 "RestoredFavoritesFolderName" = "복원된 즐겨찾기";
 
 /* Restore Tabs Affirmative Action */
-"RestoreTabAffirmativeButtonTitle" = "확인";
+"RestoreTabAffirmativeButtonTitle" = "예";
 
 /* Restore Tabs Negative Action */
 "RestoreTabNegativeButtonTitle" = "아니요";
 
 /* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "이전에 Brave에서 오류가 발생했던 것 같습니다. 탭을 복원하시겠습니까?";
+"RestoreTabOnCrashAlertMessage" = "Brave가 다운되어 제대로 닫히지 않았습니다.\n탭을 복원하시겠습니까?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "곤란한 문제가 발생했습니다.";
+"RestoreTabOnCrashAlertTitle" = "Brave가 예기치 않게 닫힘";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Brave Rewards를 이용하면 Brave Ads 네트워크에서 프라이버시 보장 광고를 볼 수 있습니다. 트래커가 없어 느려지지 않습니다. 그리고 데이터가 완벽히 안전하게 보호됩니다.";
@@ -3112,6 +3130,24 @@
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "켬";
 
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "앱을 닫아도 비공개 브라우징 탭을 열린 상태로 유지하여 비공개 브라우징 세션이 매끄럽게 이어지도록 합니다.";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "비공개 탭 유지";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "Face ID 필요";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "PIN 코드 필요";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "Touch ID 필요";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "비공개 탭";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "탐색 도구 모음";
 
@@ -3532,6 +3568,9 @@
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "연결 안정성 문제";
 
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "문제를 설명하는 카테고리를 선택하세요.";
+
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "인터넷에 연결되지 않음";
 
@@ -3876,9 +3915,6 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "예";
-
-/* An action (button title) that enables cookie consent blocking and dismisses the popup */
-"YesBlockCookieConsentNotices" = "예, 쿠키 동의 문구 차단";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "예, 삭제합니다.";

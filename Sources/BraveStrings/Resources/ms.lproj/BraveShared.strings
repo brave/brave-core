@@ -52,17 +52,8 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Dihidupkan";
 
-/* Label for the Face ID/Passcode item in Settings */
-"AuthenticationFaceIDPasscodeSetting" = "ID Muka & Kod Laluan";
-
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "Ini mengesahkan akses anda ke Brave";
-
-/* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "Kod laluan";
-
-/* Label for the Touch ID/Passcode item in Settings */
-"AuthenticationTouchIDPasscodeSetting" = "ID Sentuhan & Kod Laluan";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Batal";
@@ -115,14 +106,17 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Gagal menetapkan keutamaan. Sila cuba lagi.";
 
-/* A title for a toggle that allows user to block cookie consent notices */
+/* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Sekat Notis Persetujuan Kuki";
 
-/* A description for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupDescription" = "Brave sudah menyekat kuki pihak ketiga. Kami juga boleh menyekat notis persetujuan kuki.";
+/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesDismissButtonTitle" = "Faham";
 
-/* A title for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "Bosan dengan notis persetujuan kuki?";
+/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
+"BlockCookieConsentNoticesPopupDescription" = "Brave sudah menyekat kuki berbahaya. Kini, kami juga menyekat notis persetujuan kuki yang menjengkelkan itu secara automatik.";
+
+/* A title for a popup that informs the user that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Brave menyekat notis persetujuan kuki";
 
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Menghalang laman web daripada menyimpan maklumat tentang lawatan anda sebelum ini.";
@@ -253,23 +247,11 @@
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
 
-/* Setting to enable the browser lock privacy feature */
+/* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Kunci Pelayar";
 
-/* No comment provided by engineer. */
+/* Description for setting to enable the browser lock privacy feature */
 "BrowserLockDescription" = "Buka kunci Brave menggunakan Touch ID, Face ID atau kod laluan sistem.";
-
-/* A button title for the action to move to the next step of the browser lock migration process. */
-"browserLockMigrationContinueButtonTitle" = "Teruskan";
-
-/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
-"browserLockMigrationNoPasscodeSetup" = "Belum menetapkan ID atau kod laluan? Buka Tetapan, kemudian ketik \"%@\"";
-
-/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationSubtitle" = "Kami telah mempermudahkan Kod Laluan Brave. Anda kini boleh mengakses Brave menggunakan ID atau kod laluan yang sama yang anda gunakan pada telefon anda.";
-
-/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationTitle" = "Buka Brave menggunakan Apple Face ID, Touch ID, atau kod laluan anda";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Menyemak Imbas Sejarah";
@@ -1013,7 +995,7 @@
 "login.loginListSearchBarPlaceHolderTitle" = "Penapis";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "Untuk menyediakan rantaian segerak atau melihat tetapan, anda mesti menetapkan kata laluan pada peranti anda dahulu.";
+"login.syncSetPasscodeAlertDescription" = "Untuk menambahkan peranti pada rantaian segerak atau menogol penyegerakan kata laluan, anda mesti menetapkan kod laluan terlebih dahulu pada peranti anda.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Terakhir diubah suai %@";
@@ -1090,11 +1072,17 @@
 /* Title for adding new folder */
 "NewFolderTitle" = "Folder baharu";
 
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "Tetingkap Sulit Baru";
+
 /* New sync code button title */
 "NewSyncCode" = "Mulakan Rantaian Penyegerakan baru";
 
 /* New Tab title */
 "NewTab" = "Tab Baharu";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "Tetingkap Baharu";
 
 /* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
 "nightMode.modeTitle" = "Mod";
@@ -1119,9 +1107,6 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Perkataan Tidak Cukup";
-
-/* An action (button title) that does not block cookie consent notices and dismisses the popup */
-"NoThanks" = "Tidak, terima kasih";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Mengubah hala pautan NPR secara automatik kepada versi berasaskan teks mereka (di text.npr.org).";
@@ -1336,6 +1321,12 @@
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Buka Imej Dalam Tab Baru";
 
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "Buka dalam Tetingkap Peribadi Baharu";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "Buka dalam Tetingkap Baharu";
+
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Buka dalam Tab Peribadi Baharu";
 
@@ -1510,6 +1501,15 @@
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Kata laluan";
 
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "Penyemakan Imbas Peribadi yang Berlanjutan";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "Membenarkan Brave memulihkan tab penyemakan imbas peribadi, walaupun anda menutup/membuka semula apl tersebut";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "Pulihkan Tab Peribadi";
+
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Foto oleh %@";
 
@@ -1558,6 +1558,12 @@
 /* Text indicator on the table cell If a video is expired */
 "playList.expiredLabelTitle" = "Tamat Tempoh";
 
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "%d item";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "%d item";
+
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Terdapat masalah memuatkan sumber!";
 
@@ -1587,6 +1593,12 @@
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "Maaf, ralat berlaku semasa cuba memaparkan gambar-dalam-gambar.";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "Senarai main sudah aktif pada tetingkap lain";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "Maaf";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionFooterText" = "Pilihan ini akan mendayakan/menyahdayakan main automatik apabila Senarai Main dibuka. Walau bagaimanapun, pilihan ini tidak akan mempengaruhi main automatik apabila memuatkan video seterusnya dalam senarai.";
@@ -1888,6 +1900,9 @@
 /* Settings privacy section title */
 "Privacy" = "Privasi";
 
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "Untuk menukar mod penyemakan imbas peribadi, anda mesti menetapkan kod laluan terlebih dahulu pada peranti anda.";
+
 /* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
 "privacyHub.allTimeListsButtonText" = "Senarai sepanjang masa";
 
@@ -2125,6 +2140,9 @@
 /* Open Tab action title */
 "recently.closed.open" = "Buka";
 
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "Buka Semula Tab Terakhir yang Ditutup";
+
 /* Description for alert to ask user for opening last closed tab in list */
 "recently.closed.shake.description" = "Adakah anda mahu membuka tab paling akhir ditutup?";
 
@@ -2219,16 +2237,16 @@
 "RestoredFavoritesFolderName" = "Kegemaran yang Dipulihkan";
 
 /* Restore Tabs Affirmative Action */
-"RestoreTabAffirmativeButtonTitle" = "Okey";
+"RestoreTabAffirmativeButtonTitle" = "Ya";
 
 /* Restore Tabs Negative Action */
 "RestoreTabNegativeButtonTitle" = "Tidak";
 
 /* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "Nampaknya Brave telah rosak sebelumnya. Adakah anda ingin memulihkan tab anda?";
+"RestoreTabOnCrashAlertMessage" = "Akan tetapi, Brave telah ranap atau tidak ditutup dengan betul.\nPulihkan tab anda?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Aduh, ini memalukan.";
+"RestoreTabOnCrashAlertTitle" = "Brave berhenti berfungsi dengan tidak dijangka.";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Dengan Brave Rewards, anda boleh melihat iklan yang menjaga privasi daripada rangkaian Brave Ads. Tiada penjejak. Tiada kelewatan. Data anda selamat sepenuhnya.";
@@ -3112,6 +3130,24 @@
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "Dihidupkan";
 
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "Menetapkan tab penyemakan imbas peribadi sentiasa dibuka walaupun anda menutup apl, oleh itu sesi penyemakan imbas peribadi dipastikan dapat diteruskan dengan lancar.";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "Simpan Tab Peribadi";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "Perlukan ID Muka";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "Perlukan Kod Pin";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "Perlukan ID Sentuhan";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "Tab Sulit";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Bar Alat Navigasi";
 
@@ -3532,6 +3568,9 @@
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Masalah keutuhan sambungan";
 
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Sila pilih kategori yang menghuraikan isu tersebut.";
+
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Tidak ada internet apabila disambungkan";
 
@@ -3876,9 +3915,6 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ya";
-
-/* An action (button title) that enables cookie consent blocking and dismisses the popup */
-"YesBlockCookieConsentNotices" = "Ya, sekat notis persetujuan kuki";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Ya, Padamkan";

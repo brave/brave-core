@@ -52,17 +52,8 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Увімк.";
 
-/* Label for the Face ID/Passcode item in Settings */
-"AuthenticationFaceIDPasscodeSetting" = "Face ID і код доступу";
-
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "Це дозволяє автентифікувати ваш доступ до Brave";
-
-/* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "Код доступу";
-
-/* Label for the Touch ID/Passcode item in Settings */
-"AuthenticationTouchIDPasscodeSetting" = "Touch ID і код доступу";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Скасувати";
@@ -115,14 +106,17 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Збій установлення параметра. Спробуйте ще раз пізніше.";
 
-/* A title for a toggle that allows user to block cookie consent notices */
+/* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Блокувати повідомлення про згоду на використання файлів cookie";
 
-/* A description for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupDescription" = "У Brave уже заблоковано сторонні файли cookie. Ми також можемо блокувати повідомлення про згоду на використання файлів cookie.";
+/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesDismissButtonTitle" = "Зрозуміло";
 
-/* A title for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "Втомилися від повідомлень про згоду на використання файлів cookie?";
+/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
+"BlockCookieConsentNoticesPopupDescription" = "У Brave уже заблоковано шкідливі файли cookie. Тепер ми автоматично блокуємо нав’язливі повідомлення про згоду на використання файлів cookie.";
+
+/* A title for a popup that informs the user that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Brave блокує повідомлення про згоду на використання файлів cookie";
 
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Вебсайти не зберігатимуть інформацію про ваші попередні відвідування.";
@@ -253,23 +247,11 @@
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
 
-/* Setting to enable the browser lock privacy feature */
+/* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Блокування браузера";
 
-/* No comment provided by engineer. */
+/* Description for setting to enable the browser lock privacy feature */
 "BrowserLockDescription" = "Розблоковуйте браузер за допомогою Touch ID, Face ID або системного коду доступу.";
-
-/* A button title for the action to move to the next step of the browser lock migration process. */
-"browserLockMigrationContinueButtonTitle" = "Продовжити";
-
-/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
-"browserLockMigrationNoPasscodeSetup" = "Не встановили ідентифікатор або код доступу? Відкрийте меню «Налаштування» і торкніться пункту «%@».";
-
-/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationSubtitle" = "Ми спростили роботу системи доступу Brave. Тепер для входу в Brave ви можете скористатися ідентифікатором або кодом доступу з телефона.";
-
-/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationTitle" = "Відкривайте Brave за допомогою Apple Face ID, Touch ID бо коду доступу";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Журнал браузера";
@@ -1013,7 +995,7 @@
 "login.loginListSearchBarPlaceHolderTitle" = "Фільтрувати";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "Щоб налаштувати ланцюжок синхронізації або переглядати налаштування, вам спершу слід установити код доступу на пристрої.";
+"login.syncSetPasscodeAlertDescription" = "Щоб додати пристрій у ланцюжок синхронізації або ввімкнути чи вимкнути синхронізацію паролів, спершу слід установити код доступу на пристрої.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Останні зміни: %@";
@@ -1090,11 +1072,17 @@
 /* Title for adding new folder */
 "NewFolderTitle" = "Нова папка";
 
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "Нове приватне вікно";
+
 /* New sync code button title */
 "NewSyncCode" = "Створити новий ланцюжок синхронізації";
 
 /* New Tab title */
 "NewTab" = "Нова вкладка";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "Нове вікно";
 
 /* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
 "nightMode.modeTitle" = "Режим";
@@ -1119,9 +1107,6 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Недостатньо слів";
-
-/* An action (button title) that does not block cookie consent notices and dismisses the popup */
-"NoThanks" = "Ні, дякую";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Автоматичне переспрямування посилань NPR на текстові версії (text.npr.org).";
@@ -1336,6 +1321,12 @@
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Відкрити зображення в новій вкладці";
 
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "Відкрити в новому приватному вікні";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "Відкрити в новому вікні";
+
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Відкрити у новій приватній вкладці";
 
@@ -1510,6 +1501,15 @@
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Паролі";
 
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "Постійний перегляд у приватному режимі";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "Дозволити Brave відновлювати вкладки приватного режиму, навіть після перезапуску додатка";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "Відновлення вкладок приватного режиму";
+
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Фото від %@";
 
@@ -1558,6 +1558,12 @@
 /* Text indicator on the table cell If a video is expired */
 "playList.expiredLabelTitle" = "Термін дії завершився";
 
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "Елементів: %d ";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "%d елемент";
+
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Виникла проблема із завантаженням ресурсу!";
 
@@ -1587,6 +1593,12 @@
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "На жаль, під час спроби відобразити картинку в картинці сталася помилка.";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "Список відтворення активний в іншому вікні";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "Помилка";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionFooterText" = "Ця опція вмикає/вимикає автовідтворення під час відкриття списку відтворення. Але ця опція не впливає на автовідтворення під час завантаження наступного відео в списку.";
@@ -1888,6 +1900,9 @@
 /* Settings privacy section title */
 "Privacy" = "Приватність";
 
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "Щоб перейти в режим приватного перегляду, спершу слід установити код доступу на пристрої.";
+
 /* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
 "privacyHub.allTimeListsButtonText" = "Списки за весь час";
 
@@ -2125,6 +2140,9 @@
 /* Open Tab action title */
 "recently.closed.open" = "Відкрити";
 
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "Відкриття останньої закритої вкладки";
+
 /* Description for alert to ask user for opening last closed tab in list */
 "recently.closed.shake.description" = "Ви хочете відкрити нещодавно закриті вкладки?";
 
@@ -2219,16 +2237,16 @@
 "RestoredFavoritesFolderName" = "Відновлений список вибраного";
 
 /* Restore Tabs Affirmative Action */
-"RestoreTabAffirmativeButtonTitle" = "Добре";
+"RestoreTabAffirmativeButtonTitle" = "Так";
 
 /* Restore Tabs Negative Action */
 "RestoreTabNegativeButtonTitle" = "Ні";
 
 /* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "Здається, роботу Brave було завершено в аварійному режимі. Відновити закриті вкладки?";
+"RestoreTabOnCrashAlertMessage" = "Роботу додатка Brave було аварійно завершено або його було неналежно закрито.\nВідновити вкладки?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Нам дуже шкода.";
+"RestoreTabOnCrashAlertTitle" = "Неочікуваний вихід із Brave.";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Завдяки Brave Rewards ви можете переглядати рекламу, що не порушує вашої конфіденційності, з мережі Brave Ads. Жодних трекерів. Жодних затримок. Ваші дані в безпеці.";
@@ -3112,6 +3130,24 @@
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "Увімк.";
 
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "Залишати відкритими вкладки режиму приватного перегляду після закриття додатка. Це дозволить легко продовжувати роботу з вкладками приватного режиму в майбутньому.";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "Залишати приватні вкладки";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "Вимагати Face ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "Вимагати PIN-код";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "Вимагати Touch ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "Приватні вкладки";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Панель навігації";
 
@@ -3532,6 +3568,9 @@
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Проблема з надійністю з’єднання";
 
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Виберіть категорію, яка відповідає проблемі.";
+
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "З’єднання з Інтернетом відсутнє";
 
@@ -3876,9 +3915,6 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Так";
-
-/* An action (button title) that enables cookie consent blocking and dismisses the popup */
-"YesBlockCookieConsentNotices" = "Так, блокувати повідомлення про згоду на використання файлів cookie";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Так, видалити";

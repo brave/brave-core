@@ -157,20 +157,20 @@
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet */
 "wallet.backupRecoveryPhraseBackButtonTitle" = "リカバリーフレーズ";
 
-/* The disclaimer next to a toggle that the user must acknowledge before proceeding */
-"wallet.backupRecoveryPhraseDisclaimer" = "フレーズを安全なところにバックアップしました。";
-
 /* The subtitle of the backup recovery phrase screen */
-"wallet.backupRecoveryPhraseSubtitle" = "これらの単語を下に表示されている通りの順番で紙に書くかコピーして、安全なところに保存してください。リカバリーフレーズは、パスワードを忘れたり、デバイスを盗難されたり、ウォレットを切り替えたいときにアカウントへのアクセスを取り戻すための唯一の方法です。";
+"wallet.backupRecoveryPhraseSubtitle" = "リカバリーフレーズは、パスワードを忘れたり、デバイスを紛失した場合にウォレットにアクセスするために重要です。\n\n他の人がアクセスできない安全な場所に保管し、誰とも共有しないようにしてください。";
 
 /* The title of the backup recovery phrase screen */
-"wallet.backupRecoveryPhraseTitle" = "リカバリーフレーズ";
+"wallet.backupRecoveryPhraseTitle" = "リカバリーフレーズを保存";
 
-/* The first part of the warning displayed on the backup recovery phrase page. As in to pay attention to the following text */
-"wallet.backupRecoveryPhraseWarningPartOne" = "警告：";
+/* The title of the button that user will tap to skip the verifying recovery phrases step. */
+"wallet.backupSkipButtonTitle" = "後でバックアップ";
 
-/* The second part of the warning displayed on the backup recovery phrase page. */
-"wallet.backupRecoveryPhraseWarningPartTwo" = "警告：リカバリーフレーズを絶対に公開しないでください。このフレーズを持っている人はだれでもあなたの資産を奪うことができ、取り戻すことはできません。";
+/* The sub-title on the pop up when user decides to skip backup recovery phrases. */
+"wallet.backupSkipPromptSubTitle" = "アカウントを安全に保つために、リカバリーフレーズをバックアップしてください。";
+
+/* The title on the pop up when user decides to skip backup recovery phrases. */
+"wallet.backupSkipPromptTitle" = "この手順はスキップできますが、アカウントの安全を保つためにリカバリーフレーズを必ずバックアップしてください。";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar */
 "wallet.backupWalletBackButtonTitle" = "ウォレットをバックアップする";
@@ -190,8 +190,8 @@
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
 "wallet.backupWalletWarningMessage" = "あなたの暗号資産を保護し、アクセスを失わないことを確実にするために、今すぐウォレットをバックアップしてください。";
 
-/* The button title that enables the biometric unlock feature */
-"wallet.biometricsSetupEnableButtonTitle" = "有効にする";
+/* The button title that enables the biometric unlock feature. %@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupEnableButtonTitle" = "%@を使用";
 
 /* The message of an alert when the user has an error setting up biometric unlock */
 "wallet.biometricsSetupErrorMessage" = "生体認証を有効にする過程でエラーが生じました。後で再試行してください。";
@@ -199,8 +199,17 @@
 /* The title of an alert when the user has an error setting up biometric unlock */
 "wallet.biometricsSetupErrorTitle" = "生体認証の有効化に失敗しました。";
 
-/* The title shown when a user is asked if they would like to setup biometric unlock */
-"wallet.biometricsSetupTitle" = "BraveウォレットをFace ID, Touch ID, もしくはパスワードでロック解除します。";
+/* Type of biometrics. This will be used in Biometric setup screen. */
+"wallet.biometricsSetupFaceId" = "Face ID";
+
+/* The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupSubTitle" = "%@を使用してBraveウォレットをアンロックしますか？";
+
+/* The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupTitle" = "%@でBraveウォレットをアンロック";
+
+/* Type of biometrics. This will be used in Biometric setup screen. */
+"wallet.biometricsSetupTouchId" = "Touch ID";
 
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
 "wallet.braveSwapFeeDisclaimer" = "相場価格は %@ のBrave手数料を含んでいます。";
@@ -313,11 +322,14 @@
 /* The accessibility label for the contract address of a token / asset. */
 "wallet.contractAddressAccessibilityLabel" = "コントラクトアドレス";
 
+/* A button title that user has clicked to copy some data to the users clipboard */
+"wallet.copiedToPasteboard" = "コピー完了";
+
 /* The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard */
 "wallet.copyAddressButtonTitle" = "アドレスをコピーする";
 
 /* A button title that when tapped will copy some data to the users clipboard */
-"wallet.copyToPasteboard" = "コピー";
+"wallet.copyToPasteboard" = "タップしてコピー";
 
 /* The message of the alert shown when a user switches to a network they do not have an account for yet. */
 "wallet.createAccountAlertMessage" = "新規作成しますか？";
@@ -328,8 +340,11 @@
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet */
 "wallet.createWalletBackButtonTitle" = "パスワードを作成する";
 
+/* The sub-title of the create wallet screen */
+"wallet.createWalletSubTitle" = "このパスワードを使用してウォレットにアクセスします。";
+
 /* The title of the create wallet screen */
-"wallet.createWalletTitle" = "暗号資産をパスワードを使って保護する";
+"wallet.createWalletTitle" = "パスワードを作成";
 
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Braveウォレット";
@@ -742,10 +757,10 @@
 /* A button title that will redact a private key on the screen */
 "wallet.hidePrivateKeyButtonTitle" = "プライベートキーを隠す";
 
-/* The description label of the filter option that hides assets if their fiat value is below $1, shown below the title. Used in Portfolio/NFT filters and display settings. */
-"wallet.hideSmallBalancesDescription" = "1ドル未満のアセット";
+/* The description label of the filter option that hides assets if their fiat value is below $0.05, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideSmallBalancesDescription" = "0.05ドル未満のアセット";
 
-/* The label of the filter option that hides assets if their fiat value is below $1. Used in Portfolio/NFT filters and display settings. */
+/* The label of the filter option that hides assets if their fiat value is below $0.05. Used in Portfolio/NFT filters and display settings. */
 "wallet.hideSmallBalancesTitle" = "少額の残高を非表示";
 
 /* The description label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
@@ -819,6 +834,18 @@
 
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "詳しく";
+
+/* The description of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
+"wallet.legalDescription" = "以下の事項をご確認ください";
+
+/* For users to check indicates they have read and agree to the Terms of Use before setting up a wallet. */
+"wallet.legalTermOfUse" = "[Terms of Use](%@) を読み、同意します";
+
+/* The title of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
+"wallet.legalTitle" = "はじめに";
+
+/* The responsibility explained in screen for users to check indicates they understand before setting up a wallet. */
+"wallet.legalUserResponsibility" = "私は、このウォレットが自己管理のウォレットであり、関連する資金、資産、またはアカウントに対して私一人が責任を負い、私のウォレットを安全に保護し、バックアップするために適切な行動を取ることを理解しています。私は、Braveが私に代わって私のウォレットにアクセスしたり、取引を取り消すことはできないこと、およびパスワードの紛失、デバイスの盗難、または同様の状況の場合にアクセスを回復する唯一の方法は、私のリカバリフレーズであることを理解しています。";
 
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "ロックする";
@@ -900,6 +927,9 @@
 
 /* The label that is shown above the URL for the network on a request to switch networks or add a new network from a dapps website. */
 "wallet.networkURLTitle" = "ネットワークURL";
+
+/* A placeholder string that will be used on password text fields to create a new wallet */
+"wallet.newPasswordPlaceholder" = "新しいパスワードを入力する";
 
 /* A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with. */
 "wallet.newSiteConnectConfirmationMessage" = "許可済みのアカウントのアドレスを表示 (必須)";
@@ -994,6 +1024,15 @@
 /* The empty state displayed when the user has no transactions associated with an account */
 "wallet.noTransactions" = "トランザクションがありません";
 
+/* The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen. */
+"wallet.onboardingCompletedButtonTitle" = "ポートフォリオを見る";
+
+/* The subtitle of the last step of creating a new wallet. */
+"wallet.onbordingCompletedSubTitle" = "Braveウォレットの使用準備ができました。";
+
+/* The title of the last step of creating a new wallet. */
+"wallet.onbordingCompletedTitle" = "準備完了です！";
+
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "その他のウォレット操作";
 
@@ -1001,10 +1040,19 @@
 "wallet.passwordDoesNotMeetRequirementsError" = "パスワードは8文字以上で入力してください";
 
 /* A placeholder string that will be used on password text fields */
-"wallet.passwordPlaceholder" = "パスワード";
+"wallet.passwordPlaceholder" = "Enter password";
 
 /* The error displayed when entering two passwords that do not match that are expected to match */
 "wallet.passwordsDontMatchError" = "パスワードが違います";
+
+/* A label will be displayed beside input password when it is considered as a medium password */
+"wallet.passwordStatusMedium" = "中";
+
+/* A label will be displayed beside input password when it is considered as a strong password */
+"wallet.passwordStatusStrong" = "強い";
+
+/* A label will be displayed beside input password when it is considered as a weak password */
+"wallet.passwordStatusWeak" = "弱い";
 
 /* A button title that when tapped will paste some data from the users clipboard to a text field */
 "wallet.pasteFromPasteboard" = "貼り付け";
@@ -1017,6 +1065,12 @@
 
 /* A title above a text field for inputting the per-gas tip limit in Gwei */
 "wallet.perGasTipLimit" = "Gasあたりのチップ上限（Gwei）";
+
+/* The title of the empty state in Portfolio when no assets are shown. */
+"wallet.portfolioEmptyStateDescription" = "トークンを入金または購入して開始します。インポートしたアカウントのトークンが表示されない場合は、フィルターと表示設定を確認してください。不明なトークンはカスタムアセットとしての追加が必要な場合があります。";
+
+/* The title of the empty state in Portfolio when no assets are shown. */
+"wallet.portfolioEmptyStateTitle" = "利用可能なアセットはありません";
 
 /* The title of the portfolio page in the Crypto tab */
 "wallet.portfolioPageTitle" = "ポートフォリオ";
@@ -1075,8 +1129,11 @@
 /* A button on an account screen which when pressed presents a new screen to  rename the account */
 "wallet.renameButtonTitle" = "名前を変える";
 
+/* A label will be displayed when the repeat password field input is matched with the password field. */
+"wallet.repeatedPasswordMatch" = "一致！";
+
 /* A placeholder string that will be used on repeat password text fields */
-"wallet.repeatedPasswordPlaceholder" = "パスワードの確認";
+"wallet.repeatedPasswordPlaceholder" = "パスワードを再入力";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "ウォレットを復元する";
@@ -1084,8 +1141,11 @@
 /* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
 "wallet.restoreWalletButtonTitle" = "復元";
 
-/* A toggle label to ask the user if their 24-word phrase is a legacy Brave crypto wallet */
-"wallet.restoreWalletImportFromLegacyBraveWallet" = "従来のBraveクリプトウォレットからインポートしますか？";
+/* A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet. */
+"wallet.restoreWalletImportFromLegacyBraveWallet" = "24語のリカバリーフレーズをお持ちの方";
+
+/* A button title when 24 recovery-word grids are displayed for users to restore legacy wallet. Users can click this button to display the 12 recovery-word grids to restore regular wallet. */
+"wallet.restoreWalletImportFromRegularBraveWallet" = "12語のリカバリーフレーズをお持ちの方";
 
 /* A title displayed above 2 text fields for entering a new wallet password */
 "wallet.restoreWalletNewPasswordTitle" = "新しいパスワード";
@@ -1093,17 +1153,17 @@
 /* The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic' */
 "wallet.restoreWalletPhraseInvalidError" = "リカバリーフレーズが正しくありません";
 
-/* The placeholder on the mneomic/recovery phrase text field */
-"wallet.restoreWalletPhrasePlaceholder" = "リカバリーフレーズを入力してください";
+/* The placeholder on the mneomic/recovery phrase text field of each grid. */
+"wallet.restoreWalletPhrasePlaceholder" = "単語 #%d";
 
 /* A toggle label that will enable or disable visibility of the contents in the recovery phrase text field */
 "wallet.restoreWalletShowRecoveryPhrase" = "リカバリーフレーズを表示する";
 
 /* The subtitle on the restore wallet screen. */
-"wallet.restoreWalletSubtitle" = "リカバリーフレーズを入力して、Braveウォレット暗号資産アカウントを復元してください。";
+"wallet.restoreWalletSubtitle" = "リカバリーフレーズ全体をどのフィールドにも貼り付けできます。";
 
 /* The title on the restore wallet screen. */
-"wallet.restoreWalletTitle" = "暗号資産アカウントを復元する";
+"wallet.restoreWalletTitle" = "既存のウォレットをインポート";
 
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "銀行口座で即座に購入。手数料を抑えられます。";
@@ -1264,11 +1324,26 @@
 /* The button title to continue to the next step on the 'setup crypto' screen. As in to begin the process of creating a wallet/setting up the cryptocurrency feature */
 "wallet.setupCryptoButtonTitle" = "始める";
 
+/* The subtitle displayed in the section for user that need to create a brand new wallet */
+"wallet.setupCryptoCreateNewSubTitle" = "Braveウォレットはすぐにお使いいただけます。";
+
+/* The title displayed in the section for user that need to create a brand new wallet */
+"wallet.setupCryptoCreateNewTitle" = "新しいウォレットが必要ですか？";
+
+/* The disclaimer text at the bottom of the first step of onboarding flow. */
+"wallet.setupCryptoDisclaimer" = "©2023 Brave Software Inc. BraveおよびBraveロゴはBraveの登録商標です。その他の製品名およびロゴは、各社の商標である場合があります。無断複写・転載を禁じます。";
+
+/* The subtitle displayed in the section for user that need to restore an existed wallet */
+"wallet.setupCryptoRestoreSubTitle" = "既存のウォレットをインポートします。";
+
+/* The title displayed in the section for user that need to restore an existed wallet */
+"wallet.setupCryptoRestoreTitle" = "ウォレットを既にお持ちですか？";
+
 /* The subtitle displayed on the 'setup crypto' onboarding screen */
-"wallet.setupCryptoSubtitle" = "Braveブラウザを使って暗号資産をご自身で管理し、ポートフォリオの進捗をトラックしましょう。";
+"wallet.setupCryptoSubtitle" = "暗号通貨とNFTの管理がこの上なく快適に。Braveウォレットはイーサリアム、EVMチェーン、Solanaなどをサポートしています。";
 
 /* The title displayed on the 'setup crypto' onboarding screen */
-"wallet.setupCryptoTitle" = "新しいBraveウォレットへようこそ";
+"wallet.setupCryptoTitle" = "- ブラウザネイティブ\n- セルフカストディ\n- マルチチェーン";
 
 /* The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
 "wallet.showNFTNetworkLogoDescription" = "NFTにネットワークのロゴを表示";
@@ -1711,14 +1786,14 @@
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%2$@の%1$@";
 
-/* The button title to verify if the user has put all recovery words in the right order */
-"wallet.verifyButtonTitle" = "認証する";
+/* The error message when input phrase does not match the correct one. */
+"wallet.verifyRecoveryPhraseError" = "リカバリーフレーズが一致しません。";
 
-/* The subtitle of the verify recovery phrase screen */
-"wallet.verifyRecoveryPhraseSubtitle" = "リカバリーフレーズの単語を正しい順番で選択してください。";
+/* The sub-title of the screen that user will verify his/her recovery phrase. */
+"wallet.verifyRecoveryPhraseSubTitle" = "リカバリーフレーズの**%d番目**の単語を入力してください。";
 
-/* The title of the verify recovery phrase screen */
-"wallet.verifyRecoveryPhraseTitle" = "リカバリーフレーズを認証する";
+/* The title of the screen that user will verify his/her recovery phrase. */
+"wallet.verifyRecoveryPhraseTitle" = "ご確認ください";
 
 /* The title for the button to view details about the network the dapp site is requesting the user switch to, or the network the dapp website is requesting the user add. */
 "wallet.viewDetails" = "詳細を表示";
@@ -1728,6 +1803,9 @@
 
 /* A button title to view a given transaction on the block explorer for the current network/chain. */
 "wallet.viewOnBlockExplorer" = "ブロックエクスプローラーで確認する";
+
+/* A button title when a user will tap to reveal the recovery phrases. */
+"wallet.viewRecoveryPhraseButtonTitle" = "リカバリーフレーズを確認";
 
 /* The title shown on the menu to access Brave Wallet */
 "wallet.wallet" = "ウォレット";

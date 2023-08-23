@@ -52,17 +52,8 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "オン";
 
-/* Label for the Face ID/Passcode item in Settings */
-"AuthenticationFaceIDPasscodeSetting" = "Face ID とパスコード";
-
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "これによりBraveへのアクセスを認証します";
-
-/* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "パスコード";
-
-/* Label for the Touch ID/Passcode item in Settings */
-"AuthenticationTouchIDPasscodeSetting" = "Touch ID とパスコード";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "キャンセル";
@@ -115,14 +106,17 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "設定に失敗しました。もう一度やり直してください。";
 
-/* A title for a toggle that allows user to block cookie consent notices */
+/* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Cookieの同意通知をブロック";
 
-/* A description for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupDescription" = "Braveはすでにサードパーティーのクッキーをブロックしています。クッキーの同意通知もブロックすることができます。";
+/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesDismissButtonTitle" = "閉じる";
 
-/* A title for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "Cookieの同意通知にうんざりしていませんか？";
+/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
+"BlockCookieConsentNoticesPopupDescription" = "Braveはすでに有害なCookieをブロックしています。今では、迷惑なCookieの同意通知も自動的にブロックするようになりました。";
+
+/* A title for a popup that informs the user that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "BraveはCookieの同意通知をブロックしています";
 
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "ウェブサイトにあなたの訪問履歴が保存されないようにします。";
@@ -253,23 +247,11 @@
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
 
-/* Setting to enable the browser lock privacy feature */
+/* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "ブラウザのロック";
 
-/* No comment provided by engineer. */
+/* Description for setting to enable the browser lock privacy feature */
 "BrowserLockDescription" = "BraveをTouch ID、Face ID、システムパスコードでロック解除する";
-
-/* A button title for the action to move to the next step of the browser lock migration process. */
-"browserLockMigrationContinueButtonTitle" = "続ける";
-
-/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
-"browserLockMigrationNoPasscodeSetup" = "まだIDやパスコードを設定していませんか？設定を開いて、「%@」をタップしてください。";
-
-/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationSubtitle" = "Brave Passcodeをシンプルにしました。これからは、あなたのデバイスに使用しているのと同じIDやパスコードでBraveにアクセスできます。";
-
-/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationTitle" = "Apple Face IDやTouch IDやパスコードでBraveを開く";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "閲覧履歴";
@@ -1013,7 +995,7 @@
 "login.loginListSearchBarPlaceHolderTitle" = "フィルター";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "シンクチェーンの設定や設定を見るには、まず端末にパスコードを設定する必要があります。";
+"login.syncSetPasscodeAlertDescription" = "デバイスをシンクチェーンに追加したり、パスワードシンクを切り替えたりするには、まず端末にパスコードを設定する必要があります。";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "最終変更 %@";
@@ -1090,11 +1072,17 @@
 /* Title for adding new folder */
 "NewFolderTitle" = "新しいフォルダ";
 
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "新規シークレット ウインドウ";
+
 /* New sync code button title */
 "NewSyncCode" = "新たな同期チェーンを開始する";
 
 /* New Tab title */
 "NewTab" = "新しいタブ";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "新規ウインドウ";
 
 /* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
 "nightMode.modeTitle" = "モード";
@@ -1119,9 +1107,6 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "ワードが足りません";
-
-/* An action (button title) that does not block cookie consent notices and dismisses the popup */
-"NoThanks" = "いいえ";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "NPRのリンクをテキストベースのバージョン (text.npr.org) に自動でリダイレクトします。";
@@ -1336,6 +1321,12 @@
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "画像を新しいタブで開く";
 
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "新しいプライベートウィンドウで開く";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "新しいウィンドウで開く";
+
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "新しいプライベートタブで開く";
 
@@ -1510,6 +1501,15 @@
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "パスワード";
 
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "プライベートブラウジングモードを継続";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "アプリを終了 / 再開した場合でも、Braveがプライベートブラウジングタブを復元できるようにします";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "プライベートタブを復元";
+
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Photo by %@";
 
@@ -1558,6 +1558,12 @@
 /* Text indicator on the table cell If a video is expired */
 "playList.expiredLabelTitle" = "期限切れ";
 
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "%d件のアイテム";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "%d件のアイテム";
+
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "リソースの読み込み中に問題が発生しました！";
 
@@ -1587,6 +1593,12 @@
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "すみません、エラーによりピクチャ・イン・ピクチャで表示できません。";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "プレイリストがすでに別のウィンドウで有効になっています";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "申し訳ありません";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionFooterText" = "この設定は、Playlistが開かれたときに自動再生が行われる機能のオン/オフを行います。ただし、この設定を行っても再生リストの次の動画がロードされた際自動で再生する挙動の変更はされません。";
@@ -1888,6 +1900,9 @@
 /* Settings privacy section title */
 "Privacy" = "プライバシー";
 
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "プライベートブラウジングモードを切り替えるには、まず端末にパスコードを設定する必要があります。";
+
 /* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
 "privacyHub.allTimeListsButtonText" = "全体リスト";
 
@@ -2125,6 +2140,9 @@
 /* Open Tab action title */
 "recently.closed.open" = "開く";
 
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "最後に閉じたタブを開く";
+
 /* Description for alert to ask user for opening last closed tab in list */
 "recently.closed.shake.description" = "最後に閉じたタブを開きますか？";
 
@@ -2219,16 +2237,16 @@
 "RestoredFavoritesFolderName" = "復元されたお気に入り";
 
 /* Restore Tabs Affirmative Action */
-"RestoreTabAffirmativeButtonTitle" = "OK";
+"RestoreTabAffirmativeButtonTitle" = "はい";
 
 /* Restore Tabs Negative Action */
 "RestoreTabNegativeButtonTitle" = "いいえ";
 
 /* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "前回 Brave はクラッシュしたようです。タブを復元しますか？";
+"RestoreTabOnCrashAlertMessage" = "Braveで問題が発生したか、適切に終了しませんでした。\nタブを復元しますか？";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "申し訳ありません";
+"RestoreTabOnCrashAlertTitle" = "Braveが予期せず終了しました。";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Brave Rewardsにより、あなたはBrave Adsネットワークから提供される、プライバシーを保護した形の広告を閲覧することができます。トラッキングも、読み込み遅延もありません。あなたのデータが外部に漏れることもありません。";
@@ -3112,6 +3130,24 @@
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "オン";
 
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "アプリを閉じる際にプライベートブラウジングタブを保持し、プライベートブラウジングのセッションをシームレスに継続できるようにします。";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "プライベートタブを保持";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "Face IDが必要です";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "PINコードが必要です";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "Touch IDが必要です";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "プライベートタブ";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "ナビゲーションツールバー";
 
@@ -3532,6 +3568,9 @@
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "接続信頼性の問題";
 
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "問題に当てはまるカテゴリーを選択してください。";
+
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "接続時にインターネットに接続できなかった";
 
@@ -3876,9 +3915,6 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "はい";
-
-/* An action (button title) that enables cookie consent blocking and dismisses the popup */
-"YesBlockCookieConsentNotices" = "はい、Cookieの同意通知をブロックします。";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "はい、削除します";

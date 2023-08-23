@@ -52,17 +52,8 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "开";
 
-/* Label for the Face ID/Passcode item in Settings */
-"AuthenticationFaceIDPasscodeSetting" = "Face ID 和密码";
-
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "这将证明您获有对 Brave 的访问权";
-
-/* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "密码";
-
-/* Label for the Touch ID/Passcode item in Settings */
-"AuthenticationTouchIDPasscodeSetting" = "Touch ID 和密码";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "取消";
@@ -115,14 +106,17 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "设置首选项失败。请重试。";
 
-/* A title for a toggle that allows user to block cookie consent notices */
+/* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "阻止 Cookie 同意通知";
 
-/* A description for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupDescription" = "Brave 已经阻止了第三方 cookie。我们也可以阻止 cookie 同意通知。";
+/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesDismissButtonTitle" = "我瞭解了";
 
-/* A title for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "不想再收到 cookie 同意通知？";
+/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
+"BlockCookieConsentNoticesPopupDescription" = "Brave 已经阻止了有害 cookie。现在，我们还能自动阻止那些烦人的 cookie 同意通知。";
+
+/* A title for a popup that informs the user that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Brave 阻止了 cookie 同意通知";
 
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "阻止网站存储有关您以前访问过的信息。";
@@ -253,23 +247,11 @@
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave 通话";
 
-/* Setting to enable the browser lock privacy feature */
+/* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "浏览器锁定";
 
-/* No comment provided by engineer. */
+/* Description for setting to enable the browser lock privacy feature */
 "BrowserLockDescription" = "用 Touch ID、Face ID 或系统密码解锁 Brave。";
-
-/* A button title for the action to move to the next step of the browser lock migration process. */
-"browserLockMigrationContinueButtonTitle" = "继续";
-
-/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
-"browserLockMigrationNoPasscodeSetup" = "还没有设置 ID 或密码？打开设置，然后点击 \"%@\"即可设置。";
-
-/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationSubtitle" = "我们简化了 Brave 的密码。现在您用您在手机上使用的 ID 或密码就可以访问 Brave 了 。";
-
-/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationTitle" = "用您的 Apple Face ID、Touch ID 或密码打开 Brave";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "浏览历史";
@@ -1013,7 +995,7 @@
 "login.loginListSearchBarPlaceHolderTitle" = "筛选";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "如需设置同步链或查看设置，您必须先在您的设备上设置一个密码。";
+"login.syncSetPasscodeAlertDescription" = "要将设备添加到同步链或切换密码同步，必须先在设备上设置密码。";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "上次修改 %@";
@@ -1090,11 +1072,17 @@
 /* Title for adding new folder */
 "NewFolderTitle" = "新建文件夹";
 
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "新增無痕式視窗";
+
 /* New sync code button title */
 "NewSyncCode" = "启动新的同步链";
 
 /* New Tab title */
 "NewTab" = "新标签页";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "打开新的窗口";
 
 /* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
 "nightMode.modeTitle" = "模式";
@@ -1119,9 +1107,6 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "字数不足";
-
-/* An action (button title) that does not block cookie consent notices and dismisses the popup */
-"NoThanks" = "不，谢谢";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "自动将 NPR 链接重定向到其基于文本的版本（位于 text.npr.org）。";
@@ -1336,6 +1321,12 @@
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "在新标签中打开图片";
 
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "在新的无痕式窗口中打开 ";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "在新窗口中打开";
+
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "在新的隐私标签页中打开";
 
@@ -1510,6 +1501,15 @@
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "密码";
 
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "持续无痕浏览";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "即使关闭或重新打开应用程序，Brave 也能还原无痕浏览标签页";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "恢复无痕标签页";
+
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "摄影者：%@";
 
@@ -1558,6 +1558,12 @@
 /* Text indicator on the table cell If a video is expired */
 "playList.expiredLabelTitle" = "已过期";
 
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "%d 个项目";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "%d 个项目";
+
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "加载资源时出现问题。";
 
@@ -1587,6 +1593,12 @@
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "抱歉，尝试显示画中画时出错。";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "播放列表已在另一个窗口启动";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "抱歉";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionFooterText" = "播放列表打开后，此选项会启用/禁用自动播放。但是，加载列表中的下一视频时，此选项不会影响自动播放功能。";
@@ -1888,6 +1900,9 @@
 /* Settings privacy section title */
 "Privacy" = "隐私";
 
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "要切换无痕浏览模式，必须先在设备上设置密码。";
+
 /* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
 "privacyHub.allTimeListsButtonText" = "所有时间列表";
 
@@ -2125,6 +2140,9 @@
 /* Open Tab action title */
 "recently.closed.open" = "打开";
 
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "重新打开上次关闭的标签页";
+
 /* Description for alert to ask user for opening last closed tab in list */
 "recently.closed.shake.description" = "是否要打开最近关闭的标签页？";
 
@@ -2219,16 +2237,16 @@
 "RestoredFavoritesFolderName" = "恢复的收藏夹";
 
 /* Restore Tabs Affirmative Action */
-"RestoreTabAffirmativeButtonTitle" = "确认";
+"RestoreTabAffirmativeButtonTitle" = "是";
 
 /* Restore Tabs Negative Action */
 "RestoreTabNegativeButtonTitle" = "否";
 
 /* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "看起来 Brave 先前崩溃了。您想恢复标签吗？";
+"RestoreTabOnCrashAlertMessage" = "抱歉，Brave 崩溃了或无法正常关闭。\n恢复标签页？";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "这很尴尬。";
+"RestoreTabOnCrashAlertTitle" = "Brave 意外退出了";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "借助 Brave Rewards，您可以查看来自 Brave Ads 网络的隐私保护广告。无需跟踪器，无需减速，而您的数据绝对安全。";
@@ -3112,6 +3130,24 @@
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "开";
 
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "关闭应用时，无痕浏览标签页仍保持打开状态，确保私人浏览页面无缝继续。";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "保留无痕标签页";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "需要 Face ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "需要 Pin 码";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "需要 Touch ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "私有标签页";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "导航工具栏";
 
@@ -3532,6 +3568,9 @@
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "连接可靠性问题";
 
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "请选择描述问题的类别。";
+
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "连接后没有互联网";
 
@@ -3876,9 +3915,6 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "是";
-
-/* An action (button title) that enables cookie consent blocking and dismisses the popup */
-"YesBlockCookieConsentNotices" = "是的，阻止 cookie 同意通知";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "是，删除";

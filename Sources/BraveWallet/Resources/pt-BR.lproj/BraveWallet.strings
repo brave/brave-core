@@ -157,20 +157,20 @@
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet */
 "wallet.backupRecoveryPhraseBackButtonTitle" = "Frase de recuperação";
 
-/* The disclaimer next to a toggle that the user must acknowledge before proceeding */
-"wallet.backupRecoveryPhraseDisclaimer" = "Fiz um backup da minha frase em um lugar seguro.";
-
 /* The subtitle of the backup recovery phrase screen */
-"wallet.backupRecoveryPhraseSubtitle" = "Anote ou copie essas palavras exatamente na ordem exibida abaixo e salve-as em um lugar seguro. Sua frase de recuperação é a única maneira de recuperar o acesso à conta em caso de esquecimento de senha, dispositivo perdido ou roubado ou caso você queira trocar de carteira.";
+"wallet.backupRecoveryPhraseSubtitle" = "Sua frase de recuperação é a chave para acessar sua carteira caso você esqueça sua senha ou perca seu dispositivo.\n\nGuarde-a em um local seguro que não seja acessível a outras pessoas e evite compartilhá-la com qualquer pessoa.";
 
 /* The title of the backup recovery phrase screen */
-"wallet.backupRecoveryPhraseTitle" = "Sua frase de recuperação";
+"wallet.backupRecoveryPhraseTitle" = "Salvar frase de recuperação";
 
-/* The first part of the warning displayed on the backup recovery phrase page. As in to pay attention to the following text */
-"wallet.backupRecoveryPhraseWarningPartOne" = "AVISO:";
+/* The title of the button that user will tap to skip the verifying recovery phrases step. */
+"wallet.backupSkipButtonTitle" = "Farei backup mais tarde";
 
-/* The second part of the warning displayed on the backup recovery phrase page. */
-"wallet.backupRecoveryPhraseWarningPartTwo" = "nunca compartilhe sua frase de recuperação. Qualquer pessoa com essa frase pode obter seus ativos para sempre.";
+/* The sub-title on the pop up when user decides to skip backup recovery phrases. */
+"wallet.backupSkipPromptSubTitle" = "Para manter sua conta segura, certifique-se de fazer backup de sua frase de recuperação.";
+
+/* The title on the pop up when user decides to skip backup recovery phrases. */
+"wallet.backupSkipPromptTitle" = "Você pode pular esta etapa agora, mas ainda precisa fazer backup de sua frase de recuperação para garantir a segurança da conta.";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar */
 "wallet.backupWalletBackButtonTitle" = "Fazer backup da carteira";
@@ -190,8 +190,8 @@
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
 "wallet.backupWalletWarningMessage" = "Faça backup da sua carteira agora para proteger seus criptoativos e garantir que você nunca perca o acesso.";
 
-/* The button title that enables the biometric unlock feature */
-"wallet.biometricsSetupEnableButtonTitle" = "Ativar";
+/* The button title that enables the biometric unlock feature. %@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupEnableButtonTitle" = "Usar %@";
 
 /* The message of an alert when the user has an error setting up biometric unlock */
 "wallet.biometricsSetupErrorMessage" = "Houve um erro ao tentar ativar o desbloqueio por biometria. Tente novamente mais tarde.";
@@ -199,8 +199,17 @@
 /* The title of an alert when the user has an error setting up biometric unlock */
 "wallet.biometricsSetupErrorTitle" = "Houve uma falha ao ativar o desbloqueio por biometria.";
 
-/* The title shown when a user is asked if they would like to setup biometric unlock */
-"wallet.biometricsSetupTitle" = "Desbloqueie a Carteira Brave com seu Face ID, seu Touch ID ou sua senha.";
+/* Type of biometrics. This will be used in Biometric setup screen. */
+"wallet.biometricsSetupFaceId" = "Face ID";
+
+/* The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupSubTitle" = "Gostaria de usar %@ para desbloquear a Carteira Brave ?";
+
+/* The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupTitle" = "Desbloquear a Carteira Brave com %@";
+
+/* Type of biometrics. This will be used in Biometric setup screen. */
+"wallet.biometricsSetupTouchId" = "Touch ID";
 
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
 "wallet.braveSwapFeeDisclaimer" = "A cotação inclui uma taxa de %@ do Brave.";
@@ -313,11 +322,14 @@
 /* The accessibility label for the contract address of a token / asset. */
 "wallet.contractAddressAccessibilityLabel" = "Endereço de contato";
 
+/* A button title that user has clicked to copy some data to the users clipboard */
+"wallet.copiedToPasteboard" = "Copiado";
+
 /* The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard */
 "wallet.copyAddressButtonTitle" = "Copiar endereço";
 
 /* A button title that when tapped will copy some data to the users clipboard */
-"wallet.copyToPasteboard" = "Copiar";
+"wallet.copyToPasteboard" = "Toque para copiar";
 
 /* The message of the alert shown when a user switches to a network they do not have an account for yet. */
 "wallet.createAccountAlertMessage" = "Criar uma agora?";
@@ -328,8 +340,11 @@
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet */
 "wallet.createWalletBackButtonTitle" = "Criar senha";
 
+/* The sub-title of the create wallet screen */
+"wallet.createWalletSubTitle" = "Você usará essa senha para acessar sua carteira.";
+
 /* The title of the create wallet screen */
-"wallet.createWalletTitle" = "Proteja seus criptoativos com uma senha";
+"wallet.createWalletTitle" = "Criar uma senha";
 
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Carteira Brave";
@@ -742,10 +757,10 @@
 /* A button title that will redact a private key on the screen */
 "wallet.hidePrivateKeyButtonTitle" = "Ocultar chave privada";
 
-/* The description label of the filter option that hides assets if their fiat value is below $1, shown below the title. Used in Portfolio/NFT filters and display settings. */
-"wallet.hideSmallBalancesDescription" = "Ativos com valor inferior a US$ 1";
+/* The description label of the filter option that hides assets if their fiat value is below $0.05, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideSmallBalancesDescription" = "Ativos com valor inferior a US$ 0,05";
 
-/* The label of the filter option that hides assets if their fiat value is below $1. Used in Portfolio/NFT filters and display settings. */
+/* The label of the filter option that hides assets if their fiat value is below $0.05. Used in Portfolio/NFT filters and display settings. */
 "wallet.hideSmallBalancesTitle" = "Ocultar saldos pequenos";
 
 /* The description label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
@@ -819,6 +834,18 @@
 
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "Saiba mais";
+
+/* The description of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
+"wallet.legalDescription" = "Exigimos que você reconheça os itens abaixo";
+
+/* For users to check indicates they have read and agree to the Terms of Use before setting up a wallet. */
+"wallet.legalTermOfUse" = "Eu li e concordo com os [Termos de Uso](%@)";
+
+/* The title of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
+"wallet.legalTitle" = "Antes de começarmos";
+
+/* The responsibility explained in screen for users to check indicates they understand before setting up a wallet. */
+"wallet.legalUserResponsibility" = "Entendo que esta é uma carteira de autocustódia e que sou o único responsável por quaisquer fundos, ativos ou contas associados e por tomar as medidas apropriadas para proteger, proteger e fazer backup de minha carteira. Entendo que o Brave não pode acessar minha carteira ou reverter transações em meu nome e que minha frase de recuperação é a ÚNICA maneira de recuperar o acesso em caso de perda de senha, dispositivo roubado ou circunstância semelhante.";
 
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "Bloquear";
@@ -900,6 +927,9 @@
 
 /* The label that is shown above the URL for the network on a request to switch networks or add a new network from a dapps website. */
 "wallet.networkURLTitle" = "URL da rede";
+
+/* A placeholder string that will be used on password text fields to create a new wallet */
+"wallet.newPasswordPlaceholder" = "Insira a nova senha";
 
 /* A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with. */
 "wallet.newSiteConnectConfirmationMessage" = "Veja o endereço das suas contas autorizadas (obrigatório)";
@@ -994,6 +1024,15 @@
 /* The empty state displayed when the user has no transactions associated with an account */
 "wallet.noTransactions" = "Não há transações";
 
+/* The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen. */
+"wallet.onboardingCompletedButtonTitle" = "Ir para o meu portfólio";
+
+/* The subtitle of the last step of creating a new wallet. */
+"wallet.onbordingCompletedSubTitle" = "Sua Carteira Brave está pronta para uso.";
+
+/* The title of the last step of creating a new wallet. */
+"wallet.onbordingCompletedTitle" = "Está tudo pronto!";
+
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "Outras ações de carteira";
 
@@ -1001,10 +1040,19 @@
 "wallet.passwordDoesNotMeetRequirementsError" = "As senhas devem ter pelo menos 8 caracteres.";
 
 /* A placeholder string that will be used on password text fields */
-"wallet.passwordPlaceholder" = "Senha";
+"wallet.passwordPlaceholder" = "Digite a senha";
 
 /* The error displayed when entering two passwords that do not match that are expected to match */
 "wallet.passwordsDontMatchError" = "A senha verificada não corresponde";
+
+/* A label will be displayed beside input password when it is considered as a medium password */
+"wallet.passwordStatusMedium" = "Média";
+
+/* A label will be displayed beside input password when it is considered as a strong password */
+"wallet.passwordStatusStrong" = "Forte";
+
+/* A label will be displayed beside input password when it is considered as a weak password */
+"wallet.passwordStatusWeak" = "Fraco";
 
 /* A button title that when tapped will paste some data from the users clipboard to a text field */
 "wallet.pasteFromPasteboard" = "Colar";
@@ -1017,6 +1065,12 @@
 
 /* A title above a text field for inputting the per-gas tip limit in Gwei */
 "wallet.perGasTipLimit" = "Limite de contribuição por gás (Gwei)";
+
+/* The title of the empty state in Portfolio when no assets are shown. */
+"wallet.portfolioEmptyStateDescription" = "Deposite ou compre tokens para começar. Se você não vir os tokens de uma conta importada, verifique os filtros e as configurações de exibição. Pode ser necessário adicionar tokens desconhecidos como recursos personalizados.";
+
+/* The title of the empty state in Portfolio when no assets are shown. */
+"wallet.portfolioEmptyStateTitle" = "Nenhum ativo disponível";
 
 /* The title of the portfolio page in the Crypto tab */
 "wallet.portfolioPageTitle" = "Portfólio";
@@ -1075,8 +1129,11 @@
 /* A button on an account screen which when pressed presents a new screen to  rename the account */
 "wallet.renameButtonTitle" = "Renomear";
 
+/* A label will be displayed when the repeat password field input is matched with the password field. */
+"wallet.repeatedPasswordMatch" = "Corresponde!";
+
 /* A placeholder string that will be used on repeat password text fields */
-"wallet.repeatedPasswordPlaceholder" = "Verificar senha";
+"wallet.repeatedPasswordPlaceholder" = "Inserir senha novamente";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "Restaurar carteira";
@@ -1084,8 +1141,11 @@
 /* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
 "wallet.restoreWalletButtonTitle" = "Restaurar";
 
-/* A toggle label to ask the user if their 24-word phrase is a legacy Brave crypto wallet */
-"wallet.restoreWalletImportFromLegacyBraveWallet" = "Importar das carteiras de criptomoedas legadas do Brave?";
+/* A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet. */
+"wallet.restoreWalletImportFromLegacyBraveWallet" = "Eu tenho uma frase de recuperação de 24 palavras";
+
+/* A button title when 24 recovery-word grids are displayed for users to restore legacy wallet. Users can click this button to display the 12 recovery-word grids to restore regular wallet. */
+"wallet.restoreWalletImportFromRegularBraveWallet" = "Eu tenho uma frase de recuperação de 12 palavras";
 
 /* A title displayed above 2 text fields for entering a new wallet password */
 "wallet.restoreWalletNewPasswordTitle" = "Nova senha";
@@ -1093,17 +1153,17 @@
 /* The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic' */
 "wallet.restoreWalletPhraseInvalidError" = "Frase de recuperação inválida";
 
-/* The placeholder on the mneomic/recovery phrase text field */
-"wallet.restoreWalletPhrasePlaceholder" = "Insira sua frase de recuperação";
+/* The placeholder on the mneomic/recovery phrase text field of each grid. */
+"wallet.restoreWalletPhrasePlaceholder" = "Palavra nº %d";
 
 /* A toggle label that will enable or disable visibility of the contents in the recovery phrase text field */
 "wallet.restoreWalletShowRecoveryPhrase" = "Mostrar frase de recuperação";
 
 /* The subtitle on the restore wallet screen. */
-"wallet.restoreWalletSubtitle" = "Insira sua frase de recuperação para restaurar sua conta de criptomoedas da Carteira Brave.";
+"wallet.restoreWalletSubtitle" = "Você pode colar toda a sua frase de recuperação em qualquer campo.";
 
 /* The title on the restore wallet screen. */
-"wallet.restoreWalletTitle" = "Restaurar conta de criptomoedas";
+"wallet.restoreWalletTitle" = "Importar uma carteira existente";
 
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "Compra instantânea com sua conta bancária. Taxas mais baixas.";
@@ -1264,11 +1324,26 @@
 /* The button title to continue to the next step on the 'setup crypto' screen. As in to begin the process of creating a wallet/setting up the cryptocurrency feature */
 "wallet.setupCryptoButtonTitle" = "Começar";
 
+/* The subtitle displayed in the section for user that need to create a brand new wallet */
+"wallet.setupCryptoCreateNewSubTitle" = "Comece a usar a Carteira Brave em minutos.";
+
+/* The title displayed in the section for user that need to create a brand new wallet */
+"wallet.setupCryptoCreateNewTitle" = "Precisa de uma carteira nova?";
+
+/* The disclaimer text at the bottom of the first step of onboarding flow. */
+"wallet.setupCryptoDisclaimer" = "©2023 Brave Software Inc. Brave e o logotipo Brave são marcas registradas do Brave. Outros nomes de produtos e logotipos podem ser marcas comerciais de suas respectivas empresas. Todos os direitos reservados.";
+
+/* The subtitle displayed in the section for user that need to restore an existed wallet */
+"wallet.setupCryptoRestoreSubTitle" = "Importe sua carteira existente.";
+
+/* The title displayed in the section for user that need to restore an existed wallet */
+"wallet.setupCryptoRestoreTitle" = "Já tem uma carteira?";
+
 /* The subtitle displayed on the 'setup crypto' onboarding screen */
-"wallet.setupCryptoSubtitle" = "Guarde criptoativos em custódia e monitore o desempenho do portfólio. Tudo na privacidade do navegador Brave.";
+"wallet.setupCryptoSubtitle" = "Assuma o controle de suas criptomoedas e NFTs. A Carteira Brave é compatível com Ethereum, cadeias EVM, Solana e muito mais.";
 
 /* The title displayed on the 'setup crypto' onboarding screen */
-"wallet.setupCryptoTitle" = "Esta é a nova Carteira Brave";
+"wallet.setupCryptoTitle" = "Nativo do navegador.\nAutocustódia.\nE cadeia múltipla.";
 
 /* The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
 "wallet.showNFTNetworkLogoDescription" = "Mostrar logotipo da rede em NFTs";
@@ -1711,14 +1786,14 @@
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%1$@ no %2$@";
 
-/* The button title to verify if the user has put all recovery words in the right order */
-"wallet.verifyButtonTitle" = "Verificar";
+/* The error message when input phrase does not match the correct one. */
+"wallet.verifyRecoveryPhraseError" = "A frase de recuperação não corresponde.";
 
-/* The subtitle of the verify recovery phrase screen */
-"wallet.verifyRecoveryPhraseSubtitle" = "Selecione as palavras da sua frase de recuperação na ordem correta.";
+/* The sub-title of the screen that user will verify his/her recovery phrase. */
+"wallet.verifyRecoveryPhraseSubTitle" = "Insira a palavra na posição ** %d** da sua frase de recuperação.";
 
-/* The title of the verify recovery phrase screen */
-"wallet.verifyRecoveryPhraseTitle" = "Verificar frase de recuperação";
+/* The title of the screen that user will verify his/her recovery phrase. */
+"wallet.verifyRecoveryPhraseTitle" = "Vamos verificar";
 
 /* The title for the button to view details about the network the dapp site is requesting the user switch to, or the network the dapp website is requesting the user add. */
 "wallet.viewDetails" = "Ver detalhes";
@@ -1728,6 +1803,9 @@
 
 /* A button title to view a given transaction on the block explorer for the current network/chain. */
 "wallet.viewOnBlockExplorer" = "Ver no Block Explorer";
+
+/* A button title when a user will tap to reveal the recovery phrases. */
+"wallet.viewRecoveryPhraseButtonTitle" = "Ver minha frase de recuperação";
 
 /* The title shown on the menu to access Brave Wallet */
 "wallet.wallet" = "Carteira";

@@ -157,20 +157,20 @@
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet */
 "wallet.backupRecoveryPhraseBackButtonTitle" = "復原詞句";
 
-/* The disclaimer next to a toggle that the user must acknowledge before proceeding */
-"wallet.backupRecoveryPhraseDisclaimer" = "我已將我的詞句備份到安全的位置。";
-
 /* The subtitle of the backup recovery phrase screen */
-"wallet.backupRecoveryPhraseSubtitle" = "按照下方顯示的確切順序寫下或複製這些字詞，並儲存在安全的位置。忘記密碼、裝置遺失或遭竊，或是要切換錢包時，只能使用復原詞句重新取得帳戶存取權。";
+"wallet.backupRecoveryPhraseSubtitle" = "萬一忘記密碼或遺失裝置時要存取錢包，您的復原詞句非常重要。\n\n請放在其他人無法取得的安全之處，且不要與其他人分享。";
 
 /* The title of the backup recovery phrase screen */
-"wallet.backupRecoveryPhraseTitle" = "您的復原詞句";
+"wallet.backupRecoveryPhraseTitle" = "儲存復原詞句";
 
-/* The first part of the warning displayed on the backup recovery phrase page. As in to pay attention to the following text */
-"wallet.backupRecoveryPhraseWarningPartOne" = "警告：";
+/* The title of the button that user will tap to skip the verifying recovery phrases step. */
+"wallet.backupSkipButtonTitle" = "稍後再備份";
 
-/* The second part of the warning displayed on the backup recovery phrase page. */
-"wallet.backupRecoveryPhraseWarningPartTwo" = "請勿分享您的復原詞句。凡是擁有此詞句者皆可永久取得您的資產。";
+/* The sub-title on the pop up when user decides to skip backup recovery phrases. */
+"wallet.backupSkipPromptSubTitle" = "若要保護帳戶安全，請務必備份復原詞句。";
+
+/* The title on the pop up when user decides to skip backup recovery phrases. */
+"wallet.backupSkipPromptTitle" = "您現在可以略過此步驟，但仍須備份復原詞句以確保帳戶安全。";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar */
 "wallet.backupWalletBackButtonTitle" = "備份錢包";
@@ -190,8 +190,8 @@
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
 "wallet.backupWalletWarningMessage" = "立即備份您的錢包，以保護您的加密資產，確保您絕不失去存取權。";
 
-/* The button title that enables the biometric unlock feature */
-"wallet.biometricsSetupEnableButtonTitle" = "啟用";
+/* The button title that enables the biometric unlock feature. %@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupEnableButtonTitle" = "使用 %@";
 
 /* The message of an alert when the user has an error setting up biometric unlock */
 "wallet.biometricsSetupErrorMessage" = "嘗試啟用生物辨識解鎖功能時發生錯誤，請稍後再試。";
@@ -199,8 +199,17 @@
 /* The title of an alert when the user has an error setting up biometric unlock */
 "wallet.biometricsSetupErrorTitle" = "無法啟用生物辨識解鎖功能。";
 
-/* The title shown when a user is asked if they would like to setup biometric unlock */
-"wallet.biometricsSetupTitle" = "以您的 Face ID、Touch ID 或密碼解鎖 Brave 錢包。";
+/* Type of biometrics. This will be used in Biometric setup screen. */
+"wallet.biometricsSetupFaceId" = "Face ID";
+
+/* The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupSubTitle" = "您要使用 %@ 解鎖 Brave 錢包嗎？";
+
+/* The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupTitle" = "使用 %@ 解鎖 Brave 錢包";
+
+/* Type of biometrics. This will be used in Biometric setup screen. */
+"wallet.biometricsSetupTouchId" = "Touch ID";
 
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
 "wallet.braveSwapFeeDisclaimer" = "報價含 %@ Brave 費用。";
@@ -313,11 +322,14 @@
 /* The accessibility label for the contract address of a token / asset. */
 "wallet.contractAddressAccessibilityLabel" = "合約網址";
 
+/* A button title that user has clicked to copy some data to the users clipboard */
+"wallet.copiedToPasteboard" = "已複製";
+
 /* The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard */
 "wallet.copyAddressButtonTitle" = "複製網址";
 
 /* A button title that when tapped will copy some data to the users clipboard */
-"wallet.copyToPasteboard" = "複製";
+"wallet.copyToPasteboard" = "輕觸即可複製";
 
 /* The message of the alert shown when a user switches to a network they do not have an account for yet. */
 "wallet.createAccountAlertMessage" = "立即建立帳戶？";
@@ -328,8 +340,11 @@
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet */
 "wallet.createWalletBackButtonTitle" = "建立密碼";
 
+/* The sub-title of the create wallet screen */
+"wallet.createWalletSubTitle" = "您會使用這組密碼存取錢包。";
+
 /* The title of the create wallet screen */
-"wallet.createWalletTitle" = "使用密碼保護您的加密資產";
+"wallet.createWalletTitle" = "建立密碼";
 
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Brave 錢包";
@@ -742,10 +757,10 @@
 /* A button title that will redact a private key on the screen */
 "wallet.hidePrivateKeyButtonTitle" = "隱藏私密金鑰";
 
-/* The description label of the filter option that hides assets if their fiat value is below $1, shown below the title. Used in Portfolio/NFT filters and display settings. */
-"wallet.hideSmallBalancesDescription" = "價值低於 $1 的資產";
+/* The description label of the filter option that hides assets if their fiat value is below $0.05, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideSmallBalancesDescription" = "價值低於 $0.05 的資產";
 
-/* The label of the filter option that hides assets if their fiat value is below $1. Used in Portfolio/NFT filters and display settings. */
+/* The label of the filter option that hides assets if their fiat value is below $0.05. Used in Portfolio/NFT filters and display settings. */
 "wallet.hideSmallBalancesTitle" = "隱藏小額餘額";
 
 /* The description label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
@@ -819,6 +834,18 @@
 
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "了解更多";
+
+/* The description of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
+"wallet.legalDescription" = "請務必瞭解下列事項";
+
+/* For users to check indicates they have read and agree to the Terms of Use before setting up a wallet. */
+"wallet.legalTermOfUse" = "我已閱讀並同意[使用條款](%@)";
+
+/* The title of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
+"wallet.legalTitle" = "開始之前";
+
+/* The responsibility explained in screen for users to check indicates they understand before setting up a wallet. */
+"wallet.legalUserResponsibility" = "我瞭解這是應自行保管的錢包，我獨自負責任何相關的資金、資產或帳戶，並負責採取適當的行動來保障、保護和備份我的錢包。我瞭解 Brave 不能代表我存取我的錢包或逆轉交易，並且在密碼遺失、裝置遭竊或類似情況下，我的復原詞句是重新取得存取權限的「唯一」方法。";
 
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "鎖定";
@@ -900,6 +927,9 @@
 
 /* The label that is shown above the URL for the network on a request to switch networks or add a new network from a dapps website. */
 "wallet.networkURLTitle" = "網路 URL";
+
+/* A placeholder string that will be used on password text fields to create a new wallet */
+"wallet.newPasswordPlaceholder" = "輸入新密碼";
 
 /* A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with. */
 "wallet.newSiteConnectConfirmationMessage" = "查看所允許帳戶的位址 (必填)";
@@ -994,6 +1024,15 @@
 /* The empty state displayed when the user has no transactions associated with an account */
 "wallet.noTransactions" = "沒有交易";
 
+/* The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen. */
+"wallet.onboardingCompletedButtonTitle" = "前往我的投資組合";
+
+/* The subtitle of the last step of creating a new wallet. */
+"wallet.onbordingCompletedSubTitle" = "您的 Brave 錢包已可使用。";
+
+/* The title of the last step of creating a new wallet. */
+"wallet.onbordingCompletedTitle" = "搞定了！";
+
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "其他錢包選項";
 
@@ -1001,10 +1040,19 @@
 "wallet.passwordDoesNotMeetRequirementsError" = "PIN 碼至少要有 8 個字元。";
 
 /* A placeholder string that will be used on password text fields */
-"wallet.passwordPlaceholder" = "密碼";
+"wallet.passwordPlaceholder" = "請輸入密碼";
 
 /* The error displayed when entering two passwords that do not match that are expected to match */
 "wallet.passwordsDontMatchError" = "經驗證的密碼不相符";
+
+/* A label will be displayed beside input password when it is considered as a medium password */
+"wallet.passwordStatusMedium" = "中等";
+
+/* A label will be displayed beside input password when it is considered as a strong password */
+"wallet.passwordStatusStrong" = "強";
+
+/* A label will be displayed beside input password when it is considered as a weak password */
+"wallet.passwordStatusWeak" = "弱";
 
 /* A button title that when tapped will paste some data from the users clipboard to a text field */
 "wallet.pasteFromPasteboard" = "貼上";
@@ -1017,6 +1065,12 @@
 
 /* A title above a text field for inputting the per-gas tip limit in Gwei */
 "wallet.perGasTipLimit" = "每單位燃料小費限制 (Gwei)";
+
+/* The title of the empty state in Portfolio when no assets are shown. */
+"wallet.portfolioEmptyStateDescription" = "存入或購買代幣即可開始使用。如果沒看到來自匯入帳戶的代幣，請查看篩選器和顯示設定。不明代幣須以自訂資產形式新增。";
+
+/* The title of the empty state in Portfolio when no assets are shown. */
+"wallet.portfolioEmptyStateTitle" = "無可用的資產";
 
 /* The title of the portfolio page in the Crypto tab */
 "wallet.portfolioPageTitle" = "投資組合";
@@ -1075,8 +1129,11 @@
 /* A button on an account screen which when pressed presents a new screen to  rename the account */
 "wallet.renameButtonTitle" = "重新命名";
 
+/* A label will be displayed when the repeat password field input is matched with the password field. */
+"wallet.repeatedPasswordMatch" = "符合！";
+
 /* A placeholder string that will be used on repeat password text fields */
-"wallet.repeatedPasswordPlaceholder" = "確認密碼";
+"wallet.repeatedPasswordPlaceholder" = "重新輸入密碼";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "還原帳戶";
@@ -1084,8 +1141,11 @@
 /* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
 "wallet.restoreWalletButtonTitle" = "還原";
 
-/* A toggle label to ask the user if their 24-word phrase is a legacy Brave crypto wallet */
-"wallet.restoreWalletImportFromLegacyBraveWallet" = "從舊版 Brave 加密錢包匯入？";
+/* A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet. */
+"wallet.restoreWalletImportFromLegacyBraveWallet" = "我的復原詞句有 24 個字";
+
+/* A button title when 24 recovery-word grids are displayed for users to restore legacy wallet. Users can click this button to display the 12 recovery-word grids to restore regular wallet. */
+"wallet.restoreWalletImportFromRegularBraveWallet" = "我的復原詞句有 12 個字";
 
 /* A title displayed above 2 text fields for entering a new wallet password */
 "wallet.restoreWalletNewPasswordTitle" = "新密碼";
@@ -1093,17 +1153,17 @@
 /* The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic' */
 "wallet.restoreWalletPhraseInvalidError" = "復原詞句無效";
 
-/* The placeholder on the mneomic/recovery phrase text field */
-"wallet.restoreWalletPhrasePlaceholder" = "輸入您的復原詞句";
+/* The placeholder on the mneomic/recovery phrase text field of each grid. */
+"wallet.restoreWalletPhrasePlaceholder" = "第 %d 個字";
 
 /* A toggle label that will enable or disable visibility of the contents in the recovery phrase text field */
 "wallet.restoreWalletShowRecoveryPhrase" = "顯示復原詞句";
 
 /* The subtitle on the restore wallet screen. */
-"wallet.restoreWalletSubtitle" = "輸入復原詞句以還原您的 Brave 錢包加密帳戶。";
+"wallet.restoreWalletSubtitle" = "您可以將整段復原詞句複製到任一欄位。";
 
 /* The title on the restore wallet screen. */
-"wallet.restoreWalletTitle" = "還原加密帳戶";
+"wallet.restoreWalletTitle" = "匯入現有錢包";
 
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "使用您的銀行帳戶即時購買。手續費較低。";
@@ -1264,11 +1324,26 @@
 /* The button title to continue to the next step on the 'setup crypto' screen. As in to begin the process of creating a wallet/setting up the cryptocurrency feature */
 "wallet.setupCryptoButtonTitle" = "開始使用";
 
+/* The subtitle displayed in the section for user that need to create a brand new wallet */
+"wallet.setupCryptoCreateNewSubTitle" = "在幾分鐘內開始使用 Brave 錢包。";
+
+/* The title displayed in the section for user that need to create a brand new wallet */
+"wallet.setupCryptoCreateNewTitle" = "需要新的錢包嗎？";
+
+/* The disclaimer text at the bottom of the first step of onboarding flow. */
+"wallet.setupCryptoDisclaimer" = "©2023 Brave Software Inc. Brave 和 Brave 標誌是 Brave 的註冊商標。其他產品名稱和標誌為各自公司的商標。保留一切權利。";
+
+/* The subtitle displayed in the section for user that need to restore an existed wallet */
+"wallet.setupCryptoRestoreSubTitle" = "匯入您現有的錢包。";
+
+/* The title displayed in the section for user that need to restore an existed wallet */
+"wallet.setupCryptoRestoreTitle" = "已有錢包？";
+
 /* The subtitle displayed on the 'setup crypto' onboarding screen */
-"wallet.setupCryptoSubtitle" = "保管加密資產，並追蹤投資組合表現。所有權利來自 Brave 隱私瀏覽器。";
+"wallet.setupCryptoSubtitle" = "管理您的加密貨幣和 NFT。Brave 錢包支援以太坊、EVM 鏈、Solana 等。";
 
 /* The title displayed on the 'setup crypto' onboarding screen */
-"wallet.setupCryptoTitle" = "歡迎使用全新 Brave 錢包";
+"wallet.setupCryptoTitle" = "瀏覽器原生、\n自行保管\n且多鏈。";
 
 /* The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
 "wallet.showNFTNetworkLogoDescription" = "在 NFT 上顯示網路標誌";
@@ -1711,14 +1786,14 @@
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%2$@ 版 %1$@";
 
-/* The button title to verify if the user has put all recovery words in the right order */
-"wallet.verifyButtonTitle" = "驗證";
+/* The error message when input phrase does not match the correct one. */
+"wallet.verifyRecoveryPhraseError" = "復原詞句不相符。";
 
-/* The subtitle of the verify recovery phrase screen */
-"wallet.verifyRecoveryPhraseSubtitle" = "按照正確順序選取復原詞句中的字詞。";
+/* The sub-title of the screen that user will verify his/her recovery phrase. */
+"wallet.verifyRecoveryPhraseSubTitle" = "輸入您復原詞句**第 %d 個位置**的字。 ";
 
-/* The title of the verify recovery phrase screen */
-"wallet.verifyRecoveryPhraseTitle" = "驗證復原詞句";
+/* The title of the screen that user will verify his/her recovery phrase. */
+"wallet.verifyRecoveryPhraseTitle" = "請檢查";
 
 /* The title for the button to view details about the network the dapp site is requesting the user switch to, or the network the dapp website is requesting the user add. */
 "wallet.viewDetails" = "查看詳情";
@@ -1728,6 +1803,9 @@
 
 /* A button title to view a given transaction on the block explorer for the current network/chain. */
 "wallet.viewOnBlockExplorer" = "在區塊總管上檢視";
+
+/* A button title when a user will tap to reveal the recovery phrases. */
+"wallet.viewRecoveryPhraseButtonTitle" = "檢視我的復原詞句";
 
 /* The title shown on the menu to access Brave Wallet */
 "wallet.wallet" = "錢包";

@@ -52,17 +52,8 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Activada";
 
-/* Label for the Face ID/Passcode item in Settings */
-"AuthenticationFaceIDPasscodeSetting" = "Face ID y clave de acceso";
-
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "Sirve para autenticar tu acceso a Brave";
-
-/* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "Código de acceso";
-
-/* Label for the Touch ID/Passcode item in Settings */
-"AuthenticationTouchIDPasscodeSetting" = "Touch ID y clave de acceso";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Cancelar";
@@ -115,14 +106,17 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Error al establecer la preferencia. Inténtalo de nuevo.";
 
-/* A title for a toggle that allows user to block cookie consent notices */
+/* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Bloquear avisos de consentimiento de cookies";
 
-/* A description for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupDescription" = "Brave ya bloquea las cookies de terceros. También podemos bloquear los avisos de consentimiento de cookies.";
+/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesDismissButtonTitle" = "Listo";
 
-/* A title for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "¿Ya te aburren los avisos de consentimiento de cookies?";
+/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
+"BlockCookieConsentNoticesPopupDescription" = "Brave ya bloquea las cookies maliciosas. Además, ahora podemos bloquear automáticamente los molestos avisos de consentimiento de cookies.";
+
+/* A title for a popup that informs the user that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Brave bloquea los avisos de consentimiento de cookies";
 
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Impide que los sitios web almacenen información sobre lo que has visitado con anterioridad.";
@@ -253,23 +247,11 @@
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Charla de Brave";
 
-/* Setting to enable the browser lock privacy feature */
+/* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Browser Lock";
 
-/* No comment provided by engineer. */
+/* Description for setting to enable the browser lock privacy feature */
 "BrowserLockDescription" = "Accede a Brave con Touch ID, Face ID o con un código de acceso generado por el sistema.";
-
-/* A button title for the action to move to the next step of the browser lock migration process. */
-"browserLockMigrationContinueButtonTitle" = "Continuar";
-
-/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
-"browserLockMigrationNoPasscodeSetup" = "¿No has configurado ningún ID ni código de acceso? Abre los ajustes y pulsa \"%@\"";
-
-/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationSubtitle" = "Hemos simplificado los códigos de acceso de Brave. Ahora, puedes acceder a Brave con el mismo ID o código de acceso que utilizas en tu teléfono.";
-
-/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationTitle" = "Abre Brave con tu Face ID o Touch ID de Apple o con un código de acceso";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Historial de navegación";
@@ -1013,7 +995,7 @@
 "login.loginListSearchBarPlaceHolderTitle" = "Filtrar";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "Para configurar una cadena de sincronización o ver la configuración, primero debes establecer una clave de acceso en tu dispositivo.";
+"login.syncSetPasscodeAlertDescription" = "Para añadir un dispositivo a una cadena de sincronización o activar/desactivar la sincronización de contraseñas, primero debes establecer una clave de acceso en tu dispositivo.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Última modificación %@";
@@ -1090,11 +1072,17 @@
 /* Title for adding new folder */
 "NewFolderTitle" = "Nueva carpeta";
 
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "Nueva Ventana Privada";
+
 /* New sync code button title */
 "NewSyncCode" = "Iniciar una nueva cadena de sincronización";
 
 /* New Tab title */
 "NewTab" = "Nueva pestaña";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "Nueva ventana";
 
 /* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
 "nightMode.modeTitle" = "Modo";
@@ -1119,9 +1107,6 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "No hay suficientes palabras";
-
-/* An action (button title) that does not block cookie consent notices and dismisses the popup */
-"NoThanks" = "No, gracias";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Redirige enlaces NPR de forma automática a sus versiones textuales (en text.npr.org).";
@@ -1336,6 +1321,12 @@
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Abrir imagen en una pestaña nueva";
 
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "Abrir en una nueva ventana privada";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "Abrir en una nueva ventana";
+
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Abrir en nueva pestaña privada";
 
@@ -1510,6 +1501,15 @@
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Contraseñas";
 
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "Navegación privada permanente";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "Permite que Brave restaure las pestañas de navegación privada, incluso cuando cierras o vuelves a abrir la aplicación";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "Restaurar pestañas privadas";
+
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Foto de %@";
 
@@ -1558,6 +1558,12 @@
 /* Text indicator on the table cell If a video is expired */
 "playList.expiredLabelTitle" = "Expirada";
 
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "%d elementos";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "%d elemento";
+
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "¡Ha ocurrido un problema al cargar el recurso!";
 
@@ -1587,6 +1593,12 @@
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "Vaya, se ha producido un error al tratar de mostrar la imagen superpuesta.";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "Lista de reproducción ya está activa en otra ventana";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "Lo sentimos";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionFooterText" = "Esta opción habilitará o deshabilitará la reproducción automática al abrir la lista de reproducción, aunque no la interrumpirá cuando se cargue el siguiente vídeo de la misma.";
@@ -1888,6 +1900,9 @@
 /* Settings privacy section title */
 "Privacy" = "Privacidad";
 
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "Para cambiar al modo de navegación privada, primero debes establecer una clave de acceso en tu dispositivo.";
+
 /* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
 "privacyHub.allTimeListsButtonText" = "Todas las listas";
 
@@ -2125,6 +2140,9 @@
 /* Open Tab action title */
 "recently.closed.open" = "Abrir";
 
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "Vuelve a abrir la última pestaña cerrada";
+
 /* Description for alert to ask user for opening last closed tab in list */
 "recently.closed.shake.description" = "¿Quieres abrir la última pestaña que se ha cerrado?";
 
@@ -2219,16 +2237,16 @@
 "RestoredFavoritesFolderName" = "Favoritos restaurados";
 
 /* Restore Tabs Affirmative Action */
-"RestoreTabAffirmativeButtonTitle" = "Aceptar";
+"RestoreTabAffirmativeButtonTitle" = "Sí";
 
 /* Restore Tabs Negative Action */
 "RestoreTabNegativeButtonTitle" = "No";
 
 /* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "Parece que Brave se cerró repentinamente. ¿Le gustaría recuperar sus pestañas?";
+"RestoreTabOnCrashAlertMessage" = "Lamentablemente, Brave ha tenido algún fallo o no se ha cerrado correctamente.\n¿Quieres restaurar tus pestañas?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Vaya, esto es embarazoso.";
+"RestoreTabOnCrashAlertTitle" = "Brave se ha cerrado de forma inesperada.";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Con Brave Rewards, puedes ver los anuncios de la red Brave Ads que protegen la privacidad. Sin rastreadores ni reducciones de velocidad. Además, tus datos estarán totalmente protegidos.";
@@ -3112,6 +3130,24 @@
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "Activada";
 
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "Mantén abiertas las pestañas de navegación privada cuando cierres la aplicación para que no se interrumpan las sesiones de navegación.";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "Mantener las pestañas privadas";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "Requerir Face ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "Requerir código pin";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "Requerir Touch ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "Pestañas privadas";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Barra de navegación";
 
@@ -3532,6 +3568,9 @@
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problema con la fiabilidad de la conexión";
 
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Elige la categoría que mejor describa el problema.";
+
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "No hay Internet cuando me conecto";
 
@@ -3876,9 +3915,6 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Sí";
-
-/* An action (button title) that enables cookie consent blocking and dismisses the popup */
-"YesBlockCookieConsentNotices" = "Sí, bloquear los avisos de consentimiento de cookies";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Sí, eliminar";
