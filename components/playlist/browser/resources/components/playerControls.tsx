@@ -6,8 +6,8 @@
 import * as React from 'react'
 
 import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
 import styled from 'styled-components'
-import { color } from '@brave/leo/tokens/css'
 
 import { getPlayerActions } from '../api/getPlayerActions'
 
@@ -27,9 +27,8 @@ const Container = styled.div`
   }
 `
 
-const StyledIcon = styled(Icon)`
-  color: ${color.icon.default};
-  cursor: pointer;
+const StyledButton = styled(Button)`
+  --leo-button-padding: 0;
 `
 
 function Control ({
@@ -40,9 +39,9 @@ function Control ({
   onClick: () => void
 }) {
   return (
-    <div onClick={onClick}>
-      <StyledIcon name={iconName}></StyledIcon>
-    </div>
+    <StyledButton kind='plain-faint' size='jumbo' onClick={onClick}>
+      <Icon name={iconName}></Icon>
+    </StyledButton>
   )
 }
 
