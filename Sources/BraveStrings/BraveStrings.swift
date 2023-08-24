@@ -60,7 +60,7 @@ extension Strings {
   public static let sendReportButtonTitle = NSLocalizedString("SendReportButtonTitle", tableName: "BraveShared", bundle: .module, value: "Send Report", comment: "Used as a button label for crash dialog prompt")
   public static let alwaysSendButtonTitle = NSLocalizedString("AlwaysSendButtonTitle", tableName: "BraveShared", bundle: .module, value: "Always Send", comment: "Used as a button label for crash dialog prompt")
   public static let dontSendButtonTitle = NSLocalizedString("DontSendButtonTitle", tableName: "BraveShared", bundle: .module, value: "Don’t Send", comment: "Used as a button label for crash dialog prompt")
-  public static let restoreTabOnCrashAlertTitle = NSLocalizedString("RestoreTabOnCrashAlertTitle", tableName: "BraveShared", bundle: .module, value: "Brave quit unexpectedly.", comment: "Restore Tabs Prompt Title")
+  public static let restoreTabOnCrashAlertTitle = NSLocalizedString("RestoreTabOnCrashAlertTitle", tableName: "BraveShared", bundle: .module, value: "Brave Closed Unexpectedly.", comment: "Restore Tabs Prompt Title")
   public static let restoreTabOnCrashAlertMessage = NSLocalizedString("RestoreTabOnCrashAlertMessage", tableName: "BraveShared", bundle: .module, value: "Unfortunately, Brave crashed or did not close properly.\nRestore your tabs?", comment: "Restore Tabs Prompt Description")
   public static let restoreTabNegativeButtonTitle = NSLocalizedString("RestoreTabNegativeButtonTitle", tableName: "BraveShared", bundle: .module, value: "No", comment: "Restore Tabs Negative Action")
   public static let restoreTabAffirmativeButtonTitle = NSLocalizedString("RestoreTabAffirmativeButtonTitle", tableName: "BraveShared", bundle: .module, value: "Yes", comment: "Restore Tabs Affirmative Action")
