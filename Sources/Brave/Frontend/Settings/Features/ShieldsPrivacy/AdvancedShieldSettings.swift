@@ -26,14 +26,14 @@ import os
   
   @Published var cookieConsentBlocking: Bool {
     didSet {
-      FilterListStorage.shared.enableFilterList(
+      FilterListStorage.shared.ensureFilterList(
         for: FilterList.cookieConsentNoticesComponentID, isEnabled: cookieConsentBlocking
       )
     }
   }
   @Published var blockMobileAnnoyances: Bool {
     didSet {
-      FilterListStorage.shared.enableFilterList(
+      FilterListStorage.shared.ensureFilterList(
         for: FilterList.mobileAnnoyancesComponentID, isEnabled: blockMobileAnnoyances
       )
     }

@@ -150,19 +150,16 @@ public class FilterListResourceDownloader {
   @MainActor private func subscribeToFilterListChanges() {
     // Subscribe to changes on the filter list states
     filterListSubscription = FilterListStorage.shared.$filterLists
+      .receive(on: DispatchQueue.main)
       .sink { filterLists in
-        DispatchQueue.main.async { [weak self] in
-          for filterList in filterLists {
-            self?.handleUpdate(to: filterList)
-          }
+        for filterList in filterLists {
+          self.handleUpdate(to: filterList)
         }
       }
   }
   
   /// Ensures settings are in sync with our `FilterListStorage` and we register to/unregister from the `AdBlockService`
   @MainActor private func handleUpdate(to filterList: FilterList) {
-    FilterListStorage.shared.handleUpdate(to: filterList)
-    
     // Register or unregister the filter list depending on its toggle state
     if filterList.isEnabled {
       register(filterList: filterList)

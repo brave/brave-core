@@ -7,6 +7,8 @@ import Foundation
 import Data
 import BraveCore
 import Preferences
+import Onboarding
+import Combine
 
 @MainActor class FilterListStorage: ObservableObject {
   static let shared = FilterListStorage(persistChanges: true)
@@ -22,6 +24,8 @@ import Preferences
   /// A list of defaults that should be set once we load the filter lists.
   /// This is here in case the filter lists are not loaded but the user is already changing settings
   private var pendingDefaults: [String: Bool] = [:]
+  /// The filter list subscription
+  private var subscriptions: [AnyCancellable] = []
   
   /// The filter lists wrapped up so we can contain
   @Published var filterLists: [FilterList] = []
@@ -37,11 +41,23 @@ import Preferences
     recordP3ACookieListEnabled()
   }
   
+  /// Load the filter list settings
   func loadFilterListSettings() {
     allFilterListSettings = FilterListSetting.loadAllSettings(fromMemory: !persistChanges)
+    
+    // This is a fix for upgrading from the old cookie consent callout.
+    // Since we never stored non-default cookie settings,
+    // the only way to ensure someone's previous settings are kept is if we manually
+    // disabled it here if the callout was previously shown and the setting is not stored.
+    // In a future upgrade this can be removed as the setting is now always saved
+    // (not just for non-defaults or enabled).
+    if Preferences.FullScreenCallout.blockCookieConsentNoticesCalloutCompleted.value &&
+       !allFilterListSettings.contains(where: { $0.componentId == FilterList.cookieConsentNoticesComponentID }) {
+      pendingDefaults[FilterList.cookieConsentNoticesComponentID] = false
+    }
   }
   
-  /// Load filter lists from the ad block service
+  /// Load filter lists from the ad block service and subscribe to any filter list changes
   /// - Warning: You should always call `loadFilterListSettings` before calling this
   func loadFilterLists(from regionalFilterLists: [AdblockFilterListCatalogEntry]) {
     let filterLists = regionalFilterLists.enumerated().compactMap { index, adBlockFilterList -> FilterList? in
@@ -52,7 +68,7 @@ import Preferences
       return FilterList(
         from: adBlockFilterList,
         order: index,
-        isEnabled: setting?.isEnabled ?? pendingDefaults[adBlockFilterList.componentId] ?? adBlockFilterList.defaultToggle
+        isEnabled: pendingDefaults[adBlockFilterList.componentId] ?? setting?.isEnabled ?? adBlockFilterList.defaultToggle
       )
     }
     
@@ -69,13 +85,20 @@ import Preferences
       }
     }
     
-    FilterListSetting.save(inMemory: !persistChanges)
     pendingDefaults.removeAll()
+    FilterListSetting.save(inMemory: !persistChanges)
     self.filterLists = filterLists
+    
+    // Now that our filter lists are loaded, let's subscribe to any changes to them
+    // This way we ensure our settings are always stored.
+    subscribeToFilterListChanges()
   }
   
-  /// Enables a filter list for the given component ID. Returns true if the filter list exists or not.
-  public func enableFilterList(for componentId: String, isEnabled: Bool) {
+  /// Ensures that the settings for a filter list are stored
+  /// - Parameters:
+  ///   - componentId: The component id of the filter list to update
+  ///   - isEnabled: A boolean indicating if the filter list is enabled or not
+  public func ensureFilterList(for componentId: String, isEnabled: Bool) {
     defer { self.recordP3ACookieListEnabled() }
     
     // Enable the setting
@@ -84,10 +107,13 @@ import Preferences
       guard filterLists[index].isEnabled != isEnabled else { return }
       filterLists[index].isEnabled = isEnabled
     } else if let index = allFilterListSettings.firstIndex(where: { $0.componentId == componentId }) {
+      // If we haven't loaded the filter lists yet, at least attempt to update the settings
       allFilterListSettings[index].isEnabled = isEnabled
       allFilterListSettings[index].componentId = componentId
       FilterListSetting.save(inMemory: !persistChanges)
     } else {
+      // If we haven't even loaded the settings yet, set the pending defaults
+      // This will force the creation of the setting once filter lists have been loaded
       pendingDefaults[componentId] = isEnabled
     }
   }
@@ -102,19 +128,25 @@ import Preferences
       ?? false
   }
   
+  /// Subscribe to any filter list changes so our settings are always stored
+  private func subscribeToFilterListChanges() {
+    $filterLists
+      .receive(on: DispatchQueue.main)
+      .sink { filterLists in
+        for filterList in filterLists {
+          self.upsert(filterList: filterList)
+        }
+      }
+      .store(in: &subscriptions)
+  }
+  
   /// Upsert (update or insert) the setting.
-  ///
-  /// However we create only
-  /// 1. When the filter list is different than the default
-  ///  (In order to respect the users preference if the default were to change in the future)
-  /// 2. When the filter list is enabled:
-  ///  (So we can load the setting from the cache during launch)
-  func handleUpdate(to filterList: FilterList) {
+  private func upsert(filterList: FilterList) {
     upsertSetting(
       uuid: filterList.entry.uuid,
       isEnabled: filterList.isEnabled,
       componentId: filterList.entry.componentId,
-      allowCreation: filterList.entry.defaultToggle != filterList.isEnabled || filterList.isEnabled,
+      allowCreation: true,
       order: filterList.order,
       isAlwaysAggressive: filterList.isAlwaysAggressive
     )
