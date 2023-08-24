@@ -42,12 +42,14 @@ brave_bytecode_jars = [
   "obj/components/sync/android/sync_java.javac.jar",
   "obj/content/public/android/content_full_java.javac.jar",
   "obj/content/public/android/content_main_dex_java.javac.jar",
+  "obj/testing/android/native_test/native_test_java.javac.jar",
   "obj/url/gurl_java.javac.jar",
 ]
 
 template("brave_bytecode_rewriter") {
   _rebased_build_config = rebase_path(invoker.build_config, root_build_dir)
   _java_bytecode_rewriter_input_jar = invoker._unprocessed_jar_path
+  forward_variables_from(invoker, [ "testonly" ])
 
   action_with_pydeps(target_name) {
     script = "//brave/build/android/gyp/bytecode_processor.py"
