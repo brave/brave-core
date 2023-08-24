@@ -333,6 +333,9 @@ public class PortfolioStore: ObservableObject {
     self.updateTask = Task { @MainActor in
       self.isLoadingBalances = true
       self.allAccounts = await keyringService.allAccounts().accounts
+        .filter { account in
+          WalletConstants.supportedCoinTypes.contains(account.coin)
+        }
       self.allNetworks = await rpcService.allNetworksForSupportedCoins().filter { network in
         if !Preferences.Wallet.showTestNetworks.value { // filter out test networks
           return !WalletConstants.supportedTestNetworkChainIds.contains(where: { $0 == network.chainId })
