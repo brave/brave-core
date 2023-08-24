@@ -6,6 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.observers;
 
 public interface ApprovedTxObserver {
-    default public void onTxApprovedRejected(boolean approved, String txId){};
-    default public void onTxPending(String txId){};
+    void onTxApprovedRejected(final boolean approved, final String txId);
+    void onTxPending(final String txId);
 }

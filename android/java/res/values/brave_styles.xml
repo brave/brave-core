@@ -46,6 +46,10 @@
     </style>
 
     <!-- Brave Wallet -->
+    <style name="BraveChipTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
     <style name="BraveWalletButton" parent="Widget.AppCompat.Button">
         <item name="buttonStyle">?android:attr/borderlessButtonStyle</item>
         <item name="android:layout_width">wrap_content</item>

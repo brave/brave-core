@@ -46,6 +46,7 @@
     <color name="brave_wallet_dn_error_text_bg_color">#453e2d</color>
     <color name="brave_wallet_dn_highlight_bg_color">#1F1F27</color>
     <color name="wallet_dn_bg_primary">#17171F</color>
+    <color name="brave_wallet_day_night_chip_selected">@color/default_bg_color_baseline</color>
 
     <!-- Text colors -->
     <color name="brave_theme_subtitle_text">#C2C4CF</color>

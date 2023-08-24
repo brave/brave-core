@@ -8,9 +8,6 @@
     <item android:id="@+id/action_wallet_portfolio"
         android:title="@string/portfolio"
         android:icon="@drawable/ic_portfolio" />
-    <item android:id="@+id/action_wallet_nfts"
-        android:title="@string/brave_wallet_nfts"
-        android:icon="@drawable/ic_add" />
     <item android:id="@+id/action_wallet_activity"
         android:title="@string/brave_wallet_activity"
         android:icon="@drawable/ic_activity" />
