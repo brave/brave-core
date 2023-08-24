@@ -16,13 +16,13 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_default_resource_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_filter_list_catalog_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_localhost_filters_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -264,9 +264,9 @@ base::Value::Dict AdBlockService::HiddenClassIdSelectors(
   return result;
 }
 
-AdBlockRegionalServiceManager* AdBlockService::regional_service_manager() {
+AdBlockComponentServiceManager* AdBlockService::component_service_manager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return regional_service_manager_.get();
+  return component_service_manager_.get();
 }
 
 AdBlockCustomFiltersProvider* AdBlockService::custom_filters_provider() {
@@ -330,7 +330,7 @@ AdBlockService::AdBlockService(
           component_update_service_, kAdBlockExceptionComponentId,
           kAdBlockExceptionComponentBase64PublicKey,
           kAdBlockExceptionComponentName);
-  regional_service_manager_ = std::make_unique<AdBlockRegionalServiceManager>(
+  component_service_manager_ = std::make_unique<AdBlockComponentServiceManager>(
       local_state_, locale_, component_update_service_,
       filter_list_catalog_provider_.get());
   subscription_service_manager_ =

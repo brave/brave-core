@@ -1,10 +1,10 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_SERVICE_MANAGER_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_SERVICE_MANAGER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_COMPONENT_SERVICE_MANAGER_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_COMPONENT_SERVICE_MANAGER_H_
 
 #include <map>
 #include <memory>
@@ -25,20 +25,21 @@ namespace brave_shields {
 
 class FilterListCatalogEntry;
 
-// The AdBlock regional service manager, in charge of initializing and
-// managing regional AdBlock clients.
-class AdBlockRegionalServiceManager
+// The adblock component service manager, in charge of initializing and
+// managing adblock lists served via CRX components.
+class AdBlockComponentServiceManager
     : public AdBlockFilterListCatalogProvider::Observer {
  public:
-  explicit AdBlockRegionalServiceManager(
+  explicit AdBlockComponentServiceManager(
       PrefService* local_state,
       std::string locale,
       component_updater::ComponentUpdateService* cus,
       AdBlockFilterListCatalogProvider* catalog_provider);
-  AdBlockRegionalServiceManager(const AdBlockRegionalServiceManager&) = delete;
-  AdBlockRegionalServiceManager& operator=(
-      const AdBlockRegionalServiceManager&) = delete;
-  ~AdBlockRegionalServiceManager() override;
+  AdBlockComponentServiceManager(const AdBlockComponentServiceManager&) =
+      delete;
+  AdBlockComponentServiceManager& operator=(
+      const AdBlockComponentServiceManager&) = delete;
+  ~AdBlockComponentServiceManager() override;
 
   base::Value::List GetRegionalLists();
 
@@ -85,9 +86,9 @@ class AdBlockRegionalServiceManager
 
   SEQUENCE_CHECKER(sequence_checker_);
 
-  base::WeakPtrFactory<AdBlockRegionalServiceManager> weak_factory_{this};
+  base::WeakPtrFactory<AdBlockComponentServiceManager> weak_factory_{this};
 };
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_SERVICE_MANAGER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_COMPONENT_SERVICE_MANAGER_H_

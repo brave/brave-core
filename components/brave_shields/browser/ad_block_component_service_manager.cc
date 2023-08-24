@@ -1,9 +1,9 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_component_service_manager.h"
 
 #include <memory>
 #include <utility>
@@ -51,7 +51,7 @@ const ListDefaultOverrideConstants kOverrideConstants[2] = {
 
 }  // namespace
 
-AdBlockRegionalServiceManager::AdBlockRegionalServiceManager(
+AdBlockComponentServiceManager::AdBlockComponentServiceManager(
     PrefService* local_state,
     std::string locale,
     component_updater::ComponentUpdateService* cus,
@@ -61,12 +61,12 @@ AdBlockRegionalServiceManager::AdBlockRegionalServiceManager(
       component_update_service_(cus),
       catalog_provider_(catalog_provider) {
   catalog_provider_->LoadFilterListCatalog(
-      base::BindOnce(&AdBlockRegionalServiceManager::OnFilterListCatalogLoaded,
+      base::BindOnce(&AdBlockComponentServiceManager::OnFilterListCatalogLoaded,
                      weak_factory_.GetWeakPtr()));
   catalog_provider_->AddObserver(this);
 }
 
-AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {
+AdBlockComponentServiceManager::~AdBlockComponentServiceManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   catalog_provider_->RemoveObserver(this);
 }
@@ -75,7 +75,7 @@ AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {
 // might have been enabled. If so, make sure the user hasn't explicitly
 // modified any of these locale-specific list settings, to determine if all
 // should be enabled.
-bool AdBlockRegionalServiceManager::NeedsLocaleListsMigration(
+bool AdBlockComponentServiceManager::NeedsLocaleListsMigration(
     std::vector<std::reference_wrapper<FilterListCatalogEntry const>>
         locale_lists) {
   // This can only apply to locales with more than one available list
@@ -96,7 +96,7 @@ bool AdBlockRegionalServiceManager::NeedsLocaleListsMigration(
   return true;
 }
 
-void AdBlockRegionalServiceManager::StartRegionalServices() {
+void AdBlockComponentServiceManager::StartRegionalServices() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_)
     return;
@@ -169,7 +169,7 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
   }
 }
 
-void AdBlockRegionalServiceManager::UpdateFilterListPrefs(
+void AdBlockComponentServiceManager::UpdateFilterListPrefs(
     const std::string& uuid,
     bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -189,13 +189,13 @@ void AdBlockRegionalServiceManager::UpdateFilterListPrefs(
   RecordP3ACookieListEnabled();
 }
 
-void AdBlockRegionalServiceManager::RecordP3ACookieListEnabled() {
+void AdBlockComponentServiceManager::RecordP3ACookieListEnabled() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   UMA_HISTOGRAM_BOOLEAN(kCookieListEnabledHistogram,
                         IsFilterListEnabled(kCookieListUuid));
 }
 
-bool AdBlockRegionalServiceManager::IsFilterListAvailable(
+bool AdBlockComponentServiceManager::IsFilterListAvailable(
     const std::string& uuid) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(!uuid.empty());
@@ -204,7 +204,7 @@ bool AdBlockRegionalServiceManager::IsFilterListAvailable(
   return catalog_entry != filter_list_catalog_.end();
 }
 
-bool AdBlockRegionalServiceManager::IsFilterListEnabled(
+bool AdBlockComponentServiceManager::IsFilterListEnabled(
     const std::string& uuid) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(!uuid.empty());
@@ -228,8 +228,8 @@ bool AdBlockRegionalServiceManager::IsFilterListEnabled(
   return false;
 }
 
-void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
-                                                     bool enabled) {
+void AdBlockComponentServiceManager::EnableFilterList(const std::string& uuid,
+                                                      bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(!uuid.empty());
   auto catalog_entry =
@@ -262,7 +262,7 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
   UpdateFilterListPrefs(uuid, enabled);
 }
 
-void AdBlockRegionalServiceManager::SetFilterListCatalog(
+void AdBlockComponentServiceManager::SetFilterListCatalog(
     std::vector<FilterListCatalogEntry> catalog) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   filter_list_catalog_ = std::move(catalog);
@@ -271,12 +271,12 @@ void AdBlockRegionalServiceManager::SetFilterListCatalog(
 }
 
 const std::vector<FilterListCatalogEntry>&
-AdBlockRegionalServiceManager::GetFilterListCatalog() {
+AdBlockComponentServiceManager::GetFilterListCatalog() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return filter_list_catalog_;
 }
 
-base::Value::List AdBlockRegionalServiceManager::GetRegionalLists() {
+base::Value::List AdBlockComponentServiceManager::GetRegionalLists() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(local_state_);
 
@@ -301,7 +301,7 @@ base::Value::List AdBlockRegionalServiceManager::GetRegionalLists() {
   return list;
 }
 
-void AdBlockRegionalServiceManager::OnFilterListCatalogLoaded(
+void AdBlockComponentServiceManager::OnFilterListCatalogLoaded(
     const std::string& catalog_json) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   SetFilterListCatalog(FilterListCatalogFromJSON(catalog_json));

@@ -51,9 +51,9 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
   void GetTestDataDir(base::FilePath* test_data_dir);
   void SetDefaultComponentIdAndBase64PublicKeyForTest();
   void SetRegionalComponentIdAndBase64PublicKeyForTest();
-  bool InstallDefaultAdBlockExtension(
+  bool InstallDefaultAdBlockComponent(
       const std::string& extension_dir = "adblock-default");
-  bool InstallRegionalAdBlockExtension(const std::string& uuid,
+  bool InstallRegionalAdBlockComponent(const std::string& uuid,
                                        bool enable_list = true);
   void SetSubscriptionIntervals();
   void WaitForAdBlockServiceThreads();

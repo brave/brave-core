@@ -44,7 +44,7 @@ namespace brave_shields {
 class AdBlockEngine;
 class AdBlockComponentFiltersProvider;
 class AdBlockDefaultResourceProvider;
-class AdBlockRegionalServiceManager;
+class AdBlockComponentServiceManager;
 class AdBlockCustomFiltersProvider;
 class AdBlockLocalhostFiltersProvider;
 class AdBlockFilterListCatalogProvider;
@@ -116,7 +116,7 @@ class AdBlockService {
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
 
-  AdBlockRegionalServiceManager* regional_service_manager();
+  AdBlockComponentServiceManager* component_service_manager();
   AdBlockSubscriptionServiceManager* subscription_service_manager();
   AdBlockCustomFiltersProvider* custom_filters_provider();
 
@@ -182,7 +182,7 @@ class AdBlockService {
       filter_list_catalog_provider_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockSubscriptionServiceManager>
       subscription_service_manager_ GUARDED_BY_CONTEXT(sequence_checker_);
-  std::unique_ptr<AdBlockRegionalServiceManager> regional_service_manager_
+  std::unique_ptr<AdBlockComponentServiceManager> component_service_manager_
       GUARDED_BY_CONTEXT(sequence_checker_);
 
   std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter> default_engine_;
