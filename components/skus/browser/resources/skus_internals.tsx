@@ -23,19 +23,31 @@ const ButtonContainer = styled.div`
   gap: 4px;
 `
 
+const StateContainer = styled.div`
+  padding: 4px;
+`
+
 const API = SkusInternalsMojo.SkusInternals.getRemote()
 
 function App() {
   const [skusState, setSkusState] = React.useState({})
+  const [vpnState, setVpnState] = React.useState({})
 
   const resetSkusState = () => {
     API.resetSkusState()
     setSkusState({})
+    setVpnState({})
   }
 
   const getSkusState = () => {
     API.getSkusState().then((r: any) => {
       setSkusState(JSON.parse(r.response))
+    })
+  }
+
+  const getVpnState = () => {
+    API.getVpnState().then((r: any) => {
+      setVpnState(JSON.parse(r.response))
     })
   }
 
@@ -50,9 +62,17 @@ function App() {
           }}>
           Reset SKUs state
         </button>
+        <button onClick={getVpnState}>Fetch VPN state</button>
         <button onClick={getSkusState}>Fetch SKUs state</button>
       </ButtonContainer>
-      <JsonView data={skusState} shouldInitiallyExpand={(level) => true} />
+      <StateContainer>
+        <b>VPN State:</b>
+        <JsonView data={vpnState} shouldInitiallyExpand={(level) => true} />
+      </StateContainer>
+      <StateContainer>
+        <b>SKUs State:</b>
+        <JsonView data={skusState} shouldInitiallyExpand={(level) => true} />
+      </StateContainer>
     </Container>
   )
 }

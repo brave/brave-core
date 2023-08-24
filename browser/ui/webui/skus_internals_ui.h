@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "base/values.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 
@@ -29,7 +30,11 @@ class SkusInternalsUI : public content::WebUIController,
   // skus::mojom::SkusInternals overrides:
   void GetEventLog(GetEventLogCallback callback) override;
   void GetSkusState(GetSkusStateCallback callback) override;
+  void GetVpnState(GetVpnStateCallback callback) override;
   void ResetSkusState() override;
+
+  std::string GetLastVPNConnectionError() const;
+  base::Value::Dict GetVPNOrderInfo() const;
 
   raw_ptr<PrefService> local_state_ = nullptr;
   mojo::Receiver<skus::mojom::SkusInternals> skus_internals_receiver_{this};

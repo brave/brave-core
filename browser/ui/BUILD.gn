@@ -575,6 +575,7 @@ source_set("ui") {
   if (enable_brave_vpn) {
     deps += [
       "//brave/components/brave_vpn/browser",
+      "//brave/components/brave_vpn/browser/connection:api",
       "//brave/components/brave_vpn/common",
     ]
     if (is_win) {
