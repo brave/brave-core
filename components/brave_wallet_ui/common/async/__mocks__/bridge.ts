@@ -758,4 +758,8 @@ export function getMockedAPIProxy (): WalletApiProxy & MockedWalletApiProxy {
   return getAPIProxy() as unknown as WalletApiProxy & MockedWalletApiProxy
 }
 
+export function resetMockedAPIProxy() {
+  apiProxy = undefined
+}
+
 export default getAPIProxy

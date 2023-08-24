@@ -26,6 +26,7 @@ import { createPanelReducer } from '../panel/reducers/panel_reducer'
 // mocks
 import {
   getMockedAPIProxy,
+  resetMockedAPIProxy,
   WalletApiDataOverrides
 } from '../common/async/__mocks__/bridge'
 import { mockPageState } from '../stories/mock-data/mock-page-state'
@@ -39,7 +40,10 @@ import {
 } from '../stories/mock-data/mock-accounts-tab-state'
 import { mockUiState } from '../stories/mock-data/mock-ui-state'
 import { mockPanelState } from '../stories/mock-data/mock-panel-state'
-import { setApiProxyFetcher } from '../common/async/base-query-cache'
+import {
+  resetCache,
+  setApiProxyFetcher
+} from '../common/async/base-query-cache'
 import {
   setRewardsProxyFetcher
 } from '../common/slices/endpoints/rewards.endpoints'
@@ -73,9 +77,13 @@ export const createMockStore = (
   apiOverrides?: WalletApiDataOverrides,
   rewardsApiOverrides?: BraveRewardsProxyOverrides
 ) => {
-  // api
+  // api reset
+  resetMockedAPIProxy()
+  resetCache() // clear base query cache
   const mockedApiProxy = getMockedAPIProxy()
   const mockedRewardsApiProxy = getMockedBraveRewardsProxy()
+
+  // api overrides
   mockedApiProxy.applyOverrides(apiOverrides)
   mockedRewardsApiProxy.applyOverrides(rewardsApiOverrides)
 
