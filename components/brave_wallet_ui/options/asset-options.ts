@@ -3,9 +3,29 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// magics
 import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../common/constants/magics'
+
+// types
 import { BraveWallet, SupportedTestNetworks } from '../constants/types'
+
+// options
 import { AllNetworksOption } from './network-filter-options'
+
+// utils
+import { isComponentInStorybook } from '../utils/string-utils'
+
+// icons
+import {
+  ETHIconUrl,
+  SOLIconUrl,
+  AVAXIconUrl,
+  BNBIconUrl,
+  BTCIconUrl,
+  FILECOINIconUrl,
+} from '../stories/mock-data/asset-icons'
+
+const isStorybook = isComponentInStorybook()
 
 export const getNetworkLogo = (chainId: string, symbol: string): string => {
   if (chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID)
@@ -15,9 +35,9 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
   if (chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID)
     return 'chrome://erc-token-images/matic.png'
   if (chainId === BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID)
-    return 'chrome://erc-token-images/bnb.png'
+    return isStorybook ? BNBIconUrl : 'chrome://erc-token-images/bnb.png'
   if (chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID)
-    return 'chrome://erc-token-images/avax.png'
+    return isStorybook ? AVAXIconUrl : 'chrome://erc-token-images/avax.png'
   if (chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID)
     return 'chrome://erc-token-images/ftm.png'
   if (chainId === BraveWallet.CELO_MAINNET_CHAIN_ID)
@@ -31,10 +51,16 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
   if (chainId === AllNetworksOption.chainId)
     return AllNetworksOption.iconUrls[0]
 
-  if (symbol.toUpperCase() === 'SOL') return 'chrome://erc-token-images/sol.png'
-  if (symbol.toUpperCase() === 'FIL') return 'chrome://erc-token-images/fil.png'
-  if (symbol.toUpperCase() === 'ETH') return 'chrome://erc-token-images/eth.png'
-  if (symbol.toUpperCase() === 'BTC') return 'chrome://erc-token-images/btc.png'
+  switch (symbol.toUpperCase()) {
+    case 'SOL':
+      return isStorybook ? SOLIconUrl : 'chrome://erc-token-images/sol.png'
+    case 'ETH':
+      return isStorybook ? ETHIconUrl : 'chrome://erc-token-images/eth.png'
+    case 'FIL':
+      return isStorybook ? FILECOINIconUrl : 'chrome://erc-token-images/fil.png'
+    case 'BTC':
+      return isStorybook ? BTCIconUrl : 'chrome://erc-token-images/btc.png'
+  }
 
   return ''
 }

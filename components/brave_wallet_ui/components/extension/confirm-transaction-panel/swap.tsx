@@ -200,34 +200,21 @@ interface SwapAssetProps {
   expectAddress?: boolean
 }
 
+const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 8 } as const
+const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
+const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
+
 function SwapAsset (props: SwapAssetProps) {
   const { type, address, orb, expectAddress, asset, amount, network } = props
 
-  // Memos
-  const AssetIconWithPlaceholder = React.useMemo(() => {
-    return (
-      asset &&
-      withPlaceholderIcon(asset.isErc721 ? NftIcon : AssetIcon, {
-        size: 'big',
-        marginLeft: 0,
-        marginRight: 8
-      })
-    )
-  }, [asset])
-
-  const networkDescription = React.useMemo(() => {
-    if (network) {
-      return getLocale('braveWalletPortfolioAssetNetworkDescription')
+  // computed
+  const isUnknownAsset = asset?.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID
+  const networkDescription = network
+    ? getLocale('braveWalletPortfolioAssetNetworkDescription')
         .replace('$1', '')
         .replace('$2', network.chainName ?? '')
         .trim()
-    }
-
-    return ''
-  }, [network])
-
-  // computed
-  const isUnknownAsset = asset?.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID
+    : ''
 
   return (
     <SwapAssetContainer top={type === 'maker'}>
@@ -260,7 +247,11 @@ function SwapAsset (props: SwapAssetProps) {
             <LoadingSkeleton circle={true} width={40} height={40} />
           ) : (
             <>
-              <AssetIconWithPlaceholder asset={asset} network={network} />
+              {asset.isErc721 ? (
+                <NftIconWithPlaceholder asset={asset} network={network} />
+              ) : (
+                <AssetIconWithPlaceholder asset={asset} network={network} />
+              )}
               {network && asset.contractAddress !== '' && (
                 <NetworkIconWrapper>
                   <CreateNetworkIcon network={network} marginRight={0} />
@@ -291,8 +282,12 @@ function SwapAsset (props: SwapAssetProps) {
             </>
           ) : (
             <>
-              <SwapAssetAmountSymbol>{amount.formatAsAsset(6, asset.symbol)}</SwapAssetAmountSymbol>
-              <NetworkDescriptionText>{networkDescription}</NetworkDescriptionText>
+              <SwapAssetAmountSymbol>
+                {amount.formatAsAsset(6, asset.symbol)}
+              </SwapAssetAmountSymbol>
+              <NetworkDescriptionText>
+                {networkDescription}
+              </NetworkDescriptionText>
             </>
           )}
         </SwapAmountColumn>

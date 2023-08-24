@@ -69,6 +69,10 @@ interface Props {
   spotPrice: string
 }
 
+const ICON_CONFIG = { size: 'medium', marginLeft: 0, marginRight: 8 } as const
+const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
+const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
+
 export const PortfolioAssetItem = ({
   assetBalance,
   action,
@@ -101,15 +105,6 @@ export const PortfolioAssetItem = ({
 
   // memos & computed
   const isNonFungibleToken = React.useMemo(() => token.isNft || token.isErc721, [token.isNft, token.isErc721])
-
-  const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(
-      isNonFungibleToken &&
-        !isDataURL(token.logo)
-        ? NftIcon
-        : AssetIcon,
-      { size: 'medium', marginLeft: 0, marginRight: 8 })
-  }, [isNonFungibleToken, token.logo])
 
   const formattedAssetBalance = isNonFungibleToken
     ? new Amount(assetBalance)
@@ -181,7 +176,17 @@ export const PortfolioAssetItem = ({
                     height={40}
                   />
                   : <>
-                    <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
+                    {
+                      isNonFungibleToken && !isDataURL(token.logo)
+                        ? <NftIconWithPlaceholder
+                            asset={token}
+                            network={tokensNetwork}
+                          />
+                        : <AssetIconWithPlaceholder
+                            asset={token}
+                            network={tokensNetwork}
+                          />
+                    }
                     {
                       !isPanel &&
                       tokensNetwork &&

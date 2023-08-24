@@ -130,7 +130,7 @@ export const mockDaiToken = {
   isErc1155: false,
   isNft: false,
   isSpam: false,
-  logo: 'chrome://erc-token-images/dai.png',
+  logo: '',
   name: 'DAI Stablecoin',
   symbol: 'DAI',
   tokenId: '',
