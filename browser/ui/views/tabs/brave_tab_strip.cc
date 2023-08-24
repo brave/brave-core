@@ -80,8 +80,9 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
     return false;
   }
 
-  if (!TabStrip::ShouldDrawStrokes())
+  if (!TabStrip::ShouldDrawStrokes()) {
     return false;
+  }
 
   // Use a little bit lower minimum contrast ratio as our ratio is 1.27979
   // between default tab background and frame color of light theme.
@@ -113,8 +114,9 @@ int BraveTabStrip::GetStrokeThickness() const {
 }
 
 void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
-  if (brave_tabs::AreTooltipsEnabled(controller_->GetProfile()->GetPrefs()))
+  if (brave_tabs::AreTooltipsEnabled(controller_->GetProfile()->GetPrefs())) {
     return;
+  }
   TabStrip::UpdateHoverCard(tab, update_type);
 }
 
@@ -129,8 +131,9 @@ void BraveTabStrip::MaybeStartDrag(
         source->GetTabSlotViewType() == TabSlotView::ViewType::kTab &&
         static_cast<Tab*>(source)->data().pinned;
     for (size_t index : original_selection.selected_indices()) {
-      if (controller_->IsTabPinned(index) != source_is_pinned)
+      if (controller_->IsTabPinned(index) != source_is_pinned) {
         return;
+      }
     }
   }
 
@@ -159,8 +162,9 @@ void BraveTabStrip::MaybeStartDrag(
 
 void BraveTabStrip::AddedToWidget() {
   TabStrip::AddedToWidget();
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     return;
+  }
 
   if (BrowserView::GetBrowserViewForBrowser(GetBrowser())) {
     UpdateTabContainer();
@@ -174,13 +178,15 @@ void BraveTabStrip::AddedToWidget() {
 }
 
 SkColor BraveTabStrip::GetTabSeparatorColor() const {
-  if (ShouldShowVerticalTabs())
+  if (ShouldShowVerticalTabs()) {
     return SK_ColorTRANSPARENT;
+  }
 
   Profile* profile = controller()->GetProfile();
   if (!brave::IsRegularProfile(profile)) {
-    if (profile->IsTor())
+    if (profile->IsTor()) {
       return SkColorSetRGB(0x5A, 0x53, 0x66);
+    }
 
     // For incognito/guest window.
     return SkColorSetRGB(0x3F, 0x32, 0x56);
@@ -188,13 +194,35 @@ SkColor BraveTabStrip::GetTabSeparatorColor() const {
 
   // If custom theme is used, follow upstream separator color.
   auto* theme_service = ThemeServiceFactory::GetForProfile(profile);
-  if (theme_service->GetThemeSupplier())
+  if (theme_service->GetThemeSupplier()) {
     return TabStrip::GetTabSeparatorColor();
+  }
 
   bool dark_mode = dark_mode::GetActiveBraveDarkModeType() ==
                    dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
   return dark_mode ? SkColorSetRGB(0x39, 0x38, 0x38)
                    : SkColorSetRGB(0xBE, 0xBF, 0xBF);
+}
+
+absl::optional<int> BraveTabStrip::GetCustomBackgroundId(
+    BrowserFrameActiveState active_state) const {
+  if (!ShouldShowVerticalTabs()) {
+    return TabStrip::GetCustomBackgroundId(active_state);
+  }
+
+  // When vertical tab strip mode is enabled, the tab strip could be reattached
+  // to the original parent during destruction. In this case, theme changing
+  // could occur. But unfortunately, some of native widget's implementation
+  // doesn't check the validity of pointer, which causes crash.
+  // e.g. DesktopNativeWidgetAura's many methods desktop_tree_host without
+  //      checking it's validity.
+  // In order to avoid accessing invalid pointer, filters here.
+  if (auto* widget = GetWidget();
+      !widget || widget->IsClosed() || !widget->native_widget()) {
+    return {};
+  }
+
+  return TabStrip::GetCustomBackgroundId(active_state);
 }
 
 void BraveTabStrip::UpdateTabContainer() {
@@ -265,8 +293,9 @@ void BraveTabStrip::UpdateTabContainer() {
       tab_container_->AddTab(
           tab->parent()->RemoveChildViewT(tab), i,
           tab->data().pinned ? TabPinned::kPinned : TabPinned::kUnpinned);
-      if (tab->dragging())
+      if (tab->dragging()) {
         GetDragContext()->AddChildView(tab);
+      }
     }
 
     auto* group_model = model->group_model();
@@ -301,8 +330,9 @@ void BraveTabStrip::UpdateTabContainer() {
     }
 
     for (int i = 0; i < model->count(); i++) {
-      for (auto& observer : observers_)
+      for (auto& observer : observers_) {
         observer.OnTabAdded(i);
+      }
     }
 
     // During drag-and-drop session, the active value could be invalid.
@@ -367,8 +397,9 @@ void BraveTabStrip::UpdateTabContainer() {
 }
 
 bool BraveTabStrip::ShouldShowVerticalTabs() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     return false;
+  }
 
   return tabs::utils::ShouldShowVerticalTabs(GetBrowser());
 }
@@ -379,10 +410,11 @@ void BraveTabStrip::Layout() {
     // want.
     auto bounds = GetLocalBounds();
     for (auto* view : children()) {
-      if (view->bounds() != bounds)
+      if (view->bounds() != bounds) {
         view->SetBoundsRect(GetLocalBounds());
-      else if (view == &tab_container_.get())
+      } else if (view == &tab_container_.get()) {
         view->Layout();
+      }
     }
     return;
   }
