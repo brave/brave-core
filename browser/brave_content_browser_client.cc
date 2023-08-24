@@ -792,7 +792,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 
   if (brave_rewards::IsRewardsProtocol(url)) {
     brave_rewards::HandleRewardsProtocol(url, web_contents_getter,
-                                         page_transition, has_user_gesture);
+                                         page_transition);
     return true;
   }
 
