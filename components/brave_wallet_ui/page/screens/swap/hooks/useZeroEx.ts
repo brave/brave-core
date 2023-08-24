@@ -6,7 +6,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
 // Types / constants
-import { QuoteOption, SwapParams, SwapFee } from '../constants/types'
+import { QuoteOption, SwapParams } from '../constants/types'
 import { BraveWallet } from '../../../../constants/types'
 
 import { MAX_UINT256, NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../constants/magics'
@@ -41,7 +41,8 @@ export function useZeroEx (params: SwapParams) {
   const [error, setError] = useState<BraveWallet.SwapErrorResponse | undefined>(undefined)
   const [hasAllowance, setHasAllowance] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
-  const [braveFee, setBraveFee] = useState<SwapFee | undefined>(undefined)
+  const [braveFee, setBraveFee] =
+    useState<BraveWallet.BraveSwapFeeResponse | undefined>(undefined)
   const [abortController, setAbortController] = useState<AbortController | undefined>(undefined)
 
   // Custom hooks
@@ -49,21 +50,6 @@ export function useZeroEx (params: SwapParams) {
   const { getERC20Allowance, getEthTxManagerProxy, getSwapService, sendEthTransaction } = useLib()
   const swapService = getSwapService()
   const ethTxManagerProxy = getEthTxManagerProxy()
-
-  // FIXME(josheleonard): convert to slices
-  const getBraveFeeForAsset = useCallback(
-    async (token: BraveWallet.BlockchainToken) => {
-      if (token.coin !== BraveWallet.CoinType.ETH) {
-        throw Error('Unsupported coin type')
-      }
-
-      return {
-        fee: '0.875',
-        discount: '0'
-      } as SwapFee
-    },
-    [swapService]
-  )
 
   const reset = useCallback(
     async (callback?: () => Promise<void>) => {
@@ -123,16 +109,6 @@ export function useZeroEx (params: SwapParams) {
 
       setLoading(true)
 
-      try {
-        const fee = await getBraveFeeForAsset(overriddenParams.toToken)
-        setBraveFee(fee)
-      } catch (e) {
-        console.log(
-          `Error getting Brave fee (Jupiter):
-          ${overriddenParams.toToken.symbol}`
-        )
-      }
-
       let priceQuoteResponse
       try {
         priceQuoteResponse = await swapService.getPriceQuote({
@@ -154,6 +130,33 @@ export function useZeroEx (params: SwapParams) {
         })
       } catch (e) {
         console.log(`Error getting 0x quote: ${e}`)
+      }
+
+      try {
+        const { response: braveFeeResponse } = await swapService.getBraveFee({
+          chainId: selectedNetwork.chainId,
+          inputToken:
+            overriddenParams.fromToken.contractAddress ||
+            NATIVE_ASSET_CONTRACT_ADDRESS_0X,
+          outputToken:
+            overriddenParams.toToken.contractAddress ||
+            NATIVE_ASSET_CONTRACT_ADDRESS_0X,
+          taker: overriddenParams.fromAddress
+        })
+
+        if (priceQuoteResponse?.response && braveFeeResponse) {
+          setBraveFee({
+            ...braveFeeResponse,
+            protocolFeePct: priceQuoteResponse.response.fees.zeroExFee
+              ? braveFeeResponse.protocolFeePct
+              : '0'
+          })
+        }
+      } catch (e) {
+        console.log(
+          `Error getting Brave fee (Jupiter):
+          ${overriddenParams.toToken.symbol}`
+        )
       }
 
       let hasAllowanceResult = false
@@ -217,8 +220,7 @@ export function useZeroEx (params: SwapParams) {
       selectedAccount,
       reset,
       swapService,
-      getERC20Allowance,
-      getBraveFeeForAsset
+      getERC20Allowance
     ]
   )
 

@@ -95,6 +95,7 @@ brave_wallet::mojom::JupiterSwapParamsPtr GetCannedJupiterSwapParams(
   params->route = route.Clone();
   params->user_public_key = "foo";
   params->output_mint = output_mint;
+  params->input_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 
   return params;
 }
@@ -222,6 +223,7 @@ class SwapServiceUnitTest : public testing::Test {
 };
 
 TEST_F(SwapServiceUnitTest, GetPriceQuote) {
+  // Case 1: non-null zeroExFee
   SetInterceptor(R"(
     {
       "price":"1916.27547998814058355",
@@ -244,7 +246,15 @@ TEST_F(SwapServiceUnitTest, GetPriceQuote) {
           "name": "Uniswap_V2",
           "proportion": "1"
         }
-      ]
+      ],
+      "fees": {
+        "zeroExFee" : {
+          "feeType" : "volume",
+          "feeToken" : "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "feeAmount" : "148470027512868522",
+          "billingType" : "on-chain"
+        }
+      }
     })");
 
   auto expected_swap_response = mojom::SwapResponse::New();
@@ -272,12 +282,59 @@ TEST_F(SwapServiceUnitTest, GetPriceQuote) {
   source->proportion = "1";
   expected_swap_response->sources.push_back(source.Clone());
 
+  auto fees = brave_wallet::mojom::ZeroExFees::New();
+  auto zero_ex_fee = brave_wallet::mojom::ZeroExFee::New();
+  zero_ex_fee->fee_type = "volume";
+  zero_ex_fee->fee_token = "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063";
+  zero_ex_fee->fee_amount = "148470027512868522";
+  zero_ex_fee->billing_type = "on-chain";
+  fees->zero_ex_fee = std::move(zero_ex_fee);
+  expected_swap_response->fees = std::move(fees);
+
   base::MockCallback<mojom::SwapService::GetPriceQuoteCallback> callback;
   EXPECT_CALL(callback, Run(EqualsMojo(expected_swap_response),
                             EqualsMojo(mojom::SwapErrorResponsePtr()), ""));
 
   swap_service_->GetPriceQuote(GetCannedSwapParams(), callback.Get());
   base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Case 2: null zeroExFee
+  SetInterceptor(R"(
+    {
+      "price":"1916.27547998814058355",
+      "value":"0",
+      "gas":"719000",
+      "estimatedGas":"719000",
+      "gasPrice":"26000000000",
+      "protocolFee":"0",
+      "minimumProtocolFee":"0",
+      "buyTokenAddress":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
+      "buyAmount":"1000000000000000000000",
+      "sellAmount":"1916275479988140583549706",
+      "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+      "sellTokenToEthRate":"1900.44962824532464391",
+      "buyTokenToEthRate":"1",
+      "estimatedPriceImpact": "0.7232",
+      "sources": [
+        {
+          "name": "Uniswap_V2",
+          "proportion": "1"
+        }
+      ],
+      "fees": {
+        "zeroExFee": null
+      }
+    })");
+
+  expected_swap_response->fees->zero_ex_fee = nullptr;
+  EXPECT_CALL(callback, Run(EqualsMojo(expected_swap_response),
+                            EqualsMojo(mojom::SwapErrorResponsePtr()), ""));
+
+  swap_service_->GetPriceQuote(GetCannedSwapParams(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 TEST_F(SwapServiceUnitTest, GetPriceQuoteError) {
@@ -330,6 +387,7 @@ TEST_F(SwapServiceUnitTest, GetPriceQuoteUnexpectedReturn) {
 }
 
 TEST_F(SwapServiceUnitTest, GetTransactionPayload) {
+  // Case 1: non-null zeroExFee
   SetInterceptor(R"(
     {
       "price":"1916.27547998814058355",
@@ -355,7 +413,15 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayload) {
           "name": "Uniswap_V2",
           "proportion": "1"
         }
-      ]
+      ],
+      "fees": {
+        "zeroExFee": {
+          "feeType": "volume",
+          "feeToken": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "feeAmount": "148470027512868522",
+          "billingType": "on-chain"
+        }
+      }
     })");
 
   auto expected_swap_response = mojom::SwapResponse::New();
@@ -385,6 +451,15 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayload) {
   source->proportion = "1";
   expected_swap_response->sources.push_back(source.Clone());
 
+  auto fees = brave_wallet::mojom::ZeroExFees::New();
+  auto zero_ex_fee = brave_wallet::mojom::ZeroExFee::New();
+  zero_ex_fee->fee_type = "volume";
+  zero_ex_fee->fee_token = "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063";
+  zero_ex_fee->fee_amount = "148470027512868522";
+  zero_ex_fee->billing_type = "on-chain";
+  fees->zero_ex_fee = std::move(zero_ex_fee);
+  expected_swap_response->fees = std::move(fees);
+
   base::MockCallback<mojom::SwapService::GetTransactionPayloadCallback>
       callback;
   EXPECT_CALL(callback, Run(EqualsMojo(expected_swap_response),
@@ -392,6 +467,47 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayload) {
 
   swap_service_->GetTransactionPayload(GetCannedSwapParams(), callback.Get());
   base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Case 2: null zeroExFee
+  SetInterceptor(R"(
+    {
+      "price":"1916.27547998814058355",
+      "guaranteedPrice":"1935.438234788021989386",
+      "to":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+      "data":"0x0",
+      "value":"0",
+      "gas":"719000",
+      "estimatedGas":"719000",
+      "gasPrice":"26000000000",
+      "protocolFee":"0",
+      "minimumProtocolFee":"0",
+      "buyTokenAddress":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
+      "buyAmount":"1000000000000000000000",
+      "sellAmount":"1916275479988140583549706",
+      "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+      "sellTokenToEthRate":"1900.44962824532464391",
+      "buyTokenToEthRate":"1",
+      "estimatedPriceImpact": "0.7232",
+      "sources": [
+        {
+          "name": "Uniswap_V2",
+          "proportion": "1"
+        }
+      ],
+      "fees": {
+        "zeroExFee": null
+      }
+    })");
+
+  expected_swap_response->fees->zero_ex_fee = nullptr;
+  EXPECT_CALL(callback, Run(EqualsMojo(expected_swap_response),
+                            EqualsMojo(mojom::SwapErrorResponsePtr()), ""));
+
+  swap_service_->GetTransactionPayload(GetCannedSwapParams(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 TEST_F(SwapServiceUnitTest, GetTransactionPayloadError) {
@@ -938,6 +1054,85 @@ TEST_F(SwapServiceUnitTest, GetJupiterSwapTransactions) {
   // KO: invalid JSON
   SetInterceptor(R"(foo)");
   TestGetJupiterSwapTransactions(false, nullptr, true);
+}
+
+TEST_F(SwapServiceUnitTest, GetBraveFee) {
+  auto params = mojom::BraveSwapFeeParams::New();
+  auto expected_response = mojom::BraveSwapFeeResponse::New();
+
+  base::RunLoop run_loop;
+
+  // Case 1: 0x swap on Ethereum
+  //         1000 DAI -> ETH
+  params->chain_id = mojom::kMainnetChainId;
+  params->input_token = "0x6b175474e89094c44da98b954eedeac495271d0f";
+  params->output_token = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+  params->taker = "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
+
+  expected_response->fee_param = "0.00875";
+  expected_response->protocol_fee_pct = "0.15";
+  expected_response->brave_fee_pct = "0.875";
+  expected_response->discount_on_brave_fee_pct = "0";
+  expected_response->effective_fee_pct = "0.875";
+  expected_response->discount_code = mojom::DiscountCode::kNone;
+  expected_response->has_brave_fee = true;
+
+  base::MockCallback<mojom::SwapService::GetBraveFeeCallback> callback;
+  EXPECT_CALL(callback, Run(EqualsMojo(expected_response), ""));
+  swap_service_->GetBraveFee(params->Clone(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Case 2: Jupiter swap on Solana (no fees)
+  //         1000 SOL -> RAY
+  params->chain_id = mojom::kSolanaMainnet;
+  params->input_token = "So11111111111111111111111111111111111111112";
+  params->output_token = "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6Rxxx";
+  params->taker = "LUKAzPV8dDbVykTVT14pCGKzFfNcgZgRbAXB8AGdKx3";
+
+  expected_response->fee_param = "85";
+  expected_response->protocol_fee_pct = "0";
+  expected_response->brave_fee_pct = "0.85";
+  expected_response->discount_on_brave_fee_pct = "100";
+  expected_response->effective_fee_pct = "0";
+  expected_response->discount_code =
+      mojom::DiscountCode::kUnknownJupiterOutputMint;
+  expected_response->has_brave_fee = false;
+
+  EXPECT_CALL(callback, Run(EqualsMojo(expected_response), ""));
+  swap_service_->GetBraveFee(params->Clone(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Case 3: Jupiter swap on Solana (fees)
+  //         1000 SOL -> USDC
+  params->chain_id = mojom::kSolanaMainnet;
+  params->input_token = "So11111111111111111111111111111111111111112";
+  params->output_token = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  params->taker = "LUKAzPV8dDbVykTVT14pCGKzFfNcgZgRbAXB8AGdKx3";
+
+  expected_response->fee_param = "85";
+  expected_response->protocol_fee_pct = "0";
+  expected_response->brave_fee_pct = "0.85";
+  expected_response->discount_on_brave_fee_pct = "0";
+  expected_response->effective_fee_pct = "0.85";
+  expected_response->discount_code = mojom::DiscountCode::kNone;
+  expected_response->has_brave_fee = true;
+
+  EXPECT_CALL(callback, Run(EqualsMojo(expected_response), ""));
+  swap_service_->GetBraveFee(params->Clone(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Case 4: Unsupported network
+  //         1000 DAI -> ETH
+  params->chain_id = mojom::kAuroraMainnetChainId;
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::BraveSwapFeeResponsePtr()),
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  swap_service_->GetBraveFee(params->Clone(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 }  // namespace brave_wallet

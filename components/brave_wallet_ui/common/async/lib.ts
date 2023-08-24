@@ -386,11 +386,6 @@ export async function getIsSwapSupported (network: BraveWallet.NetworkInfo): Pro
   return (await swapService.isSwapSupported(network.chainId)).result
 }
 
-export async function hasJupiterFeesForMint (mint: string): Promise<boolean> {
-  const { swapService } = getAPIProxy()
-  return (await swapService.hasJupiterFeesForTokenMint(mint)).result
-}
-
 export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const api = getAPIProxy()

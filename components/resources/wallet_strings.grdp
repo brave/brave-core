@@ -874,6 +874,7 @@
   <message name="IDS_BRAVE_SWAP_MINIMUM_RECEIVED_AFTER_SLIPPAGE" desc="Minimum guaranteed amount user will get after the swap">Minimum received after slippage</message>
   <message name="IDS_BRAVE_SWAP_NETWORK_FEE" desc="Text indicating network fees">Network fee</message>
   <message name="IDS_BRAVE_SWAP_BRAVE_FEE" desc="Text indicating Brave fee for swaps">Brave fee</message>
+  <message name="IDS_BRAVE_SWAP_PROTOCOL_FEE" desc="Text indicating protocol fee for swaps">Protocol fee</message>
   <message name="IDS_BRAVE_SWAP_FREE" desc="Text indicating free Brave fees for swaps">Free</message>
   <message name="IDS_BRAVE_SWAP_LIQUIDITY_PROVIDER" desc="Liquidity provider for the swap quote">Liquidity provider</message>
   <message name="IDS_BRAVE_SWAP_SWAP_AND_SEND" desc="Swap and send to a specific address in one transaction">Swap &amp; send</message>

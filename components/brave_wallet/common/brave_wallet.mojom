@@ -477,6 +477,17 @@ struct ZeroExSource {
   string proportion;
 };
 
+struct ZeroExFee {
+  string fee_type;
+  string fee_token;
+  string fee_amount;
+  string billing_type;
+};
+
+struct ZeroExFees {
+  ZeroExFee? zero_ex_fee;
+};
+
 struct SwapResponse {
   string price;
   string guaranteed_price; // Unused for price quote response
@@ -497,6 +508,7 @@ struct SwapResponse {
   string buy_token_to_eth_rate;
   string estimated_price_impact;
   array<ZeroExSource> sources;
+  ZeroExFees fees;
 };
 
 struct SwapErrorResponseItem {
@@ -562,6 +574,7 @@ struct JupiterQuoteParams {
 struct JupiterSwapParams {
   JupiterRoute route;
   string user_public_key;
+  string input_mint;
   string output_mint;
 };
 
@@ -574,6 +587,34 @@ struct JupiterErrorResponse {
   string error;
   string message;
   bool is_insufficient_liquidity;
+};
+
+enum DiscountCode {
+  // No discount
+  kNone = 0,
+
+  // 100% discount is offered because of our inability to collect fees
+  // for the given output token.
+  //
+  // Applicable for Jupiter swaps only.
+  kUnknownJupiterOutputMint = 1,
+};
+
+struct BraveSwapFeeParams {
+  string chain_id;
+  string input_token;
+  string output_token;
+  string taker;
+};
+
+struct BraveSwapFeeResponse {
+  string fee_param;
+  string protocol_fee_pct;
+  string brave_fee_pct;
+  string discount_on_brave_fee_pct;
+  string effective_fee_pct;
+  DiscountCode discount_code;
+  bool has_brave_fee;
 };
 
 const string kLedgerHardwareVendor = "Ledger";
@@ -949,9 +990,8 @@ interface SwapService {
   // Obtains whether the given chain id supports swap
   IsSwapSupported(string chain_id) => (bool result);
 
-  // Obtains whether the given Solana token mint should have fees for Jupiter
-  // swaps.
-  HasJupiterFeesForTokenMint(string mint) => (bool result);
+  GetBraveFee(BraveSwapFeeParams params) =>
+      (BraveSwapFeeResponse? response, string error_string);
 };
 
 interface IpfsService {

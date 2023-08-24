@@ -35,7 +35,7 @@ export type QuoteOption = {
 
   networkFee: string
 
-  braveFee: SwapFee | undefined
+  braveFee: BraveWallet.BraveSwapFeeResponse | undefined
 }
 
 export type SwapAndSend = {
@@ -59,11 +59,6 @@ export type GasEstimate = {
   gasFeeGwei?: string
   gasFeeFiat?: string
   time?: string
-}
-
-export type SwapFee = {
-  fee: string
-  discount: string
 }
 
 export type AmountValidationErrorType =
