@@ -167,7 +167,9 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
       [](base::OnceCallback<void(absl::optional<base::Time>)> callback,
          mojom::DBCommandResponsePtr response) {
         base::Time time;
-        if (response && !response->result->get_records().empty()) {
+        if (response &&
+            response->status == mojom::DBCommandResponse::Status::RESPONSE_OK &&
+            response->result && !response->result->get_records().empty()) {
           const auto& record = response->result->get_records().front();
           int64_t timestamp = GetInt64Column(record.get(), 0);
           if (timestamp > 0) {
