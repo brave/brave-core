@@ -93,8 +93,10 @@ void NotificationAdHandler::TriggerEvent(
   CHECK_NE(mojom::NotificationAdEventType::kServed, event_type)
       << "Should not be called with kServed as this event is handled when "
          "calling TriggerEvent with kViewed";
-  CHECK(UserHasJoinedBraveRewards())
-      << "Should only be called if user has joined Brave Rewards";
+
+  if (!UserHasOptedInToNotificationAds()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
 
   if (event_type == mojom::NotificationAdEventType::kViewed) {
     return event_handler_.FireEvent(
