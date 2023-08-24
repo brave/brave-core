@@ -101,16 +101,7 @@ export default function PlaylistFolder ({
   const playlist = usePlaylist(match.params.playlistId)
   const lastPlayerState = useLastPlayerState()
 
-  const notifiedPlaylistUpdate = React.useRef(false)
-
   React.useEffect(() => {
-    notifiedPlaylistUpdate.current = false
-  }, [playlist])
-
-  React.useEffect(() => {
-    // We don't want to fall in the infinite loop.
-    if (notifiedPlaylistUpdate.current) return
-
     // When playlist updated and player is working, notify that the current
     // list has changed.
     if (playlist && playlist?.id === lastPlayerState?.currentList?.id) {
@@ -118,9 +109,8 @@ export default function PlaylistFolder ({
         actionType: types.SELECTED_PLAYLIST_UPDATED,
         currentList: playlist
       })
-      notifiedPlaylistUpdate.current = true
     }
-  }, [playlist, lastPlayerState])
+  }, [playlist, lastPlayerState?.currentList?.id])
 
   const [selectedSet, setSelectedSet] = React.useState(new Set<string>())
   const editMode = usePlaylistEditMode()

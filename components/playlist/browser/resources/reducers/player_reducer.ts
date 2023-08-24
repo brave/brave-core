@@ -15,20 +15,14 @@ function shuffleItems (
   itemsInOrder: PlaylistItem[],
   currentItem: PlaylistItem | undefined
 ) {
-  const shuffledItems: PlaylistItem[] = []
-  while (itemsInOrder.length > (currentItem ? 1 : 0)) {
-    const randomIndex = Math.floor(Math.random() * itemsInOrder.length)
-    if (itemsInOrder[randomIndex].id === currentItem?.id) {
-      // We'll push the current item before others.
-      continue
-    }
+  const shuffledItems = currentItem
+    ? itemsInOrder.splice(itemsInOrder.indexOf(currentItem), 1)
+    : []
 
+  while (itemsInOrder.length) {
+    const randomIndex = Math.floor(Math.random() * itemsInOrder.length)
     const randomItem = itemsInOrder.splice(randomIndex, 1)[0]
     shuffledItems.push(randomItem)
-  }
-
-  if (itemsInOrder.length) {
-    shuffledItems.unshift(itemsInOrder[0])
   }
 
   return shuffledItems
@@ -61,7 +55,7 @@ const playerReducer: Reducer<PlayerState | undefined> = (
           currentItem,
           currentList: {
             ...currentList,
-            items: shuffleItems([currentList.items], currentItem)
+            items: shuffleItems([...currentList.items], currentItem)
           },
           itemsInOrder: [...currentList.items]
         }
