@@ -541,6 +541,12 @@ public class BytecodeTest {
                         true,
                         boolean.class,
                         String.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/base/library_loader/LibraryLoader", "getInstance", false, null));
+        Assert.assertTrue(methodExists("org/chromium/base/library_loader/LibraryLoader",
+                "preloadAlreadyLocked", false, null));
+        Assert.assertTrue(methodExists("org/chromium/base/library_loader/LibraryLoader",
+                "loadWithSystemLinkerAlreadyLocked", false, null));
     }
 
     @Test
@@ -1173,6 +1179,8 @@ public class BytecodeTest {
         Assert.assertFalse(
                 fieldExists("org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
                         "mIsResetting"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/base/library_loader/LibraryLoader", "sInstance"));
     }
 
     @Test

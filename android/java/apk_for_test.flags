@@ -810,3 +810,16 @@
 -keep class org.chromium.chrome.browser.tasks.tab_groups.BraveTabGroupModelFilter {
     public <init>(...);
 }
+    
+-keep class org.chromium.base.library_loader.LibraryLoader {
+    *** getInstance(...);
+    *** sInstance;
+    *** loadWithSystemLinkerAlreadyLocked(...);
+    *** preloadAlreadyLocked(...);
+}
+
+-keep class org.chromium.base.library_loader.BraveLibraryLoader {
+    *** getInstance(...);
+    *** sInstance;
+    *** loadWithSystemLinkerAlreadyLocked(...);
+}

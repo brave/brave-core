@@ -6,7 +6,9 @@
 import("//build/config/python.gni")
 
 brave_bytecode_jars = [
+  "obj/android_webview/nonembedded/nonembedded_java.javac.jar",
   "obj/base/base_shared_preferences_java.javac.jar",
+  "obj/base/base_java.javac.jar",
   "obj/brave/android/features/tab_ui/java.javac.jar",
   "obj/brave/android/java/org/chromium/chrome/browser/search_engines/java.javac.jar",
   "obj/brave/browser/notifications/java.javac.jar",
@@ -18,6 +20,7 @@ brave_bytecode_jars = [
   "obj/brave/components/variations/android/java.javac.jar",
   "obj/chrome/android/base_module_java.javac.jar",
   "obj/chrome/android/chrome_java.javac.jar",
+  "chrome/android/monochrome_java.javac.jar",
   "obj/chrome/android/features/tab_ui/java.javac.jar",
   "obj/chrome/browser/download/internal/android/java.javac.jar",
   "obj/chrome/browser/flags/java.javac.jar",
@@ -43,11 +46,16 @@ brave_bytecode_jars = [
   "obj/components/permissions/android/java.javac.jar",
   "obj/components/sync/android/sync_java.javac.jar",
   "obj/components/variations/android/variations_java.javac.jar",
+  "obj/content/public/android/content_full_java.javac.jar",
+  "obj/content/public/android/content_main_dex_java.javac.jar",
+  "obj/testing/android/native_test/native_test_java.javac.jar",
+  "obj/url/gurl_java.javac.jar",
 ]
 
 template("brave_bytecode_rewriter") {
   _rebased_build_config = rebase_path(invoker.build_config, root_build_dir)
   _java_bytecode_rewriter_input_jar = invoker._unprocessed_jar_path
+  forward_variables_from(invoker, [ "testonly" ])
 
   action_with_pydeps(target_name) {
     script = "//brave/build/android/gyp/bytecode_processor.py"
