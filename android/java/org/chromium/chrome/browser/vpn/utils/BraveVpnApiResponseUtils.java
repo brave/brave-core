@@ -37,7 +37,6 @@ public class BraveVpnApiResponseUtils {
         }
         Toast.makeText(activity, R.string.purchase_token_verification_failed, Toast.LENGTH_LONG)
                 .show();
-        BraveVpnUtils.dismissProgressDialog();
     }
 
     public static void handleOnGetSubscriberCredential(Activity activity, boolean isSuccess) {

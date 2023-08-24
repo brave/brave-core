@@ -294,7 +294,8 @@ public abstract class BraveActivity extends ChromeActivity
         super.onResumeWithNative();
         BraveActivityJni.get().restartStatsUpdater();
         if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(BraveActivity.this);
+            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
+                    BraveActivity.this, null);
             BraveVpnNativeWorker.getInstance().addObserver(this);
 
             BraveVpnUtils.reportBackgroundUsageP3A();
@@ -640,7 +641,7 @@ public abstract class BraveActivity extends ChromeActivity
         InAppPurchaseWrapper.getInstance().queryPurchases();
         LiveDataUtil.observeOnce(InAppPurchaseWrapper.getInstance().getPurchases(), purchases -> {
             Purchase activePurchase = null;
-            for (Purchase purchase: purchases) {
+            for (Purchase purchase : purchases) {
                 if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
                     activePurchase = purchase;
                     break;

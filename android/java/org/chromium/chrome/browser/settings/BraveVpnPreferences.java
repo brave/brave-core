@@ -96,7 +96,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_vpn_preferences);
 
         if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(getActivity());
+            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(getActivity(), null);
         }
 
         mVpnSwitch = (ChromeSwitchPreference) findPreference(PREF_VPN_SWITCH);
@@ -373,7 +373,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         LiveDataUtil.observeOnce(InAppPurchaseWrapper.getInstance().getPurchases(), purchases -> {
             mBraveVpnPrefModel = new BraveVpnPrefModel();
             Purchase activePurchase = null;
-            for (Purchase purchase: purchases) {
+            for (Purchase purchase : purchases) {
                 if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
                     activePurchase = purchase;
                     break;

@@ -98,25 +98,46 @@ public class InAppPurchaseWrapper {
         return mBillingClient != null && mBillingClient.isReady();
     }
 
-    public void startBillingServiceConnection(Context context) {
+    public void startBillingServiceConnection(
+            Context context, MutableLiveData<Boolean> billingClientConnectionState) {
         mBillingClient = BillingClient.newBuilder(context)
                                  .enablePendingPurchases()
                                  .setListener(getPurchasesUpdatedListener(context))
                                  .build();
-
-        connectToBillingService();
-    }
-
-    public void connectToBillingService() {
         if (!mBillingClient.isReady()) {
             try {
-                mBillingClient.startConnection(billingClientStateListener);
+                mBillingClient.startConnection(new BillingClientStateListener() {
+                    private int retryCount;
+                    @Override
+                    public void onBillingServiceDisconnected() {
+                        retryCount++;
+                        if (retryCount <= 3) {
+                            startBillingServiceConnection(context, billingClientConnectionState);
+                        }
+                    }
+                    @Override
+                    public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
+                        if (billingResult.getResponseCode()
+                                == BillingClient.BillingResponseCode.OK) {
+                            retryCount = 0;
+                            if (billingClientConnectionState != null) {
+                                Log.e("BraveVPN", "billingClientConnectionState != null");
+                                billingClientConnectionState.postValue(true);
+                            }
+                        }
+                    }
+                });
             } catch (IllegalStateException exc) {
                 // That prevents a crash that some users experience
                 // https://github.com/brave/brave-browser/issues/27751.
                 // It's unknown what causes it, we tried to add retries, but it
                 // didn't help.
-                Log.e(TAG, "connectToBillingService " + exc.getMessage());
+                Log.e(TAG, "startBillingServiceConnection " + exc.getMessage());
+            }
+        } else {
+            if (billingClientConnectionState != null) {
+                billingClientConnectionState.postValue(mBillingClient.getConnectionState()
+                        == BillingClient.ConnectionState.CONNECTED);
             }
         }
     }
@@ -165,6 +186,10 @@ public class InAppPurchaseWrapper {
                             productDetails.put(productDetail.getProductId(), productDetail);
                         }
                         queryProductDetailsResponse.onProductDetails(productDetails);
+                    } else {
+                        Log.e(TAG,
+                                "queryProductDetailsAsync failed"
+                                        + billingResult.getDebugMessage());
                     }
                 });
     }
@@ -173,11 +198,18 @@ public class InAppPurchaseWrapper {
         mBillingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder()
                                                    .setProductType(BillingClient.ProductType.SUBS)
                                                    .build(),
-                (billingResult, list) -> { setPurchases(list); });
+                (billingResult, list) -> {
+                    if (billingResult.getResponseCode() == OK) {
+                        setPurchases(list);
+                    } else {
+                        Log.e(TAG, "queryPurchases failed" + billingResult.getDebugMessage());
+                    }
+                });
     }
 
     public void initiatePurchase(Activity activity, ProductDetails productDetails) {
         String offerToken = productDetails.getSubscriptionOfferDetails().get(0).getOfferToken();
+        Log.e("BraveVPN", "offerToken : " + offerToken);
         List<BillingFlowParams.ProductDetailsParams> productDetailsParamsList = new ArrayList<>();
         productDetailsParamsList.add(BillingFlowParams.ProductDetailsParams.newBuilder()
                                              .setProductDetails(productDetails)
@@ -243,7 +275,7 @@ public class InAppPurchaseWrapper {
             } else if (billingResult.getResponseCode()
                             == BillingClient.BillingResponseCode.SERVICE_DISCONNECTED
                     && mRetryCount < 5) {
-                connectToBillingService();
+                // startBillingServiceConnection(context);
                 mRetryCount++;
             } else if (billingResult.getResponseCode()
                     == BillingClient.BillingResponseCode.USER_CANCELED) {
@@ -258,21 +290,4 @@ public class InAppPurchaseWrapper {
             }
         };
     }
-
-    BillingClientStateListener billingClientStateListener = new BillingClientStateListener() {
-        private int retryCount;
-        @Override
-        public void onBillingServiceDisconnected() {
-            retryCount++;
-            if (retryCount <= 3) {
-                connectToBillingService();
-            }
-        }
-        @Override
-        public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                retryCount = 0;
-            }
-        }
-    };
 }

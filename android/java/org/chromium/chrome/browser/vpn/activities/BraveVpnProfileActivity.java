@@ -17,9 +17,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
@@ -33,6 +36,9 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
     private Button mContactSupportButton;
     private ProgressBar mProfileProgress;
     private LinearLayout mProfileLayout;
+
+    private MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+    private LiveData<Boolean> billingConnectionState = _billingConnectionState;
 
     @Override
     public void onResumeWithNative() {
@@ -49,9 +55,9 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
     private void initializeViews() {
         setContentView(R.layout.activity_brave_vpn_profile);
 
-        if (BraveVpnUtils.isBraveVpnFeatureEnable() && !InAppPurchaseWrapper.getInstance().isBillingClientReady()) {
+        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
             InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
-                    BraveVpnProfileActivity.this);
+                    BraveVpnProfileActivity.this, _billingConnectionState);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -74,12 +80,14 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
             public void onClick(View v) {
                 BraveVpnUtils.showProgressDialog(BraveVpnProfileActivity.this,
                         getResources().getString(R.string.vpn_connect_text));
-                if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
-                    mBraveVpnPrefModel = new BraveVpnPrefModel();
-                    BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
-                } else {
-                    verifySubscription();
-                }
+                LiveDataUtil.observeOnce(billingConnectionState, isConnected -> {
+                    if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+                        mBraveVpnPrefModel = new BraveVpnPrefModel();
+                        BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
+                    } else {
+                        verifySubscription();
+                    }
+                });
             }
         });
 
