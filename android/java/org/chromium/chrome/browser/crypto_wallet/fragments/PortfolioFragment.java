@@ -140,7 +140,7 @@ public class PortfolioFragment extends Fragment implements ApprovedTxObserver {
     }
 
     @Override
-    public void onTxPending(String accountName, String txId) {
+    public void onTxPending(String txId) {
         /* No op. */
     }
 }

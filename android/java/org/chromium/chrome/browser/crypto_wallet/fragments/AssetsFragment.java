@@ -350,12 +350,12 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
     }
 
     @Override
-    public void onTxPending(String accountName, String txId) {
+    public void onTxPending(String txId) {
         updatePortfolioGetPendingTx();
     }
 
     @Override
-    public void onTxApprovedRejected(boolean approved, String accountName, String txId) {
+    public void onTxApprovedRejected(boolean approved, String txId) {
         /* No op. */
     }
 
