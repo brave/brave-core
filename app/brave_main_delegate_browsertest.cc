@@ -243,10 +243,10 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
     &page_info::kPageInfoCookiesSubpage,
     &permissions::features::kPermissionsPromptSurvey,
-    &permissions::features::kPermissionStorageAccessAPI,
     &permissions::features::kRecordPermissionExpirationTimestamps,
 #endif
     &permissions::features::kPermissionOnDeviceNotificationPredictions,
+    &permissions::features::kPermissionStorageAccessAPI,
     &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
     &privacy_sandbox::kEnforcePrivacySandboxAttestations,
     &privacy_sandbox::kPrivacySandboxSettings3,
