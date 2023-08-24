@@ -199,11 +199,11 @@ struct FiltersDisplaySettingsView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .navigationBarTrailing) {
-          Button(action: restoreToDefaults) {
+          Button(action: resetToDefaults) {
             Text(Strings.Wallet.settingsResetTransactionAlertButtonTitle)
               .fontWeight(.semibold)
-              .foregroundColor(Color(uiColor: WalletV2Design.textInteractive))
           }
+          .disabled(isResetDisabled)
         }
       }
     }
@@ -380,12 +380,27 @@ struct FiltersDisplaySettingsView: View {
     .shadow(color: Color.black.opacity(0.04), radius: 16, x: 0, y: -8)
   }
   
-  func restoreToDefaults() {
-    self.groupBy = .none
+  private var isResetDisabled: Bool {
+    groupBy == GroupBy(rawValue: Preferences.Wallet.groupByFilter.defaultValue) ?? .none
+    && sortOrder == SortOrder(rawValue: Preferences.Wallet.sortOrderFilter.defaultValue) ?? .valueDesc
+    && isHidingSmallBalances == Preferences.Wallet.isHidingSmallBalancesFilter.defaultValue
+    && isHidingUnownedNFTs == Preferences.Wallet.isHidingUnownedNFTsFilter.defaultValue
+    && isShowingNFTNetworkLogo == Preferences.Wallet.isShowingNFTNetworkLogoFilter.defaultValue
+    && accounts.allSatisfy(\.isSelected)
+    && networks.allSatisfy { selectableNetwork in
+      let isTestnet = WalletConstants.supportedTestNetworkChainIds.contains(selectableNetwork.model.chainId)
+      return selectableNetwork.isSelected == !isTestnet
+    }
+  }
+  
+  func resetToDefaults() {
+    /// Assets are not grouped by default
+    self.groupBy = GroupBy(rawValue: Preferences.Wallet.groupByFilter.defaultValue) ?? .none
     // Fiat value in descending order (largest fiat to smallest) by default
-    self.sortOrder = .valueDesc
-    // Small balances shown by default
-    self.isHidingSmallBalances = false
+    self.sortOrder = SortOrder(rawValue: Preferences.Wallet.sortOrderFilter.defaultValue) ?? .valueDesc
+    self.isHidingSmallBalances = Preferences.Wallet.isHidingSmallBalancesFilter.defaultValue
+    self.isHidingUnownedNFTs = Preferences.Wallet.isHidingUnownedNFTsFilter.defaultValue
+    self.isShowingNFTNetworkLogo = Preferences.Wallet.isShowingNFTNetworkLogoFilter.defaultValue
     
     // All accounts selected by default
     self.accounts = self.accounts.map {
@@ -554,7 +569,21 @@ struct FilterPickerRowView<T: Equatable & Identifiable & Hashable, Content: View
           Image(braveSystemName: "leo.carat.down")
         }
       })
+      .osAvailabilityModifiers({
+        if #unavailable(iOS 17) {
+          // Prior to iOS 17, if selection changes from outside
+          // the Menu (ex. Reset button) the view might not
+          // resize to fit a larger label
+          $0.id(selection)
+        } else {
+          $0
+        }
+      })
       .foregroundColor(Color(WalletV2Design.textInteractive))
+      .transaction { transaction in
+        transaction.animation = nil
+        transaction.disablesAnimations = true
+      }
     }
   }
 }
