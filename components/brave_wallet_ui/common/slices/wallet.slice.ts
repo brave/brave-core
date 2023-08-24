@@ -30,6 +30,7 @@ import {
 } from '../constants/action_types'
 import {
   AddAccountPayloadType,
+  ImportAccountFromJsonPayloadType,
   ImportAccountPayloadType,
   RemoveAccountPayloadType
 } from '../../page/constants/action_types'
@@ -225,6 +226,9 @@ export const WalletAsyncActions = {
   ),
   importAccount: createAction<ImportAccountPayloadType>(
     'importAccount'
+  ),
+  importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>(
+    'importAccountFromJson'
   )
 }
 

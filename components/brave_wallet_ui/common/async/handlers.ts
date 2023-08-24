@@ -23,6 +23,7 @@ import {
 } from '../../constants/types'
 import {
   AddAccountPayloadType,
+  ImportAccountFromJsonPayloadType,
   ImportAccountPayloadType,
   RemoveAccountPayloadType
 } from '../../page/constants/action_types'
@@ -390,6 +391,23 @@ handler.on(
             payload.privateKey,
             payload.coin
           )
+    if (result.account) {
+      store.dispatch(WalletActions.setImportAccountError(false))
+    } else {
+      store.dispatch(WalletActions.setImportAccountError(true))
+    }
+  })
+
+handler.on(WalletActions.importAccountFromJson.type,
+  async (store: Store, payload: ImportAccountFromJsonPayloadType) => {
+    const { keyringService } = getAPIProxy()
+    const result =
+      await keyringService
+        .importAccountFromJson(
+          payload.accountName,
+          payload.password,
+          payload.json
+        )
     if (result.account) {
       store.dispatch(WalletActions.setImportAccountError(false))
     } else {

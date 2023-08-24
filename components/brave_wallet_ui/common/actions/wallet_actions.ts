@@ -80,5 +80,6 @@ export const {
   updateAccountName,
   removeAccount,
   importAccount,
-  setImportAccountError
+  setImportAccountError,
+  importAccountFromJson
 } = WalletActions
