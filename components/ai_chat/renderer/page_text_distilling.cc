@@ -18,6 +18,15 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/accessibility/ax_node.h"
 #include "ui/accessibility/ax_tree.h"
+#include "ui/accessibility/platform/inspect/ax_tree_formatter.h"
+#include "content/public/browser/ax_inspect_factory.h"
+#include "ui/accessibility/ax_tree_manager.h"
+#include "ui/accessibility/platform/inspect/ax_inspect.h"
+#include "ui/accessibility/platform/ax_platform_node.h"
+#include "third_party/blink/public/web/web_local_frame.h"
+#include "base/command_line.h"
+
+using ui::AXPropertyFilter;
 
 namespace ai_chat {
 
@@ -107,6 +116,36 @@ void AddTextNodesToVector(const ui::AXNode* node,
   }
 }
 
+[[maybe_unused]] std::vector<AXPropertyFilter> DefaultFilters() {
+    std::vector<AXPropertyFilter> property_filters;
+
+    property_filters.emplace_back("value='*'", AXPropertyFilter::ALLOW);
+    // The value attribute on the document object contains the URL of the
+    // current page which will not be the same every time the test is run.
+    // The PDF plugin uses the 'chrome-extension' protocol, so block that as
+    // well.
+    property_filters.emplace_back("value='http*'", AXPropertyFilter::DENY);
+    property_filters.emplace_back("value='chrome-extension*'",
+                                  AXPropertyFilter::DENY);
+    // Object attributes.value
+    property_filters.emplace_back("layout-guess:*", AXPropertyFilter::ALLOW);
+
+    property_filters.emplace_back("select*", AXPropertyFilter::ALLOW);
+    property_filters.emplace_back("descript*", AXPropertyFilter::ALLOW);
+    property_filters.emplace_back("check*", AXPropertyFilter::ALLOW);
+    property_filters.emplace_back("horizontal", AXPropertyFilter::ALLOW);
+    property_filters.emplace_back("multiselectable", AXPropertyFilter::ALLOW);
+    property_filters.emplace_back("isPageBreakingObject*",
+                                  AXPropertyFilter::ALLOW);
+
+    // Deny most empty values
+    property_filters.emplace_back("*=''", AXPropertyFilter::DENY);
+    // After denying empty values, because we want to allow name=''
+    property_filters.emplace_back("name=*", AXPropertyFilter::ALLOW_EMPTY);
+
+    return property_filters;
+  }
+
 }  // namespace
 
 void DistillPageText(
@@ -118,6 +157,21 @@ void DistillPageText(
   snapshotter->Snapshot(
       /* max_nodes= */ 9000, /* timeout= */ base::Seconds(4), &snapshot);
   ui::AXTree tree(snapshot);
+
+  LOG(ERROR) << base::CommandLine::ForCurrentProcess()->HasSwitch("pdf-renderer") << "\n";
+
+  // // PDF
+  // ui::AXPlatformNode::NotifyAddAXModeFlags(ui::kAXModeComplete);
+  // auto snapper = render_frame->CreateAXTreeSnapshotter(ui::AXMode::kPDF);
+  // ui::AXTreeUpdate snap;
+  // snapper->Snapshot(/*max_node_count=*/0, /*timeout=*/{}, &snap);
+  // ui::AXTree pdf_tree(snap);
+  // std::unique_ptr<ui::AXTreeFormatter> formatter = content::AXInspectFactory::CreateBlinkFormatter();
+  // formatter->SetPropertyFilters(DefaultFilters());
+  // base::Value::Dict node = formatter->BuildTreeForNode(pdf_tree.root());
+  // std::string contents = formatter->FormatTree(node);
+  // LOG(ERROR) << contents << "\n";
+
 
   std::vector<const ui::AXNode*> content_root_nodes;
   std::vector<const ui::AXNode*> content_nodes;

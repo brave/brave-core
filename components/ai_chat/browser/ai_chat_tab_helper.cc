@@ -32,14 +32,47 @@
 #include "content/public/browser/storage_partition.h"
 #include "net/http/http_status_code.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/accessibility/platform/inspect/ax_inspect.h"
+#include "ui/accessibility/platform/ax_platform_node.h"
 
 using ai_chat::mojom::CharacterType;
 using ai_chat::mojom::ConversationTurn;
 using ai_chat::mojom::ConversationTurnVisibility;
+using ui::AXPropertyFilter;
 
 namespace {
 static const auto kAllowedSchemes = base::MakeFixedFlatSet<base::StringPiece>(
     {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
+
+[[maybe_unused]] std::vector<AXPropertyFilter> DefaultFilters() {
+    std::vector<AXPropertyFilter> property_filters;
+
+    property_filters.emplace_back("value='*'", AXPropertyFilter::ALLOW);
+    // The value attribute on the document object contains the URL of the
+    // current page which will not be the same every time the test is run.
+    // The PDF plugin uses the 'chrome-extension' protocol, so block that as
+    // well.
+    property_filters.emplace_back("value='http*'", AXPropertyFilter::DENY);
+    property_filters.emplace_back("value='chrome-extension*'",
+                                  AXPropertyFilter::DENY);
+    // Object attributes.value
+    property_filters.emplace_back("layout-guess:*", AXPropertyFilter::ALLOW);
+
+    property_filters.emplace_back("select*", AXPropertyFilter::ALLOW);
+    property_filters.emplace_back("descript*", AXPropertyFilter::ALLOW);
+    property_filters.emplace_back("check*", AXPropertyFilter::ALLOW);
+    property_filters.emplace_back("horizontal", AXPropertyFilter::ALLOW);
+    property_filters.emplace_back("multiselectable", AXPropertyFilter::ALLOW);
+    property_filters.emplace_back("isPageBreakingObject*",
+                                  AXPropertyFilter::ALLOW);
+
+    // Deny most empty values
+    property_filters.emplace_back("*=''", AXPropertyFilter::DENY);
+    // After denying empty values, because we want to allow name=''
+    property_filters.emplace_back("name=*", AXPropertyFilter::ALLOW_EMPTY);
+
+    return property_filters;
+  }
 }  // namespace
 
 namespace ai_chat {
@@ -206,6 +239,10 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
     return;
   }
+
+  ui::AXPlatformNode::NotifyAddAXModeFlags(ui::kAXModeComplete);
+  std::string contents = web_contents()->DumpAccessibilityTree(true, DefaultFilters());
+  LOG(ERROR) << contents << "\n";
 
   is_page_text_fetch_in_progress_ = false;
   if (contents_text.empty()) {
