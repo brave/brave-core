@@ -33,4 +33,15 @@ mojom::AccountIdPtr AccountResolverDelegateImpl::ResolveAccountId(
   return nullptr;
 }
 
+bool AccountResolverDelegateImpl::ValidateAccountId(
+    const mojom::AccountIdPtr& account_id) {
+  const auto& accounts = keyring_service_->GetAllAccountInfos();
+  for (auto& account : accounts) {
+    if (account->account_id == account_id) {
+      return true;
+    }
+  }
+  return false;
+}
+
 }  // namespace brave_wallet

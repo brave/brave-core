@@ -224,8 +224,10 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         } else if (mType == AdapterType.ACCOUNTS_LIST
                 || mType == AdapterType.SELECT_ACCOUNTS_LIST) {
             holder.iconImg.setImageResource(android.R.color.transparent);
-            Utils.setBlockiesBitmapResource(
-                    mExecutor, mHandler, holder.iconImg, walletListItemModel.getSubTitle(), true);
+            if (walletListItemModel.getAccountInfo() != null) {
+                Utils.setBlockiesBitmapResourceFromAccount(mExecutor, mHandler, holder.iconImg,
+                        walletListItemModel.getAccountInfo(), true);
+            }
             holder.itemView.setOnLongClickListener(v -> {
                 Utils.saveTextToClipboard(context, walletListItemModel.getSubTitle(),
                         R.string.address_has_been_copied, false);

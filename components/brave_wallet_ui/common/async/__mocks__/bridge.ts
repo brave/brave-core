@@ -48,7 +48,7 @@ import {
   mockedErc20ApprovalTransaction
 } from '../../../stories/mock-data/mock-transaction-info'
 import { blockchainTokenEntityAdaptor } from '../../slices/entities/blockchain-token.entity'
-import { findAccountByAccountId } from '../../../utils/account-utils'
+import { findAccountByUniqueKey } from '../../../utils/account-utils'
 import { CommonNftMetadata } from '../../slices/endpoints/nfts.endpoints'
 import { mockNFTMetadata } from '../../../stories/mock-data/mock-nft-metadata'
 
@@ -344,9 +344,9 @@ export class MockedWalletApiProxy {
     getAllAccounts: async (): Promise<{
       allAccounts: BraveWallet.AllAccountsInfo
     }> => {
-      const selectedAccount = findAccountByAccountId(
+      const selectedAccount = findAccountByUniqueKey(
         this.accountInfos,
-        this.selectedAccountId
+        this.selectedAccountId.uniqueKey
       )
       assert(selectedAccount)
       const allAccounts: BraveWallet.AllAccountsInfo = {
@@ -655,7 +655,7 @@ export class MockedWalletApiProxy {
           return (
             // match from address + cointype
             txCoinType === coinType &&
-            tx.fromAddress === from &&
+            tx.fromAccountId.uniqueKey === from.uniqueKey &&
             // match chain id (if set)
             (chainId !== null ? tx.chainId === chainId : true)
           )

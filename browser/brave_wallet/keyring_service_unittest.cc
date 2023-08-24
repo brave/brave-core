@@ -168,6 +168,10 @@ class KeyringServiceUnitTest : public testing::Test {
         }));
   }
 
+  AccountUtils GetAccountUtils(KeyringService* service) {
+    return AccountUtils(service);
+  }
+
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
 
   PrefService* GetLocalState() { return &local_state_; }
@@ -2233,10 +2237,6 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   EXPECT_EQ(service.GetSelectedEthereumDappAccount()->address, "0x111");
   EXPECT_FALSE(service.GetSelectedSolanaDappAccount());
 
-  EXPECT_TRUE(service.IsHardwareAccount(mojom::kDefaultKeyringId, "0x111"));
-  EXPECT_FALSE(service.IsHardwareAccount(mojom::kSolanaKeyringId, "0x111"));
-  EXPECT_TRUE(service.IsHardwareAccount(mojom::kFilecoinKeyringId, "0x264"));
-  EXPECT_FALSE(service.IsHardwareAccount(mojom::kDefaultKeyringId, "0x264"));
   // Wallet is unlocked when the user has only hardware accounts
   EXPECT_FALSE(service.IsLockedSync());
   observer.WaitAndVerify();
@@ -2466,8 +2466,6 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   auto* solana_keyring = service.GetHDKeyringById(mojom::kSolanaKeyringId);
   std::string first_account = default_keyring->GetAddress(0);
   std::string first_sol_account = solana_keyring->GetAddress(0);
-  EXPECT_FALSE(
-      service.IsHardwareAccount(mojom::kDefaultKeyringId, first_account));
 
   EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
   // Selected account changed when creating wallet
@@ -2977,18 +2975,8 @@ TEST_F(KeyringServiceUnitTest, SignMessageByDefaultKeyring) {
   ASSERT_TRUE(RestoreWallet(&service, kMnemonicDivideCruise, "brave", false));
   ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
 
-  std::string account1;
-  {
-    base::RunLoop run_loop;
-    service.GetKeyringInfo(
-        mojom::kDefaultKeyringId,
-        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          ASSERT_EQ(keyring_info->account_infos.size(), 1u);
-          account1 = keyring_info->account_infos[0]->address;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-  }
+  auto account1 = GetAccountUtils(&service).EthAccountId(0);
+
   const std::vector<uint8_t> message = {0xde, 0xad, 0xbe, 0xef};
   auto sig_with_err = service.SignMessageByDefaultKeyring(account1, message);
   EXPECT_NE(sig_with_err.signature, absl::nullopt);
@@ -3003,17 +2991,13 @@ TEST_F(KeyringServiceUnitTest, SignMessageByDefaultKeyring) {
   EXPECT_TRUE(sig_with_err.error_message.empty());
 
   // not a valid account in this wallet
-  const std::vector<std::string> invalid_accounts(
-      {"0xea3C17c81E3baC3472d163b2c8b12ddDAa027874", "", "0x1234"});
-  for (const auto& invalid_account : invalid_accounts) {
-    sig_with_err =
-        service.SignMessageByDefaultKeyring(invalid_account, message);
-    EXPECT_EQ(sig_with_err.signature, absl::nullopt);
-    EXPECT_EQ(
-        sig_with_err.error_message,
-        l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_INVALID_ADDRESS,
-                                  base::ASCIIToUTF16(invalid_account)));
-  }
+  auto invalid_account = GetAccountUtils(&service).EthUnkownAccountId();
+  sig_with_err = service.SignMessageByDefaultKeyring(invalid_account, message);
+  EXPECT_EQ(sig_with_err.signature, absl::nullopt);
+  EXPECT_EQ(
+      sig_with_err.error_message,
+      l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_INVALID_ADDRESS,
+                                base::ASCIIToUTF16(invalid_account->address)));
 
   // Cannot sign message when locked
   service.Lock();

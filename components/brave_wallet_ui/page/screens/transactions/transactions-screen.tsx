@@ -151,12 +151,12 @@ export const TransactionsScreen: React.FC = () => {
     useGetTransactionsQuery(
       foundAccountFromParam
         ? {
-            address: foundAccountFromParam.address,
+            accountId: foundAccountFromParam.accountId,
             coinType: foundAccountFromParam.accountId.coin,
             chainId: chainId !== AllNetworksOption.chainId ? chainId : null
           }
         : {
-            address: null,
+            accountId: null,
             chainId:
               foundNetworkFromParam?.chainId === AllNetworksOption.chainId
                 ? null

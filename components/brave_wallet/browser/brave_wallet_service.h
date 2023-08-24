@@ -268,12 +268,12 @@ class BraveWalletService : public KeyedService,
   void AddSuggestTokenRequest(mojom::AddSuggestTokenRequestPtr request,
                               mojom::EthereumProvider::RequestCallback callback,
                               base::Value id);
-  void AddGetPublicKeyRequest(const std::string& address,
+  void AddGetPublicKeyRequest(const mojom::AccountIdPtr& account_id,
                               const url::Origin& origin,
                               mojom::EthereumProvider::RequestCallback callback,
                               base::Value id);
-  void AddDecryptRequest(const url::Origin& origin,
-                         const std::string& address,
+  void AddDecryptRequest(const mojom::AccountIdPtr& account_id,
+                         const url::Origin& origin,
                          std::string unsafe_message,
                          mojom::EthereumProvider::RequestCallback callback,
                          base::Value id);

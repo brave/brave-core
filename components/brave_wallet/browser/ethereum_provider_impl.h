@@ -161,6 +161,12 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                            EthSubscribeLogsFiltered);
   friend class EthereumProviderImplUnitTest;
 
+  mojom::AccountIdPtr FindAuthenticatedAccountByAddress(
+      const std::string& address,
+      base::Value& id,
+      mojom::EthereumProvider::RequestCallback& callback);
+  mojom::AccountIdPtr FindAccountByAddress(const std::string& address);
+
   // mojom::EthereumProvider:
   void Init(
       mojo::PendingRemote<mojom::EventsListener> events_listener) override;
@@ -206,16 +212,16 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                                          bool success,
                                          const std::string& tx_meta_id,
                                          const std::string& error_message);
-  void SignMessageInternal(const std::string& address,
+  void SignMessageInternal(const mojom::AccountIdPtr& account_id,
                            const std::string& domain,
                            const std::string& message,
-                           std::vector<uint8_t>&& message_to_sign,
+                           std::vector<uint8_t> message_to_sign,
                            const absl::optional<std::string>& domain_hash,
                            const absl::optional<std::string>& primary_hash,
                            bool is_eip712,
                            RequestCallback callback,
                            base::Value id);
-  bool CheckAccountAllowed(const std::string& account,
+  bool CheckAccountAllowed(const mojom::AccountIdPtr& account_id,
                            const std::vector<std::string>& allowed_accounts);
   void UpdateKnownAccounts();
   void OnUpdateKnownAccounts(const std::vector<std::string>& allowed_accounts,
@@ -238,7 +244,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
       const std::string& error_message);
   void ContinueDecryptWithSanitizedJson(RequestCallback callback,
                                         base::Value id,
-                                        const std::string& address,
+                                        const mojom::AccountIdPtr& account_id,
                                         const url::Origin& origin,
                                         data_decoder::JsonSanitizer::Result);
   void OnGetNetworkAndDefaultKeyringInfo(
@@ -257,8 +263,8 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
 
   void OnSignMessageRequestProcessed(RequestCallback callback,
                                      base::Value id,
-                                     const std::string& address,
-                                     std::vector<uint8_t>&& message,
+                                     const mojom::AccountIdPtr& account_id,
+                                     std::vector<uint8_t> message,
                                      bool is_eip712,
                                      bool approved,
                                      mojom::ByteArrayStringUnionPtr signature,

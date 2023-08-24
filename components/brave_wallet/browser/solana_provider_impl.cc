@@ -242,7 +242,7 @@ void SolanaProviderImpl::SignTransaction(
   const std::string blockhash = msg_pair->first.recent_blockhash();
   auto internal_callback = base::BindOnce(
       &SolanaProviderImpl::ContinueSignTransaction, weak_factory_.GetWeakPtr(),
-      std::move(msg_pair), std::move(param), account->address, chain_id,
+      std::move(msg_pair), std::move(param), account.Clone(), chain_id,
       std::move(callback));
   json_rpc_service_->IsSolanaBlockhashValid(chain_id, blockhash, absl::nullopt,
                                             std::move(internal_callback));
@@ -251,7 +251,7 @@ void SolanaProviderImpl::SignTransaction(
 void SolanaProviderImpl::ContinueSignTransaction(
     absl::optional<std::pair<SolanaMessage, std::vector<uint8_t>>> msg_pair,
     mojom::SolanaSignTransactionParamPtr param,
-    const std::string& account,
+    const mojom::AccountInfoPtr& account,
     const std::string& chain_id,
     SignTransactionCallback callback,
     bool is_valid,
@@ -269,21 +269,22 @@ void SolanaProviderImpl::ContinueSignTransaction(
                                                 std::move(param));
   tx->set_tx_type(mojom::TransactionType::SolanaDappSignTransaction);
   auto request = mojom::SignTransactionRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, account,
+      MakeOriginInfo(delegate_->GetOrigin()), -1, account->account_id.Clone(),
+      account->address,
       mojom::TxDataUnion::NewSolanaTxData(tx->ToSolanaTxData()),
       mojom::ByteArrayStringUnion::NewBytes(std::move(msg_pair->second)),
       mojom::CoinType::SOL, chain_id);
   brave_wallet_service_->AddSignTransactionRequest(
       std::move(request),
       base::BindOnce(&SolanaProviderImpl::OnSignTransactionRequestProcessed,
-                     weak_factory_.GetWeakPtr(), std::move(tx), account,
+                     weak_factory_.GetWeakPtr(), std::move(tx), account.Clone(),
                      std::move(callback)));
   delegate_->ShowPanel();
 }
 
 void SolanaProviderImpl::OnSignTransactionRequestProcessed(
     std::unique_ptr<SolanaTransaction> tx,
-    const std::string& account,
+    const mojom::AccountInfoPtr& account,
     SignTransactionCallback callback,
     bool approved,
     mojom::ByteArrayStringUnionPtr signature,
@@ -304,7 +305,7 @@ void SolanaProviderImpl::OnSignTransactionRequestProcessed(
   }
 
   absl::optional<std::vector<uint8_t>> signed_tx;
-  if (!keyring_service_->IsHardwareAccount(mojom::kSolanaKeyringId, account)) {
+  if (account->account_id->kind != mojom::AccountKind::kHardware) {
     signed_tx = tx->GetSignedTransactionBytes(keyring_service_);
   } else if (signature && signature->is_bytes()) {  // hardware
     signed_tx = tx->GetSignedTransactionBytes(keyring_service_,
@@ -413,9 +414,9 @@ void SolanaProviderImpl::ContinueSignAllTransactions(
   }
 
   auto request = mojom::SignAllTransactionsRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, account->address,
-      std::move(tx_datas), std::move(raw_messages), mojom::CoinType::SOL,
-      chain_id);
+      MakeOriginInfo(delegate_->GetOrigin()), -1, account->account_id.Clone(),
+      account->address, std::move(tx_datas), std::move(raw_messages),
+      mojom::CoinType::SOL, chain_id);
 
   brave_wallet_service_->AddSignAllTransactionsRequest(
       std::move(request),
@@ -521,7 +522,7 @@ void SolanaProviderImpl::SignAndSendTransaction(
 
   tx_service_->AddUnapprovedTransaction(
       mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()),
-      account->address, delegate_->GetOrigin(), absl::nullopt,
+      account->account_id.Clone(), delegate_->GetOrigin(), absl::nullopt,
       base::BindOnce(&SolanaProviderImpl::OnAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -559,7 +560,8 @@ void SolanaProviderImpl::OnTransactionStatusChanged(
   auto callback = std::move(sign_and_send_tx_callbacks_[tx_meta_id]);
   base::Value::Dict result;
   if (tx_status == mojom::TransactionStatus::Submitted) {
-    result.Set(kPublicKey, tx_info->from_address);
+    CHECK(tx_info->from_address);
+    result.Set(kPublicKey, *tx_info->from_address);
     result.Set(kSignature, tx_info->tx_hash);
     std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
                             std::move(result));
@@ -627,8 +629,9 @@ void SolanaProviderImpl::SignMessage(
     message = std::string(blob_msg.begin(), blob_msg.end());
   }
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, account->address, "", message,
-      false, absl::nullopt, absl::nullopt, blob_msg, mojom::CoinType::SOL,
+      MakeOriginInfo(delegate_->GetOrigin()), -1, account->account_id.Clone(),
+      "", message, false, absl::nullopt, absl::nullopt, blob_msg,
+      mojom::CoinType::SOL,
       json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL,
                                         delegate_->GetOrigin()));
 

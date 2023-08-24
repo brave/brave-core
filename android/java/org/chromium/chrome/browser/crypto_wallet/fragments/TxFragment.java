@@ -49,7 +49,7 @@ import java.util.Locale;
 public class TxFragment extends Fragment {
     private TransactionInfo mTxInfo;
     private ParsedTransaction mParsedTx;
-    private NetworkInfo mSelectedNetwork;
+    private NetworkInfo mTxNetwork;
     private AccountInfo[] mAccounts;
     private HashMap<String, Double> mAssetPrices;
     private BlockchainToken[] mFullTokenList;
@@ -67,12 +67,12 @@ public class TxFragment extends Fragment {
     public static final int START_ADVANCE_SETTING_ACTIVITY_CODE = 0;
     private boolean mIsSolanaInstruction;
 
-    public static TxFragment newInstance(TransactionInfo txInfo, NetworkInfo selectedNetwork,
+    public static TxFragment newInstance(TransactionInfo txInfo, NetworkInfo txNetwork,
             AccountInfo[] accounts, HashMap<String, Double> assetPrices,
             BlockchainToken[] fullTokenList, HashMap<String, Double> nativeAssetsBalances,
             HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
             boolean updateTxObjectManually, long solanaEstimatedTxFee) {
-        return new TxFragment(txInfo, selectedNetwork, accounts, assetPrices, fullTokenList,
+        return new TxFragment(txInfo, txNetwork, accounts, assetPrices, fullTokenList,
                 nativeAssetsBalances, blockchainTokensBalances, updateTxObjectManually,
                 solanaEstimatedTxFee);
     }
@@ -85,13 +85,13 @@ public class TxFragment extends Fragment {
         return null;
     }
 
-    private TxFragment(TransactionInfo txInfo, NetworkInfo selectedNetwork, AccountInfo[] accounts,
+    private TxFragment(TransactionInfo txInfo, NetworkInfo txNetwork, AccountInfo[] accounts,
             HashMap<String, Double> assetPrices, BlockchainToken[] fullTokenList,
             HashMap<String, Double> nativeAssetsBalances,
             HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
             boolean updateTxObjectManually, long solanaEstimatedTxFee) {
         mTxInfo = txInfo;
-        mSelectedNetwork = selectedNetwork;
+        mTxNetwork = txNetwork;
         mAccounts = accounts;
         mAssetPrices = assetPrices;
         mFullTokenList = fullTokenList;
@@ -119,7 +119,7 @@ public class TxFragment extends Fragment {
 
         View advanceSettingContainer = view.findViewById(R.id.fragment_tx_tv_advance_setting);
         advanceSettingContainer.setVisibility(
-                isAdvanceSettingEnabled(mSelectedNetwork) ? View.VISIBLE : View.GONE);
+                isAdvanceSettingEnabled(mTxNetwork) ? View.VISIBLE : View.GONE);
 
         advanceSettingContainer.setOnClickListener(v -> {
             Intent toAdvanceTxSetting =
@@ -133,7 +133,7 @@ public class TxFragment extends Fragment {
         });
 
         TextView editGasFee = view.findViewById(R.id.edit_gas_fee);
-        editGasFee.setVisibility(isEditTxEnabled(mSelectedNetwork) ? View.VISIBLE : View.INVISIBLE);
+        editGasFee.setVisibility(isEditTxEnabled(mTxNetwork) ? View.VISIBLE : View.INVISIBLE);
         editGasFee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -396,9 +396,9 @@ public class TxFragment extends Fragment {
     };
 
     private void fillMaxFee(TextView textView, String gasLimit, String maxFeePerGas) {
-        final double[] gasFeeArr = ParsedTransactionFees.calcGasFee(mSelectedNetwork,
-                Utils.getOrDefault(mAssetPrices,
-                        mSelectedNetwork.symbol.toLowerCase(Locale.getDefault()), 0.0d),
+        final double[] gasFeeArr = ParsedTransactionFees.calcGasFee(mTxNetwork,
+                Utils.getOrDefault(
+                        mAssetPrices, mTxNetwork.symbol.toLowerCase(Locale.ENGLISH), 0.0d),
                 true, gasLimit, "0", maxFeePerGas, false, mSolanaEstimatedTxFee);
         textView.setText(String.format(getResources().getString(R.string.wallet_maximum_fee),
                 String.format(Locale.getDefault(), "%.2f", gasFeeArr[1]),
@@ -409,8 +409,8 @@ public class TxFragment extends Fragment {
         // Re-parse transaction for mUpdateTxObjectManually
         // TODO(sergz): Not really sure do we need to re-parse here as we parse it in the
         // parent fragment
-        mParsedTx = ParsedTransaction.parseTransaction(mTxInfo, mSelectedNetwork, mAccounts,
-                mAssetPrices, mSolanaEstimatedTxFee, mFullTokenList, mNativeAssetsBalances,
+        mParsedTx = ParsedTransaction.parseTransaction(mTxInfo, mTxNetwork, mAccounts, mAssetPrices,
+                mSolanaEstimatedTxFee, mFullTokenList, mNativeAssetsBalances,
                 mBlockchainTokensBalances);
 
         if (mIsSolanaInstruction) {
@@ -452,8 +452,7 @@ public class TxFragment extends Fragment {
         }
         TextView gasFeeAmount = view.findViewById(R.id.gas_fee_amount);
         final double totalGas = mParsedTx.getGasFee();
-        String symbol =
-                mParsedTx.getSymbol() == null ? mParsedTx.getSymbol() : mSelectedNetwork.symbol;
+        String symbol = mParsedTx.getSymbol() == null ? mParsedTx.getSymbol() : mTxNetwork.symbol;
         gasFeeAmount.setText(
                 String.format(getResources().getString(R.string.crypto_wallet_gas_fee_amount),
                         String.format(Locale.getDefault(), "%.8f", totalGas), symbol));
@@ -490,11 +489,11 @@ public class TxFragment extends Fragment {
         }
     }
 
-    private boolean isEditTxEnabled(NetworkInfo selectedNetwork) {
-        return selectedNetwork.coin == CoinType.ETH;
+    private boolean isEditTxEnabled(NetworkInfo txNetwork) {
+        return txNetwork.coin == CoinType.ETH;
     }
 
-    private boolean isAdvanceSettingEnabled(NetworkInfo selectedNetwork) {
-        return isEditTxEnabled(selectedNetwork);
+    private boolean isAdvanceSettingEnabled(NetworkInfo txNetwork) {
+        return isEditTxEnabled(txNetwork);
     }
 }

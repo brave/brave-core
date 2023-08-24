@@ -143,8 +143,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                       SetAccountNameCallback callback) override;
   void Reset(bool notify_observer = true);
   bool IsKeyringCreated(mojom::KeyringId keyring_id) const;
-  bool IsHardwareAccount(mojom::KeyringId keyring_id,
-                         const std::string& account) const;
   void SignTransactionByDefaultKeyring(const mojom::AccountId& account_id,
                                        EthTransaction* tx,
                                        uint256_t chain_id);
@@ -166,7 +164,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
     std::string error_message;
   };
   SignatureWithError SignMessageByDefaultKeyring(
-      const std::string& address,
+      const mojom::AccountIdPtr& account_id,
       const std::vector<uint8_t>& message,
       bool is_eip712 = false);
 
@@ -177,15 +175,15 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                                       const std::vector<uint8_t>& signature,
                                       std::string* address);
   bool GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
-      const std::string& address,
+      const mojom::AccountIdPtr& account_id,
       std::string* key);
   absl::optional<std::vector<uint8_t>>
   DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
+      const mojom::AccountIdPtr& account_id,
       const std::string& version,
       const std::vector<uint8_t>& nonce,
       const std::vector<uint8_t>& ephemeral_public_key,
-      const std::vector<uint8_t>& ciphertext,
-      const std::string& address);
+      const std::vector<uint8_t>& ciphertext);
 
   void AddAccountsWithDefaultName(const mojom::CoinType& coin_type,
                                   mojom::KeyringId keyring_id,

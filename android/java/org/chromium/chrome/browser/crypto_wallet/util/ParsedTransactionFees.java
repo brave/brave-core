@@ -97,7 +97,7 @@ public class ParsedTransactionFees {
     }
 
     public static ParsedTransactionFees parseTransactionFees(TransactionInfo txInfo,
-            NetworkInfo selectedNetwork, Double networkSpotPrice, long solFeeEstimatesFee) {
+            NetworkInfo txNetwork, Double networkSpotPrice, long solFeeEstimatesFee) {
         TxDataUnion txDataUnion = txInfo.txDataUnion;
         TxData1559 txData = txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
                 ? txDataUnion.getEthTxData1559()
@@ -105,7 +105,7 @@ public class ParsedTransactionFees {
         final FilTxData filTxData = txDataUnion.which() == TxDataUnion.Tag.FilTxData
                 ? txDataUnion.getFilTxData()
                 : null;
-        final int networkDecimals = selectedNetwork.decimals;
+        final int networkDecimals = txNetwork.decimals;
         final boolean isSolTransaction = SOLANA_TRANSACTION_TYPES.contains(txInfo.txType);
         final boolean isFilTransaction = filTxData != null;
 
@@ -131,9 +131,8 @@ public class ParsedTransactionFees {
         }
         final boolean isEIP1559Transaction =
                 !maxPriorityFeePerGas.isEmpty() && !maxFeePerGas.isEmpty();
-        final double[] gasFeeArr =
-                calcGasFee(selectedNetwork, networkSpotPrice, isEIP1559Transaction, gasLimit,
-                        gasPrice, maxFeePerGas, isSolTransaction, solFeeEstimatesFee);
+        final double[] gasFeeArr = calcGasFee(txNetwork, networkSpotPrice, isEIP1559Transaction,
+                gasLimit, gasPrice, maxFeePerGas, isSolTransaction, solFeeEstimatesFee);
         final double gasFee = gasFeeArr[0];
         final double gasFeeFiat = gasFeeArr[1];
         final String missingGasLimitError =

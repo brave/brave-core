@@ -76,7 +76,7 @@ class TxService : public KeyedService,
 
   // mojom::TxService
   void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
-                                const std::string& from,
+                                mojom::AccountIdPtr from,
                                 const absl::optional<url::Origin>& origin,
                                 const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;
@@ -94,7 +94,7 @@ class TxService : public KeyedService,
                           GetTransactionInfoCallback) override;
   void GetAllTransactionInfo(mojom::CoinType coin_type,
                              const absl::optional<std::string>& chain_id,
-                             const absl::optional<std::string>& from,
+                             mojom::AccountIdPtr from,
                              GetAllTransactionInfoCallback) override;
   void GetPendingTransactionsCount(
       GetPendingTransactionsCountCallback callback) override;
@@ -233,10 +233,6 @@ class TxService : public KeyedService,
   friend class FilTxManagerUnitTest;
 
   void MigrateTransactionsFromPrefsToDB(PrefService* prefs);
-  void OnGetAllTransactionInfo(GetPendingTransactionsCountCallback callback,
-                               size_t counter,
-                               mojom::CoinType coin,
-                               std::vector<mojom::TransactionInfoPtr> result);
 
   TxManager* GetTxManager(mojom::CoinType coin_type);
   EthTxManager* GetEthTxManager();

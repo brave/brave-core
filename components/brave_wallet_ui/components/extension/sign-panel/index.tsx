@@ -7,7 +7,10 @@ import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Hooks
-import { useAddressOrb } from '../../../common/hooks/use-orb'
+import { useAccountOrb } from '../../../common/hooks/use-orb'
+
+// Queries
+import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -16,7 +19,6 @@ import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import { unicodeEscape, hasUnicode } from '../../../utils/string-utils'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
-import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 import { PanelActions } from '../../../panel/actions'
 import { isHardwareAccount } from '../../../utils/account-utils'
 
@@ -57,7 +59,6 @@ import {
 } from '../shared-panel-styles'
 
 interface Props {
-  accounts: BraveWallet.AccountInfo[]
   signMessageData: BraveWallet.SignMessageRequest[]
   onCancel: () => void
   showWarning: boolean
@@ -80,7 +81,6 @@ const onClickLearnMore = () => {
 
 export const SignPanel = (props: Props) => {
   const {
-    accounts,
     signMessageData,
     onCancel,
     showWarning
@@ -99,17 +99,15 @@ export const SignPanel = (props: Props) => {
       : skipToken
   )
 
-  const { account: txAccount } = useAccountQuery(
-    signMessageData[0].address ? signMessageData[0].address : skipToken
-  )
-
   // state
   const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignData)
   const [selectedQueueData, setSelectedQueueData] = React.useState<BraveWallet.SignMessageRequest>(signMessageData[0])
   const [renderUnicode, setRenderUnicode] = React.useState<boolean>(true)
 
+  const { account } = useAccountQuery(selectedQueueData?.accountId)
+
   // memos
-  const orb = useAddressOrb(selectedQueueData.address)
+  const orb = useAccountOrb(account)
 
   const signMessageQueueInfo = React.useMemo(() => {
     return {
@@ -125,10 +123,6 @@ export const SignPanel = (props: Props) => {
   )
 
   // methods
-  const findAccountName = (address: string) => {
-    return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name
-  }
-
   const onContinueSigning = () => {
     setSignStep(SignDataSteps.SignData)
   }
@@ -142,12 +136,17 @@ export const SignPanel = (props: Props) => {
   }
 
   const onSign = () => {
-    if (!txAccount) {
+    if (!account) {
       return
     }
 
-    if (isHardwareAccount(txAccount)) {
-      dispatch(PanelActions.signMessageHardware(signMessageData[0]))
+    if (isHardwareAccount(account.accountId)) {
+      dispatch(
+        PanelActions.signMessageHardware({
+          account,
+          request: signMessageData[0]
+        })
+      )
     } else {
       dispatch(
         PanelActions.signMessageProcessed({
@@ -195,7 +194,7 @@ export const SignPanel = (props: Props) => {
           eTldPlusOne={selectedQueueData.originInfo.eTldPlusOne}
         />
       </URLText>
-      <AccountNameText>{findAccountName(selectedQueueData.address) ?? ''}</AccountNameText>
+      <AccountNameText>{account?.name ?? ''}</AccountNameText>
       <PanelTitle>{getLocale('braveWalletSignTransactionTitle')}</PanelTitle>
       {signStep === SignDataSteps.SignRisk &&
         <WarningBox warningType='danger'>

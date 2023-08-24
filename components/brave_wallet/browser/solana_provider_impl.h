@@ -92,7 +92,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   void ContinueSignTransaction(
       absl::optional<std::pair<SolanaMessage, std::vector<uint8_t>>> msg_pair,
       mojom::SolanaSignTransactionParamPtr param,
-      const std::string& account,
+      const mojom::AccountInfoPtr& account,
       const std::string& chain_id,
       SignTransactionCallback callback,
       bool is_valid,
@@ -100,7 +100,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       const std::string& error_message);
   void OnSignTransactionRequestProcessed(
       std::unique_ptr<SolanaTransaction> tx,
-      const std::string& account,
+      const mojom::AccountInfoPtr& account,
       SignTransactionCallback callback,
       bool approved,
       mojom::ByteArrayStringUnionPtr signature,

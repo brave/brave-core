@@ -12,7 +12,10 @@ import {
   EthereumChainRequestPayload,
   SignMessageProcessedPayload,
   SignAllTransactionsProcessedPayload,
-  SwitchEthereumChainProcessedPayload
+  SwitchEthereumChainProcessedPayload,
+  SignTransactionHardwarePayload,
+  SignAllTransactionsHardwarePayload,
+  SignMessageHardwarePayload
 } from '../constants/action_types'
 import {
   BraveWallet,
@@ -41,7 +44,7 @@ export const navigateToMain = createAction('navigateToMain')
 export const navigateBack = createAction('navigateBack')
 export const signMessage = createAction<BraveWallet.SignMessageRequest[]>('signMessage')
 export const signMessageProcessed = createAction<SignMessageProcessedPayload>('signMessageProcessed')
-export const signMessageHardware = createAction<BraveWallet.SignMessageRequest>('signMessageHardware')
+export const signMessageHardware = createAction<SignMessageHardwarePayload>('signMessageHardware')
 export const signMessageHardwareProcessed = createAction<SignMessageProcessedPayload>('signMessageHardwareProcessed')
 export const setHardwareWalletInteractionError = createAction<HardwareWalletResponseCodeType | undefined>('setHardwareWalletInteractionError')
 export const cancelConnectHardwareWallet = createAction<BraveWallet.AccountInfo>('cancelConnectHardwareWallet')
@@ -53,8 +56,8 @@ export const setSelectedTransactionId = createAction<string | undefined>(
   'setSelectedTransactionId'
 )
 export const signTransaction = createAction<BraveWallet.SignTransactionRequest[]>('signTransaction')
-export const signTransactionHardware = createAction<BraveWallet.SignTransactionRequest>('signTransactionHardware')
+export const signTransactionHardware = createAction<SignTransactionHardwarePayload>('signTransactionHardware')
 export const signTransactionProcessed = createAction<SignMessageProcessedPayload>('signTransactionProcessed')
 export const signAllTransactions = createAction<BraveWallet.SignAllTransactionsRequest[]>('signAllTransactions')
-export const signAllTransactionsHardware = createAction<BraveWallet.SignAllTransactionsRequest>('signAllTransactionsHardware')
+export const signAllTransactionsHardware = createAction<SignAllTransactionsHardwarePayload>('signAllTransactionsHardware')
 export const signAllTransactionsProcessed = createAction<SignAllTransactionsProcessedPayload>('signAllTransactionsProcessed')

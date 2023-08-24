@@ -21,6 +21,9 @@ class AccountResolverDelegate {
   virtual mojom::AccountIdPtr ResolveAccountId(
       const std::string* from_account_id,
       const std::string* from_address) = 0;
+
+  // Returns true if there is an existing account equal to account_id.
+  virtual bool ValidateAccountId(const mojom::AccountIdPtr& account_id) = 0;
 };
 
 }  // namespace brave_wallet

@@ -7,10 +7,8 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
-#include "brave/components/brave_wallet/browser/rlp_encode.h"
 #include "brave/components/brave_wallet/browser/simulation_request_helper.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
@@ -44,12 +42,12 @@ namespace evm {
 
 absl::optional<std::string> EncodeScanTransactionParams(
     const mojom::TransactionInfoPtr& tx_info) {
-  if (!tx_info) {
+  if (!tx_info || !tx_info->from_address) {
     return absl::nullopt;
   }
 
   base::Value::Dict tx_object;
-  tx_object.Set("from", tx_info->from_address);
+  tx_object.Set("from", *tx_info->from_address);
 
   if (tx_info->tx_data_union->is_eth_tx_data_1559()) {
     const auto& tx_data = tx_info->tx_data_union->get_eth_tx_data_1559();
@@ -95,7 +93,7 @@ absl::optional<std::string> EncodeScanTransactionParams(
   base::Value::Dict params;
   params.Set("txObject", std::move(tx_object));
   params.Set("metadata", GetMetadata(tx_info->origin_info));
-  params.Set("userAccount", tx_info->from_address);
+  params.Set("userAccount", *tx_info->from_address);
 
   return GetJSON(base::Value(std::move(params)));
 }
@@ -190,6 +188,9 @@ absl::optional<std::string> EncodeScanTransactionParams(
     params.Set("userAccount", sign_all_transactions_request->from_address);
   } else if (request->is_transaction_info()) {
     const auto& tx_info = request->get_transaction_info();
+    if (!tx_info->from_address) {
+      return absl::nullopt;
+    }
     auto serialized_tx =
         GetBase64TransactionFromTxDataUnion(std::move(tx_info->tx_data_union));
     if (!serialized_tx) {
@@ -201,7 +202,7 @@ absl::optional<std::string> EncodeScanTransactionParams(
     params.Set("transactions", std::move(transactions));
 
     params.Set("metadata", GetMetadata(tx_info->origin_info));
-    params.Set("userAccount", tx_info->from_address);
+    params.Set("userAccount", *tx_info->from_address);
   } else {
     return absl::nullopt;
   }

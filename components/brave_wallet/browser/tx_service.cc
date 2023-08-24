@@ -153,21 +153,18 @@ void TxService::BindFilTxManagerProxy(
 
 void TxService::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
-    const std::string& from_address,
+    mojom::AccountIdPtr from,
     const absl::optional<url::Origin>& origin,
     const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
-  auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
-
-  auto from =
-      account_resolver_delegate_->ResolveAccountId(nullptr, &from_address);
-  if (!from) {
+  if (!account_resolver_delegate_->ValidateAccountId(from)) {
     std::move(callback).Run(
         false, "",
         l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
     return;
   }
 
+  auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
   GetTxManager(coin_type)->AddUnapprovedTransaction(
       json_rpc_service_->GetChainIdSync(coin_type, origin),
       std::move(tx_data_union), from, origin, group_id, std::move(callback));
@@ -200,60 +197,25 @@ void TxService::GetTransactionInfo(mojom::CoinType coin_type,
 void TxService::GetAllTransactionInfo(
     mojom::CoinType coin_type,
     const absl::optional<std::string>& chain_id,
-    const absl::optional<std::string>& from_address,
+    mojom::AccountIdPtr from,
     GetAllTransactionInfoCallback callback) {
-  absl::optional<mojom::AccountIdPtr> from;
-  if (from_address) {
-    auto resolved = account_resolver_delegate_->ResolveAccountId(
-        nullptr, &from_address.value());
-    if (!resolved) {
-      std::move(callback).Run(std::vector<mojom::TransactionInfoPtr>());
-      return;
-    }
-    from = std::move(resolved);
-  }
-
-  std::move(callback).Run(
-      GetTxManager(coin_type)->GetAllTransactionInfo(chain_id, from));
+  absl::optional<mojom::AccountIdPtr> from_opt =
+      from ? std::move(from) : absl::optional<mojom::AccountIdPtr>();
+  std::move(callback).Run(GetTxManager(coin_type)->GetAllTransactionInfo(
+      chain_id, std::move(from_opt)));
 }
 
 void TxService::GetPendingTransactionsCount(
     GetPendingTransactionsCountCallback callback) {
-  if (tx_manager_map_.empty()) {
-    std::move(callback).Run(0u);
-    return;
+  size_t counter = 0;
+
+  for (auto& tx_manager : tx_manager_map_) {
+    auto transactions =
+        tx_manager.second->GetAllTransactionInfo(absl::nullopt, absl::nullopt);
+    counter += CalculatePendingTxCount(transactions);
   }
 
-  auto it = tx_manager_map_.begin();
-
-  GetAllTransactionInfo(it->first, absl::nullopt, absl::nullopt,
-                        base::BindOnce(&TxService::OnGetAllTransactionInfo,
-                                       weak_factory_.GetWeakPtr(),
-                                       std::move(callback), 0u, it->first));
-}
-
-void TxService::OnGetAllTransactionInfo(
-    GetPendingTransactionsCountCallback callback,
-    size_t counter,
-    mojom::CoinType coin,
-    std::vector<mojom::TransactionInfoPtr> result) {
-  absl::optional<mojom::CoinType> next_coin_to_check;
-  counter += CalculatePendingTxCount(result);
-
-  auto it = ++tx_manager_map_.find(coin);
-  if (it != tx_manager_map_.end()) {
-    next_coin_to_check = (it)->first;
-  } else {
-    std::move(callback).Run(counter);
-    return;
-  }
-
-  DCHECK(next_coin_to_check);
-  GetAllTransactionInfo(
-      *next_coin_to_check, absl::nullopt, absl::nullopt,
-      base::BindOnce(&TxService::OnGetAllTransactionInfo,
-                     weak_factory_.GetWeakPtr(), std::move(callback), counter,
-                     *next_coin_to_check));
+  std::move(callback).Run(counter);
 }
 
 void TxService::SpeedupOrCancelTransaction(

@@ -28,11 +28,11 @@ describe('useAccountQuery', () => {
     )
     const renderOptions = renderHookOptionsWithMockStore(store)
     const hook = renderHook(
-      () => useAccountQuery(mockAccount.address),
+      () => useAccountQuery(mockAccount.accountId),
       renderOptions
     )
     const hookInstance2 = renderHook(
-      () => useAccountQuery(mockAccount.address),
+      () => useAccountQuery(mockAccount.accountId),
       renderOptions
     )
 

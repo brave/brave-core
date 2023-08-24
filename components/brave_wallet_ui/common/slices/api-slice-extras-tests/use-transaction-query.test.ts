@@ -28,14 +28,10 @@ describe('useTransactionQuery', () => {
   it('finds a transaction from the cache', async () => {
     // setup
     const mockTx = deserializeTransaction(mockTransactionInfo)
-    const mockAccountForMockedTx = {
-      ...mockAccount,
-      address: mockTransactionInfo.fromAddress
-    }
     const store = createMockStore(
       {},
       {
-        accountInfos: [mockAccountForMockedTx],
+        accountInfos: [mockAccount],
         transactionInfos: [mockTx]
       }
     )

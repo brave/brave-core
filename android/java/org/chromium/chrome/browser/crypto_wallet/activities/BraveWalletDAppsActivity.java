@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -200,17 +199,10 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                         //  onNextTransaction implementation is done
                         approveTxBottomSheetDialogFragment.dismiss();
                     }
-                    String accountName = "";
-                    for (AccountInfo accountInfo : allAccounts.accounts) {
-                        if (accountInfo.address.equals(transactionInfo.fromAddress)) {
-                            accountName = accountInfo.name;
-                            break;
-                        }
-                    }
                     approveTxBottomSheetDialogFragment =
                             ApproveTxBottomSheetDialogFragment.newInstance(
                                     mPendingTxHelper.getPendingTransactions(), transactionInfo,
-                                    accountName, this);
+                                    this);
                     approveTxBottomSheetDialogFragment.show(getSupportFragmentManager(),
                             ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
                     mPendingTxHelper.mTransactionInfoLd.observe(this, transactionInfos -> {

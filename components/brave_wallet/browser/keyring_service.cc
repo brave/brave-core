@@ -1697,18 +1697,20 @@ KeyringService::SignatureWithError::operator=(SignatureWithError&& other) =
 KeyringService::SignatureWithError::~SignatureWithError() = default;
 
 KeyringService::SignatureWithError KeyringService::SignMessageByDefaultKeyring(
-    const std::string& address,
+    const mojom::AccountIdPtr& account_id,
     const std::vector<uint8_t>& message,
     bool is_eip712) {
+  CHECK(account_id);
   SignatureWithError ret;
   auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
-  if (!keyring) {
+  if (!keyring || account_id->keyring_id != mojom::kDefaultKeyringId) {
     ret.signature = absl::nullopt;
     ret.error_message =
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST);
     return ret;
   }
 
+  auto address = account_id->address;
   // MM currently doesn't provide chain_id when signing message
   std::vector<uint8_t> signature =
       static_cast<EthereumKeyring*>(keyring)->SignMessage(address, message, 0,
@@ -1733,8 +1735,9 @@ bool KeyringService::RecoverAddressByDefaultKeyring(
 }
 
 bool KeyringService::GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
-    const std::string& address,
+    const mojom::AccountIdPtr& account_id,
     std::string* key) {
+  CHECK(account_id);
   CHECK(key);
   auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
   if (!keyring) {
@@ -1742,16 +1745,20 @@ bool KeyringService::GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
   }
   return static_cast<EthereumKeyring*>(keyring)
       ->GetPublicKeyFromX25519_XSalsa20_Poly1305(
-          EthAddress::FromHex(address).ToChecksumAddress(), key);
+          EthAddress::FromHex(account_id->address).ToChecksumAddress(), key);
 }
 
 absl::optional<std::vector<uint8_t>>
 KeyringService::DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
+    const mojom::AccountIdPtr& account_id,
     const std::string& version,
     const std::vector<uint8_t>& nonce,
     const std::vector<uint8_t>& ephemeral_public_key,
-    const std::vector<uint8_t>& ciphertext,
-    const std::string& address) {
+    const std::vector<uint8_t>& ciphertext) {
+  CHECK(account_id);
+  if (account_id->keyring_id != mojom::kDefaultKeyringId) {
+    return absl::nullopt;
+  }
   auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
   if (!keyring) {
     return absl::nullopt;
@@ -1760,7 +1767,7 @@ KeyringService::DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
   return static_cast<EthereumKeyring*>(keyring)
       ->DecryptCipherFromX25519_XSalsa20_Poly1305(
           version, nonce, ephemeral_public_key, ciphertext,
-          EthAddress::FromHex(address).ToChecksumAddress());
+          account_id->address);
 }
 
 std::vector<uint8_t> KeyringService::SignMessageBySolanaKeyring(
@@ -1843,18 +1850,6 @@ void KeyringService::Lock() {
     observer->Locked();
   }
   StopAutoLockTimer();
-}
-
-bool KeyringService::IsHardwareAccount(mojom::KeyringId keyring_id,
-                                       const std::string& address) const {
-  for (const auto& hardware_account_info :
-       GetHardwareAccountsSync(keyring_id)) {
-    if (base::EqualsCaseInsensitiveASCII(hardware_account_info->address,
-                                         address)) {
-      return true;
-    }
-  }
-  return false;
 }
 
 void KeyringService::Unlock(const std::string& password,

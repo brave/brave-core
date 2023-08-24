@@ -24,7 +24,9 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -125,19 +127,29 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
                     && URLUtil.isValidUrl(mCurrentSignMessageRequest.originInfo.originSpec)) {
                 mWebSite.setText(Utils.geteTldSpanned(mCurrentSignMessageRequest.originInfo));
             }
-            updateAccount(mCurrentSignMessageRequest.address);
+            updateAccount(mCurrentSignMessageRequest.accountId);
             updateNetwork(mCurrentSignMessageRequest.chainId);
         });
     }
 
-    private void updateAccount(String address) {
+    private void updateAccount(AccountId accountId) {
+        if (accountId == null) {
+            return;
+        }
+        assert (accountId.coin == CoinType.ETH);
+
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.getWalletModel().getKeyringModel().getAccounts(accountInfos -> {
-                if (address == null) return;
-                AccountInfo accountInfo = Utils.findAccount(accountInfos, address);
-                String accountText = (accountInfo != null ? accountInfo.name + "\n" : "") + address;
-                Utils.setBlockiesBitmapResource(mExecutor, mHandler, mAccountImage, address, true);
+                AccountInfo accountInfo = Utils.findAccount(accountInfos, accountId);
+                if (accountInfo == null) {
+                    return;
+                }
+                assert (accountInfo.address != null);
+
+                Utils.setBlockiesBitmapResourceFromAccount(
+                        mExecutor, mHandler, mAccountImage, accountInfo, true);
+                String accountText = accountInfo.name + "\n" + accountInfo.address;
                 mAccountName.setText(accountText);
             });
         } catch (BraveActivity.BraveActivityNotFoundException e) {

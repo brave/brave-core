@@ -155,6 +155,9 @@ KeyedService* TxServiceFactory::BuildServiceInstanceFor(
                     user_prefs::UserPrefs::Get(context), context->GetPath(),
                     base::SequencedTaskRunner::GetCurrentDefault());
 #if !BUILDFLAG(IS_ANDROID)
+  // TODO(apaymyshev): WalletNotificationServiceFactory depends on
+  // TxServiceFactory and should be responsible for subscribing on TxService.
+  // Refactor this.
   RegisterWalletNotificationService(context, tx_service);
 #endif
   return tx_service;

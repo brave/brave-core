@@ -79,8 +79,8 @@ public class AccountDetailActivity
         getSupportActionBar().setTitle("");
 
         ImageView accountPicture = findViewById(R.id.account_picture);
-        Utils.setBlockiesBitmapResource(
-                mExecutor, mHandler, accountPicture, mAccountInfo.address, true);
+        Utils.setBlockiesBitmapResourceFromAccount(
+                mExecutor, mHandler, accountPicture, mAccountInfo, true);
 
         mAccountText = findViewById(R.id.account_text);
         mAccountText.setText(mAccountInfo.name);
@@ -209,14 +209,14 @@ public class AccountDetailActivity
     public void onTransactionClick(TransactionInfo txInfo) {
         if (mWalletModel == null) return;
         NetworkInfo txNetwork = getNetworkModel().getNetwork(txInfo.chainId);
-        Utils.openTransaction(txInfo, this, mAccountInfo.name, txNetwork.coin, txNetwork);
+        Utils.openTransaction(txInfo, this, txNetwork.coin, txNetwork);
     }
 
     @Override
-    public void onTxApprovedRejected(boolean approved, String accountName, String txId) {}
+    public void onTxApprovedRejected(boolean approved, String txId) {}
 
     @Override
-    public void onTxPending(String accountName, String txId) {}
+    public void onTxPending(String txId) {}
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

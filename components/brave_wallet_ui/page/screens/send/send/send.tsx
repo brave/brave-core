@@ -34,7 +34,6 @@ import Amount from '../../../../utils/amount'
 import { getBalance, formatTokenBalanceWithSymbol, getPercentAmount } from '../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import { endsWithAny } from '../../../../utils/string-utils'
-import { findAccountByAccountId } from '../../../../utils/account-utils'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
 
 // Hooks
@@ -45,12 +44,12 @@ import {
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 import {
   useGetDefaultFiatCurrencyQuery,
-  useGetSelectedAccountIdQuery,
   useSetSelectedAccountMutation,
   useSetNetworkMutation,
   useGetTokenSpotPricesQuery,
   useGetUserTokensRegistryQuery
 } from '../../../../common/slices/api.slice'
+import { useSelectedAccountQuery } from '../../../../common/slices/api.slice.extra'
 import {
   querySubscriptionOptions60s
 } from '../../../../common/slices/constants'
@@ -144,7 +143,7 @@ export const Send = (props: Props) => {
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const [setSelectedAccount] = useSetSelectedAccountMutation()
   const [setNetwork] = useSetNetworkMutation()
-  const { data: selectedAccountId } = useGetSelectedAccountIdQuery()
+  const { data: selectedAccount } = useSelectedAccountQuery()
 
   // Refs
   const checksumInfoModalRef = React.useRef<HTMLDivElement>(null)
@@ -157,10 +156,6 @@ export const Send = (props: Props) => {
   const selectedSendOption = hash
     ? hash as SendPageTabHashes
     : '#token' as SendPageTabHashes
-
-  const selectedAccount = React.useMemo(() => {
-    return findAccountByAccountId(accounts, selectedAccountId)
-  }, [accounts, selectedAccountId])
 
   useOnClickOutside(
     checksumInfoModalRef,

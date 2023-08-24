@@ -15,9 +15,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -40,7 +38,7 @@ class AccountResolverDelegateImplUnitTest : public testing::Test {
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         &prefs_, &local_state_);
 
-    keyring_service_->CreateWallet(kMnemonicDivideCruise, "brave",
+    keyring_service_->CreateWallet(kMnemonicDivideCruise, kTestWalletPassword,
                                    base::DoNothing());
 
     resolver_ =
@@ -52,24 +50,8 @@ class AccountResolverDelegateImplUnitTest : public testing::Test {
   KeyringService* keyring_service() { return keyring_service_.get(); }
   AccountResolverDelegate* resolver() { return resolver_.get(); }
 
-  mojom::AccountInfoPtr AddFilAccount(const std::string& account_name) {
-    return keyring_service_->AddAccountSync(
-        mojom::CoinType::FIL, mojom::kFilecoinKeyringId, account_name);
-  }
-
-  mojom::AccountInfoPtr AddSolAccount(const std::string& account_name) {
-    return keyring_service_->AddAccountSync(
-        mojom::CoinType::SOL, mojom::kSolanaKeyringId, account_name);
-  }
-
-  mojom::AccountInfoPtr AddEthAccount(const std::string& account_name) {
-    return keyring_service_->AddAccountSync(
-        mojom::CoinType::ETH, mojom::kDefaultKeyringId, account_name);
-  }
-
-  mojom::AccountInfoPtr AddBtcAccount(const std::string& account_name) {
-    return keyring_service_->AddAccountSync(
-        mojom::CoinType::BTC, mojom::kBitcoinKeyring84Id, account_name);
+  AccountUtils GetAccountUtils() {
+    return AccountUtils(keyring_service_.get());
   }
 
  private:
@@ -86,26 +68,31 @@ class AccountResolverDelegateImplUnitTest : public testing::Test {
 };
 
 TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
-  auto some_acc = AddEthAccount("Some acc");
+  auto eth_acc = GetAccountUtils().EnsureEthAccount(0);
+  auto sol_acc = GetAccountUtils().EnsureSolAccount(0);
+  auto fil_acc = GetAccountUtils().EnsureFilAccount(0);
+  auto btc_acc = GetAccountUtils().EnsureBtcAccount(0);
+  auto hw_acc = GetAccountUtils().CreateEthHWAccount();
 
-  auto eth_acc = AddEthAccount("Eth acc");
-  auto sol_acc = AddSolAccount("Sol acc");
-  auto fil_acc = AddFilAccount("Fil acc");
-  auto btc_acc = AddBtcAccount("Btc acc");
+  auto some_acc = GetAccountUtils().EnsureEthAccount(1);
+
   ASSERT_TRUE(eth_acc);
   ASSERT_TRUE(sol_acc);
   ASSERT_TRUE(fil_acc);
   ASSERT_TRUE(btc_acc);
+  ASSERT_TRUE(hw_acc);
 
   EXPECT_EQ(some_acc->account_id,
             resolver()->ResolveAccountId(nullptr, &some_acc->address));
 
-  for (auto& acc :
-       {eth_acc.Clone(), sol_acc.Clone(), fil_acc.Clone(), btc_acc.Clone()}) {
+  for (auto& acc : {eth_acc.Clone(), sol_acc.Clone(), fil_acc.Clone(),
+                    btc_acc.Clone(), hw_acc.Clone()}) {
     const auto& account_id = acc->account_id;
     // Resolved by unique_key.
     EXPECT_EQ(account_id,
               resolver()->ResolveAccountId(&account_id->unique_key, nullptr));
+    EXPECT_EQ(account_id, resolver()->ResolveAccountId(&account_id->unique_key,
+                                                       &account_id->address));
     // Resolved by unique_key even if address is provided.
     EXPECT_EQ(account_id, resolver()->ResolveAccountId(&account_id->unique_key,
                                                        &some_acc->address));
@@ -117,7 +104,17 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
   }
   EXPECT_TRUE(AllCoinsTested());
 
-  // Btc acc has no address and should not be resolvable by an empty address.
+  // HW account is not resolvable after removal.
+  keyring_service()->RemoveAccount(hw_acc->account_id.Clone(),
+                                   kTestWalletPassword, base::DoNothing());
+  EXPECT_FALSE(
+      resolver()->ResolveAccountId(&hw_acc->account_id->unique_key, nullptr));
+  EXPECT_FALSE(resolver()->ResolveAccountId(&hw_acc->account_id->unique_key,
+                                            &hw_acc->address));
+  EXPECT_FALSE(resolver()->ResolveAccountId(nullptr, &hw_acc->address));
+
+  // Btc acc has no address and should not be resolvable by an empty
+  // address.
   EXPECT_EQ("", btc_acc->address);
   EXPECT_EQ("", btc_acc->account_id->address);
   const std::string empty_address = "";
@@ -131,6 +128,34 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
   EXPECT_FALSE(
       resolver()->ResolveAccountId(&unknown_address, &unknown_address));
   EXPECT_FALSE(resolver()->ResolveAccountId(&unknown_address, nullptr));
+}
+
+TEST_F(AccountResolverDelegateImplUnitTest, ValidateAccountId) {
+  auto eth_acc = GetAccountUtils().EnsureEthAccount(0);
+  auto sol_acc = GetAccountUtils().EnsureSolAccount(0);
+  auto fil_acc = GetAccountUtils().EnsureFilAccount(0);
+  auto btc_acc = GetAccountUtils().EnsureBtcAccount(0);
+  auto hw_acc = GetAccountUtils().CreateEthHWAccount();
+
+  ASSERT_TRUE(eth_acc);
+  ASSERT_TRUE(sol_acc);
+  ASSERT_TRUE(fil_acc);
+  ASSERT_TRUE(btc_acc);
+  ASSERT_TRUE(hw_acc);
+
+  for (auto& acc : {eth_acc.Clone(), sol_acc.Clone(), fil_acc.Clone(),
+                    btc_acc.Clone(), hw_acc.Clone()}) {
+    EXPECT_TRUE(resolver()->ValidateAccountId(acc->account_id));
+  }
+  EXPECT_TRUE(AllCoinsTested());
+
+  EXPECT_FALSE(
+      resolver()->ValidateAccountId(GetAccountUtils().EthUnkownAccountId()));
+
+  // HW account is invalid after removal.
+  keyring_service()->RemoveAccount(hw_acc->account_id.Clone(),
+                                   kTestWalletPassword, base::DoNothing());
+  EXPECT_FALSE(resolver()->ValidateAccountId(hw_acc->account_id));
 }
 
 }  // namespace brave_wallet

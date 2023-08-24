@@ -22,8 +22,8 @@ import { mockOriginInfo } from './mock-origin-info'
 
 export const mockTransactionInfo: SerializableTransactionInfo = {
   fromAccountId: mockAccount.accountId,
+  fromAddress: mockAccount.address,
   chainId: BraveWallet.GOERLI_CHAIN_ID,
-  fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
   id: '465a4d6646-kjlwf665',
   txArgs: ['0x0d8775f648430679a709e98d2b0cb6250d2887ef', '0x15ddf09c97b0000'],
   txDataUnion: {
@@ -199,7 +199,7 @@ export const createMockEthSwapTxArgs = ({
 
 export const createMockTransactionInfo = (arg: {
   toAddress: string
-  fromAddress: string,
+  fromAccount: BraveWallet.AccountInfo,
   sendApproveOrSellAssetContractAddress: string
   sendApproveOrSellAmount: string
   buyAmount?: string
@@ -215,7 +215,7 @@ export const createMockTransactionInfo = (arg: {
   const {
     chainId,
     coinType,
-    fromAddress,
+    fromAccount,
     isERC20Send,
     isSwap,
     sendApproveOrSellAmount,
@@ -234,7 +234,7 @@ export const createMockTransactionInfo = (arg: {
     case isERC20Approve: {
       txArgs = createMockERC20ApprovalTxArgs({
         amount: sendApproveOrSellAmount,
-        spender: fromAddress
+        spender: fromAccount.address
       })
     }
     case isERC20Send: {
@@ -245,7 +245,7 @@ export const createMockTransactionInfo = (arg: {
     }
     case isERC721Send: {
       txArgs = createMockERC721TxArgs({
-        owner: fromAddress,
+        owner: fromAccount.address,
         to: toAddress,
         tokenId: tokenId || ''
       })
@@ -273,7 +273,7 @@ export const createMockTransactionInfo = (arg: {
     ...(txBase),
     id: `${txBase.id}--${JSON.stringify(arg)}`,
     chainId,
-    fromAddress,
+    fromAccountId: fromAccount.accountId,
     txArgs
   }
 }
