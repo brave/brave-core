@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
@@ -494,6 +495,10 @@ void ClientStateManager::LoadCallback(InitializeCallback callback,
     Save();
   } else {
     if (!FromJson(*json)) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
+      // migration failure dumps.
+      base::debug::DumpWithoutCrashing();
+
       BLOG(0, "Failed to load client state");
       BLOG(3, "Failed to parse client state: " << *json);
 

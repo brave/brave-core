@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -50,6 +51,10 @@ void MigrateClientState(InitializeCallback callback) {
 
             ClientInfo client;
             if (!client.FromJson(*json)) {
+              // TODO(https://github.com/brave/brave-browser/issues/32066):
+              // Remove migration failure dumps.
+              base::debug::DumpWithoutCrashing();
+
               BLOG(0, "Failed to load client state");
               return FailedToMigrate(std::move(callback));
             }
@@ -63,6 +68,10 @@ void MigrateClientState(InitializeCallback callback) {
                 base::BindOnce(
                     [](InitializeCallback callback, const bool success) {
                       if (!success) {
+                        // TODO(https://github.com/brave/brave-browser/issues/32066):
+                        // Remove migration failure dumps.
+                        base::debug::DumpWithoutCrashing();
+
                         BLOG(0, "Failed to save client state");
                         return FailedToMigrate(std::move(callback));
                       }

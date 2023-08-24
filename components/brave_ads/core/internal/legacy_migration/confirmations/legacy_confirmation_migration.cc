@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -49,6 +50,10 @@ void MigrateConfirmationState(InitializeCallback callback) {
             }
 
             if (!ConfirmationStateManager::GetInstance().FromJson(*json)) {
+              // TODO(https://github.com/brave/brave-browser/issues/32066):
+              // Remove migration failure dumps.
+              base::debug::DumpWithoutCrashing();
+
               BLOG(0, "Failed to load confirmation state");
               return FailedToMigrate(std::move(callback));
             }
@@ -63,6 +68,10 @@ void MigrateConfirmationState(InitializeCallback callback) {
                 base::BindOnce(
                     [](InitializeCallback callback, const bool success) {
                       if (!success) {
+                        // TODO(https://github.com/brave/brave-browser/issues/32066):
+                        // Remove migration failure dumps.
+                        base::debug::DumpWithoutCrashing();
+
                         BLOG(0, "Failed to save confirmation state");
                         return FailedToMigrate(std::move(callback));
                       }
