@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 

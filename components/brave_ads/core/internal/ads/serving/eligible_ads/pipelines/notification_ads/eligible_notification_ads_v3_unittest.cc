@@ -56,7 +56,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAds) {
   creative_ad_2.embedding = {-0.3, 0.0, -0.2};
   creative_ads.push_back(creative_ad_2);
 
-  const TextEmbeddingHtmlEventInfo text_embedding_event =
+  const TextEmbeddingHtmlEventInfo text_embedding_html_event =
       BuildTextEmbeddingHtmlEvent(ml::pipeline::BuildTextEmbeddingForTesting());
 
   database::SaveCreativeNotificationAds(creative_ads);
@@ -64,8 +64,10 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAds) {
   // Act
   eligible_ads_->GetForUserModel(
       BuildUserModelForTesting(
-          /*latent_interest_segments*/ {}, /*latent_interest_segments*/ {},
-          /*purchase_intent_segments*/ {}, {text_embedding_event}),
+          /*intent_segments*/ {},
+          /*latent_interest_segments*/ {},
+          /*interest_segments*/ {},
+          /*text_embedding_html_events*/ {text_embedding_html_event}),
       base::BindOnce(
           [](const CreativeNotificationAdInfo& creative_ad_1,
              const bool had_opportunity,
@@ -97,10 +99,11 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredTextEmbeddings) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(/*latent_interest_segments*/ {},
-                               /*latent_interest_segments*/ {},
-                               /*purchase_intent_segments*/ {},
-                               /*text_embedding_html_events*/ {}),
+      BuildUserModelForTesting(
+          /*intent_segments*/ {},
+          /*latent_interest_segments*/ {},
+          /*latent_interest_segments*/ {},
+          /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
@@ -127,15 +130,16 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test,
       BuildCreativeNotificationAdsForTesting(/*count*/ 2);
   database::SaveCreativeNotificationAds(creative_ads);
 
-  const TextEmbeddingHtmlEventInfo text_embedding_event =
+  const TextEmbeddingHtmlEventInfo text_embedding_html_event =
       BuildTextEmbeddingHtmlEvent(ml::pipeline::BuildTextEmbeddingForTesting());
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(/*latent_interest_segments*/ {},
-                               /*latent_interest_segments*/ {},
-                               /*purchase_intent_segments*/ {},
-                               {text_embedding_event}),
+      BuildUserModelForTesting(
+          /*intent_segments*/ {},
+          /*latent_interest_segments*/ {},
+          /*interest_segments*/ {},
+          /*text_embedding_html_events*/ {text_embedding_html_event}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
@@ -146,15 +150,16 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test,
 
 TEST_F(BraveAdsEligibleNotificationAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
   // Arrange
-  const TextEmbeddingHtmlEventInfo text_embedding_event =
+  const TextEmbeddingHtmlEventInfo text_embedding_html_event =
       BuildTextEmbeddingHtmlEvent(ml::pipeline::BuildTextEmbeddingForTesting());
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(/*latent_interest_segments*/ {},
-                               /*latent_interest_segments*/ {},
-                               /*purchase_intent_segments*/ {},
-                               {text_embedding_event}),
+      BuildUserModelForTesting(
+          /*intent_segments*/ {},
+          /*latent_interest_segments*/ {},
+          /*interest_segments*/ {},
+          /*text_embedding_html_events*/ {text_embedding_html_event}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert

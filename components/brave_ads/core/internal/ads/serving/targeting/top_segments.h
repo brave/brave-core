@@ -21,8 +21,8 @@ SegmentList GetTopParentInterestSegments(const UserModelInfo& user_model);
 SegmentList GetTopChildLatentInterestSegments(const UserModelInfo& user_model);
 SegmentList GetTopParentLatentInterestSegments(const UserModelInfo& user_model);
 
-SegmentList GetTopChildPurchaseIntentSegments(const UserModelInfo& user_model);
-SegmentList GetTopParentPurchaseIntentSegments(const UserModelInfo& user_model);
+SegmentList GetTopChildIntentSegments(const UserModelInfo& user_model);
+SegmentList GetTopParentIntentSegments(const UserModelInfo& user_model);
 
 }  // namespace brave_ads
 

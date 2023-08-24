@@ -69,7 +69,7 @@ void EligibleNewTabPageAdsV1::GetBrowsingHistory(
     const AdEventList& ad_events,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
-      kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryDaysAgo.Get(),
+      kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryRecentDayRange.Get(),
       base::BindOnce(&EligibleNewTabPageAdsV1::GetEligibleAds,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      ad_events, std::move(callback)));
@@ -236,13 +236,12 @@ CreativeNewTabPageAdList EligibleNewTabPageAdsV1::FilterCreativeAds(
     return {};
   }
 
-  CreativeNewTabPageAdList eligible_creative_ads = creative_ads;
-
   NewTabPageAdExclusionRules exclusion_rules(ad_events, *subdivision_targeting_,
                                              *anti_targeting_resource_,
                                              browsing_history);
-  eligible_creative_ads = ApplyExclusionRules(
-      eligible_creative_ads, last_served_ad_, &exclusion_rules);
+
+  CreativeNewTabPageAdList eligible_creative_ads =
+      ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 
   eligible_creative_ads = FilterSeenAdvertisersAndRoundRobinIfNeeded(
       eligible_creative_ads, AdType::kNewTabPageAd);

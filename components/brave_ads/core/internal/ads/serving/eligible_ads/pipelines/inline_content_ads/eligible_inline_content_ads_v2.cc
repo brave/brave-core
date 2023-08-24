@@ -9,10 +9,11 @@
 
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/choose/predict_ad.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/inline_content_ads/inline_content_ad_exclusion_rules.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pacing/pacing.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/prediction/model_based/creative_ad_model_based_predictor.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -70,7 +71,7 @@ void EligibleInlineContentAdsV2::GetBrowsingHistory(
     const std::string& dimensions,
     EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
-      kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryDaysAgo.Get(),
+      kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryRecentDayRange.Get(),
       base::BindOnce(&EligibleInlineContentAdsV2::GetEligibleAds,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      ad_events, dimensions, std::move(callback)));
@@ -118,7 +119,7 @@ void EligibleInlineContentAdsV2::GetEligibleAdsCallback(
   }
 
   const absl::optional<CreativeInlineContentAdInfo> creative_ad =
-      PredictAd(user_model, ad_events, eligible_creative_ads);
+      MaybePredictCreativeAd(eligible_creative_ads, user_model, ad_events);
   if (!creative_ad) {
     BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
     return std::move(callback).Run(/*had_opportunity*/ true,
@@ -142,7 +143,11 @@ CreativeInlineContentAdList EligibleInlineContentAdsV2::FilterCreativeAds(
   InlineContentAdExclusionRules exclusion_rules(
       ad_events, *subdivision_targeting_, *anti_targeting_resource_,
       browsing_history);
-  return ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
+
+  const CreativeInlineContentAdList eligible_creative_ads =
+      ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
+
+  return PaceCreativeAds(eligible_creative_ads);
 }
 
 }  // namespace brave_ads

@@ -6,21 +6,9 @@
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_processor_util.h"
 
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/common/strings/string_html_parser_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 
 namespace brave_ads {
-
-namespace {
-
-constexpr char kTagName[] = "og:title";
-constexpr char kAttributeName[] = "content";
-
-}  // namespace
-
-std::string SanitizeHtml(const std::string& html) {
-  return SanitizeText(ParseHtmlTagAttribute(html, kTagName, kAttributeName));
-}
 
 std::string SanitizeText(const std::string& text) {
   return base::ToLowerASCII(StripNonAlphaCharacters(text));

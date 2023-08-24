@@ -110,8 +110,6 @@ void InlineContentAdServing::ServeAd(
     return FailedToServeAd(ad.dimensions, std::move(callback));
   }
 
-  BLOG(1, "Served inline content ad")
-
   CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 

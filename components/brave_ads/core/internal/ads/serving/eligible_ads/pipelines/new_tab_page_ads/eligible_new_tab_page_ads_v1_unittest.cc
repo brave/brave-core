@@ -63,9 +63,9 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForChildSegment) {
 
   eligible_ads_->GetForUserModel(
       BuildUserModelForTesting(
-          {/*interest_segments*/ "technology & computing-software"},
+          /*intent_segments*/ {},
           /*latent_interest_segments*/ {},
-          /*purchase_intent_segments*/ {},
+          /*interest_segments*/ {"technology & computing-software"},
           /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNewTabPageAdList& expected_creative_ads,
@@ -90,9 +90,9 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForParentSegment) {
 
   eligible_ads_->GetForUserModel(
       BuildUserModelForTesting(
-          {/*interest_segments*/ "technology & computing-software"},
+          /*intent_segments*/ {},
           /*latent_interest_segments*/ {},
-          /*purchase_intent_segments*/ {},
+          /*interest_segments*/ {"technology & computing-software"},
           /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNewTabPageAdList& expected_creative_ads,
@@ -116,10 +116,11 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForUntargetedSegment) {
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting({/*interest_segments*/ "finance-banking"},
-                               /*latent_interest_segments*/ {},
-                               /*purchase_intent_segments*/ {},
-                               /*text_embedding_html_events*/ {}),
+      BuildUserModelForTesting(
+          /*intent_segments*/ {},
+          /*latent_interest_segments*/ {},
+          /*interest_segments*/ {"finance-banking"},
+          /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNewTabPageAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -158,9 +159,9 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
 
   eligible_ads_->GetForUserModel(
       BuildUserModelForTesting(
-          {/*interest_segments*/ "technology & computing", "food & drink"},
+          /*intent_segments*/ {},
           /*latent_interest_segments*/ {},
-          /*purchase_intent_segments*/ {},
+          /*interest_segments*/ {"technology & computing", "food & drink"},
           /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNewTabPageAdList& expected_creative_ads,
@@ -205,10 +206,11 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting({/*interest_segments*/ "UNMATCHED"},
-                               /*latent_interest_segments*/ {},
-                               /*purchase_intent_segments*/ {},
-                               /*text_embedding_html_events*/ {}),
+      BuildUserModelForTesting(
+          /*intent_segments*/ {},
+          /*latent_interest_segments*/ {},
+          /*interest_segments*/ {"UNMATCHED"},
+          /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNewTabPageAdList& creative_ads) {
         // Assert
@@ -223,9 +225,9 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
   // Act
   eligible_ads_->GetForUserModel(
       BuildUserModelForTesting(
-          {/*interest_segments*/ "technology & computing", "food & drink"},
+          /*intent_segments*/ {},
           /*latent_interest_segments*/ {},
-          /*purchase_intent_segments*/ {},
+          /*interest_segments*/ {"technology & computing", "food & drink"},
           /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNewTabPageAdList& creative_ads) {
@@ -259,9 +261,9 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfAlreadySeen) {
 
   eligible_ads_->GetForUserModel(
       BuildUserModelForTesting(
-          {/*interest_segments*/ "technology & computing", "food & drink"},
+          /*intent_segments*/ {},
           /*latent_interest_segments*/ {},
-          /*purchase_intent_segments*/ {},
+          /*interest_segments*/ {"technology & computing", "food & drink"},
           /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNewTabPageAdList& expected_creative_ads,
@@ -299,9 +301,9 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetPacedAds) {
 
   eligible_ads_->GetForUserModel(
       BuildUserModelForTesting(
-          {/*interest_segments*/ "technology & computing", "food & drink"},
+          /*intent_segments*/ {},
           /*latent_interest_segments*/ {},
-          /*purchase_intent_segments*/ {},
+          /*interest_segments*/ {"technology & computing", "food & drink"},
           /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNewTabPageAdList& expected_creative_ads,
@@ -343,9 +345,9 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetPrioritizedAds) {
 
   eligible_ads_->GetForUserModel(
       BuildUserModelForTesting(
-          {/*interest_segments*/ "technology & computing", "food & drink"},
+          /*intent_segments*/ {},
           /*latent_interest_segments*/ {},
-          /*purchase_intent_segments*/ {},
+          /*interest_segments*/ {"technology & computing", "food & drink"},
           /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNewTabPageAdList& expected_creative_ads,

@@ -175,8 +175,6 @@ void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {
     return FailedToServeAd();
   }
 
-  BLOG(1, "Served notification ad");
-
   is_serving_ = false;
 
   CHECK(eligible_ads_);

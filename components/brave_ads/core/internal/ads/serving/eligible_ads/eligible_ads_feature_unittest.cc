@@ -40,51 +40,6 @@ TEST(BraveAdsEligibleAdFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsEligibleAdFeatureEnabled());
 }
 
-TEST(BraveAdsEligibleAdFeatureTest, GetAdPredictorWeights) {
-  // Arrange
-  base::FieldTrialParams params;
-  params["ad_predictor_weights"] = "0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kEligibleAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-
-  // Assert
-  EXPECT_EQ("0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7", kAdPredictorWeights.Get());
-}
-
-TEST(BraveAdsEligibleAdFeatureTest, DefaultAdFeatureWeights) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_EQ("1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0", kAdPredictorWeights.Get());
-}
-
-TEST(BraveAdsEligibleAdFeatureTest, DefaultAdFeatureWeightsWhenDisabled) {
-  // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kEligibleAdFeature);
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-
-  // Assert
-  EXPECT_EQ("1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0", kAdPredictorWeights.Get());
-}
-
 TEST(BraveAdsEligibleAdFeatureTest, GetBrowsingHistoryMaxCount) {
   // Arrange
   base::FieldTrialParams params;
@@ -131,10 +86,10 @@ TEST(BraveAdsEligibleAdFeatureTest,
   EXPECT_EQ(5'000, kBrowsingHistoryMaxCount.Get());
 }
 
-TEST(BraveAdsEligibleAdFeatureTest, GetBrowsingHistoryDaysAgo) {
+TEST(BraveAdsEligibleAdFeatureTest, GetBrowsingHistoryRecentDayRange) {
   // Arrange
   base::FieldTrialParams params;
-  params["browsing_history_days_ago"] = "7";
+  params["browsing_history_recent_day_range"] = "7";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(kEligibleAdFeature, params);
 
@@ -147,19 +102,20 @@ TEST(BraveAdsEligibleAdFeatureTest, GetBrowsingHistoryDaysAgo) {
   // Act
 
   // Assert
-  EXPECT_EQ(7, kBrowsingHistoryDaysAgo.Get());
+  EXPECT_EQ(7, kBrowsingHistoryRecentDayRange.Get());
 }
 
-TEST(BraveAdsEligibleAdFeatureTest, DefaultBrowsingHistoryDaysAgo) {
+TEST(BraveAdsEligibleAdFeatureTest, DefaultBrowsingHistoryRecentDayRange) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_EQ(180, kBrowsingHistoryDaysAgo.Get());
+  EXPECT_EQ(180, kBrowsingHistoryRecentDayRange.Get());
 }
 
-TEST(BraveAdsEligibleAdFeatureTest, DefaultBrowsingHistoryDaysAgoWhenDisabled) {
+TEST(BraveAdsEligibleAdFeatureTest,
+     DefaultBrowsingHistoryRecentDayRangeWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -173,7 +129,7 @@ TEST(BraveAdsEligibleAdFeatureTest, DefaultBrowsingHistoryDaysAgoWhenDisabled) {
   // Act
 
   // Assert
-  EXPECT_EQ(180, kBrowsingHistoryDaysAgo.Get());
+  EXPECT_EQ(180, kBrowsingHistoryRecentDayRange.Get());
 }
 
 }  // namespace brave_ads

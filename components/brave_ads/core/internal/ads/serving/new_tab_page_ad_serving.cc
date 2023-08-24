@@ -104,8 +104,6 @@ void NewTabPageAdServing::ServeAd(const NewTabPageAdInfo& ad,
     return FailedToServeAd(std::move(callback));
   }
 
-  BLOG(1, "Served new tab page ad");
-
   CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 

@@ -220,16 +220,12 @@ void MigrateToV31(mojom::DBTransactionInfo* transaction) {
   transaction->commands.push_back(std::move(command));
 
   // Copy columns to temporary table.
-  const std::vector<std::string> from_columns = {
-      "creative_set_id", "url_pattern", "verifiable_advertiser_public_key",
-      "observation_window", "expire_at"};
-
-  const std::vector<std::string> to_columns = {
-      "creative_set_id", "url_pattern", "verifiable_advertiser_public_key",
-      "observation_window", "expire_at"};
+  const std::vector<std::string> columns = {"creative_set_id", "url_pattern",
+                                            "verifiable_advertiser_public_key",
+                                            "observation_window", "expire_at"};
 
   CopyTableColumns(transaction, "creative_set_conversions",
-                   "creative_set_conversions_temp", from_columns, to_columns,
+                   "creative_set_conversions_temp", columns,
                    /*should_drop*/ true);
 
   // Rename temporary table.

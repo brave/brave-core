@@ -10,9 +10,9 @@
 
 namespace brave_ads {
 
-std::string ParseHtmlTagAttribute(const std::string& html,
-                                  const std::string& tag_substr,
-                                  const std::string& tag_attribute);
+std::string ParseHtmlTagNameAttribute(const std::string& html,
+                                      const std::string& tag,
+                                      const std::string& name_attribute);
 
 }  // namespace brave_ads
 

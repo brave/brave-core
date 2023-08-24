@@ -38,12 +38,8 @@ SegmentList FilterSegments(const SegmentList& segments, const int max_count) {
 SegmentList GetTopSegments(const SegmentList& segments,
                            const int max_count,
                            const bool parent_only) {
-  if (!parent_only) {
-    return FilterSegments(segments, max_count);
-  }
-
-  const SegmentList parent_segments = GetParentSegments(segments);
-  return FilterSegments(parent_segments, max_count);
+  return FilterSegments(parent_only ? GetParentSegments(segments) : segments,
+                        max_count);
 }
 
 SegmentList GetTopSegments(const UserModelInfo& user_model,
@@ -51,14 +47,14 @@ SegmentList GetTopSegments(const UserModelInfo& user_model,
                            const bool parent_only) {
   SegmentList segments;
 
-  base::Extend(segments, GetTopSegments(user_model.interest_segments, max_count,
+  base::Extend(segments, GetTopSegments(user_model.intent_segments, max_count,
                                         parent_only));
 
   base::Extend(segments, GetTopSegments(user_model.latent_interest_segments,
                                         max_count, parent_only));
 
-  base::Extend(segments, GetTopSegments(user_model.purchase_intent_segments,
-                                        max_count, parent_only));
+  base::Extend(segments, GetTopSegments(user_model.interest_segments, max_count,
+                                        parent_only));
 
   return segments;
 }

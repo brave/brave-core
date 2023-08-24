@@ -101,7 +101,6 @@ bool ShouldFilterSegment(const std::string& segment) {
 
   const FilteredCategoryList& filtered_segments =
       ClientStateManager::GetInstance().GetFilteredCategories();
-
   if (filtered_segments.empty()) {
     return false;
   }

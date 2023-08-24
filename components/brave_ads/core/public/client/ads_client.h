@@ -77,11 +77,11 @@ class ADS_EXPORT AdsClient {
   // Reset ad event history for the specified |id|.
   virtual void ResetAdEventHistoryForId(const std::string& id) const = 0;
 
-  // Get browsing history from |days_ago| limited to |max_count| items. The
-  // callback takes one argument - |std::vector<GURL>| containing a list of
+  // Get browsing history from |recent_day_range| limited to |max_count| items.
+  // The callback takes one argument - |std::vector<GURL>| containing a list of
   // URLs.
   virtual void GetBrowsingHistory(int max_count,
-                                  int days_ago,
+                                  int recent_day_range,
                                   GetBrowsingHistoryCallback callback) = 0;
 
   // Fetch and return data for the |url_request|. Loading should be performed

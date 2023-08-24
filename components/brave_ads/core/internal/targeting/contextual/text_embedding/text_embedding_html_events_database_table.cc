@@ -84,7 +84,7 @@ void GetAllCallback(GetTextEmbeddingHtmlEventsCallback callback,
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-    BLOG(0, "Failed to get embeddings");
+    BLOG(0, "Failed to get text embedding HTML events");
     return std::move(callback).Run(/*success*/ false,
                                    /*text_embedding_html_events*/ {});
   }

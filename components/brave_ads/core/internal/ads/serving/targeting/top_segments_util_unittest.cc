@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments_util.h"
 
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
@@ -20,12 +21,11 @@ class BraveAdsTopSegmentsUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsTopSegmentsUtilTest, GetTopChildSegments) {
   // Arrange
-  UserModelInfo user_model;
-  user_model.interest_segments = {"interest-1", "interest-2"};
-  user_model.latent_interest_segments = {"latent_interest-1",
-                                         "latent_interest-2"};
-  user_model.purchase_intent_segments = {"purchase_intent-1",
-                                         "purchase_intent-2"};
+  const UserModelInfo user_model = BuildUserModelForTesting(
+      /*intent_segments*/ {"intent-1", "intent-2"},
+      /*latent_interest_segments*/ {"latent_interest-1", "latent_interest-2"},
+      /*interest_segments*/ {"interest-1", "interest-2"},
+      /*text_embedding_html_events*/ {});
 
   // Act
   const SegmentList segments =
@@ -33,8 +33,8 @@ TEST_F(BraveAdsTopSegmentsUtilTest, GetTopChildSegments) {
 
   // Assert
   const SegmentList expected_segments = {
-      "interest-1",        "interest-2",        "latent_interest-1",
-      "latent_interest-2", "purchase_intent-1", "purchase_intent-2"};
+      "intent-1",          "intent-2",   "latent_interest-1",
+      "latent_interest-2", "interest-1", "interest-2"};
 
   EXPECT_EQ(expected_segments, segments);
 }
@@ -53,21 +53,19 @@ TEST_F(BraveAdsTopSegmentsUtilTest, GetTopChildSegmentsForEmptyUserModel) {
 
 TEST_F(BraveAdsTopSegmentsUtilTest, GetTopParentSegments) {
   // Arrange
-  UserModelInfo user_model;
-  user_model.interest_segments = {"interest_1", "interest_2"};
-  user_model.latent_interest_segments = {"latent_interest_1",
-                                         "latent_interest_2"};
-  user_model.purchase_intent_segments = {"purchase_intent_1",
-                                         "purchase_intent_2"};
+  const UserModelInfo user_model = BuildUserModelForTesting(
+      /*intent_segments*/ {"intent-1", "intent-2"},
+      /*latent_interest_segments*/ {"latent_interest-1", "latent_interest-2"},
+      /*interest_segments*/ {"interest-1", "interest-2"},
+      /*text_embedding_html_events*/ {});
 
   // Act
   const SegmentList segments =
       GetTopSegments(user_model, kSegmentsMaxCount, /*parent_only*/ true);
 
   // Assert
-  const SegmentList expected_segments = {
-      "interest_1",        "interest_2",        "latent_interest_1",
-      "latent_interest_2", "purchase_intent_1", "purchase_intent_2"};
+  const SegmentList expected_segments = {"intent", "latent_interest",
+                                         "interest"};
 
   EXPECT_EQ(expected_segments, segments);
 }

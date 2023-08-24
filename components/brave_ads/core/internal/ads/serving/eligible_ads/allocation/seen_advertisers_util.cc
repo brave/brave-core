@@ -16,8 +16,8 @@ absl::optional<base::Time> GetLastSeenAdvertiserAt(
     const CreativeAdInfo& creative_ad) {
   const auto iter = base::ranges::find_if(
       ad_events, [&creative_ad](const AdEventInfo& ad_event) -> bool {
-        return ad_event.advertiser_id == creative_ad.advertiser_id &&
-               ad_event.confirmation_type == ConfirmationType::kViewed;
+        return ad_event.confirmation_type == ConfirmationType::kViewed &&
+               ad_event.advertiser_id == creative_ad.advertiser_id;
       });
 
   if (iter == ad_events.cend()) {

@@ -9,11 +9,12 @@
 
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/choose/predict_ad.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/choose/predict_ad_embeddings.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_exclusion_rules.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pacing/pacing.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/prediction/embedding_based/creative_ad_embedding_based_predictor.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/prediction/model_based/creative_ad_model_based_predictor.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -66,7 +67,7 @@ void EligibleNotificationAdsV3::GetBrowsingHistory(
     const AdEventList& ad_events,
     EligibleAdsCallback<CreativeNotificationAdList> callback) {
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
-      kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryDaysAgo.Get(),
+      kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryRecentDayRange.Get(),
       base::BindOnce(&EligibleNotificationAdsV3::GetEligibleAds,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      ad_events, std::move(callback)));
@@ -112,14 +113,10 @@ void EligibleNotificationAdsV3::GetEligibleAdsCallback(
                                    /*eligible_ads*/ {});
   }
 
-  absl::optional<CreativeNotificationAdInfo> creative_ad;
-  if (!user_model.text_embedding_html_events.empty()) {
-    creative_ad = MaybePredictAdUsingEmbeddings<CreativeNotificationAdInfo>(
-        user_model, eligible_creative_ads);
-  } else {
-    creative_ad = PredictAd(user_model, ad_events, eligible_creative_ads);
-  }
-
+  const absl::optional<CreativeNotificationAdInfo> creative_ad =
+      user_model.text_embedding_html_events.empty()
+          ? MaybePredictCreativeAd(eligible_creative_ads, user_model, ad_events)
+          : MaybePredictCreativeAd(eligible_creative_ads, user_model);
   if (!creative_ad) {
     BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
     return std::move(callback).Run(/*had_opportunity*/ false,
@@ -140,10 +137,15 @@ CreativeNotificationAdList EligibleNotificationAdsV3::FilterCreativeAds(
     return {};
   }
 
+  CreativeNotificationAdList eligible_creative_ads = creative_ads;
+
   NotificationAdExclusionRules exclusion_rules(
       ad_events, *subdivision_targeting_, *anti_targeting_resource_,
       browsing_history);
-  return ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
+  eligible_creative_ads = ApplyExclusionRules(
+      eligible_creative_ads, last_served_ad_, &exclusion_rules);
+
+  return PaceCreativeAds(eligible_creative_ads);
 }
 
 }  // namespace brave_ads

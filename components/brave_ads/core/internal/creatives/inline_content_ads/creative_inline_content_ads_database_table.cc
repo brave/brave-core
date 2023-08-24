@@ -13,6 +13,7 @@
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -30,7 +31,7 @@
 namespace brave_ads::database::table {
 
 using CreativeInlineContentAdMap =
-    std::map</*creative_instance_id*/ std::string, CreativeInlineContentAdInfo>;
+    std::map</*creative_ad_uuid*/ std::string, CreativeInlineContentAdInfo>;
 
 namespace {
 
@@ -139,7 +140,7 @@ CreativeInlineContentAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return creative_ad;
 }
 
-CreativeInlineContentAdMap GroupCreativeAdsFromResponse(
+CreativeInlineContentAdList GetCreativeAdsFromResponse(
     mojom::DBCommandResponseInfoPtr command_response) {
   CHECK(command_response);
   CHECK(command_response->result);
@@ -149,17 +150,16 @@ CreativeInlineContentAdMap GroupCreativeAdsFromResponse(
   for (const auto& record : command_response->result->get_records()) {
     const CreativeInlineContentAdInfo creative_ad = GetFromRecord(&*record);
 
-    const auto iter = creative_ads.find(creative_ad.creative_instance_id);
+    const std::string uuid =
+        base::StrCat({creative_ad.creative_instance_id, creative_ad.segment});
+    const auto iter = creative_ads.find(uuid);
     if (iter == creative_ads.cend()) {
-      creative_ads.insert({creative_ad.creative_instance_id, creative_ad});
+      creative_ads.insert({uuid, creative_ad});
       continue;
     }
 
-    // Creative instance already exists, so append new geo targets and dayparts
-    // to the existing creative ad
     for (const auto& geo_target : creative_ad.geo_targets) {
-      const auto geo_target_iter = iter->second.geo_targets.find(geo_target);
-      if (geo_target_iter == iter->second.geo_targets.cend()) {
+      if (!base::Contains(iter->second.geo_targets, geo_target)) {
         iter->second.geo_targets.insert(geo_target);
       }
     }
@@ -171,22 +171,12 @@ CreativeInlineContentAdMap GroupCreativeAdsFromResponse(
     }
   }
 
-  return creative_ads;
-}
-
-CreativeInlineContentAdList GetCreativeAdsFromResponse(
-    mojom::DBCommandResponseInfoPtr command_response) {
-  CHECK(command_response);
-
-  const CreativeInlineContentAdMap grouped_creative_ads =
-      GroupCreativeAdsFromResponse(std::move(command_response));
-
-  CreativeInlineContentAdList creative_ads;
-  for (const auto& [creative_instance_id, creative_ad] : grouped_creative_ads) {
-    creative_ads.push_back(creative_ad);
+  CreativeInlineContentAdList normalized_creative_ads;
+  for (const auto& [_, creative_ad] : creative_ads) {
+    normalized_creative_ads.push_back(creative_ad);
   }
 
-  return creative_ads;
+  return normalized_creative_ads;
 }
 
 void GetForCreativeInstanceIdCallback(
@@ -487,11 +477,11 @@ void CreativeInlineContentAds::Create(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE creative_inline_content_ads "
-      "(creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT "
-      "REPLACE, creative_set_id TEXT NOT NULL, campaign_id TEXT NOT NULL, "
-      "title TEXT NOT NULL, description TEXT NOT NULL, image_url TEXT NOT "
-      "NULL, dimensions TEXT NOT NULL, cta_text TEXT NOT NULL);";
+      "CREATE TABLE creative_inline_content_ads (creative_instance_id TEXT NOT "
+      "NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, creative_set_id TEXT NOT "
+      "NULL, campaign_id TEXT NOT NULL, title TEXT NOT NULL, description TEXT "
+      "NOT NULL, image_url TEXT NOT NULL, dimensions TEXT NOT NULL, cta_text "
+      "TEXT NOT NULL);";
   transaction->commands.push_back(std::move(command));
 }
 

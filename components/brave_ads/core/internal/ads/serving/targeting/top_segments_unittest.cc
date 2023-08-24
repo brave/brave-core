@@ -275,14 +275,14 @@ TEST_F(BraveAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
 
     // Assert
     const SegmentList expected_segments = {
-        "technology & computing-technology & computing",
-        "personal finance-banking",
-        "food & drink-cooking",
+        "segment 3",
+        "segment 2",
         "science",
         "travel",
         "technology & computing",
-        "segment 3",
-        "segment 2"};
+        "technology & computing-technology & computing",
+        "personal finance-banking",
+        "food & drink-cooking"};
 
     EXPECT_EQ(expected_segments, segments);
   }));

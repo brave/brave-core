@@ -74,7 +74,7 @@ void EligibleInlineContentAdsV1::GetBrowsingHistory(
     const AdEventList& ad_events,
     EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
-      kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryDaysAgo.Get(),
+      kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryRecentDayRange.Get(),
       base::BindOnce(&EligibleInlineContentAdsV1::GetEligibleAds,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      dimensions, ad_events, std::move(callback)));
@@ -254,13 +254,12 @@ CreativeInlineContentAdList EligibleInlineContentAdsV1::FilterCreativeAds(
     return {};
   }
 
-  CreativeInlineContentAdList eligible_creative_ads = creative_ads;
-
   InlineContentAdExclusionRules exclusion_rules(
       ad_events, *subdivision_targeting_, *anti_targeting_resource_,
       browsing_history);
-  eligible_creative_ads = ApplyExclusionRules(
-      eligible_creative_ads, last_served_ad_, &exclusion_rules);
+
+  CreativeInlineContentAdList eligible_creative_ads =
+      ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 
   eligible_creative_ads = FilterSeenAdvertisersAndRoundRobinIfNeeded(
       eligible_creative_ads, AdType::kInlineContentAd);

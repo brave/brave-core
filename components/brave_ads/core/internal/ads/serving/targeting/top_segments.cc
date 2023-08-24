@@ -13,9 +13,9 @@ namespace brave_ads {
 namespace {
 
 constexpr int kTopSegmentsMaxCount = 3;
-constexpr int kTopInterestSegmentsMaxCount = 3;
+constexpr int kTopIntentSegmentsMaxCount = 3;
 constexpr int kTopLatentInterestSegmentsMaxCount = 3;
-constexpr int kTopPurchaseIntentSegmentsMaxCount = 3;
+constexpr int kTopInterestSegmentsMaxCount = 3;
 
 }  // namespace
 
@@ -29,15 +29,13 @@ SegmentList GetTopParentSegments(const UserModelInfo& user_model) {
                         /*parent_only*/ true);
 }
 
-SegmentList GetTopChildInterestSegments(const UserModelInfo& user_model) {
-  return GetTopSegments(user_model.interest_segments,
-                        kTopInterestSegmentsMaxCount,
+SegmentList GetTopChildIntentSegments(const UserModelInfo& user_model) {
+  return GetTopSegments(user_model.intent_segments, kTopIntentSegmentsMaxCount,
                         /*parent_only*/ false);
 }
 
-SegmentList GetTopParentInterestSegments(const UserModelInfo& user_model) {
-  return GetTopSegments(user_model.interest_segments,
-                        kTopInterestSegmentsMaxCount,
+SegmentList GetTopParentIntentSegments(const UserModelInfo& user_model) {
+  return GetTopSegments(user_model.intent_segments, kTopIntentSegmentsMaxCount,
                         /*parent_only*/ true);
 }
 
@@ -54,16 +52,15 @@ SegmentList GetTopParentLatentInterestSegments(
                         /*parent_only*/ true);
 }
 
-SegmentList GetTopChildPurchaseIntentSegments(const UserModelInfo& user_model) {
-  return GetTopSegments(user_model.purchase_intent_segments,
-                        kTopPurchaseIntentSegmentsMaxCount,
+SegmentList GetTopChildInterestSegments(const UserModelInfo& user_model) {
+  return GetTopSegments(user_model.interest_segments,
+                        kTopInterestSegmentsMaxCount,
                         /*parent_only*/ false);
 }
 
-SegmentList GetTopParentPurchaseIntentSegments(
-    const UserModelInfo& user_model) {
-  return GetTopSegments(user_model.purchase_intent_segments,
-                        kTopPurchaseIntentSegmentsMaxCount,
+SegmentList GetTopParentInterestSegments(const UserModelInfo& user_model) {
+  return GetTopSegments(user_model.interest_segments,
+                        kTopInterestSegmentsMaxCount,
                         /*parent_only*/ true);
 }
 

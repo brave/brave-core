@@ -54,10 +54,11 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting({/*interest_segments*/ "foo-bar3"},
-                               /*latent_interest_segments*/ {},
-                               {"foo-bar1", "foo-bar2"},
-                               /*text_embedding_html_events*/ {}),
+      BuildUserModelForTesting(
+          /*intent_segments*/ {"foo-bar1", "foo-bar2"},
+          /*latent_interest_segments*/ {},
+          /*interest_segments*/ {"foo-bar3"},
+          /*text_embedding_html_events*/ {}),
       /*dimensions*/ "200x100",
       base::BindOnce([](const bool had_opportunity,
                         const CreativeInlineContentAdList& creative_ads) {
@@ -85,10 +86,11 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(/*interest_segments*/ {},
-                               /*latent_interest_segments*/ {},
-                               /*purchase_intent_segments*/ {},
-                               /*text_embedding_html_events*/ {}),
+      BuildUserModelForTesting(
+          /*intent_segments*/ {},
+          /*latent_interest_segments*/ {},
+          /*interest_segments*/ {},
+          /*text_embedding_html_events*/ {}),
       /*dimensions*/ "200x100",
       base::BindOnce([](const bool had_opportunity,
                         const CreativeInlineContentAdList& creative_ads) {
@@ -105,8 +107,9 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test,
   // Act
   eligible_ads_->GetForUserModel(
       BuildUserModelForTesting(
-          {/*interest_segments*/ "interest-foo", "interest-bar"},
-          /*latent_interest_segments*/ {}, {"intent-foo", "intent-bar"},
+          /*intent_segments*/ {"intent-foo", "intent-bar"},
+          /*latent_interest_segments*/ {},
+          /*interest_segments*/ {"interest-foo", "interest-bar"},
           /*text_embedding_html_events*/ {}),
       /*dimensions*/ "?x?",
       base::BindOnce([](const bool had_opportunity,
@@ -123,8 +126,9 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
   // Act
   eligible_ads_->GetForUserModel(
       BuildUserModelForTesting(
-          {/*interest_segments*/ "interest-foo", "interest-bar"},
-          /*latent_interest_segments*/ {}, {"intent-foo", "intent-bar"},
+          /*intent_segments*/ {"intent-foo", "intent-bar"},
+          /*latent_interest_segments*/ {},
+          /*interest_segments*/ {"interest-foo", "interest-bar"},
           /*text_embedding_html_events*/ {}),
       /*dimensions*/ "200x100",
       base::BindOnce([](const bool had_opportunity,

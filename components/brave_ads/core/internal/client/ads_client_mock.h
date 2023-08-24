@@ -59,7 +59,7 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD3(GetBrowsingHistory,
                void(const int max_count,
-                    const int days_ago,
+                    const int recent_day_range,
                     GetBrowsingHistoryCallback callback));
 
   MOCK_METHOD2(UrlRequest,

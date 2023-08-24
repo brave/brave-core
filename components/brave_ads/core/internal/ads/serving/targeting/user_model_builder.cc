@@ -30,7 +30,7 @@ void GetTextEmbeddingHtmlEventsCallback(
     const bool success,
     const TextEmbeddingHtmlEventList& text_embedding_html_events) {
   if (!success) {
-    BLOG(1, "Failed to get text embedding events");
+    BLOG(1, "Failed to get text embedding HTML events");
     return std::move(callback).Run(user_model);
   }
 
@@ -44,9 +44,9 @@ void GetTextEmbeddingHtmlEventsCallback(
 void BuildUserModel(BuildUserModelCallback callback) {
   UserModelInfo user_model;
 
-  if (IsTextClassificationFeatureEnabled()) {
-    const TextClassificationModel text_classification_model;
-    user_model.interest_segments = text_classification_model.GetSegments();
+  if (IsPurchaseIntentFeatureEnabled()) {
+    const PurchaseIntentModel purchase_intent_model;
+    user_model.intent_segments = purchase_intent_model.GetSegments();
   }
 
   if (IsEpsilonGreedyBanditFeatureEnabled()) {
@@ -55,17 +55,17 @@ void BuildUserModel(BuildUserModelCallback callback) {
         epsilon_greedy_bandit_model.GetSegments();
   }
 
-  if (IsPurchaseIntentFeatureEnabled()) {
-    const PurchaseIntentModel purchase_intent_model;
-    user_model.purchase_intent_segments = purchase_intent_model.GetSegments();
+  if (IsTextClassificationFeatureEnabled()) {
+    const TextClassificationModel text_classification_model;
+    user_model.interest_segments = text_classification_model.GetSegments();
   }
 
-  if (IsTextEmbeddingFeatureEnabled()) {
-    GetTextEmbeddingHtmlEventsFromDatabase(base::BindOnce(
-        &GetTextEmbeddingHtmlEventsCallback, user_model, std::move(callback)));
-  } else {
-    std::move(callback).Run(user_model);
+  if (!IsTextEmbeddingFeatureEnabled()) {
+    return std::move(callback).Run(user_model);
   }
+
+  GetTextEmbeddingHtmlEventsFromDatabase(base::BindOnce(
+      &GetTextEmbeddingHtmlEventsCallback, user_model, std::move(callback)));
 }
 
 }  // namespace brave_ads

@@ -14,9 +14,9 @@ namespace brave_ads {
 struct UserModelInfo;
 
 UserModelInfo BuildUserModelForTesting(
-    const SegmentList& interest_segments,
+    const SegmentList& intent_segments,
     const SegmentList& latent_interest_segments,
-    const SegmentList& purchase_intent_segments,
+    const SegmentList& interest_segments,
     const TextEmbeddingHtmlEventList& text_embedding_html_events);
 
 }  // namespace brave_ads

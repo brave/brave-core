@@ -22,9 +22,9 @@ struct UserModelInfo final {
 
   ~UserModelInfo();
 
-  SegmentList interest_segments;
+  SegmentList intent_segments;
   SegmentList latent_interest_segments;
-  SegmentList purchase_intent_segments;
+  SegmentList interest_segments;
   TextEmbeddingHtmlEventList text_embedding_html_events;
 };
 
