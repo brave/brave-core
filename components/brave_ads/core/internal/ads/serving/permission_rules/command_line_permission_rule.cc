@@ -18,7 +18,7 @@ bool DoesRespectCap() {
     return true;
   }
 
-  return IsProductionEnvironment() && !DidOverrideCommandLine();
+  return !DidOverrideCommandLine();
 }
 
 }  // namespace
