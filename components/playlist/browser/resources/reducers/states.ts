@@ -49,9 +49,19 @@ export interface PlaylistData {
 }
 
 export interface PlayerState {
+  // This list could be in different order from the original list when users
+  // shuffle the list.
   currentList: Playlist | undefined
+  // This keeps the original items order when |shuffleEnabled| is true
+  itemsInOrder: PlaylistItem[] | undefined
+
   currentItem: PlaylistItem | undefined
+
   playing: boolean
+
+  autoPlayEnabled: boolean
+
+  shuffleEnabled: boolean
 }
 
 export const usePlaylist = (id?: string) =>
@@ -84,5 +94,11 @@ export function usePlaylistEditMode () {
 export function useLastPlayerState () {
   return useSelector<ApplicationState, PlayerState | undefined>(
     applicationState => applicationState.playlistData?.lastPlayerState
+  )
+}
+
+export function useAutoPlayEnabled () {
+  return useSelector<ApplicationState, boolean | undefined>(
+    applicationState => applicationState.playerState?.autoPlayEnabled
   )
 }
