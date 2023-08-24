@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
@@ -49,6 +50,10 @@ void MigrateCallback(InitializeCallback callback,
   const absl::optional<TransactionList> transactions =
       BuildTransactionsFromJson(*json);
   if (!transactions) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
+    // migration failure dumps.
+    base::debug::DumpWithoutCrashing();
+
     BLOG(0, "Failed to parse rewards state");
     return FailedToMigrate(std::move(callback));
   }
@@ -58,6 +63,10 @@ void MigrateCallback(InitializeCallback callback,
                       base::BindOnce(
                           [](InitializeCallback callback, const bool success) {
                             if (!success) {
+                              // TODO(https://github.com/brave/brave-browser/issues/32066):
+                              // Remove migration failure dumps.
+                              base::debug::DumpWithoutCrashing();
+
                               BLOG(0, "Failed to save rewards state");
                               return FailedToMigrate(std::move(callback));
                             }
