@@ -111,7 +111,6 @@ void ReaderModeBubble::Init() {
     label->SetFontList(font);
     label->SetLineHeight(kToggleLineHeight);
     label->SetMultiLine(true);
-    // label->SetMaximumWidth(kToggleWidth);
     label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
     layout->SetFlexForView(box->AddChildView(std::move(label)),
                            1);  // show the button and force text to wrap
