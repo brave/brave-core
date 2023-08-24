@@ -492,7 +492,8 @@ std::string AIChatTabHelper::BuildLlama2Prompt(std::string user_message) {
   base::Time::Exploded exploded;
   base::Time::Now().LocalExplode(&exploded);
   std::string date_string = base::StringPrintf(
-      "%s, %s %02d, %d", GetDayOfWeekString(exploded.day_of_week).c_str(),
+      "%02d:%02d %s, %s %02d, %d", exploded.hour, exploded.minute,
+      GetDayOfWeekString(exploded.day_of_week).c_str(),
       GetMonthString(exploded.month - 1).c_str(), exploded.day_of_month,
       exploded.year);
   std::string today_system_message =
