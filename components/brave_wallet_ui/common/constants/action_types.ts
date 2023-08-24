@@ -112,7 +112,6 @@ export interface RetryTransactionPayload {
   chainId: string
   transactionId: string
   coinType: BraveWallet.CoinType
-  fromAddress: string
 }
 
 export type SpeedupTransactionPayload = RetryTransactionPayload

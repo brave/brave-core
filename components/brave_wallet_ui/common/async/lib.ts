@@ -147,22 +147,6 @@ export async function getBlockchainTokenInfo (contractAddress: string): Promise<
   return (await apiProxy.assetRatioService.getTokenInfo(contractAddress))
 }
 
-export async function findHardwareAccountInfo (
-  address: string
-): Promise<BraveWallet.AccountInfo | false> {
-  const { keyringService } = getAPIProxy()
-  const { accounts }= (await keyringService.getAllAccounts()).allAccounts
-  for (const account of accounts) {
-    if (!account.hardware) {
-      continue
-    }
-    if (account.address === address) {
-      return account
-    }
-  }
-  return false
-}
-
 export async function getBuyAssetUrl (args: {
   asset: BraveWallet.BlockchainToken
   onRampProvider: BraveWallet.OnRampProvider
@@ -386,11 +370,6 @@ export async function getIsSwapSupported (network: BraveWallet.NetworkInfo): Pro
   return (await swapService.isSwapSupported(network.chainId)).result
 }
 
-export async function hasJupiterFeesForMint (mint: string): Promise<boolean> {
-  const { swapService } = getAPIProxy()
-  return (await swapService.hasJupiterFeesForTokenMint(mint)).result
-}
-
 export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const api = getAPIProxy()
@@ -507,7 +486,7 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
     }
     return await apiProxy.txService.addUnapprovedTransaction(
       toTxDataUnion({ ethTxData1559: txData1559 }),
-      payload.fromAccount.address,
+      payload.fromAccount.accountId,
       null,
       null
     )
@@ -515,7 +494,7 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
 
   return await apiProxy.txService.addUnapprovedTransaction(
     toTxDataUnion({ ethTxData: txData }),
-    payload.fromAccount.address,
+    payload.fromAccount.accountId,
     null,
     null
   )
@@ -534,7 +513,7 @@ export async function sendFilTransaction(payload: SendFilTransactionParams) {
   }
   return await apiProxy.txService.addUnapprovedTransaction(
     toTxDataUnion({ filTxData: filTxData }),
-    payload.fromAccount.address,
+    payload.fromAccount.accountId,
     null,
     null
   )
@@ -549,17 +528,7 @@ export async function sendSolTransaction(payload: SendSolTransactionParams) {
   )
   return await txService.addUnapprovedTransaction(
     toTxDataUnion({ solanaTxData: value.txData ?? undefined }),
-    payload.fromAccount.address,
-    null,
-    null
-  )
-}
-
-export async function sendSPLTransaction (payload: BraveWallet.SolanaTxData) {
-  const { txService } = getAPIProxy()
-  return await txService.addUnapprovedTransaction(
-    toTxDataUnion({ solanaTxData: payload }),
-    payload.feePayer,
+    payload.fromAccount.accountId,
     null,
     null
   )
@@ -578,14 +547,14 @@ export async function sendSolanaSerializedTransaction(
   if (result.error !== BraveWallet.ProviderError.kSuccess) {
     console.error(`Failed to sign Solana message: ${result.errorMessage}`)
     return { success: false, errorMessage: result.errorMessage, txMetaId: '' }
-  } else {
-    return await txService.addUnapprovedTransaction(
-      toTxDataUnion({ solanaTxData: result.txData ?? undefined }),
-      payload.from,
-      null,
-      payload.groupId || null
-    )
   }
+
+  return await txService.addUnapprovedTransaction(
+    toTxDataUnion({ solanaTxData: result.txData ?? undefined }),
+    payload.accountId,
+    null,
+    payload.groupId || null
+  )
 }
 
 export function getSwapService () {

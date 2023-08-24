@@ -59,15 +59,13 @@ bool IsBraveVPNWireguardEnabled(PrefService* local_state) {
 }
 
 void MigrateWireguardFeatureFlag(PrefService* local_prefs) {
-  if (!base::FeatureList::IsEnabled(features::kBraveVPNUseWireguardService)) {
-    return;
-  }
   auto* wireguard_enabled_pref =
       local_prefs->FindPreference(prefs::kBraveVPNWireguardEnabled);
   if (wireguard_enabled_pref && wireguard_enabled_pref->IsDefaultValue()) {
     local_prefs->SetBoolean(
         prefs::kBraveVPNWireguardEnabled,
-        brave_vpn::wireguard::IsWireguardServiceRegistered());
+        base::FeatureList::IsEnabled(features::kBraveVPNUseWireguardService) &&
+            brave_vpn::wireguard::IsWireguardServiceRegistered());
   }
 }
 #endif

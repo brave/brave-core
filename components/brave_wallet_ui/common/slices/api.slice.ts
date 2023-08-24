@@ -74,7 +74,7 @@ import { pricingEndpoints } from './endpoints/pricing.endpoints'
 import { nftsEndpoints } from './endpoints/nfts.endpoints'
 
 // utils
-import { getAccountType } from '../../utils/account-utils'
+import { findAccountByAccountId, getAccountType } from '../../utils/account-utils'
 import { cacher, TX_CACHE_TAGS } from '../../utils/query-cache-utils'
 import type WalletApiProxy from '../wallet_api_proxy'
 import {
@@ -179,7 +179,7 @@ interface GetTransactionsQueryArg {
   /**
    * will fetch for all coin-type addresses if null
   */
-  address: string | null
+  accountId: BraveWallet.AccountId | null
   /**
    * will fetch for all coin-type chains if null
   */
@@ -1437,7 +1437,7 @@ export function createWalletApi () {
         GetTransactionsQueryArg
       >({
         queryFn: async (
-          { address, coinType, chainId },
+          { accountId: fromAccountId, coinType, chainId },
           { dispatch },
           extraOptions,
           baseQuery
@@ -1450,12 +1450,12 @@ export function createWalletApi () {
             // TODO(apaymyshev): getAllTransactionInfo already supports getting
             // transaction for all accounts.
             const txInfos =
-              address && coinType !== null
+            fromAccountId && coinType !== null
                 ? (
                     await txService.getAllTransactionInfo(
                       coinType,
                       chainId,
-                      address
+                      fromAccountId
                     )
                   ).transactionInfos
                 : (
@@ -1469,7 +1469,7 @@ export function createWalletApi () {
                           await txService.getAllTransactionInfo(
                             account.accountId.coin,
                             chainId,
-                            account.address
+                            account.accountId
                           )
                         return transactionInfos
                       }
@@ -1493,7 +1493,7 @@ export function createWalletApi () {
             }
           } catch (error) {
             return {
-              error: `Unable to fetch txs for address: ${address} (${coinType})
+              error: `Unable to fetch txs for account: ${fromAccountId?.uniqueKey} (${coinType})
               error: ${error?.message ?? error}`
             }
           }
@@ -1505,7 +1505,7 @@ export function createWalletApi () {
                 ...TX_CACHE_TAGS.LISTS({
                   chainId: arg.chainId,
                   coin: arg.coinType,
-                  fromAddress: arg.address
+                  fromAccountId: arg.accountId
                 }),
                 ...TX_CACHE_TAGS.IDS((res || []).map(({ id }) => id))
               ]
@@ -1522,20 +1522,24 @@ export function createWalletApi () {
              *
              * isEIP1559 is true IFF:
              *   - network supports EIP-1559
+             *
+             *     AND
+             *
              *   - keyring supports EIP-1559
              *     (ex: certain hardware wallets vendors)
-             *   - payload: SendEthTransactionParams has specified EIP-1559
+             *
+             *     AND
+             *
+             *   - payload: SendEthTransactionParams has NOT specified legacy
              *              gas-pricing fields.
              *
              * In all other cases, fallback to legacy gas-pricing fields.
+             * For example, if network and keyring support EIP-1559, but the
+             * legacy gasPrice field is specified in the payload, then type-0
+             * transaction should be created.
              */
             const isEIP1559 =
-              // Transaction payload has hardcoded EIP-1559 gas fields.
-              (payload.maxPriorityFeePerGas !== undefined &&
-                payload.maxFeePerGas !== undefined) ||
-              // Transaction payload does not have hardcoded legacy gas fields.
-              payload.gasPrice === undefined ||
-              // Check if network and keyring support EIP-1559.
+              payload.gasPrice === undefined &&
               hasEIP1559Support(
                 getAccountType(payload.fromAccount),
                 payload.network
@@ -1570,7 +1574,7 @@ export function createWalletApi () {
                 isEIP1559
                   ? toTxDataUnion({ ethTxData1559: txData1559 })
                   : toTxDataUnion({ ethTxData: txData }),
-                payload.fromAccount.address,
+                payload.fromAccount.accountId,
                 null,
                 null
               )
@@ -1599,7 +1603,7 @@ export function createWalletApi () {
             ? []
             : TX_CACHE_TAGS.LISTS({
                 coin: arg.fromAccount.accountId.coin,
-                fromAddress: arg.fromAccount.accountId.address,
+                fromAccountId: arg.fromAccount.accountId,
                 chainId: null
               })
       }),
@@ -1624,7 +1628,7 @@ export function createWalletApi () {
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
                 toTxDataUnion({ filTxData: filTxData }),
-                payload.fromAccount.address,
+                payload.fromAccount.accountId,
                 null,
                 null
               )
@@ -1649,7 +1653,7 @@ export function createWalletApi () {
             ? []
             : TX_CACHE_TAGS.LISTS({
                 coin: arg.fromAccount.accountId.coin,
-                fromAddress: arg.fromAccount.accountId.address,
+                fromAccountId: arg.fromAccount.accountId,
                 chainId: null
               })
       }),
@@ -1683,7 +1687,7 @@ export function createWalletApi () {
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
                 toTxDataUnion({ solanaTxData: txData ?? undefined }),
-                payload.fromAccount.address,
+                payload.fromAccount.accountId,
                 null,
                 null
               )
@@ -1708,7 +1712,7 @@ export function createWalletApi () {
             ? []
             : TX_CACHE_TAGS.LISTS({
                 coin: arg.fromAccount.accountId.coin,
-                fromAddress: arg.fromAccount.accountId.address,
+                fromAccountId: arg.fromAccount.accountId,
                 chainId: null
               })
       }),
@@ -1843,7 +1847,7 @@ export function createWalletApi () {
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
                 toTxDataUnion({ solanaTxData: txData }),
-                txData.feePayer,
+                payload.fromAccount.accountId,
                 null,
                 null
               )
@@ -1873,7 +1877,7 @@ export function createWalletApi () {
           TX_CACHE_TAGS.LISTS({
             chainId: null,
             coin: arg.fromAccount.accountId.coin,
-            fromAddress: arg.fromAccount.accountId.address
+            fromAccountId: arg.fromAccount.accountId
           })
       }),
       sendERC721TransferFrom: mutation<
@@ -1925,7 +1929,7 @@ export function createWalletApi () {
           TX_CACHE_TAGS.LISTS({
             chainId: null,
             coin: arg.fromAccount.accountId.coin,
-            fromAddress: arg.fromAccount.accountId.address
+            fromAccountId: arg.fromAccount.accountId
           })
       }),
       sendETHFilForwarderTransfer: mutation<
@@ -1971,7 +1975,7 @@ export function createWalletApi () {
           TX_CACHE_TAGS.LISTS({
             chainId: null,
             coin: arg.fromAccount.accountId.coin,
-            fromAddress: arg.fromAccount.address
+            fromAccountId: arg.fromAccount.accountId
           })
       }),
 
@@ -2017,7 +2021,7 @@ export function createWalletApi () {
             TX_CACHE_TAGS.LISTS({
               chainId: null,
               coin: BraveWallet.CoinType.ETH,
-              fromAddress: arg.fromAccount.address
+              fromAccountId: arg.fromAccount.accountId
             })
         }
       ),
@@ -2027,8 +2031,7 @@ export function createWalletApi () {
           txId: string
           status: BraveWallet.TransactionStatus
         },
-        Pick<SerializableTransactionInfo, 'txStatus' | 'id' | 'chainId'> & {
-          fromAddress: string
+        Pick<SerializableTransactionInfo, 'txStatus' | 'id' | 'chainId' | 'fromAccountId'> & {
           coinType: BraveWallet.CoinType
         }
       >({
@@ -2055,22 +2058,22 @@ export function createWalletApi () {
         onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
           const txQueryArgsToUpdate: GetTransactionsQueryArg[] = [
             {
-              address: arg.fromAddress,
+              accountId: arg.fromAccountId,
               coinType: arg.coinType,
               chainId: arg.chainId
             },
             {
-              address: arg.fromAddress,
+              accountId: arg.fromAccountId,
               coinType: arg.coinType,
               chainId: null
             },
             {
-              address: null,
+              accountId: null,
               coinType: arg.coinType,
               chainId: arg.chainId
             },
             {
-              address: null,
+              accountId: null,
               coinType: null,
               chainId: null
             }
@@ -2157,7 +2160,7 @@ export function createWalletApi () {
         { success: boolean },
         Pick<
           SerializableTransactionInfo,
-          'id' | 'txDataUnion' | 'txType' | 'fromAddress' | 'chainId'
+          'id' | 'txDataUnion' | 'txType' | 'fromAccountId' | 'chainId'
         >
       >({
         queryFn: async (txInfo, store, extraOptions, baseQuery) => {
@@ -2166,13 +2169,16 @@ export function createWalletApi () {
             const apiProxy = data
 
             const accountsRegistry = await cache.getAccountsRegistry()
-            const foundAccount = accountsRegistry.entities[txInfo.fromAddress]
+            const foundAccount = findAccountByAccountId(
+              txInfo.fromAccountId,
+              accountsRegistry
+            )
 
             if (!foundAccount?.hardware) {
               return {
                 error:
                   'failed to approve hardware transaction - ' +
-                  `account not found or is not hardware: ${txInfo.fromAddress}`
+                  `account not found or is not hardware: ${txInfo.fromAccountId.uniqueKey}`
               }
             }
 
@@ -2364,7 +2370,7 @@ export function createWalletApi () {
               await dispatch(
                 walletApi.endpoints.getTransactions.initiate({
                   chainId: null,
-                  address: null,
+                  accountId: null,
                   coinType: null
                 })
               ).unwrap()
@@ -2688,7 +2694,7 @@ export function createWalletApi () {
             ? TX_CACHE_TAGS.LISTS({
                 chainId: arg.chainId,
                 coin: getCoinFromTxDataUnion(arg.txDataUnion),
-                fromAddress: arg.fromAddress
+                fromAccountId: arg.fromAccountId
               })
             : []
       }),

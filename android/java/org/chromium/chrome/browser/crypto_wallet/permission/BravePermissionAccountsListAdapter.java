@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.permission;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -23,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 
@@ -107,7 +105,9 @@ public class BravePermissionAccountsListAdapter
         AccountInfo accountInfo = mAccountInfos[position];
         holder.titleText.setText(accountInfo.name);
         holder.subTitleText.setText(Utils.stripAccountAddress(accountInfo.address));
-        setBlockiesBitmapResource(holder.iconImg, accountInfo.address);
+        Utils.setBlockiesBitmapResourceFromAccount(
+                mExecutor, mHandler, holder.iconImg, accountInfo, true);
+
         if (mCheckBoxStyle) {
             holder.accountCheck.setVisibility(View.VISIBLE);
             if (mSelectedAccount != null && mSelectedAccount.address.equals(accountInfo.address)) {
@@ -213,16 +213,5 @@ public class BravePermissionAccountsListAdapter
             this.accountCheck = itemView.findViewById(R.id.account_check);
             this.accountAction = itemView.findViewById(R.id.account_action);
         }
-    }
-
-    private void setBlockiesBitmapResource(ImageView iconImg, String source) {
-        mExecutor.execute(() -> {
-            final Bitmap bitmap = Blockies.createIcon(source, true, true);
-            mHandler.post(() -> {
-                if (iconImg != null) {
-                    iconImg.setImageBitmap(bitmap);
-                }
-            });
-        });
     }
 }

@@ -26,6 +26,7 @@ import { usePendingTransactions } from '../../../common/hooks/use-pending-transa
 import { useGetTransactionsQuery } from '../../../common/slices/api.slice'
 import { useUnsafeUISelector } from '../../../common/hooks/use-safe-selector'
 import {
+  useAccountQuery,
   useGetCombinedTokensListQuery
 } from '../../../common/slices/api.slice.extra'
 
@@ -57,7 +58,7 @@ export function TransactionStatus (props: Props) {
   const { tx } = useGetTransactionsQuery(
     transactionId
       ? {
-          address: null,
+          accountId: null,
           chainId: null,
           coinType: null
         }
@@ -70,6 +71,7 @@ export function TransactionStatus (props: Props) {
       })
     }
   )
+  const { account: txAccount } = useAccountQuery(tx?.fromAccountId)
 
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
 
@@ -96,6 +98,7 @@ export function TransactionStatus (props: Props) {
     const { normalizedTransferredValue } =
       getFormattedTransactionTransferredValue({
         tx,
+        txAccount,
         txNetwork: transactionNetwork,
         token,
         sellToken

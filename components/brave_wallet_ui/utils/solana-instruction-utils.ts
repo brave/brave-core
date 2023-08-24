@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { EntityState } from '@reduxjs/toolkit'
+
 // types
 import {
   BraveWallet,
@@ -10,7 +12,7 @@ import {
 } from '../constants/types'
 
 // utils
-import { findAccountName } from './account-utils'
+import { findAccountByAddress } from './account-utils'
 import { getGetCleanedMojoEnumKeys } from './enum-utils'
 import { lamportsToSol } from './web3-utils'
 
@@ -109,10 +111,7 @@ export const getTypedSolanaTxInstructions = (solTxData?: SerializableSolanaTxDat
  */
 export const formatSolInstructionParamValue = (
   { name, value, type }: BraveWallet.SolanaInstructionParam,
-  accounts: Array<{
-    address: string
-    name: string
-  }>
+  accounts: EntityState<BraveWallet.AccountInfo> | undefined
 ): {
   valueType: 'lamports' | 'address' | 'other'
   formattedValue: string
@@ -127,7 +126,7 @@ export const formatSolInstructionParamValue = (
     isLamportsParam
       ? lamportsToSol(value).formatAsAsset(9, 'SOL')
       : isAddressParam
-      ? findAccountName(accounts, value) ?? value
+      ? findAccountByAddress(value, accounts) ?? value
       : value
   ).toString()
 

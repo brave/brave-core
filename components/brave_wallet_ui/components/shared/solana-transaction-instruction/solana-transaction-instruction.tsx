@@ -4,13 +4,12 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { EntityState } from '@reduxjs/toolkit'
 
 // utils
 import { getSolanaProgramIdName } from '../../../utils/solana-program-id-utils'
 import { getLocale } from '../../../../common/locale'
-import { findAccountName } from '../../../utils/account-utils'
-import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
+import { findAccountByAddress } from '../../../utils/account-utils'
 
 // types
 import { BraveWallet } from '../../../constants/types'
@@ -41,6 +40,9 @@ import {
   CodeSnippetText
 } from '../../extension/transaction-box/style'
 
+// queries
+import { useGetAccountInfosRegistryQuery } from '../../../common/slices/api.slice'
+
 interface Props {
   typedInstructionWithParams: TypedSolanaInstructionWithParams
 }
@@ -55,8 +57,7 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
     accountMetas
   }
 }) => {
-  // redux
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const { data: accounts } = useGetAccountInfosRegistryQuery()
 
   // render
   if (!type) {
@@ -219,16 +220,13 @@ const AddressParamValue = ({
   pubkey,
   lookupTableIndex
 }: {
-  accounts: Array<{
-    address: string
-    name: string
-  }>
+  accounts: EntityState<BraveWallet.AccountInfo> | undefined
   pubkey: string
   lookupTableIndex?: number
 }) => {
   // memos
   const formattedValue = React.useMemo(() => {
-    return findAccountName(accounts, pubkey) ?? pubkey
+    return findAccountByAddress(pubkey, accounts)?.name ?? pubkey
   }, [accounts, pubkey])
 
   // render

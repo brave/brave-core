@@ -78,5 +78,8 @@ export const {
   setShowNetworkLogoOnNfts,
   setIsRefreshingNetworksAndTokens,
   updateAccountName,
-  removeAccount
+  removeAccount,
+  importAccount,
+  setImportAccountError,
+  importAccountFromJson
 } = WalletActions

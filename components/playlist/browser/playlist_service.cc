@@ -565,6 +565,18 @@ void PlaylistService::UpdateItem(mojom::PlaylistItemPtr item) {
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemUpdated, item->id);
 }
 
+void PlaylistService::UpdateItemLastPlayedPosition(
+    const std::string& id,
+    int32_t last_played_position) {
+  if (!HasPlaylistItem(id)) {
+    return;
+  }
+
+  auto item = GetPlaylistItem(id);
+  item->last_played_position = last_played_position;
+  UpdateItem(std::move(item));
+}
+
 void PlaylistService::CreatePlaylist(mojom::PlaylistPtr playlist,
                                      CreatePlaylistCallback callback) {
   do {

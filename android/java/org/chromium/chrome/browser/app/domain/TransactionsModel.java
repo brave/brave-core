@@ -174,6 +174,11 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
             List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
             var perTxSolanaFee = solanaTransactionsGasHelper.getPerTxFee();
             for (TransactionInfo txInfo : transactionInfoArr) {
+                AccountInfo txAccountInfo =
+                        Utils.findAccount(allAccountsArray, txInfo.fromAccountId);
+                if (txAccountInfo == null) {
+                    continue;
+                }
                 long solanaEstimatedTxFee = 0;
                 if (perTxSolanaFee.get(txInfo.id) != null) {
                     solanaEstimatedTxFee = perTxSolanaFee.get(txInfo.id);
@@ -189,7 +194,7 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
                         txExtraData.userAssetsList, txExtraData.nativeAssetsBalances,
                         txExtraData.blockchainTokensBalances);
                 WalletListItemModel itemModel = Utils.makeWalletItem(
-                        activityRef.get(), txInfo, txNetwork, parsedTx, allAccountsArray);
+                        activityRef.get(), txInfo, txNetwork, parsedTx, txAccountInfo);
                 walletListItemModelList.add(itemModel);
             }
             postTxListResponse(walletListItemModelList);

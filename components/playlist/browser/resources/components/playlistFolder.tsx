@@ -110,7 +110,7 @@ export default function PlaylistFolder ({
         currentList: playlist
       })
     }
-  }, [playlist, lastPlayerState])
+  }, [playlist, lastPlayerState?.currentList?.id])
 
   const [selectedSet, setSelectedSet] = React.useState(new Set<string>())
   const editMode = usePlaylistEditMode()
@@ -151,6 +151,10 @@ export default function PlaylistFolder ({
     return <Redirect to='/' />
   }
 
+  const itemsToRender = lastPlayerState?.shuffleEnabled
+    ? lastPlayerState.currentList?.items ?? playlist?.items
+    : playlist?.items
+
   return (
     <>
       {editMode === PlaylistEditMode.BULK_EDIT && (
@@ -159,7 +163,7 @@ export default function PlaylistFolder ({
           selectedIds={selectedSet}
         />
       )}
-      {playlist?.items.map(item => (
+      {itemsToRender.map(item => (
         <PlaylistItem
           key={item.id}
           playlist={playlist}

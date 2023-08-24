@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { ThunkDispatch } from '@reduxjs/toolkit'
-import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -21,9 +20,7 @@ import { HardwareWalletResponseCodeType } from '../../../common/hardware/types'
 // hooks
 import useInterval from '../../../common/hooks/interval'
 import { useDispatch } from 'react-redux'
-import {
-  useGetAccountInfosRegistryQuery //
-} from '../../../common/slices/api.slice'
+import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 import {
   useSafeUISelector,
   useUnsafePanelSelector
@@ -81,26 +78,17 @@ export const ConnectHardwareWalletPanel = ({
    * ```[{ id: -1, address: '', message: '' }]```
    */
   const signMessageData = useUnsafePanelSelector(PanelSelectors.signMessageData)
+  const request = signMessageData.at(0)
   const selectedPendingTransactionId = useSafeUISelector(
     UISelectors.selectedPendingTransactionId
   )
-  const isSigning = signMessageData?.length && signMessageData[0].id !== -1
+  const isSigning = request && request.id !== -1
 
   const isConfirming = !!selectedPendingTransactionId
   const coinType = account.accountId.coin
 
   // queries
-  const { messageAccount } = useGetAccountInfosRegistryQuery(
-    signMessageData[0].address
-      ? undefined
-      : skipToken,
-    {
-      selectFromResult: (res) => ({
-        // TODO(apaymyshev): fix this when address gets replaced by uniqueKey as a key.
-        messageAccount: res.data?.entities[signMessageData[0].address],
-      })
-    }
-  )
+  const { account: messageAccount } = useAccountQuery(request?.accountId)
 
   // pending transactions
   const { onConfirm: onConfirmTransaction, selectedPendingTransaction } =
@@ -142,21 +130,26 @@ export const ConnectHardwareWalletPanel = ({
   }, [onCancel, account])
 
   const onSignData = React.useCallback(() => {
-    if (!messageAccount) {
+    if (!messageAccount || !request) {
       return
     }
 
-    if (isHardwareAccount(messageAccount)) {
-      dispatch(PanelActions.signMessageHardware(signMessageData[0]))
+    if (isHardwareAccount(messageAccount.accountId)) {
+      dispatch(
+        PanelActions.signMessageHardware({
+          account: messageAccount,
+          request: request
+        })
+      )
     } else {
       dispatch(
         PanelActions.signMessageProcessed({
           approved: true,
-          id: signMessageData[0].id
+          id: request.id
         })
       )
     }
-  }, [messageAccount, signMessageData[0]])
+  }, [messageAccount, request])
 
   const retryHardwareOperation = React.useCallback(() => {
     if (isSigning) {

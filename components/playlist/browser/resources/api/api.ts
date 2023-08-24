@@ -89,6 +89,16 @@ class API {
     )
   }
 
+  updateItemLastPlayedPosition (
+    playlistItemId: string,
+    lastPlayedPosition: number
+  ) {
+    this.#pageHandler.updateItemLastPlayedPosition(
+      playlistItemId,
+      lastPlayedPosition
+    )
+  }
+
   removeLocalData (playlistItemId: string) {
     this.#pageHandler.removeLocalDataForItem(playlistItemId)
   }

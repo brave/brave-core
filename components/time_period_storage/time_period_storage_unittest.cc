@@ -31,9 +31,9 @@ class TimePeriodStorageTest : public ::testing::Test {
   }
 
  protected:
-  raw_ptr<base::SimpleTestClock> clock_ = nullptr;
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<TimePeriodStorage> state_;
+  raw_ptr<base::SimpleTestClock> clock_ = nullptr;
 };
 
 TEST_F(TimePeriodStorageTest, StartsZero) {

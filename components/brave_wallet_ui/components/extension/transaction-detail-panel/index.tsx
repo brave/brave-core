@@ -10,6 +10,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 // Hooks
 import { useExplorer } from '../../../common/hooks/explorer'
 import {
+  useGetAccountInfosRegistryQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
   useGetSolanaEstimatedFeeQuery,
@@ -17,17 +18,17 @@ import {
   walletApi
 } from '../../../common/slices/api.slice'
 import {
-  useUnsafeUISelector,
-  useUnsafeWalletSelector
+  useUnsafeUISelector
 } from '../../../common/hooks/use-safe-selector'
 import {
+  useAccountQuery,
   useGetCombinedTokensListQuery,
   useTransactionQuery
 } from '../../../common/slices/api.slice.extra'
 import {
   querySubscriptionOptions60s
 } from '../../../common/slices/constants'
-import { useAddressOrb } from '../../../common/hooks/use-orb'
+import { useAccountOrb, useAddressOrb } from '../../../common/hooks/use-orb'
 
 // Utils
 import { makeNetworkAsset } from '../../../options/asset-options'
@@ -48,7 +49,7 @@ import { toProperCase } from '../../../utils/string-utils'
 import Amount from '../../../utils/amount'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { getLocale } from '../../../../common/locale'
-import { UISelectors, WalletSelectors } from '../../../common/selectors'
+import { UISelectors } from '../../../common/selectors'
 import { serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
 
 // Constants
@@ -100,7 +101,6 @@ export const TransactionDetailPanel = (props: Props) => {
 
   // redux
   const dispatch = useDispatch()
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const transactionProviderErrorRegistry = useUnsafeUISelector(
     UISelectors.transactionProviderErrorRegistry
   )
@@ -112,6 +112,8 @@ export const TransactionDetailPanel = (props: Props) => {
   const txCoinType = transaction
     ? getCoinFromTxDataUnion(transaction.txDataUnion)
     : undefined
+  const { data: accounts } = useGetAccountInfosRegistryQuery()
+  const { account } = useAccountQuery(transaction?.fromAccountId)
 
   const isSolanaTxn = transaction
     ? isSolanaTransaction(transaction)
@@ -175,7 +177,13 @@ export const TransactionDetailPanel = (props: Props) => {
   }, [transaction, txCoinType, solFeeEstimate])
 
   const transactionDetails = React.useMemo(() => {
-    if (!transaction || !spotPriceRegistry) {
+    if (
+      !transaction ||
+      !spotPriceRegistry ||
+      !transactionsNetwork ||
+      !account ||
+      !accounts
+    ) {
       return undefined
     }
 
@@ -185,10 +193,12 @@ export const TransactionDetailPanel = (props: Props) => {
       gasFee,
       spotPriceRegistry,
       tokensList: combinedTokensList,
+      transactionAccount: account,
       transactionNetwork: transactionsNetwork
     })
   }, [
     transaction,
+    account,
     transactionsNetwork,
     accounts,
     spotPriceRegistry,
@@ -208,11 +218,8 @@ export const TransactionDetailPanel = (props: Props) => {
     symbol,
   } = transactionDetails || {}
 
-  const fromOrb = useAddressOrb(transaction?.fromAddress)
-
-  const to = transaction ? getTransactionToAddress(transaction) : ''
-
-  const toOrb = useAddressOrb(to)
+  const fromOrb = useAccountOrb(account)
+  const toOrb = useAddressOrb(getTransactionToAddress(transaction))
 
   const transactionTitle = React.useMemo((): string => {
     if (!transaction) {
@@ -287,7 +294,6 @@ export const TransactionDetailPanel = (props: Props) => {
         walletApi.endpoints.retryTransaction.initiate({
           chainId: transaction.chainId,
           coinType: txCoinType,
-          fromAddress: transaction.fromAddress,
           transactionId: transaction.id
         })
       )
@@ -300,7 +306,6 @@ export const TransactionDetailPanel = (props: Props) => {
         walletApi.endpoints.speedupTransaction.initiate({
           chainId: transaction.chainId,
           coinType: txCoinType,
-          fromAddress: transaction.fromAddress,
           transactionId: transaction.id
         })
       )
@@ -313,7 +318,6 @@ export const TransactionDetailPanel = (props: Props) => {
         walletApi.endpoints.cancelTransaction.initiate({
           chainId: transaction.chainId,
           coinType: txCoinType,
-          fromAddress: transaction.fromAddress,
           transactionId: transaction.id
         })
       )
@@ -321,7 +325,7 @@ export const TransactionDetailPanel = (props: Props) => {
   }
 
   // render
-  if (!transaction) {
+  if (!transaction || !account) {
     return <Skeleton />
   }
 
@@ -337,7 +341,8 @@ export const TransactionDetailPanel = (props: Props) => {
       </OrbContainer>
       <FromToRow>
         <Tooltip
-          text={transaction.fromAddress}
+          // TODO(apaymyshev): handle bitcoin transaction
+          text={transaction.fromAddress ?? ''}
           isAddress={true}
           position={'left'}
         >

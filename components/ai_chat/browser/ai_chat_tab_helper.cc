@@ -211,6 +211,12 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
     VLOG(1) << __func__ << ": No data";
     return;
   }
+
+  // tokens + max_new_tokens must be <= 4096 (llama2)
+  // 8092 chars, ~3,098 tokens (reserved for article)
+  // 1k chars, ~380 tokens (reserved for prompt)
+  contents_text = contents_text.substr(0, 8092);
+
   is_video_ = is_video;
   article_text_ = contents_text;
 

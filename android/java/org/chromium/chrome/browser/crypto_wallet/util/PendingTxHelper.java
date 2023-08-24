@@ -105,8 +105,8 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                     new AsyncUtils.GetAllTransactionInfoResponseContext(
                             allTxMultiResponse.singleResponseComplete, accountInfo.name);
             allTxContexts.add(allTxContext);
-            mTxService.getAllTransactionInfo(
-                    accountInfo.accountId.coin, mChainIdForTxs, accountInfo.address, allTxContext);
+            mTxService.getAllTransactionInfo(accountInfo.accountId.coin, mChainIdForTxs,
+                    accountInfo.accountId, allTxContext);
         }
         allTxMultiResponse.setWhenAllCompletedAction(() -> {
             for (AsyncUtils.GetAllTransactionInfoResponseContext allTxContext : allTxContexts) {
@@ -143,17 +143,6 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                 runWhenDone.run();
             }
         });
-    }
-
-    public String getAccountNameForTransaction(TransactionInfo transactionInfo) {
-        for (Map.Entry<String, TransactionInfo[]> entry : mTxInfos.entrySet()) {
-            for (TransactionInfo info : entry.getValue()) {
-                if (info.id.equals(transactionInfo.id)) {
-                    return entry.getKey();
-                }
-            }
-        }
-        return null;
     }
 
     public void updateTxInfosMap(TransactionInfo transactionInfo) {

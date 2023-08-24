@@ -9,6 +9,7 @@ import {
   BNBIconUrl,
   BTCIconUrl,
   ETHIconUrl,
+  USDCIconUrl,
   ZRXIconUrl
 } from './asset-icons'
 import MoonCatIcon from '../../assets/png-icons/mooncat.png'
@@ -147,7 +148,7 @@ export const mockUSDCoin = {
   isErc1155: false,
   isNft: false,
   isSpam: false,
-  logo: 'chrome://erc-token-images/usdc.png',
+  logo: USDCIconUrl,
   name: 'USD Coin',
   symbol: 'USDC',
   tokenId: '',

@@ -89,6 +89,7 @@ const playlistReducer: Reducer<PlaylistData | undefined> = (
 
     case types.PLAYLIST_SET_EDIT_MODE:
       state = { ...state, playlistEditMode: action.payload }
+      break
   }
   return state
 }

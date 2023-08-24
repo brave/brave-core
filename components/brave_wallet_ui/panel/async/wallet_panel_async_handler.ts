@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import {assert} from 'chrome://resources/js/assert_ts.js';
+
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
@@ -20,11 +22,11 @@ import {
   SignAllTransactionsProcessedPayload,
   SwitchEthereumChainProcessedPayload,
   GetEncryptionPublicKeyProcessedPayload,
-  DecryptProcessedPayload
+  DecryptProcessedPayload,
+  SignTransactionHardwarePayload,
+  SignAllTransactionsHardwarePayload,
+  SignMessageHardwarePayload
 } from '../constants/action_types'
-import {
-  findHardwareAccountInfo,
-} from '../../common/async/lib'
 import {
   signMessageWithHardwareKeyring,
   signRawTransactionWithHardwareKeyring,
@@ -36,6 +38,7 @@ import {
 import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
+import { isHardwareAccount } from '../../utils/account-utils'
 import { HardwareVendor } from 'components/brave_wallet_ui/common/api/hardware_keyrings'
 
 const handler = new AsyncActionHandler()
@@ -292,12 +295,11 @@ function toByteArrayStringUnion<D extends keyof BraveWallet.ByteArrayStringUnion
   return Object.assign({}, unionItem) as BraveWallet.ByteArrayStringUnion
 }
 
-handler.on(PanelActions.signMessageHardware.type, async (store, messageData: BraveWallet.SignMessageRequest) => {
+handler.on(PanelActions.signMessageHardware.type, async (store, messageData: SignMessageHardwarePayload) => {
   const apiProxy = getWalletPanelApiProxy()
-  const hardwareAccount = await findHardwareAccountInfo(messageData.address)
-  if (!hardwareAccount || !hardwareAccount.hardware) {
+  if (!isHardwareAccount(messageData.account.accountId)) {
     const braveWalletService = apiProxy.braveWalletService
-    braveWalletService.notifySignMessageRequestProcessed(false, messageData.id,
+    braveWalletService.notifySignMessageRequestProcessed(false, messageData.request.id,
       null, getLocale('braveWalletHardwareAccountNotFound'))
     const signMessageRequests = await getPendingSignMessageRequests()
     if (signMessageRequests) {
@@ -308,12 +310,15 @@ handler.on(PanelActions.signMessageHardware.type, async (store, messageData: Bra
     return
   }
   await navigateToConnectHardwareWallet(store)
-  const info = hardwareAccount.hardware
+  const coin = messageData.account.accountId.coin
+  const info = messageData.account.hardware
+  assert(info)
+
   const signed = await signMessageWithHardwareKeyring(
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     info.vendor as HardwareVendor,
     info.path,
-    messageData
+    messageData.request
   )
   if (!signed.success && signed.code) {
     if (signed.code === 'unauthorized') {
@@ -330,14 +335,14 @@ handler.on(PanelActions.signMessageHardware.type, async (store, messageData: Bra
   let signature: BraveWallet.ByteArrayStringUnion | undefined
   if (signed.success) {
     signature =
-      hardwareAccount.accountId.coin === BraveWallet.CoinType.SOL
+      coin === BraveWallet.CoinType.SOL
         ? toByteArrayStringUnion({ bytes: [...(signed.payload as Buffer)] })
         : toByteArrayStringUnion({ str: signed.payload as string })
   }
   const payload: SignMessageProcessedPayload =
     signed.success
-      ? { approved: signed.success, id: messageData.id, signature: signature }
-      : { approved: signed.success, id: messageData.id, error: signed.error as (string | undefined) }
+      ? { approved: signed.success, id: messageData.request.id, signature: signature }
+      : { approved: signed.success, id: messageData.request.id, error: signed.error as (string | undefined) }
   store.dispatch(PanelActions.signMessageHardwareProcessed(payload))
   await store.dispatch(PanelActions.navigateToMain())
   apiProxy.panelHandler.closeUI()
@@ -362,12 +367,11 @@ handler.on(PanelActions.signTransaction.type, async (store: Store, payload: Brav
   panelHandler.showUI()
 })
 
-handler.on(PanelActions.signTransactionHardware.type, async (store, messageData: BraveWallet.SignTransactionRequest) => {
+handler.on(PanelActions.signTransactionHardware.type, async (store, messageData: SignTransactionHardwarePayload) => {
   const apiProxy = getWalletPanelApiProxy()
-  const hardwareAccount = await findHardwareAccountInfo(messageData.fromAddress)
-  if (!hardwareAccount || !hardwareAccount.hardware) {
+  if (!isHardwareAccount(messageData.account.accountId)) {
     const braveWalletService = apiProxy.braveWalletService
-    braveWalletService.notifySignTransactionRequestProcessed(false, messageData.id,
+    braveWalletService.notifySignTransactionRequestProcessed(false, messageData.request.id,
       null, getLocale('braveWalletHardwareAccountNotFound'))
     const requests = await getPendingSignTransactionRequests()
     if (requests) {
@@ -379,11 +383,19 @@ handler.on(PanelActions.signTransactionHardware.type, async (store, messageData:
   }
 
   await navigateToConnectHardwareWallet(store)
-  const info = hardwareAccount.hardware
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-  const signed = await signRawTransactionWithHardwareKeyring(info.vendor as HardwareVendor, info.path, messageData.rawMessage, messageData.coin, () => {
-    store.dispatch(PanelActions.signTransaction([messageData]))
-  })
+  const coin = messageData.account.accountId.coin
+  const info = messageData.account.hardware
+  assert(info)
+
+  const signed = await signRawTransactionWithHardwareKeyring(
+    info.vendor as HardwareVendor,
+    info.path,
+    messageData.request.rawMessage,
+    coin,
+    () => {
+      store.dispatch(PanelActions.signTransaction([messageData.request]))
+    }
+  )
   if (signed?.code === 'unauthorized') {
     await store.dispatch(PanelActions.setHardwareWalletInteractionError(signed.code))
     return
@@ -391,15 +403,15 @@ handler.on(PanelActions.signTransactionHardware.type, async (store, messageData:
   let signature: BraveWallet.ByteArrayStringUnion | undefined
   if (signed.success) {
     signature =
-      hardwareAccount.accountId.coin === BraveWallet.CoinType.SOL
+      coin === BraveWallet.CoinType.SOL
         ? toByteArrayStringUnion({ bytes: [...(signed.payload as Buffer)] })
         : toByteArrayStringUnion({ str: signed.payload as string })
   }
 
   const payload: SignMessageProcessedPayload =
     signed.success
-      ? { approved: signed.success, id: messageData.id, signature: signature }
-      : { approved: signed.success, id: messageData.id, error: signed.error as (string | undefined) }
+      ? { approved: signed.success, id: messageData.request.id, signature: signature }
+      : { approved: signed.success, id: messageData.request.id, error: signed.error as (string | undefined) }
   store.dispatch(PanelActions.signTransactionProcessed(payload))
   await store.dispatch(PanelActions.navigateToMain())
   apiProxy.panelHandler.closeUI()
@@ -423,12 +435,11 @@ handler.on(PanelActions.signAllTransactions.type, async (store: Store, payload: 
   apiProxy.panelHandler.showUI()
 })
 
-handler.on(PanelActions.signAllTransactionsHardware.type, async (store, messageData: BraveWallet.SignAllTransactionsRequest) => {
+handler.on(PanelActions.signAllTransactionsHardware.type, async (store, messageData: SignAllTransactionsHardwarePayload) => {
   const apiProxy = getWalletPanelApiProxy()
-  const hardwareAccount = await findHardwareAccountInfo(messageData.fromAddress)
-  if (!hardwareAccount || !hardwareAccount.hardware) {
+  if (!isHardwareAccount(messageData.account.accountId)) {
     const braveWalletService = apiProxy.braveWalletService
-    braveWalletService.notifySignAllTransactionsRequestProcessed(false, messageData.id,
+    braveWalletService.notifySignAllTransactionsRequestProcessed(false, messageData.request.id,
       null, getLocale('braveWalletHardwareAccountNotFound'))
     const requests = await getPendingSignAllTransactionsRequests()
     if (requests) {
@@ -440,14 +451,23 @@ handler.on(PanelActions.signAllTransactionsHardware.type, async (store, messageD
   }
 
   await navigateToConnectHardwareWallet(store)
-  const info = hardwareAccount.hardware
+  const coin = messageData.account.accountId.coin
+  const info = messageData.account.hardware
+  assert(info)
+
   // Send serialized requests to hardware keyring to sign.
-  const payload: SignAllTransactionsProcessedPayload = { approved: true, id: messageData.id, signatures: [] }
-  for (const rawMessage of messageData.rawMessages) {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    const signed = await signRawTransactionWithHardwareKeyring(info.vendor as HardwareVendor, info.path, rawMessage, messageData.coin, () => {
-      store.dispatch(PanelActions.signAllTransactions([messageData]))
-    })
+  const payload: SignAllTransactionsProcessedPayload = { approved: true, id: messageData.request.id, signatures: [] }
+  for (const rawMessage of messageData.request.rawMessages) {
+    const signed = await signRawTransactionWithHardwareKeyring(
+      info.vendor as HardwareVendor,
+      info.path,
+      rawMessage,
+      coin,
+      () => {
+        store.dispatch(PanelActions.signAllTransactions([messageData.request]))
+      }
+    )
+
     if (!signed.success) {
       if (signed.code && signed.code === 'unauthorized') {
         await store.dispatch(PanelActions.setHardwareWalletInteractionError(signed.code))
@@ -459,7 +479,7 @@ handler.on(PanelActions.signAllTransactionsHardware.type, async (store, messageD
       break
     }
     const signature: BraveWallet.ByteArrayStringUnion =
-      hardwareAccount.accountId.coin === BraveWallet.CoinType.SOL
+      coin === BraveWallet.CoinType.SOL
         ? toByteArrayStringUnion({ bytes: [...(signed.payload as Buffer)] })
         : toByteArrayStringUnion({ str: signed.payload as string })
     payload.signatures?.push(signature)

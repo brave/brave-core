@@ -7,16 +7,17 @@ import {
 } from '../../constants/types'
 
 import { mockOriginInfo } from './mock-origin-info'
+import { mockEthAccount } from './mock-wallet-accounts'
 
 export const mockEncryptionKeyRequest: BraveWallet.GetEncryptionPublicKeyRequest = {
   requestId: 'random_id',
-  address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
+  accountId: mockEthAccount.accountId,
   originInfo: mockOriginInfo
 }
 
 export const mockDecryptRequest: BraveWallet.DecryptRequest = {
   requestId: 'random_id',
-  address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
+  accountId: mockEthAccount.accountId,
   unsafeMessage: 'This is a test message.',
   originInfo: mockOriginInfo
 }

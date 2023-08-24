@@ -114,7 +114,7 @@ export function makeJsonRpcServiceObserver (store: Store) {
           walletApi.endpoints.transactionStatusChanged.initiate({
             chainId: txInfo.chainId,
             coinType: getCoinFromTxDataUnion(txInfo.txDataUnion),
-            fromAddress: txInfo.fromAddress,
+            fromAccountId: txInfo.fromAccountId,
             id: txInfo.id,
             txStatus: txInfo.txStatus
           })

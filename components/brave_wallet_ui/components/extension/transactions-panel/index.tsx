@@ -34,14 +34,12 @@ import {
 
 export interface Props {
   selectedNetwork: BraveWallet.NetworkInfo | undefined
-  selectedAccountAddress: string | undefined
-  selectedAccountCoinType: BraveWallet.CoinType | undefined
+  selectedAccount: BraveWallet.AccountId | undefined
 }
 
 export const TransactionsPanel = ({
   selectedNetwork,
-  selectedAccountAddress,
-  selectedAccountCoinType,
+  selectedAccount,
 }: Props) => {
   // redux
   const dispatch = useDispatch()
@@ -49,11 +47,11 @@ export const TransactionsPanel = ({
   // queries
   const { data: sortedNonRejectedTransactionList = [] } =
     useGetTransactionsQuery(
-      selectedAccountAddress && selectedAccountCoinType !== undefined
+      selectedAccount
         ? {
-            address: selectedAccountAddress ?? null,
+            accountId: selectedAccount ?? null,
             chainId: selectedNetwork?.chainId ?? null,
-            coinType: selectedAccountCoinType ?? null
+            coinType: selectedAccount.coin ?? null
           }
         : skipToken
     )

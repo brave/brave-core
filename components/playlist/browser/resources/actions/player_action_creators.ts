@@ -30,3 +30,7 @@ export const playerStoppedPlayingItem = (playlist: PlaylistItem | undefined) =>
 export const playNextItem = () => action(types.PLAYER_PLAY_NEXT_ITEM)
 
 export const playPreviousItem = () => action(types.PLAYER_PLAY_PREVIOUS_ITEM)
+
+export const toggleShuffle = () => action(types.PLAYER_TOGGLE_SHUFFLE)
+
+export const toggleAutoPlay = () => action(types.PLAYER_TOGGLE_AUTO_PLAY)

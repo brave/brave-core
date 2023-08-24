@@ -1722,7 +1722,7 @@ void BraveWalletService::AddSuggestTokenRequest(
 }
 
 void BraveWalletService::AddGetPublicKeyRequest(
-    const std::string& address,
+    const mojom::AccountIdPtr& account_id,
     const url::Origin& origin,
     mojom::EthereumProvider::RequestCallback callback,
     base::Value id) {
@@ -1743,14 +1743,14 @@ void BraveWalletService::AddGetPublicKeyRequest(
   pending_request.origin = origin;
   pending_request.encryption_public_key_request =
       mojom::GetEncryptionPublicKeyRequest::New(
-          request_id, MakeOriginInfo(origin), address);
+          request_id, MakeOriginInfo(origin), account_id.Clone());
   pending_request.encryption_public_key_callback = std::move(callback);
   pending_request.encryption_public_key_id = std::move(id);
 }
 
 void BraveWalletService::AddDecryptRequest(
+    const mojom::AccountIdPtr& account_id,
     const url::Origin& origin,
-    const std::string& address,
     std::string unsafe_message,
     mojom::EthereumProvider::RequestCallback callback,
     base::Value id) {
@@ -1768,8 +1768,9 @@ void BraveWalletService::AddDecryptRequest(
   auto request_id = GenerateRandomHexString();
   auto& pending_request = pending_decrypt_requests_[request_id];
   pending_request.origin = origin;
-  pending_request.decrypt_request = mojom::DecryptRequest::New(
-      request_id, MakeOriginInfo(origin), address, std::move(unsafe_message));
+  pending_request.decrypt_request =
+      mojom::DecryptRequest::New(request_id, MakeOriginInfo(origin),
+                                 account_id.Clone(), std::move(unsafe_message));
   pending_request.decrypt_callback = std::move(callback);
   pending_request.decrypt_id = std::move(id);
 }
@@ -1850,7 +1851,8 @@ void BraveWalletService::NotifyGetPublicKeyRequestProcessed(
       std::move(pending_get_encryption_public_key_requests_[request_id]);
   pending_get_encryption_public_key_requests_.erase(request_id);
 
-  auto address = std::move(request.encryption_public_key_request->address);
+  auto account_id =
+      std::move(request.encryption_public_key_request->account_id);
   auto callback = std::move(request.encryption_public_key_callback);
   base::Value id = std::move(request.encryption_public_key_id);
 
@@ -1858,8 +1860,8 @@ void BraveWalletService::NotifyGetPublicKeyRequestProcessed(
   if (approved) {
     std::string key;
     if (!keyring_service_
-             ->GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(address,
-                                                                        &key)) {
+             ->GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
+                 account_id, &key)) {
       base::Value formed_response = GetProviderErrorDictionary(
           mojom::ProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));

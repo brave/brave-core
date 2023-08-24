@@ -49,13 +49,6 @@ export const groupAccountsById = (
   )
 }
 
-export const findAccountByAddress = <T extends { address: string }>(
-  accounts: T[],
-  address: string
-): T | undefined => {
-  return accounts.find((account) => address === account.address)
-}
-
 export const findAccountByUniqueKey = <
   T extends { accountId: { uniqueKey: string } }
 >(
@@ -69,36 +62,6 @@ export const findAccountByUniqueKey = <
   return accounts.find((account) => uniqueKey === account.accountId.uniqueKey)
 }
 
-export const findAccountByAccountId = <
-  T extends { accountId: { uniqueKey: string } }
->(
-  accounts: T[],
-  accountId: BraveWallet.AccountId | undefined
-): T | undefined => {
-  if (!accountId) {
-    return
-  }
-
-  return findAccountByUniqueKey(accounts, accountId.uniqueKey)
-}
-
-export const findAccountName = <
-  T extends {
-    address: string
-    name: string
-  }
->(
-  accounts: T[],
-  address: string
-) => {
-  if (!address) {
-    return undefined
-  }
-  return accounts.find(
-    (account) => account.address.toLowerCase() === address.toLowerCase()
-  )?.name
-}
-
 export const getAccountType = (
   info: Pick<BraveWallet.AccountInfo, 'accountId' | 'hardware'>
 ): WalletAccountTypeName => {
@@ -110,22 +73,6 @@ export const getAccountType = (
     : 'Primary'
 }
 
-export const getAddressLabel = <
-  T extends Array<{
-    address: string
-    name: string
-  }>
->(
-  address: string,
-  accounts: T
-): string => {
-  return (
-    registry[address.toLowerCase()] ??
-    findAccountName(accounts, address) ??
-    reduceAddress(address)
-  )
-}
-
 export const entityIdFromAccountId = (
   accountId: Pick<BraveWallet.AccountId, 'address' | 'uniqueKey'>
 ) => {
@@ -133,28 +80,53 @@ export const entityIdFromAccountId = (
   return accountId.address || accountId.uniqueKey
 }
 
-export const findAccountFromRegistry = (
+export const findAccountByAddress = (
   address: string,
-  accounts: EntityState<BraveWallet.AccountInfo>
+  accounts: EntityState<BraveWallet.AccountInfo> | undefined
 ): BraveWallet.AccountInfo | undefined => {
-  return accounts.entities[entityIdFromAccountId({ address, uniqueKey: '' })]
+  if (!address || ! accounts)
+    return undefined
+  for (const id of accounts.ids) {
+    if (accounts.entities[id]?.address.toLowerCase() === address.toLowerCase()) {
+      return accounts.entities[id]
+    }
+  }
+  return undefined
 }
 
-export const getAddressLabelFromRegistry = (
+export const findAccountByAccountId = (
+  accountId: BraveWallet.AccountId,
+  accounts: EntityState<BraveWallet.AccountInfo> | undefined
+): BraveWallet.AccountInfo | undefined => {
+  if (!accounts) {
+    return undefined
+  }
+  return accounts.entities[entityIdFromAccountId(accountId)]
+}
+
+export const getAddressLabel = (
   address: string,
   accounts: EntityState<BraveWallet.AccountInfo>
 ): string => {
   return (
     registry[address.toLowerCase()] ??
-    accounts.entities[address]?.name ??
+    findAccountByAddress(address, accounts)?.name ??
     reduceAddress(address)
   )
 }
 
-export function isHardwareAccount(
-  account: Pick<BraveWallet.AccountInfo, 'hardware'>
-) {
-  return !!account.hardware?.deviceId
+export const getAccountLabel = (
+  accountId: BraveWallet.AccountId,
+  accounts: EntityState<BraveWallet.AccountInfo>
+): string => {
+  return (
+    findAccountByAccountId(accountId, accounts)?.name ??
+    reduceAddress(accountId.address)
+  )
+}
+
+export function isHardwareAccount(account: BraveWallet.AccountId) {
+  return account.kind === BraveWallet.AccountKind.kHardware
 }
 
 export const keyringIdForNewAccount = (

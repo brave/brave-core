@@ -23,6 +23,8 @@ import {
 } from '../../constants/types'
 import {
   AddAccountPayloadType,
+  ImportAccountFromJsonPayloadType,
+  ImportAccountPayloadType,
   RemoveAccountPayloadType
 } from '../../page/constants/action_types'
 
@@ -369,5 +371,48 @@ handler.on(
     )
   }
 )
+
+handler.on(
+  WalletActions.importAccount.type,
+  async (store: Store, payload: ImportAccountPayloadType) => {
+    const { keyringService } = getAPIProxy()
+    const result =
+      payload.coin === BraveWallet.CoinType.FIL &&
+        payload.network
+        ? await keyringService
+          .importFilecoinAccount(
+            payload.accountName,
+            payload.privateKey,
+            payload.network
+          )
+        : await keyringService
+          .importAccount(
+            payload.accountName,
+            payload.privateKey,
+            payload.coin
+          )
+    if (result.account) {
+      store.dispatch(WalletActions.setImportAccountError(false))
+    } else {
+      store.dispatch(WalletActions.setImportAccountError(true))
+    }
+  })
+
+handler.on(WalletActions.importAccountFromJson.type,
+  async (store: Store, payload: ImportAccountFromJsonPayloadType) => {
+    const { keyringService } = getAPIProxy()
+    const result =
+      await keyringService
+        .importAccountFromJson(
+          payload.accountName,
+          payload.password,
+          payload.json
+        )
+    if (result.account) {
+      store.dispatch(WalletActions.setImportAccountError(false))
+    } else {
+      store.dispatch(WalletActions.setImportAccountError(true))
+    }
+  })
 
 export default handler.middleware

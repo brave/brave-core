@@ -8,8 +8,7 @@ import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   BraveWallet,
   PageState,
-  NFTMetadataReturnType,
-  ImportAccountErrorType
+  NFTMetadataReturnType
 } from '../../constants/types'
 import { getAssetIdKey } from '../../utils/asset-utils'
 import {
@@ -19,8 +18,6 @@ import {
   ShowRecoveryPhrasePayload,
   CreateWalletPayloadType,
   ImportAccountFromJsonPayloadType,
-  ImportAccountPayloadType,
-  ImportFilecoinAccountPayloadType,
   ImportFromExternalWalletPayloadType,
   RestoreWalletPayloadType,
   UpdateSelectedAssetType,
@@ -29,10 +26,8 @@ import {
 
 const defaultState: PageState = {
   hasInitialized: false,
-  showAddModal: false,
   showRecoveryPhrase: false,
   invalidMnemonic: false,
-  importAccountError: undefined,
   importWalletError: { hasError: false },
   selectedTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   selectedAsset: undefined,
@@ -59,9 +54,7 @@ export const WalletPageAsyncActions = {
   checkWalletsToImport: createAction('checkWalletsToImport'),
   createWallet: createAction<CreateWalletPayloadType>('createWallet'),
   getNFTMetadata: createAction<BraveWallet.BlockchainToken>('getNFTMetadata'),
-  importAccount: createAction<ImportAccountPayloadType>('importAccount'),
   importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>('importAccountFromJson'),
-  importFilecoinAccount: createAction<ImportFilecoinAccountPayloadType>('importFilecoinAccount'),
   importFromCryptoWallets: createAction<ImportFromExternalWalletPayloadType>('importFromCryptoWallets'),
   importFromMetaMask: createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask'),
   openWalletSettings: createAction('openWalletSettings'),
@@ -113,13 +106,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.isCryptoWalletsInitialized = payload
       },
 
-      setImportAccountError(
-        state,
-        { payload }: PayloadAction<ImportAccountErrorType>
-      ) {
-        state.importAccountError = payload
-      },
-
       setImportWalletError(
         state,
         { payload }: PayloadAction<ImportWalletErrorPayloadType>
@@ -146,10 +132,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
       setMetaMaskInitialized(state, { payload }: PayloadAction<boolean>) {
         state.isMetaMaskInitialized = payload
-      },
-
-      setShowAddModal(state, { payload }: PayloadAction<boolean>) {
-        state.showAddModal = payload
       },
 
       setShowIsRestoring(state, action: PayloadAction<boolean>) {

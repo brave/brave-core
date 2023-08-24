@@ -290,7 +290,6 @@ public class AssetDetailActivity
                     v -> Utils.openBuySendSwapActivity(this, WebUiActivityType.SWAP));
             mBtnBuy.setOnClickListener(
                     v -> Utils.openBuySendSwapActivity(this, WebUiActivityType.BUY));
-
             btnSend.setOnClickListener(
                     v -> Utils.openBuySendSwapActivity(this, WebUiActivityType.SEND));
         }
@@ -470,14 +469,14 @@ public class AssetDetailActivity
     public void onTransactionClick(TransactionInfo txInfo) {
         if (mWalletModel == null) return;
         NetworkInfo txNetwork = mWalletModel.getNetworkModel().getNetwork(txInfo.chainId);
-        Utils.openTransaction(txInfo, this, mAccountInfos, mCoinType, txNetwork);
+        Utils.openTransaction(txInfo, this, mCoinType, txNetwork);
     }
 
     @Override
-    public void onTxApprovedRejected(boolean approved, String accountName, String txId) {}
+    public void onTxApprovedRejected(boolean approved, String txId) {}
 
     @Override
-    public void onTxPending(String accountName, String txId) {}
+    public void onTxPending(String txId) {}
 
     @Override
     public void onTransactionStatusChanged(TransactionInfo txInfo) {

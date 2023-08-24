@@ -1194,6 +1194,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_SWAP_MINIMUM_RECEIVED_AFTER_SLIPPAGE},
     {"braveSwapNetworkFee", IDS_BRAVE_SWAP_NETWORK_FEE},
     {"braveSwapBraveFee", IDS_BRAVE_SWAP_BRAVE_FEE},
+    {"braveSwapProtocolFee", IDS_BRAVE_SWAP_PROTOCOL_FEE},
     {"braveSwapFree", IDS_BRAVE_SWAP_FREE},
     {"braveSwapLiquidityProvider", IDS_BRAVE_SWAP_LIQUIDITY_PROVIDER},
     {"braveSwapSwapAndSend", IDS_BRAVE_SWAP_SWAP_AND_SEND},
@@ -1329,7 +1330,8 @@ constexpr char kOptimismSwapBaseAPIURL[] = "https://optimism.api.0x.org/";
 constexpr char kArbitrumSwapBaseAPIURL[] = "https://arbitrum.api.0x.org/";
 constexpr char kBaseSwapBaseAPIURL[] = "https://base.api.0x.org/";
 constexpr char kSwapBaseAPIURL[] = "https://api.0x.org/";
-constexpr char kBuyTokenPercentageFee[] = "0.00875";
+constexpr double k0xBuyTokenFeePercentage = 0.875;
+constexpr double k0xProtocolFeePercentage = 0.15;
 constexpr char kEVMFeeRecipient[] =
     "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
 constexpr char kAffiliateAddress[] =
@@ -1338,7 +1340,7 @@ constexpr char k0xAPIKeyHeader[] = "0x-api-key";
 
 // Jupiter swap constants
 constexpr char kSolanaSwapBaseAPIURL[] = "https://quote-api.jup.ag/";
-constexpr char kSolanaBuyTokenFeeBps[] = "85";
+constexpr double kSolanaBuyTokenFeePercentage = 0.85;
 constexpr char kSolanaFeeRecipient[] =
     "3NUW8hWoCnLgJwWCVnwdFo2Dsz8bKwLac9A3VgS2jLUQ";
 

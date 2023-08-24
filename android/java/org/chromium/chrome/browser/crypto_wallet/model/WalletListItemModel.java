@@ -58,6 +58,7 @@ public class WalletListItemModel {
         WalletListItemModel result = new WalletListItemModel();
         result.mIcon = Utils.getCoinIcon(accountInfo.accountId.coin);
         result.mTitle = accountInfo.name;
+        // TODO(apaymyshev): handle bitcoin account.
         result.mSubTitle = accountInfo.address;
         result.mId = "";
         result.mText1 = fiatBalanceString;

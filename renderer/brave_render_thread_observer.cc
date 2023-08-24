@@ -50,6 +50,10 @@ void BraveRenderThreadObserver::OnRendererConfigurationAssociatedRequest(
   renderer_configuration_receivers_.Add(this, std::move(receiver));
 }
 
+void BraveRenderThreadObserver::SetInitialConfiguration(bool is_tor_process) {
+  is_tor_process_ = is_tor_process;
+}
+
 void BraveRenderThreadObserver::SetConfiguration(
     brave::mojom::DynamicParamsPtr params) {
   *GetDynamicConfigParams() = std::move(*params);

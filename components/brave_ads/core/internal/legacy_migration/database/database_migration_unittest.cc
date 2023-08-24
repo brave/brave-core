@@ -15,6 +15,14 @@
 
 namespace brave_ads {
 
+namespace {
+
+std::string TestParamToString(::testing::TestParamInfo<int> test_param) {
+  return base::StringPrintf("%d_to_%d", test_param.param, database::kVersion);
+}
+
+}  // namespace
+
 class BraveAdsDatabaseMigrationTest : public UnitTestBase,
                                       public ::testing::WithParamInterface<int>,
                                       public DatabaseManagerObserver {
@@ -48,8 +56,8 @@ class BraveAdsDatabaseMigrationTest : public UnitTestBase,
       return;
     }
 
-    const std::string database_filename =
-        base::StringPrintf("database_schema_%d.sqlite", GetSchemaVersion());
+    const std::string database_filename = base::StringPrintf(
+        "database/database_schema_%d.sqlite", GetSchemaVersion());
     ASSERT_TRUE(
         CopyFileFromTestPathToTempPath(database_filename, kDatabaseFilename));
   }
@@ -74,10 +82,6 @@ class BraveAdsDatabaseMigrationTest : public UnitTestBase,
   bool failed_to_migrate_database_ = false;
   bool database_is_ready_ = false;
 };
-
-std::string TestParamToString(::testing::TestParamInfo<int> test_param) {
-  return base::StringPrintf("%d_to_%d", test_param.param, database::kVersion);
-}
 
 TEST_P(BraveAdsDatabaseMigrationTest, MigrateFromSchema) {
   // Arrange

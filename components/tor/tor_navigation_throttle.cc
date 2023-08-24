@@ -15,6 +15,8 @@
 
 namespace tor {
 
+bool TorNavigationThrottle::skip_wait_for_tor_connected_for_testing_ = false;
+
 // static
 std::unique_ptr<TorNavigationThrottle>
 TorNavigationThrottle::MaybeCreateThrottleFor(
@@ -63,7 +65,8 @@ TorNavigationThrottle::WillStartRequest() {
       url.SchemeIs(extensions::kExtensionScheme) ||
       url.SchemeIs(content::kChromeDevToolsScheme)) {
     if (!tor_launcher_factory_->IsTorConnected() &&
-        !url.SchemeIs(content::kChromeUIScheme)) {
+        !url.SchemeIs(content::kChromeUIScheme) &&
+        !skip_wait_for_tor_connected_for_testing_) {
       resume_pending_ = true;
       return content::NavigationThrottle::DEFER;
     }
@@ -74,6 +77,11 @@ TorNavigationThrottle::WillStartRequest() {
 
 const char* TorNavigationThrottle::GetNameForLogging() {
   return "TorNavigationThrottle";
+}
+
+// static
+void TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(bool skip) {
+  skip_wait_for_tor_connected_for_testing_ = skip;
 }
 
 void TorNavigationThrottle::OnTorCircuitEstablished(bool result) {

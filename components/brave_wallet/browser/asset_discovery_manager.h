@@ -82,8 +82,8 @@ class AssetDiscoveryManager : public KeyringServiceObserverBase {
                    account_addresses);
   void FinishTask();
 
-  std::queue<std::unique_ptr<AssetDiscoveryTask>> queue_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;
+  std::queue<std::unique_ptr<AssetDiscoveryTask>> queue_;
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<KeyringService> keyring_service_;

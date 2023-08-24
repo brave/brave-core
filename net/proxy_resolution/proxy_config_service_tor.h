@@ -53,7 +53,12 @@ class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
   ConfigAvailability GetLatestProxyConfig(
       net::ProxyConfigWithAnnotation* config) override;
 
+  // This is useful when we want to test mock requests/responses in tor context
+  // with embedded test server.
+  static void SetBypassTorProxyConfigForTesting(bool bypass);
+
  private:
+  static bool bypass_tor_proxy_config_for_testing_;
   base::ObserverList<Observer>::Unchecked observers_;
   ProxyServer proxy_server_;
 };

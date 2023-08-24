@@ -20,10 +20,10 @@ TEST(FilTxMeta, ToTransactionInfo) {
                      "1", "2", "3", "4", "5",
                      "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
 
+  const char from_address[] = "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq";
   auto fil_account_id =
       MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kFilecoin,
-                    mojom::AccountKind::kDerived,
-                    "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq");
+                    mojom::AccountKind::kDerived, from_address);
 
   FilTxMeta meta(fil_account_id, std::move(tx));
   meta.set_chain_id("0x66");
@@ -37,7 +37,7 @@ TEST(FilTxMeta, ToTransactionInfo) {
   mojom::TransactionInfoPtr ti = meta.ToTransactionInfo();
   EXPECT_EQ(ti->id, meta.id());
   EXPECT_EQ(ti->chain_id, meta.chain_id());
-  EXPECT_EQ(ti->from_address, fil_account_id->address);
+  EXPECT_EQ(ti->from_address, from_address);
   EXPECT_EQ(ti->from_account_id, fil_account_id);
   EXPECT_EQ(ti->tx_status, meta.status());
   EXPECT_TRUE(ti->tx_data_union->is_fil_tx_data());

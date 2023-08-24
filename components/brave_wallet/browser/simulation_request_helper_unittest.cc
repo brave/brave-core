@@ -114,7 +114,8 @@ mojom::SignTransactionRequestPtr MakeSolanaSignTransactionRequest(
   auto request = mojom::SignTransactionRequest::New();
   request->origin_info = std::move(tx_info->origin_info);
   request->id = 1;
-  request->from_address = tx_info->from_address;
+  request->from_account_id = tx_info->from_account_id->Clone();
+  request->from_address = *tx_info->from_address;
   request->tx_data = tx_info->tx_data_union.Clone();
   request->coin = mojom::CoinType::SOL;
 
@@ -130,7 +131,8 @@ mojom::SignAllTransactionsRequestPtr MakeSolanaSignAllTransactionsRequest(
   auto request = mojom::SignAllTransactionsRequest::New();
   request->origin_info = std::move(tx_info->origin_info);
   request->id = 1;
-  request->from_address = tx_info->from_address;
+  request->from_account_id = tx_info->from_account_id->Clone();
+  request->from_address = *tx_info->from_address;
 
   request->tx_datas.push_back(tx_info->tx_data_union.Clone());
   request->coin = mojom::CoinType::SOL;

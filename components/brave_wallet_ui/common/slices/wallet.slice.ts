@@ -11,7 +11,8 @@ import {
   SolFeeEstimates,
   NetworkFilterType,
   RefreshOpts,
-  UpdateAccountNamePayloadType
+  UpdateAccountNamePayloadType,
+  ImportAccountErrorType
 } from '../../constants/types'
 import {
   AddSitePermissionPayloadType,
@@ -29,6 +30,8 @@ import {
 } from '../constants/action_types'
 import {
   AddAccountPayloadType,
+  ImportAccountFromJsonPayloadType,
+  ImportAccountPayloadType,
   RemoveAccountPayloadType
 } from '../../page/constants/action_types'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
@@ -147,7 +150,8 @@ const defaultState: WalletState = {
     window.localStorage.getItem(
       LOCAL_STORAGE_KEYS.SHOW_NETWORK_LOGO_ON_NFTS
     ) === 'true',
-  isRefreshingNetworksAndTokens: false
+  isRefreshingNetworksAndTokens: false,
+  importAccountError: undefined,
 }
 
 // async actions
@@ -219,6 +223,12 @@ export const WalletAsyncActions = {
   ),
   removeAccount: createAction<RemoveAccountPayloadType>(
     'removeAccount'
+  ),
+  importAccount: createAction<ImportAccountPayloadType>(
+    'importAccount'
+  ),
+  importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>(
+    'importAccountFromJson'
   )
 }
 
@@ -490,7 +500,13 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<boolean>
       ) => {
         state.isRefreshingNetworksAndTokens = payload
-      }
+      },
+      setImportAccountError (
+        state: WalletState,
+        { payload }: PayloadAction<ImportAccountErrorType>
+      ) {
+        state.importAccountError = payload
+      },
     },
     extraReducers: (builder) => {
       builder.addCase(WalletAsyncActions.locked.type, (state) => {

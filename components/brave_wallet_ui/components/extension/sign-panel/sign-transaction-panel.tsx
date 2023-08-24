@@ -15,13 +15,16 @@ import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { useUnsafePanelSelector, useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
+import { useUnsafePanelSelector } from '../../../common/hooks/use-safe-selector'
 import { PanelSelectors } from '../../../panel/selectors'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
+import { isHardwareAccount } from '../../../utils/account-utils'
 
 // Hooks
-import { useAddressOrb } from '../../../common/hooks/use-orb'
+import { useAccountOrb } from '../../../common/hooks/use-orb'
+
+// Queries
+import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 
 // Components
 import NavButton from '../buttons/nav-button/index'
@@ -78,7 +81,6 @@ const onClickLearnMore = () => {
 export const SignTransactionPanel = ({ signMode }: Props) => {
   // redux
   const dispatch = useDispatch()
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const signTransactionRequests = useUnsafePanelSelector(
     PanelSelectors.signTransactionRequests
   )
@@ -102,7 +104,8 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
   >(undefined)
 
   // memos
-  const orb = useAddressOrb(selectedQueueData?.fromAddress)
+  const { account } = useAccountQuery(selectedQueueData?.fromAccountId)
+  const orb = useAccountOrb(account)
 
   const signTransactionQueueInfo = React.useMemo(() => {
     return {
@@ -124,10 +127,6 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
     ).filter((data): data is BraveWallet.SolanaTxData => !!data)
   }, [selectedQueueData])
 
-  const account = React.useMemo(() => {
-    return accounts.find(acc => acc.address === selectedQueueData?.fromAddress)
-  }, [accounts, selectedQueueData?.fromAddress])
-
   // methods
   const onCancel = React.useCallback(() => {
     if (!selectedQueueData) {
@@ -147,7 +146,7 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
         id: selectedQueueData.id
       }))
     }
-  }, [selectedQueueData, accounts, signMode])
+  }, [selectedQueueData, signMode])
 
   const onSign = React.useCallback(() => {
     if (!selectedQueueData) {
@@ -157,10 +156,15 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
       return
     }
 
-    const isHwAccount = account.accountId.kind === BraveWallet.AccountKind.kHardware
+    const isHwAccount = isHardwareAccount(account.accountId)
     if (signMode === 'signTx') {
       if (isHwAccount) {
-        dispatch(PanelActions.signTransactionHardware(selectedQueueData as BraveWallet.SignTransactionRequest))
+        dispatch(
+          PanelActions.signTransactionHardware({
+            account,
+            request: selectedQueueData as BraveWallet.SignTransactionRequest
+          })
+        )
         return
       }
       dispatch(PanelActions.signTransactionProcessed({
@@ -171,7 +175,12 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
     }
     if (signMode === 'signAllTxs') {
       if (isHwAccount) {
-        dispatch(PanelActions.signAllTransactionsHardware(selectedQueueData as BraveWallet.SignAllTransactionsRequest))
+        dispatch(
+          PanelActions.signAllTransactionsHardware({
+            account,
+            request: selectedQueueData as BraveWallet.SignAllTransactionsRequest
+          })
+        )
         return
       }
       dispatch(PanelActions.signAllTransactionsProcessed({
@@ -179,7 +188,7 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
         id: selectedQueueData.id
       }))
     }
-  }, [selectedQueueData, accounts, signMode])
+  }, [selectedQueueData, signMode])
 
   const onContinueSigning = React.useCallback(() => {
     setSignStep(SignDataSteps.SignData)
@@ -231,7 +240,7 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
       }
 
       <Tooltip
-        text={selectedQueueData?.fromAddress || ''}
+        text={account?.address || ''}
         isAddress
       >
         <AccountNameText>

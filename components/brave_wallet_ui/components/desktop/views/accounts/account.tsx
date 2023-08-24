@@ -147,7 +147,7 @@ export const Account = () => {
   const { data: unsortedTransactionList = [] } = useGetTransactionsQuery(
     selectedAccount
       ? {
-          address: selectedAccount.address,
+          accountId: selectedAccount.accountId,
           chainId: null,
           coinType: selectedAccount.accountId.coin
         }

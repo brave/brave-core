@@ -6,6 +6,7 @@
 #include "base/base64url.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/bind.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -24,7 +25,9 @@
 #include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/components/tor/onion_location_navigation_throttle.h"
+#include "brave/browser/tor/tor_profile_manager.h"
+#include "brave/components/tor/tor_navigation_throttle.h"
+#include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #endif
 
 class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
@@ -187,20 +190,21 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     return last_origin_[internal_url];
   }
 
-  content::WebContents* contents() {
-    return browser()->tab_strip_model()->GetActiveWebContents();
+  content::WebContents* contents(Browser* browser) {
+    return browser->tab_strip_model()->GetActiveWebContents();
   }
 
-  void NavigateToURLAndWaitForRedirects(const GURL& original_url,
+  void NavigateToURLAndWaitForRedirects(Browser* browser,
+                                        const GURL& original_url,
                                         const GURL& landing_url) {
     ui_test_utils::UrlLoadObserver load_complete(
         landing_url, content::NotificationService::AllSources());
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), original_url));
-    EXPECT_EQ(contents()->GetPrimaryMainFrame()->GetLastCommittedURL(),
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, original_url));
+    EXPECT_EQ(contents(browser)->GetPrimaryMainFrame()->GetLastCommittedURL(),
               original_url);
     load_complete.Wait();
 
-    EXPECT_EQ(contents()->GetLastCommittedURL(), landing_url);
+    EXPECT_EQ(contents(browser)->GetLastCommittedURL(), landing_url);
   }
 
  private:
@@ -257,6 +261,7 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
 
   for (size_t i = 0; i < input_count; i++) {
     NavigateToURLAndWaitForRedirects(
+        browser(),
         url(landing_url(inputs[i], simple_landing_url()), cross_site_url()),
         landing_url(outputs[i], simple_landing_url()));
   }
@@ -265,6 +270,7 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
                        QueryStringCrossSitePost) {
   NavigateToURLAndWaitForRedirects(
+      browser(),
       url(landing_url("fbclid=1", simple_landing_url()), cross_site_post_url()),
       landing_url("fbclid=1", simple_landing_url()));
 }
@@ -278,7 +284,8 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
   for (const auto& input : inputs) {
     const GURL dest_url = landing_url(input, simple_landing_url());
     brave_shields::SetBraveShieldsEnabled(content_settings(), false, dest_url);
-    NavigateToURLAndWaitForRedirects(url(dest_url, cross_site_url()), dest_url);
+    NavigateToURLAndWaitForRedirects(browser(), url(dest_url, cross_site_url()),
+                                     dest_url);
   }
 }
 
@@ -293,6 +300,7 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
 
   for (const auto& input : inputs) {
     NavigateToURLAndWaitForRedirects(
+        browser(),
         url(landing_url(input, simple_landing_url()), same_site_url()),
         landing_url(input, simple_landing_url()));
   }
@@ -319,6 +327,7 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
     // Same-site navigations to a cross-site redirect go through the query
     // filter.
     NavigateToURLAndWaitForRedirects(
+        browser(),
         url(landing_url(inputs[i], redirect_to_cross_site_landing_url()),
             same_site_url()),
         landing_url(outputs[i], simple_landing_url()));
@@ -336,6 +345,7 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
     // Same-site navigations to a same-site redirect are exempted from the query
     // filter.
     NavigateToURLAndWaitForRedirects(
+        browser(),
         url(landing_url(input, redirect_to_same_site_landing_url()),
             same_site_url()),
         landing_url(input, simple_landing_url()));
@@ -366,21 +376,30 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
     GURL input = landing_url(inputs[i], simple_landing_url());
     GURL output = landing_url(outputs[i], simple_landing_url());
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), input));
-    EXPECT_EQ(contents()->GetLastCommittedURL(), output);
+    EXPECT_EQ(contents(browser())->GetLastCommittedURL(), output);
   }
 }
 
+#if BUILDFLAG(ENABLE_TOR)
 IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
                        OnionReferrers) {
-  // Don't block the mock .onion requests.
-  tor::OnionLocationNavigationThrottle::BlockOnionRequestsOutsideTorForTesting(
-      false);
+  net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
+  tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
+  base::RunLoop loop;
+  Browser* tor_browser = nullptr;
+  TorProfileManager::SwitchToTorProfile(
+      browser()->profile(), base::BindLambdaForTesting([&](Browser* browser) {
+        tor_browser = browser;
+        loop.Quit();
+      }));
+  loop.Run();
 
   // Same-origin navigations
   {
     const GURL dest_url = reflect_referrer_same_origin_url();
     const GURL same_origin_test_url = url(dest_url, onion_url());
-    NavigateToURLAndWaitForRedirects(same_origin_test_url, dest_url);
+    NavigateToURLAndWaitForRedirects(tor_browser, same_origin_test_url,
+                                     dest_url);
     EXPECT_EQ(last_referrer(dest_url), same_origin_test_url.spec());
     EXPECT_EQ(last_origin(dest_url), "");
 
@@ -388,7 +407,8 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
     const GURL intermediate_url = reflect_referrer_same_origin_redirect_url();
     const GURL same_origin_redirect_test_url =
         url(intermediate_url, onion_url());
-    NavigateToURLAndWaitForRedirects(same_origin_redirect_test_url, dest_url);
+    NavigateToURLAndWaitForRedirects(tor_browser, same_origin_redirect_test_url,
+                                     dest_url);
     EXPECT_EQ(last_referrer(dest_url), same_origin_redirect_test_url.spec());
     EXPECT_EQ(last_origin(dest_url), "");
   }
@@ -396,7 +416,8 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
     // POST
     const GURL dest_url = reflect_referrer_same_origin_url();
     const GURL same_origin_test_url = url(dest_url, onion_post_url());
-    NavigateToURLAndWaitForRedirects(same_origin_test_url, dest_url);
+    NavigateToURLAndWaitForRedirects(tor_browser, same_origin_test_url,
+                                     dest_url);
     EXPECT_EQ(last_referrer(dest_url), same_origin_test_url.spec());
     std::string full_origin =
         url::Origin::Create(same_origin_test_url).GetURL().spec();
@@ -407,7 +428,8 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
     const GURL intermediate_url = reflect_referrer_same_origin_redirect_url();
     const GURL same_origin_redirect_test_url =
         url(intermediate_url, onion_post_url());
-    NavigateToURLAndWaitForRedirects(same_origin_redirect_test_url, dest_url);
+    NavigateToURLAndWaitForRedirects(tor_browser, same_origin_redirect_test_url,
+                                     dest_url);
     EXPECT_EQ(last_referrer(dest_url), same_origin_redirect_test_url.spec());
     EXPECT_EQ(last_origin(dest_url), full_origin);
   }
@@ -415,33 +437,35 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
   // Cross-origin navigations
   {
     const GURL dest_url = reflect_referrer_cross_origin_url();
-    NavigateToURLAndWaitForRedirects(url(dest_url, onion_url()), dest_url);
+    NavigateToURLAndWaitForRedirects(tor_browser, url(dest_url, onion_url()),
+                                     dest_url);
     EXPECT_EQ(last_referrer(dest_url), "");
     EXPECT_EQ(last_origin(dest_url), "");
 
     // Redirect
     const GURL intermediate_url = reflect_referrer_cross_origin_redirect_url();
-    NavigateToURLAndWaitForRedirects(url(intermediate_url, onion_url()),
-                                     dest_url);
+    NavigateToURLAndWaitForRedirects(
+        tor_browser, url(intermediate_url, onion_url()), dest_url);
     EXPECT_EQ(last_referrer(dest_url), "");
     EXPECT_EQ(last_origin(dest_url), "");
   }
   {
     // POST
     const GURL dest_url = reflect_referrer_cross_origin_url();
-    NavigateToURLAndWaitForRedirects(url(dest_url, onion_post_url()), dest_url);
+    NavigateToURLAndWaitForRedirects(tor_browser,
+                                     url(dest_url, onion_post_url()), dest_url);
     EXPECT_EQ(last_referrer(dest_url), "");
     EXPECT_EQ(last_origin(dest_url), "null");
 
     // Redirect
     const GURL intermediate_url = reflect_referrer_cross_origin_redirect_url();
-    NavigateToURLAndWaitForRedirects(url(intermediate_url, onion_post_url()),
-                                     dest_url);
+    NavigateToURLAndWaitForRedirects(
+        tor_browser, url(intermediate_url, onion_post_url()), dest_url);
     EXPECT_EQ(last_referrer(dest_url), "");
     EXPECT_EQ(last_origin(dest_url), "null");
   }
 
-  NavigateToURLAndWaitForRedirects(images_url(), images_url());
+  NavigateToURLAndWaitForRedirects(tor_browser, images_url(), images_url());
 
   // Same-origin sub-requests
   std::string full_origin = url::Origin::Create(images_url()).GetURL().spec();
@@ -467,3 +491,4 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
   EXPECT_EQ(last_referrer(image_url("8")), "");
   EXPECT_EQ(last_origin(image_url("8")), "null");
 }
+#endif

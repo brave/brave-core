@@ -76,7 +76,7 @@ class TxService : public KeyedService,
 
   // mojom::TxService
   void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
-                                const std::string& from,
+                                mojom::AccountIdPtr from,
                                 const absl::optional<url::Origin>& origin,
                                 const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;
@@ -94,7 +94,7 @@ class TxService : public KeyedService,
                           GetTransactionInfoCallback) override;
   void GetAllTransactionInfo(mojom::CoinType coin_type,
                              const absl::optional<std::string>& chain_id,
-                             const absl::optional<std::string>& from,
+                             mojom::AccountIdPtr from,
                              GetAllTransactionInfoCallback) override;
   void GetPendingTransactionsCount(
       GetPendingTransactionsCountCallback callback) override;
@@ -233,10 +233,6 @@ class TxService : public KeyedService,
   friend class FilTxManagerUnitTest;
 
   void MigrateTransactionsFromPrefsToDB(PrefService* prefs);
-  void OnGetAllTransactionInfo(GetPendingTransactionsCountCallback callback,
-                               size_t counter,
-                               mojom::CoinType coin,
-                               std::vector<mojom::TransactionInfoPtr> result);
 
   TxManager* GetTxManager(mojom::CoinType coin_type);
   EthTxManager* GetEthTxManager();
@@ -245,16 +241,17 @@ class TxService : public KeyedService,
 
   raw_ptr<PrefService> prefs_;  // NOT OWNED
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
+
+  scoped_refptr<value_store::ValueStoreFactory> store_factory_;
+  std::unique_ptr<TxStorageDelegateImpl> delegate_;
+  std::unique_ptr<AccountResolverDelegate> account_resolver_delegate_;
   base::flat_map<mojom::CoinType, std::unique_ptr<TxManager>> tx_manager_map_;
+
   mojo::RemoteSet<mojom::TxServiceObserver> observers_;
   mojo::ReceiverSet<mojom::TxService> tx_service_receivers_;
   mojo::ReceiverSet<mojom::EthTxManagerProxy> eth_tx_manager_receivers_;
   mojo::ReceiverSet<mojom::SolanaTxManagerProxy> solana_tx_manager_receivers_;
   mojo::ReceiverSet<mojom::FilTxManagerProxy> fil_tx_manager_receivers_;
-
-  scoped_refptr<value_store::ValueStoreFactory> store_factory_;
-  std::unique_ptr<TxStorageDelegateImpl> delegate_;
-  std::unique_ptr<AccountResolverDelegate> account_resolver_delegate_;
 
   base::WeakPtrFactory<TxService> weak_factory_;
 };
