@@ -28,6 +28,7 @@ import {
 
 // actions
 import { WalletActions } from '../../../../common/actions'
+import { PanelActions } from '../../../../panel/actions'
 
 // components
 import { Select } from 'brave-ui/components'
@@ -54,10 +55,16 @@ import {
 } from '../account-settings-modal/account-settings-modal.style'
 
 // selectors
-import { WalletSelectors } from '../../../../common/selectors'
+import {
+  UISelectors,
+  WalletSelectors
+} from '../../../../common/selectors'
 
 // hooks
-import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import {
+  useSafeUISelector,
+  useSafeWalletSelector
+} from '../../../../common/hooks/use-safe-selector'
 
 interface Params {
   accountTypeName: string
@@ -98,6 +105,8 @@ export const ImportAccountModal = () => {
       return option.name.toLowerCase() === accountTypeName?.toLowerCase()
     })
   }, [accountTypeName, createAccountOptions])
+
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // state
   const [accountName, setAccountName] = React.useState<string>('')
@@ -160,6 +169,22 @@ export const ImportAccountModal = () => {
   const onClearClipboard = React.useCallback(() => {
     copyToClipboard('')
   }, [])
+
+  const onClickFileUpload = () => {
+    // To prevent panel from being closed when file chooser is open
+    if (isPanel) {
+      dispatch(PanelActions.setCloseOnDeactivate(false))
+      // For resume close on deactive when file chooser is close(select/cancel)
+      window.addEventListener('focus', onFocusFileUpload)
+    }
+  }
+
+  const onFocusFileUpload = () => {
+    if (isPanel) {
+      dispatch(PanelActions.setCloseOnDeactivate(true))
+      window.removeEventListener('focus', onFocusFileUpload)
+    }
+  }
 
   const onFileUpload = React.useCallback((file: React.ChangeEvent<HTMLInputElement>) => {
     if (file.target.files) {
@@ -325,6 +350,7 @@ export const ImportAccountModal = () => {
                 name='recoverFile'
                 style={{ display: 'none' }}
                 onChange={onFileUpload}
+                onClick={onClickFileUpload}
               />
               <Input
                 placeholder={`Origin ${getLocale('braveWalletCreatePasswordInput')}`}
