@@ -7,6 +7,9 @@ package org.brave.bytecode;
 
 import org.objectweb.asm.ClassVisitor;
 
+/**
+ * Class responsible for applying Java assembly changes for Brave overrides
+ */
 public class BraveClassAdapter {
     public static ClassVisitor createAdapter(ClassVisitor chain) {
         chain = new BraveActivityClassAdapter(chain);
@@ -50,6 +53,7 @@ public class BraveClassAdapter {
         chain = new BraveIntentHandlerClassAdapter(chain);
         chain = new BraveLauncherActivityClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
+        chain = new BraveLibraryLoaderClassAdapter(chain);
         chain = new BraveLocationBarCoordinatorClassAdapter(chain);
         chain = new BraveLocationBarLayoutClassAdapter(chain);
         chain = new BraveLocationBarMediatorClassAdapter(chain);

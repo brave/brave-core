@@ -518,6 +518,12 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",
                         "onItemSelected", true, boolean.class, int.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/base/library_loader/LibraryLoader", "getInstance", false, null));
+        Assert.assertTrue(methodExists("org/chromium/base/library_loader/LibraryLoader",
+                "preloadAlreadyLocked", false, null));
+        Assert.assertTrue(methodExists("org/chromium/base/library_loader/LibraryLoader",
+                "loadWithSystemLinkerAlreadyLocked", false, null));
     }
 
     @Test
@@ -1054,6 +1060,8 @@ public class BytecodeTest {
                 "mBookmarkManagerCoordinator"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/flags/CachedFlag", "mDefaultValue"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/base/library_loader/LibraryLoader", "sInstance"));
     }
 
     @Test
@@ -1192,8 +1200,9 @@ public class BytecodeTest {
             if (f.getName().equals(fieldName)) {
                 if (checkTypes) {
                     if (fieldType != null && f.getType().equals(fieldType)) return true;
-                } else
+                } else {
                     return true;
+                }
             }
         }
         return false;
