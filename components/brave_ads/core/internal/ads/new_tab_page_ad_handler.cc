@@ -80,6 +80,10 @@ void NewTabPageAdHandler::TriggerEvent(
     TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
+  if (!UserHasOptedInToNewTabPageAds()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
+
   if (!UserHasJoinedBraveRewards() &&
       !ShouldAlwaysTriggerNewTabPageAdEvents()) {
     return std::move(callback).Run(/*success*/ false);
