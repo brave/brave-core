@@ -30,6 +30,8 @@ class BraveTabStrip : public TabStrip {
       const ui::LocatedEvent& event,
       const ui::ListSelectionModel& original_selection) override;
   void AddedToWidget() override;
+  absl::optional<int> GetCustomBackgroundId(
+      BrowserFrameActiveState active_state) const override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(ColorPaletteTest, LightThemeMinimumContrast);
