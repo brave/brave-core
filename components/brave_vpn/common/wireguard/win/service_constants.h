@@ -28,6 +28,14 @@ constexpr char kBraveVpnWireguardServiceConnectSwitchName[] = "connect";
 // to work with the service for a user.
 constexpr char kBraveVpnWireguardServiceInteractiveSwitchName[] = "interactive";
 
+// Notifies users about connected state of the vpn using system notifications.
+constexpr char kBraveVpnWireguardServiceNotifyConnectedSwitchName[] =
+    "notify-connected";
+
+// Notifies users about disconnected state of the vpn using system
+// notifications.
+constexpr char kBraveVpnWireguardServiceNotifyDisconnectedSwitchName[] =
+    "notify-disconnected";
 }  // namespace brave_vpn
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_SERVICE_CONSTANTS_H_

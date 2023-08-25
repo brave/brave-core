@@ -21,12 +21,13 @@ namespace {
 
 constexpr wchar_t kWindowsExplorerExecutableName[] = L"EXPLORER.EXE";
 
-void LaunchProcessAsUser(base::UserTokenHandle token) {
+void RunCommandForUser(base::UserTokenHandle token,
+                       const std::string& command) {
   base::FilePath exe_dir;
   base::PathService::Get(base::DIR_EXE, &exe_dir);
   base::CommandLine cmd(
       exe_dir.Append(brave_vpn::kBraveVpnWireguardServiceExecutable));
-  cmd.AppendSwitch(brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName);
+  cmd.AppendSwitch(command);
   base::LaunchOptions options;
   options.as_user = token;
   if (!base::LaunchProcess(cmd, options).IsValid()) {
@@ -38,7 +39,7 @@ void LaunchProcessAsUser(base::UserTokenHandle token) {
 
 // Looking for explorer.exe to extract user token and launch tray process
 // to setup Brave VPN tray icon.
-void RunTrayProcessAsUser() {
+void RunWireGuardCommandForUsers(const std::string& command) {
   VLOG(1) << __func__;
   base::NamedProcessIterator iter(kWindowsExplorerExecutableName, nullptr);
   while (const base::ProcessEntry* process_entry = iter.NextProcessEntry()) {
@@ -54,7 +55,7 @@ void RunTrayProcessAsUser() {
     }
     user_token_handle.Set(user_token);
 
-    LaunchProcessAsUser(user_token_handle.Get());
+    RunCommandForUser(user_token_handle.Get(), command);
   }
 }
 

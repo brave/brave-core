@@ -5,36 +5,29 @@
 
 import("//build/toolchain/gcc_toolchain.gni")
 
-source_set("status_tray") {
+source_set("resources") {
   sources = [
-    "brave_vpn_tray_command_ids.h",
-    "status_tray_runner.cc",
-    "status_tray_runner.h",
+    "resource_loader.cc",
+    "resource_loader.h",
   ]
-  public_deps = [ "status_icon" ]
+
   deps = [
-    "resources",
     "//base",
-    "//brave/components/brave_vpn/common",
-    "//brave/components/brave_vpn/common/win",
-    "//brave/components/brave_vpn/common/wireguard/win",
-    "//brave/components/resources:strings_grit",
+    "//base:i18n",
     "//ui/base",
-    "//ui/native_theme",
-    "//ui/native_theme:native_theme_browser",
   ]
   if (!enable_resource_allowlist_generation) {
     deps += [ "//chrome:packed_resources" ]
   }
-  libs = [ "shell32.lib" ]
 }
 
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "status_tray_runner_unittest.cc" ]
+  sources = [ "resource_loader_unittest.cc" ]
   deps = [
-    ":status_tray",
+    ":resources",
+    "//base",
     "//brave/components/constants",
     "//testing/gtest",
   ]

@@ -218,6 +218,9 @@ bool RemoveExistingWireguardService() {
                                  kQueryWaitTimeMs)) {
         VLOG(1) << "Stopping service timed out";
       }
+      // Show system notification about disconnected vpn.
+      brave_vpn::RunWireGuardCommandForUsers(
+          brave_vpn::kBraveVpnWireguardServiceNotifyDisconnectedSwitchName);
     }
     if (!DeleteService(service.Get())) {
       VLOG(1) << "DeleteService failed, error: "
@@ -291,10 +294,9 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
     VLOG(1) << "Failed to save last used config path";
   }
   // Run tray process each time we establish connection. System tray icon
-  // manages self state to be visible/hidden due to settings. Next we will add
-  // a desktop nitification popup with established connection information which
-  // will be shown on each time.
-  brave_vpn::RunTrayProcessAsUser();
+  // manages self state to be visible/hidden due to settings.
+  brave_vpn::RunWireGuardCommandForUsers(
+      brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName);
   return true;
 }
 
@@ -320,8 +322,11 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
               << tunnel_lib.GetError()->ToString();
       return S_FALSE;
     }
-
-    if (tunnel_proc(config_file_path.value().c_str())) {
+    // Show system notification about connected vpn.
+    brave_vpn::RunWireGuardCommandForUsers(
+        brave_vpn::kBraveVpnWireguardServiceNotifyConnectedSwitchName);
+    auto result = tunnel_proc(config_file_path.value().c_str());
+    if (result) {
       ResetWireguardTunnelUsageFlag();
       return S_OK;
     }
