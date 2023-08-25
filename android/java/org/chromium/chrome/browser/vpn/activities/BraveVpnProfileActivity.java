@@ -37,9 +37,6 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
     private ProgressBar mProfileProgress;
     private LinearLayout mProfileLayout;
 
-    private MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
-    private LiveData<Boolean> billingConnectionState = _billingConnectionState;
-
     @Override
     public void onResumeWithNative() {
         super.onResumeWithNative();
@@ -54,11 +51,6 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
 
     private void initializeViews() {
         setContentView(R.layout.activity_brave_vpn_profile);
-
-        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
-                    BraveVpnProfileActivity.this, _billingConnectionState);
-        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -80,6 +72,10 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
             public void onClick(View v) {
                 BraveVpnUtils.showProgressDialog(BraveVpnProfileActivity.this,
                         getResources().getString(R.string.vpn_connect_text));
+                MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+                LiveData<Boolean> billingConnectionState = _billingConnectionState;
+                InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
+                        BraveVpnProfileActivity.this, _billingConnectionState);
                 LiveDataUtil.observeOnce(billingConnectionState, isConnected -> {
                     if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
                         mBraveVpnPrefModel = new BraveVpnPrefModel();
@@ -105,7 +101,12 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         super.finishNativeInitialization();
         if (getIntent() != null
                 && getIntent().getBooleanExtra(BraveVpnUtils.VERIFY_CREDENTIALS_FAILED, false)) {
-            verifySubscription();
+            MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+            LiveData<Boolean> billingConnectionState = _billingConnectionState;
+            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
+                    BraveVpnProfileActivity.this, _billingConnectionState);
+            LiveDataUtil.observeOnce(
+                    billingConnectionState, isConnected -> { verifySubscription(); });
         }
     }
 

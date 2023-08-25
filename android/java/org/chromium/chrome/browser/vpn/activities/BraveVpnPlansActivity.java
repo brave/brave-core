@@ -35,18 +35,21 @@ import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.adapters.BraveVpnPlanPagerAdapter;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
-import org.chromium.ui.widget.Toast;
 
 import java.util.Map;
 
 public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
-    private ProgressBar mPlanProgress;
+    private ProgressBar mMonthlyPlanProgress;
+    private ProgressBar mYearlyPlanProgress;
     private LinearLayout mPlanLayout;
     private boolean mShouldShowRestoreMenu;
 
     private LinearLayout mMonthlySelectorLayout;
+    private TextView mMonthlySubscriptionAmountText;
+
     private LinearLayout mYearlySelectorLayout;
+    private TextView mYearlySubscriptionAmountText;
 
     private MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
     private LiveData<Boolean> billingConnectionState = _billingConnectionState;
@@ -66,7 +69,6 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
 
     private void initializeViews() {
         setContentView(R.layout.activity_brave_vpn_plan);
-        Log.e("BraveVPN", "BraveVpnPlansActivity initializeViews");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,7 +78,8 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_close_24);
         actionBar.setTitle(getResources().getString(R.string.brave_vpn));
 
-        mPlanProgress = findViewById(R.id.plan_progress);
+        mMonthlyPlanProgress = findViewById(R.id.monthly_plan_progress);
+        mYearlyPlanProgress = findViewById(R.id.yearly_plan_progress);
         mPlanLayout = findViewById(R.id.plan_layout);
 
         ViewPager braveRewardsViewPager = findViewById(R.id.brave_rewards_view_pager);
@@ -93,33 +96,41 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         TextView monthlySubscriptionText = findViewById(R.id.monthly_subscription_text);
         monthlySubscriptionText.setText(
                 String.format(getResources().getString(R.string.monthly_subscription), ""));
-        TextView monthlySubscriptionAmountText =
-                findViewById(R.id.monthly_subscription_amount_text);
+        mMonthlySubscriptionAmountText = findViewById(R.id.monthly_subscription_amount_text);
         mMonthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
 
-        TextView yearlySubscriptionAmountText = findViewById(R.id.yearly_subscription_amount_text);
+        mYearlySubscriptionAmountText = findViewById(R.id.yearly_subscription_amount_text);
         mYearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
+    }
 
+    @Override
+    public void finishNativeInitialization() {
+        super.finishNativeInitialization();
+        InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
+                BraveVpnPlansActivity.this, _billingConnectionState);
         LiveDataUtil.observeOnce(billingConnectionState, isConnected -> {
-            Log.e("BraveVPN", "LiveDataUtil.observeOnce : " + isConnected);
             if (isConnected) {
-                Log.e("BraveVPN", "LiveDataUtil.observeOnce isConnected");
+                // Check for an active subscription to show restore
+                BraveVpnUtils.showProgressDialog(BraveVpnPlansActivity.this,
+                        getResources().getString(R.string.vpn_connect_text));
+                mIsVerification = true;
+                verifySubscription();
+
+                // Set up monthly subscription
+                mMonthlyPlanProgress.setVisibility(View.VISIBLE);
                 InAppPurchaseWrapper.getInstance().queryProductDetailsAsync(
                         InAppPurchaseWrapper.SubscriptionType.MONTHLY,
                         new InAppPurchaseWrapper.QueryProductDetailsResponse() {
                             @Override
                             public void onProductDetails(
                                     Map<String, ProductDetails> productDetailsMap) {
-                                Log.e("BraveVPN", "queryProductDetailsAsync MONTHLY 1");
                                 ProductDetails monthlyProductDetails = productDetailsMap.get(
                                         InAppPurchaseWrapper.getInstance().getProductId(
                                                 InAppPurchaseWrapper.SubscriptionType.MONTHLY));
-                                Log.e("BraveVPN", "queryProductDetailsAsync MONTHLY 2");
                                 if (monthlyProductDetails != null) {
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Log.e("BraveVPN", "queryProductDetailsAsync MONTHLY 3");
                                             mMonthlySelectorLayout.setOnClickListener(v
                                                     -> InAppPurchaseWrapper.getInstance()
                                                                .initiatePurchase(
@@ -154,10 +165,11 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                                                                 .findFirst()
                                                                 .get()
                                                                 .getFormattedPrice();
-                                                monthlySubscriptionAmountText.setText(String.format(
+                                                mMonthlySubscriptionAmountText.setText(String.format(
                                                         getResources().getString(
                                                                 R.string.monthly_subscription_amount),
                                                         monthlyProductPrice));
+                                                mMonthlyPlanProgress.setVisibility(View.GONE);
                                             }
                                         }
                                     });
@@ -165,22 +177,21 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                             }
                         });
 
+                // Set up yearly subscription
+                mYearlyPlanProgress.setVisibility(View.VISIBLE);
                 InAppPurchaseWrapper.getInstance().queryProductDetailsAsync(
                         InAppPurchaseWrapper.SubscriptionType.YEARLY,
                         new InAppPurchaseWrapper.QueryProductDetailsResponse() {
                             @Override
                             public void onProductDetails(
                                     Map<String, ProductDetails> productDetailsMap) {
-                                Log.e("BraveVPN", "queryProductDetailsAsync YEARLY 1");
                                 ProductDetails yearlyProductDetails = productDetailsMap.get(
                                         InAppPurchaseWrapper.getInstance().getProductId(
                                                 InAppPurchaseWrapper.SubscriptionType.YEARLY));
-                                Log.e("BraveVPN", "queryProductDetailsAsync YEARLY 2");
                                 if (yearlyProductDetails != null) {
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Log.e("BraveVPN", "queryProductDetailsAsync YEARLY 3");
                                             mYearlySelectorLayout.setOnClickListener(v
                                                     -> InAppPurchaseWrapper.getInstance()
                                                                .initiatePurchase(
@@ -215,34 +226,17 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                                                                 .findFirst()
                                                                 .get()
                                                                 .getFormattedPrice();
-                                                yearlySubscriptionAmountText.setText(String.format(
+                                                mYearlySubscriptionAmountText.setText(String.format(
                                                         getResources().getString(
                                                                 R.string.yearly_subscription_amount),
                                                         yearlyProductPrice));
+                                                mYearlyPlanProgress.setVisibility(View.GONE);
                                             }
                                         }
                                     });
                                 }
                             }
                         });
-            }
-        });
-    }
-
-    @Override
-    public void finishNativeInitialization() {
-        super.finishNativeInitialization();
-        Log.e("BraveVPN", "BraveVpnPlansActivity finishNativeInitialization");
-        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
-                    BraveVpnPlansActivity.this, _billingConnectionState);
-        }
-        LiveDataUtil.observeOnce(billingConnectionState, isConnected -> {
-            if (isConnected) {
-                BraveVpnUtils.showProgressDialog(BraveVpnPlansActivity.this,
-                        getResources().getString(R.string.vpn_connect_text));
-                mIsVerification = true;
-                verifySubscription();
             }
         });
     }

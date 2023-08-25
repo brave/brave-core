@@ -41,7 +41,6 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
-import org.chromium.ui.widget.Toast;
 
 import java.util.List;
 
@@ -74,10 +73,8 @@ public abstract class BraveVpnParentActivity
                     } else {
                         updateProfileView();
                     }
-                    Toast.makeText(this,
-                                 getResources().getString(R.string.permission_was_cancelled),
-                                 Toast.LENGTH_SHORT)
-                            .show();
+                    BraveVpnUtils.showToast(
+                            getResources().getString(R.string.permission_was_cancelled));
                 }
             });
 
@@ -143,9 +140,7 @@ public abstract class BraveVpnParentActivity
                 } else {
                     mIsVerification = false;
                     showRestoreMenu(true);
-                    Toast.makeText(BraveVpnParentActivity.this, R.string.already_subscribed,
-                                 Toast.LENGTH_SHORT)
-                            .show();
+                    BraveVpnUtils.showToast(getResources().getString(R.string.already_subscribed));
                     BraveVpnUtils.dismissProgressDialog();
                 }
             } else {
@@ -207,7 +202,7 @@ public abstract class BraveVpnParentActivity
 
             checkForVpn(braveVpnWireguardProfileCredentials, mBraveVpnPrefModel);
         } else {
-            Toast.makeText(this, R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG).show();
+            BraveVpnUtils.showToast(getResources().getString(R.string.vpn_profile_creation_failed));
             BraveVpnUtils.dismissProgressDialog();
         }
     }

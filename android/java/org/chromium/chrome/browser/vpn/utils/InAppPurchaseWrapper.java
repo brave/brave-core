@@ -33,7 +33,6 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.util.BraveConstants;
-import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,12 +49,6 @@ public class InAppPurchaseWrapper {
     public static final String RELEASE_YEARLY_SUBSCRIPTION = "brave.vpn.yearly";
     private BillingClient mBillingClient;
     private int mRetryCount;
-
-    public static final List<String> NIGHTLY_SUBS_PRODUCT_IDS = new ArrayList<>(
-            Arrays.asList(NIGHTLY_MONTHLY_SUBSCRIPTION, NIGHTLY_YEARLY_SUBSCRIPTION));
-
-    public static final List<String> RELEASE_SUBS_PRODUCT_IDS = new ArrayList<>(
-            Arrays.asList(RELEASE_MONTHLY_SUBSCRIPTION, RELEASE_YEARLY_SUBSCRIPTION));
 
     private static volatile InAppPurchaseWrapper sInAppPurchaseWrapper;
     private static Object mutex = new Object();
@@ -100,6 +93,9 @@ public class InAppPurchaseWrapper {
 
     public void startBillingServiceConnection(
             Context context, MutableLiveData<Boolean> billingClientConnectionState) {
+        if (!BraveVpnUtils.isBraveVpnFeatureEnable()) {
+            return;
+        }
         mBillingClient = BillingClient.newBuilder(context)
                                  .enablePendingPurchases()
                                  .setListener(getPurchasesUpdatedListener(context))
@@ -121,7 +117,6 @@ public class InAppPurchaseWrapper {
                                 == BillingClient.BillingResponseCode.OK) {
                             retryCount = 0;
                             if (billingClientConnectionState != null) {
-                                Log.e("BraveVPN", "billingClientConnectionState != null");
                                 billingClientConnectionState.postValue(true);
                             }
                         }
@@ -179,9 +174,7 @@ public class InAppPurchaseWrapper {
 
         mBillingClient.queryProductDetailsAsync(
                 queryProductDetailsParams, (billingResult, productDetailsList) -> {
-                    Log.e("BraveVPN", "mBillingClient.queryProductDetailsAsync 1");
                     if (billingResult.getResponseCode() == OK) {
-                        Log.e("BraveVPN", "mBillingClient.queryProductDetailsAsync 2");
                         for (ProductDetails productDetail : productDetailsList) {
                             productDetails.put(productDetail.getProductId(), productDetail);
                         }
@@ -209,7 +202,6 @@ public class InAppPurchaseWrapper {
 
     public void initiatePurchase(Activity activity, ProductDetails productDetails) {
         String offerToken = productDetails.getSubscriptionOfferDetails().get(0).getOfferToken();
-        Log.e("BraveVPN", "offerToken : " + offerToken);
         List<BillingFlowParams.ProductDetailsParams> productDetailsParamsList = new ArrayList<>();
         productDetailsParamsList.add(BillingFlowParams.ProductDetailsParams.newBuilder()
                                              .setProductDetails(productDetails)
@@ -242,16 +234,11 @@ public class InAppPurchaseWrapper {
                 if (billingResult.getResponseCode() == OK) {
                     BraveVpnPrefUtils.setSubscriptionPurchase(true);
                     BraveVpnUtils.openBraveVpnProfileActivity(context);
-                    Toast.makeText(context,
-                                 context.getResources().getString(R.string.subscription_consumed),
-                                 Toast.LENGTH_SHORT)
-                            .show();
+                    BraveVpnUtils.showToast(
+                            context.getResources().getString(R.string.subscription_consumed));
                 } else {
-                    Toast.makeText(context,
-                                 context.getResources().getString(R.string.fail_to_aknowledge)
-                                         + billingResult,
-                                 Toast.LENGTH_SHORT)
-                            .show();
+                    BraveVpnUtils.showToast(
+                            context.getResources().getString(R.string.fail_to_aknowledge));
                 }
             });
         } else {
@@ -268,25 +255,20 @@ public class InAppPurchaseWrapper {
                 }
             } else if (billingResult.getResponseCode()
                     == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-                Toast.makeText(context,
-                             context.getResources().getString(R.string.already_subscribed),
-                             Toast.LENGTH_SHORT)
-                        .show();
+                BraveVpnUtils.showToast(
+                        context.getResources().getString(R.string.already_subscribed));
             } else if (billingResult.getResponseCode()
                             == BillingClient.BillingResponseCode.SERVICE_DISCONNECTED
                     && mRetryCount < 5) {
-                // startBillingServiceConnection(context);
+                startBillingServiceConnection(context, null);
                 mRetryCount++;
             } else if (billingResult.getResponseCode()
                     == BillingClient.BillingResponseCode.USER_CANCELED) {
-                Toast.makeText(context,
-                             context.getResources().getString(R.string.error_caused_by_user),
-                             Toast.LENGTH_SHORT)
-                        .show();
+                BraveVpnUtils.showToast(
+                        context.getResources().getString(R.string.error_caused_by_user));
             } else {
-                Toast.makeText(context, context.getResources().getString(R.string.purchased_failed),
-                             Toast.LENGTH_SHORT)
-                        .show();
+                BraveVpnUtils.showToast(
+                        context.getResources().getString(R.string.purchased_failed));
             }
         };
     }

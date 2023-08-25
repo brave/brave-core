@@ -21,7 +21,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
-import org.chromium.ui.widget.Toast;
 
 import java.util.List;
 import java.util.TimeZone;
@@ -35,8 +34,8 @@ public class BraveVpnApiResponseUtils {
         if (BraveVpnProfileUtils.getInstance().isBraveVPNConnected(activity)) {
             BraveVpnProfileUtils.getInstance().stopVpn(activity);
         }
-        Toast.makeText(activity, R.string.purchase_token_verification_failed, Toast.LENGTH_LONG)
-                .show();
+        BraveVpnUtils.showToast(
+                activity.getResources().getString(R.string.purchase_token_verification_failed));
     }
 
     public static void handleOnGetSubscriberCredential(Activity activity, boolean isSuccess) {
@@ -51,8 +50,8 @@ public class BraveVpnApiResponseUtils {
             }
             BraveVpnNativeWorker.getInstance().getTimezonesForRegions();
         } else {
-            Toast.makeText(activity, R.string.vpn_profile_creation_failed, Toast.LENGTH_SHORT)
-                    .show();
+            BraveVpnUtils.showToast(
+                    activity.getResources().getString(R.string.vpn_profile_creation_failed));
             BraveVpnUtils.dismissProgressDialog();
         }
     }
@@ -63,12 +62,9 @@ public class BraveVpnApiResponseUtils {
             String region = BraveVpnUtils.getRegionForTimeZone(
                     jsonTimezones, TimeZone.getDefault().getID());
             if (TextUtils.isEmpty(region)) {
-                Toast.makeText(activity,
-                             String.format(activity.getResources().getString(
-                                                   R.string.couldnt_get_matching_timezone),
-                                     TimeZone.getDefault().getID()),
-                             Toast.LENGTH_LONG)
-                        .show();
+                BraveVpnUtils.showToast(String.format(
+                        activity.getResources().getString(R.string.couldnt_get_matching_timezone),
+                        TimeZone.getDefault().getID()));
                 return;
             }
             if (!TextUtils.isEmpty(BraveVpnUtils.selectedServerRegion)
@@ -88,8 +84,8 @@ public class BraveVpnApiResponseUtils {
             BraveVpnNativeWorker.getInstance().getHostnamesForRegion(region);
             braveVpnPrefModel.setServerRegion(region);
         } else {
-            Toast.makeText(activity, R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG)
-                    .show();
+            BraveVpnUtils.showToast(
+                    activity.getResources().getString(R.string.vpn_profile_creation_failed));
             BraveVpnUtils.dismissProgressDialog();
         }
     }
@@ -103,8 +99,8 @@ public class BraveVpnApiResponseUtils {
                     braveVpnPrefModel.getSubscriberCredential(),
                     braveVpnPrefModel.getClientPublicKey(), host.first);
         } else {
-            Toast.makeText(activity, R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG)
-                    .show();
+            BraveVpnUtils.showToast(
+                    activity.getResources().getString(R.string.vpn_profile_creation_failed));
             BraveVpnUtils.dismissProgressDialog();
         }
         return host;

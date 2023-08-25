@@ -31,6 +31,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
@@ -394,7 +396,13 @@ public abstract class BraveActivity extends ChromeActivity
                         BraveVpnUtils.showProgressDialog(BraveActivity.this,
                                 getResources().getString(R.string.vpn_connect_text));
                         if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
-                            verifySubscription();
+                            MutableLiveData<Boolean> _billingConnectionState =
+                                    new MutableLiveData();
+                            LiveData<Boolean> billingConnectionState = _billingConnectionState;
+                            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
+                                    BraveActivity.this, _billingConnectionState);
+                            LiveDataUtil.observeOnce(billingConnectionState,
+                                    isConnected -> { verifySubscription(); });
                         } else {
                             BraveVpnUtils.dismissProgressDialog();
                             BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);

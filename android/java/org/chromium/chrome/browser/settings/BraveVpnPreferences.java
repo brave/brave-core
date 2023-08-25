@@ -19,6 +19,8 @@ import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
@@ -95,9 +97,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         getActivity().setTitle(R.string.brave_firewall_vpn);
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_vpn_preferences);
 
-        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(getActivity(), null);
-        }
+        InAppPurchaseWrapper.getInstance().startBillingServiceConnection(getActivity(), null);
 
         mVpnSwitch = (ChromeSwitchPreference) findPreference(PREF_VPN_SWITCH);
         mVpnSwitch.setChecked(
@@ -125,7 +125,13 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         BraveVpnUtils.showProgressDialog(
                                 getActivity(), getResources().getString(R.string.vpn_connect_text));
                         if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
-                            verifyPurchase(true);
+                            MutableLiveData<Boolean> _billingConnectionState =
+                                    new MutableLiveData();
+                            LiveData<Boolean> billingConnectionState = _billingConnectionState;
+                            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
+                                    getActivity(), _billingConnectionState);
+                            LiveDataUtil.observeOnce(billingConnectionState,
+                                    isConnected -> { verifyPurchase(true); });
                         } else {
                             BraveVpnUtils.openBraveVpnPlansActivity(getActivity());
                             BraveVpnUtils.dismissProgressDialog();
@@ -256,7 +262,12 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 mBraveVpnPrefModel = new BraveVpnPrefModel();
                 BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
             } else {
-                verifyPurchase(false);
+                MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+                LiveData<Boolean> billingConnectionState = _billingConnectionState;
+                InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
+                        getActivity(), _billingConnectionState);
+                LiveDataUtil.observeOnce(
+                        billingConnectionState, isConnected -> { verifyPurchase(false); });
             }
         } else if (BraveVpnUtils.mUpdateProfileAfterSplitTunnel) {
             BraveVpnUtils.mUpdateProfileAfterSplitTunnel = false;
