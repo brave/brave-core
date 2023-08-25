@@ -126,7 +126,7 @@
             android:key="app_links"
             android:order="25"
             android:title="@string/settings_app_links_label"
-            android:defaultValue="false"/>
+            android:defaultValue="true"/>
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:fragment="org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreferencesFragment"
             android:key="webrtc_policy"
