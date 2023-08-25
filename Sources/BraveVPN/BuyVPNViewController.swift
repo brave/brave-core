@@ -13,7 +13,8 @@ import DesignSystem
 class BuyVPNViewController: VPNSetupLoadingController {
     
   let iapObserver: IAPObserver
-  
+  private var iapRestoreTimer: Timer?
+
   var activeSubcriptionChoice: SubscriptionType = .yearly {
     didSet {
       buyVPNView.activeSubcriptionChoice = activeSubcriptionChoice
@@ -134,6 +135,19 @@ class BuyVPNViewController: VPNSetupLoadingController {
   @objc func restorePurchasesAction() {
     isLoading = true
     SKPaymentQueue.default().restoreCompletedTransactions()
+    
+    if iapRestoreTimer != nil {
+      iapRestoreTimer?.invalidate()
+      iapRestoreTimer = nil
+    }
+    
+    // Adding 1 minute timer for restore
+    iapRestoreTimer = Timer.scheduledTimer(
+      timeInterval: 1.minutes,
+      target: self,
+      selector: #selector(handleRestoreTimeoutFailure),
+      userInfo: nil,
+      repeats: false)
   }
   
   @objc func startSubscriptionAction() {
@@ -182,6 +196,25 @@ extension BuyVPNViewController: IAPObserverDelegate {
   }
 
   func purchaseFailed(error: IAPObserver.PurchaseError) {
+    // Handle Transaction or Restore error
+    guard isLoading else {
+      return
+    }
+    
+    handleTransactionError(error: error)
+  }
+  
+  @objc func handleRestoreTimeoutFailure() {
+    // Handle Restore error from timeout
+    guard isLoading else {
+      return
+    }
+    
+    let errorRestore = SKError(SKError.unknown, userInfo: ["detail": "time-out"])
+    handleTransactionError(error: .transactionError(error: errorRestore))
+  }
+  
+  private func handleTransactionError(error: IAPObserver.PurchaseError) {
     DispatchQueue.main.async {
       self.isLoading = false
 

@@ -85,4 +85,14 @@ public class IAPObserver: NSObject, SKPaymentTransactionObserver {
     Logger.module.debug("Restoring transaction failed")
     self.delegate?.purchaseFailed(error: .transactionError(error: error as? SKError))
   }
+  
+  // Used to handle restoring transaction error for users never purchased but trying to restore
+  public func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
+    if queue.transactions.isEmpty {
+      Logger.module.debug("Restoring transaction failed - Nothing to restore - Account never bought this product")
+
+      let errorRestore = SKError(SKError.unknown, userInfo: ["detail": "not-purchased"])
+      delegate?.purchaseFailed(error: .transactionError(error: errorRestore))
+    }
+  }
 }
