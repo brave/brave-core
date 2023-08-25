@@ -17,16 +17,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Pair;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
-import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesResponseListener;
 import com.wireguard.android.backend.GoBackend;
 import com.wireguard.crypto.KeyPair;
 

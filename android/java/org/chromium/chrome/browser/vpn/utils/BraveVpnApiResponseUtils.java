@@ -11,18 +11,11 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Pair;
 
-import androidx.annotation.NonNull;
-
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesResponseListener;
-
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 
-import java.util.List;
 import java.util.TimeZone;
 
 public class BraveVpnApiResponseUtils {

@@ -34,9 +34,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesResponseListener;
 import com.brave.playlist.util.ConstantUtils;
 import com.brave.playlist.util.PlaylistPreferenceUtils;
 import com.brave.playlist.util.PlaylistUtils;
