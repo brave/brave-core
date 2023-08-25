@@ -8,7 +8,7 @@
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"

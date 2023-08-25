@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ATTENTION_USER_ACTIVITY_PAGE_TRANSITION_UTIL_H_
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_event_types.h"
-#include "brave/components/brave_ads/core/page_transition_types.h"
+#include "brave/components/brave_ads/core/public/user_attention/page_transition_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

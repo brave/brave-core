@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "base/types/expected.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "extensions/browser/extension_function.h"

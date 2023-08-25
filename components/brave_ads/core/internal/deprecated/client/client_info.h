@@ -11,10 +11,10 @@
 
 #include "base/containers/flat_map.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/ad_preferences_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
 
 namespace brave_ads {
 

@@ -5,14 +5,17 @@
 
 static_library("browser") {
   sources = [
+    "search_result_ad/search_result_ad_converting_util.cc",
+    "search_result_ad/search_result_ad_converting_util.h",
     "search_result_ad/search_result_ad_handler.cc",
     "search_result_ad/search_result_ad_handler.h",
+    "search_result_ad/search_result_ad_util.cc",
+    "search_result_ad/search_result_ad_util.h",
   ]
 
   deps = [
     "//base",
     "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/common",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_search/common",
     "//components/schema_org/common:mojom",
@@ -24,7 +27,7 @@ static_library("browser") {
   ]
 
   public_deps = [
-    "//brave/components/brave_ads/common/interfaces",
+    "//brave/components/brave_ads/core/mojom",
     "//third_party/blink/public/mojom:mojom_platform_headers",
   ]
 }

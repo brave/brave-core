@@ -469,7 +469,6 @@ source_set("ui") {
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",
     "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/common",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_federated",
     "//brave/components/brave_federated/public/interfaces",

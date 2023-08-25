@@ -6,10 +6,10 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
 

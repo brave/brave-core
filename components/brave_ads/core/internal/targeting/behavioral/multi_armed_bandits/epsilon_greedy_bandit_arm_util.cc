@@ -6,9 +6,9 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_util.h"
 
 #include "base/values.h"
-#include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_value_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

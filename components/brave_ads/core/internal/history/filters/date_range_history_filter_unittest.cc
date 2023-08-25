@@ -8,8 +8,8 @@
 #include "base/containers/circular_deque.h"
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

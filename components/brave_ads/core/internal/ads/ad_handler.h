@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler.h"
@@ -30,6 +29,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer_observer.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads {
 

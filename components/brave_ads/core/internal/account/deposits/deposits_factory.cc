@@ -6,10 +6,10 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_factory.h"
 
 #include "base/notreached.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/cash_deposit.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/non_cash_deposit.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 namespace brave_ads {
 

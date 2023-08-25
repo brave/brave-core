@@ -10,8 +10,8 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_url_request_delegate.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

@@ -7,7 +7,7 @@
 #define BRAVE_IOS_BROWSER_API_ADS_ADS_CLIENT_BRIDGE_H_
 
 #import <Foundation/Foundation.h>
-#import "brave/components/brave_ads/core/ads_client.h"
+#import "brave/components/brave_ads/core/public/client/ads_client.h"
 
 #include <string>
 #include <vector>

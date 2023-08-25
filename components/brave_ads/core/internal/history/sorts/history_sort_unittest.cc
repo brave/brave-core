@@ -7,8 +7,8 @@
 
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
-#include "brave/components/brave_ads/core/history_sort_types.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
+#include "brave/components/brave_ads/core/public/history/history_sort_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

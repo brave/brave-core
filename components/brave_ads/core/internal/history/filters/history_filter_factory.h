@@ -8,8 +8,8 @@
 
 #include <memory>
 
-#include "brave/components/brave_ads/core/history_filter_types.h"
 #include "brave/components/brave_ads/core/internal/history/filters/history_filter_interface.h"
+#include "brave/components/brave_ads/core/public/history/history_filter_types.h"
 
 namespace brave_ads {
 

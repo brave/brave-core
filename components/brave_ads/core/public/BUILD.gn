@@ -1,0 +1,65 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("headers") {
+  sources = [
+    "ad_constants.h",
+    "ad_info.h",
+    "ad_type.h",
+    "ads.h",
+    "ads/ad_event/ad_event_history.h",
+    "ads/inline_content_ad_constants.h",
+    "ads/inline_content_ad_info.h",
+    "ads/inline_content_ad_value_util.h",
+    "ads/new_tab_page_ad_constants.h",
+    "ads/new_tab_page_ad_info.h",
+    "ads/new_tab_page_ad_value_util.h",
+    "ads/new_tab_page_ad_wallpaper_focal_point_info.h",
+    "ads/new_tab_page_ad_wallpaper_info.h",
+    "ads/notification_ad_constants.h",
+    "ads/notification_ad_info.h",
+    "ads/notification_ad_value_util.h",
+    "ads/promoted_content_ad_constants.h",
+    "ads/promoted_content_ad_info.h",
+    "ads/promoted_content_ad_value_util.h",
+    "ads_callback.h",
+    "ads_util.h",
+    "client/ads_client.h",
+    "client/ads_client_callback.h",
+    "client/ads_client_notifier.h",
+    "client/ads_client_notifier_observer.h",
+    "confirmation_type.h",
+    "database/database.h",
+    "export.h",
+    "feature/brave_ads_feature.h",
+    "feature/notification_ad_constants.h",
+    "feature/notification_ad_feature.h",
+    "feature/search_result_ad_feature.h",
+    "feature/user_attention_feature.h",
+    "flags/flags_util.h",
+    "history/ad_content_info.h",
+    "history/ad_content_value_util.h",
+    "history/category_content_info.h",
+    "history/category_content_value_util.h",
+    "history/history_filter_types.h",
+    "history/history_item_info.h",
+    "history/history_item_value_util.h",
+    "history/history_sort_types.h",
+    "prefs/pref_names.h",
+    "targeting/geographical/subdivision/supported_subdivisions.h",
+    "user_attention/page_transition_types.h",
+  ]
+
+  deps = [
+    "//base",
+    "//sql",
+    "//url",
+  ]
+
+  public_deps = [
+    "//brave/components/brave_ads/core/mojom",
+    "//brave/components/brave_federated/public/interfaces",
+  ]
+}

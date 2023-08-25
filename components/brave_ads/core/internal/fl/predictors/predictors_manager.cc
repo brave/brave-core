@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/average_clickthrough_rate_predictor_variable.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/last_notification_ad_was_clicked_predictor_variable.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/number_of_user_activity_events_predictor_variable.h"

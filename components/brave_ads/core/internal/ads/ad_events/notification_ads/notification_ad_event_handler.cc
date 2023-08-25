@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_factory.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
-#include "brave/components/brave_ads/core/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

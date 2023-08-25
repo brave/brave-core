@@ -40,7 +40,7 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/app:brave_generated_resources_grit",
-    "//brave/components/brave_ads/common",
+    "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/buildflags",

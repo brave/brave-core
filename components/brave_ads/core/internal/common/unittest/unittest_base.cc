@@ -14,8 +14,6 @@
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
-#include "brave/components/brave_ads/core/database.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
@@ -29,6 +27,8 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/database/database.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {

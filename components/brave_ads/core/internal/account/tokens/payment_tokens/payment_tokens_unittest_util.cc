@@ -9,11 +9,11 @@
 #include <vector>
 
 #include "base/check_op.h"
-#include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
 
 namespace brave_ads {
 

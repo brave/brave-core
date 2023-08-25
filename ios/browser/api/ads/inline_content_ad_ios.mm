@@ -6,7 +6,7 @@
 #import "inline_content_ad_ios.h"
 
 #include "base/strings/sys_string_conversions.h"
-#include "brave/components/brave_ads/core/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."

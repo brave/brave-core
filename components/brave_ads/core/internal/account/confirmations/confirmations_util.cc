@@ -10,8 +10,6 @@
 #include "base/base64url.h"
 #include "base/json/json_reader.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/ad_type.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/confirmation_payload_json_writer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
@@ -21,6 +19,8 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 namespace brave_ads {
 

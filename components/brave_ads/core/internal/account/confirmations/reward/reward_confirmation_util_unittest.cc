@@ -8,7 +8,6 @@
 #include "base/strings/string_util.h"
 #include "base/test/mock_callback.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_unittest_util.h"
@@ -24,6 +23,7 @@
 #include "brave/components/brave_ads/core/internal/browser/browser_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

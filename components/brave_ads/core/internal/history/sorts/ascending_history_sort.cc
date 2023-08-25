@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/history/sorts/ascending_history_sort.h"
 
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
 
 namespace brave_ads {
 

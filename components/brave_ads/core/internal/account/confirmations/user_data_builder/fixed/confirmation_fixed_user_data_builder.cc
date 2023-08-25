@@ -10,7 +10,6 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/build_channel_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/catalog_user_data.h"
@@ -22,6 +21,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/segment_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/studies_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/version_number_user_data.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 namespace brave_ads {
 

@@ -12,9 +12,9 @@
 #include <vector>
 
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;

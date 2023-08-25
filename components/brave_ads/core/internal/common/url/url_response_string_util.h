@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 

@@ -7,7 +7,7 @@
 
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
-#include "brave/components/brave_ads/core/promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/promoted_content_ad_info.h"
 
 namespace brave_ads {
 

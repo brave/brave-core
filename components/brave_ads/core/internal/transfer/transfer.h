@@ -11,10 +11,10 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer_observer.h"
+#include "brave/components/brave_ads/core/public/ad_info.h"
 
 namespace base {
 class Time;

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
 
