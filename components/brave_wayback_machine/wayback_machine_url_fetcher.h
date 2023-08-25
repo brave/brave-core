@@ -43,9 +43,15 @@ class WaybackMachineURLFetcher final {
   void Fetch(const GURL& url);
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(WaybackMachineURLFetcherUnitTest,
+                           InputURLSanitizeTest);
+
   void OnWaybackURLFetched(
       const GURL& original_url,
       api_request_helper::APIRequestResult api_request_result);
+
+  // Clear sensitive data such as username/password from |url|.
+  GURL GetSanitizedURL(const GURL& url) const;
 
   raw_ptr<Client> client_ = nullptr;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;

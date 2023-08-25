@@ -56,7 +56,8 @@ WaybackMachineURLFetcher::WaybackMachineURLFetcher(
 WaybackMachineURLFetcher::~WaybackMachineURLFetcher() = default;
 
 void WaybackMachineURLFetcher::Fetch(const GURL& url) {
-  const GURL wayback_fetch_url(std::string(kWaybackQueryURL) + url.spec());
+  const GURL wayback_fetch_url(std::string(kWaybackQueryURL) +
+                               GetSanitizedURL(url).spec());
   api_request_helper_->Request(
       "GET", FixupWaybackQueryURL(wayback_fetch_url), std::string(),
       "application/json",
@@ -82,4 +83,12 @@ void WaybackMachineURLFetcher::OnWaybackURLFetched(
   }
 
   client_->OnWaybackURLFetched(GURL(*url_string));
+}
+
+GURL WaybackMachineURLFetcher::GetSanitizedURL(const GURL& url) const {
+  GURL::Replacements replacements;
+  replacements.ClearRef();
+  replacements.ClearUsername();
+  replacements.ClearPassword();
+  return url.ReplaceComponents(replacements);
 }
