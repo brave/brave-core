@@ -49,6 +49,10 @@ interface Props {
   selectedSendOption: SendPageTabHashes
 }
 
+const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 0 } as const
+const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
+const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
+
 export const SelectTokenButton = (props: Props) => {
   const { onClick, token, selectedSendOption } = props
 
@@ -56,14 +60,6 @@ export const SelectTokenButton = (props: Props) => {
   const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
 
   // Memos
-  const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(token?.isErc721 ? NftIcon : AssetIcon, {
-      size: 'big',
-      marginLeft: 0,
-      marginRight: 0
-    })
-  }, [token?.isErc721])
-
   const buttonText = React.useMemo(() => {
     if (selectedSendOption === SendPageTabHashes.nft) {
       const id = token?.tokenId ? `#${new Amount(token?.tokenId).toNumber()}` : ''
@@ -87,14 +83,20 @@ export const SelectTokenButton = (props: Props) => {
                 : undefined
             }
           >
-            <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
-            {
-              tokensNetwork &&
-              checkIfTokenNeedsNetworkIcon(tokensNetwork, token.contractAddress) &&
-              <NetworkIconWrapper>
-                <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
-              </NetworkIconWrapper>
-            }
+            {token.isNft || token.isErc721 ? (
+              <NftIconWithPlaceholder asset={token} network={tokensNetwork} />
+            ) : (
+              <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
+            )}
+            {tokensNetwork &&
+              checkIfTokenNeedsNetworkIcon(
+                tokensNetwork,
+                token.contractAddress
+              ) && (
+                <NetworkIconWrapper>
+                  <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
+                </NetworkIconWrapper>
+              )}
           </IconsWrapper>
         )}
         <ButtonText

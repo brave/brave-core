@@ -236,7 +236,7 @@ export function filterTokensByNetworks (assets: BraveWallet.BlockchainToken[], n
 }
 
 export const checkIfTokenNeedsNetworkIcon = (
-  network: BraveWallet.NetworkInfo,
+  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'symbol'>,
   contractAddress: string
 ) => {
   return contractAddress !== '' || // non-native asset

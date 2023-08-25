@@ -29,17 +29,30 @@ export const Placeholder = styled.div<{ orb: string }>`
   background-size: cover;
 `
 
+type IconSize = 'huge' | 'big' | 'small' | 'tiny' | 'extra-small'
+
 interface IconProps extends AssetIconProps {
-  size?: 'huge' | 'big' | 'small' | 'tiny'
+  size?: IconSize
 }
 
-export const NetworkIcon = AssetIconFactory<IconProps>(props => ({
-  width: props.size === 'huge'
-    ? '32px'
-    : props.size === 'big'
-      ? '24px'
-      : props.size === 'tiny'
-        ? '12px'
-        : '15px',
+function getNetworkIconWidthFromSize(size?: IconSize): string {
+  switch (size) {
+    case 'huge':
+      return '32px'
+    case 'big':
+      return '24px'
+    case 'small':
+      return '15px'
+    case 'tiny':
+      return '12px'
+    case 'extra-small':
+      return '8px'
+    default:
+      return '15px' // small
+  }
+}
+
+export const NetworkIcon = AssetIconFactory<IconProps>((props) => ({
+  width: getNetworkIconWidthFromSize(props.size),
   height: 'auto'
 }))

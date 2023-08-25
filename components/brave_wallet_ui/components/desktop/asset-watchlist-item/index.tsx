@@ -51,6 +51,10 @@ export interface Props {
   token: BraveWallet.BlockchainToken
 }
 
+const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 8 } as const
+const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
+const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
+
 const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
   (props: Props, forwardedRef) => {
     const {
@@ -80,10 +84,6 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
       onRemoveAsset(token)
     }, [token, onRemoveAsset])
 
-    const AssetIconWithPlaceholder = React.useMemo(() => {
-      return withPlaceholderIcon(token.isErc721 && !isDataURL(token.logo) ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
-    }, [token])
-
     const networkDescription = React.useMemo(() => {
       return getLocale('braveWalletPortfolioAssetNetworkDescription')
         .replace('$1', token.symbol)
@@ -93,7 +93,11 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
     return (
       <StyledWrapper ref={forwardedRef}>
         <NameAndIcon onClick={onClickAsset}>
-          <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
+          {token.isErc721 && !isDataURL(token.logo) ? (
+            <NftIconWithPlaceholder asset={token} network={tokensNetwork} />
+          ) : (
+            <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
+          )}
           <NameAndSymbol>
             <AssetName>
               {token.name} {
