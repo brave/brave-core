@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.Pref;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.safe_browsing.settings.NoGooglePlayServicesDialog;
@@ -345,6 +346,11 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
 
         mAppLinks = (ChromeSwitchPreference) findPreference(PREF_APP_LINKS);
         mAppLinks.setOnPreferenceChangeListener(this);
+
+        // Added mainly for upgrade case
+        boolean isAppLinksAllowed =
+                SharedPreferencesManager.getInstance().readBoolean(PREF_APP_LINKS, true);
+        mAppLinks.setChecked(isAppLinksAllowed);
 
         mWebrtcPolicy = (ChromeBasePreference) findPreference(PREF_WEBRTC_POLICY);
 
