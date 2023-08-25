@@ -61,7 +61,7 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
             QueryIntentActivitiesSupplier resolvingInfos, ResolveActivitySupplier resolveActivity,
             GURL browserFallbackUrl, GURL intentDataUrl, ExternalNavigationParams params) {
         if (ContextUtils.getAppSharedPreferences().getBoolean(
-                    BravePrivacySettings.PREF_APP_LINKS, false)) {
+                    BravePrivacySettings.PREF_APP_LINKS, true)) {
             return super.startActivity(intent, requiresIntentChooser, resolvingInfos,
                     resolveActivity, browserFallbackUrl, intentDataUrl, params);
         } else {
