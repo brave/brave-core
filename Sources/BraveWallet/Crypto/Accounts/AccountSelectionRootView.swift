@@ -92,6 +92,7 @@ private struct AccountListRowView: View {
           AccountView(address: account.address, name: account.name)
           checkmark
         }
+        .contentShape(Rectangle())
       }
       .buttonStyle(FadeButtonStyle())
     }

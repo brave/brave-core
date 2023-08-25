@@ -127,22 +127,7 @@ public class NFTStore: ObservableObject {
       let selectedAccounts = filters.accounts.filter(\.isSelected).map(\.model)
       let selectedNetworks = filters.networks.filter(\.isSelected).map(\.model)
       let allVisibleUserAssets = assetManager.getAllVisibleAssetsInNetworkAssets(networks: selectedNetworks)
-      var updatedUserVisibleNFTs: [NFTAssetViewModel] = []
-      for networkAssets in allVisibleUserAssets {
-        for token in networkAssets.tokens {
-          if token.isErc721 || token.isNft {
-            updatedUserVisibleNFTs.append(
-              NFTAssetViewModel(
-                token: token,
-                network: networkAssets.network,
-                balanceForAccounts: nftBalancesCache[token.contractAddress] ?? [:],
-                nftMetadata: metadataCache[token.id]
-              )
-            )
-          }
-        }
-      }
-      self.userVisibleNFTs = updatedUserVisibleNFTs
+      self.userVisibleNFTs = buildAssetViewModels(allVisibleUserAssets: allVisibleUserAssets)
         .optionallyFilterUnownedNFTs(
           isHidingUnownedNFTs: filters.isHidingUnownedNFTs,
           selectedAccounts: selectedAccounts
@@ -154,20 +139,48 @@ public class NFTStore: ObservableObject {
       if filters.isHidingUnownedNFTs {
         // fetch balance for all NFTs
         let allAccounts = filters.accounts.map(\.model)
-        for nft in allNFTs {
-          guard let networkForNFT = allNetworks.first(where: { $0.chainId == nft.chainId }) else {
-            continue
-          }
-          var nftBalances = nftBalancesCache[nft.contractAddress] ?? [:]
-          for account in allAccounts where account.coin == nft.coin {
-            guard let balance = await rpcService.balance(for: nft, in: account, network: networkForNFT) else {
-              continue
+        nftBalancesCache = await withTaskGroup(
+          of: [String: [String: Int]].self,
+          body: { @MainActor [nftBalancesCache, rpcService] group in
+            for nft in allNFTs { // for each NFT
+              guard let networkForNFT = allNetworks.first(where: { $0.chainId == nft.chainId }) else {
+                continue
+              }
+              group.addTask { @MainActor in
+                let updatedBalances = await withTaskGroup(
+                  of: [String: Int].self,
+                  body: { @MainActor group in
+                    for account in allAccounts where account.coin == nft.coin {
+                      group.addTask { @MainActor in
+                        let balanceForToken = await rpcService.balance(
+                          for: nft,
+                          in: account,
+                          network: networkForNFT
+                        )
+                        return [account.address: Int(balanceForToken ?? 0)]
+                      }
+                    }
+                    return await group.reduce(into: [String: Int](), { partialResult, new in
+                      partialResult.merge(with: new)
+                    })
+                  })
+                var tokenBalances = nftBalancesCache[nft.id] ?? [:]
+                tokenBalances.merge(with: updatedBalances)
+                return [nft.id: tokenBalances]
+              }
             }
-            nftBalances.merge(with: [account.address: Int(balance)])
-          }
-          nftBalancesCache[nft.contractAddress] = nftBalances
-        }
+            return await group.reduce(into: [String: [String: Int]](), { partialResult, new in
+              partialResult.merge(with: new)
+            })
+          })
       }
+      guard !Task.isCancelled else { return }
+      self.userVisibleNFTs = buildAssetViewModels(allVisibleUserAssets: allVisibleUserAssets)
+        .optionallyFilterUnownedNFTs(
+          isHidingUnownedNFTs: filters.isHidingUnownedNFTs,
+          selectedAccounts: selectedAccounts
+        )
+      
       // fetch nft metadata for all NFTs
       let allMetadata = await rpcService.fetchNFTMetadata(tokens: allNFTs, ipfsApi: ipfsApi)
       for (key, value) in allMetadata { // update cached values
@@ -175,22 +188,7 @@ public class NFTStore: ObservableObject {
       }
       
       guard !Task.isCancelled else { return }
-      updatedUserVisibleNFTs.removeAll()
-      for networkAssets in allVisibleUserAssets {
-        for token in networkAssets.tokens {
-          if token.isErc721 || token.isNft {
-            updatedUserVisibleNFTs.append(
-              NFTAssetViewModel(
-                token: token,
-                network: networkAssets.network,
-                balanceForAccounts: nftBalancesCache[token.contractAddress] ?? [:],
-                nftMetadata: metadataCache[token.id]
-              )
-            )
-          }
-        }
-      }
-      self.userVisibleNFTs = updatedUserVisibleNFTs
+      self.userVisibleNFTs = buildAssetViewModels(allVisibleUserAssets: allVisibleUserAssets)
         .optionallyFilterUnownedNFTs(
           isHidingUnownedNFTs: filters.isHidingUnownedNFTs,
           selectedAccounts: selectedAccounts
@@ -204,6 +202,22 @@ public class NFTStore: ObservableObject {
        var updatedViewModel = userVisibleNFTs[safe: index] {
       updatedViewModel.nftMetadata = metadata
       userVisibleNFTs[index] = updatedViewModel
+    }
+  }
+  
+  private func buildAssetViewModels(
+    allVisibleUserAssets: [NetworkAssets]
+  ) -> [NFTAssetViewModel] {
+    allVisibleUserAssets.flatMap { networkAssets in
+      networkAssets.tokens.compactMap { token in
+        guard token.isErc721 || token.isNft else { return nil }
+        return NFTAssetViewModel(
+          token: token,
+          network: networkAssets.network,
+          balanceForAccounts: nftBalancesCache[token.id] ?? [:],
+          nftMetadata: metadataCache[token.id]
+        )
+      }
     }
   }
   
