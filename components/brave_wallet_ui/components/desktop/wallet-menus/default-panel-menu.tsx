@@ -18,6 +18,7 @@ import {
 
 // Types
 import {
+  AccountPageTabs,
   BraveWallet,
   WalletRoutes
 } from '../../../constants/types'
@@ -186,6 +187,26 @@ export const DefaultPanelMenu = (props: Props) => {
         ))
   }, [hidePortfolioNFTsTab, walletLocation])
 
+  const onClickRoute =
+    (route: WalletRoutes | AccountPageTabs) => {
+      if (
+        route === WalletRoutes.AddHardwareAccountModalStart
+      ) {
+        chrome.tabs.create(
+          { url: `chrome://wallet${route}` },
+          () => {
+            if (chrome.runtime.lastError) {
+              console.error(
+                'tabs.create failed: '
+                + chrome.runtime.lastError.message
+              )
+            }
+          })
+        return
+      }
+      history.push(route)
+    }
+
   const showPortfolioSettings =
     walletLocation === WalletRoutes.PortfolioNFTs ||
     walletLocation === WalletRoutes.PortfolioAssets
@@ -278,7 +299,7 @@ export const DefaultPanelMenu = (props: Props) => {
             <PopupButton
               key={option.name}
               onClick={
-                () => history.push(option.route)
+                () => onClickRoute(option.route)
               }
               minWidth={240}
             >
