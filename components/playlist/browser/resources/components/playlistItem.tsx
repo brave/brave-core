@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 
 import { color, font } from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
+import ProgressBar from '@brave/leo/react/progressBar'
 
 import DefaultThumbnailIcon from '../assets/playlist-thumbnail-icon.svg'
 import ContextualMenuAnchorButton from './contextualMenu'
@@ -24,6 +25,7 @@ import { getLocalizedString } from '../utils/l10n'
 import { formatBytes } from '../utils/bytesFormatter'
 import { ApplicationState, CachingProgress } from '../reducers/states'
 import { getPlaylistAPI } from '../api/api'
+import { BouncingBars } from './bouncingBars'
 
 interface Props {
   playlist: Playlist
@@ -38,9 +40,27 @@ const ThumbnailStyle = css`
   height: 80px;
   object-fit: cover;
   border-radius: 4px;
+  position: relative;
+  overflow: hidden;
 `
-const StyledThumbnail = styled.img`
+const StyledThumbnail = styled.div<{ src: string }>`
   ${ThumbnailStyle}
+  background-image: url(${p => p.src});
+  background-size: cover;
+`
+
+const StyledProgressBar = styled(ProgressBar)`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  --leo-progressbar-radius: 0;
+`
+
+const BouncingBarsContainer = styled.div`
+  position: absolute;
+  left: 4px;
+  bottom: 8px;
+  filter: drop-shadow(0px 1px 4px rgba(0, 0, 0, 0.4));
 `
 
 const DefaultThumbnail = styled.div`
@@ -48,12 +68,17 @@ const DefaultThumbnail = styled.div`
   content: url(${DefaultThumbnailIcon});
 `
 
-const PlaylistItemContainer = styled.li`
+const PlaylistItemContainer = styled.li<{ isActive: boolean }>`
   display: flex;
   padding: 8px 16px 8px 8px;
   align-items: center;
   gap: 16px;
   align-self: stretch;
+  ${p =>
+    p.isActive &&
+    css`
+      background: ${color.container.interactive};
+    `}
 `
 
 const ItemInfoContainer = styled.div`
@@ -123,6 +148,37 @@ const StyledCheckBox = styled(Icon)<{ checked: boolean }>`
   color: ${p => (p.checked ? color.icon.interactive : color.icon.default)};
 `
 
+function Thumbnail ({
+  thumbnailUrl,
+  isPlaying,
+  duration,
+  lastPlayedPosition
+}: {
+  thumbnailUrl?: string
+  isPlaying: boolean
+  duration: string
+  lastPlayedPosition: number
+}) {
+  const overlay = isPlaying ? (
+    <>
+      <BouncingBarsContainer>
+        <BouncingBars />
+      </BouncingBarsContainer>
+      {!!+duration && (
+        <StyledProgressBar
+          progress={lastPlayedPosition / (+duration / 1e6)}
+        ></StyledProgressBar>
+      )}
+    </>
+  ) : null
+
+  return thumbnailUrl ? (
+    <StyledThumbnail src={thumbnailUrl}>{overlay}</StyledThumbnail>
+  ) : (
+    <DefaultThumbnail>{overlay}</DefaultThumbnail>
+  )
+}
+
 export default function PlaylistItem ({
   playlist,
   item,
@@ -165,24 +221,32 @@ export default function PlaylistItem ({
     CachingProgress | undefined
   >(applicationState => applicationState.playlistData?.cachingProgress?.get(id))
 
+  const currentItemId = useSelector<ApplicationState, string | undefined>(
+    applicationState =>
+      applicationState.playlistData?.lastPlayerState?.currentItem?.id
+  )
+  const isPlaying = currentItemId === item.id
+
   return (
     <PlaylistItemContainer
       onClick={() => !showingMenu && onClick(item)}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={e => setHovered(false)}
+      isActive={(isEditing && isSelected) || isPlaying}
     >
       <a ref={anchorElem} href={`#${id}`} />
-      {isEditing &&
-        (isSelected ? (
-          <StyledCheckBox checked={true} name='check-circle-filled' />
-        ) : (
-          <StyledCheckBox checked={false} name='radio-unchecked' />
-        ))}
-      {thumbnailUrl ? (
-        <StyledThumbnail src={thumbnailUrl} />
-      ) : (
-        <DefaultThumbnail />
+      {isEditing && (
+        <StyledCheckBox
+          checked={!!isSelected}
+          name={isSelected ? 'check-circle-filled' : 'radio-unchecked'}
+        />
       )}
+      <Thumbnail
+        thumbnailUrl={thumbnailUrl}
+        isPlaying={isPlaying}
+        duration={item.duration}
+        lastPlayedPosition={item.lastPlayedPosition}
+      />
       <ItemInfoContainer>
         <PlaylistItemName>{name}</PlaylistItemName>
         {
