@@ -9,6 +9,7 @@
 #include "base/win/registry.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
+#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
 
 namespace brave_vpn {
 
@@ -70,7 +71,8 @@ bool ShouldFallbackToIKEv2() {
   }
   DWORD launch = 0;
   key.ReadValueDW(kBraveVpnWireguardCounterOfTunnelUsage, &launch);
-  return launch >= kBraveVpnWireguardMaxFailedAttempts;
+  return launch >= kBraveVpnWireguardMaxFailedAttempts ||
+         !IsWireguardServiceRegistered();
 }
 
 // Returns last used config path.
