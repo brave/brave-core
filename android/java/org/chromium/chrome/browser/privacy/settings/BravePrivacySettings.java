@@ -711,8 +711,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     getActivity().getResources().getString(R.string.block_fingerprinting_option_3));
         }
 
-        updateRequestOtrPref();
-
         if (httpsUpgradePref.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
             mHttpsUpgradePref.setCheckedIndex(0);
             mHttpsUpgradePref.setSummary(
@@ -816,6 +814,12 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
 
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_WALLET_SNS)) {
             removePreferenceIfPresent(PREF_SNS);
+        }
+
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REQUEST_OTR_TAB)) {
+            removePreferenceIfPresent(PREF_REQUEST_OTR);
+        } else {
+            updateRequestOtrPref();
         }
     }
 

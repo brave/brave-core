@@ -16,6 +16,7 @@
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/speedreader/common/features.h"
+#include "brave/components/request_otr/common/features.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
 
@@ -24,6 +25,7 @@
     &brave_rewards::features::kBraveRewards,                            \
     &brave_search_conversion::features::kOmniboxBanner,                 \
     &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,           \
+    &request_otr::features::kBraveRequestOTRTab,                        \
     &brave_wallet::features::kNativeBraveWalletFeature,                 \
     &brave_wallet::features::kBraveWalletSolanaFeature,                 \
     &brave_wallet::features::kBraveWalletFilecoinFeature,               \
