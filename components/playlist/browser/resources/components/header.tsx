@@ -66,6 +66,9 @@ const HeaderContainer = styled.div`
   gap: ${spacing[16]};
   border-bottom: 1px solid ${color.divider.subtle};
   background-color: ${color.container.background};
+  height: 100%;
+  padding: 0 16px;
+  gap: 16px;
 `
 
 const StyledPlaylistInfo = styled(PlaylistInfo)`

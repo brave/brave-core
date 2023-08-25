@@ -104,7 +104,7 @@ export default function Player () {
         videoElement.src !== currentItem?.mediaSource.url &&
         videoElement.src !== currentItem?.mediaPath.url
       ) {
-        videoElement.src = currentItem.mediaSource.url
+        videoElement.src = currentItem.mediaPath.url
         videoElement.currentTime = currentItem.lastPlayedPosition
       }
     }
