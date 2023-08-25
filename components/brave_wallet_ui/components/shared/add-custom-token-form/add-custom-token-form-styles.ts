@@ -88,7 +88,7 @@ export const FormWrapper = styled.div`
   height: 100%;
   margin-top: 10px;
   box-sizing: border-box;
-  overflow: scroll;
+  overflow: auto;
   padding: 0px 32px;
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: 0px 16px;
