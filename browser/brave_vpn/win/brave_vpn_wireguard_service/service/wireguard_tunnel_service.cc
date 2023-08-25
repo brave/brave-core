@@ -14,6 +14,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/logging.h"
 #include "base/path_service.h"
+#include "base/rand_util.h"
 #include "base/scoped_native_library.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/win/access_control_list.h"
@@ -34,12 +35,17 @@ namespace brave_vpn {
 
 namespace {
 
-constexpr wchar_t kBraveWireguardConfig[] = L"wireguard.brave.conf";
+constexpr wchar_t kBraveWireguardConfig[] = L"wireguard";
+constexpr wchar_t kBraveWireguardConfigExtension[] = L".brave.conf";
 
 // Total time of retries until time out will be
 // kQueryWaitTimeMs * kMaxQueryRetries = X ms.
 constexpr uint16_t kQueryWaitTimeMs = 100;
 constexpr uint16_t kMaxQueryRetries = 20;
+
+std::wstring GetWireguardConfigName(const std::wstring& prefix) {
+  return prefix + std::wstring(kBraveWireguardConfigExtension);
+}
 
 struct SidAccessDescriptor {
   const base::win::Sid& sid;
@@ -84,6 +90,29 @@ bool AddACEToPath(const base::FilePath& path,
                           DACL_SECURITY_INFORMATION);
 }
 
+bool ConfigureConfigPermissions(const base::FilePath& config_path) {
+  const absl::optional<base::win::Sid> service_sid =
+      base::win::Sid::FromKnownSid(base::win::WellKnownSid::kService);
+  const absl::optional<base::win::Sid> administrators_sid =
+      base::win::Sid::FromKnownSid(
+          base::win::WellKnownSid::kBuiltinAdministrators);
+  if (!service_sid.has_value() || !administrators_sid.has_value()) {
+    VLOG(1) << "Failed to get Sids for service(" << service_sid.has_value()
+            << ") or administrators(" << administrators_sid.has_value() << ")";
+    return false;
+  }
+
+  return AddACEToPath(config_path,
+                      // Let only windows services to read the config.
+                      {{service_sid.value(),
+                        GENERIC_READ | GENERIC_WRITE | GENERIC_EXECUTE | DELETE,
+                        base::win::SecurityAccessMode::kGrant},
+                       // Let windows administrators only to remove the config.
+                       {administrators_sid.value(), GENERIC_EXECUTE | DELETE,
+                        base::win::SecurityAccessMode::kGrant}},
+                      0, /*recursive=*/false);
+}
+
 absl::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
   base::FilePath temp_dir_path;
   // Intentionally using base::GetTempDir to reuse same directory between
@@ -96,34 +125,16 @@ absl::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
   if (!scoped_temp_dir.Set(temp_dir_path.Append(base::FilePath(L"BraveVpn")))) {
     return absl::nullopt;
   }
-  base::FilePath temp_file_path(
-      scoped_temp_dir.GetPath().Append(kBraveWireguardConfig));
+
+  base::FilePath temp_file_path(scoped_temp_dir.GetPath().Append(
+      GetWireguardConfigName(kBraveWireguardConfig)));
 
   if (!base::WriteFile(temp_file_path, config)) {
     VLOG(1) << "Failed to write config to file:" << temp_file_path;
     return absl::nullopt;
   }
-  const absl::optional<base::win::Sid> service_sid =
-      base::win::Sid::FromKnownSid(base::win::WellKnownSid::kService);
-  const absl::optional<base::win::Sid> administrators_sid =
-      base::win::Sid::FromKnownSid(
-          base::win::WellKnownSid::kBuiltinAdministrators);
-  if (!service_sid.has_value() || !administrators_sid.has_value()) {
-    VLOG(1) << "Failed to get Sids for service(" << service_sid.has_value()
-            << ") or administrators(" << administrators_sid.has_value() << ")";
-    return absl::nullopt;
-  }
-
-  if (!AddACEToPath(temp_file_path,
-                    // Let only windows services to read the config.
-                    {{service_sid.value(),
-                      GENERIC_READ | GENERIC_WRITE | GENERIC_EXECUTE | DELETE,
-                      base::win::SecurityAccessMode::kGrant},
-                     // Let windows administrators only to remove the config.
-                     {administrators_sid.value(), GENERIC_EXECUTE | DELETE,
-                      base::win::SecurityAccessMode::kGrant}},
-                    0, /*recursive=*/false)) {
-    VLOG(1) << "Failed to set config file permissions:" << temp_file_path;
+  if (!ConfigureConfigPermissions(temp_file_path)) {
+    VLOG(1) << "Failed to set permissions to file:" << temp_file_path;
   }
   // Release temp directory to send path to the WireguardTunnelService.
   scoped_temp_dir.Take();
@@ -135,7 +146,7 @@ bool IsServiceRunning(SC_HANDLE service) {
   if (!::QueryServiceStatus(service, &service_status)) {
     return false;
   }
-  LOG(ERROR) << "status:" << service_status.dwCurrentState;
+  VLOG(1) << "status:" << service_status.dwCurrentState;
   return service_status.dwCurrentState == SERVICE_RUNNING;
 }
 
@@ -255,7 +266,6 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
   service_cmd.AppendSwitchPath(
       brave_vpn::kBraveVpnWireguardServiceConnectSwitchName,
       config_file_path.value());
-
   ScopedScHandle service(::CreateService(
       scm.Get(), GetBraveVpnWireguardTunnelServiceName().c_str(),
       GetBraveVpnWireguardTunnelServiceName().c_str(), SERVICE_ALL_ACCESS,
@@ -306,6 +316,34 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
     return S_FALSE;
   }
 
+  base::FilePath tunnel_config_direcory =
+      config_file_path.DirName().Append(L"tunnel");
+  if (base::PathExists(tunnel_config_direcory) &&
+      !base::DeletePathRecursively(tunnel_config_direcory)) {
+    VLOG(1) << "Unable to remove old tunnel direcrory";
+  }
+
+  base::ScopedTempDir config_dir;
+  if (!config_dir.Set(tunnel_config_direcory)) {
+    VLOG(1) << __func__ << ": Failed to create temp dir";
+    return S_FALSE;
+  }
+
+  auto config_path = config_dir.GetPath().Append(
+      GetWireguardConfigName(std::to_wstring(base::RandUint64())));
+  // In case of restarting by failure actions network interface might not be
+  // released yet. Wireguard takes interface names based on config file name
+  // and we use a new temportary config each time to avoid interface names
+  // conflicting between quick launches.
+  if (base::CopyFile(config_file_path, config_path)) {
+    if (!ConfigureConfigPermissions(config_path)) {
+      VLOG(1) << "Failed to set permissions to file:" << config_path;
+    }
+  } else {
+    // Fallback to the source config if we are unable to create a temporary one.
+    config_path = config_file_path;
+  }
+
   {
     base::FilePath directory;
     if (!base::PathService::Get(base::DIR_EXE, &directory)) {
@@ -325,13 +363,14 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
     // Show system notification about connected vpn.
     brave_vpn::RunWireGuardCommandForUsers(
         brave_vpn::kBraveVpnWireguardServiceNotifyConnectedSwitchName);
-    auto result = tunnel_proc(config_file_path.value().c_str());
+    auto result = tunnel_proc(config_path.value().c_str());
     if (result) {
       ResetWireguardTunnelUsageFlag();
       return S_OK;
     }
-    VLOG(1) << "Failed to activate tunnel service:"
-            << tunnel_lib.GetError()->ToString();
+    VLOG(1) << "Failed to activate tunnel service ("
+            << tunnel_lib.GetError()->code
+            << "): " << tunnel_lib.GetError()->ToString();
   }
   return S_FALSE;
 }
