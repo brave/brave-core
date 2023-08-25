@@ -529,6 +529,7 @@ private struct FilterDetailRowView<SelectionView: View>: View {
         .font(.body.weight(.semibold))
         .foregroundColor(Color(.separator))
     }
+    .contentShape(Rectangle())
   }
 }
 

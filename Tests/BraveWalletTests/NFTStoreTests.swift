@@ -162,10 +162,10 @@ class NFTStoreTests: XCTestCase {
     XCTAssertTrue(store.userVisibleNFTs.isEmpty)  // Initial state
     store.$userVisibleNFTs
       .dropFirst()
-      .collect(2)
+      .collect(3)
       .sink { userVisibleNFTs in
         defer { userVisibleNFTsException.fulfill() }
-        XCTAssertEqual(userVisibleNFTs.count, 2) // empty nfts, populated nfts
+        XCTAssertEqual(userVisibleNFTs.count, 3) // empty nfts, populated w/ balance nfts, populated w/ metadata
         guard let lastUpdatedVisibleNFTs = userVisibleNFTs.last else {
           XCTFail("Unexpected test result")
           return
@@ -225,10 +225,10 @@ class NFTStoreTests: XCTestCase {
     let hidingUnownedExpectation = expectation(description: "update-hidingUnowned")
     store.$userVisibleNFTs
       .dropFirst()
-      .collect(2)
+      .collect(3)
       .sink { userVisibleNFTs in
         defer { hidingUnownedExpectation.fulfill() }
-        XCTAssertEqual(userVisibleNFTs.count, 2) // empty nfts, populated nfts
+        XCTAssertEqual(userVisibleNFTs.count, 3) // empty nfts, populated w/ balance nfts, populated w/ metadata
         guard let lastUpdatedVisibleNFTs = userVisibleNFTs.last else {
           XCTFail("Unexpected test result")
           return
