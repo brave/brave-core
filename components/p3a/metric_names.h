@@ -40,7 +40,7 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Core.WindowCount.2",
     "Brave.Importer.ImporterSource.2",
     "Brave.NTP.CustomizeUsageStatus",
-    "Brave.NTP.NewTabsCreated",
+    "Brave.NTP.NewTabsCreated.2",
     "Brave.NTP.SponsoredImagesEnabled",
     "Brave.NTP.SponsoredNewTabsCreated",
     "Brave.Omnibox.SearchCount",

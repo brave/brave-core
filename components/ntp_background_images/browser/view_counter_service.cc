@@ -42,6 +42,12 @@ constexpr char kNewTabsCreated[] = "brave.new_tab_page.p3a_new_tabs_created";
 constexpr char kSponsoredNewTabsCreated[] =
     "brave.new_tab_page.p3a_sponsored_new_tabs_created";
 
+constexpr char kNewTabsCreatedHistogramName[] = "Brave.NTP.NewTabsCreated.2";
+const int kNewTabsCreatedMetricBuckets[] = {0, 1, 2, 3, 4, 8, 15};
+constexpr char kSponsoredNewTabsHistogramName[] =
+    "Brave.NTP.SponsoredNewTabsCreated";
+constexpr int kSponsoredNewTabsBuckets[] = {0, 10, 20, 30, 40, 50};
+
 }  // namespace
 
 namespace ntp_background_images {
@@ -425,22 +431,20 @@ void ViewCounterService::MaybePrefetchNewTabPageAd() {
 
 void ViewCounterService::UpdateP3AValues() const {
   uint64_t new_tab_count = new_tab_count_state_->GetHighestValueInWeek();
-  p3a_utils::RecordToHistogramBucket("Brave.NTP.NewTabsCreated",
-                                     {0, 3, 8, 20, 50, 100}, new_tab_count);
+  p3a_utils::RecordToHistogramBucket(kNewTabsCreatedHistogramName,
+                                     kNewTabsCreatedMetricBuckets,
+                                     new_tab_count);
 
-  constexpr char kSponsoredNewTabsHistogramName[] =
-      "Brave.NTP.SponsoredNewTabsCreated";
-  constexpr int kSponsoredRatio[] = {0, 10, 20, 30, 40, 50};
   uint64_t branded_new_tab_count =
       branded_new_tab_count_state_->GetHighestValueInWeek();
   if (branded_new_tab_count == 0 || new_tab_count == 0) {
     UMA_HISTOGRAM_EXACT_LINEAR(kSponsoredNewTabsHistogramName, 0,
-                               std::size(kSponsoredRatio) + 1);
+                               std::size(kSponsoredNewTabsBuckets) + 1);
   } else {
     double ratio = (branded_new_tab_count /
                     static_cast<double>(new_tab_count)) * 100;
     p3a_utils::RecordToHistogramBucket(kSponsoredNewTabsHistogramName,
-                                       kSponsoredRatio,
+                                       kSponsoredNewTabsBuckets,
                                        static_cast<int>(ratio));
   }
 }
