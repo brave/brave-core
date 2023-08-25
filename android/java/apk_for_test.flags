@@ -804,16 +804,3 @@
 -keep class org.chromium.chrome.browser.externalnav.BraveExternalNavigationHandler {
     public <init>(...);
 }
-
--keep class org.chromium.base.library_loader.LibraryLoader {
-    *** getInstance(...);
-    *** sInstance;
-    *** loadWithSystemLinkerAlreadyLocked(...);
-    *** preloadAlreadyLocked(...);
-}
-
--keep class org.chromium.base.library_loader.BraveLibraryLoader {
-    *** getInstance(...);
-    *** sInstance;
-    *** loadWithSystemLinkerAlreadyLocked(...);
-}
