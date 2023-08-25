@@ -66,19 +66,37 @@ private struct RestoreWalletView: View {
     )
   }
   
-  private func handleRecoveryWordsChanged(_ value: [String]) {
-    for word in value {
-      let phrases = word.split(separator: " ")
-      if phrases.count > 1 {
-        let currentLength = recoveryWords.count
-        var newPhrases = Array(repeating: "", count: currentLength)
-        for (index, pastedWord) in phrases.enumerated() {
-          newPhrases[index] = String(pastedWord)
+  private func handleRecoveryWordsChanged(oldValue: [String], newValue: [String]) {
+    let indexOnDifference = zip(oldValue, newValue).enumerated().first(where: { $1.0 != $1.1 }).map { $0.0 }
+    if let indexOnDifference,
+       let oldInput = oldValue[safe: indexOnDifference],
+       let newInput = newValue[safe: indexOnDifference] { // there is a new input on `indexOnDifference`
+      if abs(newInput.count - oldInput.count) > 1 { // we consider this is a copy and paste from `UIPasteboard`
+        let phrases = newInput.split(separator: " ")
+        if (!isLegacyWallet && phrases.count == 12) || (isLegacyWallet && phrases.count == 24) { // user copies and pastes the entire recovery phrases, we will auto-fill in all the recovery phrases
+          let currentLength = recoveryWords.count
+          var newPhrases = Array(repeating: "", count: currentLength)
+          for (index, pastedWord) in phrases.enumerated() {
+            newPhrases[index] = String(pastedWord)
+          }
+          recoveryWords = newPhrases
+        } else { // user copy and paste some phrases, we will auto-fill in from the `indexOfDifference` (where user pastes) to the last input field. This also means, if user passtes more phrases than number of input fields remaining, we won't exceed and will stop pasting at the last input field.
+          var startIndex = indexOnDifference
+          var recoveryWordsCopy = recoveryWords
+          for phrase in phrases {
+            if startIndex < recoveryWordsCopy.count {
+              recoveryWordsCopy[startIndex] = String(phrase)
+              startIndex += 1
+            } else {
+              break
+            }
+          }
+          recoveryWords = recoveryWordsCopy
         }
-        recoveryWords = newPhrases
-        break
+        resignFirstResponder()
       }
     }
+    
   }
 
   var body: some View {
@@ -128,6 +146,7 @@ private struct RestoreWalletView: View {
             // or legacy(24) to regular(12)
             resignFirstResponder()
             recoveryWords = .init(repeating: "", count: isLegacyWallet ? .regularWalletRecoveryPhraseNumber : .legacyWalletRecoveryPhraseNumber)
+            isShowingPhraseError = false
           } label: {
             Text(isLegacyWallet ? Strings.Wallet.restoreWalletImportFromRegularBraveWallet : Strings.Wallet.restoreWalletImportFromLegacyBraveWallet)
               .fontWeight(.medium)
@@ -166,7 +185,9 @@ private struct RestoreWalletView: View {
       }
     }
     .padding()
-    .onChange(of: recoveryWords, perform: handleRecoveryWordsChanged)
+    .onChange(of: recoveryWords) { [recoveryWords] newValue in
+      handleRecoveryWordsChanged(oldValue: recoveryWords, newValue: newValue)
+    }
     .sheet(isPresented: $isShowingCreateNewPassword) {
       NavigationView {
         CreateWalletContainerView(
