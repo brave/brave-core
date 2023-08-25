@@ -135,7 +135,7 @@ def _make_report_page_graph_binding_event(cg_context):
 
     pattern = ("if (UNLIKELY(${page_graph_enabled})) {{\n"
                "  probe::RegisterPageGraphBindingEvent("
-               "${execution_context}, ${page_graph_binding_name}, "
+               "${current_execution_context}, ${page_graph_binding_name}, "
                "PageGraphBindingType::k{_1}, "
                "PageGraphBindingEvent::k{_2});\n"
                "}}")
@@ -182,6 +182,7 @@ def _bind_page_graph_local_vars(code_node, cg_context):
 
     code_node.register_code_symbol(page_graph_binding_name_node)
 
+
 # probe::RegisterPageGraphWebAPICallWithResult() generator.
 def _append_report_page_graph_api_call_event(cg_context, expr):
     assert isinstance(cg_context, CodeGenContext)
@@ -223,12 +224,12 @@ def _append_report_page_graph_api_call_event(cg_context, expr):
     else:
         return_value = _to_page_graph_blink_arg("return_value")
 
-    pattern = (
-        ";\n"
-        "if (UNLIKELY(${page_graph_enabled})) {{\n"
-        "  probe::RegisterPageGraphWebAPICallWithResult(${execution_context}, "
-        "${page_graph_binding_name}, {_1}, {{{_2}}}, {_3}, {_4});\n"
-        "}}")
+    pattern = (";\n"
+               "if (UNLIKELY(${page_graph_enabled})) {{\n"
+               "  probe::RegisterPageGraphWebAPICallWithResult("
+               "${current_execution_context}, \n"
+               "${page_graph_binding_name}, {_1}, {{{_2}}}, {_3}, {_4});\n"
+               "}}")
     _1 = receiver_data
     _2 = args
     _3 = exception_state
