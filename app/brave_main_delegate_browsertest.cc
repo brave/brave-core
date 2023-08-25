@@ -54,6 +54,7 @@
 #include "services/device/public/cpp/device_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/blink/public/common/features.h"
+#include "ui/base/ui_base_features.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "android_webview/common/aw_features.h"
@@ -170,6 +171,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kCopyLinkToText,
 #endif
     &features::kAttributionFencedFrameReportingBeacon,
+    &features::kChromeRefresh2023,
     &features::kDigitalGoodsApi,
     &features::kExtensionsMenuInAppMenu,
     &features::kFedCm,
