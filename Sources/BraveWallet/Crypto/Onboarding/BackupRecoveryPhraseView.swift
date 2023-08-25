@@ -171,6 +171,10 @@ struct BackupRecoveryPhraseView: View {
         recoveryWords = words
       }
     }
+    .onDisappear {
+      isViewRecoveryPermitted = false
+      hasCopied = false
+    }
   }
 }
 

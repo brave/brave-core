@@ -59,25 +59,24 @@ struct VerifyRecoveryPhraseView: View {
             .focused($isFieldFocused)
           Divider()
         }
-        if isShowingError {
-          HStack(spacing: 12) {
-            Image(braveSystemName: "leo.warning.circle-filled")
-              .renderingMode(.template)
-              .foregroundColor(Color(.braveLighterOrange))
-            Text(Strings.Wallet.verifyRecoveryPhraseError)
-              .multilineTextAlignment(.leading)
-              .font(.callout)
-            Spacer()
-          }
-          .padding(12)
-          .background(
-            Color(.braveErrorBackground)
-              .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-          )
+        HStack(spacing: 12) {
+          Image(braveSystemName: "leo.warning.circle-filled")
+            .renderingMode(.template)
+            .foregroundColor(Color(.braveLighterOrange))
+          Text(Strings.Wallet.verifyRecoveryPhraseError)
+            .multilineTextAlignment(.leading)
+            .font(.callout)
+          Spacer()
         }
+        .padding(12)
+        .background(
+          Color(.braveErrorBackground)
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        )
+        .hidden(isHidden: !isShowingError)
         Button {
           let targetIndex = targetedRecoveryWordIndexes[activeCheckIndex]
-          if input == recoveryWords[safe: targetIndex]?.value {
+          if input.trimmingCharacters(in: .whitespaces) == recoveryWords[safe: targetIndex]?.value {
             isShowingError = false
             if activeCheckIndex == targetedRecoveryWordIndexes.count - 1 { // finished all checks
               if keyringStore.isOnboardingVisible {
@@ -100,6 +99,7 @@ struct VerifyRecoveryPhraseView: View {
             .frame(maxWidth: .infinity)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .disabled(input.isEmpty)
         .padding(.top, 86)
         if keyringStore.isOnboardingVisible {
           Button(action: {
@@ -141,6 +141,11 @@ struct VerifyRecoveryPhraseView: View {
         })
     )
     .transparentNavigationBar(backButtonDisplayMode: .generic)
+    .onChange(of: input, perform: { newValue in
+      if newValue.isEmpty {
+        isShowingError = false
+      }
+    })
     .onAppear {
       isFieldFocused = true
     }
