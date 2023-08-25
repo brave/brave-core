@@ -90,17 +90,27 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     return test_http_server_.get();
   }
 
+  OnionLocationView* GetOnionLocationView(Browser* browser) {
+    BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+    if (!browser_view) {
+      return nullptr;
+    }
+    BraveLocationBarView* brave_location_bar_view =
+        static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView());
+    if (!brave_location_bar_view) {
+      return nullptr;
+    }
+    return brave_location_bar_view->GetOnionLocationView();
+  }
+
   void CheckOnionLocationLabel(Browser* browser,
                                const GURL& url,
                                bool wait_for_tor_window = true) {
     bool is_tor = browser->profile()->IsTor();
-    BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-    ASSERT_NE(browser_view, nullptr);
-    BraveLocationBarView* brave_location_bar_view =
-        static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView());
-    ASSERT_NE(brave_location_bar_view, nullptr);
-    views::LabelButton* onion_button =
-        brave_location_bar_view->GetOnionLocationView()->GetButton();
+    auto* onion_location_view = GetOnionLocationView(browser);
+    ASSERT_TRUE(onion_location_view);
+    auto* onion_button = onion_location_view->GetButton();
+    ASSERT_TRUE(onion_button);
     EXPECT_TRUE(onion_button->GetVisible());
     EXPECT_EQ(onion_button->GetText(),
               brave_l10n::GetLocalizedResourceUTF16String(
@@ -170,6 +180,9 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
     helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
     EXPECT_FALSE(helper->should_show_icon());
     EXPECT_TRUE(helper->onion_location().is_empty());
+    auto* onion_location_view = GetOnionLocationView(browser);
+    ASSERT_TRUE(onion_location_view);
+    EXPECT_FALSE(onion_location_view->GetVisible());
   }
 }
 

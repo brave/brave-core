@@ -164,11 +164,12 @@ void OnionLocationView::Update(content::WebContents* web_contents,
     return;
   tor::OnionLocationTabHelper* helper =
       tor::OnionLocationTabHelper::FromWebContents(web_contents);
-  if (!helper || helper->onion_location().is_empty()) {
-    return;
-  }
+  const bool show_icon =
+      helper && helper->should_show_icon() && show_page_actions;
 
-  SetVisible(helper->should_show_icon() && show_page_actions);
-  reinterpret_cast<OnionLocationButtonView*>(button_.get())
-      ->SetOnionLocation(helper->onion_location());
+  SetVisible(show_icon);
+  if (show_icon) {
+    reinterpret_cast<OnionLocationButtonView*>(button_.get())
+        ->SetOnionLocation(helper->onion_location());
+  }
 }
