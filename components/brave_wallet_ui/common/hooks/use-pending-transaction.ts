@@ -66,6 +66,30 @@ import {
 } from '../constants/action_types'
 import { MAX_UINT256 } from '../constants/magics'
 
+export const useSelectedPendingTransaction = () => {
+  // redux
+  const selectedPendingTransactionId = useSafeUISelector(
+    UISelectors.selectedPendingTransactionId
+  )
+
+  // queries
+  const { pendingTransactions } = usePendingTransactionsQuery({
+    accountId: null,
+    chainId: null,
+    coinType: null
+  })
+
+  // computed
+  const selectedPendingTransaction = !pendingTransactions.length
+    ? undefined
+    : pendingTransactions.find(
+        (tx) => tx.id === selectedPendingTransactionId
+      ) ?? pendingTransactions[0]
+
+  // render
+  return selectedPendingTransaction
+}
+
 export const usePendingTransactions = () => {
   // redux
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
