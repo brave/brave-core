@@ -198,6 +198,7 @@ export const AssetGroupContainer = (props: Props) => {
               textSize='14px'
               isBold={true}
               textColor='text01'
+              textAlign='left'
             >
               {network.chainName}
             </Text>
@@ -220,6 +221,7 @@ export const AssetGroupContainer = (props: Props) => {
                 textSize='14px'
                 isBold={true}
                 textColor='text01'
+                textAlign='left'
               >
                 {account.name}
               </Text>
