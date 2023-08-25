@@ -9,7 +9,7 @@
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 namespace brave_wallet {
-class EthereumProviderImplUnitTest;
+class EthereumProviderServiceUnitTest;
 class SolanaProviderImplUnitTest;
 }  // namespace brave_wallet
 
@@ -20,7 +20,7 @@ class BraveWalletPermissionContextUnitTest;
 #define BuildServiceInstanceFor                                          \
   BuildServiceInstanceFor_ChromiumImpl(content::BrowserContext* profile) \
       const;                                                             \
-  friend brave_wallet::EthereumProviderImplUnitTest;                     \
+  friend brave_wallet::EthereumProviderServiceUnitTest;                  \
   friend brave_wallet::SolanaProviderImplUnitTest;                       \
   friend permissions::BraveWalletPermissionContextUnitTest;              \
   KeyedService* BuildServiceInstanceFor

@@ -22,6 +22,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/ethereum_provider_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
@@ -54,7 +55,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a_private.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
+#include "brave/components/brave_wallet/browser/ethereum_provider_host.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -318,45 +319,19 @@ void MaybeBindWalletP3A(
 void MaybeBindEthereumProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::EthereumProvider> receiver) {
-  auto* json_rpc_service =
-      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
-          frame_host->GetBrowserContext());
-
-  if (!json_rpc_service) {
-    return;
-  }
-
-  auto* tx_service = brave_wallet::TxServiceFactory::GetServiceForContext(
-      frame_host->GetBrowserContext());
-  if (!tx_service) {
-    return;
-  }
-
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          frame_host->GetBrowserContext());
-  if (!keyring_service) {
-    return;
-  }
-
-  auto* brave_wallet_service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-          frame_host->GetBrowserContext());
-  if (!brave_wallet_service) {
-    return;
-  }
-
   content::WebContents* web_contents =
       content::WebContents::FromRenderFrameHost(frame_host);
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_wallet::EthereumProviderImpl>(
-          HostContentSettingsMapFactory::GetForProfile(
-              Profile::FromBrowserContext(frame_host->GetBrowserContext())),
-          json_rpc_service, tx_service, keyring_service, brave_wallet_service,
-          std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
-              web_contents, frame_host),
-          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())),
-      std::move(receiver));
+  auto ethereum_provider_host =
+      std::make_unique<brave_wallet::EthereumProviderHost>();
+  auto ethereum_provider_service_receiver =
+      ethereum_provider_host->BindRemote();
+  brave_wallet::EthereumProviderServiceFactory::BindForContext(
+      frame_host->GetBrowserContext(),
+      std::move(ethereum_provider_service_receiver),
+      std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
+          web_contents, frame_host));
+  mojo::MakeSelfOwnedReceiver(std::move(ethereum_provider_host),
+                              std::move(receiver));
 }
 
 void MaybeBindSolanaProvider(

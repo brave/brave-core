@@ -227,7 +227,7 @@ class TxService : public KeyedService,
   TxStorageDelegate* GetDelegateForTesting();
 
  private:
-  friend class EthereumProviderImplUnitTest;
+  friend class EthereumProviderServiceUnitTest;
   friend class EthTxManagerUnitTest;
   friend class SolanaTxManagerUnitTest;
   friend class FilTxManagerUnitTest;

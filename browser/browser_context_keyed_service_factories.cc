@@ -15,6 +15,7 @@
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/ethereum_provider_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/notifications/wallet_notification_service_factory.h"
@@ -135,6 +136,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
   brave_news::BraveNewsControllerFactory::GetInstance();
   brave_wallet::AssetRatioServiceFactory::GetInstance();
+  brave_wallet::EthereumProviderServiceFactory::GetInstance();
   brave_wallet::KeyringServiceFactory::GetInstance();
   brave_wallet::JsonRpcServiceFactory::GetInstance();
   brave_wallet::SwapServiceFactory::GetInstance();

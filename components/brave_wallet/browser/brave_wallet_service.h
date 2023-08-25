@@ -301,7 +301,7 @@ class BraveWalletService : public KeyedService,
   BraveWalletService();
 
  private:
-  friend class EthereumProviderImplUnitTest;
+  friend class EthereumProviderServiceUnitTest;
   friend class SolanaProviderImplUnitTest;
   friend class BraveWalletServiceUnitTest;
 
