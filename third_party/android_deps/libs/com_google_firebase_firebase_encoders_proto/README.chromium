@@ -1,4 +1,14 @@
-Name: integrity
-URL: https://maven.google.com/web/index.html?q=integrity#com.google.android.play:integrity
-License: LicenseRef-AndroidSDK
-License File: /brave/common/licenses/AndroidSDK
+Name: firebase-encoders-proto
+Short Name: firebase-encoders-proto
+URL: https://firebase.google.com
+Version: 16.1.0
+License: Apache Version 2.0
+License File: LICENSE
+CPEPrefix: unknown
+Security Critical: yes
+
+Description:
+Commonly used encoders for Firebase SKDs.
+
+Local Modifications:
+No modifications.

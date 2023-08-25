@@ -162,10 +162,12 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                                                                 .findFirst()
                                                                 .get()
                                                                 .getFormattedPrice();
-                                                mMonthlySubscriptionAmountText.setText(String.format(
+                                                String monthlyProductPriceText = String.format(
                                                         getResources().getString(
                                                                 R.string.monthly_subscription_amount),
-                                                        monthlyProductPrice));
+                                                        monthlyProductPrice);
+                                                mMonthlySubscriptionAmountText.setText(
+                                                        monthlyProductPriceText);
                                                 mMonthlyPlanProgress.setVisibility(View.GONE);
                                             }
                                         }
@@ -223,10 +225,12 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                                                                 .findFirst()
                                                                 .get()
                                                                 .getFormattedPrice();
-                                                mYearlySubscriptionAmountText.setText(String.format(
+                                                String yearlyProductPriceText = String.format(
                                                         getResources().getString(
                                                                 R.string.yearly_subscription_amount),
-                                                        yearlyProductPrice));
+                                                        yearlyProductPrice);
+                                                mYearlySubscriptionAmountText.setText(
+                                                        yearlyProductPriceText);
                                                 mYearlyPlanProgress.setVisibility(View.GONE);
                                             }
                                         }
