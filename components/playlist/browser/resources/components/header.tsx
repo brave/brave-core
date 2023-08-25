@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import Icon from '@brave/leo/react/icon'
-import { color, font, spacing, radius } from '@brave/leo/tokens/css'
+import { color, font, radius } from '@brave/leo/tokens/css'
 import LeoButton from '@brave/leo/react/button'
 
 import PlaylistInfo from './playlistInfo'
@@ -62,8 +62,6 @@ const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: ${spacing[16]};
-  gap: ${spacing[16]};
   border-bottom: 1px solid ${color.divider.subtle};
   background-color: ${color.container.background};
   height: 100%;
