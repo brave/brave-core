@@ -1224,18 +1224,18 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
 
   auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
 
+  const std::string user_selected_subdivision =
+      prefs->GetString(brave_ads::prefs::kSubdivisionTargetingSubdivision);
+  const std::string auto_detected_subdivision = prefs->GetString(
+      brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision);
+
   base::Value::Dict ads_data;
   ads_data.Set("adsIsSupported", brave_ads::IsSupportedRegion());
   ads_data.Set(
       "adsPerHour",
       static_cast<double>(ads_service_->GetMaximumNotificationAdsPerHour()));
-  ads_data.Set(
-      kAdsSubdivisionTargeting,
-      prefs->GetString(brave_ads::prefs::kSubdivisionTargetingSubdivision));
-  ads_data.Set(
-      kAutoDetectedSubdivisionTargeting,
-      prefs->GetString(
-          brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision));
+  ads_data.Set(kAdsSubdivisionTargeting, user_selected_subdivision);
+  ads_data.Set(kAutoDetectedSubdivisionTargeting, auto_detected_subdivision);
   ads_data.Set(
       "shouldAllowAdsSubdivisionTargeting",
       prefs->GetBoolean(brave_ads::prefs::kShouldAllowSubdivisionTargeting));
@@ -1244,7 +1244,8 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
                ads_service_->NeedsBrowserUpgradeToServeAds());
 
   ads_data.Set("subdivisions",
-               brave_ads::GetSupportedSubdivisionsAsValueList());
+               brave_ads::GetSupportedSubdivisionsAsValueList(
+                   user_selected_subdivision, auto_detected_subdivision));
 
   ads_data.Set("notificationAdsEnabled",
                prefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds));

@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_observer.h"
+#include "brave/components/brave_ads/core/internal/geographical/subdivision/subdivision.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/resource/epsilon_greedy_bandit_resource.h"
@@ -93,6 +94,7 @@ class AdHandler final : public ConversionsObserver, TransferObserver {
   Transfer transfer_;
 
   SubdivisionTargeting subdivision_targeting_;
+  Subdivision subdivision_;
 
   AntiTargetingResource anti_targeting_resource_;
 

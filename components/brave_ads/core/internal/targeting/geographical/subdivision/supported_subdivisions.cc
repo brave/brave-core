@@ -8,13 +8,15 @@
 #include <utility>
 
 #include "base/no_destructor.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"
+#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_constants.h"
 
 namespace brave_ads {
 
 namespace {
 
-base::Value::List ToValueList(const SupportedSubdivisions& subdivisions) {
+base::Value::List ToValueList(
+    const brave_ads::SupportedSubdivisions& subdivisions) {
   base::Value::List list;
 
   for (const auto& [subdivision, name] : subdivisions) {
@@ -25,6 +27,18 @@ base::Value::List ToValueList(const SupportedSubdivisions& subdivisions) {
   }
 
   return list;
+}
+
+absl::optional<std::string> GetCurrentSubdivisionCountryCode(
+    const std::string& user_selected_subdivision,
+    const std::string& auto_detected_subdivision) {
+  const bool should_use_user_selected =
+      (user_selected_subdivision != kSubdivisionTargetingAuto &&
+       user_selected_subdivision != kSubdivisionTargetingDisabled);
+  const std::string subdivision = should_use_user_selected
+                                      ? user_selected_subdivision
+                                      : auto_detected_subdivision;
+  return GetSubdivisionCountryCode(subdivision);
 }
 
 }  // namespace
@@ -75,11 +89,19 @@ const SupportedSubdivisionMap& GetSupportedSubdivisions() {
   return *kSupportedSubdivisions;
 }
 
-base::Value::List GetSupportedSubdivisionsAsValueList() {
+base::Value::List GetSupportedSubdivisionsAsValueList(
+    const std::string& user_selected_subdivision,
+    const std::string& auto_detected_subdivision) {
   const auto& supported_subdivisions = GetSupportedSubdivisions();
 
-  const auto iter =
-      supported_subdivisions.find(brave_l10n::GetDefaultISOCountryCodeString());
+  const absl::optional<std::string> country_code =
+      GetCurrentSubdivisionCountryCode(user_selected_subdivision,
+                                       auto_detected_subdivision);
+  if (!country_code) {
+    return {};
+  }
+
+  const auto iter = supported_subdivisions.find(*country_code);
   if (iter == supported_subdivisions.cend()) {
     return {};
   }

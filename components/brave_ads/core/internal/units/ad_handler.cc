@@ -40,11 +40,13 @@ AdHandler::AdHandler(Account& account)
       search_result_ad_handler_(account, transfer_) {
   conversions_.AddObserver(this);
   transfer_.AddObserver(this);
+  subdivision_.AddObserver(&subdivision_targeting_);
 }
 
 AdHandler::~AdHandler() {
   conversions_.RemoveObserver(this);
   transfer_.RemoveObserver(this);
+  subdivision_.RemoveObserver(&subdivision_targeting_);
 }
 
 void AdHandler::TriggerNotificationAdEvent(

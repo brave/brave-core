@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_url_request.h"
+#include "brave/components/brave_ads/core/internal/geographical/subdivision/subdivision_url_request.h"
 
 #include <utility>
 
@@ -14,8 +14,8 @@
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
-#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_url_request_builder.h"
-#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_url_request_json_reader_util.h"
+#include "brave/components/brave_ads/core/internal/geographical/subdivision/subdivision_url_request_builder.h"
+#include "brave/components/brave_ads/core/internal/geographical/subdivision/subdivision_url_request_json_reader_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"

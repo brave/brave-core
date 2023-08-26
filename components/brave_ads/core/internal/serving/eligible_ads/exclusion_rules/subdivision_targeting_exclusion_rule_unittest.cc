@@ -14,9 +14,9 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
+#include "brave/components/brave_ads/core/internal/geographical/subdivision/subdivision_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/geographical/subdivision/subdivision_url_request_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_url_request_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
@@ -76,6 +76,8 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
             base::StrCat({"en", "_", GetParam().country}));
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
+    subdivision_ = std::make_unique<Subdivision>();
+    subdivision_->AddObserver(subdivision_targeting_.get());
     exclusion_rule_ = std::make_unique<SubdivisionTargetingExclusionRule>(
         *subdivision_targeting_);
   }
@@ -116,6 +118,7 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
   std::unique_ptr<brave_l10n::test::ScopedDefaultLocale> scoped_default_locale_;
 
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
+  std::unique_ptr<Subdivision> subdivision_;
   std::unique_ptr<SubdivisionTargetingExclusionRule> exclusion_rule_;
 };
 

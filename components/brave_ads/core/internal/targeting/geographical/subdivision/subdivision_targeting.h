@@ -9,17 +9,14 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_url_request_delegate.h"
+#include "brave/components/brave_ads/core/internal/geographical/subdivision/subdivision_observer.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-class SubdivisionUrlRequest;
-
 class SubdivisionTargeting final : public AdsClientNotifierObserver,
-                                   public SubdivisionUrlRequestDelegate {
+                                   public SubdivisionObserver {
  public:
   SubdivisionTargeting();
 
@@ -43,14 +40,12 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver,
   void Initialize();
 
   void MaybeRequireSubdivision();
-  void InitializeSubdivisionUrlRequest();
-  void ShutdownSubdivisionUrlRequest();
 
   void DisableSubdivision();
 
   void AutoDetectSubdivision();
 
-  void MaybeAllowForLocale(const std::string& locale);
+  void MaybeAllowForCountry(const std::string& country_code);
 
   bool ShouldFetchSubdivision();
   void MaybeFetchSubdivision();
@@ -61,24 +56,19 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver,
   void UpdateAutoDetectedSubdivision();
   const std::string& GetLazyAutoDetectedSubdivision() const;
 
-  void SetSubdivision(const std::string& subdivision);
-  void UpdateSubdivision();
-  const std::string& GetLazySubdivision() const;
+  void SetUserSelectedSubdivision(const std::string& subdivision);
+  void UpdateUserSelectedSubdivision();
+  const std::string& GetLazyUserSelectedSubdivision() const;
 
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;
-  void OnNotifyLocaleDidChange(const std::string& locale) override;
   void OnNotifyPrefDidChange(const std::string& path) override;
 
-  // SubdivisionUrlRequestDelegate:
-  void OnDidFetchSubdivision(const std::string& subdivision) override;
-
-  std::unique_ptr<SubdivisionUrlRequest> subdivision_url_request_;
+  // SubdivisionObserver:
+  void OnDidUpdateSubdivision(const std::string& subdivision) override;
 
   mutable absl::optional<std::string> auto_detected_subdivision_;
-  mutable absl::optional<std::string> subdivision_;
-
-  base::WeakPtrFactory<SubdivisionTargeting> weak_factory_{this};
+  mutable absl::optional<std::string> user_selected_subdivision_;
 };
 
 }  // namespace brave_ads
