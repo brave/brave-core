@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/view.h"
 
 namespace content {
@@ -17,6 +18,7 @@ class WebContents;
 }  // namespace content
 
 namespace views {
+class Checkbox;
 class ImageView;
 class Label;
 }  // namespace views
@@ -30,6 +32,8 @@ class BraveWaybackMachineInfoBarContentsView
     : public views::View,
       public WaybackMachineURLFetcher::Client {
  public:
+  METADATA_HEADER(BraveWaybackMachineInfoBarContentsView);
+
   explicit BraveWaybackMachineInfoBarContentsView(
       content::WebContents* contents);
   ~BraveWaybackMachineInfoBarContentsView() override;
@@ -58,7 +62,7 @@ class BraveWaybackMachineInfoBarContentsView
   void HideInfobar();
 
   void FetchURLButtonPressed();
-  void DontAskButtonPressed();
+  void OnCheckboxUpdated();
 
   // Used for labels theme changing all together.
   Labels labels_;
@@ -69,7 +73,7 @@ class BraveWaybackMachineInfoBarContentsView
 
   raw_ptr<BraveWaybackMachineInfoBarButtonContainer> fetch_url_button_ =
       nullptr;
-  raw_ptr<views::View> dont_ask_button_ = nullptr;
+  raw_ptr<views::Checkbox> dont_ask_again_checkbox_ = nullptr;
   const raw_ptr<PrefService> pref_service_ = nullptr;
   raw_ptr<views::ImageView> wayback_spot_graphic_ = nullptr;
   bool wayback_url_fetch_requested_ = false;
