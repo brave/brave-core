@@ -11,6 +11,7 @@ namespace net {
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kEnableWebTransportDraft07, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNoncedPartitionedCookies, base::FEATURE_DISABLED_BY_DEFAULT},
     // Enable NIK-partitioning by default.
     {kPartitionConnectionsByNetworkIsolationKey,

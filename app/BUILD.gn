@@ -126,6 +126,7 @@ source_set("browser_tests") {
       "//components/search",
       "//components/segmentation_platform/public",
       "//components/send_tab_to_self",
+      "//components/signin/public/base:signin_buildflags",
       "//components/subresource_filter/core/common",
       "//components/translate/core/common",
       "//extensions/common",
