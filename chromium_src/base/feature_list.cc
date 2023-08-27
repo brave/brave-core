@@ -22,7 +22,7 @@ using DefaultStateOverrides =
 using UnsortedDefaultStateOverrides =
     std::vector<DefaultStateOverrides::value_type>;
 
-constexpr size_t kDefaultStateOverridesReserve = 64 * 3;
+constexpr size_t kDefaultStateOverridesReserve = 64 * 4;
 
 UnsortedDefaultStateOverrides& GetUnsortedDefaultStateOverrides() {
   static NoDestructor<UnsortedDefaultStateOverrides>
