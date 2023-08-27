@@ -966,6 +966,11 @@
 # optimization_guide::features::kRemoteOptimizationGuideFetching
 -ParametrizedTests/PreloadingModelKeyedServiceTest.FeatureFlagIsWorking/*
 
+# These test fail because we remove description and 3p cookies toggle from the
+# Page Info cookies view.
+-All/PageInfoBubbleViewBrowserTestCookiesSubpage.LinkInDescriptionForCookiesSettings/*
+-All/PageInfoBubbleViewBrowserTestCookiesSubpage.ToggleForBlockingThirdPartyCookies/1
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*

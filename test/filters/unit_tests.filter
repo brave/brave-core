@@ -387,6 +387,10 @@
 # optimization_guide::features::kOptimizationGuideFetchingForSRP
 -ChromeHintsManagerFetchingTest.HintsFetched_*
 
+# These test fail because we remove description and 3p cookies toggle from the
+# Page Info cookies view.
+-PageInfoBubbleViewCookiesSubpageTest.TextsOnButtonsAreCorrect
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
