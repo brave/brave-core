@@ -56,7 +56,7 @@ public class Migration {
       return
     }
 
-    braveCore.syncAPI.enableSyncTypes(syncProfileService: braveCore.syncProfileService)
+    braveCore.syncAPI.enableSyncTypes(syncProfileService: braveCore.syncProfileService, shouldEnableBookmarks: true)
   }
 
   /// Adblock files don't have to be moved, they now have a new directory and will be downloaded there.
