@@ -13,10 +13,15 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
+/**
+ * Brave's extension for DialogFragment
+ */
 public class BraveDialogFragment extends DialogFragment {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -31,6 +36,17 @@ public class BraveDialogFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(false);
 
         setDialogParams();
+    }
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        try {
+            super.show(manager, tag);
+        } catch (IllegalStateException ignored) {
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.add(this, tag);
+            ft.commitAllowingStateLoss();
+        }
     }
 
     private void setDialogParams() {
