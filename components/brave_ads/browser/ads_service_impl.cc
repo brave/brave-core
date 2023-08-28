@@ -262,6 +262,8 @@ AdsServiceImpl::AdsServiceImpl(
         bat_ads_client_notifier_.BindNewPipeAndPassReceiver();
   }
 
+  Migrate();
+
   InitializeNotificationsForCurrentProfile();
 
   GetDeviceIdAndMaybeStartBatAdsService();
@@ -287,6 +289,15 @@ void AdsServiceImpl::RegisterResourceComponentsForDefaultLocale() const {
   RegisterResourceComponentsForDefaultCountryCode();
   if (UserHasOptedInToNotificationAds()) {
     RegisterResourceComponentsForDefaultLanguageCode();
+  }
+}
+
+void AdsServiceImpl::Migrate() {
+  int64_t ads_per_hour =
+      profile_->GetPrefs()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
+  if (ads_per_hour == 0) {
+    profile_->GetPrefs()->ClearPref(prefs::kMaximumNotificationAdsPerHour);
+    profile_->GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, false);
   }
 }
 

@@ -100,6 +100,8 @@ class AdsServiceImpl : public AdsService,
 
   void RegisterResourceComponentsForDefaultLocale() const;
 
+  void Migrate();
+
   bool UserHasOptedInToBraveRewards() const;
   bool UserHasOptedInToBraveNewsAds() const;
   bool UserHasOptedInToNewTabPageAds() const;
