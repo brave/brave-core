@@ -69,6 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:background="@color/wallet_toolbar_bg_color"
+                app:itemTextColor="@color/wallet_bottom_navigation_color"
                 app:itemHorizontalTranslationEnabled="false"
                 app:itemIconTint="@color/wallet_bottom_navigation_color"
                 app:labelVisibilityMode="labeled"

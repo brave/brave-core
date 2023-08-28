@@ -6,6 +6,6 @@
 -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked="false" android:color="@color/wallet_text_color" />
-    <item android:color="@color/tab_color" />
+    <item android:state_checked="false" android:color="#687485" />
+    <item android:color="#3F39E8" />
 </selector>
