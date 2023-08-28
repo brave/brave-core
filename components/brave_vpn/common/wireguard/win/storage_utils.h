@@ -17,12 +17,21 @@ std::wstring GetBraveVpnWireguardServiceRegistryStoragePath();
 
 bool IsVPNTrayIconEnabled();
 void EnableVPNTrayIcon(bool value);
-absl::optional<base::FilePath> GetLastUsedConfigPath();
-bool ShouldFallbackToIKEv2();
+
 void SetWireguardActive(bool value);
 bool IsWireguardActive();
 
+absl::optional<base::FilePath> GetLastUsedConfigPath();
+bool UpdateLastUsedConfigPath(const base::FilePath& config_path);
+
+bool ShouldFallbackToIKEv2();
+void IncrementWireguardTunnelUsageFlag();
+void ResetWireguardTunnelUsageFlag();
+
 void RemoveStorageKey();
+
+void WriteConnectionState(int state);
+absl::optional<int32_t> GetConnectionState();
 }  // namespace wireguard
 }  // namespace brave_vpn
 

@@ -17,6 +17,7 @@ source_set("status_tray") {
     "wireguard",
     "//base",
     "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/mojom",
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard/win",
     "//brave/components/resources:strings_grit",
@@ -36,7 +37,11 @@ source_set("unit_tests") {
   sources = [ "status_tray_runner_unittest.cc" ]
   deps = [
     ":status_tray",
+    "//base/test:test_support",
+    "//brave/components/brave_vpn/common/wireguard/win",
     "//brave/components/constants",
+    "//brave/components/resources:strings_grit",
     "//testing/gtest",
+    "//ui/native_theme",
   ]
 }

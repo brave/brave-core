@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
@@ -15,6 +16,7 @@
 #include "base/win/windows_types.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/tray_menu_model.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/wireguard/wireguard_service_observer.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ui {
@@ -28,6 +30,9 @@ class StatusTray;
 class StatusTrayRunner : public TrayMenuModel::Delegate,
                          public wireguard::WireguardServiceObserver {
  public:
+  using SetIconStateCallback =
+      base::RepeatingCallback<void(int icon_id, int tooltip_id)>;
+
   static StatusTrayRunner* GetInstance();
 
   StatusTrayRunner(const StatusTrayRunner&) = delete;
@@ -39,10 +44,21 @@ class StatusTrayRunner : public TrayMenuModel::Delegate,
     service_running_for_testing_ = value;
   }
 
+  void SetIconStateCallbackForTesting(SetIconStateCallback callback) {
+    callback_for_testing_ = std::move(callback);
+  }
+
+  void SetCurrentStateForTesting(
+      absl::optional<brave_vpn::mojom::ConnectionState> state) {
+    current_state_ = std::move(state);
+  }
+
  private:
   friend class base::NoDestructor<StatusTrayRunner>;
 
   FRIEND_TEST_ALL_PREFIXES(StatusTrayRunnerTest, FindPakPath);
+  FRIEND_TEST_ALL_PREFIXES(StatusTrayRunnerTest, UpdateConnectionState);
+  friend class StatusTrayRunnerTest;
 
   StatusTrayRunner();
   ~StatusTrayRunner() override;
@@ -53,18 +69,23 @@ class StatusTrayRunner : public TrayMenuModel::Delegate,
   bool IsTunnelServiceRunning() const;
   void SetupStatusIcon();
   void SignalExit();
-  void UpdateIconState(bool connected, bool error);
+  void UpdateConnectionState();
   void SubscribeForServiceStopNotifications(const std::wstring& name);
   void SubscribeForStorageUpdates();
   void OnConnected(bool success);
   void OnDisconnected(bool success);
   void OnServiceStateChanged(int mask);
   void OnStorageUpdated();
+  bool IsIconCreated();
+  void SetIconState(int icon_id, int tooltip_id);
+  brave_vpn::mojom::ConnectionState GetConnectionState();
 
   // TrayMenuModel::Delegate
   void ExecuteCommand(int command_id, int event_flags) override;
   void OnMenuWillShow(ui::SimpleMenuModel* source) override;
 
+  absl::optional<brave_vpn::mojom::ConnectionState> current_state_;
+  SetIconStateCallback callback_for_testing_;
   absl::optional<bool> service_running_for_testing_;
   base::win::RegKey storage_;
   std::unique_ptr<StatusTray> status_tray_;
