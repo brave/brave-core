@@ -63,6 +63,7 @@ const StyledContextualMenu = styled.div`
   width: fit-content;
   gap: 0px 8px;
   align-items: center;
+  z-index: 5;
 
   padding: 8px 16px;
   border-radius: 8px;
