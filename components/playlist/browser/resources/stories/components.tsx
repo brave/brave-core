@@ -81,6 +81,7 @@ export const SampleContextualMenu = () => {
             }
           }
         ]}
+        visible={true}
       />
     </div>
   )
