@@ -185,6 +185,13 @@ void AIChatUIPageHandler::RetryAPIRequest() {
   }
 }
 
+void AIChatUIPageHandler::GetAPIResponseError(
+    GetAPIResponseErrorCallback callback) {
+  if (active_chat_tab_helper_) {
+    std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
+  }
+}
+
 void AIChatUIPageHandler::MarkAgreementAccepted() {
   profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kBraveChatHasSeenDisclaimer,
                                    true);

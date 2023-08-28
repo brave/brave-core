@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { withKnobs } from '@storybook/addon-knobs'
+import { withKnobs, select } from '@storybook/addon-knobs'
 import styles from './style.module.scss'
 
 import './locale'
@@ -16,11 +16,12 @@ import Main from '../components/main'
 import ConversationList from '../components/conversation_list'
 import InputBox from '../components/input_box'
 import { useInput } from '../state/hooks'
-import { CharacterType, ConversationTurnVisibility  } from '../api/page_handler'
+import { CharacterType, ConversationTurnVisibility, APIError  } from '../api/page_handler'
 import PrivacyMessage from '../components/privacy_message'
 import SiteTitle from '../components/site_title'
 import PromptAutoSuggestion from '../components/prompt_auto_suggestion'
 import ErrorRateLimit from '../components/error_rate_limit'
+import ErrorConnection from '../components/error_connection'
 
 const DATA = [
   {text: 'What is pointer compression?', characterType: CharacterType.HUMAN, visibility: ConversationTurnVisibility.VISIBLE },
@@ -37,7 +38,8 @@ const SAMPLE_QUESTIONS = [
 ]
 
 interface StoryProps {
-  hasQuestions: boolean
+  hasQuestions: boolean,
+  currentErrorState: APIError
 }
 
 export default {
@@ -46,7 +48,8 @@ export default {
     layout: 'centered'
   },
   args: {
-    hasQuestions: true
+    hasQuestions: true,
+    currentErrorState: select('Current Status', APIError, APIError.RateLimitReached)
   },
   decorators: [
     (Story: any) => {
@@ -96,10 +99,18 @@ export const _Main = (props: StoryProps) => {
       <PromptAutoSuggestion
       />
     )
+console.log(props.currentErrorState)
+    if (props.currentErrorState === APIError.RateLimitReached) {
+      currentErrorElement = (
+        <ErrorRateLimit />
+      )
+    }
 
-    currentErrorElement = (
-      <ErrorRateLimit />
-    )
+    if (props.currentErrorState === APIError.ConnectionIssue) {
+      currentErrorElement = (
+        <ErrorConnection />
+      )
+    }
   }
 
   const inputBox = (

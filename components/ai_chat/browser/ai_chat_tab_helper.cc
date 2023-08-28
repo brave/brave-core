@@ -298,6 +298,10 @@ void AIChatTabHelper::ClearConversationHistory() {
   }
 }
 
+mojom::APIError AIChatTabHelper::GetCurrentAPIError() {
+  return current_error_;
+}
+
 void AIChatTabHelper::GenerateQuestions() {
   DVLOG(1) << __func__;
   // This function should not be presented in the UI if the user has not
@@ -758,10 +762,10 @@ void AIChatTabHelper::OnAPIStreamDataComplete(
   }
 
   if (!success) {
-    SetAPIError(mojom::APIError::ConnectionIssue);
-
     if (net::HTTP_TOO_MANY_REQUESTS == result.response_code()) {
       SetAPIError(mojom::APIError::RateLimitReached);
+    } else {
+      SetAPIError(mojom::APIError::ConnectionIssue);
     }
   }
 

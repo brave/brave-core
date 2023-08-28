@@ -57,6 +57,12 @@ export function useConversationHistory() {
     })
   }
 
+  const getCurrentAPIError = () => {
+    getPageHandlerInstance().pageHandler.getAPIResponseError().then((data) => {
+      setCurrentError(data.error)
+    })
+  }
+
   const initialiseForTargetTab = () => {
     // Replace state from backend
     // TODO(petemill): Perhaps we need a simple GetState mojom function
@@ -66,6 +72,7 @@ export function useConversationHistory() {
     getSuggestedQuestions()
     getSiteInfo()
     getFaviconData()
+    getCurrentAPIError()
   }
 
   React.useEffect(() => {
