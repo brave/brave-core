@@ -386,7 +386,6 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                 EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                         WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST, true);
 
-        bottomSheetDialogFragment.setSelectedNetwork(mNetworkInfo);
         bottomSheetDialogFragment.setDismissListener(isAssetsListChanged -> {
             if (isAssetsListChanged) {
                 mPbAssetDiscovery.setVisibility(View.VISIBLE);

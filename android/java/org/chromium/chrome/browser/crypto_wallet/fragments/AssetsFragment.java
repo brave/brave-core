@@ -373,7 +373,6 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
                 EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                         WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST, false);
 
-        bottomSheetDialogFragment.setSelectedNetwork(mNetworkInfo);
         bottomSheetDialogFragment.setDismissListener(isAssetsListChanged -> {
             if (isAssetsListChanged) {
                 updatePortfolioGetPendingTx();
