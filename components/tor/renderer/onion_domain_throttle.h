@@ -26,6 +26,7 @@ class OnionDomainThrottle : public blink::URLLoaderThrottle {
   // blink::URLLoaderThrottle
   void WillStartRequest(network::ResourceRequest* request,
                         bool* defer) override;
+  void DetachFromCurrentSequence() override {}
 
  private:
   OnionDomainThrottle();
