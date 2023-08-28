@@ -64,9 +64,14 @@ NewTabPageAdHandler::NewTabPageAdHandler(
 NewTabPageAdHandler::~NewTabPageAdHandler() = default;
 
 void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
-  CHECK(ShouldAlwaysTriggerNewTabPageAdEvents() || UserHasJoinedBraveRewards())
-      << "Should only be called if the user has joined Brave Rewards or if "
-         "should always trigger new tab page ad events";
+  if (!UserHasOptedInToNewTabPageAds()) {
+    return std::move(callback).Run(/*ad*/ absl::nullopt);
+  }
+
+  if (!ShouldAlwaysTriggerNewTabPageAdEvents() &&
+      !UserHasJoinedBraveRewards()) {
+    return std::move(callback).Run(/*ad*/ absl::nullopt);
+  }
 
   serving_.MaybeServeAd(base::BindOnce(&NewTabPageAdHandler::MaybeServeCallback,
                                        weak_factory_.GetWeakPtr(),
