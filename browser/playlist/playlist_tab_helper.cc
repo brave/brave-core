@@ -313,6 +313,13 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
   }
 
   for (auto& new_item : items) {
+    if (new_item->duration == "0") {
+      // Youtube seems to have a duplicated video with 0 duration. The
+      // duplicated video is has a different source URL, so we can't filter it
+      // from code below.
+      continue;
+    }
+
     const auto media_source = new_item->media_source.spec();
     if (base::Contains(already_found_items, media_source)) {
       DVLOG(2) << "The media source with url (" << media_source
