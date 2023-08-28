@@ -117,12 +117,7 @@ public class NFTStore: ObservableObject {
         .filter { account in
           WalletConstants.supportedCoinTypes.contains(account.coin)
         }
-      self.allNetworks = await rpcService.allNetworksForSupportedCoins().filter { network in
-        if !Preferences.Wallet.showTestNetworks.value { // filter out test networks
-          return !WalletConstants.supportedTestNetworkChainIds.contains(where: { $0 == network.chainId })
-        }
-        return true
-      }
+      self.allNetworks = await rpcService.allNetworksForSupportedCoins()
       let filters = self.filters
       let selectedAccounts = filters.accounts.filter(\.isSelected).map(\.model)
       let selectedNetworks = filters.networks.filter(\.isSelected).map(\.model)

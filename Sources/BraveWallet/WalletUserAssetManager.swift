@@ -98,7 +98,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType {
       if let coin = coin {
         networks = await rpcService.allNetworks(coin)
       } else {
-        networks = await rpcService.allNetworksForSupportedCoins()
+        networks = await rpcService.allNetworksForSupportedCoins(respectTestnetPreference: false)
       }
       let networkAssets = await walletService.allUserAssets(in: networks)
       for networkAsset in networkAssets {

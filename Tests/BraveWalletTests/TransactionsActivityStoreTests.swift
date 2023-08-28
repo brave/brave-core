@@ -6,9 +6,17 @@
 import Combine
 import XCTest
 import BraveCore
+import Preferences
 @testable import BraveWallet
 
 class TransactionsActivityStoreTests: XCTestCase {
+  
+  override func setUp() {
+    Preferences.Wallet.showTestNetworks.value = true
+  }
+  override func tearDown() {
+    Preferences.Wallet.showTestNetworks.reset()
+  }
   
   private var cancellables: Set<AnyCancellable> = .init()
   
