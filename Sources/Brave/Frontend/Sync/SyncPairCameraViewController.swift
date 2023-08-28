@@ -10,7 +10,7 @@ import BraveUI
 
 protocol SyncPairControllerDelegate: AnyObject {
   func syncOnScannedHexCode(_ controller: UIViewController & NavigationPrevention, hexCode: String)
-  func syncOnWordsEntered(_ controller: UIViewController & NavigationPrevention, codeWords: String)
+  func syncOnWordsEntered(_ controller: UIViewController & NavigationPrevention, codeWords: String, isCodeScanned: Bool)
 }
 
 class SyncPairCameraViewController: SyncViewController {
@@ -158,6 +158,10 @@ class SyncPairCameraViewController: SyncViewController {
     if cameraLocked { return }
     cameraLocked = true
 
+    processQRCodeData(data: data)
+  }
+  
+  private func processQRCodeData(data: String) {
     // Pause scanning
     cameraView.cameraOverlaySuccess()
     cameraView.stopRunning()
@@ -177,20 +181,7 @@ class SyncPairCameraViewController: SyncViewController {
     // Check Internet Connectivity
     if !DeviceInfo.hasConnectivity() {
       task.cancel()
-      let alert = UIAlertController(
-        title: Strings.syncNoConnectionTitle,
-        message: Strings.syncNoConnectionBody,
-        preferredStyle: .alert)
-      alert.addAction(
-        UIAlertAction(
-          title: Strings.OKString, style: .default,
-          handler: { [weak self] _ in
-            guard let self = self else { return }
-            self.cameraLocked = false
-            self.cameraView.cameraOverlayNormal()
-            self.cameraView.startRunning()
-          }))
-      present(alert, animated: true)
+      showErrorAlert(title: Strings.syncNoConnectionTitle, message: Strings.syncNoConnectionBody)
       return
     }
     
@@ -200,11 +191,11 @@ class SyncPairCameraViewController: SyncViewController {
       delegate?.syncOnScannedHexCode(self, hexCode: syncAPI.getHexSeed(fromQrCodeJson: data))
     } else {
       cameraView.cameraOverlayError()
-      showErrorAlert(message: wordsValidation.errorDescription)
+      showErrorAlert(title: Strings.syncUnableCreateGroup, message: wordsValidation.errorDescription)
     }
   }
 
-  private func showErrorAlert(message: String) {
+  private func showErrorAlert(title: String, message: String) {
     let alert = UIAlertController(
       title: Strings.syncUnableCreateGroup,
       message: message,

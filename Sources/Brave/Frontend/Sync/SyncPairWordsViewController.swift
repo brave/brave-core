@@ -196,7 +196,7 @@ class SyncPairWordsViewController: SyncViewController {
 
     if syncCodeValidation == .valid {
       let words = syncAPI.getWordsFromTimeLimitedWords(codes)
-      delegate?.syncOnWordsEntered(self, codeWords: words)
+      delegate?.syncOnWordsEntered(self, codeWords: words, isCodeScanned: false)
     } else {
       showAlert(message: syncCodeValidation.errorDescription)
       disableNavigationPrevention()

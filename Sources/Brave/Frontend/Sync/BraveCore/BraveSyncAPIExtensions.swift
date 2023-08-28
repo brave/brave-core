@@ -55,9 +55,9 @@ extension BraveSyncAPI {
   }
   
   @discardableResult
-  func joinSyncGroup(codeWords: String, syncProfileService: BraveSyncProfileServiceIOS) -> Bool {
+  func joinSyncGroup(codeWords: String, syncProfileService: BraveSyncProfileServiceIOS, shouldEnableBookmarks: Bool) -> Bool {
     if setSyncCode(codeWords) {
-      enableSyncTypes(syncProfileService: syncProfileService)
+      enableSyncTypes(syncProfileService: syncProfileService, shouldEnableBookmarks: shouldEnableBookmarks)
       requestSync()
       setSetupComplete()
       Preferences.Chromium.syncEnabled.value = true
@@ -92,9 +92,13 @@ extension BraveSyncAPI {
     resetSync()
   }
 
-  func enableSyncTypes(syncProfileService: BraveSyncProfileServiceIOS) {
+  func enableSyncTypes(syncProfileService: BraveSyncProfileServiceIOS, shouldEnableBookmarks: Bool) {
     syncProfileService.userSelectedTypes = []
-
+    
+    // This value is true by default
+    // In some cases while joining a sync chain all values must be disabled
+    Preferences.Chromium.syncBookmarksEnabled.value = shouldEnableBookmarks
+      
     if Preferences.Chromium.syncBookmarksEnabled.value {
       syncProfileService.userSelectedTypes.update(with: .BOOKMARKS)
     }

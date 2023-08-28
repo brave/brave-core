@@ -305,7 +305,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
         }
       }
 
-      syncAPI.enableSyncTypes(syncProfileService: syncProfileService)
+      syncAPI.enableSyncTypes(syncProfileService: syncProfileService, shouldEnableBookmarks: false)
     }
   }
   
