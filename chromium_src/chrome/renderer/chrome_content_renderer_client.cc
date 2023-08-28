@@ -34,7 +34,7 @@ void RenderFrameWithBinderRegistryCreated(
 // We need to do this here rather than in |BraveContentRendererClient| because
 // some classes need access to the registry on ChromeRenderFrameObserver.
 #define BRAVE_RENDER_FRAME_CREATED \
-  RenderFrameWithBinderRegistryCreated(render_frame, registry);
+  RenderFrameWithBinderRegistryCreated(render_frame, registry_);
 
 #include "src/chrome/renderer/chrome_content_renderer_client.cc"
 

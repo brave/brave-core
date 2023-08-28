@@ -1,0 +1,12 @@
+diff --git a/components/pdf/renderer/BUILD.gn b/components/pdf/renderer/BUILD.gn
+index 9182083715428f2a97cb0c781fe955a5781e26e9..e7baf682be119041a67d1f7e6aa2ec9240f533b1 100644
+--- a/components/pdf/renderer/BUILD.gn
++++ b/components/pdf/renderer/BUILD.gn
+@@ -51,6 +51,7 @@ static_library("renderer") {
+     "//ui/gfx/geometry",
+     "//url",
+     "//v8",
++    "//brave/components/ai_chat/common/mojom:mojom",
+   ]
+ 
+   public_deps = [

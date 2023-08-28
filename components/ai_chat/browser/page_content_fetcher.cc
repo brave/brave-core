@@ -13,6 +13,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/ai_chat/common/mojom/page_content_extractor.mojom.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/render_process_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -235,6 +236,16 @@ void FetchPageContent(content::WebContents* web_contents,
 
   auto* primary_rfh = web_contents->GetPrimaryMainFrame();
   DCHECK(primary_rfh->IsRenderFrameLive());
+
+  // Call the childframe of the pdf
+  primary_rfh->ForEachRenderFrameHost(
+      [&primary_rfh](content::RenderFrameHost* rfh) {
+        if (!rfh->GetProcess()->IsPdf()) {
+          return;
+        }
+        LOG(ERROR) << "Got PDF Renderer Host";
+        primary_rfh = rfh;
+      });
 
   if (!primary_rfh) {
     LOG(ERROR)

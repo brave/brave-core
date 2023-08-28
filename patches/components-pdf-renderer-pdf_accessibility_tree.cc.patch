@@ -1,0 +1,103 @@
+diff --git a/components/pdf/renderer/pdf_accessibility_tree.cc b/components/pdf/renderer/pdf_accessibility_tree.cc
+index 56d7c0514c3e045981edd4cafd4d3afb621bc208..909af071e517a6f4f96cc2d2c2b17cf6be99b0b7 100644
+--- a/components/pdf/renderer/pdf_accessibility_tree.cc
++++ b/components/pdf/renderer/pdf_accessibility_tree.cc
+@@ -39,6 +39,10 @@
+ #include "ui/gfx/geometry/point_f.h"
+ #include "ui/gfx/geometry/rect_conversions.h"
+ #include "ui/gfx/geometry/transform.h"
++#include "third_party/blink/public/web/web_local_frame.h"
++#include "ui/accessibility/platform/inspect/ax_tree_formatter.h"
++#include "content/public/browser/ax_inspect_factory.h"
++#include "ui/accessibility/ax_enum_util.cc"
+ 
+ #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
+ #include "components/services/screen_ai/public/mojom/screen_ai_service.mojom.h"
+@@ -48,6 +52,22 @@
+ #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
+ 
+ namespace pdf {
++std::string DumpPdfAccessibilityTree(const ui::AXTreeUpdate& tree) {
++  std::string ax_tree_dump;
++
++  for (const ui::AXNodeData& node : tree.nodes) {
++    std::string name =
++        node.GetStringAttribute(ax::mojom::StringAttribute::kName);
++    base::ReplaceChars(name, "\r\n", "", &name);
++
++    if (!name.empty()) {
++      ax_tree_dump += name;
++    }
++    ax_tree_dump += " ";
++  }
++
++  return ax_tree_dump;
++}
+ 
+ namespace ranges = base::ranges;
+ 
+@@ -1386,13 +1406,16 @@ class PdfAccessibilityTreeBuilder {
+ 
+ PdfAccessibilityTree::PdfAccessibilityTree(
+     content::RenderFrame* render_frame,
+-    chrome_pdf::PdfAccessibilityActionHandler* action_handler)
++    chrome_pdf::PdfAccessibilityActionHandler* action_handler,
++    service_manager::BinderRegistry* registry)
+     : content::RenderFrameObserver(render_frame),
+       render_frame_(render_frame),
+       action_handler_(action_handler) {
+   DCHECK(render_frame);
+   DCHECK(action_handler_);
+   MaybeHandleAccessibilityChange(/*always_load_or_reload_accessibility=*/false);
++
++  registry->AddInterface(base::BindRepeating(&PdfAccessibilityTree::BindReceiver, base::Unretained(this)));
+ }
+ 
+ PdfAccessibilityTree::~PdfAccessibilityTree() {
+@@ -1547,6 +1570,21 @@ bool PdfAccessibilityTree::IsDataFromPluginValid(
+   return true;
+ }
+ 
++void PdfAccessibilityTree::BindReceiver(
++      mojo::PendingReceiver<ai_chat::mojom::PageContentExtractor> receiver) {
++  receiver_.reset();
++  receiver_.Bind(std::move(receiver));
++  LOG(ERROR) << "BindReceiver\n";
++}
++
++void PdfAccessibilityTree::ExtractPageContent(
++  ai_chat::mojom::PageContentExtractor::ExtractPageContentCallback callback) {
++  auto result = ai_chat::mojom::PageContent::New();
++  result->type = std::move(ai_chat::mojom::PageContentType::Text);
++  result->content = ai_chat::mojom::PageContentData::NewContent(contents_);
++  std::move(callback).Run(std::move(result));
++}
++
+ void PdfAccessibilityTree::SetAccessibilityViewportInfo(
+     chrome_pdf::AccessibilityViewportInfo viewport_info) {
+   // This call may trigger layout, and ultimately self-deletion; see
+@@ -1674,6 +1712,7 @@ void PdfAccessibilityTree::DoSetAccessibilityPageInfo(
+   did_get_a_text_run_ |= !text_runs.empty();
+ 
+   AddPageContent(page_info, page_index, text_runs, chars, page_objects);
++  LOG(ERROR) << "AddedPageContent\n";
+ 
+ #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
+   // TODO(crbug.com/1443346): Use a more explicit flag indicating whether any
+@@ -1777,12 +1816,16 @@ void PdfAccessibilityTree::UnserializeNodes() {
+   for (const auto& node : nodes_)
+     update.nodes.push_back(std::move(*node));
+ 
++
+   if (!tree_.Unserialize(update))
+     LOG(FATAL) << tree_.error();
+ 
+   UpdateAXTreeDataFromSelection();
+   render_accessibility->SetPluginTreeSource(this);
+   nodes_.clear();
++  contents_.clear();
++
++  contents_ = DumpPdfAccessibilityTree(update);
+ 
+   if (!did_unserialize_nodes_once_) {
+     // If the user turns on PDF OCR after opening a PDF, its PDF a11y tree gets

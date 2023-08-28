@@ -1,0 +1,25 @@
+diff --git a/components/pdf/renderer/internal_plugin_renderer_helpers.cc b/components/pdf/renderer/internal_plugin_renderer_helpers.cc
+index 801003e99fe39ae26b9fba25690d15ea625d034c..c9af925390296a57d696d9770edc5ecdab7d7543 100644
+--- a/components/pdf/renderer/internal_plugin_renderer_helpers.cc
++++ b/components/pdf/renderer/internal_plugin_renderer_helpers.cc
+@@ -36,7 +36,8 @@ bool IsPdfRenderer() {
+ blink::WebPlugin* CreateInternalPlugin(
+     blink::WebPluginParams params,
+     content::RenderFrame* render_frame,
+-    std::unique_ptr<PdfInternalPluginDelegate> delegate) {
++    std::unique_ptr<PdfInternalPluginDelegate> delegate,
++    service_manager::BinderRegistry* registry) {
+   // For a PDF plugin, `params.url` holds the plugin's stream URL. If `params`
+   // contains an 'original-url' attribute, reset `params.url` with its original
+   // URL value so that it can be used to determine the plugin's origin.
+@@ -70,8 +71,9 @@ blink::WebPlugin* CreateInternalPlugin(
+   mojo::AssociatedRemote<pdf::mojom::PdfService> pdf_service;
+   render_frame->GetRemoteAssociatedInterfaces()->GetInterface(
+       pdf_service.BindNewEndpointAndPassReceiver());
++
+   return new chrome_pdf::PdfViewWebPlugin(
+-      std::make_unique<PdfViewWebPluginClient>(render_frame),
++      std::make_unique<PdfViewWebPluginClient>(render_frame, registry),
+       std::move(pdf_service), params);
+ }
+ 

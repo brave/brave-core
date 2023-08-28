@@ -1,0 +1,72 @@
+diff --git a/components/pdf/renderer/pdf_accessibility_tree.h b/components/pdf/renderer/pdf_accessibility_tree.h
+index acbc3f4c4ebcbed13fe051e689a0cb4e013f1d93..d774aae1032d9db54edbb888e95669fe6a8895f7 100644
+--- a/components/pdf/renderer/pdf_accessibility_tree.h
++++ b/components/pdf/renderer/pdf_accessibility_tree.h
+@@ -13,6 +13,7 @@
+ #include "components/services/screen_ai/buildflags/buildflags.h"
+ #include "content/public/renderer/plugin_ax_tree_source.h"
+ #include "content/public/renderer/render_frame_observer.h"
++#include "pdf/accessibility_structs.h"
+ #include "pdf/pdf_accessibility_data_handler.h"
+ #include "third_party/abseil-cpp/absl/types/optional.h"
+ #include "ui/accessibility/ax_node.h"
+@@ -21,6 +22,9 @@
+ #include "ui/accessibility/ax_tree_source.h"
+ #include "ui/gfx/geometry/rect_f.h"
+ #include "ui/gfx/geometry/vector2d_f.h"
++#include "services/service_manager/public/cpp/binder_registry.h"
++#include "brave/components/ai_chat/common/mojom/page_content_extractor.mojom.h"
++#include "mojo/public/cpp/bindings/receiver.h"
+ 
+ #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
+ #include "ui/accessibility/ax_node_data.h"
+@@ -58,11 +62,13 @@ class PdfOcrService;
+ 
+ class PdfAccessibilityTree : public content::PluginAXTreeSource,
+                              public content::RenderFrameObserver,
+-                             public chrome_pdf::PdfAccessibilityDataHandler {
++                             public chrome_pdf::PdfAccessibilityDataHandler,
++                             public ai_chat::mojom::PageContentExtractor {
+  public:
+   PdfAccessibilityTree(
+       content::RenderFrame* render_frame,
+-      chrome_pdf::PdfAccessibilityActionHandler* action_handler);
++      chrome_pdf::PdfAccessibilityActionHandler* action_handler,
++      service_manager::BinderRegistry* registry);
+   ~PdfAccessibilityTree() override;
+ 
+   static bool IsDataFromPluginValid(
+@@ -80,6 +86,14 @@ class PdfAccessibilityTree : public content::PluginAXTreeSource,
+     uint32_t annotation_index;
+   };
+ 
++  void BindReceiver(
++      mojo::PendingReceiver<ai_chat::mojom::PageContentExtractor> receiver);
++
++  // PageContentExtractor implementation:
++  void ExtractPageContent(
++      ai_chat::mojom::PageContentExtractor::ExtractPageContentCallback callback)
++      override;
++
+   // chrome_pdf::PdfAccessibilityDataHandler:
+   void SetAccessibilityViewportInfo(
+       chrome_pdf::AccessibilityViewportInfo viewport_info) override;
+@@ -219,7 +233,7 @@ class PdfAccessibilityTree : public content::PluginAXTreeSource,
+   content::RenderFrame* render_frame_;
+ 
+   // Unowned. Must outlive `this`.
+-  chrome_pdf::PdfAccessibilityActionHandler* const action_handler_;
++  chrome_pdf::PdfAccessibilityActionHandler* action_handler_;
+ 
+   // `zoom_` signifies the zoom level set in for the browser content.
+   // `scale_` signifies the scale level set by user. Scale is applied
+@@ -271,6 +285,9 @@ class PdfAccessibilityTree : public content::PluginAXTreeSource,
+   bool was_text_converted_from_image_ = false;
+ #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
+ 
++  std::string contents_;
++  mojo::Receiver<ai_chat::mojom::PageContentExtractor> receiver_{this};
++
+   base::WeakPtrFactory<PdfAccessibilityTree> weak_ptr_factory_{this};
+ };
+ 

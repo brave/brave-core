@@ -1,0 +1,13 @@
+diff --git a/chrome/renderer/plugins/chrome_plugin_placeholder.cc b/chrome/renderer/plugins/chrome_plugin_placeholder.cc
+index 7d8b82676b921de650f51304999872c1fafd7438..3de40f3ec886eb183887a2ea887568f47dc5d684 100644
+--- a/chrome/renderer/plugins/chrome_plugin_placeholder.cc
++++ b/chrome/renderer/plugins/chrome_plugin_placeholder.cc
+@@ -211,7 +211,7 @@ void ChromePluginPlaceholder::PluginListChanged() {
+   if (plugin_info->status == status_)
+     return;
+   blink::WebPlugin* new_plugin = ChromeContentRendererClient::CreatePlugin(
+-      render_frame(), GetPluginParams(), *plugin_info);
++      render_frame(), GetPluginParams(), *plugin_info, nullptr);
+   ReplacePlugin(new_plugin);
+   if (!new_plugin) {
+     PluginUMAReporter::GetInstance()->ReportPluginMissing(
