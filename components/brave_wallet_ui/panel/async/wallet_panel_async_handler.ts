@@ -557,6 +557,11 @@ handler.on(PanelActions.openWalletSettings.type, async (store) => {
   })
 })
 
+handler.on(PanelActions.setCloseOnDeactivate.type,
+           async (store: Store, payload: boolean) => {
+    getWalletPanelApiProxy().panelHandler.setCloseOnDeactivate(payload)
+})
+
 // Cross-slice action handlers
 handler.on(WalletActions.initialize.type, async (store) => {
   const state = getPanelState(store)

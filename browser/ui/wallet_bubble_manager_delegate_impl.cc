@@ -14,6 +14,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/wallet_bubble_focus_observer.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
+#include "chrome/browser/file_select_helper.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -25,6 +26,30 @@
 #include "url/gurl.h"
 
 namespace brave_wallet {
+
+class BraveWebUIBubbleDialogView : public WebUIBubbleDialogView {
+ public:
+  BraveWebUIBubbleDialogView(
+      views::View* anchor_view,
+      BubbleContentsWrapper* contents_wrapper,
+      const absl::optional<gfx::Rect>& anchor_rect = absl::nullopt,
+      views::BubbleBorder::Arrow arrow = views::BubbleBorder::TOP_RIGHT)
+      : WebUIBubbleDialogView(anchor_view,
+                              contents_wrapper,
+                              anchor_rect,
+                              arrow) {}
+  BraveWebUIBubbleDialogView(const BraveWebUIBubbleDialogView&) = delete;
+  BraveWebUIBubbleDialogView& operator=(const BraveWebUIBubbleDialogView&) =
+      delete;
+  ~BraveWebUIBubbleDialogView() override = default;
+
+  void RunFileChooser(content::RenderFrameHost* render_frame_host,
+                      scoped_refptr<content::FileSelectListener> listener,
+                      const blink::mojom::FileChooserParams& params) override {
+    FileSelectHelper::RunFileChooser(render_frame_host, std::move(listener),
+                                     params);
+  }
+};
 
 template <typename T>
 class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T>,
@@ -38,14 +63,29 @@ class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T>,
                                browser->profile(),
                                webui_url,
                                task_manager_string_id),
-        browser_(browser) {}
+        browser_(browser),
+        anchor_view_(anchor_view) {}
 
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
       const absl::optional<gfx::Rect>& anchor,
       views::BubbleBorder::Arrow arrow) override {
-    auto bubble_view =
+    // This is prevent duplicate logic of cached_contents_wrapper creation
+    // so we close WebUIBubbleDialogView and re-create bubble with
+    // BraveWebUIBubbleDialogView.
+    auto bubble_view_to_close =
         WebUIBubbleManagerT<T>::CreateWebUIBubbleDialog(anchor, arrow);
-    bubble_view_ = bubble_view.get();
+    auto* widget = bubble_view_to_close->GetWidget();
+    if (widget) {
+      widget->CloseNow();
+    }
+    auto contents_wrapper = WebUIBubbleManagerT<T>::cached_contents_wrapper();
+    DCHECK(contents_wrapper);
+    auto bubble_view = std::make_unique<BraveWebUIBubbleDialogView>(
+        anchor_view_, contents_wrapper, anchor, arrow);
+    auto bubble_view_weak_ptr = bubble_view->GetWeakPtr();
+    bubble_view_ = bubble_view_weak_ptr.get();
+    views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
+
     brave_observer_ =
         WalletBubbleFocusObserver::CreateForView(bubble_view_, browser_);
     web_ui_contents_for_testing_ = bubble_view_->web_view()->GetWebContents();
@@ -54,18 +94,17 @@ class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T>,
     // into it to redirect popups to be opened as separate windows.
     // Set a callback to be possible to activate/deactivate wallet panel from
     // typescript side
-    auto contents_wrapper = WebUIBubbleManagerT<T>::cached_contents_wrapper();
-    if (!contents_wrapper || !contents_wrapper->web_contents()) {
-      return std::move(bubble_view);
+    if (!contents_wrapper->web_contents()) {
+      return std::move(bubble_view_weak_ptr);
     }
     content::WebUI* const webui = contents_wrapper->web_contents()->GetWebUI();
     if (!webui || !webui->GetController()) {
-      return std::move(bubble_view);
+      return std::move(bubble_view_weak_ptr);
     }
     WalletPanelUI* wallet_panel =
         webui->GetController()->template GetAs<WalletPanelUI>();
     if (!wallet_panel || !browser_ || !browser_->GetDelegateWeakPtr()) {
-      return std::move(bubble_view);
+      return std::move(bubble_view_weak_ptr);
     }
     // Set Browser delegate to redirect popups to be opened as Popup window
     contents_wrapper->SetWebContentsAddNewContentsDelegate(
@@ -79,7 +118,7 @@ class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T>,
         base::BindRepeating(&BraveWebUIBubbleManagerT<T>::SetCloseOnDeactivate,
                             weak_factory_.GetWeakPtr()));
 
-    return std::move(bubble_view);
+    return std::move(bubble_view_weak_ptr);
   }
 
   void CloseOpenedPopups() {
@@ -125,6 +164,7 @@ class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T>,
 
  private:
   const raw_ptr<Browser> browser_;
+  const raw_ptr<views::View> anchor_view_;
   std::unique_ptr<WalletBubbleFocusObserver> brave_observer_;
   raw_ptr<WebUIBubbleDialogView> bubble_view_ = nullptr;
   raw_ptr<content::WebContents> web_ui_contents_for_testing_ = nullptr;
