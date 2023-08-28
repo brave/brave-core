@@ -12,15 +12,11 @@
 namespace brave_ads {
 
 int GetMaximumNotificationAdsPerHourSetting() {
-  int ads_per_hour =
+  const int ads_per_hour =
       static_cast<int>(AdsClientHelper::GetInstance()->GetInt64Pref(
           prefs::kMaximumNotificationAdsPerHour));
 
-  if (ads_per_hour == -1) {
-    ads_per_hour = kDefaultNotificationAdsPerHour.Get();
-  }
-
-  return ads_per_hour;
+  return ads_per_hour > 0 ? ads_per_hour : kDefaultNotificationAdsPerHour.Get();
 }
 
 }  // namespace brave_ads

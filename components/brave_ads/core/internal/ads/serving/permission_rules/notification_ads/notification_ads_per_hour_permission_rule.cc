@@ -22,14 +22,9 @@ namespace {
 constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
 
 bool DoesRespectCap(const std::vector<base::Time>& history) {
-  const int ads_per_hour = GetMaximumNotificationAdsPerHourSetting();
-  if (ads_per_hour == 0) {
-    // Never respect cap if set to 0
-    return false;
-  }
-
-  return DoesHistoryRespectRollingTimeConstraint(history, kTimeConstraint,
-                                                 /*cap*/ ads_per_hour);
+  return DoesHistoryRespectRollingTimeConstraint(
+      history, kTimeConstraint,
+      /*cap*/ GetMaximumNotificationAdsPerHourSetting());
 }
 
 }  // namespace
