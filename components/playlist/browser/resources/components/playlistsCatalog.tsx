@@ -8,7 +8,7 @@ import styled, { css } from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import Icon from '@brave/leo/react/icon'
-import { color } from '@brave/leo/tokens/css'
+import { color, spacing } from '@brave/leo/tokens/css'
 
 import { Playlist } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
@@ -52,12 +52,26 @@ const PlaylistCardContainer = styled.div<ThumbnailProps>`
     !p.isDefaultPlaylist &&
     p.thumbnailUrl &&
     css`
-      background: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-        url(${p.thumbnailUrl});
-      background-size: cover;
+      overflow: clip;
+      &::before {
+        position: absolute;
+        content: '';
+        background: linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.4),
+            rgba(0, 0, 0, 0.4)
+          ),
+          url(${p.thumbnailUrl});
+        background-size: cover;
+        filter: blur(8px);
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        margin: calc(-1 * ${spacing.m});
+      }
     `}
   border-radius: 8px;
-  padding: 8px;
+  padding: ${spacing.m};
 
   position: relative;
   display: flex;
@@ -99,7 +113,7 @@ const PlaylistThumbnailContainer = styled.div<ThumbnailProps>`
     !!p.thumbnailUrl &&
     css`
       background-image: url(${p.thumbnailUrl});
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
     `}

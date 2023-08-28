@@ -5,11 +5,11 @@
 
 import * as React from 'react'
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import Icon from '@brave/leo/react/icon'
-import { color, font, radius } from '@brave/leo/tokens/css'
+import { color, font, radius, spacing } from '@brave/leo/tokens/css'
 import LeoButton from '@brave/leo/react/button'
 
 import PlaylistInfo from './playlistInfo'
@@ -34,6 +34,10 @@ interface HeaderProps {
   playlistId?: string
 }
 
+const iconSize = css`
+  --leo-icon-size: 20px;
+`
+
 const GradientIcon = styled(Icon)`
   --leo-icon-color: linear-gradient(
     314.42deg,
@@ -41,10 +45,13 @@ const GradientIcon = styled(Icon)`
     #ff1893 43.72%,
     #a78aff 99.51%
   );
+  ${iconSize}
+  margin-right: calc(-1 * (${spacing.xl} - ${spacing.m}))
 `
 
 const ColoredIcon = styled(Icon)<{ color: string }>`
   color: ${p => p.color};
+  ${iconSize}
 `
 
 const ProductNameContainer = styled.div`
@@ -65,8 +72,8 @@ const HeaderContainer = styled.div`
   border-bottom: 1px solid ${color.divider.subtle};
   background-color: ${color.container.background};
   height: 100%;
-  padding: 0 16px;
-  gap: 16px;
+  padding: 0 ${spacing.xl};
+  gap: ${spacing.xl};
 `
 
 const StyledPlaylistInfo = styled(PlaylistInfo)`
@@ -226,9 +233,10 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
             nameColor={color.text.primary}
             detailColor={color.text.secondary}
           />
-          {!!contextualMenuItems.length && (
-            <ContextualMenuAnchorButton items={contextualMenuItems} />
-          )}
+          <ContextualMenuAnchorButton
+            visible={!!contextualMenuItems.length}
+            items={contextualMenuItems}
+          />
         </>
       )}
     </>

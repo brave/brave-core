@@ -6,7 +6,7 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 
-import { color } from '@brave/leo/tokens/css'
+import { color, effect } from '@brave/leo/tokens/css'
 
 import { playlistControlsAreaHeight } from '../constants/style'
 
@@ -33,6 +33,7 @@ const StyledVideoFrame = styled.iframe<Props>`
           // 16:9 aspect ratio for video and fixed height for the controls area
           height: calc(56vw + var(--player-controls-area-height));
           margin-bottom: 8px;
+          box-shadow: ${effect.elevation['02']};
         `}
 
   ${({ visible }) =>
