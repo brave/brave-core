@@ -591,6 +591,12 @@ class TabManager: NSObject {
     return nil
   }
   
+  func removePrivateWindows() {
+    if Preferences.Privacy.privateBrowsingOnly.value || (privateBrowsingManager.isPrivateBrowsing && !Preferences.Privacy.persistentPrivateBrowsing.value) {
+      SessionWindow.deleteAllWindows(privateOnly: true)
+    }
+  }
+  
   func saveAllTabs() {
     if Preferences.Privacy.privateBrowsingOnly.value || (privateBrowsingManager.isPrivateBrowsing && !Preferences.Privacy.persistentPrivateBrowsing.value) { return }
     
@@ -1026,7 +1032,7 @@ class TabManager: NSObject {
     isRestoring = false
 
     // Always make sure there is at least one tab.
-    let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
+    let isPrivate = privateBrowsingManager.isPrivateBrowsing || Preferences.Privacy.privateBrowsingOnly.value
     return tabToSelect ?? self.addTab(isPrivate: isPrivate)
   }
 

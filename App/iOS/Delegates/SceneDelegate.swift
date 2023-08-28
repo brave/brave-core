@@ -410,13 +410,13 @@ extension SceneDelegate {
       let windowIdString = userActivity.userInfo?["WindowID"] as? String ?? ""
       windowId = UUID(uuidString: windowIdString) ?? UUID()
       isPrivate = userActivity.userInfo?["isPrivate"] as? Bool == true
-      privateBrowsingManager.isPrivateBrowsing = isPrivate
       urlToOpen = userActivity.userInfo?["OpenURL"] as? URL
+      privateBrowsingManager.isPrivateBrowsing = isPrivate
       
       // Create a new session window
-      SessionWindow.createWindow(isPrivate: isPrivate, isSelected: true, uuid: windowId)
+      SessionWindow.createWindow(isPrivate: false, isSelected: true, uuid: windowId)
       
-      scene.userActivity = userActivity
+      scene.userActivity = BrowserState.userActivity(for: windowId, isPrivate: isPrivate)
       scene.session.userInfo?["WindowID"] = windowId
       scene.session.userInfo?["isPrivate"] = isPrivate
     } else if let sceneWindowId = scene.session.userInfo?["WindowID"] as? String,
@@ -513,8 +513,10 @@ extension SceneDelegate {
     }
     
     if let urlToOpen = urlToOpen {
-      browserViewController.loadViewIfNeeded()
-      browserViewController.switchToTabForURLOrOpen(urlToOpen, isPrivileged: false)
+      DispatchQueue.main.async {
+        browserViewController.loadViewIfNeeded()
+        browserViewController.switchToTabForURLOrOpen(urlToOpen, isPrivileged: false)
+      }
     }
 
     return browserViewController
