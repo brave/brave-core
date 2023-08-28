@@ -43,7 +43,7 @@
      There was a network issue connecting to Leo, check your connection and try again.
   </message>
   <message name="IDS_CHAT_UI_ERROR_RATE_LIMIT" desc="An error presented when the user has exhausted the API request limit">
-     You've reached the maximum number of questions for Leo. Please try again in a few hours.
+    Leo is too busy right now. Please try again in a few minutes.
   </message>
   <message name="IDS_CHAT_UI_RETRY_BUTTON_LABEL" desc="A button label to retry API again">
      Retry

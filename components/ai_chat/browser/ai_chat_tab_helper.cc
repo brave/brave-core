@@ -703,8 +703,9 @@ void AIChatTabHelper::RetryAPIRequest() {
 
   for (; rit != chat_history_.rend(); ++rit) {
     if ((*rit).character_type == CharacterType::HUMAN) {
-      ConversationTurn turn_copy = (*rit);
-      MakeAPIRequestWithConversationHistoryUpdate(turn_copy);
+      auto turn = *std::make_move_iterator(rit);
+      chat_history_.erase(rit.base() - 1);
+      MakeAPIRequestWithConversationHistoryUpdate(turn);
       break;
     }
   }
