@@ -11,7 +11,7 @@ import Icon from '@brave/leo/react/icon'
 import styles from './style.module.scss'
 import { ConversationTurn, CharacterType, ConversationTurnStatus }
   from '../../api/page_handler'
-import { getLocale } from '$web-common/locale'
+import { RetryConversationItem } from './retry_conversation_item'
 
 interface ConversationListProps {
   list: ConversationTurn[]
@@ -41,6 +41,7 @@ function ConversationList (props: ConversationListProps) {
     <>
       <div>
       {props.list.map((turn, id) => {
+        const prevUuid = props.list[id - 1] && props.list[id - 1].uuid ? props.list[id - 1].uuid : '0';
         const isLastEntry = (id === (props.list.length - 1))
         const isLoading = isLastEntry && props.isLoading
         const elementRef = isLastEntry
@@ -50,15 +51,6 @@ function ConversationList (props: ConversationListProps) {
         const isHuman = turn.characterType === CharacterType.HUMAN
         const isAIAssistant = turn.characterType === CharacterType.ASSISTANT
         const isError = turn.status === ConversationTurnStatus.ABNORMAL
-
-        let iconName = 'user-circle'
-        if(!isHuman) {
-          iconName = 'product-brave-ai'
-        }
-
-        if(isError) {
-          iconName = 'warning-circle-filled'
-        }
 
         const turnClass = classnames({
           [styles.turn]: true,
@@ -70,27 +62,32 @@ function ConversationList (props: ConversationListProps) {
           [styles.avatarAI]: isAIAssistant,
         })
 
-        return (
-          <div key={id} ref={elementRef} className={turnClass}>
-            <div className={avatarStyles}>
-                <Icon name={iconName} />
-            </div>
-            <div className={styles.message}>
-              <div className={styles.messageTextBox}>
-                {turn.text}
-                {isLoading && <span className={styles.caret}/>}
+        if(isError) {
+          return <>
+          <RetryConversationItem
+                    id={id} 
+                    prevItemUuid= {prevUuid}
+                    turn={turn}
+                    isLoading = {isLoading}
+                    elementRef={elementRef}
+                    onRetrySubmit={props.onRetrySubmit}
+                    />
+          </>
+        } else {
+          return (
+            <div key={id} ref={elementRef} className={turnClass}>
+              <div className={avatarStyles}>
+                  <Icon name={isHuman ? 'user-circle' : 'product-brave-ai'} />
               </div>
-              {isError &&                
-                <Button kind='outline' onClick={() =>
-                    props.onRetrySubmit(props.list[id - 1].uuid)}>
-                  <span className={styles.buttonBox}>
-                    {getLocale('retryButtonLabel')}
-                  </span>
-                </Button>
-              }
+              <div className={styles.message}>
+                <div className={styles.messageTextBox}>
+                  {turn.text}
+                  {isLoading && <span className={styles.caret}/>}
+                </div>
+              </div>
             </div>
-          </div>
-        )
+          )
+        }
       })}
       </div>
       {props.suggestedQuestions.length > 0 && (
