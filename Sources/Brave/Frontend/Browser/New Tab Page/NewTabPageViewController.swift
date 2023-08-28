@@ -199,13 +199,15 @@ class NewTabPageViewController: UIViewController {
       }),
     ]
 
+    var isBackgroundNTPSI = false
+    if let ntpBackground = background.currentBackground, case .sponsoredImage = ntpBackground {
+      isBackgroundNTPSI = true
+    }
+    let ntpDefaultBrowserCalloutProvider = NTPDefaultBrowserCalloutProvider(isBackgroundNTPSI: isBackgroundNTPSI)
+    
     // This is a one-off view, adding it to the NTP only if necessary.
-    if NTPDefaultBrowserCalloutProvider.shouldShowCallout {
-      // Never show Default Browser Notification over an NPT SI
-      if let ntpBackground = background.currentBackground, case .sponsoredImage = ntpBackground {
-        return
-      }
-      sections.insert(NTPDefaultBrowserCalloutProvider(), at: 0)
+    if ntpDefaultBrowserCalloutProvider.shouldShowCallout() {
+      sections.insert(ntpDefaultBrowserCalloutProvider, at: 0)
     }
 
     if !privateBrowsingManager.isPrivateBrowsing {
