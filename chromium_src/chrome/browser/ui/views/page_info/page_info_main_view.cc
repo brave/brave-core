@@ -28,13 +28,7 @@ const ui::ImageModel GetIpfsGetConnectionSecureIcon() {
   GetConnectionSecureIcon() != ui::ImageModel() && IsIPFSPage(presenter_) \
       ? GetIpfsGetConnectionSecureIcon()                                  \
       : PageInfoViewFactory::GetConnectionSecureIcon
-#define BRAVE_PAGE_INFO_MAIN_VIEW_CALCULATE_PREFERRED_SIZE                     \
-  if (IsIPFSPage(presenter_)) {                                                \
-    width =                                                                    \
-        std::max(security_container_view_->GetPreferredSize().width(), width); \
-  }
 
 #include "src/chrome/browser/ui/views/page_info/page_info_main_view.cc"
 
-#undef BRAVE_PAGE_INFO_MAIN_VIEW_CALCULATE_PREFERRED_SIZE
 #undef GetConnectionSecureIcon
