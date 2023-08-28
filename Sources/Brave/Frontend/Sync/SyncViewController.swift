@@ -54,7 +54,7 @@ class SyncViewController: AuthenticationController {
     super.viewWillAppear(animated)
     
     if requiresAuthentication {
-      askForAuthentication() { [weak self] success, error in
+      askForAuthentication(viewType: .sync) { [weak self] success, error in
         guard let self else { return }
         
         if !success, error != .userCancel {

@@ -256,7 +256,7 @@ class SyncWelcomeViewController: SyncViewController {
   
   @objc
   private func onSyncInternalsAction() {
-    askForAuthentication() { [weak self] status, error in
+    askForAuthentication(viewType: .sync) { [weak self] status, error in
       guard let self = self, status else { return }
       
       let syncInternalsController = syncAPI.createSyncInternalsController().then {

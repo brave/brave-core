@@ -11,6 +11,7 @@ import Shared
 import Data
 import MediaPlayer
 import os.log
+import Preferences
 
 private extension PlaylistListViewController {
   func shareItem(_ item: PlaylistInfo, anchorView: UIView?) {
@@ -106,6 +107,19 @@ private extension PlaylistListViewController {
       }
     }
   }
+  
+  func openInPrivateTabWithAuthentication(_ item: PlaylistInfo) {
+    if !isPrivateBrowsing, Preferences.Privacy.privateBrowsingLock.value {
+      askForLocalAuthentication { [weak self] success, _ in
+        if success {
+          self?.openInNewTab(item, isPrivate: true)
+        }
+      }
+    } else {
+      self.openInNewTab(item, isPrivate: true)
+    }
+  }
+  
 }
 
 // MARK: UITableViewDelegate
@@ -173,7 +187,7 @@ extension PlaylistListViewController: UITableViewDelegate {
           UIAlertAction(
             title: Strings.PlayList.sharePlaylistOpenInNewPrivateTabTitle, style: .default,
             handler: { [weak self] _ in
-              self?.openInNewTab(currentItem, isPrivate: true)
+              self?.openInPrivateTabWithAuthentication(currentItem)
             }))
 
         if !isSharedFolder {
@@ -258,7 +272,7 @@ extension PlaylistListViewController: UITableViewDelegate {
               UIAction(
                 title: Strings.PlayList.sharePlaylistOpenInNewPrivateTabTitle, image: UIImage(systemName: "plus.square.fill.on.square.fill"),
                 handler: { [weak self] _ in
-                  self?.openInNewTab(currentItem, isPrivate: true)
+                  self?.openInPrivateTabWithAuthentication(currentItem)
                 }))
 
             return actions

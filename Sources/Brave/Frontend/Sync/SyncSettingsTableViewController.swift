@@ -274,7 +274,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
       if toggleExistingStatus {
         performSyncDataTypeStatusChange(type: syncDataType)
       } else {
-        askForAuthentication() { status, error in
+        askForAuthentication(viewType: .sync) { status, error in
           guard status else {
             toggle.setOn(toggleExistingStatus, animated: false)
             return
@@ -336,7 +336,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
 
   @objc
   private func onSyncInternalsTapped() {
-    askForAuthentication() { [weak self] status, error in
+    askForAuthentication(viewType: .sync) { [weak self] status, error in
       guard let self = self, status else { return }
       
       let syncInternalsController = self.syncAPI.createSyncInternalsController().then {
@@ -592,7 +592,7 @@ extension SyncSettingsTableViewController {
   }
 
   private func addAnotherDevice() {
-    askForAuthentication() { [weak self] status, error in
+    askForAuthentication(viewType: .sync) { [weak self] status, error in
       guard let self = self, status else { return }
       
       let view = SyncSelectDeviceTypeViewController()

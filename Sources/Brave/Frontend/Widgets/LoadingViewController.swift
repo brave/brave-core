@@ -59,7 +59,7 @@ public class AuthenticationController: LoadingViewController {
   
   /// A method to ask biometric authentication to user
   /// - Parameter completion: block returning authentication status
-  func askForAuthentication(viewType: AuthViewType = .sync, completion: ((Bool, LAError.Code?) -> Void)? = nil) {
+  func askForAuthentication(viewType: AuthViewType, completion: ((Bool, LAError.Code?) -> Void)? = nil) {
     guard let windowProtection = windowProtection else {
       completion?(false, nil)
       return
