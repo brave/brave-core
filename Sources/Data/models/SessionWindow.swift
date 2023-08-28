@@ -145,6 +145,26 @@ extension SessionWindow {
       sessionWindow.delete(context: .existing(context))
     }
   }
+  
+  public static func deleteAllWindows(privateOnly: Bool) {
+    DataController.perform { context in
+      guard let sessionWindows = SessionWindow.all(where: NSPredicate(format: "isPrivate == %@", privateOnly ? "true" : "false"), context: context) else {
+        return
+      }
+      
+      sessionWindows.forEach { sessionWindow in
+        sessionWindow.sessionTabs?.forEach {
+          $0.delete(context: .existing(context))
+        }
+        
+        sessionWindow.sessionTabGroups?.forEach {
+          $0.delete(context: .existing(context))
+        }
+        
+        sessionWindow.delete(context: .existing(context))
+      }
+    }
+  }
 }
 
 // MARK: - Private
