@@ -57,6 +57,9 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
+import org.chromium.base.PathUtils;
+import org.chromium.base.annotations.JNINamespace;
+import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
@@ -941,6 +944,7 @@ public abstract class BraveActivity extends ChromeActivity
 
         BraveSearchEngineUtils.initializeBraveSearchEngineStates(
                 (TabModelSelector) getTabModelSelectorSupplier().get());
+
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
 
         BraveHelper.maybeMigrateSettings();

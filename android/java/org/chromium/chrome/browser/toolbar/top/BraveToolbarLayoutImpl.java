@@ -41,9 +41,11 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.ImageViewCompat;
 
+import com.brave.playlist.enums.DownloadStatus;
 import com.brave.playlist.enums.PlaylistOptionsEnum;
 import com.brave.playlist.listener.PlaylistOnboardingActionClickListener;
 import com.brave.playlist.listener.PlaylistOptionsListener;
+import com.brave.playlist.model.DownloadQueueModel;
 import com.brave.playlist.model.PlaylistItemModel;
 import com.brave.playlist.model.PlaylistOptionsModel;
 import com.brave.playlist.model.SnackBarActionModel;
@@ -88,6 +90,7 @@ import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
 import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.PlaylistWarningDialogListener;
+import org.chromium.chrome.browser.playlist.download.DownloadUtils;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -1685,17 +1688,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public void onEvent(int eventType, String id) {
         if (eventType == PlaylistEvent.ITEM_ADDED) {
             showAddedToPlaylistSnackBar();
-            if (mPlaylistService != null) {
-                mPlaylistService.getPlaylistItem(id, playlistItem -> {
-                    PlaylistItemModel playlistItemModel = new PlaylistItemModel(playlistItem.id,
-                            ConstantUtils.DEFAULT_PLAYLIST, playlistItem.name,
-                            playlistItem.pageSource.url, playlistItem.mediaPath.url,
-                            playlistItem.mediaSource.url, playlistItem.thumbnailPath.url,
-                            playlistItem.author, playlistItem.duration,
-                            playlistItem.lastPlayedPosition, playlistItem.cached, false, 0);
-                    // PlaylistDownloadUtils.startDownloadRequest(getContext(), playlistItemModel);
-                });
-            }
+            // if (mPlaylistService != null) {
+            //     mPlaylistService.getPlaylistItem(id, playlistItem -> {
+            //         DownloadUtils.insertDonwloadQueue(
+            //                 new DownloadQueueModel(playlistItem.id,
+            //                 DownloadStatus.PENDING.name()));
+            //         // PlaylistDownloadUtils.startDownloadRequest(getContext(),
+            //         playlistItemModel);
+            //     });
+            // }
         }
     }
 

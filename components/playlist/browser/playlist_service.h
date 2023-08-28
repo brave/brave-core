@@ -187,6 +187,9 @@ class PlaylistService : public KeyedService,
   void UpdateItem(mojom::PlaylistItemPtr item) override;
   void UpdateItemLastPlayedPosition(const std::string& id,
                                     int32_t last_played_position) override;
+  void UpdateItemHlsMediaFilePath(
+      const std::string& id,
+      const std::string& hls_media_file_path) override;
   void RecoverLocalDataForItem(
       const std::string& item_id,
       bool update_media_src_before_recovery,
@@ -223,6 +226,7 @@ class PlaylistService : public KeyedService,
   void OnResponseStarted(const std::string& url, const int64_t content_length);
   void OnDataReceived(data_decoder::DataDecoder::ValueOrError result);
   void OnDataComplete(api_request_helper::APIRequestResult result);
+
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   friend class ::PlaylistBrowserTest;

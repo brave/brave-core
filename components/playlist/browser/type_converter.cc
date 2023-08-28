@@ -37,6 +37,7 @@ constexpr char kPlaylistItemMediaSrcKey[] = "mediaSrc";
 constexpr char kPlaylistItemThumbnailSrcKey[] = "thumbnailSrc";
 constexpr char kPlaylistItemThumbnailPathKey[] = "thumbnailPath";
 constexpr char kPlaylistItemMediaFilePathKey[] = "mediaFilePath";
+constexpr char kPlaylistItemHlsMediaFilePathKey[] = "hlsMediaFilePath";
 constexpr char kPlaylistItemMediaFileCachedKey[] = "mediaCached";
 constexpr char kPlaylistItemTitleKey[] = "title";
 constexpr char kPlaylistItemAuthorKey[] = "author";
@@ -65,6 +66,9 @@ bool IsItemValueMalformed(const base::Value::Dict& dict) {
          !dict.contains(kPlaylistItemParentKey) ||
          // Added 2023. Aug.
          !dict.contains(kPlaylistItemMediaFileBytesKey);
+
+         // NEED TO CHECK BELOW FOR MIGRATION
+         !dict.contains(kPlaylistItemHlsMediaFilePathKey);
   // DO NOT ADD MORE
 }
 
@@ -96,6 +100,8 @@ mojom::PlaylistItemPtr ConvertValueToPlaylistItem(
   item->thumbnail_path = GURL(*dict.FindString(kPlaylistItemThumbnailPathKey));
   item->media_source = GURL(*dict.FindString(kPlaylistItemMediaSrcKey));
   item->media_path = GURL(*dict.FindString(kPlaylistItemMediaFilePathKey));
+  item->hls_media_path =
+      GURL(*dict.FindString(kPlaylistItemHlsMediaFilePathKey));
   item->cached = *dict.FindBool(kPlaylistItemMediaFileCachedKey);
   item->duration = *dict.FindString(kPlaylistItemDurationKey);
   item->author = *dict.FindString(kPlaylistItemAuthorKey);
@@ -125,6 +131,7 @@ base::Value::Dict ConvertPlaylistItemToValue(
           .Set(kPlaylistItemThumbnailSrcKey, item->thumbnail_source.spec())
           .Set(kPlaylistItemThumbnailPathKey, item->thumbnail_path.spec())
           .Set(kPlaylistItemMediaFilePathKey, item->media_path.spec())
+          .Set(kPlaylistItemHlsMediaFilePathKey, item->hls_media_path.spec())
           .Set(kPlaylistItemMediaFileCachedKey, item->cached)
           .Set(kPlaylistItemAuthorKey, item->author)
           .Set(kPlaylistItemDurationKey, item->duration)

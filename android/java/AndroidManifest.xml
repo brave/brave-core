@@ -215,6 +215,19 @@
 </service>
 
 <service
+    android:name="org.chromium.chrome.browser.playlist.download.DownloadService"
+    android:foregroundServiceType="dataSync"
+    android:exported="false">
+</service>
+
+<receiver android:name="org.chromium.chrome.browser.playlist.download.CancelDownloadBroadcastReceiver"
+    android:exported="false">
+    <intent-filter>
+        <action android:name="cancel_download" />
+    </intent-filter>
+</receiver>
+
+<service
     android:name="com.wireguard.android.backend.GoBackend$VpnService"
     android:permission="android.permission.BIND_VPN_SERVICE"
     android:exported="false">
@@ -224,7 +237,7 @@
 </service>
 
 <activity
-    android:name="org.chromium.chrome.browser.playlist.PlaylistMenuOnboardingActivity"
+    android:name="com.brave.playlist.activity.PlaylistMenuOnboardingActivity"
     android:exported="false"
     android:launchMode="singleTask"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen" />

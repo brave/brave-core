@@ -587,6 +587,8 @@ void PlaylistService::MoveItem(const std::string& from_playlist_id,
 }
 
 void PlaylistService::UpdateItem(mojom::PlaylistItemPtr item) {
+  LOG(ERROR) << "onDownloadCompleted : "
+             << "item->id : " << item->id;
   UpdatePlaylistItemValue(item->id,
                           base::Value(ConvertPlaylistItemToValue(item)));
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemUpdated, item->id);
@@ -601,6 +603,23 @@ void PlaylistService::UpdateItemLastPlayedPosition(
 
   auto item = GetPlaylistItem(id);
   item->last_played_position = last_played_position;
+  UpdateItem(std::move(item));
+}
+
+void PlaylistService::UpdateItemHlsMediaFilePath(
+    const std::string& id,
+    const std::string& hls_media_file_path) {
+  if (!HasPlaylistItem(id)) {
+    return;
+  }
+
+  LOG(ERROR) << "UpdateItemMediaFilePath : "
+             << "item->id : " << id;
+  LOG(ERROR) << "UpdateItemMediaFilePath : "
+             << "hls_media_file_path : " << hls_media_file_path;
+
+  auto item = GetPlaylistItem(id);
+  item->hls_media_path = GURL("file://" + hls_media_file_path);
   UpdateItem(std::move(item));
 }
 
