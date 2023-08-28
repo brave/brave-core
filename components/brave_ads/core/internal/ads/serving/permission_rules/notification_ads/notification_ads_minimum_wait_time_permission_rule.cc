@@ -22,13 +22,9 @@ namespace {
 constexpr int kMinimumWaitTimeCap = 1;
 
 bool DoesRespectCap(const std::vector<base::Time>& history) {
-  const int ads_per_hour = GetMaximumNotificationAdsPerHour();
-  if (ads_per_hour == 0) {
-    return false;
-  }
-
   return DoesHistoryRespectRollingTimeConstraint(
-      history, /*time_constraint*/ base::Hours(1) / ads_per_hour,
+      history,
+      /*time_constraint*/ base::Hours(1) / GetMaximumNotificationAdsPerHour(),
       kMinimumWaitTimeCap);
 }
 

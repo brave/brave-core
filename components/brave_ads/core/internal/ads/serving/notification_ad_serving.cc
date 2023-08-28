@@ -132,18 +132,12 @@ void NotificationAdServing::GetForUserModelCallback(
 }
 
 void NotificationAdServing::UpdateMaximumAdsPerHour() {
-  const int ads_per_hour = GetMaximumNotificationAdsPerHour();
-  BLOG(1, "Maximum notification ads per hour changed to " << ads_per_hour);
+  BLOG(1, "Maximum notification ads per hour changed to "
+              << GetMaximumNotificationAdsPerHour());
 
-  if (!ShouldServeAdsAtRegularIntervals()) {
-    return;
+  if (ShouldServeAdsAtRegularIntervals()) {
+    MaybeServeAdAtNextRegularInterval();
   }
-
-  if (ads_per_hour == 0) {
-    return StopServingAdsAtRegularIntervals();
-  }
-
-  MaybeServeAdAtNextRegularInterval();
 }
 
 void NotificationAdServing::MaybeServeAdAtNextRegularInterval() {
@@ -151,12 +145,8 @@ void NotificationAdServing::MaybeServeAdAtNextRegularInterval() {
     return;
   }
 
-  const int ads_per_hour = GetMaximumNotificationAdsPerHour();
-  if (ads_per_hour == 0) {
-    return;
-  }
-
-  const base::TimeDelta delay = base::Hours(1) / ads_per_hour;
+  const base::TimeDelta delay =
+      base::Hours(1) / GetMaximumNotificationAdsPerHour();
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
   BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
 }

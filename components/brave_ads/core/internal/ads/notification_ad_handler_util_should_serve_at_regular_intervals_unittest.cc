@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
 
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
@@ -23,56 +22,31 @@ struct ParamInfo final {
   bool should_opt_in;
   bool should_browser_enter_foreground;
   bool can_show_while_browser_is_backgrounded;
-  int ads_per_hour;
   bool should_serve_at_regular_intervals;
 } constexpr kTests[] = {
     {/*should_opt_in */ false, /* should_browser_enter_foreground*/ false,
-     /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 0,
+     /*can_show_while_browser_is_backgrounded */ false,
      /*should_serve_at_regular_intervals*/ false},
     {/*should_opt_in */ false, /* should_browser_enter_foreground*/ false,
-     /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 1,
-     /*should_serve_at_regular_intervals*/ false},
-    {/*should_opt_in */ false, /* should_browser_enter_foreground*/ false,
-     /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 0,
-     /*should_serve_at_regular_intervals*/ false},
-    {/*should_opt_in */ false, /* should_browser_enter_foreground*/ false,
-     /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 1,
+     /*can_show_while_browser_is_backgrounded */ true,
      /*should_serve_at_regular_intervals*/ false},
     {/*should_opt_in */ false, /* should_browser_enter_foreground*/ true,
-     /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 0,
+     /*can_show_while_browser_is_backgrounded */ false,
      /*should_serve_at_regular_intervals*/ false},
     {/*should_opt_in */ false, /* should_browser_enter_foreground*/ true,
-     /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 1,
-     /*should_serve_at_regular_intervals*/ false},
-    {/*should_opt_in */ false, /* should_browser_enter_foreground*/ true,
-     /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 0,
-     /*should_serve_at_regular_intervals*/ false},
-    {/*should_opt_in */ false, /* should_browser_enter_foreground*/ true,
-     /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 1,
+     /*can_show_while_browser_is_backgrounded */ true,
      /*should_serve_at_regular_intervals*/ false},
     {/*should_opt_in */ true, /* should_browser_enter_foreground*/ false,
-     /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 0,
+     /*can_show_while_browser_is_backgrounded */ false,
      /*should_serve_at_regular_intervals*/ false},
     {/*should_opt_in */ true, /* should_browser_enter_foreground*/ false,
-     /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 1,
-     /*should_serve_at_regular_intervals*/ false},
-    {/*should_opt_in */ true, /* should_browser_enter_foreground*/ false,
-     /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 0,
-     /*should_serve_at_regular_intervals*/ false},
-    {/*should_opt_in */ true, /* should_browser_enter_foreground*/ false,
-     /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 1,
+     /*can_show_while_browser_is_backgrounded */ true,
      /*should_serve_at_regular_intervals*/ true},
     {/*should_opt_in */ true, /* should_browser_enter_foreground*/ true,
-     /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 0,
-     /*should_serve_at_regular_intervals*/ false},
-    {/*should_opt_in */ true, /* should_browser_enter_foreground*/ true,
-     /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 1,
+     /*can_show_while_browser_is_backgrounded */ false,
      /*should_serve_at_regular_intervals*/ true},
     {/*should_opt_in */ true, /* should_browser_enter_foreground*/ true,
-     /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 0,
-     /*should_serve_at_regular_intervals*/ false},
-    {/*should_opt_in */ true, /* should_browser_enter_foreground*/ true,
-     /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 1,
+     /*can_show_while_browser_is_backgrounded */ true,
      /*should_serve_at_regular_intervals*/ true}};
 
 }  // namespace
@@ -89,7 +63,7 @@ class BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest
     MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
         ads_client_mock_, param.can_show_while_browser_is_backgrounded);
 
-    SetMaximumNotificationAdsPerHourForTesting(param.ads_per_hour);
+    SetMaximumNotificationAdsPerHourForTesting(1);
   }
 };
 
@@ -129,14 +103,10 @@ std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
           ? "CanShowWhileBrowserIsBackgrounded"
           : "CannotShowWhileBrowserIsBackgrounded";
 
-  const std::string ads_per_hour =
-      base::StringPrintf("%dAdsPerPerHour", test_param.param.ads_per_hour);
-
   return base::ReplaceStringPlaceholders(
-      "$1If$2And$3And$4And$5",
+      "$1If$2And$3And$4",
       {should_serve_at_regular_intervals, should_opt_in,
-       should_browser_enter_foreground, can_show_while_browser_is_backgrounded,
-       ads_per_hour},
+       should_browser_enter_foreground, can_show_while_browser_is_backgrounded},
       nullptr);
 }
 
