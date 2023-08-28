@@ -16,8 +16,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#define FrameAttachedToParent(frame, ad_script_on_stack)             \
-  FrameAttachedToParent(frame, ad_script_on_stack);                  \
+#define BRAVE_LOCAL_FRAME_LOCAL_FRAME                                \
   IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                            \
     if (IsLocalRoot()) {                                             \
       /* InstallSupplements call is too late, do it here instead. */ \
@@ -108,4 +107,4 @@ SkBitmap LocalFrame::GetImageAtViewportPoint(const gfx::Point& viewport_point) {
 
 }  // namespace blink
 
-#undef FrameAttachedToParent
+#undef BRAVE_LOCAL_FRAME_LOCAL_FRAME

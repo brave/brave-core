@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/frame/local_frame.cc b/third_party/blink/renderer/core/frame/local_frame.cc
+index 83f126adc28e8109df8e234b5b3fe6c844d2f26c..2a69cee921e220bc915bc5226dc265ae0189bc97 100644
+--- a/third_party/blink/renderer/core/frame/local_frame.cc
++++ b/third_party/blink/renderer/core/frame/local_frame.cc
+@@ -1730,6 +1730,7 @@ LocalFrame::LocalFrame(LocalFrameClient* client,
+     probe_sink_ = LocalFrameRoot().probe_sink_;
+     probe::FrameAttachedToParent(this, ad_script_from_frame_creation_stack_);
+   }
++  BRAVE_LOCAL_FRAME_LOCAL_FRAME
+ }
+ 
+ FrameScheduler* LocalFrame::GetFrameScheduler() {
