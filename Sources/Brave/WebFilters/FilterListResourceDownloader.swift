@@ -277,7 +277,9 @@ public class FilterListResourceDownloader {
           options: .all, modes: modes
         )
         
-        await FilterListStorage.shared.loadedRuleListVersions.value[componentId] = version
+        await MainActor.run {
+          FilterListStorage.shared.loadedRuleListVersions.value[componentId] = version
+        }
       } catch {
         ContentBlockerManager.log.error(
           "Failed to convert filter list `\(componentId)` to content blockers: \(error)"
