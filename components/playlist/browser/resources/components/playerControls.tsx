@@ -90,7 +90,15 @@ export default function PlayerControls ({ videoElement, className }: Props) {
         <Control
           iconName='start-outline'
           size='jumbo'
-          onClick={() => getPlayerActions().playPreviousItem()}
+          onClick={() => {
+            if (!videoElement) return
+
+            if (videoElement.currentTime > 5) {
+              videoElement.currentTime = 0
+            } else {
+              getPlayerActions().playPreviousItem()
+            }
+          }}
         ></Control>
         <Control
           iconName='rewind-15'

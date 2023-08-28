@@ -107,7 +107,11 @@ export default function Player () {
         videoElement.src !== currentItem?.mediaPath.url
       ) {
         videoElement.src = currentItem.mediaPath.url
-        videoElement.currentTime = currentItem.lastPlayedPosition
+        if (currentItem.lastPlayedPosition < +currentItem.duration / 1e6 - 5) {
+          // When the last played position is close to the end(5sec), don't
+          // set last position to the current time.
+          videoElement.currentTime = currentItem.lastPlayedPosition
+        }
       }
     }
   }, [currentItem, videoElement])
