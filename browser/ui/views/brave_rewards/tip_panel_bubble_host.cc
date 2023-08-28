@@ -9,10 +9,10 @@
 #include <utility>
 
 #include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/browser/ui/views/bubble/brave_webui_bubble_manager.h"
 #include "brave/browser/ui/webui/brave_rewards/tip_panel_ui.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "components/grit/brave_components_strings.h"
@@ -24,48 +24,27 @@ namespace brave_rewards {
 
 namespace {
 
-// In order to customize the borders and alignment of the bubble panel, we must
-// override the `CreateWebUIBubbleDialog` of `WebUIBubbleManager`. Note that
-// originally only the bottom borders were rounded but at the time that resulted
-// in inconsistent cross-platform rendering.
-class TipPanelBubbleManager : public WebUIBubbleManager {
+// `TipPanelBubbleManager` disables web contents caching for the tip panel.
+class TipPanelBubbleManager : public BraveWebUIBubbleManager<TipPanelUI> {
  public:
   TipPanelBubbleManager(views::View* anchor_view, Profile* profile)
-      : anchor_view_(anchor_view), profile_(profile) {}
+      : BraveWebUIBubbleManager(anchor_view,
+                                profile,
+                                GURL(kBraveTipPanelURL),
+                                IDS_BRAVE_UI_BRAVE_REWARDS) {}
 
   ~TipPanelBubbleManager() override = default;
 
   // WebUIBubbleManager:
 
-  // The persistent renderer feature is not supported for this bubble.
   void MaybeInitPersistentRenderer() override {}
 
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
       const absl::optional<gfx::Rect>& anchor,
       views::BubbleBorder::Arrow arrow) override {
-    auto contents_wrapper =
-        std::make_unique<BubbleContentsWrapperT<TipPanelUI>>(
-            GURL(kBraveTipPanelURL), profile_, IDS_BRAVE_UI_BRAVE_REWARDS);
-
-    set_bubble_using_cached_web_contents(false);
-    set_cached_contents_wrapper(std::move(contents_wrapper));
-    cached_contents_wrapper()->ReloadWebContents();
-
-    auto bubble_view = std::make_unique<WebUIBubbleDialogView>(
-        anchor_view_, cached_contents_wrapper(), anchor, arrow);
-    bubble_view->SetArrow(views::BubbleBorder::TOP_CENTER);
-    bubble_view->SetPaintClientToLayer(true);
-    bubble_view->set_use_round_corners(true);
-    bubble_view->set_corner_radius(16);
-
-    auto weak_ptr = bubble_view->GetWeakPtr();
-    views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
-    return weak_ptr;
+    set_cached_contents_wrapper(nullptr);
+    return BraveWebUIBubbleManager::CreateWebUIBubbleDialog(anchor, arrow);
   }
-
- private:
-  const raw_ptr<views::View> anchor_view_;
-  const raw_ptr<Profile> profile_;
 };
 
 views::View* GetAnchorView(Browser* browser) {
@@ -120,7 +99,7 @@ void TipPanelBubbleHost::OnTipPanelRequested(const std::string& publisher_id) {
         BrowserView::GetBrowserViewForBrowser(&GetBrowser())->size());
   }
 
-  bubble_manager_->ShowBubble();
+  bubble_manager_->ShowBubble({}, views::BubbleBorder::TOP_CENTER);
 }
 
 BROWSER_USER_DATA_KEY_IMPL(TipPanelBubbleHost);

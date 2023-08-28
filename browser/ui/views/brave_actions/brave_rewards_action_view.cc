@@ -13,6 +13,7 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
+#include "brave/browser/ui/views/bubble/brave_webui_bubble_manager.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -24,7 +25,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
@@ -51,7 +51,6 @@ using brave_rewards::RewardsPanelUI;
 using brave_rewards::RewardsServiceFactory;
 using brave_rewards::RewardsTabHelper;
 
-constexpr int kCornerRadius = 16;
 constexpr SkColor kIconColor = SK_ColorBLACK;
 constexpr SkColor kBadgeVerifiedBG = SkColorSetRGB(0x42, 0x3E, 0xEE);
 
@@ -169,47 +168,6 @@ class RewardsActionMenuModel : public ui::SimpleMenuModel,
   raw_ptr<PrefService> prefs_ = nullptr;
 };
 
-// In order to set rounded corners in the dialog, we must subclass
-// `WebUIBubbleManager` and override the `CreateWebUIBubbleDialog`.
-class RewardsPanelBubbleManager : public WebUIBubbleManager {
- public:
-  RewardsPanelBubbleManager(views::View* anchor_view, Profile* profile)
-      : anchor_view_(anchor_view), profile_(profile) {}
-
-  ~RewardsPanelBubbleManager() override = default;
-
-  // WebUIBubbleManager:
-
-  // The persistent renderer feature is not supported for this bubble.
-  void MaybeInitPersistentRenderer() override {}
-
-  base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
-      const absl::optional<gfx::Rect>& anchor,
-      views::BubbleBorder::Arrow arrow) override {
-    auto contents_wrapper =
-        std::make_unique<BubbleContentsWrapperT<RewardsPanelUI>>(
-            GURL(kBraveRewardsPanelURL), profile_, IDS_BRAVE_UI_BRAVE_REWARDS);
-
-    set_bubble_using_cached_web_contents(false);
-    set_cached_contents_wrapper(std::move(contents_wrapper));
-    cached_contents_wrapper()->ReloadWebContents();
-
-    auto bubble_view = std::make_unique<WebUIBubbleDialogView>(
-        anchor_view_, cached_contents_wrapper(), anchor, arrow);
-    bubble_view->SetPaintClientToLayer(true);
-    bubble_view->set_use_round_corners(true);
-    bubble_view->set_corner_radius(kCornerRadius);
-
-    auto weak_ptr = bubble_view->GetWeakPtr();
-    views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
-    return weak_ptr;
-  }
-
- private:
-  const raw_ptr<views::View> anchor_view_;
-  const raw_ptr<Profile> profile_;
-};
-
 }  // namespace
 
 BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
@@ -221,9 +179,11 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
           nullptr,
           false),
       browser_(browser),
-      bubble_manager_(
-          std::make_unique<RewardsPanelBubbleManager>(this,
-                                                      browser_->profile())) {
+      bubble_manager_(std::make_unique<BraveWebUIBubbleManager<RewardsPanelUI>>(
+          this,
+          browser_->profile(),
+          GURL(kBraveRewardsPanelURL),
+          IDS_BRAVE_UI_BRAVE_REWARDS)) {
   DCHECK(browser_);
 
   SetButtonController(std::make_unique<views::MenuButtonController>(

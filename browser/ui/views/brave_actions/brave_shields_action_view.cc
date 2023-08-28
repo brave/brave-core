@@ -11,6 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
+#include "brave/browser/ui/views/bubble/brave_webui_bubble_manager.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -200,7 +201,7 @@ void BraveShieldsActionView::ButtonPressed() {
 
   if (!webui_bubble_manager_) {
     webui_bubble_manager_ =
-        std::make_unique<WebUIBubbleManagerT<ShieldsPanelUI>>(
+        std::make_unique<BraveWebUIBubbleManager<ShieldsPanelUI>>(
             this, &*profile_, GURL(kShieldsPanelURL), IDS_BRAVE_SHIELDS);
   }
 
