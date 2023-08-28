@@ -16,16 +16,37 @@
 #define RecentlyClosedGroupsFromCurrentSession \
   DISABLED_RecentlyClosedGroupsFromCurrentSession
 
-// Need to expect more items at that place, because Brave has additional item
-// `More...` which redirects to brave://history/syncedTabs
-#define BRAVE_MAX_TABS_PER_SESSION_AND_RECENCY \
-  {ui::MenuModel::TYPE_COMMAND, true},
+#define BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST           \
+  void VerifyModel(const RecentTabsSubMenuModel& model, \
+                   base::span<const ModelData> data);   \
+  void VerifyModel(const ui::MenuModel* model,          \
+                   base::span<const ModelData> data);
 
 // The case when number of tabs on other device is <=4 so we do not add
 // `More...` item is tested by RecentTabsSubMenuModelTest.MaxSessionsAndRecency
 
 #include "src/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc"
 
+#undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST
+
 #undef RecentlyClosedTabsAndWindowsFromLastSession
 #undef RecentlyClosedTabsFromCurrentSession
 #undef RecentlyClosedGroupsFromCurrentSession
+
+void RecentTabsSubMenuModelTest::VerifyModel(
+    const RecentTabsSubMenuModel& model,
+    base::span<const ModelData> data) {
+  std::vector<ModelData> v_data{data.begin(), data.end()};
+  v_data.insert(v_data.begin() + 1, {ui::MenuModel::TYPE_COMMAND, true});
+  const base::StringPiece test_name =
+      testing::UnitTest::GetInstance()->current_test_info()->name();
+  if (test_name == "MaxTabsPerSessionAndRecency") {
+    v_data.push_back({ui::MenuModel::TYPE_COMMAND, true});
+  }
+  ::VerifyModel(model, base::make_span(v_data.begin(), v_data.size()));
+}
+
+void RecentTabsSubMenuModelTest::VerifyModel(const ui::MenuModel* model,
+                                             base::span<const ModelData> data) {
+  ::VerifyModel(model, data);
+}
