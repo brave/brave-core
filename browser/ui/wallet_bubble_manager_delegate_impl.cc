@@ -81,6 +81,7 @@ class WalletWebUIBubbleManager : public BraveWebUIBubbleManager<WalletPanelUI>,
     DCHECK(contents_wrapper);
     auto bubble_view = std::make_unique<WalletWebUIBubbleDialogView>(
         anchor_view_, contents_wrapper, anchor, arrow);
+    BraveWebUIBubbleManager::CustomizeBubbleDialogView(*bubble_view);
     auto bubble_view_weak_ptr = bubble_view->GetWeakPtr();
     bubble_view_ = bubble_view_weak_ptr.get();
     views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
