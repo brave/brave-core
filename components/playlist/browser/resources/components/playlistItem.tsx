@@ -7,7 +7,7 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { useSelector } from 'react-redux'
 
-import { color, font } from '@brave/leo/tokens/css'
+import { color, font, spacing } from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import ProgressBar from '@brave/leo/react/progressBar'
 
@@ -36,8 +36,8 @@ interface Props {
 }
 
 const ThumbnailStyle = css`
-  flex: 0 0 140px;
-  height: 80px;
+  flex: 0 0 100px;
+  height: 70px;
   object-fit: cover;
   border-radius: 4px;
   position: relative;
@@ -70,9 +70,14 @@ const DefaultThumbnail = styled.div`
 
 const PlaylistItemContainer = styled.li<{ isActive: boolean }>`
   display: flex;
-  padding: 8px 16px 8px 8px;
+  padding: ${spacing.m} ${spacing.xl} ${spacing.m} ${spacing.m};
+  height: 86px;
   align-items: center;
-  gap: 16px;
+  gap: ${spacing.xl};
+  & > a {
+    margin-right: calc(-1 * ${spacing.xl});
+  }
+
   align-self: stretch;
   ${p =>
     p.isActive &&
@@ -92,6 +97,8 @@ const PlaylistItemName = styled.span`
   color: ${color.text.primary};
   font: ${font.primary.default.semibold};
   cursor: default;
+  max-height: 48px;
+  overflow: hidden;
 `
 
 const ItemDetailsContainer = styled.div`
@@ -144,7 +151,7 @@ const ColoredSpan = styled.span<{ color: any }>`
 `
 
 const StyledCheckBox = styled(Icon)<{ checked: boolean }>`
-  --leo-icon-size: 20px;
+  --leo-icon-size: 16px;
   color: ${p => (p.checked ? color.icon.interactive : color.icon.default)};
 `
 
@@ -276,43 +283,42 @@ export default function PlaylistItem ({
           </ItemDetailsContainer>
         }
       </ItemInfoContainer>
-      {(hovered || showingMenu) && !isEditing && (
-        <ContextualMenuAnchorButton
-          items={[
-            {
-              name: getLocalizedString('bravePlaylistContextMenuMove'),
-              iconName: 'folder-exchange',
-              onClick: () =>
-                getPlaylistAPI().moveItemFromPlaylist(playlist.id!, [id])
-            },
-            cached
-              ? {
-                  name: getLocalizedString(
-                    'bravePlaylistContextMenuRemoveOfflineData'
-                  ),
-                  iconName: 'cloud-off',
-                  onClick: () => getPlaylistAPI().removeLocalData(id)
-                }
-              : {
-                  name: getLocalizedString(
-                    'bravePlaylistContextMenuKeepForOfflinePlaying'
-                  ),
-                  iconName: 'cloud-download',
-                  onClick: () => getPlaylistAPI().recoverLocalData(id)
-                },
-            {
-              name: getLocalizedString(
-                'bravePlaylistContextMenuRemoveFromPlaylist'
-              ),
-              iconName: 'trash',
-              onClick: () =>
-                getPlaylistAPI().removeItemFromPlaylist(playlist.id!, id)
-            }
-          ]}
-          onShowMenu={() => setShowingMenu(true)}
-          onDismissMenu={() => setShowingMenu(false)}
-        />
-      )}
+      <ContextualMenuAnchorButton
+        visible={(hovered || showingMenu) && !isEditing}
+        items={[
+          {
+            name: getLocalizedString('bravePlaylistContextMenuMove'),
+            iconName: 'folder-exchange',
+            onClick: () =>
+              getPlaylistAPI().moveItemFromPlaylist(playlist.id!, [id])
+          },
+          cached
+            ? {
+                name: getLocalizedString(
+                  'bravePlaylistContextMenuRemoveOfflineData'
+                ),
+                iconName: 'cloud-off',
+                onClick: () => getPlaylistAPI().removeLocalData(id)
+              }
+            : {
+                name: getLocalizedString(
+                  'bravePlaylistContextMenuKeepForOfflinePlaying'
+                ),
+                iconName: 'cloud-download',
+                onClick: () => getPlaylistAPI().recoverLocalData(id)
+              },
+          {
+            name: getLocalizedString(
+              'bravePlaylistContextMenuRemoveFromPlaylist'
+            ),
+            iconName: 'trash',
+            onClick: () =>
+              getPlaylistAPI().removeItemFromPlaylist(playlist.id!, id)
+          }
+        ]}
+        onShowMenu={() => setShowingMenu(true)}
+        onDismissMenu={() => setShowingMenu(false)}
+      />
     </PlaylistItemContainer>
   )
 }

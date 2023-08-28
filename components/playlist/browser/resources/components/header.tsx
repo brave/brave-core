@@ -233,9 +233,10 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
             nameColor={color.text.primary}
             detailColor={color.text.secondary}
           />
-          {!!contextualMenuItems.length && (
-            <ContextualMenuAnchorButton items={contextualMenuItems} />
-          )}
+          <ContextualMenuAnchorButton
+            visible={!!contextualMenuItems.length}
+            items={contextualMenuItems}
+          />
         </>
       )}
     </>

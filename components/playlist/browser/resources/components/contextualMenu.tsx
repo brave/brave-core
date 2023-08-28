@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import Icon from '@brave/leo/react/icon'
 import { color } from '@brave/leo/tokens/css'
@@ -17,6 +17,7 @@ interface MenuItemProps {
 
 interface MenuProps {
   items: MenuItemProps[]
+  visible: boolean
   onShowMenu?: () => void
   onDismissMenu?: () => void
 }
@@ -74,7 +75,10 @@ const StyledContextualMenu = styled.div`
 function ContextualMenu ({
   items,
   onClickOutside
-}: MenuProps & { onClickOutside: () => void }) {
+}: {
+  items: MenuItemProps[]
+  onClickOutside: () => void
+}) {
   React.useEffect(() => {
     document.addEventListener('click', onClickOutside)
     // Playlist has an <iframe> that holds video player. When it's clicked,
@@ -100,9 +104,15 @@ function ContextualMenu ({
   )
 }
 
-const StyledAnchorButton = styled.div`
+const StyledAnchorButton = styled.div<{ visible: boolean }>`
   position: relative;
   cursor: pointer;
+  ${p =>
+    !p.visible &&
+    css`
+      visibility: hidden;
+    `}
+  --leo-icon-size: 20px;
 `
 
 const StyledLeoButtonContainer = styled.button`
@@ -112,12 +122,13 @@ const StyledLeoButtonContainer = styled.button`
 
 export default function ContextualMenuAnchorButton ({
   items,
+  visible,
   onShowMenu,
   onDismissMenu
 }: MenuProps) {
   const [showingMenu, setShowingMenu] = React.useState(false)
   return (
-    <StyledAnchorButton>
+    <StyledAnchorButton visible={visible}>
       <StyledLeoButtonContainer
         onClick={e => {
           e.stopPropagation()
