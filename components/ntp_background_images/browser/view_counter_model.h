@@ -55,7 +55,10 @@ class ViewCounterModel {
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
                            NTPSponsoredImagesCountToBrandedWallpaperTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPBackgroundImagesTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPBackgroundImagesOnlyTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
+                           NTPBackgroundImagesWithSIDisabledTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
+                           NTPBackgroundImagesWithEmptyCampaignTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
                            NTPFailedToLoadSponsoredImagesTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);

@@ -144,8 +144,8 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesTest) {
   }
 }
 
-// Test for background images only case (SI not active)
-TEST_F(ViewCounterModelTest, NTPBackgroundImagesOnlyTest) {
+// Test for background images only case (SI option is disabled)
+TEST_F(ViewCounterModelTest, NTPBackgroundImagesWithSIDisabledTest) {
   ViewCounterModel model(prefs());
 
   model.set_total_image_count(kTestImageCount);
@@ -173,6 +173,25 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesOnlyTest) {
   model.set_show_wallpaper(false);
   for (int i = 0; i < kTestPageViewCount; ++i) {
     EXPECT_EQ(latest_wallpaper_index, model.current_wallpaper_image_index());
+    model.RegisterPageView();
+  }
+}
+
+// Test for background images only case (SI option is enabled but no campaign)
+TEST_F(ViewCounterModelTest, NTPBackgroundImagesWithEmptyCampaignTest) {
+  ViewCounterModel model(prefs());
+
+  // Check background wallpaper index is properly updated when SI option is
+  // enabled but there is no campaign.
+  model.Reset();
+  model.set_total_image_count(kTestImageCount);
+  model.set_show_branded_wallpaper(true);
+  model.count_to_branded_wallpaper_ = 0;
+
+  constexpr int kTestPageViewCount = 30;
+  for (int i = 0; i < kTestPageViewCount; ++i) {
+    EXPECT_EQ(i % model.total_image_count_,
+              model.current_wallpaper_image_index());
     model.RegisterPageView();
   }
 }
