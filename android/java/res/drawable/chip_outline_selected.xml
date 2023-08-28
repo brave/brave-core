@@ -7,7 +7,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/wallet_toolbar_bg_color" />
     <stroke
-        android:width="6dp"
+        android:width="8dp"
         android:color="@android:color/transparent" />
     <corners android:radius="30dp" />
 </shape>
