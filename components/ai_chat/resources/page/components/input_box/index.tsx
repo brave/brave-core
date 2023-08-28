@@ -18,6 +18,7 @@ interface InputBoxProps {
   value: string
   hasSeenAgreement: boolean
   onHandleAgreeClick: Function
+  isDisabled: boolean
 }
 
 const MAX_INPUT_CHAR = 2000
@@ -73,6 +74,7 @@ function InputBox (props: InputBoxProps) {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           value={inputText}
+          disabled={props.isDisabled}
         />
         <div className={classnames({
           [styles.counterText]: true,
@@ -83,7 +85,7 @@ function InputBox (props: InputBoxProps) {
         </div>
       </div>
       <div>
-        <button className={styles.buttonSend} onClick={handleClick} disabled={isCharLimitExceeded}>
+        <button className={styles.buttonSend} onClick={handleClick} disabled={isCharLimitExceeded || props.isDisabled}>
           <Icon name='send' />
         </button>
       </div>

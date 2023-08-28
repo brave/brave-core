@@ -21,7 +21,7 @@ import { useConversationHistory, useInput, useAgreement } from './state/hooks'
 import getPageHandlerInstance, { AutoGenerateQuestionsPref } from './api/page_handler'
 import SiteTitle from './components/site_title'
 import PromptAutoSuggestion from './components/prompt_auto_suggestion'
-
+import { ConversationTurnStatus } from './api/page_handler'
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
 function App () {
@@ -53,6 +53,9 @@ function App () {
     model.setUserAllowsAutoGenerating(true)
     model.generateSuggestedQuestions()
   }
+
+  const isErrorFound = model.conversationHistory
+  .some(element => element.status === ConversationTurnStatus.ABNORMAL);
 
   const handlePageContentDisconnect = () => {
     getPageHandlerInstance().pageHandler.disconnectPageContents()
@@ -103,6 +106,7 @@ function App () {
       onKeyDown={handleSubmit}
       hasSeenAgreement={hasSeenAgreement}
       onHandleAgreeClick={handleAgreeClick}
+      isDisabled={isErrorFound}
     />
   )
 
