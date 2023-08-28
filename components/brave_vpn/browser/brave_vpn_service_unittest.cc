@@ -722,6 +722,30 @@ TEST_F(BraveVPNServiceTest, ConnectionStateUpdateWithPurchasedStateTest) {
   EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
 }
 
+TEST_F(BraveVPNServiceTest, IsConnectedWithPurchasedStateTest) {
+  auto* test_api = static_cast<BraveVPNOSConnectionAPISim*>(GetConnectionAPI());
+
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+  std::string env = skus::GetDefaultEnvironment();
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+
+  // Prepare connected state.
+  test_api->SetConnectionStateForTesting(ConnectionState::CONNECTING);
+  base::RunLoop().RunUntilIdle();
+  test_api->SetConnectionStateForTesting(ConnectionState::CONNECTED);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
+  // Gets connected for purchased user.
+  EXPECT_TRUE(service_->IsConnected());
+
+  // Check BraveVpnService gives false for IsConnected() when
+  // it's connected state but not purchased.
+  SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
+  EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
+  EXPECT_FALSE(service_->IsConnected());
+}
+
 TEST_F(BraveVPNServiceTest, DisconnectedIfDisabledByPolicy) {
   // Prepare valid connection info.
   auto* test_api = static_cast<BraveVPNOSConnectionAPISim*>(GetConnectionAPI());

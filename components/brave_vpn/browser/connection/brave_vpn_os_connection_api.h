@@ -105,6 +105,8 @@ class BraveVPNOSConnectionAPI
   FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, ResetConnectionStateTest);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
                            ConnectionStateUpdateWithPurchasedStateTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
+                           IsConnectedWithPurchasedStateTest);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, DisconnectedIfDisabledByPolicy);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            IgnoreDisconnectedStateWhileConnecting);

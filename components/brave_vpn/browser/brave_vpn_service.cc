@@ -184,6 +184,10 @@ mojom::ConnectionState BraveVpnService::GetConnectionState() const {
 }
 
 bool BraveVpnService::IsConnected() const {
+  if (!is_purchased_user()) {
+    return false;
+  }
+
   return GetConnectionState() == ConnectionState::CONNECTED;
 }
 
