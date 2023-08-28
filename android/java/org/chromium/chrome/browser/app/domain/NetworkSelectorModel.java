@@ -32,15 +32,15 @@ public class NetworkSelectorModel {
     private final MutableLiveData<NetworkInfo> _mSelectedNetwork;
     private final MutableLiveData<List<NetworkInfo>> _mSelectedNetworks;
     private Mode mMode;
-    private SelectionType mSelectionType;
+    private SelectionMode mSelectionMode;
     public LiveData<NetworkModel.NetworkLists> mNetworkListsLd;
     private final LiveData<NetworkInfo> mSelectedNetwork;
     private String mSelectedChainId;
     public final LiveData<List<NetworkInfo>> mSelectedNetworks;
 
-    public NetworkSelectorModel(Mode mode, SelectionType type ,NetworkModel networkModel, Context context) {
+    public NetworkSelectorModel(Mode mode, SelectionMode type ,NetworkModel networkModel, Context context) {
         mMode = mode;
-        mSelectionType = type;
+        mSelectionMode = type;
         if (mMode == null) {
             mMode = Mode.DEFAULT_WALLET_NETWORK;
         }
@@ -54,7 +54,7 @@ public class NetworkSelectorModel {
     }
 
     public NetworkSelectorModel(NetworkModel networkModel, Context context) {
-        this(Mode.DEFAULT_WALLET_NETWORK, SelectionType.SINGLE, networkModel, context);
+        this(Mode.DEFAULT_WALLET_NETWORK, SelectionMode.SINGLE, networkModel, context);
     }
 
     public void init() {
@@ -71,7 +71,7 @@ public class NetworkSelectorModel {
             NetworkModel.NetworkLists networkListsCopy =
                     new NetworkModel.NetworkLists(networkLists);
             List<NetworkInfo> allNetworkList = new ArrayList<>(networkLists.mCoreNetworks);
-            if (mMode == Mode.LOCAL_NETWORK_FILTER && SelectionType.MULTI != mSelectionType) {
+            if (mMode == Mode.LOCAL_NETWORK_FILTER && SelectionMode.MULTI != mSelectionMode) {
                 NetworkInfo allNetwork = NetworkUtils.getAllNetworkOption(mContext);
                 networkListsCopy.mPrimaryNetworkList.add(0, allNetwork);
                 // Selected local network can be "All networks"
@@ -137,8 +137,8 @@ public class NetworkSelectorModel {
         return mMode;
     }
 
-    public SelectionType getmSelectionType() {
-        return mSelectionType;
+    public SelectionMode getmSelectionType() {
+        return mSelectionMode;
     }
     private void updateLocalNetwork(List<NetworkInfo> networkInfos, String chainId) {
         NetworkInfo networkInfo = NetworkUtils.findNetwork(networkInfos, chainId);
@@ -148,5 +148,5 @@ public class NetworkSelectorModel {
     }
 
     public enum Mode { DEFAULT_WALLET_NETWORK, LOCAL_NETWORK_FILTER }
-    public enum SelectionType { SINGLE, MULTI }
+    public enum SelectionMode { SINGLE, MULTI }
 }

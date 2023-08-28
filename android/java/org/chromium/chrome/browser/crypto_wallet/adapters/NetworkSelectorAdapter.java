@@ -49,18 +49,18 @@ public class NetworkSelectorAdapter
     private List<NetworkSelectorItem> mNetworkInfos;
     private NetworkInfo mSelectedNetwork;
     private int mSelectedParentItemPos;
-    private NetworkSelectorModel.SelectionType mSelectionType;
+    private NetworkSelectorModel.SelectionMode mSelectionMode;
 
     private Set<Integer> mSelectedNetworkPositions;
 
-    public NetworkSelectorAdapter(Context context, List<NetworkSelectorItem> networkInfos, NetworkSelectorModel.SelectionType selectionType) {
+    public NetworkSelectorAdapter(Context context, List<NetworkSelectorItem> networkInfos, NetworkSelectorModel.SelectionMode selectionMode) {
         mNetworkInfos = networkInfos;
         this.mContext = context;
         inflater = (LayoutInflater.from(context));
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
         mTokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
-        mSelectionType = selectionType;
+        mSelectionMode = selectionMode;
         mSelectedNetworkPositions = new HashSet<>();
     }
 
@@ -91,7 +91,7 @@ public class NetworkSelectorAdapter
             case PRIMARY: {
                 View.OnClickListener listener = v -> {
                     mSelectedParentItemPos = holder.getLayoutPosition();
-                    if (NetworkSelectorModel.SelectionType.MULTI == mSelectionType) {
+                    if (NetworkSelectorModel.SelectionMode.MULTI == mSelectionMode) {
                         if (network.mIsSelected) {
                             mSelectedNetworkPositions.remove(mSelectedParentItemPos);
                         } else {
@@ -198,7 +198,7 @@ public class NetworkSelectorAdapter
     public void setSelectedNetwork(NetworkInfo networkInfo) {
         mSelectedNetwork = networkInfo;
         // Mark all network as selected in MULTI network selection mode when AllNetwork is selected
-        if (NetworkSelectorModel.SelectionType.MULTI == mSelectionType && NetworkUtils.isAllNetwork(networkInfo)) {
+        if (NetworkSelectorModel.SelectionMode.MULTI == mSelectionMode && NetworkUtils.isAllNetwork(networkInfo)) {
             for (int i = 0; i < mNetworkInfos.size(); i++) {
                 NetworkSelectorItem networkSelectorItem = mNetworkInfos.get(i);
                 networkSelectorItem.setIsSelected(true);

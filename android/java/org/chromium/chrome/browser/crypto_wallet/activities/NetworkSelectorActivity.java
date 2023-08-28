@@ -43,7 +43,7 @@ public class NetworkSelectorActivity
     public static String NETWORK_SELECTOR_KEY = "network_selector_key";
     private static final String TAG = "NetworkSelector";
     private NetworkSelectorModel.Mode mMode;
-    private NetworkSelectorModel.SelectionType mSelectionType;
+    private NetworkSelectorModel.SelectionMode mSelectionMode;
     private RecyclerView mRVNetworkSelector;
     private NetworkSelectorAdapter mNetworkSelectorAdapter;
     private MaterialToolbar mToolbar;
@@ -125,12 +125,13 @@ public class NetworkSelectorActivity
 
         mSettingsLauncher = new BraveSettingsLauncherImpl();
         // Provide single selection type if key is null. Ideally caller should provide the selection type while creating network selection model.
-        NetworkSelectorModel.SelectionType selectionType = TextUtils.isEmpty(mKey) ? NetworkSelectorModel.SelectionType.SINGLE : null;
+        NetworkSelectorModel.SelectionMode selectionMode = TextUtils.isEmpty(mKey) ? NetworkSelectorModel.SelectionMode.SINGLE : null;
         mNetworkSelectorModel =
                 mWalletModel.getCryptoModel().getNetworkModel().openNetworkSelectorModel(
-                        mKey, mMode, selectionType, null);
-        mSelectionType = mNetworkSelectorModel.getmSelectionType();
-        mNetworkSelectorAdapter = new NetworkSelectorAdapter(this, new ArrayList<>(), mSelectionType);
+                        mKey, mMode, selectionMode, null);
+        mSelectionMode = mNetworkSelectorModel.getmSelectionType();
+        mNetworkSelectorAdapter = new NetworkSelectorAdapter(this, new ArrayList<>(),
+                mSelectionMode);
         mRVNetworkSelector.setAdapter(mNetworkSelectorAdapter);
         mNetworkSelectorAdapter.setOnNetworkItemSelected(this);
         mNetworkSelectorModel.mNetworkListsLd.observe(this, networkLists -> {
