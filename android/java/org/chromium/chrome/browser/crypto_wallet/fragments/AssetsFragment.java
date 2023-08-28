@@ -166,8 +166,9 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
     @MainThread
     private void setUpObservers() {
         ThreadUtils.assertOnUiThread();
-        mNetworkSelectionModel = getNetworkModel().openNetworkSelectorModel(
-                TAG, NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, getLifecycle());
+        mNetworkSelectionModel = getNetworkModel().openNetworkSelectorModel(TAG,
+                NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER,
+                NetworkSelectorModel.SelectionType.MULTI, getLifecycle());
         // Show pending transactions fab to process pending txs
         mNetworkSelectionModel.getSelectedNetwork().observe(
                 getViewLifecycleOwner(), localNetworkInfo -> {

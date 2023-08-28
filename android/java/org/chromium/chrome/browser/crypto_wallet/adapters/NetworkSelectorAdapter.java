@@ -24,13 +24,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.domain.NetworkModel;
+import org.chromium.chrome.browser.app.domain.NetworkSelectorModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.base.ViewUtils;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -43,16 +47,21 @@ public class NetworkSelectorAdapter
     private Context mContext;
     private NetworkClickListener networkClickListener;
     private List<NetworkSelectorItem> mNetworkInfos;
-    private String mSelectedNetwork;
+    private NetworkInfo mSelectedNetwork;
     private int mSelectedParentItemPos;
+    private NetworkSelectorModel.SelectionType mSelectionType;
 
-    public NetworkSelectorAdapter(Context context, List<NetworkSelectorItem> networkInfos) {
+    private Set<Integer> mSelectedNetworkPositions;
+
+    public NetworkSelectorAdapter(Context context, List<NetworkSelectorItem> networkInfos, NetworkSelectorModel.SelectionType selectionType) {
         mNetworkInfos = networkInfos;
         this.mContext = context;
         inflater = (LayoutInflater.from(context));
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
         mTokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
+        mSelectionType = selectionType;
+        mSelectedNetworkPositions = new HashSet<>();
     }
 
     @Override
@@ -81,13 +90,24 @@ public class NetworkSelectorAdapter
             case TEST:
             case PRIMARY: {
                 View.OnClickListener listener = v -> {
-                    removePrevSelection();
                     mSelectedParentItemPos = holder.getLayoutPosition();
-                    AndroidUtils.show(holder.ivSelected);
-                    network.setIsSelected(true);
-                    if (networkClickListener != null) {
-                        networkClickListener.onNetworkItemSelected(
-                                mNetworkInfos.get(mSelectedParentItemPos).mNetworkInfo);
+                    if (NetworkSelectorModel.SelectionType.MULTI == mSelectionType) {
+                        if (network.mIsSelected) {
+                            mSelectedNetworkPositions.remove(mSelectedParentItemPos);
+                        } else {
+                            mSelectedNetworkPositions.add(mSelectedParentItemPos);
+                        }
+                        network.setIsSelected(!network.isSelected());
+                        notifyItemChanged(mSelectedParentItemPos);
+                    } else {
+                        // Handle single network selection type
+                        removePrevSelection();
+                        AndroidUtils.show(holder.ivSelected);
+                        network.setIsSelected(true);
+                        if (networkClickListener != null) {
+                            networkClickListener.onNetworkItemSelected(
+                                    mNetworkInfos.get(mSelectedParentItemPos).mNetworkInfo);
+                        }
                     }
                 };
                 if (network.isSelected()) {
@@ -175,11 +195,20 @@ public class NetworkSelectorAdapter
         notifyDataSetChanged();
     }
 
-    public void setSelectedNetwork(String networkName) {
-        mSelectedNetwork = networkName;
+    public void setSelectedNetwork(NetworkInfo networkInfo) {
+        mSelectedNetwork = networkInfo;
+        // Mark all network as selected in MULTI network selection mode when AllNetwork is selected
+        if (NetworkSelectorModel.SelectionType.MULTI == mSelectionType && NetworkUtils.isAllNetwork(networkInfo)) {
+            for (int i = 0; i < mNetworkInfos.size(); i++) {
+                NetworkSelectorItem networkSelectorItem = mNetworkInfos.get(i);
+                networkSelectorItem.setIsSelected(true);
+                mSelectedNetworkPositions.add(i);
+            }
+            return;
+        }
         for (int i = 0; i < mNetworkInfos.size(); i++) {
             NetworkSelectorItem networkSelectorItem = mNetworkInfos.get(i);
-            if (networkSelectorItem.getNetworkName().equalsIgnoreCase(networkName)) {
+            if (networkSelectorItem.getNetworkName().equalsIgnoreCase(networkInfo.chainName)) {
                 removePrevSelection();
                 networkSelectorItem.setIsSelected(true);
                 mSelectedParentItemPos = i;
@@ -191,6 +220,17 @@ public class NetworkSelectorAdapter
 
     public void setOnNetworkItemSelected(NetworkClickListener networkClickListener) {
         this.networkClickListener = networkClickListener;
+    }
+
+    public List<NetworkInfo> getSelectedNetworks() {
+        List<NetworkInfo> selectedNetworks = new ArrayList<>();
+        for (int i = 0; i < mNetworkInfos.size(); i++) {
+            NetworkSelectorItem networkItem = mNetworkInfos.get(i);
+            if (mSelectedNetworkPositions.contains(i) && networkItem.mType != Type.LABEL) {
+                selectedNetworks.add(networkItem.mNetworkInfo);
+            }
+        }
+        return selectedNetworks;
     }
 
     private void removePrevSelection() {

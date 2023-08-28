@@ -195,7 +195,8 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         getNetworkModel().mCryptoNetworks.observe(
                 getViewLifecycleOwner(), allNetworkInfos -> mAllNetworkInfos = allNetworkInfos);
         mNetworkSelectionModel = getNetworkModel().openNetworkSelectorModel(
-                TAG, NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, getLifecycle());
+                TAG, NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER,
+                NetworkSelectorModel.SelectionType.MULTI, getLifecycle());
         mNetworkSelectionModel.getSelectedNetwork().observe(
                 getViewLifecycleOwner(), localNetworkInfo -> {
                     if (localNetworkInfo == null) return;
@@ -305,7 +306,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
 
     private void openNetworkSelection() {
         Intent intent = NetworkSelectorActivity.createIntent(
-                requireContext(), NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, TAG);
+                requireContext(), NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER , TAG);
         startActivity(intent);
     }
 

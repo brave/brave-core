@@ -222,10 +222,10 @@ public class NetworkModel implements JsonRpcServiceObserver {
      * @return NetworkSelectorModel object.
      */
     public NetworkSelectorModel openNetworkSelectorModel(
-            String key, NetworkSelectorModel.Mode mode, Lifecycle lifecycle) {
+            String key, NetworkSelectorModel.Mode mode, NetworkSelectorModel.SelectionType selectionType, Lifecycle lifecycle) {
         NetworkSelectorModel networkSelectorModel;
         if (key == null) {
-            return new NetworkSelectorModel(mode, this, mContext);
+            return new NetworkSelectorModel(mode, selectionType, this, mContext);
         } else if (mNetworkSelectorMap.containsKey(key)) {
             // Use existing NetworkSelector object to show the previously selected network
             networkSelectorModel = mNetworkSelectorMap.get(key);
@@ -233,7 +233,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 networkSelectorModel.updateSelectorMode(mode);
             }
         } else {
-            networkSelectorModel = new NetworkSelectorModel(mode, this, mContext);
+            networkSelectorModel = new NetworkSelectorModel(mode, selectionType, this, mContext);
             mNetworkSelectorMap.put(key, networkSelectorModel);
         }
         if (lifecycle != null) {
