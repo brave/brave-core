@@ -9,7 +9,7 @@ import styled from 'styled-components'
 
 import { PlaylistItem } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
-import { color, font } from '@brave/leo/tokens/css'
+import { color, font, spacing } from '@brave/leo/tokens/css'
 
 import {
   ApplicationState,
@@ -46,10 +46,12 @@ const ControlsContainer = styled.div`
 
   display: flex;
   flex-direction: column;
-  padding: 0px repeat(3, 16px);
+  padding: ${spacing['2XL']} ${spacing.xl};
   gap: 8px;
   flex-shrink: 0;
   justify-content: center;
+  background-color: ${color.dialogs.frostedGlassBackground};
+  box-sizing: border-box;
 `
 
 const StyledTitle = styled.div`

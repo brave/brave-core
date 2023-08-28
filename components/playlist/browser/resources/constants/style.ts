@@ -6,5 +6,5 @@
 import { css } from 'styled-components'
 
 export const playlistControlsAreaHeight = css`
-  --player-controls-area-height: 148px;
+  --player-controls-area-height: 168px;
 `
