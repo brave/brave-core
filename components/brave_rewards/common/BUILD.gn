@@ -23,8 +23,6 @@ static_library("common") {
     "rewards_flags.h",
     "rewards_util.cc",
     "rewards_util.h",
-    "url_constants.cc",
-    "url_constants.h",
   ]
 
   deps = [
