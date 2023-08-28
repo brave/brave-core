@@ -1518,20 +1518,24 @@ export function createWalletApi () {
              *
              * isEIP1559 is true IFF:
              *   - network supports EIP-1559
+             *
+             *     AND
+             *
              *   - keyring supports EIP-1559
              *     (ex: certain hardware wallets vendors)
-             *   - payload: SendEthTransactionParams has specified EIP-1559
+             *
+             *     AND
+             *
+             *   - payload: SendEthTransactionParams has NOT specified legacy
              *              gas-pricing fields.
              *
              * In all other cases, fallback to legacy gas-pricing fields.
+             * For example, if network and keyring support EIP-1559, but the
+             * legacy gasPrice field is specified in the payload, then type-0
+             * transaction should be created.
              */
             const isEIP1559 =
-              // Transaction payload has hardcoded EIP-1559 gas fields.
-              (payload.maxPriorityFeePerGas !== undefined &&
-                payload.maxFeePerGas !== undefined) ||
-              // Transaction payload does not have hardcoded legacy gas fields.
-              payload.gasPrice === undefined ||
-              // Check if network and keyring support EIP-1559.
+              payload.gasPrice === undefined &&
               hasEIP1559Support(
                 getAccountType(payload.fromAccount),
                 payload.network
