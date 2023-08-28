@@ -7,6 +7,7 @@ import Foundation
 import BraveCore
 import BigNumber
 import os.log
+import Preferences
 
 extension BraveWalletJsonRpcService {
   /// Obtain the decimal balance of an `BlockchainToken` for a given account
@@ -257,8 +258,9 @@ extension BraveWalletJsonRpcService {
     return balancesForAsset.reduce(0, +)
   }
   
-  /// Returns an array of all networks for the supported coin types.
-  @MainActor func allNetworksForSupportedCoins() async -> [BraveWallet.NetworkInfo] {
+  /// Returns an array of all networks for the supported coin types. Result will exclude test networks if test networks is set to
+  /// not shown in Wallet Settings
+  @MainActor func allNetworksForSupportedCoins(respectTestnetPreference: Bool = true) async -> [BraveWallet.NetworkInfo] {
     await withTaskGroup(of: [BraveWallet.NetworkInfo].self) { @MainActor [weak self] group -> [BraveWallet.NetworkInfo] in
       guard let self = self else { return [] }
       for coinType in WalletConstants.supportedCoinTypes {
@@ -269,7 +271,12 @@ extension BraveWalletJsonRpcService {
           }
         }
       }
-      let allChains = await group.reduce([BraveWallet.NetworkInfo](), { $0 + $1 })
+      let allChains = await group.reduce([BraveWallet.NetworkInfo](), { $0 + $1 }).filter { network in
+        if !Preferences.Wallet.showTestNetworks.value && respectTestnetPreference { // filter out test networks
+          return !WalletConstants.supportedTestNetworkChainIds.contains(where: { $0 == network.chainId })
+        }
+        return true
+      }
       return allChains.sorted { lhs, rhs in
         // sort solana chains to the front of the list
         lhs.coin == .sol && rhs.coin != .sol

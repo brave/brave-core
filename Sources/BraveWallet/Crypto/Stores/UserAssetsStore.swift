@@ -7,6 +7,7 @@ import Foundation
 import BraveCore
 import Combine
 import Data
+import Preferences
 
 public class AssetStore: ObservableObject, Equatable {
   @Published var token: BraveWallet.BlockchainToken
@@ -83,6 +84,8 @@ public class UserAssetsStore: ObservableObject {
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
     self.keyringService.add(self)
+    
+    Preferences.Wallet.showTestNetworks.observe(from: self)
   }
   
   func update() {
@@ -293,4 +296,12 @@ extension UserAssetsStore: BraveWalletBraveWalletServiceObserver {
   public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) { }
   
   public func onResetWallet() { }
+}
+
+extension UserAssetsStore: PreferencesObserver {
+  public func preferencesDidChange(for key: String) {
+    if key == Preferences.Wallet.showTestNetworks.key {
+      networkFilters.removeAll()
+    }
+  }
 }
