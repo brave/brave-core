@@ -89,6 +89,7 @@ public class WindowProtection {
   private var protectedWindow: UIWindow
   private var passcodeWindow: UIWindow
   private var context = LAContext()
+  private var viewType: AuthViewType = .general
 
   private var isVisible: Bool = false {
     didSet {
@@ -174,7 +175,7 @@ public class WindowProtection {
   }
 
   @objc private func tappedUnlock() {
-    presentLocalAuthentication()
+    presentLocalAuthentication(viewType: viewType)
   }
   
   @objc private func tappedCancel() {
@@ -208,7 +209,7 @@ public class WindowProtection {
     }
   }
 
-  private func presentLocalAuthentication(viewType: AuthViewType = .general, completion: ((Bool, LAError.Code?) -> Void)? = nil) {
+  private func presentLocalAuthentication(viewType: AuthViewType, completion: ((Bool, LAError.Code?) -> Void)? = nil) {
     if !context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) {
       completion?(false, .passcodeNotSet)
       return
@@ -229,7 +230,7 @@ public class WindowProtection {
               completion?(true, nil)
             })
         } else {
-          lockedViewController.unlockButton.isHidden = false
+          lockedViewController.unlockButton.isHidden = viewType == .general
           
           let errorPolicy = error as? LAError
           completion?(false, errorPolicy?.code)
@@ -248,6 +249,8 @@ public class WindowProtection {
     if isVisible {
       return
     }
+    
+    self.viewType = viewType
 
     context = LAContext()
     updateVisibleStatusForForeground(determineLockWithPasscode, viewType: viewType) { status, error in

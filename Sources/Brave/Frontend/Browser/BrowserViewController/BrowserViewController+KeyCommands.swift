@@ -6,6 +6,7 @@ import Shared
 import Foundation
 import UIKit
 import Data
+import Preferences
 
 extension BrowserViewController {
   
@@ -49,7 +50,16 @@ extension BrowserViewController {
   @objc private func newPrivateTabKeyCommand() {
     // NOTE: We cannot and should not distinguish between "new-tab" and "new-private-tab"
     // when recording telemetry for key commands.
-    openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
+    if !privateBrowsingManager.isPrivateBrowsing, Preferences.Privacy.privateBrowsingLock.value {
+      self.askForLocalAuthentication { [weak self] success, error in
+        if success {
+          self?.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
+
+        }
+      }
+    } else {
+      openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
+    }
   }
 
   @objc private func closeTabKeyCommand() {

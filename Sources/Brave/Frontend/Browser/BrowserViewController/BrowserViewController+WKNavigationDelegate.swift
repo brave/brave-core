@@ -15,6 +15,7 @@ import os.log
 import Favicon
 import Growth
 import SafariServices
+import LocalAuthentication
 
 extension WKNavigationAction {
   /// Allow local requests only if the request is privileged.
@@ -984,7 +985,15 @@ extension BrowserViewController: WKUIDelegate {
           title: Strings.openNewPrivateTabButtonTitle,
           image: UIImage(named: "private_glasses", in: .module, compatibleWith: nil)!.template
         ) { _ in
-          self.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
+          if !tabType.isPrivate, Preferences.Privacy.privateBrowsingLock.value {
+            self.askForLocalAuthentication { [weak self] success, error in
+              if success {
+                self?.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
+              }
+            }
+          } else {
+            self.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
+          }
         }
         openNewPrivateTabAction.accessibilityLabel = "linkContextMenu.openInNewPrivateTab"
         actions.append(openNewPrivateTabAction)
@@ -1006,7 +1015,15 @@ extension BrowserViewController: WKUIDelegate {
             title: Strings.openInNewPrivateWindowTitle,
             image: UIImage(braveSystemNamed: "leo.window.tab-private")
           ) { _ in
-            self.openInNewWindow(url: url, isPrivate: true)
+            if !tabType.isPrivate, Preferences.Privacy.privateBrowsingLock.value {
+              self.askForLocalAuthentication { [weak self] success, error in
+                if success {
+                  self?.openInNewWindow(url: url, isPrivate: true)
+                }
+              }
+            } else {
+              self.openInNewWindow(url: url, isPrivate: true)
+            }
           }
           
           openNewPrivateWindowAction.accessibilityLabel = "linkContextMenu.openInNewPrivateWindow"
