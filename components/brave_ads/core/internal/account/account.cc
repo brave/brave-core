@@ -100,7 +100,6 @@ void Account::Deposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
                       const ConfirmationType& confirmation_type) const {
   CHECK(!creative_instance_id.empty());
-  CHECK(!segment.empty());
   CHECK_NE(AdType::kUndefined, ad_type);
   CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
