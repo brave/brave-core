@@ -14,6 +14,7 @@
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
+#include "brave/components/constants/url_constants.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
@@ -226,6 +227,11 @@ void ResetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
 }
 
 bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
+  if (base::FeatureList::IsEnabled(
+          ::brave_shields::features::kBraveExtensionNetworkBlocking) &&
+      url.SchemeIs(kChromeExtensionScheme)) {
+    return true;
+  }
   if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
     return false;
 
@@ -259,6 +265,11 @@ void SetAdControlType(HostContentSettingsMap* map,
 }
 
 ControlType GetAdControlType(HostContentSettingsMap* map, const GURL& url) {
+  if (base::FeatureList::IsEnabled(
+          ::brave_shields::features::kBraveExtensionNetworkBlocking) &&
+      url.SchemeIs(kChromeExtensionScheme)) {
+    return ControlType::BLOCK;
+  }
   ContentSetting setting =
       map->GetContentSetting(url, GURL(), ContentSettingsType::BRAVE_ADS);
 
@@ -316,6 +327,11 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
 
 ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                             const GURL& url) {
+  if (base::FeatureList::IsEnabled(
+          ::brave_shields::features::kBraveExtensionNetworkBlocking) &&
+      url.SchemeIs(kChromeExtensionScheme)) {
+    return ControlType::BLOCK;
+  }
   ContentSetting setting = map->GetContentSetting(
       url, GURL(), ContentSettingsType::BRAVE_COSMETIC_FILTERING);
 
