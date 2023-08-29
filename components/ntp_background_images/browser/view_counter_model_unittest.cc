@@ -142,6 +142,16 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesTest) {
     EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
     model.RegisterPageView();
   }
+
+  // It's time for sponsored image.
+  EXPECT_EQ(0, model.count_to_branded_wallpaper_);
+  const auto bg_index = model.current_wallpaper_image_index();
+  model.RegisterPageView();
+
+  // Check bg image index is not changed if sponsored image is shown.
+  // Only |count_to_branded_wallpapaer_| is reset.
+  EXPECT_NE(0, model.count_to_branded_wallpaper_);
+  EXPECT_EQ(bg_index, model.current_wallpaper_image_index());
 }
 
 // Test for background images only case (SI option is disabled)
@@ -234,10 +244,17 @@ TEST_F(ViewCounterModelTest, NTPFailedToLoadSponsoredImagesTest) {
   const int initial_wallpaper_image_index =
       model.current_wallpaper_image_index();
 
-  // Simulate that sponsored image ad was frequency capped by ads service. In
-  // this case next background wallpaper will be shown.
+  // Simulate that sponsored image ad was frequency capped by ads service.
+  // If |count_to_branded_wallpaper_| is zero when RegisterPageView() is called,
+  // only |count_to_branded_wallpaper_| is reset and background image index is
+  // not changed because it's time to show branded image. So, need to increase
+  // background image explicitely when background image is shown as ads was
+  // frequency capped. Client(ViewCounterService) calls this increase method
+  // when it's capped.
   model.IncreaseBackgroundWallpaperImageIndex();
+  model.RegisterPageView();
 
+  // Check background index is increased properly.
   int expected_image_index =
       (initial_wallpaper_image_index + 1) % model.total_image_count_;
   EXPECT_EQ(expected_image_index, model.current_wallpaper_image_index());
