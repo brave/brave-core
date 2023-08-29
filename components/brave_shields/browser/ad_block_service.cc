@@ -89,8 +89,10 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
     auto engine_load_callback = base::BindOnce(
         [](base::WeakPtr<AdBlockEngine> engine, DATFileDataBuffer dat_buf,
            const std::string& resources_json) {
+          auto filter_set = adblock::new_filter_set();
+          filter_set->add_filter_list(dat_buf);
           if (engine) {
-            engine->Load(false, std::move(dat_buf), resources_json);
+            engine->Load(std::move(filter_set), resources_json);
           }
         },
         adblock_engine_->AsWeakPtr(), std::move(dat_buf_), resources_json);
