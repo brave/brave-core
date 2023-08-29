@@ -114,7 +114,7 @@ function App () {
       onKeyDown={handleSubmit}
       hasSeenAgreement={hasSeenAgreement}
       onHandleAgreeClick={handleAgreeClick}
-      disabled={apiHasError}
+      disabled={apiHasError || model.isGenerating}
     />
   )
 
