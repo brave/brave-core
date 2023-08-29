@@ -372,16 +372,18 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
             let namesDevicesSyncChain = fetchNamesOfDevicesInSyncChain()
 
             // Showing and alert with device list; if user answers no - leave chain, if yes - enable the bookmarks type
-            var alertMessage = isCodeScanned ? Strings.Sync.syncJoinChainCameraWarning : Strings.Sync.syncJoinChainCodewordsWarning
+            var alertMessage = ""
             
             if !namesDevicesSyncChain.isEmpty {
-              alertMessage += "\n\n\(Strings.Sync.syncDevicesInSyncChainTitle):"
+              alertMessage += "\(Strings.Sync.syncDevicesInSyncChainTitle):"
               
               for name in namesDevicesSyncChain where !name.isEmpty {
                 alertMessage += "\n\(name)"
               }
             }
             
+            alertMessage += "\n\n \(Strings.Sync.syncJoinChainCodewordsWarning)"
+
             let alert = UIAlertController(
               title: Strings.syncJoinChainWarningTitle,
               message: alertMessage,
