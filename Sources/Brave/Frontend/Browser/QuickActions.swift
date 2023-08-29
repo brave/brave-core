@@ -63,10 +63,14 @@ public class QuickActions: NSObject {
       if Preferences.Privacy.lockWithPasscode.value {
         handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: true)
       } else {
-        browserViewController.askForLocalAuthentication(viewType: .widget) { [weak self] success, _ in
-          if success {
-            self?.handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: true)
+        if Preferences.Privacy.privateBrowsingLock.value {
+          browserViewController.askForLocalAuthentication(viewType: .widget) { [weak self] success, _ in
+            if success {
+              self?.handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: true)
+            }
           }
+        } else {
+          handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: true)
         }
       }
     case .scanQRCode:
