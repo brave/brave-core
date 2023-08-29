@@ -39,7 +39,8 @@ public class NetworkSelectorModel {
     private String mSelectedChainId;
     public final LiveData<List<NetworkInfo>> mSelectedNetworks;
 
-    public NetworkSelectorModel(Mode mode, SelectionMode type ,NetworkModel networkModel, Context context) {
+    public NetworkSelectorModel(
+            Mode mode, SelectionMode type, NetworkModel networkModel, Context context) {
         mMode = mode;
         mSelectionMode = type;
         if (mMode == null) {
@@ -63,7 +64,8 @@ public class NetworkSelectorModel {
             _mSelectedNetwork.postValue(mNetworkModel.mDefaultNetwork.getValue());
         } else if (SelectionMode.MULTI == mSelectionMode) {
             LiveDataUtil.observeOnce(mNetworkModel.mNetworkLists, networkLists -> {
-                _mSelectedNetworks.postValue(NetworkUtils.nonTestNetwork(networkLists.mCoreNetworks));
+                _mSelectedNetworks.postValue(
+                        NetworkUtils.nonTestNetwork(networkLists.mCoreNetworks));
             });
         } else if (mMode == Mode.LOCAL_NETWORK_FILTER) {
             if (mSelectedChainId == null) {

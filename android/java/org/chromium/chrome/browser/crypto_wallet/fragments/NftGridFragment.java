@@ -65,7 +65,6 @@ import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.ui.text.SpanApplier;
-import org.chromium.ui.widget.Toast;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -190,21 +189,22 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         if (mWalletModel == null) return;
         getNetworkModel().mCryptoNetworks.observe(
                 getViewLifecycleOwner(), allNetworkInfos -> mAllNetworkInfos = allNetworkInfos);
-        mNetworkSelectionModel = getNetworkModel().openNetworkSelectorModel(
-                TAG, NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER,
+        mNetworkSelectionModel = getNetworkModel().openNetworkSelectorModel(TAG,
+                NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER,
                 NetworkSelectorModel.SelectionMode.MULTI, getLifecycle());
-        mNetworkSelectionModel.mSelectedNetworks.observe(getViewLifecycleOwner(), selectedNetworkInfos -> {
-            mSelectedNetworkList = selectedNetworkInfos;
-            if (mSelectedNetworkList.isEmpty()) {
-                mAddNftsContainer.setVisibility(View.GONE);
-                mPbAssetDiscovery.setVisibility(View.VISIBLE);
-                // Clean up list to avoid user clicking on an asset of the previously
-                // selected network after the network has been changed.
-                clearAssets();
-                return;
-            }
-            updateNftGrid();
-        });
+        mNetworkSelectionModel.mSelectedNetworks.observe(
+                getViewLifecycleOwner(), selectedNetworkInfos -> {
+                    mSelectedNetworkList = selectedNetworkInfos;
+                    if (mSelectedNetworkList.isEmpty()) {
+                        mAddNftsContainer.setVisibility(View.GONE);
+                        mPbAssetDiscovery.setVisibility(View.VISIBLE);
+                        // Clean up list to avoid user clicking on an asset of the previously
+                        // selected network after the network has been changed.
+                        clearAssets();
+                        return;
+                    }
+                    updateNftGrid();
+                });
 
         mPortfolioModel.mNftModels.observe(getViewLifecycleOwner(), nftDataModels -> {
             if (mPortfolioModel.mPortfolioHelper == null) return;
@@ -298,7 +298,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
 
     private void openNetworkSelection() {
         Intent intent = NetworkSelectorActivity.createIntent(
-                requireContext(), NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER , TAG);
+                requireContext(), NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, TAG);
         startActivity(intent);
     }
 

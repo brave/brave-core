@@ -29,7 +29,6 @@ import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.ui.base.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +54,8 @@ public class NetworkSelectorAdapter
 
     private Set<Integer> mSelectedNetworkPositions;
 
-    public NetworkSelectorAdapter(Context context, List<NetworkSelectorItem> networkInfos, NetworkSelectorModel.SelectionMode selectionMode) {
+    public NetworkSelectorAdapter(Context context, List<NetworkSelectorItem> networkInfos,
+            NetworkSelectorModel.SelectionMode selectionMode) {
         mNetworkInfos = networkInfos;
         this.mContext = context;
         inflater = (LayoutInflater.from(context));
@@ -196,8 +196,10 @@ public class NetworkSelectorAdapter
     public void setSelectedNetwork(List<NetworkInfo> networkInfo) {
         mSelectedNetworks = networkInfo;
         if (mSelectedNetworks.isEmpty()) return;
-        // Mark all network as selected in MULTI network selection mode when only AllNetwork is passed
-        if (NetworkSelectorModel.SelectionMode.MULTI == mSelectionMode && mSelectedNetworks.size() == 1 && NetworkUtils.isAllNetwork(networkInfo.get(0))) {
+        // Mark all network as selected in MULTI network selection mode when only AllNetwork is
+        // passed
+        if (NetworkSelectorModel.SelectionMode.MULTI == mSelectionMode
+                && mSelectedNetworks.size() == 1 && NetworkUtils.isAllNetwork(networkInfo.get(0))) {
             for (int i = 0; i < mNetworkInfos.size(); i++) {
                 NetworkSelectorItem networkSelectorItem = mNetworkInfos.get(i);
                 networkSelectorItem.setIsSelected(true);
@@ -205,11 +207,12 @@ public class NetworkSelectorAdapter
             }
             return;
         }
-        List<String> selectedNetworks = networkInfo.stream().map(network -> network.chainId).collect(
-                Collectors.toList());
+        List<String> selectedNetworks =
+                networkInfo.stream().map(network -> network.chainId).collect(Collectors.toList());
         for (int i = 0; i < mNetworkInfos.size(); i++) {
             NetworkSelectorItem networkSelectorItem = mNetworkInfos.get(i);
-            if (Type.LABEL != networkSelectorItem.mType && selectedNetworks.contains(networkSelectorItem.mNetworkInfo.chainId)) {
+            if (Type.LABEL != networkSelectorItem.mType
+                    && selectedNetworks.contains(networkSelectorItem.mNetworkInfo.chainId)) {
                 if (NetworkSelectorModel.SelectionMode.SINGLE == mSelectionMode) {
                     removePrevSelection();
                 } else {

@@ -221,8 +221,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
      * @param lifecycle to auto remove network-selection objects.
      * @return NetworkSelectorModel object.
      */
-    public NetworkSelectorModel openNetworkSelectorModel(
-            String key, NetworkSelectorModel.Mode mode, NetworkSelectorModel.SelectionMode selectionMode, Lifecycle lifecycle) {
+    public NetworkSelectorModel openNetworkSelectorModel(String key, NetworkSelectorModel.Mode mode,
+            NetworkSelectorModel.SelectionMode selectionMode, Lifecycle lifecycle) {
         NetworkSelectorModel networkSelectorModel;
         if (key == null) {
             return new NetworkSelectorModel(mode, selectionMode, this, mContext);

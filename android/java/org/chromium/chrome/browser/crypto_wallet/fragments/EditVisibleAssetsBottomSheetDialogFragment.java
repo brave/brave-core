@@ -194,7 +194,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
             mUserAssetModel = mWalletModel.getCryptoModel().createUserAssetModel(mType);
-            mSelectedNetwork = JavaUtils.safeVal(mSelectedNetwork, NetworkUtils.getAllNetworkOption(requireContext()));
+            mSelectedNetwork = JavaUtils.safeVal(
+                    mSelectedNetwork, NetworkUtils.getAllNetworkOption(requireContext()));
             mUserAssetModel.fetchAssets(mNftsOnly, mSelectedNetwork);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "Error during dialog creation.", e);

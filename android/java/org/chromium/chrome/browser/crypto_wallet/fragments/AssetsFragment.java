@@ -161,14 +161,15 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
                 NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER,
                 NetworkSelectorModel.SelectionMode.MULTI, getLifecycle());
         // Show pending transactions fab to process pending txs
-        mNetworkSelectionModel.mSelectedNetworks.observe(getViewLifecycleOwner(), selectedNetworkInfos -> {
-            mSelectedNetworkList = selectedNetworkInfos;
-            if (mSelectedNetworkList.isEmpty()) {
-                clearAssets();
-                return;
-            }
-            updatePortfolioGetPendingTx();
-        });
+        mNetworkSelectionModel.mSelectedNetworks.observe(
+                getViewLifecycleOwner(), selectedNetworkInfos -> {
+                    mSelectedNetworkList = selectedNetworkInfos;
+                    if (mSelectedNetworkList.isEmpty()) {
+                        clearAssets();
+                        return;
+                    }
+                    updatePortfolioGetPendingTx();
+                });
         mWalletModel.getCryptoModel().getPortfolioModel().mIsDiscoveringUserAssets.observe(
                 getViewLifecycleOwner(), isDiscoveringUserAssets -> {
                     if (isDiscoveringUserAssets) {

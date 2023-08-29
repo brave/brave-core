@@ -36,7 +36,6 @@ import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -128,14 +127,16 @@ public class NetworkSelectorActivity
         }
 
         mSettingsLauncher = new BraveSettingsLauncherImpl();
-        // Provide single selection type if key is null. Ideally caller should provide the selection type while creating network selection model.
-        NetworkSelectorModel.SelectionMode selectionMode = TextUtils.isEmpty(mKey) ? NetworkSelectorModel.SelectionMode.SINGLE : null;
+        // Provide single selection type if key is null. Ideally caller should provide the selection
+        // type while creating network selection model.
+        NetworkSelectorModel.SelectionMode selectionMode =
+                TextUtils.isEmpty(mKey) ? NetworkSelectorModel.SelectionMode.SINGLE : null;
         mNetworkSelectorModel =
                 mWalletModel.getCryptoModel().getNetworkModel().openNetworkSelectorModel(
                         mKey, mMode, selectionMode, null);
         mSelectionMode = mNetworkSelectorModel.getmSelectionType();
-        mNetworkSelectorAdapter = new NetworkSelectorAdapter(this, new ArrayList<>(),
-                mSelectionMode);
+        mNetworkSelectorAdapter =
+                new NetworkSelectorAdapter(this, new ArrayList<>(), mSelectionMode);
         mRVNetworkSelector.setAdapter(mNetworkSelectorAdapter);
         mNetworkSelectorAdapter.setOnNetworkItemSelected(this);
         mNetworkSelectorModel.mNetworkListsLd.observe(this, networkLists -> {
@@ -156,12 +157,13 @@ public class NetworkSelectorActivity
 
     private void setSelectedNetworkObserver() {
         if (NetworkSelectorModel.SelectionMode.MULTI == mSelectionMode) {
-            LiveDataUtil.observeOnce(mNetworkSelectorModel.mSelectedNetworks, networkInfoList -> { updateNetworkSelection(networkInfoList); });
+            LiveDataUtil.observeOnce(mNetworkSelectorModel.mSelectedNetworks,
+                    networkInfoList -> { updateNetworkSelection(networkInfoList); });
             return;
         }
-        mNetworkSelectorModel.getSelectedNetwork().observe(
-                this, networkInfoList -> { updateNetworkSelection(
-                        Collections.singletonList(networkInfoList)); });
+        mNetworkSelectorModel.getSelectedNetwork().observe(this, networkInfoList -> {
+            updateNetworkSelection(Collections.singletonList(networkInfoList));
+        });
     }
 
     private void updateNetworkSelection(List<NetworkInfo> networkInfoList) {
