@@ -26,7 +26,7 @@ ConversionInfo::~ConversionInfo() = default;
 bool ConversionInfo::IsValid() const {
   return ad_type != AdType::kUndefined && !creative_instance_id.empty() &&
          !creative_set_id.empty() && !campaign_id.empty() &&
-         !advertiser_id.empty() && !segment.empty() &&
+         !advertiser_id.empty() &&
          action_type != ConversionActionType::kUndefined;
 }
 
