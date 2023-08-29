@@ -161,7 +161,8 @@ void AdBlockComponentServiceManager::StartRegionalServices() {
           existing_provider == regional_filters_providers_.end()) {
         auto regional_filters_provider =
             std::make_unique<AdBlockComponentFiltersProvider>(
-                component_update_service_, *catalog_entry, false);
+                component_update_service_, *catalog_entry,
+                catalog_entry->first_party_protections);
         regional_filters_providers_.insert(
             {uuid, std::move(regional_filters_provider)});
       }
@@ -246,7 +247,8 @@ void AdBlockComponentServiceManager::EnableFilterList(const std::string& uuid,
     }
     auto regional_filters_provider =
         std::make_unique<AdBlockComponentFiltersProvider>(
-            component_update_service_, *catalog_entry, false);
+            component_update_service_, *catalog_entry,
+            catalog_entry->first_party_protections);
     regional_filters_providers_.insert(
         {uuid, std::move(regional_filters_provider)});
   } else {
