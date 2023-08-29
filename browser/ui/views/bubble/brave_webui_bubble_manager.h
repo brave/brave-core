@@ -21,14 +21,15 @@ class BraveWebUIBubbleManager : public WebUIBubbleManagerT<T> {
 
  protected:
   // Allows customization of the rendered bubble dialog view.
-  virtual void CustomizeBubbleDialogView(WebUIBubbleDialogView& bubble_view) {}
+  virtual void CustomizeBubbleDialogView(WebUIBubbleDialogView& bubble_view) {
+    bubble_view.SetPaintClientToLayer(true);
+    bubble_view.set_use_round_corners(true);
+    bubble_view.set_corner_radius(16);
+  }
 
  private:
   void BraveCustomizeBubbleDialogView(
       WebUIBubbleDialogView& bubble_view) override {
-    bubble_view.SetPaintClientToLayer(true);
-    bubble_view.set_use_round_corners(true);
-    bubble_view.set_corner_radius(16);
     CustomizeBubbleDialogView(bubble_view);
   }
 };
