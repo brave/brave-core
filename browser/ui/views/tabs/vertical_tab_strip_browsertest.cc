@@ -97,13 +97,15 @@ FullscreenNotificationObserver::~FullscreenNotificationObserver() = default;
 
 void FullscreenNotificationObserver::OnFullscreenStateChanged() {
   observed_change_ = true;
-  if (run_loop_.running())
+  if (run_loop_.running()) {
     run_loop_.Quit();
+  }
 }
 
 void FullscreenNotificationObserver::Wait() {
-  if (observed_change_)
+  if (observed_change_) {
     return;
+  }
 
   run_loop_.Run();
 }
@@ -309,8 +311,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
   // Add tabs as much as it can grow mih height of tab strip.
   auto tab_strip_min_height =
       browser_view()->tab_strip_region_view()->GetMinimumSize().height();
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 10; i++) {
     chrome::AddTabAt(browser(), {}, -1, true);
+  }
   ASSERT_LE(tab_strip_min_height,
             browser_view()->tab_strip_region_view()->GetMinimumSize().height());
 
@@ -393,12 +396,31 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
     observer.Wait();
   }
 
-  // Vertical tab strip should be visible on browser fullscreen.
+  base::RunLoop run_loop;
+  auto wait_until = base::BindLambdaForTesting(
+      [&](base::RepeatingCallback<bool()> predicate) {
+        if (predicate.Run()) {
+          return;
+        }
+
+        base::RepeatingTimer scheduler;
+        scheduler.Start(FROM_HERE, base::Milliseconds(100),
+                        base::BindLambdaForTesting([&]() {
+                          if (predicate.Run()) {
+                            run_loop.Quit();
+                          }
+                        }));
+        run_loop.Run();
+      });
+
+  // Vertical tab strip should be invisible on browser fullscreen.
   ASSERT_TRUE(fullscreen_controller->IsFullscreenForBrowser());
   ASSERT_TRUE(browser_view()->IsFullscreen());
-  EXPECT_TRUE(browser_view()
-                  ->vertical_tab_strip_host_view_->GetPreferredSize()
-                  .width());
+  wait_until.Run(base::BindLambdaForTesting([&]() {
+    return !browser_view()
+                ->vertical_tab_strip_host_view_->GetPreferredSize()
+                .width();
+  }));
 
   {
     auto observer = FullscreenNotificationObserver(browser());
@@ -410,7 +432,6 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
 
   {
     auto observer = FullscreenNotificationObserver(browser());
-    // Vertical tab strip should become invisible on tab fullscreen.
     fullscreen_controller->EnterFullscreenModeForTab(
         browser_view()
             ->browser()
@@ -420,33 +441,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
 
     observer.Wait();
   }
+
+  // Vertical tab strip should be invisible on tab fullscreen.
   ASSERT_TRUE(fullscreen_controller->IsTabFullscreen());
   if (!browser_view()
            ->vertical_tab_strip_host_view_->GetPreferredSize()
            .width()) {
     return;
   }
-
-  base::RunLoop run_loop;
-  auto wait_until = base::BindLambdaForTesting(
-      [&](base::RepeatingCallback<bool()> predicate) {
-        if (predicate.Run())
-          return;
-
-        base::RepeatingTimer scheduler;
-        scheduler.Start(FROM_HERE, base::Milliseconds(100),
-                        base::BindLambdaForTesting([&]() {
-                          if (predicate.Run()) {
-                            run_loop.Quit();
-                          } else {
-                            LOG(ERROR) << browser_view()
-                                              ->vertical_tab_strip_host_view_
-                                              ->GetPreferredSize()
-                                              .width();
-                          }
-                        }));
-        run_loop.Run();
-      });
 
   wait_until.Run(base::BindLambdaForTesting([&]() {
     return !browser_view()

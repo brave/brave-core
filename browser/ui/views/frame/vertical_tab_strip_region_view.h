@@ -21,7 +21,7 @@
 namespace views {
 class ScrollView;
 class ResizeArea;
-}
+}  // namespace views
 
 class BraveNewTabButton;
 class BrowserView;
@@ -127,7 +127,7 @@ class VerticalTabStripRegionView : public views::View,
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            OriginalTabSearchButton);
 
-  bool IsTabFullscreen() const;
+  bool IsFullscreen() const;
 
   void SetState(State state);
 
