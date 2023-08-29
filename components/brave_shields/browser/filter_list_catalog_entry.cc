@@ -159,9 +159,7 @@ void FilterListCatalogEntry::RegisterJSONConverter(
 std::vector<FilterListCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(
     const std::vector<FilterListCatalogEntry>& region_lists,
     const std::string& uuid) {
-  std::string uuid_uppercase = base::ToUpperASCII(uuid);
-  return base::ranges::find(region_lists, uuid_uppercase,
-                            &FilterListCatalogEntry::uuid);
+  return base::ranges::find(region_lists, uuid, &FilterListCatalogEntry::uuid);
 }
 
 // Given a locale like `en-US`, find regional lists corresponding to the
