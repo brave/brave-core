@@ -122,32 +122,50 @@ function BackButton ({
 
 function PlaylistHeader ({ playlistId }: { playlistId: string }) {
   const playlist = usePlaylist(playlistId)
-  const contextualMenuItems = playlist?.items.length
-    ? [
-        {
-          name: getLocalizedString('bravePlaylistContextMenuEdit'),
-          iconName: 'list-bullet-default',
-          onClick: () =>
-            getPlaylistActions().setPlaylistEditMode(PlaylistEditMode.BULK_EDIT)
-        },
-        // TODO(sko) We don't support this yet.
-        // { name: 'Share', iconName: 'share-macos', onClick: () => {} },
-        {
-          name: getLocalizedString(
-            'bravePlaylistContextMenuKeepForOfflinePlaying'
-          ),
-          iconName: 'cloud-download',
-          onClick: () => {}
-        },
-        {
-          name: getLocalizedString(
-            'bravePlaylistContextMenuRemovePlayedContents'
-          ),
-          iconName: 'list-checks',
-          onClick: () => {}
+  const contextualMenuItems = []
+  if (playlist?.items.length) {
+    contextualMenuItems.push({
+      name: getLocalizedString('bravePlaylistContextMenuEdit'),
+      iconName: 'list-bullet-default',
+      onClick: () =>
+        getPlaylistActions().setPlaylistEditMode(PlaylistEditMode.BULK_EDIT)
+    })
+
+    // TODO(sko) We don't support this yet.
+    // contextualMenuItems.push({ name: 'Share', iconName: 'share-macos', onClick: () => {} })
+
+    const uncachedItems = playlist.items.filter(item => !item.cached)
+    if (uncachedItems.length) {
+      contextualMenuItems.push({
+        name: getLocalizedString(
+          'bravePlaylistContextMenuKeepForOfflinePlaying'
+        ),
+        iconName: 'cloud-download',
+        onClick: () => {
+          uncachedItems.forEach(item =>
+            getPlaylistAPI().recoverLocalData(item.id)
+          )
         }
-      ]
-    : []
+      })
+    }
+
+    const playedItems = playlist.items.filter(
+      item => item.lastPlayedPosition >= Math.floor(+item.duration / 1e6)
+    )
+    if (playedItems.length) {
+      contextualMenuItems.push({
+        name: getLocalizedString(
+          'bravePlaylistContextMenuRemovePlayedContents'
+        ),
+        iconName: 'list-checks',
+        onClick: () => {
+          playedItems.forEach(item =>
+            getPlaylistAPI().removeItemFromPlaylist(playlistId, item.id)
+          )
+        }
+      })
+    }
+  }
 
   const isDefaultPlaylist = playlist?.id === 'default'
   if (contextualMenuItems && !isDefaultPlaylist) {
