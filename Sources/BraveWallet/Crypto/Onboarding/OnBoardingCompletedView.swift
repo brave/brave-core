@@ -22,38 +22,43 @@ struct OnboardingCompletedView: View {
         keyringStore: keyringStore
       ) { isBiometricCompleted = true }
     } else {
-      ScrollView {
-        VStack {
-          Image("wallet-onboarding-complete", bundle: .module)
-          Text(Strings.Wallet.onboardingCompletedTitle)
-            .font(.title)
-            .foregroundColor(.primary)
-            .fixedSize(horizontal: false, vertical: true)
-          Text(Strings.Wallet.onboardingCompletedSubTitle)
-            .font(.subheadline)
-            .foregroundColor(.secondary)
-            .fixedSize(horizontal: false, vertical: true)
-            .padding(.top, 4)
-          Button {
-            keyringStore.markOnboardingCompleted()
-          } label: {
-            Text(Strings.Wallet.onboardingCompletedButtonTitle)
-              .frame(maxWidth: .infinity)
+      GeometryReader { geometry in
+        ScrollView {
+          VStack {
+            Image("wallet-onboarding-complete", bundle: .module)
+            Text(Strings.Wallet.onboardingCompletedTitle)
+              .font(.title)
+              .foregroundColor(.primary)
+              .fixedSize(horizontal: false, vertical: true)
+            Text(Strings.Wallet.onboardingCompletedSubTitle)
+              .font(.subheadline)
+              .foregroundColor(.secondary)
+              .fixedSize(horizontal: false, vertical: true)
+              .padding(.top, 4)
+            Button {
+              keyringStore.markOnboardingCompleted()
+            } label: {
+              Text(Strings.Wallet.onboardingCompletedButtonTitle)
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(BraveFilledButtonStyle(size: .large))
+            .padding(.top, 84)
           }
-          .buttonStyle(BraveFilledButtonStyle(size: .large))
-          .padding(.top, 84)
+          .frame(maxWidth: .infinity, minHeight: geometry.size.height)
+          .padding(.horizontal, 20)
         }
-        .padding(.top, 124)
-        .padding(.horizontal, 20)
+        .onTapGesture {
+          keyringStore.markOnboardingCompleted()
+        }
+        .background(
+          Image("wallet-background", bundle: .module)
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .edgesIgnoringSafeArea(.all)
+        )
+        .interactiveDismissDisabled()
+        .transparentNavigationBar()
       }
-      .background(
-        Image("wallet-background", bundle: .module)
-          .resizable()
-          .aspectRatio(contentMode: .fill)
-          .edgesIgnoringSafeArea(.all)
-      )
-      .interactiveDismissDisabled()
-      .transparentNavigationBar()
     }
   }
 }
