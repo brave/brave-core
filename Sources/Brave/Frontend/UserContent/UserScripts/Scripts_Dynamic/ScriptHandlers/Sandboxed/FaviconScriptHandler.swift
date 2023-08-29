@@ -86,12 +86,19 @@ class FaviconScriptHandler: NSObject, TabContentScript {
       }
       
       Task { @MainActor in
-        let favicon = await Favicon.renderImage(icon, backgroundColor: .clear, shouldScale: true)
-
+        // Always fetch the favicon from the database instead of the `icon` parameter
+        // This will allow us to always get high-res icons, and only fallback to the `icon` parameter
+        // If the icon couldn't be fetched at all.
+        var favicon = try? await FaviconRenderer.loadIcon(for: url, persistent: !isPrivate)
+        if favicon == nil {
+          favicon = await Favicon.renderImage(icon, backgroundColor: .clear, shouldScale: true)
+        }
+        
+        guard let tab = tab, let favicon = favicon else { return }
+        
         // We can only cache favicons for non-private tabs
         FaviconFetcher.updateCache(favicon, for: url, persistent: !isPrivate)
         
-        guard let tab = tab else { return }
         tab.favicon = favicon
         TabEvent.post(.didLoadFavicon(favicon), for: tab)
       }
