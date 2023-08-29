@@ -26,6 +26,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -74,7 +75,7 @@ public class BraveWalletPanel implements DialogInterface {
     private final PopupWindow mPopupWindow;
     private final AppCompatActivity mActivity;
     private ViewGroup mPopupView;
-    private OnDismissListener mOnDismissListener;
+    private final OnDismissListener mOnDismissListener;
     private ImageView mExpandWalletImage;
     private ImageView mOptionsImage;
     private Button mBtnConnectedStatus;
@@ -86,34 +87,19 @@ public class BraveWalletPanel implements DialogInterface {
     private TextView mAmountFiat;
     private View mCvSolConnectionStatus;
     private HashSet<AccountInfo> mAccountsWithPermissions;
-    private ExecutorService mExecutor;
-    private Handler mHandler;
-    private BraveWalletPanelServices mBraveWalletPanelServices;
+    private final ExecutorService mExecutor;
+    private final Handler mHandler;
+    private final BraveWalletPanelServices mBraveWalletPanelServices;
     private ImageView mAccountChangeAnchor;
     private View mContainerConstraintLayout;
     private WalletModel mWalletModel;
     private AllAccountsInfo mAllAccountsInfo;
     private AccountInfo mSelectedAccount;
     private NetworkInfo mSelectedNetwork;
-    private final Observer<AllAccountsInfo> mAllAccountsInfoObserver = allAccountsInfo -> {
-        mAllAccountsInfo = allAccountsInfo;
-        mSelectedAccount = mAllAccountsInfo.selectedAccount;
+    private final Context mContext;
+    private final Observer<AllAccountsInfo> mAllAccountsInfoObserver;
 
-        AccountsPermissionsHelper accountsPermissionsHelper =
-                new AccountsPermissionsHelper(mBraveWalletPanelServices.getBraveWalletService(),
-                        Utils.filterAccountsByCoin(
-                                     mAllAccountsInfo.accounts, mSelectedAccount.accountId.coin)
-                                .toArray(new AccountInfo[0]));
-        accountsPermissionsHelper.checkAccounts(() -> {
-            mAccountsWithPermissions = accountsPermissionsHelper.getAccountsWithPermissions();
-            updateSelectedAccountInfo();
-        });
-    };
-
-    private final Observer<NetworkInfo> mDefaultNetworkObserver = networkInfo -> {
-        mSelectedNetwork = networkInfo;
-        mBtnSelectedNetwork.setText(Utils.getShortNameOfNetwork(networkInfo.chainName));
-    };
+    private final Observer<NetworkInfo> mDefaultNetworkObserver;
 
     public interface BraveWalletPanelServices {
         AssetRatioService getAssetRatioService();
@@ -122,9 +108,18 @@ public class BraveWalletPanel implements DialogInterface {
         JsonRpcService getJsonRpcService();
     }
 
-    public BraveWalletPanel(View anchorViewHost, OnDismissListener onDismissListener,
-            BraveWalletPanelServices braveWalletPanelServices) {
-        mAccountsWithPermissions = new HashSet<AccountInfo>();
+    public BraveWalletPanel(@NonNull final View anchorViewHost,
+            @NonNull final OnDismissListener onDismissListener,
+            @NonNull final BraveWalletPanelServices braveWalletPanelServices) {
+        try {
+            mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
+            // Update network model to use network per origin
+            getNetworkModel().updateMode(NetworkModel.Mode.PANEL_MODE);
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "BraveWalletPanel Constructor", e);
+        }
+
+        mAccountsWithPermissions = new HashSet<>();
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
         mAnchorViewHost = anchorViewHost;
@@ -132,7 +127,27 @@ public class BraveWalletPanel implements DialogInterface {
         mActivity = BraveActivity.getChromeTabbedActivity();
         mBraveWalletPanelServices = braveWalletPanelServices;
 
-        mPopupWindow = new PopupWindow(mAnchorViewHost.getContext());
+        mDefaultNetworkObserver = networkInfo -> {
+            mSelectedNetwork = networkInfo;
+            mBtnSelectedNetwork.setText(Utils.getShortNameOfNetwork(networkInfo.chainName));
+        };
+
+        mAllAccountsInfoObserver = allAccountsInfo -> {
+            mAllAccountsInfo = allAccountsInfo;
+            mSelectedAccount = mAllAccountsInfo.selectedAccount;
+
+            AccountsPermissionsHelper accountsPermissionsHelper =
+                    new AccountsPermissionsHelper(mBraveWalletPanelServices.getBraveWalletService(),
+                            Utils.filterAccountsByCoin(
+                                         mAllAccountsInfo.accounts, mSelectedAccount.accountId.coin)
+                                    .toArray(new AccountInfo[0]));
+            accountsPermissionsHelper.checkAccounts(() -> {
+                mAccountsWithPermissions = accountsPermissionsHelper.getAccountsWithPermissions();
+                updateSelectedAccountInfo();
+            });
+        };
+
+        mPopupWindow = new PopupWindow(mContext);
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mPopupWindow.setElevation(20);
@@ -148,19 +163,7 @@ public class BraveWalletPanel implements DialogInterface {
                 return false;
             }
         });
-        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                dismiss();
-            }
-        });
-        try {
-            mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
-            // Update network model to use network per origin
-            getNetworkModel().updateMode(NetworkModel.Mode.PANEL_MODE);
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "BraveWalletPanel Constructor " + e);
-        }
+        mPopupWindow.setOnDismissListener(this::dismiss);
         setUpViews();
     }
 
@@ -172,9 +175,9 @@ public class BraveWalletPanel implements DialogInterface {
         // use android.widget.PopupMenu and anchor to an URL bar there.
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
             androidx.appcompat.widget.PopupMenu menu = new androidx.appcompat.widget.PopupMenu(
-                    mOptionsImage.getContext(), (View) mOptionsImage);
+                    mOptionsImage.getContext(), mOptionsImage);
             menu.getMenuInflater().inflate(R.menu.menu_dapps_panel, menu.getMenu());
-            menu.setOnMenuItemClickListener(item -> { return handleMenuItemClick(item); });
+            menu.setOnMenuItemClickListener(this::handleMenuItemClick);
 
             if (menu.getMenu() instanceof MenuBuilder) {
                 ((MenuBuilder) menu.getMenu()).setOptionalIconsVisible(true);
@@ -369,28 +372,27 @@ public class BraveWalletPanel implements DialogInterface {
                 getNetworkModel().mDefaultNetwork, selectedNetwork -> {
                     BlockchainToken asset = Utils.makeNetworkAsset(selectedNetwork);
                     AssetsPricesHelper.fetchPrices(mBraveWalletPanelServices.getAssetRatioService(),
-                            new BlockchainToken[] {asset}, assetPrices -> {
-                                BalanceHelper.getNativeAssetsBalances(
-                                        mBraveWalletPanelServices.getJsonRpcService(),
-                                        selectedNetwork, new AccountInfo[] {mSelectedAccount},
-                                        (coinType, nativeAssetsBalances) -> {
-                                            double price = Utils.getOrDefault(assetPrices,
-                                                    asset.symbol.toLowerCase(Locale.getDefault()),
-                                                    0.0d);
-                                            double balance =
-                                                    Utils.getOrDefault(nativeAssetsBalances,
-                                                            mSelectedAccount.address.toLowerCase(
-                                                                    Locale.getDefault()),
-                                                            0.0d);
-                                            String fiatBalanceString = String.format(
-                                                    Locale.getDefault(), "$%,.2f", balance * price);
-                                            String cryptoBalanceString =
-                                                    String.format(Locale.getDefault(), "%.4f %s",
-                                                            balance, selectedNetwork.symbol);
-                                            mAmountAsset.setText(cryptoBalanceString);
-                                            mAmountFiat.setText(fiatBalanceString);
-                                        });
-                            });
+                            new BlockchainToken[] {asset},
+                            assetPrices
+                            -> BalanceHelper.getNativeAssetsBalances(
+                                    mBraveWalletPanelServices.getJsonRpcService(), selectedNetwork,
+                                    new AccountInfo[] {mSelectedAccount},
+                                    (coinType, nativeAssetsBalances) -> {
+                                        double price = Utils.getOrDefault(assetPrices,
+                                                asset.symbol.toLowerCase(Locale.getDefault()),
+                                                0.0d);
+                                        double balance = Utils.getOrDefault(nativeAssetsBalances,
+                                                mSelectedAccount.address.toLowerCase(
+                                                        Locale.getDefault()),
+                                                0.0d);
+                                        String fiatBalanceString = String.format(
+                                                Locale.getDefault(), "$%,.2f", balance * price);
+                                        String cryptoBalanceString =
+                                                String.format(Locale.getDefault(), "%.4f %s",
+                                                        balance, selectedNetwork.symbol);
+                                        mAmountAsset.setText(cryptoBalanceString);
+                                        mAmountFiat.setText(fiatBalanceString);
+                                    }));
                 });
     }
 
