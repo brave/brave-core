@@ -21,10 +21,13 @@ class Sidebar;
 }  // namespace sidebar
 #endif
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
 namespace speedreader {
 class SpeedreaderBubbleView;
 class SpeedreaderTabHelper;
+enum class SpeedreaderBubbleLocation : int;
 }  // namespace speedreader
+#endif
 
 class BraveBrowserWindow : public BrowserWindow {
  public:
@@ -42,7 +45,7 @@ class BraveBrowserWindow : public BrowserWindow {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   virtual speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       speedreader::SpeedreaderTabHelper* tab_helper,
-      bool is_enabled);
+      speedreader::SpeedreaderBubbleLocation location);
   virtual void ShowReaderModeToolbar() {}
   virtual void HideReaderModeToolbar() {}
 #if BUILDFLAG(ENABLE_AI_CHAT)

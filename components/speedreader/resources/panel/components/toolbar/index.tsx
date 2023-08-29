@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import * as S from './style'
-import getToolbarAPI, { SiteSettings, AppearanceSettings, TtsSettings, ToolbarColors, Theme, FontSize, FontFamily, PlaybackSpeed } from '../../api/browser'
+import getToolbarAPI, { AppearanceSettings, TtsSettings, ToolbarColors, Theme, FontSize, FontFamily, PlaybackSpeed } from '../../api/browser'
 import { MainButtonType, MainButtonsList } from '../lists'
 import ReaderModeControl from "../reader-mode-control"
 import AppearanceControl from "../appearance-control"
@@ -19,19 +19,14 @@ const toColor = (color: number) => {
 }
 
 function Toolbar() {
-  const [siteSettings, setSiteSettings] = React.useState<SiteSettings | undefined>()
   const [appearanceSettings, setAppearanceSettings] = React.useState<AppearanceSettings | undefined>()
   const [ttsSettings, setTtsSettings] = React.useState<TtsSettings | undefined>()
   const [activeButton, setActiveButton] = React.useState(MainButtonType.None)
 
   React.useEffect(() => {
-    getToolbarAPI().dataHandler.getSiteSettings().then((res: any) => setSiteSettings(res.siteSettings))
     getToolbarAPI().dataHandler.getAppearanceSettings().then((res: any) => setAppearanceSettings(res.appearanceSettings))
     getToolbarAPI().dataHandler.getTtsSettings().then((res: any) => setTtsSettings(res.ttsSettings))
     getToolbarAPI().dataHandler.observeThemeChange()
-    getToolbarAPI().eventsRouter.onSiteSettingsChanged.addListener((settings: SiteSettings) => {
-      setSiteSettings(settings)
-    })
     getToolbarAPI().eventsRouter.onAppearanceSettingsChanged.addListener((settings: AppearanceSettings) => {
       setAppearanceSettings(settings)
     })
@@ -46,17 +41,18 @@ function Toolbar() {
     })
   }, [])
 
-  if (!siteSettings || !appearanceSettings || !ttsSettings) {
+  getToolbarAPI().eventsRouter.onTuneBubbleClosed.addListener(() => {
+    if (activeButton === MainButtonType.Tune) {
+      setActiveButton(MainButtonType.None)
+    }
+  })
+
+  if (!appearanceSettings || !ttsSettings) {
     return null
   }
 
   const handleClose = () => {
     getToolbarAPI().dataHandler.viewOriginal()
-  }
-
-  const handleSpeedreaderChange = (speedreaderEnabled: boolean) => {
-    const settings = { ...siteSettings, speedreaderEnabled }
-    getToolbarAPI().dataHandler.setSiteSettings(settings)
   }
 
   const handleThemeChange = (theme: Theme) => {
@@ -90,16 +86,21 @@ function Toolbar() {
     getToolbarAPI().dataHandler.aiChat()
   }
 
+  const handleTune = (show: boolean) => {
+    getToolbarAPI().dataHandler.showTuneBubble(show)
+  }
+
   const handleMainButtonClick = (button: MainButtonType) => {
-    if (button === MainButtonType.Speedreader) {
-      handleSpeedreaderChange(siteSettings.speedreaderEnabled)
-    } else if (button === MainButtonType.AI) {
+    if (button === MainButtonType.AI) {
       handleAiChat()
     } else {
       if (activeButton !== button) {
         setActiveButton(button)
       } else {
         setActiveButton(MainButtonType.None)
+      }
+      if (button === MainButtonType.Tune) {
+        handleTune(activeButton !== button)
       }
     }
   }
@@ -110,8 +111,8 @@ function Toolbar() {
         activeButton={activeButton}
         onClick={handleMainButtonClick.bind(this)}
       />
-      {activeButton === MainButtonType.None && (
-        <ReaderModeControl onClose={handleClose.bind(this)} />)
+      {(activeButton === MainButtonType.None || activeButton === MainButtonType.Tune) &&
+       (<ReaderModeControl onClose={handleClose.bind(this)} />)
       }
       {activeButton === MainButtonType.Appearance && (
         <AppearanceControl

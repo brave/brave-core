@@ -6,67 +6,151 @@
 #include "brave/components/speedreader/speedreader_util.h"
 
 #include <memory>
-#include <tuple>
 #include <utility>
 
-#include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "components/content_settings/core/common/content_settings.h"
-#include "components/content_settings/core/common/content_settings_pattern.h"
-#include "components/content_settings/core/common/content_settings_types.h"
 #include "url/gurl.h"
 
 namespace speedreader {
 
-bool PageSupportsDistillation(DistillState state) {
-  return state == DistillState::kSpeedreaderOnDisabledPage ||
-         state == DistillState::kPageProbablyReadable;
+namespace DistillStates {
+
+ViewOriginal::ViewOriginal() = default;
+
+ViewOriginal::ViewOriginal(ViewOriginal::Reason reason, bool was_auto_distilled)
+    : reason(reason), was_auto_distilled(was_auto_distilled) {}
+
+ViewOriginal::ViewOriginal(const DistillReverting& state)
+    : ViewOriginal(state.reason, state.was_auto_distilled) {}
+
+Distilling::Distilling(Distilling::Reason reason) : reason(reason) {}
+
+Distilled::Distilled(DistillationResult result)
+    : Distilling(Distilling::Reason::kNone), result(result) {}
+
+Distilled::Distilled(Distilled::Reason reason, DistillationResult result)
+    : Distilling(reason), result(result) {}
+
+Distilled::Distilled(const Distilling& state, DistillationResult result)
+    : Distilled(state.reason, result) {}
+
+DistillReverting::DistillReverting(const Distilling& state, Reason reason)
+    : ViewOriginal(reason, state.reason == Distilling::Reason::kAutomatic) {}
+
+DistillReverting::DistillReverting(const Distilled& state,
+                                   DistillReverting::Reason reason)
+    : ViewOriginal(reason, state.reason == Distilled::Reason::kAutomatic) {}
+
+bool IsViewOriginal(const State& state) {
+  return absl::holds_alternative<ViewOriginal>(state);
 }
 
-bool PageStateIsDistilled(DistillState state) {
-  return state == DistillState::kReaderMode ||
-         state == DistillState::kSpeedreaderMode;
+bool IsDistilling(const State& state) {
+  return absl::holds_alternative<Distilling>(state);
 }
 
-bool PageWantsDistill(DistillState state) {
-  return state == DistillState::kReaderMode ||
-         state == DistillState::kSpeedreaderMode ||
-         state == DistillState::kReaderModePending ||
-         state == DistillState::kSpeedreaderModePending;
+bool IsDistilled(const State& state) {
+  return absl::holds_alternative<Distilled>(state);
 }
 
-void SetEnabledForSite(HostContentSettingsMap* map,
-                       const GURL& url,
-                       bool enable) {
-  DCHECK(!url.is_empty());  // Not supported. Disable Speedreader in settings.
+bool IsDistillReverting(const State& state) {
+  return absl::holds_alternative<DistillReverting>(state);
+}
 
-  // Rule covers all protocols and pages.
-  auto pattern = ContentSettingsPattern::FromString("*://" + url.host() + "/*");
-  if (!pattern.IsValid()) {
-    return;
+bool IsNotDistillable(const State& state) {
+  return IsViewOriginal(state) &&
+         absl::get<DistillStates::ViewOriginal>(state).reason ==
+             DistillStates::ViewOriginal::Reason::kNotDistillable;
+}
+
+bool IsDistillable(const State& state) {
+  return IsViewOriginal(state) &&
+         absl::get<DistillStates::ViewOriginal>(state).reason !=
+             DistillStates::ViewOriginal::Reason::kNotDistillable;
+}
+
+bool IsDistilledAutomatically(const State& state) {
+  if (const auto* d = absl::get_if<Distilled>(&state)) {
+    return d->reason == Distilled::Reason::kAutomatic;
+  }
+  return false;
+}
+
+bool Transit(State& state, const State& desired) {
+  if (absl::holds_alternative<None>(state)) {
+    state = desired;
+    return false;
   }
 
-  ContentSetting setting =
-      enable ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
-  map->SetContentSettingCustomScope(pattern, ContentSettingsPattern::Wildcard(),
-                                    ContentSettingsType::BRAVE_SPEEDREADER,
-                                    setting);
+  if (IsViewOriginal(state)) {
+    if (IsDistillReverting(desired)) {
+      state = ViewOriginal(absl::get<DistillReverting>(desired));
+      return false;
+    }
+    if (IsDistilling(desired)) {
+      state = desired;
+      return true;
+    }
+    if (IsDistilled(desired)) {
+      state = Distilling(absl::get<Distilled>(desired));
+      return true;
+    }
+    DCHECK(IsViewOriginal(desired));
+    // Already view original
+    return false;
+  }
+
+  if (IsDistillReverting(state)) {
+    if (IsViewOriginal(desired)) {
+      state = ViewOriginal(absl::get<DistillReverting>(state));
+      return false;
+    }
+  }
+
+  if (IsDistilling(state)) {
+    if (IsDistilled(desired)) {
+      const auto& d = absl::get<Distilled>(desired);
+      if (d.result == DistillationResult::kFail) {
+        state = ViewOriginal(ViewOriginal::Reason::kError, false);
+        return false;
+      }
+      state = Distilled(absl::get<Distilling>(state), d.result);
+      return false;
+    }
+    if (IsDistillReverting(desired) || IsDistilling(desired) ||
+        IsViewOriginal(desired)) {
+      state = desired;
+      return false;
+    }
+  }
+
+  if (IsDistilled(state)) {
+    if (IsDistillReverting(desired)) {
+      state = desired;
+      return true;
+    }
+    if (IsViewOriginal(desired)) {
+      state = DistillReverting(
+          absl::get<ViewOriginal>(desired).reason,
+          absl::get<Distilled>(state).reason == Distilled::Reason::kAutomatic);
+      return true;
+    }
+    if (IsDistilled(desired) || IsDistilling(desired)) {
+      // Already distilled.
+      return false;
+    }
+  }
+
+  NOTREACHED();
+  return false;
 }
 
-bool IsEnabledForSite(HostContentSettingsMap* map, const GURL& url) {
-  ContentSetting setting = map->GetContentSetting(
-      url, GURL(), ContentSettingsType::BRAVE_SPEEDREADER);
-  const bool enabled =
-      setting == CONTENT_SETTING_ALLOW || setting == CONTENT_SETTING_DEFAULT;
-  return enabled;
-}
+}  // namespace DistillStates
 
 void DistillPage(const GURL& url,
                  std::string body,

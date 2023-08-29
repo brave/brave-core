@@ -68,6 +68,7 @@ export const Button = styled.button<{inGroup?: boolean}>`
   background-color: transparent;
 
   &.is-active {
+    color: rgb(77, 82, 253);
     background-color: var(--color-button-active);
   }
 
