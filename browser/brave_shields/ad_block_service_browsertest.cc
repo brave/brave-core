@@ -92,10 +92,7 @@ using brave_shields::features::kCosmeticFilteringJsPerformance;
 AdBlockServiceTest::AdBlockServiceTest()
     : ws_server_(net::SpawnedTestServer::TYPE_WS,
                  net::GetWebSocketTestDataDirectory()),
-      https_server_(net::EmbeddedTestServer::Type::TYPE_HTTPS) {
-  brave_shields::SetDefaultAdBlockComponentIdAndBase64PublicKeyForTest(
-      kDefaultAdBlockComponentTestId, kDefaultAdBlockComponentTest64PublicKey);
-}
+      https_server_(net::EmbeddedTestServer::Type::TYPE_HTTPS) {}
 AdBlockServiceTest::~AdBlockServiceTest() = default;
 
 void AdBlockServiceTest::SetUpCommandLine(base::CommandLine* command_line) {
@@ -230,14 +227,27 @@ bool AdBlockServiceTest::InstallDefaultAdBlockComponent(
     const std::string& component_dir) {
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
+  g_brave_browser_process->ad_block_service()
+      ->component_service_manager()
+      ->SetFilterListCatalog({brave_shields::FilterListCatalogEntry(
+          "default", "", "Brave Ad Block Updater", {}, "",
+          "Default lists for Brave Browser", true, true, true, 0,
+          kDefaultAdBlockComponentTestId,
+          kDefaultAdBlockComponentTest64PublicKey, "", "")});
   const extensions::Extension* ad_block_component = LoadExtensionAsComponent(
       test_data_dir.AppendASCII("adblock-data").AppendASCII(component_dir));
-  if (!ad_block_component)
+  if (!ad_block_component) {
     return false;
+  }
 
-  g_brave_browser_process->ad_block_service()
-      ->default_filters_provider()
-      ->OnComponentReady(ad_block_component->path());
+  auto& component_providers = g_brave_browser_process->ad_block_service()
+                                  ->component_service_manager()
+                                  ->regional_filters_providers();
+  EXPECT_EQ(component_providers.size(), 1UL);
+  auto& default_provider = component_providers.at("default");
+  EXPECT_TRUE(default_provider);
+  default_provider->OnComponentReady(ad_block_component->path());
+
   WaitForAdBlockServiceThreads();
 
   return true;
@@ -307,7 +317,7 @@ bool AdBlockServiceTest::InstallRegionalAdBlockComponent(
             ->component_service_manager()
             ->regional_filters_providers();
 
-    EXPECT_EQ(regional_filters_providers.size(), 1ULL);
+    EXPECT_EQ(regional_filters_providers.size(), 2ULL);
 
     auto* regional_engine = g_brave_browser_process->ad_block_service()
                                 ->additional_filters_engine_.get();

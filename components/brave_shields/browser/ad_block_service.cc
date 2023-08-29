@@ -33,37 +33,6 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
-namespace {
-
-const char kAdBlockDefaultComponentName[] = "Brave Ad Block Updater";
-const char kAdBlockDefaultComponentId[] = "iodkpdagapdfkphljnddpjlldadblomo";
-const char kAdBlockDefaultComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsD/B/MGdz0gh7WkcFARn"
-    "ZTBX9KAw2fuGeogijoI+fET38IK0L+P/trCT2NshqhRNmrDpLzV2+Dmes6PvkA+O"
-    "dQkUV6VbChJG+baTfr3Oo5PdE0WxmP9Xh8XD7p85DQrk0jJilKuElxpK7Yq0JhcT"
-    "Sc3XNHeTwBVqCnHwWZZ+XysYQfjuDQ0MgQpS/s7U04OZ63NIPe/iCQm32stvS/pE"
-    "ya7KdBZXgRBQ59U6M1n1Ikkp3vfECShbBld6VrrmNrl59yKWlEPepJ9oqUc2Wf2M"
-    "q+SDNXROG554RnU4BnDJaNETTkDTZ0Pn+rmLmp1qY5Si0yGsfHkrv3FS3vdxVozO"
-    "PQIDAQAB";
-
-const char kAdBlockExceptionComponentName[] =
-    "Brave Ad Block First Party Filters";
-const char kAdBlockExceptionComponentId[] = "adcocjohghhfpidemphmcmlmhnfgikei";
-const char kAdBlockExceptionComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtvmLp4MOseThuH/vFSc7"
-    "kjr+CDCzR/ieGI8TJZyFQhzA1SKWRl4y0wB+HGkmoq0KPOzKNZq6hxK7jdm/r/nx"
-    "xOjqutPoUEL+ysxePErMTse2XeWu3psGSTEjPFdQTPEwH8MF2SwXXneOraD0V/GS"
-    "iCCvlx8yKIXNX7V9ujMo+QoD6hPGslKUZQJAg+OaZ7pAfq5cOuWXNN6jv12UL0eM"
-    "t6Dhl31yEu4kZWeTkiccHqdlB/KvPiqXTrV+qd3Tjvsk6kmUlexu3/zlOwVDz5H/"
-    "kPuOGvW7kYaW22NWQ9TH6fjffgVcSgHDbZETDiP8fHd76kyi1SZ5YJ09XHTE+i9i"
-    "kQIDAQAB";
-
-std::string g_ad_block_default_component_id_(kAdBlockDefaultComponentId);
-std::string g_ad_block_default_component_base64_public_key_(
-    kAdBlockDefaultComponentBase64PublicKey);
-
-}  // namespace
-
 namespace brave_shields {
 
 AdBlockService::SourceProviderObserver::SourceProviderObserver(
@@ -321,15 +290,6 @@ AdBlockService::AdBlockService(
       std::make_unique<AdBlockFilterListCatalogProvider>(
           component_update_service_);
 
-  default_filters_provider_ = std::make_unique<AdBlockComponentFiltersProvider>(
-      component_update_service_, g_ad_block_default_component_id_,
-      g_ad_block_default_component_base64_public_key_,
-      kAdBlockDefaultComponentName);
-  default_exception_filters_provider_ =
-      std::make_unique<AdBlockComponentFiltersProvider>(
-          component_update_service_, kAdBlockExceptionComponentId,
-          kAdBlockExceptionComponentBase64PublicKey,
-          kAdBlockExceptionComponentName);
   component_service_manager_ = std::make_unique<AdBlockComponentServiceManager>(
       local_state_, locale_, component_update_service_,
       filter_list_catalog_provider_.get());
@@ -467,14 +427,6 @@ void AdBlockService::TagExistsForTest(const std::string& tag,
       base::BindOnce(&AdBlockEngine::TagExists,
                      base::Unretained(default_engine_.get()), tag),
       std::move(cb));
-}
-
-// static
-void SetDefaultAdBlockComponentIdAndBase64PublicKeyForTest(
-    const std::string& component_id,
-    const std::string& component_base64_public_key) {
-  g_ad_block_default_component_id_ = component_id;
-  g_ad_block_default_component_base64_public_key_ = component_base64_public_key;
 }
 
 }  // namespace brave_shields
