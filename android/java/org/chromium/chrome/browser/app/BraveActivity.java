@@ -1080,6 +1080,18 @@ public abstract class BraveActivity extends ChromeActivity
                 && UrlUtilities.isNTPUrl(getActivityTab().getUrl().getSpec())) {
             showSearchBoxTooltip();
         }
+
+        // Added to reset app links settings for upgrade case
+        if (!PackageUtils.isFirstInstall(this)
+                && !SharedPreferencesManager.getInstance().readBoolean(
+                        BravePrivacySettings.PREF_APP_LINKS, true)
+                && SharedPreferencesManager.getInstance().readBoolean(
+                        BravePrivacySettings.PREF_APP_LINKS_RESET, true)) {
+            SharedPreferencesManager.getInstance().writeBoolean(
+                    BravePrivacySettings.PREF_APP_LINKS, true);
+            SharedPreferencesManager.getInstance().writeBoolean(
+                    BravePrivacySettings.PREF_APP_LINKS_RESET, false);
+        }
     }
 
     private void handleDeepLinkVpn() {
