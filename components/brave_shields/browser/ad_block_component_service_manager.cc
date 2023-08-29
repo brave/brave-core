@@ -180,20 +180,32 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
   // Retrieve user's setting for the list from preferences
   const auto& regional_filters_dict =
       local_state_->GetDict(prefs::kAdBlockRegionalFilters);
+  const auto* user_pref_dict = regional_filters_dict.FindDict(uuid);
+  const bool list_touched = user_pref_dict;
 
   // Apply feature overrides from Griffin without overriding user preference
   for (const auto& constants : kOverrideConstants) {
-    const bool list_touched =
-        regional_filters_dict.FindDict(constants.list_uuid);
     if (uuid == constants.list_uuid &&
         base::FeatureList::IsEnabled(*constants.feature) && !list_touched) {
       return true;
     }
   }
 
+  // Apply overrides for lists with a `default_enabled` designation in the
+  // catalog
+  auto catalog_entry =
+      brave_shields::FindAdBlockFilterListByUUID(filter_list_catalog_, uuid);
+  if (catalog_entry != filter_list_catalog_.end() &&
+      catalog_entry->default_enabled) {
+    // prefer any user setting for the list, unless it's hidden
+    if (!list_touched || catalog_entry->hidden) {
+      return true;
+    }
+  }
+
   // Use the user's preference if there was no valid override
-  if (const auto* regional_filter_dict = regional_filters_dict.FindDict(uuid)) {
-    return regional_filter_dict->FindBool("enabled").value_or(false);
+  if (user_pref_dict) {
+    return user_pref_dict->FindBool("enabled").value_or(false);
   }
 
   // Otherwise the list is disabled
