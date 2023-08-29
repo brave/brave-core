@@ -61,7 +61,7 @@ void AdBlockFiltersProviderManager::RemoveProvider(
 }
 
 std::string AdBlockFiltersProviderManager::GetNameForDebugging() {
-  return "AdBlockCustomFiltersProvider";
+  return "AdBlockFiltersProviderManager";
 }
 
 void AdBlockFiltersProviderManager::OnChanged() {
