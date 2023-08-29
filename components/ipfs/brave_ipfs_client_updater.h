@@ -31,12 +31,12 @@ static const char kIpfsClientComponentName[] =
 #if defined(ARCH_CPU_ARM64)
 static const char kIpfsClientComponentId[] = "nbhgdecjnlofkpafjpcjfajdceeppaih";
 static const char kIpfsClientComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlkgqO/A5+3OBGwVIEgec",
-    "BfZUjIZus/BpkebGyTqlOfS3krVG0WPM7YV/K9RkQCVVZFMa45pasddZSslzxaPF",
-    "GfECCovVKJRA43NWla+8eEmzdXH47StbYGhD6YMvkrjrgA4KQmlnns+YzkJr3qg5",
-    "GK9IB5OMMyUldCrIue0A44QsfFLdNXAuS9Dowx3pxamIzHljXxpywzHsSUoIL9eS",
-    "tLreFrZIBcLszyDUdAo5LCt6vQq1tlQgAg68tVQ7dMZWg9Vb1bY0cpWEks2D5LDL",
-    "8fnsn579l3Cw3dqC76Vc7fNdY00CEvvGMc8okUtZYSorTxtRr/EWftjQ0XtDvnGo",
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlkgqO/A5+3OBGwVIEgec"
+    "BfZUjIZus/BpkebGyTqlOfS3krVG0WPM7YV/K9RkQCVVZFMa45pasddZSslzxaPF"
+    "GfECCovVKJRA43NWla+8eEmzdXH47StbYGhD6YMvkrjrgA4KQmlnns+YzkJr3qg5"
+    "GK9IB5OMMyUldCrIue0A44QsfFLdNXAuS9Dowx3pxamIzHljXxpywzHsSUoIL9eS"
+    "tLreFrZIBcLszyDUdAo5LCt6vQq1tlQgAg68tVQ7dMZWg9Vb1bY0cpWEks2D5LDL"
+    "8fnsn579l3Cw3dqC76Vc7fNdY00CEvvGMc8okUtZYSorTxtRr/EWftjQ0XtDvnGo"
     "FwIDAQAB";
 #else
 static const char kIpfsClientComponentId[] = "lnbclahgobmjphilkalbhebakmblnbij";
