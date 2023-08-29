@@ -114,10 +114,14 @@ public enum NavigationPath: Equatable {
       if Preferences.Privacy.lockWithPasscode.value {
         bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
       } else {
-        bvc.askForLocalAuthentication(viewType: .widget) { [weak bvc] success, _ in
-          if success {
-            bvc?.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
+        if Preferences.Privacy.privateBrowsingLock.value {
+          bvc.askForLocalAuthentication(viewType: .widget) { [weak bvc] success, _ in
+            if success {
+              bvc?.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
+            }
           }
+        } else {
+          bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
         }
       }
     case .bookmarks:
