@@ -171,9 +171,13 @@ void ConfirmBubble::ResetChildViews() {
   RemoveAllChildViews();
 
   constexpr int kIconSize = 16;
+  // TODO(sko) There was feedback that "Added to Play Later" is pretty
+  // confusing. For now we show "Added to Playlist" for clarity. When we
+  // come to the conclusion, revert this to use
+  // PlaylistTabHelper::GetSavedFolderName() if it's needed
   AddChildView(std::make_unique<Row>(
       l10n_util::GetStringFUTF16(IDS_PLAYLIST_ADDED_TO_PLAYLIST_FOLDER,
-                                 playlist_tab_helper_->GetSavedFolderName()),
+                                 u"Playlist"),
       ui::ImageModel::FromVectorIcon(kLeoCheckCircleFilledIcon,
                                      kColorBravePlaylistAddedIcon, kIconSize)));
   bool added_separator = false;
