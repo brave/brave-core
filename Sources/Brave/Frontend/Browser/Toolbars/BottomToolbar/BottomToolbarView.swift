@@ -30,7 +30,8 @@ class BottomToolbarView: UIView, ToolbarProtocol {
 
   init(privateBrowsingManager: PrivateBrowsingManager) {
     self.privateBrowsingManager = privateBrowsingManager
-    actionButtons = [backButton, forwardButton, addTabButton, searchButton, tabsButton, menuButton]
+    let isBeta = AppConstants.buildChannel == .beta
+    actionButtons = [backButton, isBeta ? shareButton : forwardButton, addTabButton, searchButton, tabsButton, menuButton]
     super.init(frame: .zero)
     setupAccessibility()
 
