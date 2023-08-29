@@ -15,6 +15,7 @@
 #include "brave/components/debounce/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/request_otr/common/features.h"
 #include "brave/components/speedreader/common/features.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
@@ -30,6 +31,7 @@
     &brave_wallet::features::kBraveWalletSnsFeature,                    \
     &playlist::features::kPlaylist,                                     \
     &preferences::features::kBraveBackgroundVideoPlayback,              \
+    &request_otr::features::kBraveRequestOTRTab,                        \
     &safe_browsing::features::kBraveAndroidSafeBrowsing,                \
     &speedreader::kSpeedreaderFeature,                                  \
     &debounce::features::kBraveDebounce,                                \
