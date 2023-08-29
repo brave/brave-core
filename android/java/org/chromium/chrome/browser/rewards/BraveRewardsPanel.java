@@ -144,6 +144,11 @@ public class BraveRewardsPanel
     private static final String ERROR_CONVERT_PROBI = "ERROR";
     public static final String WALLET_GENERATION_DISABLED_ERROR = "wallet-generation-disabled";
 
+    // Payout status
+    private static final String PAYOUT_STATUS_PENDING = "pending";
+    private static final String PAYOUT_STATUS_PROCESSING = "processing";
+    private static final String PAYOUT_STATUS_COMPLETE = "complete";
+
     private static final int CLICK_DISABLE_INTERVAL = 1000; // In milliseconds
 
     public enum NotificationClickAction {
@@ -1022,35 +1027,49 @@ public class BraveRewardsPanel
 
     private void showPayoutStatusBanner(double nextPaymentDate) {
         String payoutStatus = mBraveRewardsNativeWorker.getPayoutStatus();
-        if (mPayoutStatusBannerLayout != null && nextPaymentDate > 0
-                && !TextUtils.isEmpty(payoutStatus) && mExternalWallet != null
+        if (mPayoutStatusBannerLayout != null && !TextUtils.isEmpty(payoutStatus)
+                && mExternalWallet != null
                 && mExternalWallet.getStatus() == WalletStatus.CONNECTED) {
             String currentDate = (String) android.text.format.DateFormat.format("MMMM", new Date());
-            String nextPayoutDate = (String) android.text.format.DateFormat.format(
-                    "MMMM dd", new Date((long) nextPaymentDate));
-            Log.e(TAG, "payoutStatus : " + payoutStatus + " nextPayoutDate : " + nextPayoutDate);
             mPayoutStatusBannerLayout.setVisibility(View.VISIBLE);
             ImageView payoutBannerImg = mPopupView.findViewById(R.id.payout_banner_img);
             TextView payoutBannerText = mPopupView.findViewById(R.id.payout_banner_text);
-            if (payoutStatus.equals("complete")) {
+            if (payoutStatus.equals(PAYOUT_STATUS_PENDING)) {
+                if (nextPaymentDate > 0) {
+                    String nextPayoutDate = (String) android.text.format.DateFormat.format(
+                            "MMMM dd", new Date((long) nextPaymentDate));
+                    Log.e(TAG,
+                            "payoutStatus : " + payoutStatus
+                                    + " nextPayoutDate : " + nextPayoutDate);
+                    mPayoutStatusBannerLayout.setBackgroundDrawable(ResourcesCompat.getDrawable(
+                            ContextUtils.getApplicationContext().getResources(),
+                            R.drawable.rewards_panel_payout_processing_bg, null));
+                    payoutBannerImg.setImageResource(R.drawable.ic_notification_auto_contribute);
+                    payoutBannerText.setText(
+                            String.format(mPopupView.getResources().getString(
+                                                  R.string.rewards_panel_payout_pending_text),
+                                    currentDate, nextPayoutDate));
+                }
+            } else if (payoutStatus.equals(PAYOUT_STATUS_PROCESSING)) {
+                mPayoutStatusBannerLayout.setBackgroundDrawable(ResourcesCompat.getDrawable(
+                        ContextUtils.getApplicationContext().getResources(),
+                        R.drawable.rewards_panel_payout_processing_bg, null));
+                payoutBannerImg.setVisibility(View.GONE);
+                payoutBannerText.setText(
+                        String.format(mPopupView.getResources().getString(
+                                              R.string.rewards_panel_payout_processing_text),
+                                currentDate,
+                                mPopupView.getResources().getString(
+                                        R.string.rewards_panel_payout_check_status_text)));
+            } else if (payoutStatus.equals(PAYOUT_STATUS_COMPLETE)) {
                 mPayoutStatusBannerLayout.setBackgroundDrawable(ResourcesCompat.getDrawable(
                         ContextUtils.getApplicationContext().getResources(),
                         R.drawable.rewards_panel_payout_complete_bg, null));
                 payoutBannerImg.setImageResource(R.drawable.ic_notification_auto_contribute);
-                payoutBannerText.setText(
-                        String.format(mPopupView.getResources().getString(
-                                              R.string.rewards_panel_payout_pending_text),
-                                currentDate, nextPayoutDate));
-            } else if (payoutStatus.equals("pending")) {
-            } else if (payoutStatus.equals("processing")) {
-                mPayoutStatusBannerLayout.setBackgroundDrawable(ResourcesCompat.getDrawable(
-                        ContextUtils.getApplicationContext().getResources(),
-                        R.drawable.rewards_panel_payout_processing_bg, null));
-                payoutBannerImg.setImageResource(R.drawable.ic_notification_auto_contribute);
-                payoutBannerText.setText(
-                        String.format(mPopupView.getResources().getString(
-                                              R.string.rewards_panel_payout_pending_text),
-                                currentDate, nextPayoutDate));
+                payoutBannerText.setText(String.format(
+                        mPopupView.getResources().getString(
+                                R.string.rewards_panel_payout_complete_text),
+                        currentDate, mPopupView.getResources().getString(R.string.support)));
             }
         }
     }

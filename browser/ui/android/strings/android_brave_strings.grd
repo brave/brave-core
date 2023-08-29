@@ -1510,8 +1510,18 @@ Are you sure you want to do this?
         Learn more about sponsored images
       </message>
       <message name="IDS_REWARDS_PANEL_PAYOUT_PENDING_TEXT" desc="Text for rewards panel payout pending text">
-        The payout for <ph name="DATA">%1$s</ph> rewards will begin processing by <ph name="DATA_TEXT">%2$s</ph>.
+        The payout for <ph name="CURRENT_MONTH">%1$s</ph> rewards will begin processing by <ph name="PAYOUT_DATE">%2$s</ph>.
       </message>
+      <message name="IDS_REWARDS_PANEL_PAYOUT_PROCESSING_TEXT" desc="Text for rewards panel payout processing text">
+        The payout for <ph name="CURRENT_MONTH">%1$s</ph> rewards is in progress. <ph name="CHECK_STATUS">%2$s</ph>
+      </message>
+      <message name="IDS_REWARDS_PANEL_PAYOUT_COMPLETE_TEXT" desc="Text for rewards panel payout complete text">
+        The payout for <ph name="CURRENT_MONTH">%1$s</ph> rewards has completed. <ph name="SUPPORT">%2$s</ph>
+      </message>
+      <message name="IDS_REWARDS_PANEL_PAYOUT_CHECK_STATUS_TEXT" desc="Text for rewards panel payout check status text">
+        Check status
+      </message>
+      
 
 
       <message name="IDS_SPONSORED_IMAGES_BOTTOM_SHEET_TEXT" desc="Text for SI bottom sheet.">
