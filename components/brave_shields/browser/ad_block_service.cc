@@ -71,7 +71,7 @@ void AdBlockService::SourceProviderObserver::OnChanged() {
 
 void AdBlockService::SourceProviderObserver::OnDATLoaded(
     const DATFileDataBuffer& dat_buf) {
-  dat_buf_ = std::move(dat_buf);
+  dat_buf_ = absl::make_optional(std::move(dat_buf));
   // multiple AddObserver calls are ignored
   resource_provider_->AddObserver(this);
   resource_provider_->LoadResources(base::BindOnce(
@@ -80,7 +80,7 @@ void AdBlockService::SourceProviderObserver::OnDATLoaded(
 
 void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
     const std::string& resources_json) {
-  if (dat_buf_.empty()) {
+  if (!dat_buf_) {
     task_runner_->PostTask(
         FROM_HERE,
         base::BindOnce(&AdBlockEngine::UseResources,
@@ -95,7 +95,8 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
             engine->Load(std::move(filter_set), resources_json);
           }
         },
-        adblock_engine_->AsWeakPtr(), std::move(dat_buf_), resources_json);
+        adblock_engine_->AsWeakPtr(), *std::move(dat_buf_), resources_json);
+    dat_buf_.reset();
     task_runner_->PostTask(FROM_HERE, std::move(engine_load_callback));
   }
 }

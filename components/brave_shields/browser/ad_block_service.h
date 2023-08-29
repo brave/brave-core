@@ -75,7 +75,7 @@ class AdBlockService {
     // AdBlockResourceProvider::Observer
     void OnResourcesLoaded(const std::string& resources_json) override;
 
-    DATFileDataBuffer dat_buf_;
+    absl::optional<DATFileDataBuffer> dat_buf_;
     raw_ptr<AdBlockEngine> adblock_engine_;
     raw_ptr<AdBlockFiltersProvider> filters_provider_;    // not owned
     raw_ptr<AdBlockResourceProvider> resource_provider_;  // not owned

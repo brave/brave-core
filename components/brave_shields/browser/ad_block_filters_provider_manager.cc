@@ -101,12 +101,6 @@ void AdBlockFiltersProviderManager::FinishCombinating(
     combined_list.push_back('\n');
     combined_list.insert(combined_list.end(), dat_buf.begin(), dat_buf.end());
   }
-  if (combined_list.size() == 0) {
-    // Small workaround for code in
-    // AdBlockService::SourceProviderObserver::OnResourcesLoaded that encodes a
-    // state using an entirely empty DAT.
-    combined_list.push_back('\n');
-  }
   std::move(cb).Run(combined_list);
 }
 
