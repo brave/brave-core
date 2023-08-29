@@ -10,12 +10,3 @@ index 7b5a8e56879b7aab545da6ca847d809020e11e96..49dd37f2d9fa3acf45a1d890b9a565c9
  }
  
  if (is_android) {
-@@ -139,7 +140,7 @@ grit("chromium_strings") {
-   outputs = [ "grit/chromium_strings.h" ] +
-             process_file_template(
-                 all_chrome_locales,
--                [ "${branding_path_product}_strings_{{source_name_part}}.pak" ])
-+                [ "${branding_path_component}_strings_{{source_name_part}}.pak" ])
- 
-   if (is_android) {
-     outputs += strings_java_resources

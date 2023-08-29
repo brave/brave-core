@@ -8,6 +8,7 @@
 from collections import defaultdict
 
 import os
+import posixpath
 import re
 import FP
 import lxml.etree  # pylint: disable=import-error
@@ -135,11 +136,13 @@ def get_override_file_path(source_string_path):
         # _override goes after the string name but before the _[locale].xtb part
         parts = basename.split('_')
         parts.insert(-1, 'override')
-        override_string_path = os.path.join(os.path.dirname(source_string_path),
-                                            '.'.join(('_'.join(parts), ext)))
+        override_string_path = posixpath.join(
+            os.path.dirname(source_string_path), '.'.join(
+                ('_'.join(parts), ext)))
     else:
-        override_string_path = os.path.join(os.path.dirname(source_string_path),
-            '.'.join((basename + '_override', ext)))
+        override_string_path = posixpath.join(
+            os.path.dirname(source_string_path), '.'.join(
+                (basename + '_override', ext)))
     return override_string_path
 
 

@@ -280,10 +280,6 @@ Config.prototype.isOfficialBuild = function () {
   return this.isReleaseBuild() && !this.isAsan()
 }
 
-Config.prototype.getBrandingPathProduct = function () {
-  return this.isOfficialBuild() ? "brave" : "brave-development"
-}
-
 Config.prototype.getBraveLogoIconName = function () {
   let iconName = "brave-icon-debug-color.svg"
   if (this.isBraveReleaseBuild()) {
@@ -324,7 +320,7 @@ Config.prototype.buildArgs = function () {
     proprietary_codecs: true,
     ffmpeg_branding: "Chrome",
     branding_path_component: "brave",
-    branding_path_product: this.getBrandingPathProduct(),
+    branding_path_product: "brave",
     enable_nacl: false,
     enable_widevine: true,
     // Our copy of signature_generator.py doesn't support --ignore_missing_cert:

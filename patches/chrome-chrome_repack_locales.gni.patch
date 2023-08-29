@@ -18,3 +18,14 @@ index 7aa8989a0f47167440824f0531ee9956d2f24098..d7a9da068994a9450eca2655dd5c038b
      if (defined(invoker.deps)) {
        deps += invoker.deps
      }
+@@ -106,8 +108,8 @@ template("chrome_repack_locales") {
+       ]
+     } else {
+       source_patterns += [
+-        "${root_gen_dir}/chrome/chromium_strings_",
+-        "${root_gen_dir}/components/strings/components_chromium_strings_",
++        "${root_gen_dir}/chrome/${branding_path_product}_strings_",
++        "${root_gen_dir}/components/strings/components_${branding_path_product}_strings_",
+       ]
+     }
+ 
