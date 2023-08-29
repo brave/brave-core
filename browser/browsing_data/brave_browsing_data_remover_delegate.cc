@@ -109,7 +109,8 @@ void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
 #if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveBrowsingDataRemoverDelegate::ClearAiChatHistory(base::Time begin_time,
                                                           base::Time end_time) {
-  // Handler for the Brave Leo History clearing
+  // Handler for the Brave Leo History clearing.
+  // It is prepared for future implementation.
 }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 

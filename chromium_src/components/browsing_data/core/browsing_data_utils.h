@@ -11,8 +11,11 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #define NUM_TYPES NUM_TYPES, BRAVE_AI_CHAT
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
 #include "src/components/browsing_data/core/browsing_data_utils.h"  // IWYU pragma: export
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #undef NUM_TYPES
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_BROWSING_DATA_CORE_BROWSING_DATA_UTILS_H_

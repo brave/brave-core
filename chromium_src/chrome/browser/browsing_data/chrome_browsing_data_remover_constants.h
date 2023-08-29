@@ -9,9 +9,16 @@
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
 
 #include "src/chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"  // IWYU pragma: export
+
 namespace chrome_browsing_data_remover {
+constexpr int BRAVE_DATA_TYPE_EMBEDDER_START_SHIFT_POS = 64 - 24;
+constexpr DataType GetBraveDataTypeValue(const int& index) {
+  return DATA_TYPE_EMBEDDER_BEGIN
+         << (BRAVE_DATA_TYPE_EMBEDDER_START_SHIFT_POS - index - 1);
+}
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
-constexpr DataType DATA_TYPE_BRAVE_LEO_HISTORY = DATA_TYPE_EMBEDDER_BEGIN << 13;
+constexpr DataType DATA_TYPE_BRAVE_LEO_HISTORY = GetBraveDataTypeValue(0);
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }  // namespace chrome_browsing_data_remover
 

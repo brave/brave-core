@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/chromium_src/components/browsing_data/core/browsing_data_utils.h"
+#include "base/containers/fixed_flat_map.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #define GetDeletionPreferenceFromDataType \
@@ -14,7 +15,9 @@
   NUM_TYPES:      \
   case BrowsingDataType::BRAVE_AI_CHAT
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
 #include "src/components/browsing_data/core/browsing_data_utils.cc"
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #undef NUM_TYPES
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
@@ -40,13 +43,14 @@ bool GetDeletionPreferenceFromDataType(
 
 absl::optional<BrowsingDataType> GetDataTypeFromDeletionPreference(
     const std::string& pref_name) {
-  using DataTypeMap = base::flat_map<std::string, BrowsingDataType>;
+  using DataTypeMap =
+      base::fixed_flat_map<std::string, BrowsingDataType, 1, std::less<>>;
   static base::NoDestructor<DataTypeMap> preference_to_datatype(
-      std::initializer_list<DataTypeMap::value_type>{
+      base::MakeFixedFlatMap<std::string, BrowsingDataType>({
           {prefs::kDeleteBraveLeoHistory, BrowsingDataType::BRAVE_AI_CHAT},
-      });
+      }));
 
-  auto iter = preference_to_datatype->find(pref_name);
+  auto* iter = preference_to_datatype->find(pref_name);
   if (iter != preference_to_datatype->end()) {
     return iter->second;
   }
