@@ -19,6 +19,13 @@
 
 namespace brave_ads {
 
+namespace {
+
+constexpr char kGetTablesCountSql[] =
+    "SELECT COUNT(*) FROM sqlite_schema WHERE type='table'";
+
+}  // namespace
+
 Database::Database(base::FilePath path) : db_path_(std::move(path)) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 
@@ -105,16 +112,13 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
   int table_version = 0;
 
   if (!is_initialized_) {
-    bool table_exists = false;
-    if (sql::MetaTable::DoesTableExist(&db_)) {
-      table_exists = true;
-    }
+    const bool should_create_tables = ShouldCreateTables();
 
     if (!meta_table_.Init(&db_, version, compatible_version)) {
       return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
     }
 
-    if (table_exists) {
+    if (!should_create_tables) {
       table_version = meta_table_.GetVersionNumber();
     }
 
@@ -220,6 +224,25 @@ mojom::DBCommandResponseInfo::StatusType Database::Migrate(
   }
 
   return mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK;
+}
+
+bool Database::ShouldCreateTables() {
+  if (!sql::MetaTable::DoesTableExist(&db_)) {
+    return true;
+  }
+
+  return GetTablesCount() <= 1;
+}
+
+int Database::GetTablesCount() {
+  sql::Statement statement(db_.GetUniqueStatement(kGetTablesCountSql));
+
+  int tables_count = 0;
+  if (statement.Step()) {
+    tables_count = statement.ColumnInt(0);
+  }
+
+  return tables_count;
 }
 
 void Database::ErrorCallback(const int error, sql::Statement* statement) {
