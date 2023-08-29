@@ -47,80 +47,86 @@ struct BiometricView: View {
   }
 
   var body: some View {
-    VStack {
-      ZStack {
-        Circle()
-          .strokeBorder(Color(.braveInfoBorder).opacity(0.3))
-          .background(
+    GeometryReader { geometry in
+      ScrollView {
+        VStack {
+          ZStack {
             Circle()
-              .foregroundColor(Color(.braveInfoBackground).opacity(0.5))
-          )
-          .frame(width: 240, height: 240)
-        Rectangle()
-          .frame(width: 96, height: 96)
-          .foregroundColor(Color(.braveBackground))
-          .cornerRadius(20)
-        if let biometricsIcon {
-          biometricsIcon
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 52, height: 52)
-            .foregroundColor(Color(.braveInfoLabel))
+              .strokeBorder(Color(.braveInfoBorder).opacity(0.3))
+              .background(
+                Circle()
+                  .foregroundColor(Color(.braveInfoBackground).opacity(0.5))
+              )
+              .frame(width: 240, height: 240)
+            Rectangle()
+              .frame(width: 96, height: 96)
+              .foregroundColor(Color(.braveBackground))
+              .cornerRadius(20)
+            if let biometricsIcon {
+              biometricsIcon
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 52, height: 52)
+                .foregroundColor(Color(.braveInfoLabel))
+            }
+          }
+          Group {
+            Text(String.localizedStringWithFormat(Strings.Wallet.biometricsSetupTitle, biometricName))
+              .font(.title)
+              .foregroundColor(.primary)
+              .padding(.bottom, 10)
+            Text(String.localizedStringWithFormat(Strings.Wallet.biometricsSetupSubTitle, biometricName))
+              .font(.body)
+              .foregroundColor(Color(.secondaryBraveLabel))
+          }
+          .fixedSize(horizontal: false, vertical: true)
+          .multilineTextAlignment(.center)
+          .padding(.top, 28)
+          Button {
+            // Store password in keychain
+            if let password = keyringStore.passwordToSaveInBiometric, case let status = keyringStore.storePasswordInKeychain(password),
+               status != errSecSuccess {
+              biometricError = status
+            } else {
+              keyringStore.passwordToSaveInBiometric = nil
+              completion()
+            }
+          } label: {
+            Text(String.localizedStringWithFormat(Strings.Wallet.biometricsSetupEnableButtonTitle, biometricName))
+              .frame(maxWidth: .infinity)
+          }
+          .buttonStyle(BraveFilledButtonStyle(size: .large))
+          .padding(.top, 80)
+          Button(action: {
+            keyringStore.passwordToSaveInBiometric = nil
+            completion()
+          }) {
+            Text(Strings.Wallet.skipButtonTitle)
+              .font(Font.subheadline.weight(.medium))
+              .foregroundColor(Color(.braveLabel))
+          }
+          .padding(.top, 20)
         }
+        .frame(maxWidth: .infinity, minHeight: geometry.size.height)
+        .padding(.horizontal, 24)
+        .padding(.bottom, 40)
       }
-      Group {
-        Text(String.localizedStringWithFormat(Strings.Wallet.biometricsSetupTitle, biometricName))
-          .font(.title)
-          .foregroundColor(.primary)
-          .padding(.bottom, 10)
-        Text(String.localizedStringWithFormat(Strings.Wallet.biometricsSetupSubTitle, biometricName))
-          .font(.body)
-          .foregroundColor(Color(.secondaryBraveLabel))
+      .alert(isPresented: Binding(
+        get: { biometricError != nil },
+        set: { _, _ in })
+      ) {
+        Alert(
+          title: Text(Strings.Wallet.biometricsSetupErrorTitle),
+          message: Text(Strings.Wallet.biometricsSetupErrorMessage + (AppConstants.buildChannel.isPublic ? "" : " (\(biometricError ?? -1))")),
+          dismissButton: .default(Text( Strings.OKString), action: {
+            keyringStore.passwordToSaveInBiometric = nil
+            completion()
+          })
+        )
       }
-      .fixedSize(horizontal: false, vertical: true)
-      .multilineTextAlignment(.center)
-      .padding(.top, 28)
-      Button {
-        // Store password in keychain
-        if let password = keyringStore.passwordToSaveInBiometric, case let status = keyringStore.storePasswordInKeychain(password),
-           status != errSecSuccess {
-          biometricError = status
-        } else {
-          keyringStore.passwordToSaveInBiometric = nil
-          completion()
-        }
-      } label: {
-        Text(String.localizedStringWithFormat(Strings.Wallet.biometricsSetupEnableButtonTitle, biometricName))
-          .frame(maxWidth: .infinity)
-      }
-      .buttonStyle(BraveFilledButtonStyle(size: .large))
-      .padding(.top, 80)
-      Button(action: {
-        keyringStore.passwordToSaveInBiometric = nil
-        completion()
-      }) {
-        Text(Strings.Wallet.skipButtonTitle)
-          .font(Font.subheadline.weight(.medium))
-          .foregroundColor(Color(.braveLabel))
-      }
-      .padding(.top, 20)
+      .interactiveDismissDisabled()
+      .transparentNavigationBar()
     }
-    .padding(.horizontal, 24)
-    .alert(isPresented: Binding(
-      get: { biometricError != nil },
-      set: { _, _ in })
-    ) {
-      Alert(
-        title: Text(Strings.Wallet.biometricsSetupErrorTitle),
-        message: Text(Strings.Wallet.biometricsSetupErrorMessage + (AppConstants.buildChannel.isPublic ? "" : " (\(biometricError ?? -1))")),
-        dismissButton: .default(Text( Strings.OKString), action: {
-          keyringStore.passwordToSaveInBiometric = nil
-          completion()
-        })
-      )
-    }
-    .interactiveDismissDisabled()
-    .transparentNavigationBar()
   }
 }
 
