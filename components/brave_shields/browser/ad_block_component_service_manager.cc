@@ -122,46 +122,21 @@ void AdBlockComponentServiceManager::StartRegionalServices() {
     local_state_->SetBoolean(prefs::kAdBlockCheckedAllDefaultRegions, true);
   }
 
-  // Start all regional services associated with enabled filter lists
-  const auto& regional_filters_dict =
-      local_state_->GetDict(prefs::kAdBlockRegionalFilters);
-
-  auto regional_filters_dict_with_overrides = regional_filters_dict.Clone();
-  for (const auto& constants : kOverrideConstants) {
-    const bool list_touched =
-        regional_filters_dict.FindDict(constants.list_uuid);
-
-    if (base::FeatureList::IsEnabled(*constants.feature) && !list_touched) {
-      base::Value::Dict list_entry;
-      list_entry.Set("enabled", true);
-      regional_filters_dict_with_overrides.Set(constants.list_uuid,
-                                               std::move(list_entry));
-    }
-  }
-
-  for (const auto kv : regional_filters_dict_with_overrides) {
-    const std::string uuid = kv.first;
-    bool enabled = false;
-    const auto* regional_filter_dict =
-        regional_filters_dict_with_overrides.FindDict(uuid);
-    if (regional_filter_dict) {
-      enabled = regional_filter_dict->FindBool("enabled").value_or(false);
-    }
-    if (enabled) {
-      auto catalog_entry = brave_shields::FindAdBlockFilterListByUUID(
-          filter_list_catalog_, uuid);
-      auto existing_provider = regional_filters_providers_.find(uuid);
-      // Iterating through locally enabled lists - don't disable any providers
-      // or update existing providers with a potentially new catalog entry.
+  // Start component services associated with enabled filter lists
+  for (const auto& catalog_entry : filter_list_catalog_) {
+    if (IsFilterListEnabled(catalog_entry.uuid)) {
+      auto existing_provider =
+          regional_filters_providers_.find(catalog_entry.uuid);
+      // Only check for new lists that are part of the catalog - don't touch any
+      // existing providers to account for modified or removed catalog entries.
       // They'll be handled after a browser restart.
-      if (catalog_entry != filter_list_catalog_.end() &&
-          existing_provider == regional_filters_providers_.end()) {
+      if (existing_provider == regional_filters_providers_.end()) {
         auto regional_filters_provider =
             std::make_unique<AdBlockComponentFiltersProvider>(
-                component_update_service_, *catalog_entry,
-                catalog_entry->first_party_protections);
+                component_update_service_, catalog_entry,
+                catalog_entry.first_party_protections);
         regional_filters_providers_.insert(
-            {uuid, std::move(regional_filters_provider)});
+            {catalog_entry.uuid, std::move(regional_filters_provider)});
       }
     }
   }
@@ -202,9 +177,11 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
   DCHECK(!uuid.empty());
   DCHECK(local_state_);
 
+  // Retrieve user's setting for the list from preferences
   const auto& regional_filters_dict =
       local_state_->GetDict(prefs::kAdBlockRegionalFilters);
 
+  // Apply feature overrides from Griffin without overriding user preference
   for (const auto& constants : kOverrideConstants) {
     const bool list_touched =
         regional_filters_dict.FindDict(constants.list_uuid);
@@ -214,10 +191,12 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
     }
   }
 
+  // Use the user's preference if there was no valid override
   if (const auto* regional_filter_dict = regional_filters_dict.FindDict(uuid)) {
     return regional_filter_dict->FindBool("enabled").value_or(false);
   }
 
+  // Otherwise the list is disabled
   return false;
 }
 
