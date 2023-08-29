@@ -29,7 +29,7 @@ extension UIWindowScene {
 }
 
 extension UIViewController {
-  func askForLocalAuthentication(completion: ((Bool, LAError.Code?) -> Void)? = nil) {
+  func askForLocalAuthentication(viewType: AuthViewType = .general, completion: ((Bool, LAError.Code?) -> Void)? = nil) {
     guard let windowProtection = currentScene?.browserViewController?.windowProtection else {
       completion?(false, nil)
       return
@@ -41,7 +41,7 @@ extension UIViewController {
       completion?(true, nil)
     } else {
       windowProtection.presentAuthenticationForViewController(
-        determineLockWithPasscode: false, viewType: .general) { status, error in
+        determineLockWithPasscode: false, viewType: viewType) { status, error in
           completion?(status, error)
       }
     }
