@@ -485,10 +485,6 @@ Config.prototype.buildArgs = function () {
       args.use_vaapi = true
 
     }
-    if (this.targetArch === 'arm64') {
-      // We don't yet support Widevine on Arm64 Linux.
-      args.enable_widevine = false
-    }
   }
 
   if (['android', 'linux', 'mac'].includes(this.getTargetOS())) {
