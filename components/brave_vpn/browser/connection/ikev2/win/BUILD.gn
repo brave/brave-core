@@ -39,6 +39,7 @@ source_set("win") {
     "//brave/components/brave_vpn/browser/connection/ikev2",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/brave_vpn/common/win/ras",
     "//net",
     "//services/network/public/cpp",
   ]

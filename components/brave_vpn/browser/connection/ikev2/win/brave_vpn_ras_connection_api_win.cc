@@ -8,7 +8,7 @@
 #include <windows.h>
 
 #include <netlistmgr.h>  // For CLSID_NetworkListManager
-#include <ras.h>
+
 #include <wrl/client.h>
 #include <memory>
 
@@ -53,12 +53,10 @@ BraveVPNOSConnectionAPIWin::BraveVPNOSConnectionAPIWin(
     PrefService* local_prefs,
     version_info::Channel channel)
     : BraveVPNOSConnectionAPIBase(url_loader_factory, local_prefs, channel) {
-  StartVPNConnectionChangeMonitoring();
+  StartRasConnectionChangeMonitoring();
 }
 
-BraveVPNOSConnectionAPIWin::~BraveVPNOSConnectionAPIWin() {
-  CloseHandle(event_handle_for_connected_disconnected_);
-}
+BraveVPNOSConnectionAPIWin::~BraveVPNOSConnectionAPIWin() {}
 
 void BraveVPNOSConnectionAPIWin::CreateVPNConnectionImpl(
     const BraveVPNConnectionInfo& info) {
@@ -94,16 +92,13 @@ void BraveVPNOSConnectionAPIWin::CheckConnectionImpl(const std::string& name) {
                      weak_factory_.GetWeakPtr(), name));
 }
 
-void BraveVPNOSConnectionAPIWin::OnObjectSignaled(HANDLE object) {
+void BraveVPNOSConnectionAPIWin::OnRasConnectionStateChanged() {
   DCHECK(!target_vpn_entry_name().empty());
 
   // Check connection state for BraveVPN entry again when connected or
   // disconnected events are arrived because we can get both event from any os
   // vpn entry. All other events are sent by our code at utils_win.cc.
-  if (object == event_handle_for_connected_disconnected_) {
-    CheckConnectionImpl(target_vpn_entry_name());
-    return;
-  }
+  CheckConnectionImpl(target_vpn_entry_name());
 }
 
 void BraveVPNOSConnectionAPIWin::OnCheckConnection(
@@ -156,21 +151,6 @@ void BraveVPNOSConnectionAPIWin::OnDisconnected(
     return;
   }
   SetLastConnectionError(result.error_description);
-}
-
-void BraveVPNOSConnectionAPIWin::StartVPNConnectionChangeMonitoring() {
-  DCHECK(!event_handle_for_connected_disconnected_);
-
-  event_handle_for_connected_disconnected_ =
-      CreateEvent(NULL, false, false, NULL);
-
-  // Ase we pass INVALID_HANDLE_VALUE, we can get connected or disconnected
-  // event from any os vpn entry. It's filtered by OnObjectSignaled().
-  RasConnectionNotificationW(static_cast<HRASCONN>(INVALID_HANDLE_VALUE),
-                             event_handle_for_connected_disconnected_,
-                             RASCN_Connection | RASCN_Disconnection);
-  connected_disconnected_event_watcher_.StartWatchingMultipleTimes(
-      event_handle_for_connected_disconnected_, this);
 }
 
 bool BraveVPNOSConnectionAPIWin::IsPlatformNetworkAvailable() {
