@@ -11,9 +11,6 @@ interface ToolbarFactory {
 };
 
 interface ToolbarDataHandler {
-  GetSiteSettings() => (SiteSettings site_settings);
-  SetSiteSettings(SiteSettings site_settings);
-
   GetAppearanceSettings() =>(AppearanceSettings appearance_settings);
   SetAppearanceSettings(AppearanceSettings appearance_settings);
 
@@ -21,6 +18,8 @@ interface ToolbarDataHandler {
   SetTtsSettings(TtsSettings tts_settings);
 
   ObserveThemeChange();
+
+  ShowTuneBubble(bool show);
 
   ViewOriginal();
 
@@ -38,16 +37,12 @@ interface ToolbarDataHandler {
 };
 
 interface ToolbarEventsHandler {
-  OnSiteSettingsChanged(SiteSettings site_settings);
   OnAppearanceSettingsChanged(AppearanceSettings appearance_settings);
   OnTtsSettingsChanged(TtsSettings tts_settings);
   OnBrowserThemeChanged(ToolbarColors colors);
+  OnTuneBubbleClosed();
 
   SetPlaybackState(PlaybackState playback_state);
-};
-
-struct SiteSettings {
-  bool speedreader_enabled = false;
 };
 
 struct AppearanceSettings {

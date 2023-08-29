@@ -827,8 +827,8 @@
       <part file="tor_strings.grdp" />
       <part file="brave_news_strings.grdp" />
       <part file="commands.grdp" />
+      <part file="speedreader_strings.grdp" />
       <if expr="not is_android">
-        <part file="speedreader_strings.grdp" />
         <part file="brave_shields_strings.grdp" />
         <part file="brave_welcome_strings.grdp" />
         <part file="ai_chat_prompts.grdp" />

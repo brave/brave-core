@@ -13,13 +13,19 @@ import { getLocale } from '$web-common/locale'
 
 export enum MainButtonType {
   None,
+  Tune,
   Appearance,
   TextToSpeech,
-  Speedreader,
   AI
 }
 
 const mainButtonsOptions = [
+  {
+    id: 'tune',
+    type: MainButtonType.Tune,
+    iconName: 'tune',
+    title: getLocale('braveReaderModeTune')
+  },
   {
     id: 'appearance',
     type: MainButtonType.Appearance,
@@ -32,12 +38,6 @@ const mainButtonsOptions = [
     iconName: 'headphones',
     hidden: true,  // TODO(boocmp): Enable in future PR.
     title: getLocale('braveReaderModeTextToSpeech')
-  },
-  {
-    id: 'speedreader',
-    type: MainButtonType.Speedreader,
-    iconName: 'product-speedreader',
-    title: getLocale('braveReaderModeSpeedreader')
   },
   {
     id: 'ai',

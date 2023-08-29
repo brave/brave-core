@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_SPEEDREADER_ICON_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_SPEEDREADER_ICON_VIEW_H_
 
-#include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/components/speedreader/speedreader_util.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
@@ -30,6 +30,7 @@ class SpeedreaderIconView : public PageActionIconView {
   views::BubbleDialogDelegate* GetBubble() const override;
   std::u16string GetTextForTooltipAndAccessibleName() const override;
   void UpdateImpl() override;
+  bool OnMousePressed(const ui::MouseEvent& event) override;
 
  private:
   speedreader::DistillState GetDistillState() const;

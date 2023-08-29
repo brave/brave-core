@@ -147,12 +147,6 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
   }
 
   {
-    SCOPED_TRACE("Content setting: BRAVE_SPEEDREADER");
-    info = registry()->Get(ContentSettingsType::BRAVE_SPEEDREADER);
-    EXPECT_EQ(CONTENT_SETTING_ALLOW, info->GetInitialDefaultSetting());
-  }
-
-  {
     SCOPED_TRACE("Content setting: BRAVE_ETHEREUM");
     info = registry()->Get(ContentSettingsType::BRAVE_ETHEREUM);
     EXPECT_EQ(CONTENT_SETTING_ASK, info->GetInitialDefaultSetting());
@@ -181,6 +175,12 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
   // {
   //   SCOPED_TRACE("Content setting: BRAVE_COOKIES");
   //   info = registry()->Get(ContentSettingsType::BRAVE_COOKIES);
+  //   EXPECT_EQ(CONTENT_SETTING_DEFAULT, info->GetInitialDefaultSetting());
+  // }
+
+  // {
+  //   SCOPED_TRACE("Content setting: BRAVE_SPEEDREADER");
+  //   info = registry()->Get(ContentSettingsType::BRAVE_SPEEDREADER);
   //   EXPECT_EQ(CONTENT_SETTING_DEFAULT, info->GetInitialDefaultSetting());
   // }
 }

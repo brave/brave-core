@@ -788,43 +788,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if>
 
-      <!-- Speedreader -->
-      <if expr="enable_speedreader">
-        <message name="IDS_SPEEDREADER_ASK_ENABLE" desc="Label prompting user to enable Speedreader">
-          Do you want to turn on Speedreader?
-        </message>
-        <message name="IDS_SPEEDREADER_ENABLE_BUTTON" desc="Button to enable Speedreader">
-          Turn on Speedreader
-        </message>
-        <message name="IDS_SPEEDREADER_EXPLANATION" desc="Label to explain how Speedreader is different from other reader modes">
-          Articles automatically load in reader mode, saving you time.
-        </message>
-        <message name="IDS_SPEEDREADER_DISABLE_THIS_SITE" desc="Label to enable or disable speedreader per site">
-          Turn on/off reader mode just for this website. To turn off Speedreader for your entire browser profile, visit
-        </message>
-        <message name="IDS_ACCNAME_SPEEDREADER_DISABLE_THIS_SITE_TOGGLE" desc="Accessible text for the toggle to enable or disable speedreader per site">
-          Toggle to turn on/off reader mode just for this website.
-        </message>
-        <message name="IDS_PAGE_IS_DISTILLED" desc="Speedreader is enabled on this page">
-          in Speedreader
-        </message>
-        <message name="IDS_SPEEDREADER_ICON_TURN_OFF_READER_MODE" desc="Accessible text shown when a page is in Reader Mode">
-          Turn off reader mode
-        </message>
-        <message name="IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE" desc="Accessible text shown when a page can be distilled">
-          Turn on reader mode
-        </message>
-        <message name="IDS_SPEEDREADER_ICON_SPEEDREADER_SETTINGS" desc="Accessible text shown when a page is in Speedreader Mode">
-          Speedreader settings
-        </message>
-        <message name="IDS_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK" desc="Text of the link to show original page">
-          View original
-        </message>
-        <message name="IDS_SPEEDREADER_MINUTES_TEXT" desc="Text of the read time element">
-          min. read
-        </message>
-      </if>
-
       <!-- Stats -->
       <message name="IDS_BRAVE_STATS_USAGE_PING_SETTING" desc="Description that shows in settings for toggling stats usage pings">
         Automatically send daily usage ping to Brave

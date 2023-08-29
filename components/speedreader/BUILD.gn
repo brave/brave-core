@@ -47,6 +47,7 @@ static_library("speedreader") {
     "//components/keyed_service/core:core",
     "//components/prefs:prefs",
     "//components/sessions:sessions",
+    "//components/user_prefs:user_prefs",
     "//content/public/browser",
     "//crypto",
     "//services/network/public/cpp",

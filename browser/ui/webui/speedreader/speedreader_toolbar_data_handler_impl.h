@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/scoped_observation.h"
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/tts_player.h"
@@ -17,8 +18,6 @@
 #include "chrome/browser/ui/browser_tab_strip_tracker.h"
 #include "chrome/browser/ui/browser_tab_strip_tracker_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
-#include "components/content_settings/core/browser/content_settings_observer.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -28,10 +27,6 @@
 
 class Browser;
 
-namespace speedreader {
-class SpeedreaderTabHelper;
-}  // namespace speedreader
-
 class SpeedreaderToolbarDataHandlerImpl
     : public speedreader::mojom::ToolbarDataHandler,
       public speedreader::SpeedreaderService::Observer,
@@ -40,7 +35,7 @@ class SpeedreaderToolbarDataHandlerImpl
       public BrowserTabStripTrackerDelegate,
       public ThemeServiceObserver,
       public ui::NativeThemeObserver,
-      public content_settings::Observer {
+      public speedreader::SpeedreaderTabHelper::Observer {
  public:
   SpeedreaderToolbarDataHandlerImpl(
       Browser* browser,
@@ -54,9 +49,7 @@ class SpeedreaderToolbarDataHandlerImpl
   ~SpeedreaderToolbarDataHandlerImpl() override;
 
   // speedreader::mojom::ToolbarDataHandler overrides
-  void GetSiteSettings(GetSiteSettingsCallback callback) override;
-  void SetSiteSettings(speedreader::mojom::SiteSettingsPtr settings) override;
-
+  void ShowTuneBubble(bool show) override;
   void GetAppearanceSettings(GetAppearanceSettingsCallback callback) override;
   void SetAppearanceSettings(
       speedreader::mojom::AppearanceSettingsPtr appearance_settings) override;
@@ -113,11 +106,8 @@ class SpeedreaderToolbarDataHandlerImpl
   // ui::NativeThemeObserver:
   void OnNativeThemeUpdated(ui::NativeTheme* observed_theme) override;
 
-  // content_settings::Observer:
-  void OnContentSettingChanged(
-      const ContentSettingsPattern& primary_pattern,
-      const ContentSettingsPattern& secondary_pattern,
-      ContentSettingsTypeSet content_type_set) override;
+  // speedreader::SpeedreaderTabHelper::Observer:
+  void OnTuneBubbleClosed() override;
 
   raw_ptr<Browser> browser_ = nullptr;
   mojo::Receiver<speedreader::mojom::ToolbarDataHandler> receiver_;
@@ -137,8 +127,9 @@ class SpeedreaderToolbarDataHandlerImpl
       theme_observation_{this};
   base::ScopedObservation<ui::NativeTheme, ui::NativeThemeObserver>
       native_theme_observation_{this};
-  base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
-      host_content_settings_map_observation_{this};
+  base::ScopedObservation<speedreader::SpeedreaderTabHelper,
+                          speedreader::SpeedreaderTabHelper::Observer>
+      tab_helper_observation_{this};
 
   base::WeakPtrFactory<SpeedreaderToolbarDataHandlerImpl> weak_factory_{this};
 };
