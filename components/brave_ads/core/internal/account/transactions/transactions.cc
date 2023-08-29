@@ -24,7 +24,6 @@ TransactionInfo BuildTransaction(const std::string& creative_instance_id,
                                  const AdType& ad_type,
                                  const ConfirmationType& confirmation_type) {
   CHECK(!creative_instance_id.empty());
-  CHECK(!segment.empty());
   CHECK_NE(AdType::kUndefined, ad_type);
   CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
@@ -47,7 +46,6 @@ TransactionInfo AddTransaction(const std::string& creative_instance_id,
                                const ConfirmationType& confirmation_type,
                                AddTransactionCallback callback) {
   CHECK(!creative_instance_id.empty());
-  CHECK(!segment.empty());
   CHECK_NE(AdType::kUndefined, ad_type);
   CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
