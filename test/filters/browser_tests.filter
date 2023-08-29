@@ -311,6 +311,7 @@
 # of CONTENT_SETTING_DEFAULT which is not allowed as an integer value by
 # content_settings::ParseContentSettingValue
 # https://github.com/brave/brave-browser/issues/25733
+-UnusedSitePermissionsServiceBrowserTest.RevokeAllContentSettingTypes
 -UnusedSitePermissionsServiceBrowserTest.TestIncognitoProfile
 -UnusedSitePermissionsServiceBrowserTest.TestNavigationUpdatesLastUsedDate
 -UnusedSitePermissionsServiceBrowserTest.TestRevokeUnusedPermissions
@@ -896,6 +897,9 @@
 # Shutdown, which seems to be hanging in trying to reset
 # history_service_observation_).
 -ConsentDialogUiTest.GetConsentDialogBodyTest
+
+# These fail because we disalbe history_clusters::internal::kJourneys.
+-RenameJourneys/HistoryClustersPolicyTest.HistoryClustersVisible/*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
