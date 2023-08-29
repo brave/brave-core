@@ -7,6 +7,7 @@ import Storage
 import UIKit
 import Shared
 import BraveUI
+import Preferences
 
 enum ShortcutType: String {
   case newTab = "NewTab"
@@ -59,7 +60,15 @@ public class QuickActions: NSObject {
     case .newTab:
       handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: false)
     case .newPrivateTab:
-      handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: true)
+      if Preferences.Privacy.lockWithPasscode.value {
+        handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: true)
+      } else {
+        browserViewController.askForLocalAuthentication(viewType: .widget) { [weak self] success, _ in
+          if success {
+            self?.handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: true)
+          }
+        }
+      }
     case .scanQRCode:
       handleScanQR(withBrowserViewController: browserViewController)
     }
