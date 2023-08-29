@@ -284,8 +284,9 @@ bool AdBlockServiceTest::InstallRegionalAdBlockComponent(
   filter_list_catalog.push_back(brave_shields::FilterListCatalogEntry(
       uuid, "https://easylist-downloads.adblockplus.org/liste_fr.txt",
       "EasyList Liste FR", {"fr"}, "https://forums.lanik.us/viewforum.php?f=91",
+      "Removes advertisements from French websites", false, false, false, 0,
       kRegionalAdBlockComponentTestId, kRegionalAdBlockComponentTest64PublicKey,
-      "Removes advertisements from French websites", "", ""));
+      "", ""));
   g_brave_browser_process->ad_block_service()
       ->component_service_manager()
       ->SetFilterListCatalog(filter_list_catalog);

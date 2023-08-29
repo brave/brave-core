@@ -127,9 +127,9 @@ class CookieListOptInBrowserTest : public InProcessBrowserTest {
         kCookieListUuid,
         "https://secure.fanboy.co.nz/fanboy-cookiemonster_ubo.txt",
         "Easylist-Cookie List - Filter Obtrusive Cookie Notices", {},
-        "https://forums.lanik.us/", kRegionalAdBlockComponentTestId,
-        kRegionalAdBlockComponentTest64PublicKey,
-        "Removes obtrusive cookie law notices", "", "")};
+        "https://forums.lanik.us/", "Removes obtrusive cookie law notices",
+        false, false, false, 0, kRegionalAdBlockComponentTestId,
+        kRegionalAdBlockComponentTest64PublicKey, "", "")};
     GetComponentServiceManager()->SetFilterListCatalog(filter_list_catalog);
   }
 
