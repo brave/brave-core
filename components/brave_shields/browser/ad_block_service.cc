@@ -54,7 +54,7 @@ AdBlockService::SourceProviderObserver::SourceProviderObserver(
             base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATLoaded,
                            weak_factory_.GetWeakPtr()));
   } else {
-    filters_provider_->LoadDAT(
+    filters_provider_->LoadDATBuffer(
         base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATLoaded,
                        weak_factory_.GetWeakPtr()));
   }
@@ -73,7 +73,7 @@ void AdBlockService::SourceProviderObserver::OnChanged() {
             base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATLoaded,
                            weak_factory_.GetWeakPtr()));
   } else {
-    filters_provider_->LoadDAT(
+    filters_provider_->LoadDATBuffer(
         base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATLoaded,
                        weak_factory_.GetWeakPtr()));
   }

@@ -37,8 +37,9 @@ class AdBlockFiltersProvider {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  void LoadDAT(base::OnceCallback<void(bool deserialize,
-                                       const DATFileDataBuffer& dat_buf)>);
+  virtual void LoadDATBuffer(
+      base::OnceCallback<void(bool deserialize,
+                              const DATFileDataBuffer& dat_buf)>) = 0;
 
   base::WeakPtr<AdBlockFiltersProvider> AsWeakPtr();
 
@@ -47,9 +48,6 @@ class AdBlockFiltersProvider {
  protected:
   bool engine_is_default_;
 
-  virtual void LoadDATBuffer(
-      base::OnceCallback<void(bool deserialize,
-                              const DATFileDataBuffer& dat_buf)>) = 0;
   void NotifyObservers();
 
  private:

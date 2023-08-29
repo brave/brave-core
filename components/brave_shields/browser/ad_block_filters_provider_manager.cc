@@ -96,7 +96,7 @@ void AdBlockFiltersProviderManager::LoadDATBufferForEngine(
     task_tracker_.PostTask(
         base::SequencedTaskRunner::GetCurrentDefault().get(), FROM_HERE,
         base::BindOnce(
-            &AdBlockFiltersProvider::LoadDAT, provider->AsWeakPtr(),
+            &AdBlockFiltersProvider::LoadDATBuffer, provider->AsWeakPtr(),
             base::BindOnce(OnDATLoaded, std::move(collect_and_merge))));
   }
 }
