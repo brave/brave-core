@@ -47,17 +47,7 @@ AdBlockService::SourceProviderObserver::SourceProviderObserver(
       task_runner_(task_runner),
       is_filter_provider_manager_(is_filter_provider_manager) {
   filters_provider_->AddObserver(this);
-  if (is_filter_provider_manager_) {
-    static_cast<AdBlockFiltersProviderManager*>(filters_provider_.get())
-        ->LoadDATBufferForEngine(
-            adblock_engine_->IsDefaultEngine(),
-            base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATLoaded,
-                           weak_factory_.GetWeakPtr()));
-  } else {
-    filters_provider_->LoadDATBuffer(
-        base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATLoaded,
-                       weak_factory_.GetWeakPtr()));
-  }
+  OnChanged();
 }
 
 AdBlockService::SourceProviderObserver::~SourceProviderObserver() {
