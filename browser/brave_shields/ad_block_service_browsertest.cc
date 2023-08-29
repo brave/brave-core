@@ -1866,6 +1866,28 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleMerging) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
+// Lists with `hidden` set to `true` should not be shown in `GetRegionalLists`.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, HiddenListsNotPresented) {
+  std::vector<brave_shields::FilterListCatalogEntry> filter_list_catalog;
+  filter_list_catalog.push_back(brave_shields::FilterListCatalogEntry(
+      "uuid1", "https://example.com", "Hidden list", {},
+      "https://support.example.com", "first list", true, false, false, 0,
+      "testid1", "pubkey1", "", ""));
+  filter_list_catalog.push_back(brave_shields::FilterListCatalogEntry(
+      "uuid2", "https://example.com", "Normal list", {},
+      "https://support.example.com", "second list", false, false, false, 0,
+      "testid2", "pubkey2", "", ""));
+  g_brave_browser_process->ad_block_service()
+      ->component_service_manager()
+      ->SetFilterListCatalog(filter_list_catalog);
+
+  auto regional_lists = g_brave_browser_process->ad_block_service()
+                            ->component_service_manager()
+                            ->GetRegionalLists();
+
+  ASSERT_EQ(regional_lists.size(), 1UL);
+}
+
 // Verify that scripts violating a Content Security Policy from a `$csp` rule
 // are not loaded.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleShieldsDown) {

@@ -282,6 +282,9 @@ base::Value::List AdBlockComponentServiceManager::GetRegionalLists() {
 
   base::Value::List list;
   for (const auto& region_list : filter_list_catalog_) {
+    if (region_list.hidden) {
+      continue;
+    }
     // Most settings come directly from the regional catalog from
     // https://github.com/brave/adblock-resources
     base::Value::Dict dict;
