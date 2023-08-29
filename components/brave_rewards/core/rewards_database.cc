@@ -211,16 +211,13 @@ mojom::DBCommandResponse::Status RewardsDatabase::Initialize(
 
   int table_version = 0;
   if (!initialized_) {
-    bool table_exists = false;
-    if (meta_table_.DoesTableExist(&db_)) {
-      table_exists = true;
-    }
+    const bool should_create_tables = ShouldCreateTables();
 
     if (!meta_table_.Init(&db_, version, compatible_version)) {
       return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
     }
 
-    if (table_exists) {
+    if (!should_create_tables) {
       table_version = meta_table_.GetVersionNumber();
     }
 
@@ -322,6 +319,27 @@ mojom::DBCommandResponse::Status RewardsDatabase::Migrate(
   CHECK(meta_table_.SetCompatibleVersionNumber(compatible_version));
 
   return mojom::DBCommandResponse::Status::RESPONSE_OK;
+}
+
+bool RewardsDatabase::ShouldCreateTables() {
+  if (!sql::MetaTable::DoesTableExist(&db_)) {
+    return true;
+  }
+
+  // if there's only one table in the database, that must be `meta`
+  return GetTablesCount() <= 1;
+}
+
+int RewardsDatabase::GetTablesCount() {
+  sql::Statement statement(db_.GetUniqueStatement(
+      "SELECT COUNT(*) FROM sqlite_schema WHERE type='table'"));
+
+  int tables_count = 0;
+  if (statement.Step()) {
+    tables_count = statement.ColumnInt(0);
+  }
+
+  return tables_count;
 }
 
 void RewardsDatabase::OnMemoryPressure(
