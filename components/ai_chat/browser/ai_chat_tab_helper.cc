@@ -535,8 +535,9 @@ std::string AIChatTabHelper::BuildLlama2Prompt(std::string user_message) {
   // If there's no conversation history, then we just send a (partial)
   // first sequence.
   if (conversation_history.empty() || conversation_history.size() <= 1) {
-    return BuildLlama2FirstSequence(today_system_message, first_user_message,
-                                    absl::nullopt, absl::nullopt);
+    return BuildLlama2FirstSequence(
+        today_system_message, first_user_message, absl::nullopt,
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_GENERAL_SEED));
   }
 
   // Use the first two messages to build the first sequence,
@@ -550,12 +551,14 @@ std::string AIChatTabHelper::BuildLlama2Prompt(std::string user_message) {
   for (size_t i = 2; i + 1 < conversation_history.size(); i += 2) {
     const std::string& prev_user_message = conversation_history[i].text;
     const std::string& assistant_message = conversation_history[i + 1].text;
-    prompt +=
-        BuildLlama2SubsequentSequence(prev_user_message, assistant_message);
+    prompt += BuildLlama2SubsequentSequence(prev_user_message,
+                                            assistant_message, absl::nullopt);
   }
 
   // Build the final subsequent exchange using the current turn.
-  prompt += BuildLlama2SubsequentSequence(user_message, absl::nullopt);
+  prompt += BuildLlama2SubsequentSequence(
+      user_message, absl::nullopt,
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_GENERAL_SEED));
 
   // Trimming recommended by Meta
   // https://huggingface.co/meta-llama/Llama-2-13b-chat#intended-use
@@ -655,7 +658,8 @@ std::string AIChatTabHelper::BuildLlama2FirstSequence(
 
 std::string AIChatTabHelper::BuildLlama2SubsequentSequence(
     std::string user_message,
-    absl::optional<std::string> assistant_response) {
+    absl::optional<std::string> assistant_response,
+    absl::optional<std::string> assistant_response_seed) {
   // Builds a prompt segment that looks like this:
   // <s> [INST] Give me the first few numbers in the fibonacci sequence [/INST]
 
@@ -666,6 +670,12 @@ std::string AIChatTabHelper::BuildLlama2SubsequentSequence(
   // 1, 1, 2, 3, 5, 8, 13, and so on. </s>
 
   user_message = BuildLlama2InstructionPrompt(user_message);
+
+  if (assistant_response_seed) {
+    return base::StrCat(
+        {ai_chat::kLlama2Bos, user_message, *assistant_response_seed});
+  }
+
   if (!assistant_response) {
     return base::StrCat({ai_chat::kLlama2Bos, user_message});
   }

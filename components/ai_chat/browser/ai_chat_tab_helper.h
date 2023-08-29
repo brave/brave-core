@@ -132,7 +132,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
       absl::optional<std::string> assistant_response_seed);
   std::string BuildLlama2SubsequentSequence(
       std::string user_message,
-      absl::optional<std::string> assistant_response);
+      absl::optional<std::string> assistant_response,
+      absl::optional<std::string> assistant_response_seed);
   std::string BuildLlama2InstructionPrompt(const std::string& instruction);
   std::string BuildLlama2GenerateQuestionsPrompt(bool is_video,
                                                  const std::string content);
