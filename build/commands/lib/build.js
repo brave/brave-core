@@ -24,7 +24,8 @@ const build = (buildConfig = config.defaultBuildConfig, options = {}) => {
   checkVersionsMatch()
 
   util.touchOverriddenFiles()
-  util.updateBranding()
+  // util.updateBranding()
+  util.updateBrandingForWhiteLabel()
 
   if (config.xcode_gen_target) {
     util.generateXcodeWorkspace()
