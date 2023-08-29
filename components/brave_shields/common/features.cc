@@ -32,7 +32,7 @@ BASE_FEATURE(kBraveAdblockCollapseBlockedElements,
 // overridden by a locally set preference.
 BASE_FEATURE(kBraveAdblockCookieListDefault,
              "BraveAdblockCookieListDefault",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, Brave will display a bubble inviting the user to turn on the
 // "Easylist-Cookie List" filter.
 BASE_FEATURE(kBraveAdblockCookieListOptIn,
