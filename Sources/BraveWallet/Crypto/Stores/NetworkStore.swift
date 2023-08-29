@@ -95,7 +95,7 @@ public class NetworkStore: ObservableObject {
 
   @MainActor private func updateChainList() async {
     // fetch all networks for all coin types
-    self.allChains = await rpcService.allNetworksForSupportedCoins()
+    self.allChains = await rpcService.allNetworksForSupportedCoins(respectTestnetPreference: false)
     
     let customChainIds = await rpcService.customNetworks(.eth) // only support Ethereum custom chains
     self.customChains = allChains.filter { customChainIds.contains($0.chainId) }
