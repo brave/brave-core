@@ -50,7 +50,7 @@ public struct UserAgentBuilder {
       """
       Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) \
       AppleWebKit/605.1.15 (KHTML, like Gecko) \
-      Version/16.1 \
+      Version/16.6 \
       Safari/605.1.15
       """
     
@@ -107,7 +107,7 @@ public struct UserAgentBuilder {
     case 13: return "13_6_1"
     case 14: return "14_6"
     case 15: return "15_5"
-    case 16: return "16_1"
+    case 16: return "16_6"
     default: return "\(os.majorVersion)_0"
 
     }
@@ -119,7 +119,7 @@ public struct UserAgentBuilder {
     case 13: return "13.1.2"
     case 14: return "14.1.1"
     case 15: return "15.5"
-    case 16: return "16.1"
+    case 16: return "16.6"
     default: return "\(os.majorVersion).0"
     }
   }

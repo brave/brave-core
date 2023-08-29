@@ -50,7 +50,7 @@ class UserAgentBuilderTests: XCTestCase {
       """
       Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) \
       AppleWebKit/605.1.15 (KHTML, like Gecko) \
-      Version/16.1 \
+      Version/16.6 \
       Safari/605.1.15
       """
 
@@ -115,32 +115,32 @@ class UserAgentBuilderTests: XCTestCase {
     
     // MARK: - iOS 16
     let iPhone_safari_16_UA = """
-      Mozilla/5.0 (iPhone; CPU iPhone OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-      Version/16.1 \
+      Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+      Version/16.6 \
       Mobile/15E148 \
       Safari/604.1
       """
 
     let iPad_safari_16_UA = """
-      Mozilla/5.0 (iPad; CPU OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-      Version/16.1 \
+      Mozilla/5.0 (iPad; CPU OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+      Version/16.6 \
       Mobile/15E148 \
       Safari/604.1
       """
 
     // MARK: 16.1
 
-    let ios16_1 = OperatingSystemVersion(majorVersion: 16, minorVersion: 1, patchVersion: 0)
+    let ios16_6 = OperatingSystemVersion(majorVersion: 16, minorVersion: 6, patchVersion: 0)
 
     XCTAssertEqual(
       iPhone_safari_16_UA,
-      UserAgentBuilder(device: iPhone, iOSVersion: ios16_1).build(desktopMode: false),
-      "User agent for iOS 16.1 iPhone doesn't match.")
+      UserAgentBuilder(device: iPhone, iOSVersion: ios16_6).build(desktopMode: false),
+      "User agent for iOS 16.6 iPhone doesn't match.")
 
     XCTAssertEqual(
       iPad_safari_16_UA,
-      UserAgentBuilder(device: iPad, iOSVersion: ios16_1).build(desktopMode: false),
-      "User agent for iOS 16.1 iPad doesn't match.")
+      UserAgentBuilder(device: iPad, iOSVersion: ios16_6).build(desktopMode: false),
+      "User agent for iOS 16.6 iPad doesn't match.")
     
     //// -------------------
 
@@ -261,7 +261,7 @@ class UserAgentBuilderTests: XCTestCase {
       """
       Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) \
       AppleWebKit/605.1.15 (KHTML, like Gecko) \
-      Version/16.1 \
+      Version/16.6 \
       Safari/605.1.15
       """
 
