@@ -83,6 +83,7 @@ where
 
 impl_result_from_trait!(VecStringResult, Vec<String>);
 impl_result_from_trait!(BoxEngineResult, Box<Engine>);
+impl_result_from_trait!(FilterListMetadataResult, FilterListMetadata);
 #[cfg(feature = "ios")]
 impl_result_from_trait!(ContentBlockingRulesResult, ContentBlockingRules);
 
