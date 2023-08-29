@@ -67,6 +67,7 @@ import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.widget.Toast;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -83,7 +84,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
 
     private List<NetworkInfo> mAllNetworkInfos;
     private PortfolioHelper mPortfolioHelper;
-    private NetworkInfo mNetworkInfo;
+    private List<NetworkInfo> mSelectedNetworkList;
 
     private boolean mActive;
     private RecyclerView mRvNft;
@@ -107,6 +108,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
             Api33AndPlusBackPressHelper.create(
                     this, (FragmentActivity) requireActivity(), () -> requireActivity().finish());
         }
+        mSelectedNetworkList = Collections.emptyList();
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
@@ -126,12 +128,6 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         mAddNftsContainer = view.findViewById(R.id.add_nfts_container);
         mBtnChangeNetwork = view.findViewById(R.id.fragment_nft_grid_btn_change_networks);
         mBtnChangeNetwork.setOnClickListener(v -> openNetworkSelection());
-        mBtnChangeNetwork.setOnLongClickListener(v -> {
-            if (mNetworkInfo != null) {
-                Toast.makeText(requireContext(), mNetworkInfo.chainName, Toast.LENGTH_SHORT).show();
-            }
-            return true;
-        });
 
         mBtnAddNft = view.findViewById(R.id.fragment_nft_grid_btn_add_nft);
         mBtnAddNft.setOnClickListener(v -> {
@@ -197,22 +193,18 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         mNetworkSelectionModel = getNetworkModel().openNetworkSelectorModel(
                 TAG, NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER,
                 NetworkSelectorModel.SelectionMode.MULTI, getLifecycle());
-        mNetworkSelectionModel.getSelectedNetwork().observe(
-                getViewLifecycleOwner(), localNetworkInfo -> {
-                    if (localNetworkInfo == null) return;
-                    if (mNetworkInfo != null
-                            && !mNetworkInfo.chainId.equals(localNetworkInfo.chainId)) {
-                        mAddNftsContainer.setVisibility(View.GONE);
-                        mPbAssetDiscovery.setVisibility(View.VISIBLE);
-                        // Clean up list to avoid user clicking on an asset of the previously
-                        // selected network after the network has been changed.
-                        clearAssets();
-                    }
-                    mNetworkInfo = localNetworkInfo;
-                    mBtnChangeNetwork.setText(
-                            Utils.getShortNameOfNetwork(localNetworkInfo.chainName));
-                    updateNftGrid();
-                });
+        mNetworkSelectionModel.mSelectedNetworks.observe(getViewLifecycleOwner(), selectedNetworkInfos -> {
+            mSelectedNetworkList = selectedNetworkInfos;
+            if (mSelectedNetworkList.isEmpty()) {
+                mAddNftsContainer.setVisibility(View.GONE);
+                mPbAssetDiscovery.setVisibility(View.VISIBLE);
+                // Clean up list to avoid user clicking on an asset of the previously
+                // selected network after the network has been changed.
+                clearAssets();
+                return;
+            }
+            updateNftGrid();
+        });
 
         mPortfolioModel.mNftModels.observe(getViewLifecycleOwner(), nftDataModels -> {
             if (mPortfolioModel.mPortfolioHelper == null) return;
@@ -339,11 +331,6 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
 
     @Override
     public void onAssetClick(BlockchainToken asset) {
-        NetworkInfo selectedNetwork = mNetworkInfo;
-        if (selectedNetwork == null) {
-            return;
-        }
-
         PortfolioModel.NftDataModel selectedNft = JavaUtils.find(mNftDataModels,
                 nftDataModel -> AssetUtils.Filters.isSameNFT(asset, nftDataModel.token));
         if (selectedNft == null) {
@@ -351,37 +338,28 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         }
 
         Intent intent = NftDetailActivity.getIntent(
-                getContext(), selectedNetwork.chainId, asset, selectedNft);
+                getContext(), selectedNft.networkInfo.chainId, asset, selectedNft);
         startActivity(intent);
     }
 
     private void updateNftGrid() {
-        if (mWalletModel == null) return;
-
-        final NetworkInfo selectedNetwork = mNetworkInfo;
-        if (selectedNetwork == null) {
-            return;
-        }
+        if (mWalletModel == null || mSelectedNetworkList.isEmpty()) return;
 
         Activity activity = getActivity();
         if (!(activity instanceof BraveWalletActivity)) return;
-        mPortfolioModel.fetchAssetsByType(TokenUtils.TokenType.NFTS, selectedNetwork,
+        mPortfolioModel.fetchAssets(TokenUtils.TokenType.NFTS, mSelectedNetworkList,
                 (BraveWalletBaseActivity) activity, (portfolioHelper) -> {
                     if (!AndroidUtils.canUpdateFragmentUi(this)) return;
                     mPortfolioHelper = portfolioHelper;
                     List<BlockchainToken> nfts = mPortfolioHelper.getUserAssets();
                     LiveDataUtil.observeOnce(getNetworkModel().mCryptoNetworks, networkInfos -> {
                         mPortfolioModel.prepareNftListMetaData(
-                                nfts, mNetworkInfo, mPortfolioHelper);
+                                nfts, networkInfos, mPortfolioHelper);
                     });
                 });
     }
 
     private void showEditVisibleDialog() {
-        if (mNetworkInfo == null) {
-            return;
-        }
-
         EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                 EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                         WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST, true);

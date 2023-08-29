@@ -13,6 +13,7 @@ import androidx.lifecycle.Transformations;
 
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.ArrayList;
@@ -60,8 +61,11 @@ public class NetworkSelectorModel {
     public void init() {
         if (mMode == Mode.DEFAULT_WALLET_NETWORK) {
             _mSelectedNetwork.postValue(mNetworkModel.mDefaultNetwork.getValue());
-            // TODO(pav): uncomment this after replacing network selector placeholder with icon
-        } else if (mMode == Mode.LOCAL_NETWORK_FILTER /*&& SelectionType.MULTI != mSelectionType*/) {
+        } else if (SelectionMode.MULTI == mSelectionMode) {
+            LiveDataUtil.observeOnce(mNetworkModel.mNetworkLists, networkLists -> {
+                _mSelectedNetworks.postValue(NetworkUtils.nonTestNetwork(networkLists.mCoreNetworks));
+            });
+        } else if (mMode == Mode.LOCAL_NETWORK_FILTER) {
             if (mSelectedChainId == null) {
                 _mSelectedNetwork.postValue(NetworkUtils.getAllNetworkOption(mContext));
             }

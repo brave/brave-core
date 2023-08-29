@@ -85,7 +85,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     }
 
     // TODO(pav): We should fetch and process all portfolio list here
-    public void prepareNftListMetaData(List<BlockchainToken> nftList, NetworkInfo networkInfo,
+    public void prepareNftListMetaData(List<BlockchainToken> nftList, List<NetworkInfo> allNetworkList,
             PortfolioHelper portfolioHelper) {
         mPortfolioHelper = portfolioHelper;
         // Filter out and calculate the size of supported NFTs.
@@ -120,13 +120,13 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
 
                 } else {
                     // Other NFTs.
-                    nftDataModels.add(new NftDataModel(userAsset, networkInfo, null));
+                    nftDataModels.add(new NftDataModel(userAsset, NetworkUtils.findNetwork(allNetworkList, userAsset.chainId), null));
                 }
             }
         }
         nftMetaDataHandler.setWhenAllCompletedAction(() -> {
             for (AsyncUtils.BaseGetNftMetadataContext metadata : nftMetadataList) {
-                nftDataModels.add(new NftDataModel(metadata.asset, networkInfo,
+                nftDataModels.add(new NftDataModel(metadata.asset, NetworkUtils.findNetwork(allNetworkList, metadata.asset.chainId),
                         new NftMetadata(metadata.tokenMetadata, metadata.errorCode,
                                 metadata.errorMessage)));
             }
@@ -170,6 +170,36 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                                 mPortfolioHelper.fetchAssetsAndDetails(type, callback);
                             });
                     });
+        }
+    }
+
+    /**
+     * Fetch the assets of selected networks and filter by type.
+     * @param type by NFT, NON-NFT, ERC, SOL etc.
+     * @param selectedNetworks list to fetch assets from
+     * @param braveWalletBaseActivity instance for native services
+     * @param callback to get the @{code PortfolioHelper} object containing result
+     */
+    public void fetchAssets(TokenUtils.TokenType type, List<NetworkInfo> selectedNetworks,
+            BraveWalletBaseActivity braveWalletBaseActivity,
+            Callbacks.Callback1<PortfolioHelper> callback) {
+        synchronized (mLock) {
+            if (mJsonRpcService == null) {
+                return;
+            }
+            NetworkModel.getAllNetworks(
+                    mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
+                        mAllNetworkInfos = allNetworks;
+                        mKeyringService.getAllAccounts(allAccounts -> {
+                            AccountInfo[] filteredAccounts = allAccounts.accounts;
+                            mPortfolioHelper = new PortfolioHelper(braveWalletBaseActivity,
+                                    mAllNetworkInfos, filteredAccounts);
+                            mPortfolioHelper.setSelectedNetworks(
+                                    selectedNetworks);
+                            mPortfolioHelper.fetchAssetsAndDetails(type, callback);
+                        });
+                    });
+
         }
     }
 

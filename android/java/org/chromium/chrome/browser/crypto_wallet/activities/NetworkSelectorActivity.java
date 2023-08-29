@@ -32,9 +32,13 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSelectorAdapter
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.settings.BraveSettingsLauncherImpl;
 import org.chromium.chrome.browser.settings.BraveWalletAddNetworksFragment;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class NetworkSelectorActivity
         extends BraveWalletBaseActivity implements NetworkSelectorAdapter.NetworkClickListener {
@@ -151,13 +155,18 @@ public class NetworkSelectorActivity
     }
 
     private void setSelectedNetworkObserver() {
+        if (NetworkSelectorModel.SelectionMode.MULTI == mSelectionMode) {
+            LiveDataUtil.observeOnce(mNetworkSelectorModel.mSelectedNetworks, networkInfoList -> { updateNetworkSelection(networkInfoList); });
+            return;
+        }
         mNetworkSelectorModel.getSelectedNetwork().observe(
-                this, networkInfo -> { updateNetworkSelection(networkInfo); });
+                this, networkInfoList -> { updateNetworkSelection(
+                        Collections.singletonList(networkInfoList)); });
     }
 
-    private void updateNetworkSelection(NetworkInfo networkInfo) {
-        if (networkInfo != null) {
-            mNetworkSelectorAdapter.setSelectedNetwork(networkInfo);
+    private void updateNetworkSelection(List<NetworkInfo> networkInfoList) {
+        if (!networkInfoList.isEmpty()) {
+            mNetworkSelectorAdapter.setSelectedNetwork(networkInfoList);
         }
     }
 

@@ -32,11 +32,13 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.base.ViewUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class NetworkSelectorAdapter
         extends RecyclerView.Adapter<NetworkSelectorAdapter.ViewHolder> {
@@ -47,7 +49,7 @@ public class NetworkSelectorAdapter
     private Context mContext;
     private NetworkClickListener networkClickListener;
     private List<NetworkSelectorItem> mNetworkInfos;
-    private NetworkInfo mSelectedNetwork;
+    private List<NetworkInfo> mSelectedNetworks;
     private int mSelectedParentItemPos;
     private NetworkSelectorModel.SelectionMode mSelectionMode;
 
@@ -62,6 +64,7 @@ public class NetworkSelectorAdapter
         mTokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
         mSelectionMode = selectionMode;
         mSelectedNetworkPositions = new HashSet<>();
+        mSelectedNetworks = Collections.emptyList();
     }
 
     @Override
@@ -86,7 +89,6 @@ public class NetworkSelectorAdapter
 
         switch (network.mType) {
             case SECONDARY:
-            case ITEM:
             case TEST:
             case PRIMARY: {
                 View.OnClickListener listener = v -> {
@@ -131,11 +133,6 @@ public class NetworkSelectorAdapter
                         holder.ivNetworkPicture.setColorFilter(filter);
                     }
                 } else if (!NetworkUtils.isAllNetwork(network.mNetworkInfo)) {
-                    // Resize for blockies
-                    ViewGroup.LayoutParams params = holder.ivNetworkPicture.getLayoutParams();
-                    int blockieSize = ViewUtils.dpToPx(mContext, 24);
-                    params.height = blockieSize;
-                    params.width = blockieSize;
                     Utils.setBlockiesBitmapResource(mExecutor, mHandler, holder.ivNetworkPicture,
                             network.getNetworkName(), false);
                 } else {
@@ -162,6 +159,7 @@ public class NetworkSelectorAdapter
 
     @SuppressLint("NotifyDataSetChanged")
     public void addNetworks(NetworkModel.NetworkLists networkLists) {
+        mNetworkInfos.clear();
         // Primary
         mNetworkInfos.add(new NetworkSelectorItem(
                 mContext.getString(R.string.brave_wallet_network_filter_primary), "", null,
@@ -189,16 +187,17 @@ public class NetworkSelectorAdapter
                     networkInfo.chainName, networkInfo.symbolName, networkInfo, Type.TEST));
         }
 
-        if (mSelectedNetwork != null) {
-            setSelectedNetwork(mSelectedNetwork);
+        if (!mSelectedNetworks.isEmpty()) {
+            setSelectedNetwork(mSelectedNetworks);
         }
         notifyDataSetChanged();
     }
 
-    public void setSelectedNetwork(NetworkInfo networkInfo) {
-        mSelectedNetwork = networkInfo;
-        // Mark all network as selected in MULTI network selection mode when AllNetwork is selected
-        if (NetworkSelectorModel.SelectionMode.MULTI == mSelectionMode && NetworkUtils.isAllNetwork(networkInfo)) {
+    public void setSelectedNetwork(List<NetworkInfo> networkInfo) {
+        mSelectedNetworks = networkInfo;
+        if (mSelectedNetworks.isEmpty()) return;
+        // Mark all network as selected in MULTI network selection mode when only AllNetwork is passed
+        if (NetworkSelectorModel.SelectionMode.MULTI == mSelectionMode && mSelectedNetworks.size() == 1 && NetworkUtils.isAllNetwork(networkInfo.get(0))) {
             for (int i = 0; i < mNetworkInfos.size(); i++) {
                 NetworkSelectorItem networkSelectorItem = mNetworkInfos.get(i);
                 networkSelectorItem.setIsSelected(true);
@@ -206,14 +205,19 @@ public class NetworkSelectorAdapter
             }
             return;
         }
+        List<String> selectedNetworks = networkInfo.stream().map(network -> network.chainId).collect(
+                Collectors.toList());
         for (int i = 0; i < mNetworkInfos.size(); i++) {
             NetworkSelectorItem networkSelectorItem = mNetworkInfos.get(i);
-            if (networkSelectorItem.getNetworkName().equalsIgnoreCase(networkInfo.chainName)) {
-                removePrevSelection();
+            if (Type.LABEL != networkSelectorItem.mType && selectedNetworks.contains(networkSelectorItem.mNetworkInfo.chainId)) {
+                if (NetworkSelectorModel.SelectionMode.SINGLE == mSelectionMode) {
+                    removePrevSelection();
+                } else {
+                    mSelectedNetworkPositions.add(i);
+                }
                 networkSelectorItem.setIsSelected(true);
                 mSelectedParentItemPos = i;
                 notifyItemChanged(mSelectedParentItemPos);
-                break;
             }
         }
     }
@@ -240,7 +244,7 @@ public class NetworkSelectorAdapter
         }
     }
 
-    enum Type { ITEM, PRIMARY, SECONDARY, TEST, LABEL }
+    enum Type { PRIMARY, SECONDARY, TEST, LABEL }
 
     public interface NetworkClickListener {
         void onNetworkItemSelected(NetworkInfo networkInfo);
@@ -279,9 +283,6 @@ public class NetworkSelectorAdapter
                 String networkName, String networkShortName, NetworkInfo networkInfo, Type type) {
             this(networkName, networkShortName, networkInfo);
             this.mType = type;
-            if (mType == null) {
-                mType = Type.ITEM;
-            }
         }
 
         public Type getType() {

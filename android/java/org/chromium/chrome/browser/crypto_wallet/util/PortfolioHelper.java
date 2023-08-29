@@ -179,50 +179,6 @@ public class PortfolioHelper {
         }
     }
 
-    public void calculateBalances(Runnable runWhenDone) {
-        resetResultData();
-        if (mActivity.get() == null || mActivity.get().isFinishing()) return;
-
-        Utils.getTxExtraInfo(mActivity, TokenUtils.TokenType.ALL, mCryptoNetworks, mSelectedNetwork,
-                mAccountInfos, null, true,
-                (assetPrices, userAssetsList, nativeAssetsBalances, blockchainTokensBalances) -> {
-                    mUserAssets.addAll(Arrays.asList(userAssetsList));
-                    // Sum across accounts
-                    for (AccountInfo accountInfo : mAccountInfos) {
-                        final String accountAddressLower =
-                                accountInfo.address.toLowerCase(Locale.getDefault());
-                        HashMap<String, Double> thisAccountTokensBalances =
-                                Utils.getOrDefault(blockchainTokensBalances, accountAddressLower,
-                                        new HashMap<String, Double>());
-                        for (BlockchainToken userAsset : mUserAssets) {
-                            String currentAssetKey = Utils.tokenToString(userAsset);
-                            double prevTokenCryptoBalanceSum =
-                                    Utils.getOrDefault(mPerTokenCryptoSum, currentAssetKey, 0.0d);
-                            final double thisCryptoBalance =
-                                    Utils.isNativeToken(mSelectedNetwork, userAsset)
-                                    ? Utils.getOrDefault(
-                                            nativeAssetsBalances, accountAddressLower, 0.0d)
-                                    : Utils.getOrDefault(
-                                            thisAccountTokensBalances, currentAssetKey, 0.0d);
-                            mPerTokenCryptoSum.put(
-                                    currentAssetKey, prevTokenCryptoBalanceSum + thisCryptoBalance);
-
-                            double prevTokenFiatBalanceSum =
-                                    Utils.getOrDefault(mPerTokenFiatSum, currentAssetKey, 0.0d);
-                            double thisTokenPrice = Utils.getOrDefault(assetPrices,
-                                    userAsset.symbol.toLowerCase(Locale.getDefault()), 0.0d);
-                            double thisFiatBalance = thisTokenPrice * thisCryptoBalance;
-                            mPerTokenFiatSum.put(
-                                    currentAssetKey, prevTokenFiatBalanceSum + thisFiatBalance);
-
-                            mTotalFiatSum += thisFiatBalance;
-                        }
-                    }
-
-                    runWhenDone.run();
-                });
-    }
-
     private void resetResultData() {
         mUserAssets.clear();
         mTotalFiatSum = 0.0d;
