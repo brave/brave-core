@@ -118,8 +118,10 @@ void ViewCounterModel::RegisterPageViewForBackgroundImages() {
     return;
 
   // Don't count when SI will be visible.
-  if (show_branded_wallpaper_ && count_to_branded_wallpaper_ == 0)
+  if (show_branded_wallpaper_ && total_campaign_count_ != 0 &&
+      count_to_branded_wallpaper_ == 0) {
     return;
+  }
 
   // Increase background image index
   current_wallpaper_image_index_++;
