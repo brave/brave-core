@@ -60,8 +60,7 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
 }
 
 void AdBlockCustomFiltersProvider::LoadDATBuffer(
-    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
-        cb) {
+    base::OnceCallback<void(const DATFileDataBuffer& dat_buf)> cb) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto custom_filters = GetCustomFilters();
 
@@ -70,7 +69,7 @@ void AdBlockCustomFiltersProvider::LoadDATBuffer(
 
   // PostTask so this has an async return to match other loaders
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(std::move(cb), false, std::move(buffer)));
+      FROM_HERE, base::BindOnce(std::move(cb), std::move(buffer)));
 }
 
 // The custom filters provider can provide its filters immediately after being

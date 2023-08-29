@@ -37,12 +37,10 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
   ~AdBlockSubscriptionFiltersProvider() override;
 
   void LoadDATBuffer(
-      base::OnceCallback<void(bool deserialize,
-                              const DATFileDataBuffer& dat_buf)>) override;
+      base::OnceCallback<void(const DATFileDataBuffer& dat_buf)>) override;
 
   void OnDATFileDataReady(
-      base::OnceCallback<void(bool deserialize,
-                              const DATFileDataBuffer& dat_buf)> cb,
+      base::OnceCallback<void(const DATFileDataBuffer& dat_buf)> cb,
       const DATFileDataBuffer& dat_buf);
 
   void OnListAvailable();

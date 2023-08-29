@@ -70,12 +70,11 @@ void AdBlockComponentFiltersProvider::OnComponentReady(
 }
 
 void AdBlockComponentFiltersProvider::LoadDATBuffer(
-    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
-        cb) {
+    base::OnceCallback<void(const DATFileDataBuffer& dat_buf)> cb) {
   if (component_path_.empty()) {
     // If the path is not ready yet, run the callback with an empty list. An
     // update will be pushed later to notify about the newly available list.
-    std::move(cb).Run(false, DATFileDataBuffer());
+    std::move(cb).Run(DATFileDataBuffer());
     return;
   }
 
@@ -84,7 +83,7 @@ void AdBlockComponentFiltersProvider::LoadDATBuffer(
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_path),
-      base::BindOnce(std::move(cb), false));
+      base::BindOnce(std::move(cb)));
 }
 
 }  // namespace brave_shields

@@ -28,8 +28,7 @@ AdBlockSubscriptionFiltersProvider::~AdBlockSubscriptionFiltersProvider() =
     default;
 
 void AdBlockSubscriptionFiltersProvider::LoadDATBuffer(
-    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
-        cb) {
+    base::OnceCallback<void(const DATFileDataBuffer& dat_buf)> cb) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_),
@@ -42,12 +41,11 @@ std::string AdBlockSubscriptionFiltersProvider::GetNameForDebugging() {
 }
 
 void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
-    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
-        cb,
+    base::OnceCallback<void(const DATFileDataBuffer& dat_buf)> cb,
     const DATFileDataBuffer& dat_buf) {
   auto metadata = adblock::read_list_metadata(dat_buf);
   on_metadata_retrieved_.Run(metadata);
-  std::move(cb).Run(false, dat_buf);
+  std::move(cb).Run(dat_buf);
 }
 
 void AdBlockSubscriptionFiltersProvider::OnListAvailable() {

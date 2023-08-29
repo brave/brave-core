@@ -67,7 +67,7 @@ class AdBlockService {
     ~SourceProviderObserver() override;
 
    private:
-    void OnDATLoaded(bool deserialize, const DATFileDataBuffer& dat_buf);
+    void OnDATLoaded(const DATFileDataBuffer& dat_buf);
 
     // AdBlockFiltersProvider::Observer
     void OnChanged() override;
@@ -75,7 +75,6 @@ class AdBlockService {
     // AdBlockResourceProvider::Observer
     void OnResourcesLoaded(const std::string& resources_json) override;
 
-    bool deserialize_;
     DATFileDataBuffer dat_buf_;
     raw_ptr<AdBlockEngine> adblock_engine_;
     raw_ptr<AdBlockFiltersProvider> filters_provider_;    // not owned

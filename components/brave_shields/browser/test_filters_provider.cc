@@ -15,16 +15,12 @@ namespace brave_shields {
 TestFiltersProvider::TestFiltersProvider(const std::string& rules,
                                          const std::string& resources)
     : AdBlockFiltersProvider(true), rules_(rules), resources_(resources) {}
-
-TestFiltersProvider::TestFiltersProvider(const base::FilePath& dat_location,
-                                         const std::string& resources)
-    : AdBlockFiltersProvider(true), resources_(resources) {
-  CHECK(!dat_location.empty());
-
-  dat_buffer_ = brave_component_updater::ReadDATFileData(dat_location);
-
-  CHECK(!dat_buffer_.empty());
-}
+TestFiltersProvider::TestFiltersProvider(const std::string& rules,
+                                         const std::string& resources,
+                                         bool engine_is_default)
+    : AdBlockFiltersProvider(engine_is_default),
+      rules_(rules),
+      resources_(resources) {}
 
 TestFiltersProvider::~TestFiltersProvider() = default;
 
@@ -33,14 +29,9 @@ std::string TestFiltersProvider::GetNameForDebugging() {
 }
 
 void TestFiltersProvider::LoadDATBuffer(
-    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
-        cb) {
-  if (dat_buffer_.empty()) {
-    auto buffer = std::vector<unsigned char>(rules_.begin(), rules_.end());
-    std::move(cb).Run(false, buffer);
-  } else {
-    std::move(cb).Run(true, dat_buffer_);
-  }
+    base::OnceCallback<void(const DATFileDataBuffer& dat_buf)> cb) {
+  auto buffer = std::vector<unsigned char>(rules_.begin(), rules_.end());
+  std::move(cb).Run(buffer);
 }
 
 void TestFiltersProvider::LoadResources(

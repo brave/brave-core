@@ -31,8 +31,7 @@ class AdBlockLocalhostFiltersProvider : public AdBlockFiltersProvider {
   bool UpdateLocalhostFilters(const std::string& localhost_filters);
 
   void LoadDATBuffer(
-      base::OnceCallback<void(bool deserialize,
-                              const DATFileDataBuffer& dat_buf)>) override;
+      base::OnceCallback<void(const DATFileDataBuffer& dat_buf)>) override;
 
   // AdBlockFiltersProvider
   void AddObserver(AdBlockFiltersProvider::Observer* observer);

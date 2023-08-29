@@ -42,13 +42,11 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   static AdBlockFiltersProviderManager* GetInstance();
 
   void LoadDATBuffer(
-      base::OnceCallback<void(bool deserialize,
-                              const DATFileDataBuffer& dat_buf)>) override;
+      base::OnceCallback<void(const DATFileDataBuffer& dat_buf)>) override;
 
   void LoadDATBufferForEngine(
       bool is_for_default_engine,
-      base::OnceCallback<void(bool deserialize,
-                              const DATFileDataBuffer& dat_buf)> cb);
+      base::OnceCallback<void(const DATFileDataBuffer& dat_buf)> cb);
 
   // AdBlockFiltersProvider::Observer
   void OnChanged() override;
@@ -63,9 +61,8 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
  private:
   friend base::NoDestructor<AdBlockFiltersProviderManager>;
 
-  void FinishCombinating(
-      base::OnceCallback<void(bool, const DATFileDataBuffer&)> cb,
-      const std::vector<DATFileDataBuffer>& results);
+  void FinishCombinating(base::OnceCallback<void(const DATFileDataBuffer&)> cb,
+                         const std::vector<DATFileDataBuffer>& results);
 
   base::flat_set<AdBlockFiltersProvider*> default_engine_filters_providers_;
   base::flat_set<AdBlockFiltersProvider*> additional_engine_filters_providers_;

@@ -148,25 +148,8 @@ HostContentSettingsMap* AdBlockServiceTest::content_settings() {
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
     const std::string& rules,
     const std::string& resources) {
-  auto source_provider =
-      std::make_unique<brave_shields::TestFiltersProvider>(rules, resources);
-
-  brave_shields::AdBlockService* ad_block_service =
-      g_brave_browser_process->ad_block_service();
-  ad_block_service->UseSourceProvidersForTest(source_provider.get(),
-                                              source_provider.get());
-
-  source_providers_.push_back(std::move(source_provider));
-
-  WaitForAdBlockServiceThreads();
-}
-
-void AdBlockServiceTest::UpdateAdBlockInstanceWithDAT(
-    const base::FilePath& dat_location,
-    const std::string& resources) {
-  base::ScopedAllowBlockingForTesting allow_blocking;
   auto source_provider = std::make_unique<brave_shields::TestFiltersProvider>(
-      dat_location, resources);
+      rules, resources, true);
 
   brave_shields::AdBlockService* ad_block_service =
       g_brave_browser_process->ad_block_service();
@@ -181,8 +164,8 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithDAT(
 void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
     const std::string& rules,
     const std::string& resources) {
-  auto source_provider =
-      std::make_unique<brave_shields::TestFiltersProvider>(rules, resources);
+  auto source_provider = std::make_unique<brave_shields::TestFiltersProvider>(
+      rules, resources, false);
 
   brave_shields::AdBlockService* ad_block_service =
       g_brave_browser_process->ad_block_service();
@@ -1662,17 +1645,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectRulesAreRespected) {
 // rule.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectWithoutBlockIsNoop) {
   ASSERT_TRUE(InstallDefaultAdBlockComponent());
-  // The DAT for this test contains the following rules:
-  //   .js?block=true
-  //   js_mock_me.js$redirect-rule=noopjs
-  // At the time of this test's writing, `redirect-rule` parsing is currently
-  // not supported by the engine, but it should work correctly when the CRX
-  // packager eventually begins shipping DATs that include them.
-  base::FilePath test_data_dir;
-  GetTestDataDir(&test_data_dir);
 
-  base::FilePath dat_location = test_data_dir.AppendASCII("adblock-data")
-                                    .AppendASCII("redirect-rule.dat");
   std::string resources = R"([{
         "name": "noop.js",
         "aliases": ["noopjs"],
@@ -1681,7 +1654,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectWithoutBlockIsNoop) {
         },
         "content": "KGZ1bmN0aW9uKCkgewogICAgJ3VzZSBzdHJpY3QnOwp9KSgpOwo="
       }])";
-  UpdateAdBlockInstanceWithDAT(dat_location, resources);
+  UpdateAdBlockInstanceWithRules(
+      ".js?block=true\n"
+      "js_mock_me.js$redirect-rule=noopjs",
+      resources);
 
   WaitForAdBlockServiceThreads();
 

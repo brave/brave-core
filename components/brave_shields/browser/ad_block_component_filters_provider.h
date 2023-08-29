@@ -51,8 +51,7 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
       const AdBlockComponentFiltersProvider&) = delete;
 
   void LoadDATBuffer(
-      base::OnceCallback<void(bool deserialize,
-                              const DATFileDataBuffer& dat_buf)>) override;
+      base::OnceCallback<void(const DATFileDataBuffer& dat_buf)>) override;
 
   // Remove the component. This will force it to be redownloaded next time it
   // is registered.

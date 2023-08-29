@@ -22,13 +22,7 @@ namespace {
 
 static void OnDATLoaded(
     base::OnceCallback<void(DATFileDataBuffer)> collect_and_merge,
-    bool deserialize,
     const DATFileDataBuffer& dat_buf) {
-  // This manager should never be used for a provider that returns a serialized
-  // DAT. The ability should be removed from the FiltersProvider API when
-  // possible.
-  CHECK(!deserialize);
-
   std::move(collect_and_merge).Run(dat_buf);
 }
 
@@ -76,15 +70,13 @@ void AdBlockFiltersProviderManager::OnChanged() {
 
 // Use LoadDATBufferForEngine instead, for Filter Provider Manager.
 void AdBlockFiltersProviderManager::LoadDATBuffer(
-    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
-        cb) {
+    base::OnceCallback<void(const DATFileDataBuffer& dat_buf)> cb) {
   NOTREACHED();
 }
 
 void AdBlockFiltersProviderManager::LoadDATBufferForEngine(
     bool is_for_default_engine,
-    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
-        cb) {
+    base::OnceCallback<void(const DATFileDataBuffer& dat_buf)> cb) {
   auto& filters_providers = is_for_default_engine
                                 ? default_engine_filters_providers_
                                 : additional_engine_filters_providers_;
@@ -102,7 +94,7 @@ void AdBlockFiltersProviderManager::LoadDATBufferForEngine(
 }
 
 void AdBlockFiltersProviderManager::FinishCombinating(
-    base::OnceCallback<void(bool, const DATFileDataBuffer&)> cb,
+    base::OnceCallback<void(const DATFileDataBuffer&)> cb,
     const std::vector<DATFileDataBuffer>& results) {
   DATFileDataBuffer combined_list;
   for (const auto& dat_buf : results) {
@@ -115,7 +107,7 @@ void AdBlockFiltersProviderManager::FinishCombinating(
     // state using an entirely empty DAT.
     combined_list.push_back('\n');
   }
-  std::move(cb).Run(false, combined_list);
+  std::move(cb).Run(combined_list);
 }
 
 }  // namespace brave_shields
