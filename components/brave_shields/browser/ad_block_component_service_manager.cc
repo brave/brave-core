@@ -31,19 +31,16 @@ namespace {
 
 typedef struct ListDefaultOverrideConstants {
   const raw_ref<const base::Feature> feature;
-  const char* local_override_pref;
   const char* list_uuid;
 } ListDefaultOverrideConstants;
 
 const ListDefaultOverrideConstants kCookieListConstants{
     .feature = raw_ref<const base::Feature>(kBraveAdblockCookieListDefault),
-    .local_override_pref = prefs::kAdBlockCookieListSettingTouched,
     .list_uuid = kCookieListUuid};
 
 const ListDefaultOverrideConstants kMobileNotificationsListConstants{
     .feature = raw_ref<const base::Feature>(
         kBraveAdblockMobileNotificationsListDefault),
-    .local_override_pref = prefs::kAdBlockMobileNotificationsListSettingTouched,
     .list_uuid = kMobileNotificationsListUuid};
 
 const ListDefaultOverrideConstants kOverrideConstants[2] = {
@@ -132,7 +129,7 @@ void AdBlockComponentServiceManager::StartRegionalServices() {
   auto regional_filters_dict_with_overrides = regional_filters_dict.Clone();
   for (const auto& constants : kOverrideConstants) {
     const bool list_touched =
-        local_state_->GetBoolean(constants.local_override_pref);
+        regional_filters_dict.FindDict(constants.list_uuid);
 
     if (base::FeatureList::IsEnabled(*constants.feature) && !list_touched) {
       base::Value::Dict list_entry;
@@ -181,12 +178,6 @@ void AdBlockComponentServiceManager::UpdateFilterListPrefs(
   regional_filter_dict.Set("enabled", enabled);
   update->Set(uuid, std::move(regional_filter_dict));
 
-  for (const auto& constants : kOverrideConstants) {
-    if (uuid == constants.list_uuid) {
-      local_state_->SetBoolean(constants.local_override_pref, true);
-    }
-  }
-
   RecordP3ACookieListEnabled();
 }
 
@@ -211,16 +202,17 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
   DCHECK(!uuid.empty());
   DCHECK(local_state_);
 
+  const auto& regional_filters_dict =
+      local_state_->GetDict(prefs::kAdBlockRegionalFilters);
+
   for (const auto& constants : kOverrideConstants) {
+    const bool list_touched =
+        regional_filters_dict.FindDict(constants.list_uuid);
     if (uuid == constants.list_uuid &&
-        base::FeatureList::IsEnabled(*constants.feature) &&
-        !local_state_->GetBoolean(constants.local_override_pref)) {
+        base::FeatureList::IsEnabled(*constants.feature) && !list_touched) {
       return true;
     }
   }
-
-  const auto& regional_filters_dict =
-      local_state_->GetDict(prefs::kAdBlockRegionalFilters);
 
   if (const auto* regional_filter_dict = regional_filters_dict.FindDict(uuid)) {
     return regional_filter_dict->FindBool("enabled").value_or(false);
