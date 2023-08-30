@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,6 +52,7 @@ public class NetworkSelectorAdapter
     private List<NetworkInfo> mSelectedNetworks;
     private int mSelectedParentItemPos;
     private NetworkSelectorModel.SelectionMode mSelectionMode;
+    private Button mBtnSelection;
 
     private Set<Integer> mSelectedNetworkPositions;
 
@@ -100,6 +102,7 @@ public class NetworkSelectorAdapter
                             mSelectedNetworkPositions.add(mSelectedParentItemPos);
                         }
                         network.setIsSelected(!network.isSelected());
+                        updateAllSelectionLabel();
                         notifyItemChanged(mSelectedParentItemPos);
                     } else {
                         // Handle single network selection type
@@ -145,11 +148,26 @@ public class NetworkSelectorAdapter
             case LABEL: {
                 AndroidUtils.gone(holder.ivNetworkPicture, holder.tvName, holder.ivNetworkPicture,
                         holder.ivSelected);
+                if (position == 0 && NetworkSelectorModel.SelectionMode.MULTI == mSelectionMode) {
+                    mBtnSelection = holder.btnAction;
+                    AndroidUtils.show(mBtnSelection);
+                    updateAllSelectionLabel();
+                    mBtnSelection.setOnClickListener(v -> {
+                        updateNetworksSelection(!isAllNetworkSelected());
+                        updateAllSelectionLabel();
+                    });
+                }
                 AndroidUtils.show(holder.labelTv);
                 holder.labelTv.setText(network.getNetworkName());
                 break;
             }
         }
+    }
+
+    private void updateAllSelectionLabel() {
+        if (mBtnSelection == null) return;
+        mBtnSelection.setText(isAllNetworkSelected() ? R.string.brave_wallet_deselect_all
+                                                     : R.string.brave_wallet_select_all);
     }
 
     @Override
@@ -247,6 +265,31 @@ public class NetworkSelectorAdapter
         }
     }
 
+    private void updateNetworksSelection(boolean isAllSelected) {
+        mSelectedNetworkPositions.clear();
+        for (int i = 0; i < mNetworkInfos.size(); i++) {
+            NetworkSelectorItem networkSelectorItem = mNetworkInfos.get(i);
+            if (Type.LABEL != networkSelectorItem.mType) {
+                networkSelectorItem.mIsSelected = isAllSelected;
+            }
+            if (isAllSelected) {
+                mSelectedNetworkPositions.add(i);
+            }
+        }
+        // Exclude first label
+        notifyItemRangeChanged(1, mNetworkInfos.size());
+    }
+
+    private boolean isAllNetworkSelected() {
+        if (mNetworkInfos.isEmpty()) return true;
+        for (NetworkSelectorItem networkSelectorItem : mNetworkInfos) {
+            if (Type.LABEL != networkSelectorItem.mType && !networkSelectorItem.mIsSelected) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     enum Type { PRIMARY, SECONDARY, TEST, LABEL }
 
     public interface NetworkClickListener {
@@ -258,6 +301,7 @@ public class NetworkSelectorAdapter
         TextView tvName;
         ImageView ivSelected;
         TextView labelTv;
+        Button btnAction;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -265,6 +309,7 @@ public class NetworkSelectorAdapter
             ivNetworkPicture = itemView.findViewById(R.id.iv_item_network_picture);
             ivSelected = itemView.findViewById(R.id.iv_item_network_selector_selected);
             labelTv = itemView.findViewById(R.id.iv_item_network_label);
+            btnAction = itemView.findViewById(R.id.btn_item_network_action);
         }
     }
 

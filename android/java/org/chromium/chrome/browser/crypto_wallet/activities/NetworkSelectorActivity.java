@@ -97,7 +97,11 @@ public class NetworkSelectorActivity
         mToolbar = findViewById(R.id.toolbar);
         mToolbar.setTitle(R.string.brave_wallet_select_network_title);
         mToolbar.setOnMenuItemClickListener(item -> {
-            launchAddNetwork();
+            if (item.getItemId() == R.id.menu_network_selector_close) {
+                finish();
+            } else {
+                launchAddNetwork();
+            }
             return true;
         });
 
