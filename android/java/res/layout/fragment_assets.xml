@@ -40,19 +40,12 @@
                 app:autoSizeTextType="uniform" />
 
 
-            <android.widget.Button
+            <ImageButton
                 android:id="@+id/fragment_portfolio_btn_change_networks"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight=".4"
-                android:background="@drawable/rounded_holo_button"
-                android:drawableEnd="@drawable/ic_arrow_down_circular_day_night"
-                android:minHeight="0dp"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="2dp"
-                android:textAllCaps="false"
-                android:textColor="@color/brave_wallet_day_night_text_color"
+                android:background="@drawable/ic_wallet_filters"
+                android:contentDescription="@null"
                 app:autoSizeTextType="uniform" />
 
         </LinearLayout>

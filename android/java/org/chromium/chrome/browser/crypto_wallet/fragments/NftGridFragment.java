@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -90,7 +91,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     private WalletNftAdapter mWalletNftAdapter;
     private ProgressBar mPbAssetDiscovery;
     private ViewGroup mAddNftsContainer;
-    private Button mBtnChangeNetwork;
+    private ImageButton mBtnChangeNetwork;
     private ImageView mBtnAddNft;
 
     private ActivityResultLauncher<Intent> mAddAssetActivityResultLauncher;

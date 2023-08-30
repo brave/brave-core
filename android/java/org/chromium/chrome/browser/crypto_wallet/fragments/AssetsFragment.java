@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -71,7 +72,7 @@ import java.util.Locale;
 public class AssetsFragment extends Fragment implements OnWalletListItemClick, ApprovedTxObserver {
     private static final String TAG = "AssetsFragment";
     private TextView mBalance;
-    private Button mBtnChangeNetwork;
+    private ImageButton mBtnChangeNetwork;
 
     private String mFiatSumString;
 
