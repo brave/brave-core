@@ -9,11 +9,10 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "base/win/object_watcher.h"
-#include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/brave_vpn_ras_connection_api_base.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
+#include "brave/components/brave_vpn/common/win/ras/ras_connection_observer.h"
 
 namespace brave_vpn {
 namespace ras {
@@ -21,7 +20,7 @@ enum class CheckConnectionResult;
 }  // namespace ras
 
 class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPIBase,
-                                   public base::win::ObjectWatcher::Delegate {
+                                   public ras::RasConnectionObserver {
  public:
   BraveVPNOSConnectionAPIWin(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -40,8 +39,8 @@ class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPIBase,
   void CheckConnectionImpl(const std::string& name) override;
   bool IsPlatformNetworkAvailable() override;
 
-  // base::win::ObjectWatcher::Delegate overrides:
-  void OnObjectSignaled(HANDLE object) override;
+  // ras::RasConnectionObserver overrides:
+  void OnRasConnectionStateChanged() override;
 
   void OnCreated(const std::string& name,
                  const ras::RasOperationResult& result);
@@ -50,10 +49,6 @@ class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPIBase,
   void OnCheckConnection(const std::string& name,
                          ras::CheckConnectionResult result);
 
-  void StartVPNConnectionChangeMonitoring();
-
-  HANDLE event_handle_for_connected_disconnected_ = NULL;
-  base::win::ObjectWatcher connected_disconnected_event_watcher_;
   base::WeakPtrFactory<BraveVPNOSConnectionAPIWin> weak_factory_{this};
 };
 

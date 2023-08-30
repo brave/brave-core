@@ -97,7 +97,7 @@ void StatusTrayRunner::SetupStatusIcon() {
   if (status_icon) {
     status_icon->SetContextMenu(std::make_unique<TrayMenuModel>(this));
   }
-  SubscribeForServiceStopNotifications(
+  SubscribeForWireguardNotifications(
       connected ? GetBraveVpnWireguardTunnelServiceName()
                 : GetBraveVpnWireguardServiceName());
 }
@@ -174,29 +174,12 @@ void StatusTrayRunner::UpdateIconState(bool connected, bool error) {
       GetStatusIconTooltip(connected, error));
 }
 
-void StatusTrayRunner::OnServiceStateChanged(int mask) {
+void StatusTrayRunner::OnWireguardServiceStateChanged(int mask) {
   auto connected = IsTunnelServiceRunning();
   UpdateIconState(connected, false);
-  SubscribeForServiceStopNotifications(
+  SubscribeForWireguardNotifications(
       connected ? GetBraveVpnWireguardTunnelServiceName()
                 : GetBraveVpnWireguardServiceName());
-}
-
-void StatusTrayRunner::SubscribeForServiceStopNotifications(
-    const std::wstring& name) {
-  if (service_watcher_) {
-    if (service_watcher_->GetServiceName() == name) {
-      service_watcher_->StartWatching();
-      return;
-    }
-  }
-  service_watcher_.reset(new brave::ServiceWatcher());
-  if (!service_watcher_->Subscribe(
-          name, SERVICE_NOTIFY_STOPPED,
-          base::BindRepeating(&StatusTrayRunner::OnServiceStateChanged,
-                              weak_factory_.GetWeakPtr()))) {
-    VLOG(1) << "Unable to set service watcher for:" << name;
-  }
 }
 
 void StatusTrayRunner::OnDisconnected(bool success) {

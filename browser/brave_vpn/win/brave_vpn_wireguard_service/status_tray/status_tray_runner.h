@@ -9,11 +9,12 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "base/win/registry.h"
 #include "base/win/windows_types.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/tray_menu_model.h"
-#include "brave/components/brave_vpn/common/win/brave_windows_service_watcher.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/wireguard/wireguard_service_observer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ui {
@@ -24,7 +25,8 @@ namespace brave_vpn {
 
 class StatusTray;
 
-class StatusTrayRunner : public TrayMenuModel::Delegate {
+class StatusTrayRunner : public TrayMenuModel::Delegate,
+                         public wireguard::WireguardServiceObserver {
  public:
   static StatusTrayRunner* GetInstance();
 
@@ -45,6 +47,9 @@ class StatusTrayRunner : public TrayMenuModel::Delegate {
   StatusTrayRunner();
   ~StatusTrayRunner() override;
 
+  // WireguardServiceObserver overrides:
+  void OnWireguardServiceStateChanged(int mask) override;
+
   bool IsTunnelServiceRunning() const;
   void SetupStatusIcon();
   void SignalExit();
@@ -60,7 +65,6 @@ class StatusTrayRunner : public TrayMenuModel::Delegate {
   void ExecuteCommand(int command_id, int event_flags) override;
   void OnMenuWillShow(ui::SimpleMenuModel* source) override;
 
-  std::unique_ptr<brave::ServiceWatcher> service_watcher_;
   absl::optional<bool> service_running_for_testing_;
   base::win::RegKey storage_;
   std::unique_ptr<StatusTray> status_tray_;
