@@ -137,7 +137,7 @@ void SpeedreaderToolbarDataHandlerImpl::AiChat() {
     return;
   }
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  static_cast<BraveBrowserWindow*>(browser_->window())->OpenAiChatPanel();
+  static_cast<BraveBrowserWindow*>(browser_->window())->ToggleAiChatPanel();
 #endif
 }
 

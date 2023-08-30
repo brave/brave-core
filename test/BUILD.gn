@@ -1043,6 +1043,12 @@ test("brave_browser_tests") {
       "//brave/components/speedreader",
       "//brave/components/speedreader/common:mojom",
     ]
+    if (enable_ai_chat) {
+      deps += [
+        "//brave/components/ai_chat/common:common",
+        "//brave/components/ai_chat/common/buildflags:buildflags",
+      ]
+    }
   }
 
   if (enable_playlist) {

@@ -418,20 +418,28 @@ void BraveBrowserView::ShowReaderModeToolbar() {
 }
 
 void BraveBrowserView::HideReaderModeToolbar() {
-  if (reader_mode_toolbar_view_) {
+  if (reader_mode_toolbar_view_ && reader_mode_toolbar_view_->GetVisible()) {
     reader_mode_toolbar_view_->SetVisible(false);
     Layout();
   }
 }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-void BraveBrowserView::OpenAiChatPanel() {
+void BraveBrowserView::ToggleAiChatPanel() {
   if (!ai_chat::features::IsAIChatEnabled()) {
     return;
   }
+  auto* side_panel = SidePanelUI::GetSidePanelUIForBrowser(browser_.get());
+  if (!side_panel) {
+    return;
+  }
 
-  SidePanelUI::GetSidePanelUIForBrowser(browser_.get())
-      ->Show(SidePanelEntryId::kChatUI);
+  if (auto entry = side_panel->GetCurrentEntryId();
+      entry == SidePanelEntryId::kChatUI) {
+    side_panel->Close();
+  } else {
+    side_panel->Show(SidePanelEntryId::kChatUI);
+  }
 }
 #endif
 

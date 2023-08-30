@@ -49,7 +49,7 @@ class BraveBrowserWindow : public BrowserWindow {
   virtual void ShowReaderModeToolbar() {}
   virtual void HideReaderModeToolbar() {}
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  virtual void OpenAiChatPanel() {}
+  virtual void ToggleAiChatPanel() {}
 #endif
 #endif
 
