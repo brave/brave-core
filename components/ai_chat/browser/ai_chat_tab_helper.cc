@@ -13,11 +13,13 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
+#include "base/i18n/time_formatting.h"
 #include "base/memory/weak_ptr.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/browser/constants.h"
@@ -41,35 +43,6 @@ using ai_chat::mojom::ConversationTurnVisibility;
 namespace {
 static const auto kAllowedSchemes = base::MakeFixedFlatSet<base::StringPiece>(
     {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
-
-std::string GetDayOfWeekString(int day_of_week) {
-  const auto k_day_of_week_map =
-      base::MakeFixedFlatMap<int, std::string>({{0, "Sunday"},
-                                                {1, "Monday"},
-                                                {2, "Tuesday"},
-                                                {3, "Wednesday"},
-                                                {4, "Thursday"},
-                                                {5, "Friday"},
-                                                {6, "Saturday"}});
-  return k_day_of_week_map.at(day_of_week);
-}
-
-std::string GetMonthString(int month) {
-  const auto k_month_map =
-      base::MakeFixedFlatMap<int, std::string>({{0, "January"},
-                                                {1, "February"},
-                                                {2, "March"},
-                                                {3, "April"},
-                                                {4, "May"},
-                                                {5, "June"},
-                                                {6, "July"},
-                                                {7, "August"},
-                                                {8, "September"},
-                                                {9, "October"},
-                                                {10, "November"},
-                                                {11, "December"}});
-  return k_month_map.at(month);
-}
 }  // namespace
 
 namespace ai_chat {
@@ -489,15 +462,10 @@ std::string AIChatTabHelper::BuildLlama2Prompt(std::string user_message) {
   // Always use a generic system message
   std::string system_message =
       l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC);
-  base::Time::Exploded exploded;
-  base::Time::Now().LocalExplode(&exploded);
-  std::string date_string = base::StringPrintf(
-      "%02d:%02d %s, %s %02d, %d", exploded.hour, exploded.minute,
-      GetDayOfWeekString(exploded.day_of_week).c_str(),
-      GetMonthString(exploded.month - 1).c_str(), exploded.day_of_month,
-      exploded.year);
-  std::string today_system_message =
-      base::ReplaceStringPlaceholders(system_message, {date_string}, nullptr);
+  std::string date_and_time_string =
+      base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
+  std::string today_system_message = base::ReplaceStringPlaceholders(
+      system_message, {date_and_time_string}, nullptr);
 
   auto conversation_history = GetConversationHistory();
 
