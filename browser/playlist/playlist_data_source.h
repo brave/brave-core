@@ -3,16 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_DATA_SOURCE_H_
-#define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_DATA_SOURCE_H_
+#ifndef BRAVE_BROWSER_PLAYLIST_PLAYLIST_DATA_SOURCE_H_
+#define BRAVE_BROWSER_PLAYLIST_PLAYLIST_DATA_SOURCE_H_
 
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "chrome/browser/ui/webui/favicon_source.h"
 #include "content/public/browser/url_data_source.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
+class Profile;
 
 namespace base {
 class FilePath;
@@ -23,11 +25,11 @@ namespace playlist {
 class PlaylistService;
 
 // A URL data source for
-// chrome-untrusted://playlist-data/<playlist-id>/{thumbnail,media}/ resources,
-// for use in webui pages that want to get thumbnails or media data.
-class PlaylistDataSource : public content::URLDataSource {
+// chrome-untrusted://playlist-data/<playlist-id>/{thumbnail,media,favicon}/
+// resources, for use in webui pages that want to get thumbnails or media data.
+class PlaylistDataSource : public FaviconSource {
  public:
-  explicit PlaylistDataSource(PlaylistService* service);
+  PlaylistDataSource(Profile* profile, PlaylistService* service);
   PlaylistDataSource(const PlaylistDataSource&) = delete;
   PlaylistDataSource& operator=(const PlaylistDataSource&) = delete;
   ~PlaylistDataSource() override;
@@ -53,4 +55,4 @@ class PlaylistDataSource : public content::URLDataSource {
 
 }  // namespace playlist
 
-#endif  // BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_DATA_SOURCE_H_
+#endif  // BRAVE_BROWSER_PLAYLIST_PLAYLIST_DATA_SOURCE_H_

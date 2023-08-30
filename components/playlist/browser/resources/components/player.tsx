@@ -9,7 +9,7 @@ import styled from 'styled-components'
 
 import { PlaylistItem } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
-import { color, font, spacing } from '@brave/leo/tokens/css'
+import { color, font, radius, spacing } from '@brave/leo/tokens/css'
 
 import {
   ApplicationState,
@@ -28,19 +28,35 @@ import {
 const StyledVideo = styled.video`
   width: 100vw;
   aspect-ratio: 16 / 9;
-  margin-bottom: 8px;
+  margin-bottom: var(--spacing-between-video-and-controls, 8px);
 `
 
-const PlayerContainer = styled.div`
+const PlayerContainer = styled.div<{ backgroundUrl?: string }>`
+  --spacing-between-video-and-controls: 8px;
   width: 100vw;
   height: 100vh;
   display: flex;
+  position: relative;
   flex-direction: column-reverse;
   overflow: hidden;
   user-select: none; // In order to drag-and-drop on the seeker works well.
+
+  // Put blurred thumbnail underneath other UI controls
+  &::before {
+    content: '';
+    background: url(${p => p.backgroundUrl});
+    filter: blur(8px);
+    background-position: center;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: 0.2;
+    z-index: -1;
+  }
 `
 
 const ControlsContainer = styled.div`
+  position: relative;
   ${playlistControlsAreaHeight}
   height: var(--player-controls-area-height);
 
@@ -50,8 +66,35 @@ const ControlsContainer = styled.div`
   gap: 8px;
   flex-shrink: 0;
   justify-content: center;
-  background-color: ${color.dialogs.frostedGlassBackground};
+
   box-sizing: border-box;
+
+  &::before {
+    content: '';
+    background-color: ${color.dialogs.frostedGlassBackground};
+    background-position: center;
+    position: absolute;
+    width: 100%;
+    height: calc(100% + var(--spacing-between-video-and-controls));
+    z-index: -1;
+    left: 0;
+    bottom: 0;
+  }
+`
+
+const FaviconAndTitle = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${spacing.m};
+`
+
+const StyledFavicon = styled.img`
+  padding: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: ${radius.s};
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: ${color.white};
 `
 
 const StyledTitle = styled.div`
@@ -117,9 +160,17 @@ export default function Player () {
   }, [currentItem, videoElement])
 
   return (
-    <PlayerContainer>
+    <PlayerContainer backgroundUrl={currentItem?.thumbnailPath.url}>
       <ControlsContainer>
-        <StyledTitle>{currentItem?.name}</StyledTitle>
+        <FaviconAndTitle>
+          <StyledFavicon
+            src={
+              currentItem?.id &&
+              `chrome-untrusted://playlist-data/${currentItem.id}/favicon`
+            }
+          />
+          <StyledTitle>{currentItem?.name}</StyledTitle>
+        </FaviconAndTitle>
         <PlayerSeeker videoElement={videoElement} />
         <StyledPlayerControls videoElement={videoElement} />
       </ControlsContainer>

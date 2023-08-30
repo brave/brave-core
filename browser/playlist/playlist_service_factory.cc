@@ -32,6 +32,7 @@
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #else
+#include "brave/browser/playlist/playlist_data_source.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #endif
@@ -53,8 +54,9 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
     auto tab_models = TabModelList::models();
     auto iter = base::ranges::find_if(
         tab_models, [](const auto& model) { return model->IsActiveModel(); });
-    if (iter == tab_models.end())
+    if (iter == tab_models.end()) {
       return nullptr;
+    }
 
     auto* active_contents = (*iter)->GetActiveWebContents();
     DCHECK(active_contents);
@@ -62,8 +64,9 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
     return active_contents;
 #else
     auto* browser = chrome::FindLastActiveWithProfile(profile_);
-    if (!browser)
+    if (!browser) {
       return nullptr;
+    }
 
     auto* tab_model = browser->tab_strip_model();
     DCHECK(tab_model);
@@ -154,11 +157,17 @@ KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   DCHECK(media_detector_component_manager_);
   PrefService* local_state = g_browser_process->local_state();
-  return new PlaylistService(context, local_state,
-                             media_detector_component_manager_.get(),
-                             std::make_unique<PlaylistServiceDelegateImpl>(
-                                 Profile::FromBrowserContext(context)),
-                             brave_stats::GetFirstRunTime(local_state));
+  auto* service = new PlaylistService(
+      context, local_state, media_detector_component_manager_.get(),
+      std::make_unique<PlaylistServiceDelegateImpl>(
+          Profile::FromBrowserContext(context)),
+      brave_stats::GetFirstRunTime(local_state));
+
+  content::URLDataSource::Add(
+      context, std::make_unique<PlaylistDataSource>(
+                   Profile::FromBrowserContext(context), service));
+
+  return service;
 }
 
 void PlaylistServiceFactory::PrepareMediaDetectorComponentManager() {

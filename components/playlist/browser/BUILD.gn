@@ -17,8 +17,6 @@ static_library("browser") {
     "media_detector_component_manager.cc",
     "media_detector_component_manager.h",
     "playlist_constants.h",
-    "playlist_data_source.cc",
-    "playlist_data_source.h",
     "playlist_download_request_manager.cc",
     "playlist_download_request_manager.h",
     "playlist_media_file_download_manager.cc",

@@ -81,7 +81,8 @@ class UntrustedPlayerUI : public ui::UntrustedWebUIController {
                     "chrome-untrusted://brave-resources 'unsafe-inline';"));
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::ImgSrc,
-        std::string("img-src 'self' chrome-untrusted://resources;"));
+        std::string("img-src 'self' chrome-untrusted://playlist-data "
+                    "chrome-untrusted://resources;"));
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::FontSrc,
         std::string("font-src 'self' chrome-untrusted://resources;"));
