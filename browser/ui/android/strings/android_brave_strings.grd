@@ -2976,6 +2976,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_POSITIVE_BUTTON_ACTION" desc="Brave wallet Dapp sign farment positive action text">
       Sign
     </message>
+    <message name="IDS_BRAVE_WALLET_SIGN_IN_MESSAGE_POSITIVE_BUTTON_ACTION" desc="Brave wallet Dapp sign in farment positive action text">
+      Sign in
+    </message>
     <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_TITLE" desc="Title text for a request to connect a wallet.">
       Connect With Brave Wallet
     </message>
@@ -3527,6 +3530,33 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_SIGN_MESSAGE_DETAILS_MESSAGE_SECTION" desc="A message section template of sign message details" translateable="false">
       <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Message:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_MESSAGE_TEXT">%1$s</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_ORIGIN_SECTION" desc="An origin section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Origin:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_ORIGIN_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_ADDRESS_SECTION" desc="An address section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Address:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_ADDRESS_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_STATEMENT_SECTION" desc="A statement section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Statement:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_STATEMENT_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_URI_SECTION" desc="An URI section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>URI:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_URI_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_VERSION_SECTION" desc="A version section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Version:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_VERSION_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_CHAIN_ID_SECTION" desc="A chain id section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Chain id:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_CHAIN_ID_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_NONCE_SECTION" desc="A nonce section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Nonce:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_NONCE_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_ISSUED_AT_SECTION" desc="An issued at section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Issued at:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_ISSUED_AT_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_EXPIRATION_TIME_SECTION" desc="An expiration time section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Expiration time:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_EXPIRATION_TIME_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
     </message>
     <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_ADDRESS" desc="Add custom asset dialog Token contract address field for Solana NFT">
       Token address
