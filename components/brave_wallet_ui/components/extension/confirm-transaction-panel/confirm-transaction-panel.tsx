@@ -35,6 +35,7 @@ import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
 import { Erc20ApproveTransactionInfo } from './erc-twenty-transaction-info'
 import { TransactionInfo } from './transaction-info'
+import { NftIcon } from '../../shared/nft-icon/nft-icon'
 
 // Styled Components
 import {
@@ -52,7 +53,6 @@ import {
   ArrowIcon,
   EditButton,
   WarningIcon,
-  AssetIcon,
   ContractButton,
   ExplorerIcon
 } from './style'
@@ -80,8 +80,8 @@ import { EditPendingTransactionGas } from './common/gas'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
-
-const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 0 })
+const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 0 } as const
+const NftAssetIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
 const onClickLearnMore = () => {
   chrome.tabs.create({ url: 'https://support.brave.com/hc/en-us/articles/5546517853325' }, () => {
@@ -301,7 +301,7 @@ export const ConfirmTransactionPanel = () => {
           <TransactionTypeText>{transactionTitle}</TransactionTypeText>
 
           {(isERC721TransferFrom || isERC721SafeTransferFrom) && (
-            <AssetIconWithPlaceholder
+            <NftAssetIconWithPlaceholder
               asset={transactionDetails.erc721BlockchainToken}
               network={transactionsNetwork}
             />
