@@ -21,6 +21,7 @@
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/browser/type_converter.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -32,9 +33,12 @@
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #else
-#include "brave/browser/playlist/playlist_data_source.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/browser/playlist/playlist_data_source.h"
 #endif
 
 namespace playlist {
@@ -163,9 +167,11 @@ KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
           Profile::FromBrowserContext(context)),
       brave_stats::GetFirstRunTime(local_state));
 
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   content::URLDataSource::Add(
       context, std::make_unique<PlaylistDataSource>(
                    Profile::FromBrowserContext(context), service));
+#endif
 
   return service;
 }

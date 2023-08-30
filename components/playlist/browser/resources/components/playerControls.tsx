@@ -141,11 +141,6 @@ export default function PlayerControls ({ videoElement, className }: Props) {
           onClick={() => getPlayerActions().toggleShuffle()}
         ></Control>
         <Control
-          iconName='sidepanel-open'
-          size='large'
-          onClick={() => {}}
-        ></Control>
-        <Control
           iconName='picture-in-picture'
           size='large'
           onClick={() => videoElement?.requestPictureInPicture()}
