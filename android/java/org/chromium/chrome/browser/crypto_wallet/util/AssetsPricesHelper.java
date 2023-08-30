@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class AssetsPricesHelper {
-    private static String TAG = "AssetsPricesHelper";
+    private static final String TAG = "AssetsPricesHelper";
 
     public static void fetchPrices(AssetRatioService assetRatioService, BlockchainToken[] assets,
             Callbacks.Callback1<HashMap<String, Double>> callback) {
