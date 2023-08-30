@@ -38,9 +38,6 @@ class AdBlockFiltersProvider {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  virtual void LoadDATBuffer(
-      base::OnceCallback<void(const DATFileDataBuffer& dat_buf)>) = 0;
-
   virtual void LoadFilterSet(rust::Box<adblock::FilterSet>* filter_set,
                              base::OnceCallback<void()>) = 0;
 

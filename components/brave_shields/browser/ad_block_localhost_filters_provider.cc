@@ -37,18 +37,6 @@ std::string AdBlockLocalhostFiltersProvider::GetNameForDebugging() {
   return "AdBlockLocalhostFiltersProvider";
 }
 
-void AdBlockLocalhostFiltersProvider::LoadDATBuffer(
-    base::OnceCallback<void(const DATFileDataBuffer& dat_buf)> cb) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  auto buffer = std::vector<unsigned char>(std::begin(kLocalhostBadfilters),
-                                           std::end(kLocalhostBadfilters));
-
-  // PostTask so this has an async return to match other loaders
-  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(std::move(cb), std::move(buffer)));
-}
-
 void AdBlockLocalhostFiltersProvider::LoadFilterSet(
     rust::Box<adblock::FilterSet>* filter_set,
     base::OnceCallback<void()> cb) {

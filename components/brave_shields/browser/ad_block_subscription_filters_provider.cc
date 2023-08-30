@@ -28,24 +28,14 @@ AdBlockSubscriptionFiltersProvider::AdBlockSubscriptionFiltersProvider(
 AdBlockSubscriptionFiltersProvider::~AdBlockSubscriptionFiltersProvider() =
     default;
 
-void AdBlockSubscriptionFiltersProvider::LoadDATBuffer(
-    base::OnceCallback<void(const DATFileDataBuffer& dat_buf)> cb) {
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_),
-      base::BindOnce(&AdBlockSubscriptionFiltersProvider::OnDATFileDataReady,
-                     weak_factory_.GetWeakPtr(), std::move(cb)));
-}
-
 void AdBlockSubscriptionFiltersProvider::LoadFilterSet(
     rust::Box<adblock::FilterSet>* filter_set,
     base::OnceCallback<void()> cb) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_),
-      base::BindOnce(
-          &AdBlockSubscriptionFiltersProvider::OnDATFileDataReadyForFilterSet,
-          weak_factory_.GetWeakPtr(), std::move(cb), filter_set));
+      base::BindOnce(&AdBlockSubscriptionFiltersProvider::OnDATFileDataReady,
+                     weak_factory_.GetWeakPtr(), std::move(cb), filter_set));
 }
 
 std::string AdBlockSubscriptionFiltersProvider::GetNameForDebugging() {
@@ -53,14 +43,6 @@ std::string AdBlockSubscriptionFiltersProvider::GetNameForDebugging() {
 }
 
 void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
-    base::OnceCallback<void(const DATFileDataBuffer& dat_buf)> cb,
-    const DATFileDataBuffer& dat_buf) {
-  auto metadata = adblock::read_list_metadata(dat_buf);
-  on_metadata_retrieved_.Run(metadata);
-  std::move(cb).Run(dat_buf);
-}
-
-void AdBlockSubscriptionFiltersProvider::OnDATFileDataReadyForFilterSet(
     base::OnceCallback<void()> cb,
     rust::Box<adblock::FilterSet>* filter_set,
     const DATFileDataBuffer& dat_buf) {

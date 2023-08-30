@@ -35,9 +35,6 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
   std::string GetCustomFilters();
   bool UpdateCustomFilters(const std::string& custom_filters);
 
-  void LoadDATBuffer(
-      base::OnceCallback<void(const DATFileDataBuffer& dat_buf)>) override;
-
   void LoadFilterSet(rust::Box<adblock::FilterSet>* filter_set,
                      base::OnceCallback<void()>) override;
 

@@ -71,15 +71,6 @@ void AdBlockService::SourceProviderObserver::OnChanged() {
   }
 }
 
-void AdBlockService::SourceProviderObserver::OnDATLoaded(
-    const DATFileDataBuffer& dat_buf) {
-  dat_buf_ = absl::make_optional(std::move(dat_buf));
-  // multiple AddObserver calls are ignored
-  resource_provider_->AddObserver(this);
-  resource_provider_->LoadResources(base::BindOnce(
-      &SourceProviderObserver::OnResourcesLoaded, weak_factory_.GetWeakPtr()));
-}
-
 void AdBlockService::SourceProviderObserver::OnFilterSetLoaded(
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
   filter_set_ = absl::make_optional(std::move(*filter_set));

@@ -81,23 +81,6 @@ void AdBlockComponentFiltersProvider::OnComponentReady(
   NotifyObservers();
 }
 
-void AdBlockComponentFiltersProvider::LoadDATBuffer(
-    base::OnceCallback<void(const DATFileDataBuffer& dat_buf)> cb) {
-  if (component_path_.empty()) {
-    // If the path is not ready yet, run the callback with an empty list. An
-    // update will be pushed later to notify about the newly available list.
-    std::move(cb).Run(DATFileDataBuffer());
-    return;
-  }
-
-  base::FilePath list_file_path = component_path_.AppendASCII(kListFile);
-
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_path),
-      base::BindOnce(std::move(cb)));
-}
-
 void AdBlockComponentFiltersProvider::LoadFilterSet(
     rust::Box<adblock::FilterSet>* filter_set,
     base::OnceCallback<void()> cb) {

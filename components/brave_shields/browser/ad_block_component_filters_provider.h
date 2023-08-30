@@ -50,9 +50,6 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   AdBlockComponentFiltersProvider& operator=(
       const AdBlockComponentFiltersProvider&) = delete;
 
-  void LoadDATBuffer(
-      base::OnceCallback<void(const DATFileDataBuffer& dat_buf)>) override;
-
   void LoadFilterSet(rust::Box<adblock::FilterSet>* filter_set,
                      base::OnceCallback<void()>) override;
 
