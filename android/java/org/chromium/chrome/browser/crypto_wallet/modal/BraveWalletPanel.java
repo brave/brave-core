@@ -135,8 +135,13 @@ public class BraveWalletPanel implements DialogInterface {
             mAllAccountsInfo = allAccountsInfo;
             mSelectedAccount = mAllAccountsInfo.selectedAccount;
 
+            final BraveWalletService braveWalletService =
+                    mBraveWalletPanelServices.getBraveWalletService();
+            if (braveWalletService == null) {
+                return;
+            }
             AccountsPermissionsHelper accountsPermissionsHelper =
-                    new AccountsPermissionsHelper(mBraveWalletPanelServices.getBraveWalletService(),
+                    new AccountsPermissionsHelper(braveWalletService,
                             Utils.filterAccountsByCoin(
                                          mAllAccountsInfo.accounts, mSelectedAccount.accountId.coin)
                                     .toArray(new AccountInfo[0]));
@@ -193,7 +198,10 @@ public class BraveWalletPanel implements DialogInterface {
 
     private boolean handleMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.action_lock_wallet) {
-            mBraveWalletPanelServices.getKeyringService().lock();
+            final KeyringService keyringService = mBraveWalletPanelServices.getKeyringService();
+            if (keyringService != null) {
+                keyringService.lock();
+            }
             dismiss();
         } else if (item.getItemId() == R.id.action_connected_sites) {
             try {
@@ -370,12 +378,17 @@ public class BraveWalletPanel implements DialogInterface {
         LiveDataUtil.observeOnce(
                 getNetworkModel().mDefaultNetwork, selectedNetwork -> {
                     BlockchainToken asset = Utils.makeNetworkAsset(selectedNetwork);
-                    AssetsPricesHelper.fetchPrices(mBraveWalletPanelServices.getAssetRatioService(),
-                            new BlockchainToken[] {asset},
+                    final AssetRatioService assetRatioService =
+                            mBraveWalletPanelServices.getAssetRatioService();
+                    final JsonRpcService jsonRpcService =
+                            mBraveWalletPanelServices.getJsonRpcService();
+                    if (assetRatioService == null || jsonRpcService == null) {
+                        return;
+                    }
+                    AssetsPricesHelper.fetchPrices(assetRatioService, new BlockchainToken[] {asset},
                             assetPrices
-                            -> BalanceHelper.getNativeAssetsBalances(
-                                    mBraveWalletPanelServices.getJsonRpcService(), selectedNetwork,
-                                    new AccountInfo[] {mSelectedAccount},
+                            -> BalanceHelper.getNativeAssetsBalances(jsonRpcService,
+                                    selectedNetwork, new AccountInfo[] {mSelectedAccount},
                                     (coinType, nativeAssetsBalances) -> {
                                         double price = Utils.getOrDefault(assetPrices,
                                                 asset.symbol.toLowerCase(Locale.getDefault()),
