@@ -1120,7 +1120,14 @@ public class BraveRewardsPanel
                                 ? View.GONE
                                 : View.VISIBLE);
                 mWalletBalanceProgress.setVisibility(View.GONE);
-                mPopupView.findViewById(R.id.vbat_userdrain_help_img).setVisibility(View.VISIBLE);
+                if (mBraveRewardsNativeWorker.isGrandfatheredUser()
+                        && mBraveRewardsNativeWorker.getExternalWalletType().equals(
+                                BraveWalletProvider.ZEBPAY)
+                        && mExternalWallet != null
+                        && mExternalWallet.getStatus() == WalletStatus.CONNECTED) {
+                    mPopupView.findViewById(R.id.vbat_userdrain_help_img)
+                            .setVisibility(View.VISIBLE);
+                }
                 if (mBraveRewardsNativeWorker != null) {
                     BraveRewardsBalance walletBalanceObject =
                             mBraveRewardsNativeWorker.GetWalletBalance();
