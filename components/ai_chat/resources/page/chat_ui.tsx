@@ -102,7 +102,11 @@ function App () {
     }
 
     if (apiHasError && model.currentError === APIError.RateLimitReached) {
-      currentErrorElement = <ErrorRateLimit />
+      currentErrorElement = (
+        <ErrorRateLimit
+          onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
+        />
+      )
     }
   }
 
