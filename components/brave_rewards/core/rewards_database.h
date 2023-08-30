@@ -49,6 +49,10 @@ class RewardsDatabase {
   mojom::DBCommandResponse::Status Migrate(int32_t version,
                                            int32_t compatible_version);
 
+  bool ShouldCreateTables();
+
+  int GetTablesCount();
+
   void OnMemoryPressure(
       base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
