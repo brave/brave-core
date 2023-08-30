@@ -38,6 +38,7 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
       std::string component_id,
       std::string base64_public_key,
       std::string title,
+      uint8_t permission_mask,
       bool is_default_engine = true);
   // Helper to build a particular adblock component from a catalog entry
   AdBlockComponentFiltersProvider(
@@ -67,6 +68,7 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
 
   base::FilePath component_path_;
   std::string component_id_;
+  uint8_t permission_mask_;
   const raw_ptr<component_updater::ComponentUpdateService>
       component_updater_service_;
 

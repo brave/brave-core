@@ -15,6 +15,14 @@
 
 namespace brave_shields {
 
+namespace {
+
+// Custom filters get all permissions granted, i.e. all bits of the mask set,
+// i.e. the maximum possible uint8_t.
+const uint8_t kCustomFiltersPermissionLevel = UINT8_MAX;
+
+}  // namespace
+
 AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
     PrefService* local_state)
     : AdBlockFiltersProvider(false), local_state_(local_state) {}
@@ -67,7 +75,8 @@ void AdBlockCustomFiltersProvider::LoadFilterSet(
 
   auto buffer =
       std::vector<unsigned char>(custom_filters.begin(), custom_filters.end());
-  (*filter_set)->add_filter_list(buffer);
+  (*filter_set)
+      ->add_filter_list_with_permissions(buffer, kCustomFiltersPermissionLevel);
 
   // PostTask so this has an async return to match other loaders
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(

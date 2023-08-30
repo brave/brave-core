@@ -40,7 +40,8 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
 
   HostContentSettingsMap* content_settings();
   void UpdateAdBlockInstanceWithRules(const std::string& rules,
-                                      const std::string& resources = "[]");
+                                      const std::string& resources = "[]",
+                                      uint8_t permission_mask = 0);
   void UpdateAdBlockInstanceWithDAT(const base::FilePath& dat_location,
                                     const std::string& resources = "[]");
   void UpdateCustomAdBlockInstanceWithRules(

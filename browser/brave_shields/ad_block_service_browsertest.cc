@@ -147,9 +147,10 @@ HostContentSettingsMap* AdBlockServiceTest::content_settings() {
 
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
     const std::string& rules,
-    const std::string& resources) {
+    const std::string& resources,
+    uint8_t permission_mask) {
   auto source_provider = std::make_unique<brave_shields::TestFiltersProvider>(
-      rules, resources, true);
+      rules, resources, true, permission_mask);
 
   brave_shields::AdBlockService* ad_block_service =
       g_brave_browser_process->ad_block_service();
@@ -2342,6 +2343,64 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringWindowScriptlet) {
       contents, R"(waitCSSSelector('.ad', 'color', 'Impossible value'))");
   ASSERT_TRUE(result.error.empty());
   EXPECT_EQ(base::Value(true), result.value);
+}
+
+// Test that permissioned scriptlets can only be injected from appropriately
+// permissioned lists
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ScriptletInjectionPermissions) {
+  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  std::string scriptlet =
+      "(function() {"
+      "  window.success = true;"
+      "})();";
+  std::string scriptlet_base64;
+  base::Base64Encode(scriptlet, &scriptlet_base64);
+  std::string resources =
+      "[{"
+      "\"name\": \"set-success.js\","
+      "\"aliases\": [],"
+      "\"kind\": {\"mime\": \"application/javascript\"},"
+      "\"permission\": 3,"  // i.e. 0b00000011
+      "\"content\": \"" +
+      scriptlet_base64 + "\"}]";
+  std::string rules = "b.com##+js(set-success)";
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  content::WebContents* contents;
+
+  // Add the list with default (i.e. no) permissions
+  UpdateAdBlockInstanceWithRules(rules, resources);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+  contents = browser()->tab_strip_model()->GetActiveWebContents();
+
+  {
+    auto result = EvalJs(contents, R"(window.success === undefined)");
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  // Add a list with different but still insufficient permissions
+  UpdateAdBlockInstanceWithRules(rules, resources, 5);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+  contents = browser()->tab_strip_model()->GetActiveWebContents();
+
+  {
+    auto result = EvalJs(contents, R"(window.success === undefined)");
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  // Finally add a list with sufficient permissions
+  UpdateAdBlockInstanceWithRules(rules, resources, 7);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+  contents = browser()->tab_strip_model()->GetActiveWebContents();
+
+  {
+    auto result = EvalJs(contents, R"(window.success)");
+    EXPECT_EQ(base::Value(true), result.value);
+  }
 }
 
 class ScriptletDebugLogsFlagEnabledTest : public AdBlockServiceTest {

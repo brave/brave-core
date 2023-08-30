@@ -26,8 +26,9 @@ namespace {
 // static
 void AddDATBufferToFilterSet(base::OnceCallback<void()> cb,
                              rust::Box<adblock::FilterSet>* filter_set,
+                             uint8_t permission_mask,
                              DATFileDataBuffer buffer) {
-  (*filter_set)->add_filter_list(buffer);
+  (*filter_set)->add_filter_list_with_permissions(buffer, permission_mask);
   std::move(cb).Run();
 }
 
@@ -38,9 +39,11 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
     std::string component_id,
     std::string base64_public_key,
     std::string title,
+    uint8_t permission_mask,
     bool is_default_engine)
     : AdBlockFiltersProvider(is_default_engine),
       component_id_(component_id),
+      permission_mask_(permission_mask),
       component_updater_service_(cus) {
   // Can be nullptr in unit tests
   if (cus) {
@@ -63,6 +66,7 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
                                       catalog_entry.component_id,
                                       catalog_entry.base64_public_key,
                                       catalog_entry.title,
+                                      catalog_entry.permission_mask,
                                       is_default_engine) {}
 
 AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() {}
@@ -96,7 +100,8 @@ void AdBlockComponentFiltersProvider::LoadFilterSet(
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_path),
-      base::BindOnce(&AddDATBufferToFilterSet, std::move(cb), filter_set));
+      base::BindOnce(&AddDATBufferToFilterSet, std::move(cb), filter_set,
+                     permission_mask_));
 }
 
 }  // namespace brave_shields
