@@ -54,9 +54,9 @@ KeyedService* AcceleratorServiceFactory::BuildServiceInstanceFor(
   auto* profile = Profile::FromBrowserContext(context);
   DCHECK(profile);
 
-  auto [accelerators, unmodifiable] = GetDefaultAccelerators();
+  auto [accelerators, system_managed] = GetDefaultAccelerators();
   return new AcceleratorService(profile->GetPrefs(), accelerators,
-                                unmodifiable);
+                                system_managed);
 }
 
 }  // namespace commands
