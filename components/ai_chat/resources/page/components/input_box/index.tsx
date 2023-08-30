@@ -17,6 +17,7 @@ interface InputBoxProps {
   onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void
   value: string
   hasSeenAgreement: boolean
+  disabled: boolean
   onHandleAgreeClick: Function
 }
 
@@ -73,6 +74,7 @@ function InputBox (props: InputBoxProps) {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           value={inputText}
+          disabled={props.disabled}
         />
         <div className={classnames({
           [styles.counterText]: true,
@@ -83,7 +85,11 @@ function InputBox (props: InputBoxProps) {
         </div>
       </div>
       <div>
-        <button className={styles.buttonSend} onClick={handleClick} disabled={isCharLimitExceeded}>
+        <button
+          className={styles.buttonSend}
+          onClick={handleClick}
+          disabled={isCharLimitExceeded || props.disabled}
+        >
           <Icon name='send' />
         </button>
       </div>

@@ -21,6 +21,12 @@ enum AutoGenerateQuestionsPref {
   Disabled     // User has chosen not to enable auto-generation
 };
 
+enum APIError {
+  None,
+  ConnectionIssue,
+  RateLimitReached
+};
+
 struct SiteInfo {
   string title;
 };
@@ -55,11 +61,14 @@ interface PageHandler {
   OpenBraveLeoWiki();
   DisconnectPageContents();
   ClearConversationHistory();
+  RetryAPIRequest();
+  GetAPIResponseError() => (APIError error);
 };
 
 interface ChatUIPage {
   OnConversationHistoryUpdate();
   OnAPIRequestInProgress(bool in_progress);
+  OnAPIResponseError(APIError error);
   // Provides the full list of questions for the active tab in the page's
   // Browser window.
   OnSuggestedQuestionsChanged(

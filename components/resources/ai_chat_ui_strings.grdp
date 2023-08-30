@@ -24,9 +24,6 @@
   <message name="IDS_CHAT_UI_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service">
     Enter a prompt here
   </message>
-  <message name="IDS_CHAT_UI_API_ERROR" desc="Describes an error occured submitting the API request">
-    There was an error processing your message, please try again.
-  </message>
   <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_TITLE" desc="Title to enable suggested questions">
     Enable suggested questions?
   </message>
@@ -41,5 +38,14 @@
   </message>
   <message name="IDS_CHAT_UI_PAGE_CONTENT_WARNING" desc="Description about page content being sent to a remote LLM">
      Disconnect to stop sending this page content to Leo, and start a new conversation
+  </message>
+  <message name="IDS_CHAT_UI_ERROR_NETWORK" desc="An error presented when there is a network issue in the UI">
+     There was a network issue connecting to Leo, check your connection and try again.
+  </message>
+  <message name="IDS_CHAT_UI_ERROR_RATE_LIMIT" desc="An error presented when the user has exhausted the API request limit">
+    Leo is too busy right now. Please try again in a few minutes.
+  </message>
+  <message name="IDS_CHAT_UI_RETRY_BUTTON_LABEL" desc="A button label to retry API again">
+     Retry
   </message>
 </grit-part>

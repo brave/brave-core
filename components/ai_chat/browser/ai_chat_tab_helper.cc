@@ -30,6 +30,7 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/storage_partition.h"
+#include "net/http/http_status_code.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using ai_chat::mojom::CharacterType;
@@ -295,6 +296,10 @@ void AIChatTabHelper::ClearConversationHistory() {
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
   }
+}
+
+mojom::APIError AIChatTabHelper::GetCurrentAPIError() {
+  return current_error_;
 }
 
 void AIChatTabHelper::GenerateQuestions() {
@@ -690,6 +695,24 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
                             std::move(data_received_callback));
 }
 
+void AIChatTabHelper::RetryAPIRequest() {
+  SetAPIError(mojom::APIError::None);
+  DCHECK(!chat_history_.empty());
+
+  // We're using a reverse iterator here to find the latest human turn
+  for (std::vector<ConversationTurn>::reverse_iterator rit =
+           chat_history_.rbegin();
+       rit != chat_history_.rend(); ++rit) {
+    if ((*rit).character_type == CharacterType::HUMAN) {
+      auto turn = *std::make_move_iterator(rit);
+      auto human_turn_iter = rit.base() - 1;
+      chat_history_.erase(human_turn_iter, chat_history_.end());
+      MakeAPIRequestWithConversationHistoryUpdate(turn);
+      break;
+    }
+  }
+}
+
 bool AIChatTabHelper::IsRequestInProgress() {
   DCHECK(ai_chat_api_);
 
@@ -742,10 +765,11 @@ void AIChatTabHelper::OnAPIStreamDataComplete(
   }
 
   if (!success) {
-    // TODO(petemill): show error state separate from assistant message
-    AddToConversationHistory(ConversationTurn{
-        CharacterType::ASSISTANT, ConversationTurnVisibility::VISIBLE,
-        l10n_util::GetStringUTF8(IDS_CHAT_UI_API_ERROR)});
+    if (net::HTTP_TOO_MANY_REQUESTS == result.response_code()) {
+      SetAPIError(mojom::APIError::RateLimitReached);
+    } else {
+      SetAPIError(mojom::APIError::ConnectionIssue);
+    }
   }
 
   is_request_in_progress_ = false;
@@ -833,6 +857,14 @@ mojom::AutoGenerateQuestionsPref AIChatTabHelper::GetAutoGeneratePref() {
   }
 
   return pref;
+}
+
+void AIChatTabHelper::SetAPIError(const mojom::APIError& error) {
+  current_error_ = error;
+
+  for (Observer& obs : observers_) {
+    obs.OnAPIResponseError(current_error_);
+  }
 }
 
 void AIChatTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {

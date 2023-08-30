@@ -18,9 +18,11 @@ import ConversationList from './components/conversation_list'
 import InputBox from './components/input_box'
 import PrivacyMessage from './components/privacy_message'
 import { useConversationHistory, useInput, useAgreement } from './state/hooks'
-import getPageHandlerInstance, { AutoGenerateQuestionsPref } from './api/page_handler'
+import getPageHandlerInstance, { AutoGenerateQuestionsPref, APIError } from './api/page_handler'
 import SiteTitle from './components/site_title'
 import PromptAutoSuggestion from './components/prompt_auto_suggestion'
+import ErrorConnection from './components/error_connection'
+import ErrorRateLimit from './components/error_rate_limit'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
@@ -28,6 +30,7 @@ function App () {
   const model = useConversationHistory()
   const { value, setValue } = useInput();
   const { hasSeenAgreement, handleAgreeClick } = useAgreement()
+  const apiHasError = !!model.currentError && (model.currentError !== APIError.None)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const target = e.target as HTMLTextAreaElement
@@ -57,6 +60,7 @@ function App () {
   let conversationList = <PrivacyMessage />
   let siteTitleElement = null
   let promptAutoSuggestionElement = null
+  let currentErrorElement = null
 
   if (hasSeenAgreement) {
     conversationList = (
@@ -88,6 +92,18 @@ function App () {
         />
       )
     }
+
+    if (apiHasError && model.currentError === APIError.ConnectionIssue) {
+      currentErrorElement = (
+        <ErrorConnection
+          onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
+        />
+      )
+    }
+
+    if (apiHasError && model.currentError === APIError.RateLimitReached) {
+      currentErrorElement = <ErrorRateLimit />
+    }
   }
 
   const inputBox = (
@@ -98,6 +114,7 @@ function App () {
       onKeyDown={handleSubmit}
       hasSeenAgreement={hasSeenAgreement}
       onHandleAgreeClick={handleAgreeClick}
+      disabled={apiHasError || model.isGenerating}
     />
   )
 
@@ -108,6 +125,7 @@ function App () {
         inputBox={inputBox}
         siteTitle={siteTitleElement}
         promptAutoSuggestion={promptAutoSuggestionElement}
+        currentErrorElement={currentErrorElement}
         onSettingsClick={() => getPageHandlerInstance().pageHandler.openBraveLeoSettings()}
         onEraseClick={() => getPageHandlerInstance().pageHandler.clearConversationHistory()}
       />

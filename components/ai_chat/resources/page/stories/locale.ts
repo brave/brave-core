@@ -17,5 +17,8 @@ provideStrings({
   aboutDescription_2: 'The summarized page and any questions you ask of the Chat feature are sent to the servers of an external API partner (no identifiers are sent with that query).',
   aboutNote: 'Please ensure that the page content and any follow-up inquiries do not contain personal or sensitive information. The accuracy of summaries and inquiry responses is not guaranteed and so you should not rely on any text related to health, personal safety or financial matters.',
   acceptButtonLabel: 'Accept and begin',
-  pageContentWarning: 'Disconnect to stop sending this page content to Leo, and start a new conversation'
+  pageContentWarning: 'Disconnect to stop sending this page content to Leo, and start a new conversation',
+  errorNetworkLabel: 'There was a network issue connecting to Leo, check your connection and try again.',
+  errorRateLimit: 'You\'ve reached the maximum number of questions for Leo. Please try again in a few hours.',
+  retryButtonLabel: 'Retry'
 })

@@ -179,6 +179,19 @@ void AIChatUIPageHandler::ClearConversationHistory() {
   }
 }
 
+void AIChatUIPageHandler::RetryAPIRequest() {
+  if (active_chat_tab_helper_) {
+    active_chat_tab_helper_->RetryAPIRequest();
+  }
+}
+
+void AIChatUIPageHandler::GetAPIResponseError(
+    GetAPIResponseErrorCallback callback) {
+  if (active_chat_tab_helper_) {
+    std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
+  }
+}
+
 void AIChatUIPageHandler::MarkAgreementAccepted() {
   profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kBraveChatHasSeenDisclaimer,
                                    true);
@@ -193,6 +206,12 @@ void AIChatUIPageHandler::OnHistoryUpdate() {
 void AIChatUIPageHandler::OnAPIRequestInProgress(bool in_progress) {
   if (page_.is_bound()) {
     page_->OnAPIRequestInProgress(in_progress);
+  }
+}
+
+void AIChatUIPageHandler::OnAPIResponseError(mojom::APIError error) {
+  if (page_.is_bound()) {
+    page_->OnAPIResponseError(error);
   }
 }
 
