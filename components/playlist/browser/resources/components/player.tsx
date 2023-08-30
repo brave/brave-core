@@ -28,7 +28,7 @@ import {
 const StyledVideo = styled.video`
   width: 100vw;
   aspect-ratio: 16 / 9;
-  margin-bottom: var(--spacing-between-video-and-controls, 8px);
+  margin-bottom: var(--spacing-between-video-and-controls);
 `
 
 const PlayerContainer = styled.div<{ backgroundUrl?: string }>`
