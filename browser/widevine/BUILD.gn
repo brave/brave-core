@@ -43,10 +43,10 @@ source_set("widevine") {
   ]
 }
 
-source_set("unittest") {
+source_set("widevine_cdm_component_installer_unittest") {
   testonly = true
 
-  sources = []
+  sources = [ "widevine_cdm_component_installer_unittest.cc" ]
   deps = [
     "//base",
     "//brave/common",
@@ -60,19 +60,41 @@ source_set("unittest") {
     "//testing/gtest",
     "//third_party/widevine/cdm:buildflags",
   ]
+}
+
+source_set("widevine_permission_android_unittest") {
+  testonly = true
+
+  sources = [ "widevine_permission_android_unittest.cc" ]
+  deps = [
+    ":widevine",
+    "//base",
+    "//brave/common",
+    "//chrome/browser:browser",
+    "//chrome/browser/profiles:profile",
+    "//chrome/test:test_support",
+    "//components/permissions",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//third_party/widevine/cdm:buildflags",
+  ]
+}
+
+source_set("unittests") {
+  testonly = true
+
+  sources = []
+  deps = []
   if (enable_widevine_cdm_component) {
-    sources += [ "widevine_cdm_component_installer_unittest.cc" ]
+    deps += [ ":widevine_cdm_component_installer_unittest" ]
   }
 
   if (is_android) {
-    sources += [ "widevine_permission_android_unittest.cc" ]
-    deps += [
-      ":widevine",
-      "//chrome/browser:browser",
-      "//chrome/test:test_support",
-      "//components/prefs:test_support",
-      "//content/test:test_support",
-    ]
+    deps += [ ":widevine_permission_android_unittest" ]
   }
 }
 

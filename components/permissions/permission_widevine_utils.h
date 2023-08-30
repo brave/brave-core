@@ -13,7 +13,7 @@ class PrefService;
 namespace permissions {
 class PermissionRequest;
 
-void DontAskWidevineInstall(PrefService* prefs, bool dont_ask);
+void AskWidevineInstall(PrefService* prefs, bool ask);
 bool HasWidevinePermissionRequest(
     const std::vector<permissions::PermissionRequest*>& requests);
 

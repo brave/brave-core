@@ -90,10 +90,11 @@ class WidevinePermissionAndroidTest : public ChromeRenderViewHostTestHarness {
 
  private:
   std::unique_ptr<TestingProfileManager> profile_manager_;
-  raw_ptr<TestingProfile> profile_;
+  raw_ptr<TestingProfile> profile_ = nullptr;
   std::unique_ptr<content::WebContents> web_contents_;
-  raw_ptr<BraveDrmTabHelper> tab_helper_;
-  raw_ptr<permissions::PermissionRequestManager> permission_request_manager_;
+  raw_ptr<BraveDrmTabHelper> tab_helper_ = nullptr;
+  raw_ptr<permissions::PermissionRequestManager> permission_request_manager_ =
+      nullptr;
 };
 
 TEST_F(WidevinePermissionAndroidTest, BraveDrmTabHelperTest) {
@@ -176,9 +177,9 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
 TEST_F(WidevinePermissionAndroidTest, PermissionWidevineUtilsTest) {
   SanityCheck();
 
-  permissions::DontAskWidevineInstall(profile()->GetPrefs(), true);
+  permissions::AskWidevineInstall(profile()->GetPrefs(), false);
   EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(kAskWidevineInstall));
-  permissions::DontAskWidevineInstall(profile()->GetPrefs(), false);
+  permissions::AskWidevineInstall(profile()->GetPrefs(), true);
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(kAskWidevineInstall));
 
   std::vector<permissions::PermissionRequest*> requests;

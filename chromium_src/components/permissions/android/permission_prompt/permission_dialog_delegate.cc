@@ -76,10 +76,10 @@ void ApplyDontAskAgainOption(JNIEnv* env,
     return;
   }
 
-  const bool dontAskAgain =
+  const bool dont_ask_again =
       Java_BravePermissionDialogDelegate_getDontAskAgain(env, obj);
   PermissionRequest* request = permission_prompt->delegate()->Requests()[0];
-  request->SetDontAskAgain(dontAskAgain);
+  request->set_dont_ask_again(dont_ask_again);
 }
 
 }  // namespace

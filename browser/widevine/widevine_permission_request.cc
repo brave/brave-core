@@ -76,7 +76,7 @@ void WidevinePermissionRequest::PermissionDecided(ContentSetting result,
   } else if (result == ContentSetting::CONTENT_SETTING_BLOCK) {
     Profile* profile =
         static_cast<Profile*>(web_contents_->GetBrowserContext());
-    permissions::DontAskWidevineInstall(profile->GetPrefs(), GetDontAskAgain());
+    permissions::AskWidevineInstall(profile->GetPrefs(), !get_dont_ask_again());
     // Cancelled
   } else {
     DCHECK(result == CONTENT_SETTING_DEFAULT);

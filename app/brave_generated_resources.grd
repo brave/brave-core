@@ -231,7 +231,7 @@
         </message>
       </if>
       <if expr="is_android">
-        <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_ENABLE_SYSTEM" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
+        <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_ANDROID" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           <ph name="URL">$1<ex>https://www.youtube.com</ex></ph> wants to play protected Google Widevine content, which requires you to allow Android system support for Widevine. By allowing, you'll agree to Google's terms of use.
         </message>
       </if>

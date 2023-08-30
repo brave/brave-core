@@ -109,10 +109,10 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
 
   // Check permission bubble is not visible when user turns it off.
   observer.bubble_added_ = false;
-  permissions::DontAskWidevineInstall(
+  permissions::AskWidevineInstall(
       static_cast<Profile*>(GetActiveWebContents()->GetBrowserContext())
           ->GetPrefs(),
-      true);
+      false);
   EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
                                      GURL("chrome://newtab/")));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
@@ -121,10 +121,10 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
 
   // Check permission bubble is visible when user turns it on.
   observer.bubble_added_ = false;
-  permissions::DontAskWidevineInstall(
+  permissions::AskWidevineInstall(
       static_cast<Profile*>(GetActiveWebContents()->GetBrowserContext())
           ->GetPrefs(),
-      false);
+      true);
   EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
                                      GURL("chrome://newtab/")));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();

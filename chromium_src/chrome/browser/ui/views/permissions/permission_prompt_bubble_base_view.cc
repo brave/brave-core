@@ -66,7 +66,7 @@ DontAskAgainCheckbox::DontAskAgainCheckbox(WidevinePermissionRequest* request)
       request_(request) {}
 
 void DontAskAgainCheckbox::ButtonPressed() {
-  request_->SetDontAskAgain(GetChecked());
+  request_->set_dont_ask_again(GetChecked());
 }
 
 void AddAdditionalWidevineViewControlsIfNeeded(

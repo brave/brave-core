@@ -12,8 +12,8 @@
 
 namespace permissions {
 
-void DontAskWidevineInstall(PrefService* prefs, bool dont_ask) {
-  prefs->SetBoolean(kAskWidevineInstall, !dont_ask);
+void AskWidevineInstall(PrefService* prefs, bool ask) {
+  prefs->SetBoolean(kAskWidevineInstall, ask);
 }
 
 bool HasWidevinePermissionRequest(
