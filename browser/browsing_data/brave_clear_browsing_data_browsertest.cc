@@ -161,8 +161,10 @@ class BraveClearDataOnExitTest
                             true);
     prefService->SetBoolean(browsing_data::prefs::kDeleteSiteSettingsOnExit,
                             true);
+#if BUILDFLAG(ENABLE_AI_CHAT)
     prefService->SetBoolean(browsing_data::prefs::kDeleteBraveLeoHistoryOnExit,
                             true);
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
   }
 
   uint64_t GetRemoveMaskAll() {

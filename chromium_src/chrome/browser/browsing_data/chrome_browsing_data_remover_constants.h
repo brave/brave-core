@@ -11,10 +11,8 @@
 #include "src/chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"  // IWYU pragma: export
 
 namespace chrome_browsing_data_remover {
-constexpr int BRAVE_DATA_TYPE_EMBEDDER_START_SHIFT_POS = 64 - 24;
-constexpr DataType GetBraveDataTypeValue(const int& index) {
-  return DATA_TYPE_EMBEDDER_BEGIN
-         << (BRAVE_DATA_TYPE_EMBEDDER_START_SHIFT_POS - index - 1);
+constexpr DataType GetBraveDataTypeValue(const int index) {
+  return DataType(1) << (63 - index);
 }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)

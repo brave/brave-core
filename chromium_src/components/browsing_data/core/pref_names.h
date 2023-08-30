@@ -6,8 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_BROWSING_DATA_CORE_PREF_NAMES_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_BROWSING_DATA_CORE_PREF_NAMES_H_
 
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
-
 #include "src/components/browsing_data/core/pref_names.h"  // IWYU pragma: export
 
 namespace browsing_data {
@@ -22,10 +20,9 @@ extern const char kDeletePasswordsOnExit[];
 extern const char kDeleteFormDataOnExit[];
 extern const char kDeleteHostedAppsDataOnExit[];
 extern const char kDeleteSiteSettingsOnExit[];
-#if BUILDFLAG(ENABLE_AI_CHAT)
-extern const char kDeleteBraveLeoHistory[];
-extern const char kDeleteBraveLeoHistoryOnExit[];
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+constexpr char kDeleteBraveLeoHistory[] = "browser.clear_data.brave_leo";
+constexpr char kDeleteBraveLeoHistoryOnExit[] =
+    "browser.clear_data.brave_leo_on_exit";
 }  // namespace prefs
 
 }  // namespace browsing_data

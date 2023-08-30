@@ -92,7 +92,7 @@ RegisterPolymerTemplateModifications({
     // Append Leo reset checkbox
     const isLeoAssistantAllowed = loadTimeData
       .getBoolean('isLeoAssistantAllowed')
-    if(isLeoAssistantAllowed) {
+    if (isLeoAssistantAllowed) {
       const cacheCheckbox = templateContent
         .querySelector('[id="cacheCheckbox"]')
       if (!cacheCheckbox) {
@@ -103,11 +103,12 @@ RegisterPolymerTemplateModifications({
       cacheCheckbox.insertAdjacentHTML(
         'beforebegin',
         getTrustedHTML`
-        <settings-checkbox id="leoResetCheckbox"
-        class="cookies-checkbox"
-        pref="{{prefs.browser.clear_data.brave_leo}}"
-        disabled="[[clearingInProgress_]]"
-        no-set-pref></settings-checkbox>`)
+        <settings-checkbox 
+          id="leoResetCheckbox"
+          pref="{{prefs.browser.clear_data.brave_leo}}"
+          disabled="[[clearingInProgress_]]"
+          no-set-pref>
+        </settings-checkbox>`)
 
       const leoResetCheckbox =
         templateContent.querySelector('[id="leoResetCheckbox"]')

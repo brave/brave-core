@@ -26,6 +26,7 @@ void BraveRemoveJumplist(Profile* profile) {
   }                                                                    \
   browsing_data_important_sites_util
 #endif
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #define NUM_TYPES                                                           \
   BRAVE_AI_CHAT:                                                            \
@@ -33,10 +34,13 @@ void BraveRemoveJumplist(Profile* profile) {
   break;                                                                    \
   case BrowsingDataType::NUM_TYPES
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
 #include "src/chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc"
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #undef NUM_TYPES
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
 #if BUILDFLAG(IS_WIN)
 #undef browsing_data_important_sites_util
 #endif
