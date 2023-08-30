@@ -705,19 +705,8 @@ void AIChatTabHelper::RetryAPIRequest() {
        rit != chat_history_.rend(); ++rit) {
     if ((*rit).character_type == CharacterType::HUMAN) {
       auto turn = *std::make_move_iterator(rit);
-
       auto human_turn_iter = rit.base() - 1;
-      auto assistant_turn_iter =
-          rit.base();  // Ensure if this iter is valid before using it, as there
-                       // might be no element here
-
-      if (assistant_turn_iter != chat_history_.end() &&
-          assistant_turn_iter->character_type == CharacterType::ASSISTANT) {
-        chat_history_.erase(human_turn_iter, assistant_turn_iter + 1);
-      } else {
-        chat_history_.erase(human_turn_iter);
-      }
-
+      chat_history_.erase(human_turn_iter, chat_history_.end());
       MakeAPIRequestWithConversationHistoryUpdate(turn);
       break;
     }
