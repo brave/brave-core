@@ -106,6 +106,8 @@ RegisterPolymerTemplateModifications({
         <settings-checkbox 
           id="leoResetCheckbox"
           pref="{{prefs.browser.clear_data.brave_leo}}"
+          label="[[i18n('leoClearHistoryData')]]"
+          sub-label="[[i18n('leoClearHistoryDataSubLabel')]]"
           disabled="[[clearingInProgress_]]"
           no-set-pref>
         </settings-checkbox>`)
@@ -115,11 +117,6 @@ RegisterPolymerTemplateModifications({
       if (!leoResetCheckbox) {
         console.error(
           '[Brave Settings Overrides] Couldn\'t find Leo reset link')
-      } else {
-        leoResetCheckbox.setAttribute(
-          'label', loadTimeData.getString('leoClearHistoryData'))
-        leoResetCheckbox.setAttribute(
-          'sub-label', loadTimeData.getString('leoClearHistoryDataSubLabel'))
       }
     }
   }
