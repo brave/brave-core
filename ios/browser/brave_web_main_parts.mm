@@ -12,6 +12,7 @@
 #include "base/task/thread_pool.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "brave/ios/browser/browser_state/brave_browser_state_keyed_service_factories.h"
+#include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "components/flags_ui/pref_service_flags_storage.h"
 #include "components/metrics/metrics_service.h"
 #include "components/metrics_services_manager/metrics_services_manager.h"
@@ -156,6 +157,11 @@ void BraveWebMainParts::PreMainMessageLoopRun() {
   SetupMetrics();
 
   // Start the brave services
+  // Ensure the factory services are instantiated before staring services.
+  // Otherwise the service created by the factory does not get informed of
+  // the component update as it's an observer of componennt installer.
+  brave::URLSanitizerServiceFactory::GetServiceForState(
+      last_used_browser_state);
   application_context_->StartBraveServices();
 }
 

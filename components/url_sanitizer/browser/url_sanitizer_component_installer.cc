@@ -47,12 +47,6 @@ void URLSanitizerComponentInstaller::LoadDirectlyFromResourcePath() {
 
 void URLSanitizerComponentInstaller::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
-
-  if (!resource_dir_.empty()) {
-    // If we added the observer after the resource is set,
-    // we need to inform the observer of what we already loaded
-    LoadDirectlyFromResourcePath();
-  }
 }
 
 void URLSanitizerComponentInstaller::RemoveObserver(Observer* observer) {
