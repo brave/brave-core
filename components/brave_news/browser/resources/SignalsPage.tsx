@@ -8,35 +8,16 @@ import { useInspectContext } from './context';
 import Card from './feed/Card';
 import Radio from '@brave/leo/react/radioButton'
 import Dropdown from '@brave/leo/react/dropdown';
+import Input from '@brave/leo/react/input';
 import Flex from '../../../brave_new_tab_ui/components/Flex'
 import { Channel, Publisher } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import styled from 'styled-components';
-import { color, effect, radius, spacing } from '@brave/leo/tokens/css';
 
 interface Props {
 }
 
 const Container = styled(Flex)`
   width: 800px;
-`
-
-const SearchBox = styled.input`
-  all: unset;
-  flex: 1;
-  border: 1px solid ${color.divider.subtle};
-
-  &:hover {
-    border-color: ${color.divider.strong};
-  }
-
-  &:focus {
-    border-color: ${color.divider.interactive};
-  }
-
-  border-radius: ${radius[8]};
-  box-shadow: ${effect.elevation[3]};
-  padding: ${spacing[8]};
-  height: 32px;
 `
 
 function SignalCards<T>({ items, sort, filter, getName, getKey }: { items: T[], sort: 'name' | 'subscribed' | 'visitWeight', filter: string, getName: (item: T) => string, getKey: (item: T) => string }) {
@@ -83,7 +64,9 @@ export default function SignalsPage(props: Props) {
         <Radio name='show' value="publishers" currentValue={show} onChange={e => setShow(e.detail.value)} />
         <Radio name='show' value="channels" currentValue={show} onChange={e => setShow(e.detail.value)} />
       </Flex>
-      <SearchBox placeholder='filter...' value={filter} onChange={e => setFilter(e.target.value)} />
+      <Input size='normal' hasErrors={false} showErrors={false} mode='outline' type='text' placeholder='filter...' value={filter} onInput={e => setFilter((e.target as any)['value'])}>
+        Filter
+      </Input>
       <Dropdown value={sort} onChange={e => setSort(e.detail.value)}>
         <div slot="label">Sort by</div>
         <leo-option>name</leo-option>
