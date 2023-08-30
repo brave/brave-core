@@ -11,6 +11,9 @@
 #include "net/base/features.h"
 #include "net/base/url_util.h"
 
+// Prevent double-defining macro
+#include "chrome/browser/renderer_host/chrome_navigation_ui_data.h"
+
 #define MaybeCreateLoader(...)                                                \
   MaybeCreateLoader(__VA_ARGS__) {                                            \
     if (brave_shields::IsHttpsByDefaultFeatureEnabled()) {                    \
@@ -57,9 +60,12 @@
 
 #define IsLocalhost(URL) IsLocalhostOrOnion(URL)
 
+#define url_is_typed_with_http_scheme() return_false()
+
 #include "src/chrome/browser/ssl/https_upgrades_interceptor.cc"
 
 #undef MaybeCreateLoader
 #undef MaybeCreateLoaderForResponse
 #undef IsEnabled
 #undef IsLocalhost
+#undef url_is_typed_with_http_scheme
