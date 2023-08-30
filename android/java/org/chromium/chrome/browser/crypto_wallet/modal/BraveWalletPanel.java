@@ -96,7 +96,6 @@ public class BraveWalletPanel implements DialogInterface {
     private AllAccountsInfo mAllAccountsInfo;
     private AccountInfo mSelectedAccount;
     private NetworkInfo mSelectedNetwork;
-    private final Context mContext;
     private final Observer<AllAccountsInfo> mAllAccountsInfoObserver;
 
     private final Observer<NetworkInfo> mDefaultNetworkObserver;
@@ -147,7 +146,7 @@ public class BraveWalletPanel implements DialogInterface {
             });
         };
 
-        mPopupWindow = new PopupWindow(mContext);
+        mPopupWindow = new PopupWindow(mAnchorViewHost.getContext());
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mPopupWindow.setElevation(20);
