@@ -5,6 +5,7 @@
 
 import { RegisterStyleOverride, RegisterPolymerPrototypeModification } from 'chrome://resources/brave/polymer_overriding.js'
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import 'chrome://resources/brave/leo.bundle.js'
 
 const leoIcons = (window as any)['leoIcons'] as Set<string>
 
