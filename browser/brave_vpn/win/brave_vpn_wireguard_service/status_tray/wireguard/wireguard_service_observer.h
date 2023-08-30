@@ -22,7 +22,7 @@ class WireguardServiceObserver {
   WireguardServiceObserver(const WireguardServiceObserver&) = delete;
   WireguardServiceObserver& operator=(const WireguardServiceObserver&) = delete;
 
-  ~WireguardServiceObserver();
+  virtual ~WireguardServiceObserver();
 
   virtual void OnWireguardServiceStateChanged(int mask) = 0;
 
