@@ -48,6 +48,7 @@ import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
+import org.chromium.base.ThreadUtils;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.supplier.ObservableSupplier;
@@ -1577,6 +1578,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     @MainThread
     private void setupObservers() {
+        ThreadUtils.assertOnUiThread();
         clearObservers();
         mWalletModel.getCryptoModel().getPendingTxHelper().mSelectedPendingRequest.observe(
                 this, transactionInfo -> {
@@ -1657,6 +1659,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     @MainThread
     private void clearObservers() {
+        ThreadUtils.assertOnUiThread();
         mWalletModel.getCryptoModel().getPendingTxHelper().mSelectedPendingRequest.removeObservers(
                 this);
         mWalletModel.getDappsModel().mWalletIconNotificationVisible.removeObservers(this);
