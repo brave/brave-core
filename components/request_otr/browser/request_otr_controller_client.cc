@@ -6,7 +6,6 @@
 #include "brave/components/request_otr/browser/request_otr_controller_client.h"
 
 #include "brave/components/request_otr/browser/request_otr_service.h"
-#include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
 #include "brave/components/request_otr/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/settings_page_helper.h"
@@ -35,7 +34,7 @@ RequestOTRControllerClient::GetMetricsHelper(const GURL& url) {
 RequestOTRControllerClient::RequestOTRControllerClient(
     content::WebContents* web_contents,
     const GURL& request_url,
-    ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
+    request_otr::RequestOTRService* request_otr_service,
     PrefService* prefs,
     const std::string& locale)
     : security_interstitials::SecurityInterstitialControllerClient(
@@ -47,7 +46,7 @@ RequestOTRControllerClient::RequestOTRControllerClient(
           nullptr /* settings_page_helper */),
       request_url_(request_url),
       dont_warn_again_(false),
-      ephemeral_storage_service_(ephemeral_storage_service) {}
+      request_otr_service_(request_otr_service) {}
 
 RequestOTRControllerClient::~RequestOTRControllerClient() = default;
 
@@ -56,25 +55,18 @@ void RequestOTRControllerClient::GoBack() {
 }
 
 void RequestOTRControllerClient::Proceed() {
-  RequestOTRStorageTabHelper* tab_storage =
-      RequestOTRStorageTabHelper::GetOrCreate(web_contents_);
-  tab_storage->set_is_proceeding(true);
-  if (dont_warn_again_) {
-    if (PrefService* prefs = GetPrefService()) {
-      prefs->SetInteger(
-          kRequestOTRActionOption,
-          static_cast<int>(RequestOTRService::RequestOTRActionOption::kNever));
-    }
-  }
-
-  ReloadPage();
+  ProceedInternal(/*requested_otr*/ false);
 }
 
 void RequestOTRControllerClient::ProceedOTR() {
-  RequestOTRStorageTabHelper* tab_storage =
-      RequestOTRStorageTabHelper::GetOrCreate(web_contents_);
-  tab_storage->set_is_proceeding(true);
-  tab_storage->set_requested_otr(true);
+  ProceedInternal(/*requested_otr*/ true);
+}
+
+void RequestOTRControllerClient::ProceedInternal(bool requested_otr) {
+  request_otr_service_->SetOfferedOTR(request_url_);
+  if (requested_otr) {
+    request_otr_service_->SetRequestedOTR(request_url_);
+  }
   if (dont_warn_again_) {
     if (PrefService* prefs = GetPrefService()) {
       prefs->SetInteger(
@@ -82,10 +74,7 @@ void RequestOTRControllerClient::ProceedOTR() {
           static_cast<int>(RequestOTRService::RequestOTRActionOption::kNever));
     }
   }
-  tab_storage->MaybeEnable1PESForUrl(
-      ephemeral_storage_service_, request_url_,
-      base::BindOnce(&RequestOTRControllerClient::ReloadPage,
-                     weak_ptr_factory_.GetWeakPtr()));
+  ReloadPage();
 }
 
 void RequestOTRControllerClient::ReloadPage() {

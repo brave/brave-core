@@ -15,7 +15,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "url/origin.h"
+#include "net/base/url_util.h"
 
 namespace request_otr {
 
@@ -37,7 +37,7 @@ void RequestOTRService::OnRulesReady(const std::string& json_content) {
            << " rules parsed from " << kRequestOTRConfigFile;
 }
 
-bool RequestOTRService::ShouldBlock(const GURL& url) const {
+bool RequestOTRService::ShouldOfferOTR(const GURL& url) {
   // Check host cache
   const std::string etldp1 = RequestOTRRule::GetETLDForRequestOTR(url.host());
   if (!base::Contains(host_cache_, etldp1)) {
@@ -51,6 +51,49 @@ bool RequestOTRService::ShouldBlock(const GURL& url) const {
   }
 
   return false;
+}
+
+bool RequestOTRService::OfferedOTR(const GURL& url) {
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    return false;
+  }
+  return base::Contains(offered_otr_cache_,
+                        net::URLToEphemeralStorageDomain(url));
+}
+
+bool RequestOTRService::RequestedOTR(const GURL& url) {
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    return false;
+  }
+  return base::Contains(requested_otr_cache_,
+                        net::URLToEphemeralStorageDomain(url));
+}
+
+void RequestOTRService::SetOfferedOTR(const GURL& url) {
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    return;
+  }
+
+  offered_otr_cache_[net::URLToEphemeralStorageDomain(url)] =
+      url::Origin::Create(url);
+}
+
+void RequestOTRService::SetRequestedOTR(const GURL& url) {
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    return;
+  }
+
+  requested_otr_cache_[net::URLToEphemeralStorageDomain(url)] =
+      url::Origin::Create(url);
+}
+
+void RequestOTRService::WithdrawOTR(const GURL& url) {
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    return;
+  }
+  std::string domain = net::URLToEphemeralStorageDomain(url);
+  // offered_otr_cache_.erase(domain);
+  requested_otr_cache_.erase(domain);
 }
 
 // static

@@ -8,8 +8,9 @@
 #include <memory>
 
 #include "base/check_op.h"
+#include "brave/browser/request_otr/request_otr_service_factory.h"
 #include "brave/components/l10n/common/localization_util.h"
-#include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
+#include "brave/components/request_otr/browser/request_otr_service.h"
 #include "build/build_config.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/grit/generated_resources.h"
@@ -21,8 +22,6 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
-
-using request_otr::RequestOTRStorageTabHelper;
 
 // static
 void RequestOTRInfoBarDelegate::Create(
@@ -63,11 +62,12 @@ std::u16string RequestOTRInfoBarDelegate::GetButtonLabel(
 bool RequestOTRInfoBarDelegate::Accept() {
   content::WebContents* web_contents =
       infobars::ContentInfoBarManager::WebContentsFromInfoBar(infobar());
-  RequestOTRStorageTabHelper* tab_storage =
-      RequestOTRStorageTabHelper::GetOrCreate(web_contents);
-  /* reload, not in Off-The-Record mode, and suppress interstitial */
-  tab_storage->set_is_proceeding(true);
-  tab_storage->set_requested_otr(false);
+  request_otr::RequestOTRService* request_otr_service =
+      request_otr::RequestOTRServiceFactory::GetForBrowserContext(
+          web_contents->GetBrowserContext());
+  DCHECK(request_otr_service);
+  request_otr_service->WithdrawOTR(web_contents->GetLastCommittedURL());
   web_contents->GetController().Reload(content::ReloadType::NORMAL, true);
+
   return true;
 }

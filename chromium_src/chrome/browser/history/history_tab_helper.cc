@@ -8,10 +8,11 @@
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 
+#include "brave/browser/request_otr/request_otr_service_factory.h"
+#include "brave/components/request_otr/browser/request_otr_service.h"
 #include "chrome/browser/history/history_tab_helper.h"
 
 // Include these here to avoid overriding "IsOffTheRecord" in them.
-#include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service_factory.h"
@@ -25,10 +26,11 @@
 namespace {
 
 bool BraveTabRequestedOffTheRecord(content::WebContents* web_contents) {
-  if (request_otr::RequestOTRStorageTabHelper* tab_storage =
-          request_otr::RequestOTRStorageTabHelper::FromWebContents(
-              web_contents)) {
-    return tab_storage->has_requested_otr();
+  if (request_otr::RequestOTRService* request_otr_service =
+          request_otr::RequestOTRServiceFactory::GetForBrowserContext(
+              web_contents->GetBrowserContext())) {
+    return request_otr_service->RequestedOTR(
+        web_contents->GetLastCommittedURL());
   }
   return false;
 }

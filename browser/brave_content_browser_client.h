@@ -163,6 +163,10 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
                            blink::web_pref::WebPreferences* prefs) override;
   blink::UserAgentMetadata GetUserAgentMetadata() override;
 
+  content::StoragePartitionConfig GetStoragePartitionConfigForSite(
+      content::BrowserContext* browser_context,
+      const GURL& site) override;
+
  private:
   void OnAllowGoogleAuthChanged();
 

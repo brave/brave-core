@@ -232,9 +232,9 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
       url.SchemeIs(kChromeExtensionScheme)) {
     return true;
   }
-  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
+  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS()) {
     return false;
-
+  }
   ContentSetting setting =
       map->GetContentSetting(url, GURL(), ContentSettingsType::BRAVE_SHIELDS);
 

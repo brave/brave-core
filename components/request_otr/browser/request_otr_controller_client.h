@@ -22,11 +22,9 @@ namespace security_interstitials {
 class MetricsHelper;
 }  // namespace security_interstitials
 
-namespace ephemeral_storage {
-class EphemeralStorageService;
-}  // namespace ephemeral_storage
-
 namespace request_otr {
+
+class RequestOTRService;
 
 class RequestOTRControllerClient
     : public security_interstitials::SecurityInterstitialControllerClient {
@@ -34,12 +32,11 @@ class RequestOTRControllerClient
   static std::unique_ptr<security_interstitials::MetricsHelper>
   GetMetricsHelper(const GURL& url);
 
-  RequestOTRControllerClient(
-      content::WebContents* web_contents,
-      const GURL& request_url,
-      ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
-      PrefService* prefs,
-      const std::string& locale);
+  RequestOTRControllerClient(content::WebContents* web_contents,
+                             const GURL& request_url,
+                             RequestOTRService* request_otr_service,
+                             PrefService* prefs,
+                             const std::string& locale);
   ~RequestOTRControllerClient() override;
 
   RequestOTRControllerClient(const RequestOTRControllerClient&) = delete;
@@ -54,12 +51,12 @@ class RequestOTRControllerClient
   void Proceed() override;
 
  private:
+  void ProceedInternal(bool requested_otr);
   void ReloadPage();
 
   const GURL request_url_;
   bool dont_warn_again_;
-  raw_ptr<ephemeral_storage::EphemeralStorageService>
-      ephemeral_storage_service_ = nullptr;  // not owned
+  raw_ptr<RequestOTRService> request_otr_service_;  // NOT OWNED
 
   base::WeakPtrFactory<RequestOTRControllerClient> weak_ptr_factory_{this};
 };

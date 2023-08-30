@@ -127,7 +127,7 @@
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #include "brave/browser/request_otr/request_otr_service_factory.h"
 #include "brave/components/request_otr/browser/request_otr_navigation_throttle.h"
-#include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
+#include "brave/components/request_otr/browser/request_otr_service.h"
 #endif
 
 using blink::web_pref::WebPreferences;
@@ -642,15 +642,17 @@ bool BraveContentBrowserClient::CanCreateWindow(
       user_gesture, opener_suppressed, no_javascript_access);
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
-  // If the user has requested going off-the-record in this tab, don't allow
+  // If the user has requested going off-the-record on this site, don't allow
   // opening new windows via script
   if (content::WebContents* web_contents =
           content::WebContents::FromRenderFrameHost(opener)) {
-    if (request_otr::
-            RequestOTRStorageTabHelper* request_otr_storage_tab_helper =
-                request_otr::RequestOTRStorageTabHelper::FromWebContents(
-                    web_contents)) {
-      if (request_otr_storage_tab_helper->has_requested_otr()) {
+    if (request_otr::RequestOTRService* request_otr_service =
+            request_otr::RequestOTRServiceFactory::GetForBrowserContext(
+                web_contents->GetBrowserContext())) {
+      // TODO this doesn't work, url is about:blank. Are we already protected
+      // from this?
+      if (request_otr_service->RequestedOTR(
+              web_contents->GetLastCommittedURL())) {
         *no_javascript_access = true;
       }
     }
@@ -1161,7 +1163,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
               handle,
               request_otr::RequestOTRServiceFactory::GetForBrowserContext(
                   context),
-              EphemeralStorageServiceFactory::GetForContext(context),
               Profile::FromBrowserContext(context)->GetPrefs(),
               g_browser_process->GetApplicationLocale())) {
     throttles.push_back(std::move(request_otr_throttle));
@@ -1249,4 +1250,26 @@ blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
   metadata.full_version =
       base::StrCat({base::NumberToString(version.components()[0]), ".0.0.0"});
   return metadata;
+}
+
+content::StoragePartitionConfig
+BraveContentBrowserClient::GetStoragePartitionConfigForSite(
+    content::BrowserContext* browser_context,
+    const GURL& site) {
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+  if (auto* request_otr_service =
+          request_otr::RequestOTRServiceFactory::GetForBrowserContext(
+              browser_context)) {
+    if (request_otr_service->RequestedOTR(site)) {
+      CHECK(site.has_host());  // upstream also does this before accessing
+                               // site.host()
+      return content::StoragePartitionConfig::Create(
+          browser_context, site.host(), /*partition_name=*/std::string(),
+          /*in_memory=*/true);
+    }
+  }
+#endif
+
+  return ChromeContentBrowserClient::GetStoragePartitionConfigForSite(
+      browser_context, site);
 }

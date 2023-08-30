@@ -35,7 +35,6 @@ class RequestOTRNavigationThrottle : public content::NavigationThrottle {
   explicit RequestOTRNavigationThrottle(
       content::NavigationHandle* navigation_handle,
       RequestOTRService* request_otr_service,
-      ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       PrefService* pref_service,
       const std::string& locale);
   ~RequestOTRNavigationThrottle() override;
@@ -47,7 +46,6 @@ class RequestOTRNavigationThrottle : public content::NavigationThrottle {
   static std::unique_ptr<RequestOTRNavigationThrottle> MaybeCreateThrottleFor(
       content::NavigationHandle* navigation_handle,
       RequestOTRService* request_otr_service,
-      ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       PrefService* pref_service,
       const std::string& locale);
 
@@ -61,11 +59,8 @@ class RequestOTRNavigationThrottle : public content::NavigationThrottle {
 
  private:
   content::NavigationThrottle::ThrottleCheckResult MaybeShowInterstitial();
-  void Enable1PESAndResume();
 
   raw_ptr<RequestOTRService> request_otr_service_ = nullptr;  // not owned
-  raw_ptr<ephemeral_storage::EphemeralStorageService>
-      ephemeral_storage_service_ = nullptr;      // not owned
   raw_ptr<PrefService> pref_service_ = nullptr;  // not owned
   std::string locale_;
 
