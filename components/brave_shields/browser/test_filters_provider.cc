@@ -34,6 +34,14 @@ void TestFiltersProvider::LoadDATBuffer(
   std::move(cb).Run(buffer);
 }
 
+void TestFiltersProvider::LoadFilterSet(
+    rust::Box<adblock::FilterSet>* filter_set,
+    base::OnceCallback<void()> cb) {
+  auto buffer = std::vector<unsigned char>(rules_.begin(), rules_.end());
+  (*filter_set)->add_filter_list(buffer);
+  std::move(cb).Run();
+}
+
 void TestFiltersProvider::LoadResources(
     base::OnceCallback<void(const std::string& resources_json)> cb) {
   std::move(cb).Run(resources_);

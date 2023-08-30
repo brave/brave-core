@@ -13,6 +13,7 @@
 #include "base/functional/callback.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
 
 using brave_component_updater::DATFileDataBuffer;
@@ -44,9 +45,16 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   void LoadDATBuffer(
       base::OnceCallback<void(const DATFileDataBuffer& dat_buf)>) override;
 
+  void LoadFilterSet(rust::Box<adblock::FilterSet>* filter_set,
+                     base::OnceCallback<void()>) override;
+
   void LoadDATBufferForEngine(
       bool is_for_default_engine,
       base::OnceCallback<void(const DATFileDataBuffer& dat_buf)> cb);
+
+  void LoadFilterSetForEngine(bool is_for_default_engine,
+                              rust::Box<adblock::FilterSet>* filter_set,
+                              base::OnceCallback<void()> cb);
 
   // AdBlockFiltersProvider::Observer
   void OnChanged() override;

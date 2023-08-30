@@ -33,6 +33,9 @@ class AdBlockLocalhostFiltersProvider : public AdBlockFiltersProvider {
   void LoadDATBuffer(
       base::OnceCallback<void(const DATFileDataBuffer& dat_buf)>) override;
 
+  void LoadFilterSet(rust::Box<adblock::FilterSet>* filter_set,
+                     base::OnceCallback<void()>) override;
+
   // AdBlockFiltersProvider
   void AddObserver(AdBlockFiltersProvider::Observer* observer);
 

@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/barrier_callback.h"
+#include "base/barrier_closure.h"
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
@@ -74,6 +75,13 @@ void AdBlockFiltersProviderManager::LoadDATBuffer(
   NOTREACHED();
 }
 
+// Use LoadDATBufferForEngine instead, for Filter Provider Manager.
+void AdBlockFiltersProviderManager::LoadFilterSet(
+    rust::Box<adblock::FilterSet>* filter_set,
+    base::OnceCallback<void()>) {
+  NOTREACHED();
+}
+
 void AdBlockFiltersProviderManager::LoadDATBufferForEngine(
     bool is_for_default_engine,
     base::OnceCallback<void(const DATFileDataBuffer& dat_buf)> cb) {
@@ -90,6 +98,24 @@ void AdBlockFiltersProviderManager::LoadDATBufferForEngine(
         base::BindOnce(
             &AdBlockFiltersProvider::LoadDATBuffer, provider->AsWeakPtr(),
             base::BindOnce(OnDATLoaded, std::move(collect_and_merge))));
+  }
+}
+
+void AdBlockFiltersProviderManager::LoadFilterSetForEngine(
+    bool is_for_default_engine,
+    rust::Box<adblock::FilterSet>* filter_set,
+    base::OnceCallback<void()> cb) {
+  auto& filters_providers = is_for_default_engine
+                                ? default_engine_filters_providers_
+                                : additional_engine_filters_providers_;
+  const auto collect_and_merge =
+      base::BarrierClosure(filters_providers.size(), std::move(cb));
+  for (auto* const provider : filters_providers) {
+    task_tracker_.PostTask(
+        base::SequencedTaskRunner::GetCurrentDefault().get(), FROM_HERE,
+        base::BindOnce(&AdBlockFiltersProvider::LoadFilterSet,
+                       provider->AsWeakPtr(), filter_set,
+                       std::move(collect_and_merge)));
   }
 }
 

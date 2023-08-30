@@ -68,6 +68,7 @@ class AdBlockService {
 
    private:
     void OnDATLoaded(const DATFileDataBuffer& dat_buf);
+    void OnFilterSetLoaded(std::unique_ptr<rust::Box<adblock::FilterSet>>);
 
     // AdBlockFiltersProvider::Observer
     void OnChanged() override;
@@ -76,6 +77,7 @@ class AdBlockService {
     void OnResourcesLoaded(const std::string& resources_json) override;
 
     absl::optional<DATFileDataBuffer> dat_buf_;
+    absl::optional<rust::Box<adblock::FilterSet>> filter_set_;
     raw_ptr<AdBlockEngine> adblock_engine_;
     raw_ptr<AdBlockFiltersProvider> filters_provider_;    // not owned
     raw_ptr<AdBlockResourceProvider> resource_provider_;  // not owned
