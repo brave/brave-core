@@ -106,6 +106,8 @@ public class BraveRewardsPanel
             "https://support.brave.com/hc/en-us/articles/6539887971469";
     public static final String NEW_SIGNUP_DISABLED_URL =
             "https://support.brave.com/hc/en-us/articles/9312922941069";
+    private static final String ADS_PAYOUT_STATUS_URL = "https://community.brave.com/t/ads-payout-status-update/287895";
+    private static final String SUPPORT_URL = "https://support.brave.com";
     private static final String BRAVE_REWARDS_PAGE = "https://brave.com/rewards";
     private static final String BRAVE_REWARDS_CHANGES_PAGE = "https://brave.com/rewards-changes";
 
@@ -1038,13 +1040,10 @@ public class BraveRewardsPanel
                 if (nextPaymentDate > 0) {
                     String nextPayoutDate = (String) android.text.format.DateFormat.format(
                             "MMMM dd", new Date((long) nextPaymentDate));
-                    Log.e(TAG,
-                            "payoutStatus : " + payoutStatus
-                                    + " nextPayoutDate : " + nextPayoutDate);
                     mPayoutStatusBannerLayout.setBackgroundDrawable(ResourcesCompat.getDrawable(
                             ContextUtils.getApplicationContext().getResources(),
                             R.drawable.rewards_panel_payout_processing_bg, null));
-                    payoutBannerImg.setImageResource(R.drawable.ic_notification_auto_contribute);
+                    payoutBannerImg.setImageResource(R.drawable.ic_payout_status_pending);
                     payoutBannerText.setText(
                             String.format(mPopupView.getResources().getString(
                                                   R.string.rewards_panel_payout_pending_text),
@@ -1055,21 +1054,24 @@ public class BraveRewardsPanel
                         ContextUtils.getApplicationContext().getResources(),
                         R.drawable.rewards_panel_payout_processing_bg, null));
                 payoutBannerImg.setVisibility(View.GONE);
-                payoutBannerText.setText(
-                        String.format(mPopupView.getResources().getString(
+                SpannableString spannableBannerText = spannableClickSpan(String.format(mPopupView.getResources().getString(
                                               R.string.rewards_panel_payout_processing_text),
                                 currentDate,
                                 mPopupView.getResources().getString(
-                                        R.string.rewards_panel_payout_check_status_text)));
+                                        R.string.rewards_panel_payout_check_status_text)), mPopupView.getResources().getString(R.string.rewards_panel_payout_check_status_text), ADS_PAYOUT_STATUS_URL);
+                payoutBannerText.setMovementMethod(LinkMovementMethod.getInstance());
+                payoutBannerText.setText(spannableBannerText);
             } else if (payoutStatus.equals(PAYOUT_STATUS_COMPLETE)) {
                 mPayoutStatusBannerLayout.setBackgroundDrawable(ResourcesCompat.getDrawable(
                         ContextUtils.getApplicationContext().getResources(),
                         R.drawable.rewards_panel_payout_complete_bg, null));
-                payoutBannerImg.setImageResource(R.drawable.ic_notification_auto_contribute);
-                payoutBannerText.setText(String.format(
+                payoutBannerImg.setImageResource(R.drawable.ic_payout_status_complete);
+                SpannableString spannableBannerText = spannableClickSpan(String.format(
                         mPopupView.getResources().getString(
                                 R.string.rewards_panel_payout_complete_text),
-                        currentDate, mPopupView.getResources().getString(R.string.support)));
+                        currentDate, mPopupView.getResources().getString(R.string.support)), mPopupView.getResources().getString(R.string.support), SUPPORT_URL);
+                payoutBannerText.setMovementMethod(LinkMovementMethod.getInstance());
+                payoutBannerText.setText(spannableBannerText);
             }
         }
     }
@@ -1647,6 +1649,23 @@ public class BraveRewardsPanel
 
         ss.setSpan(clickableSpan, learnMoreIndex,
                 learnMoreIndex + mActivity.getResources().getString(R.string.learn_more).length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return ss;
+    }
+
+    private SpannableString spannableClickSpan(String mainText, String clickableText, String clickUrl) {
+        Spanned textMain = BraveRewardsHelper.spannedFromHtmlString(mainText);
+
+        SpannableString ss = new SpannableString(textMain.toString());
+
+        NoUnderlineClickableSpan clickableSpan = new NoUnderlineClickableSpan(
+                mActivity, R.color.brave_rewards_modal_theme_color, (textView) -> {
+                    CustomTabActivity.showInfoPage(mActivity, clickUrl);
+                });
+        int clickableTextIndex = mainText.indexOf(clickableText);
+
+        ss.setSpan(clickableSpan, clickableTextIndex,
+                clickableTextIndex + clickableText.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return ss;
     }

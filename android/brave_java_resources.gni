@@ -556,6 +556,8 @@ brave_java_resources = [
   "java/res/drawable/ic_notification_auto_contribute.xml",
   "java/res/drawable/ic_notification_claim.xml",
   "java/res/drawable/ic_notification_error.xml",
+  "java/res/drawable/ic_payout_status_complete.xml",
+  "java/res/drawable/ic_payout_status_pending.xml",
   "java/res/drawable/ic_notification_icon.xml",
   "java/res/drawable/ic_notification_pending.xml",
   "java/res/drawable/ic_onboarding_arrow_down.xml",
