@@ -72,6 +72,7 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 #endif
 
   brave_wallet::RegisterLocalStatePrefsForMigration(registry);
+  brave_search_conversion::p3a::RegisterLocalStatePrefsForMigration(registry);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {

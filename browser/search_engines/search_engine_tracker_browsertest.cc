@@ -138,13 +138,13 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
                                        SearchEngineSwitchP3A::kOtherToBrave, 1);
 
   // Check that incognito or TOR profiles do not emit the metric.
-  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 6);
+  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 8);
   CreateIncognitoBrowser();
 #if BUILDFLAG(ENABLE_TOR)
   brave::NewOffTheRecordWindowTor(browser());
 #endif
 
-  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 6);
+  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 8);
 }
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, WebDiscoveryEnabledP3A) {

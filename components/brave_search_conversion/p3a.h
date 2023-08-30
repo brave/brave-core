@@ -14,11 +14,16 @@ class PrefService;
 namespace brave_search_conversion {
 namespace p3a {
 
-constexpr char kSearchPromoButtonHistogramName[] = "Brave.Search.Promo.Button";
-constexpr char kSearchPromoBannerHistogramName[] = "Brave.Search.Promo.Banner";
-constexpr char kSearchPromoNTPHistogramName[] = "Brave.Search.Promo.NewTabPage";
+extern const char kSearchPromoButtonHistogramName[];
+extern const char kSearchPromoBannerAHistogramName[];
+extern const char kSearchPromoBannerBHistogramName[];
+extern const char kSearchPromoBannerCHistogramName[];
+extern const char kSearchPromoBannerDHistogramName[];
+extern const char kSearchPromoNTPHistogramName[];
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
+void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 void RecordPromoShown(PrefService* prefs, ConversionType type);
 void RecordPromoTrigger(PrefService* prefs, ConversionType type);
 void RecordDefaultEngineChange(PrefService* prefs);
