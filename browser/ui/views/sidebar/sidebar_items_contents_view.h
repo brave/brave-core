@@ -67,7 +67,7 @@ class SidebarItemsContentsView : public views::View,
   void OnActiveIndexChanged(absl::optional<size_t> old_index,
                             absl::optional<size_t> new_index);
 
-  void ShowItemAddedFeedbackBubble();
+  void ShowItemAddedFeedbackBubble(size_t added_item_index);
 
   void SetImageForItem(const sidebar::SidebarItem& item,
                        const gfx::ImageSkia& image);
