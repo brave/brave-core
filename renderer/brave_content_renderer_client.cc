@@ -135,7 +135,8 @@ void BraveContentRendererClient::RenderFrameCreated(
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
+      !ChromeRenderThreadObserver::is_incognito_process()) {
     new playlist::PlaylistRenderFrameObserver(render_frame,
                                               ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
@@ -147,8 +148,9 @@ void BraveContentRendererClient::RunScriptsAtDocumentStart(
   auto* observer =
       cosmetic_filters::CosmeticFiltersJsRenderFrameObserver::Get(render_frame);
   // Run this before any extensions
-  if (observer)
+  if (observer) {
     observer->RunScriptsAtDocumentStart();
+  }
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
