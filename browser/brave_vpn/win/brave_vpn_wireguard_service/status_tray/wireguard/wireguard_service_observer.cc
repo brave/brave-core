@@ -26,7 +26,7 @@ void WireguardServiceObserver::SubscribeForWireguardNotifications(
       return;
     }
   }
-  service_watcher_.reset(new brave::ServiceWatcher());
+  service_watcher_ = std::make_unique<brave::ServiceWatcher>();
   if (!service_watcher_->Subscribe(
           name, SERVICE_NOTIFY_STOPPED,
           base::BindRepeating(
