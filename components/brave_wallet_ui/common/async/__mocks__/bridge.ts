@@ -271,7 +271,13 @@ export class MockedWalletApiProxy {
           (t) => t.chainId === chainId && t.coin === coin
         )
       }
-    }
+    },
+
+    getBuyTokens: async (provider, chainId) => {
+      return {
+        tokens: this.blockchainTokens.filter(t => t.chainId === chainId)
+      }
+    },
   }
 
   braveWalletService: Partial<

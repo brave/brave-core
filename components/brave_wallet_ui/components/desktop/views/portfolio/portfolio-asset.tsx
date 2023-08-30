@@ -52,7 +52,7 @@ import {
   useScopedBalanceUpdater
 } from '../../../../common/hooks/use-scoped-balance-updater'
 import {
-  useMultiChainBuyAssets //
+  useIsBuySupported //
 } from '../../../../common/hooks/use-multi-chain-buy-assets'
 import {
   useUnsafePageSelector,
@@ -226,7 +226,7 @@ export const PortfolioAsset = (props: Props) => {
     )
 
   // custom hooks
-  const { allAssetOptions, isReduxSelectedAssetBuySupported, getAllBuyOptionsAllChains } = useMultiChainBuyAssets()
+  const isAssetBuySupported = useIsBuySupported(selectedAssetFromParams)
 
   // memos
   // This will scrape all the user's accounts and combine the asset balances for a single asset
@@ -421,12 +421,6 @@ export const PortfolioAsset = (props: Props) => {
     setDontShowAuroraWarning(JSON.parse(localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'))
   }, [])
 
-  React.useEffect(() => {
-    if (allAssetOptions.length === 0) {
-      getAllBuyOptionsAllChains()
-    }
-  }, [allAssetOptions.length])
-
   // token list needs to load before we can find an asset to select from the url params
   if (userVisibleTokensInfo.length === 0) {
     return <Skeleton />
@@ -484,7 +478,7 @@ export const PortfolioAsset = (props: Props) => {
           padding='0px 20px'
         >
           <ButtonRow>
-            {isReduxSelectedAssetBuySupported &&
+            {isAssetBuySupported &&
               <BridgeToAuroraButton
                 onClick={onSelectBuy}
                 noBottomMargin={true}

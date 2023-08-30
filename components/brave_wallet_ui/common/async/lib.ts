@@ -15,7 +15,6 @@ import {
   SendFilTransactionParams,
   SendSolTransactionParams,
   SolanaSerializedTransactionParams,
-  SupportedOnRampNetworks
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
@@ -24,9 +23,12 @@ import {
   hasEIP1559Support
 } from '../../utils/network-utils'
 import { getAccountType } from '../../utils/account-utils'
-import { getAssetIdKey, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
+import { getAssetIdKey, isNativeAsset } from '../../utils/asset-utils'
 import { getVisibleNetworksList } from '../slices/api.slice'
-import { makeNetworkAsset } from '../../options/asset-options'
+import {
+  makeNativeAssetLogo,
+  makeNetworkAsset
+} from '../../options/asset-options'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
@@ -202,167 +204,6 @@ export const getTokenList = async (
 ): Promise<{ tokens: BraveWallet.BlockchainToken[] }> => {
   const { blockchainRegistry } = getAPIProxy()
   return blockchainRegistry.getAllTokens(network.chainId, network.coin)
-}
-
-export async function getBuyAssets (onRampProvider: BraveWallet.OnRampProvider, chainId: string) {
-  const { blockchainRegistry } = getAPIProxy()
-  return (await blockchainRegistry.getBuyTokens(
-    onRampProvider,
-    chainId)).tokens
-}
-
-export const getAllBuyAssets = async (): Promise<{
-  rampAssetOptions: BraveWallet.BlockchainToken[]
-  sardineAssetOptions: BraveWallet.BlockchainToken[]
-  transakAssetOptions: BraveWallet.BlockchainToken[]
-  stripeAssetOptions: BraveWallet.BlockchainToken[]
-  coinbaseAssetOptions: BraveWallet.BlockchainToken[]
-  allAssetOptions: BraveWallet.BlockchainToken[]
-}> => {
-  const { blockchainRegistry } = getAPIProxy()
-  const { kRamp, kSardine, kTransak, kStripe, kCoinbase } = BraveWallet.OnRampProvider
-
-  const rampAssets = await mapLimit(
-    SupportedOnRampNetworks,
-    10,
-    async (chainId: string) =>
-      await blockchainRegistry.getBuyTokens(kRamp, chainId)
-  )
-
-  const sardineAssets = await mapLimit(
-    SupportedOnRampNetworks,
-    10,
-    async (chainId: string) =>
-      await blockchainRegistry.getBuyTokens(kSardine, chainId)
-  )
-
-  const transakAssets = await mapLimit(
-    SupportedOnRampNetworks,
-    10,
-    async (chainId: string) =>
-      await blockchainRegistry.getBuyTokens(kTransak, chainId)
-  )
-  const stripeAssets = await mapLimit(
-    SupportedOnRampNetworks,
-    10,
-    async (chainId: string) =>
-      await blockchainRegistry.getBuyTokens(kStripe, chainId)
-  )
-
-  const coinbaseAssets = await mapLimit(
-    SupportedOnRampNetworks,
-    10,
-    async (chainId: string) =>
-      await blockchainRegistry.getBuyTokens(kCoinbase, chainId)
-  )
-
-  // add token logos
-  const rampAssetOptions: BraveWallet.BlockchainToken[] = await mapLimit(
-    rampAssets.flatMap((p) => p.tokens),
-    10,
-    async (token: BraveWallet.BlockchainToken) => await addLogoToToken(token)
-  )
-
-  const sardineAssetOptions: BraveWallet.BlockchainToken[] = await mapLimit(
-    sardineAssets.flatMap((p) => p.tokens),
-    10,
-    async (token: BraveWallet.BlockchainToken) => await addLogoToToken(token)
-  )
-
-  const transakAssetOptions: BraveWallet.BlockchainToken[] = await mapLimit(
-    transakAssets.flatMap((p) => p.tokens),
-    10,
-    async (token: BraveWallet.BlockchainToken) => await addLogoToToken(token)
-  )
-
-  const stripeAssetOptions: BraveWallet.BlockchainToken[] = await mapLimit(
-    stripeAssets.flatMap((p) => p.tokens),
-    10,
-    async (token: BraveWallet.BlockchainToken) => await addLogoToToken(token)
-  )
-
-  const coinbaseAssetOptions: BraveWallet.BlockchainToken[] = await mapLimit(
-    coinbaseAssets.flatMap((p) => p.tokens),
-    10,
-    async (token: BraveWallet.BlockchainToken) => await addLogoToToken(token)
-  )
-
-  // separate native assets from tokens
-  const {
-    tokens: rampTokenOptions,
-    nativeAssets: rampNativeAssetOptions
-  } = getNativeTokensFromList(rampAssetOptions)
-
-  const {
-    tokens: sardineTokenOptions,
-    nativeAssets: sardineNativeAssetOptions
-  } = getNativeTokensFromList(sardineAssetOptions)
-
-  const {
-    tokens: transakTokenOptions,
-    nativeAssets: transakNativeAssetOptions
-  } = getNativeTokensFromList(transakAssetOptions)
-
-  const {
-    tokens: stripeTokenOptions,
-    nativeAssets: stripeNativeAssetOptions
-  } = getNativeTokensFromList(stripeAssetOptions)
-
-  const {
-    tokens: coinbaseTokenOptions,
-    nativeAssets: coinbaseNativeAssetOptions
-  } = getNativeTokensFromList(coinbaseAssetOptions)
-
-  // separate BAT from other tokens
-  const {
-    bat: rampBatTokens,
-    nonBat: rampNonBatTokens
-  } = getBatTokensFromList(rampTokenOptions)
-
-  const {
-    bat: sardineBatTokens,
-    nonBat: sardineNonBatTokens
-  } = getBatTokensFromList(sardineTokenOptions)
-
-  const {
-    bat: transakBatTokens,
-    nonBat: transakNonBatTokens
-  } = getBatTokensFromList(transakTokenOptions)
-
-  const {
-    bat: stripeBatTokens,
-    nonBat: stripeNonBatTokens
-  } = getBatTokensFromList(stripeTokenOptions)
-
-  const {
-    bat: coinbaseBatTokens,
-    nonBat: coinbaseNonBatTokens
-  } = getBatTokensFromList(coinbaseTokenOptions)
-
-  // sort lists
-  // Move Gas coins and BAT to front of list
-  const sortedRampOptions = [...rampNativeAssetOptions, ...rampBatTokens, ...rampNonBatTokens]
-  const sortedSardineOptions = [...sardineNativeAssetOptions, ...sardineBatTokens, ...sardineNonBatTokens]
-  const sortedTransakOptions = [...transakNativeAssetOptions, ...transakBatTokens, ...transakNonBatTokens]
-  const sortedStripeOptions = [...stripeNativeAssetOptions, ...stripeBatTokens, ...stripeNonBatTokens]
-  const sortedCoinbaseOptions = [...coinbaseNativeAssetOptions, ...coinbaseBatTokens, ...coinbaseNonBatTokens]
-
-  const results = {
-    rampAssetOptions: sortedRampOptions,
-    sardineAssetOptions: sortedSardineOptions,
-    transakAssetOptions: sortedTransakOptions,
-    stripeAssetOptions: sortedStripeOptions,
-    coinbaseAssetOptions: sortedCoinbaseOptions,
-    allAssetOptions: getUniqueAssets([
-      ...sortedRampOptions,
-      ...sortedSardineOptions,
-      ...sortedTransakOptions,
-      ...sortedStripeOptions,
-      ...sortedCoinbaseOptions
-    ])
-  }
-
-  return results
 }
 
 export async function getIsSwapSupported (network: BraveWallet.NetworkInfo): Promise<boolean> {
@@ -651,11 +492,23 @@ export const translateToNftGateway = async (url: string | undefined) => {
 // TODO(apaymyshev): This function should not exist. Backend should be
 // responsible in providing correct logo.
 export const addLogoToToken = async (token: BraveWallet.BlockchainToken) => {
-  const newLogo = token.logo?.startsWith('ipfs://')
-    ? (await translateToNftGateway(token.logo))
-    : token.logo?.startsWith('data:image/')
-      ? token.logo
-      : `chrome://erc-token-images/${token.logo}`
+
+  const isNative = isNativeAsset(token)
+
+  if (
+    !isNative && !token.logo ||
+    token.logo?.startsWith('data:image/') ||
+    token.logo?.startsWith('chrome://erc-token-images/')
+  ) {
+    // nothing to change
+    return token
+  }
+
+  const newLogo = isNative
+    ? makeNativeAssetLogo(token.symbol, token.chainId)
+    : token.logo?.startsWith('ipfs://')
+    ? await translateToNftGateway(token.logo)
+    : `chrome://erc-token-images/${token.logo}`
 
   if (token.logo === newLogo) {
     // nothing to change
