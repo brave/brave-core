@@ -14,8 +14,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -89,6 +89,8 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
     private PortfolioModel mPortfolioModel;
     private ProgressBar mPbAssetDiscovery;
     private NetworkSelectorModel mNetworkSelectionModel;
+    private ImageView mIvMsg;
+    private TextView mTvMsgTitle;
 
     public static AssetsFragment newInstance() {
         return new AssetsFragment();
@@ -149,6 +151,8 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
         mBtnChangeNetwork = view.findViewById(R.id.fragment_portfolio_btn_change_networks);
         mBtnChangeNetwork.setOnClickListener(v -> openNetworkSelection());
 
+        mIvMsg = view.findViewById(R.id.frag_assets_iv_msg);
+        mTvMsgTitle = view.findViewById(R.id.frag_assets_tv_msg);
         mBalance = view.findViewById(R.id.balance);
         mBalance.setOnClickListener(v -> updatePortfolioGetPendingTx());
         if (mWalletModel != null) setUpObservers();
@@ -167,8 +171,10 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
                     mSelectedNetworkList = selectedNetworkInfos;
                     if (mSelectedNetworkList.isEmpty()) {
                         clearAssets();
+                        AndroidUtils.show(mIvMsg, mTvMsgTitle);
                         return;
                     }
+                    AndroidUtils.gone(mIvMsg, mTvMsgTitle);
                     updatePortfolioGetPendingTx();
                 });
         mWalletModel.getCryptoModel().getPortfolioModel().mIsDiscoveringUserAssets.observe(

@@ -425,6 +425,7 @@ brave_java_resources = [
   "java/res/drawable/custodian_text_background.xml",
   "java/res/drawable/default_dot.xml",
   "java/res/drawable/default_indicator.xml",
+  "java/res/drawable/empty_assets.xml",
   "java/res/drawable/exchange_shape.xml",
   "java/res/drawable/ic_ac_onboarding.xml",
   "java/res/drawable/ic_accessibility.xml",
