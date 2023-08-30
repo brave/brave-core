@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index ad7921bec9201897597855980092e9a108c8798e..e0eff6e89305ab74969e2e42b36624980fc32d38 100644
+index 20160807af8efefcabc065c89b18c7e9685974ee..c3d4d3ebddcbf27a459ecfeedd698e9a68ae85ae 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
 @@ -3788,6 +3788,7 @@ const FeatureEntry::FeatureVariation kPasswordGenerationExperimentVariations[] =
