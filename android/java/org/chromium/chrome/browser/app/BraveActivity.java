@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -47,6 +48,7 @@ import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
+import org.chromium.base.ThreadUtils;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.supplier.ObservableSupplier;
@@ -1576,19 +1578,25 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void setupWalletModel() {
-        if (mWalletModel == null) {
-            mWalletModel = new WalletModel(getApplicationContext(), mKeyringService,
-                    mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
-                    mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService, mSwapService);
-        } else {
-            mWalletModel.resetServices(getApplicationContext(), mKeyringService,
-                    mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
-                    mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService, mSwapService);
-        }
-        setupObservers();
+        PostTask.postTask(TaskTraits.UI_DEFAULT, () -> {
+            if (mWalletModel == null) {
+                mWalletModel = new WalletModel(getApplicationContext(), mKeyringService,
+                        mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
+                        mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService,
+                        mSwapService);
+            } else {
+                mWalletModel.resetServices(getApplicationContext(), mKeyringService,
+                        mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
+                        mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService,
+                        mSwapService);
+            }
+            setupObservers();
+        });
     }
 
+    @MainThread
     private void setupObservers() {
+        ThreadUtils.assertOnUiThread();
         clearObservers();
         mWalletModel.getCryptoModel().getPendingTxHelper().mSelectedPendingRequest.observe(
                 this, transactionInfo -> {
@@ -1614,7 +1622,7 @@ public abstract class BraveActivity extends ChromeActivity
                 });
 
         mWalletModel.getDappsModel().mWalletIconNotificationVisible.observe(
-                this, visible -> { setWalletBadgeVisibility(visible); });
+                this, this::setWalletBadgeVisibility);
 
         mWalletModel.getDappsModel().mPendingWalletAccountCreationRequest.observe(this, request -> {
             if (request == null) return;
@@ -1667,7 +1675,9 @@ public abstract class BraveActivity extends ChromeActivity
                 });
     }
 
+    @MainThread
     private void clearObservers() {
+        ThreadUtils.assertOnUiThread();
         mWalletModel.getCryptoModel().getPendingTxHelper().mSelectedPendingRequest.removeObservers(
                 this);
         mWalletModel.getDappsModel().mWalletIconNotificationVisible.removeObservers(this);

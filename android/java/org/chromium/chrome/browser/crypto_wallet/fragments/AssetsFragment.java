@@ -20,6 +20,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -32,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.chromium.base.Log;
+import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
@@ -161,7 +163,9 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
         return view;
     }
 
+    @MainThread
     private void setUpObservers() {
+        ThreadUtils.assertOnUiThread();
         mNetworkSelectionModel = getNetworkModel().openNetworkSelectorModel(
                 TAG, NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, getLifecycle());
         // Show pending transactions fab to process pending txs
