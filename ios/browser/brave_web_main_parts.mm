@@ -136,7 +136,6 @@ void BraveWebMainParts::SetupFieldTrials() {
 
 void BraveWebMainParts::PreMainMessageLoopRun() {
   application_context_->PreMainMessageLoopRun();
-  application_context_->StartBraveServices();
 
   // ContentSettingsPattern need to be initialized before creating the
   // ChromeBrowserState.
@@ -155,6 +154,9 @@ void BraveWebMainParts::PreMainMessageLoopRun() {
   // TODO(crbug.com/786494): Investigate whether metrics recording can be
   // initialized consistently across iOS and non-iOS platforms
   SetupMetrics();
+
+  // Start the brave services
+  application_context_->StartBraveServices();
 }
 
 void BraveWebMainParts::PostMainMessageLoopRun() {

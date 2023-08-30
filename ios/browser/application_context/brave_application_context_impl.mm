@@ -65,6 +65,10 @@ BraveApplicationContextImpl::url_sanitizer_component_installer() {
 }
 
 void BraveApplicationContextImpl::StartBraveServices() {
+  // We need to Initialize the component installer
+  // before calling Start on the local_data_files_service
+  url_sanitizer_component_installer();
+
   // Start the local data file service
   local_data_files_service()->Start();
 }
