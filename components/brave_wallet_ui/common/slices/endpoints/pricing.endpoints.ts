@@ -94,15 +94,15 @@ export const pricingEndpoints = ({
           const {
             data: { assetRatioService }
           } = baseQuery(undefined)
+          
+          if (!ids.length) {
+            throw new Error('no token ids provided for price lookup')
+          }
 
           // dedupe ids to prevent duplicate price requests
           const uniqueIds = [...new Set(ids)]
             // skip flagged coins such as testnet coins other than Goerli-ETH
             .filter(id => id !== SKIP_PRICE_LOOKUP_COINGECKO_ID)
-
-          if (!uniqueIds.length) {
-            throw new Error('no token ids provided for price lookup')
-          }
 
           const chunkedParams = []
           for (let i = 0; i < uniqueIds.length; i += maxBatchSizePrice) {
