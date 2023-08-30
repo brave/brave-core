@@ -217,6 +217,7 @@ public class BraveRewardsPanel
     private View mWalletBalanceProgress;
     private View mBalanceDataViewGroups;
     private View mEstimatedToolTip;
+    private View mVbatUserdrainToolTip;
 
     public BraveRewardsPanel(View anchorView) {
         mCurrentNotificationId = "";
@@ -244,6 +245,12 @@ public class BraveRewardsPanel
                 if (mEstimatedToolTip != null && mEstimatedToolTip.isShown()
                         && !isWithinViewBounds((int) event.getRawX(), (int) event.getRawY())) {
                     estimatedTooltipGroup.setVisibility(View.GONE);
+                }
+                View vbatUserdrainTooltipGroup =
+                        mPopupView.findViewById(R.id.vbat_userdrain_tooltip_group);
+                if (mVbatUserdrainToolTip != null && mVbatUserdrainToolTip.isShown()
+                        && !isWithinViewBounds((int) event.getRawX(), (int) event.getRawY())) {
+                    vbatUserdrainTooltipGroup.setVisibility(View.GONE);
                 }
                 if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
                     dismiss();
@@ -368,6 +375,9 @@ public class BraveRewardsPanel
         mEstimatedToolTip = mPopupView.findViewById(R.id.estimated_earnings_tooltip);
         mayBeShowEstimatedToolTip();
 
+        mVbatUserdrainToolTip = mPopupView.findViewById(R.id.vbat_userdrain_tooltip);
+        mayBeShowVbatUserdrainToolTip();
+
         TextView loggedOutStateText = mPopupView.findViewById(R.id.logged_out_state_text);
         loggedOutStateText.setText(String.format(
                 mActivity.getResources().getString(R.string.logged_out_state_dialog_text),
@@ -443,6 +453,14 @@ public class BraveRewardsPanel
         clickOnCloseButton();
         estimatedEarningsText.setOnClickListener(
                 v -> { estimatedTooltipGroup.setVisibility(View.VISIBLE); });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void mayBeShowVbatUserdrainToolTip() {
+        View vBatUserdrainHelpImg = mPopupView.findViewById(R.id.vbat_userdrain_help_img);
+        View vBatUserdrainTooltipGroup = mPopupView.findViewById(R.id.vbat_userdrain_tooltip_group);
+        vBatUserdrainHelpImg.setOnClickListener(
+                v -> { vBatUserdrainTooltipGroup.setVisibility(View.VISIBLE); });
     }
 
     private void clickManageAds() {
@@ -1102,6 +1120,7 @@ public class BraveRewardsPanel
                                 ? View.GONE
                                 : View.VISIBLE);
                 mWalletBalanceProgress.setVisibility(View.GONE);
+                mPopupView.findViewById(R.id.vbat_userdrain_help_img).setVisibility(View.VISIBLE);
                 if (mBraveRewardsNativeWorker != null) {
                     BraveRewardsBalance walletBalanceObject =
                             mBraveRewardsNativeWorker.GetWalletBalance();

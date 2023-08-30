@@ -236,6 +236,56 @@
         app:layout_constraintBottom_toBottomOf="@id/bat_balance_text"
         app:layout_constraintStart_toEndOf="@id/bat_balance_text" />
 
+    <ImageView
+        android:id="@+id/vbat_userdrain_help_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="8dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/bat_text2"
+        app:layout_constraintStart_toEndOf="@id/bat_text2"
+        app:layout_constraintTop_toTopOf="@id/bat_text2"
+        app:srcCompat="@drawable/ic_help_outline" />
+
+    <ImageView
+        android:id="@+id/vbat_userdrain_tooltip_triangle"
+        android:layout_width="12sp"
+        android:layout_height="6dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/tooltip_arrow"
+        android:contentDescription="@null"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toTopOf="@id/vbat_userdrain_tooltip"
+        app:layout_constraintEnd_toEndOf="@id/vbat_userdrain_tooltip"/>
+
+    <TextView
+        android:id="@+id/vbat_userdrain_tooltip"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/p2p_rewards_inside_background"
+        android:elevation="39dp"
+        android:fontFamily="sans-serif"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="32dp"
+        android:paddingEnd="40dp"
+        android:textSize="12sp"
+        android:text="@string/estimated_tooltip_text"
+        android:textColor="@color/terms_of_service_text_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vbat_userdrain_help_img" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/vbat_userdrain_tooltip_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="vbat_userdrain_tooltip_triangle,vbat_userdrain_tooltip" />
+
     <TextView
         android:id="@+id/usd_balance_text"
         android:layout_width="wrap_content"
