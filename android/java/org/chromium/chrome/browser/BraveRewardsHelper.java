@@ -38,6 +38,8 @@ import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.url.GURL;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -513,5 +515,12 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         } else {
             return Html.fromHtml(string);
         }
+    }
+
+    public static String getFormattedAmount(double amount) {
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
+        numberFormat.setRoundingMode(RoundingMode.CEILING);
+        numberFormat.setMinimumFractionDigits(3);
+        return numberFormat.format(amount);
     }
 }
