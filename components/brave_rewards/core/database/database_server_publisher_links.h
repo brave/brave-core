@@ -30,8 +30,8 @@ class DatabaseServerPublisherLinks : public DatabaseTable {
                  ServerPublisherLinksCallback callback);
 
  private:
-  void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   ServerPublisherLinksCallback callback);
+  void OnGetRecord(ServerPublisherLinksCallback callback,
+                   mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

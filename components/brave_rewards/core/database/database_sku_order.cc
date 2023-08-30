@@ -59,9 +59,9 @@ void DatabaseSKUOrder::InsertOrUpdate(mojom::SKUOrderPtr order,
 
   items_.InsertOrUpdateList(transaction.get(), std::move(order->items));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseSKUOrder::UpdateStatus(const std::string& order_id,
@@ -87,9 +87,9 @@ void DatabaseSKUOrder::UpdateStatus(const std::string& order_id,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseSKUOrder::GetRecord(const std::string& order_id,
@@ -123,14 +123,14 @@ void DatabaseSKUOrder::GetRecord(const std::string& order_id,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseSKUOrder::OnGetRecord, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseSKUOrder::OnGetRecord, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void DatabaseSKUOrder::OnGetRecord(mojom::DBCommandResponsePtr response,
-                                   GetSKUOrderCallback callback) {
+void DatabaseSKUOrder::OnGetRecord(GetSKUOrderCallback callback,
+                                   mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -206,10 +206,10 @@ void DatabaseSKUOrder::GetRecordByContributionId(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseSKUOrder::OnGetRecord, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseSKUOrder::OnGetRecord, base::Unretained(this),
+                     std::move(callback)));
 }
 
 void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
@@ -237,9 +237,9 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 }  // namespace database

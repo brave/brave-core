@@ -35,13 +35,12 @@ class DatabaseContributionInfoPublishers : public DatabaseTable {
                                LegacyResultCallback callback);
 
  private:
-  void OnGetRecordByContributionList(
-      mojom::DBCommandResponsePtr response,
-      ContributionPublisherListCallback callback);
+  void OnGetRecordByContributionList(ContributionPublisherListCallback callback,
+                                     mojom::DBCommandResponsePtr response);
 
   void OnGetContributionPublisherInfoMap(
-      mojom::DBCommandResponsePtr response,
-      ContributionPublisherPairListCallback callback);
+      ContributionPublisherPairListCallback callback,
+      mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

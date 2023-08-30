@@ -12,8 +12,6 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
-using std::placeholders::_1;
-
 namespace brave_rewards::internal {
 
 namespace {
@@ -83,9 +81,9 @@ void DatabaseBalanceReport::InsertOrUpdate(mojom::BalanceReportInfoPtr info,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseBalanceReport::InsertOrUpdateList(
@@ -121,9 +119,9 @@ void DatabaseBalanceReport::InsertOrUpdateList(
     transaction->commands.push_back(std::move(command));
   }
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
@@ -164,9 +162,9 @@ void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
   BindString(command.get(), 1, id);
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseBalanceReport::GetRecord(
@@ -215,7 +213,7 @@ void DatabaseBalanceReport::GetRecord(
 
   transaction->commands.push_back(std::move(command));
 
-  engine_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseBalanceReport::OnGetRecord,
                      base::Unretained(this), std::move(callback)));
@@ -271,15 +269,15 @@ void DatabaseBalanceReport::GetAllRecords(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseBalanceReport::OnGetAllRecords, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseBalanceReport::OnGetAllRecords,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseBalanceReport::OnGetAllRecords(
-    mojom::DBCommandResponsePtr response,
-    GetBalanceReportListCallback callback) {
+    GetBalanceReportListCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -316,9 +314,9 @@ void DatabaseBalanceReport::DeleteAllRecords(LegacyResultCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 }  // namespace database

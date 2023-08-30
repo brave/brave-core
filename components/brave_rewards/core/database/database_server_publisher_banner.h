@@ -31,9 +31,9 @@ class DatabaseServerPublisherBanner : public DatabaseTable {
                  GetPublisherBannerCallback callback);
 
  private:
-  void OnGetRecord(mojom::DBCommandResponsePtr response,
+  void OnGetRecord(GetPublisherBannerCallback callback,
                    const std::string& publisher_key,
-                   GetPublisherBannerCallback callback);
+                   mojom::DBCommandResponsePtr response);
 
   void OnGetRecordLinks(const std::map<std::string, std::string>& links,
                         const mojom::PublisherBanner& banner,

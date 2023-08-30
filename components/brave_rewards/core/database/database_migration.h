@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_MIGRATION_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_MIGRATION_H_
 
-#include <memory>
 #include <string>
 
 #include "base/memory/raw_ref.h"

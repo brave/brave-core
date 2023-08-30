@@ -36,8 +36,8 @@ int32_t GetCurrentVersion();
 
 int32_t GetCompatibleVersion();
 
-void OnResultCallback(mojom::DBCommandResponsePtr response,
-                      LegacyResultCallback callback);
+void OnResultCallback(LegacyResultCallback callback,
+                      mojom::DBCommandResponsePtr response);
 
 int GetIntColumn(mojom::DBRecord* record, const int index);
 

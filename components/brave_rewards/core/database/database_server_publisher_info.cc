@@ -56,8 +56,9 @@ void DatabaseServerPublisherInfo::InsertOrUpdate(
   transaction->commands.push_back(std::move(command));
   banner_.InsertOrUpdate(transaction.get(), server_info);
 
-  engine_->RunDBTransaction(std::move(transaction),
-                            std::bind(&OnResultCallback, _1, callback));
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseServerPublisherInfo::GetRecord(
@@ -103,18 +104,20 @@ void DatabaseServerPublisherInfo::OnGetRecordBanner(
     banner = mojom::PublisherBanner::New();
   }
 
-  auto transaction_callback =
-      std::bind(&DatabaseServerPublisherInfo::OnGetRecord, this, _1,
-                publisher_key, *banner, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseServerPublisherInfo::OnGetRecord,
+                     base::Unretained(this), std::move(callback), publisher_key,
+                     std::move(banner)));
 }
 
 void DatabaseServerPublisherInfo::OnGetRecord(
-    mojom::DBCommandResponsePtr response,
+    GetServerPublisherInfoCallback callback,
     const std::string& publisher_key,
-    const mojom::PublisherBanner& banner,
-    GetServerPublisherInfoCallback callback) {
+    mojom::PublisherBannerPtr banner,
+    mojom::DBCommandResponsePtr response) {
+  CHECK(banner);
+
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -134,7 +137,7 @@ void DatabaseServerPublisherInfo::OnGetRecord(
   info->status = static_cast<mojom::PublisherStatus>(GetIntColumn(record, 0));
   info->address = GetStringColumn(record, 1);
   info->updated_at = GetInt64Column(record, 2);
-  info->banner = banner.Clone();
+  info->banner = std::move(banner);
 
   callback(std::move(info));
 }
@@ -157,16 +160,15 @@ void DatabaseServerPublisherInfo::DeleteExpiredRecords(
 
   transaction->commands.push_back(std::move(command));
 
-  auto select_callback =
-      std::bind(&DatabaseServerPublisherInfo::OnExpiredRecordsSelected, this,
-                _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), select_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseServerPublisherInfo::OnExpiredRecordsSelected,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
-    mojom::DBCommandResponsePtr response,
-    LegacyResultCallback callback) {
+    LegacyResultCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Unable to query for expired records");
@@ -201,8 +203,9 @@ void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
 
   transaction->commands.push_back(std::move(command));
 
-  engine_->RunDBTransaction(std::move(transaction),
-                            std::bind(&OnResultCallback, _1, callback));
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 }  // namespace database

@@ -43,8 +43,8 @@ class DatabaseBalanceReport : public DatabaseTable {
   void OnGetRecord(mojom::RewardsEngine::GetBalanceReportCallback callback,
                    mojom::DBCommandResponsePtr response);
 
-  void OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                       GetBalanceReportListCallback callback);
+  void OnGetAllRecords(GetBalanceReportListCallback callback,
+                       mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

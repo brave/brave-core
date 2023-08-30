@@ -109,17 +109,17 @@ void DatabaseServerPublisherBanner::GetRecord(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseServerPublisherBanner::OnGetRecord, this, _1,
-                publisher_key, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseServerPublisherBanner::OnGetRecord,
+                     base::Unretained(this), std::move(callback),
+                     publisher_key));
 }
 
 void DatabaseServerPublisherBanner::OnGetRecord(
-    mojom::DBCommandResponsePtr response,
+    GetPublisherBannerCallback callback,
     const std::string& publisher_key,
-    GetPublisherBannerCallback callback) {
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

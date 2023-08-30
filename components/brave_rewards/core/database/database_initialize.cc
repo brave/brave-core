@@ -26,7 +26,7 @@ void DatabaseInitialize::Start(ResultCallback callback) {
   command->type = mojom::DBCommand::Type::INITIALIZE;
   transaction->commands.push_back(std::move(command));
 
-  engine_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseInitialize::OnInitialize, base::Unretained(this),
                      std::move(callback)));

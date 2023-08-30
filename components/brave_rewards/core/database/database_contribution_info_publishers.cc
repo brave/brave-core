@@ -11,8 +11,6 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
-using std::placeholders::_1;
-
 namespace brave_rewards::internal {
 namespace database {
 
@@ -85,16 +83,16 @@ void DatabaseContributionInfoPublishers::GetRecordByContributionList(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(
-      &DatabaseContributionInfoPublishers::OnGetRecordByContributionList, this,
-      _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(
+          &DatabaseContributionInfoPublishers::OnGetRecordByContributionList,
+          base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseContributionInfoPublishers::OnGetRecordByContributionList(
-    mojom::DBCommandResponsePtr response,
-    ContributionPublisherListCallback callback) {
+    ContributionPublisherListCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
@@ -155,16 +153,16 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(
-      &DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap,
-      this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseContributionInfoPublishers::
+                         OnGetContributionPublisherInfoMap,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
-    mojom::DBCommandResponsePtr response,
-    ContributionPublisherPairListCallback callback) {
+    ContributionPublisherPairListCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
@@ -223,9 +221,9 @@ void DatabaseContributionInfoPublishers::UpdateContributedAmount(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 }  // namespace database

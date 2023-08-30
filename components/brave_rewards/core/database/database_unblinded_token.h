@@ -47,12 +47,12 @@ class DatabaseUnblindedToken : public DatabaseTable {
       GetUnblindedTokenListCallback callback);
 
  private:
-  void OnGetRecords(mojom::DBCommandResponsePtr response,
-                    GetUnblindedTokenListCallback callback);
+  void OnGetRecords(GetUnblindedTokenListCallback callback,
+                    mojom::DBCommandResponsePtr response);
 
-  void OnMarkRecordListAsReserved(mojom::DBCommandResponsePtr response,
+  void OnMarkRecordListAsReserved(LegacyResultCallback callback,
                                   size_t expected_row_count,
-                                  LegacyResultCallback callback);
+                                  mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

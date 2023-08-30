@@ -87,9 +87,9 @@ void DatabaseContributionInfo::InsertOrUpdate(mojom::ContributionInfoPtr info,
 
   publishers_.InsertOrUpdate(transaction.get(), info->Clone());
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseContributionInfo::GetRecord(const std::string& contribution_id,
@@ -119,15 +119,15 @@ void DatabaseContributionInfo::GetRecord(const std::string& contribution_id,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseContributionInfo::OnGetRecord, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseContributionInfo::OnGetRecord,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseContributionInfo::OnGetRecord(
-    mojom::DBCommandResponsePtr response,
-    GetContributionInfoCallback callback) {
+    GetContributionInfoCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
@@ -201,10 +201,10 @@ void DatabaseContributionInfo::GetAllRecords(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseContributionInfo::OnGetList, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseContributionInfo::OnGetList,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseContributionInfo::GetOneTimeTips(const mojom::ActivityMonth month,
@@ -256,15 +256,15 @@ void DatabaseContributionInfo::GetOneTimeTips(const mojom::ActivityMonth month,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(
-      &DatabaseContributionInfo::OnGetOneTimeTips, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseContributionInfo::OnGetOneTimeTips,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseContributionInfo::OnGetOneTimeTips(
-    mojom::DBCommandResponsePtr response,
-    GetOneTimeTipsCallback callback) {
+    GetOneTimeTipsCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
@@ -332,15 +332,15 @@ void DatabaseContributionInfo::GetContributionReport(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(
-      &DatabaseContributionInfo::OnGetContributionReport, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseContributionInfo::OnGetContributionReport,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseContributionInfo::OnGetContributionReport(
-    mojom::DBCommandResponsePtr response,
-    GetContributionReportCallback callback) {
+    GetContributionReportCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
@@ -453,15 +453,14 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseContributionInfo::OnGetList, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseContributionInfo::OnGetList,
+                     base::Unretained(this), std::move(callback)));
 }
 
-void DatabaseContributionInfo::OnGetList(
-    mojom::DBCommandResponsePtr response,
-    ContributionInfoListCallback callback) {
+void DatabaseContributionInfo::OnGetList(ContributionInfoListCallback callback,
+                                         mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
@@ -546,9 +545,9 @@ void DatabaseContributionInfo::UpdateStep(const std::string& contribution_id,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseContributionInfo::UpdateStepAndCount(
@@ -578,9 +577,9 @@ void DatabaseContributionInfo::UpdateStepAndCount(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseContributionInfo::UpdateContributedAmount(
@@ -605,9 +604,9 @@ void DatabaseContributionInfo::FinishAllInProgressRecords(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 }  // namespace database

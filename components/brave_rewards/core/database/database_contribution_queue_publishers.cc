@@ -12,8 +12,6 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
-using std::placeholders::_1;
-
 namespace brave_rewards::internal {
 namespace database {
 
@@ -59,9 +57,9 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
     transaction->commands.push_back(command->Clone());
   }
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
@@ -91,16 +89,16 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseContributionQueuePublishers::OnGetRecordsByQueueId,
-                this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(
+          &DatabaseContributionQueuePublishers::OnGetRecordsByQueueId,
+          base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
-    mojom::DBCommandResponsePtr response,
-    ContributionQueuePublishersListCallback callback) {
+    ContributionQueuePublishersListCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

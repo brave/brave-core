@@ -30,8 +30,8 @@ class DatabaseSKUOrderItems : public DatabaseTable {
                            GetSKUOrderItemsCallback callback);
 
  private:
-  void OnGetRecordsByOrderId(mojom::DBCommandResponsePtr response,
-                             GetSKUOrderItemsCallback callback);
+  void OnGetRecordsByOrderId(GetSKUOrderItemsCallback callback,
+                             mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database
