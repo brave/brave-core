@@ -289,8 +289,9 @@ bool AdBlockServiceTest::InstallRegionalAdBlockComponent(
     const extensions::Extension* ad_block_component =
         LoadExtensionAsComponent(test_data_dir.AppendASCII("adblock-data")
                                      .AppendASCII("adblock-regional"));
-    if (!ad_block_component)
+    if (!ad_block_component) {
       return false;
+    }
 
     g_brave_browser_process->ad_block_service()
         ->component_service_manager()
