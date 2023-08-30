@@ -1860,6 +1860,9 @@ interface BraveWalletP3A {
 
   // Called to report an active wallet count for P3A
   RecordActiveWalletCount(int32 count, CoinType coin_type);
+
+  // Called to report displayed NFT count upon viewing the NFT gallery 
+  RecordNFTGalleryView(int32 nft_count);
 };
 
 enum OnboardingAction {

@@ -105,6 +105,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       kBraveWalletP3AUsedSecondDay, nullptr, nullptr);
   registry->RegisterBooleanPref(kBraveWalletP3ANewUserBalanceReported, false);
   registry->RegisterIntegerPref(kBraveWalletP3AOnboardingLastStep, 0);
+  registry->RegisterBooleanPref(kBraveWalletP3ANFTGalleryUsed, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

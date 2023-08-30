@@ -44,16 +44,21 @@ const char kBraveWalletNewUserReturningHistogramName[] =
     "Brave.Wallet.NewUserReturning";
 const char kBraveWalletLastUsageTimeHistogramName[] =
     "Brave.Wallet.LastUsageTime";
+const char kBraveWalletNFTCountHistogramName[] = "Brave.Wallet.NFTCount";
+const char kBraveWalletNFTNewUserHistogramName[] = "Brave.Wallet.NFTNewUser";
+const char kBraveWalletNFTDiscoveryEnabledHistogramName[] =
+    "Brave.Wallet.NFTDiscoveryEnabled";
 
 namespace {
 
-constexpr int kRefreshP3AFrequencyHours = 24;
-constexpr int kActiveAccountBuckets[] = {0, 1, 2, 3, 7};
+const int kRefreshP3AFrequencyHours = 24;
+const int kActiveAccountBuckets[] = {0, 1, 2, 3, 7};
 const char* kTimePrefsToMigrateToLocalState[] = {kBraveWalletLastUnlockTime,
                                                  kBraveWalletP3AFirstUnlockTime,
                                                  kBraveWalletP3ALastUnlockTime};
 const char* kTimePrefsToRemove[] = {kBraveWalletP3AFirstReportTime,
                                     kBraveWalletP3ALastReportTime};
+const int kNFTCountBuckets[] = {0, 4, 20};
 constexpr base::TimeDelta kOnboardingRecordDelay = base::Seconds(120);
 
 // Has the Wallet keyring been created?
@@ -81,16 +86,24 @@ BraveWalletP3A::BraveWalletP3A(BraveWalletService* wallet_service,
   RecordInitialBraveWalletP3AState();
   AddObservers();
 
-  pref_change_registrar_.Init(local_state_);
-  pref_change_registrar_.Add(kBraveWalletLastUnlockTime,
-                             base::BindRepeating(&BraveWalletP3A::ReportUsage,
-                                                 base::Unretained(this), true));
+  local_state_change_registrar_.Init(local_state_);
+  local_state_change_registrar_.Add(
+      kBraveWalletLastUnlockTime,
+      base::BindRepeating(&BraveWalletP3A::ReportUsage, base::Unretained(this),
+                          true));
+  profile_pref_change_registrar_.Init(profile_prefs_);
+  profile_pref_change_registrar_.Add(
+      kBraveWalletNftDiscoveryEnabled,
+      base::BindRepeating(&BraveWalletP3A::ReportNftDiscoverySetting,
+                          base::Unretained(this)));
 
   // try to record the onboarding histogram
   // just in the case the user quit the app
   // before the 120 second deadline in the last
   // app session
   RecordOnboardingHistogram();
+
+  ReportNftDiscoverySetting();
 }
 
 BraveWalletP3A::BraveWalletP3A() = default;
@@ -139,6 +152,8 @@ void BraveWalletP3A::ReportUsage(bool unlocked) {
   p3a_utils::RecordFeatureLastUsageTimeMetric(
       local_state_, kBraveWalletP3ALastUnlockTime,
       kBraveWalletLastUsageTimeHistogramName);
+
+  ReportNftDiscoverySetting();
 }
 
 void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
@@ -338,12 +353,29 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
   }
 }
 
+void BraveWalletP3A::RecordNFTGalleryView(int nft_count) {
+  if (!local_state_->GetBoolean(kBraveWalletP3ANFTGalleryUsed)) {
+    local_state_->SetBoolean(kBraveWalletP3ANFTGalleryUsed, true);
+    UMA_HISTOGRAM_BOOLEAN(kBraveWalletNFTNewUserHistogramName, true);
+  }
+  p3a_utils::RecordToHistogramBucket(kBraveWalletNFTCountHistogramName,
+                                     kNFTCountBuckets, nft_count);
+}
+
 void BraveWalletP3A::MaybeRecordNewUserBalance() {
   base::Time deadline = base::Time::Now() - base::Days(7);
   if (local_state_->GetTime(kBraveWalletP3AFirstUnlockTime) >= deadline &&
       !local_state_->GetBoolean(kBraveWalletP3ANewUserBalanceReported)) {
     UMA_HISTOGRAM_BOOLEAN(kNewUserBalanceHistogramName, true);
     local_state_->SetBoolean(kBraveWalletP3ANewUserBalanceReported, true);
+  }
+}
+
+void BraveWalletP3A::ReportNftDiscoverySetting() {
+  if (!local_state_->GetTime(kBraveWalletLastUnlockTime).is_null()) {
+    UMA_HISTOGRAM_BOOLEAN(
+        kBraveWalletNFTDiscoveryEnabledHistogramName,
+        profile_prefs_->GetBoolean(kBraveWalletNftDiscoveryEnabled));
   }
 }
 
