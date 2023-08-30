@@ -88,6 +88,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_BRAVE_STATS_USAGE_PING = "brave_stats_usage_ping";
     private static final String PREF_SEARCH_SUGGESTIONS = "search_suggestions";
     public static final String PREF_APP_LINKS = "app_links";
+    public static final String PREF_APP_LINKS_RESET = "app_links_reset";
     private static final String PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR =
             "show_autocomplete_in_address_bar";
     private static final String PREF_AUTOCOMPLETE_TOP_SITES = "autocomplete_top_sites";
@@ -365,7 +366,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mAppLinks = (ChromeSwitchPreference) findPreference(PREF_APP_LINKS);
         mAppLinks.setOnPreferenceChangeListener(this);
 
-        // Added mainly for upgrade case
         boolean isAppLinksAllowed =
                 SharedPreferencesManager.getInstance().readBoolean(PREF_APP_LINKS, true);
         mAppLinks.setChecked(isAppLinksAllowed);
@@ -606,6 +606,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             sharedPreferencesEditor.putBoolean(PREF_CLEAR_ON_EXIT, (boolean) newValue);
         } else if (PREF_APP_LINKS.equals(key)) {
             sharedPreferencesEditor.putBoolean(PREF_APP_LINKS, (boolean) newValue);
+            SharedPreferencesManager.getInstance().writeBoolean(
+                    BravePrivacySettings.PREF_APP_LINKS_RESET, false);
         } else if (PREF_BLOCK_TRACKERS_ADS.equals(key)) {
             if (newValue instanceof String) {
                 final String newStringValue = String.valueOf(newValue);
