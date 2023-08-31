@@ -158,6 +158,8 @@ interface PlaylistServiceObserver {
   OnItemAddedToList(string playlist_id, string item_id);
   OnItemRemovedFromList(string playlist_id, string item_id);
 
+  OnPlaylistUpdated(Playlist playlist);
+
   OnMediaFileDownloadProgressed(
       string id,
       int64 total_bytes,

@@ -35,6 +35,10 @@ export default function wireApiEventsToStore () {
           })
         }
       )
+
+      api.addPlaylistUpdatedListener(playlist =>
+        getPlaylistActions().playlistUpdated(playlist)
+      )
     })
     .catch(e => {
       console.error('Playlist page fatal error:', e)

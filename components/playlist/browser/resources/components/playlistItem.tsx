@@ -26,13 +26,14 @@ import { formatBytes } from '../utils/bytesFormatter'
 import { ApplicationState, CachingProgress } from '../reducers/states'
 import { getPlaylistAPI } from '../api/api'
 import { BouncingBars } from './bouncingBars'
+import { ItemDragController } from './itemDragController'
 
 interface Props {
   playlist: Playlist
   item: PlaylistItemMojo
   isEditing: boolean
   isSelected?: boolean
-  onClick: (item: PlaylistItemMojo) => void
+  dragController: ItemDragController
 }
 
 const ThumbnailStyle = css`
@@ -47,6 +48,7 @@ const StyledThumbnail = styled.div<{ src: string }>`
   ${ThumbnailStyle}
   background-image: url(${p => p.src});
   background-size: cover;
+  background-position: center;
 `
 
 const StyledProgressBar = styled(ProgressBar)`
@@ -68,10 +70,13 @@ const DefaultThumbnail = styled.div`
   content: url(${DefaultThumbnailIcon});
 `
 
+const itemHeight = 86
+
 const PlaylistItemContainer = styled.li<{ isActive: boolean }>`
   display: flex;
+  position: relative;
   padding: ${spacing.m} ${spacing.xl} ${spacing.m} ${spacing.m};
-  height: 86px;
+  height: ${`${itemHeight}px`};
   align-items: center;
   gap: ${spacing.xl};
   & > a {
@@ -191,7 +196,7 @@ export default function PlaylistItem ({
   item,
   isEditing,
   isSelected,
-  onClick
+  dragController
 }: Props) {
   const {
     id,
@@ -234,11 +239,35 @@ export default function PlaylistItem ({
   )
   const isPlaying = currentItemId === item.id
 
+  const containerElementRef = React.useRef<HTMLLIElement>(null)
+
+  React.useEffect(() => {
+    if (!item || !containerElementRef.current) return
+
+    if (containerElementRef.current) {
+      dragController.addTargetElement({
+        item,
+        elementRef: containerElementRef,
+        height: itemHeight
+      })
+    }
+
+    return () => {
+      let index = dragController.targets.findIndex(
+        t => t.elementRef === containerElementRef
+      )
+      if (index !== -1) dragController.targets.splice(index, 1)
+
+      index = dragController.targets.findIndex(t => t.item.id === item.id)
+      if (index !== -1) dragController.targets.splice(index, 1)
+    }
+  }, [containerElementRef.current, item])
+
   return (
     <PlaylistItemContainer
-      onClick={() => !showingMenu && onClick(item)}
+      ref={containerElementRef}
       onMouseEnter={() => setHovered(true)}
-      onMouseLeave={e => setHovered(false)}
+      onMouseLeave={() => setHovered(false)}
       isActive={(isEditing && isSelected) || isPlaying}
     >
       <a ref={anchorElem} href={`#${id}`} />

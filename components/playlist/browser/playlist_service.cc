@@ -232,33 +232,40 @@ void PlaylistService::ReorderItemFromPlaylist(const std::string& playlist_id,
 
   DCHECK(!item_id.empty());
 
-  ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
   auto target_playlist_id =
       playlist_id.empty() ? kDefaultPlaylistID : playlist_id;
-  base::Value::Dict* playlist_value =
-      playlists_update->FindDict(target_playlist_id);
-  DCHECK(playlist_value) << " Playlist " << playlist_id << " not found";
 
-  auto target_playlist = ConvertValueToPlaylist(
-      *playlist_value, prefs_->GetDict(kPlaylistItemsPref));
-  DCHECK_GT(target_playlist->items.size(), static_cast<size_t>(position));
-  auto it = base::ranges::find_if(
-      target_playlist->items,
-      [&item_id](const auto& item) { return item->id == item_id; });
-  DCHECK(it != target_playlist->items.end());
+  {
+    ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
+    base::Value::Dict* playlist_value =
+        playlists_update->FindDict(target_playlist_id);
+    DCHECK(playlist_value) << " Playlist " << playlist_id << " not found";
 
-  auto old_position = std::distance(target_playlist->items.begin(), it);
-  if (old_position == position) {
-    return;
+    auto target_playlist = ConvertValueToPlaylist(
+        *playlist_value, prefs_->GetDict(kPlaylistItemsPref));
+    DCHECK_GT(target_playlist->items.size(), static_cast<size_t>(position));
+    auto it = base::ranges::find_if(
+        target_playlist->items,
+        [&item_id](const auto& item) { return item->id == item_id; });
+    DCHECK(it != target_playlist->items.end());
+
+    auto old_position = std::distance(target_playlist->items.begin(), it);
+    if (old_position == position) {
+      return;
+    }
+
+    if (old_position < position) {
+      std::rotate(it, it + 1, target_playlist->items.begin() + position + 1);
+    } else {
+      std::rotate(target_playlist->items.begin() + position, it, it + 1);
+    }
+    playlists_update->Set(target_playlist_id,
+                          ConvertPlaylistToValue(target_playlist));
   }
 
-  if (old_position < position) {
-    std::rotate(it, it + 1, target_playlist->items.begin() + position + 1);
-  } else {
-    std::rotate(target_playlist->items.begin() + position, it, it + 1);
+  for (auto& observer : observers_) {
+    observer->OnPlaylistUpdated(GetPlaylist(target_playlist_id));
   }
-  playlists_update->Set(target_playlist_id,
-                        ConvertPlaylistToValue(target_playlist));
 }
 
 bool PlaylistService::MoveItem(const PlaylistId& from,

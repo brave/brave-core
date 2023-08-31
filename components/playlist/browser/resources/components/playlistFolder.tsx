@@ -10,6 +10,8 @@ import styled from 'styled-components'
 import { color } from '@brave/leo/tokens/css'
 import LeoButton from '@brave/leo/react/button'
 
+import { PlaylistItem as PlaylistItemMojo } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m'
+
 import PlaylistItem from './playlistItem'
 import {
   PlaylistEditMode,
@@ -21,6 +23,7 @@ import postMessageToPlayer from '../api/playerApi'
 import { types } from '../constants/player_types'
 import { getPlaylistActions } from '../api/getPlaylistActions'
 import { getPlaylistAPI } from '../api/api'
+import { ItemDragController } from './itemDragController'
 
 interface MatchParams {
   playlistId: string
@@ -120,9 +123,13 @@ export default function PlaylistFolder ({
       setSelectedSet(new Set<string>())
   }, [editMode])
 
+  const dragControllerRef = React.useRef(new ItemDragController())
+
   // Share single callback among multiple items.
   const onItemClick = React.useCallback(
     item => {
+      if (draggedOrder) setDraggedOrder(undefined)
+
       if (!playlist) return
 
       if (editMode === PlaylistEditMode.BULK_EDIT) {
@@ -145,15 +152,45 @@ export default function PlaylistFolder ({
     [playlist, selectedSet, editMode]
   )
 
+  const [draggedOrder, setDraggedOrder] = React.useState<
+    PlaylistItemMojo[] | undefined
+  >(undefined)
+
+  dragControllerRef.current.onClickItem = onItemClick
+  dragControllerRef.current.onDragItemStarted = () => {}
+  dragControllerRef.current.onDragItemUpdated = (item, indexDelta) => {
+    if (!playlist) return
+
+    const index = playlist.items.findIndex(i => i.id === item.id)
+    if (index + indexDelta === draggedOrder?.findIndex(i => i.id === item.id)) {
+      return
+    }
+
+    let newOrder = [...playlist.items]
+    newOrder.splice(index + indexDelta, 0, newOrder.splice(index, 1)[0])
+    setDraggedOrder(newOrder)
+  }
+  dragControllerRef.current.onDragItemEnded = item => {
+    if (!playlist) return
+
+    const index = draggedOrder!.findIndex(i => i.id === item.id)
+    getPlaylistAPI().reorderItemFromPlaylist(playlist.id!, item.id, index)
+    setDraggedOrder(undefined)
+  }
+  dragControllerRef.current.canDrag =
+    editMode !== PlaylistEditMode.BULK_EDIT && !lastPlayerState?.shuffleEnabled
+
   if (!playlist) {
     // After deleting a playlist from header, this could happen. In this case,
     // redirect to the index page.
     return <Redirect to='/' />
   }
 
-  const itemsToRender = lastPlayerState?.shuffleEnabled
-    ? lastPlayerState.currentList?.items ?? playlist?.items
-    : playlist?.items
+  const itemsToRender =
+    draggedOrder ??
+    (lastPlayerState?.shuffleEnabled
+      ? lastPlayerState.currentList?.items ?? playlist?.items
+      : playlist?.items)
 
   return (
     <>
@@ -170,7 +207,7 @@ export default function PlaylistFolder ({
           item={item}
           isEditing={editMode === PlaylistEditMode.BULK_EDIT}
           isSelected={selectedSet.has(item.id)}
-          onClick={onItemClick}
+          dragController={dragControllerRef.current}
         />
       ))}
     </>

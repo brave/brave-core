@@ -111,6 +111,14 @@ class API {
     this.#nativeUI.showRemovePlaylistUI(playlistId)
   }
 
+  reorderItemFromPlaylist (
+    playlistId: string,
+    itemId: string,
+    position: number
+  ) {
+    this.#pageHandler.reorderItemFromPlaylist(playlistId, itemId, position)
+  }
+
   // Events --------------------------------------------------------------------
   addEventListener (listener: PlaylistEventListener) {
     this.#pageCallbackRouter.onEvent.addListener(listener)
@@ -126,6 +134,10 @@ class API {
     ) => void
   ) {
     this.#pageCallbackRouter.onMediaFileDownloadProgressed.addListener(listener)
+  }
+
+  addPlaylistUpdatedListener (listener: (playlist: Playlist) => void) {
+    this.#pageCallbackRouter.onPlaylistUpdated.addListener(listener)
   }
 }
 
