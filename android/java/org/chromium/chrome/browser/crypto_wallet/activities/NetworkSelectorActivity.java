@@ -138,7 +138,7 @@ public class NetworkSelectorActivity
         mNetworkSelectorModel =
                 mWalletModel.getCryptoModel().getNetworkModel().openNetworkSelectorModel(
                         mKey, mMode, selectionMode, null);
-        mSelectionMode = mNetworkSelectorModel.getmSelectionType();
+        mSelectionMode = mNetworkSelectorModel.getSelectionType();
         mNetworkSelectorAdapter =
                 new NetworkSelectorAdapter(this, new ArrayList<>(), mSelectionMode);
         mRVNetworkSelector.setAdapter(mNetworkSelectorAdapter);

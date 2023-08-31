@@ -145,33 +145,28 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     public void fetchAssetsByType(TokenUtils.TokenType type, NetworkInfo selectedNetwork,
             BraveWalletBaseActivity braveWalletBaseActivity,
             Callbacks.Callback1<PortfolioHelper> callback) {
-        synchronized (mLock) {
-            if (mJsonRpcService == null) {
-                return;
-            }
-            NetworkModel.getAllNetworks(
-                    mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
-                        mAllNetworkInfos = allNetworks;
-                        mKeyringService.getAllAccounts(allAccounts -> {
-                            AccountInfo[] filteredAccounts = allAccounts.accounts;
-                            List<NetworkInfo> selectedNetworks;
-                            if (selectedNetwork.chainId.equals(
-                                        NetworkUtils.getAllNetworkOption(mContext).chainId)) {
-                                selectedNetworks = NetworkUtils.nonTestNetwork(mAllNetworkInfos);
-                            } else {
-                                filteredAccounts =
-                                        AssetUtils.filterAccountsByNetwork(allAccounts.accounts,
-                                                selectedNetwork.coin, selectedNetwork.chainId);
-                                selectedNetworks = Arrays.asList(selectedNetwork);
-                            }
+        NetworkModel.getAllNetworks(
+                mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
+                    mAllNetworkInfos = allNetworks;
+                    mKeyringService.getAllAccounts(allAccounts -> {
+                        AccountInfo[] filteredAccounts = allAccounts.accounts;
+                        List<NetworkInfo> selectedNetworks;
+                        if (selectedNetwork.chainId.equals(
+                                    NetworkUtils.getAllNetworkOption(mContext).chainId)) {
+                            selectedNetworks = NetworkUtils.nonTestNetwork(mAllNetworkInfos);
+                        } else {
+                            filteredAccounts =
+                                    AssetUtils.filterAccountsByNetwork(allAccounts.accounts,
+                                            selectedNetwork.coin, selectedNetwork.chainId);
+                            selectedNetworks = Arrays.asList(selectedNetwork);
+                        }
 
-                            mPortfolioHelper = new PortfolioHelper(
-                                    braveWalletBaseActivity, mAllNetworkInfos, filteredAccounts);
-                            mPortfolioHelper.setSelectedNetworks(selectedNetworks);
-                            mPortfolioHelper.fetchAssetsAndDetails(type, callback);
-                        });
+                        mPortfolioHelper = new PortfolioHelper(
+                                braveWalletBaseActivity, mAllNetworkInfos, filteredAccounts);
+                        mPortfolioHelper.setSelectedNetworks(selectedNetworks);
+                        mPortfolioHelper.fetchAssetsAndDetails(type, callback);
                     });
-        }
+                });
     }
 
     /**
@@ -184,22 +179,17 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     public void fetchAssets(TokenUtils.TokenType type, List<NetworkInfo> selectedNetworks,
             BraveWalletBaseActivity braveWalletBaseActivity,
             Callbacks.Callback1<PortfolioHelper> callback) {
-        synchronized (mLock) {
-            if (mJsonRpcService == null) {
-                return;
-            }
-            NetworkModel.getAllNetworks(
-                    mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
-                        mAllNetworkInfos = allNetworks;
-                        mKeyringService.getAllAccounts(allAccounts -> {
-                            AccountInfo[] filteredAccounts = allAccounts.accounts;
-                            mPortfolioHelper = new PortfolioHelper(
-                                    braveWalletBaseActivity, mAllNetworkInfos, filteredAccounts);
-                            mPortfolioHelper.setSelectedNetworks(selectedNetworks);
-                            mPortfolioHelper.fetchAssetsAndDetails(type, callback);
-                        });
+        NetworkModel.getAllNetworks(
+                mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
+                    mAllNetworkInfos = allNetworks;
+                    mKeyringService.getAllAccounts(allAccounts -> {
+                        AccountInfo[] filteredAccounts = allAccounts.accounts;
+                        mPortfolioHelper = new PortfolioHelper(
+                                braveWalletBaseActivity, mAllNetworkInfos, filteredAccounts);
+                        mPortfolioHelper.setSelectedNetworks(selectedNetworks);
+                        mPortfolioHelper.fetchAssetsAndDetails(type, callback);
                     });
-        }
+                });
     }
 
     @Override

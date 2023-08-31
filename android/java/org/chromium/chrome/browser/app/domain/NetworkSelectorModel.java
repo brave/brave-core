@@ -143,7 +143,7 @@ public class NetworkSelectorModel {
         return mMode;
     }
 
-    public SelectionMode getmSelectionType() {
+    public SelectionMode getSelectionType() {
         return mSelectionMode;
     }
     private void updateLocalNetwork(List<NetworkInfo> networkInfos, String chainId) {
