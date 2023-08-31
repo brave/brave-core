@@ -239,6 +239,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 style="@style/BraveWalletTextView"
                 android:layout_width="wrap_content"
@@ -295,6 +296,15 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     app:layoutManager="LinearLayoutManager" />
+
+                <View
+                    android:id="@+id/frag_asset_edit_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="?android:attr/listDivider"
+                    />
 
                 <TextView
                     android:id="@+id/edit_visible_assets"

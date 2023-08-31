@@ -91,6 +91,7 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
     private NetworkSelectorModel mNetworkSelectionModel;
     private ImageView mIvMsg;
     private TextView mTvMsgTitle;
+    private View mEditVisibleDivider;
 
     public static AssetsFragment newInstance() {
         return new AssetsFragment();
@@ -153,6 +154,7 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
 
         mIvMsg = view.findViewById(R.id.frag_assets_iv_msg);
         mTvMsgTitle = view.findViewById(R.id.frag_assets_tv_msg);
+        mEditVisibleDivider = view.findViewById(R.id.frag_asset_edit_divider);
         mBalance = view.findViewById(R.id.balance);
         mBalance.setOnClickListener(v -> updatePortfolioGetPendingTx());
         if (mWalletModel != null) setUpObservers();
@@ -171,10 +173,10 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
                     mSelectedNetworkList = selectedNetworkInfos;
                     if (mSelectedNetworkList.isEmpty()) {
                         clearAssets();
-                        AndroidUtils.show(mIvMsg, mTvMsgTitle);
+                        AndroidUtils.show(mIvMsg, mTvMsgTitle, mEditVisibleDivider);
                         return;
                     }
-                    AndroidUtils.gone(mIvMsg, mTvMsgTitle);
+                    AndroidUtils.gone(mIvMsg, mTvMsgTitle, mEditVisibleDivider);
                     updatePortfolioGetPendingTx();
                 });
         mWalletModel.getCryptoModel().getPortfolioModel().mIsDiscoveringUserAssets.observe(
