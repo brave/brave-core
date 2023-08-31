@@ -58,8 +58,11 @@ bool ViewCounterModel::ShouldShowBrandedWallpaper() const {
 }
 
 void ViewCounterModel::RegisterPageView() {
-  RegisterPageViewForBrandedImages();
+  // Call BG images first to know this calling is after showing
+  // branded image or not. If this calling is from branded image
+  // showing, background image index should not be changed.
   RegisterPageViewForBackgroundImages();
+  RegisterPageViewForBrandedImages();
 }
 
 void ViewCounterModel::RegisterPageViewForBrandedImages() {
