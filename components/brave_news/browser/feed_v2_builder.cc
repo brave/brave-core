@@ -25,6 +25,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
+#include "brave/components/brave_news/browser/feed_v2_knobs.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -52,16 +53,17 @@ Signal GetSignal(const mojom::FeedItemMetadataPtr& article,
 double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
   // Every N hours the pop_score will halve. I.e, if this was 24, every day the
   // popularity score will be halved.
-  constexpr double kPopRecencyHalfLifeInHours = 18;
+  const double pop_recency_half_life_in_hours = knobs::GetPopRecencyHalfLife();
 
   auto& publish_time = article->publish_time;
 
-  double popularity = article->pop_score == 0 ? 50 : article->pop_score;
+  double popularity =
+      article->pop_score == 0 ? knobs::GetPopRecencyFallback() : article->pop_score;
   double multiplier = publish_time > base::Time::Now() - base::Hours(5) ? 2 : 1;
   auto dt = base::Time::Now() - publish_time;
 
   return multiplier * popularity *
-         pow(0.5, dt.InHours() / kPopRecencyHalfLifeInHours);
+         pow(0.5, dt.InHours() / pop_recency_half_life_in_hours);
 }
 
 double GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
@@ -235,19 +237,16 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles) {
   result.push_back(mojom::FeedItemV2::NewHero(
       mojom::HeroArticle::New(std::move(hero_article))));
 
-  // Minimum number of articles in an inline block.
-  constexpr int kBlockInlineMin = 1;
-
-  // Maximum number of articles in an inline block.
-  constexpr int kBlockInlineMax = 5;
-  auto follow_count = GetNormal(kBlockInlineMin, kBlockInlineMax + 1);
+  const int block_min_inline = knobs::GetMinBlockCards();
+  const int block_max_inline = knobs::GetMaxBlockCards();
+  auto follow_count = GetNormal(block_min_inline, block_max_inline + 1);
   for (auto i = 0; i < follow_count; ++i) {
     // Ratio of inline articles to discovery articles.
     // discover ratio % of the time, we should do a discover card here instead
     // of a roulette card.
     // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
-    constexpr double kInlineDiscoveryRatio = 0.25;
-    bool is_discover = base::RandDouble() < kInlineDiscoveryRatio;
+    const double inline_discovery_ratio = knobs::GetInlineDiscoveryRatio();
+    bool is_discover = base::RandDouble() < inline_discovery_ratio;
     auto generated = is_discover ? PickDiscoveryArticleAndRemove(articles)
                                  : PickRouletteAndRemove(articles);
     if (!generated) {
