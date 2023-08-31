@@ -22,6 +22,7 @@ import {
   isComponentInStorybook,
   stripChromeImageURL
 } from '../../../utils/string-utils'
+import { isNativeAsset } from '../../../utils/asset-utils'
 
 // Hooks
 import {
@@ -44,7 +45,13 @@ interface Props {
   asset:
     | Pick<
         BraveWallet.BlockchainToken,
-        'symbol' | 'logo' | 'isNft' | 'isErc721' | 'contractAddress' | 'name'
+        | 'symbol'
+        | 'logo'
+        | 'isNft'
+        | 'isErc721'
+        | 'contractAddress'
+        | 'name'
+        | 'chainId'
       >
     | undefined
   network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'symbol'> | undefined
@@ -69,14 +76,10 @@ export function withPlaceholderIcon<
   return function (funcProps: Props & PROPS_FOR_FUNCTION) {
     const { asset, network, ...wrappedComponentProps } = funcProps
 
-    const isNativeAsset =
-      asset &&
-      network &&
-      asset.symbol.toLowerCase() === network.symbol.toLowerCase()
+    const isNative = asset && isNativeAsset(asset)
 
-    const nativeAssetLogo = isNativeAsset
-      ? makeNativeAssetLogo(network.symbol, network.chainId)
-      : null
+    const nativeAssetLogo =
+      isNative && asset ? makeNativeAssetLogo(asset.symbol, asset.chainId) : ''
 
     const tokenImageURL = stripERC20TokenImageURL(
       nativeAssetLogo || asset?.logo || ''
@@ -108,9 +111,8 @@ export function withPlaceholderIcon<
       return false
     }, [isRemoteURL, tokenImageURL, asset?.logo, isStorybook])
 
-    const needsPlaceholder = isNativeAsset
-      ? (tokenImageURL === '' || !isValidIcon) && nativeAssetLogo === ''
-      : tokenImageURL === '' || !isValidIcon
+    const needsPlaceholder =
+      (tokenImageURL === '' || !isValidIcon) && nativeAssetLogo === ''
 
     const bg = React.useMemo(() => {
       if (needsPlaceholder) {
@@ -130,11 +132,13 @@ export function withPlaceholderIcon<
     }, [isRemoteURL, tokenImageURL, ipfsUrl])
 
     // render
-    if (!asset || !network) {
+    if (!asset) {
       return null
     }
 
-    if (needsPlaceholder) {
+    const icon = nativeAssetLogo || (isRemoteURL ? remoteImage : asset?.logo)
+
+    if (needsPlaceholder || !icon) {
       return (
         <IconWrapper
           panelBackground={bg}
@@ -144,17 +148,11 @@ export function withPlaceholderIcon<
           marginRight={marginRight ?? 0}
         >
           <PlaceholderText size={size}>
-            {asset.symbol.charAt(0)}
+            {asset?.symbol.charAt(0) || '?'}
           </PlaceholderText>
         </IconWrapper>
       )
     }
-
-    const icon = isNativeAsset && nativeAssetLogo
-      ? nativeAssetLogo
-      : isRemoteURL
-        ? remoteImage
-        : asset.logo
 
     return (
       <IconWrapper

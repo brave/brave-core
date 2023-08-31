@@ -110,7 +110,6 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
     allAssetOptions: allBuyAssetOptions,
     buyAmount,
     buyAssetNetworks,
-    getAllBuyOptionsAllChains,
     openBuyAssetLink,
     selectedAsset,
     selectedAssetBuyOptions,
@@ -136,6 +135,10 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
   const selectedNetwork = selectedAssetNetwork || selectedNetworkFromFilter
 
   const assetsForFilteredNetwork: UserAssetInfoType[] = React.useMemo(() => {
+    if (!allBuyAssetOptions) {
+      return []
+    }
+
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
       ? allBuyAssetOptions
       : allBuyAssetOptions.filter(({ chainId }) =>
@@ -270,14 +273,6 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
 
   // effects
   React.useEffect(() => {
-    if (buyAssetNetworks.length === 0) return
-
-    if (assetsForFilteredNetwork.length === 0) {
-      getAllBuyOptionsAllChains()
-    }
-  }, [assetsForFilteredNetwork.length, buyAssetNetworks.length])
-
-  React.useEffect(() => {
     // unselect asset if  AllNetworksOption is not selected
     if (selectedNetworkFilter.chainId !== AllNetworksOption.chainId) {
       setSelectedAsset(undefined)
@@ -395,7 +390,7 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
                 />
               </FilterTokenRow>
 
-              {allBuyAssetOptions.length ? (
+              {allBuyAssetOptions?.length ? (
                 <VirtualizedTokensList
                   getItemSize={getItemSize}
                   userAssetList={assetListSearchResults}

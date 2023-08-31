@@ -8,7 +8,6 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // utils
 import {
-  filterTokensByNetworks,
   getRampAssetSymbol,
   isSelectedAssetInAssetOptions
 } from '../../utils/asset-utils'
@@ -20,53 +19,49 @@ import {
   SupportedTestNetworks
 } from '../../constants/types'
 import { WalletSelectors } from '../selectors'
-import { PageSelectors } from '../../page/selectors'
 
 // options
 import { BuyOptions } from '../../options/buy-with-options'
 
 // hooks
-import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
-import {
-  useUnsafePageSelector,
-  useUnsafeWalletSelector
-} from './use-safe-selector'
+import { useUnsafeWalletSelector } from './use-safe-selector'
 import {
   useGetNetworkQuery,
+  useGetOnRampAssetsQuery,
   useGetOnRampNetworksQuery,
   useGetSelectedChainQuery
 } from '../slices/api.slice'
 
+export const useIsBuySupported = (
+  token?: Pick<BraveWallet.BlockchainToken, 'symbol'>
+) => {
+  // queries
+  const { data: options = undefined } = useGetOnRampAssetsQuery(
+    token ? undefined : skipToken
+  )
+
+  // computed
+  const isBuySupported =
+    token &&
+    options?.allAssetOptions.some(
+      (asset) => asset.symbol.toLowerCase() === token.symbol.toLowerCase()
+    )
+
+  // render
+  return isBuySupported
+}
+
 export const useMultiChainBuyAssets = () => {
   // redux
   const selectedCurrency = useUnsafeWalletSelector(WalletSelectors.selectedCurrency)
-  const reduxSelectedAsset = useUnsafePageSelector(PageSelectors.selectedAsset)
 
   // custom hooks
-  const isMounted = useIsMounted()
-  const { getAllBuyAssets, getBuyAssetUrl } = useLib()
+  const { getBuyAssetUrl } = useLib()
 
   // state
   const [buyAmount, setBuyAmount] = React.useState<string>('')
   const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken | undefined>()
-  const [options, setOptions] = React.useState<
-    {
-      rampAssetOptions: BraveWallet.BlockchainToken[]
-      sardineAssetOptions: BraveWallet.BlockchainToken[]
-      transakAssetOptions: BraveWallet.BlockchainToken[]
-      stripeAssetOptions: BraveWallet.BlockchainToken[]
-      coinbaseAssetOptions: BraveWallet.BlockchainToken[]
-      allAssetOptions: BraveWallet.BlockchainToken[]
-    }
-  >({
-    rampAssetOptions: [],
-    sardineAssetOptions: [],
-    transakAssetOptions: [],
-    stripeAssetOptions: [],
-    coinbaseAssetOptions: [],
-    allAssetOptions: []
-  })
 
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
@@ -74,10 +69,22 @@ export const useMultiChainBuyAssets = () => {
   const { data: selectedAssetNetwork } = useGetNetworkQuery(
     selectedAsset ?? skipToken
   )
+  const { data: options } = useGetOnRampAssetsQuery()
 
   // memos
   const selectedAssetBuyOptions: BuyOption[] = React.useMemo(() => {
-    const { rampAssetOptions, sardineAssetOptions, transakAssetOptions, stripeAssetOptions, coinbaseAssetOptions } = options
+    if (!options) {
+      return []
+    }
+
+    const {
+      rampAssetOptions,
+      sardineAssetOptions,
+      transakAssetOptions,
+      stripeAssetOptions,
+      coinbaseAssetOptions
+    } = options
+
     const onRampAssetMap = {
       [BraveWallet.OnRampProvider.kRamp]: rampAssetOptions,
       [BraveWallet.OnRampProvider.kSardine]: sardineAssetOptions,
@@ -93,7 +100,7 @@ export const useMultiChainBuyAssets = () => {
   }, [selectedAsset, options])
 
   const isSelectedNetworkSupported = React.useMemo(() => {
-    if (!selectedNetwork) return false
+    if (!selectedNetwork || !options?.allAssetOptions) return false
 
     // Test networks are not supported in buy tab
     if (SupportedTestNetworks.includes(selectedNetwork.chainId.toLowerCase())) {
@@ -103,29 +110,17 @@ export const useMultiChainBuyAssets = () => {
     return options.allAssetOptions
       .map(asset => asset.chainId.toLowerCase())
       .includes(selectedNetwork.chainId.toLowerCase())
-  }, [options.allAssetOptions, selectedNetwork])
+  }, [options?.allAssetOptions, selectedNetwork])
 
   const assetsForFilteredNetwork = React.useMemo(() => {
-    return options.allAssetOptions.filter(asset => selectedNetwork?.chainId === asset.chainId)
-  }, [selectedNetwork, options.allAssetOptions])
+    return options?.allAssetOptions
+      ? options.allAssetOptions.filter(
+          (asset) => selectedNetwork?.chainId === asset.chainId
+        )
+      : []
+  }, [selectedNetwork, options?.allAssetOptions])
 
   // methods
-  const getAllBuyOptionsAllChains = React.useCallback(() => {
-    getAllBuyAssets()
-      .then(result => {
-        if (isMounted && result) {
-          setOptions({
-            rampAssetOptions: filterTokensByNetworks(result.rampAssetOptions, buyAssetNetworks),
-            sardineAssetOptions: filterTokensByNetworks(result.sardineAssetOptions, buyAssetNetworks),
-            transakAssetOptions: filterTokensByNetworks(result.transakAssetOptions, buyAssetNetworks),
-            stripeAssetOptions: filterTokensByNetworks(result.stripeAssetOptions, buyAssetNetworks),
-            coinbaseAssetOptions: filterTokensByNetworks(result.coinbaseAssetOptions, buyAssetNetworks),
-            allAssetOptions: filterTokensByNetworks(result.allAssetOptions, buyAssetNetworks)
-          })
-        }
-      })
-  }, [getAllBuyAssets, buyAssetNetworks, isMounted])
-
   const openBuyAssetLink = React.useCallback(({ buyOption, depositAddress }: {
     buyOption: BraveWallet.OnRampProvider
     depositAddress: string
@@ -181,23 +176,17 @@ export const useMultiChainBuyAssets = () => {
     selectedCurrency
   ])
 
-  const isReduxSelectedAssetBuySupported = React.useMemo(() => {
-    return options.allAssetOptions.some((asset) => asset.symbol.toLowerCase() === reduxSelectedAsset?.symbol.toLowerCase())
-  }, [options.allAssetOptions, reduxSelectedAsset?.symbol])
-
   return {
-    allAssetOptions: options.allAssetOptions,
-    rampAssetOptions: options.rampAssetOptions,
+    allAssetOptions: options?.allAssetOptions,
+    rampAssetOptions: options?.rampAssetOptions,
     selectedAsset,
     setSelectedAsset,
     selectedAssetNetwork,
     selectedAssetBuyOptions,
     buyAssetNetworks,
-    getAllBuyOptionsAllChains,
     buyAmount,
     setBuyAmount,
     openBuyAssetLink,
-    isReduxSelectedAssetBuySupported,
     isSelectedNetworkSupported,
     assetsForFilteredNetwork
   }
