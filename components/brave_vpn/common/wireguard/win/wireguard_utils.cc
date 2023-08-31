@@ -39,14 +39,22 @@ constexpr char kWireguardConfigTemplate[] = R"(
   Endpoint = {vpn_server_hostname}:51821
 )";
 
+absl::optional<bool> g_wireguard_service_registered_for_testing;
 }  // namespace
 
 namespace wireguard {
 
 bool IsWireguardServiceRegistered() {
+  if (g_wireguard_service_registered_for_testing.has_value()) {
+    return g_wireguard_service_registered_for_testing.value();
+  }
   return brave_vpn::GetWindowsServiceStatus(
              brave_vpn::GetBraveVpnWireguardServiceName())
       .has_value();
+}
+
+void SetWireguardServiceRegisteredForTesting(bool value) {
+  g_wireguard_service_registered_for_testing = value;
 }
 
 bool IsBraveVPNWireguardTunnelServiceRunning() {

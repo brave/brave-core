@@ -312,8 +312,14 @@ Let's get you connected!
     <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED" desc="Message to be displayed as tooltip for the system tray icon in disconnected state.">
       Brave VPN: Disconnected
     </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTING" desc="Message to be displayed as tooltip for the system tray icon in disconnecting state.">
+      Brave VPN: Disconnecting
+    </message>
     <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTED" desc="Message to be displayed as tooltip for the system tray icon in connected state.">
       Brave VPN: Connected
+    </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTING" desc="Message to be displayed as tooltip for the system tray icon in connecting state.">
+      Brave VPN: Connecting
     </message>
     <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR" desc="Message to be displayed as tooltip for the system tray icon in error state.">
       Brave VPN: Error

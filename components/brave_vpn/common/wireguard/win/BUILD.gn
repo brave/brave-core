@@ -37,3 +37,16 @@ source_set("win") {
     "//third_party/abseil-cpp:absl",
   ]
 }
+
+source_set("unittests") {
+  testonly = true
+  sources = [ "storage_utils_unittest.cc" ]
+  deps = [
+    ":win",
+    "//base",
+    "//base/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+  ]
+}

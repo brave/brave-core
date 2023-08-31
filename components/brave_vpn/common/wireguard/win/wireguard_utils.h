@@ -29,6 +29,7 @@ void EnableBraveVpnWireguardService(const std::string& config,
                                     BooleanCallback callback);
 void DisableBraveVpnWireguardService(BooleanCallback callback);
 
+void SetWireguardServiceRegisteredForTesting(bool value);
 }  // namespace wireguard
 
 }  // namespace brave_vpn
