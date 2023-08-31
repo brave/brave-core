@@ -3954,6 +3954,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_NO_TRANSACTIONS_YET_DESCRIPTION" desc="Explanation of why the transaction list is empty, and what to expect after the first transaction is available">
       Once you make a transaction, you'll be able to view it here.
     </message>
+    <message name="IDS_BRAVE_WALLET_SELECT_ALL" desc="Action title for select all button">
+      Select all
+    </message>
+    <message name="IDS_BRAVE_WALLET_DESELECT_ALL" desc="Action title for deselect all button">
+      Deselect all
+    </message>
+    <message name="IDS_BRAVE_WALLET_NO_AVAILABLE_ASSETS" desc="No availible assets title for empty asset list">
+      No available assets
+    </message>
   </messages>
   </release>
 </grit>

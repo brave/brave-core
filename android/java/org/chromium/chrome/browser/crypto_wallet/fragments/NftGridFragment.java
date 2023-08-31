@@ -197,11 +197,10 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                 getViewLifecycleOwner(), selectedNetworkInfos -> {
                     mSelectedNetworkList = selectedNetworkInfos;
                     if (mSelectedNetworkList.isEmpty()) {
-                        mAddNftsContainer.setVisibility(View.GONE);
+                        mAddNftsContainer.setVisibility(View.VISIBLE);
                         // Clean up list to avoid user clicking on an asset of the previously
                         // selected network after the network has been changed.
                         clearAssets();
-                        mAddNftsContainer.setVisibility(View.VISIBLE);
                         return;
                     }
                     mPbAssetDiscovery.setVisibility(View.VISIBLE);
