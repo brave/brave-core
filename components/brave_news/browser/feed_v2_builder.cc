@@ -70,21 +70,21 @@ double GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
                         const Signal& signal) {
   // Weighting for unsubscribed sources. Small but non-zero, so we still include
   // them in the feed.
-  constexpr double kSourceSubscribedMin = 1e-5;
+  const double source_subscribed_min = knobs::GetSourceSubscribedMin();
 
   // Weighting for subscribed sources (either this or |kSourceSubscribedMin|
   // will be applied).
-  constexpr double kSourceSubscribedMax = 1;
+  const double source_subscribed_boost = knobs::GetChannelSubscribedBoost();
 
   // Multiplier for unvisited sources. |visit_weighting| is in the range [0, 1]
   // inclusive and will be shifted by this (i.e. [0, 1] ==> [0.2, 1.2]). This
   // ensures we still show unvisited sources in the feed.
-  constexpr double kSourceVisitsMin = 0.2;
+  const double source_visits_min = knobs::GetSourceVisitsMin();
 
   double source_visits_projected =
-      kSourceVisitsMin + signal->visit_weight * (1 - kSourceVisitsMin);
+      source_visits_min + signal->visit_weight * (1 - source_visits_min);
   double source_subscribed_projected =
-      signal->subscribed ? kSourceSubscribedMax : kSourceSubscribedMin;
+      signal->subscribed ? source_subscribed_boost : source_subscribed_min;
   return source_visits_projected * source_subscribed_projected *
          GetPopRecency(article);
 }

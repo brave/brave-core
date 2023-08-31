@@ -42,6 +42,7 @@ double GetDoubleSwitchOrDefault(const base::StringPiece& name,
 }  // namespace
 
 namespace switches {
+
 const char kBraveNewsMinBlockCards[] = "brave-news-feed-min-block-cards";
 const char kBraveNewsMaxBlockCards[] = "brave-news-feed-max-block-cards";
 
@@ -50,6 +51,15 @@ const char kBraveNewsPopRecencyFallback[] = "brave-news-pop-recency-fallback";
 
 const char kBraveNewsInlineDiscoveryRatio[] =
     "brave-news-inline-discovery-ratio";
+
+const char kBraveNewsSourceSubscribedMin[] = "brave-news-source-subscribed-min";
+const char kBraveNewsSourceSubscribedBoost[] =
+    "brave-news-source-subscribed-boost";
+const char kBraveNewsChannelSubscribedBoost[] =
+    "brave-news-channel-subscribed-boost";
+
+const char kBraveNewsSourceVisitsMin[] = "brave-news-source-visits-min";
+
 }  // namespace switches
 
 int GetMinBlockCards() {
@@ -77,6 +87,30 @@ double GetPopRecencyFallback() {
 double GetInlineDiscoveryRatio() {
   constexpr double kDefault = 0.25;
   return GetDoubleSwitchOrDefault(switches::kBraveNewsInlineDiscoveryRatio,
+                                  kDefault);
+}
+
+double GetSourceSubscribedMin() {
+  constexpr double kDefault = 1e-5;
+  return GetDoubleSwitchOrDefault(switches::kBraveNewsSourceSubscribedMin,
+                                  kDefault);
+}
+
+double GetSourceSubscribedBoost() {
+  constexpr double kDefault = 1;
+  return GetDoubleSwitchOrDefault(switches::kBraveNewsSourceSubscribedBoost,
+                                  kDefault);
+}
+
+double GetChannelSubscribedBoost() {
+  constexpr double kDefault = 0.2;
+  return GetDoubleSwitchOrDefault(switches::kBraveNewsChannelSubscribedBoost,
+                                  kDefault);
+}
+
+double GetSourceVisitsMin() {
+  constexpr double kDefault = 0.2;
+  return GetDoubleSwitchOrDefault(switches::kBraveNewsSourceVisitsMin,
                                   kDefault);
 }
 

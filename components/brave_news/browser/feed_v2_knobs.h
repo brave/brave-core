@@ -17,6 +17,12 @@ extern const char kBraveNewsPopRecencyFallback[];
 
 extern const char kBraveNewsInlineDiscoveryRatio[];
 
+extern const char kBraveNewsSourceSubscribedMin[];
+extern const char kBraveNewsSourceSubscribedBoost[];
+extern const char kBraveNewsChannelSubscribedBoost[];
+
+extern const char kBraveNewsSourceVisitsMin[];
+
 }  // namespace knobs::switches
 
 int GetMinBlockCards();
@@ -26,6 +32,12 @@ double GetPopRecencyHalfLife();
 double GetPopRecencyFallback();
 
 double GetInlineDiscoveryRatio();
+
+double GetSourceSubscribedMin();
+double GetSourceSubscribedBoost();
+double GetChannelSubscribedBoost();
+
+double GetSourceVisitsMin();
 
 }  // namespace brave_news
 
