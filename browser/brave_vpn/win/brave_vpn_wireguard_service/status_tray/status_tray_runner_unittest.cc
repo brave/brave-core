@@ -79,17 +79,17 @@ TEST_F(StatusTrayRunnerTest, RebuildMenu) {
   EXPECT_EQ(menu_model.GetItemCount(), 0u);
 
   // connected state
-  StatusTrayRunner::GetInstance()->SetTunnelServiceRunningForTesting(true);
+  StatusTrayRunner::GetInstance()->SetVPNConnectedForTesting(true);
   menu_model.MenuWillShow();
   CheckConnectedMenuState(&menu_model);
 
   // disconnected state
-  StatusTrayRunner::GetInstance()->SetTunnelServiceRunningForTesting(false);
+  StatusTrayRunner::GetInstance()->SetVPNConnectedForTesting(false);
   menu_model.MenuWillShow();
   CheckDisconnectedMenuState(&menu_model);
 
   // back to connected state
-  StatusTrayRunner::GetInstance()->SetTunnelServiceRunningForTesting(true);
+  StatusTrayRunner::GetInstance()->SetVPNConnectedForTesting(true);
   menu_model.MenuWillShow();
   CheckConnectedMenuState(&menu_model);
 }
@@ -102,7 +102,7 @@ TEST_F(StatusTrayRunnerTest, UpdateConnectionState) {
   EXPECT_TRUE(ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
 
   // Tunnel service stopped, state disconnected, no info in registry.
-  StatusTrayRunner::GetInstance()->SetTunnelServiceRunningForTesting(false);
+  StatusTrayRunner::GetInstance()->SetVPNConnectedForTesting(false);
   WaitIconStateChangedTo(
       IDR_BRAVE_VPN_TRAY_LIGHT,
       IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED);
@@ -158,7 +158,7 @@ TEST_F(StatusTrayRunnerTest, UpdateConnectionState) {
       static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECT_FAILED));
 
   // Service is working, state connected.
-  StatusTrayRunner::GetInstance()->SetTunnelServiceRunningForTesting(true);
+  StatusTrayRunner::GetInstance()->SetVPNConnectedForTesting(true);
   WaitIconStateChangedTo(IDR_BRAVE_VPN_TRAY_LIGHT_CONNECTED,
                          IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTED);
   EXPECT_EQ(brave_vpn::wireguard::GetConnectionState().value(),

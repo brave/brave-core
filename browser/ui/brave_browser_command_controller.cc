@@ -39,7 +39,6 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
-#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
@@ -262,9 +261,7 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL, true);
   UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON, true);
 #if BUILDFLAG(IS_WIN)
-  UpdateCommandEnabled(
-      IDC_TOGGLE_BRAVE_VPN_TRAY_ICON,
-      brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state()));
+  UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON, true);
 #endif
   UpdateCommandEnabled(IDC_SEND_BRAVE_VPN_FEEDBACK, true);
   UpdateCommandEnabled(IDC_ABOUT_BRAVE_VPN, true);

@@ -24,7 +24,6 @@ void BraveVpnWireguardObserverService::ShowFallbackDialog() {
 
 void BraveVpnWireguardObserverService::OnConnectionStateChanged(
     brave_vpn::mojom::ConnectionState state) {
-  wireguard::WriteConnectionState(static_cast<int>(state));
   if (state == brave_vpn::mojom::ConnectionState::DISCONNECTED ||
       state == brave_vpn::mojom::ConnectionState::CONNECT_FAILED) {
     if (ShouldShowFallbackDialog()) {

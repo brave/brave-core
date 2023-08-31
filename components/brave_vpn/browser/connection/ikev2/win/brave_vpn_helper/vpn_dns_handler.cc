@@ -15,7 +15,8 @@
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_state.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/vpn_utils.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
-#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_commands.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 
 namespace brave_vpn {
 
@@ -86,6 +87,11 @@ bool VpnDnsHandler::SetFilters(const std::wstring& connection_name) {
     }
     return false;
   }
+
+  // Show system notification about connected vpn.
+  brave_vpn::RunWireGuardCommandForUsers(
+      brave_vpn::kBraveVpnWireguardServiceNotifyConnectedSwitchName);
+
   return true;
 }
 

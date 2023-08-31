@@ -67,21 +67,18 @@ TEST_F(BraveVPNMenuModelUnitTest, TrayIconEnabled) {
   }
 
   // Wireguard protocol disbled in the setting.
-  local_state()->SetBoolean(brave_vpn::prefs::kBraveVPNWireguardEnabled, false);
   EXPECT_TRUE(menu_model.IsTrayIconEnabled());
   menu_model.Clear();
   EXPECT_EQ(menu_model.GetItemCount(), 0u);
   menu_model.Build();
   EXPECT_NE(menu_model.GetItemCount(), 0u);
   {
-    EXPECT_FALSE(
-        menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON));
+    EXPECT_TRUE(menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON));
   }
 
   // Cases with Disabled value.
   menu_model.SetTrayIconEnabledForTesting(false);
   prefs()->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, false);
-  local_state()->SetBoolean(brave_vpn::prefs::kBraveVPNWireguardEnabled, true);
   EXPECT_FALSE(menu_model.IsTrayIconEnabled());
   menu_model.Clear();
   EXPECT_EQ(menu_model.GetItemCount(), 0u);
@@ -95,22 +92,6 @@ TEST_F(BraveVPNMenuModelUnitTest, TrayIconEnabled) {
         menu_model.GetLabelAt(tray_index.value()),
         l10n_util::GetStringUTF16(IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM));
   }
-}
-TEST_F(BraveVPNMenuModelUnitTest, TrayIconDisabled) {
-  local_state()->SetBoolean(brave_vpn::prefs::kBraveVPNWireguardEnabled, false);
-
-  BraveVPNMenuModel menu_model(nullptr, prefs());
-
-  // Cases with Enabled value.
-  menu_model.SetTrayIconEnabledForTesting(true);
-  prefs()->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, true);
-
-  EXPECT_TRUE(menu_model.IsTrayIconEnabled());
-  menu_model.Clear();
-  EXPECT_EQ(menu_model.GetItemCount(), 0u);
-  menu_model.Build();
-  EXPECT_NE(menu_model.GetItemCount(), 0u);
-  EXPECT_FALSE(menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON));
 }
 #endif  // BUILDFLAG(IS_WIN)
 

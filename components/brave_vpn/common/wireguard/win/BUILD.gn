@@ -18,6 +18,8 @@ midl("brave_wireguard_manager_idl") {
 
 source_set("win") {
   sources = [
+    "service_commands.cc",
+    "service_commands.h",
     "service_constants.h",
     "service_details.cc",
     "service_details.h",

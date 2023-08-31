@@ -23,6 +23,7 @@
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
+#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/version_info/version_info.h"
@@ -35,6 +36,10 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/url_util.h"
+
+#if BUILDFLAG(IS_WIN)
+#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
+#endif
 
 namespace brave_vpn {
 
@@ -131,7 +136,9 @@ void BraveVpnService::BindInterface(
 void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__ << " " << state;
-
+#if BUILDFLAG(IS_WIN)
+  wireguard::WriteConnectionState(static_cast<int>(state));
+#endif
   // Ignore connection state change request for non purchased user.
   // This can be happened when user controls vpn via os settings.
   if (!is_purchased_user())
@@ -144,6 +151,11 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
       connection_api_->Disconnect();
       return;
     }
+#if BUILDFLAG(IS_WIN)
+    // Run tray process each time we establish connection. System tray icon
+    // manages self state to be visible/hidden due to settings.
+    wireguard::ShowBraveVpnStatusTrayIcon();
+#endif
     RecordP3A(true);
   }
 
