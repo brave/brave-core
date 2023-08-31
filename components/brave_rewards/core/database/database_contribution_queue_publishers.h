@@ -27,8 +27,8 @@ class DatabaseContributionQueuePublishers : public DatabaseTable {
                            ContributionQueuePublishersListCallback callback);
 
  private:
-  void OnGetRecordsByQueueId(mojom::DBCommandResponsePtr response,
-                             ContributionQueuePublishersListCallback callback);
+  void OnGetRecordsByQueueId(ContributionQueuePublishersListCallback callback,
+                             mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

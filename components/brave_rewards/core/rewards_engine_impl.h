@@ -336,22 +336,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   mojom::ClientInfoPtr GetClientInfo();
 
-  template <typename Callback>
-  void RunDBTransaction(mojom::DBTransactionPtr transaction,
-                        Callback callback) {
-    if constexpr (std::is_same_v<Callback, RunDBTransactionCallback>) {
-      client_->RunDBTransaction(std::move(transaction), std::move(callback));
-    } else {
-      client_->RunDBTransaction(std::move(transaction),
-                                base::BindOnce(
-                                    [](LegacyRunDBTransactionCallback callback,
-                                       mojom::DBCommandResponsePtr response) {
-                                      callback(std::move(response));
-                                    },
-                                    std::move(callback)));
-    }
-  }
-
   absl::optional<std::string> EncryptString(const std::string& value);
 
   absl::optional<std::string> DecryptString(const std::string& value);

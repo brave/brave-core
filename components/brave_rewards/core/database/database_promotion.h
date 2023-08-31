@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_PROMOTION_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_PROMOTION_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -53,14 +52,14 @@ class DatabasePromotion : public DatabaseTable {
                                    LegacyResultCallback callback);
 
  private:
-  void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   GetPromotionCallback callback);
+  void OnGetRecord(GetPromotionCallback callback,
+                   mojom::DBCommandResponsePtr response);
 
-  void OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                       GetAllPromotionsCallback callback);
+  void OnGetAllRecords(GetAllPromotionsCallback callback,
+                       mojom::DBCommandResponsePtr response);
 
-  void OnGetRecords(mojom::DBCommandResponsePtr response,
-                    GetPromotionListCallback callback);
+  void OnGetRecords(GetPromotionListCallback callback,
+                    mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

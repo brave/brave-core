@@ -111,9 +111,6 @@ using LegacyLoadURLCallback = std::function<void(mojom::UrlResponsePtr)>;
 
 using LegacyResultCallback = std::function<void(mojom::Result)>;
 
-using LegacyRunDBTransactionCallback =
-    std::function<void(mojom::DBCommandResponsePtr)>;
-
 using PublisherInfoCallback =
     std::function<void(mojom::Result, mojom::PublisherInfoPtr)>;
 

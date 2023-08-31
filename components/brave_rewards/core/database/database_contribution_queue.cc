@@ -62,20 +62,19 @@ void DatabaseContributionQueue::InsertOrUpdate(mojom::ContributionQueuePtr info,
 
   transaction->commands.push_back(std::move(command));
 
-  auto shared_info =
-      std::make_shared<mojom::ContributionQueuePtr>(std::move(info));
-
-  auto transaction_callback =
-      std::bind(&DatabaseContributionQueue::OnInsertOrUpdate, this, _1,
-                shared_info, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseContributionQueue::OnInsertOrUpdate,
+                     base::Unretained(this), std::move(callback),
+                     std::move(info)));
 }
 
 void DatabaseContributionQueue::OnInsertOrUpdate(
-    mojom::DBCommandResponsePtr response,
-    std::shared_ptr<mojom::ContributionQueuePtr> shared_queue,
-    LegacyResultCallback callback) {
+    LegacyResultCallback callback,
+    mojom::ContributionQueuePtr queue,
+    mojom::DBCommandResponsePtr response) {
+  CHECK(queue);
+
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
@@ -83,14 +82,8 @@ void DatabaseContributionQueue::OnInsertOrUpdate(
     return;
   }
 
-  if (!shared_queue) {
-    BLOG(0, "Queue is null");
-    callback(mojom::Result::FAILED);
-    return;
-  }
-
-  publishers_.InsertOrUpdate((*shared_queue)->id,
-                             std::move((*shared_queue)->publishers), callback);
+  publishers_.InsertOrUpdate(queue->id, std::move(queue->publishers),
+                             std::move(callback));
 }
 
 void DatabaseContributionQueue::GetFirstRecord(
@@ -114,15 +107,15 @@ void DatabaseContributionQueue::GetFirstRecord(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(
-      &DatabaseContributionQueue::OnGetFirstRecord, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseContributionQueue::OnGetFirstRecord,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseContributionQueue::OnGetFirstRecord(
-    mojom::DBCommandResponsePtr response,
-    GetFirstContributionQueueCallback callback) {
+    GetFirstContributionQueueCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -191,9 +184,9 @@ void DatabaseContributionQueue::MarkRecordAsComplete(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 }  // namespace database

@@ -37,13 +37,13 @@ class DatabaseServerPublisherInfo : public DatabaseTable {
                          const std::string& publisher_key,
                          GetServerPublisherInfoCallback callback);
 
-  void OnGetRecord(mojom::DBCommandResponsePtr response,
+  void OnGetRecord(GetServerPublisherInfoCallback callback,
                    const std::string& publisher_key,
-                   const mojom::PublisherBanner& banner,
-                   GetServerPublisherInfoCallback callback);
+                   mojom::PublisherBannerPtr banner,
+                   mojom::DBCommandResponsePtr response);
 
-  void OnExpiredRecordsSelected(mojom::DBCommandResponsePtr response,
-                                LegacyResultCallback callback);
+  void OnExpiredRecordsSelected(LegacyResultCallback callback,
+                                mojom::DBCommandResponsePtr response);
 
   DatabaseServerPublisherBanner banner_;
 };

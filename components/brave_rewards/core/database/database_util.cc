@@ -99,8 +99,8 @@ int32_t GetCompatibleVersion() {
   return kCompatibleVersionNumber;
 }
 
-void OnResultCallback(mojom::DBCommandResponsePtr response,
-                      LegacyResultCallback callback) {
+void OnResultCallback(LegacyResultCallback callback,
+                      mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     callback(mojom::Result::FAILED);

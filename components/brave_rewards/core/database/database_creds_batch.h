@@ -49,11 +49,11 @@ class DatabaseCredsBatch : public DatabaseTable {
                             GetCredsBatchListCallback callback);
 
  private:
-  void OnGetRecordByTrigger(mojom::DBCommandResponsePtr response,
-                            GetCredsBatchCallback callback);
+  void OnGetRecordByTrigger(GetCredsBatchCallback callback,
+                            mojom::DBCommandResponsePtr response);
 
-  void OnGetRecords(mojom::DBCommandResponsePtr response,
-                    GetCredsBatchListCallback callback);
+  void OnGetRecords(GetCredsBatchListCallback callback,
+                    mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

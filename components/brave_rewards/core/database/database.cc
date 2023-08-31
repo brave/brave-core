@@ -10,8 +10,6 @@
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
-using std::placeholders::_1;
-
 namespace brave_rewards::internal {
 namespace database {
 
@@ -48,9 +46,10 @@ void Database::Close(LegacyResultCallback callback) {
   command->type = mojom::DBCommand::Type::CLOSE;
 
   transaction->commands.push_back(std::move(command));
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 /**

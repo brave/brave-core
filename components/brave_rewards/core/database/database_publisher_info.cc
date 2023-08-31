@@ -15,8 +15,6 @@
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
-using std::placeholders::_1;
-
 namespace {
 
 const char kTableName[] = "publisher_info";
@@ -82,9 +80,9 @@ void DatabasePublisherInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
     transaction->commands.push_back(std::move(command_icon));
   }
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabasePublisherInfo::GetRecord(const std::string& publisher_key,
@@ -123,14 +121,14 @@ void DatabasePublisherInfo::GetRecord(const std::string& publisher_key,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabasePublisherInfo::OnGetRecord, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabasePublisherInfo::OnGetRecord,
+                     base::Unretained(this), std::move(callback)));
 }
 
-void DatabasePublisherInfo::OnGetRecord(mojom::DBCommandResponsePtr response,
-                                        GetPublisherInfoCallback callback) {
+void DatabasePublisherInfo::OnGetRecord(GetPublisherInfoCallback callback,
+                                        mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -202,15 +200,15 @@ void DatabasePublisherInfo::GetPanelRecord(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabasePublisherInfo::OnGetPanelRecord, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabasePublisherInfo::OnGetPanelRecord,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabasePublisherInfo::OnGetPanelRecord(
-    mojom::DBCommandResponsePtr response,
-    GetPublisherPanelInfoCallback callback) {
+    GetPublisherPanelInfoCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -254,7 +252,7 @@ void DatabasePublisherInfo::RestorePublishers(ResultCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  engine_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabasePublisherInfo::OnRestorePublishers,
                      base::Unretained(this), std::move(callback)));
@@ -297,15 +295,15 @@ void DatabasePublisherInfo::GetExcludedList(GetExcludedListCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabasePublisherInfo::OnGetExcludedList, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabasePublisherInfo::OnGetExcludedList,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabasePublisherInfo::OnGetExcludedList(
-    mojom::DBCommandResponsePtr response,
-    GetExcludedListCallback callback) {
+    GetExcludedListCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

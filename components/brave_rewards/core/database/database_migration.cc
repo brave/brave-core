@@ -162,7 +162,7 @@ void DatabaseMigration::Start(uint32_t table_version, ResultCallback callback) {
   command->type = mojom::DBCommand::Type::VACUUM;
   transaction->commands.push_back(std::move(command));
 
-  engine_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseMigration::RunDBTransactionCallback,
                      base::Unretained(this), std::move(callback), start_version,

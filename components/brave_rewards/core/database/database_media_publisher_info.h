@@ -25,8 +25,8 @@ class DatabaseMediaPublisherInfo : public DatabaseTable {
   void GetRecord(const std::string& media_key, PublisherInfoCallback callback);
 
  private:
-  void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   PublisherInfoCallback callback);
+  void OnGetRecord(PublisherInfoCallback callback,
+                   mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

@@ -71,19 +71,26 @@ void DatabasePublisherPrefixList::Search(
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  engine_->RunDBTransaction(
-      std::move(transaction), [callback](mojom::DBCommandResponsePtr response) {
-        if (!response || !response->result ||
-            response->status != mojom::DBCommandResponse::Status::RESPONSE_OK ||
-            response->result->get_records().empty()) {
-          BLOG(0,
-               "Unexpected database result while searching "
-               "publisher prefix list.");
-          callback(false);
-          return;
-        }
-        callback(GetBoolColumn(response->result->get_records()[0].get(), 0));
-      });
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabasePublisherPrefixList::OnSearch,
+                     base::Unretained(this), std::move(callback)));
+}
+
+void DatabasePublisherPrefixList::OnSearch(
+    SearchPublisherPrefixListCallback callback,
+    mojom::DBCommandResponsePtr response) {
+  if (!response || !response->result ||
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK ||
+      response->result->get_records().empty()) {
+    BLOG(0,
+         "Unexpected database result while searching "
+         "publisher prefix list.");
+    callback(false);
+    return;
+  }
+
+  callback(GetBoolColumn(response->result->get_records()[0].get(), 0));
 }
 
 void DatabasePublisherPrefixList::Reset(publisher::PrefixListReader reader,
@@ -129,26 +136,31 @@ void DatabasePublisherPrefixList::InsertNext(publisher::PrefixIterator begin,
 
   transaction->commands.push_back(std::move(command));
 
-  auto iter = std::get<publisher::PrefixIterator>(insert_tuple);
-
-  engine_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
-      [this, iter, callback](mojom::DBCommandResponsePtr response) {
-        if (!response ||
-            response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-          reader_ = absl::nullopt;
-          callback(mojom::Result::FAILED);
-          return;
-        }
+      base::BindOnce(&DatabasePublisherPrefixList::OnInsertNext,
+                     base::Unretained(this), std::move(callback),
+                     std::get<publisher::PrefixIterator>(insert_tuple)));
+}
 
-        if (iter == reader_->end()) {
-          reader_ = absl::nullopt;
-          callback(mojom::Result::OK);
-          return;
-        }
+void DatabasePublisherPrefixList::OnInsertNext(
+    LegacyResultCallback callback,
+    publisher::PrefixIterator iter,
+    mojom::DBCommandResponsePtr response) {
+  if (!response ||
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+    reader_ = absl::nullopt;
+    callback(mojom::Result::FAILED);
+    return;
+  }
 
-        InsertNext(iter, callback);
-      });
+  if (iter == reader_->end()) {
+    reader_ = absl::nullopt;
+    callback(mojom::Result::OK);
+    return;
+  }
+
+  InsertNext(iter, callback);
 }
 
 }  // namespace database

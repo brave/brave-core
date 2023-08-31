@@ -39,8 +39,8 @@ class DatabaseSKUOrder : public DatabaseTable {
                                      LegacyResultCallback callback);
 
  private:
-  void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   GetSKUOrderCallback callback);
+  void OnGetRecord(GetSKUOrderCallback callback,
+                   mojom::DBCommandResponsePtr response);
 
   void OnGetRecordItems(std::vector<mojom::SKUOrderItemPtr> list,
                         std::shared_ptr<mojom::SKUOrderPtr> shared_order,

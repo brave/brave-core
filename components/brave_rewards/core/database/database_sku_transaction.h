@@ -35,8 +35,8 @@ class DatabaseSKUTransaction : public DatabaseTable {
                           GetSKUTransactionCallback callback);
 
  private:
-  void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   GetSKUTransactionCallback callback);
+  void OnGetRecord(GetSKUTransactionCallback callback,
+                   mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

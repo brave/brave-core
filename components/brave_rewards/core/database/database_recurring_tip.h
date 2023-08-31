@@ -42,8 +42,8 @@ class DatabaseRecurringTip : public DatabaseTable {
                     LegacyResultCallback callback);
 
  private:
-  void OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                       GetRecurringTipsCallback callback);
+  void OnGetAllRecords(GetRecurringTipsCallback callback,
+                       mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

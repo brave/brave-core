@@ -31,6 +31,13 @@ class DatabasePublisherPrefixList : public DatabaseTable {
   void InsertNext(publisher::PrefixIterator begin,
                   LegacyResultCallback callback);
 
+  void OnSearch(SearchPublisherPrefixListCallback callback,
+                mojom::DBCommandResponsePtr response);
+
+  void OnInsertNext(LegacyResultCallback callback,
+                    publisher::PrefixIterator iter,
+                    mojom::DBCommandResponsePtr response);
+
   absl::optional<publisher::PrefixListReader> reader_;
 };
 

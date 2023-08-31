@@ -28,8 +28,8 @@ class DatabaseEventLog : public DatabaseTable {
   void GetLastRecords(GetEventLogsCallback callback);
 
  private:
-  void OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                       GetEventLogsCallback callback);
+  void OnGetAllRecords(GetEventLogsCallback callback,
+                       mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

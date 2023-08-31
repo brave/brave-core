@@ -45,7 +45,7 @@ void DatabaseExternalTransactions::Insert(
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  engine_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseExternalTransactions::OnInsert,
                      base::Unretained(this), std::move(callback)));
@@ -84,7 +84,7 @@ void DatabaseExternalTransactions::GetTransaction(
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  engine_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseExternalTransactions::OnGetTransaction,
                      base::Unretained(this), std::move(callback)));

@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <map>
-#include <memory>
 #include <utility>
 
 #include "base/strings/stringprintf.h"
@@ -12,8 +11,6 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
-
-using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 
@@ -155,22 +152,26 @@ void DatabaseActivityInfo::NormalizeList(
 
   transaction->commands.push_back(std::move(command));
 
-  auto shared_list =
-      std::make_shared<std::vector<mojom::PublisherInfoPtr>>(std::move(list));
-
-  engine_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
-      [this, shared_list, callback](mojom::DBCommandResponsePtr response) {
-        if (!response ||
-            response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-          callback(mojom::Result::FAILED);
-          return;
-        }
+      base::BindOnce(&DatabaseActivityInfo::OnNormalizeList,
+                     base::Unretained(this), std::move(callback),
+                     std::move(list)));
+}
 
-        engine_->client()->PublisherListNormalized(std::move(*shared_list));
+void DatabaseActivityInfo::OnNormalizeList(
+    LegacyResultCallback callback,
+    std::vector<mojom::PublisherInfoPtr> list,
+    mojom::DBCommandResponsePtr response) {
+  if (!response ||
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+    callback(mojom::Result::FAILED);
+    return;
+  }
 
-        callback(mojom::Result::OK);
-      });
+  engine_->client()->PublisherListNormalized(std::move(list));
+
+  callback(mojom::Result::OK);
 }
 
 void DatabaseActivityInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
@@ -202,9 +203,9 @@ void DatabaseActivityInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseActivityInfo::GetRecordsList(
@@ -257,15 +258,15 @@ void DatabaseActivityInfo::GetRecordsList(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseActivityInfo::OnGetRecordsList, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseActivityInfo::OnGetRecordsList,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseActivityInfo::OnGetRecordsList(
-    mojom::DBCommandResponsePtr response,
-    GetActivityInfoListCallback callback) {
+    GetActivityInfoListCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
@@ -322,9 +323,9 @@ void DatabaseActivityInfo::DeleteRecord(const std::string& publisher_key,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseActivityInfo::GetPublishersVisitedCount(
@@ -358,8 +359,8 @@ void DatabaseActivityInfo::GetPublishersVisitedCount(
     std::move(callback).Run(GetIntColumn(record, 0));
   };
 
-  engine_->RunDBTransaction(std::move(transaction),
-                            base::BindOnce(on_read, std::move(callback)));
+  engine_->client()->RunDBTransaction(
+      std::move(transaction), base::BindOnce(on_read, std::move(callback)));
 }
 
 }  // namespace database

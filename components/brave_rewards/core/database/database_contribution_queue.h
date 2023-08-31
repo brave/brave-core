@@ -33,13 +33,12 @@ class DatabaseContributionQueue : public DatabaseTable {
                             LegacyResultCallback callback);
 
  private:
-  void OnInsertOrUpdate(
-      mojom::DBCommandResponsePtr response,
-      std::shared_ptr<mojom::ContributionQueuePtr> shared_queue,
-      LegacyResultCallback callback);
+  void OnInsertOrUpdate(LegacyResultCallback callback,
+                        mojom::ContributionQueuePtr queue,
+                        mojom::DBCommandResponsePtr response);
 
-  void OnGetFirstRecord(mojom::DBCommandResponsePtr response,
-                        GetFirstContributionQueueCallback callback);
+  void OnGetFirstRecord(GetFirstContributionQueueCallback callback,
+                        mojom::DBCommandResponsePtr response);
 
   void OnGetPublishers(
       std::vector<mojom::ContributionQueuePublisherPtr> list,
