@@ -220,6 +220,7 @@ public class NetworkSelectorAdapter
                 && mSelectedNetworks.size() == 1 && NetworkUtils.isAllNetwork(networkInfo.get(0))) {
             for (int i = 0; i < mNetworkInfos.size(); i++) {
                 NetworkSelectorItem networkSelectorItem = mNetworkInfos.get(i);
+                if (Type.LABEL == networkSelectorItem.mType) continue;
                 networkSelectorItem.setIsSelected(true);
                 mSelectedNetworkPositions.add(i);
             }

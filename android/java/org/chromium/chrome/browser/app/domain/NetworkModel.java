@@ -218,6 +218,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
      * between the view and the selection activity.
      * @param key acts as a binding key between caller and selection activity.
      * @param mode to handle network selection event globally or locally.
+     * @param selectionMode to allow Single or Multiple network selection.
      * @param lifecycle to auto remove network-selection objects.
      * @return NetworkSelectorModel object.
      */
