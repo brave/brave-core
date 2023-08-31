@@ -63,8 +63,9 @@ InlineContentAdHandler::~InlineContentAdHandler() = default;
 void InlineContentAdHandler::MaybeServe(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
-  CHECK(UserHasOptedInToBraveNewsAds())
-      << "Should only be called if the user has opted-in to Brave News Ads";
+  if (!UserHasOptedInToBraveNewsAds()) {
+    return std::move(callback).Run(dimensions, /*ad*/ absl::nullopt);
+  }
 
   serving_.MaybeServeAd(
       dimensions,

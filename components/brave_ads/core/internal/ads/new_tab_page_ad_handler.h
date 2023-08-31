@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_delegate.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
