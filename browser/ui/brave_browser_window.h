@@ -48,9 +48,6 @@ class BraveBrowserWindow : public BrowserWindow {
       speedreader::SpeedreaderBubbleLocation location);
   virtual void ShowReaderModeToolbar() {}
   virtual void HideReaderModeToolbar() {}
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  virtual void ToggleAiChatPanel() {}
-#endif
 #endif
 
 #if defined(TOOLKIT_VIEWS)

@@ -79,9 +79,6 @@ class BraveBrowserView : public BrowserView,
       speedreader::SpeedreaderBubbleLocation location) override;
   void ShowReaderModeToolbar() override;
   void HideReaderModeToolbar() override;
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  void ToggleAiChatPanel() override;
-#endif
 #endif
   bool GetTabStripVisible() const override;
 #if BUILDFLAG(IS_WIN)

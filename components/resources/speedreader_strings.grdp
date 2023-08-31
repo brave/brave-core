@@ -38,7 +38,7 @@
       <message name="IDS_READER_MODE_TEXT_TO_SPEECH_FORWARD"  desc="Tooltip for forward button">Forward</message>
       <message name="IDS_READER_MODE_TEXT_TO_SPEECH_SPEED_DECREASE"  desc="Tooltip for decrease playback speed button">Decrease the playback speed</message>
       <message name="IDS_READER_MODE_TEXT_TO_SPEECH_SPEED_INCREASE"  desc="Tooltip for increase playback speed button">Increase the playback speed</message>
-      <message name="IDS_READER_MODE_AI" desc="Tooltop for AI button">Brave Leo</message>
+      <message name="IDS_READER_MODE_AI" desc="Tooltip for AI button">Brave Leo</message>
     </if> <!-- not is_android -->
   </if> <!-- enable_speedreader -->
 </grit-part>
