@@ -4,7 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/functional/bind.h"
+#include "base/memory/weak_ptr.h"
 #include "base/run_loop.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
@@ -110,6 +113,14 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return sidebar_items_contents_view;
   }
 
+  SidebarItemsScrollView* GetSidebarItemsScrollView(
+      SidebarController* controller) const {
+    auto* sidebar_container_view =
+        static_cast<SidebarContainerView*>(controller->sidebar());
+    auto sidebar_control_view = sidebar_container_view->sidebar_control_view_;
+    return sidebar_control_view->sidebar_items_view_;
+  }
+
   // If the item at |index| is panel item, this will return after waiting
   // model's active index is changed as active index could not be not updated
   // synchronously. Panel activation is done via SidePanelCoordinator instead of
@@ -168,9 +179,45 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     run_loop()->Run();
   }
 
+  void SetItemAddedBubbleLaunchedCallback(
+      SidebarItemsContentsView* items_contents_view) {
+    items_contents_view->item_added_bubble_launched_for_test_ =
+        base::BindRepeating(
+            &SidebarBrowserTest::ItemAddedBubbleLaunchedCallback,
+            weak_factory_.GetWeakPtr());
+  }
+
+  void ItemAddedBubbleLaunchedCallback(views::View* anchor) {
+    item_added_bubble_anchor_ = anchor;
+  }
+
+  void AddItemsTillScrollable(SidebarItemsScrollView* scroll_view,
+                              SidebarService* sidebar_service) {
+    int url_prefix = 0;
+    while (true) {
+      sidebar_service->AddItem(sidebar::SidebarItem::Create(
+          GURL(base::StrCat(
+              {"https://foo/bar_", base::NumberToString(url_prefix)})),
+          u"title", SidebarItem::Type::kTypeWeb,
+          SidebarItem::BuiltInItemType::kNone, false));
+      url_prefix++;
+      base::RunLoop().RunUntilIdle();
+      // Add items till first item becomes invisible.
+      if (scroll_view->NeedScrollForItemAt(0)) {
+        break;
+      }
+    }
+  }
+
+  bool NeedScrollForItemAt(size_t index, SidebarItemsScrollView* scroll_view) {
+    return scroll_view->NeedScrollForItemAt(index);
+  }
+
   base::RunLoop* run_loop() const { return run_loop_.get(); }
 
+  raw_ptr<views::View> item_added_bubble_anchor_ = nullptr;
   std::unique_ptr<base::RunLoop> run_loop_;
+  base::WeakPtrFactory<SidebarBrowserTest> weak_factory_{this};
 };
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
@@ -372,6 +419,86 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
   EXPECT_EQ(contents_container->GetBoundsInScreen().right(),
             widget->GetWindowBoundsInScreen().right());
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedBubbleAnchorViewTest) {
+  auto* sidebar_service =
+      SidebarServiceFactory::GetForProfile(browser()->profile());
+  auto sidebar_items_contents_view = GetSidebarItemsContentsView(
+      static_cast<BraveBrowser*>(browser())->sidebar_controller());
+  SetItemAddedBubbleLaunchedCallback(sidebar_items_contents_view);
+  size_t lastly_added_item_index = 0;
+
+  // Add item at last.
+  item_added_bubble_anchor_ = nullptr;
+  sidebar_service->AddItem(sidebar::SidebarItem::Create(
+      GURL("http://foo.bar/"), u"title", SidebarItem::Type::kTypeWeb,
+      SidebarItem::BuiltInItemType::kNone, false));
+
+  // Check item is added at last and check that bubble is anchored to
+  // it properly.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !!item_added_bubble_anchor_; }));
+  lastly_added_item_index = sidebar_items_contents_view->children().size() - 1;
+  EXPECT_EQ(item_added_bubble_anchor_,
+            sidebar_items_contents_view->children()[lastly_added_item_index]);
+
+  // Add item at index 0.
+  item_added_bubble_anchor_ = nullptr;
+  sidebar_service->AddItemAtForTesting(
+      sidebar::SidebarItem::Create(GURL("http://foo.bar/"), u"title",
+                                   SidebarItem::Type::kTypeWeb,
+                                   SidebarItem::BuiltInItemType::kNone, false),
+      0);
+
+  // Check item is added at first and check that bubble is anchored to
+  // it properly.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !!item_added_bubble_anchor_; }));
+  lastly_added_item_index = 0;
+  EXPECT_EQ(item_added_bubble_anchor_,
+            sidebar_items_contents_view->children()[lastly_added_item_index]);
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedScrollTest) {
+  // To prevent item added bubble launching.
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount, 3);
+
+  auto* sidebar_service =
+      SidebarServiceFactory::GetForProfile(browser()->profile());
+  auto* scroll_view = GetSidebarItemsScrollView(
+      static_cast<BraveBrowser*>(browser())->sidebar_controller());
+  auto sidebar_items_contents_view = GetSidebarItemsContentsView(
+      static_cast<BraveBrowser*>(browser())->sidebar_controller());
+
+  AddItemsTillScrollable(scroll_view, sidebar_service);
+
+  // Check first item is not visible in scroll view.
+  EXPECT_TRUE(NeedScrollForItemAt(0, scroll_view));
+
+  // After inserting item at index 0, it should be visible as sidebar
+  // scrolls to make that new item visible. So last item becomes invisible.
+  sidebar_service->AddItemAtForTesting(
+      sidebar::SidebarItem::Create(GURL("https://abcd"), u"title",
+                                   SidebarItem::Type::kTypeWeb,
+                                   SidebarItem::BuiltInItemType::kNone, false),
+      0);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !NeedScrollForItemAt(0, scroll_view); }));
+
+  int last_item_index = sidebar_items_contents_view->children().size() - 1;
+  EXPECT_TRUE(NeedScrollForItemAt(last_item_index, scroll_view));
+
+  // After inserting item at last, it should be visible as sidebar
+  // scrolls to make that new item visible. So fisrt item becomes invisible.
+  last_item_index++;
+  sidebar_service->AddItem(sidebar::SidebarItem::Create(
+      GURL("https://abcdefg"), u"title", SidebarItem::Type::kTypeWeb,
+      SidebarItem::BuiltInItemType::kNone, false));
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !NeedScrollForItemAt(last_item_index, scroll_view); }));
+  EXPECT_TRUE(NeedScrollForItemAt(0, scroll_view));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_PrefsMigrationTest) {

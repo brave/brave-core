@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -127,6 +128,8 @@ class SidebarItemsContentsView : public views::View,
   raw_ptr<sidebar::SidebarModel> sidebar_model_ = nullptr;
   std::unique_ptr<ui::SimpleMenuModel> context_menu_model_;
   std::unique_ptr<views::MenuRunner> context_menu_runner_;
+  base::RepeatingCallback<void(views::View*)>
+      item_added_bubble_launched_for_test_;
   // Observe to know whether item added feedback bubble is visible or not.
   base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{
       this};

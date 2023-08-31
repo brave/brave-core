@@ -7,7 +7,9 @@
 
 #include <string>
 
+#include "base/check_is_test.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/i18n/case_conversion.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
@@ -332,6 +334,13 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
   // Only launch feedback bubble for active browser window.
   DCHECK_EQ(browser_, BrowserList::GetInstance()->GetLastActive());
   DCHECK(!observation_.IsObserving());
+
+  if (item_added_bubble_launched_for_test_) {
+    // Early return w/o launching actual bubble for quick test.
+    CHECK_IS_TEST();
+    item_added_bubble_launched_for_test_.Run(anchor_view);
+    return;
+  }
 
   auto* bubble = SidebarItemAddedFeedbackBubble::Create(anchor_view, this);
   observation_.Observe(bubble);

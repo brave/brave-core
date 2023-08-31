@@ -107,6 +107,8 @@ class SidebarService : public KeyedService {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SidebarServiceTest, AddRemoveItems);
+  FRIEND_TEST_ALL_PREFIXES(SidebarBrowserTest, ItemAddedBubbleAnchorViewTest);
+  FRIEND_TEST_ALL_PREFIXES(SidebarBrowserTest, ItemAddedScrollTest);
 
   void LoadSidebarItems();
   void UpdateSidebarItemsToPrefStore();
@@ -117,6 +119,8 @@ class SidebarService : public KeyedService {
   void OnPreferenceChanged(const std::string& pref_name);
   void MigrateSidebarShowOptions();
   void MigratePrefSidebarBuiltInItemsToHidden();
+
+  void AddItemAtForTesting(const SidebarItem& item, size_t index);
 
   raw_ptr<PrefService> prefs_ = nullptr;
 
