@@ -51,14 +51,12 @@ Signal GetSignal(const mojom::FeedItemMetadataPtr& article,
 }
 
 double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
-  // Every N hours the pop_score will halve. I.e, if this was 24, every day the
-  // popularity score will be halved.
   const double pop_recency_half_life_in_hours = knobs::GetPopRecencyHalfLife();
 
   auto& publish_time = article->publish_time;
 
   double popularity =
-      article->pop_score == 0 ? knobs::GetPopRecencyFallback() : article->pop_score;
+      article->pop_score == 0 ? knobs::GetPopScoreFallback() : article->pop_score;
   double multiplier = publish_time > base::Time::Now() - base::Hours(5) ? 2 : 1;
   auto dt = base::Time::Now() - publish_time;
 
@@ -68,11 +66,7 @@ double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
 
 double GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
                         const Signal& signal) {
-  // Multiplier for unvisited sources. |visit_weighting| is in the range [0, 1]
-  // inclusive and will be shifted by this (i.e. [0, 1] ==> [0.2, 1.2]). This
-  // ensures we still show unvisited sources in the feed.
   const double source_visits_min = knobs::GetSourceVisitsMin();
-
   double source_visits_projected =
       source_visits_min + signal->visit_weight * (1 - source_visits_min);
   return source_visits_projected * signal->subscribed_weight *

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_news/browser/feed_v2_knobs.h"
 
+#include <string>
+
 #include "base/command_line.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_piece_forward.h"
@@ -46,8 +48,8 @@ namespace switches {
 const char kBraveNewsMinBlockCards[] = "brave-news-feed-min-block-cards";
 const char kBraveNewsMaxBlockCards[] = "brave-news-feed-max-block-cards";
 
-const char kBraveNewsPopRecencyHalfLife[] = "brave-news-pop-recency-half-life";
-const char kBraveNewsPopRecencyFallback[] = "brave-news-pop-recency-fallback";
+const char kBraveNewsPopScoreHalfLife[] = "brave-news-pop-score-half-life";
+const char kBraveNewsPopScoreFallback[] = "brave-news-pop-score-fallback";
 
 const char kBraveNewsInlineDiscoveryRatio[] =
     "brave-news-inline-discovery-ratio";
@@ -74,13 +76,13 @@ int GetMaxBlockCards() {
 
 double GetPopRecencyHalfLife() {
   constexpr double kDefault = 18;
-  return GetDoubleSwitchOrDefault(switches::kBraveNewsPopRecencyHalfLife,
+  return GetDoubleSwitchOrDefault(switches::kBraveNewsPopScoreHalfLife,
                                   kDefault);
 }
 
-double GetPopRecencyFallback() {
+double GetPopScoreFallback() {
   constexpr double kDefault = 50;
-  return GetDoubleSwitchOrDefault(switches::kBraveNewsPopRecencyFallback,
+  return GetDoubleSwitchOrDefault(switches::kBraveNewsPopScoreFallback,
                                   kDefault);
 }
 
