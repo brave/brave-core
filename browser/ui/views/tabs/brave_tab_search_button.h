@@ -21,7 +21,8 @@ class BraveTabSearchButton : public TabSearchButton {
 
   void SetBubbleArrow(views::BubbleBorder::Arrow arrow);
 
-  // TabSearchButton overrides:
+  // TabSearchButton:
+  void UpdateColors() override;
   gfx::Size CalculatePreferredSize() const override;
   int GetCornerRadius() const override;
 };

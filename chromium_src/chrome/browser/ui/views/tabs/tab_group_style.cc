@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/views/tabs/tab_group_style.h"
 
+#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 
 #define TabGroupStyle TabGroupStyle_ChromiumImpl
@@ -48,8 +50,26 @@ SkPath TabGroupStyle::GetUnderlinePath(gfx::Rect local_bounds) const {
   return path;
 }
 
+gfx::Insets TabGroupStyle::GetInsetsForHeaderChip() const {
+  auto insets = TabGroupStyle_ChromiumImpl::GetInsetsForHeaderChip();
+  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    return insets;
+  }
+  if (!ShouldShowVerticalTabs()) {
+    insets += gfx::Insets::VH(0, brave_tabs::kHorizontalTabInset);
+  }
+  return insets;
+}
+
 bool TabGroupStyle::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser());
+}
+
+float TabGroupStyle::GetEmptyChipSize() const {
+  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    return TabGroupStyle_ChromiumImpl::GetEmptyChipSize();
+  }
+  return brave_tabs::kEmptyGroupTitleSize;
 }
 
 int ChromeRefresh2023TabGroupStyle::GetTabGroupOverlapAdjustment() {

@@ -28,7 +28,7 @@ class BraveTabGroupHeader : public TabGroupHeader {
 
  private:
   bool ShouldShowVerticalTabs() const;
-  void LayoutTitleChip();
+  void LayoutTitleChipForVerticalTabs();
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_HEADER_H_

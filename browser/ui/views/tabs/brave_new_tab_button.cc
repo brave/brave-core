@@ -6,19 +6,26 @@
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 
 #include <algorithm>
-#include <memory>
 #include <utility>
 
-#include "brave/browser/ui/color/brave_color_id.h"
-#include "chrome/app/chrome_command_ids.h"
-#include "chrome/browser/ui/layout_constants.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/scoped_canvas.h"
+#include "ui/views/view_class_properties.h"
+
+using tabs::features::HorizontalTabsUpdateEnabled;
 
 // static
-const gfx::Size BraveNewTabButton::kButtonSize{24, 24};
+gfx::Size BraveNewTabButton::GetButtonSize() {
+  if (!HorizontalTabsUpdateEnabled()) {
+    return {24, 24};
+  }
+  return {28, 28};
+}
 
 // static
 SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
@@ -44,7 +51,7 @@ SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
 
 gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
   // Overriden so that we use Brave's custom button size
-  gfx::Size size = kButtonSize;
+  gfx::Size size = GetButtonSize();
   const auto insets = GetInsets();
   size.Enlarge(insets.width(), insets.height());
   return size;
@@ -59,12 +66,31 @@ SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
 
 BraveNewTabButton::BraveNewTabButton(TabStrip* tab_strip,
                                      PressedCallback callback)
-    : NewTabButton(tab_strip, std::move(callback)) {}
+    : NewTabButton(tab_strip, std::move(callback)) {
+  if (HorizontalTabsUpdateEnabled()) {
+    // Ensure that the new tab button is vertically centered within its flex
+    // layout container.
+    SetProperty(views::kCrossAxisAlignmentKey, views::LayoutAlignment::kCenter);
+  }
+}
 
 BraveNewTabButton::~BraveNewTabButton() = default;
 
 void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
   gfx::ScopedCanvas scoped_canvas(canvas);
+
+  if (HorizontalTabsUpdateEnabled()) {
+    // Instead of letting `NewTabButton` draw a "plus", paint a vector icon to
+    // the canvas in the center of the view.
+    constexpr int kIconSize = 16;
+    gfx::Rect bounds = GetContentsBounds();
+    canvas->Translate(gfx::Vector2d((bounds.width() - kIconSize) / 2,
+                                    (bounds.height() - kIconSize) / 2));
+    gfx::PaintVectorIcon(canvas, kLeoPlusAddIcon, kIconSize,
+                         GetForegroundColor());
+    return;
+  }
+
   // Shim base implementation's painting
   // Overriden to fix chromium assumption that border radius
   // will be 50% of width.

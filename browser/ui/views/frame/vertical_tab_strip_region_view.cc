@@ -309,7 +309,7 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
                        float scale,
                        bool extend_to_top) const override {
     auto contents_bounds = GetContentsBounds();
-    const float radius = tabs::kUnpinnedTabBorderRadius * scale;
+    const float radius = GetCornerRadius() * scale;
     SkPath path;
     const gfx::Rect path_rect(origin.x(), origin.y(),
                               contents_bounds.width() * scale,

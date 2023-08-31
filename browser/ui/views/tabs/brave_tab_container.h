@@ -32,6 +32,7 @@ class BraveTabContainer : public TabContainerImpl {
   base::OnceClosure LockLayout();
 
   // TabContainerImpl:
+  gfx::Size GetMinimumSize() const override;
   gfx::Size CalculatePreferredSize() const override;
   void UpdateClosingModeOnRemovedTab(int model_index, bool was_active) override;
   gfx::Rect GetTargetBoundsForClosingTab(Tab* tab,
@@ -43,7 +44,6 @@ class BraveTabContainer : public TabContainerImpl {
   void RemoveTab(int index, bool was_active) override;
   void OnTabCloseAnimationCompleted(Tab* tab) override;
   void CompleteAnimationAndLayout() override;
-  void OnPaintBackground(gfx::Canvas* canvas) override;
   void PaintChildren(const views::PaintInfo& paint_info) override;
 
   // BrowserRootView::DropTarget

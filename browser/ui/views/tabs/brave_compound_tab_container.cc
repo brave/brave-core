@@ -138,6 +138,7 @@ void BraveCompoundTabContainer::SetScrollEnabled(bool enabled) {
 
   if (enabled) {
     scroll_view_ = AddChildView(std::make_unique<CustomScrollView>());
+    scroll_view_->SetBackgroundThemeColorId(kColorToolbar);
     auto* contents_view =
         scroll_view_->SetContents(std::make_unique<ContentsView>(this));
     contents_view->AddChildView(base::to_address(unpinned_tab_container_));

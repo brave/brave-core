@@ -22,6 +22,10 @@ class TabGroupStyle : public TabGroupStyle_ChromiumImpl {
 
   SkPath GetUnderlinePath(gfx::Rect local_bounds) const override;
 
+  gfx::Insets GetInsetsForHeaderChip() const override;
+
+  float GetEmptyChipSize() const override;
+
  private:
   bool ShouldShowVerticalTabs() const;
 };

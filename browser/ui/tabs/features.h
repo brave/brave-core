@@ -17,6 +17,10 @@ BASE_DECLARE_FEATURE(kBraveChangeActiveTabOnScrollEvent);
 
 BASE_DECLARE_FEATURE(kBraveSharedPinnedTabs);
 
+BASE_DECLARE_FEATURE(kBraveHorizontalTabsUpdate);
+
+bool HorizontalTabsUpdateEnabled();
+
 }  // namespace tabs::features
 
 #endif  // BRAVE_BROWSER_UI_TABS_FEATURES_H_
