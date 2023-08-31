@@ -31,14 +31,14 @@ function SignalCards<T>({ items, sort, filter, getName, getKey }: { items: T[], 
       const aSignal = signals[getKey(a)]
       const bSignal = signals[getKey(b)]
 
-      if (sort === 'subscribed') return +bSignal.subscribed - +aSignal.subscribed
+      if (sort === 'subscribed') return bSignal.subscribedWeight - aSignal.subscribedWeight
       return bSignal.visitWeight - aSignal.visitWeight
     })
   return <>
     {filteredAndSorted.map(a => <Card>
       <b>{getName(a)}</b>
       <br />
-      <b>Subscribed:</b> {signals[getKey(a)]?.subscribed.toString()}
+      <b>Subscribed Weighting:</b> {signals[getKey(a)]?.subscribedWeight.toString()}
       <br />
       <b>Visit Weighting:</b> {signals[getKey(a)]?.visitWeight}
     </Card>)}

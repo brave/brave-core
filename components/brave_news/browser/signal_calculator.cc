@@ -12,6 +12,8 @@
 #include <vector>
 
 #include "brave/components/brave_news/browser/feed_fetcher.h"
+#include "brave/components/brave_news/browser/feed_v2_knobs.h"
+#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 
 namespace brave_news {
@@ -116,7 +118,7 @@ void SignalCalculator::OnGotHistory(
   for (const auto& [id, publisher] : publishers) {
     const auto& visits = publisher_visits.at(publisher->publisher_id);
     signals[id] = mojom::Signal::New(
-        IsPublisherSubscribed(publisher),
+        GetSubscribedWeight(publisher),
         visits.size() / static_cast<double>(total_publisher_visits));
   }
 
@@ -132,27 +134,38 @@ void SignalCalculator::OnGotHistory(
   std::move(callback).Run(std::move(signals));
 }
 
-bool SignalCalculator::IsPublisherSubscribed(
+double SignalCalculator::GetSubscribedWeight(
     const mojom::PublisherPtr& publisher) {
-  // Direct feeds are deleted when removed.
-  if (publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
-    return true;
+  auto enabled = publisher->user_enabled_status;
+  // Disabled sources should never show up in the feed
+  if (enabled == mojom::UserEnabled::DISABLED) {
+    return 0;
   }
 
-  bool channel_subscribed = false;
+  // We have a minimum subscribed weight for feeds which aren't explicitly
+  // disabled. This means they have a (normally small) nonzero chance of showing
+  // up in the feed.
+  double result = knobs::GetSourceSubscribedMin();
+
+  // Direct feeds or explicitly enabled sources get the same boost.
+  if (publisher->type == mojom::PublisherType::DIRECT_SOURCE ||
+      enabled == mojom::UserEnabled::ENABLED) {
+    result += knobs::GetSourceSubscribedBoost();
+  }
+
+  // If the source is part of any channel the user is subscribed to, apply the
+  // channel subscribed boost.
   for (const auto& locale_info : publisher->locales) {
     for (const auto& channel : locale_info->channels) {
       if (channels_controller_->GetChannelSubscribed(locale_info->locale,
                                                      channel)) {
-        channel_subscribed = true;
+        result += knobs::GetChannelSubscribedBoost();
         break;
       }
     }
   }
 
-  return publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
-         (channel_subscribed &&
-          publisher->user_enabled_status != mojom::UserEnabled::DISABLED);
+  return result;
 }
 
 }  // namespace brave_news

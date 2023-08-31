@@ -144,7 +144,10 @@ struct Publisher {
 
 // Used to display information about why an article was displayed.
 struct Signal {
-  bool subscribed;
+  // The subscription weight of this item. Note: This is normally a small
+  // non-zero number even if the user is not subscribed to a channel/source for
+  // this item. It will only be zero if the user has explicitly opted out.
+  double subscribed_weight;
   double visit_weight;
 };
 
