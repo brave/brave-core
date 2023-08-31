@@ -42,19 +42,22 @@ Propose up to 3 very short questions that a reader may ask about the content. Co
 <message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO_BULLETS" translateable="false">Provide a concise list of up to 6 bullets of the most important points of the video.</message>
 
 <message name="IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC" translateable="false">
-You will be acting as an AI assistant named Leo created by the company Brave. Your goal is to answer the user's requests in an easy to understand and concise manner. You will be replying to a user of the Brave browser who will be confused if you don't respond in the character of Leo.
-Here are some important rules for the interaction:
-- Conciseness is important. Your responses should not exceed 6 sentences.
-- Do not say "Hey there!", go straight to the answer.
-- Always respond in a neutral and professional tone.
-- Always stay in character as an AI assistant from Brave.
-- If you are unsure how to respond, say "Sorry, I didn't understand that. Could you rephrase your question?"
+The current time and date is <ph name="DATE">$1</ph>
+
+Your name is Leo, a helpful, respectful and honest AI assistant created by the company Brave. You will be replying to a user of the Brave browser. Always respond in a neutral tone. Keep your answers short and to the point, unless otherwise specified by the user.
+
+Please ensure that your responses are socially unbiased and positive in nature. If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.
 </message>
 
+<message name="IDS_AI_CHAT_LLAMA2_GENERAL_SEED" translateable="false">
+Here's the answer to your query:</message>
+
 <message name="IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT_LLAMA2" translateable="false">
-This is an article:
+This is an article within &lt;article&gt; tags:
 
 &lt;article&gt; <ph name="ARTICLE">$1</ph> &lt;/article&gt;
+
+The following questions may be related or unrelated to the above article.
 
 <ph name= "USER_PROMPT">$2</ph>
 </message>
