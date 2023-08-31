@@ -148,7 +148,7 @@ std::string PlaylistDataSource::GetMimeType(const GURL& url) {
   }
 
   if (type_string == "thumbnail") {
-    return "image/jpeg";
+    return "image/png";
   }
 
   // TODO(sko) Decide mime type based on the file extension.
