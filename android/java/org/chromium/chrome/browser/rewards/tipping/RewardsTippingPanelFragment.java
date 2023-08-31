@@ -298,8 +298,10 @@ public class RewardsTippingPanelFragment
             return getResources().getString(R.string.uphold);
         } else if (pubStatus == PublisherStatus.GEMINI_VERIFIED) {
             return getResources().getString(R.string.gemini);
-        } else {
+        } else if (pubStatus == PublisherStatus.BITFLYER_VERIFIED) {
             return getResources().getString(R.string.bitflyer);
+        } else {
+            return getResources().getString(R.string.zebpay);
         }
     }
 
@@ -410,8 +412,10 @@ public class RewardsTippingPanelFragment
             return getResources().getString(R.string.uphold);
         } else if (walletType.equals(BraveWalletProvider.GEMINI)) {
             return getResources().getString(R.string.gemini);
-        } else {
+        } else if (walletType.equals(BraveWalletProvider.BITFLYER)) {
             return getResources().getString(R.string.bitflyer);
+        } else {
+            return getResources().getString(R.string.zebpay);
         }
     }
 
@@ -565,6 +569,9 @@ public class RewardsTippingPanelFragment
         } else if (mWalletType.equals(BraveWalletProvider.GEMINI)) {
             custodianIcon = R.drawable.ic_gemini_logo_cyan;
             custodianName = R.string.gemini;
+        } else if (mWalletType.equals(BraveWalletProvider.ZEBPAY)) {
+            custodianIcon = R.drawable.ic_logo_zebpay;
+            custodianName = R.string.zebpay;
         }
 
         mCustodianText.setText(custodianName);

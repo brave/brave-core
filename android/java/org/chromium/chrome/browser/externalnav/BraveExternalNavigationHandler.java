@@ -53,6 +53,10 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
             return true;
         }
 
+        if (params.getUrl().getSpec().startsWith(BraveWalletProvider.ZEBPAY_REDIRECT_URL)) {
+            return true;
+        }
+
         return false;
     }
 
