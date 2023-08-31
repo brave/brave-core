@@ -21,7 +21,6 @@
 #include "base/task/thread_pool.h"
 #include "base/token.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
-#include "brave/components/playlist/browser/playlist_data_source.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/browser/type_converter.h"
 #include "brave/components/playlist/common/features.h"
@@ -64,8 +63,6 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
       base_dir_(context->GetPath().Append(kBaseDirName)),
       playlist_p3a_(local_state, browser_first_run_time),
       prefs_(user_prefs::UserPrefs::Get(context)) {
-  content::URLDataSource::Add(context,
-                              std::make_unique<PlaylistDataSource>(this));
   media_file_download_manager_ =
       std::make_unique<PlaylistMediaFileDownloadManager>(context, this);
   thumbnail_downloader_ =

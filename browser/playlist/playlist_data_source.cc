@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/playlist/browser/playlist_data_source.h"
+#include "brave/browser/playlist/playlist_data_source.h"
 
 #include <memory>
 #include <utility>
@@ -14,9 +14,11 @@
 #include "base/location.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/strings/escape.h"
 #include "base/task/thread_pool.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "brave/components/playlist/browser/playlist_service.h"
+#include "components/favicon_base/favicon_url_parser.h"
 #include "net/base/filename_util.h"
 #include "url/gurl.h"
 
@@ -39,8 +41,10 @@ scoped_refptr<base::RefCountedMemory> ReadFileToString(
 
 }  // namespace
 
-PlaylistDataSource::PlaylistDataSource(PlaylistService* service)
-    : service_(service) {}
+PlaylistDataSource::PlaylistDataSource(Profile* profile,
+                                       PlaylistService* service)
+    : FaviconSource(profile, chrome::FaviconUrlFormat::kFavicon2),
+      service_(service) {}
 
 PlaylistDataSource::~PlaylistDataSource() = default;
 
@@ -65,8 +69,9 @@ void PlaylistDataSource::StartDataRequest(
     type_string.erase(std::remove(type_string.begin(), type_string.end(), '/'),
                       type_string.end());
   } else {
-    NOTREACHED() << "path is not in expected form: /id/{thumbnail,media}/ vs "
-                 << path;
+    NOTREACHED()
+        << "path is not in expected form: /id/{thumbnail,media,favicon}/ vs "
+        << path;
     std::move(got_data_callback).Run(nullptr);
     return;
   }
@@ -88,8 +93,23 @@ void PlaylistDataSource::StartDataRequest(
     if (!net::FileURLToFilePath(item->media_path, &data_path)) {
       std::move(got_data_callback).Run(nullptr);
     }
+  } else if (type_string == "favicon") {
+    if (!service_->HasPlaylistItem(id)) {
+      std::move(got_data_callback).Run(nullptr);
+      return;
+    }
+
+    auto item = service_->GetPlaylistItem(id);
+    GURL favicon_url(
+        "chrome://favicon2?allowGoogleServerFallback=0&size=32&pageUrl=" +
+        base::EscapeUrlEncodedData(item->page_source.spec(),
+                                   /*use_plus=*/false));
+    FaviconSource::StartDataRequest(favicon_url, wc_getter,
+                                    std::move(got_data_callback));
+    return;
   } else {
-    NOTREACHED() << "type is neither of {thumbnail,media}/ : " << type_string;
+    NOTREACHED() << "type is not in {thumbnail,media,favicon}/ : "
+                 << type_string;
     std::move(got_data_callback).Run(nullptr);
     return;
   }
@@ -121,19 +141,27 @@ std::string PlaylistDataSource::GetMimeType(const GURL& url) {
     type_string.erase(std::remove(type_string.begin(), type_string.end(), '/'),
                       type_string.end());
   } else {
-    NOTREACHED() << "path is not in expected form: /id/{thumbnail,media}/ vs "
-                 << path;
+    NOTREACHED()
+        << "path is not in expected form: /id/{thumbnail,media,favicon}/ vs "
+        << path;
     return std::string();
   }
 
-  if (type_string == "thumbnail")
+  if (type_string == "thumbnail") {
     return "image/jpeg";
+  }
 
   // TODO(sko) Decide mime type based on the file extension.
-  if (type_string == "media")
+  if (type_string == "media") {
     return "video/mp4";
+  }
 
-  NOTREACHED() << "type is neither of {thumbnail,media}/ : " << type_string;
+  if (type_string == "favicon") {
+    return FaviconSource::GetMimeType(url);
+  }
+
+  NOTREACHED() << "type is neither of {thumbnail,media,favicon}/ : "
+               << type_string;
   return std::string();
 }
 

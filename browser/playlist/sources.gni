@@ -36,5 +36,10 @@ if (enable_playlist) {
       "//brave/build/android:jni_headers",
       "//mojo/public/cpp/bindings",
     ]
+  } else {
+    brave_browser_playlist_sources += [
+      "//brave/browser/playlist/playlist_data_source.cc",
+      "//brave/browser/playlist/playlist_data_source.h",
+    ]
   }
 }
