@@ -154,7 +154,7 @@ extension WidgetShortcut {
     case .newPrivateTab:
       return Image(braveSystemName: "leo.product.private-window")
     case .bookmarks:
-      return Image(braveSystemName: "leo.book.open-alternative-2")
+      return Image(braveSystemName: "leo.product.bookmarks")
     case .history:
       return Image(braveSystemName: "leo.history")
     case .downloads:
