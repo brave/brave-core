@@ -6,7 +6,6 @@
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
-import { BlowfishWarningKind } from '../common/constants/blowfish'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
 // path of generated mojom files.
@@ -1109,17 +1108,9 @@ export type BlowfishErrorKind =
   | 'TOO_MANY_TRANSACTIONS'
   | 'BAD_REQUEST'
 
-/**
- * warning severity level.
- * UI should display:
- * - a yellow message if "WARNING"
- * - a red message if "CRITICAL".
- */
-export type BlowfishWarningSeverity = 'CRITICAL' | 'WARNING'
-
 export type SafeBlowfishWarning = {
-  severity: BlowfishWarningSeverity
-  kind: BlowfishWarningKind
+  severity: BraveWallet.BlowfishWarningSeverity
+  kind: BraveWallet.BlowfishWarningKind
   /**
    * human-readable message to present to the end-user
    */
@@ -1132,21 +1123,21 @@ export type SafeBlowfishWarning = {
  *  of any NFT from a given collection (eg. Opensea collection offers)
  */
 type EvmTransferKind =
-  | 'ANY_NFT_FROM_COLLECTION_TRANSFER'
-  | 'ERC20_TRANSFER'
-  | 'ERC721_TRANSFER'
-  | 'ERC1155_TRANSFER'
-  | 'NATIVE_ASSET_TRANSFER'
+  | typeof BraveWallet.BlowfishEVMRawInfoKind.kAnyNftFromCollectionTransfer
+  | typeof BraveWallet.BlowfishEVMRawInfoKind.kErc20Transfer
+  | typeof BraveWallet.BlowfishEVMRawInfoKind.kErc721Transfer
+  | typeof BraveWallet.BlowfishEVMRawInfoKind.kErc1155Transfer
+  | typeof BraveWallet.BlowfishEVMRawInfoKind.kNativeAssetTransfer
 
 type EvmApprovalKind =
-  | 'ERC20_APPROVAL'
-  | 'ERC721_APPROVAL'
-  | 'ERC721_APPROVAL_FOR_ALL'
-  | 'ERC1155_APPROVAL_FOR_ALL'
+  | typeof BraveWallet.BlowfishEVMRawInfoKind.kErc20Approval
+  | typeof BraveWallet.BlowfishEVMRawInfoKind.kErc721Approval
+  | typeof BraveWallet.BlowfishEVMRawInfoKind.kErc721ApprovalForAll
+  | typeof BraveWallet.BlowfishEVMRawInfoKind.kErc1155ApprovalForAll
 
 type SolanaTransferKind =
-  | 'SOL_TRANSFER'
-  | 'SPL_TRANSFER'
+  | typeof BraveWallet.BlowfishSolanaRawInfoKind.kSolTransfer
+  | typeof BraveWallet.BlowfishSolanaRawInfoKind.kSplTransfer
 
 export type EvmStateChangeKind =
   | EvmTransferKind
@@ -1154,16 +1145,9 @@ export type EvmStateChangeKind =
 
 export type SolanaStateChangeKind =
   | SolanaTransferKind
-  | 'SPL_APPROVAL'
-  | 'SOL_STAKE_AUTHORITY_CHANGE'
-  | 'USER_ACCOUNT_OWNER_CHANGE'
-
-export type MetaplexTokenStandard =
-  | 'non_fungible'
-  | 'fungible_asset'
-  | 'fungible'
-  | 'non_fungible_edition'
-  | 'unknown'
+  | typeof BraveWallet.BlowfishSolanaRawInfoKind.kSplApproval
+  | typeof BraveWallet.BlowfishSolanaRawInfoKind.kSolStakeAuthorityChange
+  | typeof BraveWallet.BlowfishSolanaRawInfoKind.kUserAccountOwnerChange
 
 export type PriceSource =
   | 'Simplehash'
@@ -1172,51 +1156,54 @@ export type PriceSource =
 
 export type BlowfishStateChangeKind = EvmStateChangeKind | SolanaStateChangeKind
 
-interface SafeBlowfishError {
-  kind: string
+interface SafeBlowfishEVMError {
+  kind: BraveWallet.BlowfishEVMErrorKind
   humanReadableError: string
 }
 
-/* Suggested text color when presenting the diff to end-users */
-export type BlowfishSuggestedColor = 'CREDIT' | 'DEBIT'
+interface SafeBlowfishSolanaError {
+  kind: BraveWallet.BlowfishSolanaErrorKind
+  humanReadableError: string
+}
+
+export type SafeEVMStateChange<
+  UNION_KEY extends //
+  keyof BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion //
+  = keyof BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion
+> = {
+  humanReadableDiff: string
+  rawInfo: SafeEvmRawInfo<UNION_KEY>
+}
 
 export type SafeERC20ApprovalEvent = SafeEVMStateChange<
-  'ERC20_APPROVAL',
   'erc20ApprovalData'
 >
 
 export type SafeERC721ApprovalEvent = SafeEVMStateChange<
-  'ERC721_APPROVAL',
   'erc721ApprovalData'
 >
 
 export type SafeERC721ApprovalForAllEvent = SafeEVMStateChange<
-  'ERC721_APPROVAL_FOR_ALL',
   'erc721ApprovalForAllData'
 >
 
 export type SafeERC1155ApprovalForAllEvent = SafeEVMStateChange<
-  'ERC1155_APPROVAL_FOR_ALL',
   'erc1155ApprovalForAllData'
 >
 
 export type SafeERC20TransferEvent = SafeEVMStateChange<
-  'ERC20_TRANSFER',
   'erc20TransferData'
 >
 
 export type SafeERC721TransferEvent = SafeEVMStateChange<
-  'ERC721_TRANSFER',
   'erc721TransferData'
 >
 
 export type SafeERC1155TransferEvent = SafeEVMStateChange<
-  'ERC1155_TRANSFER',
   'erc1155TransferData'
 >
 
 export type SafeNativeTransferEvent = SafeEVMStateChange<
-  'NATIVE_ASSET_TRANSFER',
   'nativeAssetTransferData'
 >
 
@@ -1234,28 +1221,33 @@ export type SafeEvmApprovalEvent =
 
 export type SafeEvmEvent = SafeEvmApprovalEvent | SafeEvmTransferEvent
 
+export type SafeSolanaStateChange<
+  UNION_KEY extends //
+  keyof BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion //
+  = keyof BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion
+> = {
+  humanReadableDiff: string
+  rawInfo: SafeSolanaRawInfo<UNION_KEY>
+  suggestedColor: BraveWallet.BlowfishSuggestedColor
+}
+
 export type SafeSplApprovalEvent = SafeSolanaStateChange<
-  'SPL_APPROVAL',
   'splApprovalData'
 >
 
 export type SafeSolanaStakeChangeEvent = SafeSolanaStateChange<
-  'SOL_STAKE_AUTHORITY_CHANGE',
   'solStakeAuthorityChangeData'
 >
 
 export type SafeSolanaAccountOwnerChangeEvent = SafeSolanaStateChange<
-  'USER_ACCOUNT_OWNER_CHANGE',
   'solStakeAuthorityChangeData' // TODO: not implemented in core
 >
 
 export type SafeSolTransferEvent = SafeSolanaStateChange<
-  'SOL_TRANSFER',
   'solTransferData'
 >
 
 export type SafeSplTransferEvent = SafeSolanaStateChange<
-  'SPL_TRANSFER',
   'splTransferData'
 >
 
@@ -1267,65 +1259,45 @@ type SafeSolanaEvent =
   | SafeSolanaAccountOwnerChangeEvent
 
 export interface SafeEVMSimulationResults {
-  error: SafeBlowfishError | undefined
+  error: SafeBlowfishEVMError | undefined
   expectedStateChanges: SafeEvmEvent[]
 };
 
 export interface SafeSolanaSimulationResults {
-  isRecentBlockhashExpired: boolean
-  error: SafeBlowfishError | undefined
+  error: SafeBlowfishSolanaError | undefined
   expectedStateChanges: SafeSolanaEvent[]
 };
 
-type ChangesDataUnionForKind<KIND extends BlowfishStateChangeKind> =
-  KIND extends EvmStateChangeKind
-    ? Partial<BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion>
-    : Partial<BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion>
-
-type SafeRawInfo<
-  KIND extends BlowfishStateChangeKind,
-  DATA_UNION extends ChangesDataUnionForKind<KIND>
+type SafeEvmRawInfo<
+  DATA_UNION_KEY //
+  extends keyof BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion
 > = {
-  kind: KIND
+  kind: BraveWallet.BlowfishEVMRawInfoKind
   data: Record<
-    keyof DATA_UNION,
-    Exclude<DATA_UNION[keyof DATA_UNION], undefined>
+    DATA_UNION_KEY,
+    Exclude<
+      BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion[DATA_UNION_KEY],
+      undefined
+    >
   >
 }
 
-export type SafeEVMStateChange<
-  KIND extends EvmStateChangeKind = EvmStateChangeKind,
-  UNION_KEY extends //
-  keyof BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion //
-  = keyof BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion
+type SafeSolanaRawInfo<
+  DATA_UNION_KEY //
+  extends keyof BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion
 > = {
-  humanReadableDiff: string
-  rawInfo: SafeRawInfo<
-    KIND,
-    Pick<BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion, UNION_KEY>
-  > & { data: Partial<BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion> }
+  kind: BraveWallet.BlowfishSolanaRawInfoKind
+  data: Record<
+    DATA_UNION_KEY,
+    Exclude<
+      BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion[DATA_UNION_KEY],
+      undefined
+    >
+  >
 }
 
-export type SafeSolanaStateChange<
-  KIND extends SolanaStateChangeKind = SolanaStateChangeKind,
-  UNION_KEY extends //
-  keyof BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion //
-  = keyof BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion
-> = {
-  humanReadableDiff: string
-  rawInfo: SafeRawInfo<
-    KIND,
-    Pick<BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion, UNION_KEY>
-  > & { data: Partial<BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion> }
-  suggestedColor: BlowfishSuggestedColor
-}
-
-export type BlowfishSimulationResponse =
-  | BraveWallet.SolanaSimulationResponse
-  | BraveWallet.EVMSimulationResponse
-
-export type SafeBlowfishResponseBase = {
-  action: BlowfishWarningActionKind
+type SafeBlowfishResponseBase = {
+  action: BraveWallet.BlowfishSuggestedAction
   warnings: SafeBlowfishWarning[]
 }
 

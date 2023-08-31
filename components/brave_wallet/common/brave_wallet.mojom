@@ -2190,27 +2190,204 @@ union SolanaTransactionRequestUnion {
 };
 
 // Common Blowfish types for both EVM and Solana.
+enum BlowfishSuggestedAction {
+  // Show the user a block screen instead of the signing UI since
+  // this is highly likely to be a malicious transaction.
+  kBlock,
+  // Show the user the supplied warnings.
+  kWarn,
+  // Show the signing UI without modification.
+  kNone,
+};
+
+enum BlowfishWarningSeverity {
+  kCritical,
+  kWarning
+};
+
+// UI should defer to the supplied message if the kind isn't recognized
+enum BlowfishWarningKind {
+  kSuspectedMalicious,
+  kKnownMalicious,
+  kTransferringErc20ToOwnContract,
+  kUnlimitedAllowanceToNfts,
+  kBulkApprovalsRequest,
+  kSetOwnerAuthority,
+  kTrustedBlocklistDomain,
+  kSemiTrustedBlocklistDomain,
+  kDanglingApproval,
+  kTradeForNothing,
+  kPermitUnlimitedAllowance,
+  kPermitNoExpiration,
+  kEthSignTxHash,
+  kObfuscatedCode,
+  kDevtoolsDisabled,
+  kBlocklistedDomainCrossOrigin,
+  kWhitelistedDomainCrossOrigin,
+  kTooManyTransactions,
+  kNonAsciiUrl,
+  kCompromisedAuthorityUpgrade,
+  kPoisonedAddress,
+  kApprovalToEOA,
+  kCopyCatDomain,
+  kCopyCatImageUnresponsiveDomain,
+  kMultiCopyCatDomain,
+  kUserAccountOwnerChange,
+  kNewDomain,
+  kUnusualGasConsumption,
+  kReferencedOfacAddress,
+  kMainnetReplayPossible,
+  kUnknown = -1
+};
+
+enum BlowfishEVMRawInfoKind {
+  kErc20Transfer,
+  kErc20Approval,
+  kNativeAssetTransfer,
+  kErc721Transfer,
+  kErc721Approval,
+  kErc721ApprovalForAll,
+  kErc1155Transfer,
+  kErc1155ApprovalForAll,
+  kAnyNftFromCollectionTransfer,
+  kUnknown = -1
+};
+
+enum BlowfishSolanaRawInfoKind {
+  kSolTransfer,
+  kSplTransfer,
+  kSplApproval,
+  kSolStakeAuthorityChange,
+  kUserAccountOwnerChange,
+  kUnknown = -1
+};
+
+enum BlowfishMetaplexTokenStandardKind {
+  kNonFungible,
+  kFungibleAsset,
+  kFungible,
+  kNonFungibleEdition,
+  kUnknown = -1
+};
+
+enum BlowfishDiffSign {
+  kPlus,
+  kMinus
+};
+
+enum BlowfishEVMAddressKind {
+  kAccount,
+  kUnknown = -1
+};
+
+enum BlowfishAssetPriceSource {
+  kSimplehash,
+  kDefillama,
+  kCoingecko,
+  kUnknown = -1
+};
+
+enum BlowfishEVMErrorKind {
+  kTransactionReverted,
+  kTransactionError,
+  kSimulationFailed,
+  kUnknownError
+};
+
+enum BlowfishSolanaErrorKind {
+  kAccountDoesNotHaveEnoughSolToPerformTheOperation,
+  kAccountDoesNotSupportSpecifiedAuthorityType,
+  kAccountInUse,
+  kAccountIsFrozen,
+  kAccountLoadedTwice,
+  kAccountNotAssociatedWithThisMint,
+  kAdvancingStoredNonceRequiresAPopulatedRecentblockhashesSysvar,
+  kAlreadyInUse,
+  kAnAccountWithTheSameAddressAlreadyExists,
+  kAttemptToDebitAnAccountButFoundNoRecordOfAPriorCredit,
+  kAttemptToLoadAProgramThatDoesNotExist,
+  kBadRequest,
+  kBlockhashNotFound,
+  kCannotAllocateAccountDataOfThisLength,
+  kCannotAssignAccountToThisProgramId,
+  kErrorProcessingInstruction,
+  kFixedSupply,
+  kInstructionDoesNotSupportNativeTokens,
+  kInstructionDoesNotSupportNonNativeTokens,
+  kInsufficientFunds,
+  kInsufficientFundsForFee,
+  kInvalidInstruction,
+  kInvalidMint,
+  kInvalidNumberOfProvidedSigners,
+  kInvalidNumberOfRequiredSigners,
+  kLamportBalanceBelowRentExemptThreshold,
+  kLengthOfRequestedSeedIsTooLong,
+  kLoaderCallChainIsTooDeep,
+  kNonNativeAccountCanOnlyBeClosedIfItsBalanceIsZero,
+  kOperationOverflowed,
+  kOwnerDoesNotMatch,
+  kProvidedAddressDoesNotMatchAddressedDerivedFromSeed,
+  kSimulationFailed,
+  kSimulationTimedOut,
+  kSpecifiedNonceDoesNotMatchStoredNonce,
+  kStateIsInvalidForRequestedOperation,
+  kStateIsUninitialized,
+  kStoredNonceIsStillInRecentBlockhashes,
+  kTheProvidedDecimalsValueDifferentFromTheMintDecimals,
+  kThisAccountMayNotBeUsedToPayTransactionFees,
+  kThisProgramMayNotBeUsedForExecutingInstructions,
+  kThisTokenMintCannotFreezeAccounts,
+  kThisTransactionHasAlreadyBeenProcessed,
+  kTooManyTransactions,
+  kTransactionAddressTableLookupUsesAnInvalidIndex,
+  kTransactionContainsADuplicateInstructionThatIsNotAllowed,
+  kTransactionContainsAnInvalidAccountReference,
+  kTransactionDidNotPassSignatureVerification,
+  kTransactionFailedToSanitizeAccountsOffsetsCorrectly,
+  kTransactionLeavesAnAccountWithALowerBalanceThanRentExemptMinimum,
+  kTransactionLoadsAnAddressTableAccountThatDoesntExist,
+  kTransactionLoadsAnAddressTableAccountWithAnInvalidOwner,
+  kTransactionLoadsAnAddressTableAccountWithInvalidData,
+  kTransactionLoadsAWritableAccountThatCannotBeWritten,
+  kTransactionLockedTooManyAccounts,
+  kTransactionProcessingLeftAnAccountWithAnOutstandingBorrowedReference,
+  kTransactionRequiresAFeeButHasNoSignaturePresent,
+  kTransactionsAreCurrentlyDisabledDueToClusterMaintenance,
+  kTransactionVersionIsUnsupported,
+  kTransactionWouldExceedAccountDataLimitWithinTheBlock,
+  kTransactionWouldExceedMaxAccountLimitWithinTheBlock,
+  kTransactionWouldExceedMaxBlockCostLimit,
+  kTransactionWouldExceedMaxVoteCostLimit,
+  kTransactionWouldExceedTotalAccountDataLimit,
+  kUnknownError = -1
+};
+
+enum BlowfishSuggestedColor {
+  kCredit,
+  kDebit
+};
+
 struct BlowfishPrice {
-  string source;
+  BlowfishAssetPriceSource source;
   string last_updated_at;
   string dollar_value_per_token;
 };
 
 struct BlowfishWarning {
-  string severity;
-  string kind;
+  BlowfishWarningSeverity severity;
+  BlowfishWarningKind kind;
   string message;
 };
 
 // Blowfish types specific to EVM.
 struct BlowfishEVMError {
-  string kind;
+  BlowfishEVMErrorKind kind;
   string human_readable_error;
 };
 
 struct BlowfishEVMContract {
   string address;
-  string kind;
+  BlowfishEVMAddressKind kind;
 };
 
 struct BlowfishEVMAmount {
@@ -2314,7 +2491,7 @@ union BlowfishEVMStateChangeRawInfoDataUnion {
 };
 
 struct BlowfishEVMStateChangeRawInfo {
-  string kind;
+  BlowfishEVMRawInfoKind kind;
   BlowfishEVMStateChangeRawInfoDataUnion data;
 };
 
@@ -2329,19 +2506,19 @@ struct EVMSimulationResults {
 };
 
 struct EVMSimulationResponse {
-  string action;
+  BlowfishSuggestedAction action;
   EVMSimulationResults simulation_results;
   array<BlowfishWarning> warnings;
 };
 
 // Blowfish types specific to Solana.
 struct BlowfishSolanaError {
-  string kind;
+  BlowfishSolanaErrorKind kind;
   string human_readable_error;
 };
 
 struct BlowfishSolanaDiff {
-  string sign;
+  BlowfishDiffSign sign;
   uint64 digits;
 };
 
@@ -2364,7 +2541,7 @@ struct BlowfishSPLTransferData {
   int32 decimals;
   BlowfishSolanaDiff diff;
   uint64 supply;
-  string metaplex_token_standard;
+  BlowfishMetaplexTokenStandardKind metaplex_token_standard;
   BlowfishPrice? asset_price;
 };
 
@@ -2376,7 +2553,7 @@ struct BlowfishSPLApprovalData {
   int32 decimals;
   BlowfishSolanaDiff diff;
   uint64 supply;
-  string metaplex_token_standard;
+  BlowfishMetaplexTokenStandardKind metaplex_token_standard;
   BlowfishPrice? asset_price;
 };
 
@@ -2398,13 +2575,13 @@ union BlowfishSolanaStateChangeRawInfoDataUnion {
 };
 
 struct BlowfishSolanaStateChangeRawInfo {
-  string kind;
+  BlowfishSolanaRawInfoKind kind;
   BlowfishSolanaStateChangeRawInfoDataUnion data;
 };
 
 struct BlowfishSolanaStateChange {
   string human_readable_diff;
-  string suggested_color;
+  BlowfishSuggestedColor suggested_color;
   BlowfishSolanaStateChangeRawInfo raw_info;
 };
 
@@ -2415,7 +2592,7 @@ struct SolanaSimulationResults {
 };
 
 struct SolanaSimulationResponse {
-  string action;
+  BlowfishSuggestedAction action;
   array<BlowfishWarning> warnings;
   SolanaSimulationResults simulation_results;
 };

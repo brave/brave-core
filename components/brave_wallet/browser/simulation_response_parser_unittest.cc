@@ -102,7 +102,7 @@ TEST(SimulationResponseParserUnitTest, ParseEVMSwapETHForDAI) {
   auto simulation_response = evm::ParseSimulationResponse(ParseJson(json));
   ASSERT_TRUE(simulation_response);
 
-  EXPECT_EQ(simulation_response->action, "NONE");
+  EXPECT_EQ(simulation_response->action, mojom::BlowfishSuggestedAction::kNone);
   EXPECT_EQ(simulation_response->warnings.size(), 0u);
   EXPECT_FALSE(simulation_response->simulation_results->error);
   ASSERT_EQ(
@@ -112,7 +112,8 @@ TEST(SimulationResponseParserUnitTest, ParseEVMSwapETHForDAI) {
   const auto& state_change_0 =
       simulation_response->simulation_results->expected_state_changes.at(0);
   EXPECT_EQ(state_change_0->human_readable_diff, "Receive 1530.81307 DAI");
-  EXPECT_EQ(state_change_0->raw_info->kind, "ERC20_TRANSFER");
+  EXPECT_EQ(state_change_0->raw_info->kind,
+            mojom::BlowfishEVMRawInfoKind::kErc20Transfer);
   ASSERT_TRUE(state_change_0->raw_info->data->is_erc20_transfer_data());
   const auto& state_change_0_raw_info =
       state_change_0->raw_info->data->get_erc20_transfer_data();
@@ -121,7 +122,8 @@ TEST(SimulationResponseParserUnitTest, ParseEVMSwapETHForDAI) {
   EXPECT_EQ(state_change_0_raw_info->amount->after, "557039306766411381864245");
   EXPECT_EQ(state_change_0_raw_info->contract->address,
             "0x6b175474e89094c44da98b954eedeac495271d0f");
-  EXPECT_EQ(state_change_0_raw_info->contract->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_0_raw_info->contract->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_0_raw_info->asset->address,
             "0x6b175474e89094c44da98b954eedeac495271d0f");
   EXPECT_EQ(state_change_0_raw_info->asset->symbol, "DAI");
@@ -133,7 +135,8 @@ TEST(SimulationResponseParserUnitTest, ParseEVMSwapETHForDAI) {
   EXPECT_EQ(state_change_0_raw_info->asset->lists.at(1), "ZERION");
   EXPECT_EQ(state_change_0_raw_info->asset->image_url,
             "https://example.com/dai.png");
-  EXPECT_EQ(state_change_0_raw_info->asset->price->source, "Defillama");
+  EXPECT_EQ(state_change_0_raw_info->asset->price->source,
+            mojom::BlowfishAssetPriceSource::kDefillama);
   EXPECT_EQ(state_change_0_raw_info->asset->price->last_updated_at,
             "1680557741");
   EXPECT_EQ(state_change_0_raw_info->asset->price->dollar_value_per_token,
@@ -142,7 +145,8 @@ TEST(SimulationResponseParserUnitTest, ParseEVMSwapETHForDAI) {
   const auto& state_change_1 =
       simulation_response->simulation_results->expected_state_changes.at(1);
   EXPECT_EQ(state_change_1->human_readable_diff, "Send 1 ETH");
-  EXPECT_EQ(state_change_1->raw_info->kind, "NATIVE_ASSET_TRANSFER");
+  EXPECT_EQ(state_change_1->raw_info->kind,
+            mojom::BlowfishEVMRawInfoKind::kNativeAssetTransfer);
   ASSERT_TRUE(state_change_1->raw_info->data->is_native_asset_transfer_data());
   const auto& state_change_1_raw_info =
       state_change_1->raw_info->data->get_native_asset_transfer_data();
@@ -150,7 +154,8 @@ TEST(SimulationResponseParserUnitTest, ParseEVMSwapETHForDAI) {
   EXPECT_EQ(state_change_1_raw_info->amount->after, "1182957389356504134754");
   EXPECT_EQ(state_change_1_raw_info->contract->address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-  EXPECT_EQ(state_change_1_raw_info->contract->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_1_raw_info->contract->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_1_raw_info->asset->address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
   EXPECT_EQ(state_change_1_raw_info->asset->symbol, "ETH");
@@ -160,7 +165,8 @@ TEST(SimulationResponseParserUnitTest, ParseEVMSwapETHForDAI) {
   EXPECT_EQ(state_change_1_raw_info->asset->lists.size(), 0u);
   EXPECT_EQ(state_change_1_raw_info->asset->image_url,
             "https://example.com/eth.png");
-  EXPECT_EQ(state_change_1_raw_info->asset->price->source, "Coingecko");
+  EXPECT_EQ(state_change_1_raw_info->asset->price->source,
+            mojom::BlowfishAssetPriceSource::kCoingecko);
   EXPECT_EQ(state_change_1_raw_info->asset->price->last_updated_at,
             "1670324557");
   EXPECT_EQ(state_change_1_raw_info->asset->price->dollar_value_per_token,
@@ -231,7 +237,7 @@ TEST(SimulationResponseParserUnitTest, ParseEVMERC20Approval) {
   auto simulation_response = evm::ParseSimulationResponse(ParseJson(json));
   ASSERT_TRUE(simulation_response);
 
-  EXPECT_EQ(simulation_response->action, "NONE");
+  EXPECT_EQ(simulation_response->action, mojom::BlowfishSuggestedAction::kNone);
   EXPECT_EQ(simulation_response->warnings.size(), 0u);
   EXPECT_FALSE(simulation_response->simulation_results->error);
   ASSERT_EQ(
@@ -242,7 +248,8 @@ TEST(SimulationResponseParserUnitTest, ParseEVMERC20Approval) {
       simulation_response->simulation_results->expected_state_changes.at(0);
   EXPECT_EQ(state_change->human_readable_diff,
             "Approve to transfer up to 1000 USDT");
-  EXPECT_EQ(state_change->raw_info->kind, "ERC20_APPROVAL");
+  EXPECT_EQ(state_change->raw_info->kind,
+            mojom::BlowfishEVMRawInfoKind::kErc20Approval);
   ASSERT_TRUE(state_change->raw_info->data->is_erc20_approval_data());
   const auto& state_change_raw_info =
       state_change->raw_info->data->get_erc20_approval_data();
@@ -259,19 +266,23 @@ TEST(SimulationResponseParserUnitTest, ParseEVMERC20Approval) {
   EXPECT_EQ(state_change_raw_info->asset->lists.at(1), "ZERION");
   EXPECT_EQ(state_change_raw_info->asset->image_url,
             "https://example.com/usdt.png");
-  EXPECT_EQ(state_change_raw_info->asset->price->source, "Defillama");
+  EXPECT_EQ(state_change_raw_info->asset->price->source,
+            mojom::BlowfishAssetPriceSource::kDefillama);
   EXPECT_EQ(state_change_raw_info->asset->price->last_updated_at, "1680557741");
   EXPECT_EQ(state_change_raw_info->asset->price->dollar_value_per_token,
             "1.001");
   EXPECT_EQ(state_change_raw_info->contract->address,
             "0xdac17f958d2ee523a2206206994597c13d831ec7");
-  EXPECT_EQ(state_change_raw_info->contract->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_raw_info->contract->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_raw_info->owner->address,
             "0xd8da6bf26964af9d7eed9e03e53415d37aa96045");
-  EXPECT_EQ(state_change_raw_info->owner->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_raw_info->owner->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_raw_info->spender->address,
             "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45");
-  EXPECT_EQ(state_change_raw_info->spender->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_raw_info->spender->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
 }
 
 // Example from https://docs.blowfish.xyz/reference/scan-transaction-evm
@@ -350,7 +361,7 @@ TEST(SimulationResponseParserUnitTest, ParseEVMBuyERC721NFTWithETH) {
   auto simulation_response = evm::ParseSimulationResponse(ParseJson(json));
   ASSERT_TRUE(simulation_response);
 
-  EXPECT_EQ(simulation_response->action, "NONE");
+  EXPECT_EQ(simulation_response->action, mojom::BlowfishSuggestedAction::kNone);
   EXPECT_EQ(simulation_response->warnings.size(), 0u);
   EXPECT_FALSE(simulation_response->simulation_results->error);
   ASSERT_EQ(
@@ -360,13 +371,15 @@ TEST(SimulationResponseParserUnitTest, ParseEVMBuyERC721NFTWithETH) {
   const auto& state_change_0 =
       simulation_response->simulation_results->expected_state_changes.at(0);
   EXPECT_EQ(state_change_0->human_readable_diff, "Receive PudgyPenguins #7238");
-  EXPECT_EQ(state_change_0->raw_info->kind, "ERC721_TRANSFER");
+  EXPECT_EQ(state_change_0->raw_info->kind,
+            mojom::BlowfishEVMRawInfoKind::kErc721Transfer);
   ASSERT_TRUE(state_change_0->raw_info->data->is_erc721_transfer_data());
   const auto& state_change_0_raw_info =
       state_change_0->raw_info->data->get_erc721_transfer_data();
   EXPECT_EQ(state_change_0_raw_info->amount->before, "0");
   EXPECT_EQ(state_change_0_raw_info->amount->after, "1");
-  EXPECT_EQ(state_change_0_raw_info->contract->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_0_raw_info->contract->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_0_raw_info->contract->address,
             "0xbd3531da5cf5857e7cfaa92426877b022e612cf8");
   EXPECT_EQ(state_change_0_raw_info->metadata->raw_image_url,
@@ -374,7 +387,8 @@ TEST(SimulationResponseParserUnitTest, ParseEVMBuyERC721NFTWithETH) {
   EXPECT_EQ(state_change_0_raw_info->name, "PudgyPenguins");
   EXPECT_EQ(state_change_0_raw_info->symbol, "PPG");
   EXPECT_EQ(state_change_0_raw_info->token_id, "7238");
-  EXPECT_EQ(state_change_0_raw_info->asset_price->source, "Simplehash");
+  EXPECT_EQ(state_change_0_raw_info->asset_price->source,
+            mojom::BlowfishAssetPriceSource::kSimplehash);
   EXPECT_EQ(state_change_0_raw_info->asset_price->last_updated_at,
             "1679331222");
   EXPECT_EQ(state_change_0_raw_info->asset_price->dollar_value_per_token,
@@ -383,13 +397,15 @@ TEST(SimulationResponseParserUnitTest, ParseEVMBuyERC721NFTWithETH) {
   const auto& state_change_1 =
       simulation_response->simulation_results->expected_state_changes.at(1);
   EXPECT_EQ(state_change_1->human_readable_diff, "Send 3.181 ETH");
-  EXPECT_EQ(state_change_1->raw_info->kind, "NATIVE_ASSET_TRANSFER");
+  EXPECT_EQ(state_change_1->raw_info->kind,
+            mojom::BlowfishEVMRawInfoKind::kNativeAssetTransfer);
   ASSERT_TRUE(state_change_1->raw_info->data->is_native_asset_transfer_data());
   const auto& state_change_1_raw_info =
       state_change_1->raw_info->data->get_native_asset_transfer_data();
   EXPECT_EQ(state_change_1_raw_info->amount->before, "1001607264937289938488");
   EXPECT_EQ(state_change_1_raw_info->amount->after, "998426264937289938488");
-  EXPECT_EQ(state_change_1_raw_info->contract->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_1_raw_info->contract->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_1_raw_info->contract->address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
   EXPECT_EQ(state_change_1_raw_info->asset->address,
@@ -400,7 +416,10 @@ TEST(SimulationResponseParserUnitTest, ParseEVMBuyERC721NFTWithETH) {
   EXPECT_EQ(state_change_1_raw_info->asset->name, "Ether");
   EXPECT_EQ(state_change_1_raw_info->asset->price->dollar_value_per_token,
             "1968.47");
-  EXPECT_EQ(state_change_1_raw_info->asset->price->source, "Coingecko");
+  EXPECT_EQ(state_change_1_raw_info->asset->price->source,
+            mojom::BlowfishAssetPriceSource::kCoingecko);
+  EXPECT_EQ(state_change_1_raw_info->asset->price->source,
+            mojom::BlowfishAssetPriceSource::kCoingecko);
   EXPECT_EQ(state_change_1_raw_info->asset->price->last_updated_at,
             "1670324557");
   EXPECT_EQ(state_change_1_raw_info->asset->symbol, "ETH");
@@ -463,14 +482,15 @@ TEST(SimulationResponseParserUnitTest, ParseEVMERC721ApprovalForAll) {
 
   auto simulation_response = evm::ParseSimulationResponse(ParseJson(json));
   ASSERT_TRUE(simulation_response);
-  EXPECT_EQ(simulation_response->action, "WARN");
+  EXPECT_EQ(simulation_response->action, mojom::BlowfishSuggestedAction::kWarn);
   ASSERT_EQ(simulation_response->warnings.size(), 1u);
   EXPECT_EQ(simulation_response->warnings.at(0)->kind,
-            "UNLIMITED_ALLOWANCE_TO_NFTS");
+            mojom::BlowfishWarningKind::kUnlimitedAllowanceToNfts);
   EXPECT_EQ(simulation_response->warnings.at(0)->message,
             "You are allowing this website to withdraw funds from your account "
             "in the future");
-  EXPECT_EQ(simulation_response->warnings.at(0)->severity, "WARNING");
+  EXPECT_EQ(simulation_response->warnings.at(0)->severity,
+            mojom::BlowfishWarningSeverity::kWarning);
   EXPECT_FALSE(simulation_response->simulation_results->error);
   ASSERT_EQ(
       simulation_response->simulation_results->expected_state_changes.size(),
@@ -480,7 +500,8 @@ TEST(SimulationResponseParserUnitTest, ParseEVMERC721ApprovalForAll) {
       simulation_response->simulation_results->expected_state_changes.at(0);
   EXPECT_EQ(state_change->human_readable_diff,
             "Approve to transfer all your BoredApeYachtClub");
-  EXPECT_EQ(state_change->raw_info->kind, "ERC721_APPROVAL_FOR_ALL");
+  EXPECT_EQ(state_change->raw_info->kind,
+            mojom::BlowfishEVMRawInfoKind::kErc721ApprovalForAll);
   ASSERT_TRUE(state_change->raw_info->data->is_erc721_approval_for_all_data());
   const auto& state_change_raw_info =
       state_change->raw_info->data->get_erc721_approval_for_all_data();
@@ -488,18 +509,22 @@ TEST(SimulationResponseParserUnitTest, ParseEVMERC721ApprovalForAll) {
   EXPECT_EQ(state_change_raw_info->amount->after,
             "115792089237316195423570985008687907853269984665640564039457584007"
             "913129639935");
-  EXPECT_EQ(state_change_raw_info->contract->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_raw_info->contract->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_raw_info->contract->address,
             "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d");
   EXPECT_EQ(state_change_raw_info->name, "BoredApeYachtClub");
-  EXPECT_EQ(state_change_raw_info->owner->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_raw_info->owner->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_raw_info->owner->address,
             "0x38191ca1307ebf67ca1a7caf5346dbd91d882ca6");
-  EXPECT_EQ(state_change_raw_info->spender->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_raw_info->spender->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_raw_info->spender->address,
             "0x1e0049783f008a0085193e00003d00cd54003c71");
   EXPECT_EQ(state_change_raw_info->symbol, "BAYC");
-  EXPECT_EQ(state_change_raw_info->asset_price->source, "Simplehash");
+  EXPECT_EQ(state_change_raw_info->asset_price->source,
+            mojom::BlowfishAssetPriceSource::kSimplehash);
   EXPECT_EQ(state_change_raw_info->asset_price->last_updated_at, "1679331222");
   EXPECT_EQ(state_change_raw_info->asset_price->dollar_value_per_token,
             "7865.43");
@@ -559,7 +584,7 @@ TEST(SimulationResponseParserUnitTest, ParseEVMERC721Approval) {
 
   auto simulation_response = evm::ParseSimulationResponse(ParseJson(json));
   ASSERT_TRUE(simulation_response);
-  EXPECT_EQ(simulation_response->action, "NONE");
+  EXPECT_EQ(simulation_response->action, mojom::BlowfishSuggestedAction::kNone);
   EXPECT_EQ(simulation_response->warnings.size(), 0u);
   EXPECT_FALSE(simulation_response->simulation_results->error);
   ASSERT_EQ(
@@ -570,27 +595,32 @@ TEST(SimulationResponseParserUnitTest, ParseEVMERC721Approval) {
       simulation_response->simulation_results->expected_state_changes.at(0);
   EXPECT_EQ(state_change->human_readable_diff,
             "Approve to transfer BoredApeYachtClub");
-  EXPECT_EQ(state_change->raw_info->kind, "ERC721_APPROVAL");
+  EXPECT_EQ(state_change->raw_info->kind,
+            mojom::BlowfishEVMRawInfoKind::kErc721Approval);
   ASSERT_TRUE(state_change->raw_info->data->is_erc721_approval_data());
   const auto& state_change_raw_info =
       state_change->raw_info->data->get_erc721_approval_data();
   EXPECT_EQ(state_change_raw_info->amount->before, "0");
   EXPECT_EQ(state_change_raw_info->amount->after, "1");
-  EXPECT_EQ(state_change_raw_info->contract->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_raw_info->contract->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_raw_info->contract->address,
             "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d");
   EXPECT_EQ(state_change_raw_info->metadata->raw_image_url,
             "https://example.com/6603.png");
   EXPECT_EQ(state_change_raw_info->name, "BoredApeYachtClub");
-  EXPECT_EQ(state_change_raw_info->owner->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_raw_info->owner->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_raw_info->owner->address,
             "0xed2ab4948ba6a909a7751dec4f34f303eb8c7236");
-  EXPECT_EQ(state_change_raw_info->spender->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_raw_info->spender->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_raw_info->spender->address,
             "0x1e0049783f008a0085193e00003d00cd54003c71");
   EXPECT_EQ(state_change_raw_info->symbol, "BAYC");
   EXPECT_EQ(state_change_raw_info->token_id, "6603");
-  EXPECT_EQ(state_change_raw_info->asset_price->source, "Simplehash");
+  EXPECT_EQ(state_change_raw_info->asset_price->source,
+            mojom::BlowfishAssetPriceSource::kSimplehash);
   EXPECT_EQ(state_change_raw_info->asset_price->last_updated_at, "1679331222");
   EXPECT_EQ(state_change_raw_info->asset_price->dollar_value_per_token,
             "7865.43");
@@ -670,7 +700,7 @@ TEST(SimulationResponseParserUnitTest, ParseEVMBuyERC1155TokenWithETH) {
 
   auto simulation_response = evm::ParseSimulationResponse(ParseJson(json));
   ASSERT_TRUE(simulation_response);
-  EXPECT_EQ(simulation_response->action, "NONE");
+  EXPECT_EQ(simulation_response->action, mojom::BlowfishSuggestedAction::kNone);
   EXPECT_EQ(simulation_response->warnings.size(), 0u);
   EXPECT_FALSE(simulation_response->simulation_results->error);
   ASSERT_EQ(
@@ -680,13 +710,15 @@ TEST(SimulationResponseParserUnitTest, ParseEVMBuyERC1155TokenWithETH) {
   const auto& state_change_0 =
       simulation_response->simulation_results->expected_state_changes.at(0);
   EXPECT_EQ(state_change_0->human_readable_diff, "Send 0.033 ETH");
-  EXPECT_EQ(state_change_0->raw_info->kind, "NATIVE_ASSET_TRANSFER");
+  EXPECT_EQ(state_change_0->raw_info->kind,
+            mojom::BlowfishEVMRawInfoKind::kNativeAssetTransfer);
   ASSERT_TRUE(state_change_0->raw_info->data->is_native_asset_transfer_data());
   const auto& state_change_0_raw_info =
       state_change_0->raw_info->data->get_native_asset_transfer_data();
   EXPECT_EQ(state_change_0_raw_info->amount->before, "104057321770366572");
   EXPECT_EQ(state_change_0_raw_info->amount->after, "71057321770366572");
-  EXPECT_EQ(state_change_0_raw_info->contract->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_0_raw_info->contract->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_0_raw_info->contract->address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
   EXPECT_EQ(state_change_0_raw_info->asset->address,
@@ -695,7 +727,9 @@ TEST(SimulationResponseParserUnitTest, ParseEVMBuyERC1155TokenWithETH) {
   EXPECT_EQ(state_change_0_raw_info->asset->image_url,
             "https://example.com/eth.png");
   EXPECT_EQ(state_change_0_raw_info->asset->name, "Ether");
-  EXPECT_EQ(state_change_0_raw_info->asset->price->source, "Coingecko");
+  EXPECT_EQ(state_change_0_raw_info->asset->price->source,
+            mojom::BlowfishAssetPriceSource::kCoingecko);
+
   EXPECT_EQ(state_change_0_raw_info->asset->price->last_updated_at,
             "1670324557");
   EXPECT_EQ(state_change_0_raw_info->asset->price->dollar_value_per_token,
@@ -706,20 +740,23 @@ TEST(SimulationResponseParserUnitTest, ParseEVMBuyERC1155TokenWithETH) {
   const auto& state_change_1 =
       simulation_response->simulation_results->expected_state_changes.at(1);
   EXPECT_EQ(state_change_1->human_readable_diff, "Receive Corgi");
-  EXPECT_EQ(state_change_1->raw_info->kind, "ERC1155_TRANSFER");
+  EXPECT_EQ(state_change_1->raw_info->kind,
+            mojom::BlowfishEVMRawInfoKind::kErc1155Transfer);
   ASSERT_TRUE(state_change_1->raw_info->data->is_erc1155_transfer_data());
   const auto& state_change_1_raw_info =
       state_change_1->raw_info->data->get_erc1155_transfer_data();
   EXPECT_EQ(state_change_1_raw_info->name, "Corgi");
   EXPECT_EQ(state_change_1_raw_info->amount->before, "0");
   EXPECT_EQ(state_change_1_raw_info->amount->after, "1");
-  EXPECT_EQ(state_change_1_raw_info->contract->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_1_raw_info->contract->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_1_raw_info->contract->address,
             "0x51e613727fdd2e0b91b51c3e5427e9440a7957e4");
   EXPECT_EQ(state_change_1_raw_info->metadata->raw_image_url,
             "https://example.com/13014975.png");
   EXPECT_EQ(state_change_1_raw_info->token_id, "13014975");
-  EXPECT_EQ(state_change_1_raw_info->asset_price->source, "Simplehash");
+  EXPECT_EQ(state_change_1_raw_info->asset_price->source,
+            mojom::BlowfishAssetPriceSource::kSimplehash);
   EXPECT_EQ(state_change_1_raw_info->asset_price->last_updated_at,
             "1679331222");
   EXPECT_EQ(state_change_1_raw_info->asset_price->dollar_value_per_token,
@@ -775,7 +812,7 @@ TEST(SimulationResponseParserUnitTest, ParseEVMERC1155Transfer) {
       evm::ParseSimulationResponse(ParseJson(json_with_token_name));
   ASSERT_TRUE(simulation_response);
 
-  EXPECT_EQ(simulation_response->action, "NONE");
+  EXPECT_EQ(simulation_response->action, mojom::BlowfishSuggestedAction::kNone);
   EXPECT_EQ(simulation_response->warnings.size(), 0u);
   EXPECT_FALSE(simulation_response->simulation_results->error);
   ASSERT_EQ(
@@ -785,20 +822,23 @@ TEST(SimulationResponseParserUnitTest, ParseEVMERC1155Transfer) {
   const auto& state_change =
       simulation_response->simulation_results->expected_state_changes.at(0);
   EXPECT_EQ(state_change->human_readable_diff, "Receive Corgi");
-  EXPECT_EQ(state_change->raw_info->kind, "ERC1155_TRANSFER");
+  EXPECT_EQ(state_change->raw_info->kind,
+            mojom::BlowfishEVMRawInfoKind::kErc1155Transfer);
   ASSERT_TRUE(state_change->raw_info->data->is_erc1155_transfer_data());
   const auto& state_change_raw_info =
       state_change->raw_info->data->get_erc1155_transfer_data();
   EXPECT_EQ(state_change_raw_info->amount->before, "0");
   EXPECT_EQ(state_change_raw_info->amount->after, "1");
   EXPECT_EQ(state_change_raw_info->name, "Corgi");
-  EXPECT_EQ(state_change_raw_info->contract->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_raw_info->contract->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_raw_info->contract->address,
             "0x51e613727fdd2e0b91b51c3e5427e9440a7957e4");
   EXPECT_EQ(state_change_raw_info->metadata->raw_image_url,
             "https://example.com/13014975.png");
   EXPECT_EQ(state_change_raw_info->token_id, "13014975");
-  EXPECT_EQ(state_change_raw_info->asset_price->source, "Simplehash");
+  EXPECT_EQ(state_change_raw_info->asset_price->source,
+            mojom::BlowfishAssetPriceSource::kSimplehash);
   EXPECT_EQ(state_change_raw_info->asset_price->last_updated_at, "1679331222");
   EXPECT_EQ(state_change_raw_info->asset_price->dollar_value_per_token,
             "232.43");
@@ -870,14 +910,15 @@ TEST(SimulationResponseParserUnitTest, ParseEVMERC1155ApprovalForAll) {
 
   auto simulation_response = evm::ParseSimulationResponse(ParseJson(json));
   ASSERT_TRUE(simulation_response);
-  EXPECT_EQ(simulation_response->action, "WARN");
+  EXPECT_EQ(simulation_response->action, mojom::BlowfishSuggestedAction::kWarn);
   ASSERT_EQ(simulation_response->warnings.size(), 1u);
   EXPECT_EQ(simulation_response->warnings.at(0)->kind,
-            "UNLIMITED_ALLOWANCE_TO_NFTS");
+            mojom::BlowfishWarningKind::kUnlimitedAllowanceToNfts);
   EXPECT_EQ(simulation_response->warnings.at(0)->message,
             "You are allowing this website to withdraw funds from your account "
             "in the future");
-  EXPECT_EQ(simulation_response->warnings.at(0)->severity, "WARNING");
+  EXPECT_EQ(simulation_response->warnings.at(0)->severity,
+            mojom::BlowfishWarningSeverity::kWarning);
   EXPECT_FALSE(simulation_response->simulation_results->error);
   ASSERT_EQ(
       simulation_response->simulation_results->expected_state_changes.size(),
@@ -887,7 +928,8 @@ TEST(SimulationResponseParserUnitTest, ParseEVMERC1155ApprovalForAll) {
       simulation_response->simulation_results->expected_state_changes.at(0);
   EXPECT_EQ(state_change->human_readable_diff,
             "Approve to transfer all your Sandbox's ASSETs");
-  EXPECT_EQ(state_change->raw_info->kind, "ERC1155_APPROVAL_FOR_ALL");
+  EXPECT_EQ(state_change->raw_info->kind,
+            mojom::BlowfishEVMRawInfoKind::kErc1155ApprovalForAll);
   ASSERT_TRUE(state_change->raw_info->data->is_erc1155_approval_for_all_data());
   const auto& state_change_raw_info =
       state_change->raw_info->data->get_erc1155_approval_for_all_data();
@@ -895,16 +937,20 @@ TEST(SimulationResponseParserUnitTest, ParseEVMERC1155ApprovalForAll) {
   EXPECT_EQ(state_change_raw_info->amount->after,
             "115792089237316195423570985008687907853269984665640564039457584007"
             "913129639935");
-  EXPECT_EQ(state_change_raw_info->contract->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_raw_info->contract->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_raw_info->contract->address,
             "0xa342f5d851e866e18ff98f351f2c6637f4478db5");
-  EXPECT_EQ(state_change_raw_info->owner->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_raw_info->owner->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_raw_info->owner->address,
             "0xed2ab4948ba6a909a7751dec4f34f303eb8c7236");
-  EXPECT_EQ(state_change_raw_info->spender->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_raw_info->spender->kind,
+            mojom::BlowfishEVMAddressKind::kAccount);
   EXPECT_EQ(state_change_raw_info->spender->address,
             "0x00000000006c3852cbef3e08e8df289169ede581");
-  EXPECT_EQ(state_change_raw_info->asset_price->source, "Simplehash");
+  EXPECT_EQ(state_change_raw_info->asset_price->source,
+            mojom::BlowfishAssetPriceSource::kSimplehash);
   EXPECT_EQ(state_change_raw_info->asset_price->last_updated_at, "1679331222");
   EXPECT_EQ(state_change_raw_info->asset_price->dollar_value_per_token,
             "232.43");
@@ -999,11 +1045,11 @@ TEST(SimulationResponseParserUnitTest, ParseEVMUnknownError) {
   auto simulation_response = evm::ParseSimulationResponse(ParseJson(json));
   ASSERT_TRUE(simulation_response);
 
-  EXPECT_EQ(simulation_response->action, "NONE");
+  EXPECT_EQ(simulation_response->action, mojom::BlowfishSuggestedAction::kNone);
   EXPECT_EQ(simulation_response->warnings.size(), 0ULL);
   ASSERT_TRUE(simulation_response->simulation_results->error);
   EXPECT_EQ(simulation_response->simulation_results->error->kind,
-            "UNKNOWN_ERROR");
+            mojom::BlowfishEVMErrorKind::kUnknownError);
   EXPECT_EQ(
       simulation_response->simulation_results->error->human_readable_error,
       "Unable to simulate transaction");
@@ -1060,7 +1106,8 @@ TEST(SimulationResponseParserUnitTest, ParseEVMNullableFields) {
     // OK: null values for asset->imageUrl and asset->price are allowed.
     ASSERT_TRUE(simulation_response);
 
-    EXPECT_EQ(simulation_response->action, "NONE");
+    EXPECT_EQ(simulation_response->action,
+              mojom::BlowfishSuggestedAction::kNone);
     EXPECT_EQ(simulation_response->warnings.size(), 0ULL);
     EXPECT_FALSE(simulation_response->simulation_results->error);
     ASSERT_EQ(
@@ -1070,7 +1117,8 @@ TEST(SimulationResponseParserUnitTest, ParseEVMNullableFields) {
     const auto& state_change =
         simulation_response->simulation_results->expected_state_changes.at(0);
     EXPECT_EQ(state_change->human_readable_diff, "Send 0.00307 BNB");
-    EXPECT_EQ(state_change->raw_info->kind, "NATIVE_ASSET_TRANSFER");
+    EXPECT_EQ(state_change->raw_info->kind,
+              mojom::BlowfishEVMRawInfoKind::kNativeAssetTransfer);
     ASSERT_TRUE(state_change->raw_info->data->is_native_asset_transfer_data());
 
     const auto& state_change_raw_info =
@@ -1079,7 +1127,8 @@ TEST(SimulationResponseParserUnitTest, ParseEVMNullableFields) {
     EXPECT_EQ(state_change_raw_info->amount->before, "93930808830306021");
     EXPECT_EQ(state_change_raw_info->contract->address,
               "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-    EXPECT_EQ(state_change_raw_info->contract->kind, "ACCOUNT");
+    EXPECT_EQ(state_change_raw_info->contract->kind,
+              mojom::BlowfishEVMAddressKind::kAccount);
     EXPECT_EQ(state_change_raw_info->asset->address,
               "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
     EXPECT_EQ(state_change_raw_info->asset->decimals, 18);
@@ -1384,7 +1433,7 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
   auto simulation_response = solana::ParseSimulationResponse(ParseJson(json));
   ASSERT_TRUE(simulation_response);
 
-  EXPECT_EQ(simulation_response->action, "NONE");
+  EXPECT_EQ(simulation_response->action, mojom::BlowfishSuggestedAction::kNone);
   EXPECT_EQ(simulation_response->warnings.size(), 0u);
   EXPECT_FALSE(simulation_response->simulation_results->error);
   EXPECT_FALSE(
@@ -1396,8 +1445,10 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
   const auto& state_change_0 =
       simulation_response->simulation_results->expected_state_changes.at(0);
   EXPECT_EQ(state_change_0->human_readable_diff, "Receive 0.05657 SOL");
-  EXPECT_EQ(state_change_0->suggested_color, "CREDIT");
-  EXPECT_EQ(state_change_0->raw_info->kind, "SOL_TRANSFER");
+  EXPECT_EQ(state_change_0->suggested_color,
+            mojom::BlowfishSuggestedColor::kCredit);
+  EXPECT_EQ(state_change_0->raw_info->kind,
+            mojom::BlowfishSolanaRawInfoKind::kSolTransfer);
   ASSERT_TRUE(state_change_0->raw_info->data->is_sol_transfer_data());
 
   const auto& state_change_0_raw_info =
@@ -1405,14 +1456,17 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
   EXPECT_EQ(state_change_0_raw_info->symbol, "SOL");
   EXPECT_EQ(state_change_0_raw_info->name, "Solana Native Token");
   EXPECT_EQ(state_change_0_raw_info->decimals, 9);
-  EXPECT_EQ(state_change_0_raw_info->diff->sign, "PLUS");
+  EXPECT_EQ(state_change_0_raw_info->diff->sign,
+            mojom::BlowfishDiffSign::kPlus);
   EXPECT_EQ(state_change_0_raw_info->diff->digits, 56573477ULL);
 
   const auto& state_change_1 =
       simulation_response->simulation_results->expected_state_changes.at(1);
   EXPECT_EQ(state_change_1->human_readable_diff, "Send 2 USDT");
-  EXPECT_EQ(state_change_1->suggested_color, "DEBIT");
-  EXPECT_EQ(state_change_1->raw_info->kind, "SPL_TRANSFER");
+  EXPECT_EQ(state_change_1->suggested_color,
+            mojom::BlowfishSuggestedColor::kDebit);
+  EXPECT_EQ(state_change_1->raw_info->kind,
+            mojom::BlowfishSolanaRawInfoKind::kSplTransfer);
   ASSERT_TRUE(state_change_1->raw_info->data->is_spl_transfer_data());
 
   const auto& state_change_1_raw_info =
@@ -1423,21 +1477,26 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
             "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB");
   EXPECT_EQ(state_change_1_raw_info->decimals, 6);
   EXPECT_EQ(state_change_1_raw_info->supply, 1000000000ULL);
-  EXPECT_EQ(state_change_1_raw_info->metaplex_token_standard, "unknown");
-  EXPECT_EQ(state_change_1_raw_info->asset_price->source, "Coingecko");
+  EXPECT_EQ(state_change_1_raw_info->metaplex_token_standard,
+            mojom::BlowfishMetaplexTokenStandardKind::kUnknown);
+  EXPECT_EQ(state_change_1_raw_info->asset_price->source,
+            mojom::BlowfishAssetPriceSource::kCoingecko);
   EXPECT_EQ(state_change_1_raw_info->asset_price->last_updated_at,
             "1679331222");
   EXPECT_EQ(state_change_1_raw_info->asset_price->dollar_value_per_token,
             "0.99");
-  EXPECT_EQ(state_change_1_raw_info->diff->sign, "MINUS");
+  EXPECT_EQ(state_change_1_raw_info->diff->sign,
+            mojom::BlowfishDiffSign::kMinus);
   EXPECT_EQ(state_change_1_raw_info->diff->digits, 2000000ULL);
 
   const auto& state_change_2 =
       simulation_response->simulation_results->expected_state_changes.at(2);
   EXPECT_EQ(state_change_2->human_readable_diff,
             "Approve to transfer Phantom QA NFT");
-  EXPECT_EQ(state_change_2->suggested_color, "DEBIT");
-  EXPECT_EQ(state_change_2->raw_info->kind, "SPL_APPROVAL");
+  EXPECT_EQ(state_change_2->suggested_color,
+            mojom::BlowfishSuggestedColor::kDebit);
+  EXPECT_EQ(state_change_2->raw_info->kind,
+            mojom::BlowfishSolanaRawInfoKind::kSplApproval);
   ASSERT_TRUE(state_change_2->raw_info->data->is_spl_approval_data());
 
   const auto& state_change_2_raw_info =
@@ -1449,18 +1508,22 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
   EXPECT_EQ(state_change_2_raw_info->symbol, "PHANTOMQA");
   EXPECT_EQ(state_change_2_raw_info->name, "Phantom QA NFT");
   EXPECT_EQ(state_change_2_raw_info->decimals, 0);
-  EXPECT_EQ(state_change_2_raw_info->diff->sign, "PLUS");
+  EXPECT_EQ(state_change_2_raw_info->diff->sign,
+            mojom::BlowfishDiffSign::kPlus);
   EXPECT_EQ(state_change_2_raw_info->diff->digits, 1525878906250000000ULL);
   EXPECT_EQ(state_change_2_raw_info->supply, 1ULL);
-  EXPECT_EQ(state_change_2_raw_info->metaplex_token_standard, "non_fungible");
+  EXPECT_EQ(state_change_2_raw_info->metaplex_token_standard,
+            mojom::BlowfishMetaplexTokenStandardKind::kNonFungible);
   EXPECT_FALSE(state_change_2_raw_info->asset_price);
 
   const auto& state_change_3 =
       simulation_response->simulation_results->expected_state_changes.at(3);
   EXPECT_EQ(state_change_3->human_readable_diff,
             "Unapprove from transferring up to 0.00132 USDC");
-  EXPECT_EQ(state_change_3->suggested_color, "CREDIT");
-  EXPECT_EQ(state_change_3->raw_info->kind, "SPL_APPROVAL");
+  EXPECT_EQ(state_change_3->suggested_color,
+            mojom::BlowfishSuggestedColor::kCredit);
+  EXPECT_EQ(state_change_3->raw_info->kind,
+            mojom::BlowfishSolanaRawInfoKind::kSplApproval);
   ASSERT_TRUE(state_change_3->raw_info->data->is_spl_approval_data());
 
   const auto& state_change_3_raw_info =
@@ -1472,11 +1535,14 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
   EXPECT_EQ(state_change_3_raw_info->symbol, "USDC");
   EXPECT_EQ(state_change_3_raw_info->name, "USD Coin");
   EXPECT_EQ(state_change_3_raw_info->decimals, 6);
-  EXPECT_EQ(state_change_3_raw_info->diff->sign, "MINUS");
+  EXPECT_EQ(state_change_3_raw_info->diff->sign,
+            mojom::BlowfishDiffSign::kMinus);
   EXPECT_EQ(state_change_3_raw_info->diff->digits, 1321ULL);
   EXPECT_EQ(state_change_3_raw_info->supply, 5034964468128435ULL);
-  EXPECT_EQ(state_change_3_raw_info->metaplex_token_standard, "unknown");
-  EXPECT_EQ(state_change_3_raw_info->asset_price->source, "Coingecko");
+  EXPECT_EQ(state_change_3_raw_info->metaplex_token_standard,
+            mojom::BlowfishMetaplexTokenStandardKind::kUnknown);
+  EXPECT_EQ(state_change_3_raw_info->asset_price->source,
+            mojom::BlowfishAssetPriceSource::kCoingecko);
   EXPECT_EQ(state_change_3_raw_info->asset_price->last_updated_at,
             "1679331222");
   EXPECT_EQ(state_change_3_raw_info->asset_price->dollar_value_per_token,
@@ -1486,8 +1552,10 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
       simulation_response->simulation_results->expected_state_changes.at(4);
   EXPECT_EQ(state_change_4->human_readable_diff,
             "Transfer control over your SOL staking account 2AG3be..p2vFQS");
-  EXPECT_EQ(state_change_4->suggested_color, "DEBIT");
-  EXPECT_EQ(state_change_4->raw_info->kind, "SOL_STAKE_AUTHORITY_CHANGE");
+  EXPECT_EQ(state_change_4->suggested_color,
+            mojom::BlowfishSuggestedColor::kDebit);
+  EXPECT_EQ(state_change_4->raw_info->kind,
+            mojom::BlowfishSolanaRawInfoKind::kSolStakeAuthorityChange);
   ASSERT_TRUE(
       state_change_4->raw_info->data->is_sol_stake_authority_change_data());
 
@@ -1545,18 +1613,20 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaWarnings) {
 
   auto simulation_response = solana::ParseSimulationResponse(ParseJson(json));
   ASSERT_TRUE(simulation_response);
-  EXPECT_EQ(simulation_response->action, "BLOCK");
+  EXPECT_EQ(simulation_response->action,
+            mojom::BlowfishSuggestedAction::kBlock);
   ASSERT_EQ(simulation_response->warnings.size(), 2ULL);
 
   const auto& warning_1 = simulation_response->warnings.at(0);
-  EXPECT_EQ(warning_1->severity, "CRITICAL");
-  EXPECT_EQ(warning_1->kind, "TRUSTED_BLOCKLIST_DOMAIN");
+  EXPECT_EQ(warning_1->severity, mojom::BlowfishWarningSeverity::kCritical);
+  EXPECT_EQ(warning_1->kind,
+            mojom::BlowfishWarningKind::kTrustedBlocklistDomain);
   EXPECT_EQ(warning_1->message,
             "This transaction originates from a known malicious domain.");
 
   const auto& warning_2 = simulation_response->warnings.at(1);
-  EXPECT_EQ(warning_2->severity, "WARNING");
-  EXPECT_EQ(warning_2->kind, "SUSPECTED_MALICIOUS");
+  EXPECT_EQ(warning_2->severity, mojom::BlowfishWarningSeverity::kWarning);
+  EXPECT_EQ(warning_2->kind, mojom::BlowfishWarningKind::kSuspectedMalicious);
   EXPECT_EQ(warning_2->message,
             "We suspect this transaction is malicious. Approving may lead to "
             "loss of funds.");
