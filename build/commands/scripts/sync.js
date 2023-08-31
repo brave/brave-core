@@ -16,8 +16,8 @@ program
   .version(process.env.npm_package_version)
   .option('--gclient_file <file>', 'gclient config file location')
   .option('--gclient_verbose', 'verbose output for gclient')
-  .option('--target_os <target_os>', 'target OS')
-  .option('--target_arch <target_arch>', 'target architecture')
+  .option('--target_os <target_os>', 'comma-separated target OS list')
+  .option('--target_arch <target_arch>', 'comma-separated target architecture list')
   .option('--target_android_base <target_android_base>', 'target Android OS level for apk or aab (classic, modern, mono)')
   .option('--init', 'initialize all dependencies')
   .option('--force', 'force reset all projects to origin/ref')
@@ -69,7 +69,7 @@ function toGClientConfigItem(name, value, pretty = true) {
   return `${name} = ${pythonLikeValue}\n`
 }
 
-function buildDefaultGClientConfig() {
+function buildDefaultGClientConfig(targetOSList, targetArchList) {
   let out = toGClientConfigItem('solutions', [
     {
       managed: '%False%',
@@ -102,12 +102,11 @@ function buildDefaultGClientConfig() {
   if (process.env.GIT_CACHE_PATH) {
     out += toGClientConfigItem('cache_dir', process.env.GIT_CACHE_PATH)
   }
-  if (config.targetOS) {
-    out += toGClientConfigItem('target_os', [config.targetOS], false)
+  if (targetOSList) {
+    out += toGClientConfigItem('target_os', targetOSList, false)
   }
-  if (config.targetOS === 'linux') {
-    // Run hooks for Arm64. This in particular creates the arm64 sysroot.
-    out += toGClientConfigItem('target_cpu', ['arm64'], false)
+  if (targetArchList) {
+    out += toGClientConfigItem('target_cpu', targetArchList, false)
   }
 
   fs.writeFileSync(config.defaultGClientFile, out)
@@ -218,6 +217,19 @@ function syncBrave(program) {
 
 async function RunCommand() {
   program.parse(process.argv)
+
+  // --target_os, --target_arch as lists make sense only for `init/sync`
+  // commands. Handle comma-separated values here and only pass the first value
+  // to the config.update() call.
+  const targetOSList = program.target_os?.split(',')
+  if (targetOSList) {
+    program.target_os = targetOSList[0]
+  }
+  const targetArchList = program.target_arch?.split(',')
+  if (targetArchList) {
+    program.target_arch = targetArchList[0]
+  }
+
   config.update(program)
 
   if (program.ignore_chromium) {
@@ -232,7 +244,7 @@ async function RunCommand() {
   }
 
   if (program.init || !fs.existsSync(config.defaultGClientFile)) {
-    buildDefaultGClientConfig()
+    buildDefaultGClientConfig(targetOSList, targetArchList)
   } else if (program.target_os) {
     Log.warn(
         '--target_os is ignored. If you are attempting to sync with ' +
