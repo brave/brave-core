@@ -33,6 +33,7 @@
         android:minHeight="0dp"
         android:padding="0dp"
         android:textStyle="bold"
+        android:textColor="@color/brave_link"
         app:layout_constraintBottom_toBottomOf="@id/iv_item_network_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_item_network_label"
