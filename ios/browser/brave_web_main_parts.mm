@@ -157,11 +157,6 @@ void BraveWebMainParts::PreMainMessageLoopRun() {
   SetupMetrics();
 
   // Start the brave services
-  // Ensure the factory services are instantiated before staring services.
-  // Otherwise the service created by the factory does not get informed of
-  // the component update as it's an observer of componennt installer.
-  brave::URLSanitizerServiceFactory::GetServiceForState(
-      last_used_browser_state);
   application_context_->StartBraveServices();
 }
 

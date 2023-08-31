@@ -15,6 +15,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/default_clock.h"
 #include "base/time/default_tick_clock.h"
+#include "brave/ios/browser/browser_state/brave_browser_state_manager_impl.h"
 #include "components/breadcrumbs/core/breadcrumb_manager.h"
 #include "components/breadcrumbs/core/breadcrumb_persistent_storage_manager.h"
 #include "components/component_updater/component_updater_service.h"
@@ -226,7 +227,7 @@ ios::ChromeBrowserStateManager*
 ApplicationContextImpl::GetChromeBrowserStateManager() {
   DCHECK(thread_checker_.CalledOnValidThread());
   if (!chrome_browser_state_manager_)
-    chrome_browser_state_manager_.reset(new ChromeBrowserStateManagerImpl());
+    chrome_browser_state_manager_.reset(new BraveBrowserStateManagerImpl());
   return chrome_browser_state_manager_.get();
 }
 
