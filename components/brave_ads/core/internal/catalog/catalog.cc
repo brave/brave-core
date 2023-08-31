@@ -25,8 +25,9 @@ namespace brave_ads {
 namespace {
 
 bool DoesRequireResourceForNewTabPageAds() {
-  return ShouldAlwaysRunService() && ShouldAlwaysTriggerNewTabPageAdEvents() &&
-         UserHasOptedInToNewTabPageAds();
+  return UserHasOptedInToNewTabPageAds() &&
+         (UserHasJoinedBraveRewards() ||
+          ShouldAlwaysTriggerNewTabPageAdEvents());
 }
 
 bool DoesRequireResource() {
