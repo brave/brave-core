@@ -384,7 +384,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         if (activity instanceof BraveWalletActivity) {
             BraveWalletActivity walletActivity = (BraveWalletActivity) activity;
             BraveWalletP3a walletP3A = walletActivity.getBraveWalletP3A();
-            if (walletP3A != null) {
+            if (walletP3A != null && mNftDataModels != null) {
                 walletP3A.recordNftGalleryView(mNftDataModels.size());
             }
         }
