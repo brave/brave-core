@@ -63,11 +63,12 @@ void PlaylistThumbnailDownloader::DownloadThumbnail(
   }
 
   auto iter = CreateURLLoaderHandler(thumbnail_url);
-  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+  iter->get()->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&PlaylistThumbnailDownloader::SaveResponseToFile,
                      weak_ptr_factory_.GetWeakPtr(), iter, id,
-                     target_thumbnail_path));
+                     target_thumbnail_path),
+      network::SimpleURLLoader::kMaxBoundedStringDownloadSize);
   url_loader_map_[id] = iter;
 }
 
