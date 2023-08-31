@@ -43,10 +43,11 @@ Polymer({
       },
     },
 
-    isLeoAssistantAllowed_: {
+    isLeoAssistantAndHistoryAllowed_: {
       type: Boolean,
       value: function() {
-        return loadTimeData.getBoolean('isLeoAssistantAllowed');
+        return loadTimeData.getBoolean('isLeoAssistantAllowed')
+          && loadTimeData.getBoolean('isLeoAssistantHistoryAllowed');
       },
     }
   },

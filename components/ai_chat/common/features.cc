@@ -22,4 +22,12 @@ bool IsAIChatEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChat);
 }
 
+BASE_FEATURE(kAIChatHistory,
+             "kAIChatHistory",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAIChatHistoryEnabled() {
+  return base::FeatureList::IsEnabled(features::kAIChatHistory);
+}
+
 }  // namespace ai_chat::features

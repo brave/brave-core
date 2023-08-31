@@ -32,6 +32,10 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
+#endif
+
 BraveBrowsingDataRemoverDelegate::BraveBrowsingDataRemoverDelegate(
     content::BrowserContext* browser_context)
     : ChromeBrowsingDataRemoverDelegate(browser_context),
@@ -71,7 +75,9 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
         ->ClearHistory();
   }
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY) {
+  if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY &&
+      ai_chat::features::IsAIChatEnabled() &&
+      ai_chat::features::IsAIChatHistoryEnabled()) {
     ClearAiChatHistory(delete_begin, delete_end);
   }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
