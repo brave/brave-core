@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper.h"
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 
@@ -25,6 +24,7 @@ class KeyedService;
 class ChromeBrowserState;
 
 namespace brave {
+class URLSanitizerService;
 
 class URLSanitizerServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
