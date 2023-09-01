@@ -4,4 +4,4 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 browser_url_sanitizer_public_headers =
-    [ "//brave/ios/browser/url_sanitizer/url_sanitizer_factory_wrappers.h" ]
+    [ "//brave/ios/browser/url_sanitizer/url_sanitizer_service_factory.h" ]

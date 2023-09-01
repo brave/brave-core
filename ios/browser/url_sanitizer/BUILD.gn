@@ -6,8 +6,6 @@
 source_set("url_sanitizer") {
   configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
-    "url_sanitizer_factory_wrappers.h",
-    "url_sanitizer_factory_wrappers.mm",
     "url_sanitizer_service_factory.h",
     "url_sanitizer_service_factory.mm",
   ]
@@ -22,4 +20,5 @@ source_set("url_sanitizer") {
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/browser_state",
   ]
+  frameworks = [ "Foundation.framework" ]
 }

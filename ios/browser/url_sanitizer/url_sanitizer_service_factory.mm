@@ -6,17 +6,32 @@
 #include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory.h"
 
 #include "base/no_destructor.h"
-
+#include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
+#include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
+#include "brave/ios/browser/api/url_sanitizer/url_sanitizer_service+private.h"
+#include "brave/ios/browser/application_context/brave_application_context_impl.h"
+#include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"
+#include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
-
-#include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
-#include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "ios/web/public/browser_state.h"
+
+#if !defined(__has_feature) || !__has_feature(objc_arc)
+#error "This file requires ARC support."
+#endif
+
+@implementation URLSanitizerServiceFactory
++ (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
+  // Create and start the local data file service and component installer
+  brave::URLSanitizerService* urlSanitizer =
+      brave::URLSanitizerServiceFactory::GetServiceForState(browserState);
+  return [[URLSanitizerService alloc] initWithURLSanitizerService:urlSanitizer];
+}
+@end
 
 namespace brave {
 
