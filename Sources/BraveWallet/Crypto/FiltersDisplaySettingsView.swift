@@ -214,7 +214,7 @@ struct FiltersDisplaySettingsView: View {
       title: Strings.Wallet.groupByTitle,
       description: Strings.Wallet.groupByDescription,
       icon: .init(
-        braveSystemName: "leo.list.bullet-default",
+        braveSystemName: "leo.stack",
         iconContainerSize: min(iconContainerSize, maxIconContainerSize)
       ),
       allOptions: GroupBy.allCases,
@@ -229,7 +229,7 @@ struct FiltersDisplaySettingsView: View {
       title: Strings.Wallet.sortAssetsTitle,
       description: Strings.Wallet.sortAssetsDescription,
       icon: .init(
-        braveSystemName: "leo.arrow.down",
+        braveSystemName: "leo.sort.desc",
         iconContainerSize: min(iconContainerSize, maxIconContainerSize)
       ),
       allOptions: SortOrder.allCases,
