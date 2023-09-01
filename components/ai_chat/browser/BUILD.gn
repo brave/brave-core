@@ -23,6 +23,11 @@ static_library("browser") {
     "constants.h",
     "page_content_fetcher.cc",
     "page_content_fetcher.h",
+    "engine/engine_consumer_claude.cc",
+    "engine/engine_consumer_claude.h",
+    "engine/engine_consumer_llama.cc",
+    "engine/engine_consumer_llama.h",
+    "engine/engine_consumer.h",
   ]
 
   deps = [

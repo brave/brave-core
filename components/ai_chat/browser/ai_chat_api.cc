@@ -12,7 +12,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
-#include "base/strings/pattern.h"
+
 #include "base/strings/strcat.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
@@ -23,7 +23,10 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
 
+namespace ai_chat {
 namespace {
+
+constexpr char kAIChatCompletionPath[] = "v1/complete";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat", R"(
@@ -48,17 +51,17 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 base::Value::Dict CreateApiParametersDict(
     const std::string& prompt,
+    const std::string& model_name,
     const std::vector<std::string> additional_stop_sequences,
     const bool is_sse_enabled) {
   base::Value::Dict dict;
 
   base::Value::List stop_sequences;
-  stop_sequences.Append(ai_chat::GetHumanPromptSegment());
+  stop_sequences.Append(AIChatAPI::GetHumanPromptSegment());
   for (auto& item : additional_stop_sequences) {
     stop_sequences.Append(item);
   }
 
-  const auto model_name = ai_chat::features::kAIModelName.Get();
   const double temp = ai_chat::features::kAITemperature.Get();
 
   DCHECK(!model_name.empty());
@@ -101,9 +104,16 @@ const GURL GetEndpointBaseUrl() {
 
 }  // namespace
 
+// static
+std::string AIChatAPI::GetHumanPromptSegment() {
+  return base::StrCat({"\n\n", kHumanPrompt, " "});
+}
+
 AIChatAPI::AIChatAPI(
+    std::string model_name,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : api_request_helper_(GetNetworkTrafficAnnotationTag(),
+    : model_name_(model_name),
+      api_request_helper_(GetNetworkTrafficAnnotationTag(),
                           url_loader_factory) {
   // Validate configuration
   const GURL api_base_url = GetEndpointBaseUrl();
@@ -124,21 +134,10 @@ void AIChatAPI::QueryPrompt(
         data_completed_callback,
     api_request_helper::APIRequestHelper::DataReceivedCallback
         data_received_callback) {
-  if (!ai_chat::UsesLlama2PromptTemplate(
-          ai_chat::features::kAIModelName.Get())) {
-    // All queries must have the "Human" and "AI" prompt markers. We do not
-    // prepend / append them here since callers may want to put them in
-    // custom positions.
-    DCHECK(base::MatchPattern(prompt,
-                              base::StrCat({"*", ai_chat::kHumanPrompt, "*"})));
-    DCHECK(base::MatchPattern(prompt,
-                              base::StrCat({"*", ai_chat::kAIPrompt, "*"})));
-  }
-
   const GURL api_base_url = GetEndpointBaseUrl();
 
   // Validate that the path is valid
-  GURL api_url = api_base_url.Resolve(ai_chat::kAIChatCompletionPath);
+  GURL api_url = api_base_url.Resolve(kAIChatCompletionPath);
   CHECK(api_url.is_valid())
       << "Invalid API Url, check path: " << api_url.spec();
 
@@ -146,7 +145,7 @@ void AIChatAPI::QueryPrompt(
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
 
   const base::Value::Dict& dict = CreateApiParametersDict(
-      prompt, std::move(extra_stop_sequences), is_sse_enabled);
+      prompt, model_name_, std::move(extra_stop_sequences), is_sse_enabled);
   base::flat_map<std::string, std::string> headers;
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
   headers.emplace("Accept", "text/event-stream");
@@ -179,3 +178,5 @@ void AIChatAPI::ClearAllQueries() {
   // individually. This would be useful to keep some in-progress requests alive.
   api_request_helper_.CancelAll();
 }
+
+}  // namespace ai_chat

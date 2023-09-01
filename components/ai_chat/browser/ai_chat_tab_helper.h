@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/ai_chat/browser/ai_chat_api.h"
+#include "brave/components/ai_chat/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "components/favicon/core/favicon_driver_observer.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -66,10 +67,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // whether content is retrieved and queries are sent for the conversation
   // when the page changes.
   void OnConversationActiveChanged(bool is_conversation_active);
-  void AddToConversationHistory(const mojom::ConversationTurn& turn);
+  void AddToConversationHistory(mojom::ConversationTurn turn);
   void UpdateOrCreateLastAssistantEntry(std::string text);
   void MakeAPIRequestWithConversationHistoryUpdate(
-      const mojom::ConversationTurn& turn);
+      mojom::ConversationTurn turn);
   void RetryAPIRequest();
   bool IsRequestInProgress();
   void AddObserver(Observer* observer);
@@ -102,13 +103,14 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void OnTabContentRetrieved(int64_t for_navigation_id,
                              std::string contents_text,
                              bool is_video = false);
-  void OnAPIStreamDataReceived(int64_t for_navigation_id,
-                               data_decoder::DataDecoder::ValueOrError result);
-  void OnAPIStreamDataComplete(int64_t for_navigation_id,
-                               api_request_helper::APIRequestResult result);
-  void OnAPISuggestedQuestionsResponse(
+  void OnEngineCompletionDataReceived(int64_t for_navigation_id,
+                                      std::string result);
+  void OnEngineCompletionComplete(
       int64_t for_navigation_id,
-      api_request_helper::APIRequestResult result);
+      EngineConsumer::AssistantResponseResult result);
+  void OnSuggestedQuestionsResponse(
+      int64_t for_navigation_id,
+      std::vector<std::string> result);
   void OnSuggestedQuestionsChanged();
   void OnPageHasContentChanged();
 
@@ -125,26 +127,12 @@ class AIChatTabHelper : public content::WebContentsObserver,
                         const GURL& icon_url,
                         bool icon_url_changed,
                         const gfx::Image& image) override;
-  std::string BuildClaudePrompt(const std::string& question_part,
-                                bool is_suggested_question);
-  std::string BuildLlama2Prompt(std::string user_message);
-  std::string BuildLlama2FirstSequence(
-      const std::string& system_message,
-      const std::string& user_message,
-      absl::optional<std::string> assistant_response,
-      absl::optional<std::string> assistant_response_seed);
-  std::string BuildLlama2SubsequentSequence(
-      std::string user_message,
-      absl::optional<std::string> assistant_response,
-      absl::optional<std::string> assistant_response_seed);
-  std::string BuildLlama2InstructionPrompt(const std::string& instruction);
-  std::string BuildLlama2GenerateQuestionsPrompt(bool is_video,
-                                                 const std::string content);
+
   mojom::AutoGenerateQuestionsPref GetAutoGeneratePref();
   void SetAPIError(const mojom::APIError& error);
 
   raw_ptr<PrefService> pref_service_;
-  std::unique_ptr<AIChatAPI> ai_chat_api_ = nullptr;
+  std::unique_ptr<EngineConsumer> engine_ = nullptr;
 
   PrefChangeRegistrar pref_change_registrar_;
   base::ObserverList<Observer> observers_;

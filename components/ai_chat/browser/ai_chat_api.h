@@ -16,9 +16,20 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
+namespace ai_chat {
+
+// TODO(petemill): Is this meant to be shared by both Claude and Llama? It's not
+// used to start the llama prompts but it is for Claude, but it's set for both
+// as a stop sequence (and currently the only stop sequence used by the
+// conversation prompts.
+constexpr char kHumanPrompt[] = "Human:";
+
 class AIChatAPI {
  public:
+  static std::string GetHumanPromptSegment();
+
   explicit AIChatAPI(
+      std::string model_name,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   AIChatAPI(const AIChatAPI&) = delete;
   AIChatAPI& operator=(const AIChatAPI&) = delete;
@@ -27,7 +38,7 @@ class AIChatAPI {
   // This function queries both types of APIs: SSE and non-SSE.
   // In non-SSE cases, only the data_completed_callback will be triggered.
   void QueryPrompt(const std::string& prompt,
-                   const std::vector<std::string> extra_stop_sequences,
+                   const std::vector<std::string> stop_sequences,
                    api_request_helper::APIRequestHelper::ResultCallback
                        data_completed_callback,
                    api_request_helper::APIRequestHelper::DataReceivedCallback
@@ -36,7 +47,11 @@ class AIChatAPI {
   void ClearAllQueries();
 
  private:
+  std::string model_name_;
+  std::vector<std::string> default_stop_sequences_;
   api_request_helper::APIRequestHelper api_request_helper_;
 };
+
+}  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_API_H_
