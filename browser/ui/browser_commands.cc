@@ -129,9 +129,8 @@ void ShowBraveVPNBubble(Browser* browser) {
 
 void ToggleBraveVPNTrayIcon() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
-  brave_vpn::wireguard::EnableVPNTrayIcon(
-      !brave_vpn::wireguard::IsVPNTrayIconEnabled());
-  if (brave_vpn::wireguard::IsVPNTrayIconEnabled()) {
+  brave_vpn::EnableVPNTrayIcon(!brave_vpn::IsVPNTrayIconEnabled());
+  if (brave_vpn::IsVPNTrayIconEnabled()) {
     brave_vpn::wireguard::ShowBraveVpnStatusTrayIcon();
   }
 #endif

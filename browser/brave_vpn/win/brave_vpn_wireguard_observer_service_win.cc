@@ -37,7 +37,7 @@ bool BraveVpnWireguardObserverService::ShouldShowFallbackDialog() const {
     return should_fallback_for_testing_.value();
   }
 
-  return wireguard::ShouldFallbackToIKEv2();
+  return ShouldFallbackToIKEv2();
 }
 
 }  // namespace brave_vpn

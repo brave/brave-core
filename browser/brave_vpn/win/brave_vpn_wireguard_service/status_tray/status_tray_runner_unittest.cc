@@ -106,20 +106,20 @@ TEST_F(StatusTrayRunnerTest, UpdateConnectionState) {
   WaitIconStateChangedTo(
       IDR_BRAVE_VPN_TRAY_LIGHT,
       IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED);
-  EXPECT_FALSE(brave_vpn::wireguard::GetConnectionState().has_value());
+  EXPECT_FALSE(brave_vpn::GetConnectionState().has_value());
 
   // Tunnel service stopped, registry state as "connecting"
-  wireguard::WriteConnectionState(
+  WriteConnectionState(
       static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECTING));
   WaitIconStateChangedTo(IDR_BRAVE_VPN_TRAY_LIGHT_CONNECTING,
                          IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTING);
-  EXPECT_EQ(brave_vpn::wireguard::GetConnectionState().value(),
+  EXPECT_EQ(brave_vpn::GetConnectionState().value(),
             static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECTING));
 
   // Tunnel service stopped, registry state as "connected"
-  wireguard::WriteConnectionState(
+  WriteConnectionState(
       static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECTED));
-  EXPECT_EQ(brave_vpn::wireguard::GetConnectionState().value(),
+  EXPECT_EQ(brave_vpn::GetConnectionState().value(),
             static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECTED));
   // State should not be shown as connected because tunnel service is not
   // launched.
@@ -127,41 +127,41 @@ TEST_F(StatusTrayRunnerTest, UpdateConnectionState) {
       IDR_BRAVE_VPN_TRAY_LIGHT,
       IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED);
   // Registry state was reset because the service wasn't running.
-  EXPECT_EQ(brave_vpn::wireguard::GetConnectionState().value(),
+  EXPECT_EQ(brave_vpn::GetConnectionState().value(),
             static_cast<int>(brave_vpn::mojom::ConnectionState::DISCONNECTED));
 
   // Tunnel service stopped, registry state as "disconnecting"
-  wireguard::WriteConnectionState(
+  WriteConnectionState(
       static_cast<int>(brave_vpn::mojom::ConnectionState::DISCONNECTING));
   WaitIconStateChangedTo(
       IDR_BRAVE_VPN_TRAY_LIGHT,
       IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTING);
-  EXPECT_EQ(brave_vpn::wireguard::GetConnectionState().value(),
+  EXPECT_EQ(brave_vpn::GetConnectionState().value(),
             static_cast<int>(brave_vpn::mojom::ConnectionState::DISCONNECTING));
 
   // Tunnel service stopped, registry state as "CONNECT_NOT_ALLOWED"
-  wireguard::WriteConnectionState(
+  WriteConnectionState(
       static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECT_NOT_ALLOWED));
   WaitIconStateChangedTo(IDR_BRAVE_VPN_TRAY_LIGHT_ERROR,
                          IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR);
   EXPECT_EQ(
-      brave_vpn::wireguard::GetConnectionState().value(),
+      brave_vpn::GetConnectionState().value(),
       static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECT_NOT_ALLOWED));
 
   // Tunnel service stopped, registry state as "CONNECT_FAILED"
-  wireguard::WriteConnectionState(
+  WriteConnectionState(
       static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECT_FAILED));
   WaitIconStateChangedTo(IDR_BRAVE_VPN_TRAY_LIGHT_ERROR,
                          IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR);
   EXPECT_EQ(
-      brave_vpn::wireguard::GetConnectionState().value(),
+      brave_vpn::GetConnectionState().value(),
       static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECT_FAILED));
 
   // Service is working, state connected.
   StatusTrayRunner::GetInstance()->SetVPNConnectedForTesting(true);
   WaitIconStateChangedTo(IDR_BRAVE_VPN_TRAY_LIGHT_CONNECTED,
                          IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTED);
-  EXPECT_EQ(brave_vpn::wireguard::GetConnectionState().value(),
+  EXPECT_EQ(brave_vpn::GetConnectionState().value(),
             static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECTED));
 }
 

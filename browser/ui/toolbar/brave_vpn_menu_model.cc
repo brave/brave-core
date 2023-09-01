@@ -62,6 +62,6 @@ bool BraveVPNMenuModel::IsTrayIconEnabled() const {
     return tray_icon_enabled_for_testing_.value();
   }
 
-  return brave_vpn::wireguard::IsVPNTrayIconEnabled();
+  return brave_vpn::IsVPNTrayIconEnabled();
 }
 #endif
