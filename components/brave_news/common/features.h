@@ -7,12 +7,18 @@
 #define BRAVE_COMPONENTS_BRAVE_NEWS_COMMON_FEATURES_H_
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
 namespace brave_news::features {
 
 BASE_DECLARE_FEATURE(kBraveNewsCardPeekFeature);
-BASE_DECLARE_FEATURE(kBraveNewsFeedUpdate);
 
+BASE_DECLARE_FEATURE(kBraveNewsFeedUpdate);
+extern const base::FeatureParam<int> kBraveNewsMinBlockCards;
+extern const base::FeatureParam<int> kBraveNewsMaxBlockCards;
+
+extern const base::FeatureParam<double> kBraveNewsPopScoreHalfLife;
+extern const base::FeatureParam<double> kBraveNewsPopScoreFallback;
 }  // namespace brave_news::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_NEWS_COMMON_FEATURES_H_
