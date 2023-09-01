@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_page_graph/common/buildflags.h"
 #include "skia/ext/skia_utils_base.h"
+#include "third_party/blink/renderer/core/core_probe_sink.h"
 #include "third_party/blink/renderer/core/html/canvas/html_canvas_element.h"
 #include "third_party/blink/renderer/core/layout/layout_image.h"
 #include "third_party/blink/renderer/core/probe/core_probes.h"
@@ -16,15 +17,17 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#define BRAVE_LOCAL_FRAME_LOCAL_FRAME                                \
-  IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                            \
-    if (IsLocalRoot()) {                                             \
-      /* InstallSupplements call is too late, do it here instead. */ \
-      PageGraph::ProvideTo(*this);                                   \
-    }                                                                \
+#define AddInspectorTraceEvents(...)                               \
+  AddInspectorTraceEvents(__VA_ARGS__);                            \
+  IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                          \
+    DCHECK(IsLocalRoot());                                         \
+    /* InstallSupplements call is too late, do it here instead. */ \
+    PageGraph::ProvideTo(*this);                                   \
   })
 
 #include "src/third_party/blink/renderer/core/frame/local_frame.cc"
+
+#undef AddInspectorTraceEvents
 
 namespace blink {
 
@@ -106,5 +109,3 @@ SkBitmap LocalFrame::GetImageAtViewportPoint(const gfx::Point& viewport_point) {
 }
 
 }  // namespace blink
-
-#undef BRAVE_LOCAL_FRAME_LOCAL_FRAME
