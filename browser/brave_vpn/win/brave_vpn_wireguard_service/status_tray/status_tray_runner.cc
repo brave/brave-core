@@ -128,7 +128,7 @@ void StatusTrayRunner::DisconnectVPN() {
     wireguard::DisableBraveVpnWireguardService(base::BindOnce(
         &StatusTrayRunner::OnDisconnected, weak_factory_.GetWeakPtr()));
   } else {
-    StatusTrayRunner::OnDisconnected(ras::DisconnectRasEntry());
+    OnDisconnected(ras::DisconnectRasEntry());
   }
 }
 
