@@ -43,7 +43,7 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.NTP.NewTabsCreated.2",
     "Brave.NTP.SponsoredImagesEnabled",
     "Brave.NTP.SponsoredNewTabsCreated",
-    "Brave.Omnibox.SearchCount",
+    "Brave.Omnibox.SearchCount.2",
     "Brave.P3A.SentAnswersCount",
     "Brave.Playlist.FirstTimeOffset",
     "Brave.Playlist.NewUserReturning",

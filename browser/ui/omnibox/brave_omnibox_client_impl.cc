@@ -48,7 +48,7 @@ bool IsSearchEvent(const AutocompleteMatch& match) {
 }
 
 void RecordSearchEventP3A(uint64_t number_of_searches) {
-  p3a_utils::RecordToHistogramBucket("Brave.Omnibox.SearchCount",
+  p3a_utils::RecordToHistogramBucket("Brave.Omnibox.SearchCount.2",
                                      {0, 5, 10, 20, 50, 100, 500},
                                      number_of_searches);
 }
