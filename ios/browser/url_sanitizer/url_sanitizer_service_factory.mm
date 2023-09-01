@@ -70,7 +70,6 @@ bool URLSanitizerServiceFactory::ServiceIsNULLWhileTesting() const {
 }
 
 bool URLSanitizerServiceFactory::ServiceIsCreatedWithBrowserState() const {
-  // Return true here because the service is instantiated lazily
   return true;
 }
 
