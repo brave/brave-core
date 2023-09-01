@@ -10,6 +10,8 @@
 
 namespace brave_rewards::internal {
 
+bool ShouldLogHeader(const std::string& header);
+
 class LoggingUtilTest : public testing::Test {};
 
 TEST(LoggingUtilTest, ShouldLogHeader) {

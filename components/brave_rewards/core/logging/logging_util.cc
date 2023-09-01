@@ -57,33 +57,6 @@ std::string UrlRequestToString(const std::string& url,
   return log;
 }
 
-std::string UrlResponseToString(const char* func,
-                                const mojom::UrlResponse& response) {
-  std::string result;
-  if (!response.error.empty()) {
-    result = "Error (" + response.error + ")";
-  } else if (response.status_code >= 200 && response.status_code < 300) {
-    result = "Success";
-  } else {
-    result = "Failure";
-  }
-
-  std::string formatted_headers;
-  for (const auto& header : response.headers) {
-    formatted_headers += "\n> Header " + header.first + ": " + header.second;
-  }
-
-  return base::StringPrintf(
-      "\n[ RESPONSE - %s ]\n"
-      "> Url: %s\n"
-      "> Result: %s\n"
-      "> HTTP Code: %d\n"
-      "> Body: %s"
-      "%s",
-      func, response.url.c_str(), result.c_str(), response.status_code,
-      response.body.c_str(), formatted_headers.c_str());
-}
-
 void LogUrlResponse(const char* func,
                     const mojom::UrlResponse& response,
                     const bool long_response) {

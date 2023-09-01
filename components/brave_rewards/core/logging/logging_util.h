@@ -14,17 +14,11 @@
 
 namespace brave_rewards::internal {
 
-bool ShouldLogHeader(const std::string& header);
-
 std::string UrlRequestToString(const std::string& url,
                                const std::vector<std::string>& headers,
                                const std::string& content,
                                const std::string& content_type,
                                const mojom::UrlMethod method);
-
-// DEPRECATED (use LogUrlResponse)
-std::string UrlResponseToString(const char* func,
-                                const mojom::UrlResponse& response);
 
 void LogUrlResponse(const char* func,
                     const mojom::UrlResponse& response,
