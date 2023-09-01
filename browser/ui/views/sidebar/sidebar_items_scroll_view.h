@@ -14,6 +14,7 @@
 #include "base/scoped_multi_source_observation.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/views/animation/bounds_animator.h"
 #include "ui/views/animation/bounds_animator_observer.h"
@@ -110,6 +111,13 @@ class SidebarItemsScrollView : public views::View,
   gfx::Rect GetTargetScrollContentsViewRectTo(bool top);
   void ScrollContentsViewBy(int offset, bool animate);
 
+  // Returns true when needs scroll for showing an item at |index|.
+  bool NeedScrollForItemAt(size_t index) const;
+
+  // Get bounds for |contents_view_| to make item at |index| visible in
+  // scroll view.
+  gfx::Rect GetTargetScrollContentsViewRectForItemAt(size_t index) const;
+
   // Put NOLINT here because our cpp linter complains -
   // "make const or use a pointer: ui::mojom::DragOperation& output_drag_op"
   // But can't avoid because View::DropCallback uses non const refererence
@@ -122,6 +130,7 @@ class SidebarItemsScrollView : public views::View,
   bool IsInVisibleContentsViewBounds(const gfx::Point& position) const;
   void ClearDragIndicator();
 
+  absl::optional<size_t> lastly_added_item_index_;
   raw_ptr<BraveBrowser> browser_ = nullptr;
   raw_ptr<views::ImageButton> up_arrow_ = nullptr;
   raw_ptr<views::ImageButton> down_arrow_ = nullptr;

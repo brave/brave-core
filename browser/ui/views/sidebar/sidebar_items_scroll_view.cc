@@ -40,6 +40,7 @@
 namespace {
 
 constexpr char kSidebarItemDragType[] = "brave/sidebar-item";
+constexpr int kArrowHeight = 24;
 
 class SidebarItemsArrowView : public views::ImageButton {
  public:
@@ -57,7 +58,9 @@ class SidebarItemsArrowView : public views::ImageButton {
   SidebarItemsArrowView(const SidebarItemsArrowView&) = delete;
   SidebarItemsArrowView& operator=(const SidebarItemsArrowView&) = delete;
 
-  gfx::Size CalculatePreferredSize() const override { return {42, 24}; }
+  gfx::Size CalculatePreferredSize() const override {
+    return {42, kArrowHeight};
+  }
 
   void OnPaintBackground(gfx::Canvas* canvas) override {
     if (const ui::ColorProvider* color_provider = GetColorProvider()) {
@@ -188,8 +191,10 @@ void SidebarItemsScrollView::OnBoundsAnimatorProgressed(
 void SidebarItemsScrollView::OnBoundsAnimatorDone(
     views::BoundsAnimator* animator) {
   if (scroll_animator_for_new_item_.get() == animator) {
-    contents_view_->ShowItemAddedFeedbackBubble();
+    CHECK(lastly_added_item_index_.has_value());
+    contents_view_->ShowItemAddedFeedbackBubble(*lastly_added_item_index_);
     UpdateArrowViewsEnabledState();
+    lastly_added_item_index_ = absl::nullopt;
   }
 }
 
@@ -205,12 +210,14 @@ void SidebarItemsScrollView::OnItemAdded(const sidebar::SidebarItem& item,
   // Only show item added feedback bubble on active browser window if this new
   // item is explicitely by user gesture.
   if (user_gesture && browser_ == BrowserList::GetInstance()->GetLastActive()) {
-    // If scrollable, scroll to bottom with animation before showing feedback.
-    if (IsScrollable()) {
+    // If added item is not visible because of narrow height, we should scroll
+    // to make it visible.
+    if (NeedScrollForItemAt(index)) {
+      lastly_added_item_index_ = index;
       scroll_animator_for_new_item_->AnimateViewTo(
-          contents_view_, GetTargetScrollContentsViewRectTo(false));
+          contents_view_, GetTargetScrollContentsViewRectForItemAt(index));
     } else {
-      contents_view_->ShowItemAddedFeedbackBubble();
+      contents_view_->ShowItemAddedFeedbackBubble(index);
     }
   }
 }
@@ -348,6 +355,53 @@ void SidebarItemsScrollView::ScrollContentsViewBy(int offset, bool animate) {
   } else {
     contents_view_->SetPosition(target_bounds.origin());
   }
+}
+
+bool SidebarItemsScrollView::NeedScrollForItemAt(size_t index) const {
+  if (!IsScrollable()) {
+    return false;
+  }
+
+  auto* item_view = contents_view_->children()[index];
+  auto item_view_bounds_per_scroll_view = item_view->GetLocalBounds();
+  item_view_bounds_per_scroll_view = views::View::ConvertRectToTarget(
+      item_view, this, item_view_bounds_per_scroll_view);
+
+  auto scroll_view_bounds = GetContentsBounds();
+  scroll_view_bounds.Inset(gfx::Insets::VH(kArrowHeight, 0));
+
+  // Need scroll if item is not fully included in scroll view.
+  return !scroll_view_bounds.Contains(item_view_bounds_per_scroll_view);
+}
+
+gfx::Rect SidebarItemsScrollView::GetTargetScrollContentsViewRectForItemAt(
+    size_t index) const {
+  DCHECK(NeedScrollForItemAt(index));
+
+  auto* item_view = contents_view_->children()[index];
+  auto item_view_bounds_per_scroll_view = item_view->GetLocalBounds();
+  item_view_bounds_per_scroll_view = views::View::ConvertRectToTarget(
+      item_view, this, item_view_bounds_per_scroll_view);
+
+  const bool scroll_up = item_view_bounds_per_scroll_view.bottom() >
+                         (GetContentsBounds().bottom() - kArrowHeight);
+  auto item_view_bounds = item_view->GetLocalBounds();
+  item_view_bounds = views::View::ConvertRectToTarget(item_view, contents_view_,
+                                                      item_view_bounds);
+  gfx::Rect target_bounds = contents_view_->bounds();
+
+  if (scroll_up) {
+    // Scroll to make this item as a last visible item.
+    target_bounds.set_origin({contents_view_->origin().x(),
+                              GetContentsBounds().height() -
+                                  item_view_bounds.bottom() - kArrowHeight});
+  } else {
+    // Scroll to make this item as a first visible item.
+    target_bounds.set_origin(
+        {contents_view_->origin().x(), -item_view_bounds.y() + kArrowHeight});
+  }
+
+  return target_bounds;
 }
 
 gfx::Rect SidebarItemsScrollView::GetTargetScrollContentsViewRectTo(bool top) {

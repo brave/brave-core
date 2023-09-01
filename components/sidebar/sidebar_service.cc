@@ -659,4 +659,17 @@ void SidebarService::OnPreferenceChanged(const std::string& pref_name) {
   }
 }
 
+void SidebarService::AddItemAtForTesting(const SidebarItem& item,
+                                         size_t index) {
+  // Assueme that |index| is valid now in test.
+  CHECK_IS_TEST();
+
+  items_.insert(items_.begin() + index, item);
+  for (Observer& obs : observers_) {
+    obs.OnItemAdded(item, index);
+  }
+
+  UpdateSidebarItemsToPrefStore();
+}
+
 }  // namespace sidebar

@@ -7,7 +7,9 @@
 
 #include <string>
 
+#include "base/check_is_test.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/i18n/case_conversion.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
@@ -312,7 +314,8 @@ void SidebarItemsContentsView::UpdateItem(
   }
 }
 
-void SidebarItemsContentsView::ShowItemAddedFeedbackBubble() {
+void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
+    size_t item_added_index) {
   auto* prefs = browser_->profile()->GetPrefs();
   const int current_count =
       prefs->GetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount);
@@ -321,8 +324,8 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble() {
     return;
   prefs->SetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount,
                     current_count + 1);
-
-  auto* lastly_added_view = children()[children().size() - 1];
+  CHECK_LT(item_added_index, children().size());
+  auto* lastly_added_view = children()[item_added_index];
   ShowItemAddedFeedbackBubble(lastly_added_view);
 }
 
@@ -331,6 +334,13 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
   // Only launch feedback bubble for active browser window.
   DCHECK_EQ(browser_, BrowserList::GetInstance()->GetLastActive());
   DCHECK(!observation_.IsObserving());
+
+  if (item_added_bubble_launched_for_test_) {
+    // Early return w/o launching actual bubble for quick test.
+    CHECK_IS_TEST();
+    item_added_bubble_launched_for_test_.Run(anchor_view);
+    return;
+  }
 
   auto* bubble = SidebarItemAddedFeedbackBubble::Create(anchor_view, this);
   observation_.Observe(bubble);
