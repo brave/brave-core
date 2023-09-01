@@ -53,7 +53,6 @@
 #include "ios/chrome/app/startup/provider_registration.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state_removal_controller.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
 #include "ios/chrome/browser/passwords/ios_chrome_password_store_factory.h"
@@ -195,10 +194,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
     // Setup WebMain
     _webMain = std::make_unique<web::WebMain>(std::move(params));
-
-    // Remove the extra browser states as Chrome iOS is single profile in M48+.
-    ChromeBrowserStateRemovalController::GetInstance()
-        ->RemoveBrowserStatesIfNecessary();
 
     // Initialize and set the main browser state.
     ios::ChromeBrowserStateManager* browserStateManager =
