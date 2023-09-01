@@ -2836,7 +2836,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Auto-Contribute
     </message>
     <message name="IDS_ESTIMATED_EARNINGS" desc="Title text for `Estimated earnings` section in Brave rewards panel">
-      Estimated earnings
+      Earnings so far
     </message>
     <message name="IDS_TIP" desc="Text for `Tip` button in Brave rewards panel">
       Contribute
