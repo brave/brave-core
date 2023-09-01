@@ -218,14 +218,15 @@ public class NetworkModel implements JsonRpcServiceObserver {
      * between the view and the selection activity.
      * @param key acts as a binding key between caller and selection activity.
      * @param mode to handle network selection event globally or locally.
+     * @param selectionMode to allow Single or Multiple network selection.
      * @param lifecycle to auto remove network-selection objects.
      * @return NetworkSelectorModel object.
      */
-    public NetworkSelectorModel openNetworkSelectorModel(
-            String key, NetworkSelectorModel.Mode mode, Lifecycle lifecycle) {
+    public NetworkSelectorModel openNetworkSelectorModel(String key, NetworkSelectorModel.Mode mode,
+            NetworkSelectorModel.SelectionMode selectionMode, Lifecycle lifecycle) {
         NetworkSelectorModel networkSelectorModel;
         if (key == null) {
-            return new NetworkSelectorModel(mode, this, mContext);
+            return new NetworkSelectorModel(mode, selectionMode, this, mContext);
         } else if (mNetworkSelectorMap.containsKey(key)) {
             // Use existing NetworkSelector object to show the previously selected network
             networkSelectorModel = mNetworkSelectorMap.get(key);
@@ -233,7 +234,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 networkSelectorModel.updateSelectorMode(mode);
             }
         } else {
-            networkSelectorModel = new NetworkSelectorModel(mode, this, mContext);
+            networkSelectorModel = new NetworkSelectorModel(mode, selectionMode, this, mContext);
             mNetworkSelectorMap.put(key, networkSelectorModel);
         }
         if (lifecycle != null) {

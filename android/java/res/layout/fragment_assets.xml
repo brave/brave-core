@@ -40,19 +40,12 @@
                 app:autoSizeTextType="uniform" />
 
 
-            <android.widget.Button
+            <ImageButton
                 android:id="@+id/fragment_portfolio_btn_change_networks"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight=".4"
-                android:background="@drawable/rounded_holo_button"
-                android:drawableEnd="@drawable/ic_arrow_down_circular_day_night"
-                android:minHeight="0dp"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="2dp"
-                android:textAllCaps="false"
-                android:textColor="@color/brave_wallet_day_night_text_color"
+                android:background="@drawable/ic_wallet_filters"
+                android:contentDescription="@null"
                 app:autoSizeTextType="uniform" />
 
         </LinearLayout>
@@ -82,10 +75,10 @@
         </LinearLayout>
 
         <org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced
-            android:layout_marginTop="32dp"
+            android:id="@+id/line_chart"
             android:layout_width="match_parent"
             android:layout_height="140dp"
-            android:id="@+id/line_chart" />
+            android:layout_marginTop="32dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -246,6 +239,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 style="@style/BraveWalletTextView"
                 android:layout_width="wrap_content"
@@ -256,10 +250,10 @@
 
             <ProgressBar
                 android:id="@+id/frag_port_pb_asset_discovery"
-                android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:visibility="gone"/>
+                android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
+                android:visibility="gone" />
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
@@ -276,6 +270,25 @@
                 android:background="@color/brave_wallet_dn_highlight_bg_color"
                 android:orientation="vertical">
 
+                <ImageView
+                    android:id="@+id/frag_assets_iv_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:background="@drawable/empty_assets"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/frag_assets_tv_msg"
+                    style="@style/BraveWalletTextViewTitle"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:text="@string/brave_wallet_no_available_assets"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvCoins"
                     android:layout_width="match_parent"
@@ -283,6 +296,15 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     app:layoutManager="LinearLayoutManager" />
+
+                <View
+                    android:id="@+id/frag_asset_edit_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="?android:attr/listDivider"
+                    />
 
                 <TextView
                     android:id="@+id/edit_visible_assets"

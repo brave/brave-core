@@ -14,7 +14,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -59,8 +60,8 @@ import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpac
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
-import org.chromium.ui.widget.Toast;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -71,7 +72,7 @@ import java.util.Locale;
 public class AssetsFragment extends Fragment implements OnWalletListItemClick, ApprovedTxObserver {
     private static final String TAG = "AssetsFragment";
     private TextView mBalance;
-    private Button mBtnChangeNetwork;
+    private ImageButton mBtnChangeNetwork;
 
     private String mFiatSumString;
 
@@ -82,12 +83,15 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
     PortfolioHelper mPortfolioHelper;
     private RecyclerView mRvCoins;
     private WalletCoinAdapter mWalletCoinAdapter;
-    private NetworkInfo mNetworkInfo;
+    private List<NetworkInfo> mSelectedNetworkList;
 
     private SmoothLineChartEquallySpaced mChartES;
     private PortfolioModel mPortfolioModel;
     private ProgressBar mPbAssetDiscovery;
     private NetworkSelectorModel mNetworkSelectionModel;
+    private ImageView mIvMsg;
+    private TextView mTvMsgTitle;
+    private View mEditVisibleDivider;
 
     public static AssetsFragment newInstance() {
         return new AssetsFragment();
@@ -101,6 +105,7 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
             Api33AndPlusBackPressHelper.create(
                     this, (FragmentActivity) requireActivity(), () -> requireActivity().finish());
         }
+        mSelectedNetworkList = Collections.emptyList();
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
@@ -146,17 +151,10 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
 
         mBtnChangeNetwork = view.findViewById(R.id.fragment_portfolio_btn_change_networks);
         mBtnChangeNetwork.setOnClickListener(v -> openNetworkSelection());
-        mBtnChangeNetwork.setOnLongClickListener(v -> {
-            NetworkInfo networkInfo = null;
-            if (mWalletModel != null) {
-                networkInfo = mNetworkInfo;
-            }
-            if (networkInfo != null) {
-                Toast.makeText(requireContext(), networkInfo.chainName, Toast.LENGTH_SHORT).show();
-            }
-            return true;
-        });
 
+        mIvMsg = view.findViewById(R.id.frag_assets_iv_msg);
+        mTvMsgTitle = view.findViewById(R.id.frag_assets_tv_msg);
+        mEditVisibleDivider = view.findViewById(R.id.frag_asset_edit_divider);
         mBalance = view.findViewById(R.id.balance);
         mBalance.setOnClickListener(v -> updatePortfolioGetPendingTx());
         if (mWalletModel != null) setUpObservers();
@@ -166,21 +164,19 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
     @MainThread
     private void setUpObservers() {
         ThreadUtils.assertOnUiThread();
-        mNetworkSelectionModel = getNetworkModel().openNetworkSelectorModel(
-                TAG, NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, getLifecycle());
+        mNetworkSelectionModel = getNetworkModel().openNetworkSelectorModel(TAG,
+                NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER,
+                NetworkSelectorModel.SelectionMode.MULTI, getLifecycle());
         // Show pending transactions fab to process pending txs
-        mNetworkSelectionModel.getSelectedNetwork().observe(
-                getViewLifecycleOwner(), localNetworkInfo -> {
-                    if (localNetworkInfo == null) return;
-                    if (mNetworkInfo != null
-                            && !mNetworkInfo.chainId.equals(localNetworkInfo.chainId)) {
-                        // Clean up list to avoid user clicking on an asset of the previously
-                        // selected network after the network has been changed
+        mNetworkSelectionModel.mSelectedNetworks.observe(
+                getViewLifecycleOwner(), selectedNetworkInfos -> {
+                    mSelectedNetworkList = selectedNetworkInfos;
+                    if (mSelectedNetworkList.isEmpty()) {
                         clearAssets();
+                        AndroidUtils.show(mIvMsg, mTvMsgTitle, mEditVisibleDivider);
+                        return;
                     }
-                    mNetworkInfo = localNetworkInfo;
-                    mBtnChangeNetwork.setText(
-                            Utils.getShortNameOfNetwork(localNetworkInfo.chainName));
+                    AndroidUtils.gone(mIvMsg, mTvMsgTitle, mEditVisibleDivider);
                     updatePortfolioGetPendingTx();
                 });
         mWalletModel.getCryptoModel().getPortfolioModel().mIsDiscoveringUserAssets.observe(
@@ -325,16 +321,11 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
     }
 
     private void updatePortfolioGetPendingTx() {
-        if (mWalletModel == null) return;
-
-        final NetworkInfo selectedNetwork = mNetworkInfo;
-        if (selectedNetwork == null) {
-            return;
-        }
+        if (mWalletModel == null || mSelectedNetworkList.isEmpty()) return;
 
         Activity activity = getActivity();
         if (!(activity instanceof BraveWalletActivity)) return;
-        mPortfolioModel.fetchAssetsByType(TokenUtils.TokenType.NON_NFTS, selectedNetwork,
+        mPortfolioModel.fetchAssets(TokenUtils.TokenType.NON_NFTS, mSelectedNetworkList,
                 (BraveWalletBaseActivity) activity, (portfolioHelper) -> {
                     if (!AndroidUtils.canUpdateFragmentUi(this)) return;
                     mPortfolioHelper = portfolioHelper;
@@ -364,15 +355,10 @@ public class AssetsFragment extends Fragment implements OnWalletListItemClick, A
     }
 
     private void showEditVisibleDialog() {
-        if (mNetworkInfo == null) {
-            return;
-        }
-
         EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                 EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                         WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST, false);
 
-        bottomSheetDialogFragment.setSelectedNetwork(mNetworkInfo);
         bottomSheetDialogFragment.setDismissListener(isAssetsListChanged -> {
             if (isAssetsListChanged) {
                 updatePortfolioGetPendingTx();
