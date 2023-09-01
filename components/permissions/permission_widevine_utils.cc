@@ -13,7 +13,7 @@
 namespace permissions {
 
 void AskWidevineInstall(PrefService* prefs, bool ask) {
-  prefs->SetBoolean(kAskWidevineInstall, ask);
+  prefs->SetBoolean(kAskEnableWidvine, ask);
 }
 
 bool HasWidevinePermissionRequest(

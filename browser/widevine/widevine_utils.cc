@@ -74,13 +74,14 @@ void DeleteOldWidevineBinary() {
 
 void ClearWidevinePrefs(Profile* profile) {
   PrefService* prefs = profile->GetPrefs();
-  prefs->ClearPref(kWidevineOptedIn);
+  prefs->ClearPref(kWidevineEnabled);
 }
 
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
 void InstallWidevineOnceRegistered() {
   component_updater::BraveOnDemandUpdate(kWidevineComponentId);
 }
-
+#endif
 }  // namespace
 
 void EnableWidevineCdm() {
@@ -125,19 +126,19 @@ void RequestWidevinePermission(content::WebContents* web_contents,
 
 void RegisterWidevineProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(kWidevineOptedIn, false);
+  registry->RegisterBooleanPref(kWidevineEnabled, false);
 }
 
 void RegisterWidevineLocalstatePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kWidevineOptedIn, false);
+  registry->RegisterBooleanPref(kWidevineEnabled, false);
 }
 
 bool IsWidevineOptedIn() {
-  return g_browser_process->local_state()->GetBoolean(kWidevineOptedIn);
+  return g_browser_process->local_state()->GetBoolean(kWidevineEnabled);
 }
 
 void SetWidevineOptedIn(bool opted_in) {
-  g_browser_process->local_state()->SetBoolean(kWidevineOptedIn, opted_in);
+  g_browser_process->local_state()->SetBoolean(kWidevineEnabled, opted_in);
 }
 
 void MigrateWidevinePrefs(Profile* profile) {
@@ -147,10 +148,10 @@ void MigrateWidevinePrefs(Profile* profile) {
   // If migration is done, local state doesn't have default value because
   // they were explicitly set by primary prefs' value. After that, we don't
   // need to try migration again and prefs from profiles are already cleared.
-  if (local_state->FindPreference(kWidevineOptedIn)->IsDefaultValue()) {
+  if (local_state->FindPreference(kWidevineEnabled)->IsDefaultValue()) {
     PrefService* prefs = profile->GetPrefs();
-    local_state->SetBoolean(kWidevineOptedIn,
-                            prefs->GetBoolean(kWidevineOptedIn));
+    local_state->SetBoolean(kWidevineEnabled,
+                            prefs->GetBoolean(kWidevineEnabled));
   }
 
   // Clear deprecated prefs.

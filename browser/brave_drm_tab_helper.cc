@@ -79,7 +79,7 @@ bool BraveDrmTabHelper::ShouldShowWidevineOptIn() const {
   // If the user already opted in, don't offer it.
   PrefService* prefs =
       static_cast<Profile*>(web_contents()->GetBrowserContext())->GetPrefs();
-  if (IsWidevineOptedIn() || !prefs->GetBoolean(kAskWidevineInstall)) {
+  if (IsWidevineOptedIn() || !prefs->GetBoolean(kAskEnableWidvine)) {
     return false;
   }
 
@@ -99,7 +99,7 @@ void BraveDrmTabHelper::DidStartNavigation(
 void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
   is_widevine_requested_ = true;
 #if BUILDFLAG(IS_ANDROID)
-  bool for_restart = true;
+  bool for_restart = false;
 #else
   bool for_restart = false;
 #endif

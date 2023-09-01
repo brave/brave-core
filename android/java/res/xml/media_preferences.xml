@@ -6,7 +6,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-      android:key="enable_widevine"
+      android:key="widevine_opted_in"
       android:title="@string/prefs_enable_widevine_title"
       android:summary="@string/prefs_enable_widevine_summary" />
 

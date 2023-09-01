@@ -44,7 +44,7 @@ public class MediaPreferences
                 (ChromeSwitchPreference) findPreference(PREF_WIDEVINE_OPTED_IN);
         if (enableWidevinePref != null) {
             enableWidevinePref.setChecked(
-                    BraveLocalState.get().getBoolean(BravePref.WIDEVINE_OPTED_IN));
+                    BraveLocalState.get().getBoolean(BravePref.WIDEVINE_ENABLED));
             enableWidevinePref.setOnPreferenceChangeListener(this);
         }
 
@@ -66,8 +66,8 @@ public class MediaPreferences
         if (PREF_WIDEVINE_OPTED_IN.equals(key)) {
             ChromeSwitchPreference enableWidevinePref =
                     (ChromeSwitchPreference) findPreference(PREF_WIDEVINE_OPTED_IN);
-            BraveLocalState.get().setBoolean(BravePref.WIDEVINE_OPTED_IN,
-                    !BraveLocalState.get().getBoolean(BravePref.WIDEVINE_OPTED_IN));
+            BraveLocalState.get().setBoolean(BravePref.WIDEVINE_ENABLED,
+                    !BraveLocalState.get().getBoolean(BravePref.WIDEVINE_ENABLED));
             shouldRelaunch = true;
         } else if (PREF_BACKGROUND_VIDEO_PLAYBACK.equals(key)) {
             BraveFeatureUtil.enableFeature(

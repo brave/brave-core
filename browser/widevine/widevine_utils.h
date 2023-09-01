@@ -18,7 +18,7 @@ class PrefRegistrySimple;
 class PrefService;
 class Profile;
 
-// On Android, kWidevineOptedIn is written through EnableWidevineCdm() for the
+// On Android, kWidevineEnabled is written through EnableWidevineCdm() for the
 // permission prompt, but r/w through BraveLocalState.java on preference screen
 void EnableWidevineCdm();
 void DisableWidevineCdm();

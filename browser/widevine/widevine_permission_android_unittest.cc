@@ -44,8 +44,8 @@ class WidevinePermissionAndroidTest : public ChromeRenderViewHostTestHarness {
   }
 
   void SanityCheck() {
-    EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(kAskWidevineInstall));
-    EXPECT_FALSE(local_state()->GetBoolean(kWidevineOptedIn));
+    EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(kAskEnableWidvine));
+    EXPECT_FALSE(local_state()->GetBoolean(kWidevineEnabled));
   }
 
   void SimulateNavigation() {
@@ -118,7 +118,7 @@ TEST_F(WidevinePermissionAndroidTest, BraveDrmTabHelperTest) {
   EXPECT_TRUE(brave_drm_tab_helper()->ShouldShowWidevineOptIn());
 
   // Dont ask again
-  profile()->GetPrefs()->SetBoolean(kAskWidevineInstall, false);
+  profile()->GetPrefs()->SetBoolean(kAskEnableWidvine, false);
   EXPECT_FALSE(brave_drm_tab_helper()->ShouldShowWidevineOptIn());
 }
 
@@ -126,15 +126,15 @@ TEST_F(WidevinePermissionAndroidTest, WidevineUtilsTest) {
   SanityCheck();
 
   EnableWidevineCdm();
-  EXPECT_TRUE(local_state()->GetBoolean(kWidevineOptedIn));
+  EXPECT_TRUE(local_state()->GetBoolean(kWidevineEnabled));
   EXPECT_TRUE(IsWidevineOptedIn());
 
   DisableWidevineCdm();
-  EXPECT_FALSE(local_state()->GetBoolean(kWidevineOptedIn));
+  EXPECT_FALSE(local_state()->GetBoolean(kWidevineEnabled));
   EXPECT_FALSE(IsWidevineOptedIn());
 
   SetWidevineOptedIn(true);
-  EXPECT_TRUE(local_state()->GetBoolean(kWidevineOptedIn));
+  EXPECT_TRUE(local_state()->GetBoolean(kWidevineEnabled));
   EXPECT_TRUE(IsWidevineOptedIn());
 }
 
@@ -150,10 +150,10 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
   EXPECT_TRUE(manager->has_pending_requests() &&
               GetPendingRequestQueue()->Count() == 1);
   GetPendingRequestQueue()->Pop()->PermissionGranted(false /* is_one_time */);
-  EXPECT_TRUE(local_state()->GetBoolean(kWidevineOptedIn));
+  EXPECT_TRUE(local_state()->GetBoolean(kWidevineEnabled));
 
   // Deny
-  local_state()->SetBoolean(kWidevineOptedIn, false);
+  local_state()->SetBoolean(kWidevineEnabled, false);
   SimulateNavigation();
   brave_drm_tab_helper()->OnWidevineKeySystemAccessRequest();
   base::RunLoop().RunUntilIdle();
@@ -161,7 +161,7 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
   EXPECT_TRUE(manager->has_pending_requests() &&
               GetPendingRequestQueue()->Count() == 1);
   GetPendingRequestQueue()->Pop()->PermissionDenied();
-  EXPECT_FALSE(local_state()->GetBoolean(kWidevineOptedIn));
+  EXPECT_FALSE(local_state()->GetBoolean(kWidevineEnabled));
 
   // Cancel
   SimulateNavigation();
@@ -171,16 +171,16 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
   EXPECT_TRUE(manager->has_pending_requests() &&
               GetPendingRequestQueue()->Count() == 1);
   GetPendingRequestQueue()->Pop()->Cancelled();
-  EXPECT_FALSE(local_state()->GetBoolean(kWidevineOptedIn));
+  EXPECT_FALSE(local_state()->GetBoolean(kWidevineEnabled));
 }
 
 TEST_F(WidevinePermissionAndroidTest, PermissionWidevineUtilsTest) {
   SanityCheck();
 
   permissions::AskWidevineInstall(profile()->GetPrefs(), false);
-  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(kAskWidevineInstall));
+  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(kAskEnableWidvine));
   permissions::AskWidevineInstall(profile()->GetPrefs(), true);
-  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(kAskWidevineInstall));
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(kAskEnableWidvine));
 
   std::vector<permissions::PermissionRequest*> requests;
   requests.push_back(new WidevinePermissionRequest(web_contents(), false));

@@ -212,7 +212,7 @@ void BraveDefaultExtensionsHandler::InitializePrefCallbacks() {
 #if BUILDFLAG(ENABLE_WIDEVINE)
   local_state_change_registrar_.Init(g_browser_process->local_state());
   local_state_change_registrar_.Add(
-      kWidevineOptedIn,
+      kWidevineEnabled,
       base::BindRepeating(
           &BraveDefaultExtensionsHandler::OnWidevineEnabledChanged,
           base::Unretained(this)));

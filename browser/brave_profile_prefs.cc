@@ -230,7 +230,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // We don't need to display "don't ask widevine prompt option" in settings
   // if widevine is disabled.
   // F/u issue: https://github.com/brave/brave-browser/issues/7000
-  registry->RegisterBooleanPref(kAskWidevineInstall, true);
+  registry->RegisterBooleanPref(kAskEnableWidvine, true);
 
   // Default Brave shields
   registry->RegisterBooleanPref(kNoScriptControlType, false);
