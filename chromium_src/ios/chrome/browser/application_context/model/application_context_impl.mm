@@ -1,9 +1,9 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "ios/chrome/browser/application_context/application_context_impl.h"
+#include "ios/chrome/browser/application_context/model/application_context_impl.h"
 
 #include <vector>
 
@@ -62,10 +62,6 @@
 #include "services/network/network_change_manager.h"
 #include "services/network/public/cpp/network_connection_tracker.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-
-#if !defined(__has_feature) || !__has_feature(objc_arc)
-#error "This file requires ARC support."
-#endif
 
 namespace {
 
@@ -174,8 +170,9 @@ void ApplicationContextImpl::OnAppEnterBackground() {
     }
 
     PrefService* browser_state_prefs = browser_state->GetPrefs();
-    if (browser_state_prefs)
+    if (browser_state_prefs) {
       browser_state_prefs->CommitPendingWrite();
+    }
   }
 }
 
@@ -187,8 +184,9 @@ bool ApplicationContextImpl::WasLastShutdownClean() {
 
 PrefService* ApplicationContextImpl::GetLocalState() {
   DCHECK(thread_checker_.CalledOnValidThread());
-  if (!local_state_)
+  if (!local_state_) {
     CreateLocalState();
+  }
   return local_state_.get();
 }
 
@@ -223,8 +221,9 @@ const std::string& ApplicationContextImpl::GetApplicationCountry() {
 ios::ChromeBrowserStateManager*
 ApplicationContextImpl::GetChromeBrowserStateManager() {
   DCHECK(thread_checker_.CalledOnValidThread());
-  if (!chrome_browser_state_manager_)
+  if (!chrome_browser_state_manager_) {
     chrome_browser_state_manager_.reset(new ChromeBrowserStateManagerImpl());
+  }
   return chrome_browser_state_manager_.get();
 }
 
