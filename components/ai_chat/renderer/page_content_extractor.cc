@@ -173,7 +173,7 @@ void PageContentExtractor::ExtractPageContent(
   VLOG(1) << "Text transcript type";
   // Do text extraction
   DistillPageText(
-      render_frame(),
+      render_frame(), isolated_world_id_,
       base::BindOnce(&PageContentExtractor::OnDistillResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }

@@ -14,8 +14,11 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
+#include "brave/components/ai_chat/common/mojom/page_content_extractor.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/blink/public/web/web_local_frame.h"
+#include "third_party/blink/public/web/web_script_source.h"
 #include "ui/accessibility/ax_node.h"
 #include "ui/accessibility/ax_tree.h"
 
@@ -111,6 +114,7 @@ void AddTextNodesToVector(const ui::AXNode* node,
 
 void DistillPageText(
     content::RenderFrame* render_frame,
+    int32_t isolated_world_id,
     base::OnceCallback<void(const absl::optional<std::string>&)> callback) {
   auto snapshotter = render_frame->CreateAXTreeSnapshotter(
       ui::AXMode::kWebContents | ui::AXMode::kHTML | ui::AXMode::kScreenReader);
@@ -136,9 +140,33 @@ void DistillPageText(
       base::UTF16ToUTF8(base::JoinString(text_node_contents, u" "));
 
   if (contents_text.empty()) {
-    std::move(callback).Run({});
+    blink::WebScriptSource source = blink::WebScriptSource(
+        blink::WebString::FromASCII("document.body.innerText"));
+
+    auto on_script_executed =
+        [](base::OnceCallback<void(const absl::optional<std::string>&)>
+               callback,
+           absl::optional<base::Value> value, base::TimeTicks start_time) {
+          if (value->is_string()) {
+            std::move(callback).Run(value->GetString());
+            return;
+          }
+
+          std::move(callback).Run({});
+        };
+
+    render_frame->GetWebFrame()->RequestExecuteScript(
+        isolated_world_id, base::make_span(&source, 1u),
+        blink::mojom::UserActivationOption::kDoNotActivate,
+        blink::mojom::EvaluationTiming::kAsynchronous,
+        blink::mojom::LoadEventBlockingOption::kDoNotBlock,
+        base::BindOnce(on_script_executed, std::move(callback)),
+        blink::BackForwardCacheAware::kAllow,
+        blink::mojom::WantResultOption::kWantResult,
+        blink::mojom::PromiseResultOption::kAwait);
     return;
   }
+
   std::move(callback).Run(contents_text);
 }
 
