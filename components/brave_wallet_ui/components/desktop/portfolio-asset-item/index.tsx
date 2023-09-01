@@ -14,7 +14,6 @@ import { BraveWallet, WalletState } from '../../../constants/types'
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
 import { unbiasedRandom } from '../../../utils/random-utils'
-import { isDataURL } from '../../../utils/string-utils'
 import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
 
 // Hooks
@@ -104,7 +103,7 @@ export const PortfolioAssetItem = ({
   )
 
   // memos & computed
-  const isNonFungibleToken = React.useMemo(() => token.isNft || token.isErc721, [token.isNft, token.isErc721])
+  const isNonFungibleToken = token.isNft
 
   const formattedAssetBalance = isNonFungibleToken
     ? new Amount(assetBalance)
@@ -128,9 +127,7 @@ export const PortfolioAssetItem = ({
     return fiatBalance.formatAsFiat(defaultCurrencies.fiat)
   }, [fiatBalance, defaultCurrencies.fiat])
 
-  const isLoading = React.useMemo(() => {
-    return formattedAssetBalance === '' && !isNonFungibleToken
-  }, [formattedAssetBalance, token])
+  const isLoading = formattedAssetBalance === '' && !isNonFungibleToken
 
   const NetworkDescription = React.useMemo(() => {
 
@@ -177,7 +174,7 @@ export const PortfolioAssetItem = ({
                   />
                   : <>
                     {
-                      isNonFungibleToken && !isDataURL(token.logo)
+                      isNonFungibleToken
                         ? <NftIconWithPlaceholder
                             asset={token}
                             network={tokensNetwork}

@@ -13,7 +13,6 @@ import {
 } from '../../../constants/types'
 
 // Utils
-import { isDataURL } from '../../../utils/string-utils'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
@@ -93,7 +92,7 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
     return (
       <StyledWrapper ref={forwardedRef}>
         <NameAndIcon onClick={onClickAsset}>
-          {token.isErc721 && !isDataURL(token.logo) ? (
+          {token.isNft ? (
             <NftIconWithPlaceholder asset={token} network={tokensNetwork} />
           ) : (
             <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
