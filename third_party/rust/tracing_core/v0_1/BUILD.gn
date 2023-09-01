@@ -49,7 +49,7 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
-  deps = [ "//third_party/rust/once_cell/v1:lib" ]
+  deps = [ "//brave/third_party/rust/once_cell/v1:lib" ]
   features = [
     "once_cell",
     "std",
