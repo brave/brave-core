@@ -115,7 +115,7 @@ public enum NavigationPath: Equatable {
         bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
       } else {
         if Preferences.Privacy.privateBrowsingLock.value {
-          bvc.askForLocalAuthentication(viewType: .widget) { [weak bvc] success, _ in
+          bvc.askForLocalAuthentication(viewType: .external) { [weak bvc] success, _ in
             if success {
               bvc?.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
             }
