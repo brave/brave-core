@@ -6,13 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_FRAME_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_FRAME_H_
 
-#define SelectNativeTheme         \
-  SelectNativeTheme_Unused() {}   \
+#define OnMenuClosed              \
+  OnMenuClosed_Unused() {}        \
   friend class BraveBrowserFrame; \
-  void SelectNativeTheme
+  void OnMenuClosed
 
 #include "src/chrome/browser/ui/views/frame/browser_frame.h"  // IWYU pragma: export
 
-#undef SelectNativeTheme
+#undef OnMenuClosed
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_FRAME_H_
