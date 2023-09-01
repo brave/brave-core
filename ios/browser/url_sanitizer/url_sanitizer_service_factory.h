@@ -8,11 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#include <memory>
-
-#include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
-#include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper.h"
-#include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
+#include "keyed_service_factory_wrapper.h"  // NOLINT
 
 @class URLSanitizerService;
 
@@ -20,45 +16,5 @@ OBJC_EXPORT
 @interface URLSanitizerServiceFactory
     : KeyedServiceFactoryWrapper <URLSanitizerService*>
 @end
-
-namespace base {
-template <typename T>
-class NoDestructor;
-}  // namespace base
-
-namespace web {
-class BrowserState;
-}  // namespace web
-
-class KeyedService;
-class ChromeBrowserState;
-
-namespace brave {
-
-class URLSanitizerServiceFactory : public BrowserStateKeyedServiceFactory {
- public:
-  static brave::URLSanitizerService* GetServiceForState(
-      ChromeBrowserState* browser_state);
-
-  static URLSanitizerServiceFactory* GetInstance();
-
- protected:
-  bool ServiceIsCreatedWithBrowserState() const override;
-
- private:
-  friend base::NoDestructor<URLSanitizerServiceFactory>;
-
-  URLSanitizerServiceFactory();
-  ~URLSanitizerServiceFactory() override;
-
-  // BrowserStateKeyedServiceFactory implementation.
-  std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      web::BrowserState* context) const override;
-  bool ServiceIsNULLWhileTesting() const override;
-  web::BrowserState* GetBrowserStateToUse(
-      web::BrowserState* context) const override;
-};
-
-}  // namespace brave
 
 #endif  // BRAVE_IOS_BROWSER_URL_SANITIZER_URL_SANITIZER_SERVICE_FACTORY_H_

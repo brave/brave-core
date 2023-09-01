@@ -12,7 +12,7 @@
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 #include "brave/ios/browser/brave_wallet/tx_service_factory.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
-#include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory.h"
+#include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory+private.h"
 
 namespace brave {
 

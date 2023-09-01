@@ -6,6 +6,7 @@
 source_set("url_sanitizer") {
   configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
+    "url_sanitizer_service_factory+private.h",
     "url_sanitizer_service_factory.h",
     "url_sanitizer_service_factory.mm",
   ]

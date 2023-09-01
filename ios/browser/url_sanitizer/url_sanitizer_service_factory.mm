@@ -11,13 +11,12 @@
 #include "brave/ios/browser/api/url_sanitizer/url_sanitizer_service+private.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"
-#include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory.h"
+#include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory+private.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "ios/web/public/browser_state.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)

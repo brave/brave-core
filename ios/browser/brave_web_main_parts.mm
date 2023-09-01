@@ -12,7 +12,6 @@
 #include "base/task/thread_pool.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "brave/ios/browser/browser_state/brave_browser_state_keyed_service_factories.h"
-#include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "components/flags_ui/pref_service_flags_storage.h"
 #include "components/metrics/metrics_service.h"
 #include "components/metrics_services_manager/metrics_services_manager.h"
