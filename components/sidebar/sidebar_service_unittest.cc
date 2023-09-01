@@ -7,17 +7,29 @@
 #include <utility>
 
 #include "base/containers/contains.h"
+#include "base/json/json_reader.h"
 #include "base/ranges/algorithm.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "chrome/browser/prefs/browser_prefs.h"
+#include "chrome/test/base/testing_profile.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/sync_preferences/pref_service_mock_factory.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/version_info/channel.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/common/features.h"
@@ -27,6 +39,133 @@ using ::testing::Eq;
 using ::testing::NiceMock;
 using ::testing::Optional;
 using version_info::Channel;
+
+namespace {
+constexpr char sidebar_all_builtin_visible_json[] = R"({
+        "hidden_built_in_items": [  ],
+        "item_added_feedback_bubble_shown_count": 3,
+        "side_panel_width": 320,
+        "sidebar_alignment_changed_for_vertical_tabs": false,
+        "sidebar_items": [ {
+          "built_in_item_type": 7,
+          "type": 0
+        }, {
+          "built_in_item_type": 2,
+          "type": 0
+        }, {
+          "built_in_item_type": 4,
+          "type": 0
+        }, {
+          "built_in_item_type": 3,
+          "type": 0
+        }, {
+          "built_in_item_type": 1,
+          "type": 0
+        }, {
+          "built_in_item_type": 0,
+          "open_in_panel": false,
+          "title": "Artificial intelligence - Wikipedia",
+          "type": 1,
+          "url": "https://en.wikipedia.org/wiki/Artificial_intelligence"
+        }, {
+          "built_in_item_type": 0,
+          "open_in_panel": false,
+          "title": "chrome.org",
+          "type": 1,
+          "url": "https://chrome.org/"
+        }, {
+          "built_in_item_type": 0,
+          "open_in_panel": false,
+          "title": "Google Chrome",
+          "type": 1,
+          "url": "https://www.google.com/chrome/"
+        } ],
+        "sidebar_show_option": 0
+    })";
+constexpr char sidebar_builtin_wallet_hidden_json[] = R"({
+         "hidden_built_in_items": [ 2 ],
+         "item_added_feedback_bubble_shown_count": 3,
+         "side_panel_width": 320,
+         "sidebar_alignment_changed_for_vertical_tabs": false,
+         "sidebar_items": [ {
+            "built_in_item_type": 1,
+            "type": 0
+         }, {
+            "built_in_item_type": 3,
+            "type": 0
+         }, {
+            "built_in_item_type": 4,
+            "type": 0
+         }, {
+            "built_in_item_type": 7,
+            "type": 0
+         }, {
+            "built_in_item_type": 0,
+            "open_in_panel": false,
+            "title": "chrome.org",
+            "type": 1,
+            "url": "https://chrome.org/"
+         }, {
+            "built_in_item_type": 0,
+            "open_in_panel": false,
+            "title": "Artificial intelligence - Wikipedia",
+            "type": 1,
+            "url": "https://en.wikipedia.org/wiki/Artificial_intelligence"
+         }, {
+            "built_in_item_type": 0,
+            "open_in_panel": false,
+            "title": "Google Chrome",
+            "type": 1,
+            "url": "https://www.google.com/chrome/"
+         } ],
+         "sidebar_show_option": 0
+      })";
+constexpr char sidebar_builtin_ai_chat_not_listed_json[] = R"({
+         "hidden_built_in_items": [ ],
+         "item_added_feedback_bubble_shown_count": 3,
+         "side_panel_width": 320,
+         "sidebar_alignment_changed_for_vertical_tabs": false,
+         "sidebar_items": [ {
+            "built_in_item_type": 1,
+            "type": 0
+         }, {
+            "built_in_item_type": 3,
+            "type": 0
+         }, {
+            "built_in_item_type": 4,
+            "type": 0
+         }, {
+            "built_in_item_type": 2,
+            "type": 0
+         }, {
+            "built_in_item_type": 0,
+            "open_in_panel": false,
+            "title": "chrome.org",
+            "type": 1,
+            "url": "https://chrome.org/"
+         }, {
+            "built_in_item_type": 0,
+            "open_in_panel": false,
+            "title": "Artificial intelligence - Wikipedia",
+            "type": 1,
+            "url": "https://en.wikipedia.org/wiki/Artificial_intelligence"
+         }, {
+            "built_in_item_type": 0,
+            "open_in_panel": false,
+            "title": "Google Chrome",
+            "type": 1,
+            "url": "https://www.google.com/chrome/"
+         } ],
+         "sidebar_show_option": 0
+      })";
+
+base::Value::Dict ParseTestJson(const base::StringPiece& json) {
+  absl::optional<base::Value> potential_response_dict_val =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+  return std::move(potential_response_dict_val.value().GetDict());
+}
+}  // namespace
 
 namespace sidebar {
 
@@ -101,7 +240,7 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
 
   // Add again.
   // New item will be added at last.
-  EXPECT_CALL(observer_, OnItemAdded(item, 3)).Times(1);
+  EXPECT_CALL(observer_, OnItemAdded(item, 0)).Times(1);
   service_->AddItem(item);
   testing::Mock::VerifyAndClearExpectations(&observer_);
   EXPECT_EQ(4UL, service_->items().size());
@@ -295,10 +434,14 @@ TEST_F(SidebarServiceTest, HideBuiltInItem) {
 
 TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
   SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
+  const std::vector<SidebarItem::BuiltInItemType> hidden_builtin_types{
+      SidebarItem::BuiltInItemType::kBookmarks};
   // Have prefs which contain a custom item and hides 1 built-in item
   {
     base::Value::List list;
-    list.Append(static_cast<int>(SidebarItem::BuiltInItemType::kBookmarks));
+    base::ranges::for_each(hidden_builtin_types, [&list](const auto& item) {
+      list.Append(static_cast<int>(item));
+    });
     prefs_.SetList(sidebar::kSidebarHiddenBuiltInItems, std::move(list));
   }
   {
@@ -328,9 +471,14 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
       SidebarItem::BuiltInItemType::kWallet,
       SidebarItem::BuiltInItemType::kReadingList,
   };
-  // Get expected indexes (the custom item will replace the index of the removed
-  // built-in).
-  const auto& all_default_item_types = SidebarService::kDefaultBuiltInItemTypes;
+  // Get expected indexes (excluding the hidden items).
+  std::vector<SidebarItem::BuiltInItemType> all_default_item_types;
+  base::ranges::for_each(SidebarService::kDefaultBuiltInItemTypes,
+                         [&](const auto& btint) {
+                           if (!base::Contains(hidden_builtin_types, btint)) {
+                             all_default_item_types.push_back(btint);
+                           }
+                         });
   // There should also be the custom item we added
   EXPECT_EQ(remaining_default_items.size() + 1, service_->items().size());
   for (auto built_in_type : remaining_default_items) {
@@ -481,7 +629,7 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
       base::ranges::find(items, SidebarItem::BuiltInItemType::kReadingList,
                          &SidebarItem::built_in_item_type);
   auto index = iter - items.begin();
-  EXPECT_EQ(3, index);
+  EXPECT_EQ(4, index);
 }
 
 // Verify service has migrated the previous pref format where built-in items
@@ -727,6 +875,177 @@ TEST_F(SidebarServiceTestWithPlaylist, GetDefaultPanelItem) {
   }
 
   EXPECT_FALSE(service_->GetDefaultPanelItem());
+}
+
+class SidebarServiceOrderingTest : public testing::Test {
+ public:
+  SidebarServiceOrderingTest() = default;
+  SidebarServiceOrderingTest(const SidebarServiceOrderingTest&) = delete;
+  SidebarServiceOrderingTest& operator=(const SidebarServiceOrderingTest&) =
+      delete;
+  SidebarServiceOrderingTest(const SidebarServiceOrderingTest&&) = delete;
+  SidebarServiceOrderingTest& operator=(const SidebarServiceOrderingTest&&) =
+      delete;
+
+  ~SidebarServiceOrderingTest() override = default;
+
+  PrefService* GetPrefs() { return profile_->GetPrefs(); }
+
+  SidebarService* GetSidebarService() { return sidebar_service_; }
+
+  void SetUp() override {
+    testing::Test::SetUp();
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    scoped_feature_list_.InitAndEnableFeature(ai_chat::features::kAIChat);
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+    auto registry = base::MakeRefCounted<user_prefs::PrefRegistrySyncable>();
+    sidebar::SidebarServiceFactory::GetInstance();
+    RegisterUserProfilePrefs(registry.get());
+    registry->RegisterDictionaryPref("brave");
+    registry->RegisterDictionaryPref("brave.sidebar");
+
+    sync_preferences::PrefServiceMockFactory factory;
+    auto pref_service = factory.CreateSyncable(registry.get());
+    auto* pref_service_ptr = pref_service.get();
+
+    auto builder = TestingProfile::Builder();
+    builder.SetPrefService(std::move(pref_service));
+    profile_ = builder.Build();
+
+    ASSERT_EQ(pref_service_ptr, profile_->GetPrefs());
+  }
+
+  void InitSideBarService() {
+    sidebar_service_ =
+        sidebar::SidebarServiceFactory::GetForProfile(profile_.get());
+    sidebar_service_->AddObserver(&observer_);
+  }
+
+  bool ValidateBuiltInTypesOrdering(
+      const std::vector<SidebarItem::BuiltInItemType>& defined_order) {
+    size_t srv_items_index = 0, dbt_index = 0;
+    const auto default_btin_types_count = defined_order.size();
+    std::vector<SidebarItem> only_builtin_types;
+    base::ranges::copy_if(
+        sidebar_service_->items(), std::back_inserter(only_builtin_types),
+        [](const SidebarItem& item) {
+          return item.built_in_item_type != SidebarItem::BuiltInItemType::kNone;
+        });
+
+    const auto srv_items_count = only_builtin_types.size();
+    while (srv_items_index < srv_items_count &&
+           dbt_index < default_btin_types_count) {
+      if (only_builtin_types[srv_items_index].built_in_item_type ==
+          defined_order[dbt_index]) {
+        srv_items_index++;
+      }
+      dbt_index++;
+    }
+    return srv_items_index == srv_items_count;
+  }
+
+  void LoadFromPrefsTest(
+      base::Value::Dict sidebar_prefs,
+      const std::vector<SidebarItem::BuiltInItemType>& defined_order,
+      const size_t& expected_items_loaded) {
+    // base::Value::Dict
+    // sidebar(ParseTestJson(sidebar_all_builtin_visible_json));
+    GetPrefs()->Set(kSidebarItems,
+                    std::move(sidebar_prefs.Find("sidebar_items")->Clone()));
+    GetPrefs()->SetInteger(kSidebarShowOption, 0);
+    EXPECT_EQ(0, GetPrefs()->GetInteger(kSidebarShowOption));
+
+    InitSideBarService();
+
+    EXPECT_EQ(expected_items_loaded, GetSidebarService()->items().size());
+    EXPECT_TRUE(ValidateBuiltInTypesOrdering(defined_order))
+        << "Wrong order detected";
+  }
+
+ private:
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  base::test::ScopedFeatureList scoped_feature_list_;
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+  content::BrowserTaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
+  std::unique_ptr<TestingProfile> profile_;
+  raw_ptr<SidebarService> sidebar_service_;
+  NiceMock<MockSidebarServiceObserver> observer_;
+};
+
+TEST_F(SidebarServiceOrderingTest, BuiltInItemsDefaultOrder) {
+  InitSideBarService();
+  EXPECT_EQ(
+#if BUILDFLAG(ENABLE_AI_CHAT)
+      5UL,
+#else
+      4UL,
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+      GetSidebarService()->items().size());
+  EXPECT_EQ(0UL, GetSidebarService()->GetHiddenDefaultSidebarItems().size());
+
+  EXPECT_TRUE(
+      ValidateBuiltInTypesOrdering({SidebarItem::BuiltInItemType::kBraveTalk,
+                                    SidebarItem::BuiltInItemType::kWallet,
+                                    SidebarItem::BuiltInItemType::kChatUI,
+                                    SidebarItem::BuiltInItemType::kBookmarks,
+                                    SidebarItem::BuiltInItemType::kReadingList,
+                                    SidebarItem::BuiltInItemType::kHistory,
+                                    SidebarItem::BuiltInItemType::kPlaylist}));
+}
+
+TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
+  base::Value::Dict sidebar(ParseTestJson(sidebar_all_builtin_visible_json));
+  LoadFromPrefsTest(std::move(sidebar),
+                    {
+                        SidebarItem::BuiltInItemType::kChatUI,
+                        SidebarItem::BuiltInItemType::kWallet,
+                        SidebarItem::BuiltInItemType::kReadingList,
+                        SidebarItem::BuiltInItemType::kBookmarks,
+                        SidebarItem::BuiltInItemType::kBraveTalk,
+                    },
+#if BUILDFLAG(ENABLE_AI_CHAT)
+                    8UL
+#else
+                    7UL
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+  );
+}
+TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
+  base::Value::Dict sidebar(ParseTestJson(sidebar_builtin_wallet_hidden_json));
+  LoadFromPrefsTest(std::move(sidebar),
+                    {
+                        SidebarItem::BuiltInItemType::kBraveTalk,
+                        SidebarItem::BuiltInItemType::kBookmarks,
+                        SidebarItem::BuiltInItemType::kReadingList,
+                        SidebarItem::BuiltInItemType::kChatUI,
+                    },
+#if BUILDFLAG(ENABLE_AI_CHAT)
+                    7UL
+#else
+                    6UL
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+  );
+}
+TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAiChatBuiltInNotListed) {
+  base::Value::Dict sidebar(
+      ParseTestJson(sidebar_builtin_ai_chat_not_listed_json));
+  LoadFromPrefsTest(std::move(sidebar),
+                    {
+                        SidebarItem::BuiltInItemType::kBraveTalk,
+                        SidebarItem::BuiltInItemType::kBookmarks,
+                        SidebarItem::BuiltInItemType::kChatUI,
+                        SidebarItem::BuiltInItemType::kReadingList,
+                        SidebarItem::BuiltInItemType::kWallet,
+                    },
+#if BUILDFLAG(ENABLE_AI_CHAT)
+                    8UL
+#else
+                    7UL
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+  );
 }
 
 }  // namespace sidebar

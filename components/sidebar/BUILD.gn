@@ -49,15 +49,24 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/browser/ui/sidebar",
+    "//brave/components/ai_chat/common/buildflags",
     "//brave/components/sidebar",
+    "//chrome/browser:browser",
+    "//chrome/test:test_support",
     "//components/prefs",
     "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
     "//components/version_info",
     "//content/public/browser",
     "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/common" ]
+  }
 
   if (enable_playlist) {
     deps += [ "//brave/components/playlist/common" ]
