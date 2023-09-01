@@ -93,7 +93,8 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
   registry->RegisterIntegerPref(kSidePanelWidth, kDefaultSidePanelWidth);
 }
 
-SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
+SidebarService::SidebarService(PrefService* prefs)
+    : prefs_(prefs), sidebar_p3a_(prefs) {
   DCHECK(prefs_);
   MigratePrefSidebarBuiltInItemsToHidden();
 
