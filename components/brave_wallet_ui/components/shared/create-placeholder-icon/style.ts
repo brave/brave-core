@@ -26,7 +26,7 @@ export const IconWrapper = styled.div<{
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: var(--size);
+  min-width: var(--size);
   height: ${(p) => (p.isPlaceholder ? 'var(--size)' : 'auto')};
   border-radius: ${(p) => (p.isPlaceholder ? '100%' : '0px')};
   margin-right: ${(p) => `${p.marginRight}px`};
