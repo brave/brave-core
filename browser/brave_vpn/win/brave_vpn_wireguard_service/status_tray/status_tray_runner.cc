@@ -119,7 +119,7 @@ void StatusTrayRunner::ConnectVPN() {
         "", base::BindOnce(&StatusTrayRunner::OnConnected,
                            weak_factory_.GetWeakPtr()));
   } else {
-    StatusTrayRunner::OnConnected(ras::ConnectRasEntry());
+   OnConnected(ras::ConnectRasEntry());
   }
 }
 
