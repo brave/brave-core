@@ -15,7 +15,7 @@ export const localeStrings = {
   rewardsConnectAccountNoProviders: 'To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so earning isn’t available at this time. However, you’ll still be automatically supporting creators by using Rewards.',
   rewardsConnectAccountText: '$1Ready to start earning?$2 Connect or create an account with one of our partners.',
   rewardsContinue: 'Continue',
-  rewardsEarningsHeader: 'Estimated earnings',
+  rewardsEarningsTitle: 'Earnings so far',
   rewardsEarningInfoText: 'This reflects your estimated earnings range for Brave Ads this month.',
   rewardsHowDoesItWork: 'How does it work?',
   rewardsGrantDaysRemaining: 'You have $1 left to claim',

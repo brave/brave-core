@@ -157,7 +157,7 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"walletBalanceTitle", IDS_REWARDS_WALLET_BALANCE_TITLE},
     {"walletDisconnected", IDS_REWARDS_WALLET_DISCONNECTED},
     {"walletEarningInfoText", IDS_REWARDS_WIDGET_EARNING_INFO_TEXT},
-    {"walletEstimatedEarnings", IDS_REWARDS_WALLET_ESTIMATED_EARNINGS},
+    {"walletEstimatedEarnings", IDS_REWARDS_ESTIMATED_EARNINGS_TITLE},
     {"walletLogIntoYourAccount", IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT},
     {"walletManageAds", IDS_REWARDS_WALLET_MANAGE_ADS},
     {"walletMonthlyTips", IDS_REWARDS_WALLET_MONTHLY_TIPS},

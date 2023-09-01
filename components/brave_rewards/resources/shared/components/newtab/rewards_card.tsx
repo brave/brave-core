@@ -265,7 +265,7 @@ export function RewardsCard (props: Props) {
       <>
         <style.earningsHeader>
           <style.earningsHeaderText>
-            Estimated earnings
+            {getString('rewardsEarningsTitle')}
             <style.earningsInfo>
               <InfoIcon />
               <div className='tooltip'>

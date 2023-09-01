@@ -30,9 +30,6 @@
   <message name="IDS_REWARDS_WALLET_DISCONNECTED" desc="">
     Logged out
   </message>
-  <message name="IDS_REWARDS_WALLET_ESTIMATED_EARNINGS" desc="">
-    Estimated earnings
-  </message>
   <message name="IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT" desc="">
     Log in to your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
   </message>
@@ -111,9 +108,6 @@
   </message>
   <message name="IDS_REWARDS_WIDGET_CONTINUE" desc="">
     Continue
-  </message>
-  <message name="IDS_REWARDS_WIDGET_EARNINGS_TITLE" desc="">
-    Estimated earnings
   </message>
   <message name="IDS_REWARDS_WIDGET_EARNING_INFO_TEXT" desc="">
     This reflects your estimated earnings range for Brave Ads this month.
@@ -430,6 +424,9 @@
   </message>
   <message name="IDS_REWARDS_LEARN_MORE" desc="">
     Learn more
+  </message>
+  <message name="IDS_REWARDS_ESTIMATED_EARNINGS_TITLE" desc="">
+    Earnings so far
   </message>
 
   <!-- Tip panel -->

@@ -317,7 +317,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsConnectAccountNoProviders", IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS },  // NOLINT
         { "rewardsConnectAccountText", IDS_REWARDS_CONNECT_ACCOUNT_TEXT },
         { "rewardsContinue", IDS_REWARDS_WIDGET_CONTINUE},
-        { "rewardsEarningsTitle", IDS_REWARDS_WIDGET_EARNINGS_TITLE },
+        { "rewardsEarningsTitle", IDS_REWARDS_ESTIMATED_EARNINGS_TITLE },
         { "rewardsEarningInfoText", IDS_REWARDS_WIDGET_EARNING_INFO_TEXT },
         { "rewardsHowDoesItWork", IDS_REWARDS_WIDGET_HOW_DOES_IT_WORK},
         { "rewardsGrantDaysRemaining", IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING },  // NOLINT
@@ -640,7 +640,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "walletAccountLink", IDS_REWARDS_WALLET_ACCOUNT_LINK },
         { "walletAutoContribute", IDS_REWARDS_WALLET_AUTO_CONTRIBUTE },
         { "walletDisconnected", IDS_REWARDS_WALLET_DISCONNECTED },
-        { "walletEstimatedEarnings", IDS_REWARDS_WALLET_ESTIMATED_EARNINGS },
+        { "walletEstimatedEarnings", IDS_REWARDS_ESTIMATED_EARNINGS_TITLE },
         { "walletLogIntoYourAccount", IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT },  // NOLINT
         { "walletMonthlyTips", IDS_REWARDS_WALLET_MONTHLY_TIPS },
         { "walletOneTimeTips", IDS_REWARDS_WALLET_ONE_TIME_TIPS },
