@@ -25,10 +25,10 @@
 #include "base/time/time.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
-#include "brave/components/brave_news/browser/feed_v2_knobs.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/features.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -51,12 +51,14 @@ Signal GetSignal(const mojom::FeedItemMetadataPtr& article,
 }
 
 double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
-  const double pop_recency_half_life_in_hours = knobs::GetPopRecencyHalfLife();
+  const double pop_recency_half_life_in_hours =
+      features::kBraveNewsPopScoreHalfLife.Get();
 
   auto& publish_time = article->publish_time;
 
-  double popularity =
-      article->pop_score == 0 ? knobs::GetPopScoreFallback() : article->pop_score;
+  double popularity = article->pop_score == 0
+                          ? features::kBraveNewsPopScoreFallback.Get()
+                          : article->pop_score;
   double multiplier = publish_time > base::Time::Now() - base::Hours(5) ? 2 : 1;
   auto dt = base::Time::Now() - publish_time;
 
@@ -66,7 +68,7 @@ double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
 
 double GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
                         const Signal& signal) {
-  const double source_visits_min = knobs::GetSourceVisitsMin();
+  const double source_visits_min = features::kBraveNewsSourceVisitsMin.Get();
   double source_visits_projected =
       source_visits_min + signal->visit_weight * (1 - source_visits_min);
   return source_visits_projected * signal->subscribed_weight *
@@ -221,15 +223,16 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles) {
   result.push_back(mojom::FeedItemV2::NewHero(
       mojom::HeroArticle::New(std::move(hero_article))));
 
-  const int block_min_inline = knobs::GetMinBlockCards();
-  const int block_max_inline = knobs::GetMaxBlockCards();
+  const int block_min_inline = features::kBraveNewsMinBlockCards.Get();
+  const int block_max_inline = features::kBraveNewsMaxBlockCards.Get();
   auto follow_count = GetNormal(block_min_inline, block_max_inline + 1);
   for (auto i = 0; i < follow_count; ++i) {
     // Ratio of inline articles to discovery articles.
     // discover ratio % of the time, we should do a discover card here instead
     // of a roulette card.
     // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
-    const double inline_discovery_ratio = knobs::GetInlineDiscoveryRatio();
+    const double inline_discovery_ratio =
+        features::kBraveNewsInlineDiscoveryRatio.Get();
     bool is_discover = base::RandDouble() < inline_discovery_ratio;
     auto generated = is_discover ? PickDiscoveryArticleAndRemove(articles)
                                  : PickRouletteAndRemove(articles);

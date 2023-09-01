@@ -12,9 +12,8 @@
 #include <vector>
 
 #include "brave/components/brave_news/browser/feed_fetcher.h"
-#include "brave/components/brave_news/browser/feed_v2_knobs.h"
-#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/features.h"
 
 namespace brave_news {
 
@@ -145,12 +144,12 @@ double SignalCalculator::GetSubscribedWeight(
   // We have a minimum subscribed weight for feeds which aren't explicitly
   // disabled. This means they have a (normally small) nonzero chance of showing
   // up in the feed.
-  double result = knobs::GetSourceSubscribedMin();
+  double result = features::kBraveNewsSourceVisitsMin.Get();
 
   // Direct feeds or explicitly enabled sources get the same boost.
   if (publisher->type == mojom::PublisherType::DIRECT_SOURCE ||
       enabled == mojom::UserEnabled::ENABLED) {
-    result += knobs::GetSourceSubscribedBoost();
+    result += features::kBraveNewsSourceSubscribedBoost.Get();
   }
 
   // If the source is part of any channel the user is subscribed to, apply the
@@ -159,7 +158,7 @@ double SignalCalculator::GetSubscribedWeight(
     for (const auto& channel : locale_info->channels) {
       if (channels_controller_->GetChannelSubscribed(locale_info->locale,
                                                      channel)) {
-        result += knobs::GetChannelSubscribedBoost();
+        result += features::kBraveNewsChannelSubscribedBoost.Get();
         break;
       }
     }
