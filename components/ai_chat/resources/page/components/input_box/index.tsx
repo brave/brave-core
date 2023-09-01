@@ -75,6 +75,7 @@ function InputBox (props: InputBoxProps) {
           onKeyDown={handleKeyDown}
           value={inputText}
           disabled={props.disabled}
+          autoFocus
         />
         <div className={classnames({
           [styles.counterText]: true,
