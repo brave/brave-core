@@ -17,6 +17,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
   @NSManaged public var isERC721: Bool
   @NSManaged public var isERC1155: Bool
   @NSManaged public var isNFT: Bool
+  @NSManaged public var isSpam: Bool
   @NSManaged public var symbol: String
   @NSManaged public var decimals: Int32
   @NSManaged public var visible: Bool
@@ -35,7 +36,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
       isErc721: self.isERC721,
       isErc1155: self.isERC1155,
       isNft: self.isNFT,
-      isSpam: false, // TODO: Handle `isSpam` in `WalletUserAsset`
+      isSpam: self.isSpam,
       symbol: self.symbol,
       decimals: self.decimals,
       visible: self.visible,
@@ -71,6 +72,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
     self.isERC721 = asset.isErc721
     self.isERC1155 = asset.isErc1155
     self.isNFT = asset.isNft
+    self.isSpam = asset.isSpam
     self.symbol = asset.symbol
     self.decimals = asset.decimals
     self.visible = asset.visible
