@@ -55,6 +55,11 @@ bool URLSanitizerServiceFactory::ServiceIsNULLWhileTesting() const {
   return true;
 }
 
+bool URLSanitizerServiceFactory::ServiceIsCreatedWithBrowserState() const {
+  // Return true here because the service is instantiated lazily
+  return true;
+}
+
 web::BrowserState* URLSanitizerServiceFactory::GetBrowserStateToUse(
     web::BrowserState* context) const {
   return GetBrowserStateRedirectedInIncognito(context);

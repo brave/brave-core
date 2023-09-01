@@ -32,6 +32,9 @@ class URLSanitizerServiceFactory : public BrowserStateKeyedServiceFactory {
 
   static URLSanitizerServiceFactory* GetInstance();
 
+ protected:
+  bool ServiceIsCreatedWithBrowserState() const override;
+
  private:
   friend base::NoDestructor<URLSanitizerServiceFactory>;
 
