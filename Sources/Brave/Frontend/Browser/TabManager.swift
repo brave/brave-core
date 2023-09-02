@@ -85,6 +85,7 @@ class TabManager: NSObject {
     return _selectedIndex
   }
   var normalTabSelectedIndex: Int = 0
+  var privateTabSelectedIndex: Int = 0
   var tempTabs: [Tab]?
   private weak var rewards: BraveRewards?
   private weak var tabGeneratorAPI: BraveTabGeneratorAPI?

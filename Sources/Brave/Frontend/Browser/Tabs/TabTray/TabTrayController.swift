@@ -621,8 +621,10 @@ class TabTrayController: AuthenticationController {
       return
     }
 
-    // Record the slected index before private mode navigation
-    if !privateMode {
+    // Record the selected index before mode navigation
+    if privateMode {
+      tabManager.privateTabSelectedIndex = Preferences.Privacy.persistentPrivateBrowsing.value ? tabManager.selectedIndex : 0
+    } else {
       tabManager.normalTabSelectedIndex = tabManager.selectedIndex
     }
     
@@ -646,8 +648,19 @@ class TabTrayController: AuthenticationController {
           tabManager.addTabAndSelect(isPrivate: true)
         }
         
+        let privateModeTabSelected = tabManager.allTabs[safe: tabManager.privateTabSelectedIndex]
+
+        if Preferences.Privacy.persistentPrivateBrowsing.value {
+          tabManager.selectTab(privateModeTabSelected)
+        }
         tabTrayView.hidePrivateModeInfo()
         tabTrayView.collectionView.reloadData()
+        
+        // When you go back from normal mode, current tab should be selected
+        // in case private tabs are persistent
+        if Preferences.Privacy.persistentPrivateBrowsing.value {
+          scrollToSelectedTab(privateModeTabSelected)
+        }
         navigationController?.setNavigationBarHidden(false, animated: false)
       }
     } else {
@@ -655,8 +668,12 @@ class TabTrayController: AuthenticationController {
       
       // When you go back from private mode, a previous current tab is selected
       // Reloding the collection view in order to mark the selecte the tab
-      tabManager.selectTab(tabManager.tabsForCurrentMode[safe: tabManager.normalTabSelectedIndex])
+      let normalModeTabSelected = tabManager.allTabs[safe: tabManager.normalTabSelectedIndex]
+      
+      tabManager.selectTab(normalModeTabSelected)
       tabTrayView.collectionView.reloadData()
+      
+      scrollToSelectedTab(normalModeTabSelected)
       navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
@@ -722,6 +739,15 @@ class TabTrayController: AuthenticationController {
     UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
 
     present(settingsNavigationController, animated: true)
+  }
+  
+  private func scrollToSelectedTab(_ tab: Tab?) {
+    if let selectedTab = tab,
+       let selectedIndexPath = dataSource.indexPath(for: selectedTab) {
+      DispatchQueue.main.async {
+        self.tabTrayView.collectionView.scrollToItem(at: selectedIndexPath, at: .centeredVertically, animated: false)
+      }
+    }
   }
   
   @objc private func tappedCollectionViewBackground() {
