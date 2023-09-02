@@ -121,8 +121,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class BraveNewTabPageLayout
         extends NewTabPageLayout implements ConnectionErrorHandler, OnBraveNtpListener {
@@ -189,6 +187,7 @@ public class BraveNewTabPageLayout
     private boolean mIsBraveStatsEnabled;
     private boolean mIsDisplayNews;
     private boolean mIsDisplayNewsOptin;
+    private boolean mNewsFeedViewedOnce;
 
     private Supplier<Tab> mTabProvider;
 
@@ -439,10 +438,6 @@ public class BraveNewTabPageLayout
                     mNtpAdapter.setNewsLoading(true);
                     getFeed(false);
 
-                    // Brave News interaction started
-                    if (mBraveNewsController != null) {
-                        mBraveNewsController.onInteractionSessionStarted();
-                    }
                 } else {
                     keepPosition();
                 }
@@ -493,6 +488,11 @@ public class BraveNewTabPageLayout
                     }
                 }
                 if (mIsDisplayNews && firstVisibleItemPosition >= newsFeedPosition - 1) {
+                    if (!mNewsFeedViewedOnce && mBraveNewsController != null) {
+                        // Brave News interaction started
+                        mBraveNewsController.onInteractionSessionStarted();
+                        mNewsFeedViewedOnce = true;
+                    }
                     if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                         mEndCardViewTime = System.currentTimeMillis();
                         long timeDiff = mEndCardViewTime - mStartCardViewTime;
