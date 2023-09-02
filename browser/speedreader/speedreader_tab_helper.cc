@@ -9,7 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
@@ -20,26 +19,17 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/speedreader/page_distiller.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_extended_info_handler.h"
-#include "brave/components/speedreader/speedreader_pref_names.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
-#include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/dom_distiller/content/browser/distillable_page_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/prefs/pref_change_registrar.h"
-#include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
@@ -71,38 +61,17 @@ std::u16string GetSpeedreaderData(
   return result + u"}\n\n";
 }
 
-constexpr const char* kPropertyPrefNames[] = {kSpeedreaderPrefTheme,
-                                              kSpeedreaderPrefFontSize,
-                                              kSpeedreaderPrefFontFamily};
-
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<SpeedreaderTabHelper>(*web_contents),
       PageDistiller(web_contents) {
-  pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
-  pref_change_registrar_->Init(GetProfile()->GetPrefs());
-  pref_change_registrar_->Add(
-      kSpeedreaderPrefEnabled,
-      base::BindRepeating(&SpeedreaderTabHelper::OnPrefChanged,
-                          weak_factory_.GetWeakPtr()));
-
-  for (const auto* pref_name : kPropertyPrefNames) {
-    pref_change_registrar_->Add(
-        pref_name,
-        base::BindRepeating(&SpeedreaderTabHelper::OnPropertyPrefChanged,
-                            weak_factory_.GetWeakPtr()));
-  }
-
   dom_distiller::AddObserver(web_contents, this);
-
-  content_rules_ = HostContentSettingsMapFactory::GetForProfile(
-      web_contents->GetBrowserContext());
+  speedreader_service_observation_.Observe(GetSpeedreaderService());
 }
 
 SpeedreaderTabHelper::~SpeedreaderTabHelper() {
-  DCHECK(!pref_change_registrar_);
   DCHECK(!speedreader_bubble_);
-  DCHECK(!content_rules_);
+  DCHECK(!speedreader_service_observation_.IsObserving());
 }
 
 // static
@@ -148,74 +117,20 @@ base::WeakPtr<SpeedreaderTabHelper> SpeedreaderTabHelper::GetWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
 
-bool SpeedreaderTabHelper::IsSpeedreaderEnabled() const {
-  return SpeedreaderServiceFactory::GetForProfile(GetProfile())->IsEnabled();
-}
-
-bool SpeedreaderTabHelper::IsEnabledForSite() {
-  return IsEnabledForSite(web_contents()->GetLastCommittedURL());
-}
-
-bool SpeedreaderTabHelper::IsEnabledForSite(const GURL& url) {
-  if (!IsSpeedreaderEnabled()) {
-    return false;
-  }
-  return speedreader::IsEnabledForSite(content_rules_, url);
-}
-
 void SpeedreaderTabHelper::ProcessIconClick() {
-  switch (distill_state_) {
-    case DistillState::kSpeedreaderMode:
-      ShowSpeedreaderBubble();
-      break;
-    case DistillState::kSpeedreaderOnDisabledPage:
-      if (original_page_shown_ &&
-          IsEnabledForSite(web_contents()->GetLastCommittedURL())) {
-        ReloadContents();
-      } else {
-        ShowSpeedreaderBubble();
-      }
-      break;
-    case DistillState::kReaderMode:
-      SetNextRequestState(DistillState::kPageProbablyReadable);
-      ClearPersistedData();
-      ReloadContents();
-      break;
-    case DistillState::kPageProbablyReadable:
-      SingleShotSpeedreader();
-      break;
-    default:
-      NOTREACHED();
-  }
-}
-
-void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
-  const bool enabled = speedreader::IsEnabledForSite(
-      content_rules_, web_contents()->GetLastCommittedURL());
-  if (enabled == on) {
-    return;
-  }
-
-  speedreader::SetEnabledForSite(content_rules_,
-                                 web_contents()->GetLastCommittedURL(), on);
-
-  ClearPersistedData();
-  ReloadContents();
-}
-
-void SpeedreaderTabHelper::SingleShotSpeedreader() {
-  GetDistilledHTML(base::BindOnce(&SpeedreaderTabHelper::OnGetDocumentSource,
-                                  weak_factory_.GetWeakPtr()));
-
-  SetNextRequestState(DistillState::kReaderModePending);
-  single_shot_next_request_ = true;
-
-  // Determine if bubble should be shown automatically
-  auto* speedreader_service =
-      SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  if (speedreader_service->ShouldPromptUserToEnable()) {
-    ShowReaderModeBubble();
-    speedreader_service->IncrementPromptCount();
+  if (DistillStates::IsViewOriginal(distill_state_)) {
+    const auto& vo = absl::get<DistillStates::ViewOriginal>(distill_state_);
+    if (!vo.was_auto_distilled ||
+        !GetSpeedreaderService()->IsEnabledForSite(web_contents())) {
+      GetDistilledHTML(
+          base::BindOnce(&SpeedreaderTabHelper::OnGetDocumentSource,
+                         weak_factory_.GetWeakPtr()));
+    } else {
+      TransitStateTo(DistillStates::Distilling(
+          DistillStates::Distilling::Reason::kAutomatic));
+    }
+  } else if (DistillStates::IsDistilled(distill_state_)) {
+    OnShowOriginalPage();
   }
 }
 
@@ -230,95 +145,52 @@ bool SpeedreaderTabHelper::MaybeUpdateCachedState(
                  !handle->IsServedFromBackForwardCache())) {
     return false;
   }
-  auto* speedreader_service =
-      SpeedreaderServiceFactory::GetForProfile(GetProfile());
+  auto* speedreader_service = GetSpeedreaderService();
 
   const DistillState state =
       SpeedreaderExtendedInfoHandler::GetCachedMode(entry, speedreader_service);
-  const bool cached = state != DistillState::kUnknown;
-  if (cached) {
-    distill_state_ = state;
-  } else {
-    SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
-  }
-  return cached;
-}
-
-void SpeedreaderTabHelper::UpdateActiveState(const GURL& url) {
-  if (single_shot_next_request_) {
-    SetNextRequestState(DistillState::kReaderModePending);
-    return;
-  }
-
-  if (show_original_page_) {
-    SetNextRequestState(DistillState::kSpeedreaderOnDisabledPage);
-    return;
-  }
-
-  // Work only with casual main frame navigations.
-  if (url.SchemeIsHTTPOrHTTPS()) {
-    auto* rewriter_service =
-        g_brave_browser_process->speedreader_rewriter_service();
-    if (rewriter_service->URLLooksReadable(url)) {
-      VLOG(2) << __func__ << "URL passed speedreader heuristic: " << url;
-      if (!IsSpeedreaderEnabled()) {
-        // Determine readability on DOMContentLoaded.
-        SetNextRequestState(DistillState::kNone);
-      } else if (!IsEnabledForSite(url)) {
-        SetNextRequestState(DistillState::kSpeedreaderOnDisabledPage);
-      } else {
-        SetNextRequestState(DistillState::kSpeedreaderModePending);
-      }
-      return;
+  if (DistillStates::IsDistilled(state)) {
+    if (handle->IsServedFromBackForwardCache() ||
+        DistillStates::IsDistilledAutomatically(state)) {
+      distill_state_ = state;
+      return true;
     }
   }
-  SetNextRequestState(DistillState::kNone);
-}
+  SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
 
-void SpeedreaderTabHelper::SetNextRequestState(DistillState state) {
-  distill_state_ = state;
-  single_shot_next_request_ = false;
-  show_original_page_ = false;
+  return false;
 }
 
 void SpeedreaderTabHelper::OnBubbleClosed() {
   speedreader_bubble_ = nullptr;
   UpdateUI();
+
+  for (auto& o : observers_) {
+    o.OnTuneBubbleClosed();
+  }
 }
 
-void SpeedreaderTabHelper::ShowSpeedreaderBubble() {
-  ShowBubble(true);
+void SpeedreaderTabHelper::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
 }
 
-void SpeedreaderTabHelper::ShowReaderModeBubble() {
-  ShowBubble(false);
+void SpeedreaderTabHelper::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
 }
 
-void SpeedreaderTabHelper::HideReaderModeToolbar() {
-  toolbar_hidden_ = true;
-  UpdateUI();
-}
-
-Profile* SpeedreaderTabHelper::GetProfile() const {
-  auto* profile =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
-  DCHECK(profile);
-  return profile;
-}
-
-void SpeedreaderTabHelper::ShowBubble(bool is_bubble_speedreader) {
+void SpeedreaderTabHelper::ShowSpeedreaderBubble(
+    SpeedreaderBubbleLocation location) {
 #if !BUILDFLAG(IS_ANDROID)
   auto* contents = web_contents();
   Browser* browser = chrome::FindBrowserWithWebContents(contents);
   DCHECK(browser);
 
-  speedreader_bubble_ =
-      static_cast<BraveBrowserWindow*>(browser->window())
-          ->ShowSpeedreaderBubble(this, is_bubble_speedreader);
+  speedreader_bubble_ = static_cast<BraveBrowserWindow*>(browser->window())
+                            ->ShowSpeedreaderBubble(this, location);
 #endif
 }
 
-void SpeedreaderTabHelper::HideBubble() {
+void SpeedreaderTabHelper::HideSpeedreaderBubble() {
   if (speedreader_bubble_) {
     speedreader_bubble_->Hide();
     speedreader_bubble_ = nullptr;
@@ -326,8 +198,10 @@ void SpeedreaderTabHelper::HideBubble() {
 }
 
 void SpeedreaderTabHelper::OnShowOriginalPage() {
-  show_original_page_ = distill_state_ == DistillState::kSpeedreaderMode;
-  ReloadContents();
+  if (!DistillStates::IsDistilled(distill_state_)) {
+    return;
+  }
+  TransitStateTo(DistillStates::ViewOriginal());
 }
 
 void SpeedreaderTabHelper::ClearPersistedData() {
@@ -349,77 +223,42 @@ void SpeedreaderTabHelper::ProcessNavigation(
     return;
   }
 
-  toolbar_hidden_ = false;
-  original_page_shown_ = show_original_page_;
-
-  UpdateActiveState(navigation_handle->GetURL());
-  UpdateUI();
-}
-
-void SpeedreaderTabHelper::OnPrefChanged() {
-  const bool is_speedreader_enabled = IsSpeedreaderEnabled();
-
-  switch (distill_state_) {
-    case DistillState::kUnknown:
-    case DistillState::kNone:
-      break;  // Nothing to do.
-    case DistillState::kPageProbablyReadable:
-      if (is_speedreader_enabled) {
-        distill_state_ = DistillState::kSpeedreaderOnDisabledPage;
-      }
-      break;
-    case DistillState::kSpeedreaderMode:
-      if (!is_speedreader_enabled) {
-        distill_state_ = DistillState::kReaderMode;
-      }
-      break;
-    case DistillState::kReaderMode:
-      if (is_speedreader_enabled) {
-        distill_state_ = DistillState::kSpeedreaderMode;
-      } else {
-        distill_state_ = DistillState::kSpeedreaderOnDisabledPage;
-      }
-      break;
-    case DistillState::kSpeedreaderOnDisabledPage: {
-      if (!is_speedreader_enabled) {
-        distill_state_ = DistillState::kPageProbablyReadable;
-      }
-      break;
-    }
-    default:
-      break;
-  }
-
-  UpdateUI();
-}
-
-void SpeedreaderTabHelper::OnPropertyPrefChanged(const std::string& path) {
-  DCHECK(base::Contains(kPropertyPrefNames, path));
-
-  auto* speedreader_service =
-      SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  if (!speedreader_service) {
+  if (DistillStates::IsDistilling(distill_state_)) {
+    // State will be determined in OnDistillComplete.
     return;
   }
-  if (!PageStateIsDistilled(distill_state_)) {
+  if (DistillStates::IsDistillReverting(distill_state_)) {
+    TransitStateTo(DistillStates::ViewOriginal(), true);
     return;
   }
 
-  if (path == kSpeedreaderPrefTheme) {
-    SetDocumentAttribute("data-theme", speedreader_service->GetThemeName());
-  } else if (path == kSpeedreaderPrefFontFamily) {
-    SetDocumentAttribute("data-font-family",
-                         speedreader_service->GetFontFamilyName());
-  } else if (path == kSpeedreaderPrefFontSize) {
-    SetDocumentAttribute("data-font-size",
-                         speedreader_service->GetFontSizeName());
+  auto* rewriter_service =
+      g_brave_browser_process->speedreader_rewriter_service();
+  const bool url_looks_readable =
+      rewriter_service &&
+      rewriter_service->URLLooksReadable(navigation_handle->GetURL());
+
+  const bool enabled_for_site =
+      GetSpeedreaderService()->IsEnabledForSite(navigation_handle->GetURL());
+
+  const auto reason =
+      url_looks_readable ? DistillStates::ViewOriginal::Reason::kNone
+                         : DistillStates::ViewOriginal::Reason::kNotDistillable;
+  TransitStateTo(DistillStates::DistillReverting(reason, false), true);
+  TransitStateTo(DistillStates::ViewOriginal(), true);
+
+  if (url_looks_readable && enabled_for_site) {
+    // Speedreader enabled for this page.
+    TransitStateTo(DistillStates::Distilling(
+                       DistillStates::Distilling::Reason::kAutomatic),
+                   true);
   }
 }
 
 void SpeedreaderTabHelper::UpdateUI() {
-  if (PageStateIsDistilled(distill_state_)) {
+  if (DistillStates::IsDistilled(distill_state_)) {
     UpdateState(State::kDistilled);
-  } else if (PageSupportsDistillation(distill_state_)) {
+  } else if (DistillStates::IsDistillable(distill_state_)) {
     UpdateState(State::kDistillable);
   } else {
     UpdateState(State::kNotDistillable);
@@ -431,7 +270,7 @@ void SpeedreaderTabHelper::UpdateUI() {
 #if !BUILDFLAG(IS_ANDROID)
   if (const auto* browser =
           chrome::FindBrowserWithWebContents(web_contents())) {
-    if (toolbar_hidden_ || !PageStateIsDistilled(PageDistillState())) {
+    if (!DistillStates::IsDistilled(PageDistillState())) {
       static_cast<BraveBrowserWindow*>(browser->window())
           ->HideReaderModeToolbar();
     } else {
@@ -463,25 +302,19 @@ void SpeedreaderTabHelper::DidStopLoading() {
 
 void SpeedreaderTabHelper::DOMContentLoaded(
     content::RenderFrameHost* render_frame_host) {
-  if (PageDistillState() == DistillState::kNone) {
-    auto* rewriter_service =
-        g_brave_browser_process->speedreader_rewriter_service();
-    if (rewriter_service && rewriter_service->URLLooksReadable(
-                                web_contents()->GetLastCommittedURL())) {
-      distill_state_ = DistillState::kPageProbablyReadable;
-      UpdateUI();
-    }
+  if (!render_frame_host->IsInPrimaryMainFrame()) {
     return;
   }
 
-  if (!PageWantsDistill(distill_state_)) {
+  if (!IsPageDistillationAllowed()) {
     return;
   } else {
     UpdateUI();
   }
 
-  static base::NoDestructor<std::u16string> kSpeedreaderData(
-      GetSpeedreaderData({{"minutesText", IDS_SPEEDREADER_MINUTES_TEXT}}));
+  static base::NoDestructor<std::u16string> kSpeedreaderData(GetSpeedreaderData(
+      {{"showOriginalLinkText", IDS_READER_MODE_SHOW_ORIGINAL_PAGE_LINK},
+       {"minutesText", IDS_READER_MODE_MINUTES_TEXT}}));
 
   static base::NoDestructor<std::u16string> kJsScript(base::UTF8ToUTF16(
       ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
@@ -500,15 +333,15 @@ void SpeedreaderTabHelper::OnVisibilityChanged(content::Visibility visibility) {
 }
 
 void SpeedreaderTabHelper::WebContentsDestroyed() {
-  pref_change_registrar_.reset();
+  speedreader_service_observation_.Reset();
   dom_distiller::RemoveObserver(web_contents(), this);
-  content_rules_ = nullptr;
   SetWebContents(nullptr);
-  HideBubble();
+  HideSpeedreaderBubble();
 }
 
 bool SpeedreaderTabHelper::IsPageDistillationAllowed() {
-  return speedreader::PageWantsDistill(distill_state_);
+  return DistillStates::IsDistilling(distill_state_) ||
+         DistillStates::IsDistilled(distill_state_);
 }
 
 bool SpeedreaderTabHelper::IsPageContentPresent() {
@@ -520,33 +353,15 @@ std::string SpeedreaderTabHelper::TakePageContent() {
 }
 
 void SpeedreaderTabHelper::OnDistillComplete(DistillationResult result) {
-  if (result != DistillationResult::kSuccess) {
-    SetNextRequestState(DistillState::kNone);
-    return;
-  }
-
   // Perform a state transition
-  if (distill_state_ == DistillState::kSpeedreaderModePending) {
-    distill_state_ = DistillState::kSpeedreaderMode;
-  } else if (distill_state_ == DistillState::kReaderModePending) {
-    if (result == DistillationResult::kSuccess) {
-      distill_state_ = DistillState::kReaderMode;
-    } else {
-      distill_state_ = DistillState::kPageProbablyReadable;
-    }
-  } else {
-    // We got here via an already cached page.
-    DCHECK(distill_state_ == DistillState::kSpeedreaderMode ||
-           distill_state_ == DistillState::kReaderMode);
-  }
+  TransitStateTo(DistillStates::Distilled(result));
 
 #if BUILDFLAG(IS_ANDROID)
   // Attempt to reset page scale after a successful distillation.
   // This is done by mocking a pinch gesture on Android,
   // see chrome/android/java/src/org/chromium/chrome/browser/ZoomController.java
   // and ui/android/event_forwarder.cc
-  if (distill_state_ == DistillState::kSpeedreaderMode ||
-      distill_state_ == DistillState::kReaderMode) {
+  if (DistillStates::IsDistilled(distill_state_)) {
     ui::ViewAndroid* view = web_contents()->GetNativeView();
     int64_t time_ms = base::TimeTicks::Now().ToUptimeMillis();
     SendGestureEvent(view, ui::GESTURE_EVENT_TYPE_PINCH_BEGIN, time_ms, 0.f);
@@ -554,18 +369,58 @@ void SpeedreaderTabHelper::OnDistillComplete(DistillationResult result) {
     SendGestureEvent(view, ui::GESTURE_EVENT_TYPE_PINCH_END, time_ms, 0.f);
   }
 #endif
+}
 
-  UpdateUI();
+void SpeedreaderTabHelper::OnSiteEnableSettingChanged(
+    content::WebContents* site,
+    bool enabled_on_site) {
+  if (site != web_contents()) {
+    return;
+  }
+
+  if (enabled_on_site) {
+    TransitStateTo(DistillStates::Distilling(
+        DistillStates::Distilled::Reason::kAutomatic));
+  } else {
+    TransitStateTo(DistillStates::ViewOriginal());
+  }
+  HideSpeedreaderBubble();
+}
+
+void SpeedreaderTabHelper::OnAllSitesEnableSettingChanged(
+    bool enabled_on_all_sites) {
+  if (!is_visible_ || !GetSpeedreaderService()) {
+    return;
+  }
+  OnSiteEnableSettingChanged(
+      web_contents(),
+      GetSpeedreaderService()->IsEnabledForSite(web_contents()));
+}
+
+void SpeedreaderTabHelper::OnAppearanceSettingsChanged(
+    const mojom::AppearanceSettings& view_settings) {
+  auto* speedreader_service = GetSpeedreaderService();
+  if (!speedreader_service) {
+    return;
+  }
+  if (!speedreader::DistillStates::IsDistilled(distill_state_)) {
+    return;
+  }
+
+  SetDocumentAttribute("data-theme", speedreader_service->GetThemeName());
+  SetDocumentAttribute("data-font-family",
+                       speedreader_service->GetFontFamilyName());
+  SetDocumentAttribute("data-font-size",
+                       speedreader_service->GetFontSizeName());
 }
 
 void SpeedreaderTabHelper::OnResult(
     const dom_distiller::DistillabilityResult& result) {
-  if (PageDistillState() == DistillState::kNone) {
-    if (result.is_distillable) {
-      // Page detected as non-readable by URL, but readable by content.
-      distill_state_ = DistillState::kPageProbablyReadable;
-      UpdateUI();
-    }
+  if (DistillStates::IsNotDistillable(distill_state_) &&
+      result.is_distillable) {
+    TransitStateTo(DistillStates::DistillReverting(
+        DistillStates::DistillReverting::Reason::kNone, false));
+    TransitStateTo(DistillStates::ViewOriginal());
   }
 }
 
@@ -593,16 +448,31 @@ void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
 }
 
 void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
-  DCHECK(single_shot_next_request_);
   if (!success) {
     // TODO(boocmp): Show error dialog [Distillation failed on this page].
-    SetNextRequestState(DistillState::kPageProbablyReadable);
-    UpdateUI();
+    TransitStateTo(DistillStates::DistillReverting(
+        DistillStates::DistillReverting::Reason::kError, false));
+    TransitStateTo(DistillStates::ViewOriginal());
     return;
   }
 
   single_show_content_.swap(html);
-  ReloadContents();
+  TransitStateTo(
+      DistillStates::Distilling(DistillStates::Distilling::Reason::kManual));
+}
+
+SpeedreaderService* SpeedreaderTabHelper::GetSpeedreaderService() {
+  return SpeedreaderServiceFactory::GetForBrowserContext(
+      web_contents()->GetBrowserContext());
+}
+
+void SpeedreaderTabHelper::TransitStateTo(const DistillState& desired_state,
+                                          bool no_reload) {
+  if (Transit(distill_state_, desired_state) && !no_reload) {
+    ClearPersistedData();
+    ReloadContents();
+  }
+  UpdateUI();
 }
 
 #if BUILDFLAG(IS_ANDROID)

@@ -552,7 +552,6 @@ test("brave_unit_tests") {
   if (enable_speedreader) {
     sources += [
       "//brave/components/speedreader/speedreader_rewriter_unittest.cc",
-      "//brave/components/speedreader/speedreader_throttle_unittest.cc",
       "//brave/components/speedreader/speedreader_util_unittest.cc",
     ]
 
@@ -1034,10 +1033,7 @@ test("brave_browser_tests") {
   }
 
   if (enable_speedreader) {
-    sources += [
-      "//brave/browser/speedreader/speedreader_browsertest.cc",
-      "//brave/browser/ui/speedreader/speedreader_bubble_browsertest.cc",
-    ]
+    sources += [ "//brave/browser/speedreader/speedreader_browsertest.cc" ]
     deps += [
       "//brave/components/speedreader",
       "//brave/components/speedreader/common:mojom",

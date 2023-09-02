@@ -23,7 +23,9 @@ const initShowOriginalLink = () => {
         window.speedreader.showOriginalPage()
     })
 
-    link.style.display = 'none'
+    if (!navigator.userAgentData.mobile) {
+        link.style.display = 'none'
+    }
 }
 
 const calculateReadtime = () => {

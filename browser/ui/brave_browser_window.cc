@@ -12,7 +12,7 @@
 
 speedreader::SpeedreaderBubbleView* BraveBrowserWindow::ShowSpeedreaderBubble(
     speedreader::SpeedreaderTabHelper* tab_helper,
-    bool is_enabled) {
+    speedreader::SpeedreaderBubbleLocation location) {
   return nullptr;
 }
 
