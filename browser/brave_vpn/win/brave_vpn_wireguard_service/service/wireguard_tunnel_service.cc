@@ -22,9 +22,9 @@
 #include "base/win/security_descriptor.h"
 #include "base/win/sid.h"
 #include "base/win/windows_types.h"
-#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/process_utils.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_commands.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
@@ -302,10 +302,6 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
       !UpdateLastUsedConfigPath(config_file_path.value())) {
     VLOG(1) << "Failed to save last used config path";
   }
-  // Run tray process each time we establish connection. System tray icon
-  // manages self state to be visible/hidden due to settings.
-  brave_vpn::RunWireGuardCommandForUsers(
-      brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName);
   return true;
 }
 

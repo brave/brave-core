@@ -36,12 +36,10 @@ void BraveVPNMenuModel::Build() {
                           ? IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM
                           : IDS_BRAVE_VPN_SHOW_VPN_BUTTON_MENU_ITEM);
 #if BUILDFLAG(IS_WIN)
-  if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
-    AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON,
-                        IsTrayIconEnabled()
-                            ? IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM
-                            : IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM);
-  }
+  AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON,
+                      IsTrayIconEnabled()
+                          ? IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM
+                          : IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM);
 #endif  // BUILDFLAG(IS_WIN)
   AddItemWithStringId(IDC_SEND_BRAVE_VPN_FEEDBACK,
                       IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM);
@@ -64,6 +62,6 @@ bool BraveVPNMenuModel::IsTrayIconEnabled() const {
     return tray_icon_enabled_for_testing_.value();
   }
 
-  return brave_vpn::wireguard::IsVPNTrayIconEnabled();
+  return brave_vpn::IsVPNTrayIconEnabled();
 }
 #endif

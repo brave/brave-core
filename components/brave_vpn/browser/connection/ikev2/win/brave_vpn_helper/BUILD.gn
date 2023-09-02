@@ -52,6 +52,7 @@ source_set("lib") {
     "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/win",
+    "//brave/components/brave_vpn/common/wireguard/win",
     "//third_party/abseil-cpp:absl",
   ]
 

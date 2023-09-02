@@ -11,7 +11,10 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/command_line.h"
+#include "base/files/file_path.h"
 #include "base/logging.h"
+#include "base/process/launch.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/single_thread_task_runner.h"
@@ -20,6 +23,7 @@
 #include "base/win/scoped_bstr.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/brave_wireguard_manager_idl.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -223,6 +227,16 @@ void WireguardGenerateKeypair(
       ->PostTaskAndReplyWithResult(
           FROM_HERE, base::BindOnce(&WireguardGenerateKeypairImpl),
           std::move(callback));
+}
+
+void ShowBraveVpnStatusTrayIcon() {
+  auto executable_path = brave_vpn::GetBraveVPNWireguardServiceExecutablePath();
+  base::CommandLine interactive_cmd(executable_path);
+  interactive_cmd.AppendSwitch(
+      brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName);
+  if (!base::LaunchProcess(interactive_cmd, base::LaunchOptions()).IsValid()) {
+    VLOG(1) << "Interactive process launch failed";
+  }
 }
 
 }  // namespace wireguard

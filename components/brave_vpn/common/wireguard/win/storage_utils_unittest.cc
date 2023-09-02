@@ -11,7 +11,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_vpn {
-namespace wireguard {
 
 TEST(StorageUtilsUnitTest, IsVPNTrayIconEnabled) {
   registry_util::RegistryOverrideManager registry_overrides;
@@ -38,14 +37,14 @@ TEST(StorageUtilsUnitTest, IsWireguardActive) {
 TEST(StorageUtilsUnitTest, GetLastUsedConfigPath) {
   registry_util::RegistryOverrideManager registry_overrides;
   registry_overrides.OverrideRegistry(HKEY_LOCAL_MACHINE);
-  EXPECT_FALSE(GetLastUsedConfigPath());
+  EXPECT_FALSE(wireguard::GetLastUsedConfigPath());
 
-  EXPECT_TRUE(UpdateLastUsedConfigPath(base::FilePath()));
-  EXPECT_FALSE(GetLastUsedConfigPath());
+  EXPECT_TRUE(wireguard::UpdateLastUsedConfigPath(base::FilePath()));
+  EXPECT_FALSE(wireguard::GetLastUsedConfigPath());
 
   base::FilePath test_config_path(L"C:\\value");
-  EXPECT_TRUE(UpdateLastUsedConfigPath(test_config_path));
-  auto last_config = GetLastUsedConfigPath();
+  EXPECT_TRUE(wireguard::UpdateLastUsedConfigPath(test_config_path));
+  auto last_config = wireguard::GetLastUsedConfigPath();
   EXPECT_TRUE(last_config.has_value());
   EXPECT_EQ(last_config.value(), test_config_path);
 }
@@ -53,7 +52,7 @@ TEST(StorageUtilsUnitTest, GetLastUsedConfigPath) {
 TEST(StorageUtilsUnitTest, ShouldFallbackToIKEv2) {
   registry_util::RegistryOverrideManager registry_overrides;
   registry_overrides.OverrideRegistry(HKEY_LOCAL_MACHINE);
-  SetWireguardServiceRegisteredForTesting(true);
+  wireguard::SetWireguardServiceRegisteredForTesting(true);
   EXPECT_FALSE(ShouldFallbackToIKEv2());
 
   // By default we have limitations in 3 attempts.
@@ -65,7 +64,7 @@ TEST(StorageUtilsUnitTest, ShouldFallbackToIKEv2) {
   EXPECT_TRUE(ShouldFallbackToIKEv2());
   ResetWireguardTunnelUsageFlag();
   EXPECT_FALSE(ShouldFallbackToIKEv2());
-  SetWireguardServiceRegisteredForTesting(false);
+  wireguard::SetWireguardServiceRegisteredForTesting(false);
   EXPECT_TRUE(ShouldFallbackToIKEv2());
 }
 
@@ -80,5 +79,4 @@ TEST(StorageUtilsUnitTest, WriteConnectionState) {
   EXPECT_EQ(value.value(), 1);
 }
 
-}  // namespace wireguard
 }  // namespace brave_vpn

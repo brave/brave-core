@@ -13,12 +13,13 @@ source_set("status_tray") {
   ]
   public_deps = [ "status_icon" ]
   deps = [
+    "ras",
     "resources",
     "wireguard",
     "//base",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
-    "//brave/components/brave_vpn/common/win",
+    "//brave/components/brave_vpn/common/win/ras",
     "//brave/components/brave_vpn/common/wireguard/win",
     "//brave/components/resources:strings_grit",
     "//ui/base",

@@ -24,7 +24,6 @@ void BraveVpnWireguardObserverService::ShowFallbackDialog() {
 
 void BraveVpnWireguardObserverService::OnConnectionStateChanged(
     brave_vpn::mojom::ConnectionState state) {
-  wireguard::WriteConnectionState(static_cast<int>(state));
   if (state == brave_vpn::mojom::ConnectionState::DISCONNECTED ||
       state == brave_vpn::mojom::ConnectionState::CONNECT_FAILED) {
     if (ShouldShowFallbackDialog()) {
@@ -38,7 +37,7 @@ bool BraveVpnWireguardObserverService::ShouldShowFallbackDialog() const {
     return should_fallback_for_testing_.value();
   }
 
-  return wireguard::ShouldFallbackToIKEv2();
+  return ShouldFallbackToIKEv2();
 }
 
 }  // namespace brave_vpn

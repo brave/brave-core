@@ -40,6 +40,9 @@ static_library("browser") {
     "//ui/base",
     "//url",
   ]
+  if (is_win) {
+    deps += [ "//brave/components/brave_vpn/common/wireguard/win" ]
+  }
 }
 
 source_set("unit_tests") {

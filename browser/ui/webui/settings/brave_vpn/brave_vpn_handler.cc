@@ -70,7 +70,7 @@ void BraveVpnHandler::RegisterMessages() {
 void BraveVpnHandler::OnProtocolChanged() {
   auto enabled =
       brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state());
-  brave_vpn::wireguard::SetWireguardActive(enabled);
+  brave_vpn::SetWireguardActive(enabled);
 }
 
 void BraveVpnHandler::HandleRegisterWireguardService(

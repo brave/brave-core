@@ -8,9 +8,6 @@
 #include <string>
 #include <vector>
 
-#include "base/command_line.h"
-#include "base/files/file_path.h"
-#include "base/process/launch.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
@@ -73,9 +70,8 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 
 #if BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -88,19 +84,6 @@
 using content::WebContents;
 
 namespace brave {
-namespace {
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
-void LaunchBraveVpnWireguardInInteractiveMode() {
-  auto executable_path = brave_vpn::GetBraveVPNWireguardServiceExecutablePath();
-  base::CommandLine interactive_cmd(executable_path);
-  interactive_cmd.AppendSwitch(
-      brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName);
-  if (!base::LaunchProcess(interactive_cmd, base::LaunchOptions()).IsValid()) {
-    VLOG(1) << "Interactive process launch failed";
-  }
-}
-#endif
-}  // namespace
 void NewOffTheRecordWindowTor(Browser* browser) {
   CHECK(browser);
   if (browser->profile()->IsTor()) {
@@ -146,10 +129,9 @@ void ShowBraveVPNBubble(Browser* browser) {
 
 void ToggleBraveVPNTrayIcon() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
-  brave_vpn::wireguard::EnableVPNTrayIcon(
-      !brave_vpn::wireguard::IsVPNTrayIconEnabled());
-  if (brave_vpn::wireguard::IsVPNTrayIconEnabled()) {
-    LaunchBraveVpnWireguardInInteractiveMode();
+  brave_vpn::EnableVPNTrayIcon(!brave_vpn::IsVPNTrayIconEnabled());
+  if (brave_vpn::IsVPNTrayIconEnabled()) {
+    brave_vpn::wireguard::ShowBraveVpnStatusTrayIcon();
   }
 #endif
 }
