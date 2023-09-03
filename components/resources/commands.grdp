@@ -514,4 +514,7 @@
   <message name="IDS_SHORTCUTS_PAGE_ADD_SHORTCUT" desc="Text for the button to add a new shortcut">
     Add
   </message>
+  <message name="IDS_COMMANDER_OPEN_BOOKMARK" desc="Text for the command to begin opening a bookmark">
+    Open bookmark...
+  </message>
 </grit-part>

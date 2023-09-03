@@ -54,7 +54,7 @@ CommandItemModel FromCommand(const std::unique_ptr<CommandItem>& item) {
 CommanderService::CommanderService(Profile* profile)
     : profile_(profile), ranker_(profile->GetPrefs()) {
   command_sources_.push_back(std::make_unique<BraveSimpleCommandSource>());
-  command_sources_.push_back(std::make_unique<BookmarkCommandSource>());
+  command_sources_.push_back(std::make_unique<BraveBookmarkCommandSource>());
   command_sources_.push_back(std::make_unique<WindowCommandSource>());
   command_sources_.push_back(std::make_unique<BraveTabCommandSource>());
 }
@@ -146,6 +146,7 @@ const std::u16string& CommanderService::GetPrompt() {
 
 void CommanderService::Shutdown() {
   weak_ptr_factory_.InvalidateWeakPtrs();
+  items_.clear();
 }
 
 void CommanderService::Toggle() {
