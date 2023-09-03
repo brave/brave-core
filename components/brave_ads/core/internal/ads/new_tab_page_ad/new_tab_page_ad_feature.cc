@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad/new_tab_page_ad_feature.h"
 
 namespace brave_ads {
 
-BASE_FEATURE(kInlineContentAdFeature,
-             "InlineContentAds",
+BASE_FEATURE(kNewTabPageAdFeature,
+             "NewTabPageAds",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-bool IsInlineContentAdFeatureEnabled() {
-  return base::FeatureList::IsEnabled(kInlineContentAdFeature);
+bool IsNewTabPageAdFeatureEnabled() {
+  return base::FeatureList::IsEnabled(kNewTabPageAdFeature);
 }
 
 }  // namespace brave_ads

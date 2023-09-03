@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/promoted_content_ads/promoted_content_ads_per_hour_permission_rule.h"
 
-#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_event_unittest_util.h"
 

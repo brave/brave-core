@@ -9,7 +9,7 @@
 
 #include "base/time/time.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/ad_type.h"

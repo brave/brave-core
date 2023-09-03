@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad/new_tab_page_ad_handler.h"
 
 #include <utility>
 

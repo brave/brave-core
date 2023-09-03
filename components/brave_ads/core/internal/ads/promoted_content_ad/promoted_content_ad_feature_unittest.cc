@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad/promoted_content_ad_feature.h"
 
 #include <vector>
 
@@ -14,21 +14,21 @@
 
 namespace brave_ads {
 
-TEST(BraveInlineContentAdFeatureTest, IsEnabled) {
+TEST(BraveAdsPromotedContentAdFeatureTest, IsEnabled) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(IsInlineContentAdFeatureEnabled());
+  EXPECT_TRUE(IsPromotedContentAdFeatureEnabled());
 }
 
-TEST(BraveInlineContentAdFeatureTest, IsDisabled) {
+TEST(BraveAdsPromotedContentAdFeatureTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kInlineContentAdFeature);
+  disabled_features.emplace_back(kPromotedContentAdFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -37,15 +37,15 @@ TEST(BraveInlineContentAdFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsInlineContentAdFeatureEnabled());
+  EXPECT_FALSE(IsPromotedContentAdFeatureEnabled());
 }
 
-TEST(BraveInlineContentAdFeatureTest, GetMaximumAdsPerHour) {
+TEST(BraveAdsPromotedContentAdFeatureTest, GetMaximumAdsPerHour) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["maximum_ads_per_hour"] = "42";
-  enabled_features.emplace_back(kInlineContentAdFeature, params);
+  enabled_features.emplace_back(kPromotedContentAdFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -56,24 +56,25 @@ TEST(BraveInlineContentAdFeatureTest, GetMaximumAdsPerHour) {
   // Act
 
   // Assert
-  EXPECT_EQ(42, kMaximumInlineContentAdsPerHour.Get());
+  EXPECT_EQ(42, kMaximumPromotedContentAdsPerHour.Get());
 }
 
-TEST(BraveInlineContentAdFeatureTest, DefaultMaximumAdsPerHour) {
+TEST(BraveAdsPromotedContentAdFeatureTest, DefaultMaximumAdsPerHour) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_EQ(6, kMaximumInlineContentAdsPerHour.Get());
+  EXPECT_EQ(4, kMaximumPromotedContentAdsPerHour.Get());
 }
 
-TEST(BraveInlineContentAdFeatureTest, DefaultMaximumAdsPerHourWhenDisabled) {
+TEST(BraveAdsPromotedContentAdFeatureTest,
+     DefaultMaximumAdsPerHourWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kInlineContentAdFeature);
+  disabled_features.emplace_back(kPromotedContentAdFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -82,15 +83,15 @@ TEST(BraveInlineContentAdFeatureTest, DefaultMaximumAdsPerHourWhenDisabled) {
   // Act
 
   // Assert
-  EXPECT_EQ(6, kMaximumInlineContentAdsPerHour.Get());
+  EXPECT_EQ(4, kMaximumPromotedContentAdsPerHour.Get());
 }
 
-TEST(BraveInlineContentAdFeatureTest, GetMaximumAdsPerDay) {
+TEST(BraveAdsPromotedContentAdFeatureTest, GetMaximumAdsPerDay) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["maximum_ads_per_day"] = "24";
-  enabled_features.emplace_back(kInlineContentAdFeature, params);
+  enabled_features.emplace_back(kPromotedContentAdFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -101,24 +102,25 @@ TEST(BraveInlineContentAdFeatureTest, GetMaximumAdsPerDay) {
   // Act
 
   // Assert
-  EXPECT_EQ(24, kMaximumInlineContentAdsPerDay.Get());
+  EXPECT_EQ(24, kMaximumPromotedContentAdsPerDay.Get());
 }
 
-TEST(BraveInlineContentAdFeatureTest, DefaultMaximumAdsPerDay) {
+TEST(BraveAdsPromotedContentAdFeatureTest, DefaultMaximumAdsPerDay) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_EQ(20, kMaximumInlineContentAdsPerDay.Get());
+  EXPECT_EQ(20, kMaximumPromotedContentAdsPerDay.Get());
 }
 
-TEST(BraveInlineContentAdFeatureTest, DefaultMaximumAdsPerDayWhenDisabled) {
+TEST(BraveAdsPromotedContentAdFeatureTest,
+     DefaultMaximumAdsPerDayWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kInlineContentAdFeature);
+  disabled_features.emplace_back(kPromotedContentAdFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -127,7 +129,7 @@ TEST(BraveInlineContentAdFeatureTest, DefaultMaximumAdsPerDayWhenDisabled) {
   // Act
 
   // Assert
-  EXPECT_EQ(20, kMaximumInlineContentAdsPerDay.Get());
+  EXPECT_EQ(20, kMaximumPromotedContentAdsPerDay.Get());
 }
 
 }  // namespace brave_ads

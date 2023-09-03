@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad/notification_ad_handler.h"
 
 #include <utility>
 
 #include "base/check.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad/notification_ad_handler_util.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"

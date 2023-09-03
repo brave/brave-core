@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/search_result_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_ads/core/public/feature/brave_ads_feature.h"
 
 #include "base/test/mock_callback.h"
