@@ -51,16 +51,27 @@ export const PortfolioNftAsset = () => {
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
   )
+  const hiddenNfts =
+    useUnsafeWalletSelector(WalletSelectors.removedNonFungibleTokens)
 
   const selectedAssetFromParams = React.useMemo(() => {
-    const userToken = userVisibleTokensInfo.find((token) =>
-      tokenId
-        ? token.tokenId === tokenId &&
-          token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
-        : token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
-    )
+    const userToken =
+      [...userVisibleTokensInfo, ...hiddenNfts]
+        .find((token) =>
+          tokenId
+            ? token.tokenId === tokenId &&
+            token.contractAddress.toLowerCase() ===
+            contractAddress.toLowerCase()
+            : token.contractAddress.toLowerCase() ===
+            contractAddress.toLowerCase()
+        )
     return userToken
-  }, [userVisibleTokensInfo, contractAddress, tokenId])
+  }, [
+    userVisibleTokensInfo,
+    contractAddress,
+    tokenId,
+    hiddenNfts
+  ])
 
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const { data: selectedAssetNetwork } = useGetNetworkQuery(
