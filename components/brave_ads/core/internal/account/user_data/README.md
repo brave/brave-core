@@ -32,7 +32,7 @@ Should only be included in the confirmation payload for users who have joined Br
 
 ## User Data Submitted when Redeeming Identifiable Payment Tokens
 
-See [identifiable payment token redemption](../tokens/redeem_payment_tokens/README.md).
+See [identifiable payment token redemption](../utility/redeem_payment_tokens/README.md).
 
 | user data  | optional  | mutable  | description  |
 |---|---|---|---|

@@ -8,7 +8,7 @@
 #include <string>
 
 #include "base/values.h"
-#include "brave/browser/brave_ads/brave_stats_helper.h"
+#include "brave/browser/brave_ads/analytics/p3a/brave_stats_helper.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"

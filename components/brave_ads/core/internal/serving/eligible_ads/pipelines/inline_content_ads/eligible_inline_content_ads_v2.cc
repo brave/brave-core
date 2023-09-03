@@ -19,7 +19,7 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_events_database_table.h"
+#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

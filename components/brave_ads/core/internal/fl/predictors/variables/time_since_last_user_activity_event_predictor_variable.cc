@@ -8,8 +8,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/predictor_variable_constants.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util.h"
+#include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_manager.h"
+#include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_util.h"
 
 namespace brave_ads {
 

@@ -5,9 +5,9 @@
 
 # Tests that do not run on Android
 android_test_exception_sources = [
-  "//brave/browser/brave_ads/notification_helper/notification_helper_impl_mock.cc",
-  "//brave/browser/brave_ads/notification_helper/notification_helper_impl_mock.h",
-  "//brave/browser/brave_ads/search_result_ad/search_result_ad_browsertest.cc",
+  "//brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl_mock.cc",
+  "//brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl_mock.h",
+  "//brave/browser/brave_ads/units/search_result_ad/search_result_ad_browsertest.cc",
   "//brave/browser/brave_content_browser_client_browsertest.cc",
   "//brave/browser/brave_scheme_load_browsertest.cc",
   "//brave/browser/brave_search/brave_search_browsertest.cc",

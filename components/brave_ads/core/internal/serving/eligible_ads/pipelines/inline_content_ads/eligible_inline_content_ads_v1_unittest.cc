@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

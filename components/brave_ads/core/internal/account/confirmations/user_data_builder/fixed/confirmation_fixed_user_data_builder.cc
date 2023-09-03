@@ -21,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/segment_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/studies_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/version_number_user_data.h"
-#include "brave/components/brave_ads/core/public/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 namespace brave_ads {
 

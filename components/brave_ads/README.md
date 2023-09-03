@@ -1,7 +1,6 @@
 # Brave Ads
 
-Users earn tokens by viewing privacy-first Brave Ads. Ads presented are based on the user's interests, as inferred from the user's browsing behavior. No personal data or browsing history should ever leave the browser. For more details, refer to the glossary at [glossary.md](/brave/components/brave_ads/glossary.md).
-
+Users earn tokens by viewing privacy-first Brave Ads. Ads presented are based on the user's interests, as inferred from the user's browsing behavior. No personal data or browsing history should ever leave the browser. For more details, refer to [GLOSSARY.md](../../../brave/components/brave_ads/GLOSSARY.md).
 
 Brave Ads is a [layered component](https://sites.google.com/a/chromium.org/dev/developers/design-documents/layered-components-design). It has the following structure:
 
@@ -42,13 +41,11 @@ You can enable diagnostic logging to the `Rewards.log` file stored on your devic
 View diagnostics at [rewards internals](brave://rewards-internals) on the `Ad diagnostics` tab.
 
 ## Browser Tests
-
 ```
 npm run test -- brave_browser_tests --filter=BraveAds*
 ```
 
 ## Unit Tests
-
 ```
 npm run test -- brave_unit_tests --filter=BraveAds*
 ```

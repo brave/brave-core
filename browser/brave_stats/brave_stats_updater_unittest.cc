@@ -12,7 +12,7 @@
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_ads/brave_stats_helper.h"
+#include "brave/browser/brave_ads/analytics/p3a/brave_stats_helper.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"

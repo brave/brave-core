@@ -6,7 +6,7 @@
 #import "notification_ad_ios.h"
 
 #include "base/strings/sys_string_conversions.h"
-#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."

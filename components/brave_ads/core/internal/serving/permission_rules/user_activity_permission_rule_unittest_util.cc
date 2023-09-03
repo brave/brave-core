@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/user_activity_permission_rule_unittest_util.h"
 
-#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
+#include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_manager.h"
 
 namespace brave_ads {
 

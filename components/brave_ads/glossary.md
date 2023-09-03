@@ -4,9 +4,9 @@ A place to define all specific terms and vocabulary for the Brave Ads component,
 
 | term  | description  |
 |---|---|
-| Ad event  | Ad events are actions or interactions with an advertisement, such as a user viewing or clicking an ad.  |
-| Advertisment  | An advertisement is a promotional message or content created to promote a product, service, or idea to a target audience, also known as an Ad.  |
 | Advertiser  | An advertiser is someone or a company that promotes products, services, or ideas through various mediums to reach and persuade potential customers or target audiences.  |
+| Advertisment  | An advertisement is a promotional message or content created to promote a product, service, or idea to a target audience, also known as an Ad.  |
+| Analytics  | Examine data to uncover meaningful insights, trends, and patterns that can inform decision-making and improve understanding of a given subject or domain. See P2A and P3A.  |
 | Anti-targeting  | Exclude users from receiving targeted advertisements based on specific attributes such as demographics, interests, or behaviors.  |
 | Basic Attention Token  | See the [whitepaper](https://basicattentiontoken.org/static-assets/documents/BasicAttentionTokenWhitePaper-4.pdf). Also known as BAT.  |
 | Behavioral  | Behavioral advertising targets ads based on the user's previous online behavior, such as browsing history and interactions, to deliver relevant and personalized advertisements.  |
@@ -21,7 +21,6 @@ A place to define all specific terms and vocabulary for the Brave Ads component,
 | Creative instance  | A creative instance refers to a specific version or variation of an advertisement allowing advertisers to test different approaches, optimize performance, and effectively engage their target audience.  |
 | Creative set  | A creative set refers to a collection of related creative instances or variations of an advertisement.  |
 | Day parting  | Day parting is a strategy that involves scheduling and targeting ads based on specific times of the day to maximize their effectiveness.  |
-| Delivery  | Delivering ad content to the user, also known as serving.  |
 | Deposit  | Refers to redeeming a confirmation token in exchange for BAT.  |
 | Frequency capping  | Limits how many times a given ad will be shown within a specified period, also known as exclusion rules.  |
 | Geographic  | Geographic advertising targets ads based on specific geographic locations to reach the desired audience.  |
@@ -38,6 +37,7 @@ A place to define all specific terms and vocabulary for the Brave Ads component,
 | Purchase intent  | Likelihood or inclination of a consumer to make a purchase based on their expressed interest or behavior. It indicates the consumer's readiness to buy a product or service.  |
 | Resources  | External resources provided by [components](brave://components).  |
 | Segment  | An advertising taxonomy to target ads to reach the desired audience.  |
+| Serving  | Deliver advertisements to users, ensuring that suitable ads are shown to the right audience at the right time, also known as delivery.  |
 | Split testing  | Comparing ad or landing page versions to determine which performs better. Also known as A/B testing.  |
 | Statement of accounts  | A statement of accounts outlines the transactions during a specific period, giving the user an overview of earned rewards.  |
 | Targeting  | Delivering an ad to the appropriate audience through behavioral, contextual, or geographic targeting.  |
@@ -46,6 +46,7 @@ A place to define all specific terms and vocabulary for the Brave Ads component,
 | Transactions  | Transactions occur when redeeming a confirmation token and are recorded in a ledger on local storage, providing a chronological and organized history of events.  |
 | Transfer  | A user's arrival on the advertiser's website, i.e., the pages after the user clicks on an ad, also known as site visits or page lands.  |
 | User attention  | Measures user attention to drive performance.  |
+| User interaction  | Measures user interactions with an advertisement, such as a user viewing or clicking an ad.  |
 | Wallet  | Holds a Brave Rewards payment identifier and recovery seed to enable the refill of confirmation tokens and disbursement of earned rewards to the user.  |
 
 Please add to it!
