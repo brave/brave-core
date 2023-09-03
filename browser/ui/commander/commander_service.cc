@@ -55,7 +55,7 @@ CommanderService::CommanderService(Profile* profile)
     : profile_(profile), ranker_(profile->GetPrefs()) {
   command_sources_.push_back(std::make_unique<BraveSimpleCommandSource>());
   command_sources_.push_back(std::make_unique<BraveBookmarkCommandSource>());
-  command_sources_.push_back(std::make_unique<WindowCommandSource>());
+  command_sources_.push_back(std::make_unique<BraveWindowCommandSource>());
   command_sources_.push_back(std::make_unique<BraveTabCommandSource>());
 }
 

@@ -517,4 +517,10 @@
   <message name="IDS_COMMANDER_OPEN_BOOKMARK" desc="Text for the command to begin opening a bookmark">
     Open bookmark...
   </message>
+  <message name="IDS_COMMANDER_SWITCH_TO_WINDOW" desc="Text for the command to begin switching to another window">
+    Switch to window...
+  </message>
+  <message name="IDS_COMMANDER_MERGE_WINDOW_INTO" desc="Text for the command to begin merging the current window into another window">
+    Merge current window into...
+  </message>
 </grit-part>
