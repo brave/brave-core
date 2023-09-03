@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_builder.h"
 
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_info.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_event_info.h"
 
 namespace brave_ads {
 

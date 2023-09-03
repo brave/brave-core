@@ -7,9 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_EXCLUSION_RULE_UTIL_H_
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_event_info.h"
 
 namespace base {
 class TimeDelta;

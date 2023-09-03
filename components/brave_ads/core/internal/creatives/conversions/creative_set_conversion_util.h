@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_event_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;

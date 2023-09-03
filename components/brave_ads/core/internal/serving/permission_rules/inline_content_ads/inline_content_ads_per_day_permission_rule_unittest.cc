@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/inline_content_ads/inline_content_ads_per_day_permission_rule.h"
 
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_event_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

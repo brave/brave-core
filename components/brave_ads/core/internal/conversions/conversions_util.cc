@@ -7,8 +7,8 @@
 
 #include "base/notreached.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_event_info.h"
 
 namespace brave_ads {
 

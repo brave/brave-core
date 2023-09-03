@@ -8,12 +8,12 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_event_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

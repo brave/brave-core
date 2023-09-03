@@ -9,12 +9,12 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_callback.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_base.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_event_info.h"
 
 namespace brave_ads {
 

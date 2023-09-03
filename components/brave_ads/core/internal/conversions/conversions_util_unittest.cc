@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversions_util.h"
 
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_builder.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_event_builder.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/public/ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
@@ -14,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/creative_ad_model_based_predictor_input_variable_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model_builder_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_event_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
