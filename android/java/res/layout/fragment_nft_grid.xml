@@ -83,8 +83,17 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_nft"
+                android:background="@color/wallet_dn_bg_primary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_hidden_nft"
+                android:background="@color/wallet_dn_bg_primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
                 />
 
             <LinearLayout

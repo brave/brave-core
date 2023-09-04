@@ -80,6 +80,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     private WalletModel mWalletModel;
     private PortfolioModel mPortfolioModel;
     private List<PortfolioModel.NftDataModel> mNftDataModels;
+    private List<PortfolioModel.NftDataModel> mNftHiddenDataModels;
     private NetworkSelectorModel mNetworkSelectionModel;
     private boolean mCanRunOnceWhenResumed;
 
@@ -90,10 +91,13 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     private boolean mActive;
     private RecyclerView mRvNft;
     private WalletNftAdapter mWalletNftAdapter;
+    private RecyclerView mRvHiddenNft;
+    private WalletNftAdapter mWalletHiddenNftAdapter;
     private ProgressBar mPbAssetDiscovery;
     private ViewGroup mAddNftsContainer;
     private ImageButton mBtnChangeNetwork;
     private ImageView mBtnAddNft;
+    private TabLayout mTabLayout;
 
     private ActivityResultLauncher<Intent> mAddAssetActivityResultLauncher;
 
@@ -137,6 +141,8 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                mRvNft.setVisibility(tab.getPosition() == 0 ? View.VISIBLE : View.GONE);
+                mRvHiddenNft.setVisibility(tab.getPosition() == 0 ? View.GONE : View.VISIBLE);
             }
 
             @Override
@@ -175,6 +181,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
 
         TextView editVisibleNft = view.findViewById(R.id.edit_visible_nfts);
         mRvNft = view.findViewById(R.id.rv_nft);
+        mRvHiddenNft = view.findViewById(R.id.rv_hidden_nft);
         editVisibleNft.setOnClickListener(v -> showEditVisibleDialog());
     }
 
