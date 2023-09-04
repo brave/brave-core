@@ -1183,7 +1183,6 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
                                            'rust-toolchain', 'bin'), true)
     env = this.addPathToEnv(env, this.depotToolsDir, true)
     const pythonPaths = [
-      ['brave', 'chromium_src', 'python_modules'],
       ['brave', 'script'],
       ['tools', 'grit', 'grit', 'extern'],
       ['brave', 'vendor', 'requests'],

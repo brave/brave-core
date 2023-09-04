@@ -14,8 +14,6 @@ json_features("api_features") {
   feature_type = "APIFeature"
   method_name = "AddBraveAPIFeatures"
   sources = [
-    "//chrome/common/extensions/api/_api_features.json",
-    "//extensions/common/api/_api_features.json",
     "_api_features.json",
     "_brave_talk_api_features.json",
   ]
@@ -32,27 +30,23 @@ json_features("api_features") {
 json_features("permission_features") {
   feature_type = "PermissionFeature"
   method_name = "AddBravePermissionFeatures"
-  sources = [
-    "//chrome/common/extensions/api/_permission_features.json",
-    "//extensions/common/api/_permission_features.json",
-    "_permission_features.json",
-  ]
+  sources = [ "_permission_features.json" ]
+
+  if (enable_ipfs) {
+    sources += [ "_ipfs_permission_features.json" ]
+  }
 }
 
 json_features("manifest_features") {
   feature_type = "ManifestFeature"
   method_name = "AddBraveManifestFeatures"
-  sources = [
-    "//chrome/common/extensions/api/_manifest_features.json",
-    "//extensions/common/api/_manifest_features.json",
-    "_manifest_features.json",
-  ]
+  sources = [ "_manifest_features.json" ]
 }
 
 json_features("behavior_features") {
   feature_type = "BehaviorFeature"
   method_name = "AddBraveBehaviorFeatures"
-  sources = [ "//extensions/common/api/_behavior_features.json" ]
+  sources = [ "_behavior_features.json" ]
 }
 
 brave_extensions_api_schema_sources = [

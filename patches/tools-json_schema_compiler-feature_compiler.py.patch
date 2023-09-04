@@ -1,12 +1,12 @@
 diff --git a/tools/json_schema_compiler/feature_compiler.py b/tools/json_schema_compiler/feature_compiler.py
-index fbe99e3008ec0e0351f0f742ec9c320e44cdf056..5b9e2c0c4cbe0fe38db34925e0ea35fb2fcb8898 100644
+index fbe99e3008ec0e0351f0f742ec9c320e44cdf056..e24054dc32f203cb52a6b45838b4f79b1ddb9e14 100644
 --- a/tools/json_schema_compiler/feature_compiler.py
 +++ b/tools/json_schema_compiler/feature_compiler.py
-@@ -768,6 +768,7 @@ class FeatureCompiler(object):
-                   abs_source_file)
-         raise
-       dupes = set(f_json) & set(self._json)
-+      from tools.json_schema_compiler import feature_compiler_helper; feature_compiler_helper.DiscardBraveOverridesFromDupes(dupes)
-       assert not dupes, 'Duplicate keys found: %s' % list(dupes)
-       self._json.update(f_json)
+@@ -922,6 +922,7 @@ class FeatureCompiler(object):
+       cc_file.Concat(cc_end)
+       f.write(cc_file.Render().strip())
  
++from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/json_schema_compiler/feature_compiler.py", globals(), locals())
+ if __name__ == '__main__':
+   parser = argparse.ArgumentParser(description='Compile json feature files')
+   parser.add_argument('chrome_root', type=str,

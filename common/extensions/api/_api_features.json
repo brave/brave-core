@@ -1,6 +1,11 @@
+// Copyright (c) 2017 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// DO NOT CHANGE UPSTREAM FEATURES HERE.
+// Use //brave/chromium_src/tools/json_schema_compiler/feature_compiler.py
+
 // Command to get allowlist ID:
 // Brave Shields       A321D47A2B4CA86898167A55CA8B2E02385EA7CD: echo -n mnojpmjdmbbfmejpflffifhffcmidifd | openssl sha1 | tr '[:lower:]' '[:upper:]'
 // WebTorrent          3D9518A72EB02667A773B69DBA9E72E0F4A37423: echo -n lgjmpdmojkpocjcopdikifhejkkjglho | openssl sha1 | tr '[:lower:]' '[:upper:]'
@@ -15,87 +20,6 @@
     "allowlist": [
       "A321D47A2B4CA86898167A55CA8B2E02385EA7CD"
     ]
-  },
-  "topSites": [{
-    "dependencies": ["permission:topSites"],
-    "contexts": ["blessed_extension"]
-  }, {
-    "channel": "stable",
-    "contexts": ["webui"],
-    "matches": [
-      "chrome://newtab/*"
-    ]
-  }],
-  "bookmarks": [{
-    "dependencies": ["permission:bookmarks"],
-    "contexts": ["blessed_extension"],
-    "default_parent": true
-  }, {
-    "channel": "stable",
-    "contexts": ["webui"],
-    "matches": [
-      "chrome://bookmarks/*",
-      "chrome://bookmarks-side-panel.top-chrome/*",
-      "chrome://read-later.top-chrome/*"
-    ],
-    "default_parent": true
-  }, {
-    "channel": "stable",
-    "contexts": ["webui"],
-    "matches": [
-      "chrome://newtab/*"
-    ]
-  }],
-  "tabs": [{
-    "channel": "stable",
-    "extension_types": ["extension", "legacy_packaged_app"],
-    "contexts": ["blessed_extension"],
-    "default_parent": true
-  }, {
-    "channel": "stable",
-    "contexts": ["webui"],
-    "matches": [
-      "chrome://bookmarks/*",
-      "chrome://bookmarks-side-panel.top-chrome/*",
-      "chrome://brave-shields.top-chrome/*",
-      "chrome://read-later.top-chrome/*",
-      "chrome://rewards-panel.top-chrome/*",
-      "chrome://tab-strip/*",
-      "chrome://wallet-panel.top-chrome/*",
-      "chrome://wallet/*"
-    ]
-  }, {
-    "channel": "stable",
-    "contexts": ["webui_untrusted"],
-    "matches": [
-      "chrome-untrusted://crosh/*",
-      "chrome-untrusted://terminal/*"
-    ],
-    "platforms": ["chromeos"]
-  }],
-  "extension.inIncognitoContext": [{
-    "contexts": ["blessed_extension", "unblessed_extension", "content_script"]
-  }, {
-    "channel": "stable",
-    "contexts": ["webui"],
-    "matches": [
-      "chrome://newtab/*"
-    ]
-  }],
-  "sockets.tcp": {
-    "dependencies": ["manifest:sockets"],
-    "contexts": ["blessed_extension"],
-    "allowlist": ["3D9518A72EB02667A773B69DBA9E72E0F4A37423", "780BF954C0F7C586EA9662D4F967771F49CC2114", "FF32507DC3DB5DFFD1D6733187C84D4B74713D63"]
-  },
-  "sockets.tcpServer": {
-    "dependencies": ["manifest:sockets"],
-    "contexts": ["blessed_extension"],
-    "allowlist": ["3D9518A72EB02667A773B69DBA9E72E0F4A37423", "780BF954C0F7C586EA9662D4F967771F49CC2114", "FF32507DC3DB5DFFD1D6733187C84D4B74713D63"]
-  },
-  "sockets.udp": {
-    "dependencies": ["manifest:sockets"],
-    "contexts": ["blessed_extension"],
-    "allowlist": ["3D9518A72EB02667A773B69DBA9E72E0F4A37423", "780BF954C0F7C586EA9662D4F967771F49CC2114", "FF32507DC3DB5DFFD1D6733187C84D4B74713D63"]
   },
   "braveRewards": [
     {
