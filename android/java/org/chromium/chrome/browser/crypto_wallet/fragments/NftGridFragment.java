@@ -30,6 +30,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
@@ -123,7 +124,31 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_nft_grid, container, false);
+        return inflater.inflate(R.layout.fragment_nft_grid, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mTabLayout = view.findViewById(R.id.nft_tab_layout);
+        mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.brave_wallet_nfts)));
+        mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.brave_wallet_hidden)));
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                /* No-op. */
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                /* No-op. */
+            }
+        });
         mPbAssetDiscovery = view.findViewById(R.id.frag_nft_grid_pb_asset_discovery);
         mAddNftsContainer = view.findViewById(R.id.add_nfts_container);
         mBtnChangeNetwork = view.findViewById(R.id.fragment_nft_grid_btn_change_networks);
@@ -148,7 +173,9 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                             }
                         });
 
-        return view;
+        TextView editVisibleNft = view.findViewById(R.id.edit_visible_nfts);
+        mRvNft = view.findViewById(R.id.rv_nft);
+        editVisibleNft.setOnClickListener(v -> showEditVisibleDialog());
     }
 
     @Override
@@ -246,15 +273,6 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                                             });
                     builder.show();
                 });
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        TextView editVisibleNft = view.findViewById(R.id.edit_visible_nfts);
-        mRvNft = view.findViewById(R.id.rv_nft);
-        editVisibleNft.setOnClickListener(v -> showEditVisibleDialog());
     }
 
     private void showNftDiscoveryDialog() {
