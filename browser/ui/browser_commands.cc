@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/browser_commands.h"
 
+#include <numeric>
 #include <string>
 #include <vector>
 
@@ -408,6 +409,114 @@ void CloseDuplicateTabs(Browser* browser) {
       tab->Close();
     }
   }
+}
+
+bool CanCloseTabsToLeft(Browser* browser) {
+  auto* tsm = browser->tab_strip_model();
+  const auto& selection = tsm->selection_model();
+  if (selection.empty()) {
+    return false;
+  }
+
+  int left_selected = *(selection.selected_indices().begin());
+  return left_selected > 0;
+}
+
+void CloseTabsToLeft(Browser* browser) {
+  auto* tsm = browser->tab_strip_model();
+  const auto& selection = tsm->selection_model();
+  if (selection.empty()) {
+    return;
+  }
+
+  int left_selected = *(selection.selected_indices().begin());
+  for (int i = left_selected - 1; i >= 0; --i) {
+    tsm->CloseWebContentsAt(i, TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB |
+                                   TabCloseTypes::CLOSE_USER_GESTURE);
+  }
+}
+
+bool CanCloseUnpinnedTabs(Browser* browser) {
+  auto first_unpinned_index =
+      browser->tab_strip_model()->IndexOfFirstNonPinnedTab();
+  return first_unpinned_index > 0 &&
+         first_unpinned_index < browser->tab_strip_model()->count();
+}
+
+void CloseUnpinnedTabs(Browser* browser) {
+  auto* tsm = browser->tab_strip_model();
+  DCHECK(CanCloseUnpinnedTabs(browser));
+
+  for (int i = tsm->count() - 1; i >= tsm->IndexOfFirstNonPinnedTab(); --i) {
+    tsm->CloseWebContentsAt(i, TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB |
+                                   TabCloseTypes::CLOSE_USER_GESTURE);
+  }
+}
+
+void AddAllTabsToNewGroup(Browser* browser) {
+  std::vector<int> indices(browser->tab_strip_model()->count());
+  std::iota(indices.begin(), indices.end(), 0);
+  browser->tab_strip_model()->AddToNewGroup(indices);
+}
+
+bool CanMuteAllTabs(Browser* browser, bool exclude_active) {
+  auto* tsm = browser->tab_strip_model();
+  for (int i = 0; i < tsm->count(); ++i) {
+    if (exclude_active && tsm->active_index() == i) {
+      continue;
+    }
+
+    auto* contents = tsm->GetWebContentsAt(i);
+    if (contents->IsCurrentlyAudible()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void MuteAllTabs(Browser* browser, bool exclude_active) {
+  auto* tsm = browser->tab_strip_model();
+  for (int i = 0; i < tsm->count(); ++i) {
+    if (exclude_active && tsm->active_index() == i) {
+      continue;
+    }
+
+    auto* contents = tsm->GetWebContentsAt(i);
+    if (contents->IsCurrentlyAudible()) {
+      contents->SetAudioMuted(true);
+    }
+  }
+}
+
+bool CanUnmuteAllTabs(Browser* browser) {
+  auto* tsm = browser->tab_strip_model();
+  for (int i = 0; i < tsm->count(); ++i) {
+    auto* contents = tsm->GetWebContentsAt(i);
+    if (contents->IsAudioMuted()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void UnmuteAllTabs(Browser* browser) {
+  auto* tsm = browser->tab_strip_model();
+  for (int i = 0; i < tsm->count(); ++i) {
+    auto* contents = tsm->GetWebContentsAt(i);
+    if (contents->IsAudioMuted()) {
+      contents->SetAudioMuted(false);
+    }
+  }
+}
+
+void ScrollTabToTop(Browser* browser) {
+  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  contents->ScrollToTopOfDocument();
+}
+
+void ScrollTabToBottom(Browser* browser) {
+  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  contents->ScrollToBottomOfDocument();
 }
 
 }  // namespace brave

@@ -51,7 +51,26 @@ void ShowPlaylistBubble(Browser* browser);
 
 void GroupTabsOnCurrentOrigin(Browser* browser);
 void MoveGroupToNewWindow(Browser* browser);
+
+bool CanCloseDuplicateTabs(Browser* browser);
 void CloseDuplicateTabs(Browser* browser);
+
+bool CanCloseTabsToLeft(Browser* browser);
+void CloseTabsToLeft(Browser* browser);
+
+bool CanCloseUnpinnedTabs(Browser* browser);
+void CloseUnpinnedTabs(Browser* browser);
+
+void AddAllTabsToNewGroup(Browser* browser);
+
+bool CanMuteAllTabs(Browser* browser, bool exclude_active);
+void MuteAllTabs(Browser* browser, bool exclude_active);
+
+bool CanUnmuteAllTabs(Browser* browser);
+void UnmuteAllTabs(Browser* browser);
+
+void ScrollTabToTop(Browser* browser);
+void ScrollTabToBottom(Browser* browser);
 
 }  // namespace brave
 

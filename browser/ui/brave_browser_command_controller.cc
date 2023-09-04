@@ -27,7 +27,9 @@
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/send_tab_to_self/send_tab_to_self_util.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/pref_names.h"
@@ -81,6 +83,25 @@ BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
 }
 
 BraveBrowserCommandController::~BraveBrowserCommandController() = default;
+
+void BraveBrowserCommandController::UpdateCommandsForTabStripStateChanged() {
+  BrowserCommandController::UpdateCommandsForTabStripStateChanged();
+
+  UpdateCommandEnabled(IDC_WINDOW_CLOSE_TABS_TO_LEFT,
+                       brave::CanCloseTabsToLeft(&*browser_));
+  UpdateCommandEnabled(IDC_WINDOW_CLOSE_UNPINNED_TABS,
+                       brave::CanCloseUnpinnedTabs(&*browser_));
+  UpdateCommandEnabled(IDC_WINDOW_MUTE_ALL_TABS,
+                       brave::CanMuteAllTabs(&*browser_, false));
+  UpdateCommandEnabled(IDC_WINDOW_MUTE_OTHER_TABS,
+                       brave::CanMuteAllTabs(&*browser_, true));
+  UpdateCommandEnabled(IDC_WINDOW_UNMUTE_ALL_TABS,
+                       brave::CanUnmuteAllTabs(&*browser_));
+  UpdateCommandEnabled(
+      IDC_BRAVE_SEND_TAB_TO_SELF,
+      send_tab_to_self::ShouldDisplayEntryPoint(
+          browser_->tab_strip_model()->GetActiveWebContents()));
+}
 
 bool BraveBrowserCommandController::SupportsCommand(int id) const {
   return IsBraveCommands(id) ? brave_command_updater_.SupportsCommand(id)
@@ -206,8 +227,15 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_TOGGLE_SHIELDS, true);
   UpdateCommandEnabled(IDC_TOGGLE_JAVASCRIPT, true);
   UpdateCommandEnabled(IDC_GROUP_TABS_ON_CURRENT_ORIGIN, true);
+
   UpdateCommandEnabled(IDC_MOVE_GROUP_TO_NEW_WINDOW, true);
   UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS, true);
+  UpdateCommandEnabled(IDC_WINDOW_ADD_ALL_TABS_TO_NEW_GROUP, true);
+
+  UpdateCommandEnabled(IDC_SCROLL_TAB_TO_TOP, true);
+  UpdateCommandEnabled(IDC_SCROLL_TAB_TO_BOTTOM, true);
+
+  UpdateCommandEnabled(IDC_BRAVE_SEND_TAB_TO_SELF, true);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -418,6 +446,33 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_CLOSE_DUPLICATE_TABS:
       brave::CloseDuplicateTabs(&*browser_);
+      break;
+    case IDC_WINDOW_CLOSE_TABS_TO_LEFT:
+      brave::CloseTabsToLeft(&*browser_);
+      break;
+    case IDC_WINDOW_CLOSE_UNPINNED_TABS:
+      brave::CloseUnpinnedTabs(&*browser_);
+      break;
+    case IDC_WINDOW_ADD_ALL_TABS_TO_NEW_GROUP:
+      brave::AddAllTabsToNewGroup(&*browser_);
+      break;
+    case IDC_WINDOW_MUTE_ALL_TABS:
+      brave::MuteAllTabs(&*browser_, false);
+      break;
+    case IDC_WINDOW_MUTE_OTHER_TABS:
+      brave::MuteAllTabs(&*browser_, true);
+      break;
+    case IDC_WINDOW_UNMUTE_ALL_TABS:
+      brave::UnmuteAllTabs(&*browser_);
+      break;
+    case IDC_SCROLL_TAB_TO_TOP:
+      brave::ScrollTabToTop(&*browser_);
+      break;
+    case IDC_SCROLL_TAB_TO_BOTTOM:
+      brave::ScrollTabToBottom(&*browser_);
+      break;
+    case IDC_BRAVE_SEND_TAB_TO_SELF:
+      chrome::SendTabToSelfFromPageAction(&*browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

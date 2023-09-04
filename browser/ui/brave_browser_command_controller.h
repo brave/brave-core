@@ -42,6 +42,9 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   void UpdateCommandForTor();
 #endif
 
+ protected:
+  void UpdateCommandsForTabStripStateChanged() override;
+
  private:
   friend class ::BraveAppMenuBrowserTest;
   friend class ::BraveAppMenuModelBrowserTest;
@@ -87,6 +90,6 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   CommandUpdaterImpl brave_command_updater_;
 };
 
-}   // namespace chrome
+}  // namespace chrome
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_COMMAND_CONTROLLER_H_
