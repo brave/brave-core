@@ -19,6 +19,7 @@
 #endif
 
 class BraveAppMenuBrowserTest;
+class BraveAppMenuModelBrowserTest;
 class BraveBrowserCommandControllerTest;
 
 // This namespace is needed for a chromium_src override
@@ -43,6 +44,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
 
  private:
   friend class ::BraveAppMenuBrowserTest;
+  friend class ::BraveAppMenuModelBrowserTest;
   friend class ::BraveBrowserCommandControllerTest;
 
   // Overriden from CommandUpdater:

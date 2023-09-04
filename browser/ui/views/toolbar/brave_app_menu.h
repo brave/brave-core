@@ -18,21 +18,16 @@ class BraveAppMenu : public AppMenu {
   BraveAppMenu(const BraveAppMenu&) = delete;
   BraveAppMenu& operator=(const BraveAppMenu&) = delete;
 
+  // AppMenu overrides:
   void RunMenu(views::MenuButtonController* host) override;
-
   void ExecuteCommand(int command_id, int mouse_event_flags) override;
-
   void OnMenuClosed(views::MenuItemView* menu) override;
 
  private:
-  // AppMenu overrides:
-  views::MenuItemView* AddMenuItem(views::MenuItemView* parent,
-                                   size_t menu_index,
-                                   ui::MenuModel* model,
-                                   size_t model_index,
-                                   ui::MenuModel::ItemType menu_type) override;
-
   void RecordMenuUsage(int command_id);
+
+  // Update item's view as brave style.
+  void UpdateMenuItemView();
 
   base::raw_ptr<misc_metrics::MenuMetrics> menu_metrics_;
 };

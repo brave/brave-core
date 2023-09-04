@@ -30,6 +30,7 @@ BraveAppMenu::BraveAppMenu(Browser* browser,
       menu_metrics_(
           g_brave_browser_process->process_misc_metrics()->menu_metrics()) {
   DCHECK(menu_metrics_);
+  UpdateMenuItemView();
 }
 
 BraveAppMenu::~BraveAppMenu() = default;
@@ -49,24 +50,6 @@ void BraveAppMenu::OnMenuClosed(views::MenuItemView* menu) {
   if (menu == nullptr) {
     menu_metrics_->RecordMenuDismiss();
   }
-}
-
-MenuItemView* BraveAppMenu::AddMenuItem(views::MenuItemView* parent,
-                                        size_t menu_index,
-                                        ui::MenuModel* model,
-                                        size_t model_index,
-                                        ui::MenuModel::ItemType menu_type) {
-  MenuItemView* menu_item =
-      AppMenu::AddMenuItem(parent, menu_index, model, model_index, menu_type);
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (menu_item && model->GetCommandIdAt(model_index) == IDC_TOGGLE_BRAVE_VPN) {
-    menu_item->AddChildView(std::make_unique<BraveVPNStatusLabel>(browser_));
-    menu_item->AddChildView(std::make_unique<BraveVPNToggleButton>(browser_));
-  }
-#endif
-
-  return menu_item;
 }
 
 void BraveAppMenu::RecordMenuUsage(int command_id) {
@@ -104,4 +87,15 @@ void BraveAppMenu::RecordMenuUsage(int command_id) {
       }
   }
   menu_metrics_->RecordMenuGroupAction(group);
+}
+
+void BraveAppMenu::UpdateMenuItemView() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  CHECK(root_menu_item());
+  if (auto* menu_item =
+          root_menu_item()->GetMenuItemByID(IDC_TOGGLE_BRAVE_VPN)) {
+    menu_item->AddChildView(std::make_unique<BraveVPNStatusLabel>(browser_));
+    menu_item->AddChildView(std::make_unique<BraveVPNToggleButton>(browser_));
+  }
+#endif
 }
