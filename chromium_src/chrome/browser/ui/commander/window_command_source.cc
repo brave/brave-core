@@ -5,7 +5,7 @@
 
 #include "brave/chromium_src/chrome/browser/ui/commander/window_command_source.h"
 
-#include "src/chrome/browser/ui/commander/window_command_source.cc"
+#include "src/chrome/browser/ui/commander/window_command_source.cc"  // IWYU pragma: export
 
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"

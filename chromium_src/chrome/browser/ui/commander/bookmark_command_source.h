@@ -6,8 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_COMMANDER_BOOKMARK_COMMAND_SOURCE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_COMMANDER_BOOKMARK_COMMAND_SOURCE_H_
 
+#include "src/chrome/browser/ui/commander/bookmark_command_source.h"  // IWYU pragma: export
+
 #include "chrome/browser/ui/commander/command_source.h"
-#include "src/chrome/browser/ui/commander/bookmark_command_source.h"
 
 namespace commander {
 

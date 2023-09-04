@@ -5,11 +5,10 @@
 
 #include "brave/chromium_src/chrome/browser/ui/commander/bookmark_command_source.h"
 
-#include "src/chrome/browser/ui/commander/bookmark_command_source.cc"
+#include "src/chrome/browser/ui/commander/bookmark_command_source.cc"  // IWYU pragma: export
 
-#include "ui/base/l10n/l10n_util.h"
 #include "components/grit/brave_components_strings.h"
-
+#include "ui/base/l10n/l10n_util.h"
 
 namespace commander {
 
@@ -24,12 +23,14 @@ CommandSource::CommandResults BraveBookmarkCommandSource::GetCommands(
       BookmarkModelFactory::GetForBrowserContext(browser->profile());
   // Just no-op instead of waiting for the model to load, since this isn't
   // a persistent UI surface and they can just try again.
-  if (!model || !model->loaded() || !model->HasBookmarks())
+  if (!model || !model->loaded() || !model->HasBookmarks()) {
     return results;
+  }
 
   FuzzyFinder finder(input);
   std::vector<gfx::Range> ranges;
-  std::u16string open_title = l10n_util::GetStringUTF16(IDS_COMMANDER_OPEN_BOOKMARK);
+  std::u16string open_title =
+      l10n_util::GetStringUTF16(IDS_COMMANDER_OPEN_BOOKMARK);
   double score = finder.Find(open_title, &ranges);
   if (score > 0) {
     auto verb = std::make_unique<CommandItem>(open_title, score, ranges);
@@ -42,4 +43,4 @@ CommandSource::CommandResults BraveBookmarkCommandSource::GetCommands(
   return results;
 }
 
-}
+}  // namespace commander

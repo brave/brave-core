@@ -17,7 +17,7 @@
  private:                                               \
   void UpdateCommandsForTabStripStateChanged_Chromium2
 
-#include "src/chrome/browser/ui/browser_command_controller.h"
+#include "src/chrome/browser/ui/browser_command_controller.h"  // IWYU pragma: export
 
 #undef UpdateCommandsForTabStripStateChanged
 

@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_COMMANDER_WINDOW_COMMAND_SOURCE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_COMMANDER_WINDOW_COMMAND_SOURCE_H_
 
-#include "chrome/browser/ui/commander/command_source.h"
+#include "src/chrome/browser/ui/commander/window_command_source.h"  // IWYU pragma: export
 
-#include "src/chrome/browser/ui/commander/window_command_source.h"
+#include "chrome/browser/ui/commander/command_source.h"
 
 namespace commander {
 
