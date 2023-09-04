@@ -9,6 +9,18 @@ namespace swap_responses {
     DOMString proportion;
   };
 
+  dictionary ZeroExFee {
+    DOMString feeType;
+    DOMString feeToken;
+    DOMString feeAmount;
+    DOMString billingType;
+  };
+
+  dictionary ZeroExFees {
+    // nullable field that maps to ZeroExFee
+    any zeroExFee;
+  };
+
   dictionary SwapResponse0x {
     DOMString price;
     DOMString? guaranteedPrice;
@@ -30,6 +42,7 @@ namespace swap_responses {
     DOMString buyTokenToEthRate;
     DOMString estimatedPriceImpact;
     ZeroExSource[] sources;
+    ZeroExFees fees;
   };
 
   dictionary SwapErrorResponseItem0x {
@@ -67,8 +80,8 @@ namespace swap_responses {
     DOMString inAmount;
     DOMString outAmount;
     DOMString amount;
+    DOMString slippageBps;
     DOMString otherAmountThreshold;
-    DOMString outAmountWithSlippage;
     DOMString swapMode;
     any priceImpactPct; // nullable
     JupiterMarketInfo[] marketInfos;
@@ -80,9 +93,7 @@ namespace swap_responses {
   };
 
   dictionary JupiterSwapTransactions {
-    DOMString? setupTransaction;
     DOMString swapTransaction;
-    DOMString? cleanupTransaction;
   };
 
   dictionary JupiterErrorResponse {

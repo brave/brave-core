@@ -24,6 +24,9 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "ui/color/color_provider.h"
+#include "ui/color/color_provider_manager.h"
+#include "ui/color/color_provider_source.h"
 #include "ui/native_theme/test_native_theme.h"
 
 using brave_shields::ControlType;
@@ -46,6 +49,30 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
 
    private:
     const raw_ptr<const ui::NativeTheme> theme_;
+  };
+
+  class MockColorProviderSource : public ui::ColorProviderSource {
+   public:
+    explicit MockColorProviderSource(bool is_dark) {
+      key_.color_mode = is_dark ? ui::ColorProviderManager::ColorMode::kDark
+                                : ui::ColorProviderManager::ColorMode::kLight;
+      provider_.GenerateColorMap();
+    }
+    MockColorProviderSource(const MockColorProviderSource&) = delete;
+    MockColorProviderSource& operator=(const MockColorProviderSource&) = delete;
+    ~MockColorProviderSource() override = default;
+
+    // ui::ColorProviderSource:
+    const ui::ColorProvider* GetColorProvider() const override {
+      return &provider_;
+    }
+    ui::ColorProviderManager::Key GetColorProviderKey() const override {
+      return key_;
+    }
+
+   private:
+    ui::ColorProvider provider_;
+    ui::ColorProviderManager::Key key_;
   };
 
   void SetUpOnMainThread() override {
@@ -96,6 +123,11 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
     browser()
         ->tab_strip_model()
         ->GetActiveWebContents()
+        ->SetColorProviderSource(dark_mode ? &dark_color_provider_source_
+                                           : &light_color_provider_source_);
+    browser()
+        ->tab_strip_model()
+        ->GetActiveWebContents()
         ->OnWebPreferencesChanged();
   }
 
@@ -126,6 +158,8 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
 
  protected:
   ui::TestNativeTheme test_theme_;
+  MockColorProviderSource dark_color_provider_source_{true};
+  MockColorProviderSource light_color_provider_source_{false};
 
  private:
   GURL top_level_page_url_;

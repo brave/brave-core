@@ -124,6 +124,8 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
   in_progress_urls_count_++;
 
   DCHECK(callback_for_current_request_.is_null());
+  DCHECK(requested_url_.is_empty());
+
   callback_for_current_request_ = std::move(request.callback);
   DCHECK(callback_for_current_request_)
       << "Empty callback shouldn't be requested";
@@ -134,11 +136,12 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
     // previous page.
     CreateWebContents();
 
-    GURL url(absl::get<std::string>(request.url_or_contents));
-    DCHECK(url.is_valid());
+    requested_url_ = GURL(absl::get<std::string>(request.url_or_contents));
+    DCHECK(requested_url_.is_valid());
     DCHECK(web_contents_);
-    DVLOG(2) << "Load URL to detect media files: " << url.spec();
-    auto load_url_params = content::NavigationController::LoadURLParams(url);
+    DVLOG(2) << "Load URL to detect media files: " << requested_url_.spec();
+    auto load_url_params =
+        content::NavigationController::LoadURLParams(requested_url_);
     if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
       load_url_params.override_user_agent =
           content::NavigationController::UA_OVERRIDE_TRUE;
@@ -159,6 +162,8 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
       // While the request was in queue, the tab was deleted. Proceed to the
       // next request.
       in_progress_urls_count_--;
+      auto callback = std::move(callback_for_current_request_);
+      DCHECK(callback) << "Callback should be valid but we won't run this";
 
       FetchPendingRequest();
       return;
@@ -166,6 +171,7 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
 
     DVLOG(2) << "Try detecting media files from existing web contents: "
              << web_contents_->GetVisibleURL();
+    requested_url_ = weak_contents->GetVisibleURL();
     GetMedia(weak_contents.get());
   }
 }
@@ -238,6 +244,7 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
 
   DCHECK_GT(in_progress_urls_count_, 0);
   in_progress_urls_count_--;
+  GURL requested_url = std::move(requested_url_);
   Observe(nullptr);
   if (!contents) {
     return;
@@ -294,7 +301,8 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
 
     auto item = mojom::PlaylistItem::New();
     item->id = base::Token::CreateRandom().ToString();
-    item->page_source = GURL(*page_source);
+    item->page_source = requested_url;
+    item->page_redirected = GURL(*page_source);
     item->name = *name;
     // URL data
     if (GURL media_url(*src); !media_url.SchemeIsHTTPOrHTTPS()) {

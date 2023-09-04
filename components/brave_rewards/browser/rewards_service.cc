@@ -43,9 +43,6 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kEnabled, false);
   registry->RegisterStringPref(prefs::kDeclaredGeo, "");
   registry->RegisterStringPref(prefs::kUserVersion, "");
-  registry->RegisterTimePref(prefs::kAdsEnabledTimestamp, base::Time());
-  registry->RegisterTimeDeltaPref(prefs::kAdsEnabledTimeDelta,
-                                  base::TimeDelta());
   registry->RegisterDictionaryPref(prefs::kExternalWallets);
   registry->RegisterUint64Pref(prefs::kServerPublisherListStamp, 0ull);
   registry->RegisterStringPref(prefs::kUpholdAnonAddress, "");
@@ -91,6 +88,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kWalletUphold, "");
   registry->RegisterStringPref(prefs::kWalletBitflyer, "");
   registry->RegisterStringPref(prefs::kWalletGemini, "");
+  registry->RegisterStringPref(prefs::kWalletZebPay, "");
   registry->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
   registry->RegisterIntegerPref(prefs::kWalletCreationEnvironment, -1);
 }
@@ -101,6 +99,10 @@ void RewardsService::RegisterProfilePrefsForMigration(
   // Added 05/2023
   registry->RegisterBooleanPref(prefs::kAdsWereDisabled, false);
   registry->RegisterBooleanPref(prefs::kHasAdsP3AState, false);
+  // Added 07/2023
+  registry->RegisterTimePref(prefs::kAdsEnabledTimestamp, base::Time());
+  registry->RegisterTimeDeltaPref(prefs::kAdsEnabledTimeDelta,
+                                  base::TimeDelta());
 }
 
 }  // namespace brave_rewards

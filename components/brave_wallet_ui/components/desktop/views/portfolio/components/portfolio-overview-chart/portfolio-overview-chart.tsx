@@ -6,11 +6,7 @@
 import * as React from 'react'
 
 // types
-import { PriceDataObjectType } from '../../../../../../constants/types'
-
-// utils
-import { useSafeWalletSelector, useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../../../common/selectors'
+import { TokenPriceHistory } from '../../../../../../constants/types'
 
 // components
 import LineChart from '../../../../line-chart'
@@ -19,21 +15,19 @@ import LineChart from '../../../../line-chart'
 import { Column } from '../../../../../shared/style'
 
 interface Props {
-  hasZeroBalance: boolean
+  hasZeroBalance: boolean,
+  portfolioPriceHistory: TokenPriceHistory[] | undefined
+  isLoading: boolean
 }
 
 export const PortfolioOverviewChart: React.FC<Props> = ({
-  hasZeroBalance
+  hasZeroBalance,
+  portfolioPriceHistory,
+  isLoading
 }) => {
-  // safe selectors
-  const isFetchingPortfolioPriceHistory = useSafeWalletSelector(WalletSelectors.isFetchingPortfolioPriceHistory)
-
-  // unsafe selectors
-  const portfolioPriceHistory = useUnsafeWalletSelector(WalletSelectors.portfolioPriceHistory)
-
   // memos
-  const priceHistory = React.useMemo((): PriceDataObjectType[] => {
-    if (hasZeroBalance) {
+  const priceHistory = React.useMemo((): TokenPriceHistory[] => {
+    if (hasZeroBalance || !portfolioPriceHistory) {
       return []
     }
     return portfolioPriceHistory
@@ -44,7 +38,7 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
     <Column alignItems='center' fullWidth>
       <LineChart
         priceData={priceHistory}
-        isLoading={hasZeroBalance ? false : isFetchingPortfolioPriceHistory}
+        isLoading={hasZeroBalance ? false : isLoading}
         isDisabled={hasZeroBalance}
       />
     </Column>

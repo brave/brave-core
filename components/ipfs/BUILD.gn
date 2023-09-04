@@ -44,6 +44,7 @@ static_library("ipfs") {
     "//brave/base",
     "//brave/components/api_request_helper",
     "//brave/components/brave_component_updater/browser/",
+    "//brave/components/filecoin/rs:rust_lib",
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings",
     "//brave/components/services/ipfs/public/mojom",

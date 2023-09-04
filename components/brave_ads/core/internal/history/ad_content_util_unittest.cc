@@ -5,13 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/history/ad_content_util.h"
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "brave/components/brave_ads/core/notification_ad_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -29,7 +29,7 @@ class BraveAdsAdContentUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsAdContentUtilTest, Build) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act

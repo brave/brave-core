@@ -23,7 +23,7 @@ module.exports = {
                            process.env.ROOT_GEN_DIR, 'ui/webui/resources/tsc'),
   // We import brave-ui direct from source and not from package repo, so we need
   // direct path to the src/ directory.
-  'brave-ui' : path.resolve(__dirname, '../../node_modules/brave-ui/src'),
+  'brave-ui' : path.resolve(__dirname, '../../node_modules/@brave/brave-ui'),
   // Force same styled-components module for brave-core and brave-ui
   // which ensure both repos code use the same singletons, e.g. ThemeContext.
   'styled-components' : path.resolve(

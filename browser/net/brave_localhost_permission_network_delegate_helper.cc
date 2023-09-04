@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "brave/browser/brave_browser_process.h"
+#include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
@@ -36,8 +37,7 @@ void OnPermissionRequestStatus(
 
 bool IsLocalhostRequest(const GURL& request_url,
                         const GURL& request_initiator_url) {
-  return request_initiator_url.is_valid() && request_url.is_valid() &&
-         net::IsLocalhost(request_url) &&
+  return net::IsLocalhost(request_url) &&
          !net::IsLocalhost(request_initiator_url);
 }
 
@@ -66,6 +66,13 @@ int HandleLocalhostRequestsWithNoWebContents(
 int OnBeforeURLRequest_LocalhostPermissionWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
+  // If feature is disabled, return.
+  auto* localhost_permission_component =
+      g_brave_browser_process->localhost_permission_component();
+  if (!localhost_permission_component) {
+    return net::OK;
+  }
+
   // If request is already blocked by adblock, return.
   if (ctx->blocked_by == kAdBlocked) {
     return net::OK;
@@ -85,9 +92,20 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
   const auto& request_initiator_url = ctx->initiator_url;
   const auto& request_url = ctx->request_url;
 
+  const bool is_request_url_valid =
+      request_url.is_valid() && !request_url.is_empty();
+  const bool is_request_initiator_url_valid =
+      request_initiator_url.is_valid() && !request_initiator_url.is_empty() &&
+      request_initiator_url.has_host();
+
   // If the following info isn't available, then there's not much we can do.
-  if (request_url.is_empty() || request_initiator_url.is_empty() ||
-      !request_initiator_url.has_host()) {
+  if (!is_request_url_valid || !is_request_initiator_url_valid) {
+    return net::OK;
+  }
+
+  // We don't want to block requests from extensions, because
+  // we don't currently do that via adblock.
+  if (request_initiator_url.SchemeIs(content_settings::kExtensionScheme)) {
     return net::OK;
   }
 
@@ -120,10 +138,15 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
     }
 
     case blink::mojom::PermissionStatus::ASK: {
-      permission_controller->RequestPermissionsFromCurrentDocument(
-          {blink::PermissionType::BRAVE_LOCALHOST_ACCESS},
-          /* rfh */ contents->GetPrimaryMainFrame(), true,
-          base::BindOnce(&OnPermissionRequestStatus, ctx->frame_tree_node_id));
+      // Check if website is allowed to ask for permission.
+      if (localhost_permission_component->CanAskForLocalhostPermission(
+              request_initiator_url)) {
+        permission_controller->RequestPermissionsFromCurrentDocument(
+            {blink::PermissionType::BRAVE_LOCALHOST_ACCESS},
+            /* rfh */ contents->GetPrimaryMainFrame(), true,
+            base::BindOnce(&OnPermissionRequestStatus,
+                           ctx->frame_tree_node_id));
+      }
       return net::ERR_ACCESS_DENIED;
     }
   }

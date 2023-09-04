@@ -109,61 +109,31 @@
                     android:textSize="16sp"
                     android:textColor="@color/onboarding_card_text_color"/>
 
-                <LinearLayout
-                    android:id="@+id/layout_crash"
-                    android:layout_width="match_parent"
+                <android.widget.CheckBox
+                    android:id="@+id/checkbox_crash"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:button="@drawable/ic_p3a_checkbox"
+                    android:gravity="top"
                     android:visibility="gone"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false">
+                    android:paddingStart="4dp"
+                    android:text="@string/p3a_crash"
+                    android:textColor="@color/onboarding_card_text_color"
+                    android:textSize="14sp" />
 
-                    <android.widget.CheckBox
-                        android:id="@+id/checkbox_crash"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:button="@drawable/ic_p3a_checkbox"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginEnd="12dp"/>
-
-                    <TextView
-                        android:id="@+id/tv_crash"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/p3a_crash"
-                        android:textSize="14sp"
-                        android:textColor="@color/onboarding_card_text_color"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_p3a"
-                    android:layout_width="match_parent"
+                <android.widget.CheckBox
+                    android:id="@+id/checkbox_p3a"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
+                    android:button="@drawable/ic_p3a_checkbox"
+                    android:gravity="top"
                     android:visibility="gone"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false">
-
-                    <android.widget.CheckBox
-                        android:id="@+id/checkbox_p3a"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:button="@drawable/ic_p3a_checkbox"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginEnd="12dp"/>
-
-                    <TextView
-                        android:id="@+id/tv_p3a"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/p3a_insights"
-                        android:textSize="14sp"
-                        android:textColor="@color/onboarding_card_text_color"/>
-
-                </LinearLayout>
+                    android:paddingStart="4dp"
+                    android:text="@string/p3a_insights"
+                    android:textColor="@color/onboarding_card_text_color"
+                    android:textSize="14sp" />
 
                 <Button
                     android:id="@+id/btn_positive"

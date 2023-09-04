@@ -11,9 +11,11 @@
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+constexpr int kCommandIds[] = {1, 99, 100};
+
 class AcceleratorPrefManagerTest : public testing::Test {
  public:
-  AcceleratorPrefManagerTest() : manager_(&prefs_) {
+  AcceleratorPrefManagerTest() : manager_(&prefs_, kCommandIds) {
     commands::AcceleratorPrefManager::RegisterProfilePrefs(prefs_.registry());
   }
 
@@ -103,4 +105,15 @@ TEST_F(AcceleratorPrefManagerTest, CanRemoveAccelerators) {
   ASSERT_TRUE(accelerators.contains(100));
   ASSERT_EQ(1u, accelerators[100].size());
   EXPECT_EQ(accelerator3, accelerators[100][0]);
+}
+
+TEST_F(AcceleratorPrefManagerTest, AcceleratorsAreNotDuplicated) {
+  ui::Accelerator accelerator1 = commands::FromCodesString("Shift+Alt+KeyC");
+  ui::Accelerator accelerator1_dupe =
+      commands::FromCodesString("Shift+Alt+KeyC");
+  ui::Accelerator accelerator2 = commands::FromCodesString("Ctrl+KeyM");
+  manager().AddAccelerator(1, accelerator1);
+  manager().AddAccelerator(1, accelerator1_dupe);
+  manager().AddAccelerator(1, accelerator2);
+  EXPECT_EQ(2u, manager().GetAccelerators()[1].size());
 }

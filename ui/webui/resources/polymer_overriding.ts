@@ -11,7 +11,7 @@ import 'chrome://resources/brave/br_elements/br_shared_style.css.js'
 import './overrides/cr_button_override.css.js'
 import './overrides/cr_toggle_override.css.js'
 
-import {html as polymerHtml, mixinBehaviors, Polymer, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import { html as polymerHtml, mixinBehaviors, Polymer, PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 type ModificationsMap = {
   [tagName: string]: (DocumentFragment) => unknown
@@ -32,6 +32,7 @@ if (debug) {
 const allBehaviorsMap = {}
 const allPropertiesMap = {}
 const componentPropertyModifications = {}
+const prototypeModifications: { [key: string]: (prototype: any) => void } = {}
 const ignoredComponents = [
   'cr-toolbar'
 ]
@@ -57,9 +58,13 @@ function addBraveProperties(moduleName: string, component: { properties: any }) 
   }
 }
 
+function applyPrototypeModifications(moduleName: string, prototype: any) {
+  prototypeModifications[moduleName]?.(prototype)
+}
+
 const allBraveTemplateModificationsMap = {}
 
-function addBraveTemplateModifications(moduleName: string, component: PolymerElement, modifyFn: (content: DocumentFragment ) => unknown) {
+function addBraveTemplateModifications(moduleName: string, component: PolymerElement, modifyFn: (content: DocumentFragment) => unknown) {
   const template = component._template || component.template
   if (template) {
     const templateContent = template.content
@@ -113,8 +118,18 @@ export function RegisterPolymerComponentProperties(propertiesMap) {
   Object.assign(allPropertiesMap, propertiesMap)
   for (const componentName in propertiesMap) {
     if (componentPropertyModifications[componentName]) {
-        addBraveProperties(componentName, componentPropertyModifications[componentName])
+      addBraveProperties(componentName, componentPropertyModifications[componentName])
     }
+  }
+}
+
+export function RegisterPolymerPrototypeModification(modifications: { [element: string]: (prototype: any) => void }) {
+  for (const [element, modifier] of Object.entries(modifications)) {
+    const existing = prototypeModifications[element]
+    prototypeModifications[element] = existing ? ((prototype) => {
+      existing(prototype)
+      modifier(prototype)
+    }) : modifier
   }
 }
 
@@ -271,6 +286,11 @@ PolymerElement._prepareTemplate = function BravePolymer_PrepareTemplate() {
   // Other modifications, such as injecting overriden classes (aka behaviors),
   // will happen at component definition time.
   addBraveProperties(name, this.prototype)
+
+  // This allows us to add new functions to the prototype and/or replace
+  // existing ones.
+  applyPrototypeModifications(name, this.prototype)
+
   const templateModifyFn = allBraveTemplateModificationsMap[name]
   if (templateModifyFn) {
     addBraveTemplateModifications(name, this.prototype, templateModifyFn)
@@ -296,7 +316,7 @@ const oldDefine = window.customElements.define
  * @param {boolean} [useIgnoreList=true]
  * @returns
  */
-function BraveDefineCustomElements (name, component, options, useIgnoreList = true) {
+function BraveDefineCustomElements(name, component, options, useIgnoreList = true) {
   if (component.polymerElementVersion) {
     if (debug) {
       console.log('BraveDefineCustomElements PolymerElement defined', name, component, options)
@@ -322,7 +342,7 @@ function BraveDefineCustomElements (name, component, options, useIgnoreList = tr
 
 window.customElements.define = BraveDefineCustomElements
 
-export function define (name, component, options?) {
+export function define(name, component, options?) {
   // We still want style and template overrides
   BraveDefineCustomElements.call(window.customElements, name, component, options, false)
 }
@@ -336,12 +356,12 @@ export function define (name, component, options?) {
  * @param  {...any} values
  * @returns HTMLTEmplateElement
  */
- export function html(strings, ...values) {
+export function html(strings, ...values) {
   // Get regular string placeholders first (basic `i am ${'a'} string` parsing)
   // since Polymer's html tagged template only supports html element
   // placeholders.
   const htmlRaw = values.reduce((acc, v, idx) =>
-      acc + v + strings[idx + 1], strings[0])
+    acc + v + strings[idx + 1], strings[0])
   // Utilize polymer's tagged template element creation for no other reason than we are allowed
   // to call innerHTML there.
   const htmlStrings = [htmlRaw]

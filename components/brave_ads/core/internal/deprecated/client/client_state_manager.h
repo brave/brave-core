@@ -10,16 +10,16 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/ads_callback.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_alias.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_advertiser_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_category_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/flagged_ad_info.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
@@ -42,7 +42,8 @@ class ClientStateManager final {
 
   static ClientStateManager& GetInstance();
 
-  void Initialize(InitializeCallback callback);
+  void Load(InitializeCallback callback);
+
   const FilteredAdvertiserList& GetFilteredAdvertisers() const;
   const FilteredCategoryList& GetFilteredCategories() const;
   const FlaggedAdList& GetFlaggedAds() const;
@@ -61,11 +62,9 @@ class ClientStateManager final {
       const std::string& advertiser_id);
 
   mojom::UserReactionType ToggleLikeCategory(
-      const std::string& category,
-      mojom::UserReactionType user_reaction_type);
+      const CategoryContentInfo& category_content);
   mojom::UserReactionType ToggleDislikeCategory(
-      const std::string& category,
-      mojom::UserReactionType user_reaction_type);
+      const CategoryContentInfo& category_content);
   mojom::UserReactionType GetUserReactionTypeForSegment(
       const std::string& segment);
 
@@ -89,22 +88,15 @@ class ClientStateManager final {
   const TextClassificationProbabilityList&
   GetTextClassificationProbabilitiesHistory() const;
 
-  void RemoveAllHistory();
-
-  bool is_mutated() const { return is_mutated_; }
-
  private:
   void Save();
 
-  void Load(InitializeCallback callback);
-  void LoadedCallback(InitializeCallback callback,
-                      const absl::optional<std::string>& json);
+  void LoadCallback(InitializeCallback callback,
+                    const absl::optional<std::string>& json);
 
-  bool FromJson(const std::string& json);
+  [[nodiscard]] bool FromJson(const std::string& json);
 
   ClientInfo client_;
-
-  bool is_mutated_ = false;
 
   bool is_initialized_ = false;
 

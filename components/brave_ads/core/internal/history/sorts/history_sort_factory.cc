@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/history/sorts/history_sort_factory.h"
 
-#include <ostream>
-
 #include "base/notreached.h"
 #include "brave/components/brave_ads/core/internal/history/sorts/ascending_history_sort.h"
 #include "brave/components/brave_ads/core/internal/history/sorts/descending_history_sort.h"

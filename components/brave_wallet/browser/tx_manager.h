@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -25,7 +26,7 @@ class KeyringService;
 class TxService;
 
 class TxManager : public TxStateManager::Observer,
-                  public mojom::KeyringServiceObserver {
+                  public KeyringServiceObserverBase {
  public:
   TxManager(std::unique_ptr<TxStateManager> tx_state_manager,
             std::unique_ptr<BlockTracker> block_tracker,
@@ -42,8 +43,6 @@ class TxManager : public TxStateManager::Observer,
   using RejectTransactionCallback = mojom::TxService::RejectTransactionCallback;
   using GetTransactionInfoCallback =
       mojom::TxService::GetTransactionInfoCallback;
-  using GetAllTransactionInfoCallback =
-      mojom::TxService::GetAllTransactionInfoCallback;
   using SpeedupOrCancelTransactionCallback =
       mojom::TxService::SpeedupOrCancelTransactionCallback;
   using RetryTransactionCallback = mojom::TxService::RetryTransactionCallback;
@@ -53,7 +52,7 @@ class TxManager : public TxStateManager::Observer,
   virtual void AddUnapprovedTransaction(
       const std::string& chain_id,
       mojom::TxDataUnionPtr tx_data_union,
-      const std::string& from,
+      const mojom::AccountIdPtr& from,
       const absl::optional<url::Origin>& origin,
       const absl::optional<std::string>& group_id,
       AddUnapprovedTransactionCallback) = 0;
@@ -66,10 +65,9 @@ class TxManager : public TxStateManager::Observer,
   virtual void GetTransactionInfo(const std::string& chain_id,
                                   const std::string& tx_meta_id,
                                   GetTransactionInfoCallback);
-  virtual void GetAllTransactionInfo(
+  std::vector<mojom::TransactionInfoPtr> GetAllTransactionInfo(
       const absl::optional<std::string>& chain_id,
-      const absl::optional<std::string>& from,
-      GetAllTransactionInfoCallback);
+      const absl::optional<mojom::AccountIdPtr>& from);
 
   virtual void SpeedupOrCancelTransaction(
       const std::string& chain_id,
@@ -108,18 +106,10 @@ class TxManager : public TxStateManager::Observer,
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override;
 
-  // mojom::KeyringServiceObserver
-  void KeyringCreated(const std::string& keyring_id) override {}
-  void KeyringRestored(const std::string& keyring_id) override {}
+  // mojom::KeyringServiceObserverBase:
   void KeyringReset() override;
   void Locked() override;
   void Unlocked() override;
-  void BackedUp() override {}
-  void AccountsChanged() override {}
-  void AccountsAdded(mojom::CoinType coin,
-                     const std::vector<std::string>& addresses) override {}
-  void AutoLockMinutesChanged() override {}
-  void SelectedAccountChanged(mojom::CoinType coin) override {}
 
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};

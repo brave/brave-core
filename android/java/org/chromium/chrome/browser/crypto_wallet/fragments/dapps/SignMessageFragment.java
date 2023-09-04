@@ -24,15 +24,16 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.SignMessagePagerAdapter;
+import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     private TextView mWebSite;
     private ExecutorService mExecutor;
     private Handler mHandler;
+    private WalletModel mWalletModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,13 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         mHandler = new Handler(Looper.getMainLooper());
         mTabTitles = new ArrayList<>();
         mTabTitles.add(getString(R.string.details));
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            mWalletModel = activity.getWalletModel();
+            registerKeyringObserver(mWalletModel.getKeyringModel());
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "onCreate ", e);
+        }
     }
 
     @Override
@@ -116,23 +125,31 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
             }
             if (mCurrentSignMessageRequest.originInfo != null
                     && URLUtil.isValidUrl(mCurrentSignMessageRequest.originInfo.originSpec)) {
-                mWebSite.setText(
-                        Utils.geteTLD(new GURL(mCurrentSignMessageRequest.originInfo.originSpec),
-                                mCurrentSignMessageRequest.originInfo.eTldPlusOne));
+                mWebSite.setText(Utils.geteTldSpanned(mCurrentSignMessageRequest.originInfo));
             }
-            updateAccount(mCurrentSignMessageRequest.address);
-            updateNetwork(mCurrentSignMessageRequest.coin);
+            updateAccount(mCurrentSignMessageRequest.accountId);
+            updateNetwork(mCurrentSignMessageRequest.chainId);
         });
     }
 
-    private void updateAccount(String address) {
+    private void updateAccount(AccountId accountId) {
+        if (accountId == null) {
+            return;
+        }
+        assert (accountId.coin == CoinType.ETH);
+
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.getWalletModel().getKeyringModel().getAccounts(accountInfos -> {
-                if (address == null) return;
-                AccountInfo accountInfo = Utils.findAccount(accountInfos, address);
-                String accountText = (accountInfo != null ? accountInfo.name + "\n" : "") + address;
-                Utils.setBlockiesBitmapResource(mExecutor, mHandler, mAccountImage, address, true);
+                AccountInfo accountInfo = Utils.findAccount(accountInfos, accountId);
+                if (accountInfo == null) {
+                    return;
+                }
+                assert (accountInfo.address != null);
+
+                Utils.setBlockiesBitmapResourceFromAccount(
+                        mExecutor, mHandler, mAccountImage, accountInfo, true);
+                String accountText = accountInfo.name + "\n" + accountInfo.address;
                 mAccountName.setText(accountText);
             });
         } catch (BraveActivity.BraveActivityNotFoundException e) {
@@ -140,8 +157,9 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         }
     }
 
-    private void updateNetwork(@CoinType.EnumType int coin) {
-        getJsonRpcService().getNetwork(coin, null,
-                selectedNetwork -> { mNetworkName.setText(selectedNetwork.chainName); });
+    private void updateNetwork(String chainId) {
+        if (JavaUtils.anyNull(mWalletModel, chainId)) return;
+        var selectedNetwork = mWalletModel.getNetworkModel().getNetwork(chainId);
+        mNetworkName.setText(selectedNetwork.chainName);
     }
 }

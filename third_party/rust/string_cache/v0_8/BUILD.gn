@@ -1,0 +1,45 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "string_cache"
+  epoch = "0.8"
+  crate_type = "rlib"
+
+  # Only for usage from third-party crates. Add the crate to
+  # third_party.toml to use it from first-party code.
+  visibility = [ "//third_party/rust/*" ]
+  crate_root = "crate/src/lib.rs"
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  sources = [ "crate/src/lib.rs" ]
+  edition = "2018"
+  cargo_pkg_version = "0.8.7"
+  cargo_pkg_authors = "The Servo Project Developers"
+  cargo_pkg_name = "string_cache"
+  cargo_pkg_description = "A string interning library for Rust, developed as part of the Servo project."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/new_debug_unreachable/v1:lib",
+    "//brave/third_party/rust/parking_lot/v0_12:lib",
+    "//brave/third_party/rust/phf_shared/v0_10:lib",
+    "//brave/third_party/rust/precomputed_hash/v0_1:lib",
+    "//third_party/rust/once_cell/v1:lib",
+    "//third_party/rust/serde/v1:lib",
+  ]
+  aliased_deps = {
+    debug_unreachable =
+        "//brave/third_party/rust/new_debug_unreachable/v1:lib__rlib"
+  }
+  features = [
+    "serde",
+    "serde_support",
+  ]
+}

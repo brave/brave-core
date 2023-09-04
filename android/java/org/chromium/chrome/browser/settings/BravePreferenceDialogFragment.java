@@ -5,13 +5,10 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -21,9 +18,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceDialogFragmentCompat;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;

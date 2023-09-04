@@ -14,10 +14,10 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoint/rewards/rewards_server.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace publisher {
 
@@ -27,7 +27,7 @@ using PublisherPrefixListUpdatedCallback = std::function<void()>;
 // intervals.
 class PublisherPrefixListUpdater {
  public:
-  explicit PublisherPrefixListUpdater(LedgerImpl& ledger);
+  explicit PublisherPrefixListUpdater(RewardsEngineImpl& engine);
 
   PublisherPrefixListUpdater(const PublisherPrefixListUpdater&) = delete;
   PublisherPrefixListUpdater& operator=(const PublisherPrefixListUpdater&) =
@@ -52,7 +52,7 @@ class PublisherPrefixListUpdater {
   base::TimeDelta GetAutoUpdateDelay();
   base::TimeDelta GetRetryAfterFailureDelay();
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   base::OneShotTimer timer_;
   bool auto_update_ = false;
   int retry_count_ = 0;

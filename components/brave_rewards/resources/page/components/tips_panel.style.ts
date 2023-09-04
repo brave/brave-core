@@ -7,9 +7,7 @@ import styled from 'styled-components'
 
 import * as mixins from '../../shared/lib/css_mixins'
 
-export const root = styled.div`
-  --settings-panel-title-color: #696fdc;
-`
+export const root = styled.div``
 
 export const description = styled.div`
   color: var(--brave-palette-neutral600);
@@ -53,11 +51,9 @@ export const restart = styled.div`
   }
 `
 
-export const panelItemLineBreak = styled.div`
-  flex-basis: 100%;
-  height: 0;
-`
-
 export const inlineTippingSiteItem = styled.div`
-  margin-left: 16px;
+  margin: 16px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 `

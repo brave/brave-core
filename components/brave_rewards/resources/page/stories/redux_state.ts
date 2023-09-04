@@ -5,13 +5,13 @@
 
 import { defaultState } from '../reducers/default_state'
 import { optional } from '../../shared/lib/optional'
+import * as Rewards from '../lib/types'
 
 export const reduxState: Rewards.ApplicationState = {
   rewardsData: {
     ...defaultState(),
 
-    enabledAds: false,
-    enabledAdsMigrated: false,
+    isAcSupported: true,
     enabledContribute: true,
     contributionMinTime: 8,
     contributionMinVisits: 1,
@@ -21,6 +21,10 @@ export const reduxState: Rewards.ApplicationState = {
       modalConnect: false,
       modalRedirect: 'hide',
       modalReset: false,
+      modalAdsHistory: false,
+      adsSettings: false,
+      autoContributeSettings: false,
+      contributionsSettings: false,
       promosDismissed: {}
     },
     autoContributeList: [
@@ -103,22 +107,29 @@ export const reduxState: Rewards.ApplicationState = {
       }
     ],
     adsData: {
-      adsEnabled: false,
       adsPerHour: 0,
       adsSubdivisionTargeting: '',
       automaticallyDetectedAdsSubdivisionTargeting: '',
       shouldAllowAdsSubdivisionTargeting: true,
       subdivisions: [],
-      adsUIEnabled: true,
       adsIsSupported: true,
       needsBrowserUpgradeToServeAds: false,
+      notificationAdsEnabled: false,
+      newTabAdsEnabled: false,
+      newsAdsEnabled: true,
       adsNextPaymentDate: 0,
-      adsReceivedThisMonth: 0,
-      adsEarningsThisMonth: 0,
-      adsEarningsLastMonth: 0
+      adsReceivedThisMonth: 4,
+      adTypesReceivedThisMonth: {
+        inline_content_ad: 1,
+        ad_notification: 1,
+        new_tab_page_ad: 2
+      },
+      adsMinEarningsThisMonth: 0,
+      adsMaxEarningsThisMonth: 0,
+      adsMinEarningsLastMonth: 0,
+      adsMaxEarningsLastMonth: 0
     },
     adsHistory: [],
-    pendingContributionTotal: 4,
     promotions: [],
     inlineTipsEnabled: true,
     inlineTip: {
@@ -126,63 +137,6 @@ export const reduxState: Rewards.ApplicationState = {
       reddit: true,
       github: true
     },
-    pendingContributions: [{
-      id: 123,
-      publisherKey: 'brave.com',
-      percentage: 1,
-      status: 1,
-      url: 'https://brave.com',
-      name: 'Brave',
-      provider: 'twitter',
-      favIcon: 'brave.com',
-      amount: 1,
-      addedDate: '',
-      type: 8,
-      viewingId: '',
-      expirationDate: String(Date.now() / 1000)
-    }, {
-      id: 123,
-      publisherKey: 'brave.com',
-      percentage: 1,
-      status: 1,
-      url: 'https://brave.com',
-      name: 'Brave',
-      provider: '',
-      favIcon: 'brave.com',
-      amount: 1,
-      addedDate: '',
-      type: 8,
-      viewingId: '',
-      expirationDate: String(Date.now() / 1000)
-    }, {
-      id: 123,
-      publisherKey: 'brave.com',
-      percentage: 1,
-      status: 1,
-      url: 'https://brave.com',
-      name: 'Brave',
-      provider: '',
-      favIcon: 'brave.com',
-      amount: 1,
-      addedDate: '',
-      type: 8,
-      viewingId: '',
-      expirationDate: String(Date.now() / 1000)
-    }, {
-      id: 123,
-      publisherKey: 'brave.com',
-      percentage: 1,
-      status: 1,
-      url: 'https://brave.com',
-      name: 'Brave',
-      provider: '',
-      favIcon: 'brave.com',
-      amount: 1,
-      addedDate: '',
-      type: 8,
-      viewingId: '',
-      expirationDate: String(Date.now() / 1000)
-    }],
     excludedList: [],
     externalWalletProviderList: ['uphold'],
     balance: optional<number>(),
@@ -207,6 +161,7 @@ export const reduxState: Rewards.ApplicationState = {
     },
     initializing: false,
     showOnboarding: false,
+    isGrandfatheredUser: false,
     userType: 'unconnected'
   }
 }

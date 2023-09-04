@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/components/brave_federated/brave_federated_service.h"
 #include "brave/components/brave_federated/features.h"
 #include "chrome/browser/browser_process.h"
@@ -30,7 +31,8 @@ BraveFederatedService* BraveFederatedServiceFactory::GetForBrowserContext(
 
 // static
 BraveFederatedServiceFactory* BraveFederatedServiceFactory::GetInstance() {
-  return base::Singleton<BraveFederatedServiceFactory>::get();
+  static base::NoDestructor<BraveFederatedServiceFactory> instance;
+  return instance.get();
 }
 
 BraveFederatedServiceFactory::BraveFederatedServiceFactory()

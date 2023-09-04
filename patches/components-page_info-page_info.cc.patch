@@ -1,12 +1,12 @@
 diff --git a/components/page_info/page_info.cc b/components/page_info/page_info.cc
-index 75099555116ffa1b5f0bcfa7ee1b247dfc83b632..043a014158734ea71fa174b425446adf8beec279 100644
+index 68340f351dd3d24b5ec9d1f363d1bac5bea69897..c6e38c010b419bae75dc5647534d96bcc50c9795 100644
 --- a/components/page_info/page_info.cc
 +++ b/components/page_info/page_info.cc
-@@ -1245,6 +1245,7 @@ void PageInfo::PresentSitePermissions() {
-       }
-     }
- 
-+    BRAVE_PAGE_INFO_SHOULD_SHOW_PERMISSION
-     if (ShouldShowPermission(
-             permission_info, site_url_, content_settings, web_contents_.get(),
-             HasContentSettingChangedViaPageInfo(permission_info.type),
+@@ -1191,6 +1191,7 @@ void PageInfo::PopulatePermissionInfo(PermissionInfo& permission_info,
+ // applies to permissions listed in |kPermissionType|.
+ bool PageInfo::ShouldShowPermission(
+     const PageInfo::PermissionInfo& info) const {
++  BRAVE_PAGE_INFO_SHOULD_SHOW_PERMISSION
+   // Note |ContentSettingsType::ADS| will show up regardless of its default
+   // value when it has been activated on the current origin.
+   if (info.type == ContentSettingsType::ADS) {

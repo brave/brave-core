@@ -13,9 +13,9 @@
 #define LocationBarView BraveLocationBarView
 #endif
 
-#define BRAVE_TOOLBAR_VIEW_INIT                                                \
-  avatar_ =                                                                    \
-      AddChildView(std::make_unique<BraveAvatarToolbarButton>(browser_view_)); \
+#define BRAVE_TOOLBAR_VIEW_INIT                                   \
+  avatar_ = container_view_->AddChildView(                        \
+      std::make_unique<BraveAvatarToolbarButton>(browser_view_)); \
   if (false)
 
 #include "src/chrome/browser/ui/views/toolbar/toolbar_view.cc"

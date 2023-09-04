@@ -104,18 +104,22 @@ std::string getBlockHeight() {
   return GetJsonRpcString("getBlockHeight");
 }
 
-std::string getTokenAccountsByOwner(const std::string& pubkey) {
+// Returns all SPL Token accounts by token owner.
+//
+// "base58" as encoding is slow and deprecated. Prefer using "base64" instead.
+std::string getTokenAccountsByOwner(const std::string& pubkey,
+                                    const std::string& encoding) {
+  CHECK(IsValidEncodingString(encoding));
+
   base::Value::List params;
   params.Append(pubkey);
 
-  // Set encoding to base64 because the document says base58 is currently the
-  // default value but is slow and deprecated.
   base::Value::Dict program;
-  base::Value::Dict encoding;
+  base::Value::Dict encoding_dict;
   program.Set("programId", mojom::kSolanaTokenProgramId);
-  encoding.Set("encoding", "base64");
+  encoding_dict.Set("encoding", encoding);
   params.Append(std::move(program));
-  params.Append(std::move(encoding));
+  params.Append(std::move(encoding_dict));
 
   base::Value::Dict dictionary =
       GetJsonRpcDictionary("getTokenAccountsByOwner", std::move(params));

@@ -5,6 +5,7 @@
 
 #include "brave/components/constants/pref_names.h"
 
+const char kBraveAutofillPrivateWindows[] = "brave.autofill_private_windows";
 const char kManagedBraveShieldsDisabledForUrls[] =
     "brave.managed_shields_disabled";
 const char kManagedBraveShieldsEnabledForUrls[] =

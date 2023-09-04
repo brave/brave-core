@@ -10,7 +10,7 @@
 namespace blink {
 
 bool WebDocument::IsDOMFeaturePolicyEnabled(v8::Local<v8::Context> context,
-                                            const String& feature) {
+                                            const WebString& feature) {
   blink::ScriptState* script_state = blink::ScriptState::From(context);
   Document* document = Unwrap<Document>();
   return document->featurePolicy()->allowsFeature(script_state, feature);

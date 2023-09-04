@@ -13,8 +13,9 @@ int BraveLayoutProvider::GetCornerRadiusMetric(views::Emphasis emphasis,
     case views::Emphasis::kNone:
       return 0;
     case views::Emphasis::kLow:
-    case views::Emphasis::kMedium:
       return 2;
+    case views::Emphasis::kMedium:
+      return 8;
     case views::Emphasis::kHigh:
     case views::Emphasis::kMaximum:
       return 4;

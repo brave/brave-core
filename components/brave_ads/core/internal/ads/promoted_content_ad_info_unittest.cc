@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/promoted_content_ad_info.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
@@ -19,7 +19,8 @@ class BraveAdsPromotedContentAdInfoTest : public UnitTestBase {};
 TEST_F(BraveAdsPromotedContentAdInfoTest, IsValid) {
   // Arrange
   const CreativePromotedContentAdInfo creative_ad =
-      BuildCreativePromotedContentAd(/*should_use_random_guids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
 
   // Act

@@ -3,13 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import { MoreVertRIcon } from 'brave-ui/components/icons'
+import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
 import { WalletButton } from '../../shared/style'
-import ClipboardIcon from '../../../assets/svg-icons/copy-to-clipboard-icon.svg'
-
-interface StyleProps {
-  orb: string
-}
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -17,7 +13,8 @@ export const StyledWrapper = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  margin: 10px 0px;
+  margin-bottom: 8px;
+  padding: 8px;
   position: relative;
 `
 
@@ -41,18 +38,19 @@ export const AccountNameButton = styled(WalletButton)`
   background: none;
   border: none;
   font-family: Poppins;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
+  margin: 0px;
+  padding: 0px;
 `
 
 export const AccountAddressButton = styled(AccountNameButton)`
   font-size: 12px;
   line-height: 18px;
   font-weight: 400;
-  color: ${(p) => p.theme.color.text02};
+  margin-right: 6px;
 `
 
 export const AddressAndButtonRow = styled.div`
@@ -67,65 +65,58 @@ export const BalanceColumn = styled.div`
   align-items: flex-end;
   justify-content: center;
   flex-direction: column;
-  margin-right: 20px;
+  margin-right: 12px;
 `
 
 export const RightSide = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   flex-direction: row;
 `
 
 export const FiatBalanceText = styled.span`
   font-family: Poppins;
-  font-size: 13px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+  color: ${leo.color.text.secondary};
 `
 
 export const AssetBalanceText = styled.span`
   font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 600;
+  color: ${leo.color.text.primary};
 `
 
-export const AccountCircle = styled.div<StyleProps>`
-  width: 40px;
-  height: 40px;
-  border-radius: 100%;
-  background-image: url(${(p) => p.orb});
-  background-size: cover;
-  margin-right: 12px;
+export const AccountMenuWrapper = styled.div`
+  position: relative;
 `
 
-export const MoreButton = styled(WalletButton)`
-  display: flex;;
+export const AccountMenuButton = styled(WalletButton)`
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   outline: none;
   background: none;
+  pointer-events: auto;
   border: none;
 `
 
-export const MoreIcon = styled(MoreVertRIcon)`
-  width: auto;
-  height: 26px;
-  transform: rotate(90deg);
-  color: ${(p) => p.theme.color.interactive08};
+export const AccountMenuIcon = styled(Icon).attrs({
+  name: 'more-vertical'
+})`
+  --leo-icon-size: 24px;
+  color: ${leo.color.icon.default};
 `
 
-export const CopyIcon = styled.div`
+export const CopyIcon = styled(Icon).attrs({
+  name: 'copy'
+})`
   cursor: pointer;
-  width: 14px;
-  height: 14px;
-  background-color: ${(p) => p.theme.color.interactive07};
-  -webkit-mask-image: url(${ClipboardIcon});
-  mask-image: url(${ClipboardIcon});
-  mask-size: cover;
-  margin-left: 6px;
+  --leo-icon-size: 14px;
+  color: ${leo.color.icon.default};
 `

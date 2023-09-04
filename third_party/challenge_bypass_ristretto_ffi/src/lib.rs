@@ -41,6 +41,7 @@ where
 
 /// Clear and return the message associated with the last error.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn last_error_message() -> *mut c_char {
     LAST_ERROR.with(|prev| {
         let mut ret = ptr::null_mut();
@@ -56,6 +57,7 @@ pub unsafe extern "C" fn last_error_message() -> *mut c_char {
 
 /// Destroy a `*c_char` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn c_char_destroy(s: *mut c_char) {
     if !s.is_null() {
         drop(CString::from_raw(s));
@@ -66,6 +68,7 @@ macro_rules! impl_base64 {
     ($t:ident, $en:ident, $de:ident) => {
         /// Return base64 encoding as a C string.
         #[no_mangle]
+        #[allow(unsafe_op_in_unsafe_fn)]
         pub unsafe extern "C" fn $en(t: *const $t) -> *mut c_char {
             if !t.is_null() {
                 let b64 = (&*t).encode_base64();
@@ -80,6 +83,7 @@ macro_rules! impl_base64 {
         /// If something goes wrong, this will return a null pointer. Don't forget to
         /// destroy the returned pointer once you are done with it!
         #[no_mangle]
+        #[allow(unsafe_op_in_unsafe_fn)]
         pub unsafe extern "C" fn $de(s: *const u8, s_length: usize) -> *mut $t {
             if !s.is_null() {
                 let slice = slice::from_raw_parts(s, s_length);
@@ -101,6 +105,7 @@ macro_rules! impl_base64 {
 
 /// Destroy a `TokenPreimage` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn token_preimage_destroy(t: *mut TokenPreimage) {
     if !t.is_null() {
         drop(Box::from_raw(t));
@@ -120,6 +125,7 @@ impl_base64!(
 /// Make sure you destroy the token with [`token_destroy()`] once you are
 /// done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn token_random() -> *mut Token {
     let mut rng = OsRng;
     let token = Token::random::<Sha512, OsRng>(&mut rng);
@@ -128,6 +134,7 @@ pub unsafe extern "C" fn token_random() -> *mut Token {
 
 /// Destroy a `Token` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn token_destroy(token: *mut Token) {
     if !token.is_null() {
         drop(Box::from_raw(token));
@@ -139,6 +146,7 @@ pub unsafe extern "C" fn token_destroy(token: *mut Token) {
 /// If something goes wrong, this will return a null pointer. Don't forget to
 /// destroy the `BlindedToken` once you are done with it!
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn token_blind(token: *const Token) -> *mut BlindedToken {
     if token.is_null() {
         update_last_error("Pointer to token was null");
@@ -152,6 +160,7 @@ impl_base64!(Token, token_encode_base64, token_decode_base64);
 
 /// Destroy a `BlindedToken` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn blinded_token_destroy(token: *mut BlindedToken) {
     if !token.is_null() {
         drop(Box::from_raw(token));
@@ -166,6 +175,7 @@ impl_base64!(
 
 /// Destroy a `SignedToken` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn signed_token_destroy(token: *mut SignedToken) {
     if !token.is_null() {
         drop(Box::from_raw(token));
@@ -180,6 +190,7 @@ impl_base64!(
 
 /// Destroy an `UnblindedToken` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn unblinded_token_destroy(token: *mut UnblindedToken) {
     if !token.is_null() {
         drop(Box::from_raw(token));
@@ -192,6 +203,7 @@ pub unsafe extern "C" fn unblinded_token_destroy(token: *mut UnblindedToken) {
 /// If something goes wrong, this will return a null pointer. Don't forget to
 /// destroy the `VerificationKey` once you are done with it!
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn unblinded_token_derive_verification_key_sha512(
     token: *const UnblindedToken,
 ) -> *mut VerificationKey {
@@ -207,6 +219,7 @@ pub unsafe extern "C" fn unblinded_token_derive_verification_key_sha512(
 /// If something goes wrong, this will return a null pointer. Don't forget to
 /// destroy the `BlindedToken` once you are done with it!
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn unblinded_token_preimage(
     token: *const UnblindedToken,
 ) -> *mut TokenPreimage {
@@ -226,6 +239,7 @@ impl_base64!(
 
 /// Destroy a `VerificationKey` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn verification_key_destroy(key: *mut VerificationKey) {
     if !key.is_null() {
         drop(Box::from_raw(key));
@@ -238,6 +252,7 @@ pub unsafe extern "C" fn verification_key_destroy(key: *mut VerificationKey) {
 /// If something goes wrong, this will return a null pointer. Don't forget to
 /// destroy the `VerificationSignature` once you are done with it!
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn verification_key_sign_sha512(
     key: *const VerificationKey,
     message: *const u8,
@@ -261,6 +276,7 @@ pub unsafe extern "C" fn verification_key_sign_sha512(
 /// NOTE this is named "invalid" instead of "verify" as it returns true (non-zero) when
 /// the signature is invalid and false (zero) when valid
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn verification_key_invalid_sha512(
     key: *const VerificationKey,
     sig: *const VerificationSignature,
@@ -283,6 +299,7 @@ pub unsafe extern "C" fn verification_key_invalid_sha512(
 
 /// Destroy a `VerificationSignature` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn verification_signature_destroy(sig: *mut VerificationSignature) {
     if !sig.is_null() {
         drop(Box::from_raw(sig));
@@ -302,6 +319,7 @@ impl_base64!(
 /// Make sure you destroy the key with [`signing_key_destroy()`] once you are
 /// done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn signing_key_random() -> *mut SigningKey {
     let mut rng = OsRng;
     let key = SigningKey::random(&mut rng);
@@ -310,6 +328,7 @@ pub unsafe extern "C" fn signing_key_random() -> *mut SigningKey {
 
 /// Destroy a `SigningKey` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn signing_key_destroy(key: *mut SigningKey) {
     if !key.is_null() {
         drop(Box::from_raw(key));
@@ -322,6 +341,7 @@ pub unsafe extern "C" fn signing_key_destroy(key: *mut SigningKey) {
 /// If something goes wrong, this will return a null pointer. Don't forget to
 /// destroy the `SignedToken` once you are done with it!
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn signing_key_sign(
     key: *const SigningKey,
     token: *const BlindedToken,
@@ -345,6 +365,7 @@ pub unsafe extern "C" fn signing_key_sign(
 /// If something goes wrong, this will return a null pointer. Don't forget to
 /// destroy the `UnblindedToken` once you are done with it!
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn signing_key_rederive_unblinded_token(
     key: *const SigningKey,
     t: *const TokenPreimage,
@@ -362,6 +383,7 @@ pub unsafe extern "C" fn signing_key_rederive_unblinded_token(
 /// If something goes wrong, this will return a null pointer. Don't forget to
 /// destroy the `PublicKey` once you are done with it!
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn signing_key_get_public_key(key: *const SigningKey) -> *mut PublicKey {
     if key.is_null() {
         update_last_error("Pointer to signing key was null");
@@ -379,6 +401,7 @@ impl_base64!(
 
 /// Destroy a `DLEQProof` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn dleq_proof_destroy(p: *mut DLEQProof) {
     if !p.is_null() {
         drop(Box::from_raw(p));
@@ -396,6 +419,7 @@ impl_base64!(
 /// If something goes wrong, this will return a null pointer. Don't forget to
 /// destroy the `DLEQProof` once you are done with it!
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn dleq_proof_new(
     blinded_token: *const BlindedToken,
     signed_token: *const SignedToken,
@@ -420,6 +444,7 @@ pub unsafe extern "C" fn dleq_proof_new(
 /// NOTE this is named "invalid" instead of "verify" as it returns true (non-zero) when
 /// the proof is invalid and false (zero) when valid
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn dleq_proof_invalid(
     proof: *const DLEQProof,
     blinded_token: *const BlindedToken,
@@ -451,6 +476,7 @@ pub unsafe extern "C" fn dleq_proof_invalid(
 
 /// Destroy a `PublicKey` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn public_key_destroy(k: *mut PublicKey) {
     if !k.is_null() {
         drop(Box::from_raw(k));
@@ -465,6 +491,7 @@ impl_base64!(
 
 /// Destroy a `BatchDLEQProof` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn batch_dleq_proof_destroy(p: *mut BatchDLEQProof) {
     if !p.is_null() {
         drop(Box::from_raw(p));
@@ -482,6 +509,7 @@ impl_base64!(
 /// If something goes wrong, this will return a null pointer. Don't forget to
 /// destroy the `BatchDLEQProof` once you are done with it!
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn batch_dleq_proof_new(
     blinded_tokens: *const *const BlindedToken,
     signed_tokens: *const *const SignedToken,
@@ -514,6 +542,7 @@ pub unsafe extern "C" fn batch_dleq_proof_new(
 /// NOTE this is named "invalid" instead of "verify" as it returns true (non-zero) when
 /// the proof is invalid and false (zero) when valid
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn batch_dleq_proof_invalid(
     proof: *const BatchDLEQProof,
     blinded_tokens: *const *const BlindedToken,
@@ -558,6 +587,7 @@ pub unsafe extern "C" fn batch_dleq_proof_invalid(
 /// NOTE this is named "invalid" instead of "verify" as it returns true (non-zero) when
 /// the proof is invalid and false (zero) when valid
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn batch_dleq_proof_invalid_or_unblind(
     proof: *const BatchDLEQProof,
     tokens: *const *const Token,

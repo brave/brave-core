@@ -160,14 +160,27 @@ IpfsService::~IpfsService() {
 }
 
 // static
+void IpfsService::MigrateProfilePrefs(PrefService* pref_service) {
+  if (pref_service->HasPrefPath(kIPFSAutoRedirectToConfiguredGateway)) {
+    return;
+  }
+  pref_service->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway,
+      pref_service->GetBoolean(kIPFSAutoRedirectDNSLink) &&
+          pref_service->GetBoolean(kIPFSAutoRedirectGateway));
+  pref_service->ClearPref(kIPFSAutoRedirectDNSLink);
+  pref_service->ClearPref(kIPFSAutoRedirectGateway);
+}
+
+// static
 void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kIPFSEnabled, true);
   registry->RegisterIntegerPref(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
   registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
-  registry->RegisterBooleanPref(kIPFSAutoRedirectGateway, false);
-  registry->RegisterBooleanPref(kIPFSAutoRedirectDNSLink, false);
+
+  registry->RegisterBooleanPref(kIPFSAutoRedirectToConfiguredGateway, false);
   registry->RegisterBooleanPref(kIPFSLocalNodeUsed, false);
   registry->RegisterIntegerPref(kIPFSInfobarCount, 0);
   registry->RegisterIntegerPref(kIpfsStorageMax, 1);
@@ -176,6 +189,11 @@ void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
                                kDefaultIPFSNFTGateway);
   registry->RegisterFilePathPref(kIPFSBinaryPath, base::FilePath());
   registry->RegisterDictionaryPref(kIPFSPinnedCids);
+  registry->RegisterBooleanPref(kShowIPFSPromoInfobar, true);
+
+  // Deprecated, kIPFSAutoRedirectToConfiguredGateway is used instead
+  registry->RegisterBooleanPref(kIPFSAutoRedirectGateway, false);
+  registry->RegisterBooleanPref(kIPFSAutoRedirectDNSLink, false);
 }
 
 base::FilePath IpfsService::GetIpfsExecutablePath() const {

@@ -15,8 +15,12 @@ namespace brave_wallet {
 
 SolanaTxMeta::SolanaTxMeta() = default;
 
-SolanaTxMeta::SolanaTxMeta(std::unique_ptr<SolanaTransaction> tx)
-    : tx_(std::move(tx)) {}
+SolanaTxMeta::SolanaTxMeta(const mojom::AccountIdPtr& from,
+                           std::unique_ptr<SolanaTransaction> tx)
+    : tx_(std::move(tx)) {
+  DCHECK_EQ(from->coin, mojom::CoinType::SOL);
+  set_from(std::move(from));
+}
 
 SolanaTxMeta::~SolanaTxMeta() = default;
 
@@ -34,7 +38,7 @@ base::Value::Dict SolanaTxMeta::ToValue() const {
 
 mojom::TransactionInfoPtr SolanaTxMeta::ToTransactionInfo() const {
   return mojom::TransactionInfo::New(
-      id_, from_, tx_hash_,
+      id_, from_->address, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewSolanaTxData(tx_->ToSolanaTxData()), status_,
       tx_->tx_type(), std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,
@@ -42,7 +46,7 @@ mojom::TransactionInfoPtr SolanaTxMeta::ToTransactionInfo() const {
       base::Milliseconds(submitted_time_.ToJavaTime()),
       base::Milliseconds(confirmed_time_.ToJavaTime()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, group_id_,
-      chain_id_);
+      chain_id_, absl::nullopt);
 }
 
 }  // namespace brave_wallet

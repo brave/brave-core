@@ -19,7 +19,7 @@ namespace credential {
 
 class CredentialsSKU : public Credentials {
  public:
-  explicit CredentialsSKU(LedgerImpl& ledger);
+  explicit CredentialsSKU(RewardsEngineImpl& engine);
   ~CredentialsSKU() override;
 
   void Start(const CredentialsTrigger& trigger,
@@ -79,7 +79,7 @@ class CredentialsSKU : public Credentials {
                       const CredentialsRedeem& redeem,
                       LegacyResultCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   CredentialsCommon common_;
   endpoint::PaymentServer payment_server_;
 };

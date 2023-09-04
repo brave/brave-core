@@ -32,6 +32,10 @@ void BatAdsClientNotifierImpl::BindReceiver() {
   receiver_.Bind(std::move(pending_receiver_));
 }
 
+void BatAdsClientNotifierImpl::NotifyDidInitializeAds() {
+  notifier_.NotifyDidInitializeAds();
+}
+
 void BatAdsClientNotifierImpl::NotifyLocaleDidChange(
     const std::string& locale) {
   notifier_.NotifyLocaleDidChange(locale);
@@ -42,8 +46,15 @@ void BatAdsClientNotifierImpl::NotifyPrefDidChange(const std::string& path) {
 }
 
 void BatAdsClientNotifierImpl::NotifyDidUpdateResourceComponent(
+    const std::string& manifest_version,
     const std::string& id) {
-  notifier_.NotifyDidUpdateResourceComponent(id);
+  notifier_.NotifyDidUpdateResourceComponent(manifest_version, id);
+}
+
+void BatAdsClientNotifierImpl::NotifyRewardsWalletDidUpdate(
+    const std::string& payment_id,
+    const std::string& recovery_seed) {
+  notifier_.NotifyRewardsWalletDidUpdate(payment_id, recovery_seed);
 }
 
 void BatAdsClientNotifierImpl::NotifyTabTextContentDidChange(
@@ -73,10 +84,8 @@ void BatAdsClientNotifierImpl::NotifyTabDidStopPlayingMedia(
 void BatAdsClientNotifierImpl::NotifyTabDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
-    const bool is_visible,
-    const bool is_incognito) {
-  notifier_.NotifyTabDidChange(tab_id, redirect_chain, is_visible,
-                               is_incognito);
+    const bool is_visible) {
+  notifier_.NotifyTabDidChange(tab_id, redirect_chain, is_visible);
 }
 
 void BatAdsClientNotifierImpl::NotifyDidCloseTab(const int32_t tab_id) {
@@ -112,6 +121,10 @@ void BatAdsClientNotifierImpl::NotifyBrowserDidBecomeActive() {
 
 void BatAdsClientNotifierImpl::NotifyBrowserDidResignActive() {
   notifier_.NotifyBrowserDidResignActive();
+}
+
+void BatAdsClientNotifierImpl::NotifyDidSolveAdaptiveCaptcha() {
+  notifier_.NotifyDidSolveAdaptiveCaptcha();
 }
 
 }  // namespace bat_ads

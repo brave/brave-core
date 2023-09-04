@@ -8,7 +8,7 @@ import * as React from 'react'
 import { BraveWallet } from '../../../constants/types'
 
 // Components
-import { CreateNetworkIcon } from '../../shared'
+import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
 
 // Options
 import { AllNetworksOption } from '../../../options/network-filter-options'

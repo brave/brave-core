@@ -16,6 +16,7 @@
 
 class BraveActionsContainer;
 class BraveActionsContainerTest;
+class PlaylistActionIconView;
 class RewardsBrowserTest;
 class SkPath;
 
@@ -72,10 +73,16 @@ class BraveLocationBarView : public LocationBarView {
     return brave_actions_;
   }
 
+  void ShowPlaylistBubble();
+
  private:
   FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, AddItemsToList);
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
+
+  PlaylistActionIconView* GetPlaylistActionIconView();
+
   raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
   raw_ptr<BraveNewsLocationView> brave_news_location_view_ = nullptr;
 #if BUILDFLAG(ENABLE_TOR)

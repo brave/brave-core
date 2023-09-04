@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -17,9 +18,9 @@ class BraveAdsIssuersPermissionRuleTest : public UnitTestBase {
   const IssuersPermissionRule permission_rule_;
 };
 
-TEST_F(BraveAdsIssuersPermissionRuleTest, Issuers) {
+TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldAllowForRewardsUser) {
   // Arrange
-  BuildAndSetIssuers();
+  BuildAndSetIssuersForTesting();
 
   // Act
 
@@ -27,7 +28,17 @@ TEST_F(BraveAdsIssuersPermissionRuleTest, Issuers) {
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsIssuersPermissionRuleTest, NoIssuers) {
+TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldAlwaysAllowForNonRewardsUser) {
+  // Arrange
+  DisableBraveRewardsForTesting();
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+}
+
+TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldNotAllowIfNoIssuers) {
   // Arrange
 
   // Act

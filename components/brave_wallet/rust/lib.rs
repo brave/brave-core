@@ -58,6 +58,7 @@ macro_rules! impl_error {
     };
 }
 
+#[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace =  brave_wallet)]
 mod ffi {
     extern "Rust" {

@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/commander/common/buildflags/buildflags.gni")
+
 brave_components_omnibox_browser_sources = [
   "//brave/components/omnibox/browser/brave_bookmark_provider.cc",
   "//brave/components/omnibox/browser/brave_bookmark_provider.h",
@@ -14,8 +16,6 @@ brave_components_omnibox_browser_sources = [
   "//brave/components/omnibox/browser/brave_local_history_zero_suggest_provider.h",
   "//brave/components/omnibox/browser/brave_omnibox_client.cc",
   "//brave/components/omnibox/browser/brave_omnibox_client.h",
-  "//brave/components/omnibox/browser/brave_omnibox_edit_model.cc",
-  "//brave/components/omnibox/browser/brave_omnibox_edit_model.h",
   "//brave/components/omnibox/browser/brave_omnibox_prefs.cc",
   "//brave/components/omnibox/browser/brave_omnibox_prefs.h",
   "//brave/components/omnibox/browser/brave_search_provider.cc",
@@ -34,12 +34,14 @@ brave_components_omnibox_browser_sources = [
 brave_components_omnibox_browser_deps = [
   "//base",
   "//brave/components/brave_search_conversion",
+  "//brave/components/commander/common/buildflags",
   "//brave/components/constants",
+  "//brave/components/vector_icons",
   "//components/prefs",
   "//url",
 ]
 
-if (!is_android && !is_ios) {
+if (enable_commander) {
   brave_components_omnibox_browser_sources += [
     "//brave/components/omnibox/browser/commander_action.cc",
     "//brave/components/omnibox/browser/commander_action.h",

@@ -11,8 +11,9 @@
 #include <string>
 #include <vector>
 
+#include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 
 namespace brave_ads {
@@ -45,13 +46,11 @@ class BatAdsImpl : public mojom::BatAds {
       brave_ads::mojom::BuildChannelInfoPtr build_channel) override;
   void SetFlags(brave_ads::mojom::FlagsPtr flags) override;
 
-  void Initialize(InitializeCallback callback) override;
+  void Initialize(brave_ads::mojom::WalletInfoPtr wallet,
+                  InitializeCallback callback) override;
   void Shutdown(ShutdownCallback callback) override;
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
-
-  void OnRewardsWalletDidChange(const std::string& payment_id,
-                                const std::string& recovery_seed) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
@@ -61,28 +60,33 @@ class BatAdsImpl : public mojom::BatAds {
   void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      brave_ads::mojom::InlineContentAdEventType event_type) override;
+      brave_ads::mojom::InlineContentAdEventType event_type,
+      TriggerInlineContentAdEventCallback callback) override;
 
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      brave_ads::mojom::NewTabPageAdEventType event_type) override;
+      brave_ads::mojom::NewTabPageAdEventType event_type,
+      TriggerNewTabPageAdEventCallback callback) override;
 
   void MaybeGetNotificationAd(const std::string& placement_id,
                               MaybeGetNotificationAdCallback callback) override;
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
-      brave_ads::mojom::NotificationAdEventType event_type) override;
+      brave_ads::mojom::NotificationAdEventType event_type,
+      TriggerNotificationAdEventCallback callback) override;
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      brave_ads::mojom::PromotedContentAdEventType event_type) override;
+      brave_ads::mojom::PromotedContentAdEventType event_type,
+      TriggerPromotedContentAdEventCallback callback) override;
 
   void TriggerSearchResultAdEvent(
       brave_ads::mojom::SearchResultAdInfoPtr ad_mojom,
-      brave_ads::mojom::SearchResultAdEventType event_type) override;
+      brave_ads::mojom::SearchResultAdEventType event_type,
+      TriggerSearchResultAdEventCallback callback) override;
 
   void PurgeOrphanedAdEventsForType(
       brave_ads::mojom::AdType ad_type,
@@ -91,19 +95,15 @@ class BatAdsImpl : public mojom::BatAds {
   void GetHistory(base::Time from_time,
                   base::Time to_time,
                   GetHistoryCallback callback) override;
-  void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
   void ToggleLikeAd(base::Value::Dict value,
                     ToggleLikeAdCallback callback) override;
   void ToggleDislikeAd(base::Value::Dict value,
                        ToggleLikeAdCallback callback) override;
-  void ToggleLikeCategory(const std::string& category,
-                          brave_ads::mojom::UserReactionType user_reaction_type,
+  void ToggleLikeCategory(base::Value::Dict value,
                           ToggleLikeCategoryCallback callback) override;
-  void ToggleDislikeCategory(
-      const std::string& category,
-      brave_ads::mojom::UserReactionType user_reaction_type,
-      ToggleDislikeCategoryCallback callback) override;
+  void ToggleDislikeCategory(base::Value::Dict value,
+                             ToggleDislikeCategoryCallback callback) override;
   void ToggleSaveAd(base::Value::Dict value,
                     ToggleSaveAdCallback callback) override;
   void ToggleMarkAdAsInappropriate(
@@ -111,8 +111,10 @@ class BatAdsImpl : public mojom::BatAds {
       ToggleMarkAdAsInappropriateCallback callback) override;
 
  private:
-  std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
-  std::unique_ptr<brave_ads::Ads> ads_;
+  brave_ads::Ads* GetAds();
+
+  class AdsInstance;
+  std::unique_ptr<AdsInstance, base::OnTaskRunnerDeleter> ads_instance_;
 };
 
 }  // namespace bat_ads

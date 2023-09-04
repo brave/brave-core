@@ -9,7 +9,10 @@
 
 namespace brave_ads {
 
-int GetMinutes(const int hours, const int minutes) {
+int GetMinutesForTesting(const int hours, const int minutes) {
+  CHECK(hours >= 0 && hours <= 23);
+  CHECK(minutes >= 0 && minutes <= 59);
+
   const base::TimeDelta time_delta =
       base::Hours(hours) + base::Minutes(minutes);
   return time_delta.InMinutes();

@@ -46,7 +46,7 @@ bool IsGuestProfile(content::BrowserContext* context) {
 
 bool IsTorDisabledForProfile(Profile* profile) {
 #if BUILDFLAG(ENABLE_TOR)
-  return TorProfileServiceFactory::IsTorDisabled() || profile->IsGuestSession();
+  return TorProfileServiceFactory::IsTorDisabled(profile);
 #else
   return true;
 #endif
@@ -105,7 +105,12 @@ void SetDefaultThirdPartyCookieBlockValue(Profile* profile) {
 void MigrateHttpsUpgradeSettings(Profile* profile) {
   // If user flips the HTTPS by Default feature flag
   auto* prefs = profile->GetPrefs();
+  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
+  // the System Profile.
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+  if (!map) {
+    return;
+  }
   if (brave_shields::IsHttpsByDefaultFeatureEnabled()) {
     // Migrate forwards from HTTPS-Only Mode to HTTPS Upgrade Strict setting.
     if (prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)) {

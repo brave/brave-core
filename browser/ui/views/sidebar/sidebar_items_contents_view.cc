@@ -7,7 +7,9 @@
 
 #include <string>
 
+#include "base/check_is_test.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/i18n/case_conversion.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
@@ -16,11 +18,13 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/sidebar/sidebar_edit_item_bubble_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
-#include "brave/components/ai_chat/features.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/pref_names.h"
@@ -48,6 +52,10 @@
 #include "ui/views/controls/menu/menu_runner.h"
 #include "ui/views/controls/separator.h"
 #include "ui/views/layout/box_layout.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
+#endif
 
 namespace {
 
@@ -306,7 +314,8 @@ void SidebarItemsContentsView::UpdateItem(
   }
 }
 
-void SidebarItemsContentsView::ShowItemAddedFeedbackBubble() {
+void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
+    size_t item_added_index) {
   auto* prefs = browser_->profile()->GetPrefs();
   const int current_count =
       prefs->GetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount);
@@ -315,8 +324,8 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble() {
     return;
   prefs->SetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount,
                     current_count + 1);
-
-  auto* lastly_added_view = children()[children().size() - 1];
+  CHECK_LT(item_added_index, children().size());
+  auto* lastly_added_view = children()[item_added_index];
   ShowItemAddedFeedbackBubble(lastly_added_view);
 }
 
@@ -325,6 +334,13 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
   // Only launch feedback bubble for active browser window.
   DCHECK_EQ(browser_, BrowserList::GetInstance()->GetLastActive());
   DCHECK(!observation_.IsObserving());
+
+  if (item_added_bubble_launched_for_test_) {
+    // Early return w/o launching actual bubble for quick test.
+    CHECK_IS_TEST();
+    item_added_bubble_launched_for_test_.Run(anchor_view);
+    return;
+  }
 
   auto* bubble = SidebarItemAddedFeedbackBubble::Create(anchor_view, this);
   observation_.Observe(bubble);
@@ -444,6 +460,7 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
         GetImageForBuiltInItems(item.built_in_item_type, /* focus= */ false,
                                 /* disabled= */ true));
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
     if (ai_chat::features::IsAIChatEnabled() && browser_->profile()->IsTor()) {
       auto is_ai_chat = [](const auto& item) {
         return item.built_in_item_type ==
@@ -454,6 +471,7 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
         item_view->SetEnabled(false);
       }
     }
+#endif
 
     if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
         browser_->profile()->IsOffTheRecord()) {
@@ -478,15 +496,20 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
   auto* controller = browser_->sidebar_controller();
   auto index = GetIndexOf(item);
   if (controller->IsActiveIndex(index)) {
-    // TODO(simonhong): This is for demo. We will have another UI for closing.
-    // De-activate active item.
-    controller->ActivateItemAt(absl::nullopt);
+    controller->DeactivateCurrentPanel();
+    return;
+  }
+
+  const auto& item_model = controller->model()->GetAllSidebarItems()[*index];
+  if (item_model.open_in_panel) {
+    controller->ActivatePanelItem(item_model.built_in_item_type);
     return;
   }
 
   WindowOpenDisposition open_disposition = WindowOpenDisposition::CURRENT_TAB;
-  if (event_utils::IsPossibleDispositionEvent(event))
+  if (event_utils::IsPossibleDispositionEvent(event)) {
     open_disposition = ui::DispositionFromEventFlags(event.flags());
+  }
 
   controller->ActivateItemAt(index, open_disposition);
 }

@@ -36,11 +36,13 @@ static constexpr auto kFarbleAcceptLanguageExceptions =
         {// https://github.com/brave/brave-browser/issues/25309
          "ulta.com", "www.ulta.com",
          // https://github.com/brave/brave-browser/issues/26325
-         "aeroplan.rewardops.com"});
+         "aeroplan.rewardops.com",
+         // https://github.com/brave/brave-browser/issues/31196
+         "login.live.com"});
 }  // namespace
 
 std::string FarbleAcceptLanguageHeader(
-    const GURL& tab_origin,
+    const GURL& origin_url,
     Profile* profile,
     HostContentSettingsMap* content_settings) {
   std::string languages = profile->GetPrefs()
@@ -58,7 +60,7 @@ std::string FarbleAcceptLanguageHeader(
   brave::FarblingPRNG prng;
   if (g_brave_browser_process->brave_farbling_service()
           ->MakePseudoRandomGeneratorForURL(
-              tab_origin, profile && profile->IsOffTheRecord(), &prng)) {
+              origin_url, profile && profile->IsOffTheRecord(), &prng)) {
     accept_language_string += kFakeQValues[prng() % kFakeQValues.size()];
   }
   return accept_language_string;
@@ -73,12 +75,19 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
   HostContentSettingsMap* content_settings =
       HostContentSettingsMapFactory::GetForProfile(profile);
   DCHECK(content_settings);
-  if (!brave_shields::ShouldDoReduceLanguage(content_settings, ctx->tab_origin,
+  GURL origin_url(ctx->tab_origin);
+  if (origin_url.is_empty()) {
+    origin_url = ctx->initiator_url;
+  }
+  if (origin_url.is_empty()) {
+    return net::OK;
+  }
+  if (!brave_shields::ShouldDoReduceLanguage(content_settings, origin_url,
                                              profile->GetPrefs())) {
     return net::OK;
   }
-  base::StringPiece tab_origin_host(ctx->tab_origin.host_piece());
-  if (kFarbleAcceptLanguageExceptions.contains(tab_origin_host)) {
+  base::StringPiece origin_host(origin_url.host_piece());
+  if (kFarbleAcceptLanguageExceptions.contains(origin_host)) {
     return net::OK;
   }
 
@@ -96,7 +105,7 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
 
   std::string accept_language_string;
   switch (brave_shields::GetFingerprintingControlType(content_settings,
-                                                      ctx->tab_origin)) {
+                                                      origin_url)) {
     case ControlType::BLOCK: {
       // If fingerprint blocking is maximum, set Accept-Language header to
       // static value regardless of other preferences.
@@ -106,8 +115,8 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
     case ControlType::DEFAULT: {
       // If fingerprint blocking is default, compute Accept-Language header
       // based on user preferences and some randomization.
-      accept_language_string = FarbleAcceptLanguageHeader(
-          ctx->tab_origin, profile, content_settings);
+      accept_language_string =
+          FarbleAcceptLanguageHeader(origin_url, profile, content_settings);
       break;
     }
     default:

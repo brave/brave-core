@@ -10,9 +10,11 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
+#include "brave/browser/ui/color/leo/colors.h"
 #include "brave/browser/ui/tabs/brave_vertical_tab_color_mixer.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_id.h"
@@ -21,6 +23,11 @@
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/native_theme/native_theme.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/browser/ui/color/playlist/playlist_color_mixer.h"
+#include "brave/components/playlist/common/features.h"
+#endif
 
 namespace {
 
@@ -59,12 +66,107 @@ SkColor PickColorContrastingToToolbar(const ui::ColorProviderManager::Key& key,
   return color_utils::PickContrastingColor(color1, color2, toolbar_color);
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_SPEEDREADER)
+SkColor PickSimilarColorToToolbar(const ui::ColorProviderManager::Key& key,
+                                  const ui::ColorMixer& mixer,
+                                  SkColor light_theme_color,
+                                  SkColor dark_theme_color) {
+  auto toolbar_color = mixer.GetResultColor(kColorToolbar);
+  SkColor custom_toolbar_color;
+  if (key.custom_theme &&
+      key.custom_theme->GetColor(ThemeProperties::COLOR_TOOLBAR,
+                                 &custom_toolbar_color)) {
+    toolbar_color = custom_toolbar_color;
+  }
+
+  // Give min constrast color.
+  return color_utils::IsDark(toolbar_color) ? dark_theme_color
+                                            : light_theme_color;
+}
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+void AddBraveVpnColorMixer(ui::ColorProvider* provider,
+                           const ui::ColorProviderManager::Key& key) {
+  ui::ColorMixer& mixer = provider->AddMixer();
+
+  mixer[kColorBraveVpnButtonText] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x1C, 0x1E, 0x26),
+                                    SkColorSetRGB(0xED, 0xEE, 0xF1))};
+  mixer[kColorBraveVpnButtonTextError] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0xDC, 0x1D, 0x3C),
+                                    SkColorSetRGB(0xEB, 0x63, 0x7A))};
+
+  mixer[kColorBraveVpnButtonBorder] = {PickSimilarColorToToolbar(
+      key, mixer, SkColorSetARGB(0x14, 0x13, 0x16, 0x20),
+      SkColorSetARGB(0x4D, 0x04, 0x04, 0x06))};
+  mixer[kColorBraveVpnButtonErrorBorder] = {kColorBraveVpnButtonTextError};
+
+  mixer[kColorBraveVpnButtonIconConnected] = {SkColorSetRGB(0x3F, 0xA4, 0x50)};
+  mixer[kColorBraveVpnButtonIconDisconnected] = {PickColorContrastingToToolbar(
+      key, mixer, SkColorSetARGB(0x99, 0x0B, 0x16, 0x41),
+      SkColorSetARGB(0xCC, 0xB1, 0xB7, 0xCD))};
+  mixer[kColorBraveVpnButtonIconInner] = {PickSimilarColorToToolbar(
+      key, mixer, SK_ColorWHITE, SkColorSetARGB(0x33, 0x04, 0x04, 0x06))};
+  mixer[kColorBraveVpnButtonIconError] = {kColorBraveVpnButtonErrorBorder};
+  mixer[kColorBraveVpnButtonIconErrorInner] = {PickSimilarColorToToolbar(
+      key, mixer, SK_ColorWHITE, SkColorSetRGB(0x0F, 0x17, 0x2A))};
+
+  mixer[kColorBraveVpnButtonBackgroundNormal] = {kColorToolbar};
+  mixer[kColorBraveVpnButtonBackgroundHover] = {PickSimilarColorToToolbar(
+      key, mixer, SkColorSetARGB(0x14, 0x13, 0x16, 0x20),
+      SkColorSetARGB(0x4D, 0x04, 0x04, 0x06))};
+  mixer[kColorBraveVpnButtonErrorBackgroundNormal] = {PickSimilarColorToToolbar(
+      key, mixer, SkColorSetARGB(0x31, 0xDC, 0x1D, 0x3C),
+      SkColorSetARGB(0x33, 0xEB, 0x63, 0x7A))};
+  mixer[kColorBraveVpnButtonErrorBackgroundHover] = {PickSimilarColorToToolbar(
+      key, mixer, SkColorSetARGB(0x40, 0xDC, 0x1D, 0x3C),
+      SkColorSetARGB(0x40, 0xEB, 0x63, 0x7A))};
+}
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+void AddBraveSpeedreaderColorMixer(ui::ColorProvider* provider,
+                                   const ui::ColorProviderManager::Key& key) {
+  ui::ColorMixer& mixer = provider->AddMixer();
+
+  mixer[kColorSpeedreaderIcon] = {
+      PickSimilarColorToToolbar(key, mixer, SkColorSetRGB(0x4C, 0x54, 0xD2),
+                                SkColorSetRGB(0x73, 0x7A, 0xDE))};
+  mixer[kColorSpeedreaderToggleThumb] = {
+      PickSimilarColorToToolbar(key, mixer, SkColorSetRGB(0x4C, 0x54, 0xD2),
+                                SkColorSetRGB(0x44, 0x36, 0xE1))};
+  mixer[kColorSpeedreaderToggleTrack] = {
+      PickSimilarColorToToolbar(key, mixer, SkColorSetRGB(0xE1, 0xE2, 0xF6),
+                                SkColorSetRGB(0x76, 0x79, 0xB1))};
+
+  mixer[kColorSpeedreaderToolbarBackground] = {kColorToolbar};
+  mixer[kColorSpeedreaderToolbarBorder] = {kColorToolbarContentAreaSeparator};
+  mixer[kColorSpeedreaderToolbarForeground] = {PickColorContrastingToToolbar(
+      key, mixer,
+      leo::GetColor(leo::Color::kColorLegacyText2, leo::Theme::kLight),
+      leo::GetColor(leo::Color::kColorLegacyText2, leo::Theme::kDark))};
+
+  mixer[kColorSpeedreaderToolbarButtonHover] = {PickSimilarColorToToolbar(
+      key, mixer, SkColorSetARGB(0x0D, 0x13, 0x16, 0x20),
+      SkColorSetARGB(0x59, 0x0A, 0x0B, 0x10))};
+  mixer[kColorSpeedreaderToolbarButtonActive] = {PickSimilarColorToToolbar(
+      key, mixer, SkColorSetARGB(0x14, 0x13, 0x16, 0x20),
+      SkColorSetARGB(0x80, 0x0A, 0x0B, 0x10))};
+  mixer[kColorSpeedreaderToolbarButtonBorder] = {PickSimilarColorToToolbar(
+      key, mixer, leo::GetColor(leo::Color::kColorGray20, leo::Theme::kLight),
+      leo::GetColor(leo::Color::kColorGray10, leo::Theme::kDark))};
+}
+#endif
+
 void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
                                    const ui::ColorProviderManager::Key& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
   mixer[kColorTabThrobber] = {SkColorSetRGB(0xd7, 0x55, 0x26)};
   mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
+  mixer[ui::kColorBadgeBackground] = {SkColorSetRGB(95, 92, 241)};
+  mixer[ui::kColorBadgeForeground] = {SkColorSetRGB(245, 244, 254)};
   mixer[kColorDownloadShelfButtonText] = {gfx::kBraveGrey800};
   mixer[kColorForTest] = {kLightColorForTest};
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
@@ -104,6 +206,8 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorTabThrobber] = {SkColorSetRGB(0xd7, 0x55, 0x26)};
   mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
+  mixer[ui::kColorBadgeBackground] = {SkColorSetRGB(135, 132, 244)};
+  mixer[ui::kColorBadgeForeground] = {SkColorSetRGB(14, 14, 52)};
   mixer[kColorDownloadShelfButtonText] = {SK_ColorWHITE};
   mixer[kColorForTest] = {kDarkColorForTest};
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
@@ -190,8 +294,9 @@ SkColor GetOmniboxResultBackground(int id, bool dark, bool priv) {
 void AddBravifiedChromeThemeColorMixer(
     ui::ColorProvider* provider,
     const ui::ColorProviderManager::Key& key) {
-  if (key.custom_theme)
+  if (key.custom_theme) {
     return;
+  }
 
   key.color_mode == ui::ColorProviderManager::ColorMode::kDark
       ? AddChromeDarkThemeColorMixer(provider, key)
@@ -209,6 +314,8 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
                                     SkColorSetRGB(0xFF, 0xFF, 0xFF))};
   mixer[kColorMenuItemSubText] = {SkColorSetRGB(0x86, 0x8E, 0x96)};
+  mixer[kColorSearchConversionCloseButton] = {
+      leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight)};
   mixer[kColorSearchConversionBannerTypeDescText] = {
       SkColorSetRGB(0x2E, 0x30, 0x39)};
   mixer[kColorSearchConversionBannerTypeBackgroundBorder] = {
@@ -218,7 +325,7 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSearchConversionBannerTypeBackgroundGradientFrom] = {
       SkColorSetARGB(104, 0xFF, 0xFF, 0xFF)};
   mixer[kColorSearchConversionBannerTypeBackgroundGradientTo] = {
-      SkColorSetARGB(104, 0xEF, 0xEF, 0xFB)};
+      SkColorSetRGB(0xEF, 0xEF, 0xFB)};
   mixer[kColorSearchConversionButtonTypeInputAppend] = {
       SkColorSetRGB(0x58, 0x5C, 0x6D)};
   mixer[kColorSearchConversionButtonTypeBackgroundNormal] = {
@@ -260,21 +367,6 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarItemDragIndicator] = {
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x21, 0x25, 0x29),
                                     SkColorSetRGB(0xC2, 0xC4, 0xCF))};
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  mixer[kColorSpeedreaderIcon] = {SkColorSetRGB(0x4C, 0x54, 0xD2)};
-  mixer[kColorSpeedreaderToggleThumb] = {SkColorSetRGB(0x4C, 0x54, 0xD2)};
-  mixer[kColorSpeedreaderToggleTrack] = {SkColorSetRGB(0xE1, 0xE2, 0xF6)};
-#endif
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  mixer[kColorBraveVpnButtonBorder] = {SkColorSetRGB(0xD0, 0xD3, 0xD6)};
-  mixer[kColorBraveVpnButtonTextConnected] = {
-      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x21, 0x25, 0x29),
-                                    SkColorSetRGB(0xF0, 0xF2, 0xFF))};
-  mixer[kColorBraveVpnButtonTextDisconnected] = {
-      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x86, 0x8E, 0x96),
-                                    SkColorSetRGB(0xF0, 0xF2, 0xFF))};
-#endif
-
   mixer[kColorWebDiscoveryInfoBarBackground] = {
       SkColorSetRGB(0xFF, 0xFF, 0xFF)};
   mixer[kColorWebDiscoveryInfoBarMessage] = {SkColorSetRGB(0x1D, 0x1F, 0x25)};
@@ -297,6 +389,12 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     tabs::AddBraveVerticalTabLightThemeColorMixer(provider, key);
   }
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    playlist::AddThemeColorMixer(provider, leo::Theme::kLight, key);
+  }
+#endif
 }
 
 void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -310,6 +408,8 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
                                     SkColorSetRGB(0xFF, 0xFF, 0xFF))};
   mixer[kColorMenuItemSubText] = {SkColorSetRGB(0x84, 0x88, 0x9C)};
+  mixer[kColorSearchConversionCloseButton] = {
+      leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark)};
   mixer[kColorSearchConversionBannerTypeDescText] = {
       SkColorSetRGB(0xE2, 0xE3, 0xE7)};
   mixer[kColorSearchConversionBannerTypeBackgroundBorder] = {
@@ -359,21 +459,6 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarItemDragIndicator] = {
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x21, 0x25, 0x29),
                                     SkColorSetRGB(0xC2, 0xC4, 0xCF))};
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  mixer[kColorSpeedreaderIcon] = {SkColorSetRGB(0x73, 0x7A, 0xDE)};
-  mixer[kColorSpeedreaderToggleThumb] = {SkColorSetRGB(0x44, 0x36, 0xE1)};
-  mixer[kColorSpeedreaderToggleTrack] = {SkColorSetRGB(0x76, 0x79, 0xB1)};
-#endif
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  mixer[kColorBraveVpnButtonBorder] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
-  mixer[kColorBraveVpnButtonTextConnected] = {
-      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x21, 0x25, 0x29),
-                                    SkColorSetRGB(0xF0, 0xF2, 0xFF))};
-  mixer[kColorBraveVpnButtonTextDisconnected] = {
-      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x86, 0x8E, 0x96),
-                                    SkColorSetRGB(0xF0, 0xF2, 0xFF))};
-#endif
-
   mixer[kColorWebDiscoveryInfoBarBackground] = {
       SkColorSetRGB(0x1A, 0x1C, 0x22)};
   mixer[kColorWebDiscoveryInfoBarMessage] = {SkColorSetRGB(0xFF, 0xFF, 0xFF)};
@@ -396,6 +481,12 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     tabs::AddBraveVerticalTabDarkThemeColorMixer(provider, key);
   }
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    playlist::AddThemeColorMixer(provider, leo::Theme::kDark, key);
+  }
+#endif
 }
 
 // Handling dark or light theme on normal profile.
@@ -404,6 +495,12 @@ void AddBraveThemeColorMixer(ui::ColorProvider* provider,
   key.color_mode == ui::ColorProviderManager::ColorMode::kDark
       ? AddBraveDarkThemeColorMixer(provider, key)
       : AddBraveLightThemeColorMixer(provider, key);
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  AddBraveVpnColorMixer(provider, key);
+#endif
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  AddBraveSpeedreaderColorMixer(provider, key);
+#endif
 }
 
 void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,

@@ -6,52 +6,47 @@ import * as React from 'react'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { NewTabLink } from '../new_tab_link'
-import { TermsOfService } from '../terms_of_service'
 import { BatIcon } from '../icons/bat_icon'
+import { OptInIcon } from './icons/optin_icon'
 import { MainButton } from './main_button'
 
 import * as style from './settings_opt_in_form.style'
 
+import * as urls from '../../lib/rewards_urls'
+
 interface Props {
-  onEnable: () => void
-  onTakeTour: () => void
+  onEnable?: () => void
 }
 
 export function SettingsOptInForm (props: Props) {
   const { getString } = React.useContext(LocaleContext)
   return (
     <style.root>
+      <style.icon>
+        <OptInIcon />
+      </style.icon>
       <style.heading>
-        <BatIcon />{getString('onboardingBraveRewards')}
-      </style.heading>
-      <style.subHeading>
         {getString('onboardingEarnHeader')}
-      </style.subHeading>
+      </style.heading>
       <style.text>
-        {getString('onboardingEarnText')}&nbsp;
-        {
-          formatMessage(getString('onboardingDetailLinks'), {
-            tags: {
-              $1: (content) => (
-                <a key='tour' href='#' onClick={props.onTakeTour}>{content}</a>
-              ),
-              $3: (content) => (
-                <NewTabLink key='learn' href='https://basicattentiontoken.org'>
-                  {content}
-                </NewTabLink>
-              )
-            }
-          })
-        }
+        {getString('onboardingEarnText')}
       </style.text>
       <style.enable>
-        <MainButton onClick={props.onEnable}>
-          {getString('onboardingStartUsingRewards')}
-        </MainButton>
+        {
+          props.onEnable
+            ? <MainButton onClick={props.onEnable}>
+                {getString('onboardingStartUsingRewards')}
+              </MainButton>
+            : formatMessage(getString('onboardingStartUsingRewardsTextOnly'), [
+                <BatIcon key='icon' />
+              ])
+        }
       </style.enable>
-      <style.footer>
-        <TermsOfService />
-      </style.footer>
+      <style.learnMore>
+        <NewTabLink href={urls.rewardsTourURL}>
+          {getString('rewardsLearnMore')}
+        </NewTabLink>
+      </style.learnMore>
     </style.root>
   )
 }

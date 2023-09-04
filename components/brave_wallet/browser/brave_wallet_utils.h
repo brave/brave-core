@@ -23,16 +23,6 @@ class GURL;
 
 namespace brave_wallet {
 
-bool IsNativeWalletEnabled();
-bool IsFilecoinEnabled();
-bool IsSolanaEnabled();
-bool ShouldShowTxStatusInToolbar();
-bool IsNftPinningEnabled();
-bool IsPanelV2Enabled();
-bool ShouldCreateDefaultSolanaAccount();
-bool IsDappsSupportEnabled();
-bool IsBitcoinEnabled();
-
 // Generate mnemonic from random entropy following BIP39.
 // |entropy_size| should be specify in bytes
 // If |entropy_size| is not in 16, 20, 24, 28, 32 range or allocation
@@ -70,15 +60,28 @@ absl::optional<TransactionReceipt> ValueToTransactionReceipt(
 
 std::vector<mojom::NetworkInfoPtr> GetAllKnownChains(PrefService* prefs,
                                                      mojom::CoinType coin);
-std::vector<mojom::NetworkInfoPtr> GetAllKnownNetworksForTesting();
 std::vector<mojom::NetworkInfoPtr> GetAllCustomChains(PrefService* prefs,
                                                       mojom::CoinType coin);
+std::vector<mojom::NetworkInfoPtr> GetAllChains(PrefService* prefs,
+                                                mojom::CoinType coin);
+mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
+                                    const std::string& chain_id,
+                                    mojom::CoinType coin);
+mojom::NetworkInfoPtr GetCustomChain(PrefService* prefs,
+                                     const std::string& chain_id,
+                                     mojom::CoinType coin);
+mojom::NetworkInfoPtr GetChain(PrefService* prefs,
+                               const std::string& chain_id,
+                               mojom::CoinType coin);
 bool KnownChainExists(const std::string& chain_id, mojom::CoinType coin);
 bool CustomChainExists(PrefService* prefs,
                        const std::string& custom_chain_id,
                        mojom::CoinType coin);
-std::vector<mojom::NetworkInfoPtr> GetAllChains(PrefService* prefs,
-                                                mojom::CoinType coin);
+std::vector<std::string> CustomChainsExist(
+    PrefService* prefs,
+    const std::vector<std::string>& custom_chain_ids,
+    mojom::CoinType coin);
+
 GURL GetNetworkURL(PrefService* prefs,
                    const std::string& chain_id,
                    mojom::CoinType coin);
@@ -87,16 +90,12 @@ std::string GetInfuraEndpointForKnownChainId(const std::string& chain_id);
 std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id);
 GURL AddInfuraProjectId(const GURL& url);
 GURL MaybeAddInfuraProjectId(const GURL& url);
-mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
-                                    const std::string& chain_id,
-                                    mojom::CoinType coin);
-mojom::NetworkInfoPtr GetCustomChain(PrefService* prefs,
-                                     const std::string& chain_id,
-                                     mojom::CoinType coin);
 
 std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id);
 std::string GetFilecoinSubdomainForKnownChainId(const std::string& chain_id);
+std::string GetBitcoinSubdomainForKnownChainId(const std::string& chain_id);
 std::string GetKnownFilNetworkId(const std::string& chain_id);
+std::string GetKnownBtcNetworkId(const std::string& chain_id);
 std::string GetKnownSolNetworkId(const std::string& chain_id);
 std::string GetKnownNetworkId(mojom::CoinType coin,
                               const std::string& chain_id);
@@ -113,12 +112,11 @@ void SetDefaultBaseCurrency(PrefService* prefs, const std::string& currency);
 std::string GetDefaultBaseCurrency(PrefService* prefs);
 void SetDefaultBaseCryptocurrency(PrefService* prefs,
                                   const std::string& cryptocurrency);
-void SetSelectedCoin(PrefService* prefs, mojom::CoinType coin);
-mojom::CoinType GetSelectedCoin(PrefService* prefs);
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
 std::vector<std::string> GetAllKnownEthNetworkIds();
 std::vector<std::string> GetAllKnownSolNetworkIds();
 std::vector<std::string> GetAllKnownFilNetworkIds();
+std::vector<std::string> GetAllKnownBtcNetworkIds();
 std::string GetKnownEthNetworkId(const std::string& chain_id);
 
 GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id);
@@ -143,11 +141,6 @@ void AddHiddenNetwork(PrefService* prefs,
 void RemoveHiddenNetwork(PrefService* prefs,
                          mojom::CoinType coin,
                          const std::string& chain_id);
-
-// Get a specific chain from all chains for certain coin.
-mojom::NetworkInfoPtr GetChain(PrefService* prefs,
-                               const std::string& chain_id,
-                               mojom::CoinType coin);
 
 // Get/Set the current chain ID for coin from kBraveWalletSelectedNetworks pref
 // when origin is not presetned. If origin is presented,
@@ -190,25 +183,8 @@ std::string eTLDPlusOne(const url::Origin& origin);
 
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin);
 
-bool IsFilecoinKeyringId(const std::string& keyring_id);
-
-bool IsBitcoinKeyring(const std::string& keyring_id);
-bool IsBitcoinNetwork(const std::string& network_id);
-bool IsValidBitcoinNetworkKeyringPair(const std::string& network_id,
-                                      const std::string& keyring_id);
-
-std::string GetFilecoinKeyringId(const std::string& network);
-
-std::string GetFilecoinChainId(const std::string& keyring_id);
-
-mojom::CoinType GetCoinForKeyring(const std::string& keyring_id);
-
-// optional chain_id only matters to FIL
-absl::optional<std::string> CoinTypeToKeyringId(
-    mojom::CoinType coin_type,
-    const absl::optional<std::string>& chain_id);
-
-GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
+// Hex string of random 32 bytes.
+std::string GenerateRandomHexString();
 
 }  // namespace brave_wallet
 

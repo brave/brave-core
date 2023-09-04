@@ -45,7 +45,7 @@ const char kObservingScriptletEntryPoint[] =
 
 const char kScriptletInitScript[] =
     R"((function() {
-          let text = '(function() {\nconst scriptletGlobals = new Map();\nlet deAmpEnabled = %s;\n' + %s + '})()';
+          let text = '(function() {\nconst scriptletGlobals = new Map(%s);\nlet deAmpEnabled = %s;\n' + %s + '})()';
           let script;
           try {
             script = document.createElement('script');
@@ -359,8 +359,13 @@ bool CosmeticFiltersJSHandler::ProcessURL(
   }
 
   enabled_1st_party_cf_ =
+      force_cosmetic_filtering ||
       render_frame_->GetWebFrame()->IsCrossOriginToOutermostMainFrame() ||
-      content_settings->IsFirstPartyCosmeticFilteringEnabled(url_);
+      content_settings->IsFirstPartyCosmeticFilteringEnabled(url_) ||
+      net::registry_controlled_domains::SameDomainOrHost(
+          url_,
+          url::Origin::CreateFromNormalizedTuple("https", "youtube.com", 443),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
   if (callback.has_value()) {
     SCOPED_UMA_HISTOGRAM_TIMER_MICROS(
@@ -410,11 +415,16 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
 
   std::string scriptlet_script;
   base::Value* injected_script = resources_dict_->Find("injected_script");
+
   if (injected_script &&
       base::JSONWriter::Write(*injected_script, &scriptlet_script)) {
-    scriptlet_script = base::StringPrintf(kScriptletInitScript,
-                                          de_amp_enabled ? "true" : "false",
-                                          scriptlet_script.c_str());
+    const bool scriptlet_debug_enabled = base::FeatureList::IsEnabled(
+        brave_shields::features::kBraveAdblockScriptletDebugLogs);
+
+    scriptlet_script = base::StringPrintf(
+        kScriptletInitScript,
+        scriptlet_debug_enabled ? "[[\"canDebug\", true]]" : "",
+        de_amp_enabled ? "true" : "false", scriptlet_script.c_str());
   }
   if (!scriptlet_script.empty()) {
     web_frame->ExecuteScriptInIsolatedWorld(

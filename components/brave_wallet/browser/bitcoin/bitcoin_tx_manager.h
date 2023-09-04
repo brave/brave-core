@@ -16,6 +16,7 @@ class PrefService;
 
 namespace brave_wallet {
 
+class AccountResolverDelegate;
 class TxService;
 class JsonRpcService;
 class KeyringService;
@@ -27,23 +28,22 @@ class BitcoinTxManager : public TxManager {
                    JsonRpcService* json_rpc_service,
                    BitcoinWalletService* bitcoin_wallet_service,
                    KeyringService* keyring_service,
-                   PrefService* prefs);
+                   PrefService* prefs,
+                   TxStorageDelegate* delegate,
+                   AccountResolverDelegate* account_resolver_delegate);
   ~BitcoinTxManager() override;
   BitcoinTxManager(const BitcoinTxManager&) = delete;
   BitcoinTxManager& operator=(const BitcoinTxManager&) = delete;
 
   void AddUnapprovedTransaction(const std::string& chain_id,
                                 mojom::TxDataUnionPtr tx_data_union,
-                                const std::string& from,
+                                const mojom::AccountIdPtr& from,
                                 const absl::optional<url::Origin>& origin,
                                 const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& chain_id,
                           const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
-  void GetAllTransactionInfo(const absl::optional<std::string>& chain_id,
-                             const absl::optional<std::string>& from,
-                             GetAllTransactionInfoCallback) override;
   void GetTransactionMessageToSign(
       const std::string& chain_id,
       const std::string& tx_meta_id,

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0">
+    <title>The Akamai Blog</title>
+    <link rel="alternate" type="text/html" href="https://blogs.akamai.com/" />
+
+    <id>tag:blogs.akamai.com,2019-07-30://2</id>
+    <updated>2019-07-30T15:02:05Z</updated>
+
+    <generator uri="http://www.sixapart.com/movabletype/">Movable Type Pro 5.2.13</generator>
+
+    <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/atom+xml" href="http://feeds.feedburner.com/TheAkamaiBlog" /><feedburner:info uri="theakamaiblog" /><atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com/" /><entry>
+    <title>Time to Transfer Risk: Why Security Complexity &amp; VPNs Are No Longer Sustainable</title>
+    <link rel="alternate" type="text/html" href="http://feedproxy.google.com/~r/TheAkamaiBlog/~3/NnQEuqRSyug/time-to-transfer-risk-why-security-complexity-vpns-are-no-longer-sustainable.html" />
+    <id>tag:blogs.akamai.com,2019://2.3337</id>
+
+    <published>2019-07-30T16:00:00Z</published>
+    <updated>2019-07-30T15:02:05Z</updated>
+
+    <summary>Now, there are many reasons to isolate your infrastructure from the Internet. Minimizing the number of exposed things not only reduces risk, it also reduces operational complexity. VPNs are counter to this. VPNs make it so you aren't exposing all of your applications publicly in a DMZ, which is good. But for the most part, they still provide access to the corporate network to get access to corporate apps. Definitely bad. At this point, I think we all agree that moats and castles belong in the past.</summary>
+    <author>
+        <name>Lorenz Jakober</name>
+
+    </author>
+
+    <category term="Zero Trust" scheme="http://www.sixapart.com/ns/types#category" />
+
+    <category term="ssl" label="SSL" scheme="http://www.sixapart.com/ns/types#tag" />
+    <category term="zerotrust" label="Zero Trust" scheme="http://www.sixapart.com/ns/types#tag" />
+
+    <content type="html" xml:lang="en-us" xml:base="https://blogs.akamai.com/">
+        &lt;p&gt;We all heed the gospel of patching, but as recent incidents made clear, even cutting-edge disruptors struggle to patch everything, everywhere, and all the time.&lt;/p&gt;
+        &lt;img src="http://feeds.feedburner.com/~r/TheAkamaiBlog/~4/NnQEuqRSyug" height="1" width="1" alt=""/&gt;</content>
+    <feedburner:origLink>https://blogs.akamai.com/2019/07/time-to-transfer-risk-why-security-complexity-vpns-are-no-longer-sustainable.html</feedburner:origLink></entry>
+
+</feed>

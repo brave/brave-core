@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import { CaratStrongDownIcon } from 'brave-ui/components/icons'
+import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
 import Refresh from '../../../assets/svg-icons/refresh-icon.svg'
 import ClipboardIcon from '../../../assets/svg-icons/clipboard-icon.svg'
 import { BuySendSwapInputType } from './index'
@@ -17,6 +18,7 @@ interface StyleProps {
   isSlippage: boolean
   isERC721: boolean
   isWarning: boolean
+  isV2?: boolean
 }
 
 export const Row = styled.div<Partial<StyleProps>>`
@@ -66,21 +68,23 @@ export const AssetIcon = AssetIconFactory<AssetIconProps>({
   height: 'auto'
 })
 
-export const AssetTicker = styled.span`
+export const AssetTicker = styled.span<{
+  role?: 'currency' | 'symbol'
+  isV2?: boolean
+}>`
   font-family: Poppins;
   font-size: 20px;
   line-height: 30px;
   letter-spacing: 0.02em;
   font-weight: 600;
   margin-right: 4px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.isV2 ? p.role === 'currency' ? leo.color.text.tertiary : leo.color.text.primary : p.theme.color.text01};
   cursor: pointer;
 `
 
-export const CaratDownIcon = styled(CaratStrongDownIcon)`
-  width: 12px;
-  height: auto;
-  color: ${(p) => p.theme.color.text02};
+export const CaratDownIcon = styled(Icon)`
+  --leo-icon-size: 22px;
+  color: ${(p) => leo.color.icon.default};
 `
 
 export const PresetRow = styled.div`
@@ -206,21 +210,21 @@ export const Input = styled.input<Partial<StyleProps>>`
   width: 100%;
   outline: none;
   background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.isV2 ? leo.color.container.highlight : p.theme.color.background02};
   box-shadow: none;
   border: none;
   font-family: Poppins;
-  font-size: ${(p) => p.componentType === 'toAddress' ? '14px' : '20px'};
-  line-height: ${(p) => p.componentType === 'exchange' ? '0px' : '30px'};
+  font-size: ${(p) => p.componentType === 'toAddress' ? '14px' : p.isV2 ? '28px' : '20px'};
+  line-height: ${(p) => p.componentType === 'exchange' ? '0px' : p.isV2 ? '40px' : '30px'};
   letter-spacing: 0.02em;
-  font-weight: ${(p) => p.componentType === 'toAddress' ? '400' : '600'};
+  font-weight: ${(p) => p.componentType === 'toAddress' ? '400' : p.isV2 ? '500' : '600'};
   padding: 0px;
   margin: ${(p) => p.componentType === 'exchange' ? '0px' : '4px 0px'};
-  color: ${(p) => p.hasError ? p.theme.color.errorText : p.componentType === 'toAddress' ? p.theme.color.text02 : p.theme.color.text01};
+  color: ${(p) => p.hasError ? p.theme.color.errorText : p.componentType === 'toAddress' ? p.theme.color.text02 : p.isV2 ? leo.color.text.primary : p.theme.color.text01};
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   ::placeholder {
-    color: ${(p) => p.theme.color.text02};
+    color: ${(p) => p.isV2 ? leo.color.text.tertiary : p.theme.color.text02};
   }
   :focus {
       outline: none;

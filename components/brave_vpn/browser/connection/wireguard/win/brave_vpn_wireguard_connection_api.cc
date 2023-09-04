@@ -5,14 +5,21 @@
 
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_connection_api.h"
 
-#include "base/check_is_test.h"
-#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
-#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
-#include "brave/components/brave_vpn/common/pref_names.h"
-#include "components/prefs/pref_service.h"
-#include "net/base/network_change_notifier.h"
+#include <memory>
+#include <tuple>
+
+#include "brave/components/brave_vpn/browser/connection/wireguard/brave_vpn_wireguard_connection_api_base.h"
+#include "brave/components/brave_vpn/common/win/utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
+#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
 
 namespace brave_vpn {
+
+namespace {
+constexpr char kCloudflareIPv4[] = "1.1.1.1";
+// Timer to recheck the service launch after some time.
+constexpr int kWireguardServiceRestartTimeoutSec = 5;
+}  // namespace
 
 using ConnectionState = mojom::ConnectionState;
 
@@ -21,124 +28,105 @@ std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNWireguardConnectionAPI(
     PrefService* local_prefs,
     version_info::Channel channel) {
   return std::make_unique<BraveVPNWireguardConnectionAPI>(url_loader_factory,
-                                                          local_prefs, channel);
+                                                          local_prefs);
 }
 
-// TODO(spylogsster): Implement wireguard connection using Wireguard service.
 BraveVPNWireguardConnectionAPI::BraveVPNWireguardConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    version_info::Channel channel)
-    : local_prefs_(local_prefs),
-      url_loader_factory_(url_loader_factory),
-      region_data_manager_(url_loader_factory_, local_prefs_) {
-  DCHECK(url_loader_factory_ && local_prefs_);
-  // Safe to use Unretained here because |region_data_manager_| is owned
-  // instance.
-  region_data_manager_.set_selected_region_changed_callback(base::BindRepeating(
-      &BraveVPNWireguardConnectionAPI::NotifySelectedRegionChanged,
-      base::Unretained(this)));
-  region_data_manager_.set_region_data_ready_callback(base::BindRepeating(
-      &BraveVPNWireguardConnectionAPI::NotifyRegionDataReady,
-      base::Unretained(this)));
-  net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
-}
+    PrefService* local_prefs)
+    : BraveVPNWireguardConnectionAPIBase(url_loader_factory, local_prefs) {}
 
 BraveVPNWireguardConnectionAPI::~BraveVPNWireguardConnectionAPI() {}
 
-std::string BraveVPNWireguardConnectionAPI::GetCurrentEnvironment() const {
-  return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
-}
-
-void BraveVPNWireguardConnectionAPI::OnNetworkChanged(
-    net::NetworkChangeNotifier::ConnectionType type) {
-  VLOG(1) << __func__ << " : " << type;
-  CheckConnection();
-}
-
-BraveVpnAPIRequest* BraveVPNWireguardConnectionAPI::GetAPIRequest() {
-  if (!url_loader_factory_) {
-    CHECK_IS_TEST();
-    return nullptr;
-  }
-
-  if (!api_request_) {
-    api_request_ = std::make_unique<BraveVpnAPIRequest>(url_loader_factory_);
-  }
-
-  return api_request_.get();
-}
-
-void BraveVPNWireguardConnectionAPI::UpdateAndNotifyConnectionStateChange(
-    ConnectionState state) {
-  // this is a simple state machine for handling connection state
-  if (connection_state_ == state) {
+void BraveVPNWireguardConnectionAPI::Disconnect() {
+  if (GetConnectionState() == ConnectionState::DISCONNECTED) {
+    VLOG(2) << __func__ << " : already disconnected";
     return;
   }
+  VLOG(2) << __func__ << " : Start stopping the service";
+  UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
 
-  connection_state_ = state;
-  for (auto& obs : observers_) {
-    obs.OnConnectionStateChanged(connection_state_);
+  brave_vpn::wireguard::DisableBraveVpnWireguardService(
+      base::BindOnce(&BraveVPNWireguardConnectionAPI::OnDisconnected,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void BraveVPNWireguardConnectionAPI::CheckConnection() {
+  auto state = IsWindowsServiceRunning(
+                   brave_vpn::GetBraveVpnWireguardTunnelServiceName())
+                   ? ConnectionState::CONNECTED
+                   : ConnectionState::DISCONNECTED;
+  UpdateAndNotifyConnectionStateChange(state);
+}
+
+void BraveVPNWireguardConnectionAPI::RequestNewProfileCredentials() {
+  brave_vpn::wireguard::WireguardGenerateKeypair(base::BindOnce(
+      &BraveVPNWireguardConnectionAPI::OnWireguardKeypairGenerated,
+      weak_factory_.GetWeakPtr()));
+}
+
+void BraveVPNWireguardConnectionAPI::PlatformConnectImpl(
+    const wireguard::WireguardProfileCredentials& credentials) {
+  auto vpn_server_hostname = GetHostname();
+  auto config = brave_vpn::wireguard::CreateWireguardConfig(
+      credentials.client_private_key, credentials.server_public_key,
+      vpn_server_hostname, credentials.mapped_ip4_address, kCloudflareIPv4);
+  if (!config.has_value()) {
+    VLOG(1) << __func__ << " : failed to get correct credentials";
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    return;
+  }
+  brave_vpn::wireguard::EnableBraveVpnWireguardService(
+      config.value(),
+      base::BindOnce(
+          &BraveVPNWireguardConnectionAPI::OnWireguardServiceLaunched,
+          weak_factory_.GetWeakPtr()));
+}
+
+void BraveVPNWireguardConnectionAPI::OnServiceStopped(int mask) {
+  // Postpone check because the service can be restarted by the system due to
+  // configured failure actions.
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&BraveVPNWireguardConnectionAPI::CheckConnection,
+                     weak_factory_.GetWeakPtr()),
+      base::Seconds(kWireguardServiceRestartTimeoutSec));
+  ResetServiceWatcher();
+}
+
+void BraveVPNWireguardConnectionAPI::RunServiceWatcher() {
+  if (service_watcher_ && service_watcher_->IsWatching()) {
+    return;
+  }
+  service_watcher_.reset(new brave::ServiceWatcher());
+  if (!service_watcher_->Subscribe(
+          brave_vpn::GetBraveVpnWireguardTunnelServiceName(),
+          SERVICE_NOTIFY_STOPPED,
+          base::BindRepeating(&BraveVPNWireguardConnectionAPI::OnServiceStopped,
+                              weak_factory_.GetWeakPtr()))) {
+    VLOG(1) << "Unable to set service watcher";
   }
 }
 
-mojom::ConnectionState BraveVPNWireguardConnectionAPI::GetConnectionState()
-    const {
-  return connection_state_;
-}
-
-void BraveVPNWireguardConnectionAPI::ResetConnectionState() {}
-
-void BraveVPNWireguardConnectionAPI::RemoveVPNConnection() {}
-
-void BraveVPNWireguardConnectionAPI::Connect() {}
-
-void BraveVPNWireguardConnectionAPI::Disconnect() {}
-
-void BraveVPNWireguardConnectionAPI::ToggleConnection() {}
-
-void BraveVPNWireguardConnectionAPI::CheckConnection() {}
-
-void BraveVPNWireguardConnectionAPI::ResetConnectionInfo() {}
-
-std::string BraveVPNWireguardConnectionAPI::GetHostname() const {
-  return std::string();
-}
-
-void BraveVPNWireguardConnectionAPI::AddObserver(Observer* observer) {
-  observers_.AddObserver(observer);
-}
-
-void BraveVPNWireguardConnectionAPI::RemoveObserver(Observer* observer) {
-  observers_.RemoveObserver(observer);
-}
-
-void BraveVPNWireguardConnectionAPI::SetConnectionState(
-    mojom::ConnectionState state) {}
-
-std::string BraveVPNWireguardConnectionAPI::GetLastConnectionError() const {
-  return std::string();
-}
-
-BraveVPNRegionDataManager&
-BraveVPNWireguardConnectionAPI::GetRegionDataManager() {
-  return region_data_manager_;
-}
-
-void BraveVPNWireguardConnectionAPI::SetSelectedRegion(
-    const std::string& name) {}
-
-void BraveVPNWireguardConnectionAPI::NotifyRegionDataReady(bool ready) const {
-  for (auto& obs : observers_) {
-    obs.OnRegionDataReady(ready);
+void BraveVPNWireguardConnectionAPI::ResetServiceWatcher() {
+  if (service_watcher_) {
+    service_watcher_.reset();
   }
 }
 
-void BraveVPNWireguardConnectionAPI::NotifySelectedRegionChanged(
-    const std::string& name) const {
-  for (auto& obs : observers_) {
-    obs.OnSelectedRegionChanged(name);
+void BraveVPNWireguardConnectionAPI::OnWireguardServiceLaunched(bool success) {
+  UpdateAndNotifyConnectionStateChange(
+      success ? ConnectionState::CONNECTED : ConnectionState::CONNECT_FAILED);
+}
+
+void BraveVPNWireguardConnectionAPI::OnConnectionStateChanged(
+    mojom::ConnectionState state) {
+  BraveVPNWireguardConnectionAPIBase::OnConnectionStateChanged(state);
+  if (state == ConnectionState::CONNECTED) {
+    RunServiceWatcher();
+    return;
   }
+  ResetServiceWatcher();
 }
 
 }  // namespace brave_vpn

@@ -3,8 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { UserAccountType, WalletAccountType } from '../../../constants/types'
-import { SearchBar, SelectAccount } from '../../shared'
+import { BraveWallet } from '../../../constants/types'
+import { SearchBar } from '../../shared/search-bar/index'
+import { SelectAccount } from '../../shared/select-account/index'
 import Header from '../../buy-send-swap/select-header'
 import { getLocale } from '../../../../common/locale'
 // Styled Components
@@ -14,9 +15,9 @@ import {
 } from '../shared-styles'
 
 export interface Props {
-  accounts: WalletAccountType[]
-  selectedAccount?: UserAccountType
-  onSelectAccount: (account: UserAccountType) => () => void
+  accounts: BraveWallet.AccountInfo[]
+  selectedAccount?: BraveWallet.AccountInfo
+  onSelectAccount: (account: BraveWallet.AccountInfo) => void
   onAddAccount?: () => void
   hasAddButton?: boolean
   onBack?: () => void
@@ -31,7 +32,8 @@ export function SelectAccountWithHeader (props: Props) {
     onAddAccount,
     hasAddButton
   } = props
-  const [filteredAccountList, setFilteredAccountList] = React.useState<WalletAccountType[]>(accounts)
+  const [filteredAccountList, setFilteredAccountList] =
+    React.useState<BraveWallet.AccountInfo[]>(accounts)
 
   const filterAccountList = (event: any) => {
     const search = event.target.value

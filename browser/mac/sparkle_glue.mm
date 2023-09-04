@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #import "brave/browser/mac/sparkle_glue.h"
 
@@ -8,11 +9,10 @@
 #include <sys/mount.h>
 #include <sys/stat.h>
 
+#include "base/apple/bundle_locations.h"
 #include "base/command_line.h"
-#include "base/mac/bundle_locations.h"
 #include "base/mac/foundation_util.h"
 #import "base/mac/scoped_nsautorelease_pool.h"
-#import "base/mac/scoped_nsobject.h"
 #include "base/memory/ref_counted.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/system/sys_info.h"
@@ -23,6 +23,10 @@
 #include "brave/components/constants/brave_switches.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_constants.h"
+
+#if !defined(__has_feature) || !__has_feature(objc_arc)
+#error "This file requires ARC support."
+#endif
 
 namespace {
 
@@ -44,69 +48,23 @@ std::string GetDescriptionFromAppcastItem(id item) {
       [NSString stringWithFormat:@"AppcastItem(Date: %@, Version: %@)",
           [item performSelector:@selector(dateString)],
           GetVersionFromAppcastItem(item)];
-  return [description UTF8String];
+  return base::SysNSStringToUTF8(description);
 }
-
-// Adaptor for scheduling an Objective-C method call in TaskScheduler.
-class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
- public:
-
-  // Call |sel| on |target| with |arg| in a WorkerPool thread.
-  // |target| and |arg| are retained, |arg| may be |nil|.
-  static void PostPerform(id target, SEL sel, id arg) {
-    DCHECK(target);
-    DCHECK(sel);
-
-    scoped_refptr<PerformBridge> op = new PerformBridge(target, sel, arg);
-    base::ThreadPool::PostTask(
-        FROM_HERE,
-        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-         base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
-        base::BindOnce(&PerformBridge::Run, std::move(op)));
-  }
-
-  // Convenience for the no-argument case.
-  static void PostPerform(id target, SEL sel) {
-    PostPerform(target, sel, nil);
-  }
-
- private:
-  // Allow RefCountedThreadSafe<> to delete.
-  friend class base::RefCountedThreadSafe<PerformBridge>;
-
-  PerformBridge(id target, SEL sel, id arg)
-      : target_([target retain]),
-        sel_(sel),
-        arg_([arg retain]) {
-  }
-
-  ~PerformBridge() {}
-
-  // Happens on a WorkerPool thread.
-  void Run() {
-    base::mac::ScopedNSAutoreleasePool pool;
-    [target_ performSelector:sel_ withObject:arg_];
-  }
-
-  base::scoped_nsobject<id> target_;
-  SEL sel_;
-  base::scoped_nsobject<id> arg_;
-};
 
 }  // namespace
 
 @implementation SparkleGlue
 {
-  SUUpdater* su_updater_;
+  SUUpdater* __strong _su_updater;
 
-  BOOL registered_;
-  BOOL updateSuccessfullyInstalled_;
+  BOOL _registered;
+  BOOL _updateSuccessfullyInstalled;
 
-  NSString* appPath_;
-  NSString* new_version_;
+  NSString* __strong _appPath;
+  NSString* __strong _new_version;
 
   // The most recent kAutoupdateStatusNotification notification posted.
-  base::scoped_nsobject<NSNotification> recentNotification_;
+  NSNotification* __strong _recentNotification;
 }
 
 #pragma mark - SparkleGlue
@@ -122,7 +80,6 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
     [shared loadParameters];
     if (![shared loadSparkleFramework]) {
       VLOG(0) << "brave update: Failed to load sparkle framework";
-      [shared release];
       shared = nil;
     }
   }
@@ -131,42 +88,36 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 
 - (instancetype)init {
   if (self = [super init]) {
-    registered_ = false;
-    su_updater_ = nil;
+    _registered = false;
+    _su_updater = nil;
     return self;
   } else {
     return nil;
   }
 }
 
-- (void)dealloc {
-  [appPath_ release];
-  [new_version_ release];
-
-  [super dealloc];
-}
-
 - (BOOL)loadSparkleFramework {
-  if (!appPath_)
+  if (!_appPath) {
     return NO;
+  }
 
   if ([self isOnReadOnlyFilesystem])
     return NO;
 
-  DCHECK(!su_updater_);
+  DCHECK(!_su_updater);
 
   NSString* sparkle_path =
-      [[base::mac::FrameworkBundle() privateFrameworksPath]
+      [[base::apple::FrameworkBundle() privateFrameworksPath]
           stringByAppendingPathComponent:@"Sparkle.framework"];
   DCHECK(sparkle_path);
 
   NSBundle* sparkle_bundle = [NSBundle bundleWithPath:sparkle_path];
   [sparkle_bundle load];
 
-  registered_ = false;
+  _registered = false;
 
   Class sparkle_class = [sparkle_bundle classNamed:@"SUUpdater"];
-  su_updater_ = [sparkle_class sharedUpdater];
+  _su_updater = [sparkle_class sharedUpdater];
 
   return YES;
 }
@@ -174,39 +125,41 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 - (void)registerWithSparkle {
   // This can be called by BraveBrowserMainPartsMac::PreMainMessageLoopStart()
   // again when browser is relaunched.
-  if (registered_)
+  if (_registered) {
     return;
+  }
 
   DCHECK(brave::UpdateEnabled());
-  DCHECK(su_updater_);
+  DCHECK(_su_updater);
 
   [self updateStatus:kAutoupdateRegistering version:nil error:nil];
 
-  registered_ = true;
+  _registered = true;
 
-  [su_updater_ setDelegate:self];
+  [_su_updater setDelegate:self];
 
   // Background update check interval.
   constexpr NSTimeInterval kBraveUpdateCheckIntervalInSec = 3 * 60 * 60;
-  [su_updater_ setUpdateCheckInterval:kBraveUpdateCheckIntervalInSec];
+  [_su_updater setUpdateCheckInterval:kBraveUpdateCheckIntervalInSec];
 
-  [su_updater_ setAutomaticallyDownloadsUpdates:YES];
+  [_su_updater setAutomaticallyDownloadsUpdates:YES];
 
   // We only want to perform automatic update checks if we have write
   // access to the installation directory. Such access can be checked
   // with SUSystemUpdateInfo:systemAllowsAutomaticUpdatesForHost.
-  // The following makes su_updater_ call this method for us because
+  // The following makes _su_updater call this method for us because
   // we setAutomaticallyDownloadUpdates:YES above.
-  if ([su_updater_ automaticallyDownloadsUpdates])
-    [su_updater_ setAutomaticallyChecksForUpdates:YES];
+  if ([_su_updater automaticallyDownloadsUpdates]) {
+    [_su_updater setAutomaticallyChecksForUpdates:YES];
+  }
   [self updateStatus:kAutoupdateRegistered version:nil error:nil];
 }
 
 - (NSString*)appInfoPlistPath {
   // NSBundle ought to have a way to access this path directly, but it
   // doesn't.
-  return [[appPath_ stringByAppendingPathComponent:@"Contents"]
-             stringByAppendingPathComponent:@"Info.plist"];
+  return [[_appPath stringByAppendingPathComponent:@"Contents"]
+      stringByAppendingPathComponent:@"Info.plist"];
 }
 
 // Returns the version of the currently-installed application on disk.
@@ -215,8 +168,9 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
   // We don't know currently installed version from property list because
   // sparkle updates it when relaunching.
   // So, caching version when new candidate is found and use it.
-  if (updateSuccessfullyInstalled_)
-    return new_version_;
+  if (_updateSuccessfullyInstalled) {
+    return _new_version;
+  }
 
   NSString* appInfoPlistPath = [self appInfoPlistPath];
   NSDictionary* infoPlist =
@@ -226,7 +180,7 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 }
 
 - (void)checkForUpdates {
-  DCHECK(registered_);
+  DCHECK(_registered);
 
   if ([self asyncOperationPending]) {
     // Update check already in process; return without doing anything.
@@ -235,44 +189,43 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 
   [self updateStatus:kAutoupdateChecking version:nil error:nil];
 
-  [su_updater_ checkForUpdatesInBackgroundWithoutUi];
+  [_su_updater checkForUpdatesInBackgroundWithoutUi];
 }
 
 - (void)relaunch {
-  [su_updater_.driver installWithToolAndRelaunch:YES
+  [_su_updater.driver installWithToolAndRelaunch:YES
                          displayingUserInterface:NO];
 }
 
 - (void)checkForUpdatesInBackground {
-  DCHECK(registered_);
-  [su_updater_ checkForUpdatesInBackgroundWithoutUi];
+  DCHECK(_registered);
+  [_su_updater checkForUpdatesInBackgroundWithoutUi];
 }
 
 - (void)updateStatus:(AutoupdateStatus)status
              version:(NSString*)version
                error:(NSString*)error {
-  NSNumber* statusNumber = [NSNumber numberWithInt:status];
   NSMutableDictionary* dictionary =
-      [NSMutableDictionary dictionaryWithObject:statusNumber
+      [NSMutableDictionary dictionaryWithObject:@(status)
                                          forKey:kAutoupdateStatusStatus];
-  if ([version length]) {
-    [dictionary setObject:version forKey:kAutoupdateStatusVersion];
+  if (version.length) {
+    dictionary[kAutoupdateStatusVersion] = version;
   }
-  if ([error length]) {
-    [dictionary setObject:error forKey:kAutoupdateStatusErrorMessages];
+  if (error.length) {
+    dictionary[kAutoupdateStatusErrorMessages] = error;
   }
 
   NSNotification* notification =
       [NSNotification notificationWithName:kAutoupdateStatusNotification
                                     object:self
                                   userInfo:dictionary];
-  recentNotification_.reset([notification retain]);
+  _recentNotification = notification;
 
-  [[NSNotificationCenter defaultCenter] postNotification:notification];
+  [NSNotificationCenter.defaultCenter postNotification:notification];
 }
 
 - (BOOL)isOnReadOnlyFilesystem {
-  const char* appPathC = [appPath_ fileSystemRepresentation];
+  const char* appPathC = _appPath.fileSystemRepresentation;
   struct statfs statfsBuf;
 
   if (statfs(appPathC, &statfsBuf) != 0) {
@@ -285,25 +238,25 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 }
 
 - (void)loadParameters {
-  NSBundle* appBundle = base::mac::OuterBundle();
-  NSString* appPath = [appBundle bundlePath];
+  NSBundle* appBundle = base::apple::OuterBundle();
+  NSString* appPath = appBundle.bundlePath;
   if (!appPath) {
     // If parameters required for sparkle are missing, don't use it.
     return;
   }
 
-  appPath_ = [appPath retain];
+  _appPath = [appPath copy];
 }
 
 - (AutoupdateStatus)recentStatus {
-  NSDictionary* dictionary = [recentNotification_ userInfo];
+  NSDictionary* dictionary = _recentNotification.userInfo;
   NSNumber* status = base::mac::ObjCCastStrict<NSNumber>(
       [dictionary objectForKey:kAutoupdateStatusStatus]);
-  return static_cast<AutoupdateStatus>([status intValue]);
+  return static_cast<AutoupdateStatus>(status.intValue);
 }
 
 - (NSNotification*)recentNotification {
-  return [[recentNotification_ retain] autorelease];
+  return _recentNotification;
 }
 
 - (BOOL)asyncOperationPending {
@@ -314,14 +267,19 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 }
 
 - (void)determineUpdateStatusAsync {
-  DCHECK([NSThread isMainThread]);
+  DCHECK(NSThread.isMainThread);
 
-  PerformBridge::PostPerform(self, @selector(determineUpdateStatus));
+  base::ThreadPool::PostTask(FROM_HERE,
+                             {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+                              base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
+                             base::BindOnce(^{
+                               [self determineUpdateStatus];
+                             }));
 }
 
 // Runs on a thread managed by WorkerPool.
 - (void)determineUpdateStatus {
-  DCHECK(![NSThread isMainThread]);
+  DCHECK(!NSThread.isMainThread);
 
   NSString* version = [self currentlyInstalledVersion];
 
@@ -331,16 +289,15 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 }
 
 - (void)determineUpdateStatusForVersion:(NSString*)version {
-  DCHECK([NSThread isMainThread]);
+  DCHECK(NSThread.isMainThread);
 
   AutoupdateStatus status;
-  if (updateSuccessfullyInstalled_) {
+  if (_updateSuccessfullyInstalled) {
     // If an update was successfully installed and this object saw it happen,
     // then don't even bother comparing versions.
     status = kAutoupdateInstalled;
   } else {
-    NSString* currentVersion =
-        [NSString stringWithUTF8String:chrome::kChromeVersion];
+    NSString* currentVersion = base::SysUTF8ToNSString(chrome::kChromeVersion);
     if (!version) {
       // If the version on disk could not be determined, assume that
       // whatever's running is current.
@@ -351,7 +308,7 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
     } else {
       // If the version on disk doesn't match what's currently running, an
       // update must have been applied in the background, without this app's
-      // direct participation.  Leave updateSuccessfullyInstalled_ alone
+      // direct participation.  Leave _updateSuccessfullyInstalled alone
       // because there's no direct knowledge of what actually happened.
       status = kAutoupdateInstalled;
     }
@@ -374,7 +331,7 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 
   // Caching update candidate version.
   // See the comments of |currentlyInstalledVersion|.
-  new_version_ = [GetVersionFromAppcastItem(item) retain];
+  _new_version = GetVersionFromAppcastItem(item);
 
   [self updateStatus:kAutoupdateAvailable
              version:GetVersionFromAppcastItem(item)
@@ -401,8 +358,8 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
     failedToDownloadUpdate:(id)item
                      error:(NSError *)error {
   VLOG(0) << "brave update: failed to download update with " +
-             GetDescriptionFromAppcastItem(item) +
-             " with error - " + [[error description] UTF8String];
+                 GetDescriptionFromAppcastItem(item) + " with error - " +
+                 base::SysNSStringToUTF8([error description]);
   [self updateStatus:kAutoupdateInstallFailed
              version:nil
                error:[error localizedDescription]];
@@ -429,7 +386,7 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
   VLOG(0) << "brave update: will install update on quit with " +
              GetDescriptionFromAppcastItem(item);
 
-  updateSuccessfullyInstalled_ = YES;
+  _updateSuccessfullyInstalled = YES;
 
   [self determineUpdateStatusAsync];
 }

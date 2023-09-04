@@ -8,7 +8,16 @@
 
 class IPFSDOMHandler;
 
-#define BRAVE_COMPONENT_UPDATER_SERVICE_H_ friend class ::IPFSDOMHandler;
+namespace chrome {
+namespace android {
+class BraveComponentUpdaterAndroid;
+}
+}  // namespace chrome
+
+#define BRAVE_COMPONENT_UPDATER_SERVICE_H_ \
+  friend class ::IPFSDOMHandler;           \
+  friend class ::chrome::android::BraveComponentUpdaterAndroid;
+
 #define BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER \
  private:                                                   \
   friend void BraveOnDemandUpdate(const std::string&);      \

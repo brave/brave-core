@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/url_data_source.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"

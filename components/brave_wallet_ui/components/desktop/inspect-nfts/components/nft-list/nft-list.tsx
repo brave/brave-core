@@ -19,12 +19,18 @@ export const NftList = () => {
   // hooks
   const { pinnableNftsCount, nonFungibleTokens } = useNftPin()
 
+  const heading = React.useMemo(() => {
+    return getLocale(
+      pinnableNftsCount === 1
+        ? 'braveWalletNftPinningInspectHeading'
+        : 'braveWalletNftPinningInspectHeadingPlural'
+    ).replace('$1', `${pinnableNftsCount}`)
+  }, [pinnableNftsCount])
+
   return (
     <NftListWrapper>
       <NftCountHeading>
-        {getLocale('braveWalletNftPinningInspectHeading')
-          .replace('$1', `${pinnableNftsCount}`)
-          .replace('$2', `${nonFungibleTokens.length}`)}
+        {heading}
       </NftCountHeading>
       <List>
         {nonFungibleTokens.map(({ canBePinned, token }) => (

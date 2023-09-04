@@ -44,7 +44,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:fontFamily="@font/poppins_600"
+                    android:fontFamily="sans-serif-medium"
                     android:text="@string/you_are_done"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -86,7 +86,7 @@
                     android:textAllCaps="false"
                     android:drawableTint="@android:color/white"
                     android:focusable="true"
-                    android:fontFamily="@font/poppins_600"
+                    android:fontFamily="sans-serif-medium"
                     android:text="@string/connect_account"
                     android:textColor="@android:color/white" />
 
@@ -101,7 +101,7 @@
                     android:focusable="true"
                     android:textAllCaps="false"
                     android:text="@string/i_will_do_it_later"
-                    android:fontFamily="@font/poppins_600"
+                    android:fontFamily="sans-serif-medium"
                     android:textColor="@color/rewards_panel_secondary_text_color" />
 
               </LinearLayout>

@@ -8,13 +8,17 @@
 
 #include <memory>
 
-#include "base/memory/singleton.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
 class ChromeBrowserState;
 class KeyedService;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace web {
 class BrowserState;
@@ -35,7 +39,7 @@ class JsonRpcServiceFactory : public BrowserStateKeyedServiceFactory {
   static JsonRpcServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<JsonRpcServiceFactory>;
+  friend base::NoDestructor<JsonRpcServiceFactory>;
 
   JsonRpcServiceFactory();
   ~JsonRpcServiceFactory() override;

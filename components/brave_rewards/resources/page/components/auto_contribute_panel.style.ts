@@ -7,9 +7,7 @@ import styled from 'styled-components'
 
 import * as mixins from '../../shared/lib/css_mixins'
 
-export const root = styled.div`
-  --settings-panel-title-color: #A43CE4;
-`
+export const root = styled.div``
 
 export const description = styled.div`
   color: var(--brave-palette-neutral600);

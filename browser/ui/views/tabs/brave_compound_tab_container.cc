@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/tabs/brave_compound_tab_container.h"
 
+#include <algorithm>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -17,12 +18,67 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/views/controls/scroll_view.h"
+#include "ui/views/controls/scrollbar/overlay_scroll_bar.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/view_utils.h"
 
+namespace {
+class ContentsView : public views::View {
+ public:
+  explicit ContentsView(BraveCompoundTabContainer* container)
+      : container_(container) {
+    SetLayoutManager(std::make_unique<views::FillLayout>());
+  }
+  ~ContentsView() override = default;
+
+  // views::View:
+  void ChildPreferredSizeChanged(views::View* child) override {
+    // Bypass ScrollView and notify the BraveCompoundTabContainer directly.
+    container_->ChildPreferredSizeChanged(child);
+  }
+
+  base::raw_ptr<BraveCompoundTabContainer> container_;
+};
+
+// A custom scroll view to avoid bugs from upstream
+// At the moment,
+//  * ScrollRectToVisible() doesn't work well, so disable layer and make it
+//    easier to manipulate offset.
+//  * When disabling ScrollWithLayers, OnScrollEvent cause DCHECK failure.
+//  * Even when scrollbar is kHiddenButEnabled, the width for contents view is
+//  cut off.
+//    In order to avoid that, attach overlay scroll bar which doesn't take
+//    space.
+class CustomScrollView : public views::ScrollView {
+ public:
+  METADATA_HEADER(CustomScrollView);
+
+  CustomScrollView()
+      : views::ScrollView(views::ScrollView::ScrollWithLayers::kDisabled) {
+    SetDrawOverflowIndicator(false);
+    SetVerticalScrollBarMode(
+        views::ScrollView::ScrollBarMode::kHiddenButEnabled);
+    SetHorizontalScrollBarMode(views::ScrollView::ScrollBarMode::kDisabled);
+    SetVerticalScrollBar(
+        std::make_unique<views::OverlayScrollBar>(/* horizontal= */ false));
+  }
+  ~CustomScrollView() override = default;
+
+  // views::ScrollView:
+  void OnScrollEvent(ui::ScrollEvent* event) override {
+    // DO NOTHING to avoid crash when layer is disabled.
+  }
+};
+
+BEGIN_METADATA(CustomScrollView, views::ScrollView)
+END_METADATA
+
+}  // namespace
+
 BraveCompoundTabContainer::BraveCompoundTabContainer(
-    raw_ref<TabContainerController> controller,
+    TabContainerController& controller,
     TabHoverCardController* hover_card_controller,
     TabDragContextBase* drag_context,
     TabSlotController& tab_slot_controller,
@@ -54,7 +110,13 @@ void BraveCompoundTabContainer::SetAvailableWidthCallback(
   unpinned_tab_container_->SetAvailableWidthCallback(base::NullCallback());
 }
 
-BraveCompoundTabContainer::~BraveCompoundTabContainer() = default;
+BraveCompoundTabContainer::~BraveCompoundTabContainer() {
+  if (scroll_view_) {
+    // Remove scroll view and set this as the parent of
+    // |unpinned_tab_container_| so that clean up can be done by upstream code.
+    SetScrollEnabled(false);
+  }
+}
 
 base::OnceClosure BraveCompoundTabContainer::LockLayout() {
   std::vector<base::OnceClosure> closures;
@@ -71,6 +133,29 @@ base::OnceClosure BraveCompoundTabContainer::LockLayout() {
                                [](auto& closure) { std::move(closure).Run(); });
       },
       std::move(closures));
+}
+
+void BraveCompoundTabContainer::SetScrollEnabled(bool enabled) {
+  DCHECK(base::FeatureList::IsEnabled(
+      tabs::features::kBraveVerticalTabsStickyPinnedTabs));
+  if (enabled == !!scroll_view_) {
+    return;
+  }
+
+  if (enabled) {
+    scroll_view_ = AddChildView(std::make_unique<CustomScrollView>());
+    auto* contents_view =
+        scroll_view_->SetContents(std::make_unique<ContentsView>(this));
+    contents_view->AddChildView(base::to_address(unpinned_tab_container_));
+    Layout();
+  } else {
+    unpinned_tab_container_->parent()->RemoveChildView(
+        base::to_address(unpinned_tab_container_));
+    AddChildView(base::to_address(unpinned_tab_container_));
+
+    RemoveChildViewT(scroll_view_.get());
+    scroll_view_ = nullptr;
+  }
 }
 
 void BraveCompoundTabContainer::TransferTabBetweenContainers(
@@ -122,8 +207,37 @@ void BraveCompoundTabContainer::Layout() {
     return;
   }
 
-  // We use flex layout manager so let it do its job.
-  views::View::Layout();
+  if (!base::FeatureList::IsEnabled(
+          tabs::features::kBraveVerticalTabsStickyPinnedTabs)) {
+    // We use flex layout manager so let it do its job.
+    views::View::Layout();
+    return;
+  }
+
+  const auto contents_bounds = GetContentsBounds();
+
+  // Pinned container gets however much space it wants.
+  pinned_tab_container_->SetBoundsRect(
+      gfx::Rect(gfx::Size(contents_bounds.width(),
+                          pinned_tab_container_->GetPreferredSize().height())));
+
+  // Unpinned container gets the left over.
+  if (scroll_view_) {
+    auto bounds = gfx::Rect(
+        contents_bounds.x(), pinned_tab_container_->bounds().bottom(), width(),
+        contents_bounds.height() - pinned_tab_container_->height());
+    scroll_view_->SetBoundsRect(bounds);
+    if (scroll_view_->GetMaxHeight() != bounds.height()) {
+      scroll_view_->ClipHeightTo(0, scroll_view_->height());
+    }
+
+    UpdateUnpinnedContainerSize();
+  } else {
+    unpinned_tab_container_->SetBoundsRect(
+        gfx::Rect(contents_bounds.x(), pinned_tab_container_->bounds().bottom(),
+                  contents_bounds.width(),
+                  contents_bounds.height() - pinned_tab_container_->height()));
+  }
 }
 
 gfx::Size BraveCompoundTabContainer::CalculatePreferredSize() const {
@@ -131,8 +245,12 @@ gfx::Size BraveCompoundTabContainer::CalculatePreferredSize() const {
     return CompoundTabContainer::CalculatePreferredSize();
   }
 
-  // We use flex layout manager so let it do its job.
-  auto preferred_size = views::View::CalculatePreferredSize();
+  const auto sticky_pinned_tabs_enabled = base::FeatureList::IsEnabled(
+      tabs::features::kBraveVerticalTabsStickyPinnedTabs);
+
+  auto preferred_size = sticky_pinned_tabs_enabled
+                            ? CompoundTabContainer::CalculatePreferredSize()
+                            : views::View::CalculatePreferredSize();
 
   // Check if we can expand height to fill the entire scroll area's viewport.
   for (auto* parent_view = parent(); parent_view;
@@ -142,8 +260,13 @@ gfx::Size BraveCompoundTabContainer::CalculatePreferredSize() const {
     if (!region_view) {
       continue;
     }
-    preferred_size.set_height(std::max(
-        region_view->GetScrollViewViewportHeight(), preferred_size.height()));
+
+    if (sticky_pinned_tabs_enabled) {
+      preferred_size.set_height(region_view->GetTabStripViewportHeight());
+    } else {
+      preferred_size.set_height(std::max(
+          region_view->GetTabStripViewportHeight(), preferred_size.height()));
+    }
     break;
   }
 
@@ -153,6 +276,11 @@ gfx::Size BraveCompoundTabContainer::CalculatePreferredSize() const {
 gfx::Size BraveCompoundTabContainer::GetMinimumSize() const {
   if (!ShouldShowVerticalTabs()) {
     return CompoundTabContainer::GetMinimumSize();
+  }
+
+  if (base::FeatureList::IsEnabled(
+          tabs::features::kBraveVerticalTabsStickyPinnedTabs)) {
+    return {};
   }
 
   // We use flex layout manager so let it do its job.
@@ -172,12 +300,12 @@ views::SizeBounds BraveCompoundTabContainer::GetAvailableSize(
 Tab* BraveCompoundTabContainer::AddTab(std::unique_ptr<Tab> tab,
                                        int model_index,
                                        TabPinned pinned) {
-  auto* result =
+  auto* new_tab =
       CompoundTabContainer::AddTab(std::move(tab), model_index, pinned);
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
       !tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
-    return result;
+    return new_tab;
   }
 
   if (pinned == TabPinned::kPinned && !pinned_tab_container_->GetVisible()) {
@@ -185,7 +313,12 @@ Tab* BraveCompoundTabContainer::AddTab(std::unique_ptr<Tab> tab,
     // could be hidden initially by the FlexLayout.
     pinned_tab_container_->SetVisible(true);
   }
-  return result;
+
+  if (scroll_view_ && pinned == TabPinned::kUnpinned && new_tab->IsActive()) {
+    ScrollTabToBeVisible(model_index);
+  }
+
+  return new_tab;
 }
 
 int BraveCompoundTabContainer::GetUnpinnedContainerIdealLeadingX() const {
@@ -224,21 +357,67 @@ void BraveCompoundTabContainer::OnThemeChanged() {
   }
 }
 
+void BraveCompoundTabContainer::PaintChildren(const views::PaintInfo& info) {
+  if (ShouldShowVerticalTabs() &&
+      base::FeatureList::IsEnabled(
+          tabs::features::kBraveVerticalTabsStickyPinnedTabs)) {
+    // Bypass CompoundTabContainer::PaintChildren() implementation.
+    // CompoundTabContainer calls children's View::Paint() even when they have
+    // their own layer, which shouldn't happen.
+    views::View::PaintChildren(info);
+  } else {
+    CompoundTabContainer::PaintChildren(info);
+  }
+}
+
+void BraveCompoundTabContainer::ChildPreferredSizeChanged(views::View* child) {
+  if (ShouldShowVerticalTabs() && scroll_view_ &&
+      child->Contains(base::to_address(unpinned_tab_container_))) {
+    UpdateUnpinnedContainerSize();
+  }
+
+  CompoundTabContainer::ChildPreferredSizeChanged(child);
+}
+
+void BraveCompoundTabContainer::SetActiveTab(
+    absl::optional<size_t> prev_active_index,
+    absl::optional<size_t> new_active_index) {
+  CompoundTabContainer::SetActiveTab(prev_active_index, new_active_index);
+  if (new_active_index.has_value()) {
+    ScrollTabToBeVisible(*new_active_index);
+  }
+}
+
 TabContainer* BraveCompoundTabContainer::GetTabContainerAt(
     gfx::Point point_in_local_coords) const {
   if (!ShouldShowVerticalTabs()) {
     return CompoundTabContainer::GetTabContainerAt(point_in_local_coords);
   }
 
-  return point_in_local_coords.y() < pinned_tab_container_->bounds().bottom()
-             ? base::to_address(pinned_tab_container_)
-             : base::to_address(unpinned_tab_container_);
+  auto* container =
+      point_in_local_coords.y() < pinned_tab_container_->bounds().bottom()
+          ? base::to_address(pinned_tab_container_)
+          : base::to_address(unpinned_tab_container_);
+
+  if (!container->GetWidget()) {
+    // Note that this could be happen when we're detaching tabs and we're still
+    // changing view hierarchy.
+    return nullptr;
+  }
+
+  return container;
 }
 
 gfx::Rect BraveCompoundTabContainer::ConvertUnpinnedContainerIdealBoundsToLocal(
     gfx::Rect ideal_bounds) const {
   if (!ShouldShowVerticalTabs()) {
     return CompoundTabContainer::ConvertUnpinnedContainerIdealBoundsToLocal(
+        ideal_bounds);
+  }
+
+  if (scroll_view_) {
+    return views::View::ConvertRectToTarget(
+        /*source=*/base::to_address(unpinned_tab_container_), /*target=*/this,
         ideal_bounds);
   }
 
@@ -250,6 +429,57 @@ bool BraveCompoundTabContainer::ShouldShowVerticalTabs() const {
   return base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
          tabs::utils::ShouldShowVerticalTabs(
              tab_slot_controller_->GetBrowser());
+}
+
+void BraveCompoundTabContainer::UpdateUnpinnedContainerSize() {
+  DCHECK(scroll_view_);
+
+  auto preferred_size = unpinned_tab_container_->GetPreferredSize();
+  preferred_size.set_width(scroll_view_->width());
+  preferred_size.set_height(
+      std::max(scroll_view_->height(), preferred_size.height()));
+  if (scroll_view_->contents()->height() != preferred_size.height()) {
+    scroll_view_->contents()->SetSize(preferred_size);
+  }
+}
+
+void BraveCompoundTabContainer::ScrollTabToBeVisible(int model_index) {
+  if (!scroll_view_) {
+    return;
+  }
+
+  auto* tab = GetTabAtModelIndex(model_index);
+  if (tab->data().pinned) {
+    return;
+  }
+
+  DCHECK(scroll_view_->contents()->Contains(tab));
+
+  gfx::RectF tab_bounds_in_contents_view(tab->GetLocalBounds());
+  views::View::ConvertRectToTarget(tab, scroll_view_->contents(),
+                                   &tab_bounds_in_contents_view);
+
+  const auto visible_rect = scroll_view_->GetVisibleRect();
+  if (visible_rect.Contains(gfx::Rect(0, tab_bounds_in_contents_view.y(),
+                                      1 /*in order to ignore width */,
+                                      tab_bounds_in_contents_view.height()))) {
+    return;
+  }
+
+  // Unfortunately, ScrollView's API doesn't work well for us. So we manually
+  // adjust scroll offset. Note that we change contents view's position as
+  // we disabled layered scroll view.
+  if (visible_rect.CenterPoint().y() >=
+      tab_bounds_in_contents_view.CenterPoint().y()) {
+    scroll_view_->contents()->SetPosition(
+        {0, -static_cast<int>(tab_bounds_in_contents_view.y())});
+  } else {
+    scroll_view_->contents()->SetPosition(
+        {0, std::min(0, scroll_view_->height() -
+                            static_cast<int>(
+                                tab_bounds_in_contents_view.bottom() +
+                                tabs::kMarginForVerticalTabContainers))});
+  }
 }
 
 BEGIN_METADATA(BraveCompoundTabContainer, CompoundTabContainer)

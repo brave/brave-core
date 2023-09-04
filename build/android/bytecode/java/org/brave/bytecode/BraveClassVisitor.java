@@ -17,7 +17,6 @@ import static org.objectweb.asm.Opcodes.NEW;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -444,6 +443,7 @@ class BraveClassVisitor extends ClassVisitor {
 
         if (shouldMakeProtectedField(name)) {
             System.out.println("make " + name + " public in " + mName);
+            access &= ~ACC_FINAL;
             access &= ~ACC_PRIVATE;
             access |= ACC_PROTECTED;
         }

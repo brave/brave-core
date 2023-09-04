@@ -102,9 +102,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
                               profile_data[0].force_default_name);
   // Rest are generated
   for (auto& profile : profile_data) {
-    Profile* created_profile = profiles::testing::CreateProfileSync(
-        profile_manager, profile.profile_path);
-    EXPECT_TRUE(created_profile);
+    profiles::testing::CreateProfileSync(profile_manager, profile.profile_path);
     ProfileAttributesEntry* entry =
         storage.GetProfileAttributesWithPath(profile.profile_path);
     ASSERT_NE(entry, nullptr);

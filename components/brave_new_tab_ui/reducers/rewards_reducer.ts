@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -11,11 +12,6 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
   const payload = action.payload
 
   switch (action.type) {
-    case types.ON_ADS_ENABLED:
-      state = { ...state }
-      state.rewardsState.enabledAds = payload.enabled
-      break
-
     case types.ON_ADS_ACCOUNT_STATEMENT:
       state = { ...state }
       state.rewardsState.adsAccountStatement = payload.adsAccountStatement
@@ -86,11 +82,10 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         rewardsState: {
           ...state.rewardsState,
           rewardsEnabled: preInitialRewardsDataPayload.rewardsEnabled,
+          isGrandfatheredUser: preInitialRewardsDataPayload.isGrandfatheredUser,
           userType: preInitialRewardsDataPayload.userType,
           isUnsupportedRegion: preInitialRewardsDataPayload.isUnsupportedRegion,
           declaredCountry: preInitialRewardsDataPayload.declaredCountry,
-          enabledAds: preInitialRewardsDataPayload.enabledAds,
-          adsSupported: preInitialRewardsDataPayload.adsSupported,
           needsBrowserUpgradeToServeAds: preInitialRewardsDataPayload.needsBrowserUpgradeToServeAds
         }
       }
@@ -126,8 +121,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         ...state,
         rewardsState: {
           ...state.rewardsState,
-          rewardsEnabled: false,
-          enabledAds: false
+          rewardsEnabled: false
         }
       }
       break

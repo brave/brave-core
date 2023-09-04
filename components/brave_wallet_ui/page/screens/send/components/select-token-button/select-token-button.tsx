@@ -4,12 +4,16 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Assets
 import CaratDownIcon from '../../assets/carat-down-icon.svg'
 
 // Types
-import { BraveWallet, SendOptionTypes } from '../../../../../constants/types'
+import {
+  BraveWallet,
+  SendPageTabHashes
+} from '../../../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../../../common/locale'
@@ -21,9 +25,11 @@ import { useGetNetworkQuery } from '../../../../../common/slices/api.slice'
 
 // Components
 import {
-  withPlaceholderIcon,
-  CreateNetworkIcon
-} from '../../../../../components/shared'
+  withPlaceholderIcon //
+} from '../../../../../components/shared/create-placeholder-icon/index'
+import {
+  CreateNetworkIcon //
+} from '../../../../../components/shared/create-network-icon/index'
 import { NftIcon } from '../../../../../components/shared/nft-icon/nft-icon'
 
 // Styled Components
@@ -40,26 +46,22 @@ import { Row } from '../../shared.styles'
 interface Props {
   onClick: () => void
   token: BraveWallet.BlockchainToken | undefined
-  selectedSendOption: SendOptionTypes
+  selectedSendOption: SendPageTabHashes
 }
+
+const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 0 } as const
+const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
+const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
 export const SelectTokenButton = (props: Props) => {
   const { onClick, token, selectedSendOption } = props
 
   // Queries
-  const { data: tokensNetwork } = useGetNetworkQuery(token, { skip: !token })
+  const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
 
   // Memos
-  const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(token?.isErc721 ? NftIcon : AssetIcon, {
-      size: 'big',
-      marginLeft: 0,
-      marginRight: 0
-    })
-  }, [token?.isErc721])
-
   const buttonText = React.useMemo(() => {
-    if (selectedSendOption === 'nft') {
+    if (selectedSendOption === SendPageTabHashes.nft) {
       const id = token?.tokenId ? `#${new Amount(token?.tokenId).toNumber()}` : ''
       return token !== undefined ? `${token.name} ${id}` : getLocale('braveWalletSelectNFT')
     }
@@ -67,25 +69,41 @@ export const SelectTokenButton = (props: Props) => {
   }, [selectedSendOption, token])
 
   return (
-    <Button onClick={onClick} morePadding={token !== undefined} isNFT={selectedSendOption === 'nft'}>
+    <Button
+      onClick={onClick}
+      morePadding={token !== undefined}
+      isNFT={selectedSendOption === SendPageTabHashes.nft}
+    >
       <Row>
         {token && (
-          <IconsWrapper marginRight={selectedSendOption === 'nft' ? 12 : undefined}>
-            <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
-            {
-              tokensNetwork &&
-              checkIfTokenNeedsNetworkIcon(tokensNetwork, token.contractAddress) &&
-              <NetworkIconWrapper>
-                <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
-              </NetworkIconWrapper>
+          <IconsWrapper
+            marginRight={
+              selectedSendOption === SendPageTabHashes.nft
+                ? 12
+                : undefined
             }
+          >
+            {token.isNft || token.isErc721 ? (
+              <NftIconWithPlaceholder asset={token} network={tokensNetwork} />
+            ) : (
+              <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
+            )}
+            {tokensNetwork &&
+              checkIfTokenNeedsNetworkIcon(
+                tokensNetwork,
+                token.contractAddress
+              ) && (
+                <NetworkIconWrapper>
+                  <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
+                </NetworkIconWrapper>
+              )}
           </IconsWrapper>
         )}
         <ButtonText
           isBold={token !== undefined}
           textColor={token !== undefined ? 'text01' : 'text03'}
           textSize={token !== undefined ? '18px' : '16px'}
-          isNFT={selectedSendOption === 'nft'}
+          isNFT={selectedSendOption === SendPageTabHashes.nft}
           textAlign='left'
         >
           {buttonText}

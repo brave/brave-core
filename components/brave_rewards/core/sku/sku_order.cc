@@ -8,7 +8,7 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/sku/sku_order.h"
 #include "brave/components/brave_rewards/core/sku/sku_util.h"
 
@@ -19,8 +19,8 @@ using std::placeholders::_3;
 namespace brave_rewards::internal {
 namespace sku {
 
-SKUOrder::SKUOrder(LedgerImpl& ledger)
-    : ledger_(ledger), payment_server_(ledger) {}
+SKUOrder::SKUOrder(RewardsEngineImpl& engine)
+    : engine_(engine), payment_server_(engine) {}
 
 SKUOrder::~SKUOrder() = default;
 
@@ -28,7 +28,7 @@ void SKUOrder::Create(const std::vector<mojom::SKUOrderItem>& items,
                       SKUOrderCallback callback) {
   if (items.empty()) {
     BLOG(0, "List is empty");
-    callback(mojom::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::FAILED, "");
     return;
   }
 
@@ -40,28 +40,28 @@ void SKUOrder::Create(const std::vector<mojom::SKUOrderItem>& items,
 void SKUOrder::OnCreate(const mojom::Result result,
                         mojom::SKUOrderPtr order,
                         SKUOrderCallback callback) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Order response could not be parsed");
-    callback(mojom::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::FAILED, "");
     return;
   }
 
   auto save_callback =
       std::bind(&SKUOrder::OnCreateSave, this, _1, order->order_id, callback);
 
-  ledger_->database()->SaveSKUOrder(order->Clone(), save_callback);
+  engine_->database()->SaveSKUOrder(order->Clone(), save_callback);
 }
 
 void SKUOrder::OnCreateSave(const mojom::Result result,
                             const std::string& order_id,
                             SKUOrderCallback callback) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Order couldn't be saved");
     callback(result, "");
     return;
   }
 
-  callback(mojom::Result::LEDGER_OK, order_id);
+  callback(mojom::Result::OK, order_id);
 }
 
 }  // namespace sku

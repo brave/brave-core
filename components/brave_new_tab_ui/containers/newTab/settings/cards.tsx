@@ -26,7 +26,7 @@ import {
 import braveTalkBanner from './assets/brave-talk.png'
 import rewardsBanner from './assets/braverewards.png'
 import HideIcon from './assets/hide-icon'
-import { Toggle } from '../../../components/toggle'
+import Toggle from '@brave/leo/react/toggle'
 import { PlusIcon } from 'brave-ui/components/icons'
 
 import { getLocale } from '../../../../common/locale'
@@ -124,7 +124,7 @@ class CardsSettings extends React.PureComponent<Props, {}> {
             </ToggleCardsText>
             <ToggleCardsSwitch>
               <Toggle
-                size={'large'}
+                size='small'
                 onChange={toggleCards.bind(this, cardsHidden)}
                 checked={!cardsHidden}
               />

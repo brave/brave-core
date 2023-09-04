@@ -25,10 +25,20 @@ interface Props {
 
 export const NftsEmptyState = ({ onImportNft }: Props) => (
   <StyledWrapper>
-    <EmptyStateImage src={window.matchMedia('(prefers-color-scheme: dark)').matches ? EmptyStateGraphicDark : EmptyStateGraphicLight} />
+    <EmptyStateImage
+      src={
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? EmptyStateGraphicDark
+          : EmptyStateGraphicLight
+      }
+    />
     <Heading>{getLocale('braveNftsTabEmptyStateHeading')}</Heading>
     <SubHeading>{getLocale('braveNftsTabEmptyStateSubHeading')}</SubHeading>
-    <ImportButton onClick={onImportNft}>{getLocale('braveNftsTabImportNft')}</ImportButton>
-    <DisclaimerText>{getLocale('braveNftsTabEmptyStateDisclaimer')}</DisclaimerText>
+    <ImportButton onClick={onImportNft}>
+      {getLocale('braveNftsTabImportNft')}
+    </ImportButton>
+    <DisclaimerText>
+      {getLocale('braveNftsTabEmptyStateDisclaimer')}
+    </DisclaimerText>
   </StyledWrapper>
 )

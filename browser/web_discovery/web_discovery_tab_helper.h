@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_WEB_DISCOVERY_WEB_DISCOVERY_TAB_HELPER_H_
 #define BRAVE_BROWSER_WEB_DISCOVERY_WEB_DISCOVERY_TAB_HELPER_H_
 
+#include "base/gtest_prod_util.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 

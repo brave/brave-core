@@ -38,7 +38,7 @@ struct CreativeAdInfo {
   base::Time end_at;
   int daily_cap = 0;
   int priority = 0;
-  double ptr = 0.0;
+  double pass_through_rate = 0.0;
   bool has_conversion = false;
   int per_day = 0;
   int per_week = 0;

@@ -286,8 +286,7 @@ void AdblockDOMHandler::HandleViewSubscriptionSource(
 #else
   auto* browser =
       chrome::FindBrowserWithWebContents(web_ui()->GetWebContents());
-  NavigateParams params(GetSingletonTabNavigateParams(browser, file_url));
-  ShowSingletonTabOverwritingNTP(browser, &params);
+  ShowSingletonTabOverwritingNTP(browser, file_url);
 #endif
 }
 

@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/ad_event_history.h"
+#include "brave/components/brave_ads/core/public/ads/ad_event/ad_event_history.h"
 
-#include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -22,9 +22,9 @@ constexpr char kID2[] = "5b2f108c-e176-4a3e-8e7c-fe67fb3db518";
 
 class BraveAdsAdEventHistoryTest : public UnitTestBase {
  protected:
-  void RecordAdEvent(const std::string& id,
-                     const AdType& ad_type,
-                     const ConfirmationType& confirmation_type) {
+  void RecordAdEventForTesting(const std::string& id,
+                               const AdType& ad_type,
+                               const ConfirmationType& confirmation_type) {
     ad_event_history_.RecordForId(id, ad_type.ToString(),
                                   confirmation_type.ToString(), Now());
   }
@@ -41,7 +41,8 @@ class BraveAdsAdEventHistoryTest : public UnitTestBase {
 
 TEST_F(BraveAdsAdEventHistoryTest, RecordAdEventForNewType) {
   // Arrange
-  RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
+  RecordAdEventForTesting(kID1, AdType::kNotificationAd,
+                          ConfirmationType::kViewed);
 
   // Act
   const std::vector<base::Time> history =
@@ -54,8 +55,10 @@ TEST_F(BraveAdsAdEventHistoryTest, RecordAdEventForNewType) {
 
 TEST_F(BraveAdsAdEventHistoryTest, RecordAdEventForExistingType) {
   // Arrange
-  RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
-  RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
+  RecordAdEventForTesting(kID1, AdType::kNotificationAd,
+                          ConfirmationType::kViewed);
+  RecordAdEventForTesting(kID1, AdType::kNotificationAd,
+                          ConfirmationType::kViewed);
 
   // Act
   const std::vector<base::Time> history =
@@ -68,8 +71,10 @@ TEST_F(BraveAdsAdEventHistoryTest, RecordAdEventForExistingType) {
 
 TEST_F(BraveAdsAdEventHistoryTest, RecordAdEventForMultipleIds) {
   // Arrange
-  RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
-  RecordAdEvent(kID2, AdType::kNotificationAd, ConfirmationType::kViewed);
+  RecordAdEventForTesting(kID1, AdType::kNotificationAd,
+                          ConfirmationType::kViewed);
+  RecordAdEventForTesting(kID2, AdType::kNotificationAd,
+                          ConfirmationType::kViewed);
 
   // Act
   const std::vector<base::Time> history =
@@ -82,8 +87,10 @@ TEST_F(BraveAdsAdEventHistoryTest, RecordAdEventForMultipleIds) {
 
 TEST_F(BraveAdsAdEventHistoryTest, RecordAdEventForMultipleTypes) {
   // Arrange
-  RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
-  RecordAdEvent(kID1, AdType::kNewTabPageAd, ConfirmationType::kClicked);
+  RecordAdEventForTesting(kID1, AdType::kNotificationAd,
+                          ConfirmationType::kViewed);
+  RecordAdEventForTesting(kID1, AdType::kNewTabPageAd,
+                          ConfirmationType::kClicked);
 
   // Act
   const std::vector<base::Time> history =
@@ -96,11 +103,13 @@ TEST_F(BraveAdsAdEventHistoryTest, RecordAdEventForMultipleTypes) {
 
 TEST_F(BraveAdsAdEventHistoryTest, PurgeHistoryOlderThan) {
   // Arrange
-  RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
+  RecordAdEventForTesting(kID1, AdType::kNotificationAd,
+                          ConfirmationType::kViewed);
 
   AdvanceClockBy(base::Days(1) + base::Milliseconds(1));
 
-  RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
+  RecordAdEventForTesting(kID1, AdType::kNotificationAd,
+                          ConfirmationType::kViewed);
 
   // Act
   const std::vector<base::Time> history =

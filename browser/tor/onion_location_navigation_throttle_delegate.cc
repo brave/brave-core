@@ -17,8 +17,7 @@ namespace tor {
 
 namespace {
 
-void OnTorProfileCreated(GURL onion_location, Profile* profile) {
-  Browser* browser = chrome::FindTabbedBrowser(profile, false);
+void OnTorProfileCreated(GURL onion_location, Browser* browser) {
   if (!browser)
     return;
   content::OpenURLParams open_tor(onion_location, content::Referrer(),

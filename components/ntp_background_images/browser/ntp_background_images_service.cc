@@ -18,8 +18,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
-#include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_component_installer.h"
@@ -32,6 +30,11 @@
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+
+#if !BUILDFLAG(IS_IOS)
+#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/brave_referrals/common/pref_names.h"
+#endif
 
 using brave_component_updater::BraveOnDemandUpdater;
 
@@ -196,6 +199,9 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
 }
 
 void NTPBackgroundImagesService::CheckSuperReferralComponent() {
+#if BUILDFLAG(IS_IOS)
+  MarkThisInstallIsNotSuperReferralForever();
+#else
   const auto& value =
       local_pref_->GetDict(prefs::kNewTabPageCachedSuperReferralComponentInfo);
   // If we have valid cached SR component info, it means this install is valid
@@ -275,19 +281,23 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
   DVLOG(2) << __func__ << ": This has invalid component info.";
   DVLOG(2) << __func__ << ": In this case, this install is campaign ended super"
                        << " referral, default referral or non super referral.";
+#endif  // BUILDFLAG(IS_IOS)
 }
 
 void NTPBackgroundImagesService::MonitorReferralPromoCodeChange() {
+#if !BUILDFLAG(IS_IOS)
   DVLOG(2) << __func__ << ": Monitor referral promo code change";
 
   pref_change_registrar_.Init(local_pref_);
   pref_change_registrar_.Add(kReferralPromoCode,
       base::BindRepeating(&NTPBackgroundImagesService::OnPreferenceChanged,
       base::Unretained(this)));
+#endif
 }
 
 void NTPBackgroundImagesService::OnPreferenceChanged(
   const std::string& pref_name) {
+#if !BUILDFLAG(IS_IOS)
   DCHECK_EQ(kReferralPromoCode, pref_name);
   const std::string new_referral_code = GetReferralPromoCode();
   DVLOG(2) << __func__ << ": Got referral promo code: "
@@ -303,6 +313,7 @@ void NTPBackgroundImagesService::OnPreferenceChanged(
                        << " Let's check this code is super referral or not"
                        << " after downloading mapping table.";
   DownloadSuperReferralMappingTable();
+#endif
 }
 
 void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
@@ -558,7 +569,11 @@ void NTPBackgroundImagesService::UnRegisterSuperReferralComponent() {
 }
 
 std::string NTPBackgroundImagesService::GetReferralPromoCode() const {
+#if BUILDFLAG(IS_IOS)
+  return "";
+#else
   return local_pref_->GetString(kReferralPromoCode);
+#endif
 }
 
 bool NTPBackgroundImagesService::IsSuperReferral() const {

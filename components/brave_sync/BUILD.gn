@@ -37,7 +37,7 @@ static_library("crypto") {
   ]
 
   if (is_android) {
-    deps += [ "//third_party/android_sdk:cpu_features" ]
+    deps += [ "//third_party/cpu_features:ndk_compat" ]
   }
 }
 
@@ -118,7 +118,7 @@ static_library("sync_service_impl_helper") {
 
   deps = [
     "//base",
-    "//components/sync/driver",
+    "//components/sync/service",
     "//components/sync_device_info",
   ]
 }

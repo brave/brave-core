@@ -10,9 +10,12 @@
     <includes>
       <!-- DO NOT PUT RESOURCES FOR SPECIFIC COMPONENTS IN THIS FILE
            create a new grd file in components/component_name/resources/ -->
+
       <!-- Common resources -->
       <!-- TODO: Define only where needed, via webpack generated output, or use common chrome://resources DataSource -->
-      <include name="IDR_BRAVE_COMMON_TOOLBAR_IMG" file="../img/toolbar/menu_btn.svg" type="BINDATA" />
+      <if expr="not is_android">
+        <include name="IDR_BRAVE_COMMON_TOOLBAR_IMG" file="../img/toolbar/menu_btn.svg" type="BINDATA" />
+      </if>
 
       <!-- WebUI adblock resources -->
       <!-- TODO: move to brave_adblock_ui component -->
@@ -21,19 +24,25 @@
 
       <!-- WebUI webcompat reporter resources -->
       <!-- TODO: move to webcompat_reporter_ui component -->
-      <include name="IDR_WEBCOMPAT_REPORTER_HTML" file="../webcompat_reporter/ui/webcompat_reporter.html" type="BINDATA" />
+      <if expr="not is_android">
+        <include name="IDR_WEBCOMPAT_REPORTER_HTML" file="../webcompat_reporter/ui/webcompat_reporter.html" type="BINDATA" />
+      </if>
 
       <!-- WebUI welcome page resources -->
       <!-- TODO: move to brave_welcome_ui component -->
-      <include name="IDR_BRAVE_WELCOME_HTML" file="../brave_welcome_ui/brave_welcome.html" type="BINDATA" />
-      <include name="IDR_BRAVE_WELCOME_PAGE_FAVICON" file="../img/welcome/favicon.ico" type="BINDATA" />
+      <if expr="not is_android">
+        <include name="IDR_BRAVE_WELCOME_HTML" file="../brave_welcome_ui/brave_welcome.html" type="BINDATA" />
+        <include name="IDR_BRAVE_WELCOME_PAGE_FAVICON" file="../img/welcome/favicon.ico" type="BINDATA" />
+      </if>
 
       <!-- WebUI newtab resources -->
       <!-- TODO: move to brave_new_tab_ui component -->
-      <include name="IDR_BRAVE_NEW_TAB_HTML" file="../brave_new_tab_ui/brave_new_tab.html" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_IMG1" file="../img/newtab/bookmarks_btn.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_IMG4" file="../img/newtab/history_btn.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_IMG2" file="../img/newtab/settings_prefs_btn.svg" type="BINDATA" />
+      <if expr="not is_android">
+        <include name="IDR_BRAVE_NEW_TAB_HTML" file="../brave_new_tab_ui/brave_new_tab.html" type="BINDATA" />
+        <include name="IDR_BRAVE_NEW_TAB_IMG1" file="../img/newtab/bookmarks_btn.svg" type="BINDATA" />
+        <include name="IDR_BRAVE_NEW_TAB_IMG4" file="../img/newtab/history_btn.svg" type="BINDATA" />
+        <include name="IDR_BRAVE_NEW_TAB_IMG2" file="../img/newtab/settings_prefs_btn.svg" type="BINDATA" />
+      </if>
 
       <!-- WebUI wallet resources -->
       <if expr="not is_android">
@@ -45,9 +54,12 @@
         <include name="IDR_BRAVE_WALLET_TREZOR_BRIDGE_HTML" file="../brave_wallet_ui/trezor/trezor.html" type="BINDATA" />
       </if>
 
-      <!-- WebUI swap page resources for Android -->
+      <!-- WebUI swap, send, and deposit page resources for Android -->
       <if expr="is_android">
         <include name="IDR_BRAVE_WALLET_SWAP_PAGE_HTML" file="../brave_wallet_ui/page/screens/swap/android/swap.html" type="BINDATA" />
+        <include name="IDR_BRAVE_WALLET_SEND_PAGE_HTML" file="../brave_wallet_ui/page/screens/send/android/send.html" type="BINDATA" />
+        <include name="IDR_BRAVE_WALLET_DEPOSIT_PAGE_HTML" file="../brave_wallet_ui/page/screens/fund-wallet/android/deposit-funds.html" type="BINDATA" />
+        <include name="IDR_BRAVE_WALLET_FUND_WALLET_PAGE_HTML" file="../brave_wallet_ui/page/screens/android-buy/android/fund-wallet.html" type="BINDATA" />
       </if>
       <!-- WebUI vpn resources -->
       <if expr="not is_android">
@@ -63,29 +75,33 @@
 
       <!-- WebUI private new tab resources -->
       <!-- TODO: move to brave_new_tab_ui component -->
-      <include name="IDR_BRAVE_PRIVATE_TAB_IMG" file="../img/newtab/private-window.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_PRIVATE_TAB_TOR_IMG" file="../img/newtab/private-window-tor.svg" type="BINDATA" />
+      <if expr="not is_android">
+        <include name="IDR_BRAVE_PRIVATE_TAB_IMG" file="../img/newtab/private-window.svg" type="BINDATA" />
+        <include name="IDR_BRAVE_PRIVATE_TAB_TOR_IMG" file="../img/newtab/private-window-tor.svg" type="BINDATA" />
+      </if>
 
       <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />
-      <part file="../commands/browser/resources/commands_resources.grdp" />
       <part file="../playlist/browser/resources/playlist_resources.grdp" />
+      <part file="../brave_news/browser/resources/news_resources.grdp" />
       <part file="../skus/browser/resources/skus_internals_resources.grdp" />
-      <part file="brave_blank_page_resources.grdp" />
+      <if expr="not is_android">
+        <part file="brave_blank_page_resources.grdp" />
+      </if>
       <part file="brave_translate_resources.grdp" />
       <part file="speedreader_resources.grdp" />
       <part file="brave_flags_ui_resources.grdp" />
       <part file="ipfs_resources.grdp" />
       <part file="domain_block_resources.grdp" />
-      <if expr="not is_android">
-        <part file="request_otr_resources.grdp" />
-      </if>
+      <part file="request_otr_resources.grdp" />
       <if expr="not is_ios">
         <part file="decentralized_dns_resources.grdp" />
       </if>
-      <part file="brave_shields_resources.grdp" />
-      <part file="brave_private_new_tab_resources.grdp" />
+      <if expr="not is_android">
+        <part file="brave_shields_resources.grdp" />
+        <part file="brave_private_new_tab_resources.grdp" />
+        <part file="../ai_chat/resources/page/ai_chat_ui_resources.grdp" />
+      </if>
       <part file="brave_wallet_resources.grdp" />
-      <part file="ai_chat_ui_resources.grdp" />
     </includes>
   </release>
 </grit>

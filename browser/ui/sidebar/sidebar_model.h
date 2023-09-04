@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
@@ -84,6 +85,7 @@ class SidebarModel : public SidebarService::Observer,
   // Returns true if webcontents of item at |index| already loaded url.
   bool IsSidebarHasAllBuiltInItems() const;
   absl::optional<size_t> GetIndexOf(const SidebarItem& item) const;
+  absl::optional<size_t> GetIndexOf(SidebarItem::BuiltInItemType type) const;
 
   // Don't cache item list. list can be changed during the runtime.
   const std::vector<SidebarItem>& GetAllSidebarItems() const;

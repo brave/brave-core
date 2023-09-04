@@ -6,12 +6,16 @@
 #ifndef BRAVE_BROWSER_BRAVE_VPN_BRAVE_VPN_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_VPN_BRAVE_VPN_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "build/build_config.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 class Profile;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace brave_vpn {
 
@@ -30,7 +34,7 @@ class BraveVpnServiceFactory : public BrowserContextKeyedServiceFactory {
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
 
  private:
-  friend struct base::DefaultSingletonTraits<BraveVpnServiceFactory>;
+  friend base::NoDestructor<BraveVpnServiceFactory>;
 
   BraveVpnServiceFactory();
   ~BraveVpnServiceFactory() override;

@@ -12,7 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_search/browser/brave_search_fallback_host.h"
 #include "brave/components/brave_search/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -46,6 +46,8 @@ const char kAllowedDomain[] = "search.brave.com";
 const char kAllowedDomainDev[] = "search.brave.software";
 const char kNotAllowedDomain[] = "brave.com";
 const char kBraveSearchPath[] = "/bravesearch.html";
+const char kPageWithCookie[] = "/simple_page_with_cookie.html";
+const char kPageWithoutCookie[] = "/simple_page_without_cookie.html";
 const char kAdsStatusHeaderName[] = "X-Brave-Ads-Enabled";
 const char kAdsStatusHeaderValue[] = "1";
 const char kBackupSearchContent[] = "<html><body>results</body></html>";
@@ -67,17 +69,23 @@ const char kScriptDefaultAPIGetValue[] = R"(
 )";
 
 std::string GetChromeFetchBackupResultsAvailScript() {
-  return base::StringPrintf(R"(function waitForFunction() {
-        setTimeout(waitForFunction, 200);
-      }
-      navigator.serviceWorker.addEventListener('message', msg => {
-        if (msg.data && msg.data.result === 'INJECTED') {
-          window.domAutomationController.send(msg.data.response === '%s');
-        } else if (msg.data && msg.data.result === 'FAILED') {
-          window.domAutomationController.send(false);
-      }});
-      waitForFunction();)",
+  return base::StringPrintf(R"(
+      new Promise(resolve => {
+        setTimeout(function () {
+          navigator.serviceWorker.addEventListener('message', msg => {
+            if (msg.data && msg.data.result === 'INJECTED') {
+              resolve(msg.data.response === '%s');
+            } else if (msg.data && msg.data.result === 'FAILED') {
+              resolve(false);
+          }});
+        }, 200)
+      });
+    )",
                             kBackupSearchContent);
+}
+
+std::string GetCookieFromJS(content::RenderFrameHost* frame) {
+  return EvalJs(frame, "document.cookie;").ExtractString();
 }
 
 }  // namespace
@@ -139,13 +147,18 @@ class BraveSearchTest : public InProcessBrowserTest {
     auto path = url.path_piece();
 
     if (path == "/" || path == "/sw.js" || path == kBraveSearchPath ||
-        path == "/search_provider_opensearch.xml")
+        path == kPageWithCookie || path == kPageWithoutCookie ||
+        path == "/search_provider_opensearch.xml") {
       return nullptr;
+    }
 
     auto http_response =
         std::make_unique<net::test_server::BasicHttpResponse>();
     if (url.path() + "?" + url.query() ==
-        "/search?q=test&hl=en&gl=us&safe=active") {
+        "/search?q=test&start=10&hl=en&gl=us&safe=active") {
+      auto cookie_header_it =
+          request.headers.find(net::HttpRequestHeaders::kCookie);
+      fallback_sets_cookie_ = cookie_header_it != request.headers.end();
       http_response->set_code(net::HTTP_OK);
       http_response->set_content_type("text/html");
       http_response->set_content(kBackupSearchContent);
@@ -161,6 +174,8 @@ class BraveSearchTest : public InProcessBrowserTest {
     request_expectations_callback_ = std::move(callback);
   }
 
+  bool GetFallbackSetsCookie() { return fallback_sets_cookie_; }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
 
@@ -168,6 +183,7 @@ class BraveSearchTest : public InProcessBrowserTest {
   RequestExpectationsCallback request_expectations_callback_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
+  bool fallback_sets_cookie_ = true;
 };
 
 class BraveSearchTestDisabled : public BraveSearchTest {
@@ -195,8 +211,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunction) {
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
 
-  auto result_first = EvalJs(contents, GetChromeFetchBackupResultsAvailScript(),
-                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result_first =
+      EvalJs(contents, GetChromeFetchBackupResultsAvailScript());
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
@@ -207,8 +223,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunctionDev) {
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
 
-  auto result_first = EvalJs(contents, GetChromeFetchBackupResultsAvailScript(),
-                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result_first =
+      EvalJs(contents, GetChromeFetchBackupResultsAvailScript());
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
@@ -219,8 +235,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAnUndefinedFunction) {
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
 
-  auto result_first = EvalJs(contents, GetChromeFetchBackupResultsAvailScript(),
-                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result_first =
+      EvalJs(contents, GetChromeFetchBackupResultsAvailScript());
   EXPECT_EQ(base::Value(false), result_first.value);
 }
 
@@ -323,7 +339,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeader) {
       run_loop.QuitClosure()));
 
   PrefService* prefs = browser()->profile()->GetPrefs();
-  prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
+  prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
   const GURL url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -345,7 +361,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderAdsDisabled) {
       run_loop.QuitClosure()));
 
   PrefService* prefs = browser()->profile()->GetPrefs();
-  prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
+  prefs->SetBoolean(brave_rewards::prefs::kEnabled, false);
 
   const GURL url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -367,7 +383,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderNotAllowedDomain) {
       run_loop.QuitClosure()));
 
   PrefService* prefs = browser()->profile()->GetPrefs();
-  prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
+  prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
   const GURL url = https_server()->GetURL(kNotAllowedDomain, kBraveSearchPath);
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -377,7 +393,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderNotAllowedDomain) {
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderForFetchRequest) {
   PrefService* prefs = browser()->profile()->GetPrefs();
-  prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
+  prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
   GURL url = https_server()->GetURL(kAllowedDomain, "/");
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -407,7 +423,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderForFetchRequest) {
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, FetchRequestForNonBraveSearchTab) {
   PrefService* prefs = browser()->profile()->GetPrefs();
-  prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
+  prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
   GURL url = https_server()->GetURL(kNotAllowedDomain, "/");
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -447,10 +463,46 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderIncognitoBrowser) {
       run_loop.QuitClosure()));
 
   PrefService* prefs = browser()->profile()->GetPrefs();
-  prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
+  prefs->SetBoolean(brave_rewards::prefs::kEnabled, false);
 
   const GURL url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
   OpenURLOffTheRecord(browser()->profile(), url);
 
   run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckNoCookieForFallback) {
+  // Sets cookie for the search backup provider domain
+  GURL url_cookie = https_server()->GetURL("a.com", kPageWithCookie);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_cookie));
+  content::WebContents* contents_cookie =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  WaitForLoadStop(contents_cookie);
+  EXPECT_EQ("test_cookie=test",
+            GetCookieFromJS(contents_cookie->GetPrimaryMainFrame()));
+
+  // Checks that the search backup provider domain has the cookie
+  GURL url_no_cookie = https_server()->GetURL("a.com", kPageWithoutCookie);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_no_cookie));
+  content::WebContents* contents_no_cookie =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  WaitForLoadStop(contents_no_cookie);
+  EXPECT_EQ("test_cookie=test",
+            GetCookieFromJS(contents_no_cookie->GetPrimaryMainFrame()));
+
+  // Triggers search fallback for allowed domain and save whether it has cookie
+  // from HttpResponse
+  GURL url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  WaitForLoadStop(contents);
+
+  // Wait for the search fallback been executed
+  auto result_first =
+      EvalJs(contents, GetChromeFetchBackupResultsAvailScript());
+  EXPECT_EQ(base::Value(true), result_first.value);
+
+  // Check if the search fallback call has any cookie
+  ASSERT_FALSE(GetFallbackSetsCookie());
 }

@@ -17,6 +17,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/scripts/script_tracker.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/abseil-cpp/absl/types/variant.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
@@ -72,6 +73,7 @@ class LocalFrame;
 class Node;
 class CharacterData;
 class Element;
+class Document;
 class DocumentLoader;
 class ExceptionState;
 class ConsoleMessage;
@@ -207,6 +209,9 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
       blink::EventTarget* event_target,
       const String& event_type,
       blink::RegisteredEventListener* registered_listener);
+  void RegisterPageGraphJavaScriptUrl(blink::Document* document,
+                                      const KURL& url);
+
   // Console message tracking:
   void ConsoleMessageAdded(blink::ConsoleMessage* console_message);
   // *** CoreProbe handlers end ***
@@ -280,11 +285,16 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
     NodeExtensions* extensions_node;
   };
 
+  struct ProcessedJavascriptURL {
+    String script_code;
+    ScriptId parent_script_id = 0;
+  };
+
   NodeHTML* GetHTMLNode(const blink::DOMNodeId node_id) const;
-  NodeHTMLElement* GetHTMLElementNode(const blink::DOMNodeId node_id) const;
+  NodeHTMLElement* GetHTMLElementNode(
+      absl::variant<blink::DOMNodeId, blink::Node*> node_var);
   NodeHTMLText* GetHTMLTextNode(const blink::DOMNodeId node_id) const;
-  NodeHTMLElement* RegisterAndGetHTMLElementNode(blink::Node* node);
-  void RegisterCurrentlyConstructedNode(blink::Node* node);
+  bool RegisterCurrentlyConstructedNode(blink::Node* node);
 
   void RegisterDocumentNodeCreated(blink::Document* node);
   void RegisterHTMLTextNodeCreated(blink::CharacterData* node);
@@ -365,10 +375,6 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                  const ScriptId script_id,
                                  const ScriptData& script_data);
   void RegisterScriptCompilationFromAttr(
-      blink::ExecutionContext* execution_context,
-      const ScriptId script_id,
-      const ScriptData& script_data);
-  void RegisterScriptCompilationFromEval(
       blink::ExecutionContext* execution_context,
       const ScriptId script_id,
       const ScriptData& script_data);
@@ -459,6 +465,12 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   base::flat_map<blink::UntracedMember<blink::Node>, bool>
       currently_constructed_nodes_;
 
+  // Holds JavascriptURL parent script id to use during the script compilation
+  // event.
+  blink::HeapHashMap<blink::Member<ExecutionContext>,
+                     Vector<ProcessedJavascriptURL>>
+      processed_js_urls_;
+
   // Index structure for looking up HTML nodes.
   // This map does not own the references.
   HashMap<blink::DOMNodeId, NodeHTMLElement*> element_nodes_;
@@ -494,6 +506,8 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   NodeShield* tracker_shield_node_;
   NodeShield* js_shield_node_;
   NodeShield* fingerprinting_shield_node_;
+
+  String source_url_;
 
   NodeStorageRoot* storage_node_;
   NodeStorageCookieJar* cookie_jar_node_;

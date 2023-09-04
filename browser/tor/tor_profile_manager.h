@@ -19,7 +19,7 @@ class TorProfileManager : public BrowserListObserver, public ProfileObserver {
  public:
   static TorProfileManager& GetInstance();
   static void SwitchToTorProfile(Profile* original_profile,
-                                 base::OnceCallback<void(Profile*)> callback);
+                                 base::OnceCallback<void(Browser*)> callback);
   static void CloseTorProfileWindows(Profile* tor_profile);
   Profile* GetTorProfile(Profile* original_profile);
 

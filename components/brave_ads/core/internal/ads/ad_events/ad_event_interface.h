@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_AD_EVENT_INTERFACE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_AD_EVENT_INTERFACE_H_
 
+#include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
+
 namespace brave_ads {
 
 template <typename T>
@@ -13,7 +15,7 @@ class AdEventInterface {
  public:
   virtual ~AdEventInterface() = default;
 
-  virtual void FireEvent(const T&) = 0;
+  virtual void FireEvent(const T&, ResultCallback callback) = 0;
 };
 
 }  // namespace brave_ads

@@ -11,18 +11,27 @@
 
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
-#include "base/memory/singleton.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
 
 using brave_component_updater::DATFileDataBuffer;
 
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
+
 namespace brave_shields {
 
 // AdBlockFiltersProviderManager is both an AdBlockFiltersProvider and an
 // AdBlockFiltersProvider::Observer. It is used to observe multiple provider
 // sources and combine their filter lists into a single compound filter list.
+// Note that AdBlockFiltersProviderManager should technically not inherit from
+// AdBlockFiltersProvider since it manages multiple providers and is not a
+// filters provider itself. However, SourceProviderObserver needs it to be so
+// for now because AdBlockFiltersProviderManager cannot be used for combining
+// DAT files.
 class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
                                       public AdBlockFiltersProvider::Observer {
  public:
@@ -36,19 +45,30 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
       base::OnceCallback<void(bool deserialize,
                               const DATFileDataBuffer& dat_buf)>) override;
 
+  void LoadDATBufferForEngine(
+      bool is_for_default_engine,
+      base::OnceCallback<void(bool deserialize,
+                              const DATFileDataBuffer& dat_buf)> cb);
+
   // AdBlockFiltersProvider::Observer
   void OnChanged() override;
 
-  void AddProvider(AdBlockFiltersProvider* provider);
-  void RemoveProvider(AdBlockFiltersProvider* provider);
+  void AddProvider(AdBlockFiltersProvider* provider,
+                   bool is_for_default_engine);
+  void RemoveProvider(AdBlockFiltersProvider* provider,
+                      bool is_for_default_engine);
+
+  std::string GetNameForDebugging() override;
 
  private:
-  friend struct base::DefaultSingletonTraits<AdBlockFiltersProviderManager>;
+  friend base::NoDestructor<AdBlockFiltersProviderManager>;
 
   void FinishCombinating(
       base::OnceCallback<void(bool, const DATFileDataBuffer&)> cb,
       const std::vector<DATFileDataBuffer>& results);
-  base::flat_set<AdBlockFiltersProvider*> filters_providers_;
+
+  base::flat_set<AdBlockFiltersProvider*> default_engine_filters_providers_;
+  base::flat_set<AdBlockFiltersProvider*> additional_engine_filters_providers_;
 
   base::CancelableTaskTracker task_tracker_;
 

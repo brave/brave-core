@@ -5,43 +5,46 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog.h"
 
-#include <utility>
-
 #include "base/check.h"
-#include "base/functional/bind.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog_json_reader.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
-#include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
-#include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
-#include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
-#include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/public/feature/brave_ads_feature.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 
 namespace brave_ads {
 
 namespace {
 
-constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
+bool DoesRequireResourceForNewTabPageAds() {
+  return UserHasOptedInToNewTabPageAds() &&
+         (UserHasJoinedBraveRewards() ||
+          ShouldAlwaysTriggerNewTabPageAdEvents());
+}
 
-constexpr base::TimeDelta kDebugCatalogPing = base::Minutes(15);
+bool DoesRequireResource() {
+  return UserHasOptedInToBraveNewsAds() ||
+         DoesRequireResourceForNewTabPageAds() ||
+         UserHasOptedInToNotificationAds();
+}
 
 }  // namespace
 
 Catalog::Catalog() {
+  AdsClientHelper::AddObserver(this);
   DatabaseManager::GetInstance().AddObserver(this);
 }
 
 Catalog::~Catalog() {
+  AdsClientHelper::RemoveObserver(this);
   DatabaseManager::GetInstance().RemoveObserver(this);
 }
 
@@ -55,108 +58,40 @@ void Catalog::RemoveObserver(CatalogObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void Catalog::MaybeFetch() {
-  if (is_fetching_ || retry_timer_.IsRunning()) {
-    return;
-  }
-
-  Fetch();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
-void Catalog::Fetch() {
-  CHECK(!is_fetching_);
-
-  BLOG(1, "FetchCatalog " << BuildCatalogUrlPath());
-
-  is_fetching_ = true;
-
-  CatalogUrlRequestBuilder url_request_builder;
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-  BLOG(6, UrlRequestToString(url_request));
-  BLOG(7, UrlRequestHeadersToString(url_request));
-
-  AdsClientHelper::GetInstance()->UrlRequest(
-      std::move(url_request),
-      base::BindOnce(&Catalog::FetchCallback, weak_factory_.GetWeakPtr()));
+void Catalog::Initialize() {
+  MaybeRequireCatalog();
+  MaybeFetchCatalog();
 }
 
-void Catalog::FetchCallback(const mojom::UrlResponseInfo& url_response) {
-  BLOG(1, "OnFetchCatalog");
-
-  BLOG(7, UrlResponseToString(url_response));
-  BLOG(7, UrlResponseHeadersToString(url_response));
-
-  is_fetching_ = false;
-
-  if (url_response.status_code == net::HTTP_NOT_MODIFIED) {
-    BLOG(1, "Catalog is up to date");
-    return FetchAfterDelay();
-  }
-
-  if (url_response.status_code != net::HTTP_OK) {
-    BLOG(1, "Failed to fetch catalog");
-    NotifyFailedToUpdateCatalog();
-    return Retry();
-  }
-
-  BLOG(1, "Successfully fetched catalog");
-
-  BLOG(1, "Parsing catalog");
-  const absl::optional<CatalogInfo> catalog =
-      json::reader::ReadCatalog(url_response.body);
-  if (!catalog) {
-    BLOG(1, "Failed to parse catalog");
-    NotifyFailedToUpdateCatalog();
-    return Retry();
-  }
-
-  if (catalog->version != kCatalogVersion) {
-    BLOG(1, "Catalog version mismatch");
-    NotifyFailedToUpdateCatalog();
-    return Retry();
-  }
-
-  SetCatalogLastUpdated(base::Time::Now());
-
-  if (!HasCatalogChanged(catalog->id)) {
-    BLOG(1, "Catalog id " << catalog->id << " is up to date");
-    return FetchAfterDelay();
-  }
-
-  SaveCatalog(*catalog);
-  NotifyDidUpdateCatalog(*catalog);
-  FetchAfterDelay();
+void Catalog::MaybeRequireCatalog() {
+  DoesRequireResource() ? InitializeCatalogUrlRequest()
+                        : ShutdownCatalogUrlRequest();
 }
 
-void Catalog::FetchAfterDelay() {
-  retry_timer_.Stop();
-
-  const base::TimeDelta delay =
-      ShouldDebug() ? kDebugCatalogPing : GetCatalogPing();
-
-  const base::Time fetch_at = timer_.StartWithPrivacy(
-      FROM_HERE, delay,
-      base::BindOnce(&Catalog::Fetch, weak_factory_.GetWeakPtr()));
-
-  BLOG(1, "Fetch catalog " << FriendlyDateAndTime(fetch_at,
-                                                  /*use_sentence_style*/ true));
+void Catalog::InitializeCatalogUrlRequest() {
+  if (!catalog_url_request_) {
+    BLOG(1, "Initialize catalog URL request");
+    catalog_url_request_ = std::make_unique<CatalogUrlRequest>();
+    catalog_url_request_->SetDelegate(this);
+  }
 }
 
-void Catalog::Retry() {
-  const base::Time retry_at = retry_timer_.StartWithPrivacy(
-      FROM_HERE, kRetryAfter,
-      base::BindOnce(&Catalog::RetryCallback, weak_factory_.GetWeakPtr()));
+void Catalog::ShutdownCatalogUrlRequest() {
+  if (catalog_url_request_) {
+    catalog_url_request_.reset();
+    BLOG(1, "Shutdown catalog URL request");
 
-  BLOG(1, "Retry fetching catalog "
-              << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
+    ResetCatalog();
+    BLOG(1, "Reset catalog");
+  }
 }
 
-void Catalog::RetryCallback() {
-  BLOG(1, "Retry fetching catalog");
-
-  Fetch();
+void Catalog::MaybeFetchCatalog() const {
+  if (catalog_url_request_) {
+    catalog_url_request_->PeriodicallyFetch();
+  }
 }
 
 void Catalog::NotifyDidUpdateCatalog(const CatalogInfo& catalog) const {
@@ -169,6 +104,38 @@ void Catalog::NotifyFailedToUpdateCatalog() const {
   for (CatalogObserver& observer : observers_) {
     observer.OnFailedToUpdateCatalog();
   }
+}
+
+void Catalog::OnNotifyDidInitializeAds() {
+  Initialize();
+}
+
+void Catalog::OnNotifyPrefDidChange(const std::string& path) {
+  if (path == brave_rewards::prefs::kEnabled ||
+      path == prefs::kOptedInToNotificationAds ||
+      path == brave_news::prefs::kBraveNewsOptedIn ||
+      path == brave_news::prefs::kNewTabPageShowToday ||
+      path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
+      path == ntp_background_images::prefs::
+                  kNewTabPageShowSponsoredImagesBackgroundImage) {
+    Initialize();
+  }
+}
+
+void Catalog::OnDidFetchCatalog(const CatalogInfo& catalog) {
+  SetCatalogLastUpdated(base::Time::Now());
+
+  if (!HasCatalogChanged(catalog.id)) {
+    return BLOG(1, "Catalog id " << catalog.id << " is up to date");
+  }
+
+  SaveCatalog(catalog);
+
+  NotifyDidUpdateCatalog(catalog);
+}
+
+void Catalog::OnFailedToFetchCatalog() {
+  NotifyFailedToUpdateCatalog();
 }
 
 void Catalog::OnDidMigrateDatabase(const int /*from_version*/,

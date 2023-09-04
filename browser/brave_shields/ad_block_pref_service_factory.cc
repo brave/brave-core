@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/browser/ad_block_pref_service.h"
 #include "chrome/browser/net/proxy_service_factory.h"
@@ -28,7 +29,8 @@ AdBlockPrefService* AdBlockPrefServiceFactory::GetForBrowserContext(
 
 // static
 AdBlockPrefServiceFactory* AdBlockPrefServiceFactory::GetInstance() {
-  return base::Singleton<AdBlockPrefServiceFactory>::get();
+  static base::NoDestructor<AdBlockPrefServiceFactory> instance;
+  return instance.get();
 }
 
 AdBlockPrefServiceFactory::AdBlockPrefServiceFactory()

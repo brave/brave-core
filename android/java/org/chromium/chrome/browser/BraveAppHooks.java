@@ -5,16 +5,9 @@
 
 package org.chromium.chrome.browser;
 
-import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncher;
-import org.chromium.chrome.browser.help.BraveHelpAndFeedbackLauncher;
 import org.chromium.chrome.browser.partnerbookmarks.PartnerBookmark;
 
 public class BraveAppHooks extends AppHooksImpl {
-    @Override
-    public HelpAndFeedbackLauncher createHelpAndFeedbackLauncher() {
-        return new BraveHelpAndFeedbackLauncher();
-    }
-
     @Override
     public PartnerBookmark.BookmarkIterator getPartnerBookmarkIterator() {
         return null;

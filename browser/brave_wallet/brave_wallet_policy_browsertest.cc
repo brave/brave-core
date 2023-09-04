@@ -10,7 +10,7 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
-#include "brave/components/brave_wallet/common/common_util.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "chrome/browser/profiles/profile.h"

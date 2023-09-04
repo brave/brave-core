@@ -63,7 +63,10 @@ class P3AMessageManagerTest : public testing::Test,
  protected:
   void SetUpManager(bool is_constellation_enabled) {
     if (is_constellation_enabled) {
-      scoped_feature_list_.InitWithFeatures({features::kConstellation}, {});
+      scoped_feature_list_.InitWithFeatures(
+          {features::kConstellation,
+           features::kConstellationEnclaveAttestation},
+          {});
     }
 
     base::Time future_mock_time;
@@ -168,7 +171,8 @@ class P3AMessageManagerTest : public testing::Test,
           result.push_back(std::string(histogram_name));
           p2a_i++;
         }
-      } else if (p3a_i < p3a_count) {
+      } else if (p3a_i < p3a_count &&
+                 base::StartsWith(histogram_name, "Brave.Core")) {
         result.push_back(std::string(histogram_name));
         p3a_i++;
       }

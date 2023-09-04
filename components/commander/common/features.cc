@@ -5,19 +5,10 @@
 
 #include "brave/components/commander/common/features.h"
 
-#include "base/feature_list.h"
-
 namespace features {
 
 BASE_FEATURE(kBraveCommander,
              "BraveCommander",
              base::FEATURE_DISABLED_BY_DEFAULT);
-}
 
-namespace commander {
-
-bool CommanderEnabled() {
-  return base::FeatureList::IsEnabled(features::kBraveCommander);
-}
-
-}  // namespace commander
+}  // namespace features

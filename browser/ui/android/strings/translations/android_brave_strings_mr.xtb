@@ -1,10 +1,12 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="mr">
+<translation id="370665806235115550">लोड करीत आहे...</translation>
+<translation id="1177863135347784049">सानुकूल</translation>
 <translation id="7307834434086582547">ब्रेव्ह शिल्ड्स सक्षम / अक्षम करा</translation>
 <translation id="3570081523466826008">HTTPS वर कनेक्शन श्रेणीसुधारित करा</translation>
-<translation id="2359808026110333948">सुरू ठेवा</translation>
 <translation id="94154759592465111">स्क्रिप्ट्स ब्लॉक करा</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="6052725679982758334">सोशल मीडिया ब्लॉकिंग</translation>
 <translation id="7498695072878479744">तृतीय पक्ष साइटवर Google लॉगिन बटणांना अनुमती द्या</translation>
 <translation id="863171915776379000">फेसबुक लॉगिन आणि अंतःस्थापित पोस्टना अनुमती द्या</translation>
@@ -41,6 +43,8 @@
 <translation id="2175927920773552910">QR कोड</translation>
 <translation id="8730621377337864115">पूर्ण झाले</translation>
 <translation id="8131740175452115882">पुष्टी करा</translation>
+<translation id="8457451314607652708">बुकमार्क आयात करा</translation>
+<translation id="1008186147501209563">बुकमार्क निर्यात करा</translation>
 <translation id="7173114856073700355">सेटिंग्ज उघडा</translation>
 <translation id="6965382102122355670">ठीक आहे</translation>
 <translation id="1056898198331236512">चेतावणी</translation>
@@ -59,6 +63,7 @@
 <translation id="8798099450830957504">डीफॉल्ट</translation>
 <translation id="1483493594462132177">पाठवा</translation>
 <translation id="4472575034687746823">प्रारंभ करा</translation>
+<translation id="2359808026110333948">सुरू ठेवा</translation>
 <translation id="6896758677409633944">कॉपी करा</translation>
 <translation id="7665369617277396874">खाते जोडा</translation>
 <translation id="3943857333388298514">पेस्ट करा</translation>
@@ -85,10 +90,7 @@
 <translation id="5045550434625856497">अयोग्य पासवर्ड</translation>
 <translation id="1367951781824006909">फाइल निवडा</translation>
 <translation id="8648684608605749476">तृतीय पक्ष कुकी गुप्त मोडमध्ये ब्लॉक करा</translation>
-<translation id="3380365263193509176">अज्ञात एरर</translation>
 <translation id="1165039591588034296">एरर</translation>
-<translation id="1177863135347784049">सानुकूल</translation>
-<translation id="1974060860693918893">प्रगत</translation>
 <translation id="7791543448312431591">जोडा</translation>
 <translation id="4250680216510889253">नाही</translation>
 <translation id="2653659639078652383">सबमिट करा</translation>

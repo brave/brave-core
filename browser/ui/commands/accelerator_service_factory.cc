@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/memory/singleton.h"
+#include "base/no_destructor.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/default_accelerators.h"
@@ -23,7 +23,8 @@ namespace commands {
 
 // static
 AcceleratorServiceFactory* AcceleratorServiceFactory::GetInstance() {
-  return base::Singleton<AcceleratorServiceFactory>::get();
+  static base::NoDestructor<AcceleratorServiceFactory> instance;
+  return instance.get();
 }
 
 // static
@@ -36,7 +37,10 @@ AcceleratorService* AcceleratorServiceFactory::GetForContext(
 AcceleratorServiceFactory::AcceleratorServiceFactory()
     : ProfileKeyedServiceFactory(
           "AcceleratorServiceFactory",
-          ProfileSelections::BuildRedirectedToOriginal()) {}
+          ProfileSelections::Builder()
+              .WithRegular(ProfileSelection::kRedirectedToOriginal)
+              .WithGuest(ProfileSelection::kRedirectedToOriginal)
+              .Build()) {}
 
 AcceleratorServiceFactory::~AcceleratorServiceFactory() = default;
 
@@ -50,7 +54,9 @@ KeyedService* AcceleratorServiceFactory::BuildServiceInstanceFor(
   auto* profile = Profile::FromBrowserContext(context);
   DCHECK(profile);
 
-  return new AcceleratorService(profile->GetPrefs(), GetDefaultAccelerators());
+  auto [accelerators, system_managed] = GetDefaultAccelerators();
+  return new AcceleratorService(profile->GetPrefs(), accelerators,
+                                system_managed);
 }
 
 }  // namespace commands

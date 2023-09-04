@@ -6,10 +6,8 @@
 package org.chromium.chrome.browser.logo;
 
 import android.content.Context;
-import android.view.View;
 
 import org.chromium.base.Callback;
-import org.chromium.chrome.browser.logo.LogoBridge.Logo;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.modelutil.PropertyModel;
 

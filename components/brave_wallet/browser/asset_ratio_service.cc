@@ -15,6 +15,8 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
@@ -94,6 +96,32 @@ std::vector<std::string> VectorToLowerCase(const std::vector<std::string>& v) {
   return v_lower;
 }
 
+absl::optional<std::string> ChainIdToStripeChainId(
+    const std::string& chain_id) {
+  static base::NoDestructor<base::flat_map<std::string, std::string>>
+      chain_id_lookup(
+          {{brave_wallet::mojom::kMainnetChainId, "ethereum"},
+           {brave_wallet::mojom::kSolanaMainnet, "solana"},
+           {brave_wallet::mojom::kPolygonMainnetChainId, "polygon"}});
+  if (!chain_id_lookup->contains(chain_id)) {
+    return absl::nullopt;
+  }
+
+  return chain_id_lookup->at(chain_id);
+}
+
+base::flat_map<std::string, std::string> MakeBraveServicesKeyHeader() {
+  base::flat_map<std::string, std::string> request_headers;
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  std::string brave_key(BUILDFLAG(BRAVE_SERVICES_KEY));
+  if (env->HasVar("BRAVE_SERVICES_KEY")) {
+    env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
+  }
+  request_headers["x-brave-key"] = std::move(brave_key);
+
+  return request_headers;
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -157,8 +185,8 @@ GURL AssetRatioService::GetPriceURL(
   std::string from = VectorToCommaSeparatedList(from_assets);
   std::string to = VectorToCommaSeparatedList(to_assets);
   std::string spec = base::StringPrintf(
-      "%sv2/relative/provider/coingecko/%s/%s/%s",
-      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
+      "%s/v2/relative/provider/coingecko/%s/%s/%s",
+      base_url_for_test_.is_empty() ? GetAssetRatioBaseURL().c_str()
                                     : base_url_for_test_.spec().c_str(),
       from.c_str(), to.c_str(), TimeFrameKeyToString(timeframe).c_str());
   return GURL(spec);
@@ -170,8 +198,8 @@ GURL AssetRatioService::GetPriceHistoryURL(
     const std::string& vs_asset,
     brave_wallet::mojom::AssetPriceTimeframe timeframe) {
   std::string spec = base::StringPrintf(
-      "%sv2/history/coingecko/%s/%s/%s",
-      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
+      "%s/v2/history/coingecko/%s/%s/%s",
+      base_url_for_test_.is_empty() ? GetAssetRatioBaseURL().c_str()
                                     : base_url_for_test_.spec().c_str(),
       asset.c_str(), vs_asset.c_str(), TimeFrameKeyToString(timeframe).c_str());
   return GURL(spec);
@@ -239,6 +267,53 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
         net::AppendQueryParameter(transak_url, "apiKey", kTransakApiKey);
 
     std::move(callback).Run(std::move(transak_url.spec()), absl::nullopt);
+  } else if (provider == mojom::OnRampProvider::kStripe) {
+    GetStripeBuyURL(std::move(callback), address, currency_code, amount,
+                    chain_id, symbol);
+  } else if (provider == mojom::OnRampProvider::kCoinbase) {
+    GURL coinbase_url = GURL(kCoinbaseURL);
+    coinbase_url =
+        net::AppendQueryParameter(coinbase_url, "appId", kCoinbaseAppId);
+    coinbase_url =
+        net::AppendQueryParameter(coinbase_url, "defaultExperience", "buy");
+    coinbase_url =
+        net::AppendQueryParameter(coinbase_url, "presetFiatAmount", amount);
+
+    // Construct the destinationWallets JSON
+    base::Value::List destinationWallets;
+    base::Value::Dict wallet;
+    wallet.Set("address", address);
+
+    // Restrict to ETH or SOL chains based on the address
+    base::Value::List blockchains;
+    if (EthAddress::IsValidAddress(address)) {
+      // Supported networks list
+      // https://docs.cloud.coinbase.com/pay-sdk/docs/faq#which-blockchains-and-cryptocurrencies-do-you-support
+      blockchains.Append("ethereum");
+      blockchains.Append("arbitrum");
+      blockchains.Append("optimism");
+      blockchains.Append("polygon");
+      blockchains.Append("avalanche-c-chain");
+      blockchains.Append("celo");
+    } else {
+      // Assume it's a valid SOL address
+      blockchains.Append("solana");
+    }
+    wallet.Set("blockchains", std::move(blockchains));
+    base::Value::List assets;
+    assets.Append(symbol);
+    wallet.Set("assets", std::move(assets));
+    destinationWallets.Append(std::move(wallet));
+
+    // Convert the JSON to a string and URL-encode it
+    std::string destinationWalletsStr;
+    base::JSONWriter::Write(destinationWallets, &destinationWalletsStr);
+
+    // Append the destinationWallets parameter
+    coinbase_url = net::AppendQueryParameter(coinbase_url, "destinationWallets",
+                                             destinationWalletsStr);
+
+    std::move(callback).Run(std::move(coinbase_url.spec()), absl::nullopt);
   } else {
     std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
   }
@@ -286,16 +361,9 @@ void AssetRatioService::GetPrice(
       &AssetRatioService::OnGetPrice, weak_ptr_factory_.GetWeakPtr(),
       from_assets_lower, to_assets_lower, std::move(callback));
 
-  base::flat_map<std::string, std::string> request_headers;
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  std::string brave_key(BUILDFLAG(BRAVE_SERVICES_KEY));
-  if (env->HasVar("BRAVE_SERVICES_KEY")) {
-    env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
-  }
-  request_headers["x-brave-key"] = std::move(brave_key);
   api_request_helper_->Request(
       "GET", GetPriceURL(from_assets_lower, to_assets_lower, timeframe), "", "",
-      std::move(internal_callback), request_headers,
+      std::move(internal_callback), MakeBraveServicesKeyHeader(),
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
@@ -321,6 +389,61 @@ void AssetRatioService::OnGetSardineAuthToken(
   GURL sardine_buy_url = GetSardineBuyURL(chain_id, address, symbol, amount,
                                           currency_code, *auth_token);
   std::move(callback).Run(std::move(sardine_buy_url.spec()), absl::nullopt);
+}
+
+void AssetRatioService::GetStripeBuyURL(
+    GetBuyUrlV1Callback callback,
+    const std::string& address,
+    const std::string& source_currency,
+    const std::string& source_exchange_amount,
+    const std::string& chain_id,
+    const std::string& destination_currency) {
+  // Convert the frontend supplied chain ID to the chain ID used by Stripe
+  absl::optional<std::string> destination_network =
+      ChainIdToStripeChainId(chain_id);
+  if (!destination_network) {
+    std::move(callback).Run("", "UNSUPPORTED_CHAIN_ID");
+    return;
+  }
+
+  base::Value::Dict payload;
+  AddKeyIfNotEmpty(&payload, "wallet_address", address);
+  AddKeyIfNotEmpty(&payload, "source_currency", source_currency);
+  AddKeyIfNotEmpty(&payload, "source_exchange_amount", source_exchange_amount);
+  AddKeyIfNotEmpty(&payload, "destination_network", *destination_network);
+  AddKeyIfNotEmpty(&payload, "destination_currency", destination_currency);
+
+  const std::string json_payload = GetJSON(payload);
+
+  GURL url = GURL(base::StringPrintf("%s/v2/stripe/onramp_sessions",
+                                     base_url_for_test_.is_empty()
+                                         ? GetAssetRatioBaseURL().c_str()
+                                         : base_url_for_test_.spec().c_str()));
+
+  auto internal_callback =
+      base::BindOnce(&AssetRatioService::OnGetStripeBuyURL,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  api_request_helper_->Request(
+      "POST", url, json_payload, "application/json",
+      std::move(internal_callback), MakeBraveServicesKeyHeader(),
+      {.auto_retry_on_network_change = true, .enable_cache = false});
+}
+
+void AssetRatioService::OnGetStripeBuyURL(GetBuyUrlV1Callback callback,
+                                          APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run("", "INTERNAL_SERVICE_ERROR");
+    return;
+  }
+
+  auto url = ParseStripeBuyURL(api_request_result.value_body());
+  if (!url) {
+    std::move(callback).Run("", "PARSING_ERROR");
+    return;
+  }
+
+  std::move(callback).Run(*url, absl::nullopt);
 }
 
 void AssetRatioService::OnGetPrice(std::vector<std::string> from_assets,
@@ -353,7 +476,7 @@ void AssetRatioService::GetPriceHistory(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request(
       "GET", GetPriceHistoryURL(asset_lower, vs_asset_lower, timeframe), "", "",
-      std::move(internal_callback), {},
+      std::move(internal_callback), MakeBraveServicesKeyHeader(),
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
@@ -375,9 +498,9 @@ void AssetRatioService::OnGetPriceHistory(GetPriceHistoryCallback callback,
 // static
 GURL AssetRatioService::GetTokenInfoURL(const std::string& contract_address) {
   std::string spec = base::StringPrintf(
-      "%sv2/etherscan/"
+      "%s/v3/etherscan/"
       "passthrough?module=token&action=tokeninfo&contractaddress=%s",
-      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
+      base_url_for_test_.is_empty() ? GetAssetRatioBaseURL().c_str()
                                     : base_url_for_test_.spec().c_str(),
       contract_address.c_str());
   return GURL(spec);
@@ -390,7 +513,7 @@ void AssetRatioService::GetTokenInfo(const std::string& contract_address,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request(
       "GET", GetTokenInfoURL(contract_address), "", "",
-      std::move(internal_callback), {},
+      std::move(internal_callback), MakeBraveServicesKeyHeader(),
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
@@ -409,9 +532,9 @@ void AssetRatioService::OnGetTokenInfo(GetTokenInfoCallback callback,
 // static
 GURL AssetRatioService::GetCoinMarketsURL(const std::string& vs_asset,
                                           const uint8_t limit) {
-  GURL url = GURL(base::StringPrintf("%sv2/market/provider/coingecko",
+  GURL url = GURL(base::StringPrintf("%s/v2/market/provider/coingecko",
                                      base_url_for_test_.is_empty()
-                                         ? kAssetRatioBaseURL
+                                         ? GetAssetRatioBaseURL().c_str()
                                          : base_url_for_test_.spec().c_str()));
   url = net::AppendQueryParameter(url, "vsCurrency", vs_asset);
   url = net::AppendQueryParameter(url, "limit", std::to_string(limit));
@@ -427,7 +550,7 @@ void AssetRatioService::GetCoinMarkets(const std::string& vs_asset,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request(
       "GET", GetCoinMarketsURL(vs_asset_lower, limit), "", "",
-      std::move(internal_callback), {},
+      std::move(internal_callback), MakeBraveServicesKeyHeader(),
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 

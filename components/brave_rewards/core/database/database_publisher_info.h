@@ -15,7 +15,7 @@ namespace database {
 
 class DatabasePublisherInfo : public DatabaseTable {
  public:
-  explicit DatabasePublisherInfo(LedgerImpl& ledger);
+  explicit DatabasePublisherInfo(RewardsEngineImpl& engine);
   ~DatabasePublisherInfo() override;
 
   void InsertOrUpdate(mojom::PublisherInfoPtr info,
@@ -32,17 +32,17 @@ class DatabasePublisherInfo : public DatabaseTable {
   void GetExcludedList(GetExcludedListCallback callback);
 
  private:
-  void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   GetPublisherInfoCallback callback);
+  void OnGetRecord(GetPublisherInfoCallback callback,
+                   mojom::DBCommandResponsePtr response);
 
-  void OnGetPanelRecord(mojom::DBCommandResponsePtr response,
-                        GetPublisherPanelInfoCallback callback);
+  void OnGetPanelRecord(GetPublisherPanelInfoCallback callback,
+                        mojom::DBCommandResponsePtr response);
 
   void OnRestorePublishers(ResultCallback callback,
                            mojom::DBCommandResponsePtr response);
 
-  void OnGetExcludedList(mojom::DBCommandResponsePtr response,
-                         GetExcludedListCallback callback);
+  void OnGetExcludedList(GetExcludedListCallback callback,
+                         mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

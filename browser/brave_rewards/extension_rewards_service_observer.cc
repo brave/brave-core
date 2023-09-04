@@ -38,11 +38,11 @@ void ExtensionRewardsServiceObserver::OnRewardsInitialized(
   event_router->BroadcastEvent(std::move(event));
 }
 
-void ExtensionRewardsServiceObserver::OnRewardsWalletUpdated() {
+void ExtensionRewardsServiceObserver::OnRewardsWalletCreated() {
   if (auto* event_router = extensions::EventRouter::Get(profile_)) {
     event_router->BroadcastEvent(std::make_unique<extensions::Event>(
         extensions::events::BRAVE_START,
-        extensions::api::brave_rewards::OnRewardsWalletUpdated::kEventName,
+        extensions::api::brave_rewards::OnRewardsWalletCreated::kEventName,
         base::Value::List()));
   }
 }
@@ -113,7 +113,7 @@ void ExtensionRewardsServiceObserver::OnPromotionFinished(
     const brave_rewards::mojom::Result result,
     brave_rewards::mojom::PromotionPtr promotion) {
   auto* event_router = extensions::EventRouter::Get(profile_);
-  if (!event_router || result != brave_rewards::mojom::Result::LEDGER_OK) {
+  if (!event_router || result != brave_rewards::mojom::Result::OK) {
     return;
   }
 
@@ -131,37 +131,6 @@ void ExtensionRewardsServiceObserver::OnPromotionFinished(
       extensions::api::brave_rewards::OnPromotionFinish::kEventName,
       extensions::api::brave_rewards::OnPromotionFinish::Create(
           static_cast<int>(result), promotion_api)));
-  event_router->BroadcastEvent(std::move(event));
-}
-
-void ExtensionRewardsServiceObserver::OnAdsEnabled(
-    RewardsService* rewards_service,
-    bool ads_enabled) {
-  auto* event_router = extensions::EventRouter::Get(profile_);
-  if (!event_router) {
-    return;
-  }
-
-  std::unique_ptr<extensions::Event> event(new extensions::Event(
-      extensions::events::BRAVE_START,
-      extensions::api::brave_rewards::OnAdsEnabled::kEventName,
-      extensions::api::brave_rewards::OnAdsEnabled::Create(ads_enabled)));
-  event_router->BroadcastEvent(std::move(event));
-}
-
-void ExtensionRewardsServiceObserver::OnPendingContributionSaved(
-    RewardsService* rewards_service,
-    const brave_rewards::mojom::Result result) {
-  auto* event_router = extensions::EventRouter::Get(profile_);
-  if (!event_router) {
-    return;
-  }
-
-  std::unique_ptr<extensions::Event> event(new extensions::Event(
-      extensions::events::BRAVE_START,
-      extensions::api::brave_rewards::OnPendingContributionSaved::kEventName,
-      extensions::api::brave_rewards::OnPendingContributionSaved::Create(
-          static_cast<int>(result))));
   event_router->BroadcastEvent(std::move(event));
 }
 
@@ -243,23 +212,6 @@ void ExtensionRewardsServiceObserver::OnRecurringTipRemoved(
   event_router->BroadcastEvent(std::move(event));
 }
 
-void ExtensionRewardsServiceObserver::OnPendingContributionRemoved(
-    RewardsService* rewards_service,
-    const brave_rewards::mojom::Result result) {
-  extensions::EventRouter* event_router =
-      extensions::EventRouter::Get(profile_);
-  if (!event_router) {
-    return;
-  }
-
-  std::unique_ptr<extensions::Event> event(new extensions::Event(
-      extensions::events::BRAVE_START,
-      extensions::api::brave_rewards::OnPendingContributionRemoved::kEventName,
-      extensions::api::brave_rewards::OnPendingContributionRemoved::Create(
-          static_cast<int>(result))));
-  event_router->BroadcastEvent(std::move(event));
-}
-
 void ExtensionRewardsServiceObserver::OnReconcileComplete(
     RewardsService* rewards_service,
     const brave_rewards::mojom::Result result,
@@ -297,6 +249,16 @@ void ExtensionRewardsServiceObserver::OnExternalWalletLoggedOut() {
     event_router->BroadcastEvent(std::make_unique<extensions::Event>(
         extensions::events::BRAVE_START,
         extensions::api::brave_rewards::OnExternalWalletLoggedOut::kEventName,
+        base::Value::List()));
+  }
+}
+
+void ExtensionRewardsServiceObserver::OnExternalWalletDisconnected() {
+  if (auto* event_router = extensions::EventRouter::Get(profile_)) {
+    event_router->BroadcastEvent(std::make_unique<extensions::Event>(
+        extensions::events::BRAVE_START,
+        extensions::api::brave_rewards::OnExternalWalletDisconnected::
+            kEventName,
         base::Value::List()));
   }
 }

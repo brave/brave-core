@@ -5,10 +5,16 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_segment_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 bool operator==(const CatalogSegmentInfo& lhs, const CatalogSegmentInfo& rhs) {
-  return lhs.code == rhs.code && lhs.name == rhs.name;
+  const auto tie = [](const CatalogSegmentInfo& segment) {
+    return std::tie(segment.code, segment.name);
+  };
+
+  return tie(lhs) == tie(rhs);
 }
 
 bool operator!=(const CatalogSegmentInfo& lhs, const CatalogSegmentInfo& rhs) {

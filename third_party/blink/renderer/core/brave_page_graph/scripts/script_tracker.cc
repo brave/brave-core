@@ -5,14 +5,28 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/scripts/script_tracker.h"
 
-#include "base/containers/contains.h"
+#include <utility>
+
+#include "base/no_destructor.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
-#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
-#include "third_party/blink/renderer/platform/weborigin/kurl.h"
+#include "third_party/blink/renderer/bindings/core/v8/script_source_location_type.h"
+#include "third_party/blink/renderer/platform/wtf/hash_map.h"
 
 namespace brave_page_graph {
+
+namespace {
+
+using ScriptKey = std::pair<v8::Isolate*, ScriptId>;
+
+// Script nodes should be accessible from multiple PageGraph instances.
+HashMap<ScriptKey, NodeScript*>& GetScriptNodes() {
+  static base::NoDestructor<HashMap<ScriptKey, NodeScript*>> script_nodes;
+  return *script_nodes;
+}
+
+}  // namespace
 
 ScriptTracker::ScriptTracker(PageGraphContext* page_graph_context)
     : page_graph_context_(page_graph_context) {}
@@ -23,17 +37,25 @@ NodeScript* ScriptTracker::AddScriptNode(v8::Isolate* isolate,
                                          ScriptId script_id,
                                          const ScriptData& script_data) {
   const ScriptKey script_key{isolate, script_id};
-  auto it = scripts_.find(script_key);
-  if (it != scripts_.end()) {
+  auto it = GetScriptNodes().find(script_key);
+  if (it != GetScriptNodes().end()) {
     const auto& cached_script_data = it->value->GetScriptData();
     bool is_valid_script_data = false;
     if (script_data == cached_script_data) {
       is_valid_script_data = true;
     } else {
-      if (script_data.code == cached_script_data.code &&
-          script_data.source.is_eval && cached_script_data.source.is_eval) {
-        // Simple evals can be cached and shared across v8 contexts.
-        is_valid_script_data = true;
+      if (script_data.code == cached_script_data.code) {
+        if (script_data.source.is_eval && cached_script_data.source.is_eval) {
+          // Simple evals can be cached and shared across v8 contexts.
+          is_valid_script_data = true;
+        } else if (script_data.source.location_type ==
+                       blink::ScriptSourceLocationType::kJavascriptUrl &&
+                   cached_script_data.source.location_type ==
+                       blink::ScriptSourceLocationType::kJavascriptUrl) {
+          // `javascript:` scripts can be compiled from another script or from a
+          // parser.
+          is_valid_script_data = true;
+        }
       }
     }
     CHECK(is_valid_script_data) << "isolate: " << script_key.first
@@ -42,15 +64,15 @@ NodeScript* ScriptTracker::AddScriptNode(v8::Isolate* isolate,
   }
   auto* script_node =
       page_graph_context_->AddNode<NodeScript>(script_id, script_data);
-  scripts_.insert(script_key, script_node);
+  GetScriptNodes().insert(script_key, script_node);
   return script_node;
 }
 
 NodeScript* ScriptTracker::GetScriptNode(v8::Isolate* isolate,
                                          ScriptId script_id) const {
   const ScriptKey script_key{isolate, script_id};
-  auto it = scripts_.find(script_key);
-  CHECK(it != scripts_.end())
+  auto it = GetScriptNodes().find(script_key);
+  CHECK(it != GetScriptNodes().end())
       << "isolate: " << script_key.first << " script id: " << script_key.second;
   return it->value;
 }

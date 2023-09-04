@@ -4,21 +4,29 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import {
-  useDispatch,
-  useSelector
-} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 // Actions
 import { WalletActions } from '../../../common/actions'
 
 // Types
-import { BraveWallet, WalletAccountType, WalletState } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
+
+// Hooks
+import {
+  useUnsafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
 
 // Utils
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
-import { create } from 'ethereum-blockies'
 import { getLocale } from '../../../../common/locale'
+import { reduceAddress } from '../../../utils/reduce-address'
+import { useSetSelectedAccountMutation } from '../../../common/slices/api.slice'
+import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
+import { WalletSelectors } from '../../../common/selectors'
+
+// Hooks
+import { useAccountOrb } from '../../../common/hooks/use-orb'
 
 // Styled Components
 import {
@@ -32,41 +40,33 @@ import {
   RightSide
 } from './style'
 
-// Utils
-import { reduceAddress } from '../../../utils/reduce-address'
-import { useSelectedCoinQuery } from '../../../common/slices/api.slice'
 
 export interface Props {
-  account: WalletAccountType
+  account: BraveWallet.AccountInfo
 }
 
-const SitePermissionAccountItem = (props: Props) => {
+export const ConnectedAccountItem = (props: Props) => {
   const {
     account
   } = props
 
   const dispatch = useDispatch()
-  const {
-    selectedAccount,
-    connectedAccounts,
-    activeOrigin
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const connectedAccounts = useUnsafeWalletSelector(WalletSelectors.connectedAccounts)
 
   // api
-  const { selectedCoin } = useSelectedCoinQuery()
+  const { data: selectedAccount } = useSelectedAccountQuery()
+  const [setSelectedAccount] = useSetSelectedAccountMutation()
+  const selectedCoin = selectedAccount?.accountId.coin
 
   // memos
-  const orb = React.useMemo(() => {
-    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [account.address])
+  const orb = useAccountOrb(account)
 
-  const isActive = React.useMemo((): boolean => {
-    return account.address.toLowerCase() === selectedAccount?.address.toLowerCase()
-  }, [selectedAccount?.address, account.address])
+  const isActive = account.accountId.uniqueKey === selectedAccount?.accountId.uniqueKey
 
   const hasPermission = React.useMemo((): boolean => {
-    return connectedAccounts.some(a => a.address.toLowerCase() === account.address.toLowerCase())
-  }, [connectedAccounts, account])
+    return connectedAccounts.some(
+      (accountId) => accountId.uniqueKey === account.accountId.uniqueKey
+    )  }, [connectedAccounts, account])
 
   const buttonText = React.useMemo((): string => {
     if (selectedCoin === BraveWallet.CoinType.SOL) {
@@ -83,21 +83,21 @@ const SitePermissionAccountItem = (props: Props) => {
 
   // methods
   const onClickConnect = React.useCallback(() => {
-    dispatch(WalletActions.addSitePermission({ coin: account.coin, origin: activeOrigin.origin, account: account.address }))
+    dispatch(WalletActions.addSitePermission({ accountId: account.accountId }))
     if (selectedCoin !== BraveWallet.CoinType.SOL) {
-      dispatch(WalletActions.selectAccount(account))
+      setSelectedAccount(account.accountId)
     }
-  }, [activeOrigin, account, selectedCoin])
+  }, [account, selectedCoin])
 
   const onClickDisconnect = React.useCallback(() => {
-    dispatch(WalletActions.removeSitePermission({ coin: account.coin, origin: activeOrigin.origin, account: account.address }))
+    dispatch(WalletActions.removeSitePermission({ accountId: account.accountId }))
     if (connectedAccounts.length !== 0 && selectedCoin !== BraveWallet.CoinType.SOL) {
-      dispatch(WalletActions.selectAccount(connectedAccounts[0]))
+      setSelectedAccount(account.accountId)
     }
-  }, [connectedAccounts, activeOrigin, account, selectedCoin])
+  }, [connectedAccounts, account, selectedCoin])
 
   const onClickSwitchAccount = React.useCallback(() => {
-    dispatch(WalletActions.selectAccount(account))
+    setSelectedAccount(account.accountId)
   }, [account])
 
   const onClickConnectDisconnectOrSwitch = React.useCallback(() => {
@@ -135,4 +135,4 @@ const SitePermissionAccountItem = (props: Props) => {
   )
 }
 
-export default SitePermissionAccountItem
+export default ConnectedAccountItem

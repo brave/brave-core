@@ -40,7 +40,7 @@ TEST(BraveAdsConversionsFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsConversionFeatureEnabled());
 }
 
-TEST(BraveAdsConversionsFeatureTest, GetConversionsResourceVersion) {
+TEST(BraveAdsConversionsFeatureTest, GetConversionResourceVersion) {
   // Arrange
   base::FieldTrialParams params;
   params["resource_version"] = "0";
@@ -56,20 +56,20 @@ TEST(BraveAdsConversionsFeatureTest, GetConversionsResourceVersion) {
   // Act
 
   // Assert
-  EXPECT_EQ(0, kConversionsResourceVersion.Get());
+  EXPECT_EQ(0, kConversionResourceVersion.Get());
 }
 
-TEST(BraveAdsConversionsFeatureTest, DefaultConversionsResourceVersion) {
+TEST(BraveAdsConversionsFeatureTest, DefaultConversionResourceVersion) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_EQ(1, kConversionsResourceVersion.Get());
+  EXPECT_EQ(1, kConversionResourceVersion.Get());
 }
 
 TEST(BraveAdsConversionsFeatureTest,
-     DefaultConversionsResourceVersionWhenDisabled) {
+     DefaultConversionResourceVersionWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -83,13 +83,13 @@ TEST(BraveAdsConversionsFeatureTest,
   // Act
 
   // Assert
-  EXPECT_EQ(1, kConversionsResourceVersion.Get());
+  EXPECT_EQ(1, kConversionResourceVersion.Get());
 }
 
 TEST(BraveAdsConversionsFeatureTest, GetConversionIdPattern) {
   // Arrange
   base::FieldTrialParams params;
-  params["conversion_id_pattern"] = "*";
+  params["html_meta_tag_id_pattern"] = "*";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(kConversionsFeature, params);
 
@@ -102,7 +102,7 @@ TEST(BraveAdsConversionsFeatureTest, GetConversionIdPattern) {
   // Act
 
   // Assert
-  EXPECT_EQ("*", kConversionsIdPattern.Get());
+  EXPECT_EQ("*", kHtmlMetaTagConversionIdPattern.Get());
 }
 
 TEST(BraveAdsConversionsFeatureTest, DefaultConversionIdPattern) {
@@ -111,9 +111,8 @@ TEST(BraveAdsConversionsFeatureTest, DefaultConversionIdPattern) {
   // Act
 
   // Assert
-  const std::string expected_pattern =
-      R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~";
-  EXPECT_EQ(expected_pattern, kConversionsIdPattern.Get());
+  EXPECT_EQ(R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~",
+            kHtmlMetaTagConversionIdPattern.Get());
 }
 
 TEST(BraveAdsConversionsFeatureTest, DefaultConversionIdPatternWhenDisabled) {
@@ -130,9 +129,8 @@ TEST(BraveAdsConversionsFeatureTest, DefaultConversionIdPatternWhenDisabled) {
   // Act
 
   // Assert
-  const std::string expected_pattern =
-      R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~";
-  EXPECT_EQ(expected_pattern, kConversionsIdPattern.Get());
+  EXPECT_EQ(R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~",
+            kHtmlMetaTagConversionIdPattern.Get());
 }
 
 }  // namespace brave_ads

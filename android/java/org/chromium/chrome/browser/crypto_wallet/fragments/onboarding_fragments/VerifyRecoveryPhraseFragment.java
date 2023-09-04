@@ -16,14 +16,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
@@ -33,11 +33,12 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
+    private static final String IS_ONBOARDING_ARG = "isOnboarding";
+
     private RecyclerView recoveryPhrasesRecyclerView;
     private RecyclerView selectedPhraseRecyclerView;
 
@@ -46,6 +47,7 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
 
     private Button recoveryPhraseButton;
     private List<String> recoveryPhrases;
+    private boolean mIsOnboarding;
     private OnboardingViewModel mOnboardingViewModel;
 
     private KeyringService getKeyringService() {
@@ -57,13 +59,33 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
         return null;
     }
 
+    private BraveWalletP3a getBraveWalletP3A() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getBraveWalletP3A();
+        }
+
+        return null;
+    }
+
     public interface OnRecoveryPhraseSelected {
         void onSelectedRecoveryPhrase(String phrase);
+    }
+
+    public static VerifyRecoveryPhraseFragment newInstance(boolean isOnboarding) {
+        VerifyRecoveryPhraseFragment fragment = new VerifyRecoveryPhraseFragment();
+
+        Bundle args = new Bundle();
+        args.putBoolean(IS_ONBOARDING_ARG, isOnboarding);
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mIsOnboarding = getArguments().getBoolean(IS_ONBOARDING_ARG, false);
         return inflater.inflate(R.layout.fragment_verify_recovery_phrase, container, false);
     }
 
@@ -79,11 +101,15 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
                     && recoveryPhrasesToVerifyAdapter.getRecoveryPhraseList().size() > 0
                     && password != null) {
                 KeyringService keyringService = getKeyringService();
+                BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
                 if (keyringService != null) {
                     keyringService.getMnemonicForDefaultKeyring(password, result -> {
                         String recoveryPhraseToVerify = Utils.getRecoveryPhraseFromList(
                                 recoveryPhrasesToVerifyAdapter.getRecoveryPhraseList());
                         if (result.equals(recoveryPhraseToVerify)) {
+                            if (braveWalletP3A != null && mIsOnboarding) {
+                                braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE);
+                            }
                             keyringService.notifyWalletBackupComplete();
                             onNextPage.gotoNextPage(true);
                         } else {
@@ -98,7 +124,13 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
             }
         });
         TextView recoveryPhraseSkipButton = view.findViewById(R.id.btn_verify_recovery_phrase_skip);
-        recoveryPhraseSkipButton.setOnClickListener(v -> onNextPage.gotoNextPage(true));
+        recoveryPhraseSkipButton.setOnClickListener(v -> {
+            BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+            if (braveWalletP3A != null && mIsOnboarding) {
+                braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
+            }
+            onNextPage.gotoNextPage(true);
+        });
 
         mOnboardingViewModel.getPassword().observe(getViewLifecycleOwner(), password -> {
             if (password == null) {

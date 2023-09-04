@@ -13,8 +13,6 @@ export const defaultState: NewTab.State = {
   initialDataLoaded: false,
   textDirection: loadTimeData.getString('textdirection'),
   featureFlagBraveNTPSponsoredImagesWallpaper: loadTimeData.getBoolean('featureFlagBraveNTPSponsoredImagesWallpaper'),
-  featureFlagBraveNewsEnabled: loadTimeData.getBoolean('featureFlagBraveNewsEnabled'),
-  featureFlagBraveNewsV2Enabled: loadTimeData.getBoolean('featureFlagBraveNewsV2Enabled'),
   featureFlagBraveNewsPromptEnabled: loadTimeData.getBoolean('featureFlagBraveNewsPromptEnabled'),
   featureCustomBackgroundEnabled: loadTimeData.getBoolean('featureCustomBackgroundEnabled'),
   searchPromotionEnabled: false,
@@ -51,27 +49,25 @@ export const defaultState: NewTab.State = {
     httpsUpgradesStat: 0,
     fingerprintingBlockedStat: 0
   },
-  braveTalkPromptDismissed: false,
-  braveTalkPromptAutoDismissed: false,
-  braveTalkPromptAllowed: loadTimeData.getBoolean('braveTalkPromptAllowed'),
   rewardsState: {
     adsAccountStatement: {
       nextPaymentDate: 0,
       adsReceivedThisMonth: 0,
-      earningsThisMonth: 0,
-      earningsLastMonth: 0
+      minEarningsThisMonth: 0,
+      maxEarningsThisMonth: 0,
+      minEarningsLastMonth: 0,
+      maxEarningsLastMonth: 0
     },
     balance: undefined,
     externalWallet: undefined,
     externalWalletProviders: [],
     dismissedNotifications: [],
     rewardsEnabled: false,
+    isGrandfatheredUser: false,
     userType: '',
     isUnsupportedRegion: false,
     declaredCountry: '',
-    enabledAds: false,
     needsBrowserUpgradeToServeAds: false,
-    adsSupported: false,
     promotions: [],
     totalContribution: 0.0,
     publishersVisitedCount: 0,
@@ -143,12 +139,23 @@ const cleanData = (state: NewTab.State) => {
     rewardsState.totalContribution = 0
   }
 
-  // nextPaymentDate updated from seconds-since-epoch-string to ms-since-epoch
   const { adsAccountStatement } = rewardsState
-  if (adsAccountStatement &&
-      typeof (adsAccountStatement.nextPaymentDate as any) === 'string') {
-    adsAccountStatement.nextPaymentDate =
-      Number(adsAccountStatement.nextPaymentDate) * 1000 || 0
+  if (adsAccountStatement) {
+    // nextPaymentDate updated from seconds-since-epoch-string to ms-since-epoch
+    if (typeof (adsAccountStatement.nextPaymentDate as any) === 'string') {
+      adsAccountStatement.nextPaymentDate =
+        Number(adsAccountStatement.nextPaymentDate) * 1000 || 0
+    }
+    // earningsThisMonth replaced with range
+    if (typeof (adsAccountStatement.minEarningsThisMonth as any) !== 'number') {
+      adsAccountStatement.minEarningsThisMonth = 0
+      adsAccountStatement.maxEarningsThisMonth = 0
+    }
+    // earningsLastMonth replaced with range
+    if (typeof (adsAccountStatement.minEarningsLastMonth as any) !== 'number') {
+      adsAccountStatement.minEarningsLastMonth = 0
+      adsAccountStatement.maxEarningsLastMonth = 0
+    }
   }
 
   if (!rewardsState.parameters) {
@@ -186,8 +193,6 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
     const dataToSave = {
       braveRewardsSupported: data.braveRewardsSupported,
       braveTalkSupported: data.braveTalkSupported,
-      braveTalkPromptDismissed: data.braveTalkPromptDismissed,
-      braveTalkPromptAutoDismissed: data.braveTalkPromptAutoDismissed,
       bitcoinDotComSupported: data.bitcoinDotComSupported,
       rewardsState: data.rewardsState,
       removedStackWidgets: data.removedStackWidgets,

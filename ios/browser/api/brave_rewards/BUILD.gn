@@ -1,0 +1,67 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/ios/coredata_model.gni")
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
+import("//build/config/ios/rules.gni")
+
+config("external_config") {
+  visibility = [ ":*" ]
+  include_dirs = [ "$target_gen_dir" ]
+}
+
+source_set("brave_rewards") {
+  configs += [
+    ":external_config",
+    "//build/config/compiler:enable_arc",
+  ]
+
+  sources = [
+    "brave_rewards_api.h",
+    "brave_rewards_api.mm",
+    "promotion_solution.h",
+    "promotion_solution.mm",
+    "rewards_client_bridge.h",
+    "rewards_client_ios.h",
+    "rewards_client_ios.mm",
+    "rewards_notification.h",
+    "rewards_notification.m",
+    "rewards_observer.h",
+    "rewards_observer.mm",
+  ]
+
+  deps = [
+    ":rewards_mojom_wrappers",
+    ":rewards_types_mojom_wrappers",
+    "//base",
+    "//brave/components/brave_rewards/common",
+    "//brave/components/brave_rewards/core",
+    "//brave/ios/browser/api/common",
+    "//components/os_crypt/sync",
+    "//net:net",
+    "//url",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "UIKit.framework",
+    "Network.framework",
+  ]
+}
+
+ios_objc_mojom_wrappers("rewards_mojom_wrappers") {
+  mojom_target =
+      "//brave/components/brave_rewards/common/mojom:rewards_interfaces"
+  sources = [ "//brave/components/brave_rewards/common/mojom/rewards.mojom" ]
+}
+
+ios_objc_mojom_wrappers("rewards_types_mojom_wrappers") {
+  mojom_target = "//brave/components/brave_rewards/common/mojom:rewards_types"
+
+  # rewards_types.mojom shares the same namespace/module as rewards.mojom
+  generate_namespace = false
+  sources =
+      [ "//brave/components/brave_rewards/common/mojom/rewards_types.mojom" ]
+}

@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
-import { create } from 'ethereum-blockies'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Actions
 import { PanelActions } from '../../../panel/actions'
@@ -15,12 +15,16 @@ import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { isHardwareAccount } from '../../../utils/address-utils'
-import { findAccountName } from '../../../utils/account-utils'
-import { useUnsafePanelSelector, useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
+import { useUnsafePanelSelector } from '../../../common/hooks/use-safe-selector'
 import { PanelSelectors } from '../../../panel/selectors'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
+import { isHardwareAccount } from '../../../utils/account-utils'
+
+// Hooks
+import { useAccountOrb } from '../../../common/hooks/use-orb'
+
+// Queries
+import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 
 // Components
 import NavButton from '../buttons/nav-button/index'
@@ -59,7 +63,7 @@ import {
 
 import { DetailColumn } from '../transaction-box/style'
 import { getSolanaTransactionInstructionParamsAndType } from '../../../utils/solana-instruction-utils'
-import { Tooltip } from '../../shared'
+import { Tooltip } from '../../shared/tooltip/index'
 
 export interface Props {
   signMode: 'signTx' | 'signAllTxs'
@@ -77,7 +81,6 @@ const onClickLearnMore = () => {
 export const SignTransactionPanel = ({ signMode }: Props) => {
   // redux
   const dispatch = useDispatch()
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const signTransactionRequests = useUnsafePanelSelector(
     PanelSelectors.signTransactionRequests
   )
@@ -90,10 +93,9 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
       : signAllTransactionsRequests
 
   // queries
-  const { data: network } = useGetNetworkQuery({
-    chainId: signTransactionData[0].chainId,
-    coin: signTransactionData[0].coin
-  })
+  const { data: network } = useGetNetworkQuery(
+    signTransactionData[0] ?? skipToken
+  )
 
   // state
   const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignRisk)
@@ -102,9 +104,8 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
   >(undefined)
 
   // memos
-  const orb = React.useMemo(() => {
-    return create({ seed: selectedQueueData?.fromAddress?.toLowerCase() ?? '', size: 8, scale: 16 }).toDataURL()
-  }, [selectedQueueData?.fromAddress])
+  const { account } = useAccountQuery(selectedQueueData?.fromAccountId)
+  const orb = useAccountOrb(account)
 
   const signTransactionQueueInfo = React.useMemo(() => {
     return {
@@ -145,17 +146,25 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
         id: selectedQueueData.id
       }))
     }
-  }, [selectedQueueData, accounts, signMode])
+  }, [selectedQueueData, signMode])
 
   const onSign = React.useCallback(() => {
     if (!selectedQueueData) {
       return
     }
+    if (!account) {
+      return
+    }
 
-    const isHwAccount = isHardwareAccount(accounts, selectedQueueData.fromAddress)
+    const isHwAccount = isHardwareAccount(account.accountId)
     if (signMode === 'signTx') {
       if (isHwAccount) {
-        dispatch(PanelActions.signTransactionHardware(selectedQueueData as BraveWallet.SignTransactionRequest))
+        dispatch(
+          PanelActions.signTransactionHardware({
+            account,
+            request: selectedQueueData as BraveWallet.SignTransactionRequest
+          })
+        )
         return
       }
       dispatch(PanelActions.signTransactionProcessed({
@@ -166,7 +175,12 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
     }
     if (signMode === 'signAllTxs') {
       if (isHwAccount) {
-        dispatch(PanelActions.signAllTransactionsHardware(selectedQueueData as BraveWallet.SignAllTransactionsRequest))
+        dispatch(
+          PanelActions.signAllTransactionsHardware({
+            account,
+            request: selectedQueueData as BraveWallet.SignAllTransactionsRequest
+          })
+        )
         return
       }
       dispatch(PanelActions.signAllTransactionsProcessed({
@@ -174,7 +188,7 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
         id: selectedQueueData.id
       }))
     }
-  }, [selectedQueueData, accounts, signMode])
+  }, [selectedQueueData, signMode])
 
   const onContinueSigning = React.useCallback(() => {
     setSignStep(SignDataSteps.SignData)
@@ -226,11 +240,11 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
       }
 
       <Tooltip
-        text={selectedQueueData?.fromAddress || ''}
+        text={account?.address || ''}
         isAddress
       >
         <AccountNameText>
-          {findAccountName(accounts, selectedQueueData?.fromAddress || '') ?? ''}
+          {account?.name ?? ''}
         </AccountNameText>
       </Tooltip>
 

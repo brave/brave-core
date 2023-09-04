@@ -181,11 +181,10 @@ mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
     return nullptr;
   }
 
-  if (token_info->payload.result.size() != 1) {
+  if (token_info->result.size() != 1) {
     return nullptr;
   }
-  const api::asset_ratio::TokenInfoResult& result =
-      token_info->payload.result.front();
+  const api::asset_ratio::TokenInfoResult& result = token_info->result.front();
 
   int decimals = 0;
   const auto eth_addr = EthAddress::FromHex(result.contract_address);
@@ -202,8 +201,8 @@ mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
       result.token_type ==
           api::asset_ratio::TOKEN_TYPE_ERC1155 /* is_erc1155 */,
       result.token_type == api::asset_ratio::TOKEN_TYPE_ERC721 /* is_nft */,
-      result.symbol, decimals, true /* visible */, "" /* token_id */,
-      "" /* coingecko_id */, chain_id, coin);
+      false /* is_spam */, result.symbol, decimals, true /* visible */,
+      "" /* token_id */, "" /* coingecko_id */, chain_id, coin);
 }
 
 absl::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
@@ -232,6 +231,21 @@ absl::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
     values.push_back(std::move(coin_market));
   }
   return values;
+}
+
+absl::optional<std::string> ParseStripeBuyURL(const base::Value& json_value) {
+  // Parses results like this:
+  // {
+  //   "url": "https://crypto.link.com?session_hash=abcdefgh"
+  // }
+  auto stripe_buy_url_response =
+      api::asset_ratio::StripeBuyURLResponse::FromValue(json_value);
+
+  if (!stripe_buy_url_response) {
+    return absl::nullopt;
+  }
+
+  return stripe_buy_url_response->url;
 }
 
 }  // namespace brave_wallet

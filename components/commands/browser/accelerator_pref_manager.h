@@ -11,6 +11,8 @@
 
 #include "base/component_export.h"
 #include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
+#include "base/containers/span.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/accelerators/accelerator.h"
@@ -23,7 +25,8 @@ class COMPONENT_EXPORT(COMMANDS_BROWSER) AcceleratorPrefManager {
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
-  explicit AcceleratorPrefManager(PrefService* prefs);
+  explicit AcceleratorPrefManager(PrefService* prefs,
+                                  base::span<const int> available_command_ids);
   AcceleratorPrefManager(const AcceleratorPrefManager&) = delete;
   AcceleratorPrefManager& operator=(const AcceleratorPrefManager&) = delete;
   ~AcceleratorPrefManager();
@@ -38,6 +41,7 @@ class COMPONENT_EXPORT(COMMANDS_BROWSER) AcceleratorPrefManager {
 
  private:
   raw_ptr<PrefService> prefs_;
+  base::flat_set<int> available_command_ids_;
 };
 
 }  // namespace commands

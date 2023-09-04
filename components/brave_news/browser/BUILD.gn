@@ -18,10 +18,16 @@ static_library("browser") {
     "combined_feed_parsing.h",
     "direct_feed_controller.cc",
     "direct_feed_controller.h",
+    "direct_feed_fetcher.cc",
+    "direct_feed_fetcher.h",
     "feed_building.cc",
     "feed_building.h",
     "feed_controller.cc",
     "feed_controller.h",
+    "feed_fetcher.cc",
+    "feed_fetcher.h",
+    "feed_v2_builder.cc",
+    "feed_v2_builder.h",
     "html_parsing.cc",
     "html_parsing.h",
     "locales_helper.cc",
@@ -32,6 +38,8 @@ static_library("browser") {
     "publishers_controller.h",
     "publishers_parsing.cc",
     "publishers_parsing.h",
+    "signal_calculator.cc",
+    "signal_calculator.h",
     "suggestions_controller.cc",
     "suggestions_controller.h",
     "unsupported_publisher_migrator.cc",
@@ -66,7 +74,7 @@ static_library("browser") {
   ]
 
   public_deps = [
-    "../rust:rust-rs",
+    "../rust:rust_lib",
     "//brave/components/brave_news/common",
     "//brave/components/brave_news/common:mojom",
   ]

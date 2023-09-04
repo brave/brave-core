@@ -9,6 +9,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/brave_ads/ads_tab_helper.h"
 #include "brave/browser/brave_ads/search_result_ad/search_result_ad_tab_helper.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -16,13 +17,15 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
-#include "brave/components/brave_news/common/features.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -43,9 +46,12 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_shields_data_controller.h"
-#include "brave/components/ai_chat/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/features.h"
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -79,6 +85,14 @@
 #include "brave/components/request_otr/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_tab_helper.h"
+#endif
+
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
+#endif
+
 namespace brave {
 
 void AttachTabHelpers(content::WebContents* web_contents) {
@@ -94,12 +108,17 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   BraveBookmarkTabHelper::CreateForWebContents(web_contents);
   brave_shields::BraveShieldsDataController::CreateForWebContents(web_contents);
   ThumbnailTabHelper::CreateForWebContents(web_contents);
-  if (ai_chat::features::IsAIChatEnabled()) {
-    AIChatTabHelper::CreateForWebContents(web_contents);
-  }
 #endif
 
   brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (ai_chat::features::IsAIChatEnabled()) {
+    ai_chat::AIChatTabHelper::CreateForWebContents(
+        web_contents,
+        g_brave_browser_process->process_misc_metrics()->ai_chat_metrics());
+  }
+#endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
   BraveDrmTabHelper::CreateForWebContents(web_contents);
@@ -134,6 +153,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
+#if defined(TOOLKIT_VIEWS)
+  SidebarTabHelper::CreateForWebContents(web_contents);
+#endif
+
   if (!web_contents->GetBrowserContext()->IsOffTheRecord()) {
     BraveNewsTabHelper::CreateForWebContents(web_contents);
   }
@@ -157,6 +180,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
     }
 #endif
   }
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  playlist::PlaylistTabHelper::MaybeCreateForWebContents(web_contents);
+#endif
 }
 
 }  // namespace brave

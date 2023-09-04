@@ -18,9 +18,15 @@
 -keep class org.chromium.brave_wallet.mojom.NetworkInfo { *; }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkBridge {
+    *** mNativeBookmarkBridge;
     *** extensiveBookmarkChangesBeginning(...);
     *** extensiveBookmarkChangesEnded(...);
     *** createBookmarkItem(...);
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkBridge {
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.LaunchIntentDispatcher {
@@ -76,11 +82,7 @@
 -keep class org.chromium.chrome.browser.sync.settings.ManageSyncSettings {
     *** mGoogleActivityControls;
     *** mSyncEncryption;
-    *** mReviewSyncData;
     *** mSyncPaymentsIntegration;
-    *** mSyncReadingList;
-    *** mSyncAutofill;
-    *** mTurnOffSync;
 }
 
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
@@ -166,7 +168,6 @@
 -keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTopToolbar {
     *** mNewTabViewButton;
     *** mNewTabImageButton;
-    *** mToggleTabStackButton;
     *** mMenuButton;
     *** mShouldShowNewTabVariation;
     *** mIsIncognito;
@@ -205,10 +206,74 @@
 
 -keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkUtils {
     *** addOrEditBookmark(...);
+    *** showBookmarkManagerOnPhone(...);
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
     *** addOrEditBookmark(...);
+    *** showBookmarkManagerOnPhone(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkToolbar {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkToolbar {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkToolbarCoordinator {
+    *** mToolbar;
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkToolbarCoordinator {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.app.bookmarks.BookmarkActivity {
+    *** mBookmarkManagerCoordinator;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.app.bookmarks.BraveBookmarkActivity {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkManagerCoordinator {
+    *** mMediator;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkManagerCoordinator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkManagerMediator {
+    *** mBookmarkModel;
+    *** mContext;
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkManagerMediator {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkModel {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkModel {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkPage {
+    *** mBookmarkManagerCoordinator;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkPage {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.preferences.ChromePreferenceKeyChecker {
@@ -486,6 +551,17 @@
     public <init>(...);
 }
 
+
+-keep class org.chromium.chrome.browser.contextmenu.ChromeContextMenuPopulator {
+    *** onItemSelected(...);
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.contextmenu.BraveChromeContextMenuPopulator {
+    public <init>(...);
+}
+
+
 -keep class org.chromium.chrome.browser.omnibox.LocationBarCoordinator {
     *** mLocationBarMediator;
     public <init>(...);
@@ -531,11 +607,11 @@
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListBuilder {
-    public <init>(...);
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveDropdownItemViewInfoListBuilder {
-    public <init>(...);
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListManager {
@@ -622,6 +698,7 @@
 }
 
 -keep class org.chromium.chrome.browser.flags.CachedFlag {
+    *** mDefaultValue;
     <init>(...);
 }
 
@@ -702,4 +779,28 @@
 
 -keep class org.chromium.chrome.browser.incognito.reauth.IncognitoReauthCoordinatorBase {
     *** mIncognitoReauthView;
+}
+
+-keep class org.chromium.chrome.browser.firstrun.BraveFreIntentCreator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.firstrun.FreIntentCreator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.feedback.BraveHelpAndFeedbackLauncherImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncherImpl {
+    private <init>(...);
+}
+
+-keep class org.chromium.components.external_intents.ExternalNavigationHandler {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.externalnav.BraveExternalNavigationHandler {
+    public <init>(...);
 }

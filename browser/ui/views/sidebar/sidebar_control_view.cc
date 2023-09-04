@@ -21,6 +21,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -227,7 +228,8 @@ void SidebarControlView::AddChildViews() {
 
 void SidebarControlView::OnButtonPressed(views::View* view) {
   if (view == sidebar_settings_view_) {
-    browser_->sidebar_controller()->LoadAtTab(
+    ShowSingletonTabOverwritingNTP(
+        browser_,
         GURL("brave://settings?search=" +
              l10n_util::GetStringUTF8(
                  IDS_SETTINGS_APPEARNCE_SETTINGS_SIDEBAR_PART_TITLE)));

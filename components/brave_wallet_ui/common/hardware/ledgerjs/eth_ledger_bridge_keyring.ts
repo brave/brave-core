@@ -40,6 +40,10 @@ export default class EthereumLedgerBridgeKeyring extends LedgerBridgeKeyring imp
     return BraveWallet.CoinType.ETH
   }
 
+  keyringId = (): BraveWallet.KeyringId => {
+    return BraveWallet.KeyringId.kDefault
+  }
+
   getAccounts = async (from: number, to: number, scheme: string): Promise<GetAccountsHardwareOperationResult> => {
     const result = await this.unlock()
     if (!result.success) {
@@ -197,7 +201,7 @@ export default class EthereumLedgerBridgeKeyring extends LedgerBridgeKeyring imp
         hardwareVendor: this.type(),
         deviceId: this.deviceId,
         coin: this.coin(),
-        network: undefined
+        keyringId: this.keyringId()
       })
     }
     return { success: true, payload: accounts }

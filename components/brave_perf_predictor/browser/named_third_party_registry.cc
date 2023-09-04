@@ -41,19 +41,21 @@ ParseMappings(const base::StringPiece entities, bool discard_irrelevant) {
   }
 
   // Collect the mappings
-  for (auto& entity : document->GetList()) {
-    const std::string* entity_name = entity.FindStringPath("name");
+  for (auto& item : document->GetList()) {
+    const auto& entity = item.GetDict();
+
+    const std::string* entity_name = entity.FindString("name");
     if (!entity_name)
       continue;
     if (discard_irrelevant && !relevant_entity_set.contains(*entity_name)) {
       VLOG(3) << "Irrelevant entity " << *entity_name;
       continue;
     }
-    const auto* entity_domains = entity.FindListPath("domains");
+    const auto* entity_domains = entity.FindList("domains");
     if (!entity_domains)
       continue;
 
-    for (auto& entity_domain_it : entity_domains->GetList()) {
+    for (auto& entity_domain_it : *entity_domains) {
       if (!entity_domain_it.is_string()) {
         continue;
       }

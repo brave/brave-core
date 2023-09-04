@@ -8,10 +8,8 @@ import * as React from 'react'
 import { LocaleContext, createLocaleContextForTesting } from '../../../lib/locale_context'
 import { WithThemeVariables } from '../../with_theme_variables'
 
-import { RewardsTourModal } from '../rewards_tour_modal'
-import { RewardsOptInModal } from '../rewards_opt_in_modal'
+import { RewardsOptIn } from '../rewards_opt_in'
 import { SettingsOptInForm } from '../settings_opt_in_form'
-import { RewardsTourPromo } from '../rewards_tour_promo'
 
 import { localeStrings } from './locale_strings'
 
@@ -40,84 +38,115 @@ function StoryWrapper (props: StoryWrapperProps) {
   )
 }
 
-function getRewardsTourProps () {
-  return {
-    firstTimeSetup: true,
-    adsPerHour: 3,
-    canAutoContribute: true,
-    canConnectAccount: true,
-    onAdsPerHourChanged: actionLogger('onAdsPerHourChanged'),
-    onConnectAccount: actionLogger('onConnectAccount'),
-    onDone: actionLogger('onDone')
-  }
-}
-
 export default {
   title: 'Rewards/Onboarding'
 }
 
-export function TourModal () {
-  const [adsPerHour, setAdsPerHour] = React.useState(3)
-
+export function OptIn() {
   return (
     <StoryWrapper>
-      <RewardsTourModal
-        {...getRewardsTourProps()}
-        adsPerHour={adsPerHour}
-        onAdsPerHourChanged={setAdsPerHour}
-        onClose={actionLogger('onClose')}
-      />
-    </StoryWrapper>
-  )
-}
-
-export function TourModalWide () {
-  return (
-    <StoryWrapper>
-      <RewardsTourModal
-        {...getRewardsTourProps()}
-        layout='wide'
-        onClose={actionLogger('onClose')}
-      />
-    </StoryWrapper>
-  )
-}
-
-TourModalWide.storyName = 'Tour Modal (Wide)'
-
-export function OptInModal () {
-  return (
-    <StoryWrapper>
-      <RewardsOptInModal
-        initialView='declare-country'
+      <RewardsOptIn
+        initialView='default'
         availableCountries={['US']}
         defaultCountry={'US'}
-        result={'success'}
+        result={null}
         onEnable={actionLogger('onEnable')}
-        onTakeTour={actionLogger('onTakeTour')}
         onHideResult={actionLogger('onHideResult')}
       />
     </StoryWrapper>
   )
 }
 
-export function SettingsOptIn () {
+export function OptInDeclareCountry() {
   return (
-    <StoryWrapper style={{ width: '619px' }}>
-      <SettingsOptInForm
+    <StoryWrapper>
+      <RewardsOptIn
+        initialView='declare-country'
+        availableCountries={['US']}
+        defaultCountry={'US'}
+        result={null}
         onEnable={actionLogger('onEnable')}
-        onTakeTour={actionLogger('onTakeTour')}
+        onHideResult={actionLogger('onHideResult')}
       />
     </StoryWrapper>
   )
 }
 
-export function TourPromo () {
+OptInDeclareCountry.storyName = 'Opt In (declare country)'
+
+export function OptInSuccess () {
   return (
-    <StoryWrapper style={{ width: '373px' }}>
-      <RewardsTourPromo
-        onClose={actionLogger('onClose')}
-        onTakeTour={actionLogger('onTakeTour')}
+    <StoryWrapper>
+      <RewardsOptIn
+        initialView='declare-country'
+        availableCountries={['US']}
+        defaultCountry={'US'}
+        result={'success'}
+        onEnable={actionLogger('onEnable')}
+        onHideResult={actionLogger('onHideResult')}
+      />
+    </StoryWrapper>
+  )
+}
+
+OptInSuccess.storyName = 'Opt In (success)'
+
+export function OptInError1() {
+  return (
+    <StoryWrapper>
+      <RewardsOptIn
+        initialView='declare-country'
+        availableCountries={['US']}
+        defaultCountry={'US'}
+        result={'wallet-generation-disabled'}
+        onEnable={actionLogger('onEnable')}
+        onHideResult={actionLogger('onHideResult')}
+      />
+    </StoryWrapper>
+  )
+}
+
+OptInError1.storyName = 'Opt In (Error: wallet generation disabled)'
+
+export function OptInError2() {
+  return (
+    <StoryWrapper>
+      <RewardsOptIn
+        initialView='declare-country'
+        availableCountries={['US']}
+        defaultCountry={'US'}
+        result={'country-already-declared'}
+        onEnable={actionLogger('onEnable')}
+        onHideResult={actionLogger('onHideResult')}
+      />
+    </StoryWrapper>
+  )
+}
+
+OptInError2.storyName = 'Opt In (Error: country already declared)'
+
+export function OptInError3() {
+  return (
+    <StoryWrapper>
+      <RewardsOptIn
+        initialView='declare-country'
+        availableCountries={['US']}
+        defaultCountry={'US'}
+        result={'unexpected-error'}
+        onEnable={actionLogger('onEnable')}
+        onHideResult={actionLogger('onHideResult')}
+      />
+    </StoryWrapper>
+  )
+}
+
+OptInError3.storyName = 'Opt In (Error: unexpected error)'
+
+export function SettingsOptIn () {
+  return (
+    <StoryWrapper style={{ width: '619px' }}>
+      <SettingsOptInForm
+        onEnable={actionLogger('onEnable')}
       />
     </StoryWrapper>
   )

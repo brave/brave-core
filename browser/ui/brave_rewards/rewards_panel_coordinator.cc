@@ -28,9 +28,9 @@ bool RewardsPanelCoordinator::OpenRewardsPanel() {
       mojom::RewardsPanelArgs(mojom::RewardsPanelView::kDefault, ""));
 }
 
-bool RewardsPanelCoordinator::ShowRewardsTour() {
+bool RewardsPanelCoordinator::ShowRewardsSetup() {
   return OpenWithArgs(
-      mojom::RewardsPanelArgs(mojom::RewardsPanelView::kRewardsTour, ""));
+      mojom::RewardsPanelArgs(mojom::RewardsPanelView::kRewardsSetup, ""));
 }
 
 bool RewardsPanelCoordinator::ShowGrantCaptcha(const std::string& grant_id) {

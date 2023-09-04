@@ -10,9 +10,9 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -28,12 +28,12 @@ namespace promotion {
 class GetAvailableTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  GetAvailable available_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  GetAvailable available_{mock_engine_impl_};
 };
 
 TEST_F(GetAvailableTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -78,7 +78,7 @@ TEST_F(GetAvailableTest, ServerOK) {
             "[\"dvpysTSiJdZUPihius7pvGOfngRWfDiIbrowykgMi1I=\"]";
         expected_promotion.legacy_claimed = false;
 
-        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+        EXPECT_EQ(result, mojom::Result::OK);
         EXPECT_TRUE(corrupted_promotions.empty());
         EXPECT_EQ(list.size(), 1ul);
         EXPECT_TRUE(expected_promotion.Equals(*list[0]));
@@ -89,7 +89,7 @@ TEST_F(GetAvailableTest, ServerOK) {
 }
 
 TEST_F(GetAvailableTest, ServerError400) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -100,7 +100,7 @@ TEST_F(GetAvailableTest, ServerError400) {
       });
 
   base::MockCallback<GetAvailableCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, IsEmpty(), IsEmpty()))
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, IsEmpty(), IsEmpty()))
       .Times(1);
   available_.Request("macos", callback.Get());
 
@@ -108,7 +108,7 @@ TEST_F(GetAvailableTest, ServerError400) {
 }
 
 TEST_F(GetAvailableTest, ServerError404) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -127,7 +127,7 @@ TEST_F(GetAvailableTest, ServerError404) {
 }
 
 TEST_F(GetAvailableTest, ServerError500) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -138,7 +138,7 @@ TEST_F(GetAvailableTest, ServerError500) {
       });
 
   base::MockCallback<GetAvailableCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, IsEmpty(), IsEmpty()))
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, IsEmpty(), IsEmpty()))
       .Times(1);
   available_.Request("macos", callback.Get());
 
@@ -146,7 +146,7 @@ TEST_F(GetAvailableTest, ServerError500) {
 }
 
 TEST_F(GetAvailableTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -157,7 +157,7 @@ TEST_F(GetAvailableTest, ServerErrorRandom) {
       });
 
   base::MockCallback<GetAvailableCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, IsEmpty(), IsEmpty()))
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, IsEmpty(), IsEmpty()))
       .Times(1);
   available_.Request("macos", callback.Get());
 
@@ -165,7 +165,7 @@ TEST_F(GetAvailableTest, ServerErrorRandom) {
 }
 
 TEST_F(GetAvailableTest, ServerWrongResponse) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();

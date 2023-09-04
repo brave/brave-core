@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -21,7 +22,8 @@ namespace brave_wallet {
 
 // static
 JsonRpcServiceFactory* JsonRpcServiceFactory::GetInstance() {
-  return base::Singleton<JsonRpcServiceFactory>::get();
+  static base::NoDestructor<JsonRpcServiceFactory> instance;
+  return instance.get();
 }
 
 // static

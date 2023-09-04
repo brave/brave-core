@@ -1,0 +1,19 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//testing/test.gni")
+
+assert(enable_brave_vpn && is_win)
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_vpn_wireguard_observer_service_win_unittest.cc" ]
+  deps = [
+    "//chrome/test:test_support",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+  ]
+}

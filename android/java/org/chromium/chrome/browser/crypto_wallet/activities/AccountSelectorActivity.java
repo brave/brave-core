@@ -14,6 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.AccountKind;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
@@ -21,6 +22,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.CreateAccountBottomSheetFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,13 +69,12 @@ public class AccountSelectorActivity
 
     @Override
     public void onAccountClick(WalletListItemModel walletListItemModel) {
-        for (AccountInfo accountInfo : mAccountInfos) {
-            if (walletListItemModel.getTitle().equals(accountInfo.name)
-                    && walletListItemModel.getSubTitle().equals(accountInfo.address)) {
-                mKeyringModel.setSelectedAccount(accountInfo.address, accountInfo.coin);
-                finish();
-            }
+        if (walletListItemModel.getAccountInfo() == null) {
+            return;
         }
+
+        mKeyringModel.setSelectedAccount(walletListItemModel.getAccountInfo());
+        finish();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -84,7 +85,7 @@ public class AccountSelectorActivity
             boolean callDataSetChanged = true;
             if (mAccountInfos != null) {
                 for (AccountInfo accountInfo : mAccountInfos) {
-                    if (selectedAccountInfo.address.equals(accountInfo.address)) {
+                    if (WalletUtils.accountIdsEqual(selectedAccountInfo, accountInfo)) {
                         callDataSetChanged = false;
                         break;
                     }
@@ -96,10 +97,10 @@ public class AccountSelectorActivity
                 mAccountInfos = accountInfos;
                 List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
                 for (AccountInfo accountInfo : mAccountInfos) {
-                    if (!accountInfo.isImported) {
+                    // TODO(apaymyshev): Why I'm not allowed to select imported account?
+                    if (accountInfo.accountId.kind != AccountKind.IMPORTED) {
                         walletListItemModelList.add(
-                                new WalletListItemModel(R.drawable.ic_eth, accountInfo.name,
-                                        accountInfo.address, null, null, accountInfo.isImported));
+                                WalletListItemModel.makeForAccountInfo(accountInfo));
                     }
                 }
 

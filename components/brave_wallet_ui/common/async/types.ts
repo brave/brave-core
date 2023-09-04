@@ -8,6 +8,7 @@ import { ThunkDispatch } from 'redux-thunk'
 
 import { WalletPageState, WalletPanelState } from '../../constants/types'
 
-export type State = WalletPanelState | WalletPageState
+export type State = (WalletPanelState | WalletPageState) &
+  Partial<WalletPanelState & WalletPageState>
 export type Dispatch = ThunkDispatch<State, void, AnyAction>
 export type Store = MiddlewareAPI<Dispatch, State>

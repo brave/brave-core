@@ -1,0 +1,51 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
+
+assert(enable_ai_chat)
+
+if (is_official_build) {
+  assert(brave_ai_chat_endpoint != "")
+}
+
+static_library("browser") {
+  sources = [
+    "ai_chat_api.cc",
+    "ai_chat_api.h",
+    "ai_chat_metrics.cc",
+    "ai_chat_metrics.h",
+    "ai_chat_tab_helper.cc",
+    "ai_chat_tab_helper.h",
+    "constants.cc",
+    "constants.h",
+    "page_content_fetcher.cc",
+    "page_content_fetcher.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/common",
+    "//brave/components/ai_chat/common/buildflags",
+    "//brave/components/ai_chat/common/mojom",
+    "//brave/components/api_request_helper",
+    "//brave/components/constants",
+    "//brave/components/p3a_utils",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/time_period_storage",
+    "//components/favicon/content",
+    "//components/favicon/core",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//net/traffic_annotation",
+    "//services/data_decoder/public/cpp",
+    "//services/network/public/cpp",
+    "//services/service_manager/public/cpp",
+    "//third_party/abseil-cpp:absl",
+    "//ui/base",
+    "//url",
+  ]
+}

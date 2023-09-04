@@ -8,8 +8,15 @@
 
 #include "components/omnibox/browser/omnibox_view.h"
 
-#define CanPasteAndGo virtual CanPasteAndGo
+#define CanPasteAndGo                                       \
+  CanPasteAndGo_Chromium(const std::u16string& text) const; \
+  bool CanPasteAndGo
+#define PasteAndGo                                                \
+  PasteAndGo_Chromium(const std::u16string& text,                 \
+                      base::TimeTicks match_selection_timestamp); \
+  void PasteAndGo
 #include "src/components/omnibox/browser/omnibox_edit_model.h"  // IWYU pragma: export
 #undef CanPasteAndGo
+#undef PasteAndGo
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_OMNIBOX_EDIT_MODEL_H_

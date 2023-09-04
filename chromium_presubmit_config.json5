@@ -58,7 +58,9 @@
   "default_files_to_skip": [
     "\\.storybook/",
     "components/brave_wallet/resources/solana_web3_script\\.js",
-    "ios/browser/api/ledger/legacy_database/core_data_models/",
+    "ios/browser/api/brave_rewards/legacy_database/core_data_models/",
+    "third_party/rust/",
+    "tools/crates/",
     "win_build_output/",
   ],
 
@@ -81,7 +83,6 @@
     ],
 
     // Checks to be fixed.
-    "CheckJavaStyle": [".*\\.java"],
     "CheckUnwantedDependencies": [".*\\.java"],
     "CheckSpamLogging": [
       "browser/browsing_data/brave_clear_browsing_data\\.cc",
@@ -91,8 +92,8 @@
       "components/permissions/permission_lifetime_utils\\.cc",
       "components/tor/tor_launcher_factory\\.cc",
       "components/webcompat_reporter/browser/webcompat_report_uploader\\.cc",
-      "ios/browser/api/ledger/legacy_database/legacy_ledger_database\\.mm",
-      "ios/browser/api/ledger/promotion_solution\\.mm",
+      "ios/browser/api/brave_rewards/legacy_database/legacy_ledger_database\\.mm",
+      "ios/browser/api/brave_rewards/promotion_solution\\.mm",
     ],
     "CheckUniquePtrOnUpload": [
       "components/brave_sync/qr_code_data\\.cc",
@@ -143,16 +144,17 @@
       "components/cosmetic_filters/renderer/cosmetic_filters_js_handler\\.h",
       "components/speedreader/renderer/speedreader_js_handler\\.h",
     ],
-    // A temporary fix to silence a failing presubmit check on a namespace
-    // change.
+    // A temporary fix to silence a failing presubmit check on file renames.
     "CheckStableMojomChanges": [
-      "components/services/bat_ledger/public/interfaces/ledger_factory\\.mojom",
-      "components/brave_rewards/common/mojom/bat_ledger\\.mojom",
-      "components/brave_rewards/common/mojom/tip_panel\\.mojom",
+      "components/brave_rewards/common/mojom/.*",
+      "components/services/bat_ads/public/interfaces/bat_ads\\.mojom",
+      "components/services/bat_ledger/public/interfaces/.*",
+      "components/services/bat_rewards/public/interfaces/.*",
     ],
     "CheckWebDevStyle": [
       "components/speedreader/resources/speedreader-desktop.css",
       "components/speedreader/resources/third_party/",
+      "components/webpack/gen-webpack-grd\\.js",
       "test/data/speedreader/",
     ]
   },
@@ -175,18 +177,16 @@
     ],
     "/\\bstd::bind\\b": [
       "components/brave_rewards/.*",
-      "components/services/bat_ledger/bat_ledger_impl\\.cc",
-      "components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge\\.cc",
     ],
     "/\\bstd::function\\b": [
       "chromium_src/chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views\\.cc",
-      "components/brave_rewards/.*",
+      "components/brave_rewards/core/.*",
       "ios/browser/api/bookmarks/exporter/brave_bookmarks_exporter\\.mm",
       "ios/browser/api/bookmarks/importer/brave_bookmarks_importer\\.mm",
     ],
     "/\\bstd::shared_ptr\\b": [
       "browser/net/.*",
-      "components/brave_rewards/.*",
+      "components/brave_rewards/core/.*",
       "ios/browser/api/certificate/brave_certificate\\.mm",
       "ios/browser/api/net/certificate_utility\\.mm",
     ],

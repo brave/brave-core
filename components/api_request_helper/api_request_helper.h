@@ -13,16 +13,19 @@
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
+#include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace network {
 class SharedURLLoaderFactory;
-class SimpleURLLoader;
 }  // namespace network
 
 namespace api_request_helper {
@@ -65,6 +68,8 @@ class APIRequestResult {
   GURL final_url() const { return final_url_; }
 
  private:
+  friend class APIRequestHelper;
+
   int response_code_ = -1;
   std::string body_;
   base::Value value_body_;
@@ -81,19 +86,90 @@ struct APIRequestOptions {
 };
 
 // Anyone is welcome to use APIRequestHelper to reduce boilerplate
+// Unit tests which need to use the data decoding from this class can use
+// data_decoder::test::InProcessDataDecoder to run all decode operations
+// in-process.
 class APIRequestHelper {
  public:
-  using Ticket = std::list<std::unique_ptr<network::SimpleURLLoader>>::iterator;
+  using DataReceivedCallback = base::RepeatingCallback<void(
+      data_decoder::DataDecoder::ValueOrError result)>;
+  using ResultCallback = base::OnceCallback<void(APIRequestResult)>;
+  using ResponseConversionCallback =
+      base::OnceCallback<absl::optional<std::string>(
+          const std::string& raw_response)>;
+
+  class URLLoaderHandler : public network::SimpleURLLoaderStreamConsumer {
+   public:
+    explicit URLLoaderHandler(APIRequestHelper* api_request_helper);
+    ~URLLoaderHandler() override;
+    URLLoaderHandler(const URLLoaderHandler&) = delete;
+    URLLoaderHandler& operator=(const URLLoaderHandler&) = delete;
+
+    void RegisterURLLoader(std::unique_ptr<network::SimpleURLLoader> loader);
+    void SetResultCallback(ResultCallback result_callback);
+    base::WeakPtr<URLLoaderHandler> GetWeakPtr();
+
+    void send_sse_data_for_testing(base::StringPiece string_piece,
+                                   bool is_sse,
+                                   DataReceivedCallback callback);
+
+   private:
+    friend class APIRequestHelper;
+
+    data_decoder::DataDecoder* GetDataDecoder();
+
+    // Run completion callback if there are no operations in progress.
+    // If Cancel is needed even if url or data operations are in progress,
+    // then call |APIRequestHelper::Cancel|.
+    void MaybeSendResult();
+    void ParseSSE(base::StringPiece string_piece);
+
+    // network::SimpleURLLoaderStreamConsumer implementation:
+    void OnDataReceived(base::StringPiece string_piece,
+                        base::OnceClosure resume) override;
+    void OnComplete(bool success) override;
+    void OnRetry(base::OnceClosure start_retry) override;
+
+    // This is used for one shot responses
+    void OnResponse(ResponseConversionCallback conversion_callback,
+                    const std::unique_ptr<std::string> response_body);
+
+    // Decode one shot reponses
+    void OnParseJsonResponse(
+        APIRequestResult result,
+        data_decoder::DataDecoder::ValueOrError result_value);
+
+    std::unique_ptr<network::SimpleURLLoader> url_loader_;
+    raw_ptr<APIRequestHelper> api_request_helper_;
+
+    DataReceivedCallback data_received_callback_;
+    ResultCallback result_callback_;
+    ResponseConversionCallback conversion_callback_;
+
+    bool is_sse_ = false;
+
+    // To ensure ordered processing of stream chunks, we create our own
+    // instance of DataDecoder per request. This avoids the issue
+    // of unordered chunks that can occur when calling the static function,
+    // which creates a new instance of the process for each call. By using a
+    // single instance of the parser, we can reuse it for consecutive calls.
+    std::unique_ptr<data_decoder::DataDecoder> data_decoder_;
+    // Keep track of number of in-progress data decoding operations
+    // so that we can know if any are still in-progress when the request
+    // completes.
+    int current_decoding_operation_count_ = 0;
+    bool request_is_finished_ = false;
+
+    base::WeakPtrFactory<URLLoaderHandler> weak_ptr_factory_{this};
+  };
+
+  using URLLoaderHandlerList = std::list<std::unique_ptr<URLLoaderHandler>>;
+  using Ticket = std::list<std::unique_ptr<URLLoaderHandler>>::iterator;
 
   APIRequestHelper(
       net::NetworkTrafficAnnotationTag annotation_tag,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~APIRequestHelper();
-
-  using ResultCallback = base::OnceCallback<void(APIRequestResult)>;
-  using ResponseConversionCallback =
-      base::OnceCallback<absl::optional<std::string>(
-          const std::string& raw_response)>;
 
   // Each response is expected in json format and will be validated through
   // JsonSanitizer. In cases where json contains values that are not supported
@@ -111,9 +187,22 @@ class APIRequestHelper {
       const APIRequestOptions& request_options = {},
       ResponseConversionCallback conversion_callback = base::NullCallback());
 
+  Ticket RequestSSE(
+      const std::string& method,
+      const GURL& url,
+      const std::string& payload,
+      const std::string& payload_content_type,
+      DataReceivedCallback data_received_callback,
+      ResultCallback result_callback,
+      const base::flat_map<std::string, std::string>& headers = {},
+      const APIRequestOptions& request_options = {});
+
   using DownloadCallback = base::OnceCallback<void(
       base::FilePath,
       const base::flat_map<std::string, std::string>& /*response_headers*/)>;
+
+  // TODO(petemill): Move Download (and OnDownload) to a separate module,
+  // it does not share much from this file, which is meant to be for JSON APIs.
   Ticket Download(const GURL& url,
                   const std::string& payload,
                   const std::string& payload_content_type,
@@ -123,12 +212,13 @@ class APIRequestHelper {
                   const APIRequestOptions& request_options = {});
 
   void Cancel(const Ticket& ticket);
+  void CancelAll();
 
  private:
   APIRequestHelper(const APIRequestHelper&) = delete;
   APIRequestHelper& operator=(const APIRequestHelper&) = delete;
 
-  std::unique_ptr<network::SimpleURLLoader> CreateLoader(
+  APIRequestHelper::Ticket CreateURLLoaderHandler(
       const std::string& method,
       const GURL& url,
       const std::string& payload,
@@ -138,18 +228,25 @@ class APIRequestHelper {
       bool allow_http_error_result,
       const base::flat_map<std::string, std::string>& headers);
 
-  using SimpleURLLoaderList =
-      std::list<std::unique_ptr<network::SimpleURLLoader>>;
-  void OnResponse(SimpleURLLoaderList::iterator iter,
-                  ResultCallback callback,
-                  ResponseConversionCallback conversion_callback,
-                  const std::unique_ptr<std::string> response_body);
-  void OnDownload(SimpleURLLoaderList::iterator iter,
-                  DownloadCallback callback,
-                  base::FilePath path);
+  // TODO(petemill): When Download has been removed, we don't need two versions
+  // of CreateURLLoaderHandler
+  APIRequestHelper::Ticket CreateRequestURLLoaderHandler(
+      const std::string& method,
+      const GURL& url,
+      const std::string& payload,
+      const std::string& payload_content_type,
+      const APIRequestOptions& request_options,
+      const base::flat_map<std::string, std::string>& headers,
+      ResultCallback result_callback);
+
+  void DeleteAndSendResult(Ticket iter,
+                           ResultCallback callback,
+                           APIRequestResult result);
+
+  void OnDownload(Ticket iter, DownloadCallback callback, base::FilePath path);
 
   net::NetworkTrafficAnnotationTag annotation_tag_;
-  SimpleURLLoaderList url_loaders_;
+  URLLoaderHandlerList url_loaders_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   base::WeakPtrFactory<APIRequestHelper> weak_ptr_factory_{this};
 };

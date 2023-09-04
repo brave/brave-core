@@ -7,21 +7,19 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.SOLANA_TRANSACTION_TYPES;
 
-import org.chromium.base.Log;
+import androidx.annotation.NonNull;
+
 import org.chromium.brave_wallet.mojom.FilTxData;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
-import org.chromium.brave_wallet.mojom.TransactionStatus;
-import org.chromium.brave_wallet.mojom.TransactionType;
-import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
 
-import java.util.Locale;
+import java.math.BigInteger;
 
 /*
- * Transaction fees parser. Java version of
- * components/brave_wallet_ui/common/hooks/transaction-parser.ts.
+ * Transaction fees parser. Java version adapted from
+ * components/brave_wallet_ui/utils/tx-utils.ts.
  */
 public class ParsedTransactionFees {
     // Strings are initialized to empty string instead of null, as the default value from mojo
@@ -99,25 +97,42 @@ public class ParsedTransactionFees {
     }
 
     public static ParsedTransactionFees parseTransactionFees(TransactionInfo txInfo,
-            NetworkInfo selectedNetwork, Double networkSpotPrice, long solFeeEstimatesFee) {
+            NetworkInfo txNetwork, Double networkSpotPrice, long solFeeEstimatesFee) {
         TxDataUnion txDataUnion = txInfo.txDataUnion;
         TxData1559 txData = txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
                 ? txDataUnion.getEthTxData1559()
                 : null;
-        FilTxData filTxData = null; // TODO: add with FIL
-        final int networkDecimals = selectedNetwork.decimals;
+        final FilTxData filTxData = txDataUnion.which() == TxDataUnion.Tag.FilTxData
+                ? txDataUnion.getFilTxData()
+                : null;
+        final int networkDecimals = txNetwork.decimals;
         final boolean isSolTransaction = SOLANA_TRANSACTION_TYPES.contains(txInfo.txType);
         final boolean isFilTransaction = filTxData != null;
-        final String gasLimit = isFilTransaction ? filTxData.gasLimit
-                                                 : (txData != null ? txData.baseData.gasLimit : "");
-        final String gasPrice = txData != null ? txData.baseData.gasPrice : "";
-        final String maxFeePerGas = txData != null ? txData.maxFeePerGas : "";
-        final String maxPriorityFeePerGas = txData != null ? txData.maxPriorityFeePerGas : "";
+
+        final String gasLimit;
+        final String gasPrice;
+        final String maxFeePerGas;
+        final String maxPriorityFeePerGas;
+        if (isFilTransaction) {
+            final String maxFeePerGasDecimal =
+                    filTxData.gasFeeCap != null ? filTxData.gasFeeCap : "";
+            final String maxPriorityFeePerGasDecimal =
+                    filTxData.gasPremium != null ? filTxData.gasPremium : "";
+
+            gasLimit = filTxData.gasLimit != null ? Utils.toHex(filTxData.gasLimit) : "";
+            maxFeePerGas = Utils.toHex(maxFeePerGasDecimal);
+            maxPriorityFeePerGas = Utils.toHex(maxPriorityFeePerGasDecimal);
+            gasPrice = calculateFilGasPrice(maxFeePerGasDecimal, maxPriorityFeePerGasDecimal);
+        } else {
+            gasLimit = txData != null ? txData.baseData.gasLimit : "";
+            gasPrice = txData != null ? txData.baseData.gasPrice : "";
+            maxFeePerGas = txData != null ? txData.maxFeePerGas : "";
+            maxPriorityFeePerGas = txData != null ? txData.maxPriorityFeePerGas : "";
+        }
         final boolean isEIP1559Transaction =
                 !maxPriorityFeePerGas.isEmpty() && !maxFeePerGas.isEmpty();
-        final double[] gasFeeArr =
-                calcGasFee(selectedNetwork, networkSpotPrice, isEIP1559Transaction, gasLimit,
-                        gasPrice, maxFeePerGas, isSolTransaction, solFeeEstimatesFee);
+        final double[] gasFeeArr = calcGasFee(txNetwork, networkSpotPrice, isEIP1559Transaction,
+                gasLimit, gasPrice, maxFeePerGas, isSolTransaction, solFeeEstimatesFee);
         final double gasFee = gasFeeArr[0];
         final double gasFeeFiat = gasFeeArr[1];
         final String missingGasLimitError =
@@ -134,20 +149,43 @@ public class ParsedTransactionFees {
         return parsedTransactionFees;
     }
 
+    @NonNull
+    private static String calculateFilGasPrice(@NonNull final String maxFeePerGasDecimal,
+            @NonNull final String maxPriorityFeePerGasDecimal) {
+        if (maxFeePerGasDecimal.isEmpty() || maxPriorityFeePerGasDecimal.isEmpty()) {
+            return "";
+        } else {
+            String result;
+            try {
+                BigInteger minuend = new BigInteger(maxFeePerGasDecimal);
+                BigInteger subtrahend = new BigInteger(maxPriorityFeePerGasDecimal);
+                BigInteger gasPrice = minuend.subtract(subtrahend);
+                result = "0x" + gasPrice.toString(16);
+            } catch (NumberFormatException nfe) {
+                result = "";
+            }
+            return result;
+        }
+    }
+
     // Desktop doesn't seem to have slow/avg/fast MaxFeePerGas options,
     // so extracting this part as a separate function
     public static double[] calcGasFee(NetworkInfo selectedNetwork, double networkSpotPrice,
             boolean isEIP1559Transaction, String gasLimit, String gasPrice, String maxFeePerGas,
             boolean isSolTransaction, long solFeeEstimatesFee) {
         final int networkDecimals = selectedNetwork.decimals;
-        final double gasFee = isSolTransaction
-                ? solFeeEstimatesFee != 0
-                        ? Utils.fromWei(Long.toString(solFeeEstimatesFee), networkDecimals)
-                        : 0.0d
-                : Utils.fromHexWei(isEIP1559Transaction
-                                ? Utils.multiplyHexBN(maxFeePerGas, gasLimit)
-                                : Utils.multiplyHexBN(gasPrice, gasLimit),
-                        networkDecimals);
+        double gasFee;
+        if (isSolTransaction) {
+            gasFee = solFeeEstimatesFee != 0
+                    ? Utils.fromWei(Long.toString(solFeeEstimatesFee), networkDecimals)
+                    : 0.0d;
+        } else {
+            // Gas fee calculations for Eth and Fil use the same logic.
+            gasFee = Utils.fromHexWei(isEIP1559Transaction
+                            ? Utils.multiplyHexBN(maxFeePerGas, gasLimit)
+                            : Utils.multiplyHexBN(gasPrice, gasLimit),
+                    networkDecimals);
+        }
 
         final double gasFeeFiat = gasFee * networkSpotPrice;
 

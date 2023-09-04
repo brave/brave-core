@@ -63,7 +63,7 @@ void ExecuteInterstitialScript(Browser* browser, const std::string& script) {
             GetInterstitialType(web_contents));
 
   content::TestNavigationObserver navigation_observer(web_contents, 1);
-  EXPECT_TRUE(ExecuteScript(web_contents, script));
+  EXPECT_TRUE(content::ExecJs(web_contents, script));
 
   navigation_observer.Wait();
 
@@ -249,7 +249,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, LearnMore) {
   EXPECT_FALSE(GetPrefs()->GetBoolean(kIPFSAutoFallbackToGateway));
 
   // Send Proceed command and check if we fallback to gateway and pref is set.
-  EXPECT_TRUE(ExecuteScript(web_contents, "$('learn-more').click();"));
+  EXPECT_TRUE(content::ExecJs(web_contents, "$('learn-more').click();"));
   EXPECT_EQ(GetPrefs()->GetInteger(kIPFSResolveMethod),
             static_cast<int>(IPFSResolveMethodTypes::IPFS_ASK));
 
@@ -278,7 +278,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, OpenSettings) {
   EXPECT_FALSE(GetPrefs()->GetBoolean(kIPFSAutoFallbackToGateway));
 
   // Send Proceed command and check if we fallback to gateway and pref is set.
-  EXPECT_TRUE(ExecuteScript(web_contents, "$('open-settings').click();"));
+  EXPECT_TRUE(content::ExecJs(web_contents, "$('open-settings').click();"));
   EXPECT_EQ(GetPrefs()->GetInteger(kIPFSResolveMethod),
             static_cast<int>(IPFSResolveMethodTypes::IPFS_ASK));
 

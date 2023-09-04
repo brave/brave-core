@@ -1,0 +1,7 @@
+Name: fvm_ipld_blockstore
+URL: https://crates.io/crates/fvm_ipld_blockstore
+Description: Sharded IPLD Blockstore.
+Version: 0.1.1
+Security Critical: no
+License: Apache 2.0
+Revision: 17e5a31cee866da7045272d6f99a4b9a7d53a94e

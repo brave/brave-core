@@ -24,10 +24,13 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/url_data_source.h"
 
 #define DEFAULT_ADS_PER_HOUR 2
@@ -98,6 +101,13 @@ std::string BraveRewardsNativeWorker::StringifyResult(
   }
 }
 
+bool BraveRewardsNativeWorker::IsRewardsEnabled(JNIEnv* env) {
+  return ProfileManager::GetActiveUserProfile()
+      ->GetOriginalProfile()
+      ->GetPrefs()
+      ->GetBoolean(brave_rewards::prefs::kEnabled);
+}
+
 void BraveRewardsNativeWorker::CreateRewardsWallet(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& country_code) {
@@ -139,8 +149,7 @@ void BraveRewardsNativeWorker::OnGetRewardsParameters(
 
 double BraveRewardsNativeWorker::GetVbatDeadline(JNIEnv* env) {
   if (parameters_) {
-    base::Time vbat_deadline = parameters_->vbat_deadline;
-    if (!vbat_deadline.is_null()) {
+    if (!parameters_->vbat_deadline.is_null()) {
       return floor(parameters_->vbat_deadline.ToDoubleT() *
                    base::Time::kMillisecondsPerSecond);
     }
@@ -227,15 +236,6 @@ void BraveRewardsNativeWorker::OnReconcileComplete(
       static_cast<int>(result), static_cast<int>(type), amount);
 }
 
-void BraveRewardsNativeWorker::OnPendingContributionSaved(
-    brave_rewards::RewardsService* rewards_service,
-    const brave_rewards::mojom::Result result) {
-  JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnPendingContributionSaved(
-      env, weak_java_brave_rewards_native_worker_.get(env),
-      static_cast<int>(result));
-}
-
 base::android::ScopedJavaLocalRef<jstring>
 BraveRewardsNativeWorker::GetPublisherURL(JNIEnv* env, uint64_t tabId) {
   base::android::ScopedJavaLocalRef<jstring> res =
@@ -272,6 +272,28 @@ BraveRewardsNativeWorker::GetCaptchaSolutionURL(
       "/v3/captcha/solution/%s/%s",
       base::android::ConvertJavaStringToUTF8(env, paymentId).c_str(),
       base::android::ConvertJavaStringToUTF8(env, captchaId).c_str());
+  std::string captcha_solution_url =
+      brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl(path);
+
+  return base::android::ConvertUTF8ToJavaString(env, captcha_solution_url);
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+BraveRewardsNativeWorker::GetAttestationURL(JNIEnv* env) {
+  const std::string path = "/v1/attestations/android";
+  std::string captcha_solution_url =
+      brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl(path);
+
+  return base::android::ConvertUTF8ToJavaString(env, captcha_solution_url);
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+BraveRewardsNativeWorker::GetAttestationURLWithPaymentId(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& paymentId) {
+  const std::string path = base::StringPrintf(
+      "/v1/attestations/android/%s",
+      base::android::ConvertJavaStringToUTF8(env, paymentId).c_str());
   std::string captcha_solution_url =
       brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl(path);
 
@@ -405,15 +427,15 @@ void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
   if (!statement) {
     Java_BraveRewardsNativeWorker_OnGetAdsAccountStatement(
         env, weak_java_brave_rewards_native_worker_.get(env),
-        /* success */ false, 0.0, 0, 0.0, 0.0);
+        /* success */ false, 0.0, 0, 0.0, 0.0, 0.0);
     return;
   }
 
   Java_BraveRewardsNativeWorker_OnGetAdsAccountStatement(
       env, weak_java_brave_rewards_native_worker_.get(env),
       /* success */ true, statement->next_payment_date.ToDoubleT() * 1000,
-      statement->ads_received_this_month, statement->earnings_this_month,
-      statement->earnings_last_month);
+      statement->ads_received_this_month, statement->min_earnings_this_month,
+      statement->max_earnings_this_month, statement->max_earnings_last_month);
 }
 
 bool BraveRewardsNativeWorker::CanConnectAccount(JNIEnv* env) {
@@ -497,20 +519,18 @@ void BraveRewardsNativeWorker::Donate(
     double amount,
     bool recurring) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->OnTip(
+    brave_rewards_service_->SendContribution(
         base::android::ConvertJavaStringToUTF8(env, publisher_key), amount,
         recurring,
-        base::BindOnce(&BraveRewardsNativeWorker::OnOneTimeTip,
+        base::BindOnce(&BraveRewardsNativeWorker::OnSendContribution,
                        weak_factory_.GetWeakPtr()));
   }
 }
 
-void BraveRewardsNativeWorker::OnOneTimeTip(
-    brave_rewards::mojom::Result result) {
+void BraveRewardsNativeWorker::OnSendContribution(bool result) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnOneTimeTip(
-      env, weak_java_brave_rewards_native_worker_.get(env),
-      static_cast<int>(result));
+  Java_BraveRewardsNativeWorker_onSendContribution(
+      env, weak_java_brave_rewards_native_worker_.get(env), result);
 }
 
 void BraveRewardsNativeWorker::GetAllNotifications(JNIEnv* env) {
@@ -575,14 +595,6 @@ base::android::ScopedJavaLocalRef<jobjectArray>
       std::to_string(static_cast<int>((promotions_[position])->type)));
 
   return base::android::ToJavaArrayOfStrings(env, values);
-}
-
-void BraveRewardsNativeWorker::GetPendingContributionsTotal(JNIEnv* env) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->GetPendingContributionsTotal(base::BindOnce(
-        &BraveRewardsNativeWorker::OnGetPendingContributionsTotal,
-        weak_factory_.GetWeakPtr()));
-  }
 }
 
 void BraveRewardsNativeWorker::GetRecurringDonations(JNIEnv* env) {
@@ -658,6 +670,13 @@ void BraveRewardsNativeWorker::ResetTheWholeState(JNIEnv* env) {
                      weak_factory_.GetWeakPtr()));
 }
 
+void BraveRewardsNativeWorker::OnCompleteReset(const bool success) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+
+  Java_BraveRewardsNativeWorker_onCompleteReset(
+      env, weak_java_brave_rewards_native_worker_.get(env), success);
+}
+
 void BraveRewardsNativeWorker::OnResetTheWholeState(const bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
 
@@ -697,13 +716,6 @@ void BraveRewardsNativeWorker::OnGetGetReconcileStamp(uint64_t timestamp) {
 
   Java_BraveRewardsNativeWorker_OnGetReconcileStamp(env,
           weak_java_brave_rewards_native_worker_.get(env), timestamp);
-}
-
-void BraveRewardsNativeWorker::OnGetPendingContributionsTotal(double amount) {
-  JNIEnv* env = base::android::AttachCurrentThread();
-
-  Java_BraveRewardsNativeWorker_OnGetPendingContributionsTotal(env,
-        weak_java_brave_rewards_native_worker_.get(env), amount);
 }
 
 void BraveRewardsNativeWorker::OnNotificationAdded(
@@ -783,12 +795,11 @@ int BraveRewardsNativeWorker::GetAdsPerHour(JNIEnv* env) {
 }
 
 void BraveRewardsNativeWorker::SetAdsPerHour(JNIEnv* env, jint value) {
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(
-      ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
-  if (!ads_service_) {
-    return;
-  }
-  ads_service_->SetMaximumNotificationAdsPerHour(value);
+  ProfileManager::GetActiveUserProfile()
+      ->GetOriginalProfile()
+      ->GetPrefs()
+      ->SetInt64(brave_ads::prefs::kMaximumNotificationAdsPerHour,
+                 static_cast<int64_t>(value));
 }
 
 void BraveRewardsNativeWorker::SetAutoContributionAmount(JNIEnv* env,
@@ -888,6 +899,7 @@ void BraveRewardsNativeWorker::onPublisherBanner(
     dict.Set("background", banner->background);
     dict.Set("logo", banner->logo);
     dict.Set("provider", banner->provider);
+    dict.Set("web3_url", banner->web3_url);
 
     base::Value::Dict links;
     for (auto const& link : banner->links) {

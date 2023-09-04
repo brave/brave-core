@@ -7,7 +7,11 @@ import { BraveWallet } from '../constants/types'
 
 import { mockAccount } from '../common/constants/mocks'
 
-import { isHardwareAccount, findAccountFromRegistry } from './account-utils'
+import {
+  isHardwareAccount,
+  findAccountByAddress,
+  getAccountTypeDescription
+} from './account-utils'
 
 import {
   AccountInfoEntity,
@@ -23,10 +27,19 @@ const mockHardware = {
 const mockHardwareAccounts: BraveWallet.AccountInfo[] = [
   {
     ...mockAccount,
+    accountId: {
+      ...mockAccount.accountId,
+      kind: BraveWallet.AccountKind.kHardware
+    },
     hardware: mockHardware
   },
   {
     ...mockAccount,
+    accountId: {
+      ...mockAccount.accountId,
+      kind: BraveWallet.AccountKind.kHardware,
+      address: 'mockAccount2'
+    },
     address: 'mockAccount2',
     hardware: {
       ...mockHardware,
@@ -38,12 +51,14 @@ const mockHardwareAccounts: BraveWallet.AccountInfo[] = [
 const mockAccounts: AccountInfoEntity[] = [
   {
     ...mockAccount,
-    deviceId: ''
   },
   {
     ...mockAccount,
+    accountId: {
+      ...mockAccount.accountId,
+      address: 'mockAccount2'
+    },
     address: 'mockAccount2',
-    deviceId: ''
   }
 ]
 
@@ -57,7 +72,7 @@ describe('Account Utils', () => {
     it.each(mockHardwareAccounts)(
       'should return true if accounts have deviceId and address matches',
       (account) => {
-        expect(isHardwareAccount(account)).toBe(true)
+        expect(isHardwareAccount(account.accountId)).toBe(true)
       }
     )
   })
@@ -66,9 +81,28 @@ describe('Account Utils', () => {
       'should return true if accounts have deviceId and address matches',
       (account) => {
         expect(
-          findAccountFromRegistry(account.address, mockAccountsRegistry)
+          findAccountByAddress(account.address, mockAccountsRegistry)
         ).toBe(account)
       }
     )
+  })
+})
+
+describe('Test getAccountTypeDescription', () => {
+  test('CoinType ETH Address Description', () => {
+    expect(getAccountTypeDescription(BraveWallet.CoinType.ETH))
+      .toEqual('braveWalletETHAccountDescrption')
+  })
+  test('CoinType SOL Address Description', () => {
+    expect(getAccountTypeDescription(BraveWallet.CoinType.SOL))
+      .toEqual('braveWalletSOLAccountDescrption')
+  })
+  test('CoinType FIL Address Description', () => {
+    expect(getAccountTypeDescription(BraveWallet.CoinType.FIL))
+      .toEqual('braveWalletFILAccountDescrption')
+  })
+  test('CoinType BTC Address Description', () => {
+    expect(getAccountTypeDescription(BraveWallet.CoinType.BTC))
+      .toEqual('braveWalletBTCAccountDescrption')
   })
 })

@@ -96,8 +96,7 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   GURL url = https_server()->GetURL("a.test", "/simple.html");
-  mojom::OriginInfoPtr expected_origin_info =
-      MakeOriginInfo(url::Origin::Create(url));
+  auto expected_origin_info = MakeOriginInfo(url::Origin::Create(url));
   TestBraveWalletServiceObserver observer;
   wallet_service()->AddObserver(observer.GetReceiver());
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));

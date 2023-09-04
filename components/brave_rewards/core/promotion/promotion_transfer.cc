@@ -13,14 +13,14 @@
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace promotion {
 
-PromotionTransfer::PromotionTransfer(LedgerImpl& ledger)
-    : ledger_(ledger), credentials_(ledger) {}
+PromotionTransfer::PromotionTransfer(RewardsEngineImpl& engine)
+    : engine_(engine), credentials_(engine) {}
 
 PromotionTransfer::~PromotionTransfer() = default;
 
@@ -29,7 +29,7 @@ void PromotionTransfer::Start(PostSuggestionsClaimCallback callback) {
       base::BindOnce(&PromotionTransfer::OnGetSpendableUnblindedTokens,
                      base::Unretained(this), std::move(callback));
 
-  ledger_->database()->GetSpendableUnblindedTokens(
+  engine_->database()->GetSpendableUnblindedTokens(
       [callback = std::make_shared<decltype(tokens_callback)>(std::move(
            tokens_callback))](std::vector<mojom::UnblindedTokenPtr> tokens) {
         std::move(*callback).Run(std::move(tokens));
@@ -45,7 +45,7 @@ void PromotionTransfer::OnGetSpendableUnblindedTokens(
   }
 
   if (token_list.empty()) {
-    return std::move(callback).Run(mojom::Result::LEDGER_OK, "");
+    return std::move(callback).Run(mojom::Result::OK, "");
   }
 
   credential::CredentialsRedeem redeem;
@@ -63,8 +63,8 @@ void PromotionTransfer::OnDrainTokens(PostSuggestionsClaimCallback callback,
                                       double transfer_amount,
                                       mojom::Result result,
                                       std::string drain_id) const {
-  if (result == mojom::Result::LEDGER_OK) {
-    ledger_->database()->SaveEventLog(log::kPromotionVBATDrained,
+  if (result == mojom::Result::OK) {
+    engine_->database()->SaveEventLog(log::kPromotionVBATDrained,
                                       base::NumberToString(transfer_amount));
   }
 

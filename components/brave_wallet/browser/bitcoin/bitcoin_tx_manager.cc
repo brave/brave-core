@@ -16,13 +16,19 @@
 
 namespace brave_wallet {
 
-BitcoinTxManager::BitcoinTxManager(TxService* tx_service,
-                                   JsonRpcService* json_rpc_service,
-                                   BitcoinWalletService* bitcoin_wallet_service,
-                                   KeyringService* keyring_service,
-                                   PrefService* prefs)
+BitcoinTxManager::BitcoinTxManager(
+    TxService* tx_service,
+    JsonRpcService* json_rpc_service,
+    BitcoinWalletService* bitcoin_wallet_service,
+    KeyringService* keyring_service,
+    PrefService* prefs,
+    TxStorageDelegate* delegate,
+    AccountResolverDelegate* account_resolver_delegate)
     : TxManager(
-          std::make_unique<BitcoinTxStateManager>(prefs, json_rpc_service),
+          std::make_unique<BitcoinTxStateManager>(prefs,
+                                                  delegate,
+                                                  json_rpc_service,
+                                                  account_resolver_delegate),
           std::make_unique<BitcoinBlockTracker>(json_rpc_service,
                                                 bitcoin_wallet_service),
           tx_service,
@@ -35,7 +41,7 @@ BitcoinTxManager::~BitcoinTxManager() = default;
 void BitcoinTxManager::AddUnapprovedTransaction(
     const std::string& chain_id,
     mojom::TxDataUnionPtr tx_data_union,
-    const std::string& from,
+    const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
     const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
@@ -48,15 +54,6 @@ void BitcoinTxManager::ApproveTransaction(const std::string& chain_id,
                                           ApproveTransactionCallback callback) {
   // TODO(apaymyshev): implement
   NOTIMPLEMENTED();
-}
-
-void BitcoinTxManager::GetAllTransactionInfo(
-    const absl::optional<std::string>& chain_id,
-    const absl::optional<std::string>& from,
-    GetAllTransactionInfoCallback callback) {
-  // TODO(apaymyshev): implement
-
-  std::move(callback).Run({});
 }
 
 void BitcoinTxManager::SpeedupOrCancelTransaction(

@@ -12,7 +12,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import org.chromium.base.Log;
-import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardService;
 
 public class DisconnectVpnBroadcastReceiver extends BroadcastReceiver {

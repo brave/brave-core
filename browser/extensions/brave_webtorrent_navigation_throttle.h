@@ -9,9 +9,10 @@
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "content/public/browser/navigation_throttle.h"
-#include "extensions/browser/test_extension_registry_observer.h"
+#include "url/gurl.h"
 
 namespace content {
+class BrowserContext;
 class NavigationHandle;
 }
 
@@ -19,8 +20,7 @@ namespace extensions {
 
 // This class enables the WebTorrent component when a .torrent
 // or magnet file is loaded.
-class BraveWebTorrentNavigationThrottle : public content::NavigationThrottle,
-                                          public ExtensionRegistryObserver {
+class BraveWebTorrentNavigationThrottle : public content::NavigationThrottle {
  public:
   explicit BraveWebTorrentNavigationThrottle(
       content::NavigationHandle* navigation_handle);
@@ -40,15 +40,6 @@ class BraveWebTorrentNavigationThrottle : public content::NavigationThrottle,
 
  private:
   ThrottleCheckResult CommonWillProcessRequestResponse();
-  void ResumeThrottle();
-
-  // ExtensionRegistryObserver:
-  void OnExtensionReady(content::BrowserContext* browser_context,
-                        const extensions::Extension* extension) override;
-  base::ScopedObservation<ExtensionRegistry, ExtensionRegistryObserver>
-      extension_registry_observer_{this};
-  bool resume_pending_;
-  base::OneShotTimer timer_;
 };
 
 }  // namespace extensions

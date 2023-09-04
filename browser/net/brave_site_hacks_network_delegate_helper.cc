@@ -10,9 +10,9 @@
 #include <vector>
 
 #include "base/metrics/histogram_macros.h"
-#include "brave/browser/net/brave_query_filter.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/constants/url_constants.h"
+#include "brave/components/query_filter/utils.h"
 #include "content/public/common/referrer.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"
@@ -22,44 +22,6 @@
 namespace brave {
 
 namespace {
-
-void ApplyPotentialQueryStringFilter(std::shared_ptr<BraveRequestInfo> ctx) {
-  SCOPED_UMA_HISTOGRAM_TIMER("Brave.SiteHacks.QueryFilter");
-
-  if (!ctx->allow_brave_shields) {
-    // Don't apply the filter if the destination URL has shields down.
-    return;
-  }
-
-  if (ctx->method != "GET") {
-    return;
-  }
-
-  if (ctx->redirect_source.is_valid()) {
-    if (ctx->internal_redirect) {
-      // Ignore internal redirects since we trigger them.
-      return;
-    }
-
-    if (net::registry_controlled_domains::SameDomainOrHost(
-            ctx->redirect_source, ctx->request_url,
-            net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
-      // Same-site redirects are exempted.
-      return;
-    }
-  } else if (ctx->initiator_url.is_valid() &&
-             net::registry_controlled_domains::SameDomainOrHost(
-                 ctx->initiator_url, ctx->request_url,
-                 net::registry_controlled_domains::
-                     INCLUDE_PRIVATE_REGISTRIES)) {
-    // Same-site requests are exempted.
-    return;
-  }
-  auto filtered_url = ApplyQueryFilter(ctx->request_url);
-  if (filtered_url.has_value()) {
-    ctx->new_url_spec = filtered_url.value().spec();
-  }
-}
 
 bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
   if (ctx->tab_origin.SchemeIs(kChromeExtensionScheme)) {
@@ -87,8 +49,14 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
 int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
                                      std::shared_ptr<BraveRequestInfo> ctx) {
   ApplyPotentialReferrerBlock(ctx);
-  if (ctx->request_url.has_query()) {
-    ApplyPotentialQueryStringFilter(ctx);
+  if (ctx->allow_brave_shields) {
+    auto filtered_url = query_filter::MaybeApplyQueryStringFilter(
+        ctx->initiator_url, ctx->redirect_source, ctx->request_url, ctx->method,
+        ctx->internal_redirect);
+
+    if (filtered_url.has_value()) {
+      ctx->new_url_spec = filtered_url.value().spec();
+    }
   }
   return net::OK;
 }

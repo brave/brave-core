@@ -8,16 +8,39 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import android.content.Context;
 import android.text.TextUtils;
 
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.url.mojom.Url;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class NetworkUtils {
     private static NetworkInfo sAllNetworksOption;
+
+    public static Comparator<NetworkInfo> sSortNetworkByPriority = (c1, c2) -> {
+        return Integer.compare(getCoinRank(c1.coin), getCoinRank(c2.coin));
+    };
+
+    // Solana first
+    private static int getCoinRank(@CoinType.EnumType int coin) {
+        switch (coin) {
+            case CoinType.SOL:
+                return 0;
+            case CoinType.ETH:
+                return 1;
+            case CoinType.FIL:
+                return 2;
+            case CoinType.BTC:
+                return 3;
+            default:
+                return Integer.MAX_VALUE;
+        }
+    }
 
     public static class Filters {
         public static boolean isSameNetwork(NetworkInfo network, String chainId, int coin) {
@@ -26,6 +49,10 @@ public class NetworkUtils {
 
         public static boolean isSameNetwork(NetworkInfo network1, NetworkInfo network2) {
             return isSameNetwork(network1, network2.chainId, network2.coin);
+        }
+
+        public static boolean isLocalNetwork(NetworkInfo network) {
+            return network.chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID);
         }
     }
 
@@ -36,6 +63,7 @@ public class NetworkUtils {
             allNetworkInfo.chainId = "all";
             allNetworkInfo.chainName = context.getString(R.string.brave_wallet_network_filter_all);
             allNetworkInfo.coin = 0;
+            allNetworkInfo.supportedKeyrings = new int[0];
             allNetworkInfo.decimals = 0;
             allNetworkInfo.iconUrls = new String[0];
             allNetworkInfo.activeRpcEndpointIndex = 0;
@@ -69,5 +97,9 @@ public class NetworkUtils {
     public static NetworkInfo findNetwork(List<NetworkInfo> networkInfos, String chainId) {
         if (networkInfos.isEmpty() || TextUtils.isEmpty(chainId)) return null;
         return JavaUtils.find(networkInfos, networkInfo -> networkInfo.chainId.equals(chainId));
+    }
+
+    public static boolean isTestNetwork(String chainId) {
+        return WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(chainId);
     }
 }

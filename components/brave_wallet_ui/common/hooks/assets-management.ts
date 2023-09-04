@@ -4,14 +4,22 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+
+// Selectors
+import {
+  useUnsafeWalletSelector
+} from './use-safe-selector'
+import { WalletSelectors } from '../selectors'
 
 // Constants
-import { BraveWallet, WalletState } from '../../constants/types'
+import { BraveWallet } from '../../constants/types'
 
 // Utils
 import { stripERC20TokenImageURL } from '../../utils/string-utils'
 import { WalletActions } from '../actions'
+import { LOCAL_STORAGE_KEYS } from '../constants/local-storage-keys'
+import { getAssetIdKey } from '../../utils/asset-utils'
 
 const onlyInLeft = (left: BraveWallet.BlockchainToken[], right: BraveWallet.BlockchainToken[]) =>
   left.filter(leftValue =>
@@ -27,28 +35,102 @@ const findTokensWithMismatchedVisibility = (left: BraveWallet.BlockchainToken[],
       leftValue.tokenId === rightValue.tokenId &&
       leftValue.visible !== rightValue.visible))
 
-export default function useAssetManagement () {
+export function useAssetManagement () {
+  // selectors
+  const userVisibleTokensInfo =
+    useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
+  const removedFungibleTokenIds =
+    useUnsafeWalletSelector(WalletSelectors.removedFungibleTokenIds)
+  const removedNonFungibleTokenIds =
+    useUnsafeWalletSelector(WalletSelectors.removedNonFungibleTokenIds)
+
+
   // redux
-  const {
-    userVisibleTokensInfo
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
   const dispatch = useDispatch()
 
-  const onAddUserAsset = (token: BraveWallet.BlockchainToken) => {
-    dispatch(WalletActions.addUserAsset({
-      ...token,
-      logo: stripERC20TokenImageURL(token.logo) || ''
-    }))
-  }
+  const tokenIsSetAsRemovedInLocalStorage = React.useCallback(
+    (
+      token: BraveWallet.BlockchainToken
+    ) => {
+      const assetId = getAssetIdKey(token)
+      return token.isNft ||
+        token.isErc1155 ||
+        token.isErc721
+        ? removedNonFungibleTokenIds.includes(assetId)
+        : removedFungibleTokenIds.includes(assetId)
+    }, [removedNonFungibleTokenIds, removedFungibleTokenIds])
 
-  const onAddCustomAsset = (token: BraveWallet.BlockchainToken) => {
-    onAddUserAsset(token)
+  const addOrRemoveTokenInLocalStorage = React.useCallback(
+    (
+      token: BraveWallet.BlockchainToken,
+      addOrRemove: 'add' | 'remove'
+    ) => {
+      const assetId = getAssetIdKey(token)
+      const isNFT = token.isNft || token.isErc1155 || token.isErc721
+      const removedList = isNFT
+        ? removedNonFungibleTokenIds
+        : removedFungibleTokenIds
+      const localStorageKey = isNFT
+        ? LOCAL_STORAGE_KEYS.USER_REMOVED_NON_FUNGIBLE_TOKEN_IDS
+        : LOCAL_STORAGE_KEYS.USER_REMOVED_FUNGIBLE_TOKEN_IDS
 
-    // We handle refreshing balances for ERC721 tokens in the addUserAsset handler.
-    if (!(token.isErc721 || token.isNft)) {
-      dispatch(WalletActions.refreshBalancesAndPriceHistory())
-    }
-  }
+      // add assetId if it is not in the array
+      if (addOrRemove === 'remove') {
+        const newList = [...removedList, assetId]
+        // update state
+        if (isNFT) {
+          dispatch(WalletActions.setRemovedNonFungibleTokenIds(newList))
+        } else {
+          dispatch(WalletActions.setRemovedFungibleTokenIds(newList))
+        }
+        // persist array
+        localStorage.setItem(localStorageKey, JSON.stringify(newList))
+      }
+
+      // add assetId if it is not in the array
+      if (addOrRemove === 'add') {
+        const newList = removedList.filter((id) => id !== assetId)
+        // update state
+        if (isNFT) {
+          dispatch(WalletActions.setRemovedNonFungibleTokenIds(newList))
+        } else {
+          dispatch(WalletActions.setRemovedFungibleTokenIds(newList))
+        }
+        // persist array
+        localStorage.setItem(localStorageKey, JSON.stringify(newList))
+      }
+
+    }, [removedNonFungibleTokenIds, removedFungibleTokenIds])
+
+  const onAddUserAsset = React.useCallback(
+    (
+      token: BraveWallet.BlockchainToken
+    ) => {
+      if (tokenIsSetAsRemovedInLocalStorage(token)) {
+        addOrRemoveTokenInLocalStorage(token, 'add')
+      } else {
+        dispatch(WalletActions.addUserAsset({
+          ...token,
+          logo: stripERC20TokenImageURL(token.logo) || ''
+        }))
+      }
+    }, [
+    addOrRemoveTokenInLocalStorage,
+    tokenIsSetAsRemovedInLocalStorage
+  ])
+
+  const onAddCustomAsset = React.useCallback(
+    (
+      token: BraveWallet.BlockchainToken
+    ) => {
+      onAddUserAsset(token)
+
+      // We handle refreshing balances for ERC721 tokens in the
+      // addUserAsset handler.
+      if (!(token.isErc721 || token.isNft)) {
+        dispatch(WalletActions.refreshBalancesAndPriceHistory())
+      }
+    }, [onAddUserAsset])
 
   const onUpdateVisibleAssets = React.useCallback((updatedTokensList: BraveWallet.BlockchainToken[]) => {
     // Gets a list of all added tokens and adds them to the userVisibleTokensInfo list
@@ -57,7 +139,12 @@ export default function useAssetManagement () {
 
     // Gets a list of all removed tokens and removes them from the userVisibleTokensInfo list
     onlyInLeft(userVisibleTokensInfo, updatedTokensList)
-      .forEach(token => dispatch(WalletActions.removeUserAsset(token)))
+      .forEach(token => {
+        dispatch(WalletActions.removeUserAsset(token))
+        if (!tokenIsSetAsRemovedInLocalStorage(token)) {
+          addOrRemoveTokenInLocalStorage(token, 'remove')
+        }
+      })
 
     // Gets a list of custom tokens and native assets returned from updatedTokensList payload
     // then compares against userVisibleTokensInfo list and updates the tokens visibility if it has changed.
@@ -66,7 +153,7 @@ export default function useAssetManagement () {
 
     // Refresh Balances, Prices and Price History when done.
     dispatch(WalletActions.refreshBalancesAndPriceHistory())
-  }, [userVisibleTokensInfo])
+  }, [userVisibleTokensInfo, addOrRemoveTokenInLocalStorage])
 
   const makeTokenVisible = React.useCallback((token: BraveWallet.BlockchainToken) => {
     const foundTokenIdx = userVisibleTokensInfo.findIndex(t =>
@@ -94,6 +181,9 @@ export default function useAssetManagement () {
   return {
     onUpdateVisibleAssets,
     onAddCustomAsset,
-    makeTokenVisible
+    makeTokenVisible,
+    addOrRemoveTokenInLocalStorage
   }
 }
+
+export default useAssetManagement

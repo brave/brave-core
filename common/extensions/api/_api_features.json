@@ -103,7 +103,8 @@
       "dependencies": [],
       "contexts": ["blessed_extension"],
       "allowlist": [
-        "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64"
+        "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64", // braveRewards
+        "21070F3D60711361C1210B870439BE49B5D995F4"  // braveWallet
       ]
     },
     {
@@ -112,7 +113,9 @@
       "matches": [
         "chrome://newtab/*",
         "chrome://rewards-panel.top-chrome/*",
-        "chrome://settings/*"
+        "chrome://settings/*",
+        "chrome://wallet-panel.top-chrome/*",
+        "chrome://wallet/*"
       ]
     }
   ],

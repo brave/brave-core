@@ -9,6 +9,7 @@ import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
 import { ThemeProvider } from 'styled-components'
 import Theme from 'brave-ui/theme/brave-default'
+import { setIconBasePath } from '@brave/leo/react/icon'
 import { createStore, bindActionCreators } from 'redux'
 
 import { loadTimeData } from '../../../common/loadTimeData'
@@ -23,8 +24,12 @@ import * as rewardsActions from './actions/rewards_actions'
 import { App } from './components/app'
 import * as mojom from '../shared/lib/mojom'
 
+import * as Rewards from './lib/types'
+
 const store = createStore(createReducer())
 const actions = bindActionCreators(rewardsActions, store.dispatch.bind(store))
+
+setIconBasePath('chrome://resources/brave-icons')
 
 function initialize () {
   initLocale(loadTimeData.data_)
@@ -46,6 +51,10 @@ function initialize () {
       </ThemeProvider>
     </Provider>,
     document.getElementById('root'))
+}
+
+function onIsGrandfatheredUser (isGrandfatheredUser: boolean) {
+  actions.onIsGrandfatheredUser(isGrandfatheredUser)
 }
 
 function userType (userType: number) {
@@ -99,6 +108,10 @@ function currentTips (list: Rewards.Publisher[]) {
   actions.onCurrentTips(list)
 }
 
+function onIsAutoContributeSupported (isAcSupported: boolean) {
+  actions.onIsAutoContributeSupported(isAcSupported)
+}
+
 function autoContributeProperties (properties: any) {
   actions.onAutoContributeProperties(properties)
 }
@@ -135,12 +148,6 @@ function onToggleFlaggedAd (result: Rewards.ToggleFlaggedAd) {
   actions.onToggleFlaggedAd(result)
 }
 
-function onPendingContributionSaved (result: number) {
-  if (result === 0) {
-    actions.getPendingContributions()
-  }
-}
-
 function statement (data: any) {
   actions.onStatement(data)
 }
@@ -159,16 +166,6 @@ function recurringTipRemoved (success: boolean) {
 
 function externalWalletProviderList (list: Rewards.ExternalWalletProvider[]) {
   actions.onExternalWalletProviderList(list)
-}
-
-function pendingContributions (list: Rewards.PendingContribution[]) {
-  actions.onPendingContributions(list)
-}
-
-function onRemovePendingContribution (result: number) {
-  if (result === 0) {
-    actions.getPendingContributions()
-  }
 }
 
 function excludedSiteChanged () {
@@ -206,6 +203,10 @@ function onConnectExternalWallet (result: mojom.ConnectExternalWalletResult) {
 function onExternalWalletLoggedOut () {
   actions.getExternalWallet()
   actions.getBalance()
+}
+
+function onExternalWalletDisconnected () {
+  actions.getUserType()
 }
 
 function unblindedTokensReady () {
@@ -260,6 +261,7 @@ function onIsUnsupportedRegion (isUnsupportedRegion: boolean) {
 Object.defineProperty(window, 'brave_rewards', {
   configurable: true,
   value: {
+    onIsGrandfatheredUser,
     userType,
     rewardsParameters,
     promotions,
@@ -273,6 +275,7 @@ Object.defineProperty(window, 'brave_rewards', {
     contributionAmount,
     recurringTips,
     currentTips,
+    onIsAutoContributeSupported,
     autoContributeProperties,
     adsData,
     adsHistory,
@@ -282,19 +285,17 @@ Object.defineProperty(window, 'brave_rewards', {
     onToggleAdOptOut,
     onToggleSavedAd,
     onToggleFlaggedAd,
-    pendingContributions,
-    onPendingContributionSaved,
     statement,
     statementChanged,
     recurringTipSaved,
     recurringTipRemoved,
-    onRemovePendingContribution,
     excludedSiteChanged,
     balance,
     reconcileComplete,
     onGetExternalWallet,
     onConnectExternalWallet,
     onExternalWalletLoggedOut,
+    onExternalWalletDisconnected,
     unblindedTokensReady,
     monthlyReport,
     reconcileStampReset,

@@ -7,24 +7,27 @@ import * as React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 // Types
-import { BraveWallet, SupportedTestNetworks, WalletAccountType, WalletState } from '../../../constants/types'
+import {
+  BraveWallet,
+  SupportedTestNetworks,
+  WalletState
+} from '../../../constants/types'
 import { LOCAL_STORAGE_KEYS } from '../../../common/constants/local-storage-keys'
 
 // Components
 import NetworkFilterItem from './network-filter-item'
-import { CreateNetworkIcon } from '../../shared'
+import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
 
 // Utils
 import { WalletActions } from '../../../common/actions'
 import { getLocale } from '../../../../common/locale'
-import { accountInfoEntityAdaptor } from '../../../common/slices/entities/account-info.entity'
 
 // Options
 import {
   AllNetworksOption,
   SupportedTopLevelChainIds
 } from '../../../options/network-filter-options'
-import { AllAccountsOption } from '../../../options/account-filter-options'
+import { applySelectedAccountFilter } from '../../../options/account-filter-options'
 
 // Styled Components
 import {
@@ -40,11 +43,17 @@ import {
   useGetNetworkQuery,
   useGetVisibleNetworksQuery
 } from '../../../common/slices/api.slice'
+import { skipToken } from '@reduxjs/toolkit/dist/query'
 
 interface Props {
   networkListSubset?: BraveWallet.NetworkInfo[]
   selectedNetwork?: BraveWallet.NetworkInfo
-  selectedAccount?: Pick<WalletAccountType, 'address' | 'coin' | 'name'>
+  selectedAccount?: Pick<BraveWallet.AccountInfo,
+    | 'accountId'
+    | 'address'
+    | 'name'
+  >
+  isV2?: boolean
   onSelectNetwork?: (network: BraveWallet.NetworkInfo) => void
 }
 
@@ -52,7 +61,8 @@ export const NetworkFilterSelector = ({
   networkListSubset,
   onSelectNetwork,
   selectedNetwork: networkProp,
-  selectedAccount: accountProp
+  selectedAccount: accountProp,
+  isV2
 }: Props) => {
   // state
   const [showNetworkFilter, setShowNetworkFilter] = React.useState<boolean>(false)
@@ -68,13 +78,11 @@ export const NetworkFilterSelector = ({
     skip: !!networkListSubset
   })
   const { data: selectedNetworkFromFilter } = useGetNetworkQuery(
-    selectedNetworkFilter,
-    {
-      skip:
-        !!networkProp ||
-        !selectedNetworkFilter ||
-        selectedNetworkFilter.chainId === AllNetworksOption.chainId
-    }
+    !!networkProp ||
+      !selectedNetworkFilter ||
+      selectedNetworkFilter.chainId === AllNetworksOption.chainId
+      ? skipToken
+      : selectedNetworkFilter
   )
 
   const selectedNetwork =
@@ -83,27 +91,23 @@ export const NetworkFilterSelector = ({
       ? AllNetworksOption
       : selectedNetworkFromFilter || AllNetworksOption)
 
-  const selectedAccount =
-    accountProp ||
-    [...accounts, AllAccountsOption].find(
-      (account) => account.id === selectedAccountFilter
-    ) ||
-    AllAccountsOption
-
-  // memos & computed
-  const accountId = accountInfoEntityAdaptor.selectId(selectedAccount)
+  const oneFilteredAccount = React.useMemo(() => {
+    return (
+      accountProp ||
+      applySelectedAccountFilter(accounts, selectedAccountFilter).oneAccount
+    )
+  }, [accountProp, accounts, selectedAccountFilter])
 
   // memos
   const filteredNetworks: BraveWallet.NetworkInfo[] = React.useMemo(() => {
     // Filters networks by coinType if a selectedAccountFilter is selected
-    const networks =
-      accountId === AllAccountsOption.id
-        ? networkListSubset
-        : networkListSubset?.filter(
-            (network) => network.coin === selectedAccount.coin
-          )
+    const networks = !oneFilteredAccount
+      ? networkListSubset
+      : networkListSubset?.filter(
+          (network) => network.coin === oneFilteredAccount.accountId.coin
+        )
     return networks || reduxNetworkList
-  }, [networkListSubset, reduxNetworkList, accountId, selectedAccount.coin])
+  }, [networkListSubset, reduxNetworkList, oneFilteredAccount])
 
   const sortedNetworks = React.useMemo(() => {
     const onlyMainnets = filteredNetworks.filter((network) =>
@@ -160,14 +164,16 @@ export const NetworkFilterSelector = ({
   return (
     <StyledWrapper>
       <DropDownButton
-        onClick={toggleShowNetworkFilter}>
+        isV2={isV2}
+        onClick={toggleShowNetworkFilter}
+      >
         <SelectorLeftSide>
           {selectedNetwork.chainId !== AllNetworksOption.chainId &&
-            <CreateNetworkIcon network={selectedNetwork} marginRight={14} size='big' />
+            <CreateNetworkIcon network={selectedNetwork} marginRight={14} size='small' />
           }
           {selectedNetwork.chainName}
         </SelectorLeftSide>
-        <DropDownIcon />
+        <DropDownIcon isV2={isV2} />
       </DropDownButton>
 
       {showNetworkFilter &&

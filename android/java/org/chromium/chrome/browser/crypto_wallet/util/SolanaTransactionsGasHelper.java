@@ -9,11 +9,9 @@ import org.chromium.brave_wallet.mojom.SolanaProviderError;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
-import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 public class SolanaTransactionsGasHelper {

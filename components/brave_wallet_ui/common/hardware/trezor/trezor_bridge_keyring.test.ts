@@ -328,7 +328,7 @@ test('Extract accounts from unlocked device returned success', () => {
             'hardwareVendor': 'Trezor',
             'name': 'Trezor',
             'coin': BraveWallet.CoinType.ETH,
-            'network': undefined
+            'keyringId': BraveWallet.KeyringId.kDefault
           },
           {
             'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
@@ -337,7 +337,7 @@ test('Extract accounts from unlocked device returned success', () => {
             'hardwareVendor': 'Trezor',
             'name': 'Trezor',
             'coin': BraveWallet.CoinType.ETH,
-            'network': undefined
+            'keyringId': BraveWallet.KeyringId.kDefault
           }],
           success: true
     })
@@ -370,7 +370,7 @@ test('Extracting accounts from unlocked device returned success without zero ind
         'hardwareVendor': 'Trezor',
         'name': 'Trezor',
         'coin': BraveWallet.CoinType.ETH,
-        'network': undefined
+        'keyringId': BraveWallet.KeyringId.kDefault
       }],
       success: true
     })

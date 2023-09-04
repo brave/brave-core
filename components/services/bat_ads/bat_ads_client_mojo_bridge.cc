@@ -8,10 +8,10 @@
 #include <utility>
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
-#include "brave/components/brave_ads/core/notification_ad_info.h"
-#include "brave/components/brave_ads/core/notification_ad_value_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"  // IWYU pragma: keep
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -22,6 +22,7 @@ BatAdsClientMojoBridge::BatAdsClientMojoBridge(
     mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier)
     : notifier_impl_(std::move(client_notifier)) {
   bat_ads_client_.Bind(std::move(client_info));
+  bat_ads_client_.reset_on_disconnect();
 }
 
 BatAdsClientMojoBridge::~BatAdsClientMojoBridge() = default;
@@ -36,7 +37,7 @@ void BatAdsClientMojoBridge::RemoveObserver(
   notifier_impl_.RemoveObserver(observer);
 }
 
-void BatAdsClientMojoBridge::BindPendingObservers() {
+void BatAdsClientMojoBridge::NotifyPendingObservers() {
   notifier_impl_.BindReceiver();
 }
 
@@ -210,10 +211,9 @@ void BatAdsClientMojoBridge::GetBrowsingHistory(
   bat_ads_client_->GetBrowsingHistory(max_count, days_ago, std::move(callback));
 }
 
-void BatAdsClientMojoBridge::RecordP2AEvent(const std::string& name,
-                                            base::Value::List value) {
+void BatAdsClientMojoBridge::RecordP2AEvents(base::Value::List events) {
   if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->RecordP2AEvent(name, std::move(value));
+    bat_ads_client_->RecordP2AEvents(std::move(events));
   }
 }
 
@@ -247,14 +247,13 @@ std::string BatAdsClientMojoBridge::LoadDataResource(const std::string& name) {
 void BatAdsClientMojoBridge::RunDBTransaction(
     brave_ads::mojom::DBTransactionInfoPtr transaction,
     brave_ads::RunDBTransactionCallback callback) {
+  if (!bat_ads_client_.is_bound()) {
+    std::move(callback).Run(brave_ads::mojom::DBCommandResponseInfoPtr());
+    return;
+  }
+
   bat_ads_client_->RunDBTransaction(std::move(transaction),
                                     std::move(callback));
-}
-
-void BatAdsClientMojoBridge::ClearScheduledCaptcha() {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->ClearScheduledCaptcha();
-  }
 }
 
 void BatAdsClientMojoBridge::GetScheduledCaptcha(

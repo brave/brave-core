@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape>
+            <corners
+                android:topLeftRadius="28dp"
+                android:topRightRadius="28dp" />
+            <gradient
+                android:type="linear"
+                android:startX="90"
+                android:startY="254"
+                android:endX="270"
+                android:endY="254"
+                android:angle="90"
+                android:startColor="@color/rewards_background_gradient_start_color"
+                android:endColor="@color/rewards_background_gradient_end_color" />
+        </shape>
+    </item>
+
+    <item android:bottom="156dp"
+        android:drawable="@drawable/tipping_background_success"/>
+
+</layer-list>

@@ -19,10 +19,13 @@ function InsertGoogleSignInSubpage (
     getTrustedHTML`
       <template is="dom-if" route-path="/content/googleSignIn" no-search>
         <settings-subpage>
-          <category-default-setting
-            id="googleSignInDefault"
-            category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]">
-          </category-default-setting>
+          <div id="page-title" class="content-settings-header secondary"></div>
+          <settings-category-default-radio-group
+              id="googleSignInDefault"
+              category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]"
+              allow-option-icon="user"
+              block-option-icon="user-off">
+          </settings-category-default-radio-group>
           <category-setting-exceptions
             id="googleSignInExceptions"
             category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]">
@@ -42,9 +45,16 @@ function InsertGoogleSignInSubpage (
       console.error(
         '[Brave Settings Overrides] Couldn\'t find Google signin subpage')
     } else {
-      googleSignInSubpage.setAttribute(
-          'page-title',
+      const pageTitle =
+        googleSignInTemplate.content.getElementById('page-title')
+      if (!pageTitle) {
+        console.error(
+          '[Brave Settings Overrides] Couldn\'t find Google sigin page-title')
+      } else {
+        let pageTitleNode = document.createTextNode(
           loadTimeData.getString('siteSettingsCategoryGoogleSignIn'))
+        pageTitle.appendChild(pageTitleNode)
+      }
       const googleSignInDefault =
         googleSignInTemplate.content.getElementById('googleSignInDefault')
       if (!googleSignInDefault) {
@@ -52,10 +62,10 @@ function InsertGoogleSignInSubpage (
           '[Brave Settings Overrides] Couldn\'t find Google signin default')
       } else {
         googleSignInDefault.setAttribute(
-            'toggle-off-label',
-            loadTimeData.getString('siteSettingsGoogleSignInAsk'))
+            'block-option-label',
+            loadTimeData.getString('siteSettingsGoogleSignInBlock'))
         googleSignInDefault.setAttribute(
-            'toggle-on-label',
+            'allow-option-label',
             loadTimeData.getString('siteSettingsGoogleSignInAsk'))
       }
       const googleSignInExceptions =
@@ -84,10 +94,13 @@ function InsertLocalhostAccessSubpage (
     getTrustedHTML`
         <template is="dom-if" route-path="/content/localhostAccess" no-search>
         <settings-subpage>
-          <category-default-setting
-            id="localhostAccessDefault"
-            category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]">
-          </category-default-setting>
+          <div id="page-title" class="content-settings-header secondary"></div>
+          <settings-category-default-radio-group
+              id="localhostAccessDefault"
+              category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]"
+              allow-option-icon="smartphone-desktop"
+              block-option-icon="smartphone-desktop-off">
+          </settings-category-default-radio-group>
           <category-setting-exceptions
             id="localhostExceptions"
             category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]">
@@ -108,8 +121,17 @@ function InsertLocalhostAccessSubpage (
       console.error(
         '[Brave Settings Overrides] Couldn\'t find localhost access subpage')
     } else {
-      localhostAccessSubpage.setAttribute('page-title',
-        loadTimeData.getString('siteSettingsCategoryLocalhostAccess'))
+      const pageTitle =
+        localhostAccessTemplate.content.getElementById('page-title')
+      if (!pageTitle) {
+        console.error(
+          '[Brave Settings Overrides] Couldn\'t find localhost access ' +
+          'page-title')
+      } else {
+        let pageTitleNode = document.createTextNode(
+          loadTimeData.getString('siteSettingsCategoryLocalhostAccess'))
+        pageTitle.appendChild(pageTitleNode)
+      }
       const localhostAccessDefault =
         localhostAccessTemplate.content.getElementById('localhostAccessDefault')
       if (!localhostAccessDefault) {
@@ -117,10 +139,10 @@ function InsertLocalhostAccessSubpage (
           '[Brave Settings Overrides] Couldn\'t find localhost access default')
       } else {
         localhostAccessDefault.setAttribute(
-          'toggle-off-label',
-          loadTimeData.getString('siteSettingsLocalhostAccessAsk'))
+          'block-option-label',
+          loadTimeData.getString('siteSettingsLocalhostAccessBlock'))
           localhostAccessDefault.setAttribute(
-          'toggle-on-label',
+          'allow-option-label',
           loadTimeData.getString('siteSettingsLocalhostAccessAsk'))
       }
       const localhostExceptions =
@@ -149,10 +171,13 @@ function InsertAutoplaySubpage (
     getTrustedHTML`
       <template is="dom-if" route-path="/content/autoplay" no-search>
         <settings-subpage>
-          <category-default-setting
-            id="autoplayDefault"
-            category="[[contentSettingsTypesEnum_.AUTOPLAY}}">
-          </category-default-setting>
+          <div id="page-title" class="content-settings-header secondary"></div>
+          <settings-category-default-radio-group
+              id="autoplayDefault"
+              category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
+              allow-option-icon="autoplay-on"
+              block-option-icon="autoplay-off">
+          </settings-category-default-radio-group>
           <category-setting-exceptions
             id="autoplayExceptions"
             category="[[contentSettingsTypesEnum_.AUTOPLAY]]">
@@ -171,8 +196,16 @@ function InsertAutoplaySubpage (
       console.error(
         '[Brave Settings Overrides] Couldn\'t find autoplay subpage')
     } else {
-      autoplaySubpage.setAttribute(
-          'page-title', loadTimeData.getString('siteSettingsCategoryAutoplay'))
+      const pageTitle =
+        autoplayTemplate.content.getElementById('page-title')
+      if (!pageTitle) {
+        console.error(
+          '[Brave Settings Overrides] Couldn\'t find autoplay page-title')
+      } else {
+        let pageTitleNode = document.createTextNode(
+          loadTimeData.getString('siteSettingsCategoryAutoplay'))
+        pageTitle.appendChild(pageTitleNode)
+      }
       const autoplayDefault =
         autoplayTemplate.content.getElementById('autoplayDefault')
       if (!autoplayDefault) {
@@ -180,10 +213,10 @@ function InsertAutoplaySubpage (
           '[Brave Settings Overrides] Couldn\'t find autoplay default')
       } else {
         autoplayDefault.setAttribute(
-            'toggle-off-label',
+            'block-option-label',
             loadTimeData.getString('siteSettingsAutoplayBlock'))
         autoplayDefault.setAttribute(
-            'toggle-on-label',
+            'allow-option-label',
             loadTimeData.getString('siteSettingsAutoplayAllow'))
       }
       const autoplayExceptions =
@@ -210,10 +243,13 @@ function InsertEthereumSubpage (
     getTrustedHTML`
       <template is="dom-if" route-path="/content/ethereum" no-search>
         <settings-subpage>
-          <category-default-setting
-            id="ethereumDefault"
-            category="[[contentSettingsTypesEnum_.ETHEREUM]]">
-          </category-default-setting>
+          <div id="page-title" class="content-settings-header secondary"></div>
+          <settings-category-default-radio-group
+              id="ethereumDefault"
+              category="[[contentSettingsTypesEnum_.ETHEREUM]]"
+              allow-option-icon="ethereum-on"
+              block-option-icon="ethereum-off">
+          </settings-category-default-radio-group>
           <category-setting-exceptions
             id="ethereumExceptions"
             category="[[contentSettingsTypesEnum_.ETHEREUM]]"
@@ -233,8 +269,16 @@ function InsertEthereumSubpage (
       console.error(
         '[Brave Settings Overrides] Couldn\'t find Ethereum subpage')
     } else {
-      ethereumSubpage.setAttribute(
-          'page-title', loadTimeData.getString('siteSettingsCategoryEthereum'))
+      const pageTitle =
+        ethereumTemplate.content.getElementById('page-title')
+      if (!pageTitle) {
+        console.error(
+          '[Brave Settings Overrides] Couldn\'t find Ethereum page-title')
+      } else {
+        let pageTitleNode = document.createTextNode(
+          loadTimeData.getString('siteSettingsCategoryEthereum'))
+        pageTitle.appendChild(pageTitleNode)
+      }
       const ethereumDefault =
         ethereumTemplate.content.getElementById('ethereumDefault')
       if (!ethereumDefault) {
@@ -242,10 +286,10 @@ function InsertEthereumSubpage (
           '[Brave Settings Overrides] Couldn\'t find Ethereum default')
       } else {
         ethereumDefault.setAttribute(
-            'toggle-off-label',
+            'block-option-label',
             loadTimeData.getString('siteSettingsEthereumBlock'))
         ethereumDefault.setAttribute(
-            'toggle-on-label',
+            'allow-option-label',
             loadTimeData.getString('siteSettingsEthereumAsk'))
       }
       const ethereumExceptions =
@@ -272,10 +316,13 @@ function InsertSolanaSubpage (
     getTrustedHTML`
       <template is="dom-if" route-path="/content/solana" no-search>
         <settings-subpage>
-          <category-default-setting
-            id="solanaDefault"
-            category="[[contentSettingsTypesEnum_.SOLANA]]">
-          </category-default-setting>
+          <div id="page-title" class="content-settings-header secondary"></div>
+          <settings-category-default-radio-group
+              id="solanaDefault"
+              category="[[contentSettingsTypesEnum_.SOLANA]]"
+              allow-option-icon="solana-on"
+              block-option-icon="solana-off">
+          </settings-category-default-radio-group>
           <category-setting-exceptions
             id="solanaExceptions"
             category="[[contentSettingsTypesEnum_.SOLANA]]"
@@ -295,8 +342,16 @@ function InsertSolanaSubpage (
       console.error(
         '[Brave Settings Overrides] Couldn\'t find Solana subpage')
     } else {
-      solanaSubpage.setAttribute(
-          'page-title', loadTimeData.getString('siteSettingsCategorySolana'))
+      const pageTitle =
+        solanaTemplate.content.getElementById('page-title')
+      if (!pageTitle) {
+        console.error(
+          '[Brave Settings Overrides] Couldn\'t find Solana page-title')
+      } else {
+        let pageTitleNode = document.createTextNode(
+          loadTimeData.getString('siteSettingsCategorySolana'))
+        pageTitle.appendChild(pageTitleNode)
+      }
       const solanaDefault =
         solanaTemplate.content.getElementById('solanaDefault')
       if (!solanaDefault) {
@@ -304,10 +359,11 @@ function InsertSolanaSubpage (
           '[Brave Settings Overrides] Couldn\'t find Solana default')
       } else {
         solanaDefault.setAttribute(
-            'toggle-off-label',
+            'block-option-label',
             loadTimeData.getString('siteSettingsSolanaBlock'))
         solanaDefault.setAttribute(
-            'toggle-on-label', loadTimeData.getString('siteSettingsSolanaAsk'))
+            'allow-option-label',
+            loadTimeData.getString('siteSettingsSolanaAsk'))
       }
       const solanaExceptions =
         solanaTemplate.content.getElementById('solanaExceptions')

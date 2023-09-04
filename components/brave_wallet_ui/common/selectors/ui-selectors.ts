@@ -10,3 +10,9 @@ export const selectedPendingTransactionId = ({ ui }: State) =>
   ui.selectedPendingTransactionId
 export const transactionProviderErrorRegistry = ({ ui }: State) =>
   ui.transactionProviderErrorRegistry
+export const isPanel = ({ ui }: State) =>
+  ui.isPanel
+export const collapsedPortfolioAccountAddresses = ({ ui }: State) =>
+  ui.collapsedPortfolioAccountAddresses
+export const collapsedPortfolioNetworkKeys = ({ ui }: State) =>
+  ui.collapsedPortfolioNetworkKeys

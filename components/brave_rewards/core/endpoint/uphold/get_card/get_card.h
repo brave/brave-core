@@ -10,7 +10,7 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // GET https://api.uphold.com/v0/me/cards/{wallet_address}
 //
@@ -73,7 +73,7 @@
 // }
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 namespace uphold {
@@ -83,7 +83,7 @@ using GetCardCallback = base::OnceCallback<void(const mojom::Result result,
 
 class GetCard {
  public:
-  explicit GetCard(LedgerImpl& ledger);
+  explicit GetCard(RewardsEngineImpl& engine);
   ~GetCard();
 
   void Request(const std::string& address,
@@ -99,7 +99,7 @@ class GetCard {
 
   void OnRequest(GetCardCallback callback, mojom::UrlResponsePtr response);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace uphold

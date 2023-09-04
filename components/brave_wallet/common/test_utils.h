@@ -13,10 +13,14 @@
 
 namespace brave_wallet {
 
+bool AllCoinsTested();
+
 mojom::NetworkInfo GetTestNetworkInfo1(
-    const std::string& chain_id = "chain_id");
+    const std::string& chain_id = "chain_id",
+    mojom::CoinType coin = mojom::CoinType::ETH);
 mojom::NetworkInfo GetTestNetworkInfo2(
-    const std::string& chain_id = "chain_id2");
+    const std::string& chain_id = "chain_id2",
+    mojom::CoinType coin = mojom::CoinType::ETH);
 
 // Matcher to check equality of two mojo structs. Matcher needs copyable value
 // which is not possible for some mojo types, so wrapping it with RefCounted.

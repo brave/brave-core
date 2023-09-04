@@ -8,15 +8,17 @@
 #include <string>
 #include <utility>
 
+#include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
+
 namespace brave_shields {
 
 TestFiltersProvider::TestFiltersProvider(const std::string& rules,
                                          const std::string& resources)
-    : rules_(rules), resources_(resources) {}
+    : AdBlockFiltersProvider(true), rules_(rules), resources_(resources) {}
 
 TestFiltersProvider::TestFiltersProvider(const base::FilePath& dat_location,
                                          const std::string& resources)
-    : resources_(resources) {
+    : AdBlockFiltersProvider(true), resources_(resources) {
   CHECK(!dat_location.empty());
 
   dat_buffer_ = brave_component_updater::ReadDATFileData(dat_location);
@@ -25,6 +27,10 @@ TestFiltersProvider::TestFiltersProvider(const base::FilePath& dat_location,
 }
 
 TestFiltersProvider::~TestFiltersProvider() = default;
+
+std::string TestFiltersProvider::GetNameForDebugging() {
+  return "TestFiltersProvider";
+}
 
 void TestFiltersProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>

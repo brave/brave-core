@@ -15,6 +15,7 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/callback_forward.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/tor/tor_control_event.h"
@@ -34,7 +35,7 @@ namespace tor {
 // This class is resposible for talking to Tor executable to get status, send
 // command or subsribe to events through the control channel.
 // Tor Control Channel spec:
-// https://gitweb.torproject.org/torspec.git/plain/control-spec.txt
+// https://gitlab.torproject.org/tpo/core/torspec/-/raw/HEAD/control-spec.txt
 //
 // Most of its internal implementation should be ran on IO thread so owner of
 // TorControl should pass in named io task runner and also use

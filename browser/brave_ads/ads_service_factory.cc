@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/device_id/device_id_impl.h"
 #include "brave/browser/brave_ads/services/bat_ads_service_factory_impl.h"
@@ -36,7 +37,8 @@ AdsService* AdsServiceFactory::GetForProfile(Profile* profile) {
 
 // static
 AdsServiceFactory* AdsServiceFactory::GetInstance() {
-  return base::Singleton<AdsServiceFactory>::get();
+  static base::NoDestructor<AdsServiceFactory> instance;
+  return instance.get();
 }
 
 AdsServiceFactory::AdsServiceFactory()

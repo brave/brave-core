@@ -16,7 +16,6 @@ from lib.github import GitHub
 from lib.helpers import *
 from lib.util import download, execute, tempdir, extract_zip
 
-
 tag_names = []
 releases = {}
 is_mac_os = True
@@ -34,19 +33,29 @@ def parse_args():
     parser.add_argument('--branch',
                         help='optional branch where the problem is occurring',
                         default=None)
-    parser.add_argument('-v', '--verbose', action='store_true',
+    parser.add_argument('-v',
+                        '--verbose',
+                        action='store_true',
                         help='extra logging')
-    parser.add_argument('--real-profile', action='store_true',
-                        help='if true, use your real profile (instead of a fresh one). \
-                              can\'t be combined with `--use-profile`.')
-    parser.add_argument('--use-profile',
-                        help='url of a zipped profile to unzip/use for each install',
-                        default=None)
-    parser.add_argument('--channel',
-                        help='narrow down to a specific release channel. nightly/dev/beta/release',
-                        default=None)
-    parser.add_argument('--demo-mode', action='store_true',
-                        help='if true, don\'t actually perform download/install')
+    parser.add_argument(
+        '--real-profile',
+        action='store_true',
+        help=
+        'if true, use your real profile (instead of a fresh one). can\'t be combined with `--use-profile`.'
+    )
+    parser.add_argument(
+        '--use-profile',
+        help='url of a zipped profile to unzip/use for each install',
+        default=None)
+    parser.add_argument(
+        '--channel',
+        help=
+        'narrow down to a specific release channel. nightly/dev/beta/release',
+        default=None)
+    parser.add_argument(
+        '--demo-mode',
+        action='store_true',
+        help='if true, don\'t actually perform download/install')
 
     return parser.parse_args()
 
@@ -65,10 +74,7 @@ def get_releases(repo):
 
     while not done:
         # for more info, see: https://developer.github.com/v3/guides/traversing-with-pagination/
-        get_data = {
-            'page': page,
-            'per_page': 100
-        }
+        get_data = {'page': page, 'per_page': 100}
         # get all the releases and index them
         response = repo.releases.get(params=get_data)
         if len(response) == 0:
@@ -111,8 +117,8 @@ def filter_releases(args):
 
         # remove entries which don't match optional branch (if present)
         if args.branch is not None and branch_version != args.branch:
-            print(' - skipping "' + tag +
-                  '" (' + branch_version + ' != ' + args.branch + ')')
+            print(' - skipping "' + tag + '" (' + branch_version + ' != ' +
+                  args.branch + ')')
             continue
 
         # remove entries which don't have installer binary
@@ -123,14 +129,14 @@ def filter_releases(args):
         if args.channel:
             channel = get_release_channel(tag)
             if args.channel != channel:
-                print(' - skipping "' + tag +
-                      '" (not in channel "' + args.channel + '")')
+                print(' - skipping "' + tag + '" (not in channel "' +
+                      args.channel + '")')
                 continue
 
         filtered_tag_names.append(tag)
 
-    print('filtering complete (' + str(len(tag_names) -
-          len(filtered_tag_names)) + ' versions removed)')
+    print('filtering complete (' +
+          str(len(tag_names) - len(filtered_tag_names)) + ' versions removed)')
     tag_names = filtered_tag_names
 
 
@@ -140,8 +146,8 @@ def get_release_asset(version, verbose=True):
 
     release_id = releases[version]['id']
     if verbose:
-        print('getting installer for  "' + version +
-              '" (release id ' + str(release_id) + ')...')
+        print('getting installer for  "' + version + '" (release id ' +
+              str(release_id) + ')...')
 
     # find correct asset for platform
     for asset in releases[version]['assets']:
@@ -189,15 +195,16 @@ def install(download_dir, path):
                 break
 
         if volume is None:
-            raise Exception('[ERROR] did not find "/Volumes/Brave" sub-string in mount list!\n \
-                             Full response from "hdiutil":\n' + result)
+            raise Exception(
+                '[ERROR] did not find "/Volumes/Brave" sub-string in mount list!\nFull response from "hdiutil":\n'
+                + result)
 
         print('-> mounted as "' + volume + '"')
 
         # in case volumes are already mounted, remove trailing " 1" or " 2" (etc)
         binary_name = volume.replace("/Volumes/", "")
-        binary_name = re.sub("^\\d+\\s|\\s\\d+\\s|\\s\\d+$",
-                             "", binary_name) + '.app'
+        binary_name = re.sub(r"^(?:\d+\s|\s\d+\s|\s\d+)$", "",
+                             binary_name) + '.app'
         volume_path = os.path.join(volume, binary_name)
 
         # copy binary to a temp folder
@@ -291,15 +298,8 @@ def test_version(args, attempt, tag):
 
 
 def get_github_token():
-    github_token = get_env_var('GITHUB_TOKEN')
-    if len(github_token) == 0:
-        result = execute(
-            ['npm', 'config', 'get', 'BRAVE_GITHUB_TOKEN']).strip()
-        if result == 'undefined':
-            raise Exception('`BRAVE_GITHUB_TOKEN` value not found!')
-        return result
-    else:
-        return github_token
+    github_token = os.environ.get('GITHUB_TOKEN')
+    return github_token
 
 
 def get_nearest_index(version, index_to_get, default):
@@ -314,8 +314,9 @@ def get_nearest_index(version, index_to_get, default):
             return default
 
         versions.pop()
-        results = [i for i in tag_names if i.startswith(
-            '.'.join(versions) + '.')]
+        results = [
+            i for i in tag_names if i.startswith('.'.join(versions) + '.')
+        ]
         if len(results) == 0:
             return default
 
@@ -326,7 +327,8 @@ def get_nearest_index(version, index_to_get, default):
 def find_first_broken_version(args):
     global tag_names
 
-    print('bisecting: total of ' + str(len(tag_names)) + ' versions in search set')
+    print('bisecting: total of ' + str(len(tag_names)) +
+          ' versions in search set')
 
     left_index = 0
     right_index = len(tag_names) - 1
@@ -380,12 +382,13 @@ def find_first_broken_version(args):
         test_tag = tag_names[test_index]
 
         if args.verbose:
-            print('\n[DEBUG]' +
-                  '\nworks_from=' + tag_names[works_from] + ' (' + str(works_from) + ')' +
-                  '\nfails_at=' + tag_names[fails_at] + ' (' + str(fails_at) + ')' +
-                  '\nleft_index=' + tag_names[left_index] + ' (' + str(left_index) + ')' +
-                  '\nright_index=' + tag_names[right_index] + ' (' + str(right_index) + ')' +
-                  '\ntest_index=' + tag_names[test_index] + ' (' + str(test_index) + ')' +
+            print('\n[DEBUG]' + '\nworks_from=' + tag_names[works_from] + ' (' +
+                  str(works_from) + ')' + '\nfails_at=' + tag_names[fails_at] +
+                  ' (' + str(fails_at) + ')' + '\nleft_index=' +
+                  tag_names[left_index] + ' (' + str(left_index) + ')' +
+                  '\nright_index=' + tag_names[right_index] + ' (' +
+                  str(right_index) + ')' + '\ntest_index=' +
+                  tag_names[test_index] + ' (' + str(test_index) + ')' +
                   '\ngap=' + str(fails_at - works_from))
 
         result = test_version(args, attempt_number, test_tag)
@@ -413,14 +416,16 @@ def main():
     supported_platforms = ['Darwin']
 
     if platform.system() not in supported_platforms:
-        print('Error: Platform \'{}\' not supported; acceptable platform(s): {}'
-              .format(platform.system(), ", ".join(supported_platforms)))
+        print(
+            'Error: Platform \'{}\' not supported; acceptable platform(s): {}'.
+            format(platform.system(), ", ".join(supported_platforms)))
         exit(1)
 
     args = parse_args()
     if args.real_profile and args.use_profile:
         print(
-            '[ERROR] you can\'t use both `--fresh-profile` AND `--use-profile` at the same time.')
+            '[ERROR] you can\'t use both `--fresh-profile` AND `--use-profile` at the same time.'
+        )
         return 1
 
     github_token = get_github_token()
@@ -441,12 +446,13 @@ def main():
             versions = 'v' + previous_release + '..v' + first_broken_version
             if args.verbose:
                 print(
-                    '[INFO] finding commits using "git log --pretty=oneline ' + versions + '"')
-            commits = execute(
-                ['git', 'log', '--pretty=oneline', versions]).strip()
+                    '[INFO] finding commits using "git log --pretty=oneline ' +
+                    versions + '"')
+            commits = execute(['git', 'log', '--pretty=oneline',
+                               versions]).strip()
             commit_lines = commits.split('\n')
-            print('Commits specific to tag "v' + first_broken_version +
-                  '" (' + str(len(commit_lines)) + ' commit(s)):')
+            print('Commits specific to tag "v' + first_broken_version + '" (' +
+                  str(len(commit_lines)) + ' commit(s)):')
             print(commits)
     except Exception as e:
         print('[ERROR] ' + str(e))

@@ -4,6 +4,7 @@
 .brave_gclient_*
 .gclient_*
 .tags*
+.cipd
 /.idea/
 /components/brave_new_tab_ui/data/LICENSE
 /components/brave_webtorrent/extension/out/
@@ -16,13 +17,19 @@ node_modules/
 patches/**/*.patchinfo
 /third_party/android_deps/libs/com_google_android_play_core/core-1.10.0.aar
 /third_party/argon2/src
+/third_party/brave-vpn-wireguard-nt-dlls/
+/third_party/brave-vpn-wireguard-tunnel-dlls/
 /third_party/bip39wally-core-native/
 /third_party/ethash/src
 /third_party/bitcoin-core/src
-/third_party/constellation/crate
 /third_party/playlist_component/src
 /third_party/rapidjson/src
-/third_party/rust/cxx
+/third_party/rust/challenge_bypass_ristretto/v1/crate
+/third_party/rust/kuchiki/v0_8/crate
+/third_party/rust/futures_retry/v0_5/crate
+/third_party/rust/star_constellation/v0_2/crate
+/third_party/cryptography
+/third_party/macholib
 *.xcodeproj
 *.swp
 *.pyc
@@ -37,6 +44,7 @@ patches/**/*.patchinfo
 debug.log
 npm-debug.log
 .npmrc
+.env
 *~
 CMakeLists.txt
 cmake-build-debug/
@@ -51,3 +59,4 @@ venv/
 .storybook-out
 test_get_pkgs
 build/config/gclient_args.gni
+third_party/rust/target

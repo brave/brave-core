@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_info.h"
 
 #include <tuple>
 
@@ -24,15 +24,11 @@ NewTabPageAdInfo& NewTabPageAdInfo::operator=(
 NewTabPageAdInfo::~NewTabPageAdInfo() = default;
 
 bool NewTabPageAdInfo::operator==(const NewTabPageAdInfo& other) const {
-  if (!AdInfo::operator==(other)) {
-    return false;
-  }
-
-  auto tie = [](const NewTabPageAdInfo& ad) {
+  const auto tie = [](const NewTabPageAdInfo& ad) {
     return std::tie(ad.company_name, ad.image_url, ad.alt, ad.wallpapers);
   };
 
-  return tie(*this) == tie(other);
+  return AdInfo::operator==(other) && tie(*this) == tie(other);
 }
 
 bool NewTabPageAdInfo::operator!=(const NewTabPageAdInfo& other) const {
@@ -42,10 +38,6 @@ bool NewTabPageAdInfo::operator!=(const NewTabPageAdInfo& other) const {
 bool NewTabPageAdInfo::IsValid() const {
   return AdInfo::IsValid() && !company_name.empty() && image_url.is_valid() &&
          !alt.empty() && !wallpapers.empty();
-}
-
-bool NewTabPageAdInfo::HasValidCreativeInstanceIdAndCampaignId() const {
-  return !creative_instance_id.empty() && !campaign_id.empty();
 }
 
 }  // namespace brave_ads

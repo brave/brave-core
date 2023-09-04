@@ -7,11 +7,12 @@
 #include <string>
 #include <utility>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_balance_report.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 
 // npm run test -- brave_unit_tests --filter=DatabaseBalanceReportTest.*
 
@@ -24,12 +25,12 @@ namespace database {
 class DatabaseBalanceReportTest : public ::testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  DatabaseBalanceReport balance_report_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  DatabaseBalanceReport balance_report_{mock_engine_impl_};
 };
 
 TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(1)
       .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
@@ -61,7 +62,7 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
 }
 
 TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(1)
       .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
@@ -85,7 +86,7 @@ TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
 }
 
 TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(1)
       .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
@@ -102,16 +103,15 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
-  MockFunction<GetBalanceReportCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
-  balance_report_.GetRecord(mojom::ActivityMonth::MAY, 2020,
-                            callback.AsStdFunction());
+  base::MockCallback<mojom::RewardsEngine::GetBalanceReportCallback> callback;
+  EXPECT_CALL(callback, Run).Times(1);
+  balance_report_.GetRecord(mojom::ActivityMonth::MAY, 2020, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(1)
       .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);

@@ -11,7 +11,7 @@ namespace {
 ////////////////////////////////////////////////////////////////////////////////
 // BraveGM2TabStyle
 //
-class BraveGM2TabStyle : public GM2TabStyle {
+class BraveGM2TabStyle : public GM2TabStyleViews {
  public:
   explicit BraveGM2TabStyle(Tab* tab);
   BraveGM2TabStyle(const BraveGM2TabStyle&) = delete;
@@ -28,10 +28,11 @@ class BraveGM2TabStyle : public GM2TabStyle {
   raw_ptr<Tab> tab_;
 };
 
-BraveGM2TabStyle::BraveGM2TabStyle(Tab* tab) : GM2TabStyle(tab), tab_(tab) {}
+BraveGM2TabStyle::BraveGM2TabStyle(Tab* tab)
+    : GM2TabStyleViews(tab), tab_(tab) {}
 
 TabStyle::TabColors BraveGM2TabStyle::CalculateColors() const {
-  auto colors = GM2TabStyle::CalculateColors();
+  auto colors = GM2TabStyleViews::CalculateColors();
   const SkColor inactive_non_hovered_fg_color = SkColorSetA(
       colors.foreground_color,
       gfx::Tween::IntValueBetween(0.7, SK_AlphaTRANSPARENT, SK_AlphaOPAQUE));
@@ -57,12 +58,12 @@ class BraveVerticalTabStyle : public BraveGM2TabStyle {
   ~BraveVerticalTabStyle() override = default;
 
   // BraveGM2TabStyle:
-  SkPath GetPath(
-      PathType path_type,
-      float scale,
-      bool force_active = false,
-      RenderUnits render_units = RenderUnits::kPixels) const override;
-  SeparatorBounds GetSeparatorBounds(float scale) const override;
+  SkPath GetPath(TabStyle::PathType path_type,
+                 float scale,
+                 bool force_active = false,
+                 TabStyle::RenderUnits render_units =
+                     TabStyle::RenderUnits::kPixels) const override;
+  TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const override;
   void PaintTab(gfx::Canvas* canvas) const override;
 
  private:
@@ -75,10 +76,11 @@ BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab) : BraveGM2TabStyle(tab) {
       << "This class should be used only when the flag is on.";
 }
 
-SkPath BraveVerticalTabStyle::GetPath(PathType path_type,
-                                      float scale,
-                                      bool force_active,
-                                      RenderUnits render_units) const {
+SkPath BraveVerticalTabStyle::GetPath(
+    TabStyle::PathType path_type,
+    float scale,
+    bool force_active,
+    TabStyle::RenderUnits render_units) const {
   if (!ShouldShowVerticalTabs()) {
     return BraveGM2TabStyle::GetPath(path_type, scale, force_active,
                                      render_units);
@@ -111,7 +113,8 @@ SkPath BraveVerticalTabStyle::GetPath(PathType path_type,
 
   if (is_pinned) {
     // Only pinned tabs have border
-    if (path_type == PathType::kBorder || path_type == PathType::kFill) {
+    if (path_type == TabStyle::PathType::kBorder ||
+        path_type == TabStyle::PathType::kFill) {
       // As stroke's coordinate is amid of stroke width, we should set position
       // at 50% of 1 dip.
       tab_top += scale * 0.5;
@@ -120,7 +123,7 @@ SkPath BraveVerticalTabStyle::GetPath(PathType path_type,
       tab_bottom -= scale * 0.5;
     }
 
-    if (path_type == PathType::kInteriorClip) {
+    if (path_type == TabStyle::PathType::kInteriorClip) {
       // In order to clip the fill by the stroke thickness, we should set
       // another 1 dip for interior clip.
       tab_top += scale + scale * 0.5;
@@ -141,7 +144,7 @@ SkPath BraveVerticalTabStyle::GetPath(PathType path_type,
   path.offset(-origin.x(), -origin.y());
 
   // Possibly convert back to DIPs.
-  if (render_units == RenderUnits::kDips && scale != 1.0f) {
+  if (render_units == TabStyle::RenderUnits::kDips && scale != 1.0f) {
     path.transform(SkMatrix::Scale(1.0f / scale, 1.0f / scale));
   }
 

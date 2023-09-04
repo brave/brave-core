@@ -3,18 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 
 // Constants
 import { BraveWallet } from '../../../constants/types'
 import { AllNetworksOption } from '../../../options/network-filter-options'
-import { PanelActions } from '../../../panel/actions'
-
-// Hooks
-import { useSetNetworkMutation } from '../../../common/slices/api.slice'
 
 // Components
-import { CreateNetworkIcon } from '../'
+import { CreateNetworkIcon } from '../create-network-icon/index'
 
 // Styled Components
 import {
@@ -24,37 +19,19 @@ import {
   BigCheckMark
 } from './style'
 
-
 export interface Props {
   selectedNetwork?: BraveWallet.NetworkInfo
   network: BraveWallet.NetworkInfo
-  onSelectCustomNetwork?: (network: BraveWallet.NetworkInfo) => void
+  onSelectCustomNetwork: (network: BraveWallet.NetworkInfo) => void
 }
 
-function SelectNetworkItem (props: Props) {
+export function SelectNetworkItem (props: Props) {
   const { network, selectedNetwork, onSelectCustomNetwork } = props
-
-  // redux
-  const dispatch = useDispatch()
-
-  // queries & mutations
-  const [setNetwork] = useSetNetworkMutation()
-
 
   // methods
   const onSelectNetwork = React.useCallback(async () => {
-    if (onSelectCustomNetwork) {
-      onSelectCustomNetwork(network)
-      return
-    }
-
-    await setNetwork({
-      chainId: network.chainId,
-      coin: network.coin
-    })
-
-    dispatch(PanelActions.navigateTo('main'))
-  }, [onSelectCustomNetwork, setNetwork])
+    onSelectCustomNetwork(network)
+  }, [onSelectCustomNetwork, network])
 
   // render
   return (

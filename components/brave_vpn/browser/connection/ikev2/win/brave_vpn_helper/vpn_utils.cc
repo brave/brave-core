@@ -16,17 +16,13 @@
 #include "base/win/registry.h"
 #include "base/win/windows_version.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/scoped_sc_handle.h"
+#include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
+#include "brave/components/brave_vpn/common/win/utils.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
 namespace {
-
-HRESULT HRESULTFromLastError() {
-  const auto error_code = ::GetLastError();
-  return (error_code != NO_ERROR) ? HRESULT_FROM_WIN32(error_code) : E_FAIL;
-}
 
 // Microsoft-Windows-NetworkProfile
 // fbcfac3f-8459-419f-8e48-1f0b49cdb85e
@@ -64,21 +60,6 @@ bool SetServiceTriggerForVPNConnection(SC_HANDLE hService,
   // and pass to it the address of the SERVICE_TRIGGER_INFO structure
   return ChangeServiceConfig2(hService, SERVICE_CONFIG_TRIGGER_INFO,
                               &serviceTriggerInfo);
-}
-
-bool SetServiceFailActions(SC_HANDLE service) {
-  SC_ACTION failActions[] = {
-      {SC_ACTION_RESTART, 1}, {SC_ACTION_RESTART, 1}, {SC_ACTION_RESTART, 1}};
-  // The time after which to reset the failure count to zero if there are no
-  // failures, in seconds.
-  SERVICE_FAILURE_ACTIONS servFailActions = {
-      .dwResetPeriod = 0,
-      .lpRebootMsg = NULL,
-      .lpCommand = NULL,
-      .cActions = sizeof(failActions) / sizeof(SC_ACTION),
-      .lpsaActions = failActions};
-  return ChangeServiceConfig2(service, SERVICE_CONFIG_FAILURE_ACTIONS,
-                              &servFailActions);
 }
 
 DWORD AddSublayer(GUID uuid) {
@@ -341,8 +322,8 @@ bool ConfigureServiceAutoRestart(const std::wstring& service_name,
     return false;
   }
 
-  if (!SetServiceFailActions(service.Get())) {
-    LOG(ERROR) << "SetServiceFailActions failed:" << std::hex
+  if (!brave_vpn::SetServiceFailureActions(service.Get())) {
+    LOG(ERROR) << "SetServiceFailureActions failed:" << std::hex
                << HRESULTFromLastError();
     return false;
   }

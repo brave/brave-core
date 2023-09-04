@@ -1,42 +1,42 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index 03c4a6a04c1231c3f169a8ddb1880b95df84ea09..45b26494089dc83fb88aedf533652f24af092c0d 100644
+index a34293da9026018a3e733ed58e4eabde666c0198..709346c672d1e996cf26b6afd16da8c89bbdb309 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
-@@ -40,6 +40,9 @@
+@@ -38,6 +38,9 @@
    "chrome/app/chromium_strings.grd": {
-     "messages": [400],
+     "messages": [800],
    },
 +  "chrome/app/brave_strings.grd": {
-+    "messages": [400],
++    "messages": [800],
 +  },
    "chrome/app/google_chrome_strings.grd": {
-     "messages": [400],
+     "messages": [800],
    },
-@@ -231,7 +234,7 @@
-     "includes": [1600],
+@@ -248,7 +251,7 @@
+     "includes": [2960],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/history/resources.grd": {
 -    "META": {"sizes": {"includes": [40]}},
 +    "META": {"sizes": {"includes": [44]}},
-     "includes": [1620],
+     "includes": [2980],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/identity_internals/resources.grd": {
-@@ -342,7 +345,7 @@
-     "includes": [1940],
+@@ -375,7 +378,7 @@
+     "includes": [3520],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings/resources.grd": {
 -    "META": {"sizes": {"includes": [500],}},
 +    "META": {"sizes": {"includes": [650],}},
-     "includes": [1960],
+     "includes": [3540],
    },
-   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/signin/profile_picker/resources.grd": {
-@@ -794,6 +797,9 @@
+   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
+@@ -860,6 +863,9 @@
    "components/components_chromium_strings.grd": {
-     "messages": [3520],
+     "messages": [6020],
    },
 +  "components/components_brave_strings.grd": {
-+    "messages": [3520],
++    "messages": [6020],
 +  },
    "components/components_google_chrome_strings.grd": {
-     "messages": [3520],
+     "messages": [6020],
    },

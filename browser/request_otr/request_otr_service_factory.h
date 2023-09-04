@@ -6,8 +6,12 @@
 #ifndef BRAVE_BROWSER_REQUEST_OTR_REQUEST_OTR_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_REQUEST_OTR_REQUEST_OTR_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace request_otr {
 
@@ -20,7 +24,7 @@ class RequestOTRServiceFactory : public BrowserContextKeyedServiceFactory {
   static RequestOTRServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<RequestOTRServiceFactory>;
+  friend base::NoDestructor<RequestOTRServiceFactory>;
 
   RequestOTRServiceFactory();
   ~RequestOTRServiceFactory() override;

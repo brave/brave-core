@@ -1,0 +1,8 @@
+Name: pin-project-internal
+URL: https://crates.io/crates/pin-project-internal
+Description: Implementation detail of the `pin-project` crate.
+
+Version: 0.4.30
+Security Critical: yes
+License: Apache 2.0
+Revision: ff44458eb0f754a3187f482b1720e2946ddfb4ce

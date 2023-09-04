@@ -5,14 +5,12 @@
 
 package org.chromium.chrome.browser.brave_news;
 import android.app.Activity;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -22,7 +20,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,9 +34,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -50,7 +45,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -72,18 +66,15 @@ import org.chromium.brave_news.mojom.PromotedArticle;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
-import org.chromium.chrome.browser.brave_news.BraveNewsBottomSheetDialogFragment;
-import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.DisplayAdsTable;
-import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.url.mojom.Url;
 
 import java.util.List;
@@ -281,6 +272,7 @@ public class CardBuilderFeedCard {
                     (LinearLayout.LayoutParams) adLayoutUp.getLayoutParams();
             adImageLinearParams.weight = 1.0f;
             adImage.setLayoutParams(adImageLinearParams);
+            adImage.setContentDescription(mActivity.getResources().getText(R.string.brave_news_ad));
 
             setDisplayAdImage(adImage, adData.image, 1);
             adLayoutUp.addView(adImage);
@@ -407,20 +399,23 @@ public class CardBuilderFeedCard {
                         Handler handler = new Handler(Looper.getMainLooper());
                         executor.execute(() -> {
                             try {
-                                int tabId =
-                                        BraveActivity.getBraveActivity().getActivityTab().getId();
-                                DatabaseHelper dbHelper = DatabaseHelper.getInstance();
-                                DisplayAdsTable posTabAd = dbHelper.getDisplayAd(position, tabId);
-                                handler.post(() -> {
-                                    if (posTabAd != null) {
-                                        createAdFromTable(posTabAd);
-                                    } else {
-                                        mBraveNewsController.getDisplayAd(adData -> {
-                                            BraveNewsUtils.putToDisplayAdsMap(position, adData);
-                                            createdDisplayAdCard(adData);
-                                        });
-                                    }
-                                });
+                                Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+                                if (tab != null) {
+                                    int tabId = tab.getId();
+                                    DatabaseHelper dbHelper = DatabaseHelper.getInstance();
+                                    DisplayAdsTable posTabAd =
+                                            dbHelper.getDisplayAd(position, tabId);
+                                    handler.post(() -> {
+                                        if (posTabAd != null) {
+                                            createAdFromTable(posTabAd);
+                                        } else {
+                                            mBraveNewsController.getDisplayAd(adData -> {
+                                                BraveNewsUtils.putToDisplayAdsMap(position, adData);
+                                                createdDisplayAdCard(adData);
+                                            });
+                                        }
+                                    });
+                                }
                             } catch (BraveActivity.BraveActivityNotFoundException e) {
                                 Log.e(TAG, "createCard DISPLAY_AD " + e);
                             }

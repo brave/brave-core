@@ -1,13 +1,12 @@
 diff --git a/components/update_client/BUILD.gn b/components/update_client/BUILD.gn
-index c6bc908372c5ebcf066197e82e7aabe461da540c..de2afe16a0871aff87ffba8e879a823573dab983 100644
+index 09913b7fa8f271a61674e5cbf7da8f6182803061..b491d5ae58f6680c824d3bf2d70cd6752bf4ee87 100644
 --- a/components/update_client/BUILD.gn
 +++ b/components/update_client/BUILD.gn
-@@ -196,6 +196,8 @@ static_library("update_client") {
-       "puffin_patcher.h",
+@@ -180,6 +180,7 @@ static_library("update_client") {
+       "background_downloader_win.h",
      ]
    }
-+
 +  deps += brave_components_update_client_deps public_deps = brave_components_update_client_public_deps
  }
  
- static_library("test_support") {
+ source_set("test_support") {

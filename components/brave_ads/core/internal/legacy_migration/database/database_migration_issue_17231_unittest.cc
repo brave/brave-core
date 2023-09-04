@@ -9,10 +9,10 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversion_queue_database_table.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_database_table.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_info.h"
+#include "brave/components/brave_ads/core/internal/conversions/queue/conversion_queue_database_table.h"
+#include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -21,8 +21,8 @@ namespace brave_ads {
 class BraveAdsDatabaseMigrationIssue17231Test : public UnitTestBase {
  protected:
   void SetUpMocks() override {
-    CopyFileFromTestPathToTempPath("database_issue_17231.sqlite",
-                                   kDatabaseFilename);
+    ASSERT_TRUE(CopyFileFromTestPathToTempPath(
+        "database/database_issue_17231.sqlite", kDatabaseFilename));
   }
 };
 
@@ -34,40 +34,42 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
   database_table.GetAll(
       base::BindOnce([](const bool success,
                         const ConversionQueueItemList& conversion_queue_items) {
+        // Assert
         ASSERT_TRUE(success);
 
-        ConversionQueueItemInfo conversion_queue_item;
-        conversion_queue_item.ad_type = AdType::kNotificationAd;
-        conversion_queue_item.campaign_id =
-            "6ee347d9-acec-4a80-b108-e9335a5cbd39";
-        conversion_queue_item.creative_set_id =
-            "37489815-8786-4ef8-83aa-4b0737f44375";
-        conversion_queue_item.creative_instance_id =
+        ConversionInfo conversion;
+        conversion.ad_type = AdType::kNotificationAd;
+        conversion.creative_instance_id =
             "6c9b4c69-1ed8-4dc3-b44d-5b37a479795e";
-        conversion_queue_item.advertiser_id =
-            "80ec0ddb-8dbb-4009-8192-1528faa411ae";
-        conversion_queue_item.conversion_id =
-            "425fb519-f6c0-407f-98f6-cfff8f2b1ec7";
-        conversion_queue_item.process_at = base::Time::FromDoubleT(1627581449);
+        conversion.creative_set_id = "37489815-8786-4ef8-83aa-4b0737f44375";
+        conversion.campaign_id = "6ee347d9-acec-4a80-b108-e9335a5cbd39";
+        conversion.advertiser_id = "80ec0ddb-8dbb-4009-8192-1528faa411ae";
+        conversion.action_type = ConversionActionType::kViewThrough;
 
         ConversionQueueItemList expected_conversion_queue_items;
-        expected_conversion_queue_items.push_back(conversion_queue_item);
+        ConversionQueueItemInfo expected_conversion_queue_item;
+        expected_conversion_queue_item.conversion = conversion;
+        expected_conversion_queue_item.process_at =
+            base::Time::FromDoubleT(1627581449);
+        expected_conversion_queue_items.push_back(
+            expected_conversion_queue_item);
 
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
       }));
-
-  // Assert
 }
 
-TEST_F(BraveAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
+TEST_F(BraveAdsDatabaseMigrationIssue17231Test,
+       CreativeSetConversionsDatabase) {
   // Arrange
-  const database::table::Conversions database_table;
+  const database::table::CreativeSetConversions database_table;
 
   AdvanceClockTo(TimeFromString("28 July 2021", /*is_local*/ false));
 
   // Act
   database_table.GetAll(base::BindOnce([](const bool success,
-                                          const ConversionList& conversions) {
+                                          const CreativeSetConversionList&
+                                              creative_set_conversions) {
+    // Assert
     ASSERT_TRUE(success);
 
     const std::vector<std::string> creative_set_ids = {
@@ -258,46 +260,6 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
         "c99fadb5-cca7-459f-abc1-980d588e4bc0",
         "1988e8a6-a126-40b7-87a6-64c699a96d03",
         "5ffa1ff8-685a-4142-ae89-309c6de3c4c4"};
-
-    const std::vector<std::string> types = {
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postclick", "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postclick",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview", "postview", "postview",  "postview",
-        "postview", "postview"};
 
     const std::vector<std::string> url_patterns = {
         R"(https://buy.norton.com/estore/checkOutConfirmation*)",
@@ -535,27 +497,28 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
         1627585140, 1627577940, 1627577940, 1627577940, 1627577940, 1627577940,
         1627577940};
 
-    ConversionList expected_conversions;
+    CreativeSetConversionList expected_creative_set_conversions;
 
-    // creative_ad_conversions database table in database_issue_17231.sqlite
+    // creative_id_conversions database table in database_issue_17231.sqlite
     // contains 189 rows of which two are duplicates, these duplicate rows are
-    // removed after migration.
-    ASSERT_EQ(187U, conversions.size());
+    // removed after migration to the creative_set_conversions database table.
+    ASSERT_EQ(187U, creative_set_conversions.size());
     for (int i = 0; i < 187; i++) {
-      ConversionInfo expected_conversion;
-      expected_conversion.creative_set_id = creative_set_ids.at(i);
-      expected_conversion.type = types.at(i);
-      expected_conversion.url_pattern = url_patterns.at(i);
-      expected_conversion.observation_window =
+      CreativeSetConversionInfo expected_creative_set_conversion;
+      expected_creative_set_conversion.id = creative_set_ids.at(i);
+      expected_creative_set_conversion.url_pattern = url_patterns.at(i);
+      expected_creative_set_conversion.observation_window =
           base::Days(observation_windows.at(i));
-      expected_conversion.expire_at = base::Time::FromDoubleT(expire_ats.at(i));
-      expected_conversions.push_back(expected_conversion);
+      expected_creative_set_conversion.expire_at =
+          base::Time::FromDoubleT(expire_ats.at(i));
+
+      expected_creative_set_conversions.push_back(
+          expected_creative_set_conversion);
     }
 
-    EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
+    EXPECT_TRUE(ContainersEq(expected_creative_set_conversions,
+                             creative_set_conversions));
   }));
-
-  // Assert
 }
 
 }  // namespace brave_ads

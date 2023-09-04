@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,37 +18,27 @@ import android.os.Handler;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.cardview.widget.CardView;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
-import org.chromium.chrome.browser.compositor.CompositorViewHolder;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.RewardsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
 import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
-import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
@@ -61,7 +50,6 @@ import org.chromium.ui.base.DeviceFormFactor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -78,13 +66,10 @@ public class NTPUtil {
     public static int checkForNonDisruptiveBanner(NTPImage ntpImage, SponsoredTab sponsoredTab) {
         Context context = ContextUtils.getApplicationContext();
         if(sponsoredTab.shouldShowBanner()) {
-            if(PackageUtils.isFirstInstall(context)
-                && ntpImage instanceof Wallpaper
-                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+            if (PackageUtils.isFirstInstall(context) && ntpImage instanceof Wallpaper
+                    && !BraveRewardsHelper.isRewardsEnabled()) {
                 return SponsoredImageUtil.BR_ON_ADS_OFF ;
-            } else if (ntpImage instanceof Wallpaper
-                    && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                            Profile.getLastUsedRegularProfile())) {
+            } else if (ntpImage instanceof Wallpaper && BraveRewardsHelper.isRewardsEnabled()) {
                 return SponsoredImageUtil.BR_ON_ADS_ON;
             }
         }
@@ -93,8 +78,7 @@ public class NTPUtil {
 
     public static void showBREBottomBanner(View view) {
         Context context = ContextUtils.getApplicationContext();
-        if (!PackageUtils.isFirstInstall(context)
-                && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
+        if (!PackageUtils.isFirstInstall(context) && BraveRewardsHelper.isRewardsEnabled()
                 && ContextUtils.getAppSharedPreferences().getBoolean(
                         BackgroundImagesPreferences.PREF_SHOW_BRE_BANNER, true)) {
             final ViewGroup breBottomBannerLayout = (ViewGroup) view.findViewById(R.id.bre_banner);
@@ -130,8 +114,7 @@ public class NTPUtil {
         nonDisruptiveBannerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                            Profile.getLastUsedRegularProfile())) {
+                if (BraveRewardsHelper.isRewardsEnabled()) {
                     clickOnBottomBanner(chromeActivity, ntpType, nonDisruptiveBannerLayout,
                             sponsoredTab, newTabPageListener);
                 } else {

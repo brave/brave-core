@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_SERVICE_H_
 #define BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_SERVICE_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
@@ -23,8 +23,6 @@ class PrefRegistrySimple;
 class PrefService;
 
 namespace sidebar {
-
-class SidebarServiceDelegate;
 
 struct SidebarItemUpdate {
   size_t index = 0;
@@ -78,8 +76,7 @@ class SidebarService : public KeyedService {
   static void RegisterProfilePrefs(PrefRegistrySimple* registry,
                                    version_info::Channel channel);
 
-  SidebarService(PrefService* prefs,
-                 std::unique_ptr<SidebarServiceDelegate> delegate);
+  explicit SidebarService(PrefService* prefs);
   ~SidebarService() override;
 
   const std::vector<SidebarItem>& items() const { return items_; }
@@ -102,9 +99,6 @@ class SidebarService : public KeyedService {
   ShowSidebarOption GetSidebarShowOption() const;
   void SetSidebarShowOption(ShowSidebarOption show_options);
 
-  void MoveSidebarToRightTemporarily();
-  void RestoreSidebarAlignmentIfNeeded();
-
   absl::optional<SidebarItem> GetDefaultPanelItem() const;
   bool IsEditableItemAt(size_t index) const;
 
@@ -113,6 +107,8 @@ class SidebarService : public KeyedService {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SidebarServiceTest, AddRemoveItems);
+  FRIEND_TEST_ALL_PREFIXES(SidebarBrowserTest, ItemAddedBubbleAnchorViewTest);
+  FRIEND_TEST_ALL_PREFIXES(SidebarBrowserTest, ItemAddedScrollTest);
 
   void LoadSidebarItems();
   void UpdateSidebarItemsToPrefStore();
@@ -124,9 +120,9 @@ class SidebarService : public KeyedService {
   void MigrateSidebarShowOptions();
   void MigratePrefSidebarBuiltInItemsToHidden();
 
-  raw_ptr<PrefService> prefs_ = nullptr;
+  void AddItemAtForTesting(const SidebarItem& item, size_t index);
 
-  std::unique_ptr<SidebarServiceDelegate> delegate_;
+  raw_ptr<PrefService> prefs_ = nullptr;
 
   std::vector<SidebarItem> items_;
 

@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled(WalletButton)`
@@ -17,7 +18,14 @@ export const StyledWrapper = styled(WalletButton)`
   background: none;
   border: none;
   margin-bottom: 10px;
-  padding: 0px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid ${leo.color.divider.subtle};
+
+  &:hover {
+    border-color: ${leo.color.button.background};
+    background-color: ${leo.color.container.interactive};
+  }
 `
 
 export const CurrencyNameAndCode = styled.div`
@@ -33,7 +41,7 @@ export const CurrencyName = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   text-align: left;
 `
 
@@ -42,7 +50,7 @@ export const CurrencySymbol = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.secondary};
 `
 
 // Construct styled-component using JS object instead of string, for editor

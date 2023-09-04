@@ -6,7 +6,9 @@
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -14,7 +16,6 @@
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
-#include "chrome/common/chrome_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
@@ -390,6 +391,9 @@ class EphemeralStorageTest : public InProcessBrowserTest {
     ASSERT_TRUE(
         tabs_->CloseWebContentsAt(tabs_->GetIndexOfWebContents(original_tab_),
                                   TabCloseTypes::CLOSE_NONE));
+    EphemeralStorageServiceFactory::GetInstance()
+        ->GetForContext(browser()->profile())
+        ->FireCleanupTimersForTesting();
 
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
 

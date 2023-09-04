@@ -3,8 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-
-import { BraveWallet, SerializableOriginInfo } from '../../../constants/types'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 // Styled Components
 import {
@@ -17,65 +16,135 @@ import {
   AssetIcon,
   TopWrapper,
   NetworkText,
-  TopRow
+  TopRow,
+  LoadingRing
 } from './style'
 import { URLText } from '../shared-panel-styles'
 
 // Components
-import { withPlaceholderIcon, Tooltip, CreateSiteOrigin } from '../../shared'
-import { NavButton } from '..'
+import withPlaceholderIcon from '../../shared/create-placeholder-icon/index'
+import { Tooltip } from '../../shared/tooltip/index'
+import CreateSiteOrigin from '../../shared/create-site-origin/index'
+import LoadingSkeleton from '../../shared/loading-skeleton/index'
+import { NavButton } from '../buttons/nav-button/index'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
 
 // Hooks
-import { useExplorer } from '../../../common/hooks'
+import useExplorer from '../../../common/hooks/explorer'
+import {
+  useApproveOrDeclineTokenSuggestionMutation,
+  useGetNetworkQuery,
+  useGetPendingTokenSuggestionRequestsQuery
+} from '../../../common/slices/api.slice'
 
-export interface Props {
-  onCancel: () => void
-  onAddToken: () => void
-  originInfo: SerializableOriginInfo
-  selectedNetwork?: BraveWallet.NetworkInfo
-  token?: BraveWallet.BlockchainToken
-}
+const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
+  size: 'big',
+  marginLeft: 0,
+  marginRight: 0
+})
 
-function AddSuggestedTokenPanel (props: Props) {
+export function AddSuggestedTokenPanel() {
+  // queries
   const {
-    onCancel,
-    onAddToken,
-    token,
-    selectedNetwork,
-    originInfo
-  } = props
+    data: suggestions = [],
+    isFetching: isFetchingSuggestions,
+    isLoading: isLoadingSuggestions
+  } = useGetPendingTokenSuggestionRequestsQuery()
+  const suggestion = suggestions[0]
+  const { origin, token } = suggestion
 
-  const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 0 })
-  }, [])
+  const { data: tokenNetwork, isLoading: isFetchingTokenNetwork } =
+    useGetNetworkQuery(token ?? skipToken)
 
-  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+  const isRefreshingSuggestions = isFetchingSuggestions || isLoadingSuggestions
+  const isFetching = isRefreshingSuggestions || isFetchingTokenNetwork
 
+  // mutations
+  const [approveOrDeclineSuggestion] =
+    useApproveOrDeclineTokenSuggestionMutation()
+
+  // methods
+  const onAddToken = React.useCallback(async () => {
+    if (!token?.contractAddress || isRefreshingSuggestions) {
+      return
+    }
+    await approveOrDeclineSuggestion({
+      approved: true,
+      contractAddress: token.contractAddress,
+      closePanel: suggestions.length < 2
+    })
+  }, [
+    approveOrDeclineSuggestion,
+    token?.contractAddress,
+    suggestions.length,
+    isRefreshingSuggestions
+  ])
+
+  const onCancel = React.useCallback(async () => {
+    if (!token?.contractAddress || isRefreshingSuggestions) {
+      return
+    }
+    await approveOrDeclineSuggestion({
+      approved: false,
+      contractAddress: token.contractAddress,
+      closePanel: suggestions.length < 2
+    })
+  }, [
+    approveOrDeclineSuggestion,
+    token?.contractAddress,
+    suggestions.length,
+    isRefreshingSuggestions
+  ])
+
+  // custom hooks
+  const onClickViewOnBlockExplorer = useExplorer(tokenNetwork)
+
+  // render
   return (
     <StyledWrapper>
       <TopWrapper>
         <TopRow>
-          <NetworkText>{selectedNetwork?.chainName ?? ''}</NetworkText>
+          {!isFetching && tokenNetwork?.chainName ? (
+            <NetworkText>{tokenNetwork.chainName}</NetworkText>
+          ) : (
+            <LoadingSkeleton height={12} width={'50px'} />
+          )}
         </TopRow>
         <Title>{getLocale('braveWalletAddSuggestedTokenTitle')}</Title>
         <URLText>
-          <CreateSiteOrigin
-            originSpec={originInfo.originSpec}
-            eTldPlusOne={originInfo.eTldPlusOne}
-          />
+          {isFetching ? (
+            <LoadingSkeleton height={12} width={'50px'} />
+          ) : (
+            <CreateSiteOrigin
+              originSpec={origin.originSpec}
+              eTldPlusOne={origin.eTldPlusOne}
+            />
+          )}
         </URLText>
-        <Description>{getLocale('braveWalletAddSuggestedTokenDescription')}</Description>
-        <AssetIconWithPlaceholder asset={token} network={selectedNetwork} />
-        <TokenName>{token?.name ?? ''} ({token?.symbol ?? ''})</TokenName>
-        <Tooltip
-          text={getLocale('braveWalletTransactionExplorer')}
-        >
+        <Description>
+          {getLocale('braveWalletAddSuggestedTokenDescription')}
+        </Description>
+        {isFetching ? (
+          <LoadingRing size={'40px'} />
+        ) : (
+          <AssetIconWithPlaceholder asset={token} network={tokenNetwork} />
+        )}
+        {!isFetching && token ? (
+          <TokenName>
+            {token.name ?? ''} ({token.symbol ?? ''})
+          </TokenName>
+        ) : (
+          <LoadingSkeleton height={12} width={'50px'} />
+        )}
+        <Tooltip text={getLocale('braveWalletTransactionExplorer')}>
           <ContractAddress
-            onClick={onClickViewOnBlockExplorer('token', token?.contractAddress)}
+            onClick={onClickViewOnBlockExplorer(
+              'token',
+              token?.contractAddress
+            )}
           >
             {reduceAddress(token?.contractAddress ?? '')}
           </ContractAddress>
@@ -83,17 +152,18 @@ function AddSuggestedTokenPanel (props: Props) {
       </TopWrapper>
       <ButtonWrapper>
         <NavButton
+          disabled={isFetching}
           buttonType='secondary'
           text={getLocale('braveWalletButtonCancel')}
           onSubmit={onCancel}
         />
         <NavButton
+          disabled={isFetching}
           buttonType='confirm'
           text={getLocale('braveWalletWatchListAdd')}
           onSubmit={onAddToken}
         />
       </ButtonWrapper>
-
     </StyledWrapper>
   )
 }

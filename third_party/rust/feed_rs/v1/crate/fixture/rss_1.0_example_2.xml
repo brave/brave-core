@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns="http://purl.org/rss/1.0/"
+>
+<channel rdf:about="http://planet.freedesktop.org">
+	<title>planet.freedesktop.org</title>
+	<link>http://planet.freedesktop.org</link>
+	<description>planet.freedesktop.org - http://planet.freedesktop.org</description>
+
+	<items>
+		<rdf:Seq>
+			<rdf:li rdf:resource="tag:blogger.com,1999:blog-4530460124602916146.post-1219535934607510094" />
+		</rdf:Seq>
+	</items>
+</channel>
+<item rdf:about="tag:blogger.com,1999:blog-4530460124602916146.post-1219535934607510094">
+	<title>Dave Airlie (blogspot): DirectX on Linux - what it is/isn't</title>
+	<link>https://airlied.blogspot.com/2020/05/directx-on-linux-what-it-isisnt.html</link>
+	<content:encoded>This morning I saw two things that were Microsoft and Linux graphics related.&lt;br /&gt;&lt;a href=&quot;https://www.blogger.com/goog_1507224819&quot;&gt;&lt;br /&gt;&lt;/a&gt;&lt;a href=&quot;https://devblogs.microsoft.com/commandline/the-windows-subsystem-for-linux-build-2020-summary/&quot;&gt;https://devblogs.microsoft.com/commandline/the-windows-subsystem-for-linux-build-2020-summary/&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;a) DirectX on Linux for compute workloads&lt;br /&gt;b) Linux GUI apps on Windows&lt;br /&gt;&lt;br /&gt;At first I thought these were related, but it appears at least presently these are quite orthogonal projects.&lt;br /&gt;&lt;br /&gt;First up clarify for the people who jump to insane conclusions:&lt;br /&gt;&lt;br /&gt;The DX on Linux is a WSL2 only thing. Microsoft are not any way bringing DX12 to Linux outside of the Windows environment. They are also in no way open sourcing any of the DX12 driver code. They are recompiling the DX12 userspace drivers (from GPU vendors) into Linux shared libraries, and running them on a kernel driver shim that transfers the kernel interface up to the closed source Windows kernel driver. This is in no way useful for having DX12 on Linux baremetal or anywhere other than in a WSL2 environment. It is not useful for Linux gaming.&lt;br /&gt;&lt;br /&gt;Microsoft have submitted to the upstream kernel the shim driver to support this. This driver exposes their D3DKMT kernel interface from Windows over virtual channels into a Linux driver that provides an ioctl interface. The kernel drivers are still all running on the Windows side.&lt;br /&gt;&lt;br /&gt;Now I read the Linux GUI apps bit and assumed that these things were the same, well it turns out the DX12 stuff doesn't address presentation at all. It's currently only for compute/ML workloads using CUDA/DirectML. There isn't a way to put the results of DX12 rendering from the Linux guest applications onto the screen at all. The other project is a wayland/RDP integration server, that connects Linux apps via wayland to RDP client on Windows display, integrating that with DX12 will be a tricky project, and then integrating that upstream with the Linux stack another step completely.&lt;br /&gt;&lt;br /&gt;Now I'm sure this will be resolved, but it has certain implications on how the driver architecture works and how much of the rest of the Linux graphics ecosystem you have to interact with, and that means that the current driver might not be a great fit in the long run and upstreaming it prematurely might be a bad idea.&lt;br /&gt;&lt;br /&gt;From my point of view the kernel shim driver doesn't really bring anything to Linux, it's just a tunnel for some binary data between a host windows kernel binary and a guest linux userspace binary. It doesn't enhance the Linux graphics ecosystem in any useful direction, and as such I'm questioning why we'd want this upstream at all.&lt;br /&gt;&lt;br /&gt;</content:encoded>
+	<dc:date>2020-05-20T00:01:59+00:00</dc:date>
+</item>
+
+</rdf:RDF>

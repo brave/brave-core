@@ -5,42 +5,36 @@
 
 #include "brave/browser/extensions/api/brave_rewards_api.h"
 
-#include <map>
-#include <memory>
 #include <string>
 #include <utility>
 
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/version.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
-#include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/brave_rewards/tip_panel_coordinator.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/core/ads_util.h"
-#include "brave/components/brave_ads/core/supported_subdivisions.h"
+#include "brave/components/brave_ads/core/public/ads_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
-#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "components/country_codes/country_codes.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
-#include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 
 using brave_ads::AdsService;
@@ -126,8 +120,7 @@ std::string StringifyResult(
 
 }  // namespace
 
-namespace extensions {
-namespace api {
+namespace extensions::api {
 
 BraveRewardsIsSupportedFunction::~BraveRewardsIsSupportedFunction() = default;
 
@@ -145,12 +138,6 @@ ExtensionFunction::ResponseAction
 BraveRewardsIsUnsupportedRegionFunction::Run() {
   bool is_unsupported_region = ::brave_rewards::IsUnsupportedRegion();
   return RespondNow(WithArguments(is_unsupported_region));
-}
-
-BraveRewardsGetLocaleFunction::~BraveRewardsGetLocaleFunction() = default;
-
-ExtensionFunction::ResponseAction BraveRewardsGetLocaleFunction::Run() {
-  return RespondNow(WithArguments(brave_l10n::GetDefaultLocaleString()));
 }
 
 BraveRewardsRecordNTPPanelTriggerFunction::
@@ -180,6 +167,16 @@ BraveRewardsOpenRewardsPanelFunction::~BraveRewardsOpenRewardsPanelFunction() =
 ExtensionFunction::ResponseAction BraveRewardsOpenRewardsPanelFunction::Run() {
   if (auto* coordinator = GetPanelCoordinator(this)) {
     coordinator->OpenRewardsPanel();
+  }
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsShowRewardsSetupFunction::~BraveRewardsShowRewardsSetupFunction() =
+    default;
+
+ExtensionFunction::ResponseAction BraveRewardsShowRewardsSetupFunction::Run() {
+  if (auto* coordinator = GetPanelCoordinator(this)) {
+    coordinator->ShowRewardsSetup();
   }
   return RespondNow(NoArguments());
 }
@@ -476,7 +473,7 @@ ExtensionFunction::ResponseAction BraveRewardsTipUserFunction::Run() {
   }
 
   // If the user clicks the tipping button before having opted into the Rewards,
-  // then the Rewards service would not have started the ledger process yet. We
+  // then the Rewards service would not have started the engine process yet. We
   // need to open the Rewards panel for the user to offer opting in.
   if (!rewards_enabled) {
     // Get web contents for this tab
@@ -507,13 +504,13 @@ ExtensionFunction::ResponseAction BraveRewardsTipUserFunction::Run() {
 void BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo(
     const ::brave_rewards::mojom::Result result,
     ::brave_rewards::mojom::PublisherInfoPtr info) {
-  if (result != ::brave_rewards::mojom::Result::LEDGER_OK &&
+  if (result != ::brave_rewards::mojom::Result::OK &&
       result != ::brave_rewards::mojom::Result::NOT_FOUND) {
     Release();
     return;
   }
 
-  if (result == ::brave_rewards::mojom::Result::LEDGER_OK) {
+  if (result == ::brave_rewards::mojom::Result::OK) {
     ShowTipDialog();
     Release();
     return;
@@ -544,7 +541,7 @@ void BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo(
 
 void BraveRewardsTipUserFunction::OnTipUserSavePublisherInfo(
     const ::brave_rewards::mojom::Result result) {
-  if (result != ::brave_rewards::mojom::Result::LEDGER_OK) {
+  if (result != ::brave_rewards::mojom::Result::OK) {
     Release();
     return;
   }
@@ -758,6 +755,17 @@ BraveRewardsGetDeclaredCountryFunction::Run() {
   return RespondNow(WithArguments(std::move(country)));
 }
 
+BraveRewardsIsGrandfatheredUserFunction::
+    ~BraveRewardsIsGrandfatheredUserFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsIsGrandfatheredUserFunction::Run() {
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  return RespondNow(WithArguments(
+      rewards_service ? rewards_service->IsGrandfatheredUser() : false));
+}
+
 BraveRewardsGetUserTypeFunction::~BraveRewardsGetUserTypeFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsGetUserTypeFunction::Run() {
@@ -949,53 +957,6 @@ void BraveRewardsAttestPromotionFunction::OnAttestPromotion(
   Respond(WithArguments(static_cast<int>(result), std::move(data)));
 }
 
-BraveRewardsGetPendingContributionsTotalFunction::
-    ~BraveRewardsGetPendingContributionsTotalFunction() = default;
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetPendingContributionsTotalFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(WithArguments(0.0));
-  }
-
-  rewards_service->GetPendingContributionsTotal(base::BindOnce(
-      &BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal,
-      this));
-  return RespondLater();
-}
-
-void BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal(
-    double amount) {
-  Respond(WithArguments(amount));
-}
-
-BraveRewardsSaveAdsSettingFunction::~BraveRewardsSaveAdsSettingFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
-  absl::optional<brave_rewards::SaveAdsSetting::Params> params =
-      brave_rewards::SaveAdsSetting::Params::Create(args());
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service || !ads_service) {
-    return RespondNow(Error("Service is not initialized"));
-  }
-
-  if (params->key == "adsEnabled") {
-    ads_service->SetEnabled(params->value == "true" &&
-                            brave_ads::IsSupportedRegion());
-  }
-
-  return RespondNow(NoArguments());
-}
-
 BraveRewardsSetAutoContributeEnabledFunction::
     ~BraveRewardsSetAutoContributeEnabledFunction() = default;
 
@@ -1043,14 +1004,14 @@ ExtensionFunction::ResponseAction BraveRewardsSaveRecurringTipFunction::Run() {
       brave_rewards::SaveRecurringTip::Params::Create(args());
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ =
+  RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
 
-  if (!rewards_service_) {
+  if (!rewards_service) {
     return RespondNow(NoArguments());
   }
 
-  rewards_service_->SaveRecurringTip(
+  rewards_service->SaveRecurringTip(
       params->publisher_key, params->new_amount,
       base::BindOnce(&BraveRewardsSaveRecurringTipFunction::OnSaveRecurringTip,
                      this));
@@ -1060,7 +1021,7 @@ ExtensionFunction::ResponseAction BraveRewardsSaveRecurringTipFunction::Run() {
 
 void BraveRewardsSaveRecurringTipFunction::OnSaveRecurringTip(
     ::brave_rewards::mojom::Result result) {
-  Respond(result == ::brave_rewards::mojom::Result::LEDGER_OK
+  Respond(result == ::brave_rewards::mojom::Result::OK
               ? NoArguments()
               : Error("Failed to save"));
 }
@@ -1074,11 +1035,11 @@ BraveRewardsRemoveRecurringTipFunction::Run() {
       brave_rewards::RemoveRecurringTip::Params::Create(args());
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ =
+  RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
 
-  if (rewards_service_) {
-    rewards_service_->RemoveRecurringTip(params->publisher_key);
+  if (rewards_service) {
+    rewards_service->RemoveRecurringTip(params->publisher_key);
   }
 
   return RespondNow(NoArguments());
@@ -1104,18 +1065,18 @@ ExtensionFunction::ResponseAction BraveRewardsGetRecurringTipsFunction::Run() {
 void BraveRewardsGetRecurringTipsFunction::OnGetRecurringTips(
     std::vector<::brave_rewards::mojom::PublisherInfoPtr> list) {
   base::Value::Dict result;
-  base::Value::List recurringTips;
+  base::Value::List recurring_tips;
 
   if (!list.empty()) {
     for (const auto& item : list) {
       base::Value::Dict tip;
       tip.Set("publisherKey", item->id);
       tip.Set("amount", item->weight);
-      recurringTips.Append(std::move(tip));
+      recurring_tips.Append(std::move(tip));
     }
   }
 
-  result.Set("recurringTips", std::move(recurringTips));
+  result.Set("recurringTips", std::move(recurring_tips));
   Respond(WithArguments(std::move(result)));
 }
 
@@ -1209,22 +1170,6 @@ void BraveRewardsGetInlineTippingPlatformEnabledFunction::OnInlineTipSetting(
   Respond(WithArguments(value));
 }
 
-BraveRewardsIsAutoContributeSupportedFunction::
-    ~BraveRewardsIsAutoContributeSupportedFunction() = default;
-
-ExtensionFunction::ResponseAction
-BraveRewardsIsAutoContributeSupportedFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  return RespondNow(
-      WithArguments(rewards_service->IsAutoContributeSupported()));
-}
-
 BraveRewardsFetchBalanceFunction::~BraveRewardsFetchBalanceFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsFetchBalanceFunction::Run() {
@@ -1310,21 +1255,6 @@ ExtensionFunction::ResponseAction BraveRewardsGetRewardsEnabledFunction::Run() {
   return RespondNow(WithArguments(enabled));
 }
 
-BraveRewardsGetAdsEnabledFunction::~BraveRewardsGetAdsEnabledFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsGetAdsEnabledFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
-
-  if (!ads_service) {
-    return RespondNow(WithArguments(false));
-  }
-
-  const bool enabled = ads_service->IsEnabled();
-  return RespondNow(WithArguments(enabled));
-}
-
 BraveRewardsGetAdsAccountStatementFunction::
     ~BraveRewardsGetAdsAccountStatementFunction() = default;
 
@@ -1354,70 +1284,15 @@ void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
     dict.Set("nextPaymentDate",
              statement->next_payment_date.ToDoubleT() * 1000);
     dict.Set("adsReceivedThisMonth", statement->ads_received_this_month);
-    dict.Set("earningsThisMonth", statement->earnings_this_month);
-    dict.Set("earningsLastMonth", statement->earnings_last_month);
+    dict.Set("minEarningsThisMonth", statement->min_earnings_this_month);
+    dict.Set("maxEarningsThisMonth", statement->max_earnings_this_month);
+    dict.Set("minEarningsLastMonth", statement->min_earnings_last_month);
+    dict.Set("maxEarningsLastMonth", statement->max_earnings_last_month);
 
     Respond(WithArguments(true, std::move(dict)));
   }
 
   Release();  // Balanced in Run()
-}
-
-BraveRewardsGetAdsSupportedFunction::~BraveRewardsGetAdsSupportedFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsGetAdsSupportedFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
-
-  if (!ads_service) {
-    return RespondNow(WithArguments(false));
-  }
-
-  return RespondNow(WithArguments(brave_ads::IsSupportedRegion()));
-}
-
-BraveRewardsGetAdsDataFunction::~BraveRewardsGetAdsDataFunction() = default;
-
-ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
-
-  base::Value::Dict ads_data;
-  if (!ads_service) {
-    ads_data.Set("adsIsSupported", false);
-    ads_data.Set("adsEnabled", false);
-    ads_data.Set("adsPerHour", 0);
-    ads_data.Set("adsSubdivisionTargeting", std::string());
-    ads_data.Set("automaticallyDetectedAdsSubdivisionTargeting", std::string());
-    ads_data.Set("shouldAllowAdsSubdivisionTargeting", false);
-    ads_data.Set("adsUIEnabled", false);
-  } else {
-    ads_data.Set("adsIsSupported", brave_ads::IsSupportedRegion());
-    ads_data.Set("adsEnabled", ads_service->IsEnabled());
-    ads_data.Set(
-        "adsPerHour",
-        static_cast<int>(ads_service->GetMaximumNotificationAdsPerHour()));
-    ads_data.Set("adsSubdivisionTargeting",
-                 ads_service->GetSubdivisionTargetingCode());
-    ads_data.Set("automaticallyDetectedAdsSubdivisionTargeting",
-                 ads_service->GetAutoDetectedSubdivisionTargetingCode());
-    ads_data.Set("shouldAllowAdsSubdivisionTargeting",
-                 ads_service->ShouldAllowSubdivisionTargeting());
-    ads_data.Set("adsUIEnabled", true);
-  }
-
-  base::Value::List subdivisions;
-  const auto subdivision_infos = brave_ads::GetSupportedSubdivisions();
-  for (const auto& info : subdivision_infos) {
-    base::Value::Dict subdivision;
-    subdivision.Set("value", info.first);
-    subdivision.Set("name", info.second);
-    subdivisions.Append(std::move(subdivision));
-  }
-  ads_data.Set("subdivisions", std::move(subdivisions));
-
-  return RespondNow(WithArguments(std::move(ads_data)));
 }
 
 BraveRewardsIsInitializedFunction::~BraveRewardsIsInitializedFunction() =
@@ -1429,7 +1304,6 @@ ExtensionFunction::ResponseAction BraveRewardsIsInitializedFunction::Run() {
   return RespondNow(
       WithArguments(rewards_service && rewards_service->IsInitialized()));
 }
-
 BraveRewardsGetScheduledCaptchaInfoFunction::
     ~BraveRewardsGetScheduledCaptchaInfoFunction() = default;
 
@@ -1478,16 +1352,11 @@ BraveRewardsUpdateScheduledCaptchaResultFunction::Run() {
 
   brave_adaptive_captcha_service->UpdateScheduledCaptchaResult(params->result);
 
-  return RespondNow(NoArguments());
-}
-
-BraveRewardsEnableAdsFunction::~BraveRewardsEnableAdsFunction() = default;
-
-ExtensionFunction::ResponseAction BraveRewardsEnableAdsFunction::Run() {
-  auto* profile = Profile::FromBrowserContext(browser_context());
-  if (auto* ads_service = AdsServiceFactory::GetForProfile(profile)) {
-    ads_service->SetEnabled(true);
+  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
+  if (ads_service && params->result) {
+    ads_service->NotifyDidSolveAdaptiveCaptcha();
   }
+
   return RespondNow(NoArguments());
 }
 
@@ -1513,55 +1382,7 @@ void BraveRewardsGetPrefsFunction::GetAutoContributePropertiesCallback(
   prefs.Set("autoContributeEnabled",
             properties ? properties->enabled_contribute : false);
   prefs.Set("autoContributeAmount", properties ? properties->amount : 0.0);
-
-  auto* ads_service = AdsServiceFactory::GetForProfile(
-      Profile::FromBrowserContext(browser_context()));
-
-  if (ads_service) {
-    prefs.Set("adsEnabled", ads_service->IsEnabled());
-    prefs.Set(
-        "adsPerHour",
-        static_cast<double>(ads_service->GetMaximumNotificationAdsPerHour()));
-  } else {
-    prefs.Set("adsEnabled", false);
-    prefs.Set("adsPerHour", 0.0);
-  }
-
   Respond(WithArguments(std::move(prefs)));
 }
 
-BraveRewardsUpdatePrefsFunction::~BraveRewardsUpdatePrefsFunction() = default;
-
-ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
-  auto params = brave_rewards::UpdatePrefs::Params::Create(args());
-  EXTENSION_FUNCTION_VALIDATE(params);
-
-  auto* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  auto* ads_service = AdsServiceFactory::GetForProfile(profile);
-
-  if (rewards_service) {
-    auto& ac_enabled = params->prefs.auto_contribute_enabled;
-    if (ac_enabled)
-      rewards_service->SetAutoContributeEnabled(*ac_enabled);
-
-    auto& ac_amount = params->prefs.auto_contribute_amount;
-    if (ac_amount)
-      rewards_service->SetAutoContributionAmount(*ac_amount);
-  }
-
-  if (ads_service) {
-    auto& ads_enabled = params->prefs.ads_enabled;
-    if (ads_enabled)
-      ads_service->SetEnabled(*ads_enabled);
-
-    auto& ads_per_hour = params->prefs.ads_per_hour;
-    if (ads_per_hour)
-      ads_service->SetMaximumNotificationAdsPerHour(*ads_per_hour);
-  }
-
-  return RespondNow(NoArguments());
-}
-
-}  // namespace api
-}  // namespace extensions
+}  // namespace extensions::api

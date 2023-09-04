@@ -26,8 +26,6 @@ import com.airbnb.lottie.LottieAnimationView;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.firstrun.FirstRunFragment;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
-import org.chromium.chrome.browser.onboarding.OnViewPagerAction;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 
 public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFragment {
     private OnViewPagerAction onViewPagerAction;

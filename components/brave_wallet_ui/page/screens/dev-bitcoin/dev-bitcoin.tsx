@@ -6,14 +6,12 @@
 import getAPIProxy from '../../../common/async/bridge'
 import * as React from 'react'
 
-// Redux
-import { useSelector, useDispatch } from 'react-redux'
-import { WalletActions } from '../../../common/actions'
-
 import styled from 'styled-components'
 import { useState } from 'react'
-import { BraveWallet, WalletState } from '../../../constants/types'
-import { LoadingSkeleton } from '../../../components/shared'
+import { BraveWallet } from '../../../constants/types'
+import {
+  LoadingSkeleton //
+} from '../../../components/shared/loading-skeleton/index'
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -62,20 +60,23 @@ const SendToLine = styled.div`
 `
 
 const defaultNetworkId = BraveWallet.BITCOIN_TESTNET
-const defaultKeyringId = BraveWallet.BITCOIN_KEYRING84_TEST_ID
-const accountIndex = 0
+const defaultKeyringId = BraveWallet.KeyringId.kBitcoin84Testnet
 
-const CreateAccountSection = () => {
-  const dispatch = useDispatch()
+interface CreateAccountSectionProps {
+  setAccountId: (accountId: BraveWallet.AccountId | undefined) => void
+}
 
+const CreateAccountSection = (props: CreateAccountSectionProps) => {
   const createBtcAccount = async () => {
-    dispatch(
-      WalletActions.addBitcoinAccount({
-        accountName: 'BTC Account',
-        networkId: defaultNetworkId,
-        keyringId: defaultKeyringId
-      })
+    const {accountInfo} = await getAPIProxy().keyringService.addAccount(
+      BraveWallet.CoinType.BTC,
+      BraveWallet.KeyringId.kBitcoin84Testnet,
+      'BTC Account'
     )
+
+    if (accountInfo) {
+      props.setAccountId(accountInfo.accountId)
+    }
   }
 
   return (
@@ -85,11 +86,15 @@ const CreateAccountSection = () => {
   )
 }
 
-const AccountSection = () => {
+interface AccountSectionProps {
+  accountId: BraveWallet.AccountId
+}
+
+const AccountSection = (props: AccountSectionProps) => {
   const [loading, setLoading] = useState<boolean>(true)
 
   const [accountInfo, setAccountInfo] =
-    useState<BraveWallet.BitcoinAccountInfo | null>(null)
+    useState<BraveWallet.BitcoinAccountInfo | undefined>()
 
   const [sendToAddress, setSendToAddress] = useState<string>('')
 
@@ -99,7 +104,7 @@ const AccountSection = () => {
   const [sendResult, setSendResult] = useState<{
     txid: string
     error: string
-  } | null>(null)
+  } | undefined>()
 
   const handlesendToAddressInputChanged = ({
     target: { value }
@@ -123,20 +128,20 @@ const AccountSection = () => {
     const accountInfo =
       await getAPIProxy().bitcoinWalletService.getBitcoinAccountInfo(
         defaultNetworkId,
-        defaultKeyringId,
-        accountIndex
+        props.accountId
       )
-    setAccountInfo(accountInfo.accountInfo ?? null)
+    setAccountInfo(accountInfo.accountInfo || undefined)
     setLoading(false)
   }
 
   const doSend = async () => {
-    setSendResult(null)
+    setSendResult(undefined)
+    setSending(false)
+
     setSending(true)
     const result = await getAPIProxy().bitcoinWalletService.sendTo(
       defaultNetworkId,
-      defaultKeyringId,
-      accountIndex,
+      props.accountId,
       sendToAddress,
       BigInt(sendToAmount),
       BigInt(sendToFee)
@@ -162,7 +167,7 @@ const AccountSection = () => {
       <AccountInfoSection>
         <button onClick={fetchAccountInfo}>Reload</button>
         <h2>
-          {accountInfo?.name} balance: {accountInfo?.balance}
+          {accountInfo?.name} balance: {accountInfo?.balance.toString()}
         </h2>
         <AddressesHeader>Receiving Addresses</AddressesHeader>
         <ul>
@@ -173,7 +178,7 @@ const AccountSection = () => {
                 <li key={a.addressString}>
                   <AddressLine>
                     <Address>{a.addressString}</Address>
-                    <Balance>{a.balance}</Balance>
+                    <Balance>{a.balance.toString()}</Balance>
                   </AddressLine>
                 </li>
               )
@@ -188,7 +193,7 @@ const AccountSection = () => {
                 <li key={a.addressString}>
                   <AddressLine>
                     <Address>{a.addressString}</Address>
-                    <Balance>{a.balance}</Balance>
+                    <Balance>{a.balance.toString()}</Balance>
                   </AddressLine>
                 </li>
               )
@@ -235,17 +240,28 @@ const AccountSection = () => {
 }
 
 export const DevBitcoin = () => {
-  const accounts = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.accounts
+  const [accountId, setAccountId] = useState<
+    BraveWallet.AccountId | undefined
+  >()
+
+  React.useEffect(() => {
+    const fetchBitcoinAccount = async () => {
+      const { accounts } = (await getAPIProxy().keyringService.getAllAccounts())
+        .allAccounts
+      const bitcoinAccount = accounts.find(
+        (acc) => acc.accountId.keyringId === defaultKeyringId
+      )
+      setAccountId(bitcoinAccount?.accountId)
+    }
+
+    fetchBitcoinAccount()
+  }, [])
+
+  return accountId ? (
+    <AccountSection accountId={accountId} />
+  ) : (
+    <CreateAccountSection setAccountId={setAccountId}/>
   )
-
-  const hasBitcoinAccount =
-    accounts.filter(
-      (a) =>
-        a.coin === BraveWallet.CoinType.BTC && a.keyringId === defaultKeyringId
-    ).length > 0
-
-  return hasBitcoinAccount ? <AccountSection /> : <CreateAccountSection />
 }
 
 export default DevBitcoin

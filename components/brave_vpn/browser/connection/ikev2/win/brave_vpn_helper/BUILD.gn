@@ -22,14 +22,13 @@ source_set("common") {
     "brave_vpn_helper_constants.h",
     "brave_vpn_helper_state.cc",
     "brave_vpn_helper_state.h",
-    "scoped_sc_handle.h",
   ]
-
-  public_deps = [ "//brave/components/brave_vpn/common/buildflags" ]
 
   deps = [
     "//base",
     "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_vpn/common/win",
     "//chrome/install_static:install_static_util",
   ]
 }
@@ -50,8 +49,10 @@ source_set("lib") {
   deps = [
     ":common",
     "//base",
-    "//brave//components/brave_vpn/browser/connection/ikev2/win:utils",
-    "//brave//components/brave_vpn/common",
+    "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/win",
+    "//brave/components/brave_vpn/common/wireguard/win",
     "//third_party/abseil-cpp:absl",
   ]
 
@@ -105,7 +106,7 @@ source_set("unit_tests") {
     ":lib",
     "//base",
     "//base/test:test_support",
-    "//brave/components/brave_vpn/browser/connection/ikev2/win:utils",
+    "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
     "//brave/components/brave_vpn/common",
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",

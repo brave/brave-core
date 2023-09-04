@@ -25,7 +25,8 @@ struct TransactionReceipt;
 class EthTxMeta : public TxMeta {
  public:
   EthTxMeta();
-  explicit EthTxMeta(std::unique_ptr<EthTransaction> tx);
+  EthTxMeta(const mojom::AccountIdPtr& from,
+            std::unique_ptr<EthTransaction> tx);
   ~EthTxMeta() override;
   EthTxMeta(const EthTxMeta&) = delete;
   EthTxMeta operator=(const EthTxMeta&) = delete;

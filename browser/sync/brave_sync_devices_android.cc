@@ -14,7 +14,7 @@
 
 #include "brave/build/android/jni_headers/BraveSyncDevices_jni.h"
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
-#include "brave/components/sync/driver/brave_sync_service_impl.h"
+#include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
 
 #include "chrome/browser/profiles/profile_manager.h"

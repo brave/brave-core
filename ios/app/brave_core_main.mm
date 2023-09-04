@@ -8,11 +8,11 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#include "base/apple/bundle_locations.h"
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/i18n/icu_util.h"
 #include "base/logging.h"
-#include "base/mac/bundle_locations.h"
 #include "base/mac/foundation_util.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
@@ -20,6 +20,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -31,6 +32,7 @@
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
+#include "brave/ios/browser/api/ntp_background_images/ntp_background_images_service_ios+private.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_tabgenerator_api+private.h"
@@ -49,25 +51,25 @@
 #include "components/prefs/pref_service.h"
 #include "components/send_tab_to_self/send_tab_to_self_sync_service.h"
 #include "ios/chrome/app/startup/provider_registration.h"
-#include "ios/chrome/browser/application_context/application_context.h"
+#include "ios/chrome/browser/bookmarks/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/bookmarks/local_or_syncable_bookmark_model_factory.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_removal_controller.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
-#include "ios/chrome/browser/main/browser.h"
-#include "ios/chrome/browser/main/browser_list.h"
-#include "ios/chrome/browser/main/browser_list_factory.h"
 #include "ios/chrome/browser/passwords/ios_chrome_password_store_factory.h"
-#include "ios/chrome/browser/paths/paths.h"
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/chrome/browser/shared/model/browser/browser.h"
+#include "ios/chrome/browser/shared/model/browser/browser_list.h"
+#include "ios/chrome/browser/shared/model/browser/browser_list_factory.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/shared/model/paths/paths.h"
+#include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
 #include "ios/chrome/browser/shared/public/commands/command_dispatcher.h"
 #include "ios/chrome/browser/sync/send_tab_to_self_sync_service_factory.h"
 #include "ios/chrome/browser/sync/session_sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_service_factory.h"
 #include "ios/chrome/browser/ui/webui/chrome_web_ui_ios_controller_factory.h"
-#include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
-#include "ios/chrome/browser/web_state_list/web_state_list.h"
 #include "ios/public/provider/chrome/browser/overrides/overrides_api.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
@@ -110,6 +112,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) WebImageDownloader* webImageDownloader;
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
 @property(nonatomic) IpfsAPIImpl* ipfsAPI;
+@property(nonatomic) BraveP3AUtils* p3aUtils;
+@property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
 @end
 
 @implementation BraveCoreMain
@@ -147,7 +151,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
           ios::DIR_USER_DATA, ios::DIR_USER_DATA, ios::DIR_USER_DATA);
     }
 
-    NSBundle* baseBundle = base::mac::OuterBundle();
+    NSBundle* baseBundle = base::apple::OuterBundle();
     base::mac::SetBaseBundleID(
         base::SysNSStringToUTF8([baseBundle bundleIdentifier]).c_str());
 
@@ -230,6 +234,11 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
     _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
     [self registerComponentsForUpdate:cus];
+
+    _backgroundImagesService = [[NTPBackgroundImagesService alloc]
+        initWithBackgroundImagesService:
+            std::make_unique<ntp_background_images::NTPBackgroundImagesService>(
+                cus, GetApplicationContext()->GetLocalState())];
   }
   return self;
 }
@@ -471,16 +480,17 @@ static bool CustomLogHandler(int severity,
 }
 
 - (BraveP3AUtils*)p3aUtils {
-  return [[BraveP3AUtils alloc]
-      initWithBrowserState:_mainBrowserState
-                localState:GetApplicationContext()->GetLocalState()];
+  if (!_p3aUtils) {
+    _p3aUtils = [[BraveP3AUtils alloc]
+        initWithBrowserState:_mainBrowserState
+                  localState:GetApplicationContext()->GetLocalState()
+                  p3aService:_p3a_service];
+  }
+  return _p3aUtils;
 }
 
 + (bool)initializeICUForTesting {
-  base::FilePath path;
-  base::PathService::Get(base::DIR_MODULE, &path);
-  base::mac::SetOverrideFrameworkBundlePath(path);
-  base::mac::SetOverrideOuterBundlePath(path);
+  base::apple::SetOverrideFrameworkBundle([NSBundle bundleForClass:self]);
   return base::i18n::InitializeICU();
 }
 

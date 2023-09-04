@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/strings/string_number_conversions.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -60,9 +61,12 @@ GURL BraveSearchFallbackHost::GetBackupResultURL(const GURL& baseURL,
                                                  const std::string& lang,
                                                  const std::string& country,
                                                  const std::string& geo,
-                                                 bool filter_explicit_results) {
+                                                 bool filter_explicit_results,
+                                                 int page_index) {
   GURL url = baseURL;
   url = net::AppendQueryParameter(url, "q", query);
+  url =
+      net::AppendQueryParameter(url, "start", base::NumberToString(page_index));
   if (!lang.empty()) {
     url = net::AppendQueryParameter(url, "hl", lang);
   }
@@ -81,6 +85,7 @@ void BraveSearchFallbackHost::FetchBackupResults(
     const std::string& country,
     const std::string& geo,
     bool filter_explicit_results,
+    int page_index,
     FetchBackupResultsCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL("https://www.google.com/search");
@@ -88,7 +93,7 @@ void BraveSearchFallbackHost::FetchBackupResults(
     request->url = backup_provider_for_test;
   }
   request->url = GetBackupResultURL(request->url, query, lang, country, geo,
-                                    filter_explicit_results);
+                                    filter_explicit_results, page_index);
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   request->load_flags |= net::LOAD_DO_NOT_SAVE_COOKIES;

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/strings/string_piece.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "v8/include/v8-context.h"
 #include "v8/include/v8-local-handle.h"
 #include "v8/include/v8-value.h"
@@ -41,8 +42,7 @@ v8::MaybeLocal<v8::Value> CallMethodOfObject(
     std::vector<v8::Local<v8::Value>>&& args);
 
 v8::MaybeLocal<v8::Value> ExecuteScript(blink::WebLocalFrame* web_frame,
-                                        const std::string& script,
-                                        const std::string& name);
+                                        const std::string& script);
 
 // By default we allow extensions to overwrite the window.[provider] object
 // but if the user goes into settings and explicitly selects to use Brave Wallet

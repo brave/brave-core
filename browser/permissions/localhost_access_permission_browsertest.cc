@@ -3,15 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/test/thread_test_helper.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -58,6 +61,12 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     current_browser_ = InProcessBrowserTest::browser();
+    localhost_permission_component_ =
+        g_brave_browser_process->localhost_permission_component();
+    if (localhost_permission_component_) {
+      localhost_permission_component_->SetAllowedDomainsForTesting(
+          {kTestEmbeddingDomain});
+    }
 
     // Embedding website server
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
@@ -258,8 +267,10 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<net::EmbeddedTestServer> localhost_server_;
   base::test::ScopedFeatureList feature_list_;
-  Browser* current_browser_;
+  raw_ptr<Browser> current_browser_;
   std::unique_ptr<brave_shields::TestFiltersProvider> source_provider_;
+  raw_ptr<localhost_permission::LocalhostPermissionComponent>
+      localhost_permission_component_;
 
  private:
   std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;
@@ -417,16 +428,75 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, ServiceWorker) {
 }
 
 // Test that localhost connections blocked by adblock are still blocked without
-// permission prompt, and exceptioned domains cause permission prompt.
+// permission prompt.
 IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, AdblockRule) {
   // Add adblock rule to block localhost.
   std::string test_domain = "localhost";
   embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
-  const auto& target_url = localhost_server_->GetURL(test_domain, "/logo.png");
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
   auto rule = base::StrCat({"||", test_domain, "^"});
   AddAdblockRule(rule);
   // The image won't show up because of adblock rule.
   CheckNoPromptFlow(false, target_url);
+}
+
+// Test that badfiltering a localhost adblock rule makes permission come up.
+IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, AdblockRuleBadfilter) {
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+
+  auto adblock_rule = base::StrCat({"||", test_domain, "^"});
+  auto badfilter_rule = base::StrCat({"\n", adblock_rule, "$badfilter"});
+  auto rules = adblock_rule + badfilter_rule;
+  AddAdblockRule(rules);
+  CheckAskAndAcceptFlow(target_url);
+}
+
+// Test that localhost connections from website not on allowlist
+// are blocked without permission prompt.
+IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, WebsiteNotOnAllowlist) {
+  std::string test_domain = "localhost";
+  // Note: we're also testing that comments are handled correctly here
+  // because we inserted #b.com into the allowlist.
+  localhost_permission_component_->SetAllowedDomainsForTesting(
+      {base::StrCat({kTestEmbeddingDomain, "\n", "#b.com"})});
+  embedding_url_ = https_server_->GetURL("b.com", kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  CheckNoPromptFlow(false, target_url);
+}
+
+// Test that manually adding a website to the site permission exceptions
+// allows connections to localhost from that eTLD+1.
+IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest,
+                       WebsiteNotOnAllowlistButManuallyAdded) {
+  std::string test_domain = "localhost";
+  // Clear out the allowlist.
+  localhost_permission_component_->SetAllowedDomainsForTesting({""});
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  SetCurrentStatus(ContentSetting::CONTENT_SETTING_ALLOW);
+  // Load subresource, should succeed.
+  InsertImage(target_url.spec(), true);
+  // No prompt though.
+  EXPECT_EQ(0, prompt_factory()->show_count());
+}
+
+// Test that different hosts under the same eTLD+1 can prompt.
+IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, WebsitePartOfETLDP1) {
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(
+      base::StrCat({"test1.", kTestEmbeddingDomain}), kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  CheckAskAndAcceptFlow(target_url);
+  embedding_url_ = https_server_->GetURL(
+      base::StrCat({"test2.", kTestEmbeddingDomain}), kSimplePage);
+  CheckAskAndAcceptFlow(target_url, 1);
 }
 
 // Test that localhost connections blocked by adblock are still blocked without
@@ -435,7 +505,8 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, AdblockRuleException) {
   // Add adblock rule to block localhost.
   std::string test_domain = "localhost";
   embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
-  const auto& target_url = localhost_server_->GetURL(test_domain, "/logo.png");
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
   auto original_rule = base::StrCat({"||", test_domain, "^", "\n"});
   auto exception_rule = base::StrCat({"@@||", test_domain, "^"});
   auto rules = original_rule + exception_rule;

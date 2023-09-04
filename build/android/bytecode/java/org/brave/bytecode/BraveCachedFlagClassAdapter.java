@@ -15,5 +15,8 @@ public class BraveCachedFlagClassAdapter extends BraveClassVisitor {
         super(visitor);
 
         redirectConstructor(sCachedFlagClassName, sBraveCachedFlagClassName);
+
+        deleteField(sBraveCachedFlagClassName, "mDefaultValue");
+        makeProtectedField(sCachedFlagClassName, "mDefaultValue");
     }
 }

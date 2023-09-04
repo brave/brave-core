@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "base/containers/queue.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
@@ -107,6 +108,7 @@ class IpfsService : public KeyedService,
   void RemoveObserver(IpfsServiceObserver* observer);
 
   virtual bool IsDaemonLaunched() const;
+  static void MigrateProfilePrefs(PrefService* pref_service);
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
   bool IsIPFSExecutableAvailable() const;
   void RegisterIpfsClientUpdater();

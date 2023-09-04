@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
-
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 

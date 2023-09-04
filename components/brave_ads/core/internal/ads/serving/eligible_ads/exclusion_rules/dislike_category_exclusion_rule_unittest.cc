@@ -5,10 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/dislike_category_exclusion_rule.h"
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/history/category_content_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -19,7 +20,7 @@ class BraveAdsDislikeCategoryExclusionRuleTest : public UnitTestBase {
   const DislikeCategoryExclusionRule exclusion_rule_;
 };
 
-TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, AllowAd) {
+TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, ShouldInclude) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.segment = kSegment;
@@ -30,13 +31,16 @@ TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, AllowAd) {
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, ShouldExclude) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.segment = kSegment;
 
-  ClientStateManager::GetInstance().ToggleDislikeCategory(
-      creative_ad.segment, mojom::UserReactionType::kNeutral);
+  CategoryContentInfo category_content;
+  category_content.category = creative_ad.segment;
+  category_content.user_reaction_type = mojom::UserReactionType::kNeutral;
+
+  ClientStateManager::GetInstance().ToggleDislikeCategory(category_content);
 
   // Act
 

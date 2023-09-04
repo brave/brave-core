@@ -8,38 +8,57 @@ package org.chromium.chrome.browser.sync.settings;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.sync.settings.ManageSyncSettings;
-import org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference;
+import org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference;
 
-// See org.brave.bytecode.BraveManageSyncSettingsClassAdapter
+/**
+ * See org.brave.bytecode.BraveManageSyncSettingsClassAdapter
+ */
 public class BraveManageSyncSettings extends ManageSyncSettings {
     private static final String PREF_ADVANCED_CATEGORY = "advanced_category";
 
-    private Preference mTurnOffSync;
     private Preference mGoogleActivityControls;
     private Preference mSyncEncryption;
-    private Preference mReviewSyncData;
 
-    private CheckBoxPreference mSyncPaymentsIntegration;
-    private CheckBoxPreference mSyncReadingList;
-    private CheckBoxPreference mSyncAutofill;
+    private ChromeBaseCheckBoxPreference mSyncPaymentsIntegration;
 
+    @VisibleForTesting
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
 
-        getPreferenceScreen().removePreference(mTurnOffSync);
+        Preference reviewSyncData = findPreference(PREF_SYNC_REVIEW_DATA);
+        assert reviewSyncData != null : "Something has changed in the upstream!";
+        if (reviewSyncData != null) {
+            getPreferenceScreen().removePreference(reviewSyncData);
+        }
+
+        Preference turnOffSync = findPreference(PREF_TURN_OFF_SYNC);
+        assert turnOffSync != null : "Something has changed in the upstream!";
+        if (turnOffSync != null) {
+            getPreferenceScreen().removePreference(turnOffSync);
+        }
+
+        Preference syncReadingList = findPreference(PREF_SYNC_READING_LIST);
+        assert syncReadingList != null : "Something has changed in the upstream!";
+        if (syncReadingList != null) {
+            syncReadingList.setVisible(false);
+        }
+
+        Preference syncAutofill = findPreference(PREF_SYNC_AUTOFILL);
+        assert syncAutofill != null : "Something has changed in the upstream!";
+        if (syncAutofill != null) {
+            syncAutofill.setTitle(R.string.brave_sync_autofill);
+        }
+
         getPreferenceScreen().removePreference(mGoogleActivityControls);
         getPreferenceScreen().removePreference(mSyncEncryption);
-        getPreferenceScreen().removePreference(mReviewSyncData);
 
         findPreference(PREF_ADVANCED_CATEGORY).setVisible(false);
 
         mSyncPaymentsIntegration.setVisible(false);
-        mSyncReadingList.setVisible(false);
-        mSyncAutofill.setTitle(R.string.brave_sync_autofill);
     }
 }

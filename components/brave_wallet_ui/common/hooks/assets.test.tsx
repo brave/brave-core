@@ -9,32 +9,13 @@ import { TextEncoder, TextDecoder } from 'util'
 global.TextDecoder = TextDecoder
 global.TextEncoder = TextEncoder
 import { renderHook } from '@testing-library/react-hooks'
-import { mockAccount, mockAssetPrices } from '../constants/mocks'
+import { mockAccount } from '../constants/mocks'
 import useAssets from './assets'
-import { WalletAccountType } from '../../constants/types'
 import * as MockedLib from '../async/__mocks__/lib'
 import { LibContext } from '../context/lib.context'
 import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
 import { mockBasicAttentionToken, mockEthToken } from '../../stories/mock-data/mock-asset-options'
 import { createMockStore } from '../../utils/test-utils'
-
-const mockAccounts = [
-  {
-    ...mockAccount,
-    tokenBalanceRegistry: {
-      [mockEthToken.contractAddress.toLowerCase()]: '238699740940532500',
-      [mockBasicAttentionToken.contractAddress.toLowerCase()]: '0'
-    }
-  } as WalletAccountType,
-  {
-    ...mockAccount,
-    balance: '',
-    tokenBalanceRegistry: {
-      [mockEthToken.contractAddress.toLowerCase()]: '0',
-      [mockBasicAttentionToken.contractAddress.toLowerCase()]: '0'
-    }
-  } as WalletAccountType
-]
 
 const mockVisibleList = [
   mockEthToken,
@@ -51,7 +32,7 @@ const renderHookOptionsWithCustomStore = (store: any) => ({
 })
 
 describe('useAssets hook', () => {
-  it('should return panel user assets by value & network', async () => {
+  it('should return assets by value & network', async () => {
     const { result, waitForNextUpdate } = renderHook(
       () => useAssets(),
       renderHookOptionsWithCustomStore(
@@ -59,20 +40,20 @@ describe('useAssets hook', () => {
           walletStateOverride: {
             ...mockWalletState,
             userVisibleTokensInfo: mockVisibleList,
-            selectedAccount: mockAccounts[0],
-            accounts: mockAccounts,
-            transactionSpotPrices: mockAssetPrices
+            accounts: [mockAccount]
           }
-        })
+        },
+        { selectedAccountId: mockAccount.accountId }
+        )
       )
     )
 
     await waitForNextUpdate()
 
-    expect(result.current.panelUserAssetList).toEqual(mockVisibleList)
+    expect(result.current).toEqual(mockVisibleList)
   })
 
-  it('should return empty array for panelUserAssetList if visible assets is empty', () => {
+  it('should return empty array for assets if visible assets is empty', () => {
     const { result } = renderHook(
       () => useAssets(),
       renderHookOptionsWithCustomStore(
@@ -80,13 +61,13 @@ describe('useAssets hook', () => {
           walletStateOverride: {
             ...mockWalletState,
             userVisibleTokensInfo: [],
-            selectedAccount: mockAccounts[0],
-            accounts: mockAccounts,
-            transactionSpotPrices: mockAssetPrices
+            accounts: [mockAccount]
           }
-        })
+        },
+        { selectedAccountId: mockAccount.accountId }
+        )
       )
     )
-    expect(result.current.panelUserAssetList).toEqual([])
+    expect(result.current).toEqual([])
   })
 })

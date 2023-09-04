@@ -195,16 +195,21 @@ std::string FilecoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
 }
 
 absl::optional<std::string> FilecoinKeyring::SignTransaction(
+    const std::string& address,
     const FilTransaction* tx) {
   if (!tx) {
     return absl::nullopt;
   }
-  auto address = tx->from().EncodeAsString();
+  auto fil_address = FilAddress::FromAddress(address);
+  if (fil_address.IsEmpty()) {
+    return absl::nullopt;
+  }
+
   HDKeyBase* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key) {
     return absl::nullopt;
   }
-  return tx->GetSignedTransaction(hd_key->GetPrivateKeyBytes());
+  return tx->GetSignedTransaction(fil_address, hd_key->GetPrivateKeyBytes());
 }
 
 std::unique_ptr<HDKeyBase> FilecoinKeyring::DeriveAccount(

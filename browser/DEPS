@@ -38,7 +38,7 @@ include_rules = [
   "+mojo/public",
   "+net",
   "+sandbox/mac",
-  "+sandbox/win/src",
+  "+sandbox/policy",
   "+services/audio/public",
   "+services/cert_verifier",
   "+services/data_decoder/public",

@@ -11,7 +11,7 @@
 #include "base/time/time.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/browser/brave_stats/first_run_util.h"
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"

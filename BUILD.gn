@@ -3,7 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/build/cargo.gni")
+import(
+    "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/allowlist.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
@@ -77,6 +78,11 @@ if (is_win) {
       "$root_out_dir/gen/chrome/installer/mini_installer/packed_delta_files.rc"
   action("delta_installer_archive") {
     script = "//brave/tools/win/create_delta_archive.py"
+    if (skip_signing) {
+      setup_exe = "setup.exe"
+    } else {
+      setup_exe = "presigned_binaries/setup.exe"
+    }
     inputs = [
       # The original tool for delta archive generation was called "courgette".
       # But it runs out of memory on recent Chromium / Brave revisions. Its
@@ -84,7 +90,7 @@ if (is_win) {
       # again prevent out of memory errors.
       "$root_out_dir/zucchini64.exe",
       "$root_out_dir/chrome.7z",
-      "$root_out_dir/setup.exe",
+      "$root_out_dir/" + setup_exe,
     ]
     outputs = [
       "$root_out_dir/chrome_patch.diff",
@@ -98,12 +104,15 @@ if (is_win) {
       "//chrome/installer/setup:setup",
       "//components/zucchini:zucchini64",
     ]
+    if (!skip_signing) {
+      deps += [ ":signed_setup_exe" ]
+    }
     args = [
       "zucchini64.exe",
       "$last_chrome_installer/chrome.7z",
       "chrome.7z",
       "$last_chrome_installer/setup.exe",
-      "setup.exe",
+      setup_exe,
       "chrome_patch.diff",
       "chrome_patch.packed.7z",
       "setup_patch.diff",
@@ -203,7 +212,10 @@ if (is_android) {
 
 if (is_mac) {
   group("framework_bundle_data") {
-    deps = [ "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data" ]
+    deps = [
+      "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data",
+      "//brave/build/rust:framework_exports",
+    ]
   }
 }
 
@@ -297,7 +309,7 @@ group("create_dist") {
     }
 
     if (build_delta_installer) {
-      deps += [ "//chrome/installer/mini_installer:delta_installer" ]
+      deps += [ "//brave/build/win:signed_delta_installer" ]
     }
   }
   if (is_mac) {
@@ -440,7 +452,7 @@ template("create_dist_template") {
 }
 
 if (should_generate_symbols) {
-  create_dist_template("create_breakpad_symbols_dist") {
+  create_dist_template("create_brave_symbols_dist") {
     if (is_android) {
       output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_android_base-$target_cpu-symbols-$target_android_output_format.zip"
     } else {
@@ -449,7 +461,11 @@ if (should_generate_symbols) {
 
     deps = [ "//brave/app/$current_os:symbol_dist_resources" ]
 
-    dir_inputs = [ "$brave_product_name.breakpad.syms" ]
+    if (is_win) {
+      dir_inputs = [ "$brave_product_name.syms" ]
+    } else {
+      dir_inputs = [ "$brave_product_name.breakpad.syms" ]
+    }
   }
 
   if (is_win) {
@@ -457,7 +473,7 @@ if (should_generate_symbols) {
       output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.7z"
       dir_inputs = [ "$brave_product_name.pdb.syms" ]
 
-      deps = [ "//brave/app/win:generate_breakpad_symbols" ]
+      deps = [ "//brave/app/win:generate_symbols" ]
     }
   } else if (is_mac) {
     copy("create_native_symbols_dist") {
@@ -479,7 +495,7 @@ group("create_symbols_dist") {
 
   if (should_generate_symbols) {
     public_deps += [
-      ":create_breakpad_symbols_dist",
+      ":create_brave_symbols_dist",
       ":create_native_symbols_dist",
     ]
   }
@@ -596,6 +612,37 @@ if (is_mac) {
   }
 }
 
+cargo_audit_target_dir = "$root_build_dir/cargo_audit"
+cargo_audit_exe = "$cargo_audit_target_dir/release/cargo-audit"
+cargo_audit_src = "//brave/tools/crates/cargo_audit/v0_17/crate"
+if (host_os == "win") {
+  cargo_audit_exe += ".exe"
+}
+
+action("build_cargo_audit") {
+  script = "//build/gn_run_binary.py"
+
+  cargo_exe = "//third_party/rust-toolchain/bin/cargo"
+  if (host_os == "win") {
+    cargo_exe += ".exe"
+  }
+
+  inputs = [
+    cargo_exe,
+    "$cargo_audit_src/Cargo.lock",
+  ]
+  outputs = [ cargo_audit_exe ]
+  args = [
+    rebase_path(cargo_exe),
+    "build",
+    "--release",
+    "--manifest-path",
+    rebase_path("$cargo_audit_src/Cargo.toml"),
+    "--target-dir",
+    rebase_path(cargo_audit_target_dir),
+  ]
+}
+
 action("audit_deps") {
   script = "//brave/script/audit_deps.py"
 
@@ -603,24 +650,41 @@ action("audit_deps") {
 
   args = [
     "--source_root=" + rebase_path("//brave"),
-    "--rustup_home=" + rebase_path(rustup_home),
-    "--cargo_home=" + rebase_path(rustup_home),
+    "--cargo_audit_exe=" + rebase_path(cargo_audit_exe),
   ]
 
   if (audit_dev_deps) {
     args += [ "--audit_dev_deps" ]
   }
-}
 
-group("tools") {
-  if (is_win && enable_brave_vpn) {
-    deps =
-        [ "//brave/components/brave_vpn/browser/connection/ikev2/win:vpntool" ]
-  }
+  deps = [ ":build_cargo_audit" ]
 }
 
 if (is_redirect_cc_build) {
   group("redirect_cc") {
     deps = [ "//brave/tools/redirect_cc" ]
+  }
+}
+if (is_win && enable_resource_allowlist_generation) {
+  # Merge chrome_resource_allowlist and wireguard resources allowlist to keep
+  # wireguard resources in pak files.
+  action("merge_allowlists") {
+    deps = [
+      "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service:wireguard_resource_allowlist",
+      "//chrome:resource_allowlist",
+    ]
+
+    script = "//brave//resources/brave_allowlist.py"
+    source_allowlist = "$root_gen_dir/chrome/chrome_resource_allowlist.txt"
+    args = [
+      "--repack_allowlist",
+      rebase_path(source_allowlist, root_build_dir),
+      "--brave_allowlist",
+      rebase_path(wireguard_resource_allowlist_file, root_build_dir),
+      "--output",
+      rebase_path(brave_allowlist_file, root_build_dir),
+    ]
+
+    outputs = [ brave_allowlist_file ]
   }
 }

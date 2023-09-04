@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/ref_counted.h"
 #include "base/time/time.h"
 #include "components/component_updater/configurator_impl.h"
@@ -22,18 +22,24 @@ class PrefService;
 
 namespace base {
 class CommandLine;
+class FilePath;
 }
 
 namespace net {
 class URLRequestContextGetter;
 }
 
-namespace component_updater {
+namespace network {
+class SharedURLLoaderFactory;
+}
 
+namespace component_updater {
 class BraveConfigurator : public update_client::Configurator {
  public:
-  BraveConfigurator(const base::CommandLine* cmdline,
-                    PrefService* pref_service);
+  BraveConfigurator(
+      const base::CommandLine* cmdline,
+      PrefService* pref_service,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
   // update_client::Configurator overrides.
   base::TimeDelta InitialDelay() const override;
@@ -65,13 +71,15 @@ class BraveConfigurator : public update_client::Configurator {
   GetProtocolHandlerFactory() const override;
   absl::optional<bool> IsMachineExternallyManaged() const override;
   update_client::UpdaterStateProvider GetUpdaterStateProvider() const override;
+  absl::optional<base::FilePath> GetCrxCachePath() const override;
 
  private:
   friend class base::RefCountedThreadSafe<BraveConfigurator>;
 
   ConfiguratorImpl configurator_impl_;
-  raw_ptr<PrefService> pref_service_ =
-      nullptr;  // This member is not owned by this class.
+  const raw_ref<PrefService>
+      pref_service_;  // This member is not owned by this class.
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   scoped_refptr<update_client::NetworkFetcherFactory> network_fetcher_factory_;
   scoped_refptr<update_client::CrxDownloaderFactory> crx_downloader_factory_;
   scoped_refptr<update_client::UnzipperFactory> unzip_factory_;

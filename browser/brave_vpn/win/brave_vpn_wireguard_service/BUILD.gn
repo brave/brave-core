@@ -1,0 +1,86 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import(
+    "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/allowlist.gni")
+import("//brave/build/config.gni")
+import("//build/toolchain/gcc_toolchain.gni")
+import("//build/util/process_version.gni")
+import("//chrome/process_version_rc_template.gni")
+import("//tools/resources/generate_resource_allowlist.gni")
+
+assert(is_win)
+
+copy("brave_vpn_wireguard_binaries") {
+  sources = [
+    "//brave/third_party/brave-vpn-wireguard-nt-dlls/${target_cpu}/wireguard.dll",
+    "//brave/third_party/brave-vpn-wireguard-tunnel-dlls/${target_cpu}/tunnel.dll",
+  ]
+  outputs = [ "$root_out_dir/{{source_file_part}}" ]
+}
+
+group("wireguard_service") {
+  deps = [ ":brave_vpn_wireguard_service" ]
+  if (enable_resource_allowlist_generation) {
+    deps += [ ":wireguard_resource_allowlist" ]
+  }
+}
+
+generate_resource_allowlist("wireguard_resource_allowlist") {
+  deps = [ ":brave_vpn_wireguard_service" ]
+  inputs = [ "$root_out_dir/brave_vpn_wireguard_service.exe.pdb" ]
+  output = wireguard_resource_allowlist_file
+}
+
+executable("brave_vpn_wireguard_service") {
+  visibility = [ ":*" ]
+  sources = [
+    "brave_vpn_wireguard_service.rc",
+    "brave_wireguard_service_crash_reporter_client.cc",
+    "brave_wireguard_service_crash_reporter_client.h",
+    "main.cc",
+  ]
+
+  deps = [
+    ":brave_vpn_wireguard_binaries",
+    ":version_resources",
+    "notifications",
+    "resources",
+    "service",
+    "status_tray",
+    "//base",
+    "//base:base_static",
+    "//brave/components/brave_vpn/common/wireguard/win",
+    "//brave/components/resources:strings_grit",
+    "//build/win:default_exe_manifest",
+    "//chrome/install_static:install_static_util",
+    "//components/crash/core/app",
+    "//components/crash/core/app:crash_export_thunks",
+    "//components/crash/core/app:run_as_crashpad_handler",
+    "//components/version_info:channel",
+    "//third_party/abseil-cpp:absl",
+  ]
+
+  public_configs = [ "//build/config/win:windowed" ]
+
+  libs = [
+    "userenv.lib",  # For GetUserProfileDirectoryW()
+    "runtimeobject.lib",
+  ]
+}
+
+process_version_rc_template("version_resources") {
+  sources = [ "brave_vpn_wireguard_service.ver" ]
+
+  output = "$target_gen_dir/brave_vpn_wireguard_service.rc"
+}
+
+group("unit_tests") {
+  testonly = true
+  deps = [
+    "resources:unit_tests",
+    "status_tray:unit_tests",
+  ]
+}

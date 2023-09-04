@@ -5,16 +5,24 @@
 
 package org.chromium.chrome.browser.externalnav;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 
+import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.BraveWalletProvider;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.external_intents.ExternalNavigationHandler;
 import org.chromium.components.external_intents.ExternalNavigationHandler.OverrideUrlLoadingResult;
 import org.chromium.components.external_intents.ExternalNavigationParams;
 import org.chromium.url.GURL;
 
+/**
+ * Extends Chromium's ExternalNavigationHandler
+ */
 public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
+    private static final String TAG = "BraveUrlHandler";
     private BraveWalletProvider mBraveWalletProvider;
 
     public BraveExternalNavigationHandler(ExternalNavigationDelegate delegate) {
@@ -23,14 +31,21 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
 
     @Override
     public OverrideUrlLoadingResult shouldOverrideUrlLoading(ExternalNavigationParams params) {
+        String originalUrl = params.getUrl().getSpec();
         if (isWalletProviderOverride(params)) {
-            String originalUrl = params.getUrl().getSpec();
             String url = originalUrl.replaceFirst("^rewards://", "brave://rewards/");
             GURL browserFallbackGURL = new GURL(url);
             if (params.getRedirectHandler() != null) {
                 params.getRedirectHandler().setShouldNotOverrideUrlLoadingOnCurrentRedirectChain();
             }
             return OverrideUrlLoadingResult.forNavigateTab(browserFallbackGURL, params);
+        } else if (originalUrl.equalsIgnoreCase("chrome://adblock/")) {
+            try {
+                BraveActivity.getBraveActivity().openBraveContentFilteringSettings();
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                Log.e(TAG, "adblock url " + e);
+            }
+            return OverrideUrlLoadingResult.forExternalIntent();
         }
         return super.shouldOverrideUrlLoading(params);
     }
@@ -48,28 +63,23 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
             return true;
         }
 
+        if (params.getUrl().getSpec().startsWith(BraveWalletProvider.ZEBPAY_REDIRECT_URL)) {
+            return true;
+        }
+
         return false;
     }
 
-    private void completeWalletProviderVerification(ExternalNavigationParams params) {
-        mBraveWalletProvider = new BraveWalletProvider();
-        mBraveWalletProvider.completeWalletProviderVerification(params, this);
-    }
-
-    @SuppressLint("VisibleForTests")
-    public OverrideUrlLoadingResult clobberCurrentTabWithFallbackUrl(
-            String browserFallbackUrl, ExternalNavigationParams params) {
-        // Below is an actual code that was used prior to deletion of
-        // clobberCurrentTabWithFallbackUrl introduced here
-        // https://chromium.googlesource.com/chromium/src/+/37b5b744bc83f630d3121b46868818bb4e848c2a
-        if (!params.isMainFrame()) {
+    @Override
+    protected OverrideUrlLoadingResult startActivity(Intent intent, boolean requiresIntentChooser,
+            QueryIntentActivitiesSupplier resolvingInfos, ResolveActivitySupplier resolveActivity,
+            GURL browserFallbackUrl, GURL intentDataUrl, ExternalNavigationParams params) {
+        if (ContextUtils.getAppSharedPreferences().getBoolean(
+                    BravePrivacySettings.PREF_APP_LINKS, true)) {
+            return super.startActivity(intent, requiresIntentChooser, resolvingInfos,
+                    resolveActivity, browserFallbackUrl, intentDataUrl, params);
+        } else {
             return OverrideUrlLoadingResult.forNoOverride();
         }
-
-        if (params.getRedirectHandler() != null) {
-            params.getRedirectHandler().setShouldNotOverrideUrlLoadingOnCurrentRedirectChain();
-        }
-        GURL browserFallbackGURL = new GURL(browserFallbackUrl);
-        return OverrideUrlLoadingResult.forNavigateTab(browserFallbackGURL, params);
     }
 }

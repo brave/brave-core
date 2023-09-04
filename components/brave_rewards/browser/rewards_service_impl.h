@@ -29,10 +29,10 @@
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "brave/components/services/bat_ledger/public/interfaces/ledger_factory.mojom.h"
+#include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
 #include "build/build_config.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -64,13 +64,13 @@ class SimpleURLLoader;
 }  // namespace network
 
 class Profile;
-class RewardsFlagBrowserTest;
 
 namespace brave_rewards {
 
+class RewardsFlagBrowserTest;
+
 namespace internal {
-class Ledger;
-class LedgerDatabase;
+class RewardsDatabase;
 }  // namespace internal
 
 class RewardsNotificationServiceImpl;
@@ -86,10 +86,10 @@ using GetTestResponseCallback = base::RepeatingCallback<void(
     std::string* response,
     base::flat_map<std::string, std::string>* headers)>;
 
-using StopLedgerCallback = base::OnceCallback<void(mojom::Result)>;
+using StopEngineCallback = base::OnceCallback<void(mojom::Result)>;
 
 class RewardsServiceImpl : public RewardsService,
-                           public mojom::LedgerClient,
+                           public mojom::RewardsEngineClient,
 #if BUILDFLAG(ENABLE_GREASELION)
                            public greaselion::GreaselionService::Observer,
 #endif
@@ -117,6 +117,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void CreateRewardsWallet(const std::string& country,
                            CreateRewardsWalletCallback callback) override;
+
+  bool IsGrandfatheredUser() const override;
 
   void GetUserType(base::OnceCallback<void(mojom::UserType)> callback) override;
 
@@ -196,19 +198,13 @@ class RewardsServiceImpl : public RewardsService,
 
   p3a::ConversionMonitor* GetP3AConversionMonitor() override;
 
-  void HandleFlags(const RewardsFlags& flags);
-  void SetEnvironment(mojom::Environment environment);
-  void SetDebug(bool debug);
-  void GetDebug(GetDebugCallback callback);
-  void SetReconcileInterval(const int32_t interval);
-  void GetReconcileInterval(GetReconcileIntervalCallback callback);
-  void SetRetryInterval(int32_t interval);
-  void GetRetryInterval(GetRetryIntervalCallback callback);
+  mojom::RewardsEngineOptionsPtr HandleFlags(const RewardsFlags& flags);
+
+  void IsAutoContributeSupported(
+      base::OnceCallback<void(bool)> callback) override;
 
   void GetAutoContributeProperties(
       GetAutoContributePropertiesCallback callback) override;
-  void GetPendingContributionsTotal(
-      GetPendingContributionsTotalCallback callback) override;
 
   void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
   void RefreshPublisher(const std::string& publisher_key,
@@ -263,21 +259,12 @@ class RewardsServiceImpl : public RewardsService,
       const base::flat_map<std::string, std::string>& args,
       GetShareURLCallback callback) override;
 
-  void GetPendingContributions(
-    GetPendingContributionsCallback callback) override;
-
-  void RemovePendingContribution(const uint64_t id) override;
-
-  void RemoveAllPendingContributions() override;
-
   void OnTip(const std::string& publisher_key,
              double amount,
              bool recurring,
              OnTipCallback callback) override;
 
   void SetPublisherMinVisitTime(int duration_in_seconds) const override;
-
-  bool IsAutoContributeSupported() const override;
 
   void FetchBalance(FetchBalanceCallback callback) override;
 
@@ -308,7 +295,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetEventLogs(GetEventLogsCallback callback) override;
 
-  void StopLedger(StopLedgerCallback callback);
+  void StopEngine(StopEngineCallback callback);
 
   void EncryptString(const std::string& value,
                      EncryptStringCallback callback) override;
@@ -319,16 +306,16 @@ class RewardsServiceImpl : public RewardsService,
   void GetRewardsWallet(GetRewardsWalletCallback callback) override;
 
   // Testing methods
-  void SetLedgerEnvForTesting();
-  void SetLedgerStateTargetVersionForTesting(int version);
-  void PrepareLedgerEnvForTesting();
+  void SetEngineEnvForTesting();
+  void SetEngineStateTargetVersionForTesting(int version);
+  void PrepareEngineEnvForTesting(mojom::RewardsEngineOptions& options);
   void StartContributionsForTesting();
   void ForTestingSetTestResponseCallback(
       const GetTestResponseCallback& callback);
   void StartProcessForTesting(base::OnceClosure callback);
 
  private:
-  friend class ::RewardsFlagBrowserTest;
+  friend class RewardsFlagBrowserTest;
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
@@ -345,11 +332,11 @@ class RewardsServiceImpl : public RewardsService,
 
   void CheckPreferences();
 
-  void StartLedgerProcessIfNecessary();
+  void StartEngineProcessIfNecessary();
 
-  void OnStopLedger(StopLedgerCallback callback, const mojom::Result result);
+  void OnStopEngine(StopEngineCallback callback, const mojom::Result result);
 
-  void OnStopLedgerForCompleteReset(SuccessCallback callback,
+  void OnStopEngineForCompleteReset(SuccessCallback callback,
                                     const mojom::Result result);
 
   void OnDiagnosticLogDeletedForCompleteReset(SuccessCallback callback,
@@ -357,9 +344,9 @@ class RewardsServiceImpl : public RewardsService,
 
   void Reset();
 
-  void OnLedgerCreated();
+  void OnEngineCreated();
 
-  void OnLedgerStateLoaded(LoadLedgerStateCallback callback,
+  void OnLegacyStateLoaded(LoadLegacyStateCallback callback,
                            std::pair<std::string, base::Value> data);
   void OnPublisherStateLoaded(LoadPublisherStateCallback callback,
                               const std::string& data);
@@ -383,15 +370,11 @@ class RewardsServiceImpl : public RewardsService,
   void MaybeShowNotificationTipsPaid();
   void ShowNotificationTipsPaid(bool ac_enabled);
 
-  void OnPendingContributionRemoved(const mojom::Result result);
-
-  void OnRemoveAllPendingContributions(const mojom::Result result);
-
   void OnSetPublisherExclude(const std::string& publisher_key,
                              const bool exclude,
                              const mojom::Result result);
 
-  void OnLedgerInitialized(mojom::Result result);
+  void OnEngineInitialized(mojom::Result result);
 
   void OnClaimPromotion(ClaimPromotionCallback callback,
                         const mojom::Result result,
@@ -410,13 +393,13 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& token,
       const bool attestation_passed);
 
-  // mojom::LedgerClient
+  // mojom::RewardsEngineClient
   void OnReconcileComplete(mojom::Result result,
                            mojom::ContributionInfoPtr contribution) override;
   void OnAttestPromotion(AttestPromotionCallback callback,
                          const mojom::Result result,
                          mojom::PromotionPtr promotion);
-  void LoadLedgerState(LoadLedgerStateCallback callback) override;
+  void LoadLegacyState(LoadLegacyStateCallback callback) override;
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
   void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback) override;
   void SetPublisherMinVisits(int visits) const override;
@@ -500,7 +483,10 @@ class RewardsServiceImpl : public RewardsService,
   void ClearState(const std::string& name,
                   ClearStateCallback callback) override;
 
-  void IsBitFlyerRegion(IsBitFlyerRegionCallback callback) override;
+  void GetClientCountryCode(GetClientCountryCodeCallback callback) override;
+
+  void IsAutoContributeSupportedForClient(
+      IsAutoContributeSupportedForClientCallback callback) override;
 
   void PublisherListNormalized(
       std::vector<mojom::PublisherInfoPtr> list) override;
@@ -521,8 +507,6 @@ class RewardsServiceImpl : public RewardsService,
   void RunDBTransaction(mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
 
-  void PendingContributionSaved(mojom::Result result) override;
-
   void ClearAllNotifications() override;
 
   void ExternalWalletConnected() override;
@@ -531,18 +515,15 @@ class RewardsServiceImpl : public RewardsService,
 
   void ExternalWalletReconnected() override;
 
+  void ExternalWalletDisconnected() override;
+
   void DeleteLog(DeleteLogCallback callback) override;
 
-  // end mojom::LedgerClient
+  // end mojom::RewardsEngineClient
 
   void OnRefreshPublisher(RefreshPublisherCallback callback,
                           const std::string& publisher_key,
                           mojom::PublisherStatus status);
-
-  void OnContributeUnverifiedPublishers(
-      mojom::Result result,
-      const std::string& publisher_key,
-      const std::string& publisher_name) override;
 
   bool Connected() const;
   void ConnectionClosed();
@@ -598,19 +579,19 @@ class RewardsServiceImpl : public RewardsService,
       nullptr;  // NOT OWNED
   bool greaselion_enabled_ = false;
 #endif
-  mojo::AssociatedReceiver<mojom::LedgerClient> receiver_;
-  mojo::AssociatedRemote<mojom::Ledger> ledger_;
-  mojo::Remote<mojom::LedgerFactory> ledger_factory_;
+  mojo::AssociatedReceiver<mojom::RewardsEngineClient> receiver_;
+  mojo::AssociatedRemote<mojom::RewardsEngine> engine_;
+  mojo::Remote<mojom::RewardsEngineFactory> engine_factory_;
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   const scoped_refptr<base::SequencedTaskRunner> json_sanitizer_task_runner_;
 
-  const base::FilePath ledger_state_path_;
+  const base::FilePath legacy_state_path_;
   const base::FilePath publisher_state_path_;
   const base::FilePath publisher_info_db_path_;
   const base::FilePath publisher_list_path_;
 
   std::unique_ptr<DiagnosticLog> diagnostic_log_;
-  base::SequenceBound<internal::LedgerDatabase> ledger_database_;
+  base::SequenceBound<internal::RewardsDatabase> rewards_database_;
   std::unique_ptr<RewardsNotificationServiceImpl> notification_service_;
   std::unique_ptr<RewardsServiceObserver> extension_observer_;
 
@@ -622,10 +603,8 @@ class RewardsServiceImpl : public RewardsService,
   std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
   PrefChangeRegistrar profile_pref_change_registrar_;
 
-  uint32_t next_timer_id_;
-  bool reset_states_;
-  bool ledger_for_testing_ = false;
-  int ledger_state_target_version_for_testing_ = -1;
+  bool engine_for_testing_ = false;
+  int engine_state_target_version_for_testing_ = -1;
   bool resetting_rewards_ = false;
   int persist_log_level_ = 0;
   base::WallClockTimer p3a_daily_timer_;

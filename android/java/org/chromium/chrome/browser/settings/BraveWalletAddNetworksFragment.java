@@ -8,8 +8,6 @@ package org.chromium.chrome.browser.settings;
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK;
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -184,6 +182,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
             return false;
         }
         chain.chainId = strChainId;
+        chain.supportedKeyrings = new int[0];
 
         EditText chainName = view.findViewById(R.id.chain_name);
         String strChainName = chainName.getText().toString().trim();

@@ -15,12 +15,6 @@
     </if>
   <if expr="not is_android">
     </if>
-  <if expr="is_ios">
-    </if>
-
-  <if expr="is_ios">
-    </if>
-
   <if expr="not use_titlecase">
     </if>  <if expr="use_titlecase">
     </if>  <if expr="is_android">

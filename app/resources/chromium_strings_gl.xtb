@@ -10,12 +10,15 @@
 <translation id="5918095577778020936">Brave quere exportar os teus contrasinais. Escribe o teu contrasinal de Windows para permitir esta acción.</translation>
 <translation id="5468853758063275923">Brave é o teu navegador predeterminado</translation>
 <translation id="8522292744959221145">Para comprobar se os teus contrasinais están protexidos fronte a violacións da seguranza dos datos e outros problemas de seguranza, debes <ph name="BEGIN_LINK"/>iniciar sesión en Brave<ph name="END_LINK"/>.</translation>
+<translation id="2627788872035182013">Fai clic no menú de Brave</translation>
+<translation id="8468770846533807490">{NUM_DEVICES,plural, =0{As extensións de Brave tiñan acceso a dispositivos de interface humana}=1{As extensións de Brave teñen acceso a dispositivos de interface humana}other{As extensións de Brave teñen acceso a # dispositivos de interface humana}}</translation>
 <translation id="8541922081612557424">Acerca de Brave</translation>
-<translation id="3528799424770515097">{COUNT,plural, =1{O teu administrador pecha Brave automaticamente cando non se usa durante 1 minuto. Os datos de navegación elimínanse. Poden incluír o historial, os datos da función de autocompletar e as descargas.}other{O teu administrador pecha Brave automaticamente cando non se usa durante # minutos. Os datos de navegación elimínanse. Poden incluír o historial, os datos da función de autocompletar e as descargas.}}</translation>
 <translation id="1203500561924088507">Grazas por levar a cabo a instalación. Para utilizar <ph name="BUNDLE_NAME"/>, debes reiniciar o navegador.</translation>
 <translation id="4658574652223735641">Brave funciona máis rápido grazas a Aforro de memoria</translation>
+<translation id="8799570501820813406">Mentres esta pestana estaba inactiva, liberouse memoria para que Brave siga funcionando rápido. Podes optar por excluír este sitio para que nunca estea inactivo.</translation>
 <translation id="4798342026247191171">Configura o teu novo perfil de Brave</translation>
 <translation id="8132634101975074716">Iniciaches sesión en Brave.</translation>
+<translation id="1586284627848250203">Recibir axuda con Brave for Testing</translation>
 <translation id="5147525139567260139">Compartir unha pestana de Brave</translation>
 <translation id="1530633922026945685">Brave necesita permiso para acceder á cámara co fin de crear un mapa 3D do que te rodea</translation>
 <translation id="4449148723378534338">Revisa os controis clave de privacidade e seguranza en Brave</translation>
@@ -50,9 +53,11 @@
 <translation id="8418845734693287262">Chrome OS non puido sincronizar os teus datos porque a información de inicio de sesión da túa conta está desactualizada.</translation>
 <translation id="2576129394594491151">A extensión "<ph name="EXTENSION_NAME"/>" cambiou a páxina que se mostra ao iniciar Brave.</translation>
 <translation id="1248225940185478633">Brave necesita permiso de acceso á cámara e ao micrófono para este sitio</translation>
+<translation id="2451727308784734061">Usa o atallo para acceder rapidamente ao xestor de contrasinais. Podes mover o atallo ao Menú de aplicacións ou á pantalla de inicio do ordenador.</translation>
 <translation id="6381750314821942592">Brave pecharase en breve</translation>
 <translation id="6078442581074612226">En Brave</translation>
 <translation id="2485422356828889247">Desinstalar</translation>
+<translation id="70183448213529602">Brave está tentando substituír os contrasinais. Escribe o teu contrasinal de Windows para permitir esta acción.</translation>
 <translation id="7798069806040634998">Brave necesita acceder ao almacenamento para descargar ficheiros</translation>
 <translation id="8447483940522230788">Asistente de Brave</translation>
 <translation id="7291143854620707672">O administrador do perfil de traballo pode quitar os datos de Brave que se xeren durante o uso deste perfil (por exemplo, os marcadores, o historial, os contrasinais e outras opcións de configuración). <ph name="LEARN_MORE"/></translation>
@@ -64,6 +69,7 @@
 <translation id="6791166902140255175">Pestana de Brave</translation>
 <translation id="8372880274820509128">Para obter unha maior seguranza, Brave encriptará os teus datos.</translation>
 <translation id="2770231113462710648">Cambiar o navegador predeterminado a:</translation>
+<translation id="1187986649024576560">Esta extensión contén software malicioso, polo que non é segura. Quítaa de Brave para que non poida ver nin cambiar os teus datos (como a túa información persoal) nos sitios que visites.</translation>
 <translation id="2799223571221894425">Iniciar de novo</translation>
 <translation id="3783547330001921298">Con esta acción crearase un novo perfil de Brave para <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="777113543093865885">Eliminar de Brave...</translation>
@@ -74,7 +80,6 @@
 <translation id="2928420929544864228">Completouse a instalación.</translation>
 <translation id="8208853227947884571">Brave está actualizado</translation>
 <translation id="5122472867956731189">Se un sitio tenta roubarche o contrasinal ou se descargas un ficheiro daniño, Brave tamén pode comprobar os enderezos URL, así como fragmentos de contido das páxinas, a través da función Navegación segura</translation>
-<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave está conectado a un dispositivo de interface humana}other{Brave está conectado a dispositivos de interface humana}}</translation>
 <translation id="8755404239607088219">Brave non puido comprobar os teus contrasinais. Téntao de novo máis tarde.</translation>
 <translation id="8880183781256147665">Engadindo a Brave...</translation>
 <translation id="3038232873781883849">Esperando para realizar a instalación…</translation>
@@ -88,7 +93,6 @@
 <translation id="2585240446624043880">Brave non pode ler e escribir no seu directorio de datos:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
-<translation id="6823651909636163674">Esta guía axudarache a entender as opcións que tes para que Brave funcione como queres</translation>
 <translation id="2423637317249323944">Tes instalada a versión <ph name="PRODUCT_VERSION"/> de Brave</translation>
 <translation id="3286538390144397061">Reiniciar agora</translation>
 <translation id="2339258256897053758">Non se atopan as claves da API de Brave. Desactivaranse algunhas funcións de Brave.</translation>
@@ -123,10 +127,13 @@
 <translation id="2337217774418822704"><ph name="MANAGER_NAME"/> xestiona a túa conta. O teu administrador pode consultar e editar este perfil do navegador Brave e os seus datos (por exemplo, os marcadores, o historial ou os contrasinais).</translation>
 <translation id="8090497651549769448">Brave está tentando copiar os contrasinais. Escribe o teu contrasinal de Windows para permitir esta acción.</translation>
 <translation id="7133557675784723900">Brave recomenda analizar este ficheiro porque pode ser perigoso</translation>
+<translation id="1311808042904310985">Sobre &amp;Brave for Testing</translation>
 <translation id="1152920704813762236">Acerca de Chrome OS</translation>
 <translation id="3703994572283698466">Chrome OS é posible grazas a <ph name="BEGIN_LINK_CROS_OSS"/>software de código aberto<ph name="END_LINK_CROS_OSS"/> adicional, igual que o <ph name="BEGIN_LINK_LINUX_OSS"/>contorno de programación de Linux<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="6056473803837713617">Informa da <ph name="BEGIN_LINK"/>configuración actual<ph name="END_LINK"/> para axudar a mellorar Brave</translation>
 <translation id="4050175100176540509">A última versión conta con melloras de seguranza importantes e novas funcións.</translation>
+<translation id="4055805654398742145">X&amp;estor de contrasinais</translation>
+<translation id="6217792792122501564">{COUNT,plural, =1{A túa organización pechará Brave automaticamente cando leve 1 minuto sen usarse. Os datos de navegación (entre os que se poderían incluír o historial, os datos da función de autocompletar e as descargas) eliminaranse.}other{A túa organización pechará Brave automaticamente cando leve # minuto sen usarse. Os datos de navegación (entre os que se poderían incluír o historial, os datos da función de autocompletar e as descargas) eliminaranse.}}</translation>
 <translation id="4148957013307229264">Instalando...</translation>
 <translation id="4658486203392098459"><ph name="PAGE_TITLE"/> (Inicio de sesión, Brave)</translation>
 <translation id="2871190378186459992">Descubre aplicacións, xogos, extensións e temas fantásticos para Brave.</translation>
@@ -142,6 +149,7 @@
 <translation id="4065288863231444640">Deixar que Brave se execute en segundo plano</translation>
 <translation id="8148611988012584308">Personaliza e controla Brave</translation>
 <translation id="4427306783828095590">A protección mellorada é máis eficaz á hora de bloquear o phishing e o software malicioso</translation>
+<translation id="6786534271003695094">Sobre Brave for Testing</translation>
 <translation id="7084397798469173252">Dámosche a benvida a Brave. Abriuse unha nova ventá do navegador</translation>
 <translation id="2633397153656205379">Brave non se actualizou, xa que se produciu un erro. <ph name="BEGIN_LINK"/>Soluciona os problemas de actualización de Brave e as actualizacións que non se puidesen realizar<ph name="END_LINK"/>.</translation>
 <translation id="3679799810790990472">Queres continuar nun perfil de Brave novo?</translation>
@@ -161,11 +169,11 @@
 <translation id="215320507915280336">Esta función utiliza o mesmo corrector ortográfico que o usado na busca de Brave. O texto que escribas no navegador enviarase a Brave. Podes cambiar esta opción na configuración cando queiras.</translation>
 <translation id="1912973375560256099">Norma de entrada para Brave para permitir tráfico mDNS.</translation>
 <translation id="711601904575862069">Reiniciar para actualizar &amp;Brave</translation>
+<translation id="2778869200975718483">{COUNT,plural, =1{A túa organización eliminará os datos de navegación automaticamente cando Brave leve 1 minuto sen usarse. Entre esa información, poderían incluírse o historial, os datos da función de autocompletar e as descargas. As pestanas seguirán abertas.}other{A túa organización eliminará os datos de navegación automaticamente cando Brave leve # minutos sen usarse. Entre esa información, poderían incluírse o historial, os datos da función de autocompletar e as descargas. As pestanas seguirán abertas.}}</translation>
 <translation id="8797356639448065696">Brave está no modo de segundo plano.</translation>
 <translation id="7406627712452599344">Os invitados poden utilizar Brave sen perder información.</translation>
 <translation id="5952898964075639679">Engádete a Brave</translation>
 <translation id="8112581848375017126">Brave está probando novas funcións que lles permitan aos sitios ofrecer a mesma experiencia de navegación usando menos información túa</translation>
-<translation id="101136574863710793">{COUNT,plural, =1{O teu administrador pecha Brave automaticamente cando non se usa durante 1 minuto.}other{O teu administrador pecha Brave automaticamente cando non se usa durante # minutos.}}</translation>
 <translation id="9078804073692109646">Non hai contrasinais gardados. Brave pode comprobar os teus contrasinais cando os gardes.</translation>
 <translation id="729580998737807583"><ph name="EXISTING_USER"/> xa ten a sesión iniciada neste perfil de Brave. Con esta acción crearase un novo perfil de Brave para <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="8586264863973514035">Para aplicar os cambios, reinicia Brave</translation>
@@ -195,6 +203,7 @@
 <translation id="5924017743176219022">Conectando a Internet…</translation>
 <translation id="5941711191222866238">Minimizar</translation>
 <translation id="3613110494561632737">Se Brave te inclúe automaticamente nunha proba activa, o teu historial de navegación aféctalles aos anuncios que se che mostran e aos intereses estimados que se indican abaixo. Para protexer a túa privacidade, Brave elimina os teus intereses cada mes. A menos que os quites, os intereses actualízanse.</translation>
+<translation id="4357808717322635817">{COUNT,plural, =1{A túa organización pechará Brave automaticamente cando leve 1 minuto sen usarse.}other{A túa organización pechará Brave automaticamente cando leve # minutos sen usarse.}}</translation>
 <translation id="3598551856834560515">Actualiza Brave para iniciar a sincronización</translation>
 <translation id="5225261774087485064">É habitual que os sitios que visitas lembren o que che interesa para personalizar a experiencia que se che ofrece neles. Os sitios tamén poden almacenar con Brave información sobre os teus intereses.</translation>
 <translation id="6003112304606738118">Descargando… Tempo restante: <ph name="HOURS"/> h</translation>
@@ -229,15 +238,18 @@
 <translation id="6327105987658262776">Non hai ningunha actualización dispoñible.</translation>
 <translation id="1819119299840995223">Hai outra operación en Brave que está en progreso. Téntao de novo máis tarde.</translation>
 <translation id="8616874628011103667">Agora é máis fácil utilizar Brave coa túa conta de Brave e en ordenadores compartidos.</translation>
-<translation id="6365489425007284765">{COUNT,plural, =1{O teu administrador elimina os datos de navegación automaticamente cando non se usa durante 1 minuto. Poden incluír o historial, os datos da función de autocompletar e as descargas. As pestanas seguirán abertas.}other{O teu administrador elimina os datos de navegación automaticamente cando non se usa durante # minutos. Poden incluír o historial, os datos da función de autocompletar e as descargas. As pestanas seguirán abertas.}}</translation>
 <translation id="335632367599648646">Seguro que queres desinstalar Brave?</translation>
+<translation id="6375219077595103062">Engade un atallo ao xestor de contrasinais</translation>
 <translation id="4867486350347355096"><ph name="BEGIN_BOLD"/>Como usamos estes datos?<ph name="END_BOLD"/> Brave pode facer unha estimación dos teus intereses. Máis tarde, un sitio que visites pode consultarlle a Brave os teus intereses para personalizar os anuncios que se che mostren.</translation>
 <translation id="6373767849825830651">Brave é un navegador web que executa páxinas web e aplicacións a gran velocidade. É rápido, estable e fácil de utilizar. Brave permíteche navegar na web de forma máis segura, xa que inclúe protección contra malware e phishing.</translation>
 <translation id="2139300032719313227">Reiniciar Chrome OS</translation>
 <translation id="1684121725014454063">Dámosche a benvida aos perfís de Brave</translation>
 <translation id="2675662665675552980">Tamén controla a páxina que se mostra ao iniciar Brave.</translation>
+<translation id="648319183876919572">Navegación segura mellorada é máis eficaz á hora de protexerte de descargas e sitios web perigosos</translation>
 <translation id="5590013613412457132">Desinstalar Brave</translation>
+<translation id="3617744907966785605">A túa organización pecha Brave cando non se usa durante <ph name="TIMEOUT_DURATION"/>. Elimináronse os datos de navegación. Entre esa información, poden incluírse o historial, os datos da función de autocompletar e as descargas.</translation>
 <translation id="8646609321956191980">En cada perfil gárdase a información de Brave que lle corresponde (por exemplo, os marcadores, o historial ou os contrasinais)</translation>
+<translation id="2535436634051789953">Podes cambiar de perfil para ver os contrasinais doutro perfil de Brave</translation>
 <translation id="2312399718665761438">Para solucionar os erros ortográficos, Brave envía a Brave o texto que escribes nos campos de texto</translation>
 <translation id="3507835409099344374">Ir á configuración de notificacións de Brave</translation>
 <translation id="9156965752763025780">Os cambios aplicaranse a próxima vez que reinicies Brave.</translation>
@@ -271,6 +283,7 @@
 <translation id="7025789849649390912">Detívose a instalación.</translation>
 <translation id="1705567146636171298">Actualizar Brave</translation>
 <translation id="5499063270485366718">Se unha imaxe non ten unha descrición útil, Brave tentará proporcionarche unha. Para crear descricións, envíanse imaxes a Brave.</translation>
+<translation id="2332301637111071062">A túa organización elimina os datos de Brave cando non se usa durante <ph name="TIMEOUT_DURATION"/>. Entre esa información, poden incluírse o historial, os datos da función de autocompletar e as descargas.</translation>
 <translation id="1008530050039597147">Brave necesita permiso de acceso á cámara para este sitio</translation>
 <translation id="1197672524850678392">Non se puido iniciar Brave. Téntao de novo.</translation>
 <translation id="3405035915691517126">Brave non puido comprobar os teus contrasinais. Téntao de novo dentro de 24 horas.</translation>
@@ -281,7 +294,6 @@
 <translation id="3403365884036456766">O teu ficheiro de preferencias está danado ou non é válido.
 
 Brave non pode recuperar a túa configuración.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="7339898014177206373">Nova ventá</translation>
 <translation id="3511996232906761537">Aquí podes atopar as túas páxinas web, marcadores e outros contidos de Brave.</translation>
 <translation id="5380963249588143069">A persoa que administra o teu sistema configurou Brave para abrir o navegador <ph name="TARGET_URL_HOSTNAME"/> co obxectivo de acceder a <ph name="ALTERNATIVE_BROWSER_NAME"/>.</translation>
@@ -323,11 +335,13 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="8207657266087451193">Se unha imaxe non ten unha descrición útil, Brave tentará proporcionarche unha. Para crear descricións, envíanse imaxes a Brave. Podes desactivar esta función na configuración cando queiras.</translation>
 <translation id="8622246347342688645">Brave non puido comprobar os teus contrasinais porque non iniciaches sesión</translation>
 <translation id="89367911614620585">Este ficheiro pode ser perigoso, así que Brave bloqueouno.</translation>
+<translation id="6098476632210317894">A túa organización pecha Brave cando non se usa durante <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="5196445203969439095">Tira máis proveito de Brave</translation>
 <translation id="3360368475735266712">Inicia sesión para sincronizar e personalizar Brave nos teus dispositivos</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> estaba utilizando Brave previamente</translation>
 <translation id="3098618823450433881">Se queres acceder ás túas cousas do navegador Brave desde calquera dos teus dispositivos, inicia sesión e activa a sincronización</translation>
 <translation id="2569754604093464025">Se queres recibir actualizacións de Brave no futuro, debes instalar Windows 10 ou unha versión posterior. Este ordenador ten instalado Windows 8.</translation>
+<translation id="8577108764439626300">O programador anulou a publicación desta extensión, polo que poida que non sexa segura. Quítaa de Brave para que non poida ver nin cambiar os teus datos (como a túa información persoal) nos sitios que visites.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Reinicia Brave en 1 día}other{Reinicia Brave en # días}}</translation>
 <translation id="6914496861676471566">O arquivo do instalador está danado ou non é válido. Volve descargar Brave.</translation>
 <translation id="4378573854226202617">Para usar Brave, precísase Windows 10 ou unha versión posterior.</translation>
@@ -340,9 +354,12 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Como usamos estes datos?<ph name="END_BOLD"/> Os sitios poden almacenar con Brave información sobre os teus intereses. Por exemplo, se visitas un sitio para comprar zapatillas deportivas para un maratón, ese sitio podería determinar que che interesa correr maratóns. Máis tarde, se visitas un sitio distinto que che permite rexistrarte para participar nunha carreira, pode mostrárseche nel un anuncio de zapatillas deportivas baseado nos teus intereses.</translation>
 <translation id="3052349005266761501">Iniciando Brave…</translation>
 <translation id="6283840329609797763">Non se puido efectuar a instalación debido a un erro. Volve descargar Brave.</translation>
+<translation id="5128665650717824082">Brave for Testing non se pode converter no teu navegador predeterminado.</translation>
+<translation id="4668189655335212354">{NUM_DEVICES,plural, =0{Unha extensión de Brave tiña acceso a dispositivos de interface humana}=1{Unha extensión de Brave ten acceso a 1 dispositivo de interface humana}other{Unha extensión de Brave ten acceso a # dispositivos de interface humana}}</translation>
 <translation id="2433912322225810055">Tamén controla a páxina que se mostra ao iniciar Brave ou ao realizar unha busca desde Omnibox.</translation>
 <translation id="4100716194836114130">Este é o teu Brave</translation>
 <translation id="4831743161813926460">Brave necesita permiso para acceder á cámara e ao micrófono neste sitio</translation>
+<translation id="8826492472752484139">Fai clic no xestor de contrasinais</translation>
 <translation id="6933858244219479645">Sistema Chrome OS</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Que datos se usan?<ph name="END_BOLD"/> O teu historial de navegación e un rexistro dos sitios que visitases usando Brave neste dispositivo.</translation>
 <translation id="8862326446509486874">Non tes os dereitos apropiados para efectuar a instalación a nivel do sistema. Tenta volver executar o instalador como administrador.</translation>
@@ -355,6 +372,7 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="8986207147630327271">Estás a piques de engadir un perfil de traballo a este navegador e de permitir que o teu administrador controle só o perfil de traballo.</translation>
 <translation id="82609232232243542">Iniciar sesión en Brave</translation>
 <translation id="3273774796888928550">Inicia sesión en Brave. Se queres iniciar sesión nunha conta só unha vez, podes <ph name="GUEST_LINK_BEGIN"/>usar este dispositivo como convidado<ph name="GUEST_LINK_END"/>.</translation>
+<translation id="4561046754724442504">Brave pechouse automaticamente</translation>
 <translation id="5173820533850252773">Brave está desactualizado</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave reiniciarase en 1 hora}other{Brave reiniciarase en # horas}}</translation>
 <translation id="5190991181158966940">Se queres recibir actualizacións de Brave no futuro, debes instalar Windows 10 ou unha versión posterior. Este ordenador ten instalado Windows 8.1.</translation>
@@ -367,7 +385,6 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="296137235951584143">Personaliza Brave</translation>
 <translation id="7977787072794666032">É posible que Brave non funcione correctamente porque xa non admite Windows XP nin Windows Vista</translation>
 <translation id="8180288330711585962">Certificados que xestiona Brave</translation>
-<translation id="3050465115159165320">Tira o máximo proveito de Brave</translation>
 <translation id="4484434718272972655">Quen está utilizando Brave?</translation>
 <translation id="7173394303099002355">Goza da máxima seguranza de Brave</translation>
 <translation id="5775101967851558962">Borrar sempre do dispositivo os datos dos sitios cando peches Brave</translation>
@@ -378,6 +395,7 @@ Brave non pode recuperar a túa configuración.</translation>
 
 É posible que os permisos que xa facilitou aos sitios web e aplicacións se apliquen a esta conta. Pode xestionar as súas cadeas de sincronización de Brave en <ph name="SETTINGS_LINK_BEGIN"/>Configuración<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1743665722170667430">As extensións, aplicacións e temas de fontes descoñecidas poden danar o teu dispositivo. Brave recomenda instalalas unicamente desde a <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/></translation>
+<translation id="6184592406110188164">Esta extensión infrinxe a política da Web Store e podería non ser segura. Elimínaa de Brave para impedir que siga vendo e modificando os teus datos, incluída a túa información persoal, nos sitios que visitas.</translation>
 <translation id="1299765473362724475">Advertencia: Brave non pode evitar que as extensións rexistren o teu historial de navegación. Para desactivar esta extensión no modo de incógnito, anula a selección desta opción.</translation>
 <translation id="1448049584457347995">Para conseguir que Brave resulte máis seguro, desactivamos algunhas extensións que non aparecen en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e que é posible que se engadisen sen o teu coñecemento.</translation>
 <translation id="8848045066928358658">Para conseguir que Brave resulte máis seguro, desactivamos a seguinte extensión que non aparece en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e que quizais se engadise sen o teu coñecemento.</translation>

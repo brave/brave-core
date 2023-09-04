@@ -4,7 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/functional/bind.h"
+#include "base/memory/weak_ptr.h"
 #include "base/run_loop.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
@@ -17,18 +20,24 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
+#include "brave/browser/ui/views/side_panel/brave_side_panel_resize_widget.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/sidebar/constants.h"
+#include "brave/components/sidebar/pref_names.h"
+#include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -40,6 +49,10 @@
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
 #include "ui/gfx/geometry/point.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 using ::testing::Eq;
 using ::testing::Ne;
@@ -84,6 +97,10 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return sidebar_container_view->GetEventDetectWidget()->widget_.get();
   }
 
+  views::Widget* GetSidePanelResizeWidget() {
+    return GetSidePanel()->resize_widget_->GetWidget();
+  }
+
   raw_ptr<SidebarItemsContentsView> GetSidebarItemsContentsView(
       SidebarController* controller) const {
     auto* sidebar_container_view =
@@ -96,7 +113,19 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return sidebar_items_contents_view;
   }
 
-  void SimulateSidebarItemClickAt(int index) const {
+  SidebarItemsScrollView* GetSidebarItemsScrollView(
+      SidebarController* controller) const {
+    auto* sidebar_container_view =
+        static_cast<SidebarContainerView*>(controller->sidebar());
+    auto sidebar_control_view = sidebar_container_view->sidebar_control_view_;
+    return sidebar_control_view->sidebar_items_view_;
+  }
+
+  // If the item at |index| is panel item, this will return after waiting
+  // model's active index is changed as active index could not be not updated
+  // synchronously. Panel activation is done via SidePanelCoordinator instead of
+  // asking activation to SidebarController directly.
+  void SimulateSidebarItemClickAt(size_t index) {
     auto sidebar_items_contents_view =
         GetSidebarItemsContentsView(controller());
 
@@ -107,6 +136,11 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     ui::MouseEvent event(ui::ET_MOUSE_PRESSED, origin, origin,
                          ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0);
     sidebar_items_contents_view->OnItemPressed(item, event);
+
+    if (model()->GetAllSidebarItems()[index].open_in_panel) {
+      WaitUntil(base::BindLambdaForTesting(
+          [&]() { return model()->active_index() == index; }));
+    }
   }
 
   SidebarControlView* GetSidebarControlView() const {
@@ -145,9 +179,45 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     run_loop()->Run();
   }
 
+  void SetItemAddedBubbleLaunchedCallback(
+      SidebarItemsContentsView* items_contents_view) {
+    items_contents_view->item_added_bubble_launched_for_test_ =
+        base::BindRepeating(
+            &SidebarBrowserTest::ItemAddedBubbleLaunchedCallback,
+            weak_factory_.GetWeakPtr());
+  }
+
+  void ItemAddedBubbleLaunchedCallback(views::View* anchor) {
+    item_added_bubble_anchor_ = anchor;
+  }
+
+  void AddItemsTillScrollable(SidebarItemsScrollView* scroll_view,
+                              SidebarService* sidebar_service) {
+    int url_prefix = 0;
+    while (true) {
+      sidebar_service->AddItem(sidebar::SidebarItem::Create(
+          GURL(base::StrCat(
+              {"https://foo/bar_", base::NumberToString(url_prefix)})),
+          u"title", SidebarItem::Type::kTypeWeb,
+          SidebarItem::BuiltInItemType::kNone, false));
+      url_prefix++;
+      base::RunLoop().RunUntilIdle();
+      // Add items till first item becomes invisible.
+      if (scroll_view->NeedScrollForItemAt(0)) {
+        break;
+      }
+    }
+  }
+
+  bool NeedScrollForItemAt(size_t index, SidebarItemsScrollView* scroll_view) {
+    return scroll_view->NeedScrollForItemAt(index);
+  }
+
   base::RunLoop* run_loop() const { return run_loop_.get(); }
 
+  raw_ptr<views::View> item_added_bubble_anchor_ = nullptr;
   std::unique_ptr<base::RunLoop> run_loop_;
+  base::WeakPtrFactory<SidebarBrowserTest> weak_factory_{this};
 };
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
@@ -315,20 +385,20 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_InitialHorizontalOptionTest) {
   auto* prefs = browser()->profile()->GetPrefs();
 
-  // Check default horizontal option is left-sided.
-  EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-  EXPECT_TRUE(IsSidebarUIOnLeft());
+  // Check default horizontal option is right-sided.
+  EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+  EXPECT_FALSE(IsSidebarUIOnLeft());
 
-  // Set right-sided for next testing.
-  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+  // Set left-sided for next testing.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, InitialHorizontalOptionTest) {
   auto* prefs = browser()->profile()->GetPrefs();
 
   // Check horizontal option is right-sided.
-  EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-  EXPECT_FALSE(IsSidebarUIOnLeft());
+  EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+  EXPECT_TRUE(IsSidebarUIOnLeft());
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
@@ -349,6 +419,195 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
   EXPECT_EQ(contents_container->GetBoundsInScreen().right(),
             widget->GetWindowBoundsInScreen().right());
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedBubbleAnchorViewTest) {
+  auto* sidebar_service =
+      SidebarServiceFactory::GetForProfile(browser()->profile());
+  auto sidebar_items_contents_view = GetSidebarItemsContentsView(
+      static_cast<BraveBrowser*>(browser())->sidebar_controller());
+  SetItemAddedBubbleLaunchedCallback(sidebar_items_contents_view);
+  size_t lastly_added_item_index = 0;
+
+  // Add item at last.
+  item_added_bubble_anchor_ = nullptr;
+  sidebar_service->AddItem(sidebar::SidebarItem::Create(
+      GURL("http://foo.bar/"), u"title", SidebarItem::Type::kTypeWeb,
+      SidebarItem::BuiltInItemType::kNone, false));
+
+  // Check item is added at last and check that bubble is anchored to
+  // it properly.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !!item_added_bubble_anchor_; }));
+  lastly_added_item_index = sidebar_items_contents_view->children().size() - 1;
+  EXPECT_EQ(item_added_bubble_anchor_,
+            sidebar_items_contents_view->children()[lastly_added_item_index]);
+
+  // Add item at index 0.
+  item_added_bubble_anchor_ = nullptr;
+  sidebar_service->AddItemAtForTesting(
+      sidebar::SidebarItem::Create(GURL("http://foo.bar/"), u"title",
+                                   SidebarItem::Type::kTypeWeb,
+                                   SidebarItem::BuiltInItemType::kNone, false),
+      0);
+
+  // Check item is added at first and check that bubble is anchored to
+  // it properly.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !!item_added_bubble_anchor_; }));
+  lastly_added_item_index = 0;
+  EXPECT_EQ(item_added_bubble_anchor_,
+            sidebar_items_contents_view->children()[lastly_added_item_index]);
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedScrollTest) {
+  // To prevent item added bubble launching.
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount, 3);
+
+  auto* sidebar_service =
+      SidebarServiceFactory::GetForProfile(browser()->profile());
+  auto* scroll_view = GetSidebarItemsScrollView(
+      static_cast<BraveBrowser*>(browser())->sidebar_controller());
+  auto sidebar_items_contents_view = GetSidebarItemsContentsView(
+      static_cast<BraveBrowser*>(browser())->sidebar_controller());
+
+  AddItemsTillScrollable(scroll_view, sidebar_service);
+
+  // Check first item is not visible in scroll view.
+  EXPECT_TRUE(NeedScrollForItemAt(0, scroll_view));
+
+  // After inserting item at index 0, it should be visible as sidebar
+  // scrolls to make that new item visible. So last item becomes invisible.
+  sidebar_service->AddItemAtForTesting(
+      sidebar::SidebarItem::Create(GURL("https://abcd"), u"title",
+                                   SidebarItem::Type::kTypeWeb,
+                                   SidebarItem::BuiltInItemType::kNone, false),
+      0);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !NeedScrollForItemAt(0, scroll_view); }));
+
+  int last_item_index = sidebar_items_contents_view->children().size() - 1;
+  EXPECT_TRUE(NeedScrollForItemAt(last_item_index, scroll_view));
+
+  // After inserting item at last, it should be visible as sidebar
+  // scrolls to make that new item visible. So fisrt item becomes invisible.
+  last_item_index++;
+  sidebar_service->AddItem(sidebar::SidebarItem::Create(
+      GURL("https://abcdefg"), u"title", SidebarItem::Type::kTypeWeb,
+      SidebarItem::BuiltInItemType::kNone, false));
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !NeedScrollForItemAt(last_item_index, scroll_view); }));
+  EXPECT_TRUE(NeedScrollForItemAt(0, scroll_view));
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_PrefsMigrationTest) {
+  // Prepare temporarily changed condition.
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(sidebar::kSidebarAlignmentChangedTemporarily, true);
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PrefsMigrationTest) {
+  // Check all prefs are changed to default.
+  auto* prefs = browser()->profile()->GetPrefs();
+  EXPECT_TRUE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
+                  ->IsDefaultValue());
+  EXPECT_TRUE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
+                  ->IsDefaultValue());
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_SidePanelResizeTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  EXPECT_EQ(kDefaultSidePanelWidth,
+            prefs->GetInteger(sidebar::kSidePanelWidth));
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+
+  // Wait till sidebar animation ends.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() == kDefaultSidePanelWidth; }));
+
+  // Test smaller panel width than default(minimum) and check smaller than
+  // default is not applied. Positive offset value is for reducing width in
+  // right-sided sidebar.
+  GetSidePanel()->OnResize(30, true);
+  // Check panel width is not changed.
+  EXPECT_EQ(kDefaultSidePanelWidth,
+            prefs->GetInteger(sidebar::kSidePanelWidth));
+
+  // On right-side sidebar position, side panel's x and resize widget's x is
+  // same.
+  EXPECT_EQ(GetSidePanel()->GetBoundsInScreen().x(),
+            GetSidePanelResizeWidget()->GetWindowBoundsInScreen().x());
+
+  // Increase panel width and check resize handle widget's position.
+  // Negative offset value is for increasing width in right-sided
+  // sidebar.
+  GetSidePanel()->OnResize(-20, true);
+  EXPECT_EQ(kDefaultSidePanelWidth + 20,
+            prefs->GetInteger(sidebar::kSidePanelWidth));
+  EXPECT_EQ(GetSidePanel()->GetBoundsInScreen().x(),
+            GetSidePanelResizeWidget()->GetWindowBoundsInScreen().x());
+
+  // Set sidebar on left side.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  EXPECT_EQ(GetSidePanel()->GetBoundsInScreen().right(),
+            GetSidePanelResizeWidget()->GetWindowBoundsInScreen().right());
+
+  // Increse panel width and check width and resize handle position .
+  // Positive offset value is for increasing width in left-sided sidebar.
+  GetSidePanel()->OnResize(20, true);
+  EXPECT_EQ(kDefaultSidePanelWidth + 40,
+            prefs->GetInteger(sidebar::kSidePanelWidth));
+  EXPECT_EQ(GetSidePanel()->GetBoundsInScreen().right(),
+            GetSidePanelResizeWidget()->GetWindowBoundsInScreen().right());
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidePanelResizeTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  // Check that 40px increased width is persisted properly.
+  constexpr int kExpectedPanelWidth = kDefaultSidePanelWidth + 40;
+  EXPECT_EQ(kExpectedPanelWidth, prefs->GetInteger(sidebar::kSidePanelWidth));
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+
+  // Wait till sidebar animation ends.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() == kExpectedPanelWidth; }));
+  EXPECT_EQ(kExpectedPanelWidth, GetSidePanel()->width());
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+
+  // Show bookmarks entry and it has active index.
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  // Wait till sidebar show ends.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() == kDefaultSidePanelWidth; }));
+  EXPECT_TRUE(model()->active_index().has_value());
+
+  // Cache bookmarks entry index to remove it later.
+  const auto bookmark_item_index = model()->active_index().value();
+
+  // Close panel and wait till panel closing animation ends. Panel is hidden
+  // when closing completes.
+  panel_ui->Close();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !GetSidePanel()->GetVisible(); }));
+  EXPECT_FALSE(!!panel_ui->GetCurrentEntryId());
+
+  // Remove bookmarks and check it's gone.
+  SidebarServiceFactory::GetForProfile(browser()->profile())
+      ->RemoveItemAt(bookmark_item_index);
+  EXPECT_FALSE(!!model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
+
+  // Show bookmarks entry again and wait till sidebar panel gets visible
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->GetVisible(); }));
+  EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
 }
 
 class SidebarBrowserTestWithPlaylist : public SidebarBrowserTest {
@@ -393,6 +652,148 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithPlaylist, Incognito) {
   sidebar_service->RemoveItemAt(0);
 }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+class SidebarBrowserTestWithAIChat : public SidebarBrowserTest {
+ public:
+  SidebarBrowserTestWithAIChat() {
+    feature_list_.InitAndEnableFeature(ai_chat::features::kAIChat);
+  }
+  ~SidebarBrowserTestWithAIChat() override = default;
+
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanel) {
+  // Collect item indexes for test
+  constexpr auto kGlobalItemType = SidebarItem::BuiltInItemType::kBookmarks;
+  constexpr auto kTabSpecificItemType = SidebarItem::BuiltInItemType::kChatUI;
+  auto global_item_index = model()->GetIndexOf(kGlobalItemType);
+  ASSERT_TRUE(global_item_index.has_value());
+  auto tab_specific_item_index = model()->GetIndexOf(kTabSpecificItemType);
+  ASSERT_TRUE(tab_specific_item_index.has_value());
+  // Open 2 more tabs
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_EQ(tab_model()->GetTabCount(), 3);
+  // Open a "global" panel from Tab 0
+  tab_model()->ActivateTabAt(0);
+  SimulateSidebarItemClickAt(global_item_index.value());
+  // Open a "tab specific" panel from Tab 1
+  tab_model()->ActivateTabAt(1);
+  SimulateSidebarItemClickAt(tab_specific_item_index.value());
+  // Tab Specific panel should be open when Tab 1 is active
+  EXPECT_EQ(model()->active_index(), tab_specific_item_index);
+  // Global panel should be open when Tab 0 is active
+  tab_model()->ActivateTabAt(0);
+  EXPECT_EQ(model()->active_index(), global_item_index);
+  // Global panel should be open when Tab 2 is active
+  tab_model()->ActivateTabAt(2);
+  EXPECT_EQ(model()->active_index(), global_item_index);
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
+                       TabSpecificPanelAndUnManagedPanel) {
+  // Collect item indexes for test and remove global item.
+  constexpr auto kGlobalItemType = SidebarItem::BuiltInItemType::kBookmarks;
+  constexpr auto kTabSpecificItemType = SidebarItem::BuiltInItemType::kChatUI;
+  auto global_item_index = model()->GetIndexOf(kGlobalItemType);
+  ASSERT_TRUE(global_item_index.has_value());
+  SidebarServiceFactory::GetForProfile(browser()->profile())
+      ->RemoveItemAt(*global_item_index);
+  EXPECT_FALSE(!!model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
+
+  auto tab_specific_item_index = model()->GetIndexOf(kTabSpecificItemType);
+  ASSERT_TRUE(tab_specific_item_index.has_value());
+  // Open 2 more tabs
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_EQ(tab_model()->GetTabCount(), 3);
+
+  // Open a unmanaged "global" panel from Tab 0
+  tab_model()->ActivateTabAt(0);
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  // Unmanaged entry could not be active.
+  EXPECT_FALSE(!!model()->active_index());
+  // Wait till sidebar show ends.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() == kDefaultSidePanelWidth; }));
+
+  // Open a "tab specific" panel from Tab 1
+  tab_model()->ActivateTabAt(1);
+  SimulateSidebarItemClickAt(tab_specific_item_index.value());
+  EXPECT_EQ(SidePanelEntryId::kChatUI, panel_ui->GetCurrentEntryId());
+  EXPECT_TRUE(GetSidePanel()->GetVisible());
+  // Tab Specific panel should be open when Tab 1 is active
+  EXPECT_EQ(model()->active_index(), tab_specific_item_index);
+
+  // Global panel should be open when Tab 0 is active
+  tab_model()->ActivateTabAt(0);
+  EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+  // Unmanaged entry could not be active.
+  EXPECT_FALSE(!!model()->active_index());
+
+  // Global panel should be open when Tab 2 is active
+  tab_model()->ActivateTabAt(2);
+  EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+
+  // Unmanaged entry could not be active.
+  EXPECT_FALSE(!!model()->active_index());
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
+                       TabSpecificPanelIdxChange) {
+  // Collect item indexes for test
+  constexpr auto kGlobalItemType = SidebarItem::BuiltInItemType::kBookmarks;
+  constexpr auto kTabSpecificItemType = SidebarItem::BuiltInItemType::kChatUI;
+  auto global_item_index = model()->GetIndexOf(kGlobalItemType);
+  ASSERT_TRUE(global_item_index.has_value());
+  auto tab_specific_item_index = model()->GetIndexOf(kTabSpecificItemType);
+  ASSERT_TRUE(tab_specific_item_index.has_value());
+  // Open 2 more tabs
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_EQ(tab_model()->GetTabCount(), 3);
+  // Open a "global" panel from Tab 0
+  tab_model()->ActivateTabAt(0);
+  SimulateSidebarItemClickAt(global_item_index.value());
+  // Open a "tab specific" panel from Tab 1
+  tab_model()->ActivateTabAt(1);
+  SimulateSidebarItemClickAt(tab_specific_item_index.value());
+  // Move global item
+  size_t new_global_item_index = (global_item_index > 0u) ? 0u : 1u;
+  SidebarServiceFactory::GetForProfile(browser()->profile())
+      ->MoveItem(global_item_index.value(), new_global_item_index);
+  tab_specific_item_index = model()->GetIndexOf(kTabSpecificItemType);
+  // Tab Specific panel should be open when Tab 1 is active
+  EXPECT_EQ(model()->active_index(), tab_specific_item_index);
+  // Global panel should be open when Tab 0 is active
+  tab_model()->ActivateTabAt(0);
+  EXPECT_EQ(model()->active_index(), new_global_item_index);
+  // Global panel should be open when Tab 2 is active
+  tab_model()->ActivateTabAt(2);
+  EXPECT_EQ(model()->active_index(), new_global_item_index);
+}
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
 class SidebarBrowserTestWithVerticalTabs : public SidebarBrowserTest {
  public:
   SidebarBrowserTestWithVerticalTabs() {
@@ -405,27 +806,23 @@ class SidebarBrowserTestWithVerticalTabs : public SidebarBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithVerticalTabs,
                        SidebarRightSideTest) {
-  // Sidebar is on left by default
-  EXPECT_TRUE(IsSidebarUIOnLeft());
+  // Sidebar is on right by default
+  EXPECT_FALSE(IsSidebarUIOnLeft());
 
   brave::ToggleVerticalTabStrip(browser());
   ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
 
   auto* prefs = browser()->profile()->GetPrefs();
-
   auto* vertical_tabs_container = GetVerticalTabsContainer();
   auto* sidebar_container =
       static_cast<SidebarContainerView*>(controller()->sidebar());
-
-  // Sidebar will be moved to the right when enabling vertical tab strip.
-  EXPECT_FALSE(IsSidebarUIOnLeft());
 
   // Check if vertical tabs is located at first and sidebar is located on the
   // right side.
   EXPECT_LT(vertical_tabs_container->GetBoundsInScreen().x(),
             sidebar_container->GetBoundsInScreen().x());
 
-  // Changed to sidebar on left side again.
+  // Changed to sidebar on left side.
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
   EXPECT_TRUE(IsSidebarUIOnLeft());
 

@@ -5,12 +5,12 @@
 
 #include "brave/ios/browser/api/web/web_state/web_state_native.h"
 
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/main/browser.h"
 #include "ios/chrome/browser/sessions/ios_chrome_session_tab_helper.h"
+#include "ios/chrome/browser/shared/model/browser/browser.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
+#include "ios/chrome/browser/shared/model/web_state_list/web_state_opener.h"
 #include "ios/chrome/browser/tabs/synced_window_delegate_browser_agent.h"
-#include "ios/chrome/browser/web_state_list/web_state_list.h"
-#include "ios/chrome/browser/web_state_list/web_state_opener.h"
 
 #include "ios/web/public/session/crw_navigation_item_storage.h"
 #include "ios/web/public/session/crw_session_storage.h"
@@ -115,6 +115,7 @@ class NavigationDelegate : public web::NavigationManagerDelegate {
 
   void RemoveWebView() override;
   web::NavigationItemImpl* GetPendingItem() override;
+  GURL GetCurrentURL() const override;
 
  private:
   web::WebState* web_state_;
@@ -181,6 +182,10 @@ void NavigationDelegate::RemoveWebView() {
   // Not needed on iOS
 }
 
+GURL NavigationDelegate::GetCurrentURL() const {
+  return GURL();
+}
+
 #pragma mark NativeWebState
 
 NativeWebState::NativeWebState(Browser* browser, bool off_the_record)
@@ -201,6 +206,7 @@ NativeWebState::NativeWebState(Browser* browser, bool off_the_record)
 
   CRWSessionStorage* session_storage = [[CRWSessionStorage alloc] init];
   session_storage.stableIdentifier = [[NSUUID UUID] UUIDString];
+  session_storage.uniqueIdentifier = SessionID::NewUnique();
   session_storage.itemStorages = [item_storages copy];
   session_storage.userAgentType = web::UserAgentType::MOBILE;
 

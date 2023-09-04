@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 import { EntityId } from '@reduxjs/toolkit'
 import { Checkbox, Select } from 'brave-ui/components'
 import {
@@ -25,11 +24,14 @@ import {
   HardwareWalletDerivationPathsMapping,
   SolHardwareWalletDerivationPathLocaleMapping
 } from './types'
-import { FilecoinNetwork, SolDerivationPaths } from '../../../../../common/hardware/types'
-import { BraveWallet, WalletAccountType, CreateAccountOptionsType } from '../../../../../constants/types'
+import { SolDerivationPaths } from '../../../../../common/hardware/types'
+import {
+  BraveWallet,
+  FilecoinNetwork
+} from '../../../../../constants/types'
 import { getLocale } from '../../../../../../common/locale'
-import { NavButton } from '../../../../extension'
-import { SearchBar } from '../../../../shared'
+import { NavButton } from '../../../../extension/buttons/nav-button/index'
+import { SearchBar } from '../../../../shared/search-bar/index'
 import { NetworkFilterSelector } from '../../../network-filter-selector'
 import { DisclaimerText } from '../style'
 import { Skeleton } from '../../../../shared/loading-skeleton/styles'
@@ -38,9 +40,10 @@ import { Skeleton } from '../../../../shared/loading-skeleton/styles'
 import { reduceAddress } from '../../../../../utils/reduce-address'
 import Amount from '../../../../../utils/amount'
 import {
-  useGetAccountTokenCurrentBalanceQuery,
+  useGetHardwareAccountDiscoveryBalanceQuery,
   useGetNetworksRegistryQuery
 } from '../../../../../common/slices/api.slice'
+import { useAddressOrb } from '../../../../../common/hooks/use-orb'
 import { makeNetworkAsset } from '../../../../../options/asset-options'
 import {
   networkEntityAdapter
@@ -49,7 +52,7 @@ import {
 interface Props {
   hardwareWallet: string
   accounts: BraveWallet.HardwareWalletAccount[]
-  preAddedHardwareWalletAccounts: WalletAccountType[]
+  preAddedHardwareWalletAccounts: BraveWallet.AccountInfo[]
   onLoadMore: () => void
   selectedDerivationPaths: string[]
   setSelectedDerivationPaths: (paths: string[]) => void
@@ -58,7 +61,7 @@ interface Props {
   onAddAccounts: () => void
   filecoinNetwork: FilecoinNetwork
   onChangeFilecoinNetwork: (network: FilecoinNetwork) => void
-  selectedAccountType: CreateAccountOptionsType
+  coin: BraveWallet.CoinType
 }
 
 export const HardwareWalletAccountsList = ({
@@ -73,7 +76,7 @@ export const HardwareWalletAccountsList = ({
   onAddAccounts,
   filecoinNetwork,
   onChangeFilecoinNetwork,
-  selectedAccountType
+  coin
 }: Props) => {
   // queries
   const { data: networksRegistry } = useGetNetworksRegistryQuery()
@@ -84,9 +87,9 @@ export const HardwareWalletAccountsList = ({
   >([])
   const [isLoadingMore, setIsLoadingMore] = React.useState<boolean>(false)
   const [selectedNetworkId, setSelectedNetworkId] = React.useState<EntityId>(
-    selectedAccountType.coin === BraveWallet.CoinType.ETH
+    coin === BraveWallet.CoinType.ETH
       ? BraveWallet.MAINNET_CHAIN_ID
-      : selectedAccountType.coin === BraveWallet.CoinType.SOL
+      : coin === BraveWallet.CoinType.SOL
       ? BraveWallet.SOLANA_MAINNET
       : BraveWallet.FILECOIN_MAINNET
   )
@@ -103,10 +106,10 @@ export const HardwareWalletAccountsList = ({
     if (!networksRegistry) {
       return []
     }
-    return networksRegistry.idsByCoinType[selectedAccountType.coin].map(
+    return networksRegistry.idsByCoinType[coin].map(
       (id) => networksRegistry.entities[id] as BraveWallet.NetworkInfo
     )
-  }, [networksRegistry, selectedAccountType])
+  }, [networksRegistry, coin])
 
   // computed
   const ethDerivationPathsEnum =
@@ -150,11 +153,11 @@ export const HardwareWalletAccountsList = ({
   const onSelectNetwork = React.useCallback(
     (n: BraveWallet.NetworkInfo): void => {
       setSelectedNetworkId(networkEntityAdapter.selectId(n))
-      if (selectedAccountType.coin === BraveWallet.CoinType.FIL) {
+      if (coin === BraveWallet.CoinType.FIL) {
         onChangeFilecoinNetwork(n.chainId as FilecoinNetwork)
       }
     },
-    [selectedAccountType.coin, onChangeFilecoinNetwork]
+    [coin, onChangeFilecoinNetwork]
   )
 
   // effects
@@ -173,9 +176,9 @@ export const HardwareWalletAccountsList = ({
 
     // set network dropdown default value
     setSelectedNetworkId(
-      networksRegistry.idsByCoinType[selectedAccountType.coin][0]
+      networksRegistry.idsByCoinType[coin][0]
     )
-  }, [networksRegistry, selectedAccountType])
+  }, [networksRegistry, coin])
 
   // render
   return (
@@ -187,7 +190,7 @@ export const HardwareWalletAccountsList = ({
             selectedNetwork={networksRegistry?.entities[selectedNetworkId]}
             onSelectNetwork={onSelectNetwork}
           />
-          {selectedAccountType.coin === BraveWallet.CoinType.ETH ? (
+          {coin === BraveWallet.CoinType.ETH ? (
             <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
               {Object.keys(ethDerivationPathsEnum).map((path, index) => {
                 const pathValue = ethDerivationPathsEnum[path]
@@ -200,7 +203,7 @@ export const HardwareWalletAccountsList = ({
               })}
             </Select>
           ) : null}
-          {selectedAccountType.coin === BraveWallet.CoinType.SOL ? (
+          {coin === BraveWallet.CoinType.SOL ? (
             <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
               {Object.keys(solDerivationPathsEnum).map((path, index) => {
                 const pathLocale = solDerivationPathsEnum[path]
@@ -228,15 +231,15 @@ export const HardwareWalletAccountsList = ({
           </LoadingWrapper>
         )}
 
-        {accounts.length > 0 && filteredAccountList?.length === 0 && (
+        {accounts.length > 0 && filteredAccountList.length === 0 && (
           <NoSearchResultText>
             {getLocale('braveWalletConnectHardwareSearchNothingFound')}
           </NoSearchResultText>
         )}
 
-        {accounts.length > 0 && filteredAccountList.length > 0 && (
+        {accountNativeAsset && accounts.length > 0 && filteredAccountList.length > 0 && (
           <>
-            {filteredAccountList?.map((account) => {
+            {filteredAccountList.map((account) => {
               return (
                 <AccountListItem
                   key={account.derivationPath}
@@ -278,8 +281,9 @@ interface AccountListItemProps {
   onSelect: () => void
   selected: boolean
   disabled: boolean
-  balanceAsset?: Pick<
+  balanceAsset: Pick<
     BraveWallet.BlockchainToken,
+    | 'coin'
     | 'chainId'
     | 'contractAddress'
     | 'isErc721'
@@ -299,46 +303,34 @@ function AccountListItem({
 }: AccountListItemProps) {
   // queries
   const { data: balanceResult, isFetching: isLoadingBalance } =
-    useGetAccountTokenCurrentBalanceQuery(
+    useGetHardwareAccountDiscoveryBalanceQuery(
       {
-        account,
-        token: {
-          chainId: balanceAsset?.chainId || '',
-          contractAddress: balanceAsset?.contractAddress || '',
-          isErc721: balanceAsset?.isErc721 || false,
-          isNft: balanceAsset?.isNft || false,
-          tokenId: balanceAsset?.tokenId || ''
-        }
-      },
-      { skip: !balanceAsset }
+        coin: balanceAsset.coin,
+        chainId: balanceAsset.chainId,
+        address: account.address,
+      }
     )
 
   // memos
-  const orb = React.useMemo(() => {
-    return create({
-      seed: account.address.toLowerCase(),
-      size: 8,
-      scale: 16
-    }).toDataURL()
-  }, [account.address])
+  const orb = useAddressOrb(account.address)
 
   const balance = React.useMemo(() => {
     if (
       isLoadingBalance ||
-      !balanceResult?.balance ||
-      balanceAsset?.decimals === undefined
+      !balanceResult ||
+      balanceAsset.decimals === undefined
     ) {
       return undefined
     }
 
-    return new Amount(balanceResult.balance)
+    return new Amount(balanceResult)
       .divideByDecimals(balanceAsset.decimals)
       .formatAsAsset(undefined, balanceAsset.symbol)
   }, [
     isLoadingBalance,
-    balanceResult?.balance,
-    balanceAsset?.decimals,
-    balanceAsset?.symbol
+    balanceResult,
+    balanceAsset.decimals,
+    balanceAsset.symbol
   ])
 
   // render

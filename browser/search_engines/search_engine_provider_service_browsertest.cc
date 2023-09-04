@@ -64,7 +64,7 @@ testing::AssertionResult VerifyTemplateURLServiceLoad(
 
 // An observer that returns back to test code after a new profile is
 // initialized.
-void OnProfileCreation(base::RunLoop* run_loop, Profile* profile) {
+void OnProfileCreation(base::RunLoop* run_loop, Browser* browser) {
   run_loop->Quit();
 }
 
@@ -163,6 +163,11 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   Profile* profile = browser()->profile();
   Profile* incognito_profile =
       profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
+
+  // Need to wait as
+  // PrivateWindowSearchEngineProviderServiceBase::Initialize() is
+  // run as posted task.
+  base::RunLoop().RunUntilIdle();
 
   auto* service = TemplateURLServiceFactory::GetForProfile(profile);
   EXPECT_TRUE(VerifyTemplateURLServiceLoad(service));
@@ -309,6 +314,11 @@ IN_PROC_BROWSER_TEST_F(ExtensionBrowserTest,
 
   Profile* incognito_profile =
       profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true);
+
+  // Need to wait as
+  // PrivateWindowSearchEngineProviderServiceBase::Initialize() is
+  // run as posted task.
+  base::RunLoop().RunUntilIdle();
 
   auto* incognito_url_service =
       TemplateURLServiceFactory::GetForProfile(incognito_profile);

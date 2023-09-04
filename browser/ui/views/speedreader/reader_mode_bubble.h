@@ -21,14 +21,13 @@ class Event;
 
 namespace views {
 class View;
-class Label;
-class StyledLabel;
+class ToggleButton;
 }  // namespace views
 
 namespace speedreader {
 
-class ReaderButton;
 class SpeedreaderTabHelper;
+class SpeedreaderService;
 
 // ReaderModeBubble is shown when Speedreader is not enabled, but the user has
 // chosen to distill a single page. The Speedreader service runs in one-shot
@@ -57,14 +56,13 @@ class ReaderModeBubble : public SpeedreaderBubbleView,
   // views::View
   gfx::Size CalculatePreferredSize() const override;
 
-  void OnButtonPressed(const ui::Event& event);
-  void OnLinkClicked(const ui::Event& event);
+  SpeedreaderService* GetSpeedreaderService();
+  void OnSiteToggled(const ui::Event& event);
+  void OnAllSitesToggled(const ui::Event& event);
 
   raw_ptr<SpeedreaderTabHelper> tab_helper_ = nullptr;
-
-  raw_ptr<views::Label> heading_label_ = nullptr;
-  raw_ptr<views::StyledLabel> global_toggle_label_ = nullptr;
-  raw_ptr<ReaderButton> enable_speedreader_button_ = nullptr;
+  raw_ptr<views::ToggleButton> site_toggle_ = nullptr;
+  raw_ptr<views::ToggleButton> all_sites_toggle_ = nullptr;
 };
 
 }  // namespace speedreader

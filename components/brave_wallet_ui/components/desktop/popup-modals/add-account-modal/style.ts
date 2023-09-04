@@ -14,6 +14,7 @@ export const StyledWrapper = styled.div`
   width: 100%;
   padding: 0px 15px 15px 15px;
   min-height: 320px;
+  height: 100%;
 `
 
 export const Input = styled.input`

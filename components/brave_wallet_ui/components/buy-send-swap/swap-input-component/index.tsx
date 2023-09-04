@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { useSelector } from 'react-redux'
+
+// Types
 import {
   BraveWallet,
   OrderTypes,
@@ -12,18 +13,30 @@ import {
   SwapValidationErrorType,
   AmountPresetTypes,
   DefaultCurrencies,
-  WalletState
 } from '../../../constants/types'
+
+// Options
 import { AmountPresetOptions } from '../../../options/amount-preset-options'
 import { SlippagePresetOptions } from '../../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../../options/expiration-preset-options'
-import { getLocale } from '../../../../common/locale'
-import { withPlaceholderIcon, Tooltip } from '../../shared'
 
 // Utils
+import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { CurrencySymbols } from '../../../utils/currency-symbols'
 import Amount from '../../../utils/amount'
+import { WalletSelectors } from '../../../common/selectors'
+
+// Hooks
+import {
+  useUnsafeWalletSelector //
+} from '../../../common/hooks/use-safe-selector'
+
+// Components
+import {
+  withPlaceholderIcon //
+} from '../../shared/create-placeholder-icon/index'
+import { Tooltip } from '../../shared/tooltip/index'
 
 // Styled Components
 import {
@@ -53,6 +66,7 @@ import {
 
 import { BubbleContainer } from '../shared-styles'
 
+
 export type BuySendSwapInputType =
   | 'toAmount'
   | 'fromAmount'
@@ -80,6 +94,7 @@ export interface Props {
   customSlippageTolerance?: string
   defaultCurrencies?: DefaultCurrencies
   selectedPreset?: AmountPresetTypes | undefined
+  isV2?: boolean
   onCustomSlippageToleranceChange?: (value: string) => void
   onInputChange?: (value: string, name: string) => void
   onSelectPresetAmount?: (percent: number) => void
@@ -90,6 +105,20 @@ export interface Props {
   onRefresh?: () => void
   onPaste?: () => void
   onShowCurrencySelection?: () => void
+}
+
+const onClickLearnMore = () => {
+  chrome.tabs.create(
+    { url: 'https://support.brave.com/hc/en-us/articles/4441999049101' },
+    () => {
+      if (chrome.runtime.lastError) {
+        console.error(
+          'tabs.create failed: ' + //
+            chrome.runtime.lastError.message
+        )
+      }
+    }
+  )
 }
 
 function SwapInputComponent (props: Props) {
@@ -111,6 +140,7 @@ function SwapInputComponent (props: Props) {
     validationError,
     customSlippageTolerance,
     selectedPreset,
+    isV2,
     onCustomSlippageToleranceChange,
     onInputChange,
     onPaste,
@@ -126,11 +156,12 @@ function SwapInputComponent (props: Props) {
   const [showSlippageWarning, setShowSlippageWarning] = React.useState<boolean>(false)
 
   // redux
-  const {
-    selectedCurrency: reduxSelectedCurrency,
-    onRampCurrencies: currencies
-  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+  const reduxSelectedCurrency = useUnsafeWalletSelector(
+    WalletSelectors.selectedCurrency
+  )
+  const currencies = useUnsafeWalletSelector(WalletSelectors.onRampCurrencies)
 
+  // methods
   const toggleExpandSelector = () => {
     setExpandSelector(!expandSelector)
   }
@@ -173,7 +204,7 @@ function SwapInputComponent (props: Props) {
           return getLocale('braveWalletSwapTo')
         }
       case 'buyAmount':
-        return getLocale('braveWalletBuy')
+        return ''
       case 'exchange':
         if (orderType === 'market') {
           return `${getLocale('braveWalletSwapMarket')} ${getLocale('braveWalletSwapPriceIn')} ${selectedAsset?.symbol}`
@@ -196,19 +227,6 @@ function SwapInputComponent (props: Props) {
       onInputChange(event.target.value, event.target.name)
     }
   }
-
-  React.useMemo(() => {
-    // Show Warning if slippage is to high
-    if (Number(customSlippageTolerance) >= 6) {
-      setShowSlippageWarning(true)
-      return
-    }
-    setShowSlippageWarning(false)
-  }, [customSlippageTolerance])
-
-  const selectedCurrency = React.useMemo(() => {
-    return reduxSelectedCurrency || currencies[0]
-  }, [reduxSelectedCurrency, currencies])
 
   const handleCustomSlippageToleranceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onCustomSlippageToleranceChange) {
@@ -240,6 +258,20 @@ function SwapInputComponent (props: Props) {
       : symbol
   }
 
+  // memos & computed
+  React.useMemo(() => {
+    // Show Warning if slippage is to high
+    if (Number(customSlippageTolerance) >= 6) {
+      setShowSlippageWarning(true)
+      return
+    }
+    setShowSlippageWarning(false)
+  }, [customSlippageTolerance])
+
+  const selectedCurrency = React.useMemo(() => {
+    return reduxSelectedCurrency || currencies[0]
+  }, [reduxSelectedCurrency, currencies])
+
   const fromAmountHasErrors = validationError && [
     'insufficientBalance',
     'insufficientFundsForGas',
@@ -260,14 +292,6 @@ function SwapInputComponent (props: Props) {
       .format(6, true)
     : ''
 
-  const onClickLearnMore = () => {
-    chrome.tabs.create({ url: 'https://support.brave.com/hc/en-us/articles/4441999049101' }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-      }
-    })
-  }
-
   const placeholderText = React.useMemo((): string => {
     return componentType === 'toAddress'
       ? selectedNetwork?.coin === BraveWallet.CoinType.ETH
@@ -276,8 +300,9 @@ function SwapInputComponent (props: Props) {
       : '0'
   }, [selectedNetwork, componentType])
 
+  // render
   return (
-    <BubbleContainer>
+    <BubbleContainer isV2={isV2}>
       {componentType !== 'selector' &&
         <>
           {!(selectedAsset?.isErc721 || selectedAsset?.isNft) &&
@@ -302,8 +327,13 @@ function SwapInputComponent (props: Props) {
           <Row componentType={componentType}>
             {componentType === 'buyAmount' &&
               <AssetButton onClick={onShowCurrencySelection}>
-                <AssetTicker>{CurrencySymbols[selectedCurrency?.currencyCode]}</AssetTicker>
-                <CaratDownIcon />
+                <AssetTicker
+                  isV2={isV2}
+                  role='currency'
+                >
+                  {CurrencySymbols[selectedCurrency?.currencyCode]}
+                </AssetTicker>
+                <CaratDownIcon name='carat-down' />
                 <Spacer />
               </AssetButton>
             }
@@ -326,6 +356,7 @@ function SwapInputComponent (props: Props) {
                   (selectedNetwork?.chainId === BraveWallet.SOLANA_MAINNET && componentType === 'toAmount')
                 }
                 autoFocus={autoFocus}
+                isV2={isV2}
               />
             }
             {componentType === 'exchange' && orderType === 'market' &&
@@ -340,7 +371,10 @@ function SwapInputComponent (props: Props) {
               <AssetButton isERC721={(selectedAsset?.isErc721 || selectedAsset?.isNft)} onClick={onShowSelection}>
                 <ButtonLeftSide>
                   <AssetIconWithPlaceholder asset={selectedAsset} network={selectedNetwork} />
-                  <AssetTicker>
+                  <AssetTicker
+                    isV2={isV2}
+                    role='symbol'
+                  >
                     {getAssetSymbol(selectedAsset?.symbol)} {
                       selectedAsset?.isErc721 && selectedAsset?.tokenId
                         ? '#' + new Amount(selectedAsset.tokenId).toNumber()

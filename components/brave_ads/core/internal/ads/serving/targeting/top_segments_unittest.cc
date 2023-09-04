@@ -17,21 +17,23 @@
 #include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/common/resources/language_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_segments.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
-#include "brave/components/brave_ads/core/internal/processors/contextual/text_classification/text_classification_processor.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/multi_armed_bandits/epsilon_greedy_bandit_resource_util.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
-#include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_segments.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/resource/epsilon_greedy_bandit_resource_util.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_processor.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_processor.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -82,29 +84,6 @@ SegmentList GetSegmentList() {
   return segments;
 }
 
-void ProcessEpsilonGreedyBandit() {
-  const std::vector<EpsilonGreedyBanditFeedbackInfo> feedbacks = {
-      {"science", mojom::NotificationAdEventType::kClicked},
-      {"science", mojom::NotificationAdEventType::kClicked},
-      {"science", mojom::NotificationAdEventType::kClicked},
-      {"travel", mojom::NotificationAdEventType::kDismissed},
-      {"travel", mojom::NotificationAdEventType::kClicked},
-      {"travel", mojom::NotificationAdEventType::kClicked},
-      {"technology & computing", mojom::NotificationAdEventType::kDismissed},
-      {"technology & computing", mojom::NotificationAdEventType::kDismissed},
-      {"technology & computing", mojom::NotificationAdEventType::kClicked}};
-
-  for (const base::StringPiece segment : GetSegments()) {
-    EpsilonGreedyBanditProcessor::Process(
-        {static_cast<std::string>(segment),
-         mojom::NotificationAdEventType::kDismissed});
-  }
-
-  for (const auto& feedback : feedbacks) {
-    EpsilonGreedyBanditProcessor::Process(feedback);
-  }
-}
-
 }  // namespace
 
 class BraveAdsTopSegmentsTest
@@ -114,22 +93,49 @@ class BraveAdsTopSegmentsTest
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    // We always instantitate processors even if features are disabled
     epsilon_greedy_bandit_processor_ =
         std::make_unique<EpsilonGreedyBanditProcessor>();
 
     purchase_intent_resource_ = std::make_unique<PurchaseIntentResource>();
-    purchase_intent_resource_->Load();
+    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                     kCountryComponentId);
     purchase_intent_processor_ =
         std::make_unique<PurchaseIntentProcessor>(*purchase_intent_resource_);
 
     text_classification_resource_ =
         std::make_unique<TextClassificationResource>();
-    text_classification_resource_->Load();
-    task_environment_.RunUntilIdle();
+    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
+                                     kLanguageComponentId);
     text_classification_processor_ =
         std::make_unique<TextClassificationProcessor>(
             *text_classification_resource_);
+
+    NotifyDidInitializeAds();
+
+    task_environment_.RunUntilIdle();
+  }
+
+  void ProcessEpsilonGreedyBandit() {
+    const std::vector<EpsilonGreedyBanditFeedbackInfo> feedbacks = {
+        {"science", mojom::NotificationAdEventType::kClicked},
+        {"science", mojom::NotificationAdEventType::kClicked},
+        {"science", mojom::NotificationAdEventType::kClicked},
+        {"travel", mojom::NotificationAdEventType::kDismissed},
+        {"travel", mojom::NotificationAdEventType::kClicked},
+        {"travel", mojom::NotificationAdEventType::kClicked},
+        {"technology & computing", mojom::NotificationAdEventType::kDismissed},
+        {"technology & computing", mojom::NotificationAdEventType::kDismissed},
+        {"technology & computing", mojom::NotificationAdEventType::kClicked}};
+
+    for (const base::StringPiece segment : GetSegments()) {
+      epsilon_greedy_bandit_processor_->Process(
+          {static_cast<std::string>(segment),
+           mojom::NotificationAdEventType::kDismissed});
+    }
+
+    for (const auto& feedback : feedbacks) {
+      epsilon_greedy_bandit_processor_->Process(feedback);
+    }
   }
 
   void ProcessTextClassification() {

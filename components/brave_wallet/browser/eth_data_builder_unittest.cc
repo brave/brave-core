@@ -8,6 +8,7 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -560,5 +561,21 @@ TEST(EthCallDataBuilderTest, TokensBalance) {
 }
 
 }  // namespace balance_scanner
+
+namespace filforwarder {
+
+TEST(EthCallDataBuilderTest, Forward) {
+  auto data = Forward(
+      FilAddress::FromAddress("f12fopnvzwjwfu3k45sdofngoru6gpokobsbjyl2a"));
+  EXPECT_EQ(
+      data.value(),
+      PrefixedHexStringToBytes(
+          "0xd948d468"
+          "0000000000000000000000000000000000000000000000000000000000000020"
+          "0000000000000000000000000000000000000000000000000000000000000015"
+          "01d15cf6d7364d8b4dab9d90dc5699d1a78cf729c10000000000000000000000"));
+}
+
+}  // namespace filforwarder
 
 }  // namespace brave_wallet

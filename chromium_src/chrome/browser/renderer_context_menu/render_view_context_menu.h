@@ -48,6 +48,7 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   friend class BraveRenderViewContextMenuTest;
   // RenderViewContextMenuBase:
   void InitMenu() override;
+  void NotifyMenuShown() override;
 #if BUILDFLAG(ENABLE_IPFS)
   void SeIpfsIconAt(int index);
   void BuildIPFSMenu();

@@ -15,7 +15,12 @@ import { createMockStore } from '../../utils/test-utils'
 import { WalletActions } from '../../common/actions'
 
 // types
-import { PageState, WalletRoutes, WalletState } from '../../constants/types'
+import {
+  PageState,
+  WalletRoutes,
+  WalletState,
+  UIState
+} from '../../constants/types'
 
 // components
 import { LibContext } from '../../common/context/lib.context'
@@ -23,12 +28,14 @@ import { LibContext } from '../../common/context/lib.context'
 // Mocks
 import * as Lib from '../../common/async/__mocks__/lib'
 import { ApiProxyContext } from '../../common/context/api-proxy.context'
-import { getMockedAPIProxy } from '../../common/async/__mocks__/bridge'
+import { WalletApiDataOverrides, getMockedAPIProxy } from '../../common/async/__mocks__/bridge'
 
 export interface WalletPageStoryProps {
   walletStateOverride?: Partial<WalletState>
   pageStateOverride?: Partial<PageState>
   accountTabStateOverride?: Partial<AccountsTabState>
+  uiStateOverride?: Partial<UIState>
+  apiOverrides?: WalletApiDataOverrides
 }
 
 const mockedProxy = getMockedAPIProxy()
@@ -37,23 +44,30 @@ export const WalletPageStory: React.FC<React.PropsWithChildren<WalletPageStoryPr
   children,
   pageStateOverride,
   walletStateOverride,
-  accountTabStateOverride
+  accountTabStateOverride,
+  uiStateOverride,
+  apiOverrides,
 }) => {
   // redux
   const store = React.useMemo(() => {
-    return createMockStore({
-      accountTabStateOverride,
-      pageStateOverride,
-      walletStateOverride
-    })
+    return createMockStore(
+      {
+        accountTabStateOverride,
+        pageStateOverride,
+        walletStateOverride,
+        uiStateOverride
+      },
+      apiOverrides
+    )
   }, [
     accountTabStateOverride,
     pageStateOverride,
-    walletStateOverride
+    walletStateOverride,
+    uiStateOverride
   ])
 
   React.useEffect(() => {
-    store && store.dispatch(WalletActions.initialize())
+    store && store.dispatch(WalletActions.initialize({}))
   }, [store])
 
   // render

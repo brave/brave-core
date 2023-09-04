@@ -21,5 +21,18 @@ RegisterPolymerTemplateModifications({
           </settings-brave-personalization-options>
         `)
     }
+
+    // searchSugestToggle is moved to search engines section.
+    const searchSuggestToggleTemplate = templateContent.querySelector('template[is="dom-if"][if="[[showSearchSuggestToggle_()]]"]')
+    if (!searchSuggestToggleTemplate) {
+      console.error('[Brave Settings Overrides] Could not find searchSuggestToggle template')
+    } else {
+      const searchSuggestToggle = searchSuggestToggleTemplate.content.getElementById('searchSuggestToggle')
+      if (!searchSuggestToggle) {
+        console.error('[Brave Settings Overrides] Could not find searchSuggestToggle id')
+      } else {
+        searchSuggestToggle.setAttribute('hidden', 'true')
+      }
+    }
   },
 })

@@ -5,35 +5,18 @@
 
 import {
   BraveWallet,
-  Origin,
-  SerializableOrigin,
   SerializableTransactionInfo,
   SlippagePresetObjectType,
-  TransactionProviderError,
-  WalletAccountType
+  TransactionProviderError
 } from '../../constants/types'
 
 export type UnlockWalletPayloadType = {
   password: string
 }
 
-export type ChainChangedEventPayloadType = {
-  chainId: string
-  coin: BraveWallet.CoinType
-  origin?: Origin
-}
-
-export type SelectedAccountChangedPayloadType = {
-  coin: BraveWallet.CoinType
-}
-
 export type IsEip1559Changed = {
   chainId: string
   isEip1559: boolean
-}
-
-export type NewUnapprovedTxAdded = {
-  txInfo: SerializableTransactionInfo
 }
 
 export type UnapprovedTxUpdated = {
@@ -99,19 +82,15 @@ export type DefaultBaseCryptocurrencyChanged = {
 }
 
 export type SitePermissionsPayloadType = {
-  accounts: WalletAccountType[]
+  accounts: BraveWallet.AccountId[]
 }
 
 export type RemoveSitePermissionPayloadType = {
-  coin: BraveWallet.CoinType
-  origin: SerializableOrigin
-  account: string
+  accountId: BraveWallet.AccountId
 }
 
 export type AddSitePermissionPayloadType = {
-  coin: BraveWallet.CoinType
-  origin: SerializableOrigin
-  account: string
+  accountId: BraveWallet.AccountId
 }
 
 export type GetCoinMarketPayload = {
@@ -125,7 +104,7 @@ export type GetCoinMarketsResponse = {
 }
 
 export type SetTransactionProviderErrorType = {
-  transaction: BraveWallet.TransactionInfo
+  transactionId: string
   providerError: TransactionProviderError
 }
 
@@ -133,7 +112,6 @@ export interface RetryTransactionPayload {
   chainId: string
   transactionId: string
   coinType: BraveWallet.CoinType
-  fromAddress: string
 }
 
 export type SpeedupTransactionPayload = RetryTransactionPayload

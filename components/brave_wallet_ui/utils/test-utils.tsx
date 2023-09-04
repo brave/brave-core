@@ -21,10 +21,12 @@ import { createWalletApi } from '../common/slices/api.slice'
 import { createWalletReducer } from '../common/slices/wallet.slice'
 import { createPageReducer } from '../page/reducers/page_reducer'
 import { createUIReducer } from '../common/slices/ui.slice'
+import { createPanelReducer } from '../panel/reducers/panel_reducer'
 
 // mocks
 import {
   getMockedAPIProxy,
+  resetMockedAPIProxy,
   WalletApiDataOverrides
 } from '../common/async/__mocks__/bridge'
 import { mockPageState } from '../stories/mock-data/mock-page-state'
@@ -37,6 +39,24 @@ import {
   mockAccountsTabState //
 } from '../stories/mock-data/mock-accounts-tab-state'
 import { mockUiState } from '../stories/mock-data/mock-ui-state'
+import { mockPanelState } from '../stories/mock-data/mock-panel-state'
+import {
+  resetCache,
+  setApiProxyFetcher
+} from '../common/async/base-query-cache'
+import {
+  setRewardsProxyFetcher
+} from '../common/slices/endpoints/rewards.endpoints'
+import {
+  BraveRewardsProxyOverrides,
+  getMockedBraveRewardsProxy
+} from '../common/async/__mocks__/brave_rewards_api_proxy'
+import {
+  makeBraveWalletServiceObserver,
+  makeJsonRpcServiceObserver,
+  makeKeyringServiceObserver,
+  makeTxServiceObserver
+} from '../common/wallet_api_proxy_observers'
 
 export interface RootStateOverrides {
   accountTabStateOverride?: Partial<AccountsTabState>
@@ -54,17 +74,32 @@ export const createMockStore = (
     uiStateOverride,
     walletStateOverride
   }: RootStateOverrides,
-  apiOverrides?: WalletApiDataOverrides
+  apiOverrides?: WalletApiDataOverrides,
+  rewardsApiOverrides?: BraveRewardsProxyOverrides
 ) => {
-  // api
-  getMockedAPIProxy().applyOverrides(apiOverrides)
-  const api = createWalletApi(getMockedAPIProxy)
+  // api reset
+  resetMockedAPIProxy()
+  resetCache() // clear base query cache
+  const mockedApiProxy = getMockedAPIProxy()
+  const mockedRewardsApiProxy = getMockedBraveRewardsProxy()
+
+  // api overrides
+  mockedApiProxy.applyOverrides(apiOverrides)
+  mockedRewardsApiProxy.applyOverrides(rewardsApiOverrides)
+
+  setApiProxyFetcher(getMockedAPIProxy)
+  setRewardsProxyFetcher(getMockedBraveRewardsProxy)
+  const api = createWalletApi()
   // redux
   const store = configureStore({
     reducer: {
       wallet: createWalletReducer({
         ...mockWalletState,
         ...(walletStateOverride || {})
+      }),
+      panel: createPanelReducer({
+        ...mockPanelState,
+        ...(panelStateOverride ?? {})
       }),
       page: createPageReducer({
         ...mockPageState,
@@ -86,11 +121,11 @@ export const createMockStore = (
   })
 
   const proxy = getMockedAPIProxy()
-  proxy?.addJsonRpcServiceObserver?.(store)
-  proxy?.addKeyringServiceObserver?.(store)
-  proxy?.addTxServiceObserver?.(store)
-  proxy?.addBraveWalletServiceObserver?.(store)
-  store.dispatch(WalletActions.initialize())
+  proxy?.addJsonRpcServiceObserver?.(makeJsonRpcServiceObserver(store))
+  proxy?.addKeyringServiceObserver?.(makeKeyringServiceObserver(store))
+  proxy?.addTxServiceObserver?.(makeTxServiceObserver(store))
+  proxy?.addBraveWalletServiceObserver?.(makeBraveWalletServiceObserver(store))
+  store.dispatch(WalletActions.initialize({}))
 
   return store
 }

@@ -8,17 +8,20 @@
 #include <string>
 #include <vector>
 
-#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
-#include "brave/components/brave_wallet/common/fil_address.h"
 
 namespace brave_wallet {
 
 FilTxMeta::FilTxMeta() : tx_(std::make_unique<FilTransaction>()) {}
-FilTxMeta::FilTxMeta(std::unique_ptr<FilTransaction> tx) : tx_(std::move(tx)) {}
+FilTxMeta::FilTxMeta(const mojom::AccountIdPtr& from,
+                     std::unique_ptr<FilTransaction> tx)
+    : tx_(std::move(tx)) {
+  DCHECK_EQ(from->coin, mojom::CoinType::FIL);
+  set_from(std::move(from));
+}
 
 FilTxMeta::~FilTxMeta() = default;
 
@@ -34,7 +37,7 @@ base::Value::Dict FilTxMeta::ToValue() const {
 
 mojom::TransactionInfoPtr FilTxMeta::ToTransactionInfo() const {
   return mojom::TransactionInfo::New(
-      id_, from_, tx_hash_,
+      id_, from_->address, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewFilTxData(tx_->ToFilTxData()), status_,
       mojom::TransactionType::Other, std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,
@@ -42,7 +45,7 @@ mojom::TransactionInfoPtr FilTxMeta::ToTransactionInfo() const {
       base::Milliseconds(submitted_time_.ToJavaTime()),
       base::Milliseconds(confirmed_time_.ToJavaTime()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, group_id_,
-      chain_id_);
+      chain_id_, tx_->ToFilTxData()->to);
 }
 
 }  // namespace brave_wallet

@@ -45,16 +45,6 @@ void CookieListOptInService::Bind(
   receivers_.Add(this, std::move(receiver));
 }
 
-void CookieListOptInService::ShouldShowDialog(
-    ShouldShowDialogCallback callback) {
-  bool should_show_dialog =
-      base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveAdblockCookieListOptIn) &&
-      ad_block_service_->regional_service_manager()->IsFilterListAvailable(
-          brave_shields::kCookieListUuid);
-  std::move(callback).Run(should_show_dialog);
-}
-
 void CookieListOptInService::OnTooltipShown() {
   local_state_->SetBoolean(prefs::kAdBlockCookieListOptInShown, true);
   base::UmaHistogramExactLinear(kCookieListPromptHistogram, 1, 4);

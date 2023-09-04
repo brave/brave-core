@@ -4,15 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import {
-  useSelector
-} from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Proxies
 import getWalletPanelApiProxy from '../../../panel/wallet_panel_api_proxy'
 
 // Components
-import { create, background } from 'ethereum-blockies'
+import { background } from 'ethereum-blockies'
 import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
 
 // Utils
@@ -20,26 +18,47 @@ import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import Amount from '../../../utils/amount'
-import { deserializeOrigin } from '../../../utils/model-serialization-utils'
+import { makeNetworkAsset } from '../../../options/asset-options'
+import { getPriceIdForToken } from '../../../utils/api-utils'
+import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
+import { WalletSelectors } from '../../../common/selectors'
+import { getBalance } from '../../../utils/balance-utils'
 
 // Hooks
-import { useExplorer, usePricing } from '../../../common/hooks'
-import { useGetSelectedChainQuery } from '../../../common/slices/api.slice'
+import { useExplorer } from '../../../common/hooks/explorer'
+import {
+  useGetDefaultFiatCurrencyQuery,
+  useGetSelectedChainQuery,
+  useGetTokenSpotPricesQuery
+} from '../../../common/slices/api.slice'
+import {
+  querySubscriptionOptions60s
+} from '../../../common/slices/constants'
+import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
 import { useApiProxy } from '../../../common/hooks/use-api-proxy'
+import {
+  useScopedBalanceUpdater
+} from '../../../common/hooks/use-scoped-balance-updater'
+import {
+  useUnsafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
+import { useAccountOrb } from '../../../common/hooks/use-orb'
 
 // types
 import {
   PanelTypes,
   BraveWallet,
-  WalletState,
   WalletOrigin
 } from '../../../constants/types'
 
 // Components
 import {
   ConnectedHeader
-} from '../'
-import { SelectNetworkButton, LoadingSkeleton } from '../../shared'
+} from '../connected-header/index'
+import {
+  SelectNetworkButton //
+} from '../../shared/select-network-button/select-network-button'
+import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 import { PanelBottomNav } from '../panel-bottom-nav/panel-bottom-nav'
 
 // Styled Components
@@ -63,7 +82,7 @@ import {
 
 import { VerticalSpacer } from '../../shared/style'
 
-export interface Props {
+interface Props {
   navAction: (path: PanelTypes) => void
 }
 
@@ -72,17 +91,52 @@ export const ConnectedPanel = (props: Props) => {
     navAction
   } = props
 
-  const {
-    defaultCurrencies,
-    transactionSpotPrices: spotPrices,
-    activeOrigin: originInfo,
-    selectedAccount,
-    connectedAccounts
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const originInfo = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
+  const connectedAccounts = useUnsafeWalletSelector(
+    WalletSelectors.connectedAccounts
+  )
 
   // queries
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { currentData: selectedNetwork } = useGetSelectedChainQuery(undefined)
   const selectedCoin = selectedNetwork?.coin
+  const { data: selectedAccount } = useSelectedAccountQuery()
+
+  const networkAsset = React.useMemo(() =>
+    makeNetworkAsset(selectedNetwork),
+    [selectedNetwork]
+  )
+
+  const {
+    data: tokenBalancesRegistry,
+    isLoading: isLoadingBalances,
+    isFetching: isFetchingBalances
+  } = useScopedBalanceUpdater(
+    selectedNetwork && selectedAccount && networkAsset
+      ? {
+          network: selectedNetwork,
+          accounts: [selectedAccount],
+          tokens: [networkAsset]
+        }
+      : skipToken
+    )
+
+  const networkTokenPriceIds = React.useMemo(() =>
+    networkAsset
+      ? [getPriceIdForToken(networkAsset)]
+      : [],
+    [networkAsset]
+  )
+
+  const {
+    data: spotPriceRegistry,
+    isLoading: isLoadingSpotPrices
+  } = useGetTokenSpotPricesQuery(
+    networkTokenPriceIds.length && defaultFiatCurrency
+      ? { ids: networkTokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
+    querySubscriptionOptions60s
+  )
 
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
@@ -90,12 +144,12 @@ export const ConnectedPanel = (props: Props) => {
   const [isPermissionDenied, setIsPermissionDenied] = React.useState<boolean>(false)
 
   // computed
+  // TODO(apaymyshev): handle bitcoin address
   const selectedAccountAddress = selectedAccount?.address || ''
   const selectedAccountName = selectedAccount?.name || ''
 
   // custom hooks
   const { braveWalletService } = useApiProxy()
-  const { computeFiatAmount } = usePricing(spotPrices)
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
   // methods
@@ -134,7 +188,7 @@ export const ConnectedPanel = (props: Props) => {
 
     if (selectedCoin) {
       (async () => {
-        await braveWalletService.isPermissionDenied(selectedCoin, deserializeOrigin(originInfo.origin))
+        await braveWalletService.isPermissionDenied(selectedCoin)
           .then(result => {
             if (subscribed) {
               setIsPermissionDenied(result.denied)
@@ -147,7 +201,9 @@ export const ConnectedPanel = (props: Props) => {
     return () => {
       subscribed = false
     }
-  }, [braveWalletService, selectedCoin, originInfo.origin])
+    // Keep dependency on originInfo. When braveWalletService.isPermissionDenied
+    // is moved to api slice it's cached value should be reset on activeOriginChanged event.
+  }, [braveWalletService, selectedCoin, originInfo])
 
   React.useEffect(() => {
     let subscribed = true
@@ -175,34 +231,68 @@ export const ConnectedPanel = (props: Props) => {
     return background({ seed: selectedAccountAddress.toLowerCase() })
   }, [selectedAccountAddress])
 
-  const orb = React.useMemo(() => {
-    return create({ seed: selectedAccountAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [selectedAccountAddress])
+  const orb = useAccountOrb(selectedAccount)
 
-  const selectedAccountFiatBalance = React.useMemo(() => {
-    if (!selectedNetwork || !selectedAccount) {
+  const selectedAccountBalance = React.useMemo(() => {
+    if (
+      !tokenBalancesRegistry ||
+      !networkAsset ||
+      !selectedAccount ||
+      isLoadingBalances ||
+      isFetchingBalances
+    ) {
       return Amount.empty()
     }
 
-    return computeFiatAmount(
-      selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId],
-      selectedNetwork.symbol,
-      selectedNetwork.decimals,
-      '',
-      selectedNetwork.chainId
+    const balance = getBalance(
+      selectedAccount.accountId,
+      networkAsset,
+      tokenBalancesRegistry
     )
-  }, [computeFiatAmount, selectedNetwork, selectedAccount])
+
+    return new Amount(balance).divideByDecimals(networkAsset.decimals)
+  }, [
+    tokenBalancesRegistry,
+    networkAsset,
+    selectedAccount,
+    isLoadingBalances,
+    isFetchingBalances
+  ])
+
+  const selectedAccountFiatBalance = React.useMemo(() => {
+    if (
+      selectedAccountBalance.isUndefined() ||
+      !networkAsset ||
+      !spotPriceRegistry ||
+      isLoadingSpotPrices
+    ) {
+      return Amount.empty()
+    }
+
+    return selectedAccountBalance
+      .times(getTokenPriceAmountFromRegistry(spotPriceRegistry, networkAsset))
+  }, [
+    selectedAccountBalance,
+    networkAsset,
+    spotPriceRegistry,
+    isLoadingSpotPrices
+  ])
 
   const isConnected = React.useMemo((): boolean => {
+    if (!selectedAccount) {
+      return false
+    }
     if (selectedCoin === BraveWallet.CoinType.SOL) {
       return isSolanaConnected
     }
     if (originInfo.originSpec === WalletOrigin) {
       return true
     } else {
-      return connectedAccounts.some(account => account.address === selectedAccountAddress)
+      return connectedAccounts.some(
+        (accountId) => accountId.uniqueKey === selectedAccount.accountId.uniqueKey
+      )
     }
-  }, [connectedAccounts, selectedAccountAddress, originInfo, selectedCoin, isSolanaConnected])
+  }, [connectedAccounts, selectedAccount, originInfo, selectedCoin, isSolanaConnected])
 
   const connectedStatusText = React.useMemo((): string => {
     if (isPermissionDenied) {
@@ -225,15 +315,26 @@ export const ConnectedPanel = (props: Props) => {
     if (selectedCoin === BraveWallet.CoinType.SOL) {
       return connectedAccounts.length !== 0
     }
-    return originInfo?.origin?.scheme !== 'chrome'
+    if (!originInfo)
+      return false
+
+    return !originInfo.originSpec.startsWith('chrome')
   }, [selectedCoin, connectedAccounts, originInfo, isPermissionDenied])
 
   // computed
-  const formattedAssetBalance = selectedNetwork && selectedAccount
-    ? new Amount(selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId] ?? '')
-      .divideByDecimals(selectedNetwork.decimals)
-      .formatAsAsset(6, selectedNetwork.symbol)
-    : ''
+  const formattedAssetBalance = React.useMemo(() => {
+    if (
+      selectedAccountBalance.isUndefined() ||
+      !networkAsset
+    ) {
+      return ''
+    }
+
+    return selectedAccountBalance.formatAsAsset(6, networkAsset.symbol)
+  }, [
+    selectedAccountBalance,
+    networkAsset
+  ])
 
   // render
   return (
@@ -295,7 +396,7 @@ export const ConnectedPanel = (props: Props) => {
           )}
           {!selectedAccountFiatBalance.isUndefined() ? (
             <FiatBalanceText>
-              {selectedAccountFiatBalance.formatAsFiat(defaultCurrencies.fiat)}
+              {selectedAccountFiatBalance.formatAsFiat(defaultFiatCurrency)}
             </FiatBalanceText>
           ) : (
             <LoadingSkeleton useLightTheme={true} width={80} height={20} />

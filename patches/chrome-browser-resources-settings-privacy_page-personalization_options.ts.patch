@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index 5c55e5518ba3087448b8333ae5c906fc14e0ac11..17e94c8eabe1a208fb60f1461d414952491e25a8 100644
+index 7be2ad2e49fe5544c8534f3f108f1ec8752e7b5d..60130b6f217597ee3a7cc8608dac63bff82c1ae7 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-@@ -69,7 +69,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -71,7 +71,7 @@ export class SettingsPersonalizationOptionsElement extends
  
        syncStatus: Object,
  
@@ -11,7 +11,7 @@ index 5c55e5518ba3087448b8333ae5c906fc14e0ac11..17e94c8eabe1a208fb60f1461d414952
        // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
        // (but handled differently in C++).
        metricsReportingPref_: {
-@@ -104,7 +104,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -106,7 +106,7 @@ export class SettingsPersonalizationOptionsElement extends
    pageVisibility: PrivacyPageVisibility;
    syncStatus: SyncStatus;
  
@@ -20,7 +20,7 @@ index 5c55e5518ba3087448b8333ae5c906fc14e0ac11..17e94c8eabe1a208fb60f1461d414952
    private metricsReportingPref_: chrome.settingsPrivate.PrefObject<boolean>;
    private showRestart_: boolean;
    // </if>
-@@ -137,7 +137,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -139,7 +139,7 @@ export class SettingsPersonalizationOptionsElement extends
    override ready() {
      super.ready();
  
@@ -29,7 +29,7 @@ index 5c55e5518ba3087448b8333ae5c906fc14e0ac11..17e94c8eabe1a208fb60f1461d414952
      const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
          this.setMetricsReportingPref_(metricsReporting);
      this.addWebUiListener('metrics-reporting-change', setMetricsReportingPref);
-@@ -171,7 +171,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -173,7 +173,7 @@ export class SettingsPersonalizationOptionsElement extends
    }
    // </if>
  

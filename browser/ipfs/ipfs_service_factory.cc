@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ipfs/ipfs_blob_context_getter_factory.h"
@@ -49,7 +50,8 @@ namespace ipfs {
 
 // static
 IpfsServiceFactory* IpfsServiceFactory::GetInstance() {
-  return base::Singleton<IpfsServiceFactory>::get();
+  static base::NoDestructor<IpfsServiceFactory> instance;
+  return instance.get();
 }
 
 // static

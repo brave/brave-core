@@ -30,8 +30,11 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
+import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
@@ -40,7 +43,9 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import java.util.concurrent.Executor;
 
 public class BackupWalletFragment extends CryptoOnboardingFragment {
-    private boolean mOnboardingLayout;
+    private static final String IS_ONBOARDING_ARG = "isOnboarding";
+
+    private boolean mIsOnboarding;
     private TextView mBackupWalletTitle;
     private EditText mBackupWalletPassword;
     private ImageView mBiometricBackupWalletImage;
@@ -59,11 +64,29 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
         return null;
     }
 
+    private BraveWalletP3a getBraveWalletP3A() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getBraveWalletP3A();
+        }
+
+        return null;
+    }
+
+    public static BackupWalletFragment newInstance(boolean isOnboarding) {
+        BackupWalletFragment fragment = new BackupWalletFragment();
+
+        Bundle args = new Bundle();
+        args.putBoolean(IS_ONBOARDING_ARG, isOnboarding);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mOnboardingLayout = Utils.shouldShowCryptoOnboarding();
-
+        mIsOnboarding = getArguments().getBoolean(IS_ONBOARDING_ARG, false);
         return inflater.inflate(R.layout.fragment_backup_wallet, container, false);
     }
 
@@ -81,9 +104,10 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
 
         mBackupWalletPassword.addTextChangedListener(new FilterTextWatcherPassword());
         mBackupWalletButton.setOnClickListener(v -> {
-            if (mOnboardingLayout) {
+            BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+            if (mIsOnboarding) {
                 onNextPage.gotoNextPage(false);
-
+                braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
                 return;
             }
             KeyringService keyringService = getKeyringService();
@@ -104,7 +128,7 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
             }
         });
         mBackupWalletCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (!mOnboardingLayout && !mBiometricExecuted
+            if (!mIsOnboarding && !mBiometricExecuted
                     && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
                     && Utils.isBiometricAvailable(getContext())
                     && KeystoreHelper.shouldUseBiometricOnUnlock()) {
@@ -115,7 +139,13 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
             enableDisableContinueButton(isChecked);
         });
         TextView backupWalletSkipButton = view.findViewById(R.id.btn_backup_wallet_skip);
-        backupWalletSkipButton.setOnClickListener(v -> onNextPage.gotoNextPage(true));
+        backupWalletSkipButton.setOnClickListener(v -> {
+            BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+            if (braveWalletP3A != null && mIsOnboarding) {
+                braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
+            }
+            onNextPage.gotoNextPage(true);
+        });
         mBiometricBackupWalletImage.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
                     && Utils.isBiometricAvailable(getContext())) {
@@ -137,7 +167,7 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
     }
 
     private void showPasswordRelatedControls(boolean show) {
-        if (mOnboardingLayout) return;
+        if (mIsOnboarding) return;
 
         int visibility = show ? View.VISIBLE : View.GONE;
         mBackupWalletTitle.setVisibility(visibility);
@@ -151,7 +181,7 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
 
     private void enableDisableContinueButton(boolean isChecked) {
         if (isChecked
-                && (mOnboardingLayout || !TextUtils.isEmpty(mBackupWalletPassword.getText())
+                && (mIsOnboarding || !TextUtils.isEmpty(mBackupWalletPassword.getText())
                         || !mPasswordFromBiometric.isEmpty())) {
             mBackupWalletButton.setEnabled(true);
             mBackupWalletButton.setAlpha(1.0f);

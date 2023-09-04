@@ -13,7 +13,12 @@
 -All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_SaveStateToDB
 -All/DiceWebSigninInterceptorWithManagedDisclaimerForSyncPromoTest.*
 -All/ExtensionContextMenuModelWithUserHostControlsAndPermittedSitesTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
+-All/ExtensionContextMenuModelWithUserHostControlsTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
+-All/ExtensionContextMenuModelWithUserHostControlsTest.PageAccessItemsVisibility_PolicyInstalled/*
+-All/ExtensionContextMenuModelWithUserHostControlsTest.TestClickingPageAccessPermissionsPage/*
+-All/HighEfficiencyBubbleViewMemorySavingsImprovementsTest.ShowsCorrectLabelsForDifferentSavings/*
 -All/PriceTrackingViewFeatureFlagTest.PriceTrackingViewCreation/*
+-All/PrintContentAnalysisUtilsTest.*/*
 -ApcScrimManagerImplTest.DisabledScrimCannotBeShown
 -ApcScrimManagerImplTest.HideDoesNotImmediatelySetOriginalAxMode
 -ApcScrimManagerImplTest.HideFocusOnTheWebContent
@@ -24,19 +29,41 @@
 -BatterySaverButtonTest.*
 -BrowserViewTestWithStopLoadingAnimationForHiddenWindow.LoadingAnimationNotRenderedWhenWindowHidden
 -ChromeBrowsingDataRemoverDelegateOriginTrialsTest.PersistentOriginTrialsAreDeleted
+-CookieControlsUserBypassTest.SiteCounts
+-CoreTabHelperWindowUnitTest.SearchWithLens_LensPingEnabled_TriggersLensPing
 -CustomizeChromeFeaturePromoHelperTest.CloseCustomizeChromeFeaturePromoHelper
 -CustomizeChromeFeaturePromoHelperTest.MaybeShowCustomizeChromeFeaturePromoHelper
 -CustomizeChromeFeaturePromoHelperTest.RecordCustomizeChromeFeatureUsage
+-DownloadBubbleRowListViewTest.AddRow
+-DownloadBubbleRowListViewTest.RemoveRow
 -DownloadBubbleRowViewTest.CopyAcceleratorCopiesFile
+-DownloadBubbleRowViewTest.MainButtonPressed
+-DownloadBubbleRowViewTest.UpdateTimeFromCompletedDownload
+-DownloadBubbleRowViewTest.OnlyEnabledQuickActionsVisible
+-ExpsRegistrationSuccessObserverTest.IPHNotShownForChromeUrls
 -ExtensionActionViewControllerFeatureUnitTest.*
 -ExtensionActionViewControllerFeatureWithPermittedSitesUnitTest.GetHoverCardStatus
 -ExtensionActionViewControllerGrayscaleTest.*
 -ExtensionActionViewControllerUnitTest.*
+-ExtensionActionViewControllerWithSidePanelUnitTest.*
 -ExtensionMenuItemViewTest.*
+-ExtensionsSitePermissionsPageViewUnitTest.*
+-ExtensionsToolbarControlsWithPermittedSitesUnitTest.RequestAccessButtonVisibilityOnPermittedSites
+-FirstShowAndReshow/MandatoryReauthBubbleControllerImplMetricsTest.MetricsMandatoryReauthOptInBubbleMetric_NotInteracted/*
+-FirstShowAndReshow/MandatoryReauthBubbleControllerImplMetricsTest.Metrics_MandatoryReauthOptInBubbleMetric_Accepted/*
+-FirstShowAndReshow/MandatoryReauthBubbleControllerImplMetricsTest.Metrics_MandatoryReauthOptInBubbleMetric_Cancelled/*
+-FirstShowAndReshow/MandatoryReauthBubbleControllerImplMetricsTest.Metrics_MandatoryReauthOptInBubbleMetric_Closed/*
+-FirstShowAndReshow/MandatoryReauthBubbleControllerImplMetricsTest.Metrics_MandatoryReauthOptInBubbleMetric_LostFocus/*
+-FirstShowAndReshow/MandatoryReauthBubbleControllerImplMetricsTest.Metrics_MandatoryReauthOptInBubbleMetric_Shown/*
+-HighEfficiencyBubbleViewMemorySavingsImprovementsTest.*
+-HighEfficiencyBubbleViewTest.*
+-HighEfficiencyChipViewDiscardedTabTreatmentDisabledTest.ShouldNotExpandWhenFeatureIsDisabled
+-HighEfficiencyChipViewMemorySavingsImprovementsTest.*
 -HighEfficiencyChipViewTest.*
--HistoryClustersPageHandlerTest.OpenUrlsInTabGroup
--HistoryClustersPageHandlerCartTest.CheckClusterHasCart
 -IbanBubbleControllerImplTest.*
+-MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesAcceptCallback
+-MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesCancelCallback
+-MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesCloseCallback
 -PageLiveStateDecoratorHelperTabsTest.IsActiveTab
 -PageLiveStateDecoratorHelperTabsTest.IsPinnedTab
 -PeopleHandlerSignoutTest.RevokeSyncNotAllowed
@@ -44,12 +71,17 @@
 -PeopleHandlerSignoutTest.SignoutNotAllowedSyncOn
 -PeopleHandlerSignoutTest.SignoutWithSyncOff
 -PeopleHandlerSignoutTest.SignoutWithSyncOn
+-ProfileManagementNavigationThrottleTest.*
 -ProfileTokenNavigationThrottleTest.*
 -ProfileTokenWebSigninInterceptorTest.*
 -SavedTabGroupModelListenerTest.CreatesRemovesBrowserListener
 -SavedTabGroupModelListenerTest.GetTabStripModelWithTabGroupId
 -SaveIbanBubbleControllerImplTest.LocalIbanSavedSuccessfully
 -SidePanelToolbarContainerTest.*
+-TabHelperUnitTest.ClearsExtensionOnUnload
+-TabHelperUnitTest.ReloadRequired_BlockAllExtensions
+-TabHelperUnitTest.ReloadRequired_CustomizeByExtension
+-TabHoverCardPreviewsEnabledPrefTest.DefaultState
 -UserNotesPageHandlerTest.CurrentTabUrlChangedWithNavigation
 -UserNotesPageHandlerTest.CurrentTabUrlChangedWithTabStripModelChanged
 
@@ -117,6 +149,9 @@
 -AutofillContextMenuManagerTest.ExecuteCommand
 -AutofillContextMenuManagerTest.RecordContextMenuIsShownOnField
 -PasswordsPrivateDelegateImplTest.ShowAddShortcutDialog
+-PerformanceHandlerTest.GetCurrentOpenSites
+-PermissionPromptBubbleTwoOriginsViewTest.DescriptionMentionsTwoOriginsAndPermission
+-PermissionPromptBubbleTwoOriginsViewTest.TitleMentionsRequestingOriginAndPermission
 -SavedTabGroupBarUnitTest.*
 
 # MPArch is not supported in Brave, and therefore tests relating to it should
@@ -168,28 +203,45 @@
 -All/DIPSDatabaseErrorHistogramsTest.*/*
 -All/DIPSDatabaseGarbageCollectionTest.*/*
 -All/DIPSDatabaseInteractionTest.*/*
+-BrowserSigninDetectorServiceTest.LateObservation
+-CreateChooserTitleTest.ExtensionsFrameTree
 -DIPSDatabaseHistogramTest.*
+-DIPSGetSitesToClearTest.*
 -DIPSServiceHistogramTest.*
 -DIPSServiceStateRemovalTest.*
 -GetSitesToClearTest.*
+-StorageAccessGrantPermissionContextAPIDisabledTest.AllowedByCookieSettings
+-StorageAccessGrantPermissionContextAPIDisabledTest.InsecureOriginsDisallowed
+-StorageAccessGrantPermissionContextAPIDisabledTest.PermissionBlocked
+-StorageAccessGrantPermissionContextAPIDisabledTest.PermissionStatusBlocked
+-StorageAccessGrantPermissionContextAPIWithFirstPartySetsTest.ImplicitGrant_AutograntedWithinFPS
 
 # These tests fail a CalledOnValidSequence check when calling
 # TorProfileServiceFactory::IsTorDisabled
 -All/CustomizeChromePageHandlerSetThemeTest.*/*
 -CustomizeChromePageHandlerTest.*
 -CustomizeChromePageHandlerWithModulesTest.*
+-CWSInfoServiceTest.*
+-LocalTabHandlerTest.*
+-PermissionPromptBubbleTwoOriginsViewTest.DiesIfPermissionNotAllowed
+-PermissionPromptBubbleTwoOriginsViewTest.TitleMentionsTwoOriginsAndPermission
 -SavedTabGroupKeyedServiceUnitTest.*
+-TabLifecycleUnitTest.CannotDiscardPictureInPictureWindow
 
 # These tests fail because BRAVE_COSMETIC_FILTERING has an initial default value
 # of CONTENT_SETTING_DEFAULT which is not allowed as an integer value by
 # content_settings::ParseContentSettingValue
 # https://github.com/brave/brave-browser/issues/25733
+-SafetyHubHandlerTest.HandleAcknowledgeRevokedUnusedSitePermissionsList
+-SafetyHubHandlerTest.HandleAllowPermissionsAgainForUnusedSite
+-SafetyHubHandlerTest.RevokeAllContentSettingTypes
 -SiteSettingsPermissionsHandlerTest.HandleAcknowledgeRevokedUnusedSitePermissionsList
 -SiteSettingsPermissionsHandlerTest.HandleAllowPermissionsAgainForUnusedSite
 
 # These tests fail because we disable the media router via
 # prefs::kEnableMediaRouter
--MediaDialogViewWithRemotePlaybackTest.BuildDeviceSelectorView_RemotePlaybackSource
+-CastDialogSinkViewTest.ButtonsAccessibleName
+-MediaDialogViewWithRemotePlaybackTest.*
 -MediaRouterActionControllerUnitTest.*
 -MediaRouterEnabledTest.*
 -MediaRouterUIServiceFactoryUnitTest.*
@@ -210,22 +262,6 @@
 # groups
 -All/TabGroupViewsTest.UnderlineBoundsWhenTabsAreNotVisible/1
 
-# These tests are disabled because of turning the performance features on.
-# Re-enable when performance features are enabled by default from upstream.
-# performance_manager::features::kBatterySaverModeAvailable,
-# performance_manager::features::kHighEfficiencyModeAvailable
--AppMenuModelTest.DisabledPerformanceItem
--CLSUkmPageLoadMetricsObserverTest.BeforeInputOrScroll*
--DownloadBubbleRowViewTest.UpdateTimeFromCompletedDownload
--ExtensionsSitePermissionsPageViewUnitTest.*
--ExtensionsToolbarControlsWithPermittedSitesUnitTest.RequestAccessButtonVisibilityOnPermittedSites
--HighEfficiencyModeTest.*
--OfflinePreviewsUKMPageLoadMetricsObserverTest.OfflinePreviewReported
--PageDiscardingHelperTest.*
--UkmPageLoadMetricsObserverWithMockTimeTest.LargestContentfulPaintRecordOnHidden
--UrgentPageDiscardingPolicyTest.DiscardOnCriticalPressure
--UrgentPageDiscardingPolicyTest.NoDiscardOnModeratePressure
-
 # Isolated Web Apps (IWAs) use web bundles which we don't support.
 -All/InstallIsolatedWebAppCommandBundleTest.*
 -All/IsolatedWebAppURLLoaderFactorySignedWebBundleTest.*
@@ -238,7 +274,14 @@
 
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
+-SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedAllowed
+-SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed
 -SignoutAllowed/SigninManagerTest.*
+-TestAppMenuModelCR2023.ProfileSyncOnTest
+
+# Failed because we disabled upstream's entire client-side field trials.
+# See ChromeBrowserFieldTrials.
+-ChromeBrowserFieldTrialsTest.SamplingTrials
 
 # These tests crash because we disable 
 # enterprise_connectors::kLocalContentAnalysisEnabled feature
@@ -267,13 +310,20 @@
 -ContentAnalysisDelegateResultHandlingTest.Test/8
 -ManagementUIHandlerTests.ThreatReportingInfo
 
-
 # These fail because we disable safe browsing enhanced protection.
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/1
+-All/ClientSideDetectionServiceTest.GetNumReportTestESB/2
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/3
+-All/ClientSideDetectionServiceTest.GetNumReportTestESB/6
+-All/ClientSideDetectionServiceTest.GetNumReportTestESB/7
+-All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/5
+-All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/7
 -ChromePingManagerFactoryTest.ShouldFetchAccessTokenForReport_Yes
+-NotificationMetricsLoggerTest.PersistentNotificationSize
 
 # These fail because we have journeys/history clusters disabled.
+-HistoryClustersHandlerTest.OpenVisitUrlsInTabGroup
+-HistoryClustersPageHandlerCartTest.CheckClusterHasCart
 -HistoryClustersPageHandlerTest.*
 
 # These fail because we override IdentityManager::GetAccountsInCookieJar
@@ -288,6 +338,40 @@
 -DownloadDisplayControllerTest.InitialState_NewLastDownload
 -DownloadDisplayControllerTest.InitialState_OldLastDownload
 -DownloadDisplayControllerTest.UpdateToolbarButtonState_OnCompleteItemCreated
+
+# This test crashes because AutocompleteClassifier called when TabStripModel
+# was not initialized in test.
+-RenderViewContextMenuPrefsTest.ShowAllPasswordsIncognito
+
+# This test fails because we changed the behavior of the fuzzy finder to match
+# the empty string.
+-CommanderFuzzyFinder.EmptyStringDoesNotMatch
+
+# Flaky upstream test.
+-EncryptedReportingUploadProviderTest.SuccessfullyUploadsRecord
+
+# This test fails because we disable page_info::kPageInfoCookiesSubpage
+-PageInfoBubbleViewCookiesSubpageTest.TextsOnButtonsAreCorrect
+
+# This test fails because we insert our own bookmarks submenu into the app menu
+# model
+-TestAppMenuModelCR2023.ModelHasIcons
+
+# These tests fail because we set kIsolatedAppsDeveloperModeAllowed to false
+-All/IsolatedWebAppInstallCommandHelperTrustAndSignaturesBundleTest.ErrorsOnBundleError/InstalledBundle
+-All/IsolatedWebAppInstallCommandHelperTrustAndSignaturesBundleTest.SucceedsWhenThereIsNoError/InstalledBundle
+-IsolatedWebAppInstallCommandHelperTrustAndSignaturesTest.DevProxySucceeds
+
+# This test fails because we override Chromium's "what's new" util functionality
+# see brave/chromium_src/chrome/browser/ui/webui/whats_new/whats_new_util.cc
+-WhatsNewUtilTests.ShouldShowForStateUsesChromeVersionForRefresh
+
+# This test fails because we disable page_image_service::kImageService feature.
+-NewTabPageModulesTest.MakeModuleIdNames
+
+# These tests fail because we disable
+# optimization_guide::features::kOptimizationGuideFetchingForSRP
+-ChromeHintsManagerFetchingTest.HintsFetched_*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -304,10 +388,9 @@
 -ActivityLogTestWithoutSwitch.*
 -All/ActionTrackerTest.*
 -All/ChromeLabs*Test.*
+-All/ContentAnalysisPrintPreviewHandlerTest.LocalScanBeforePrinting/*
 -All/EnterpriseProfileWelcomeHandleProceedTest.HandleProceed/*
 -All/ExtensionActionAPIUnitTest.*
--All/ExtensionContextMenuModelWithUserHostControlsTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
--All/ExtensionContextMenuModelWithUserHostControlsTest.TestClickingPageAccessPermissionsPage/*
 -All/IntentPickerBubbleViewLayoutTest.*
 -All/InvalidSearchProviderTest.DoesNotSendSuggestRequests/*
 -All/MultipleRulesetsTest_Unpacked.*
@@ -323,7 +406,7 @@
 -AppInfoDialogViewsTest.*
 -AppLauncherHandlerTest.*
 -AssistantSidePanelCoordinatorImplTest.*
--AutofillContextMenuTest/RenderViewContestMenuAutofillTest.ShowAutofillOptions/*
+-AutofillContextMenuTest/RenderViewContextMenuAutofillTest.ShowAutofillOptions/*
 -AvatarToolbarButtonTest.*
 -BackFwdMenuModelIncognitoTest.*
 -BackFwdMenuModelTest.*
@@ -352,8 +435,15 @@
 -BrowserUnitTest.*
 -BrowserViewHostedAppTest.*
 -BrowserViewTest.*
+-CastDeviceListHostTest.StartAudioTabMirroring
+-CastDialogSinkViewTest.FreezableSink
+-CastDialogSinkViewTest.NonfreezableSink
+-CastDialogSinkViewTest.SetEnabledState
 -CastDialogCoordinatorTest.ShowAndHideDialog
 -CastDialogViewTest.AccessCodeEmptySinksSourcesAvailable
+-CastDialogViewTest.FreezeNoRoute
+-CastDialogViewTest.FreezeRoute
+-CastDialogViewTest.FreezeUiStopCasting
 -CastDialogViewTest.ShowAccessCodeCastButtonEnabled
 -CastHandlerTest.*
 -CastMediaNotificationProducerTest.*
@@ -633,6 +723,7 @@
 -StartupBrowserPolicyUnitTest.*
 -StartupTabProviderTest.*
 -StorageAccessGrantPermissionContextAPIEnabledTest.*
+-StorageAccessGrantPermissionContextAPIWithImplicitGrantsTest.*
 -StorageAccessGrantPermissionContextTest.*
 -StubResolverConfigReaderTest.*
 -SubresourceFilterComponentInstallerTest.*
@@ -689,14 +780,3 @@
 -WebUsbServiceImplTest.*
 -WellKnownChangePasswordNavigationThrottleTest.*
 -ZipFileInstallerTest.*
-
-# This test crashes because AutocompleteClassifier called when TabStripModel
-# was not initialized in test.
--RenderViewContextMenuPrefsTest.ShowAllPasswordsIncognito
-
-# This test fails because we changed the behavior of the fuzzy finder to match
-# the empty string.
--CommanderFuzzyFinder.EmptyStringDoesNotMatch
-
-# We changed the default value of media router to disabled, so the tests fail.
--MediaDialogViewWithRemotePlaybackTest.*

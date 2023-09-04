@@ -15,7 +15,8 @@ struct NotificationAdInfo;
 class NotificationAdEventServed final
     : public AdEventInterface<NotificationAdInfo> {
  public:
-  void FireEvent(const NotificationAdInfo& ad) override;
+  void FireEvent(const NotificationAdInfo& ad,
+                 ResultCallback callback) override;
 };
 
 }  // namespace brave_ads

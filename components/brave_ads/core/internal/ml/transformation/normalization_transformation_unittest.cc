@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/normalization_transformation.h"
 
-#include <string>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -20,6 +19,20 @@
 namespace brave_ads::ml {
 
 class BraveAdsNormalizationTransformationTest : public UnitTestBase {};
+
+TEST_F(BraveAdsNormalizationTransformationTest, WrongInputDataTest) {
+  // Arrange
+  constexpr char kTestString[] = "quite a small test string";
+  std::unique_ptr<Data> text_data = std::make_unique<TextData>(kTestString);
+
+  const NormalizationTransformation normalization;
+
+  // Act
+  const std::unique_ptr<Data> output_data = normalization.Apply(text_data);
+
+  // Assert
+  EXPECT_FALSE(output_data.get());
+}
 
 TEST_F(BraveAdsNormalizationTransformationTest, NormalizationTest) {
   // Arrange

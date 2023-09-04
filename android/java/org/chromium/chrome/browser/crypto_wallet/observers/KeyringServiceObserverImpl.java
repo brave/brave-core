@@ -5,6 +5,9 @@
 
 package org.chromium.chrome.browser.crypto_wallet.observers;
 
+import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.KeyringId;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
 import org.chromium.mojo.system.MojoException;
 
@@ -14,14 +17,16 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
     public interface KeyringServiceObserverImplDelegate {
         default void locked() {}
         default void backedUp() {}
-        default void keyringCreated(String keyringId) {}
-        default void keyringRestored(String keyringId) {}
+        default void keyringCreated(@KeyringId.EnumType int keyringId) {}
+        default void keyringRestored(@KeyringId.EnumType int keyringId) {}
         default void keyringReset() {}
         default void unlocked() {}
         default void accountsChanged() {}
-        default void accountsAdded(int coin, String[] addresses) {}
+        default void accountsAdded(AccountInfo[] addedAccounts) {}
         default void autoLockMinutesChanged() {}
-        default void selectedAccountChanged(int coin) {}
+        default void selectedWalletAccountChanged(AccountInfo accountInfo) {}
+        default void selectedDappAccountChanged(
+                @CoinType.EnumType int coinType, AccountInfo accountInfo) {}
     }
 
     private WeakReference<KeyringServiceObserverImplDelegate> mDelegate;
@@ -31,12 +36,12 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
     }
 
     @Override
-    public void keyringCreated(String keyringId) {
+    public void keyringCreated(@KeyringId.EnumType int keyringId) {
         if (isActive()) getRef().keyringCreated(keyringId);
     }
 
     @Override
-    public void keyringRestored(String keyringId) {
+    public void keyringRestored(@KeyringId.EnumType int keyringId) {
         if (isActive()) getRef().keyringRestored(keyringId);
     }
 
@@ -66,8 +71,8 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
     }
 
     @Override
-    public void accountsAdded(int coin, String[] addresses) {
-        if (isActive()) getRef().accountsAdded(coin, addresses);
+    public void accountsAdded(AccountInfo[] addedAccounts) {
+        if (isActive()) getRef().accountsAdded(addedAccounts);
     }
 
     @Override
@@ -76,8 +81,14 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
     }
 
     @Override
-    public void selectedAccountChanged(int coin) {
-        if (isActive()) getRef().selectedAccountChanged(coin);
+    public void selectedWalletAccountChanged(AccountInfo accountInfo) {
+        if (isActive()) getRef().selectedWalletAccountChanged(accountInfo);
+    }
+
+    @Override
+    public void selectedDappAccountChanged(
+            @CoinType.EnumType int coinType, AccountInfo accountInfo) {
+        if (isActive()) getRef().selectedDappAccountChanged(coinType, accountInfo);
     }
 
     @Override

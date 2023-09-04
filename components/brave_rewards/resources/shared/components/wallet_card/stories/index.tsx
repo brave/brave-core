@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -57,11 +58,15 @@ export function Wallet () {
       <WithThemeVariables>
         <div style={{ width: '375px' }}>
           <WalletCard
+            userType={'connected'}
             balance={optional(0)}
-            externalWallet={externalWallet}
+            isGrandfatheredUser={false}
+            externalWallet={externalWallet && null}
             providerPayoutStatus={'complete'}
-            earningsThisMonth={0}
-            earningsLastMonth={1}
+            minEarningsThisMonth={0.25}
+            maxEarningsThisMonth={0.75}
+            minEarningsLastMonth={1}
+            maxEarningsLastMonth={1.5}
             nextPaymentDate={nextPaymentDate.getTime()}
             exchangeRate={0.75}
             exchangeCurrency={'USD'}
@@ -69,8 +74,8 @@ export function Wallet () {
             summaryData={summaryData}
             autoContributeEnabled={true}
             onExternalWalletAction={actionLogger('onExternalWalletAction')}
-            onViewPendingTips={actionLogger('onViewPendingTips')}
             onViewStatement={actionLogger('onViewStatement')}
+            onManageAds={actionLogger('onManageAds')}
           />
         </div>
       </WithThemeVariables>

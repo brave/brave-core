@@ -5,39 +5,21 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
+import Icon from '@brave/leo/react/icon'
+
+const FlagIcon = styled(Icon)`
+  --leo-icon-size: 24px;
+`
 
 interface Props {
   countryCode?: string
 }
 
-export const IconBox = styled.span`
-  width: 24px;
-  height: auto;
-  display: flex;
+const COUNTRIES = ['AU', 'BR', 'CA', 'CH', 'DE', 'ES', 'FR', 'GB', 'IT', 'JP', 'MX', 'NL', 'SG', 'US']
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-`
-
-const COUNTRIES = ['AU', 'BR', 'CA', 'CH', 'DE', 'ES', 'FR', 'GB', 'JP', 'NL', 'SG', 'US']
-
-function Flag (props: Props) {
-  const [url, setUrl] = React.useState<undefined | string>(undefined)
-
-  React.useEffect(() => {
-    if (COUNTRIES.includes(props?.countryCode ?? '')) {
-      setUrl(`assets/country-flags/${props.countryCode}.svg`)
-    }
-  }, [props?.countryCode])
-
-  return !url ? null : (
-    <IconBox>
-      <img src={url} />
-    </IconBox>
-  )
+function Flag(props: Props) {
+  return COUNTRIES.includes(props?.countryCode ?? '') ?
+    <FlagIcon name={`country-${props.countryCode?.toLocaleLowerCase()}`} /> : null
 }
 
 export default Flag

@@ -1,28 +1,35 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 import BigNumber from 'bignumber.js'
 
 import { CurrencySymbols } from './currency-symbols'
-import { AbbreviationOptions } from '../constants/types'
 
-type BigNumberIsh =
-  | BigNumber
-  | string
-  | number
+export type AbbreviationOptions =
+  'thousand' | 'million' | 'billion' | 'trillion'
+type BigNumberIsh = BigNumber | string | number
+type AmountLike = Amount | BigNumberIsh
 
-type AmountLike =
-  | Amount
-  | BigNumberIsh
+const powers = {
+  trillion: Math.pow(10, 12),
+  billion: Math.pow(10, 9),
+  million: Math.pow(10, 6),
+  thousand: Math.pow(10, 3)
+} as const
+
+const abbreviations = {
+  thousand: 'k',
+  million: 'M',
+  billion: 'B',
+  trillion: 'T'
+} as const
 
 export default class Amount {
   public readonly value?: BigNumber
 
-  public constructor (value: BigNumberIsh) {
-    this.value = value === ''
-      ? undefined
-      : new BigNumber(value)
+  public constructor(value: BigNumberIsh) {
+    this.value = value === '' ? undefined : new BigNumber(value)
   }
 
   static zero (): Amount {
@@ -206,26 +213,25 @@ export default class Amount {
     }
 
     if (significantDigits === undefined) {
-      return Amount.formatAmountWithCommas(
-        this.value.toFixed(),
-        commas
-      )
+      return Amount.formatAmountWithCommas(this.value.toFixed(), commas)
     }
 
     // Handle the case where the value is large enough that formatting with
     // significant figures will result in an undesirable loss of precision.
     const desiredDecimalPlaces = 2
     if (this.value.isGreaterThanOrEqualTo(10 ** (significantDigits - desiredDecimalPlaces))) {
-      return Amount.formatAmountWithCommas(
-        this.value.toFixed(desiredDecimalPlaces),
-        commas
-      )
+      return Amount
+        .formatAmountWithCommas(
+          this.value.toFixed(desiredDecimalPlaces),
+          commas
+        )
     }
 
-    return Amount.formatAmountWithCommas(
-      this.value.precision(significantDigits).toFixed(),
-      commas
-    )
+    return Amount.
+      formatAmountWithCommas(
+        this.value.precision(significantDigits).toFixed(),
+        commas
+      )
   }
 
   formatAsAsset (significantDigits?: number, symbol?: string): string {
@@ -234,51 +240,29 @@ export default class Amount {
       return result
     }
 
-    return result === ''
-      ? ''
-      : `${result} ${symbol}`
+    return result === '' ? '' : `${result} ${symbol}`
   }
 
-  formatAsFiat (currency?: string): string {
-    let decimals
-    let value
-
-    const valueDP = this.value && this.value.decimalPlaces()
-    if (
-        this.value === undefined ||
-        this.value.isNaN() ||
-        valueDP === null ||
-        valueDP === undefined
-    ) {
+  formatAsFiat (currency?: string, maxDecimals: number = 20): string {
+    if (this.value === undefined || this.value.isNaN()) {
       return ''
-    } else if (
-        valueDP < 2 || this.value.isGreaterThanOrEqualTo(10)
-    ) {
-      decimals = 2
-      value = this.value.toNumber()
-    } else if (this.value.isGreaterThanOrEqualTo(1)) {
-      decimals = 3
-      value = this.value.toNumber()
-    } else {
-      value = new BigNumber(this.format(4)).toNumber()
     }
 
     const options: Intl.NumberFormatOptions = {
       style: 'decimal',
-      minimumFractionDigits: decimals || 0,
-      maximumFractionDigits: decimals || 20
+      minimumFractionDigits: 2,
+      maximumFractionDigits: maxDecimals
     }
 
-    // currency code must be upper-case
-    const upperCaseCurrency = currency?.toUpperCase()
-
-    if (upperCaseCurrency && CurrencySymbols[upperCaseCurrency]) {
+    if (currency && CurrencySymbols[currency.toUpperCase()]) {
       options.style = 'currency'
       options.currency = currency
       options.currencyDisplay = 'narrowSymbol'
     }
 
-    return Intl.NumberFormat(navigator.language, options).format(value)
+    return Intl.NumberFormat(navigator.language, options).format(
+      new BigNumber(this.format(4)).toNumber()
+    )
   }
 
   toHex (): string {
@@ -321,31 +305,43 @@ export default class Amount {
     return this.value !== undefined && this.value.isNegative()
   }
 
-  // Abbreviate number in units of 1000 e.g., 100000 becomes 100k
-  abbreviate (decimals: number, currency?: string, forceAbbreviation?: AbbreviationOptions): string {
-    const powers = {
-      trillion: Math.pow(10, 12),
-      billion: Math.pow(10, 9),
-      million: Math.pow(10, 6),
-      thousand: Math.pow(10, 3)
-    }
-    const abbreviations = {
-      thousand: 'k',
-      million: 'M',
-      billion: 'B',
-      trillion: 'T'
+  parseInteger (): Amount {
+    if (this.value === undefined) {
+      return Amount.empty()
     }
 
+    return new Amount(this.value.integerValue(BigNumber.ROUND_DOWN))
+  }
+
+  toAbsoluteValue (): Amount {
+    if (this.value === undefined || this.value.isNaN()) {
+      return Amount.empty()
+    }
+
+    return new Amount(this.value.absoluteValue())
+  }
+
+  // Abbreviate number in units of 1000 e.g., 100000 becomes 100k
+  abbreviate (
+    decimals: number,
+    currency?: string,
+    forceAbbreviation?: AbbreviationOptions
+  ): string {
     if (this.value === undefined) {
       return ''
     }
+
+    /**
+     * range is: 0 - 20
+     */
+    const fractionDigits = decimals < 21 && decimals > -1 ? decimals : 20
 
     const formatter = Intl.NumberFormat(navigator.language, {
       style: currency ? 'currency' : 'decimal',
       currency: currency,
       currencyDisplay: 'narrowSymbol',
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits
     })
 
     const abs = this.value.absoluteValue().toNumber()

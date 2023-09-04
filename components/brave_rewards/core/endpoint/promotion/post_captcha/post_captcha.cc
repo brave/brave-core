@@ -10,7 +10,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
@@ -18,7 +18,7 @@ namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
-PostCaptcha::PostCaptcha(LedgerImpl& ledger) : ledger_(ledger) {}
+PostCaptcha::PostCaptcha(RewardsEngineImpl& engine) : engine_(engine) {}
 
 PostCaptcha::~PostCaptcha() = default;
 
@@ -27,7 +27,7 @@ std::string PostCaptcha::GetUrl() {
 }
 
 std::string PostCaptcha::GeneratePayload() {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     return "";
@@ -45,15 +45,15 @@ std::string PostCaptcha::GeneratePayload() {
 mojom::Result PostCaptcha::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 mojom::Result PostCaptcha::ParseBody(const std::string& body,
@@ -64,26 +64,26 @@ mojom::Result PostCaptcha::ParseBody(const std::string& body,
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* captcha_id_parse = dict.FindString("captchaId");
   if (!captcha_id_parse) {
     BLOG(0, "Captcha id is wrong");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const auto* hint_parse = dict.FindString("hint");
   if (!hint_parse) {
     BLOG(0, "Hint is wrong");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   *captcha_id = *captcha_id_parse;
   *hint = *hint_parse;
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void PostCaptcha::Request(PostCaptchaCallback callback) {
@@ -95,7 +95,7 @@ void PostCaptcha::Request(PostCaptchaCallback callback) {
   request->content = GeneratePayload();
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  engine_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostCaptcha::OnRequest(PostCaptchaCallback callback,
@@ -107,7 +107,7 @@ void PostCaptcha::OnRequest(PostCaptchaCallback callback,
   std::string captcha_id;
   mojom::Result result = CheckStatusCode(response->status_code);
 
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     std::move(callback).Run(result, hint, captcha_id);
     return;
   }

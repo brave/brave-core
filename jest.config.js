@@ -61,7 +61,7 @@ module.exports = {
     "lib/test.js"
   ],
   transformIgnorePatterns: [
-    "<rootDir>/node_modules/(?!(brave-ui)/)"
+    "<rootDir>/node_modules/(?!(@brave/brave-ui|@brave/leo)/)"
   ],
   setupFilesAfterEnv: [
     "<rootDir>/components/test/testSetup.ts"
@@ -74,8 +74,8 @@ module.exports = {
     "\\.(css|less|scss)$": "identity-obj-proxy",
     "^\\$web-common\\/(.*)": "<rootDir>/components/common/$1",
     "^\\$web-components\\/(.*)": "<rootDir>/components/web-components/$1",
-    "^brave-ui$": "<rootDir>/node_modules/brave-ui/src",
-    "^brave-ui\\/(.*)": "<rootDir>/node_modules/brave-ui/src/$1",
+    "^brave-ui$": "<rootDir>/node_modules/@brave/brave-ui",
+    "^brave-ui\\/(.*)": "<rootDir>/node_modules/@brave/brave-ui/$1",
     // TODO(petemill): The ordering here can get problematic for devs
     // who have more than 1 build type at a time, since if the file exists
     // at the first path, it will be used for Type analysis instead of the second

@@ -13,25 +13,27 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/command_line.h"
 #include "base/containers/contains.h"
 #include "base/environment.h"
-#include "base/feature_list.h"
 #include "base/logging.h"
-#include "base/metrics/field_trial_params.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
-#include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/switches.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/third_party/bip39wally-core-native/include/wally_bip39.h"
@@ -82,8 +84,11 @@ const char kSolanaLocalhostURL[] = "http://localhost:8899/";
 const char kFilecoinLocalhostURL[] = "http://localhost:1234/rpc/v0";
 
 const mojom::NetworkInfo* GetEthMainnet() {
+  const auto coin = mojom::CoinType::ETH;
+  const auto* chain_id = mojom::kMainnetChainId;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kMainnetChainId,
+      {chain_id,
        "Ethereum Mainnet",
        {"https://etherscan.io"},
        {},
@@ -92,14 +97,18 @@ const mojom::NetworkInfo* GetEthMainnet() {
        "ETH",
        "Ethereum",
        18,
-       brave_wallet::mojom::CoinType::ETH,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        true});
   return network_info.get();
 }
 
 const mojom::NetworkInfo* GetPolygonMainnet() {
+  const auto coin = mojom::CoinType::ETH;
+  const auto* chain_id = mojom::kPolygonMainnetChainId;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kPolygonMainnetChainId,
+      {chain_id,
        "Polygon Mainnet",
        {"https://polygonscan.com"},
        {},
@@ -108,14 +117,18 @@ const mojom::NetworkInfo* GetPolygonMainnet() {
        "MATIC",
        "MATIC",
        18,
-       brave_wallet::mojom::CoinType::ETH,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        true});
   return network_info.get();
 }
 
 const mojom::NetworkInfo* GetBscMainnet() {
+  const auto coin = mojom::CoinType::ETH;
+  const auto* chain_id = mojom::kBinanceSmartChainMainnetChainId;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kBinanceSmartChainMainnetChainId,
+      {chain_id,
        "Binance Smart Chain Mainnet",
        {"https://bscscan.com"},
        {},
@@ -124,14 +137,18 @@ const mojom::NetworkInfo* GetBscMainnet() {
        "BNB",
        "Binance Chain Native Token",
        18,
-       brave_wallet::mojom::CoinType::ETH,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        false});
   return network_info.get();
 }
 
 const mojom::NetworkInfo* GetAvalancheMainnet() {
+  const auto coin = mojom::CoinType::ETH;
+  const auto* chain_id = mojom::kAvalancheMainnetChainId;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kAvalancheMainnetChainId,
+      {chain_id,
        "Avalanche C-Chain",
        {"https://snowtrace.io"},
        {},
@@ -140,30 +157,18 @@ const mojom::NetworkInfo* GetAvalancheMainnet() {
        "AVAX",
        "Avalanche",
        18,
-       brave_wallet::mojom::CoinType::ETH,
-       true});
-  return network_info.get();
-}
-
-const mojom::NetworkInfo* GetFantomOperaMainnet() {
-  static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kFantomMainnetChainId,
-       "Fantom Opera",
-       {"https://ftmscan.com"},
-       {},
-       0,
-       {GURL("https://rpc.ftm.tools")},
-       "FTM",
-       "Fantom",
-       18,
-       brave_wallet::mojom::CoinType::ETH,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        true});
   return network_info.get();
 }
 
 const mojom::NetworkInfo* GetOptimismMainnet() {
+  const auto coin = mojom::CoinType::ETH;
+  const auto* chain_id = mojom::kOptimismMainnetChainId;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kOptimismMainnetChainId,
+      {chain_id,
        "Optimism",
        {"https://optimistic.etherscan.io"},
        {},
@@ -172,14 +177,18 @@ const mojom::NetworkInfo* GetOptimismMainnet() {
        "ETH",
        "Ether",
        18,
-       brave_wallet::mojom::CoinType::ETH,
-       false});
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
+       true});
   return network_info.get();
 }
 
 const mojom::NetworkInfo* GetAuroraMainnet() {
+  const auto coin = mojom::CoinType::ETH;
+  const auto* chain_id = mojom::kAuroraMainnetChainId;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kAuroraMainnetChainId,
+      {chain_id,
        "Aurora Mainnet",
        {"https://aurorascan.dev"},
        {},
@@ -188,14 +197,38 @@ const mojom::NetworkInfo* GetAuroraMainnet() {
        "ETH",
        "Ether",
        18,
-       brave_wallet::mojom::CoinType::ETH,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
+       false});
+  return network_info.get();
+}
+
+const mojom::NetworkInfo* GetNeonEVMMainnet() {
+  const auto coin = mojom::CoinType::ETH;
+  const auto* chain_id = mojom::kNeonEVMMainnetChainId;
+
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Neon EVM",
+       {"https://neonscan.org"},
+       {},
+       0,
+       {GURL("https://neon-proxy-mainnet.solana.p2p.org")},
+       "NEON",
+       "Neon",
+       18,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        false});
   return network_info.get();
 }
 
 const mojom::NetworkInfo* GetGoerliTestNetwork() {
+  const auto coin = mojom::CoinType::ETH;
+  const auto* chain_id = mojom::kGoerliChainId;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kGoerliChainId,
+      {chain_id,
        "Goerli Test Network",
        {"https://goerli.etherscan.io"},
        {},
@@ -204,14 +237,18 @@ const mojom::NetworkInfo* GetGoerliTestNetwork() {
        "ETH",
        "Ethereum",
        18,
-       brave_wallet::mojom::CoinType::ETH,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        true});
   return network_info.get();
 }
 
 const mojom::NetworkInfo* GetSepoliaTestNetwork() {
+  const auto coin = mojom::CoinType::ETH;
+  const auto* chain_id = mojom::kSepoliaChainId;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kSepoliaChainId,
+      {chain_id,
        "Sepolia Test Network",
        {"https://sepolia.etherscan.io"},
        {},
@@ -220,14 +257,18 @@ const mojom::NetworkInfo* GetSepoliaTestNetwork() {
        "ETH",
        "Ethereum",
        18,
-       brave_wallet::mojom::CoinType::ETH,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        true});
   return network_info.get();
 }
 
 const mojom::NetworkInfo* GetEthLocalhost() {
+  const auto coin = mojom::CoinType::ETH;
+  const auto* chain_id = mojom::kLocalhostChainId;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kLocalhostChainId,
+      {chain_id,
        "Localhost",
        {kGanacheLocalhostURL},
        {},
@@ -236,14 +277,18 @@ const mojom::NetworkInfo* GetEthLocalhost() {
        "ETH",
        "Ethereum",
        18,
-       brave_wallet::mojom::CoinType::ETH,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        false});
   return network_info.get();
 }
 
 const mojom::NetworkInfo* GetFilecoinEthereumMainnet() {
+  const auto coin = mojom::CoinType::ETH;
+  const auto* chain_id = mojom::kFilecoinEthereumMainnetChainId;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kFilecoinEthereumMainnetChainId,
+      {chain_id,
        "Filecoin EVM Mainnet",
        {"https://filfox.info/en/message"},
        {},
@@ -252,14 +297,18 @@ const mojom::NetworkInfo* GetFilecoinEthereumMainnet() {
        "FIL",
        "Filecoin",
        18,
-       brave_wallet::mojom::CoinType::ETH,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        true});
   return network_info.get();
 }
 
 const mojom::NetworkInfo* GetFilecoinEthereumTestnet() {
+  const auto coin = mojom::CoinType::ETH;
+  const auto* chain_id = mojom::kFilecoinEthereumTestnetChainId;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kFilecoinEthereumTestnetChainId,
+      {chain_id,
        "Filecoin EVM Testnet",
        {"https://calibration.filfox.info/en/message"},
        {},
@@ -268,7 +317,8 @@ const mojom::NetworkInfo* GetFilecoinEthereumTestnet() {
        "FIL",
        "Filecoin",
        18,
-       brave_wallet::mojom::CoinType::ETH,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        true});
   return network_info.get();
 }
@@ -281,22 +331,25 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownEthNetworks() {
       GetAuroraMainnet(),
       GetPolygonMainnet(),
       GetBscMainnet(),
-      GetAvalancheMainnet(),
-      GetFantomOperaMainnet(),
       GetOptimismMainnet(),
+      GetAvalancheMainnet(),
+      GetFilecoinEthereumMainnet(),
+      GetNeonEVMMainnet(),
       GetGoerliTestNetwork(),
       GetSepoliaTestNetwork(),
-      GetEthLocalhost(),
-      GetFilecoinEthereumMainnet(),
-      GetFilecoinEthereumTestnet()
+      GetFilecoinEthereumTestnet(),
+      GetEthLocalhost()
       // clang-format on
   });
   return *networks.get();
 }
 
 const mojom::NetworkInfo* GetSolMainnet() {
+  const auto coin = mojom::CoinType::SOL;
+  const auto* chain_id = mojom::kSolanaMainnet;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kSolanaMainnet,
+      {chain_id,
        "Solana Mainnet Beta",
        {"https://explorer.solana.com/"},
        {},
@@ -305,14 +358,18 @@ const mojom::NetworkInfo* GetSolMainnet() {
        "SOL",
        "Solana",
        9,
-       brave_wallet::mojom::CoinType::SOL,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        false});
   return network_info.get();
 }
 
 const mojom::NetworkInfo* GetSolTestnet() {
+  const auto coin = mojom::CoinType::SOL;
+  const auto* chain_id = mojom::kSolanaTestnet;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kSolanaTestnet,
+      {chain_id,
        "Solana Testnet",
        {"https://explorer.solana.com/?cluster=testnet"},
        {},
@@ -321,14 +378,18 @@ const mojom::NetworkInfo* GetSolTestnet() {
        "SOL",
        "Solana",
        9,
-       brave_wallet::mojom::CoinType::SOL,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        false});
   return network_info.get();
 }
 
 const mojom::NetworkInfo* GetSolDevnet() {
+  const auto coin = mojom::CoinType::SOL;
+  const auto* chain_id = mojom::kSolanaDevnet;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kSolanaDevnet,
+      {chain_id,
        "Solana Devnet",
        {"https://explorer.solana.com/?cluster=devnet"},
        {},
@@ -337,14 +398,18 @@ const mojom::NetworkInfo* GetSolDevnet() {
        "SOL",
        "Solana",
        9,
-       brave_wallet::mojom::CoinType::SOL,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        false});
   return network_info.get();
 }
 
 const mojom::NetworkInfo* GetSolLocalhost() {
+  const auto coin = mojom::CoinType::SOL;
+  const auto* chain_id = mojom::kLocalhostChainId;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kLocalhostChainId,
+      {chain_id,
        "Solana Localhost",
        {"https://explorer.solana.com/"
         "?cluster=custom&customUrl=http%3A%2F%2Flocalhost%3A8899"},
@@ -354,7 +419,8 @@ const mojom::NetworkInfo* GetSolLocalhost() {
        "SOL",
        "Solana",
        9,
-       brave_wallet::mojom::CoinType::SOL,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        false});
   return network_info.get();
 }
@@ -372,8 +438,11 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownSolNetworks() {
 }
 
 const mojom::NetworkInfo* GetFilMainnet() {
+  const auto coin = mojom::CoinType::FIL;
+  const auto* chain_id = mojom::kFilecoinMainnet;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kFilecoinMainnet,
+      {chain_id,
        "Filecoin Mainnet",
        {"https://filscan.io/tipset/message-detail"},
        {},
@@ -382,14 +451,18 @@ const mojom::NetworkInfo* GetFilMainnet() {
        "FIL",
        "Filecoin",
        18,
-       brave_wallet::mojom::CoinType::FIL,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        false});
   return network_info.get();
 }
 
 const mojom::NetworkInfo* GetFilTestnet() {
+  const auto coin = mojom::CoinType::FIL;
+  const auto* chain_id = mojom::kFilecoinTestnet;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kFilecoinTestnet,
+      {chain_id,
        "Filecoin Testnet",
        {"https://calibration.filscan.io/tipset/message-detail"},
        {},
@@ -398,14 +471,18 @@ const mojom::NetworkInfo* GetFilTestnet() {
        "FIL",
        "Filecoin",
        18,
-       brave_wallet::mojom::CoinType::FIL,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        false});
   return network_info.get();
 }
 
 const mojom::NetworkInfo* GetFilLocalhost() {
+  const auto coin = mojom::CoinType::FIL;
+  const auto* chain_id = mojom::kLocalhostChainId;
+
   static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kLocalhostChainId,
+      {chain_id,
        "Filecoin Localhost",
        {kFilecoinLocalhostURL},
        {},
@@ -414,7 +491,8 @@ const mojom::NetworkInfo* GetFilLocalhost() {
        "FIL",
        "Filecoin",
        18,
-       brave_wallet::mojom::CoinType::FIL,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
        false});
   return network_info.get();
 }
@@ -425,6 +503,66 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownFilNetworks() {
       GetFilMainnet(),
       GetFilTestnet(),
       GetFilLocalhost(),
+      // clang-format on
+  });
+  return *networks.get();
+}
+
+GURL BitcoinMainnetRpcUrl() {
+  return GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+      switches::kBitcoinMainnetRpcUrl));
+}
+
+GURL BitcoinTestnetRpcUrl() {
+  return GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+      switches::kBitcoinTestnetRpcUrl));
+}
+
+const mojom::NetworkInfo* GetBitcoinMainnet() {
+  const auto coin = mojom::CoinType::BTC;
+  const auto* chain_id = mojom::kBitcoinMainnet;
+
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Bitcoin Mainnet",
+       {""},  // TODO(apaymyshev): explorer url
+       {},
+       0,
+       {BitcoinMainnetRpcUrl()},
+       "BTC",
+       "Bitcoin",
+       8,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
+       false});
+  return network_info.get();
+}
+
+const mojom::NetworkInfo* GetBitcoinTestnet() {
+  const auto coin = mojom::CoinType::BTC;
+  const auto* chain_id = mojom::kBitcoinTestnet;
+
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Bitcoin Testnet",
+       {""},  // TODO(apaymyshev): explorer url
+       {},
+       0,
+       {BitcoinTestnetRpcUrl()},
+       "tBTC",
+       "Bitcoin",
+       8,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
+       false});
+  return network_info.get();
+}
+
+const std::vector<const mojom::NetworkInfo*>& GetKnownBitcoinNetworks() {
+  static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
+      // clang-format off
+      GetBitcoinMainnet(),
+      GetBitcoinTestnet(),
       // clang-format on
   });
   return *networks.get();
@@ -452,6 +590,10 @@ const base::flat_map<std::string, std::string> kSolanaSubdomains = {
 const base::flat_map<std::string, std::string> kFilecoinSubdomains = {
     {brave_wallet::mojom::kFilecoinMainnet, "mainnet"},
     {brave_wallet::mojom::kFilecoinTestnet, "testnet"}};
+
+const base::flat_map<std::string, std::string> kBitcoinSubdomains = {
+    {mojom::kBitcoinMainnet, "mainnet"},
+    {mojom::kBitcoinTestnet, "testnet"}};
 
 // Addesses taken from https://docs.unstoppabledomains.com/developer-toolkit/
 // smart-contracts/uns-smart-contracts/#proxyreader
@@ -576,6 +718,14 @@ mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
     }
     return nullptr;
   }
+  if (coin == mojom::CoinType::BTC) {
+    for (const auto* network : GetKnownBitcoinNetworks()) {
+      if (base::EqualsCaseInsensitiveASCII(network->chain_id, chain_id)) {
+        return network->Clone();
+      }
+    }
+    return nullptr;
+  }
   NOTREACHED();
   return nullptr;
 }
@@ -605,9 +755,11 @@ mojom::NetworkInfoPtr GetChain(PrefService* prefs,
     return nullptr;
   }
   if (auto custom_chain = GetCustomChain(prefs, chain_id, coin)) {
+    DCHECK(!custom_chain->supported_keyrings.empty());
     return custom_chain;
   }
   if (auto known_chain = GetKnownChain(prefs, chain_id, coin)) {
+    DCHECK(!known_chain->supported_keyrings.empty());
     return known_chain;
   }
 
@@ -661,6 +813,14 @@ std::string GetFilecoinSubdomainForKnownChainId(const std::string& chain_id) {
   return std::string();
 }
 
+std::string GetBitcoinSubdomainForKnownChainId(const std::string& chain_id) {
+  std::string chain_id_lower = base::ToLowerASCII(chain_id);
+  if (kBitcoinSubdomains.contains(chain_id_lower)) {
+    return kBitcoinSubdomains.at(chain_id_lower);
+  }
+  return std::string();
+}
+
 std::vector<mojom::NetworkInfoPtr> GetAllCustomChains(PrefService* prefs,
                                                       mojom::CoinType coin) {
   std::vector<mojom::NetworkInfoPtr> result;
@@ -699,6 +859,12 @@ bool KnownChainExists(const std::string& chain_id, mojom::CoinType coin) {
         return true;
       }
     }
+  } else if (coin == mojom::CoinType::BTC) {
+    for (const auto* network : GetKnownBitcoinNetworks()) {
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
+        return true;
+      }
+    }
   } else {
     NOTREACHED() << coin;
   }
@@ -722,57 +888,30 @@ bool CustomChainExists(PrefService* prefs,
   return false;
 }
 
-bool IsNativeWalletEnabled() {
-  return base::FeatureList::IsEnabled(
-      brave_wallet::features::kNativeBraveWalletFeature);
-}
+// Returns the subset of custom_chain_ids that are custom chains
+std::vector<std::string> CustomChainsExist(
+    PrefService* prefs,
+    const std::vector<std::string>& custom_chain_ids,
+    mojom::CoinType coin) {
+  const base::Value::List* custom_list = GetCustomNetworksList(prefs, coin);
+  std::vector<std::string> existing_chain_ids;
 
-bool IsFilecoinEnabled() {
-  return base::FeatureList::IsEnabled(
-      brave_wallet::features::kBraveWalletFilecoinFeature);
-}
-
-bool IsDappsSupportEnabled() {
-  return base::FeatureList::IsEnabled(
-      brave_wallet::features::kBraveWalletDappsSupportFeature);
-}
-
-bool IsSolanaEnabled() {
-  return base::FeatureList::IsEnabled(
-      brave_wallet::features::kBraveWalletSolanaFeature);
-}
-
-bool IsNftPinningEnabled() {
-  return base::FeatureList::IsEnabled(
-      brave_wallet::features::kBraveWalletNftPinningFeature);
-}
-
-bool IsPanelV2Enabled() {
-  return base::FeatureList::IsEnabled(
-      brave_wallet::features::kBraveWalletPanelV2Feature);
-}
-
-bool ShouldCreateDefaultSolanaAccount() {
-  return IsSolanaEnabled() &&
-         brave_wallet::features::kCreateDefaultSolanaAccount.Get();
-}
-
-bool ShouldShowTxStatusInToolbar() {
-  return brave_wallet::features::kShowToolbarTxStatus.Get();
-}
-
-bool IsBitcoinEnabled() {
-  return base::FeatureList::IsEnabled(
-      brave_wallet::features::kBraveWalletBitcoinFeature);
-}
-
-std::vector<brave_wallet::mojom::NetworkInfoPtr>
-GetAllKnownNetworksForTesting() {
-  std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
-  for (const auto* network : GetKnownEthNetworks()) {
-    result.push_back(network->Clone());
+  if (!custom_list) {
+    return existing_chain_ids;
   }
-  return result;
+
+  for (const auto& it : *custom_list) {
+    if (auto chain_id = ExtractChainIdFromValue(it.GetIfDict())) {
+      for (const auto& custom_chain_id : custom_chain_ids) {
+        if (base::CompareCaseInsensitiveASCII(*chain_id, custom_chain_id) ==
+            0) {
+          existing_chain_ids.push_back(custom_chain_id);
+          break;
+        }
+      }
+    }
+  }
+  return existing_chain_ids;
 }
 
 std::string GenerateMnemonic(size_t entropy_size) {
@@ -1113,6 +1252,13 @@ std::vector<mojom::NetworkInfoPtr> GetAllKnownChains(PrefService* prefs,
     return result;
   }
 
+  if (coin == mojom::CoinType::BTC) {
+    for (const auto* network : GetKnownBitcoinNetworks()) {
+      result.push_back(network->Clone());
+    }
+    return result;
+  }
+
   NOTREACHED();
   return result;
 }
@@ -1149,6 +1295,17 @@ std::vector<std::string> GetAllKnownFilNetworkIds() {
   std::vector<std::string> network_ids;
   for (const auto* network : GetKnownFilNetworks()) {
     std::string network_id = GetKnownFilNetworkId(network->chain_id);
+    if (!network_id.empty()) {
+      network_ids.push_back(network_id);
+    }
+  }
+  return network_ids;
+}
+
+std::vector<std::string> GetAllKnownBtcNetworkIds() {
+  std::vector<std::string> network_ids;
+  for (const auto* network : GetKnownBitcoinNetworks()) {
+    std::string network_id = GetKnownBtcNetworkId(network->chain_id);
     if (!network_id.empty()) {
       network_ids.push_back(network_id);
     }
@@ -1230,6 +1387,15 @@ std::string GetKnownFilNetworkId(const std::string& chain_id) {
   return "";
 }
 
+std::string GetKnownBtcNetworkId(const std::string& chain_id) {
+  auto subdomain = GetBitcoinSubdomainForKnownChainId(chain_id);
+  if (!subdomain.empty()) {
+    return subdomain;
+  }
+
+  return "";
+}
+
 std::string GetKnownNetworkId(mojom::CoinType coin,
                               const std::string& chain_id) {
   if (coin == mojom::CoinType::ETH) {
@@ -1240,6 +1406,9 @@ std::string GetKnownNetworkId(mojom::CoinType coin,
   }
   if (coin == mojom::CoinType::FIL) {
     return GetKnownFilNetworkId(chain_id);
+  }
+  if (coin == mojom::CoinType::BTC) {
+    return GetKnownBtcNetworkId(chain_id);
   }
   return "";
 }
@@ -1335,15 +1504,6 @@ std::string GetDefaultBaseCurrency(PrefService* prefs) {
 void SetDefaultBaseCryptocurrency(PrefService* prefs,
                                   const std::string& cryptocurrency) {
   prefs->SetString(kDefaultBaseCryptocurrency, cryptocurrency);
-}
-
-mojom::CoinType GetSelectedCoin(PrefService* prefs) {
-  return static_cast<mojom::CoinType>(
-      prefs->GetInteger(kBraveWalletSelectedCoin));
-}
-
-void SetSelectedCoin(PrefService* prefs, mojom::CoinType coin) {
-  prefs->SetInteger(kBraveWalletSelectedCoin, static_cast<int>(coin));
 }
 
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
@@ -1572,6 +1732,8 @@ absl::optional<mojom::CoinType> GetCoinTypeFromPrefKey(const std::string& key) {
     return mojom::CoinType::FIL;
   } else if (key == kSolanaPrefKey) {
     return mojom::CoinType::SOL;
+  } else if (key == kBitcoinPrefKey) {
+    return mojom::CoinType::BTC;
   }
   NOTREACHED();
   return absl::nullopt;
@@ -1583,8 +1745,13 @@ std::string eTLDPlusOne(const url::Origin& origin) {
 }
 
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin) {
-  return mojom::OriginInfo::New(origin, origin.Serialize(),
-                                eTLDPlusOne(origin));
+  return mojom::OriginInfo::New(origin.Serialize(), eTLDPlusOne(origin));
+}
+
+std::string GenerateRandomHexString() {
+  std::vector<uint8_t> bytes(32);
+  crypto::RandBytes(bytes);
+  return base::HexEncode(bytes);
 }
 
 // Returns a string used for web3_clientVersion in the form of
@@ -1592,98 +1759,6 @@ mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin) {
 std::string GetWeb3ClientVersion() {
   return base::StringPrintf(
       "BraveWallet/v%s", version_info::GetBraveChromiumVersionNumber().c_str());
-}
-
-bool IsFilecoinKeyringId(const std::string& keyring_id) {
-  return keyring_id == mojom::kFilecoinKeyringId ||
-         keyring_id == mojom::kFilecoinTestnetKeyringId;
-}
-
-bool IsBitcoinKeyring(const std::string& keyring_id) {
-  return keyring_id == mojom::kBitcoinKeyring84Id ||
-         keyring_id == mojom::kBitcoinKeyring84TestId;
-}
-
-bool IsBitcoinNetwork(const std::string& network_id) {
-  return network_id == mojom::kBitcoinMainnet ||
-         network_id == mojom::kBitcoinTestnet;
-}
-
-bool IsValidBitcoinNetworkKeyringPair(const std::string& network_id,
-                                      const std::string& keyring_id) {
-  if (!IsBitcoinKeyring(keyring_id) || !IsBitcoinNetwork(network_id)) {
-    return false;
-  }
-
-  if (network_id == mojom::kBitcoinMainnet) {
-    return keyring_id == mojom::kBitcoinKeyring84Id;
-  } else if (network_id == mojom::kBitcoinTestnet) {
-    return keyring_id == mojom::kBitcoinKeyring84TestId;
-  }
-  NOTREACHED();
-  return false;
-}
-
-std::string GetFilecoinKeyringId(const std::string& network) {
-  if (network == mojom::kFilecoinMainnet) {
-    return mojom::kFilecoinKeyringId;
-  } else if (network == mojom::kFilecoinTestnet ||
-             network == mojom::kLocalhostChainId) {
-    return mojom::kFilecoinTestnetKeyringId;
-  }
-  NOTREACHED() << "Unsupported chain id for filecoin " << network;
-  return mojom::kFilecoinMainnet;
-}
-
-std::string GetFilecoinChainId(const std::string& keyring_id) {
-  if (keyring_id == mojom::kFilecoinKeyringId) {
-    return mojom::kFilecoinMainnet;
-  } else if (keyring_id == mojom::kFilecoinTestnetKeyringId) {
-    return mojom::kFilecoinTestnet;
-  }
-  NOTREACHED() << "Unsupported keyring id for filecoin";
-  return "";
-}
-
-mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
-  if (IsFilecoinKeyringId(keyring_id)) {
-    return mojom::CoinType::FIL;
-  } else if (keyring_id == mojom::kSolanaKeyringId) {
-    return mojom::CoinType::SOL;
-  } else if (IsBitcoinKeyring(keyring_id)) {
-    return mojom::CoinType::BTC;
-  }
-
-  DCHECK_EQ(keyring_id, mojom::kDefaultKeyringId);
-  return mojom::CoinType::ETH;
-}
-
-absl::optional<std::string> CoinTypeToKeyringId(
-    mojom::CoinType coin_type,
-    const absl::optional<std::string>& chain_id) {
-  switch (coin_type) {
-    case mojom::CoinType::ETH:
-      return mojom::kDefaultKeyringId;
-    case mojom::CoinType::SOL:
-      return mojom::kSolanaKeyringId;
-    case mojom::CoinType::FIL:
-      if (!chain_id.has_value()) {
-        return mojom::kFilecoinKeyringId;
-      }
-      return GetFilecoinKeyringId(*chain_id);
-    default:
-      NOTREACHED() << "Unsupported coin type";
-      return absl::nullopt;
-  }
-}
-
-GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain) {
-  if (chain.active_rpc_endpoint_index >= 0 &&
-      static_cast<size_t>(chain.active_rpc_endpoint_index) <
-          chain.rpc_endpoints.size()) {
-    return chain.rpc_endpoints[chain.active_rpc_endpoint_index];
-  }
-  return GURL();
 }
 
 }  // namespace brave_wallet

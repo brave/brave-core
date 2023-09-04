@@ -1,0 +1,7 @@
+Name: string_cache_codegen
+URL: https://crates.io/crates/string_cache_codegen
+Description: A codegen library for string-cache, developed as part of the Servo project.
+Version: 0.5.2
+Security Critical: yes
+License: Apache 2.0
+Revision: d317968441e57cbd6f5ab61a7975956a1edc772e

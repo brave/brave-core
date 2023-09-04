@@ -18,6 +18,9 @@ ChromePermissionMessageRule::GetAllRules() {
   auto rules = ChromePermissionMessageRule::GetAllRules_ChromiumImpl();
   rules.push_back(
       {IDS_EXTENSION_PROMPT_WARNING_IPFS, {APIPermissionID::kIpfs}, {}});
+  rules.push_back({IDS_EXTENSION_PROMPT_WARNING_IPFS_PRIVATE,
+                   {APIPermissionID::kIpfsPrivate},
+                   {}});
   return rules;
 }
 

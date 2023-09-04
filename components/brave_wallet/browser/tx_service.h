@@ -12,6 +12,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -21,12 +22,24 @@
 
 class PrefService;
 
+namespace base {
+class FilePath;
+class SequencedTaskRunner;
+}  // namespace base
+
+namespace value_store {
+class ValueStoreFactory;
+}  // namespace value_store
+
 namespace brave_wallet {
 
+class AccountResolverDelegate;
 class JsonRpcService;
 class BitcoinWalletService;
 class KeyringService;
 class TxManager;
+class TxStorageDelegate;
+class TxStorageDelegateImpl;
 class EthTxManager;
 class SolanaTxManager;
 class FilTxManager;
@@ -40,7 +53,9 @@ class TxService : public KeyedService,
   TxService(JsonRpcService* json_rpc_service,
             BitcoinWalletService* bitcoin_wallet_service,
             KeyringService* keyring_service,
-            PrefService* prefs);
+            PrefService* prefs,
+            const base::FilePath& context_path,
+            scoped_refptr<base::SequencedTaskRunner> ui_task_runner);
   ~TxService() override;
   TxService(const TxService&) = delete;
   TxService operator=(const TxService&) = delete;
@@ -61,7 +76,7 @@ class TxService : public KeyedService,
 
   // mojom::TxService
   void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
-                                const std::string& from,
+                                mojom::AccountIdPtr from,
                                 const absl::optional<url::Origin>& origin,
                                 const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;
@@ -79,7 +94,7 @@ class TxService : public KeyedService,
                           GetTransactionInfoCallback) override;
   void GetAllTransactionInfo(mojom::CoinType coin_type,
                              const absl::optional<std::string>& chain_id,
-                             const absl::optional<std::string>& from,
+                             mojom::AccountIdPtr from,
                              GetAllTransactionInfoCallback) override;
   void GetPendingTransactionsCount(
       GetPendingTransactionsCountCallback callback) override;
@@ -114,6 +129,9 @@ class TxService : public KeyedService,
   void Reset() override;
 
   // mojom::EthTxManagerProxy
+  void MakeFilForwarderTransferData(
+      const std::string& to_address,
+      MakeFilForwarderTransferDataCallback callback) override;
   void MakeERC20TransferData(const std::string& to_address,
                              const std::string& amount,
                              MakeERC20TransferDataCallback) override;
@@ -206,15 +224,15 @@ class TxService : public KeyedService,
       const std::string& signed_message,
       ProcessFilHardwareSignatureCallback callback) override;
 
+  TxStorageDelegate* GetDelegateForTesting();
+
  private:
+  friend class EthereumProviderImplUnitTest;
   friend class EthTxManagerUnitTest;
   friend class SolanaTxManagerUnitTest;
   friend class FilTxManagerUnitTest;
 
-  void OnGetAllTransactionInfo(GetPendingTransactionsCountCallback callback,
-                               size_t counter,
-                               mojom::CoinType coin,
-                               std::vector<mojom::TransactionInfoPtr> result);
+  void MigrateTransactionsFromPrefsToDB(PrefService* prefs);
 
   TxManager* GetTxManager(mojom::CoinType coin_type);
   EthTxManager* GetEthTxManager();
@@ -223,7 +241,12 @@ class TxService : public KeyedService,
 
   raw_ptr<PrefService> prefs_;  // NOT OWNED
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
+
+  scoped_refptr<value_store::ValueStoreFactory> store_factory_;
+  std::unique_ptr<TxStorageDelegateImpl> delegate_;
+  std::unique_ptr<AccountResolverDelegate> account_resolver_delegate_;
   base::flat_map<mojom::CoinType, std::unique_ptr<TxManager>> tx_manager_map_;
+
   mojo::RemoteSet<mojom::TxServiceObserver> observers_;
   mojo::ReceiverSet<mojom::TxService> tx_service_receivers_;
   mojo::ReceiverSet<mojom::EthTxManagerProxy> eth_tx_manager_receivers_;

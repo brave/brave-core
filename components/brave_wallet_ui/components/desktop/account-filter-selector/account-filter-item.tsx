@@ -4,13 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
-
-// Options
-import { AllAccountsOption } from '../../../options/account-filter-options'
 
 // Types
-import { WalletAccountType } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Styled Components
 import {
@@ -25,14 +21,18 @@ import {
   BigCheckMark
 } from '../network-filter-selector/style'
 
+// Hooks
+import { useAccountOrb } from '../../../common/hooks/use-orb'
+
 export interface Props {
   selected: boolean
-  account: WalletAccountType
-  onSelectAccount: (account?: WalletAccountType) => void
+  showCircle: boolean
+  account: BraveWallet.AccountInfo
+  onSelectAccount: (account?: BraveWallet.AccountInfo) => void
 }
 
 export const AccountFilterItem = (props: Props) => {
-  const { account, selected, onSelectAccount } = props
+  const { account, selected, showCircle, onSelectAccount } = props
 
   // Methods
   const onClickSelectAccount = React.useCallback(() => {
@@ -40,23 +40,16 @@ export const AccountFilterItem = (props: Props) => {
   }, [account, onSelectAccount])
 
   // Memos
-  const orb = React.useMemo(() => {
-    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [account.address])
+  const orb = useAccountOrb(account)
 
   return (
     <NetworkItemWrapper>
       <NetworkItemButton onClick={onClickSelectAccount}>
         <LeftSide>
-          {account.address !== AllAccountsOption.address && (
-            <AccountCircle orb={orb} />
-          )}
-          <NetworkName>
-            {account.name}
-          </NetworkName>
+          {showCircle && <AccountCircle orb={orb} />}
+          <NetworkName>{account.name}</NetworkName>
         </LeftSide>
-        {selected &&
-          <BigCheckMark />}
+        {selected && <BigCheckMark />}
       </NetworkItemButton>
     </NetworkItemWrapper>
   )

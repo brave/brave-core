@@ -19,7 +19,7 @@ extern const char kInlineTipTriggerHistogramName[];
 extern const char kToolbarButtonTriggerHistogramName[];
 extern const char kTipsSentHistogramName[];
 extern const char kAutoContributionsStateHistogramName[];
-extern const char kAdsEnabledDurationHistogramName[];
+extern const char kAdTypesEnabledHistogramName[];
 
 enum class AutoContributionsState {
   kNoWallet,
@@ -35,34 +35,21 @@ enum class PanelTrigger {
   kMaxValue = kNTP
 };
 
-enum class AdsState {
-  kNoWallet,
-  kRewardsDisabled,
-  kAdsDisabled,
-  kAdsEnabled,
-  kAdsEnabledThenDisabledRewardsOn,
-  kAdsEnabledThenDisabledRewardsOff,
-  kMaxValue = kAdsEnabledThenDisabledRewardsOff,
-};
-
 void RecordTipsSent(size_t tip_count);
 
 void RecordAutoContributionsState(bool ac_enabled);
 
 void RecordNoWalletCreatedForAllMetrics();
 
-enum class AdsEnabledDuration {
-  kNever,
-  kStillEnabled,
-  kHours,
-  kDays,
-  kWeeks,
-  kMonths,
-  kQuarters,
-  kMaxValue = kQuarters,
+enum class AdTypesEnabled {
+  kNone,
+  kNTP,
+  kNotification,
+  kAll,
+  kMaxValue = kAll,
 };
 
-void RecordAdsEnabledDuration(PrefService* prefs, bool ads_enabled);
+void RecordAdTypesEnabled(PrefService* prefs);
 
 class ConversionMonitor {
  public:

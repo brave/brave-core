@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.toolbar.top;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewStub;
 
@@ -15,9 +14,7 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
-import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
-import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ButtonData;
@@ -30,8 +27,6 @@ import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
-import org.chromium.chrome.features.start_surface.StartSurface;
-import org.chromium.chrome.features.start_surface.StartSurfaceConfiguration;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.resources.ResourceManager;
 
@@ -133,9 +128,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     }
 
     @Override
-    public void setTabSwitcherMode(
-            boolean inTabSwitcherMode, boolean showToolbar, boolean delayAnimation) {
-        super.setTabSwitcherMode(inTabSwitcherMode, showToolbar, delayAnimation);
+    public void setTabSwitcherMode(boolean inTabSwitcherMode) {
+        super.setTabSwitcherMode(inTabSwitcherMode);
 
         if (mBraveToolbarLayout instanceof ToolbarPhone) {
             mBraveToolbarLayout.setVisibility(

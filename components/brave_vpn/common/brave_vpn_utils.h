@@ -36,7 +36,10 @@ bool HasValidSubscriberCredential(PrefService* local_prefs);
 std::string GetSubscriberCredential(PrefService* local_prefs);
 bool HasValidSkusCredential(PrefService* local_prefs);
 std::string GetSkusCredential(PrefService* local_prefs);
-
+#if BUILDFLAG(IS_WIN)
+bool IsBraveVPNWireguardEnabled(PrefService* local_state);
+void MigrateWireguardFeatureFlag(PrefService* local_prefs);
+#endif
 }  // namespace brave_vpn
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_COMMON_BRAVE_VPN_UTILS_H_

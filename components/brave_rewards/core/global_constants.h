@@ -13,6 +13,7 @@ const char kWalletUphold[] = "uphold";
 const char kWalletUnBlinded[] = "blinded";
 const char kWalletBitflyer[] = "bitflyer";
 const char kWalletGemini[] = "gemini";
+const char kWalletZebPay[] = "zebpay";
 
 }  // namespace constant
 }  // namespace brave_rewards::internal

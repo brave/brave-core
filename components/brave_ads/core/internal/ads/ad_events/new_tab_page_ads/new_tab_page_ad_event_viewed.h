@@ -15,7 +15,7 @@ struct NewTabPageAdInfo;
 class NewTabPageAdEventViewed final
     : public AdEventInterface<NewTabPageAdInfo> {
  public:
-  void FireEvent(const NewTabPageAdInfo& ad) override;
+  void FireEvent(const NewTabPageAdInfo& ad, ResultCallback callback) override;
 };
 
 }  // namespace brave_ads

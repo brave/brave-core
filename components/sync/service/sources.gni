@@ -1,0 +1,21 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_components_sync_driver_sources = [
+  "//brave/components/sync/service/brave_sync_auth_manager.cc",
+  "//brave/components/sync/service/brave_sync_auth_manager.h",
+  "//brave/components/sync/service/brave_sync_service_impl.cc",
+  "//brave/components/sync/service/brave_sync_service_impl.h",
+  "//brave/components/sync/service/brave_sync_stopped_reporter.cc",
+  "//brave/components/sync/service/brave_sync_stopped_reporter.h",
+  "//brave/components/sync/service/sync_service_impl_delegate.h",
+]
+brave_components_sync_driver_deps = [
+  "//brave/components/brave_sync",
+  "//brave/components/brave_sync:crypto",
+  "//brave/components/brave_sync:network_time_helper",
+  "//brave/components/brave_sync:prefs",
+  "//brave/components/constants",
+]

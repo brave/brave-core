@@ -56,11 +56,13 @@ namespace {
 // initialized.
 void OnUnblockOnProfileCreation(base::RunLoop* run_loop,
                                 TorLauncherFactory* factory,
-                                Profile* profile) {
-  tor::TorProfileService* service =
-      TorProfileServiceFactory::GetForContext(profile);
-  service->SetTorLauncherFactoryForTest(factory);
+                                Browser* browser) {
   run_loop->Quit();
+
+  ASSERT_TRUE(browser);
+  tor::TorProfileService* service =
+      TorProfileServiceFactory::GetForContext(browser->profile());
+  service->SetTorLauncherFactoryForTest(factory);
 }
 
 Profile* SwitchToTorProfile(Profile* parent_profile,

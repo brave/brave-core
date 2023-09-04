@@ -481,9 +481,6 @@ bool ParseEthSignTypedDataParams(const std::string& json,
   }
 
   *address = *address_str;
-  if (!base::JSONWriter::Write(*message, message_out)) {
-    return false;
-  }
 
   auto* types = dict->FindDict("types");
   if (!types) {
@@ -498,14 +495,19 @@ bool ParseEthSignTypedDataParams(const std::string& json,
   if (!domain_hash) {
     return false;
   }
+
   auto primary_hash = helper->GetTypedDataPrimaryHash(*primary_type, *message);
   if (!primary_hash) {
     return false;
   }
-  *domain_hash_out = *domain_hash;
-  *primary_hash_out = *primary_hash;
 
-  *domain_out = std::move(*domain);
+  *domain_hash_out = domain_hash->first;
+  *domain_out = std::move(domain_hash->second);
+
+  *primary_hash_out = primary_hash->first;
+  if (!base::JSONWriter::Write(std::move(primary_hash->second), message_out)) {
+    return false;
+  }
 
   return true;
 }
@@ -705,7 +707,7 @@ bool ParseWalletWatchAssetParams(const std::string& json,
 
   *token = mojom::BlockchainToken::New(
       eth_addr.ToChecksumAddress(), *symbol /* name */, logo, true, false,
-      false, false, *symbol, decimals, true, "", "",
+      false, false, /* is_spam */ false, *symbol, decimals, true, "", "",
       base::ToLowerASCII(chain_id), coin);
   return true;
 }

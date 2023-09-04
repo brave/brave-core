@@ -174,6 +174,9 @@
       <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NEVER" desc="The name of the context menu item to never show bookmark bar">
         Never
       </message>
+      <message name="IDS_COPY_CLEAN_LINK_SHARING_HUB" desc="The name of the Sharing Hub's menu item to copy clean link">
+        Copy clean link
+      </message>
       <if expr="use_titlecase">
         <message name="IDS_BRAVE_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new Private window">
           New &amp;Private Window
@@ -208,26 +211,6 @@
       <message name="IDS_SHOW_BRAVE_WALLET" desc="The show Brave Wallet menu item (app menu)">
         Wallet
       </message>
-      <if expr="use_titlecase">
-        <message name="IDS_ADD_NEW_PROFILE" desc="The app menu item to create a new User Profile">
-          Create a New Profile
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_ADD_NEW_PROFILE" desc="The app menu item to create a new User Profile">
-          Create a new profile
-        </message>
-      </if>
-      <if expr="use_titlecase">
-        <message name="IDS_OPEN_GUEST_PROFILE" desc="The app menu item to create a new User Profile">
-          Open Guest Window
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_OPEN_GUEST_PROFILE" desc="The app menu item to create a new User Profile">
-          Open guest window
-        </message>
-      </if>
       <message name="IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS" desc="The history sub-menu item to show sessions from other devices">
         More…
       </message>
@@ -278,6 +261,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <!-- Extensions -->
       <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Brave. Asks the user if they want to install a particular extension or app.">
         Brave does not review extensions for security and safety. Install this extension only if you trust the developer.
+      </message>
+
+      <!-- Permissions -->
+      <message name="IDS_PERMISSIONS_BLUETOOTH_CHOOSER_PRIVACY_WARNING_TEXT" desc="Privacy warning text displayed right before Bluetooth devices list available to Pair.">
+        Granting access to a Bluetooth device will allow the site to read identifying and potentially sensitive information about you. Only allow sites you trust to access Bluetooth devices. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
       </message>
 
       <!-- Tor -->
@@ -356,6 +344,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_EXTENSION_PROMPT_WARNING_IPFS" desc="Permisson string for access to ipfs api.">
         Publish and retrieve files from IPFS
+      </message>
+      <message name="IDS_EXTENSION_PROMPT_WARNING_IPFS_PRIVATE" desc="Permisson string for access to private ipfs api.">
+        Read and modify IPFS settings
       </message>
       <message name="IDS_LOCATION_BAR_ONION_AVAILABLE" desc="Button in location bar to indicate onion available site to open a new tab in tor window.">
         .onion
@@ -587,20 +578,41 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL_FIRST_PART" desc="The text for finding the first sentence from above. Both should have the same translation.">
           Support independent search with better privacy.
         </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TITLE" desc="The text for the banner type title">
-          Support independent search with better privacy
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_TITLE" desc="The text for the banner type title">
+          Time to ditch big tech.
         </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_DESC" desc="The text for the banner type description">
-          Brave search doesn't track you, your queries, or your clicks.
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_DESC" desc="The text for the banner type description">
+          Brave doesn't track you, your queries, or your clicks. And it's 100% independent of Big Tech.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_TITLE" desc="The text for the banner type title">
+          Don't Google it. Can't Bing it. Just Brave it.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_DESC" desc="The text for the banner type description">
+          Brave doesn't track you, your queries, or your clicks. And it's 100% independent.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_TITLE" desc="The text for the banner type title">
+          Search and you will find. Privately.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_DESC" desc="The text for the banner type description">
+          Brave doesn't track you, your queries, or your clicks. And it's 100% independent of Big Tech.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_TITLE" desc="The text for the banner type title">
+          AI-infused search with a unique index.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_DESC" desc="The text for the banner type description">
+          Fully private, 100% independent, and with great AI features.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL" desc="The text for the try button in the promotion match">
           Try Brave Search
         </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON_TOOLTIP" desc="The tooltip text for the dismiss button in a promotion match">
-          Don't show this again
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON_LABEL" desc="The text for the dismiss button in a promotion match">
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_CLOSE_BUTTON_TOOLTIP" desc="The tooltip text for the dismiss button in a promotion match">
           Dismiss
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_MAYBE_LATER_BUTTON_TOOLTIP" desc="The tooltip text for the maybe later button in a promotion match">
+          Maybe later
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_MAYBE_LATER_BUTTON_LABEL" desc="The text for the maybe later button in a promotion match">
+          Maybe later
         </message>
         <message name="IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON" desc="Announcement when the dismiss button is focused.">
           Dismiss Brave search conversion, press Enter to remove this suggestion
@@ -622,14 +634,23 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           No thanks
         </message>
         <!-- obsolete system InfoBar -->
-        <if expr="is_win">
+        <if expr="is_win or is_macosx">
           <message name="IDS_OBSOLETE_SYSTEM_INFOBAR_DONT_SHOW_BUTTON" desc="The text for don't show again button">
             Don't show again
           </message>
+        </if>
+        <if expr="is_win">
           <message name="IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT" desc="The text for obsolete system confirm dialog">
             By clicking OK, you acknowledge that your installation of Brave will NOT receive critical security fixes until you update to Windows 10 or later. This warning will NOT show again.
           </message>
         </if>
+        <if expr="is_macosx">
+          <message name="IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT" desc="The text for obsolete system confirm dialog">
+            By clicking OK, you acknowledge that your installation of Brave will NOT receive critical security fixes until you update to macOS 10.15 or later. This warning will NOT show again.
+          </message>
+        </if>
+
+        <!-- Download bubble -->
         <message name="IDS_DOWNLOAD_BUBBLE_ITEM_CTX_MENU_REMOVE_ITEM" desc="Text for the download bubble context menu item for removing item from the list">
           Remove from list
         </message>
@@ -639,8 +660,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_SERVICE_BAT_ADS" desc="The bat ads utility process">
         Bat Ads Service
       </message>
-      <message name="IDS_UTILITY_PROCESS_LEDGER_NAME" desc="The utility process running ledger">
-        Bat Ledger Service
+      <message name="IDS_UTILITY_PROCESS_REWARDS_NAME" desc="The utility process running rewards">
+        Bat Rewards Service
       </message>
       <message name="IDS_BRAVE_ADS_NOTIFICATION_AD_CLOSE_BUTTON" desc="Text to be spoken for the notification ad close button">
         Close
@@ -649,10 +670,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Brave Notification Ad
       </message>
       <message name="IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_TITLE" desc="The notification title to show when an external wallet is connected">
-        &#x1F389; You're now earning for Brave Ads!
+        &#x1F389; You're now earning!
       </message>
       <message name="IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_BODY" desc="The notification body to show when an external wallet is connected">
-        For example, you earn whenever a notification like this appears on your screen. You don't need to click to earn.
+        You earn whenever a notification like this appears on your screen. You don't need to click to earn.
       </message>
       <message name="IDS_BRAVE_ADS_NOTIFICATION_CLICKED_SAME_AD_MULTIPLE_TIMES_TITLE" desc="The notification title to show when a user clicks an ad multiple times">
         You earn when a Brave Ads notification appears
@@ -772,43 +793,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if>
 
-      <!-- Speedreader -->
-      <if expr="enable_speedreader">
-        <message name="IDS_SPEEDREADER_ASK_ENABLE" desc="Label prompting user to enable Speedreader">
-          Do you want to turn on Speedreader?
-        </message>
-        <message name="IDS_SPEEDREADER_ENABLE_BUTTON" desc="Button to enable Speedreader">
-          Turn on Speedreader
-        </message>
-        <message name="IDS_SPEEDREADER_EXPLANATION" desc="Label to explain how Speedreader is different from other reader modes">
-          Articles automatically load in reader mode, saving you time.
-        </message>
-        <message name="IDS_SPEEDREADER_DISABLE_THIS_SITE" desc="Label to enable or disable speedreader per site">
-          Turn on/off reader mode just for this website. To turn off Speedreader for your entire browser profile, visit
-        </message>
-        <message name="IDS_ACCNAME_SPEEDREADER_DISABLE_THIS_SITE_TOGGLE" desc="Accessible text for the toggle to enable or disable speedreader per site">
-          Toggle to turn on/off reader mode just for this website.
-        </message>
-        <message name="IDS_PAGE_IS_DISTILLED" desc="Speedreader is enabled on this page">
-          in Speedreader
-        </message>
-        <message name="IDS_SPEEDREADER_ICON_TURN_OFF_READER_MODE" desc="Accessible text shown when a page is in Reader Mode">
-          Turn off reader mode
-        </message>
-        <message name="IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE" desc="Accessible text shown when a page can be distilled">
-          Turn on reader mode
-        </message>
-        <message name="IDS_SPEEDREADER_ICON_SPEEDREADER_SETTINGS" desc="Accessible text shown when a page is in Speedreader Mode">
-          Speedreader settings
-        </message>
-        <message name="IDS_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK" desc="Text of the link to show original page">
-          View original
-        </message>
-        <message name="IDS_SPEEDREADER_MINUTES_TEXT" desc="Text of the read time element">
-          min. read
-        </message>
-      </if>
-
       <!-- Stats -->
       <message name="IDS_BRAVE_STATS_USAGE_PING_SETTING" desc="Description that shows in settings for toggling stats usage pings">
         Automatically send daily usage ping to Brave
@@ -868,6 +852,21 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_BRAVE_IPFS_LEARN_MORE">
         Learn more about IPFS and privacy
+      </message>
+      <message name="IDS_BRAVE_IPFS_INFOBAR_TEXT" desc="Text that promotes turning on autoredirect to the configured gateway setting">
+        This page is available on the IPFS network. Would you like to load IPFS pages using Brave's built-in support (via ipfs:// or ipns://)?
+      </message>
+      <message name="IDS_BRAVE_IPFS_INFOBAR_APPROVE" desc="Turns on promoted setting">
+        Always
+      </message>
+      <message name="IDS_BRAVE_IPFS_INFOBAR_APPROVE_ONCE" desc="Redirects to the ipfs:// or ipns:// resource for once">
+        Only This Time
+      </message>
+      <message name="IDS_BRAVE_IPFS_INFOBAR_NEVER" desc="Closed infobar and disables it showing">
+        No Thanks
+      </message>
+      <message name="IDS_BRAVE_IPFS_INFOBAR_LINK" desc="Link redirects to the privacy description article">
+        Learn how this affects my privacy
       </message>
 
       <!-- Brave Wayback Machine -->
@@ -956,6 +955,18 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
 
       <!-- Brave VPN -->
       <if expr="enable_brave_vpn">
+        <message name="IDS_SETTINGS_VPN_PAGE_TITLE" desc="Title of the vpn settings page">
+          Brave VPN
+        </message>
+        <message name="IDS_SETTINGS_VPN_PAGE_USE_WIREGUARD_TITLE" desc="Title of the WireGuard option on the vpn settings page">
+          Use WireGuard protocol in Brave VPN
+        </message>
+        <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_CONNECTED" desc="Title of the WireGuard sub label on the vpn settings page when brave vpn connected">
+          This setting cannot be changed while Brave VPN is connected.
+        </message>
+        <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_DISCONNECTED" desc="Title of the WireGuard sub label on the vpn settings page when brave vpn connected">
+          Requires browser restart.
+        </message>
         <message name="IDS_SETTINGS_SHOW_VPN_BUTTON" desc="The label for showing vpn button in the toolbar">
           Show VPN button
         </message>
@@ -993,6 +1004,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           <message name="IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM" desc="The menu item for hiding vpn button in toolbar">
             Hide VPN Button in Toolbar
           </message>
+          <message name="IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for showing vpn tray icon in windows">
+            Show VPN Tray Icon
+          </message>
+          <message name="IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for hiding vpn tray icon in windows">
+            Hide VPN Tray Icon
+          </message>
           <message name="IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM" desc="The menu item for sending feedback">
             Send Feedback
           </message>
@@ -1006,6 +1023,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           </message>
           <message name="IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM" desc="The menu item for hiding vpn button in toolbar">
             Hide VPN button in toolbar
+          </message>
+          <message name="IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for showing vpn tray icon in windows">
+            Show VPN tray icon
+          </message>
+          <message name="IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for hiding vpn tray icon in windows">
+            Hide VPN tray icon
           </message>
           <message name="IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM" desc="The menu item for sending feedback">
             Send feedback
@@ -1099,6 +1122,128 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           </message>
         </if>
       </if>
+
+      <!-- Playlist -->
+      <if expr="enable_playlist_webui">
+          <message name="IDS_PLAYLIST_ADD_TO_PLAYLIST" desc="A title label on a bubble to add media files to Playlist">
+            Add to Playlist
+          </message>
+          <message name="IDS_PLAYLIST_MEDIA_FOUND_IN_THIS_PAGE" desc="A sub title in a bubble to add media files to playlist">
+            Media found in this page
+          </message>
+          <message name="IDS_PLAYLIST_DEFAULT_PLAYLIST_NAME" desc="A default playlist folder's name">
+            Play Later
+          </message>
+          <message name="IDS_PLAYLIST_ADDED_TO_PLAYLIST_FOLDER" desc="A label on a bubble that shows up when items were added from the current page">
+            Added to <ph name="PLAYLIST_FOLDER_NAME">$1<ex>Play Later</ex></ph>
+          </message>
+        <if expr="use_titlecase">
+          <message name="IDS_PLAYLIST_OPEN_IN_PLAYLIST" desc="A menu name to open added media files on Playlist">
+            Open in Playlist
+          </message>
+          <message name="IDS_PLAYLIST_CHANGE_FOLDER" desc="A menu name to move items to another folder">
+            Change Folder
+          </message>
+          <message name="IDS_PLAYLIST_REMOVE_FROM_PLAYLIST" desc="A menu name to remove items">
+            Remove from Playlist
+          </message>
+          <message name="IDS_PLAYLIST_MORE_MEDIA_IN_THIS_PAGE" desc="A menu name to see found media files">
+            More Media on This Page...
+          </message>
+          <message name="IDS_PLAYLIST_ADD_SELECTED" desc="A label on a button to add selected items">
+            Add Selected
+          </message>
+        </if>
+        <if expr="not use_titlecase">
+          <message name="IDS_PLAYLIST_OPEN_IN_PLAYLIST" desc="A menu name to open added media files on Playlist">
+            Open in playlist
+          </message>
+          <message name="IDS_PLAYLIST_CHANGE_FOLDER" desc="A menu name to move items to another folder">
+            Change folder
+          </message>
+          <message name="IDS_PLAYLIST_REMOVE_FROM_PLAYLIST" desc="A menu name to remove items">
+            Remove from Playlist
+          </message>
+          <message name="IDS_PLAYLIST_MORE_MEDIA_IN_THIS_PAGE" desc="A menu name to see found media files">
+            More media on this page...
+          </message>
+          <message name="IDS_PLAYLIST_ADD_SELECTED" desc="A label on a button to add selected items">
+            Add selected
+          </message>
+        </if>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_TITLE" desc="A window title for a dialog to move media to another folder">
+          Move Media
+        </message>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_NEW_PLAYLIST" desc="A label for a button to create a new playlist and move media to it">
+          New Playlist
+        </message>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_BACK" desc="A label for 'Back' button ">
+          Back
+        </message>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_OK" desc="A label for 'OK' button on move dialog">
+          Save
+        </message>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_CREATE_AND_MOVE" desc="A label for 'OK' button when creating a new playlist and moving media">
+          Create and move
+        </message>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_DESCRIPTION" desc="A description for move dialog">
+          Select a folder to move this media to
+        </message>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_PLAYLIST_NAME" desc="A title for new playlist's name textfield">
+          Playlist name
+        </message>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_SELECTED_ITEMS" desc="Shows how many items are about to be moved">
+          <ph name="NUM_ITEMS">$1<ex>4</ex></ph> items selected
+        </message>
+        <message name="IDS_PLAYLIST_REMOVE_PLAYLIST_DIALOG_TITLE" desc="Window title for a dialog to remove playlist">
+          Delete playlist
+        </message>
+        <message name="IDS_PLAYLIST_REMOVE_PLAYLIST_DIALOG_DESCRIPTION" desc="Warning message for a dialog to remove playlist">
+          Are you sure you want to delete this playlist and all its contents? This action cannot be undone.
+        </message>
+        <message name="IDS_PLAYLIST_REMOVE_PLAYLIST_DIALOG_OK" desc="A label for 'OK' button for a dialog to remove playlist" >
+          Delete
+        </message>
+        <message name="IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_TITLE" desc="Window title for a dialog to create a new Playlist folder" >
+          New playlist
+        </message>
+        <message name="IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_NAME_TEXTFIELD" desc="A lable for a textfield to specify a name for a new Paylist folder" >
+         Playlist name
+        </message>
+        <message name="IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_SELECTABLE_ITEMS" desc="A lable for a list of items from the default Playlist folder">
+          Add from your Play Later folder
+        </message>
+        <message name="IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_OK" desc="A label for 'OK' button for a dialog to create a new playlist">
+          Create
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_EDIT" desc="Context menu item on Playlist to enter editing mode">
+          Edit
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_SHARE" desc="Context menu item on Playlist to share it">
+          Share
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_KEEP_FOR_OFFLINE_PLAYING" desc="Context menu item on Playlist to cache all items">
+          Keep for offline playing
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_REMOVE_PLAYED_CONTENTS" desc="Context menu item on Playlist to clear cache for played contents">
+          Remove played contents
+        </message>
+       <message name="IDS_PLAYLIST_CONTEXT_MENU_RENAME_PLAYLIST" desc="Context menu item on Playlist to rename it">
+          Rename
+       </message>
+       <message name="IDS_PLAYLIST_CONTEXT_MENU_DELETE_PLAYLIST" desc="Context menu item on Playlist to delete it">
+          Delete playlist
+       </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_MOVE" desc="Context menu item on Playlist item to move it to another folder">
+          Move
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_REMOVE_OFFLINE_DATA" desc="Context menu item on Playlist item to clear cache for the item">
+          Remove offline data
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_REMOVE_FROM_PLAYLIST" desc="Context menu item on Playlist item to remove it from the folder">
+          Remove from playlist
+        </message>
+      </if> <!-- enable_playlist_webui -->
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

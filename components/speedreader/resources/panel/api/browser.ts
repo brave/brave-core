@@ -1,17 +1,38 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as SpeedreaderPanel from 'gen/brave/components/speedreader/common/speedreader_panel.mojom.m.js'
+import * as mojom from 'gen/brave/components/speedreader/common/speedreader_toolbar.mojom.m.js'
 
 // Provide access to all the generated types
-export * from 'gen/brave/components/speedreader/common/speedreader_panel.mojom.m.js'
+export * from 'gen/brave/components/speedreader/common/speedreader_toolbar.mojom.m.js'
 
-const factory = SpeedreaderPanel.PanelFactory.getRemote()
+interface API {
+  dataHandler: mojom.ToolbarDataHandlerRemote
+  eventsRouter: mojom.ToolbarEventsHandlerCallbackRouter
+}
 
-export const panelHandler = new SpeedreaderPanel.PanelHandlerRemote()
-export const panelDataHandler = new SpeedreaderPanel.PanelDataHandlerRemote()
+class ToolbarHandlerAPI implements API {
+  dataHandler: mojom.ToolbarDataHandlerRemote
+  eventsRouter: mojom.ToolbarEventsHandlerCallbackRouter
 
-factory.createInterfaces(
-  panelHandler.$.bindNewPipeAndPassReceiver(),
-  panelDataHandler.$.bindNewPipeAndPassReceiver())
+  constructor() {
+    this.dataHandler = new mojom.ToolbarDataHandlerRemote()
+    this.eventsRouter = new mojom.ToolbarEventsHandlerCallbackRouter()
+
+    const factory = mojom.ToolbarFactory.getRemote()
+    factory.createInterfaces(
+      this.dataHandler.$.bindNewPipeAndPassReceiver(),
+      this.eventsRouter.$.bindNewPipeAndPassRemote())
+  }
+}
+
+let apiInstance: API
+
+export default function getToolbarAPI() {
+  if (!apiInstance) {
+    apiInstance = new ToolbarHandlerAPI()
+  }
+  return apiInstance
+}

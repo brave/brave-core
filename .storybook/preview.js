@@ -9,6 +9,7 @@ import ThemeProvider from '../components/common/BraveCoreThemeProvider'
 
 // Fonts
 import '../ui/webui/resources/fonts/poppins.css'
+import '../ui/webui/resources/fonts/manrope.css'
 
 export const parameters = {
   backgrounds: {

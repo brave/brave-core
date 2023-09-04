@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/scoped_observation.h"
 #include "base/strings/stringprintf.h"
@@ -49,6 +50,7 @@ using ::testing::_;
 namespace {
 
 const char kTestDataDirectory[] = "request-otr-data";
+const char kRequestOTRResponseHeader[] = "Request-OTR";
 
 class TestObserver : public infobars::InfoBarManager::Observer {
  public:
@@ -56,6 +58,22 @@ class TestObserver : public infobars::InfoBarManager::Observer {
   ~TestObserver() override = default;
   MOCK_METHOD(void, OnInfoBarAdded, (infobars::InfoBar * infobar), (override));
 };
+
+std::unique_ptr<net::test_server::HttpResponse> RespondWithCustomHeader(
+    const net::test_server::HttpRequest& request) {
+  auto http_response = std::make_unique<net::test_server::BasicHttpResponse>();
+  http_response->set_code(net::HTTP_OK);
+  http_response->set_content_type("text/plain");
+  http_response->set_content("Well OK I guess");
+  if (request.relative_url.find("include-response-header-with-1") !=
+      std::string::npos) {
+    http_response->AddCustomHeader(kRequestOTRResponseHeader, "1");
+  } else if (request.relative_url.find("include-response-header-with-0") !=
+             std::string::npos) {
+    http_response->AddCustomHeader(kRequestOTRResponseHeader, "0");
+  }
+  return http_response;
+}
 
 }  // namespace
 
@@ -85,7 +103,7 @@ class RequestOTRComponentInstallerPolicyWaiter
     run_loop_.QuitWhenIdle();
   }
 
-  RequestOTRComponentInstallerPolicy* const component_installer_;
+  raw_ptr<RequestOTRComponentInstallerPolicy> const component_installer_;
   base::RunLoop run_loop_;
   base::ScopedObservation<RequestOTRComponentInstallerPolicy,
                           RequestOTRComponentInstallerPolicy::Observer>
@@ -114,7 +132,7 @@ class RequestOTRBrowserTestBase : public BaseLocalDataFilesBrowserTest {
   }
 
   void SetRequestOTRPref(RequestOTRService::RequestOTRActionOption value) {
-    browser()->profile()->GetPrefs()->SetInteger(prefs::kRequestOTRActionOption,
+    browser()->profile()->GetPrefs()->SetInteger(kRequestOTRActionOption,
                                                  static_cast<int>(value));
   }
 
@@ -291,7 +309,8 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
 
 // Check that a URL affected by both include and exclude rules is properly
 // excluded.
-IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, IncludeExclude) {
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
+                       URLThatIsIncludedAndExcludedIsExcluded) {
   ASSERT_TRUE(InstallMockExtension());
   SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAsk);
   GURL url1 = embedded_test_server()->GetURL("www.b.com", "/simple.html");
@@ -299,6 +318,19 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, IncludeExclude) {
   ASSERT_TRUE(IsShowingInterstitial());
   GURL url2 =
       embedded_test_server()->GetURL("notsensitive.b.com", "/simple.html");
+  NavigateTo(url2);
+  ASSERT_FALSE(IsShowingInterstitial());
+}
+
+// Check that URLs ending with a '.' are properly included or excluded.
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, URLThatEndsWithADot) {
+  ASSERT_TRUE(InstallMockExtension());
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAsk);
+  GURL url1 = embedded_test_server()->GetURL("www.b.com.", "/simple.html");
+  NavigateTo(url1);
+  ASSERT_TRUE(IsShowingInterstitial());
+  GURL url2 =
+      embedded_test_server()->GetURL("notsensitive.b.com.", "/simple.html");
   NavigateTo(url2);
   ASSERT_FALSE(IsShowingInterstitial());
 }
@@ -504,6 +536,41 @@ IN_PROC_BROWSER_TEST_F(RequestOTRServiceWorkerBrowserTest,
   NavigateTo(https_server_.GetURL("sensitive.a.com",
                                   "/workers/service_worker_setup.html"));
   ASSERT_TRUE(content::ExecJs(web_contents(), "setup();"));
+}
+
+// Define a subclass that sets up a special HTTP server that responds with
+// a custom header to trigger an OTR tab.
+class RequestOTRCustomHeaderBrowserTest : public RequestOTRBrowserTest {
+ public:
+  void SetUp() override {
+    content::SetupCrossSiteRedirector(embedded_test_server());
+    embedded_test_server()->RegisterRequestHandler(
+        base::BindRepeating(&RespondWithCustomHeader));
+    ASSERT_TRUE(embedded_test_server()->Start());
+    ExtensionBrowserTest::SetUp();
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(RequestOTRCustomHeaderBrowserTest,
+                       CustomHeaderShowsInterstitial) {
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAsk);
+
+  // No Request-OTR header -> do not show interstitial
+  GURL url = embedded_test_server()->GetURL("z.com", "/simple.html");
+  NavigateTo(url);
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // 'Request-OTR: 1' header -> show interstitial
+  url = embedded_test_server()->GetURL(
+      "z.com", "/simple.html?test=include-response-header-with-1");
+  NavigateTo(url);
+  ASSERT_TRUE(IsShowingInterstitial());
+
+  // 'Request-OTR: 0' header -> do not show interstitial
+  url = embedded_test_server()->GetURL(
+      "z.com", "/simple.html?test=include-response-header-with-0");
+  NavigateTo(url);
+  ASSERT_FALSE(IsShowingInterstitial());
 }
 
 }  // namespace request_otr

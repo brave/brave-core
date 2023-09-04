@@ -11,6 +11,7 @@
 
 #include "base/functional/callback.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 // TODO(apaymyshev): refactor utility methods to return absl::optional instead
@@ -46,6 +47,9 @@ bool ParseGetTokenAccountsByOwner(const base::Value& json_value,
                                   std::vector<SolanaAccountInfo>* accounts);
 
 absl::optional<bool> ParseIsBlockhashValid(const base::Value& json_value);
+
+absl::optional<std::vector<mojom::SPLTokenAmountPtr>> ParseGetSPLTokenBalances(
+    const base::Value& json_value);
 
 base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
 ConverterForGetAccountInfo();

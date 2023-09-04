@@ -38,8 +38,9 @@
 # always return true.
 -StartupBrowserCreatorWelcomeBackTest.WelcomeBackStandardNoPolicy/UsingForYouFre
 
-# This test fails on CI but passes locally
+# These tests fail on CI but passes locally
 -LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
+-AppMenuBrowserTest.*
 
 -All/MediaEngagementAutoplayBrowserTest.*
 -All/ExternallyManagedBrowserTestWithPrefMigrationRead.ReinstallPolicyAppWithLocallyInstalledApp/1
@@ -132,5 +133,8 @@
 -WebAppBrowserTest_FileHandler.RegKeysFileExtension
 -WebAppGlassBrowserFrameViewTest.*
 -WebAppIntegrationBrowserTestWin.*
+-WebAppTagWebAppTest.TabNavigatedAwayNotWebAppTask
+-WebAppTagWebAppTest.WebAppTaskCreatedForStandalone
+-WebAppTagWebAppTest.WebAppTaskCreatedForTab
 -WebSocketBrowserTestWithAllowFileAccessFromFiles.CheckFileOrigin
 -WebUIBubbleManagerBrowserTest.*

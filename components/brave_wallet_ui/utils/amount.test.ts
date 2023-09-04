@@ -283,6 +283,15 @@ describe('Amount class', () => {
       expect(Amount.empty().toNumber()).toBe(0)
       expect(new Amount('invalid value').toNumber()).toBe(0)
     })
+
+    it('should return the correct result for .toAbsoluteValue()', () => {
+      expect(new Amount('123').toAbsoluteValue().toNumber()).toBe(123)
+      expect(new Amount('-123').toAbsoluteValue().toNumber()).toBe(123)
+      expect(new Amount('0').toAbsoluteValue().toNumber()).toBe(0)
+      expect(new Amount('-0').toAbsoluteValue().toNumber()).toBe(0)
+      expect(Amount.empty().toAbsoluteValue().toNumber()).toBe(0)
+      expect(new Amount('invalid value').toAbsoluteValue().toNumber()).toBe(0)
+    })
   })
 
   describe('formatting tests', () => {

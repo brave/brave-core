@@ -10,12 +10,15 @@
 <translation id="5918095577778020936">Brave የእርስዎን የይለፍ ቃላት ወደ ውጭ መላክ ይፈልጋል። ይህንን ለመፍቀድ የWindows የይለፍ ቃልዎን ይተይቡ።</translation>
 <translation id="5468853758063275923">Brave የእርስዎ ነባሪ አሳሽ ነው</translation>
 <translation id="8522292744959221145">የእርስዎ የይለፍ ቃላት ከውሂብ ጥሰቶች እና ሌሎች የደህንነት ችግሮች ነፃ መሆናቸውን ለማረጋገጥ <ph name="BEGIN_LINK"/>በመለያ ወደ Brave ይግቡ<ph name="END_LINK"/>።</translation>
+<translation id="2627788872035182013">Brave ምናሌው ላይ ጠቅ ያድርጉ</translation>
+<translation id="8468770846533807490">{NUM_DEVICES,plural, =0{የBrave ቅጥያዎች ኤችአይዲ መሣሪያዎችን እየደረሱ ነበር}=1{የBrave ቅጥያዎች ኤችአይዲ መሣሪያን እየደረሱ ነው}one{የBrave ቅጥያዎች # ኤችአይዲ መሣሪያን እየደረሱ ነው}other{የBrave ቅጥያዎች # ኤችአይዲ መሣሪያዎችን እየደረሱ ነው}}</translation>
 <translation id="8541922081612557424">ስለBrave</translation>
-<translation id="3528799424770515097">{COUNT,plural, =1{አስተዳዳሪዎ Brave ለ1 ደቂቃ ጥቅም ላይ ሳይውል ሲቀር በራስ-ሰር ይዘጉታል። የአሰሳ ውሂብ ተሰርዟል። ይህ ታሪክን፣ ራስ-ሙላን እና ውርዶችን ሊያካትት ይችላል።}one{አስተዳዳሪዎ Brave ለ# ደቂቃ ጥቅም ላይ ሳይውል ሲቀር በራስ-ሰር ይዘጉታል። የአሰሳ ውሂብ ተሰርዟል። ይህ ታሪክን፣ ራስ-ሙላን እና ውርዶችን ሊያካትት ይችላል።}other{አስተዳዳሪዎ Brave ለ# ደቂቃዎች ጥቅም ላይ ሳይውል ሲቀር በራስ-ሰር ይዘጉታል። የአሰሳ ውሂብ ተሰርዟል። ይህ ታሪክን፣ ራስ-ሙላን እና ውርዶችን ሊያካትት ይችላል።}}</translation>
 <translation id="1203500561924088507">ሰለተጫኑ እናመሰግናለን። <ph name="BUNDLE_NAME"/>ን ከመጠቀምዎ በፊት አሳሽዎን እንደገና ማስጀመር አለብዎት።</translation>
 <translation id="4658574652223735641">የማህደረ ትውስታ ቆጣቢ Braveን የበለጠ ፈጣን አድርጎታል</translation>
+<translation id="8799570501820813406">ይህ ትር ቦዝኖ ሳለ Braveን ፈጣን እንደሆነ ለማቆየት ማህደረ ትውስታ ነፃ ተደርጓል። ይህን ጣቢያ ሁልጊዜ ከመቦዘን ማግለል መምረጥ ይችላሉ።</translation>
 <translation id="4798342026247191171">አዲሱን የBrave መገለጫዎ ያቀናብሩት</translation>
 <translation id="8132634101975074716">ወደ Brave ገብተዋል!</translation>
+<translation id="1586284627848250203">በBrave ለሙከራ ላይ እገዛ ያግኙ</translation>
 <translation id="5147525139567260139">የBrave ትር ያጋሩ</translation>
 <translation id="1530633922026945685">Brave የዙሪያዎ 3ል ካርታ መፍጠር እንዲችል ካሜራዎን የመድረስ ፈቃድ ያስፈልገዋል</translation>
 <translation id="4449148723378534338">በBrave ውስጥ ቁልፍ የግላዊነት እና የደህንነት ቁጥጥሮችን ይገምግሙ</translation>
@@ -50,9 +53,11 @@
 <translation id="8418845734693287262">የመለያ መግቢያ ዝርዝሮችዎ ጊዜ ያለፈባቸው ስለሆኑ ChromeOS ውሂብዎን ማስመር አልቻለም።</translation>
 <translation id="2576129394594491151">ይህ «<ph name="EXTENSION_NAME"/>» ቅጥያ Braveን ሲጀምሩት የሚታየውን ገፅ ቀይሮታል።</translation>
 <translation id="1248225940185478633">Brave ለዚህ ጣቢያ የካሜራ እና የማይክሮፎን ፈቃዶች ያስፈልጉታል</translation>
+<translation id="2451727308784734061">ወደ የይለፍ ቃል አስተዳዳሪ በፍጥነት ለመድረስ የእርስዎን አቋራጭ ይጠቀሙ። አቋራጭዎን ወደ ኮምፒውተርዎ መነሻ ማያ ገጽ ወይም የመተግበሪያ አስጀማሪ መውሰድ ይችላሉ።</translation>
 <translation id="6381750314821942592">Brave በቅርቡ ይዘጋል</translation>
 <translation id="6078442581074612226">በBrave ውስጥ</translation>
 <translation id="2485422356828889247">አራግፍ</translation>
+<translation id="70183448213529602">Brave ነባር የይለፍ ቃላትን ለመተካት እየሞከረ ነው። ይህን ለመፍቀድ የWindows የይለፍ ቃልዎን ይተይቡ።</translation>
 <translation id="7798069806040634998">Brave ፋይሎችን ለማውረድ የማከማቻ መዳረሻ ያስፈልገዋል</translation>
 <translation id="8447483940522230788">Brave አጋዥ</translation>
 <translation id="7291143854620707672">ይህን መገለጫ በሚጠቀሙበት ጊዜ የመነጨ ማንኛውም የBrave ውሂብ (እንደ የዕልባቶች፣ ታሪክ፣ የይለፍ ቃላት እና ሌሎች ቅንብሮች መፈጠር ያለ) በስራ መገለጫ አስተዳዳሪው ሊወገድ ይችላል። <ph name="LEARN_MORE"/></translation>
@@ -64,17 +69,17 @@
 <translation id="6791166902140255175">የBrave ትር</translation>
 <translation id="8372880274820509128">ለተጨማሪ ደህንነት ሲባል Brave ውሂብዎን ያመሰጥረዋል።</translation>
 <translation id="2770231113462710648">ነባሪ አሳሽን ወደዚህ ቀይር፦</translation>
+<translation id="1187986649024576560">ይህ ቅጥያ ተንኮል አዘል ዌርን ይዟል እና ደህንነቱ የተጠበቀ አይደለም። የግል መረጃዎን ጨምሮ ከእንግዲህ እርስዎ በሚጎበኟቸው ጣቢያዎች ላይ ያለዎን ውሂብ ማየት እና መለወጥ እንዳይችል ከBrave ያስወግዱት።</translation>
 <translation id="2799223571221894425">ዳግም አስጀምር</translation>
 <translation id="3783547330001921298">ይህ አዲስ የBrave መገለጫ ለ<ph name="USER_EMAIL_ADDRESS"/> ይፈጥራል</translation>
 <translation id="777113543093865885">ከBrave አስወግድ...</translation>
-<translation id="5265419033369521352">በBrave ላይ ደህንነትዎን ይጠብቃል እና በመለያ በገቡባቸው ሌሎች የBrave መተግበሪያዎች ላይ ደህንነትዎን ለማሻሻል ስራ ላይ ሊውል ይችላል።</translation>
+<translation id="5265419033369521352">በBrave ላይ ደህንነትዎን ይጠብቃል እና በመለያ በገቡባቸው ሌሎች የBrave መተግበሪያዎች ላይ ደህንነትዎን ለማሻሻል ሥራ ላይ ሊውል ይችላል።</translation>
 <translation id="2885378588091291677">ተግባር መሪ</translation>
 <translation id="2176825726964012531">ስለ &amp;Brave</translation>
 <translation id="2915996080311180594">በኋላ ዳግም አስነሳ</translation>
 <translation id="2928420929544864228">ጭነት ተጠናቅቋል።</translation>
 <translation id="8208853227947884571">Brave የተዘመነ ነው</translation>
 <translation id="5122472867956731189">አንድ ጣቢያ የእርስዎን የይለፍ ቃል ለመስረቅ ከሞከረ ወይም ጎጂ ፋይል ሲያወርዱ Brave እንዲሁም የገጽ ይዘት ቢትስንም ጨምሮ ዩአርኤሎችን ወደ የጥንቃቄ አሰሳ ሊልክ ይችላል</translation>
-<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave ከኤችአይዲ መሣሪያ ጋር ተገናኝቷል}one{Brave ከኤችአይዲ መሣሪያ ጋር ተገናኝቷል}other{Brave ከኤችአይዲ መሣሪያዎች ጋር ተገናኝቷል}}</translation>
 <translation id="8755404239607088219">Brave የእርስዎን የይለፍ ቃላት መፈተሽ አይችልም። ቆይተው እንደገና ይሞክሩ።</translation>
 <translation id="8880183781256147665">ወደ Brave በማከል ላይ...</translation>
 <translation id="3038232873781883849">ለመጫን በመጠበቅ ላይ...</translation>
@@ -88,7 +93,6 @@
 <translation id="2585240446624043880">Brave የውሂብ አቃፊው ላይ ማንበብ እና መጻፍ አይችልም፦
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
-<translation id="6823651909636163674">Brave እርስዎ በሚፈልጉት መንገድ እንዲሠራ ይህ መመሪያ ምርጫዎችዎን እንዲረዱ ያግዝዎታል</translation>
 <translation id="2423637317249323944">Brave ስሪት <ph name="PRODUCT_VERSION"/> ተጭኗል</translation>
 <translation id="3286538390144397061">አሁን ዳግም አስጀምር</translation>
 <translation id="2339258256897053758">የBrave ኤ ፒ አይ ቁልፎች ይጎድላሉ። አንዳንድ የBrave ተግባራት ይሰናከላሉ።</translation>
@@ -123,14 +127,17 @@
 <translation id="2337217774418822704">የእርስዎ መለያ የሚተዳደረው በ<ph name="MANAGER_NAME"/> ነው። የእርስዎ አስተዳዳሪ ይህንን የBrave አሳሽ መገለጫ እና እንደ እልባቶች፣ ታሪክ እና የይለፍ ቃላት ያሉ ውሂቡን መመልከት እና ማርትዕ ይችላሉ።</translation>
 <translation id="8090497651549769448">Brave የይለፍ ቃላትን ለመቅዳት እየሞከረ ነው። ይህንን ለመፍቀድ የWindows የይለፍ ቃልዎን ይተይቡ።</translation>
 <translation id="7133557675784723900">Brave ይህ ፋይል አደገኛ ሊሆን ስለሚችል እንዲቃኙት ይመክራል</translation>
+<translation id="1311808042904310985">ስለ Brave ለሙከራ</translation>
 <translation id="1152920704813762236">ስለChromeOS</translation>
 <translation id="3703994572283698466">ChromeOS እና <ph name="BEGIN_LINK_LINUX_OSS"/>የLinux ግንባታ ምህዳር<ph name="END_LINK_LINUX_OSS"/> ሊሠሩ የቻሉት በተጨማሪ <ph name="BEGIN_LINK_CROS_OSS"/>የክፍት ምንጭ ሶፍትዌር<ph name="END_LINK_CROS_OSS"/> ነው።</translation>
 <translation id="6056473803837713617"><ph name="BEGIN_LINK"/>የአሁኖቹን ቅንብሮች<ph name="END_LINK"/> ሪፖርት በማድረግ Brave የተሻለ እንዲሆን ያግዙ</translation>
 <translation id="4050175100176540509">አስፈላጊ የደህንነት ማሻሻያዎች እና አዲስ ባህሪያት በቅርብ ጊዜው ስሪቱ ላይ ይገኛሉ።</translation>
+<translation id="4055805654398742145">የይለፍ ቃል አስተዳዳሪ</translation>
+<translation id="6217792792122501564">{COUNT,plural, =1{ድርጅትዎ Brave ለ1 ደቂቃ ጥቅም ላይ ሳይውል ሲቀር በራስ ሰር ይዘጋዋል። የአሰሳ ውሂብ ተሰርዟል። ይህ ታሪክን፣ ራስ-ሙላን እና ውርዶችን ሊያካትት ይችላል።}one{ድርጅትዎ Brave ለ# ደቂቃ ጥቅም ላይ ሳይውል ሲቀር በራስ ሰር ይዘጋዋል። የአሰሳ ውሂብ ተሰርዟል። ይህ ታሪክን፣ ራስ-ሙላን እና ውርዶችን ሊያካትት ይችላል።}other{ድርጅትዎ Brave ለ# ደቂቃዎች ጥቅም ላይ ሳይውል ሲቀር በራስ ሰር ይዘጋዋል። የአሰሳ ውሂብ ተሰርዟል። ይህ ታሪክን፣ ራስ-ሙላን እና ውርዶችን ሊያካትት ይችላል።}}</translation>
 <translation id="4148957013307229264">በመጫን ላይ...</translation>
 <translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - በአውታረ መረብ ወደ መለያ መግባት - Brave</translation>
 <translation id="2871190378186459992">ለBrave ምርጥ መተግበሪያዎችን፣ ጨዋታዎችን፣ ቅጥያዎችን እና ገጽታዎችን ያግኙ።</translation>
-<translation id="5757460455745382269">ይህ ቋንቋ የBrave ዩአይን ለማሳየት ስራ ላይ ይውላል</translation>
+<translation id="5757460455745382269">ይህ ቋንቋ የBrave ዩአይን ለማሳየት ሥራ ላይ ይውላል</translation>
 <translation id="4222932583846282852">በመሰረዝ ላይ...</translation>
 <translation id="1853997773668795891">የBrave ውሂዎ ከዚህ መለያ ጋር ይገናኝ?</translation>
 <translation id="3262506503470845422">Brave ላይ እገዛ ያግኙ</translation>
@@ -142,6 +149,7 @@
 <translation id="4065288863231444640">Brave በበስተጀርባ ላይ ያሂድ</translation>
 <translation id="8148611988012584308">Braveን ያብጁ እና ይቆጣጠሩ</translation>
 <translation id="4427306783828095590">የተሻሻለ ጥበቃ ማስገር እና ተንኮል-አዘል ዌር ለማገድ የበለጠ ይሠራል</translation>
+<translation id="6786534271003695094">ስለ Brave ለሙከራ</translation>
 <translation id="7084397798469173252">እንኳን ወደ Brave በደህና መጡ፤ አዲስ የአሳሽ መስኮት ተከፍቷል</translation>
 <translation id="2633397153656205379">Brave አልተዘመነም፣ የሆነ ችግር ተፈጥሯል። <ph name="BEGIN_LINK"/>የBrave ዝማኔ ችግሮችን እና ያልተሳኩ ዝማኔዎችን ያስተካክሉ።<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">በአዲሱ የBrave መገለጫ ውስጥ ይቀጥል?</translation>
@@ -161,11 +169,11 @@
 <translation id="215320507915280336">ይህ በ Brave ፍለጋ ውስጥ ጥቅም ላይ ጋር ተመሳሳይ የፊደል አራሚ ይጠቀማል። በአሳሽ ውስጥ የሚተይቡት ጽሁፍ ወደ Brave ይላካል። ይህን ባህሪ ሁልጊዜ በቅንብሮች ውስጥ መለወጥ ይችላሉ።</translation>
 <translation id="1912973375560256099">Brave ለmDNS ትራፊክ ለመፍቀድ የውስጥ ደንብ።</translation>
 <translation id="711601904575862069">&amp;Braveን ለማዘመን ዳግም ያስነሱት</translation>
+<translation id="2778869200975718483">{COUNT,plural, =1{ድርጅትዎ Brave ለ1 ደቂቃ ጥቅም ላይ ሳይውል ሲቀር በራስ ሰር የአሰሳ ውሂብን በራስ ሰር ይሰርዛል። ይህ ታሪክን፣ ራስ-ሙላን እና ውርዶችን ሊያካትት ይችላል። ነባር ትሮችዎ እንደተከፈቱ ይቆያሉ።}one{ድርጅትዎ Brave ለ# ደቂቃ ጥቅም ላይ ሳይውል ሲቀር በራስ ሰር የአሰሳ ውሂብን በራስ ሰር ይሰርዛል። ይህ ታሪክን፣ ራስ-ሙላን እና ውርዶችን ሊያካትት ይችላል። ነባር ትሮችዎ እንደተከፈቱ ይቆያሉ።}other{ድርጅትዎ Brave ለ# ደቂቃዎች ጥቅም ላይ ሳይውል ሲቀር በራስ ሰር የአሰሳ ውሂብን በራስ ሰር ይሰርዛል። ይህ ታሪክን፣ ራስ-ሙላን እና ውርዶችን ሊያካትት ይችላል። ነባር ትሮችዎ እንደተከፈቱ ይቆያሉ።}}</translation>
 <translation id="8797356639448065696">Brave በጀርባ ሁነታ ላይ ነው።</translation>
 <translation id="7406627712452599344">እንግዳዎች ማንኛውንም ነገር ወደኋላ ሳይተዉ Brave መጠቀም ይችላሉ።</translation>
 <translation id="5952898964075639679">እራስዎን በBrave ላይ ያክሉ</translation>
 <translation id="8112581848375017126">Brave ጣቢያዎች ያነሰ መረጃዎን ተጠቅመው ተመሳሳይ የአሰሳ ተሞክሮ እንዲያቀርቡ የሚያስችሏቸውን አዳዲስ ባህሪያትን እያሰሰ ነው።</translation>
-<translation id="101136574863710793">{COUNT,plural, =1{አስተዳዳሪዎ Brave ለ1 ደቂቃ ጥቅም ላይ ሳይውል ሲቀር በራስ-ሰር ይዘጉታል።}one{አስተዳዳሪዎ Brave ለ# ደቂቃ ጥቅም ላይ ሳይውል ሲቀር በራስ-ሰር ይዘጉታል።}other{አስተዳዳሪዎ Brave ለ# ደቂቃዎች ጥቅም ላይ ሳይውል ሲቀር በራስ-ሰር ይዘጉታል።}}</translation>
 <translation id="9078804073692109646">ምንም የተቀመጡ የይለፍ ቃላት የሉም። እርስዎ የይለፍ ቃላትዎን ሲያስቀምጧቸው Brave መፈተሽ ይችላል።</translation>
 <translation id="729580998737807583"><ph name="EXISTING_USER"/> አስቀድመው ወደዚህ የBrave መገለጫ ገብተዋል። ይህ አዲስ የBrave መገለጫ ለ<ph name="USER_EMAIL_ADDRESS"/> ይፈጥራል</translation>
 <translation id="8586264863973514035">የእርስዎን ለውጦች ተፈጻሚ ለማድረግ፣ Braveን ዳግም ያስጀምሩ</translation>
@@ -195,6 +203,7 @@
 <translation id="5924017743176219022">ከበይነመረቡ ጋር በመገናኘት ላይ...</translation>
 <translation id="5941711191222866238">አሳንስ</translation>
 <translation id="3613110494561632737">Brave በዘፈቀደ እርስዎን በገቢር ሙከራ ካስቀመጠ የአሰሳ ታሪክዎ በሚያዩዋቸው ማስታወቂያዎች እና ከታች በተገመተው ዝንባሌዎች ላይ ተጽዕኖ ይኖረዋል። የእርስዎን ግላዊነት ለመጠበቅ Brave በየወሩ ዝንባሌዎችዎን ይሰርዛል። እርስዎ ካላስወገዷቸው በስተቀር ዝንባሌዎች ይታደሳሉ።</translation>
+<translation id="4357808717322635817">{COUNT,plural, =1{ድርጅትዎ Brave ለ1 ደቂቃ ጥቅም ላይ ሳይውል ሲቀር በራስ ሰር ይዘጋዋል።}one{ድርጅትዎ Brave ለ# ደቂቃ ጥቅም ላይ ሳይውል ሲቀር በራስ ሰር ይዘጋዋል።}other{ድርጅትዎ Brave ለ# ደቂቃዎች ጥቅም ላይ ሳይውል ሲቀር በራስ ሰር ይዘጋዋል።}}</translation>
 <translation id="3598551856834560515">ስምረትን ለመጀመር Braveን ያዘምኑ</translation>
 <translation id="5225261774087485064">የሚጎበኟቸው ጣቢያዎች ልምድዎን ግላዊነት ማላበስ እንዲችሉ እርስዎ የሚፈልጓቸውን ነገሮች ማስታወስ የተለመደ ነው። እንዲሁም ጣቢያዎች ስለዝንባሌዎችዎ መረጃን በBrave አማካኝነት ማከማቸት ይችላሉ።</translation>
 <translation id="6003112304606738118">በማውረድ ላይ... <ph name="HOURS"/> ሰዓት(ታት) ይቀራል(ሉ)</translation>
@@ -229,15 +238,18 @@
 <translation id="6327105987658262776">ምንም ዝማኔ የለም።</translation>
 <translation id="1819119299840995223">ሌላ ሥርዓተ ክወና በBrave ላይ በሂደት ላይ ነው። እባክዎ ቆይተው እንደገና ይሞክሩ።</translation>
 <translation id="8616874628011103667">አሁን Braveን ከBrave መለያዎ ጋር እና በተጋሩ ኮምፒውተሮች ላይ መጠቀም ይበልጥ ቀላል ነው።</translation>
-<translation id="6365489425007284765">{COUNT,plural, =1{አስተዳዳሪዎ የአሰሳ ውሂብን ለ1 ደቂቃ ጥቅም ላይ ሳይውል ሲቀር በራስ-ሰር ይሰርዛሉ። ይህ ታሪክን፣ ራስ-ሙላን እና ውርዶችን ሊያካትት ይችላል። ነባር ትሮችዎ እንደተከፈቱ ይቆያሉ።}one{አስተዳዳሪዎ የአሰሳ ውሂብን ለ# ደቂቃ ጥቅም ላይ ሳይውል ሲቀር በራስ-ሰር ይሰርዛሉ። ይህ ታሪክን፣ ራስ-ሙላን እና ውርዶችን ሊያካትት ይችላል። ነባር ትሮችዎ እንደተከፈቱ ይቆያሉ።}other{አስተዳዳሪዎ የአሰሳ ውሂብን ለ# ደቂቃዎች ጥቅም ላይ ሳይውል ሲቀር በራስ-ሰር ይሰርዛሉ። ይህ ታሪክን፣ ራስ-ሙላን እና ውርዶችን ሊያካትት ይችላል። ነባር ትሮችዎ እንደተከፈቱ ይቆያሉ።}}</translation>
 <translation id="335632367599648646">እርግጠኛ ነዎት Braveን ማራገፍ ይፈልጋሉ?</translation>
+<translation id="6375219077595103062">ለየሚስጥር ቁልፍ አስተዳዳሪ አቋራጭ ያክሉ</translation>
 <translation id="4867486350347355096"><ph name="BEGIN_BOLD"/>ይህን ውሂብ እንዴት እንደምንጠቀምበት፦<ph name="END_BOLD"/> Brave የእርስዎን ዝንባሌዎች ሊገምት ይችላል። በኋላ ላይ እርስዎ የሚጎበኙት ጣቢያ እርስዎ የሚያዩዋቸውን ማስታወቂያዎች ግላዊነት ለማላበስ Brave ዝንባሌዎችዎን እንዲያይ ሊጠይቅ ይችላል።</translation>
 <translation id="6373767849825830651">Brave ድረ-ገጾችን እና መተግበሪያዎችን እጅግ በጣም ፈጣን በሆነ ፍጥነት የሚያሄድ ድር አሳሽ ነው። ፈጣን፣ የረጋ እና ለመጠቀም ቀላል ነው። Brave ውስጥ አብሮ በተሰራላቸው የተንኮል-አዘል ሶፍትዌር እና የማስገሪያ መከላከያዎች አማካኝነት ደህንነትዎ ይበልጥ በተጠበቀ ሁኔታ ድሩን ያስሱ።</translation>
 <translation id="2139300032719313227">ChromeOSን ዳግም አስጀምር</translation>
 <translation id="1684121725014454063">ወደ Brave መገለጫዎች እንኳን በደህና መጡ</translation>
 <translation id="2675662665675552980">እንዲሁም Braveን ሲጀምሩት የሚታየውን ገፅ ይቆጣጠራል።</translation>
+<translation id="648319183876919572">የተሻሻለ የደህንነት አሰሳ እርስዎን ከአደገኛ ድር ጣቢያዎች እና ውርዶች ለመጠበቅ ይበልጥ ያደርጋል</translation>
 <translation id="5590013613412457132">Braveን ያራግፉ</translation>
+<translation id="3617744907966785605">ድርጅትዎ Brave ለ<ph name="TIMEOUT_DURATION"/> ያህል ሥራ ላይ ሳይውል ይዘጋዋል። የአሰሳ ውሂብ ተሰርዟል። ይህ ታሪክን፣ ራስ-ሙላን እና ውርዶችን ሊያካትት ይችላል።</translation>
 <translation id="8646609321956191980">እያንዳንዱ መገለጫ እንደ ዕልባቶች፣ ታሪክ፣ የይለፍ ቃላት እና ሌሎችም ያሉ የራሱ የBrave መረጃዎችን ይይዛል</translation>
+<translation id="2535436634051789953">ከሌላ የBrave መገለጫ የይለፍ ቃላትን ለማየት መቀየር ይችላሉ</translation>
 <translation id="2312399718665761438">የሥርዓተ ፊደል አጻጻፍ ስህተቶችን ለማስተካከል፣ Brave እርስዎ በጽሁፍ መስኮች ውስጥ የሚተይቡትን ጽሁፍ ወደ Brave ይልካል</translation>
 <translation id="3507835409099344374">ወደ የBrave ማሳወቂያ ቅንብሮች ይሂዱ</translation>
 <translation id="9156965752763025780">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ።</translation>
@@ -246,7 +258,7 @@
 <translation id="6676384891291319759">በይነመረብን ተዳረስ</translation>
 <translation id="1363996462118479832">በመለያ ሲገባ በነበረ ስህተት ምክንያት &amp;ChromeOS ውሂብዎን ማስመር አልቻለም።</translation>
 <translation id="1257247502847251159">Brave ለዚህ ጣቢያ የማይክሮፎን ፈቃድ ያስፈልገዋል</translation>
-<translation id="1489465648257900784">መገለጫዎ ከአዲስ የBrave ስሪት ስለሆነ የመጣው ስራ ላይ ሊውል አይችልም።
+<translation id="1489465648257900784">መገለጫዎ ከአዲስ የBrave ስሪት ስለሆነ የመጣው ሥራ ላይ ሊውል አይችልም።
 
 አንዳንድ ባህሪያት ላይገኙ ይችላሉ። እባክዎ የተለየ የመገለጫ አቃፊ ይግለጹ ወይም ይበልጥ አዲስ የሆነ የBrave ስሪት ይጠቀሙ።</translation>
 <translation id="7870748924073900361">የማህደረ ትውስታ ቆጣቢ Braveን ፈጣን አድርጎታል</translation>
@@ -265,12 +277,13 @@
 <translation id="126871877963043118">ሙከራዎች ሲበሩ የማስታወቂያ ልኬት እርስዎ የሚጎበኟቸው ጣቢያዎች የማስታወቂያዎቻቸውን አፈጻጸም የሚለካው ጣቢያ የሚያግዘውን መረጃ ከBrave እንዲጠይቁ ያስችላቸዋል። የማስታወቂያ ልኬት በተቻለ መጠን ትንሽ መረጃን በጣቢያዎች መካከል በማስተላለፍ የጣቢያ ተሻጋሪ ክትትልን ይገድባል።</translation>
 <translation id="4392161457256085190">በኋላ ላይ እርስዎ የሚጎበኙት ጣቢያ እርስዎ የሚያዩዋቸውን ማስታወቂያዎች ግላዊነት ለማላበስ Brave ዝንባሌዎችዎን እንዲያይ ሊጠይቅ ይችላል። Brave እስከ 3 ዝንባሌዎች ድረስ ማጋራት ይችላል።</translation>
 <translation id="6418340404893954563">ደካማ የይለፍ ቃላት ለመገመት ቀላል ናቸው። Brave <ph name="BEGIN_LINK"/> ለእርስዎ ጠንካራ የይለፍ ቃላትን እንዲፈጥር እና እንዲያስታውስ<ph name="END_LINK"/> ይፍቀዱ።</translation>
-<translation id="7164968566146897003">ሲበራ Brave ገቢር ካልሆኑ ትሮች ማህደረ ትውስታን ነጻ ያደርጋል። ይህ ገቢር ለሆኑ ትሮች እና ለሌሎች መተግበሪያዎች ተጨማሪ የኮምፒውተር ግብዓቶችን ይሰጣቸዋል እና Braveን ፈጣን አድርጎ ያቆየዋል። የእርስዎ ገቢር ያልሆኑ ትሮች ተመልሰው ወደ እነሱ ሲሄዱ በራስ-ሰር እንደገና ገቢር ይሆናሉ።</translation>
+<translation id="7164968566146897003">ሲበራ Brave ገቢር ካልሆኑ ትሮች ማህደረ ትውስታን ነፃ ያደርጋል። ይህ ገቢር ለሆኑ ትሮች እና ለሌሎች መተግበሪያዎች ተጨማሪ የኮምፒውተር ግብዓቶችን ይሰጣቸዋል እና Braveን ፈጣን አድርጎ ያቆየዋል። የእርስዎ ገቢር ያልሆኑ ትሮች ተመልሰው ወደ እነሱ ሲሄዱ በራስ-ሰር እንደገና ገቢር ይሆናሉ።</translation>
 <translation id="3453763134178591239">የChromeOS ውል</translation>
 <translation id="3335606533094650083">Brave ለዚህ ጣቢያ የእርስዎን ማይክሮፎን ለመድረስ ፈቃድ ያስፈልገዋል</translation>
 <translation id="7025789849649390912">መጫኑ ቆሟል።</translation>
 <translation id="1705567146636171298">Braveን አዘምን</translation>
 <translation id="5499063270485366718">አንድ ምስል ጠቃሚ መግለጫ ከሌለው Brave ለእርስዎ አንድ ለማቅረብ ይሞክራል። ዝርዝር መግለጫዎችን ለመፍጠር፣ ምስሎች ወደ Brave ይላካሉ።</translation>
+<translation id="2332301637111071062">ድርጅትዎ የBrave ውሂብን ለ<ph name="TIMEOUT_DURATION"/> ያህል ሥራ ላይ ሳይውል ይሰርዘዋል። ይህ ታሪክን፣ ራስ-ሙላን እና ውርዶችን ሊያካትት ይችላል።</translation>
 <translation id="1008530050039597147">Brave ለዚህ ጣቢያ የካሜራ ፈቃድ ያስፈልገዋል</translation>
 <translation id="1197672524850678392">Braveን ማስጀመር አልተቻለም። እንደገና ይሞክሩ።</translation>
 <translation id="3405035915691517126">Brave የእርስዎን የይለፍ ቃላት መፈተሽ አይችልም። ከ24 ሰዓቶች በኋላ እንደገና ይሞክሩ።</translation>
@@ -281,7 +294,6 @@
 <translation id="3403365884036456766">የምርጫዎች ፋይልዎ የተበላሸ ወይም ልክ ያልሆነ ነው።
 
 Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="7339898014177206373">አዲሰ መስኮት</translation>
 <translation id="3511996232906761537">የእርስዎ ድር፣ ዕልባቶች እና ሌሎች የBrave ነገሮች እዚህ ይኖራሉ።</translation>
 <translation id="5380963249588143069">የእርስዎ ስርዓት አስተዳዳሪ Brave <ph name="TARGET_URL_HOSTNAME"/>ን ለመድረስ <ph name="ALTERNATIVE_BROWSER_NAME"/>ን እንዲከፍት አዋቅሮታል።</translation>
@@ -323,11 +335,13 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="8207657266087451193">አንድ ምስል ጠቃሚ መግለጫ ከሌለው Brave ለእርስዎ አንድ ለማቅረብ ይሞክራል። ዝርዝር መግለጫዎችን ለመፍጠር፣ ምስሎች ወደ Brave ይላካሉ። ይህን በማንኛውም ጊዜ በቅንብሮች ውስጥ ሊያጠፉት ይችላሉ።</translation>
 <translation id="8622246347342688645">እርስዎ በመለያ ስላልገቡ ስለሆኑ Brave የይለፍ ቃላትዎን መፈተሽ አይችልም</translation>
 <translation id="89367911614620585">ይህ ፋይል አደገኛ ሊሆን ስለሚችል Brave አግዶታል።</translation>
+<translation id="6098476632210317894">ድርጅትዎ Brave ለ<ph name="TIMEOUT_DURATION"/> ያህል ሥራ ላይ ሳይውል ይዘጋዋል።</translation>
 <translation id="5196445203969439095">በBrave ተጨማሪ ያድርጉ</translation>
 <translation id="3360368475735266712">Braveን በመላ መሣሪያዎችዎ ላይ ለማሳመር እና ግላዊነት ለማላበስ</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> ከዚህ ቀደም Braveን እየተጠቀመ ነበር</translation>
 <translation id="3098618823450433881">በሁሉም መሣሪያዎችዎ ላይ የእርስዎን የBrave አሳሽ ነገሮች ለመድረስ ይግቡ፣ ከዚያ ስምረትን ያብሩ</translation>
 <translation id="2569754604093464025">የወደፊት የBrave ዝማኔዎችን ለማግኘት Windows 10 ወይም ከዚያ በላይ ያስፈልግዎታል። ይህ ኮምፒውተር Windows 8 እየተጠቀመ ነው።</translation>
+<translation id="8577108764439626300">ይህ ቅጥያ በገንቢው ከህትመት ወጥቷል እና ደህንነቱ የተጠበቀ ላይሆን ይችላል። የግል መረጃዎን ጨምሮ ከእንግዲህ እርስዎ በሚጎበኟቸው ጣቢያዎች ላይ ያለዎን ውሂብ ማየት እና መለወጥ እንዳይችል ከBrave ያስወግዱት።</translation>
 <translation id="5337999052834672687">{0,plural, =1{በአንድ ቀን ውስጥ Braveን ዳግም አስጀምር}one{በ# ቀኖች ውስጥ Braveን ዳግም አስጀምር}other{በ# ቀኖች ውስጥ Braveን ዳግም አስጀምር}}</translation>
 <translation id="6914496861676471566">የጫኚው መዝገብ ተበላሽቷል ወይም ትክክል አይደለም። እባክዎ Braveን እንደገና ያውርዱ።</translation>
 <translation id="4378573854226202617">Brave Windows 10 ወይም ከዚያ በላይ ያስፈልገዋል።</translation>
@@ -340,9 +354,12 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>ይህንን ውሂብ እንዴት እንደሚጠቀሙበት፦<ph name="END_BOLD"/> ጣቢያዎች ስለዝንባሌዎችዎ መረጃን በBrave አማካኝነት ማከማቸት ይችላሉ። ለምሳሌ፣ ለማራቶን ጫማ ለመግዛት ጣቢያን ከጎበኙ ጣቢያው ዝንባሌዎን እንደ ማራቶን መሮጥ ሊገልጽ ይችላል። በኋላ ላይ ለሩጫ ለመመዝገብ ሌላ ጣቢያ ከጎበኙ ይህ ጣቢያ በዝንባሌዎችዎ ላይ ተመስርቶ የመሮጫ ጫማ ማስታወቂያ ሊያሳየዎት ይችላል።</translation>
 <translation id="3052349005266761501">Braveን በማስጀመር ላይ...</translation>
 <translation id="6283840329609797763">ተለይቶ ባልታወቀ ስህተት ምክንያት ጭነት ከሽፏል። እባክዎ Braveን እንደገና ያውርዱ።</translation>
+<translation id="5128665650717824082">Brave ለሙከራ የእርስዎ ነባሪ አሳሽ እንዲሆን ማድረግ አይቻልም።</translation>
+<translation id="4668189655335212354">{NUM_DEVICES,plural, =0{የBrave ቅጥያ ኤችአይዲ መሣሪያዎችን እየደረሰ ነበር}=1{የBrave ቅጥያ 1 ኤችአይዲ መሣሪያ እየደረሰ ነው}one{የBrave ቅጥያ # ኤችአይዲ መሣሪያን እየደረሰ ነው}other{የBrave ቅጥያ # ኤችአይዲ መሣሪያዎችን እየደረሰ ነው}}</translation>
 <translation id="2433912322225810055">እንዲሁም Braveን ሲጀምሩት ወይም ከኦምኒቦክሱ ሆነው ሲፈልጉ የሚታየውን ገፅ ይቆጣጠራል።</translation>
 <translation id="4100716194836114130">ይሄ የእርስዎ Brave ነው</translation>
 <translation id="4831743161813926460">Brave ለዚህ ጣቢያ የእርስዎን ካሜራ እና ማይክሮፎን ለመድረስ ፈቃድ ያስፈልገዋል</translation>
+<translation id="8826492472752484139">«የሚስጥር ቁልፍ አስተዳዳሪ» ላይ ጠቅ ያድርጉ</translation>
 <translation id="6933858244219479645">የChromeOS ስርዓት</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>ምን ውሂብ ጥቅም ላይ እንደሚውል፦<ph name="END_BOLD"/> የአሰሳ ታሪክዎ፣ በዚህ መሣሪያ ላይ Braveን ተጠቅመው የጎበኟቸው የጣቢያዎች መዝገብ።</translation>
 <translation id="8862326446509486874">ለስርዓተ-ደረጃ ጭነት ተገቢ መብቶች የሉዎትም። ጫኚውን እንደ አስተዳዳሪ በማሄድ እንደገና ይሞክሩ።</translation>
@@ -355,6 +372,7 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="8986207147630327271">የስራ መገለጫን ወደዚህ አሳሽ እያከሉ እና ለአስተዳዳሪዎ በስራ መገለጫው ላይ ብቻ ቁጥጥር እየሰጡ ነው።</translation>
 <translation id="82609232232243542">Brave ውስጥ ይግቡ</translation>
 <translation id="3273774796888928550">ወደ Brave በመለያ ይግቡ። ወደ መለያ አንድ ጊዜ ብቻ መግባት ከፈለጉ <ph name="GUEST_LINK_BEGIN"/>መሣሪያውን እንደ እንግዳ መጠቀም<ph name="GUEST_LINK_END"/> ይችላሉ።</translation>
+<translation id="4561046754724442504">Brave በራስ-ሰር ተዘግቷል</translation>
 <translation id="5173820533850252773">Brave ጊዜው አልፎበታል</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave በአንድ ሰዓት ውስጥ ዳግም ይጀምራል}one{Brave በ# ሰዓቶች ውስጥ ዳግም ይጀምራል}other{Brave በ# ሰዓቶች ውስጥ ዳግም ይጀምራል}}</translation>
 <translation id="5190991181158966940">የወደፊት የBrave ዝማኔዎችን ለማግኘት Windows 10 ወይም ከዚያ በላይ ያስፈልግዎታል። ይህ ኮምፒውተር Windows 8.1ን እየተጠቀመ ነው።</translation>
@@ -367,7 +385,6 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="296137235951584143">Braveን የራስዎ ያድርጉት</translation>
 <translation id="7977787072794666032">Brave በWindows XP ወይም Windows Vista ላይ ከእንግዲህ ስለማይደገፍ በአግባቡ ላይሰራ ይችላል</translation>
 <translation id="8180288330711585962">በBrave የሚተዳደሩ የእውቅና ማረጋገጫዎች</translation>
-<translation id="3050465115159165320">የBrave ምርጡን ያግኙ</translation>
 <translation id="4484434718272972655">ማነው Braveን የሚጠቀመው?</translation>
 <translation id="7173394303099002355">የBraveን ጠንካራ ደህንነት ያግኙ</translation>
 <translation id="5775101967851558962">Braveን በሚዘጉበት ጊዜ የጣቢያ ውሂብን ሁልጊዜ ከመሣሪያዎ ላይ ያጽዱ</translation>
@@ -378,6 +395,7 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="1743665722170667430">ካልታወቁ ምንጮች የመጡ ቅጥያዎች፣ መተግበሪያዎች እና ገጽታዎች መሣሪያዎን ሊጎዱ ይችላሉ። Brave እነሱን ከ
 1 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> 
 ላይ ብቻ እንዲጭኑ ይመክራል።</translation>
+<translation id="6184592406110188164">ይህ ቅጥያ የ Web Store ን ፖሊሲ ይጥሳል፣ እና ደህንነቱ ያልተጠበቀ ሊሆን ይችላል። የእርስዎን የግል መረጃን ጨምሮ በሚጎበኟቸው ጣቢያዎች ላይ ውሂብዎን ማየት እና መለወጥ እንዳይችል ከ Brave ያስወግዱት።</translation>
 <translation id="1299765473362724475">ማስጠንቀቂያ፦ Brave ቅጥያዎች የአሰሳ ታሪክዎን እንዳይመዘግቡ መከልከል አይችልም። ይህን ቅጥያ ማንነትን በማያሳውቅ ሁነት ላይ ለማሰናከል ይህን አማራጭ አይምረጡ።</translation>
 <translation id="1448049584457347995">Brave ይበልጥ ደህንነቱ የተጠበቀ እንዲሆን ለማድረግ፣ በ <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ውስጥ ያልተጠቀሱ እና እርስዎ ሳያውቋቸው የታከሉ ሊሆኑ የሚችሉ የተወሰኑ ዝርዝሮችን አሰናክለናል።</translation>
 <translation id="8848045066928358658">Braveን ይበልጥ ደህንነቱ የተጠበቀ እንዲሆን ለማድረግ፣ በ<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ውስጥ ያልተዘረዘረውን የሚከተለውን ቅጥያ አሰናክለነዋል እና እርስዎ ሳያውቁት የታከለ ሊሆን ይችላል።</translation>

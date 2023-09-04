@@ -1,0 +1,76 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.inputBox {
+  width: 100%;
+  padding: 16px;
+  border-top: 1px solid var(--leo-color-divider-subtle);
+  background-color: var(--leo-color-container-background);
+}
+
+.scroller {
+  overflow: auto;
+  height: 100%;
+  padding-bottom: 16px;
+}
+
+.header {
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--leo-color-divider-subtle);
+  background-color: var(--leo-color-container-background);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.actions {
+  --leo-icon-size: 20px;
+
+  leo-button {
+    margin-right: 18px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.logo {
+  --leo-icon-size: 20px;
+  --leo-icon-color: linear-gradient(314.42deg, #FA7250 8.49%, #FF1893 43.72%, #A78AFF 99.51%);
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: var(--leo-font-primary-large-regular);
+}
+
+.logoTitle {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--leo-color-text-secondary);
+  line-height: 1;
+
+  span {
+    color: var(--leo-color-text-primary);
+  }
+}
+
+.siteTitleBox {
+  padding: 16px 16px 0 16px;
+}
+
+.errorContainer {
+  padding: 16px;
+}

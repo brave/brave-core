@@ -38,12 +38,11 @@ export const root = styled.div`
 
 export const onboarding = styled.div`
   margin: 0 auto;
-  width: 600px;
+  width: 100%;
+  max-width: 600px;
+  min-width: 300px;
 
   .layout-narrow & {
-    width: 100%;
-    max-width: 600px;
-    min-width: 320px;
     margin-top: -20px;
   }
 `

@@ -6,21 +6,20 @@
 #include <string>
 
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util_constants.h"
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
 namespace {
-
-constexpr char kRewardsSwitch[] = "rewards";
 
 struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
@@ -57,7 +56,8 @@ TEST_P(BraveAdsEnvironmentCommandLineSwitchParserUtilTest,
 std::string TestParamToString(
     const ::testing::TestParamInfo<ParamInfo>& test_param) {
   const std::string expected_environment_type =
-      EnvironmentTypeEnumToString(test_param.param.expected_environment_type);
+      EnvironmentTypeEnumToStringForTesting(
+          test_param.param.expected_environment_type);
 
   const std::string sanitized_command_line_switch =
       SanitizeCommandLineSwitch(test_param.param.command_line_switch);
@@ -69,7 +69,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsEnvironmentCommandLineSwitchParserUtilTest,
-                         testing::ValuesIn(kTests),
+                         ::testing::ValuesIn(kTests),
                          TestParamToString);
 
 }  // namespace brave_ads

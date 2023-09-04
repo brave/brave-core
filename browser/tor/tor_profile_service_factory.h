@@ -6,9 +6,13 @@
 #ifndef BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "brave/components/tor/tor_utils.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace tor {
 class TorProfileService;
@@ -26,12 +30,13 @@ class TorProfileServiceFactory : public BrowserContextKeyedServiceFactory {
   static TorProfileServiceFactory* GetInstance();
 
   static void SetTorDisabled(bool disabled);
-  static bool IsTorDisabled();
+  static bool IsTorManaged(content::BrowserContext* context);
+  static bool IsTorDisabled(content::BrowserContext* context);
   static void SetTorBridgesConfig(const tor::BridgesConfig& config);
   static tor::BridgesConfig GetTorBridgesConfig();
 
  private:
-  friend struct base::DefaultSingletonTraits<TorProfileServiceFactory>;
+  friend base::NoDestructor<TorProfileServiceFactory>;
 
   static tor::TorProfileService* GetForContext(content::BrowserContext* context,
                                                bool create);

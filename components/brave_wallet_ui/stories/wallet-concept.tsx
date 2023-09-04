@@ -28,6 +28,9 @@ export const _DesktopWalletConcept = () => {
       pageStateOverride={{
         hasInitialized: true
       }}
+      uiStateOverride={{
+        isPanel: true
+      }}
     >
       <Container />
     </WalletPageStory>

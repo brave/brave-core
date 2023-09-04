@@ -13,24 +13,39 @@
     Summarize
   </message>
   <message name="IDS_CHAT_UI_ABOUT_TITLE" desc="A concise title that summarizes the purpose of AIChat">
-    About Brave AI
+    About Brave Leo
   </message>
    <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION" desc="An outlining the functioning of AIChat">
-    The Brave AI Chat feature summarizes the content of a webpage you browse and includes a chat interface that allows you to make follow-up inquiries of the summarized content for that page.
+    The AI Chat feature provides summaries of the web page you are browsing and includes a chat interface that allows you to submit questions and receive responses about the content of that page.  The accuracy of summaries is not guaranteed and may include inaccurate, misleading and false information. You should not submit sensitive or private information and should exercise caution with any text related to health, finance or personal safety and similar cases.
   </message>
   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION_2" desc="An outlining the functioning of AIChat (cont)">
-    The summarized page and any questions you ask of the Chat feature are sent to the servers of an external API partner (no identifiers are sent with that query).
-  </message>
-  <message name="IDS_CHAT_UI_ABOUT_NOTE" desc="An advisory statement that notifies users of potentially confidential data shared with AIChat">
-    Please ensure that the page content and any follow-up inquiries do not contain personal or sensitive information. The accuracy of summaries and inquiry responses is not guaranteed and so you should not rely on any text related to health, personal safety or financial matters.
+    Brave's AI Chat uses a self-hosted <ph name="LINK_BEFORE">$1</ph>large language model<ph name="LINK_AFTER">$2</ph>  The AI Chat feature does not collect nor otherwise process identifiers such as an IP Address that can be linked to you.  No personal data is retained by the AI model.
   </message>
   <message name="IDS_CHAT_UI_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service">
-    Ask Brave AI
+    Enter a prompt here
   </message>
-  <message name="IDS_CHAT_UI_LOADING_LABEL" desc="A label shown when the UI is loading or generating a response">
-    Generating…
+  <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_TITLE" desc="Title to enable suggested questions">
+    Enable suggested questions?
   </message>
-  <message name="IDS_CHAT_UI_API_ERROR" desc="Describes an error occured submitting the API request">
-    There was an error processing your message, please try again.
+  <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_DESC" desc="Description about suggested questions">
+    Brave AI can automatically suggest questions based on the content of the site. You can disable it later in Settings.
+  </message>
+  <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_BUTTON_LABEL" desc="A button label to enable suggested questions">
+    Enable
+  </message>
+  <message name="IDS_CHAT_UI_NO_THANKS_BUTTON_LABEL" desc="A button label to skip suggested questions option">
+    No Thanks
+  </message>
+  <message name="IDS_CHAT_UI_PAGE_CONTENT_WARNING" desc="Description about page content being sent to a remote LLM">
+     Disconnect to stop sending this page content to Leo, and start a new conversation
+  </message>
+  <message name="IDS_CHAT_UI_ERROR_NETWORK" desc="An error presented when there is a network issue in the UI">
+     There was a network issue connecting to Leo, check your connection and try again.
+  </message>
+  <message name="IDS_CHAT_UI_ERROR_RATE_LIMIT" desc="An error presented when the user has exhausted the API request limit">
+    Leo is too busy right now. Please try again in a few minutes.
+  </message>
+  <message name="IDS_CHAT_UI_RETRY_BUTTON_LABEL" desc="A button label to retry API again">
+     Retry
   </message>
 </grit-part>

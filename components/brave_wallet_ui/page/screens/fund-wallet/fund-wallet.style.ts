@@ -4,12 +4,14 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
 
 export const ScrollContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  overflow-y: auto;
 `
 
 export const SelectAssetWrapper = styled.div`
@@ -52,4 +54,56 @@ export const AddressTextLabel = styled(AddressText)`
   font-size: 15px;
   line-height: 20px;
   letter-spacing: 0.04em;
+`
+
+export const Title = styled.p`
+  font-family: Poppins;
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 600;
+  color: ${leo.color.text.primary};
+  margin: 0px;
+  text-align: left;
+  align-self: flex-start;
+`
+
+export const Description = styled.p`
+  font-family: Poppins;
+  font-size: 14px;
+  line-height: 24px;
+  color: ${leo.color.text.secondary};
+  text-align: left;
+  align-self: flex-start;
+  margin: 0;
+`
+
+export const Divider = styled.div`
+  width: 100%;
+  border-bottom: 1px solid ${leo.color.divider.subtle};
+`
+
+
+export const Alert = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  margin-top: 16px;
+  background-color: ${leo.color.systemfeedback.infoBackground};
+`
+
+export const InfoIcon = styled(Icon)`
+  --leo-icon-size: 20px;
+  color: ${leo.color.systemfeedback.infoIcon}
+`
+
+export const AlertText = styled.p`
+  font-size: 14px;
+  font-family: Poppins;
+  line-height: 24px;
+  color: ${leo.color.text.primary};
+  margin: 0;
+  padding: 0;
 `

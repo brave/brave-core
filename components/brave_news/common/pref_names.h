@@ -37,6 +37,7 @@ constexpr char kBraveNewsFirstSessionTime[] =
 constexpr char kBraveNewsUsedSecondDay[] = "brave.today.p3a_used_second_day";
 constexpr char kBraveNewsLastSessionTime[] =
     "brave.today.p3a_last_session_time";
+constexpr char kBraveNewsWasEverEnabled[] = "brave.today.p3a_was_ever_enabled";
 
 // Dictionary value keys
 constexpr char kBraveNewsDirectFeedsKeyTitle[] = "title";

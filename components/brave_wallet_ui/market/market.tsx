@@ -11,7 +11,6 @@ import { loadTimeData } from '../../common/loadTimeData'
 
 // css
 import 'emptykit.css'
-import 'chrome://resources/brave/fonts/poppins.css'
 import './css/market.css'
 
 // theme setup
@@ -19,12 +18,16 @@ import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 
+// leo icons setup
+import { setIconBasePath } from '@brave/leo/react/icon'
+setIconBasePath('chrome-untrusted://resources/brave-icons')
+
 // constants
 import {
   BraveWallet,
   DefaultCurrencies,
   MarketAssetFilterOption,
-  MarketDataTableColumnTypes,
+  MarketGridColumnTypes,
   SortOrder
 } from '../constants/types'
 
@@ -40,33 +43,41 @@ import {
   UpdateBuyableAssetsMessage,
   UpdateDepositableAssetsMessage,
   UpdateCoinMarketMessage,
-  UpdateTradableAssetsMessage
-
+  UpdateTradableAssetsMessage,
+  UpdateIframeHeightMessage,
+  braveWalletPanelOrigin
 } from './market-ui-messages'
 import { filterCoinMarkets, searchCoinMarkets, sortCoinMarkets } from '../utils/coin-market-utils'
 
 // Options
 import { AssetFilterOptions } from '../options/market-data-filter-options'
-import { marketDataTableHeaders } from '../options/market-data-headers'
+import { marketGridHeaders } from '../options/market-data-headers'
 
 // components
-import { MarketDataTable } from '../components/market-datatable'
 import { TopRow } from '../components/desktop/views/market/style'
-import { AssetsFilterDropdown } from '../components/desktop'
-import { SearchBar } from '../components/shared'
+import {
+  AssetsFilterDropdown //
+} from '../components/desktop/assets-filter-dropdown/index'
+import { SearchBar } from '../components/shared/search-bar/index'
+import { MarketGrid } from '../components/shared/market-grid/market-grid'
 
 const App = () => {
   // State
-  const [tableHeaders, setTableHeaders] = React.useState(marketDataTableHeaders)
   const [currentFilter, setCurrentFilter] = React.useState<MarketAssetFilterOption>('all')
   const [sortOrder, setSortOrder] = React.useState<SortOrder>('desc')
-  const [sortByColumnId, setSortByColumnId] = React.useState<MarketDataTableColumnTypes>('marketCap')
+  const [sortByColumnId, setSortByColumnId] = React.useState<MarketGridColumnTypes>('marketCap')
   const [searchTerm, setSearchTerm] = React.useState('')
   const [coinMarkets, setCoinMarkets] = React.useState<BraveWallet.CoinMarket[]>([])
   const [tradableAssets, setTradableAssets] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [buyableAssets, setBuyableAssets] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [depositableAssets, setDepositableAssets] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [defaultCurrencies, setDefaultCurrencies] = React.useState<DefaultCurrencies>()
+
+  // Constants
+  const origin =
+    window.location.ancestorOrigins[0] === braveWalletPanelOrigin
+      ? braveWalletPanelOrigin
+      : braveWalletOrigin
 
   // Memos
   const visibleCoinMarkets = React.useMemo(() => {
@@ -89,16 +100,25 @@ const App = () => {
       command: MarketUiCommand.SelectBuy,
       payload: coinMarket
     }
-    sendMessageToWalletUi(parent, message)
-  }, [])
+    sendMessageToWalletUi(parent, message, origin)
+  }, [origin])
 
   const onClickDeposit = React.useCallback((coinMarket: BraveWallet.CoinMarket) => {
     const message: SelectDepositMessage = {
       command: MarketUiCommand.SelectDeposit,
       payload: coinMarket
     }
-    sendMessageToWalletUi(parent, message)
-  }, [])
+    sendMessageToWalletUi(parent, message, origin)
+  }, [origin])
+
+  const onUpdateIframeHeight = React.useCallback(
+    (height: number) => {
+      const message: UpdateIframeHeightMessage = {
+        command: MarketUiCommand.UpdateIframeHeight,
+        payload: height
+      }
+      sendMessageToWalletUi(parent, message, origin)
+    }, [origin])
 
   const onSelectFilter = (value: MarketAssetFilterOption) => {
     setCurrentFilter(value)
@@ -106,52 +126,37 @@ const App = () => {
 
   const onMessageEventListener = React.useCallback((event: MessageEvent<MarketCommandMessage>) => {
     // validate message origin
-    if (event.origin !== braveWalletOrigin) return
-
-    const message = event.data
-    switch (message.command) {
-      case MarketUiCommand.UpdateCoinMarkets: {
-        const { payload } = message as UpdateCoinMarketMessage
-        setCoinMarkets(payload.coins)
-        setDefaultCurrencies(payload.defaultCurrencies)
-        break
-      }
-
-      case MarketUiCommand.UpdateTradableAssets: {
-        const { payload } = message as UpdateTradableAssetsMessage
-        setTradableAssets(payload)
-        break
-      }
-
-      case MarketUiCommand.UpdateBuyableAssets: {
-        const { payload } = message as UpdateBuyableAssetsMessage
-        setBuyableAssets(payload)
-        break
-      }
-
-      case MarketUiCommand.UpdateDepositableAssets: {
-        const { payload } = message as UpdateDepositableAssetsMessage
-        setDepositableAssets(payload)
+    if (event.origin === braveWalletOrigin || event.origin === braveWalletPanelOrigin) {
+      const message = event.data
+      switch (message.command) {
+        case MarketUiCommand.UpdateCoinMarkets: {
+          const { payload } = message as UpdateCoinMarketMessage
+          setCoinMarkets(payload.coins)
+          setDefaultCurrencies(payload.defaultCurrencies)
+          break
+        }
+  
+        case MarketUiCommand.UpdateTradableAssets: {
+          const { payload } = message as UpdateTradableAssetsMessage
+          setTradableAssets(payload)
+          break
+        }
+  
+        case MarketUiCommand.UpdateBuyableAssets: {
+          const { payload } = message as UpdateBuyableAssetsMessage
+          setBuyableAssets(payload)
+          break
+        }
+  
+        case MarketUiCommand.UpdateDepositableAssets: {
+          const { payload } = message as UpdateDepositableAssetsMessage
+          setDepositableAssets(payload)
+        }
       }
     }
   }, [])
 
-  const onSort = React.useCallback((columnId: MarketDataTableColumnTypes, newSortOrder: SortOrder) => {
-    const updatedTableHeaders = tableHeaders.map(header => {
-      if (header.id === columnId) {
-        return {
-          ...header,
-          sortOrder: newSortOrder
-        }
-      } else {
-        return {
-          ...header,
-          sortOrder: undefined
-        }
-      }
-    })
-
-    setTableHeaders(updatedTableHeaders)
+  const onSort = React.useCallback((columnId: MarketGridColumnTypes, newSortOrder: SortOrder) => {
     setSortByColumnId(columnId)
     setSortOrder(newSortOrder)
   }, [])
@@ -161,8 +166,8 @@ const App = () => {
       command: MarketUiCommand.SelectCoinMarket,
       payload: coinMarket
     }
-    sendMessageToWalletUi(parent, message)
-  }, [])
+    sendMessageToWalletUi(parent, message, origin)
+  }, [origin])
 
   // Effects
   React.useEffect(() => {
@@ -189,19 +194,23 @@ const App = () => {
               action={event => {
                 setSearchTerm(event.target.value)
               }}
+              isV2={true}
             />
           </TopRow>
-          <MarketDataTable
-            headers={tableHeaders}
+          <MarketGrid
+            headers={marketGridHeaders}
             coinMarketData={visibleCoinMarkets}
             showEmptyState={searchTerm !== '' || currentFilter !== 'all'}
             fiatCurrency={defaultCurrencies?.fiat ?? 'USD'}
+            sortedBy={sortByColumnId}
+            sortOrder={sortOrder}
             onSelectCoinMarket={onSelectCoinMarket}
             onSort={onSort}
             isBuySupported={isBuySupported}
             isDepositSupported={isDepositSupported}
             onClickBuy={onClickBuy}
             onClickDeposit={onClickDeposit}
+            onUpdateIframeHeight={onUpdateIframeHeight}
           />
         </>
       </BraveCoreThemeProvider>

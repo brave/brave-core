@@ -13,9 +13,9 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/browser/playlist/test/mock_playlist_service_observer.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
-#include "brave/components/playlist/browser/playlist_service_observer.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/browser/type_converter.h"
 #include "brave/components/playlist/common/features.h"
@@ -42,6 +42,9 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using playlist::mojom::PlaylistEvent;
+using testing::_;
+
 namespace {
 
 std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
@@ -66,25 +69,6 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
 // for FRIEND_TEST_ALL_PREFIXES declaration. Without this, the macro requires
 // tests in global space to be visible.
 namespace playlist {
-
-////////////////////////////////////////////////////////////////////////////////
-// MockObserver
-//
-class MockObserver : public PlaylistServiceObserver {
- public:
-  MOCK_METHOD(void,
-              OnPlaylistStatusChanged,
-              (const PlaylistChangeParams& params),
-              (override));
-  MOCK_METHOD(void,
-              OnMediaFileDownloadProgressed,
-              (const std::string& id,
-               int64_t total_bytes,
-               int64_t received_bytes,
-               int percent_complete,
-               base::TimeDelta remaining_time),
-              (override));
-};
 
 ////////////////////////////////////////////////////////////////////////////////
 // FakeDownloadRequestmanager
@@ -277,23 +261,18 @@ TEST_F(PlaylistServiceUnitTest, CreatePlaylistItem) {
     // When a playlist is created and all goes well, we will receive 3
     // notifications: added, thumbnail ready and play ready.
     int expected_call_count = 3;
-    testing::NiceMock<MockObserver> observer;
+    testing::NiceMock<MockPlaylistServiceObserver> observer;
     auto on_event = [&]() { expected_call_count--; };
-    auto expected_arg =
-        PlaylistChangeParams(mojom::PlaylistEvent::kItemThumbnailReady, id);
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemThumbnailReady, id))
         .WillOnce(on_event);
-    expected_arg.change_type = mojom::PlaylistEvent::kItemAdded;
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemAdded, id))
         .WillOnce(on_event);
-    expected_arg.change_type = mojom::PlaylistEvent::kItemCached;
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemCached, id))
         .WillOnce(on_event);
-    using testing::_;
     EXPECT_CALL(observer, OnMediaFileDownloadProgressed(_, _, _, _, _))
         .Times(testing::AtLeast(1));
 
-    service->AddObserverForTest(&observer);
+    service->AddObserver(observer.GetRemote());
 
     auto item = GetValidCreateParams();
     item->id = id;
@@ -306,8 +285,6 @@ TEST_F(PlaylistServiceUnitTest, CreatePlaylistItem) {
         [&](std::vector<mojom::PlaylistItemPtr> items) {
           EXPECT_EQ(i + 1u, items.size());
         }));
-
-    service->RemoveObserverForTest(&observer);
   }
 }
 
@@ -318,20 +295,16 @@ TEST_F(PlaylistServiceUnitTest, ThumbnailFailed) {
   // receive 3 notifications: added, thumbnail failed and ready.
   auto id = base::Token::CreateRandom().ToString();
   int expected_call_count = 3;
-  testing::NiceMock<MockObserver> observer;
+  testing::NiceMock<MockPlaylistServiceObserver> observer;
   auto on_event = [&]() { expected_call_count--; };
-  auto expected_arg =
-      PlaylistChangeParams(mojom::PlaylistEvent::kItemThumbnailFailed, id);
-  EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+  EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemThumbnailFailed, id))
       .WillOnce(on_event);
-  expected_arg.change_type = mojom::PlaylistEvent::kItemAdded;
-  EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+  EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemAdded, id))
       .WillOnce(on_event);
-  expected_arg.change_type = mojom::PlaylistEvent::kItemCached;
-  EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+  EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemCached, id))
       .WillOnce(on_event);
 
-  service->AddObserverForTest(&observer);
+  service->AddObserver(observer.GetRemote());
 
   auto params = GetInvalidCreateParams();
   params->id = id;
@@ -346,8 +319,6 @@ TEST_F(PlaylistServiceUnitTest, ThumbnailFailed) {
       base::BindLambdaForTesting([](std::vector<mojom::PlaylistItemPtr> items) {
         EXPECT_EQ(1u, items.size());
       }));
-
-  service->RemoveObserverForTest(&observer);
 }
 
 TEST_F(PlaylistServiceUnitTest, MediaDownloadFailed) {
@@ -358,21 +329,16 @@ TEST_F(PlaylistServiceUnitTest, MediaDownloadFailed) {
   // Thumbnail downloading can be canceled.
   auto id = base::Token::CreateRandom().ToString();
   int expected_call_count = 2;
-  testing::NiceMock<MockObserver> observer;
+  testing::NiceMock<MockPlaylistServiceObserver> observer;
   auto on_event = [&]() { expected_call_count--; };
-  auto expected_arg =
-      PlaylistChangeParams(mojom::PlaylistEvent::kItemAdded, id);
-  EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+  EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemAdded, id))
       .WillOnce(on_event);
-  expected_arg.change_type = mojom::PlaylistEvent::kItemAborted;
-  EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+  EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemAborted, id))
       .WillOnce(on_event);
-
-  expected_arg.change_type = mojom::PlaylistEvent::kItemThumbnailReady;
-  EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+  EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemThumbnailReady, id))
       .Times(testing::AtMost(1));
 
-  service->AddObserverForTest(&observer);
+  service->AddObserver(observer.GetRemote());
 
   auto params = GetValidCreateParamsForIncompleteMediaFileList();
   params->id = id;
@@ -385,8 +351,6 @@ TEST_F(PlaylistServiceUnitTest, MediaDownloadFailed) {
       base::BindLambdaForTesting([](std::vector<mojom::PlaylistItemPtr> items) {
         EXPECT_EQ(1u, items.size());
       }));
-
-  service->RemoveObserverForTest(&observer);
 }
 
 TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
@@ -402,20 +366,16 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
   auto id = base::Token::CreateRandom().ToString();
   {
     int expected_call_count = 2;
-    testing::NiceMock<MockObserver> observer;
+    testing::NiceMock<MockPlaylistServiceObserver> observer;
     auto on_event = [&]() { expected_call_count--; };
-    auto expected_arg =
-        PlaylistChangeParams(mojom::PlaylistEvent::kItemAdded, id);
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemAdded, id))
         .WillOnce(on_event);
-    expected_arg.change_type = mojom::PlaylistEvent::kItemAborted;
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemAborted, id))
         .WillOnce(on_event);
-    expected_arg.change_type = mojom::PlaylistEvent::kItemThumbnailReady;
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemThumbnailReady, id))
         .Times(testing::AtMost(1));
 
-    service->AddObserverForTest(&observer);
+    service->AddObserver(observer.GetRemote());
 
     auto params = GetValidCreateParamsForIncompleteMediaFileList();
     params->id = id;
@@ -430,47 +390,36 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
         [](std::vector<mojom::PlaylistItemPtr> items) {
           EXPECT_EQ(1u, items.size());
         }));
-
-    service->RemoveObserverForTest(&observer);
   }
 
   // Try to recover as is - should fail as it still has invalid media.
   {
     bool called = false;
-    testing::NiceMock<MockObserver> observer;
-    auto expected_arg =
-        PlaylistChangeParams(mojom::PlaylistEvent::kItemAborted, id);
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    testing::NiceMock<MockPlaylistServiceObserver> observer;
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemAborted, id))
         .WillOnce([&]() { called = true; });
-    expected_arg.change_type = mojom::PlaylistEvent::kItemThumbnailReady;
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemThumbnailReady, id))
         .Times(testing::AtMost(1));
 
-    service->AddObserverForTest(&observer);
+    service->AddObserver(observer.GetRemote());
     service->RecoverLocalDataForItem(
         id,
         /*update_media_src_before_recovery*/ false,
         base::BindLambdaForTesting(
             [](mojom::PlaylistItemPtr item) { EXPECT_FALSE(item->cached); }));
     WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
-
-    service->RemoveObserverForTest(&observer);
   }
 
   // Try to recover with valid media - should succeed.
   {
     bool called = false;
-    testing::NiceMock<MockObserver> observer;
-    auto expected_arg =
-        PlaylistChangeParams(mojom::PlaylistEvent::kItemCached, id);
-    EXPECT_CALL(observer,
-                OnPlaylistStatusChanged(PlaylistChangeParams(expected_arg)))
+    testing::NiceMock<MockPlaylistServiceObserver> observer;
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemCached, id))
         .WillOnce([&]() { called = true; });
-    expected_arg.change_type = mojom::PlaylistEvent::kItemThumbnailReady;
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemThumbnailReady, id))
         .Times(testing::AtMost(1));
 
-    service->AddObserverForTest(&observer);
+    service->AddObserver(observer.GetRemote());
 
     service->GetPlaylistItem(
         id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr item) {
@@ -488,8 +437,6 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
               }));
           WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
         }));
-
-    service->RemoveObserverForTest(&observer);
   }
 }
 
@@ -500,20 +447,16 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
   for (int i = 0; i < 3; i++) {
     auto id = base::Token::CreateRandom().ToString();
     int expected_call_count = 2;
-    testing::NiceMock<MockObserver> observer;
+    testing::NiceMock<MockPlaylistServiceObserver> observer;
     auto on_event = [&]() { expected_call_count--; };
-    auto expected_arg =
-        PlaylistChangeParams(mojom::PlaylistEvent::kItemAdded, id);
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemAdded, id))
         .WillOnce(on_event);
-    expected_arg.change_type = mojom::PlaylistEvent::kItemCached;
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemCached, id))
         .WillOnce(on_event);
-    expected_arg.change_type = mojom::PlaylistEvent::kItemThumbnailReady;
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemThumbnailReady, id))
         .Times(testing::AtMost(1));
 
-    service->AddObserverForTest(&observer);
+    service->AddObserver(observer.GetRemote());
 
     auto params = GetValidCreateParams();
     params->id = id;
@@ -526,8 +469,6 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
         [&i](std::vector<mojom::PlaylistItemPtr> items) {
           EXPECT_EQ(i + 1u, items.size());
         }));
-
-    service->RemoveObserverForTest(&observer);
   }
 
   // Delete the first item
@@ -535,11 +476,10 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
       [&](std::vector<mojom::PlaylistItemPtr> items) {
         auto id = items.front()->id;
         bool called = false;
-        testing::NiceMock<MockObserver> observer;
-        EXPECT_CALL(observer, OnPlaylistStatusChanged(PlaylistChangeParams(
-                                  mojom::PlaylistEvent::kItemDeleted, id)))
+        testing::NiceMock<MockPlaylistServiceObserver> observer;
+        EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemDeleted, id))
             .WillOnce([&]() { called = true; });
-        service->AddObserverForTest(&observer);
+        service->AddObserver(observer.GetRemote());
 
         service->DeletePlaylistItemData(id);
         WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
@@ -548,18 +488,15 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
             [&items](std::vector<mojom::PlaylistItemPtr> new_items) {
               EXPECT_EQ(items.size() - 1, new_items.size());
             }));
-
-        service->RemoveObserverForTest(&observer);
       }));
 
   // Delete all items
   {
     bool called = false;
-    testing::NiceMock<MockObserver> observer;
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(PlaylistChangeParams(
-                              mojom::PlaylistEvent::kAllDeleted, "")))
+    testing::NiceMock<MockPlaylistServiceObserver> observer;
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kAllDeleted, ""))
         .WillOnce([&]() { called = true; });
-    service->AddObserverForTest(&observer);
+    service->AddObserver(observer.GetRemote());
 
     service->DeleteAllPlaylistItems();
     WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
@@ -568,8 +505,6 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
         [](std::vector<mojom::PlaylistItemPtr> items) {
           EXPECT_FALSE(items.size());
         }));
-
-    service->RemoveObserverForTest(&observer);
   }
 }
 
@@ -589,25 +524,22 @@ TEST_F(PlaylistServiceUnitTest, CreateAndRemovePlaylist) {
   new_playlist->name = "new playlist";
   {
     bool called = false;
-    testing::NiceMock<MockObserver> observer;
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(testing::Field(
-                              &PlaylistChangeParams::change_type,
-                              mojom::PlaylistEvent::kListCreated)))
+    testing::NiceMock<MockPlaylistServiceObserver> observer;
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kListCreated, _))
         .WillOnce([&]() { called = true; });
-    service->AddObserverForTest(&observer);
+    service->AddObserver(observer.GetRemote());
 
     service->CreatePlaylist(
         new_playlist->Clone(),
         base::BindLambdaForTesting([&](mojom::PlaylistPtr new_list) {
           new_playlist->id = *new_list->id;
         }));
+    WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
 
     service->GetAllPlaylists(base::BindLambdaForTesting(
         [&](std::vector<mojom::PlaylistPtr> playlists) {
           EXPECT_EQ(initial_playlists.size() + 1, playlists.size());
         }));
-
-    service->RemoveObserverForTest(&observer);
   }
 
   service->GetAllPlaylists(base::BindLambdaForTesting(
@@ -620,16 +552,13 @@ TEST_F(PlaylistServiceUnitTest, CreateAndRemovePlaylist) {
 
         // Remove the new playlist
         bool called = false;
-        testing::NiceMock<MockObserver> observer;
-        EXPECT_CALL(observer, OnPlaylistStatusChanged(testing::Field(
-                                  &PlaylistChangeParams::change_type,
-                                  mojom::PlaylistEvent::kListRemoved)))
+        testing::NiceMock<MockPlaylistServiceObserver> observer;
+        EXPECT_CALL(observer, OnEvent(PlaylistEvent::kListRemoved, _))
             .WillOnce([&]() { called = true; });
-        service->AddObserverForTest(&observer);
+        service->AddObserver(observer.GetRemote());
 
         service->RemovePlaylist((*iter)->id.value());
-
-        service->RemoveObserverForTest(&observer);
+        WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
       }));
 
   service->GetAllPlaylists(base::BindLambdaForTesting(
@@ -650,20 +579,16 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
   {
     auto id = base::Token::CreateRandom().ToString();
     int expected_call_count = 2;
-    testing::NiceMock<MockObserver> observer;
+    testing::NiceMock<MockPlaylistServiceObserver> observer;
     auto on_event = [&]() { expected_call_count--; };
-    auto expected_arg =
-        PlaylistChangeParams(mojom::PlaylistEvent::kItemAdded, id);
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemAdded, id))
         .WillOnce(on_event);
-    expected_arg.change_type = mojom::PlaylistEvent::kItemCached;
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemCached, id))
         .WillOnce(on_event);
-    expected_arg.change_type = mojom::PlaylistEvent::kItemThumbnailReady;
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemThumbnailReady, id))
         .Times(testing::AtMost(1));
 
-    service->AddObserverForTest(&observer);
+    service->AddObserver(observer.GetRemote());
 
     auto params = GetValidCreateParams();
     params->id = id;
@@ -686,8 +611,6 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
                 service->GetPlaylistItemDirPath(item->id)));
           }
         }));
-
-    service->RemoveObserverForTest(&observer);
   }
 
   // Remove local media file. Thumbnail shouldn't be removed
@@ -767,6 +690,27 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
   }));
 }
 
+TEST_F(PlaylistServiceUnitTest, MediaFileExtension) {
+  auto* service = playlist_service();
+  base::FilePath media_path;
+  EXPECT_TRUE(service->GetMediaPath("foo", &media_path));
+
+  // When a url doesn't have extension.
+  EXPECT_TRUE(media_path.Extension().empty());
+
+  // When an item has url with file extension, the destination file path should
+  // have the same extension.
+  const auto* id = "extension-with-param";
+  auto dummy_item = mojom::PlaylistItem::New();
+  dummy_item->id = id;
+  dummy_item->media_source = GURL("https://foo.bar.com/baz.m3u8?q=123&w=456");
+  service->UpdatePlaylistItemValue(
+      id, base::Value(ConvertPlaylistItemToValue(dummy_item)));
+
+  EXPECT_TRUE(service->GetMediaPath(id, &media_path));
+  EXPECT_EQ(media_path.Extension(), FILE_PATH_LITERAL(".m3u8"));
+}
+
 TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
   auto* service = playlist_service();
 
@@ -843,8 +787,12 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
     std::vector<mojom::PlaylistItemPtr> items;
     items.push_back(std::move(item));
 
-    service->AddMediaFilesFromItems(kDefaultPlaylistID, /*cache*/ false,
-                                    std::move(items));
+    service->AddMediaFilesFromItems(
+        kDefaultPlaylistID, /*cache*/ false,
+        base::BindOnce([](std::vector<mojom::PlaylistItemPtr> items) {
+          EXPECT_TRUE(items.empty());
+        }),
+        std::move(items));
 
     EXPECT_EQ(old_item_size, GetPlaylist(kDefaultPlaylistID)->items.size());
     EXPECT_FALSE(prefs->GetDict(kPlaylistItemsPref).FindDict("new_id"));
@@ -946,26 +894,22 @@ TEST_F(PlaylistServiceUnitTest, CachingBehavior) {
     // When a playlist is created and all goes well, we will receive 3
     // notifications: added, thumbnail ready and play ready.
     int expected_call_count = 3 - (should_cache ? 0 : 1);
-    testing::NiceMock<MockObserver> observer;
+    testing::NiceMock<MockPlaylistServiceObserver> observer;
     auto on_event = [&]() { expected_call_count--; };
-    auto expected_arg =
-        PlaylistChangeParams(mojom::PlaylistEvent::kItemThumbnailReady, id);
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemThumbnailReady, id))
         .WillOnce(on_event);
-    expected_arg.change_type = mojom::PlaylistEvent::kItemAdded;
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+    EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemAdded, id))
         .WillOnce(on_event);
 
-    expected_arg.change_type = mojom::PlaylistEvent::kItemCached;
     if (should_cache) {
-      EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+      EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemCached, id))
           .WillOnce(on_event);
     } else {
-      EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+      EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemCached, id))
           .Times(testing::Exactly(0));
     }
 
-    service->AddObserverForTest(&observer);
+    service->AddObserver(observer.GetRemote());
 
     auto params = GetValidCreateParams();
     params->id = id;
@@ -973,8 +917,6 @@ TEST_F(PlaylistServiceUnitTest, CachingBehavior) {
 
     WaitUntil(
         base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
-
-    service->RemoveObserverForTest(&observer);
   }
 }
 
@@ -1019,32 +961,26 @@ TEST_F(PlaylistServiceUnitTest, UpdateItem) {
   playlist_service()->UpdatePlaylistItemValue(
       item.id, base::Value(ConvertPlaylistItemToValue(item.Clone())));
 
-  std::vector<mojom::PlaylistItemPtr> items;
-  items.push_back(item.Clone());
-  playlist_service()->AddMediaFilesFromItems(
-      std::string() /* will be saved to default list*/, false /* no caching */,
-      std::move(items));
-
   WaitUntil(base::BindLambdaForTesting([&]() {
     return !!prefs()->GetDict(kPlaylistItemsPref).FindDict(item.id);
   }));
 
-  testing::NiceMock<MockObserver> observer;
-  EXPECT_CALL(observer, OnPlaylistStatusChanged(PlaylistChangeParams(
-                            mojom::PlaylistEvent::kItemUpdated, item.id)));
-  playlist_service()->AddObserverForTest(&observer);
+  testing::NiceMock<MockPlaylistServiceObserver> observer;
+  bool called = false;
+  EXPECT_CALL(observer, OnEvent(PlaylistEvent::kItemUpdated, item.id))
+      .WillOnce([&]() { called = true; });
+  playlist_service()->AddObserver(observer.GetRemote());
 
   item.name = "new name";
   item.last_played_position = 100;
   playlist_service()->UpdateItem(item.Clone());
+  WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
 
   playlist_service()->GetPlaylistItem(
-      item.id, base::BindLambdaForTesting([](mojom::PlaylistItemPtr new_item) {
+      item.id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr new_item) {
         EXPECT_EQ("new name", new_item->name);
         EXPECT_EQ(100, new_item->last_played_position);
       }));
-
-  playlist_service()->RemoveObserverForTest(&observer);
 }
 
 TEST_F(PlaylistServiceUnitTest, ReorderItemFromPlaylist) {
@@ -1072,7 +1008,8 @@ TEST_F(PlaylistServiceUnitTest, ReorderItemFromPlaylist) {
 
   auto* service = playlist_service();
   service->AddMediaFilesFromItems(playlist::kDefaultPlaylistID,
-                                  false /* no caching */, std::move(items));
+                                  false /* no caching */, base::NullCallback(),
+                                  std::move(items));
 
   auto order_checker = [](const std::vector<std::string>& expected_orders) {
     return base::BindLambdaForTesting(
@@ -1218,7 +1155,7 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
         ASSERT_EQ(playlist->items.size(), 0u);
       }));
   service->AddMediaFilesFromItems(kDefaultPlaylistID, /* cache = */ true,
-                                  std::move(items));
+                                  base::NullCallback(), std::move(items));
   service->GetPlaylist(
       kDefaultPlaylistID,
       base::BindLambdaForTesting([](mojom::PlaylistPtr playlist) {
@@ -1237,7 +1174,7 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
         ASSERT_EQ(playlist->items.size(), 0u);
       }));
   service->AddMediaFilesFromItems(another_playlist_id, false /* no caching */,
-                                  std::move(items));
+                                  base::NullCallback(), std::move(items));
   service->GetPlaylist(
       another_playlist_id,
       base::BindLambdaForTesting([](mojom::PlaylistPtr playlist) {
@@ -1297,7 +1234,7 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
   item->id = base::Token::CreateRandom().ToString();
   items.push_back(item.Clone());
   service->AddMediaFilesFromItems(kDefaultPlaylistID, false /* no caching */,
-                                  std::move(items));
+                                  base::NullCallback(), std::move(items));
 
   WaitUntil(base::BindRepeating(
       [](base::FilePath item_path) {
@@ -1324,7 +1261,7 @@ TEST_F(PlaylistServiceUnitTest, CleanUpOrphanedPlaylistItemDirs) {
   items.push_back(item.Clone());
 
   service->AddMediaFilesFromItems(kDefaultPlaylistID, false /* no caching */,
-                                  std::move(items));
+                                  base::NullCallback(), std::move(items));
 
   WaitUntil(base::BindRepeating(
       [](base::FilePath item_path) { return base::DirectoryExists(item_path); },

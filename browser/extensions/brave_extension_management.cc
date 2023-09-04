@@ -89,7 +89,7 @@ void BraveExtensionManagement::OnExtensionUnloaded(
 
 void BraveExtensionManagement::OnTorDisabledChanged() {
 #if BUILDFLAG(ENABLE_TOR)
-  if (TorProfileServiceFactory::IsTorDisabled()) {
+  if (TorProfileServiceFactory::IsTorDisabled(profile_)) {
     TorProfileManager::GetInstance().CloseAllTorWindows();
     if (g_brave_browser_process->tor_client_updater()) {
       g_brave_browser_process->tor_client_updater()->Cleanup();

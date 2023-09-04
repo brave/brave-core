@@ -12,7 +12,7 @@ import {
 } from '../../../components/default'
 import NavigateBack from '../../../components/default/settings/navigateBack'
 import BackgroundOption from './backgroundOption'
-import { Toggle } from '../../../components/toggle'
+import Toggle from '@brave/leo/react/toggle'
 
 import { getLocale } from '../../../../common/locale'
 
@@ -40,7 +40,7 @@ function BackgroundChooser ({ title, backgrounds, onBack, onSelectValue, current
         <SettingsRow>
           <SettingsText>{getLocale('refreshBackgroundOnNewTab')}</SettingsText>
           <Toggle
-            onChange={e => onToggleRandomColor(e.target.checked)}
+            onChange={e => onToggleRandomColor(e.detail.checked)}
             checked={usingRandomColor}
           />
         </SettingsRow>

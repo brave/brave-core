@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 
@@ -20,7 +21,14 @@ LowercaseTransformation::LowercaseTransformation()
 
 std::unique_ptr<Data> LowercaseTransformation::Apply(
     const std::unique_ptr<Data>& input_data) const {
-  CHECK(input_data->GetType() == DataType::kText);
+  CHECK(input_data);
+
+  // TODO(https://github.com/brave/brave-browser/issues/31180): Refactor
+  // TextProcessing to make it more reliable.
+  if (input_data->GetType() != DataType::kText) {
+    BLOG(0, "LowercaseTransformation input not of type text");
+    return {};
+  }
 
   auto* text_data = static_cast<TextData*>(input_data.get());
 

@@ -6,18 +6,20 @@
 import * as React from 'react'
 
 import WalletPageStory from '../../../stories/wrappers/wallet-page-story-wrapper'
-import SignPanel from '.'
-import { mockAccounts } from '../../../stories/mock-data/mock-wallet-accounts'
+import { SignPanel } from './index'
 
 import {
-  BraveWallet,
-  SerializableSignMessageRequest
+  BraveWallet
 } from '../../../constants/types'
 import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
+import { mockAccount } from '../../../common/constants/mocks'
 
-const signMessageData: SerializableSignMessageRequest = {
+const signMessageData: BraveWallet.SignMessageRequest = {
   id: 0,
-  address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
+  accountId: {
+    ...mockAccount.accountId,
+    address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
+  },
   message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.',
   originInfo: mockOriginInfo,
   coin: BraveWallet.CoinType.ETH,
@@ -39,9 +41,7 @@ const evilUnicodeSignMessageData = {
 export const _SignPanel = () => {
   return <WalletPageStory>
     <SignPanel
-      accounts={mockAccounts}
       onCancel={() => alert('')}
-      onSign={() => alert('')}
       showWarning={true}
       signMessageData={[evilUnicodeSignMessageData, signMessageData]}
     />

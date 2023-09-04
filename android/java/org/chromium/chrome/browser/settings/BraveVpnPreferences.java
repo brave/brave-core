@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -34,10 +33,8 @@ import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
-import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.models.BraveVpnWireguardProfileCredentials;
@@ -56,7 +53,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class BraveVpnPreferences extends BravePreferenceFragment implements BraveVpnObserver {
     private static final String TAG = "BraveVPN";
@@ -77,7 +73,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     private static final int INVALIDATE_CREDENTIAL_TIMER_COUNT = 5000;
 
     private static final String VPN_SUPPORT_PAGE =
-            "https://support.brave.com/hc/en-us/articles/360045045952";
+            "https://support.brave.com/hc/en-us/articles/4410838268429";
     private static final String MANAGE_SUBSCRIPTION_PAGE =
             "https://play.google.com/store/account/subscriptions";
 
@@ -280,6 +276,9 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     }
 
     private void updateSummaries() {
+        if (getActivity() == null) {
+            return;
+        }
         List<BraveVpnServerRegion> vpnServerRegions =
                 BraveVpnUtils.getServerLocations(BraveVpnPrefUtils.getServerRegions());
         String serverLocation = "";

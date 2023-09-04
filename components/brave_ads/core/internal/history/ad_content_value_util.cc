@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/ad_content_value_util.h"
+#include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/ad_content_info.h"
-#include "brave/components/brave_ads/core/ad_type.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/history/ad_content_info.h"
 
 namespace brave_ads {
 
@@ -46,25 +46,22 @@ constexpr char kLegacyIsFlagged[] = "flagged_ad";
 }  // namespace
 
 base::Value::Dict AdContentToValue(const AdContentInfo& ad_content) {
-  base::Value::Dict dict;
-
-  dict.Set(kType, ad_content.type.ToString());
-  dict.Set(kPlacementId, ad_content.placement_id);
-  dict.Set(kCreativeInstanceId, ad_content.creative_instance_id);
-  dict.Set(kCreativeSetId, ad_content.creative_set_id);
-  dict.Set(kCampaignId, ad_content.campaign_id);
-  dict.Set(kAdvertiserId, ad_content.advertiser_id);
-  dict.Set(kSegment, ad_content.segment);
-  dict.Set(kBrand, ad_content.brand);
-  dict.Set(kBrandInfo, ad_content.brand_info);
-  dict.Set(kBrandDisplayUrl, ad_content.brand_display_url);
-  dict.Set(kBrandUrl, ad_content.brand_url.spec());
-  dict.Set(kUserReactionType, static_cast<int>(ad_content.user_reaction_type));
-  dict.Set(kConfirmationType, ad_content.confirmation_type.ToString());
-  dict.Set(kIsSaved, ad_content.is_saved);
-  dict.Set(kIsFlagged, ad_content.is_flagged);
-
-  return dict;
+  return base::Value::Dict()
+      .Set(kType, ad_content.type.ToString())
+      .Set(kPlacementId, ad_content.placement_id)
+      .Set(kCreativeInstanceId, ad_content.creative_instance_id)
+      .Set(kCreativeSetId, ad_content.creative_set_id)
+      .Set(kCampaignId, ad_content.campaign_id)
+      .Set(kAdvertiserId, ad_content.advertiser_id)
+      .Set(kSegment, ad_content.segment)
+      .Set(kBrand, ad_content.brand)
+      .Set(kBrandInfo, ad_content.brand_info)
+      .Set(kBrandDisplayUrl, ad_content.brand_display_url)
+      .Set(kBrandUrl, ad_content.brand_url.spec())
+      .Set(kUserReactionType, static_cast<int>(ad_content.user_reaction_type))
+      .Set(kConfirmationType, ad_content.confirmation_type.ToString())
+      .Set(kIsSaved, ad_content.is_saved)
+      .Set(kIsFlagged, ad_content.is_flagged);
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/24934): Reduce cognitive

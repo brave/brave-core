@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "sql/statement.h"
 
 namespace brave_ads::database {

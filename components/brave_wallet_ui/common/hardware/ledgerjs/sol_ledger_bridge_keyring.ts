@@ -35,6 +35,10 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
     return BraveWallet.CoinType.SOL
   }
 
+  keyringId = (): BraveWallet.KeyringId => {
+    return BraveWallet.KeyringId.kSolana
+  }
+
   getAccounts = async (from: number, to: number, scheme: SolDerivationPaths): Promise<GetAccountsHardwareOperationResult> => {
     const result = await this.unlock()
     if (!result.success) {
@@ -131,7 +135,7 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
         hardwareVendor: this.type(),
         deviceId: this.deviceId,
         coin: this.coin(),
-        network: undefined
+        keyringId: this.keyringId()
       })
     }
     return { success: true, payload: accounts }

@@ -4,8 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { AppsListType, BraveWallet } from '../../../constants/types'
-import { NavButton } from '../../extension/'
-import { AppListItem } from '../'
+import { NavButton } from '../../extension/buttons/nav-button/index'
+import { AppListItem } from '../app-list-item/index'
 import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
@@ -23,7 +23,7 @@ export interface Props {
   removeFromFav: (app: BraveWallet.AppItem) => void
 }
 
-export default class AppList extends React.PureComponent<Props> {
+export class AppList extends React.PureComponent<Props> {
   checkIsSelected = (app: BraveWallet.AppItem) => {
     return this.props.favApps.some((a) => a.name === app.name)
   }
@@ -71,3 +71,5 @@ export default class AppList extends React.PureComponent<Props> {
     )
   }
 }
+
+export default AppList

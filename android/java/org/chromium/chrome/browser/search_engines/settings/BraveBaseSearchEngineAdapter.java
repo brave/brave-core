@@ -5,14 +5,10 @@
 
 package org.chromium.chrome.browser.search_engines.settings;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import androidx.annotation.StringRes;
-
-import org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter;
 import org.chromium.components.search_engines.TemplateUrl;
 
 import java.util.HashSet;

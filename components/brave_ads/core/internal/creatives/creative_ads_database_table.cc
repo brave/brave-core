@@ -13,13 +13,13 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "url/gurl.h"
 
 namespace brave_ads::database::table {
@@ -92,6 +92,7 @@ CreativeAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
 CreativeAdMap GroupCreativeAdsFromResponse(
     mojom::DBCommandResponseInfoPtr command_response) {
   CHECK(command_response);
+  CHECK(command_response->result);
 
   CreativeAdMap creative_ads;
 
@@ -138,7 +139,7 @@ CreativeAdList GetCreativeAdsFromResponse(
   return creative_ads;
 }
 
-void OnGetForCreativeInstanceId(
+void GetForCreativeInstanceIdCallback(
     const std::string& creative_instance_id,
     GetCreativeAdCallback callback,
     mojom::DBCommandResponseInfoPtr command_response) {
@@ -164,7 +165,7 @@ void OnGetForCreativeInstanceId(
   std::move(callback).Run(/*success*/ true, creative_instance_id, creative_ad);
 }
 
-void MigrateToV24(mojom::DBTransactionInfo* transaction) {
+void MigrateToV29(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
   DropTable(transaction, "creative_ads");
@@ -216,7 +217,6 @@ void CreativeAds::GetForCreativeInstanceId(
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -229,7 +229,7 @@ void CreativeAds::GetForCreativeInstanceId(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetForCreativeInstanceId, creative_instance_id,
+      base::BindOnce(&GetForCreativeInstanceIdCallback, creative_instance_id,
                      std::move(callback)));
 }
 
@@ -257,12 +257,8 @@ void CreativeAds::Migrate(mojom::DBTransactionInfo* transaction,
   CHECK(transaction);
 
   switch (to_version) {
-    case 24: {
-      MigrateToV24(transaction);
-      break;
-    }
-
-    default: {
+    case 29: {
+      MigrateToV29(transaction);
       break;
     }
   }

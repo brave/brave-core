@@ -8,9 +8,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_server_publisher_links.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
-
-using std::placeholders::_1;
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace {
 
@@ -21,8 +19,9 @@ const char kTableName[] = "server_publisher_links";
 namespace brave_rewards::internal {
 namespace database {
 
-DatabaseServerPublisherLinks::DatabaseServerPublisherLinks(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseServerPublisherLinks::DatabaseServerPublisherLinks(
+    RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseServerPublisherLinks::~DatabaseServerPublisherLinks() = default;
 
@@ -96,15 +95,15 @@ void DatabaseServerPublisherLinks::GetRecord(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseServerPublisherLinks::OnGetRecord, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseServerPublisherLinks::OnGetRecord,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseServerPublisherLinks::OnGetRecord(
-    mojom::DBCommandResponsePtr response,
-    ServerPublisherLinksCallback callback) {
+    ServerPublisherLinksCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

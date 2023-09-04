@@ -5,10 +5,16 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_os_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 bool operator==(const CatalogOsInfo& lhs, const CatalogOsInfo& rhs) {
-  return lhs.code == rhs.code && lhs.name == rhs.name;
+  const auto tie = [](const CatalogOsInfo& os) {
+    return std::tie(os.code, os.name);
+  };
+
+  return tie(lhs) == tie(rhs);
 }
 
 bool operator!=(const CatalogOsInfo& lhs, const CatalogOsInfo& rhs) {

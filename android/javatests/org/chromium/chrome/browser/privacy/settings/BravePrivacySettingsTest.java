@@ -9,7 +9,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
-import androidx.preference.Preference;
 import androidx.test.filters.SmallTest;
 
 import org.junit.Before;
@@ -18,18 +17,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.chromium.base.test.util.Batch;
-import org.chromium.chrome.R;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesSettingsBridge;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesState;
-import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
-import org.chromium.chrome.browser.privacy_sandbox.PrivacySandboxBridge;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.chrome.test.ChromeTabbedActivityTestRule;
-import org.chromium.chrome.test.util.browser.Features;
 import org.chromium.content_public.browser.test.util.TestThreadUtils;
 
-// Checks if changes have been made to the Chromium privacy settings
+/**
+ * Checks if changes have been made to the Chromium privacy settings
+ */
 @Batch(Batch.PER_CLASS)
 @RunWith(ChromeJUnit4ClassRunner.class)
 public class BravePrivacySettingsTest {
@@ -43,10 +40,11 @@ public class BravePrivacySettingsTest {
     private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
     private static final String PREF_HTTPS_UPGRADE = "https_upgrade";
+    private static final String PREF_FORGET_FIRST_PARTY_STORAGE = "forget_first_party_storage";
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
 
-    private static int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 26;
+    private static final int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 29;
 
     private int mItemsLeft;
 
@@ -73,6 +71,7 @@ public class BravePrivacySettingsTest {
         checkPreferenceExists(PREF_DO_NOT_TRACK);
         checkPreferenceExists(PREF_HTTPS_FIRST_MODE);
         checkPreferenceExists(PREF_HTTPS_UPGRADE);
+        checkPreferenceExists(PREF_FORGET_FIRST_PARTY_STORAGE);
         checkPreferenceExists(PREF_SAFE_BROWSING);
         checkPreferenceExists(PREF_SECURE_DNS);
         checkPreferenceExists(PREF_INCOGNITO_LOCK);

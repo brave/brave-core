@@ -18,7 +18,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
@@ -78,7 +78,7 @@ class RewardsStateBrowserTest : public InProcessBrowserTest {
         base::BindRepeating(
             &RewardsStateBrowserTest::GetTestResponse,
             base::Unretained(this)));
-    rewards_service_->SetLedgerEnvForTesting();
+    rewards_service_->SetEngineEnvForTesting();
   }
 
   void GetTestResponse(
@@ -410,11 +410,12 @@ class V10 : public RewardsStateBrowserTest,
 };
 
 #ifdef OFFICIAL_BUILD
-#define _UPHOLD_CLIENT_ID_ +std::string(BUILDFLAG(UPHOLD_CLIENT_ID)) +
-#define _UPHOLD_URL_ "https://uphold.com"
+#define _UPHOLD_CLIENT_ID_ \
+  +std::string(BUILDFLAG(UPHOLD_PRODUCTION_CLIENT_ID)) +
+#define _UPHOLD_URL_ +std::string(BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)) +
 #else
-#define _UPHOLD_CLIENT_ID_ +std::string(BUILDFLAG(UPHOLD_STAGING_CLIENT_ID)) +
-#define _UPHOLD_URL_ "https://wallet-sandbox.uphold.com"
+#define _UPHOLD_CLIENT_ID_ +std::string(BUILDFLAG(UPHOLD_SANDBOX_CLIENT_ID)) +
+#define _UPHOLD_URL_ +std::string(BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL)) +
 #endif
 
 // clang-format off
@@ -1124,7 +1125,7 @@ INSTANTIATE_TEST_SUITE_P(
 IN_PROC_BROWSER_TEST_P_(V10, Paths) {
   // testing migration from v9 to v10
   profile_->GetPrefs()->SetInteger("brave.rewards.version", 9);
-  rewards_service_->SetLedgerStateTargetVersionForTesting(10);
+  rewards_service_->SetEngineStateTargetVersionForTesting(10);
 
   const auto& params = GetParam();
   const auto& from_wallet = std::get<0>(params);
@@ -1264,7 +1265,7 @@ INSTANTIATE_TEST_SUITE_P(
 IN_PROC_BROWSER_TEST_P_(V12, Paths) {
   // testing migration from v11 to v12
   profile_->GetPrefs()->SetInteger("brave.rewards.version", 11);
-  rewards_service_->SetLedgerStateTargetVersionForTesting(12);
+  rewards_service_->SetEngineStateTargetVersionForTesting(12);
 
   const auto encrypted_from_wallet =
       test_util::EncryptPrefString(rewards_service_, std::get<1>(GetParam()));
@@ -1350,7 +1351,7 @@ INSTANTIATE_TEST_SUITE_P(
 IN_PROC_BROWSER_TEST_P_(V13, Paths) {
   // testing migration from v12 to v13
   profile_->GetPrefs()->SetInteger("brave.rewards.version", 12);
-  rewards_service_->SetLedgerStateTargetVersionForTesting(13);
+  rewards_service_->SetEngineStateTargetVersionForTesting(13);
 
   const auto wallet_status = std::get<1>(GetParam());
   const auto encrypted_wallet = test_util::EncryptPrefString(

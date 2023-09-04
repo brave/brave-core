@@ -8,6 +8,7 @@
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/ranges/algorithm.h"
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -37,6 +38,8 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+using testing::ElementsAreArray;
 
 namespace permissions {
 
@@ -169,14 +172,24 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     auto observer = std::make_unique<PermissionRequestManagerObserver>(
         permission_request_manager);
 
+    base::MockCallback<base::OnceCallback<void(
+        const std::vector<blink::mojom::PermissionStatus>&)>>
+        callback;
+    EXPECT_CALL(callback,
+                Run(ElementsAreArray({blink::mojom::PermissionStatus::ASK,
+                                      blink::mojom::PermissionStatus::ASK})))
+        .Times(1);
     permission_manager()->RequestPermissionsForOrigin(
         permissions, web_contents()->GetPrimaryMainFrame(), origin.GetURL(),
-        true, base::DoNothing());
+        true, callback.Get());
 
     content::RunAllTasksUntilIdle();
 
     EXPECT_TRUE(permission_request_manager->IsRequestInProgress())
         << "case: " << i;
+    EXPECT_TRUE(observer->IsShowingBubble()) << "case: " << i;
+    // update anchor should not dismiss the bubble
+    permission_request_manager->UpdateAnchor();
     EXPECT_TRUE(observer->IsShowingBubble()) << "case: " << i;
     EXPECT_FALSE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
@@ -193,6 +206,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
 
     // Test dismissing request.
     permissions::BraveWalletPermissionContext::Cancel(web_contents());
+    testing::Mock::VerifyAndClearExpectations(&callback);
     EXPECT_TRUE(observer->IsRequestsFinalized()) << "case: " << i;
     EXPECT_TRUE(!observer->IsShowingBubble()) << "case: " << i;
     EXPECT_TRUE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
@@ -206,13 +220,21 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     }
 
     observer->Reset();
+    EXPECT_CALL(
+        callback,
+        Run(ElementsAreArray({blink::mojom::PermissionStatus::ASK,
+                              blink::mojom::PermissionStatus::GRANTED})))
+        .Times(1);
     permission_manager()->RequestPermissionsForOrigin(
         permissions, web_contents()->GetPrimaryMainFrame(), origin.GetURL(),
-        true, base::DoNothing());
+        true, callback.Get());
 
     content::RunAllTasksUntilIdle();
     EXPECT_TRUE(permission_request_manager->IsRequestInProgress())
         << "case: " << i;
+    EXPECT_TRUE(observer->IsShowingBubble()) << "case: " << i;
+    // update anchor should not dismiss the bubble
+    permission_request_manager->UpdateAnchor();
     EXPECT_TRUE(observer->IsShowingBubble()) << "case: " << i;
     EXPECT_FALSE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
@@ -232,6 +254,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
         std::vector<std::string>{addresses[1]},
         brave_wallet::mojom::PermissionLifetimeOption::kForever,
         web_contents());
+    testing::Mock::VerifyAndClearExpectations(&callback);
     std::vector<ContentSetting> expected_settings(
         {ContentSetting::CONTENT_SETTING_ASK,
          ContentSetting::CONTENT_SETTING_ALLOW});
@@ -306,6 +329,9 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
 
     EXPECT_TRUE(permission_request_manager->IsRequestInProgress())
         << "case: " << i;
+    EXPECT_TRUE(observer->IsShowingBubble()) << "case: " << i;
+    // update anchor should not dismiss the bubble
+    permission_request_manager->UpdateAnchor();
     EXPECT_TRUE(observer->IsShowingBubble()) << "case: " << i;
     EXPECT_FALSE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 

@@ -1,0 +1,95 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.form {
+  border-radius: 8px;
+  border: 1px solid var(--leo-color-divider-strong);
+  display: flex;
+
+  &:has(textarea:disabled) {
+    border-color: var(--leo-color-divider-subtle);
+    background: var(--leo-color-container-highlight);
+
+    &::placeholder {
+      color: var(--leo-color-text-disabled);
+    }
+  }
+}
+
+.textareaBox {
+  width: 100%;
+  font: var(--leo-font-secondary-default-regular);
+  color: var(--leo-color-text-primary);
+}
+
+.textarea {
+  width: 100%;
+  padding: 10px 16px;
+  resize: none;
+  background-color: transparent;
+  border: 0;
+
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: var(--leo-color-text-tertiary);
+  }
+}
+
+.buttonSend {
+  background-color: transparent;
+  border: 0;
+  padding: 14px;
+  color: var(--leo-color-icon-default);
+  cursor: pointer;
+
+  &:disabled {
+    color: var(--leo-color-icon-disabled);
+    cursor: not-allowed;
+  }
+}
+
+.buttonAgree {
+  background-color: var(--leo-color-button-background);
+  color: white;
+  border-radius: 30px;
+  border: none;
+  width: 100%;
+  padding: 10px 0;
+  margin-bottom: 10px;
+  font-size: 13px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.alert {
+  width: 100%;
+  padding: 16px;
+  color: var(--leo-color-text-primary);
+  background-color: var(--leo-color-systemfeedback-info-background);
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+
+.counterText {
+  font: var(--leo-font-primary-small-regular);
+  color: var(--leo-color-systemfeedback-warning-icon);
+  padding: 3px 16px;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.2s linear, opacity 0.2s linear;
+}
+
+.counterTextVisible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.counterTextError {
+  color: var(--leo-color-systemfeedback-error-icon);
+}

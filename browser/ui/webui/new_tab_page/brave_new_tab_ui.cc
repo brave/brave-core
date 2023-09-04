@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
@@ -25,7 +26,9 @@
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/strings/grit/components_strings.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/url_data_source.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 
 using ntp_background_images::NTPCustomImagesSource;
@@ -35,6 +38,17 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
           web_ui,
           true /* Needed for legacy non-mojom message handler */),
       page_factory_receiver_(this) {
+  content::WebContents* web_contents = web_ui->GetWebContents();
+  CHECK(web_contents);
+
+  content::NavigationEntry* navigation_entry =
+      web_contents->GetController().GetLastCommittedEntry();
+  const bool was_restored =
+      navigation_entry ? navigation_entry->IsRestored() : false;
+
+  const bool is_visible =
+      web_contents->GetVisibility() == content::Visibility::VISIBLE;
+
   Profile* profile = Profile::FromWebUI(web_ui);
   web_ui->OverrideTitle(
       brave_l10n::GetLocalizedResourceUTF16String(IDS_NEW_TAB_TITLE));
@@ -43,7 +57,7 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
     content::WebUIDataSource* source =
         content::WebUIDataSource::CreateAndAdd(profile, name);
     source->SetDefaultResource(IDR_BRAVE_BLANK_NEW_TAB_HTML);
-    AddBackgroundColorToSource(source, web_ui->GetWebContents());
+    AddBackgroundColorToSource(source, web_contents);
     return;
   }
 
@@ -52,25 +66,19 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
       web_ui, name, kBraveNewTabGenerated, kBraveNewTabGeneratedSize,
       IDR_BRAVE_NEW_TAB_HTML);
 
-  AddBackgroundColorToSource(source, web_ui->GetWebContents());
+  AddBackgroundColorToSource(source, web_contents);
 
   source->AddBoolean("featureCustomBackgroundEnabled",
                      !profile->GetPrefs()->IsManagedPreference(
                          prefs::kNtpCustomBackgroundDict));
 
   // Let frontend know about feature flags
-  source->AddBoolean(
-      "featureFlagBraveNewsEnabled",
-      base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature));
   source->AddBoolean("featureFlagBraveNewsPromptEnabled",
                      base::FeatureList::IsEnabled(
                          brave_news::features::kBraveNewsCardPeekFeature));
-  source->AddBoolean(
-      "featureFlagBraveNewsV2Enabled",
-      base::FeatureList::IsEnabled(brave_news::features::kBraveNewsV2Feature));
 
-  web_ui->AddMessageHandler(
-      base::WrapUnique(BraveNewTabMessageHandler::Create(source, profile)));
+  web_ui->AddMessageHandler(base::WrapUnique(BraveNewTabMessageHandler::Create(
+      source, profile, was_restored && !is_visible)));
   web_ui->AddMessageHandler(
       base::WrapUnique(new TopSitesMessageHandler(profile)));
 
@@ -89,13 +97,11 @@ void BraveNewTabUI::BindInterface(
     mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
-  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature)) {
-    // Wire up JS mojom to service
-    auto* brave_news_controller =
-        brave_news::BraveNewsControllerFactory::GetForContext(profile);
-    if (brave_news_controller) {
-      brave_news_controller->Bind(std::move(receiver));
-    }
+  // Wire up JS mojom to service
+  auto* brave_news_controller =
+      brave_news::BraveNewsControllerFactory::GetForContext(profile);
+  if (brave_news_controller) {
+    brave_news_controller->Bind(std::move(receiver));
   }
 }
 

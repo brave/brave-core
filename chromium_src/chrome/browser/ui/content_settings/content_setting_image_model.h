@@ -11,7 +11,14 @@
   static std::vector<std::unique_ptr<ContentSettingImageModel>> \
       GenerateContentSettingImageModels
 
+#define SetFramebustBlockedIcon                           \
+  GetIconFromType(ContentSettingsType type, bool blocked, \
+                  raw_ptr<const gfx::VectorIcon>* icon,   \
+                  raw_ptr<const gfx::VectorIcon>* badge); \
+  void SetFramebustBlockedIcon
+
 #include "src/chrome/browser/ui/content_settings/content_setting_image_model.h"  // IWYU pragma: export
+#undef SetFramebustBlockedIcon
 #undef GenerateContentSettingImageModels
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_CONTENT_SETTINGS_CONTENT_SETTING_IMAGE_MODEL_H_

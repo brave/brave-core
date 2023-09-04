@@ -20,7 +20,7 @@ class BraveAdsPromotedContentAdsPerHourPermissionRuleTest
 };
 
 TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
-       AllowAdIfThereIsNoAdsHistory) {
+       ShouldAllowIfThereAreNoAdEvents) {
   // Arrange
 
   // Act
@@ -30,22 +30,24 @@ TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
 }
 
 TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
-       AllowAdIfDoesNotExceedCap) {
+       ShouldAllowIfDoesNotExceedCap) {
   // Arrange
 
   // Act
-  RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumPromotedContentAdsPerHour.Get() - 1);
+  RecordAdEventsForTesting(
+      AdType::kPromotedContentAd, ConfirmationType::kServed,
+      /*count*/ kMaximumPromotedContentAdsPerHour.Get() - 1);
 
   // Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
-       AllowAdIfDoesNotExceedCapAfter1Hour) {
+       ShouldAllowIfDoesNotExceedCapAfter1Hour) {
   // Arrange
-  RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumPromotedContentAdsPerHour.Get());
+  RecordAdEventsForTesting(AdType::kPromotedContentAd,
+                           ConfirmationType::kServed,
+                           /*count*/ kMaximumPromotedContentAdsPerHour.Get());
 
   // Act
   AdvanceClockBy(base::Hours(1));
@@ -55,10 +57,11 @@ TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
 }
 
 TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
-       DoNotAllowAdIfExceedsCapWithin1Hour) {
+       ShouldNotAllowIfExceedsCapWithin1Hour) {
   // Arrange
-  RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumPromotedContentAdsPerHour.Get());
+  RecordAdEventsForTesting(AdType::kPromotedContentAd,
+                           ConfirmationType::kServed,
+                           /*count*/ kMaximumPromotedContentAdsPerHour.Get());
 
   // Act
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));

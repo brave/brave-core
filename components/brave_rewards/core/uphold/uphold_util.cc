@@ -3,50 +3,41 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <utility>
+#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 
 #include "base/base64.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
-#include "base/notreached.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/buildflags.h"
-#include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
-#include "crypto/random.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
-namespace uphold {
+namespace {
+enum class UrlType { kOAuth, kAPI };
 
-std::string GetClientId() {
-  return _environment == mojom::Environment::PRODUCTION
-             ? BUILDFLAG(UPHOLD_CLIENT_ID)
-             : BUILDFLAG(UPHOLD_STAGING_CLIENT_ID);
+std::string GetUrl(UrlType type) {
+  if (type == UrlType::kOAuth) {
+    return _environment == mojom::Environment::PRODUCTION
+               ? BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)
+               : BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL);
+  } else {
+    DCHECK(type == UrlType::kAPI);
+    return _environment == mojom::Environment::PRODUCTION
+               ? BUILDFLAG(UPHOLD_PRODUCTION_API_URL)
+               : BUILDFLAG(UPHOLD_SANDBOX_API_URL);
+  }
 }
 
-std::string GetClientSecret() {
-  return _environment == mojom::Environment::PRODUCTION
-             ? BUILDFLAG(UPHOLD_CLIENT_SECRET)
-             : BUILDFLAG(UPHOLD_STAGING_CLIENT_SECRET);
+std::string GetAccountUrl() {
+  return GetUrl(UrlType::kOAuth) + "/dashboard";
 }
 
-std::string GetUrl() {
-  return _environment == mojom::Environment::PRODUCTION ? kUrlProduction
-                                                        : kUrlStaging;
-}
-
-std::string GetFeeAddress() {
-  return _environment == mojom::Environment::PRODUCTION ? kFeeAddressProduction
-                                                        : kFeeAddressStaging;
+std::string GetActivityUrl(const std::string& address) {
+  DCHECK(!address.empty());
+  return base::StringPrintf("%s/dashboard/cards/%s/activity",
+                            GetUrl(UrlType::kOAuth).c_str(), address.c_str());
 }
 
 std::string GetLoginUrl(const std::string& state) {
-  const std::string id = GetClientId();
-  const std::string url = GetUrl();
-
   return base::StringPrintf(
       "%s/authorize/%s"
       "?scope="
@@ -58,37 +49,38 @@ std::string GetLoginUrl(const std::string& state) {
       "transactions:transfer:others"
       "&intention=login&"
       "state=%s",
-      url.c_str(), id.c_str(), state.c_str());
+      GetUrl(UrlType::kOAuth).c_str(), uphold::GetClientId().c_str(),
+      state.c_str());
+}
+}  // namespace
+
+namespace uphold {
+
+std::string GetClientId() {
+  return _environment == mojom::Environment::PRODUCTION
+             ? BUILDFLAG(UPHOLD_PRODUCTION_CLIENT_ID)
+             : BUILDFLAG(UPHOLD_SANDBOX_CLIENT_ID);
 }
 
-std::string GetAccountUrl() {
-  const std::string url = GetUrl();
-
-  return base::StringPrintf("%s/dashboard", url.c_str());
+std::string GetClientSecret() {
+  return _environment == mojom::Environment::PRODUCTION
+             ? BUILDFLAG(UPHOLD_PRODUCTION_CLIENT_SECRET)
+             : BUILDFLAG(UPHOLD_SANDBOX_CLIENT_SECRET);
 }
 
-std::string GetActivityUrl(const std::string& address) {
-  std::string url;
-
-  if (!address.empty()) {
-    url = base::StringPrintf("%s/dashboard/cards/%s/activity", GetUrl().c_str(),
-                             address.c_str());
-  }
-
-  return url;
+std::string GetFeeAddress() {
+  return _environment == mojom::Environment::PRODUCTION
+             ? BUILDFLAG(UPHOLD_PRODUCTION_FEE_ADDRESS)
+             : BUILDFLAG(UPHOLD_SANDBOX_FEE_ADDRESS);
 }
 
 mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
-  if (!wallet) {
-    return nullptr;
-  }
-
-  wallet->account_url = GetAccountUrl();
-  wallet->activity_url = "";
-  wallet->login_url = GetLoginUrl(wallet->one_time_string);
-
-  if (wallet->status == mojom::WalletStatus::kConnected) {
-    wallet->activity_url = GetActivityUrl(wallet->address);
+  if (wallet) {
+    wallet->account_url = GetAccountUrl();
+    wallet->activity_url = wallet->status == mojom::WalletStatus::kConnected
+                               ? GetActivityUrl(wallet->address)
+                               : "";
+    wallet->login_url = GetLoginUrl(wallet->one_time_string);
   }
 
   return wallet;
@@ -96,3 +88,29 @@ mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
 
 }  // namespace uphold
 }  // namespace brave_rewards::internal
+
+namespace brave_rewards::internal::endpoint::uphold {
+
+std::vector<std::string> RequestAuthorization(const std::string& token) {
+  std::vector<std::string> headers;
+
+  if (!token.empty()) {
+    headers.push_back("Authorization: Bearer " + token);
+  } else {
+    std::string user;
+    base::Base64Encode(
+        base::StringPrintf("%s:%s", internal::uphold::GetClientId().c_str(),
+                           internal::uphold::GetClientSecret().c_str()),
+        &user);
+    headers.push_back("Authorization: Basic " + user);
+  }
+
+  return headers;
+}
+
+std::string GetServerUrl(const std::string& path) {
+  DCHECK(!path.empty());
+  return GetUrl(UrlType::kAPI) + path;
+}
+
+}  // namespace brave_rewards::internal::endpoint::uphold

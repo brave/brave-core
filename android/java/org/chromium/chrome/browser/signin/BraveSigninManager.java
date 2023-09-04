@@ -12,16 +12,15 @@ import androidx.annotation.Nullable;
 
 import org.chromium.base.Callback;
 import org.chromium.base.annotations.CalledByNative;
-import org.chromium.chrome.browser.AppHooks;
 import org.chromium.chrome.browser.signin.services.SigninManager;
 import org.chromium.components.signin.base.CoreAccountId;
-import org.chromium.components.signin.base.CoreAccountInfo;
 import org.chromium.components.signin.identitymanager.AccountInfoServiceProvider;
 import org.chromium.components.signin.identitymanager.AccountTrackerService;
 import org.chromium.components.signin.identitymanager.IdentityManager;
 import org.chromium.components.signin.identitymanager.IdentityMutator;
 import org.chromium.components.signin.metrics.SigninAccessPoint;
 import org.chromium.components.signin.metrics.SignoutReason;
+import org.chromium.components.sync.SyncService;
 
 public class BraveSigninManager implements SigninManager {
     private final IdentityManager mIdentityManager;
@@ -41,7 +40,7 @@ public class BraveSigninManager implements SigninManager {
     }
 
     @Override
-    public boolean isSigninSupported() {
+    public boolean isSigninSupported(boolean requireUpdatedPlayServices) {
         return false;
     }
 
@@ -62,12 +61,12 @@ public class BraveSigninManager implements SigninManager {
     public void runAfterOperationInProgress(Runnable runnable) {}
 
     @Override
-    @Deprecated
-    public void signinAndEnableSync(@SigninAccessPoint int accessPoint, Account account,
+    public void signinAndEnableSync(Account account, @SigninAccessPoint int accessPoint,
             @Nullable SignInCallback callback) {}
 
     @Override
-    public void signin(Account account, @Nullable SignInCallback callback) {}
+    public void signin(Account account, @SigninAccessPoint int accessPoint,
+            @Nullable SignInCallback callback) {}
 
     @Override
     public void removeSignInStateObserver(SignInStateObserver observer) {}
@@ -101,7 +100,7 @@ public class BraveSigninManager implements SigninManager {
     @CalledByNative
     static SigninManager create(long nativeSigninManagerAndroid,
             AccountTrackerService accountTrackerService, IdentityManager identityManager,
-            IdentityMutator identityMutator) {
+            IdentityMutator identityMutator, SyncService syncService) {
         AccountInfoServiceProvider.init(identityManager, accountTrackerService);
         return new BraveSigninManager(identityManager);
     }

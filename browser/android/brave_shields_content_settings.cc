@@ -298,5 +298,27 @@ base::android::ScopedJavaLocalRef<jstring>
       brave_shields::ControlTypeToString(control_type));
 }
 
+void JNI_BraveShieldsContentSettings_SetForgetFirstPartyStorageEnabled(
+    JNIEnv* env,
+    jboolean enabled,
+    const base::android::JavaParamRef<jstring>& url,
+    const base::android::JavaParamRef<jobject>& j_profile) {
+  brave_shields::SetForgetFirstPartyStorageEnabled(
+      HostContentSettingsMapFactory::GetForProfile(
+          ProfileAndroid::FromProfileAndroid(j_profile)),
+      enabled, GURL(base::android::ConvertJavaStringToUTF8(env, url)),
+      g_browser_process->local_state());
+}
+
+jboolean JNI_BraveShieldsContentSettings_GetForgetFirstPartyStorageEnabled(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& url,
+    const base::android::JavaParamRef<jobject>& j_profile) {
+  return brave_shields::GetForgetFirstPartyStorageEnabled(
+      HostContentSettingsMapFactory::GetForProfile(
+          ProfileAndroid::FromProfileAndroid(j_profile)),
+      GURL(base::android::ConvertJavaStringToUTF8(env, url)));
+}
+
 }  // namespace android
 }  // namespace chrome

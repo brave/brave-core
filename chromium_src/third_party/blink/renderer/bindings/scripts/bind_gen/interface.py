@@ -3,9 +3,21 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import os.path
 import re
+import sys
 
 import override_utils
+
+# We patch the upstream script to inline this file, so the path reported by
+# __file__ will be the path of the upstream script.
+SCRIPTS_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+sys.path.insert(1, SCRIPTS_DIR)
+
+from bind_gen.code_node import SymbolNode, TextNode  # pylint: disable=import-error,wrong-import-position
+from bind_gen.codegen_accumulator import CodeGenAccumulator  # pylint: disable=import-error,wrong-import-position
+from bind_gen.codegen_context import CodeGenContext  # pylint: disable=import-error,wrong-import-position
+from bind_gen.codegen_format import format_template as _format  # pylint: disable=import-error,wrong-import-position
 
 # Get gn arg to enable WebAPI probes.
 _IS_PG_WEBAPI_PROBES_ENABLED = override_utils.get_gn_arg(
@@ -33,6 +45,7 @@ _PAGE_GRAPH_TRACKED_ITEMS = {
         "toBlob",
         "toDataURL",
     },
+    "Location": {"*"},
     "Navigator": {"*"},
     "Performance": {"*"},
     "PerformanceObserver": {"*"},
@@ -122,7 +135,7 @@ def _make_report_page_graph_binding_event(cg_context):
 
     pattern = ("if (UNLIKELY(${page_graph_enabled})) {{\n"
                "  probe::RegisterPageGraphBindingEvent("
-               "${execution_context}, ${page_graph_binding_name}, "
+               "${current_execution_context}, ${page_graph_binding_name}, "
                "PageGraphBindingType::k{_1}, "
                "PageGraphBindingEvent::k{_2});\n"
                "}}")
@@ -156,7 +169,8 @@ def _bind_page_graph_local_vars(code_node, cg_context):
         event_name = "{}.{}".format(event_name, "get")
     elif cg_context.attribute_set:
         event_name = "{}.{}".format(event_name, "set")
-    elif cg_context.constructor_group and not cg_context.is_named_constructor:
+    elif (cg_context.constructor_group
+          and not cg_context.is_legacy_factory_function):
         event_name = "{}.{}".format(cg_context.class_like.identifier,
                                     "constructor")
 
@@ -167,6 +181,7 @@ def _bind_page_graph_local_vars(code_node, cg_context):
                 _1=event_name))
 
     code_node.register_code_symbol(page_graph_binding_name_node)
+
 
 # probe::RegisterPageGraphWebAPICallWithResult() generator.
 def _append_report_page_graph_api_call_event(cg_context, expr):
@@ -209,12 +224,12 @@ def _append_report_page_graph_api_call_event(cg_context, expr):
     else:
         return_value = _to_page_graph_blink_arg("return_value")
 
-    pattern = (
-        ";\n"
-        "if (UNLIKELY(${page_graph_enabled})) {{\n"
-        "  probe::RegisterPageGraphWebAPICallWithResult(${execution_context}, "
-        "${page_graph_binding_name}, {_1}, {{{_2}}}, {_3}, {_4});\n"
-        "}}")
+    pattern = (";\n"
+               "if (UNLIKELY(${page_graph_enabled})) {{\n"
+               "  probe::RegisterPageGraphWebAPICallWithResult("
+               "${current_execution_context}, \n"
+               "${page_graph_binding_name}, {_1}, {{{_2}}}, {_3}, {_4});\n"
+               "}}")
     _1 = receiver_data
     _2 = args
     _3 = exception_state

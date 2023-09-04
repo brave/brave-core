@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 
+#include <cinttypes>
 #include <utility>
 #include <vector>
 
@@ -12,16 +13,16 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_constants.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database::table {
 
@@ -34,15 +35,15 @@ void BindRecords(mojom::DBCommandInfo* command) {
 
   command->record_bindings = {
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // id
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // created_at
+      mojom::DBCommandInfo::RecordBindingType::INT64_TYPE,   // created_at
       mojom::DBCommandInfo::RecordBindingType::
           STRING_TYPE,  // creative_instance_id
       mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // segment
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // ad_type
       mojom::DBCommandInfo::RecordBindingType::
-          STRING_TYPE,                                      // confirmation_type
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE  // reconciled_at
+          STRING_TYPE,                                     // confirmation_type
+      mojom::DBCommandInfo::RecordBindingType::INT64_TYPE  // reconciled_at
   };
 }
 
@@ -55,13 +56,17 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   int index = 0;
   for (const auto& transaction : transactions) {
     BindString(command, index++, transaction.id);
-    BindDouble(command, index++, transaction.created_at.ToDoubleT());
+    BindInt64(
+        command, index++,
+        transaction.created_at.ToDeltaSinceWindowsEpoch().InMicroseconds());
     BindString(command, index++, transaction.creative_instance_id);
     BindDouble(command, index++, transaction.value);
     BindString(command, index++, transaction.segment);
     BindString(command, index++, transaction.ad_type.ToString());
     BindString(command, index++, transaction.confirmation_type.ToString());
-    BindDouble(command, index++, transaction.reconciled_at.ToDoubleT());
+    BindInt64(
+        command, index++,
+        transaction.reconciled_at.ToDeltaSinceWindowsEpoch().InMicroseconds());
 
     count++;
   }
@@ -75,25 +80,29 @@ TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   TransactionInfo transaction;
 
   transaction.id = ColumnString(record, 0);
-  transaction.created_at = base::Time::FromDoubleT(ColumnDouble(record, 1));
+  transaction.created_at = base::Time::FromDeltaSinceWindowsEpoch(
+      base::Microseconds(ColumnInt64(record, 1)));
   transaction.creative_instance_id = ColumnString(record, 2);
   transaction.value = ColumnDouble(record, 3);
   transaction.segment = ColumnString(record, 4);
   transaction.ad_type = AdType(ColumnString(record, 5));
   transaction.confirmation_type = ConfirmationType(ColumnString(record, 6));
-  transaction.reconciled_at = base::Time::FromDoubleT(ColumnDouble(record, 7));
+  transaction.reconciled_at = base::Time::FromDeltaSinceWindowsEpoch(
+      base::Microseconds(ColumnInt64(record, 7)));
 
   return transaction;
 }
 
-void OnGetTransactions(GetTransactionsCallback callback,
-                       mojom::DBCommandResponseInfoPtr command_response) {
+void GetCallback(GetTransactionsCallback callback,
+                 mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get transactions");
     return std::move(callback).Run(/*success*/ false, /*transactions*/ {});
   }
+
+  CHECK(command_response->result);
 
   TransactionList transactions;
 
@@ -147,6 +156,39 @@ void MigrateToV26(mojom::DBTransactionInfo* transaction) {
   CreateTableIndex(transaction, "transactions", "id");
 }
 
+void MigrateToV29(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  {
+    mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+    command->type = mojom::DBCommandInfo::Type::EXECUTE;
+    command->sql =
+        "UPDATE transactions SET created_at = (CAST(created_at AS INT64) + "
+        "11644473600) * 1000000;";
+    transaction->commands.push_back(std::move(command));
+  }
+
+  {
+    mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+    command->type = mojom::DBCommandInfo::Type::EXECUTE;
+    command->sql =
+        "UPDATE transactions SET reconciled_at = (CAST(reconciled_at AS INT64) "
+        "+ 11644473600) * 1000000 WHERE reconciled_at != 0;";
+    transaction->commands.push_back(std::move(command));
+  }
+}
+
+void MigrateToV32(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "UPDATE transactions SET confirmation_type = 'bookmark' WHERE "
+      "confirmation_type == 'saved';";
+  transaction->commands.push_back(std::move(command));
+}
+
 }  // namespace
 
 void Transactions::Save(const TransactionList& transactions,
@@ -164,7 +206,6 @@ void Transactions::Save(const TransactionList& transactions,
 
 void Transactions::GetAll(GetTransactionsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -176,51 +217,48 @@ void Transactions::GetAll(GetTransactionsCallback callback) const {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetTransactions, std::move(callback)));
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void Transactions::GetForDateRange(const base::Time from_time,
                                    const base::Time to_time,
                                    GetTransactionsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
-  command->sql = base::ReplaceStringPlaceholders(
+  command->sql = base::StringPrintf(
       "SELECT id, created_at, creative_instance_id, value, segment, ad_type, "
-      "confirmation_type, reconciled_at FROM $1 WHERE created_at BETWEEN $2 "
-      "AND $3;",
-      {GetTableName(), TimeAsTimestampString(from_time),
-       TimeAsTimestampString(to_time)},
-      nullptr);
+      "confirmation_type, reconciled_at FROM %s WHERE created_at BETWEEN "
+      "%" PRId64 " AND %" PRId64 ";",
+      GetTableName().c_str(),
+      from_time.ToDeltaSinceWindowsEpoch().InMicroseconds(),
+      to_time.ToDeltaSinceWindowsEpoch().InMicroseconds());
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetTransactions, std::move(callback)));
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
-void Transactions::Update(
-    const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
-    ResultCallback callback) const {
+void Transactions::Update(const PaymentTokenList& payment_tokens,
+                          ResultCallback callback) const {
   std::vector<std::string> transaction_ids;
-  for (const auto& unblinded_payment_token : unblinded_payment_tokens) {
-    transaction_ids.push_back(unblinded_payment_token.transaction_id);
+  for (const auto& payment_token : payment_tokens) {
+    transaction_ids.push_back(payment_token.transaction_id);
   }
   transaction_ids.emplace_back(rewards::kMigrationUnreconciledTransactionId);
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::RUN;
-  command->sql = base::ReplaceStringPlaceholders(
-      "UPDATE $1 SET reconciled_at = $2 WHERE reconciled_at == 0 AND (id IN $3 "
-      "OR creative_instance_id IN $4);",
-      {GetTableName(), TimeAsTimestampString(base::Time::Now()),
-       BuildBindingParameterPlaceholder(transaction_ids.size()),
-       BuildBindingParameterPlaceholder(1)},
-      nullptr);
+  command->sql = base::StringPrintf(
+      "UPDATE %s SET reconciled_at = %" PRId64
+      " WHERE reconciled_at == 0 AND (id IN %s OR creative_instance_id IN %s);",
+      GetTableName().c_str(),
+      base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds(),
+      BuildBindingParameterPlaceholder(transaction_ids.size()).c_str(),
+      BuildBindingParameterPlaceholder(1).c_str());
 
   int index = 0;
   for (const auto& transaction_id : transaction_ids) {
@@ -276,7 +314,13 @@ void Transactions::Migrate(mojom::DBTransactionInfo* transaction,
       break;
     }
 
-    default: {
+    case 29: {
+      MigrateToV29(transaction);
+      break;
+    }
+
+    case 32: {
+      MigrateToV32(transaction);
       break;
     }
   }

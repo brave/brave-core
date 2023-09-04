@@ -39,8 +39,7 @@ class DownloadToolbarButtonView : public DownloadToolbarButtonViewChromium {
   void UpdateIcon() override;
 
  private:
-  bool HasInsecureDownloads(
-      const std::vector<DownloadUIModel::DownloadUIModelPtr>& models) const;
+  bool HasInsecureDownloads();
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DOWNLOAD_BUBBLE_DOWNLOAD_TOOLBAR_BUTTON_VIEW_H_

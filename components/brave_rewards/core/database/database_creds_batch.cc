@@ -8,9 +8,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_creds_batch.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
-
-using std::placeholders::_1;
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -21,8 +19,8 @@ const char kTableName[] = "creds_batch";
 
 }  // namespace
 
-DatabaseCredsBatch::DatabaseCredsBatch(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseCredsBatch::DatabaseCredsBatch(RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseCredsBatch::~DatabaseCredsBatch() = default;
 
@@ -30,7 +28,7 @@ void DatabaseCredsBatch::InsertOrUpdate(mojom::CredsBatchPtr creds,
                                         LegacyResultCallback callback) {
   if (!creds) {
     BLOG(1, "Creds is null");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -59,9 +57,9 @@ void DatabaseCredsBatch::InsertOrUpdate(mojom::CredsBatchPtr creds,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseCredsBatch::GetRecordByTrigger(
@@ -96,15 +94,15 @@ void DatabaseCredsBatch::GetRecordByTrigger(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseCredsBatch::OnGetRecordByTrigger, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseCredsBatch::OnGetRecordByTrigger,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseCredsBatch::OnGetRecordByTrigger(
-    mojom::DBCommandResponsePtr response,
-    GetCredsBatchCallback callback) {
+    GetCredsBatchCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -140,7 +138,7 @@ void DatabaseCredsBatch::SaveSignedCreds(mojom::CredsBatchPtr creds,
                                          LegacyResultCallback callback) {
   if (!creds) {
     BLOG(1, "Creds is null");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -164,9 +162,9 @@ void DatabaseCredsBatch::SaveSignedCreds(mojom::CredsBatchPtr creds,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseCredsBatch::GetAllRecords(GetCredsBatchListCallback callback) {
@@ -193,14 +191,14 @@ void DatabaseCredsBatch::GetAllRecords(GetCredsBatchListCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseCredsBatch::OnGetRecords, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseCredsBatch::OnGetRecords, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void DatabaseCredsBatch::OnGetRecords(mojom::DBCommandResponsePtr response,
-                                      GetCredsBatchListCallback callback) {
+void DatabaseCredsBatch::OnGetRecords(GetCredsBatchListCallback callback,
+                                      mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -237,7 +235,7 @@ void DatabaseCredsBatch::UpdateStatus(const std::string& trigger_id,
                                       LegacyResultCallback callback) {
   if (trigger_id.empty()) {
     BLOG(0, "Trigger id is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -257,9 +255,9 @@ void DatabaseCredsBatch::UpdateStatus(const std::string& trigger_id,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseCredsBatch::UpdateRecordsStatus(
@@ -269,7 +267,7 @@ void DatabaseCredsBatch::UpdateRecordsStatus(
     LegacyResultCallback callback) {
   if (trigger_ids.empty()) {
     BLOG(0, "Trigger id is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -288,9 +286,9 @@ void DatabaseCredsBatch::UpdateRecordsStatus(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseCredsBatch::GetRecordsByTriggers(
@@ -320,10 +318,10 @@ void DatabaseCredsBatch::GetRecordsByTriggers(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseCredsBatch::OnGetRecords, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseCredsBatch::OnGetRecords, base::Unretained(this),
+                     std::move(callback)));
 }
 
 }  // namespace database

@@ -1,0 +1,7 @@
+Name: serde_repr
+URL: https://crates.io/crates/serde_repr
+Description: Derive Serialize and Deserialize that delegates to the underlying repr of a C-like enum.
+Version: 0.1.7
+Security Critical: no
+License: Apache 2.0
+Revision: 9445b8940aa032bf5606854fbcd4d838acbb0a63

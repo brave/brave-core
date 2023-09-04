@@ -22,7 +22,6 @@ typedef NS_OPTIONS(NSUInteger, BraveSyncUserSelectableTypes) {
   BraveSyncUserSelectableTypes_APPS = 1ULL << 8,
   BraveSyncUserSelectableTypes_READING_LIST = 1ULL << 9,
   BraveSyncUserSelectableTypes_TABS = 1ULL << 10,
-  BraveSyncUserSelectableTypes_WIFI_CONFIGURATIONS = 1ULL << 11,
 };
 
 OBJC_EXPORT

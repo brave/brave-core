@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
@@ -26,14 +27,17 @@
 #include "brave/components/brave_wallet/browser/fil_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
+#include "brave/components/brave_wallet/browser/nft_metadata_fetcher.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_requests.h"
 #include "brave/components/brave_wallet/browser/solana_response_parser.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -41,6 +45,7 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
+#include "brave/components/json/rs/src/lib.rs.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -194,6 +199,48 @@ decentralized_dns::EnsOffchainResolveMethod FromMojomEnsOffchainResolveMethod(
   return EnsOffchainResolveMethod::kDisabled;
 }
 
+// Function to convert all numbers in JSON string to strings, recursively
+// under the top-level "result" key.
+absl::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
+  auto converted_json =
+      std::string(json::convert_all_numbers_to_string(json, "/result"));
+  if (converted_json.empty()) {
+    return absl::nullopt;
+  }
+
+  return converted_json;
+}
+
+// Retrieves a custom network dict from the preferences based on the chain ID.
+// This function is templated to work with both base::Value::Dict as well as
+// const base::Value::Dict types, for read/write and read-only access
+// respectively.
+template <typename T>
+T* GetCustomEVMNetworkFromPrefsDict(const std::string& chain_id,
+                                    T& custom_networks) {
+  auto* custom_evm_networks =
+      custom_networks.FindList(brave_wallet::kEthereumPrefKey);
+  if (!custom_evm_networks) {
+    return nullptr;
+  }
+
+  for (auto& item : *custom_evm_networks) {
+    T* custom_network = item.GetIfDict();
+    if (!custom_network) {
+      continue;
+    }
+
+    const std::string* id = custom_network->FindString("chainId");
+    if (!id || *id != chain_id) {
+      continue;
+    }
+
+    return custom_network;
+  }
+
+  return nullptr;
+}
+
 namespace solana {
 // https://github.com/solana-labs/solana/blob/f7b2951c79cd07685ed62717e78ab1c200924924/rpc/src/rpc.rs#L1717
 constexpr char kAccountNotCreatedError[] = "could not find account";
@@ -202,6 +249,18 @@ constexpr char kAccountNotCreatedError[] = "could not find account";
 }  // namespace
 
 namespace brave_wallet {
+
+struct PendingAddChainRequest {
+  mojom::AddChainRequestPtr request;
+  url::Origin origin;
+};
+
+struct PendingSwitchChainRequest {
+  mojom::SwitchChainRequestPtr switch_chain_request;
+  url::Origin origin;
+  base::Value switch_chain_id;
+  mojom::EthereumProvider::RequestCallback switch_chain_callback;
+};
 
 JsonRpcService::JsonRpcService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -301,7 +360,7 @@ void JsonRpcService::MigrateShowTestNetworksToggle(PrefService* prefs) {
     return;
   }
 
-  // Show test networks toggle was explictily enabled. Go through coins and
+  // Show test networks toggle was explicitly enabled. Go through coins and
   // remove all test networks from hidden lists.
 
   ScopedDictPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
@@ -390,20 +449,25 @@ void JsonRpcService::FirePendingRequestCompleted(const std::string& chain_id,
   }
 }
 
-bool JsonRpcService::HasRequestFromOrigin(const url::Origin& origin) const {
-  for (const auto& request : add_chain_pending_requests_) {
-    if (request.second->origin_info->origin == origin) {
-      return true;
-    }
-  }
-  return false;
+bool JsonRpcService::HasAddChainRequestFromOrigin(
+    const url::Origin& origin) const {
+  return base::ranges::any_of(add_chain_pending_requests_, [origin](auto& req) {
+    return req.second.origin == origin;
+  });
+}
+
+bool JsonRpcService::HasSwitchChainRequestFromOrigin(
+    const url::Origin& origin) const {
+  return base::ranges::any_of(
+      pending_switch_chain_requests_,
+      [origin](auto& req) { return req.second.origin == origin; });
 }
 
 void JsonRpcService::GetPendingAddChainRequests(
     GetPendingAddChainRequestsCallback callback) {
   std::vector<mojom::AddChainRequestPtr> all_requests;
   for (const auto& request : add_chain_pending_requests_) {
-    all_requests.push_back(request.second.Clone());
+    all_requests.push_back(request.second.request.Clone());
   }
   std::move(callback).Run(std::move(all_requests));
 }
@@ -428,10 +492,11 @@ void JsonRpcService::AddChain(mojom::NetworkInfoPtr chain,
     return;
   }
 
-  // Custom networks for FIL and SOL are allowed to replace only known chain
-  // ids. So just update prefs without chain id validation.
+  // Custom networks for FIL, SOL and BTC are allowed to replace only known
+  // chain ids. So just update prefs without chain id validation.
   if (chain->coin == mojom::CoinType::FIL ||
-      chain->coin == mojom::CoinType::SOL) {
+      chain->coin == mojom::CoinType::SOL ||
+      chain->coin == mojom::CoinType::BTC) {
     if (!KnownChainExists(chain_id, chain->coin)) {
       std::move(callback).Run(
           chain_id, mojom::ProviderError::kInternalError,
@@ -470,29 +535,23 @@ void JsonRpcService::OnEthChainIdValidated(
   std::move(callback).Run(chain_id, mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::AddEthereumChainForOrigin(
+std::string JsonRpcService::AddEthereumChainForOrigin(
     mojom::NetworkInfoPtr chain,
-    const url::Origin& origin,
-    AddEthereumChainForOriginCallback callback) {
+    const url::Origin& origin) {
   auto chain_id = chain->chain_id;
   if (KnownChainExists(chain_id, mojom::CoinType::ETH) ||
       CustomChainExists(prefs_, chain_id, mojom::CoinType::ETH)) {
-    std::move(callback).Run(
-        chain_id, mojom::ProviderError::kUserRejectedRequest,
-        l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS));
-    return;
+    return l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS);
   }
   if (origin.opaque() || add_chain_pending_requests_.contains(chain_id) ||
-      HasRequestFromOrigin(origin)) {
-    std::move(callback).Run(
-        chain_id, mojom::ProviderError::kUserRejectedRequest,
-        l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
-    return;
+      HasAddChainRequestFromOrigin(origin)) {
+    return l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR);
   }
 
-  add_chain_pending_requests_[chain_id] =
+  add_chain_pending_requests_[chain_id].origin = origin;
+  add_chain_pending_requests_[chain_id].request =
       mojom::AddChainRequest::New(MakeOriginInfo(origin), std::move(chain));
-  std::move(callback).Run(chain_id, mojom::ProviderError::kSuccess, "");
+  return "";
 }
 
 void JsonRpcService::AddEthereumChainRequestCompleted(
@@ -509,7 +568,8 @@ void JsonRpcService::AddEthereumChainRequestCompleted(
     return;
   }
 
-  const auto& chain = *add_chain_pending_requests_.at(chain_id)->network_info;
+  const auto& chain =
+      *add_chain_pending_requests_[chain_id].request->network_info;
   GURL url = MaybeAddInfuraProjectId(GetActiveEndpointUrl(chain));
   if (!url.is_valid()) {
     FirePendingRequestCompleted(
@@ -533,7 +593,8 @@ void JsonRpcService::OnEthChainIdValidatedForOrigin(
     return;
   }
 
-  const auto& chain = *add_chain_pending_requests_.at(chain_id)->network_info;
+  const auto& chain =
+      *add_chain_pending_requests_[chain_id].request->network_info;
   if (ParseSingleStringResult(api_request_result.value_body()) != chain_id &&
       !skip_eth_chain_id_validation_for_testing_) {
     FirePendingRequestCompleted(
@@ -558,15 +619,13 @@ void JsonRpcService::RemoveChain(const std::string& chain_id,
 
 bool JsonRpcService::SetNetwork(const std::string& chain_id,
                                 mojom::CoinType coin,
-                                const absl::optional<url::Origin>& origin,
-                                bool silent) {
+                                const absl::optional<url::Origin>& origin) {
   if (!SetCurrentChainId(prefs_, coin, origin, chain_id)) {
     return false;
   }
 
-  if (!silent) {
-    FireNetworkChanged(coin, chain_id, origin);
-  }
+  FireNetworkChanged(coin, chain_id, origin);
+
   if (coin == mojom::CoinType::ETH) {
     MaybeUpdateIsEip1559(chain_id);
   }
@@ -575,20 +634,21 @@ bool JsonRpcService::SetNetwork(const std::string& chain_id,
 
 void JsonRpcService::SetNetwork(const std::string& chain_id,
                                 mojom::CoinType coin,
-                                const absl::optional<::url::Origin>& origin,
+                                const absl::optional<url::Origin>& origin,
                                 SetNetworkCallback callback) {
-  if (!SetNetwork(chain_id, coin, origin)) {
-    std::move(callback).Run(false);
-  } else {
-    std::move(callback).Run(true);
-  }
+  std::move(callback).Run(SetNetwork(chain_id, coin, origin));
 }
 
 void JsonRpcService::GetNetwork(mojom::CoinType coin,
                                 const absl::optional<::url::Origin>& origin,
                                 GetNetworkCallback callback) {
-  const auto& chain_id = GetChainIdSync(coin, origin);
-  std::move(callback).Run(GetChain(prefs_, chain_id, coin));
+  std::move(callback).Run(GetNetworkSync(coin, origin));
+}
+
+mojom::NetworkInfoPtr JsonRpcService::GetNetworkSync(
+    mojom::CoinType coin,
+    const absl::optional<::url::Origin>& origin) {
+  return GetChain(prefs_, GetChainIdSync(coin, origin), coin);
 }
 
 void JsonRpcService::MaybeUpdateIsEip1559(const std::string& chain_id) {
@@ -598,44 +658,52 @@ void JsonRpcService::MaybeUpdateIsEip1559(const std::string& chain_id) {
     return;
   }
 
-  GetIsEip1559(chain_id,
-               base::BindOnce(&JsonRpcService::UpdateIsEip1559,
-                              weak_ptr_factory_.GetWeakPtr(), chain_id));
+  GetBaseFeePerGas(chain_id,
+                   base::BindOnce(&JsonRpcService::UpdateIsEip1559,
+                                  weak_ptr_factory_.GetWeakPtr(), chain_id));
 }
 
 void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
-                                     bool is_eip1559,
+                                     const std::string& base_fee_per_gas,
                                      mojom::ProviderError error,
                                      const std::string& error_message) {
   if (error != mojom::ProviderError::kSuccess) {
     return;
   }
 
+  bool is_eip1559 = !base_fee_per_gas.empty();
   bool changed = false;
   if (chain_id == brave_wallet::mojom::kLocalhostChainId) {
     changed = prefs_->GetBoolean(kSupportEip1559OnLocalhostChain) != is_eip1559;
     prefs_->SetBoolean(kSupportEip1559OnLocalhostChain, is_eip1559);
   } else {
-    // TODO(apaymyshev): move all work with kBraveWalletCustomNetworks into one
-    // file.
-    ScopedDictPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
-    for (base::Value& item : *update->FindList(kEthereumPrefKey)) {
-      base::Value::Dict* custom_network = item.GetIfDict();
-      if (!custom_network) {
-        continue;
+    // TODO(apaymyshev): move all work with kBraveWalletCustomNetworks into
+    // one file.
+
+    // Read is_eip1559 field of the custom network from prefs, without
+    // triggering notifications. See comments in the next block for more
+    // details.
+    auto& custom_networks = prefs_->GetDict(kBraveWalletCustomNetworks);
+    auto* custom_network =
+        GetCustomEVMNetworkFromPrefsDict(chain_id, custom_networks);
+    if (!custom_network) {
+      return;
+    }
+    changed =
+        custom_network->FindBool("is_eip1559").value_or(false) != is_eip1559;
+
+    // ScopedDictPrefUpdate always notifies PrefObservers at destruction time.
+    // Initialize ScopedDictPrefUpdate only if is_eip1559 field of the custom
+    // network has changed, to avoid unnecessary notifications.
+    if (changed) {
+      ScopedDictPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
+      auto* custom_network_for_update =
+          GetCustomEVMNetworkFromPrefsDict(chain_id, *update);
+      if (!custom_network_for_update) {
+        return;
       }
 
-      const std::string* id = custom_network->FindString("chainId");
-      if (!id || *id != chain_id) {
-        continue;
-      }
-
-      changed =
-          custom_network->FindBool("is_eip1559").value_or(false) != is_eip1559;
-      custom_network->Set("is_eip1559", is_eip1559);
-      // Break the loop cuz we don't expect multiple entries with the same
-      // chainId in the list.
-      break;
+      custom_network_for_update->Set("is_eip1559", is_eip1559);
     }
   }
 
@@ -708,6 +776,22 @@ void JsonRpcService::GetHiddenNetworks(mojom::CoinType coin,
               base::ToLowerASCII(GetChainIdSync(coin, absl::nullopt)));
 
   std::move(callback).Run(hidden_networks);
+}
+
+void JsonRpcService::AddHiddenNetwork(mojom::CoinType coin,
+                                      const std::string& chain_id,
+                                      AddHiddenNetworkCallback callback) {
+  brave_wallet::AddHiddenNetwork(prefs_, coin, chain_id);
+
+  std::move(callback).Run(true);
+}
+
+void JsonRpcService::RemoveHiddenNetwork(mojom::CoinType coin,
+                                         const std::string& chain_id,
+                                         RemoveHiddenNetworkCallback callback) {
+  brave_wallet::RemoveHiddenNetwork(prefs_, coin, chain_id);
+
+  std::move(callback).Run(true);
 }
 
 std::string JsonRpcService::GetNetworkUrl(
@@ -809,11 +893,13 @@ void JsonRpcService::GetFeeHistory(const std::string& chain_id,
       base::BindOnce(&JsonRpcService::OnGetFeeHistory,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
+
   RequestInternal(eth::eth_feeHistory("0x28",  // blockCount = 40
                                       kEthereumBlockTagLatest,
                                       std::vector<double>{20, 50, 80}),
                   true, GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH),
-                  std::move(internal_callback));
+                  std::move(internal_callback), std::move(conversion_callback));
 }
 
 void JsonRpcService::OnGetFeeHistory(GetFeeHistoryCallback callback,
@@ -858,6 +944,7 @@ void JsonRpcService::GetBalance(const std::string& address,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
+
   if (coin == mojom::CoinType::ETH) {
     auto internal_callback =
         base::BindOnce(&JsonRpcService::OnEthGetBalance,
@@ -872,6 +959,8 @@ void JsonRpcService::GetBalance(const std::string& address,
     RequestInternal(fil::getBalance(address), true, network_url,
                     std::move(internal_callback));
     return;
+  } else {
+    NOTREACHED();
   }
   std::move(callback).Run("", mojom::ProviderError::kInternalError,
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -2089,21 +2178,26 @@ void JsonRpcService::OnGetGasPrice(GetGasPriceCallback callback,
   std::move(callback).Run(*result, mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetIsEip1559(const std::string& chain_id,
-                                  GetIsEip1559Callback callback) {
+// Retrieves the BASEFEE per gas for a given chain ID.
+//
+// If the chain does not support EIP-1559, and assuming no other provider
+// errors, an empty string as base fee with kSuccess error will be delivered
+// to the provided callback.
+void JsonRpcService::GetBaseFeePerGas(const std::string& chain_id,
+                                      GetBaseFeePerGasCallback callback) {
   auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnGetIsEip1559,
+      base::BindOnce(&JsonRpcService::OnGetBaseFeePerGas,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(eth::eth_getBlockByNumber(kEthereumBlockTagLatest, false),
                   true, GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH),
                   std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetIsEip1559(GetIsEip1559Callback callback,
-                                    APIRequestResult api_request_result) {
+void JsonRpcService::OnGetBaseFeePerGas(GetBaseFeePerGasCallback callback,
+                                        APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
-        false, mojom::ProviderError::kInternalError,
+        "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
@@ -2114,13 +2208,17 @@ void JsonRpcService::OnGetIsEip1559(GetIsEip1559Callback callback,
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
                                            &error, &error_message);
-    std::move(callback).Run(false, error, error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
   const std::string* base_fee = result->FindString("baseFeePerGas");
-  std::move(callback).Run(base_fee && !base_fee->empty(),
-                          mojom::ProviderError::kSuccess, "");
+  if (base_fee && !base_fee->empty()) {
+    std::move(callback).Run(*base_fee, mojom::ProviderError::kSuccess, "");
+  } else {
+    // Successful response, but the chain does not support EIP-1559.
+    std::move(callback).Run("", mojom::ProviderError::kSuccess, "");
+  }
 }
 
 void JsonRpcService::GetBlockByNumber(const std::string& chain_id,
@@ -2570,35 +2668,38 @@ void JsonRpcService::OnGetEthNftStandard(
 
 void JsonRpcService::GetPendingSwitchChainRequests(
     GetPendingSwitchChainRequestsCallback callback) {
+  std::move(callback).Run(GetPendingSwitchChainRequestsSync());
+}
+
+std::vector<mojom::SwitchChainRequestPtr>
+JsonRpcService::GetPendingSwitchChainRequestsSync() {
   std::vector<mojom::SwitchChainRequestPtr> requests;
-  for (const auto& request : switch_chain_requests_) {
-    requests.push_back(mojom::SwitchChainRequest::New(
-        MakeOriginInfo(request.first), request.second));
+  for (const auto& request : pending_switch_chain_requests_) {
+    requests.push_back(request.second.switch_chain_request.Clone());
   }
-  std::move(callback).Run(std::move(requests));
+  return requests;
 }
 
 void JsonRpcService::NotifySwitchChainRequestProcessed(
-    bool approved,
-    const url::Origin& origin) {
-  if (!switch_chain_requests_.contains(origin) ||
-      !switch_chain_callbacks_.contains(origin) ||
-      !switch_chain_ids_.contains(origin)) {
+    const std::string& request_id,
+    bool approved) {
+  if (!pending_switch_chain_requests_.contains(request_id)) {
     return;
   }
+
+  auto pending_request = std::move(pending_switch_chain_requests_[request_id]);
+  pending_switch_chain_requests_.erase(request_id);
+
   if (approved) {
     // We already check chain id validiy in
     // JsonRpcService::AddSwitchEthereumChainRequest so this should always
     // be successful unless chain id differs or we add more check other than
     // chain id
-    CHECK(SetNetwork(switch_chain_requests_[origin], mojom::CoinType::ETH,
-                     origin));
+    CHECK(SetNetwork(pending_request.switch_chain_request->chain_id,
+                     mojom::CoinType::ETH, pending_request.origin));
   }
-  auto callback = std::move(switch_chain_callbacks_[origin]);
-  base::Value id = std::move(switch_chain_ids_[origin]);
-  switch_chain_requests_.erase(origin);
-  switch_chain_callbacks_.erase(origin);
-  switch_chain_ids_.erase(origin);
+  auto callback = std::move(pending_request.switch_chain_callback);
+  base::Value id = std::move(pending_request.switch_chain_id);
 
   bool reject = false;
   if (approved) {
@@ -2638,7 +2739,7 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(const std::string& chain_id,
   }
 
   // There can be only 1 request per origin
-  if (switch_chain_requests_.contains(origin)) {
+  if (HasSwitchChainRequestFromOrigin(origin)) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
@@ -2647,9 +2748,15 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(const std::string& chain_id,
                             "", false);
     return false;
   }
-  switch_chain_requests_[origin] = chain_id;
-  switch_chain_callbacks_[origin] = std::move(callback);
-  switch_chain_ids_[origin] = std::move(id);
+
+  auto request_id = GenerateRandomHexString();
+  auto& pending_request = pending_switch_chain_requests_[request_id];
+  pending_request.switch_chain_request = mojom::SwitchChainRequest::New(
+      request_id, MakeOriginInfo(origin), chain_id);
+  pending_request.origin = origin;
+  pending_request.switch_chain_callback = std::move(callback);
+  pending_request.switch_chain_id = std::move(id);
+
   return true;
 }
 
@@ -2744,19 +2851,22 @@ void JsonRpcService::Reset() {
   ClearJsonRpcServiceProfilePrefs(prefs_);
 
   add_chain_pending_requests_.clear();
-  switch_chain_requests_.clear();
+
+  base::Value formed_response = GetProviderErrorDictionary(
+      mojom::ProviderError::kUserRejectedRequest,
+      l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+
   // Reject pending suggest token requests when network changed.
-  for (auto& callback : switch_chain_callbacks_) {
-    base::Value formed_response = GetProviderErrorDictionary(
-        mojom::ProviderError::kUserRejectedRequest,
-        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+  for (auto& pending_request : pending_switch_chain_requests_) {
     bool reject = true;
-    std::move(callback.second)
-        .Run(std::move(switch_chain_ids_[callback.first]),
-             std::move(formed_response), reject, "", false);
+
+    auto callback = std::move(pending_request.second.switch_chain_callback);
+    base::Value id = std::move(pending_request.second.switch_chain_id);
+
+    std::move(callback).Run(std::move(id), formed_response.Clone(), reject, "",
+                            false);
   }
-  switch_chain_callbacks_.clear();
-  switch_chain_ids_.clear();
+  pending_switch_chain_requests_.clear();
 }
 
 void JsonRpcService::GetSolanaBalance(const std::string& pubkey,
@@ -3227,8 +3337,8 @@ void JsonRpcService::GetSolanaTokenAccountsByOwner(
       base::BindOnce(&JsonRpcService::OnGetSolanaTokenAccountsByOwner,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(
-      solana::getTokenAccountsByOwner(pubkey.ToBase58()), true, network_url,
-      std::move(internal_callback),
+      solana::getTokenAccountsByOwner(pubkey.ToBase58(), "base64"), true,
+      network_url, std::move(internal_callback),
       base::BindOnce(&ConvertMultiUint64InObjectArrayToString, "/result/value",
                      "/account",
                      std::vector<std::string>({"lamports", "rentEpoch"})));
@@ -3258,6 +3368,49 @@ void JsonRpcService::OnGetSolanaTokenAccountsByOwner(
 
   std::move(callback).Run(token_accounts, mojom::SolanaProviderError::kSuccess,
                           "");
+}
+
+void JsonRpcService::GetSPLTokenBalances(const std::string& pubkey,
+                                         const std::string& chain_id,
+                                         GetSPLTokenBalancesCallback callback) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        {}, mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetSPLTokenBalances,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(solana::getTokenAccountsByOwner(pubkey, "jsonParsed"), true,
+                  network_url, std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetSPLTokenBalances(
+    GetSPLTokenBalancesCallback callback,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(
+        {}, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  auto result =
+      solana::ParseGetSPLTokenBalances(api_request_result.value_body());
+  if (!result) {
+    mojom::SolanaProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::SolanaProviderError>(
+        api_request_result.value_body(), &error, &error_message);
+    std::move(callback).Run({}, error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(std::move(*result),
+                          mojom::SolanaProviderError::kSuccess, "");
 }
 
 }  // namespace brave_wallet

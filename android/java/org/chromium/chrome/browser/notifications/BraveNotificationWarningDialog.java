@@ -24,14 +24,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveDialogFragment;
-import org.chromium.chrome.browser.notifications.BravePermissionUtils;
+import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.ui.permissions.PermissionConstants;
 
 /**
  * This dialog is used to show different messages when notification permission is off and
@@ -91,7 +87,7 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
     }
 
     public static boolean shouldShowRewardWarningDialog(Context context) {
-        return isBraveRewardsEnabled()
+        return BraveRewardsHelper.isRewardsEnabled()
                 && BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(context);
     }
 
@@ -137,10 +133,6 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
         clickOnPrimaryButton(view);
         clickOnCloseButton(view);
         clickOnNotNow(view);
-    }
-
-    public static boolean isBraveRewardsEnabled() {
-        return BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile());
     }
 
     public static boolean isPrivacyReportsEnabled() {

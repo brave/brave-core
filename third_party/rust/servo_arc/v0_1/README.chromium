@@ -1,0 +1,6 @@
+Name: servo_arc
+URL: https://crates.io/crates/servo_arc
+Description: A fork of std::sync::Arc with some extra functionality and without weak references
+Version: 0.1.1
+Security Critical: yes
+License: Apache 2.0

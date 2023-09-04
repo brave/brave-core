@@ -18,6 +18,8 @@ const char kVerticalTabsShowTitleOnWindow[] =
     "brave.tabs.vertical_tabs_show_title_on_window";
 const char kVerticalTabsFloatingEnabled[] =
     "brave.tabs.vertical_tabs_floating_enabled";
+const char kVerticalTabsExpandedWidth[] =
+    "brave.tabs.vertical_tabs_expanded_width";
 
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kTabHoverMode, TabHoverMode::CARD);
@@ -31,6 +33,7 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kVerticalTabsShowTitleOnWindow, false);
 #endif
   registry->RegisterBooleanPref(kVerticalTabsFloatingEnabled, true);
+  registry->RegisterIntegerPref(kVerticalTabsExpandedWidth, 250);
 }
 
 bool AreTooltipsEnabled(PrefService* prefs) {

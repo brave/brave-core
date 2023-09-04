@@ -7,11 +7,11 @@
 
 #include "base/path_service.h"
 #include "brave/browser/brave_drm_tab_helper.h"
-#include "brave/browser/widevine/constants.h"
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/widevine/constants.h"
 #include "build/build_config.h"
 #include "chrome/browser/ssl/cert_verifier_browser_test.h"
 #include "chrome/browser/ui/browser.h"
@@ -207,7 +207,8 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
     base::FilePath test_data_dir;
     base::PathService::Get(chrome::DIR_TEST_DATA, &test_data_dir);
     https_server_.ServeFilesFromDirectory(test_data_dir);
-    SetUpMockCertVerifierForHttpsServer(0, net::OK);
+    mock_cert_verifier()->set_default_result(net::OK);
+
     ASSERT_TRUE(https_server_.Start());
 
     GetPermissionRequestManager()->AddObserver(&observer);
@@ -216,13 +217,6 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
   void TearDownOnMainThread() override {
     CertVerifierBrowserTest::TearDownOnMainThread();
     GetPermissionRequestManager()->RemoveObserver(&observer);
-  }
-
-  void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
-    CertVerifierBrowserTest::SetUpDefaultCommandLine(command_line);
-    command_line->AppendSwitchASCII(
-        "enable-blink-features",
-        "EncryptedMediaEncryptionSchemeQuery");
   }
 
   content::WebContents* active_contents() {
@@ -244,16 +238,6 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
   }
 
  protected:
-  void SetUpMockCertVerifierForHttpsServer(net::CertStatus cert_status,
-                                           int net_result) {
-    scoped_refptr<net::X509Certificate> cert(https_server_.GetCertificate());
-    net::CertVerifyResult verify_result;
-    verify_result.is_issued_by_known_root = true;
-    verify_result.verified_cert = cert;
-    verify_result.cert_status = cert_status;
-    mock_cert_verifier()->AddResultForCert(cert, verify_result, net_result);
-  }
-
   TestObserver observer;
   net::EmbeddedTestServer https_server_;
 };
@@ -272,13 +256,17 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_FALSE(IsPermissionBubbleShown());
 
+  const std::string js_error =
+      "a JavaScript error: \"NotSupportedError: Unsupported keySystem or "
+      "supportedConfigurations.\"\n";
+
   const std::string drm_js =
       "var config = [{initDataTypes: ['cenc']}];"
       "navigator.requestMediaKeySystemAccess($1, config);";
   const std::string widevine_js = content::JsReplace(drm_js,
                                                      "com.widevine.alpha");
 
-  EXPECT_TRUE(content::ExecuteScript(active_contents(), widevine_js));
+  EXPECT_EQ(js_error, content::EvalJs(active_contents(), widevine_js).error);
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(IsPermissionBubbleShown());
   ResetBubbleState();
@@ -299,15 +287,16 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
   ResetBubbleState();
 
   // Check that non-widevine DRM is ignored.
-  EXPECT_TRUE(
-      content::ExecuteScript(active_contents(),
-                             content::JsReplace(drm_js, "org.w3.clearkey")));
+  EXPECT_EQ(js_error,
+            content::EvalJs(active_contents(),
+                            content::JsReplace(drm_js, "org.w3.clearkey"))
+                .error);
   content::RunAllTasksUntilIdle();
   EXPECT_FALSE(IsPermissionBubbleShown());
   ResetBubbleState();
 
   // Finally check the widevine request.
-  EXPECT_TRUE(content::ExecuteScript(active_contents(), widevine_js));
+  EXPECT_EQ(js_error, content::EvalJs(active_contents(), widevine_js).error);
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(IsPermissionBubbleShown());
 }

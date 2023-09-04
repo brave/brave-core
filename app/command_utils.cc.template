@@ -10,17 +10,26 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/span.h"
 #include "base/feature_list.h"
-#include "base/strings/string_piece.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/components/commander/common/features.h"
+#include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/grit/chromium_strings.h"
+#include "chrome/grit/generated_resources.h"
+#include "components/grit/brave_components_strings.h"
+#include "components/strings/grit/components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/strings/grit/ui_strings.h"
+
+#if BUILDFLAG(ENABLE_COMMANDER)
+#include "brave/components/commander/common/features.h"
+#endif
 
 namespace commands {
 namespace {
 
-constexpr auto kCommandInfos =
-    base::MakeFixedFlatMap<int, base::StringPiece>({
+constexpr auto kCommandTranslationIds =
+    base::MakeFixedFlatMap<int, int>({
 COMMAND_NAMES
 });
 
@@ -31,23 +40,32 @@ COMMAND_IDS
 }  // namespace
 
 base::span<const int> GetCommands() {
+  #if BUILDFLAG(ENABLE_COMMANDER)
   DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands) ||
-         commander::CommanderEnabled())
+         base::FeatureList::IsEnabled(::features::kBraveCommander))
+  #else
+  DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands))
+  #endif
       << "This should only be used when |kBraveCommands| is enabled.";
   return kCommandIds;
 }
 
-base::StringPiece GetCommandName(int command_id) {
+std::string GetCommandName(int command_id) {
+  #if BUILDFLAG(ENABLE_COMMANDER)
   DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands) ||
-         commander::CommanderEnabled())
+         base::FeatureList::IsEnabled(::features::kBraveCommander))
+  #else
+  DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands))
+  #endif
       << "This should only be used when |kBraveCommands| is enabled.";
-  auto it = kCommandInfos.find(command_id);
-  CHECK(it != kCommandInfos.end())
+  auto it = kCommandTranslationIds.find(command_id);
+  CHECK(it != kCommandTranslationIds.end())
       << "Unknown command " << command_id
       << ". This function should only be used for known "
          "commands (i.e. commands in |GetCommands()|). "
          "This command should probably be added.";
-  return it->second.data();
+
+  return l10n_util::GetStringUTF8(it->second);
 }
 
 }  // namespace commands

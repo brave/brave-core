@@ -25,8 +25,8 @@ source_set("browser") {
     "request_otr_rule.h",
     "request_otr_service.cc",
     "request_otr_service.h",
-    "request_otr_tab_storage.cc",
-    "request_otr_tab_storage.h",
+    "request_otr_storage_tab_helper.cc",
+    "request_otr_storage_tab_helper.h",
   ]
 
   deps += [

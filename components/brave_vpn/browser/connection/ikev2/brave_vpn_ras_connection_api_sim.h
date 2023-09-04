@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
@@ -28,25 +29,22 @@ class BraveVPNOSConnectionAPISim : public BraveVPNOSConnectionAPIBase {
 
   bool IsConnectionCreated() const;
   bool IsConnectionChecked() const;
+  void SetNetworkAvailableForTesting(bool value);
 
  protected:
   friend class base::NoDestructor<BraveVPNOSConnectionAPISim>;
 
   // BraveVPNOSConnectionAPI overrides:
-  void SetConnectionState(mojom::ConnectionState state) override;
   void Connect() override;
   void Disconnect() override;
-  void ToggleConnection() override;
   void CheckConnection() override;
-  void ResetConnectionInfo() override;
-  std::string GetHostname() const override;
 
   // BraveVPNOSConnectionAPIBase interfaces:
   void CreateVPNConnectionImpl(const BraveVPNConnectionInfo& info) override;
-  void RemoveVPNConnectionImpl(const std::string& name) override;
   void ConnectImpl(const std::string& name) override;
   void DisconnectImpl(const std::string& name) override;
   void CheckConnectionImpl(const std::string& name) override;
+  bool IsPlatformNetworkAvailable() override;
 
  private:
   friend class BraveVPNServiceTest;
@@ -71,6 +69,7 @@ class BraveVPNOSConnectionAPISim : public BraveVPNOSConnectionAPIBase {
   bool connection_created_ = false;
   bool check_connection_called_ = false;
 
+  absl::optional<bool> network_available_;
   base::WeakPtrFactory<BraveVPNOSConnectionAPISim> weak_factory_{this};
 };
 

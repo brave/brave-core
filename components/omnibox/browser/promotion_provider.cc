@@ -56,13 +56,14 @@ void PromotionProvider::AddMatchForBraveSearchPromotion(
   // entry could not be visible when other providers supply many related matches
   // from history.
   AutocompleteMatch match(this, kRelavance, false,
-                          AutocompleteMatchType::NAVSUGGEST);
+                          AutocompleteMatchType::SEARCH_WHAT_YOU_TYPED);
   const GURL promo_url = GetPromoURL(input);
   const auto contents = base::UTF8ToUTF16(promo_url.spec());
   // URL is displayed at omnibox edit box when this match is selected.
   match.fill_into_edit = contents;
   match.destination_url = promo_url;
   match.contents = contents;
+  match.keyword = u"brave";
   ACMatchClassifications styles;
   styles.push_back(ACMatchClassification(0, ACMatchClassification::URL));
   match.contents_class = styles;

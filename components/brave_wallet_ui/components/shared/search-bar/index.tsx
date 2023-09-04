@@ -19,21 +19,35 @@ interface Props {
   value?: string
   useWithFilter?: boolean
   disabled?: boolean
+  isV2?: boolean
 }
 
 export const SearchBar = (props: Props) => {
-  const { autoFocus, placeholder, action, value, useWithFilter, disabled } = props
+  const {
+    autoFocus,
+    placeholder,
+    action,
+    value,
+    useWithFilter,
+    disabled,
+    isV2
+  } = props
   return (
     <StyledWrapper
       useWithFilter={useWithFilter}
+      isV2={isV2}
     >
-      <SearchIcon />
+      <SearchIcon
+        isV2={isV2}
+        name='search'
+      />
       <SearchInput
         autoFocus={autoFocus}
         value={value}
         placeholder={placeholder}
         onChange={action}
         disabled={disabled}
+        isV2={isV2}
       />
     </StyledWrapper>
   )

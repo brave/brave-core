@@ -11,7 +11,6 @@
 
 #include "base/json/values_util.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
-#include "brave/components/playlist/browser/playlist_types.h"
 
 static_assert(
     std::numeric_limits<
@@ -42,6 +41,7 @@ constexpr char kPlaylistItemAuthorKey[] = "author";
 constexpr char kPlaylistItemDurationKey[] = "duration";
 constexpr char kPlaylistItemLastPlayedPositionKey[] = "lastPlayedPosition";
 constexpr char kPlaylistItemParentKey[] = "parent";
+constexpr char kPlaylistItemMediaFileBytesKey[] = "mediaFileBytes";
 
 }  // namespace
 
@@ -60,7 +60,9 @@ bool IsItemValueMalformed(const base::Value::Dict& dict) {
          !dict.contains(kPlaylistItemAuthorKey) ||
          !dict.contains(kPlaylistItemLastPlayedPositionKey) ||
          // Added 2023. Jan.
-         !dict.contains(kPlaylistItemParentKey);
+         !dict.contains(kPlaylistItemParentKey) ||
+         // Added 2023. Aug.
+         !dict.contains(kPlaylistItemMediaFileBytesKey);
 }
 
 mojom::PlaylistItemPtr ConvertValueToPlaylistItem(
@@ -80,6 +82,7 @@ mojom::PlaylistItemPtr ConvertValueToPlaylistItem(
   item->author = *dict.FindString(kPlaylistItemAuthorKey);
   item->last_played_position =
       *dict.FindInt(kPlaylistItemLastPlayedPositionKey);
+  item->media_file_bytes = *dict.FindDouble(kPlaylistItemMediaFileBytesKey);
 
   const auto* parents = dict.FindList(kPlaylistItemParentKey);
   for (const auto& id_value : *parents) {
@@ -94,21 +97,21 @@ mojom::PlaylistItemPtr ConvertValueToPlaylistItem(
 
 base::Value::Dict ConvertPlaylistItemToValue(
     const mojom::PlaylistItemPtr& item) {
-  base::Value::Dict playlist_value;
-  playlist_value.Set(kPlaylistItemIDKey, item->id);
-  playlist_value.Set(kPlaylistItemTitleKey, item->name);
-  playlist_value.Set(kPlaylistItemPageSrcKey, item->page_source.spec());
-  playlist_value.Set(kPlaylistItemMediaSrcKey, item->media_source.spec());
-  playlist_value.Set(kPlaylistItemThumbnailSrcKey,
-                     item->thumbnail_source.spec());
-  playlist_value.Set(kPlaylistItemThumbnailPathKey,
-                     item->thumbnail_path.spec());
-  playlist_value.Set(kPlaylistItemMediaFilePathKey, item->media_path.spec());
-  playlist_value.Set(kPlaylistItemMediaFileCachedKey, item->cached);
-  playlist_value.Set(kPlaylistItemAuthorKey, item->author);
-  playlist_value.Set(kPlaylistItemDurationKey, item->duration);
-  playlist_value.Set(kPlaylistItemLastPlayedPositionKey,
-                     item->last_played_position);
+  base::Value::Dict playlist_value =
+      base::Value::Dict()
+          .Set(kPlaylistItemIDKey, item->id)
+          .Set(kPlaylistItemTitleKey, item->name)
+          .Set(kPlaylistItemPageSrcKey, item->page_source.spec())
+          .Set(kPlaylistItemMediaSrcKey, item->media_source.spec())
+          .Set(kPlaylistItemThumbnailSrcKey, item->thumbnail_source.spec())
+          .Set(kPlaylistItemThumbnailPathKey, item->thumbnail_path.spec())
+          .Set(kPlaylistItemMediaFilePathKey, item->media_path.spec())
+          .Set(kPlaylistItemMediaFileCachedKey, item->cached)
+          .Set(kPlaylistItemAuthorKey, item->author)
+          .Set(kPlaylistItemDurationKey, item->duration)
+          .Set(kPlaylistItemLastPlayedPositionKey, item->last_played_position)
+          .Set(kPlaylistItemMediaFileBytesKey,
+               static_cast<double>(item->media_file_bytes));
 
   base::Value::List parent;
   for (const auto& parent_playlist_id : item->parents) {
@@ -140,8 +143,9 @@ base::Value::Dict ConvertPlaylistToValue(const mojom::PlaylistPtr& playlist) {
   value.Set(kPlaylistIDKey, playlist->id.value());
   value.Set(kPlaylistNameKey, playlist->name);
   auto item_ids = base::Value::List();
-  for (const auto& items : playlist->items)
+  for (const auto& items : playlist->items) {
     item_ids.Append(items->id);
+  }
   value.Set(kPlaylistItemsKey, std::move(item_ids));
   return value;
 }

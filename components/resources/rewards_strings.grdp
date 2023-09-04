@@ -5,13 +5,16 @@
     Check status
   </message>
   <message name="IDS_REWARDS_PAYMENT_COMPLETED" desc="">
-    Congrats! Your <ph name="MONTH">$1<ex>October</ex></ph> rewards have arrived!
+    The payout for <ph name="MONTH">$1<ex>October</ex></ph> rewards has completed.
   </message>
   <message name="IDS_REWARDS_PAYMENT_PENDING" desc="">
-    Your <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> <ph name="MONTH">$2<ex>October</ex></ph> rewards will arrive in <ph name="DAYS">$3<ex>4 days</ex></ph>
+    The payout for <ph name="MONTH">$1<ex>October</ex></ph> rewards will begin processing by <ph name="DATE">$2<ex>October 5</ex></ph>.
   </message>
   <message name="IDS_REWARDS_PAYMENT_PROCESSING" desc="">
-    Your <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> <ph name="MONTH">$2<ex>October</ex></ph> rewards are on the way. Keep an eye out!
+    The payout for <ph name="MONTH">$1<ex>October</ex></ph> rewards is in progress.
+  </message>
+  <message name="IDS_REWARDS_PAYMENT_SUPPORT" desc="">
+    Support
   </message>
 
   <!-- Rewards "card-and-summary" -->
@@ -27,20 +30,17 @@
   <message name="IDS_REWARDS_WALLET_DISCONNECTED" desc="">
     Logged out
   </message>
-  <message name="IDS_REWARDS_WALLET_ESTIMATED_EARNINGS" desc="">
-    Estimated Earnings
-  </message>
   <message name="IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT" desc="">
     Log in to your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
+  </message>
+  <message name="IDS_REWARDS_WALLET_MANAGE_ADS" desc="">
+    Manage ads
   </message>
   <message name="IDS_REWARDS_WALLET_MONTHLY_TIPS" desc="">
     Monthly Contributions
   </message>
   <message name="IDS_REWARDS_WALLET_ONE_TIME_TIPS" desc="">
     Contributions
-  </message>
-  <message name="IDS_REWARDS_WALLET_PENDING_CONTRIBUTIONS" desc="">
-    Pending contributions
   </message>
   <message name="IDS_REWARDS_WALLET_REWARDS_FROM_ADS" desc="">
     Rewards from Ads
@@ -57,8 +57,8 @@
   <message name="IDS_REWARDS_WALLET_VERIFIED" desc="">
     Connected
   </message>
-  <message name="IDS_REWARDS_WALLET_YOUR_BALANCE" desc="">
-    Your Balance
+  <message name="IDS_REWARDS_WALLET_BALANCE_TITLE" desc="">
+    Balance
   </message>
 
   <!-- Rewards "limited" view -->
@@ -79,9 +79,6 @@
   </message>
   <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_NO_PROVIDERS" desc="">
     To send on-demand contributions, users must connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so sending isn’t available. In the meantime, you’re still automatically supporting creators.
-  </message>
-  <message name="IDS_REWARDS_LEARN_MORE" desc="">
-    Learn more
   </message>
   <message name="IDS_REWARDS_PUBLISHER_COUNT_TEXT" desc="">
     {PUBLISHER_COUNT, plural,
@@ -112,32 +109,20 @@
   <message name="IDS_REWARDS_WIDGET_CONTINUE" desc="">
     Continue
   </message>
-  <message name="IDS_REWARDS_WIDGET_EARNING" desc="">
-    Earning
-  </message>
   <message name="IDS_REWARDS_WIDGET_EARNING_INFO_TEXT" desc="">
-    The tokens you earn this month will begin processing on <ph name="DATE">$1<ex>OCT 12</ex></ph>.
+    This reflects your estimated earnings range for Brave Ads this month.
   </message>
-  <message name="IDS_REWARDS_WIDGET_ENABLE_BRAVE_ADS" desc="">
-    Enable Brave Ads
-  </message>
-  <message name="IDS_REWARDS_WIDGET_EXCHANGE_VALUE_NOTE" desc="">
-    This may vary based on market volatility.
-  </message>
-  <message name="IDS_REWARDS_WIDGET_GIVING" desc="">
-    Giving
+  <message name="IDS_REWARDS_WIDGET_HOW_DOES_IT_WORK" desc="">
+    How does it work?
   </message>
   <message name="IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING" desc="">
     You have <ph name="DAYS">$1<ex>80 days</ex></ph> left to claim
   </message>
   <message name="IDS_REWARDS_WIDGET_OPT_IN_HEADER" desc="">
-    Earn tokens and give back
+    Earn tokens for private ads you see in Brave
   </message>
   <message name="IDS_REWARDS_WIDGET_OPT_IN_TEXT" desc="">
-    Earn tokens by viewing Brave Private Ads and support content creators automatically.
-  </message>
-  <message name="IDS_REWARDS_WIDGET_PROGRESS" desc="">
-    Progress
+    Support content creators and use your tokens to buy gift cards, exchange for other currencies, and more.
   </message>
   <message name="IDS_REWARDS_WIDGET_SETTINGS" desc="">
     Rewards settings
@@ -151,8 +136,11 @@
   <message name="IDS_REWARDS_WIDGET_START_USING_REWARDS" desc="">
     Start using Rewards
   </message>
-  <message name="IDS_REWARDS_WIDGET_TOKEN_BALANCE" desc="">
-    Token Balance
+  <message name="IDS_REWARDS_WIDGET_BALANCE_INFO_TEXT" desc="">
+    Now that you're connected to ZebPay, any previous balance you had will be deposited into your ZebPay account as part of your next earnings payout. Once it arrives, you'll see your BAT reflected in your Rewards balance.
+  </message>
+  <message name="IDS_REWARDS_WIDGET_BALANCE_TITLE" desc="">
+    Balance
   </message>
   <message name="IDS_REWARDS_WIDGET_TOKEN_GRANT_TITLE" desc="">
     A token grant is available!
@@ -204,17 +192,11 @@
   <message name="IDS_REWARDS_PANEL_CANCEL" desc="">
     Cancel
   </message>
-  <message name="IDS_REWARDS_PANEL_ABOUT_REWARDS_TEXT" desc="">
-    Using Brave Rewards helps support content creators, and lets you earn BAT.
-  </message>
   <message name="IDS_REWARDS_PANEL_HEADER_TITLE" desc="">
     Brave Rewards
   </message>
-  <message name="IDS_REWARDS_PANEL_HEADER_TEXT_ADS_ENABLED" desc="">
+  <message name="IDS_REWARDS_PANEL_HEADER_TEXT" desc="">
     You are helping support content creators
-  </message>
-  <message name="IDS_REWARDS_PANEL_HEADER_TEXT_ADS_DISABLED" desc="">
-    Turn on to help support content creators
   </message>
   <message name="IDS_REWARDS_PANEL_REWARDS_SETTINGS" desc="">
     Rewards settings
@@ -336,12 +318,6 @@
   <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_TIP_COMPLETED_TEXT" desc="">
     Your monthly contributions have been processed.
   </message>
-  <message name="IDS_REWARDS_NOTIFICATION_PUBLISHER_VERIFIED_TITLE" desc="">
-    Pending contribution
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_PUBLISHER_VERIFIED_TEXT" desc="">
-    Creator <ph name="PUBLISHER_NAME">$1<ex>brave.com</ex></ph> recently verified.
-  </message>
 
   <!-- Adaptive captcha -->
   <message name="IDS_REWARDS_CAPTCHA_MAX_ATTEMPTS_EXCEEDED_TEXT" desc="">
@@ -364,23 +340,23 @@
   </message>
 
   <!-- Rewards onboarding tour -->
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_BRAVE_REWARDS" desc="">
-    Brave Rewards
-  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_CLOSE" desc="">
     Close
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_DONE" desc="">
+    Done
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_CONTINUE" desc="">
     Continue
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_DETAIL_LINKS" desc="">
-    <ph name="TOUR_LINK_BEGIN">$1</ph>Take a quick tour<ph name="TOUR_LINK_END">$2</ph> or <ph name="LEARN_LINK_BEGIN">$3</ph>learn more<ph name="LEARN_LINK_END">$4</ph> for details.
-  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_HEADER" desc="">
-    Earn Tokens &amp; Give Back
+    Earn tokens for private ads you see in Brave
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT" desc="">
-    Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.
+    Use tokens to buy gift cards, exchange for other currencies, support content creators, and more.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_HOW_DOES_IT_WORK" desc="">
+    How does it work?
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_HEADER" desc="">
     Something went wrong
@@ -401,120 +377,28 @@
     Select your country
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_SUCCESS_HEADER" desc="">
-    Thank you!
+    Woohoo! You’re all set!
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_SUCCESS_TEXT" desc="">
-    Your Brave Rewards region has been set to <ph name="COUNTRY">$1<ex>United States</ex></ph>.
+    Now you can get rewarded for viewing ads. You're helping make the web a better place for everyone. And that's awesome!
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_HOW_DOES_BRAVE_REWARDS_WORK" desc="">
+    How does Brave Rewards work?
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_TEXT" desc="">
-    Select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN">$1</ph>Privacy Policy<ph name="LINK_END">$2</ph>
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_TEXT_DECLARE_COUNTRY" desc="">
-    To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN">$1</ph>Privacy Policy<ph name="LINK_END">$2</ph>
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER" desc="">
-    Maybe Later
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PROMO_HEADER" desc="">
-    Need a refresher on Rewards?
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PROMO_TEXT" desc="">
-    Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SAVE" desc="">
-    Save
+    Select your country so we can show you the right options and ads for your region.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_SELECT_COUNTRY" desc="">
-    Select Country
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER" desc="">
-    How often do you want to see ads?
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_PER_HOUR" desc="">
-    {ADS_PER_HOUR, plural,
-      =1 {# Ad per hour}
-      other {# Ads per hour}
-    }
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_TEXT_1" desc="">
-    More private ads, more rewards
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_TEXT_2" desc="">
-    With more ads, you can support more creators
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CHANGE_LATER" desc="">
-    You can change this later in settings.
+    Select
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS" desc="">
-    Start using Brave Rewards
+    Start using Rewards
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TAKE_TOUR" desc="">
-    Take a quick tour
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS_TEXT_ONLY" desc="">
+    Press the <ph name="BAT_ICON">$1</ph> BAT icon in the URL bar to start.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_TERMS" desc="">
     By proceeding, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BACK" desc="">
-    Go Back
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BEGIN" desc="">
-    Let’s take a quick tour
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_CONTINUE" desc="">
-    Continue
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_DONE" desc="">
-    Done
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP" desc="">
-    Skip
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP_FOR_NOW" desc="">
-    Skip for now
-  </message>
-
-  <!-- Rewards onboarding tour panels -->
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_HEADER" desc="">
-    Welcome to Brave Rewards!
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_TEXT" desc="">
-    Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_HEADER" desc="">
-    Where do ads show up?
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_TEXT" desc="">
-    Brave Private Ads appear as notifications on your screen. You control how often you see these ads.
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_HEADER" desc="">
-    Giving back made effortless
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_TEXT" desc="">
-    Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_HEADER" desc="">
-    Say thank you with contributions
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_TEXT" desc="">
-    Contributions are a way to personally encourage and support content or creators that you love.
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_HEADER" desc="">
-    Lastly, let’s get you set up
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER" desc="">
-    Woohoo, you’re all set!
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT" desc="">
-    By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_SUBTEXT" desc="">
-    Connect a custodial account so you can earn BAT and withdraw your rewards
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_LATER" desc="">
-    I’ll do it later
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_NOW" desc="">
-    Connect account
   </message>
 
   <!-- Rewards unsupported region notice -->
@@ -537,6 +421,12 @@
   <!-- Rewards common strings -->
   <message name="IDS_BRAVE_REWARDS_LOADING_LABEL" desc="">
     Loading...
+  </message>
+  <message name="IDS_REWARDS_LEARN_MORE" desc="">
+    Learn more
+  </message>
+  <message name="IDS_REWARDS_ESTIMATED_EARNINGS_TITLE" desc="">
+    Earnings so far
   </message>
 
   <!-- Tip panel -->
@@ -628,7 +518,7 @@
     Share your support
   </message>
   <message name="IDS_REWARDS_TIP_SHARE_TEXT" desc="">
-    I just contributed <ph name="AMOUNT">$1</ph> using the Brave Browser! See how you can support your favorite creators and sites too: https://brave.com/rewards
+    I just contributed <ph name="AMOUNT">$1</ph> BAT using the Brave Browser! See how you can support your favorite creators and sites too: https://brave.com/rewards
   </message>
   <message name="IDS_REWARDS_TIP_UNEXPECTED_ERROR_TITLE" desc="">
     An unexpected error has occurred

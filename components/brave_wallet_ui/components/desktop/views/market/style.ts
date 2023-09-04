@@ -16,8 +16,9 @@ export const TopRow = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  margin-bottom: 20px;
   gap: 10px;
+  position: static;
+  top: 0;
 `
 
 export const AssetsColumnWrapper = styled.div`
@@ -66,9 +67,15 @@ export const LoadIconWrapper = styled.div`
   align-items: center;
   justify-content: center;
 `
-export const MarketDataIframe = styled.iframe`
+export const MarketDataIframe = styled.iframe<{
+  iframeHeight: number
+}>`
   width: 100%;
   height: 100%;
-  min-height: calc(100vh - 172px);
+  min-height: ${(p) =>
+    p.iframeHeight
+      ? `calc(${p.iframeHeight}px + 72px)`
+      : 'unset'
+  };
   border: none;
 `

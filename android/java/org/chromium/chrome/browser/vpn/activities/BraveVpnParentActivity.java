@@ -7,14 +7,11 @@
 
 package org.chromium.chrome.browser.vpn.activities;
 
-import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
-
 import android.content.Intent;
 import android.util.Pair;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.content.ContextCompat;
 
 import com.android.billingclient.api.Purchase;
 import com.wireguard.android.backend.GoBackend;
@@ -33,11 +30,9 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
-import org.chromium.chrome.browser.vpn.wireguard.WireguardService;
 import org.chromium.ui.widget.Toast;
 
 import java.util.List;
-import java.util.TimeZone;
 
 public abstract class BraveVpnParentActivity
         extends AsyncInitializationActivity implements BraveVpnObserver {
@@ -48,8 +43,11 @@ public abstract class BraveVpnParentActivity
     abstract void showRestoreMenu(boolean shouldShowRestore);
     abstract void updateProfileView();
 
+    // Pass @{code ActivityResultRegistry} reference explicitly to avoid crash
+    // https://github.com/brave/brave-browser/issues/31882
     ActivityResultLauncher<Intent> intentActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> {
+            new ActivityResultContracts.StartActivityForResult(), getActivityResultRegistry(),
+            result -> {
                 BraveVpnUtils.dismissProgressDialog();
                 if (result.getResultCode() == RESULT_OK) {
                     BraveVpnProfileUtils.getInstance().startVpn(BraveVpnParentActivity.this);

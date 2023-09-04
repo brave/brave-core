@@ -54,10 +54,14 @@ function checkSelector(selector, property, expected) {
 
 async function waitCSSSelector(selector, property, expected) {
   if (await checkSelector(selector, property, expected)) {
-    window.domAutomationController.send(true);
+    return true;
   } else {
     console.log('still waiting for css selector');
-    setTimeout(waitCSSSelector.bind(undefined, selector, property, expected), 200);
+    return new Promise(resolve => {
+      setTimeout(function () {
+        resolve(waitCSSSelector(selector, property, expected));
+      }, 200);
+    });
   }
 }
 
@@ -74,22 +78,26 @@ async function waitCSSSelector(selector, property, expected) {
 
     <!-- Assume that the document host is test.lion.appspot.com (see AdBlockServiceTest.*) -->
     <div id="relative-url-div" class="fpsponsored">
-      A text of 30 chars and 5 words is needed here to consider element significant.
+      Sponsored
       <img src="/sponsored/640x820.png">
     </div>
     <div id="same-origin-div" class="fpsponsored1">
-      A text of 30 chars and 5 words is needed here to consider element significant.
+      Sponsored
       <img src="http://test.lion.appspot.com/sponsored/640x820.png">
     </div>
     <div id="subdomain-div" class="fpsponsored2">
-      A text of 30 chars and 5 words is needed here to consider element significant.
+      Sponsored
       <img src="http://sub.test.lion.appspot.com/sponsored/640x820.png">
     </div>
     <div id="same-etld" class="fpsponsored3">
-      A text of 30 chars and 5 words is needed here to consider element significant.
+      Sponsored
       <img src="http://another.lion.appspot.com/sponsored/640x820.png">
     </div>
     <div id="another-etld" class="fpsponsored4">
+      Advertisement
+      <img src="http://chrome.appspot.com/sponsored/640x820.png">
+    </div>
+    <div id="another-etld-significant-text" class="fpsponsored5">
       A text of 30 chars and 5 words is needed here to consider element significant.
       <img src="http://chrome.appspot.com/sponsored/640x820.png">
     </div>

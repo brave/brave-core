@@ -7,13 +7,19 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import { Row } from '../../shared/style'
 
-const minCardHeight = 531
+const minCardHeight = 497
 const maxCardWidth = 768
-export const layoutSmallWidth = 983
+const layoutScaleWithNav = 1374
+const layoutSmallCardBottom = 67
+export const layoutSmallWidth = 980
 export const layoutPanelWidth = 660
 export const layoutTopPosition = 68
 
-export const Wrapper = styled.div<{ noPadding?: boolean }>`
+export const Wrapper = styled.div<{
+  noPadding?: boolean
+  isPanel?: boolean
+}>`
+  --layout-top-position: ${(p) => p.isPanel ? 0 : layoutTopPosition}px;
   position: fixed;
   top: 0px;
   bottom: 0px;
@@ -28,40 +34,50 @@ export const Wrapper = styled.div<{ noPadding?: boolean }>`
   padding: ${(p) =>
     p.noPadding
       ? '0px'
-      : `${layoutTopPosition}px 0px`
+      : `var(--layout-top-position) 0px`
   };
 `
 
 export const LayoutCardWrapper = styled.div<{
+  hideNav?: boolean
   hideCardHeader?: boolean
   headerHeight: number
 }>`
   --header-top-position:
-    calc(${layoutTopPosition}px + ${(p) => p.headerHeight}px);
-  --no-header-top-position: ${layoutTopPosition}px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  top: ${(p) =>
+    calc(var(--layout-top-position) + ${(p) => p.headerHeight}px);
+  --no-header-top-position: var(--layout-top-position);
+  --top-position: ${(p) =>
     p.hideCardHeader
       ? 'var(--no-header-top-position)'
       : 'var(--header-top-position)'
   };
+  --bottom-position: ${(p) =>
+    p.hideNav
+      ? 0
+      : layoutSmallCardBottom
+  }px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  top: var(--top-position);
   bottom: 0px;
   position: absolute;
   width: 100%;
-  transition-duration: 0.5s;
-  transition-timing-function: ease;
   overflow-x: hidden;
   overflow-y: auto;
   padding-bottom: 32px;
   &::-webkit-scrollbar {
     display: none;
   }
+  @media screen and (max-width: ${layoutScaleWithNav}px) {
+    padding: 0px 32px 32px 304px;
+    align-items: flex-start;
+  }
   @media screen and (max-width: ${layoutSmallWidth}px) {
-    bottom: 67px;
+    bottom: var(--bottom-position);
     padding: 0px 32px 32px 32px;
+    align-items: center;
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: 0px;
@@ -70,14 +86,21 @@ export const LayoutCardWrapper = styled.div<{
 
 export const ContainerCard = styled.div<
   {
-    noPadding?: boolean,
-    maxWidth?: number,
+    noPadding?: boolean
+    maxWidth?: number
     hideCardHeader?: boolean
+    noMinCardHeight?: boolean
+    noBorderRadius?: boolean
+    useDarkBackground?: boolean
   }>`
   display: flex;
   flex: none;
   flex-direction: column;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) =>
+    p.useDarkBackground
+      ? leo.color.page.background
+      : leo.color.container.background
+  };
   border-radius: ${(p) =>
     p.hideCardHeader
       ? '24px' : '0px 0px 24px 24px'
@@ -88,35 +111,57 @@ export const ContainerCard = styled.div<
   align-items: center;
   padding: ${(p) => p.noPadding ? 0 : 20}px;
   width: 100%;
-  min-height: ${minCardHeight}px;
+  min-height: ${p => p.noMinCardHeight ? 'unset' : `${minCardHeight}px`};
   max-width: ${(p) => p.maxWidth ? p.maxWidth : maxCardWidth}px;
   position: relative;
-  transition-duration: inherit;
-  transition-timing-function: inherit;
   @media screen and (max-width: ${layoutSmallWidth}px) {
+    max-width: ${(p) =>
+    p.maxWidth
+      ? `${p.maxWidth}px`
+      : 'unset'
+  };
     width: 100%;
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
+    min-height: calc(100vh - var(--bottom-position) - var(--top-position));
     border-radius: ${(p) =>
-    p.hideCardHeader
-      ? '24px 24px 0px 0px'
-      : '0px'
+    p.noBorderRadius
+      ? '0px'
+      : p.hideCardHeader
+        ? '24px 24px 0px 0px'
+        : '0px'
   };
   }
 `
 
-export const CardHeaderWrapper = styled.div`
+
+export const CardHeaderWrapper = styled.div<{
+  maxWidth?: number
+  isPanel?: boolean
+}>`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  top: ${layoutTopPosition}px;
+  top: var(--layout-top-position);
   position: fixed;
   width: 100%;
-  transition-duration: 0.5s;
-  transition-timing-function: ease;
+  max-width: ${(p) =>
+    p.maxWidth
+      ? `${p.maxWidth}px`
+      : 'unset'
+  };
+  @media screen and (max-width: ${layoutScaleWithNav}px) {
+    padding: ${(p) => p.maxWidth ? '0px' : '0px 32px 0px 304px'};
+    left: ${(p) => p.maxWidth ? 'unset' : '0px'};
+    right: ${(p) => p.maxWidth ? 'unset' : '0px'};
+    align-items: flex-start;
+  }
   @media screen and (max-width: ${layoutSmallWidth}px) {
-    padding: 0px 32px;
+    left: unset;
+    right: unset;
+    align-items: center;
+    padding: ${p => p.maxWidth ? '0px' : '0px 32px'};
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: 0px;
@@ -125,6 +170,8 @@ export const CardHeaderWrapper = styled.div`
 
 export const CardHeader = styled.div<{
   shadowOpacity?: number
+  isPanel?: boolean
+  useDarkBackground?: boolean
 }>`
   --shadow-opacity: ${(p) =>
     p.shadowOpacity !== undefined
@@ -132,15 +179,20 @@ export const CardHeader = styled.div<{
       : 0
   };
   display: flex;
-  background-color: ${(p) => p.theme.color.background02};
-  border-radius: 24px 24px 0px 0px;
+  background-color: ${(p) =>
+    p.useDarkBackground
+      ? leo.color.page.background
+      : leo.color.container.background
+  };
+  border-radius: ${(p) => p.isPanel ? '0px' : '24px 24px 0px 0px'};
   width: 100%;
-  padding: 0px 32px;
+  padding: ${(p) => p.isPanel ? '0px' : '0px 32px'};
   position: relative;
   max-width: ${maxCardWidth}px;
-  transition-duration: inherit;
-  transition-timing-function: inherit;
   box-shadow: 0px 4px 13px -2px rgba(0, 0, 0, var(--shadow-opacity));
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    max-width: unset;
+  }
 `
 
 export const CardHeaderShadow = styled(CardHeader) <{
@@ -151,7 +203,8 @@ export const CardHeaderShadow = styled(CardHeader) <{
 `
 
 export const CardHeaderContentWrapper = styled(Row) <{
-  dividerOpacity?: number
+  dividerOpacity?: number,
+  hideDivider?: boolean
 }>`
   --divider-opacity: ${(p) =>
     p.dividerOpacity !== undefined
@@ -162,7 +215,10 @@ export const CardHeaderContentWrapper = styled(Row) <{
   @media (prefers-color-scheme: dark) {
     --divider-color: rgba(43, 46, 59, var(--divider-opacity));
   }
-  border-bottom: 1px solid var(--divider-color);
+  border-bottom: ${(p) =>
+    p.hideDivider
+      ? 'none'
+      : '1px solid var(--divider-color)'};
   height: 100%;
 `
 
@@ -172,11 +228,7 @@ export const StaticBackground = styled.div`
   bottom: 0px;
   left: 0px;
   right: 0px;
-  background-color: ${leo.color.container.highlight};
-  @media (prefers-color-scheme: dark) {
-    /* #17171F does not exist in design system */
-    background-color: #17171F;
-  }
+  background-color: ${leo.color.page.background};
 `
 
 export const BackgroundGradientWrapper = styled.div`
@@ -186,7 +238,7 @@ export const BackgroundGradientWrapper = styled.div`
   left: 0px;
   right: 0px;
   opacity: 0.5;
-  background-color: ${leo.color.container.highlight};
+  background-color: ${leo.color.page.background};
 `
 
 export const BackgroundGradientTopLayer = styled.div`
@@ -259,7 +311,7 @@ export const BackgroundGradientBottomLayer = styled.div`
 `
 
 export const BlockForHeight = styled.div`
-  top: ${layoutTopPosition}px;
+  top: var(--layout-top-position);
   width: 1px;
   height: calc(${minCardHeight}px + 30px);
   display: flex;

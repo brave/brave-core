@@ -6,8 +6,11 @@
 #ifndef BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_UTILS_H_
 #define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_UTILS_H_
 
+#include "brave/components/sidebar/sidebar_item.h"
+
 class Browser;
 class GURL;
+enum class SidePanelEntryId;
 
 namespace sidebar {
 
@@ -20,6 +23,9 @@ bool CanAddCurrentActiveTabToSidebar(Browser* browser);
 bool HiddenDefaultSidebarItemsContains(SidebarService* service,
                                        const GURL& url);
 GURL ConvertURLToBuiltInItemURL(const GURL& url);
+SidePanelEntryId SidePanelIdFromSideBarItemType(
+    SidebarItem::BuiltInItemType type);
+SidePanelEntryId SidePanelIdFromSideBarItem(const SidebarItem& item);
 
 }  // namespace sidebar
 

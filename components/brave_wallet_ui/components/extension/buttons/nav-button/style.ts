@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled, { css } from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 
 // types
 import { PanelButtonTypes } from './index'
@@ -25,6 +26,7 @@ interface StyledButtonProps {
   maxHeight?: string
   minHeight?: string
   minWidth?: string
+  isV2?: boolean
 }
 
 const StyledButtonCssMixin = (p: StyledButtonProps) => {
@@ -40,17 +42,21 @@ const StyledButtonCssMixin = (p: StyledButtonProps) => {
     justify-content: center;
     cursor: ${(p) => p.disabled ? 'default' : 'pointer'};
     border-radius: 40px;
-    padding: 10px 22px;
+    padding: ${p.isV2 ? '18px 24px' : '10px 22px'};
     outline: none;
     margin-top: ${(p) => p?.addTopMargin ? '8px' : '0px'};
 
     background-color: ${(p) =>
       p.disabled
-        ? p.theme.color.disabled
+        ? p.isV2 
+          ? leo.color.icon.disabled
+          : p.theme.color.disabled
         : p.buttonType === 'primary' ||
           p.buttonType === 'confirm' ||
           p.buttonType === 'sign'
-            ? p.theme.palette.blurple500
+            ? p.isV2
+              ? leo.color.primitive.primary[60]
+              : p.theme.palette.blurple500
             : p.buttonType === 'danger'
               ? p.theme.color.errorBorder
               : 'transparent'
@@ -92,10 +98,12 @@ export const StyledLink = styled(Link).withConfig<StyledButtonProps>({
 
 export const ButtonText = styled.span<{
   buttonType: PanelButtonTypes
+  isV2?: boolean
 }>`
-  font-size: 13px;
+  font-family: Poppins;
+  font-size: ${p => p.isV2 ? '16px': '13px' };
   font-weight: 600;
-  line-height: 20px;
+  line-height: ${p => p.isV2 ? '24px' : '20px'};
   color: ${(p) =>
     p.buttonType === 'secondary' ||
     p.buttonType === 'reject' ||

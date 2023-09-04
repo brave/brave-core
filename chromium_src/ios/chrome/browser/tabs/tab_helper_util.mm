@@ -4,6 +4,7 @@
 
 #import "ios/chrome/browser/tabs/tab_helper_util.h"
 
+#include "ios/chrome/browser/complex_tasks/ios_task_tab_helper.h"
 #include "ios/chrome/browser/sessions/ios_chrome_session_tab_helper.h"
 #include "ios/chrome/browser/sync/ios_chrome_synced_tab_delegate.h"
 #include "ios/chrome/browser/tabs/tab_helper_util.h"
@@ -17,4 +18,5 @@ void AttachTabHelpers(web::WebState* web_state, bool for_prerender) {
   IOSChromeSessionTabHelper::CreateForWebState(web_state);
   IOSChromeSyncedTabDelegate::CreateForWebState(web_state);
   WebSessionStateTabHelper::CreateForWebState(web_state);
+  IOSTaskTabHelper::CreateForWebState(web_state);
 }

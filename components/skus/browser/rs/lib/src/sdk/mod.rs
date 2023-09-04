@@ -7,12 +7,16 @@ pub use orders::*;
 use std::cell::RefCell;
 use std::fmt;
 
-use git_version::git_version;
 use tracing::{event, Level};
 
 use crate::cache::CacheNode;
 use crate::models::*;
 use crate::{HTTPClient, StorageClient};
+
+#[cfg(feature = "wasm")]
+const VERSION: &str = git_version!();
+#[cfg(not(feature = "wasm"))]
+const VERSION: &str = "unknown";
 
 pub struct SDK<U> {
     pub client: U,
@@ -70,7 +74,7 @@ where
         event!(
             Level::INFO,
             environment = %self.environment,
-            version = %git_version!(),
+            version = VERSION,
             "skus sdk initialized",
         );
     }

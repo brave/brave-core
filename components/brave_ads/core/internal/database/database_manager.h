@@ -8,8 +8,8 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/core/ads_client_callback.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 
 namespace brave_ads {
 
@@ -40,12 +40,13 @@ class DatabaseManager final {
   void CreateCallback(ResultCallback callback, bool success) const;
 
   void MaybeMigrate(int from_version, ResultCallback callback) const;
-  void MigrateCallback(int from_version,
-                       ResultCallback callback,
-                       bool success) const;
+  void MigrateFromVersionCallback(int from_version,
+                                  ResultCallback callback,
+                                  bool success) const;
 
   void NotifyWillCreateOrOpenDatabase() const;
-  void NotifyDidCreateOrOpenDatabase() const;
+  void NotifyDidCreateDatabase() const;
+  void NotifyDidOpenDatabase() const;
   void NotifyFailedToCreateOrOpenDatabase() const;
   void NotifyWillMigrateDatabase(int from_version, int to_version) const;
   void NotifyDidMigrateDatabase(int from_version, int to_version) const;

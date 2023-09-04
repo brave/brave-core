@@ -22,8 +22,6 @@ function getBackgroundImage (key: PromotionKey) {
   }
 }
 
-export const rewardsTourPromo = styled.div``
-
 export const promotion = styled.div`
   color: #000;
   background: #fff;
@@ -46,6 +44,8 @@ export const promotion = styled.div`
 
   &.promotion-gemini {
     background-image: url(/${getBackgroundImage('gemini')});
+    background-position: 4% center;
+    background-size: auto;
   }
 
   &.promotion-tap-network {

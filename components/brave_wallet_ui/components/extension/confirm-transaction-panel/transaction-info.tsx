@@ -43,7 +43,10 @@ export const TransactionInfo = ({
     transactionsNetwork,
     sendOptions,
     hasFeeEstimatesError,
-    isLoadingGasFee
+    isLoadingGasFee,
+    gasFee,
+    insufficientFundsError,
+    insufficientFundsForGasError
   } = usePendingTransactions()
 
   // queries
@@ -157,7 +160,7 @@ export const TransactionInfo = ({
       ) : (
         <TransactionTypeText>
           {(transactionsNetwork &&
-            new Amount(transactionDetails.gasFee)
+            new Amount(gasFee)
               .divideByDecimals(transactionsNetwork.decimals)
               .formatAsAsset(6, transactionsNetwork.symbol)) ||
             ''}
@@ -214,7 +217,7 @@ export const TransactionInfo = ({
           <TransactionTypeText>
             +{' '}
             {transactionsNetwork &&
-              new Amount(transactionDetails.gasFee)
+              new Amount(gasFee)
                 .divideByDecimals(transactionsNetwork.decimals)
                 .formatAsAsset(6, transactionsNetwork.symbol)}
           </TransactionTypeText>
@@ -237,13 +240,13 @@ export const TransactionInfo = ({
         </TransactionText>
       )}
 
-      {transactionDetails.insufficientFundsForGasError && (
+      {insufficientFundsForGasError && (
         <TransactionText hasError={true}>
           {getLocale('braveWalletSwapInsufficientFundsForGas')}
         </TransactionText>
       )}
-      {transactionDetails.insufficientFundsForGasError === false &&
-        transactionDetails.insufficientFundsError && (
+      {!insufficientFundsForGasError &&
+        insufficientFundsError && (
           <TransactionText hasError={true}>
             {getLocale('braveWalletSwapInsufficientBalance')}
           </TransactionText>

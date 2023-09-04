@@ -151,11 +151,11 @@
             android:drawablePadding="8dp"
             android:padding="12dp"
             android:text="@string/brave_wallet_advanced_settings"
-            android:textColor="@color/brave_action_color"
+            android:textColor="@color/brave_text_button_color"
             android:textSize="14sp"
             android:textStyle="bold"
             app:drawableLeftCompat="@drawable/ic_wallet_settings"
-            app:drawableTint="@color/brave_action_color" />
+            app:drawableTint="@color/brave_text_button_color" />
 
     </LinearLayout>
 

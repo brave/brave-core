@@ -6,12 +6,17 @@
 #ifndef BRAVE_BROWSER_UI_COMMANDS_DEFAULT_ACCELERATORS_H_
 #define BRAVE_BROWSER_UI_COMMANDS_DEFAULT_ACCELERATORS_H_
 
+#include <utility>
+
+#include "base/containers/flat_set.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
+#include "ui/base/accelerators/accelerator.h"
 
 namespace commands {
 
 // Gets the default list of accelerators.
-Accelerators GetDefaultAccelerators();
+std::pair<Accelerators, base::flat_set<ui::Accelerator>>
+GetDefaultAccelerators();
 
 }  // namespace commands
 

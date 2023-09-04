@@ -16,7 +16,7 @@ namespace database {
 
 class DatabaseContributionQueuePublishers : public DatabaseTable {
  public:
-  explicit DatabaseContributionQueuePublishers(LedgerImpl& ledger);
+  explicit DatabaseContributionQueuePublishers(RewardsEngineImpl& engine);
   ~DatabaseContributionQueuePublishers() override;
 
   void InsertOrUpdate(const std::string& id,
@@ -27,8 +27,8 @@ class DatabaseContributionQueuePublishers : public DatabaseTable {
                            ContributionQueuePublishersListCallback callback);
 
  private:
-  void OnGetRecordsByQueueId(mojom::DBCommandResponsePtr response,
-                             ContributionQueuePublishersListCallback callback);
+  void OnGetRecordsByQueueId(ContributionQueuePublishersListCallback callback,
+                             mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

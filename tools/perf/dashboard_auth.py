@@ -14,6 +14,7 @@ import logging
 
 from typing import Optional
 
+# pytype: disable=import-error
 # pylint: disable=import-error
 from google.oauth2 import service_account
 from google.auth.transport.requests import Request

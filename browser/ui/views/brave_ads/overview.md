@@ -1,52 +1,52 @@
-# Ad Notifications Overview
+# Notification Ads Overview
 
-This document is an overview of ad notification popup concepts, terminology, and architecture. The target audience is engineers using or working on ad notifications.
+This document is an overview of notification ad popup concepts, terminology, and architecture. The target audience is engineers using or working on notification ads.
 
 For more details about the Chromium UI Platform, see [overview.md].
 
-## Ad Notification Popup Views
+## Notification Ad Popup
 
-**AdNotificationPopupView** is responsible for the display of ad notifications and informing **AdNotificationDelegate** listeners of **AdNotificationPopupView** events.
+**NotificationAdPopup** is responsible for the display of notification ads and informing **NotificationAdDelegate** listeners of **NotificationAdPopup** events.
 
-**AdNotificationPopupView** needs an underlying canvas to paint onto. This is provided by adding **AdNotificationView** to a **views::widget**.
+**NotificationAdPopup** needs an underlying canvas to paint onto. This is provided by adding **NotificationAdView** to a **views::Widget**.
 
-## Ad Notification View Factory
+## Notification Ad View Factory
 
-**AdNotificationViewFactory** is responsible for creating different types of ad notifications. i.e., see [text_ad_notification_view.h](./text_ad_notification_view.h).
+**NotificationAdViewFactory** is responsible for creating different types of notification ads. i.e., see [text_notification_ad_view.h](./text_notification_ad_view.h).
 
-## Text Ad Notification View
+## Text Notification Ad View
 
-**TextAdNotificationView** is a subclass of **AdNotificationView** that lays out and renders a text ad notification with a solid background, control buttons, title and body text
+**TextNotificationAdView** is a subclass of **NotificationAdView** that lays out and renders a text notification ad with a solid background, control buttons, title and body text
 
-## Ad Notification View
+## Notification Ad View
 
-**AdNotificationView** is a base class for layout, rendering and mouse events of ad notifications.
+**NotificationAdView** is a base class for layout, rendering and mouse events of notification ads.
 
-Different **AdNotificationView** subclasses are responsible for implementing their own design. i.e, see [text_ad_notification_view.h](./text_ad_notification_view.h).
+Different **NotificationAdView** subclasses are responsible for implementing their own design. i.e, see [text_notification_ad_view.h](./text_ad_notification_view.h).
 
-## Ad Notification Background Painter
+## Notification Ad Background Painter
 
-**AdNotificationBackgroundPainter** is responsible for drawing a solid background below any other part of the **AdNotificationView** with rounded corners on macOS and Linux.
+**NotificationAdBackgroundPainter** is responsible for drawing a solid background below any other part of the **NotificationAdView** with rounded corners on macOS and Linux.
 
-## Ad Notification Header View
+## Notification Ad Header View
 
-**AdNotificationHeaderView** is responsible for the layout and rendering of the header which includes the title text.
+**NotificationAdHeaderView** is responsible for the layout and rendering of the header which includes the title text.
 
-## Ad Notification Control Buttons View
+## Notification Ad Control Buttons View
 
-**AdNotificationControlButtonsView** is responsible for the layout and rendering of the control buttons comprising of a BAT logo and close button.
+**NotificationAdControlButtonsView** is responsible for the layout and rendering of the control buttons comprising of a BAT logo and close button.
 
 ## Overall structure looks like this
 
 <pre>
 ┌──────────────────────────────────────────────────────────────────┐
-│AdNotificationPopup                                               │
+│NotificationAdPopup                                               │
 │ ┌──────────────────────────────────────────────────────────────┐ │
-│ │AdNotificationView                                            │ │
+│ │NotificationAdView                                            │ │
 │ │ ┌──────────────────────────────────────────────────────────┐ │ │
-│ │ │AdNotificationBackgroundPainter                           │ │ │
+│ │ │NotificationAdBackgroundPainter                           │ │ │
 │ │ │ ┌────────────────────────┐┌────────────────────────────┐ │ │ │
-│ │ │ │AdNotificationHeaderView││AdNotificationControlButtons│ │ │ │
+│ │ │ │NotificationAdHeaderView││NotificationAdControlButtons│ │ │ │
 │ │ │ └────────────────────────┘└────────────────────────────┘ │ │ │
 │ │ │ ┌──────────────────────────────────────────────────────┐ │ │ │
 │ │ │ │                                                      │ │ │ │

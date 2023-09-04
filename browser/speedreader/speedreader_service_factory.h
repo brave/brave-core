@@ -6,11 +6,17 @@
 #ifndef BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 
-class Profile;
+namespace content {
+class BrowserContext;
+}
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace speedreader {
 
@@ -19,10 +25,11 @@ class SpeedreaderService;
 class SpeedreaderServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
   static SpeedreaderServiceFactory* GetInstance();
-  static SpeedreaderService* GetForProfile(Profile* profile);
+  static SpeedreaderService* GetForBrowserContext(
+      content::BrowserContext* browser_context);
 
  private:
-  friend struct base::DefaultSingletonTraits<SpeedreaderServiceFactory>;
+  friend base::NoDestructor<SpeedreaderServiceFactory>;
   SpeedreaderServiceFactory();
   ~SpeedreaderServiceFactory() override;
 

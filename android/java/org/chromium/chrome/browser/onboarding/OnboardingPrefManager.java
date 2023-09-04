@@ -7,25 +7,19 @@
 
 package org.chromium.chrome.browser.onboarding;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.BraveActivity.BraveActivityNotFoundException;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
-import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
-import org.chromium.chrome.browser.util.PackageUtils;
-import org.chromium.components.user_prefs.UserPrefs;
 
-import java.lang.System;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,6 +29,8 @@ import java.util.Map;
  * Provides information regarding onboarding.
  */
 public class OnboardingPrefManager {
+    private static final String TAG = "OnboardingPrefMgr";
+
     private static final String PREF_ONBOARDING = "onboarding";
     private static final String PREF_P3A_ONBOARDING = "p3a_onboarding";
     private static final String PREF_CROSS_PROMO_MODAL = "cross_promo_modal";
@@ -169,10 +165,6 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
-    public boolean isBraveAdsEnabled() {
-        return mSharedPreferences.getBoolean(BraveRewardsPreferences.PREF_ADS_SWITCH, false);
-    }
-
     public boolean isBraveStatsEnabled() {
         return mSharedPreferences.getBoolean(PREF_BRAVE_STATS, false);
     }
@@ -181,6 +173,12 @@ public class OnboardingPrefManager {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_BRAVE_STATS, enabled);
         sharedPreferencesEditor.apply();
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.getPrivacyHubMetrics().recordEnabledStatus(enabled);
+        } catch (BraveActivityNotFoundException e) {
+            Log.e(TAG, "Could not report privacy hub enabled change to P3A: " + e);
+        }
     }
 
     public boolean isBraveStatsNotificationEnabled() {

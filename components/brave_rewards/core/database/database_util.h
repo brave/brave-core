@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "sql/database.h"
 
 namespace brave_rewards::internal {
@@ -36,8 +36,8 @@ int32_t GetCurrentVersion();
 
 int32_t GetCompatibleVersion();
 
-void OnResultCallback(mojom::DBCommandResponsePtr response,
-                      LegacyResultCallback callback);
+void OnResultCallback(LegacyResultCallback callback,
+                      mojom::DBCommandResponsePtr response);
 
 int GetIntColumn(mojom::DBRecord* record, const int index);
 

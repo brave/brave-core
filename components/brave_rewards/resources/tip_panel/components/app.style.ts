@@ -9,6 +9,8 @@ import * as leo from '@brave/leo/tokens/css'
 
 import defaultBackgroundURL from '../assets/default_background.svg'
 
+const panelMinHeight = '500px'
+
 export const root = styled.div`
   font-family: Poppins;
   display: flex;
@@ -17,6 +19,7 @@ export const root = styled.div`
   z-index: 1;
   padding: 0 24px;
   overflow: hidden;
+  min-height: ${panelMinHeight};
   background: ${leo.color.container.background};
 
   .narrow-view & {
@@ -35,7 +38,7 @@ export const root = styled.div`
 `
 
 export const loading = styled.div`
-  min-height: 500px;
+  height: ${panelMinHeight};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,8 +63,8 @@ export const loading = styled.div`
 
 export const error = styled.div`
   font-family: Poppins;
-  min-height: 500px;
   width: 100%;
+  height: ${panelMinHeight};
   padding: 100px 70px;
   background: url(/${defaultBackgroundURL});
   background-size: cover;

@@ -13,6 +13,8 @@ static_library("misc_metrics") {
     "page_metrics_service.h",
     "pref_names.cc",
     "pref_names.h",
+    "privacy_hub_metrics.cc",
+    "privacy_hub_metrics.h",
   ]
 
   deps = [
@@ -24,4 +26,6 @@ static_library("misc_metrics") {
     "//components/prefs",
     "//url",
   ]
+
+  public_deps = [ "//brave/components/misc_metrics/common:mojom" ]
 }

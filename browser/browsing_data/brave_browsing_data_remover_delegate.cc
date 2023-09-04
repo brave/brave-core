@@ -10,7 +10,6 @@
 
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "build/build_config.h"
@@ -66,12 +65,10 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   if (remove_mask & content::BrowsingDataRemover::DATA_TYPE_CACHE)
     ClearIPFSCache();
 #endif
-  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature)) {
-    // Brave News feed cache
-    if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) {
-      brave_news::BraveNewsControllerFactory::GetForContext(profile_)
-          ->ClearHistory();
-    }
+  // Brave News feed cache
+  if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) {
+    brave_news::BraveNewsControllerFactory::GetForContext(profile_)
+        ->ClearHistory();
   }
 }
 
@@ -93,7 +90,7 @@ void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
     ContentSettingsForOneType settings;
     map->GetSettingsForOneType(content_type, &settings);
     for (const ContentSettingPatternSource& setting : settings) {
-      base::Time last_modified = setting.metadata.last_modified;
+      base::Time last_modified = setting.metadata.last_modified();
       if (last_modified >= begin_time &&
           (last_modified < end_time || end_time.is_null())) {
         provider->SetWebsiteSetting(setting.primary_pattern,

@@ -23,6 +23,8 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_registry_observer.h"
 #include "components/prefs/pref_member.h"
 #include "ui/events/event_observer.h"
+#include "ui/gfx/animation/slide_animation.h"
+#include "ui/views/animation/animation_delegate_views.h"
 #include "ui/views/view.h"
 
 namespace views {
@@ -37,12 +39,19 @@ class BraveBrowser;
 class SidePanelEntry;
 
 // This view is the parent view of all sidebar ui.
-// Thi will include sidebar items button, add button, settings button and panel
-// view.
+// Direct child views are control view and panel view.
+// Control view includes sidebar items button, add button, settings button
+// and panel view includes each panel's webview.
+// This class controls the visibility of control and panel view based on panel
+// item state and show options.
+// In the comments, we use the term "managed panel entry" and it means that
+// entry is managed by sidebar model. Only managed entry has its item in sidebar
+// UI.
 class SidebarContainerView
     : public sidebar::Sidebar,
       public SidebarControlView::Delegate,
       public views::View,
+      public views::AnimationDelegateViews,
       public SidebarShowOptionsEventDetectWidget::Delegate,
       public sidebar::SidebarModel::Observer,
       public SidePanelEntryObserver,
@@ -64,10 +73,13 @@ class SidebarContainerView
 
   BraveSidePanel* side_panel() { return side_panel_; }
 
+  bool IsFullscreenForCurrentEntry() const;
+
   // Sidebar overrides:
   void SetSidebarShowOption(
       sidebar::SidebarService::ShowSidebarOption show_option) override;
-  void UpdateSidebar() override;
+  void UpdateSidebarItemsState() override;
+  bool HasActiveContextualEntry() override;
 
   // SidebarControlView::Delegate overrides:
   void MenuClosed() override;
@@ -79,8 +91,12 @@ class SidebarContainerView
   void OnMouseEntered(const ui::MouseEvent& event) override;
   void OnMouseExited(const ui::MouseEvent& event) override;
 
+  // views::AnimationDelegateViews overrides:
+  void AnimationProgressed(const gfx::Animation* animation) override;
+  void AnimationEnded(const gfx::Animation* animation) override;
+
   // SidebarShowOptionsEventDetectWidget::Delegate overrides:
-  void ShowSidebar() override;
+  void ShowSidebarControlView() override;
 
   // sidebar::SidebarModel::Observer overrides:
   void OnItemAdded(const sidebar::SidebarItem& item,
@@ -90,6 +106,8 @@ class SidebarContainerView
                             absl::optional<size_t> new_index) override;
   void OnItemRemoved(size_t index) override;
 
+  // NOTE: If SidePanelEntryObserver could be used from outside of view,
+  // SidebarController should become a SidePanelEntryObserver.
   // SidePanelEntryObserver:
   void OnEntryShown(SidePanelEntry* entry) override;
   void OnEntryHidden(SidePanelEntry* entry) override;
@@ -107,11 +125,26 @@ class SidebarContainerView
 
   void AddChildViews();
   void UpdateBackground();
-  void UpdateSidebarVisibility();
-  void UpdateSidebarVisibility(
-      sidebar::SidebarService::ShowSidebarOption show_option);
   void ShowOptionsEventDetectWidget(bool show);
-  void ShowSidebar(bool show_sidebar, bool show_event_detect_widget);
+  bool ShouldUseAnimation() const;
+
+  // Show control view. panel's visibility depends on |show_side_panel|.
+  void ShowSidebar(bool show_side_panel);
+
+  // Show all (panel + control view).
+  void ShowSidebarAll();
+
+  // Hide panel. Control view's visibility depends on |hide_sidebar_control|.
+  void HideSidebar(bool hide_sidebbar_control);
+
+  // Hide all(panel + control view).
+  void HideSidebarAll();
+  void HideSidebarPanel();
+
+  // Panel is hidden and control view visibility is controlled by show option.
+  // Call this when want to hide and only want to consider show opton.
+  void HideSidebarForShowOption();
+
   SidebarShowOptionsEventDetectWidget* GetEventDetectWidget();
   bool ShouldForceShowSidebar() const;
   void UpdateToolbarButtonVisibility();
@@ -133,17 +166,19 @@ class SidebarContainerView
   void StartBrowserWindowEventMonitoring();
   void StopBrowserWindowEventMonitoring();
 
-  void DoHideSidebar(bool show_event_detect_widget);
-
   raw_ptr<BraveBrowser> browser_ = nullptr;
   raw_ptr<SidePanelCoordinator> side_panel_coordinator_ = nullptr;
   raw_ptr<BraveSidePanel> side_panel_ = nullptr;
   raw_ptr<sidebar::SidebarModel> sidebar_model_ = nullptr;
   raw_ptr<SidebarControlView> sidebar_control_view_ = nullptr;
   bool initialized_ = false;
-  bool is_side_panel_event_ = false;
   bool sidebar_on_left_ = true;
   base::OneShotTimer sidebar_hide_timer_;
+  sidebar::SidebarService::ShowSidebarOption show_sidebar_option_ =
+      sidebar::SidebarService::ShowSidebarOption::kShowAlways;
+  gfx::SlideAnimation width_animation_{this};
+  int animation_start_width_ = 0;
+  int animation_end_width_ = 0;
   std::unique_ptr<BrowserWindowEventObserver> browser_window_event_observer_;
   std::unique_ptr<views::EventMonitor> browser_window_event_monitor_;
   std::unique_ptr<SidebarShowOptionsEventDetectWidget> show_options_widget_;

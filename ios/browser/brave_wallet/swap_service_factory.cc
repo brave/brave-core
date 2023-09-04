@@ -5,12 +5,13 @@
 
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 
+#include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
-#include "ios/chrome/browser/browser_state/browser_state_otr_helper.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_wallet {
@@ -25,7 +26,8 @@ mojo::PendingRemote<mojom::SwapService> SwapServiceFactory::GetForBrowserState(
 
 // static
 SwapServiceFactory* SwapServiceFactory::GetInstance() {
-  return base::Singleton<SwapServiceFactory>::get();
+  static base::NoDestructor<SwapServiceFactory> instance;
+  return instance.get();
 }
 
 SwapServiceFactory::SwapServiceFactory()

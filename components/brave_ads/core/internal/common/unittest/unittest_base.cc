@@ -13,32 +13,25 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "base/values.h"
-#include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
-#include "brave/components/brave_ads/core/database.h"
-#include "brave/components/brave_ads/core/flags_util.h"
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_test_suite_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_registry_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/database/database.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
-
-using ::testing::_;
-using ::testing::Invoke;
 
 UnitTestBase::UnitTestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
@@ -62,7 +55,7 @@ void UnitTestBase::SetUp() {
 void UnitTestBase::TearDown() {
   teardown_called_ = true;
 
-  CleanupCommandLineSwitches();
+  ShutdownCommandLineSwitches();
 }
 
 void UnitTestBase::SetUpForTesting(const bool is_integration_test) {
@@ -70,7 +63,13 @@ void UnitTestBase::SetUpForTesting(const bool is_integration_test) {
 
   is_integration_test_ = is_integration_test;
 
-  Initialize();
+  InitializeCommandLineSwitches();
+
+  RegisterPrefs();
+
+  MockAdsClient();
+
+  is_integration_test_ ? SetUpIntegrationTest() : SetUpUnitTest();
 }
 
 AdsImpl& UnitTestBase::GetAds() const {
@@ -93,10 +92,7 @@ bool UnitTestBase::CopyFileFromTestPathToTempPath(
   const base::FilePath from_test_path = GetTestPath().AppendASCII(from_path);
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
 
-  const bool success = base::CopyFile(from_test_path, to_temp_path);
-  CHECK(success) << "Failed to copy file from " << from_test_path << " to "
-                 << to_temp_path;
-  return success;
+  return base::CopyFile(from_test_path, to_temp_path);
 }
 
 bool UnitTestBase::CopyFileFromTestPathToTempPath(
@@ -114,11 +110,8 @@ bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
   const base::FilePath from_test_path = GetTestPath().AppendASCII(from_path);
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
 
-  const bool success = base::CopyDirectory(from_test_path, to_temp_path,
-                                           /*recursive*/ true);
-  CHECK(success) << "Failed to copy directory from " << from_test_path << " to "
-                 << to_temp_path;
-  return success;
+  return base::CopyDirectory(from_test_path, to_temp_path,
+                             /*recursive*/ true);
 }
 
 bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
@@ -175,47 +168,16 @@ void UnitTestBase::AdvanceClockToMidnight(const bool is_local) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void UnitTestBase::Initialize() {
-  InitializeCommandLineSwitches();
-
-  MockDefaultAdsClient();
-
-  MockDefaultPrefs();
-
-  SetUpMocks();
-
-  if (is_integration_test_) {
-    return SetUpIntegrationTest();
-  }
-
-  global_state_ = std::make_unique<GlobalState>(&ads_client_mock_);
-
-  MockBuildChannel(BuildChannelType::kRelease);
-
-  global_state_->Flags() = *BuildFlags();
-
-  global_state_->GetClientStateManager().Initialize(
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
-
-  global_state_->GetConfirmationStateManager().Initialize(
-      GetWalletForTesting(),  // IN-TEST
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
-
-  global_state_->GetDatabaseManager().CreateOrOpen(
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
-
-  // Fast forward until no tasks remain to ensure
-  // "EnsureSqliteInitialized" tasks have fired before running tests.
-  task_environment_.FastForwardUntilNoTasksRemain();
-}
-
 void UnitTestBase::MockAdsClientAddObserver() {
-  ON_CALL(ads_client_mock_, AddObserver(_))
-      .WillByDefault(Invoke(
-          [=](AdsClientNotifierObserver* observer) { AddObserver(observer); }));
+  ON_CALL(ads_client_mock_, AddObserver)
+      .WillByDefault(
+          ::testing::Invoke([=](AdsClientNotifierObserver* observer) {
+            CHECK(observer);
+            AddObserver(observer);
+          }));
 }
 
-void UnitTestBase::MockDefaultAdsClient() {
+void UnitTestBase::MockAdsClient() {
   MockAdsClientAddObserver();
 
   MockShowNotificationAd(ads_client_mock_);
@@ -260,6 +222,7 @@ void UnitTestBase::MockDefaultAdsClient() {
   MockIsNetworkConnectionAvailable(ads_client_mock_, true);
 
   MockIsBrowserActive(ads_client_mock_, true);
+
   MockIsBrowserInFullScreenMode(ads_client_mock_, false);
 
   MockCanShowNotificationAds(ads_client_mock_, true);
@@ -269,136 +232,98 @@ void UnitTestBase::MockDefaultAdsClient() {
 }
 
 void UnitTestBase::MockSetBooleanPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetBooleanPref(_, _))
-      .WillByDefault(Invoke([=](const std::string& path, const bool value) {
-        const std::string uuid = GetUuidForCurrentTestAndValue(path);
-        Prefs()[uuid] = base::NumberToString(static_cast<int>(value));
-        NotifyPrefDidChange(path);
-      }));
+  ON_CALL(mock, SetBooleanPref)
+      .WillByDefault(
+          ::testing::Invoke([=](const std::string& path, const bool value) {
+            SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
+            NotifyPrefDidChange(path);
+          }));
 }
 
 void UnitTestBase::MockSetIntegerPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetIntegerPref(_, _))
-      .WillByDefault(Invoke([=](const std::string& path, const int value) {
-        const std::string uuid = GetUuidForCurrentTestAndValue(path);
-        Prefs()[uuid] = base::NumberToString(value);
-        NotifyPrefDidChange(path);
-      }));
+  ON_CALL(mock, SetIntegerPref)
+      .WillByDefault(
+          ::testing::Invoke([=](const std::string& path, const int value) {
+            SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
+            NotifyPrefDidChange(path);
+          }));
 }
 
 void UnitTestBase::MockSetDoublePref(AdsClientMock& mock) {
-  ON_CALL(mock, SetDoublePref(_, _))
-      .WillByDefault(Invoke([=](const std::string& path, const double value) {
-        const std::string uuid = GetUuidForCurrentTestAndValue(path);
-        Prefs()[uuid] = base::NumberToString(value);
-        NotifyPrefDidChange(path);
-      }));
+  ON_CALL(mock, SetDoublePref)
+      .WillByDefault(
+          ::testing::Invoke([=](const std::string& path, const double value) {
+            SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
+            NotifyPrefDidChange(path);
+          }));
 }
 
 void UnitTestBase::MockSetStringPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetStringPref(_, _))
-      .WillByDefault(
-          Invoke([=](const std::string& path, const std::string& value) {
-            const std::string uuid = GetUuidForCurrentTestAndValue(path);
-            Prefs()[uuid] = value;
+  ON_CALL(mock, SetStringPref)
+      .WillByDefault(::testing::Invoke(
+          [=](const std::string& path, const std::string& value) {
+            SetPrefValue(path, value);
             NotifyPrefDidChange(path);
           }));
 }
 
 void UnitTestBase::MockSetInt64Pref(AdsClientMock& mock) {
-  ON_CALL(mock, SetInt64Pref(_, _))
-      .WillByDefault(Invoke([=](const std::string& path, const int64_t value) {
-        const std::string uuid = GetUuidForCurrentTestAndValue(path);
-        Prefs()[uuid] = base::NumberToString(value);
-        NotifyPrefDidChange(path);
-      }));
+  ON_CALL(mock, SetInt64Pref)
+      .WillByDefault(
+          ::testing::Invoke([=](const std::string& path, const int64_t value) {
+            SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
+            NotifyPrefDidChange(path);
+          }));
 }
 
 void UnitTestBase::MockSetUint64Pref(AdsClientMock& mock) {
-  ON_CALL(mock, SetUint64Pref(_, _))
-      .WillByDefault(Invoke([=](const std::string& path, const uint64_t value) {
-        const std::string uuid = GetUuidForCurrentTestAndValue(path);
-        Prefs()[uuid] = base::NumberToString(value);
-        NotifyPrefDidChange(path);
-      }));
+  ON_CALL(mock, SetUint64Pref)
+      .WillByDefault(
+          ::testing::Invoke([=](const std::string& path, const uint64_t value) {
+            SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
+            NotifyPrefDidChange(path);
+          }));
 }
 
 void UnitTestBase::MockSetDictPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetDictPref(_, _))
-      .WillByDefault(
-          Invoke([=](const std::string& path, base::Value::Dict value) {
-            const std::string uuid = GetUuidForCurrentTestAndValue(path);
-            CHECK(base::JSONWriter::Write(value, &Prefs()[uuid]));
+  ON_CALL(mock, SetDictPref)
+      .WillByDefault(::testing::Invoke(
+          [=](const std::string& path, base::Value::Dict value) {
+            std::string json;
+            CHECK(base::JSONWriter::Write(value, &json));
+            SetPrefValue(path, json);
             NotifyPrefDidChange(path);
           }));
 }
 
 void UnitTestBase::MockSetListPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetListPref(_, _))
-      .WillByDefault(
-          Invoke([=](const std::string& path, base::Value::List value) {
-            const std::string uuid = GetUuidForCurrentTestAndValue(path);
-            CHECK(base::JSONWriter::Write(value, &Prefs()[uuid]));
+  ON_CALL(mock, SetListPref)
+      .WillByDefault(::testing::Invoke(
+          [=](const std::string& path, base::Value::List value) {
+            std::string json;
+            CHECK(base::JSONWriter::Write(value, &json));
+            SetPrefValue(path, json);
             NotifyPrefDidChange(path);
           }));
 }
 
 void UnitTestBase::MockSetTimePref(AdsClientMock& mock) {
-  ON_CALL(mock, SetTimePref(_, _))
-      .WillByDefault(
-          Invoke([=](const std::string& path, const base::Time value) {
-            const std::string uuid = GetUuidForCurrentTestAndValue(path);
-            Prefs()[uuid] = base::NumberToString(
-                value.ToDeltaSinceWindowsEpoch().InMicroseconds());
+  ON_CALL(mock, SetTimePref)
+      .WillByDefault(::testing::Invoke(
+          [=](const std::string& path, const base::Time value) {
+            SetPrefValue(
+                path, base::NumberToString(
+                          value.ToDeltaSinceWindowsEpoch().InMicroseconds()));
             NotifyPrefDidChange(path);
           }));
 }
 
-void UnitTestBase::MockDefaultPrefs() {
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, true);
+void UnitTestBase::SetUpTest() {
+  MockBuildChannel(BuildChannelType::kRelease);
 
-  ads_client_mock_.SetStringPref(prefs::kDiagnosticId, "");
+  SetUpMocks();
 
-  ads_client_mock_.SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
-
-  ads_client_mock_.SetIntegerPref(prefs::kIdleTimeThreshold, 15);
-
-  ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
-                                  false);
-  ads_client_mock_.SetStringPref(prefs::kSubdivisionTargetingCode, "AUTO");
-  ads_client_mock_.SetStringPref(prefs::kAutoDetectedSubdivisionTargetingCode,
-                                 "");
-
-  ads_client_mock_.SetStringPref(prefs::kCatalogId, "");
-  ads_client_mock_.SetIntegerPref(prefs::kCatalogVersion, 1);
-  ads_client_mock_.SetInt64Pref(prefs::kCatalogPing, 7'200'000);
-  ads_client_mock_.SetTimePref(prefs::kCatalogLastUpdated, DistantPast());
-
-  ads_client_mock_.SetInt64Pref(prefs::kIssuerPing, 0);
-  ads_client_mock_.SetListPref(prefs::kIssuers, base::Value::List());
-
-  ads_client_mock_.SetDictPref(prefs::kEpsilonGreedyBanditArms,
-                               base::Value::Dict());
-  ads_client_mock_.SetListPref(prefs::kEpsilonGreedyBanditEligibleSegments,
-                               base::Value::List());
-
-  ads_client_mock_.SetListPref(prefs::kNotificationAds, base::Value::List());
-  ads_client_mock_.SetTimePref(prefs::kServeAdAt, Now());
-
-  ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt, DistantFuture());
-
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedClientState, true);
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedConfirmationState, true);
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedConversionState, true);
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedNotificationState, true);
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedRewardsState, true);
-  ads_client_mock_.SetBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser,
-                                  false);
-
-  ads_client_mock_.SetUint64Pref(prefs::kConfirmationsHash, 0);
-  ads_client_mock_.SetUint64Pref(prefs::kClientHash, 0);
-
-  ads_client_mock_.SetStringPref(prefs::kBrowserVersionNumber, "");
+  MockFlags();
 }
 
 void UnitTestBase::SetUpIntegrationTest() {
@@ -408,16 +333,47 @@ void UnitTestBase::SetUpIntegrationTest() {
 
   ads_ = std::make_unique<AdsImpl>(&ads_client_mock_);
 
-  MockBuildChannel(BuildChannelType::kRelease);
+  SetUpTest();
 
-  ads_->SetFlags(BuildFlags());
+  ads_->Initialize(GetWalletPtrForTesting(),  // IN-TEST
+                   base::BindOnce(&UnitTestBase::SetUpIntegrationTestCallback,
+                                  weak_factory_.GetWeakPtr()));
+}
 
-  ads_->OnRewardsWalletDidChange(kWalletPaymentId, kWalletRecoverySeed);
+void UnitTestBase::SetUpIntegrationTestCallback(const bool success) {
+  ASSERT_TRUE(success) << "Failed to initialize ads";
 
-  ads_->Initialize(
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+  NotifyDidInitializeAds();
 
   task_environment_.RunUntilIdle();
+}
+
+void UnitTestBase::SetUpUnitTest() {
+  CHECK(!is_integration_test_)
+      << "|SetUpUnitTest| should only be called if |SetUpForTesting| is not "
+         "initialized for integration testing";
+
+  global_state_ = std::make_unique<GlobalState>(&ads_client_mock_);
+
+  SetUpTest();
+
+  global_state_->GetDatabaseManager().CreateOrOpen(
+      base::BindOnce([](const bool success) {
+        ASSERT_TRUE(success) << "Failed to create or open database";
+      }));
+
+  global_state_->GetClientStateManager().Load(
+      base::BindOnce([](const bool success) {
+        ASSERT_TRUE(success) << "Failed to load client state";
+      }));
+
+  global_state_->GetConfirmationStateManager().Load(
+      GetWalletForTesting(),  // IN-TEST
+      base::BindOnce([](const bool success) {
+        ASSERT_TRUE(success) << "Failed to load confirmation state";
+      }));
+
+  task_environment_.FastForwardUntilNoTasksRemain();
 }
 
 }  // namespace brave_ads

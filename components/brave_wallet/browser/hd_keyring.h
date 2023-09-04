@@ -14,14 +14,13 @@
 
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 namespace brave_wallet {
 
 class EthTransaction;
 
 struct AddedAcountInfo {
-  std::string path;
+  uint32_t account_index;
   std::string address;
 };
 

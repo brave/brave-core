@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Selectors
 import { WalletSelectors } from '../../../../../common/selectors'
@@ -15,16 +16,17 @@ import { BraveWallet } from '../../../../../constants/types'
 // Utils
 import { getLocale } from '../../../../../../common/locale'
 import Amount from '../../../../../utils/amount'
-import { computeFiatAmount } from '../../../../../utils/pricing-utils'
 import { formatTokenBalanceWithSymbol } from '../../../../../utils/balance-utils'
 import { checkIfTokenNeedsNetworkIcon } from '../../../../../utils/asset-utils'
 import { useGetNetworkQuery } from '../../../../../common/slices/api.slice'
 
 // Components
 import {
-  withPlaceholderIcon,
-  CreateNetworkIcon
-} from '../../../../../components/shared'
+  withPlaceholderIcon //
+} from '../../../../../components/shared/create-placeholder-icon/index'
+import {
+  CreateNetworkIcon //
+} from '../../../../../components/shared/create-network-icon/index'
 import { NftIcon } from '../../../../../components/shared/nft-icon/nft-icon'
 import { NFTInfoTooltip } from '../nft-info-tooltip/nft-info-tooltip'
 
@@ -43,37 +45,28 @@ interface Props {
   onClick: () => void
   token: BraveWallet.BlockchainToken
   balance: string
+  spotPrice: string
 }
 
+const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 0 } as const
+const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
+const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
+
 export const TokenListItem = (props: Props) => {
-  const { onClick, token, balance } = props
+  const { onClick, token, balance, spotPrice } = props
 
   // Wallet Selectors
-  const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
 
   // Queries
-  const { data: tokensNetwork } = useGetNetworkQuery(token, { skip: !token })
-
-  // Memos
-  const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(token?.isErc721 ? NftIcon : AssetIcon, {
-      size: 'big',
-      marginLeft: 0,
-      marginRight: 0
-    })
-  }, [token?.isErc721])
+  const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
 
   const fiatBalance = React.useMemo(() => {
-    return computeFiatAmount(spotPrices, {
-      decimals: token.decimals,
-      symbol: token.symbol,
-      value: balance,
-      contractAddress: token.contractAddress,
-      chainId: token.chainId
-    })
+    return new Amount(balance)
+      .divideByDecimals(token.decimals)
+      .times(spotPrice)
   }, [
-    spotPrices,
+    spotPrice,
     balance,
     token.symbol,
     token.decimals,
@@ -109,38 +102,58 @@ export const TokenListItem = (props: Props) => {
       <Button onClick={onClick}>
         <IconAndName horizontalAlign='flex-start'>
           <IconsWrapper>
-            <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
-            {
-              tokensNetwork &&
-              checkIfTokenNeedsNetworkIcon(tokensNetwork, token.contractAddress) &&
-              <NetworkIconWrapper>
-                <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
-              </NetworkIconWrapper>
-            }
+            {token.isErc721 || token.isNft ? (
+              <NftIconWithPlaceholder asset={token} network={tokensNetwork} />
+            ) : (
+              <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
+            )}
+            {tokensNetwork &&
+              checkIfTokenNeedsNetworkIcon(
+                tokensNetwork,
+                token.contractAddress
+              ) && (
+                <NetworkIconWrapper>
+                  <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
+                </NetworkIconWrapper>
+              )}
           </IconsWrapper>
           <Column horizontalAlign='flex-start'>
-            <Text textColor='text01' textSize='14px' isBold={true} textAlign='left'>
+            <Text
+              textColor='text01'
+              textSize='14px'
+              isBold={true}
+              textAlign='left'
+            >
               {tokenDisplayName}
             </Text>
-            <Text textColor='text03' textSize='12px' isBold={false} textAlign='left'>
+            <Text
+              textColor='text03'
+              textSize='12px'
+              isBold={false}
+              textAlign='left'
+            >
               {networkDescription}
             </Text>
           </Column>
         </IconAndName>
-        {!token.isErc721 && !token.isNft &&
+        {!token.isErc721 && !token.isNft && (
           <Column horizontalAlign='flex-end'>
             <Text textColor='text01' textSize='14px' isBold={true}>
-              {formatTokenBalanceWithSymbol(balance, token.decimals, token.symbol)}
+              {formatTokenBalanceWithSymbol(
+                balance,
+                token.decimals,
+                token.symbol
+              )}
             </Text>
             <Text textColor='text03' textSize='12px' isBold={false}>
               {formattedFiatBalance}
             </Text>
           </Column>
-        }
+        )}
       </Button>
-      {(token.isErc721 || token.isNft) &&
+      {(token.isErc721 || token.isNft) && (
         <NFTInfoTooltip network={tokensNetwork} token={token} />
-      }
+      )}
     </ButtonWrapper>
   )
 }

@@ -25,7 +25,8 @@ class SolanaTransaction;
 class SolanaTxMeta : public TxMeta {
  public:
   SolanaTxMeta();
-  explicit SolanaTxMeta(std::unique_ptr<SolanaTransaction> tx);
+  SolanaTxMeta(const mojom::AccountIdPtr& from,
+               std::unique_ptr<SolanaTransaction> tx);
   SolanaTxMeta(const SolanaTxMeta&) = delete;
   ~SolanaTxMeta() override;
   bool operator==(const SolanaTxMeta&) const;

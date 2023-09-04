@@ -28,10 +28,10 @@ std::vector<AddedAcountInfo> HDKeyring::AddAccounts(size_t number) {
   }
 
   size_t cur_accounts_number = accounts_.size();
-  for (size_t i = cur_accounts_number; i < cur_accounts_number + number; ++i) {
+  for (uint32_t i = cur_accounts_number; i < cur_accounts_number + number;
+       ++i) {
     auto& added_account = accounts_.emplace_back(DeriveAccount(i));
-    result.push_back(
-        {added_account->GetPath(), GetAddressInternal(added_account.get())});
+    result.push_back({i, GetAddressInternal(added_account.get())});
   }
 
   return result;

@@ -15,6 +15,12 @@ int GetLayoutConstant(LayoutConstant constant) {
   if (braveOption) {
     return braveOption.value();
   }
-  // get chromium value
-  return GetLayoutConstant_ChromiumImpl(constant);
+  switch (constant) {
+    case TAB_SEPARATOR_HEIGHT:
+      return 24;
+
+    default:
+      // get chromium value
+      return GetLayoutConstant_ChromiumImpl(constant);
+  }
 }

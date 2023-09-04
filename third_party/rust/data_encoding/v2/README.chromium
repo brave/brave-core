@@ -1,0 +1,7 @@
+Name: data-encoding
+URL: https://crates.io/crates/data-encoding
+Description: Efficient and customizable data-encoding functions like base64, base32, and hex
+Version: 2.3.3
+Security Critical: yes
+License: MIT
+Revision: 61a52403808f73f7fcbefb7bbc64715fe44672ec

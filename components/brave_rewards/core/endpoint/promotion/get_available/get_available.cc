@@ -11,8 +11,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_util.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
@@ -22,12 +22,12 @@ namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
-GetAvailable::GetAvailable(LedgerImpl& ledger) : ledger_(ledger) {}
+GetAvailable::GetAvailable(RewardsEngineImpl& engine) : engine_(engine) {}
 
 GetAvailable::~GetAvailable() = default;
 
 std::string GetAvailable::GetUrl(const std::string& platform) {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = engine_->wallet()->GetWallet();
   std::string payment_id;
   if (wallet) {
     payment_id =
@@ -46,7 +46,7 @@ std::string GetAvailable::GetUrl(const std::string& platform) {
 mojom::Result GetAvailable::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid paymentId or platform in request");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
@@ -56,15 +56,15 @@ mojom::Result GetAvailable::CheckStatusCode(const int status_code) {
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 mojom::Result GetAvailable::ParseBody(
@@ -76,13 +76,13 @@ mojom::Result GetAvailable::ParseBody(
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* promotions = dict.FindList("promotions");
   if (!promotions) {
-    return mojom::Result::LEDGER_OK;
+    return mojom::Result::OK;
   }
 
   const auto promotion_size = promotions->size();
@@ -195,7 +195,7 @@ mojom::Result GetAvailable::ParseBody(
     return mojom::Result::CORRUPTED_DATA;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void GetAvailable::Request(const std::string& platform,
@@ -205,7 +205,7 @@ void GetAvailable::Request(const std::string& platform,
 
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(platform);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  engine_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetAvailable::OnRequest(GetAvailableCallback callback,
@@ -217,7 +217,7 @@ void GetAvailable::OnRequest(GetAvailableCallback callback,
   std::vector<std::string> corrupted_promotions;
   mojom::Result result = CheckStatusCode(response->status_code);
 
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     std::move(callback).Run(result, std::move(list), corrupted_promotions);
     return;
   }

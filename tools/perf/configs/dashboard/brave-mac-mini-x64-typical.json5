@@ -2,7 +2,7 @@
   "configurations": [{
     "dashboard-bot-name": "mac-mini-x64-typical",
     "browser-type": "brave",
-    "profile": "brave-typical-v1.50.26",
+    "profile": "brave-typical-mac-v1.55.98",
     "extra-browser-args": [],
     "extra-benchmark-args": [],
   }],
@@ -18,6 +18,14 @@
     },
     {
       "name": "system_health.memory_desktop",
+      "pageset-repeat": 20,
+      "stories": [
+        "load:chrome:blank",
+        "load:media:youtube:2018",
+      ]
+    },
+    {
+      "name": "system_health.common_desktop",
       "pageset-repeat": 20,
       "stories": [
         "load:chrome:blank",

@@ -1,0 +1,81 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+enum CharacterType {
+  HUMAN,
+  ASSISTANT
+};
+
+enum ConversationTurnVisibility {
+  VISIBLE,
+  HIDDEN // does not get added to chat history, used as a flag internally
+};
+
+enum AutoGenerateQuestionsPref {
+  Unset,       // User has not made a choice yet
+  Enabled,     // User has chosen to enable auto-generation
+  Disabled     // User has chosen not to enable auto-generation
+};
+
+enum APIError {
+  None,
+  ConnectionIssue,
+  RateLimitReached
+};
+
+struct SiteInfo {
+  string title;
+};
+
+// Represents a single turn in a conversation.
+// The character type defines which party initiated the turn in the conversation
+// The text attribute contains the actual content of the turn, which can be a
+// message, statement, or question, among others.
+struct ConversationTurn {
+  CharacterType character_type;
+  ConversationTurnVisibility visibility;
+  string text;
+};
+
+// Browser-side handler for requests from WebUI page.
+interface PageHandler {
+  SetClientPage(pending_remote<ChatUIPage> page);
+  GetConversationHistory() => (array<ConversationTurn> conversation_history);
+  // List of all suggested questions for the active tab in the page's Browser
+  // window.
+  GetSuggestedQuestions() => (
+      array<string> questions, bool can_generate, AutoGenerateQuestionsPref auto_generate);
+  // The browser should generate some questions and fire an event when they
+  // are ready.
+  GenerateQuestions();
+  SubmitHumanConversationEntry(string input);
+  MarkAgreementAccepted();
+  SetAutoGenerateQuestions(bool can_auto_generate_questions);
+  GetSiteInfo() => (SiteInfo? site_info);
+  GetFaviconImageData() => (array<uint8>? favicon_image_data);
+  OpenBraveLeoSettings();
+  OpenBraveLeoWiki();
+  DisconnectPageContents();
+  ClearConversationHistory();
+  RetryAPIRequest();
+  GetAPIResponseError() => (APIError error);
+};
+
+interface ChatUIPage {
+  OnConversationHistoryUpdate();
+  OnAPIRequestInProgress(bool in_progress);
+  OnAPIResponseError(APIError error);
+  // Provides the full list of questions for the active tab in the page's
+  // Browser window.
+  OnSuggestedQuestionsChanged(
+      array<string> questions, bool has_generated, AutoGenerateQuestionsPref auto_generate);
+  // Event for when active tab changes, if it is the target of this chat
+  // conversation.
+  OnTargetTabChanged();
+  OnSiteInfoChanged(SiteInfo? info);
+  OnFaviconImageDataChanged(array<uint8> favicon_image_data);
+};

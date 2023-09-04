@@ -5,7 +5,7 @@ include_rules = [
   "+content/public/test",
   "+components/gcm_driver/gcm_buildflags.h",
   "+components/grit/brave_components_resources.h",
-  "+components/grit/components_resources.h",
+  "+components/grit/flags_ui_resources.h",
   "+components/version_info",
   "+extensions/buildflags",
   "+extensions/common/url_pattern.h",

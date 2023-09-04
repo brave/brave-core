@@ -13,7 +13,7 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
@@ -47,7 +47,6 @@ class SearchResultAdHandler final {
       base::OnceCallback<void(std::vector<std::string>)> callback);
 
   void MaybeTriggerSearchResultAdViewedEvent(const std::string& placement_id);
-
   void MaybeTriggerSearchResultAdClickedEvent(const GURL& navigation_url);
 
  private:

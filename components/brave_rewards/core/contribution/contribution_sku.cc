@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -77,8 +77,8 @@ void GetCredentialTrigger(mojom::SKUOrderPtr order,
 
 namespace contribution {
 
-ContributionSKU::ContributionSKU(LedgerImpl& ledger)
-    : ledger_(ledger), credentials_(ledger), sku_(ledger) {}
+ContributionSKU::ContributionSKU(RewardsEngineImpl& engine)
+    : engine_(engine), credentials_(engine), sku_(engine) {}
 
 ContributionSKU::~ContributionSKU() = default;
 
@@ -98,7 +98,7 @@ void ContributionSKU::Start(const std::string& contribution_id,
   auto get_callback = std::bind(&ContributionSKU::GetContributionInfo, this, _1,
                                 item, wallet_type, callback);
 
-  ledger_->database()->GetContributionInfo(contribution_id, get_callback);
+  engine_->database()->GetContributionInfo(contribution_id, get_callback);
 }
 
 void ContributionSKU::GetContributionInfo(
@@ -108,7 +108,7 @@ void ContributionSKU::GetContributionInfo(
     LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution not found");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -136,7 +136,7 @@ void ContributionSKU::GetOrder(mojom::Result result,
                                const std::string& order_id,
                                const std::string& contribution_id,
                                LegacyResultCallback callback) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "SKU was not processed");
     callback(result);
     return;
@@ -144,7 +144,7 @@ void ContributionSKU::GetOrder(mojom::Result result,
 
   auto get_callback = std::bind(&ContributionSKU::OnGetOrder, this, _1,
                                 contribution_id, callback);
-  ledger_->database()->GetSKUOrder(order_id, get_callback);
+  engine_->database()->GetSKUOrder(order_id, get_callback);
 }
 
 void ContributionSKU::OnGetOrder(mojom::SKUOrderPtr order,
@@ -152,7 +152,7 @@ void ContributionSKU::OnGetOrder(mojom::SKUOrderPtr order,
                                  LegacyResultCallback callback) {
   if (!order) {
     BLOG(0, "Order was not found");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -170,7 +170,7 @@ void ContributionSKU::Completed(mojom::Result result,
                                 const std::string& contribution_id,
                                 mojom::RewardsType type,
                                 LegacyResultCallback callback) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Order not completed");
     callback(result);
     return;
@@ -179,20 +179,20 @@ void ContributionSKU::Completed(mojom::Result result,
   auto save_callback = std::bind(&ContributionSKU::CredsStepSaved, this, _1,
                                  contribution_id, callback);
 
-  ledger_->database()->UpdateContributionInfoStep(
+  engine_->database()->UpdateContributionInfoStep(
       contribution_id, mojom::ContributionStep::STEP_CREDS, save_callback);
 }
 
 void ContributionSKU::CredsStepSaved(mojom::Result result,
                                      const std::string& contribution_id,
                                      LegacyResultCallback callback) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Creds step not saved");
     callback(result);
     return;
   }
 
-  ledger_->contribution()->StartUnblinded({mojom::CredsBatchType::SKU},
+  engine_->contribution()->StartUnblinded({mojom::CredsBatchType::SKU},
                                           contribution_id, callback);
 }
 
@@ -201,7 +201,7 @@ void ContributionSKU::Merchant(const mojom::SKUTransaction& transaction,
   auto get_callback = std::bind(&ContributionSKU::GetUnblindedTokens, this, _1,
                                 transaction, callback);
 
-  ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(
+  engine_->database()->GetSpendableUnblindedTokensByBatchTypes(
       {mojom::CredsBatchType::PROMOTION}, get_callback);
 }
 
@@ -211,7 +211,7 @@ void ContributionSKU::GetUnblindedTokens(
     LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(0, "List is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -241,7 +241,7 @@ void ContributionSKU::GetUnblindedTokens(
   auto get_callback =
       std::bind(&ContributionSKU::GetOrderMerchant, this, _1, redeem, callback);
 
-  ledger_->database()->GetSKUOrder(transaction.order_id, get_callback);
+  engine_->database()->GetSKUOrder(transaction.order_id, get_callback);
 }
 
 void ContributionSKU::GetOrderMerchant(
@@ -250,7 +250,7 @@ void ContributionSKU::GetOrderMerchant(
     LegacyResultCallback callback) {
   if (!order) {
     BLOG(0, "Order was not found");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -265,7 +265,7 @@ void ContributionSKU::GetOrderMerchant(
 
 void ContributionSKU::OnRedeemTokens(mojom::Result result,
                                      LegacyResultCallback callback) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Problem redeeming tokens");
     callback(result);
     return;
@@ -278,7 +278,7 @@ void ContributionSKU::Retry(mojom::ContributionInfoPtr contribution,
                             LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution was not found");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -287,7 +287,7 @@ void ContributionSKU::Retry(mojom::ContributionInfoPtr contribution,
       std::make_shared<mojom::ContributionInfoPtr>(contribution->Clone()),
       callback);
 
-  ledger_->database()->GetSKUOrderByContributionId(
+  engine_->database()->GetSKUOrderByContributionId(
       contribution->contribution_id, get_callback);
 }
 
@@ -298,7 +298,7 @@ void ContributionSKU::OnOrder(
   auto contribution = std::move(*shared_contribution);
   if (!contribution) {
     BLOG(0, "Contribution is null");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -311,7 +311,7 @@ void ContributionSKU::OnOrder(
     case mojom::ContributionStep::STEP_PREPARE:
     case mojom::ContributionStep::STEP_RESERVE:
     case mojom::ContributionStep::STEP_CREDS: {
-      ledger_->contribution()->RetryUnblinded({mojom::CredsBatchType::SKU},
+      engine_->contribution()->RetryUnblinded({mojom::CredsBatchType::SKU},
                                               contribution->contribution_id,
                                               callback);
       return;
@@ -336,7 +336,7 @@ void ContributionSKU::RetryStartStep(mojom::ContributionInfoPtr contribution,
                                      LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -356,7 +356,7 @@ void ContributionSKU::RetryStartStep(mojom::ContributionInfoPtr contribution,
 
   if (wallet_type.empty()) {
     BLOG(0, "Invalid processor for SKU contribution");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 

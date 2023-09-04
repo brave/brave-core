@@ -6,8 +6,12 @@
 #ifndef BRAVE_BROWSER_BRAVE_VPN_DNS_BRAVE_VPN_DNS_OBSERVER_FACTORY_WIN_H_
 #define BRAVE_BROWSER_BRAVE_VPN_DNS_BRAVE_VPN_DNS_OBSERVER_FACTORY_WIN_H_
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace content {
 class BrowserContext;
@@ -34,7 +38,7 @@ class BraveVpnDnsObserverFactory : public BrowserContextKeyedServiceFactory {
       user_prefs::PrefRegistrySyncable* registry) override;
 
  private:
-  friend struct base::DefaultSingletonTraits<BraveVpnDnsObserverFactory>;
+  friend base::NoDestructor<BraveVpnDnsObserverFactory>;
 
   BraveVpnDnsObserverFactory();
   ~BraveVpnDnsObserverFactory() override;

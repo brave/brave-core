@@ -11,7 +11,6 @@ import android.view.ViewStub;
 
 import androidx.annotation.Nullable;
 
-import org.chromium.chrome.browser.suggestions.tile.Tile;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.ui.modelutil.PropertyModel;
@@ -23,10 +22,11 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
             PropertyModel propertyModel, boolean shouldShowSkeletonUIPreNative,
             boolean isScrollableMVTEnabled, boolean isTablet,
             @Nullable Runnable snapshotTileGridChangedRunnable,
-            @Nullable Runnable tileCountChangedRunnable) {
+            @Nullable Runnable tileCountChangedRunnable, boolean isMultiColumnFeedOnTabletEnabled) {
         super(resources, uiConfig, mvTilesLayout, noMvPlaceholderStub, renderer, propertyModel,
                 shouldShowSkeletonUIPreNative, isScrollableMVTEnabled, isTablet,
-                snapshotTileGridChangedRunnable, tileCountChangedRunnable);
+                snapshotTileGridChangedRunnable, tileCountChangedRunnable,
+                isMultiColumnFeedOnTabletEnabled);
     }
 
     protected void updateTilePlaceholderVisibility() {

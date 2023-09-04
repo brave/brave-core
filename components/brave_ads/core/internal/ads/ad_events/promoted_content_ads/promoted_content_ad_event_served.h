@@ -15,7 +15,8 @@ struct PromotedContentAdInfo;
 class PromotedContentAdEventServed final
     : public AdEventInterface<PromotedContentAdInfo> {
  public:
-  void FireEvent(const PromotedContentAdInfo& ad) override;
+  void FireEvent(const PromotedContentAdInfo& ad,
+                 ResultCallback callback) override;
 };
 
 }  // namespace brave_ads

@@ -8,6 +8,7 @@ Resolves
 * CI/skip - do not run CI builds (except noplatform)
 * CI/skip-linux-arm64, CI/skip-linux-x64, CI/skip-android, CI/skip-macos, CI/skip-ios, CI/skip-windows-arm64, CI/skip-windows-x64, CI/skip-windows-x86 - skip CI builds for specific platforms
 * CI/skip-upstream-tests - do not run Chromium unit, or browser tests (otherwise only on Linux)
+* CI/skip-all-linters - do not run presubmit and lint checks
 * CI/storybook-url (1) - deploy storybook and provide a unique URL for each build
 
 (1) applied automatically when some files are changed (see: https://github.com/brave/brave-core/blob/master/.github/labeler.yml)
@@ -15,7 +16,7 @@ Resolves
 
 ## Submitter Checklist:
 
-- [ ] I confirm that no security/privacy review [is needed](https://github.com/brave/brave-browser/wiki/Security-reviews), or that I have [requested](https://github.com/brave/security/issues/new/choose) one
+- [ ] I confirm that no [security/privacy review is needed](https://github.com/brave/brave-browser/wiki/Security-reviews) and no other type of reviews are needed, or that I have [requested](https://github.com/brave/reviews/issues/new/choose) them
 - [ ] There is a [ticket](https://github.com/brave/brave-browser/issues) for my issue
 - [ ] Used Github [auto-closing keywords](https://docs.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) in the PR description above
 - [ ] Wrote a good [PR/commit description](https://google.github.io/eng-practices/review/developer/cl-descriptions.html)

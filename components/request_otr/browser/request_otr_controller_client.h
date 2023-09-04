@@ -58,8 +58,8 @@ class RequestOTRControllerClient
 
   const GURL request_url_;
   bool dont_warn_again_;
-  ephemeral_storage::EphemeralStorageService* ephemeral_storage_service_ =
-      nullptr;  // not owned
+  raw_ptr<ephemeral_storage::EphemeralStorageService>
+      ephemeral_storage_service_ = nullptr;  // not owned
 
   base::WeakPtrFactory<RequestOTRControllerClient> weak_ptr_factory_{this};
 };

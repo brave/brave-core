@@ -34,7 +34,7 @@ base::FilePath GetResourcesPakFilePath() {
   return base::mac::PathForFrameworkBundleResource("brave_resources.pak");
 #else
   base::FilePath pak_path;
-  base::PathService::Get(base::DIR_MODULE, &pak_path);
+  base::PathService::Get(base::DIR_ASSETS, &pak_path);
   pak_path = pak_path.AppendASCII("brave_resources.pak");
   return pak_path;
 #endif  // OS_MAC
@@ -53,7 +53,7 @@ base::FilePath GetScaledResourcesPakFilePath(
   return base::mac::PathForFrameworkBundleResource(pak_file);
 #else
   base::FilePath pak_path;
-  base::PathService::Get(base::DIR_MODULE, &pak_path);
+  base::PathService::Get(base::DIR_ASSETS, &pak_path);
   pak_path = pak_path.AppendASCII(pak_file);
   return pak_path;
 #endif  // OS_MAC
@@ -75,7 +75,7 @@ void InitializeResourceBundle() {
   rb.AddDataPackFromPath(GetResourcesPakFilePath(), ui::kScaleFactorNone);
   rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::k100Percent),
                          ui::k100Percent);
-  if (ui::ResourceBundle::IsScaleFactorSupported(ui::k200Percent)) {
+  if (ui::IsScaleFactorSupported(ui::k200Percent)) {
     rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::k200Percent),
                            ui::k200Percent);
   }

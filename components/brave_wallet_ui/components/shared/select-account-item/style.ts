@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
 import { WalletButton } from '../style'
 import CheckMark from '../../../assets/svg-icons/big-checkmark.svg'
 
@@ -10,7 +12,10 @@ interface StyleProps {
   orb: string
 }
 
-export const StyledWrapper = styled(WalletButton)`
+export const StyledWrapper = styled(WalletButton)<
+  {
+    isV2?: boolean
+  }>`
   display: flex;
   width: 100%;
   flex-direction: row;
@@ -22,6 +27,9 @@ export const StyledWrapper = styled(WalletButton)`
   border: none;
   margin-bottom: 10px;
   padding: 0px;
+  background-color: ${p => p.isV2 ? leo.color.container.highlight : 'transparent'};
+  border-radius: ${p => p.isV2 ? '8px' : 0};
+  padding: ${p => p.isV2 ? '8px' : 0}
 `
 
 export const AccountAndAddress = styled.div`
@@ -31,21 +39,23 @@ export const AccountAndAddress = styled.div`
   flex-direction: column;
 `
 
-export const AccountName = styled.span`
+export const AccountName = styled.span<{
+    isV2?: boolean
+  }>`
   font-family: Poppins;
-  font-size: 13px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
+  font-size: ${p => p.isV2 ? '14px' : '13px'};
+  line-height: ${p => p.isV2 ? '24px' : '20px'};
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
-`
-
-export const AccountAddress = styled.span`
+  color: ${leo.color.text.primary};
+  `
+  
+  export const AccountAddress = styled.span<{
+    isV2?: boolean
+  }>`
   font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  font-size: ${p => p.isV2 ? '11px' : '12px'};
+  line-height: ${p => p.isV2 ? '16px' : '18px'};
+  color: ${leo.color.text.secondary};
 `
 
 export const AccountCircle = styled.div<StyleProps>`
@@ -77,4 +87,11 @@ export const LeftSide = styled.div`
 export const SwitchAccountIconContainer = styled.div`
   padding-left: 8;
   padding-right: 8;
+`
+
+export const CaratDown = styled(Icon).attrs({
+    name: 'carat-down'
+})`
+  --leo-icon-size: 20px;
+  color: ${leo.color.icon.default}
 `

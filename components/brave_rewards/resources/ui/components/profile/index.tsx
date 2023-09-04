@@ -3,6 +3,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+
+import Icon from '@brave/leo/react/icon'
+
 import {
   StyledWrapper,
   StyledContent,
@@ -29,7 +32,7 @@ import {
   StyledVerifiedDivider
 } from './style'
 import { getLocale } from 'brave-ui/helpers'
-import { VerifiedSIcon, UnVerifiedSIcon, LoaderIcon, CheckmarkCircleS } from 'brave-ui/components/icons'
+import { UnVerifiedSIcon, LoaderIcon, CheckmarkCircleS } from 'brave-ui/components/icons'
 
 export type Provider = 'twitter' | 'youtube' | 'twitch' | 'reddit' | 'vimeo' | 'github'
 
@@ -82,7 +85,7 @@ export default class Profile extends React.PureComponent<Props, {}> {
     return (
       <>
         <StyledInlineVerified>
-          <VerifiedSIcon />
+          <Icon name='verification-filled-color' />
         </StyledInlineVerified>{' '}
         <StyledVerifiedText>
           {getLocale('verifiedPublisher')}
@@ -291,7 +294,7 @@ export default class Profile extends React.PureComponent<Props, {}> {
           <StyledImage src={this.getSrc(src)} />
           {verified && type === 'small' ? (
             <StyledVerified>
-              <VerifiedSIcon />
+              <Icon name='verification-filled-color' />
             </StyledVerified>
           ) : null}
         </StyledImageWrapper>

@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
 
 // utils
@@ -19,20 +19,22 @@ import { CreateAccountOptions } from '../../../../options/create-account-options
 import {
   BraveWallet,
   CreateAccountOptionsType,
-  PageState,
   WalletRoutes,
-  WalletState,
-  ImportAccountErrorType
+  ImportAccountErrorType,
+  FilecoinNetwork,
+  FilecoinNetworkTypes,
+  FilecoinNetworkLocaleMapping
 } from '../../../../constants/types'
-import { FilecoinNetworkTypes, FilecoinNetworkLocaleMapping, FilecoinNetwork } from '../../../../common/hardware/types'
 
 // actions
-import { WalletPageActions } from '../../../../page/actions'
+import { WalletActions } from '../../../../common/actions'
+import { PanelActions } from '../../../../panel/actions'
 
 // components
 import { Select } from 'brave-ui/components'
-import { DividerLine, NavButton } from '../../../extension'
-import PopupModal from '..'
+import { NavButton } from '../../../extension/buttons/nav-button/index'
+import { DividerLine } from '../../../extension/divider/index'
+import { PopupModal } from '../index'
 import { SelectAccountType } from './select-account-type/select-account-type'
 
 // style
@@ -52,6 +54,18 @@ import {
   WarningWrapper
 } from '../account-settings-modal/account-settings-modal.style'
 
+// selectors
+import {
+  UISelectors,
+  WalletSelectors
+} from '../../../../common/selectors'
+
+// hooks
+import {
+  useSafeUISelector,
+  useSafeWalletSelector
+} from '../../../../common/hooks/use-safe-selector'
+
 interface Params {
   accountTypeName: string
 }
@@ -69,22 +83,30 @@ export const ImportAccountModal = () => {
 
   // routing
   const history = useHistory()
-  // const { pathname: walletLocation } = useLocation()
   const { accountTypeName } = useParams<Params>()
 
   // redux
-  const isSolanaEnabled = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isSolanaEnabled)
-  const isFilecoinEnabled = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isFilecoinEnabled)
+  const isFilecoinEnabled = useSafeWalletSelector(WalletSelectors.isFilecoinEnabled)
+  const isSolanaEnabled = useSafeWalletSelector(WalletSelectors.isSolanaEnabled)
+  const hasImportError =
+    useSafeWalletSelector(WalletSelectors.importAccountError)
 
   // memos
-  const selectedAccountType: CreateAccountOptionsType | undefined = React.useMemo(() => {
-    if (!accountTypeName) {
-      return undefined
-    }
-    return CreateAccountOptions(isFilecoinEnabled, isSolanaEnabled).find(option => {
-      return option.name.toLowerCase() === accountTypeName.toLowerCase()
+  const createAccountOptions = React.useMemo(() => {
+    return CreateAccountOptions({
+      isFilecoinEnabled,
+      isSolanaEnabled,
+      isBitcoinEnabled: false // No bitcoin imported accounts by now.
     })
-  }, [accountTypeName, isFilecoinEnabled, isSolanaEnabled])
+  }, [isFilecoinEnabled, isSolanaEnabled])
+
+  const selectedAccountType = React.useMemo(() => {
+    return createAccountOptions.find((option) => {
+      return option.name.toLowerCase() === accountTypeName?.toLowerCase()
+    })
+  }, [accountTypeName, createAccountOptions])
+
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // state
   const [accountName, setAccountName] = React.useState<string>('')
@@ -96,11 +118,10 @@ export const ImportAccountModal = () => {
 
   // redux
   const dispatch = useDispatch()
-  const hasImportError = useSelector(({ page }: { page: PageState }) => page.importAccountError)
 
   // methods
   const setImportError = React.useCallback((hasError: ImportAccountErrorType) => {
-    dispatch(WalletPageActions.setImportAccountError(hasError))
+    dispatch(WalletActions.setImportAccountError(hasError))
   }, [])
 
   const onClickClose = React.useCallback(() => {
@@ -109,15 +130,26 @@ export const ImportAccountModal = () => {
   }, [setImportError])
 
   const importAccount = React.useCallback((accountName: string, privateKey: string, coin: BraveWallet.CoinType) => {
-    dispatch(WalletPageActions.importAccount({ accountName, privateKey, coin }))
+    dispatch(WalletActions.importAccount({ accountName, privateKey, coin }))
   }, [])
 
-  const importFilecoinAccount = React.useCallback((accountName: string, privateKey: string, network: string) => {
-    dispatch(WalletPageActions.importFilecoinAccount({ accountName, privateKey, network }))
-  }, [])
+  const importFilecoinAccount = React.useCallback(
+    (
+      accountName: string,
+      privateKey: string,
+      coin: BraveWallet.CoinType,
+      network: FilecoinNetwork
+    ) => {
+      dispatch(
+        WalletActions
+          .importAccount({ accountName, privateKey, coin, network })
+      )
+    }, [])
 
   const importAccountFromJson = React.useCallback((accountName: string, password: string, json: string) => {
-    dispatch(WalletPageActions.importAccountFromJson({ accountName, password, json }))
+    dispatch(
+      WalletActions
+        .importAccountFromJson({ accountName, password, json }))
   }, [])
 
   const handleAccountNameChanged = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,6 +170,22 @@ export const ImportAccountModal = () => {
     copyToClipboard('')
   }, [])
 
+  const onClickFileUpload = () => {
+    // To prevent panel from being closed when file chooser is open
+    if (isPanel) {
+      dispatch(PanelActions.setCloseOnDeactivate(false))
+      // For resume close on deactive when file chooser is close(select/cancel)
+      window.addEventListener('focus', onFocusFileUpload)
+    }
+  }
+
+  const onFocusFileUpload = () => {
+    if (isPanel) {
+      dispatch(PanelActions.setCloseOnDeactivate(true))
+      window.removeEventListener('focus', onFocusFileUpload)
+    }
+  }
+
   const onFileUpload = React.useCallback((file: React.ChangeEvent<HTMLInputElement>) => {
     if (file.target.files) {
       setFile(file.target.files)
@@ -154,7 +202,12 @@ export const ImportAccountModal = () => {
   const onClickCreateAccount = React.useCallback(() => {
     if (importOption === 'key') {
       if (selectedAccountType?.coin === BraveWallet.CoinType.FIL) {
-        importFilecoinAccount(accountName, privateKey, filecoinNetwork)
+        importFilecoinAccount(
+          accountName,
+          privateKey,
+          BraveWallet.CoinType.FIL,
+          filecoinNetwork
+        )
       } else {
         importAccount(accountName, privateKey, selectedAccountType?.coin || BraveWallet.CoinType.ETH)
       }
@@ -216,6 +269,7 @@ export const ImportAccountModal = () => {
 
       {!selectedAccountType &&
         <SelectAccountType
+          createAccountOptions={createAccountOptions}
           buttonText={getLocale('braveWalletAddAccountImport')}
           onSelectAccountType={onSelectAccountType}
         />
@@ -296,6 +350,7 @@ export const ImportAccountModal = () => {
                 name='recoverFile'
                 style={{ display: 'none' }}
                 onChange={onFileUpload}
+                onClick={onClickFileUpload}
               />
               <Input
                 placeholder={`Origin ${getLocale('braveWalletCreatePasswordInput')}`}

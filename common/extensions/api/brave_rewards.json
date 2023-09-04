@@ -57,9 +57,9 @@
         ]
       },
       {
-        "name": "onRewardsWalletUpdated",
+        "name": "onRewardsWalletCreated",
         "type": "function",
-        "description": "Called when the user's Rewards wallet has been updated",
+        "description": "Called when the user's Rewards wallet has been created",
         "parameters": []
       },
       {
@@ -167,28 +167,6 @@
         ]
       },
       {
-        "name": "onAdsEnabled",
-        "type": "function",
-        "description": "",
-        "parameters": [
-          {
-            "name": "enabled",
-            "type": "boolean"
-          }
-        ]
-      },
-      {
-        "name": "onPendingContributionSaved",
-        "type": "function",
-        "description": "",
-        "parameters": [
-          {
-            "name": "result",
-            "type": "integer"
-          }
-        ]
-      },
-      {
         "name": "onPublisherListNormalized",
         "type": "function",
         "description": "Fired when publisher list was updated and normalized",
@@ -260,17 +238,6 @@
         ]
       },
       {
-        "name": "onPendingContributionRemoved",
-        "type": "function",
-        "description": "",
-        "parameters": [
-          {
-            "name": "result",
-            "type": "integer"
-          }
-        ]
-      },
-      {
         "name": "onReconcileComplete",
         "type": "function",
         "description": "Fired when reconcile is complete",
@@ -301,6 +268,12 @@
         "name": "onExternalWalletLoggedOut",
         "type": "function",
         "description": "Fired when an external wallet is logged out",
+        "parameters": []
+      },
+      {
+        "name": "onExternalWalletDisconnected",
+        "type": "function",
+        "description": "Fired when an external wallet is disconnected",
         "parameters": []
       },
       {
@@ -363,23 +336,6 @@
         ]
       },
       {
-        "name": "getLocale",
-        "type": "function",
-        "description": "Retrieves the current locale",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "locale",
-                "type": "string"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "recordNTPPanelTrigger",
         "type": "function",
         "description": "Records an NTP Rewards card 'Start using Brave Rewards' click.",
@@ -389,6 +345,12 @@
         "name": "openRewardsPanel",
         "type": "function",
         "description": "Opens the Rewards panel in the active window.",
+        "parameters": []
+      },
+      {
+        "name": "showRewardsSetup",
+        "type": "function",
+        "description": "Opens the Rewards panel in the active window and shows setup.",
         "parameters": []
       },
       {
@@ -872,6 +834,23 @@
         ]
       },
       {
+        "name": "isGrandfatheredUser",
+        "type": "function",
+        "description": "Returns if the user is grandfathered",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "isGrandfatheredUser",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getUserType",
         "type": "function",
         "description": "Returns the Rewards user type for the current user",
@@ -1067,23 +1046,6 @@
         ]
       },
       {
-        "name": "getPendingContributionsTotal",
-        "type": "function",
-        "description": "Gets pending contributions total",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "amount",
-                "type": "number"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "getRewardsEnabled",
         "type": "function",
         "description": "Gets a value indicating whether the user has opted-in to Rewards",
@@ -1095,96 +1057,6 @@
               {
                 "name": "enabled",
                 "type": "boolean"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "getAdsEnabled",
-        "type": "function",
-        "description": "Gets whether ads is enabled",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "enabled",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "getAdsSupported",
-        "type": "function",
-        "description": "Gets whether ads is supported in the user's region",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "supported",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "getAdsData",
-        "type": "function",
-        "description": "Gets whether ads is supported in the user's region",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "adsData",
-                "type": "object",
-                "properties": {
-                  "adsIsSupported": {
-                    "type": "boolean"
-                  },
-                  "adsEnabled": {
-                    "type": "boolean"
-                  },
-                  "adsPerHour": {
-                    "type": "number"
-                  },
-                  "adsSubdivisionTargeting": {
-                    "type": "string"
-                  },
-                  "automaticallyDetectedAdsSubdivisionTargeting": {
-                    "type": "string"
-                  },
-                  "shouldAllowAdsSubdivisionTargeting": {
-                    "type": "boolean"
-                  },
-                  "adsUIEnabled": {
-                    "type": "boolean"
-                  },
-                  "subdivisions": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "description": "subdivision name"
-                        },
-                        "value": {
-                          "type": "string",
-                          "description": "subdivision code"
-                        }
-                      }
-                    }
-                  }
-                }
               }
             ]
           }
@@ -1204,21 +1076,6 @@
                 "type": "boolean"
               }
             ]
-          }
-        ]
-      },
-      {
-        "name": "saveAdsSetting",
-        "type": "function",
-        "description": "Updates settings related to ads service.",
-        "parameters": [
-          {
-            "name": "key",
-            "type": "string"
-          },
-          {
-            "name": "value",
-            "type": "string"
           }
         ]
       },
@@ -1364,23 +1221,6 @@
         ]
       },
       {
-        "name": "isAutoContributeSupported",
-        "type": "function",
-        "description": "Determines whether the current profile supports auto-contribute",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "type",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "fetchBalance",
         "type": "function",
         "description": "Fetch balance",
@@ -1483,10 +1323,16 @@
                   "adsReceivedThisMonth": {
                     "type": "integer"
                   },
-                  "earningsThisMonth": {
+                  "minEarningsThisMonth": {
                     "type": "number"
                   },
-                  "earningsLastMonth": {
+                  "maxEarningsThisMonth": {
+                    "type": "number"
+                  },
+                  "minEarningsLastMonth": {
+                    "type": "number"
+                  },
+                  "maxEarningsLastMonth": {
                     "type": "number"
                   }
                 }
@@ -1498,7 +1344,7 @@
       {
         "name": "isInitialized",
         "type": "function",
-        "description": "Is ledger process initialized",
+        "description": "Is rewards engine initialized",
         "parameters": [
           {
             "type": "function",
@@ -1549,12 +1395,6 @@
         ]
       },
       {
-        "name": "enableAds",
-        "type": "function",
-        "description": "Enables Brave Private Ads for the current profile.",
-        "parameters": []
-      },
-      {
         "name": "getPrefs",
         "type": "function",
         "description": "Gets rewards preferences for the current profile",
@@ -1572,45 +1412,10 @@
                   },
                   "autoContributeAmount": {
                     "type": "number"
-                  },
-                  "adsEnabled": {
-                    "type": "boolean"
-                  },
-                  "adsPerHour": {
-                    "type": "integer"
                   }
                 }
               }
             ]
-          }
-        ]
-      },
-      {
-        "name": "updatePrefs",
-        "type": "function",
-        "description": "Updates rewards preferences for the current profile",
-        "parameters": [
-          {
-            "type": "object",
-            "name": "prefs",
-            "properties": {
-              "autoContributeEnabled": {
-                "type": "boolean",
-                "optional": true
-              },
-              "autoContributeAmount": {
-                "type": "number",
-                "optional": true
-              },
-              "adsEnabled": {
-                "type": "boolean",
-                "optional": true
-              },
-              "adsPerHour": {
-                "type": "integer",
-                "optional": true
-              }
-            }
           }
         ]
       }

@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 
@@ -29,7 +29,7 @@ void UpholdTransfer::CreateTransaction(
   DCHECK(transaction->transaction_id.empty());
 
   const auto wallet =
-      ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
+      engine_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
     return std::move(callback).Run(nullptr);
   }
@@ -38,7 +38,7 @@ void UpholdTransfer::CreateTransaction(
       &UpholdTransfer::OnCreateTransaction, base::Unretained(this),
       std::move(callback), transaction->Clone());
 
-  RequestFor<PostCreateTransactionUphold>(*ledger_, std::move(wallet->token),
+  RequestFor<PostCreateTransactionUphold>(*engine_, std::move(wallet->token),
                                           std::move(wallet->address),
                                           std::move(transaction))
       .Send(std::move(on_create_transaction));
@@ -50,14 +50,14 @@ void UpholdTransfer::OnCreateTransaction(
     PostCreateTransactionUphold::Result&& result) const {
   DCHECK(transaction);
 
-  if (!ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected})) {
+  if (!engine_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected})) {
     return std::move(callback).Run(nullptr);
   }
 
   if (!result.has_value()) {
     if (result.error() ==
         PostCreateTransactionUphold::Error::kAccessTokenExpired) {
-      if (!ledger_->uphold()->LogOutWallet()) {
+      if (!engine_->uphold()->LogOutWallet()) {
         BLOG(0,
              "Failed to disconnect " << constant::kWalletUphold << " wallet!");
       }
@@ -75,22 +75,22 @@ void UpholdTransfer::CommitTransaction(
     ResultCallback callback,
     mojom::ExternalTransactionPtr transaction) const {
   if (!transaction) {
-    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+    return std::move(callback).Run(mojom::Result::FAILED);
   }
 
   DCHECK(!transaction->transaction_id.empty());
 
   const auto wallet =
-      ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
+      engine_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
-    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+    return std::move(callback).Run(mojom::Result::FAILED);
   }
 
   auto on_commit_transaction = base::BindOnce(
       &UpholdTransfer::OnCommitTransaction, base::Unretained(this),
       std::move(callback), transaction->transaction_id);
 
-  RequestFor<PostCommitTransactionUphold>(*ledger_, std::move(wallet->token),
+  RequestFor<PostCommitTransactionUphold>(*engine_, std::move(wallet->token),
                                           std::move(wallet->address),
                                           std::move(transaction))
       .Send(std::move(on_commit_transaction));
@@ -101,13 +101,13 @@ void UpholdTransfer::OnCommitTransaction(
     std::string&& transaction_id,
     PostCommitTransactionUphold::Result&& result) const {
   const auto wallet =
-      ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
+      engine_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
-    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+    return std::move(callback).Run(mojom::Result::FAILED);
   }
 
   if (result.has_value()) {
-    return std::move(callback).Run(mojom::Result::LEDGER_OK);
+    return std::move(callback).Run(mojom::Result::OK);
   }
 
   switch (result.error()) {
@@ -117,16 +117,16 @@ void UpholdTransfer::OnCommitTransaction(
       return std::move(callback).Run(
           mojom::Result::RETRY_PENDING_TRANSACTION_SHORT);
     case PostCommitTransactionUphold::Error::kAccessTokenExpired:
-      if (!ledger_->uphold()->LogOutWallet()) {
+      if (!engine_->uphold()->LogOutWallet()) {
         BLOG(0,
              "Failed to disconnect " << constant::kWalletUphold << " wallet!");
       }
       ABSL_FALLTHROUGH_INTENDED;
     default:
-      return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+      return std::move(callback).Run(mojom::Result::FAILED);
   }
 
-  RequestFor<GetTransactionStatusUphold>(*ledger_, std::move(wallet->token),
+  RequestFor<GetTransactionStatusUphold>(*engine_, std::move(wallet->token),
                                          std::move(transaction_id))
       .Send(base::BindOnce(&UpholdTransfer::OnGetTransactionStatus,
                            base::Unretained(this), std::move(callback)));
@@ -135,12 +135,12 @@ void UpholdTransfer::OnCommitTransaction(
 void UpholdTransfer::OnGetTransactionStatus(
     ResultCallback callback,
     endpoints::GetTransactionStatusUphold::Result&& result) const {
-  if (!ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected})) {
-    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+  if (!engine_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected})) {
+    return std::move(callback).Run(mojom::Result::FAILED);
   }
 
   if (result.has_value()) {
-    return std::move(callback).Run(mojom::Result::LEDGER_OK);
+    return std::move(callback).Run(mojom::Result::OK);
   }
 
   switch (result.error()) {
@@ -148,13 +148,13 @@ void UpholdTransfer::OnGetTransactionStatus(
       return std::move(callback).Run(
           mojom::Result::RETRY_PENDING_TRANSACTION_SHORT);
     case GetTransactionStatusUphold::Error::kAccessTokenExpired:
-      if (!ledger_->uphold()->LogOutWallet()) {
+      if (!engine_->uphold()->LogOutWallet()) {
         BLOG(0,
              "Failed to disconnect " << constant::kWalletUphold << " wallet!");
       }
       ABSL_FALLTHROUGH_INTENDED;
     default:
-      return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+      return std::move(callback).Run(mojom::Result::FAILED);
   }
 }
 

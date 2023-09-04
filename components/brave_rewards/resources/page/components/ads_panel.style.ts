@@ -7,14 +7,17 @@ import styled from 'styled-components'
 
 import * as mixins from '../../shared/lib/css_mixins'
 
-export const root = styled.div`
-  --settings-panel-title-color: #C12D7C;
-`
+export const root = styled.div``
 
 export const description = styled.div`
   color: var(--brave-palette-neutral600);
   margin: 16px 0;
   line-height: 24px;
+
+  a {
+    padding-left: 4px;
+    text-decoration: none;
+  }
 `
 
 export const terms = styled.div`
@@ -46,12 +49,6 @@ export const paymentStatus = styled.div`
     font-weight: 500;
   }
 
-  .rewards-payment-amount {
-    .plus {
-      margin-right: 2px;
-    }
-  }
-
   .rewards-payment-pending {
     background: #E8F4FF;
 
@@ -74,10 +71,10 @@ export const paymentStatus = styled.div`
       vertical-align: middle;
     }
   }
+`
 
-  .rewards-payment-check-status {
-    display: block;
-  }
+export const earnings = styled.span`
+  color: #495057;
 `
 
 export const hiddenEarnings = styled.div`
@@ -95,6 +92,10 @@ export const hiddenEarnings = styled.div`
     line-height: 18px;
     text-decoration: none;
   }
+`
+
+export const totalAdsCount = styled.span`
+  font-weight: 600;
 `
 
 export const showHistory = styled.div`
@@ -176,6 +177,7 @@ export const notSupportedIcon = styled.div`
 `
 
 export const connect = styled.div`
+  margin-bottom: 8px;
   background: rgba(93, 181, 252, 0.2);
   border-radius: 8px;
   padding: 16px;
@@ -216,6 +218,7 @@ export const connectAction = styled.div`
 `
 
 export const connectUnavailable = styled.div`
+  margin-bottom: 8px;
   display: flex;
   flex-direction: column;
   gap: 10px;

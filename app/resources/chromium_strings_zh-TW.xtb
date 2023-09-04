@@ -8,12 +8,15 @@
 <translation id="5918095577778020936">Brave 要求匯出你的密碼。如果允許，請輸入你的 Windows 密碼。</translation>
 <translation id="5468853758063275923">Brave 是你的預設瀏覽器</translation>
 <translation id="8522292744959221145">如要檢查你的密碼是否因資料侵害事件而遭到外洩，或是否有其他安全性問題，<ph name="BEGIN_LINK"/>請登入 Brave<ph name="END_LINK"/>。</translation>
+<translation id="2627788872035182013">按一下「Brave」選單</translation>
+<translation id="8468770846533807490">{NUM_DEVICES,plural, =0{Brave 擴充功能當時正在存取 HID 裝置}=1{Brave 擴充功能正在存取 HID 裝置}other{Brave 擴充功能正在存取 # 部 HID 裝置}}</translation>
 <translation id="8541922081612557424">關於 Brave</translation>
-<translation id="3528799424770515097">{COUNT,plural, =1{根據管理員規定，Brave 閒置 1 分鐘就會自動關閉，屆時系統將刪除瀏覽資料，當中可能包括歷史記錄、自動填入的資料和下載內容。}other{根據管理員規定，Brave 閒置 # 分鐘就會自動關閉，屆時系統將刪除瀏覽資料，當中可能包括歷史記錄、自動填入的資料和下載內容。}}</translation>
 <translation id="1203500561924088507">感謝你安裝本服務。你必須重新啟動瀏覽器，才能使用 <ph name="BUNDLE_NAME"/>。</translation>
 <translation id="4658574652223735641">記憶體節省模式可以提升 Brave 運作速度</translation>
+<translation id="8799570501820813406">當這個分頁處於閒置狀態時，系統會釋出記憶體，加快 Brave 的運作速度。你可以選擇一律不讓這個網站進入閒置狀態。</translation>
 <translation id="4798342026247191171">設定新的 Brave 設定檔</translation>
 <translation id="8132634101975074716">你已登入 Brave！</translation>
+<translation id="1586284627848250203">查看 Brave for Testing 相關說明</translation>
 <translation id="5147525139567260139">分享 Brave 分頁</translation>
 <translation id="1530633922026945685">Brave 需要取得攝影機權限，才能根據你的周遭環境建立 3D 地圖</translation>
 <translation id="4449148723378534338">查看 Brave 中最重要的隱私權和安全性控制項</translation>
@@ -48,9 +51,11 @@
 <translation id="8418845734693287262">你的帳戶登入詳細資料尚未更新，因此 Chrome OS 無法同步處理你的資料。</translation>
 <translation id="2576129394594491151">擴充功能「<ph name="EXTENSION_NAME"/>」已變更 Brave 啟動時所顯示的網頁。</translation>
 <translation id="1248225940185478633">Brave 需要相機權限和麥克風權限，才能執行這個網站要求的功能</translation>
+<translation id="2451727308784734061">使用捷徑快速前往密碼管理工具。你可以將捷徑移至電腦的主畫面或應用程式啟動器。</translation>
 <translation id="6381750314821942592">Brave 即將關閉</translation>
 <translation id="6078442581074612226">在 Brave 中</translation>
 <translation id="2485422356828889247">解除安裝</translation>
+<translation id="70183448213529602">Brave 正在嘗試更換現有密碼。如果允許，請輸入 Windows 密碼。</translation>
 <translation id="7798069806040634998">Brave 需要儲存空間存取權，才能下載檔案</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
 <translation id="7291143854620707672">凡是在使用這個資料夾期間產生的 Brave 資料 (例如建立的書籤、歷史記錄、密碼和其他設定)，工作資料夾管理員皆可予以移除。<ph name="LEARN_MORE"/></translation>
@@ -62,6 +67,7 @@
 <translation id="6791166902140255175">Brave 分頁</translation>
 <translation id="8372880274820509128">為了提升安全性，Brave 會將您的資料加密保護。</translation>
 <translation id="2770231113462710648">將預設瀏覽器變更為：</translation>
+<translation id="1187986649024576560">這項擴充功能含有惡意軟體且不安全。請從 Brave 中移除這項擴充功能，使其無法再查看及變更你造訪的網站相關資料，包括你的個人資訊。</translation>
 <translation id="2799223571221894425">重新啟動</translation>
 <translation id="3783547330001921298">這項操作會為 <ph name="USER_EMAIL_ADDRESS"/> 建立新的 Brave 設定檔</translation>
 <translation id="777113543093865885">從 Brave 中移除...</translation>
@@ -72,7 +78,6 @@
 <translation id="2928420929544864228">安裝完成。</translation>
 <translation id="8208853227947884571">Brave 目前是最新版本</translation>
 <translation id="5122472867956731189">如果有網站試圖竊取你的密碼，或當你下載有害檔案時，Brave 可能也會將網址 (包括部分網頁內容) 傳送給安全瀏覽功能</translation>
-<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave 已連線至 HID 裝置}other{Brave 已連線至 HID 裝置}}</translation>
 <translation id="8755404239607088219">Brave 無法檢查你的密碼，請稍後再試。</translation>
 <translation id="8880183781256147665">正在新增至 Brave...</translation>
 <translation id="3038232873781883849">正在等待安裝...</translation>
@@ -86,7 +91,6 @@
 <translation id="2585240446624043880">Brave 無法讀取及寫入資料目錄：
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
-<translation id="6823651909636163674">你可以透過這份指南瞭解各項選擇，讓 Brave 依照所需方式運作</translation>
 <translation id="2423637317249323944">已安裝 Brave <ph name="PRODUCT_VERSION"/> 版</translation>
 <translation id="3286538390144397061">立即重新啟動</translation>
 <translation id="2339258256897053758">缺少 Brave API 金鑰，系統將停用 Brave 的部分功能。</translation>
@@ -121,10 +125,13 @@
 <translation id="2337217774418822704">你的帳戶是由 <ph name="MANAGER_NAME"/> 管理。系統管理員可查看及編輯這個 Brave 瀏覽器設定檔及其中的資料，例如書籤、歷史記錄和密碼。</translation>
 <translation id="8090497651549769448">Brave 正在嘗試複製密碼。如果你同意這項作業，請輸入你的 Windows 密碼。</translation>
 <translation id="7133557675784723900">這個檔案可能含有危險內容，因此 Brave 建議掃描檔案</translation>
+<translation id="1311808042904310985">關於 Brave for Testing(&amp;G)</translation>
 <translation id="1152920704813762236">關於 Chrome OS</translation>
 <translation id="3703994572283698466">Chrome OS 受惠於其他<ph name="BEGIN_LINK_CROS_OSS"/>開放原始碼軟體<ph name="END_LINK_CROS_OSS"/>技術才能成功發布，<ph name="BEGIN_LINK_LINUX_OSS"/>Linux 開發環境<ph name="END_LINK_LINUX_OSS"/>也一樣。</translation>
 <translation id="6056473803837713617">只要回報<ph name="BEGIN_LINK"/>目前的設定<ph name="END_LINK"/>，就能助我們一臂之力，讓 Brave 更臻完美</translation>
 <translation id="4050175100176540509">最新版本包含重要的安全性改善與新功能。</translation>
+<translation id="4055805654398742145">密碼管理工具(&amp;A)</translation>
+<translation id="6217792792122501564">{COUNT,plural, =1{根據貴機構規定，Brave 閒置 1 分鐘就會自動關閉。屆時系統將刪除瀏覽資料，當中可能包含歷史記錄、自動填入的資料和下載內容。}other{根據貴機構規定，Brave 閒置 # 分鐘就會自動關閉。屆時系統將刪除瀏覽資料，當中可能包含歷史記錄、自動填入的資料和下載內容。}}</translation>
 <translation id="4148957013307229264">安裝中...</translation>
 <translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - 網路登入 - Brave</translation>
 <translation id="2871190378186459992">探索 Brave 專用的優質應用程式、遊戲、擴充功能和主題。</translation>
@@ -140,6 +147,7 @@
 <translation id="4065288863231444640">讓 Brave 在背景執行</translation>
 <translation id="8148611988012584308">自訂及控制 Brave</translation>
 <translation id="4427306783828095590">強化防護功能可進一步封鎖網路詐騙和惡意軟體</translation>
+<translation id="6786534271003695094">關於 Brave for Testing</translation>
 <translation id="7084397798469173252">歡迎使用 Brave；新的瀏覽器視窗已開啟</translation>
 <translation id="2633397153656205379">發生錯誤，Brave 未能更新。<ph name="BEGIN_LINK"/>請修正 Brave 更新問題與更新失敗項目。<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">要繼續使用新的 Brave 設定檔嗎？</translation>
@@ -159,11 +167,11 @@
 <translation id="215320507915280336">這會使用與 Brave 搜尋相同的拼字檢查工具。系統會將你在瀏覽器中輸入的文字傳送給 Brave。你隨時可以在設定中變更這項行為。</translation>
 <translation id="1912973375560256099">允許 mDNS 流量的 Brave 輸入規則。</translation>
 <translation id="711601904575862069">重新啟動以更新 &amp;Brave</translation>
+<translation id="2778869200975718483">{COUNT,plural, =1{根據貴機構規定，如果 Brave 閒置 1 分鐘，系統就會自動刪除瀏覽資料，當中可能包含歷史記錄、自動填入的資料和下載內容。現有的分頁仍會維持開啟狀態。}other{根據貴機構規定，如果 Brave 閒置 # 分鐘，系統就會自動刪除瀏覽資料，當中可能包含歷史記錄、自動填入的資料和下載內容。現有的分頁仍會維持開啟狀態。}}</translation>
 <translation id="8797356639448065696">Brave 正在背景模式中執行。</translation>
 <translation id="7406627712452599344">以訪客身分使用 Brave 不會留下任何記錄。</translation>
 <translation id="5952898964075639679">新增為 Brave 使用者</translation>
 <translation id="8112581848375017126">Brave 目前正在研發新功能，設法讓網站減少使用訪客的個人資訊，同時又能維持相同的瀏覽體驗</translation>
-<translation id="101136574863710793">{COUNT,plural, =1{根據管理員規定，Brave 閒置 1 分鐘就會自動關閉。}other{根據管理員規定，Brave 閒置 # 分鐘就會自動關閉。}}</translation>
 <translation id="9078804073692109646">未儲存任何密碼。你必須先儲存密碼，才能使用 Brave 的密碼檢查功能。</translation>
 <translation id="729580998737807583"><ph name="EXISTING_USER"/>已登入這個 Brave 設定檔。這項操作會為 <ph name="USER_EMAIL_ADDRESS"/> 建立新的 Brave 設定檔</translation>
 <translation id="8586264863973514035">如要套用變更，請重新啟動 Brave</translation>
@@ -193,6 +201,7 @@
 <translation id="5924017743176219022">正在連線至網際網路...</translation>
 <translation id="5941711191222866238">最小化</translation>
 <translation id="3613110494561632737">如果 Brave 隨機讓你加入試用行列，你的瀏覽記錄會影響你所看到的廣告，以及系統推測的下列興趣喜好。為保護個人隱私，Brave 每個月都會刪除你的興趣喜好。系統會重新整理這項資訊，除非你自行予以移除。</translation>
+<translation id="4357808717322635817">{COUNT,plural, =1{根據貴機構規定，Brave 閒置 1 分鐘就會自動關閉。}other{根據貴機構規定，Brave 閒置 # 分鐘就會自動關閉。}}</translation>
 <translation id="3598551856834560515">如要開始同步處理，請更新 Brave</translation>
 <translation id="5225261774087485064">你造訪的網站通常都會記住你感興趣的項目，目的是打造個人化體驗。此外，網站也可以將你的興趣喜好相關資訊儲存在 Brave 中。</translation>
 <translation id="6003112304606738118">下載中… 還剩 <ph name="HOURS"/> 小時</translation>
@@ -227,15 +236,18 @@
 <translation id="6327105987658262776">沒有可用的更新。</translation>
 <translation id="1819119299840995223">Brave 正在執行另一項作業，請稍後再試。</translation>
 <translation id="8616874628011103667">無論是登入 Brave 帳戶使用 Brave，還是以 Brave 帳戶使用共用電腦，現在都變得更容易了。</translation>
-<translation id="6365489425007284765">{COUNT,plural, =1{根據管理員規定，如果 Brave 閒置 1 分鐘，系統就會自動刪除瀏覽資料，當中可能包括歷史記錄、自動填入的資料和下載內容。現有的分頁仍會維持開啟狀態。}other{根據管理員規定，如果 Brave 閒置 # 分鐘，系統就會自動刪除瀏覽資料，當中可能包括歷史記錄、自動填入的資料和下載內容。現有的分頁仍會維持開啟狀態。}}</translation>
 <translation id="335632367599648646">你確定要解除安裝 Brave 嗎？</translation>
+<translation id="6375219077595103062">新增密碼管理工具的捷徑</translation>
 <translation id="4867486350347355096"><ph name="BEGIN_BOLD"/>Brave 如何使用這些資料：<ph name="END_BOLD"/>Brave 可以推測你的興趣喜好。在此之後，你造訪的網站就可以要求 Brave 查看你的興趣喜好，以便向你放送個人化廣告。</translation>
 <translation id="6373767849825830651">Brave 網路瀏覽器開啟網頁和執行應用程式的速度十分迅速。除了迅速、穩定且易於使用之外，Brave 的內建惡意軟體與網路釣魚防護功能，可讓你安心悠遊網路。</translation>
 <translation id="2139300032719313227">重新啟動 Chrome OS</translation>
 <translation id="1684121725014454063">歡迎使用 Brave 設定檔</translation>
 <translation id="2675662665675552980">這個擴充功能也會控管你啟動 Brave 時所顯示的網頁。</translation>
+<translation id="648319183876919572">安全瀏覽強化防護功能可進一步協助你防範危險的網站和下載內容</translation>
 <translation id="5590013613412457132">解除安裝 Brave</translation>
+<translation id="3617744907966785605">由於 Brave 閒置超過 <ph name="TIMEOUT_DURATION"/>，貴機構已將其關閉。瀏覽資料已刪除，當中可能包含歷史記錄、自動填入的資料和下載內容。</translation>
 <translation id="8646609321956191980">每個設定檔都有獨立專屬的 Brave 資訊，例如書籤、歷史記錄和密碼等等</translation>
+<translation id="2535436634051789953">你可以切換查看其他 Brave 設定檔的密碼</translation>
 <translation id="2312399718665761438">為修正拼字錯誤，Brave 會將你在文字欄位輸入的文字傳送給 Brave</translation>
 <translation id="3507835409099344374">前往 Brave 通知設定</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
@@ -269,6 +281,7 @@
 <translation id="7025789849649390912">已停止安裝。</translation>
 <translation id="1705567146636171298">更新 Brave</translation>
 <translation id="5499063270485366718">如果圖片缺少有用的說明，Brave 會嘗試為你提供說明。系統會將圖片傳送給 Brave，以便產生說明。</translation>
+<translation id="2332301637111071062">由於 Brave 資料閒置超過 <ph name="TIMEOUT_DURATION"/>，貴機構已將其刪除。當中可能包含歷史記錄、自動填入的資料和下載內容。</translation>
 <translation id="1008530050039597147">Brave 需要相機權限，才能執行這個網站要求的功能</translation>
 <translation id="1197672524850678392">無法啟動 Brave，請再試一次。</translation>
 <translation id="3405035915691517126">Brave 無法檢查你的密碼，請於 24 小時後再試。</translation>
@@ -279,7 +292,6 @@
 <translation id="3403365884036456766">你的偏好設定檔案已毀損或無效。
 
 Brave 無法復原你的設定。</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="7339898014177206373">開啟新視窗</translation>
 <translation id="3511996232906761537">你瀏覽的網頁、書籤和其他 Brave 設定都在這裡。</translation>
 <translation id="5380963249588143069">你的系統管理員已設定由 Brave 開啟 <ph name="ALTERNATIVE_BROWSER_NAME"/> 以存取 <ph name="TARGET_URL_HOSTNAME"/>。</translation>
@@ -322,11 +334,13 @@ Brave 無法復原你的設定。</translation>
 <translation id="8207657266087451193">如果圖片缺少有用的說明，Brave 會嘗試為你提供說明。系統會將圖片傳送給 Brave，以便產生說明。你隨時可以在設定中關閉這項功能。</translation>
 <translation id="8622246347342688645">你尚未登入帳戶，因此 Brave 無法檢查你的密碼</translation>
 <translation id="89367911614620585">這個檔案可能不安全，因此遭到 Brave 封鎖。</translation>
+<translation id="6098476632210317894">由於 Brave 閒置超過 <ph name="TIMEOUT_DURATION"/>，貴機構已將其關閉。</translation>
 <translation id="5196445203969439095">Brave 讓你事半功倍</translation>
 <translation id="3360368475735266712">登入即可進行同步處理，讓你在所有裝置上享有個人化的 Brave 體驗</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> 先前使用的是 Brave</translation>
 <translation id="3098618823450433881">如要透過所有裝置存取你的 Brave 瀏覽器資料，請登入並開啟同步功能</translation>
 <translation id="2569754604093464025">如要取得日後的 Brave 更新，必須使用 Windows 10 以上版本。這部電腦目前版本為 Windows 8。</translation>
+<translation id="8577108764439626300">這項擴充功能已由開發人員取消發布，可能不安全。請從 Brave 中移除這項擴充功能，使其無法再查看及變更你造訪的網站相關資料，包括你的個人資訊。</translation>
 <translation id="5337999052834672687">{0,plural, =1{請在 1 天內重新啟動 Brave}other{請在 # 天內重新啟動 Brave}}</translation>
 <translation id="6914496861676471566">安裝程式封存檔案已毀損或無效，請重新下載 Brave。</translation>
 <translation id="4378573854226202617">Brave 僅支援 Windows 10 以上版本的作業系統。</translation>
@@ -339,9 +353,12 @@ Brave 無法復原你的設定。</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Brave 如何使用這些資料：<ph name="END_BOLD"/>網站可以將你的興趣喜好相關資訊儲存在 Brave 中。舉例來說，如果你造訪某個網站想購買適合馬拉松活動的慢跑鞋，網站可能會判斷你的興趣是跑馬拉松。在此之後，如果你造訪另一個網站報名參加比賽，該網站就可以根據你的興趣喜好向你顯示慢跑鞋的廣告。</translation>
 <translation id="3052349005266761501">正在啟動 Brave…</translation>
 <translation id="6283840329609797763">不明錯誤導致安裝失敗，請重新下載 Brave。</translation>
+<translation id="5128665650717824082">Brave for Testing 無法設為預設瀏覽器。</translation>
+<translation id="4668189655335212354">{NUM_DEVICES,plural, =0{Brave 擴充功能當時正在存取 HID 裝置}=1{Brave 擴充功能正在存取 1 個 HID 裝置}other{Brave 擴充功能正在存取 # 部 HID 裝置}}</translation>
 <translation id="2433912322225810055">這個擴充功能也會控管 Brave 啟動時或你使用網址列搜尋時所顯示的網頁。</translation>
 <translation id="4100716194836114130">這是你專屬的 Brave</translation>
 <translation id="4831743161813926460">Brave 需要相關權限，才能讓這個網站使用你的攝影機和麥克風</translation>
+<translation id="8826492472752484139">按一下「密碼管理工具」</translation>
 <translation id="6933858244219479645">Chrome OS 系統</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>我們會使用哪些資料：<ph name="END_BOLD"/>你的瀏覽記錄，也就是在這部裝置上透過 Brave 造訪網站的記錄。</translation>
 <translation id="8862326446509486874">你沒有在系統層級進行安裝的權限，請以管理員的身分執行安裝檔。</translation>
@@ -354,6 +371,7 @@ Brave 無法復原你的設定。</translation>
 <translation id="8986207147630327271">你即將在這個瀏覽器中新增工作資料夾，並僅將工作資料夾的控制權授予管理員。</translation>
 <translation id="82609232232243542">登入 Brave</translation>
 <translation id="3273774796888928550">登入 Brave。如果你只想登入帳戶一次，可以<ph name="GUEST_LINK_BEGIN"/>透過訪客的身分使用這部裝置<ph name="GUEST_LINK_END"/>。</translation>
+<translation id="4561046754724442504">Brave 已自動關閉</translation>
 <translation id="5173820533850252773">Brave 版本過舊</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave 將在 1 小時後重新啟動}other{Brave 將在 # 小時後重新啟動}}</translation>
 <translation id="5190991181158966940">如要取得日後的 Brave 更新，必須使用 Windows 10 以上版本。這部電腦目前版本為 Windows 8.1。</translation>
@@ -366,7 +384,6 @@ Brave 無法復原你的設定。</translation>
 <translation id="296137235951584143">享有個人化的 Brave 體驗</translation>
 <translation id="7977787072794666032">Brave 已不適用於 Windows XP 或 Windows Vista，因此可能無法正常運作</translation>
 <translation id="8180288330711585962">由 Brave 管理的憑證</translation>
-<translation id="3050465115159165320">充分發揮 Brave 的效用</translation>
 <translation id="4484434718272972655">誰在使用 Brave？</translation>
 <translation id="7173394303099002355">獲得 Brave 最強大的安全防護</translation>
 <translation id="5775101967851558962">在 Brave 關閉後一律清除裝置上的網站資料</translation>
@@ -377,6 +394,7 @@ Brave 無法復原你的設定。</translation>
 
 您已授予各網站和應用程式的權限會套用至此帳戶。您可前往<ph name="SETTINGS_LINK_BEGIN"/>設定<ph name="SETTINGS_LINK_END"/>管理 Brave 同步鏈。</translation>
 <translation id="1743665722170667430">不明來源的擴充功能、應用程式和主題可能會損壞您的裝置，Brave 建議您一概從<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>安裝。</translation>
+<translation id="6184592406110188164">此擴展項目違反了 Web Store 政策，並且可能不安全。將它從 Brave 中刪除以讓它就無法再查看和更改您瀏覽的網站上的資料，包括您的個人資訊。</translation>
 <translation id="1299765473362724475">警告：Brave 無法禁止擴充功能記錄你的瀏覽活動。如要在無痕模式中停用這個擴充功能，請取消選取這個選項。</translation>
 <translation id="1448049584457347995">為了讓 Brave 的安全性更有保障，我們已將部分未列在 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> 中的擴充功能停用，它們可能在你不知情的情況下加入瀏覽器。</translation>
 <translation id="8848045066928358658">為了讓 Brave 的安全性更有保障，我們停用了以下這個未列在「<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>」中的擴充功能 (它可能是在您不知情的情況下加入瀏覽器)。</translation>

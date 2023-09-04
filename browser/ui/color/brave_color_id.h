@@ -28,6 +28,7 @@
     E_CPONLY(kColorBraveDownloadToolbarButtonActive)
 
 #define BRAVE_SEARCH_CONVERSION_COLOR_IDS                             \
+    E_CPONLY(kColorSearchConversionCloseButton)                       \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundBorder)        \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundBorderHovered) \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundGradientFrom)  \
@@ -58,16 +59,32 @@
 #define BRAVE_SPEEDREADER_COLOR_IDS      \
   E_CPONLY(kColorSpeedreaderIcon)        \
   E_CPONLY(kColorSpeedreaderToggleThumb) \
-  E_CPONLY(kColorSpeedreaderToggleTrack)
+  E_CPONLY(kColorSpeedreaderToggleTrack) \
+  E_CPONLY(kColorSpeedreaderToolbarBackground) \
+  E_CPONLY(kColorSpeedreaderToolbarBorder) \
+  E_CPONLY(kColorSpeedreaderToolbarForeground) \
+  E_CPONLY(kColorSpeedreaderToolbarButtonHover) \
+  E_CPONLY(kColorSpeedreaderToolbarButtonActive) \
+  E_CPONLY(kColorSpeedreaderToolbarButtonBorder)
 #else
 #define BRAVE_SPEEDREADER_COLOR_IDS
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #define BRAVE_VPN_COLOR_IDS                        \
+    E_CPONLY(kColorBraveVpnButtonErrorBorder)      \
     E_CPONLY(kColorBraveVpnButtonBorder)           \
-    E_CPONLY(kColorBraveVpnButtonTextConnected)    \
-    E_CPONLY(kColorBraveVpnButtonTextDisconnected)
+    E_CPONLY(kColorBraveVpnButtonText)    \
+    E_CPONLY(kColorBraveVpnButtonTextError)    \
+    E_CPONLY(kColorBraveVpnButtonIconConnected)    \
+    E_CPONLY(kColorBraveVpnButtonIconDisconnected) \
+    E_CPONLY(kColorBraveVpnButtonIconError) \
+    E_CPONLY(kColorBraveVpnButtonBackgroundNormal) \
+    E_CPONLY(kColorBraveVpnButtonBackgroundHover)  \
+    E_CPONLY(kColorBraveVpnButtonErrorBackgroundNormal) \
+    E_CPONLY(kColorBraveVpnButtonErrorBackgroundHover)  \
+    E_CPONLY(kColorBraveVpnButtonIconInner) \
+    E_CPONLY(kColorBraveVpnButtonIconErrorInner)
 #else
 #define BRAVE_VPN_COLOR_IDS
 #endif
@@ -85,6 +102,16 @@
     E_CPONLY(kColorBraveVerticalTabNTBTextColor)        \
     E_CPONLY(kColorBraveVerticalTabNTBShortcutTextColor)
 
+#define BRAVE_PLAYLIST_COLOR_IDS                                      \
+    E_CPONLY(kColorBravePlaylistAddedIcon)                            \
+    E_CPONLY(kColorBravePlaylistCheckedIcon)                          \
+    E_CPONLY(kColorBravePlaylistSelectedBackground)                   \
+    E_CPONLY(kColorBravePlaylistListBorder)                           \
+    E_CPONLY(kColorBravePlaylistMoveDialogDescription)                \
+    E_CPONLY(kColorBravePlaylistMoveDialogCreatePlaylistAndMoveTitle) \
+    E_CPONLY(kColorBravePlaylistNewPlaylistDialogNameLabel)           \
+    E_CPONLY(kColorBravePlaylistNewPlaylistDialogItemsLabel)
+
 #define BRAVE_COLOR_IDS               \
     BRAVE_COMMON_COLOR_IDS            \
     BRAVE_SEARCH_CONVERSION_COLOR_IDS \
@@ -92,6 +119,7 @@
     BRAVE_SPEEDREADER_COLOR_IDS       \
     BRAVE_VPN_COLOR_IDS               \
     BRAVE_VERTICAL_TAB_COLOR_IDS      \
+    BRAVE_PLAYLIST_COLOR_IDS
 
 #include "ui/color/color_id_macros.inc"
 

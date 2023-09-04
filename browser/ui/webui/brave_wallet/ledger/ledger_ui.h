@@ -29,7 +29,8 @@ class UntrustedLedgerUIConfig : public content::WebUIConfig {
   ~UntrustedLedgerUIConfig() override = default;
 
   std::unique_ptr<content::WebUIController> CreateWebUIController(
-      content::WebUI* web_ui) override;
+      content::WebUI* web_ui,
+      const GURL& url) override;
 };
 
 }  // namespace ledger

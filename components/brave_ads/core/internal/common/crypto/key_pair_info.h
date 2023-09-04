@@ -25,7 +25,7 @@ struct KeyPairInfo final {
   bool operator==(const KeyPairInfo&) const;
   bool operator!=(const KeyPairInfo&) const;
 
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 
   std::vector<uint8_t> public_key;
   std::vector<uint8_t> secret_key;

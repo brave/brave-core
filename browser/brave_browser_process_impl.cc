@@ -17,12 +17,13 @@
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
-#include "brave/browser/component_updater/brave_component_updater_delegate.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/net/brave_system_request_handler.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
+#include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -31,12 +32,13 @@
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/browser/debounce_component_installer.h"
 #include "brave/components/debounce/common/features.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
-#include "brave/components/misc_metrics/menu_metrics.h"
+#include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
@@ -138,8 +140,8 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   // early initialize brave stats
   brave_stats_updater();
 
-  // early initialize menu metrics
-  menu_metrics();
+  // early initialize misc metrics
+  process_misc_metrics();
 }
 
 void BraveBrowserProcessImpl::Init() {
@@ -195,9 +197,9 @@ brave_component_updater::BraveComponent::Delegate*
 BraveBrowserProcessImpl::brave_component_updater_delegate() {
   if (!brave_component_updater_delegate_) {
     brave_component_updater_delegate_ =
-        std::make_unique<brave::BraveComponentUpdaterDelegate>();
+        std::make_unique<brave::BraveComponentUpdaterDelegate>(
+            component_updater(), local_state(), GetApplicationLocale());
   }
-
   return brave_component_updater_delegate_.get();
 }
 
@@ -217,6 +219,11 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 
   if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
     https_upgrade_exceptions_service();
+  }
+
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveLocalhostAccessPermission)) {
+    localhost_permission_component();
   }
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -272,6 +279,21 @@ BraveBrowserProcessImpl::https_upgrade_exceptions_service() {
             local_data_files_service());
   }
   return https_upgrade_exceptions_service_.get();
+}
+
+localhost_permission::LocalhostPermissionComponent*
+BraveBrowserProcessImpl::localhost_permission_component() {
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveLocalhostAccessPermission)) {
+    return nullptr;
+  }
+
+  if (!localhost_permission_component_) {
+    localhost_permission_component_ =
+        std::make_unique<localhost_permission::LocalhostPermissionComponent>(
+            local_data_files_service());
+  }
+  return localhost_permission_component_.get();
 }
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -503,11 +525,11 @@ brave::BraveFarblingService* BraveBrowserProcessImpl::brave_farbling_service() {
   return brave_farbling_service_.get();
 }
 
-misc_metrics::MenuMetrics* BraveBrowserProcessImpl::menu_metrics() {
-#if !BUILDFLAG(IS_ANDROID)
-  if (!menu_metrics_) {
-    menu_metrics_ = std::make_unique<misc_metrics::MenuMetrics>(local_state());
+misc_metrics::ProcessMiscMetrics*
+BraveBrowserProcessImpl::process_misc_metrics() {
+  if (!process_misc_metrics_) {
+    process_misc_metrics_ =
+        std::make_unique<misc_metrics::ProcessMiscMetrics>(local_state());
   }
-#endif
-  return menu_metrics_.get();
+  return process_misc_metrics_.get();
 }

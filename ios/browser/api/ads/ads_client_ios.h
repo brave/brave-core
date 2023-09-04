@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #include <string>
 #include <vector>
-#import "brave/components/brave_ads/core/ads_client.h"
+#import "brave/components/brave_ads/core/public/client/ads_client.h"
 
 @protocol AdsClientBridge;
 
@@ -23,7 +23,7 @@ class AdsClientIOS : public brave_ads::AdsClient {
 
   void AddObserver(brave_ads::AdsClientNotifierObserver* observer) override;
   void RemoveObserver(brave_ads::AdsClientNotifierObserver* observer) override;
-  void BindPendingObservers() override;
+  void NotifyPendingObservers() override;
   bool IsNetworkConnectionAvailable() const override;
   bool IsBrowserActive() const override;
   bool IsBrowserInFullScreenMode() const override;
@@ -54,7 +54,6 @@ class AdsClientIOS : public brave_ads::AdsClient {
       const int days_ago,
       brave_ads::GetBrowsingHistoryCallback callback) override;
   std::string LoadDataResource(const std::string& name) override;
-  void ClearScheduledCaptcha() override;
   void GetScheduledCaptcha(
       const std::string& payment_id,
       brave_ads::GetScheduledCaptchaCallback callback) override;
@@ -90,8 +89,7 @@ class AdsClientIOS : public brave_ads::AdsClient {
       const std::string& path) const override;
   void ClearPref(const std::string& path) override;
   bool HasPrefPath(const std::string& path) const override;
-  void RecordP2AEvent(const std::string& name,
-                      base::Value::List value) override;
+  void RecordP2AEvents(base::Value::List events) override;
   void AddTrainingSample(
       const std::vector<brave_federated::mojom::CovariateInfoPtr>
           training_sample) override;

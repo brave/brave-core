@@ -382,11 +382,11 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
             "0x24beaded75"
           ],
           "gasUsedRatio": [
-            0.020687709938714324,
-            0.4678514936136911,
-            0.12914042746424212,
-            0.999758,
-            0.9054214892490816
+            "0.020687709938714324",
+            "0.4678514936136911",
+            "0.12914042746424212",
+            "0.999758",
+            "0.9054214892490816"
           ],
           "oldestBlock": "0xd6b1b0",
           "reward": [
@@ -443,14 +443,37 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
 
   // Empty result for the correct schema parses OK
   json = R"(
+    {
+      "jsonrpc":"2.0",
+      "id":1,
+      "result": {
+        "baseFeePerGas": [],
+        "gasUsedRatio": [],
+        "oldestBlock": "0xd6b1b0",
+        "reward": []
+      }
+    }
+  )";
+  base_fee_per_gas.clear();
+  gas_used_ratio.clear();
+  oldest_block.clear();
+  reward.clear();
+  EXPECT_TRUE(ParseEthGetFeeHistory(ParseJson(json), &base_fee_per_gas,
+                                    &gas_used_ratio, &oldest_block, &reward));
+  EXPECT_EQ(base_fee_per_gas, std::vector<std::string>());
+  EXPECT_EQ(gas_used_ratio, std::vector<double>());
+  EXPECT_EQ(oldest_block, "0xd6b1b0");
+  EXPECT_EQ(reward, std::vector<std::vector<std::string>>());
+
+  // Integer values in gasUsedRatio should be handled correctly
+  json = R"(
       {
         "jsonrpc":"2.0",
         "id":1,
         "result": {
           "baseFeePerGas": [],
-          "gasUsedRatio": [],
-          "oldestBlock": "0xd6b1b0",
-          "reward": []
+          "gasUsedRatio": ["1", "0"],
+          "oldestBlock": "0xd6b1b0"
         }
       })";
   base_fee_per_gas.clear();
@@ -460,7 +483,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
   EXPECT_TRUE(ParseEthGetFeeHistory(ParseJson(json), &base_fee_per_gas,
                                     &gas_used_ratio, &oldest_block, &reward));
   EXPECT_EQ(base_fee_per_gas, std::vector<std::string>());
-  EXPECT_EQ(gas_used_ratio, std::vector<double>());
+  EXPECT_EQ(gas_used_ratio, (std::vector<double>{1.0, 0.0}));
   EXPECT_EQ(oldest_block, "0xd6b1b0");
   EXPECT_EQ(reward, std::vector<std::vector<std::string>>());
 
@@ -474,6 +497,29 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
           "baseFeePerGas": [],
           "gasUsedRatio": [],
           "oldestBlock": "0xd6b1b0"
+        }
+      })";
+  base_fee_per_gas.clear();
+  gas_used_ratio.clear();
+  oldest_block.clear();
+  reward.clear();
+  EXPECT_TRUE(ParseEthGetFeeHistory(ParseJson(json), &base_fee_per_gas,
+                                    &gas_used_ratio, &oldest_block, &reward));
+  EXPECT_EQ(base_fee_per_gas, std::vector<std::string>());
+  EXPECT_EQ(gas_used_ratio, std::vector<double>());
+  EXPECT_EQ(oldest_block, "0xd6b1b0");
+  EXPECT_EQ(reward, std::vector<std::vector<std::string>>());
+
+  // null reward is OK which is treated the same as missing reward
+  json = R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result": {
+          "baseFeePerGas": [],
+          "gasUsedRatio": [],
+          "oldestBlock": "0xd6b1b0",
+          "reward": null
         }
       })";
   base_fee_per_gas.clear();
@@ -504,7 +550,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
           "baseFeePerGas": [],
           "gasUsedRatio": [],
           "oldestBlock": "0xd6b1b0",
-          "reward": [[3]]
+          "reward": [[true]]
         }
       })";
   EXPECT_FALSE(ParseEthGetFeeHistory(ParseJson(json), &base_fee_per_gas,
@@ -518,7 +564,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
         "result": {
           "baseFeePerGas": [],
           "gasUsedRatio": [],
-          "oldestBlock": 3,
+          "oldestBlock": true,
           "reward": [[]]
         }
       })";
@@ -532,7 +578,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
         "id":1,
         "result": {
           "baseFeePerGas": [],
-          "gasUsedRatio": ["3"],
+          "gasUsedRatio": ["abc"],
           "oldestBlock": "0xd6b1b0",
           "reward": [[]]
         }
@@ -546,7 +592,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
         "jsonrpc":"2.0",
         "id":1,
         "result": {
-          "baseFeePerGas": [3],
+          "baseFeePerGas": [true],
           "gasUsedRatio": [],
           "oldestBlock": "0xd6b1b0",
           "reward": [[]]

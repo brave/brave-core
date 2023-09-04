@@ -10,9 +10,10 @@
 
 namespace brave_ads {
 
-CreativePromotedContentAdList BuildCreativePromotedContentAds(int count);
-CreativePromotedContentAdInfo BuildCreativePromotedContentAd(
-    bool should_use_random_guids);
+CreativePromotedContentAdList BuildCreativePromotedContentAdsForTesting(
+    int count);
+CreativePromotedContentAdInfo BuildCreativePromotedContentAdForTesting(
+    bool should_use_random_uuids);
 
 }  // namespace brave_ads
 

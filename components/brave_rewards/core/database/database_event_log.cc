@@ -6,14 +6,13 @@
 #include <utility>
 #include <vector>
 
-#include "base/guid.h"
+#include "base/functional/callback_helpers.h"
 #include "base/strings/stringprintf.h"
+#include "base/uuid.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_event_log.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
-
-using std::placeholders::_1;
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -24,8 +23,8 @@ const char kTableName[] = "event_log";
 
 }  // namespace
 
-DatabaseEventLog::DatabaseEventLog(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseEventLog::DatabaseEventLog(RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseEventLog::~DatabaseEventLog() = default;
 
@@ -47,15 +46,16 @@ void DatabaseEventLog::Insert(const std::string& key,
   command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
-  BindString(command.get(), 0, base::GenerateGUID());
+  BindString(command.get(), 0,
+             base::Uuid::GenerateRandomV4().AsLowercaseString());
   BindString(command.get(), 1, key);
   BindString(command.get(), 2, value);
   BindInt64(command.get(), 3, util::GetCurrentTimeStamp());
 
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(std::move(transaction),
-                            [](mojom::DBCommandResponsePtr response) {});
+  engine_->client()->RunDBTransaction(std::move(transaction),
+                                      base::DoNothing());
 }
 
 void DatabaseEventLog::InsertRecords(
@@ -75,10 +75,11 @@ void DatabaseEventLog::InsertRecords(
 
   std::string query = base_query;
   for (const auto& record : records) {
-    query +=
-        base::StringPrintf(R"(('%s','%s','%s',%u),)",
-                           base::GenerateGUID().c_str(), record.first.c_str(),
-                           record.second.c_str(), static_cast<uint32_t>(time));
+    query += base::StringPrintf(
+        R"(('%s','%s','%s',%u),)",
+        base::Uuid::GenerateRandomV4().AsLowercaseString().c_str(),
+        record.first.c_str(), record.second.c_str(),
+        static_cast<uint32_t>(time));
   }
 
   query.pop_back();
@@ -88,9 +89,9 @@ void DatabaseEventLog::InsertRecords(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseEventLog::GetLastRecords(GetEventLogsCallback callback) {
@@ -114,14 +115,14 @@ void DatabaseEventLog::GetLastRecords(GetEventLogsCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseEventLog::OnGetAllRecords, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseEventLog::OnGetAllRecords, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void DatabaseEventLog::OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                                       GetEventLogsCallback callback) {
+void DatabaseEventLog::OnGetAllRecords(GetEventLogsCallback callback,
+                                       mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

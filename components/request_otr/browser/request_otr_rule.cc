@@ -24,6 +24,15 @@ namespace {
 const char kInclude[] = "include";
 const char kExclude[] = "exclude";
 
+// Removes trailing dot from |host_piece| if any.
+// Copied from extensions/common/url_pattern.cc
+base::StringPiece CanonicalizeHostForMatching(base::StringPiece host_piece) {
+  if (base::EndsWith(host_piece, ".")) {
+    host_piece.remove_suffix(1);
+  }
+  return host_piece;
+}
+
 }  // namespace
 
 namespace request_otr {
@@ -61,11 +70,14 @@ void RequestOTRRule::RegisterJSONConverter(
 }
 
 // static
+// All eTLD+1 calculations for Request-OTR-Tab should flow through here so they
+// are consistent in their private registries configuration.
 const std::string RequestOTRRule::GetETLDForRequestOTR(
     const std::string& host) {
+  base::StringPiece host_piece = CanonicalizeHostForMatching(host);
   return net::registry_controlled_domains::GetDomainAndRegistry(
-      host, net::registry_controlled_domains::PrivateRegistryFilter::
-                EXCLUDE_PRIVATE_REGISTRIES);
+      host_piece, net::registry_controlled_domains::PrivateRegistryFilter::
+                      EXCLUDE_PRIVATE_REGISTRIES);
 }
 
 // static

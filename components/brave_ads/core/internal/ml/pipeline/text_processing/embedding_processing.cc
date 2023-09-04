@@ -46,6 +46,7 @@ bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value::Dict dict) {
   absl::optional<EmbeddingPipelineInfo> embedding_pipeline =
       EmbeddingPipelineFromValue(dict);
   if (!embedding_pipeline) {
+    embedding_pipeline_ = {};
     is_initialized_ = false;
   } else {
     embedding_pipeline_ = std::move(embedding_pipeline).value();

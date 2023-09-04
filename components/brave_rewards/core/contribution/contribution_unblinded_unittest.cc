@@ -9,7 +9,7 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/core/database/database_unblinded_token.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 
 // npm run test -- brave_unit_tests --filter=UnblindedTest.*
 
@@ -26,12 +26,12 @@ namespace contribution {
 class UnblindedTest : public ::testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  Unblinded unblinded_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  Unblinded unblinded_{mock_engine_impl_};
 };
 
 TEST_F(UnblindedTest, NotEnoughFunds) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_database(),
+  EXPECT_CALL(*mock_engine_impl_.mock_database(),
               GetSpendableUnblindedTokensByBatchTypes(_, _))
       .Times(1)
       .WillOnce([](const std::vector<mojom::CredsBatchType>&, auto callback) {
@@ -47,7 +47,7 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
         callback(std::move(tokens));
       });
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_database(),
+  EXPECT_CALL(*mock_engine_impl_.mock_database(),
               GetContributionInfo(contribution_id, _))
       .Times(1)
       .WillOnce([](const std::string& id, auto callback) {

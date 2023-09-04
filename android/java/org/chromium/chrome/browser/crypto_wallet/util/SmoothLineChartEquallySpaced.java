@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class SmoothLineChartEquallySpaced extends View {
     private static final int CIRCLE_SIZE = 8;

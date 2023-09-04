@@ -13,8 +13,8 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 
@@ -24,8 +24,9 @@ using std::placeholders::_2;
 namespace brave_rewards::internal {
 namespace contribution {
 
-ContributionExternalWallet::ContributionExternalWallet(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+ContributionExternalWallet::ContributionExternalWallet(
+    RewardsEngineImpl& engine)
+    : engine_(engine) {}
 
 ContributionExternalWallet::~ContributionExternalWallet() = default;
 
@@ -33,13 +34,13 @@ void ContributionExternalWallet::Process(const std::string& contribution_id,
                                          LegacyResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(0, "Contribution id is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
   auto get_callback = std::bind(&ContributionExternalWallet::ContributionInfo,
                                 this, _1, callback);
-  ledger_->database()->GetContributionInfo(contribution_id, get_callback);
+  engine_->database()->GetContributionInfo(contribution_id, get_callback);
 }
 
 void ContributionExternalWallet::ContributionInfo(
@@ -47,7 +48,7 @@ void ContributionExternalWallet::ContributionInfo(
     LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -55,15 +56,15 @@ void ContributionExternalWallet::ContributionInfo(
   switch (contribution->processor) {
     case mojom::ContributionProcessor::BITFLYER:
       wallet =
-          ledger_->bitflyer()->GetWalletIf({mojom::WalletStatus::kConnected});
+          engine_->bitflyer()->GetWalletIf({mojom::WalletStatus::kConnected});
       break;
     case mojom::ContributionProcessor::GEMINI:
       wallet =
-          ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kConnected});
+          engine_->gemini()->GetWalletIf({mojom::WalletStatus::kConnected});
       break;
     case mojom::ContributionProcessor::UPHOLD:
       wallet =
-          ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
+          engine_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
       break;
     default:
       break;
@@ -71,11 +72,11 @@ void ContributionExternalWallet::ContributionInfo(
 
   if (!wallet) {
     BLOG(0, "Unexpected wallet status!");
-    return callback(mojom::Result::LEDGER_ERROR);
+    return callback(mojom::Result::FAILED);
   }
 
   if (contribution->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
-    ledger_->contribution()->SKUAutoContribution(contribution->contribution_id,
+    engine_->contribution()->SKUAutoContribution(contribution->contribution_id,
                                                  wallet->type, callback);
     return;
   }
@@ -93,13 +94,13 @@ void ContributionExternalWallet::ContributionInfo(
                   contribution->type, contribution->processor, single_publisher,
                   callback);
 
-    ledger_->publisher()->GetServerPublisherInfo(publisher->publisher_key,
+    engine_->publisher()->GetServerPublisherInfo(publisher->publisher_key,
                                                  get_callback);
     return;
   }
 
   // we processed all publishers
-  callback(mojom::Result::LEDGER_OK);
+  callback(mojom::Result::OK);
 }
 
 void ContributionExternalWallet::OnServerPublisherInfo(
@@ -112,7 +113,7 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher not found");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -138,7 +139,7 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     // We can then infer that no other external wallet will be able to service
     // this contribution item, and we can safely error out.
     BLOG(1, "Publisher not verified");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -147,15 +148,15 @@ void ContributionExternalWallet::OnServerPublisherInfo(
 
   switch (processor) {
     case mojom::ContributionProcessor::UPHOLD:
-      ledger_->uphold()->StartContribution(contribution_id, std::move(info),
+      engine_->uphold()->StartContribution(contribution_id, std::move(info),
                                            amount, start_callback);
       break;
     case mojom::ContributionProcessor::BITFLYER:
-      ledger_->bitflyer()->StartContribution(contribution_id, std::move(info),
+      engine_->bitflyer()->StartContribution(contribution_id, std::move(info),
                                              amount, start_callback);
       break;
     case mojom::ContributionProcessor::GEMINI:
-      ledger_->gemini()->StartContribution(contribution_id, std::move(info),
+      engine_->gemini()->StartContribution(contribution_id, std::move(info),
                                            amount, start_callback);
       break;
     default:

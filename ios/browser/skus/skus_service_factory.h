@@ -8,13 +8,17 @@
 
 #include <memory>
 
-#include "base/memory/singleton.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
 class ChromeBrowserState;
 class KeyedService;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace web {
 class BrowserState;
@@ -33,7 +37,7 @@ class SkusServiceFactory : public BrowserStateKeyedServiceFactory {
   static SkusServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<SkusServiceFactory>;
+  friend base::NoDestructor<SkusServiceFactory>;
 
   SkusServiceFactory();
   ~SkusServiceFactory() override;

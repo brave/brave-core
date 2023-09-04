@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/extensions/updater/chrome_update_client_config.h b/chrome/browser/extensions/updater/chrome_update_client_config.h
-index fa1904e6da9288f3c44247f4f7b73d4dc0ce1cb1..07aa4bbf1fc08a8964ae01b506f55211615b8029 100644
+index 9e96ef8b09f8d108253945bd0db227cef398a4a4..8bf94d0f74e1e9bce5d76bed069e74b893070fb8 100644
 --- a/chrome/browser/extensions/updater/chrome_update_client_config.h
 +++ b/chrome/browser/extensions/updater/chrome_update_client_config.h
-@@ -92,6 +92,7 @@ class ChromeUpdateClientConfig : public update_client::Configurator {
- #if BUILDFLAG(ENABLE_PUFFIN_PATCHES)
+@@ -85,6 +85,7 @@ class ChromeUpdateClientConfig : public update_client::Configurator {
+   absl::optional<bool> IsMachineExternallyManaged() const override;
+   update_client::UpdaterStateProvider GetUpdaterStateProvider() const override;
    absl::optional<base::FilePath> GetCrxCachePath() const override;
- #endif
 +  BRAVE_CHROME_UPDATE_CLIENT_CONFIG_H_
  
   protected:

@@ -6,6 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_
 
+#include <memory>
+#include <string>
+
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
@@ -15,6 +18,10 @@
 namespace brave_vpn {
 class BraveVpnService;
 }  // namespace brave_vpn
+
+namespace views {
+class Border;
+}  // namespace views
 
 class Browser;
 
@@ -32,16 +39,19 @@ class BraveVPNButton : public ToolbarButton,
   // BraveVPNServiceObserver overrides:
   void OnConnectionStateChanged(
       brave_vpn::mojom::ConnectionState state) override;
-  std::u16string GetTooltipText(const gfx::Point& p) const override;
+  void OnPurchasedStateChanged(
+      brave_vpn::mojom::PurchasedState state,
+      const absl::optional<std::string>& description) override;
 
  private:
+  // ToolbarButton overrides:
   void UpdateColorsAndInsets() override;
+  std::u16string GetTooltipText(const gfx::Point& p) const override;
 
-  // Update button based on connection state.
-  void UpdateButtonState();
   bool IsConnected() const;
+  bool IsConnectError() const;
   bool IsPurchased() const;
-
+  std::unique_ptr<views::Border> GetBorder(SkColor border_color) const;
   void OnButtonPressed(const ui::Event& event);
 
   raw_ptr<Browser> browser_ = nullptr;

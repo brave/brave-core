@@ -46,7 +46,11 @@ void NavigateToPublisherPage(
     const std::string& publisher_key,
     const std::string& path = "");
 
-void WaitForLedgerStop(RewardsServiceImpl* rewards_service);
+void NavigateToPublisherAndWaitForUpdate(Browser* browser,
+                                         net::EmbeddedTestServer* https_server,
+                                         const std::string& publisher_key);
+
+void WaitForEngineStop(RewardsServiceImpl* rewards_service);
 
 void WaitForAutoContributeVisitTime();
 
@@ -56,7 +60,7 @@ void CreateRewardsWallet(RewardsServiceImpl* rewards_service,
 void SetOnboardingBypassed(Browser* browser, bool bypassed = true);
 
 // TODO(zenparsing): Remove these functions when browser tests that read or
-// write encrypted "state" are migrated to the bat ledger library.
+// write encrypted "state" are migrated to the bat rewards library.
 absl::optional<std::string> EncryptPrefString(
     RewardsServiceImpl* rewards_service,
     const std::string& value);

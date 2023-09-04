@@ -1,5 +1,5 @@
 diff --git a/services/network/cookie_settings.cc b/services/network/cookie_settings.cc
-index d5299ee0a680d1deced34cf86aadbf0deae06152..17e46c7981ac2cdf506dd4befd21a80e9153ee31 100644
+index ebb05ccaac10a42bbacfba194ea9e3be27b077c5..6e9f3dc89e5882eb437bf9d30290e9b2c119f3e8 100644
 --- a/services/network/cookie_settings.cc
 +++ b/services/network/cookie_settings.cc
 @@ -230,6 +230,7 @@ CookieSettings::GetCookieSettingWithMetadata(

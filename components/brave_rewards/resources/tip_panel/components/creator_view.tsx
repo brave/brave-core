@@ -5,12 +5,13 @@
 
 import * as React from 'react'
 
+import Icon from '@brave/leo/react/icon'
+
 import { useModelState } from '../lib/model_context'
 import { useLocaleContext } from '../lib/locale_strings'
 import { formatMessage } from '../../shared/lib/locale_context'
 import { lookupPublisherPlatformName } from '../../shared/lib/publisher_platform'
 import { NewTabLink } from '../../shared/components/new_tab_link'
-import { VerifiedIcon } from './icons/verified_icon'
 import { LaunchIcon } from './icons/launch_icon'
 import { getSocialIcon } from './icons/social_icon'
 import { VerifiedTooltip } from './verified_tooltip'
@@ -81,7 +82,7 @@ export function CreatorView () {
         {
           creatorVerified &&
             <style.verifiedCheck>
-              <VerifiedIcon />
+              <Icon name='verification-filled-color' />
               <div className='tooltip'>
                 <VerifiedTooltip />
               </div>

@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/notreached.h"
+#include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_block_tracker.h"
 #include "brave/components/brave_wallet/browser/fil_nonce_tracker.h"
@@ -20,7 +21,6 @@
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -31,15 +31,20 @@ namespace brave_wallet {
 FilTxManager::FilTxManager(TxService* tx_service,
                            JsonRpcService* json_rpc_service,
                            KeyringService* keyring_service,
-                           PrefService* prefs)
-    : TxManager(std::make_unique<FilTxStateManager>(prefs),
+                           PrefService* prefs,
+                           TxStorageDelegate* delegate,
+                           AccountResolverDelegate* account_resolver_delegate)
+    : TxManager(std::make_unique<FilTxStateManager>(prefs,
+                                                    delegate,
+                                                    account_resolver_delegate),
                 std::make_unique<FilBlockTracker>(json_rpc_service),
                 tx_service,
                 json_rpc_service,
                 keyring_service,
                 prefs),
       nonce_tracker_(std::make_unique<FilNonceTracker>(GetFilTxStateManager(),
-                                                       json_rpc_service)) {
+                                                       json_rpc_service)),
+      account_resolver_delegate_(account_resolver_delegate) {
   GetFilBlockTracker()->AddObserver(this);
 }
 
@@ -48,7 +53,7 @@ FilTxManager::~FilTxManager() {
 }
 
 void FilTxManager::GetEstimatedGas(const std::string& chain_id,
-                                   const std::string& from,
+                                   const mojom::AccountIdPtr& from,
                                    const absl::optional<url::Origin>& origin,
                                    const absl::optional<std::string>& group_id,
                                    std::unique_ptr<FilTransaction> tx,
@@ -61,16 +66,16 @@ void FilTxManager::GetEstimatedGas(const std::string& chain_id,
   const std::string max_fee = tx->max_fee();
   auto to = tx->to().EncodeAsString();
   json_rpc_service_->GetFilEstimateGas(
-      chain_id, from, to, gas_premium, gas_fee_cap, gas_limit, nonce, max_fee,
-      value,
+      chain_id, from->address, to, gas_premium, gas_fee_cap, gas_limit, nonce,
+      max_fee, value,
       base::BindOnce(&FilTxManager::ContinueAddUnapprovedTransaction,
-                     weak_factory_.GetWeakPtr(), chain_id, from, origin,
+                     weak_factory_.GetWeakPtr(), chain_id, from.Clone(), origin,
                      group_id, std::move(tx), std::move(callback)));
 }
 
 void FilTxManager::ContinueAddUnapprovedTransaction(
     const std::string& chain_id,
-    const std::string& from,
+    const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
     const absl::optional<std::string>& group_id,
     std::unique_ptr<FilTransaction> tx,
@@ -88,9 +93,8 @@ void FilTxManager::ContinueAddUnapprovedTransaction(
   tx->set_gas_premium(gas_premium);
   tx->set_fee_cap(gas_fee_cap);
   tx->set_gas_limit(gas_limit);
-  FilTxMeta meta(std::move(tx));
+  FilTxMeta meta(from, std::move(tx));
   meta.set_id(TxMeta::GenerateMetaID());
-  meta.set_from(FilAddress::FromAddress(from).EncodeAsString());
   meta.set_origin(
       origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
   meta.set_group_id(group_id);
@@ -98,26 +102,25 @@ void FilTxManager::ContinueAddUnapprovedTransaction(
   meta.set_status(mojom::TransactionStatus::Unapproved);
   meta.set_chain_id(chain_id);
 
-  tx_state_manager_->AddOrUpdateTx(meta);
+  if (!tx_state_manager_->AddOrUpdateTx(meta)) {
+    std::move(callback).Run(
+        false, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
   std::move(callback).Run(true, meta.id(), "");
 }
 
 void FilTxManager::AddUnapprovedTransaction(
     const std::string& chain_id,
     mojom::TxDataUnionPtr tx_data_union,
-    const std::string& from,
+    const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
     const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
   DCHECK(tx_data_union->is_fil_tx_data());
-  if (!FilAddress::IsValidAddress(from)) {
-    std::move(callback).Run(
-        false, "",
-        l10n_util::GetStringUTF8(IDS_WALLET_FIL_SEND_TRANSACTION_FROM_INVALID));
-    return;
-  }
+  const bool is_mainnet = chain_id == mojom::kFilecoinMainnet;
   auto tx =
-      FilTransaction::FromTxData(std::move(tx_data_union->get_fil_tx_data()));
+      FilTransaction::FromTxData(is_mainnet, tx_data_union->get_fil_tx_data());
   if (!tx) {
     std::move(callback).Run(
         false, "",
@@ -161,7 +164,7 @@ void FilTxManager::ApproveTransaction(const std::string& chain_id,
     return;
   }
   if (!meta->tx()->nonce()) {
-    auto from = meta->from();
+    auto from = meta->from()->Clone();
     nonce_tracker_->GetNextNonce(
         chain_id, from,
         base::BindOnce(&FilTxManager::OnGetNextNonce,
@@ -195,10 +198,17 @@ void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
   DCHECK(!keyring_service_->IsLocked(mojom::kFilecoinKeyringId) ||
          !keyring_service_->IsLocked(mojom::kFilecoinTestnetKeyringId));
   meta->set_status(mojom::TransactionStatus::Approved);
-  tx_state_manager_->AddOrUpdateTx(*meta);
+  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewFilecoinProviderError(
+            mojom::FilecoinProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
 
-  auto signed_tx =
-      keyring_service_->SignTransactionByFilecoinKeyring(meta->tx());
+  auto signed_tx = keyring_service_->SignTransactionByFilecoinKeyring(
+      *meta->from(), meta->tx());
   if (!signed_tx) {
     std::move(callback).Run(
         false,
@@ -242,7 +252,14 @@ void FilTxManager::OnSendFilecoinTransaction(
     meta->set_status(mojom::TransactionStatus::Error);
   }
 
-  tx_state_manager_->AddOrUpdateTx(*meta);
+  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewFilecoinProviderError(
+            mojom::FilecoinProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
 
   if (success) {
     UpdatePendingTransactions(chain_id);
@@ -251,24 +268,6 @@ void FilTxManager::OnSendFilecoinTransaction(
       error_message.empty(),
       mojom::ProviderErrorUnion::NewFilecoinProviderError(error),
       error_message);
-}
-
-void FilTxManager::GetAllTransactionInfo(
-    const absl::optional<std::string>& chain_id,
-    const absl::optional<std::string>& from,
-    GetAllTransactionInfoCallback callback) {
-  if (!from) {
-    TxManager::GetAllTransactionInfo(chain_id, absl::nullopt,
-                                     std::move(callback));
-    return;
-  }
-  auto from_address = FilAddress::FromAddress(from.value());
-  if (from_address.IsEmpty()) {
-    std::move(callback).Run(std::vector<mojom::TransactionInfoPtr>());
-    return;
-  }
-  TxManager::GetAllTransactionInfo(chain_id, from_address.EncodeAsString(),
-                                   std::move(callback));
 }
 
 void FilTxManager::SpeedupOrCancelTransaction(
@@ -297,7 +296,7 @@ void FilTxManager::GetTransactionMessageToSign(
     return;
   }
   if (!meta->tx()->nonce()) {
-    auto from = meta->from();
+    auto from = meta->from().Clone();
     nonce_tracker_->GetNextNonce(
         chain_id, from,
         base::BindOnce(&FilTxManager::OnGetNextNonceForHardware,
@@ -330,9 +329,18 @@ void FilTxManager::OnGetNextNonceForHardware(
   DCHECK(nonce <= static_cast<uint256_t>(UINT64_MAX));
   meta->tx()->set_nonce(static_cast<uint64_t>(nonce));
   meta->set_status(mojom::TransactionStatus::Approved);
-  tx_state_manager_->AddOrUpdateTx(*meta);
+  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
 
-  auto message = meta->tx()->GetMessageToSign();
+  auto fil_address = FilAddress::FromAddress(meta->from()->address);
+  if (fil_address.IsEmpty()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  auto message = meta->tx()->GetMessageToSignJson(fil_address);
   if (!message.has_value()) {
     std::move(callback).Run(nullptr);
     return;
@@ -431,7 +439,14 @@ void FilTxManager::ProcessFilHardwareSignature(
   }
 
   meta->set_status(mojom::TransactionStatus::Approved);
-  tx_state_manager_->AddOrUpdateTx(*meta);
+  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewFilecoinProviderError(
+            mojom::FilecoinProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
 
   json_rpc_service_->SendFilecoinTransaction(
       chain_id, signed_tx,

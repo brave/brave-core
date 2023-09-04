@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.CancellationSignal;
@@ -14,7 +15,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -27,26 +27,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
-import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Executor;
 
 public class AccountPrivateKeyActivity extends BraveWalletBaseActivity {
-    private String mAddress;
+    private AccountInfo mAccountInfo;
+
     private String mPasswordFromBiometric;
-    private int mCoinType;
     private boolean mIsPrivateKeyShown;
     private boolean mIsPasswordEntered;
     private TextView mWalletTitle;
@@ -55,6 +51,12 @@ public class AccountPrivateKeyActivity extends BraveWalletBaseActivity {
     private ImageView mBiometricWalletImage;
     private Button mShowPrivateKeyBtn;
 
+    public static Intent createIntent(@NonNull Context context, @NonNull AccountInfo accountInfo) {
+        Intent intent = new Intent(context, AccountPrivateKeyActivity.class);
+        WalletUtils.addAccountInfoToIntent(intent, accountInfo);
+        return intent;
+    }
+
     @Override
     protected void triggerLayoutInflation() {
         getWindow().setFlags(
@@ -62,8 +64,7 @@ public class AccountPrivateKeyActivity extends BraveWalletBaseActivity {
         setContentView(R.layout.activity_account_private_key);
 
         if (getIntent() != null) {
-            mAddress = getIntent().getStringExtra(Utils.ADDRESS);
-            mCoinType = getIntent().getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
+            mAccountInfo = WalletUtils.getAccountInfoFromIntent(getIntent());
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -115,7 +116,7 @@ public class AccountPrivateKeyActivity extends BraveWalletBaseActivity {
                         ? mWalletPassword.getText().toString()
                         : mPasswordFromBiometric;
                 mKeyringService.encodePrivateKeyForExport(
-                        mAddress, passwordToUse, mCoinType, (privateKey) -> {
+                        mAccountInfo.accountId, passwordToUse, (privateKey) -> {
                             if (privateKey.isEmpty()) {
                                 showPasswordRelatedControls(true);
                                 mWalletPassword.setError(

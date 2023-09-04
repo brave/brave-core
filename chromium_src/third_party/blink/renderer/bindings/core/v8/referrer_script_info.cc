@@ -8,6 +8,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #define FromV8HostDefinedOptions FromV8HostDefinedOptions_ChromiumImpl
 #define ToV8HostDefinedOptions ToV8HostDefinedOptions_ChromiumImpl
+#define BRAVE_REFERRER_SCRIPT_INFO_IS_DEFAULT_VALUE \
+  (dom_node_id_ == kInvalidDOMNodeId && parent_script_id_ == 0)
+#else
+#define BRAVE_REFERRER_SCRIPT_INFO_IS_DEFAULT_VALUE true
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
 #include "src/third_party/blink/renderer/bindings/core/v8/referrer_script_info.cc"

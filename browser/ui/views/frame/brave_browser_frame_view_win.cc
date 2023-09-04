@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_frame_view_win.h"
 
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
@@ -23,9 +24,38 @@ BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(BrowserFrame* frame,
     : BrowserFrameViewWin(frame, browser_view) {
   frame_graphic_.reset(
       new BraveWindowFrameGraphic(browser_view->browser()->profile()));
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    DCHECK(browser_view->browser());
+    auto* prefs = browser_view->browser()->profile()->GetPrefs();
+    using_vertical_tabs_.Init(
+        brave_tabs::kVerticalTabsEnabled, prefs,
+        base::BindRepeating(
+            &BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
+            base::Unretained(this)));
+    showing_window_title_for_vertical_tabs_.Init(
+        brave_tabs::kVerticalTabsShowTitleOnWindow, prefs,
+        base::BindRepeating(
+            &BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
+            base::Unretained(this)));
+  }
 }
 
 BraveBrowserFrameViewWin::~BraveBrowserFrameViewWin() = default;
+
+void BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged() {
+  if (auto* widget = GetWidget();
+      widget && (widget->IsMaximized() || widget->IsFullscreen())) {
+    // In case the widget is maximized, the bounds of it doesn't change even
+    // though prefs change. But we need to lay out window controls again.
+    // https://github.com/brave/brave-browser/issues/31971
+
+    // As the LayoutManagerBase could have cached layout, we should call
+    // InvalidateLayout() first.
+    caption_button_container_->InvalidateLayout();
+    LayoutCaptionButtons();
+  }
+}
 
 void BraveBrowserFrameViewWin::OnPaint(gfx::Canvas* canvas) {
   BrowserFrameViewWin::OnPaint(canvas);

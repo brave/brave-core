@@ -12,21 +12,13 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/win/registry.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
+#include "brave/components/brave_vpn/common/win/utils.h"
 #include "chrome/install_static/install_modes.h"
 #include "chrome/install_static/install_util.h"
 
 namespace brave_vpn {
-
-namespace {
-
-HRESULT HRESULTFromLastError() {
-  const auto error_code = ::GetLastError();
-  return (error_code != NO_ERROR) ? HRESULT_FROM_WIN32(error_code) : E_FAIL;
-}
-
-}  // namespace
 
 bool IsBraveVPNHelperServiceInstalled() {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));
@@ -43,30 +35,6 @@ bool IsBraveVPNHelperServiceInstalled() {
   // Service registered and has not exceeded the number of auto-configured
   // restarts.
   return service.IsValid();
-}
-
-bool IsBraveVPNHelperServiceRunning() {
-  ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));
-  if (!scm.IsValid()) {
-    VLOG(1) << "::OpenSCManager failed. service_name: "
-            << brave_vpn::GetBraveVpnHelperServiceName()
-            << ", error: " << std::hex << HRESULTFromLastError();
-    return false;
-  }
-  ScopedScHandle service(::OpenService(
-      scm.Get(), brave_vpn::GetBraveVpnHelperServiceName().c_str(),
-      SERVICE_QUERY_STATUS));
-
-  // Service registered and has not exceeded the number of auto-configured
-  // restarts.
-  if (!service.IsValid()) {
-    return false;
-  }
-  SERVICE_STATUS service_status = {0};
-  if (!::QueryServiceStatus(service.Get(), &service_status)) {
-    return false;
-  }
-  return service_status.dwCurrentState == SERVICE_RUNNING;
 }
 
 std::wstring GetBraveVPNConnectionName() {

@@ -5,33 +5,34 @@
 
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"
 
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::confirmations {
+namespace brave_ads {
 
 class BraveAdsLegacyConfirmationMigrationUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasMigrated) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedConfirmationState, true);
+  SetBooleanPref(prefs::kHasMigratedConfirmationState, true);
 
   // Act
 
   // Assert
-  EXPECT_TRUE(HasMigrated());
+  EXPECT_TRUE(HasMigratedConfirmation());
 }
 
 TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasNotMigrated) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedConfirmationState, false);
+  SetBooleanPref(prefs::kHasMigratedConfirmationState, false);
 
   // Act
 
   // Assert
-  EXPECT_FALSE(HasMigrated());
+  EXPECT_FALSE(HasMigratedConfirmation());
 }
 
-}  // namespace brave_ads::confirmations
+}  // namespace brave_ads

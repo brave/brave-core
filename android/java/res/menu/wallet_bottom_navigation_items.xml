@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_wallet_portfolio"
+        android:title="@string/portfolio"
+        android:icon="@drawable/ic_portfolio" />
+    <item android:id="@+id/action_wallet_activity"
+        android:title="@string/brave_wallet_activity"
+        android:icon="@drawable/ic_activity" />
+    <item android:id="@+id/action_wallet_accounts"
+        android:title="@string/accounts"
+        android:icon="@drawable/ic_accounts" />
+    <item android:id="@+id/action_wallet_explore"
+        android:title="@string/explore"
+        android:icon="@drawable/ic_explore" />
+</menu>

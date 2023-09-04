@@ -1,13 +1,15 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/search_engines/private_window_search_engine_provider_service_base.h"
 
 #include <memory>
 #include <utility>
 
+#include "base/functional/bind.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -27,7 +29,24 @@ PrivateWindowSearchEngineProviderServiceBase::
       original_template_url_service_(TemplateURLServiceFactory::GetForProfile(
           otr_profile_->GetOriginalProfile())),
       otr_template_url_service_(
-          TemplateURLServiceFactory::GetForProfile(otr_profile_)) {}
+          TemplateURLServiceFactory::GetForProfile(otr_profile_)) {
+  if (original_template_url_service_->loaded()) {
+    // Avoid calling virtual method from ctor.
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(
+            &PrivateWindowSearchEngineProviderServiceBase::Initialize,
+            weak_factory_.GetWeakPtr()));
+    return;
+  }
+
+  // Using Unretained safe with subscription_.
+  template_url_service_subscription_ =
+      original_template_url_service_->RegisterOnLoadedCallback(
+          base::BindOnce(&PrivateWindowSearchEngineProviderServiceBase::
+                             OnTemplateURLServiceLoaded,
+                         base::Unretained(this)));
+}
 
 PrivateWindowSearchEngineProviderServiceBase::
     ~PrivateWindowSearchEngineProviderServiceBase() = default;
@@ -107,4 +126,14 @@ bool PrivateWindowSearchEngineProviderServiceBase::CouldAddExtensionTemplateURL(
       return false;
   }
   return true;
+}
+
+void PrivateWindowSearchEngineProviderServiceBase::
+    OnTemplateURLServiceLoaded() {
+  template_url_service_subscription_ = {};
+  Initialize();
+}
+
+void PrivateWindowSearchEngineProviderServiceBase::Shutdown() {
+  template_url_service_subscription_ = {};
 }

@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 65be8048c471f5536d5c85066b38b3efc1f24546..1f33295399f61cfbcf94caa54cc10d1332a720ab 100644
+index ea1d9e280b7fbcc6dee43b5b719cbcba85773dae..0e43bdf14d2f60e00973d8bb07c66451f5b97d05 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -24,7 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
- import androidx.fragment.app.DialogFragment;
- import androidx.fragment.app.FragmentManager;
- import androidx.fragment.app.FragmentTransaction;
--import androidx.preference.CheckBoxPreference;
-+import org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference;
- import androidx.preference.Preference;
- import androidx.preference.PreferenceCategory;
- import androidx.preference.PreferenceFragmentCompat;
-@@ -362,7 +362,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
+@@ -53,7 +53,7 @@ import org.chromium.chrome.browser.sync.ui.PassphraseDialogFragment;
+ import org.chromium.chrome.browser.sync.ui.PassphraseTypeDialogFragment;
+ import org.chromium.chrome.browser.ui.signin.SignOutDialogCoordinator;
+ import org.chromium.chrome.browser.ui.signin.SignOutDialogCoordinator.Listener;
+-import org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference;
++import org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference;
+ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+ import org.chromium.components.browser_ui.settings.SettingsUtils;
+ import org.chromium.components.signin.AccountManagerFacadeProvider;
+@@ -359,7 +359,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
                          .getIdentityManager(Profile.getLastUsedRegularProfile())
                          .getPrimaryAccountInfo(ConsentLevel.SYNC));
          // May happen if account is removed from the device while this screen is shown.

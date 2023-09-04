@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <utility>
 
-#include "base/check.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
@@ -61,43 +61,51 @@ bool TextProcessing::SetPipeline(base::Value::Dict dict) {
     SetPipeline(std::move(pipeline).value());
     is_initialized_ = true;
   } else {
+    SetPipeline(PipelineInfo{});
     is_initialized_ = false;
   }
 
   return is_initialized_;
 }
 
-PredictionMap TextProcessing::Apply(
-    const std::unique_ptr<Data>& input_data) const {
+absl::optional<PredictionMap> TextProcessing::Apply(
+    std::unique_ptr<Data> input_data) const {
+  std::unique_ptr<Data> current_data = std::move(input_data);
+  CHECK(current_data);
+
   const size_t transformation_count = transformations_.size();
-
-  if (transformation_count == 0) {
-    CHECK(input_data->GetType() == DataType::kVector);
-    const VectorData* const vector_data =
-        static_cast<VectorData*>(input_data.get());
-    return linear_model_.GetTopPredictions(*vector_data);
-  }
-
-  std::unique_ptr<Data> current_data = transformations_[0]->Apply(input_data);
-  for (size_t i = 1; i < transformation_count; ++i) {
+  for (size_t i = 0; i < transformation_count; ++i) {
     current_data = transformations_[i]->Apply(current_data);
+    if (!current_data) {
+      BLOG(0, "TextProcessing transformation failed due to an invalid model");
+      return absl::nullopt;
+    }
   }
 
-  CHECK(current_data->GetType() == DataType::kVector);
+  // TODO(https://github.com/brave/brave-browser/issues/31180): Refactor
+  // TextProcessing to make it more reliable.
+  if (current_data->GetType() != DataType::kVector) {
+    BLOG(0, "Linear model predictions failed due to an invalid model");
+    return absl::nullopt;
+  }
   const VectorData* const vector_data =
       static_cast<VectorData*>(current_data.get());
   return linear_model_.GetTopPredictions(*vector_data);
 }
 
-PredictionMap TextProcessing::GetTopPredictions(
-    const std::string& content) const {
-  std::string stripped_content = StripNonAlphaCharacters(content);
-  const PredictionMap predictions =
-      Apply(std::make_unique<TextData>(std::move(stripped_content)));
+absl::optional<PredictionMap> TextProcessing::GetTopPredictions(
+    const std::string& text) const {
+  std::string stripped_text = StripNonAlphaCharacters(text);
+  const absl::optional<PredictionMap> predictions =
+      Apply(std::make_unique<TextData>(std::move(stripped_text)));
+  if (!predictions) {
+    return absl::nullopt;
+  }
+
   const double expected_prob =
-      1.0 / std::max(1.0, static_cast<double>(predictions.size()));
+      1.0 / std::max(1.0, static_cast<double>(predictions->size()));
   PredictionMap rtn;
-  for (auto const& prediction : predictions) {
+  for (const auto& prediction : *predictions) {
     if (prediction.second > expected_prob) {
       rtn[prediction.first] = prediction.second;
     }
@@ -105,12 +113,13 @@ PredictionMap TextProcessing::GetTopPredictions(
   return rtn;
 }
 
-PredictionMap TextProcessing::ClassifyPage(const std::string& content) const {
+absl::optional<PredictionMap> TextProcessing::ClassifyPage(
+    const std::string& text) const {
   if (!IsInitialized()) {
-    return {};
+    return PredictionMap{};
   }
 
-  return GetTopPredictions(content);
+  return GetTopPredictions(text);
 }
 
 }  // namespace brave_ads::ml::pipeline

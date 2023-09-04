@@ -9,7 +9,6 @@
 #include "brave/browser/ui/brave_ads/notification_ad_delegate.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup_collection.h"
-#include "ui/gfx/geometry/vector2d.h"
 
 namespace brave_ads {
 

@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/json/values_util.h"
 #include "base/notreached.h"
@@ -15,7 +16,8 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/public/feature/brave_ads_feature.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a_utils/bucket.h"
@@ -47,16 +49,21 @@ constexpr base::TimeDelta kCountExpiryTime = base::Days(30);
 constexpr base::TimeDelta kStartLandingCheckTime = base::Milliseconds(750);
 constexpr base::TimeDelta kLandingTime = base::Seconds(10);
 
+bool IsRewardsDisabled(PrefService* prefs) {
+  return !prefs->GetBoolean(brave_rewards::prefs::kEnabled) &&
+         !base::FeatureList::IsEnabled(
+             brave_ads::kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
+}
+
 }  // namespace
 
 NTPP3AHelperImpl::NTPP3AHelperImpl(PrefService* local_state,
                                    p3a::P3AService* p3a_service,
-                                   brave_ads::AdsService* ads_service)
-    : local_state_(local_state),
-      p3a_service_(p3a_service),
-      ads_service_(ads_service) {
+                                   PrefService* prefs)
+    : local_state_(local_state), p3a_service_(p3a_service), prefs_(prefs) {
   DCHECK(local_state);
   DCHECK(p3a_service);
+  DCHECK(prefs);
   metric_sent_subscription_ =
       p3a_service->RegisterMetricCycledCallback(base::BindRepeating(
           &NTPP3AHelperImpl::OnP3AMetricCycled, base::Unretained(this)));
@@ -72,7 +79,7 @@ void NTPP3AHelperImpl::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 }
 
 void NTPP3AHelperImpl::RecordView(const std::string& creative_instance_id) {
-  if (!p3a_service_->IsP3AEnabled()) {
+  if (!p3a_service_->IsP3AEnabled() || !IsRewardsDisabled(prefs_)) {
     return;
   }
   UpdateMetricCount(creative_instance_id, kViewEventKey);
@@ -80,7 +87,7 @@ void NTPP3AHelperImpl::RecordView(const std::string& creative_instance_id) {
 
 void NTPP3AHelperImpl::RecordClickAndMaybeLand(
     const std::string& creative_instance_id) {
-  if (!p3a_service_->IsP3AEnabled()) {
+  if (!p3a_service_->IsP3AEnabled() || !IsRewardsDisabled(prefs_)) {
     return;
   }
   UpdateMetricCount(creative_instance_id, kClickEventKey);
@@ -132,8 +139,7 @@ void NTPP3AHelperImpl::OnP3ARotation(p3a::MetricLogType log_type,
       BuildHistogramName(kCreativeTotalInstanceId, kCreativeTotalCountEventKey);
   // Always send the creative total if ads are disabled (as per spec),
   // or send the total if there were outstanding events sent
-  if ((ads_service_ != nullptr && !ads_service_->IsEnabled()) ||
-      total_active_creatives > 0) {
+  if (IsRewardsDisabled(prefs_) || total_active_creatives > 0) {
     p3a_service_->RegisterDynamicMetric(creative_total_histogram_name,
                                         p3a::MetricLogType::kExpress);
     p3a_utils::RecordToHistogramBucket(creative_total_histogram_name.c_str(),

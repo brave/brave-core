@@ -16,7 +16,7 @@ struct CatalogCreativeInfo {
   bool operator==(const CatalogCreativeInfo&) const;
   bool operator!=(const CatalogCreativeInfo&) const;
 
-  std::string creative_instance_id;
+  std::string instance_id;
   CatalogTypeInfo type;
 };
 

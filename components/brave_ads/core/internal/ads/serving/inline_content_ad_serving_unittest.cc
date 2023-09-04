@@ -8,16 +8,16 @@
 #include <memory>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_feature_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -61,7 +61,7 @@ class BraveAdsInlineContentAdServingTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    ForceInlineContentAdServingVersion(1);
+    ForceInlineContentAdServingVersionForTesting(1);
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
@@ -79,7 +79,7 @@ class BraveAdsInlineContentAdServingTest : public UnitTestBase {
 
 TEST_F(BraveAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Arrange
-  ForceInlineContentAdServingVersion(0);
+  ForceInlineContentAdServingVersionForTesting(0);
 
   // Act
   serving_->MaybeServeAd(
@@ -102,7 +102,7 @@ TEST_F(BraveAdsInlineContentAdServingTest, ServeAd) {
   ForcePermissionRulesForTesting();
 
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act
@@ -128,7 +128,7 @@ TEST_F(BraveAdsInlineContentAdServingTest,
   ForcePermissionRulesForTesting();
 
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act
@@ -145,15 +145,13 @@ TEST_F(BraveAdsInlineContentAdServingTest,
             EXPECT_TRUE(serving_delegate->failed_to_serve_ad());
           },
           base::Unretained(&serving_delegate_)));
-
-  // Assert
 }
 
 TEST_F(BraveAdsInlineContentAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act
@@ -170,8 +168,6 @@ TEST_F(BraveAdsInlineContentAdServingTest,
             EXPECT_TRUE(serving_delegate->failed_to_serve_ad());
           },
           base::Unretained(&serving_delegate_)));
-
-  // Assert
 }
 
 }  // namespace brave_ads

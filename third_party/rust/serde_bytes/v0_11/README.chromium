@@ -1,0 +1,7 @@
+Name: serde_bytes
+URL: https://crates.io/crates/serde_bytes
+Description: Optimized handling of `&[u8]` and `Vec<u8>` for Serde
+Version: 0.11.9
+Security Critical: no
+License: Apache 2.0
+Revision: c3c83935d3943224c17ab11a7796db8e2810b7dc

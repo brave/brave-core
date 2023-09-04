@@ -13,8 +13,8 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -41,12 +41,12 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAds) {
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_1.segment = "foo-bar1";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_2.segment = "foo-bar3";
   creative_ads.push_back(creative_ad_2);
 
@@ -54,9 +54,10 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModel({/*interest_segments*/ "foo-bar3"},
-                     /*latent_interest_segments*/ {}, {"foo-bar1", "foo-bar2"},
-                     /*text_embedding_html_events*/ {}),
+      BuildUserModelForTesting({/*interest_segments*/ "foo-bar3"},
+                               /*latent_interest_segments*/ {},
+                               {"foo-bar1", "foo-bar2"},
+                               /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
@@ -70,12 +71,12 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAdsForNoSegments) {
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_1.segment = "foo";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_2.segment = "foo-bar";
   creative_ads.push_back(creative_ad_2);
 
@@ -83,10 +84,10 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAdsForNoSegments) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModel(/*interest_segments*/ {},
-                     /*latent_interest_segments*/ {},
-                     /*purchase_intent_segments*/ {},
-                     /*text_embedding_html_events*/ {}),
+      BuildUserModelForTesting(/*interest_segments*/ {},
+                               /*latent_interest_segments*/ {},
+                               /*purchase_intent_segments*/ {},
+                               /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
@@ -100,10 +101,10 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModel({/*interest_segments*/ "interest-foo", "interest-bar"},
-                     /*latent_interest_segments*/ {},
-                     {"intent-foo", "intent-bar"},
-                     /*text_embedding_html_events*/ {}),
+      BuildUserModelForTesting(
+          {/*interest_segments*/ "interest-foo", "interest-bar"},
+          /*latent_interest_segments*/ {}, {"intent-foo", "intent-bar"},
+          /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert

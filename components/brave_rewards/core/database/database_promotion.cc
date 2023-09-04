@@ -13,9 +13,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_promotion.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
-
-using std::placeholders::_1;
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -26,8 +24,8 @@ const char kTableName[] = "promotion";
 
 }  // namespace
 
-DatabasePromotion::DatabasePromotion(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabasePromotion::DatabasePromotion(RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabasePromotion::~DatabasePromotion() = default;
 
@@ -35,7 +33,7 @@ void DatabasePromotion::InsertOrUpdate(mojom::PromotionPtr info,
                                        LegacyResultCallback callback) {
   if (!info) {
     BLOG(1, "Info is null");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -68,9 +66,9 @@ void DatabasePromotion::InsertOrUpdate(mojom::PromotionPtr info,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabasePromotion::GetRecord(const std::string& id,
@@ -111,14 +109,14 @@ void DatabasePromotion::GetRecord(const std::string& id,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabasePromotion::OnGetRecord, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabasePromotion::OnGetRecord, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void DatabasePromotion::OnGetRecord(mojom::DBCommandResponsePtr response,
-                                    GetPromotionCallback callback) {
+void DatabasePromotion::OnGetRecord(GetPromotionCallback callback,
+                                    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -183,14 +181,14 @@ void DatabasePromotion::GetAllRecords(GetAllPromotionsCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabasePromotion::OnGetAllRecords, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabasePromotion::OnGetAllRecords,
+                     base::Unretained(this), std::move(callback)));
 }
 
-void DatabasePromotion::OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                                        GetAllPromotionsCallback callback) {
+void DatabasePromotion::OnGetAllRecords(GetAllPromotionsCallback callback,
+                                        mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -230,7 +228,7 @@ void DatabasePromotion::SaveClaimId(const std::string& promotion_id,
                                     LegacyResultCallback callback) {
   if (promotion_id.empty() || claim_id.empty()) {
     BLOG(1, "Data is empty " << promotion_id << "/" << claim_id);
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -247,9 +245,9 @@ void DatabasePromotion::SaveClaimId(const std::string& promotion_id,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabasePromotion::UpdateStatus(const std::string& promotion_id,
@@ -257,7 +255,7 @@ void DatabasePromotion::UpdateStatus(const std::string& promotion_id,
                                      LegacyResultCallback callback) {
   if (promotion_id.empty()) {
     BLOG(0, "Promotion id is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -274,9 +272,9 @@ void DatabasePromotion::UpdateStatus(const std::string& promotion_id,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabasePromotion::UpdateRecordsStatus(const std::vector<std::string>& ids,
@@ -284,7 +282,7 @@ void DatabasePromotion::UpdateRecordsStatus(const std::vector<std::string>& ids,
                                             LegacyResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -301,16 +299,16 @@ void DatabasePromotion::UpdateRecordsStatus(const std::vector<std::string>& ids,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabasePromotion::CredentialCompleted(const std::string& promotion_id,
                                             LegacyResultCallback callback) {
   if (promotion_id.empty()) {
     BLOG(1, "Promotion id is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -331,9 +329,9 @@ void DatabasePromotion::CredentialCompleted(const std::string& promotion_id,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabasePromotion::GetRecords(const std::vector<std::string>& ids,
@@ -374,14 +372,14 @@ void DatabasePromotion::GetRecords(const std::vector<std::string>& ids,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabasePromotion::OnGetRecords, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabasePromotion::OnGetRecords, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void DatabasePromotion::OnGetRecords(mojom::DBCommandResponsePtr response,
-                                     GetPromotionListCallback callback) {
+void DatabasePromotion::OnGetRecords(GetPromotionListCallback callback,
+                                     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -422,7 +420,7 @@ void DatabasePromotion::UpdateRecordsBlankPublicKey(
     LegacyResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -438,9 +436,9 @@ void DatabasePromotion::UpdateRecordsBlankPublicKey(
   command->command = query;
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 }  // namespace database

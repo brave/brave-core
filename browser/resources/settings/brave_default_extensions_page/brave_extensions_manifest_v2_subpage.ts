@@ -5,14 +5,17 @@
 
 import 'chrome://resources/cr_elements/cr_button/cr_button.js'
 import 'chrome://resources/cr_elements/icons.html.js'
-import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
-import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import { BaseMixin } from '../base_mixin.js'
-import { PrefsMixin } from '../prefs/prefs_mixin.js'
-import { WebUiListenerMixin } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
-import { BraveDefaultExtensionsBrowserProxyImpl, ExtensionV2 } from './brave_default_extensions_browser_proxy.js'
-import { getTemplate } from './brave_extensions_manifest_v2_subpage.html.js'
-import { loadTimeData } from '../i18n_setup.js'
+
+import {PrefsMixin} from 'chrome://resources/cr_components/settings_prefs/prefs_mixin.js';
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+
+import {BaseMixin} from '../base_mixin.js'
+import {loadTimeData} from '../i18n_setup.js'
+
+import {BraveDefaultExtensionsBrowserProxyImpl, ExtensionV2} from './brave_default_extensions_browser_proxy.js'
+import {getTemplate} from './brave_extensions_manifest_v2_subpage.html.js'
 
 const BraveExtensionsV2SubpageBase =
   WebUiListenerMixin(PrefsMixin(I18nMixin(BaseMixin(PolymerElement))))

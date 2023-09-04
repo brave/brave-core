@@ -5,15 +5,13 @@
 
 import * as React from 'react'
 
-import { useSelector } from 'react-redux'
 import { useGetVisibleNetworksQuery } from '../../../../common/slices/api.slice'
+import {
+  TokenBalancesRegistry
+} from '../../../../common/slices/entities/token-balance.entity'
 
 // types
-import {
-  SupportedTestNetworks,
-  WalletState
-} from '../../../../constants/types'
-import { AllNetworksOption } from '../../../../options/network-filter-options'
+import { BraveWallet } from '../../../../constants/types'
 
 // hooks
 
@@ -21,39 +19,28 @@ import { AllNetworksOption } from '../../../../options/network-filter-options'
 import { Nfts } from './components/nfts'
 
 interface Props {
-  onToggleShowIpfsBanner: () => void
+  nftsList: BraveWallet.BlockchainToken[]
+  accounts: BraveWallet.AccountInfo[]
+  onShowPortfolioSettings?: () => void
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined
 }
 
-export const NftView = ({ onToggleShowIpfsBanner }: Props) => {
-  // redux
-  const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
-  const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
-
+export const NftView = ({
+  nftsList,
+  accounts,
+  onShowPortfolioSettings,
+  tokenBalancesRegistry
+}: Props) => {
   // queries
   const { data: networks = [] } = useGetVisibleNetworksQuery()
-
-  // memos
-  const nonFungibleTokens = React.useMemo(() => {
-    if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
-      return userVisibleTokensInfo.filter(
-        (token) =>
-          !SupportedTestNetworks.includes(token.chainId) &&
-          (token.isErc721 || token.isNft)
-      )
-    }
-
-    return userVisibleTokensInfo.filter(
-      (token) =>
-        token.chainId === selectedNetworkFilter.chainId &&
-        (token.isErc721 || token.isNft)
-    )
-  }, [userVisibleTokensInfo, selectedNetworkFilter.chainId])
 
   return (
     <Nfts
       networks={networks}
-      nftList={nonFungibleTokens}
-      onToggleShowIpfsBanner={onToggleShowIpfsBanner}
+      nftList={nftsList}
+      accounts={accounts}
+      onShowPortfolioSettings={onShowPortfolioSettings}
+      tokenBalancesRegistry={tokenBalancesRegistry}
     />
   )
 }

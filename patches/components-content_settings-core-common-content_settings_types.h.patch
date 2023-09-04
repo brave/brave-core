@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 4eb53ed3da74c4798815bf592f01cc6fc086bd9d..24d0e534ce035968ee5fcfc8e3c71618a80f5fd5 100644
+index e238be9d538dd257f74101c413cbb69cf04f39f5..fdede737f382949a667b56301edaf618af09f2db 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -327,6 +327,22 @@ enum class ContentSettingsType : int32_t {
-   // should be enabled.
-   THIRD_PARTY_STORAGE_PARTITIONING,
+@@ -331,6 +331,22 @@ enum class ContentSettingsType : int32_t {
+   // https://github.com/screen-share/capture-all-screens
+   ALL_SCREEN_CAPTURE,
  
 +  BRAVE_START,
 +  BRAVE_ADS = BRAVE_START,

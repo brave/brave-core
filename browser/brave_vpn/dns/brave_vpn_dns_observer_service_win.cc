@@ -13,6 +13,7 @@
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_state.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
+#include "brave/components/brave_vpn/common/win/utils.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/stub_resolver_config_reader.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -47,8 +48,7 @@ void SkipDNSDialog(PrefService* prefs, bool checked) {
 
 gfx::NativeWindow GetAnchorBrowserWindow() {
   auto* browser = chrome::FindLastActive();
-  return browser ? browser->window()->GetNativeWindow()
-                 : gfx::kNullNativeWindow;
+  return browser ? browser->window()->GetNativeWindow() : gfx::NativeWindow();
 }
 
 bool AreConfigsEqual(SecureDnsConfig& one, SecureDnsConfig& two) {
@@ -112,7 +112,7 @@ bool BraveVpnDnsObserverService::IsDNSHelperLive() {
     return false;
   }
 
-  if (IsBraveVPNHelperServiceRunning()) {
+  if (IsWindowsServiceRunning(brave_vpn::GetBraveVpnHelperServiceName())) {
     RunServiceWatcher();
   }
 
@@ -131,16 +131,16 @@ bool BraveVpnDnsObserverService::IsDNSHelperLive() {
 }
 
 void BraveVpnDnsObserverService::RunServiceWatcher() {
-  service_watcher_.reset(new ServiceWatcher());
+  service_watcher_.reset(new brave::ServiceWatcher());
   if (!service_watcher_->Subscribe(
           brave_vpn::GetBraveVpnHelperServiceName(), SERVICE_NOTIFY_STOPPED,
-          base::BindOnce(&BraveVpnDnsObserverService::OnServiceStopped,
-                         weak_ptr_factory_.GetWeakPtr()))) {
+          base::BindRepeating(&BraveVpnDnsObserverService::OnServiceStopped,
+                              weak_ptr_factory_.GetWeakPtr()))) {
     VLOG(1) << "Unable to set service watcher";
   }
 }
 
-void BraveVpnDnsObserverService::OnServiceStopped() {
+void BraveVpnDnsObserverService::OnServiceStopped(int mask) {
   // Postpone check because the service can be restarted by the system due to
   // configured failure actions.
   content::GetUIThreadTaskRunner({})->PostDelayedTask(
@@ -161,7 +161,8 @@ void BraveVpnDnsObserverService::OnCheckIfServiceStarted() {
     return;
   }
   // Checking if the service was not launched or filters were not set.
-  if (!IsNetworkFiltersInstalled() || !IsBraveVPNHelperServiceRunning()) {
+  if (!IsNetworkFiltersInstalled() ||
+      !IsWindowsServiceRunning(brave_vpn::GetBraveVpnHelperServiceName())) {
     LockDNS();
     return;
   }

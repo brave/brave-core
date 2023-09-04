@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
@@ -39,17 +40,14 @@ namespace brave_wallet {
 
 namespace {
 
-const char kMnemonic1[] =
-    "divide cruise upon flag harsh carbon filter merit once advice bright "
-    "drive";
 const char kPasswordBrave[] = "brave";
 
 }  // namespace
 
-class TestBraveWalletServiceObserverForAssetDiscovery
+class TestBraveWalletServiceObserverForAssetDiscoveryManager
     : public brave_wallet::BraveWalletServiceObserverBase {
  public:
-  TestBraveWalletServiceObserverForAssetDiscovery() = default;
+  TestBraveWalletServiceObserverForAssetDiscoveryManager() = default;
 
   void OnDiscoverAssetsStarted() override {
     on_discover_assets_started_fired_ = true;
@@ -128,16 +126,18 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
         JsonRpcServiceFactory::GetServiceForContext(profile_.get());
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
-    tx_service = TxServiceFactory::GetServiceForContext(profile_.get());
+    tx_service_ = TxServiceFactory::GetServiceForContext(profile_.get());
     wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service, GetPrefs(), GetLocalState());
+        json_rpc_service_, tx_service_, GetPrefs(), GetLocalState());
+    simple_hash_client_ =
+        std::make_unique<SimpleHashClient>(shared_url_loader_factory_);
     asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
         shared_url_loader_factory_, wallet_service_.get(), json_rpc_service_,
-        keyring_service_, GetPrefs());
-    wallet_service_observer_ =
-        std::make_unique<TestBraveWalletServiceObserverForAssetDiscovery>();
+        keyring_service_, simple_hash_client_.get(), GetPrefs());
+    wallet_service_observer_ = std::make_unique<
+        TestBraveWalletServiceObserverForAssetDiscoveryManager>();
     wallet_service_->AddObserver(wallet_service_observer_->GetReceiver());
   }
 
@@ -148,28 +148,29 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   }
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscovery>
+  std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscoveryManager>
       wallet_service_observer_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<ScopedTestingLocalState> local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<BraveWalletService> wallet_service_;
+  std::unique_ptr<SimpleHashClient> simple_hash_client_;
   std::unique_ptr<AssetDiscoveryManager> asset_discovery_manager_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
-  JsonRpcService* json_rpc_service_;
-  TxService* tx_service;
+  raw_ptr<JsonRpcService> json_rpc_service_;
+  raw_ptr<TxService> tx_service_;
   base::test::ScopedFeatureList scoped_feature_list_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 
   void TestDiscoverAssetsOnAllSupportedChains(
       const std::map<mojom::CoinType, std::vector<std::string>>&
           account_addresses,
-      bool triggered_by_accounts_added,
+      bool bypass_rate_limit,
       bool expect_events_fired,
       const std::vector<std::string>& expected_token_contract_addresses,
       size_t expected_ending_queue_size = 0u) {
     asset_discovery_manager_->DiscoverAssetsOnAllSupportedChains(
-        account_addresses, triggered_by_accounts_added);
+        account_addresses, bypass_rate_limit);
     if (expect_events_fired) {
       wallet_service_observer_->WaitForOnDiscoverAssetsCompleted(
           expected_token_contract_addresses);
@@ -186,15 +187,15 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   }
 };
 
-TEST_F(AssetDiscoveryManagerUnitTest, GetAssetDiscoverySupportedChains) {
-  // GetAssetDiscoverySupportedChains should return a map of the same size
+TEST_F(AssetDiscoveryManagerUnitTest, GetFungibleSupportedChains) {
+  // GetFungibleSupportedChains should return a map of the same size
   // vectors every time
   const std::map<mojom::CoinType, std::vector<std::string>> chains1 =
-      asset_discovery_manager_->GetAssetDiscoverySupportedChains();
+      asset_discovery_manager_->GetFungibleSupportedChains();
   const std::map<mojom::CoinType, std::vector<std::string>> chains2 =
-      asset_discovery_manager_->GetAssetDiscoverySupportedChains();
+      asset_discovery_manager_->GetFungibleSupportedChains();
   const std::map<mojom::CoinType, std::vector<std::string>> chains3 =
-      asset_discovery_manager_->GetAssetDiscoverySupportedChains();
+      asset_discovery_manager_->GetFungibleSupportedChains();
   EXPECT_GT(chains1.at(mojom::CoinType::ETH).size(), 0u);
   EXPECT_GT(chains1.at(mojom::CoinType::SOL).size(), 0u);
 
@@ -202,6 +203,34 @@ TEST_F(AssetDiscoveryManagerUnitTest, GetAssetDiscoverySupportedChains) {
             chains1.at(mojom::CoinType::ETH).size());
   EXPECT_EQ(chains2.at(mojom::CoinType::SOL).size(),
             chains1.at(mojom::CoinType::SOL).size());
+}
+
+TEST_F(AssetDiscoveryManagerUnitTest, GetNonFungibleSupportedChains) {
+  // Gnosis chain ID should not be included if it's not a custom network
+  std::map<mojom::CoinType, std::vector<std::string>> chains =
+      asset_discovery_manager_->GetNonFungibleSupportedChains();
+  EXPECT_EQ(chains.at(mojom::CoinType::ETH).size(), 6UL);
+  EXPECT_EQ(chains.at(mojom::CoinType::SOL).size(), 1UL);
+
+  // Verify none of the chain IDs == mojom::kGnosisChainId
+  EXPECT_EQ(
+      std::find(chains.at(mojom::CoinType::ETH).begin(),
+                chains.at(mojom::CoinType::ETH).end(), mojom::kGnosisChainId),
+      chains.at(mojom::CoinType::ETH).end());
+
+  // Add a custom network (Gnosis) and verify it is included
+  auto gnosis_network = GetTestNetworkInfo1(mojom::kGnosisChainId);
+  AddCustomNetwork(GetPrefs(), gnosis_network);
+
+  chains = asset_discovery_manager_->GetNonFungibleSupportedChains();
+  EXPECT_EQ(chains.at(mojom::CoinType::ETH).size(), 7UL);
+  EXPECT_EQ(chains.at(mojom::CoinType::SOL).size(), 1UL);
+
+  // Verify one of the chain IDs is mojom::kGnosisChainId
+  EXPECT_NE(
+      std::find(chains.at(mojom::CoinType::ETH).begin(),
+                chains.at(mojom::CoinType::ETH).end(), mojom::kGnosisChainId),
+      chains.at(mojom::CoinType::ETH).end());
 }
 
 TEST_F(AssetDiscoveryManagerUnitTest, DiscoverAssetsOnAllSupportedChains) {
@@ -256,8 +285,8 @@ TEST_F(AssetDiscoveryManagerUnitTest, DiscoverAssetsOnAllSupportedChains) {
   task_environment_.FastForwardBy(
       base::Minutes(kAssetDiscoveryMinutesPerRequest));
   std::queue<std::unique_ptr<AssetDiscoveryTask>> tasks;
-  tasks.push(
-      std::make_unique<AssetDiscoveryTask>(nullptr, nullptr, nullptr, nullptr));
+  tasks.push(std::make_unique<AssetDiscoveryTask>(nullptr, nullptr, nullptr,
+                                                  nullptr, nullptr));
   asset_discovery_manager_->SetQueueForTesting(std::move(tasks));
   TestDiscoverAssetsOnAllSupportedChains({}, true, true, {}, 1);
 
@@ -273,7 +302,7 @@ TEST_F(AssetDiscoveryManagerUnitTest, AccountsAdded) {
   base::Time current_assets_last_discovered_at =
       GetPrefs()->GetTime(kBraveWalletLastDiscoveredAssetsAt);
   ASSERT_EQ(current_assets_last_discovered_at, base::Time());
-  keyring_service_->RestoreWallet(kMnemonic1, kPasswordBrave, false,
+  keyring_service_->RestoreWallet(kMnemonicDivideCruise, kPasswordBrave, false,
                                   base::DoNothing());
   wallet_service_observer_->WaitForOnDiscoverAssetsCompleted({});
   base::Time previous_assets_last_discovered_at =

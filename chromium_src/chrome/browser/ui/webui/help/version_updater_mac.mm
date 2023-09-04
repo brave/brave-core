@@ -6,6 +6,7 @@
 #include "chrome/browser/ui/webui/help/version_updater_mac.h"
 
 #include "base/mac/foundation_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/escape.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
@@ -13,7 +14,6 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/mac/keystone_glue.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
-#include "chrome/browser/updater/browser_updater_helper_client_mac.h"
 #include "chrome/grit/chromium_strings.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -26,7 +26,7 @@
 // updates. It will be created and managed by VersionUpdaterMac.
 @interface KeystoneObserver : NSObject {
  @private
-  VersionUpdaterMac* versionUpdater_;  // Weak.
+  raw_ptr<VersionUpdaterMac> versionUpdater_;  // Weak.
 }
 
 // Initialize an observer with an updater. The updater owns this object.

@@ -12,17 +12,17 @@
 
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/sku/sku.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace contribution {
 
 class ContributionSKU {
  public:
-  explicit ContributionSKU(LedgerImpl& ledger);
+  explicit ContributionSKU(RewardsEngineImpl& engine);
   ~ContributionSKU();
 
   void AutoContribution(const std::string& contribution_id,
@@ -81,7 +81,7 @@ class ContributionSKU {
                       mojom::SKUOrderPtr order,
                       LegacyResultCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   credential::CredentialsSKU credentials_;
   sku::SKU sku_;
 };

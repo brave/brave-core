@@ -7,14 +7,13 @@ package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
 import android.app.Activity;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
+import org.chromium.chrome.browser.crypto_wallet.fragments.WalletBottomSheetDialogFragment;
 
-public class BaseDAppsBottomSheetDialogFragment extends BottomSheetDialogFragment {
+public class BaseDAppsBottomSheetDialogFragment extends WalletBottomSheetDialogFragment {
     public BraveWalletService getBraveWalletService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletBaseActivity) {

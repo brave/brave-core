@@ -45,7 +45,7 @@ bool NavigateRenderFrameToURL(content::RenderFrameHost* frame,
 
   content::TestNavigationManager navigation_manager(
       content::WebContents::FromRenderFrameHost(frame), url);
-  bool result = ExecuteScript(frame, script);
+  bool result = content::ExecJs(frame, script);
   if (!navigation_manager.WaitForNavigationFinished()) {
     return false;
   }

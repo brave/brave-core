@@ -16,6 +16,7 @@ group("android_deps") {
     ":com_google_android_exoplayer_exoplayer_ui_java",
     ":com_google_android_exoplayer_extension_cast_java",
     ":com_google_android_exoplayer_extension_mediasession_java",
+    ":com_google_android_play_integrity_java",
     ":com_wireguard_android_java",
     ":google_play_services_safetynet_java",
   ]
@@ -103,6 +104,7 @@ android_aar_prebuilt("com_brave_playlist_java") {
     "//third_party/androidx:androidx_fragment_fragment_java",
     "//third_party/androidx:androidx_preference_preference_java",
     "//third_party/androidx:androidx_recyclerview_recyclerview_java",
+    "//third_party/androidx:androidx_room_room_runtime_java",
     "//third_party/androidx:androidx_transition_transition_java",
     "//third_party/androidx:androidx_viewpager2_viewpager2_java",
   ]
@@ -200,5 +202,14 @@ android_aar_prebuilt(
   deps = [
     ":com_google_android_exoplayer_exoplayer_common_java",
     "//third_party/androidx:androidx_media_media_java",
+  ]
+}
+
+android_aar_prebuilt("com_google_android_play_integrity_java") {
+  aar_path = "libs/com_google_android_play_integrity/integrity-1.1.0.aar"
+  info_path = "libs/com_google_android_play_integrity/com_google_android_play_integrity.info"
+  deps = [
+    "//third_party/android_deps:google_play_services_basement_java",
+    "//third_party/android_deps:google_play_services_tasks_java",
   ]
 }

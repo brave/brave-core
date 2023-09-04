@@ -19,9 +19,9 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_info.h"
 
 namespace brave_ads {
 
@@ -59,6 +59,8 @@ void NewTabPageAdServing::MaybeServeAd(
                                 std::move(callback)));
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void NewTabPageAdServing::BuildUserModelCallback(
     MaybeServeNewTabPageAdCallback callback,
     const UserModelInfo& user_model) {
@@ -68,8 +70,6 @@ void NewTabPageAdServing::BuildUserModelCallback(
                                  weak_factory_.GetWeakPtr(),
                                  std::move(callback), user_model));
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 void NewTabPageAdServing::GetForUserModelCallback(
     MaybeServeNewTabPageAdCallback callback,
@@ -104,22 +104,7 @@ void NewTabPageAdServing::ServeAd(const NewTabPageAdInfo& ad,
     return FailedToServeAd(std::move(callback));
   }
 
-  BLOG(1, "Served new tab page ad:\n"
-              << "  placementId: " << ad.placement_id << "\n"
-              << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
-              << "  creativeSetId: " << ad.creative_set_id << "\n"
-              << "  campaignId: " << ad.campaign_id << "\n"
-              << "  advertiserId: " << ad.advertiser_id << "\n"
-              << "  segment: " << ad.segment << "\n"
-              << "  companyName: " << ad.company_name << "\n"
-              << "  imageUrl: " << ad.image_url << "\n"
-              << "  alt: " << ad.alt << "\n"
-              << "  targetUrl: " << ad.target_url << "\n"
-              << "  wallpaper:\n"
-              << "    imageUrl: " << ad.wallpapers[0].image_url << "\n"
-              << "    focalPoint:\n"
-              << "      x: " << ad.wallpapers[0].focal_point.x << "\n"
-              << "      y: " << ad.wallpapers[0].focal_point.y);
+  BLOG(1, "Served new tab page ad");
 
   CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);

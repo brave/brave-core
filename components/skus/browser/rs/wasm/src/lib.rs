@@ -11,8 +11,11 @@ use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::futures_0_3::{future_to_promise, JsFuture};
 use web_sys::{EventTarget, HtmlDocument, Request, RequestInit, RequestMode, Response};
 
+use tracing_subscriber::fmt::format::Pretty;
+use tracing_subscriber::fmt::time::UtcTime;
+use tracing_subscriber::util::SubscriberInitExt;
 use tracing_subscriber::{filter::LevelFilter, layer::SubscriberExt, registry::Registry};
-use tracing_wasm::{WASMLayer, WASMLayerConfig};
+use tracing_web::{performance_layer, MakeConsoleWriter};
 
 use skus::{errors, http::http, sdk, tracing, Environment, HTTPClient, KVClient, KVStore};
 
@@ -69,10 +72,16 @@ pub fn initialize(
             None => LevelFilter::DEBUG,
         };
 
-        skus::tracing::subscriber::set_global_default(
-            Registry::default().with(WASMLayer::new(WASMLayerConfig::default())).with(level_filter),
-        )
-        .expect("default global");
+        let fmt_layer = tracing_subscriber::fmt::layer()
+            .with_ansi(false)
+            .with_timer(UtcTime::rfc_3339())
+            .with_writer(MakeConsoleWriter);
+        let perf_layer = performance_layer().with_details_from_fields(Pretty::default());
+
+        tracing_subscriber::registry()
+            .with(fmt_layer)
+            .with(perf_layer)
+            .init();
 
         if let Some(remote_sdk) = remote_sdk {
             if remote_sdk {

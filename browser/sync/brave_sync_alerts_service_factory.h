@@ -6,8 +6,12 @@
 #ifndef BRAVE_BROWSER_SYNC_BRAVE_SYNC_ALERTS_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_SYNC_BRAVE_SYNC_ALERTS_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 class BraveSyncAlertsService;
 
@@ -23,7 +27,7 @@ class BraveSyncAlertsServiceFactory : public BrowserContextKeyedServiceFactory {
   static BraveSyncAlertsServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<BraveSyncAlertsServiceFactory>;
+  friend base::NoDestructor<BraveSyncAlertsServiceFactory>;
 
   BraveSyncAlertsServiceFactory();
   ~BraveSyncAlertsServiceFactory() override;

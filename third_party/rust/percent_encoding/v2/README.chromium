@@ -1,0 +1,7 @@
+Name: percent-encoding
+URL: https://crates.io/crates/percent-encoding
+Description: Percent encoding and decoding
+Version: 2.2.0
+Security Critical: yes
+License: Apache 2.0
+Revision: 359bc90a4f07224f79cc79c45dc873d44bcd6f14

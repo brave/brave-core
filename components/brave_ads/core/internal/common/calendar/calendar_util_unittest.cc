@@ -19,12 +19,12 @@ TEST(BraveAdsCalendarUtilTest, GetLastDayOfMonth) {
                                         31, 31, 30, 31, 30, 31};
 
   // Act
+
+  // Assert
   for (int i = 0; i < 12; i++) {
     EXPECT_EQ(kLastDayForMonth[i],
               GetLastDayOfMonth(/*year*/ 2021, /*month*/ i + 1));
   }
-
-  // Assert
 }
 
 TEST(BraveAdsCalendarUtilTest, GetLastDayOfMonthForLeapYear) {
@@ -33,12 +33,12 @@ TEST(BraveAdsCalendarUtilTest, GetLastDayOfMonthForLeapYear) {
                                         31, 31, 30, 31, 30, 31};
 
   // Act
+
+  // Assert
   for (int i = 0; i < 12; i++) {
     EXPECT_EQ(kLastDayForMonth[i],
               GetLastDayOfMonth(/*year*/ 2020, /*month*/ i + 1));
   }
-
-  // Assert
 }
 
 TEST(BraveAdsCalendarUtilTest, GetDayOfWeekForYearMonthAndDay) {

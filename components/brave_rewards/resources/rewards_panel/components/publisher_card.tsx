@@ -5,13 +5,14 @@
 
 import * as React from 'react'
 
+import Icon from '@brave/leo/react/icon'
+
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { getPublisherPlatformName } from '../../shared/lib/publisher_platform'
 import { HostContext, useHostListener } from '../lib/host_context'
 import { NewTabLink } from '../../shared/components/new_tab_link'
 import { ToggleButton } from '../../shared/components/toggle_button'
 import { TokenAmount } from '../../shared/components/token_amount'
-import { VerifiedIcon } from './icons/verified_icon'
 import { LoadingIcon } from '../../shared/components/icons/loading_icon'
 import { InfoIcon } from './icons/info_icon'
 import { RefreshStatusIcon } from './icons/refresh_status_icon'
@@ -50,8 +51,14 @@ export function PublisherCard () {
     }
 
     return (
-      <style.statusIndicator className={publisherVerified ? 'verified' : ''}>
-        <div><VerifiedIcon /></div>
+      <style.statusIndicator>
+        <style.verifiedIcon>
+          {
+            publisherVerified ?
+              <Icon name='verification-filled-color' /> :
+              <Icon name='verification-filled' />
+          }
+        </style.verifiedIcon>
         <div>
           {
             getString(
@@ -162,12 +169,12 @@ export function PublisherCard () {
   return (
     <style.root data-test-id='publisher-card'>
       <style.heading>
-        {
-          publisherInfo.icon &&
-            <style.icon>
-              <img src={publisherInfo.icon} />
-            </style.icon>
-        }
+        <style.icon>
+          <img
+            className={publisherInfo.platform ? 'rounded' : ''}
+            src={publisherInfo.icon}
+          />
+        </style.icon>
         <style.name>
           {getPublisherName()}
           <style.status>

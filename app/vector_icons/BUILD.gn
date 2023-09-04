@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 import("//components/vector_icons/vector_icons.gni")
@@ -25,28 +27,8 @@ aggregate_vector_icons("brave_vector_icons") {
     "open_in_tor.icon",
     "sidebar_toolbar_button.icon",
     "sidebar_toolbar_button_right.icon",
-    "vpn_indicator.icon",
-    "wallet_toolbar_button.icon",
     "web_discovery_infobar_close_button.icon",
   ]
-
-  # The Skia icon names are transformed to make them easier to use in Brave Core
-  # `arrow-right.svg` becomes `leo_arrow_right.icon`
-  leo_icons = [
-    "leo_arrow_right.icon",
-    "leo_heart_filled.icon",
-    "leo_heart_outline.icon",
-    "leo_rss.icon",
-  ]
-
-  if (toolkit_views) {
-    leo_icons += [
-      "leo_plus_add.icon",
-      "leo_search.icon",
-    ]
-  }
-  sources +=
-      rebase_path(leo_icons, ".", "//brave/node_modules/@brave/leo/icons-skia")
 
   if (toolkit_views) {
     sources += [
@@ -67,14 +49,20 @@ aggregate_vector_icons("brave_vector_icons") {
     ]
   }
 
+  if (enable_brave_vpn_panel) {
+    sources += [
+      "vpn_indicator_error.icon",
+      "vpn_indicator_off.icon",
+      "vpn_indicator_on.icon",
+    ]
+  }
+
   if (enable_speedreader) {
     sources += [
-      "brave_reader_mode.icon",
       "brave_speedreader_graphic_book1.icon",
       "brave_speedreader_graphic_book2.icon",
       "brave_speedreader_graphic_book3.icon",
       "brave_speedreader_graphic_lines.icon",
-      "brave_speedreader_mode.icon",
     ]
   }
 }

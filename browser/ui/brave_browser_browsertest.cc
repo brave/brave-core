@@ -41,6 +41,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, NTPFaviconTest) {
       browser()->ShouldDisplayFavicon(tab_model->GetActiveWebContents()));
 }
 
+IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, LoadWebUIURLWithBadSchemeTest) {
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("http://settings/")));
+}
+
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   ASSERT_TRUE(embedded_test_server()->Start());
   Browser* new_browser = OpenNewBrowser(browser()->profile());

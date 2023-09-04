@@ -22,6 +22,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT},
     {kRecordPermissionExpirationTimestamps, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
+    {kPermissionStorageAccessAPI, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace features

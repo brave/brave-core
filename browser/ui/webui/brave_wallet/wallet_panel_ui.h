@@ -53,6 +53,8 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
       mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
           bitcoin_rpc_service,
       mojo::PendingReceiver<brave_wallet::mojom::SwapService> swap_service,
+      mojo::PendingReceiver<brave_wallet::mojom::SimulationService>
+          simulation_service,
       mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
           asset_ratio_service,
       mojo::PendingReceiver<brave_wallet::mojom::KeyringService>
@@ -70,11 +72,15 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
           brave_wallet_service,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
           brave_wallet_p3a,
+      mojo::PendingReceiver<brave_wallet::mojom::WalletPinService>
+          brave_wallet_pin_service_receiver,
+      mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
+          brave_wallet_auto_pin_service_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
           brave_wallet_ipfs_service_receiver) override;
 
   std::unique_ptr<WalletPanelHandler> panel_handler_;
-  std::unique_ptr<WalletHandler> wallet_handler_;
+  std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
   raw_ptr<content::WebContents> active_web_contents_ = nullptr;
 
   base::RepeatingCallback<void(bool)> deactivation_callback_;

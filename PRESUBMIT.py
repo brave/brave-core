@@ -25,6 +25,33 @@ def CheckToModifyInputApi(input_api, _output_api):
     return []
 
 
+# Check Leo variables actually exist
+def CheckLeoVariables(input_api, output_api):
+    def _web_files_filter(affected_file):
+        return input_api.FilterSourceFile(
+            affected_file,
+            files_to_check=[
+                r'.+\.(js|jsx|ts|tsx|css|less|lss|sass|scss|svelte)$',
+                r'package\.json$'
+            ])
+
+    # If no web files were affected, this shouldn't change any Leo variables, so
+    # we can skip running leo-check.
+    if not any(
+            input_api.AffectedFiles(file_filter=_web_files_filter,
+                                    include_deletes=False)):
+        return []
+
+    try:
+        parts = [
+            brave_node.PathInNodeModules('@brave', 'leo', 'src', 'scripts',
+                                         'audit-tokens.js')
+        ]
+        brave_node.RunNode(parts)
+        return []
+    except RuntimeError as err:
+        return [output_api.PresubmitError(err.args[1])]
+
 # Check and fix formatting issues (supports --fix).
 def CheckPatchFormatted(input_api, output_api):
     # Use git cl format to format supported files with Chromium formatters.
@@ -35,6 +62,7 @@ def CheckPatchFormatted(input_api, output_api):
         'format',
         '--presubmit',
         '--python',
+        '--no-rust-fmt',
     ]
 
     # Make sure the passed --upstream branch is applied to git cl format.
@@ -50,8 +78,7 @@ def CheckPatchFormatted(input_api, output_api):
     git_cl_format_cmd.append(input_api.PresubmitLocalPath())
 
     # Run git cl format and get return code.
-    git_cl_format_code, _ = git_cl.RunGitWithCode(git_cl_format_cmd,
-                                                  suppress_stderr=True)
+    git_cl_format_code, _ = git_cl.RunGitWithCode(git_cl_format_cmd)
 
     is_format_required = git_cl_format_code == 2
 
@@ -159,7 +186,7 @@ def CheckLicense(input_api, output_api):
     files_to_check = input_api.DEFAULT_FILES_TO_CHECK + (r'.+\.gni?$', )
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (
         r"\.storybook/",
-        r"ios/browser/api/ledger/legacy_database/core_data_models/",
+        r"ios/browser/api/brave_rewards/legacy_database/core_data_models/",
         r'win_build_output/',
     )
 
@@ -342,5 +369,61 @@ def _ChangeHasSecurityReviewer(*_):
     # We don't have Gerrit API available to check for reviewers.
     return False
 
+
+@chromium_presubmit_overrides.override_check(globals())
+def CheckJavaStyle(_original_check, input_api, output_api):
+    """ Copy of upstream's CheckJavaStyle. The only difference - it uses
+    brave/tools/android/checkstyle/brave-style-5.0.xml style file where all
+    errors are replaced with warnings except UnusedImports.
+    When all style error will be fixed, this function should be removed and
+    the original function from upstream must be used again """
+    def _IsJavaFile(input_api, file_path):
+        return input_api.os_path.splitext(file_path)[1] == ".java"
+
+    # Return early if no java files were modified.
+    if not any(
+            _IsJavaFile(input_api, f.LocalPath())
+            for f in input_api.AffectedFiles()):
+        return []
+
+    import sys  # pylint: disable=import-outside-toplevel
+    # Android toolchain is only available on Linux.
+    if not sys.platform.startswith('linux'):
+        return []
+
+    with import_inline.sys_path(
+            input_api.os_path.join(input_api.PresubmitLocalPath(), 'tools',
+                                   'android')):
+        from checkstyle import checkstyle  # pylint: disable=import-outside-toplevel, import-error
+
+    files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
+
+    # Filter out non-Java files and files that were deleted.
+    java_files = [
+        x.AbsoluteLocalPath() for x in
+        input_api.AffectedSourceFiles(lambda f: input_api.FilterSourceFile(
+            f, files_to_skip=files_to_skip)) if x.LocalPath().endswith('.java')
+    ]
+    if not java_files:
+        return []
+
+    local_path = os.path.join(input_api.PresubmitLocalPath(), 'brave')
+    style_file = os.path.join(input_api.PresubmitLocalPath(), 'brave', 'tools',
+                              'android', 'checkstyle', 'brave-style-5.0.xml')
+    violations = checkstyle.run_checkstyle(local_path, style_file, java_files)
+    warnings = ['  ' + str(v) for v in violations if v.is_warning()]
+    errors = ['  ' + str(v) for v in violations if v.is_error()]
+
+    ret = []
+    if warnings:
+        ret.append(output_api.PresubmitPromptWarning('\n'.join(warnings)))
+    if errors:
+        msg = '\n'.join(errors)
+        if 'Unused import:' in msg or 'Duplicate import' in msg:
+            msg += """
+
+To remove unused imports: ./tools/android/checkstyle/remove_unused_imports.sh"""
+        ret.append(output_api.PresubmitError(msg))
+    return ret
 
 # DON'T ADD NEW CHECKS HERE, ADD THEM BEFORE FIRST inline_presubmit_from_src().

@@ -6,12 +6,16 @@
 #ifndef BRAVE_BROWSER_BRAVE_SHIELDS_FILTER_LIST_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_SHIELDS_FILTER_LIST_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "brave/components/brave_shields/common/filter_list.mojom.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_context.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace brave_shields {
 
@@ -32,7 +36,7 @@ class FilterListServiceFactory : public BrowserContextKeyedServiceFactory {
       mojo::PendingReceiver<mojom::FilterListAndroidHandler> receiver);
 
  private:
-  friend struct base::DefaultSingletonTraits<FilterListServiceFactory>;
+  friend base::NoDestructor<FilterListServiceFactory>;
 
   FilterListServiceFactory();
   ~FilterListServiceFactory() override;

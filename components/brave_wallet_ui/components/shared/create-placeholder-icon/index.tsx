@@ -2,8 +2,12 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
+/* eslint-disable @typescript-eslint/key-spacing */
+
 import * as React from 'react'
 import { background } from 'ethereum-blockies'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 // Constants
 import { BraveWallet } from '../../../constants/types'
@@ -14,94 +18,127 @@ import {
   isRemoteImageURL,
   isValidIconExtension,
   isDataURL,
-  isIpfs
+  isIpfs,
+  isComponentInStorybook,
+  stripChromeImageURL
 } from '../../../utils/string-utils'
+import { isNativeAsset } from '../../../utils/asset-utils'
+
+// Hooks
+import {
+  useGetIpfsGatewayTranslatedNftUrlQuery //
+} from '../../../common/slices/api.slice'
 
 // Styled components
 import { IconWrapper, PlaceholderText } from './style'
 
 // Options
 import { makeNativeAssetLogo } from '../../../options/asset-options'
-import { translateToNftGateway } from '../../../common/async/lib'
 
 interface Config {
-  size: 'big' | 'medium' | 'small'
+  size: 'big' | 'medium' | 'small' | 'tiny'
   marginLeft?: number
   marginRight?: number
 }
 
 interface Props {
-  asset: BraveWallet.BlockchainToken | undefined
-  network: BraveWallet.NetworkInfo | undefined
+  asset:
+    | Pick<
+        BraveWallet.BlockchainToken,
+        | 'symbol'
+        | 'logo'
+        | 'isNft'
+        | 'isErc721'
+        | 'contractAddress'
+        | 'name'
+        | 'chainId'
+      >
+    | undefined
+  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'symbol'> | undefined
 }
 
-function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config: Config) {
-  const {
-    size,
-    marginLeft,
-    marginRight
-  } = config
+const isStorybook = isComponentInStorybook()
 
-  return function (props: Props) {
-    const { asset, network } = props
+export function withPlaceholderIcon<
+  P extends {
+    icon?: string
+  } & JSX.IntrinsicAttributes,
+  PROPS_FOR_FUNCTION = Omit<P, 'icon' | 'onLoad'>
+>(
+  // ignore "onLoad" prop differences since it is not used
+  WrappedComponent: React.ComponentType<
+    PROPS_FOR_FUNCTION & { icon?: string | undefined }
+  >,
+  config: Config
+): (props: Props & PROPS_FOR_FUNCTION) => JSX.Element | null {
+  const { size, marginLeft, marginRight } = config
 
-    if (!asset || !network) {
-      return null
-    }
+  return function (funcProps: Props & PROPS_FOR_FUNCTION) {
+    const { asset, network, ...wrappedComponentProps } = funcProps
 
-    const nativeAssetLogo = makeNativeAssetLogo(network.symbol, network.chainId)
+    const isNative = asset && isNativeAsset(asset)
 
-    const isNativeAsset = React.useMemo(() =>
-      asset.symbol.toLowerCase() === network.symbol.toLowerCase(),
-      [network.symbol, asset.symbol]
+    const nativeAssetLogo =
+      isNative && asset ? makeNativeAssetLogo(asset.symbol, asset.chainId) : ''
+
+    const tokenImageURL = stripERC20TokenImageURL(
+      nativeAssetLogo || asset?.logo || ''
+    )
+    const isRemoteURL = isRemoteImageURL(tokenImageURL)
+
+    const isNonFungibleToken = asset?.isNft || asset?.isErc721
+
+    // queries
+    const { data: ipfsUrl } = useGetIpfsGatewayTranslatedNftUrlQuery(
+      tokenImageURL || skipToken
     )
 
-    const isNonFungibleToken = React.useMemo(() => asset.isNft || asset.isErc721, [asset.isNft, asset.isErc721])
-
-    const tokenImageURL = stripERC20TokenImageURL(asset.logo)
-    const isRemoteURL = isRemoteImageURL(tokenImageURL)
-    const isStorybook = asset.logo.startsWith('static/media/components/brave_wallet_ui/')
-
+    // memos + computed
     const isValidIcon = React.useMemo(() => {
-      if (isRemoteURL || isDataURL(asset.logo)) {
-        return tokenImageURL?.includes('data:image/') || isIpfs(tokenImageURL) || isNonFungibleToken ? true : isValidIconExtension(new URL(asset.logo).pathname)
-      }
       if (isStorybook) {
-        return true
+        return !!asset?.logo
+      }
+
+      const isDataUri = isDataURL(asset?.logo)
+
+      if (isRemoteURL || isDataUri) {
+        return tokenImageURL?.includes('data:image/') ||
+          isIpfs(tokenImageURL) ||
+          isNonFungibleToken
+          ? true
+          : isValidIconExtension(new URL(asset?.logo || '').pathname)
       }
       return false
-    }, [isRemoteURL, tokenImageURL, asset.logo, isStorybook])
+    }, [isRemoteURL, tokenImageURL, asset?.logo, isStorybook])
 
-    const needsPlaceholder = isNativeAsset
-      ? (tokenImageURL === '' || !isValidIcon) && nativeAssetLogo === ''
-      : tokenImageURL === '' || !isValidIcon
+    const needsPlaceholder =
+      (tokenImageURL === '' || !isValidIcon) && nativeAssetLogo === ''
 
     const bg = React.useMemo(() => {
       if (needsPlaceholder) {
-        return background({ seed: asset.contractAddress ? asset.contractAddress.toLowerCase() : asset.name })
+        return background({
+          seed: asset?.contractAddress
+            ? asset?.contractAddress.toLowerCase()
+            : asset?.name
+        })
       }
-    }, [needsPlaceholder, asset.contractAddress, asset.name])
-
-    const [ipfsUrl, setIpfsUrl] = React.useState<string>()
-
-    // memos
-    React.useEffect(() => {
-      let ignore = false
-      translateToNftGateway(tokenImageURL).then(
-        (v) => { if (!ignore) setIpfsUrl(v) })
-      return () => {
-        ignore = true
-      }
-    }, [tokenImageURL])
+    }, [needsPlaceholder, asset?.contractAddress, asset?.name])
 
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
-        return `chrome://image?${ipfsUrl}`
+        return isStorybook ? ipfsUrl || '' : `chrome://image?${ipfsUrl}`
       }
       return ''
     }, [isRemoteURL, tokenImageURL, ipfsUrl])
 
-    if (needsPlaceholder) {
+    // render
+    if (!asset) {
+      return null
+    }
+
+    const icon = nativeAssetLogo || (isRemoteURL ? remoteImage : asset?.logo)
+
+    if (needsPlaceholder || !icon) {
       return (
         <IconWrapper
           panelBackground={bg}
@@ -110,7 +147,9 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
           marginLeft={marginLeft ?? 0}
           marginRight={marginRight ?? 0}
         >
-          <PlaceholderText size={size}>{asset.symbol.charAt(0)}</PlaceholderText>
+          <PlaceholderText size={size}>
+            {asset?.symbol.charAt(0) || '?'}
+          </PlaceholderText>
         </IconWrapper>
       )
     }
@@ -123,11 +162,10 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
         marginRight={marginRight ?? 0}
       >
         <WrappedComponent
-          icon={
-            isNativeAsset && nativeAssetLogo
-              ? nativeAssetLogo
-              : isRemoteURL ? remoteImage : asset.logo
-          }
+          {...(wrappedComponentProps as PROPS_FOR_FUNCTION & {
+            icon?: undefined
+          })}
+          icon={isStorybook ? stripChromeImageURL(tokenImageURL) : icon}
         />
       </IconWrapper>
     )

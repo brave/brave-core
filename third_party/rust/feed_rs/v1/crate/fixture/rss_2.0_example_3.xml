@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/" version="2.0">
+    <channel>
+        <title>News, Politics, Opinion, Commentary, and Analysis</title>
+        <description>In-depth reporting, commentary on breaking news, political analysis, and opinion from The New
+            Yorker.
+        </description>
+        <link>https://www.newyorker.com/news</link>
+        <atom:link href="https://www.newyorker.com/feed/news/rss" rel="self" type="application/atom+xml"/>
+        <copyright>© Condé Nast 2019</copyright>
+        <language>en</language>
+        <lastBuildDate>Tue, 06 Aug 2019 10:46:05 +0000</lastBuildDate>
+        <item>
+            <title>How a Historian Uncovered Ronald Reagan’s Racist Remarks to Richard Nixon</title>
+            <link>
+                https://www.newyorker.com/news/q-and-a/how-a-historian-uncovered-ronald-reagans-racist-remarks-to-richard-nixon
+            </link>
+            <guid isPermaLink="false">5d420f3abfe6c20008d5eaad</guid>
+            <pubDate>Fri, 02 Aug 2019 15:35:34 +0000</pubDate>
+            <media:content/>
+            <description>Isaac Chotiner talks with the historian Tim Naftali, who published the text and audio of a
+                taped call, from 1971, in which Reagan described the African delegates to the U.N. in luridly racist
+                terms.
+            </description>
+            <category>News / Q. &amp; A.</category>
+            <media:keywords>Ronald Reagan, Richard Nixon, Racism, History</media:keywords>
+            <dc:creator>Isaac Chotiner</dc:creator>
+            <dc:modified>Fri, 02 Aug 2019 15:35:34 +0000</dc:modified>
+            <dc:publisher>Condé Nast</dc:publisher>
+            <media:thumbnail
+                    url="https://media.newyorker.com/photos/5d4211a4ba8a9c0009a57cfd/master/pass/Chotiner-ReaganRacismNaftali-3.jpg"
+                    width="2560" height="1819"/>
+        </item>
+    </channel>
+</rss>

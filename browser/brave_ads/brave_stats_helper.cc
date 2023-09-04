@@ -9,7 +9,7 @@
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_stats/first_run_util.h"
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/pref_names.h"
@@ -128,7 +128,7 @@ void BraveStatsHelper::OnLastUsedProfileChanged() {
   ads_enabled_pref_change_registrar_.RemoveAll();
   ads_enabled_pref_change_registrar_.Init(profile_prefs);
   ads_enabled_pref_change_registrar_.Add(
-      prefs::kEnabled,
+      prefs::kOptedInToNotificationAds,
       base::BindRepeating(&BraveStatsHelper::Update, base::Unretained(this)));
   Update();
 }
@@ -138,7 +138,7 @@ void BraveStatsHelper::Update() {
   if (profile_prefs == nullptr) {
     return;
   }
-  bool is_enabled = profile_prefs->GetBoolean(prefs::kEnabled);
+  bool is_enabled = profile_prefs->GetBoolean(prefs::kOptedInToNotificationAds);
   UpdateLocalStateAdsEnabled(is_enabled);
   MaybeReportAdsInstallationTimeMetric(is_enabled);
 }

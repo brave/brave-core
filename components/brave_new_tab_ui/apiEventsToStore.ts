@@ -119,11 +119,7 @@ function fetchRewardsData () {
 
 chrome.braveRewards.initialized.addListener(fetchRewardsData)
 
-chrome.braveRewards.onRewardsWalletUpdated.addListener(fetchRewardsData)
-
-chrome.braveRewards.onAdsEnabled.addListener((enabled: boolean) => {
-  getActions().onAdsEnabled(enabled)
-})
+chrome.braveRewards.onRewardsWalletCreated.addListener(fetchRewardsData)
 
 chrome.braveRewards.onPromotions.addListener((result: number, promotions: NewTab.Promotion[]) => {
   getActions().onPromotions(result, promotions)
@@ -136,3 +132,7 @@ chrome.braveRewards.onPromotionFinish.addListener((result: number, promotion: Ne
 chrome.braveRewards.onCompleteReset.addListener((properties: { success: boolean }) => {
   getActions().onCompleteReset(properties.success)
 })
+
+chrome.braveRewards.onExternalWalletLoggedOut.addListener(fetchRewardsData)
+
+chrome.braveRewards.onExternalWalletDisconnected.addListener(fetchRewardsData)

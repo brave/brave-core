@@ -10,7 +10,7 @@ import {
   ChannelsListenerReceiver
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import getBraveNewsController from '.'
-import { CachingWrapper } from './magicCache'
+import { CachingWrapper } from '$web-common/mojomCache'
 
 export class ChannelsCachingWrapper
   extends CachingWrapper<Channel>

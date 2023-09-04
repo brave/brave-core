@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 import { StyledWidget, StyledWidgetContainer } from './styles'
-import WidgetMenu from './widgetMenu'
+import WidgetMenu, { WidgetMenuCustomItem } from './widgetMenu'
 
 type HideWidgetFunction = () => void
 
@@ -23,6 +23,7 @@ export interface WidgetProps {
   onAddSite?: () => void
   customLinksEnabled?: boolean
   onToggleCustomLinksEnabled?: () => void
+  customMenuItems?: WidgetMenuCustomItem[]
 }
 
 export interface WidgetState {
@@ -44,6 +45,7 @@ export function Widget ({
   onAddSite,
   customLinksEnabled,
   onToggleCustomLinksEnabled,
+  customMenuItems,
   children
 }: WidgetProps & { children: React.ReactNode }) {
   const [widgetMenuPersist, setWidgetMenuPersist] = React.useState(!!isForeground)
@@ -63,6 +65,7 @@ export function Widget ({
         onAddSite={onAddSite}
         customLinksEnabled={customLinksEnabled}
         onToggleCustomLinksEnabled={onToggleCustomLinksEnabled}
+        customMenuItems={customMenuItems}
         isForeground={isForeground}
         widgetMenuPersist={widgetMenuPersist}
         textDirection={textDirection}

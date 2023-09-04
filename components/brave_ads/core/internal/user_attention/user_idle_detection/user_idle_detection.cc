@@ -6,16 +6,14 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 
 namespace brave_ads {
 
 UserIdleDetection::UserIdleDetection() {
-  MaybeUpdateIdleTimeThreshold();
-
   AdsClientHelper::AddObserver(this);
 }
 
@@ -28,17 +26,23 @@ UserIdleDetection::~UserIdleDetection() {
 void UserIdleDetection::OnNotifyUserDidBecomeActive(
     const base::TimeDelta idle_time,
     const bool screen_was_locked) {
+  if (!UserHasJoinedBraveRewards()) {
+    return;
+  }
+
   BLOG(1, "User is active after " << idle_time);
   if (screen_was_locked) {
     BLOG(1, "Screen was locked before the user become active");
   }
 
-  MaybeUpdateIdleTimeThreshold();
-
   SetLastUnIdleTimeDiagnosticEntry(base::Time::Now());
 }
 
 void UserIdleDetection::OnNotifyUserDidBecomeIdle() {
+  if (!UserHasJoinedBraveRewards()) {
+    return;
+  }
+
   BLOG(1, "User is idle");
 }
 

@@ -1,0 +1,30 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+
+assert(is_win)
+
+source_set("service") {
+  sources = [
+    "brave_wireguard_manager.cc",
+    "brave_wireguard_manager.h",
+    "install_utils.cc",
+    "install_utils.h",
+    "wireguard_service_runner.cc",
+    "wireguard_service_runner.h",
+    "wireguard_tunnel_service.cc",
+    "wireguard_tunnel_service.h",
+  ]
+
+  public_deps = [ "//brave/components/brave_vpn/common/wireguard/win:brave_wireguard_manager_idl" ]
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/common/win",
+    "//brave/components/brave_vpn/common/wireguard/win",
+    "//chrome/installer/util:with_no_strings",
+  ]
+  libs = [ "Shell32.lib" ]
+}

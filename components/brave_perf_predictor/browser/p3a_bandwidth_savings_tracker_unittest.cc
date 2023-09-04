@@ -30,9 +30,9 @@ class P3ABandwidthSavingsTrackerTest : public ::testing::Test {
   }
 
  protected:
-  raw_ptr<base::SimpleTestClock> clock_ = nullptr;
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<P3ABandwidthSavingsTracker> tracker_;
+  raw_ptr<base::SimpleTestClock> clock_ = nullptr;
 };
 
 TEST_F(P3ABandwidthSavingsTrackerTest, RecordSavingsHistogram) {

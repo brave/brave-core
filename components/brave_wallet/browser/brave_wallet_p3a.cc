@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 
+#include <string>
 #include <utility>
 
 #include "base/metrics/histogram_functions.h"
@@ -14,7 +15,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "components/prefs/pref_service.h"
@@ -24,9 +24,10 @@ namespace brave_wallet {
 
 const char kKeyringCreatedHistogramName[] = "Brave.Wallet.KeyringCreated";
 const char kOnboardingConversionHistogramName[] =
-    "Brave.Wallet.OnboardingConversion.2";
-const char kEthProviderHistogramName[] = "Brave.Wallet.EthProvider.3";
-const char kSolProviderHistogramName[] = "Brave.Wallet.SolProvider";
+    "Brave.Wallet.OnboardingConversion.3";
+const char kNewUserBalanceHistogramName[] = "Brave.Wallet.NewUserBalance";
+const char kEthProviderHistogramName[] = "Brave.Wallet.EthProvider.4";
+const char kSolProviderHistogramName[] = "Brave.Wallet.SolProvider.2";
 const char kEthTransactionSentHistogramName[] =
     "Brave.Wallet.EthTransactionSent";
 const char kSolTransactionSentHistogramName[] =
@@ -43,16 +44,22 @@ const char kBraveWalletNewUserReturningHistogramName[] =
     "Brave.Wallet.NewUserReturning";
 const char kBraveWalletLastUsageTimeHistogramName[] =
     "Brave.Wallet.LastUsageTime";
+const char kBraveWalletNFTCountHistogramName[] = "Brave.Wallet.NFTCount";
+const char kBraveWalletNFTNewUserHistogramName[] = "Brave.Wallet.NFTNewUser";
+const char kBraveWalletNFTDiscoveryEnabledHistogramName[] =
+    "Brave.Wallet.NFTDiscoveryEnabled";
 
 namespace {
 
-constexpr int kRefreshP3AFrequencyHours = 24;
-constexpr int kActiveAccountBuckets[] = {0, 1, 2, 3, 7};
+const int kRefreshP3AFrequencyHours = 24;
+const int kActiveAccountBuckets[] = {0, 1, 2, 3, 7};
 const char* kTimePrefsToMigrateToLocalState[] = {kBraveWalletLastUnlockTime,
                                                  kBraveWalletP3AFirstUnlockTime,
                                                  kBraveWalletP3ALastUnlockTime};
 const char* kTimePrefsToRemove[] = {kBraveWalletP3AFirstReportTime,
                                     kBraveWalletP3ALastReportTime};
+const int kNFTCountBuckets[] = {0, 4, 20};
+constexpr base::TimeDelta kOnboardingRecordDelay = base::Seconds(120);
 
 // Has the Wallet keyring been created?
 // 0) No, 1) Yes
@@ -79,10 +86,24 @@ BraveWalletP3A::BraveWalletP3A(BraveWalletService* wallet_service,
   RecordInitialBraveWalletP3AState();
   AddObservers();
 
-  pref_change_registrar_.Init(local_state_);
-  pref_change_registrar_.Add(kBraveWalletLastUnlockTime,
-                             base::BindRepeating(&BraveWalletP3A::ReportUsage,
-                                                 base::Unretained(this), true));
+  local_state_change_registrar_.Init(local_state_);
+  local_state_change_registrar_.Add(
+      kBraveWalletLastUnlockTime,
+      base::BindRepeating(&BraveWalletP3A::ReportUsage, base::Unretained(this),
+                          true));
+  profile_pref_change_registrar_.Init(profile_prefs_);
+  profile_pref_change_registrar_.Add(
+      kBraveWalletNftDiscoveryEnabled,
+      base::BindRepeating(&BraveWalletP3A::ReportNftDiscoverySetting,
+                          base::Unretained(this)));
+
+  // try to record the onboarding histogram
+  // just in the case the user quit the app
+  // before the 120 second deadline in the last
+  // app session
+  RecordOnboardingHistogram();
+
+  ReportNftDiscoverySetting();
 }
 
 BraveWalletP3A::BraveWalletP3A() = default;
@@ -131,15 +152,16 @@ void BraveWalletP3A::ReportUsage(bool unlocked) {
   p3a_utils::RecordFeatureLastUsageTimeMetric(
       local_state_, kBraveWalletP3ALastUnlockTime,
       kBraveWalletLastUsageTimeHistogramName);
+
+  ReportNftDiscoverySetting();
 }
 
 void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
                                       mojom::CoinType coin_type,
-                                      bool use_native_wallet_enabled,
                                       bool allow_provider_overwrite) {
   CHECK(coin_type == mojom::CoinType::ETH || coin_type == mojom::CoinType::SOL);
 
-  absl::optional<std::string> keyring_id =
+  const auto keyring_id =
       keyring_service_->GetKeyringIdForCoinNonFIL(coin_type);
   CHECK(keyring_id.has_value());
 
@@ -160,20 +182,20 @@ void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
 
   switch (provider_type) {
     case mojom::JSProviderType::None:
-      // If there is no provider at all, we can assume that
-      // the native wallet is disabled
-      answer = JSProviderAnswer::kWalletDisabled;
+      if (is_wallet_setup) {
+        answer = JSProviderAnswer::kWalletDisabled;
+      } else {
+        answer = JSProviderAnswer::kNoWallet;
+      }
       break;
     case mojom::JSProviderType::ThirdParty:
       // Third-party overriding is considered if the native wallet
       // is enabled and the native wallet is setup.
-      answer = use_native_wallet_enabled && is_wallet_setup
+      answer = is_wallet_setup && allow_provider_overwrite
                    ? JSProviderAnswer::kThirdPartyOverriding
                    : JSProviderAnswer::kThirdPartyNotOverriding;
       break;
     case mojom::JSProviderType::Native:
-      // Only report native wallet provider if wallet has been set up,
-      // otherwise report "no wallet".
       if (is_wallet_setup) {
         // A native wallet is definitely not being overridden
         // if provider overwrites are allowed.
@@ -189,10 +211,54 @@ void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
   base::UmaHistogramEnumeration(histogram_name, answer);
 }
 
-void BraveWalletP3A::ReportOnboardingAction(
-    mojom::OnboardingAction onboarding_action) {
-  UMA_HISTOGRAM_ENUMERATION(kOnboardingConversionHistogramName,
-                            onboarding_action);
+absl::optional<mojom::OnboardingAction>
+BraveWalletP3A::GetLastOnboardingAction() {
+  if (local_state_->HasPrefPath(kBraveWalletP3AOnboardingLastStep)) {
+    int pref_value =
+        local_state_->GetInteger(kBraveWalletP3AOnboardingLastStep);
+    return static_cast<mojom::OnboardingAction>(pref_value);
+  }
+  return absl::nullopt;
+}
+
+void BraveWalletP3A::ReportOnboardingAction(mojom::OnboardingAction action) {
+  if (action == mojom::OnboardingAction::StartRestore) {
+    // We do not want to monitor wallet restores; cancel the
+    // histogram record timer and wipe out the last onboarding step.
+    local_state_->ClearPref(kBraveWalletP3AOnboardingLastStep);
+    onboarding_report_timer_.Stop();
+    return;
+  }
+  absl::optional<mojom::OnboardingAction> last_step = GetLastOnboardingAction();
+  if (!last_step.has_value() || *last_step < action) {
+    // Only record steps that are ahead of the previous step so we
+    // don't record back navigation.
+    local_state_->SetInteger(kBraveWalletP3AOnboardingLastStep,
+                             static_cast<int>(action));
+  }
+  if (onboarding_report_timer_.IsRunning() ||
+      action == mojom::OnboardingAction::Shown) {
+    // If the event is the first possible action (aka the shown event),
+    // or if timer is already running (re)start the timer to debounce.
+    onboarding_report_timer_.Start(
+        FROM_HERE, kOnboardingRecordDelay,
+        base::BindOnce(&BraveWalletP3A::RecordOnboardingHistogram,
+                       base::Unretained(this)));
+  } else {
+    // If the timer is not running and the action is after the first possible
+    // event, report it right away since it probably missed the 120 sec
+    // deadline.
+    RecordOnboardingHistogram();
+  }
+}
+
+void BraveWalletP3A::RecordOnboardingHistogram() {
+  absl::optional<mojom::OnboardingAction> last_step = GetLastOnboardingAction();
+  if (!last_step.has_value()) {
+    return;
+  }
+  local_state_->ClearPref(kBraveWalletP3AOnboardingLastStep);
+  UMA_HISTOGRAM_ENUMERATION(kOnboardingConversionHistogramName, *last_step);
 }
 
 void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
@@ -281,6 +347,36 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
   }
   p3a_utils::RecordToHistogramBucket(histogram_name, kActiveAccountBuckets,
                                      count);
+
+  if (count > 0) {
+    MaybeRecordNewUserBalance();
+  }
+}
+
+void BraveWalletP3A::RecordNFTGalleryView(int nft_count) {
+  if (!local_state_->GetBoolean(kBraveWalletP3ANFTGalleryUsed)) {
+    local_state_->SetBoolean(kBraveWalletP3ANFTGalleryUsed, true);
+    UMA_HISTOGRAM_BOOLEAN(kBraveWalletNFTNewUserHistogramName, true);
+  }
+  p3a_utils::RecordToHistogramBucket(kBraveWalletNFTCountHistogramName,
+                                     kNFTCountBuckets, nft_count);
+}
+
+void BraveWalletP3A::MaybeRecordNewUserBalance() {
+  base::Time deadline = base::Time::Now() - base::Days(7);
+  if (local_state_->GetTime(kBraveWalletP3AFirstUnlockTime) >= deadline &&
+      !local_state_->GetBoolean(kBraveWalletP3ANewUserBalanceReported)) {
+    UMA_HISTOGRAM_BOOLEAN(kNewUserBalanceHistogramName, true);
+    local_state_->SetBoolean(kBraveWalletP3ANewUserBalanceReported, true);
+  }
+}
+
+void BraveWalletP3A::ReportNftDiscoverySetting() {
+  if (!local_state_->GetTime(kBraveWalletLastUnlockTime).is_null()) {
+    UMA_HISTOGRAM_BOOLEAN(
+        kBraveWalletNFTDiscoveryEnabledHistogramName,
+        profile_prefs_->GetBoolean(kBraveWalletNftDiscoveryEnabled));
+  }
 }
 
 // TODO(djandries): remove pref migration around November 2023
@@ -330,7 +426,7 @@ void BraveWalletP3A::RecordInitialBraveWalletP3AState() {
 }
 
 // KeyringServiceObserver
-void BraveWalletP3A::KeyringCreated(const std::string& keyring_id) {
+void BraveWalletP3A::KeyringCreated(mojom::KeyringId keyring_id) {
   keyring_service_->GetKeyringInfo(keyring_id,
                                    base::BindOnce(&RecordKeyringCreated));
 }

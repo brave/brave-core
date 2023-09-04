@@ -5,7 +5,7 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/components/brave_wallet/common/common_util.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 

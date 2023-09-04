@@ -6,6 +6,7 @@
 from os.path import dirname, realpath, join, exists
 
 import os
+import sys
 
 from lib.util import execute
 
@@ -24,12 +25,8 @@ def can_generate_sig_file():
 
 
 def generate_sig_file(input_file, output_file, flags):
-    # N.B.: We are invoking Python 2 below because signature_generator.py still
-    # uses it. It also expects the `cryptography` library to be pre-installed.
-    # We should migrate the script to Python 3 and use .vpython3 files to fetch
-    # the library instead.
     execute([
-        'python', SIGNATURE_GENERATOR_PY, '--input_file', input_file,
+        sys.executable, SIGNATURE_GENERATOR_PY, '--input_file', input_file,
         '--output_file', output_file, '--flags', flags, '--certificate',
         SIGN_WIDEVINE_CERT, '--private_key', SIGN_WIDEVINE_KEY,
         '--private_key_passphrase', SIGN_WIDEVINE_PASSPHRASE

@@ -8,9 +8,13 @@
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
-#include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace network_time {
 class NetworkTimeTracker;
@@ -36,7 +40,7 @@ class NetworkTimeHelper {
   void SetNetworkTimeForTest(const base::Time& time);
 
  private:
-  friend struct base::DefaultSingletonTraits<NetworkTimeHelper>;
+  friend base::NoDestructor<NetworkTimeHelper>;
 
   void GetNetworkTimeOnUIThread(GetNetworkTimeCallback cb);
 

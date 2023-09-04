@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/notification_ads/notification_ads_per_day_permission_rule.h"
 
-#include "brave/components/brave_ads/common/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/public/feature/notification_ad_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -19,7 +19,7 @@ class BraveAdsNotificationAdsPerDayPermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
-       AllowAdIfThereIsNoAdsHistory) {
+       ShouldAllowIfThereAreNoAdEvents) {
   // Arrange
 
   // Act
@@ -29,10 +29,10 @@ TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
 }
 
 TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
-       AllowAdIfDoesNotExceedCap) {
+       ShouldAllowIfDoesNotExceedCap) {
   // Arrange
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumNotificationAdsPerDay.Get() - 1);
+  RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
+                           /*count*/ kMaximumNotificationAdsPerDay.Get() - 1);
 
   // Act
 
@@ -41,10 +41,10 @@ TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
 }
 
 TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
-       AllowAdIfDoesNotExceedCapAfter1Day) {
+       ShouldAllowIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumNotificationAdsPerDay.Get());
+  RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
+                           /*count*/ kMaximumNotificationAdsPerDay.Get());
 
   // Act
   AdvanceClockBy(base::Days(1));
@@ -54,10 +54,10 @@ TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
 }
 
 TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
-       DoNotAllowAdIfExceedsCapWithin1Day) {
+       ShouldNotAllowIfExceedsCapWithin1Day) {
   // Arrange
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumNotificationAdsPerDay.Get());
+  RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
+                           /*count*/ kMaximumNotificationAdsPerDay.Get());
 
   // Act
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));

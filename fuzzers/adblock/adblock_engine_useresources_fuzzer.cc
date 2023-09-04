@@ -8,7 +8,7 @@
 #include <iostream>
 #include <string>
 
-#include "brave/components/adblock_rust_ffi/src/wrapper.h"
+#include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
   FuzzedDataProvider data_provider(data, size);
@@ -18,7 +18,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     std::cout << input << std::endl;
   }
 
-  adblock::Engine engine;
-  engine.useResources(input);
+  rust::Box<adblock::Engine> engine = adblock::new_engine();
+  engine->use_resources(input);
   return 0;
 }

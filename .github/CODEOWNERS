@@ -9,7 +9,24 @@ Jenkinsfile @brave/devops-team
 DEPS @brave/deps-reviewers
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
+
+# Rust deps
 **/Cargo.* @brave/rust-deps-reviewers
+third_party/rust @bridiver
+
+# Rust code
+**/*.rs @brave/rust-reviewers
+
+# Third-party binaries
+**/*.aar @bridiver
+**/*.jar @bridiver
+**/*.apk @bridiver
+**/*.dex @bridiver
+**/*.lib @bridiver
+**/*.so @bridiver
+**/*.o @bridiver
+**/*.dll @bridiver
+**/*.dylib @bridiver
 
 # Strings
 **/*.grd @brave/string-reviewers-team
@@ -25,7 +42,7 @@ browser/ui/webui/brave_rewards_page_ui.h @brave/rewards-client
 browser/ui/webui/brave_rewards_ui.cc @brave/rewards-client
 browser/ui/webui/brave_rewards_ui.h @brave/rewards-client
 components/brave_rewards/ @brave/rewards-client
-components/services/bat_ledger/ @brave/rewards-client
+components/services/bat_rewards/ @brave/rewards-client
 
 # Ads
 browser/brave_ads/**/*.cc @brave/ads-client
@@ -70,19 +87,33 @@ script/generate_licenses.py @fmarier
 
 # Crypto Wallets
 browser/brave_wallet/ @brave/crypto-wallets-core
+browser/ui/brave_wallet/ @brave/crypto-wallets-core
+browser/ui/wallet_bubble_manager_delegate_impl.* @brave/crypto-wallets-core
+browser/ui/webui/brave_wallet/ @brave/crypto-wallets-core
+browser/ui/views/wallet_bubble_focus_observer* @brave/crypto-wallets-core
 components/brave_wallet/ @brave/crypto-wallets-core
-components/brave_wallet/browser/brave_wallet_provider_delegate.h @brave/crypto-wallets-core @brave/ios
-components/brave_wallet/resources/*.js @brave/crypto-wallets-core @brave/ios
+components/brave_wallet/browser/brave_wallet_provider_delegate.h @brave/crypto-wallets-core @brave/crypto-wallets-ios
+components/brave_wallet/common/brave_wallet.mojom @brave/crypto-wallets-ios
+components/brave_wallet/renderer/ @brave/crypto-wallets-ios
+components/brave_wallet/resources/*.js @brave/crypto-wallets-core @brave/crypto-wallets-ios
 components/brave_wallet_ui/ @brave/crypto-wallets-front-end
+ios/browser/brave_wallet/ @brave/crypto-wallets-ios
+ios/browser/api/brave_wallet @brave/crypto-wallets-ios
+renderer/brave_wallet/ @brave/crypto-wallets-core @brave/crypto-wallets-ios
 
 # Brave Referrals Service
 components/brave_referrals/browser/brave_referrals_service* @simonhong
 
 # Brave Sync
+browser/android/brave_sync_worker.* @brave/sync-reviewers
+browser/sync/ @brave/sync-reviewers
+browser/ui/webui/settings/brave_sync_handler.* @brave/sync-reviewers
 components/brave_sync/ @brave/sync-reviewers
-components/sync/driver/ @brave/sync-reviewers
+components/sync/service/ @brave/sync-reviewers
+components/sync_device_info/ @brave/sync-reviewers
 chromium_src/components/sync/ @brave/sync-reviewers
-chromium_src/components/sync_device_info/device_info_sync_bridge.cc @brave/sync-reviewers
+chromium_src/components/sync_device_info/ @brave/sync-reviewers
+ios/browser/api/sync/brave_sync_worker.* @brave/sync-reviewers
 
 # Speedreader
 browser/speedreader/ @iefremov
@@ -131,3 +162,7 @@ android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java
 /.github/ @brave/devops-team
 /.github/CODEOWNERS @brave/devops-team @bsclifton
 /.github/PULL_REQUEST_TEMPLATE.md @bsclifton
+
+
+# Semgrep configuration
+/.semgrepignore @thypon

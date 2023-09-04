@@ -4,6 +4,12 @@
 
 import styled from 'styled-components'
 
+export const StyledModalWrapper = styled('div') <{}>`
+  #modal > div {
+    max-width: 80%;
+  }
+`
+
 export const StyledWrapper = styled('div')<{}>`
   font-family: ${p => p.theme.fontFamily.heading};
   padding-top: 10px;

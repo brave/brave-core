@@ -36,6 +36,7 @@
 #include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
 #include "ui/views/layout/flex_layout.h"
 
 BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
@@ -44,12 +45,32 @@ BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
 BraveTabStrip::~BraveTabStrip() = default;
 
 bool BraveTabStrip::IsVerticalTabsFloating() const {
-  DCHECK(ShouldShowVerticalTabs())
-      << "This method should be called when vertical tab strip is enabled";
+  if (!ShouldShowVerticalTabs()) {
+    // Can happen when switching the orientation
+    return false;
+  }
 
-  const auto* prefs = controller_->GetProfile()->GetPrefs();
-  return prefs->GetBoolean(brave_tabs::kVerticalTabsFloatingEnabled) &&
-         prefs->GetBoolean(brave_tabs::kVerticalTabsCollapsed);
+  auto* browser = GetBrowser();
+  DCHECK(browser);
+  auto* browser_view = static_cast<BraveBrowserView*>(
+      BrowserView::GetBrowserViewForBrowser(browser));
+  if (!browser_view) {
+    // Could be null during the start-up.
+    return false;
+  }
+
+  auto* vertical_region_view =
+      browser_view->vertical_tab_strip_widget_delegate_view()
+          ->vertical_tab_strip_region_view();
+  DCHECK(vertical_region_view);
+
+  return vertical_region_view->state() ==
+             VerticalTabStripRegionView::State::kFloating ||
+         (vertical_region_view->is_animating() &&
+          vertical_region_view->last_state() ==
+              VerticalTabStripRegionView::State::kFloating &&
+          vertical_region_view->state() ==
+              VerticalTabStripRegionView::State::kCollapsed);
 }
 
 bool BraveTabStrip::ShouldDrawStrokes() const {
@@ -201,6 +222,9 @@ void BraveTabStrip::UpdateTabContainer() {
   const bool is_using_compound_tab_container =
       tab_container_->GetClassName() ==
       BraveCompoundTabContainer::kViewClassName;
+  const bool using_sticky_pinned_tabs = base::FeatureList::IsEnabled(
+      tabs::features::kBraveVerticalTabsStickyPinnedTabs);
+
   base::ScopedClosureRunner layout_lock;
   if (should_use_compound_tab_container != is_using_compound_tab_container) {
     // Before removing any child, we should complete the 'tab closing animation'
@@ -214,14 +238,23 @@ void BraveTabStrip::UpdateTabContainer() {
     if (should_use_compound_tab_container) {
       // Container should be attached before TabDragContext so that dragged
       // views can be atop container.
+      auto* drag_context = GetDragContext();
       auto* brave_tab_container = AddChildViewAt(
           std::make_unique<BraveCompoundTabContainer>(
-              raw_ref<TabContainerController>::from_ptr(this),
-              hover_card_controller_.get(), GetDragContext(), *this, this),
+              *this, hover_card_controller_.get(), drag_context, *this, this),
           0);
       tab_container_ = *brave_tab_container;
       layout_lock =
           base::ScopedClosureRunner(brave_tab_container->LockLayout());
+
+      if (using_sticky_pinned_tabs) {
+        brave_tab_container->SetScrollEnabled(using_vertical_tabs);
+
+        // Make dragged views on top of container's layer.
+        drag_context->SetPaintToLayer();
+        drag_context->layer()->SetFillsBoundsOpaquely(false);
+        drag_context->parent()->ReorderChildView(drag_context, -1);
+      }
     } else {
       // Container should be attached before TabDragContext so that dragged
       // views can be atop container.
@@ -233,6 +266,10 @@ void BraveTabStrip::UpdateTabContainer() {
       tab_container_ = *brave_tab_container;
       layout_lock =
           base::ScopedClosureRunner(brave_tab_container->LockLayout());
+
+      if (using_sticky_pinned_tabs) {
+        GetDragContext()->DestroyLayer();
+      }
     }
 
     // Resets TabSlotViews for the new TabContainer.
@@ -306,12 +343,14 @@ void BraveTabStrip::UpdateTabContainer() {
           base::Unretained(vertical_region_view)));
     }
 
-    tab_container_->SetLayoutManager(std::make_unique<views::FlexLayout>())
-        ->SetOrientation(views::LayoutOrientation::kVertical)
-        .SetDefault(views::kFlexBehaviorKey,
-                    views::FlexSpecification(
-                        views::MinimumFlexSizeRule::kScaleToMinimumSnapToZero,
-                        views::MaximumFlexSizeRule::kPreferred));
+    if (!using_sticky_pinned_tabs) {
+      tab_container_->SetLayoutManager(std::make_unique<views::FlexLayout>())
+          ->SetOrientation(views::LayoutOrientation::kVertical)
+          .SetDefault(views::kFlexBehaviorKey,
+                      views::FlexSpecification(
+                          views::MinimumFlexSizeRule::kScaleToMinimumSnapToZero,
+                          views::MaximumFlexSizeRule::kPreferred));
+    }
   } else {
     if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
       auto* browser_view = static_cast<BraveBrowserView*>(

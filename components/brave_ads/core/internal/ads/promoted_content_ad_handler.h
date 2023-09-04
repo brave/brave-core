@@ -9,9 +9,11 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler_delegate.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads {
 
@@ -19,24 +21,35 @@ class Account;
 class Transfer;
 struct PromotedContentAdInfo;
 
-class PromotedContentAd final : public PromotedContentAdEventHandlerDelegate {
+class PromotedContentAdHandler final
+    : public PromotedContentAdEventHandlerDelegate {
  public:
-  PromotedContentAd(Account& account, Transfer& transfer);
+  PromotedContentAdHandler(Account& account, Transfer& transfer);
 
-  PromotedContentAd(const PromotedContentAd&) = delete;
-  PromotedContentAd& operator=(const PromotedContentAd&) = delete;
+  PromotedContentAdHandler(const PromotedContentAdHandler&) = delete;
+  PromotedContentAdHandler& operator=(const PromotedContentAdHandler&) = delete;
 
-  PromotedContentAd(PromotedContentAd&&) noexcept = delete;
-  PromotedContentAd& operator=(PromotedContentAd&&) noexcept = delete;
+  PromotedContentAdHandler(PromotedContentAdHandler&&) noexcept = delete;
+  PromotedContentAdHandler& operator=(PromotedContentAdHandler&&) noexcept =
+      delete;
 
-  ~PromotedContentAd() override;
+  ~PromotedContentAdHandler() override;
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,
-                    mojom::PromotedContentAdEventType event_type);
+                    mojom::PromotedContentAdEventType event_type,
+                    TriggerAdEventCallback callback);
 
  private:
+  void TriggerServedEventCallback(const std::string& creative_instance_id,
+                                  TriggerAdEventCallback callback,
+                                  bool success,
+                                  const std::string& placement_id,
+                                  mojom::PromotedContentAdEventType event_type);
+
   // PromotedContentAdEventHandlerDelegate:
+  void OnDidFirePromotedContentAdServedEvent(
+      const PromotedContentAdInfo& ad) override;
   void OnDidFirePromotedContentAdViewedEvent(
       const PromotedContentAdInfo& ad) override;
   void OnDidFirePromotedContentAdClickedEvent(
@@ -46,6 +59,8 @@ class PromotedContentAd final : public PromotedContentAdEventHandlerDelegate {
   const raw_ref<Transfer> transfer_;
 
   PromotedContentAdEventHandler event_handler_;
+
+  base::WeakPtrFactory<PromotedContentAdHandler> weak_factory_{this};
 };
 
 }  // namespace brave_ads

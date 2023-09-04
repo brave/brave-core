@@ -14,10 +14,6 @@
 <translation id="8294286161128352783">בדף הכרטיסייה החדשה בלבד</translation>
 <translation id="6406506848690869874">סנכרון</translation>
 <translation id="1544192797660353713">ארנק</translation>
-<translation id="2445484935443597917">יצירת פרופיל חדש</translation>
-<translation id="744341768939279100">צור פרופיל חדש</translation>
-<translation id="2666990579225592931">פתיחת חלון במצב אורח</translation>
-<translation id="4986483413015198747">פתח חלון אורח</translation>
 <translation id="8275068909952022340">עוד…</translation>
 <translation id="1990886731975529483">התקינו והפעילו את Google Widevine</translation>
 <translation id="8926389886865778422">אל תשאל שוב</translation>
@@ -30,7 +26,7 @@
 <translation id="3218385319396786393">ההפעלה האוטומטית נחסמה בדף זה</translation>
 <translation id="4988333904713528597">הרשו תמיד הפעלה אוטומטית ל-<ph name="HOST"/></translation>
 <translation id="4150684676757176434">המשיכו לחסום הפעלה אוטומטית</translation>
-<translation id="8988939298652262600">Brave אינו בודק את האבטחה והבטיחות של הרחבות. התקן/י הרחבה זו רק אם יש לך אמון במפתח.</translation>
+<translation id="3477357195688115718">Brave אינו בודק את האבטחה והבטיחות של הרחבות. התקן/י הרחבה זו רק אם יש לך אמון במפתח.</translation>
 <translation id="9005883459983913482">חלונות Tor</translation>
 <translation id="7965178729203412357">זהות Tor חדשה</translation>
 <translation id="6924909138923993900">חיבור Tor חדש לאתר זה</translation>
@@ -125,10 +121,16 @@
 <translation id="8184318863960255706">מידע נוסף</translation>
 <translation id="780301667611848630">לא תודה</translation>
 <translation id="1162706247109707219">על ידי לחיצה על אישור, אתה מאשר שההתקנה שלך של Brave לא תקבל תיקוני אבטחה קריטיים עד שתעדכן ל-Windows 10 ואילך. אזהרה זו לא תופיע שוב.</translation>
+<translation id="9164786361657554526">על ידי לחיצה על אישור, אתה מאשר שההתקנה שלך של Brave לא תקבל תיקוני אבטחה קריטיים עד שתעדכן ל-macOS 10.15 ואילך. אזהרה זו לא תופיע שוב.</translation>
+<translation id="2770465223704140727">הסר מהרשימה</translation>
 <translation id="2515126961943087659">שירות Bat Ads</translation>
 <translation id="7924918279836988121">שירות יומן BAT</translation>
 <translation id="6040143037577758943">סגירה</translation>
 <translation id="6665472986740899785">התראת Brave Ad</translation>
+<translation id="5582087890067572966">🎉 עכשיו אתה מרוויח!</translation>
+<translation id="4364336119478610380">אתה מרוויח בכל פעם שמופיעה התראה כזו על המסך שלך. אתה לא צריך ללחוץ כדי להרוויח.</translation>
+<translation id="5893017172751072752">אתה מרוויח כאשר מופיעה התראה של Brave Ads</translation>
+<translation id="3447730462826640312">אתה לא צריך ללחוץ כדי להרוויח, אבל לחץ אם אתה מעוניין!</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">תרמו קצת לחיפוש אנונימי ונתוני גלישה כדי לשפר את Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -242,6 +244,18 @@
 <translation id="480565261566115689">מזער כרטיסיות</translation>
 <translation id="7194343495483122559">הרחב כרטיסיות</translation>
 <translation id="1199054713803577378">מזער כרטיסיות</translation>
+<translation id="8120600068258956006">הוסף לרשימת השמעה</translation>
+<translation id="650694591627983430">מדיה שנמצאת בדף זה</translation>
+<translation id="1824323294233307883">נוסף ל-Play Later</translation>
+<translation id="4830689155681863580">פתח ברשימת השמעה</translation>
+<translation id="5330442669942072852">תיקייה פתוחה</translation>
+<translation id="8101564000331197174">הסר מרשימת ההשמעה</translation>
+<translation id="838254185387128227">מדיה נוספת בעמוד זה...</translation>
+<translation id="326641288623143307">הוסף נבחרים</translation>
+<translation id="5856970744810677796">פתח ברשימת השמעה</translation>
+<translation id="2803313416453193357">תיקייה פתוחה</translation>
+<translation id="333558915234875673">מדיה נוספת בעמוד זה...</translation>
+<translation id="5145233969981669502">הוסף נבחרים</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
 <translation id="7179921470347911571">הפעלה מחדש כעת</translation>
 <translation id="4472575034687746823">תחילת העבודה</translation>
@@ -256,6 +270,9 @@
 <translation id="8721331068159819483">כמו macOS</translation>
 <translation id="1692470335103807198">קבל/י ערכות נושא נוספות</translation>
 <translation id="2906510232093002459">תמונות ברירת מחדל של Brave</translation>
+<translation id="8076492880354921740">כרטיסיות</translation>
+<translation id="5860254591544742609">הצגת שורת הכותרת</translation>
+<translation id="5371926069408837914">הרחב את חלונית הכרטיסיות האנכיות בעת העברת העכבר כאשר היא מכווצת</translation>
 <translation id="3367129510799209147">מצב ריחוף בכרטיסייה</translation>
 <translation id="2113977810652731515">כרטיס</translation>
 <translation id="4096343215397759358">כרטיס עם תצוגה מקדימה</translation>
@@ -315,7 +332,6 @@
 <translation id="3357319404342882895">חמור</translation>
 <translation id="8823559166155093873">חסימת קובצי עוגיות</translation>
 <translation id="5770288601196774623">מרובה-אתרים בלבד</translation>
-<translation id="6795317840397506736">שכח כברירת מחדל</translation>
 <translation id="3587482841069643663">הכל</translation>
 <translation id="7390783310074170337">תצוגת ברירת מחדל</translation>
 <translation id="130615081792797568">תצוגה רגילה</translation>
@@ -342,22 +358,10 @@
 <translation id="4182731739150761577">הצג רשימה מלאה</translation>
 <translation id="1340263054776016283">יש להזין את כתובת האתר של רשימת הסינון</translation>
 <translation id="8578397014396032341">מסנני תוכן</translation>
+<translation id="3020183492814296499">קיצור דרך</translation>
 <translation id="5567412479632285879">Brave Rewards מושבתים</translation>
 <translation id="413570371620795359">פתח לוח תגמולים כדי לאפשר ולהתחיל לעבוד</translation>
-<translation id="3849957491997306859">זוהה אוטומטית</translation>
-<translation id="8798099450830957504">ברירת מחדל</translation>
-<translation id="4851215387785619212">מודעות פרטיות Brave.</translation>
-<translation id="7808122468353671181">הרוויחו tokens על ידי הצגת  Brave Ads. הפרסומות המוצגות מבוססות על תחומי העניין שלכם, כפי שניתן להסיק מהרגלי הגלישה שלכם. אף נתונים אישיים או היסטוריית גלישה לא יעזבו את הדפדפן שלכם.</translation>
-<translation id="1758947220824279023">מספר מרבי של המודעות הניתנות להצגה</translation>
-<translation id="2356652719351432565">פרסומות ממוקדות איזור</translation>
-<translation id="2196950072404588793">כך Brave תוכל להציג לך מודעות המיועדות באופן מיוחד לאזורך.<ph name="BEGIN_LINK"/>פרטים נוספים<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">מראה</translation>
-<translation id="6112368337882254910">תרומה אוטומטית</translation>
-<translation id="9132509928968869844">גבול התרומה החודשית האוטומטית</translation>
-<translation id="7286722244752781970">זמן מינימלי בדף לפני כניסה שנרשמת כביקור</translation>
-<translation id="4424486208397124985">מספר כניסות מינימלי עבור רלוונטיות של אתר</translation>
-<translation id="6248554379744796526">הצג ברשימה אתרים לא מאומתים</translation>
-<translation id="924777189963477634">על ידי הפעלת Auto-Contribute הינכם מסכימים <ph name="BEGIN_LINK_TOS"/>לתנאי השירות<ph name="END_LINK_TOS"/> <ph name="BEGIN_LINK_PP"/>ומדיניות הפרטיות<ph name="END_LINK_PP"/>.</translation>
+<translation id="1051600834033686945">פתח את הגדרות Brave Rewards המלאות</translation>
 <translation id="6333347122924254968">הצג את סמליל פרסי Brave בשורת הכתובת</translation>
 <translation id="7483857210736407752">הצג כפתורי טיפ באתרים</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -369,15 +373,43 @@
 <translation id="958971637207126733">נא לאפשר פוסטים מוטבעים</translation>
 <translation id="8792121506918889955">מדיניות טיפול ב- WebRTC IP</translation>
 <translation id="6165508094623778733">למידע נוסף</translation>
+<translation id="8798099450830957504">ברירת מחדל</translation>
 <translation id="1822560017823072927">ממשקים ברירת מחדל ציבוריים ופרטיים</translation>
 <translation id="5825943197137337319">ברירת המחדל של הממשק הציבורי בלבד</translation>
 <translation id="1689062823386843231">השבתת UDP ללא פרוקסי</translation>
 <translation id="3540231253392253941">השתמש בשירותי Google לצורך שליחת הודעות פוש</translation>
 <translation id="933652931229970927">שלחו דוחות באופן אוטומטי</translation>
+<translation id="4891600875049212418">עברו ל-Off-The-Record בעת ביקור באתרים רגישים</translation>
+<translation id="2356070529366658676">שאל</translation>
 <translation id="4846154056248462491">ביציאה</translation>
 <translation id="2808630562319398131">אפס נתוני Brave Rewards...</translation>
 <translation id="6438096877646138757">אתרים שמנקים קובצי עוגיות כאשר הם נסגרים</translation>
 <translation id="2988792685798128092">נקה עם סגירת האתר</translation>
+<translation id="4663317021223369617">קובצי Cookie ונתוני אתר</translation>
+<translation id="7050661313034564003">הצג את כל קובצי ה-cookie והנתונים המאוחסנים מקומית עבור אתר זה</translation>
+<translation id="8339059274628563283">נתונים המאוחסנים באופן מקומי עבור <ph name="SITE"/></translation>
+<translation id="1963227389609234879">הסר הכל</translation>
+<translation id="8168435359814927499">תוכן</translation>
+<translation id="7702907602086592255">דומיין</translation>
+<translation id="3202131003361292969">נתיב</translation>
+<translation id="5390743329570580756">שלח עבור</translation>
+<translation id="6742339027238151589">נגיש לסקריפט</translation>
+<translation id="1067048845568873861">נוצר</translation>
+<translation id="5747552184818312860">מועד תפוגה</translation>
+<translation id="3858860766373142691">שם</translation>
+<translation id="361106536627977100">‏נתוני Flash</translation>
+<translation id="4530494379350999373">מקור</translation>
+<translation id="8195027750202970175">גודל בדיסק</translation>
+<translation id="9116465289595958864">שינוי אחרון</translation>
+<translation id="4590324241397107707">אחסון מסדי נתונים</translation>
+<translation id="5338503421962489998">אחסון מקומי</translation>
+<translation id="6032912588568283682">מערכת קבצים</translation>
+<translation id="8016266267177410919">אחסון זמני</translation>
+<translation id="4175737294868205930">אחסון קבוע</translation>
+<translation id="1234808891666923653">Service Workers</translation>
+<translation id="3432762828853624962">Shared Workers</translation>
+<translation id="2927017729816812676">אחסון קובצי מטמון</translation>
+<translation id="1389601498324964367">אחסון מנוהל לפי מכסה</translation>
 <translation id="814018970995616154">בדיקת כתובות URL באמצעות רשימה של אתרים לא בטוחים ששמורה ב-Brave.</translation>
 <translation id="1144810021918451336">אינו מגן מפני אתרים הורדות והרחבות שעלולים לסכן אותך.</translation>
 <translation id="5570470519803062774">הגדרות אתר ו-Shields</translation>
@@ -395,6 +427,11 @@
 <translation id="2903783737778379345">אל תאפשר כניסה של Google מדור קודם באמצעות קובצי Cookie של צד שלישי</translation>
 <translation id="2570833232754279153">אסור להשתמש בקובצי Cookie של צד שלישי לצורך כניסה מדור קודם של Google</translation>
 <translation id="6880817299303842099">מותר להשתמש בקובצי Cookie של צד שלישי לצורך כניסה מדור קודם של Google</translation>
+<translation id="5169650598465327872">גישה ל-Localhost</translation>
+<translation id="4172219483893066798">אתרים יכולים לבקש גישה למשאבי localhost</translation>
+<translation id="7181706637590665047">אל תאפשר גישה למשאבי localhost</translation>
+<translation id="1336116824874668514">לא מורשה לגשת למשאבי localhost</translation>
+<translation id="1485435696620658073">מורשה לגשת למשאבי localhost</translation>
 <translation id="6414370348346025511">ההגנה הסטנדרטית מופעלת.</translation>
 <translation id="5565355416171743213">התחל להשתמש בסנכרון</translation>
 <translation id="4332558599726753990">הגדרות סנכרון</translation>
@@ -460,7 +497,7 @@
 <translation id="2516405584294312544">המחיקה הזו היא לצמיתות ואין דרך לשחזר את הנתונים. אם תחליט להתחיל להשתמש שוב בסינכרון, תצטרך ליצור חשבון חדש ולהוסיף מחדש כל מכשיר אחד אחד.</translation>
 <translation id="4860996720371753023">מחיקת החשבון מתבצעת...</translation>
 <translation id="4094590686212463338">לא ניתן היה להצטרף לשרשרת הסנכרון הזו. שרשרת הסנכרון נמחקה.</translation>
-<translation id="5633907266617216186">כתובות, פרטי תשלום וכו'.</translation>
+<translation id="4908081302669157000">מספרי טלפון, דוא"ל וכתובות</translation>
 <translation id="294985549514492876">Web apps (PWAs)</translation>
 <translation id="6285118765755298263">תצרו אינדקס למנועי חיפוש אחרים</translation>
 <translation id="919715748352669592">כולל אינדקס באופן אוטומטי לאתרי אינטרנט העוקבים אחר מפרט OpenSearch.</translation>
@@ -517,8 +554,7 @@
 <translation id="4954512758656527938">ארנק ברירת המחדל של Ethereum</translation>
 <translation id="7701023802820268122">ארנק ברירת המחדל של Solana</translation>
 <translation id="8488282162676695335">ארנק Brave</translation>
-<translation id="2356070529366658676">שאל</translation>
-<translation id="6942354363301686374">הרחבות (ללא ניתוק)</translation>
+<translation id="6942354363301686374">הרחבות (ללא גיבוי)</translation>
 <translation id="1274962333945373242">ארנקי קריפטו (מבוטלת)</translation>
 <translation id="702381242110464396">הרחבות (החלפה של ארנק Brave)</translation>
 <translation id="4718664830805652430">ברירת המחדל של מטבע הבסיס</translation>
@@ -533,7 +569,7 @@
 <translation id="5693968582510626466">ניקוי עסקאות יכול להיות שימושי עבור מפתחים או בעת ניקוי מצב בשרת מקומי</translation>
 <translation id="4440478655766953083">הצמד NFTs באופן אוטומטי</translation>
 <translation id="464460032678285850">NFTs שנוספו לארנק Brave עשויים להיות מוצמדים אוטומטית לצומת IPFS המקומי. הערה: ייתכן שהדמון IPFS יופעל למטרות ההצמדה כך שהצומת המקומי שלך ישתף נתונים מאוחסנים במטמון ו-NFT מוצמדים לרשת IPFS.</translation>
-<translation id="4993345308607970390">איפוס ארנק Brave</translation>
+<translation id="2326850911705720398">אפס ונקה את נתוני הארנק</translation>
 <translation id="5887022857624190239">נקה NFT מוצמדים</translation>
 <translation id="204584113330893805">NFTs מוצמדים מתארחים לרשת IPFS כאשר צומת IPFS מקומי מופעל. יש לך
      <ph name="NFT_COUNT"/> מכשירי NFT מוצמדים כרגע.</translation>
@@ -573,7 +609,7 @@
 <translation id="1062463687579789365">התאמה אישית של רשתות הארנק</translation>
 <translation id="2234108191702901162">לא ניתן להוסיף רשת</translation>
 <translation id="8996633027318264334">האם ברצונך למחוק את <ph name="KEY_NAME"/>?</translation>
-<translation id="3316326558572563182">רשת פעילה תמיד גלויה ברשימת רשתות הארנק</translation>
+<translation id="8633484167132172058">רשת ברירת המחדל תמיד גלויה ברשימת רשתות הארנק</translation>
 <translation id="232693303726691609">הצג/הסתר רשת ברשימת רשתות הארנק</translation>
 <translation id="7893578599666249602">בטוח/ה שברצונך לאפס את <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">האם ברצונך לעדכן את הרשת הקיימת?</translation>

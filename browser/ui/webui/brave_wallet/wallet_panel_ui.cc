@@ -9,12 +9,15 @@
 #include <utility>
 
 #include "base/command_line.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/bitcoin_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/simulation_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
@@ -25,6 +28,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/simulation_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
@@ -43,6 +47,11 @@
 #include "content/public/common/url_constants.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/webui/web_ui_util.h"
+
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+#include "brave/browser/brave_wallet/brave_wallet_auto_pin_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_pin_service_factory.h"
+#endif
 
 WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
     : ui::MojoBubbleWebUIController(web_ui,
@@ -63,8 +72,17 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      std::string("frame-src ") + kUntrustedTrezorURL + " " +
-          kUntrustedLedgerURL + " " + kUntrustedNftURL + ";");
+      base::JoinString(
+          {"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
+           kUntrustedNftURL, base::StrCat({kUntrustedMarketURL, ";"})},
+          " "));
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      base::JoinString(
+          {"img-src", "'self'", "chrome://resources",
+           "chrome://erc-token-images", "chrome://favicon", "chrome://image",
+           "https://assets.cgproxy.brave.com", base::StrCat({"data:", ";"})},
+          " "));
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
@@ -105,6 +123,8 @@ void WalletPanelUI::CreatePanelHandler(
         bitcoin_rpc_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SwapService>
         swap_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::SimulationService>
+        simulation_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
         asset_ratio_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::KeyringService>
@@ -122,6 +142,10 @@ void WalletPanelUI::CreatePanelHandler(
         brave_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
         brave_wallet_p3a_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::WalletPinService>
+        brave_wallet_pin_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
+        brave_wallet_auto_pin_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
         brave_wallet_ipfs_service_receiver) {
   DCHECK(page);
@@ -131,8 +155,8 @@ void WalletPanelUI::CreatePanelHandler(
   panel_handler_ = std::make_unique<WalletPanelHandler>(
       std::move(panel_receiver), this, active_web_contents_,
       std::move(deactivation_callback_));
-  wallet_handler_ =
-      std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);
+  wallet_handler_ = std::make_unique<brave_wallet::WalletHandler>(
+      std::move(wallet_receiver), profile);
 
   brave_wallet::JsonRpcServiceFactory::BindForContext(
       profile, std::move(json_rpc_service_receiver));
@@ -140,6 +164,8 @@ void WalletPanelUI::CreatePanelHandler(
       profile, std::move(bitcoin_rpc_service_receiver));
   brave_wallet::SwapServiceFactory::BindForContext(
       profile, std::move(swap_service_receiver));
+  brave_wallet::SimulationServiceFactory::BindForContext(
+      profile, std::move(simulation_service_receiver));
   brave_wallet::AssetRatioServiceFactory::BindForContext(
       profile, std::move(asset_ratio_service_receiver));
   brave_wallet::KeyringServiceFactory::BindForContext(
@@ -160,6 +186,13 @@ void WalletPanelUI::CreatePanelHandler(
   wallet_service->Bind(std::move(brave_wallet_service_receiver));
   wallet_service->GetBraveWalletP3A()->Bind(
       std::move(brave_wallet_p3a_receiver));
+
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+  brave_wallet::BraveWalletPinServiceFactory::BindForContext(
+      profile, std::move(brave_wallet_pin_service_receiver));
+  brave_wallet::BraveWalletAutoPinServiceFactory::BindForContext(
+      profile, std::move(brave_wallet_auto_pin_service_receiver));
+#endif
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {

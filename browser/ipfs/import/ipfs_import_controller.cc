@@ -11,9 +11,9 @@
 #include <vector>
 
 #include "base/files/file_util.h"
-#include "base/guid.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
+#include "base/uuid.h"
 #include "brave/browser/ipfs/import/save_package_observer.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -306,8 +306,8 @@ void IpfsImportController::OnImportCompleted(const ipfs::ImportedData& data) {
 void IpfsImportController::PushNotification(const std::u16string& title,
                                             const std::u16string& body,
                                             const GURL& link) {
-  auto notification =
-      CreateMessageCenterNotification(title, body, base::GenerateGUID(), link);
+  auto notification = CreateMessageCenterNotification(
+      title, body, base::Uuid::GenerateRandomV4().AsLowercaseString(), link);
   Profile* profile =
       Profile::FromBrowserContext(web_contents_->GetBrowserContext());
   auto* display_service = NotificationDisplayService::GetForProfile(profile);

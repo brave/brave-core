@@ -5,6 +5,7 @@
 
 #include "brave/browser/misc_metrics/page_metrics_service_factory.h"
 
+#include "base/no_destructor.h"
 #include "brave/components/misc_metrics/page_metrics_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/history/history_service_factory.h"
@@ -17,7 +18,8 @@ namespace misc_metrics {
 
 // static
 PageMetricsServiceFactory* PageMetricsServiceFactory::GetInstance() {
-  return base::Singleton<PageMetricsServiceFactory>::get();
+  static base::NoDestructor<PageMetricsServiceFactory> instance;
+  return instance.get();
 }
 
 // static

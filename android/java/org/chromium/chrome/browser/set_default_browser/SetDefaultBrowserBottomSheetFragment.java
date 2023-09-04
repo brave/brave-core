@@ -18,6 +18,8 @@ import android.widget.CheckBox;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.BravePreferenceKeys;
@@ -57,6 +59,9 @@ public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragm
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        ((BottomSheetDialog) getDialog())
+                .getBehavior()
+                .setState(BottomSheetBehavior.STATE_EXPANDED);
         Button nextButton = view.findViewById(R.id.btn_next);
         nextButton.setOnClickListener((new View.OnClickListener() {
             @Override

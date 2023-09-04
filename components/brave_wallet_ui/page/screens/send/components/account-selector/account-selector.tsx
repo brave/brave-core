@@ -16,6 +16,8 @@ import CaratDownIcon from '../../assets/carat-down-icon.svg'
 // Hooks
 import { useOnClickOutside } from '../../../../../common/hooks/useOnClickOutside'
 import {
+  useGetFVMAddressQuery,
+  useGetSelectedAccountIdQuery,
   useGetSelectedChainQuery //
 } from '../../../../../common/slices/api.slice'
 
@@ -24,8 +26,12 @@ import { AccountListItem } from '../account-list-item/account-list-item'
 
 // Styled Components
 import { ButtonIcon, ArrowIcon, DropDown, SelectorButton } from './account-selector.style'
+import { BraveWallet } from '../../../../../constants/types'
+
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 interface Props {
+  asset: BraveWallet.BlockchainToken | undefined
   onSelectAddress: (value: string) => void
   disabled: boolean
 }
@@ -33,14 +39,14 @@ interface Props {
 const ACCOUNT_SELECTOR_BUTTON_ID = 'account-selector-button-id'
 
 export const AccountSelector = (props: Props) => {
-  const { onSelectAddress, disabled } = props
+  const { asset, onSelectAddress, disabled } = props
 
   // Selectors
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-  const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
 
   // Queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const { data: selectedAccountId } = useGetSelectedAccountIdQuery()
 
   // State
   const [showAccountSelector, setShowAccountSelector] = React.useState<boolean>(false)
@@ -53,15 +59,57 @@ export const AccountSelector = (props: Props) => {
     setShowAccountSelector(prev => !prev)
   }, [])
 
-  const handleOnSelectAccount = React.useCallback((address: string) => {
-    setShowAccountSelector(false)
-    onSelectAddress(address)
-  }, [onSelectAddress])
+  const handleOnSelectAccount = React.useCallback((account: BraveWallet.AccountInfo) => {
+      setShowAccountSelector(false)
+      onSelectAddress(account.address)
+    }, [onSelectAddress])
+
+  const isFVMAccount = React.useCallback(
+    (account) =>
+      (selectedNetwork?.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID &&
+        account.accountId.keyringId === BraveWallet.KeyringId.kFilecoin) ||
+      (selectedNetwork?.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID &&
+        account.accountId.keyringId === BraveWallet.KeyringId.kFilecoinTestnet),
+    [selectedNetwork]);
 
   // Memos
   const accountsByNetwork = React.useMemo(() => {
-    return accounts.filter((account) => account.coin === selectedNetwork?.coin && account.keyringId === selectedAccount?.keyringId)
-  }, [accounts, selectedNetwork, selectedAccount])
+    if (!selectedNetwork || !selectedAccountId) {
+      return []
+    }
+
+    if (selectedAccountId.coin === BraveWallet.CoinType.FIL) {
+      const filecoinAccounts = accounts.filter((account) =>
+        (account.accountId.keyringId === selectedAccountId?.keyringId))
+      const fevmAccounts = accounts.filter((account) =>
+        (account.accountId.coin === BraveWallet.CoinType.ETH))
+      return filecoinAccounts.concat(fevmAccounts)
+    }
+
+    // TODO(apaymyshev): for bitcoin should allow sending to my account, but
+    // from different keyring (i.e. segwit -> taproot)
+    // https://github.com/brave/brave-browser/issues/29262
+    return accounts.filter(
+      (account) =>
+        account.accountId.keyringId === selectedAccountId.keyringId ||
+        (asset?.contractAddress === "" && isFVMAccount(account)))
+  }, [accounts, selectedNetwork, selectedAccountId, asset])
+
+  const evmAddressesforFVMTranslation = React.useMemo(() =>
+  accountsByNetwork
+    .filter(account => account.accountId.coin === BraveWallet.CoinType.ETH)
+    .map(account => account.accountId.address),
+  [accountsByNetwork])
+
+  const { data: fvmTranslatedAddresses } = useGetFVMAddressQuery(
+    selectedNetwork && evmAddressesforFVMTranslation.length
+    ? {
+        coin: selectedNetwork.coin,
+        addresses: evmAddressesforFVMTranslation,
+        isMainNet: selectedNetwork.chainId === BraveWallet.FILECOIN_MAINNET
+      }
+    : skipToken
+  )
 
   // Hooks
   useOnClickOutside(
@@ -81,10 +129,13 @@ export const AccountSelector = (props: Props) => {
         <DropDown ref={accountSelectorRef}>
           {accountsByNetwork.map((account) =>
             <AccountListItem
-              key={account.address}
+              key={account.accountId.uniqueKey}
+              account={account}
               onClick={handleOnSelectAccount}
-              address={account.address}
-              name={account.name}
+              isSelected={
+                account.accountId.uniqueKey === selectedAccountId?.uniqueKey
+              }
+              accountAlias={fvmTranslatedAddresses?.[account.accountId.address]}
             />
           )}
         </DropDown>

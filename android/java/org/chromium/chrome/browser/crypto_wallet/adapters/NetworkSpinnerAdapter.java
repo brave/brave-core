@@ -26,32 +26,30 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
-    private Context context;
-    private LayoutInflater inflater;
-    private List<NetworkInfo> mNetworkInfos;
+    private LayoutInflater mInflater;
+    private List<NetworkInfo> mNetworkInfoList;
     private ExecutorService mExecutor;
     private Handler mHandler;
 
-    public NetworkSpinnerAdapter(Context applicationContext, List<NetworkInfo> networkInfos) {
-        this.context = applicationContext;
-        inflater = (LayoutInflater.from(applicationContext));
-        mNetworkInfos = networkInfos;
+    public NetworkSpinnerAdapter(Context context, List<NetworkInfo> networkInfoList) {
+        mInflater = LayoutInflater.from(context);
+        mNetworkInfoList = networkInfoList;
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
     }
 
     public NetworkInfo getNetwork(int position) {
-        return mNetworkInfos.get(position);
+        return mNetworkInfoList.get(position);
     }
 
     @Override
     public int getCount() {
-        return mNetworkInfos.size();
+        return mNetworkInfoList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mNetworkInfos.get(position);
+        return mNetworkInfoList.get(position);
     }
 
     @Override
@@ -66,29 +64,26 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
     // [ViewHolder]
     @SuppressLint("ViewHolder")
     public View getView(int position, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.network_spinner_items, null);
+        view = mInflater.inflate(R.layout.selected_network_item, viewGroup, false);
         TextView name = view.findViewById(R.id.network_name_text);
-        name.setText(Utils.getShortNameOfNetwork(mNetworkInfos.get(position).chainName));
-        ImageView networkPicture = view.findViewById(R.id.network_picture);
-        networkPicture.setVisibility(View.GONE);
-        name.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null);
+        name.setText(mNetworkInfoList.get(position).chainName);
         return view;
     }
 
     @Override
     public View getDropDownView(int position, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.network_spinner_items, null);
+        view = mInflater.inflate(R.layout.network_spinner_items, null);
         TextView name = (TextView) view.findViewById(R.id.network_name_text);
-        name.setText(mNetworkInfos.get(position).chainName);
+        name.setText(mNetworkInfoList.get(position).chainName);
         ImageView networkPicture = view.findViewById(R.id.network_picture);
-        Utils.setBlockiesBitmapResource(
-                mExecutor, mHandler, networkPicture, mNetworkInfos.get(position).chainName, false);
+        Utils.setBlockiesBitmapResource(mExecutor, mHandler, networkPicture,
+                mNetworkInfoList.get(position).chainName, false);
 
         return view;
     }
 
-    public void setNetworks(List<NetworkInfo> networkInfos) {
-        mNetworkInfos = networkInfos;
+    public void setNetworks(List<NetworkInfo> networkInfoList) {
+        mNetworkInfoList = networkInfoList;
         notifyDataSetChanged();
     }
 }

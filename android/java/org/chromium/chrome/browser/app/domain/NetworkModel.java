@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.app.domain;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -20,34 +19,37 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
-import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkResponsesCollector;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
+import org.chromium.chrome.browser.crypto_wallet.web_ui.WebUiActivityType;
 import org.chromium.chrome.browser.util.Triple;
 import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.url.internal.mojom.Origin;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 public class NetworkModel implements JsonRpcServiceObserver {
+    private BraveWalletService mBraveWalletService;
     private JsonRpcService mJsonRpcService;
     private final Object mLock = new Object();
+    private Mode mMode = Mode.WALLET_MODE;
+
     private final MediatorLiveData<String> _mChainId;
     private final MediatorLiveData<List<NetworkInfo>> _mDefaultCoinCryptoNetworks;
     private final MutableLiveData<List<NetworkInfo>> _mCryptoNetworks;
@@ -63,27 +65,32 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private final MediatorLiveData<List<NetworkInfo>> _mPrimaryNetworks;
     private final MediatorLiveData<List<NetworkInfo>> _mSecondaryNetworks;
     private Map<String, NetworkSelectorModel> mNetworkSelectorMap;
+
+    public final LiveData<String> mChainId;
+    private final MutableLiveData<NetworkLists> _mNetworkLists;
     public final LiveData<String[]> mCustomNetworkIds;
     public LiveData<NetworkInfo> mNeedToCreateAccountForNetwork;
     public final LiveData<Triple<String, NetworkInfo, List<NetworkInfo>>> mChainNetworkAllNetwork;
     public final LiveData<Pair<String, List<NetworkInfo>>> mPairChainAndNetwork;
-    public final LiveData<String> mChainId;
     public final LiveData<List<NetworkInfo>> mDefaultCoinCryptoNetworks;
     public final LiveData<List<NetworkInfo>> mCryptoNetworks;
     public final LiveData<NetworkInfo> mDefaultNetwork;
     public final LiveData<List<NetworkInfo>> mPrimaryNetworks;
     public final LiveData<List<NetworkInfo>> mSecondaryNetworks;
+    public final LiveData<NetworkLists> mNetworkLists;
 
-    public NetworkModel(JsonRpcService jsonRpcService, CryptoSharedData sharedData,
-            CryptoSharedActions cryptoSharedActions, Context context) {
+    public NetworkModel(BraveWalletService braveWalletService, JsonRpcService jsonRpcService,
+            CryptoSharedData sharedData, CryptoSharedActions cryptoSharedActions, Context context) {
+        mBraveWalletService = braveWalletService;
         mJsonRpcService = jsonRpcService;
         mSharedData = sharedData;
         mCryptoActions = cryptoSharedActions;
         mContext = context;
+
         _mChainId = new MediatorLiveData<>();
         _mChainId.setValue(BraveWalletConstants.MAINNET_CHAIN_ID);
-        _mDefaultCoinCryptoNetworks = new MediatorLiveData<>();
         mChainId = _mChainId;
+        _mDefaultCoinCryptoNetworks = new MediatorLiveData<>();
         mDefaultCoinCryptoNetworks = _mDefaultCoinCryptoNetworks;
         _mCryptoNetworks = new MutableLiveData<>(Collections.emptyList());
         mCryptoNetworks = _mCryptoNetworks;
@@ -104,6 +111,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
         mSecondaryNetworks = _mSecondaryNetworks;
         jsonRpcService.addObserver(this);
         mNetworkSelectorMap = new HashMap<>();
+        _mNetworkLists = new MutableLiveData<>();
+        mNetworkLists = _mNetworkLists;
         _mPairChainAndNetwork.setValue(Pair.create("", Collections.emptyList()));
         _mPairChainAndNetwork.addSource(_mChainId, chainId -> {
             _mPairChainAndNetwork.setValue(
@@ -123,22 +132,10 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 }
             }
         });
-        _mChainId.addSource(mSharedData.getCoinTypeLd(), coinType -> {
-            mJsonRpcService.getDefaultChainId(coinType, chainId -> {
-                String id = BraveWalletConstants.MAINNET_CHAIN_ID;
-                if (TextUtils.isEmpty(chainId)) {
-                    mJsonRpcService.setNetwork(
-                            id, mSharedData.getCoinType(), null, hasSetNetwork -> {});
-                } else {
-                    id = chainId;
-                }
-                _mChainId.postValue(id);
-            });
-        });
+        _mChainId.addSource(mSharedData.getCoinTypeLd(), coinType -> { updateChainId(); });
         _mDefaultCoinCryptoNetworks.addSource(mSharedData.getCoinTypeLd(), coinType -> {
-            mJsonRpcService.getAllNetworks(coinType, networkInfos -> {
-                _mDefaultCoinCryptoNetworks.postValue(
-                        stripDebugNetwork(context, Arrays.asList(networkInfos)));
+            getAllNetworks(mJsonRpcService, Collections.singletonList(coinType), networkInfoSet -> {
+                _mDefaultCoinCryptoNetworks.postValue(new ArrayList<>(networkInfoSet));
             });
         });
 
@@ -187,6 +184,25 @@ public class NetworkModel implements JsonRpcServiceObserver {
         });
     }
 
+    private void updateChainId() {
+        @CoinType.EnumType
+        int coin = mSharedData.getCoinTypeLd().getValue();
+
+        if (mMode == Mode.WALLET_MODE) {
+            mJsonRpcService.getNetwork(coin, null, networkInfo -> {
+                if (networkInfo != null) {
+                    _mChainId.postValue(networkInfo.chainId);
+                }
+            });
+        } else if (mMode == Mode.PANEL_MODE) {
+            mBraveWalletService.getNetworkForSelectedAccountOnActiveOrigin(networkInfo -> {
+                if (networkInfo != null) {
+                    _mChainId.postValue(networkInfo.chainId);
+                }
+            });
+        }
+    }
+
     /**
      * Create a network model to handle default wallet network selector events
      * @return mNetworkSelectorModel object in DEFAULT_WALLET_NETWORK mode
@@ -202,14 +218,15 @@ public class NetworkModel implements JsonRpcServiceObserver {
      * between the view and the selection activity.
      * @param key acts as a binding key between caller and selection activity.
      * @param mode to handle network selection event globally or locally.
+     * @param selectionMode to allow Single or Multiple network selection.
      * @param lifecycle to auto remove network-selection objects.
      * @return NetworkSelectorModel object.
      */
-    public NetworkSelectorModel openNetworkSelectorModel(
-            String key, NetworkSelectorModel.Mode mode, Lifecycle lifecycle) {
+    public NetworkSelectorModel openNetworkSelectorModel(String key, NetworkSelectorModel.Mode mode,
+            NetworkSelectorModel.SelectionMode selectionMode, Lifecycle lifecycle) {
         NetworkSelectorModel networkSelectorModel;
         if (key == null) {
-            return new NetworkSelectorModel(mode, this, mContext);
+            return new NetworkSelectorModel(mode, selectionMode, this, mContext);
         } else if (mNetworkSelectorMap.containsKey(key)) {
             // Use existing NetworkSelector object to show the previously selected network
             networkSelectorModel = mNetworkSelectorMap.get(key);
@@ -217,7 +234,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 networkSelectorModel.updateSelectorMode(mode);
             }
         } else {
-            networkSelectorModel = new NetworkSelectorModel(mode, this, mContext);
+            networkSelectorModel = new NetworkSelectorModel(mode, selectionMode, this, mContext);
             mNetworkSelectorMap.put(key, networkSelectorModel);
         }
         if (lifecycle != null) {
@@ -244,7 +261,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
         _mNeedToCreateAccountForNetwork.addSource(accounts, accountInfos -> {
             if (_mNeedToCreateAccountForNetwork.getValue() == null) return;
             for (AccountInfo accountInfo : accountInfos) {
-                if (accountInfo.coin == _mNeedToCreateAccountForNetwork.getValue().coin) {
+                if (accountInfo.accountId.coin == _mNeedToCreateAccountForNetwork.getValue().coin) {
                     _mNeedToCreateAccountForNetwork.postValue(null);
                     break;
                 }
@@ -252,8 +269,10 @@ public class NetworkModel implements JsonRpcServiceObserver {
         });
     }
 
-    public void resetServices(JsonRpcService jsonRpcService) {
+    public void resetServices(
+            BraveWalletService braveWalletService, JsonRpcService jsonRpcService) {
         synchronized (mLock) {
+            mBraveWalletService = braveWalletService;
             mJsonRpcService = jsonRpcService;
         }
         init();
@@ -264,15 +283,24 @@ public class NetworkModel implements JsonRpcServiceObserver {
     }
 
     static void getAllNetworks(JsonRpcService jsonRpcService, List<Integer> supportedCoins,
-            Callbacks.Callback1<Set<NetworkInfo>> callback) {
+            Callbacks.Callback1<List<NetworkInfo>> callback) {
         if (jsonRpcService == null) {
-            callback.call(Collections.emptySet());
+            callback.call(Collections.emptyList());
             return;
         }
 
         NetworkResponsesCollector networkResponsesCollector =
                 new NetworkResponsesCollector(jsonRpcService, supportedCoins);
-        networkResponsesCollector.getNetworks(networkInfos -> { callback.call(networkInfos); });
+        networkResponsesCollector.getNetworks(networkInfoList -> {
+            if (!AndroidUtils.isDebugBuild()) {
+                networkInfoList =
+                        networkInfoList.stream()
+                                .filter(networkInfo
+                                        -> !NetworkUtils.Filters.isLocalNetwork(networkInfo))
+                                .collect(Collectors.toList());
+            }
+            callback.call(networkInfoList);
+        });
     }
 
     public void init() {
@@ -281,61 +309,93 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 return;
             }
 
-            getAllNetworks(mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
-                _mCryptoNetworks.postValue(
-                        stripDebugNetwork(mContext, new ArrayList<>(allNetworks)));
-            });
+            // Mark hidden networks as visible in preferences.
+            for (Map.Entry<String, Integer> entry :
+                    WalletConstants.KNOWN_TEST_CHAINS_MAP.entrySet()) {
+                if (!AndroidUtils.isDebugBuild()
+                        && entry.getKey().equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)) {
+                    // Hide local host for non-debug builds.
+                    mJsonRpcService.addHiddenNetwork(
+                            entry.getValue(), entry.getKey(), result -> {/* No-op. */});
+                } else {
+                    mJsonRpcService.removeHiddenNetwork(
+                            entry.getValue(), entry.getKey(), result -> {/* No-op. */});
+                }
+            }
+
+            getAllNetworks(
+                    mJsonRpcService, mSharedData.getSupportedCryptoCoins(), cryptoNetworks -> {
+                        _mCryptoNetworks.postValue(cryptoNetworks);
+
+                        List<NetworkInfo> primary = new ArrayList<>();
+                        List<NetworkInfo> secondary = new ArrayList<>();
+                        List<NetworkInfo> test = new ArrayList<>();
+                        NetworkLists networkLists =
+                                new NetworkLists(cryptoNetworks, primary, secondary, test);
+                        for (NetworkInfo networkInfo : cryptoNetworks) {
+                            if (WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(
+                                        networkInfo.chainId)) {
+                                primary.add(networkInfo);
+                            } else if (WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(
+                                               networkInfo.chainId)) {
+                                test.add(networkInfo);
+                            } else {
+                                secondary.add(networkInfo);
+                            }
+                        }
+                        _mNetworkLists.postValue(networkLists);
+                    });
         }
     }
 
-    public void setNetworkWithAccountCheck(
-            NetworkInfo networkToBeSetAsSelected, Callbacks.Callback1<Boolean> callback) {
+    public void setNetworkWithAccountCheck(NetworkInfo networkToBeSetAsSelected,
+            boolean setNetworkAsDefault, Callbacks.Callback1<Boolean> callback) {
         NetworkInfo selectedNetwork = _mDefaultNetwork.getValue();
         if (isSameNetwork(networkToBeSetAsSelected, selectedNetwork)) return;
-        boolean hasAccountOfNetworkType = hasAccountOfNetworkType(networkToBeSetAsSelected);
-        if (hasAccountOfNetworkType) {
-            mJsonRpcService.setNetwork(networkToBeSetAsSelected.chainId,
-                    networkToBeSetAsSelected.coin, null, isSelected -> {
-                        callback.call(isSelected);
-                        mCryptoActions.updateCoinType();
-                        init();
-                    });
-        } else {
-            _mNeedToCreateAccountForNetwork.postValue(networkToBeSetAsSelected);
-            callback.call(false);
-        }
+
+        mBraveWalletService.ensureSelectedAccountForChain(
+                networkToBeSetAsSelected.coin, networkToBeSetAsSelected.chainId, accountId -> {
+                    if (accountId == null) {
+                        _mNeedToCreateAccountForNetwork.postValue(networkToBeSetAsSelected);
+                        callback.call(false);
+                        return;
+                    }
+                    if (setNetworkAsDefault) {
+                        setDefaultNetwork(networkToBeSetAsSelected, callback);
+                    } else {
+                        setNetworkForSelectedAccountOnActiveOrigin(
+                                networkToBeSetAsSelected, callback);
+                    }
+                });
     }
 
-    public void setNetworkWithAccountCheck(String chainId, Callbacks.Callback1<Boolean> callback) {
-        NetworkInfo networkToBeSetAsSelected = getNetwork(chainId);
-        setNetworkWithAccountCheck(networkToBeSetAsSelected, callback);
-    }
-
-    public void setNetwork(
+    public void setNetworkForSelectedAccountOnActiveOrigin(
             NetworkInfo networkToBeSetAsSelected, Callbacks.Callback1<Boolean> callback) {
-        mJsonRpcService.setNetwork(networkToBeSetAsSelected.chainId, networkToBeSetAsSelected.coin,
-                null, isSelected -> {
-                    callback.call(isSelected);
+        mBraveWalletService.setNetworkForSelectedAccountOnActiveOrigin(
+                networkToBeSetAsSelected.chainId, success -> {
+                    callback.call(success);
                     mCryptoActions.updateCoinType();
                     init();
                 });
     }
 
-    public void getNetwork(@CoinType.EnumType int coin, Callbacks.Callback1<NetworkInfo> callback) {
-        mJsonRpcService.getNetwork(coin, null, networkInfo -> { callback.call(networkInfo); });
+    public void setDefaultNetwork(NetworkInfo networkInfo, Callbacks.Callback1<Boolean> callback) {
+        mJsonRpcService.setNetwork(networkInfo.chainId, networkInfo.coin, null, success -> {
+            callback.call(success);
+            mCryptoActions.updateCoinType();
+            init();
+        });
     }
 
     public void clearCreateAccountState() {
         _mNeedToCreateAccountForNetwork.postValue(null);
     }
 
-    public List<NetworkInfo> stripNoBuySwapNetworks(
-            List<NetworkInfo> networkInfos, BuySendSwapActivity.ActivityType type) {
+    public List<NetworkInfo> stripNoBuyNetworks(
+            List<NetworkInfo> networkInfos, WebUiActivityType type) {
         List<NetworkInfo> networkInfosFiltered = new ArrayList<>();
         for (NetworkInfo networkInfo : networkInfos) {
-            if (type == BuySendSwapActivity.ActivityType.BUY && Utils.allowBuy(networkInfo.chainId)
-                    || (type == BuySendSwapActivity.ActivityType.SWAP
-                            && Utils.allowSwap(networkInfo.chainId))) {
+            if (type == WebUiActivityType.BUY && Utils.allowBuy(networkInfo.chainId)) {
                 networkInfosFiltered.add(networkInfo);
             }
         }
@@ -354,37 +414,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
         return null;
     }
 
-    private List<NetworkInfo> stripDebugNetwork(Context context, List<NetworkInfo> networkInfos) {
-        if ((context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
-            return networkInfos;
-        } else {
-            List<NetworkInfo> networkInfosFiltered = new ArrayList<>();
-            // remove localhost network
-            for (NetworkInfo networkInfo : networkInfos) {
-                if (!networkInfo.chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)) {
-                    networkInfosFiltered.add(networkInfo);
-                }
-            }
-            return networkInfosFiltered;
-        }
-    }
-
-    List<NetworkInfo> getSubTestNetworks(NetworkInfo networkInfo) {
-        List<NetworkInfo> cryptoNws = _mCryptoNetworks.getValue();
-        if (cryptoNws == null || cryptoNws.size() == 0
-                || !WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(networkInfo.chainId))
-            return Collections.emptyList();
-        List<NetworkInfo> list = new ArrayList<>();
-        for (NetworkInfo info : cryptoNws) {
-            if (WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(info.chainId)
-                    && networkInfo.coin == info.coin && networkInfo.symbol.equals(info.symbol)
-                    && !isCustomChain(info.chainId)) {
-                list.add(info);
-            }
-        }
-        return list;
-    }
-
     private boolean isCustomChain(String netWorkChainId) {
         String[] customNetworkChains = JavaUtils.safeVal(_mCustomNetworkIds.getValue());
         for (String chain : customNetworkChains) {
@@ -397,14 +426,16 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     boolean hasAccountOfNetworkType(NetworkInfo networkToBeSetAsSelected) {
         List<AccountInfo> accountInfos = mSharedData.getAccounts().getValue();
-        boolean hasAccountOfNetworkType = false;
         for (AccountInfo accountInfo : accountInfos) {
-            hasAccountOfNetworkType = accountInfo.coin == networkToBeSetAsSelected.coin;
-            if (hasAccountOfNetworkType) {
-                break;
+            if (accountInfo.accountId.coin == networkToBeSetAsSelected.coin) {
+                if (accountInfo.accountId.coin != CoinType.FIL
+                        || AssetUtils.getKeyring(CoinType.FIL, networkToBeSetAsSelected.chainId)
+                                == accountInfo.accountId.keyringId) {
+                    return true;
+                }
             }
         }
-        return hasAccountOfNetworkType;
+        return false;
     }
 
     private boolean isSameNetwork(
@@ -416,8 +447,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     @Override
     public void chainChangedEvent(String chainId, int coin, Origin origin) {
-        _mChainId.postValue(chainId);
-        mCryptoActions.updateCoinAccountNetworkInfo(coin);
+        updateChainId();
     }
 
     @Override
@@ -433,4 +463,40 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     @Override
     public void close() {}
+
+    public void updateMode(Mode mode) {
+        mMode = mode;
+        updateChainId();
+    }
+
+    public enum Mode { PANEL_MODE, WALLET_MODE }
+
+    public static class NetworkLists {
+        // Networks from core.
+        public List<NetworkInfo> mCoreNetworks;
+        public List<NetworkInfo> mPrimaryNetworkList;
+        public List<NetworkInfo> mSecondaryNetworkList;
+        public List<NetworkInfo> mTestNetworkList;
+
+        public NetworkLists() {
+            mCoreNetworks = Collections.emptyList();
+            mPrimaryNetworkList = Collections.emptyList();
+            mSecondaryNetworkList = Collections.emptyList();
+            mTestNetworkList = Collections.emptyList();
+        }
+        public NetworkLists(List<NetworkInfo> mCoreNetworks, List<NetworkInfo> mPrimaryNetworkList,
+                List<NetworkInfo> mSecondaryNetworkList, List<NetworkInfo> mTestNetworkList) {
+            this.mCoreNetworks = mCoreNetworks;
+            this.mPrimaryNetworkList = mPrimaryNetworkList;
+            this.mSecondaryNetworkList = mSecondaryNetworkList;
+            this.mTestNetworkList = mTestNetworkList;
+        }
+
+        public NetworkLists(NetworkLists networkLists) {
+            this.mCoreNetworks = new ArrayList<>(networkLists.mCoreNetworks);
+            this.mPrimaryNetworkList = new ArrayList<>(networkLists.mPrimaryNetworkList);
+            this.mSecondaryNetworkList = new ArrayList<>(networkLists.mSecondaryNetworkList);
+            this.mTestNetworkList = new ArrayList<>(networkLists.mTestNetworkList);
+        }
+    }
 }

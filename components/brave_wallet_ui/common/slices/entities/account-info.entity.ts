@@ -9,29 +9,34 @@ import {
   EntityId
 } from '@reduxjs/toolkit'
 
-import { BraveWallet, WalletAccountTypeName } from '../../../constants/types'
-import { RootStoreState } from '../../../page/store'
-import { getAccountId } from '../../../utils/account-utils'
-import { walletApi } from '../api.slice'
+import { BraveWallet } from '../../../constants/types'
+import { walletApi, WalletApiSliceStateFromRoot } from '../api.slice'
 import {
   EntityByIdFromRegistryResultSelectorFactory,
   makeSelectEntityByIdFromRegistryQuery
 } from './entity.selectors'
+import { entityIdFromAccountId } from '../../../utils/account-utils'
 
-export type AccountInfoEntity = BraveWallet.AccountInfo & {
-  accountType: WalletAccountTypeName
-  deviceId: Exclude<BraveWallet.AccountInfo['hardware'], undefined>['deviceId']
+export type AccountInfoEntity = BraveWallet.AccountInfo
+
+export type AccountInfoEntityAdaptor = EntityAdapter<AccountInfoEntity> & {
+  selectIdByAddress: (address: string) => EntityId
+  selectIdByAccountId: (
+    accountId: Pick<BraveWallet.AccountId, 'address' | 'uniqueKey'>
+  ) => EntityId
 }
 
-export type AccountInfoEntityAdaptor =
-  EntityAdapter<AccountInfoEntity> & {
-    selectId: (accountInfo: { address: string }) => EntityId
-  }
-
-export const accountInfoEntityAdaptor: AccountInfoEntityAdaptor =
-  createEntityAdapter<AccountInfoEntity>({
-    selectId: getAccountId
-  })
+export const accountInfoEntityAdaptor: AccountInfoEntityAdaptor = {
+  ...createEntityAdapter<AccountInfoEntity>({
+    selectId: (model: Pick<BraveWallet.AccountInfo, 'accountId'>): EntityId => {
+      return entityIdFromAccountId(model.accountId)
+    }
+  }),
+  selectIdByAddress: (address: string) => {
+    return entityIdFromAccountId({ address, uniqueKey: '' })
+  },
+  selectIdByAccountId: entityIdFromAccountId
+}
 
 export const accountInfoEntityAdaptorInitialState = accountInfoEntityAdaptor.getInitialState()
 export type AccountInfoEntityState = typeof accountInfoEntityAdaptorInitialState
@@ -43,7 +48,7 @@ export const {
   selectEntities: selectAccountInfoEntities,
   selectIds: selectAccountInfoIds,
   selectTotal: selectTotalAccountInfos
-} = accountInfoEntityAdaptor.getSelectors((state: RootStoreState) => {
+} = accountInfoEntityAdaptor.getSelectors((state: WalletApiSliceStateFromRoot) => {
   return (
     walletApi.endpoints.getAccountInfosRegistry.select()(state)?.data ??
     accountInfoEntityAdaptor.getInitialState()

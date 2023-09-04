@@ -8,16 +8,16 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/endpoint/gemini/gemini_utils.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "base/uuid.h"
+#include "brave/components/brave_rewards/core/gemini/gemini_util.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal::endpoint::gemini {
 
-PostRecipientId::PostRecipientId(LedgerImpl& ledger) : ledger_(ledger) {}
+PostRecipientId::PostRecipientId(RewardsEngineImpl& engine) : engine_(engine) {}
 
 PostRecipientId::~PostRecipientId() = default;
 
@@ -32,29 +32,29 @@ mojom::Result PostRecipientId::ParseBody(const std::string& body,
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* result = dict.FindString("result");
   if (!result || *result != "OK") {
     BLOG(0, "Failed creating recipient_id");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const auto* id = dict.FindString("recipient_id");
   if (!id) {
     BLOG(0, "Response missing a recipient_id");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   *recipient_id = *id;
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 std::string PostRecipientId::GeneratePayload() {
   base::Value::Dict payload;
-  payload.Set("label", endpoints::kGeminiRecipientIDLabel);
+  payload.Set("label", internal::gemini::kGeminiRecipientIDLabel);
 
   std::string json;
   base::JSONWriter::Write(payload, &json);
@@ -72,7 +72,7 @@ void PostRecipientId::Request(const std::string& token,
   request->headers = RequestAuthorization(token);
   request->headers.push_back("X-GEMINI-PAYLOAD: " + GeneratePayload());
 
-  ledger_->LoadURL(std::move(request),
+  engine_->LoadURL(std::move(request),
                    base::BindOnce(&PostRecipientId::OnRequest,
                                   base::Unretained(this), std::move(callback)));
 }
@@ -91,7 +91,7 @@ void PostRecipientId::OnRequest(PostRecipientIdCallback callback,
   }
 
   mojom::Result result = CheckStatusCode(response->status_code);
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     return std::move(callback).Run(result, "");
   }
 

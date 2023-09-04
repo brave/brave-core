@@ -56,8 +56,6 @@ constexpr char kSolana[] = "solana";
 constexpr char kSignature[] = "signature";
 constexpr char kSignatures[] = "signatures";
 constexpr char kToString[] = "toString";
-constexpr char kSolanaProviderScript[] = "solana_provider.js";
-constexpr char kWalletStandardScript[] = "wallet_standard.js";
 constexpr char kWalletStandardOnDemandScript[] = R"((function () {
   window.addEventListener('wallet-standard:app-ready', (e) => {
     window.braveSolana.walletStandardInit()
@@ -85,7 +83,6 @@ constexpr char kSolanaProxyHandlerScript[] = R"((function() {
   };
   return handler;
 })())";
-constexpr char kSolanaProxyScript[] = "solana_proxy.js";
 
 }  // namespace
 
@@ -164,7 +161,7 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
   blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
   v8::Local<v8::Proxy> solana_proxy;
   auto solana_proxy_handler_val =
-      ExecuteScript(web_frame, kSolanaProxyHandlerScript, kSolanaProxyScript);
+      ExecuteScript(web_frame, kSolanaProxyHandlerScript);
   v8::Local<v8::Object> solana_proxy_handler_obj =
       solana_proxy_handler_val.ToLocalChecked()
           ->ToObject(context)
@@ -199,11 +196,9 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
 
   ExecuteScript(web_frame,
                 LoadDataResource(
-                    IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_SCRIPT_BUNDLE_JS),
-                kSolanaProviderScript);
+                    IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_SCRIPT_BUNDLE_JS));
 
-  ExecuteScript(web_frame, kWalletStandardOnDemandScript,
-                kWalletStandardScript);
+  ExecuteScript(web_frame, kWalletStandardOnDemandScript);
 }
 
 gin::ObjectTemplateBuilder JSSolanaProvider::GetObjectTemplateBuilder(
@@ -253,6 +248,12 @@ void JSSolanaProvider::AccountChangedEvent(
     args.push_back(std::move(v8_public_key));
   }
   FireEvent(solana::kAccountChangedEvent, std::move(args));
+}
+
+void JSSolanaProvider::DisconnectEvent() {
+  v8::Isolate* isolate = blink::MainThreadIsolate();
+  v8::HandleScope handle_scope(isolate);
+  FireEvent(kDisconnectEvent, std::vector<v8::Local<v8::Value>>());
 }
 
 void JSSolanaProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
@@ -365,7 +366,6 @@ v8::Local<v8::Promise> JSSolanaProvider::Disconnect(gin::Arguments* arguments) {
   std::ignore = resolver.ToLocalChecked()->Resolve(isolate->GetCurrentContext(),
                                                    v8::Undefined(isolate));
 
-  FireEvent(kDisconnectEvent, std::vector<v8::Local<v8::Value>>());
   return resolver.ToLocalChecked()->GetPromise();
 }
 
@@ -623,9 +623,7 @@ void JSSolanaProvider::WalletStandardInit(gin::Arguments* arguments) {
        "return walletStandardBrave; })()"});
 
   v8::Local<v8::Value> wallet_standard =
-      ExecuteScript(web_frame, wallet_standard_module_str,
-                    "wallet_standard_brave")
-          .ToLocalChecked();
+      ExecuteScript(web_frame, wallet_standard_module_str).ToLocalChecked();
   v8::Local<v8::Value> object;
   v8::Isolate* isolate = arguments->isolate();
   v8::Local<v8::Context> context = isolate->GetCurrentContext();
@@ -1065,10 +1063,10 @@ bool JSSolanaProvider::LoadSolanaWeb3ModuleIfNeeded(v8::Isolate* isolate) {
       {"(function() {", LoadDataResource(IDR_BRAVE_WALLET_SOLANA_WEB3_JS),
        "return solanaWeb3; })()"});
 
-  solana_web3_module_.Reset(isolate,
-                            ExecuteScript(render_frame()->GetWebFrame(),
-                                          solana_web3_module_str, "solana_web3")
-                                .ToLocalChecked());
+  solana_web3_module_.Reset(
+      isolate,
+      ExecuteScript(render_frame()->GetWebFrame(), solana_web3_module_str)
+          .ToLocalChecked());
   // loading SolanaWeb3 module failed
   if (solana_web3_module_.IsEmpty()) {
     return false;

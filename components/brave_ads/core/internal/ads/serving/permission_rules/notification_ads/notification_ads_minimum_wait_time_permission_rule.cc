@@ -8,12 +8,12 @@
 #include <vector>
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/ad_type.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 namespace brave_ads {
 
@@ -22,13 +22,9 @@ namespace {
 constexpr int kMinimumWaitTimeCap = 1;
 
 bool DoesRespectCap(const std::vector<base::Time>& history) {
-  const int ads_per_hour = GetMaximumNotificationAdsPerHourSetting();
-  if (ads_per_hour == 0) {
-    return false;
-  }
-
   return DoesHistoryRespectRollingTimeConstraint(
-      history, /*time_constraint*/ base::Hours(1) / ads_per_hour,
+      history,
+      /*time_constraint*/ base::Hours(1) / GetMaximumNotificationAdsPerHour(),
       kMinimumWaitTimeCap);
 }
 

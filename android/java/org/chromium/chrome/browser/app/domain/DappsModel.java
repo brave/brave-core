@@ -12,6 +12,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.KeyringId;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
 import org.chromium.brave_wallet.mojom.SignAllTransactionsRequest;
@@ -20,13 +21,11 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletAccountCreationRequest;
-import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.Pair;
-import org.chromium.url.internal.mojom.Origin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,33 +71,25 @@ public class DappsModel implements KeyringServiceObserver {
 
     public void fetchAccountsForConnectionReq(@CoinType.EnumType int coinType,
             Callbacks.Callback1<Pair<AccountInfo, List<AccountInfo>>> callback) {
-        if (coinType == CoinType.ETH || coinType == CoinType.SOL) {
-            mKeyringService.getKeyringInfo(
-                    AssetUtils.getKeyringForCoinType(coinType), keyringInfo -> {
-                        mKeyringService.getSelectedAccount(coinType, accountAddress -> {
-                            if (coinType == CoinType.SOL) {
-                                // only the selected account is used for solana dapps
-                                for (AccountInfo accountInfo : keyringInfo.accountInfos) {
-                                    if (accountAddress.equals(accountInfo.address)) {
-                                        List<AccountInfo> accountInfos = new ArrayList<>();
-                                        accountInfos.add(accountInfo);
-                                        callback.call(new Pair<>(
-                                                Utils.findAccount(
-                                                        keyringInfo.accountInfos, accountAddress),
-                                                accountInfos));
-                                        return;
-                                    }
-                                }
-                            } else {
-                                callback.call(new Pair<>(
-                                        Utils.findAccount(keyringInfo.accountInfos, accountAddress),
-                                        Arrays.asList(keyringInfo.accountInfos)));
-                            }
-                        });
-                    });
-        } else {
+        if (coinType != CoinType.ETH && coinType != CoinType.SOL) {
             callback.call(new Pair<>(null, Collections.emptyList()));
+            return;
         }
+
+        mKeyringService.getAllAccounts(allAccounts -> {
+            if (coinType == CoinType.SOL) {
+                // only the selected account is used for solana dapps
+                if (allAccounts.solDappSelectedAccount != null) {
+                    List<AccountInfo> accounts = new ArrayList();
+                    accounts.add(allAccounts.solDappSelectedAccount);
+                    callback.call(new Pair<>(allAccounts.solDappSelectedAccount, accounts));
+                }
+            } else {
+                List<AccountInfo> accounts =
+                        Utils.filterAccountsByCoin(allAccounts.accounts, coinType);
+                callback.call(new Pair<>(allAccounts.ethDappSelectedAccount, accounts));
+            }
+        });
     }
 
     public LiveData<List<SignTransactionRequest>> fetchSignTxRequest() {
@@ -158,12 +149,12 @@ public class DappsModel implements KeyringServiceObserver {
         _mProcessNextDAppsRequest.postValue(null);
     }
 
-    public void processPublicEncryptionKey(boolean isApproved, Origin origin) {
+    public void processPublicEncryptionKey(String requestId, boolean isApproved) {
         synchronized (mLock) {
             if (mBraveWalletService == null) {
                 return;
             }
-            mBraveWalletService.notifyGetPublicKeyRequestProcessed(isApproved, origin);
+            mBraveWalletService.notifyGetPublicKeyRequestProcessed(requestId, isApproved);
             mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
                 if (requests != null && requests.length > 0) {
                     _mProcessNextDAppsRequest.postValue(BraveWalletDAppsActivity.ActivityType
@@ -176,12 +167,12 @@ public class DappsModel implements KeyringServiceObserver {
         }
     }
 
-    public void processDecryptRequest(boolean isApproved, Origin origin) {
+    public void processDecryptRequest(String requestId, boolean isApproved) {
         synchronized (mLock) {
             if (mBraveWalletService == null) {
                 return;
             }
-            mBraveWalletService.notifyDecryptRequestProcessed(isApproved, origin);
+            mBraveWalletService.notifyDecryptRequestProcessed(requestId, isApproved);
             mBraveWalletService.getPendingDecryptRequests(requests -> {
                 if (requests != null && requests.length > 0) {
                     _mProcessNextDAppsRequest.postValue(
@@ -202,11 +193,10 @@ public class DappsModel implements KeyringServiceObserver {
         _mWalletIconNotificationVisible.setValue(false);
     }
 
-    public void addAccountCreationRequest(String keyringId) {
-        if (keyringId == null) return;
+    public void addAccountCreationRequest(@CoinType.EnumType int coinType) {
         Utils.removeIf(mPendingWalletAccountCreationRequests,
-                request -> request.getKeyringId().equals(keyringId));
-        WalletAccountCreationRequest request = new WalletAccountCreationRequest(keyringId);
+                request -> request.getCoinType() == coinType);
+        WalletAccountCreationRequest request = new WalletAccountCreationRequest(coinType);
         mPendingWalletAccountCreationRequests.add(request);
         updatePendingAccountCreationRequest();
     }
@@ -293,10 +283,10 @@ public class DappsModel implements KeyringServiceObserver {
     }
 
     @Override
-    public void keyringCreated(String keyringId) {}
+    public void keyringCreated(@KeyringId.EnumType int keyringId) {}
 
     @Override
-    public void keyringRestored(String keyringId) {}
+    public void keyringRestored(@KeyringId.EnumType int keyringId) {}
 
     @Override
     public void keyringReset() {}
@@ -316,13 +306,17 @@ public class DappsModel implements KeyringServiceObserver {
     public void accountsChanged() {}
 
     @Override
-    public void accountsAdded(int coin, String[] addresses) {}
+    public void accountsAdded(AccountInfo[] addedAccounts) {}
 
     @Override
     public void autoLockMinutesChanged() {}
 
     @Override
-    public void selectedAccountChanged(int coin) {}
+    public void selectedWalletAccountChanged(AccountInfo accountInfo) {}
+
+    @Override
+    public void selectedDappAccountChanged(
+            @CoinType.EnumType int coinType, AccountInfo accountInfo) {}
 
     @Override
     public void onConnectionError(MojoException e) {}

@@ -100,13 +100,12 @@
   <message name="IDS_SETTINGS_ANTI_ABUSE_DESCRIPTION" desc="The label used for the anti-abuse site settings description.">
     Sites you visit can verify that you're a real profile and not a bot
   </message>
-  <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_ONE" desc="A description that informs users how their browsing could be helped by the anti-abuse features.">
+  <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_TWO" desc="A description that informs users how the anti-abuse features work.">
+    As you keep browsing, sites can check with Brave and verify with a previous site you've visited that you're likely a real profile
+  </message>
+  <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_THREE" desc="A description that informs users how their browsing could be helped by the anti-abuse features.">
     Browsing is faster because a site is less likely to ask you to verify you're a real profile
   </message>
-  <message name="IDS_SETTINGS_ANTI_ABUSE_THINGS_TO_CONSIDER_SECTION_ONE" desc="A description that informs users that site can save info with Brave when the anti-abuse features are enabled.">
-    A site you visit can save info with Brave that validates you're not a bot. As you keep browsing, sites can check with Brave and verify with a previous site you've visited that you're likely a real profile
-  </message>
-
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_SPAM_AND_FRAUD_SUMMARY" desc="The description of card 3 of 3. * “help”: This API is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players.">
     Help sites fight fraud and distinguish bots from profiles
   </message>
@@ -127,6 +126,11 @@
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_PRIVACY_DESCRIPTION2" desc="A part of the privacy description of the third party cookie blocking in private section of the cookies card in the 'Privacy guide'.">
     When you’re in Private mode, sites can only use cookies to see your browsing activity on their own site. Cookies are deleted at the end of the Private session.
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_EXTENSIONS" desc="This text describes that potentially harmful extensions need to be reviewed by the user. The placeholder will be a numeral.">
+    {NUM_EXTENSIONS, plural,
+     =1 {Review <ph name="BEGIN_BOLD">&lt;b&gt;</ph>1 extension<ph name="END_BOLD">&lt;/b&gt;</ph> that was taken down from the Web Store}
+     other {Review <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{NUM_EXTENSIONS} extensions<ph name="END_BOLD">&lt;/b&gt;</ph> that were taken down from the Web Store}}
   </message>
   <if expr="chrome_root_store_supported">
     </if>
@@ -191,9 +195,6 @@
   <if expr="not is_chromeos">
     </if>
   <if expr="chromeos_lacros">
-    </if>
-
-  <if expr="is_win and _google_chrome">
     </if>
 
   <if expr="is_win and _google_chrome">

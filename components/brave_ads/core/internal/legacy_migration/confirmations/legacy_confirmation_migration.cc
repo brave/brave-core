@@ -8,16 +8,17 @@
 #include <string>
 #include <utility>
 
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::confirmations {
+namespace brave_ads {
 
 namespace {
 
@@ -33,8 +34,8 @@ void SuccessfullyMigrated(InitializeCallback callback) {
 
 }  // namespace
 
-void Migrate(InitializeCallback callback) {
-  if (HasMigrated()) {
+void MigrateConfirmationState(InitializeCallback callback) {
+  if (HasMigratedConfirmation()) {
     return std::move(callback).Run(/*success*/ true);
   }
 
@@ -49,6 +50,10 @@ void Migrate(InitializeCallback callback) {
             }
 
             if (!ConfirmationStateManager::GetInstance().FromJson(*json)) {
+              // TODO(https://github.com/brave/brave-browser/issues/32066):
+              // Remove migration failure dumps.
+              base::debug::DumpWithoutCrashing();
+
               BLOG(0, "Failed to load confirmation state");
               return FailedToMigrate(std::move(callback));
             }
@@ -57,13 +62,16 @@ void Migrate(InitializeCallback callback) {
 
             const std::string migrated_json =
                 ConfirmationStateManager::GetInstance().ToJson();
-            SetHashForJson(migrated_json);
 
             AdsClientHelper::GetInstance()->Save(
                 kConfirmationStateFilename, migrated_json,
                 base::BindOnce(
                     [](InitializeCallback callback, const bool success) {
                       if (!success) {
+                        // TODO(https://github.com/brave/brave-browser/issues/32066):
+                        // Remove migration failure dumps.
+                        base::debug::DumpWithoutCrashing();
+
                         BLOG(0, "Failed to save confirmation state");
                         return FailedToMigrate(std::move(callback));
                       }
@@ -76,4 +84,4 @@ void Migrate(InitializeCallback callback) {
           std::move(callback)));
 }
 
-}  // namespace brave_ads::confirmations
+}  // namespace brave_ads

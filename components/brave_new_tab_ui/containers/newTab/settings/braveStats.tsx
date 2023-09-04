@@ -9,7 +9,7 @@ import {
   SettingsRow,
   SettingsText
 } from '../../../components/default'
-import { Toggle } from '../../../components/toggle'
+import Toggle from '@brave/leo/react/toggle'
 
 import { getLocale } from '../../../../common/locale'
 import { useNewTabPref } from '../../../hooks/usePref'
@@ -22,7 +22,7 @@ export default function BraveStatsSettings () {
       <Toggle
         onChange={() => setShowStats(!showStats)}
         checked={showStats}
-        size='large'
+        size='small'
       />
     </SettingsRow>
   </div>

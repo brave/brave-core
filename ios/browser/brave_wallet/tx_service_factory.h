@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/memory/singleton.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
@@ -16,6 +15,11 @@
 
 class ChromeBrowserState;
 class KeyedService;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace web {
 class BrowserState;
@@ -37,7 +41,7 @@ class TxServiceFactory : public BrowserStateKeyedServiceFactory {
   static TxServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<TxServiceFactory>;
+  friend base::NoDestructor<TxServiceFactory>;
 
   TxServiceFactory();
   ~TxServiceFactory() override;

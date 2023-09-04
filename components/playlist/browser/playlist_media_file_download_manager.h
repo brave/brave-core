@@ -10,6 +10,8 @@
 #include <string>
 
 #include "base/containers/queue.h"
+#include "base/gtest_prod_util.h"
+#include "base/types/expected.h"
 #include "brave/components/playlist/browser/playlist_media_file_downloader.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 
@@ -26,6 +28,16 @@ namespace playlist {
 class PlaylistMediaFileDownloadManager
     : public PlaylistMediaFileDownloader::Delegate {
  public:
+  struct DownloadResult {
+    std::string media_file_path;
+    uint64_t received_bytes = 0u;
+  };
+
+  enum class DownloadFailureReason {
+    kFailed,
+    kCanceled,
+  };
+
   struct DownloadJob {
     // This struct is move-only type.
     DownloadJob();
@@ -37,34 +49,34 @@ class PlaylistMediaFileDownloadManager
 
     mojom::PlaylistItemPtr item;
 
-    base::RepeatingCallback<void(const mojom::PlaylistItemPtr& /*item*/,
-                                 int64_t /*total_bytes*/,
-                                 int64_t /*received_bytes*/,
-                                 int /*percent_complete*/,
-                                 base::TimeDelta /*time_remaining*/)>
+    base::RepeatingCallback<void(const mojom::PlaylistItemPtr& item,
+                                 int64_t total_bytes,
+                                 int64_t received_bytes,
+                                 int percent_complete,
+                                 base::TimeDelta time_remaining)>
         on_progress_callback;
 
     // If the manage fails to download file, the |media_file_path| will be
     // empty.
-    base::OnceCallback<void(mojom::PlaylistItemPtr /*item*/,
-                            const std::string& /*media_file_path*/)>
+    base::OnceCallback<void(
+        mojom::PlaylistItemPtr item,
+        const base::expected<DownloadResult, DownloadFailureReason>& result)>
         on_finish_callback;
   };
 
   class Delegate {
    public:
     virtual bool IsValidPlaylistItem(const std::string& id) = 0;
+    virtual base::FilePath GetMediaPathForPlaylistItemItem(
+        const std::string& id) = 0;
+    virtual base::SequencedTaskRunner* GetTaskRunner() = 0;
 
    protected:
     virtual ~Delegate() {}
   };
 
-  static constexpr base::FilePath::CharType kMediaFileName[] =
-      FILE_PATH_LITERAL("media_file.mp4");
-
   PlaylistMediaFileDownloadManager(content::BrowserContext* context,
-                                   Delegate* delegate,
-                                   const base::FilePath& base_dir);
+                                   Delegate* delegate);
   ~PlaylistMediaFileDownloadManager() override;
 
   PlaylistMediaFileDownloadManager(const PlaylistMediaFileDownloadManager&) =
@@ -88,8 +100,10 @@ class PlaylistMediaFileDownloadManager
                                      int percent_complete,
                                      base::TimeDelta time_remaining) override;
   void OnMediaFileReady(const std::string& id,
-                        const std::string& media_file_path) override;
+                        const std::string& media_file_path,
+                        int64_t received_bytes) override;
   void OnMediaFileGenerationFailed(const std::string& id) override;
+  base::SequencedTaskRunner* GetTaskRunner() override;
 
   void TryStartingDownloadTask();
   std::unique_ptr<DownloadJob> PopNextJob();
@@ -97,7 +111,6 @@ class PlaylistMediaFileDownloadManager
   void CancelCurrentDownloadingPlaylistItem();
   bool IsCurrentDownloadingInProgress() const;
 
-  const base::FilePath base_dir_;
   raw_ptr<Delegate> delegate_;
   base::queue<std::unique_ptr<DownloadJob>> pending_media_file_creation_jobs_;
 

@@ -11,6 +11,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -24,6 +25,7 @@ using Channels = base::flat_map<std::string, mojom::ChannelPtr>;
 using ChannelsCallback = base::OnceCallback<void(Channels)>;
 
 constexpr char kTopSourcesChannel[] = "Top Sources";
+constexpr char kTopNewsChannel[] = "Top News";
 
 class ChannelsController : public PublishersController::Observer {
  public:
@@ -54,7 +56,7 @@ class ChannelsController : public PublishersController::Observer {
   void OnPublishersUpdated(PublishersController* controller) override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveNewsFeedBuildingTest, BuildFeedV2);
+  FRIEND_TEST_ALL_PREFIXES(BraveNewsFeedBuildingTest, BuildFeed);
   FRIEND_TEST_ALL_PREFIXES(BraveNewsFeedBuildingTest,
                            DuplicateItemsAreNotIncluded);
   static void SetChannelSubscribedPref(PrefService* prefs,

@@ -1,0 +1,28 @@
+[package]
+name = "rand_chacha"
+version = "0.2.2"
+authors = ["The Rand Project Developers", "The Rust Project Developers", "The CryptoCorrosion Contributors"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/rust-random/rand"
+documentation = "https://rust-random.github.io/rand/rand_chacha/"
+homepage = "https://crates.io/crates/rand_chacha"
+description = """
+ChaCha random number generator
+"""
+keywords = ["random", "rng", "chacha"]
+categories = ["algorithms", "no-std"]
+edition = "2018"
+
+[badges]
+travis-ci = { repository = "rust-random/rand" }
+appveyor = { repository = "rust-random/rand" }
+
+[dependencies]
+rand_core = { path = "../rand_core", version = "0.5" }
+ppv-lite86 = { version = "0.2.6", default-features = false, features = ["simd"] }
+
+[features]
+default = ["std", "simd"]
+std = ["ppv-lite86/std"]
+simd = [] # deprecated

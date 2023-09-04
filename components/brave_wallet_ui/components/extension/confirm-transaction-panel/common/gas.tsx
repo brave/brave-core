@@ -27,7 +27,6 @@ export function EditPendingTransactionGas (props: Props) {
     suggestedMaxPriorityFeeChoices,
     updateUnapprovedTransactionGasFields,
     baseFeePerGas,
-    findAssetPrice,
     transactionsNetwork,
     selectedPendingTransaction
   } = usePendingTransactions()
@@ -40,7 +39,6 @@ export function EditPendingTransactionGas (props: Props) {
     <EditGas
       transactionInfo={selectedPendingTransaction}
       onCancel={onCancel}
-      networkSpotPrice={findAssetPrice(transactionsNetwork.symbol, '', transactionsNetwork.chainId)}
       selectedNetwork={transactionsNetwork}
       baseFeePerGas={baseFeePerGas}
       suggestedMaxPriorityFeeChoices={suggestedMaxPriorityFeeChoices}

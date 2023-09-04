@@ -16,6 +16,9 @@
 # These fail because OsIntegrationTestOverride::IsRunOnOsLoginEnabled on Linux
 # hard-codes "chrome-" into the shortcut name and the shortcut start with
 # "brave-".
+-All/InstallAppLocallyCommandTest.BasicBehavior/OSIntegrationSubManagers_Disabled
+-All/InstallAppLocallyCommandTest.BasicBehavior/OSIntegrationSubManagers_SaveStateAndExecute
+-All/InstallAppLocallyCommandTest.BasicBehavior/OSIntegrationSubManagers_SaveStateToDB
 -All/RunOnOsLoginSubManagerExecuteTest.*
 -All/ShortcutSubManagerExecuteTest.*
 

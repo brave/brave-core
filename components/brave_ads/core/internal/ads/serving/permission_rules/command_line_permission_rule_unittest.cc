@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/command_line_permission_rule.h"
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -19,7 +19,7 @@ class BraveAdsCommandLinePermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsCommandLinePermissionRuleTest,
-       AllowAdIfDidNotOverrideCommandLineSwitchesForProduction) {
+       ShouldAllowIfDidNotOverrideCommandLineSwitchesForProduction) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
@@ -33,7 +33,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
 }
 
 TEST_F(BraveAdsCommandLinePermissionRuleTest,
-       AllowAdIfDidNotOverrideCommandLineSwitchesForStaging) {
+       ShouldAllowIfDidNotOverrideCommandLineSwitchesForStaging) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;
@@ -47,7 +47,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
 }
 
 TEST_F(BraveAdsCommandLinePermissionRuleTest,
-       DoNotAllowAdIfDidOverrideCommandLineSwitchesForProduction) {
+       ShouldNotAllowIfDidOverrideCommandLineSwitchesForProduction) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
@@ -61,7 +61,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
 }
 
 TEST_F(BraveAdsCommandLinePermissionRuleTest,
-       AllowAdIfDidOverrideCommandLineSwitchesForStaging) {
+       ShouldAllowIfDidOverrideCommandLineSwitchesForStaging) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;

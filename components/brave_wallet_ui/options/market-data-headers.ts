@@ -4,65 +4,45 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { getLocale } from '$web-common/locale'
-import { MarketDataHeader } from '../components/market-datatable'
+import { MarketGridHeader } from '../constants/types'
 
-// The id field matches values in MarketDataTableColumnTypes
+// The id field matches values in MarketGridColumnTypes
 // which match property fields in CoinMarketMetadata
 // this helps in finding the correct header to sort by
-export const marketDataTableHeaders: MarketDataHeader[] = [
+export const marketGridHeaders: MarketGridHeader[] = [
   {
     id: 'assets',
-    content: getLocale('braveWalletMarketDataAssetsColumn'),
-    customStyle: {
-      width: 350,
-      paddingLeft: 10
-    }
+    label: getLocale('braveWalletMarketDataAssetsColumn'),
   },
   {
     id: 'currentPrice',
-    content: getLocale('braveWalletMarketDataPriceColumn'),
+    label: getLocale('braveWalletMarketDataPriceColumn'),
     sortable: true,
-    customStyle: {
-      width: 150,
-      textAlign: 'right'
-    }
   },
   {
     id: 'priceChangePercentage24h',
-    content: getLocale('braveWalletMarketData24HrColumn'),
+    label: getLocale('braveWalletMarketData24HrColumn'),
     sortable: true,
-    customStyle: {
-      textAlign: 'right'
-    }
   },
   {
     id: 'marketCap',
-    content: getLocale('braveWalletMarketDataMarketCapColumn'),
+    label: getLocale('braveWalletMarketDataMarketCapColumn'),
     sortable: true,
-    sortOrder: 'desc',
-    customStyle: {
-      textAlign: 'right'
-    }
+    width: '90px',
+    hideOnPanel: true
   },
   {
     id: 'totalVolume',
-    content: getLocale('braveWalletMarketDataVolumeColumn'),
+    label: getLocale('braveWalletMarketDataVolumeColumn'),
     sortable: true,
-    customStyle: {
-      textAlign: 'right'
-    }
+    hideOnPanel: true,
+    width: '95px'
   },
   {
     id: 'actions',
-    content: 'Buy/Deposit',
+    label: 'Buy/Deposit',
     sortable: false,
-    customStyle: {
-      textAlign: 'right'
-    }
+    hideOnPanel: true,
+    width: '130px'
   }
-  // Hiden because price History data is not available
-  // {
-  //   id: 'lineGraph',
-  //   content: ''
-  // }
 ]

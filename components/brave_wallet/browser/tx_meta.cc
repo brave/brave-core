@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 
-#include "base/guid.h"
 #include "base/json/values_util.h"
+#include "base/uuid.h"
 #include "base/values.h"
 
 namespace brave_wallet {
@@ -27,7 +27,7 @@ base::Value::Dict TxMeta::ToValue() const {
 
   dict.Set("id", id_);
   dict.Set("status", static_cast<int>(status_));
-  dict.Set("from", from_);
+  dict.Set("from_account_id", from_->unique_key);
   dict.Set("created_time", base::TimeToValue(created_time_));
   dict.Set("submitted_time", base::TimeToValue(submitted_time_));
   dict.Set("confirmed_time", base::TimeToValue(confirmed_time_));
@@ -45,7 +45,7 @@ base::Value::Dict TxMeta::ToValue() const {
 
 // static
 std::string TxMeta::GenerateMetaID() {
-  return base::GenerateGUID();
+  return base::Uuid::GenerateRandomV4().AsLowercaseString();
 }
 
 }  // namespace brave_wallet

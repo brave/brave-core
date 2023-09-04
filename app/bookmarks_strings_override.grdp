@@ -24,6 +24,9 @@
       <message name="IDS_SHOW_BOOKMARK_BAR" desc="The toggle to show the bookmark bar">
         &amp;Show bookmarks
       </message>
+      <message name="IDS_HIDE_BOOKMARK_BAR" desc="The toggle to hide the bookmark bar">
+        &amp;Hide bookmarks
+      </message>
     </if>
   </if>
   <if expr="use_titlecase">
@@ -39,6 +42,9 @@
     <if expr="not is_android">
       <message name="IDS_SHOW_BOOKMARK_BAR" desc="In Title Case: The toggle to show the bookmark bar">
         &amp;Show Bookmarks
+      </message>
+      <message name="IDS_HIDE_BOOKMARK_BAR" desc="The toggle to hide the bookmark bar">
+        &amp;Hide Bookmarks
       </message>
     </if>
   </if>
@@ -67,6 +73,14 @@
   <message name="IDS_BOOKMARK_MANAGER_MENU_OPEN_INCOGNITO" desc="Menu description for opening a bookmark in Private window">
     Open in Private window
   </message>
+  <if expr="not use_titlecase">
+    </if>
+  <if expr="use_titlecase">
+    </if>
+  <if expr="not use_titlecase">
+    </if>
+  <if expr="use_titlecase">
+    </if>
   <if expr="not use_titlecase">
     </if>
   <if expr="use_titlecase">

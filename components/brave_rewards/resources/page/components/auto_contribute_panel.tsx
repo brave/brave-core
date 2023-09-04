@@ -25,6 +25,8 @@ import { TrashIcon } from './icons/trash_icon'
 import * as urls from '../../shared/lib/rewards_urls'
 import * as style from './auto_contribute_panel.style'
 
+import * as Rewards from '../lib/types'
+
 const maxTableSize = 5
 
 export function AutoContributePanel () {
@@ -36,18 +38,19 @@ export function AutoContributePanel () {
     contributionMinVisits: state.contributionMinVisits,
     contributionMonthly: state.contributionMonthly,
     parameters: state.parameters,
+    isAcSupported: state.isAcSupported,
     enabledContribute: state.enabledContribute,
     reconcileStamp: state.reconcileStamp,
     autoContributeList: state.autoContributeList,
     excludedList: state.excludedList,
     externalWallet: state.externalWallet,
     externalWalletProviderList: state.externalWalletProviderList,
-    userType: state.userType
+    userType: state.userType,
+    showSettings: state.ui.autoContributeSettings
   }))
 
   const [showModal, setShowModal] = React.useState(false)
   const [modalTab, setModalTab] = React.useState(0)
-  const [showConfig, setShowConfig] = React.useState(false)
   const [publisherCountText, setPublisherCountText] = React.useState('')
 
   React.useEffect(() => {
@@ -77,6 +80,14 @@ export function AutoContributePanel () {
 
   const onRestore = () => {
     actions.restorePublishers()
+  }
+
+  const onShowConfigChange = (showConfig: boolean) => {
+    if (showConfig) {
+      actions.onAutoContributeSettingsOpen()
+    } else {
+      actions.onAutoContributeSettingsClose()
+    }
   }
 
   const settingSelectHandler = (key: string) => {
@@ -359,25 +370,25 @@ export function AutoContributePanel () {
     )
   }
 
-  // Don't show AC panel for users in bitflyer-enabled regions.
-  if (data.externalWalletProviderList.includes('bitflyer')) {
+  // Don't show AC panel if AC is not supported.
+  if (!data.isAcSupported) {
     return null
   }
 
   return (
-    <SettingsPanel>
+    <SettingsPanel deeplinkId='auto-contribute'>
       <style.root data-test-id='auto-contribute-panel'>
         {renderModal()}
         <PanelHeader
           title={getString('contributionTitle')}
           enabled={data.enabledContribute}
-          showConfig={showConfig}
+          showConfig={data.showSettings}
           onShowConfigChange={
-            data.userType === 'unconnected' ? undefined : setShowConfig
+            data.userType === 'unconnected' ? undefined : onShowConfigChange
           }
           onEnabledChange={onEnabledChange}
         />
-        {showConfig ? renderConfig() : renderContent()}
+        {data.showSettings ? renderConfig() : renderContent()}
       </style.root>
     </SettingsPanel>
   )

@@ -14,9 +14,6 @@ import {
   WalletRoutes
 } from '../../../../constants/types'
 
-// Utils
-import { getLocale } from '../../../../../common/locale'
-
 // Styled Components
 import {
   HeaderWrapper,
@@ -25,19 +22,19 @@ import {
   SettingsIcon,
   SettingsWrapper
 } from './tab-header.style'
-import { HorizontalDivider, Row, Text } from '../../send/shared.styles'
+import { Row } from '../../send/shared.styles'
 
 // Components
 import {
   WalletSettingsMenu
 } from '../../../../components/desktop/wallet-menus/wallet-settings-menu'
 
-interface Props {
-  title: string
+export interface Props {
+  hideHeaderMenu?: boolean
 }
 
 export const TabHeader = (props: Props) => {
-  const { title } = props
+  const { hideHeaderMenu } = props
 
   // Routing
   const history = useHistory()
@@ -65,25 +62,23 @@ export const TabHeader = (props: Props) => {
     <HeaderWrapper>
       <Row rowHeight='full' verticalAlign='center'>
         <BraveLogo />
-        <HorizontalDivider height={22} marginRight={12} />
-        <Text textSize='18px' textColor='text02' isBold={true}>
-          {getLocale(title)}
-        </Text>
       </Row>
-      <SettingsWrapper
-        ref={settingsModalRef}
-      >
-        <SettingsButton onClick={() => setShowSettings(prev => !prev)}>
-          <SettingsIcon name='more-horizontal' />
-        </SettingsButton>
-        {showSettings &&
-          <WalletSettingsMenu
-            onClickBackup={onShowBackup}
-            onClosePopup={() => setShowSettings(false)}
-            yPosition={50}
-          />
-        }
-      </SettingsWrapper>
+      {!hideHeaderMenu &&
+        <SettingsWrapper
+          ref={settingsModalRef}
+        >
+          <SettingsButton onClick={() => setShowSettings(prev => !prev)}>
+            <SettingsIcon name='more-horizontal' />
+          </SettingsButton>
+          {showSettings &&
+            <WalletSettingsMenu
+              onClickBackup={onShowBackup}
+              onClosePopup={() => setShowSettings(false)}
+              yPosition={50}
+            />
+          }
+        </SettingsWrapper>
+      }
     </HeaderWrapper>
   )
 }

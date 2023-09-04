@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone">
+
+    <ImageView
+        android:id="@+id/rewards_onboarding_all_set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:scaleType="fitXY"
+        android:contentDescription="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/rewards_onboarding_all_set" />
+
+    <TextView
+        android:id="@+id/rewards_onboarding_all_set_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_horizontal|top"
+        android:lineSpacingExtra="10sp"
+        android:text="@string/rewards_onboarding_all_set_title"
+        android:textColor="@color/terms_of_service_text_color"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rewards_onboarding_all_set" />
+
+    <TextView
+        android:id="@+id/rewards_onboarding_all_set_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="10sp"
+        android:text="@string/rewards_onboarding_all_set_description"
+        android:textColor="@color/terms_of_service_text_color_default"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rewards_onboarding_all_set_title" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/all_set_done_button"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/tipping_send_button_background"
+        android:fontFamily="sans-serif-medium"
+        android:paddingHorizontal="24dp"
+        android:text="@string/brave_sync_btn_done"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rewards_onboarding_all_set_description" />
+
+    <TextView
+        android:id="@+id/how_does_it_work_all_set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="34dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/how_does_brave_rewards_work"
+        android:textAllCaps="false"
+        android:textColor="@color/brave_rating_not_now_text_color"
+        android:textSize="13sp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/all_set_done_button" />
+</androidx.constraintlayout.widget.ConstraintLayout>

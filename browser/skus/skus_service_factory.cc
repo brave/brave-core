@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/feature_list.h"
+#include "base/no_destructor.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/skus/browser/skus_service_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
@@ -24,7 +25,8 @@ namespace skus {
 
 // static
 SkusServiceFactory* SkusServiceFactory::GetInstance() {
-  return base::Singleton<SkusServiceFactory>::get();
+  static base::NoDestructor<SkusServiceFactory> instance;
+  return instance.get();
 }
 
 // static

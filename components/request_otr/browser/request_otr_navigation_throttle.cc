@@ -13,7 +13,7 @@
 #include "brave/components/request_otr/browser/request_otr_blocking_page.h"
 #include "brave/components/request_otr/browser/request_otr_controller_client.h"
 #include "brave/components/request_otr/browser/request_otr_service.h"
-#include "brave/components/request_otr/browser/request_otr_tab_storage.h"
+#include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
 #include "brave/components/request_otr/common/features.h"
 #include "brave/components/request_otr/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -61,7 +61,7 @@ RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
 
   // If user preference is 'never go off the record', don't bother creating
   // throttle.
-  if (pref_service->GetInteger(prefs::kRequestOTRActionOption) ==
+  if (pref_service->GetInteger(kRequestOTRActionOption) ==
       static_cast<int>(RequestOTRService::RequestOTRActionOption::kNever)) {
     return nullptr;
   }
@@ -101,14 +101,14 @@ RequestOTRNavigationThrottle::WillStartRequest() {
 
   // If user has just chosen to proceed on our interstitial, don't show
   // another one.
-  RequestOTRTabStorage* tab_storage =
-      RequestOTRTabStorage::GetOrCreate(web_contents);
-  if (tab_storage->IsProceeding()) {
+  RequestOTRStorageTabHelper* tab_storage =
+      RequestOTRStorageTabHelper::GetOrCreate(web_contents);
+  if (tab_storage->is_proceeding()) {
     return content::NavigationThrottle::PROCEED;
   }
   // If user has already indicated they want to go off-the-record,
   // don't show another interstitial. (Everything is already set up.)
-  if (tab_storage->RequestedOTR()) {
+  if (tab_storage->has_requested_otr()) {
     return content::NavigationThrottle::PROCEED;
   }
 
@@ -140,16 +140,17 @@ RequestOTRNavigationThrottle::WillProcessResponse() {
     return content::NavigationThrottle::PROCEED;
   }
 
-  // If there is an RequestOTRTabStorage associated to |web_contents_|, clear
-  // the IsProceeding flag.
-  RequestOTRTabStorage* tab_storage = RequestOTRTabStorage::FromWebContents(
-      navigation_handle()->GetWebContents());
+  // If there is an RequestOTRStorageTabHelper associated to |web_contents_|,
+  // clear the IsProceeding flag.
+  RequestOTRStorageTabHelper* tab_storage =
+      RequestOTRStorageTabHelper::FromWebContents(
+          navigation_handle()->GetWebContents());
   if (tab_storage) {
-    tab_storage->SetIsProceeding(false);
+    tab_storage->set_is_proceeding(false);
 
     // If we have already offered to go off-the-record (i.e. shown our
     // interstitial), don't offer again.
-    if (tab_storage->OfferedOTR()) {
+    if (tab_storage->has_offered_otr()) {
       return content::NavigationThrottle::PROCEED;
     }
   }
@@ -163,7 +164,7 @@ RequestOTRNavigationThrottle::WillProcessResponse() {
 
   // Check if this site sent an HTTP header indicating it wants to offer to go
   // off-the-record.
-  if (!headers->HasHeaderValue("X-Request-OTR", "1")) {
+  if (!headers->HasHeaderValue("Request-OTR", "1")) {
     return content::NavigationThrottle::PROCEED;
   }
 
@@ -182,7 +183,7 @@ RequestOTRNavigationThrottle::MaybeShowInterstitial() {
       web_contents, request_url, ephemeral_storage_service_, pref_service_,
       locale_);
 
-  if (pref_service_->GetInteger(prefs::kRequestOTRActionOption) ==
+  if (pref_service_->GetInteger(kRequestOTRActionOption) ==
       static_cast<int>(RequestOTRService::RequestOTRActionOption::kAlways)) {
     controller_client->ProceedOTR();
     return content::NavigationThrottle::PROCEED;
@@ -200,9 +201,9 @@ RequestOTRNavigationThrottle::MaybeShowInterstitial() {
   std::string blocked_page_content = blocked_page->GetHTMLContents();
 
   // Record (in memory) that we have shown this interstitial.
-  RequestOTRTabStorage* tab_storage =
-      RequestOTRTabStorage::GetOrCreate(web_contents);
-  tab_storage->SetOfferedOTR(true);
+  RequestOTRStorageTabHelper* tab_storage =
+      RequestOTRStorageTabHelper::GetOrCreate(web_contents);
+  tab_storage->set_offered_otr(true);
 
   // Replace the tab contents with our interstitial page.
   security_interstitials::SecurityInterstitialTabHelper::AssociateBlockingPage(
@@ -216,8 +217,9 @@ RequestOTRNavigationThrottle::MaybeShowInterstitial() {
 
 void RequestOTRNavigationThrottle::Enable1PESAndResume() {
   DCHECK(ephemeral_storage_service_);
-  RequestOTRTabStorage* tab_storage = RequestOTRTabStorage::FromWebContents(
-      navigation_handle()->GetWebContents());
+  RequestOTRStorageTabHelper* tab_storage =
+      RequestOTRStorageTabHelper::FromWebContents(
+          navigation_handle()->GetWebContents());
   if (tab_storage) {
     tab_storage->MaybeEnable1PESForUrl(
         ephemeral_storage_service_, navigation_handle()->GetURL(),

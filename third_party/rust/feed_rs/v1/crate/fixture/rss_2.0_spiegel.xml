@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:psc="https://podlove.org/simple-chapters/" xmlns:omny="https://omny.fm/rss-extensions" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0" xmlns:acast="https://schema.acast.com/1.0/" version="2.0">
+  <channel>
+    <language>de</language>
+    <atom:link rel="self" type="application/rss+xml" href="https://www.omnycontent.com/d/playlist/5ac1e950-45c7-4eb7-87c0-aa0f018441b8/bb17ca27-51f4-4349-bc1e-abc00102c975/4c18e072-24d2-4d60-9a42-abc00102c97e/podcast.rss" />
+    <atom:link rel="next" type="application/rss+xml" href="https://www.omnycontent.com/d/playlist/5ac1e950-45c7-4eb7-87c0-aa0f018441b8/bb17ca27-51f4-4349-bc1e-abc00102c975/4c18e072-24d2-4d60-9a42-abc00102c97e/podcast.rss?page=2" />
+    <atom:link rel="first" type="application/rss+xml" href="https://www.omnycontent.com/d/playlist/5ac1e950-45c7-4eb7-87c0-aa0f018441b8/bb17ca27-51f4-4349-bc1e-abc00102c975/4c18e072-24d2-4d60-9a42-abc00102c97e/podcast.rss?page=1" />
+    <atom:link rel="last" type="application/rss+xml" href="https://www.omnycontent.com/d/playlist/5ac1e950-45c7-4eb7-87c0-aa0f018441b8/bb17ca27-51f4-4349-bc1e-abc00102c975/4c18e072-24d2-4d60-9a42-abc00102c97e/podcast.rss?page=7" />
+    <itunes:new-feed-url>https://www.omnycontent.com/d/playlist/5ac1e950-45c7-4eb7-87c0-aa0f018441b8/bb17ca27-51f4-4349-bc1e-abc00102c975/4c18e072-24d2-4d60-9a42-abc00102c97e/podcast.rss</itunes:new-feed-url>
+    <title>SPIEGEL Update – Die Nachrichten</title>
+    <itunes:subtitle>Die wichtigsten Nachrichten des Tages</itunes:subtitle>
+    <link>https://www.spiegel.de/thema/spiegel-update/</link>
+    <description><![CDATA[<p>Die wichtigsten Nachrichten des Tages &ndash; erg&auml;nzt um Meinungen und Empfehlungen aus der SPIEGEL-Redaktion. Wochentags aktualisieren wir morgens, mittags und abends unsere Meldungen. Am Wochenende blicken wir zur&uuml;ck auf die vergangene Woche &ndash; und erkl&auml;ren, was in der n&auml;chsten Woche wichtig wird.</p>]]></description>
+    <itunes:type>episodic</itunes:type>
+    <itunes:summary>Summary</itunes:summary>
+    <itunes:owner>
+      <itunes:name>SPIEGEL Update – Die Nachrichten</itunes:name>
+      <itunes:email>charlotte.meyer-hamme@spiegel.de</itunes:email>
+    </itunes:owner>
+    <itunes:author>DER SPIEGEL</itunes:author>
+    <copyright>2021 DER SPIEGEL GmbH &amp; Co. KG</copyright>
+    <itunes:explicit>no</itunes:explicit>
+    <itunes:category text="News"></itunes:category>
+    <itunes:image href="https://www.omnycontent.com/d/programs/5ac1e950-45c7-4eb7-87c0-aa0f018441b8/bb17ca27-51f4-4349-bc1e-abc00102c975/image.jpg?t=1589902935&amp;size=Large" />
+    <image>
+      <url>https://www.omnycontent.com/d/programs/5ac1e950-45c7-4eb7-87c0-aa0f018441b8/bb17ca27-51f4-4349-bc1e-abc00102c975/image.jpg?t=1589902935&amp;size=Large</url>
+      <title>SPIEGEL Update – Die Nachrichten</title>
+      <link>https://www.spiegel.de/thema/spiegel-update/</link>
+    </image>
+    <item>
+      <title>07.02. – die Wochenvorschau: Lockdown-Verlängerung, Kriegsverbrecher vor Gericht, Super Bowl, Karneval </title>
+      <itunes:title>07.02. – die Wochenvorschau: Lockdown-Verlängerung, Kriegsverbrecher vor Gericht, Super Bowl, Karneval </itunes:title>
+      <description>Die wichtigsten Nachrichten aus der SPIEGEL-Redaktion. 
+See omnystudio.com/listener for privacy information.</description>
+      <content:encoded><![CDATA[Die wichtigsten Nachrichten aus der SPIEGEL-Redaktion. <br><br><p>See <a href="https://omnystudio.com/listener">omnystudio.com/listener</a> for privacy information.</p>]]></content:encoded>
+      <itunes:summary>Die wichtigsten Nachrichten aus der SPIEGEL-Redaktion. 
+See omnystudio.com/listener for privacy information.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:author>DER SPIEGEL</itunes:author>
+      <itunes:image href="https://www.omnycontent.com/d/programs/5ac1e950-45c7-4eb7-87c0-aa0f018441b8/bb17ca27-51f4-4349-bc1e-abc00102c975/image.jpg?t=1589902935&amp;size=Large" />
+      <media:content url="https://traffic.omny.fm/d/clips/5ac1e950-45c7-4eb7-87c0-aa0f018441b8/bb17ca27-51f4-4349-bc1e-abc00102c975/c7e3cca2-665e-4bc4-bcac-acc6011b9fa2/audio.mp3?utm_source=Podcast&amp;in_playlist=4c18e072-24d2-4d60-9a42-abc00102c97e&amp;t=1612652510" type="audio/mpeg">
+        <media:player url="https://omny.fm/shows/spiegel-update-die-nachrichten/07-02-die-wochenvorschau-lockdown-verl-ngerung-kri/embed" />
+      </media:content>
+      <media:content url="https://www.omnycontent.com/d/programs/5ac1e950-45c7-4eb7-87c0-aa0f018441b8/bb17ca27-51f4-4349-bc1e-abc00102c975/image.jpg?t=1589902935&amp;size=Large" type="image/jpeg" />
+      <guid isPermaLink="false">c7e3cca2-665e-4bc4-bcac-acc6011b9fa2</guid>
+      <omny:clipId>c7e3cca2-665e-4bc4-bcac-acc6011b9fa2</omny:clipId>
+      <pubDate>Sat, 06 Feb 2021 23:01:00 +0000</pubDate>
+      <itunes:duration>312</itunes:duration>
+      <enclosure url="https://traffic.omny.fm/d/clips/5ac1e950-45c7-4eb7-87c0-aa0f018441b8/bb17ca27-51f4-4349-bc1e-abc00102c975/c7e3cca2-665e-4bc4-bcac-acc6011b9fa2/audio.mp3?utm_source=Podcast&amp;in_playlist=4c18e072-24d2-4d60-9a42-abc00102c97e&amp;t=1612652510" length="2519606" type="audio/mpeg" />
+      <link>https://omny.fm/shows/spiegel-update-die-nachrichten/07-02-die-wochenvorschau-lockdown-verl-ngerung-kri</link>
+    </item>
+  </channel>
+</rss>

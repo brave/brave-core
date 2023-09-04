@@ -35,6 +35,10 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   // TestingBraveBrowserProcess*.
   static TestingBraveBrowserProcess* GetGlobal();
 
+  // Convenience method to both teardown and destroy the TestingBrowserProcess
+  // instance
+  static void TearDownAndDeleteInstance();
+
   TestingBraveBrowserProcess(const TestingBraveBrowserProcess&) = delete;
   TestingBraveBrowserProcess& operator=(const TestingBraveBrowserProcess&) =
       delete;
@@ -55,6 +59,8 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   brave_shields::HTTPSEverywhereService* https_everywhere_service() override;
   https_upgrade_exceptions::HttpsUpgradeExceptionsService*
   https_upgrade_exceptions_service() override;
+  localhost_permission::LocalhostPermissionComponent*
+  localhost_permission_component() override;
   brave_component_updater::LocalDataFilesService* local_data_files_service()
       override;
 #if BUILDFLAG(ENABLE_TOR)
@@ -80,13 +86,16 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVPNOSConnectionAPI* brave_vpn_os_connection_api() override;
 #endif
-  misc_metrics::MenuMetrics* menu_metrics() override;
+  misc_metrics::ProcessMiscMetrics* process_misc_metrics() override;
 
   // Populate the mock process with services. Consumer is responsible for
   // cleaning these up after completion of a test.
   void SetAdBlockService(std::unique_ptr<brave_shields::AdBlockService>);
 
  private:
+  // Perform necessary cleanup prior to destruction of |g_browser_process|
+  static void StartTearDown();
+
   // See CreateInstance() and DestroyInstance() above.
   TestingBraveBrowserProcess();
   ~TestingBraveBrowserProcess() override;

@@ -28,6 +28,7 @@
 #include "url/gurl.h"
 
 class AdBlockServiceTest;
+class DebounceBrowserTest;
 class PrefService;
 
 namespace component_updater {
@@ -35,6 +36,7 @@ class ComponentUpdateService;
 }  // namespace component_updater
 
 namespace adblock {
+struct BlockerResult;
 struct RegexManagerDiscardPolicy;
 }
 namespace brave_shields {
@@ -44,6 +46,7 @@ class AdBlockComponentFiltersProvider;
 class AdBlockDefaultResourceProvider;
 class AdBlockRegionalServiceManager;
 class AdBlockCustomFiltersProvider;
+class AdBlockLocalhostFiltersProvider;
 class AdBlockFilterListCatalogProvider;
 class AdBlockSubscriptionServiceManager;
 
@@ -53,11 +56,12 @@ class AdBlockService {
   class SourceProviderObserver : public AdBlockResourceProvider::Observer,
                                  public AdBlockFiltersProvider::Observer {
    public:
-    SourceProviderObserver(
-        AdBlockEngine* adblock_engine,
-        AdBlockFiltersProvider* source_provider,
-        AdBlockResourceProvider* resource_provider,
-        scoped_refptr<base::SequencedTaskRunner> task_runner);
+    SourceProviderObserver(AdBlockEngine* adblock_engine,
+                           AdBlockFiltersProvider* filters_provider,
+                           AdBlockResourceProvider* resource_provider,
+                           scoped_refptr<base::SequencedTaskRunner> task_runner,
+                           bool is_filter_provider_manager = false);
+
     SourceProviderObserver(const SourceProviderObserver&) = delete;
     SourceProviderObserver& operator=(const SourceProviderObserver&) = delete;
     ~SourceProviderObserver() override;
@@ -77,6 +81,7 @@ class AdBlockService {
     raw_ptr<AdBlockFiltersProvider> filters_provider_;    // not owned
     raw_ptr<AdBlockResourceProvider> resource_provider_;  // not owned
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
+    bool is_filter_provider_manager_;
 
     base::WeakPtrFactory<SourceProviderObserver> weak_factory_{this};
   };
@@ -92,15 +97,14 @@ class AdBlockService {
   AdBlockService& operator=(const AdBlockService&) = delete;
   ~AdBlockService();
 
-  void ShouldStartRequest(const GURL& url,
-                          blink::mojom::ResourceType resource_type,
-                          const std::string& tab_host,
-                          bool aggressive_blocking,
-                          bool* did_match_rule,
-                          bool* did_match_exception,
-                          bool* did_match_important,
-                          std::string* mock_data_url,
-                          std::string* rewritten_url);
+  adblock::BlockerResult ShouldStartRequest(
+      const GURL& url,
+      blink::mojom::ResourceType resource_type,
+      const std::string& tab_host,
+      bool aggressive_blocking,
+      bool previously_matched_rule,
+      bool previously_matched_exception,
+      bool previously_matched_important);
   absl::optional<std::string> GetCspDirectives(
       const GURL& url,
       blink::mojom::ResourceType resource_type,
@@ -136,6 +140,7 @@ class AdBlockService {
 
  private:
   friend class ::AdBlockServiceTest;
+  friend class ::DebounceBrowserTest;
 
   static std::string g_ad_block_dat_file_version_;
 
@@ -167,8 +172,12 @@ class AdBlockService {
       GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockCustomFiltersProvider> custom_filters_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockLocalhostFiltersProvider> localhost_filters_provider_
+      GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockComponentFiltersProvider> default_filters_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockComponentFiltersProvider>
+      default_exception_filters_provider_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockFilterListCatalogProvider>
       filter_list_catalog_provider_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockSubscriptionServiceManager>

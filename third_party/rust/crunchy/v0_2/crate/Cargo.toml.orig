@@ -1,0 +1,19 @@
+[package]
+name = "crunchy"
+version = "0.2.2"
+authors = ["Vurich <jackefransham@hotmail.co.uk>"]
+description = "Crunchy unroller: deterministically unroll constant loops"
+license = "MIT"
+build = "build.rs"
+
+[dependencies]
+
+[features]
+"std" = []
+"limit_64" = []
+"limit_128" = []
+"limit_256" = []
+"limit_512" = []
+"limit_1024" = []
+"limit_2048" = []
+"default" = ["limit_128"]

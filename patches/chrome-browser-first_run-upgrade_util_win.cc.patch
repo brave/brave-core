@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/first_run/upgrade_util_win.cc b/chrome/browser/first_run/upgrade_util_win.cc
-index 1bac044e1ad84fc2e9617e8ed6ee3a662dd5af55..4f9d1f68f6eb8173ba5d30202249d792b4383947 100644
+index 09b404dd9f397bb9099e497d5cfc23f2bdc52e73..a1d6f1ba62ccf53f80849f98ebb6f5a9c13bf38c 100644
 --- a/chrome/browser/first_run/upgrade_util_win.cc
 +++ b/chrome/browser/first_run/upgrade_util_win.cc
 @@ -44,7 +44,7 @@
@@ -8,7 +8,7 @@ index 1bac044e1ad84fc2e9617e8ed6ee3a662dd5af55..4f9d1f68f6eb8173ba5d30202249d792
  
 -#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
 +#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || defined(OFFICIAL_BUILD)
- #include "google_update/google_update_idl.h"
+ #include "chrome/updater/app/server/win/updater_legacy_idl.h"
  #endif
  
 @@ -58,7 +58,7 @@ bool GetNewerChromeFile(base::FilePath* path) {

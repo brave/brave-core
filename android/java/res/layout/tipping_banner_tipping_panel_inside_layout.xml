@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <ImageView
+        android:id="@+id/ic_bat_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_bat_color" />
+
+    <TextView
+        android:id="@+id/brave_rewards_balance_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/brave_rewards_balance"
+        android:textColor="@color/rewards_panel_notification_text_color"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/ic_bat_icon"
+        app:layout_constraintTop_toTopOf="@id/ic_bat_icon" />
+
+    <TextView
+        android:id="@+id/custodian_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/custodian_text_background"
+        android:drawablePadding="8dp"
+        android:fontFamily="sans-serif-medium"
+        android:padding="4dp"
+        android:textAllCaps="true"
+        android:textColor="@color/custodian_name_color"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@id/brave_rewards_balance_text"
+        app:layout_constraintStart_toEndOf="@id/brave_rewards_balance_text"
+        app:layout_constraintTop_toTopOf="@id/brave_rewards_balance_text" />
+
+    <TextView
+        android:id="@+id/tipChoice3"
+        android:layout_width="58dp"
+        android:layout_height="44dp"
+        android:background="@drawable/rewards_points_center_background_selector"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="@string/_10"
+        android:textColor="@color/tipping_rewards_points_text_color"
+        app:layout_constraintEnd_toStartOf="@id/tipChoiceCustom"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/tipChoice2"
+        app:layout_constraintTop_toTopOf="@id/tipChoice2" />
+
+    <TextView
+        android:id="@+id/tipChoice1"
+        android:layout_width="58dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/rewards_points_left_background_selector"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="@string/_1"
+        android:textColor="@color/tipping_rewards_points_text_color"
+        app:layout_constraintEnd_toStartOf="@id/tipChoice2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ic_bat_icon" />
+
+    <TextView
+        android:id="@+id/tipChoiceCustom"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rewards_points_right_background_selector"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="@string/custom"
+        android:textColor="@color/tipping_rewards_points_text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tipChoice3"
+        app:layout_constraintTop_toTopOf="@id/tipChoice3" />
+
+    <TextView
+        android:id="@+id/tipChoice2"
+        android:layout_width="58dp"
+        android:layout_height="44dp"
+        android:background="@drawable/rewards_points_center_background_selector"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="@string/_5"
+        android:textColor="@color/tipping_rewards_points_text_color"
+        app:layout_constraintEnd_toStartOf="@id/tipChoice3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/tipChoice1"
+        app:layout_constraintTop_toTopOf="@id/tipChoice1" />
+
+    <TextView
+        android:id="@+id/usd_symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="@string/dollar"
+        android:textColor="@color/tipping_details_description_text_color"
+        app:layout_constraintStart_toStartOf="@id/tipChoice1"
+        app:layout_constraintTop_toBottomOf="@id/tipChoice1" />
+
+    <TextView
+        android:id="@+id/usd_symbol2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="@string/dollar"
+        android:visibility="invisible"
+        android:textColor="@color/tipping_details_description_text_color"
+        app:layout_constraintBottom_toBottomOf="@id/currencyOneEditText"
+        app:layout_constraintEnd_toStartOf="@id/currencyOneEditText"
+        app:layout_constraintTop_toTopOf="@id/currencyOneEditText" />
+
+    <TextView
+        android:id="@+id/exchange_amount1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:textColor="@color/tipping_details_description_text_color"
+        app:layout_constraintStart_toEndOf="@id/usd_symbol"
+        app:layout_constraintTop_toBottomOf="@id/tipChoice1" />
+
+
+    <TextView
+        android:id="@+id/currency2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="@string/usd"
+        android:textColor="@color/tipping_details_description_text_color"
+        app:layout_constraintBottom_toBottomOf="@id/exchange_amount1"
+        app:layout_constraintStart_toEndOf="@id/exchange_amount1"
+        app:layout_constraintTop_toTopOf="@id/exchange_amount1" />
+
+    <ImageView
+        android:id="@+id/exchange_shape"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:contentDescription="@string/exchange_button"
+        app:layout_constraintBottom_toBottomOf="@id/exchange_amount1"
+        app:layout_constraintStart_toEndOf="@id/currency2"
+        app:layout_constraintTop_toTopOf="@id/exchange_amount1"
+        app:srcCompat="@drawable/exchange_shape" />
+
+
+    <TextView
+        android:id="@+id/set_as_monthly_contribution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="@string/set_as_monthly_contribution"
+        android:textColor="@color/rewards_panel_notification_text_color"
+        app:layout_constraintBottom_toTopOf="@id/tipping_warning_message_layout"
+        app:layout_constraintStart_toStartOf="@id/exchange_amount1"
+        app:layout_constraintTop_toTopOf="@id/info_outline" />
+
+
+    <ImageView
+        android:id="@+id/info_outline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="@id/monthly_switch"
+        app:layout_constraintEnd_toStartOf="@id/monthly_switch"
+        app:layout_constraintTop_toTopOf="@id/monthly_switch"
+        app:srcCompat="@drawable/info_outline" />
+
+    <TextView
+        android:id="@+id/currency1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="@string/bat"
+        android:textColor="@color/tipping_details_description_text_color"
+        app:layout_constraintBottom_toBottomOf="@id/currencyOneEditText"
+        app:layout_constraintEnd_toEndOf="@id/tipChoiceCustom"
+        app:layout_constraintTop_toTopOf="@id/currencyOneEditText" />
+
+    <EditText
+        android:id="@+id/currencyOneEditText"
+        android:layout_width="80dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/currency_edit_text_background_color"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:hint="@null"
+        android:textSize="28sp"
+        android:importantForAutofill="no"
+        android:inputType="numberDecimal"
+        android:textColor="@color/rewards_panel_notification_text_color"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@id/currency1"
+        app:layout_constraintTop_toBottomOf="@id/tipChoiceCustom" />
+
+    <TextView
+        android:id="@+id/currencyOneEditText1"
+        android:layout_width="80dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textSize="28sp"
+        android:gravity="center"
+        android:textColor="@color/rewards_panel_notification_text_color"
+        app:layout_constraintEnd_toStartOf="@id/currency1"
+        app:layout_constraintTop_toBottomOf="@id/tipChoiceCustom" />
+
+    <TextView
+        android:id="@+id/wallet_amount_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/rewards_panel_notification_text_color"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/ic_bat_icon"
+        app:layout_constraintStart_toStartOf="@id/brave_rewards_balance_text"
+        app:layout_constraintTop_toBottomOf="@id/brave_rewards_balance_text" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/monthly_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/TippingSwitchTheme"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@id/currency1"
+        app:layout_constraintTop_toBottomOf="@id/currencyOneEditText"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+ <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tipping_warning_message_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/tipping_logout_message_background"
+        android:padding="24dp"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/set_as_monthly_contribution">
+
+        <include layout="@layout/tipping_warning_message_layout" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tipChoice1,tipChoice2,tipChoice3, tipChoiceCustom, exchange_amount1, exchange_shape, currency1, currency2, currencyOneEditText1, usd_symbol " />
+</merge>

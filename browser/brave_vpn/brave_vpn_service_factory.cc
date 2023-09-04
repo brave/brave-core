@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/feature_list.h"
+#include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -27,13 +28,16 @@
 #if BUILDFLAG(IS_WIN)
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_factory_win.h"
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service_win.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_factory_win.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.h"
 #endif
 
 namespace brave_vpn {
 
 // static
 BraveVpnServiceFactory* BraveVpnServiceFactory::GetInstance() {
-  return base::Singleton<BraveVpnServiceFactory>::get();
+  static base::NoDestructor<BraveVpnServiceFactory> instance;
+  return instance.get();
 }
 
 // static
@@ -58,9 +62,12 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
           "BraveVpnService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
-
 #if BUILDFLAG(IS_WIN)
-  DependsOn(brave_vpn::BraveVpnDnsObserverFactory::GetInstance());
+  if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
+    DependsOn(brave_vpn::BraveVpnWireguardObserverFactory::GetInstance());
+  } else {
+    DependsOn(brave_vpn::BraveVpnDnsObserverFactory::GetInstance());
+  }
 #endif
 }
 
@@ -68,10 +75,15 @@ BraveVpnServiceFactory::~BraveVpnServiceFactory() = default;
 
 KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  if (!brave_vpn::IsAllowedForContext(context) ||
-      !g_brave_browser_process->brave_vpn_os_connection_api()) {
+  if (!brave_vpn::IsAllowedForContext(context)) {
     return nullptr;
   }
+
+#if !BUILDFLAG(IS_ANDROID)
+  if (!g_brave_browser_process->brave_vpn_os_connection_api()) {
+    return nullptr;
+  }
+#endif
 
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =
@@ -90,11 +102,21 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
       shared_url_loader_factory, local_state,
       user_prefs::UserPrefs::Get(context), callback);
 #if BUILDFLAG(IS_WIN)
-  auto* dns_observer_service =
-      brave_vpn::BraveVpnDnsObserverFactory::GetInstance()
-          ->GetServiceForContext(context);
-  if (dns_observer_service)
-    dns_observer_service->Observe(vpn_service);
+  if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
+    auto* observer_service =
+        brave_vpn::BraveVpnWireguardObserverFactory::GetInstance()
+            ->GetServiceForContext(context);
+    if (observer_service) {
+      observer_service->Observe(vpn_service);
+    }
+  } else {
+    auto* observer_service =
+        brave_vpn::BraveVpnDnsObserverFactory::GetInstance()
+            ->GetServiceForContext(context);
+    if (observer_service) {
+      observer_service->Observe(vpn_service);
+    }
+  }
 #endif
   return vpn_service;
 }

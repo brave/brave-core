@@ -327,15 +327,13 @@ TEST(PermissionUtilsUnitTest, GetConnectWithSiteWebUIURL) {
         "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"},
        "chrome://wallet-panel.top-chrome/"
        "?addr=0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A&addr="
-       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B&origin-scheme=https&"
-       "origin-host=a.test.com&origin-port=123&origin-spec=https://"
+       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B&origin-spec=https://"
        "a.test.com:123&etld-plus-one=test.com#connectWithSite"},
       {{"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
         "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
        "chrome://wallet-panel.top-chrome/"
        "?addr=BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8&addr="
-       "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV&origin-scheme=https&"
-       "origin-host=a.test.com&origin-port=123&origin-spec=https://"
+       "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV&origin-spec=https://"
        "a.test.com:123&etld-plus-one=test.com#connectWithSite"}};
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
     GURL url_out = GetConnectWithSiteWebUIURL(base_url, cases[i].addrs, origin);

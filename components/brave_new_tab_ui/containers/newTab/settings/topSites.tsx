@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.*/
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
@@ -15,7 +15,7 @@ import {
   StyledTopSitesCustomizationOptionTitle,
   StyledTopSitesCustomizationOptionDesc
 } from '../../../components/default'
-import { Toggle } from '../../../components/toggle'
+import Toggle from '@brave/leo/react/toggle'
 
 import { getLocale } from '../../../../common/locale'
 
@@ -51,7 +51,7 @@ class TopSitesSettings extends React.PureComponent<Props, {}> {
           <Toggle
             onChange={toggleShowTopSites}
             checked={showTopSites}
-            size='large'
+            size='small'
           />
         </SettingsRow>
         <StyledTopSitesCustomizationSettings>

@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -110,8 +111,7 @@ class ViewCounterService : public KeyedService,
                            SINotActiveWithBadData);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            NotActiveOptedOut);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           IsActiveOptedIn);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, IsActiveOptedIn);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            ActiveInitiallyOptedIn);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
@@ -149,8 +149,8 @@ class ViewCounterService : public KeyedService,
   // Should we show the branded wallpaper right now, in addition
   // to the result from `IsBrandedWallpaperActive()`.
   bool ShouldShowBrandedWallpaper() const;
-  // Should we show custom background that user uploaded or fill background with
-  // solid color user selected.
+  // Should we show custom background that user uploaded or fill background
+  // with solid color user selected.
   bool ShouldShowCustomBackground() const;
 
   void ResetModel();

@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <iterator>
 #include <map>
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -34,11 +35,13 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -48,6 +51,7 @@
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
@@ -72,12 +76,11 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
-#include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
-#include "brave/browser/ui/views/speedreader/speedreader_mode_bubble.h"
-#include "brave/components/constants/webui_url_constants.h"
-#include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
-#include "components/grit/brave_components_strings.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
 #endif
 
 namespace {
@@ -210,14 +213,18 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     // Wrap chromium side panel with our sidebar container
     auto original_side_panel = RemoveChildViewT(unified_side_panel_.get());
     sidebar_container_view_ = contents_container_->AddChildView(
-        std::make_unique<SidebarContainerView>(GetBraveBrowser(),
-                                               side_panel_coordinator(),
-                                               std::move(original_side_panel)));
+        std::make_unique<SidebarContainerView>(
+            GetBraveBrowser(),
+            SidePanelUtil::GetSidePanelCoordinatorForBrowser(browser_.get()),
+            std::move(original_side_panel)));
     unified_side_panel_ = sidebar_container_view_->side_panel();
     contents_container_->SetLayoutManager(
         std::make_unique<BraveContentsLayoutManager>(
             devtools_web_view_, contents_web_view_, sidebar_container_view_));
+
+#if defined(USE_AURA)
     sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
+#endif
 
     pref_change_registrar_.Add(
         prefs::kSidePanelHorizontalAlignment,
@@ -291,7 +298,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
 }
 
 void BraveBrowserView::ToggleSidebar() {
-  side_panel_coordinator()->Toggle();
+  SidePanelUI::GetSidePanelUIForBrowser(browser_.get())->Toggle();
 }
 
 void BraveBrowserView::ShowBraveVPNBubble() {
@@ -369,26 +376,66 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
   }
 }
 
-void BraveBrowserView::ShowSpeedreaderWebUIBubble(Browser* browser) {
-  if (!speedreader_webui_bubble_manager_) {
-    BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+#if BUILDFLAG(ENABLE_SPEEDREADER)
 
-    speedreader_webui_bubble_manager_ =
-        std::make_unique<WebUIBubbleManagerT<SpeedreaderPanelUI>>(
-            browser_view->GetLocationBarView(), GetProfile(),
-            GURL(base::StringPiece(kSpeedreaderPanelURL)),
-            IDS_SPEEDREADER_BRAND_LABEL);
+speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
+    speedreader::SpeedreaderTabHelper* tab_helper,
+    speedreader::SpeedreaderBubbleLocation location) {
+  views::View* anchor = nullptr;
+  views::BubbleBorder::Arrow arrow = views::BubbleBorder::NONE;
+  switch (location) {
+    case speedreader::SpeedreaderBubbleLocation::kLocationBar:
+      anchor = GetLocationBarView();
+      arrow = views::BubbleBorder::TOP_RIGHT;
+      break;
+    case speedreader::SpeedreaderBubbleLocation::kToolbar:
+      anchor = reader_mode_toolbar_view_->toolbar();
+      arrow = views::BubbleBorder::TOP_LEFT;
+      break;
   }
 
-  speedreader_webui_bubble_manager_->ShowBubble();
+  auto* reader_mode_bubble =
+      new speedreader::ReaderModeBubble(anchor, tab_helper);
+  views::BubbleDialogDelegateView::CreateBubble(reader_mode_bubble);
+  reader_mode_bubble->SetArrow(arrow);
+  reader_mode_bubble->Show();
+  return reader_mode_bubble;
 }
 
-void BraveBrowserView::HideSpeedreaderWebUIBubble() {
-  if (speedreader_webui_bubble_manager_ &&
-      speedreader_webui_bubble_manager_->GetBubbleWidget()) {
-    speedreader_webui_bubble_manager_->CloseBubble();
+void BraveBrowserView::ShowReaderModeToolbar() {
+  if (!reader_mode_toolbar_view_) {
+    reader_mode_toolbar_view_ =
+        std::make_unique<ReaderModeToolbarView>(GetProfile());
+    contents_web_view()->parent()->AddChildView(
+        reader_mode_toolbar_view_.get());
+    static_cast<BraveContentsLayoutManager*>(GetContentsLayoutManager())
+        ->set_reader_mode_toolbar(reader_mode_toolbar_view_.get());
+  } else {
+    reader_mode_toolbar_view_->SetVisible(true);
+  }
+
+  Layout();
+}
+
+void BraveBrowserView::HideReaderModeToolbar() {
+  if (reader_mode_toolbar_view_) {
+    reader_mode_toolbar_view_->SetVisible(false);
+    Layout();
   }
 }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void BraveBrowserView::OpenAiChatPanel() {
+  if (!ai_chat::features::IsAIChatEnabled()) {
+    return;
+  }
+
+  SidePanelUI::GetSidePanelUIForBrowser(browser_.get())
+      ->Show(SidePanelEntryId::kChatUI);
+}
+#endif
+
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 void BraveBrowserView::ShowUpdateChromeDialog() {
 #if BUILDFLAG(ENABLE_SPARKLE)
@@ -396,31 +443,6 @@ void BraveBrowserView::ShowUpdateChromeDialog() {
   UpdateRecommendedMessageBoxMac::Show(GetNativeWindow());
 #else
   BrowserView::ShowUpdateChromeDialog();
-#endif
-}
-
-speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
-    speedreader::SpeedreaderTabHelper* tab_helper,
-    bool is_enabled) {
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  speedreader::SpeedreaderBubbleView* bubble = nullptr;
-  if (is_enabled) {
-    auto* speedreader_mode_bubble = new speedreader::SpeedreaderModeBubble(
-        GetLocationBarView(), tab_helper);
-    views::BubbleDialogDelegateView::CreateBubble(speedreader_mode_bubble);
-    bubble = speedreader_mode_bubble;
-  } else {
-    auto* reader_mode_bubble =
-        new speedreader::ReaderModeBubble(GetLocationBarView(), tab_helper);
-    views::BubbleDialogDelegateView::CreateBubble(reader_mode_bubble);
-    bubble = reader_mode_bubble;
-  }
-
-  bubble->Show();
-
-  return bubble;
-#else
-  return nullptr;
 #endif
 }
 
@@ -444,6 +466,13 @@ void BraveBrowserView::CleanAndCopySelectedURL() {
   }
   brave_omnibox_view->CleanAndCopySelectedURL();
 }
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+void BraveBrowserView::ShowPlaylistBubble() {
+  static_cast<BraveLocationBarView*>(GetLocationBarView())
+      ->ShowPlaylistBubble();
+}
+#endif
 
 WalletButton* BraveBrowserView::GetWalletButton() {
   return static_cast<BraveToolbarView*>(toolbar())->wallet_button();
@@ -624,7 +653,7 @@ void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,
   // state is changed. With this, active window could have correct sidebar item
   // state.
   if (sidebar_container_view_) {
-    sidebar_container_view_->UpdateSidebar();
+    sidebar_container_view_->UpdateSidebarItemsState();
   }
 }
 

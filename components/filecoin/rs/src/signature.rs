@@ -1,55 +1,26 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use crate::message::MessageAPI;
 use blake2b_simd::Params;
 use bls_signatures::Serialize;
 use core::{array::TryFromSliceError, num::ParseIntError};
-use fvm_ipld_encoding::Cbor;
-use fvm_shared::address::Protocol;
+use fvm_ipld_encoding::to_vec;
+use fvm_ipld_encoding::DAG_CBOR;
+use fvm_shared::address::set_current_network;
+use fvm_shared::address::Network;
+use fvm_shared::crypto::signature::Signature;
 use fvm_shared::message::Message as UnsignedMessage;
 use libsecp256k1::util::{SECRET_KEY_SIZE, SIGNATURE_SIZE};
-use libsecp256k1::{sign, Message};
-use std::convert::TryInto;
+use multihash::{Code, MultihashDigest};
 use thiserror::Error;
 
-pub const SIGNATURE_RECOVERY_SIZE: usize = SIGNATURE_SIZE + 1;
-pub const BLS_SIGNATURE_SIZE: usize = 96;
-
 pub struct PrivateKey(pub [u8; SECRET_KEY_SIZE]);
-pub struct SignatureBLS(pub [u8; BLS_SIGNATURE_SIZE]);
-pub struct SignatureSECP256K1(pub [u8; SIGNATURE_RECOVERY_SIZE]);
-
-struct SecpSignature {
-  signature: libsecp256k1::Signature,
-  recid: libsecp256k1::RecoveryId
-}
-
-pub enum Signature {
-    SignatureSECP256K1(SignatureSECP256K1),
-    SignatureBLS(SignatureBLS),
-}
-
-impl Signature {
-    pub fn as_bytes(&self) -> &[u8] {
-        match self {
-            Signature::SignatureSECP256K1(sig_secp256k1) => sig_secp256k1.as_bytes(),
-            Signature::SignatureBLS(sig_bls) => sig_bls.as_bytes(),
-        }
-    }
-}
-
-impl SignatureBLS {
-    pub fn as_bytes(&self) -> &[u8] {
-        &self.0
-    }
-}
-
-impl SignatureSECP256K1 {
-    pub fn as_bytes(&self) -> &[u8] {
-        &self.0
-    }
-}
 
 /// Filecoin Signer Error
-/// https://github.com/Zondax/filecoin-signing-tools/blob/2e7b005b4733761de11d4a252cb481ca5aedb029/signer/src/error.rs#L7
+/// https://github.com/Zondax/filecoin-signing-tools/blob/222362ae38a1ccd8523ea026d5298d4718b43e2b/signer/src/error.rs#L7
 #[derive(Error, Debug)]
 pub enum SignerError {
     /// Secp256k1 error
@@ -76,72 +47,54 @@ pub enum SignerError {
 
     #[error("Marshall error | {0}")]
     FvmSharedEncodingError(#[from] fvm_ipld_encoding::Error),
+
+    // CID error
+    #[error("Cannot read CID from string | {0}")]
+    CidError(#[from] cid::Error),
 }
 
-/// Multihash prefix (https://multiformats.io/multihash/) for blake2b 256 bits
-/// 01 - Version 1
-/// 71 - DAG_CBOR encoded
-/// a0e402 - code for blake2b256 hashing function
-/// 20 - 32 bytes length
-const CID_PREFIX: &[u8] = &[0x01, 0x71, 0xa0, 0xe4, 0x02, 0x20];
-const HASH_LENGTH: usize = 32;
+/// https://github.com/Zondax/filecoin-signing-tools/blob/222362ae38a1ccd8523ea026d5298d4718b43e2b/signer/src/utils.rs#L6
+pub fn blake2b_256(ingest: &[u8]) -> [u8; 32] {
+    let digest = Params::new().hash_length(32).to_state().update(ingest).finalize();
 
-/// transform a message into a hashed message ready to be signed and following Filecoin standard
-/// https://github.com/Zondax/filecoin-signing-tools/blob/2e7b005b4733761de11d4a252cb481ca5aedb029/signer/src/utils.rs#L19
-pub fn get_digest(message: &[u8]) -> Result<[u8; HASH_LENGTH], TryFromSliceError> {
-    let message_hashed =
-        Params::new().hash_length(HASH_LENGTH).to_state().update(message).finalize();
-    // Making blake2b256 CID multihash, https://multiformats.io/multihash/
-    let cid_hashed = Params::new()
-        .hash_length(HASH_LENGTH)
-        .to_state()
-        .update(CID_PREFIX)
-        .update(message_hashed.as_bytes())
-        .finalize();
-
-    cid_hashed.as_bytes().try_into()
+    let mut ret = [0u8; 32];
+    ret.clone_from_slice(digest.as_bytes());
+    ret
 }
 
-
-fn sign_message_secp256(
-  private_key: &PrivateKey, message_digest: &libsecp256k1::Message
-) -> Result <SecpSignature, SignerError> {
-  let secret_key = libsecp256k1::SecretKey::parse_slice(&private_key.0)?;
-  let (signature_rs, recovery_id) = sign(message_digest, &secret_key);
-  Ok(SecpSignature {signature: signature_rs, recid: recovery_id})
-}
-
-// https://github.com/Zondax/filecoin-signing-tools/blob/2e7b005b4733761de11d4a252cb481ca5aedb029/signer/src/lib.rs#L282
+/// https://github.com/Zondax/filecoin-signing-tools/blob/222362ae38a1ccd8523ea026d5298d4718b43e2b/signer/src/lib.rs#L308
 fn transaction_sign_secp56k1_raw(
-    unsigned_message_api: &UnsignedMessage,
+    message: &UnsignedMessage,
     private_key: &PrivateKey,
-) -> Result<SignatureSECP256K1, SignerError> {
-    let message_cbor = unsigned_message_api.marshal_cbor()?;
-    let cid_hashed = get_digest(message_cbor.as_ref())?;
-    let message_digest = Message::parse_slice(&cid_hashed)?;
-    let signed = sign_message_secp256(private_key, &message_digest)?;
-    let mut signature = SignatureSECP256K1([0; SIGNATURE_RECOVERY_SIZE]);
-    signature.0[..64].copy_from_slice(&signed.signature.serialize()[..]);
-    signature.0[64] = signed.recid.serialize();
+) -> Result<Signature, SignerError> {
+    let secret_key = libsecp256k1::SecretKey::parse_slice(&private_key.0)?;
+    let message_ser = to_vec(message)?;
+    let hash = Code::Blake2b256.digest(&message_ser);
+    let message_cid = cid::Cid::new_v1(DAG_CBOR, hash);
+    let message_digest = libsecp256k1::Message::parse_slice(&blake2b_256(&message_cid.to_bytes()))?;
+
+    let (signature_rs, recovery_id) = libsecp256k1::sign(&message_digest, &secret_key);
+
+    let mut sig = [0; SIGNATURE_SIZE + 1];
+    sig[..SIGNATURE_SIZE].copy_from_slice(&signature_rs.serialize().to_vec());
+    sig[SIGNATURE_SIZE] = recovery_id.serialize();
+
+    let signature = Signature::new_secp256k1(sig.to_vec());
 
     Ok(signature)
 }
 
-// https://github.com/Zondax/filecoin-signing-tools/blob/2e7b005b4733761de11d4a252cb481ca5aedb029/signer/src/lib.rs#L301
+/// https://github.com/Zondax/filecoin-signing-tools/blob/222362ae38a1ccd8523ea026d5298d4718b43e2b/signer/src/lib.rs#L330
 fn transaction_sign_bls_raw(
-    unsigned_message: &UnsignedMessage,
+    message: &UnsignedMessage,
     private_key: &PrivateKey,
-) -> Result<SignatureBLS, SignerError> {
+) -> Result<Signature, SignerError> {
     let sk = bls_signatures::PrivateKey::from_bytes(&private_key.0)?;
-
-    //sign the message's signing bytes
-    let signed = sk.sign(unsigned_message.to_signing_bytes());
-    let v = signed.as_bytes();
-    if v.len() != BLS_SIGNATURE_SIZE {
-        return Err(SignerError::GenericString("Invalid Signature Length".to_string()));
-    }
-    let mut signature = SignatureBLS { 0: [0; BLS_SIGNATURE_SIZE] };
-    signature.0.copy_from_slice(&v[..BLS_SIGNATURE_SIZE]);
+    let message_ser = to_vec(message)?;
+    let hash = Code::Blake2b256.digest(&message_ser);
+    let message_cid = cid::Cid::new_v1(DAG_CBOR, hash);
+    let sig = sk.sign(&message_cid.to_bytes());
+    let signature = Signature::new_bls(sig.as_bytes());
 
     Ok(signature)
 }
@@ -153,35 +106,41 @@ fn transaction_sign_bls_raw(
 /// * `unsigned_message_api` - an unsigned filecoin message
 /// * `private_key` - a `PrivateKey`
 ///
-/// https://github.com/Zondax/filecoin-signing-tools/blob/2e7b005b4733761de11d4a252cb481ca5aedb029/signer/src/lib.rs#L319
+/// https://github.com/Zondax/filecoin-signing-tools/blob/222362ae38a1ccd8523ea026d5298d4718b43e2b/signer-npm/src/lib.rs#L342
 pub fn transaction_sign_raw(
-    unsigned_message_api: &UnsignedMessage,
+    message: &UnsignedMessage,
     private_key: &PrivateKey,
 ) -> Result<Signature, SignerError> {
     // the `from` address protocol let us know which signing scheme to use
-    match unsigned_message_api.from.protocol() {
-        Protocol::Secp256k1 => {
-            let signed = transaction_sign_secp56k1_raw(unsigned_message_api, private_key)?;
-            Ok(Signature::SignatureSECP256K1(signed))
+    let signature = match message.from.protocol() {
+        fvm_shared::address::Protocol::Secp256k1 => {
+            transaction_sign_secp56k1_raw(message, private_key)?
         }
-        Protocol::BLS => {
-            let signed = transaction_sign_bls_raw(unsigned_message_api, private_key)?;
-            Ok(Signature::SignatureBLS(signed))
+        fvm_shared::address::Protocol::BLS => transaction_sign_bls_raw(message, private_key)?,
+        _ => {
+            return Err(SignerError::GenericString("Unknown signing protocol".to_string()));
         }
-        _ => Err(SignerError::GenericString("Unknown signing protocol".to_string())),
-    }
+    };
+
+    Ok(signature)
 }
 
-pub fn transaction_sign(transaction: &str, private_key: &[u8]) -> String {
-  let mut de = serde_json::Deserializer::from_str(transaction);
-  let mut sk = PrivateKey([0; SECRET_KEY_SIZE]);
-  sk.0.copy_from_slice(&private_key[..SECRET_KEY_SIZE]);
-  let message_user_api = MessageAPI::deserialize(&mut de);
-  if let Ok(message_user_api) = message_user_api {
-    let raw_signature = transaction_sign_raw(&message_user_api, &sk);
-    if let Ok(raw_signature) = raw_signature {
-        return base64::encode(raw_signature.as_bytes());
+pub fn transaction_sign(is_mainnet: bool, transaction: &str, private_key: &[u8]) -> String {
+    if is_mainnet {
+        set_current_network(Network::Mainnet);
+    } else {
+        set_current_network(Network::Testnet);
     }
-  }
-  String::new()
+    let mut de = serde_json::Deserializer::from_str(transaction);
+    let mut sk = PrivateKey([0; SECRET_KEY_SIZE]);
+    sk.0.copy_from_slice(&private_key[..SECRET_KEY_SIZE]);
+    let message_user_api = MessageAPI::deserialize(&mut de);
+    if let Ok(message_user_api) = message_user_api {
+        let raw_signature = transaction_sign_raw(&message_user_api, &sk);
+        if let Ok(raw_signature) = raw_signature {
+            return base64::encode(raw_signature.bytes());
+        }
+    }
+    // Empty string is returned as an error cause this code is executed from cxx
+    String::new()
 }

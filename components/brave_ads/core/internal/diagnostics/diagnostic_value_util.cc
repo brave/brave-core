@@ -24,9 +24,9 @@ base::Value::List DiagnosticsToValue(const DiagnosticMap& diagnostics) {
   for (const auto& [entry_type, entry] : diagnostics) {
     CHECK(entry);
 
-    base::Value::Dict dict;
-    dict.Set(kNameKey, entry->GetName());
-    dict.Set(kValueKey, entry->GetValue());
+    auto dict = base::Value::Dict()
+                    .Set(kNameKey, entry->GetName())
+                    .Set(kValueKey, entry->GetValue());
 
     list.Append(std::move(dict));
   }

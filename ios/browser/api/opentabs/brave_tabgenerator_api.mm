@@ -10,7 +10,7 @@
 
 #include "base/strings/sys_string_conversions.h"
 
-#include "ios/chrome/browser/main/browser.h"
+#include "ios/chrome/browser/shared/model/browser/browser.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "ios/web/web_state/web_state_impl.h"
 

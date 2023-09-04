@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<org.chromium.chrome.browser.custom_layout.LockableNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wallet_dn_bg_primary"
+    android:fillViewport="true">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <org.chromium.chrome.browser.app.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:shimmer_duration="1000">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view_market_placeholder"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="88dp"
+                app:cardBackgroundColor="@color/brave_wallet_dn_highlight_bg_color"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:id="@+id/shimmer_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/market_coin_shimmer_item" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </org.chromium.chrome.browser.app.shimmer.ShimmerFrameLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/market_list_card_view_view_container"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="88dp"
+            app:cardBackgroundColor="@color/brave_wallet_dn_highlight_bg_color"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/coin_markets_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                app:layoutManager="LinearLayoutManager" />
+
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
+</org.chromium.chrome.browser.custom_layout.LockableNestedScrollView>

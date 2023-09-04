@@ -6,14 +6,10 @@
 package org.chromium.chrome.browser.site_settings;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
 import org.chromium.base.Callback;
-import org.chromium.chrome.browser.ChromeTabbedActivity;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.site_settings.ChromeSiteSettingsDelegate;
 import org.chromium.url.GURL;
 
 public class BraveSiteSettingsDelegate extends ChromeSiteSettingsDelegate {

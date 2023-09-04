@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/files/scoped_temp_dir.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -23,6 +25,7 @@
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
@@ -69,20 +72,27 @@ class SolanaTxManagerUnitTest : public testing::Test {
                    false, last_valid_block_height1_);
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
+    brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
     json_rpc_service_ =
         std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         &prefs_, &local_state_);
-    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(), nullptr,
-                                              keyring_service_.get(), &prefs_);
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    tx_service_ = std::make_unique<TxService>(
+        json_rpc_service_.get(), nullptr, keyring_service_.get(), &prefs_,
+        temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
+    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
     CreateWallet();
-    AddAccount();
+
+    sol_account_ = SolAccount(0);
   }
+
+  const mojom::AccountIdPtr& sol_account() { return sol_account_; }
 
   void CreateWallet() {
     base::RunLoop run_loop;
     keyring_service_->CreateWallet(
-        "brave",
+        kMnemonicDivideCruise, "brave",
         base::BindLambdaForTesting([&run_loop](const std::string& mnemonic) {
           ASSERT_FALSE(mnemonic.empty());
           run_loop.Quit();
@@ -90,15 +100,15 @@ class SolanaTxManagerUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  void AddAccount() {
-    base::RunLoop run_loop;
-    keyring_service_->AddAccount(
-        "New Account", mojom::CoinType::SOL,
-        base::BindLambdaForTesting([&run_loop](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+  mojom::AccountInfoPtr AddAccount() {
+    return keyring_service_->AddAccountSync(
+        mojom::CoinType::SOL, mojom::kSolanaKeyringId, "New Account");
+  }
+
+  mojom::AccountIdPtr SolAccount(size_t index) {
+    return keyring_service_->GetKeyringInfoSync(mojom::KeyringId::kSolana)
+        ->account_infos[index]
+        ->account_id->Clone();
   }
 
   void SetInterceptor(const std::string& latest_blockhash,
@@ -231,7 +241,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
 
   void AddUnapprovedTransaction(const std::string& chain_id,
                                 mojom::SolanaTxDataPtr solana_tx_data,
-                                const std::string& from,
+                                const mojom::AccountIdPtr& from,
                                 std::string* meta_id) {
     AddUnapprovedTransaction(chain_id, std::move(solana_tx_data), from,
                              GetOrigin(), meta_id, absl::nullopt);
@@ -240,7 +250,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
   void AddUnapprovedTransaction(
       const std::string& chain_id,
       mojom::SolanaTxDataPtr solana_tx_data,
-      const std::string& from,
+      const mojom::AccountIdPtr& from,
       const absl::optional<url::Origin>& origin,
       std::string* meta_id,
       const absl::optional<std::string>& group_id = absl::nullopt) {
@@ -303,6 +313,20 @@ class SolanaTxManagerUnitTest : public testing::Test {
           run_loop.Quit();
         }));
     run_loop.Run();
+  }
+
+  void TestMakeSystemProgramTransferTxData(
+      const mojom::AccountIdPtr& from,
+      const std::string& to,
+      uint64_t lamports,
+      mojom::SolanaTxDataPtr expected_tx_data,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_err_message,
+      mojom::SolanaTxDataPtr* tx_data_out = nullptr) {
+    TestMakeSystemProgramTransferTxData(
+        from->address, to, lamports, std::move(expected_tx_data),
+        std::move(expected_error), std::move(expected_err_message),
+        tx_data_out);
   }
 
   void TestMakeTokenProgramTransferTxData(
@@ -414,6 +438,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
 
  protected:
   base::test::TaskEnvironment task_environment_;
+  base::ScopedTempDir temp_dir_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
@@ -422,6 +447,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<TxService> tx_service_;
+  mojom::AccountIdPtr sol_account_;
   std::string tx_hash1_;
   std::string tx_hash2_;
   std::string latest_blockhash1_;
@@ -437,13 +463,15 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   // submit our pending transactions.
   solana_tx_manager()->GetSolanaBlockTracker()->Stop();
 
-  std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  const auto& from_account = sol_account();
+  std::string from_account_address = from_account->address;
+
   std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
 
   std::vector<mojom::SolanaAccountMetaPtr> account_metas;
   auto account_meta1 =
-      mojom::SolanaAccountMeta::New(from_account, nullptr, true, true);
+      mojom::SolanaAccountMeta::New(from_account_address, nullptr, true, true);
   auto account_meta2 =
       mojom::SolanaAccountMeta::New(to_account, nullptr, false, true);
   account_metas.push_back(std::move(account_meta1));
@@ -455,12 +483,12 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   instructions.push_back(std::move(instruction));
 
   auto solana_tx_data = mojom::SolanaTxData::New(
-      "", 0, from_account, to_account, "", 10000000, 0,
+      "", 0, from_account_address, to_account, "", 10000000, 0,
       mojom::TransactionType::SolanaSystemTransfer, std::move(instructions),
       mojom::SolanaMessageVersion::kLegacy,
       mojom::SolanaMessageHeader::New(1, 0, 1),
       std::vector<std::string>(
-          {from_account, to_account, mojom::kSolanaSystemProgramId}),
+          {from_account_address, to_account, mojom::kSolanaSystemProgramId}),
       std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
       nullptr);
 
@@ -550,7 +578,7 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
 }
 
 TEST_F(SolanaTxManagerUnitTest, WalletOrigin) {
-  const std::string from = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  const auto& from = sol_account();
   const std::string to = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   mojom::SolanaTxDataPtr system_transfer_data = nullptr;
   TestMakeSystemProgramTransferTxData(from, to, 10000000, nullptr,
@@ -571,7 +599,7 @@ TEST_F(SolanaTxManagerUnitTest, WalletOrigin) {
 }
 
 TEST_F(SolanaTxManagerUnitTest, SomeSiteOrigin) {
-  const std::string from = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  const auto& from = sol_account();
   const std::string to = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   mojom::SolanaTxDataPtr system_transfer_data = nullptr;
   TestMakeSystemProgramTransferTxData(from, to, 10000000, nullptr,
@@ -593,7 +621,7 @@ TEST_F(SolanaTxManagerUnitTest, SomeSiteOrigin) {
 }
 
 TEST_F(SolanaTxManagerUnitTest, AddUnapprovedTransactionWithGroupId) {
-  const std::string from = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  const auto& from = sol_account();
   const std::string to = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   mojom::SolanaTxDataPtr system_transfer_data = nullptr;
   TestMakeSystemProgramTransferTxData(from, to, 10000000, nullptr,
@@ -614,12 +642,13 @@ TEST_F(SolanaTxManagerUnitTest, AddUnapprovedTransactionWithGroupId) {
 }
 
 TEST_F(SolanaTxManagerUnitTest, MakeSystemProgramTransferTxData) {
-  std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  const auto& from_account = sol_account();
+  std::string from_account_address = from_account->address;
   std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
 
   auto solana_account_meta1 =
-      mojom::SolanaAccountMeta::New(from_account, nullptr, true, true);
+      mojom::SolanaAccountMeta::New(from_account_address, nullptr, true, true);
   auto solana_account_meta2 =
       mojom::SolanaAccountMeta::New(to_account, nullptr, false, true);
   std::vector<mojom::SolanaAccountMetaPtr> account_metas;
@@ -645,12 +674,12 @@ TEST_F(SolanaTxManagerUnitTest, MakeSystemProgramTransferTxData) {
   instructions.push_back(std::move(mojom_instruction));
 
   auto tx_data = mojom::SolanaTxData::New(
-      "", 0, from_account, to_account, "", 10000000, 0,
+      "", 0, from_account_address, to_account, "", 10000000, 0,
       mojom::TransactionType::SolanaSystemTransfer, std::move(instructions),
       mojom::SolanaMessageVersion::kLegacy,
       mojom::SolanaMessageHeader::New(1, 0, 1),
       std::vector<std::string>(
-          {from_account, to_account, mojom::kSolanaSystemProgramId}),
+          {from_account_address, to_account, mojom::kSolanaSystemProgramId}),
       std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
       nullptr);
 
@@ -925,7 +954,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeTxDataFromBase64EncodedTransaction) {
 }
 
 TEST_F(SolanaTxManagerUnitTest, GetEstimatedTxFee) {
-  const std::string from = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  const auto& from = sol_account();
   const std::string to = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   mojom::SolanaTxDataPtr system_transfer_data = nullptr;
   TestMakeSystemProgramTransferTxData(from, to, 10000000, nullptr,
@@ -982,7 +1011,7 @@ TEST_F(SolanaTxManagerUnitTest, GetEstimatedTxFee) {
 }
 
 TEST_F(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash) {
-  const std::string from = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  const auto& from = sol_account();
   const std::string to = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   mojom::SolanaTxDataPtr system_transfer_data = nullptr;
   TestMakeSystemProgramTransferTxData(from, to, 10000000, nullptr,
@@ -1065,8 +1094,12 @@ TEST_F(SolanaTxManagerUnitTest, GetTransactionMessageToSign) {
   // Unknown tx_meta_id yields null message
   TestGetTransactionMessageToSign(mojom::kSolanaMainnet, "Unknown",
                                   absl::nullopt);
-
-  const std::string from = "89DzXVKJ79xf9MkzTxatQESh5fcvsqBo9fCsbAXkCaZE";
+  std::vector<mojom::HardwareWalletAccountPtr> hw_infos;
+  hw_infos.push_back(mojom::HardwareWalletAccount::New(
+      "89DzXVKJ79xf9MkzTxatQESh5fcvsqBo9fCsbAXkCaZE", "path", "name 1",
+      "Ledger", "device1", mojom::CoinType::SOL, mojom::KeyringId::kSolana));
+  auto from = keyring_service_->AddHardwareAccountsSync(std::move(hw_infos))[0]
+                  ->account_id->Clone();
   const std::string to = "148FvZU6e67eSB12wv7fXCH5FsTDW8tsxXo3nFuZhfCF";
   mojom::SolanaTxDataPtr system_transfer_data = nullptr;
   TestMakeSystemProgramTransferTxData(from, to, 1, nullptr,
@@ -1108,7 +1141,12 @@ TEST_F(SolanaTxManagerUnitTest, ProcessSolanaHardwareSignature) {
       mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
 
-  const std::string from = "89DzXVKJ79xf9MkzTxatQESh5fcvsqBo9fCsbAXkCaZE";
+  std::vector<mojom::HardwareWalletAccountPtr> hw_infos;
+  hw_infos.push_back(mojom::HardwareWalletAccount::New(
+      "89DzXVKJ79xf9MkzTxatQESh5fcvsqBo9fCsbAXkCaZE", "path", "name 1",
+      "Ledger", "device1", mojom::CoinType::SOL, mojom::KeyringId::kSolana));
+  auto from = keyring_service_->AddHardwareAccountsSync(std::move(hw_infos))[0]
+                  ->account_id.Clone();
   const std::string to = "148FvZU6e67eSB12wv7fXCH5FsTDW8tsxXo3nFuZhfCF";
   mojom::SolanaTxDataPtr system_transfer_data = nullptr;
   TestMakeSystemProgramTransferTxData(from, to, 1, nullptr,
@@ -1138,7 +1176,8 @@ TEST_F(SolanaTxManagerUnitTest, ProcessSolanaHardwareSignature) {
                                                    system_transfer_meta_id);
   meta->tx()->message()->set_recent_blockhash(latest_blockhash1_);
   meta->tx()->message()->set_last_valid_block_height(last_valid_block_height1_);
-  solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*meta);
+  ASSERT_TRUE(
+      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*meta));
 
   // Valid blockhash and valid number of signers is valid
   TestProcessSolanaHardwareSignature(

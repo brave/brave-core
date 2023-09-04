@@ -1,7 +1,8 @@
+name: Pull Request
+
 on:
   pull_request:
     types: [opened, reopened, closed]
-name: Pull Request
 
 # Setting permissions for GITHUB_TOKEN for dependabot as default is readonly
 # https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/automating-dependabot-with-github-actions?learn=dependency_version_updates&learnProduct=code-security
@@ -10,20 +11,19 @@ permissions:
   pull-requests: write
 
 jobs:
-  assignAuthor:
+  assign:
     name: Assign author to PR
     runs-on: ubuntu-latest
     steps:
       - name: Assign author to PR
         uses: technote-space/assign-author@v1
+
   # See: .github/labeler.yml
-  addCiLabels:
+  label:
+    name: Assign labels automatically
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/labeler@v3
+    - uses: actions/labeler@v4
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        # Workaround for https://github.com/actions/labeler/issues/104
-        # Explained at https://github.com/wesnoth/wesnoth/commit/958c82d0867568057caaf58356502ec8c87d8366
-        # Should continue working https://github.com/actions/labeler/pull/113#issuecomment-865404272
-        sync-labels: ""
+

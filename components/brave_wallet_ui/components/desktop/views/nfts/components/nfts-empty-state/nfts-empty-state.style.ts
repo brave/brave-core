@@ -12,7 +12,6 @@ export const StyledWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin-top: 36px;
 `
 
 export const EmptyStateImage = styled.img`
@@ -60,7 +59,7 @@ export const ImportButton = styled(WalletButton)`
   line-height: 20px;
   text-align: center;
   color: ${p => p.theme.color.background01};
-  margin-bottom: 64px;
+  margin-bottom: 24px;
   border: none;
   cursor: pointer;
 `
@@ -77,3 +76,4 @@ export const DisclaimerText = styled.p`
   color: ${p => p.theme.color.text03};
   margin: 0;
 `
+

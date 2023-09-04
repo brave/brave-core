@@ -8,16 +8,19 @@ import { useHistory, useLocation } from 'react-router'
 
 // utils
 import { getLocale, splitStringForTag } from '../../../../../common/locale'
+import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
 // routes
-import { WalletRoutes } from '../../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // images
 import ExamplePhrase from './images/example-recovery-phrase.svg'
 
 // components
-import { NavButton } from '../../../../components/extension'
+import {
+  NavButton //
+} from '../../../../components/extension/buttons/nav-button/index'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { ArticleLinkBubble } from '../../onboarding/onboarding-success/components/article-link-bubble/article-link-bubble'
@@ -50,6 +53,9 @@ const ImportantTextSegments = () => {
 }
 
 export const RecoveryPhraseExplainer = () => {
+  // custom hooks
+  const { braveWalletP3A } = useApiProxy()
+
   // routing
   const history = useHistory()
   const { pathname } = useLocation()
@@ -57,6 +63,7 @@ export const RecoveryPhraseExplainer = () => {
 
   // methods
   const skipToOnboardingSuccess = () => {
+    braveWalletP3A.reportOnboardingAction(BraveWallet.OnboardingAction.CompleteRecoverySkipped);
     history.push(WalletRoutes.OnboardingComplete)
   }
 

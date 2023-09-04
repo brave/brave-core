@@ -45,12 +45,12 @@ void ShowWalletOnboarding(content::WebContents* web_contents) {
 }
 
 void ShowAccountCreation(content::WebContents* web_contents,
-                         const std::string& keyring_id) {
+                         brave_wallet::mojom::CoinType coin_type) {
   Browser* browser =
       web_contents ? chrome::FindBrowserWithWebContents(web_contents) : nullptr;
 
   if (browser) {
-    brave::ShowBraveWalletAccountCreation(browser, keyring_id);
+    brave::ShowBraveWalletAccountCreation(browser, coin_type);
   } else if (g_account_creation_callback_for_testing) {
     std::move(g_account_creation_callback_for_testing).Run();
   }

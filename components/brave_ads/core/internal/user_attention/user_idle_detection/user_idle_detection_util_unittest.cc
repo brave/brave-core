@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_feature.h"
 
@@ -152,52 +151,6 @@ TEST_F(BraveAdsUserIdleDetectionUtilTest, HasExceededMaximumIdleTime) {
 
   // Assert
   EXPECT_TRUE(HasExceededMaximumIdleTime(base::Seconds(11)));
-}
-
-TEST_F(BraveAdsUserIdleDetectionUtilTest, UpdateIdleTimeThreshold) {
-  // Arrange
-  base::FieldTrialParams params;
-  params["idle_time_threshold"] = "5s";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kUserIdleDetectionFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  ads_client_mock_.SetIntegerPref(prefs::kIdleTimeThreshold, 10);
-
-  ASSERT_TRUE(MaybeUpdateIdleTimeThreshold());
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(5, ads_client_mock_.GetIntegerPref(prefs::kIdleTimeThreshold));
-}
-
-TEST_F(BraveAdsUserIdleDetectionUtilTest, DoNotUpdateIdleTimeThreshold) {
-  // Arrange
-  base::FieldTrialParams params;
-  params["idle_time_threshold"] = "10s";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kUserIdleDetectionFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  ads_client_mock_.SetIntegerPref(prefs::kIdleTimeThreshold, 10);
-
-  ASSERT_FALSE(MaybeUpdateIdleTimeThreshold());
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(10, ads_client_mock_.GetIntegerPref(prefs::kIdleTimeThreshold));
 }
 
 }  // namespace brave_ads

@@ -19,7 +19,7 @@ export const StyledWrapper = styled.div`
   width: 280px;
   border-radius: 6px;
   bottom: 30px;
-  right: -10px;
+  right: -139px;
   box-shadow: ${leo.effect.elevation['03']};
 `
 

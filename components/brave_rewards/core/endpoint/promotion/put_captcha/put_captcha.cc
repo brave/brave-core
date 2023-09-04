@@ -9,14 +9,14 @@
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
-PutCaptcha::PutCaptcha(LedgerImpl& ledger) : ledger_(ledger) {}
+PutCaptcha::PutCaptcha(RewardsEngineImpl& engine) : engine_(engine) {}
 
 PutCaptcha::~PutCaptcha() = default;
 
@@ -52,15 +52,15 @@ mojom::Result PutCaptcha::CheckStatusCode(const int status_code) {
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Failed to verify captcha solution");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void PutCaptcha::Request(const int x,
@@ -75,7 +75,7 @@ void PutCaptcha::Request(const int x,
   request->content = GeneratePayload(x, y);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::PUT;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  engine_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PutCaptcha::OnRequest(PutCaptchaCallback callback,

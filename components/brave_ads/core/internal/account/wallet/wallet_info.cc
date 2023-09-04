@@ -5,27 +5,20 @@
 
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 bool WalletInfo::IsValid() const {
   return !payment_id.empty() && !public_key.empty() && !secret_key.empty();
 }
 
-bool WalletInfo::WasCreated(const WalletInfo& other) const {
-  return !other.IsValid() && WasUpdated(other);
-}
-
-bool WalletInfo::WasUpdated(const WalletInfo& other) const {
-  return *this != other;
-}
-
-bool WalletInfo::HasChanged(const WalletInfo& other) const {
-  return other.IsValid() && WasUpdated(other);
-}
-
 bool WalletInfo::operator==(const WalletInfo& other) const {
-  return payment_id == other.payment_id && public_key == other.public_key &&
-         secret_key == other.secret_key;
+  const auto tie = [](const WalletInfo& wallet) {
+    return std::tie(wallet.payment_id, wallet.public_key, wallet.secret_key);
+  };
+
+  return tie(*this) == tie(other);
 }
 
 bool WalletInfo::operator!=(const WalletInfo& other) const {

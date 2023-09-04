@@ -44,7 +44,7 @@ void TabHoverCardBubbleView_ChromiumImpl::BraveUpdateCardContent(
     base::ReplaceFirstSubstringAfterOffset(
         &new_domain, 0ul, kChromeUISchemeU16,
         base::ASCIIToUTF16(base::StrCat({content::kBraveUIScheme, "://"})));
-    domain_label_->SetText(new_domain, /*is_filename*/ false);
+    domain_label_->SetData({new_domain, /*is_filename*/ false});
   }
 }
 

@@ -16,7 +16,7 @@
 #include "crypto/signature_verifier.h"
 #include "net/cert/asn1_util.h"
 #include "net/cert/pki/trust_store.h"
-#include "net/der/encode_values.h"
+#include "net/cert/time_conversions.h"
 #include "third_party/boringssl/src/include/openssl/bn.h"
 #include "third_party/boringssl/src/include/openssl/bytestring.h"
 #include "third_party/boringssl/src/include/openssl/ecdsa.h"
@@ -191,7 +191,7 @@ bool CoseSign1::Verify(const net::ParsedCertificateList& cert_chain) {
   CHECK_GT(cert_chain.size(), 1U);
 
   net::der::GeneralizedTime time_now;
-  CHECK(net::der::EncodeTimeAsGeneralizedTime(base::Time::Now(), &time_now));
+  CHECK(net::EncodeTimeAsGeneralizedTime(base::Time::Now(), &time_now));
 
   net::CertPathErrors cert_path_errors;
 
@@ -220,7 +220,7 @@ bool CoseSign1::Verify(const net::ParsedCertificateList& cert_chain) {
 
   base::StringPiece low_cert_spki;
   if (!net::asn1::ExtractSPKIFromDERCert(
-          cert_chain.front()->der_cert().AsStringPiece(), &low_cert_spki)) {
+          cert_chain.front()->der_cert().AsStringView(), &low_cert_spki)) {
     LOG(ERROR) << "COSE verification: could not extract SPKI from cert";
     return false;
   }

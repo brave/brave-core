@@ -19,11 +19,7 @@ def channels():
 
 def get_channel_display_name():
     raw = channels()
-    d = {
-        raw[0]: 'Nightly',
-        raw[1]: 'Beta',
-        raw[2]: 'Release'
-    }
+    d = {raw[0]: 'Nightly', raw[1]: 'Beta', raw[2]: 'Release'}
 
     return d[release_channel()]
 
@@ -46,8 +42,10 @@ def get_releases_by_tag(repo, tag_name, include_drafts=False):
     GITHUB_URL = 'https://api.github.com'
 
     next_request = ""
-    headers = {'Accept': 'application/vnd.github+json',
-               'Authorization': 'token ' + get_env_var('GITHUB_TOKEN')}
+    headers = {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': 'token ' + os.environ.get('GITHUB_TOKEN')
+    }
     release_url = GITHUB_URL + "/repos/" + \
         BRAVE_REPO + "/releases?page=1&per_page=100"
     r = call_github_api(release_url, headers=headers)
@@ -84,9 +82,9 @@ def get_release(repo, tag, allow_published_release_updates=False):
     if releases:
         print("[INFO] Found existing release draft")
         if len(releases) > 1:
-            raise UserWarning("[INFO] More then one draft with the tag '{}' "
-                              "found, not sure which one to merge with."
-                              .format(tag))
+            raise UserWarning(
+                "[INFO] More then one draft with the tag '{}' "
+                "found, not sure which one to merge with.".format(tag))
         release = releases[0]
         if not allow_published_release_updates and not release['draft']:
             raise UserWarning("[INFO] Release with tag '{}' is already "

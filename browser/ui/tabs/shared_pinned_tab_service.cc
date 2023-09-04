@@ -178,6 +178,7 @@ void SharedPinnedTabService::Shutdown() {
 }
 
 void SharedPinnedTabService::OnBrowserAdded(Browser* browser) {
+  DVLOG(1) << "Browser added: " << browser->type();
   if (profile_ != browser->profile()) {
     return;
   }
@@ -195,14 +196,16 @@ void SharedPinnedTabService::OnBrowserAdded(Browser* browser) {
 }
 
 void SharedPinnedTabService::OnBrowserSetLastActive(Browser* browser) {
-  if (profile_ != browser->profile()) {
+  if (!base::Contains(browsers_, browser)) {
+    // Browser could be different profile or not a type we're
+    // looking for. Let |OnBrowserAdded| decide which to look for.
+    DCHECK(!browser->is_type_normal() || profile_ != browser->profile())
+        << "We expect a Browser to be created before set active";
     return;
   }
 
   auto* model = browser->tab_strip_model();
   DVLOG(2) << __FUNCTION__ << " " << model->count();
-  DCHECK(base::Contains(browsers_, browser))
-      << "We expect a browser created first and then activated";
   DCHECK_LT(0, model->count()) << "We're assuming that browser has tabs";
 
   SynchronizeNewBrowser(browser);

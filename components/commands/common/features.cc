@@ -4,14 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/commands/common/features.h"
+#include "base/feature_list.h"
 
 namespace commands::features {
 
 // This feature enables a page a brave://commands which lists all available
 // commands in Brave, and the shortcut for executing them. In future, this will
 // allow configuring the shortcuts for various commands.
-BASE_FEATURE(kBraveCommands,
-             "BraveCommands",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveCommands, "BraveCommands", base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace commands::features

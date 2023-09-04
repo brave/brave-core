@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_payload_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 CatalogNewTabPageAdPayloadInfo::CatalogNewTabPageAdPayloadInfo() = default;
@@ -25,9 +27,12 @@ CatalogNewTabPageAdPayloadInfo::~CatalogNewTabPageAdPayloadInfo() = default;
 
 bool CatalogNewTabPageAdPayloadInfo::operator==(
     const CatalogNewTabPageAdPayloadInfo& other) const {
-  return company_name == other.company_name && image_url == other.image_url &&
-         alt == other.alt && target_url == other.target_url &&
-         wallpapers == other.wallpapers;
+  const auto tie = [](const CatalogNewTabPageAdPayloadInfo& payload) {
+    return std::tie(payload.company_name, payload.image_url, payload.alt,
+                    payload.target_url, payload.wallpapers);
+  };
+
+  return tie(*this) == tie(other);
 }
 
 bool CatalogNewTabPageAdPayloadInfo::operator!=(

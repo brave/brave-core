@@ -10,7 +10,8 @@
 #include "base/strings/string_split.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
 #include "chrome/browser/net/secure_dns_config.h"
-#include "chrome/browser/net/system_network_context_manager.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/storage_partition.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "net/base/host_port_pair.h"
 #include "net/dns/public/dns_protocol.h"
@@ -42,10 +43,9 @@ absl::optional<std::string> GetDNSRecordValue(
 
 namespace ipfs {
 
-IPFSHostResolver::IPFSHostResolver(
-    network::mojom::NetworkContext& network_context,
-    const std::string& prefix)
-    : prefix_(prefix), network_context_(network_context) {}
+IPFSHostResolver::IPFSHostResolver(content::BrowserContext* browser_context,
+                                   const std::string& prefix)
+    : prefix_(prefix), browser_context_(browser_context) {}
 IPFSHostResolver::~IPFSHostResolver() = default;
 
 void IPFSHostResolver::Resolve(
@@ -72,11 +72,25 @@ void IPFSHostResolver::Resolve(
   dnslink_ = absl::nullopt;
   resolving_host_ = host.host();
   net::HostPortPair local_host_port(prefix_ + resolving_host_, host.port());
-
-  network_context_->ResolveHost(
+  auto* network_context = GetNetworkContext();
+  if (!network_context) {
+    return;
+  }
+  network_context->ResolveHost(
       network::mojom::HostResolverHost::NewHostPortPair(local_host_port),
       anonymization_key, std::move(parameters),
       receiver_.BindNewPipeAndPassRemote());
+}
+
+network::mojom::NetworkContext* IPFSHostResolver::GetNetworkContext() {
+  if (network_context_for_testing_.has_value()) {
+    return network_context_for_testing_.value();
+  }
+  auto* storage_partition = browser_context_->GetDefaultStoragePartition();
+  if (!storage_partition) {
+    return nullptr;
+  }
+  return storage_partition->GetNetworkContext();
 }
 
 void IPFSHostResolver::OnComplete(

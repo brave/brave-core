@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h
-index 4067c3d35ae1f7078216ef5c7e3959119eaf1b10..f47abf151b042e6f35c25bb1164303b583b78e38 100644
+index c39400b0dfcad06a4061da7bb3933691667dbf1e..5d24f32c7e4a65a758aae9e6236c01f25a4962e5 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h
-@@ -85,6 +85,7 @@ class RecentTabsSubMenuModel : public ui::SimpleMenuModel,
-   bool GetURLAndTitleForItemAtIndex(size_t index,
-                                     std::string* url,
-                                     std::u16string* title);
-+  BRAVE_RECENT_TABS_SUB_MENU_MODEL_H_
+@@ -89,7 +89,7 @@ class RecentTabsSubMenuModel : public ui::SimpleMenuModel,
  
-  private:
-   struct TabNavigationItem;
+   // Index of the separator that follows the history menu item. Used as a
+   // reference position for inserting local entries.
+-  static constexpr size_t kHistorySeparatorIndex = 1;
++  static constexpr size_t kHistorySeparatorIndex = 2;
+ 
+   // Build the menu items by populating the menumodel.
+   void Build();

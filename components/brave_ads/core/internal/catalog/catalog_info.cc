@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 CatalogInfo::CatalogInfo() = default;
@@ -20,8 +22,12 @@ CatalogInfo& CatalogInfo::operator=(CatalogInfo&& other) noexcept = default;
 CatalogInfo::~CatalogInfo() = default;
 
 bool CatalogInfo::operator==(const CatalogInfo& other) const {
-  return id == other.id && version == other.version && ping == other.ping &&
-         campaigns == other.campaigns;
+  const auto tie = [](const CatalogInfo& catalog) {
+    return std::tie(catalog.id, catalog.version, catalog.ping,
+                    catalog.campaigns);
+  };
+
+  return tie(*this) == tie(other);
 }
 
 bool CatalogInfo::operator!=(const CatalogInfo& other) const {

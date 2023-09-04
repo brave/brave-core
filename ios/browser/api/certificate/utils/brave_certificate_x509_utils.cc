@@ -14,7 +14,7 @@
 #include "net/cert/pki/parse_certificate.h"
 #include "net/cert/pki/signature_algorithm.h"
 #include "net/cert/signed_certificate_timestamp.h"
-#include "net/der/encode_values.h"
+#include "net/cert/time_conversions.h"
 #include "net/der/input.h"
 #include "net/der/parse_values.h"
 #include "net/der/parser.h"
@@ -323,7 +323,7 @@ std::string SignatureAlgorithmIdToName(
 base::Time GeneralizedTimeToTime(
     const net::der::GeneralizedTime& generalized_time) {
   base::Time time;
-  net::der::GeneralizedTimeToTime(generalized_time, &time);
+  net::GeneralizedTimeToTime(generalized_time, &time);
   return time;
 }
 }  // namespace x509_utils

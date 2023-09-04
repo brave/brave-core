@@ -93,7 +93,7 @@ test('getAccounts success', async () => {
         hardwareVendor: 'Ledger',
         deviceId: '0d09bdd791abfcf562035fc99c7293400125339df1e8194b4ea8c2bd69327caa',
         coin: BraveWallet.CoinType.SOL,
-        network: undefined
+        keyringId: BraveWallet.KeyringId.kSolana
       },
       {
         address: '',
@@ -103,7 +103,7 @@ test('getAccounts success', async () => {
         hardwareVendor: 'Ledger',
         deviceId: '0d09bdd791abfcf562035fc99c7293400125339df1e8194b4ea8c2bd69327caa',
         coin: BraveWallet.CoinType.SOL,
-        network: undefined
+        keyringId: BraveWallet.KeyringId.kSolana
       }
     ]
   })

@@ -5,6 +5,8 @@
 
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 
+#include "base/no_destructor.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -13,13 +15,16 @@
 BraveRendererUpdaterFactory::BraveRendererUpdaterFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveRendererUpdater",
-          BrowserContextDependencyManager::GetInstance()) {}
+          BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(brave_wallet::KeyringServiceFactory::GetInstance());
+}
 
 BraveRendererUpdaterFactory::~BraveRendererUpdaterFactory() = default;
 
 // static
 BraveRendererUpdaterFactory* BraveRendererUpdaterFactory::GetInstance() {
-  return base::Singleton<BraveRendererUpdaterFactory>::get();
+  static base::NoDestructor<BraveRendererUpdaterFactory> instance;
+  return instance.get();
 }
 
 // static
@@ -31,7 +36,10 @@ BraveRendererUpdater* BraveRendererUpdaterFactory::GetForProfile(
 
 KeyedService* BraveRendererUpdaterFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new BraveRendererUpdater(static_cast<Profile*>(context));
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(context);
+  return new BraveRendererUpdater(static_cast<Profile*>(context),
+                                  keyring_service);
 }
 
 bool BraveRendererUpdaterFactory::ServiceIsCreatedWithBrowserContext() const {

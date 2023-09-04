@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_BOUNDS_UTIL_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_BOUNDS_UTIL_H_
 
+#include "ui/gfx/native_widget_types.h"
+
 namespace gfx {
 class Rect;
 }  // namespace gfx
@@ -19,6 +21,8 @@ class Widget;
 }  // namespace views
 
 namespace brave_ads {
+
+gfx::Rect GetDefaultDisplayScreenWorkArea(gfx::NativeView browser_native_view);
 
 void AdjustBoundsAndSnapToFitWorkAreaForNativeView(views::Widget* widget,
                                                    gfx::Rect* bounds);

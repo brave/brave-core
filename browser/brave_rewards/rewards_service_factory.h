@@ -6,12 +6,16 @@
 #ifndef BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 class Profile;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace brave_rewards {
 class RewardsService;
@@ -29,7 +33,7 @@ class RewardsServiceFactory : public BrowserContextKeyedServiceFactory {
   static void SetServiceForTesting(RewardsService* service);
 
  private:
-  friend struct base::DefaultSingletonTraits<RewardsServiceFactory>;
+  friend base::NoDestructor<RewardsServiceFactory>;
 
   RewardsServiceFactory();
   ~RewardsServiceFactory() override = default;

@@ -185,8 +185,8 @@ export function createHost (): Host {
 
   function handleRewardsPanelArgs (args: mojom.RewardsPanelArgs) {
     switch (args.view) {
-      case mojom.RewardsPanelView.kRewardsTour:
-        stateManager.update({ requestedView: 'rewards-tour' })
+      case mojom.RewardsPanelView.kRewardsSetup:
+        stateManager.update({ requestedView: 'rewards-setup' })
         break
       case mojom.RewardsPanelView.kGrantCaptcha:
         loadGrantCaptcha(args.data, 'pending')
@@ -215,6 +215,12 @@ export function createHost (): Host {
     apiAdapter.getRewardsSummaryData().then((summaryData) => {
       stateManager.update({ summaryData })
     }).catch(console.error)
+  }
+
+  function updateUserType () {
+    apiAdapter.getUserType().then((userType) => {
+      stateManager.update({ userType })
+    })
   }
 
   function updateNotifications () {
@@ -299,17 +305,8 @@ export function createHost (): Host {
     })
 
     // Update user settings and other data after rewards has been enabled.
-    chrome.braveRewards.onRewardsWalletUpdated.addListener(() => {
+    chrome.braveRewards.onRewardsWalletCreated.addListener(() => {
       loadPanelData().catch(console.error)
-    })
-
-    chrome.braveRewards.onAdsEnabled.addListener((adsEnabled: boolean) => {
-      stateManager.update({
-        settings: {
-          ...stateManager.getState().settings,
-          adsEnabled
-        }
-      })
     })
 
     apiAdapter.onGrantsUpdated(updateGrants)
@@ -319,6 +316,9 @@ export function createHost (): Host {
     chrome.braveRewards.onReconcileComplete.addListener(updateBalance)
     chrome.braveRewards.onUnblindedTokensReady.addListener(updateBalance)
     chrome.braveRewards.onExternalWalletLoggedOut.addListener(updateBalance)
+
+    // Update user type when the user's wallet is disconnected.
+    chrome.braveRewards.onExternalWalletDisconnected.addListener(updateUserType)
 
     // Update the notification list when notifications are added or removed.
     chrome.rewardsNotifications.onAllNotificationsDeleted.addListener(
@@ -336,6 +336,9 @@ export function createHost (): Host {
       }),
       apiAdapter.getRewardsEnabled().then((rewardsEnabled) => {
         stateManager.update({ rewardsEnabled })
+      }),
+      apiAdapter.isGrandfatheredUser().then((isGrandfatheredUser) => {
+        stateManager.update({ isGrandfatheredUser })
       }),
       apiAdapter.getUserType().then((userType) => {
         stateManager.update({ userType })
@@ -451,21 +454,6 @@ export function createHost (): Host {
       })
     },
 
-    setAdsEnabled (adsEnabled) {
-      chrome.braveRewards.updatePrefs({ adsEnabled })
-    },
-
-    setAdsPerHour (adsPerHour) {
-      chrome.braveRewards.updatePrefs({ adsPerHour })
-
-      stateManager.update({
-        settings: {
-          ...stateManager.getState().settings,
-          adsPerHour
-        }
-      })
-    },
-
     sendTip () {
       getCurrentTabInfo().then((tabInfo) => {
         if (!tabInfo) {
@@ -572,6 +560,8 @@ export function createHost (): Host {
           break
       }
     },
+
+    closePanel,
 
     onAppRendered () {
       proxy.handler.showUI()

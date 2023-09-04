@@ -10,6 +10,9 @@ import * as leo from '@brave/leo/tokens/css'
 import {
   StyledButton
 } from '../../../page/screens/send/shared.styles'
+import {
+  layoutPanelWidth
+} from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const ButtonsContainer = styled.div<{
   width?: number;
@@ -29,15 +32,15 @@ export const ButtonsContainer = styled.div<{
   height: 48px;
   background-color: ${leo.color.container.highlight};
   border-radius: 100px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    height: 40px;
+  }
 `
 
 export const Button = styled(StyledButton) <{
   isSelected: boolean
 }>`
   --selected-background-color: ${leo.color.container.background};
-  @media (prefers-color-scheme: dark) {
-    --selected-background-color: ${leo.color.gray[20]};
-  }
   background-color: ${(p) =>
     p.isSelected
       ? 'var(--selected-background-color)'
@@ -55,4 +58,9 @@ export const Button = styled(StyledButton) <{
       ? leo.color.text.primary
       : leo.color.text.secondary
   };
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 8px;
+    font-size: 12px;
+    line-height: 16px;
+  }
 `

@@ -54,7 +54,7 @@
         base::ScopedCFTypeRef<SecKeyRef>(SecCertificateCopyKey(certificate));
 
     bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(
-        net::X509Certificate::CreateCertBufferFromBytes(base::make_span(
+        net::x509_util::CreateCryptoBuffer(base::make_span(
             CFDataGetBytePtr(cert_data_),
             base::checked_cast<size_t>(CFDataGetLength(cert_data_)))));
 

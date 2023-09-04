@@ -7,6 +7,7 @@
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
@@ -59,7 +60,7 @@ class TorDisabledPolicyBrowserTest : public BravePolicyTest {
 IN_PROC_BROWSER_TEST_F(TorDisabledPolicyBrowserTest, TorDisabledPrefValueTest) {
   // When policy is set, explicit setting doesn't change its pref value.
   TorProfileServiceFactory::SetTorDisabled(false);
-  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled());
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
 }
 
 class TorEnabledPolicyBrowserTest : public BravePolicyTest {
@@ -81,7 +82,7 @@ class TorEnabledPolicyBrowserTest : public BravePolicyTest {
 IN_PROC_BROWSER_TEST_F(TorEnabledPolicyBrowserTest, TorDisabledPrefValueTest) {
   // When policy is set, explicit setting doesn't change its pref value.
   TorProfileServiceFactory::SetTorDisabled(true);
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
 }
 #endif
 

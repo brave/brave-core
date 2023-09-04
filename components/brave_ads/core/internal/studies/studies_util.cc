@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/studies/studies_util.h"
 
+#include <iterator>
+
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -35,8 +37,7 @@ void LogActiveStudies() {
   const base::FieldTrial::ActiveGroups active_field_trial_groups =
       GetActiveFieldTrialStudyGroups();
   if (active_field_trial_groups.empty()) {
-    BLOG(1, "No active studies");
-    return;
+    return BLOG(1, "No active studies");
   }
 
   for (const auto& active_field_trial_group : active_field_trial_groups) {

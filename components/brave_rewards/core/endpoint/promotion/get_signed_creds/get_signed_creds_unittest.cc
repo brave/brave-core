@@ -10,9 +10,9 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -28,12 +28,12 @@ namespace promotion {
 class GetSignedCredsTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  GetSignedCreds creds_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  GetSignedCreds creds_{mock_engine_impl_};
 };
 
 TEST_F(GetSignedCredsTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -65,7 +65,7 @@ TEST_F(GetSignedCredsTest, ServerOK) {
         expected_batch.signed_creds =
             R"(["ijSZoLLG+EnRN916RUQcjiV6c4Wb6ItbnxXBFhz81EQ=","dj6glCJ2roHYcTFcXF21IrKx1uT/ptM7SJEdiEE1fG8=","nCF9a4KuASICVC0zrx2wGnllgIUxBMnylpu5SA+oBjI="])";  // NOLINT
 
-        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+        EXPECT_EQ(result, mojom::Result::OK);
         EXPECT_TRUE(expected_batch.Equals(*batch));
       });
   creds_.Request("ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
@@ -75,7 +75,7 @@ TEST_F(GetSignedCredsTest, ServerOK) {
 }
 
 TEST_F(GetSignedCredsTest, ServerError202) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -94,7 +94,7 @@ TEST_F(GetSignedCredsTest, ServerError202) {
 }
 
 TEST_F(GetSignedCredsTest, ServerError400) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -105,7 +105,7 @@ TEST_F(GetSignedCredsTest, ServerError400) {
       });
 
   base::MockCallback<GetSignedCredsCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, IsFalse())).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, IsFalse())).Times(1);
   creds_.Request("ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
                  callback.Get());
 
@@ -113,7 +113,7 @@ TEST_F(GetSignedCredsTest, ServerError400) {
 }
 
 TEST_F(GetSignedCredsTest, ServerError404) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -132,7 +132,7 @@ TEST_F(GetSignedCredsTest, ServerError404) {
 }
 
 TEST_F(GetSignedCredsTest, ServerError500) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -143,7 +143,7 @@ TEST_F(GetSignedCredsTest, ServerError500) {
       });
 
   base::MockCallback<GetSignedCredsCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, IsFalse())).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, IsFalse())).Times(1);
   creds_.Request("ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
                  callback.Get());
 
@@ -151,7 +151,7 @@ TEST_F(GetSignedCredsTest, ServerError500) {
 }
 
 TEST_F(GetSignedCredsTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -162,7 +162,7 @@ TEST_F(GetSignedCredsTest, ServerErrorRandom) {
       });
 
   base::MockCallback<GetSignedCredsCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, IsFalse())).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, IsFalse())).Times(1);
   creds_.Request("ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
                  callback.Get());
 

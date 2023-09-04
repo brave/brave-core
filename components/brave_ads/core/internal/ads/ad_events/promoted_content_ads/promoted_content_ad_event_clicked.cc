@@ -5,28 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_clicked.h"
 
-#include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
+#include <utility>
+
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 namespace brave_ads {
 
-void PromotedContentAdEventClicked::FireEvent(const PromotedContentAdInfo& ad) {
-  BLOG(3, "Clicked promoted content ad with placement id "
-              << ad.placement_id << " and creative instance id "
-              << ad.creative_instance_id);
-
-  LogAdEvent(ad, ConfirmationType::kClicked,
-             base::BindOnce([](const bool success) {
-               if (!success) {
-                 BLOG(1, "Failed to log promoted content ad clicked event");
-                 return;
-               }
-
-               BLOG(6, "Successfully logged promoted content ad clicked event");
-             }));
+void PromotedContentAdEventClicked::FireEvent(const PromotedContentAdInfo& ad,
+                                              ResultCallback callback) {
+  LogAdEvent(ad, ConfirmationType::kClicked, std::move(callback));
 }
 
 }  // namespace brave_ads

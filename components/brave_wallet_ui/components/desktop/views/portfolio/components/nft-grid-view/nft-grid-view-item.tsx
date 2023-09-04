@@ -4,9 +4,26 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
+
+// hooks
+import {
+  useAssetManagement //
+} from '../../../../../../common/hooks/assets-management'
+import {
+  useGetIpfsGatewayTranslatedNftUrlQuery //
+} from '../../../../../../common/slices/api.slice'
+
+// actions
+import { WalletActions } from '../../../../../../common/actions'
+
+// selectors
+import { useSafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../../../common/selectors'
 
 // Utils
 import { stripERC20TokenImageURL } from '../../../../../../utils/string-utils'
@@ -27,20 +44,32 @@ import {
   DIVForClickableArea,
   NFTSymbol
 } from './style'
-import { translateToNftGateway } from '../../../../../../common/async/lib'
-
 
 interface Props {
   token: BraveWallet.BlockchainToken
+  isHidden: boolean
   onSelectAsset: () => void
 }
 
 export const NFTGridViewItem = (props: Props) => {
-  const { token, onSelectAsset } = props
+  const { token, isHidden, onSelectAsset } = props
+  const tokenImageURL = stripERC20TokenImageURL(token.logo)
+
+  // redux
+  const showNetworkLogoOnNfts = useSafeWalletSelector(WalletSelectors.showNetworkLogoOnNfts)
 
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
+
+  // queries
+  const { data: remoteImage } = useGetIpfsGatewayTranslatedNftUrlQuery(
+    tokenImageURL || skipToken
+  )
+
+  // hooks
+  const dispatch = useDispatch()
+  const { addOrRemoveTokenInLocalStorage } = useAssetManagement()
 
   // methods
   const onToggleShowMore = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -57,47 +86,57 @@ export const NFTGridViewItem = (props: Props) => {
     setShowMore(false)
   }, [])
 
-  const [remoteImage, setRemoteImage] = React.useState<string>()
-  React.useEffect(() => {
-    let ignore = false
-    const tokenImageURL = stripERC20TokenImageURL(token.logo)
-    translateToNftGateway(tokenImageURL).then(
-      (v) => {if (!ignore) setRemoteImage(v)})
-    return () => {
-      ignore = true
-    }
-  }, [token.logo])
+  const onHideNft = React.useCallback(() => {
+    setShowMore(false)
+    addOrRemoveTokenInLocalStorage(token, 'remove')
+    dispatch(WalletActions.refreshNetworksAndTokens({}))
+  }, [token, addOrRemoveTokenInLocalStorage])
+
+  const onUnHideNft = React.useCallback(() => {
+    setShowMore(false)
+    addOrRemoveTokenInLocalStorage(token, 'add')
+    dispatch(WalletActions.refreshNetworksAndTokens({}))
+  }, [token, addOrRemoveTokenInLocalStorage])
 
   return (
     <>
       <NFTWrapper>
-        <VerticalMenu onClick={onToggleShowMore}>
+        <VerticalMenu
+          onClick={onToggleShowMore}
+        >
           <VerticalMenuIcon />
         </VerticalMenu>
-        {showMore &&
+        {showMore && (
           <NftMorePopup
+            isHidden={isHidden}
             onEditNft={onEditNft}
+            onHideNft={onHideNft}
+            onUnHideNft={onUnHideNft}
           />
-        }
-        <DIVForClickableArea onClick={onSelectAsset}/>
+        )}
+        <DIVForClickableArea onClick={onSelectAsset} />
         <IconWrapper>
           <NftIconWithNetworkIcon
             icon={remoteImage}
             responsive={true}
             chainId={token?.chainId}
             coinType={token?.coin}
+            hideNetworkIcon={!showNetworkLogoOnNfts}
           />
         </IconWrapper>
-        <NFTText>{token.name} {token.tokenId ? '#' + new Amount(token.tokenId).toNumber() : ''}</NFTText>
+        <NFTText>
+          {token.name}{' '}
+          {token.tokenId ? '#' + new Amount(token.tokenId).toNumber() : ''}
+        </NFTText>
         {token.symbol !== '' && <NFTSymbol>{token.symbol}</NFTSymbol>}
       </NFTWrapper>
-      {showEditModal &&
+      {showEditModal && (
         <AddOrEditNftModal
           nftToken={token}
           onHideForm={onHideModal}
           onClose={onHideModal}
         />
-      }
+      )}
     </>
   )
 }

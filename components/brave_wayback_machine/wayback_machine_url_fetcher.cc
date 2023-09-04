@@ -17,6 +17,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/fetch_api.mojom-shared.h"
 #include "url/gurl.h"
+#include "url/url_constants.h"
 
 namespace {
 
@@ -56,7 +57,8 @@ WaybackMachineURLFetcher::WaybackMachineURLFetcher(
 WaybackMachineURLFetcher::~WaybackMachineURLFetcher() = default;
 
 void WaybackMachineURLFetcher::Fetch(const GURL& url) {
-  const GURL wayback_fetch_url(std::string(kWaybackQueryURL) + url.spec());
+  const GURL wayback_fetch_url(std::string(kWaybackQueryURL) +
+                               GetSanitizedInputURL(url).spec());
   api_request_helper_->Request(
       "GET", FixupWaybackQueryURL(wayback_fetch_url), std::string(),
       "application/json",
@@ -76,10 +78,43 @@ void WaybackMachineURLFetcher::OnWaybackURLFetched(
   }
   auto* url_string = value_body.GetDict().FindStringByDottedPath(
       "archived_snapshots.closest.url");
+
+  // Response doesn't have wayback url.
   if (!url_string) {
     client_->OnWaybackURLFetched(GURL::EmptyGURL());
     return;
   }
 
-  client_->OnWaybackURLFetched(GURL(*url_string));
+  client_->OnWaybackURLFetched(GetSanitizedWaybackURL(GURL(*url_string)));
+}
+
+GURL WaybackMachineURLFetcher::GetSanitizedWaybackURL(const GURL& url) const {
+  if (!url.is_valid()) {
+    return GURL::EmptyGURL();
+  }
+
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    return GURL::EmptyGURL();
+  }
+
+  if (url.host() != kWaybackHost) {
+    return GURL::EmptyGURL();
+  }
+
+  // Upgrade to https.
+  if (url.SchemeIs(url::kHttpScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(url::kHttpsScheme);
+    return url.ReplaceComponents(replacements);
+  }
+
+  return url;
+}
+
+GURL WaybackMachineURLFetcher::GetSanitizedInputURL(const GURL& url) const {
+  GURL::Replacements replacements;
+  replacements.ClearRef();
+  replacements.ClearUsername();
+  replacements.ClearPassword();
+  return url.ReplaceComponents(replacements);
 }

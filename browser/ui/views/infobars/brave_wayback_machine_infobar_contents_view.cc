@@ -29,16 +29,17 @@
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/native_theme/native_theme.h"
+#include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/flex_layout.h"
-#include "ui/views/style/platform_style.h"
 #include "ui/views/view_class_properties.h"
 #include "url/gurl.h"
 
@@ -46,6 +47,22 @@ namespace {
 // IDs of the colors to use for infobar elements.
 constexpr int kInfoBarLabelBackgroundColor = kColorInfoBarBackground;
 constexpr int kInfoBarLabelTextColor = kColorBookmarkBarForeground;
+
+// Subclass for custom font.
+class DontAskAgainCheckbox : public views::Checkbox {
+ public:
+  METADATA_HEADER(DontAskAgainCheckbox);
+
+  using views::Checkbox::Checkbox;
+  ~DontAskAgainCheckbox() override = default;
+
+  void SetFontList(const gfx::FontList& font_list) {
+    label()->SetFontList(font_list);
+  }
+};
+
+BEGIN_METADATA(DontAskAgainCheckbox, views::Checkbox)
+END_METADATA
 }  // namespace
 
 BraveWaybackMachineInfoBarContentsView::BraveWaybackMachineInfoBarContentsView(
@@ -120,13 +137,12 @@ void BraveWaybackMachineInfoBarContentsView::FetchURLButtonPressed() {
   if (wayback_url_fetch_requested_)
     return;
   wayback_url_fetch_requested_ = true;
-  dont_ask_button_->SetVisible(false);
   FetchWaybackURL();
 }
 
-void BraveWaybackMachineInfoBarContentsView::DontAskButtonPressed() {
-  pref_service_->SetBoolean(kBraveWaybackMachineEnabled, false);
-  HideInfobar();
+void BraveWaybackMachineInfoBarContentsView::OnCheckboxUpdated() {
+  pref_service_->SetBoolean(kBraveWaybackMachineEnabled,
+                            !dont_ask_again_checkbox_->GetChecked());
 }
 
 void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
@@ -143,7 +159,7 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
   label->SetFontList(
       label->font_list().DeriveWithWeight(gfx::Font::Weight::BOLD));
   views_visible_before_checking_.push_back(label);
-  label->SetProperty(views::kFlexBehaviorKey, label_flex_rule.WithOrder(1));
+  label->SetProperty(views::kFlexBehaviorKey, label_flex_rule);
   label->SetProperty(
       views::kMarginsKey,
       gfx::Insets::VH(ChromeLayoutProvider::Get()->GetDistanceMetric(
@@ -162,6 +178,24 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
   label->SetElideBehavior(gfx::ELIDE_TAIL);
   label->SetProperty(views::kFlexBehaviorKey, label_flex_rule.WithOrder(2));
   AddChildView(label);
+
+  dont_ask_again_checkbox_ =
+      AddChildView(std::make_unique<DontAskAgainCheckbox>(
+          brave_l10n::GetLocalizedResourceUTF16String(
+              IDS_BRAVE_WAYBACK_MACHINE_DONT_ASK_AGAIN_TEXT),
+          base::BindRepeating(
+              &BraveWaybackMachineInfoBarContentsView::OnCheckboxUpdated,
+              base::Unretained(this))));
+  dont_ask_again_checkbox_->SetProperty(views::kMarginsKey,
+                                        gfx::Insets::TLBR(12, 20, 12, 0));
+  dont_ask_again_checkbox_->SetProperty(views::kFlexBehaviorKey,
+                                        label_flex_rule);
+
+  // Use same font with label. Checkbox's default font size is a little bit
+  // smaller than label.
+  static_cast<DontAskAgainCheckbox*>(dont_ask_again_checkbox_)
+      ->SetFontList(label->font_list());
+  views_visible_before_checking_.push_back(dont_ask_again_checkbox_);
 
   // Add empty view to locate button to last.
   auto* place_holder_view = new views::View;
@@ -185,41 +219,18 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
                       0));
   AddChildView(label);
 
-  dont_ask_button_ = AddChildView(std::make_unique<views::MdTextButton>(
-      base::BindRepeating(
-          &BraveWaybackMachineInfoBarContentsView::DontAskButtonPressed,
-          base::Unretained(this)),
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_BRAVE_WAYBACK_MACHINE_DONT_ASK_AGAIN_TEXT)));
-  views_visible_before_checking_.push_back(dont_ask_button_);
-
   fetch_url_button_ =
       AddChildView(std::make_unique<BraveWaybackMachineInfoBarButtonContainer>(
           base::BindRepeating(
               &BraveWaybackMachineInfoBarContentsView::FetchURLButtonPressed,
               base::Unretained(this))));
   views_visible_before_checking_.push_back(fetch_url_button_);
-
-  const auto first_button_margin =
+  fetch_url_button_->SetProperty(
+      views::kMarginsKey,
       gfx::Insets::VH(ChromeLayoutProvider::Get()->GetDistanceMetric(
                           DISTANCE_TOAST_CONTROL_VERTICAL),
                       ChromeLayoutProvider::Get()->GetDistanceMetric(
-                          DISTANCE_RELATED_CONTROL_HORIZONTAL_SMALL));
-
-  const auto second_button_margin =
-      gfx::Insets::VH(ChromeLayoutProvider::Get()->GetDistanceMetric(
-                          DISTANCE_TOAST_CONTROL_VERTICAL),
-                      0);
-
-  if (views::PlatformStyle::kIsOkButtonLeading) {
-    // Move |dont_ask_button_| at the end.
-    ReorderChildView(dont_ask_button_, -1);
-    fetch_url_button_->SetProperty(views::kMarginsKey, first_button_margin);
-    dont_ask_button_->SetProperty(views::kMarginsKey, second_button_margin);
-  } else {
-    dont_ask_button_->SetProperty(views::kMarginsKey, first_button_margin);
-    fetch_url_button_->SetProperty(views::kMarginsKey, second_button_margin);
-  }
+                          DISTANCE_RELATED_CONTROL_HORIZONTAL_SMALL)));
 
   UpdateChildrenVisibility(true);
 }
@@ -260,3 +271,6 @@ void BraveWaybackMachineInfoBarContentsView::LoadURL(const GURL& url) {
                                      ui::PAGE_TRANSITION_LINK,
                                      std::string());
 }
+
+BEGIN_METADATA(BraveWaybackMachineInfoBarContentsView, views::View)
+END_METADATA

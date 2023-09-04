@@ -4,19 +4,18 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useLocation } from 'react-router-dom'
-
-// Types
-import { WalletRoutes } from '../../../constants/types'
 
 // Selectors
-import { WalletSelectors } from '../../../common/selectors'
+import {
+  WalletSelectors,
+  UISelectors
+} from '../../../common/selectors'
 
 // Hooks
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-
-// Options
-import { AllNavOptions } from '../../../options/nav-options'
+import {
+  useSafeWalletSelector,
+  useSafeUISelector
+} from '../../../common/hooks/use-safe-selector'
 
 // Components
 import { WalletNav } from '../wallet-nav/wallet-nav'
@@ -53,7 +52,12 @@ export interface Props {
   hideBackground?: boolean
   hideNav?: boolean
   hideHeader?: boolean
+  hideHeaderMenu?: boolean
+  hideDivider?: boolean
   cardHeader?: JSX.Element | undefined | null
+  noMinCardHeight?: boolean
+  noBorderRadius?: boolean
+  useDarkBackground?: boolean
   children?: React.ReactNode
 }
 
@@ -67,15 +71,18 @@ export const WalletPageWrapper = (props: Props) => {
     cardHeader,
     hideBackground,
     hideNav,
-    hideHeader
+    hideHeader,
+    hideHeaderMenu,
+    hideDivider,
+    noMinCardHeight,
+    noBorderRadius,
+    useDarkBackground
   } = props
-
-  // Routing
-  const { pathname: walletLocation } = useLocation()
 
   // Wallet Selectors (safe)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // State
   const [headerShadowOpacity, setHeaderShadowOpacity]
@@ -87,11 +94,6 @@ export const WalletPageWrapper = (props: Props) => {
   // Refs
   let scrollRef = React.useRef<HTMLDivElement | null>(null)
   const headerRef = React.createRef<HTMLDivElement>()
-
-  // Computed
-
-  const headerTitle = AllNavOptions.find((option) =>
-    walletLocation.includes(option.route))?.name ?? ''
 
   React.useEffect(() => {
     // Keeps track of the Header height to update
@@ -152,18 +154,23 @@ export const WalletPageWrapper = (props: Props) => {
           <BackgroundGradientBottomLayer />
         </BackgroundGradientWrapper>
       }
-      <Wrapper noPadding={noPadding}>
+      <Wrapper
+        noPadding={noPadding}
+        isPanel={isPanel}
+      >
         {
           isWalletCreated &&
-          !isWalletLocked &&
           !hideHeader &&
-          <TabHeader title={headerTitle} />
+          !isPanel &&
+          <TabHeader
+            hideHeaderMenu={hideHeaderMenu}
+          />
         }
         {
           isWalletCreated &&
           !isWalletLocked &&
           !hideNav &&
-          <WalletNav isSwap={walletLocation === WalletRoutes.Swap} />
+          <WalletNav />
         }
         {!isWalletLocked &&
           <FeatureRequestButtonWrapper>
@@ -178,9 +185,13 @@ export const WalletPageWrapper = (props: Props) => {
             onScroll={onScroll}
             hideCardHeader={!cardHeader}
             headerHeight={headerHeight}
+            hideNav={hideNav}
           >
             {cardHeader &&
-              <CardHeaderWrapper>
+              <CardHeaderWrapper
+                maxWidth={cardWidth}
+                isPanel={isPanel}
+              >
                 <CardHeaderShadow
                   headerHeight={headerHeight}
                 />
@@ -191,6 +202,9 @@ export const WalletPageWrapper = (props: Props) => {
               noPadding={noCardPadding}
               maxWidth={cardWidth}
               hideCardHeader={!cardHeader}
+              noMinCardHeight={noMinCardHeight}
+              noBorderRadius={noBorderRadius}
+              useDarkBackground={useDarkBackground}
             >
               {children}
             </ContainerCard>
@@ -198,12 +212,17 @@ export const WalletPageWrapper = (props: Props) => {
             {cardHeader &&
               <CardHeaderWrapper
                 ref={headerRef}
+                maxWidth={cardWidth}
+                isPanel={isPanel}
               >
                 <CardHeader
                   shadowOpacity={headerShadowOpacity}
+                  isPanel={isPanel}
+                  useDarkBackground={useDarkBackground}
                 >
                   <CardHeaderContentWrapper
                     dividerOpacity={headerDividerOpacity}
+                    hideDivider={hideDivider}
                   >
                     {cardHeader}
                   </CardHeaderContentWrapper>

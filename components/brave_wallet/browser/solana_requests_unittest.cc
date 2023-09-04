@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_requests.h"
 
 #include "base/json/json_reader.h"
+#include "base/strings/stringprintf.h"
 #include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -109,9 +110,38 @@ TEST(SolanaRequestsUnitTest, getBlockHeight) {
 }
 
 TEST(SolanaRequestsUnitTest, getTokenAccountsByOwner) {
+  std::string expected_json_string_fmt = R"(
+    {
+      "id":1,
+      "jsonrpc":"2.0",
+      "method":"getTokenAccountsByOwner",
+      "params":[
+        "pubkey",
+        {
+          "programId":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "encoding":"%s"
+        }
+      ]
+    }
+  )";
   ASSERT_EQ(
-      getTokenAccountsByOwner("pubkey"),
-      R"({"id":1,"jsonrpc":"2.0","method":"getTokenAccountsByOwner","params":["pubkey",{"programId":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"encoding":"base64"}]})");
+      base::test::ParseJsonDict(getTokenAccountsByOwner("pubkey", "base64")),
+      base::test::ParseJsonDict(
+          base::StringPrintf(expected_json_string_fmt.c_str(), "base64")));
+
+  ASSERT_EQ(
+      base::test::ParseJsonDict(getTokenAccountsByOwner("pubkey", "base58")),
+      base::test::ParseJsonDict(
+          base::StringPrintf(expected_json_string_fmt.c_str(), "base58")));
+
+  ASSERT_EQ(base::test::ParseJsonDict(
+                getTokenAccountsByOwner("pubkey", "jsonParsed")),
+            base::test::ParseJsonDict(base::StringPrintf(
+                expected_json_string_fmt.c_str(), "jsonParsed")));
+
+  EXPECT_CHECK_DEATH(getTokenAccountsByOwner("pubkey", "invalid encoding"));
 }
 
 TEST(SolanaRequestsUnitTest, isBlockhashValid) {

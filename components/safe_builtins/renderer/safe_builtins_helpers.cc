@@ -61,7 +61,6 @@ v8::Local<v8::String> WrapSource(v8::Isolate* isolate,
 }
 
 v8::Local<v8::Value> RunScript(v8::Local<v8::Context> context,
-                               v8::Local<v8::String> name,
                                v8::Local<v8::String> code) {
   v8::EscapableHandleScope handle_scope(context->GetIsolate());
   v8::Context::Scope context_scope(context);
@@ -71,8 +70,7 @@ v8::Local<v8::Value> RunScript(v8::Local<v8::Context> context,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::TryCatch try_catch(context->GetIsolate());
   try_catch.SetCaptureMessage(true);
-  v8::ScriptOrigin origin(context->GetIsolate(), name);
-  v8::ScriptCompiler::Source script_source(code, origin);
+  v8::ScriptCompiler::Source script_source(code);
   v8::Local<v8::Script> script;
   if (!v8::ScriptCompiler::Compile(
            context, &script_source, v8::ScriptCompiler::kNoCompileOptions,
@@ -122,17 +120,14 @@ v8::MaybeLocal<v8::Value> SafeCallFunction(
 
 v8::MaybeLocal<v8::Value> LoadScriptWithSafeBuiltins(
     blink::WebLocalFrame* web_frame,
-    const std::string& script,
-    const std::string& name) {
+    const std::string& script) {
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
   v8::Local<v8::String> wrapped_source(WrapSource(
       context->GetIsolate(), gin::StringToV8(context->GetIsolate(), script)));
   // Wrapping script in function(...) {...}
-  v8::Local<v8::Value> func_as_value = RunScript(
-      context, gin::StringToV8(context->GetIsolate(), name), wrapped_source);
+  v8::Local<v8::Value> func_as_value = RunScript(context, wrapped_source);
   if (func_as_value.IsEmpty() || func_as_value->IsUndefined()) {
-    std::string message =
-        base::StringPrintf("Bad source for require(\"%s\")", name.c_str());
+    std::string message = base::StringPrintf("Bad source");
     web_frame->AddMessageToConsole(
         blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kError,
                                  blink::WebString::FromUTF8(message)));

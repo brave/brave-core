@@ -12,12 +12,11 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_wallet {
+class KeyringService;
 
 // Start account discovery process. Consecutively look for accounts with at
 // least one transaction. Add such ones and all missing previous ones(so no
@@ -34,13 +33,13 @@ class AccountDiscoveryManager {
  private:
   struct DiscoveryContext {
     DiscoveryContext(const mojom::CoinType& coin_type,
-                     const std::string& keyring_id,
+                     const mojom::KeyringId& keyring_id,
                      const std::string& chain_id,
                      size_t discovery_account_index,
                      int attempts_left);
     ~DiscoveryContext();
     mojom::CoinType coin_type;
-    std::string keyring_id;
+    mojom::KeyringId keyring_id;
     std::string chain_id;
     size_t discovery_account_index;
     int attempts_left;

@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/notification_ads/notification_ads_minimum_wait_time_permission_rule.h"
 
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -20,7 +20,7 @@ class BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest
 };
 
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
-       AllowAdIfThereIsNoAdsHistory) {
+       ShouldAllowIfThereAreNoAdEvents) {
   // Arrange
 
   // Act
@@ -30,11 +30,11 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
 }
 
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
-       AllowAdIfDoesNotExceedCap) {
+       ShouldAllowIfDoesNotExceedCap) {
   // Arrange
-  ads_client_mock_.SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, 5);
+  SetMaximumNotificationAdsPerHourForTesting(5);
 
-  RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
+  RecordAdEventForTesting(AdType::kNotificationAd, ConfirmationType::kServed);
 
   // Act
   AdvanceClockBy(base::Minutes(12));
@@ -44,11 +44,11 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
 }
 
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
-       DoNotAllowAdIfExceedsCap) {
+       ShouldNotAllowIfExceedsCap) {
   // Arrange
-  ads_client_mock_.SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, 5);
+  SetMaximumNotificationAdsPerHourForTesting(5);
 
-  RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
+  RecordAdEventForTesting(AdType::kNotificationAd, ConfirmationType::kServed);
 
   // Act
   AdvanceClockBy(base::Minutes(12) - base::Milliseconds(1));

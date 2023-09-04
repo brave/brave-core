@@ -8,11 +8,12 @@
 
 #include <string>
 
-#include "base/containers/flat_map.h"
 #include "base/timer/timer.h"
-#include "brave/components/brave_rewards/core/endpoints/uphold/post_oauth/post_oauth_uphold.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/endpoint/uphold/uphold_server.h"
+#include "brave/components/brave_rewards/core/endpoints/uphold/post_oauth_uphold.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_capabilities.h"
+#include "brave/components/brave_rewards/core/uphold/uphold_card.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_user.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 
@@ -20,7 +21,7 @@ namespace brave_rewards::internal::uphold {
 
 class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
  public:
-  explicit ConnectUpholdWallet(LedgerImpl& ledger);
+  explicit ConnectUpholdWallet(RewardsEngineImpl& engine);
 
   ~ConnectUpholdWallet() override;
 
@@ -39,11 +40,13 @@ class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
 
   void OnGetCapabilities(ConnectExternalWalletCallback,
                          const std::string& access_token,
+                         const std::string& country_id,
                          mojom::Result,
                          internal::uphold::Capabilities) const;
 
   void OnCreateCard(ConnectExternalWalletCallback,
                     const std::string& access_token,
+                    const std::string& country_id,
                     mojom::Result,
                     std::string&& id) const;
 
@@ -53,7 +56,9 @@ class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
 
   void OnGetCapabilities(mojom::Result, Capabilities) const;
 
-  base::RepeatingTimer eligibility_checker_;
+  UpholdCard card_;
+  endpoint::UpholdServer server_;
+  base::RetainingOneShotTimer eligibility_checker_;
 };
 
 }  // namespace brave_rewards::internal::uphold

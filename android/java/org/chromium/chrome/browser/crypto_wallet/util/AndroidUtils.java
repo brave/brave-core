@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 
 public class AndroidUtils {
@@ -108,5 +110,25 @@ public class AndroidUtils {
     public static boolean canUpdateFragmentUi(Fragment frag) {
         return !(frag.isRemoving() || frag.getActivity() == null || frag.isDetached()
                 || !frag.isAdded() || frag.getView() == null);
+    }
+
+    /**
+     * Calculated an ideal row count for shimmer effect based on screen size
+     * @param context of app
+     * @param skeletonRowHeight of a skeleton row view in pixels
+     * @return count of rows for the skeleton list
+     */
+    public static int getSkeletonRowCount(int skeletonRowHeight) {
+        int pxHeight = getScreenHeight();
+        return (int) Math.floor(pxHeight / skeletonRowHeight);
+    }
+
+    /**
+     * @return {@code true} if the app is a debug build, {@code false} otherwise.
+     */
+    public static boolean isDebugBuild() {
+        return (ContextUtils.getApplicationContext().getApplicationInfo().flags
+                       & ApplicationInfo.FLAG_DEBUGGABLE)
+                != 0;
     }
 }

@@ -2,52 +2,51 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { BraveWallet, WalletAccountType, GetFlattenedAccountBalancesReturnInfo } from '../constants/types'
+import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../common/constants/magics'
+import { BraveWallet, SupportedTestNetworks } from '../constants/types'
 
-export type GetTokenParamArg = Pick<
-  BraveWallet.BlockchainToken,
-  | 'chainId'
-  | 'contractAddress'
-  | 'symbol'
-> & {
-  coingeckoId?: string | undefined
-}
-
-export const getTokenParam = (token: GetTokenParamArg): string => {
+export const getPriceIdForToken = (
+  token: Pick<
+    BraveWallet.BlockchainToken,
+    | 'contractAddress'
+    | 'symbol'
+    | 'coingeckoId'
+    | 'chainId'
+    >
+) => {
   if (token?.coingeckoId) {
-    return token.coingeckoId
+    return token.coingeckoId.toLowerCase()
+  }
+
+  // Skip price of testnet tokens other than goerli-eth
+  if (SupportedTestNetworks.includes(token.chainId)) {
+    // Goerli ETH has a real-world value
+    if (
+      token.chainId === BraveWallet.GOERLI_CHAIN_ID &&
+      !token.contractAddress
+    ) {
+      return 'goerli-eth' // coingecko id
+    }
+    return SKIP_PRICE_LOOKUP_COINGECKO_ID
   }
 
   const isEthereumNetwork = token.chainId === BraveWallet.MAINNET_CHAIN_ID
-
-  if (
-    !isEthereumNetwork ||
-    token.contractAddress === ''
-  ) {
-    return token.symbol.toLowerCase()
+  if (isEthereumNetwork && token.contractAddress) {
+    return token.contractAddress.toLowerCase()
   }
 
-  return token.contractAddress
+  return token.symbol.toLowerCase()
 }
 
-// This will get the sum balance for each token between all accounts
-export const getFlattenedAccountBalances = (accounts: WalletAccountType[], userVisibleTokensInfo: BraveWallet.BlockchainToken[]): GetFlattenedAccountBalancesReturnInfo[] => {
-  if (accounts.length === 0) {
-    return []
+export function handleEndpointError(
+  endpointName: string,
+  friendlyMessage: string,
+  error: any
+) {
+  const message = `${friendlyMessage}: ${error?.message || error}`
+  console.log(`error in: ${endpointName || 'endpoint'}: ${message}`)
+  console.error(error)
+  return {
+    error: friendlyMessage
   }
-
-  return userVisibleTokensInfo.map((token) => {
-    return {
-      token: token,
-      balance: accounts
-        .map(account => {
-          const balance = token.contractAddress
-            ? account.tokenBalanceRegistry[token.contractAddress.toLowerCase()]
-            : account.nativeBalanceRegistry[token.chainId]
-
-          return balance || '0'
-        })
-        .reduce((a, b) => a + Number(b), 0)
-    }
-  })
 }

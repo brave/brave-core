@@ -208,6 +208,18 @@ absl::optional<size_t> SidebarModel::GetIndexOf(const SidebarItem& item) const {
   return std::distance(items.begin(), iter);
 }
 
+absl::optional<size_t> SidebarModel::GetIndexOf(
+    SidebarItem::BuiltInItemType type) const {
+  const auto items = GetAllSidebarItems();
+  const auto iter = base::ranges::find_if(
+      items, [&type](const auto& i) { return (type == i.built_in_item_type); });
+  if (iter == items.end()) {
+    return absl::nullopt;
+  }
+
+  return std::distance(items.begin(), iter);
+}
+
 void SidebarModel::UpdateActiveIndexAndNotify(
     absl::optional<size_t> new_active_index) {
   if (new_active_index == active_index_)

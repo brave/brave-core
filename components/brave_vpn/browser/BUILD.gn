@@ -40,6 +40,9 @@ static_library("browser") {
     "//ui/base",
     "//url",
   ]
+  if (is_win) {
+    deps += [ "//brave/components/brave_vpn/common/wireguard/win" ]
+  }
 }
 
 source_set("unit_tests") {
@@ -54,6 +57,7 @@ source_set("unit_tests") {
     "//base",
     "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/browser/connection:common",
+    "//brave/components/brave_vpn/browser/connection/wireguard/credentials:unit_tests",
     "//brave/components/brave_vpn/common",
     "//brave/components/skus/browser",
     "//brave/components/skus/common",
@@ -70,7 +74,7 @@ source_set("unit_tests") {
   ]
   if (!is_android) {
     deps += [
-      "connection/ikev2:unit_tests",
+      "connection:unit_tests",
       "//brave/components/brave_vpn/browser/connection/ikev2:sim",
     ]
   }

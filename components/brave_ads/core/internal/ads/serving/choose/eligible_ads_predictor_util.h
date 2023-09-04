@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_ELIGIBLE_ADS_PREDICTOR_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_ELIGIBLE_ADS_PREDICTOR_UTIL_H_
 
-#include <cstddef>
 #include <iterator>
 #include <limits>
 #include <vector>
@@ -14,15 +13,16 @@
 #include "base/check_op.h"
 #include "base/numerics/ranges.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/ad_predictor_info.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/allocation/seen_ads_util.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/allocation/seen_advertisers_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_alias.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
-#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
@@ -93,13 +93,13 @@ AdPredictorInfo<T> ComputePredictorFeatures(
   const base::Time now = base::Time::Now();
 
   if (const absl::optional<base::Time> last_seen_ad_at =
-          GetLastSeenAdTime(ad_events, ad_predictor.creative_ad)) {
+          GetLastSeenAdAt(ad_events, ad_predictor.creative_ad)) {
     const base::TimeDelta time_delta = now - *last_seen_ad_at;
     mutable_ad_predictor.ad_last_seen_hours_ago = time_delta.InHours();
   }
 
   if (const absl::optional<base::Time> last_seen_advertiser_at =
-          GetLastSeenAdvertiserTime(ad_events, ad_predictor.creative_ad)) {
+          GetLastSeenAdvertiserAt(ad_events, ad_predictor.creative_ad)) {
     const base::TimeDelta time_delta = now - *last_seen_advertiser_at;
     mutable_ad_predictor.advertiser_last_seen_hours_ago = time_delta.InHours();
   }

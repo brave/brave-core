@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/download_progress_text_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@color/onboarding_negative_button_color"
+    android:textSize="14sp"
+    android:layout_gravity="center_horizontal|bottom"
+    android:gravity="center_horizontal"/>

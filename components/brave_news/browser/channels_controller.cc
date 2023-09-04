@@ -12,9 +12,7 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
-#include "base/unguessable_token.h"
 #include "base/values.h"
-#include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -98,7 +96,7 @@ std::vector<std::string> ChannelsController::GetChannelLocales() const {
   const auto& pref = prefs_->GetDict(prefs::kBraveNewsChannels);
 
   for (const auto&& [locale, channel] : pref) {
-    if (channel.DictEmpty()) {
+    if (channel.GetDict().empty()) {
       continue;
     }
     result.push_back(locale);
@@ -112,7 +110,7 @@ std::vector<std::string> ChannelsController::GetChannelLocales(
   std::vector<std::string> result;
   const auto& pref = prefs_->GetDict(prefs::kBraveNewsChannels);
   for (const auto&& [locale, channels] : pref) {
-    auto subscribed = channels.FindBoolKey(channel_id).value_or(false);
+    auto subscribed = channels.GetDict().FindBool(channel_id).value_or(false);
     if (subscribed) {
       result.push_back(locale);
     }

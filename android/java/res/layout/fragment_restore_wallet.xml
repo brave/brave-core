@@ -176,6 +176,12 @@
             android:textColor="@android:color/white"
             style="?android:attr/borderlessButtonStyle"/>
 
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/onboarding_component_download_progress"
+            android:name="org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.DownloadComponentProgressFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

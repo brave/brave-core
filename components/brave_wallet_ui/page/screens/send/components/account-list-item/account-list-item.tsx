@@ -4,46 +4,40 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 
-// Selectors
-import { WalletSelectors } from '../../../../../common/selectors'
-import { useUnsafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
+import { BraveWallet } from '../../../../../constants/types'
 
 // Styled Components
 import { Button, AccountCircle } from './account-list-item.style'
 import { Text, Column } from '../../shared.styles'
 
+// Hooks
+import { useAccountOrb } from '../../../../../common/hooks/use-orb'
+
 interface Props {
-  onClick: (address: string) => void
-  address: string
-  name: string
+  account: BraveWallet.AccountInfo
+  onClick: (account: BraveWallet.AccountInfo) => void
+  isSelected: boolean
+  accountAlias: string | undefined
 }
 
 export const AccountListItem = (props: Props) => {
-  const { onClick, address, name } = props
+  const { onClick, account, isSelected, accountAlias } = props
 
-  // Selectors
-  const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
-
-  // Memos
-  const isAccountDisabled = React.useMemo(() => {
-    return selectedAccount?.address.toLowerCase() === address.toLowerCase()
-  }, [selectedAccount, address])
-
-  const orb = React.useMemo(() => {
-    return create({ seed: address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [address])
+  // hooks
+  const orb = useAccountOrb(account)
 
   return (
-    <Button disabled={isAccountDisabled} onClick={() => onClick(address)}>
+    <Button disabled={isSelected} onClick={() => onClick(account)}>
       <AccountCircle orb={orb} />
       <Column horizontalAlign='flex-start' verticalAlign='center'>
-        <Text textColor='text03' textSize='12px' isBold={false}>{name}</Text>
-        <Text textColor='text01' textSize='12px' isBold={false}>{address}</Text>
+        <Text textColor='text03' textSize='12px' isBold={false}>{account.name}</Text>
+        <Text textColor='text01' textSize='12px' isBold={false}>{account.address}</Text>
+        {(accountAlias && accountAlias !== '') &&
+          <Text textColor='text02' textSize='12px' isBold={false}>{accountAlias}</Text>
+        }
       </Column>
     </Button>
-
   )
 }
 

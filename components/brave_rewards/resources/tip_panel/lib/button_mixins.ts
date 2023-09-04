@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { color } from '@brave/leo/tokens/css'
 import { buttonReset } from '../../shared/lib/css_mixins'
 
 const commonStyles = `
@@ -34,8 +35,7 @@ const commonStyles = `
 export const primaryButton = `
   ${commonStyles}
 
-  --self-background-color:
-    var(--leo-color-interaction-button-primary-background);
+  --self-background-color: ${color.button.background};
 
   --self-lighten-opacity: 0;
 

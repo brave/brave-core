@@ -20,7 +20,7 @@ using GetSKUOrderItemsCallback =
 
 class DatabaseSKUOrderItems : public DatabaseTable {
  public:
-  explicit DatabaseSKUOrderItems(LedgerImpl& ledger);
+  explicit DatabaseSKUOrderItems(RewardsEngineImpl& engine);
   ~DatabaseSKUOrderItems() override;
 
   void InsertOrUpdateList(mojom::DBTransaction* transaction,
@@ -30,8 +30,8 @@ class DatabaseSKUOrderItems : public DatabaseTable {
                            GetSKUOrderItemsCallback callback);
 
  private:
-  void OnGetRecordsByOrderId(mojom::DBCommandResponsePtr response,
-                             GetSKUOrderItemsCallback callback);
+  void OnGetRecordsByOrderId(GetSKUOrderItemsCallback callback,
+                             mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

@@ -1,0 +1,17 @@
+[package]
+name = "data-encoding-macro-internal"
+version = "0.1.10"
+authors = ["Julien Cretin <cretin@google.com>"]
+license = "MIT"
+edition = "2018"
+description = "Internal library for data-encoding-macro"
+readme = "README.md"
+repository = "https://github.com/ia0/data-encoding"
+include = ["Cargo.toml", "LICENSE", "README.md", "src/lib.rs"]
+
+[lib]
+proc-macro = true
+
+[dependencies]
+data-encoding = { version = "2.3", path = "../..", default-features = false, features = ["alloc"] }
+syn = "1"

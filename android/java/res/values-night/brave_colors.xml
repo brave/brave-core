@@ -8,14 +8,16 @@
 <resources>
     <!-- Theme colors -->
     <!-- Overriding chromium theme colors to brave theme colors -->
-    <color name="baseline_primary_100">#5B2A23</color>
-    <color name="baseline_primary_200">#F35333</color>
+    <color name="baseline_primary_90">#5B2A23</color>
+    <color name="baseline_primary_80">#F35333</color>
     <color name="default_text_color_on_accent1_baseline">@color/default_text_color_on_accent1_light</color>
     <color name="dialog_bg_color_dark_baseline">@color/default_bg_color_baseline</color>
 
     <!-- Theme colors -->
-    <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_200</color>
+    <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_80</color>
     <color name="brave_link">#A0A5EB</color>
+    <color name="brave_button_color">#4C54D2</color>
+    <color name="brave_button_pressed">#575CA4</color>
 
     <color name="onboarding_text_color">#F0F2FF</color>
     <color name="onboarding_bg_color">#1E2029</color>
@@ -39,15 +41,17 @@
     <!-- Day/Night brave wallet colors -->
     <color name="brave_wallet_day_night_toolbar_icon_color">@android:color/white</color>
     <color name="brave_wallet_day_night_text_color">@android:color/white</color>
-    <color name="brave_wallet_day_night_icon_color">#C2C4CF</color>
+    <color name="brave_wallet_day_night_icon_color">#F0F2FF</color>
     <color name="brave_wallet_day_night_negative_ripple_color">#272733</color>
     <color name="brave_wallet_dn_error_text_bg_color">#453e2d</color>
-    <color name="brave_wallet_dn_highlight_bg_color">#1E2029</color>
+    <color name="brave_wallet_dn_highlight_bg_color">#1F1F27</color>
     <color name="wallet_dn_bg_primary">#17171F</color>
+    <color name="brave_wallet_day_night_chip_selected">@color/default_bg_color_baseline</color>
 
     <!-- Text colors -->
     <color name="brave_theme_subtitle_text">#C2C4CF</color>
     <color name="brave_theme_hint_text">#84889C</color>
+    <color name="brave_text_button_color">#A0A5EB</color>
 
     <!-- Set Default Browser colors -->
     <color name="set_default_bottom_sheet_bg_color">#1E2029</color>
@@ -89,8 +93,18 @@
     
     <color name="shield_thank_you_icon_color">#F0F2FF</color>
 
+    <color name="filter_title_color">#EDEEF1</color>
+    <color name="filter_summary_color">#C2C4CF</color>
+    <color name="filter_divider_color">#2E3038</color>
+    <color name="add_custom_filter_text_input_stroke_color">#2E3038</color>
+    <color name="add_custom_filter_text_input_hint_color">#EDEEF1</color>
+    <color name="add_custom_filter_edit_text_hint_color">#C2C4CF</color>
+    <color name="add_custom_filter_summary_color">#C2C4CF</color>
+    <color name="add_custom_filter_tint_color">#C2C4CF</color>
+
     <color name="brave_stats_ads_color">#FF7654</color>
     <color name="brave_stats_data_saved_color">#737ADE</color>
+    <color name="brave_stats_pager_title_color">#DBDEE2</color>
 
     <color name="brave_stats_title_color">#84889C</color>
     <color name="brave_stats_text_color">#F0F2FF</color>
@@ -100,7 +114,12 @@
     <color name="brave_stats_close_button_color">#F0F2FF</color>
     <color name="brave_stats_radio_group_bg">#17171F</color>
     <color name="brave_stats_radio_button_active">#3B3E4F</color>
+    <color name="brave_stats_empty_border_color">#072542</color>
+    <color name="brave_stats_empty_text_color">#F6F7F8</color>
     <color name="brave_blue_tint_color">#737ADE</color>
+    <color name="brave_stats_ic_clock_color">#1075C9</color>
+
+
 
     <color name="wallet_text_color">#F0F2FF</color>
     <color name="wallet_secondary_text_color">#84889C</color>
@@ -135,7 +154,6 @@
     <!--  Brave Wallet DApp  -->
     <color name="brave_wallet_dapp_text_color">@android:color/white</color>
 
-    <color name="cookie_consent_action_color">@android:color/white</color>
     <color name="cookie_consent_text_color">#F0F2FF</color>
     <color name="cookie_consent_tooltip_color">#1E2029</color>
 
@@ -164,6 +182,10 @@
 
     <color name="bookmark_menu_text_color">#C2C4CF</color>
     <color name="bookmark_menu_bg_color">#2E3039</color>
+    <color name="bookmark_import_export_toast_bg_color">#1E2025</color>
+    <color name="bookmark_import_export_dialog_title_color">#EDEEF1</color>
+    <color name="bookmark_import_export_dialog_secondary_color">#878DA6</color>
+    <color name="bookmark_import_export_dialog_button_color">#AAA8F7</color>
 
     <color name="notification_volume_icon_color">#F0F2FF</color>
     <color name="notification_bat1_icon_color">#A0A5EB</color>
@@ -176,4 +198,45 @@
     <color name="you_are_not_earning_rewards_bg_color">#17171F</color>
 
     <color name="playlist_warning_dialog_bg">#17171F</color>
+    <color name="tipping_details_description_text_color">#8C90A1</color>
+    <color name="link_icon_color">#8C90A1</color>
+    <color name="rewards_background_gradient_start_color">#240F1E</color>
+    <color name="rewards_background_gradient_end_color">#0F0F24</color>
+    <color name="tipping_rewards_background_color">#1E2025</color>
+    <color name="tipping_inside_box_background_color">#1A1C20</color>
+    <color name="tipping_points_stroke_color">#2E3038</color>
+    <color name="tipping_points_selected_color">#0E0E34</color>
+    <color name="tipping_rewards_points_text_color">#AAA8F7</color>
+    <color name="currency_edit_text_background_color">#0E0F11</color>
+    <color name="use_web3_wallet_button_text_color">#AAA8F7</color>
+    <color name="transparent_shadow_background_start_color">#1E2025</color>
+    <color name="transparent_shadow_background_end_color">#001E2025</color>
+    <color name="custodian_name_color">#ACAFBB</color>
+    <color name="tipping_error_alert_message_background_color">#630D1B</color>
+    <color name="tipping_use_web3_button_border_color">#668784F4</color>
+    <color name="bottomsheet_top_bar_color">#FFFFFF</color>
+    <color name="custodian_text_background_color">#121316</color>
+    <color name="tootltip_verified_creator_text">#EDEEF1</color>
+    <color name="tootltip_verified_creator_text_secondary">#878DA6</color>
+    <color name="contribution_sent_text_color">#3FA450</color>
+    <color name="thanks_for_supporting_text_color">#AAA8F7</color>
+    <color name="go_back_text_color">#878DA6</color>
+    <color name="terms_of_service_text_color">#EDEEF1</color>
+    <color name="terms_of_service_text_color_default">#878DA6</color>
+    <color name="tipping_warning_default_background">#052743</color>
+    <color name="tipping_logout_warning_background_color">#332500</color>
+    <color name="rewards_private_ads_icon_color1">#111217</color>
+    <color name="rewards_private_ads_icon_color2">#8389DF</color>
+    <color name="rewards_private_ads_icon_color3">#545A71</color>
+    <color name="rewards_private_ads_icon_color4">#4C53AD</color>
+    <color name="rewards_private_ads_icon_color5">#262A33</color>
+    <color name="rewards_private_ads_icon_color6">#D292FD</color>
+    <color name="rewards_private_ads_icon_color7">#784A91</color>
+    <color name="rewards_private_ads_icon_color8">#85CCFF</color>
+    <color name="rewards_private_ads_icon_color9">#0C5FA3</color>
+    <color name="rewards_private_ads_icon_color10">#FFBEDF</color>
+    <color name="rewards_private_ads_icon_color11">#AF1769</color>
+    <color name="rewards_private_ads_icon_color12">#AF1769</color>
+    <color name="rewards_private_ads_icon_color13">#0C5FA3</color>
+    <color name="rewards_estimated_earning_close_color">#EDEEF1</color>
 </resources>

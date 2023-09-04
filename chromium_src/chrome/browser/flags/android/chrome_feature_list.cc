@@ -15,6 +15,7 @@
 #include "brave/components/debounce/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/request_otr/common/features.h"
 #include "brave/components/speedreader/common/features.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
@@ -23,19 +24,20 @@
 #define kForceWebContentsDarkMode kForceWebContentsDarkMode,            \
     &brave_rewards::features::kBraveRewards,                            \
     &brave_search_conversion::features::kOmniboxBanner,                 \
-    &brave_news::features::kBraveNewsFeature,                           \
-    &brave_news::features::kBraveNewsV2Feature,                         \
     &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,           \
     &brave_wallet::features::kNativeBraveWalletFeature,                 \
     &brave_wallet::features::kBraveWalletSolanaFeature,                 \
+    &brave_wallet::features::kBraveWalletFilecoinFeature,               \
     &brave_wallet::features::kBraveWalletSnsFeature,                    \
     &playlist::features::kPlaylist,                                     \
     &preferences::features::kBraveBackgroundVideoPlayback,              \
+    &request_otr::features::kBraveRequestOTRTab,                        \
     &safe_browsing::features::kBraveAndroidSafeBrowsing,                \
     &speedreader::kSpeedreaderFeature,                                  \
     &debounce::features::kBraveDebounce,                                \
     &net::features::kBraveHttpsByDefault,                               \
     &google_sign_in_permission::features::kBraveGoogleSignInPermission, \
+    &net::features::kBraveForgetFirstPartyStorage,                      \
     &brave_shields::features::kBraveLocalhostAccessPermission
 
 // clang-format on
@@ -48,6 +50,7 @@ namespace android {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAddToHomescreenIPH, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kBaselineGM3SurfaceColors, base::FEATURE_DISABLED_BY_DEFAULT},
     // Disable until we sort out UI issues
     // https://github.com/brave/brave-browser/issues/29688
     {kIncognitoReauthenticationForAndroid, base::FEATURE_DISABLED_BY_DEFAULT},

@@ -12,10 +12,12 @@ import { UserType } from '../../lib/user_type'
 import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
 import { BatIcon } from '../icons/bat_icon'
+import { OptInIcon } from '../icons/optin_icon'
 import { SettingsIcon } from '../icons/settings_icon'
 import { InfoIcon } from './icons/info_icon'
 import { ArrowNextIcon } from '../icons/arrow_next_icon'
-import { TermsOfService } from '../terms_of_service'
+import { CaretIcon } from '../icons/caret_icon'
+import { EarningsRange } from '../earnings_range'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
 import { NewTabLink } from '../new_tab_link'
@@ -26,6 +28,7 @@ import { UnsupportedRegionCard } from './unsupported_region_card'
 import { VBATNotice, shouldShowVBATNotice } from '../vbat_notice'
 import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
 import { Optional } from '../../../shared/lib/optional'
+import Icon from '@brave/leo/react/icon'
 
 import * as urls from '../../lib/rewards_urls'
 
@@ -33,30 +36,9 @@ import * as style from './rewards_card.style'
 
 import * as mojom from '../../../shared/lib/mojom'
 
-const nextPaymentDateFormatter = new Intl.DateTimeFormat(undefined, {
-  day: 'numeric',
+const monthFormatter = new Intl.DateTimeFormat(undefined, {
   month: 'short'
 })
-
-const monthDayFormatter = new Intl.DateTimeFormat(undefined, {
-  day: 'numeric',
-  month: 'short'
-})
-
-function renderDateRange () {
-  const now = new Date()
-  const start = new Date(now.getFullYear(), now.getMonth(), 1)
-
-  // To get the last day of the month, we can create a date for the next month,
-  // (months greater than 11 wrap around) with the day part set to 0 (one before
-  // the first day of the month). The Date constructor will perform the offset
-  // for us.
-  const end = new Date(start.getFullYear(), start.getMonth() + 1, 0)
-
-  return (
-    <>{monthDayFormatter.format(start)} - {monthDayFormatter.format(end)}</>
-  )
-}
 
 export function RewardsCardHeader () {
   const { getString } = React.useContext(LocaleContext)
@@ -72,27 +54,27 @@ export function RewardsCardHeader () {
 
 interface Props {
   rewardsEnabled: boolean
+  isGrandfatheredUser: boolean
   userType: UserType
   vbatDeadline: number | undefined
   isUnsupportedRegion: boolean
   declaredCountry: string
-  adsEnabled: boolean
-  adsSupported: boolean
   needsBrowserUpgradeToServeAds: boolean
   rewardsBalance: Optional<number>
   exchangeRate: number
   exchangeCurrency: string
   providerPayoutStatus: ProviderPayoutStatus
   nextPaymentDate: number
-  earningsThisMonth: number
-  earningsLastMonth: number
+  minEarningsThisMonth: number
+  maxEarningsThisMonth: number
+  minEarningsLastMonth: number
+  maxEarningsLastMonth: number
   contributionsThisMonth: number
   grantInfo: GrantInfo | null
   externalWallet: ExternalWallet | null
   publishersVisited: number
   canConnectAccount: boolean
   onEnableRewards: () => void
-  onEnableAds: () => void
   onSelectCountry: () => void
   onClaimGrant: () => void
 }
@@ -146,7 +128,7 @@ export function RewardsCard (props: Props) {
       )
     }
 
-    if (props.needsBrowserUpgradeToServeAds && props.adsSupported) {
+    if (props.needsBrowserUpgradeToServeAds) {
       return (
         <style.balance>
           <style.needsBrowserUpdateView>
@@ -158,11 +140,15 @@ export function RewardsCard (props: Props) {
             </style.needsBrowserUpdateContentBody>
           </style.needsBrowserUpdateView>
           <style.pendingRewards>
-            <PaymentStatusView
-              earningsLastMonth={props.earningsLastMonth}
-              nextPaymentDate={props.nextPaymentDate}
-              providerPayoutStatus={props.providerPayoutStatus}
-            />
+          {
+            props.userType === 'connected' &&
+              <PaymentStatusView
+                minEarnings={props.minEarningsLastMonth}
+                maxEarnings={props.maxEarningsLastMonth}
+                nextPaymentDate={props.nextPaymentDate}
+                providerPayoutStatus={props.providerPayoutStatus}
+              />
+          }
           </style.pendingRewards>
         </style.balance>
       )
@@ -172,41 +158,54 @@ export function RewardsCard (props: Props) {
       <style.balance
         className={!props.rewardsBalance.hasValue() ? 'flat' : ''}>
         <style.balanceTitle>
-          {getString('rewardsTokenBalance')}
+          {getString('rewardsBalanceTitle')}
         </style.balanceTitle>
         {
           !props.rewardsBalance.hasValue()
             ? <style.balanceSpinner>
-              <LoadingIcon />
-              <style.loading>{getString('loading')}</style.loading>
-            </style.balanceSpinner>
+                <LoadingIcon />
+                <style.loading>{getString('loading')}</style.loading>
+              </style.balanceSpinner>
             : <>
-              <style.balanceAmount>
-                <TokenAmount amount={props.rewardsBalance.value()} />
-              </style.balanceAmount>
-              <style.balanceExchange>
-                <style.balanceExchangeAmount>
-                  ≈&nbsp;
-                  <ExchangeAmount
-                    amount={props.rewardsBalance.value()}
-                    rate={props.exchangeRate}
-                    currency={props.exchangeCurrency} />
-                </style.balanceExchangeAmount>
-                {
-                  props.rewardsBalance.value() > 0 &&
-                  <style.balanceExchangeNote>
-                    {getString('rewardsExchangeValueNote')}
-                  </style.balanceExchangeNote>
-                }
-              </style.balanceExchange>
-            </>
+                <style.balanceAmount>
+                  <TokenAmount amount={props.rewardsBalance.value()} />
+                  {
+                    props.externalWallet?.provider === 'zebpay' &&
+                    props.isGrandfatheredUser &&
+                    <style.balanceInfo>
+                      <Icon name='help-outline' />
+                      <div className='tooltip'>
+                        <div className='tooltip-arrow' />
+                        <div className='tooltip-bubble'>
+                          <style.balanceTooltip>
+                            {getString('rewardsBalanceInfoText')}
+                          </style.balanceTooltip>
+                        </div>
+                      </div>
+                    </style.balanceInfo>
+                  }
+                </style.balanceAmount>
+                <style.balanceExchange>
+                  <style.balanceExchangeAmount>
+                    ≈&nbsp;
+                    <ExchangeAmount
+                      amount={props.rewardsBalance.value()}
+                      rate={props.exchangeRate}
+                      currency={props.exchangeCurrency} />
+                  </style.balanceExchangeAmount>
+                </style.balanceExchange>
+              </>
         }
         <style.pendingRewards>
-          <PaymentStatusView
-            earningsLastMonth={props.earningsLastMonth}
-            nextPaymentDate={props.nextPaymentDate}
-            providerPayoutStatus={props.providerPayoutStatus}
-          />
+        {
+          props.userType === 'connected' &&
+            <PaymentStatusView
+              minEarnings={props.minEarningsLastMonth}
+              maxEarnings={props.maxEarningsLastMonth}
+              nextPaymentDate={props.nextPaymentDate}
+              providerPayoutStatus={props.providerPayoutStatus}
+            />
+        }
         </style.pendingRewards>
       </style.balance>
     )
@@ -227,20 +226,25 @@ export function RewardsCard (props: Props) {
     return (
       <style.root>
         <RewardsCardHeader />
-        <style.rewardsOptIn>
-          <style.rewardsOptInHeader>
-            {getString('rewardsOptInHeader')}
-          </style.rewardsOptInHeader>
+        <style.optInIcon>
+          <OptInIcon />
+        </style.optInIcon>
+        <style.optInHeaderText>
+          {getString('rewardsOptInHeader')}
+        </style.optInHeaderText>
+        <style.optInText>
           {getString('rewardsOptInText')}
-        </style.rewardsOptIn>
-        <style.primaryAction>
+        </style.optInText>
+        <style.optInAction>
           <button onClick={props.onEnableRewards}>
             {getString('rewardsStartUsingRewards')}
           </button>
-        </style.primaryAction>
-        <style.terms>
-          <TermsOfService text={getString('rewardsOptInTerms')} />
-        </style.terms>
+        </style.optInAction>
+        <style.optInLearnMore>
+          <NewTabLink href={urls.rewardsTourURL}>
+            {getString('rewardsHowDoesItWork')}
+          </NewTabLink>
+        </style.optInLearnMore>
       </style.root>
     )
   }
@@ -256,21 +260,50 @@ export function RewardsCard (props: Props) {
     )
   }
 
-  function renderAdsOptIn () {
-    if (props.adsEnabled || !props.adsSupported) {
-      return null
-    }
-
+  function renderEarnings () {
     return (
       <>
-        <style.adsOptIn>
-          {getString('rewardsOptInText')}
-        </style.adsOptIn>
-        <style.primaryAction>
-          <button onClick={props.onEnableAds}>
-            {getString('rewardsEnableBraveAds')}
-          </button>
-        </style.primaryAction>
+        <style.earningsHeader>
+          <style.earningsHeaderText>
+            {getString('rewardsEarningsTitle')}
+            <style.earningsInfo>
+              <InfoIcon />
+              <div className='tooltip'>
+                <style.earningsTooltip>
+                  {getString('rewardsEarningInfoText')}
+                  <style.manageAds>
+                    <NewTabLink href={urls.settingsURL}>
+                      {getString('rewardsManageAds')}
+                      <CaretIcon direction='right' />
+                    </NewTabLink>
+                  </style.manageAds>
+                </style.earningsTooltip>
+              </div>
+            </style.earningsInfo>
+          </style.earningsHeaderText>
+          <style.earningsHeaderBorder />
+        </style.earningsHeader>
+        <style.earningsDisplay>
+          <style.earningsMonth>
+            {monthFormatter.format(new Date())}
+          </style.earningsMonth>
+          <div>
+            {
+              props.userType === 'connected'
+                ? <EarningsRange
+                    minimum={props.minEarningsThisMonth}
+                    maximum={props.maxEarningsThisMonth}
+                    minimumFractionDigits={3}
+                  />
+                : <style.hiddenEarnings>
+                    --&nbsp;
+                    <NewTabLink href={urls.rewardsChangesURL}>
+                      {getString('rewardsLearnMore')}
+                    </NewTabLink>
+                  </style.hiddenEarnings>
+            }
+          </div>
+        </style.earningsDisplay>
       </>
     )
   }
@@ -306,22 +339,6 @@ export function RewardsCard (props: Props) {
 
   function renderLimited () {
     const onConnect = () => { window.open(urls.connectURL, '_blank', 'noreferrer') }
-
-    if (!props.adsEnabled) {
-      return (
-        <style.root>
-          <RewardsCardHeader />
-          <style.adsOptIn>
-            {getString('rewardsAboutRewards')}
-          </style.adsOptIn>
-          <style.primaryAction>
-            <button onClick={props.onEnableAds}>
-              {getString('rewardsStartUsingRewards')}
-            </button>
-          </style.primaryAction>
-        </style.root>
-      )
-    }
 
     return (
       <style.root>
@@ -392,62 +409,7 @@ export function RewardsCard (props: Props) {
     <style.root>
       <RewardsCardHeader />
       {renderBalance()}
-      <style.progressHeader>
-        <style.progressHeaderText>
-          <span className='date-range'>{renderDateRange()}</span>&nbsp;
-          {getString('rewardsProgress')}
-        </style.progressHeaderText>
-        <style.progressHeaderBorder />
-      </style.progressHeader>
-      {renderAdsOptIn()}
-      <style.progress>
-        {
-          props.adsEnabled &&
-            <style.earning>
-              <style.progressItemLabel>
-                {getString('rewardsEarning')}
-                <style.earningInfo>
-                  <InfoIcon />
-                  <div className='tooltip'>
-                    <style.earningTooltip>
-                      {
-                        formatMessage(getString('rewardsEarningInfoText'), [
-                          nextPaymentDateFormatter.format(props.nextPaymentDate)
-                        ])
-                      }
-                    </style.earningTooltip>
-                  </div>
-                </style.earningInfo>
-              </style.progressItemLabel>
-              <style.progressItemAmount>
-                {
-                  props.externalWallet
-                    ? <TokenAmount
-                        amount={props.earningsThisMonth}
-                        minimumFractionDigits={1}
-                      />
-                    : <style.hiddenEarnings>
-                        -&nbsp;-&nbsp;
-                        <NewTabLink href={urls.rewardsChangesURL}>
-                          {getString('rewardsLearnMore')}
-                        </NewTabLink>
-                      </style.hiddenEarnings>
-                }
-              </style.progressItemAmount>
-            </style.earning>
-        }
-        <style.giving>
-          <style.progressItemLabel>
-            {getString('rewardsGiving')}
-          </style.progressItemLabel>
-          <style.progressItemAmount>
-            <TokenAmount
-              amount={props.contributionsThisMonth}
-              minimumFractionDigits={1}
-            />
-          </style.progressItemAmount>
-        </style.giving>
-      </style.progress>
+      {renderEarnings()}
       {renderSettingsLink()}
     </style.root>
   )

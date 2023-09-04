@@ -47,6 +47,10 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     return BraveWallet.CoinType.ETH
   }
 
+  keyringId = (): BraveWallet.KeyringId => {
+    return BraveWallet.KeyringId.kDefault
+  }
+
   isUnlocked = (): boolean => {
     return this.unlocked
   }
@@ -157,7 +161,14 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
       payload: {
         path: path,
         domain_separator_hash: domainSeparatorHex,
-        message_hash: hashStructMessageHex
+        message_hash: hashStructMessageHex,
+        metamask_v4_compat: true,
+        data: {
+          types: { EIP712Domain: [] },
+          primaryType: 'UnknownType',
+          domain: {},
+          message: {},
+        }
       },
       origin: window.origin
     })
@@ -288,7 +299,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
         hardwareVendor: this.type(),
         deviceId: this.deviceId,
         coin: this.coin(),
-        network: undefined
+        keyringId: this.keyringId()
       })
     }
     return { success: true, payload: [...accounts] }

@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
@@ -27,14 +28,16 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/ui/webui/speedreader/speedreader_panel_ui.h"
-#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #endif
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
 namespace speedreader {
 class SpeedreaderBubbleView;
 class SpeedreaderTabHelper;
+enum class SpeedreaderBubbleLocation : int;
 }  // namespace speedreader
+#endif
 
 namespace content {
 class WebContents;
@@ -60,9 +63,6 @@ class BraveBrowserView : public BrowserView,
 
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
-  speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
-      speedreader::SpeedreaderTabHelper* tab_helper,
-      bool is_enabled) override;
   void CreateWalletBubble();
   void CreateApproveWalletBubble();
   void CloseWalletBubble();
@@ -73,8 +73,16 @@ class BraveBrowserView : public BrowserView,
   void StartTabCycling() override;
   views::View* GetAnchorViewForBraveVPNPanel();
   gfx::Rect GetShieldsBubbleRect() override;
-  void ShowSpeedreaderWebUIBubble(Browser* browser) override;
-  void HideSpeedreaderWebUIBubble() override;
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
+      speedreader::SpeedreaderTabHelper* tab_helper,
+      speedreader::SpeedreaderBubbleLocation location) override;
+  void ShowReaderModeToolbar() override;
+  void HideReaderModeToolbar() override;
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  void OpenAiChatPanel() override;
+#endif
+#endif
   bool GetTabStripVisible() const override;
 #if BUILDFLAG(IS_WIN)
   bool GetSupportsTitle() const override;
@@ -83,7 +91,10 @@ class BraveBrowserView : public BrowserView,
   void OnThemeChanged() override;
   TabSearchBubbleHost* GetTabSearchBubbleHost() override;
 
+#if defined(USE_AURA)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
+#endif
+
   bool IsSidebarVisible() const;
 
   VerticalTabStripWidgetDelegateView*
@@ -104,6 +115,7 @@ class BraveBrowserView : public BrowserView,
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, Fullscreen);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripDragAndDropBrowserTest,
                            DragTabToReorder);
+  FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, Toolbar);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
@@ -133,22 +145,29 @@ class BraveBrowserView : public BrowserView,
   void ToggleSidebar() override;
   bool HasSelectedURL() const override;
   void CleanAndCopySelectedURL() override;
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  void ShowPlaylistBubble() override;
+#endif
+
   void UpdateSideBarHorizontalAlignment();
 
   bool closing_confirm_dialog_activated_ = false;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
-  raw_ptr<views::View> sidebar_host_view_ = nullptr;
   raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
   raw_ptr<VerticalTabStripWidgetDelegateView>
       vertical_tab_strip_widget_delegate_view_ = nullptr;
+
+#if defined(USE_AURA)
+  raw_ptr<views::View> sidebar_host_view_ = nullptr;
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   BraveVPNPanelController vpn_panel_controller_{this};
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  std::unique_ptr<WebUIBubbleManagerT<SpeedreaderPanelUI>>
-      speedreader_webui_bubble_manager_;
+  std::unique_ptr<ReaderModeToolbarView> reader_mode_toolbar_view_;
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;

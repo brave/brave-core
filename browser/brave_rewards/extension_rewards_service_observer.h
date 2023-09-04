@@ -35,7 +35,7 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
   // RewardsServiceObserver:
   void OnRewardsInitialized(RewardsService* rewards_service) override;
 
-  void OnRewardsWalletUpdated() override;
+  void OnRewardsWalletCreated() override;
 
   void OnPublisherListNormalized(
       RewardsService* rewards_service,
@@ -51,10 +51,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
   void OnRecurringTipRemoved(RewardsService* rewards_service,
                              bool success) override;
 
-  void OnPendingContributionRemoved(
-      RewardsService* rewards_service,
-      const brave_rewards::mojom::Result result) override;
-
   void OnReconcileComplete(
       RewardsService* rewards_service,
       const brave_rewards::mojom::Result result,
@@ -66,6 +62,8 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
   void OnExternalWalletConnected() override;
 
   void OnExternalWalletLoggedOut() override;
+
+  void OnExternalWalletDisconnected() override;
 
   void OnUnblindedTokensReady(
       brave_rewards::RewardsService* rewards_service) override;
@@ -79,12 +77,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
       RewardsService* rewards_service,
       const brave_rewards::mojom::Result result,
       brave_rewards::mojom::PromotionPtr promotion) override;
-
-  void OnPendingContributionSaved(
-      RewardsService* rewards_service,
-      const brave_rewards::mojom::Result result) override;
-
-  void OnAdsEnabled(RewardsService* rewards_service, bool ads_enabled) override;
 
   void OnCompleteReset(const bool success) override;
 

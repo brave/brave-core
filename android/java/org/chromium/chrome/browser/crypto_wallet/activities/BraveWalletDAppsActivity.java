@@ -11,13 +11,12 @@ import android.content.Intent;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.MainThread;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
-import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.base.ThreadUtils;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -34,7 +33,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
@@ -112,7 +110,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
             });
 
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "triggerLayoutInflation " + e);
+            Log.e(TAG, "triggerLayoutInflation", e);
         }
 
         onInitialLayoutInflationComplete();
@@ -174,25 +172,26 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         }
     }
 
+    @MainThread
     private void processPendingDappsRequest() {
+        ThreadUtils.assertOnUiThread();
         mFragment = null;
         if (mActivityType == ActivityType.SIGN_MESSAGE) {
             mFragment = new SignMessageFragment();
         } else if (mActivityType == ActivityType.ADD_TOKEN) {
             mFragment = new AddTokenFragment();
         } else if (mActivityType == ActivityType.CONFIRM_TRANSACTION) {
-            mWalletModel.getKeyringModel().getDefaultAccountPerCoin(defaultAccountPerCoin -> {
-                AccountInfo[] accountInfos = defaultAccountPerCoin.toArray(new AccountInfo[0]);
+            mKeyringService.getAllAccounts(allAccounts -> {
                 if (mPendingTxHelper != null) {
                     mPendingTxHelper.destroy();
                 }
-                mPendingTxHelper = new PendingTxHelper(getTxService(), accountInfos, false, true);
+                mPendingTxHelper = new PendingTxHelper(
+                        getTxService(), allAccounts.accounts, false, true, null);
                 mPendingTxHelper.mHasNoPendingTxAfterProcessing.observe(this, hasNoPendingTx -> {
                     if (hasNoPendingTx) {
                         finish();
                     }
                 });
-                final AccountInfo[] accounts = accountInfos;
                 mPendingTxHelper.mSelectedPendingRequest.observe(this, transactionInfo -> {
                     if (transactionInfo == null
                             || mPendingTxHelper.getPendingTransactions().size() == 0) {
@@ -204,17 +203,10 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                         //  onNextTransaction implementation is done
                         approveTxBottomSheetDialogFragment.dismiss();
                     }
-                    String accountName = "";
-                    for (AccountInfo accountInfo : accounts) {
-                        if (accountInfo.address.equals(transactionInfo.fromAddress)) {
-                            accountName = accountInfo.name;
-                            break;
-                        }
-                    }
                     approveTxBottomSheetDialogFragment =
                             ApproveTxBottomSheetDialogFragment.newInstance(
                                     mPendingTxHelper.getPendingTransactions(), transactionInfo,
-                                    accountName, this);
+                                    this);
                     approveTxBottomSheetDialogFragment.show(getSupportFragmentManager(),
                             ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
                     mPendingTxHelper.mTransactionInfoLd.observe(this, transactionInfos -> {

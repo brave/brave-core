@@ -10,10 +10,7 @@ import { ConfirmTransactionPanel } from './confirm-transaction-panel'
 
 export const _ConfirmTransactionPanel = () => {
   return <WalletPanelStory>
-    <ConfirmTransactionPanel
-      onConfirm={() => ''}
-      onReject={() => ''}
-    />
+    <ConfirmTransactionPanel />
   </WalletPanelStory>
 }
 

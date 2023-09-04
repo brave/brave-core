@@ -33,6 +33,12 @@ constexpr char kValidSegmentClassificationPipeline[] =
 constexpr char kEmptySegmentClassificationPipeline[] =
     "ml/pipeline/text_processing/empty_segment_classification.json";
 
+constexpr char kWrongTransformationOrderPipeline[] =
+    "ml/pipeline/text_processing/wrong_transformations_order.json";
+
+constexpr char kEmptyTransformationsPipeline[] =
+    "ml/pipeline/text_processing/empty_transformations_pipeline.json";
+
 constexpr char kValidSpamClassificationPipeline[] =
     "ml/pipeline/text_processing/valid_spam_classification.json";
 
@@ -76,12 +82,14 @@ TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
       std::move(transformations), std::move(linear_model));
 
   // Act
-  const PredictionMap predictions = pipeline.GetTopPredictions(kTestString);
-  ASSERT_TRUE(!predictions.empty());
-  ASSERT_LE(predictions.size(), 3U);
+  const absl::optional<PredictionMap> predictions =
+      pipeline.GetTopPredictions(kTestString);
+  ASSERT_TRUE(predictions);
+  ASSERT_TRUE(!predictions->empty());
+  ASSERT_LE(predictions->size(), 3U);
 
   // Assert
-  for (const auto& prediction : predictions) {
+  for (const auto& prediction : *predictions) {
     EXPECT_TRUE(prediction.second > -kTolerance &&
                 prediction.second < 1.0 + kTolerance);
   }
@@ -108,11 +116,12 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
 
   std::vector<PredictionMap> prediction_maps(train_texts.size());
   for (size_t i = 0; i < train_texts.size(); i++) {
-    const std::unique_ptr<Data> text_data =
+    std::unique_ptr<Data> text_data =
         std::make_unique<TextData>(train_texts[i]);
-    const PredictionMap prediction_map =
-        text_processing_pipeline.Apply(text_data);
-    prediction_maps[i] = prediction_map;
+    const absl::optional<PredictionMap> prediction_map =
+        text_processing_pipeline.Apply(std::move(text_data));
+    ASSERT_TRUE(prediction_map);
+    prediction_maps[i] = *prediction_map;
   }
 
   // Assert
@@ -133,12 +142,12 @@ TEST_F(BraveAdsTextProcessingTest, InitValidModelTest) {
 
   base::Value::Dict dict = base::test::ParseJsonDict(*json);
 
-  // Act
   pipeline::TextProcessing text_processing_pipeline;
-  const bool success = text_processing_pipeline.SetPipeline(std::move(dict));
+
+  // Act
 
   // Assert
-  EXPECT_TRUE(success);
+  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(dict)));
 }
 
 TEST_F(BraveAdsTextProcessingTest, EmptySegmentModelTest) {
@@ -149,12 +158,59 @@ TEST_F(BraveAdsTextProcessingTest, EmptySegmentModelTest) {
 
   base::Value::Dict dict = base::test::ParseJsonDict(*json);
 
-  // Act
   pipeline::TextProcessing text_processing_pipeline;
-  const bool success = text_processing_pipeline.SetPipeline(std::move(dict));
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(success);
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(dict)));
+}
+
+TEST_F(BraveAdsTextProcessingTest, EmptyTransformationsModelTest) {
+  // Arrange
+  const std::string input_text = "This is a spam email.";
+
+  const absl::optional<std::string> json =
+      ReadFileFromTestPathToString(kEmptyTransformationsPipeline);
+  ASSERT_TRUE(json);
+
+  base::Value::Dict dict = base::test::ParseJsonDict(*json);
+  pipeline::TextProcessing text_processing_pipeline;
+  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(dict)));
+
+  // Act
+  std::unique_ptr<Data> text_data = std::make_unique<TextData>(input_text);
+  const absl::optional<PredictionMap> prediction_map =
+      text_processing_pipeline.Apply(std::move(text_data));
+
+  // Assert
+  EXPECT_FALSE(prediction_map);
+}
+
+TEST_F(BraveAdsTextProcessingTest, WrongTransformationsOrderModelTest) {
+  // Arrange
+  const std::vector<std::string> input_texts = {
+      "This is a spam email.", "Another spam trying to sell you viagra",
+      "Message from mom with no real subject",
+      "Another messase from mom with no real subject", "Yadayada"};
+
+  const absl::optional<std::string> json =
+      ReadFileFromTestPathToString(kWrongTransformationOrderPipeline);
+  ASSERT_TRUE(json);
+
+  base::Value::Dict dict = base::test::ParseJsonDict(*json);
+  pipeline::TextProcessing text_processing_pipeline;
+  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(dict)));
+
+  // Act
+
+  // Assert
+  for (const auto& text : input_texts) {
+    std::unique_ptr<Data> text_data = std::make_unique<TextData>(text);
+    const absl::optional<PredictionMap> prediction_map =
+        text_processing_pipeline.Apply(std::move(text_data));
+    EXPECT_FALSE(prediction_map);
+  }
 }
 
 TEST_F(BraveAdsTextProcessingTest, EmptyModelTest) {
@@ -183,15 +239,16 @@ TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {
   ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(dict)));
 
   // Act
-  const PredictionMap predictions =
+  const absl::optional<PredictionMap> predictions =
       text_processing_pipeline.ClassifyPage(kTestPage);
 
   // Assert
-  ASSERT_TRUE(predictions.size());
-  ASSERT_LT(predictions.size(), kMaxPredictionsSize);
-  ASSERT_TRUE(predictions.count("crypto-crypto"));
-  for (const auto& prediction : predictions) {
-    EXPECT_TRUE(prediction.second <= predictions.at("crypto-crypto"));
+  ASSERT_TRUE(predictions);
+  ASSERT_TRUE(predictions->size());
+  ASSERT_LT(predictions->size(), kMaxPredictionsSize);
+  ASSERT_TRUE(predictions->count("crypto-crypto"));
+  for (const auto& prediction : *predictions) {
+    EXPECT_TRUE(prediction.second <= predictions->at("crypto-crypto"));
   }
 }
 
@@ -214,15 +271,16 @@ TEST_F(BraveAdsTextProcessingTest, TextCMCCrashTest) {
   ASSERT_TRUE(text);
 
   // Act
-  const PredictionMap predictions =
+  const absl::optional<PredictionMap> predictions =
       text_processing_pipeline.ClassifyPage(*text);
 
   // Assert
-  ASSERT_GT(predictions.size(), kMinPredictionsSize);
-  ASSERT_LT(predictions.size(), kMaxPredictionsSize);
-  ASSERT_TRUE(predictions.count("crypto-crypto"));
-  for (const auto& prediction : predictions) {
-    EXPECT_TRUE(prediction.second <= predictions.at("crypto-crypto"));
+  ASSERT_TRUE(predictions);
+  ASSERT_GT(predictions->size(), kMinPredictionsSize);
+  ASSERT_LT(predictions->size(), kMaxPredictionsSize);
+  ASSERT_TRUE(predictions->count("crypto-crypto"));
+  for (const auto& prediction : *predictions) {
+    EXPECT_TRUE(prediction.second <= predictions->at("crypto-crypto"));
   }
 }
 

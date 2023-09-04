@@ -10,9 +10,9 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -27,12 +27,12 @@ namespace promotion {
 class PostSafetynetTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  PostSafetynet safetynet_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  PostSafetynet safetynet_{mock_engine_impl_};
 };
 
 TEST_F(PostSafetynetTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -45,8 +45,8 @@ TEST_F(PostSafetynetTest, ServerOK) {
       });
 
   base::MockCallback<PostSafetynetCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_OK,
-                            "c4645786-052f-402f-8593-56af2f7a21ce"))
+  EXPECT_CALL(callback,
+              Run(mojom::Result::OK, "c4645786-052f-402f-8593-56af2f7a21ce"))
       .Times(1);
   safetynet_.Request(callback.Get());
 
@@ -54,7 +54,7 @@ TEST_F(PostSafetynetTest, ServerOK) {
 }
 
 TEST_F(PostSafetynetTest, ServerError400) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -65,14 +65,14 @@ TEST_F(PostSafetynetTest, ServerError400) {
       });
 
   base::MockCallback<PostSafetynetCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, "")).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, "")).Times(1);
   safetynet_.Request(callback.Get());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostSafetynetTest, ServerError401) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -83,7 +83,7 @@ TEST_F(PostSafetynetTest, ServerError401) {
       });
 
   base::MockCallback<PostSafetynetCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, "")).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, "")).Times(1);
   safetynet_.Request(callback.Get());
 
   task_environment_.RunUntilIdle();

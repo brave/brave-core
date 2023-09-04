@@ -34,10 +34,6 @@ void BraveVPNOSConnectionAPISim::CreateVPNConnectionImpl(
                      weak_factory_.GetWeakPtr(), info.connection_name(), true));
 }
 
-std::string BraveVPNOSConnectionAPISim::GetHostname() const {
-  return std::string();
-}
-
 void BraveVPNOSConnectionAPISim::ConnectImpl(const std::string& name) {
   disconnect_requested_ = false;
 
@@ -80,19 +76,8 @@ void BraveVPNOSConnectionAPISim::DisconnectImpl(const std::string& name) {
                                 weak_factory_.GetWeakPtr(), name, true));
 }
 
-void BraveVPNOSConnectionAPISim::ResetConnectionInfo() {
-  BraveVPNOSConnectionAPIBase::ResetConnectionInfo();
-}
-
 void BraveVPNOSConnectionAPISim::Connect() {
   BraveVPNOSConnectionAPIBase::Connect();
-}
-
-void BraveVPNOSConnectionAPISim::RemoveVPNConnectionImpl(
-    const std::string& name) {
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnRemoved,
-                                weak_factory_.GetWeakPtr(), name, true));
 }
 
 void BraveVPNOSConnectionAPISim::CheckConnectionImpl(const std::string& name) {
@@ -108,17 +93,8 @@ void BraveVPNOSConnectionAPISim::OnCreated(const std::string& name,
   BraveVPNOSConnectionAPIBase::OnCreated();
 }
 
-void BraveVPNOSConnectionAPISim::SetConnectionState(
-    mojom::ConnectionState state) {
-  BraveVPNOSConnectionAPIBase::SetConnectionState(state);
-}
-
 void BraveVPNOSConnectionAPISim::Disconnect() {
   BraveVPNOSConnectionAPIBase::Disconnect();
-}
-
-void BraveVPNOSConnectionAPISim::ToggleConnection() {
-  BraveVPNOSConnectionAPIBase::ToggleConnection();
 }
 
 void BraveVPNOSConnectionAPISim::CheckConnection() {
@@ -162,7 +138,15 @@ void BraveVPNOSConnectionAPISim::OnIsDisconnecting(const std::string& name) {
   BraveVPNOSConnectionAPIBase::OnIsDisconnecting();
 }
 
-void BraveVPNOSConnectionAPISim::OnRemoved(const std::string& name,
-                                           bool success) {}
+void BraveVPNOSConnectionAPISim::SetNetworkAvailableForTesting(bool value) {
+  network_available_ = value;
+}
+
+bool BraveVPNOSConnectionAPISim::IsPlatformNetworkAvailable() {
+  if (network_available_.has_value()) {
+    return network_available_.value();
+  }
+  return true;
+}
 
 }  // namespace brave_vpn

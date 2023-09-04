@@ -18,7 +18,7 @@ import org.chromium.components.browser_ui.widget.gesture.SwipeGestureListener;
 import org.chromium.components.browser_ui.widget.gesture.SwipeGestureListener.SwipeHandler;
 
 public class BraveScrollingBottomViewResourceFrameLayout
-        extends ScrollingBottomViewResourceFrameLayout {
+        extends ScrollingBottomViewResourceFrameLayout implements View.OnLayoutChangeListener {
     /** A swipe recognizer for handling swipe gestures. */
     private SwipeGestureListener mSwipeGestureListener;
     private Supplier<BottomControlsCoordinator> mBottomControlsCoordinatorSupplier;
@@ -47,6 +47,7 @@ public class BraveScrollingBottomViewResourceFrameLayout
     public BraveScrollingBottomViewResourceFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mCallbackController = new CallbackController();
+        addOnLayoutChangeListener(this);
     }
 
     @Override
@@ -107,7 +108,7 @@ public class BraveScrollingBottomViewResourceFrameLayout
                             && (mBottomToolbar.getVisibility()
                                     != (visible ? View.VISIBLE : View.GONE))) {
                         mBottomToolbar.setVisibility(visible ? View.VISIBLE : View.GONE);
-                        getResourceAdapter().dropCachedBitmap();
+                        triggerBitmapCapture(!visible);
                     }
                 }));
         braveBottomControlsCoordinator().getTabGroupUiVisibleSupplier().addObserver(
@@ -117,7 +118,7 @@ public class BraveScrollingBottomViewResourceFrameLayout
                             && (mBottomContainerSlot.getVisibility()
                                     != (visible ? View.VISIBLE : View.GONE))) {
                         mBottomContainerSlot.setVisibility(visible ? View.VISIBLE : View.GONE);
-                        getResourceAdapter().dropCachedBitmap();
+                        triggerBitmapCapture(!visible);
                     }
                 }));
     }
@@ -133,5 +134,33 @@ public class BraveScrollingBottomViewResourceFrameLayout
 
     void destroy() {
         mCallbackController.destroy();
+    }
+
+    @Override
+    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
+            int oldTop, int oldRight, int oldBottom) {
+        final int width = right - left;
+        final int height = bottom - top;
+        final int oldWidth = oldRight - oldLeft;
+        final int oldHeight = oldBottom - oldTop;
+
+        if (width != oldWidth || height != oldHeight) {
+            // We need to explicitly trigger bitmap capture when dimensions are changed.
+            getResourceAdapter().onLayoutChange(
+                    v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom);
+            triggerBitmapCapture(width < oldWidth || height < oldHeight);
+        }
+    }
+
+    @SuppressLint("VisibleForTests")
+    public void triggerBitmapCapture(boolean dropCachedBitmap) {
+        synchronized (mCallbackController) {
+            if (dropCachedBitmap) {
+                getResourceAdapter().dropCachedBitmap();
+            }
+            if (!getResourceAdapter().getDirtyRect().isEmpty()) {
+                getResourceAdapter().triggerBitmapCapture();
+            }
+        }
     }
 }

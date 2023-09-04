@@ -31,9 +31,12 @@ static_library("speedreader") {
     "speedreader_url_loader.h",
     "speedreader_util.cc",
     "speedreader_util.h",
+    "tts_player.cc",
+    "tts_player.h",
   ]
 
   deps = [
+    "rust/ffi",
     "//brave/components/body_sniffer",
     "//brave/components/resources",
     "//brave/components/resources:static_resources_grit",
@@ -44,6 +47,7 @@ static_library("speedreader") {
     "//components/keyed_service/core:core",
     "//components/prefs:prefs",
     "//components/sessions:sessions",
+    "//components/user_prefs:user_prefs",
     "//content/public/browser",
     "//crypto",
     "//services/network/public/cpp",

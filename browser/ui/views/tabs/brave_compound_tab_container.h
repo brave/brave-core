@@ -10,11 +10,15 @@
 
 #include "chrome/browser/ui/views/tabs/compound_tab_container.h"
 
+namespace views {
+class ScrollView;
+}  // namespace views
+
 class BraveCompoundTabContainer : public CompoundTabContainer {
  public:
   METADATA_HEADER(BraveCompoundTabContainer);
 
-  BraveCompoundTabContainer(raw_ref<TabContainerController> controller,
+  BraveCompoundTabContainer(TabContainerController& controller,
                             TabHoverCardController* hover_card_controller,
                             TabDragContextBase* drag_context,
                             TabSlotController& tab_slot_controller,
@@ -24,6 +28,8 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
   // Combine results of TabContainerImpl::LockLayout() for pinned tabs and
   // un pinned tabs.
   base::OnceClosure LockLayout();
+
+  void SetScrollEnabled(bool enabled);
 
   // CompoundTabContainer:
   void SetAvailableWidthCallback(
@@ -45,10 +51,20 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
   BrowserRootView::DropTarget* GetDropTarget(
       gfx::Point loc_in_local_coords) override;
   void OnThemeChanged() override;
+  void PaintChildren(const views::PaintInfo& info) override;
+  void ChildPreferredSizeChanged(views::View* child) override;
+  void SetActiveTab(absl::optional<size_t> prev_active_index,
+                    absl::optional<size_t> new_active_index) override;
 
+ private:
   bool ShouldShowVerticalTabs() const;
 
+  void UpdateUnpinnedContainerSize();
+  void ScrollTabToBeVisible(int model_index);
+
   base::raw_ref<TabSlotController> tab_slot_controller_;
+
+  base::raw_ptr<views::ScrollView> scroll_view_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_COMPOUND_TAB_CONTAINER_H_

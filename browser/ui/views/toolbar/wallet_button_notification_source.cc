@@ -115,7 +115,7 @@ void WalletButtonNotificationSource::OnTxStatusResolved(uint32_t count) {
 }
 
 void WalletButtonNotificationSource::OnKeyringReady(
-    const std::string& keyring_id) {
+    brave_wallet::mojom::KeyringId keyring_id) {
   if (keyring_id == brave_wallet::mojom::kDefaultKeyringId) {
     prefs_->SetBoolean(kShouldShowWalletSuggestionBadge, false);
     NotifyObservers();
@@ -123,12 +123,12 @@ void WalletButtonNotificationSource::OnKeyringReady(
 }
 
 void WalletButtonNotificationSource::KeyringCreated(
-    const std::string& keyring_id) {
+    brave_wallet::mojom::KeyringId keyring_id) {
   OnKeyringReady(keyring_id);
 }
 
 void WalletButtonNotificationSource::KeyringRestored(
-    const std::string& keyring_id) {
+    brave_wallet::mojom::KeyringId keyring_id) {
   OnKeyringReady(keyring_id);
 }
 

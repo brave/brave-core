@@ -41,7 +41,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="8dp"
                     android:drawablePadding="8dp"
-                    android:fontFamily="@font/poppins_600"
+                    android:fontFamily="sans-serif-medium"
                     android:textSize="20sp"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
@@ -55,7 +55,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textSize="14sp"
-                    android:fontFamily="@font/poppins_400"
+                    android:fontFamily="sans-serif"
                     android:textColor="@color/rewards_panel_secondary_text_color"/>
 
                 <TextView
@@ -69,7 +69,7 @@
                     android:textAllCaps="false"
                     android:textSize="16sp"
                     android:padding="8dp"
-                    android:fontFamily="@font/poppins_600"
+                    android:fontFamily="sans-serif-medium"
                     android:layout_marginBottom="12dp"
                     android:textColor="@android:color/white"
                     style="?android:attr/borderlessButtonStyle"/>
@@ -82,7 +82,7 @@
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:textSize="12sp"
-                    android:fontFamily="@font/poppins_400"
+                    android:fontFamily="sans-serif"
                     android:textColor="@color/rewards_panel_secondary_text_color"/>
 
             </LinearLayout>

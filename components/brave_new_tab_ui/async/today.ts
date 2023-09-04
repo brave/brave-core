@@ -138,7 +138,8 @@ handler.on<number>(
   async (store, payload) => {
     const state = store.getState() as ApplicationState
     getBraveNewsController().onSessionCardViewsCountChanged(
-      state.today.cardsViewed
+      state.today.cardsViewed,
+      state.today.cardsViewedDelta
     )
   }
 )

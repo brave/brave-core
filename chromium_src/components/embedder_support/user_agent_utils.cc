@@ -6,8 +6,10 @@
 #include "components/embedder_support/user_agent_utils.h"
 
 #include "base/check_op.h"
+#include "base/command_line.h"
 #include "base/strings/stringprintf.h"
 #include "base/version.h"
+#include "components/embedder_support/switches.h"
 #include "third_party/blink/public/common/features.h"
 
 namespace {
@@ -39,6 +41,10 @@ blink::UserAgentMetadata GetUserAgentMetadata() {
 blink::UserAgentMetadata GetUserAgentMetadata(const PrefService* pref_service) {
   blink::UserAgentMetadata metadata =
       GetUserAgentMetadata_ChromiumImpl(pref_service);
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(kUserAgent)) {
+    return metadata;
+  }
   if (base::FeatureList::IsEnabled(
           blink::features::kClampPlatformVersionClientHint)) {
     // Clamp platform version

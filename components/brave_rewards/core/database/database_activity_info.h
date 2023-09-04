@@ -16,7 +16,7 @@ namespace database {
 
 class DatabaseActivityInfo : public DatabaseTable {
  public:
-  explicit DatabaseActivityInfo(LedgerImpl& ledger);
+  explicit DatabaseActivityInfo(RewardsEngineImpl& engine);
   ~DatabaseActivityInfo() override;
 
   void InsertOrUpdate(mojom::PublisherInfoPtr info,
@@ -39,8 +39,12 @@ class DatabaseActivityInfo : public DatabaseTable {
   void CreateInsertOrUpdate(mojom::DBTransaction* transaction,
                             mojom::PublisherInfoPtr info);
 
-  void OnGetRecordsList(mojom::DBCommandResponsePtr response,
-                        GetActivityInfoListCallback callback);
+  void OnNormalizeList(LegacyResultCallback callback,
+                       std::vector<mojom::PublisherInfoPtr> list,
+                       mojom::DBCommandResponsePtr response);
+
+  void OnGetRecordsList(GetActivityInfoListCallback callback,
+                        mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

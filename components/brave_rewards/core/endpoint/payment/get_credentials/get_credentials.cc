@@ -11,14 +11,14 @@
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal {
 namespace endpoint {
 namespace payment {
 
-GetCredentials::GetCredentials(LedgerImpl& ledger) : ledger_(ledger) {}
+GetCredentials::GetCredentials(RewardsEngineImpl& engine) : engine_(engine) {}
 
 GetCredentials::~GetCredentials() = default;
 
@@ -55,7 +55,7 @@ mojom::Result GetCredentials::CheckStatusCode(const int status_code) {
     return mojom::Result::RETRY;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 mojom::Result GetCredentials::ParseBody(const std::string& body,
@@ -90,7 +90,7 @@ mojom::Result GetCredentials::ParseBody(const std::string& body,
   batch->batch_proof = *batch_proof;
   base::JSONWriter::Write(*signed_creds, &batch->signed_creds);
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void GetCredentials::Request(const std::string& order_id,
@@ -101,7 +101,7 @@ void GetCredentials::Request(const std::string& order_id,
 
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(order_id, item_id);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  engine_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetCredentials::OnRequest(GetCredentialsCallback callback,
@@ -110,7 +110,7 @@ void GetCredentials::OnRequest(GetCredentialsCallback callback,
   LogUrlResponse(__func__, *response);
 
   mojom::Result result = CheckStatusCode(response->status_code);
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     std::move(callback).Run(result, nullptr);
     return;
   }

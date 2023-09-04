@@ -37,7 +37,6 @@ export const Skeleton = styled.span<Partial<LoadingSkeletonStyleProps>>`
   line-height: 1;
   position: relative;
   overflow: hidden;
-  z-index: 1;
   opacity: ${p => p.useLightTheme ? 0.6 : 1};
 
   @media (prefers-color-scheme: dark) {

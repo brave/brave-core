@@ -72,7 +72,7 @@ class RewardsContributionBrowserTest : public InProcessBrowserTest {
         base::BindRepeating(
             &RewardsContributionBrowserTest::GetTestResponse,
             base::Unretained(this)));
-    rewards_service_->SetLedgerEnvForTesting();
+    rewards_service_->SetEngineEnvForTesting();
 
     // Other
     promotion_->Initialize(browser(), rewards_service_);
@@ -142,12 +142,12 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, AutoContribution) {
   rewards_service_->StartContributionsForTesting();
 
   contribution_->WaitForACReconcileCompleted();
-  ASSERT_EQ(contribution_->GetACStatus(), mojom::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetACStatus(), mojom::Result::OK);
 
   contribution_->IsBalanceCorrect();
 
   test_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "-20.00 BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "20.00 BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
@@ -166,8 +166,6 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   // Switch to original tab to trigger saving publisher activity
   browser()->tab_strip_model()->ActivateTabAt(0);
-
-  rewards_service_->StartContributionsForTesting();
 
   // Switch back to publisher tab and verify that we see correct visited count
   // in Rewards panel
@@ -198,8 +196,6 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   // Switch to original tab to trigger saving publisher activity
   browser()->tab_strip_model()->ActivateTabAt(0);
 
-  rewards_service_->StartContributionsForTesting();
-
   // Switch back to publisher tab and verify that we see correct visited count
   // in Rewards panel
   browser()->tab_strip_model()->ActivateTabAt(1);
@@ -226,12 +222,12 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   rewards_service_->StartContributionsForTesting();
 
   contribution_->WaitForACReconcileCompleted();
-  ASSERT_EQ(contribution_->GetACStatus(), mojom::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetACStatus(), mojom::Result::OK);
 
   contribution_->IsBalanceCorrect();
 
   test_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "-20.00 BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "20.00 BAT");
 
   context_helper_->LoadURL(test_util::GetRewardsInternalsUrl());
 
@@ -282,12 +278,12 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   rewards_service_->StartContributionsForTesting();
 
   contribution_->WaitForACReconcileCompleted();
-  ASSERT_EQ(contribution_->GetACStatus(), mojom::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetACStatus(), mojom::Result::OK);
 
   contribution_->IsBalanceCorrect();
 
   test_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "-20.00 BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "20.00 BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
@@ -403,7 +399,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipNonIntegralAmount) {
   rewards_service_->SendContribution("duckduckgo.com", 2.5, false,
                                      base::DoNothing());
   contribution_->WaitForTipReconcileCompleted();
-  ASSERT_EQ(contribution_->GetTipStatus(), mojom::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetTipStatus(), mojom::Result::OK);
   ASSERT_EQ(contribution_->GetReconcileTipTotal(), 2.5);
 }
 
@@ -423,7 +419,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                                      base::DoNothing());
   rewards_service_->StartContributionsForTesting();
   contribution_->WaitForTipReconcileCompleted();
-  ASSERT_EQ(contribution_->GetTipStatus(), mojom::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetTipStatus(), mojom::Result::OK);
 
   ASSERT_EQ(contribution_->GetReconcileTipTotal(), 2.5);
 }
@@ -452,18 +448,18 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   // Wait for reconciliation to complete
   contribution_->WaitForTipReconcileCompleted();
-  ASSERT_EQ(contribution_->GetTipStatus(), mojom::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetTipStatus(), mojom::Result::OK);
 
   // Wait for reconciliation to complete successfully
   contribution_->WaitForACReconcileCompleted();
-  ASSERT_EQ(contribution_->GetACStatus(), mojom::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetACStatus(), mojom::Result::OK);
 
   // Make sure that balance is updated correctly
   contribution_->IsBalanceCorrect();
 
   // Check that summary table shows the appropriate contribution
   test_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "-5.00 BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "5.00 BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
@@ -494,18 +490,18 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   // Wait for reconciliation to complete
   contribution_->WaitForMultipleTipReconcileCompleted(3);
-  ASSERT_EQ(contribution_->GetTipStatus(), mojom::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetTipStatus(), mojom::Result::OK);
 
   // Wait for reconciliation to complete successfully
   contribution_->WaitForACReconcileCompleted();
-  ASSERT_EQ(contribution_->GetACStatus(), mojom::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetACStatus(), mojom::Result::OK);
 
   // Make sure that balance is updated correctly
   contribution_->IsBalanceCorrect();
 
   // Check that summary table shows the appropriate contribution
   test_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "-4.00 BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "4.00 BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
@@ -546,12 +542,12 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   // Wait for reconciliation to complete successfully
   contribution_->WaitForMultipleACReconcileCompleted(2);
   auto statuses = contribution_->GetMultipleACStatus();
-  ASSERT_EQ(statuses[0], mojom::Result::LEDGER_OK);
-  ASSERT_EQ(statuses[1], mojom::Result::LEDGER_OK);
+  ASSERT_EQ(statuses[0], mojom::Result::OK);
+  ASSERT_EQ(statuses[1], mojom::Result::OK);
 
   // Wait for UI to update with contribution
   test_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "-50.00 BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "50.00 BAT");
 
   test_util::WaitForElementThenClick(contents(),
                                      "[data-test-id=view-statement-button]");
@@ -559,10 +555,10 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   test_util::WaitForElementToAppear(contents(), "#transactionTable");
 
   test_util::WaitForElementToContain(contents(), "#transactionTable",
-                                     "-30.000BAT");
+                                     "30.000BAT");
 
   test_util::WaitForElementToContain(contents(), "#transactionTable",
-                                     "-20.000BAT");
+                                     "20.000BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
@@ -627,8 +623,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, PanelMonthlyTipAmount) {
   context_helper_->LoadRewardsPage();
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
-  test_util::NavigateToPublisherPage(browser(), https_server_.get(),
-                                     "3zsistemi.si");
+  test_util::NavigateToPublisherAndWaitForUpdate(browser(), https_server_.get(),
+                                                 "3zsistemi.si");
 
   // Add a recurring tip of 10 BAT.
   contribution_->TipViaCode("3zsistemi.si", 10.0,

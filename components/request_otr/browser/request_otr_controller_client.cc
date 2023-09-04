@@ -6,7 +6,7 @@
 #include "brave/components/request_otr/browser/request_otr_controller_client.h"
 
 #include "brave/components/request_otr/browser/request_otr_service.h"
-#include "brave/components/request_otr/browser/request_otr_tab_storage.h"
+#include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
 #include "brave/components/request_otr/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/settings_page_helper.h"
@@ -56,13 +56,13 @@ void RequestOTRControllerClient::GoBack() {
 }
 
 void RequestOTRControllerClient::Proceed() {
-  RequestOTRTabStorage* tab_storage =
-      RequestOTRTabStorage::GetOrCreate(web_contents_);
-  tab_storage->SetIsProceeding(true);
+  RequestOTRStorageTabHelper* tab_storage =
+      RequestOTRStorageTabHelper::GetOrCreate(web_contents_);
+  tab_storage->set_is_proceeding(true);
   if (dont_warn_again_) {
     if (PrefService* prefs = GetPrefService()) {
       prefs->SetInteger(
-          prefs::kRequestOTRActionOption,
+          kRequestOTRActionOption,
           static_cast<int>(RequestOTRService::RequestOTRActionOption::kNever));
     }
   }
@@ -71,14 +71,14 @@ void RequestOTRControllerClient::Proceed() {
 }
 
 void RequestOTRControllerClient::ProceedOTR() {
-  RequestOTRTabStorage* tab_storage =
-      RequestOTRTabStorage::GetOrCreate(web_contents_);
-  tab_storage->SetIsProceeding(true);
-  tab_storage->SetRequestedOTR(true);
+  RequestOTRStorageTabHelper* tab_storage =
+      RequestOTRStorageTabHelper::GetOrCreate(web_contents_);
+  tab_storage->set_is_proceeding(true);
+  tab_storage->set_requested_otr(true);
   if (dont_warn_again_) {
     if (PrefService* prefs = GetPrefService()) {
       prefs->SetInteger(
-          prefs::kRequestOTRActionOption,
+          kRequestOTRActionOption,
           static_cast<int>(RequestOTRService::RequestOTRActionOption::kNever));
     }
   }

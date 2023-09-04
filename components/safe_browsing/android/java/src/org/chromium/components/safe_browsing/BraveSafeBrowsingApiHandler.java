@@ -10,11 +10,8 @@ import android.content.pm.ApplicationInfo;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.safetynet.SafeBrowsingThreat;
 import com.google.android.gms.safetynet.SafetyNet;
-import com.google.android.gms.safetynet.SafetyNetApi;
 import com.google.android.gms.safetynet.SafetyNetStatusCodes;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,12 +20,18 @@ import org.json.JSONObject;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 
-public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
+/**
+ * Brave implementation of SafetyNetApiHandler for Safe Browsing
+ */
+public class BraveSafeBrowsingApiHandler implements SafetyNetApiHandler {
     public static final long SAFE_BROWSING_INIT_INTERVAL_MS = 30000;
     private static final long DEFAULT_CHECK_DELTA = 10;
     private static final String SAFE_METADATA = "{}";
     private static final String TAG = "BraveSafeBrowsingApiHandler";
 
+    /**
+     *This is a delegate that is implemented in the object where the handler is created
+     */
     public interface BraveSafeBrowsingApiHandlerDelegate {
         default void turnSafeBrowsingOff() {}
         default boolean isSafeBrowsingEnabled() {
@@ -42,16 +45,16 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
     private boolean mInitialized;
     private int mTriesCount;
     private BraveSafeBrowsingApiHandlerDelegate mBraveSafeBrowsingApiHandlerDelegate;
-    private static final Object lock = new Object();
-    private static BraveSafeBrowsingApiHandler instance;
+    private static final Object sLock = new Object();
+    private static BraveSafeBrowsingApiHandler sInstance;
 
     public static BraveSafeBrowsingApiHandler getInstance() {
-        synchronized (lock) {
-            if (instance == null) {
-                instance = new BraveSafeBrowsingApiHandler();
+        synchronized (sLock) {
+            if (sInstance == null) {
+                sInstance = new BraveSafeBrowsingApiHandler();
             }
         }
-        return instance;
+        return sInstance;
     }
 
     public void setDelegate(String apiKey,
@@ -145,12 +148,17 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                                         == SafetyNetStatusCodes.SAFE_BROWSING_API_NOT_INITIALIZED) {
                             initSafeBrowsing();
                             startUriLookup(callbackId, uri, threatsOfInterest);
+                        } else {
+                            mObserver.onUrlCheckDone(callbackId, SafeBrowsingResult.TIMEOUT, "{}",
+                                    DEFAULT_CHECK_DELTA);
                         }
                     } else {
                         // A different, unknown type of error occurred.
                         if (isDebuggable()) {
                             Log.d(TAG, "Error: " + e.getMessage());
                         }
+                        mObserver.onUrlCheckDone(
+                                callbackId, SafeBrowsingResult.TIMEOUT, "{}", DEFAULT_CHECK_DELTA);
                     }
                     mTriesCount = 0;
                 });

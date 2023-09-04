@@ -1,4 +1,4 @@
-<title>Dancing Links In Rust</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">Dancing Links In Rust</h1><p class="subhead metadata">Ferrous Systems is a Berlin based Rust Consultancy</p><div class="metadata"><div class="readtime" id="da24e4ef-db57-4b9f-9fa5-548924fc9c32"></div><div class="show_original" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></div></div><hr class=""></hr>
+<title>Dancing Links In Rust</title><meta charset="utf-8"/><body id="article"><main><article><div id="3bafd2b4-a87d-4471-8134-7a9cca092000"><h1 class="title metadata">Dancing Links In Rust</h1><p class="subhead metadata">Ferrous Systems is a Berlin based Rust Consultancy</p><div class="metadata"><div class="readtime" id="da24e4ef-db57-4b9f-9fa5-548924fc9c32"></div><div class="show_original" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></div></div><hr></hr></div><div id="7c08a417-bf02-4241-a55e-ad5b8dc88f69">
 <p>Let’s get to the meat of the post — how to express all this in Rust.
 This section will have a bit of a literal programming vibe to it.</p>
 <p>So far, it sounds like we need some kind of <code>Cell</code> object:</p>
@@ -597,4 +597,4 @@ Remember that on the modern hardware, a <code>Vec</code> beats <code>LinkedList<
 While linked lists have a better theoretical complexity for the insertion and removal from the middle, most benchmarks are dominated by the traversal time to get to this middle.
 Linked list only wins if you have some additional structure in place to quickly get to the interesting element.
 And this is exactly what happens in this case — because we have a two-dimensional web of interleaving lists, we can do a bunch of removals from the middle in one dimension, while doing traversal in the other dimension.</p>
-</body>
+</div></article></main></body>

@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { useSelector } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Options
 import { BraveWallet, WalletState } from '../../../constants/types'
@@ -12,18 +13,28 @@ import { BraveWallet, WalletState } from '../../../constants/types'
 // Utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
-import { computeFiatAmount } from '../../../utils/pricing-utils'
 import { unbiasedRandom } from '../../../utils/random-utils'
-import { isDataURL } from '../../../utils/string-utils'
 import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
 
 // Hooks
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
+import {
+  useOnClickOutside
+} from '../../../common/hooks/useOnClickOutside'
 
 // Components
-import { withPlaceholderIcon, CreateNetworkIcon, LoadingSkeleton } from '../../shared'
-import { WithHideBalancePlaceholder } from '../'
+import {
+  withPlaceholderIcon //
+} from '../../shared/create-placeholder-icon/index'
+import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
+import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
+import {
+  WithHideBalancePlaceholder //
+} from '../with-hide-balance-placeholder/index'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
+import {
+  AssetItemMenu
+} from '../wallet-menus/asset-item-menu'
 
 // Styled Components
 import {
@@ -37,20 +48,29 @@ import {
   NameColumn,
   Spacer,
   NetworkDescriptionText,
-  ButtonArea
+  ButtonArea,
+  AssetMenuWrapper,
+  AssetMenuButton,
+  AssetMenuButtonIcon
 } from './style'
-import { IconsWrapper, NetworkIconWrapper, SellButton, SellButtonRow } from '../../shared/style'
+import {
+  IconsWrapper,
+  NetworkIconWrapper
+} from '../../shared/style'
 
 interface Props {
   action?: () => void
   assetBalance: string
   token: BraveWallet.BlockchainToken
+  account?: BraveWallet.AccountInfo
   hideBalances?: boolean
   isPanel?: boolean
-  isAccountDetails?: boolean
-  isSellSupported?: boolean
-  showSellModal?: () => void
+  spotPrice: string
 }
+
+const ICON_CONFIG = { size: 'medium', marginLeft: 0, marginRight: 8 } as const
+const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
+const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
 export const PortfolioAssetItem = ({
   assetBalance,
@@ -58,27 +78,32 @@ export const PortfolioAssetItem = ({
   token,
   hideBalances,
   isPanel,
-  isAccountDetails,
-  isSellSupported,
-  showSellModal
+  spotPrice,
+  account
 }: Props) => {
   // redux
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
-  const spotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
 
   // queries
-  const { data: tokensNetwork } = useGetNetworkQuery(token, { skip: !token })
+  const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
 
   // state
   const [assetNameSkeletonWidth, setAssetNameSkeletonWidth] = React.useState(0)
   const [assetNetworkSkeletonWidth, setAssetNetworkSkeletonWidth] = React.useState(0)
+  const [showAssetMenu, setShowAssetMenu] = React.useState<boolean>(false)
+
+  // refs
+  const assetMenuRef = React.useRef<HTMLDivElement>(null)
+
+  // hooks
+  useOnClickOutside(
+    assetMenuRef,
+    () => setShowAssetMenu(false),
+    showAssetMenu
+  )
 
   // memos & computed
-  const isNonFungibleToken = React.useMemo(() => token.isNft || token.isErc721, [token.isNft, token.isErc721])
-
-  const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(isNonFungibleToken && !isDataURL(token.logo) ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
-  }, [isNonFungibleToken, token.logo])
+  const isNonFungibleToken = token.isNft
 
   const formattedAssetBalance = isNonFungibleToken
     ? new Amount(assetBalance)
@@ -89,22 +114,20 @@ export const PortfolioAssetItem = ({
       .formatAsAsset(6, token.symbol)
 
   const fiatBalance = React.useMemo(() => {
-    return computeFiatAmount(spotPrices, {
-      decimals: token.decimals,
-      symbol: token.symbol,
-      value: assetBalance,
-      contractAddress: token.contractAddress,
-      chainId: token.chainId
-    })
-  }, [spotPrices, assetBalance, token.symbol, token.decimals, token.chainId])
+    if (!spotPrice) {
+      return Amount.empty()
+    }
+
+    return new Amount(assetBalance)
+      .divideByDecimals(token.decimals)
+      .times(spotPrice)
+  }, [spotPrice, assetBalance, token.chainId])
 
   const formattedFiatBalance = React.useMemo(() => {
     return fiatBalance.formatAsFiat(defaultCurrencies.fiat)
   }, [fiatBalance, defaultCurrencies.fiat])
 
-  const isLoading = React.useMemo(() => {
-    return formattedAssetBalance === '' && !isNonFungibleToken
-  }, [formattedAssetBalance, token])
+  const isLoading = formattedAssetBalance === '' && !isNonFungibleToken
 
   const NetworkDescription = React.useMemo(() => {
 
@@ -117,10 +140,6 @@ export const PortfolioAssetItem = ({
     }
     return token.symbol
   }, [tokensNetwork, token])
-
-  const isAssetsBalanceZero = React.useMemo(() => {
-    return new Amount(assetBalance).isZero()
-  }, [assetBalance])
 
   // effects
   React.useEffect(() => {
@@ -140,7 +159,11 @@ export const PortfolioAssetItem = ({
     <>
       {token.visible &&
         <StyledWrapper isPanel={isPanel}>
-          <ButtonArea disabled={isLoading} rightMargin={isAccountDetails ? 10 : 0} onClick={action}>
+          <ButtonArea
+            disabled={isLoading}
+            rightMargin={10}
+            onClick={action}
+          >
             <NameAndIcon>
               <IconsWrapper>
                 {!token.logo
@@ -150,7 +173,17 @@ export const PortfolioAssetItem = ({
                     height={40}
                   />
                   : <>
-                    <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
+                    {
+                      isNonFungibleToken
+                        ? <NftIconWithPlaceholder
+                            asset={token}
+                            network={tokensNetwork}
+                          />
+                        : <AssetIconWithPlaceholder
+                            asset={token}
+                            network={tokensNetwork}
+                          />
+                    }
                     {
                       !isPanel &&
                       tokensNetwork &&
@@ -208,13 +241,22 @@ export const PortfolioAssetItem = ({
               </WithHideBalancePlaceholder>
             </BalanceColumn>
           </ButtonArea>
-          {isAccountDetails &&
-            <SellButtonRow>
-              {isSellSupported && !isAssetsBalanceZero &&
-                <SellButton onClick={showSellModal}>{getLocale('braveWalletSell')}</SellButton>
-              }
-            </SellButtonRow>
-          }
+          <AssetMenuWrapper
+            ref={assetMenuRef}
+          >
+            <AssetMenuButton
+              onClick={() => setShowAssetMenu(prev => !prev)}
+            >
+              <AssetMenuButtonIcon />
+            </AssetMenuButton>
+            {showAssetMenu &&
+              <AssetItemMenu
+                assetBalance={assetBalance}
+                asset={token}
+                account={account}
+              />
+            }
+          </AssetMenuWrapper>
         </StyledWrapper>
       }
     </>

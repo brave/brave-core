@@ -7,14 +7,14 @@
 
 #include <utility>
 
-#include "base/guid.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/uuid.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal::wallet_provider {
 
-Transfer::Transfer(LedgerImpl& ledger) : ledger_(ledger) {}
+Transfer::Transfer(RewardsEngineImpl& engine) : engine_(engine) {}
 
 Transfer::~Transfer() = default;
 
@@ -36,7 +36,7 @@ void Transfer::MaybeCreateTransaction(
     const std::string& destination,
     const std::string& amount,
     MaybeCreateTransactionCallback callback) const {
-  ledger_->database()->GetExternalTransaction(
+  engine_->database()->GetExternalTransaction(
       contribution_id, destination,
       base::BindOnce(&Transfer::OnGetExternalTransaction,
                      base::Unretained(this), std::move(callback),
@@ -85,7 +85,7 @@ void Transfer::SaveExternalTransaction(
       &Transfer::OnSaveExternalTransaction, base::Unretained(this),
       std::move(callback), transaction->Clone());
 
-  ledger_->database()->SaveExternalTransaction(
+  engine_->database()->SaveExternalTransaction(
       std::move(transaction), std::move(on_save_external_transaction));
 }
 
@@ -93,7 +93,7 @@ void Transfer::OnSaveExternalTransaction(
     MaybeCreateTransactionCallback callback,
     mojom::ExternalTransactionPtr transaction,
     mojom::Result result) const {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Failed to save external transaction!");
     return std::move(callback).Run(nullptr);
   }
@@ -107,7 +107,8 @@ void Transfer::CreateTransaction(
   DCHECK(transaction);
   DCHECK(transaction->transaction_id.empty());
 
-  transaction->transaction_id = base::GenerateGUID();
+  transaction->transaction_id =
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(std::move(callback), std::move(transaction)));

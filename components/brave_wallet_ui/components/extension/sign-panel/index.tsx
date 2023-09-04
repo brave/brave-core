@@ -3,22 +3,29 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query/react'
+
+// Hooks
+import { useAccountOrb } from '../../../common/hooks/use-orb'
+
+// Queries
+import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 
 // Types
-import {
-  SerializableSignMessageRequest,
-  WalletAccountType
-} from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { unicodeEscape, hasUnicode } from '../../../utils/string-utils'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
+import { PanelActions } from '../../../panel/actions'
+import { isHardwareAccount } from '../../../utils/account-utils'
 
 // Components
-import { NavButton, PanelTab } from '../'
-import { CreateSiteOrigin } from '../../shared'
-import { create } from 'ethereum-blockies'
+import { NavButton } from '../buttons/nav-button/index'
+import { PanelTab } from '../panel-tab/index'
+import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
 
 // Styled Components
 import {
@@ -51,10 +58,8 @@ import {
   WarningIcon
 } from '../shared-panel-styles'
 
-export interface Props {
-  accounts: WalletAccountType[]
-  signMessageData: SerializableSignMessageRequest[]
-  onSign: () => void
+interface Props {
+  signMessageData: BraveWallet.SignMessageRequest[]
   onCancel: () => void
   showWarning: boolean
 }
@@ -76,28 +81,33 @@ const onClickLearnMore = () => {
 
 export const SignPanel = (props: Props) => {
   const {
-    accounts,
     signMessageData,
-    onSign,
     onCancel,
     showWarning
   } = props
 
+  // redux
+  const dispatch = useDispatch()
+
   // queries
-  const { data: network } = useGetNetworkQuery({
-    chainId: signMessageData[0].chainId,
-    coin: signMessageData[0].coin
-  })
+  const { data: network } = useGetNetworkQuery(
+    signMessageData[0]
+      ? {
+          chainId: signMessageData[0].chainId,
+          coin: signMessageData[0].coin
+        }
+      : skipToken
+  )
 
   // state
   const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignData)
-  const [selectedQueueData, setSelectedQueueData] = React.useState<SerializableSignMessageRequest>(signMessageData[0])
+  const [selectedQueueData, setSelectedQueueData] = React.useState<BraveWallet.SignMessageRequest>(signMessageData[0])
   const [renderUnicode, setRenderUnicode] = React.useState<boolean>(true)
 
+  const { account } = useAccountQuery(selectedQueueData?.accountId)
+
   // memos
-  const orb = React.useMemo(() => {
-    return create({ seed: selectedQueueData.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [selectedQueueData.address])
+  const orb = useAccountOrb(account)
 
   const signMessageQueueInfo = React.useMemo(() => {
     return {
@@ -113,10 +123,6 @@ export const SignPanel = (props: Props) => {
   )
 
   // methods
-  const findAccountName = (address: string) => {
-    return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name
-  }
-
   const onContinueSigning = () => {
     setSignStep(SignDataSteps.SignData)
   }
@@ -127,6 +133,28 @@ export const SignPanel = (props: Props) => {
       return
     }
     setSelectedQueueData(signMessageData[signMessageQueueInfo.queueNumber])
+  }
+
+  const onSign = () => {
+    if (!account) {
+      return
+    }
+
+    if (isHardwareAccount(account.accountId)) {
+      dispatch(
+        PanelActions.signMessageHardware({
+          account,
+          request: signMessageData[0]
+        })
+      )
+    } else {
+      dispatch(
+        PanelActions.signMessageProcessed({
+          approved: true,
+          id: signMessageData[0].id
+        })
+      )
+    }
   }
 
   // effects
@@ -166,7 +194,7 @@ export const SignPanel = (props: Props) => {
           eTldPlusOne={selectedQueueData.originInfo.eTldPlusOne}
         />
       </URLText>
-      <AccountNameText>{findAccountName(selectedQueueData.address) ?? ''}</AccountNameText>
+      <AccountNameText>{account?.name ?? ''}</AccountNameText>
       <PanelTitle>{getLocale('braveWalletSignTransactionTitle')}</PanelTitle>
       {signStep === SignDataSteps.SignRisk &&
         <WarningBox warningType='danger'>

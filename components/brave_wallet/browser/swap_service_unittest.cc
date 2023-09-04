@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <map>
 #include <memory>
 #include <utility>
 
@@ -51,7 +52,8 @@ brave_wallet::mojom::JupiterQuoteParamsPtr GetCannedJupiterQuoteParams() {
   params->output_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   params->input_mint = "So11111111111111111111111111111111111111112";
   params->amount = "10000";
-  params->slippage_percentage = 0.5;
+  params->slippage_bps = 50;
+  params->user_public_key = "foo";
   return params;
 }
 
@@ -93,6 +95,7 @@ brave_wallet::mojom::JupiterSwapParamsPtr GetCannedJupiterSwapParams(
   params->route = route.Clone();
   params->user_public_key = "foo";
   params->output_mint = output_mint;
+  params->input_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 
   return params;
 }
@@ -220,6 +223,7 @@ class SwapServiceUnitTest : public testing::Test {
 };
 
 TEST_F(SwapServiceUnitTest, GetPriceQuote) {
+  // Case 1: non-null zeroExFee
   SetInterceptor(R"(
     {
       "price":"1916.27547998814058355",
@@ -242,7 +246,15 @@ TEST_F(SwapServiceUnitTest, GetPriceQuote) {
           "name": "Uniswap_V2",
           "proportion": "1"
         }
-      ]
+      ],
+      "fees": {
+        "zeroExFee" : {
+          "feeType" : "volume",
+          "feeToken" : "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "feeAmount" : "148470027512868522",
+          "billingType" : "on-chain"
+        }
+      }
     })");
 
   auto expected_swap_response = mojom::SwapResponse::New();
@@ -270,12 +282,59 @@ TEST_F(SwapServiceUnitTest, GetPriceQuote) {
   source->proportion = "1";
   expected_swap_response->sources.push_back(source.Clone());
 
+  auto fees = brave_wallet::mojom::ZeroExFees::New();
+  auto zero_ex_fee = brave_wallet::mojom::ZeroExFee::New();
+  zero_ex_fee->fee_type = "volume";
+  zero_ex_fee->fee_token = "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063";
+  zero_ex_fee->fee_amount = "148470027512868522";
+  zero_ex_fee->billing_type = "on-chain";
+  fees->zero_ex_fee = std::move(zero_ex_fee);
+  expected_swap_response->fees = std::move(fees);
+
   base::MockCallback<mojom::SwapService::GetPriceQuoteCallback> callback;
   EXPECT_CALL(callback, Run(EqualsMojo(expected_swap_response),
                             EqualsMojo(mojom::SwapErrorResponsePtr()), ""));
 
   swap_service_->GetPriceQuote(GetCannedSwapParams(), callback.Get());
   base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Case 2: null zeroExFee
+  SetInterceptor(R"(
+    {
+      "price":"1916.27547998814058355",
+      "value":"0",
+      "gas":"719000",
+      "estimatedGas":"719000",
+      "gasPrice":"26000000000",
+      "protocolFee":"0",
+      "minimumProtocolFee":"0",
+      "buyTokenAddress":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
+      "buyAmount":"1000000000000000000000",
+      "sellAmount":"1916275479988140583549706",
+      "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+      "sellTokenToEthRate":"1900.44962824532464391",
+      "buyTokenToEthRate":"1",
+      "estimatedPriceImpact": "0.7232",
+      "sources": [
+        {
+          "name": "Uniswap_V2",
+          "proportion": "1"
+        }
+      ],
+      "fees": {
+        "zeroExFee": null
+      }
+    })");
+
+  expected_swap_response->fees->zero_ex_fee = nullptr;
+  EXPECT_CALL(callback, Run(EqualsMojo(expected_swap_response),
+                            EqualsMojo(mojom::SwapErrorResponsePtr()), ""));
+
+  swap_service_->GetPriceQuote(GetCannedSwapParams(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 TEST_F(SwapServiceUnitTest, GetPriceQuoteError) {
@@ -328,6 +387,7 @@ TEST_F(SwapServiceUnitTest, GetPriceQuoteUnexpectedReturn) {
 }
 
 TEST_F(SwapServiceUnitTest, GetTransactionPayload) {
+  // Case 1: non-null zeroExFee
   SetInterceptor(R"(
     {
       "price":"1916.27547998814058355",
@@ -353,7 +413,15 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayload) {
           "name": "Uniswap_V2",
           "proportion": "1"
         }
-      ]
+      ],
+      "fees": {
+        "zeroExFee": {
+          "feeType": "volume",
+          "feeToken": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "feeAmount": "148470027512868522",
+          "billingType": "on-chain"
+        }
+      }
     })");
 
   auto expected_swap_response = mojom::SwapResponse::New();
@@ -383,6 +451,15 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayload) {
   source->proportion = "1";
   expected_swap_response->sources.push_back(source.Clone());
 
+  auto fees = brave_wallet::mojom::ZeroExFees::New();
+  auto zero_ex_fee = brave_wallet::mojom::ZeroExFee::New();
+  zero_ex_fee->fee_type = "volume";
+  zero_ex_fee->fee_token = "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063";
+  zero_ex_fee->fee_amount = "148470027512868522";
+  zero_ex_fee->billing_type = "on-chain";
+  fees->zero_ex_fee = std::move(zero_ex_fee);
+  expected_swap_response->fees = std::move(fees);
+
   base::MockCallback<mojom::SwapService::GetTransactionPayloadCallback>
       callback;
   EXPECT_CALL(callback, Run(EqualsMojo(expected_swap_response),
@@ -390,6 +467,47 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayload) {
 
   swap_service_->GetTransactionPayload(GetCannedSwapParams(), callback.Get());
   base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Case 2: null zeroExFee
+  SetInterceptor(R"(
+    {
+      "price":"1916.27547998814058355",
+      "guaranteedPrice":"1935.438234788021989386",
+      "to":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+      "data":"0x0",
+      "value":"0",
+      "gas":"719000",
+      "estimatedGas":"719000",
+      "gasPrice":"26000000000",
+      "protocolFee":"0",
+      "minimumProtocolFee":"0",
+      "buyTokenAddress":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
+      "buyAmount":"1000000000000000000000",
+      "sellAmount":"1916275479988140583549706",
+      "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+      "sellTokenToEthRate":"1900.44962824532464391",
+      "buyTokenToEthRate":"1",
+      "estimatedPriceImpact": "0.7232",
+      "sources": [
+        {
+          "name": "Uniswap_V2",
+          "proportion": "1"
+        }
+      ],
+      "fees": {
+        "zeroExFee": null
+      }
+    })");
+
+  expected_swap_response->fees->zero_ex_fee = nullptr;
+  EXPECT_CALL(callback, Run(EqualsMojo(expected_swap_response),
+                            EqualsMojo(mojom::SwapErrorResponsePtr()), ""));
+
+  swap_service_->GetTransactionPayload(GetCannedSwapParams(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 TEST_F(SwapServiceUnitTest, GetTransactionPayloadError) {
@@ -423,271 +541,127 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayloadUnexpectedReturn) {
 }
 
 TEST_F(SwapServiceUnitTest, GetPriceQuoteURL) {
+  const std::map<std::string, std::string> non_rfqt_chain_ids = {
+      {mojom::kGoerliChainId, "goerli.api.0x.org"},
+      {mojom::kBinanceSmartChainMainnetChainId, "bsc.api.0x.org"},
+      {mojom::kAvalancheMainnetChainId, "avalanche.api.0x.org"},
+      {mojom::kFantomMainnetChainId, "fantom.api.0x.org"},
+      {mojom::kCeloMainnetChainId, "celo.api.0x.org"},
+      {mojom::kOptimismMainnetChainId, "optimism.api.0x.org"},
+      {mojom::kArbitrumMainnetChainId, "arbitrum.api.0x.org"},
+      {mojom::kBaseMainnetChainId, "base.api.0x.org"}};
+
+  const std::map<std::string, std::string> rfqt_chain_ids = {
+      {mojom::kMainnetChainId, "api.0x.org"},
+      {mojom::kPolygonMainnetChainId, "polygon.api.0x.org"}};
+
   auto params = GetCannedSwapParams();
-  auto url =
-      swap_service_->GetPriceQuoteURL(params.Clone(), mojom::kGoerliChainId);
-  EXPECT_EQ(url,
-            "https://goerli.api.0x.org/swap/v1/price?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "skipValidation=true");
 
-  // Ethereum has RFQ-T liquidity available, so /quote endpoint is used for
-  // fetching indicative prices.
-  url = swap_service_->GetPriceQuoteURL(params.Clone(), mojom::kMainnetChainId);
-  EXPECT_EQ(url,
-            "https://api.0x.org/swap/v1/quote?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "skipValidation=true&"
-            "intentOnFilling=false");
+  for (const auto& [chain_id, domain] : non_rfqt_chain_ids) {
+    SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
+    auto url = swap_service_->GetPriceQuoteURL(params.Clone(), chain_id);
 
-  // Polygon has RFQ-T liquidity available, so /quote endpoint is used for
-  // fetching indicative prices.
-  url = swap_service_->GetPriceQuoteURL(params.Clone(),
-                                        mojom::kPolygonMainnetChainId);
-  EXPECT_EQ(url,
-            "https://polygon.api.0x.org/swap/v1/quote?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "skipValidation=true&"
-            "intentOnFilling=false");
+    EXPECT_EQ(url,
+              base::StringPrintf(
+                  "https://%s/swap/v1/price?"
+                  "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+                  "buyAmount=1000000000000000000000&"
+                  "buyToken=ETH&"
+                  "sellToken=DAI&"
+                  "buyTokenPercentageFee=0.00875&"
+                  "slippagePercentage=0.030000&"
+                  "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+                  "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+                  "skipValidation=true",
+                  domain.c_str()));
+  }
 
-  url = swap_service_->GetPriceQuoteURL(
-      params.Clone(), mojom::kBinanceSmartChainMainnetChainId);
-  EXPECT_EQ(url,
-            "https://bsc.api.0x.org/swap/v1/price?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "skipValidation=true");
+  // If RFQ-T liquidity is available, so intentOnFilling=true is specified
+  // while fetching firm quotes.
+  for (const auto& [chain_id, domain] : rfqt_chain_ids) {
+    SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
+    auto url = swap_service_->GetPriceQuoteURL(params.Clone(), chain_id);
 
-  url = swap_service_->GetPriceQuoteURL(params.Clone(),
-                                        mojom::kAvalancheMainnetChainId);
-  EXPECT_EQ(url,
-            "https://avalanche.api.0x.org/swap/v1/price?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "skipValidation=true");
-
-  url = swap_service_->GetPriceQuoteURL(params.Clone(),
-                                        mojom::kFantomMainnetChainId);
-  EXPECT_EQ(url,
-            "https://fantom.api.0x.org/swap/v1/price?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "skipValidation=true");
-
-  url = swap_service_->GetPriceQuoteURL(params.Clone(),
-                                        mojom::kCeloMainnetChainId);
-  EXPECT_EQ(url,
-            "https://celo.api.0x.org/swap/v1/price?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "skipValidation=true");
-
-  url = swap_service_->GetPriceQuoteURL(params.Clone(),
-                                        mojom::kOptimismMainnetChainId);
-  EXPECT_EQ(url,
-            "https://optimism.api.0x.org/swap/v1/price?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "skipValidation=true");
-
-  url = swap_service_->GetPriceQuoteURL(params.Clone(),
-                                        mojom::kArbitrumMainnetChainId);
-  EXPECT_EQ(url,
-            "https://arbitrum.api.0x.org/swap/v1/price?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "skipValidation=true");
+    EXPECT_EQ(url,
+              base::StringPrintf(
+                  "https://%s/swap/v1/quote?"
+                  "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+                  "buyAmount=1000000000000000000000&"
+                  "buyToken=ETH&"
+                  "sellToken=DAI&"
+                  "buyTokenPercentageFee=0.00875&"
+                  "slippagePercentage=0.030000&"
+                  "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+                  "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+                  "skipValidation=true&"
+                  "intentOnFilling=false",
+                  domain.c_str()));
+  }
 
   // KO: unsupported network
-  url = swap_service_->GetPriceQuoteURL(params.Clone(), "0x3");
-  EXPECT_EQ(url, "");
+  EXPECT_EQ(swap_service_->GetPriceQuoteURL(params.Clone(), "0x3"), "");
 }
 
 TEST_F(SwapServiceUnitTest, GetTransactionPayloadURL) {
+  const std::map<std::string, std::string> non_rfqt_chain_ids = {
+      {mojom::kGoerliChainId, "goerli.api.0x.org"},
+      {mojom::kBinanceSmartChainMainnetChainId, "bsc.api.0x.org"},
+      {mojom::kAvalancheMainnetChainId, "avalanche.api.0x.org"},
+      {mojom::kFantomMainnetChainId, "fantom.api.0x.org"},
+      {mojom::kCeloMainnetChainId, "celo.api.0x.org"},
+      {mojom::kOptimismMainnetChainId, "optimism.api.0x.org"},
+      {mojom::kArbitrumMainnetChainId, "arbitrum.api.0x.org"},
+      {mojom::kBaseMainnetChainId, "base.api.0x.org"}};
+
+  const std::map<std::string, std::string> rfqt_chain_ids = {
+      {mojom::kMainnetChainId, "api.0x.org"},
+      {mojom::kPolygonMainnetChainId, "polygon.api.0x.org"}};
+
   auto params = GetCannedSwapParams();
-  auto url = swap_service_->GetTransactionPayloadURL(params.Clone(),
-                                                     mojom::kGoerliChainId);
-  EXPECT_EQ(url,
-            "https://goerli.api.0x.org/swap/v1/quote?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
 
-  // Ethereum has RFQ-T liquidity available, so intentOnFilling=true is
-  // specified while fetching firm quotes.
-  url = swap_service_->GetTransactionPayloadURL(params.Clone(),
-                                                mojom::kMainnetChainId);
-  EXPECT_EQ(url,
-            "https://api.0x.org/swap/v1/quote?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "intentOnFilling=true");
+  for (const auto& [chain_id, domain] : non_rfqt_chain_ids) {
+    SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
+    auto url =
+        swap_service_->GetTransactionPayloadURL(params.Clone(), chain_id);
 
-  // Polygon has RFQ-T liquidity available, so intentOnFilling=true is
-  // specified while fetching firm quotes.
-  url = swap_service_->GetTransactionPayloadURL(params.Clone(),
-                                                mojom::kPolygonMainnetChainId);
-  EXPECT_EQ(url,
-            "https://polygon.api.0x.org/swap/v1/quote?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "intentOnFilling=true");
+    EXPECT_EQ(url,
+              base::StringPrintf(
+                  "https://%s/swap/v1/quote?"
+                  "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+                  "buyAmount=1000000000000000000000&"
+                  "buyToken=ETH&"
+                  "sellToken=DAI&"
+                  "buyTokenPercentageFee=0.00875&"
+                  "slippagePercentage=0.030000&"
+                  "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+                  "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d",
+                  domain.c_str()));
+  }
 
-  url = swap_service_->GetTransactionPayloadURL(
-      params.Clone(), mojom::kBinanceSmartChainMainnetChainId);
-  EXPECT_EQ(url,
-            "https://bsc.api.0x.org/swap/v1/quote?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
+  // If RFQ-T liquidity is available, so intentOnFilling=true is specified
+  // while fetching firm quotes.
+  for (const auto& [chain_id, domain] : rfqt_chain_ids) {
+    SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
+    auto url =
+        swap_service_->GetTransactionPayloadURL(params.Clone(), chain_id);
 
-  url = swap_service_->GetTransactionPayloadURL(
-      params.Clone(), mojom::kAvalancheMainnetChainId);
-  EXPECT_EQ(url,
-            "https://avalanche.api.0x.org/swap/v1/quote?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
-
-  url = swap_service_->GetTransactionPayloadURL(params.Clone(),
-                                                mojom::kFantomMainnetChainId);
-  EXPECT_EQ(url,
-            "https://fantom.api.0x.org/swap/v1/quote?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
-
-  url = swap_service_->GetTransactionPayloadURL(params.Clone(),
-                                                mojom::kCeloMainnetChainId);
-  EXPECT_EQ(url,
-            "https://celo.api.0x.org/swap/v1/quote?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
-
-  url = swap_service_->GetTransactionPayloadURL(params.Clone(),
-                                                mojom::kOptimismMainnetChainId);
-  EXPECT_EQ(url,
-            "https://optimism.api.0x.org/swap/v1/quote?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
-
-  url = swap_service_->GetTransactionPayloadURL(params.Clone(),
-                                                mojom::kArbitrumMainnetChainId);
-  EXPECT_EQ(url,
-            "https://arbitrum.api.0x.org/swap/v1/quote?"
-            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-            "buyAmount=1000000000000000000000&"
-            "buyToken=ETH&"
-            "sellToken=DAI&"
-            "buyTokenPercentageFee=0.00875&"
-            "slippagePercentage=0.030000&"
-            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
-            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
+    EXPECT_EQ(url,
+              base::StringPrintf(
+                  "https://%s/swap/v1/quote?"
+                  "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+                  "buyAmount=1000000000000000000000&"
+                  "buyToken=ETH&"
+                  "sellToken=DAI&"
+                  "buyTokenPercentageFee=0.00875&"
+                  "slippagePercentage=0.030000&"
+                  "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+                  "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+                  "intentOnFilling=true",
+                  domain.c_str()));
+  }
 
   // KO: unsupported network
-  url = swap_service_->GetTransactionPayloadURL(params.Clone(), "0x3");
-  EXPECT_EQ(url, "");
+  EXPECT_EQ(swap_service_->GetTransactionPayloadURL(params.Clone(), "0x3"), "");
 }
 
 TEST_F(SwapServiceUnitTest, IsSwapSupported) {
@@ -702,6 +676,7 @@ TEST_F(SwapServiceUnitTest, IsSwapSupported) {
       mojom::kCeloMainnetChainId,
       mojom::kOptimismMainnetChainId,
       mojom::kArbitrumMainnetChainId,
+      mojom::kBaseMainnetChainId,
   });
 
   for (auto& chain_id : supported_chain_ids) {
@@ -719,33 +694,33 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
       swap_service_->GetJupiterQuoteURL(params.Clone(), mojom::kSolanaMainnet);
 
   // OK: output mint has Jupiter fees
-  ASSERT_EQ(url,
-            "https://quote-api.jup.ag/v1/quote?"
+  EXPECT_EQ(url,
+            "https://quote-api.jup.ag/v4/quote?"
             "inputMint=So11111111111111111111111111111111111111112&"
             "outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&"
             "amount=10000&"
-            "feeBps=85&"
-            "slippage=0.500000&"
-            "onlyDirectRoutes=true");
+            "swapMode=ExactIn&"
+            "slippageBps=50&"
+            "feeBps=85");
 
   params->output_mint = "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y";
   url =
       swap_service_->GetJupiterQuoteURL(params.Clone(), mojom::kSolanaMainnet);
 
   // OK: output mint does not have Jupiter fees
-  ASSERT_EQ(url,
-            "https://quote-api.jup.ag/v1/quote?"
+  EXPECT_EQ(url,
+            "https://quote-api.jup.ag/v4/quote?"
             "inputMint=So11111111111111111111111111111111111111112&"
             "outputMint=SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y&"
             "amount=10000&"
-            "slippage=0.500000&"
-            "onlyDirectRoutes=true");
+            "swapMode=ExactIn&"
+            "slippageBps=50");
 }
 
 TEST_F(SwapServiceUnitTest, GetJupiterSwapTransactionsURL) {
   auto url =
       swap_service_->GetJupiterSwapTransactionsURL(mojom::kSolanaMainnet);
-  ASSERT_EQ(url, "https://quote-api.jup.ag/v1/swap");
+  EXPECT_EQ(url, "https://quote-api.jup.ag/v4/swap");
 }
 
 TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
@@ -757,9 +732,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": 10000,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -797,6 +772,7 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
   expected_route->other_amount_threshold = 258660ULL;
   expected_route->swap_mode = "ExactIn";
   expected_route->price_impact_pct = 0.008955716118219659;
+  expected_route->slippage_bps = 50;
   auto& expected_market_info = expected_route->market_infos.emplace_back(
       mojom::JupiterMarketInfo::New());
   expected_market_info->id = "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK";
@@ -842,9 +818,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": 10000,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": []
         }
       ],
@@ -860,9 +836,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": %s,
           "amount": 10000,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": []
         }
       ],
@@ -878,9 +854,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": %s,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": []
         }
       ],
@@ -896,9 +872,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": 10000,
           "otherAmountThreshold": %s,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": []
         }
       ],
@@ -914,9 +890,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": 10000,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -953,9 +929,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": 10000,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -992,9 +968,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": 10000,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -1031,9 +1007,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": 10000,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -1065,13 +1041,10 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
 TEST_F(SwapServiceUnitTest, GetJupiterSwapTransactions) {
   SetInterceptor(R"(
     {
-      "setupTransaction": "foo",
-      "swapTransaction": "bar",
-      "cleanupTransaction": "baz"
+      "swapTransaction": "bar"
     })");
 
-  auto expected_response =
-      mojom::JupiterSwapTransactions::New("foo", "bar", "baz");
+  auto expected_response = mojom::JupiterSwapTransactions::New("foo");
   // OK: valid case
   TestGetJupiterSwapTransactions(true, std::move(expected_response), false);
 
@@ -1081,6 +1054,85 @@ TEST_F(SwapServiceUnitTest, GetJupiterSwapTransactions) {
   // KO: invalid JSON
   SetInterceptor(R"(foo)");
   TestGetJupiterSwapTransactions(false, nullptr, true);
+}
+
+TEST_F(SwapServiceUnitTest, GetBraveFee) {
+  auto params = mojom::BraveSwapFeeParams::New();
+  auto expected_response = mojom::BraveSwapFeeResponse::New();
+
+  base::RunLoop run_loop;
+
+  // Case 1: 0x swap on Ethereum
+  //         1000 DAI -> ETH
+  params->chain_id = mojom::kMainnetChainId;
+  params->input_token = "0x6b175474e89094c44da98b954eedeac495271d0f";
+  params->output_token = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+  params->taker = "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
+
+  expected_response->fee_param = "0.00875";
+  expected_response->protocol_fee_pct = "0.15";
+  expected_response->brave_fee_pct = "0.875";
+  expected_response->discount_on_brave_fee_pct = "0";
+  expected_response->effective_fee_pct = "0.875";
+  expected_response->discount_code = mojom::DiscountCode::kNone;
+  expected_response->has_brave_fee = true;
+
+  base::MockCallback<mojom::SwapService::GetBraveFeeCallback> callback;
+  EXPECT_CALL(callback, Run(EqualsMojo(expected_response), ""));
+  swap_service_->GetBraveFee(params->Clone(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Case 2: Jupiter swap on Solana (no fees)
+  //         1000 SOL -> RAY
+  params->chain_id = mojom::kSolanaMainnet;
+  params->input_token = "So11111111111111111111111111111111111111112";
+  params->output_token = "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6Rxxx";
+  params->taker = "LUKAzPV8dDbVykTVT14pCGKzFfNcgZgRbAXB8AGdKx3";
+
+  expected_response->fee_param = "85";
+  expected_response->protocol_fee_pct = "0";
+  expected_response->brave_fee_pct = "0.85";
+  expected_response->discount_on_brave_fee_pct = "100";
+  expected_response->effective_fee_pct = "0";
+  expected_response->discount_code =
+      mojom::DiscountCode::kUnknownJupiterOutputMint;
+  expected_response->has_brave_fee = false;
+
+  EXPECT_CALL(callback, Run(EqualsMojo(expected_response), ""));
+  swap_service_->GetBraveFee(params->Clone(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Case 3: Jupiter swap on Solana (fees)
+  //         1000 SOL -> USDC
+  params->chain_id = mojom::kSolanaMainnet;
+  params->input_token = "So11111111111111111111111111111111111111112";
+  params->output_token = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  params->taker = "LUKAzPV8dDbVykTVT14pCGKzFfNcgZgRbAXB8AGdKx3";
+
+  expected_response->fee_param = "85";
+  expected_response->protocol_fee_pct = "0";
+  expected_response->brave_fee_pct = "0.85";
+  expected_response->discount_on_brave_fee_pct = "0";
+  expected_response->effective_fee_pct = "0.85";
+  expected_response->discount_code = mojom::DiscountCode::kNone;
+  expected_response->has_brave_fee = true;
+
+  EXPECT_CALL(callback, Run(EqualsMojo(expected_response), ""));
+  swap_service_->GetBraveFee(params->Clone(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Case 4: Unsupported network
+  //         1000 DAI -> ETH
+  params->chain_id = mojom::kAuroraMainnetChainId;
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::BraveSwapFeeResponsePtr()),
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  swap_service_->GetBraveFee(params->Clone(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 }  // namespace brave_wallet

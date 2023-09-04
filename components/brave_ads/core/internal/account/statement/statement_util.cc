@@ -5,15 +5,33 @@
 
 #include "brave/components/brave_ads/core/internal/account/statement/statement_util.h"
 
+#include <iterator>
+
+#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/statement/ads_received_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/earnings_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/next_payment_date_util.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
+
+namespace {
+
+TransactionList FilterTransactionsForEstimatedEarnings(
+    const TransactionList& transactions) {
+  TransactionList filtered_transactions;
+  base::ranges::copy_if(transactions, std::back_inserter(filtered_transactions),
+                        [](const TransactionInfo& transaction) {
+                          return transaction.ad_type != AdType::kNewTabPageAd;
+                        });
+  return filtered_transactions;
+}
+
+}  // namespace
 
 base::Time GetNextPaymentDate(const TransactionList& transactions) {
   const base::Time next_token_redemption_at =
@@ -26,25 +44,36 @@ base::Time GetNextPaymentDate(const TransactionList& transactions) {
   return next_payment_date;
 }
 
-double GetEarningsForThisMonth(const TransactionList& transactions) {
-  const double unreconciled_earnings = GetUnreconciledEarnings(transactions);
+std::pair<double, double> GetEstimatedEarningsForThisMonth(
+    const TransactionList& transactions) {
+  TransactionList filtered_transactions =
+      FilterTransactionsForEstimatedEarnings(transactions);
 
-  const double reconciled_earnings_this_month =
-      GetReconciledEarningsForThisMonth(transactions);
+  const double range_low =
+      GetUnreconciledEarnings(filtered_transactions) +
+      GetReconciledEarningsForThisMonth(filtered_transactions);
 
-  return unreconciled_earnings + reconciled_earnings_this_month;
+  const double range_high = GetUnreconciledEarnings(transactions) +
+                            GetReconciledEarningsForThisMonth(transactions);
+
+  return {range_low * kMinEstimatedEarningsMultiplier.Get(), range_high};
 }
 
-double GetEarningsForLastMonth(const TransactionList& transactions) {
-  return GetReconciledEarningsForLastMonth(transactions);
+std::pair<double, double> GetEstimatedEarningsForLastMonth(
+    const TransactionList& transactions) {
+  const double range_low = GetReconciledEarningsForLastMonth(
+      FilterTransactionsForEstimatedEarnings(transactions));
+  const double range_high = GetReconciledEarningsForLastMonth(transactions);
+
+  return {range_low * kMinEstimatedEarningsMultiplier.Get(), range_high};
 }
 
-int32_t GetAdsReceivedThisMonth(const TransactionList& transactions) {
+base::flat_map<std::string, int32_t> GetAdTypesReceivedThisMonth(
+    const TransactionList& transactions) {
   const base::Time from_time = GetLocalTimeAtBeginningOfThisMonth();
   const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
 
-  return static_cast<int32_t>(
-      GetAdsReceivedForDateRange(transactions, from_time, to_time));
+  return GetAdTypesReceivedForDateRange(transactions, from_time, to_time);
 }
 
 }  // namespace brave_ads

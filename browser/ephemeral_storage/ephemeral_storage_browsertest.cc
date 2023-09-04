@@ -14,10 +14,12 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/time/time.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -49,8 +51,6 @@ using net::test_server::HttpRequest;
 using net::test_server::HttpResponse;
 
 namespace {
-
-const int kKeepAliveInterval = 2;
 
 const char* ToString(EphemeralStorageBrowserTest::StorageType storage_type) {
   switch (storage_type) {
@@ -166,9 +166,6 @@ void EphemeralStorageBrowserTest::SetUpOnMainThread() {
       https_server_.GetURL("c.com", "/ephemeral_storage.html");
   a_site_ephemeral_storage_with_network_cookies_url_ = https_server_.GetURL(
       "a.com", "/ephemeral_storage_with_network_cookies.html");
-
-  ephemeral_storage::EphemeralStorageTabHelper::SetKeepAliveTimeDelayForTesting(
-      base::Seconds(kKeepAliveInterval));
 }
 
 void EphemeralStorageBrowserTest::SetUpHttpsServer() {
@@ -269,7 +266,7 @@ void EphemeralStorageBrowserTest::SetStorageValueInFrame(
   std::string script =
       base::StringPrintf("%sStorage.setItem('storage_key', '%s');",
                          ToString(storage_type), value.c_str());
-  ASSERT_TRUE(content::ExecuteScript(host, script));
+  ASSERT_TRUE(content::ExecJs(host, script));
 }
 
 content::EvalJsResult EphemeralStorageBrowserTest::GetStorageValueInFrame(
@@ -284,7 +281,7 @@ void EphemeralStorageBrowserTest::SetCookieInFrame(RenderFrameHost* host,
                                                    std::string cookie) {
   std::string script = base::StringPrintf(
       "document.cookie='%s; path=/; SameSite=None; Secure'", cookie.c_str());
-  ASSERT_TRUE(content::ExecuteScript(host, script));
+  ASSERT_TRUE(content::ExecJs(host, script));
 }
 
 content::EvalJsResult EphemeralStorageBrowserTest::GetCookiesInFrame(
@@ -292,11 +289,10 @@ content::EvalJsResult EphemeralStorageBrowserTest::GetCookiesInFrame(
   return content::EvalJs(host, "document.cookie");
 }
 
-void EphemeralStorageBrowserTest::WaitForCleanupAfterKeepAlive() {
-  base::RunLoop run_loop;
-  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
-  run_loop.Run();
+size_t EphemeralStorageBrowserTest::WaitForCleanupAfterKeepAlive(Browser* b) {
+  return EphemeralStorageServiceFactory::GetInstance()
+      ->GetForContext((b ? b : browser())->profile())
+      ->FireCleanupTimersForTesting();
 }
 
 void EphemeralStorageBrowserTest::ExpectValuesFromFramesAreEmpty(
@@ -621,7 +617,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   // after keepalive values should be cleared
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
-  WaitForCleanupAfterKeepAlive();
+  EXPECT_TRUE(WaitForCleanupAfterKeepAlive());
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
 
@@ -668,6 +664,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   bool was_closed = browser()->tab_strip_model()->CloseWebContentsAt(
       tab_index, TabCloseTypes::CLOSE_NONE);
   EXPECT_TRUE(was_closed);
+  EXPECT_TRUE(WaitForCleanupAfterKeepAlive());
 
   // Navigate the main tab to the same site.
   ASSERT_TRUE(
@@ -842,7 +839,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   // timeout.
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
-  WaitForCleanupAfterKeepAlive();
+  EXPECT_TRUE(WaitForCleanupAfterKeepAlive());
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
 
@@ -1111,6 +1108,56 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageKeepAliveDisabledBrowserTest,
   EXPECT_EQ(nullptr, values_after.iframe_2.local_storage);
 
   EXPECT_EQ("a.com value", values_after.main_frame.session_storage);
+  EXPECT_EQ(nullptr, values_after.iframe_1.session_storage);
+  EXPECT_EQ(nullptr, values_after.iframe_2.session_storage);
+
+  EXPECT_EQ("name=acom_simple; from=a.com", values_after.main_frame.cookies);
+  EXPECT_EQ("", values_after.iframe_1.cookies);
+  EXPECT_EQ("", values_after.iframe_2.cookies);
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageKeepAliveDisabledBrowserTest,
+                       ClosingTabClearsEphemeralStorage) {
+  WebContents* site_a_tab =
+      LoadURLInNewTab(a_site_ephemeral_storage_with_network_cookies_url_);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 2);
+
+  SetValuesInFrames(site_a_tab, "a.com value", "from=a.com");
+
+  ValuesFromFrames values_before = GetValuesFromFrames(site_a_tab);
+  EXPECT_EQ("a.com value", values_before.main_frame.local_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_1.local_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_2.local_storage);
+
+  EXPECT_EQ("a.com value", values_before.main_frame.session_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_1.session_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_2.session_storage);
+
+  EXPECT_EQ("name=acom_simple; from=a.com", values_before.main_frame.cookies);
+  EXPECT_EQ("name=bcom_simple; from=a.com", values_before.iframe_1.cookies);
+  EXPECT_EQ("name=bcom_simple; from=a.com", values_before.iframe_2.cookies);
+
+  // Close the new tab which we set ephemeral storage value in. This should
+  // clear the ephemeral storage since this is the last tab which has a.com as
+  // an eTLD.
+  int tab_index =
+      browser()->tab_strip_model()->GetIndexOfWebContents(site_a_tab);
+  bool was_closed = browser()->tab_strip_model()->CloseWebContentsAt(
+      tab_index, TabCloseTypes::CLOSE_NONE);
+  EXPECT_TRUE(was_closed);
+
+  // Navigate the main tab to the same site.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+
+  // Closing the tab earlier should have cleared the ephemeral storage area.
+  ValuesFromFrames values_after = GetValuesFromFrames(web_contents);
+  EXPECT_EQ("a.com value", values_after.main_frame.local_storage);
+  EXPECT_EQ(nullptr, values_after.iframe_1.local_storage);
+  EXPECT_EQ(nullptr, values_after.iframe_2.local_storage);
+
+  EXPECT_EQ(nullptr, values_after.main_frame.session_storage);
   EXPECT_EQ(nullptr, values_after.iframe_1.session_storage);
   EXPECT_EQ(nullptr, values_after.iframe_2.session_storage);
 

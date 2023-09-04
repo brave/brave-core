@@ -69,7 +69,7 @@
     Show title bar
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_USE_FLOATING_VERTICAL_TABS" desc="The label for enabling floating mode for vertical tab strip">
-    Float on mouseover
+    Expand vertical tabs panel on mouseover when collapsed
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE" desc="The label for the settings select controlling what happens when a user hovers over a tab.">
     Tab hover mode
@@ -149,6 +149,14 @@
       Show Sidebar button
     </message>
   </if>
+
+  <!-- Settings / Autofill -->
+  <message name="IDS_SETTINGS_BRAVE_AUTOFILL_PRIVATE_WINDOWS_LABEL" desc="The label to enable autofill in private profiles">
+    Allow auto-fill in private windows
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_AUTOFILL_PRIVATE_WINDOWS_DESC" desc="The description for the label to enable autofill in private profiles">
+    Info from regular windows can be read/auto-filled in private windows
+  </message>
 
   <!-- Settings / New tab page -->
   <message name="IDS_SETTINGS_NEW_TAB" desc="The text label for the New Tab settings page">
@@ -383,6 +391,10 @@
     Filter lists
   </message>
 
+  <message name="IDS_SETTINGS_BRAVE_SHORTCUTS_TITLE" desc="The text label for the shortcuts settings page">
+    Shortcuts
+  </message>
+
   <!-- Settings / Brave Rewards -->
   <message name="IDS_SETTINGS_BRAVE_REWARDS_TITLE" desc="The text label for the Rewards settings page">
     Brave Rewards
@@ -393,47 +405,8 @@
   <message name="IDS_SETTINGS_BRAVE_REWARDS_DISABLED_SUB_LABEL" desc="The text sublabel for the Rewards disabled state">
     Open Rewards panel to enable and get started
   </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_DETECTED_ITEM" desc="The menu item for auto-detected settings">
-    Auto-detected
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_DEFAULT_ITEM" desc="The menu item for default settings">
-    Default
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_DISABLED_ITEM" desc="The menu item for disabled settings">
-    Disabled
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_PRIVATE_ADS_TITLE" desc="The text label for the Rewards Private Ads section">
-    Brave Private Ads
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_PRIVATE_ADS_EARN_TOKENS_LABEL" desc="The text label for the settings switch controlling earning tokens for viewing private ads">
-    Earn tokens by viewing Brave Ads. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_MAX_ADS_TO_DISPLAY_LABEL" desc="The text label for the setting controlling the maximum number of ads to display">
-    Maximum number of ads to display
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_LABEL" desc="The text label for the setting that allows Brave to show ads meant specifically for user's region">
-    Regional ad relevance
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_DESC_LABEL" desc="The text label for the description of subdivision-level ad targeting">
-    This allows Brave to show you ads meant specifically for your region. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_APPEARANCE_TITLE" desc="The text label for the Rewards Appearance section">
-    Appearance
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_TITLE" desc="The text label for the Rewards Auto-Contribute section">
-    Auto-Contribute
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_MONTHLY_LIMIT_LABEL" desc="The text label for the setting controlling the monthly auto-contribution limit">
-    Monthly auto-contribution limit
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_MIN_VISIT_TIME_LABEL" desc="The text label for the setting controlling the minimum page time before logging a visit">
-    Minimum page time before logging a visit
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_MIN_VISITS_LABEL" desc="The text label for the setting controlling the minimum page visits for publisher relevancy">
-    Minimum visits for publisher relevancy
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_DESC_LABEL" desc="The text label for the description of auto-contribute">
-    By turning on Auto-Contribute, you agree to the <ph name="BEGIN_LINK_TOS">&lt;a target="_blank" href="$1"&gt;</ph>Terms of Service<ph name="END_LINK_TOS">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_PP">&lt;a target="_blank" href="$2"&gt;</ph>Privacy Policy<ph name="END_LINK_PP">&lt;/a&gt;</ph>.
+  <message name="IDS_SETTINGS_BRAVE_REWARDS_PAGE_LABEL" desc="The text label for the link to the Rewards settings page">
+    Open full Brave Rewards settings
   </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
     Show Brave Rewards icon in address bar
@@ -544,6 +517,75 @@
     Remove All
   </message>
 
+  <!-- Settings / Privacy and security / Cookies and other site data / See all site data and permissions -->
+  <!-- These settings were reinstated after being deleted upstream -->
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_CONTENT_LABEL" desc="The Cookie Content label">
+    Content
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_DOMAIN_LABEL" desc="The Cookie Domain label">
+    Domain
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_PATH_LABEL" desc="The Cookie Path label">
+    Path
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_SENDFOR_LABEL" desc="The Cookie Send For label">
+    Send for
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_ACCESSIBLE_TO_SCRIPT_LABEL" desc="The Cookie Accessible to Script label">
+    Accessible to script
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_CREATED_LABEL" desc="The Cookie Created label">
+    Created
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_EXPIRES_LABEL" desc="The Cookie Expires label">
+    Expires
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_NAME_LABEL" desc="The Cookie Name label" meaning="Name of an inanimate object">
+    Name
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_FLASH_LSO" desc="The text shown when Flash has Local Shared Objects (informally known as 'Flash cookies') stored">
+    Flash data
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL" desc="The Local Storage Origin label">
+    Origin
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL" desc="The Local Storage Size on disk label">
+    Size on disk
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_LOCAL_STORAGE_LAST_MODIFIED_LABEL" desc="The Local Storage Last modified label">
+    Last modified
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_DATABASE_STORAGE" desc="The text shown when there is either Web Database or Indexed Database Storage (names of HTML standards) in the Cookies table">
+    Database storage
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_LOCAL_STORAGE" desc="Label for local storage (name of an HTML standard)">
+    Local storage
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_FILE_SYSTEM" desc="The text shown when there is a file system (name of an HTML standard) in the Cookies table">
+    File system
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_FILE_SYSTEM_TEMPORARY_USAGE_LABEL" desc="Label for a temporary file system's disk usage.">
+    Temporary storage
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_FILE_SYSTEM_PERSISTENT_USAGE_LABEL" desc="Label for a persistent file system's disk usage.">
+    Persistent storage
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_SERVICE_WORKER" desc="The text shown when there is data for Service Workers within an origin (name of a Web standard) in the Cookies table">
+    Service Workers
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_SHARED_WORKER" desc="The text shown when there is data for Shared Workers within an origin (name of a Web standard) in the Cookies table">
+    Shared Workers
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_SHARED_WORKER_WORKER_LABEL" desc="Label for the URL of a Shared Worker's (name of an HTML standard) main script">
+    URL
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_CACHE_STORAGE" desc="The text shown when there is Cache Storage (name of a Web standard) in the Cookies table">
+    Cache Storage
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_QUOTA_STORAGE" desc="The text shown when there is Quota Managed Storage in the Cookies table">
+    Quota-managed storage
+  </message>
+
   <!-- Settings / Privacy and security / Security -->
   <!-- Safe browsing -->
   <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_BULLET_TWO" desc="Second bullet point under the safe browsing standard protection mode">
@@ -606,7 +648,7 @@
 
   <!-- Localhost access setting -->
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS" desc="Label for localhost site settings.">
-    Localhost Access
+    Localhost access
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ASK" desc="Label for localhost access site settings.">
     Sites can request access to localhost resources
@@ -1225,18 +1267,12 @@
   <message name="IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_DESC" desc="The description for the switch of automatically fallback to IPFS public gateway">
     Automatically fall back to public IPFS gateway if your Brave local IPFS node cannot be reached.
   </message>
-  <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_LABEL" desc="The text label for redirecting IPFS resources to the configured gateway">
-    Redirect IPFS resources to the configured IPFS gateway
+  <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_TO_GATEWAY_WHEN_POSSIBLE_LABEL">
+    Automatically redirect requests for IPFS network resources to the configured gateway.
   </message>
-  <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_DESC" desc="The description for redirecting IPFS resources to the configured gateway">
-    Requests to IPFS resources, hosted on third-party IPFS gateways will be loaded via selected local or remote gateway.
+  <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_TO_GATEWAY_WHEN_POSSIBLE_DESC">
+    Requests for IPFS resources hosted on third-party IPFS gateways or DNSLINK resources will be routed via the selected local or remote gateway.
     Note: If local node is selected, resource will be requested directly from your computer and cached data may be provided to the IPFS network for some time.
-  </message>
-  <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_DNSLINK_RESOURCES_LABEL" desc="The text label for redirecting IPFS resources for DNSLink">
-    Automatically redirect to IPFS pages via DNSLink when possible
-  </message>
-  <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_DNSLINK_RESOURCES_DESC" desc="The description for redirecting IPFS resources for DNSLink">
-    Automatically uses DNSLink to navigate to an IPFS version of a website when possible
   </message>
   <message name="IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC" desc="The description for IPFS companion switch in settings">
     Uses the IPFS Companion extension for enhanced IPFS support in Brave, including access to common IPFS tasks from your browser bar.
@@ -1363,6 +1399,19 @@
     Disable mute function in tab speaker icons
   </message>
 
+  <!-- Settings / Leo Assistant -->
+  <message name="IDS_SETTINGS_LEO_ASSISTANT" desc="Title for an item in the 'Leo Assistant' section of Brave Settings">
+    Leo
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_ICON_ON_TOOLBAR_LABEL" desc="The text for settings option">
+    Show Leo icon in the sidebar
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_SUGGESTED_PROMPTS_LABEL" desc="The text for settings option">
+    Show suggested prompts in the conversation
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_LABEL" desc="The text for settings option">
+    Clear Leo data
+  </message>
   <!-- Avatars. Generated via zsh and node:
         declare -i a=56
         for file in $(cat < avatarlist); do node -e "console.log(\`<message name=\"IDS_BRAVE_AVATAR_LABEL_$a\" desc=\"The label for the $file avatar.\">

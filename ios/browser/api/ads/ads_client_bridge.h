@@ -7,7 +7,7 @@
 #define BRAVE_IOS_BROWSER_API_ADS_ADS_CLIENT_BRIDGE_H_
 
 #import <Foundation/Foundation.h>
-#import "brave/components/brave_ads/core/ads_client.h"
+#import "brave/components/brave_ads/core/public/client/ads_client.h"
 
 #include <string>
 #include <vector>
@@ -20,13 +20,12 @@
 - (bool)canShowNotificationAdsWhileBrowserIsBackgrounded;
 - (void)addObserver:(brave_ads::AdsClientNotifierObserver*)observer;
 - (void)removeObserver:(brave_ads::AdsClientNotifierObserver*)observer;
-- (void)bindPendingObservers;
+- (void)notifyPendingObservers;
 - (bool)isNetworkConnectionAvailable;
 - (bool)canShowNotificationAds;
 - (void)loadFileResource:(const std::string&)id
                  version:(const int)version
                 callback:(brave_ads::LoadFileCallback)callback;
-- (void)clearScheduledCaptcha;
 - (void)getScheduledCaptcha:(const std::string&)payment_id
                    callback:(brave_ads::GetScheduledCaptchaCallback)callback;
 - (void)showScheduledCaptchaNotification:(const std::string&)payment_id
@@ -80,7 +79,7 @@
 - (absl::optional<base::Value::List>)getListPref:(const std::string&)path;
 - (void)clearPref:(const std::string&)path;
 - (bool)hasPrefPath:(const std::string&)path;
-- (void)recordP2AEvent:(const std::string&)name value:(base::Value::List)value;
+- (void)recordP2AEvents:(base::Value::List)events;
 - (void)addTrainingSample:
     (const std::vector<brave_federated::mojom::CovariateInfoPtr>)
         training_sample;

@@ -8,7 +8,6 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 
 import { initLocale } from 'brave-ui'
-import '@brave/swap-interface/dist/style.css'
 
 // style
 import walletDarkTheme from '../../../../theme/wallet-dark'
@@ -43,7 +42,7 @@ export function AndroidSwapApp() {
 
 function initialize () {
   initLocale(loadTimeData.data_)
-  store.dispatch(WalletActions.initialize())
+  store.dispatch(WalletActions.initialize({}))
   render(AndroidSwapApp(), document.getElementById('root'))
 }
 

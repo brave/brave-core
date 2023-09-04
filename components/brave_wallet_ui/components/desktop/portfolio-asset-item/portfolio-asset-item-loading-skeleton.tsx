@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Components
-import { LoadingSkeleton } from '../../shared'
+import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 
 // Styled Components
 import { StyledWrapper, NameAndIcon, NameColumn, Spacer, BalanceColumn, ButtonArea } from './style'
@@ -20,8 +20,8 @@ export const PortfolioAssetItemLoadingSkeleton = () => {
         <IconsWrapper>
           <LoadingSkeleton
             circle={true}
-            width={40}
-            height={40}
+            width={32}
+            height={32}
           />
         </IconsWrapper>
         <NameColumn>

@@ -115,7 +115,25 @@ const base::flat_map<MdTextButtonStyleKey, ButtonStyle>& GetButtonThemes() {
            {{Kind::kTertiary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
             {.background_color = absl::nullopt,
              .border_color = absl::nullopt,
-             .text_color = SkColorSetRGB(186, 199, 247)}}});
+             .text_color = SkColorSetRGB(186, 199, 247)}},
+
+           {{Kind::kQuaternary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
+            {.background_color = absl::nullopt,
+             .border_color = absl::nullopt,
+             .text_color = SkColorSetRGB(84, 96, 113)}},
+           {{Kind::kQuaternary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
+            {.background_color = absl::nullopt,
+             .border_color = absl::nullopt,
+             .text_color = SkColorSetRGB(195, 201, 211)}},
+           {{Kind::kQuaternary, ColorScheme::kLight,
+             ButtonState::STATE_HOVERED},
+            {.background_color = absl::nullopt,
+             .border_color = absl::nullopt,
+             .text_color = SkColorSetRGB(63, 72, 85)}},
+           {{Kind::kQuaternary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
+            {.background_color = absl::nullopt,
+             .border_color = absl::nullopt,
+             .text_color = SkColorSetRGB(195, 201, 211)}}});
 
   return *button_themes;
 }

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -7,7 +8,8 @@ import * as mojom from '../../shared/lib/mojom'
 export type ExternalWalletProvider =
   'uphold' |
   'bitflyer' |
-  'gemini'
+  'gemini' |
+  'zebpay'
 
 export interface ExternalWallet {
   provider: ExternalWalletProvider
@@ -27,6 +29,7 @@ export function getExternalWalletProviderName (
     case 'bitflyer': return 'bitFlyer'
     case 'gemini': return 'Gemini'
     case 'uphold': return 'Uphold'
+    case 'zebpay': return 'ZebPay'
   }
 }
 
@@ -41,6 +44,7 @@ export function externalWalletProviderFromString (
     case 'bitflyer':
     case 'gemini':
     case 'uphold':
+    case 'zebpay':
       return key
     default:
       return null

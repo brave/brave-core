@@ -41,7 +41,8 @@ export const verifiedCheck = styled.div`
   position: relative;
   height: 20px;
   width: 20px;
-  color: ${leo.color.icon.interactive};
+
+  --leo-icon-size: 22px;
 
   .tooltip {
     visibility: hidden;

@@ -8,11 +8,7 @@
 import { loadTimeData } from '../i18n_setup.js';
 
 export interface BraveRewardsBrowserProxy {
-  getAdsData(): Promise<any>
   getRewardsEnabled(): Promise<boolean>
-  getRewardsParameters(): Promise<any>
-  getUserType(): Promise<boolean>
-  isAutoContributeSupported(): Promise<boolean>
   wasInlineTipButtonsEnabledAtStartup(): boolean
   wasInlineTipTwitterEnabledAtStartup(): boolean
   wasInlineTipRedditEnabledAtStartup(): boolean
@@ -23,29 +19,9 @@ export interface BraveRewardsBrowserProxy {
  * @implements {settings.BraveRewardsBrowserProxy}
  */
 export class BraveRewardsBrowserProxyImpl implements BraveRewardsBrowserProxy {
-  getAdsData () {
-    return new Promise((resolve) => chrome.braveRewards.getAdsData(
-      (data) => { resolve(data) }))
-  }
-
   getRewardsEnabled () {
     return new Promise<boolean>((resolve) => chrome.braveRewards.getRewardsEnabled(
       (enabled) => { resolve(enabled) }))
-  }
-
-  getRewardsParameters () {
-    return new Promise((resolve) => chrome.braveRewards.getRewardsParameters(
-      (parameters) => { resolve(parameters) }))
-  }
-
-  getUserType () {
-    return new Promise((resolve) => chrome.braveRewards.getUserType(
-      (userType) => { resolve(userType) }))
-  }
-
-  isAutoContributeSupported () {
-    return new Promise<boolean>((resolve) => chrome.braveRewards.isAutoContributeSupported(
-      (supported) => { resolve(supported) }))
   }
 
   wasInlineTipButtonsEnabledAtStartup() {

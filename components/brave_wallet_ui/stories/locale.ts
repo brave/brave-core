@@ -112,6 +112,8 @@ provideStrings({
   braveWalletEnsOffChainLookupTitle: 'Brave supports using off-chain gateways to resolve .eth domains.',
   braveWalletEnsOffChainLookupDescription: 'It looks like you\'ve entered an ENS address. We\'ll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain.',
   braveWalletEnsOffChainButton: 'Use ENS domain',
+  braveWalletFEVMAddressTranslationTitle: 'ETH address will be converted to the Filecoin address.',
+  braveWalletFEVMAddressTranslationDescription: 'It looks like you\'ve entered an ENS address. We\'ll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain.',
 
   // Send Tab
   braveWalletSendToken: 'Send token',
@@ -148,6 +150,7 @@ provideStrings({
   braveWalletButtonDone: 'Done',
   braveWalletButtonSkip: 'Skip',
   braveWalletButtonCancel: 'Cancel',
+  braveWalletButtonSaveChanges: 'Save changes',
   braveWalletLearnMore: 'Learn more',
 
   // Onboarding - Welcome
@@ -157,7 +160,7 @@ provideStrings({
   braveWalletImportExistingWallet: 'Import existing wallet',
   braveWalletWelcomeRestoreButton: 'Restore',
   braveWalletConnectHardwareWallet: 'Connect hardware wallet',
-  braveWalletWelcomeDividerText: 'Or',
+  braveWalletWelcomeDividerText: 'or',
 
   // Onboarding - Disclosures
   braveWalletDisclosuresTitle: 'Legal stuff',
@@ -251,14 +254,16 @@ provideStrings({
   braveWalletLockScreenTitle: 'Enter password to unlock wallet',
   braveWalletLockScreenButton: 'Unlock',
   braveWalletLockScreenError: 'Incorrect password',
+  braveWalletUnlockWallet: 'Unlock Wallet',
 
   // Wallet More Popup
   braveWalletWalletPopupSettings: 'Settings',
   braveWalletWalletPopupLock: 'Lock wallet',
   braveWalletWalletPopupBackup: 'Backup Wallet',
   braveWalletWalletPopupConnectedSites: 'Connected sites',
-  braveWalletWalletPopupHideBalances: 'Hide balances',
-  braveWalletWalletPopupShowGraph: 'Show graph',
+  braveWalletWalletPopupHideBalances: 'Balances',
+  braveWalletWalletPopupShowGraph: 'Graph',
+  braveWalletWalletNFTsTab: 'NFTs tab',
 
   // Backup Warning
   braveWalletBackupWarningText: 'Back up your wallet now to protect your assets and ensure you never lose access.',
@@ -284,11 +289,11 @@ provideStrings({
 
   // Accounts Tab
   braveWalletAccountsPrimary: 'Primary crypto accounts',
-  braveWalletAccountsPrimaryDisclaimer: 'You can create primary accounts in Brave Wallet that may be backed up or restored from your recovery phrase. To learn more about account types visit account help',
   braveWalletAccountsSecondary: 'Imported accounts',
-  braveWalletAccountsSecondaryDisclaimer: 'These accounts can be used with Web3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.',
+  braveWalletConnectedHardwareWallets: 'Connected hardware wallets',
   braveWalletAccountsAssets: 'Assets',
   braveWalletAccountsEditVisibleAssets: 'Visible assets',
+  braveWalletAccountBalance: 'Account balance',
 
   // Add Account Options
   braveWalletCreateAccount: 'Create $1 account',
@@ -314,6 +319,7 @@ provideStrings({
   braveWalletImportAccountUploadButton: 'Choose file',
   braveWalletImportAccountUploadPlaceholder: 'No file chosen',
   braveWalletImportAccountError: 'Failed to import account, please try again.',
+  braveWalletImportAccount: 'Import account',
 
   // Connect Hardware Wallet
   braveWalletConnectHardwareTitle: 'Select your hardware wallet device',
@@ -346,7 +352,6 @@ provideStrings({
   braveWalletWatchListTokenDecimals: 'Decimals of precision',
   braveWalletWatchListAdd: 'Add',
   braveWalletWatchListDoneButton: 'Done',
-  braveWalletWatchListSuggestion: 'Add $1 as a custom token',
   braveWalletWatchListNoAsset: 'No assets named',
   braveWalletWatchListSearchPlaceholder: 'Search assets or contract address',
   braveWalletWatchListError: 'Failed to add custom token, please try again.',
@@ -364,6 +369,11 @@ provideStrings({
   braveWalletAccountsExport: 'Export',
   braveWalletAccountsDeposit: 'Deposit',
   braveWalletAccountsRemove: 'Remove',
+
+  // Empty Token List State
+  braveWalletNoAvailableAssets: 'No available assets',
+  braveWalletNoAvailableAssetsDescription:
+    'Deposit or purchase tokens to get started. If you don\'t see tokens from an imported account, check the filters and display settings. Unknown tokens may need to be added as custom assets.',
 
   // AmountPresets
   braveWalletPreset25: '25%',
@@ -444,13 +454,20 @@ provideStrings({
   braveWalletBuyRampNetworkName: 'Ramp.Network',
   braveWalletBuySardineName: 'Sardine',
   braveWalletBuyTransakName: 'Transak',
+  braveWalletBuyStripeName: 'Link by Stripe',
+  braveWalletBuyCoinbaseName: 'Coinbase Pay',
   braveWalletBuyRampDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
   braveWalletBuySardineDescription: 'Easiest, fastest and cheapest way to buy crypto with card and bank transfers.',
   braveWalletBuyTransakDescription: 'Instant buy with your bank account. Lower fees.',
+  braveWalletBuyStripeDescription: 'Pay with credit, debit, bank account',
+  braveWalletBuyCoinbaseDescription: 'Buy with the most trusted name in crypto.',
   braveWalletBuyWithRamp: 'Buy with Ramp',
   braveWalletBuyWithSardine: 'Buy with Sardine',
   braveWalletBuyWithTransak: 'Buy with Transak',
+  braveWalletBuyWithStripe: 'Buy with Link',
+  braveWalletBuyWithCoinbase: 'Buy with Coinbase Pay',
   braveWalletSellWithProvider: 'Sell with $1',
+  braveWalletBuyDisclaimer: 'Financial and transaction data is processed by our onramp partners. Brave does not collect or have access to such data.',
 
   // Fund Wallet Screen
   braveWalletFundWalletTitle: 'To finish your $1 purchase, select one of our partners',
@@ -526,6 +543,7 @@ provideStrings({
   braveWalletTransactionGasLimit: 'Gas Limit',
   braveWalletTransactionGasPremium: 'Gas Premium',
   braveWalletTransactionGasFeeCap: 'Gas Fee Cap',
+  braveWalletNetworkFees: 'Network fees',
 
   // Wallet Main Panel
   braveWalletPanelTitle: 'Brave Wallet',
@@ -548,6 +566,14 @@ provideStrings({
   braveWalletSitePermissionsNewAccount: 'New account',
   braveWalletSitePermissionsTrust: 'Trust',
   braveWalletSitePermissionsRevoke: 'Revoke',
+
+  // DApp Connection Panel
+  braveWalletChangeNetwork: 'Change network',
+  braveWalletChangeAccount: 'Change account',
+  braveWalletActive: 'Active',
+  braveWalletNotConnected: 'Not connected',
+  braveWalletConnectedAccounts: 'Connected accounts',
+  braveWalletAvailableAccounts: 'Available accounts',
 
   // Transaction Detail Box
   braveWalletTransactionDetailBoxFunction: 'FUNCTION TYPE',
@@ -588,8 +614,9 @@ provideStrings({
   braveWalletConnectHardwarePanelOpenApp: 'Hardware wallet requires $1 App opened on $2',
 
   // Transaction History Panel (Empty)
-  braveWalletNoTransactionsYet: 'No transactions yet',
-  braveWalletNoTransactionsYetDescription: 'After your first transaction you will be able to view it here.',
+  braveWalletNoTransactionsYet: 'No transaction history',
+  braveWalletNoTransactionsYetDescription:
+    'Transactions made with your Brave Wallet will appear here.',
 
   // Transaction List Item
   braveWalletTransactionSent: 'sent',
@@ -603,6 +630,11 @@ provideStrings({
   braveWalletTransactionPlaceholder: 'Transactions will appear here',
   braveWalletTransactionApproveUnlimited: 'Unlimited',
   braveWalletApprovalTransactionIntent: 'approve',
+
+  // Asset Detail Accounts (Empty)
+  braveWalletNoAccountsWithABalance: 'No available accounts',
+  braveWalletNoAccountsWithABalanceDescription:
+    'Accounts with a balance will appear here.',
 
   // Edit Gas
   braveWalletEditGasTitle1: 'Max priority fee',
@@ -700,7 +732,17 @@ provideStrings({
   braveWalletNFTDetailTokenID: 'Token ID',
   braveWalletNFTDetailContractAddress: 'Contract address',
   braveWalletNFTDetailDescription: 'Description',
-  braveWalletNFTDetailImageAddress: 'Image location or address',
+  braveWalletNFTDetailImageAddress: 'Image URL',
+  braveWalletNFTDetailsPinningInProgress: 'In progress',
+  braveWalletNFTDetailsPinningSuccessful: 'Pinned',
+  braveWalletNFTDetailsPinningFailed: 'Failed',
+  braveWalletNFTDetailsNotAvailable: 'Not available yet',
+  braveWalletNFTDetailsOverview: 'Overview',
+  braveWalletNFTDetailsOwnedBy: 'Owned by',
+  braveWalletNFTDetailsViewAccount: 'View account',
+  braveWalletNFTDetailsPinningStatusLabel: 'IPFS pinning status',
+  braveWalletNFTDetailsCid: 'CID',
+  braveWalletNFTDetailsProperties: 'Properties',
 
   // Sweepstakes
   braveWalletSweepstakesTitle: 'Brave Swap-stakes',
@@ -725,14 +767,42 @@ provideStrings({
 
   // Network Filter
   braveWalletNetworkFilterAll: 'All Networks',
-  braveWalletNetworkFilterSecondary: 'Secondary Networks',
-  braveWalletNetworkFilterTestNetworks: 'Test Networks',
+  braveWalletNetworkFilterSecondary: 'Secondary networks',
+  braveWalletNetworkFilterTestNetworks: 'Test networks',
 
   // Asset Filter
-  braveWalletAssetFilterLowToHigh: 'Balance ↑',
-  braveWalletAssetFilterHighToLow: 'Balance ↓',
-  braveWalletAssetFilterAToZ: 'Name ↓',
-  braveWalletAssetFilterZToA: 'Name ↑',
+  braveWalletAssetFilterLowToHigh: 'Low to High',
+  braveWalletAssetFilterHighToLow: 'High to Low',
+  braveWalletAssetFilterAToZ: 'A to Z',
+  braveWalletAssetFilterZToA: 'Z to A',
+
+  // Asset Group By
+  braveWalletNone: 'None',
+  braveWalletNetworks: 'Networks',
+  braveWalletPortfolioGroupByTitle: 'Group by',
+  braveWalletPortfolioGroupByDescription: 'Group assets by',
+
+  // Portfolio Filters
+  braveWalletPortfolioFiltersTitle: 'Filters and display settings',
+  braveWalletPortfolioNftsFiltersTitle: 'NFT display settings',
+  braveWalletSortAssets: 'Sort assets',
+  braveWalletSortAssetsDescription: 'Sort by fiat value or name',
+  braveWalletHideSmallBalances: 'Hide small balances',
+  braveWalletHideSmallBalancesDescription: 'Assets with value less than $1',
+  braveWalletSelectAccounts: 'Select accounts',
+  braveWalletSelectNetworks: 'Select networks',
+  braveWalletSelectAll: 'Select all',
+  braveWalletDeselectAll: 'Deselect all',
+  braveWalletPrimaryNetworks: 'Primary networks',
+  braveWalletETHAccountDescrption: 'Ethereum + EVM Chains',
+  braveWalletSOLAccountDescrption: 'Solana + SVM Chains',
+  braveWalletFILAccountDescrption: 'Filecoin',
+  braveWalletBTCAccountDescrption: 'Bitcoin',
+  braveWalletShowNetworkLogoOnNftsTitle: 'Network Logo',
+  braveWalletShowNetworkLogoOnNftsDescription: 'Show network logo on NFTs',
+  braveWalletShowSpamNftsTitle: 'Spam NFTs',
+  braveWalletShowSpamNftsDescription: 'Show Spam NFTs',
+
 
   // Account Filter
   braveWalletAccountFilterAllAccounts: 'All accounts',
@@ -829,6 +899,14 @@ provideStrings({
   braveWalletConfirmHidingToken: 'Hide',
   braveWalletCancelHidingToken: 'Cancel',
 
+  // Visible assets modal
+  braveWalletMyAssets: 'My assets',
+  braveWalletAvailableAssets: 'Available assets',
+  braveWalletDidntFindAssetEndOfList: 'Didn\'t find your asset on the list?',
+  braveWalletDidntFindAssetInList:
+    'If you didn\'t find your asset in this list, you can add it manually by using the button below',
+  braveWalletAssetNotFound: 'Asset not found',
+
   // Request feature button
   braveWalletRequestFeatureButtonText: 'Request feature',
 
@@ -844,6 +922,11 @@ provideStrings({
   braveNftsTabEmptyStateHeading: 'No NFTs here yet.',
   braveNftsTabEmptyStateSubHeading: 'Ready to add some? Just click the button below to import.',
   braveNftsTabEmptyStateDisclaimer: 'Compatible with NFTs on Solana (SPL) and Ethereum (ERC-721).',
+  braveNftsTab: 'NFTs',
+  braveNftsTabHidden: 'Hidden',
+  braveNftsTabHide: 'Hide',
+  braveNftsTabUnhide: 'Unhide',
+  braveNftsTabEdit: 'Edit',
 
   // Add asset tabs
   braveWalletAddAssetTokenTabTitle: 'Token',
@@ -865,8 +948,8 @@ provideStrings({
   braveWalletTransactionHasFeeEstimatesError: 'Unable to fetch fee estimates',
 
   // NFT Pinning
-  braveWalletNftPinningWhyNotAvailable: 'Why not available?',
-  braveWalletNftPinningTooltip: 'Some of NFT data are stored in centralized server such as AWS, Google Cloud, etc. In this case, it is not available to pin your NFT data to IPFS network.',
+  braveWalletNftPinningWhyNotAvailable: 'Why aren\'t some NFTs eligible?',
+  braveWalletNftPinningTooltip: 'Some NFT data is stored on centralized servers like AWS, Google Cloud, etc. In this case, it\’s not possible to pin your NFT data to the IPFS network.',
   braveWalletNftPinningBenefitsHeading: 'By enabling IPFS in Brave, your NFTs will be pinned automatically. It\'s the best way to securely back up your NFTs.',
   braveWalletNftPinningPinNftsButton: 'Get started with IPFS',
   braveWalletNftPinningBackButton: 'Back',
@@ -879,7 +962,8 @@ provideStrings({
   braveWalletNftPinningBannerUploading: 'NFTs are being pinned to your local IPFS node.',
   braveWalletNftPinningBannerSuccess: '$1 supported NFTs are pinned to your local IPFS node.',
   braveWalletNftPinningBannerLearnMore: 'Learn more',
-  braveWalletNftPinningInspectHeading: '$1 out of $2 are available!',
+  braveWalletNftPinningInspectHeading: '$1 NFT is eligible',
+  braveWalletNftPinningInspectHeadingPlural: '$1 NFTs are eligible',
   braveWalletNftPinningUnableToPin: 'Unable to pin',
   braveWalletNftPinningNodeRunningStatus: 'You\’re running an IPFS node',
   braveWalletNftPinningNodeNotRunningStatus: 'Local IPFS node is not running',
@@ -897,5 +981,10 @@ provideStrings({
   braveWalletEnableNftAutoDiscoveryModalHeader: 'Want your NFTs displayed automatically?',
   braveWalletEnableNftAutoDiscoveryModalDescription: 'Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with $1SimpleHash$2 to provide this service. $3Learn more.$4',
   braveWalletEnableNftAutoDiscoveryModalConfirm: 'Yes, proceed',
-  braveWalletEnableNftAutoDiscoveryModalCancel: 'No thanks, I\'ll do it manually'
+  braveWalletEnableNftAutoDiscoveryModalCancel: 'No thanks, I\'ll do it manually',
+  braveWalletAutoDiscoveryEmptyStateHeading: 'No NFTs to display',
+  braveWalletAutoDiscoveryEmptyStateSubHeading: 'Once an NFT is detected, it\’ll be displayed here.',
+  braveWalletAutoDiscoveryEmptyStateFooter: 'Can\’t see your NFTs?',
+  braveWalletAutoDiscoveryEmptyStateActions: '$1Refresh$2 or $3Import Manually$4',
+  braveWalletAutoDiscoveryEmptyStateRefresh: 'Refreshing' 
 })

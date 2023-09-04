@@ -8,7 +8,6 @@
 package org.chromium.chrome.browser;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,9 +19,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.brave_rewards.mojom.WalletStatus;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsExternalWallet;
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
-import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 
@@ -86,8 +82,10 @@ public class BraveRewardsUserWalletActivity
             return R.drawable.uphold_green;
         } else if (walletType.equals(BraveWalletProvider.GEMINI)) {
             return R.drawable.ic_gemini_logo_cyan;
-        } else {
+        } else if (walletType.equals(BraveWalletProvider.BITFLYER)) {
             return R.drawable.ic_logo_bitflyer_colored;
+        } else {
+            return R.drawable.ic_logo_zebpay;
         }
     }
 
@@ -96,8 +94,10 @@ public class BraveRewardsUserWalletActivity
             return getResources().getString(R.string.uphold);
         } else if (walletType.equals(BraveWalletProvider.GEMINI)) {
             return getResources().getString(R.string.gemini);
-        } else {
+        } else if (walletType.equals(BraveWalletProvider.BITFLYER)) {
             return getResources().getString(R.string.bitflyer);
+        } else {
+            return getResources().getString(R.string.zebpay);
         }
     }
 

@@ -59,6 +59,7 @@ OBJC_EXPORT
 /// Initializes the ads service
 - (void)initializeWithSysInfo:(BraveAdsSysInfo*)sysInfo
              buildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo
+                   walletInfo:(nullable BraveAdsWalletInfo*)walletInfo
                    completion:(void (^)(bool))completion;
 
 /// Shuts down the ads service if its running
@@ -90,10 +91,6 @@ OBJC_EXPORT
 
 /// Automatically detected ads subdivision targeting code
 @property(nonatomic, copy) NSString* autoDetectedSubdivisionTargetingCode;
-
-/// Remove all cached history (should be called when the user clears their
-/// browser history)
-- (void)removeAllHistory:(void (^)(BOOL))completion;
 
 #pragma mark - Notificiations
 
@@ -130,8 +127,7 @@ OBJC_EXPORT
 - (void)reportTabUpdated:(NSInteger)tabId
                      url:(NSURL*)url
       redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
-              isSelected:(BOOL)isSelected
-               isPrivate:(BOOL)isPrivate;
+              isSelected:(BOOL)isSelected;
 
 /// Report that a tab with a given id was closed by the user
 - (void)reportTabClosedWithTabId:(NSInteger)tabId
@@ -139,7 +135,8 @@ OBJC_EXPORT
 
 /// Report that a notification ad event type was triggered for a given id
 - (void)reportNotificationAdEvent:(NSString*)placementId
-                        eventType:(BraveAdsNotificationAdEventType)eventType;
+                        eventType:(BraveAdsNotificationAdEventType)eventType
+                       completion:(void (^)(BOOL success))completion;
 
 /// Get inline content ad for the given dimensions
 - (void)inlineContentAdsWithDimensions:(NSString*)dimensions
@@ -151,18 +148,21 @@ OBJC_EXPORT
 /// Report that an inline content ad event type was triggered for a given id
 - (void)reportInlineContentAdEvent:(NSString*)placementId
                 creativeInstanceId:(NSString*)creativeInstanceId
-                         eventType:(BraveAdsInlineContentAdEventType)eventType;
+                         eventType:(BraveAdsInlineContentAdEventType)eventType
+                        completion:(void (^)(BOOL success))completion;
 
 /// Report that a new tab page ad event type was triggered for a given id
 - (void)reportNewTabPageAdEvent:(NSString*)wallpaperId
              creativeInstanceId:(NSString*)creativeInstanceId
-                      eventType:(BraveAdsNewTabPageAdEventType)eventType;
+                      eventType:(BraveAdsNewTabPageAdEventType)eventType
+                     completion:(void (^)(BOOL success))completion;
 
 /// Report that a promoted content ad event type was triggered for a given id
 - (void)reportPromotedContentAdEvent:(NSString*)placementId
                   creativeInstanceId:(NSString*)creativeInstanceId
                            eventType:
-                               (BraveAdsPromotedContentAdEventType)eventType;
+                               (BraveAdsPromotedContentAdEventType)eventType
+                          completion:(void (^)(BOOL success))completion;
 
 /// Purge orphaned ad events for a given ad type
 - (void)purgeOrphanedAdEvents:(BraveAdsAdType)adType
@@ -179,12 +179,14 @@ OBJC_EXPORT
 /// Toggle that the user liked the given ad and advertiser and more like it
 /// should be shown
 - (void)toggleThumbsUpForAd:(NSString*)creativeInstanceId
-               advertiserId:(NSString*)advertiserId;
+               advertiserId:(NSString*)advertiserId
+                    segment:(NSString*)segment;
 
 /// Toggle that the user disliked the given ad and advertiser and it shouldn't
 /// be shown again
 - (void)toggleThumbsDownForAd:(NSString*)creativeInstanceId
-                 advertiserId:(NSString*)advertiserId;
+                 advertiserId:(NSString*)advertiserId
+                      segment:(NSString*)segment;
 
 #pragma mark -
 

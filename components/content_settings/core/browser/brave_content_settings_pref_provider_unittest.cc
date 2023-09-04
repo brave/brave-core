@@ -503,7 +503,7 @@ TEST_F(BravePrefProviderTest, MigrateFPShieldsSettings) {
   while (rule_iterator && rule_iterator->HasNext()) {
     auto rule = rule_iterator->Next();
     EXPECT_NE(
-        rule.secondary_pattern.ToString(),
+        rule->secondary_pattern.ToString(),
         ContentSettingsPattern::FromString("https://balanced/*").ToString());
   }
   rule_iterator.reset();
@@ -528,12 +528,13 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
 
   // Manually write settings under the PLUGINS type using the no longer existing
   // ResourceIdentifier names, and then perform the migration.
-  ScopedDictPrefUpdate plugins(pref_service, kUserProfilePluginsPath);
+  absl::optional<ScopedDictPrefUpdate> plugins(absl::in_place, pref_service,
+                                               kUserProfilePluginsPath);
 
   base::Time expected_last_modified = base::Time::Now();
 
   // Seed global shield settings with non-default values.
-  base::Value::Dict* global_settings = plugins->EnsureDict("*,*");
+  base::Value::Dict* global_settings = plugins.value()->EnsureDict("*,*");
 
   const int expected_global_settings_value = 1;
   InitializeAllShieldSettingsInDictionary(
@@ -541,7 +542,7 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
 
   // Change all of those global settings for www.example.com.
   base::Value::Dict* example_settings =
-      plugins->EnsureDict("www.example.com,*");
+      plugins.value()->EnsureDict("www.example.com,*");
 
   const int expected_example_com_settings_value = 1;
   InitializeAllShieldSettingsInDictionary(example_settings,
@@ -549,12 +550,17 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
                                           expected_example_com_settings_value);
 
   // Disable Brave Shields for www.brave.com.
-  base::Value::Dict* brave_settings = plugins->EnsureDict("www.brave.com,*");
+  base::Value::Dict* brave_settings =
+      plugins.value()->EnsureDict("www.brave.com,*");
 
   const int expected_brave_com_settings_value = 1;
   InitializeBraveShieldsSettingInDictionary(brave_settings,
                                             expected_last_modified,
                                             expected_brave_com_settings_value);
+
+  // Destroying `plugins` at this point, as otherwise it will be holding a
+  // dangling pointer, after `MigrateShieldsSettingsFromResourceIds()`.
+  plugins = absl::nullopt;
 
   provider.MigrateShieldsSettingsFromResourceIds();
 
@@ -591,7 +597,8 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromUnknownSettings) {
 
   // Manually write invalid settings under the PLUGINS type using the no longer
   // existing ResourceIdentifier names, to attempt the migration.
-  ScopedDictPrefUpdate plugins(pref_service, kUserProfilePluginsPath);
+  absl::optional<ScopedDictPrefUpdate> plugins(absl::in_place, pref_service,
+                                               kUserProfilePluginsPath);
 
   // Seed both global and per-site shield settings preferences using unsupported
   // names, so that we can test that Brave doesn't crash while attempting the
@@ -600,13 +607,17 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromUnknownSettings) {
   // For a list of supported names, see |kBraveContentSettingstypes| inside the
   // components/content_settings/core/browser/content_settings_registry.cc
   // override, in the chromium_src/ directory.
-  base::Value::Dict* global_settings = plugins->EnsureDict("*,*");
+  base::Value::Dict* global_settings = plugins.value()->EnsureDict("*,*");
   InitializeUnsupportedShieldSettingInDictionary(global_settings,
                                                  base::Time::Now());
   base::Value::Dict* example_settings =
-      plugins->EnsureDict("www.example.com,*");
+      plugins.value()->EnsureDict("www.example.com,*");
   InitializeUnsupportedShieldSettingInDictionary(example_settings,
                                                  base::Time::Now());
+
+  // Destroying `plugins` at this point, as otherwise it will be holding a
+  // dangling pointer, after `MigrateShieldsSettingsFromResourceIds()`.
+  plugins = absl::nullopt;
 
   // Doing the migration below should NOT get a crash due to invalid settings.
   provider.MigrateShieldsSettingsFromResourceIds();

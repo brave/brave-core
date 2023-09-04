@@ -16,11 +16,10 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.infobar.BraveInfoBarIdentifier;
-import org.chromium.chrome.browser.sync.SyncService;
+import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ui.messages.infobar.BraveSimpleConfirmInfoBarBuilder;
 import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuilder;
-import org.chromium.chrome.browser.util.TabUtils;
 
 public class BraveAndroidSyncDisabledInformer {
     private static final String TAG = "SyncDisabled";
@@ -51,7 +50,8 @@ public class BraveAndroidSyncDisabledInformer {
             return;
         }
 
-        boolean brave_sync_is_enabled = SyncService.get().isFirstSetupComplete();
+        boolean brave_sync_is_enabled =
+                SyncServiceFactory.get().isInitialSyncFeatureSetupComplete();
         boolean android_system_sync_disabled = !ContentResolver.getMasterSyncAutomatically();
 
         if (!brave_sync_is_enabled || !android_system_sync_disabled) {

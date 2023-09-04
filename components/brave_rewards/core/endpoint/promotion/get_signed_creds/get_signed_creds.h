@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // GET /v1/promotions/{promotion_id}/claims/{claim_id}
 //
@@ -44,7 +44,7 @@
 // }
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 namespace promotion {
@@ -54,7 +54,7 @@ using GetSignedCredsCallback =
 
 class GetSignedCreds {
  public:
-  explicit GetSignedCreds(LedgerImpl& ledger);
+  explicit GetSignedCreds(RewardsEngineImpl& engine);
   ~GetSignedCreds();
 
   void Request(const std::string& promotion_id,
@@ -72,7 +72,7 @@ class GetSignedCreds {
   void OnRequest(GetSignedCredsCallback callback,
                  mojom::UrlResponsePtr response);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace promotion

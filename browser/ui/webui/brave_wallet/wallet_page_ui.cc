@@ -27,6 +27,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/simulation_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
@@ -132,8 +133,8 @@ void WalletPageUI::CreatePageHandler(
 
   page_handler_ =
       std::make_unique<WalletPageHandler>(std::move(page_receiver), profile);
-  wallet_handler_ =
-      std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);
+  wallet_handler_ = std::make_unique<brave_wallet::WalletHandler>(
+      std::move(wallet_receiver), profile);
 
   brave_wallet::JsonRpcServiceFactory::BindForContext(
       profile, std::move(json_rpc_service_receiver));

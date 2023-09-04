@@ -31,7 +31,7 @@ absl::optional<mojom::UrlRequestPtr> RequestBuilder::Request() const {
                                 ContentType(), SkipLog(), LoadFlags());
 }
 
-RequestBuilder::RequestBuilder(LedgerImpl& ledger) : ledger_(ledger) {}
+RequestBuilder::RequestBuilder(RewardsEngineImpl& engine) : engine_(engine) {}
 
 mojom::UrlMethod RequestBuilder::Method() const {
   return mojom::UrlMethod::POST;

@@ -5,15 +5,13 @@
 
 import("//brave/build/config.gni")
 
-source_set("browser") {
+static_library("browser") {
   sources = [
     "ads_p2a.cc",
     "ads_p2a.h",
     "ads_service.cc",
     "ads_service.h",
     "ads_service_observer.h",
-    "ads_storage_cleanup.cc",
-    "ads_storage_cleanup.h",
     "component_updater/component_info.h",
     "component_updater/component_util.cc",
     "component_updater/component_util.h",
@@ -21,6 +19,9 @@ source_set("browser") {
     "component_updater/resource_component.h",
     "component_updater/resource_component_observer.h",
     "component_updater/resource_info.h",
+    "feature/custom_notification_ad_constants.h",
+    "feature/custom_notification_ad_feature.cc",
+    "feature/custom_notification_ad_feature.h",
     "frequency_capping_helper.cc",
     "frequency_capping_helper.h",
     "reminder_util.cc",
@@ -32,7 +33,6 @@ source_set("browser") {
   deps = [
     "//base",
     "//brave/components/brave_adaptive_captcha",
-    "//brave/components/brave_ads/common",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/resources",
     "//brave/components/brave_component_updater/browser",
@@ -48,7 +48,7 @@ source_set("browser") {
     "//url",
   ]
 
-  public_deps = [ "//brave/components/brave_ads/common/interfaces" ]
+  public_deps = [ "//brave/components/brave_ads/core/mojom" ]
 
   # TODO(https://github.com/brave/brave-browser/issues/24163)
   check_includes = false
@@ -96,7 +96,7 @@ source_set("test_support") {
   deps = [ "//testing/gmock" ]
 
   sources = [
-    "mock_ads_service.cc",
-    "mock_ads_service.h",
+    "ads_service_mock.cc",
+    "ads_service_mock.h",
   ]
 }

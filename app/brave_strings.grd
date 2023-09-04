@@ -275,12 +275,31 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         <part file="settings_brave_strings.grdp" />
       </if>
 
-      <message name="IDS_PRODUCT_NAME" desc="The Brave application name">
-        Brave
-      </message>
-      <message name="IDS_SHORT_PRODUCT_NAME" desc="The Brave application short name.">
-        Brave
-      </message>
+      <!--
+        Even though Brave for Testing is a separate brand, there is
+        no separate file for it. Instead, we use the same file as Brave, with
+        a few select overrides for the most prominent end-user strings.
+
+        Rationale: https://goo.gle/chrome-for-testing#bookmark=id.n1rat320av91
+      -->
+      <if expr="_is_chrome_for_testing_branded">
+        <then>
+          <message name="IDS_PRODUCT_NAME" desc="The Brave for Testing application name" translateable="false">
+            Brave for Testing
+          </message>
+          <message name="IDS_SHORT_PRODUCT_NAME" desc="The Brave for Testing application short name." translateable="false">
+            Brave for Testing
+          </message>
+        </then>
+        <else>
+          <message name="IDS_PRODUCT_NAME" desc="The Brave application name" translateable="false">
+            Brave
+          </message>
+          <message name="IDS_SHORT_PRODUCT_NAME" desc="The Brave application short name." translateable="false">
+            Brave
+          </message>
+        </else>
+      </if>
       <if expr="is_win">
         <message name="IDS_SXS_SHORTCUT_NAME">Brave Nightly</message>
         <message name="IDS_SHORTCUT_NAME_BETA">Brave Beta</message>
@@ -438,7 +457,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           Brave may not function correctly because it is no longer supported on this Linux distribution
         </message>
       </if>
-      <message name="IDS_ACCNAME_APP" desc="The accessible name for the app menu.">
+      <message name="IDS_ACCNAME_APP" desc="The accessible name for the app menu." translateable="false">
         Brave
       </message>
       <!-- Hung Browser Detector -->
@@ -516,7 +535,7 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
       </if>
       <!-- Crash Recovery Dialog -->
-      <message name="IDS_CRASH_RECOVERY_TITLE" desc="Title of dialog shown when the browser crashes.">
+      <message name="IDS_CRASH_RECOVERY_TITLE" desc="Title of dialog shown when the browser crashes." translateable="false">
         Brave
       </message>
       <if expr="is_win">
@@ -532,7 +551,7 @@ Permissions you've already given to websites and apps may apply to this account.
       <message name="IDS_PASSWORD_MANAGER_ONBOARDING_DETAILS_C" desc="The explanation text that is shown below the title in the password manager onboarding dialog.">
         Brave lets you know if your passwords are ever compromised
       </message>
-      <message name="IDS_PASSWORD_MANAGER_TITLE_BRAND" desc="The product name used in the title of the password bubble.">
+      <message name="IDS_PASSWORD_MANAGER_TITLE_BRAND" desc="The product name used in the title of the password bubble." translateable="false">
         Brave
       </message>
       <message name="IDS_PASSWORD_BUBBLES_PASSWORD_MANAGER_LINK_TEXT_SAVING_ON_DEVICE" desc="The text of the Brave Password Manager links displayed on Password Manager bubbles footer when the credentials are stored only locally.">
@@ -561,6 +580,9 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
         <message name="IDS_PASSWORDS_PAGE_EXPORT_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before exporting passwords to a file.">
           Brave wants to export your passwords. Type your Windows password to allow this.
+        </message>
+        <message name="IDS_PASSWORDS_PAGE_IMPORT_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before overriding passwords during Import.">
+          Brave is trying to replace existing passwords. Type your Windows password to allow this.
         </message>
         <message name="IDS_INSTALL_HIGHER_VERSION" desc="Error displayed when higher version already exists.">
           This computer already has a more recent version of Brave. If the software is not working, please uninstall Brave and try again.
@@ -727,6 +749,17 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
       </if>
 
+      <!-- Extension Safety Check Detail Page strings -->
+      <message name="IDS_SAFETY_CHECK_EXTENSIONS_MALWARE" desc="The text explaining the reason for disabling extension. The extension in question contains malware.">
+        This extension contains malware and is unsafe. Remove it from Brave so it can no longer see and change your data on sites you visit, including your personal info.
+      </message>
+       <message name="IDS_SAFETY_CHECK_EXTENSIONS_POLICY_VIOLATION" desc="The text explaining the reason for disabling extension. The extension in question violates Web Store policy.">
+          This extension violates the Web Store policy, and might be unsafe. Remove it from Brave so it can no longer see and change your data on sites you visit, including your personal info.
+      </message>
+      <message name="IDS_SAFETY_CHECK_EXTENSIONS_UNPUBLISHED" desc="The text explaining the reason for disabling extension. The extension in question was unpublished by the developer.">
+          This extension was unpublished by its developer, and might be unsafe. Remove it from Brave so it can no longer see and change your data on sites you visit, including your personal info.
+      </message>
+
       <!-- chrome://settings/extensions page -->
       <message name="IDS_EXTENSIONS_ITEM_SHOW_ACCESS_REQUESTS_IN_TOOLBAR" desc="The label on the toggle to allow the extension to show site access requests in the toolbar.">
         Allow extension to show access requests in the Brave toolbar
@@ -768,17 +801,35 @@ Permissions you've already given to websites and apps may apply to this account.
       </message>
 
       <if expr="use_titlecase and not chromeos_ash">
-        <message name="IDS_ABOUT" desc="In Title Case: The text label of the About Brave menu item">
-          About &amp;Brave
-        </message>
+        <if expr="_is_chrome_for_testing_branded">
+          <then>
+            <message name="IDS_ABOUT" desc="In Title Case: The text label of the About Brave for Testing menu item">
+              About &amp;Brave for Testing
+            </message>
+          </then>
+          <else>
+            <message name="IDS_ABOUT" desc="In Title Case: The text label of the About Brave menu item">
+              About &amp;Brave
+            </message>
+          </else>
+        </if>
         <message name="IDS_RELAUNCH_TO_UPDATE" desc="In Title Case: The text label of the relaunch to update Brave menu item">
           Relaunch to Update &amp;Brave
         </message>
       </if>
       <if expr="not use_titlecase and not chromeos_ash">
-        <message name="IDS_ABOUT" desc="The text label of the About Brave menu item">
-          About &amp;Brave
-        </message>
+        <if expr="_is_chrome_for_testing_branded">
+          <then>
+            <message name="IDS_ABOUT" desc="The text label of the About Brave for Testing menu item">
+              About &amp;Brave for Testing
+            </message>
+          </then>
+          <else>
+            <message name="IDS_ABOUT" desc="The text label of the About Brave menu item">
+              About &amp;Brave
+            </message>
+          </else>
+        </if>
         <message name="IDS_RELAUNCH_TO_UPDATE" desc="The text label of the relaunch to update Brave menu item">
           Relaunch to update &amp;Brave
         </message>
@@ -792,8 +843,14 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
       </if>
 
+      <if expr="is_win or is_macosx or is_linux">
+        <message name="IDS_RELAUNCH_TO_UPDATE_ALT" desc="Alternate text label of the relaunch to update Brave menu item" translateable="false">
+        Not used in Brave. Placeholder to keep resource maps in sync.
+        </message>
+      </if>
+
       <if expr="is_macosx">
-        <message name="IDS_APP_MENU_PRODUCT_NAME" desc="The application's short name, used for the Mac's application menu, activity monitor, etc. This should be less than 16 characters. Example: Brave, not Brave.">
+        <message name="IDS_APP_MENU_PRODUCT_NAME" desc="The application's short name, used for the Mac's application menu, activity monitor, etc. This should be less than 16 characters. Example: Brave, not Brave." translateable="false">
           Brave
         </message>
         <message name="IDS_HELPER_NAME" desc="The helper application's name.  Should contain the Brave application name (IDS_PRODUCT_NAME). Example: Brave Helper.">
@@ -804,8 +861,12 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
       </if>
 
+      <message name="IDS_VIEW_PASSWORDS" desc="Item in the app menu which shows Password Manager page">
+        P&amp;assword Manager
+      </message>
+
       <!-- Brave sign-in page -->
-      <message name="IDS_CHROME_SIGNIN_TITLE" desc="Title on the about:chrome-signin page">
+      <message name="IDS_CHROME_SIGNIN_TITLE" desc="Title on the about:chrome-signin page" translateable="false">
         Brave
       </message>
 
@@ -977,10 +1038,17 @@ Permissions you've already given to websites and apps may apply to this account.
 
       <if expr="not is_android">
         <!-- WebHID system tray icon -->
-        <message name="IDS_WEBHID_SYSTEM_TRAY_ICON_TOOLTIP" desc="Tooltip for the WebHID system tray icon when one or more HID devices are being accessed.">
+        <message name="IDS_WEBHID_SYSTEM_TRAY_ICON_TITLE_SINGLE_EXTENSION" desc="Title for the WebHID system tray icon when one or more HID devices are being accessed by an extension.">
             {NUM_DEVICES, plural,
-            =1 {Brave is connected to a HID device}
-            other {Brave is connected to HID devices}}
+            =0 {A Brave extension was accessing HID devices}
+            =1 {A Brave extension is accessing 1 HID device}
+            other {A Brave extension is accessing # HID devices}}
+        </message>
+        <message name="IDS_WEBHID_SYSTEM_TRAY_ICON_TITLE_MULTIPLE_EXTENSIONS" desc="Title for the WebHID system tray icon when HID devices are being accessed by multiple extensions.">
+            {NUM_DEVICES, plural,
+            =0 {Brave extensions were accessing HID devices}
+            =1 {Brave extensions are accessing HID devices}
+            other {Brave extensions are accessing # HID devices}}
         </message>
       </if>
 
@@ -1029,6 +1097,22 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
         <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_OUTRO_ADD_USER" desc="Text of the add a new user button">
           Add yourself to Brave
+        </message>
+      </if>
+
+      <if expr="not is_android">
+        <!-- Password Manager Tutorial Strings -->
+        <message name="IDS_TUTORIAL_PASSWORD_MANAGER_OPEN_APP_MENU" desc="The description of the 'open add menu' step in password manager tutorial">
+          Click the Brave menu
+        </message>
+        <message name="IDS_TUTORIAL_PASSWORD_MANAGER_CLICK_PASSWORD_MANAGER" desc="The description of the 'click password manager' step in password manager tutorial">
+          Click “Password Manager”
+        </message>
+        <message name="IDS_TUTORIAL_PASSWORD_MANAGER_SUCCESS_BODY" desc="The description of the body text in the 'success' step in password manager tutorial">
+          Use your shortcut to quickly get to the Password Manager. You can move your shortcut to your computer's home screen or app launcher.
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_IPH_CREATE_SHORTCUT_BODY" desc="Body of the in Product Help shown after successfully logging into a website telling user about how to create a shortcut">
+          Add a shortcut to Password Manager
         </message>
       </if>
 
@@ -1122,6 +1206,15 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
         <message name="IDS_RELAUNCH_AND_UPDATE" desc="The button in the Update Recommended dialog which updates and restarts ChromeOS.">
           Restart
+        </message>
+      </if>
+
+      <if expr="is_win or is_macosx or is_linux">
+        <message name="IDS_UPDATE_RECOMMENDED_DIALOG_TITLE_ALT" desc="Alternate window title for the Update Recommended dialog." translateable="false">
+          Not used in Brave. Placeholder to keep resource maps in sync.
+        </message>
+        <message name="IDS_UPDATE_RECOMMENDED_ALT" desc="Alternate main text of the Update Recommended dialog with a count of open Private windows." translateable="false">
+          Not used in Brave. Placeholder to keep resource maps in sync.
         </message>
       </if>
 
@@ -1324,6 +1417,19 @@ Permissions you've already given to websites and apps may apply to this account.
       <message name="IDS_DESKTOP_MEDIA_PICKER_TITLE_WEB_CONTENTS_ONLY" desc="Title for the window picker dialog shown when desktop capture of a tab is requested by an app.">
         Share a Brave tab
       </message>
+      <!-- Idle timeout bubble. -->
+      <message name="IDS_IDLE_BUBBLE_TITLE_CLOSE" desc="Title of a bubble that informs the user that Brave closed automatically, because they were away from the computer for X minutes.">
+        Brave was automatically closed
+      </message>
+      <message name="IDS_IDLE_BUBBLE_BODY_CLOSE_AND_CLEAR" desc="Body of a bubble that informs the user that Brave closed + cleared data automatically, because they were away from the computer for X minutes.">
+        Your organization closes Brave when it isn't used for <ph name="TIMEOUT_DURATION">$1<ex>30 minutes</ex></ph>. Browsing data was deleted. This could include history, autofill, and downloads.
+      </message>
+      <message name="IDS_IDLE_BUBBLE_BODY_CLEAR" desc="Body of a bubble that informs the user that Brave cleared data automatically, because they were away from the computer for X minutes.">
+        Your organization deletes Brave data when it isn't used for <ph name="TIMEOUT_DURATION">$1<ex>30 minutes</ex></ph>. This could include history, autofill, and downloads.
+      </message>
+      <message name="IDS_IDLE_BUBBLE_BODY_CLOSE" desc="Body of a bubble that informs the user that Brave closed automatically, because they were away from the computer for X minutes.">
+        Your organization closes Brave when it isn't used for <ph name="TIMEOUT_DURATION">$1<ex>30 minutes</ex></ph>.
+      </message>
       <!-- Idle timeout dialog. -->
       <if expr="not is_android and not is_chromeos">
         <message name="IDS_IDLE_TIMEOUT_CLOSE_TITLE" desc="Title of the Idle Timeout dialog, warning the user that their windows are about to close.">
@@ -1337,18 +1443,18 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
         <message name="IDS_IDLE_TIMEOUT_CLOSE_BODY" desc="First sentence in the Idle Timeout dialog, warning the user that Brave is going to close automatically.">
           {COUNT, plural,
-          =1 {Your administrator automatically closes Brave when it isn't used for 1 minute.}
-          other {Your administrator automatically closes Brave when it isn't used for # minutes.}}
+          =1 {Your organization automatically closes Brave when it isn't used for 1 minute.}
+          other {Your organization automatically closes Brave when it isn't used for # minutes.}}
         </message>
         <message name="IDS_IDLE_TIMEOUT_CLEAR_BODY" desc="First sentence in the Idle Timeout dialog, warning the user that Brave is going to clear data automatically.">
           {COUNT, plural,
-          =1 {Your administrator automatically deletes browsing data when it isn't used for 1 minute. This could include history, autofill, and downloads. Your existing tabs will remain open.}
-          other {Your administrator automatically deletes browsing data when it isn't used for # minutes. This could include history, autofill, and downloads. Your existing tabs will remain open.}}
+          =1 {Your organization automatically deletes browsing data when Brave isn't used for 1 minute. This could include history, autofill, and downloads. Your existing tabs will remain open.}
+          other {Your organization automatically deletes browsing data when Brave isn't used for # minutes. This could include history, autofill, and downloads. Your existing tabs will remain open.}}
         </message>
         <message name="IDS_IDLE_TIMEOUT_CLOSE_AND_CLEAR_BODY" desc="First sentence in the Idle Timeout dialog, warning the user that Brave is going to close and clear data automatically.">
           {COUNT, plural,
-          =1 {Your administrator automatically closes Brave when it isn't used for 1 minute. Browsing data is deleted. This could include history, autofill, and downloads.}
-          other {Your administrator automatically closes Brave when it isn't used for # minutes. Browsing data is deleted. This could include history, autofill, and downloads.}}
+          =1 {Your organization automatically closes Brave when it isn't used for 1 minute. Browsing data is deleted. This could include history, autofill, and downloads.}
+          other {Your organization automatically closes Brave when it isn't used for # minutes. Browsing data is deleted. This could include history, autofill, and downloads.}}
         </message>
         <message name="IDS_IDLE_DISMISS_BUTTON" desc="Button label in the Idle Timeout dialog, this button dismisses the dialog and prevents browsers from closing automatically.">
           Continue using Brave
@@ -1453,6 +1559,9 @@ Permissions you've already given to websites and apps may apply to this account.
         <message name="IDS_PROFILE_SWITCH_PROMO_SCREENREADER" desc="Text announced by screenreaders to explain how to switch between profiles.">
           <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+M</ex></ph> can switch between Brave profiles
         </message>
+        <message name="IDS_PASSWORD_MANAGER_IPH_BODY_WEB_APP_PROFILE_SWITCH" desc="Body of the in Product Help for profile switching shown in the password manager web app.">
+          You can switch to see passwords from another Brave profile
+        </message>
       </if>
 
       <!-- Strings for full restore notifications -->
@@ -1482,6 +1591,9 @@ Permissions you've already given to websites and apps may apply to this account.
       </message>
       <message name="IDS_TAILORED_SECURITY_UNCONSENTED_PROMOTION_MESSAGE_DESCRIPTION" desc="Description shown in the message shown when a user changes their account-level tailored security setting encouraging them to enable Enhanced Safe Browsing">
         Enhanced protection does more to block phishing and malware
+      </message>
+      <message name="IDS_TAILORED_SECURITY_UNCONSENTED_PROMOTION_MESSAGE_DESCRIPTION_UPDATED" desc="Description shown in the message shown when a user changes their account-level tailored security setting encouraging them to enable Enhanced Safe Browsing">
+        Enhanced Safe Browsing does more to protect you against dangerous websites and downloads
       </message>
       <message name="IDS_TAILORED_SECURITY_UNCONSENTED_PROMOTION_MESSAGE_ACCEPT" desc="Accept button shown in the message shown when a user changes their account-level tailored security setting encouraging them to enable Enhanced Safe Browsing">
         Continue
@@ -1530,7 +1642,7 @@ Permissions you've already given to websites and apps may apply to this account.
 
       <!-- BraveUpdater Strings -->
       <if expr="is_win">
-        <message name="IDS_FRIENDLY_COMPANY_NAME" desc="Company name">
+        <message name="IDS_FRIENDLY_COMPANY_NAME" desc="Company name" translateable="false">
           Brave
         </message>
         <message name="IDS_NO_UPDATE_RESPONSE" desc="Updater response for no updates when handling install result.">
@@ -1630,20 +1742,13 @@ Permissions you've already given to websites and apps may apply to this account.
             Memory Saver made Brave faster
           </message>
         </if>
+        <message name="IDS_HIGH_EFFICIENCY_DIALOG_BODY_V2" desc="Body text for a dialog describing that Memory Saver mode will use less memory.">
+          While this tab was inactive, memory was freed up to keep Brave fast. You can choose to always exclude this site from being inactive.
+        </message>
       </if>
 
       <!-- High Efficiency IPH strings -->
       <if expr="not is_android">
-        <if expr="use_titlecase">
-          <message name="IDS_HIGH_EFFICIENCY_INFO_MODE_PROMO_TITLE" desc="In Title Case: The title for the high efficiency info mode in-product promo bubble.">
-            Memory Saver Made Brave Faster
-          </message>
-        </if>
-        <if expr="not use_titlecase">
-          <message name="IDS_HIGH_EFFICIENCY_INFO_MODE_PROMO_TITLE" desc="The title for the high efficiency info mode in-product promo bubble.">
-            Memory Saver made Brave faster
-          </message>
-        </if>
         <if expr="use_titlecase">
           <message name="IDS_HIGH_EFFICIENCY_MODE_PROMO_TITLE" desc="In Title Case: The title for the high efficiency mode in-product promo bubble">
             Make Brave Faster

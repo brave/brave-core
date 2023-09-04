@@ -11,16 +11,16 @@
 #include "base/memory/raw_ref.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/database/database_external_transactions.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace wallet_provider {
 
 class Transfer {
  public:
-  explicit Transfer(LedgerImpl& ledger);
+  explicit Transfer(RewardsEngineImpl& engine);
 
   virtual ~Transfer();
 
@@ -61,7 +61,7 @@ class Transfer {
   virtual void CommitTransaction(ResultCallback,
                                  mojom::ExternalTransactionPtr) const = 0;
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace wallet_provider

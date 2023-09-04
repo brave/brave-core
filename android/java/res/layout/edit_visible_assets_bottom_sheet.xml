@@ -20,60 +20,57 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="4dp"
-        android:layout_marginHorizontal="20dp">
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="4dp">
 
         <TextView
             android:id="@+id/add_custom_asset"
             style="@style/BraveWalletTextView"
             android:layout_width="0dp"
             android:paddingVertical="8dp"
-            android:textColor="@color/brave_action_color"
+            android:textColor="@color/brave_text_button_color"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/edit_visible_btn_network"
+            app:layout_constraintEnd_toStartOf="@id/edit_visible_network_spinner"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <android.widget.Button
-            android:id="@+id/edit_visible_btn_network"
-            style="@style/BraveWalletButtonHollow"
+
+        <Spinner
+            android:id="@+id/edit_visible_network_spinner"
             android:layout_width="0dp"
-            android:background="@drawable/rounded_holo_button"
-            android:minHeight="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:paddingVertical="2dp"
-            app:autoSizeTextType="uniform"
+            android:textColor="@color/brave_wallet_day_night_text_color"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/add_custom_asset"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_min="80dp"
-            android:visibility="gone"/>
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvAssets"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
-        android:layout_weight = "9.8"
-        android:layout_height="0dp"/>
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="9.8" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/saveAssets"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:layout_weight = "0.2"
         android:layout_marginBottom="25dp"
+        android:layout_weight="0.2"
         android:background="@drawable/crypto_wallet_blue_button"
+        android:gravity="center"
+        android:paddingHorizontal="24dp"
         android:text="@string/save_account_watchlist"
         android:textAllCaps="false"
-        android:textSize="16sp"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
         android:textColor="@android:color/white"
-        style="?android:attr/borderlessButtonStyle"/>
+        android:textSize="16sp" />
 
 </LinearLayout>

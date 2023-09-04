@@ -54,11 +54,11 @@ TEST_F(P3ASchedulerTest, NonRandom) {
 TEST_F(P3ASchedulerTest, Random) {
   SetUpScheduler(true);
 
-  task_environment_.FastForwardBy(base::Hours(4));
+  task_environment_.FastForwardBy(base::Hours(8));
   size_t first_upload_count = upload_count_;
   upload_count_ = 0;
 
-  task_environment_.FastForwardBy(base::Hours(4));
+  task_environment_.FastForwardBy(base::Hours(8));
   EXPECT_NE(upload_count_, first_upload_count);
 }
 

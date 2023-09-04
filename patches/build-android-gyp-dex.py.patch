@@ -1,13 +1,12 @@
 diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
-index 7aa8aedac9a4e311c78816980de789f7d0f5b7d5..8aed4f7a92565721a2869505891056989c13f1c2 100755
+index ce91b38b1ae3bf0be4046b33a3efd5f0ed0f72d1..dfaed65b2cd56d2789ae308d9a794540482138ce 100755
 --- a/build/android/gyp/dex.py
 +++ b/build/android/gyp/dex.py
-@@ -54,7 +54,7 @@ _IGNORE_WARNINGS = (
- _SKIPPED_CLASS_FILE_NAMES = (
-     'module-info.class',  # Explicitly skipped by r8/utils/FileUtils#isClassFile
- )
--
-+_IGNORE_WARNINGS += ( r'.Brave', )
+@@ -30,6 +30,7 @@ DEFAULT_IGNORE_WARNINGS = (
+     # META-INF/. This means that all rules with a '-upto-' qualifier will be
+     # excluded and all rules with a -from- qualifier will be included.
+     r'Running R8 version main', )
++DEFAULT_IGNORE_WARNINGS += ( r'.Brave', )
  
- def _ParseArgs(args):
-   args = build_utils.ExpandFileArgs(args)
+ INTERFACE_DESUGARING_WARNINGS = (r'default or static interface methods', )
+ 

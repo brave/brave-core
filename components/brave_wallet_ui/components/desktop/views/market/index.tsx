@@ -8,8 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 // Hooks
-import { useLib } from '../../../../common/hooks/useLib'
-import { useIsMounted } from '../../../../common/hooks/useIsMounted'
+import { useGetOnRampAssetsQuery } from '../../../../common/slices/api.slice'
 
 // Constants
 import { BraveWallet, WalletRoutes, WalletState } from '../../../../constants/types'
@@ -33,7 +32,8 @@ import {
   UpdateCoinMarketMessage,
   UpdateTradableAssetsMessage,
   UpdateBuyableAssetsMessage,
-  UpdateDepositableAssetsMessage
+  UpdateDepositableAssetsMessage,
+  UpdateIframeHeightMessage
 } from '../../../../market/market-ui-messages'
 
 const defaultCurrency = 'usd'
@@ -41,8 +41,8 @@ const assetsRequestLimit = 250
 
 export const MarketView = () => {
   // State
-  const [buyAssets, setBuyAssets] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [iframeLoaded, setIframeLoaded] = React.useState<boolean>(false)
+  const [iframeHeight, setIframeHeight] = React.useState<number>(0)
   const marketDataIframeRef = React.useRef<HTMLIFrameElement>(null)
 
   // Redux
@@ -55,8 +55,14 @@ export const MarketView = () => {
 
   // Hooks
   const history = useHistory()
-  const { getAllBuyAssets } = useLib()
-  const isMounted = useIsMounted()
+
+  // Queries
+  const { buyAssets } = useGetOnRampAssetsQuery(undefined, {
+    selectFromResult: (res) => ({
+      isLoading: res.isLoading,
+      buyAssets: res.data?.allAssetOptions || []
+    })
+  })
 
   // Methods
   const onSelectCoinMarket = React.useCallback((coinMarket: BraveWallet.CoinMarket) => {
@@ -94,6 +100,11 @@ export const MarketView = () => {
         const { payload } = message as SelectDepositMessage
         onSelectDeposit(payload)
       }
+
+      case MarketUiCommand.UpdateIframeHeight: {
+        const { payload } = message as UpdateIframeHeightMessage
+        setIframeHeight(payload)
+      }
     }
   }, [onSelectCoinMarket, onSelectBuy, onSelectDeposit])
 
@@ -127,15 +138,6 @@ export const MarketView = () => {
     }
     sendMessageToMarketUiFrame(marketDataIframeRef.current.contentWindow, updateAssetsMsg)
 
-    if (buyAssets.length === 0 && isMounted) {
-      getAllBuyAssets()
-        .then(result => {
-          if (result) {
-            setBuyAssets(result.allAssetOptions)
-          }
-        })
-    }
-
     const updateBuyableAssetsMsg: UpdateBuyableAssetsMessage = {
       command: MarketUiCommand.UpdateBuyableAssets,
       payload: buyAssets
@@ -147,7 +149,14 @@ export const MarketView = () => {
       payload: fullTokenList
     }
     sendMessageToMarketUiFrame(marketDataIframeRef.current.contentWindow, updateDepositableAssetsMsg)
-  }, [iframeLoaded, marketDataIframeRef, allCoins, buyAssets, fullTokenList, isMounted, getAllBuyAssets, defaultCurrencies])
+  }, [
+    iframeLoaded,
+    marketDataIframeRef,
+    allCoins,
+    buyAssets,
+    fullTokenList,
+    defaultCurrencies
+  ])
 
   React.useEffect(() => {
     window.addEventListener('message', onMessageEventListener)
@@ -161,6 +170,7 @@ export const MarketView = () => {
           <LoadIcon />
         </LoadIconWrapper>
         : <MarketDataIframe
+          iframeHeight={iframeHeight}
           ref={marketDataIframeRef}
           onLoad={onMarketDataFrameLoad}
           src="chrome-untrusted://market-display"

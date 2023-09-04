@@ -5,11 +5,6 @@
 
 import * as React from 'react'
 
-// mocks
-import {
-  mockSolDappSignAndSendTransactionRequest
-} from '../../../common/constants/mocks'
-
 // components
 import { WalletPanelStory } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { ConfirmSolanaTransactionPanel } from './confirm-solana-transaction-panel'
@@ -18,17 +13,13 @@ export const _ConfirmSolanaTransactionPanel = () => {
   return <WalletPanelStory
     walletStateOverride={{
       hasInitialized: true,
-      isWalletCreated: true,
-      selectedPendingTransaction: mockSolDappSignAndSendTransactionRequest
+      isWalletCreated: true
     }}
     panelStateOverride={{
       hasInitialized: true
     }}
   >
-    <ConfirmSolanaTransactionPanel
-      onConfirm={() => {}}
-      onReject={() => {}}
-    />
+    <ConfirmSolanaTransactionPanel />
   </WalletPanelStory>
 }
 

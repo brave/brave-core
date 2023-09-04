@@ -29,12 +29,16 @@
 namespace {
 
 std::string CheckForEventScript(const std::string& event_var) {
-  return base::StringPrintf(R"(function waitForEvent() {
-             if (%s) {
-               window.domAutomationController.send(true);
-             }
-            }
-          setInterval(waitForEvent, 100);)",
+  return base::StringPrintf(R"(
+      new Promise(resolve => {
+        const timer = setInterval(function () {
+          if (%s) {
+            clearInterval(timer);
+            resolve(true);
+          }
+        }, 100);
+      });
+    )",
                             event_var.c_str());
 }
 
@@ -133,8 +137,7 @@ IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest, InactiveTabRequest) {
   base::RunLoop().RunUntilIdle();
 
   auto result_first =
-      EvalJs(first_tab_web_contents, CheckForEventScript("inactiveTabError"),
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+      EvalJs(first_tab_web_contents, CheckForEventScript("inactiveTabError"));
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
@@ -160,8 +163,7 @@ IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest, ActiveTabRequest) {
   base::RunLoop().RunUntilIdle();
 
   auto result_first =
-      EvalJs(web_contents(), CheckForEventScript("!inactiveTabError"),
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+      EvalJs(web_contents(), CheckForEventScript("!inactiveTabError"));
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 

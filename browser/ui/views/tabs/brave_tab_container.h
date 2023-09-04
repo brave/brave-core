@@ -8,6 +8,7 @@
 
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 
+#include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/tab_drag_context.h"
 
 class BraveTabContainer : public TabContainerImpl {
@@ -51,6 +52,9 @@ class BraveTabContainer : public TabContainerImpl {
   base::flat_set<Tab*> closing_tabs_;
 
   raw_ptr<TabDragContext> drag_context_;
+
+  // A pointer storing the global tab style to be used.
+  const raw_ptr<const TabStyle> tab_style_;
 
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember vertical_tabs_floating_mode_enabled_;

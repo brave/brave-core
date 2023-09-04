@@ -337,17 +337,17 @@
     <message name="IDS_PAGE_INFO_STATE_TEXT_ALLOWED" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the permission is allowed by any source (the user, the administrator, etc.).">
       Allowed
     </message>
-    <message name="IDS_PAGE_INFO_STATE_TEXT_ALLOWED_ONCE_ONE_TAB" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the permission is allowed once by any source (the user, the administrator, etc.) and there is only one tab opened for the site.">
-      Allowed until you close this tab
-    </message>
-    <message name="IDS_PAGE_INFO_STATE_TEXT_ALLOWED_ONCE_MULTIPLE_TAB" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the permission is allowed once by any source (the user, the administrator, etc.) and there are nultiple tabs opened for the site.">
-      Allowed until you close tabs for this site
+    <message name="IDS_PAGE_INFO_STATE_TEXT_ALLOWED_ONCE" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the permission is allowed once by any source (the user, the administrator, etc.).">
+      Only this time
     </message>
     <message name="IDS_PAGE_INFO_STATE_TEXT_NOT_ALLOWED" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the permission is not allowed (blocked or ask state) by any source (the user, the administrator, etc.).">
       Not allowed
     </message>
     <message name="IDS_PAGE_INFO_STATE_TEXT_NOT_ALLOWED_IN_INCOGNITO" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the permission is not allowed in private mode.">
       Not allowed in Private
+    </message>
+    <message name="IDS_PAGE_INFO_STATE_TEXT_NOT_ALLOWED_IN_GUEST" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the permission is not allowed in Guest mode.">
+      Not allowed in Guest mode
     </message>
     <message name="IDS_PAGE_INFO_STATE_TEXT_NOT_ALLOWED_INSECURE" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the permission is not allowed in non-secure sites.">
       Not allowed for non-secure sites
@@ -424,6 +424,9 @@
     </message>
     <message name="IDS_PAGE_INFO_STATE_TEXT_BLUETOOTH_SCANNING_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the bluetooth scanning permission is in the ask state and the site can prompt the user to ask if they allow the site to discover nearby Bluetooth devices.">
       Can ask to discover nearby Bluetooth devices
+    </message>
+    <message name="IDS_PAGE_INFO_STATE_TEXT_STORAGE_ACCESS_ASK" translateable="false" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the storage access permission is in the ask state and the site can prompt the user to ask if they allow the site to access cookies.">
+      Can ask to access cookies
     </message>
 
     <!-- UI for device access granted to the site using the device chooser (e.g. USB, Bluetooth) -->
@@ -503,7 +506,7 @@
 
     <!-- Permission change infobar. -->
     <if expr="not is_android">
-      <message name="IDS_PAGE_INFO_INFOBAR_TEXT" desc="The string shown in the infobar after the user has changed site permissions settings, reminding them to reload the page in order for the new settings to take effect.">
+      <message name="IDS_PAGE_INFO_INFOBAR_TEXT" desc="The string shown in the infobar after the user has changed site permissions settings, reminding them to reload the page in order for the new settings to take effect.  Deliberately similar to IDS_EXTENSION_SITE_RELOAD_PAGE_BUBBLE_HEADING, but used for an different permission setting so they are not combined. If updating the one, please update the other or consult the extensions and privacy teams.">
         To apply your updated settings to this site, reload this page
       </message>
       <message name="IDS_PAGE_INFO_INFOBAR_BUTTON" desc="The string used in the infobar button allowing the user to reload the page directly from the infobar.">
@@ -654,7 +657,7 @@
     Go to permission settings
   </message>
   <message name="IDS_PAGE_INFO_PERMISSIONS_SUBPAGE_REMEMBER_THIS_SETTING" desc="The text near the checkbox, that controls if user's decision will be remembered for this permission, in permission's subpage in page info bubble.">
-    Remember this setting
+    Allow on every visit
   </message>
   <message name="IDS_PAGE_INFO_RESET_PERMISSIONS" desc="The label of the button to reset permissions for a site.">
     {NUM_PERMISSIONS, plural, =1 {Reset permission} other {Reset permissions}}

@@ -1,100 +1,93 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
 
-import modalBackground from './assets/opt_in_modal_bg.svg'
+import * as leo from '@brave/leo/tokens/css'
 
 export const root = styled.div`
-  height: 100%;
-  width: 100%;
-  background-color: var(--brave-palette-white);
-  background-image: url('${modalBackground}');
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  background-size: auto 220px;
+  background-color: ${leo.color.white};
   border-radius: 4px;
   font-family: var(--brave-font-heading);
   text-align: center;
-  padding: 90px 16px;
+  padding: 44px;
+`
 
-  a {
-    color: var(--brave-color-brandBat);
-    font-weight: 600;
-    text-decoration: none;
+export const icon = styled.div`
+  .icon {
+    height: 190px;
+    width: 198px;
   }
 `
 
-export const heading = styled.div`
-  font-weight: 600;
-  font-size: 36px;
-  line-height: 60px;
+export const heading = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  margin: 32px auto 0;
+  max-width: 339px;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 32px;
+  color: ${leo.color.text.primary};
+`
+
+export const text = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  margin: 16px auto;
+  max-width: 339px;
+  color: ${leo.color.text.secondary};
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+`
+
+export const enable = styled.div.attrs({
+  'data-theme': 'light'
+})`
+
+  margin-top: 16px;
+  color: ${leo.color.text.secondary};
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  font-style: italic;
 
   .icon {
-    height: 45px;
+    height: 19px;
+    width: auto;
     vertical-align: middle;
-    margin-bottom: 6px;
-    margin-right: 12px;
+    margin-bottom: 3px;
   }
-
-  @media (max-width: 500px) {
-    font-size: 32px;
-
-    .icon {
-      margin-right: 8px;
-    }
-  }
-`
-
-export const subHeading = styled.div`
-  font-size: 18px;
-  line-height: 24px;
-  color: var(--brave-palette-neutral600);
-`
-
-export const text = styled.div`
-  margin: 19px auto 0;
-  color: var(--brave-palette-neutral700);
-  font-size: 14px;
-  line-height: 22px;
-  max-width: 325px;
-`
-
-export const takeTour = styled.div`
-  margin-top: 20px;
-  color: var(--brave-color-brandBat);
 
   button {
+    margin-top: 16px;
+    max-width: 339px;
+    color: ${leo.color.white};
+    background: ${leo.color.button.background};
+    border-radius: 48px;
+    padding: 12px 24px;
     font-weight: 600;
-    font-size: 14px;
-    line-height: 21px;
-    border: 0;
-    background: 0;
-    margin: 0;
-    padding: 0;
-    cursor: pointer;
+    font-size: 13px;
+    line-height: 20px;
+    letter-spacing: 0.03em;
   }
 `
 
-export const enable = styled.div`
-  margin-top: 62px;
-
-  button {
-    width: 100%;
-    max-width: 330px;
-  }
-`
-
-export const footer = styled.div`
-  max-width: 320px;
-  margin: 10px auto;
-  font-size: 11px;
-  line-height: 16px;
-  color: var(--brave-palette-neutral600);
+export const learnMore = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  margin: 20px 0 8px;
+  text-align: center;
 
   a {
+    color: ${leo.color.text.interactive};
     font-weight: 600;
-    color: var(--brave-color-brandBat);
+    font-size: 13px;
+    line-height: 20px;
+    letter-spacing: 0.03em;
+    text-decoration: none;
   }
 `

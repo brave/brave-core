@@ -191,6 +191,17 @@ void BraveTab::UpdateIconVisibility() {
   }
 }
 
+void BraveTab::ViewHierarchyChanged(
+    const views::ViewHierarchyChangedDetails& details) {
+  if (details.child != this) {
+    return;
+  }
+
+  if (details.is_add && shadow_layer_) {
+    AddLayerToBelowThis();
+  }
+}
+
 void BraveTab::OnLayerBoundsChanged(const gfx::Rect& old_bounds,
                                     ui::PropertyChangeReason reason) {
   Tab::OnLayerBoundsChanged(old_bounds, reason);
@@ -226,6 +237,25 @@ void BraveTab::Layout() {
   }
 }
 
+gfx::Insets BraveTab::GetInsets() const {
+  // Supplement extra left side padding.
+  // Upstream gives extra padding to balance with right side padding space but
+  // it's gone when tab doesn't have sufficient available width. In our case,
+  // As we have more narrow left & right padding than upstream, icon seems stick
+  // to left side when extra padding is not used.
+  // We only need to do that when |extra_padding_before_content_| is false.
+  int extra_left_padding = 0;
+
+  // Add extra padding if upstream tab doesn't have it.
+  if (!extra_padding_before_content_) {
+    extra_left_padding = kExtraLeftPadding;
+  }
+
+  auto insets = Tab::GetInsets();
+  insets.set_left(insets.left() + extra_left_padding);
+  return insets;
+}
+
 void BraveTab::ReorderChildLayers(ui::Layer* parent_layer) {
   Tab::ReorderChildLayers(parent_layer);
 
@@ -246,6 +276,8 @@ void BraveTab::ReorderChildLayers(ui::Layer* parent_layer) {
 
   DCHECK_EQ(shadow_layer_->parent(), layer()->parent());
   layer()->parent()->StackBelow(shadow_layer_.get(), layer());
+
+  LayoutShadowLayer();
 }
 
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
@@ -256,33 +288,9 @@ void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
     return;
   }
 
-  if (!ShouldRenderAsNormalTab()) {
-    // In case it's pinned tab, use the same calculation with the upstream.
-    Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
-    return;
-  }
-
-  auto* browser_view =
-      BrowserView::GetBrowserViewForBrowser(controller_->GetBrowser());
-  if (!browser_view) {
-    Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
-    return;
-  }
-
-  auto* widget_delegate_view = static_cast<BraveBrowserView*>(browser_view)
-                                   ->vertical_tab_strip_widget_delegate_view();
-  CHECK(widget_delegate_view);
-  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
-  CHECK(region_view);
-
-  if (region_view->state() == VerticalTabStripRegionView::State::kFloating) {
-    // In case we're in floating mode, set the same left padding with the one
-    // we use for the collapsed state, so that the favicon doesn't moves left
-    // and right.
-    bounds->set_x((tabs::kVerticalTabMinWidth - gfx::kFaviconSize) / 2);
-  }
-
-  // For else cases(non-pinned tabs), we don't do anything just like upstream.
+  // We keep favicon on fixed position so that it won't move left and right
+  // during animation.
+  bounds->set_x((tabs::kVerticalTabMinWidth - gfx::kFaviconSize) / 2);
 }
 
 bool BraveTab::ShouldRenderAsNormalTab() const {

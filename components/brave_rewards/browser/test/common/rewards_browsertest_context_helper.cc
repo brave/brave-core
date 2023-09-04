@@ -122,8 +122,8 @@ void RewardsBrowserTestContextHelper::VisitPublisher(const GURL& url,
     // favicon and the verified icon
     content::EvalJsResult js_result = EvalJs(
         contents,
-        "document.querySelector(\"[data-test-id='ac_link_" +
-        publisher + "']\").getElementsByTagName('svg').length === 1;",
+        "document.querySelectorAll(\"[data-test-id='ac_link_" + publisher +
+            "'] [data-test-id=verified-icon]\").length === 1;",
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END);
     EXPECT_TRUE(js_result.ExtractBool());

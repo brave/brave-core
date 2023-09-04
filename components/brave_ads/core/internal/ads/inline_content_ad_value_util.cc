@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/inline_content_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_value_util.h"
 
-#include "brave/components/brave_ads/core/inline_content_ad_constants.h"
-#include "brave/components/brave_ads/core/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_constants.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
 
 namespace brave_ads {
 
@@ -15,23 +15,20 @@ constexpr char kTypeKey[] = "type";
 }  // namespace
 
 base::Value::Dict InlineContentAdToValue(const InlineContentAdInfo& ad) {
-  base::Value::Dict dict;
-
-  dict.Set(kTypeKey, ad.type.ToString());
-  dict.Set(kInlineContentAdPlacementIdKey, ad.placement_id);
-  dict.Set(kInlineContentAdCreativeInstanceIdKey, ad.creative_instance_id);
-  dict.Set(kInlineContentAdCreativeSetIdKey, ad.creative_set_id);
-  dict.Set(kInlineContentAdCampaignIdKey, ad.campaign_id);
-  dict.Set(kInlineContentAdAdvertiserIdKey, ad.advertiser_id);
-  dict.Set(kInlineContentAdSegmentKey, ad.segment);
-  dict.Set(kInlineContentAdTitleKey, ad.title);
-  dict.Set(kInlineContentAdDescriptionKey, ad.description);
-  dict.Set(kInlineContentAdImageUrlKey, ad.image_url.spec());
-  dict.Set(kInlineContentAdDimensionsKey, ad.dimensions);
-  dict.Set(kInlineContentAdCtaTextKey, ad.cta_text);
-  dict.Set(kInlineContentAdTargetUrlKey, ad.target_url.spec());
-
-  return dict;
+  return base::Value::Dict()
+      .Set(kTypeKey, ad.type.ToString())
+      .Set(kInlineContentAdPlacementIdKey, ad.placement_id)
+      .Set(kInlineContentAdCreativeInstanceIdKey, ad.creative_instance_id)
+      .Set(kInlineContentAdCreativeSetIdKey, ad.creative_set_id)
+      .Set(kInlineContentAdCampaignIdKey, ad.campaign_id)
+      .Set(kInlineContentAdAdvertiserIdKey, ad.advertiser_id)
+      .Set(kInlineContentAdSegmentKey, ad.segment)
+      .Set(kInlineContentAdTitleKey, ad.title)
+      .Set(kInlineContentAdDescriptionKey, ad.description)
+      .Set(kInlineContentAdImageUrlKey, ad.image_url.spec())
+      .Set(kInlineContentAdDimensionsKey, ad.dimensions)
+      .Set(kInlineContentAdCtaTextKey, ad.cta_text)
+      .Set(kInlineContentAdTargetUrlKey, ad.target_url.spec());
 }
 
 InlineContentAdInfo InlineContentAdFromValue(const base::Value::Dict& dict) {

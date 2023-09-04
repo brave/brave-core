@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // POST /v1/devicecheck/attestations
 //
@@ -32,7 +32,7 @@
 // }
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 namespace promotion {
@@ -42,7 +42,7 @@ using PostDevicecheckCallback =
 
 class PostDevicecheck {
  public:
-  explicit PostDevicecheck(LedgerImpl& ledger);
+  explicit PostDevicecheck(RewardsEngineImpl& engine);
   ~PostDevicecheck();
 
   void Request(const std::string& key, PostDevicecheckCallback callback);
@@ -59,7 +59,7 @@ class PostDevicecheck {
   void OnRequest(PostDevicecheckCallback callback,
                  mojom::UrlResponsePtr response);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace promotion

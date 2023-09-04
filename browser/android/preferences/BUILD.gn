@@ -47,6 +47,7 @@ java_cpp_strings("java_pref_names_srcjar") {
     "//brave/components/ntp_background_images/common/pref_names.cc",
     "//brave/components/omnibox/browser/brave_omnibox_prefs.cc",
     "//brave/components/p3a/pref_names.cc",
+    "//brave/components/request_otr/common/pref_names.cc",
     "//brave/components/speedreader/speedreader_pref_names.h",
     "//components/translate/core/browser/translate_pref_names.cc",
   ]

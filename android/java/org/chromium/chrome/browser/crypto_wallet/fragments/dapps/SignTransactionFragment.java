@@ -27,8 +27,10 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.SignAllTransactionsRequest;
 import org.chromium.brave_wallet.mojom.SignTransactionRequest;
@@ -47,8 +49,8 @@ import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -170,9 +172,10 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
             return;
         }
         int size = 0;
-        String fromAddress = null;
+        AccountId fromAccountId = null;
         @CoinType.EnumType
-        int coin = CoinType.ETH;
+        int coin = CoinType.SOL;
+        String chainId = null;
         OriginInfo originInfo = null;
         switch (mActivityType) {
             case SIGN_TRANSACTION:
@@ -183,8 +186,9 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
                 size = mSignTransactionRequests.size();
                 mTxDatas = Arrays.asList(TransactionUtils.safeSolData(mSignTransactionRequest));
                 coin = mSignTransactionRequest.coin;
-                fromAddress = mSignTransactionRequest.fromAddress;
+                fromAccountId = mSignTransactionRequest.fromAccountId;
                 originInfo = mSignTransactionRequest.originInfo;
+                chainId = mSignTransactionRequest.chainId;
                 break;
             case SIGN_ALL_TRANSACTIONS:
                 if (mTxRequestNumber >= mSignAllTransactionRequests.size()) {
@@ -194,8 +198,9 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
                 size = mSignAllTransactionRequests.size();
                 mTxDatas = TransactionUtils.safeSolData(mSignAllTransactionsRequest);
                 coin = mSignAllTransactionsRequest.coin;
-                fromAddress = mSignAllTransactionsRequest.fromAddress;
+                fromAccountId = mSignAllTransactionsRequest.fromAccountId;
                 originInfo = mSignAllTransactionsRequest.originInfo;
+                chainId = mSignAllTransactionsRequest.chainId;
                 break;
             default: // Do nothing
         }
@@ -211,12 +216,11 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         mTvTxCounter.setText(
                 getString(R.string.brave_wallet_queue_of, (mTxRequestNumber + 1), size));
         updateActionState(mTxRequestNumber == 0);
-        updateAccount(fromAddress);
-        updateNetwork(coin);
+        updateAccount(fromAccountId);
+        updateNetwork(coin, chainId);
         if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
             mWebSite.setVisibility(View.VISIBLE);
-            mWebSite.setText(
-                    Utils.geteTLD(new GURL(originInfo.originSpec), originInfo.eTldPlusOne));
+            mWebSite.setText(Utils.geteTldSpanned(originInfo));
         }
     }
 
@@ -338,17 +342,23 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         }
     }
 
-    private void updateAccount(String fromAddress) {
-        if (fromAddress == null) return;
+    private void updateAccount(AccountId fromAccountId) {
+        if (fromAccountId == null) {
+            return;
+        }
+        assert (fromAccountId.coin == CoinType.SOL);
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.getWalletModel().getKeyringModel().getAccounts(accountInfos -> {
-                if (fromAddress == null) return;
-                AccountInfo accountInfo = Utils.findAccount(accountInfos, fromAddress);
-                String accountText =
-                        (accountInfo != null ? accountInfo.name + "\n" : "") + fromAddress;
-                Utils.setBlockiesBitmapResource(
-                        mExecutor, mHandler, mAccountImage, fromAddress, true);
+                AccountInfo accountInfo = Utils.findAccount(accountInfos, fromAccountId);
+                if (accountInfo == null) {
+                    return;
+                }
+                assert (accountInfo.address != null);
+
+                Utils.setBlockiesBitmapResourceFromAccount(
+                        mExecutor, mHandler, mAccountImage, accountInfo, true);
+                String accountText = accountInfo.name + "\n" + accountInfo.address;
                 mAccountName.setText(accountText);
             });
         } catch (BraveActivity.BraveActivityNotFoundException e) {
@@ -356,17 +366,21 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         }
     }
 
-    private void updateNetwork(@CoinType.EnumType int coin) {
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.getWalletModel().getCryptoModel().getNetworkModel().getNetwork(
-                    coin, networkInfo -> {
-                        if (networkInfo == null) return;
-                        mNetworkName.setText(networkInfo.chainName);
-                    });
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "updateNetwork " + e);
+    private void updateNetwork(@CoinType.EnumType int coin, String chainId) {
+        mNetworkName.setText("");
+
+        if (chainId == null) {
+            return;
         }
+        LiveDataUtil.observeOnce(
+                mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks, allNetworks -> {
+                    for (NetworkInfo networkInfo : allNetworks) {
+                        if (networkInfo.coin == coin && networkInfo.chainId.equals(chainId)) {
+                            mNetworkName.setText(networkInfo.chainName);
+                            break;
+                        }
+                    }
+                });
     }
 
     private void updateSignDataAndDetails() {

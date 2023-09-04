@@ -24,8 +24,6 @@ brave_components_permissions_sources = [
   "//brave/components/permissions/permission_lifetime_utils.cc",
   "//brave/components/permissions/permission_lifetime_utils.h",
   "//brave/components/permissions/permission_origin_lifetime_monitor.h",
-  "//brave/components/permissions/permission_origin_lifetime_monitor_impl.cc",
-  "//brave/components/permissions/permission_origin_lifetime_monitor_impl.h",
   "//brave/components/permissions/permission_origins.cc",
   "//brave/components/permissions/permission_origins.h",
 ]

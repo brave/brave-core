@@ -6,14 +6,14 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/confirmations_issuer_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_value_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/payments_issuer_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/public_key_util.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
 
@@ -28,7 +28,7 @@ void SetIssuers(const IssuersInfo& issuers) {
 absl::optional<IssuersInfo> GetIssuers() {
   const absl::optional<base::Value::List> list =
       AdsClientHelper::GetInstance()->GetListPref(prefs::kIssuers);
-  if (!list) {
+  if (!list || list->empty()) {
     return absl::nullopt;
   }
 
@@ -59,13 +59,13 @@ bool HasIssuers() {
          IssuerExistsForType(IssuerType::kPayments);
 }
 
-bool HasIssuersChanged(const IssuersInfo& issuers) {
-  const absl::optional<IssuersInfo> last_issuers = GetIssuers();
-  if (!last_issuers) {
+bool HasIssuersChanged(const IssuersInfo& other) {
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  if (!issuers) {
     return true;
   }
 
-  return issuers != *last_issuers;
+  return other != *issuers;
 }
 
 bool IssuerExistsForType(const IssuerType issuer_type) {

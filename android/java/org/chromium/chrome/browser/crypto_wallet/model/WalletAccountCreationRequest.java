@@ -6,20 +6,12 @@
 package org.chromium.chrome.browser.crypto_wallet.model;
 
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 
 public class WalletAccountCreationRequest {
-    private String mKeyringId;
     private @CoinType.EnumType int mCoinType;
 
-    public WalletAccountCreationRequest(String keyringId) {
-        assert keyringId != null : " keyringId should not be null";
-        mKeyringId = keyringId;
-        mCoinType = AssetUtils.getCoinForKeyring(keyringId);
-    }
-
-    public String getKeyringId() {
-        return mKeyringId;
+    public WalletAccountCreationRequest(@CoinType.EnumType int coinType) {
+        mCoinType = coinType;
     }
 
     public int getCoinType() {

@@ -26,19 +26,23 @@ class Value;
 
 namespace brave_wallet {
 
+class AccountResolverDelegate;
 class TxMeta;
+class TxStorageDelegate;
 
 class TxStateManager {
  public:
-  explicit TxStateManager(PrefService* prefs);
+  TxStateManager(PrefService* prefs,
+                 TxStorageDelegate* delegate,
+                 AccountResolverDelegate* account_resolver_delegate);
   virtual ~TxStateManager();
   TxStateManager(const TxStateManager&) = delete;
 
-  void AddOrUpdateTx(const TxMeta& meta);
+  bool AddOrUpdateTx(const TxMeta& meta);
   std::unique_ptr<TxMeta> GetTx(const std::string& chain_id,
                                 const std::string& id);
-  void DeleteTx(const std::string& chain_id, const std::string& id);
-  void WipeTxs();
+  bool DeleteTx(const std::string& chain_id, const std::string& id);
+  bool WipeTxs();
 
   static void MigrateAddChainIdToTransactionInfo(PrefService* prefs);
   static void MigrateSolanaTransactionsForV0TransactionsSupport(
@@ -47,7 +51,12 @@ class TxStateManager {
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
       const absl::optional<std::string>& chain_id,
       const absl::optional<mojom::TransactionStatus>& status,
-      const absl::optional<std::string>& from);
+      const mojom::AccountIdPtr& from);
+
+  std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
+      const absl::optional<std::string>& chain_id,
+      const absl::optional<mojom::TransactionStatus>& status,
+      const absl::optional<mojom::AccountIdPtr>& from);
 
   class Observer : public base::CheckedObserver {
    public:
@@ -61,12 +70,15 @@ class TxStateManager {
 
  protected:
   // For derived classes to call to fill TxMeta properties.
-  static bool ValueToTxMeta(const base::Value::Dict& value, TxMeta* tx_meta);
+  bool ValueToBaseTxMeta(const base::Value::Dict& value, TxMeta* tx_meta);
 
   raw_ptr<PrefService> prefs_ = nullptr;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, ConvertFromAddress);
   FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, TxOperations);
+  FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, Reset);
+
   void RetireTxByStatus(const std::string& chain_id,
                         mojom::TransactionStatus status,
                         size_t max_num);
@@ -88,8 +100,9 @@ class TxStateManager {
   virtual std::string GetTxPrefPathPrefix(
       const absl::optional<std::string>& chain_id) = 0;
 
+  raw_ptr<TxStorageDelegate> delegate_ = nullptr;
+  raw_ptr<AccountResolverDelegate> account_resolver_delegate_ = nullptr;
   base::ObserverList<Observer> observers_;
-
   base::WeakPtrFactory<TxStateManager> weak_factory_;
 };
 

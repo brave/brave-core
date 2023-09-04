@@ -5,19 +5,38 @@
 
 source_set("component_updater") {
   sources = [
-    "brave_component_installer.cc",
-    "brave_component_installer.h",
-    "brave_component_updater_delegate.cc",
-    "brave_component_updater_delegate.h",
+    "brave_component_updater_configurator.cc",
+    "brave_component_updater_configurator.h",
   ]
 
   deps = [
     "//base",
-    "//brave/components/brave_component_updater/browser",
-    "//chrome/browser:browser_process",
+    "//brave/components/constants",
+    "//chrome/common",
     "//components/component_updater",
-    "//components/crx_file",
+    "//components/prefs",
+    "//components/services/patch/content",
+    "//components/services/unzip/content",
     "//components/update_client",
-    "//crypto",
+    "//components/update_client:network_impl",
+    "//components/update_client:patch_impl",
+    "//components/update_client:unzip_impl",
+    "//content/public/browser",
+    "//services/network/public/cpp",
   ]
+
+  if (is_win) {
+    deps += [ "//chrome/installer/util:with_no_strings" ]
+  }
+
+  if (is_android) {
+    sources += [
+      "brave_component_updater_android.cc",
+      "brave_component_updater_android.h",
+    ]
+    deps += [
+      "//brave/build/android:jni_headers",
+      "//chrome/browser:browser_process",
+    ]
+  }
 }

@@ -7,13 +7,13 @@
 
 #include <utility>
 
-#include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
+#include "base/uuid.h"
+#include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_info.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "content/public/common/url_constants.h"
 
@@ -314,7 +314,7 @@ absl::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
   data.Set(kThemeNameKey, theme_name);
   data.Set(kIsSponsoredKey, !IsSuperReferral());
   data.Set(kIsBackgroundKey, false);
-  data.Set(kWallpaperIDKey, base::GenerateGUID());
+  data.Set(kWallpaperIDKey, base::Uuid::GenerateRandomV4().AsLowercaseString());
 
   const auto background_file_path =
       campaign.backgrounds[background_index].image_file;

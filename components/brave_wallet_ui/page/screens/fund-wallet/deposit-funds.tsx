@@ -4,39 +4,39 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
-import {
-  useDispatch,
-  useSelector
-} from 'react-redux'
+import { useSelector } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query/react'
+import { useParams } from 'react-router'
 
 // utils
 import { getLocale } from '../../../../common/locale'
 import { generateQRCode } from '../../../utils/qr-code-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
+import {
+  getBatTokensFromList,
+  getAssetIdKey
+} from '../../../utils/asset-utils'
 
 // types
 import {
   BraveWallet,
   UserAssetInfoType,
-  WalletAccountType,
   WalletState
 } from '../../../constants/types'
-
-// actions
-import { WalletActions } from '../../../common/actions'
 
 // options
 import { AllNetworksOption } from '../../../options/network-filter-options'
 
 // hooks
 import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
-import { usePrevNetwork } from '../../../common/hooks'
 import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
 import {
   useGetMainnetsQuery,
   useGetNetworkQuery
 } from '../../../common/slices/api.slice'
+import {
+  useGetCombinedTokensListQuery
+} from '../../../common/slices/api.slice.extra'
 
 // style
 import { Column, CopyButton, HorizontalSpace, LoadingIcon, Row, VerticalSpace } from '../../../components/shared/style'
@@ -55,8 +55,9 @@ import {
 } from './fund-wallet.style'
 
 // components
-import { TokenLists } from '../../../components/desktop/views/portfolio/components/token-lists/token-list'
-import { StepsNavigation } from '../../../components/desktop/steps-navigation/steps-navigation'
+import {
+  VirtualizedTokensList
+} from '../../../components/desktop/views/portfolio/components/token-lists/virtualized-tokens-list'
 import SearchBar from '../../../components/shared/search-bar/index'
 import SelectAccountItem from '../../../components/shared/select-account-item/index'
 import SelectAccount from '../../../components/shared/select-account/index'
@@ -66,40 +67,54 @@ import { NavButton } from '../../../components/extension/buttons/nav-button/inde
 import CreateAccountTab from '../../../components/buy-send-swap/create-account/index'
 import SelectHeader from '../../../components/buy-send-swap/select-header/index'
 import {
-  getBatTokensFromList,
-  getAssetIdKey
-} from '../../../utils/asset-utils'
+  FilterTokenRow //
+} from '../../../components/desktop/views/portfolio/style'
+import {
+  NetworkFilterSelector //
+} from '../../../components/desktop/network-filter-selector'
 
-export const DepositFundsScreen = () => {
+const itemSize = 82
+
+function getItemSize (index: number): number {
+  return itemSize
+}
+
+interface Props {
+  showDepositAddress: boolean
+  onShowDepositAddress: (showDepositAddress: boolean) => void
+}
+
+export const DepositFundsScreen = (props: Props) => {
+  const { showDepositAddress, onShowDepositAddress } = props
+
   // routing
-  const history = useHistory()
+  const { tokenId } = useParams<{ tokenId?: string }>()
 
   // redux
-  const dispatch = useDispatch()
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
-  const fullTokenList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.fullTokenList)
 
   // custom hooks
-  const { prevNetwork } = usePrevNetwork()
   const { copyToClipboard, isCopied, resetCopyState } = useCopyToClipboard()
   const scrollIntoView = useScrollIntoView()
 
   // state
-  const [showDepositAddress, setShowDepositAddress] = React.useState<boolean>(false)
   const [showAccountSearch, setShowAccountSearch] = React.useState<boolean>(false)
   const [accountSearchText, setAccountSearchText] = React.useState<string>('')
   const [qrCode, setQRCode] = React.useState<string>('')
   const [selectedAsset, setSelectedAsset] = React.useState<
     BraveWallet.BlockchainToken | undefined
   >(undefined)
-  const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType | undefined>()
+  const [selectedAccount, setSelectedAccount] =
+    React.useState<BraveWallet.AccountInfo | undefined>()
+  const [searchValue, setSearchValue] = React.useState<string>(tokenId ?? '')
 
   // queries
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { data: mainnetsList = [] } = useGetMainnetsQuery()
-  const { data: selectedAssetNetwork } = useGetNetworkQuery(selectedAsset, {
-    skip: !selectedAsset
-  })
+  const { data: selectedAssetNetwork } = useGetNetworkQuery(
+    selectedAsset ?? skipToken
+  )
 
   // memos
   const isNextStepEnabled = React.useMemo(() => !!selectedAsset, [selectedAsset])
@@ -108,11 +123,40 @@ export const DepositFundsScreen = () => {
     return (mainnetsList || []).map(makeNetworkAsset)
   }, [mainnetsList])
 
+  // Combine all NFTs from each collection
+  // into a single "asset" for depositing purposes.
+  const nftCollectionAssets: BraveWallet.BlockchainToken[] =
+    React.useMemo(() => {
+      const nftContractTokens: BraveWallet.BlockchainToken[] = []
+      for (const token of combinedTokensList) {
+        if (
+          token.isNft &&
+          !nftContractTokens.find(
+            (t) =>
+              t.contractAddress === token.contractAddress &&
+              t.name === token.name &&
+              t.symbol === token.symbol
+          )
+        ) {
+          nftContractTokens.push({
+            ...token,
+            tokenId: '' // remove token ID
+          })
+        }
+      }
+      return nftContractTokens
+    }, [combinedTokensList])
+
   const fullAssetsList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     // separate BAT from other tokens in the list so they can be placed higher in the list
-    const { bat, nonBat } = getBatTokensFromList(fullTokenList)
-    return [...mainnetNetworkAssetsList, ...bat, ...nonBat]
-  }, [mainnetNetworkAssetsList, fullTokenList])
+    const { bat, nonBat } = getBatTokensFromList(combinedTokensList)
+    return [
+      ...mainnetNetworkAssetsList,
+      ...bat,
+      ...nonBat.filter((token) => token.contractAddress && !token.tokenId),
+      ...nftCollectionAssets
+    ]
+  }, [mainnetNetworkAssetsList, combinedTokensList, nftCollectionAssets])
 
   const assetsForFilteredNetwork: UserAssetInfoType[] = React.useMemo(() => {
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
@@ -122,9 +166,9 @@ export const DepositFundsScreen = () => {
     return assets.map(asset => ({ asset, assetBalance: '1' }))
   }, [selectedNetworkFilter.chainId, fullAssetsList])
 
-  const accountsForSelectedAssetNetwork: WalletAccountType[] = React.useMemo(() => {
+  const accountsForSelectedAssetNetwork = React.useMemo(() => {
     return selectedAssetNetwork
-      ? accounts.filter(a => a.coin === selectedAssetNetwork.coin)
+      ? accounts.filter(a => a.accountId.coin === selectedAssetNetwork.coin)
       : []
   }, [selectedAssetNetwork, accounts])
 
@@ -132,7 +176,7 @@ export const DepositFundsScreen = () => {
     return !!selectedAsset && accountsForSelectedAssetNetwork.length < 1
   }, [selectedAsset, accountsForSelectedAssetNetwork.length])
 
-  const accountListSearchResults: WalletAccountType[] = React.useMemo(() => {
+  const accountListSearchResults = React.useMemo(() => {
     if (accountSearchText === '') {
       return accountsForSelectedAssetNetwork
     }
@@ -141,6 +185,22 @@ export const DepositFundsScreen = () => {
       return item.name.toLowerCase().startsWith(accountSearchText.toLowerCase())
     })
   }, [accountSearchText, accountsForSelectedAssetNetwork])
+
+  const assetListSearchResults = React.useMemo(() => {
+    if (searchValue === '') {
+      return assetsForFilteredNetwork
+    }
+    return assetsForFilteredNetwork.filter((item) => {
+      const searchValueLower = searchValue.toLowerCase()
+      return (
+        item.asset.name.toLowerCase().startsWith(searchValueLower) ||
+        item.asset.symbol.toLowerCase().startsWith(searchValueLower)
+      )
+    })
+  }, [
+    searchValue,
+    assetsForFilteredNetwork
+  ])
 
   const depositTitleText: string = React.useMemo(() => {
     const isNativeAsset = (
@@ -175,37 +235,35 @@ export const DepositFundsScreen = () => {
   const closeAccountSearch = React.useCallback(() => setShowAccountSearch(false), [])
   const onSearchTextChanged = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => setAccountSearchText(e.target.value), [])
 
-  const onSelectAccountFromSearch = React.useCallback((account: WalletAccountType) => () => {
-    closeAccountSearch()
-    setSelectedAccount(account)
-    resetCopyState()
-  }, [closeAccountSearch, resetCopyState])
+  // This filters a list of assets when the user types in search bar
+  const onSearchValueChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchValue(event.target.value)
+    },
+    []
+  )
 
-  const onBack = React.useCallback(() => {
-    resetCopyState()
-
-    if (!showDepositAddress && history.length) {
-      return history.goBack()
-    }
-
-    if (showDepositAddress) {
-      // go back to asset selection
-      setShowDepositAddress(false)
-      return closeAccountSearch()
-    }
-  }, [showDepositAddress, closeAccountSearch, history, resetCopyState])
+  const onSelectAccountFromSearch = React.useCallback(
+    (account: BraveWallet.AccountInfo) => {
+      closeAccountSearch()
+      setSelectedAccount(account)
+      resetCopyState()
+    },
+    [closeAccountSearch, resetCopyState]
+  )
 
   const nextStep = React.useCallback(() => {
     if (!isNextStepEnabled || !selectedAssetNetwork) {
       return
     }
-    setShowDepositAddress(true)
-  }, [isNextStepEnabled, selectedAssetNetwork])
+    onShowDepositAddress(true)
+  }, [isNextStepEnabled, selectedAssetNetwork, onShowDepositAddress])
 
   const goBackToSelectAssets = React.useCallback(() => {
-    setShowDepositAddress(false)
+    onShowDepositAddress(false)
+    resetCopyState()
     setSelectedAsset(undefined)
-  }, [])
+  }, [onShowDepositAddress, resetCopyState])
 
   const copyAddressToClipboard = React.useCallback(() => {
     copyToClipboard(selectedAccount?.address || '')
@@ -256,8 +314,10 @@ export const DepositFundsScreen = () => {
     if (
       selectedAsset &&
       selectedAssetNetwork &&
-      accountsForSelectedAssetNetwork.length && // asset is selected & account is available
-      selectedAccount?.coin !== selectedAsset.coin // needs to change accounts to one with correct network
+      // asset is selected & account is available
+      accountsForSelectedAssetNetwork.length &&
+      // needs to change accounts to one with correct network
+      selectedAccount?.accountId?.coin !== selectedAsset.coin
     ) {
       setSelectedAccount(accountsForSelectedAssetNetwork[0])
     }
@@ -265,71 +325,78 @@ export const DepositFundsScreen = () => {
     selectedAsset,
     selectedAssetNetwork,
     accountsForSelectedAssetNetwork,
-    selectedAccount
+    selectedAccount?.accountId?.coin
   ])
 
   React.useEffect(() => {
-    // load tokens on mount
-    if (!fullTokenList.length) {
-      dispatch(WalletActions.getAllTokensList())
+    if (!showDepositAddress) {
+      if (isCopied) {
+        resetCopyState()
+      }
+
+      if (showAccountSearch) {
+        closeAccountSearch()
+      }
     }
-  }, [fullTokenList])
+  }, [showDepositAddress, showAccountSearch, isCopied, closeAccountSearch, resetCopyState])
+
+  React.useEffect(() => {
+    // reset search field on list update
+    if (fullAssetsList && !tokenId) {
+      setSearchValue('')
+    }
+  }, [fullAssetsList, tokenId])
 
   // render
   return (
     <>
-      {/* Hide nav when creating or searching accounts */}
-      {!showAccountSearch && !(
-        needsAccount && showDepositAddress
-      ) &&
-        <StepsNavigation
-          goBack={onBack}
-          steps={[]}
-          currentStep=''
-          preventGoBack={!showDepositAddress}
-        />
-      }
-
       {/* Asset Selection */}
-      {!showDepositAddress &&
+      {!showDepositAddress && (
         <>
           <SelectAssetWrapper>
 
-            <Title>
-              {getLocale('braveWalletDepositFundsTitle')}
-            </Title>
+            <FilterTokenRow horizontalPadding={0} isV2={false}>
+              <Column
+                flex={1}
+                style={{ minWidth: '25%' }}
+                alignItems='flex-start'
+              >
+                <SearchBar
+                  placeholder={getLocale('braveWalletSearchText')}
+                  action={onSearchValueChange}
+                  value={searchValue}
+                  isV2={false}
+                />
+              </Column>
+              <NetworkFilterSelector isV2={false} />
+            </FilterTokenRow>
 
-            {fullTokenList.length
-              ? <TokenLists
-                enableScroll
-                maxListHeight={'38vh'}
-                userAssetList={assetsForFilteredNetwork}
-                networks={mainnetsList}
-                hideAddButton
-                hideAssetFilter
-                hideAccountFilter
-                hideAutoDiscovery
-                estimatedItemSize={100}
-                renderToken={({
-                  item: { asset }
-                }) => <BuyAssetOptionItem
+            {fullAssetsList.length ? (
+              <VirtualizedTokensList
+                getItemSize={getItemSize}
+                userAssetList={assetListSearchResults}
+                estimatedItemSize={itemSize}
+                renderToken={({ item: { asset } }) => (
+                  <BuyAssetOptionItem
                     isSelected={checkIsDepositAssetSelected(asset)}
                     key={getAssetIdKey(asset)}
                     token={asset}
                     onClick={setSelectedAsset}
-                    ref={(ref) => handleScrollIntoView(asset, ref)} />}
+                    ref={(ref) => handleScrollIntoView(asset, ref)}
+                  />
+                )}
               />
-              : <Column>
+            ) : (
+              <Column>
                 <LoadingIcon
                   opacity={1}
                   size={'100px'}
                   color={'interactive05'}
                 />
               </Column>
-            }
+            )}
 
             <VerticalSpace space={'12px'} />
-
           </SelectAssetWrapper>
 
           <NextButtonRow>
@@ -345,13 +412,12 @@ export const DepositFundsScreen = () => {
             />
           </NextButtonRow>
         </>
-      }
+      )}
 
       {/* Creates wallet Account if needed for deposit */}
-      {needsAccount && showDepositAddress &&
+      {needsAccount && showDepositAddress && selectedAssetNetwork &&
         <CreateAccountTab
           network={selectedAssetNetwork}
-          prevNetwork={prevNetwork}
           onCancel={goBackToSelectAssets}
         />
       }

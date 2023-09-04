@@ -3,13 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { FilecoinNetwork } from '../../common/hardware/types'
 import {
   BraveWallet,
-  GetPriceHistoryReturnObjectInfo,
-  AssetPriceWithContractAndChainId,
-  BitcoinKeyring,
-  BitcoinNetwork
+  FilecoinNetwork
 } from '../../constants/types'
 
 export type CreateWalletPayloadType = {
@@ -18,30 +14,15 @@ export type CreateWalletPayloadType = {
 
 export type AddAccountPayloadType = {
   accountName: string
+  keyringId: BraveWallet.KeyringId
   coin: BraveWallet.CoinType
-}
-
-export type AddFilecoinAccountPayloadType = {
-  accountName: string
-  network: FilecoinNetwork
-}
-
-export type AddBitcoinAccountPayloadType = {
-  accountName: string
-  networkId: BitcoinNetwork
-  keyringId: BitcoinKeyring
 }
 
 export type ImportAccountPayloadType = {
   accountName: string
   privateKey: string
   coin: BraveWallet.CoinType
-}
-
-export type ImportFilecoinAccountPayloadType = {
-  accountName: string
-  privateKey: string
-  network: string
+  network?: FilecoinNetwork
 }
 
 export type ImportAccountFromJsonPayloadType = {
@@ -50,15 +31,9 @@ export type ImportAccountFromJsonPayloadType = {
   json: string
 }
 
-export type RemoveImportedAccountPayloadType = {
-  address: string
-  coin: BraveWallet.CoinType
+export type RemoveAccountPayloadType = {
+  accountId: BraveWallet.AccountId
   password: string
-}
-
-export type RemoveHardwareAccountPayloadType = {
-  address: string
-  coin: BraveWallet.CoinType
 }
 
 export type RestoreWalletPayloadType = {
@@ -86,13 +61,6 @@ export type RecoveryWordsAvailablePayloadType = {
 
 export type UpdateSelectedAssetType = {
   asset?: BraveWallet.BlockchainToken | undefined
-  timeFrame: BraveWallet.AssetPriceTimeframe
-}
-
-export type SelectAssetPayloadType = {
-  priceHistory: GetPriceHistoryReturnObjectInfo | undefined
-  defaultFiatPrice?: AssetPriceWithContractAndChainId
-  defaultCryptoPrice?: AssetPriceWithContractAndChainId
   timeFrame: BraveWallet.AssetPriceTimeframe
 }
 

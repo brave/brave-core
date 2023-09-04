@@ -18,7 +18,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
-#include "base/guid.h"
+#include "base/location.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -26,15 +26,13 @@
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
+#include "brave/components/brave_news/browser/feed_v2_builder.h"
 #include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
-#include "brave/components/brave_news/browser/urls.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
-#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -57,6 +55,9 @@ namespace {
 // The favicon size we desire. The favicons are rendered at 24x24 pixels but
 // they look quite a bit nicer if we get a 48x48 pixel icon and downscale it.
 constexpr uint32_t kDesiredFaviconSizePixels = 48;
+// Since we have two boolean prefs for the News enabled status, a delay
+// will be used so that we only report the histogram once for both pref updates.
+constexpr base::TimeDelta kP3AEnabledReportTimeDelay = base::Seconds(3);
 }  // namespace
 
 bool GetIsEnabled(PrefService* prefs) {
@@ -91,6 +92,8 @@ BraveNewsController::BraveNewsController(
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
       private_cdn_request_helper_(GetNetworkTrafficAnnotationTag(),
                                   url_loader_factory),
+      history_service_(history_service),
+      url_loader_factory_(url_loader_factory),
       direct_feed_controller_(prefs_, url_loader_factory),
       unsupported_publisher_migrator_(prefs_,
                                       &direct_feed_controller_,
@@ -104,7 +107,7 @@ BraveNewsController::BraveNewsController(
                        &direct_feed_controller_,
                        &channels_controller_,
                        history_service,
-                       &api_request_helper_,
+                       url_loader_factory,
                        prefs_),
       suggestions_controller_(prefs_,
                               &publishers_controller_,
@@ -116,12 +119,12 @@ BraveNewsController::BraveNewsController(
   // Set up preference listeners
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
-      prefs::kNewTabPageShowToday,
-      base::BindRepeating(&BraveNewsController::ConditionallyStartOrStopTimer,
+      prefs::kBraveNewsOptedIn,
+      base::BindRepeating(&BraveNewsController::OnOptInChange,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      prefs::kBraveNewsOptedIn,
-      base::BindRepeating(&BraveNewsController::ConditionallyStartOrStopTimer,
+      prefs::kNewTabPageShowToday,
+      base::BindRepeating(&BraveNewsController::OnOptInChange,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
       prefs::kBraveNewsChannels,
@@ -169,6 +172,40 @@ void BraveNewsController::GetFeed(GetFeedCallback callback) {
     return;
   }
   feed_controller_.GetOrFetchFeed(std::move(callback));
+}
+
+void BraveNewsController::GetFeedV2(GetFeedV2Callback callback) {
+  if (!GetIsEnabled(prefs_) ||
+      !base::FeatureList::IsEnabled(
+          brave_news::features::kBraveNewsFeedUpdate)) {
+    std::move(callback).Run(mojom::FeedV2::New());
+    return;
+  }
+
+  if (!feed_v2_builder_) {
+    feed_v2_builder_ = std::make_unique<FeedV2Builder>(
+        publishers_controller_, channels_controller_, suggestions_controller_,
+        *prefs_.get(), *history_service_.get(), url_loader_factory_);
+  }
+
+  feed_v2_builder_->Build(std::move(callback));
+}
+
+void BraveNewsController::GetSignals(GetSignalsCallback callback) {
+  if (!GetIsEnabled(prefs_) ||
+      !base::FeatureList::IsEnabled(
+          brave_news::features::kBraveNewsFeedUpdate)) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  if (!feed_v2_builder_) {
+    feed_v2_builder_ = std::make_unique<FeedV2Builder>(
+        publishers_controller_, channels_controller_, suggestions_controller_,
+        *prefs_.get(), *history_service_.get(), url_loader_factory_);
+  }
+
+  feed_v2_builder_->GetSignals(std::move(callback));
 }
 
 void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
@@ -327,6 +364,12 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
   // be a direct image
   const auto file_name = padded_image_url.path();
   const std::string ending = ".pad";
+  if (file_name.length() >= file_name.max_size() - 1 ||
+      file_name.length() <= ending.length()) {
+    absl::optional<std::vector<uint8_t>> args;
+    std::move(callback).Run(std::move(args));
+    return;
+  }
   const bool is_padded =
       (file_name.compare(file_name.length() - ending.length(), ending.length(),
                          ending) == 0);
@@ -504,9 +547,8 @@ void BraveNewsController::OnInteractionSessionStarted() {
 }
 
 void BraveNewsController::OnSessionCardVisitsCountChanged(
-    uint16_t cards_visited_session_total_count) {
-  p3a::RecordWeeklyMaxCardVisitsCount(prefs_,
-                                      cards_visited_session_total_count);
+    uint16_t total_count) {
+  // TODO(djandries): Add new News card visit metrics
 }
 
 void BraveNewsController::OnPromotedItemView(
@@ -515,11 +557,8 @@ void BraveNewsController::OnPromotedItemView(
   if (ads_service_ && !item_id.empty() && !creative_instance_id.empty()) {
     ads_service_->TriggerPromotedContentAdEvent(
         item_id, creative_instance_id,
-        brave_ads::mojom::PromotedContentAdEventType::kServed);
-
-    ads_service_->TriggerPromotedContentAdEvent(
-        item_id, creative_instance_id,
-        brave_ads::mojom::PromotedContentAdEventType::kViewed);
+        brave_ads::mojom::PromotedContentAdEventType::kViewed,
+        /*intentional*/ base::DoNothing());
   }
 }
 
@@ -529,14 +568,15 @@ void BraveNewsController::OnPromotedItemVisit(
   if (ads_service_ && !item_id.empty() && !creative_instance_id.empty()) {
     ads_service_->TriggerPromotedContentAdEvent(
         item_id, creative_instance_id,
-        brave_ads::mojom::PromotedContentAdEventType::kClicked);
+        brave_ads::mojom::PromotedContentAdEventType::kClicked,
+        /*intentional*/ base::DoNothing());
   }
 }
 
-void BraveNewsController::OnSessionCardViewsCountChanged(
-    uint16_t cards_viewed_session_total_count) {
-  p3a::RecordWeeklyMaxCardViewsCount(prefs_, cards_viewed_session_total_count);
-  p3a::RecordTotalCardViews(prefs_, cards_viewed_session_total_count);
+void BraveNewsController::OnSessionCardViewsCountChanged(uint16_t total_count,
+                                                         uint16_t count_delta) {
+  // TODO(djandries): Add new News card view metrics that use the total count
+  p3a::RecordTotalCardViews(prefs_, count_delta);
 }
 
 void BraveNewsController::OnDisplayAdVisit(
@@ -561,7 +601,8 @@ void BraveNewsController::OnDisplayAdVisit(
   }
   ads_service_->TriggerInlineContentAdEvent(
       item_id, creative_instance_id,
-      brave_ads::mojom::InlineContentAdEventType::kClicked);
+      brave_ads::mojom::InlineContentAdEventType::kClicked,
+      /*intentional*/ base::DoNothing());
 }
 
 void BraveNewsController::OnDisplayAdView(
@@ -586,7 +627,8 @@ void BraveNewsController::OnDisplayAdView(
   }
   ads_service_->TriggerInlineContentAdEvent(
       item_id, creative_instance_id,
-      brave_ads::mojom::InlineContentAdEventType::kViewed);
+      brave_ads::mojom::InlineContentAdEventType::kViewed,
+      /*intentional*/ base::DoNothing());
 
   p3a::RecordWeeklyDisplayAdsViewedCount(prefs_, true);
 }
@@ -599,7 +641,8 @@ void BraveNewsController::OnDisplayAdPurgeOrphanedEvents() {
     return;
   }
   ads_service_->PurgeOrphanedAdEventsForType(
-      brave_ads::mojom::AdType::kInlineContentAd, base::DoNothing());
+      brave_ads::mojom::AdType::kInlineContentAd,
+      /*intentional*/ base::DoNothing());
 }
 
 void BraveNewsController::CheckForPublishersUpdate() {
@@ -619,6 +662,13 @@ void BraveNewsController::CheckForFeedsUpdate() {
 void BraveNewsController::Prefetch() {
   VLOG(1) << "PREFETCHING: ensuring feed has been retrieved";
   feed_controller_.EnsureFeedIsCached();
+}
+
+void BraveNewsController::OnOptInChange() {
+  p3a_enabled_report_timer_.Start(
+      FROM_HERE, kP3AEnabledReportTimeDelay,
+      base::BindOnce(&p3a::RecordFeatureEnabledChange, prefs_));
+  ConditionallyStartOrStopTimer();
 }
 
 void BraveNewsController::ConditionallyStartOrStopTimer() {
@@ -672,8 +722,7 @@ void BraveNewsController::HandleSubscriptionsChanged() {
 }
 
 void BraveNewsController::MaybeInitPrefs() {
-  if (GetIsEnabled(prefs_) &&
-      base::FeatureList::IsEnabled(brave_news::features::kBraveNewsV2Feature)) {
+  if (GetIsEnabled(prefs_)) {
     // We had a bug where you could be subscribed to a channel in the empty
     // locale in earlier versions of Brave News. If so, we should remove it.
     // After this has been out for a bit we can remove it.

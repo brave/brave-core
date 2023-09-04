@@ -5,15 +5,14 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.zxing.BarcodeFormat;
@@ -22,32 +21,29 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.chrome.browser.init.AsyncInitializationActivity;
-import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 
 public class AccountDetailsWithQrActivity extends BraveWalletBaseActivity {
     private static final int WIDTH = 300;
 
     private ImageView qrCodeImage;
+    private AccountInfo mAccountInfo;
 
-    private String mAddress;
-    private String mName;
-    private int mCoinType;
+    public static Intent createIntent(@NonNull Context context, @NonNull AccountInfo accountInfo) {
+        Intent intent = new Intent(context, AccountDetailsWithQrActivity.class);
+        WalletUtils.addAccountInfoToIntent(intent, accountInfo);
+        return intent;
+    }
 
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_account_details_with_qr);
 
         if (getIntent() != null) {
-            mAddress = getIntent().getStringExtra(Utils.ADDRESS);
-            mName = getIntent().getStringExtra(Utils.NAME);
-            mCoinType = getIntent().getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
+            mAccountInfo = WalletUtils.getAccountInfoFromIntent(getIntent());
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -56,30 +52,25 @@ public class AccountDetailsWithQrActivity extends BraveWalletBaseActivity {
         getSupportActionBar().setTitle(getResources().getString(R.string.account_details));
 
         qrCodeImage = findViewById(R.id.qr_code_image);
-        fillQrCode(mAddress);
+        fillQrCode(mAccountInfo.address);
 
         TextView accountValueText = findViewById(R.id.account_value_text);
-        accountValueText.setText(Utils.stripAccountAddress(mAddress));
+        accountValueText.setText(Utils.stripAccountAddress(mAccountInfo.address));
 
         ImageView accountCopyImage = findViewById(R.id.account_copy_image);
         accountCopyImage.setOnClickListener(v
-                -> Utils.saveTextToClipboard(AccountDetailsWithQrActivity.this, mAddress,
-                        R.string.address_has_been_copied, false));
+                -> Utils.saveTextToClipboard(AccountDetailsWithQrActivity.this,
+                        mAccountInfo.address, R.string.address_has_been_copied, false));
 
         EditText accountNameText = findViewById(R.id.account_name_text);
-        accountNameText.setText(mName);
+        accountNameText.setText(mAccountInfo.name);
         accountNameText.setEnabled(false);
 
         TextView privateKeyText = findViewById(R.id.account_private_key_text);
-        privateKeyText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent accountPrivateKeyActivityIntent = new Intent(
-                        AccountDetailsWithQrActivity.this, AccountPrivateKeyActivity.class);
-                accountPrivateKeyActivityIntent.putExtra(Utils.ADDRESS, mAddress);
-                accountPrivateKeyActivityIntent.putExtra(Utils.COIN_TYPE, mCoinType);
-                startActivity(accountPrivateKeyActivityIntent);
-            }
+        privateKeyText.setOnClickListener(v -> {
+            Intent intent = AccountPrivateKeyActivity.createIntent(
+                    AccountDetailsWithQrActivity.this, mAccountInfo);
+            startActivity(intent);
         });
 
         onInitialLayoutInflationComplete();

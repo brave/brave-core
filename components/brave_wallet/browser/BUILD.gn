@@ -22,6 +22,9 @@ static_library("browser") {
   sources = [
     "account_discovery_manager.cc",
     "account_discovery_manager.h",
+    "account_resolver_delegate.h",
+    "account_resolver_delegate_impl.cc",
+    "account_resolver_delegate_impl.h",
     "asset_discovery_manager.cc",
     "asset_discovery_manager.h",
     "asset_discovery_task.cc",
@@ -71,6 +74,8 @@ static_library("browser") {
     "ens_resolver_task.h",
     "eth_abi_decoder.cc",
     "eth_abi_decoder.h",
+    "eth_allowance_manager.cc",
+    "eth_allowance_manager.h",
     "eth_block_tracker.cc",
     "eth_block_tracker.h",
     "eth_data_builder.cc",
@@ -128,6 +133,16 @@ static_library("browser") {
     "nonce_tracker.h",
     "password_encryptor.cc",
     "password_encryptor.h",
+    "scoped_txs_update.cc",
+    "scoped_txs_update.h",
+    "simple_hash_client.cc",
+    "simple_hash_client.h",
+    "simulation_request_helper.cc",
+    "simulation_request_helper.h",
+    "simulation_response_parser.cc",
+    "simulation_response_parser.h",
+    "simulation_service.cc",
+    "simulation_service.h",
     "sns_resolver_task.cc",
     "sns_resolver_task.h",
     "solana_account_meta.cc",
@@ -178,6 +193,9 @@ static_library("browser") {
     "tx_service.h",
     "tx_state_manager.cc",
     "tx_state_manager.h",
+    "tx_storage_delegate.h",
+    "tx_storage_delegate_impl.cc",
+    "tx_storage_delegate_impl.h",
     "unstoppable_domains_dns_resolve.cc",
     "unstoppable_domains_dns_resolve.h",
     "unstoppable_domains_multichain_calls.cc",
@@ -195,14 +213,15 @@ static_library("browser") {
   }
   deps = [
     ":constants",
+    ":generated_blockchain_list_schemas",
     ":generated_json_rpc_responses",
+    ":generated_simulation_responses",
     ":generated_swap_responses",
     ":hd_keyring",
     ":pref_names",
     ":transaction",
     ":utils",
     "//base",
-    "//brave/components/api_request_helper",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_stats/browser",
     "//brave/components/brave_wallet/api",
@@ -213,9 +232,9 @@ static_library("browser") {
     "//brave/components/brave_wallet/common:pref_names",
     "//brave/components/constants",
     "//brave/components/decentralized_dns/core",
-    "//brave/components/filecoin/rs:cxx",
+    "//brave/components/filecoin/rs:rust_lib",
     "//brave/components/ipfs/buildflags",
-    "//brave/components/json/rs:cxx",
+    "//brave/components/json/rs:rust_lib",
     "//brave/components/p3a_utils",
     "//brave/components/resources:strings_grit",
     "//components/component_updater",
@@ -223,6 +242,7 @@ static_library("browser") {
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/sync_preferences",
+    "//components/value_store",
     "//crypto",
     "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
@@ -234,11 +254,21 @@ static_library("browser") {
     "//url",
   ]
 
+  public_deps = [ "//brave/components/api_request_helper" ]
+
   if (enable_ipfs) {
     deps += [ "//brave/components/ipfs" ]
   }
 
   configs += [ ":sardine_config" ]
+
+  if (is_android) {
+    sources += [
+      "wallet_data_files_installer_android_util.cc",
+      "wallet_data_files_installer_android_util.h",
+    ]
+    deps += [ "//brave/build/android:jni_headers" ]
+  }
 }
 
 if (!is_ios) {
@@ -293,6 +323,7 @@ source_set("utils") {
     ":constants",
     ":pref_names",
     "//base",
+    "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:buildflags",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/version_info",
@@ -330,11 +361,11 @@ source_set("hd_keyring") {
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
-    "//brave/components/filecoin/rs:cxx",
+    "//brave/components/filecoin/rs:rust_lib",
     "//crypto",
   ]
 
-  public_deps = [ "//brave/components/brave_wallet/rust:cxx" ]
+  public_deps = [ "//brave/components/brave_wallet/rust:rust_lib" ]
 }
 
 source_set("transaction") {
@@ -357,13 +388,55 @@ source_set("transaction") {
     "//base",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
-    "//brave/components/filecoin/rs:cxx",
-    "//brave/components/json/rs:cxx",
+    "//brave/components/filecoin/rs:rust_lib",
+    "//brave/components/json/rs:rust_lib",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "test_utils.cc",
+    "test_utils.h",
+  ]
+
+  deps = [
+    ":browser",
+    "//brave/components/brave_wallet/common",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_wallet/common:mojom",
+    "//components/value_store",
+    "//components/value_store:test_support",
+  ]
+}  # source_set("test_support")
+
+generated_types("generated_blockchain_list_schemas") {
+  sources = [ "blockchain_list_schemas.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [
+    ":browser",
+    "test:brave_wallet_unit_tests",
   ]
 }
 
 generated_types("generated_json_rpc_responses") {
   sources = [ "json_rpc_responses.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [
+    ":browser",
+    "test:brave_wallet_unit_tests",
+  ]
+}
+
+generated_types("generated_simulation_responses") {
+  sources = [ "simulation_responses.idl" ]
   root_namespace = "brave_wallet::%(namespace)s"
   deps = [ "//base" ]
   visibility = [

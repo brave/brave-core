@@ -3,12 +3,47 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//components/vector_icons/vector_icons.gni")
 
 aggregate_vector_icons("brave_components_vector_icons") {
   icon_directory = "."
 
+  # Note: Before adding another icon here, check if the icon is available in Leo
+  # https://leo.bravesoftware.com/?path=/story/icon--all-icons
   sources = [ "autoplay_status.icon" ]
+
+  # The Skia icon names are transformed to make them easier to use in Brave Core
+  # `arrow-right.svg` becomes `leo_arrow_right.icon`
+  leo_icons = [
+    "leo_close.icon",
+    "leo_plus_add.icon",
+    "leo_search.icon",
+    "leo_tune_small.icon",
+    "leo_arrow_right.icon",
+    "leo_check_circle_filled.icon",
+    "leo_check_circle_outline.icon",
+    "leo_folder_exchange.icon",
+    "leo_heart_filled.icon",
+    "leo_heart_outline.icon",
+    "leo_product_brave_wallet.icon",
+    "leo_product_readermode.icon",
+    "leo_product_speedreader.icon",
+    "leo_rss.icon",
+    "leo_trash.icon",
+    "leo_verification_filled.icon",
+  ]
+
+  if (enable_playlist_webui) {
+    leo_icons += [
+      "leo_product_playlist.icon",
+      "leo_product_playlist_add.icon",
+      "leo_product_playlist_added.icon",
+    ]
+  }
+
+  sources +=
+      rebase_path(leo_icons, ".", "//brave/node_modules/@brave/leo/icons-skia")
 }
 
 static_library("vector_icons") {

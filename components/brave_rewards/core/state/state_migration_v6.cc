@@ -10,30 +10,31 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
 namespace brave_rewards::internal {
 namespace state {
 
-StateMigrationV6::StateMigrationV6(LedgerImpl& ledger) : ledger_(ledger) {}
+StateMigrationV6::StateMigrationV6(RewardsEngineImpl& engine)
+    : engine_(engine) {}
 
 StateMigrationV6::~StateMigrationV6() = default;
 
 void StateMigrationV6::Migrate(LegacyResultCallback callback) {
-  auto uphold_wallet = ledger_->GetLegacyWallet();
-  ledger_->SetState(kWalletUphold, uphold_wallet);
-  ledger_->client()->ClearState("external_wallets");
+  auto uphold_wallet = engine_->GetLegacyWallet();
+  engine_->SetState(kWalletUphold, uphold_wallet);
+  engine_->client()->ClearState("external_wallets");
 
   base::Value::Dict brave;
-  brave.Set("payment_id", ledger_->GetState<std::string>(kPaymentId));
-  brave.Set("recovery_seed", ledger_->GetState<std::string>(kRecoverySeed));
+  brave.Set("payment_id", engine_->GetState<std::string>(kPaymentId));
+  brave.Set("recovery_seed", engine_->GetState<std::string>(kRecoverySeed));
 
   std::string brave_json;
   base::JSONWriter::Write(brave, &brave_json);
-  ledger_->SetState(kWalletBrave, std::move(brave_json));
+  engine_->SetState(kWalletBrave, std::move(brave_json));
 
-  callback(mojom::Result::LEDGER_OK);
+  callback(mojom::Result::OK);
 }
 
 }  // namespace state

@@ -13,9 +13,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_unblinded_token.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
-
-using std::placeholders::_1;
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -26,8 +24,8 @@ const char kTableName[] = "unblinded_tokens";
 
 }  // namespace
 
-DatabaseUnblindedToken::DatabaseUnblindedToken(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseUnblindedToken::DatabaseUnblindedToken(RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseUnblindedToken::~DatabaseUnblindedToken() = default;
 
@@ -36,7 +34,7 @@ void DatabaseUnblindedToken::InsertOrUpdateList(
     LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "List is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -68,14 +66,14 @@ void DatabaseUnblindedToken::InsertOrUpdateList(
     transaction->commands.push_back(std::move(command));
   }
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseUnblindedToken::OnGetRecords(
-    mojom::DBCommandResponsePtr response,
-    GetUnblindedTokenListCallback callback) {
+    GetUnblindedTokenListCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -132,9 +130,10 @@ void DatabaseUnblindedToken::GetSpendableRecords(
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(std::move(transaction),
-                            std::bind(&DatabaseUnblindedToken::OnGetRecords,
-                                      this, _1, std::move(callback)));
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseUnblindedToken::OnGetRecords,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseUnblindedToken::MarkRecordListAsSpent(
@@ -144,7 +143,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
     LegacyResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -165,9 +164,9 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseUnblindedToken::MarkRecordListAsReserved(
@@ -176,7 +175,7 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
     LegacyResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -227,31 +226,30 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseUnblindedToken::OnMarkRecordListAsReserved, this, _1,
-                ids.size(), callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseUnblindedToken::OnMarkRecordListAsReserved,
+                     base::Unretained(this), std::move(callback), ids.size()));
 }
 
 void DatabaseUnblindedToken::OnMarkRecordListAsReserved(
-    mojom::DBCommandResponsePtr response,
+    LegacyResultCallback callback,
     size_t expected_row_count,
-    LegacyResultCallback callback) {
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
   if (response->result->get_records().size() != expected_row_count) {
     BLOG(0, "Records size doesn't match");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
-  callback(mojom::Result::LEDGER_OK);
+  callback(mojom::Result::OK);
 }
 
 void DatabaseUnblindedToken::MarkRecordListAsSpendable(
@@ -259,7 +257,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpendable(
     LegacyResultCallback callback) {
   if (redeem_id.empty()) {
     BLOG(1, "Redeem id is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -278,9 +276,9 @@ void DatabaseUnblindedToken::MarkRecordListAsSpendable(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseUnblindedToken::GetReservedRecordList(
@@ -315,10 +313,10 @@ void DatabaseUnblindedToken::GetReservedRecordList(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseUnblindedToken::OnGetRecords, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseUnblindedToken::OnGetRecords,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
@@ -360,10 +358,10 @@ void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseUnblindedToken::OnGetRecords, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseUnblindedToken::OnGetRecords,
+                     base::Unretained(this), std::move(callback)));
 }
 
 }  // namespace database

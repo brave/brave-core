@@ -6,7 +6,7 @@
 #include "brave/browser/brave_ads/notification_helper/notification_helper.h"
 
 #include "base/functional/bind.h"
-#include "base/memory/singleton.h"
+#include "base/no_destructor.h"
 #include "brave/browser/brave_ads/notification_helper/notification_helper_impl.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -92,7 +92,8 @@ NotificationHelper::~NotificationHelper() = default;
 
 // static
 NotificationHelper* NotificationHelper::GetInstance() {
-  return base::Singleton<NotificationHelper>::get();
+  static base::NoDestructor<NotificationHelper> instance;
+  return instance.get();
 }
 
 void NotificationHelper::InitForProfile(Profile* profile) {
@@ -128,7 +129,8 @@ bool NotificationHelper::DoesSupportSystemNotifications() const {
   return does_support_system_notifications_;
 }
 
-void NotificationHelper::OnSystemNotificationPlatformBridgeReady(bool success) {
+void NotificationHelper::OnSystemNotificationPlatformBridgeReady(
+    const bool success) {
   does_support_system_notifications_ = success;
 }
 

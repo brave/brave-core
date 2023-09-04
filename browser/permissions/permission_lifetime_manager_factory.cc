@@ -8,8 +8,10 @@
 #include <memory>
 #include <utility>
 
+#include "base/no_destructor.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "brave/browser/permissions/permission_origin_lifetime_monitor_impl.h"
 #include "brave/components/permissions/permission_lifetime_manager.h"
-#include "brave/components/permissions/permission_origin_lifetime_monitor_impl.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -28,13 +30,16 @@ PermissionLifetimeManagerFactory::GetForProfile(
 // static
 PermissionLifetimeManagerFactory*
 PermissionLifetimeManagerFactory::GetInstance() {
-  return base::Singleton<PermissionLifetimeManagerFactory>::get();
+  static base::NoDestructor<PermissionLifetimeManagerFactory> instance;
+  return instance.get();
 }
 
 PermissionLifetimeManagerFactory::PermissionLifetimeManagerFactory()
     : BrowserContextKeyedServiceFactory(
           "PermissionLifetimeManagerFactory",
-          BrowserContextDependencyManager::GetInstance()) {}
+          BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(EphemeralStorageServiceFactory::GetInstance());
+}
 
 PermissionLifetimeManagerFactory::~PermissionLifetimeManagerFactory() = default;
 
@@ -52,8 +57,15 @@ KeyedService* PermissionLifetimeManagerFactory::BuildServiceInstanceFor(
             context);
   }
   auto* profile = Profile::FromBrowserContext(context);
+  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
+  // the System Profile.
+  auto* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(profile);
+  if (!host_content_settings_map) {
+    return nullptr;
+  }
   return new permissions::PermissionLifetimeManager(
-      *HostContentSettingsMapFactory::GetForProfile(context),
+      *host_content_settings_map,
       profile->IsOffTheRecord() ? nullptr : profile->GetPrefs(),
       std::move(permission_origin_lifetime_monitor));
 }

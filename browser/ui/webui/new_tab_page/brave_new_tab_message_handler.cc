@@ -23,7 +23,7 @@
 #include "brave/browser/search_engines/pref_names.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
-#include "brave/components/brave_ads/core/ads_util.h"
+#include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
@@ -129,26 +129,11 @@ void BraveNewTabMessageHandler::RecordInitialP3AValues(
       kNTPCustomizeUsageStatus, local_state);
 }
 
-bool BraveNewTabMessageHandler::CanPromptBraveTalk() {
-  return BraveNewTabMessageHandler::CanPromptBraveTalk(base::Time::Now());
-}
-
-bool BraveNewTabMessageHandler::CanPromptBraveTalk(base::Time now) {
-  // Only show Brave Talk prompt 4 days after first run.
-  // CreateSentinelIfNeeded() is called in chrome_browser_main.cc, making this a
-  // non-blocking read of the cached sentinel value when running from production
-  // code. However tests will never create the sentinel file due to being run
-  // with the switches:kNoFirstRun flag, so we need to allow blocking for that.
-  base::ScopedAllowBlockingForTesting allow_blocking;
-  base::Time time_first_run = first_run::GetFirstRunSentinelCreationTime();
-  base::Time talk_prompt_trigger_time = now - base::Days(3);
-  return (time_first_run <= talk_prompt_trigger_time);
-}
-
 // static
 BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
     content::WebUIDataSource* source,
-    Profile* profile) {
+    Profile* profile,
+    bool was_invisible_and_restored) {
   //
   // Initial Values
   // Should only contain data that is static
@@ -166,19 +151,21 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
 
   source->AddBoolean("featureFlagBraveNTPSponsoredImagesWallpaper",
                      is_ads_supported_locale);
-  source->AddBoolean("braveTalkPromptAllowed",
-                     BraveNewTabMessageHandler::CanPromptBraveTalk());
 
   // Private Tab info
   if (IsPrivateNewTab(profile)) {
     source->AddBoolean("isTor", profile->IsTor());
     source->AddBoolean("isQwant", brave::IsRegionForQwant(profile));
   }
-  return new BraveNewTabMessageHandler(profile);
+  return new BraveNewTabMessageHandler(profile, was_invisible_and_restored);
 }
 
-BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile)
-    : profile_(profile), weak_ptr_factory_(this) {
+BraveNewTabMessageHandler::BraveNewTabMessageHandler(
+    Profile* profile,
+    bool was_invisible_and_restored)
+    : profile_(profile),
+      was_invisible_and_restored_(was_invisible_and_restored),
+      weak_ptr_factory_(this) {
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
 }
 
@@ -449,7 +436,13 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
     const base::Value::List& args) {
   AllowJavascript();
 
-  // Decrement original value only if there's actual branded content
+  // Decrement original value only if there's actual branded content and we are
+  // not restoring invisible (hidden or occluded) browser tabs.
+  if (was_invisible_and_restored_) {
+    was_invisible_and_restored_ = false;
+    return;
+  }
+
   if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_))
     service->RegisterPageView();
 }

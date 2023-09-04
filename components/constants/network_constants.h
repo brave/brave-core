@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_CONSTANTS_NETWORK_CONSTANTS_H_
 #define BRAVE_COMPONENTS_CONSTANTS_NETWORK_CONSTANTS_H_
 
+#include "brave/components/widevine/static_buildflags.h"
+
 extern const char kExtensionUpdaterDomain[];
 
 extern const char kBraveProxyPattern[];
@@ -39,6 +41,10 @@ extern const char kCRLSetPrefix4[];
 extern const char kChromeCastPrefix[];
 extern const char kWidevineGvt1Prefix[];
 extern const char kWidevineGoogleDlPrefix[];
+
+#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
+extern const char kWidevineGoogleDlPrefixWinArm64[];
+#endif
 
 extern const char kUserAgentHeader[];
 extern const char kBravePartnerHeader[];

@@ -11,11 +11,15 @@
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_handler.h"
+#include "brave/components/brave_ads/core/public/feature/brave_ads_feature.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
@@ -48,22 +52,34 @@ SearchResultAdTabHelper::SearchResultAdTabHelper(
 
 SearchResultAdTabHelper::~SearchResultAdTabHelper() = default;
 
+bool SearchResultAdTabHelper::ShouldHandleSearchResultAdEvents() const {
+  if (!ShouldSupportSearchResultAds()) {
+    return false;
+  }
+
+  if (ShouldAlwaysTriggerSearchResultAdEvents()) {
+    return true;
+  }
+
+  const Profile* const profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  return profile->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
+}
+
 // static
 void SearchResultAdTabHelper::MaybeCreateForWebContents(
     content::WebContents* web_contents) {
   CHECK(web_contents);
-  if (!base::FeatureList::IsEnabled(
-          kShouldTriggerSearchResultAdEventsFeature) ||
-      !web_contents->GetBrowserContext() ||
-      web_contents->GetBrowserContext()->IsOffTheRecord()) {
-    return;
+
+  if (ShouldSupportSearchResultAds() && web_contents->GetBrowserContext() &&
+      !web_contents->GetBrowserContext()->IsOffTheRecord()) {
+    CreateForWebContents(web_contents);
   }
-  CreateForWebContents(web_contents);
 }
 
 void SearchResultAdTabHelper::MaybeTriggerSearchResultAdClickedEvent(
     const GURL& navigation_url) {
-  if (search_result_ad_handler_) {
+  if (ShouldHandleSearchResultAdEvents() && search_result_ad_handler_) {
     search_result_ad_handler_->MaybeTriggerSearchResultAdClickedEvent(
         navigation_url);
   }
@@ -95,11 +111,16 @@ void SearchResultAdTabHelper::DidFinishNavigation(
 
   MaybeProcessSearchResultAdClickedEvent(navigation_handle);
 
+  if (!ShouldHandleSearchResultAdEvents()) {
+    return;
+  }
+
   const bool should_trigger_viewed_event =
       navigation_handle->GetRestoreType() ==
           content::RestoreType::kNotRestored &&
       !(navigation_handle->GetPageTransition() &
         ui::PAGE_TRANSITION_FORWARD_BACK);
+
   search_result_ad_handler_ =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
           GetAdsService(), navigation_handle->GetURL(),
@@ -107,15 +128,17 @@ void SearchResultAdTabHelper::DidFinishNavigation(
 }
 
 void SearchResultAdTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  if (search_result_ad_handler_) {
-    content::RenderFrameHost* render_frame_host =
-        web_contents()->GetPrimaryMainFrame();
-
-    search_result_ad_handler_->MaybeRetrieveSearchResultAd(
-        render_frame_host,
-        base::BindOnce(&SearchResultAdTabHelper::OnRetrieveSearchResultAd,
-                       weak_factory_.GetWeakPtr()));
+  if (!ShouldHandleSearchResultAdEvents() || !search_result_ad_handler_) {
+    return;
   }
+
+  content::RenderFrameHost* render_frame_host =
+      web_contents()->GetPrimaryMainFrame();
+
+  search_result_ad_handler_->MaybeRetrieveSearchResultAd(
+      render_frame_host,
+      base::BindOnce(&SearchResultAdTabHelper::OnRetrieveSearchResultAd,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void SearchResultAdTabHelper::WebContentsDestroyed() {
@@ -185,11 +208,8 @@ void SearchResultAdTabHelper::OnRetrieveSearchResultAd(
 void SearchResultAdTabHelper::OnCheckForAdWithDataPlacementIdVisible(
     const std::string& placement_id,
     base::Value value) {
-  if (!search_result_ad_handler_ || !value.is_bool()) {
-    return;
-  }
-
-  if (value.GetBool()) {
+  if (ShouldHandleSearchResultAdEvents() && search_result_ad_handler_ &&
+      value.is_bool() && value.GetBool()) {
     search_result_ad_handler_->MaybeTriggerSearchResultAdViewedEvent(
         placement_id);
   }

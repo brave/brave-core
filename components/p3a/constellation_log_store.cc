@@ -133,7 +133,7 @@ void ConstellationLogStore::StageNextLog() {
           << ", histogram_name = " << staged_entry_key_->histogram_name;
 }
 
-void ConstellationLogStore::DiscardStagedLog() {
+void ConstellationLogStore::DiscardStagedLog(base::StringPiece reason) {
   if (!has_staged_log()) {
     return;
   }
@@ -178,8 +178,7 @@ void ConstellationLogStore::LoadPersistedUnsentLogs() {
       continue;
     }
 
-    for (const auto [histogram_name, log_value] :
-         inner_epoch_dict.DictItems()) {
+    for (const auto [histogram_name, log_value] : inner_epoch_dict.GetDict()) {
       if (!log_value.is_string()) {
         continue;
       }

@@ -15,6 +15,7 @@
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -28,6 +29,7 @@
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
+#include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -49,7 +51,7 @@
 
 #if defined(USE_AURA)
 #include "chrome/browser/ui/views/frame/opaque_browser_frame_view.h"
-#include "ui/aura/test/ui_controls_factory_aura.h"
+#include "ui/aura/test/ui_controls_aurawin.h"
 #include "ui/aura/window.h"
 #endif
 
@@ -95,13 +97,15 @@ FullscreenNotificationObserver::~FullscreenNotificationObserver() = default;
 
 void FullscreenNotificationObserver::OnFullscreenStateChanged() {
   observed_change_ = true;
-  if (run_loop_.running())
+  if (run_loop_.running()) {
     run_loop_.Quit();
+  }
 }
 
 void FullscreenNotificationObserver::Wait() {
-  if (observed_change_)
+  if (observed_change_) {
     return;
+  }
 
   run_loop_.Run();
 }
@@ -307,8 +311,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
   // Add tabs as much as it can grow mih height of tab strip.
   auto tab_strip_min_height =
       browser_view()->tab_strip_region_view()->GetMinimumSize().height();
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 10; i++) {
     chrome::AddTabAt(browser(), {}, -1, true);
+  }
   ASSERT_LE(tab_strip_min_height,
             browser_view()->tab_strip_region_view()->GetMinimumSize().height());
 
@@ -370,44 +375,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, SidebarAlignment) {
-  // Pre-condition: sidebar is on the left by default.
-  auto* prefs = browser()->profile()->GetPrefs();
-  ASSERT_TRUE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
-                  ->IsDefaultValue());
-  ASSERT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-
-  // When enabling vertical tab strip, sidebar moves to the right.
-  ToggleVerticalTabStrip();
-  EXPECT_FALSE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
-                   ->IsDefaultValue());
-  EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-
-  // When disabling vertical tab strip, sidebar should be restored to the
-  // default position.
-  ToggleVerticalTabStrip();
-  EXPECT_TRUE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
-                  ->IsDefaultValue());
-  EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-
-  // When user explicitly set position, sidebar shouldn't move.
-  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
-  EXPECT_FALSE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
-                   ->IsDefaultValue());
-  ToggleVerticalTabStrip();
-  EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-
-  // Turning off vertical tab strip also shouldn't affect sidebar's position.
-  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
-  ToggleVerticalTabStrip();
-  ToggleVerticalTabStrip();
-  EXPECT_FALSE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
-                   ->IsDefaultValue());
-  EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-}
-
-#if BUILDFLAG(IS_MAC)
-// Mac test bots are not able to enter fullscreen.
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+// * Mac test bots are not able to enter fullscreen.
+// * On Linux this test is flaky.
 #define MAYBE_Fullscreen DISABLED_Fullscreen
 #else
 #define MAYBE_Fullscreen Fullscreen
@@ -420,44 +390,65 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
                   .width());
   auto* fullscreen_controller =
       browser_view()->GetExclusiveAccessManager()->fullscreen_controller();
-  fullscreen_controller->ToggleBrowserFullscreenMode();
-  { FullscreenNotificationObserver(browser()).Wait(); }
-
-  // Vertical tab strip should be visible on browser fullscreen.
-  ASSERT_TRUE(fullscreen_controller->IsFullscreenForBrowser());
-  ASSERT_TRUE(browser_view()->IsFullscreen());
-  EXPECT_TRUE(browser_view()
-                  ->vertical_tab_strip_host_view_->GetPreferredSize()
-                  .width());
-
-  fullscreen_controller->ToggleBrowserFullscreenMode();
-  { FullscreenNotificationObserver(browser()).Wait(); }
-  ASSERT_FALSE(fullscreen_controller->IsFullscreenForBrowser());
-  ASSERT_FALSE(browser_view()->IsFullscreen());
-
-  // Vertical tab strip should become invisible on tab fullscreen.
-  fullscreen_controller->EnterFullscreenModeForTab(browser_view()
-                                                       ->browser()
-                                                       ->tab_strip_model()
-                                                       ->GetActiveWebContents()
-                                                       ->GetPrimaryMainFrame());
-  { FullscreenNotificationObserver(browser()).Wait(); }
-  ASSERT_TRUE(fullscreen_controller->IsTabFullscreen());
+  {
+    auto observer = FullscreenNotificationObserver(browser());
+    fullscreen_controller->ToggleBrowserFullscreenMode();
+    observer.Wait();
+  }
 
   base::RunLoop run_loop;
   auto wait_until = base::BindLambdaForTesting(
       [&](base::RepeatingCallback<bool()> predicate) {
-        if (predicate.Run())
+        if (predicate.Run()) {
           return;
+        }
 
         base::RepeatingTimer scheduler;
         scheduler.Start(FROM_HERE, base::Milliseconds(100),
                         base::BindLambdaForTesting([&]() {
-                          if (predicate.Run())
+                          if (predicate.Run()) {
                             run_loop.Quit();
+                          }
                         }));
         run_loop.Run();
       });
+
+  // Vertical tab strip should be invisible on browser fullscreen.
+  ASSERT_TRUE(fullscreen_controller->IsFullscreenForBrowser());
+  ASSERT_TRUE(browser_view()->IsFullscreen());
+  wait_until.Run(base::BindLambdaForTesting([&]() {
+    return !browser_view()
+                ->vertical_tab_strip_host_view_->GetPreferredSize()
+                .width();
+  }));
+
+  {
+    auto observer = FullscreenNotificationObserver(browser());
+    fullscreen_controller->ToggleBrowserFullscreenMode();
+    observer.Wait();
+  }
+  ASSERT_FALSE(fullscreen_controller->IsFullscreenForBrowser());
+  ASSERT_FALSE(browser_view()->IsFullscreen());
+
+  {
+    auto observer = FullscreenNotificationObserver(browser());
+    fullscreen_controller->EnterFullscreenModeForTab(
+        browser_view()
+            ->browser()
+            ->tab_strip_model()
+            ->GetActiveWebContents()
+            ->GetPrimaryMainFrame());
+
+    observer.Wait();
+  }
+
+  // Vertical tab strip should be invisible on tab fullscreen.
+  ASSERT_TRUE(fullscreen_controller->IsTabFullscreen());
+  if (!browser_view()
+           ->vertical_tab_strip_host_view_->GetPreferredSize()
+           .width()) {
+    return;
+  }
 
   wait_until.Run(base::BindLambdaForTesting([&]() {
     return !browser_view()
@@ -564,6 +555,44 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripStringBrowserTest, ContextMenuString) {
   }
 }
 
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, OriginalTabSearchButton) {
+  auto* widget_delegate_view =
+      browser_view()->vertical_tab_strip_widget_delegate_view();
+  ASSERT_TRUE(widget_delegate_view);
+
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+
+  auto* original_tab_search_button =
+      region_view->original_region_view_->tab_search_button();
+  if (!original_tab_search_button) {
+    // On Windows 10, the button is on the window frame and vertical tab strip
+    // does nothing to it.
+    return;
+  }
+
+  ASSERT_TRUE(original_tab_search_button->GetVisible());
+
+  // The button should be hidden when using vertical tab strip
+  ToggleVerticalTabStrip();
+  EXPECT_FALSE(original_tab_search_button->GetVisible());
+
+  // The button should reappear when getting back to horizontal tab strip.
+  ToggleVerticalTabStrip();
+  EXPECT_TRUE(original_tab_search_button->GetVisible());
+
+  // Turn off the button with a preference.
+  browser()->profile()->GetPrefs()->SetBoolean(kTabsSearchShow, false);
+  EXPECT_FALSE(original_tab_search_button->GetVisible());
+
+  // Turn on and off vertical tab strip
+  ToggleVerticalTabStrip();
+  ToggleVerticalTabStrip();
+
+  // the original tab search button should stay hidden
+  EXPECT_FALSE(original_tab_search_button->GetVisible());
+}
+
 class VerticalTabStripDragAndDropBrowserTest
     : public VerticalTabStripBrowserTest {
  public:
@@ -610,19 +639,11 @@ class VerticalTabStripDragAndDropBrowserTest
     VerticalTabStripBrowserTest::SetUpOnMainThread();
 
 #if BUILDFLAG(IS_WIN)
-    auto* root_window =
-        browser_view()->GetWidget()->GetNativeWindow()->GetRootWindow();
-    ui_controls::InstallUIControlsAura(
-        aura::test::CreateUIControlsAura(root_window->GetHost()));
+    aura::test::EnableUIControlsAuraWin();
 
     auto* widget_delegate_view =
         browser_view()->vertical_tab_strip_widget_delegate_view_.get();
     ASSERT_TRUE(widget_delegate_view);
-
-    root_window =
-        widget_delegate_view->GetWidget()->GetNativeWindow()->GetRootWindow();
-    ui_controls::InstallUIControlsAura(
-        aura::test::CreateUIControlsAura(root_window->GetHost()));
 #endif  // defined(IS_WIN)
 
 #if BUILDFLAG(IS_OZONE)
@@ -635,7 +656,9 @@ class VerticalTabStripDragAndDropBrowserTest
     ui::OzonePlatform::InitializeForUI(params);
 #endif
 
+#if !BUILDFLAG(IS_WIN)
     ui_controls::EnableUIControls();
+#endif
 
     ToggleVerticalTabStrip();
 

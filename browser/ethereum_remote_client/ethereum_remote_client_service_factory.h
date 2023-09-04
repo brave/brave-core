@@ -6,8 +6,12 @@
 #ifndef BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_ETHEREUM_REMOTE_CLIENT_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_ETHEREUM_REMOTE_CLIENT_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 class EthereumRemoteClientService;
 
@@ -24,8 +28,7 @@ class EthereumRemoteClientServiceFactory
   static EthereumRemoteClientServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<
-      EthereumRemoteClientServiceFactory>;
+  friend base::NoDestructor<EthereumRemoteClientServiceFactory>;
 
   EthereumRemoteClientServiceFactory();
   ~EthereumRemoteClientServiceFactory() override;

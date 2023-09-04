@@ -1,3 +1,8 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 use crate::{dom, nlp, scorer, util};
 use html5ever::parse_document;
 use html5ever::tendril::TendrilSink;
@@ -44,6 +49,11 @@ lazy_static! {
     static ref JSONLD_SCHEMA: Regex = Regex::new(r#"^https?://schema\.org[/?\w/?]*$"#).unwrap();
 }
 
+static SHOW_ORIGINAL_DIV_ID: &str = "c93e2206-2f31-4ddc-9828-2bb8e8ed940e";
+static READ_TIME_DIV_ID: &str = "da24e4ef-db57-4b9f-9fa5-548924fc9c32";
+static META_DATA_AREA_DIV_ID: &str = "3bafd2b4-a87d-4471-8134-7a9cca092000";
+static MAIN_CONTENT_DIV_ID: &str = "7c08a417-bf02-4241-a55e-ad5b8dc88f69";
+
 #[derive(Debug)]
 pub struct Product {
     pub meta: Meta,
@@ -76,8 +86,8 @@ pub struct Meta {
 }
 
 impl Meta {
-    /// Performs a merge of two meta structs, preferencing self except description.
-    /// The shortest description will be taken.
+    /// Performs a merge of two meta structs, preferencing self except
+    /// description. The shortest description will be taken.
     /// Takes ownership of both structs and returns the merged metadata.
     pub fn merge(mut self, other: Self) -> Meta {
         if self.title.is_empty() {
@@ -265,7 +275,12 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         Some(x) if x.name.local != local_name!("body") => {
             let name = QualName::new(None, ns!(), local_name!("body"));
             let body = dom.create_element(name, vec![], ElementFlags::default());
-            dom.reparent_children(&top_candidate, &body);
+            let main = dom::create_element_simple(dom, "main", "", None);
+            let article = dom::create_element_simple(dom, "article", "", None);
+
+            dom.reparent_children(&top_candidate, &article);
+            dom.append(&main, NodeOrText::AppendNode(article));
+            dom.append(&body, NodeOrText::AppendNode(main));
 
             // Our CSS formats based on id="article".
             dom::set_attr("id", "article", body.clone(), true);
@@ -307,12 +322,15 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
 }
 
 pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
-    if let Some(first_child) = root.first_child() {
+    if root.first_child().is_some() {
+        let meta_area = dom::create_element_simple(dom, "div", "", None);
+        dom::set_attr("id", META_DATA_AREA_DIV_ID, meta_area.clone(), true);
+
         // Add in the title
         if !meta.title.is_empty() {
             let title_header =
                 dom::create_element_simple(dom, "h1", "title metadata", Some(&meta.title));
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(title_header));
+            dom.append(&meta_area, NodeOrText::AppendNode(title_header));
         }
         // Add in the description
         if let Some(ref text) = meta.description {
@@ -327,17 +345,17 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
                 "subhead metadata",
                 Some(&text[..slice_offset]),
             );
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(description));
+            dom.append(&meta_area, NodeOrText::AppendNode(description));
         }
 
         // Vertical split
         if meta.author.is_some() || meta.last_modified.is_some() {
             let splitter = dom::create_element_simple(dom, "hr", "", None);
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(splitter));
+            dom.append(&meta_area, NodeOrText::AppendNode(splitter));
         }
 
         let metadata_parent = dom::create_element_simple(dom, "div", "metadata", None);
-        dom.append_before_sibling(&first_child, NodeOrText::AppendNode(metadata_parent.clone()));
+        dom.append(&meta_area, NodeOrText::AppendNode(metadata_parent.clone()));
 
         // Add in the author
         if let Some(ref text) = meta.author {
@@ -360,19 +378,14 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
         // Add 'read time'
         {
             let read_time = dom::create_element_simple(dom, "div", "readtime", None);
-            dom::set_attr("id", "da24e4ef-db57-4b9f-9fa5-548924fc9c32", read_time.clone(), true);
+            dom::set_attr("id", READ_TIME_DIV_ID, read_time.clone(), true);
             dom.append(&metadata_parent, NodeOrText::AppendNode(read_time));
         }
 
         // Add 'show original'
         {
             let show_original_link = dom::create_element_simple(dom, "div", "show_original", None);
-            dom::set_attr(
-                "id",
-                "c93e2206-2f31-4ddc-9828-2bb8e8ed940e",
-                show_original_link.clone(),
-                true,
-            );
+            dom::set_attr("id", SHOW_ORIGINAL_DIV_ID, show_original_link.clone(), true);
             dom.append(&metadata_parent, NodeOrText::AppendNode(show_original_link));
         }
 
@@ -383,8 +396,15 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
             || meta.last_modified.is_some()
         {
             let splitter = dom::create_element_simple(dom, "hr", "", None);
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(splitter));
+            dom.append(&meta_area, NodeOrText::AppendNode(splitter));
         }
+
+        let content = dom::create_element_simple(dom, "div", "", None);
+        dom::set_attr("id", MAIN_CONTENT_DIV_ID, content.clone(), true);
+        dom.reparent_children(&root, &content);
+
+        dom.append(&root, NodeOrText::AppendNode(meta_area));
+        dom.append(&root, NodeOrText::AppendNode(content));
 
         // Our CSS formats based on id="article".
         dom::set_attr("id", "article", root, true);
@@ -401,7 +421,8 @@ pub fn clean_title(dom: &Sink, title: String) -> String {
     } else if let Some(m) = END_DASH.find(&title) {
         let trailing_title = title.substring(m.start(), title.len());
         if trailing_title.split_whitespace().count() <= 4 {
-            // We have 3 distinct words and the dash. Probably the website title. Trim it off.
+            // We have 3 distinct words and the dash. Probably the website title. Trim it
+            // off.
             title.substring(0, m.start())
         } else {
             title
@@ -608,8 +629,8 @@ mod tests {
 
     #[test]
     fn test_description_complex() {
-        // We grab the description, HTML decode it, keep the punctuation entites, but delete the <b> tag.
-        // This was found on Buzzfeed.
+        // We grab the description, HTML decode it, keep the punctuation entites, but
+        // delete the <b> tag. This was found on Buzzfeed.
         let data = r#"
         <head>
         <meta property="og:description" content="&lt;b&gt;An inquest into Eloise Parry&#x27;s death has been adjourned.&lt;/b&gt;"/>
@@ -1026,7 +1047,8 @@ mod tests {
 
     #[test]
     fn test_clean_title_ascii_dash_separator() {
-        // A common pattern found it <title> tags is the site name being included after a final dash
+        // A common pattern found it <title> tags is the site name being included after
+        // a final dash
         let input =
             "House committee votes to approve bill that would grant DC statehood - CNNPolitics";
         let expected = "House committee votes to approve bill that would grant DC statehood";
@@ -1036,9 +1058,10 @@ mod tests {
 
     #[test]
     fn test_clean_title_unicode_dash_separator() {
-        // A follow up to the last test with common unicode dashes. For example &#8211; converts to an en dash.
+        // A follow up to the last test with common unicode dashes. For example &#8211;
+        // converts to an en dash.
         let dashes = [
-            "-",   // hyphen
+            "-", // hyphen
             "–", // en dash
             "—", // em dash
         ];
@@ -1052,7 +1075,8 @@ mod tests {
 
     #[test]
     fn test_clean_title_preserve_dash() {
-        // In this case, we don't want to delete the content after the " - ", because it is part of the title
+        // In this case, we don't want to delete the content after the " - ", because it
+        // is part of the title
         let input = "Raspberry Pi 3 - All-time bestselling computer in UK";
         let output = clean_title(&Sink::default(), input.to_string());
         assert_eq!(input, output);

@@ -8,8 +8,12 @@
 
 #include "base/component_export.h"
 #include "base/functional/callback.h"
-#include "base/memory/singleton.h"
 #include "services/network/public/cpp/resource_request.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace network {
 
@@ -33,7 +37,7 @@ class COMPONENT_EXPORT(NETWORK_CPP) SystemRequestHandler {
       const network::ResourceRequest& url_request);
 
  private:
-  friend struct base::DefaultSingletonTraits<SystemRequestHandler>;
+  friend base::NoDestructor<SystemRequestHandler>;
 
   SystemRequestHandler();
   ~SystemRequestHandler();

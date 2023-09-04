@@ -9,8 +9,8 @@
 
 #include "components/sync/base/model_type.h"
 #include "components/sync/base/user_selectable_type.h"
-#include "components/sync/driver/sync_service.h"
-#include "components/sync/driver/sync_user_settings.h"
+#include "components/sync/service/sync_service.h"
+#include "components/sync/service/sync_user_settings.h"
 #include "ios/web/public/thread/web_thread.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -38,9 +38,7 @@ std::unordered_map<syncer::UserSelectableType, BraveSyncUserSelectableTypes>
         {syncer::UserSelectableType::kApps, BraveSyncUserSelectableTypes_APPS},
         {syncer::UserSelectableType::kReadingList,
          BraveSyncUserSelectableTypes_READING_LIST},
-        {syncer::UserSelectableType::kTabs, BraveSyncUserSelectableTypes_TABS},
-        {syncer::UserSelectableType::kWifiConfigurations,
-         BraveSyncUserSelectableTypes_WIFI_CONFIGURATIONS}};
+        {syncer::UserSelectableType::kTabs, BraveSyncUserSelectableTypes_TABS}};
 
 syncer::UserSelectableTypeSet user_types_from_options(
     BraveSyncUserSelectableTypes options) {

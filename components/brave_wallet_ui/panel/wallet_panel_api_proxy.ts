@@ -10,7 +10,7 @@ export class WalletPanelApiProxy extends WalletApiProxy {
   callbackRouter = new BraveWallet.PageCallbackRouter()
   panelHandler = new BraveWallet.PanelHandlerRemote()
 
-  constructor () {
+  constructor() {
     super()
 
     const factory = BraveWallet.PanelHandlerFactory.getRemote()
@@ -21,6 +21,7 @@ export class WalletPanelApiProxy extends WalletApiProxy {
         this.jsonRpcService.$.bindNewPipeAndPassReceiver(),
         this.bitcoinWalletService.$.bindNewPipeAndPassReceiver(),
         this.swapService.$.bindNewPipeAndPassReceiver(),
+        this.simulationService.$.bindNewPipeAndPassReceiver(),
         this.assetRatioService.$.bindNewPipeAndPassReceiver(),
         this.keyringService.$.bindNewPipeAndPassReceiver(),
         this.blockchainRegistry.$.bindNewPipeAndPassReceiver(),
@@ -30,6 +31,8 @@ export class WalletPanelApiProxy extends WalletApiProxy {
         this.filTxManagerProxy.$.bindNewPipeAndPassReceiver(),
         this.braveWalletService.$.bindNewPipeAndPassReceiver(),
         this.braveWalletP3A.$.bindNewPipeAndPassReceiver(),
+        this.braveWalletPinService.$.bindNewPipeAndPassReceiver(),
+        this.braveWalletAutoPinService.$.bindNewPipeAndPassReceiver(),
         this.braveWalletIpfsService.$.bindNewPipeAndPassReceiver())
   }
 }

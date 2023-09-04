@@ -4,132 +4,112 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <string>
+#include <tuple>
 #include <utility>
 
 #include "base/strings/strcat.h"
+#include "base/strings/stringprintf.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/buildflags.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
-#include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
-#include "brave/components/brave_rewards/core/test/test_ledger_client.h"
+#include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"
+#include "net/http/http_status_code.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-// npm run test -- brave_unit_tests --filter=GeminiUtilTest.*
+// npm run test -- brave_unit_tests --filter=*GeminiUtilTest.*
 
 using ::testing::_;
+using ::testing::Combine;
+using ::testing::TestWithParam;
+using ::testing::Values;
 
-namespace brave_rewards::internal {
-namespace gemini {
+namespace brave_rewards::internal::gemini {
 
-class GeminiUtilTest : public testing::Test {};
+class GeminiUtilTest
+    : public TestWithParam<
+          std::tuple<mojom::Environment, mojom::WalletStatus>> {};
 
 TEST_F(GeminiUtilTest, GetClientId) {
-  // production
   _environment = mojom::Environment::PRODUCTION;
-  std::string result = gemini::GetClientId();
-  ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_CLIENT_ID));
+  EXPECT_EQ(GetClientId(), BUILDFLAG(GEMINI_PRODUCTION_CLIENT_ID));
 
-  // staging
   _environment = mojom::Environment::STAGING;
-  result = gemini::GetClientId();
-  ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID));
+  EXPECT_EQ(GetClientId(), BUILDFLAG(GEMINI_SANDBOX_CLIENT_ID));
+
+  _environment = mojom::Environment::DEVELOPMENT;
+  EXPECT_EQ(GetClientId(), BUILDFLAG(GEMINI_SANDBOX_CLIENT_ID));
 }
 
 TEST_F(GeminiUtilTest, GetClientSecret) {
-  // production
   _environment = mojom::Environment::PRODUCTION;
-  std::string result = gemini::GetClientSecret();
-  ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_CLIENT_SECRET));
+  EXPECT_EQ(GetClientSecret(), BUILDFLAG(GEMINI_PRODUCTION_CLIENT_SECRET));
 
-  // staging
   _environment = mojom::Environment::STAGING;
-  result = gemini::GetClientSecret();
-  ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_SECRET));
+  EXPECT_EQ(GetClientSecret(), BUILDFLAG(GEMINI_SANDBOX_CLIENT_SECRET));
+
+  _environment = mojom::Environment::DEVELOPMENT;
+  EXPECT_EQ(GetClientSecret(), BUILDFLAG(GEMINI_SANDBOX_CLIENT_SECRET));
 }
 
 TEST_F(GeminiUtilTest, GetFeeAddress) {
-  // production
   _environment = mojom::Environment::PRODUCTION;
-  std::string result = gemini::GetFeeAddress();
-  ASSERT_EQ(result, kFeeAddressProduction);
+  EXPECT_EQ(GetFeeAddress(), BUILDFLAG(GEMINI_PRODUCTION_FEE_ADDRESS));
 
-  // staging
   _environment = mojom::Environment::STAGING;
-  result = gemini::GetFeeAddress();
-  ASSERT_EQ(result, kFeeAddressStaging);
+  EXPECT_EQ(GetFeeAddress(), BUILDFLAG(GEMINI_SANDBOX_FEE_ADDRESS));
+
+  _environment = mojom::Environment::DEVELOPMENT;
+  EXPECT_EQ(GetFeeAddress(), BUILDFLAG(GEMINI_SANDBOX_FEE_ADDRESS));
 }
 
-TEST_F(GeminiUtilTest, GetLoginUrl) {
-  // production
+TEST_F(GeminiUtilTest, GetApiServerUrl) {
   _environment = mojom::Environment::PRODUCTION;
-  std::string result = gemini::GetLoginUrl("my-state");
-  ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL),
-                                  "/auth"
-                                  "?client_id=",
-                                  BUILDFLAG(GEMINI_WALLET_CLIENT_ID),
-                                  "&scope="
-                                  "balances:read,"
-                                  "history:read,"
-                                  "crypto:send,"
-                                  "account:read,"
-                                  "payments:create,"
-                                  "payments:send,"
-                                  "&redirect_uri=rewards://gemini/authorization"
-                                  "&state=my-state"
-                                  "&response_type=code"}));
+  EXPECT_EQ(endpoint::gemini::GetApiServerUrl("/test"),
+            base::StrCat({BUILDFLAG(GEMINI_PRODUCTION_API_URL), "/test"}));
 
-  // staging
   _environment = mojom::Environment::STAGING;
-  result = gemini::GetLoginUrl("my-state");
-  ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
-                                  "/auth"
-                                  "?client_id=",
-                                  BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
-                                  "&scope="
-                                  "balances:read,"
-                                  "history:read,"
-                                  "crypto:send,"
-                                  "account:read,"
-                                  "payments:create,"
-                                  "payments:send,"
-                                  "&redirect_uri=rewards://gemini/authorization"
-                                  "&state=my-state"
-                                  "&response_type=code"}));
+  EXPECT_EQ(endpoint::gemini::GetApiServerUrl("/test"),
+            base::StrCat({BUILDFLAG(GEMINI_SANDBOX_API_URL), "/test"}));
+
+  _environment = mojom::Environment::DEVELOPMENT;
+  EXPECT_EQ(endpoint::gemini::GetApiServerUrl("/test"),
+            base::StrCat({BUILDFLAG(GEMINI_SANDBOX_API_URL), "/test"}));
 }
 
-TEST_F(GeminiUtilTest, GetActivityUrl) {
-  // production
+TEST_F(GeminiUtilTest, GetOauthServerUrl) {
   _environment = mojom::Environment::PRODUCTION;
-  std::string result = gemini::GetActivityUrl();
-  ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL), "/balances"}));
+  EXPECT_EQ(endpoint::gemini::GetOauthServerUrl("/test"),
+            base::StrCat({BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL), "/test"}));
 
-  // staging
   _environment = mojom::Environment::STAGING;
-  result = gemini::GetActivityUrl();
-  ASSERT_EQ(result,
-            base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL), "/balances"}));
+  EXPECT_EQ(endpoint::gemini::GetOauthServerUrl("/test"),
+            base::StrCat({BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL), "/test"}));
+
+  _environment = mojom::Environment::DEVELOPMENT;
+  EXPECT_EQ(endpoint::gemini::GetOauthServerUrl("/test"),
+            base::StrCat({BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilTest, GetWallet) {
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
+  MockRewardsEngineImpl mock_engine_impl_;
 
   // no wallet
-  ON_CALL(*mock_ledger_impl_.mock_client(),
+  ON_CALL(*mock_engine_impl_.mock_client(),
           GetStringState(state::kWalletGemini, _))
       .WillByDefault([](const std::string&, auto callback) {
         std::move(callback).Run("");
       });
-  auto result = mock_ledger_impl_.gemini()->GetWallet();
-  ASSERT_TRUE(!result);
+  auto result = mock_engine_impl_.gemini()->GetWallet();
+  EXPECT_FALSE(result);
 
-  ON_CALL(*mock_ledger_impl_.mock_client(),
+  ON_CALL(*mock_engine_impl_.mock_client(),
           GetStringState(state::kWalletGemini, _))
       .WillByDefault([](const std::string&, auto callback) {
         std::string wallet = FakeEncryption::Base64EncryptString(R"({
@@ -146,93 +126,99 @@ TEST_F(GeminiUtilTest, GetWallet) {
       });
 
   // Gemini wallet
-  result = mock_ledger_impl_.gemini()->GetWallet();
-  ASSERT_TRUE(result);
-  ASSERT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
-  ASSERT_EQ(result->user_name, "test");
-  ASSERT_EQ(result->token, "4c80232r219c30cdf112208890a32c7e00");
-  ASSERT_EQ(result->status, mojom::WalletStatus::kConnected);
+  result = mock_engine_impl_.gemini()->GetWallet();
+  EXPECT_TRUE(result);
+  EXPECT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
+  EXPECT_EQ(result->user_name, "test");
+  EXPECT_EQ(result->token, "4c80232r219c30cdf112208890a32c7e00");
+  EXPECT_EQ(result->status, mojom::WalletStatus::kConnected);
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(GeminiUtilTest, GenerateRandomHexString) {
-  // string for testing
   is_testing = true;
   auto result = util::GenerateRandomHexString();
-  ASSERT_EQ(result, "123456789");
+  EXPECT_EQ(result, "123456789");
 
-  // random string
   is_testing = false;
-  _environment = mojom::Environment::STAGING;
   result = util::GenerateRandomHexString();
-  ASSERT_EQ(result.length(), 64u);
+  EXPECT_EQ(result.length(), 64u);
 }
 
-TEST_F(GeminiUtilTest, GenerateLinks) {
-  _environment = mojom::Environment::STAGING;
+INSTANTIATE_TEST_SUITE_P(GenerateLinks,
+                         GeminiUtilTest,
+                         Combine(Values(mojom::Environment::PRODUCTION,
+                                        mojom::Environment::STAGING,
+                                        mojom::Environment::DEVELOPMENT),
+                                 Values(mojom::WalletStatus::kNotConnected,
+                                        mojom::WalletStatus::kConnected,
+                                        mojom::WalletStatus::kLoggedOut)),
+                         [](const auto& info) {
+                           return (std::ostringstream()
+                                   << std::get<0>(info.param) << '_'
+                                   << std::get<1>(info.param))
+                               .str();
+                         });
 
+TEST_P(GeminiUtilTest, Paths) {
+  const auto [environment, wallet_status] = GetParam();
+
+  _environment = environment;
   auto wallet = mojom::ExternalWallet::New();
-  wallet->address = "123123123124234234234";
-  wallet->one_time_string = "aaabbbccc";
+  wallet->status = wallet_status;
+  wallet->one_time_string = "one_time_string";
 
-  // Not connected
-  wallet->status = mojom::WalletStatus::kNotConnected;
-  auto result = gemini::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->login_url,
-            base::StrCat(
-                {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
-                 "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
-                 "&scope="
-                 "balances:read,"
-                 "history:read,"
-                 "crypto:send,"
-                 "account:read,"
-                 "payments:create,"
-                 "payments:send,"
-                 "&redirect_uri=rewards://gemini/authorization"
-                 "&state=aaabbbccc"
-                 "&response_type=code"}));
-  ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
+  const auto* account_url = environment == mojom::Environment::PRODUCTION
+                                ? BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL)
+                                : BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL);
 
-  // Connected
-  wallet->status = mojom::WalletStatus::kConnected;
-  result = gemini::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->login_url,
-            base::StrCat(
-                {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
-                 "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
-                 "&scope="
-                 "balances:read,"
-                 "history:read,"
-                 "crypto:send,"
-                 "account:read,"
-                 "payments:create,"
-                 "payments:send,"
-                 "&redirect_uri=rewards://gemini/authorization"
-                 "&state=aaabbbccc"
-                 "&response_type=code"}));
-  ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
+  const auto activity_url =
+      wallet->status == mojom::WalletStatus::kConnected
+          ? base::StrCat({environment == mojom::Environment::PRODUCTION
+                              ? BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL)
+                              : BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL),
+                          "/balances"})
+          : "";
 
-  // Logged out
-  wallet->status = mojom::WalletStatus::kLoggedOut;
-  result = gemini::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->login_url,
-            base::StrCat(
-                {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
-                 "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
-                 "&scope="
-                 "balances:read,"
-                 "history:read,"
-                 "crypto:send,"
-                 "account:read,"
-                 "payments:create,"
-                 "payments:send,"
-                 "&redirect_uri=rewards://gemini/authorization"
-                 "&state=aaabbbccc"
-                 "&response_type=code"}));
-  ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
+  const auto login_url = base::StringPrintf(
+      "%s/auth"
+      "?client_id=%s"
+      "&scope="
+      "balances:read,"
+      "history:read,"
+      "crypto:send,"
+      "account:read,"
+      "payments:create,"
+      "payments:send,"
+      "&redirect_uri=rewards://gemini/authorization"
+      "&state=one_time_string"
+      "&response_type=code",
+      environment == mojom::Environment::PRODUCTION
+          ? BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL)
+          : BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL),
+      environment == mojom::Environment::PRODUCTION
+          ? BUILDFLAG(GEMINI_PRODUCTION_CLIENT_ID)
+          : BUILDFLAG(GEMINI_SANDBOX_CLIENT_ID));
+
+  EXPECT_FALSE(gemini::GenerateLinks(nullptr));
+  const auto result = GenerateLinks(std::move(wallet));
+  EXPECT_TRUE(result);
+  EXPECT_EQ(result->account_url, account_url);
+  EXPECT_EQ(result->activity_url, activity_url);
+  EXPECT_EQ(result->login_url, login_url);
 }
 
-}  // namespace gemini
-}  // namespace brave_rewards::internal
+TEST_F(GeminiUtilTest, CheckStatusCodeTest) {
+  EXPECT_EQ(endpoint::gemini::CheckStatusCode(net::HTTP_UNAUTHORIZED),
+            mojom::Result::EXPIRED_TOKEN);
+  EXPECT_EQ(endpoint::gemini::CheckStatusCode(net::HTTP_FORBIDDEN),
+            mojom::Result::EXPIRED_TOKEN);
+  EXPECT_EQ(endpoint::gemini::CheckStatusCode(net::HTTP_NOT_FOUND),
+            mojom::Result::NOT_FOUND);
+  EXPECT_EQ(endpoint::gemini::CheckStatusCode(net::HTTP_BAD_REQUEST),
+            mojom::Result::FAILED);
+  EXPECT_EQ(endpoint::gemini::CheckStatusCode(net::HTTP_OK), mojom::Result::OK);
+}
+
+}  // namespace brave_rewards::internal::gemini

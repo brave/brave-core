@@ -2,27 +2,26 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 
 // Types
-import { BraveWallet, SerializableDecryptRequest, SerializableGetEncryptionPublicKeyRequest, WalletAccountType } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { getLocale, splitStringForTag } from '../../../../common/locale'
 
 // Components
-import { create } from 'ethereum-blockies'
-import { NavButton, PanelTab } from '..'
-import { CreateSiteOrigin } from '../../shared'
+import { NavButton } from '../buttons/nav-button/index'
+import { PanelTab } from '../panel-tab/index'
+import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
 
 // Styled Components
 import {
   StyledWrapper,
   AccountCircle,
   AccountNameText,
-  TopRow,
-  NetworkText,
   PanelTitle,
   MessageBox,
   MessageText,
@@ -32,66 +31,35 @@ import {
 
 import { TabRow, URLText } from '../shared-panel-styles'
 
-export interface Props {
-  panelType: 'request' | 'read'
-  accounts: WalletAccountType[]
-  selectedNetwork?: BraveWallet.NetworkInfo
-  encryptionKeyPayload: SerializableGetEncryptionPublicKeyRequest
-  eTldPlusOne: string
-  decryptPayload: SerializableDecryptRequest
-  onProvideOrAllow: () => void
-  onCancel: () => void
+// Hooks
+import { useAccountOrb } from '../../../common/hooks/use-orb'
+import { useAccountQuery } from '../../../common/slices/api.slice.extra'
+
+export interface ProvidePubKeyPanelProps {
+  payload: BraveWallet.GetEncryptionPublicKeyRequest
+  onProvide: (requestId: string) => void
+  onCancel: (requestId: string) => void
 }
 
-function EncryptionKeyPanel (props: Props) {
-  const {
-    panelType,
-    accounts,
-    selectedNetwork,
-    encryptionKeyPayload,
-    eTldPlusOne,
-    decryptPayload,
-    onProvideOrAllow,
-    onCancel
-  } = props
-  const [isDecrypted, setIsDecrypted] = React.useState<boolean>(false)
-  const payloadAddress = panelType === 'request' ? encryptionKeyPayload.address : decryptPayload.address
+export function ProvidePubKeyPanel(props: ProvidePubKeyPanelProps) {
+  const { payload, onProvide: onProvideOrAllow, onCancel } = props
+  const { account } = useAccountQuery(payload.accountId)
 
-  const foundAccountName = React.useMemo(() => {
-    return accounts.find((account) => account.address.toLowerCase() === payloadAddress.toLowerCase())?.name
-  }, [payloadAddress])
+  const orb = useAccountOrb(account)
 
-  const orb = React.useMemo(() => {
-    return create({ seed: payloadAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [payloadAddress])
-
-  const onDecryptMessage = () => {
-    setIsDecrypted(true)
-  }
-
-  const descriptionString = getLocale('braveWalletProvideEncryptionKeyDescription').replace('$url', encryptionKeyPayload.originInfo.originSpec)
+  const descriptionString = getLocale(
+    'braveWalletProvideEncryptionKeyDescription'
+  ).replace('$url', payload.originInfo.originSpec)
   const { duringTag, afterTag } = splitStringForTag(descriptionString)
 
   return (
     <StyledWrapper>
-      <TopRow>
-        <NetworkText>{selectedNetwork?.chainName ?? ''}</NetworkText>
-      </TopRow>
       <AccountCircle orb={orb} />
-      <AccountNameText>{reduceAccountDisplayName(foundAccountName ?? '', 14)}</AccountNameText>
-      {panelType === 'read' &&
-        <URLText>
-          <CreateSiteOrigin
-            originSpec={encryptionKeyPayload.originInfo.originSpec}
-            // TODO(apaymyshev): why originSpec is coming from payload, but eTldPlusOne from props?
-            eTldPlusOne={eTldPlusOne}
-          />
-        </URLText>
-      }
+      <AccountNameText>
+        {reduceAccountDisplayName(account?.name ?? '', 14)}
+      </AccountNameText>
       <PanelTitle>
-        {panelType === 'request'
-          ? getLocale('braveWalletProvideEncryptionKeyTitle')
-          : getLocale('braveWalletReadEncryptedMessageTitle')}
+        {getLocale('braveWalletProvideEncryptionKeyTitle')}
       </PanelTitle>
       <TabRow>
         <PanelTab
@@ -99,47 +67,91 @@ function EncryptionKeyPanel (props: Props) {
           text={getLocale('braveWalletSignTransactionMessageTitle')}
         />
       </TabRow>
-      <MessageBox
-        needsCenterAlignment={panelType === 'read' && !isDecrypted}
-      >
-        {panelType === 'read' && !isDecrypted ? (
-          <DecryptButton
-            onClick={onDecryptMessage}
-          >
-            {getLocale('braveWalletReadEncryptedMessageDecryptButton')}
-          </DecryptButton>
-        ) : (
-          <MessageText>
-            {panelType === 'request'
-              ? <>
-                <CreateSiteOrigin
-                  originSpec={duringTag ?? ''}
-                  eTldPlusOne={eTldPlusOne}
-                />
-                {afterTag}
-              </>
-              : decryptPayload.unsafeMessage}
-          </MessageText>
-        )}
+      <MessageBox needsCenterAlignment={false}>
+        <MessageText>
+          <CreateSiteOrigin
+            originSpec={duringTag ?? ''}
+            eTldPlusOne={payload.originInfo.eTldPlusOne}
+          />
+          {afterTag}
+        </MessageText>
       </MessageBox>
       <ButtonRow>
         <NavButton
           buttonType='secondary'
           text={getLocale('braveWalletButtonCancel')}
-          onSubmit={onCancel}
+          onSubmit={() => onCancel(payload.requestId)}
         />
         <NavButton
           buttonType='primary'
-          text={
-            panelType === 'request'
-              ? getLocale('braveWalletProvideEncryptionKeyButton')
-              : getLocale('braveWalletReadEncryptedMessageButton')
-          }
-          onSubmit={onProvideOrAllow}
+          text={getLocale('braveWalletProvideEncryptionKeyButton')}
+          onSubmit={() => onProvideOrAllow(payload.requestId)}
         />
       </ButtonRow>
     </StyledWrapper>
   )
 }
 
-export default EncryptionKeyPanel
+interface DecryptRequestPanelProps {
+  payload: BraveWallet.DecryptRequest
+  onAllow: (requestId: string) => void
+  onCancel: (requestId: string) => void
+}
+
+export function DecryptRequestPanel(props: DecryptRequestPanelProps) {
+  const { payload, onAllow, onCancel } = props
+  const [isDecrypted, setIsDecrypted] = React.useState<boolean>(false)
+
+  const { account } = useAccountQuery(payload.accountId)
+
+  const orb = useAccountOrb(account)
+
+  const onDecryptMessage = () => {
+    setIsDecrypted(true)
+  }
+
+  return (
+    <StyledWrapper>
+      <AccountCircle orb={orb} />
+      <AccountNameText>
+        {reduceAccountDisplayName(account?.name ?? '', 14)}
+      </AccountNameText>
+      <URLText>
+        <CreateSiteOrigin
+          originSpec={payload.originInfo.originSpec}
+          eTldPlusOne={payload.originInfo.eTldPlusOne}
+        />
+      </URLText>
+      <PanelTitle>
+        {getLocale('braveWalletReadEncryptedMessageTitle')}
+      </PanelTitle>
+      <TabRow>
+        <PanelTab
+          isSelected={true}
+          text={getLocale('braveWalletSignTransactionMessageTitle')}
+        />
+      </TabRow>
+      <MessageBox needsCenterAlignment={!isDecrypted}>
+        {!isDecrypted ? (
+          <DecryptButton onClick={onDecryptMessage}>
+            {getLocale('braveWalletReadEncryptedMessageDecryptButton')}
+          </DecryptButton>
+        ) : (
+          <MessageText>{payload.unsafeMessage}</MessageText>
+        )}
+      </MessageBox>
+      <ButtonRow>
+        <NavButton
+          buttonType='secondary'
+          text={getLocale('braveWalletButtonCancel')}
+          onSubmit={() => onCancel(payload.requestId)}
+        />
+        <NavButton
+          buttonType='primary'
+          text={getLocale('braveWalletReadEncryptedMessageButton')}
+          onSubmit={() => onAllow(payload.requestId)}
+        />
+      </ButtonRow>
+    </StyledWrapper>
+  )
+}

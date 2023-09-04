@@ -1,0 +1,44 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "typenum"
+  epoch = "1"
+  crate_type = "rlib"
+
+  # Only for usage from third-party crates. Add the crate to
+  # third_party.toml to use it from first-party code.
+  visibility = [ "//brave/third_party/rust/*" ]
+  crate_root = "crate/src/lib.rs"
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  sources = [ "crate/src/lib.rs" ]
+  edition = "2018"
+  cargo_pkg_version = "1.16.0"
+  cargo_pkg_authors =
+      "Paho Lurie-Gregg <paho@paholg.com>, Andre Bogus <bogusandre@gmail.com>"
+  cargo_pkg_name = "typenum"
+  cargo_pkg_description = "Typenum is a Rust library for type-level numbers evaluated at     compile time. It currently supports bits, unsigned integers, and signed     integers. It also provides a type-level array of type-level numbers, but its     implementation is incomplete."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  build_root = "crate/build/main.rs"
+  build_sources = [ "crate/build/main.rs" ]
+  build_script_outputs = [
+    "consts.rs",
+    "op.rs",
+  ]
+
+  # These are output to the console, but the cargo_crate build script doesn't
+  # currently handle this
+  target_lib_dir = rebase_path(target_gen_dir)
+  rustenv = [
+    "TYPENUM_BUILD_CONSTS=$target_lib_dir/lib/consts.rs",
+    "TYPENUM_BUILD_OP=$target_lib_dir/lib/op.rs",
+  ]
+}

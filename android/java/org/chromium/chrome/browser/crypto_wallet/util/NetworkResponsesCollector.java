@@ -5,36 +5,33 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.Collections;
 import java.util.List;
 
 public class NetworkResponsesCollector {
-    private JsonRpcService mJsonRpcService;
-    private List<Integer> coinTypes;
-    private HashSet<NetworkInfo> mNetworks;
+    private final JsonRpcService mJsonRpcService;
+    private final List<Integer> mCoinTypes;
+    private final List<NetworkInfo> mNetworks;
 
     public NetworkResponsesCollector(JsonRpcService jsonRpcService, List<Integer> coinTypes) {
         assert jsonRpcService != null;
         mJsonRpcService = jsonRpcService;
-        this.coinTypes = coinTypes;
-        mNetworks = new LinkedHashSet<>();
+        mCoinTypes = coinTypes;
+        mNetworks = new ArrayList<>();
     }
 
-    public void getNetworks(Callbacks.Callback1<HashSet<NetworkInfo>> runWhenDone) {
+    public void getNetworks(Callbacks.Callback1<List<NetworkInfo>> runWhenDone) {
         AsyncUtils.MultiResponseHandler networkInfosMultiResponse =
-                new AsyncUtils.MultiResponseHandler(coinTypes.size());
+                new AsyncUtils.MultiResponseHandler(mCoinTypes.size());
         ArrayList<AsyncUtils.GetNetworkResponseContext> accountsPermissionsContexts =
                 new ArrayList<>();
-        for (int coin : coinTypes) {
+        for (int coin : mCoinTypes) {
             AsyncUtils.GetNetworkResponseContext networksContext =
                     new AsyncUtils.GetNetworkResponseContext(
                             networkInfosMultiResponse.singleResponseComplete);
@@ -53,6 +50,7 @@ public class NetworkResponsesCollector {
 
                 mNetworks.addAll(Arrays.asList(getNetworkResponseContext.networkInfos));
             }
+            Collections.sort(mNetworks, NetworkUtils.sSortNetworkByPriority);
             runWhenDone.call(mNetworks);
         });
     }

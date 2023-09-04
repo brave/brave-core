@@ -12,27 +12,27 @@ mojom("mojom") {
   ]
 
   deps = [
-    ":ledger_interfaces",
-    ":ledger_types",
+    ":rewards_interfaces",
+    ":rewards_types",
   ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
 }
 
-mojom("ledger_interfaces") {
+mojom("rewards_interfaces") {
   generate_java = true
   sources = [
-    "ledger.mojom",
-    "ledger_database.mojom",
-    "ledger_endpoints.mojom",
+    "rewards.mojom",
+    "rewards_database.mojom",
+    "rewards_endpoints.mojom",
   ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
 }
 
-mojom("ledger_types") {
+mojom("rewards_types") {
   generate_java = true
-  sources = [ "ledger_types.mojom" ]
+  sources = [ "rewards_types.mojom" ]
 
   cpp_typemaps = [
     {
@@ -54,19 +54,19 @@ mojom("ledger_types") {
         },
       ]
 
-      traits_headers = [ "ledger_types_mojom_traits.h" ]
-      traits_sources = [ "ledger_types_mojom_traits.cc" ]
+      traits_headers = [ "rewards_types_mojom_traits.h" ]
+      traits_sources = [ "rewards_types_mojom_traits.cc" ]
     },
   ]
 }
 
 mojom("interfaces") {
-  sources = [ "bat_ledger.mojom" ]
+  sources = [ "rewards_engine.mojom" ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
 
   deps = [
-    "//brave/components/brave_rewards/common/mojom:ledger_interfaces",
-    "//brave/components/brave_rewards/common/mojom:ledger_types",
+    "//brave/components/brave_rewards/common/mojom:rewards_interfaces",
+    "//brave/components/brave_rewards/common/mojom:rewards_types",
   ]
 }

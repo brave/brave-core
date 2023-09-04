@@ -18,6 +18,14 @@
 -ChromeBlocklistTrialTest.VerifyFirstRun
 -ChromeBlocklistTrialTest.VersionChanged
 
+# This test fails because we disable SafeBrowsingEnhancedProtection
+-GetUserPopulationForProfileWithCookieTheftExperiments.PopulatesExperimentsForEsb
+
+# These tests fail when SYSTEM account is used.
+# https://github.com/brave/brave-browser/issues/31948
+-All/ShortcutSubManagerExecuteTest.*
+-LaunchModeRecorderTest.*
+
 -All/AppMenuIconControllerTest.*
 -AppServiceProxyTest.*
 -BookmarkEditorViewTest.*

@@ -13,6 +13,7 @@
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -25,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -219,6 +221,9 @@ class TestBraveWalletServiceObserver
 
   void OnNetworkListChanged() override { network_list_changed_fired_ = true; }
 
+  MOCK_METHOD1(OnDiscoverAssetsCompleted,
+               void(std::vector<mojom::BlockchainTokenPtr>));
+
   mojom::DefaultWallet GetDefaultEthereumWallet() {
     return default_ethereum_wallet_;
   }
@@ -309,11 +314,11 @@ class BraveWalletServiceUnitTest : public testing::Test {
         JsonRpcServiceFactory::GetServiceForContext(profile_.get());
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
-    tx_service = TxServiceFactory::GetServiceForContext(profile_.get());
+    tx_service_ = TxServiceFactory::GetServiceForContext(profile_.get());
     service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service, GetPrefs(), local_state_->Get());
+        json_rpc_service_, tx_service_, GetPrefs(), local_state_->Get());
     observer_ = std::make_unique<TestBraveWalletServiceObserver>();
     service_->AddObserver(observer_->GetReceiver());
 
@@ -390,11 +395,11 @@ class BraveWalletServiceUnitTest : public testing::Test {
     bat_token_->coin = mojom::CoinType::ETH;
 
     sol_token_ = mojom::BlockchainToken::New(
-        "", "Solana", "sol.png", false, false, false, false, "SOL", 9, true, "",
-        "", mojom::kSolanaMainnet, mojom::CoinType::SOL);
+        "", "Solana", "sol.png", false, false, false, false, false, "SOL", 9,
+        true, "", "", mojom::kSolanaMainnet, mojom::CoinType::SOL);
     fil_token_ = mojom::BlockchainToken::New(
-        "", "Filecoin", "fil.png", false, false, false, false, "FIL", 18, true,
-        "", "", mojom::kFilecoinMainnet, mojom::CoinType::FIL);
+        "", "Filecoin", "fil.png", false, false, false, false, false, "FIL", 18,
+        true, "", "", mojom::kFilecoinMainnet, mojom::CoinType::FIL);
   }
 
   mojom::BlockchainTokenPtr GetToken1() { return token1_.Clone(); }
@@ -411,6 +416,24 @@ class BraveWalletServiceUnitTest : public testing::Test {
   TestingPrefServiceSimple* GetLocalState() { return local_state_->Get(); }
   BlockchainRegistry* GetRegistry() {
     return BlockchainRegistry::GetInstance();
+  }
+
+  void SetupWallet() {
+    keyring_service_->CreateWallet(kMnemonicDivideCruise, kTestWalletPassword,
+                                   base::DoNothing());
+  }
+
+  void SetInterceptors(std::map<GURL, std::string> responses) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, responses](const network::ResourceRequest& request) {
+          // If the request url is in responses, add that response
+          auto it = responses.find(request.url);
+          if (it != responses.end()) {
+            std::string response = it->second;
+            url_loader_factory_.ClearResponses();
+            url_loader_factory_.AddResponse(request.url.spec(), response);
+          }
+        }));
   }
 
   void SetGetEthNftStandardInterceptor(
@@ -483,6 +506,18 @@ class BraveWalletServiceUnitTest : public testing::Test {
                                     *out_success = success;
                                     run_loop.Quit();
                                   }));
+    run_loop.Run();
+  }
+
+  void SetAssetSpamStatus(mojom::BlockchainTokenPtr token,
+                          bool is_spam,
+                          bool* out_success) {
+    base::RunLoop run_loop;
+    service_->SetAssetSpamStatus(std::move(token), is_spam,
+                                 base::BindLambdaForTesting([&](bool success) {
+                                   *out_success = success;
+                                   run_loop.Quit();
+                                 }));
     run_loop.Run();
   }
 
@@ -588,18 +623,6 @@ class BraveWalletServiceUnitTest : public testing::Test {
         }));
     run_loop.Run();
     return default_cryptocurrency;
-  }
-
-  mojom::CoinType GetSelectedCoin() {
-    base::RunLoop run_loop;
-    mojom::CoinType selected_coin;
-    service_->GetSelectedCoin(
-        base::BindLambdaForTesting([&](mojom::CoinType coin_type) {
-          selected_coin = coin_type;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return selected_coin;
   }
 
   void SimulateOnGetImportInfo(const std::string& new_password,
@@ -761,6 +784,29 @@ class BraveWalletServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void GetSimpleHashSpamNFTs(
+      const std::string& account_address,
+      const std::vector<std::string>& chain_ids,
+      mojom::CoinType coin,
+      absl::optional<std::string> cursor,
+      const std::vector<mojom::BlockchainTokenPtr>& expected_nfts,
+      absl::optional<std::string> expected_cursor) {
+    base::RunLoop run_loop;
+    service_->GetSimpleHashSpamNFTs(
+        account_address, chain_ids, coin, cursor,
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::BlockchainTokenPtr> nfts,
+                const absl::optional<std::string>& returned_cursor) {
+              ASSERT_EQ(nfts.size(), expected_nfts.size());
+              EXPECT_EQ(returned_cursor, expected_cursor);
+              EXPECT_EQ(nfts, expected_nfts);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
+  AccountUtils GetAccountUtils() { return AccountUtils(keyring_service_); }
+
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<ScopedTestingLocalState> local_state_;
   std::unique_ptr<TestingProfile> profile_;
@@ -768,7 +814,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   std::unique_ptr<BraveWalletService> service_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
-  raw_ptr<TxService> tx_service;
+  raw_ptr<TxService> tx_service_;
   std::unique_ptr<TestBraveWalletServiceObserver> observer_;
   base::test::ScopedFeatureList scoped_feature_list_;
 
@@ -881,8 +927,9 @@ TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
 
   for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::ETH)) {
     auto native_asset = mojom::BlockchainToken::New(
-        "", chain->symbol_name, "", false, false, false, false, chain->symbol,
-        chain->decimals, true, "", "", chain->chain_id, mojom::CoinType::ETH);
+        "", chain->symbol_name, "", false, false, false, false, false,
+        chain->symbol, chain->decimals, true, "", "", chain->chain_id,
+        mojom::CoinType::ETH);
     std::vector<mojom::BlockchainTokenPtr> tokens;
     GetUserAssets(chain->chain_id, mojom::CoinType::ETH, &tokens);
     if (chain->chain_id == mojom::kMainnetChainId) {
@@ -999,8 +1046,8 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAssetNfts) {
   // is_erc721 is set to true based on supportsInterface call results.
   mojom::BlockchainTokenPtr erc721_token = mojom::BlockchainToken::New(
       "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D", "BAYC", "bayc.png", false,
-      false, false, true, "BAYC", 0, true, "0x1", "", mojom::kMainnetChainId,
-      mojom::CoinType::ETH);
+      false, false, true, false, "BAYC", 0, true, "0x1", "",
+      mojom::kMainnetChainId, mojom::CoinType::ETH);
   responses[kERC721InterfaceId] = interface_supported_response;
   responses[kERC1155InterfaceId] = interface_not_supported_response;
   SetGetEthNftStandardInterceptor(network, responses);
@@ -1020,7 +1067,7 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAssetNfts) {
   // is_erc1155 is set to true based on supportsInterface call.
   mojom::BlockchainTokenPtr erc1155 = mojom::BlockchainToken::New(
       "0x28472a58A490c5e09A238847F66A68a47cC76f0f", "ADIDAS", "adidas.png",
-      false, false, false, true, "ADIDAS", 0, true, "0x1", "",
+      false, false, false, true, false, "ADIDAS", 0, true, "0x1", "",
       mojom::kMainnetChainId, mojom::CoinType::ETH);
   responses[kERC721InterfaceId] = interface_not_supported_response;
   responses[kERC1155InterfaceId] = interface_supported_response;
@@ -1042,7 +1089,7 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAssetNfts) {
   // token id is added.
   mojom::BlockchainTokenPtr erc1155_2 = mojom::BlockchainToken::New(
       "0x28472a58A490c5e09A238847F66A68a47cC76f0f", "ADIDAS", "adidas.png",
-      false, false, false, true, "ADIDAS", 0, true, "0x2", "",
+      false, false, false, true, false, "ADIDAS", 0, true, "0x2", "",
       mojom::kMainnetChainId, mojom::CoinType::ETH);
   responses[kERC721InterfaceId] = interface_not_supported_response;
   responses[kERC1155InterfaceId] = interface_supported_response;
@@ -1063,7 +1110,7 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAssetNfts) {
   // If invalid response is returned, AddUserAsset returns false.
   mojom::BlockchainTokenPtr erc1155_3 = mojom::BlockchainToken::New(
       "0x3333333333333333333333333333333333333333", "333333", "333333.png",
-      false, false, false, true, "333333", 0, true, "0x1", "",
+      false, false, false, true, false, "333333", 0, true, "0x1", "",
       mojom::kMainnetChainId, mojom::CoinType::ETH);
   responses[kERC721InterfaceId] = "invalid";
   responses[kERC1155InterfaceId] = interface_not_supported_response;
@@ -1074,7 +1121,7 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAssetNfts) {
   // If neither erc721 nor erc1155 is supported, AddUserAsset returns false.
   mojom::BlockchainTokenPtr erc1155_4 = mojom::BlockchainToken::New(
       "0x4444444444444444444444444444444444444444", "444444", "444444.png",
-      false, false, false, true, "444444", 0, true, "0x1", "",
+      false, false, false, true, false, "444444", 0, true, "0x1", "",
       mojom::kMainnetChainId, mojom::CoinType::ETH);
   responses[kERC721InterfaceId] = interface_not_supported_response;
   responses[kERC1155InterfaceId] = interface_not_supported_response;
@@ -1256,6 +1303,74 @@ TEST_F(BraveWalletServiceUnitTest, SetUserAssetVisible) {
   EXPECT_FALSE(tokens[1]->visible);
 }
 
+TEST_F(BraveWalletServiceUnitTest, SetAssetSpamStatus) {
+  mojom::BlockchainTokenPtr token1 = GetToken1();
+  token1->chain_id = mojom::kMainnetChainId;
+  bool success = false;
+  std::vector<mojom::BlockchainTokenPtr> tokens;
+
+  // Original list has two tokens
+  GetUserAssets(token1->chain_id, mojom::CoinType::ETH, &tokens);
+  EXPECT_EQ(tokens.size(), 2u);
+
+  // Add token
+  AddUserAsset(token1.Clone(), &success);
+  EXPECT_TRUE(success);
+
+  GetUserAssets(token1->chain_id, mojom::CoinType::ETH, &tokens);
+  EXPECT_EQ(tokens.size(), 3u);
+  EXPECT_FALSE(tokens[2]->is_spam);  // New token is default not spam
+  EXPECT_TRUE(tokens[2]->visible);   // New token should default to be visible
+
+  // Flip spam
+  SetAssetSpamStatus(token1.Clone(), true, &success);
+  EXPECT_TRUE(success);
+
+  // Verify token has been set as spam and is not visible
+  GetUserAssets(token1->chain_id, mojom::CoinType::ETH, &tokens);
+  EXPECT_EQ(tokens.size(), 3u);
+  EXPECT_EQ(tokens[2]->contract_address, token1->contract_address);
+  EXPECT_TRUE(tokens[2]->is_spam);
+  EXPECT_FALSE(tokens[2]->visible);  // Should not be visible since it's spam
+
+  // Set asset as not spam
+  SetAssetSpamStatus(token1.Clone(), false, &success);
+  EXPECT_TRUE(success);
+
+  // Verify token has been set as not spam and is visible
+  GetUserAssets(token1->chain_id, mojom::CoinType::ETH, &tokens);
+  EXPECT_EQ(tokens.size(), 3u);
+  EXPECT_EQ(tokens[2]->contract_address, token1->contract_address);
+  EXPECT_FALSE(tokens[2]->is_spam);
+  EXPECT_TRUE(tokens[2]->visible);  // Should be visible since it's not spam
+
+  // Try to set spam status for non-existing asset
+  mojom::BlockchainTokenPtr fakeToken = mojom::BlockchainToken::New();
+  fakeToken->contract_address = "0xFakeAddress";
+  fakeToken->chain_id = token1->chain_id;
+  SetAssetSpamStatus(fakeToken.Clone(), true, &success);
+  EXPECT_FALSE(success);  // Should fail because asset does not exist
+
+  // Try to set spam status with invalid chain_id
+  mojom::BlockchainTokenPtr tokenWithInvalidChain = token1.Clone();
+  tokenWithInvalidChain->chain_id = "invalid_chain_id";
+  SetAssetSpamStatus(tokenWithInvalidChain.Clone(), true, &success);
+  EXPECT_FALSE(success);  // Should fail because of invalid chain_id
+
+  // Set the spam_status of a token not in user assets list
+  mojom::BlockchainTokenPtr token2 = GetToken1();
+  token2->chain_id = mojom::kOptimismMainnetChainId;
+  GetUserAssets(token2->chain_id, mojom::CoinType::ETH, &tokens);
+  size_t original_optimism_user_asset_list = tokens.size();
+  SetAssetSpamStatus(token2.Clone(), true, &success);
+  EXPECT_TRUE(success);
+  GetUserAssets(token2->chain_id, mojom::CoinType::ETH, &tokens);
+  EXPECT_EQ(tokens.size(), original_optimism_user_asset_list + 1u);
+  EXPECT_EQ(tokens[1]->contract_address, token2->contract_address);
+  EXPECT_EQ(tokens[1]->is_spam, true);
+  EXPECT_EQ(tokens[1]->visible, false);
+}
+
 TEST_F(BraveWalletServiceUnitTest, GetChecksumAddress) {
   absl::optional<std::string> addr = service_->GetChecksumAddress(
       "0x06012c8cf97bead5deae237070f9587f8e7a266d", "0x1");
@@ -1344,17 +1459,6 @@ TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultBaseCryptocurrency) {
   EXPECT_EQ(GetDefaultBaseCryptocurrency(), "ETH");
 }
 
-TEST_F(BraveWalletServiceUnitTest, SelectedCoin) {
-  EXPECT_EQ(static_cast<int>(mojom::CoinType::ETH),
-            GetPrefs()->GetInteger(kBraveWalletSelectedCoin));
-  EXPECT_EQ(mojom::CoinType::ETH, GetSelectedCoin());
-
-  service_->SetSelectedCoin(mojom::CoinType::SOL);
-  EXPECT_EQ(static_cast<int>(mojom::CoinType::SOL),
-            GetPrefs()->GetInteger(kBraveWalletSelectedCoin));
-  EXPECT_EQ(mojom::CoinType::SOL, GetSelectedCoin());
-}
-
 TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
   mojom::BlockchainTokenPtr eth_0xaa36a7_token = GetEthToken();
   eth_0xaa36a7_token->chain_id = "0xaa36a7";
@@ -1429,7 +1533,7 @@ TEST_F(BraveWalletServiceUnitTest,
   AddCustomNetwork(GetPrefs(), chain);
 
   auto native_asset = mojom::BlockchainToken::New(
-      "", "symbol_name", "https://url1.com", false, false, false, false,
+      "", "symbol_name", "https://url1.com", false, false, false, false, false,
       "symbol", 11, true, "", "", "0x5566", mojom::CoinType::ETH);
 
   bool success = false;
@@ -1776,12 +1880,13 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddPreloadingNetworks) {
 
   auto wtrtl = mojom::BlockchainToken::New(
       "0x6a31Aca4d2f7398F04d9B6ffae2D898d9A8e7938", "WTRTL",
-      "https://brave.com/logo.jpg", true, false, false, false, "WTRTL", 18,
-      true, "", "", mojom::kFantomMainnetChainId, mojom::CoinType::ETH);
+      "https://brave.com/logo.jpg", true, false, false, false, false, "WTRTL",
+      18, true, "", "", mojom::kFantomMainnetChainId, mojom::CoinType::ETH);
   for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::ETH)) {
     auto native_asset = mojom::BlockchainToken::New(
-        "", chain->symbol_name, "", false, false, false, false, chain->symbol,
-        chain->decimals, true, "", "", chain->chain_id, mojom::CoinType::ETH);
+        "", chain->symbol_name, "", false, false, false, false, false,
+        chain->symbol, chain->decimals, true, "", "", chain->chain_id,
+        mojom::CoinType::ETH);
     std::vector<mojom::BlockchainTokenPtr> tokens;
     GetUserAssets(chain->chain_id, mojom::CoinType::ETH, &tokens);
 
@@ -1882,6 +1987,87 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddIsNFT) {
   EXPECT_EQ(GetPrefs()->GetValue(kBraveWalletUserAssets), *user_assets_value);
 
   EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated));
+}
+
+TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddIsSpam) {
+  ASSERT_FALSE(GetPrefs()->GetBoolean(kBraveWalletUserAssetsAddIsSpamMigrated));
+
+  std::string json = R"({
+    "ethereum": {
+      "mainnet": [
+        {
+          "address": "",
+          "name": "Ethereum",
+          "symbol": "ETH",
+          "is_erc20": false,
+          "is_erc721": false,
+          "decimals": 18,
+          "visible": true
+        },
+        {
+          "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+          "name": "Basic Attention Token",
+          "symbol": "BAT",
+          "is_erc20": true,
+          "is_erc721": false,
+          "decimals": 18,
+          "visible": true
+        },
+        {
+          "address": "0x0D8775F648430679A709E98d2b0Cb6250d288888",
+          "name": "My NFT",
+          "symbol": "MN",
+          "is_erc20": false,
+          "is_erc721": true,
+          "token_id": 1,
+          "visible": false
+        }
+      ],
+      "0x89": [
+        {
+          "address": "",
+          "coingecko_id": "",
+          "decimals": 18,
+          "is_erc20": false,
+          "is_erc721": false,
+          "logo": "https://brave.com/logo.jpg",
+          "name": "MATIC",
+          "symbol": "MATIC",
+          "token_id": "",
+          "visible": true
+        }
+      ]
+    },
+    "solana": {
+      "mainnet": [
+        {
+          "address": "",
+          "coingecko_id": "",
+          "decimals": 9,
+          "is_erc20": false,
+          "is_erc721": false,
+          "logo": "https://brave.com/logo.jpg",
+          "name": "Solana",
+          "symbol": "SOL",
+          "visible": true
+        }
+      ]
+    }
+  })";
+  auto user_assets_value = base::test::ParseJson(json);
+  GetPrefs()->Set(kBraveWalletUserAssets, user_assets_value);
+  ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletUserAssets));
+  BraveWalletService::MigrateUserAssetsAddIsSpam(GetPrefs());
+
+  base::ReplaceSubstringsAfterOffset(
+      &json, 0, "\"is_erc721\": false",
+      "\"is_erc721\": false, \"is_spam\": false");
+  base::ReplaceSubstringsAfterOffset(&json, 0, "\"is_erc721\": true",
+                                     "\"is_erc721\": true, \"is_spam\": false");
+  user_assets_value = base::test::ParseJson(json);
+  EXPECT_EQ(GetPrefs()->GetValue(kBraveWalletUserAssets), user_assets_value);
+
+  EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletUserAssetsAddIsSpamMigrated));
 }
 
 TEST_F(BraveWalletServiceUnitTest, MigradeDefaultHiddenNetworks) {
@@ -2013,6 +2199,112 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddIsERC1155) {
       GetPrefs()->GetBoolean(kBraveWalletUserAssetsAddIsERC1155Migrated));
 }
 
+TEST_F(BraveWalletServiceUnitTest, MigrateFantomMainnetAsCustomNetwork) {
+  // CASE 1: Fantom is the selected network of some origin
+  ASSERT_FALSE(
+      GetPrefs()->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated));
+
+  auto selected_networks = base::JSONReader::Read(R"({
+    "ethereum": {
+      "https://app.uniswap.org": "0xfa"
+    }
+  })");
+  GetPrefs()->Set(kBraveWalletSelectedNetworksPerOrigin, *selected_networks);
+
+  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
+  BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
+
+  // OK: Fantom should be added to custom networks
+  EXPECT_TRUE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
+  EXPECT_TRUE(
+      GetPrefs()->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated));
+
+  // CASE 2: Fantom is the default ETH network
+  GetPrefs()->SetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated,
+                         false);
+  GetPrefs()->ClearPref(kBraveWalletCustomNetworks);
+  GetPrefs()->ClearPref(kBraveWalletSelectedNetworksPerOrigin);
+
+  auto default_networks = base::JSONReader::Read(R"({
+    "ethereum": "0xfa"
+  })");
+  GetPrefs()->Set(kBraveWalletSelectedNetworks, *default_networks);
+
+  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
+  BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
+
+  // OK: Fantom should be added to custom networks
+  EXPECT_TRUE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
+  // OK: default ETH network should be retained as Fantom
+  EXPECT_EQ(
+      *GetPrefs()->GetDict(kBraveWalletSelectedNetworks).FindString("ethereum"),
+      "0xfa");
+
+  EXPECT_TRUE(
+      GetPrefs()->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated));
+
+  // CASE 3: Fantom neither default ETH network nor selected for any origin
+  GetPrefs()->SetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated,
+                         false);
+  GetPrefs()->ClearPref(kBraveWalletCustomNetworks);
+  GetPrefs()->ClearPref(kBraveWalletSelectedNetworksPerOrigin);
+
+  default_networks = base::JSONReader::Read(R"({
+    "ethereum": "0xa"
+  })");
+  GetPrefs()->Set(kBraveWalletSelectedNetworks, *default_networks);
+
+  selected_networks = base::JSONReader::Read(R"({
+    "ethereum": {
+      "https://app.uniswap.org": "0x1"
+    }
+  })");
+  GetPrefs()->Set(kBraveWalletSelectedNetworksPerOrigin, *selected_networks);
+
+  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
+  BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
+
+  // KO: Fantom should NOT be added to custom networks
+  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
+  // KO: Default ETH network does not change
+  EXPECT_EQ(
+      *GetPrefs()->GetDict(kBraveWalletSelectedNetworks).FindString("ethereum"),
+      "0xa");
+
+  EXPECT_TRUE(
+      GetPrefs()->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated));
+
+  // CASE 4: Fantom is already added to custom networks
+  GetPrefs()->SetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated,
+                         false);
+  GetPrefs()->ClearPref(kBraveWalletCustomNetworks);
+  GetPrefs()->ClearPref(kBraveWalletSelectedNetworksPerOrigin);
+
+  // Add Fantom to custom networks
+  mojom::NetworkInfo fantom = GetTestNetworkInfo1("0xfa");
+  AddCustomNetwork(GetPrefs(), fantom);
+  EXPECT_TRUE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
+  BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
+
+  // KO: Fantom should NOT be added to custom networks again
+  ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletCustomNetworks));
+  auto* custom_networks =
+      GetPrefs()->GetDict(kBraveWalletCustomNetworks).FindList("ethereum");
+  ASSERT_TRUE(custom_networks);
+  ASSERT_EQ(custom_networks->size(), 1u);
+  EXPECT_EQ(*(*custom_networks)[0].GetDict().FindString("chainId"), "0xfa");
+
+  EXPECT_TRUE(
+      GetPrefs()->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated));
+}
+
 TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
   const char* new_password = "brave1234!";
   bool success;
@@ -2102,15 +2394,18 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
+  SetupWallet();
+
   mojom::OriginInfoPtr origin_info =
       MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
   std::string expected_signature = std::string("0xSiGnEd");
-  std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
+  // That should be hw account per test name.
+  auto account_id = GetAccountUtils().EnsureEthAccount(0)->account_id.Clone();
   std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, address, domain, message, false, absl::nullopt,
-      absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
+      origin_info.Clone(), 1, account_id.Clone(), domain, message, false,
+      absl::nullopt, absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
       mojom::kMainnetChainId);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
@@ -2137,8 +2432,8 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 2, address, domain, message, false, absl::nullopt,
-      absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
+      origin_info.Clone(), 2, account_id.Clone(), domain, message, false,
+      absl::nullopt, absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
       mojom::kMainnetChainId);
   service_->AddSignMessageRequest(
       std::move(request2),
@@ -2161,15 +2456,17 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, SignMessage) {
+  SetupWallet();
+
   mojom::OriginInfoPtr origin_info =
       MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
   std::string expected_signature = std::string("0xSiGnEd");
-  std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
+  auto account_id = GetAccountUtils().EnsureEthAccount(0)->account_id.Clone();
   std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, address, domain, message, false, absl::nullopt,
-      absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
+      origin_info.Clone(), 1, account_id.Clone(), domain, message, false,
+      absl::nullopt, absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
       mojom::kMainnetChainId);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
@@ -2191,8 +2488,8 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 2, address, domain, message, false, absl::nullopt,
-      absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
+      origin_info.Clone(), 2, account_id.Clone(), domain, message, false,
+      absl::nullopt, absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
       mojom::kMainnetChainId);
   service_->AddSignMessageRequest(
       std::move(request2),
@@ -2219,8 +2516,8 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     mojom::BlockchainTokenPtr usdc_from_blockchain_registry =
         mojom::BlockchainToken::New(
             "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin",
-            "usdc.png", true, false, false, false, "USDC", 6, true, "", "",
-            chain_id, mojom::CoinType::ETH);
+            "usdc.png", true, false, false, false, false, "USDC", 6, true, "",
+            "", chain_id, mojom::CoinType::ETH);
     ASSERT_EQ(usdc_from_blockchain_registry,
               GetRegistry()->GetTokenByAddress(
                   chain_id, mojom::CoinType::ETH,
@@ -2228,17 +2525,18 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     mojom::BlockchainTokenPtr usdc_from_user_assets =
         mojom::BlockchainToken::New(
             "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "", true,
-            false, false, false, "USDC", 6, true, "", "", chain_id,
+            false, false, false, false, "USDC", 6, true, "", "", chain_id,
             mojom::CoinType::ETH);
     ASSERT_TRUE(service_->AddUserAsset(usdc_from_user_assets.Clone()));
 
     mojom::BlockchainTokenPtr usdc_from_request = mojom::BlockchainToken::New(
         "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USDC", "", true, false,
-        false, false, "USDC", 6, true, "", "", chain_id, mojom::CoinType::ETH);
+        false, false, false, "USDC", 6, true, "", "", chain_id,
+        mojom::CoinType::ETH);
 
     mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
         "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", true, false,
-        false, false, "COLOR", 18, true, "", "", chain_id,
+        false, false, false, "COLOR", 18, true, "", "", chain_id,
         mojom::CoinType::ETH);
 
     // Case 1: Suggested token does not exist (no entry with the same contract
@@ -2295,13 +2593,14 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     mojom::BlockchainTokenPtr usdt_from_user_assets =
         mojom::BlockchainToken::New(
             "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether", "usdt.png",
-            true, false, false, false, "USDT", 6, true, "", "", chain_id,
+            true, false, false, false, false, "USDT", 6, true, "", "", chain_id,
             mojom::CoinType::ETH);
     ASSERT_TRUE(service_->AddUserAsset(usdt_from_user_assets.Clone()));
 
     mojom::BlockchainTokenPtr usdt_from_request = mojom::BlockchainToken::New(
         "0xdAC17F958D2ee523a2206206994597C13D831ec7", "USDT", "", true, false,
-        false, false, "USDT", 18, true, "", "", chain_id, mojom::CoinType::ETH);
+        false, false, false, "USDT", 18, true, "", "", chain_id,
+        mojom::CoinType::ETH);
     // Case 5: Suggested token exists in user asset list and is visible, does
     // not exist in BlockchainRegistry. Token should be in user asset list and
     // is visible, and the data should be the same as the one in user asset
@@ -2337,7 +2636,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     // kUserRejectedRequest error.
     mojom::BlockchainTokenPtr busd = mojom::BlockchainToken::New(
         "0x4Fabb145d64652a948d72533023f6E7A623C7C53", "Binance USD", "", true,
-        false, false, false, "BUSD", 18, true, "", "", chain_id,
+        false, false, false, false, "BUSD", 18, true, "", "", chain_id,
         mojom::CoinType::ETH);
     AddSuggestToken(busd.Clone(), busd.Clone(), false,
                     true /* run_switch_network */);
@@ -2345,7 +2644,8 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     // Test reject request.
     mojom::BlockchainTokenPtr brb_from_request = mojom::BlockchainToken::New(
         "0x6B175474E89094C44Da98b954EedeAC495271d0A", "BRB", "", true, false,
-        false, false, "BRB", 6, true, "", "", chain_id, mojom::CoinType::ETH);
+        false, false, false, "BRB", 6, true, "", "", chain_id,
+        mojom::CoinType::ETH);
     ASSERT_TRUE(service_->RemoveUserAsset(brb_from_request.Clone()));
     AddSuggestToken(brb_from_request.Clone(), brb_from_request.Clone(), false);
     token = service_->GetUserAsset(
@@ -2358,8 +2658,8 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
 TEST_F(BraveWalletServiceUnitTest, GetUserAsset) {
   mojom::BlockchainTokenPtr usdc = mojom::BlockchainToken::New(
       "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "usdc.png",
-      true, false, false, false, "USDC", 6, true, "", "", mojom::kGoerliChainId,
-      mojom::CoinType::ETH);
+      true, false, false, false, false, "USDC", 6, true, "", "",
+      mojom::kGoerliChainId, mojom::CoinType::ETH);
   ASSERT_TRUE(service_->AddUserAsset(usdc.Clone()));
   EXPECT_EQ(usdc, service_->GetUserAsset(usdc->contract_address, usdc->token_id,
                                          usdc->is_nft, mojom::kGoerliChainId,
@@ -2388,6 +2688,8 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAsset) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, Reset) {
+  SetupWallet();
+
   SetDefaultBaseCurrency("CAD");
   SetDefaultBaseCryptocurrency("ETH");
   mojom::BlockchainTokenPtr token1 = GetToken1();
@@ -2399,12 +2701,12 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   EXPECT_TRUE(GetPrefs()->HasPrefPath(kDefaultBaseCryptocurrency));
   mojom::OriginInfoPtr origin_info =
       MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
-  std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
+  auto account_id = GetAccountUtils().EnsureEthAccount(0)->account_id.Clone();
   std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, address, domain, message, false, absl::nullopt,
-      absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
+      origin_info.Clone(), 1, account_id.Clone(), domain, message, false,
+      absl::nullopt, absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
       mojom::kMainnetChainId);
   service_->AddSignMessageRequest(
       std::move(request1),
@@ -2412,7 +2714,8 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
                                     const absl::optional<std::string>&) {}));
   mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
       "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", true, false,
-      false, false, "COLOR", 18, true, "", "", "0x1", mojom::CoinType::ETH);
+      false, false, false, "COLOR", 18, true, "", "", "0x1",
+      mojom::CoinType::ETH);
   AddSuggestToken(custom_token.Clone(), custom_token.Clone(), true);
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -2575,12 +2878,20 @@ TEST_F(BraveWalletServiceUnitTest, SetNftDiscoveryEnabled) {
   // Default should be off
   EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
 
-  // Should be able to set to true
+  // Setting NFT discovery enabled should update the pref and trigger asset
+  // discovery
+  EXPECT_CALL(*observer_, OnDiscoverAssetsCompleted(testing::_)).Times(1);
   service_->SetNftDiscoveryEnabled(true);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer_));
   EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
 
-  // And then back to false
+  // Unsetting NFT discovery enabled should update the pref and not trigger
+  // asset discovery
+  EXPECT_CALL(*observer_, OnDiscoverAssetsCompleted(testing::_)).Times(0);
   service_->SetNftDiscoveryEnabled(false);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer_));
   EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
 }
 
@@ -2624,6 +2935,178 @@ TEST_F(BraveWalletServiceUnitTest, GetBalanceScannerSupportedChains) {
         ASSERT_EQ(chains.size(), expected_chains.size());
         EXPECT_EQ(chains, expected_chains);
       }));
+}
+
+TEST_F(BraveWalletServiceUnitTest, GetSimpleHashSpamNFTs) {
+  std::vector<mojom::BlockchainTokenPtr> expected_nfts;
+  std::string json = R"({
+    "next": null,
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "polygon",
+        "contract_address": "0x1111111111111111111111111111111111111111",
+        "token_id": "1",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "ONE"
+        },
+        "collection": {
+          "spam_score": 100
+        }
+      },
+      {
+        "chain": "polygon",
+        "contract_address": "0x2222222222222222222222222222222222222222",
+        "token_id": "2",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "TWO"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+
+  GURL url = GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "owners?chains=ethereum&wallet_addresses="
+      "0x0000000000000000000000000000000000000000");
+  std::map<GURL, std::string> responses;
+  responses[url] = json;
+
+  // First make the call with NFT discovery disabled,
+  // no NFTs should be discovered
+  GetSimpleHashSpamNFTs("0x0000000000000000000000000000000000000000",
+                        {mojom::kMainnetChainId}, mojom::CoinType::ETH,
+                        absl::nullopt, expected_nfts, absl::nullopt);
+
+  // Enable NFT discovery then try again, only the spam NFT should be discovered
+  SetInterceptors(responses);
+  service_->SetNftDiscoveryEnabled(true);
+  auto nft1 = mojom::BlockchainToken::New();
+  nft1->chain_id = mojom::kPolygonMainnetChainId;
+  nft1->contract_address = "0x1111111111111111111111111111111111111111";
+  nft1->token_id = "0x1";
+  nft1->is_erc721 = true;
+  nft1->is_erc1155 = false;
+  nft1->is_erc20 = false;
+  nft1->is_nft = true;
+  nft1->symbol = "ONE";
+  nft1->coin = mojom::CoinType::ETH;
+  expected_nfts.push_back(std::move(nft1));
+  GetSimpleHashSpamNFTs("0x0000000000000000000000000000000000000000",
+                        {mojom::kMainnetChainId}, mojom::CoinType::ETH,
+                        absl::nullopt, expected_nfts, absl::nullopt);
+}
+
+TEST_F(BraveWalletServiceUnitTest, EnsureSelectedAccountForChain) {
+  const char* new_password = "brave1234!";
+  bool success;
+  std::string error_message;
+  const char* valid_mnemonic =
+      "drip caution abandon festival order clown oven regular absorb evidence "
+      "crew where";
+  SimulateOnGetImportInfo(new_password, true,
+                          ImportInfo({valid_mnemonic, false, 1}),
+                          ImportError::kNone, &success, &error_message);
+
+  auto accounts = std::move(keyring_service_->GetAllAccountsSync()->accounts);
+  auto eth_account_id = accounts[0]->account_id->Clone();
+  auto sol_account_id = accounts[1]->account_id->Clone();
+  EXPECT_EQ(eth_account_id->coin, mojom::CoinType::ETH);
+  EXPECT_EQ(sol_account_id->coin, mojom::CoinType::SOL);
+
+  // SOL account is selected by default.
+  EXPECT_EQ(
+      sol_account_id,
+      keyring_service_->GetAllAccountsSync()->selected_account->account_id);
+
+  // For solana network switch current account is ok.
+  EXPECT_EQ(sol_account_id, service_->EnsureSelectedAccountForChainSync(
+                                mojom::CoinType::SOL, mojom::kSolanaMainnet));
+  EXPECT_EQ(
+      sol_account_id,
+      keyring_service_->GetAllAccountsSync()->selected_account->account_id);
+
+  // For polygon network we switch to eth account.
+  EXPECT_EQ(eth_account_id,
+            service_->EnsureSelectedAccountForChainSync(
+                mojom::CoinType::ETH, mojom::kPolygonMainnetChainId));
+  EXPECT_EQ(
+      eth_account_id,
+      keyring_service_->GetAllAccountsSync()->selected_account->account_id);
+
+  // For filecoin network there is no account, so eth account is still selected.
+  EXPECT_EQ(mojom::AccountIdPtr(),
+            service_->EnsureSelectedAccountForChainSync(
+                mojom::CoinType::FIL, mojom::kFilecoinMainnet));
+  EXPECT_EQ(
+      eth_account_id,
+      keyring_service_->GetAllAccountsSync()->selected_account->account_id);
+
+  // Create fil account and it gets selected.
+  auto fil_account_id =
+      keyring_service_
+          ->AddAccountSync(mojom::CoinType::FIL, mojom::KeyringId::kFilecoin,
+                           "Fil 1")
+          ->account_id.Clone();
+  EXPECT_EQ(
+      fil_account_id,
+      keyring_service_->GetAllAccountsSync()->selected_account->account_id);
+
+  // Switch to eth account again.
+  EXPECT_EQ(eth_account_id,
+            service_->EnsureSelectedAccountForChainSync(
+                mojom::CoinType::ETH, mojom::kPolygonMainnetChainId));
+  EXPECT_EQ(
+      eth_account_id,
+      keyring_service_->GetAllAccountsSync()->selected_account->account_id);
+
+  // As there is filecoin accoin account we can switch to it.
+  EXPECT_EQ(fil_account_id, service_->EnsureSelectedAccountForChainSync(
+                                mojom::CoinType::FIL, mojom::kFilecoinMainnet));
+  EXPECT_EQ(
+      fil_account_id,
+      keyring_service_->GetAllAccountsSync()->selected_account->account_id);
+}
+
+TEST_F(BraveWalletServiceUnitTest, ConvertFEVMToFVMAddress) {
+  {
+    bool callback_is_called;
+
+    service_->ConvertFEVMToFVMAddress(
+        true, {"0xf563fc08AFD59e2260b7d2d4481215c745Fa7573", "", "123"},
+        base::BindLambdaForTesting(
+            [&](const base::flat_map<std::string, std::string>& result) {
+              EXPECT_EQ(
+                  result.find("0xf563fc08AFD59e2260b7d2d4481215c745Fa7573")
+                      ->second,
+                  "f410f6vr7ycfp2wpceyfx2lkeqeqvy5c7u5ltn7oripq");
+              EXPECT_EQ(result.size(), 1u);
+              callback_is_called = true;
+            }));
+    ASSERT_TRUE(callback_is_called);
+  }
+
+  {
+    bool callback_is_called;
+
+    service_->ConvertFEVMToFVMAddress(
+        false, {"0xf563fc08AFD59e2260b7d2d4481215c745Fa7573", "", "123"},
+        base::BindLambdaForTesting(
+            [&](const base::flat_map<std::string, std::string>& result) {
+              EXPECT_EQ(
+                  result.find("0xf563fc08AFD59e2260b7d2d4481215c745Fa7573")
+                      ->second,
+                  "t410f6vr7ycfp2wpceyfx2lkeqeqvy5c7u5ltn7oripq");
+              EXPECT_EQ(result.size(), 1u);
+              callback_is_called = true;
+            }));
+    ASSERT_TRUE(callback_is_called);
+  }
 }
 
 }  // namespace brave_wallet

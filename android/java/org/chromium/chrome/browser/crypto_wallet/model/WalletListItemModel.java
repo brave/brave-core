@@ -13,6 +13,7 @@ import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
+import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class WalletListItemModel {
@@ -24,11 +25,8 @@ public class WalletListItemModel {
     private Bitmap mTxStatusBitmap;
     private String mText1;
     private String mText2;
-    private String mId;
     private BlockchainToken mBlockchainToken;
     private AccountInfo mAccountInfo;
-    private boolean mIsAccount;
-    private boolean mIsImportedAccount;
     private boolean mIsUserSelected;
     private double mTotalGas;
     private double mTotalGasFiat;
@@ -40,6 +38,9 @@ public class WalletListItemModel {
     private NetworkInfo mAssetNetwork;
     private String mBrowserResPath;
 
+    public String mId;
+    private ParsedTransaction mParsedTx;
+
     public WalletListItemModel(
             int icon, String title, String subTitle, String id, String text1, String text2) {
         mIcon = icon;
@@ -50,11 +51,24 @@ public class WalletListItemModel {
         mText2 = text2;
     }
 
-    public WalletListItemModel(int icon, String title, String subTitle, String text1, String text2,
-            boolean isImportedAccount) {
-        this(icon, title, subTitle, "", text1, text2);
-        mIsImportedAccount = isImportedAccount;
-        mIsAccount = true;
+    private WalletListItemModel() {}
+
+    public static WalletListItemModel makeForAccountInfoWithBalances(
+            AccountInfo accountInfo, String fiatBalanceString, String cryptoBalanceString) {
+        WalletListItemModel result = new WalletListItemModel();
+        result.mIcon = Utils.getCoinIcon(accountInfo.accountId.coin);
+        result.mTitle = accountInfo.name;
+        // TODO(apaymyshev): handle bitcoin account.
+        result.mSubTitle = accountInfo.address;
+        result.mId = "";
+        result.mText1 = fiatBalanceString;
+        result.mText2 = cryptoBalanceString;
+        result.mAccountInfo = accountInfo;
+        return result;
+    }
+
+    public static WalletListItemModel makeForAccountInfo(AccountInfo accountInfo) {
+        return makeForAccountInfoWithBalances(accountInfo, null, null);
     }
 
     public boolean isNft() {
@@ -156,14 +170,6 @@ public class WalletListItemModel {
         return mAccountInfo;
     }
 
-    public void setIsImportedAccount(boolean isImportedAccount) {
-        mIsImportedAccount = isImportedAccount;
-    }
-
-    public boolean getIsImportedAccount() {
-        return mIsImportedAccount;
-    }
-
     public int getIcon() {
         return mIcon;
     }
@@ -200,7 +206,7 @@ public class WalletListItemModel {
     }
 
     public boolean isAccount() {
-        return mIsAccount;
+        return mAccountInfo != null;
     }
 
     public PortfolioModel.NftDataModel getNftDataModel() {
@@ -235,5 +241,13 @@ public class WalletListItemModel {
     public String getNetworkIcon() {
         if (mAssetNetwork == null || TextUtils.isEmpty(getBrowserResourcePath())) return "";
         return "file://" + getBrowserResourcePath() + "/" + Utils.getNetworkIconName(mAssetNetwork);
+    }
+
+    public ParsedTransaction getParsedTx() {
+        return mParsedTx;
+    }
+
+    public void setParsedTx(ParsedTransaction mParsedTx) {
+        this.mParsedTx = mParsedTx;
     }
 }

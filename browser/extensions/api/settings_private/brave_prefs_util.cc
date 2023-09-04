@@ -9,7 +9,8 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/common/pref_names.h"
@@ -45,6 +46,10 @@
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/pref_names.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -108,26 +113,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
   // Rewards/Ads prefs
-  (*s_brave_allowlist)[brave_ads::prefs::kEnabled] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[brave_ads::prefs::kMaximumNotificationAdsPerHour] =
-      settings_api::PrefType::PREF_TYPE_NUMBER;
-  (*s_brave_allowlist)[brave_ads::prefs::kShouldAllowSubdivisionTargeting] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[brave_ads::prefs::kSubdivisionTargetingCode] =
-      settings_api::PrefType::PREF_TYPE_STRING;
   (*s_brave_allowlist)[brave_rewards::prefs::kEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[brave_rewards::prefs::kShowLocationBarButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[brave_rewards::prefs::kAutoContributeEnabled] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[brave_rewards::prefs::kAutoContributeAmount] =
-      settings_api::PrefType::PREF_TYPE_NUMBER;
-  (*s_brave_allowlist)[brave_rewards::prefs::kMinVisitTime] =
-      settings_api::PrefType::PREF_TYPE_NUMBER;
-  (*s_brave_allowlist)[brave_rewards::prefs::kMinVisits] =
-      settings_api::PrefType::PREF_TYPE_NUMBER;
   (*s_brave_allowlist)[brave_rewards::prefs::kInlineTipButtonsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[brave_rewards::prefs::kInlineTipRedditEnabled] =
@@ -142,6 +131,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[prefs::kSyncedDefaultPrivateSearchProviderGUID] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
+
+  // autofill prefs
+  (*s_brave_allowlist)[kBraveAutofillPrivateWindows] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
   // appearance prefs
   (*s_brave_allowlist)[kShowBookmarksButton] =
@@ -173,6 +166,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   (*s_brave_allowlist)[brave_vpn::prefs::kBraveVPNShowButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#if BUILDFLAG(IS_WIN)
+  (*s_brave_allowlist)[brave_vpn::prefs::kBraveVPNWireguardEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#endif
 #endif
 #if defined(TOOLKIT_VIEWS)
   (*s_brave_allowlist)[sidebar::kSidebarShowOption] =
@@ -275,12 +272,16 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_STRING;
   (*s_brave_allowlist)[kIPFSPublicNFTGatewayAddress] =
       settings_api::PrefType::PREF_TYPE_STRING;
-  (*s_brave_allowlist)[kIPFSAutoRedirectGateway] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[kIPFSAutoRedirectDNSLink] =
+  (*s_brave_allowlist)[kIPFSAutoRedirectToConfiguredGateway] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kIpfsStorageMax] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
+#endif
+
+// Leo Assistant pref
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  (*s_brave_allowlist)[ai_chat::prefs::kBraveChatAutoGenerateQuestions] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
@@ -300,7 +301,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[prefs::kWebRTCIPHandlingPolicy] =
       settings_api::PrefType::PREF_TYPE_STRING;
   // Request OTR feature
-  (*s_brave_allowlist)[request_otr::prefs::kRequestOTRActionOption] =
+  (*s_brave_allowlist)[request_otr::kRequestOTRActionOption] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
 
   (*s_brave_allowlist)[decentralized_dns::kUnstoppableDomainsResolveMethod] =

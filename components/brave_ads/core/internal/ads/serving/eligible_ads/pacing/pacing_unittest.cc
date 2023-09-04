@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -32,8 +31,8 @@ TEST_F(BraveAdsPacingTest, PaceCreativeAdsWithMinPassThroughRate) {
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  creative_ad.ptr = 0.0;
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+  creative_ad.pass_through_rate = 0.0;
   creative_ads.push_back(creative_ad);
 
   // Act
@@ -52,8 +51,8 @@ TEST_F(BraveAdsPacingTest, DoNotPaceCreativeAdsWithMaxPassThroughRate) {
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  creative_ad.ptr = 1.0;
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+  creative_ad.pass_through_rate = 1.0;
   creative_ads.push_back(creative_ad);
 
   // Act
@@ -75,8 +74,8 @@ TEST_F(BraveAdsPacingTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  creative_ad.ptr = 0.5;
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+  creative_ad.pass_through_rate = 0.5;
   creative_ads.push_back(creative_ad);
 
   // Act
@@ -94,13 +93,13 @@ TEST_F(BraveAdsPacingTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  creative_ad_1.ptr = 0.1;
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+  creative_ad_1.pass_through_rate = 0.1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  creative_ad_2.ptr = 0.5;
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+  creative_ad_2.pass_through_rate = 0.5;
   creative_ads.push_back(creative_ad_2);
 
   // Act

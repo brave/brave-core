@@ -17,9 +17,9 @@
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/core/constants.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/bat_helper.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "tweetnacl.h"  // NOLINT
 #include "url/gurl.h"

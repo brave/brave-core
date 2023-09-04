@@ -43,8 +43,6 @@ export function getSettings () {
   return new Promise<Settings>((resolve) => {
     chrome.braveRewards.getPrefs((prefs) => {
       resolve({
-        adsEnabled: prefs.adsEnabled,
-        adsPerHour: prefs.adsPerHour,
         autoContributeEnabled: prefs.autoContributeEnabled,
         autoContributeAmount: prefs.autoContributeAmount
       })
@@ -57,8 +55,10 @@ export function getEarningsInfo () {
     chrome.braveRewards.getAdsAccountStatement((success, statement) => {
       if (success) {
         resolve({
-          earningsLastMonth: statement.earningsLastMonth,
-          earningsThisMonth: statement.earningsThisMonth,
+          minEarningsLastMonth: statement.minEarningsLastMonth,
+          maxEarningsLastMonth: statement.maxEarningsLastMonth,
+          minEarningsThisMonth: statement.minEarningsThisMonth,
+          maxEarningsThisMonth: statement.maxEarningsThisMonth,
           nextPaymentDate: statement.nextPaymentDate
         })
       } else {
@@ -134,8 +134,7 @@ export function getRewardsSummaryData () {
         adEarnings: balanceReport.ads,
         autoContributions: balanceReport.contribute,
         oneTimeTips: balanceReport.tips,
-        monthlyTips: balanceReport.monthly,
-        pendingTips: 0
+        monthlyTips: balanceReport.monthly
       })
     })
   })
@@ -209,6 +208,14 @@ export function getGrants () {
 export function getRewardsEnabled () {
   return new Promise<boolean>((resolve) => {
     chrome.braveRewards.getRewardsEnabled(resolve)
+  })
+}
+
+export function isGrandfatheredUser () {
+  return new Promise<boolean>((resolve) => {
+    chrome.braveRewards.isGrandfatheredUser((isGrandfatheredUser) => {
+      resolve(isGrandfatheredUser)
+    })
   })
 }
 

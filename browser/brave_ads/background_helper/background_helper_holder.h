@@ -9,8 +9,8 @@
 #include <memory>
 
 namespace base {
-template <typename Type>
-struct DefaultSingletonTraits;
+template <typename T>
+class NoDestructor;
 }  // namespace base
 
 namespace brave_ads {
@@ -30,7 +30,7 @@ class BackgroundHelperHolder final {
   BackgroundHelper* GetBackgroundHelper();
 
  private:
-  friend struct base::DefaultSingletonTraits<BackgroundHelperHolder>;
+  friend base::NoDestructor<BackgroundHelperHolder>;
 
   BackgroundHelperHolder();
 

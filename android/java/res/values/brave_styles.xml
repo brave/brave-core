@@ -20,6 +20,12 @@
         <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
     </style>
 
+    <style name="TippingSwitchTheme">
+        <item name="colorControlActivated">@color/rewards_panel_action_color</item>
+        <item name="colorSwitchThumbNormal">@color/modern_grey_600</item>
+        <item name="android:colorForeground">@color/modern_grey_600</item>
+    </style>
+
     <style name="AppBottomSheetDialogTheme"
            parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
@@ -40,6 +46,10 @@
     </style>
 
     <!-- Brave Wallet -->
+    <style name="BraveChipTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
     <style name="BraveWalletButton" parent="Widget.AppCompat.Button">
         <item name="buttonStyle">?android:attr/borderlessButtonStyle</item>
         <item name="android:layout_width">wrap_content</item>
@@ -181,17 +191,23 @@
       <item name="android:itemBackground">@color/new_tab_menu_bg_dark_color</item>
     </style>
 
-    <style name="BraveRewardsPanelPopupMenu" parent="Widget.AppCompat.PopupMenu">
-        <item name="android:textColor">@color/rewards_panel_action_color</item>
-        <item name="android:itemBackground">@color/rewards_panel_bg_color</item>
-    </style>
-
     <style name="BraveTranslucent" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/translucent_activity_background_color</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="TippingBraveTranslucent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/translucent_activity_background_color</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:statusBarColor">#00000000</item>
     </style>
 
     <style name="BraveTranslucentMaterial" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -209,11 +225,6 @@
 
     <style name="BraveWalletTabsTextAppearance" parent="TextAppearance.Design.Tab">
       <item name="textAllCaps">false</item>
-    </style>
-
-    <style name="BraveWalletToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="actionMenuTextColor">@color/wallet_text_color</item>
-        <item name="android:textColorPrimary">@color/wallet_text_color</item>
     </style>
 
     <style name="BraveWalletOnboarding">

@@ -14,7 +14,11 @@ if (is_win) {
     "//brave/installer/util",
   ]
   if (enable_brave_vpn) {
-    brave_chromium_src_chrome_installer_setup_deps += [ "//brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper:common" ]
+    brave_chromium_src_chrome_installer_setup_deps += [
+      "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
+      "//brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper:common",
+      "//brave/components/brave_vpn/common/wireguard/win",
+    ]
   }
   if (is_official_build) {
     # These should be added to the lib target, but don't want to add another

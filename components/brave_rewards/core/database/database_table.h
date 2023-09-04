@@ -12,10 +12,10 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace database {
 
@@ -39,11 +39,11 @@ using ContributionPublisherPairListCallback =
 
 class DatabaseTable {
  public:
-  explicit DatabaseTable(LedgerImpl& ledger);
+  explicit DatabaseTable(RewardsEngineImpl& engine);
   virtual ~DatabaseTable();
 
  protected:
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace database

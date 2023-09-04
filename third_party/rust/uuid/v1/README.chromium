@@ -1,0 +1,7 @@
+Name: uuid
+URL: https://crates.io/crates/uuid
+Description: A library to generate and parse UUIDs.
+Version: 1.3.0
+Security Critical: yes
+License: Apache 2.0
+Revision: 573362627c354bd13432e9aa9cdc3465e00aaff3

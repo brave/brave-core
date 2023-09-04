@@ -7,8 +7,11 @@
 
 #include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/no_destructor.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_search_conversion/p3a.h"
+#include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -97,7 +100,8 @@ SearchEngineSwitchP3A SearchEngineSwitchP3AMapAnswer(const GURL& to,
 
 // static
 SearchEngineTrackerFactory* SearchEngineTrackerFactory::GetInstance() {
-  return base::Singleton<SearchEngineTrackerFactory>::get();
+  static base::NoDestructor<SearchEngineTrackerFactory> instance;
+  return instance.get();
 }
 
 SearchEngineTrackerFactory::SearchEngineTrackerFactory()
@@ -218,5 +222,12 @@ void SearchEngineTracker::RecordSwitchP3A(const GURL& url) {
     }
   }
 
+  if (brave_search_conversion::IsBraveSearchConversionFeatureEnabled() ||
+      base::FeatureList::IsEnabled(brave_search_conversion::features::kNTP)) {
+    // Do not report if search conversion promo is enabled, to prevent metric
+    // overlap with conversion metrics.
+    UMA_HISTOGRAM_EXACT_LINEAR(kSwitchSearchEngineMetric, INT_MAX - 1, 8);
+    return;
+  }
   UMA_HISTOGRAM_ENUMERATION(kSwitchSearchEngineMetric, answer);
 }

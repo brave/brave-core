@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/views/brave_ads/bounds_util.h"
 
-#include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
+#include "brave/components/brave_ads/browser/feature/custom_notification_ad_feature.h"
 #include "ui/display/screen.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/native_widget_types.h"
@@ -52,6 +52,12 @@ void AdjustBoundsToFitWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds) {
 }
 
 }  // namespace
+
+gfx::Rect GetDefaultDisplayScreenWorkArea(gfx::NativeView browser_native_view) {
+  return kUseSameZOrderAsBrowserWindow.Get()
+             ? GetNearestDisplayScreenWorkArea(browser_native_view)
+             : GetPrimaryDisplayScreenWorkArea();
+}
 
 void AdjustBoundsAndSnapToFitWorkAreaForNativeView(views::Widget* widget,
                                                    gfx::Rect* bounds) {

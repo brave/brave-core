@@ -38,48 +38,49 @@ const char kEmbeddedTestServerDirectory[] = "brave-wallet";
 const char kSomeChainId[] = "0xabcde";
 
 const char kScriptWaitForEvent[] = R"(
-    function waitForEvent() {
+    new Promise(resolve => {
+      const timer = setInterval(function () {
         if (request_finished) {
-          window.domAutomationController.send(chain_added_result);
+          clearInterval(timer);
+          resolve(chain_added_result);
         }
-    }
-    setInterval(waitForEvent, 100);)";
+      }, 100);
+    });
+  )";
 
 const char kScriptRunAndCheckAddChainResult[] = R"(
-      function waitForEvent() {
+    new Promise(resolve => {
+      const timer = setInterval(function () {
         if (!window.ethereum)
           return;
+
         window.ethereum.request({ method: 'wallet_addEthereumChain', params:[{
-              chainId: '%s',
-              chainName: 'Test Smart Chain',
-              rpcUrls: ['https://bsc-dataseed.binance.org/'],
-          }]
+          chainId: '0x11',
+          chainName: 'Test Smart Chain',
+          rpcUrls: ['https://bsc-dataseed.binance.org/'],
+        }]
         }).then(result => {
-          %s
         }).catch(result => {
-          %s
+          clearInterval(timer);
+          resolve(result.code == 4001)
         })
-      };
-      console.log("!!!starting");
-      setInterval(waitForEvent, 100);
-    )";
+      }, 100);
+    });
+  )";
 
 const char kScriptRunEmptyAndCheckChainResult[] = R"(
-      function waitForEvent() {
+    new Promise(resolve => {
+      const timer = setInterval(function () {
         if (!window.ethereum)
           return;
-        window.ethereum.request({ method: 'wallet_addEthereumChain', params:[]
-        }).catch(result => {
-          %s
+        window.ethereum.request({ method: 'wallet_addEthereumChain', params:[]})
+          .catch(result => {
+            clearInterval(timer);
+            resolve(result.code == -32602)
         })
-      };
-      console.log("!!!starting");
-      setInterval(waitForEvent, 100);
-    )";
-
-const char kRejectedResult[] =
-    R"(window.domAutomationController.send(
-        result.code == %s))";
+      }, 100);
+    });
+  )";
 
 std::string EncodeQuery(const std::string& query) {
   url::RawCanonOutputT<char> buffer;
@@ -268,6 +269,12 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
     loop.Run();
   }
 
+  std::string GetPendingSwitchChainRequestId() {
+    auto requests = GetJsonRpcService()->GetPendingSwitchChainRequestsSync();
+    EXPECT_EQ(1u, requests.size());
+    return requests[0]->request_id;
+  }
+
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
@@ -292,9 +299,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainApproved) {
   CallAndWaitForEthereumChainRequestCompleted(
       kSomeChainId, true, brave_wallet::mojom::CoinType::ETH, "");
   const url::Origin origin = url::Origin::Create(url);
-  GetJsonRpcService()->NotifySwitchChainRequestProcessed(true, origin);
-  auto result_first = EvalJs(contents, kScriptWaitForEvent,
-                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  GetJsonRpcService()->NotifySwitchChainRequestProcessed(
+      GetPendingSwitchChainRequestId(), true);
+  auto result_first = EvalJs(contents, kScriptWaitForEvent);
   EXPECT_EQ(base::Value(true), result_first.value);
   ASSERT_FALSE(GetAllEthCustomChains().empty());
   auto chain = GetAllEthCustomChains().front().Clone();
@@ -324,8 +331,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainRejected) {
   ASSERT_TRUE(brave_wallet::BraveWalletTabHelper::FromWebContents(contents)
                   ->IsShowingBubble());
   GetJsonRpcService()->AddEthereumChainRequestCompleted(kSomeChainId, false);
-  auto result_first = EvalJs(contents, kScriptWaitForEvent,
-                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result_first = EvalJs(contents, kScriptWaitForEvent);
   EXPECT_EQ(base::Value(false), result_first.value);
 }
 
@@ -344,11 +350,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddChainSameOrigin) {
   tab_helper->CloseBubble();
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(tab_helper->IsShowingBubble());
-  auto script =
-      base::StringPrintf(kScriptRunAndCheckAddChainResult, "0x11", "",
-                         base::StringPrintf(kRejectedResult, "4001").c_str());
-  auto result_first =
-      EvalJs(contents, script, content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result_first = EvalJs(contents, kScriptRunAndCheckAddChainResult);
   ASSERT_FALSE(tab_helper->IsShowingBubble());
   EXPECT_EQ(base::Value(true), result_first.value);
 }
@@ -378,8 +380,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
   auto* tab_helperB =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contentsB);
   ASSERT_FALSE(tab_helperB->IsShowingBubble());
-  auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent,
-                                 content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent);
   EXPECT_EQ(base::Value(false), rejected_same_id.value);
   ASSERT_FALSE(tab_helperB->IsShowingBubble());
   ASSERT_FALSE(tab_helperA->IsShowingBubble());
@@ -423,9 +424,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
   CallAndWaitForEthereumChainRequestCompleted(
       "0x11", true, brave_wallet::mojom::CoinType::ETH, "");
   const url::Origin origin = url::Origin::Create(urlB);
-  GetJsonRpcService()->NotifySwitchChainRequestProcessed(false, origin);
-  auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent,
-                                 content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  GetJsonRpcService()->NotifySwitchChainRequestProcessed(
+      GetPendingSwitchChainRequestId(), false);
+  auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent);
   EXPECT_EQ(base::Value(false), rejected_same_id.value);
   base::RunLoop().RunUntilIdle();
   // Chain should still exist though
@@ -474,9 +475,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddDifferentChainsSwitch) {
   CallAndWaitForEthereumChainRequestCompleted(
       "0x11", true, brave_wallet::mojom::CoinType::ETH, "");
   const url::Origin origin = url::Origin::Create(urlB);
-  GetJsonRpcService()->NotifySwitchChainRequestProcessed(true, origin);
-  auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent,
-                                 content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  GetJsonRpcService()->NotifySwitchChainRequestProcessed(
+      GetPendingSwitchChainRequestId(), true);
+  auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent);
   EXPECT_EQ(base::Value(true), rejected_same_id.value);
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(GetAllEthCustomChains().empty());
@@ -539,11 +540,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddBrokenChain) {
   tab_helper->CloseBubble();
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(tab_helper->IsShowingBubble());
-  auto script =
-      base::StringPrintf(kScriptRunEmptyAndCheckChainResult,
-                         base::StringPrintf(kRejectedResult, "-32602").c_str());
-  auto result_first =
-      EvalJs(contents, script, content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result_first = EvalJs(contents, kScriptRunEmptyAndCheckChainResult);
   ASSERT_FALSE(tab_helper->IsShowingBubble());
   EXPECT_EQ(base::Value(true), result_first.value);
 }
@@ -559,9 +556,6 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, CheckIncognitoTab) {
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(content::EvalJs(contents, "document.title;"),
             "PAGE_SCRIPT_STARTED");
-  auto result_first = EvalJs(contents,
-                             "window.domAutomationController.send("
-                             "window.ethereum != null)",
-                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result_first = EvalJs(contents, "window.ethereum != null");
   EXPECT_EQ(base::Value(false), result_first.value);
 }

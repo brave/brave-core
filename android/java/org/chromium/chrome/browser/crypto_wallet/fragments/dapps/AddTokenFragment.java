@@ -18,20 +18,23 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AddSuggestTokenRequest;
-import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.url.GURL;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class AddTokenFragment extends BaseDAppsFragment {
+    private static final String TAG = "AddTokenFragment";
     private AddSuggestTokenRequest mCurrentAddSuggestTokenRequest;
     private Button mBtCancel;
     private Button mBtAdd;
@@ -42,6 +45,7 @@ public class AddTokenFragment extends BaseDAppsFragment {
     private ImageView mTokenImage;
     private ExecutorService mExecutor;
     private Handler mHandler;
+    private WalletModel mWalletModel;
 
     @Override
     public View onCreateView(
@@ -57,6 +61,12 @@ public class AddTokenFragment extends BaseDAppsFragment {
         mTokenImage = view.findViewById(R.id.fragment_add_token_iv_token);
         mTokenName = view.findViewById(R.id.fragment_add_token_tv_token);
         mTokenAddress = view.findViewById(R.id.fragment_add_token_tv_address);
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            mWalletModel = activity.getWalletModel();
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "onCreate ", e);
+        }
         initComponents(true);
 
         return view;
@@ -73,6 +83,7 @@ public class AddTokenFragment extends BaseDAppsFragment {
     }
 
     private void fillAddSuggestTokenRequest(boolean init) {
+        if (mWalletModel == null) return;
         getBraveWalletService().getPendingAddSuggestTokenRequests(requests -> {
             if (requests == null || requests.length == 0) {
                 Intent intent = new Intent();
@@ -82,36 +93,37 @@ public class AddTokenFragment extends BaseDAppsFragment {
                 return;
             }
             mCurrentAddSuggestTokenRequest = requests[0];
+            NetworkInfo selectedNetwork = mWalletModel.getNetworkModel().getNetwork(
+                    mCurrentAddSuggestTokenRequest.token.chainId);
             if (init) {
                 mBtCancel.setOnClickListener(
                         v -> { notifyAddSuggestTokenRequestProcessed(false); });
                 mBtAdd.setOnClickListener(v -> { notifyAddSuggestTokenRequestProcessed(true); });
                 mTokenAddress.setOnClickListener(v -> {
                     Activity activity = getActivity();
-                    if (activity instanceof BraveWalletBaseActivity) {
+                    if (activity instanceof BraveWalletBaseActivity && selectedNetwork != null) {
                         Utils.openAddress(
                                 "/token/" + mCurrentAddSuggestTokenRequest.token.contractAddress,
-                                getJsonRpcService(), (BraveWalletBaseActivity) activity,
-                                mCurrentAddSuggestTokenRequest.token.coin);
+                                (BraveWalletBaseActivity) activity,
+                                mCurrentAddSuggestTokenRequest.token.coin, selectedNetwork);
                     }
                 });
             }
             fillOriginInfo(mCurrentAddSuggestTokenRequest.origin);
             initToken();
-            updateNetwork(mCurrentAddSuggestTokenRequest.token.coin);
+            updateNetwork(selectedNetwork);
         });
     }
 
     private void fillOriginInfo(OriginInfo originInfo) {
         if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
-            GURL url = new GURL(originInfo.originSpec);
-            mWebSite.setText(Utils.geteTLD(url, originInfo.eTldPlusOne));
+            mWebSite.setText(Utils.geteTldSpanned(originInfo));
         }
     }
 
-    private void updateNetwork(@CoinType.EnumType int coin) {
-        getJsonRpcService().getNetwork(coin, null,
-                selectedNetwork -> { mNetworkName.setText(selectedNetwork.chainName); });
+    private void updateNetwork(NetworkInfo networkInfo) {
+        if (JavaUtils.anyNull(mWalletModel, networkInfo)) return;
+        mNetworkName.setText(networkInfo.chainName);
     }
 
     private void initToken() {

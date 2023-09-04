@@ -12,6 +12,7 @@ source_set("unit_tests") {
 
   deps = [
     "//base/test:test_support",
+    "//components/embedder_support",
     "//components/embedder_support:browser_util",
     "//components/version_info",
     "//testing/gtest",

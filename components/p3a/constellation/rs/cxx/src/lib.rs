@@ -13,6 +13,7 @@ use star_constellation::api::*;
 use star_constellation::randomness::testing::{LocalFetcher, LocalFetcherResponse};
 use star_constellation::randomness::RequestState as RandomnessRequestState;
 
+#[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace = "constellation")]
 mod ffi {
     struct RandomnessRequestStateResult {

@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import { useDispatch, useSelector } from 'react-redux'
 import * as rewardsActions from '../actions/rewards_actions'
 import { defaultState } from '../reducers/default_state'
+import * as Rewards from './types'
 
 export function useActions () {
   return bindActionCreators(rewardsActions, useDispatch())

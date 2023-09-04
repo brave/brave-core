@@ -54,8 +54,8 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/infobars/content/content_infobar_manager.h"
-#include "components/sync/driver/sync_service.h"
-#include "components/sync/driver/sync_user_settings.h"
+#include "components/sync/service/sync_service.h"
+#include "components/sync/service/sync_user_settings.h"
 #include "content/public/browser/web_contents.h"
 #else
 #include "brave/browser/android/preferences/features.h"
@@ -144,8 +144,8 @@ void BraveBrowserMainParts::PostBrowserStart() {
                                  ? SyncServiceFactory::GetForProfile(profile)
                                  : nullptr;
         const bool is_v2_user =
-            sync_service &&
-            sync_service->GetUserSettings()->IsFirstSetupComplete();
+            sync_service && sync_service->GetUserSettings()
+                                ->IsInitialSyncFeatureSetupComplete();
         SyncV2MigrateInfoBarDelegate::Create(infobar_manager, is_v2_user,
                                              profile, browser);
 

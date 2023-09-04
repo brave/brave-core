@@ -1,16 +1,15 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ta">
+<translation id="370665806235115550">ஏற்றுகிறது…</translation>
+<translation id="5012991400231464322">மாத பங்களிப்புகள்</translation>
+<translation id="1177863135347784049">தனிப்பயன்</translation>
 <translation id="2524310205387880526">பிரேவை மதிப்பிடு</translation>
 <translation id="1420756770787071946">இப்படைப்பாரை ஆதரவளி</translation>
 <translation id="7307834434086582547">பிரேவ் கவசங்களை இயக்கு/முடக்கு</translation>
 <translation id="3570081523466826008">HTTPSக்கு இணைப்புகளை தரமுயர்த்து</translation>
-<translation id="7277134233385925078">மாதாந்திர துணுக்குதவியை பார்</translation>
-<translation id="8759753423332885148">மேலும் அறிக.</translation>
-<translation id="2978223787436054634">உம் ஆதரவு பற்றி கீச்சிடு</translation>
-<translation id="1166682575529520472">மாதாந்திர</translation>
-<translation id="2359808026110333948">தொடர்க</translation>
 <translation id="2278950434998763147">வெற்று HTTP-க்கு பதிலாக பாதுகாப்பான HTTPS இணைப்பை பயன்படுத்தி சில தளங்களை திற.</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="6052725679982758334">சமூக ஊடகம் தடுத்தல்</translation>
 <translation id="7498695072878479744">கூகிள் உள்நுழைவு பொத்தான்களை மூன்றாம் தரப்பு தளங்களில் அனுமதி</translation>
 <translation id="863171915776379000">முகநூல் உள்நுழைவுகள் மற்றும் உட்பதித்த இடுகைகளை அனுமதி</translation>
@@ -29,7 +28,6 @@
 <translation id="59174027418879706">செயலாக்கப்பட்டது</translation>
 <translation id="7823038307453615214">பிரேவ் செய்திகளை காட்டு</translation>
 <translation id="6527303717912515753">பகிர்</translation>
-<translation id="1717242776111689224">பிரேவ் செய்திகளை இயக்கு</translation>
 <translation id="7459000603787995422">வெளியேறுகையில் தாவல்களை மூடு</translation>
 <translation id="4448697385961650078">தடமிகள் &amp; விளம்பரங்கள் தடு</translation>
 <translation id="1680858055899097121">உலாவல் அமர்வுகளுக்கு இடையே தாவல்களை நிலைத்திருக்காதே</translation>
@@ -45,7 +43,6 @@
 <translation id="6332924730165919598">எல்லா தாவல்களையும் மூடல் பிரேவை மூடும்</translation>
 <translation id="4150201353443180367">காட்சியமைவு</translation>
 <translation id="2433507940547922241">தோற்றம்</translation>
-<translation id="6333347122924254968">முகவரிப்பட்டையில் பிரேவ் வெகுமதிகள் படவுருவைக் காட்டு</translation>
 <translation id="8495235435594442882">அடிப்புற கருவிப்பட்டையை இயக்கு</translation>
 <translation id="6587448235155023666">அடுத்த முறை நீங்கள் பிரேவை மறுஏவும்போது உங்கள் மாற்றங்கள் செயல்படும்.</translation>
 <translation id="8701563696941209024">இப்போது மறுஏவு</translation>
@@ -67,8 +64,6 @@
 <translation id="3546439402724649282">பிரேவ் முன்னரே உம் இயல்புநிலை உலாவியாக அமைக்கப்பட்டுள்ளது.</translation>
 <translation id="8389661903259423907">நீங்கள் ஏற்கனவே இயல்புநிலை உலாவியை அமைத்துள்ளீர்கள். செயலி அமைப்புகளில் இயல்புநிலை உலாவியை நீங்கள் மாற்றலாம்.</translation>
 <translation id="1545749641540134597">விரைவுக்குறியை ஒளிவருடு</translation>
-<translation id="8826007068782654809">நன்றி</translation>
-<translation id="1910721550319506122">வாருங்கள்!</translation>
 <translation id="7658239707568436148">ரத்துசெய்</translation>
 <translation id="1201402288615127009">அடுத்து</translation>
 <translation id="8926389886865778422">மீண்டும் கேட்காதே</translation>
@@ -125,8 +120,9 @@
 <translation id="8050847734948770789">பிரேவ் வெகுமதிகளை இயக்கு</translation>
 <translation id="5321518976657560663">பிழையை அகரமாக்கு</translation>
 <translation id="4114170343590425996">பிரேவ் வெகுமதிகளை அகரமாக்குவதில் பிழை. பிரேவை மறுஏவி மீண்டும் முயலவும்.</translation>
-<translation id="6393502589311632553">பிரேவ் பயன்பாட்டிலில்லாதபோது விளம்பரங்கள் காட்டு</translation>
-<translation id="3349204812119681938">பிரேவ் வெகுமதிகளை அகரமாக்கு</translation>
+<translation id="6417420737057016607">பிரேவ் விளம்பரங்கள்</translation>
+<translation id="8457451314607652708">புத்தகக்குறிகளை இறக்குமதி செய்</translation>
+<translation id="1008186147501209563">புத்தகக்குறிகளை ஏற்று</translation>
 <translation id="7473245612074035141">அமைத்திட துவங்கு</translation>
 <translation id="8985635554450124959">ஒத்திசைவை அமைக்க இயலவில்லை</translation>
 <translation id="7173114856073700355">அமைப்புகளை திற</translation>
@@ -142,7 +138,6 @@
 <translation id="3870475560794762985">ஆதரவளிக்கப்பட்ட படங்களை காட்டு</translation>
 <translation id="7275773481201277457">பிரேவ் புள்ளிவிவரங்களை காட்டு</translation>
 <translation id="7136586167396205364">ஆதரவளிக்கப்பட்ட படங்களை மறை</translation>
-<translation id="213787746370741250">தாவல்களை தனிப்பயன் தாவல்களில் திற</translation>
 <translation id="5308380583665731573">இணை</translation>
 <translation id="3368922792935385530">இணைக்கப்பட்டது</translation>
 <translation id="8874184842967597500">இணைக்கப்படவில்லை</translation>
@@ -199,6 +194,7 @@
 <translation id="5825943197137337319">இயல்புநிலை பொது இடைமுகங்களை மட்டும்</translation>
 <translation id="1483493594462132177">அனுப்பு</translation>
 <translation id="4472575034687746823">தொடங்குக</translation>
+<translation id="2359808026110333948">தொடர்க</translation>
 <translation id="6896758677409633944">நகலெடு</translation>
 <translation id="7665369617277396874">கணக்கைச் சேர்</translation>
 <translation id="1544192797660353713">பணப்பை</translation>
@@ -217,7 +213,6 @@
 <translation id="3866249974567520381">விவரம்</translation>
 <translation id="8239147115686034860">தானாக பிரேவ் பணப்பையைப் பூட்டு</translation>
 <translation id="414639769490080648">பிரேவ் பணப்பை தானாக பூட்டப்படும் வரை காத்திருக்க வேண்டிய நிமிடங்கள்</translation>
-<translation id="4993345308607970390">பிரேவ் பணப்பையை அகரமாக்கு</translation>
 <translation id="4449475351935531438">பிரேவ் தீச்சுவர் + VPN</translation>
 <translation id="3435896845095436175">இயக்கு</translation>
 <translation id="7805768142964895445">நிலை</translation>
@@ -235,20 +230,16 @@
 <translation id="5045550434625856497">தவறான கடவுச்சொல்</translation>
 <translation id="1367951781824006909">கோப்பைத் தேர்வுசெய்க</translation>
 <translation id="8648684608605749476">மறைநிலை அம்சத்தில் மூன்றாம் தரப்பு குக்கீகளைத் தடுக்கும்</translation>
-<translation id="3380365263193509176">அறியப்படாத பிழை</translation>
 <translation id="5932938770824268122">தனிப்பட்ட விசை</translation>
 <translation id="6666273175654835609">சமர்ப்பிக்கப்பட்டது</translation>
 <translation id="1165039591588034296">பிழை</translation>
-<translation id="1177863135347784049">தனிப்பயன்</translation>
-<translation id="1974060860693918893">மேம்பட்டவை</translation>
 <translation id="7791543448312431591">சேர்</translation>
 <translation id="4250680216510889253">இல்லை</translation>
 <translation id="3494964159182650590">வெகுமதிகள் சுருக்கம்</translation>
-<translation id="7577100371127227294">மாதாந்திர துணுக்குதவிகள்</translation>
-<translation id="1346059596910821859">துணுக்குதவி</translation>
-<translation id="1549705559752367917">துணுக்குதவி அனுப்பு</translation>
+<translation id="1767561995429774671">பங்களி</translation>
 <translation id="7335371657242627509">தானியங்கு-பங்களிப்பில் சேர்</translation>
 <translation id="3074127054582480056">கவனத்திற்கு</translation>
+<translation id="2280319752798785157">மாதாந்திர பங்களிப்பு</translation>
 <translation id="5802665280774361839">முகவரிப்பட்டையில் தன்னிறைவுசெய்தலைக் காட்டு</translation>
 <translation id="7059127752542505809">உரலியை உள்ளிடு</translation>
 <translation id="2156993118928861787">செல்லாத முகவரி</translation>
@@ -269,7 +260,6 @@
 <translation id="6040143037577758943">மூடு</translation>
 <translation id="5456039738087398178">முகப்புத்திரை நிரல் பலகை</translation>
 <translation id="703185154752046151">நிரல் பலகை முகப்புத்திரையில் சேர்க்கப்பட்டது</translation>
-<translation id="6417420737057016607">பிரேவ் விளம்பரங்கள்</translation>
 <translation id="4850886885716139402">காட்சி</translation>
 <translation id="5939518447894949180">மீட்டமை</translation>
 <translation id="5916664084637901428">இயக்கு</translation>
@@ -281,4 +271,5 @@
 <translation id="4195643157523330669">புதிய தாவலில் திற</translation>
 <translation id="4243710787042215766">மறைநிலை தாவலில் திற</translation>
 <translation id="8261506727792406068">நீக்கு</translation>
+<translation id="4932733599132424254">தேதி</translation>
 </translationbundle>

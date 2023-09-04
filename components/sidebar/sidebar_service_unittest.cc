@@ -14,7 +14,6 @@
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
-#include "brave/components/sidebar/sidebar_service_delegate.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/version_info/channel.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -67,7 +66,7 @@ class SidebarServiceTest : public testing::Test {
   void TearDown() override { ResetService(); }
 
   void InitService() {
-    service_ = std::make_unique<SidebarService>(&prefs_, nullptr);
+    service_ = std::make_unique<SidebarService>(&prefs_);
     service_->AddObserver(&observer_);
   }
 
@@ -526,11 +525,11 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
   // Verify migration
   auto& items = prefs_.GetList(kSidebarItems);
   for (const auto& item : items) {
-    const auto item_type =
-        static_cast<SidebarItem::Type>(*item.FindIntKey(kSidebarItemTypeKey));
+    const auto item_type = static_cast<SidebarItem::Type>(
+        *item.GetDict().FindInt(kSidebarItemTypeKey));
     if (item_type == SidebarItem::Type::kTypeBuiltIn) {
       const auto built_in_type = static_cast<SidebarItem::BuiltInItemType>(
-          *item.FindIntKey(kSidebarItemBuiltInItemTypeKey));
+          *item.GetDict().FindInt(kSidebarItemBuiltInItemTypeKey));
       EXPECT_NE(built_in_type, SidebarItem::BuiltInItemType::kNone);
     }
   }

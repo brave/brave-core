@@ -60,7 +60,7 @@ const char kMonkey6Url[] =
     "https://google.com/QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2888";
 
 const char kMonkey1[] =
-    R"({"image":"ipfs://bafy1",
+    R"({"image":"ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi",
                         "attributes":[
                         {"trait_type":"Mouth","value":"Bored Cigarette"},
                         {"trait_type":"Fur","value":"Zombie"},
@@ -69,7 +69,7 @@ const char kMonkey1[] =
                         {"trait_type":"Clothes","value":"Toga"},
                         {"trait_type":"Hat","value":"Cowboy Hat"}]})";
 const char kMonkey2[] =
-    R"({"image":"ipfs://bafy2",
+    R"({"image":"ipfs://bafybeihdwdcefgh4dqkjv67uzcmw7ojee6xedzdetojuzjevtenxquvyku",
                         "attributes":[
                         {"trait_type":"Mouth","value":"Bored Cigarette"},
                         {"trait_type":"Fur","value":"Zombie"},
@@ -78,7 +78,7 @@ const char kMonkey2[] =
                         {"trait_type":"Clothes","value":"Toga"},
                         {"trait_type":"Hat","value":"Cowboy Hat"}]})";
 const char kMonkey3[] =
-    R"({"image":"ipfs://bafy3",
+    R"({"image":"ipfs://bafybeibqch4za325rjzva4nxtgrjd4k4qdf6dval4jwjxbtpj2dyt6qjhy",
                         "attributes":[
                         {"trait_type":"Mouth","value":"Bored Cigarette"},
                         {"trait_type":"Fur","value":"Zombie"},
@@ -96,7 +96,7 @@ const char kMonkey4[] =
                         {"trait_type":"Clothes","value":"Toga"},
                         {"trait_type":"Hat","value":"Cowboy Hat"}]})";
 const char kMonkey5[] =
-    R"({"image":"https://ipfs.io/ipfs/bafy3",
+    R"({"image":"https://ipfs.io/ipfs/bafybeibqch4za325rjzva4nxtgrjd4k4qdf6dval4jwjxbtpj2dyt6qjhy",
                         "attributes":[
                         {"trait_type":"Mouth","value":"Bored Cigarette"},
                         {"trait_type":"Fur","value":"Zombie"},
@@ -105,7 +105,7 @@ const char kMonkey5[] =
                         {"trait_type":"Clothes","value":"Toga"},
                         {"trait_type":"Hat","value":"Cowboy Hat"}]})";
 const char kMonkey6[] =
-    R"({"image":"https://google.com/bafy3",
+    R"({"image":"https://google.com/bafybeibqch4za325rjzva4nxtgrjd4k4qdf6dval4jwjxbtpj2dyt6qjhy",
                         "attributes":[
                         {"trait_type":"Mouth","value":"Bored Cigarette"},
                         {"trait_type":"Fur","value":"Zombie"},
@@ -116,13 +116,14 @@ const char kMonkey6[] =
 
 const char kSolMonkey1Path[] =
     "nft.local.501.0x65.GdGXUTd9ZctZQdNCsV85ULryafVgMR4Jyiq3zkqwR8kY.*";
-const char kSolMonkey1Url[] = "ipfs://bafy1";
+const char kSolMonkey1Url[] =
+    "ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi";
 const char kSolMonkey1[] =
     R"({"name":"The Eyedeas #3193",
         "symbol":"EYE",
         "description":"",
         "seller_fee_basis_points":1000,
-        "image":"ipfs://bafy2/1.png",
+        "image":"ipfs://bafybeihdwdcefgh4dqkjv67uzcmw7ojee6xedzdetojuzjevtenxquvyku/1.png",
         "external_url":"https://www.theeyedeas.com/","edition":3193})";
 
 const char kSolMonkey2Path[] =
@@ -262,8 +263,15 @@ TEST_F(BraveWalletPinServiceTest, AddSolPin) {
             [](const std::string& prefix, const std::vector<std::string>& cids,
                ipfs::AddPinCallback callback) {
               EXPECT_EQ(kSolMonkey1Path, prefix);
-              EXPECT_EQ("ipfs://bafy1", cids.at(0));
-              EXPECT_EQ("ipfs://bafy2/1.png", cids.at(1));
+              EXPECT_EQ(
+                  "ipfs://"
+                  "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi",
+                  cids.at(0));
+              EXPECT_EQ(
+                  "ipfs://"
+                  "bafybeihdwdcefgh4dqkjv67uzcmw7ojee6xedzdetojuzjevtenxquvyku/"
+                  "1.png",
+                  cids.at(1));
               std::move(callback).Run(true);
             }));
 
@@ -288,8 +296,11 @@ TEST_F(BraveWalletPinServiceTest, AddSolPin) {
             .FindDictByDottedPath(kSolMonkey1Path);
 
     base::Value::List expected_cids;
-    expected_cids.Append("ipfs://bafy1");
-    expected_cids.Append("ipfs://bafy2/1.png");
+    expected_cids.Append(
+        "ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi");
+    expected_cids.Append(
+        "ipfs://bafybeihdwdcefgh4dqkjv67uzcmw7ojee6xedzdetojuzjevtenxquvyku/"
+        "1.png");
 
     EXPECT_EQ(BraveWalletPinService::StatusToString(
                   mojom::TokenPinStatusCode::STATUS_PINNED),
@@ -371,7 +382,10 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
               EXPECT_EQ(
                   "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2413",
                   cids.at(0));
-              EXPECT_EQ("ipfs://bafy1", cids.at(1));
+              EXPECT_EQ(
+                  "ipfs://"
+                  "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi",
+                  cids.at(1));
               std::move(callback).Run(true);
             }));
 
@@ -398,7 +412,8 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
     base::Value::List expected_cids;
     expected_cids.Append(
         "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2413");
-    expected_cids.Append("ipfs://bafy1");
+    expected_cids.Append(
+        "ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi");
 
     EXPECT_EQ(BraveWalletPinService::StatusToString(
                   mojom::TokenPinStatusCode::STATUS_PINNED),
@@ -482,7 +497,10 @@ TEST_F(BraveWalletPinServiceTest, AddPin_GatewayUrl) {
               EXPECT_EQ(
                   "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2888",
                   cids.at(0));
-              EXPECT_EQ("ipfs://bafy3", cids.at(1));
+              EXPECT_EQ(
+                  "ipfs://"
+                  "bafybeibqch4za325rjzva4nxtgrjd4k4qdf6dval4jwjxbtpj2dyt6qjhy",
+                  cids.at(1));
               std::move(callback).Run(true);
             }));
 
@@ -509,7 +527,8 @@ TEST_F(BraveWalletPinServiceTest, AddPin_GatewayUrl) {
     base::Value::List expected_cids;
     expected_cids.Append(
         "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2888");
-    expected_cids.Append("ipfs://bafy3");
+    expected_cids.Append(
+        "ipfs://bafybeibqch4za325rjzva4nxtgrjd4k4qdf6dval4jwjxbtpj2dyt6qjhy");
 
     EXPECT_EQ(BraveWalletPinService::StatusToString(
                   mojom::TokenPinStatusCode::STATUS_PINNED),
@@ -566,12 +585,16 @@ TEST_F(BraveWalletPinServiceTest, AddPin_GatewayUrl) {
 TEST_F(BraveWalletPinServiceTest, AddPin_ContentVerification) {
   {
     ON_CALL(*GetContentTypeChecker(), CheckContentTypeSupported(_, _))
-        .WillByDefault(::testing::Invoke(
-            [](const std::string& cid,
-               base::OnceCallback<void(absl::optional<bool>)> callback) {
-              EXPECT_EQ(cid, "ipfs://bafy1");
-              std::move(callback).Run(true);
-            }));
+        .WillByDefault(::testing::Invoke([](const std::string& cid,
+                                            base::OnceCallback<void(
+                                                absl::optional<bool>)>
+                                                callback) {
+          EXPECT_EQ(
+              cid,
+              "ipfs://"
+              "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi");
+          std::move(callback).Run(true);
+        }));
     ON_CALL(*GetJsonRpcService(), GetERC721Metadata(_, _, _, _))
         .WillByDefault(::testing::Invoke(
             [](const std::string& contract_address, const std::string& token_id,
@@ -592,7 +615,10 @@ TEST_F(BraveWalletPinServiceTest, AddPin_ContentVerification) {
               EXPECT_EQ(
                   "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2413",
                   cids.at(0));
-              EXPECT_EQ("ipfs://bafy1", cids.at(1));
+              EXPECT_EQ(
+                  "ipfs://"
+                  "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi",
+                  cids.at(1));
               std::move(callback).Run(true);
             }));
 
@@ -619,7 +645,8 @@ TEST_F(BraveWalletPinServiceTest, AddPin_ContentVerification) {
     base::Value::List expected_cids;
     expected_cids.Append(
         "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2413");
-    expected_cids.Append("ipfs://bafy1");
+    expected_cids.Append(
+        "ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi");
 
     EXPECT_EQ(BraveWalletPinService::StatusToString(
                   mojom::TokenPinStatusCode::STATUS_PINNED),
@@ -632,12 +659,16 @@ TEST_F(BraveWalletPinServiceTest, AddPin_ContentVerification) {
 
   {
     ON_CALL(*GetContentTypeChecker(), CheckContentTypeSupported(_, _))
-        .WillByDefault(::testing::Invoke(
-            [](const std::string& cid,
-               base::OnceCallback<void(absl::optional<bool>)> callback) {
-              EXPECT_EQ(cid, "ipfs://bafy2");
-              std::move(callback).Run(false);
-            }));
+        .WillByDefault(::testing::Invoke([](const std::string& cid,
+                                            base::OnceCallback<void(
+                                                absl::optional<bool>)>
+                                                callback) {
+          EXPECT_EQ(
+              cid,
+              "ipfs://"
+              "bafybeihdwdcefgh4dqkjv67uzcmw7ojee6xedzdetojuzjevtenxquvyku");
+          std::move(callback).Run(false);
+        }));
     ON_CALL(*GetJsonRpcService(), GetERC721Metadata(_, _, _, _))
         .WillByDefault(::testing::Invoke(
             [](const std::string& contract_address, const std::string& token_id,
@@ -657,7 +688,10 @@ TEST_F(BraveWalletPinServiceTest, AddPin_ContentVerification) {
               EXPECT_EQ(kMonkey1Path, prefix);
               EXPECT_EQ("ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
                         cids.at(0));
-              EXPECT_EQ("ipfs://bafy2", cids.at(1));
+              EXPECT_EQ(
+                  "ipfs://"
+                  "bafybeihdwdcefgh4dqkjv67uzcmw7ojee6xedzdetojuzjevtenxquvyku",
+                  cids.at(1));
               std::move(callback).Run(true);
             }));
 
@@ -685,12 +719,16 @@ TEST_F(BraveWalletPinServiceTest, AddPin_ContentVerification) {
 
   {
     ON_CALL(*GetContentTypeChecker(), CheckContentTypeSupported(_, _))
-        .WillByDefault(::testing::Invoke(
-            [](const std::string& cid,
-               base::OnceCallback<void(absl::optional<bool>)> callback) {
-              EXPECT_EQ(cid, "ipfs://bafy3");
-              std::move(callback).Run(absl::nullopt);
-            }));
+        .WillByDefault(::testing::Invoke([](const std::string& cid,
+                                            base::OnceCallback<void(
+                                                absl::optional<bool>)>
+                                                callback) {
+          EXPECT_EQ(
+              cid,
+              "ipfs://"
+              "bafybeibqch4za325rjzva4nxtgrjd4k4qdf6dval4jwjxbtpj2dyt6qjhy");
+          std::move(callback).Run(absl::nullopt);
+        }));
     ON_CALL(*GetJsonRpcService(), GetERC721Metadata(_, _, _, _))
         .WillByDefault(::testing::Invoke(
             [](const std::string& contract_address, const std::string& token_id,
@@ -710,7 +748,10 @@ TEST_F(BraveWalletPinServiceTest, AddPin_ContentVerification) {
               EXPECT_EQ(kMonkey3Path, prefix);
               EXPECT_EQ("ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
                         cids.at(0));
-              EXPECT_EQ("ipfs://bafy3", cids.at(1));
+              EXPECT_EQ(
+                  "ipfs://"
+                  "bafybeibqch4za325rjzva4nxtgrjd4k4qdf6dval4jwjxbtpj2dyt6qjhy",
+                  cids.at(1));
               std::move(callback).Run(true);
             }));
 
@@ -849,7 +890,8 @@ TEST_F(BraveWalletPinServiceTest, RemovePin) {
     item.Set("validation_timestamp", "123");
     base::Value::List cids;
     cids.Append("ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
-    cids.Append("ipfs://bafy1");
+    cids.Append(
+        "ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi");
 
     update_dict.SetByDottedPath(kMonkey1Path, std::move(item));
   }

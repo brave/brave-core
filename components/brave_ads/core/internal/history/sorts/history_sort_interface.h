@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_SORTS_HISTORY_SORT_INTERFACE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_SORTS_HISTORY_SORT_INTERFACE_H_
 
-#include "brave/components/brave_ads/core/history_item_info.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
 
 namespace brave_ads {
 

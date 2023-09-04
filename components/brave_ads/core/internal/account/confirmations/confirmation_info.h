@@ -10,9 +10,10 @@
 #include <vector>
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/ad_type.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_info.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
@@ -34,7 +35,8 @@ struct ConfirmationInfo final {
   AdType ad_type = AdType::kUndefined;
   base::Time created_at;
   bool was_created = false;
-  absl::optional<OptedInInfo> opted_in;
+  absl::optional<RewardInfo> reward;
+  UserDataInfo user_data;
 };
 
 bool operator==(const ConfirmationInfo&, const ConfirmationInfo&);

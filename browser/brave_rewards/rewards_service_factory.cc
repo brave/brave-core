@@ -8,6 +8,7 @@
 
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -59,7 +60,8 @@ RewardsService* RewardsServiceFactory::GetForProfile(
 
 // static
 RewardsServiceFactory* RewardsServiceFactory::GetInstance() {
-  return base::Singleton<RewardsServiceFactory>::get();
+  static base::NoDestructor<RewardsServiceFactory> instance;
+  return instance.get();
 }
 
 RewardsServiceFactory::RewardsServiceFactory()

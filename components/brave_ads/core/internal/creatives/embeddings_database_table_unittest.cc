@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/embeddings_database_table.h"
 
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

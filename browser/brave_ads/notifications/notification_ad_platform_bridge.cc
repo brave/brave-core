@@ -21,7 +21,7 @@ namespace brave_ads {
 namespace {
 
 gfx::NativeWindow GetBrowserNativeWindow() {
-  gfx::NativeWindow browser_native_window = gfx::kNullNativeWindow;
+  gfx::NativeWindow browser_native_window = gfx::NativeWindow();
 
   if (Browser* last_active_browser = chrome::FindLastActive()) {
     if (BrowserWindow* browser_window = last_active_browser->window()) {

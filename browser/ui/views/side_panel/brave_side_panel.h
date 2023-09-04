@@ -6,15 +6,27 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_
 #define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_
 
+#include <memory>
+
+#include "base/memory/raw_ptr.h"
+#include "components/prefs/pref_member.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/gfx/geometry/size.h"
 #include "ui/views/controls/resize_area_delegate.h"
 #include "ui/views/view.h"
 #include "ui/views/view_observer.h"
 
 class BrowserView;
+class SidePanelResizeWidget;
+
+namespace sidebar {
+class SidebarBrowserTest;
+}  // namespace sidebar
 
 // Replacement for chromium's SidePanel which defines a
-// unique inset and border style compared to Brave
+// unique inset and border style compared to Brave.
+// SidebarContainerView controls this panel's visibility.
 class BraveSidePanel : public views::View,
                        public views::ViewObserver,
                        public views::ResizeAreaDelegate {
@@ -38,25 +50,40 @@ class BraveSidePanel : public views::View,
   void SetHorizontalAlignment(HorizontalAlignment alignment);
   HorizontalAlignment GetHorizontalAlignment();
   bool IsRightAligned();
+  gfx::Size GetContentSizeUpperBound() const { return gfx::Size(); }
+
+  void set_fixed_contents_width(absl::optional<int> fixed_width) {
+    fixed_contents_width_ = fixed_width;
+  }
 
   // views::ResizeAreaDelegate:
   void OnResize(int resize_amount, bool done_resizing) override;
+  void AddHeaderView(std::unique_ptr<views::View> view);
+
+  // views::View:
+  void OnThemeChanged() override;
+  gfx::Size GetMinimumSize() const override;
+  void AddedToWidget() override;
+  void Layout() override;
 
   void SetMinimumSidePanelContentsWidthForTesting(int width) {}
 
  private:
-  void UpdateVisibility();
+  friend class sidebar::SidebarBrowserTest;
+
   void UpdateBorder();
+  void OnSidePanelWidthChanged();
 
-  // views::View:
-  void ChildVisibilityChanged(View* child) override;
-  void OnThemeChanged() override;
+  HorizontalAlignment horizontal_alignment_ = kHorizontalAlignLeft;
+  absl::optional<int> starting_width_on_resize_;
 
-  // views::ViewObserver:
-  void OnChildViewAdded(View* observed_view, View* child) override;
-  void OnChildViewRemoved(View* observed_view, View* child) override;
-
-  HorizontalAlignment horizontal_alighment_ = kHorizontalAlignLeft;
+  // If this is set, use this width for panel contents during the layout
+  // instead of using this panel's bounds. This is used to prevent panel
+  // contents layout while sidebar show/hide animation is in-progress.
+  absl::optional<int> fixed_contents_width_;
+  raw_ptr<BrowserView> browser_view_ = nullptr;
+  IntegerPrefMember side_panel_width_;
+  std::unique_ptr<SidePanelResizeWidget> resize_widget_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_

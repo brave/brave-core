@@ -12,10 +12,8 @@
 #include "brave/components/brave_rewards/core/database/database_publisher_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-
-using std::placeholders::_1;
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace {
 
@@ -26,8 +24,8 @@ const char kTableName[] = "publisher_info";
 namespace brave_rewards::internal {
 namespace database {
 
-DatabasePublisherInfo::DatabasePublisherInfo(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabasePublisherInfo::DatabasePublisherInfo(RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabasePublisherInfo::~DatabasePublisherInfo() = default;
 
@@ -35,7 +33,7 @@ void DatabasePublisherInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
                                            LegacyResultCallback callback) {
   if (!info || info->id.empty()) {
     BLOG(1, "Info is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -82,16 +80,16 @@ void DatabasePublisherInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
     transaction->commands.push_back(std::move(command_icon));
   }
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabasePublisherInfo::GetRecord(const std::string& publisher_key,
                                       GetPublisherInfoCallback callback) {
   if (publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
-    callback(mojom::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::FAILED, {});
     return;
   }
 
@@ -123,18 +121,18 @@ void DatabasePublisherInfo::GetRecord(const std::string& publisher_key,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabasePublisherInfo::OnGetRecord, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabasePublisherInfo::OnGetRecord,
+                     base::Unretained(this), std::move(callback)));
 }
 
-void DatabasePublisherInfo::OnGetRecord(mojom::DBCommandResponsePtr response,
-                                        GetPublisherInfoCallback callback) {
+void DatabasePublisherInfo::OnGetRecord(GetPublisherInfoCallback callback,
+                                        mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(mojom::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::FAILED, {});
     return;
   }
 
@@ -156,7 +154,7 @@ void DatabasePublisherInfo::OnGetRecord(mojom::DBCommandResponsePtr response,
   info->excluded =
       static_cast<mojom::PublisherExclude>(GetIntColumn(record, 7));
 
-  callback(mojom::Result::LEDGER_OK, std::move(info));
+  callback(mojom::Result::OK, std::move(info));
 }
 
 void DatabasePublisherInfo::GetPanelRecord(
@@ -164,7 +162,7 @@ void DatabasePublisherInfo::GetPanelRecord(
     GetPublisherPanelInfoCallback callback) {
   if (!filter || filter->id.empty()) {
     BLOG(1, "Filter is empty");
-    callback(mojom::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::FAILED, {});
     return;
   }
 
@@ -202,19 +200,19 @@ void DatabasePublisherInfo::GetPanelRecord(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabasePublisherInfo::OnGetPanelRecord, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabasePublisherInfo::OnGetPanelRecord,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabasePublisherInfo::OnGetPanelRecord(
-    mojom::DBCommandResponsePtr response,
-    GetPublisherPanelInfoCallback callback) {
+    GetPublisherPanelInfoCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(mojom::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::FAILED, {});
     return;
   }
 
@@ -236,7 +234,7 @@ void DatabasePublisherInfo::OnGetPanelRecord(
       static_cast<mojom::PublisherExclude>(GetIntColumn(record, 6));
   info->percent = GetIntColumn(record, 7);
 
-  callback(mojom::Result::LEDGER_OK, std::move(info));
+  callback(mojom::Result::OK, std::move(info));
 }
 
 void DatabasePublisherInfo::RestorePublishers(ResultCallback callback) {
@@ -254,7 +252,7 @@ void DatabasePublisherInfo::RestorePublishers(ResultCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabasePublisherInfo::OnRestorePublishers,
                      base::Unretained(this), std::move(callback)));
@@ -265,11 +263,11 @@ void DatabasePublisherInfo::OnRestorePublishers(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  ledger_->publisher()->OnRestorePublishers(mojom::Result::LEDGER_OK,
+  engine_->publisher()->OnRestorePublishers(mojom::Result::OK,
                                             std::move(callback));
 }
 
@@ -297,15 +295,15 @@ void DatabasePublisherInfo::GetExcludedList(GetExcludedListCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabasePublisherInfo::OnGetExcludedList, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabasePublisherInfo::OnGetExcludedList,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabasePublisherInfo::OnGetExcludedList(
-    mojom::DBCommandResponsePtr response,
-    GetExcludedListCallback callback) {
+    GetExcludedListCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

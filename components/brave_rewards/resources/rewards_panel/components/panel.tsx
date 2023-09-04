@@ -6,18 +6,26 @@
 import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
-import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
+import { TabOpenerContext } from '../../shared/components/new_tab_link'
+import { OnboardingResult, RewardsOptIn } from '../../shared/components/onboarding'
 import { WalletCard } from '../../shared/components/wallet_card'
+import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { LimitedView } from './limited_view'
 import { NavBar } from './navbar'
 import { PanelOverlays } from './panel_overlays'
 import { PublisherCard } from './publisher_card'
 
+import * as urls from '../../shared/lib/rewards_urls'
+
+import * as style from './panel.style'
+
 type ActiveView = 'tip' | 'summary'
 
 export function Panel () {
   const host = React.useContext(HostContext)
+  const tabOpener = React.useContext(TabOpenerContext)
 
+  const [isGrandfatheredUser, setIsGrandfatheredUser] = React.useState(host.state.isGrandfatheredUser)
   const [userType, setUserType] = React.useState(host.state.userType)
   const [balance, setBalance] = React.useState(host.state.balance)
   const [settings, setSettings] = React.useState(host.state.settings)
@@ -36,7 +44,21 @@ export function Panel () {
   const [activeView, setActiveView] = React.useState<ActiveView>(
     publisherInfo ? 'tip' : 'summary')
 
+  const [requestedView, setRequestedView] =
+    React.useState(host.state.requestedView)
+  const [availableCountries, setAvailableCountries] =
+    React.useState(host.state.availableCountries)
+  const [defaultCountry, setDefaultCountry] =
+    React.useState(host.state.defaultCountry)
+  const [onboardingResult, setOnboardingResult] =
+    React.useState<OnboardingResult | null>(null)
+  const [rewardsEnabled, setRewardsEnabled] =
+    React.useState(host.state.rewardsEnabled)
+  const [declaredCountry, setDeclaredCountry] =
+    React.useState(host.state.declaredCountry)
+
   useHostListener(host, (state) => {
+    setIsGrandfatheredUser(state.isGrandfatheredUser)
     setUserType(state.userType)
     setBalance(state.balance)
     setSettings(state.settings)
@@ -46,7 +68,43 @@ export function Panel () {
     setPayoutStatus(state.payoutStatus)
     setSummaryData(state.summaryData)
     setPublisherInfo(state.publisherInfo)
+
+    setRequestedView(state.requestedView)
+    setRewardsEnabled(state.rewardsEnabled)
+    setDeclaredCountry(state.declaredCountry)
+    setAvailableCountries(state.availableCountries)
+    setDefaultCountry(state.defaultCountry)
   })
+
+  const needsCountry = rewardsEnabled && !declaredCountry
+
+  function renderOnboaring () {
+    const onHideResult = () => {
+      if (onboardingResult === 'success') {
+        tabOpener.openTab(urls.rewardsTourURL)
+      }
+      setOnboardingResult(null)
+      host.closePanel()
+    }
+
+    const onEnable = (country: string) => {
+      host.enableRewards(country).then((result) => {
+        setOnboardingResult(result)
+      })
+    }
+
+    return (
+      <RewardsOptIn
+        availableCountries={availableCountries}
+        defaultCountry={defaultCountry}
+        initialView={needsCountry || requestedView === 'rewards-setup' ?
+          'declare-country' : 'default'}
+        result={onboardingResult}
+        onEnable={onEnable}
+        onHideResult={onHideResult}
+      />
+    )
+  }
 
   const walletProvider = externalWallet ? externalWallet.provider : null
 
@@ -58,11 +116,15 @@ export function Panel () {
     return (
       <>
         <WalletCard
+          userType={userType}
           balance={balance}
+          isGrandfatheredUser={isGrandfatheredUser}
           externalWallet={externalWallet}
           providerPayoutStatus={providerPayoutStatus}
-          earningsThisMonth={earningsInfo.earningsThisMonth}
-          earningsLastMonth={earningsInfo.earningsLastMonth}
+          minEarningsThisMonth={earningsInfo.minEarningsThisMonth}
+          maxEarningsThisMonth={earningsInfo.maxEarningsThisMonth}
+          minEarningsLastMonth={earningsInfo.minEarningsLastMonth}
+          maxEarningsLastMonth={earningsInfo.maxEarningsLastMonth}
           nextPaymentDate={earningsInfo.nextPaymentDate}
           exchangeRate={exchangeInfo.rate}
           exchangeCurrency={exchangeInfo.currency}
@@ -70,6 +132,7 @@ export function Panel () {
           summaryData={summaryData}
           autoContributeEnabled={settings.autoContributeEnabled}
           onExternalWalletAction={host.handleExternalWalletAction}
+          onManageAds={onSettingsClick}
         />
         {activeView === 'tip' && <PublisherCard />}
         <NavBar
@@ -82,12 +145,14 @@ export function Panel () {
     )
   }
 
+  if (onboardingResult || !rewardsEnabled || needsCountry) {
+    return renderOnboaring()
+  }
+
   return (
-    <div>
-      <div className='rewards-panel' data-test-id='rewards-panel'>
-        {userType !== 'unconnected' ? renderFull() : <LimitedView />}
-      </div>
+    <style.root>
+      {userType !== 'unconnected' ? renderFull() : <LimitedView />}
       <PanelOverlays />
-    </div>
+    </style.root>
   )
 }

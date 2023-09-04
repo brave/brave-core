@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ml">
-<translation id="2359808026110333948">തുടരുക</translation>
+<translation id="370665806235115550">ലോഡ്ചെയ്യുന്നു...</translation>
+<translation id="1177863135347784049">ഇഷ്ടാനുസൃതം</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="4692623383562244444">സെര്‍ച് എഞ്ചിനുകള്‍</translation>
 <translation id="3377025655491224618">അദൃശ്യ ടാബ്</translation>
 <translation id="9148058034647219655">പുറത്തുകടക്കുക</translation>
@@ -29,6 +31,8 @@
 <translation id="2175927920773552910">QR കോഡ്</translation>
 <translation id="8730621377337864115">പൂർത്തിയാക്കി</translation>
 <translation id="8131740175452115882">സ്ഥിരീകരിക്കുക</translation>
+<translation id="8457451314607652708">ബുക്ക്‌മാർക്കുകൾ ഇമ്പോർട്ടുചെയ്യുക</translation>
+<translation id="1008186147501209563">ബുക്ക്‌മാർക്കുകൾ എക്‌സ്‌പോർട്ട് ചെയ്യുക</translation>
 <translation id="7173114856073700355">ക്രമീകരണം തുറക്കുക</translation>
 <translation id="6965382102122355670">ശരി</translation>
 <translation id="1056898198331236512">മുന്നറിയിപ്പ്</translation>
@@ -47,6 +51,7 @@
 <translation id="8798099450830957504">സ്ഥിരസ്ഥിതി</translation>
 <translation id="1483493594462132177">അയയ്‌ക്കുക</translation>
 <translation id="4472575034687746823">ആരംഭിക്കാം</translation>
+<translation id="2359808026110333948">തുടരുക</translation>
 <translation id="6896758677409633944">പകര്‍ത്തുക</translation>
 <translation id="7665369617277396874">അക്കൗണ്ട് ചേർക്കുക</translation>
 <translation id="3448492834076427715">അക്കൗണ്ട് അപ്‌ഡേറ്റ് ചെയ്യുക</translation>
@@ -74,11 +79,8 @@
 <translation id="5045550434625856497">ശരിയല്ലാത്ത രഹസ്യവാക്ക്</translation>
 <translation id="1367951781824006909">ഒരു ഫയല്‍ തിരഞ്ഞെടുക്കുക</translation>
 <translation id="8648684608605749476">അദൃശ്യ മോഡിൽ മൂന്നാം കക്ഷി കുക്കികളെ ബ്ലോക്ക് ചെയ്യുക</translation>
-<translation id="3380365263193509176">അജ്ഞാതമായ പിശക്</translation>
 <translation id="1165039591588034296">പിശക്</translation>
 <translation id="2941112035454246133">താഴ്ന്ന</translation>
-<translation id="1177863135347784049">ഇഷ്ടാനുസൃതം</translation>
-<translation id="1974060860693918893">നൂതനം</translation>
 <translation id="7791543448312431591">ചേര്‍ക്കൂ</translation>
 <translation id="4250680216510889253">ഇല്ല</translation>
 <translation id="2653659639078652383">സമര്‍പ്പിക്കൂ</translation>

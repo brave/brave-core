@@ -14,9 +14,9 @@
 #include "base/scoped_multi_source_observation.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_sync/time_limited_words.h"
-#include "components/sync/driver/sync_service.h"
-#include "components/sync/driver/sync_service_observer.h"
 #include "components/sync/protocol/sync_protocol_error.h"
+#include "components/sync/service/sync_service.h"
+#include "components/sync/service/sync_service_observer.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 
@@ -96,7 +96,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   std::vector<std::unique_ptr<syncer::BraveDeviceInfo>> GetDeviceList();
   bool CanSyncFeatureStart();
   bool IsSyncFeatureActive();
-  bool IsFirstSetupComplete();
+  bool IsInitialSyncFeatureSetupComplete();
   bool SetSetupComplete();
   void ResetSync();
   void DeleteDevice(const std::string& device_guid);

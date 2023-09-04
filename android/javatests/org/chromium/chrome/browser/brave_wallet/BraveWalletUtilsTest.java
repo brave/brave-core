@@ -7,19 +7,15 @@ package org.chromium.chrome.browser.brave_wallet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import androidx.test.filters.SmallTest;
 
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.chromium.base.test.util.Batch;
-import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
@@ -77,12 +73,6 @@ public class BraveWalletUtilsTest {
 
     @Test
     @SmallTest
-    public void concatHexBNTest() {
-        assertEquals(Utils.concatHexBN("0x123afff", "0xabcdf"), "0x12e6cde");
-    }
-
-    @Test
-    @SmallTest
     public void fromWeiTest() {
         assertEquals(Utils.fromWei("50000000000000000000", 18), 50, 0.001);
         assertEquals(Utils.fromWei("5000000000000000000", 18), 5, 0.001);
@@ -117,36 +107,6 @@ public class BraveWalletUtilsTest {
         assertEquals(Utils.toHexWei("0,05", 18), "0xb1a2bc2ec50000");
         assertEquals(Utils.toHexWei("0,01234567890123456789012", 18), "0x2bdc545d6b4b87");
         assertEquals(Utils.toHexWei("", 18), "0x0");
-        Locale.setDefault(defaultLocal);
-    }
-
-    @Test
-    @SmallTest
-    public void toWeiEnTest() {
-        Locale defaultLocal = Locale.getDefault();
-        Locale.setDefault(Locale.US);
-        assertEquals(Utils.toWei("50", 18, false), "50000000000000000000");
-        assertEquals(Utils.toWei("5", 18, false), "5000000000000000000");
-        assertEquals(Utils.toWei("0.5", 18, false), "500000000000000000");
-        assertEquals(Utils.toWei("0.05", 18, false), "50000000000000000");
-        assertEquals(Utils.toWei("0.123456789012345678901", 18, false), "123456789012345678");
-        assertEquals(Utils.toWei("", 18, false), "");
-        assertEquals(Utils.toWei("5", 18, true), "");
-        Locale.setDefault(defaultLocal);
-    }
-
-    @Test
-    @SmallTest
-    public void toWeiFrTest() {
-        Locale defaultLocal = Locale.getDefault();
-        Locale.setDefault(Locale.FRANCE);
-        assertEquals(Utils.toWei("50", 18, false), "50000000000000000000");
-        assertEquals(Utils.toWei("5", 18, false), "5000000000000000000");
-        assertEquals(Utils.toWei("0,5", 18, false), "500000000000000000");
-        assertEquals(Utils.toWei("0,05", 18, false), "50000000000000000");
-        assertEquals(Utils.toWei("0,123456789012345678901", 18, false), "123456789012345678");
-        assertEquals(Utils.toWei("", 18, false), "");
-        assertEquals(Utils.toWei("5", 18, true), "");
         Locale.setDefault(defaultLocal);
     }
 
@@ -349,51 +309,6 @@ public class BraveWalletUtilsTest {
 
     @Test
     @SmallTest
-    public void validateAccountInfoTest() {
-        AccountInfo testStruct = new AccountInfo();
-        java.lang.reflect.Field[] fields = testStruct.getClass().getDeclaredFields();
-        for (java.lang.reflect.Field f : fields) {
-            try {
-                java.lang.Class t = f.getType();
-                java.lang.Object v = f.get(testStruct);
-                if (!t.isPrimitive()) {
-                    String varName = f.getName();
-                    if (varName.equals("address") || varName.equals("name")
-                            || varName.equals("hardware") || varName.equals("keyringId")) {
-                        continue;
-                    }
-                    if (v == null) {
-                        String message = "Check that " + varName + " is initialized everywhere\n"
-                                + "in Java files, where AccountInfo object is created. It\n"
-                                + "could be safely added to the above if to skip that var on checks\n"
-                                + "after that.";
-                        fail(message);
-                    }
-                }
-            } catch (Exception exc) {
-                // Exception appears on private field members. We just skip them as we are
-                // interested in public members of a mojom structure
-            }
-        }
-        testStruct.address = "";
-        testStruct.name = "";
-        testStruct.coin = CoinType.ETH;
-        testStruct.keyringId = BraveWalletConstants.DEFAULT_KEYRING_ID;
-        try {
-            java.nio.ByteBuffer byteBuffer = testStruct.serialize();
-            AccountInfo testStructDeserialized = AccountInfo.deserialize(byteBuffer);
-        } catch (Exception exc) {
-            String message = "Check that a variable with a type in the exception below is\n"
-                    + "initialized everywhere in Java files, where AccountInfo object is\n"
-                    + "created('git grep \"new AccountInfo\"' inside src/brave).\n"
-                    + "Initialisation of it could be safely added to the test to pass it,\n"
-                    + "but only after all places where it's created are fixed.\n";
-            fail(message + "\n" + getStackTrace(exc));
-        }
-    }
-
-    @Test
-    @SmallTest
     public void validateTxDataTest() {
         TxData testStruct = new TxData();
         java.lang.reflect.Field[] fields = testStruct.getClass().getDeclaredFields();
@@ -568,7 +483,7 @@ public class BraveWalletUtilsTest {
                     String varName = f.getName();
                     if (varName.equals("chainId") || varName.equals("chainName")
                             || varName.equals("blockExplorerUrls") || varName.equals("iconUrls")
-                            || varName.equals("rpcEndpoints")
+                            || varName.equals("rpcEndpoints") || varName.equals("supportedKeyrings")
                             || varName.equals("activeRpcEndpointIndex") || varName.equals("symbol")
                             || varName.equals("symbolName") || varName.equals("isEip1559")) {
                         continue;
@@ -587,6 +502,7 @@ public class BraveWalletUtilsTest {
             }
         }
         testStruct.chainId = "";
+        testStruct.supportedKeyrings = new int[0];
         testStruct.chainName = "";
         testStruct.blockExplorerUrls = new String[0];
         testStruct.iconUrls = new String[0];

@@ -157,7 +157,11 @@ int FarbledPointerScreenCoordinate(const DOMWindow* view,
   if (!BlockScreenFingerprinting(context)) {
     return true_screen_coordinate;
   }
-  double zoom_factor = local_dom_window->GetFrame()->PageZoomFactor();
+  auto* frame = local_dom_window->GetFrame();
+  if (!frame) {
+    return true_screen_coordinate;
+  }
+  double zoom_factor = frame->PageZoomFactor();
   return FarbleInteger(context, key, zoom_factor * client_coordinate, 0, 8);
 }
 

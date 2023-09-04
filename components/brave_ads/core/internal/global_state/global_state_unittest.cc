@@ -4,16 +4,15 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+
 #include "base/test/task_environment.h"
-#include "brave/components/brave_ads/core/internal/ads_client_mock.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
-
-using ::testing::NiceMock;
 
 class BraveAdsGlobalStateTest : public ::testing::Test {
  protected:
@@ -23,7 +22,7 @@ class BraveAdsGlobalStateTest : public ::testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
-  NiceMock<AdsClientMock> ads_client_mock_;
+  ::testing::NiceMock<AdsClientMock> ads_client_mock_;
 
   std::unique_ptr<GlobalState> global_state_;
 };

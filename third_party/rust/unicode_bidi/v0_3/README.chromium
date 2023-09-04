@@ -1,0 +1,7 @@
+Name: unicode-bidi
+URL: https://crates.io/crates/unicode-bidi
+Description: Implementation of the Unicode Bidirectional Algorithm
+Version: 0.3.13
+Security Critical: yes
+License: Apache 2.0
+Revision: 3b7a02fd6006a0f83c78a3f59405e97dfd75e311

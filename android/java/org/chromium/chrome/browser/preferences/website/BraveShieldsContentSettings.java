@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.preferences.website;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
 
 import java.util.ArrayList;
@@ -26,12 +25,18 @@ public class BraveShieldsContentSettings {
     static public final String RESOURCE_IDENTIFIER_REFERRERS = "referrers";
     static public final String RESOURCE_IDENTIFIER_JAVASCRIPTS = "javascript";
     static public final String RESOURCE_IDENTIFIER_HTTPS_UPGRADE = "httpsUpgrade";
+    static public final String RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE =
+            "forgetFirstPartyStorage";
 
     static public final String BLOCK_RESOURCE = "block";
     static public final String BLOCK_THIRDPARTY_RESOURCE = "block_third_party";
     static public final String DEFAULT = "default";
     static public final String ALLOW_RESOURCE = "allow";
     static public final String AGGRESSIVE = "aggressive";
+
+    public static final int ALWAYS = 0;
+    public static final int ASK = 1;
+    public static final int NEVER = 2;
 
     private long mNativeBraveShieldsContentSettings;
     private List<BraveShieldsContentSettingsObserver> mBraveShieldsContentSettingsObservers;
@@ -84,6 +89,9 @@ public class BraveShieldsContentSettings {
             BraveShieldsContentSettingsJni.get().setHTTPSEverywhereEnabled(value, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             BraveShieldsContentSettingsJni.get().setNoScriptControlType(setting_string, host, profile);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE)) {
+            BraveShieldsContentSettingsJni.get().setForgetFirstPartyStorageEnabled(
+                    value, host, profile);
         }
     }
 
@@ -115,6 +123,9 @@ public class BraveShieldsContentSettings {
             return BraveShieldsContentSettingsJni.get().getHTTPSEverywhereEnabled(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             settings = BraveShieldsContentSettingsJni.get().getNoScriptControlType(host, profile);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE)) {
+            return BraveShieldsContentSettingsJni.get().getForgetFirstPartyStorageEnabled(
+                    host, profile);
         }
 
         return !settings.equals(ALLOW_RESOURCE);
@@ -171,6 +182,12 @@ public class BraveShieldsContentSettings {
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS, value, false);
     }
 
+    public static void setForgetFirstPartyStoragePref(boolean value) {
+        setShields(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE, value,
+                false);
+    }
+
     public static boolean getJavascriptPref() {
         return getShields(Profile.getLastUsedRegularProfile(), "",
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS);
@@ -194,6 +211,11 @@ public class BraveShieldsContentSettings {
     public static boolean getHTTPSEverywherePref() {
         return getShields(Profile.getLastUsedRegularProfile(), "",
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES);
+    }
+
+    public static boolean getForgetFirstPartyStoragePref() {
+        return getShields(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE);
     }
 
     @CalledByNative
@@ -235,6 +257,8 @@ public class BraveShieldsContentSettings {
         String getHttpsUpgradeControlType(String url, Profile profile);
         void setNoScriptControlType(String type, String url, Profile profile);
         String getNoScriptControlType(String url, Profile profile);
+        void setForgetFirstPartyStorageEnabled(boolean enabled, String url, Profile profile);
+        boolean getForgetFirstPartyStorageEnabled(String url, Profile profile);
 
         void setCosmeticFilteringControlType(String type, String url, Profile profile);
         String getCosmeticFilteringControlType(String url, Profile profile);

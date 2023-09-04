@@ -52,7 +52,7 @@ export const SettingsButton = styled(StyledButton)`
   height: 40px;
   width: 40px;
   &:hover {
-    background-color: ${leo.color.container.interactiveBackground};
+    background-color: ${leo.color.container.interactive};
   }
   @media (prefers-color-scheme: dark) {
     box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.36);
@@ -61,5 +61,5 @@ export const SettingsButton = styled(StyledButton)`
 
 export const SettingsIcon = styled(Icon)`
   --leo-icon-size: 20px;
-  color: ${leo.color.iconTint};
+  color: ${leo.color.icon.default};
 `

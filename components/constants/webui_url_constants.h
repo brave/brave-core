@@ -23,6 +23,7 @@ extern const char kRewardsInternalsHost[];
 extern const char kWelcomeHost[];
 extern const char kWelcomeJS[];
 extern const char kBraveNewTabJS[];
+extern const char kBraveNewsInternalsHost[];
 extern const char kBraveRewardsPanelURL[];
 extern const char kBraveRewardsPanelHost[];
 extern const char kBraveTipPanelURL[];
@@ -40,7 +41,10 @@ extern const char kVPNPanelHost[];
 extern const char kBraveUIWalletPageURL[];
 extern const char kWalletPageHost[];
 #if BUILDFLAG(IS_ANDROID)
+extern const char kWalletBuyPagePath[];
+extern const char kWalletSendPagePath[];
 extern const char kWalletSwapPagePath[];
+extern const char kWalletDepositPagePath[];
 #endif  // BUILDFLAG(IS_ANDROID)
 extern const char kExtensionSettingsURL[];
 extern const char kWalletSettingsURL[];
@@ -68,7 +72,7 @@ extern const char kPlaylistPlayerHost[];
 extern const char kPlaylistPlayerURL[];
 extern const char kSpeedreaderPanelURL[];
 extern const char kSpeedreaderPanelHost[];
-extern const char kCommandsHost[];
+extern const char kShortcutsURL[];
 extern const char kChatUIURL[];
 extern const char kChatUIHost[];
 

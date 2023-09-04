@@ -268,26 +268,26 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   EXPECT_EQ(nullptr, service_->GetBackgroundImagesData());
 
   // Check with json file with empty object.
+  observer.si_data_ = nullptr;
   service_->si_images_data_.reset();
   observer.on_si_updated_ = false;
-  observer.si_data_ = nullptr;
   service_->OnGetSponsoredComponentJsonData(false, kTestEmptyComponent);
   auto* si_data = service_->GetBrandedImagesData(false);
   EXPECT_EQ(si_data, nullptr);
   EXPECT_TRUE(observer.on_si_updated_);
   EXPECT_TRUE(observer.si_data_->campaigns.empty());
+  observer.bi_data_ = nullptr;
   service_->bi_images_data_.reset();
   observer.on_bi_updated_ = false;
-  observer.bi_data_ = nullptr;
   service_->OnGetComponentJsonData(kTestEmptyComponent);
   auto* bi_data = service_->GetBackgroundImagesData();
   EXPECT_EQ(bi_data, nullptr);
   EXPECT_TRUE(observer.on_bi_updated_);
   EXPECT_FALSE(observer.bi_data_->IsValid());
 
+  observer.si_data_ = nullptr;
   service_->si_images_data_.reset();
   observer.on_si_updated_ = false;
-  observer.si_data_ = nullptr;
   service_->OnGetSponsoredComponentJsonData(false, kTestSponsoredImages);
   // Mark this is not SR to get SI data.
   service_->MarkThisInstallIsNotSuperReferralForever();
@@ -329,9 +329,9 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
       *si_data->GetBackgroundAt(0, 1)->FindStringByDottedPath(kLogoImagePath));
 
   // Test BI data loading
+  observer.bi_data_ = nullptr;
   service_->bi_images_data_.reset();
   observer.on_bi_updated_ = false;
-  observer.bi_data_ = nullptr;
   service_->OnGetComponentJsonData(kTestBackgroundImages);
   bi_data = service_->GetBackgroundImagesData();
   EXPECT_TRUE(bi_data);
@@ -378,9 +378,9 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
             }
         ]
     })";
+  observer.si_data_ = nullptr;
   service_->si_images_data_.reset();
   observer.on_si_updated_ = false;
-  observer.si_data_ = nullptr;
   service_->OnGetSponsoredComponentJsonData(false,
                                             test_json_string_higher_schema);
   si_data = service_->GetBrandedImagesData(false);
@@ -400,9 +400,9 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
       }
     ]
   })";
+  observer.bi_data_ = nullptr;
   service_->bi_images_data_.reset();
   observer.on_bi_updated_ = false;
-  observer.bi_data_ = nullptr;
   service_->OnGetComponentJsonData(test_background_json_string_higher_schema);
   bi_data = service_->GetBackgroundImagesData();
   EXPECT_FALSE(bi_data);
@@ -418,9 +418,9 @@ TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
   pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
   pref_service_.SetBoolean(kReferralInitialization, true);
 
+  observer.si_data_ = nullptr;
   service_->si_images_data_.reset();
   observer.on_si_updated_ = false;
-  observer.si_data_ = nullptr;
   service_->OnGetSponsoredComponentJsonData(
       false, kTestSponsoredImagesWithMultipleCampaigns);
   // Mark this is not SR to get SI data.

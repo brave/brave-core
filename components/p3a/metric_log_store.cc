@@ -231,7 +231,7 @@ void MetricLogStore::StageNextLog() {
   VLOG(2) << "MetricLogStore::StageNextLog: staged " << staged_entry_key_;
 }
 
-void MetricLogStore::DiscardStagedLog() {
+void MetricLogStore::DiscardStagedLog(base::StringPiece reason) {
   if (!has_staged_log()) {
     return;
   }

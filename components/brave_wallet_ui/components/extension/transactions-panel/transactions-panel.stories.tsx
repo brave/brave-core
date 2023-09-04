@@ -23,8 +23,7 @@ export const _TransactionsPanel: React.FC = () => {
         }
       >
         <TransactionsPanel
-          onSelectTransaction={() => null}
-          selectedAccountAddress={mockAccount.address}
+          selectedAccount={mockAccount.accountId}
           selectedNetwork={mockNetwork}
         />
       </Column>

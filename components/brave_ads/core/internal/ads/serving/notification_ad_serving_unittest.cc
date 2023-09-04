@@ -14,10 +14,10 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
-#include "brave/components/brave_ads/core/notification_ad_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -29,7 +29,9 @@ class BraveAdsNotificationAdServingTest : public NotificationAdServingDelegate,
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    ForceNotificationAdServingVersion(1);
+    NotifyDidInitializeAds();
+
+    ForceNotificationAdServingVersionForTesting(1);
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
@@ -62,7 +64,7 @@ class BraveAdsNotificationAdServingTest : public NotificationAdServingDelegate,
 
 TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Arrange
-  ForceNotificationAdServingVersion(0);
+  ForceNotificationAdServingVersionForTesting(0);
 
   // Act
   serving_->MaybeServeAd();
@@ -78,7 +80,7 @@ TEST_F(BraveAdsNotificationAdServingTest, ServeAd) {
   ForcePermissionRulesForTesting();
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
@@ -88,10 +90,7 @@ TEST_F(BraveAdsNotificationAdServingTest, ServeAd) {
   EXPECT_TRUE(opportunity_arose_to_serve_ad_);
   EXPECT_TRUE(did_serve_ad_);
   EXPECT_FALSE(failed_to_serve_ad_);
-
-  const NotificationAdInfo expected_ad =
-      BuildNotificationAd(creative_ad, ad_.placement_id);
-  EXPECT_EQ(expected_ad, ad_);
+  EXPECT_EQ(BuildNotificationAd(creative_ad, ad_.placement_id), ad_);
 }
 
 TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
@@ -111,7 +110,7 @@ TEST_F(BraveAdsNotificationAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act

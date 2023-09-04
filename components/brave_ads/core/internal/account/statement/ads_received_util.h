@@ -6,6 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_STATEMENT_ADS_RECEIVED_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_STATEMENT_ADS_RECEIVED_UTIL_H_
 
+#include <cstdint>
+#include <string>
+
+#include "base/containers/flat_map.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 
 namespace base {
@@ -14,9 +18,10 @@ class Time;
 
 namespace brave_ads {
 
-size_t GetAdsReceivedForDateRange(const TransactionList& transactions,
-                                  base::Time from_time,
-                                  base::Time to_time);
+base::flat_map<std::string, int32_t> GetAdTypesReceivedForDateRange(
+    const TransactionList& transactions,
+    base::Time from_time,
+    base::Time to_time);
 
 }  // namespace brave_ads
 

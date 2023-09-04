@@ -16,7 +16,7 @@
 #include "base/types/expected.h"
 #include "base/version.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
-#include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -48,7 +48,6 @@ using GetPublisherMinVisitTimeCallback = base::OnceCallback<void(int)>;
 using GetPublisherMinVisitsCallback = base::OnceCallback<void(int)>;
 using GetAutoContributeEnabledCallback = base::OnceCallback<void(bool)>;
 using GetReconcileStampCallback = base::OnceCallback<void(uint64_t)>;
-using GetPendingContributionsTotalCallback = base::OnceCallback<void(double)>;
 using GetRewardsInternalsInfoCallback =
     base::OnceCallback<void(mojom::RewardsInternalsInfoPtr info)>;
 using GetRecurringTipsCallback =
@@ -64,8 +63,6 @@ using GetPublisherInfoCallback =
 using SavePublisherInfoCallback = base::OnceCallback<void(const mojom::Result)>;
 using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
-using GetPendingContributionsCallback = base::OnceCallback<void(
-    std::vector<mojom::PendingContributionInfoPtr> list)>;
 using ConnectExternalWalletResult =
     base::expected<void, mojom::ConnectExternalWalletError>;
 using ConnectExternalWalletCallback =
@@ -141,6 +138,9 @@ class RewardsService : public KeyedService {
 
   // Returns the country code associated with the user's Rewards profile.
   virtual std::string GetCountryCode() const = 0;
+
+  // Returns if the user is grandfathered.
+  virtual bool IsGrandfatheredUser() const = 0;
 
   // Returns the Rewards user type for the current profile.
   virtual void GetUserType(
@@ -241,22 +241,17 @@ class RewardsService : public KeyedService {
       const std::string& publisher_key,
       bool exclude) = 0;
   virtual RewardsNotificationService* GetNotificationService() const = 0;
+  virtual void IsAutoContributeSupported(
+      base::OnceCallback<void(bool)> callback) = 0;
   virtual void GetAutoContributeProperties(
       GetAutoContributePropertiesCallback callback) = 0;
-  virtual void GetPendingContributionsTotal(
-      GetPendingContributionsTotalCallback callback) = 0;
+
   virtual void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) = 0;
 
   virtual void RefreshPublisher(
       const std::string& publisher_key,
       RefreshPublisherCallback callback) = 0;
-
-  virtual void GetPendingContributions(
-    GetPendingContributionsCallback callback) = 0;
-
-  virtual void RemovePendingContribution(const uint64_t id) = 0;
-  virtual void RemoveAllPendingContributions() = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);
@@ -307,8 +302,6 @@ class RewardsService : public KeyedService {
       GetShareURLCallback callback) = 0;
 
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;
-
-  virtual bool IsAutoContributeSupported() const = 0;
 
   virtual void GetExternalWallet(GetExternalWalletCallback callback) = 0;
 

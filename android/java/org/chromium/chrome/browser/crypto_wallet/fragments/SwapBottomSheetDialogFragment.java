@@ -5,13 +5,10 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -19,27 +16,24 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
-import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
-import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
+import org.chromium.chrome.browser.crypto_wallet.web_ui.WebUiActivityType;
+import org.chromium.chrome.browser.util.TabUtils;
 
 public class SwapBottomSheetDialogFragment
-        extends BottomSheetDialogFragment implements View.OnClickListener {
+        extends WalletBottomSheetDialogFragment implements View.OnClickListener {
     public static final String TAG_FRAGMENT = SwapBottomSheetDialogFragment.class.getName();
     private static final String TAG = "BSS-bottom-dialog";
     private LinearLayout mBuyLayout;
     private LinearLayout mSendLayout;
     private LinearLayout mSwapLayout;
+    private LinearLayout mDepositLayout;
     private NetworkInfo mNetworkInfo;
     private WalletModel mWalletModel;
 
@@ -73,9 +67,9 @@ public class SwapBottomSheetDialogFragment
         super.onCreate(savedInstanceState);
         try {
             mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
+            registerKeyringObserver(mWalletModel.getKeyringModel());
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreate ", e);
-            e.printStackTrace();
         }
     }
 
@@ -92,30 +86,63 @@ public class SwapBottomSheetDialogFragment
         mSendLayout.setOnClickListener(this);
         mSwapLayout = view.findViewById(R.id.swap_layout);
         mSwapLayout.setOnClickListener(this);
+        mDepositLayout = view.findViewById(R.id.deposit_layout);
+        mDepositLayout.setOnClickListener(this);
         return view;
+    }
+
+    private void setDefaultNetwork(
+            @NonNull final Callback callback, @Nullable final WebUiActivityType webUiActivityType) {
+        if (!JavaUtils.anyNull(mWalletModel, mNetworkInfo)) {
+            // TODO(apaymyshev): buy/send/swap should be decoupled from panel selected network.
+            mWalletModel.getNetworkModel().setDefaultNetwork(
+                    mNetworkInfo, isSelected -> callback.run(webUiActivityType));
+        } else {
+            callback.run(webUiActivityType);
+        }
     }
 
     @Override
     public void onClick(View view) {
-        BuySendSwapActivity.ActivityType activityType = BuySendSwapActivity.ActivityType.BUY;
-        if (view == mSendLayout) {
-            activityType = BuySendSwapActivity.ActivityType.SEND;
-        } else if (view == mSwapLayout) {
-            activityType = BuySendSwapActivity.ActivityType.SWAP;
-        }
+        if (view == mDepositLayout) {
+            setDefaultNetwork(activityType -> openDepositWebUi(), null);
+        } else {
+            WebUiActivityType webUiActivityType = WebUiActivityType.BUY;
+            if (view == mSendLayout) {
+                webUiActivityType = WebUiActivityType.SEND;
+            } else if (view == mSwapLayout) {
+                webUiActivityType = WebUiActivityType.SWAP;
+            }
 
-        if (!JavaUtils.anyNull(mWalletModel, mNetworkInfo)) {
-            BuySendSwapActivity.ActivityType finalActivityType = activityType;
-            mWalletModel.getNetworkModel().setNetwork(
-                    mNetworkInfo, isSelected -> { openBssAndDismiss(finalActivityType); });
-            return;
+            setDefaultNetwork(this::openBssAndDismiss, webUiActivityType);
         }
-        openBssAndDismiss(activityType);
+    }
+
+    private void openDepositWebUi() {
+        try {
+            BraveActivity.getBraveActivity().openNewOrSelectExistingTab(
+                    BraveActivity.BRAVE_DEPOSIT_URL, true);
+            TabUtils.bringChromeTabbedActivityToTheTop(requireActivity());
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "Error while opening deposit tab.", e);
+        }
     }
 
     // Open buy send swap (BSS)
-    private void openBssAndDismiss(BuySendSwapActivity.ActivityType activityType) {
-        Utils.openBuySendSwapActivity(getActivity(), activityType);
+    private void openBssAndDismiss(WebUiActivityType webUiActivityType) {
+        Utils.openBuySendSwapActivity(requireActivity(), webUiActivityType);
         dismiss();
+    }
+
+    /**
+     * Generic callback used by {@code setDefaultNetwork} that runs an action with a given activity
+     * type.
+     */
+    private interface Callback {
+        /**
+         * Runs an action with a given activity type.
+         * @param webUiActivityType given activity type. May be null.
+         */
+        void run(@Nullable final WebUiActivityType webUiActivityType);
     }
 }

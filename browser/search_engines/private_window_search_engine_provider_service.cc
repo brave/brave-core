@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/search_engines/private_window_search_engine_provider_service.h"
 
@@ -22,12 +22,6 @@ PrivateWindowSearchEngineProviderService::
       base::BindRepeating(
           &PrivateWindowSearchEngineProviderService::OnPreferenceChanged,
           base::Unretained(this)));
-  UpdateExtensionPrefsAndProvider();
-
-  // Monitor normal profile's search engine changing because private window
-  // should use that search engine provider when extension search provider is
-  // used.
-  observation_.Observe(original_template_url_service_);
 }
 
 PrivateWindowSearchEngineProviderService::
@@ -58,6 +52,15 @@ void PrivateWindowSearchEngineProviderService::
     otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
         template_url);
   }
+}
+
+void PrivateWindowSearchEngineProviderService::Initialize() {
+  UpdateExtensionPrefsAndProvider();
+
+  // Monitor normal profile's search engine changing because private window
+  // should use that search engine provider when extension search provider is
+  // used.
+  observation_.Observe(original_template_url_service_);
 }
 
 void PrivateWindowSearchEngineProviderService::Shutdown() {

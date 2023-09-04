@@ -8,16 +8,17 @@ import { useDispatch, useSelector } from 'react-redux'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
-import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
 // routes
-import { OnboardingAction, WalletRoutes, WalletState } from '../../../../constants/types'
+import { WalletRoutes, WalletState } from '../../../../constants/types'
 
 // actions
 import { WalletPageActions } from '../../../actions'
 
 // components
-import { NavButton } from '../../../../components/extension'
+import {
+  NavButton //
+} from '../../../../components/extension/buttons/nav-button/index'
 import { NewPasswordInput, NewPasswordValues } from '../../../../components/shared/password-input/new-password-input'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
@@ -60,13 +61,9 @@ export const OnboardingCreatePassword = (props: OnboardingCreatePasswordProps) =
     setIsValid(isValid)
   }, [])
 
-  // custom hooks
-  const { braveWalletP3A } = useApiProxy()
-
   // effects
   React.useEffect(() => {
     if (isWalletCreated) {
-      braveWalletP3A.reportOnboardingAction(OnboardingAction.CREATED_WALLET)
       onWalletCreated()
     }
   }, [isWalletCreated, onWalletCreated])

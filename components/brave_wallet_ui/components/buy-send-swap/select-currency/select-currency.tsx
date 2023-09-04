@@ -4,16 +4,23 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import Fuse from 'fuse.js'
 
-import { BraveWallet, WalletState } from '../../../constants/types'
-import { SearchBar } from '../../shared'
-import Header from '../select-header'
+// Types
+import { BraveWallet } from '../../../constants/types'
+
+// Utils
 import { getLocale } from '../../../../common/locale'
+import { WalletSelectors } from '../../../common/selectors'
 
 // Components
+import { SearchBar } from '../../shared/search-bar/index'
+import Header from '../select-header'
 import { SelectCurrencyItem } from '../select-currency-item/select-currency-item'
+
+// Hooks
+import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 
 // Styled Components
 import {
@@ -21,6 +28,7 @@ import {
 } from '../shared-styles'
 import { SelectCurrencyWrapper } from './select-currency.style'
 import { WalletActions } from '../../../common/actions'
+import { VerticalSpace } from '../../shared/style'
 
 export interface Props {
   onSelectCurrency?: (currency: BraveWallet.OnRampCurrency) => void
@@ -29,13 +37,12 @@ export interface Props {
 
 export const SelectCurrency = (props: Props) => {
   const { onSelectCurrency, onBack } = props
-  const {
-    onRampCurrencies: currencies
-  } = useSelector((state: { wallet: WalletState }) => state.wallet)
-
+  
   // redux
   const dispatch = useDispatch()
+  const currencies = useUnsafeWalletSelector(WalletSelectors.onRampCurrencies)
 
+  // memos
   const fuse = React.useMemo(() => new Fuse(currencies, {
     shouldSort: true,
     threshold: 0.45,
@@ -84,7 +91,13 @@ export const SelectCurrency = (props: Props) => {
         onBack={onBack}
         hasAddButton={false}
       />
-      <SearchBar placeholder={getLocale('braveWalletSearchCurrency')} action={filterCurrencyList} autoFocus={true} />
+      <SearchBar
+        placeholder={getLocale('braveWalletSearchCurrency')}
+        action={filterCurrencyList}
+        autoFocus={true}
+        isV2={true}
+      />
+      <VerticalSpace space='16px' />
       <SelectScrollSearchContainer>
         {
           filteredCurrencies.map((currency: BraveWallet.OnRampCurrency) =>

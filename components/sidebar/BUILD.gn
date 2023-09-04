@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
@@ -16,13 +17,12 @@ static_library("sidebar") {
     "sidebar_item.h",
     "sidebar_service.cc",
     "sidebar_service.h",
-    "sidebar_service_delegate.h",
   ]
 
   deps = [
     "//base",
-    "//brave/components/ai_chat",
-    "//brave/components/brave_wallet/common:common_utils",
+    "//brave/components/ai_chat/common/buildflags",
+    "//brave/components/brave_wallet/common",
     "//brave/components/constants:constants",
     "//brave/components/l10n/common",
     "//brave/components/resources:strings",
@@ -32,6 +32,10 @@ static_library("sidebar") {
     "//ui/base",
     "//url",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/common" ]
+  }
 
   if (enable_playlist) {
     deps += [ "//brave/components/playlist/common" ]

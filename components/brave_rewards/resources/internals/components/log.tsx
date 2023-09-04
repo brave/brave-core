@@ -36,6 +36,10 @@ export class Log extends React.Component<Props, State> {
     }
   }
 
+  componentDidMount () {
+    this.props.onGet()
+  }
+
   componentDidUpdate (prevProps: Props) {
     if (this.props.fullLog.length !== 0) {
       this.downloadFile(this.props.fullLog)
@@ -59,9 +63,10 @@ export class Log extends React.Component<Props, State> {
   }
 
   downloadFile = (log: string) => {
-    const filename = 'brave_rewards_log.txt'
+    const filename = 'brave_rewards_sensitive_log.txt'
     let element = document.createElement('a')
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(log))
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,'
+      + encodeURIComponent(getLocale('logDisclaimer') + '\n\n' + log))
     element.setAttribute('download', filename)
 
     element.style.display = 'none'

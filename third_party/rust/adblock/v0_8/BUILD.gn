@@ -1,0 +1,64 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "adblock"
+  epoch = "0.8"
+  crate_type = "rlib"
+  crate_root = "crate/src/lib.rs"
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  sources = [ "crate/src/lib.rs" ]
+  edition = "2021"
+  cargo_pkg_version = "0.8.0"
+  cargo_pkg_authors =
+      "Andrius Aucinas <aaucinas@brave.com>, Anton Lazarev <alazarev@brave.com>"
+  cargo_pkg_name = "adblock"
+  cargo_pkg_description = "Native Rust module for Adblock Plus syntax (e.g. EasyList, EasyPrivacy) filter parsing and matching."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/cssparser/v0_28:lib",
+    "//brave/third_party/rust/idna/v0_2:lib",
+    "//brave/third_party/rust/itertools/v0_10:lib",
+    "//brave/third_party/rust/percent_encoding/v2:lib",
+    "//brave/third_party/rust/rmp_serde/v0_15:lib",
+    "//brave/third_party/rust/seahash/v3:lib",
+    "//brave/third_party/rust/selectors/v0_23:lib",
+    "//brave/third_party/rust/thiserror/v1:lib",
+    "//brave/third_party/rust/url/v2:lib",
+    "//third_party/rust/base64/v0_13:lib",
+    "//third_party/rust/bitflags/v1:lib",
+    "//third_party/rust/memchr/v2:lib",
+    "//third_party/rust/once_cell/v1:lib",
+    "//third_party/rust/regex/v1:lib",
+    "//third_party/rust/serde/v1:lib",
+  ]
+  features = [
+    "css-validation",
+    "cssparser",
+    "full-regex-handling",
+    "regex-debug-info",
+    "selectors",
+  ]
+  if (is_ios) {
+    features += [
+      "content-blocking",
+      "serde_json",
+    ]
+    deps += [ "//third_party/rust/serde_json/v1:lib" ]
+  } else {
+    features += [
+      "object-pooling",
+      "lifeguard",
+      "unsync-regex-caching",
+    ]
+    deps += [ "//brave/third_party/rust/lifeguard/v0_6:lib" ]
+  }
+}

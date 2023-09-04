@@ -31,19 +31,18 @@ CatalogCreativeSetInfo::~CatalogCreativeSetInfo() = default;
 
 bool CatalogCreativeSetInfo::operator==(
     const CatalogCreativeSetInfo& other) const {
-  return creative_set_id == other.creative_set_id && per_day == other.per_day &&
+  return id == other.id && per_day == other.per_day &&
          per_week == other.per_week && per_month == other.per_month &&
          total_max == other.total_max &&
          base::IsApproximatelyEqual(value, other.value,
                                     std::numeric_limits<double>::epsilon()) &&
          split_test_group == other.split_test_group &&
          embedding == other.embedding && segments == other.segments &&
-         oses == other.oses &&
+         oses == other.oses && conversions == other.conversions &&
          creative_notification_ads == other.creative_notification_ads &&
          creative_inline_content_ads == other.creative_inline_content_ads &&
          creative_new_tab_page_ads == other.creative_new_tab_page_ads &&
-         creative_promoted_content_ads == other.creative_promoted_content_ads &&
-         conversions == other.conversions;
+         creative_promoted_content_ads == other.creative_promoted_content_ads;
 }
 
 bool CatalogCreativeSetInfo::operator!=(

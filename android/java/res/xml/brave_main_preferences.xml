@@ -17,29 +17,17 @@
         android:order="1"
         android:title="@string/brave_shields_and_privacy"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.settings.BraveRewardsPreferences"
-        android:key="brave_rewards"
+        android:fragment="org.chromium.chrome.browser.settings.BraveNewsPreferencesV2"
+        android:key="brave_news_v2"
+        android:icon="@drawable/ic_news"
         android:order="2"
-        android:icon="@drawable/ic_rewards"
-        android:title="@string/brave_ui_brave_rewards"/>
+        android:title="@string/brave_news_title"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BraveWalletPreferences"
         android:key="brave_wallet"
         android:icon="@drawable/ic_crypto_wallets"
         android:order="3"
         android:title="@string/brave_ui_brave_wallet"/>
-     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.settings.BraveNewsPreferences"
-        android:key="brave_news"
-        android:icon="@drawable/ic_news"
-        android:order="3"
-        android:title="@string/brave_news_title"/>
-    <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.settings.BraveNewsPreferencesV2"
-        android:key="brave_news_v2"
-        android:icon="@drawable/ic_news"
-        android:order="3"
-        android:title="@string/brave_news_title"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BraveVpnPreferences"
         android:key="brave_vpn"

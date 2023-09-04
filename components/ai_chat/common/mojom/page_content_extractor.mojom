@@ -1,0 +1,31 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+import "url/mojom/url.mojom";
+
+enum PageContentType {
+  Text,
+  VideoTranscriptYouTube,
+  VideoTranscriptVTT
+};
+
+// Items either have content or a url to retrieve content
+union PageContentData {
+  string content;
+  url.mojom.Url content_url;
+};
+
+struct PageContent {
+  PageContentData content;
+  PageContentType type;
+};
+
+// Allows the browser process to request extraction events for a particular
+// RenderFrame.
+interface PageContentExtractor {
+  ExtractPageContent() => (PageContent? page_content);
+};

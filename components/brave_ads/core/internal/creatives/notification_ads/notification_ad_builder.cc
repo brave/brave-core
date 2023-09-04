@@ -5,16 +5,16 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 
-#include "base/guid.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
-#include "brave/components/brave_ads/core/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
 
 namespace brave_ads {
 
 NotificationAdInfo BuildNotificationAd(
     const CreativeNotificationAdInfo& creative_ad) {
   const std::string placement_id =
-      base::GUID::GenerateRandomV4().AsLowercaseString();
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
   return BuildNotificationAd(creative_ad, placement_id);
 }
 

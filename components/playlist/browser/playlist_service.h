@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
@@ -20,7 +21,6 @@
 #include "brave/components/playlist/browser/playlist_media_file_download_manager.h"
 #include "brave/components/playlist/browser/playlist_p3a.h"
 #include "brave/components/playlist/browser/playlist_thumbnail_downloader.h"
-#include "brave/components/playlist/browser/playlist_types.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -50,7 +50,6 @@ class PrefService;
 
 namespace playlist {
 
-class PlaylistServiceObserver;
 class MediaDetectorComponentManager;
 
 // This class is key interface for playlist. Client will ask any playlist
@@ -110,6 +109,9 @@ class PlaylistService : public KeyedService,
 #endif  // BUILDFLAG(IS_ANDROID)
 
   bool GetThumbnailPath(const std::string& id, base::FilePath* thumbnail_path);
+
+  // This returns candidate path, which possibly doesn't have file extension.
+  // Don't depend on this method to access the actual cache on the local disk.
   bool GetMediaPath(const std::string& id, base::FilePath* media_path);
 
   base::FilePath GetPlaylistItemDirPath(const std::string& id) const;
@@ -120,6 +122,18 @@ class PlaylistService : public KeyedService,
       blink::web_pref::WebPreferences* web_prefs);
 
   base::WeakPtr<PlaylistService> GetWeakPtr();
+
+  using FindMediaFilesFromContentsCallback =
+      base::OnceCallback<void(const GURL& target_url,
+                              std::vector<mojom::PlaylistItemPtr> items)>;
+  void FindMediaFilesFromContents(content::WebContents* contents,
+                                  FindMediaFilesFromContentsCallback callback);
+
+  // Synchronous versions of mojom::PlaylistService implementations
+  std::vector<mojom::PlaylistItemPtr> GetAllPlaylistItems();
+  mojom::PlaylistItemPtr GetPlaylistItem(const std::string& id);
+  mojom::PlaylistPtr GetPlaylist(const std::string& id);
+  std::vector<mojom::PlaylistPtr> GetAllPlaylists();
 
   // mojom::PlaylistService:
   // TODO(sko) Make getters without callbacks and simplify codes in
@@ -140,7 +154,8 @@ class PlaylistService : public KeyedService,
       FindMediaFilesFromActiveTabCallback callback) override;
   void AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
                      const std::string& playlist_id,
-                     bool can_cache) override;
+                     bool can_cache,
+                     AddMediaFilesCallback callback) override;
   void CopyItemToPlaylist(const std::vector<std::string>& item_ids,
                           const std::string& playlist_id) override;
   void RemoveItemFromPlaylist(const std::string& playlist_id,
@@ -152,6 +167,8 @@ class PlaylistService : public KeyedService,
                                const std::string& item_id,
                                int16_t position) override;
   void UpdateItem(mojom::PlaylistItemPtr item) override;
+  void UpdateItemLastPlayedPosition(const std::string& id,
+                                    int32_t last_played_position) override;
   void RecoverLocalDataForItem(
       const std::string& item_id,
       bool update_media_src_before_recovery,
@@ -169,10 +186,14 @@ class PlaylistService : public KeyedService,
 
   void ResetAll() override;
 
+  // Please note that mojo-based observer mechanism is asynchronous, which means
+  // it could be notified much later than callback from each operation.
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 
   void OnMediaUpdatedFromContents(content::WebContents* contents);
+
+  bool HasPlaylistItem(const std::string& id) const;
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
@@ -199,14 +220,9 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ResetAll);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest,
                            CleanUpOrphanedPlaylistItemDirs);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, MediaFileExtension);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceWithFakeUAUnitTest,
                            ShouldAlwaysGetMediaFromBackgroundWebContents);
-
-  void AddObserverForTest(PlaylistServiceObserver* observer);
-  void RemoveObserverForTest(PlaylistServiceObserver* observer);
-
-  // KeyedService overrides:
-  void Shutdown() override;
 
   // Finds media files from |contents| or |url| and adds them to given
   // |playlist_id|.
@@ -216,22 +232,13 @@ class PlaylistService : public KeyedService,
 
   void AddMediaFilesFromItems(const std::string& playlist_id,
                               bool cache,
+                              AddMediaFilesCallback callback,
                               std::vector<mojom::PlaylistItemPtr> items);
-
-  bool IsValidPlaylistItem(const std::string& id) override;
-
-  // PlaylistThumbnailDownloader::Delegate overrides:
-  // Called when thumbnail image file is downloaded.
-  void OnThumbnailDownloaded(const std::string& id,
-                             const base::FilePath& path) override;
 
   // Returns true when we should try getting media from a background web
   // contents that is different from the given |contents|.
   bool ShouldGetMediaFromBackgroundWebContents(
       content::WebContents* contents) const;
-
-  std::vector<mojom::PlaylistItemPtr> GetAllPlaylistItems();
-  mojom::PlaylistItemPtr GetPlaylistItem(const std::string& id);
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);
@@ -242,15 +249,14 @@ class PlaylistService : public KeyedService,
                          bool update_media_src_and_retry_on_fail,
                          DownloadMediaFileCallback callback);
 
-  base::SequencedTaskRunner* GetTaskRunner();
-
   void CleanUpMalformedPlaylistItems();
 
   // Delete orphaned playlist item directories that are not included in prefs.
   void CleanUpOrphanedPlaylistItemDirs();
   void OnGetOrphanedPaths(const std::vector<base::FilePath> paths);
 
-  void NotifyPlaylistChanged(const PlaylistChangeParams& params);
+  // TODO(sko) Remove this version
+  // https://github.com/brave/brave-browser/issues/30735
   void NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
                              const std::string& playlist_id);
   void NotifyMediaFilesUpdated(const GURL& url,
@@ -302,28 +308,43 @@ class PlaylistService : public KeyedService,
                                    RecoverLocalDataForItemCallback callback);
   void RemoveLocalDataForItemImpl(const mojom::PlaylistItemPtr& item);
 
-  void OnPlaylistItemDirCreated(mojom::PlaylistItemPtr item,
-                                bool cache_media,
-                                bool update_media_src_and_retry_caching_on_fail,
-                                DownloadMediaFileCallback callback,
-                                bool directory_ready);
+  void OnPlaylistItemDirCreated(
+      mojom::PlaylistItemPtr item,
+      base::OnceCallback<void(mojom::PlaylistItemPtr, bool)> callback,
+      bool directory_ready);
 
   void OnMediaFileDownloadProgressed(const mojom::PlaylistItemPtr& item,
                                      int64_t total_bytes,
                                      int64_t received_bytes,
                                      int percent_complete,
                                      base::TimeDelta remaining_time);
-  void OnMediaFileDownloadFinished(bool update_media_src_and_retry_on_fail,
-                                   DownloadMediaFileCallback callback,
-                                   mojom::PlaylistItemPtr item,
-                                   const std::string& media_file_path);
+  void OnMediaFileDownloadFinished(
+      bool update_media_src_and_retry_on_fail,
+      DownloadMediaFileCallback callback,
+      mojom::PlaylistItemPtr item,
+      const base::expected<
+          PlaylistMediaFileDownloadManager::DownloadResult,
+          PlaylistMediaFileDownloadManager::DownloadFailureReason>& result);
+
+  // KeyedService overrides:
+  void Shutdown() override;
+
+  // PlaylistMediaFileDownloadManager::Delegate
+  bool IsValidPlaylistItem(const std::string& id) override;
+  base::FilePath GetMediaPathForPlaylistItemItem(
+      const std::string& id) override;
+  base::SequencedTaskRunner* GetTaskRunner() override;
+
+  // PlaylistThumbnailDownloader::Delegate overrides:
+  // Called when thumbnail image file is downloaded.
+  void OnThumbnailDownloaded(const std::string& id,
+                             const base::FilePath& path) override;
 
   std::unique_ptr<Delegate> delegate_;
 
   const base::FilePath base_dir_;
-  base::ObserverList<PlaylistServiceObserver> observers_;
 
-  mojo::RemoteSet<mojom::PlaylistServiceObserver> service_observers_;
+  mojo::RemoteSet<mojom::PlaylistServiceObserver> observers_;
 
   std::unique_ptr<PlaylistMediaFileDownloadManager>
       media_file_download_manager_;

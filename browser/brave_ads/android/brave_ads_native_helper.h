@@ -10,14 +10,14 @@
 
 namespace brave_ads {
 
-static jboolean JNI_BraveAdsNativeHelper_IsBraveAdsEnabled(
+static jboolean JNI_BraveAdsNativeHelper_IsOptedInToNotificationAds(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android);
 
-static void JNI_BraveAdsNativeHelper_SetAdsEnabled(
+static void JNI_BraveAdsNativeHelper_SetOptedInToNotificationAds(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
-    jboolean should_enable_ads);
+    jboolean opted_in);
 
 static jboolean JNI_BraveAdsNativeHelper_IsSupportedRegion(
     JNIEnv* env,

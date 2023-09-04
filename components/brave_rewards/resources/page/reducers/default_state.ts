@@ -6,12 +6,13 @@
 import {
   optional
 } from '../../../../brave_rewards/resources/shared/lib/optional'
+import * as Rewards from '../lib/types'
 
 export function defaultState (): Rewards.State {
   return {
+    isGrandfatheredUser: false,
     userType: 'unconnected',
-    enabledAds: false,
-    enabledAdsMigrated: false,
+    isAcSupported: false,
     enabledContribute: false,
     contributionMinTime: 8,
     contributionMinVisits: 1,
@@ -21,28 +22,35 @@ export function defaultState (): Rewards.State {
       modalConnect: false,
       modalRedirect: 'hide',
       modalReset: false,
+      modalAdsHistory: false,
+      adsSettings: false,
+      autoContributeSettings: false,
+      contributionsSettings: false,
       promosDismissed: {}
     },
     autoContributeList: [],
     recurringList: [],
     tipsList: [],
     adsData: {
-      adsEnabled: false,
       adsPerHour: 0,
       adsSubdivisionTargeting: '',
       automaticallyDetectedAdsSubdivisionTargeting: '',
       shouldAllowAdsSubdivisionTargeting: true,
       subdivisions: [],
-      adsUIEnabled: false,
       adsIsSupported: false,
       needsBrowserUpgradeToServeAds: false,
+      notificationAdsEnabled: false,
+      newTabAdsEnabled: false,
+      newsAdsEnabled: false,
       adsNextPaymentDate: 0,
       adsReceivedThisMonth: 0,
-      adsEarningsThisMonth: 0,
-      adsEarningsLastMonth: 0
+      adTypesReceivedThisMonth: {},
+      adsMinEarningsThisMonth: 0,
+      adsMaxEarningsThisMonth: 0,
+      adsMinEarningsLastMonth: 0,
+      adsMaxEarningsLastMonth: 0
     },
     adsHistory: [],
-    pendingContributionTotal: 0,
     promotions: [],
     inlineTipsEnabled: true,
     inlineTip: {
@@ -50,7 +58,6 @@ export function defaultState (): Rewards.State {
       reddit: true,
       github: true
     },
-    pendingContributions: [],
     excludedList: [],
     externalWalletProviderList: [],
     balance: optional<number>(),

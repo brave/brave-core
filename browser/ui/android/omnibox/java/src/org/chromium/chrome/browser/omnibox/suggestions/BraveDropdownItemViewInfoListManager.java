@@ -11,6 +11,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import org.chromium.components.omnibox.suggestions.OmniboxSuggestionUiType;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
 class BraveDropdownItemViewInfoListManager extends DropdownItemViewInfoListManager {

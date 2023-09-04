@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_ANDROID_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_ANDROID_UTIL_H_
 
-#include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 
 namespace android_util {
 

@@ -3,11 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/history/category_content_value_util.h"
+#include "brave/components/brave_ads/core/public/history/category_content_value_util.h"
 
-#include <string>
-
-#include "brave/components/brave_ads/core/category_content_info.h"
+#include "brave/components/brave_ads/core/public/history/category_content_info.h"
 
 namespace brave_ads {
 
@@ -22,13 +20,10 @@ constexpr char kLegacyUserReactionTypeKey[] = "opt_action";
 
 base::Value::Dict CategoryContentToValue(
     const CategoryContentInfo& category_content) {
-  base::Value::Dict dict;
-
-  dict.Set(kCategoryKey, category_content.category);
-  dict.Set(kUserReactionTypeKey,
+  return base::Value::Dict()
+      .Set(kCategoryKey, category_content.category)
+      .Set(kUserReactionTypeKey,
            static_cast<int>(category_content.user_reaction_type));
-
-  return dict;
 }
 
 CategoryContentInfo CategoryContentFromValue(const base::Value::Dict& dict) {

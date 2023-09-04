@@ -5,9 +5,7 @@
 
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 
-#include <memory>
-
-#include "brave/browser/ui/sidebar/sidebar_service_delegate_impl.h"
+#include "base/no_destructor.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -17,7 +15,8 @@ namespace sidebar {
 
 // static
 SidebarServiceFactory* SidebarServiceFactory::GetInstance() {
-  return base::Singleton<SidebarServiceFactory>::get();
+  static base::NoDestructor<SidebarServiceFactory> instance;
+  return instance.get();
 }
 
 SidebarService* SidebarServiceFactory::GetForProfile(Profile* profile) {
@@ -35,8 +34,7 @@ SidebarServiceFactory::~SidebarServiceFactory() = default;
 KeyedService* SidebarServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto* prefs = Profile::FromBrowserContext(context)->GetPrefs();
-  return new SidebarService(
-      prefs, std::make_unique<SidebarServiceDelegateImpl>(prefs));
+  return new SidebarService(prefs);
 }
 
 content::BrowserContext* SidebarServiceFactory::GetBrowserContextToUse(

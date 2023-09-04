@@ -1,5 +1,5 @@
 # Statement Of Accounts
 
-Statement of accounts includes estimated earnings, the next payment date, ads received this month, and ads received last month.
+Statement of accounts includes payment date, estimated earnings, ads received, and revenues for the previous month.
 
 Please add to it!

@@ -1,15 +1,14 @@
-# Copyright 2021 The Brave Authors. All rights reserved.
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/build/cargo.gni")
+import("//build/rust/rust_static_library.gni")
 
-rust_crate("rust_lib") {
-  visibility = [ "//brave/components/skus/browser/rs:rust_lib" ]
-
-  inputs = [
-    "Cargo.toml",
+rust_static_library("rust_lib") {
+  crate_name = "skus"
+  crate_root = "src/lib.rs"
+  sources = [
     "src/cache.rs",
     "src/errors.rs",
     "src/http.rs",
@@ -22,5 +21,24 @@ rust_crate("rust_lib") {
     "src/sdk/orders.rs",
     "src/storage/kv.rs",
     "src/storage/mod.rs",
+  ]
+
+  deps = [
+    "//brave/third_party/rust/async_trait/v0_1:lib",
+    "//brave/third_party/rust/bigdecimal/v0_1:lib",
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1:lib",
+    "//brave/third_party/rust/chrono/v0_4:lib",
+    "//brave/third_party/rust/data_encoding/v2:lib",
+    "//brave/third_party/rust/futures_retry/v0_5:lib",
+    "//brave/third_party/rust/hmac/v0_10:lib",
+    "//brave/third_party/rust/http/v0_1:lib",
+    "//brave/third_party/rust/rand/v0_7:lib",
+    "//brave/third_party/rust/sha2/v0_9:lib",
+    "//brave/third_party/rust/tracing/v0_1:lib",
+    "//brave/third_party/rust/urlencoding/v1:lib",
+    "//brave/third_party/rust/uuid/v0_8:lib",
+    "//third_party/rust/base64/v0_13:lib",
+    "//third_party/rust/serde/v1:lib",
+    "//third_party/rust/serde_json/v1:lib",
   ]
 }

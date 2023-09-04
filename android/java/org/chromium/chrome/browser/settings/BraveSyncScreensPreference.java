@@ -15,7 +15,6 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -32,7 +31,6 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -40,7 +38,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -48,7 +45,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,31 +63,25 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
-import org.chromium.base.task.PostTask;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BackPressHelper;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.back_press.BackPressHelper;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.qrreader.BarcodeTracker;
 import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
 import org.chromium.chrome.browser.qrreader.CameraSource;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.share.qrcode.QRCodeGenerationRequest;
 import org.chromium.chrome.browser.sync.BraveSyncDevices;
-import org.chromium.chrome.browser.sync.SyncService;
+import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
-import org.chromium.chrome.browser.sync.settings.SyncSettingsUtils;
-import org.chromium.chrome.browser.sync.settings.SyncSettingsUtils.SyncError;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
-import org.chromium.ui.KeyboardVisibilityDelegate;
+import org.chromium.components.sync.SyncService;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.io.IOException;
-import java.lang.Runnable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -193,7 +183,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        SyncService.get().addSyncStateChangedListener(this);
+        SyncServiceFactory.get().addSyncStateChangedListener(this);
 
         InvalidateCodephrase();
 
@@ -483,7 +473,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getActivity().setTitle(R.string.sync_category_title);
 
-        boolean firstSetupComplete = getBraveSyncWorker().IsFirstSetupComplete();
+        boolean firstSetupComplete = getBraveSyncWorker().IsInitialSyncFeatureSetupComplete();
 
         Log.v(TAG, "setAppropriateView first setup complete " + firstSetupComplete);
         if (!firstSetupComplete) {
@@ -967,7 +957,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             mCameraSourcePreview.release();
         }
 
-        SyncService.get().removeSyncStateChangedListener(this);
+        SyncServiceFactory.get().removeSyncStateChangedListener(this);
 
         if (deviceInfoObserverSet) {
             BraveSyncDevices.get().removeDeviceInfoChangedListener(this);
@@ -1238,7 +1228,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (isSyncStateChangedObserverPaused()) {
             return;
         }
-        if (SyncService.get().isFirstSetupComplete() == false) {
+        if (SyncServiceFactory.get().isInitialSyncFeatureSetupComplete() == false) {
             if (mLeaveSyncChainInProgress) {
                 leaveSyncChainComplete();
             } else {

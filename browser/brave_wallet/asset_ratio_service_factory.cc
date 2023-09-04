@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -18,7 +19,8 @@ namespace brave_wallet {
 
 // static
 AssetRatioServiceFactory* AssetRatioServiceFactory::GetInstance() {
-  return base::Singleton<AssetRatioServiceFactory>::get();
+  static base::NoDestructor<AssetRatioServiceFactory> instance;
+  return instance.get();
 }
 
 // static

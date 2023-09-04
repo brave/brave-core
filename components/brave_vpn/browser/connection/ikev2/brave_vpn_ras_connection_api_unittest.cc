@@ -27,6 +27,7 @@
 namespace brave_vpn {
 
 namespace {
+
 const char kProfileCredentialData[] = R"(
         {
           "eap-username": "brave-user",
@@ -409,6 +410,21 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest) {
   test_api->OnDisconnected();
   EXPECT_FALSE(test_api->needs_connect_);
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
+
+  test_api->connection_state_ = mojom::ConnectionState::CONNECTED;
+  test_api->Connect();
+  EXPECT_TRUE(test_api->needs_connect_);
+  EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
+            test_api->GetConnectionState());
+  static_cast<BraveVPNOSConnectionAPISim*>(test_api)
+      ->SetNetworkAvailableForTesting(false);
+  test_api->OnDisconnected();
+  EXPECT_TRUE(test_api->needs_connect_);
+  static_cast<BraveVPNOSConnectionAPISim*>(test_api)
+      ->SetNetworkAvailableForTesting(true);
+  test_api->OnNetworkChanged(net::NetworkChangeNotifier::CONNECTION_ETHERNET);
+  EXPECT_FALSE(test_api->needs_connect_);
+  EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 }
 
 TEST_F(BraveVPNOSConnectionAPIUnitTest,
@@ -452,7 +468,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, ConnectionInfoTest) {
 
   // Check cached connection info is cleared when user set new selected region.
   test_api->connection_state_ = mojom::ConnectionState::DISCONNECTED;
-  GetConnectionAPI()->ResetConnectionInfo();
+  test_api->ResetConnectionInfo();
   EXPECT_FALSE(test_api->connection_info().IsValid());
 
   // Fill connection info again.
@@ -520,7 +536,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest,
   auto* test_api =
       static_cast<BraveVPNOSConnectionAPIBase*>(GetConnectionAPI());
 
-  test_api->SetConnectionState(mojom::ConnectionState::CONNECTING);
+  test_api->SetConnectionStateForTesting(mojom::ConnectionState::CONNECTING);
   test_api->UpdateAndNotifyConnectionStateChange(
       mojom::ConnectionState::DISCONNECTED);
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());

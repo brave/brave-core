@@ -104,13 +104,8 @@ copy("brave") {
         sources += [ "$root_out_dir/apks/MonochromePublic.apk" ]
       }
     } else {
-      if (target_android_output_format == "aab") {
-        deps += [ "//chrome/android:chrome_modern_public_bundle" ]
-        sources += [ "$root_out_dir/apks/ChromeModernPublic.aab" ]
-      } else {
-        deps += [ "//chrome/android:chrome_public_apk" ]
-        sources += [ "$root_out_dir/apks/ChromePublic.apk" ]
-      }
+      deps += [ "//chrome/android:chrome_public_apk" ]
+      sources += [ "$root_out_dir/apks/ChromePublic.apk" ]
     }
   }
   outputs = [ brave_android_output ]
@@ -215,7 +210,9 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/BraveRewardsNativeWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/app/BraveActivity.java",
+    "//brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsControllerFactory.java",
+    "//brave/android/java/org/chromium/chrome/browser/component_updater/BraveComponentUpdater.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BlockchainRegistryFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletProviderDelegateImplHelper.java",
@@ -225,8 +222,11 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/SwapServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/TxServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/permission/BraveDappPermissionPromptDialog.java",
+    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletDataFilesInstaller.java",
+    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletDataFilesInstallerUtil.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletNativeUtils.java",
     "//brave/android/java/org/chromium/chrome/browser/informers/BraveSyncAccountDeletedInformer.java",
+    "//brave/android/java/org/chromium/chrome/browser/misc_metrics/PrivacyHubMetricsFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationPlatformBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationSettingsBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
@@ -236,6 +236,7 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/settings/developer/BraveQAPreferences.java",
     "//brave/android/java/org/chromium/chrome/browser/shields/CookieListOptInServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/shields/FilterListServiceFactory.java",
+    "//brave/android/java/org/chromium/chrome/browser/shields/UrlSanitizerServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
     "//brave/android/java/org/chromium/chrome/browser/speedreader/BraveSpeedReaderUtils.java",
     "//brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",

@@ -11,10 +11,10 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 
 using testing::ElementsAreArray;
 
@@ -83,10 +83,126 @@ const char solana_token_list_json[] = R"(
     }
   })";
 
+const char ramp_token_lists_json[] = R"({
+  "tokens": [
+    {
+      "chain_id": "0x1",
+      "coin": 60,
+      "coingecko_id": "",
+      "contract_address": "",
+      "decimals": 18,
+      "is_erc1155": false,
+      "is_erc20": false,
+      "is_erc721": false,
+      "is_nft": false,
+      "logo": "",
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "token_id": "",
+      "visible": true,
+      "on_ramp_providers": ["ramp", "sardine", "transak", "stripe", "coinbase"],
+      "off_ramp_providers": ["ramp"]
+    },
+    {
+      "chain_id": "0x89",
+      "coin": 60,
+      "coingecko_id": "",
+      "contract_address": "",
+      "decimals": 18,
+      "is_erc1155": false,
+      "is_erc20": false,
+      "is_erc721": false,
+      "is_nft": false,
+      "logo": "",
+      "name": "Polygon",
+      "symbol": "MATIC",
+      "token_id": "",
+      "visible": true,
+      "on_ramp_providers": ["ramp"],
+      "off_ramp_providers": ["ramp"]
+    },
+    {
+      "chain_id": "0xa",
+      "coin": 60,
+      "coingecko_id": "",
+      "contract_address": "",
+      "decimals": 18,
+      "is_erc1155": false,
+      "is_erc20": false,
+      "is_erc721": false,
+      "is_nft": false,
+      "logo": "",
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "token_id": "",
+      "visible": true,
+      "on_ramp_providers": ["transak"],
+      "off_ramp_providers": []
+    },
+    {
+      "chain_id": "0x1",
+      "coin": 60,
+      "coingecko_id": "",
+      "contract_address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+      "decimals": 18,
+      "is_erc1155": false,
+      "is_erc20": true,
+      "is_erc721": false,
+      "is_nft": false,
+      "logo": "aave.png",
+      "name": "AAVE",
+      "symbol": "AAVE",
+      "token_id": "",
+      "visible": true,
+      "on_ramp_providers": ["sardine"],
+      "off_ramp_providers": []
+    },
+    {
+      "chain_id": "0x65",
+      "coin": 501,
+      "coingecko_id": "",
+      "contract_address": "",
+      "decimals": 9,
+      "is_erc1155": false,
+      "is_erc20": false,
+      "is_erc721": false,
+      "is_nft": false,
+      "logo": "",
+      "name": "Solana",
+      "symbol": "SOL",
+      "token_id": "",
+      "visible": true,
+      "on_ramp_providers": [],
+      "off_ramp_providers": ["ramp"]
+    }
+  ]
+})";
+
+const char on_ramp_currency_lists_json[] = R"({
+  "currencies": [
+    {
+      "currency_code": "ARS",
+      "currency_name": "Argentine Peso",
+      "providers": [
+        "transak"
+      ]
+    },
+    {
+      "currency_code": "USD",
+      "currency_name": "US Dollar",
+      "providers": [
+        "ramp",
+        "transak"
+      ]
+    }
+  ]
+})";
+
 mojom::BlockchainTokenPtr wrapped_sol = mojom::BlockchainToken::New(
     "So11111111111111111111111111111111111111112",
     "Wrapped SOL",
     "So11111111111111111111111111111111111111112.png",
+    false,
     false,
     false,
     false,
@@ -106,6 +222,7 @@ mojom::BlockchainTokenPtr usdc = mojom::BlockchainToken::New(
     false,
     false,
     false,
+    false,
     "USDC",
     6,
     true,
@@ -117,6 +234,7 @@ mojom::BlockchainTokenPtr tsla = mojom::BlockchainToken::New(
     "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ",
     "Tesla Inc.",
     "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
+    false,
     false,
     false,
     false,
@@ -184,6 +302,131 @@ const char chain_list_json[] = R"(
       ]
     }
   ])";
+
+const char dapp_lists_json[] = R"({
+    "solana": {
+      "success": true,
+      "chain": "solana",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": [
+        {
+          "dappId": "20419",
+          "name": "GameTrade Market",
+          "description": "Discover, buy, sell and trade in-game NFTs",
+          "logo": "https://dashboard-assets.dappradar.com/document/20419/gametrademarket-dapp-marketplaces-matic-logo_e3e698e60ebd9bfe8ed1421bb41b890d.png",
+          "link": "https://dappradar.com/solana/marketplaces/gametrade-market-2",
+          "website": "https://gametrade.market/",
+          "chains": [
+            "polygon",
+            "solana",
+            "binance-smart-chain"
+          ],
+          "categories": [
+            "marketplaces"
+          ],
+          "metrics": {
+            "transactions": "1513120",
+            "uaw": "917737",
+            "volume": "32352.38",
+            "balance": "3.81"
+          }
+        }
+      ]
+    },
+    "ethereum": {
+      "success": true,
+      "chain": "ethereum",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": [
+        {
+          "dappId": "7000",
+          "name": "Uniswap V3",
+          "description": "A protocol for trading and automated liquidity.",
+          "logo": "https://dashboard-assets.dappradar.com/document/7000/uniswapv3-dapp-defi-ethereum-logo_7f71f0c5a1cd26a3e3ffb9e8fb21b26b.png",
+          "link": "https://dappradar.com/ethereum/exchanges/uniswap-v3",
+          "website": "https://app.uniswap.org/#/swap",
+          "chains": [
+            "ethereum",
+            "polygon",
+            "optimism",
+            "celo",
+            "arbitrum",
+            "binance-smart-chain"
+          ],
+          "categories": [
+            "exchanges"
+          ],
+          "metrics": {
+            "transactions": "3596443",
+            "uaw": "507730",
+            "volume": "42672855706.52",
+            "balance": "1887202135.14"
+          }
+        }
+      ]
+    },
+    "polygon": {
+      "success": true,
+      "chain": "polygon",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    },
+    "binance_smart_chain": {
+      "success": true,
+      "chain": "binance-smart-chain",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    },
+    "optimism": {
+      "success": true,
+      "chain": "optimism",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    },
+    "aurora": {
+      "success": true,
+      "chain": "aurora",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    },
+    "avalanche": {
+      "success": true,
+      "chain": "avalanche",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    },
+    "fantom": {
+      "success": true,
+      "chain": "fantom",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    }
+  })";
+
+const char coingecko_ids_map_json[] = R"({
+  "0xa": {
+    "0x7f5c764cbc14f9669b88837ca1490cca17c31607": "usd-coin"
+  },
+  "0x65": {
+    "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": "usd-coin"
+  }
+})";
 
 std::vector<std::string> GetChainIds(
     const std::vector<mojom::NetworkInfoPtr>& networks) {
@@ -413,107 +656,194 @@ TEST(BlockchainRegistryUnitTest, GetBuyTokens) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
 
+  // Before parsing the list, an empty list should be returned (no crash)
+  auto run_loop = std::make_unique<base::RunLoop>();
+  registry->GetBuyTokens(
+      mojom::OnRampProvider::kRamp, mojom::kMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_TRUE(token_list.empty());
+            run_loop->Quit();
+          }));
+  run_loop->Run();
+
+  absl::optional<RampTokenListMaps> ramp_token_lists =
+      ParseRampTokenListMaps(ramp_token_lists_json);
+  ASSERT_TRUE(ramp_token_lists);
+  registry->UpdateOnRampTokenLists(std::move(*ramp_token_lists).first);
+
   // Get Ramp buy tokens
-  base::RunLoop run_loop3;
+  run_loop = std::make_unique<base::RunLoop>();
   registry->GetBuyTokens(
       mojom::OnRampProvider::kRamp, mojom::kMainnetChainId,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_NE(token_list.size(), 0UL);
             EXPECT_EQ(token_list[0]->name, "Ethereum");
-            run_loop3.Quit();
+            run_loop->Quit();
           }));
-  run_loop3.Run();
+  run_loop->Run();
 
-  base::RunLoop run_loop4;
+  run_loop = std::make_unique<base::RunLoop>();
   registry->GetBuyTokens(
       mojom::OnRampProvider::kRamp, mojom::kPolygonMainnetChainId,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_NE(token_list.size(), 0UL);
             EXPECT_EQ(token_list[0]->name, "Polygon");
-            run_loop4.Quit();
+            run_loop->Quit();
           }));
-  run_loop4.Run();
+  run_loop->Run();
+
+  // Coinbase
+  run_loop = std::make_unique<base::RunLoop>();
+  registry->GetBuyTokens(
+      mojom::OnRampProvider::kCoinbase, mojom::kMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_EQ(token_list[0]->name, "Ethereum");
+            run_loop->Quit();
+          }));
+  run_loop->Run();
 }
 
 TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
 
-  std::vector<mojom::BlockchainToken> buy_tokens;
-  for (const auto& v :
-       {GetRampBuyTokens(), GetSardineBuyTokens(), GetTransakBuyTokens()}) {
-    buy_tokens.insert(buy_tokens.end(), v.begin(), v.end());
-  }
+  absl::optional<RampTokenListMaps> ramp_token_lists =
+      ParseRampTokenListMaps(ramp_token_lists_json);
+  ASSERT_TRUE(ramp_token_lists);
+  registry->UpdateOnRampTokenLists(std::move(*ramp_token_lists).first);
 
-  const char* chains[] = {
-      mojom::kMainnetChainId,          mojom::kPolygonMainnetChainId,
-      mojom::kAvalancheMainnetChainId, mojom::kBinanceSmartChainMainnetChainId,
-      mojom::kSolanaMainnet,           mojom::kCeloMainnetChainId,
-      mojom::kArbitrumMainnetChainId};
+  // Ethereum mainnet tokens are present
+  auto run_loop = std::make_unique<base::RunLoop>();
+  registry->GetProvidersBuyTokens(
+      {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kSardine,
+       mojom::OnRampProvider::kTransak,
+       mojom::OnRampProvider::kTransak /* test duplicate provider */},
+      mojom::kMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_EQ(token_list.size(), 4UL);
+            run_loop->Quit();
+          }));
+  run_loop->Run();
 
-  for (auto* chain : chains) {
-    std::vector<mojom::BlockchainTokenPtr> expected_tokens;
-    for (const auto& token : buy_tokens) {
-      if (token.chain_id == chain) {
-        expected_tokens.push_back(mojom::BlockchainToken::New(token));
-      }
-    }
+  // Polygon mainnet token is present
+  run_loop = std::make_unique<base::RunLoop>();
+  registry->GetProvidersBuyTokens(
+      {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kSardine,
+       mojom::OnRampProvider::kTransak,
+       mojom::OnRampProvider::kTransak /* test duplicate provider */},
+      mojom::kPolygonMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_EQ(token_list.size(), 1UL);
+            EXPECT_EQ(token_list[0]->chain_id, mojom::kPolygonMainnetChainId);
+            run_loop->Quit();
+          }));
+  run_loop->Run();
 
-    base::RunLoop run_loop;
-    registry->GetProvidersBuyTokens(
-        {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kSardine,
-         mojom::OnRampProvider::kTransak,
-         mojom::OnRampProvider::kTransak /* test duplicate provider */},
-        chain,
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
-              EXPECT_EQ(expected_tokens, token_list) << chain;
-
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-  }
+  // Optimism mainnet token is present for transak
+  run_loop = std::make_unique<base::RunLoop>();
+  registry->GetProvidersBuyTokens(
+      {mojom::OnRampProvider::kTransak}, mojom::kOptimismMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_EQ(token_list.size(), 1UL);
+            EXPECT_EQ(token_list[0]->chain_id, mojom::kOptimismMainnetChainId);
+            run_loop->Quit();
+          }));
+  run_loop->Run();
 }
 
 TEST(BlockchainRegistryUnitTest, GetSellTokens) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
 
+  // Before parsing the list, an empty list should be returned
+  auto run_loop = std::make_unique<base::RunLoop>();
+  registry->GetSellTokens(
+      mojom::OffRampProvider::kRamp, mojom::kMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_TRUE(token_list.empty());
+            run_loop->Quit();
+          }));
+  run_loop->Run();
+
+  absl::optional<RampTokenListMaps> ramp_token_lists =
+      ParseRampTokenListMaps(ramp_token_lists_json);
+  ASSERT_TRUE(ramp_token_lists);
+  registry->UpdateOffRampTokenLists(std::move(*ramp_token_lists).second);
+
   // Get Ramp sell tokens
-  base::RunLoop run_loop1;
+  run_loop = std::make_unique<base::RunLoop>();
   registry->GetSellTokens(
       mojom::OffRampProvider::kRamp, mojom::kMainnetChainId,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_NE(token_list.size(), 0UL);
             EXPECT_EQ(token_list[0]->name, "Ethereum");
-            run_loop1.Quit();
+            run_loop->Quit();
           }));
-  run_loop1.Run();
+  run_loop->Run();
 
-  base::RunLoop run_loop2;
+  run_loop = std::make_unique<base::RunLoop>();
   registry->GetSellTokens(
       mojom::OffRampProvider::kRamp, mojom::kPolygonMainnetChainId,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_NE(token_list.size(), 0UL);
             EXPECT_EQ(token_list[0]->name, "Polygon");
-            run_loop2.Quit();
+            run_loop->Quit();
           }));
-  run_loop2.Run();
+  run_loop->Run();
 
-  base::RunLoop run_loop3;
+  run_loop = std::make_unique<base::RunLoop>();
   registry->GetSellTokens(
       mojom::OffRampProvider::kRamp, mojom::kSolanaMainnet,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_NE(token_list.size(), 0UL);
             EXPECT_EQ(token_list[0]->name, "Solana");
-            run_loop3.Quit();
+            run_loop->Quit();
           }));
-  run_loop3.Run();
+  run_loop->Run();
+}
+
+TEST(BlockchainRegistryUnitTest, GetOnRampCurrencies) {
+  base::test::TaskEnvironment task_environment;
+  auto* registry = BlockchainRegistry::GetInstance();
+
+  // Before parsing the list, an empty list should be returned
+  auto run_loop = std::make_unique<base::RunLoop>();
+  registry->GetOnRampCurrencies(base::BindLambdaForTesting(
+      [&](std::vector<mojom::OnRampCurrencyPtr> currency_list) {
+        EXPECT_TRUE(currency_list.empty());
+        run_loop->Quit();
+      }));
+  run_loop->Run();
+
+  absl::optional<std::vector<mojom::OnRampCurrency>> on_ramp_currency_lists =
+      ParseOnRampCurrencyLists(on_ramp_currency_lists_json);
+  ASSERT_TRUE(on_ramp_currency_lists);
+  registry->UpdateOnRampCurrenciesLists(std::move(*on_ramp_currency_lists));
+
+  // After parsing the list, we should have some currencies
+  run_loop = std::make_unique<base::RunLoop>();
+  registry->GetOnRampCurrencies(base::BindLambdaForTesting(
+      [&](std::vector<mojom::OnRampCurrencyPtr> currency_list) {
+        EXPECT_NE(currency_list.size(), 0UL);
+        EXPECT_EQ(currency_list[0]->currency_code, "ARS");
+        EXPECT_EQ(currency_list[0]->currency_name, "Argentine Peso");
+        EXPECT_EQ(currency_list[1]->currency_code, "USD");
+        EXPECT_EQ(currency_list[1]->currency_name, "US Dollar");
+        run_loop->Quit();
+      }));
+  run_loop->Run();
 }
 
 TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworks) {
@@ -542,6 +872,67 @@ TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworksKnownOnesArePreferred) {
   EXPECT_EQ(found_networks[0]->chain_name, "Ethereum Mainnet");
 }
 
+TEST(BlockchainRegistryUnitTest, GetTopDapps) {
+  base::test::TaskEnvironment task_environment;
+  auto* registry = BlockchainRegistry::GetInstance();
+  absl::optional<DappListMap> dapp_lists_map = ParseDappLists(dapp_lists_json);
+  ASSERT_TRUE(dapp_lists_map);
+  registry->UpdateDappList(std::move(*dapp_lists_map));
+
+  // Top Ethereum dapps
+  // Loop twice to make sure getting the same list twice works
+  // For example, make sure nothing is std::move'd
+  for (size_t i = 0; i < 2; ++i) {
+    base::RunLoop run_loop;
+    registry->GetTopDapps(
+        mojom::kMainnetChainId, mojom::CoinType::ETH,
+        base::BindLambdaForTesting([&](std::vector<mojom::DappPtr> dapp_list) {
+          ASSERT_EQ(dapp_list.size(), 1UL);
+          EXPECT_EQ(dapp_list[0]->name, "Uniswap V3");
+          EXPECT_EQ(dapp_list[0]->description,
+                    "A protocol for trading and automated liquidity.");
+          EXPECT_EQ(dapp_list[0]->chains.size(), 6UL);
+          EXPECT_EQ(dapp_list[0]->chains[0], "ethereum");
+          EXPECT_EQ(dapp_list[0]->chains[1], "polygon");
+          EXPECT_EQ(dapp_list[0]->chains[2], "optimism");
+          EXPECT_EQ(dapp_list[0]->chains[3], "celo");
+          EXPECT_EQ(dapp_list[0]->chains[4], "arbitrum");
+          EXPECT_EQ(dapp_list[0]->chains[5], "binance-smart-chain");
+          EXPECT_EQ(dapp_list[0]->transactions, 3596443U);
+          EXPECT_EQ(dapp_list[0]->uaw, 507730U);
+          EXPECT_DOUBLE_EQ(dapp_list[0]->volume, 42672855706.52);
+          EXPECT_DOUBLE_EQ(dapp_list[0]->balance, 1887202135.14);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  // Top Solana dapps
+  // Loop twice to make sure getting the same list twice works
+  // For example, make sure nothing is std::move'd
+  for (size_t i = 0; i < 2; ++i) {
+    base::RunLoop run_loop;
+    registry->GetTopDapps(
+        mojom::kSolanaMainnet, mojom::CoinType::SOL,
+        base::BindLambdaForTesting([&](std::vector<mojom::DappPtr> dapp_list) {
+          ASSERT_EQ(dapp_list.size(), 1UL);
+          EXPECT_EQ(dapp_list[0]->name, "GameTrade Market");
+          EXPECT_EQ(dapp_list[0]->description,
+                    "Discover, buy, sell and trade in-game NFTs");
+          EXPECT_EQ(dapp_list[0]->chains.size(), 3UL);
+          EXPECT_EQ(dapp_list[0]->chains[0], "polygon");
+          EXPECT_EQ(dapp_list[0]->chains[1], "solana");
+          EXPECT_EQ(dapp_list[0]->chains[2], "binance-smart-chain");
+          EXPECT_EQ(dapp_list[0]->transactions, 1513120U);
+          EXPECT_EQ(dapp_list[0]->uaw, 917737U);
+          EXPECT_DOUBLE_EQ(dapp_list[0]->volume, 32352.38);
+          EXPECT_DOUBLE_EQ(dapp_list[0]->balance, 3.81);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+}
+
 TEST(BlockchainRegistryUnitTest, GetEthTokenListMap) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
@@ -557,6 +948,74 @@ TEST(BlockchainRegistryUnitTest, GetEthTokenListMap) {
     EXPECT_EQ(token_list_map.size(), 1UL);
     EXPECT_EQ(token_list_map[mojom::kMainnetChainId].size(), 2UL);
   }
+}
+
+TEST(BlockchainRegistryUnitTest, GetCoingeckoId) {
+  base::test::TaskEnvironment task_environment;
+  auto* registry = BlockchainRegistry::GetInstance();
+  absl::optional<CoingeckoIdsMap> coingecko_ids_map =
+      ParseCoingeckoIdsMap(coingecko_ids_map_json);
+  ASSERT_TRUE(coingecko_ids_map);
+  registry->UpdateCoingeckoIdsMap(std::move(*coingecko_ids_map));
+
+  // Chain: ✅
+  // Contract: ✅
+  // Result: ✅
+  EXPECT_EQ(
+      registry->GetCoingeckoId(mojom::kOptimismMainnetChainId,
+                               "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
+      "usd-coin");
+
+  // Chain: ✅
+  // Contract: ❌
+  // Result: ❌
+  EXPECT_EQ(
+      registry->GetCoingeckoId(mojom::kOptimismMainnetChainId, "0xdeadbeef"),
+      absl::nullopt);
+
+  // Chain: ❌
+  // Contract: ✅
+  // Result: ❌
+  EXPECT_EQ(registry->GetCoingeckoId(
+                "0xdeadbeef", "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
+            absl::nullopt);
+
+  // Chain: ❌
+  // Contract: ❌
+  // Result: ❌
+  EXPECT_EQ(registry->GetCoingeckoId("0xdeadbeef", "0xcafebabe"),
+            absl::nullopt);
+
+  // Chain: ✅ (wrong case)
+  // Contract: ✅
+  // Result: ✅
+  EXPECT_EQ(registry->GetCoingeckoId(
+                "0xA", "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
+            "usd-coin");
+
+  // Chain: ✅
+  // Contract: ✅ (mixed case EIP-55)
+  // Result: ✅
+  EXPECT_EQ(
+      registry->GetCoingeckoId(mojom::kOptimismMainnetChainId,
+                               "0x7F5c764cBc14f9669B88837ca1490cCa17c31607"),
+      "usd-coin");
+
+  // Chain: ✅
+  // Contract: ✅ (mixed case Solana)
+  // Result: ✅
+  EXPECT_EQ(
+      registry->GetCoingeckoId(mojom::kSolanaMainnet,
+                               "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"),
+      "usd-coin");
+
+  // Chain: ✅
+  // Contract: ✅ (wrong case Solana)
+  // Result: ✅
+  EXPECT_EQ(
+      registry->GetCoingeckoId(mojom::kSolanaMainnet,
+                               "epjfwdd5aufqssqem2qn1xzybapc8g4weggkzwytdt1v"),
+      "usd-coin");
 }
 
 }  // namespace brave_wallet

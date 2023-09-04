@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback_helpers.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
 #include "base/base64.h"
@@ -35,6 +36,7 @@
 #include "brave/components/brave_wallet/browser/sns_resolver_task.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -730,17 +732,18 @@ class JsonRpcServiceUnitTest : public testing::Test {
       return false;
     }
 
-    for (const auto& chain : custom_networks->GetList()) {
-      if (!chain.is_dict()) {
+    for (const auto& item : custom_networks->GetList()) {
+      const auto* chain = item.GetIfDict();
+      if (!chain) {
         continue;
       }
 
-      const std::string* id = chain.GetDict().FindString("chainId");
+      const std::string* id = chain->FindString("chainId");
       if (!id || *id != chain_id) {
         continue;
       }
 
-      return chain.FindBoolKey("is_eip1559").value_or(false);
+      return chain->FindBool("is_eip1559").value_or(false);
     }
 
     return false;
@@ -1058,15 +1061,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
   bool SetNetwork(const std::string& chain_id,
                   mojom::CoinType coin,
                   const absl::optional<::url::Origin>& origin) {
-    bool result;
-    base::RunLoop run_loop;
-    json_rpc_service_->SetNetwork(chain_id, coin, origin,
-                                  base::BindLambdaForTesting([&](bool success) {
-                                    result = success;
-                                    run_loop.Quit();
-                                  }));
-    run_loop.Run();
-    return result;
+    return json_rpc_service_->SetNetwork(chain_id, coin, origin);
   }
 
   std::string GetChainId(mojom::CoinType coin,
@@ -1577,6 +1572,34 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestGetSPLTokenBalances(
+      const std::string& pubkey,
+      const std::string& chain_id,
+      std::vector<mojom::SPLTokenAmountPtr> expected_results,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetSPLTokenBalances(
+        pubkey, chain_id,
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::SPLTokenAmountPtr> results,
+                mojom::SolanaProviderError error,
+                const std::string& error_message) {
+              EXPECT_EQ(results.size(), expected_results.size());
+              for (size_t i = 0; i < results.size(); i++) {
+                EXPECT_EQ(results[i]->mint, expected_results[i]->mint);
+                EXPECT_EQ(results[i]->amount, expected_results[i]->amount);
+                EXPECT_EQ(results[i]->decimals, expected_results[i]->decimals);
+                EXPECT_EQ(results[i]->ui_amount,
+                          expected_results[i]->ui_amount);
+              }
+              EXPECT_EQ(error, expected_error);
+              EXPECT_EQ(error_message, expected_error_message);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
   void GetFilEstimateGas(const std::string& chain_id,
                          const std::string& from,
                          const std::string& to,
@@ -1606,22 +1629,10 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
   void AddEthereumChainForOrigin(mojom::NetworkInfoPtr chain,
                                  const url::Origin& origin,
-                                 const std::string& expected_chain_id,
-                                 mojom::ProviderError expected_error,
                                  const std::string& expected_error_message) {
-    base::RunLoop loop;
-    json_rpc_service_->AddEthereumChainForOrigin(
-        std::move(chain), origin,
-        base::BindLambdaForTesting([&](const std::string& chain_id,
-                                       mojom::ProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(chain_id, expected_chain_id);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          loop.Quit();
-        }));
-
-    loop.Run();
+    EXPECT_EQ(
+        expected_error_message,
+        json_rpc_service_->AddEthereumChainForOrigin(std::move(chain), origin));
   }
 
   void TestGetSolTokenMetadata(const std::string& token_mint_address,
@@ -1815,9 +1826,9 @@ TEST_F(JsonRpcServiceUnitTest, GetKnownNetworks) {
   UpdateCustomNetworks(prefs(), &values);
 
   EXPECT_CALL(callback,
-              Run(ElementsAreArray({"0x1", "0x4e454152", "0x89", "0x38",
-                                    "0xa86a", "0xfa", "0xa", "0x5", "0xaa36a7",
-                                    "0x539", "0x13a", "0x4cb2f"})));
+              Run(ElementsAreArray({"0x1", "0x4e454152", "0x89", "0x38", "0xa",
+                                    "0xa86a", "0x13a", "0xe9ac0d6", "0x5",
+                                    "0xaa36a7", "0x4cb2f", "0x539"})));
   json_rpc_service_->GetKnownNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
@@ -2042,28 +2053,16 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
   mojo::MakeSelfOwnedReceiver(std::move(observer),
                               receiver.InitWithNewPipeAndPassReceiver());
 
-  bool callback_is_called = false;
-  mojom::ProviderError expected = mojom::ProviderError::kSuccess;
   ASSERT_FALSE(
       brave_wallet::GetNetworkURL(prefs(), "0x111", mojom::CoinType::ETH)
           .is_valid());
   SetEthChainIdInterceptor(GetActiveEndpointUrl(chain), "0x111");
-  json_rpc_service_->AddEthereumChainForOrigin(
-      chain.Clone(), url::Origin::Create(GURL("https://brave.com")),
-      base::BindLambdaForTesting(
-          [&callback_is_called, &expected](const std::string& chain_id,
-                                           mojom::ProviderError error,
-                                           const std::string& error_message) {
-            ASSERT_FALSE(chain_id.empty());
-            EXPECT_EQ(error, expected);
-            ASSERT_TRUE(error_message.empty());
-            callback_is_called = true;
-          }));
-  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ("",
+            json_rpc_service_->AddEthereumChainForOrigin(
+                chain.Clone(), url::Origin::Create(GURL("https://brave.com"))));
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", true);
   loop.Run();
 
-  ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(
       brave_wallet::GetNetworkURL(prefs(), "0x111", mojom::CoinType::ETH)
           .is_valid());
@@ -2087,9 +2086,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
   EXPECT_EQ(*asset_list[0].GetDict().FindString("logo"), "https://url1.com");
   EXPECT_EQ(*asset_list[0].GetDict().FindBool("visible"), true);
 
-  callback_is_called = false;
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", true);
-  ASSERT_FALSE(callback_is_called);
 }
 
 TEST_F(JsonRpcServiceUnitTest, AddEthereumChainForOriginRejected) {
@@ -2107,27 +2104,15 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainForOriginRejected) {
   mojo::MakeSelfOwnedReceiver(std::move(observer),
                               receiver.InitWithNewPipeAndPassReceiver());
 
-  bool callback_is_called = false;
-  mojom::ProviderError expected = mojom::ProviderError::kSuccess;
   ASSERT_FALSE(
       brave_wallet::GetNetworkURL(prefs(), "0x111", mojom::CoinType::ETH)
           .is_valid());
   SetEthChainIdInterceptor(GetActiveEndpointUrl(chain), "0x111");
-  json_rpc_service_->AddEthereumChainForOrigin(
-      chain.Clone(), url::Origin::Create(GURL("https://brave.com")),
-      base::BindLambdaForTesting(
-          [&callback_is_called, &expected](const std::string& chain_id,
-                                           mojom::ProviderError error,
-                                           const std::string& error_message) {
-            ASSERT_FALSE(chain_id.empty());
-            EXPECT_EQ(error, expected);
-            ASSERT_TRUE(error_message.empty());
-            callback_is_called = true;
-          }));
-  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ("",
+            json_rpc_service_->AddEthereumChainForOrigin(
+                chain.Clone(), url::Origin::Create(GURL("https://brave.com"))));
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", false);
   loop.Run();
-  ASSERT_TRUE(callback_is_called);
   ASSERT_FALSE(
       brave_wallet::GetNetworkURL(prefs(), "0x111", mojom::CoinType::ETH)
           .is_valid());
@@ -2255,7 +2240,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
   mojom::NetworkInfo chain4("0x444", "chain_name4", {"https://url4.com"},
                             {"https://url4.com"}, 0, {GURL("https://url4.com")},
                             "symbol_name", "symbol", 11, mojom::CoinType::ETH,
-                            false);
+                            {mojom::KeyringId::kDefault}, false);
   bool fourth_callback_is_called = false;
   mojom::ProviderError fourth_expected =
       mojom::ProviderError::kUserRejectedRequest;
@@ -2282,7 +2267,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
   mojom::NetworkInfo chain5("0x444", "chain_name5", {"https://url5.com"},
                             {"https://url5.com"}, 0, {GURL("https://url5.com")},
                             "symbol_name", "symbol", 11, mojom::CoinType::ETH,
-                            false);
+                            {mojom::KeyringId::kDefault}, false);
   bool fifth_callback_is_called = false;
   mojom::ProviderError fifth_expected =
       mojom::ProviderError::kUserRejectedRequest;
@@ -2315,8 +2300,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainForOriginError) {
       brave_wallet::GetNetworkURL(prefs(), chain.chain_id, mojom::CoinType::ETH)
           .is_valid());
   AddEthereumChainForOrigin(
-      chain.Clone(), origin, chain.chain_id,
-      mojom::ProviderError::kUserRejectedRequest,
+      chain.Clone(), origin,
       l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS));
 
   // Try to add a custom chain.
@@ -2325,21 +2309,18 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainForOriginError) {
       brave_wallet::GetNetworkURL(prefs(), chain.chain_id, mojom::CoinType::ETH)
           .is_valid());
   SetEthChainIdInterceptor(GetActiveEndpointUrl(chain), chain.chain_id);
-  AddEthereumChainForOrigin(chain.Clone(), origin, chain.chain_id,
-                            mojom::ProviderError::kSuccess, "");
+  AddEthereumChainForOrigin(chain.Clone(), origin, "");
 
   // Other chain with same origin that has a pending request should be rejected.
   auto chain2 = chain.Clone();
   chain2->chain_id = "0x222";
   AddEthereumChainForOrigin(
-      chain2->Clone(), origin, chain2->chain_id,
-      mojom::ProviderError::kUserRejectedRequest,
+      chain2->Clone(), origin,
       l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
 
   // Try to add same chain with other origin should get rejected.
   AddEthereumChainForOrigin(
       chain.Clone(), url::Origin::Create(GURL("https://others.com")),
-      chain.chain_id, mojom::ProviderError::kUserRejectedRequest,
       l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
 
   auto network_url = GetActiveEndpointUrl(chain);
@@ -2360,8 +2341,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainForOriginError) {
 
     chain.chain_id = "0x333";
     AddEthereumChainForOrigin(
-        chain.Clone(), url::Origin::Create(GURL("https://others2.com")),
-        chain.chain_id, mojom::ProviderError::kSuccess, "");
+        chain.Clone(), url::Origin::Create(GURL("https://others2.com")), "");
     SetEthChainIdInterceptor(GetActiveEndpointUrl(chain), "0x555");
     json_rpc_service_->AddEthereumChainRequestCompleted(chain.chain_id, true);
     loop.Run();
@@ -2385,8 +2365,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainForOriginError) {
 
     chain.chain_id = "0x444";
     AddEthereumChainForOrigin(
-        chain.Clone(), url::Origin::Create(GURL("https://others3.com")),
-        chain.chain_id, mojom::ProviderError::kSuccess, "");
+        chain.Clone(), url::Origin::Create(GURL("https://others3.com")), "");
     SetEthChainIdInterceptorWithBrokenResponse(GetActiveEndpointUrl(chain));
     json_rpc_service_->AddEthereumChainRequestCompleted(chain.chain_id, true);
     loop.Run();
@@ -2630,6 +2609,7 @@ TEST_F(JsonRpcServiceUnitTest, GetFeeHistory) {
           }));
   run_loop.Run();
 
+  // OK: valid response
   SetHTTPRequestTimeoutInterceptor();
   base::RunLoop run_loop2;
   json_rpc_service_->GetFeeHistory(
@@ -2647,8 +2627,28 @@ TEST_F(JsonRpcServiceUnitTest, GetFeeHistory) {
           }));
   run_loop2.Run();
 
+  // KO: invalid JSON
   SetInvalidJsonInterceptor();
   base::RunLoop run_loop3;
+  json_rpc_service_->GetFeeHistory(
+      mojom::kLocalhostChainId,
+      base::BindLambdaForTesting(
+          [&](const std::vector<std::string>& base_fee_per_gas,
+              const std::vector<double>& gas_used_ratio,
+              const std::string& oldest_block,
+              const std::vector<std::vector<std::string>>& reward,
+              mojom::ProviderError error, const std::string& error_message) {
+            EXPECT_EQ(error, mojom::ProviderError::kInternalError);
+            EXPECT_EQ(error_message,
+                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+            run_loop3.Quit();
+          }));
+  run_loop3.Run();
+
+  // KO: valid JSON but unexpected response
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH),
+                 "eth_feeHistory", "", "{\"foo\":0}");
+  base::RunLoop run_loop4;
   json_rpc_service_->GetFeeHistory(
       mojom::kLocalhostChainId,
       base::BindLambdaForTesting(
@@ -2660,12 +2660,13 @@ TEST_F(JsonRpcServiceUnitTest, GetFeeHistory) {
             EXPECT_EQ(error, mojom::ProviderError::kParsingError);
             EXPECT_EQ(error_message,
                       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-            run_loop3.Quit();
+            run_loop4.Quit();
           }));
-  run_loop3.Run();
+  run_loop4.Run();
 
+  // KO: valid error response
   SetLimitExceededJsonErrorResponse();
-  base::RunLoop run_loop4;
+  base::RunLoop run_loop5;
   json_rpc_service_->GetFeeHistory(
       mojom::kLocalhostChainId,
       base::BindLambdaForTesting(
@@ -2676,9 +2677,9 @@ TEST_F(JsonRpcServiceUnitTest, GetFeeHistory) {
               mojom::ProviderError error, const std::string& error_message) {
             EXPECT_EQ(error, mojom::ProviderError::kLimitExceeded);
             EXPECT_EQ(error_message, "Request exceeds defined limit");
-            run_loop4.Quit();
+            run_loop5.Quit();
           }));
-  run_loop4.Run();
+  run_loop5.Run();
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
@@ -3450,58 +3451,56 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_ManyCalls) {
   testing::Mock::VerifyAndClearExpectations(&callback3);
 }
 
-TEST_F(JsonRpcServiceUnitTest, GetIsEip1559) {
+TEST_F(JsonRpcServiceUnitTest, GetBaseFeePerGas) {
   bool callback_called = false;
   GURL expected_network =
       GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH);
   // Successful path when the network is EIP1559
   SetIsEip1559Interceptor(expected_network, true);
-  json_rpc_service_->GetIsEip1559(
+  json_rpc_service_->GetBaseFeePerGas(
       mojom::kLocalhostChainId,
-      base::BindOnce(&OnBoolResponse, &callback_called,
-                     mojom::ProviderError::kSuccess, "", true));
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kSuccess, "", "0x181f22e7a9"));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   // Successful path when the network is not EIP1559
   callback_called = false;
   SetIsEip1559Interceptor(expected_network, false);
-  json_rpc_service_->GetIsEip1559(
+  json_rpc_service_->GetBaseFeePerGas(
       mojom::kLocalhostChainId,
-      base::BindOnce(&OnBoolResponse, &callback_called,
-                     mojom::ProviderError::kSuccess, "", false));
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kSuccess, "", ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
   SetHTTPRequestTimeoutInterceptor();
-  json_rpc_service_->GetIsEip1559(
+  json_rpc_service_->GetBaseFeePerGas(
       mojom::kLocalhostChainId,
-      base::BindOnce(&OnBoolResponse, &callback_called,
+      base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
-                     false));
+                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
   SetInvalidJsonInterceptor();
-  json_rpc_service_->GetIsEip1559(
+  json_rpc_service_->GetBaseFeePerGas(
       mojom::kLocalhostChainId,
-      base::BindOnce(&OnBoolResponse, &callback_called,
+      base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
-                     false));
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
   SetLimitExceededJsonErrorResponse();
-  json_rpc_service_->GetIsEip1559(
+  json_rpc_service_->GetBaseFeePerGas(
       mojom::kLocalhostChainId,
-      base::BindOnce(&OnBoolResponse, &callback_called,
+      base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
-                     "Request exceeds defined limit", false));
+                     "Request exceeds defined limit", ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
@@ -4121,16 +4120,15 @@ TEST_F(JsonRpcServiceUnitTest, Reset) {
   EXPECT_TRUE(prefs()->HasPrefPath(kBraveWalletCustomNetworks));
   EXPECT_EQ(GetCurrentChainId(prefs(), mojom::CoinType::ETH, absl::nullopt),
             mojom::kLocalhostChainId);
-  // This isn't valid data for these maps but we are just checking to make sure
-  // it gets cleared
-  json_rpc_service_->add_chain_pending_requests_["1"] =
-      mojom::AddChainRequest::New();
-  json_rpc_service_->switch_chain_requests_[url::Origin()] = "";
-  json_rpc_service_->switch_chain_callbacks_[url::Origin()] =
-      base::BindLambdaForTesting(
-          [&](base::Value id, base::Value formed_response, const bool reject,
-              const std::string& first_allowed_account,
-              const bool update_bind_js_properties) {});
+
+  auto origin = url::Origin::Create(GURL("https://brave.com"));
+  json_rpc_service_->AddEthereumChainForOrigin(
+      GetTestNetworkInfo1("0x123").Clone(), origin);
+  json_rpc_service_->AddSwitchEthereumChainRequest(
+      "0x1", origin, base::DoNothing(), base::Value());
+
+  EXPECT_FALSE(json_rpc_service_->add_chain_pending_requests_.empty());
+  EXPECT_FALSE(json_rpc_service_->pending_switch_chain_requests_.empty());
 
   json_rpc_service_->Reset();
 
@@ -4140,8 +4138,7 @@ TEST_F(JsonRpcServiceUnitTest, Reset) {
             mojom::kMainnetChainId);
   EXPECT_FALSE(prefs()->HasPrefPath(kSupportEip1559OnLocalhostChain));
   EXPECT_TRUE(json_rpc_service_->add_chain_pending_requests_.empty());
-  EXPECT_TRUE(json_rpc_service_->switch_chain_requests_.empty());
-  EXPECT_TRUE(json_rpc_service_->switch_chain_callbacks_.empty());
+  EXPECT_TRUE(json_rpc_service_->pending_switch_chain_requests_.empty());
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetSolanaBalance) {
@@ -4899,6 +4896,100 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaTokenAccountsByOwner) {
       *solana_address, mojom::kSolanaMainnet, {},
       mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetSPLTokenBalances) {
+  auto expected_network_url =
+      GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
+
+  SetInterceptor(expected_network_url, "getTokenAccountsByOwner", "", R"(
+    {
+      "jsonrpc": "2.0",
+      "result": {
+        "context": {
+          "apiVersion": "1.14.17",
+          "slot": 195856971
+        },
+        "value": [
+          {
+            "account": {
+              "data": {
+                "parsed": {
+                  "info": {
+                    "isNative": false,
+                    "mint": "7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj",
+                    "owner": "5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X",
+                    "state": "initialized",
+                    "tokenAmount": {
+                      "amount": "898865",
+                      "decimals": 9,
+                      "uiAmount": 0.000898865,
+                      "uiAmountString": "0.000898865"
+                    }
+                  },
+                  "type": "account"
+                },
+                "program": "spl-token",
+                "space": 165
+              },
+              "executable": false,
+              "lamports": 2039280,
+              "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+              "rentEpoch": 0
+            },
+            "pubkey": "5rUXc3r8bfHVadpvCUPLgcTphcwPMLihCJrxmBeaJEpR"
+          }
+        ]
+      },
+      "id": 1
+    }
+  )");
+
+  std::vector<mojom::SPLTokenAmountPtr> expected_results;
+  mojom::SPLTokenAmountPtr result = mojom::SPLTokenAmount::New();
+  result->mint = "7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj";
+  result->amount = "898865";
+  result->ui_amount = "0.000898865";
+  result->decimals = 9;
+  expected_results.push_back(std::move(result));
+
+  // OK: valid
+  TestGetSPLTokenBalances("5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X",
+                          mojom::kSolanaMainnet, std::move(expected_results),
+                          mojom::SolanaProviderError::kSuccess, "");
+
+  // KO: invalid chain id
+  TestGetSPLTokenBalances(
+      "5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X", "999", {},
+      mojom::SolanaProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // KO: response parsing error
+  SetInterceptor(expected_network_url, "getTokenAccountsByOwner", "",
+                 R"({"jsonrpc":"2.0","id":1})");
+  TestGetSPLTokenBalances("5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X",
+                          mojom::kSolanaMainnet, {},
+                          mojom::SolanaProviderError::kParsingError,
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // KO: JSON RPC error
+  SetInterceptor(expected_network_url, "getTokenAccountsByOwner", "",
+                 R"({"jsonrpc": "2.0", "id": 1,
+                     "error": {
+                       "code":-32601,
+                       "message":"method does not exist"
+                     }
+                    })");
+  TestGetSPLTokenBalances(
+      "5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X", mojom::kSolanaMainnet, {},
+      mojom::SolanaProviderError::kMethodNotFound, "method does not exist");
+
+  // KO: HTTP error
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetSPLTokenBalances("5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X",
+                          mojom::kSolanaMainnet, {},
+                          mojom::SolanaProviderError::kInternalError,
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetFilEstimateGas) {

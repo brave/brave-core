@@ -15,11 +15,8 @@ void DeleteCreativeInlineContentAds() {
   const table::CreativeInlineContentAds database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
-      BLOG(0, "Failed to delete creative inline content ads");
-      return;
+      return BLOG(0, "Failed to delete creative inline content ads");
     }
-
-    BLOG(3, "Successfully deleted creative inline content ads");
   }));
 }
 
@@ -28,8 +25,8 @@ void SaveCreativeInlineContentAds(
   table::CreativeInlineContentAds database_table;
   database_table.Save(creative_ads, base::BindOnce([](const bool success) {
                         if (!success) {
-                          BLOG(0, "Failed to save creative inline content ads");
-                          return;
+                          return BLOG(
+                              0, "Failed to save creative inline content ads");
                         }
 
                         BLOG(3,

@@ -3,8 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import TrashIcon from '../../../assets/svg-icons/trash-icon.svg'
-import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
+import * as leo from '@brave/leo/tokens/css'
+import LeoIcon from '@brave/leo/react/icon'
+
+// Shared Styles
+import {
+  AssetIconProps,
+  AssetIconFactory,
+  WalletButton
+} from '../../shared/style'
+import {
+  layoutPanelWidth
+} from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const assetWatchListItemHeight = 58
 
@@ -14,7 +24,10 @@ export const StyledWrapper = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  padding: 8px 0;
+  padding: 8px 40px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 8px 24px;
+  }
 `
 
 export const NameAndIcon = styled(WalletButton)`
@@ -27,6 +40,7 @@ export const NameAndIcon = styled(WalletButton)`
   outline: none;
   background: none;
   border: none;
+  padding: 0px;
 `
 
 export const NameAndSymbol = styled.div`
@@ -95,7 +109,7 @@ export const CheckboxRow = styled.div`
   width: 10%;
 `
 
-export const DeleteButton = styled(WalletButton)`
+export const Button = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -103,14 +117,13 @@ export const DeleteButton = styled(WalletButton)`
   outline: none;
   background: none;
   border: none;
+  width: 20px;
+  height: 20px;
 `
 
-export const DeleteIcon = styled.div`
-  width: 18px;
-  height: 18px;
-  background-color: ${(p) => p.theme.color.text02};
-  -webkit-mask-image: url(${TrashIcon});
-  mask-image: url(${TrashIcon});
+export const Icon = styled(LeoIcon)`
+  --leo-icon-size: 20px;
+  color: ${leo.color.icon.default};
 `
 
 export const RightSide = styled.div`

@@ -37,7 +37,7 @@
 	          android:layout_marginBottom="8dp"
 	          android:layout_gravity="center"
 	          android:gravity="center"
-	          android:fontFamily="@font/poppins_600"
+	          android:fontFamily="sans-serif-medium"
 	          android:text="@string/earn_tokens_and_give_back"
 	          android:textSize="20sp"
 	          android:textStyle="bold"
@@ -52,7 +52,7 @@
 	          android:gravity="center"
 	          android:text="@string/brave_rewards_modal_text"
 	          android:textSize="14sp"
-	          android:fontFamily="@font/poppins_400"
+	          android:fontFamily="sans-serif"
 	          android:textColor="@color/rewards_panel_secondary_text_color"/>
 
 	        <Spinner
@@ -83,7 +83,7 @@
 	          android:textAllCaps="false"
 	          android:textSize="16sp"
 	          android:padding="8dp"
-	          android:fontFamily="@font/poppins_600"
+	          android:fontFamily="sans-serif-medium"
 	          android:layout_marginTop="24dp"
 	          android:layout_marginBottom="18dp"
 	          android:textAlignment="center"
@@ -104,7 +104,7 @@
 	          android:padding="8dp"
 	          android:visibility="gone"
 	          android:textAlignment="center"
-	          android:fontFamily="@font/poppins_600"
+	          android:fontFamily="sans-serif-medium"
 	          android:layout_marginTop="16dp"
 	          android:layout_marginBottom="20dp"
 	          android:textColor="@android:color/white"
@@ -120,7 +120,7 @@
 	          android:textSize="14sp"
 	          android:textStyle="bold"
 	          android:textAlignment="center"
-	          android:fontFamily="@font/poppins_600"
+	          android:fontFamily="sans-serif-medium"
 	          android:textColor="@color/rewards_panel_action_color"/>
 
 	        <TextView
@@ -133,7 +133,7 @@
 	          android:text="@string/brave_rewards_tos_text"
 	          android:textSize="12sp"
 	          android:textStyle="bold"
-	          android:fontFamily="@font/poppins_500"
+	          android:fontFamily="sans-serif-medium"
 	          android:textColor="@color/rewards_panel_secondary_text_color"/>
 
 	    </LinearLayout>

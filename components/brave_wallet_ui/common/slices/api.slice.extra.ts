@@ -16,10 +16,17 @@ import type {
 import {
   useGetAccountInfosRegistryQuery,
   useGetNetworkQuery,
+  useGetSelectedAccountIdQuery,
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
 } from './api.slice'
+
+// entities
+import {
+  accountInfoEntityAdaptor,
+  accountInfoEntityAdaptorInitialState
+} from './entities/account-info.entity'
 
 // utils
 import {
@@ -27,27 +34,49 @@ import {
   selectAllBlockchainTokensFromQueryResult,
   selectCombinedTokensList
 } from '../slices/entities/blockchain-token.entity'
-import { findAccountFromRegistry } from '../../utils/account-utils'
+import {
+  findAccountByAccountId
+} from '../../utils/account-utils'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
+import { selectPendingTransactions } from './entities/transaction.entity'
 
 export const useAccountQuery = (
-  address: string | typeof skipToken,
+  accountId: BraveWallet.AccountId | undefined | typeof skipToken,
   opts?: { skip?: boolean }
 ) => {
-  return useGetAccountInfosRegistryQuery(
-    address === skipToken ? skipToken : undefined,
-    {
-      skip: address === skipToken || opts?.skip,
-      selectFromResult: (res) => ({
-        isLoading: res.isLoading,
-        error: res.error,
-        account:
-          res.data && address !== skipToken
-            ? findAccountFromRegistry(address, res.data)
-            : undefined
-      })
-    }
-  )
+  const skip = accountId === undefined || accountId === skipToken || opts?.skip
+  return useGetAccountInfosRegistryQuery(skip ? skipToken : undefined, {
+    skip: skip,
+    selectFromResult: (res) => ({
+      isLoading: res.isLoading,
+      error: res.error,
+      account:
+        res.data && !skip
+          ? findAccountByAccountId(accountId, res.data)
+          : undefined
+    })
+  })
+}
+
+export const useSelectedAccountQuery = () => {
+  const {
+    data: accountInfosRegistry = accountInfoEntityAdaptorInitialState,
+    isLoading: isLoadingAccounts
+  } = useGetAccountInfosRegistryQuery(undefined)
+
+  const { data: selectedAccountId, isLoading: isLoadingSelectedAccountId } =
+  useGetSelectedAccountIdQuery(isLoadingAccounts ? skipToken : undefined)
+
+  const selectedAccount = selectedAccountId
+    ? accountInfosRegistry.entities[
+        accountInfoEntityAdaptor.selectIdByAccountId(selectedAccountId)
+      ]
+    : undefined
+
+  return {
+    isLoading: isLoadingAccounts || isLoadingSelectedAccountId,
+    data: selectedAccount
+  }
 }
 
 export const useGetCombinedTokensListQuery = (
@@ -80,7 +109,7 @@ export const useGetCombinedTokensListQuery = (
     if (isLoadingUserTokens || isLoadingKnownTokens) {
       return {
         isLoading: true,
-        data: []
+        data: [] as BraveWallet.BlockchainToken[]
       }
     }
     const combinedList = selectCombinedTokensList(knownTokens, userTokens)
@@ -101,7 +130,7 @@ export const useTransactionQuery = (
     txID === skipToken
       ? skipToken
       : {
-          address: null,
+          accountId: null,
           chainId: null,
           coinType: null
         },
@@ -137,4 +166,20 @@ export const useTransactionsNetworkQuery = <
         }
       : skipToken
   )
+}
+
+const emptyPendingTxs: SerializableTransactionInfo[] = []
+
+export const usePendingTransactionsQuery = (
+  arg: Parameters<typeof useGetTransactionsQuery>[0]
+) => {
+  return useGetTransactionsQuery(arg, {
+    selectFromResult: (res) => ({
+      isLoading: res.isLoading,
+      transactions: res.data || emptyPendingTxs,
+      pendingTransactions: res.data
+        ? selectPendingTransactions(res.data)
+        : emptyPendingTxs
+    })
+  })
 }

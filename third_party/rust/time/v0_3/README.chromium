@@ -1,0 +1,7 @@
+Name: time
+URL: https://crates.io/crates/time
+Description: Date and time library. Fully interoperable with the standard library. Mostly compatible with #![no_std].
+Version: 0.3.20
+Security Critical: yes
+License: Apache 2.0
+Revision: d7c725c422e6cb551302601464042d434a91b6da

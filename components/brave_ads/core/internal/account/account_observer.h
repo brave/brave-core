@@ -19,17 +19,11 @@ struct WalletInfo;
 
 class AccountObserver : public base::CheckedObserver {
  public:
-  // Invoked when the |wallet| was created.
-  virtual void OnWalletWasCreated(const WalletInfo& wallet) {}
-
-  // Invoked when the |wallet| has updated.
-  virtual void OnWalletDidUpdate(const WalletInfo& wallet) {}
-
-  // Invoked when the |wallet| has changed.
-  virtual void OnWalletDidChange(const WalletInfo& wallet) {}
+  // Invoked when the |wallet| did initialize.
+  virtual void OnDidInitializeWallet(const WalletInfo& wallet) {}
 
   // Invoked if the wallet is invalid.
-  virtual void OnInvalidWallet() {}
+  virtual void OnFailedToInitializeWallet() {}
 
   // Invoked after successfully processing a deposit for |transaction|.
   virtual void OnDidProcessDeposit(const TransactionInfo& transaction) {}

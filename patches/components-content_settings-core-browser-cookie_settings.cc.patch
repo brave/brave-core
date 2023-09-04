@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/browser/cookie_settings.cc b/components/content_settings/core/browser/cookie_settings.cc
-index 185a247e7224dc7bcb2ba4f76fefe07a64f9b695..b52a87e0b4dd8eb34f3cd872f9d6edb8de3281e8 100644
+index 5ae664478680d5f8537f1be4e71c89cb76791f7f..08978712fd1d4b070203e9d92b1e8c49b7497e19 100644
 --- a/components/content_settings/core/browser/cookie_settings.cc
 +++ b/components/content_settings/core/browser/cookie_settings.cc
-@@ -197,6 +197,7 @@ ContentSetting CookieSettings::GetCookieSettingInternal(
-   DCHECK(value.is_int());
-   ContentSetting setting = ValueToContentSetting(value);
+@@ -229,6 +229,7 @@ ContentSetting CookieSettings::GetCookieSettingInternal(
+                      !first_party_url.SchemeIs(extension_scheme_);
+ 
    bool block = block_third && is_third_party_request;
 +  BRAVE_COOKIE_SETTINGS_GET_COOKIES_SETTINGS_INTERNAL
  

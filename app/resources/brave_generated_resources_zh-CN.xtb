@@ -14,10 +14,6 @@
 <translation id="8294286161128352783">只在新标签页</translation>
 <translation id="6406506848690869874">同步</translation>
 <translation id="1544192797660353713">钱包</translation>
-<translation id="2445484935443597917">创建新的个人资料</translation>
-<translation id="744341768939279100">创建新配置文件</translation>
-<translation id="2666990579225592931">以访客身份打开一个窗口</translation>
-<translation id="4986483413015198747">打开访客窗口</translation>
 <translation id="8275068909952022340">更多…</translation>
 <translation id="1990886731975529483">安装并运行 Google Widevine</translation>
 <translation id="8926389886865778422">不再询问</translation>
@@ -30,7 +26,7 @@
 <translation id="3218385319396786393">已禁止在此网页上运行自动播放</translation>
 <translation id="4988333904713528597">始终允许自动播放<ph name="HOST"/></translation>
 <translation id="4150684676757176434">继续禁止自动播放</translation>
-<translation id="8988939298652262600">Brave 不审查扩展程序的安全性。如果您信任这个开发者，请仅安装这个扩展程序。</translation>
+<translation id="3477357195688115718">Brave 不审查扩展程序的安全性。如果您信任这个开发者，请仅安装这个扩展程序。</translation>
 <translation id="9005883459983913482">Tor 窗口</translation>
 <translation id="7965178729203412357">新 Tor 身份</translation>
 <translation id="6924909138923993900">此站点的新 Tor 连接</translation>
@@ -124,10 +120,16 @@
 <translation id="8184318863960255706">更多信息</translation>
 <translation id="780301667611848630">不用了，谢谢</translation>
 <translation id="1162706247109707219">通过单击“确定”，确认在更新到 Windows 10 或更高版本之前，您安装的 Brave 浏览器将不会收到关键安全补丁。此警告将不会再次显示。</translation>
+<translation id="9164786361657554526">通过单击“确定”，确认在更新到 macOS 10.15 或更高版本之前，您安装的 Brave 浏览器将不会收到关键安全补丁。此警告将不会再次显示。</translation>
+<translation id="2770465223704140727">从列表中移除</translation>
 <translation id="2515126961943087659">Bat Ads 服务</translation>
 <translation id="7924918279836988121">Bat Ledger 服务</translation>
 <translation id="6040143037577758943">关闭</translation>
 <translation id="6665472986740899785">Brave 的通知广告</translation>
+<translation id="5582087890067572966">🎉你开始赚取收益了！</translation>
+<translation id="4364336119478610380">每当这样的通知出现在你的屏幕上，你就能赚取收益。而无需点击以赚取收益。</translation>
+<translation id="5893017172751072752">当 Brave Ads 的通知出现时，你就能赚取收益</translation>
+<translation id="3447730462826640312">你无需点击以赚取收益，但如果你有兴趣，请点击查看！</translation>
 <translation id="4174337572777167894">Web 发现项目</translation>
 <translation id="8659271182272561965">提供一些匿名搜索和浏览数据来完善 Brave 搜索。</translation>
 <translation id="1516554614404600536">Brave 工具提示</translation>
@@ -166,7 +168,7 @@
 <translation id="2036503787657622020">打开阅读器模式</translation>
 <translation id="5226458915125328323">速读器设置</translation>
 <translation id="8591883849678260674">查看原文</translation>
-<translation id="1969654232209826429">最小读数</translation>
+<translation id="1969654232209826429">分钟读取</translation>
 <translation id="6284218950354553099">自动向 Brave 发送每日使用 ping</translation>
 <translation id="5288333155754958121">这种匿名的私人 ping 可以让 Brave 估计活跃用户数</translation>
 <translation id="1872784258300710671">Brave 使用完全隐私的产品分析来估计某些功能的整体使用情况</translation>
@@ -242,6 +244,18 @@
 <translation id="480565261566115689">最小化标签页</translation>
 <translation id="7194343495483122559">展开标签页</translation>
 <translation id="1199054713803577378">最小化标签页</translation>
+<translation id="8120600068258956006">添加至播放列表</translation>
+<translation id="650694591627983430">在本页找到的媒体</translation>
+<translation id="1824323294233307883">已添加到稍后播放</translation>
+<translation id="4830689155681863580">在播放列表中开启</translation>
+<translation id="5330442669942072852">打开文件夹</translation>
+<translation id="8101564000331197174">从播放列表中移除</translation>
+<translation id="838254185387128227">本页更多媒体……</translation>
+<translation id="326641288623143307">添加已选</translation>
+<translation id="5856970744810677796">在播放列表中开启</translation>
+<translation id="2803313416453193357">打开文件夹</translation>
+<translation id="333558915234875673">本页更多媒体……</translation>
+<translation id="5145233969981669502">添加已选</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
 <translation id="7179921470347911571">立即重新启动</translation>
 <translation id="4472575034687746823">开始使用</translation>
@@ -256,6 +270,9 @@
 <translation id="8721331068159819483">与 macOS 相同</translation>
 <translation id="1692470335103807198">获得更多主题</translation>
 <translation id="2906510232093002459">Brave 默认图片</translation>
+<translation id="8076492880354921740">标签页</translation>
+<translation id="5860254591544742609">显示标题栏</translation>
+<translation id="5371926069408837914">当折叠时，在鼠标移动中展开垂直标签面板</translation>
 <translation id="3367129510799209147">标签悬停模式</translation>
 <translation id="2113977810652731515">信用卡</translation>
 <translation id="4096343215397759358">带预览的卡片</translation>
@@ -315,7 +332,6 @@
 <translation id="3357319404342882895">严格</translation>
 <translation id="8823559166155093873">阻止 cookies</translation>
 <translation id="5770288601196774623">仅限跨站点</translation>
-<translation id="6795317840397506736">忘记默认值</translation>
 <translation id="3587482841069643663">全部</translation>
 <translation id="7390783310074170337">默认视图</translation>
 <translation id="130615081792797568">简单视图</translation>
@@ -342,22 +358,10 @@
 <translation id="4182731739150761577">显示完整列表</translation>
 <translation id="1340263054776016283">输入过滤器列表 URL</translation>
 <translation id="8578397014396032341">内容过滤</translation>
+<translation id="3020183492814296499">快捷方式</translation>
 <translation id="5567412479632285879">Brave 奖励已禁用</translation>
 <translation id="413570371620795359">打开奖励面板，启用并开始体验服务</translation>
-<translation id="3849957491997306859">自动检测</translation>
-<translation id="8798099450830957504">默认</translation>
-<translation id="4851215387785619212">Brave 专属广告</translation>
-<translation id="7808122468353671181">通过观看 Brave 广告赚取代币。展示的广告是基于您的兴趣（根据您的浏览行为推断而来的）。没有任何个人数据或浏览历史记录会离开您的浏览器。</translation>
-<translation id="1758947220824279023">待显示的最大广告个数</translation>
-<translation id="2356652719351432565">区域广告相关性</translation>
-<translation id="2196950072404588793">这使 Brave 可以向您显示专门针对您所在地区的广告。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">外观</translation>
-<translation id="6112368337882254910">自动贡献</translation>
-<translation id="9132509928968869844">每月自动打赏限制</translation>
-<translation id="7286722244752781970">登录访问前最短页面时间</translation>
-<translation id="4424486208397124985">发布者相关性的最低访问量</translation>
-<translation id="6248554379744796526">显示列表中未经验证的站点</translation>
-<translation id="924777189963477634">开启自动打赏即表示您同意<ph name="BEGIN_LINK_TOS"/>服务条款<ph name="END_LINK_TOS"/>和<ph name="BEGIN_LINK_PP"/>隐私政策<ph name="END_LINK_PP"/>。</translation>
+<translation id="1051600834033686945">打开完整的 Brave 奖励设置</translation>
 <translation id="6333347122924254968">在地址栏显示 Brave 奖励图标</translation>
 <translation id="7483857210736407752">在网站上显示提示按钮</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -369,15 +373,43 @@
 <translation id="958971637207126733">允许 LinkedIn 嵌入帖子</translation>
 <translation id="8792121506918889955">WebRTC IP 处理政策</translation>
 <translation id="6165508094623778733">了解更多</translation>
+<translation id="8798099450830957504">默认</translation>
 <translation id="1822560017823072927">默认公共和私人接口</translation>
 <translation id="5825943197137337319">仅限默认公共接口</translation>
 <translation id="1689062823386843231">禁用无代理的 UDP</translation>
 <translation id="3540231253392253941">使用 Google 服务进行推送消息传递</translation>
 <translation id="933652931229970927">自动发送诊断报告</translation>
+<translation id="4891600875049212418">访问敏感网站时不记录在案</translation>
+<translation id="2356070529366658676">询问</translation>
 <translation id="4846154056248462491">退出时</translation>
 <translation id="2808630562319398131">重置 Brave Rewards 计划数据...</translation>
 <translation id="6438096877646138757">关闭时所有网站窗口时清除 cookie 的网站</translation>
 <translation id="2988792685798128092">站点关闭时清除</translation>
+<translation id="4663317021223369617">Cookie 及網站資料</translation>
+<translation id="7050661313034564003">显示本网站的所有 cookies 和本地存储数据</translation>
+<translation id="8339059274628563283"><ph name="SITE"/> 本地存储的数据</translation>
+<translation id="1963227389609234879">全部删除</translation>
+<translation id="8168435359814927499">内容</translation>
+<translation id="7702907602086592255">域名</translation>
+<translation id="3202131003361292969">路径</translation>
+<translation id="5390743329570580756">为何发送</translation>
+<translation id="6742339027238151589">脚本可访问</translation>
+<translation id="1067048845568873861">创建时间</translation>
+<translation id="5747552184818312860">到期时间</translation>
+<translation id="3858860766373142691">名称</translation>
+<translation id="361106536627977100">闪存数据</translation>
+<translation id="4530494379350999373">来源</translation>
+<translation id="8195027750202970175">占用的存储空间</translation>
+<translation id="9116465289595958864">上次修改时间</translation>
+<translation id="4590324241397107707">数据库存储</translation>
+<translation id="5338503421962489998">本地存储</translation>
+<translation id="6032912588568283682">文件系统</translation>
+<translation id="8016266267177410919">临时存储</translation>
+<translation id="4175737294868205930">永久存储</translation>
+<translation id="1234808891666923653">Service Workers</translation>
+<translation id="3432762828853624962">Shared Workers</translation>
+<translation id="2927017729816812676">缓存空间</translation>
+<translation id="1389601498324964367">配额管理存储</translation>
 <translation id="814018970995616154">检查带有保存在 Brave 中的不安全站点列表的 URL。</translation>
 <translation id="1144810021918451336">不能保护您免受危险网站、下载和扩展名的侵害。</translation>
 <translation id="5570470519803062774">站点和屏蔽设置</translation>
@@ -395,6 +427,11 @@
 <translation id="2903783737778379345">不允许通过第三方 cookie 登录传统谷歌</translation>
 <translation id="2570833232754279153">不允许使用第三方 cookie 登录旧版谷歌</translation>
 <translation id="6880817299303842099">允许使用第三方 cookie 登录旧版谷歌</translation>
+<translation id="5169650598465327872">本地主机访问权限</translation>
+<translation id="4172219483893066798">网站可以请求访问本地主机资源</translation>
+<translation id="7181706637590665047">不允许访问本地主机资源</translation>
+<translation id="1336116824874668514">不允许访问本地主机资源</translation>
+<translation id="1485435696620658073">允许访问本地主机资源</translation>
 <translation id="6414370348346025511">标准保护已启用。</translation>
 <translation id="5565355416171743213">开始使用同步</translation>
 <translation id="4332558599726753990">同步设置</translation>
@@ -461,7 +498,7 @@
 再次开始使用同步时，您需要创建一个新账户，并逐个重新添加每个设备。</translation>
 <translation id="4860996720371753023">正在删除账户……</translation>
 <translation id="4094590686212463338">无法加入此同步链。同步链已删除。</translation>
-<translation id="5633907266617216186">地址、付款信息等。</translation>
+<translation id="4908081302669157000">电话号码、电子邮件和地址</translation>
 <translation id="294985549514492876">Web 应用程序（PWA）</translation>
 <translation id="6285118765755298263">对其他搜索引擎构建索引</translation>
 <translation id="919715748352669592">自动对遵循 OpenSearch 规范的网站构建索引</translation>
@@ -517,10 +554,9 @@
 <translation id="4954512758656527938">默认以太坊钱包</translation>
 <translation id="7701023802820268122">默认 Solana 钱包</translation>
 <translation id="8488282162676695335">Brave 钱包</translation>
-<translation id="2356070529366658676">询问</translation>
-<translation id="6942354363301686374">扩展（无回退）</translation>
+<translation id="6942354363301686374">扩展（无备份）</translation>
 <translation id="1274962333945373242">Crypto Wallets（已废弃）</translation>
-<translation id="702381242110464396">扩展（Brave 钱包回退）</translation>
+<translation id="702381242110464396">扩展（Brave 钱包备份）</translation>
 <translation id="4718664830805652430">默认基础货币</translation>
 <translation id="7992507032049865603">默认基础加密货币</translation>
 <translation id="1834467296210148203">在工具栏上显示 Brave Wallet 图标</translation>
@@ -534,10 +570,10 @@
 <translation id="4440478655766953083">自动固定 NFT</translation>
 <translation id="464460032678285850">添加到 Brave 钱包的 NFT 可能会自动固定到本地 IPFS 节点。
    注意：IPFS 守护进程可能是为了固定目的而启动的，因此您的本地节点将共享缓存的数据和固定的 NFT 到 IPFS 网络。</translation>
-<translation id="4993345308607970390">重置 Brave 钱包</translation>
+<translation id="2326850911705720398">重置和清除钱包数据</translation>
 <translation id="5887022857624190239">清除固定的 NFT</translation>
 <translation id="204584113330893805">当本地 IPFS 节点启动时，固定的 NFT 被托管到 IPFS 网络中。
-您目前 <ph name="NFT_COUNT"/> 个固定的 NFT。</translation>
+您目前拥有 <ph name="NFT_COUNT"/> 个固定的 NFT。</translation>
 <translation id="9216386092464743272">您确定要重置所有的钱包交易和随机数信息吗？这个选项主要由运行本地测试服务器的开发人员使用。输入“<ph name="CONFIRMATION_PHRASE"/>”进行确认。</translation>
 <translation id="6369495274982305511">确定要重置钱包吗？如果您的钱包没有备份，重置将导致您丢失所有账户数据（包括所有关联的资金）。输入“<ph name="CONFIRMATION_PHRASE"/>”确认。</translation>
 <translation id="4248533222660842025">确定要清除您的固定 NFT 吗？如果 IPFS 网络中没有其他主机，有些 NFT 可能会永久丢失。输入“<ph name="CONFIRMATION_PHRASE"/>”以确认。</translation>
@@ -574,7 +610,7 @@
 <translation id="1062463687579789365">定制钱包网络</translation>
 <translation id="2234108191702901162">无法添加网络</translation>
 <translation id="8996633027318264334">确定要删除 <ph name="KEY_NAME"/> 吗？</translation>
-<translation id="3316326558572563182">活动网络在钱包网络列表中始终可见</translation>
+<translation id="8633484167132172058">默认网络总是在钱包网络列表中可见</translation>
 <translation id="232693303726691609">在钱包网络列表中显示/隐藏网络</translation>
 <translation id="7893578599666249602">您是否真的要重置<ph name="KEY_NAME"/>？</translation>
 <translation id="2618193846561624884">要更新现有网络吗？</translation>

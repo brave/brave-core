@@ -22,6 +22,7 @@ TEST(BraveAdsReminderFeatureTest, IsEnabled) {
   // Assert
   EXPECT_TRUE(IsReminderFeatureEnabled());
 }
+
 TEST(BraveAdsReminderFeatureTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;

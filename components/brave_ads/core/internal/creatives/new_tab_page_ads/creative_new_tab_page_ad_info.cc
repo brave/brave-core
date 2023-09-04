@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo() = default;
@@ -29,9 +31,11 @@ CreativeNewTabPageAdInfo::~CreativeNewTabPageAdInfo() = default;
 
 bool CreativeNewTabPageAdInfo::operator==(
     const CreativeNewTabPageAdInfo& other) const {
-  return CreativeAdInfo::operator==(other) &&
-         company_name == other.company_name && image_url == other.image_url &&
-         alt == other.alt && wallpapers == other.wallpapers;
+  const auto tie = [](const CreativeNewTabPageAdInfo& ad) {
+    return std::tie(ad.company_name, ad.image_url, ad.alt, ad.wallpapers);
+  };
+
+  return CreativeAdInfo::operator==(other) && tie(*this) == tie(other);
 }
 
 bool CreativeNewTabPageAdInfo::operator!=(

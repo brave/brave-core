@@ -97,12 +97,11 @@ declare namespace RewardsExtension {
   }
 
   export const enum Result {
-    LEDGER_OK = 0,
-    LEDGER_ERROR = 1,
+    OK = 0,
+    FAILED = 1,
     NO_PUBLISHER_STATE = 2,
-    NO_LEDGER_STATE = 3,
+    NO_LEGACY_STATE = 3,
     INVALID_PUBLISHER_STATE = 4,
-    INVALID_LEDGER_STATE = 5,
     CAPTCHA_FAILED = 6,
     NO_PUBLISHER_LIST = 7,
     TOO_MANY_RESULTS = 8,
@@ -177,7 +176,7 @@ declare namespace RewardsExtension {
 
   export type TipDialogEntryPoint = 'one-time' | 'set-monthly' | 'clear-monthly'
 
-  type WalletStatus = import('gen/brave/components/brave_rewards/common/mojom/ledger_types.mojom.m.js').WalletStatus
+  type WalletStatus = import('gen/brave/components/brave_rewards/common/mojom/rewards_types.mojom.m.js').WalletStatus
 
   export type WalletType = 'uphold' | 'bitflyer' | 'gemini'
 

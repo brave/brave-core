@@ -13,6 +13,12 @@ export const Tip = styled.div<{
 }>`
   --y-tip-translation: ${(p) => p.orientation === 'top' ? `-${p.distance + 22}px` : p.orientation === 'bottom' ? `${p.distance + 22}px` : '0px'};
   --x-tip-translation: ${(p) => p.orientation === 'right' ? `${p.distance + 10}px` : '0px'};
+  /* #1E2029 does not exist in design system */
+  --nav-tool-tip-background: #1e2029;
+  @media (prefers-color-scheme: dark) {
+    /* #17171F does not exist in design system */
+    --nav-tool-tip-background: #17171f;
+  }
   position: absolute;
   border-radius: 4px;
   left: ${(p) => p.horizontalAlign === 'left' ? '0px' : 'unset'};

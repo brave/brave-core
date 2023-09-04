@@ -7,7 +7,7 @@
 
 #include <sstream>
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

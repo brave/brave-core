@@ -21,9 +21,8 @@ class BraveAdsFullScreenModePermissionRuleTest : public UnitTestBase {
   const FullScreenModePermissionRule permission_rule_;
 };
 
-TEST_F(BraveAdsFullScreenModePermissionRuleTest, AllowAd) {
+TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAllow) {
   // Arrange
-  MockIsBrowserInFullScreenMode(ads_client_mock_, false);
 
   // Act
 
@@ -31,7 +30,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, AllowAd) {
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForAndroid) {
+TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -43,7 +42,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForAndroid) {
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForIOS) {
+TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
@@ -55,7 +54,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForIOS) {
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsFullScreenModePermissionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldNotAllow) {
   // Arrange
   MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
@@ -66,7 +65,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, DoNotAllowAd) {
 }
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest,
-       AllowAdIfPermissionRuleIsDisabled) {
+       ShouldAllowIfPermissionRuleIsDisabled) {
   // Arrange
   base::FieldTrialParams params;
   params["should_only_serve_ads_in_windowed_mode"] = "false";

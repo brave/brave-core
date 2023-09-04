@@ -15,13 +15,13 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace state {
 
 class State {
  public:
-  explicit State(LedgerImpl& ledger);
+  explicit State(RewardsEngineImpl& engine);
   ~State();
 
   void Initialize(ResultCallback callback);
@@ -110,7 +110,7 @@ class State {
   bool SetEncryptedString(const std::string& key, const std::string& value);
 
  private:
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   StateMigration migration_;
 };
 

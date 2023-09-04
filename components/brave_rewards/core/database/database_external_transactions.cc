@@ -9,14 +9,15 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_external_transactions.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal::database {
 
 constexpr char kTableName[] = "external_transactions";
 
-DatabaseExternalTransactions::DatabaseExternalTransactions(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseExternalTransactions::DatabaseExternalTransactions(
+    RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseExternalTransactions::~DatabaseExternalTransactions() = default;
 
@@ -25,7 +26,7 @@ void DatabaseExternalTransactions::Insert(
     ResultCallback callback) {
   if (!external_transaction) {
     BLOG(0, "external_transaction is null!");
-    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+    return std::move(callback).Run(mojom::Result::FAILED);
   }
 
   auto command = mojom::DBCommand::New();
@@ -44,7 +45,7 @@ void DatabaseExternalTransactions::Insert(
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseExternalTransactions::OnInsert,
                      base::Unretained(this), std::move(callback)));
@@ -56,8 +57,8 @@ void DatabaseExternalTransactions::OnInsert(
   std::move(callback).Run(
       response &&
               response->status == mojom::DBCommandResponse::Status::RESPONSE_OK
-          ? mojom::Result::LEDGER_OK
-          : mojom::Result::LEDGER_ERROR);
+          ? mojom::Result::OK
+          : mojom::Result::FAILED);
 }
 
 void DatabaseExternalTransactions::GetTransaction(
@@ -83,7 +84,7 @@ void DatabaseExternalTransactions::GetTransaction(
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseExternalTransactions::OnGetTransaction,
                      base::Unretained(this), std::move(callback)));

@@ -15,7 +15,9 @@
 
 #include "base/command_line.h"
 #include "base/logging.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/utils.h"
+#include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 
 // Simple Windows VPN configuration tool (using RAS API)
 // By Brian Clifton (brian@clifton.me)
@@ -47,14 +49,18 @@ constexpr char kVPNName[] = "vpn_name";
 constexpr char kUserName[] = "user_name";
 constexpr char kPassword[] = "password";
 
-using brave_vpn::internal::CheckConnection;
-using brave_vpn::internal::CheckConnectionResult;
-using brave_vpn::internal::ConnectEntry;
-using brave_vpn::internal::CreateEntry;
-using brave_vpn::internal::DisconnectEntry;
-using brave_vpn::internal::GetPhonebookPath;
-using brave_vpn::internal::PrintRasError;
-using brave_vpn::internal::RemoveEntry;
+using brave_vpn::ras::CheckConnection;
+using brave_vpn::ras::CheckConnectionResult;
+using brave_vpn::ras::ConnectEntry;
+using brave_vpn::ras::CreateEntry;
+using brave_vpn::ras::DisconnectEntry;
+using brave_vpn::ras::GetPhonebookPath;
+using brave_vpn::ras::GetRasErrorMessage;
+using brave_vpn::ras::RemoveEntry;
+
+void PrintRasError(DWORD error) {
+  LOG(ERROR) << GetRasErrorMessage(error);
+}
 
 int PrintConnectionDetails(HRASCONN connection) {
   DWORD dw_cb = 0;
@@ -491,7 +497,8 @@ void PrintOptions2(DWORD options) {
 }
 
 void PrintPolicyValue(LPCTSTR entry_name) {
-  std::wstring phone_book_path = GetPhonebookPath(entry_name);
+  std::string error;
+  std::wstring phone_book_path = GetPhonebookPath(entry_name, &error);
   if (phone_book_path.empty()) {
     return;
   }
@@ -835,7 +842,11 @@ int main(int argc, char* argv[]) {
       return 0;
     }
 
-    CreateEntry(vpn_name, host_name, user_name, password);
+    brave_vpn::BraveVPNConnectionInfo info;
+    info.SetConnectionInfo(
+        base::WideToUTF8(vpn_name), base::WideToUTF8(host_name),
+        base::WideToUTF8(user_name), base::WideToUTF8(password));
+    CreateEntry(info);
     return 0;
   }
 

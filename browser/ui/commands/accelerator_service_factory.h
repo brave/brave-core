@@ -6,11 +6,16 @@
 #ifndef BRAVE_BROWSER_UI_COMMANDS_ACCELERATOR_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_UI_COMMANDS_ACCELERATOR_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
+#include "base/no_destructor.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_context.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace commands {
 
@@ -24,7 +29,7 @@ class AcceleratorServiceFactory : public ProfileKeyedServiceFactory {
       delete;
 
  private:
-  friend struct base::DefaultSingletonTraits<AcceleratorServiceFactory>;
+  friend base::NoDestructor<AcceleratorServiceFactory>;
 
   AcceleratorServiceFactory();
   ~AcceleratorServiceFactory() override;

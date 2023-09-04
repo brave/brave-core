@@ -19,7 +19,6 @@ public interface CryptoSharedData {
     String getChainId();
     Context getContext();
     LiveData<Integer> getCoinTypeLd();
-    String[] getEnabledKeyrings();
     List<CryptoAccountTypeInfo> getSupportedCryptoAccountTypes();
     List<Integer> getSupportedCryptoCoins();
     LiveData<List<AccountInfo>> getAccounts();

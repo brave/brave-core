@@ -34,15 +34,6 @@ let ethereumHardwareKeyring: EthereumLedgerBridgeKeyring
 let filecoinHardwareKeyring: FilecoinLedgerBridgeKeyring
 let solanaHardwareKeyring: SolanaLedgerBridgeKeyring
 let trezorHardwareKeyring: TrezorBridgeKeyring
-let keyringService: BraveWallet.KeyringServiceRemote
-
-export function getBraveKeyring (): BraveWallet.KeyringServiceRemote {
-  if (!keyringService) {
-    /** @type {!braveWallet.mojom.KeyringServiceRemote} */
-    keyringService = new BraveWallet.KeyringServiceRemote()
-  }
-  return keyringService
-}
 
 export function getHardwareKeyring (
   type: HardwareVendor,

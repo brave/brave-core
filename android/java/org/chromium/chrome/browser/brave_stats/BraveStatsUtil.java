@@ -11,7 +11,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
@@ -23,23 +22,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
-import org.chromium.base.ThreadUtils;
-import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.brave_stats.BraveStatsBottomSheetDialogFragment;
-import org.chromium.chrome.browser.local_database.DatabaseHelper;
-import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -114,11 +103,14 @@ public class BraveStatsUtil {
 
     public static void showBraveStats() {
         try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             BraveStatsBottomSheetDialogFragment braveStatsBottomSheetDialogFragment =
                     BraveStatsBottomSheetDialogFragment.newInstance();
             braveStatsBottomSheetDialogFragment.show(
-                    BraveActivity.getBraveActivity().getSupportFragmentManager(),
-                    STATS_FRAGMENT_TAG);
+                    activity.getSupportFragmentManager(), STATS_FRAGMENT_TAG);
+            if (activity.getPrivacyHubMetrics() != null) {
+                activity.getPrivacyHubMetrics().recordView();
+            }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showBraveStats " + e);
         }
@@ -280,7 +272,8 @@ public class BraveStatsUtil {
     }
 
     public static boolean hasWritePermission(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             if (activity == null) {
                 return false;
             }

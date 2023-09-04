@@ -5,11 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/hosts/anonymous_search_url_host.h"
 
-#include <ostream>
-
-#include "base/notreached.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
+#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -24,6 +22,7 @@ constexpr char kStagingHost[] =
 std::string AnonymousSearchUrlHost::Get() const {
   const mojom::EnvironmentType environment_type =
       GlobalState::GetInstance()->Flags().environment_type;
+  CHECK(mojom::IsKnownEnumValue(environment_type));
 
   switch (environment_type) {
     case mojom::EnvironmentType::kProduction: {
@@ -34,9 +33,6 @@ std::string AnonymousSearchUrlHost::Get() const {
       return kStagingHost;
     }
   }
-
-  NOTREACHED_NORETURN() << "Unexpected value for EnvironmentType: "
-                        << static_cast<int>(environment_type);
 }
 
 }  // namespace brave_ads

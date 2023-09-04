@@ -65,7 +65,9 @@ class BraveProxyingURLLoaderFactory
         content::BrowserContext* browser_context,
         const net::MutableNetworkTrafficAnnotationTag& traffic_annotation,
         mojo::PendingReceiver<network::mojom::URLLoader> loader_receiver,
-        mojo::PendingRemote<network::mojom::URLLoaderClient> client);
+        mojo::PendingRemote<network::mojom::URLLoaderClient> client,
+        scoped_refptr<base::SequencedTaskRunner>
+            navigation_response_task_runner);
     InProgressRequest(const InProgressRequest&) = delete;
     InProgressRequest& operator=(const InProgressRequest&) = delete;
     ~InProgressRequest() override;
@@ -172,6 +174,10 @@ class BraveProxyingURLLoaderFactory
     };
     std::unique_ptr<FollowRedirectParams> pending_follow_redirect_params_;
 
+    // A task runner that should be used for the request when non-null. Non-null
+    // when this was created for a navigation request.
+    scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner_;
+
     base::WeakPtrFactory<InProgressRequest> weak_factory_;
   };
 
@@ -185,7 +191,8 @@ class BraveProxyingURLLoaderFactory
       mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver,
       mojo::PendingRemote<network::mojom::URLLoaderFactory> target_factory,
       scoped_refptr<RequestIDGenerator> request_id_generator,
-      DisconnectCallback on_disconnect);
+      DisconnectCallback on_disconnect,
+      scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
 
   BraveProxyingURLLoaderFactory(const BraveProxyingURLLoaderFactory&) = delete;
   BraveProxyingURLLoaderFactory& operator=(
@@ -197,8 +204,8 @@ class BraveProxyingURLLoaderFactory
       content::BrowserContext* browser_context,
       content::RenderFrameHost* render_frame_host,
       int render_process_id,
-      mojo::PendingReceiver<network::mojom::URLLoaderFactory>*
-          factory_receiver);
+      mojo::PendingReceiver<network::mojom::URLLoaderFactory>* factory_receiver,
+      scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
 
   // network::mojom::URLLoaderFactory:
   void CreateLoaderAndStart(
@@ -236,6 +243,10 @@ class BraveProxyingURLLoaderFactory
   scoped_refptr<RequestIDGenerator> request_id_generator_;
 
   DisconnectCallback disconnect_callback_;
+
+  // A task runner that should be used for requests when non-null. Non-null when
+  // this was created for a navigation request.
+  scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner_;
 
   base::WeakPtrFactory<BraveProxyingURLLoaderFactory> weak_factory_;
 };

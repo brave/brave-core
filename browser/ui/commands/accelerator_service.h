@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
@@ -34,7 +35,8 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   };
 
   AcceleratorService(PrefService* pref_service,
-                     Accelerators default_accelerators);
+                     Accelerators default_accelerators,
+                     base::flat_set<ui::Accelerator> system_managed);
   AcceleratorService(const AcceleratorService&) = delete;
   AcceleratorService& operator=(const AcceleratorService&) = delete;
   ~AcceleratorService() override;
@@ -48,12 +50,18 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   void UnassignAcceleratorFromCommand(int command_id,
                                       const std::string& accelerator) override;
   void ResetAcceleratorsForCommand(int command_id) override;
+  void ResetAccelerators() override;
+
+  void GetKeyFromCode(const std::string& code,
+                      GetKeyFromCodeCallback callback) override;
+
   void AddCommandsListener(
       mojo::PendingRemote<mojom::CommandsListener> listener) override;
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
   const Accelerators& GetAcceleratorsForTesting();
+  mojom::CommandPtr GetCommandForTesting(int command_id);
 
   // KeyedService:
   void Shutdown() override;
@@ -70,6 +78,11 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   AcceleratorPrefManager pref_manager_;
   Accelerators accelerators_;
   Accelerators default_accelerators_;
+
+  // Some accelerators are managed by the system - we need to make sure we don't
+  // register these (which can result in double handling) or allow them to be
+  // modified.
+  base::flat_set<ui::Accelerator> system_managed_;
 
   mojo::ReceiverSet<CommandsService> receivers_;
   mojo::RemoteSet<mojom::CommandsListener> mojo_listeners_;

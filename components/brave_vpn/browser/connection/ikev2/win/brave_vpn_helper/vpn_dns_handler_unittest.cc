@@ -14,7 +14,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_dns_delegate.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/utils.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -36,7 +36,7 @@ class MockVpnDnsHandler : public VpnDnsHandler, public BraveVpnDnsDelegate {
   void SubscribeForRasNotifications(HANDLE event_handle) override {
     event_handle_ = event_handle;
   }
-  void SetConnectionResultForTesting(internal::CheckConnectionResult result) {
+  void SetConnectionResultForTesting(ras::CheckConnectionResult result) {
     VpnDnsHandler::SetConnectionResultForTesting(result);
   }
   void SetPlatformFiltersResultForTesting(bool value) {
@@ -84,7 +84,7 @@ TEST_F(VpnDnsHandlerTest, Disconnected) {
       base::BindLambdaForTesting([&]() { callback_called = true; }));
   EXPECT_FALSE(handler.IsActive());
   handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::DISCONNECTED);
+      ras::CheckConnectionResult::DISCONNECTED);
   handler.StartMonitoring();
   base::RunLoop().RunUntilIdle();
   FastForwardBy(base::Seconds(1));
@@ -96,13 +96,12 @@ TEST_F(VpnDnsHandlerTest, ConnectingFailed) {
   MockVpnDnsHandler handler(
       base::BindLambdaForTesting([&]() { callback_called = true; }));
   EXPECT_FALSE(handler.IsActive());
-  handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::CONNECTING);
+  handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTING);
   handler.StartMonitoring();
   base::RunLoop().RunUntilIdle();
   EXPECT_FALSE(handler.IsActive());
   handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::DISCONNECTED);
+      ras::CheckConnectionResult::DISCONNECTED);
   EXPECT_FALSE(handler.IsExitTimerRunningForTesting());
   // Repeating interval to check the connection is live.
   // kCheckConnectionIntervalInSeconds
@@ -119,13 +118,11 @@ TEST_F(VpnDnsHandlerTest, ConnectingSuccessFailedToSetFilters) {
   MockVpnDnsHandler handler(
       base::BindLambdaForTesting([&]() { callback_called = true; }));
   EXPECT_FALSE(handler.IsActive());
-  handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::CONNECTING);
+  handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTING);
   handler.StartMonitoring();
   base::RunLoop().RunUntilIdle();
 
-  handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::CONNECTED);
+  handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTED);
   handler.SetPlatformFiltersResultForTesting(false);
   EXPECT_FALSE(handler.IsExitTimerRunningForTesting());
   // Repeating interval to check the connection is live.
@@ -145,13 +142,11 @@ TEST_F(VpnDnsHandlerTest, ConnectingSuccessFiltersInstalled) {
       base::BindLambdaForTesting([&]() { callback_called = true; }));
   EXPECT_FALSE(handler.IsActive());
   EXPECT_EQ(handler.GetEventHandle(), nullptr);
-  handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::CONNECTING);
+  handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTING);
   handler.StartMonitoring();
   base::RunLoop().RunUntilIdle();
   EXPECT_NE(handler.GetEventHandle(), nullptr);
-  handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::CONNECTED);
+  handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTED);
   handler.SetPlatformFiltersResultForTesting(true);
   // Repeating interval to check the connection is live.
   // kCheckConnectionIntervalInSeconds
@@ -165,7 +160,7 @@ TEST_F(VpnDnsHandlerTest, ConnectingSuccessFiltersInstalled) {
 
   // Disconnected.
   handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::DISCONNECTED);
+      ras::CheckConnectionResult::DISCONNECTED);
 
   // BraveVpn changed state.
   handler.OnObjectSignaled(handler.GetEventHandle());
@@ -183,8 +178,7 @@ TEST_F(VpnDnsHandlerTest, Connected) {
       base::BindLambdaForTesting([&]() { callback_called = true; }));
   EXPECT_FALSE(handler.IsActive());
   // Connected.
-  handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::CONNECTED);
+  handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTED);
   handler.StartMonitoring();
   base::RunLoop().RunUntilIdle();
   // Set filters immediately as vpn is connected.
@@ -194,7 +188,7 @@ TEST_F(VpnDnsHandlerTest, Connected) {
 
   // Disconnected.
   handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::DISCONNECTED);
+      ras::CheckConnectionResult::DISCONNECTED);
   // BraveVpn changed state.
   handler.OnObjectSignaled(handler.GetEventHandle());
   EXPECT_TRUE(handler.IsExitTimerRunningForTesting());
@@ -210,8 +204,7 @@ TEST_F(VpnDnsHandlerTest, CheckConnectedState) {
       base::BindLambdaForTesting([&]() { callback_called = true; }));
   EXPECT_FALSE(handler.IsActive());
   // Connected.
-  handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::CONNECTED);
+  handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTED);
   handler.UpdateFiltersState();
   // Set filters immediately as vpn is connected.
   EXPECT_TRUE(handler.IsActive());
@@ -224,8 +217,7 @@ TEST_F(VpnDnsHandlerTest, CheckConnectingState) {
       base::BindLambdaForTesting([&]() { callback_called = true; }));
   EXPECT_FALSE(handler.IsActive());
   // Connecting.
-  handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::CONNECTING);
+  handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTING);
   handler.UpdateFiltersState();
   // Do nothing and wait until connected event.
   EXPECT_FALSE(handler.IsActive());
@@ -241,7 +233,7 @@ TEST_F(VpnDnsHandlerTest, CheckDisconnectedState) {
   EXPECT_TRUE(handler.IsActive());
   // Disconnected.
   handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::DISCONNECTED);
+      ras::CheckConnectionResult::DISCONNECTED);
   handler.UpdateFiltersState();
   base::RunLoop().RunUntilIdle();
   // Remove filters
@@ -260,7 +252,7 @@ TEST_F(VpnDnsHandlerTest, DisconnectAndReconnectRightAfterBySignal) {
   EXPECT_TRUE(handler.IsActive());
   // Disconnected.
   handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::DISCONNECTED);
+      ras::CheckConnectionResult::DISCONNECTED);
   handler.UpdateFiltersState();
   base::RunLoop().RunUntilIdle();
   // Filters removed
@@ -268,8 +260,7 @@ TEST_F(VpnDnsHandlerTest, DisconnectAndReconnectRightAfterBySignal) {
   EXPECT_TRUE(handler.IsExitTimerRunningForTesting());
   // Emulate vpn connect after some time.
   FastForwardBy(base::Seconds(2));
-  handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::CONNECTED);
+  handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTED);
   handler.OnObjectSignaled(handler.GetEventHandle());
   EXPECT_FALSE(handler.IsExitTimerRunningForTesting());
   // Exit should not happen because connection is on.
@@ -292,7 +283,7 @@ TEST_F(VpnDnsHandlerTest, DisconnectAndReconnectRightAfterByPolling) {
 
   // Disconnected.
   handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::DISCONNECTED);
+      ras::CheckConnectionResult::DISCONNECTED);
   handler.UpdateFiltersState();
   base::RunLoop().RunUntilIdle();
   // Filters removed
@@ -300,8 +291,7 @@ TEST_F(VpnDnsHandlerTest, DisconnectAndReconnectRightAfterByPolling) {
   EXPECT_TRUE(handler.IsExitTimerRunningForTesting());
   // Emulate vpn connect after some time.
   FastForwardBy(base::Seconds(2));
-  handler.SetConnectionResultForTesting(
-      internal::CheckConnectionResult::CONNECTED);
+  handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTED);
   // Exit should not happen because connection is on.
   // Polling should reset exit timer.
   FastForwardBy(base::Seconds(4));

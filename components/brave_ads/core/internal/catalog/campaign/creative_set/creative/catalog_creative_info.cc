@@ -5,11 +5,16 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/catalog_creative_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 bool CatalogCreativeInfo::operator==(const CatalogCreativeInfo& other) const {
-  return creative_instance_id == other.creative_instance_id &&
-         type == other.type;
+  const auto tie = [](const CatalogCreativeInfo& creative) {
+    return std::tie(creative.instance_id, creative.type);
+  };
+
+  return tie(*this) == tie(other);
 }
 
 bool CatalogCreativeInfo::operator!=(const CatalogCreativeInfo& other) const {

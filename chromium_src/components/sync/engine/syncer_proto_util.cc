@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define BRAVE_SYNCER_PROTO_UTIL_POST_CLIENT_TO_SERVER_MESSAGE \
-  SaveServerErrorMessage(*response, cycle->mutable_status_controller());
+  SaveServerErrorMessage(response, cycle->mutable_status_controller());
 
 #include "src/components/sync/engine/syncer_proto_util.cc"
 

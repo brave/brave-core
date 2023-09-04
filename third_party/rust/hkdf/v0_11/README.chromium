@@ -1,0 +1,7 @@
+Name: hkdf
+URL: https://crates.io/crates/hkdf
+Description: HMAC-based Extract-and-Expand Key Derivation Function (HKDF)
+Version: 0.11.0
+Security Critical: no
+License: Apache 2.0
+Revision: d60cffd9393cab50dc5b524bbec03abd11ff279c

@@ -177,7 +177,7 @@ TEST_F(CommanderProviderTest, ItemsAreConvertedToMatches) {
     // scrolling through the commands doesn't affect what the user typed.
     EXPECT_EQ(u":> Hello World", match.fill_into_edit);
     // Check the matches have actions.
-    EXPECT_NE(0u, match.actions.size());
+    EXPECT_TRUE(match.takeover_action);
   }
 }
 
@@ -192,19 +192,6 @@ TEST_F(CommanderProviderTest, RemovingPrefixClearsMatches) {
 
   provider()->Start(CreateInput(u"no prefix!"), false);
   EXPECT_EQ(0u, provider()->matches().size());
-}
-
-TEST_F(CommanderProviderTest, PromptingForMoreInputSetsAnnotation) {
-  provider()->Start(
-      CreateInput(base::StrCat({commander::kCommandPrefix, u" Hello World"})),
-      false);
-
-  delegate()->Notify({commander::CommandItemModel(u"Foo", {}, u"")},
-                     u"What thing?");
-
-  EXPECT_EQ(1u, provider()->matches().size());
-  EXPECT_EQ(u"What thing?", provider()->matches()[0].additional_text);
-  EXPECT_EQ(u":> Foo", provider()->matches()[0].description);
 }
 
 TEST_F(CommanderProviderTest, NoMatchRangeAllDimStyle) {

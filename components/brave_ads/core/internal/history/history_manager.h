@@ -9,11 +9,11 @@
 #include <string>
 
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/history_filter_types.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
-#include "brave/components/brave_ads/core/history_sort_types.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager_observer.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/history/history_filter_types.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
+#include "brave/components/brave_ads/core/public/history/history_sort_types.h"
 
 namespace base {
 class Time;
@@ -52,26 +52,24 @@ class HistoryManager final {
                              base::Time from_time,
                              base::Time to_time);
 
-  HistoryItemInfo Add(const InlineContentAdInfo& ad,
-                      const ConfirmationType& confirmation_type) const;
-  HistoryItemInfo Add(const NewTabPageAdInfo& ad,
-                      const ConfirmationType& confirmation_type) const;
-  HistoryItemInfo Add(const NotificationAdInfo& ad,
-                      const ConfirmationType& confirmation_type) const;
-  HistoryItemInfo Add(const PromotedContentAdInfo& ad,
-                      const ConfirmationType& confirmation_type) const;
-  HistoryItemInfo Add(const SearchResultAdInfo& ad,
-                      const ConfirmationType& confirmation_type) const;
+  void Add(const InlineContentAdInfo& ad,
+           const ConfirmationType& confirmation_type) const;
+  void Add(const NewTabPageAdInfo& ad,
+           const ConfirmationType& confirmation_type) const;
+  void Add(const NotificationAdInfo& ad,
+           const ConfirmationType& confirmation_type) const;
+  void Add(const PromotedContentAdInfo& ad,
+           const ConfirmationType& confirmation_type) const;
+  void Add(const SearchResultAdInfo& ad,
+           const ConfirmationType& confirmation_type) const;
 
   mojom::UserReactionType LikeAd(const AdContentInfo& ad_content) const;
   mojom::UserReactionType DislikeAd(const AdContentInfo& ad_content) const;
 
   mojom::UserReactionType LikeCategory(
-      const std::string& category,
-      mojom::UserReactionType user_reaction_type) const;
+      const CategoryContentInfo& category_content) const;
   mojom::UserReactionType DislikeCategory(
-      const std::string& category,
-      mojom::UserReactionType user_reaction_type) const;
+      const CategoryContentInfo& category_content) const;
 
   bool ToggleSaveAd(const AdContentInfo& ad_content) const;
 

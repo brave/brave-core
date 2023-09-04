@@ -6,18 +6,15 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.base.Callback;
-import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OnRampProvider;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.mojo.bindings.Callbacks;
+import org.chromium.mojo.bindings.Callbacks.Callback1;
 
-import java.lang.UnsupportedOperationException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -183,16 +180,21 @@ public class TokenUtils {
                     tokenType, allTokens -> { callback.call(allTokens); });
     }
 
+    private static final int[] SUPPORTED_RAMP_PROVIDERS = {
+            OnRampProvider.RAMP, OnRampProvider.SARDINE, OnRampProvider.TRANSAK};
+
     public static void getBuyTokensFiltered(BlockchainRegistry blockchainRegistry,
-            NetworkInfo selectedNetwork, TokenType tokenType, int[] rampProviders,
+            NetworkInfo selectedNetwork, TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
+        int[] rampProviders = SUPPORTED_RAMP_PROVIDERS;
         blockchainRegistry.getProvidersBuyTokens(rampProviders, selectedNetwork.chainId, tokens -> {
             // blockchainRegistry.getProvidersBuyTokens returns a full list of tokens that are
             // allowed to buy by given rampProviders. We just need to check on native assets logo
             // and fill them if they are empty.
             for (BlockchainToken tokenFromAll : tokens) {
                 if (tokenFromAll.logo.isEmpty()) {
-                    tokenFromAll.logo = Utils.getNetworkIconName(tokenFromAll.chainId);
+                    tokenFromAll.logo =
+                            Utils.getNetworkIconName(tokenFromAll.chainId, tokenFromAll.coin);
                 }
             }
             Arrays.sort(tokens, blockchainTokenComparatorPerGasOrBatType);
@@ -200,9 +202,23 @@ public class TokenUtils {
         });
     }
 
+    public static void isBuySupported(BlockchainRegistry blockchainRegistry,
+            NetworkInfo selectedNetwork, String assetSymbol, String contractAddress, String chainId,
+            Callback1<Boolean> callback) {
+        getBuyTokensFiltered(
+                blockchainRegistry, selectedNetwork, TokenUtils.TokenType.ALL, tokens -> {
+                    callback.call(JavaUtils.includes(tokens,
+                            iToken
+                            -> AssetUtils.Filters.isSameToken(
+                                    iToken, assetSymbol, contractAddress, chainId)));
+                });
+    }
+
     public static void isCustomToken(BlockchainRegistry blockchainRegistry,
             NetworkInfo selectedNetwork, int coinType, BlockchainToken token,
             Callbacks.Callback1<Boolean> callback) {
+        assert !JavaUtils.anyNull(token, selectedNetwork) : "Token or network should not be null";
+        if (JavaUtils.anyNull(token, selectedNetwork)) return;
         getAllTokens(blockchainRegistry, selectedNetwork.chainId, coinType, tokens -> {
             boolean isCustom = true;
             tokens = filterTokens(selectedNetwork, tokens, TokenType.ALL, false);

@@ -20,21 +20,13 @@
 
 namespace brave_wallet {
 
-EthTxStateManager::EthTxStateManager(PrefService* prefs)
-    : TxStateManager(prefs) {}
+EthTxStateManager::EthTxStateManager(
+    PrefService* prefs,
+    TxStorageDelegate* delegate,
+    AccountResolverDelegate* account_resolver_delegate)
+    : TxStateManager(prefs, delegate, account_resolver_delegate) {}
 
 EthTxStateManager::~EthTxStateManager() = default;
-
-std::vector<std::unique_ptr<TxMeta>> EthTxStateManager::GetTransactionsByStatus(
-    const absl::optional<std::string>& chain_id,
-    const absl::optional<mojom::TransactionStatus>& status,
-    const absl::optional<EthAddress>& from) {
-  std::vector<std::unique_ptr<TxMeta>> result;
-  absl::optional<std::string> from_string =
-      from.has_value() ? absl::optional<std::string>(from->ToChecksumAddress())
-                       : absl::nullopt;
-  return TxStateManager::GetTransactionsByStatus(chain_id, status, from_string);
-}
 
 std::unique_ptr<EthTxMeta> EthTxStateManager::GetEthTx(
     const std::string& chain_id,
@@ -57,7 +49,7 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
     const base::Value::Dict& value) {
   std::unique_ptr<EthTxMeta> meta = std::make_unique<EthTxMeta>();
 
-  if (!TxStateManager::ValueToTxMeta(value, meta.get())) {
+  if (!ValueToBaseTxMeta(value, meta.get())) {
     return nullptr;
   }
 

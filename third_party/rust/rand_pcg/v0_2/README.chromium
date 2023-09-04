@@ -1,0 +1,8 @@
+Name: rand_pcg
+URL: https://crates.io/crates/rand_pcg
+Description: Selected PCG random number generators
+
+Version: 0.2.1
+Security Critical: yes
+License: Apache 2.0
+Revision: c95ad7615e8ac79dc147f04a3f29073131082267

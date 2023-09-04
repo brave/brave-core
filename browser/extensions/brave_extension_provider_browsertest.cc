@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
@@ -52,16 +52,11 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
-  bool as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "setExpectations(1, 0, 0, 0);"
-      "addImage('ad_banner.png')",
-      &as_expected));
-  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(true, content::EvalJs(contents,
+                                  "setExpectations(1, 0, 0, 0);"
+                                  "addImage('ad_banner.png')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
@@ -78,15 +73,10 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
-  bool as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "canGetCookie('test', 'http://a.com')",
-      &as_expected));
-  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(true,
+            content::EvalJs(contents, "canGetCookie('test', 'http://a.com')"));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanSetCookies) {
@@ -102,15 +92,11 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanSetCookies) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
-  bool as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "canSetCookie('test', 'testval', 'http://a.com')",
-      &as_expected));
-  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(true,
+            content::EvalJs(contents,
+                            "canSetCookie('test', 'testval', 'http://a.com')"));
 }
 
 }  // namespace extensions

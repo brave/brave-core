@@ -11,7 +11,7 @@ import {
   UserEnabled
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import getBraveNewsController, { isDirectFeed } from '.'
-import { CachingWrapper } from './magicCache'
+import { CachingWrapper } from '$web-common/mojomCache'
 
 export class PublishersCachingWrapper
   extends CachingWrapper<Publisher>

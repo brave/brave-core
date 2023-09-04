@@ -16,6 +16,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/threading/thread_checker.h"
+#include "brave/components/widevine/static_buildflags.h"
 #include "components/update_client/component.h"
 #include "components/update_client/configurator.h"
 #include "components/update_client/persisted_data.h"
@@ -55,12 +56,26 @@ class SequentialUpdateChecker : public UpdateChecker {
   ~SequentialUpdateChecker() override;
 
  private:
-  void CheckNext();
+  void CheckNext(
+#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
+      std::string fake_architecture = ""
+#endif
+  );
   void UpdateResultAvailable(
+#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
+      std::string fake_architecture,
+#endif
       const absl::optional<ProtocolParser::Results>& results,
       ErrorCategory error_category,
       int error,
       int retry_after_sec);
+
+#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
+  void SetPersistedFlag(const std::string& extension_id,
+                        const std::string& key);
+  bool GetPersistedFlag(const std::string& extension_id,
+                        const std::string& key);
+#endif
 
   base::ThreadChecker thread_checker_;
 

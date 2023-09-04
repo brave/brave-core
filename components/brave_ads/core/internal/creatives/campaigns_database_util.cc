@@ -15,11 +15,8 @@ void DeleteCampaigns() {
   const table::Campaigns database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
-      BLOG(0, "Failed to delete campaigns");
-      return;
+      return BLOG(0, "Failed to delete campaigns");
     }
-
-    BLOG(3, "Successfully deleted campaigns");
   }));
 }
 

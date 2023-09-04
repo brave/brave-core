@@ -14,7 +14,6 @@
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/browser/ui/webui/brave_vpn/brave_vpn_localized_string_provider.h"
 #include "brave/components/brave_vpn/resources/panel/grit/brave_vpn_panel_generated_map.h"
-#include "brave/components/brave_vpn/resources/panel/grit/brave_vpn_static_resources_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -45,8 +44,6 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
       source,
       base::make_span(kBraveVpnPanelGenerated, kBraveVpnPanelGeneratedSize),
       IDR_VPN_PANEL_HTML);
-  source->AddResourcePaths(
-      base::make_span(kBraveVpnStaticResources, kBraveVpnStaticResourcesSize));
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
@@ -57,6 +54,10 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::FontSrc,
       std::string("font-src "
                   "chrome-untrusted://resources;"));
+
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      "img-src 'self' chrome-untrusted://resources;");
 
   Profile* profile = Profile::FromWebUI(web_ui);
   content::URLDataSource::Add(
@@ -94,7 +95,8 @@ void VPNPanelUI::CreatePanelHandler(
 }
 
 std::unique_ptr<content::WebUIController>
-UntrustedVPNPanelUIConfig::CreateWebUIController(content::WebUI* web_ui) {
+UntrustedVPNPanelUIConfig::CreateWebUIController(content::WebUI* web_ui,
+                                                 const GURL& url) {
   return std::make_unique<VPNPanelUI>(web_ui);
 }
 

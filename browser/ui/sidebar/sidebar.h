@@ -6,22 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_H_
 #define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_H_
 
-#include <memory>
-
 #include "brave/components/sidebar/sidebar_service.h"
-
-namespace content {
-class WebContents;
-struct NativeWebKeyboardEvent;
-}  // namespace content
-
-namespace gfx {
-class Point;
-}  // namespace gfx
-
-namespace ui {
-class MenuModel;
-}  // namespace ui
 
 namespace sidebar {
 
@@ -30,8 +15,13 @@ class Sidebar {
  public:
   virtual void SetSidebarShowOption(
       SidebarService::ShowSidebarOption show_option) = 0;
-  // Update current sidebar UI.
-  virtual void UpdateSidebar() = 0;
+
+  // Update sidebar item's UI state.
+  virtual void UpdateSidebarItemsState() = 0;
+
+  // Return true if active tab(web contents) has associated
+  // side panel.
+  virtual bool HasActiveContextualEntry() = 0;
 
  protected:
   virtual ~Sidebar() {}

@@ -12,6 +12,7 @@
 -PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
 
+# Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
 -BluetoothLowEnergyApiTest.*
@@ -19,10 +20,12 @@
 -ConditionalFocusBrowserTest.*
 -ContextMenuIncognitoFilterBrowserTest.*
 -DomainReliabilityPrefetchProxyBrowserTest.*
+-ExtensionApiTestWithSwitch.ExtensionTracing
 -ExtensionDialogTest.*
 -ExtensionStartupTest.*
 -ExternalProtocolHandlerSandboxBrowserTest.*
 -HeadlessModeProtocolBrowserTest.ScreencastBasics
+-HeadlessModeScreenshotCommandBrowserTest.HeadlessScreenshot
 -IndividualNetworkContextsPrefetchProxyBrowserTest.*
 -LayoutInstabilityTest.*
 -LocalNetworkAccessWithFeatureEnabledBrowserTest.SpecialSchemeChromeDistiller
@@ -57,6 +60,9 @@
 -TabCaptureApiTest.*
 -WebAppIntegrationBrowserTestMacWinLinux.*
 -WebAppOpaqueBrowserFrameViewTest.*
+-WebAppTagWebAppTest.TabNavigatedAwayNotWebAppTask
+-WebAppTagWebAppTest.WebAppTaskCreatedForStandalone
+-WebAppTagWebAppTest.WebAppTaskCreatedForTab
 -WebAuthnCableSecondFactor.*
 -WebRtcBrowserTest.*
 -WebRtcDisableEncryptionFlagBrowserTest.*

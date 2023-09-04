@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+android:insetLeft="-1dp">
+
+<shape android:shape="rectangle">
+    <stroke android:color="@color/tipping_points_stroke_color"
+        android:width="1dp" />
+
+</shape>
+
+</inset>

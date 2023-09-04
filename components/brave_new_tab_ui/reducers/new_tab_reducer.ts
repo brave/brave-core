@@ -9,7 +9,6 @@ import { Reducer } from 'redux'
 import { types, DismissBrandedWallpaperNotificationPayload } from '../constants/new_tab_types'
 import { Stats } from '../api/stats'
 import { PrivateTabData } from '../api/privateTabData'
-import * as Actions from '../actions/new_tab_actions'
 
 // API
 import * as backgroundAPI from '../api/background'
@@ -47,10 +46,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         braveRewardsSupported: initialDataPayload.braveRewardsSupported,
         braveTalkSupported: initialDataPayload.braveTalkSupported,
         searchPromotionEnabled: initialDataPayload.searchPromotionEnabled,
-        // Auto-dismiss of together prompt only
-        // takes effect on the next page view and not the
-        // page view that the action occurred on.
-        braveTalkPromptDismissed: state.braveTalkPromptDismissed || state.braveTalkPromptAutoDismissed,
         customImageBackgrounds: initialDataPayload.customImageBackgrounds
       }
 
@@ -250,18 +245,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       performSideEffect(async function (state) {
         chrome.send('customizeClicked', [])
       })
-      break
-    }
-
-    case Actions.dismissBraveTalkPrompt.getType(): {
-      const actionPayload = payload as Actions.DismissBraveTalkPromptPayload
-      const stateChange: Partial<NewTab.State> = actionPayload.isAutomatic
-        ? { braveTalkPromptAutoDismissed: true }
-        : { braveTalkPromptDismissed: true }
-      state = {
-        ...state,
-        ...stateChange
-      }
       break
     }
 

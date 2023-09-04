@@ -10,9 +10,9 @@
 
 namespace brave_ads {
 
-CreativeNewTabPageAdList BuildCreativeNewTabPageAds(int count);
-CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
-    bool should_use_random_guids);
+CreativeNewTabPageAdList BuildCreativeNewTabPageAdsForTesting(int count);
+CreativeNewTabPageAdInfo BuildCreativeNewTabPageAdForTesting(
+    bool should_use_random_uuids);
 
 }  // namespace brave_ads
 

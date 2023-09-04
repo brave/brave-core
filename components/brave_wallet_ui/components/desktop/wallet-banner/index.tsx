@@ -19,7 +19,7 @@ export interface Props {
   buttonText: string
 }
 
-const WalletBanner = (props: Props) => {
+export const WalletBanner = (props: Props) => {
   const { onDismiss, onClick, bannerType, description, buttonText } = props
 
   return (

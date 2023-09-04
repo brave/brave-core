@@ -18,6 +18,7 @@ source_set("base") {
 source_set("base_unittests") {
   testonly = true
   sources = [
+    "build_time_unittest.cc",
     "feature_override_unittest.cc",
     "tools_sanity_unittest.cc",
   ]

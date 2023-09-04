@@ -1,0 +1,167 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+// Schema types used by brave wallet to parse data served by component updater
+namespace blockchain_lists {
+
+  dictionary DappMetrics {
+    // Nullable
+    // e.g. "2348167", null
+    any transactions;
+
+    // Nullable
+    // e.g. "387445", null
+    any uaw;
+
+    // Nullable
+    // e.g. "65982226285.39", null
+    any volume;
+
+    // Nullable
+    // e.g. "1904817795.53", null
+    any balance;
+  };
+
+  dictionary Dapp {
+    // e.g. "7000"
+    DOMString dappId;
+
+    // e.g. "Uniswap V3"
+    DOMString name;
+
+    // e.g. "A protocol for trading and automated liquidity provision on Ethereum."
+    DOMString description;
+
+    // An url for the dapp logo.
+    DOMString logo;
+
+    // e.g. "https://dappradar.com/ethereum/exchanges/uniswap-v3"
+    DOMString link;
+
+    // e.g. "https://app.uniswap.org/#/swap"
+    DOMString website;
+
+    // e.g. ["ethereum", "polygon", "optimism", "celo", "arbitrum", "binance-smart-chain"]
+    DOMString[] chains;
+
+    // e.g. ["exchanges"]
+    DOMString[] categories;
+
+    // Dapp metrics
+    DappMetrics metrics;
+  };
+
+  dictionary DappList {
+    // e.g. true
+    boolean success;
+
+    // e.g. "ethereum"
+    DOMString chain;
+
+    // e.g. "30d"
+    DOMString range;
+
+    // e.g. "10"
+    DOMString top;
+
+    // A results list.
+    Dapp[] results;
+  };
+
+  dictionary DappLists {
+    // Dapps on Ethereum chain
+    DappList ethereum;
+
+    // Dapps on Solana chain
+    DappList solana;
+
+    // Dapps on Polygon chain
+    DappList polygon;
+
+    // Dapps on Binance Smart Chain
+    DappList binance_smart_chain;
+
+    // Dapps on Optimism chain
+    DappList optimism;
+
+    // Dapps on Aurora chain
+    DappList aurora;
+
+    // Dapps on Avalanche chain
+    DappList avalanche;
+
+    // Dapps on Fantom chain
+    DappList fantom;
+  };
+
+  dictionary Token {
+    // Hexadecimal string, e.g. "0x1"
+    DOMString chain_id;
+
+    // e.g. 60
+    long coin;
+
+    // e.g. ""
+    DOMString coingecko_id;
+
+    // Hexadecimal string, e.g. ""
+    DOMString contract_address;
+
+    // e.g. 18
+    long decimals;
+
+    // e.g. false
+    boolean is_erc1155;
+
+    // e.g. false
+    boolean is_erc20;
+
+    // e.g. false
+    boolean is_erc721;
+
+    // e.g. false
+    boolean is_nft;
+
+    // An url for the token logo, e.g. "aave.png"
+    DOMString logo;
+
+    // e.g. "Ethereum"
+    DOMString name;
+
+    // e.g. "ETH"
+    DOMString symbol;
+
+    // Hexadecimal string, e.g. ""
+    DOMString token_id;
+
+    // e.g. true
+    boolean visible;
+
+    // e.g. ["stripe", "coinbase"]
+    DOMString[] on_ramp_providers;
+
+    // e.g. ["ramp"]
+    DOMString[] off_ramp_providers;
+  };
+
+  dictionary OnRampTokenLists {
+    Token[] tokens;
+  };
+
+  dictionary OnRampCurrency {
+    // e.g. "ARS"
+    DOMString currency_code;
+
+    // e.g. "Argentine Peso"
+    DOMString currency_name;
+
+    // e.g. ["transak"]
+    DOMString[] providers;
+  };
+
+  dictionary OnRampCurrencyLists {
+    OnRampCurrency[] currencies;
+  };
+};

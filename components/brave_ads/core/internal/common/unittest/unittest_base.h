@@ -10,11 +10,12 @@
 #include <string>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/memory/weak_ptr.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_ads/core/ads_client_notifier.h"
-#include "brave/components/brave_ads/core/internal/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_mock.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_notifier.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -26,12 +27,10 @@ class TimeDelta;
 
 namespace brave_ads {
 
-using ::testing::NiceMock;
-
 class Database;
 class GlobalState;
 
-class UnitTestBase : public AdsClientNotifier, public testing::Test {
+class UnitTestBase : public AdsClientNotifier, public ::testing::Test {
  public:
   UnitTestBase();
 
@@ -43,7 +42,7 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
 
   ~UnitTestBase() override;
 
-  // testing::Test:
+  // ::testing::Test:
   void SetUp() override;
   void TearDown() override;
 
@@ -51,12 +50,11 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
   // Override |SetUp| and call |SetUpForTesting| with |is_integration_test| set
   // to |true| to test functionality and performance under product-like
   // circumstances with data to replicate live settings to simulate what a real
-  // user scenario looks like from start to finish. You should mock AdsClient
-  // and copy mock files and directories before initialization in |SetUpMocks|.
+  // user scenario looks like from start to finish.
   void SetUpForTesting(bool is_integration_test);
 
-  // Override |SetUpMocks| to mock AdsClient and to copy mock files and
-  // directories before initialization.
+  // Override |SetUpMocks| to mock command line switches, file system, prefs,
+  // and the |AdsClient| before initialization.
   virtual void SetUpMocks() {}
 
   // Convenience function for accessing AdsImpl from integration tests.
@@ -64,15 +62,19 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
 
   // Copies a single file from "data/test" to the temp path. Use
   // |CopyDirectoryFromTestPathToTempPath| to copy directories.
-  bool CopyFileFromTestPathToTempPath(const std::string& from_path,
-                                      const std::string& to_path) const;
-  bool CopyFileFromTestPathToTempPath(const std::string& path) const;
+  [[nodiscard]] bool CopyFileFromTestPathToTempPath(
+      const std::string& from_path,
+      const std::string& to_path) const;
+  [[nodiscard]] bool CopyFileFromTestPathToTempPath(
+      const std::string& path) const;
 
   // Copies the given path from "data/test", and all subdirectories and their
   // contents as well to the temp directory.
-  bool CopyDirectoryFromTestPathToTempPath(const std::string& from_path,
-                                           const std::string& to_path) const;
-  bool CopyDirectoryFromTestPathToTempPath(const std::string& path) const;
+  [[nodiscard]] bool CopyDirectoryFromTestPathToTempPath(
+      const std::string& from_path,
+      const std::string& to_path) const;
+  [[nodiscard]] bool CopyDirectoryFromTestPathToTempPath(
+      const std::string& path) const;
 
   // Fast-forwards virtual time by |time_delta|, causing all tasks on the main
   // thread and thread pool with a remaining delay less than or equal to
@@ -118,16 +120,14 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
-  NiceMock<AdsClientMock> ads_client_mock_;
+  ::testing::NiceMock<AdsClientMock> ads_client_mock_;
 
-  NiceMock<PlatformHelperMock> platform_helper_mock_;
+  ::testing::NiceMock<PlatformHelperMock> platform_helper_mock_;
 
  private:
-  void Initialize();
-
   void MockAdsClientAddObserver();
 
-  void MockDefaultAdsClient();
+  void MockAdsClient();
 
   void MockSetBooleanPref(AdsClientMock& mock);
   void MockSetIntegerPref(AdsClientMock& mock);
@@ -135,28 +135,31 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
   void MockSetStringPref(AdsClientMock& mock);
   void MockSetInt64Pref(AdsClientMock& mock);
   void MockSetUint64Pref(AdsClientMock& mock);
-  void MockSetTimePref(AdsClientMock& mock);
   void MockSetDictPref(AdsClientMock& mock);
   void MockSetListPref(AdsClientMock& mock);
+  void MockSetTimePref(AdsClientMock& mock);
 
-  void MockDefaultPrefs();
-
+  void SetUpTest();
   void SetUpIntegrationTest();
+  void SetUpIntegrationTestCallback(bool success);
+  void SetUpUnitTest();
 
   base::ScopedTempDir temp_dir_;
-
-  bool is_integration_test_ = false;
 
   bool setup_called_ = false;
   bool teardown_called_ = false;
 
-  brave_l10n::test::ScopedDefaultLocale scoped_default_locale_;
+  bool is_integration_test_ = false;
 
-  std::unique_ptr<AdsImpl> ads_;
+  brave_l10n::test::ScopedDefaultLocale scoped_default_locale_;
 
   std::unique_ptr<Database> database_;
 
+  std::unique_ptr<AdsImpl> ads_;
+
   std::unique_ptr<GlobalState> global_state_;
+
+  base::WeakPtrFactory<UnitTestBase> weak_factory_{this};
 };
 
 }  // namespace brave_ads

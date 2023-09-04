@@ -12,6 +12,7 @@
 #include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
+#include "base/values.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/load_error_reporter.h"
@@ -131,12 +132,11 @@ class BraveWebTorrentNavigationThrottleUnitTest
   }
 
   void AddExtension() {
-    DictionaryBuilder manifest;
-    manifest.Set("name", "ext")
-        .Set("version", "0.1")
-        .Set("manifest_version", 2);
     extension_ = ExtensionBuilder()
-                     .SetManifest(manifest.Build())
+                     .SetManifest(base::Value::Dict()
+                                      .Set("name", "ext")
+                                      .Set("version", "0.1")
+                                      .Set("manifest_version", 2))
                      .SetID(brave_webtorrent_extension_id)
                      .Build();
     ASSERT_TRUE(extension_);
@@ -168,8 +168,10 @@ TEST_F(BraveWebTorrentNavigationThrottleUnitTest, ExternalWebPage) {
       << url;
 }
 
-// Tests the case of loading a torrent without having the extension
-// installed. It should defer which it does to install the extension.
+// Tests the case of loading a torrent without having the extension installed.
+// It should proceed with the navigation (it used to defer prior to changes in
+// cr114, but OnExtensionReady is triggered immediately now when loading the
+// WebTorrent extension).
 TEST_F(BraveWebTorrentNavigationThrottleUnitTest,
     WebTorrentUrlNotInstalled) {
   web_contents_tester()->NavigateAndCommit(GURL("http://example.com"));
@@ -179,12 +181,14 @@ TEST_F(BraveWebTorrentNavigationThrottleUnitTest,
   test_handle.set_starting_site_instance(host->GetSiteInstance());
   auto throttle =
       std::make_unique<BraveWebTorrentNavigationThrottle>(&test_handle);
-  EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
+  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << GetTorrentUrl();
 }
 
-// Tests the case of loading a torrent without having the extension
-// installed. It should defer which it does to install the extension.
+// Tests the case of loading a torrent without having the extension installed.
+// It should proceed with the navigation (it used to defer prior to changes in
+// cr114, but OnExtensionReady is triggered immediately now when loading the
+// WebTorrent extension).
 TEST_F(BraveWebTorrentNavigationThrottleUnitTest,
     WebTorrentMagnetUrlNotInstalled) {
   web_contents_tester()->NavigateAndCommit(GURL("http://example.com"));
@@ -194,7 +198,7 @@ TEST_F(BraveWebTorrentNavigationThrottleUnitTest,
   test_handle.set_starting_site_instance(host->GetSiteInstance());
   auto throttle =
       std::make_unique<BraveWebTorrentNavigationThrottle>(&test_handle);
-  EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
+  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << GetMagnetUrl();
 }
 

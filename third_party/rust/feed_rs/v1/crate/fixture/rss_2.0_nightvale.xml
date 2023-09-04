@@ -1,0 +1,69 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:media="http://search.yahoo.com/mrss/" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:podcast="https://podcastindex.org/namespace/1.0" version="2.0">
+    <channel>
+        <title>Welcome to Night Vale</title>
+        <link>http://welcometonightvale.com</link>
+        <pubDate>Wed, 01 Feb 2023 05:00:00 -0000</pubDate>
+        <lastBuildDate>Thu, 02 Feb 2023 22:28:21 -0000</lastBuildDate>
+        <ttl>60</ttl>
+        <language>en</language>
+        <copyright>2016, Night Vale Presents</copyright>
+        <webMaster>help@prx.org (PRX)</webMaster>
+        <description>
+            <![CDATA[ <p>Twice-monthly community updates for the small desert town of Night Vale, where every conspiracy theory is true. Turn on your radio and hide. Never listened before? It's an ongoing radio show. Start with the current episode, and you'll catch on in no time. Or, go right to Episode 1 if you wanna binge-listen.</p> ]]>
+        </description>
+        <managingEditor>info@welcometonightvale.com (info@welcometonightvale.com)</managingEditor>
+        <generator>PRX Feeder v1.0.0</generator>
+        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+        <image>
+            <url>https://f.prxu.org/126/images/bc7d203a-c0dd-46ec-956b-03bad13ba85e/nightvalelogo-web4.jpg</url>
+            <title>Welcome to Night Vale</title>
+            <link>http://welcometonightvale.com</link>
+            <width>1400</width>
+            <height>1400</height>
+            <description>Twice-monthly community updates for the small desert town of Night Vale, where every conspiracy theory is true.</description>
+        </image>
+        <atom:link href="https://f.prxu.org/126/feed-rss.xml" rel="self" type="application/rss+xml"/>
+        <itunes:author>Night Vale Presents</itunes:author>
+        <itunes:type>episodic</itunes:type>
+        <itunes:category text="Fiction">
+            <itunes:category text="Science Fiction"/>
+        </itunes:category>
+        <itunes:image href="https://f.prxu.org/126/images/1f749c5d-c83a-4db9-8112-a3245da49c54/nightvalelogo-web4.jpg"/>
+        <itunes:explicit>false</itunes:explicit>
+        <itunes:owner>
+            <itunes:email>info@welcometonightvale.com</itunes:email>
+            <itunes:name>Welcome to Night Vale</itunes:name>
+        </itunes:owner>
+        <itunes:subtitle>Twice-monthly community updates for the small desert town of Night Vale, where every conspiracy theory is true.</itunes:subtitle>
+        <itunes:summary>
+            <![CDATA[ Twice-monthly community updates for the small desert town of Night Vale, where every conspiracy theory is true. Turn on your radio and hide. Never listened before? It's an ongoing radio show. Start with the current episode, and you'll catch on in no time. Or, go right to Episode 1 if you wanna binge-listen. ]]>
+        </itunes:summary>
+        <itunes:keywords>cecil,commonplace,cranor,fink,lovecraft,neofuturists,night,nightvale,nightvaleradio,radio,vale,welcome</itunes:keywords>
+        <media:copyright>2016, Night Vale Presents</media:copyright>
+        <media:thumbnail url="https://f.prxu.org/126/images/bc7d203a-c0dd-46ec-956b-03bad13ba85e/nightvalelogo-web4.jpg"/>
+        <media:keywords>cecil,commonplace,cranor,fink,lovecraft,neofuturists,night,nightvale,nightvaleradio,radio,vale,welcome</media:keywords>
+        <media:category scheme="http://www.itunes.com/dtds/podcast-1.0.dtd">Fiction</media:category>
+        <item>
+            <guid isPermaLink="false">prx_126_c6d43512-3eb0-41bc-9092-393412cae641</guid>
+            <title>221 - The Glow Cloud, Explained</title>
+            <pubDate>Wed, 01 Feb 2023 05:00:00 -0000</pubDate>
+            <link>https://beta.prx.org/stories/441886</link>
+            <description>
+                <![CDATA[ <p>The University of What It Is takes a special interest in a certain glowing cloud.</p> <p>Weather: “Blackeyeblue“ by <a href="https://shotgunmarmalade.bandcamp.com/" rel="nofollow" target="_blank">Shotgun Marmalade</a></p> <p>The voice of Dr. Janet Lubelle is Janet Varney.</p> <p>Original episode art by <a href="http://www.jessica-hayworth.com/" rel="nofollow" target="_blank">Jessica Hayworth</a></p> <p><a href="http://welcometonightvale.com/transcripts" rel="nofollow" target="_blank">Read episode transcripts</a></p> <p>Our new podcast, <a href="http://audible.com/unlicensed" rel="nofollow" target="_blank">UNLICENSED, available now! </a></p> <p><a href="http://welcometonightvale.com/live" rel="nofollow" target="_blank">2023 US TOUR DATES</a> for “The Haunting of Night Vale”</p> <p><a href="http://patreon.com/welcometonightvale/" rel="nofollow" target="_blank">Patreon is how we exist</a>! If you can, please help us keep making this show.</p> <p>Music: <a href="http://disparition.bandcamp.com" rel="nofollow" target="_blank">Disparition</a></p> <p>Logo: <a href="http://robwilsonwork.com" rel="nofollow" target="_blank">Rob Wilson</a></p> <p>Written by Joseph Fink &amp; Jeffrey Cranor</p> <p>Narrated by Cecil Baldwin</p> <p>Follow us on <a href="https://twitter.com/NightValeRadio" rel="nofollow" target="_blank">Twitter</a>, <a href="https://www.facebook.com/WelcomeToNightVale/" rel="nofollow" target="_blank">Facebook</a>, and <a href="https://www.instagram.com/nightvaleofficial/" rel="nofollow" target="_blank">Instagram</a>.</p> <p>Check out our books, live shows, store, membership program, and official recap show at <a href="https://welcometonightvale.com" rel="nofollow" target="_blank">welcometonightvale.com</a></p> <p>A production of <a href="http://nightvalepresents.com" rel="nofollow" target="_blank">Night Vale Presents</a>.</p> ]]>
+            </description>
+            <enclosure url="https://www.podtrac.com/pts/redirect.mp3/dovetail.prxu.org/_/126/c6d43512-3eb0-41bc-9092-393412cae641/nv221_intro.mp3" type="audio/mpeg" length="38749539"/>
+            <itunes:subtitle>The University of What It Is takes a special interest in a certain glowing cloud.</itunes:subtitle>
+            <itunes:episodeType>full</itunes:episodeType>
+            <itunes:duration>26:53</itunes:duration>
+            <itunes:author>Night Vale Presents</itunes:author>
+            <itunes:summary>
+                <![CDATA[ The University of What It Is takes a special interest in a certain glowing cloud. Weather: “Blackeyeblue“ by <a href="https://shotgunmarmalade.bandcamp.com/" target="_blank">Shotgun Marmalade</a> The voice of Dr. Janet Lubelle is Janet Varney. Original episode art by <a href="http://www.jessica-hayworth.com/" target="_blank">Jessica Hayworth</a> <a href="http://welcometonightvale.com/transcripts" target="_blank">Read episode transcripts</a> Our new podcast, <a href="http://audible.com/unlicensed" target="_blank">UNLICENSED, available now! </a> <a href="http://welcometonightvale.com/live" target="_blank">2023 US TOUR DATES</a> for “The Haunting of Night Vale” <a href="http://patreon.com/welcometonightvale/" target="_blank">Patreon is how we exist</a>! If you can, please help us keep making this show. Music: <a href="http://disparition.bandcamp.com" target="_blank">Disparition</a> Logo: <a href="http://robwilsonwork.com" target="_blank">Rob Wilson</a> Written by Joseph Fink &amp; Jeffrey Cranor Narrated by Cecil Baldwin Follow us on <a href="https://twitter.com/NightValeRadio" target="_blank">Twitter</a>, <a href="https://www.facebook.com/WelcomeToNightVale/" target="_blank">Facebook</a>, and <a href="https://www.instagram.com/nightvaleofficial/" target="_blank">Instagram</a>. Check out our books, live shows, store, membership program, and official recap show at <a href="https://welcometonightvale.com" target="_blank">welcometonightvale.com</a> A production of <a href="http://nightvalepresents.com" target="_blank">Night Vale Presents</a>. ]]>
+            </itunes:summary>
+            <itunes:image href="https://f.prxu.org/126/c6d43512-3eb0-41bc-9092-393412cae641/images/13851a89-c4ee-4f9d-b98b-00a238b94bdc/nightvalelogo_web4.jpg"/>
+            <media:content fileSize="38749539" type="audio/mpeg" url="https://www.podtrac.com/pts/redirect.mp3/dovetail.prxu.org/_/126/c6d43512-3eb0-41bc-9092-393412cae641/nv221_intro.mp3"/>
+            <content:encoded>
+                <![CDATA[ <p>The University of What It Is takes a special interest in a certain glowing cloud.</p> <p>Weather: “Blackeyeblue“ by <a href="https://shotgunmarmalade.bandcamp.com/" rel="nofollow" target="_blank">Shotgun Marmalade</a></p> <p>The voice of Dr. Janet Lubelle is Janet Varney.</p> <p>Original episode art by <a href="http://www.jessica-hayworth.com/" rel="nofollow" target="_blank">Jessica Hayworth</a></p> <p><a href="http://welcometonightvale.com/transcripts" rel="nofollow" target="_blank">Read episode transcripts</a></p> <p>Our new podcast, <a href="http://audible.com/unlicensed" rel="nofollow" target="_blank">UNLICENSED, available now! </a></p> <p><a href="http://welcometonightvale.com/live" rel="nofollow" target="_blank">2023 US TOUR DATES</a> for “The Haunting of Night Vale”</p> <p><a href="http://patreon.com/welcometonightvale/" rel="nofollow" target="_blank">Patreon is how we exist</a>! If you can, please help us keep making this show.</p> <p>Music: <a href="http://disparition.bandcamp.com" rel="nofollow" target="_blank">Disparition</a></p> <p>Logo: <a href="http://robwilsonwork.com" rel="nofollow" target="_blank">Rob Wilson</a></p> <p>Written by Joseph Fink &amp; Jeffrey Cranor</p> <p>Narrated by Cecil Baldwin</p> <p>Follow us on <a href="https://twitter.com/NightValeRadio" rel="nofollow" target="_blank">Twitter</a>, <a href="https://www.facebook.com/WelcomeToNightVale/" rel="nofollow" target="_blank">Facebook</a>, and <a href="https://www.instagram.com/nightvaleofficial/" rel="nofollow" target="_blank">Instagram</a>.</p> <p>Check out our books, live shows, store, membership program, and official recap show at <a href="https://welcometonightvale.com" rel="nofollow" target="_blank">welcometonightvale.com</a></p> <p>A production of <a href="http://nightvalepresents.com" rel="nofollow" target="_blank">Night Vale Presents</a>.</p> ]]>
+            </content:encoded>
+        </item>
+    </channel>
+</rss>

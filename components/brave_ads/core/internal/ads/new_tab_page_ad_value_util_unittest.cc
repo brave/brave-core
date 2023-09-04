@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/new_tab_page_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_value_util.h"
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
-#include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -34,7 +34,7 @@ TEST_F(BraveAdsNewTabPageAdValueUtilTest, FromValue) {
 
   // Assert
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ false);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ false);
   const NewTabPageAdInfo expected_ad =
       BuildNewTabPageAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, NewTabPageAdFromValue(dict));
@@ -43,7 +43,7 @@ TEST_F(BraveAdsNewTabPageAdValueUtilTest, FromValue) {
 TEST_F(BraveAdsNewTabPageAdValueUtilTest, ToValue) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ false);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ false);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad, kPlacementId);
 
   // Act

@@ -12,7 +12,7 @@ import { getLocale } from '../../../../../../common/locale'
 // components
 import { HardwareWalletAccountsList } from './accounts-list'
 import { AuthorizeHardwareDeviceIFrame } from '../../../../shared/authorize-hardware-device/authorize-hardware-device'
-import { NavButton } from '../../../../extension'
+import { NavButton } from '../../../../extension/buttons/nav-button/index'
 
 // Styled Components
 import { DisclaimerText, InfoIcon } from '../style'
@@ -32,14 +32,24 @@ import {
 
 // Custom types
 import { ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
-import { HardwareDerivationScheme, LedgerDerivationPaths, FilecoinNetwork, DerivationBatchSize, SolDerivationPaths } from '../../../../../common/hardware/types'
+import {
+  HardwareDerivationScheme,
+  LedgerDerivationPaths,
+  DerivationBatchSize,
+  SolDerivationPaths
+} from '../../../../../common/hardware/types'
 import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 import { WalletPageActions } from '../../../../../page/actions'
-import { BraveWallet, CreateAccountOptionsType, WalletState } from '../../../../../constants/types'
+import {
+  BraveWallet,
+  CreateAccountOptionsType,
+  FilecoinNetwork,
+  WalletState
+} from '../../../../../constants/types'
 import { LedgerError } from '../../../../../common/hardware/ledgerjs/ledger-messages'
 
 // hooks
-import { useLib } from '../../../../../common/hooks'
+import { useLib } from '../../../../../common/hooks/useLib'
 
 export interface Props {
   selectedAccountType: CreateAccountOptionsType
@@ -216,7 +226,7 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
   // memos
   const preAddedHardwareWalletAccounts = React.useMemo(() => {
     return savedAccounts.filter(account =>
-      ['Ledger', 'Trezor'].includes(account.accountType)
+      account.accountId.kind === BraveWallet.AccountKind.kHardware
     )
   }, [savedAccounts])
 
@@ -251,7 +261,7 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
         onAddAccounts={onAddAccounts}
         filecoinNetwork={filecoinNetwork}
         onChangeFilecoinNetwork={onFilecoinNetworkChanged}
-        selectedAccountType={selectedAccountType}
+        coin={selectedAccountType.coin}
       />
     )
   }

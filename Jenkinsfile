@@ -30,6 +30,7 @@ pipeline {
                         CHANGE_BRANCH_ENCODED = java.net.URLEncoder.encode(CHANGE_BRANCH, 'UTF-8')
                         def prDetails = readJSON(text: httpRequest(url: GITHUB_API + '/brave-core/pulls?head=brave:' + CHANGE_BRANCH_ENCODED, customHeaders: GITHUB_AUTH_HEADERS, quiet: true).content)[0]
                         SKIP = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip') }.equals(1) || prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip-${PLATFORM}") }.equals(1)
+                        SKIP_ALL_LINTERS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip-all-linters') }.equals(1)
                         RUN_NETWORK_AUDIT = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-network-audit') }.equals(1)
                         RUN_AUDIT_DEPS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-audit-deps') }.equals(1)
                         RUN_UPSTREAM_TESTS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-upstream-tests') }.equals(1)
@@ -58,6 +59,7 @@ pipeline {
                                 choiceParam('BUILD_TYPE', ["Static", "Release", "Component", "Debug"])
                                 booleanParam('WIPE_WORKSPACE', false)
                                 booleanParam('USE_GOMA', true)
+                                booleanParam('SKIP_ALL_LINTERS', false)
                                 booleanParam('SKIP_SIGNING', ${SKIP_SIGNING_DEFAULT})
                                 booleanParam('DCHECK_ALWAYS_ON', true)
                                 booleanParam('RUN_NETWORK_AUDIT', false)
@@ -91,6 +93,7 @@ pipeline {
                         string(name: 'BUILD_TYPE', value: PLATFORM == 'android' ? 'Release' : params.BUILD_TYPE),
                         booleanParam(name: 'WIPE_WORKSPACE', value: params.WIPE_WORKSPACE),
                         booleanParam(name: 'USE_GOMA', value: params.USE_GOMA),
+                        booleanParam(name: 'SKIP_ALL_LINTERS', value: SKIP_ALL_LINTERS),
                         booleanParam(name: 'SKIP_SIGNING', value: params.SKIP_SIGNING),
                         booleanParam(name: 'DCHECK_ALWAYS_ON', value: params.DCHECK_ALWAYS_ON),
                         booleanParam(name: 'RUN_NETWORK_AUDIT', value: RUN_NETWORK_AUDIT),

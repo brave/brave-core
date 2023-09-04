@@ -61,19 +61,8 @@
 		          android:paddingBottom="8dp"
 		          android:paddingStart="16dp"
 		          android:paddingEnd="16dp"
-		          android:layout_marginBottom="16dp"
 		          android:textColor="@android:color/white"
 		          style="?android:attr/borderlessButtonStyle"/>
-
-		     <TextView
-		     	android:id="@+id/txt_no_thanks"
-		        	android:layout_width="match_parent"
-		        	android:layout_height="wrap_content"
-		        	android:paddingHorizontal="30dp"
-		        	android:text="@string/no_thanks"
-		        	android:textAlignment="center"
-		        	android:textColor="@color/cookie_consent_action_color"
-		        	android:textSize="14sp" />
 
 		</LinearLayout>
 

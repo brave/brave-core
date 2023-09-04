@@ -9,10 +9,13 @@ package org.chromium.chrome.browser.firstrun;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
+import android.Manifest;
 import android.animation.LayoutTransition;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.RemoteException;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -24,16 +27,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
+import com.android.installreferrer.api.InstallReferrerClient;
+import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse;
+import com.android.installreferrer.api.InstallReferrerStateListener;
+import com.android.installreferrer.api.ReferrerDetails;
+
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLocalState;
+import org.chromium.chrome.browser.back_press.SecondaryActivityBackPressUma.SecondaryActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
@@ -42,14 +54,19 @@ import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
-import java.lang.Math;
 import java.util.Locale;
 
+/**
+ * This is on boarding activity
+ * */
 public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     // mInitializeViewsDone and mInvokePostWorkAtInitializeViews are accessed
     // from the same thread, so no need to use extra locks
     private static final String P3A_URL =
             "https://support.brave.com/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave";
+
+    private static final String TAG = "WelcomeOnboarding";
+
     private boolean mInitializeViewsDone;
     private boolean mInvokePostWorkAtInitializeViews;
     private boolean mIsP3aEnabled;
@@ -65,8 +82,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private ImageView mIvBrave;
     private ImageView mIvArrowDown;
     private LinearLayout mLayoutCard;
-    private LinearLayout mLayoutCrash;
-    private LinearLayout mLayoutP3a;
     private TextView mTvWelcome;
     private TextView mTvCard;
     private TextView mTvDefault;
@@ -88,6 +103,48 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (mInvokePostWorkAtInitializeViews) {
             finishNativeInitializationPostWork();
         }
+
+        checkReferral();
+    }
+
+    private void checkReferral() {
+        InstallReferrerClient referrerClient = InstallReferrerClient.newBuilder(this).build();
+        referrerClient.startConnection(new InstallReferrerStateListener() {
+            @Override
+            public void onInstallReferrerSetupFinished(int responseCode) {
+                switch (responseCode) {
+                    case InstallReferrerResponse.OK:
+                        try {
+                            ReferrerDetails response = referrerClient.getInstallReferrer();
+                            String referrerUrl = response.getInstallReferrer();
+                            if (referrerUrl == null) return;
+
+                            if (referrerUrl.equals(BraveConstants.DEEPLINK_ANDROID_PLAYLIST)) {
+                                SharedPreferencesManager.getInstance().writeBoolean(
+                                        BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_PLAYLIST, true);
+                            } else if (referrerUrl.equals(BraveConstants.DEEPLINK_ANDROID_VPN)) {
+                                SharedPreferencesManager.getInstance().writeBoolean(
+                                        BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_VPN, true);
+                            }
+                        } catch (RemoteException e) {
+                            Log.e(TAG, "Could not get referral: " + e.getMessage());
+                        }
+                        // Connection established.
+                        break;
+                    case InstallReferrerResponse.FEATURE_NOT_SUPPORTED:
+                        // API not available on the current Play Store app.
+                        Log.e(TAG, "InstallReferrerResponse.FEATURE_NOT_SUPPORTED");
+                        break;
+                    case InstallReferrerResponse.SERVICE_UNAVAILABLE:
+                        // Connection couldn't be established.
+                        Log.e(TAG, "InstallReferrerResponse.SERVICE_UNAVAILABLE");
+                        break;
+                }
+            }
+
+            @Override
+            public void onInstallReferrerServiceDisconnected() {}
+        });
     }
 
     private void initViews() {
@@ -99,8 +156,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         mIvBrave = findViewById(R.id.iv_brave);
         mIvArrowDown = findViewById(R.id.iv_arrow_down);
         mLayoutCard = findViewById(R.id.layout_card);
-        mLayoutCrash = findViewById(R.id.layout_crash);
-        mLayoutP3a = findViewById(R.id.layout_p3a);
         mTvWelcome = findViewById(R.id.tv_welcome);
         mTvCard = findViewById(R.id.tv_card);
         mTvDefault = findViewById(R.id.tv_default);
@@ -162,6 +217,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         new Handler().postDelayed(this::nextOnboardingStep, delayMillis);
     }
 
+    ActivityResultLauncher<String> mRequestPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(), isGranted -> { startTimer(3000); });
+
     private void nextOnboardingStep() {
         if (isActivityFinishingOrDestroyed()) return;
 
@@ -189,8 +247,11 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 }
             }, 200);
 
-            startTimer(3000);
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                mRequestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            } else {
+                startTimer(3000);
+            }
         } else if (mCurrentStep == 1) {
             int margin = mIsTablet ? 200 : 30;
             setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.3f, margin, true);
@@ -265,7 +326,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                                                .isUsageAndCrashReportingPermittedByUser();
 
                 } catch (Exception e) {
-                    Log.e("isCrashReportingOnboarding", e.getMessage());
+                    Log.e(TAG, "isCrashReportingOnboarding: " + e.getMessage());
                 }
                 if (mCheckboxCrash != null) {
                     mCheckboxCrash.setChecked(isCrashReporting);
@@ -282,7 +343,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                                     UmaSessionStats.changeMetricsReportingConsent(isChecked,
                                             ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
                                 } catch (Exception e) {
-                                    Log.e("CrashReportingOnboarding", e.getMessage());
+                                    Log.e(TAG, "CrashReportingOnboarding: " + e.getMessage());
                                 }
                             }
                         });
@@ -293,7 +354,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             try {
                 isP3aEnabled = BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
             } catch (Exception e) {
-                Log.e("P3aOnboarding", e.getMessage());
+                Log.e(TAG, "P3aOnboarding: " + e.getMessage());
             }
 
             if (mCheckboxP3a != null) {
@@ -310,7 +371,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                                             BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
                                     BraveLocalState.commitPendingWrite();
                                 } catch (Exception e) {
-                                    Log.e("P3aOnboarding", e.getMessage());
+                                    Log.e(TAG, "P3aOnboarding: " + e.getMessage());
                                 }
                             }
                         });
@@ -319,11 +380,11 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             if (mTvCard != null) {
                 mTvCard.setVisibility(View.VISIBLE);
             }
-            if (mLayoutCrash != null) {
-                mLayoutCrash.setVisibility(View.VISIBLE);
+            if (mCheckboxCrash != null) {
+                mCheckboxCrash.setVisibility(View.VISIBLE);
             }
-            if (mLayoutP3a != null) {
-                mLayoutP3a.setVisibility(View.VISIBLE);
+            if (mCheckboxP3a != null) {
+                mCheckboxP3a.setVisibility(View.VISIBLE);
             }
             if (mLayoutCard != null) {
                 mLayoutCard.setVisibility(View.VISIBLE);
@@ -418,5 +479,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         };
         mFirstRunFlowSequencer.start();
         onInitialLayoutInflationComplete();
+    }
+
+    @Override
+    public int getSecondaryActivity() {
+        return SecondaryActivity.FIRST_RUN;
     }
 }

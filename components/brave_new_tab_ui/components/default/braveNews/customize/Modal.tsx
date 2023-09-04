@@ -25,7 +25,7 @@ const Dialog = styled.dialog`
 `
 
 export default function BraveNewsModal () {
-  const { customizePage } = useBraveNews()
+  const { customizePage, setCustomizePage } = useBraveNews()
   const dialogRef = React.useRef<HTMLDialogElement & { showModal: () => void, close: () => void, open: boolean }>()
 
   const shouldRender = !!customizePage
@@ -37,6 +37,12 @@ export default function BraveNewsModal () {
       dialogRef.current?.showModal?.()
     } else if (!shouldRender && dialogRef.current?.open) {
       dialogRef.current?.close?.()
+    }
+
+    const handleCancel = () => setCustomizePage(null)
+    dialogRef.current?.addEventListener('cancel', handleCancel)
+    return () => {
+      dialogRef.current?.removeEventListener('cancel', handleCancel)
     }
   }, [shouldRender, dialogRef])
 

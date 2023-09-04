@@ -31,7 +31,7 @@ class TxMeta {
 
   const std::string& id() const { return id_; }
   mojom::TransactionStatus status() const { return status_; }
-  const std::string& from() const { return from_; }
+  const mojom::AccountIdPtr& from() const { return from_; }
   base::Time created_time() const { return created_time_; }
   base::Time submitted_time() const { return submitted_time_; }
   base::Time confirmed_time() const { return confirmed_time_; }
@@ -42,7 +42,7 @@ class TxMeta {
 
   void set_id(const std::string& id) { id_ = id; }
   void set_status(mojom::TransactionStatus status) { status_ = status; }
-  void set_from(const std::string& from) { from_ = from; }
+  void set_from(const mojom::AccountIdPtr& from) { from_ = from.Clone(); }
   void set_created_time(base::Time created_time) {
     created_time_ = created_time;
   }
@@ -66,7 +66,7 @@ class TxMeta {
 
   std::string id_;
   mojom::TransactionStatus status_ = mojom::TransactionStatus::Unapproved;
-  std::string from_;
+  mojom::AccountIdPtr from_;
   base::Time created_time_;
   base::Time submitted_time_;
   base::Time confirmed_time_;

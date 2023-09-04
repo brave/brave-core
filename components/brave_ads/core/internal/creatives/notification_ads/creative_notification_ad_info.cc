@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 CreativeNotificationAdInfo::CreativeNotificationAdInfo() = default;
@@ -15,8 +17,11 @@ CreativeNotificationAdInfo::CreativeNotificationAdInfo(
 
 bool CreativeNotificationAdInfo::operator==(
     const CreativeNotificationAdInfo& other) const {
-  return CreativeAdInfo::operator==(other) && title == other.title &&
-         body == other.body;
+  const auto tie = [](const CreativeNotificationAdInfo& ad) {
+    return std::tie(ad.title, ad.body);
+  };
+
+  return CreativeAdInfo::operator==(other) && tie(*this) == tie(other);
 }
 
 bool CreativeNotificationAdInfo::operator!=(

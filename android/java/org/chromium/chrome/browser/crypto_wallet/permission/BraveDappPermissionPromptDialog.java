@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.permission;
 
-import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.MAX_BITMAP_SIZE_FOR_DOWNLOAD;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -117,8 +115,8 @@ public class BraveDappPermissionPromptDialog
 
         InitBraveWalletService();
         TextView domain = customView.findViewById(R.id.domain);
-        mBraveWalletService.geteTldPlusOneFromOrigin(Utils.getCurrentMojomOrigin(),
-                origin -> { domain.setText(Utils.geteTLD(origin.eTldPlusOne)); });
+        mBraveWalletService.getActiveOrigin(
+                originInfo -> { domain.setText(Utils.geteTldSpanned(originInfo)); });
 
         mPropertyModel =
                 new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)

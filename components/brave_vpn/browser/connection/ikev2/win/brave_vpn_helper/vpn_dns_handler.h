@@ -9,6 +9,7 @@
 #include <windows.h>
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/synchronization/waitable_event.h"
 #include "base/task/sequenced_task_runner.h"
@@ -18,9 +19,9 @@
 
 namespace brave_vpn {
 
-namespace internal {
+namespace ras {
 enum class CheckConnectionResult;
-}  // namespace internal
+}  // namespace ras
 
 class BraveVpnDnsDelegate;
 class MockVpnDnsHandler;
@@ -36,14 +37,14 @@ class VpnDnsHandler : public base::win::ObjectWatcher::Delegate {
   // base::win::ObjectWatcher::Delegate overrides:
   void OnObjectSignaled(HANDLE object) override;
 
-  internal::CheckConnectionResult GetVpnEntryStatus();
+  ras::CheckConnectionResult GetVpnEntryStatus();
   bool CloseEngineSession();
 
   bool SetFilters(const std::wstring& connection_name);
   bool RemoveFilters(const std::wstring& connection_name);
   bool IsActive() const;
   bool IsExitTimerRunningForTesting();
-  void SetConnectionResultForTesting(internal::CheckConnectionResult result);
+  void SetConnectionResultForTesting(ras::CheckConnectionResult result);
   void SetCloseEngineResultForTesting(bool value);
   void SetPlatformFiltersResultForTesting(bool value);
   void SetWaitingIntervalBeforeExitForTesting(int value);
@@ -62,8 +63,7 @@ class VpnDnsHandler : public base::win::ObjectWatcher::Delegate {
   void Exit();
   virtual void SubscribeForRasNotifications(HANDLE event_handle);
 
-  absl::optional<internal::CheckConnectionResult>
-      connection_result_for_testing_;
+  absl::optional<ras::CheckConnectionResult> connection_result_for_testing_;
   absl::optional<bool> platform_filters_result_for_testing_;
   absl::optional<bool> close_engine_result_for_testing_;
   absl::optional<int> waiting_interval_before_exit_for_testing_;

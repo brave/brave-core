@@ -11,10 +11,12 @@
 #include "base/strings/string_piece.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/browser/mock_ads_service.h"
-#include "brave/components/brave_ads/common/search_result_ad_feature.h"
+#include "brave/components/brave_ads/browser/ads_service_mock.h"
+#include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_converting_util.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_handler.h"
-#include "brave/components/brave_ads/core/search_result_ad/test_web_page_util.h"
+#include "brave/components/brave_ads/content/browser/search_result_ad/test_web_page_util.h"
+#include "brave/components/brave_ads/core/public/feature/brave_ads_feature.h"
+#include "brave/components/brave_ads/core/public/feature/search_result_ad_feature.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -48,13 +50,45 @@ GURL GetSearchResultAdClickedUrl() {
       {kSearchResultAdClickUrl, kPlacementId, "=", kTestWebPagePlacementId}));
 }
 
+void CompareSearchResultAdInfosWithNonEmptyConversion(
+    const mojom::SearchResultAdInfoPtr& search_result_ad_info1,
+    const mojom::SearchResultAdInfoPtr& search_result_ad_info2) {
+  EXPECT_EQ(search_result_ad_info1->placement_id,
+            search_result_ad_info2->placement_id);
+  EXPECT_EQ(search_result_ad_info1->advertiser_id,
+            search_result_ad_info2->advertiser_id);
+  EXPECT_EQ(search_result_ad_info1->campaign_id,
+            search_result_ad_info2->campaign_id);
+  EXPECT_EQ(search_result_ad_info1->creative_instance_id,
+            search_result_ad_info2->creative_instance_id);
+  EXPECT_EQ(search_result_ad_info1->creative_set_id,
+            search_result_ad_info2->creative_set_id);
+  EXPECT_EQ(search_result_ad_info1->description,
+            search_result_ad_info2->description);
+  EXPECT_EQ(search_result_ad_info1->headline_text,
+            search_result_ad_info2->headline_text);
+  EXPECT_EQ(search_result_ad_info1->target_url,
+            search_result_ad_info2->target_url);
+  EXPECT_EQ(search_result_ad_info1->type, search_result_ad_info2->type);
+  EXPECT_EQ(search_result_ad_info1->value, search_result_ad_info2->value);
+  ASSERT_TRUE(search_result_ad_info1->conversion);
+  ASSERT_TRUE(search_result_ad_info2->conversion);
+  EXPECT_EQ(search_result_ad_info1->conversion->observation_window,
+            search_result_ad_info2->conversion->observation_window);
+  EXPECT_EQ(search_result_ad_info1->conversion->url_pattern,
+            search_result_ad_info2->conversion->url_pattern);
+  EXPECT_EQ(search_result_ad_info1->conversion
+                ->verifiable_advertiser_public_key_base64,
+            search_result_ad_info2->conversion
+                ->verifiable_advertiser_public_key_base64);
+}
+
 }  // namespace
 
 class SearchResultAdHandlerTest : public ::testing::Test {
  public:
   SearchResultAdHandlerTest() {
-    feature_list_.InitAndEnableFeature(
-        kShouldTriggerSearchResultAdEventsFeature);
+    feature_list_.InitAndEnableFeature(kShouldSupportSearchResultAdsFeature);
   }
 
   static void SimulateOnRetrieveSearchResultAdEntities(
@@ -67,21 +101,9 @@ class SearchResultAdHandlerTest : public ::testing::Test {
   }
 
  protected:
-  MockAdsService ads_service_;
+  AdsServiceMock ads_service_mock_;
   base::test::ScopedFeatureList feature_list_;
 };
-
-TEST_F(SearchResultAdHandlerTest,
-       BraveAdsDisabledMaybeCreateSearchResultAdHandler) {
-  EXPECT_CALL(ads_service_, IsEnabled()).WillOnce(Return(false));
-
-  auto search_result_ad_handler =
-      SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
-          /*should_trigger_viewed_event*/ true);
-
-  EXPECT_FALSE(search_result_ad_handler.get());
-}
 
 TEST_F(SearchResultAdHandlerTest,
        IncognitoModeMaybeCreateSearchResultAdHandler) {
@@ -94,28 +116,27 @@ TEST_F(SearchResultAdHandlerTest,
 
 TEST_F(SearchResultAdHandlerTest,
        NotAllowedDomainMaybeCreateSearchResultAdHandler) {
-  EXPECT_CALL(ads_service_, IsEnabled()).WillOnce(Return(true));
-
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kNotAllowedDomain),
+          &ads_service_mock_, GURL(kNotAllowedDomain),
           /*should_trigger_viewed_event*/ true);
 
   EXPECT_FALSE(search_result_ad_handler.get());
 }
 
 TEST_F(SearchResultAdHandlerTest, NullWebPage) {
-  EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed))
+  EXPECT_CALL(
+      ads_service_mock_,
+      TriggerSearchResultAdEvent(_, mojom::SearchResultAdEventType::kViewed, _))
       .Times(0);
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  _, mojom::SearchResultAdEventType::kClicked, _))
       .Times(0);
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_mock_, GURL(kAllowedDomain),
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 
@@ -137,17 +158,18 @@ TEST_F(SearchResultAdHandlerTest, NullWebPage) {
 }
 
 TEST_F(SearchResultAdHandlerTest, EmptyWebPage) {
-  EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed))
+  EXPECT_CALL(
+      ads_service_mock_,
+      TriggerSearchResultAdEvent(_, mojom::SearchResultAdEventType::kViewed, _))
       .Times(0);
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  _, mojom::SearchResultAdEventType::kClicked, _))
       .Times(0);
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_mock_, GURL(kAllowedDomain),
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 
@@ -169,17 +191,18 @@ TEST_F(SearchResultAdHandlerTest, EmptyWebPage) {
 }
 
 TEST_F(SearchResultAdHandlerTest, NotValidSearchResultAd) {
-  EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed))
+  EXPECT_CALL(
+      ads_service_mock_,
+      TriggerSearchResultAdEvent(_, mojom::SearchResultAdEventType::kViewed, _))
       .Times(0);
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  _, mojom::SearchResultAdEventType::kClicked, _))
       .Times(0);
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_mock_, GURL(kAllowedDomain),
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 
@@ -202,21 +225,24 @@ TEST_F(SearchResultAdHandlerTest, NotValidSearchResultAd) {
 }
 
 TEST_F(SearchResultAdHandlerTest, EmptyConversions) {
-  EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kServed));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked));
+  EXPECT_CALL(
+      ads_service_mock_,
+      TriggerSearchResultAdEvent(_, mojom::SearchResultAdEventType::kViewed, _))
+      .WillOnce([](mojom::SearchResultAdInfoPtr ad_mojom,
+                   mojom::SearchResultAdEventType /*event_type*/,
+                   TriggerAdEventCallback /*callback*/) {
+        EXPECT_FALSE(ad_mojom->conversion);
+      });
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  _, mojom::SearchResultAdEventType::kClicked, _));
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_mock_, GURL(kAllowedDomain),
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 
-  // "data-conversion-type-value" is missed.
   base::MockCallback<OnRetrieveSearchResultAdCallback> callback;
   EXPECT_CALL(callback, Run(_))
       .WillOnce([&search_result_ad_handler](
@@ -226,61 +252,50 @@ TEST_F(SearchResultAdHandlerTest, EmptyConversions) {
               placement_id);
         }
       });
+  // "data-conversion-url-pattern-value" is missed so conversions won't be
+  // parsed.
   SimulateOnRetrieveSearchResultAdEntities(
       search_result_ad_handler.get(), callback.Get(),
-      CreateTestWebPage({"data-conversion-type-value"}));
-
-  search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
-      GetSearchResultAdClickedUrl());
-}
-
-TEST_F(SearchResultAdHandlerTest, BraveAdsBecomeDisabled) {
-  EXPECT_CALL(ads_service_, IsEnabled()).WillOnce(Return(true));
-
-  auto search_result_ad_handler =
-      SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
-          /*should_trigger_viewed_event*/ true);
-  ASSERT_TRUE(search_result_ad_handler.get());
-  Mock::VerifyAndClearExpectations(&ads_service_);
-
-  EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(false));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed))
-      .Times(0);
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked))
-      .Times(0);
-
-  base::MockCallback<OnRetrieveSearchResultAdCallback> callback;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce([&search_result_ad_handler](
-                    const std::vector<std::string>& placement_ids) {
-        for (const std::string& placement_id : placement_ids) {
-          search_result_ad_handler->MaybeTriggerSearchResultAdViewedEvent(
-              placement_id);
-        }
-      });
-  SimulateOnRetrieveSearchResultAdEntities(search_result_ad_handler.get(),
-                                           callback.Get(), CreateTestWebPage());
+      CreateTestWebPage({"data-conversion-url-pattern-value"}));
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
       GetSearchResultAdClickedUrl());
 }
 
 TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
-  EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kServed));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked))
-      .Times(2);
+  blink::mojom::WebPagePtr web_page = CreateTestWebPage();
+  ASSERT_TRUE(web_page);
+
+  EXPECT_CALL(
+      ads_service_mock_,
+      TriggerSearchResultAdEvent(_, mojom::SearchResultAdEventType::kViewed, _))
+      .WillOnce([&web_page](mojom::SearchResultAdInfoPtr ad_mojom,
+                            mojom::SearchResultAdEventType /*event_type*/,
+                            TriggerAdEventCallback /*callback*/) {
+        const auto search_result_ads =
+            ConvertWebPageEntitiesToSearchResultAds(web_page->entities);
+        ASSERT_TRUE(search_result_ads.contains(kTestWebPagePlacementId));
+        CompareSearchResultAdInfosWithNonEmptyConversion(
+            search_result_ads.at(kTestWebPagePlacementId), ad_mojom);
+      });
+
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  _, mojom::SearchResultAdEventType::kClicked, _))
+      .Times(2)
+      .WillRepeatedly([&web_page](mojom::SearchResultAdInfoPtr ad_mojom,
+                                  mojom::SearchResultAdEventType /*event_type*/,
+                                  TriggerAdEventCallback /*callback*/) {
+        const auto search_result_ads =
+            ConvertWebPageEntitiesToSearchResultAds(web_page->entities);
+        ASSERT_TRUE(search_result_ads.contains(kTestWebPagePlacementId));
+        CompareSearchResultAdInfosWithNonEmptyConversion(
+            search_result_ads.at(kTestWebPagePlacementId), ad_mojom);
+      });
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_mock_, GURL(kAllowedDomain),
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 
@@ -294,7 +309,7 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
         }
       });
   SimulateOnRetrieveSearchResultAdEntities(search_result_ad_handler.get(),
-                                           callback.Get(), CreateTestWebPage());
+                                           callback.Get(), web_page->Clone());
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
       GetSearchResultAdClickedUrl());
@@ -304,16 +319,17 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
 }
 
 TEST_F(SearchResultAdHandlerTest, BraveAdsTabRestored) {
-  EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed))
+  EXPECT_CALL(
+      ads_service_mock_,
+      TriggerSearchResultAdEvent(_, mojom::SearchResultAdEventType::kViewed, _))
       .Times(0);
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked));
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  _, mojom::SearchResultAdEventType::kClicked, _));
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_mock_, GURL(kAllowedDomain),
           /*should_trigger_viewed_event*/ false);
   ASSERT_TRUE(search_result_ad_handler.get());
 
@@ -334,18 +350,17 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsTabRestored) {
 }
 
 TEST_F(SearchResultAdHandlerTest, WrongClickedUrl) {
-  EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kServed));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  _, mojom::SearchResultAdEventType::kViewed, _));
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  _, mojom::SearchResultAdEventType::kClicked, _))
       .Times(0);
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_mock_, GURL(kAllowedDomain),
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 

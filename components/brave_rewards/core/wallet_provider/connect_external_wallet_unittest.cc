@@ -10,10 +10,10 @@
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_mock.h"
-#include "brave/components/brave_rewards/core/endpoints/post_connect/post_connect.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
-#include "brave/components/brave_rewards/core/test/test_ledger_client.h"
+#include "brave/components/brave_rewards/core/endpoints/common/post_connect.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
+#include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -29,8 +29,9 @@ using Result = endpoints::PostConnect::Result;
 
 class ConnectTestWallet : public wallet_provider::ConnectExternalWallet {
  public:
-  explicit ConnectTestWallet(LedgerImpl& ledger, Result post_connect_result)
-      : ConnectExternalWallet(ledger),
+  explicit ConnectTestWallet(RewardsEngineImpl& engine,
+                             Result post_connect_result)
+      : ConnectExternalWallet(engine),
         post_connect_result_(post_connect_result) {}
 
   ~ConnectTestWallet() override = default;
@@ -39,7 +40,7 @@ class ConnectTestWallet : public wallet_provider::ConnectExternalWallet {
   const char* WalletType() const override { return "test"; }
 
   void Authorize(OAuthInfo&&, ConnectExternalWalletCallback callback) override {
-    OnConnect(std::move(callback), "token", "address",
+    OnConnect(std::move(callback), "token", "address", "country",
               Result(post_connect_result_));
   }
 
@@ -61,7 +62,7 @@ class ConnectExternalWalletTest
     : public TestWithParam<ConnectExternalWalletTestParamType> {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
+  MockRewardsEngineImpl mock_engine_impl_;
 };
 
 TEST_P(ConnectExternalWalletTest, Paths) {
@@ -73,12 +74,12 @@ TEST_P(ConnectExternalWalletTest, Paths) {
           "status": )" +
       std::to_string(static_cast<int>(wallet_status)) + "}");
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), GetStringState("wallets.test", _))
+  ON_CALL(*mock_engine_impl_.mock_client(), GetStringState("wallets.test", _))
       .WillByDefault([&](const std::string&, auto callback) {
         std::move(callback).Run(test_wallet);
       });
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  ON_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
         std::move(callback).Run(db_error_response->Clone());
       });
@@ -86,7 +87,7 @@ TEST_P(ConnectExternalWalletTest, Paths) {
   base::MockCallback<ConnectExternalWalletCallback> callback;
   EXPECT_CALL(callback, Run(expected_result)).Times(1);
 
-  ConnectTestWallet(mock_ledger_impl_, post_connect_result)
+  ConnectTestWallet(mock_engine_impl_, post_connect_result)
       .Run(query_parameters, callback.Get());
 
   task_environment_.RunUntilIdle();

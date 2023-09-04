@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+    <channel>
+        <item>
+            <media:content url="https://example"/><content:encoded>Example</content:encoded>
+        </item>
+    </channel>
+</rss>

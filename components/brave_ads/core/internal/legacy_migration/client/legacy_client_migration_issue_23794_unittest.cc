@@ -3,39 +3,40 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
-#include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
+#include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::client {
+namespace brave_ads {
 
 namespace {
-
 constexpr char kClientIssue23794Filename[] = "client_issue_23794.json";
-constexpr uint64_t kClientIssue23794JsonHash = 1891112954;
-constexpr uint64_t kMigratedClientIssue23794JsonHash = 2087726078;
-
 }  // namespace
 
-class BraveAdsLegacyClientMigrationIssue23794Test : public UnitTestBase {};
+class BraveAdsLegacyClientMigrationIssue23794Test : public UnitTestBase {
+ protected:
+  void SetUpMocks() override {
+    SetBooleanPref(prefs::kHasMigratedClientState, false);
+  }
+};
 
 TEST_F(BraveAdsLegacyClientMigrationIssue23794Test, Migrate) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedClientState, false);
-
-  CopyFileFromTestPathToTempPath(kClientIssue23794Filename,
-                                 kClientStateFilename);
-
-  SetHash(kClientIssue23794JsonHash);
+  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kClientIssue23794Filename,
+                                             kClientStateFilename));
 
   // Act
-  Migrate(/*should_migrate*/ true);
+  MigrateClientState(base::BindOnce([](const bool success) {
+    ASSERT_TRUE(success);
 
-  // Assert
-  EXPECT_EQ(kMigratedClientIssue23794JsonHash, GetHash());
+    // Assert
+    EXPECT_TRUE(HasMigratedClientState());
+  }));
 }
 
-}  // namespace brave_ads::client
+}  // namespace brave_ads

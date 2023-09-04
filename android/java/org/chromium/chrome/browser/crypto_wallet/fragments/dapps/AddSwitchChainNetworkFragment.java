@@ -83,8 +83,8 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTabTitles.add(new NavigationItem(getString(R.string.brave_wallet_allow_add_network_title),
-                new TwoLineItemFragment(networks)));
+        mTabTitles.add(new NavigationItem(
+                getString(R.string.network_text), new TwoLineItemFragment(networks)));
         mTabTitles.add(
                 new NavigationItem(getString(R.string.details), new TwoLineItemFragment(details)));
     }
@@ -162,8 +162,8 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     private void setBitmapOnImageView(GURL pageUrl, Bitmap iconBitmap) {
         if (iconBitmap == null) {
             if (mDefaultFaviconHelper == null) mDefaultFaviconHelper = new DefaultFaviconHelper();
-            iconBitmap = mDefaultFaviconHelper.getDefaultFaviconBitmap(
-                    getActivity().getResources(), pageUrl, true);
+            iconBitmap =
+                    mDefaultFaviconHelper.getDefaultFaviconBitmap(getActivity(), pageUrl, true);
         }
         mFavicon.setImageBitmap(iconBitmap);
         mFavicon.setVisibility(View.VISIBLE);
@@ -209,9 +209,8 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
 
     private void fillOriginInfo(OriginInfo originInfo) {
         if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
-            GURL url = new GURL(originInfo.originSpec);
-            mSiteTv.setText(Utils.geteTLD(url, originInfo.eTldPlusOne));
-            showFavIcon(url);
+            mSiteTv.setText(Utils.geteTldSpanned(originInfo));
+            showFavIcon(new GURL(originInfo.originSpec));
         }
     }
 
@@ -240,7 +239,7 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     private void processSwitchChainRequest(
             SwitchChainRequest switchChainRequest, boolean isApproved) {
         mBraveWalletBaseActivity.getJsonRpcService().notifySwitchChainRequestProcessed(
-                isApproved, switchChainRequest.originInfo.origin);
+                switchChainRequest.requestId, isApproved);
     }
 
     private void processAddChainRequest(NetworkInfo networkInfo, boolean isApproved) {

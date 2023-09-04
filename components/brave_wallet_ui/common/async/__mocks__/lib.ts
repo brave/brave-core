@@ -3,7 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { mockBasicAttentionToken, mockEthToken } from '../../../stories/mock-data/mock-asset-options'
+import {
+  mockBasicAttentionToken //
+} from '../../../stories/mock-data/mock-asset-options'
 import { BraveWallet, GetBlockchainTokenInfoReturnInfo, GetChecksumEthAddressReturnInfo, GetEthAddrReturnInfo } from '../../../constants/types'
 import { HardwareWalletConnectOpts } from '../../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
@@ -26,11 +28,6 @@ export const getIsSwapSupported = (network: BraveWallet.NetworkInfo) => new Prom
   resolve(mockedIsSwapSupported)
 })
 
-let mockBuyAssetList: BraveWallet.BlockchainToken[] = [
-  mockEthToken,
-  mockBasicAttentionToken
-]
-
 const mockENSValues = [
   {
     address: 'mockAddress2',
@@ -52,36 +49,6 @@ const mockUDValues = [
     name: 'bravey.crypto'
   }
 ]
-
-export const getBuyAssets = () => new Promise<BraveWallet.BlockchainToken[]>((resolve) => {
-  resolve(mockBuyAssetList)
-})
-
-export const getAllBuyAssets = () => new Promise<{
-  rampAssetOptions: BraveWallet.BlockchainToken[]
-  allAssetOptions: BraveWallet.BlockchainToken[]
-  sardineAssetOptions: BraveWallet.BlockchainToken[]
-}>((resolve) => {
-  resolve({
-    rampAssetOptions: mockBuyAssetList,
-    sardineAssetOptions: mockBuyAssetList,
-    allAssetOptions: mockBuyAssetList
-  })
-})
-
-export const getAllSellAssets = () => new Promise<{
-  rampAssetOptions: BraveWallet.BlockchainToken[]
-  allAssetOptions: BraveWallet.BlockchainToken[]
-}>((resolve) => {
-  resolve({
-    rampAssetOptions: mockBuyAssetList,
-    allAssetOptions: mockBuyAssetList
-  })
-})
-
-export const setMockedBuyAssets = (newList: BraveWallet.BlockchainToken[]) => {
-  mockBuyAssetList = newList
-}
 
 export const findENSAddress = async (address: string) => {
   const foundAddress = mockENSValues.find((value) => value.name === address)
@@ -112,12 +79,13 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
 
   return new Promise((resolve) => {
     resolve(Array.from({ length: opts.stopIndex - opts.startIndex }, (_, i) => ({
+      coin: BraveWallet.CoinType.ETH,
+      keyringId: BraveWallet.KeyringId.kDefault,
       address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
       derivationPath: makeDerivationPath(i + opts.startIndex),
       name: 'Ledger 1',
       hardwareVendor: 'Ledger',
       deviceId: 'device1',
-      coin: BraveWallet.CoinType.ETH,
       network: undefined
     })))
   })
@@ -147,4 +115,8 @@ export const getBlockchainTokenInfo = async (
   return {
     token: null
   }
+}
+
+export const translateToNftGateway = async (url: string | undefined) => {
+  return url
 }

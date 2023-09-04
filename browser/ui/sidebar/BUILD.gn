@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 import("//extensions/buildflags/buildflags.gni")
 
@@ -18,10 +19,10 @@ source_set("sidebar") {
     "sidebar_controller.h",
     "sidebar_model.cc",
     "sidebar_model.h",
-    "sidebar_service_delegate_impl.cc",
-    "sidebar_service_delegate_impl.h",
     "sidebar_service_factory.cc",
     "sidebar_service_factory.h",
+    "sidebar_tab_helper.cc",
+    "sidebar_tab_helper.h",
     "sidebar_utils.cc",
     "sidebar_utils.h",
   ]
@@ -36,6 +37,7 @@ source_set("sidebar") {
     "//content/public/common",
     "//extensions/buildflags",
     "//skia",
+    "//third_party/abseil-cpp:absl",
     "//url",
   ]
 
@@ -78,6 +80,7 @@ source_set("browser_tests") {
     "//brave/app:command_ids",
     "//brave/browser/ui/sidebar",
     "//brave/browser/ui/tabs",
+    "//brave/components/ai_chat/common/buildflags",
     "//brave/components/playlist/common",
     "//brave/components/sidebar",
     "//chrome/browser",
@@ -90,6 +93,10 @@ source_set("browser_tests") {
     "//ui/events",
     "//ui/gfx",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/common" ]
+  }
 }
 
 source_set("unit_tests") {

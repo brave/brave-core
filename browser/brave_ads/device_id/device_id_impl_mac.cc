@@ -50,19 +50,22 @@ std::string FindBSDNameOfSystemDisk() {
                                                 base::BlockingType::MAY_BLOCK);
 
   struct statfs* mounted_volumes;
-  const int count = getmntinfo(&mounted_volumes, 0);
+  const int count = getmntinfo_r_np(&mounted_volumes, 0);
   if (count == 0) {
     return {};
   }
 
+  std::string root_bsd_name;
   for (int i = 0; i < count; i++) {
-    struct statfs* volume = &mounted_volumes[i];
-    if (std::string(volume->f_mntonname) == kRootDirectory) {
-      return std::string(volume->f_mntfromname);
+    const struct statfs& volume = mounted_volumes[i];
+    if (std::string(volume.f_mntonname) == kRootDirectory) {
+      root_bsd_name = std::string(volume.f_mntfromname);
+      break;
     }
   }
 
-  return {};
+  free(mounted_volumes);
+  return root_bsd_name;
 }
 
 // Return the Volume UUID property of a BSD disk name (e.g. '/dev/disk1').

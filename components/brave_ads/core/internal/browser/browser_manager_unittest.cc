@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -42,17 +43,21 @@ class BraveAdsBrowserManagerTest : public BrowserManagerObserver,
     browser_did_enter_background_ = true;
   }
 
+  void ResetObserver() {
+    browser_did_become_active_ = false;
+    browser_did_resign_active_ = false;
+    browser_did_enter_foreground_ = false;
+    browser_did_enter_background_ = false;
+  }
+
   bool browser_did_become_active_ = false;
   bool browser_did_resign_active_ = false;
-
   bool browser_did_enter_foreground_ = false;
   bool browser_did_enter_background_ = false;
 };
 
-TEST_F(BraveAdsBrowserManagerTest, BrowserDidBecomeActive) {
+TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidBecomeActive) {
   // Arrange
-  BrowserManager::GetInstance().SetBrowserIsInForeground(true);
-  BrowserManager::GetInstance().SetBrowserIsActive(false);
 
   // Act
   NotifyBrowserDidBecomeActive();
@@ -63,9 +68,10 @@ TEST_F(BraveAdsBrowserManagerTest, BrowserDidBecomeActive) {
   EXPECT_FALSE(browser_did_resign_active_);
 }
 
-TEST_F(BraveAdsBrowserManagerTest, BrowserDidResignActive) {
+TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidResignActive) {
   // Arrange
-  BrowserManager::GetInstance().SetBrowserIsActive(true);
+  NotifyBrowserDidBecomeActive();
+  ResetObserver();
 
   // Act
   NotifyBrowserDidResignActive();
@@ -76,9 +82,8 @@ TEST_F(BraveAdsBrowserManagerTest, BrowserDidResignActive) {
   EXPECT_TRUE(browser_did_resign_active_);
 }
 
-TEST_F(BraveAdsBrowserManagerTest, BrowserDidEnterForeground) {
+TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterForeground) {
   // Arrange
-  BrowserManager::GetInstance().SetBrowserIsInForeground(false);
 
   // Act
   NotifyBrowserDidEnterForeground();
@@ -89,9 +94,10 @@ TEST_F(BraveAdsBrowserManagerTest, BrowserDidEnterForeground) {
   EXPECT_FALSE(browser_did_enter_background_);
 }
 
-TEST_F(BraveAdsBrowserManagerTest, BrowserDidEnterBackground) {
+TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterBackground) {
   // Arrange
-  BrowserManager::GetInstance().SetBrowserIsInForeground(true);
+  NotifyBrowserDidEnterForeground();
+  ResetObserver();
 
   // Act
   NotifyBrowserDidEnterBackground();
@@ -100,6 +106,31 @@ TEST_F(BraveAdsBrowserManagerTest, BrowserDidEnterBackground) {
   EXPECT_FALSE(BrowserManager::GetInstance().IsBrowserInForeground());
   EXPECT_FALSE(browser_did_enter_foreground_);
   EXPECT_TRUE(browser_did_enter_background_);
+}
+
+TEST_F(BraveAdsBrowserManagerTest,
+       OnNotifyDidInitializeAdsWhenBrowserIsActive) {
+  // Arrange
+
+  // Act
+  NotifyDidInitializeAds();
+
+  // Assert
+  EXPECT_TRUE(BrowserManager::GetInstance().IsBrowserActive());
+  EXPECT_TRUE(BrowserManager::GetInstance().IsBrowserInForeground());
+}
+
+TEST_F(BraveAdsBrowserManagerTest,
+       OnNotifyDidInitializeAdsWhenBrowserIsInactive) {
+  // Arrange
+  MockIsBrowserActive(ads_client_mock_, false);
+
+  // Act
+  NotifyDidInitializeAds();
+
+  // Assert
+  EXPECT_FALSE(BrowserManager::GetInstance().IsBrowserActive());
+  EXPECT_FALSE(BrowserManager::GetInstance().IsBrowserInForeground());
 }
 
 }  // namespace brave_ads

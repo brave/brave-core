@@ -193,6 +193,62 @@ class IpfsValidateGatewayUrlFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class IpfsGetSettingsFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.getSettings", UNKNOWN)
+
+ protected:
+  ~IpfsGetSettingsFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsSetPublicGatewayFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.setPublicGateway", UNKNOWN)
+
+ protected:
+  ~IpfsSetPublicGatewayFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsSetPublicNFTGatewayFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.setPublicNFTGateway", UNKNOWN)
+
+ protected:
+  ~IpfsSetPublicNFTGatewayFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsSetResolveMethodFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.setResolveMethod", UNKNOWN)
+
+ protected:
+  ~IpfsSetResolveMethodFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsSetAutoRedirectToConfiguredGatewayEnabledFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.setAutoRedirectToConfiguredGatewayEnabled",
+                             UNKNOWN)
+
+ protected:
+  ~IpfsSetAutoRedirectToConfiguredGatewayEnabledFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsSetGatewayFallbackEnabledFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.setGatewayFallbackEnabled", UNKNOWN)
+
+ protected:
+  ~IpfsSetGatewayFallbackEnabledFunction() override {}
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

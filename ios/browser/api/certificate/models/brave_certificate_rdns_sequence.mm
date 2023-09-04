@@ -24,8 +24,6 @@
       _organization = [[NSArray alloc] init];
       _organizationalUnit = [[NSArray alloc] init];
       _commonName = [[NSString alloc] init];
-      _streetAddress = [[NSArray alloc] init];
-      _domainComponent = [[NSArray alloc] init];
       _userId = [[NSString alloc] init];
       _countryOrRegion = [[NSString alloc] init];
       return self;
@@ -37,8 +35,6 @@
     _organization = brave::vector_to_ns(rdns.organization_names);
     _organizationalUnit = brave::vector_to_ns(rdns.organization_unit_names);
     _commonName = base::SysUTF8ToNSString(rdns.common_name);
-    _streetAddress = brave::vector_to_ns(rdns.street_addresses);
-    _domainComponent = brave::vector_to_ns(rdns.domain_components);
     _userId = base::SysUTF8ToNSString(uniqueId.bytes().AsString());
   }
   return self;

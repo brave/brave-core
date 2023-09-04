@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.toolbar.bottom;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -22,7 +21,6 @@ import org.chromium.base.Log;
 import org.chromium.base.metrics.RecordUserAction;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
-import org.chromium.base.supplier.OneShotCallback;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
@@ -32,13 +30,10 @@ import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
-import org.chromium.chrome.browser.feature_engagement.TrackerFactory;
 import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.omnibox.OmniboxFocusReason;
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tasks.ReturnToChromeUtil;
 import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
@@ -46,14 +41,8 @@ import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.LocationBarModel;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
-import org.chromium.chrome.browser.toolbar.bottom.BookmarksButton;
-import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarNewTabButton;
-import org.chromium.chrome.browser.toolbar.bottom.SearchAccelerator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.components.feature_engagement.EventConstants;
-import org.chromium.components.feature_engagement.Tracker;
-import org.chromium.ui.widget.Toast;
 
 /**
  * The root coordinator for the bottom toolbar. It has two sub-components: the browsing mode bottom
@@ -93,7 +82,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private SearchAccelerator mSearchAccelerator;
     private BottomToolbarNewTabButton mNewTabButton;
     private View mBottomContainerTopShadow;
-
+    private boolean mBookmarkButtonFilled;
     private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private LocationBarModel mLocationBarModel;
 
@@ -190,7 +179,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 && BottomToolbarVariationManager.shouldBottomToolbarBeVisibleInOverviewMode()) {
             mLayoutStateObserver = new LayoutStateProvider.LayoutStateObserver() {
                 @Override
-                public void onStartedShowing(@LayoutType int layoutType, boolean showToolbar) {
+                public void onStartedShowing(@LayoutType int layoutType) {
                     if (layoutType != LayoutType.TAB_SWITCHER) return;
 
                     BrowsingModeBottomToolbarCoordinator browsingModeCoordinator =
@@ -214,8 +203,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 }
 
                 @Override
-                public void onStartedHiding(
-                        @LayoutType int layoutType, boolean showToolbar, boolean delayAnimation) {
+                public void onStartedHiding(@LayoutType int layoutType) {
                     if (layoutType != LayoutType.TAB_SWITCHER) return;
 
                     BrowsingModeBottomToolbarCoordinator browsingModeCoordinator =
@@ -329,6 +317,11 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         if (mBrowsingModeCoordinator != null) {
             ((BrowsingModeBottomToolbarCoordinator) mBrowsingModeCoordinator)
                     .updateBookmarkButton(isBookmarked, editingAllowed);
+            if (mBookmarkButtonFilled != isBookmarked) {
+                // We need to update cached image with new bookmark button state.
+                mScrollingBottomView.triggerBitmapCapture(false);
+                mBookmarkButtonFilled = isBookmarked;
+            }
         }
     }
 

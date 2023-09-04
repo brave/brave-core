@@ -20,6 +20,10 @@ class TestingBrowserProcess : public TestingBrowserProcess_ChromiumImpl {
   // Cleanly destroys |g_browser_process|, which has special deletion semantics.
   static void DeleteInstance();
 
+  // Convenience method to both teardown and destroy the TestingBrowserProcess
+  // instance
+  static void TearDownAndDeleteInstance();
+
   // Convenience method to get g_browser_process as a TestingBrowserProcess*.
   static TestingBrowserProcess* GetGlobal();
 

@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.crypto_wallet.presenters;
 import android.content.Context;
 import android.text.TextUtils;
 
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.SolanaAccountMeta;
 import org.chromium.brave_wallet.mojom.SolanaInstruction;
@@ -146,7 +145,8 @@ public class SolanaInstructionPresenter {
                                     R.string.brave_wallet_solana_address_lookup_table_account));
                     twoLineItemText.setTitle(prependedTableIndexSubTitle);
                 }
-                if (!accountPresenter.mSolanaAccountMeta.isSigner) {
+                if (!accountPresenter.mSolanaAccountMeta.isSigner
+                        && accountPresenter.mSolanaAccountMeta.addrTableLookupIndex != null) {
                     twoLineItemDataSources.add(new TwoLineItemText(
                             resources.getString(
                                     R.string.brave_wallet_solana_address_lookup_table_index),

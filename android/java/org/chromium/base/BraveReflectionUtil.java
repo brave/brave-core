@@ -5,9 +5,6 @@
 
 package org.chromium.base;
 
-import org.chromium.base.Log;
-
-import java.lang.Class;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

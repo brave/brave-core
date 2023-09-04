@@ -1,0 +1,12 @@
+diff --git a/third_party/rust/rand/v0_8/BUILD.gn b/third_party/rust/rand/v0_8/BUILD.gn
+index edb6299865e033cc1962517cc7df7fbb1f3c4861..5fe869d2a3216dadb840ca845f378728c4ec8f1d 100644
+--- a/third_party/rust/rand/v0_8/BUILD.gn
++++ b/third_party/rust/rand/v0_8/BUILD.gn
+@@ -42,6 +42,7 @@ cargo_crate("lib") {
+     "std",
+     "std_rng",
+   ]
++  features += [ "small_rng" ]
+ }
+ group("test_support") {
+   public_deps = [ ":lib" ]

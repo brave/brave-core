@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Fuse from 'fuse.js'
-import { BraveWallet, MarketAssetFilterOption, MarketDataTableColumnTypes, SortOrder } from '../constants/types'
+import { BraveWallet, MarketAssetFilterOption, MarketGridColumnTypes, SortOrder } from '../constants/types'
 
 const searchOptions: Fuse.IFuseOptions<BraveWallet.CoinMarket> = {
   shouldSort: true,
@@ -18,7 +18,7 @@ const searchOptions: Fuse.IFuseOptions<BraveWallet.CoinMarket> = {
   ]
 }
 
-export const sortCoinMarkets = (marketData: BraveWallet.CoinMarket[], sortOrder: SortOrder, columnId: MarketDataTableColumnTypes) => {
+export const sortCoinMarkets = (marketData: BraveWallet.CoinMarket[], sortOrder: SortOrder, columnId: MarketGridColumnTypes) => {
   if (sortOrder === 'asc') {
     return marketData.sort((a, b) => a[columnId] - b[columnId])
   } else {

@@ -6,6 +6,8 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
+import { setIconBasePath } from '@brave/leo/react/icon'
+
 import { LocaleContext } from '../shared/lib/locale_context'
 import { TabOpenerContext } from '../shared/components/new_tab_link'
 import { ModelContext } from './lib/model_context'
@@ -13,6 +15,8 @@ import { createLocaleContextForWebUI } from '../shared/lib/webui_locale_context'
 import { createModel } from './lib/webui_model'
 import { TipPanelProxy } from './lib/tip_panel_proxy'
 import { App } from './components/app'
+
+setIconBasePath('chrome://resources/brave-icons')
 
 // A wrapping component that sets the document dimensions. This is necessary
 // when rendering a WebUI bubble, as the bubble will resize based on the

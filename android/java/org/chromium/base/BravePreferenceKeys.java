@@ -53,5 +53,7 @@ public final class BravePreferenceKeys {
             "brave_background_video_playback_converted_to_feature";
     public static final String BRAVE_APP_OPEN_COUNT_FOR_WIDGET_PROMO =
             "brave_app_open_count_for_widget_promo";
-    public static final String SHOULD_SHOW_PLAYLIST_ONBOARDING = "should_show_playlist_onboarding";
+    public static final String BRAVE_DEFERRED_DEEPLINK_PLAYLIST =
+            "brave_deferred_deeplink_playlist";
+    public static final String BRAVE_DEFERRED_DEEPLINK_VPN = "brave_deferred_deeplink_vpn";
 }

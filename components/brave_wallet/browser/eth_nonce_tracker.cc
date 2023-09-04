@@ -23,12 +23,12 @@ EthNonceTracker::EthNonceTracker(TxStateManager* tx_state_manager,
 EthNonceTracker::~EthNonceTracker() = default;
 
 void EthNonceTracker::GetNextNonce(const std::string& chain_id,
-                                   const std::string& from,
+                                   const mojom::AccountIdPtr& from,
                                    GetNextNonceCallback callback) {
   json_rpc_service_->GetEthTransactionCount(
-      chain_id, from,
+      chain_id, from->address,
       base::BindOnce(&EthNonceTracker::OnGetNetworkNonce,
-                     weak_factory_.GetWeakPtr(), chain_id, from,
+                     weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
                      std::move(callback)));
 }
 
@@ -60,7 +60,7 @@ uint256_t EthNonceTracker::GetHighestContinuousFrom(
 }
 
 void EthNonceTracker::OnGetNetworkNonce(const std::string& chain_id,
-                                        const std::string& from,
+                                        const mojom::AccountIdPtr& from,
                                         GetNextNonceCallback callback,
                                         uint256_t network_nonce,
                                         mojom::ProviderError error,
@@ -69,9 +69,8 @@ void EthNonceTracker::OnGetNetworkNonce(const std::string& chain_id,
     std::move(callback).Run(false, network_nonce);
     return;
   }
-  auto nonce = GetFinalNonce(
-      chain_id, EthAddress::FromHex(from).ToChecksumAddress(), network_nonce);
-  std::move(callback).Run(nonce.has_value(), nonce.has_value() ? *nonce : 0);
+  auto nonce = GetFinalNonce(chain_id, from, network_nonce);
+  std::move(callback).Run(true, nonce);
 }
 
 }  // namespace brave_wallet

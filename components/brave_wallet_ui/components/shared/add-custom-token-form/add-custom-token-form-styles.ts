@@ -4,8 +4,11 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { WalletButton } from '../style'
+import { WalletButton, Row } from '../style'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
+import {
+  layoutPanelWidth
+} from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const AdvancedButton = styled(WalletButton)`
   display: flex;
@@ -26,13 +29,20 @@ export const AdvancedIcon = styled(CaratStrongDownIcon) <Partial<{ rotated: bool
   transform: ${(p) => p.rotated ? 'rotate(180deg)' : 'rotate(0deg)'};
   margin-right: 10px;
 `
-export const ButtonRow = styled.div`
+
+export const ButtonRow = styled(Row)`
+  padding: 32px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 24px 16px;
+  }
+`
+
+export const AddButtonWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 100%;
-  margin-top: 12px;
+  width: 210px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    width: 170px;
+  }
 `
 
 export const ErrorText = styled.span`
@@ -41,6 +51,7 @@ export const ErrorText = styled.span`
   line-height: 18px;
   color: ${(p) => p.theme.color.errorText};
   margin-bottom: 10px;
+  text-align: left;
 `
 
 export const DividerRow = styled.div`
@@ -74,7 +85,14 @@ export const FormWrapper = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
+  height: 100%;
   margin-top: 10px;
+  box-sizing: border-box;
+  overflow: auto;
+  padding: 0px 32px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 0px 16px;
+  }
 `
 
 export const FormRow = styled.div`
@@ -110,7 +128,7 @@ export const InputLabel = styled.span`
 
 export const Input = styled.input`
   outline: none;
-  width: ${p => p.width ? p.width : '265px'};
+  width: ${p => p.width ? p.width : '100%'};
   background-image: none;
   background-color: ${(p) => p.theme.color.background02};
   box-shadow: none;

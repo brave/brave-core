@@ -17,8 +17,6 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.custom_layout.NonSwipeableViewPager;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.onboarding.OnboardingViewPagerAdapter;
 
 public class OnboardingActivity extends AppCompatActivity implements OnViewPagerAction {
     private static final String TAG = "OnboardingActivity";

@@ -258,6 +258,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   std::string domain_d = "d.test";
   std::string domain_x = "www.ulta.com";
   std::string domain_y = "aeroplan.rewardops.com";
+  std::string domain_z = "login.live.com";
   GURL url_b = https_server_.GetURL(
       domain_b, "/reduce-language/page-with-subresources.html");
   GURL url_d = https_server_.GetURL(
@@ -266,6 +267,8 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
       domain_x, "/reduce-language/page-with-subresources.html");
   GURL url_y = https_server_.GetURL(
       domain_y, "/reduce-language/page-with-subresources.html");
+  GURL url_z = https_server_.GetURL(
+      domain_z, "/reduce-language/page-with-subresources.html");
   SetAcceptLanguages("la,es,en");
 
   // Farbling level: off
@@ -328,4 +331,25 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_x));
   BlockFingerprinting(domain_y);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_y));
+  BlockFingerprinting(domain_z);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
+}
+
+// Tests results of farbling HTTP Accept-Language header
+IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
+                       FarbleHTTPAcceptLanguageFromServiceWorker) {
+  std::string domain_b = "b.test";
+  GURL url_b_sw = https_server_.GetURL(
+      domain_b, "/reduce-language/service-workers-accept-language.html");
+
+  // Farbling level: maximum
+  // HTTP Accept-Language header should be farbled by the same across domains,
+  // even if fetch originated from a service worker.
+  SetFingerprintingDefault(domain_b);
+  SetAcceptLanguages("zh-HK,zh,la");
+  SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.7");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b_sw));
+  std::u16string expected_title(u"LOADED");
+  TitleWatcher watcher(web_contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }

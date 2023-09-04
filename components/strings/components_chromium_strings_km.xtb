@@ -2,9 +2,12 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="km">
 <translation id="130631256467250065">ការប្តូររបស់អ្នកនឹងមានប្រសិទ្ធភាពនៅពេលដែលអ្នកចាប់ផ្តើមឧបករណ៍របស់អ្នកឡើងវិញពេលបន្ទាប់។</translation>
+<translation id="1555506416658437797">កែ​វិធីបង់ប្រាក់។</translation>
 <translation id="7999989146447764333">ការរាយការណ៍ពីការគាំងមិនមាននៅក្នុង Brave ទេ។</translation>
 <translation id="1953231710324290369">អ្នក​កំពុង​មើល​ទំព័រ Brave ដែល​មាន​សុវត្ថិភាព</translation>
+<translation id="907470742420136113">Brave កំពុងព្យាយាម​កែប្រែ​ការកំណត់​សម្រាប់​ការបំពេញ​វិធីបង់ប្រាក់។</translation>
 <translation id="4847979153841887006">និមិត្តសញ្ញា Brave</translation>
+<translation id="336808635693308470">Brave កំពុង​ព្យាយាម​កែ​វិធីបង់ប្រាក់។</translation>
 <translation id="7932149101545999102">Brave អាចបង្កើតឡើងបានដោយគម្រោងប្រភពបើកចំហរ <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> និង <ph name="BEGIN_LINK_OSS"/>កម្មវិធីប្រភពបើកចំហរ<ph name="END_LINK_OSS"/> ផ្សេងទៀត។</translation>
 <translation id="8746410156982274638">ទៅកាន់
           ម៉ឺនុយ Brave &gt;
@@ -27,6 +30,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           ហើយត្រូវប្រាកដថាការតំឡើងរបស់អ្នកកំណត់ទៅ "គ្មានប្រូកស៊ី" ឬ "ដោយផ្ទាល់។"</translation>
+<translation id="585620188971323280">កែប្រែ​ការកំណត់​សម្រាប់​ការបំពេញ​វិធីបង់ប្រាក់។</translation>
 <translation id="2765022094254723779">Brave អាច​បង្កើត​ឡើង​បាន​ដោយ<ph name="BEGIN_LINK_OSS"/>កម្មវិធីកូដ​ចំហ<ph name="END_LINK_OSS"/>ផ្សេង​ទៀត​ផងដែរ។</translation>
 <translation id="9156965752763025780">ការផ្លាស់ប្តូររបស់អ្នកនឹងមានប្រសិទ្ធភាពនៅពេលដែលបើកដំណើរការ Brave ឡើងវិញពេលក្រោយ។</translation>
 <translation id="6477625882876869143">Brave អាច​បង្កើត​ឡើង​បាន​ដោយគម្រោងកូដ​ចំហ <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>។</translation>
@@ -41,5 +45,6 @@
 <translation id="8187289872471304532">ទៅកាន់
           កម្មវិធី &gt; ចំណូលចិត្តប្រព័ន្ធ &gt; បណ្តាញ &gt; កម្រិតខ្ពស់ &gt; ប្រូកស៊ី
           ហើយលុបការជ្រើសរើសប្រូកស៊ីណាមួយដែលបានជ្រើសរើស។</translation>
+<translation id="4159376633403260073">អ្នកកំពុងមើលទំព័រ Brave for Testing ដែលមានសុវត្ថិភាព</translation>
 <translation id="88187049159266777">Brave មិនបានបិទត្រឹមត្រូវទេ។</translation>
 </translationbundle>

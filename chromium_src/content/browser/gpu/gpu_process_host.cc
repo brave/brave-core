@@ -7,13 +7,13 @@
 
 #if BUILDFLAG(IS_WIN)
 
-#include "brave/sandbox/win/src/module_file_name_interception.h"
+#include "sandbox/policy/features.h"
 #include "sandbox/win/src/sandbox_policy.h"
 
-#define AddDllToUnload(x)               \
-  AddDllToUnload(x);                    \
-  config->SetShouldPatchModuleFileName( \
-      base::FeatureList::IsEnabled(sandbox::kModuleFileNamePatch))
+#define AddDllToUnload(x)                                            \
+  AddDllToUnload(x);                                                 \
+  config->SetShouldPatchModuleFileName(base::FeatureList::IsEnabled( \
+      sandbox::policy::features::kModuleFileNamePatch))
 
 #endif  // BUILDFLAG(IS_WIN)
 

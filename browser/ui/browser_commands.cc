@@ -6,11 +6,12 @@
 #include "brave/browser/ui/browser_commands.h"
 
 #include <string>
+#include <vector>
 
-#include "base/files/file_path.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
-#include "brave/browser/net/brave_query_filter.h"
+#include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -18,6 +19,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/browser/debounce_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/query_filter/utils.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -32,13 +34,17 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/profile_picker.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
+#include "chrome/browser/ui/tabs/tab_group.h"
+#include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
 #include "chrome/common/pref_names.h"
+#include "components/tab_groups/tab_group_visual_data.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "url/origin.h"
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -62,7 +68,13 @@
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
-#endif
+
+#if BUILDFLAG(IS_WIN)
+#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -71,12 +83,9 @@
 
 using content::WebContents;
 
-namespace {
-}  // namespace
-
 namespace brave {
-
 void NewOffTheRecordWindowTor(Browser* browser) {
+  CHECK(browser);
   if (browser->profile()->IsTor()) {
     chrome::OpenEmptyWindow(browser->profile());
     return;
@@ -90,33 +99,22 @@ void NewTorConnectionForSite(Browser* browser) {
   Profile* profile = browser->profile();
   DCHECK(profile);
   tor::TorProfileService* service =
-    TorProfileServiceFactory::GetForContext(profile);
+      TorProfileServiceFactory::GetForContext(profile);
   DCHECK(service);
-  WebContents* current_tab =
-    browser->tab_strip_model()->GetActiveWebContents();
-  if (!current_tab)
+  WebContents* current_tab = browser->tab_strip_model()->GetActiveWebContents();
+  if (!current_tab) {
     return;
+  }
   service->SetNewTorCircuit(current_tab);
 #endif
-}
-
-void AddNewProfile() {
-  ProfilePicker::Show(ProfilePicker::Params::FromEntryPoint(
-      ProfilePicker::EntryPoint::kProfileMenuAddNewProfile));
-}
-
-void OpenGuestProfile() {
-  PrefService* service = g_browser_process->local_state();
-  DCHECK(service);
-  DCHECK(service->GetBoolean(prefs::kBrowserGuestModeEnabled));
-  profiles::SwitchToGuestProfile(base::DoNothing());
 }
 
 void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
-  if (!contents)
+  if (!contents) {
     return;
+  }
   if (auto* tab_helper =
           speedreader::SpeedreaderTabHelper::FromWebContents(contents)) {
     tab_helper->ProcessIconClick();
@@ -127,6 +125,15 @@ void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 void ShowBraveVPNBubble(Browser* browser) {
   // Ask to browser view.
   static_cast<BraveBrowserWindow*>(browser->window())->ShowBraveVPNBubble();
+}
+
+void ToggleBraveVPNTrayIcon() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
+  brave_vpn::EnableVPNTrayIcon(!brave_vpn::IsVPNTrayIconEnabled());
+  if (brave_vpn::IsVPNTrayIconEnabled()) {
+    brave_vpn::wireguard::ShowBraveVpnStatusTrayIcon();
+  }
+#endif
 }
 
 void ToggleBraveVPNButton(Browser* browser) {
@@ -194,6 +201,9 @@ void CloseWalletBubble(Browser* browser) {
 }
 
 void CopySanitizedURL(Browser* browser, const GURL& url) {
+  if (!browser || !browser->profile()) {
+    return;
+  }
   GURL sanitized_url = brave::URLSanitizerServiceFactory::GetForBrowserContext(
                            browser->profile())
                            ->SanitizeURL(url);
@@ -207,6 +217,9 @@ void CopySanitizedURL(Browser* browser, const GURL& url) {
 // - Query filter
 // - URLSanitizerService
 void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url) {
+  if (!browser || !browser->profile()) {
+    return;
+  }
   DCHECK(url.SchemeIsHTTPOrHTTPS());
   GURL final_url;
   // Apply debounce rules.
@@ -218,7 +231,7 @@ void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url) {
     final_url = url;
   }
   // Apply query filters.
-  auto filtered_url = ApplyQueryFilter(final_url);
+  auto filtered_url = query_filter::ApplyQueryFilter(final_url);
   if (filtered_url.has_value()) {
     final_url = filtered_url.value();
   }
@@ -254,10 +267,17 @@ void ToggleVerticalTabStripFloatingMode(Browser* browser) {
       !prefs->GetBoolean(brave_tabs::kVerticalTabsFloatingEnabled));
 }
 
+void ToggleVerticalTabStripExpanded(Browser* browser) {
+  auto* prefs = browser->profile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed,
+                    !prefs->GetBoolean(brave_tabs::kVerticalTabsCollapsed));
+}
+
 void ToggleActiveTabAudioMute(Browser* browser) {
   WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
-  if (!contents || !contents->IsCurrentlyAudible())
+  if (!contents || !contents->IsCurrentlyAudible()) {
     return;
+  }
 
   bool mute_tab = !contents->IsAudioMuted();
   chrome::SetTabAudioMuted(contents, mute_tab, TabMutedReason::AUDIO_INDICATOR,
@@ -298,4 +318,96 @@ void CleanAndCopySelectedURL(Browser* browser) {
     brave_browser_window->CleanAndCopySelectedURL();
   }
 }
+
+void ToggleShieldsEnabled(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  if (!contents) {
+    return;
+  }
+  auto* shields =
+      brave_shields::BraveShieldsDataController::FromWebContents(contents);
+  if (!shields) {
+    return;
+  }
+
+  shields->SetBraveShieldsEnabled(!shields->GetBraveShieldsEnabled());
+}
+
+void ToggleJavascriptEnabled(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  if (!contents) {
+    return;
+  }
+  auto* shields =
+      brave_shields::BraveShieldsDataController::FromWebContents(contents);
+  if (!shields) {
+    return;
+  }
+
+  shields->SetIsNoScriptEnabled(!shields->GetNoScriptEnabled());
+}
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+void ShowPlaylistBubble(Browser* browser) {
+  BraveBrowserWindow::From(browser->window())->ShowPlaylistBubble();
+}
+#endif
+
+void GroupTabsOnCurrentOrigin(Browser* browser) {
+  auto url =
+      browser->tab_strip_model()->GetActiveWebContents()->GetVisibleURL();
+  auto origin = url::Origin::Create(url);
+
+  std::vector<int> group_indices;
+  for (int index = 0; index < browser->tab_strip_model()->count(); ++index) {
+    auto* tab = browser->tab_strip_model()->GetWebContentsAt(index);
+    auto tab_origin = url::Origin::Create(tab->GetVisibleURL());
+    if (origin.IsSameOriginWith(tab_origin)) {
+      group_indices.push_back(index);
+    }
+  }
+  auto group_id = browser->tab_strip_model()->AddToNewGroup(group_indices);
+  auto* group =
+      browser->tab_strip_model()->group_model()->GetTabGroup(group_id);
+
+  auto data = *group->visual_data();
+  data.SetTitle(base::UTF8ToUTF16(origin.host()));
+  group->SetVisualData(data);
+}
+
+void MoveGroupToNewWindow(Browser* browser) {
+  auto* tsm = browser->tab_strip_model();
+  auto current_group_id = tsm->GetTabGroupForTab(tsm->active_index());
+  if (!current_group_id.has_value()) {
+    return;
+  }
+
+  tsm->delegate()->MoveGroupToNewWindow(current_group_id.value());
+}
+
+void CloseDuplicateTabs(Browser* browser) {
+  auto* tsm = browser->tab_strip_model();
+  auto url = tsm->GetActiveWebContents()->GetVisibleURL();
+
+  for (int i = tsm->GetTabCount() - 1; i >= 0; --i) {
+    // Don't close the active tab.
+    if (tsm->active_index() == i) {
+      continue;
+    }
+
+    auto* tab = tsm->GetWebContentsAt(i);
+    if (tab->GetVisibleURL() == url) {
+      tab->Close();
+    }
+  }
+}
+
 }  // namespace brave

@@ -28,7 +28,8 @@ constexpr const char* kCampaignIds[] = {"60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
 
 class BraveAdsTransferredExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BraveAdsTransferredExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BraveAdsTransferredExclusionRuleTest,
+       ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -43,7 +44,7 @@ TEST_F(BraveAdsTransferredExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
 }
 
 TEST_F(BraveAdsTransferredExclusionRuleTest,
-       AllowAdWithDifferentCampaignIdWithin2Days) {
+       ShouldIncludeWithDifferentCampaignIdWithin2Days) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_transferred_within_time_window"] = "2d";
@@ -65,13 +66,10 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   creative_ad_2.campaign_id = kCampaignIds[1];
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
-                   ConfirmationType::kTransferred, Now());
-
+      BuildAdEventForTesting(creative_ad_2, AdType::kNotificationAd,
+                             ConfirmationType::kTransferred, Now());
   ad_events.push_back(ad_event);
-
   const TransferredExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) - base::Milliseconds(1));
@@ -83,7 +81,7 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 }
 
 TEST_F(BraveAdsTransferredExclusionRuleTest,
-       AllowAdWithDifferentCampaignIdWithin2DaysForMultipleTypes) {
+       ShouldIncludeWithDifferentCampaignIdWithin2DaysForMultipleTypes) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_transferred_within_time_window"] = "2d";
@@ -107,23 +105,23 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event_1 =
-      BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
-                   ConfirmationType::kTransferred, Now());
+      BuildAdEventForTesting(creative_ad_2, AdType::kNotificationAd,
+                             ConfirmationType::kTransferred, Now());
   ad_events.push_back(ad_event_1);
 
   const AdEventInfo ad_event_2 =
-      BuildAdEvent(creative_ad_2, AdType::kNewTabPageAd,
-                   ConfirmationType::kTransferred, Now());
+      BuildAdEventForTesting(creative_ad_2, AdType::kNewTabPageAd,
+                             ConfirmationType::kTransferred, Now());
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_3 =
-      BuildAdEvent(creative_ad_2, AdType::kPromotedContentAd,
-                   ConfirmationType::kTransferred, Now());
+      BuildAdEventForTesting(creative_ad_2, AdType::kPromotedContentAd,
+                             ConfirmationType::kTransferred, Now());
   ad_events.push_back(ad_event_3);
 
   const AdEventInfo ad_event_4 =
-      BuildAdEvent(creative_ad_2, AdType::kSearchResultAd,
-                   ConfirmationType::kTransferred, Now());
+      BuildAdEventForTesting(creative_ad_2, AdType::kSearchResultAd,
+                             ConfirmationType::kTransferred, Now());
   ad_events.push_back(ad_event_3);
 
   const TransferredExclusionRule exclusion_rule(ad_events);
@@ -137,7 +135,7 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 }
 
 TEST_F(BraveAdsTransferredExclusionRuleTest,
-       DoNotAllowAdWithSameCampaignIdWithin2Days) {
+       ShouldExcludeWithSameCampaignIdWithin2Days) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_transferred_within_time_window"] = "2d";
@@ -155,11 +153,9 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   creative_ad.campaign_id = kCampaignIds[0];
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kNotificationAd,
-                   ConfirmationType::kTransferred, Now());
-
+      BuildAdEventForTesting(creative_ad, AdType::kNotificationAd,
+                             ConfirmationType::kTransferred, Now());
   ad_events.push_back(ad_event);
 
   const TransferredExclusionRule exclusion_rule(ad_events);
@@ -173,7 +169,7 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 }
 
 TEST_F(BraveAdsTransferredExclusionRuleTest,
-       AllowAdWithSameCampaignIdWithin0Seconds) {
+       ShouldIncludeWithSameCampaignIdWithin0Seconds) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_transferred_within_time_window"] = "0s";
@@ -191,11 +187,9 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   creative_ad.campaign_id = kCampaignIds[0];
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kNotificationAd,
-                   ConfirmationType::kTransferred, Now());
-
+      BuildAdEventForTesting(creative_ad, AdType::kNotificationAd,
+                             ConfirmationType::kTransferred, Now());
   ad_events.push_back(ad_event);
 
   const TransferredExclusionRule exclusion_rule(ad_events);
@@ -209,7 +203,7 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 }
 
 TEST_F(BraveAdsTransferredExclusionRuleTest,
-       AllowAdWithSameCampaignIdAfter2Days) {
+       ShouldIncludeWithSameCampaignIdAfter2Days) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_transferred_within_time_window"] = "2d";
@@ -227,11 +221,9 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   creative_ad.campaign_id = kCampaignIds[0];
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kNotificationAd,
-                   ConfirmationType::kTransferred, Now());
-
+      BuildAdEventForTesting(creative_ad, AdType::kNotificationAd,
+                             ConfirmationType::kTransferred, Now());
   ad_events.push_back(ad_event);
 
   const TransferredExclusionRule exclusion_rule(ad_events);
@@ -245,7 +237,7 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 }
 
 TEST_F(BraveAdsTransferredExclusionRuleTest,
-       AllowAdWithDifferentCampaignIdAfter2Days) {
+       ShouldIncludeWithDifferentCampaignIdAfter2Days) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_transferred_within_time_window"] = "2d";
@@ -267,11 +259,9 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   creative_ad_2.campaign_id = kCampaignIds[1];
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
-                   ConfirmationType::kTransferred, Now());
-
+      BuildAdEventForTesting(creative_ad_2, AdType::kNotificationAd,
+                             ConfirmationType::kTransferred, Now());
   ad_events.push_back(ad_event);
 
   const TransferredExclusionRule exclusion_rule(ad_events);

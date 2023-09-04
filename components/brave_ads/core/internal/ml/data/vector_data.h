@@ -9,7 +9,6 @@
 #include <cstdint>
 #include <map>
 #include <memory>
-#include <string>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/ml/data/data.h"

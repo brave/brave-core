@@ -1,0 +1,7 @@
+Name: ripemd
+URL: https://crates.io/crates/ripemd
+Description: Pure Rust implementation of the RIPEMD hash functions
+Version: 0.1.3
+Security Critical: yes
+License: Apache 2.0
+Revision: 4561d6fbafeb979a797db9d40d301a1f354dbe40

@@ -6,7 +6,8 @@ import * as React from 'react'
 
 import { getLocale } from '$web-common/locale'
 
-import { NavButton, Panel } from '../..'
+import { Panel } from '../../panel/index'
+import { NavButton } from '../../buttons/nav-button/index'
 import {
   ErrorIcon,
   Title,

@@ -61,7 +61,7 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
         base::BindRepeating(
             &RewardsPublisherBrowserTest::GetTestResponse,
             base::Unretained(this)));
-    rewards_service_->SetLedgerEnvForTesting();
+    rewards_service_->SetEngineEnvForTesting();
 
     test_util::SetOnboardingBypassed(browser());
   }
@@ -104,7 +104,8 @@ IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest,
   test_util::CreateRewardsWallet(rewards_service_);
   // Navigate to a verified site in a new tab
   const std::string publisher = "duckduckgo.com";
-  test_util::NavigateToPublisherPage(browser(), https_server_.get(), publisher);
+  test_util::NavigateToPublisherAndWaitForUpdate(browser(), https_server_.get(),
+                                                 publisher);
 
   // Open the Rewards popup
   base::WeakPtr<content::WebContents> popup_contents =

@@ -8,13 +8,14 @@
 #include <iterator>
 #include <utility>
 
+#include "base/functional/callback_helpers.h"
 #include "base/memory/ptr_util.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/common/search_result_ad_feature.h"
-#include "brave/components/brave_ads/core/search_result_ad/search_result_ad_converting_util.h"
-#include "brave/components/brave_ads/core/search_result_ad/search_result_ad_util.h"
+#include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_converting_util.h"
+#include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/feature/brave_ads_feature.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "content/public/browser/render_frame_host.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
@@ -39,11 +40,8 @@ SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
     AdsService* ads_service,
     const GURL& url,
     const bool should_trigger_viewed_event) {
-  if (!ads_service || !ads_service->IsEnabled() ||
-      !base::FeatureList::IsEnabled(
-          kShouldTriggerSearchResultAdEventsFeature) ||
-      !brave_search::IsAllowedHost(url)) {
-    return {};
+  if (!ads_service || !brave_search::IsAllowedHost(url)) {
+    return nullptr;
   }
 
   return base::WrapUnique(
@@ -56,18 +54,14 @@ void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
   CHECK(render_frame_host);
   CHECK(ads_service_);
 
-  if (!ads_service_->IsEnabled()) {
-    return;
-  }
-
   mojo::Remote<blink::mojom::DocumentMetadata> document_metadata;
   render_frame_host->GetRemoteInterfaces()->GetInterface(
       document_metadata.BindNewPipeAndPassReceiver());
   CHECK(document_metadata.is_bound());
-  document_metadata.reset_on_disconnect();
 
   blink::mojom::DocumentMetadata* raw_document_metadata =
       document_metadata.get();
+  CHECK(raw_document_metadata);
   raw_document_metadata->GetEntities(
       base::BindOnce(&SearchResultAdHandler::OnRetrieveSearchResultAdEntities,
                      weak_factory_.GetWeakPtr(), std::move(document_metadata),
@@ -77,7 +71,8 @@ void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
 void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
     const GURL& navigation_url) {
   CHECK(ads_service_);
-  if (!ads_service_->IsEnabled() || !search_result_ads_) {
+
+  if (!search_result_ads_) {
     return;
   }
 
@@ -91,14 +86,15 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
   if (iter == search_result_ads_->cend()) {
     return;
   }
+  const auto& [_, search_result_ad] = *iter;
 
-  const mojom::SearchResultAdInfoPtr& search_result_ad = iter->second;
   if (!search_result_ad) {
     return;
   }
 
   ads_service_->TriggerSearchResultAdEvent(
-      search_result_ad->Clone(), mojom::SearchResultAdEventType::kClicked);
+      search_result_ad->Clone(), mojom::SearchResultAdEventType::kClicked,
+      /*intentional*/ base::DoNothing());
 }
 
 void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
@@ -107,8 +103,8 @@ void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
     blink::mojom::WebPagePtr web_page) {
   CHECK(ads_service_);
 
-  if (!ads_service_->IsEnabled() || !web_page) {
-    return std::move(callback).Run({});
+  if (!web_page) {
+    return std::move(callback).Run(/*placement_ids*/ {});
   }
 
   search_result_ads_ =
@@ -134,17 +130,15 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdViewedEvent(
   if (iter == search_result_ads_->cend()) {
     return;
   }
+  const auto& [_, search_result_ad] = *iter;
 
-  const mojom::SearchResultAdInfoPtr& search_result_ad = iter->second;
   if (!search_result_ad) {
     return;
   }
 
   ads_service_->TriggerSearchResultAdEvent(
-      search_result_ad->Clone(), mojom::SearchResultAdEventType::kServed);
-
-  ads_service_->TriggerSearchResultAdEvent(
-      search_result_ad->Clone(), mojom::SearchResultAdEventType::kViewed);
+      search_result_ad->Clone(), mojom::SearchResultAdEventType::kViewed,
+      /*intentional*/ base::DoNothing());
 }
 
 }  // namespace brave_ads

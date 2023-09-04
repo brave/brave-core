@@ -5,6 +5,7 @@
 
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
@@ -13,10 +14,7 @@ import("//build/config/features.gni")
 import("//build/config/locales.gni")
 
 action("generate_command_metadata") {
-  command_files = [
-    "//chrome/app/chrome_command_ids.h",
-    "//brave/app/brave_command_ids.h",
-  ]
+  command_files = [ "//brave/app/brave_command_ids.h" ]
   cc_template = "command_utils.cc.template"
 
   sources = command_files + [ cc_template ]
@@ -39,8 +37,12 @@ source_set("command_ids") {
 
   deps = [
     "//base",
+    "//brave/components/resources:strings",
     "//chrome/app:command_ids",
+    "//chrome/app:generated_resources",
     "//components/services/screen_ai/buildflags",
+    "//components/strings:components_strings",
+    "//ui/strings:ui_strings",
   ]
 
   if (!is_android) {
@@ -52,10 +54,11 @@ source_set("command_ids") {
 
 brave_grit("brave_generated_resources_grit") {
   defines = [
-    "enable_speedreader=$enable_speedreader",
-    "enable_request_otr=$enable_request_otr",
     "enable_brave_vpn=$enable_brave_vpn",
     "enable_pin_shortcut=$enable_pin_shortcut",
+    "enable_playlist_webui=$enable_playlist_webui",
+    "enable_request_otr=$enable_request_otr",
+    "enable_speedreader=$enable_speedreader",
     "enable_text_recognition=$enable_text_recognition",
   ]
   source = "brave_generated_resources.grd"
@@ -90,16 +93,22 @@ source_set("browser_tests") {
       "//brave/components/commands/common",
       "//chrome/app:command_ids",
       "//chrome/browser",
+      "//chrome/browser/companion/core",
+      "//chrome/browser/companion/visual_search:flags",
       "//chrome/browser/enterprise/connectors/analysis:features",
+      "//chrome/browser/promos:utils",
       "//chrome/browser/ui",
       "//chrome/common:chrome_features",
       "//chrome/common:non_code_constants",
       "//chrome/test",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
+      "//components/aggregation_service",
+      "//components/attribution_reporting",
       "//components/autofill/core/common",
       "//components/commerce/core:feature_list",
       "//components/component_updater",
+      "//components/content_settings/core/common:features",
       "//components/embedder_support",
       "//components/history_clusters/core",
       "//components/language/core/common",
@@ -107,6 +116,8 @@ source_set("browser_tests") {
       "//components/network_time",
       "//components/omnibox/browser",
       "//components/optimization_guide/core",
+      "//components/page_image_service",
+      "//components/page_info/core",
       "//components/performance_manager",
       "//components/permissions",
       "//components/privacy_sandbox",
@@ -121,6 +132,10 @@ source_set("browser_tests") {
       "//services/device/public/cpp:device_features",
       "//testing/gtest",
     ]
+
+    if (is_linux || is_win || is_mac) {
+      deps += [ "//components/device_signals/core/common:features" ]
+    }
   }
 }
 
@@ -135,7 +150,7 @@ source_set("unit_tests") {
       "//base/test:test_support",
       "//brave/components/commands/common",
       "//chrome/app:command_ids",
-      "//chrome/browser/ui/views",
+      "//chrome/browser/ui",
       "//testing/gtest",
     ]
   }

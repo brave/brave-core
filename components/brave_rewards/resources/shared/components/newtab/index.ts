@@ -3,4 +3,3 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 export * from './rewards_card'
-export * from './sponsored_image_tooltip'

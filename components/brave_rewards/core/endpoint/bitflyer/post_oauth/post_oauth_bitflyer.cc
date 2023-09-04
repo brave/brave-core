@@ -7,18 +7,17 @@
 
 #include <utility>
 
-#include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
+#include "base/uuid.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
-#include "brave/components/brave_rewards/core/endpoint/bitflyer/bitflyer_utils.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoint::bitflyer {
 
-PostOauth::PostOauth(LedgerImpl& ledger) : ledger_(ledger) {}
+PostOauth::PostOauth(RewardsEngineImpl& engine) : engine_(engine) {}
 
 PostOauth::~PostOauth() = default;
 
@@ -30,8 +29,9 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
                                        const std::string& code,
                                        const std::string& code_verifier) {
   const std::string client_id = internal::bitflyer::GetClientId();
-  const std::string client_secret = GetClientSecret();
-  const std::string request_id = base::GenerateGUID();
+  const std::string client_secret = internal::bitflyer::GetClientSecret();
+  const std::string request_id =
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   base::Value::Dict dict;
   dict.Set("grant_type", "code");
@@ -53,10 +53,10 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
 mojom::Result PostOauth::CheckStatusCode(int status_code) {
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 mojom::Result PostOauth::ParseBody(const std::string& body,
@@ -70,33 +70,33 @@ mojom::Result PostOauth::ParseBody(const std::string& body,
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* access_token = dict.FindString("access_token");
   if (!access_token) {
     BLOG(0, "Missing access token");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const auto* deposit_id = dict.FindString("deposit_id");
   if (!deposit_id) {
     BLOG(0, "Missing deposit id");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const auto* linking_information = dict.FindString("linking_info");
   if (!linking_information) {
     BLOG(0, "Missing linking info");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   *token = *access_token;
   *address = *deposit_id;
   *linking_info = *linking_information;
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void PostOauth::Request(const std::string& external_account_id,
@@ -111,7 +111,7 @@ void PostOauth::Request(const std::string& external_account_id,
   request->method = mojom::UrlMethod::POST;
   request->skip_log = true;
 
-  ledger_->LoadURL(std::move(request),
+  engine_->LoadURL(std::move(request),
                    base::BindOnce(&PostOauth::OnRequest, base::Unretained(this),
                                   std::move(callback)));
 }
@@ -122,7 +122,7 @@ void PostOauth::OnRequest(PostOauthCallback callback,
   LogUrlResponse(__func__, *response, true);
 
   mojom::Result result = CheckStatusCode(response->status_code);
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     return std::move(callback).Run(result, "", "", "");
   }
 

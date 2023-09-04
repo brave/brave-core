@@ -3,13 +3,38 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/feed/content/renderer/rss_link_reader.h"
+#include "content/public/common/isolated_world_ids.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
+#include "brave/components/ai_chat/renderer/page_content_extractor.h"
+#endif
+
+namespace {
+
+void RenderFrameWithBinderRegistryCreated(
+    content::RenderFrame* render_frame,
+    service_manager::BinderRegistry* registry) {
+  new feed::RssLinkReader(render_frame, registry);
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (ai_chat::features::IsAIChatEnabled()) {
+    new ai_chat::PageContentExtractor(render_frame, registry,
+                                      content::ISOLATED_WORLD_ID_GLOBAL,
+                                      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  }
+#endif
+}
+
+}  // namespace
 
 // We need to do this here rather than in |BraveContentRendererClient| because
-// it needs access to the registry on ChromeRenderFrameObserver.
+// some classes need access to the registry on ChromeRenderFrameObserver.
 #define BRAVE_RENDER_FRAME_CREATED \
-  new feed::RssLinkReader(render_frame, registry);
+  RenderFrameWithBinderRegistryCreated(render_frame, registry);
 
 #include "src/chrome/renderer/chrome_content_renderer_client.cc"
 

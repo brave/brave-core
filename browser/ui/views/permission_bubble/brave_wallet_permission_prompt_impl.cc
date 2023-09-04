@@ -30,8 +30,10 @@ void BraveWalletPermissionPromptImpl::ShowBubble() {
 }
 
 bool BraveWalletPermissionPromptImpl::UpdateAnchor() {
-  // Returning false will force the caller to recreate the view.
-  return false;
+  // Don't recreate the view for every BrowserView::Layout() which would cause
+  // BraveWalletPermissionPromptImpl being destoryed which leads to bubble
+  // dismissed unintentionally.
+  return true;
 }
 
 permissions::PermissionPrompt::TabSwitchingBehavior

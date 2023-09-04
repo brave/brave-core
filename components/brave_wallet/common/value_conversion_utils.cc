@@ -8,9 +8,10 @@
 #include <vector>
 
 #include "base/containers/contains.h"
-#include "base/guid.h"
+#include "base/uuid.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "net/base/url_util.h"
 
@@ -101,6 +102,9 @@ mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value) {
   } else {
     chain.coin = mojom::CoinType::ETH;
   }
+
+  chain.supported_keyrings =
+      GetSupportedKeyringsForNetwork(chain.coin, chain.chain_id);
 
   const auto* explorerUrlsListValue =
       params_dict->FindList("blockExplorerUrls");
@@ -299,6 +303,13 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value::Dict& value,
     tokenPtr->is_erc1155 = is_erc1155.value();
   }
 
+  absl::optional<bool> is_spam = value.FindBool("is_spam");
+  if (!is_spam) {
+    tokenPtr->is_spam = false;
+  } else {
+    tokenPtr->is_spam = is_spam.value();
+  }
+
   // There might be existing pref values that does not have is_nft yet, in this
   // case, fallback to is_erc721 value.
   absl::optional<bool> is_nft = value.FindBool("is_nft");
@@ -343,7 +354,7 @@ base::Value::List PermissionRequestResponseToValue(
     const std::vector<std::string> accounts) {
   base::Value::List container_list;
   base::Value::Dict dict;
-  dict.Set("id", base::GenerateGUID());
+  dict.Set("id", base::Uuid::GenerateRandomV4().AsLowercaseString());
 
   base::Value::List context_list;
   context_list.Append(base::Value("https://github.com/MetaMask/rpc-cap"));

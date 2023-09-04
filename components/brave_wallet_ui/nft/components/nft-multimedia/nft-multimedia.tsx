@@ -7,11 +7,6 @@ import * as React from 'react'
 // utils
 import { NFTMetadataReturnType } from '../../../constants/types'
 import {
-  NftUiCommand,
-  sendMessageToWalletUi,
-  ToggleNftModal
-} from '../../nft-ui-messages'
-import {
   getMediaType,
   MultimediaType
 } from '../../nft-utils'
@@ -55,23 +50,12 @@ export const NftMultimedia = (props: Props) => {
     }
   }, [nftMetadata])
 
-  const onClickMagnify = React.useCallback(() => {
-    const message: ToggleNftModal = {
-      command: NftUiCommand.ToggleNftModal,
-      payload: true
-    }
-    sendMessageToWalletUi(parent, message)
-    // return focus to parent window
-    parent.focus()
-  }, [])
-
   const renderMedia = React.useCallback(() => {
     if (mediaType === 'image') {
       return (
         <NftImage
           imageUrl={mediaUrl}
           mimeType={mimeType}
-          onMagnify={onClickMagnify}
         />
       )
     }
@@ -81,7 +65,6 @@ export const NftMultimedia = (props: Props) => {
       <NftImage
         imageUrl={mediaUrl}
         mimeType={mimeType}
-        onMagnify={onClickMagnify}
       />
     )
   }, [mediaUrl, mediaType])

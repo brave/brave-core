@@ -14,20 +14,16 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 
 import org.chromium.base.BraveFeatureList;
-import org.chromium.base.BraveReflectionUtil;
-import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.omnibox.OmniboxPrefManager;
-import org.chromium.chrome.browser.omnibox.R;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
-import org.chromium.chrome.browser.omnibox.suggestions.ActionChipsDelegate;
+import org.chromium.chrome.browser.omnibox.suggestions.base.HistoryClustersProcessor.OpenHistoryClustersDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_search.BraveSearchBannerProcessor;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.AutocompleteResult;
 import org.chromium.ui.modelutil.PropertyModel;
 
@@ -47,8 +43,8 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     private Context mContext;
 
     BraveDropdownItemViewInfoListBuilder(@NonNull Supplier<Tab> tabSupplier,
-            BookmarkState bookmarkState, @NonNull ActionChipsDelegate actionChipsDelegate) {
-        super(tabSupplier, bookmarkState, actionChipsDelegate);
+            BookmarkState bookmarkState, OpenHistoryClustersDelegate openHistoryClustersDelegate) {
+        super(tabSupplier, bookmarkState, openHistoryClustersDelegate);
 
         mActivityTabSupplier = tabSupplier;
     }

@@ -21,10 +21,10 @@
 #include "components/variations/variations_switches.h"
 #include "ios/chrome/browser/application_context/application_context_impl.h"
 #include "ios/chrome/browser/browser_state/browser_state_keyed_service_factories.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/flags/about_flags.h"
-#include "ios/chrome/browser/paths/paths.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/shared/model/paths/paths.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "ui/base/l10n/l10n_util_mac.h"
@@ -52,7 +52,7 @@ void BraveWebMainParts::PreCreateMainMessageLoop() {
       resources_pack_path, ui::k100Percent);
 
   base::FilePath brave_pack_path;
-  base::PathService::Get(base::DIR_MODULE, &brave_pack_path);
+  base::PathService::Get(base::DIR_ASSETS, &brave_pack_path);
   brave_pack_path = brave_pack_path.AppendASCII("brave_resources.pak");
   ui::ResourceBundle::GetSharedInstance().AddDataPackFromPath(
       brave_pack_path, ui::kScaleFactorNone);
@@ -161,4 +161,8 @@ void BraveWebMainParts::PostMainMessageLoopRun() {
 
 void BraveWebMainParts::PostDestroyThreads() {
   application_context_->PostDestroyThreads();
+}
+
+void BraveWebMainParts::PostCreateThreads() {
+  application_context_->PostCreateThreads();
 }

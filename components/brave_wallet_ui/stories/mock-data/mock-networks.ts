@@ -4,7 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import { BraveWallet } from '../../constants/types'
 import {
+  BTCIconUrl,
   ETHIconUrl,
+  FILECOINIconUrl,
   SOLIconUrl
 } from './asset-icons'
 
@@ -14,6 +16,7 @@ export const mockEthMainnet: BraveWallet.NetworkInfo = {
   chainId: BraveWallet.MAINNET_CHAIN_ID,
   chainName: 'Ethereum Mainnet',
   coin: BraveWallet.CoinType.ETH,
+  supportedKeyrings: [BraveWallet.KeyringId.kDefault],
   decimals: 18,
   iconUrls: [ETHIconUrl],
   isEip1559: true,
@@ -28,6 +31,7 @@ export const mockGoerli: BraveWallet.NetworkInfo = {
   chainId: BraveWallet.GOERLI_CHAIN_ID,
   chainName: 'Goerli Test Network',
   coin: BraveWallet.CoinType.ETH,
+  supportedKeyrings: [BraveWallet.KeyringId.kDefault],
   decimals: 18,
   iconUrls: [ETHIconUrl],
   isEip1559: true,
@@ -42,8 +46,9 @@ export const mockSepolia: BraveWallet.NetworkInfo = {
   chainId: BraveWallet.SEPOLIA_CHAIN_ID,
   chainName: 'Sepolia Test Network',
   coin: 60,
+  supportedKeyrings: [BraveWallet.KeyringId.kDefault],
   decimals: 18,
-  iconUrls: [],
+  iconUrls: [ETHIconUrl],
   isEip1559: true,
   rpcEndpoints: [{ url: 'https://sepolia-infura.brave.com' }],
   symbol: 'ETH',
@@ -56,8 +61,9 @@ export const mockEthLocalhost: BraveWallet.NetworkInfo = {
   chainId: BraveWallet.LOCALHOST_CHAIN_ID,
   chainName: 'Localhost',
   coin: 60,
+  supportedKeyrings: [BraveWallet.KeyringId.kDefault],
   decimals: 18,
-  iconUrls: [],
+  iconUrls: [ETHIconUrl],
   isEip1559: false,
   rpcEndpoints: [{ url: 'http://localhost:7545/' }],
   symbol: 'ETH',
@@ -73,8 +79,9 @@ export const mockFilecoinMainnetNetwork: BraveWallet.NetworkInfo = {
   symbol: 'FIL',
   symbolName: 'Filecoin',
   decimals: 18,
-  iconUrls: [],
+  iconUrls: [FILECOINIconUrl],
   coin: BraveWallet.CoinType.FIL,
+  supportedKeyrings: [BraveWallet.KeyringId.kFilecoin],
   isEip1559: false
 }
 
@@ -87,8 +94,9 @@ export const mockFilecoinTestnetNetwork: BraveWallet.NetworkInfo = {
   symbol: 'FIL',
   symbolName: 'Filecoin',
   decimals: 18,
-  iconUrls: [],
+  iconUrls: [FILECOINIconUrl],
   coin: BraveWallet.CoinType.FIL,
+  supportedKeyrings: [BraveWallet.KeyringId.kFilecoinTestnet],
   isEip1559: false
 }
 
@@ -98,6 +106,7 @@ export const mockSolanaMainnetNetwork: BraveWallet.NetworkInfo = {
   chainId: '0x65',
   chainName: 'Solana Mainnet Beta',
   coin: BraveWallet.CoinType.SOL,
+  supportedKeyrings: [BraveWallet.KeyringId.kSolana],
   decimals: 9,
   iconUrls: [SOLIconUrl],
   isEip1559: false,
@@ -115,9 +124,40 @@ export const mockSolanaTestnetNetwork: BraveWallet.NetworkInfo = {
   symbol: 'SOL',
   symbolName: 'Solana',
   decimals: 9,
-  iconUrls: [],
+  iconUrls: [SOLIconUrl],
   coin: BraveWallet.CoinType.SOL,
+  supportedKeyrings: [BraveWallet.KeyringId.kSolana],
   isEip1559: false
+}
+
+export const mockBitcoinMainnet: BraveWallet.NetworkInfo = {
+  activeRpcEndpointIndex: 0,
+  blockExplorerUrls: ['https://bitcoin.explorer'],
+  chainId: 'bitcoin_mainnet',
+  chainName: 'Bitcoin Mainnnet',
+  coin: BraveWallet.CoinType.BTC,
+  supportedKeyrings: [BraveWallet.KeyringId.kBitcoin84],
+  decimals: 8,
+  iconUrls: [BTCIconUrl],
+  isEip1559: false,
+  rpcEndpoints: [{ url: 'https://bitcoin.rpc' }],
+  symbol: 'BTC',
+  symbolName: 'Bitcoin'
+}
+
+export const mockBitcoinTestnet: BraveWallet.NetworkInfo = {
+  activeRpcEndpointIndex: 0,
+  blockExplorerUrls: ['https://bitcoin.explorer'],
+  chainId: 'bitcoin_testnet',
+  chainName: 'Bitcoin Testnet',
+  coin: BraveWallet.CoinType.BTC,
+  supportedKeyrings: [BraveWallet.KeyringId.kBitcoin84Testnet],
+  decimals: 8,
+  iconUrls: [BTCIconUrl],
+  isEip1559: false,
+  rpcEndpoints: [{ url: 'https://bitcoin.rpc/test' }],
+  symbol: 'BTC',
+  symbolName: 'Bitcoin'
 }
 
 export const mockNetworks: BraveWallet.NetworkInfo[] = [
@@ -128,5 +168,6 @@ export const mockNetworks: BraveWallet.NetworkInfo[] = [
   mockFilecoinTestnetNetwork,
   mockSolanaMainnetNetwork,
   mockSolanaTestnetNetwork,
-  mockEthLocalhost
+  mockEthLocalhost,
+  mockBitcoinMainnet
 ]

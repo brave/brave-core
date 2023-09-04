@@ -11,8 +11,8 @@
 #include <vector>
 
 #include "base/values.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/ads_client.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/public/client/ads_client.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
 #include "brave/components/services/bat_ads/bat_ads_client_notifier_impl.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -48,7 +48,7 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
   // AdsClient:
   void AddObserver(brave_ads::AdsClientNotifierObserver* observer) override;
   void RemoveObserver(brave_ads::AdsClientNotifierObserver* observer) override;
-  void BindPendingObservers() override;
+  void NotifyPendingObservers() override;
 
   bool IsNetworkConnectionAvailable() const override;
 
@@ -95,13 +95,11 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
       brave_ads::GetScheduledCaptchaCallback callback) override;
   void ShowScheduledCaptchaNotification(const std::string& payment_id,
                                         const std::string& captcha_id) override;
-  void ClearScheduledCaptcha() override;
 
   void RunDBTransaction(brave_ads::mojom::DBTransactionInfoPtr transaction,
                         brave_ads::RunDBTransactionCallback callback) override;
 
-  void RecordP2AEvent(const std::string& name,
-                      base::Value::List value) override;
+  void RecordP2AEvents(base::Value::List events) override;
 
   void AddTrainingSample(std::vector<brave_federated::mojom::CovariateInfoPtr>
                              training_sample) override;

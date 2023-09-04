@@ -4,9 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "components/embedder_support/user_agent_utils.h"
+#include "base/command_line.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/test/scoped_command_line.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/version.h"
+#include "components/embedder_support/switches.h"
 #include "components/version_info/version_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/features.h"
@@ -76,6 +79,24 @@ TEST(UserAgentUtilsTest, ClampPlatformVersion) {
             brave_platform_version.components()[2]);
   EXPECT_EQ(kClampedValue,
             base::NumberToString(brave_platform_version.components()[2]));
+}
+
+TEST(UserAgentUtilsTest, UserAgentFromCommandLine) {
+  constexpr char kCmdUserAgentValue[] =
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+      "(KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36";
+  base::test::ScopedCommandLine command_line;
+  command_line.GetProcessCommandLine()->AppendSwitchASCII(kUserAgent,
+                                                          kCmdUserAgentValue);
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitWithFeatures(
+      {blink::features::kAllowCertainClientHints},
+      {blink::features::kClampPlatformVersionClientHint});
+  const auto brave_metadata = GetUserAgentMetadata(nullptr);
+  const blink::UserAgentMetadata empty_metadata;
+
+  EXPECT_EQ(GetUserAgent(), kCmdUserAgentValue);
+  EXPECT_EQ(brave_metadata, empty_metadata);
 }
 
 }  // namespace embedder_support

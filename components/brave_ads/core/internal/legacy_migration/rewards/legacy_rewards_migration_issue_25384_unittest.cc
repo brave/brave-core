@@ -6,15 +6,14 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration.h"
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
-
-using ::testing::_;
 
 namespace {
 constexpr char kIssue25384ConfirmationStateFilename[] =
@@ -24,16 +23,16 @@ constexpr char kIssue25384ConfirmationStateFilename[] =
 class BraveAdsLegacyRewardsMigrationIssue25384Test : public UnitTestBase {
  protected:
   void SetUpMocks() override {
-    CopyFileFromTestPathToTempPath(kIssue25384ConfirmationStateFilename,
-                                   kConfirmationStateFilename);
+    ASSERT_TRUE(CopyFileFromTestPathToTempPath(
+        kIssue25384ConfirmationStateFilename, kConfirmationStateFilename));
   }
 };
 
 TEST_F(BraveAdsLegacyRewardsMigrationIssue25384Test, Migrate) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedRewardsState, false);
+  SetBooleanPref(prefs::kHasMigratedRewardsState, false);
 
-  EXPECT_CALL(ads_client_mock_, Load(kConfirmationStateFilename, _));
+  EXPECT_CALL(ads_client_mock_, Load(kConfirmationStateFilename, ::testing::_));
 
   // Act
   rewards::Migrate(

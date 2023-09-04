@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/android/brave_android_wireguard_sources.gni")
 import("//brave/android/brave_java_resources.gni")
 import("//brave/android/brave_java_sources.gni")
 import("//brave/build/android/bytecode/bytecode_rewriter.gni")
@@ -29,14 +28,16 @@ brave_chrome_java_deps = [
   "//brave/browser/ui/android/omnibox:java",
   "//brave/browser/ui/android/theme:java",
   "//brave/components/brave_news/common:mojom_java",
-  "//brave/components/brave_rewards/common/mojom:ledger_interfaces_java",
-  "//brave/components/brave_rewards/common/mojom:ledger_types_java",
+  "//brave/components/brave_rewards/common/mojom:rewards_interfaces_java",
+  "//brave/components/brave_rewards/common/mojom:rewards_types_java",
   "//brave/components/brave_shields/common:mojom_java",
   "//brave/components/brave_wallet/common:mojom_java",
   "//brave/components/browser_ui/accessibility/android:java",
   "//brave/components/browser_ui/site_settings/android:java",
+  "//brave/components/misc_metrics/common:mojom_java",
   "//brave/components/playlist/common/mojom:mojom_java",
   "//brave/components/safe_browsing/android:brave_safe_browsing_java",
+  "//brave/components/url_sanitizer/common/mojom:mojom_java",
   "//brave/components/variations/android:java",
   "//brave/third_party/android_deps:com_airbnb_android_java",
   "//brave/third_party/android_deps:com_android_billingclient_java",
@@ -52,17 +53,21 @@ brave_chrome_java_deps = [
   "//brave/third_party/android_deps:com_google_android_exoplayer_exoplayer_ui_java",
   "//brave/third_party/android_deps:com_google_android_exoplayer_extension_cast_java",
   "//brave/third_party/android_deps:com_google_android_exoplayer_extension_mediasession_java",
+  "//brave/third_party/android_deps:com_google_android_play_integrity_java",
   "//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar",
   "//brave/third_party/android_deps:com_wireguard_android_java",
   "//brave/third_party/android_deps:google_play_services_safetynet_java",
   "//brave/third_party/zxing:zxing_java",
+  "//third_party/android_deps:com_android_support_support_annotations_java",
   "//third_party/android_deps:com_google_code_gson_gson_java",
   "//third_party/android_deps:google_play_services_vision_common_java",
   "//third_party/android_deps:google_play_services_vision_java",
   "//third_party/android_deps:org_jetbrains_kotlinx_kotlinx_coroutines_android_java",
+  "//third_party/androidx:androidx_interpolator_interpolator_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_livedata_core_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_livedata_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_viewmodel_java",
+  "//third_party/androidx:androidx_room_room_runtime_java",
   "//url/mojom:url_mojom_origin_java",
 ]
 

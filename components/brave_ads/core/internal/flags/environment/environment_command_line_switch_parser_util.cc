@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_command_line_switch_parser_util.h"
 
-#include <ostream>
-
 #include "base/notreached.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 

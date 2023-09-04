@@ -6,8 +6,8 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v1.h"
 
@@ -16,13 +16,14 @@ using std::placeholders::_1;
 namespace brave_rewards::internal {
 namespace state {
 
-StateMigrationV1::StateMigrationV1(LedgerImpl& ledger) : ledger_(ledger) {}
+StateMigrationV1::StateMigrationV1(RewardsEngineImpl& engine)
+    : engine_(engine) {}
 
 StateMigrationV1::~StateMigrationV1() = default;
 
 void StateMigrationV1::Migrate(LegacyResultCallback callback) {
   legacy_publisher_ =
-      std::make_unique<publisher::LegacyPublisherState>(*ledger_);
+      std::make_unique<publisher::LegacyPublisherState>(*engine_);
 
   auto load_callback =
       std::bind(&StateMigrationV1::OnLoadState, this, _1, callback);
@@ -34,30 +35,30 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
                                    LegacyResultCallback callback) {
   if (result == mojom::Result::NO_PUBLISHER_STATE) {
     BLOG(1, "No publisher state");
-    ledger_->publisher()->CalcScoreConsts(
-        ledger_->GetState<int>(kMinVisitTime));
+    engine_->publisher()->CalcScoreConsts(
+        engine_->GetState<int>(kMinVisitTime));
 
-    callback(mojom::Result::LEDGER_OK);
+    callback(mojom::Result::OK);
     return;
   }
 
-  if (result != mojom::Result::LEDGER_OK) {
-    ledger_->publisher()->CalcScoreConsts(
-        ledger_->GetState<int>(kMinVisitTime));
+  if (result != mojom::Result::OK) {
+    engine_->publisher()->CalcScoreConsts(
+        engine_->GetState<int>(kMinVisitTime));
 
     BLOG(0, "Failed to load publisher state file, setting default values");
-    callback(mojom::Result::LEDGER_OK);
+    callback(mojom::Result::OK);
     return;
   }
 
   legacy_data_migrated_ = true;
 
-  ledger_->SetState(
+  engine_->SetState(
       kMinVisitTime,
       static_cast<int>(legacy_publisher_->GetPublisherMinVisitTime()));
-  ledger_->publisher()->CalcScoreConsts(ledger_->GetState<int>(kMinVisitTime));
+  engine_->publisher()->CalcScoreConsts(engine_->GetState<int>(kMinVisitTime));
 
-  ledger_->SetState(
+  engine_->SetState(
       kMinVisits, static_cast<int>(legacy_publisher_->GetPublisherMinVisits()));
 
   std::vector<mojom::BalanceReportInfoPtr> reports;
@@ -66,19 +67,19 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
     auto save_callback =
         std::bind(&StateMigrationV1::BalanceReportsSaved, this, _1, callback);
 
-    ledger_->database()->SaveBalanceReportInfoList(std::move(reports),
+    engine_->database()->SaveBalanceReportInfoList(std::move(reports),
                                                    save_callback);
   }
 }
 
 void StateMigrationV1::BalanceReportsSaved(mojom::Result result,
                                            LegacyResultCallback callback) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Balance report save failed");
     callback(result);
     return;
   }
-  callback(mojom::Result::LEDGER_OK);
+  callback(mojom::Result::OK);
 }
 
 }  // namespace state

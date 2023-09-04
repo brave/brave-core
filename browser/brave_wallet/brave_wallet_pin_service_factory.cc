@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 // TODO(cypt4) : Refactor brave/browser into separate component (#27486)
@@ -16,7 +17,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_pin_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
@@ -26,7 +27,8 @@ namespace brave_wallet {
 
 // static
 BraveWalletPinServiceFactory* BraveWalletPinServiceFactory::GetInstance() {
-  return base::Singleton<BraveWalletPinServiceFactory>::get();
+  static base::NoDestructor<BraveWalletPinServiceFactory> instance;
+  return instance.get();
 }
 
 // static

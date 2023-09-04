@@ -1,96 +1,56 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/internal/conversions/conversions_util.h"
 
-#include <cstdint>
-#include <vector>
-
-#include "base/base64.h"
-#include "base/check_op.h"
-#include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
-#include "brave/components/brave_ads/core/internal/common/crypto/key_pair_info.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_util_constants.h"
-#include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_info.h"
-#include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
-#include "third_party/re2/src/re2/re2.h"
-#include "tweetnacl.h"  // NOLINT
+#include "base/notreached.h"
+#include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 
 namespace brave_ads {
 
-namespace {
+bool CanConvertAdEvent(const AdEventInfo& ad_event) {
+  // Only convert view-through and click-through ad events.
+  if (ad_event.confirmation_type != ConfirmationType::kViewed &&
+      ad_event.confirmation_type != ConfirmationType::kClicked) {
+    return false;
+  }
 
-constexpr char kAlgorithm[] = "crypto_box_curve25519xsalsa20poly1305";
-constexpr size_t kCipherTextLength = 32;
+  switch (ad_event.type.value()) {
+    case AdType::kInlineContentAd:
+    case AdType::kPromotedContentAd: {
+      return UserHasOptedInToBraveNewsAds();
+    }
 
-bool IsConversionIdValid(const std::string& conversion_id) {
-  return RE2::FullMatch(conversion_id, "^[a-zA-Z0-9-]*$");
+    case AdType::kNewTabPageAd: {
+      return UserHasOptedInToNewTabPageAds();
+    }
+
+    case AdType::kNotificationAd: {
+      return UserHasOptedInToNotificationAds();
+    }
+
+    case AdType::kSearchResultAd: {
+      // Always.
+      return true;
+    }
+
+    case AdType::kUndefined: {
+      NOTREACHED_NORETURN();
+    }
+  }
+
+  NOTREACHED_NORETURN() << "Unexpected value for AdType: "
+                        << static_cast<int>(ad_event.type.value());
 }
 
-}  // namespace
-
-std::string GetAlgorithm() {
-  return kAlgorithm;
-}
-
-absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
-    const VerifiableConversionInfo& verifiable_conversion) {
-  const std::string message = verifiable_conversion.id;
-  const std::string public_key_base64 = verifiable_conversion.public_key;
-
-  if (message.length() < kMinVerifiableConversionMessageLength ||
-      message.length() > kMaxVerifiableConversionMessageLength) {
-    return absl::nullopt;
-  }
-
-  if (!IsConversionIdValid(message)) {
-    return absl::nullopt;
-  }
-
-  // Protocol requires at least 2 trailing zero-padding bytes
-  std::vector<uint8_t> plaintext(message.cbegin(), message.cend());
-  plaintext.insert(plaintext.cend(), kCipherTextLength - plaintext.size(), 0);
-  CHECK_EQ(kCipherTextLength, plaintext.size());
-
-  const absl::optional<std::vector<uint8_t>> public_key =
-      base::Base64Decode(public_key_base64);
-  if (!public_key) {
-    return absl::nullopt;
-  }
-  if (public_key->size() != crypto_box_PUBLICKEYBYTES) {
-    return absl::nullopt;
-  }
-
-  const crypto::KeyPairInfo ephemeral_key_pair = crypto::GenerateBoxKeyPair();
-  if (!ephemeral_key_pair.IsValid()) {
-    return absl::nullopt;
-  }
-
-  const std::vector<uint8_t> nonce = crypto::GenerateRandomNonce();
-
-  const std::vector<uint8_t> padded_ciphertext = crypto::Encrypt(
-      plaintext, nonce, *public_key, ephemeral_key_pair.secret_key);
-
-  // The first 16 bytes of the resulting ciphertext is left as padding by the
-  // C API and should be removed before sending out extraneously.
-  const std::vector<uint8_t> ciphertext(
-      padded_ciphertext.cbegin() + crypto_box_BOXZEROBYTES,
-      padded_ciphertext.cend());
-
-  VerifiableConversionEnvelopeInfo envelope;
-  envelope.algorithm = GetAlgorithm();
-  envelope.ciphertext = base::Base64Encode(ciphertext);
-  envelope.ephemeral_public_key =
-      base::Base64Encode(ephemeral_key_pair.public_key);
-  envelope.nonce = base::Base64Encode(nonce);
-
-  if (!envelope.IsValid()) {
-    return absl::nullopt;
-  }
-
-  return envelope;
+bool HasObservationWindowForAdEventExpired(
+    const base::TimeDelta observation_window,
+    const AdEventInfo& ad_event) {
+  return ad_event.created_at < base::Time::Now() - observation_window;
 }
 
 }  // namespace brave_ads

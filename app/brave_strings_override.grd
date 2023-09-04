@@ -91,6 +91,12 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         <part file="settings_brave_strings_override.grdp" />
       </if>
 
+      <if expr="_is_chrome_for_testing_branded">
+        <then>
+          </then>
+        <else>
+          </else>
+      </if>
       <if expr="is_win">
         </if>
       <if expr="is_macosx or is_linux">
@@ -175,6 +181,9 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="enable_extensions">
         </if>
 
+      <message name="IDS_SAFETY_CHECK_EXTENSIONS_POLICY_VIOLATION" desc="The text explaining the reason for disabling extension. The extension in question violates Web Store policy.">
+          This extension violates the Web Store policy, and might be unsafe. Remove it from Brave so it can no longer see and change your data on sites you visit, including your personal info.
+      </message>
       <message name="IDS_EXTENSIONS_INCOGNITO_WARNING" desc="Warns the user that Brave cannot prevent extensions from recording history in Private mode. Displayed in extensions management UI after an extension is selected to be run in Private mode.">
         Warning: Brave cannot prevent extensions from recording your browsing history. To disable this extension in Private mode, unselect this option.
       </message>
@@ -188,10 +197,25 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
 
       <if expr="use_titlecase and not chromeos_ash">
+        <if expr="_is_chrome_for_testing_branded">
+          <then>
+            </then>
+          <else>
+            </else>
+        </if>
         </if>
       <if expr="not use_titlecase and not chromeos_ash">
+        <if expr="_is_chrome_for_testing_branded">
+          <then>
+            </then>
+          <else>
+            </else>
+        </if>
         </if>
       <if expr="chromeos_ash">
+        </if>
+
+      <if expr="is_win or is_macosx or is_linux">
         </if>
 
       <if expr="is_macosx">
@@ -246,6 +270,9 @@ Permissions you've already given to websites and apps may apply to this account.
 
         </if>
 
+      <if expr="not is_android">
+        </if>
+
       <if expr="is_win">
         </if>
 
@@ -271,6 +298,9 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
         </if>
       <if expr="chromeos_ash">
+        </if>
+
+      <if expr="is_win or is_macosx or is_linux">
         </if>
 
       <if expr="use_titlecase">
@@ -345,13 +375,9 @@ Permissions you've already given to websites and apps may apply to this account.
           </if>
         <if expr="not use_titlecase">
           </if>
-      </if>
+        </if>
 
       <if expr="not is_android">
-        <if expr="use_titlecase">
-          </if>
-        <if expr="not use_titlecase">
-          </if>
         <if expr="use_titlecase">
           </if>
         <if expr="not use_titlecase">

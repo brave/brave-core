@@ -17,7 +17,7 @@ namespace database {
 
 class DatabaseServerPublisherLinks : public DatabaseTable {
  public:
-  explicit DatabaseServerPublisherLinks(LedgerImpl& ledger);
+  explicit DatabaseServerPublisherLinks(RewardsEngineImpl& engine);
   ~DatabaseServerPublisherLinks() override;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,
@@ -30,8 +30,8 @@ class DatabaseServerPublisherLinks : public DatabaseTable {
                  ServerPublisherLinksCallback callback);
 
  private:
-  void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   ServerPublisherLinksCallback callback);
+  void OnGetRecord(ServerPublisherLinksCallback callback,
+                   mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

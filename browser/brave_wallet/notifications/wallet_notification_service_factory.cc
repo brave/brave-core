@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/notifications/wallet_notification_service.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
@@ -18,7 +19,8 @@ namespace brave_wallet {
 // static
 WalletNotificationServiceFactory*
 WalletNotificationServiceFactory::GetInstance() {
-  return base::Singleton<WalletNotificationServiceFactory>::get();
+  static base::NoDestructor<WalletNotificationServiceFactory> instance;
+  return instance.get();
 }
 
 WalletNotificationServiceFactory::WalletNotificationServiceFactory()

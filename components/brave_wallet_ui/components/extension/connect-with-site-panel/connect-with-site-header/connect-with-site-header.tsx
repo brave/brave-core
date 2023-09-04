@@ -4,16 +4,16 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 
 // Types
-import { SerializableOriginInfo } from '../../../../constants/types'
+import { BraveWallet } from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
 
 // Components
-import { CreateSiteOrigin, Tooltip } from '../../../shared'
+import { CreateSiteOrigin } from '../../../shared/create-site-origin/index'
+import { Tooltip } from '../../../shared/tooltip/index'
 
 // Styled Components
 import {
@@ -34,8 +34,11 @@ import {
 import { AccountCircle } from '../select-account-item/select-account-item.style'
 import { HorizontalSpace, Column, Row } from '../../../shared/style'
 
+// Hooks
+import { useAddressOrb } from '../../../../common/hooks/use-orb'
+
 interface Props {
-  originInfo: SerializableOriginInfo
+  originInfo: BraveWallet.OriginInfo
   isReadyToConnect: boolean
   onBack: () => void
   address?: string
@@ -46,13 +49,7 @@ export const ConnectWithSiteHeader = (props: Props) => {
   const { originInfo, address, isReadyToConnect, isScrolled, onBack } = props
 
   // Memos
-  const orb = React.useMemo(() => {
-    return create({
-      seed: address?.toLowerCase() ?? '',
-      size: 8,
-      scale: 16
-    }).toDataURL()
-  }, [address])
+  const orb = useAddressOrb(address)
 
   return (
     <>

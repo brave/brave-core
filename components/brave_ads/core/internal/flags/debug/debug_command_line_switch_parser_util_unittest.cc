@@ -6,9 +6,10 @@
 #include <string>
 
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -16,8 +17,6 @@
 namespace brave_ads {
 
 namespace {
-
-constexpr char kRewardsSwitch[] = "rewards";
 
 struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
@@ -65,7 +64,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsDebugCommandLineSwitchParserUtilTest,
-                         testing::ValuesIn(kTests),
+                         ::testing::ValuesIn(kTests),
                          TestParamToString);
 
 }  // namespace brave_ads

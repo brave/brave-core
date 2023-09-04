@@ -7,9 +7,9 @@
 
 #include <string>
 
-#include "base/guid.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
+#include "base/uuid.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 namespace brave_ads::rewards::json::reader {
 
@@ -26,7 +26,7 @@ absl::optional<TransactionInfo> ParseTransaction(
   TransactionInfo transaction;
 
   // Id
-  transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
+  transaction.id = base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   // Created at
   const std::string* const created_at = dict.FindString(kCreatedAtKey);

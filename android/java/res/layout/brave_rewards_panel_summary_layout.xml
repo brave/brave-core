@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="12dp"
-    android:layout_marginEnd="12dp"
-    android:layout_marginTop="16dp"
-    android:visibility="gone"
-    android:orientation="vertical"
-    android:paddingBottom="8dp">
+>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,8 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:textStyle="bold"
-            android:fontFamily="@font/poppins_600"
+            android:fontFamily="sans-serif-medium"
             android:text="@string/rewards_summary"
             android:textColor="@android:color/white"
             android:textSize="14sp" />
@@ -35,9 +27,8 @@
             android:id="@+id/month_year_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_600"
+            android:fontFamily="sans-serif-medium"
             android:textColor="@android:color/white"
-            android:textStyle="bold"
             android:textSize="14sp" />
 
     </LinearLayout>
@@ -62,8 +53,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_weight="0.5"
-                android:fontFamily="@font/poppins_600"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/rewards_from_ads"
@@ -72,20 +63,19 @@
 
             <TextView
                 android:id="@+id/rewards_from_ads_bat_text"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.25"
+                android:fontFamily="sans-serif-medium"
                 android:layout_marginEnd="4dp"
-                android:fontFamily="@font/poppins_600"
+                android:textColor="@color/rewards_settings_button_color"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/rewards_from_ads_usd_text"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:fontFamily="@font/poppins_600"
-                android:textColor="@color/rewards_panel_secondary_text_color"
+                android:fontFamily="sans-serif"
+                android:text="@string/bat_text"
+                android:textColor="@color/rewards_panel_text_color"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -114,8 +104,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_weight="0.5"
-                android:fontFamily="@font/poppins_600"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/auto_contribute"
@@ -124,22 +114,22 @@
 
             <TextView
                 android:id="@+id/auto_contribute_bat_text"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.25"
+                android:fontFamily="sans-serif-medium"
                 android:layout_marginEnd="4dp"
-                android:fontFamily="@font/poppins_600"
                 android:textColor="@color/rewards_settings_button_color"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/auto_contribute_usd_text"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:fontFamily="@font/poppins_600"
-                android:textColor="@color/rewards_panel_secondary_text_color"
+                android:fontFamily="sans-serif"
+                android:text="@string/bat_text"
+                android:textColor="@color/rewards_panel_text_color"
                 android:textSize="12sp" />
+
+
 
         </LinearLayout>
 
@@ -163,31 +153,29 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_weight="0.5"
-                android:fontFamily="@font/poppins_600"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="@string/one_time_tip"
+                android:text="@string/brave_ui_contribution_tips"
                 android:textColor="@color/rewards_panel_text_color"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/one_time_tip_bat_text"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.25"
+                android:fontFamily="sans-serif-medium"
                 android:layout_marginEnd="4dp"
-                android:fontFamily="@font/poppins_600"
                 android:textColor="@color/rewards_settings_button_color"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/one_time_tip_usd_text"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:fontFamily="@font/poppins_600"
-                android:textColor="@color/rewards_panel_secondary_text_color"
+                android:fontFamily="sans-serif"
+                android:text="@string/bat_text"
+                android:textColor="@color/rewards_panel_text_color"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -212,43 +200,32 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_weight="0.5"
-                android:fontFamily="@font/poppins_600"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="@string/monthly_tips"
+                android:text="@string/monthly_contributions"
                 android:textColor="@color/rewards_panel_text_color"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/monthly_tips_bat_text"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.25"
                 android:layout_marginEnd="4dp"
-                android:fontFamily="@font/poppins_600"
+                android:fontFamily="sans-serif-medium"
                 android:textColor="@color/rewards_settings_button_color"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/monthly_tips_usd_text"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:fontFamily="@font/poppins_600"
-                android:textColor="@color/rewards_panel_secondary_text_color"
+                android:fontFamily="sans-serif"
+                android:text="@string/bat_text"
+                android:textColor="@color/rewards_panel_text_color"
                 android:textSize="12sp" />
 
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@color/rewards_panel_summary_divider_color" />
-
     </LinearLayout>
 
-</LinearLayout>
+</merge>

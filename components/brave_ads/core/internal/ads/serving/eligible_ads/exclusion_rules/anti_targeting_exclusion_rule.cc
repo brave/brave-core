@@ -11,7 +11,9 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -58,9 +60,14 @@ bool AntiTargetingExclusionRule::DoesRespectCap(
     return true;
   }
 
-  const auto iter = resource_->get().sites.find(creative_ad.creative_set_id);
-  if (iter == resource_->get().sites.cend()) {
-    // Always respect if creative set has no anti-targeting sites
+  const absl::optional<AntiTargetingInfo>& anti_targeting = resource_->get();
+  if (!anti_targeting) {
+    return true;
+  }
+
+  const auto iter = anti_targeting->sites.find(creative_ad.creative_set_id);
+  if (iter == anti_targeting->sites.cend()) {
+    // Always respect if creative set has no anti-targeting sites.
     return true;
   }
 

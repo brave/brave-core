@@ -6,93 +6,34 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_GEMINI_GEMINI_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_GEMINI_GEMINI_H_
 
-#include <stdint.h>
-
-#include <map>
-#include <set>
 #include <string>
 
-#include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ref.h"
-#include "base/timer/timer.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/gemini_server.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/wallet_provider/gemini/connect_gemini_wallet.h"
-#include "brave/components/brave_rewards/core/wallet_provider/gemini/gemini_transfer.h"
-#include "brave/components/brave_rewards/core/wallet_provider/gemini/get_gemini_wallet.h"
+#include "brave/components/brave_rewards/core/wallet_provider/wallet_provider.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace gemini {
 
-using FetchBalanceCallback = base::OnceCallback<void(mojom::Result, double)>;
-
-class Gemini {
+class Gemini final : public wallet_provider::WalletProvider {
  public:
-  explicit Gemini(LedgerImpl& ledger);
+  explicit Gemini(RewardsEngineImpl& engine);
 
-  ~Gemini();
+  const char* WalletType() const override;
 
-  void Initialize();
+  void FetchBalance(
+      base::OnceCallback<void(mojom::Result, double)> callback) override;
 
-  void StartContribution(const std::string& contribution_id,
-                         mojom::ServerPublisherInfoPtr info,
-                         double amount,
-                         LegacyResultCallback callback);
+  std::string GetFeeAddress() const override;
 
-  void FetchBalance(FetchBalanceCallback callback);
-
-  void TransferFunds(double amount,
-                     const std::string& address,
-                     const std::string& contribution_id,
-                     LegacyResultCallback);
-
-  void ConnectWallet(const base::flat_map<std::string, std::string>& args,
-                     ConnectExternalWalletCallback);
-
-  void GetWallet(GetExternalWalletCallback);
-
-  mojom::ExternalWalletPtr GetWallet();
-
-  mojom::ExternalWalletPtr GetWalletIf(const std::set<mojom::WalletStatus>&);
-
-  [[nodiscard]] bool SetWallet(mojom::ExternalWalletPtr);
-
-  [[nodiscard]] bool LogOutWallet();
+  base::TimeDelta GetDelay() const override;
 
  private:
-  void ContributionCompleted(LegacyResultCallback,
-                             const std::string& contribution_id,
-                             double fee,
-                             const std::string& publisher_key,
-                             mojom::Result);
-
-  void OnFetchBalance(FetchBalanceCallback, mojom::Result, double available);
-
-  void SaveTransferFee(const std::string& contribution_id, double amount);
-
-  void StartTransferFeeTimer(const std::string& fee_id, const int attempts);
-
-  void OnTransferFeeCompleted(const std::string& contribution_id,
-                              int attempts,
-                              mojom::Result);
-
-  void TransferFee(const std::string& contribution_id,
-                   double amount,
-                   int attempts);
-
-  void OnTransferFeeTimerElapsed(const std::string& id, const int attempts);
-
-  void RemoveTransferFee(const std::string& contribution_id);
-
-  const raw_ref<LedgerImpl> ledger_;
-  ConnectGeminiWallet connect_wallet_;
-  GetGeminiWallet get_wallet_;
-  GeminiTransfer transfer_;
-  endpoint::GeminiServer gemini_server_;
-  std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
+  endpoint::GeminiServer server_;
 };
 
 }  // namespace gemini

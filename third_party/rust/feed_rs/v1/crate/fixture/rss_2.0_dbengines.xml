@@ -1,0 +1,16 @@
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+    <channel>
+        <description>DB-Engines.com Blog</description>
+        <link>https://db-engines.com/en/blog</link>
+        <title>DB-Engines.com Blog</title>
+        <dc:date>2013-01-01T00:00:00Z</dc:date>
+        <item>
+            <description>Snowflake is the database management system that gained more popularity in our&nbsp;DB-Engines Ranking&nbsp;within the last year than any of the other 402 monitored systems. We thus declare Snowflake&nbsp;as the&nbsp;DBMS of the Year 2022. </description>
+            <link>https://db-engines.com/en/blog_post/103</link>
+            <guid>https://db-engines.com/en/blog_post/103</guid>
+            <title>Snowflake is the DBMS of the Year 2022, defending the title from last year</title>
+            <dc:date>2023-01-03T15:00:00Z</dc:date>
+            <dc:creator>Matthias Gelbmann, Paul Andlinger</dc:creator>
+        </item>
+    </channel>
+</rss>

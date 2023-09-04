@@ -31,28 +31,30 @@
 #include "components/sessions/core/session_id_generator.h"
 #include "components/ukm/ukm_service.h"
 #import "ios/chrome/app/tests_hook.h"
-#include "ios/chrome/browser/application_context/application_context.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager_impl.h"
 #import "ios/chrome/browser/browser_state/ios_chrome_io_thread.h"
 #include "ios/chrome/browser/component_updater/ios_component_updater_configurator.h"
 #import "ios/chrome/browser/crash_report/breadcrumbs/application_breadcrumbs_logger.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/metrics/ios_chrome_metrics_services_manager_client.h"
-#include "ios/chrome/browser/paths/paths.h"
 #include "ios/chrome/browser/policy/browser_policy_connector_ios.h"
-#include "ios/chrome/browser/prefs/browser_prefs.h"
 #include "ios/chrome/browser/prefs/ios_chrome_pref_service_factory.h"
-#include "ios/chrome/browser/prefs/pref_names.h"
 #import "ios/chrome/browser/promos_manager/promos_manager.h"
 #include "ios/chrome/browser/push_notification/push_notification_service.h"
 #include "ios/chrome/browser/segmentation_platform/otr_web_state_observer.h"
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/paths/paths.h"
+#include "ios/chrome/browser/shared/model/prefs/browser_prefs.h"
+#include "ios/chrome/browser/shared/model/prefs/pref_names.h"
 #include "ios/chrome/browser/signin/system_identity_manager.h"
 #import "ios/components/security_interstitials/safe_browsing/safe_browsing_service.h"
 #include "ios/public/provider/chrome/browser/app_distribution/app_distribution_api.h"
 #include "ios/public/provider/chrome/browser/push_notification/push_notification_api.h"
 #import "ios/public/provider/chrome/browser/signin/signin_identity_api.h"
 #include "ios/public/provider/chrome/browser/signin/signin_sso_api.h"
+#import "ios/web/public/thread/web_task_traits.h"
+#import "ios/web/public/thread/web_thread.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "net/log/net_log.h"
 #include "net/log/net_log_capture_mode.h"
@@ -398,11 +400,6 @@ void ApplicationContextImpl::CreateGCMDriver() {
   DCHECK(thread_checker_.CalledOnValidThread());
 }
 
-PromosManager* ApplicationContextImpl::GetPromosManager() {
-  DCHECK(thread_checker_.CalledOnValidThread());
-  return nullptr;
-}
-
 PushNotificationService* ApplicationContextImpl::GetPushNotificationService() {
   if (!push_notification_service_) {
     push_notification_service_ = ios::provider::CreatePushNotificationService();
@@ -410,4 +407,10 @@ PushNotificationService* ApplicationContextImpl::GetPushNotificationService() {
   }
 
   return push_notification_service_.get();
+}
+
+void ApplicationContextImpl::PostCreateThreads() {
+  web::GetIOThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(&IOSChromeIOThread::InitOnIO,
+                                base::Unretained(ios_chrome_io_thread_.get())));
 }

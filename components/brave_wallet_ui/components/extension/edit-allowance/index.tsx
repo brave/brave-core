@@ -9,7 +9,8 @@ import Radio from 'brave-ui/components/formControls/radio'
 import { getLocale } from '$web-common/locale'
 
 // Styled Components
-import { NavButton, Panel } from '../'
+import { NavButton } from '../buttons/nav-button/index'
+import { Panel } from '../panel/index'
 import {
   StyledWrapper,
   FormColumn,

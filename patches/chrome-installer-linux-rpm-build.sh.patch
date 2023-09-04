@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/rpm/build.sh b/chrome/installer/linux/rpm/build.sh
-index 3053be4fbf88872a7ae743eed0b13291cb1862e7..77d6fb168ce8a3c6e5f74f68034a48943884635a 100755
+index 3053be4fbf88872a7ae743eed0b13291cb1862e7..7d22ce1cf6e720e35781d1ac459f483b1ab0788d 100755
 --- a/chrome/installer/linux/rpm/build.sh
 +++ b/chrome/installer/linux/rpm/build.sh
 @@ -15,8 +15,9 @@ gen_spec() {
@@ -13,20 +13,16 @@ index 3053be4fbf88872a7ae743eed0b13291cb1862e7..77d6fb168ce8a3c6e5f74f68034a4894
      local INSTALLDIR="${INSTALLDIR}-${CHANNEL}"
      local PACKAGE="${PACKAGE}-${CHANNEL}"
      local MENUNAME="${MENUNAME} (${CHANNEL})"
-@@ -87,6 +88,12 @@ do_package() {
+@@ -87,6 +88,8 @@ do_package() {
    PROVIDES="${PACKAGE}"
    RPM_COMMON_DEPS="${OUTPUTDIR}/rpm_common.deps"
    DEPENDS=$(cat "${RPM_COMMON_DEPS}" | tr '\n' ',')
-+
 +  # Ensure that our signing key is up-to-date (brave/brave-browser#4205).
-+  if [ "$CHANNEL" = "stable" ]; then
-+    DEPENDS="brave-keyring, ${DEPENDS}"
-+  fi
-+
++  DEPENDS="brave-keyring >= 1.11-1, ${DEPENDS}"
    gen_spec
  
    # Create temporary rpmbuild dirs.
-@@ -109,7 +116,10 @@ do_package() {
+@@ -109,7 +112,10 @@ do_package() {
      --define "__os_install_post  %{nil}" \
      --define "_build_id_links none" \
      "${SPEC}"
@@ -38,7 +34,7 @@ index 3053be4fbf88872a7ae743eed0b13291cb1862e7..77d6fb168ce8a3c6e5f74f68034a4894
    mv "$RPMBUILD_DIR/RPMS/$ARCHITECTURE/${PKGNAME}.${ARCHITECTURE}.rpm" \
       "${OUTPUTDIR}"
    # Make sure the package is world-readable, otherwise it causes problems when
-@@ -145,7 +155,10 @@ verify_channel() {
+@@ -145,7 +151,10 @@ verify_channel() {
        CHANNEL=stable
        ;;
      unstable|dev|alpha )

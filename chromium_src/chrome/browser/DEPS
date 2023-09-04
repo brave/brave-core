@@ -48,6 +48,7 @@ include_rules = [
   "+chrome/android",
   "+chrome/app",
   "+chrome/common",
+  "+chrome/utility",
   "+chrome/grit",
   "+chrome/installer",
   "+chrome/install_static",

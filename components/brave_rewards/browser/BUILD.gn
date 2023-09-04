@@ -35,18 +35,17 @@ static_library("browser") {
     "rewards_service_impl.h",
     "rewards_service_observer.h",
     "service_sandbox_type.h",
-    "static_values.h",
   ]
 
   deps = [
     "//base",
     "//brave/app:brave_generated_resources_grit",
-    "//brave/components/brave_ads/common",
+    "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/buildflags",
     "//brave/components/resources",
-    "//brave/components/services/bat_ledger/public/interfaces",
+    "//brave/components/services/bat_rewards/public/interfaces",
     "//mojo/public/cpp/bindings",
     "//net",
     "//services/data_decoder/public/cpp",

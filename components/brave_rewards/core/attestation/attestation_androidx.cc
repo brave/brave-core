@@ -9,13 +9,13 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/attestation/attestation_androidx.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace attestation {
 
-AttestationAndroid::AttestationAndroid(LedgerImpl& ledger)
-    : Attestation(ledger), promotion_server_(ledger) {}
+AttestationAndroid::AttestationAndroid(RewardsEngineImpl& engine)
+    : Attestation(engine), promotion_server_(engine) {}
 
 AttestationAndroid::~AttestationAndroid() = default;
 
@@ -58,13 +58,13 @@ void AttestationAndroid::Start(const std::string& payload,
 void AttestationAndroid::OnStart(StartCallback callback,
                                  mojom::Result result,
                                  const std::string& nonce) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Failed to start attestation");
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
-  std::move(callback).Run(mojom::Result::LEDGER_OK, nonce);
+  std::move(callback).Run(mojom::Result::OK, nonce);
 }
 
 void AttestationAndroid::Confirm(const std::string& solution,
@@ -83,13 +83,13 @@ void AttestationAndroid::Confirm(const std::string& solution,
 
 void AttestationAndroid::OnConfirm(ConfirmCallback callback,
                                    mojom::Result result) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Failed to confirm attestation");
     std::move(callback).Run(result);
     return;
   }
 
-  std::move(callback).Run(mojom::Result::LEDGER_OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 }  // namespace attestation

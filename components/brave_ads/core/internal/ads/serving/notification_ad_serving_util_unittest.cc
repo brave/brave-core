@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -18,7 +17,18 @@ namespace brave_ads {
 class BraveAdsNotificationAdServingUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsNotificationAdServingUtilTest,
-       ShouldServeAdsAtRegularIntervals) {
+       ShouldServeAdsAtRegularIntervalsOnIOS) {
+  // Arrange
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(ShouldServeAdsAtRegularIntervals());
+}
+
+TEST_F(BraveAdsNotificationAdServingUtilTest,
+       ShouldServeAdsAtRegularIntervalsOnAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -29,9 +39,31 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
 }
 
 TEST_F(BraveAdsNotificationAdServingUtilTest,
-       ShouldNotServeAdsAtRegularIntervals) {
+       ShouldNotServeAdsAtRegularIntervalsOnMacOS) {
+  // Arrange
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());
+}
+
+TEST_F(BraveAdsNotificationAdServingUtilTest,
+       ShouldNotServeAdsAtRegularIntervalsOnWindows) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());
+}
+
+TEST_F(BraveAdsNotificationAdServingUtilTest,
+       ShouldNotServeAdsAtRegularIntervalsOnLinux) {
+  // Arrange
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kLinux);
 
   // Act
 
@@ -52,7 +84,6 @@ TEST_F(BraveAdsNotificationAdServingUtilTest, SetServeAdAt) {
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        CalculateDelayBeforeServingTheFirstAd) {
   // Arrange
-  ads_client_mock_.ClearPref(prefs::kServeAdAt);
 
   // Act
 
@@ -79,6 +110,19 @@ TEST_F(BraveAdsNotificationAdServingUtilTest, CalculateDelayBeforeServingAnAd) {
 
   // Assert
   EXPECT_EQ(DistantFuture() - Now(), CalculateDelayBeforeServingAnAd());
+}
+
+TEST_F(BraveAdsNotificationAdServingUtilTest,
+       CalculateMinimumDelayBeforeServingAnAd) {
+  // Arrange
+  SetServeAdAt(Now());
+
+  AdvanceClockBy(base::Milliseconds(1));
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(base::Minutes(1), CalculateDelayBeforeServingAnAd());
 }
 
 }  // namespace brave_ads

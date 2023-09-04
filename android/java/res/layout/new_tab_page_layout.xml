@@ -115,21 +115,19 @@
                 android:layout_marginTop="16dp"
                 android:visibility="gone"/>
 
+            <!-- Single tab card -->
+            <ViewStub
+                android:id="@+id/tab_switcher_module_container_stub"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout="@layout/tab_switcher_module_container" />
+
             <ViewStub
                 android:id="@+id/search_resumption_module_container_stub"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/search_resumption_module_margin_top"
                 android:layout="@layout/search_resumption_module_layout" />
-
-            <!-- Video tutorial IPH card -->
-            <ViewStub
-                android:id="@+id/video_iph_stub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout="@layout/video_tutorial_iph_card"
-                android:inflatedId="@+id/video_iph_card"/>
 
             <!-- Middle spacer -->
             <View

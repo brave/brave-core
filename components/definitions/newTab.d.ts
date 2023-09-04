@@ -102,9 +102,7 @@ declare namespace NewTab {
 
   export interface PersistentState {
     braveRewardsSupported: boolean
-    braveTalkPromptDismissed: boolean
     braveTalkSupported: boolean
-    braveTalkPromptAutoDismissed: boolean
     bitcoinDotComSupported: boolean
     showEmptyPage: boolean
     rewardsState: RewardsWidgetState
@@ -132,8 +130,6 @@ declare namespace NewTab {
     initialDataLoaded: boolean
     textDirection: string
     featureFlagBraveNTPSponsoredImagesWallpaper: boolean
-    featureFlagBraveNewsEnabled: boolean
-    featureFlagBraveNewsV2Enabled: boolean
     featureFlagBraveNewsPromptEnabled: boolean
     searchPromotionEnabled: boolean
     featureCustomBackgroundEnabled: boolean
@@ -151,7 +147,6 @@ declare namespace NewTab {
     customLinksNum: number
     showBitcoinDotCom: boolean
     stats: Stats,
-    braveTalkPromptAllowed: boolean
     brandedWallpaper?: BrandedWallpaper
     backgroundWallpaper?: BackgroundWallpaper
     customImageBackgrounds: ImageBackground[]
@@ -159,17 +154,16 @@ declare namespace NewTab {
 
   export interface RewardsWidgetState {
     rewardsEnabled: boolean
+    isGrandfatheredUser: boolean
     userType: string
     isUnsupportedRegion: boolean
     declaredCountry: string
-    adsSupported?: boolean
     balance?: number
     externalWallet?: RewardsExtension.ExternalWallet
     externalWalletProviders?: string[]
     report?: RewardsBalanceReport
     adsAccountStatement: AdsAccountStatement
     dismissedNotifications: string[]
-    enabledAds: boolean
     needsBrowserUpgradeToServeAds: boolean
     promotions: Promotion[]
     parameters: RewardsParameters
@@ -178,12 +172,11 @@ declare namespace NewTab {
   }
 
   export const enum RewardsResult {
-    LEDGER_OK = 0,
-    LEDGER_ERROR = 1,
+    OK = 0,
+    FAILED = 1,
     NO_PUBLISHER_STATE = 2,
-    NO_LEDGER_STATE = 3,
+    NO_LEGACY_STATE = 3,
     INVALID_PUBLISHER_STATE = 4,
-    INVALID_LEDGER_STATE = 5,
     CAPTCHA_FAILED = 6,
     NO_PUBLISHER_LIST = 7,
     TOO_MANY_RESULTS = 8,
@@ -223,8 +216,10 @@ declare namespace NewTab {
   export interface AdsAccountStatement {
     nextPaymentDate: number
     adsReceivedThisMonth: number
-    earningsThisMonth: number
-    earningsLastMonth: number
+    minEarningsThisMonth: number
+    maxEarningsThisMonth: number
+    minEarningsLastMonth: number
+    maxEarningsLastMonth: number
   }
 
   export type ProviderPayoutStatus = 'off' | 'processing' | 'complete'

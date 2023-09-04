@@ -4,4 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as WalletSelectors from './wallet-selectors'
-export { WalletSelectors }
+import * as UISelectors from './ui-selectors'
+
+export {
+  WalletSelectors,
+  UISelectors
+}

@@ -12,23 +12,25 @@
 
 namespace brave_ads {
 
-CreativeNotificationAdList BuildCreativeNotificationAds(const int count) {
+CreativeNotificationAdList BuildCreativeNotificationAdsForTesting(
+    const int count) {
   CHECK_GT(count, 0);
 
   CreativeNotificationAdList creative_ads;
 
   for (int i = 0; i < count; i++) {
     const CreativeNotificationAdInfo creative_ad =
-        BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+        BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
     creative_ads.push_back(creative_ad);
   }
 
   return creative_ads;
 }
 
-CreativeNotificationAdInfo BuildCreativeNotificationAd(
-    const bool should_use_random_guids) {
-  const CreativeAdInfo creative_ad = BuildCreativeAd(should_use_random_guids);
+CreativeNotificationAdInfo BuildCreativeNotificationAdForTesting(
+    const bool should_use_random_uuids) {
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAdForTesting(should_use_random_uuids);
   CreativeNotificationAdInfo creative_notification_ad(creative_ad);
 
   creative_notification_ad.title = "Test Ad Title";

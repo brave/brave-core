@@ -9,14 +9,19 @@ const path = require('path')
 
 
 const runPerfTests = (passthroughArgs, perf_config, targets) => {
-  targets = targets.replace(/brave:nightly:([^:]+):none:/, "$1:")
   args = [
     path.join(
-      config.braveCoreDir, 'tools', 'perf', 'run_dashboard_perftests.py'),
-    '--config=' + perf_config,
-    '--targets=' + targets,
-    '--verbose',
+      config.braveCoreDir, 'tools', 'perf', 'run_perftests.py'),
+    perf_config,
   ]
+
+  if (targets !== undefined) {
+    if (process.platform === 'win32') {
+      targets = '"' + targets + '"'
+    }
+    args.push(targets)
+  }
+
   args.push(...passthroughArgs)
   console.log(args)
   util.run(

@@ -9,8 +9,10 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
-#include "base/notreached.h"
+#include "base/containers/flat_set.h"
+#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/commands/common/accelerator_parsing.h"
@@ -29,7 +31,8 @@ constexpr char kDefaultAcceleratorsPrefs[] = "brave.default_accelerators";
 
 AcceleratorPrefManager::Accelerators GetAcceleratorsFromPref(
     const std::string& pref,
-    PrefService* prefs) {
+    PrefService* prefs,
+    const base::flat_set<int> command_ids) {
   AcceleratorPrefManager::Accelerators result;
 
   const auto& accelerators = prefs->GetDict(pref);
@@ -37,6 +40,12 @@ AcceleratorPrefManager::Accelerators GetAcceleratorsFromPref(
     int id;
     if (!base::StringToInt(command_id, &id)) {
       DCHECK(false) << "Failed to parse " << command_id << " as int";
+      continue;
+    }
+
+    if (!base::Contains(command_ids, id)) {
+      DVLOG(1) << "Found non-existent command_id " << id
+               << ". Maybe it has been removed?";
       continue;
     }
 
@@ -57,8 +66,11 @@ void AcceleratorPrefManager::RegisterProfilePrefs(
   registry->RegisterDictionaryPref(kDefaultAcceleratorsPrefs);
 }
 
-AcceleratorPrefManager::AcceleratorPrefManager(PrefService* prefs)
-    : prefs_(prefs) {
+AcceleratorPrefManager::AcceleratorPrefManager(
+    PrefService* prefs,
+    base::span<const int> available_command_ids)
+    : prefs_(prefs),
+      available_command_ids_(base::MakeFlatSet<int>(available_command_ids)) {
   DCHECK(prefs_);
 }
 
@@ -77,6 +89,13 @@ void AcceleratorPrefManager::AddAccelerator(
   auto* list = update->EnsureList(base::NumberToString(command_id));
   auto accelerator_string = ToCodesString(accelerator);
   DCHECK(!accelerator_string.empty());
+
+  // If the value is already in the list, erase it.
+  list->EraseIf([&accelerator_string](const base::Value& value) {
+    auto* string_value = value.GetIfString();
+    return string_value && *string_value == accelerator_string;
+  });
+
   list->Append(accelerator_string);
 }
 
@@ -93,12 +112,14 @@ void AcceleratorPrefManager::RemoveAccelerator(
 }
 
 AcceleratorPrefManager::Accelerators AcceleratorPrefManager::GetAccelerators() {
-  return GetAcceleratorsFromPref(kAcceleratorsPrefs, prefs_);
+  return GetAcceleratorsFromPref(kAcceleratorsPrefs, prefs_,
+                                 available_command_ids_);
 }
 
 AcceleratorPrefManager::Accelerators
 AcceleratorPrefManager::GetDefaultAccelerators() {
-  return GetAcceleratorsFromPref(kDefaultAcceleratorsPrefs, prefs_);
+  return GetAcceleratorsFromPref(kDefaultAcceleratorsPrefs, prefs_,
+                                 available_command_ids_);
 }
 
 void AcceleratorPrefManager::SetDefaultAccelerators(

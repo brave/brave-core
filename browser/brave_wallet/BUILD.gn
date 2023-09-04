@@ -26,6 +26,8 @@ source_set("brave_wallet") {
     "json_rpc_service_factory.h",
     "keyring_service_factory.cc",
     "keyring_service_factory.h",
+    "simulation_service_factory.cc",
+    "simulation_service_factory.h",
     "swap_service_factory.cc",
     "swap_service_factory.h",
     "tx_service_factory.cc",
@@ -48,7 +50,6 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
-    "//brave/components/brave_wallet/common:common_utils",
     "//brave/components/brave_wallet/common:mojom",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profiles",
@@ -97,7 +98,11 @@ source_set("brave_wallet_delegate") {
       "brave_wallet_service_delegate_impl_android.cc",
       "brave_wallet_service_delegate_impl_android.h",
     ]
-    deps += [ "//brave/build/android:jni_headers" ]
+    deps += [
+      "//brave/build/android:jni_headers",
+      "//chrome/browser/ui:tab_model_enums_java",
+      "//chrome/browser/ui:ui",
+    ]
   } else {
     sources += [
       "brave_wallet_provider_delegate_impl_helper.cc",
@@ -166,6 +171,7 @@ source_set("unit_tests") {
     "brave_wallet_p3a_unittest.cc",
     "brave_wallet_prefs_unittest.cc",
     "brave_wallet_service_unittest.cc",
+    "eth_allowance_manager_unittest.cc",
     "eth_pending_tx_tracker_unittest.cc",
     "filecoin_keyring_unittest.cc",
     "keyring_service_unittest.cc",
@@ -180,12 +186,13 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser:hd_keyring",
     "//brave/components/brave_wallet/browser:permission_utils",
     "//brave/components/brave_wallet/browser:pref_names",
+    "//brave/components/brave_wallet/browser:test_support",
     "//brave/components/brave_wallet/browser:transaction",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:test_support",
-    "//brave/components/filecoin/rs:cxx",
+    "//brave/components/filecoin/rs:rust_lib",
     "//brave/components/l10n/common",
     "//brave/components/resources:strings_grit",
     "//brave/components/version_info",
@@ -223,7 +230,7 @@ source_set("browser_tests") {
       "//brave/app:command_ids",
       "//brave/browser",
       "//brave/browser/ui/sidebar",
-      "//brave/components/brave_wallet/common:common_utils",
+      "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:pref_names",
       "//brave/components/sidebar",
       "//chrome/browser/ui",

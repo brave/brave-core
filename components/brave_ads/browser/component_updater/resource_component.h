@@ -34,24 +34,27 @@ class ResourceComponent : public brave_component_updater::BraveComponent {
   void AddObserver(ResourceComponentObserver* observer);
   void RemoveObserver(ResourceComponentObserver* observer);
 
-  void RegisterComponentsForLocale(const std::string& locale);
+  void RegisterComponentForCountryCode(const std::string& country_code);
+  void RegisterComponentForLanguageCode(const std::string& language_code);
 
-  void NotifyDidUpdateResourceComponent(const std::string& id);
-
+  void NotifyDidUpdateResourceComponent(const std::string& manifest_version,
+                                        const std::string& id);
   absl::optional<base::FilePath> GetPath(const std::string& id, int version);
 
  private:
-  void RegisterComponentForCountryCode(const std::string& country_code);
+  void LoadManifestCallback(const std::string& component_id,
+                            const base::FilePath& install_dir,
+                            const std::string& json);
 
-  void RegisterComponentForLanguageCode(const std::string& language_code);
+  void LoadResourceCallback(const std::string& manifest_version,
+                            const std::string& component_id,
+                            const base::FilePath& install_dir,
+                            const std::string& json);
 
+  // brave_component_updater::BraveComponent:
   void OnComponentReady(const std::string& component_id,
                         const base::FilePath& install_dir,
                         const std::string& manifest) override;
-
-  void OnGetManifest(const std::string& component_id,
-                     const base::FilePath& install_dir,
-                     const std::string& json);
 
   std::map<std::string, ResourceInfo> resources_;
   base::ObserverList<ResourceComponentObserver> observers_;

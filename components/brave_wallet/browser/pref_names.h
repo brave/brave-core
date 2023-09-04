@@ -13,18 +13,22 @@ extern const char kDefaultBaseCurrency[];
 extern const char kDefaultBaseCryptocurrency[];
 extern const char kBraveWalletTransactions[];
 extern const char kShowWalletIconOnToolbar[];
-extern const char kBraveWalletSelectedCoin[];
 extern const char kBraveWalletLastUnlockTime[];
 extern const char kBraveWalletPingReportedUnlockTime[];
 extern const char kBraveWalletP3ALastReportTime[];
 extern const char kBraveWalletP3AFirstReportTime[];
 extern const char kBraveWalletP3AWeeklyStorage[];
+extern const char kBraveWalletP3ANFTGalleryUsed[];
+extern const char kBraveWalletSelectedWalletAccount[];
+extern const char kBraveWalletSelectedEthDappAccount[];
+extern const char kBraveWalletSelectedSolDappAccount[];
 extern const char kBraveWalletKeyrings[];
 extern const char kBraveWalletCustomNetworks[];
 extern const char kBraveWalletHiddenNetworks[];
 extern const char kBraveWalletSelectedNetworks[];
 extern const char kBraveWalletSelectedNetworksPerOrigin[];
 extern const char kBraveWalletUserAssets[];
+extern const char kBraveWalletEthAllowancesCache[];
 // Added 10/2021 to migrate contract address to an empty string for ETH.
 extern const char kBraveWalletUserAssetEthContractAddressMigrated[];
 // Added 06/2022 to add native assets of preloading networks to user assets.
@@ -38,6 +42,8 @@ extern const char kBraveWalletUserAssetsAddIsERC1155Migrated[];
 // Added 10/2022 to replace ETH selected network with mainnet if selected
 // network is one of the Ethereum testnets deprecated on 10/5/2022.
 extern const char kBraveWalletDeprecateEthereumTestNetworksMigrated[];
+// Added 06/2023 to set is_spam = false for all existing tokens.
+extern const char kBraveWalletUserAssetsAddIsSpamMigrated[];
 extern const char kBraveWalletAutoLockMinutes[];
 extern const char kSupportEip1559OnLocalhostChain[];
 // Added 02/2022 to migrate ethereum transactions to be under ethereum coin
@@ -47,6 +53,8 @@ extern const char kBraveWalletEthereumTransactionsCoinTypeMigrated[];
 extern const char kBraveWalletP3AFirstUnlockTime[];
 extern const char kBraveWalletP3ALastUnlockTime[];
 extern const char kBraveWalletP3AUsedSecondDay[];
+extern const char kBraveWalletP3AOnboardingLastStep[];
+extern const char kBraveWalletP3ANewUserBalanceReported[];
 
 extern const char kBraveWalletP3AActiveWalletDict[];
 extern const char kBraveWalletKeyringEncryptionKeysMigrated[];
@@ -59,10 +67,15 @@ extern const char kBraveWalletLastTransactionSentTimeDict[];
 extern const char kBraveWalletTransactionsChainIdMigrated[];
 // Added 04/2023 to migrate solana transactions for v0 transaction support.
 extern const char kBraveWalletSolanaTransactionsV0SupportMigrated[];
+// Added 07/2023 to migrate transactions from prefs to DB.
+extern const char kBraveWalletTransactionsFromPrefsToDBMigrated[];
+
+// Added 08/09 to migrate Fantom mainnet, previously a preloaded network,
+// to a custom network.
+extern const char kBraveWalletCustomNetworksFantomMainnetMigrated[];
 
 // DEPRECATED
 extern const char kShowWalletTestNetworksDeprecated[];
-extern const char kBraveWalletSelectedAccount[];
 extern const char kBraveWalletWeb3ProviderDeprecated[];
 extern const char kDefaultWalletDeprecated[];
 extern const char kBraveWalletCustomNetworksDeprecated[];
@@ -74,5 +87,7 @@ extern const char
     kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated2[];
 extern const char kPinnedNFTAssets[];
 extern const char kAutoPinEnabled[];
+// 06/2023
+extern const char kBraveWalletSelectedCoinDeprecated[];
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

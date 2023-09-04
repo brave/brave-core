@@ -7,8 +7,7 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 static_library("common") {
   sources = [
-    "adblock_domain_resolver.cc",
-    "adblock_domain_resolver.h",
+    "brave_shield_constants.h",
     "brave_shield_utils.cc",
     "brave_shield_utils.h",
     "features.cc",
@@ -18,13 +17,14 @@ static_library("common") {
   ]
 
   if (!is_android) {
-    sources += [ "brave_shield_constants.h" ]
+    sources += [ "brave_shield_localized_strings.h" ]
   }
 
   public_deps = [ "//brave/components/resources:strings" ]
 
   deps = [
     "//base",
+    "//brave/components/brave_shields/adblock:rust_lib",
     "//components/content_settings/core/common",
     "//net",
     "//ui/base",

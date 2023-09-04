@@ -37,7 +37,7 @@
   sub-label="$i18n{torEnabledDesc}" disabled="[[disableTorOption_]]"
   on-settings-boolean-control-change="onTorEnabledChange_">
 </settings-toggle-button>
-<settings-toggle-button pref="{{prefs.tor.auto_onion_location}}" class="cr-row" label="$i18n{autoOnionLocationLabel}"
+<settings-toggle-button id="autoOnionLocation" pref="{{prefs.tor.auto_onion_location}}" class="cr-row" label="$i18n{autoOnionLocationLabel}"
   sub-label="$i18n{autoOnionLocationDesc}" disabled="[[!torEnabledPref_.value]]">
 </settings-toggle-button>
 <if expr="enable_extensions">

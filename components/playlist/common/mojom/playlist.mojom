@@ -7,6 +7,8 @@ module playlist.mojom;
 
 import "url/mojom/url.mojom";
 
+// TODO(sko) This should be removed
+// https://github.com/brave/brave-browser/issues/30735
 enum PlaylistEvent {
   kNone,
   kItemAdded,             // a new playlist item added but not ready state
@@ -37,6 +39,7 @@ struct PlaylistItem {
 
   // original sources
   url.mojom.Url page_source;
+  url.mojom.Url page_redirected;
   url.mojom.Url media_source;
   url.mojom.Url thumbnail_source;
 
@@ -47,9 +50,15 @@ struct PlaylistItem {
   // When it's |cached|, |media_path| and |thumbnail_path| will be
   // local path.
   bool cached;
+  uint64 media_file_bytes;
 
   string author;
+
+  // This value is from base::TimeDeltaToValue. It's converting base::TimeDelta
+  // to microseconds.
+  // TODO(sko) We might be able to use base::Time mojo type directly.
   string duration;
+
   int32 last_played_position;
 
   // Playlists that contain this item. Could have multiple |Playlist| in case
@@ -62,7 +71,8 @@ struct PlaylistItem {
 // when the page is first initialized.
 interface PageHandlerFactory {
   CreatePageHandler(pending_remote<PlaylistServiceObserver> service_observer,
-                    pending_receiver<PlaylistService> service);
+                    pending_receiver<PlaylistService> service,
+                    pending_receiver<PlaylistNativeUI> native_ui);
 };
 
 // Service-side handler for requests from UI.
@@ -84,7 +94,8 @@ interface PlaylistService {
   FindMediaFilesFromActiveTab() => (url.mojom.Url page_url,
                                     array<PlaylistItem> items);
 
-  AddMediaFiles(array<PlaylistItem> items, string playlist_id, bool can_cache);
+  AddMediaFiles(array<PlaylistItem> items, string playlist_id, bool can_cache)
+      => (array<PlaylistItem> items);
 
   CopyItemToPlaylist(array<string> item_ids, string playlist_id);
 
@@ -92,10 +103,14 @@ interface PlaylistService {
   MoveItem(string from_playlist_id, string to_playlist_id, string item_id);
   ReorderItemFromPlaylist(string playlist_id, string item_id, int16 position);
 
+  // If you want to update a specific field, using the version for the feild
+  // would be better to gurantee the data consistency. We have many concurrent
+  // actors that update the item.
   UpdateItem(PlaylistItem item);
+  UpdateItemLastPlayedPosition(string id, int32 last_played_position);
 
   // Try downloading media files again. Returns PlaylistItem after trying
-  // recovery. If it succeeded, |cached| state of the return itme would be true.
+  // recovery. If it succeeded, |cached| state of the return item would be true.
   RecoverLocalDataForItem(string id, bool update_media_src_before_recovery)
       => (PlaylistItem result);
 
@@ -120,11 +135,28 @@ interface PlaylistService {
   AddObserver(pending_remote<PlaylistServiceObserver> observer);
 };
 
+// WebUI will delegate some UIs to native UI via this interface. While
+// PlaylistService is shared among browsers with the same profile, a NativeUI
+// instance will be bound to each web ui.
+interface PlaylistNativeUI {
+  ShowCreatePlaylistUI();
+
+  ShowRemovePlaylistUI(string playlist_id);
+
+  ShowMoveItemsUI(string playlist_id, array<string> item_id);
+};
+
 // UI-side handler for response from the service.
 interface PlaylistServiceObserver {
   // TODO(sko) For now, we only send |kUpdated| event. Need to make more events
   // and parameters for client side.
+  // https://github.com/brave/brave-browser/issues/30735
   OnEvent(PlaylistEvent event, string playlist_id);
+
+  OnItemCreated(PlaylistItem item);
+  OnItemDeleted(string id);
+  OnItemAddedToList(string playlist_id, string item_id);
+  OnItemRemovedFromList(string playlist_id, string item_id);
 
   OnMediaFileDownloadProgressed(
       string id,

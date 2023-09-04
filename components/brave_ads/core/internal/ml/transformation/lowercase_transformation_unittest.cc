@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation.h"
 
-#include <string>
+#include <vector>
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
@@ -15,6 +15,20 @@
 namespace brave_ads::ml {
 
 class BraveAdsLowercaseTransformationTest : public UnitTestBase {};
+
+TEST_F(BraveAdsLowercaseTransformationTest, WrongInputDataTest) {
+  // Arrange
+  const std::unique_ptr<Data> vector_data =
+      std::make_unique<VectorData>(std::vector<float>(1.0F));
+
+  const LowercaseTransformation lowercase;
+
+  // Act
+  const std::unique_ptr<Data> output_data = lowercase.Apply(vector_data);
+
+  // Assert
+  EXPECT_FALSE(output_data.get());
+}
 
 TEST_F(BraveAdsLowercaseTransformationTest, LowercaseTest) {
   // Arrange

@@ -1,19 +1,20 @@
-# Copyright 2022 The Brave Authors. All rights reserved.
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/build/rust/rust_cxx.gni")
+import("//build/rust/rust_static_library.gni")
 
-rust_crate("rust_lib") {
-  visibility = [ "//brave/components/json:rust_lib" ]
+rust_static_library("rust_lib") {
+  crate_name = "json_cxx"
+  crate_root = "src/lib.rs"
+  allow_unsafe = true
+  sources = [ "src/lib.rs" ]
+  cxx_bindings = [ "src/lib.rs" ]
 
-  inputs = [
-    "Cargo.toml",
-    "src/lib.rs",
+  deps = [
+    "//third_party/rust/libc/v0_2:lib",
+    "//third_party/rust/serde/v1:lib",
+    "//third_party/rust/serde_json/v1:lib",
   ]
-}
-
-rust_cxx("cxx") {
-  input = [ "src/lib.rs" ]
 }

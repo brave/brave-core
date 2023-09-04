@@ -113,7 +113,7 @@ class RewardsBrowserTestContribution : public RewardsServiceObserver {
 
   bool tip_reconcile_completed_ = false;
   std::unique_ptr<base::RunLoop> wait_for_tip_completed_loop_;
-  mojom::Result tip_reconcile_status_ = mojom::Result::LEDGER_ERROR;
+  mojom::Result tip_reconcile_status_ = mojom::Result::FAILED;
   bool recurring_tip_saved_ = false;
   std::unique_ptr<base::RunLoop> wait_for_recurring_tip_saved_loop_;
   bool multiple_tip_reconcile_completed_ = false;
@@ -128,7 +128,7 @@ class RewardsBrowserTestContribution : public RewardsServiceObserver {
   std::vector<mojom::Result> multiple_ac_reconcile_status_ = {};
   bool ac_reconcile_completed_ = false;
   std::unique_ptr<base::RunLoop> wait_for_ac_completed_loop_;
-  mojom::Result ac_reconcile_status_ = mojom::Result::LEDGER_ERROR;
+  mojom::Result ac_reconcile_status_ = mojom::Result::FAILED;
 
   raw_ptr<Browser> browser_ = nullptr;  // NOT OWNED
   raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;  // NOT OWNED

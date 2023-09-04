@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/commander/common/buildflags/buildflags.gni")
+
 source_set("unit_tests") {
   testonly = true
 
@@ -42,7 +44,7 @@ source_set("unit_tests") {
     "//testing/gtest",
   ]
 
-  if (!is_android && !is_ios) {
+  if (enable_commander) {
     sources +=
         [ "//brave/components/omnibox/browser/commander_provider_unittest.cc" ]
 

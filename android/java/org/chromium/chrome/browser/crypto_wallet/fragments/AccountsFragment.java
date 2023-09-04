@@ -24,14 +24,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
-import org.chromium.brave_wallet.mojom.KeyringInfo;
+import org.chromium.brave_wallet.mojom.AccountKind;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
@@ -88,7 +86,7 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
 
         TextView backupBtn = view.findViewById(R.id.accounts_backup);
         backupBtn.setOnClickListener(
-                v -> { ((BraveWalletActivity) getActivity()).backupBannerOnClick(); });
+                v -> { ((BraveWalletActivity) getActivity()).showOnboardingLayout(); });
 
         AppCompatImageView settingsBtn = view.findViewById(R.id.accounts_settings);
         settingsBtn.setOnClickListener(v -> {
@@ -110,11 +108,9 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
                 getViewLifecycleOwner(), accountInfos -> {
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
                     for (AccountInfo accountInfo : accountInfos) {
-                        if (!accountInfo.isImported) {
-                            WalletListItemModel model = new WalletListItemModel(R.drawable.ic_eth,
-                                    accountInfo.name, accountInfo.address, null, null,
-                                    accountInfo.isImported);
-                            model.setAccountInfo(accountInfo);
+                        if (accountInfo.accountId.kind == AccountKind.DERIVED) {
+                            WalletListItemModel model =
+                                    WalletListItemModel.makeForAccountInfo(accountInfo);
                             walletListItemModelList.add(model);
                         }
                     }
@@ -139,12 +135,9 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
                 getViewLifecycleOwner(), accountInfos -> {
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
                     for (AccountInfo accountInfo : accountInfos) {
-                        if (accountInfo.isImported) {
-                            WalletListItemModel model = new WalletListItemModel(R.drawable.ic_eth,
-                                    accountInfo.name, accountInfo.address, null, null,
-                                    accountInfo.isImported);
-                            model.setAccountInfo(accountInfo);
-                            walletListItemModelList.add(model);
+                        if (accountInfo.accountId.kind == AccountKind.IMPORTED) {
+                            walletListItemModelList.add(
+                                    WalletListItemModel.makeForAccountInfo(accountInfo));
                         }
                     }
                     if (walletCoinAdapter != null) {
@@ -160,15 +153,12 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
 
     @Override
     public void onAccountClick(WalletListItemModel walletListItemModel) {
-        Intent accountDetailActivityIntent = new Intent(getActivity(), AccountDetailActivity.class);
-        accountDetailActivityIntent.putExtra(Utils.NAME, walletListItemModel.getTitle());
-        accountDetailActivityIntent.putExtra(Utils.ADDRESS, walletListItemModel.getSubTitle());
-        if (walletListItemModel.getAccountInfo() != null) {
-            accountDetailActivityIntent.putExtra(
-                    Utils.COIN_TYPE, walletListItemModel.getAccountInfo().coin);
+        if (walletListItemModel.getAccountInfo() == null) {
+            return;
         }
-        accountDetailActivityIntent.putExtra(
-                Utils.ISIMPORTED, walletListItemModel.getIsImportedAccount());
+
+        Intent accountDetailActivityIntent = AccountDetailActivity.createIntent(
+                getContext(), walletListItemModel.getAccountInfo());
         startActivity(accountDetailActivityIntent);
     }
 

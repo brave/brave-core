@@ -9,26 +9,24 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
-#include "brave/components/brave_ads/core/notification_ad_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-using ::testing::_;
-
 namespace {
 
 void AddHistory(const size_t count) {
   const NotificationAdInfo ad = BuildNotificationAd(
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ false));
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true));
 
   for (size_t i = 0; i < count; i++) {
     HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
@@ -50,24 +48,28 @@ class BraveAdsReminderTest : public UnitTestBase {
 
 TEST_F(BraveAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
   // Arrange
+
+  // Assert
   EXPECT_CALL(ads_client_mock_,
               ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
 
   // Act
   AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get());
 
-  // Assert
+  FastForwardClockBy(base::Seconds(1));
 }
 
 TEST_F(BraveAdsReminderTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimes) {
   // Arrange
-  EXPECT_CALL(ads_client_mock_, ShowReminder(_)).Times(0);
+
+  // Assert
+  EXPECT_CALL(ads_client_mock_, ShowReminder).Times(0);
 
   // Act
   AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get() - 1);
 
-  // Assert
+  FastForwardClockBy(base::Seconds(1));
 }
 
 TEST_F(BraveAdsReminderTest,
@@ -82,12 +84,13 @@ TEST_F(BraveAdsReminderTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  EXPECT_CALL(ads_client_mock_, ShowReminder(_)).Times(0);
+  // Assert
+  EXPECT_CALL(ads_client_mock_, ShowReminder).Times(0);
 
   // Act
   AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get());
 
-  // Assert
+  FastForwardClockBy(base::Seconds(1));
 }
 
 }  // namespace brave_ads

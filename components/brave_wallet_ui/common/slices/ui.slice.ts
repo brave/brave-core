@@ -9,13 +9,31 @@ import { BraveWallet, UIState } from '../../constants/types'
 import { walletApi } from './api.slice'
 import { SetTransactionProviderErrorType } from '../constants/action_types'
 
-const defaultState: UIState = {
+// Utils
+import {
+  parseJSONFromLocalStorage
+} from '../../utils/local-storage-utils'
+
+export const defaultUIState: UIState = {
   selectedPendingTransactionId: undefined,
-  transactionProviderErrorRegistry: {}
+  transactionProviderErrorRegistry: {},
+  isPanel: false,
+  collapsedPortfolioAccountAddresses:
+    parseJSONFromLocalStorage(
+      'COLLAPSED_PORTFOLIO_ACCOUNT_ADDRESSES',
+      []
+    ),
+  collapsedPortfolioNetworkKeys:
+    parseJSONFromLocalStorage(
+      'COLLAPSED_PORTFOLIO_NETWORK_KEYS',
+      []
+    )
 }
 
 // slice
-export const createUISlice = (initialState: UIState = defaultState) => {
+export const createUISlice = (
+  initialState: UIState = defaultUIState
+) => {
   return createSlice({
     name: 'ui',
     initialState,
@@ -31,12 +49,44 @@ export const createUISlice = (initialState: UIState = defaultState) => {
         state: UIState,
         { payload }: PayloadAction<SetTransactionProviderErrorType>
       ) => {
-        state.transactionProviderErrorRegistry[payload.transaction.id] =
+        state.transactionProviderErrorRegistry[payload.transactionId] =
           payload.providerError
+      },
+
+      setCollapsedPortfolioAccountAddresses
+        (
+          state: UIState,
+          { payload }: PayloadAction<string[]>
+        ) {
+        state.collapsedPortfolioAccountAddresses = payload
+      },
+
+      setCollapsedPortfolioNetworkKeys
+        (
+          state: UIState,
+          { payload }: PayloadAction<string[]>
+        ) {
+        state.collapsedPortfolioNetworkKeys = payload
       },
 
     },
     extraReducers: (builder) => {
+      builder.addMatcher(
+        walletApi.endpoints.getTransactions.matchFulfilled,
+        (state, { payload }) => {
+          // set the the first pending transaction as the selected pending tx
+          // if there is not one already
+          if (!state.selectedPendingTransactionId) {
+            const firstPendingTx = payload.find(
+              (tx) => tx.txStatus === BraveWallet.TransactionStatus.Unapproved
+            )
+            if (firstPendingTx) {
+              state.selectedPendingTransactionId = firstPendingTx.id
+            }
+          }
+        }
+      )
+
       builder.addMatcher(
         walletApi.endpoints.newUnapprovedTxAdded.matchFulfilled,
         (state, { payload }) => {
@@ -51,11 +101,11 @@ export const createUISlice = (initialState: UIState = defaultState) => {
       builder.addMatcher(
         walletApi.endpoints.transactionStatusChanged.matchFulfilled,
         (state, { payload }) => {
-          // set the new transaction as the selected pending tx
+          // set the updated transaction as the selected pending tx
           // if there is not one already
           if (
-            payload.status === BraveWallet.TransactionStatus.Unapproved &&
-            !state.selectedPendingTransactionId
+            !state.selectedPendingTransactionId &&
+            payload.status === BraveWallet.TransactionStatus.Unapproved
           ) {
             state.selectedPendingTransactionId = payload.txId
           }

@@ -2,7 +2,7 @@
   "configurations": [{
     "dashboard-bot-name": "asus-w10-slow-laptop-typical",
     "browser-type": "chrome",
-    "profile": "chrome-typical",
+    "profile": "chrome-typical-win-114",
     "extra-browser-args": [],
     "extra-benchmark-args": [],
     "save-artifacts": false,

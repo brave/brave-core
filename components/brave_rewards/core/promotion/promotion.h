@@ -16,18 +16,18 @@
 #include "brave/components/brave_rewards/core/attestation/attestation_impl.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_transfer.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace promotion {
 
 class Promotion {
  public:
-  explicit Promotion(LedgerImpl& ledger);
+  explicit Promotion(RewardsEngineImpl& engine);
   ~Promotion();
 
   void Initialize();
@@ -126,7 +126,7 @@ class Promotion {
 
   void OnLastCheckTimerElapsed();
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   attestation::AttestationImpl attestation_;
   PromotionTransfer transfer_;
   credential::CredentialsPromotion credentials_;

@@ -6,14 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_CLIENT_LEGACY_CLIENT_MIGRATION_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_CLIENT_LEGACY_CLIENT_MIGRATION_UTIL_H_
 
-#include <string>
+namespace brave_ads {
 
-namespace brave_ads::client {
+bool HasMigratedClientState();
 
-bool HasMigrated();
-
-void SetHashForJson(const std::string& json);
-
-}  // namespace brave_ads::client
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_CLIENT_LEGACY_CLIENT_MIGRATION_UTIL_H_

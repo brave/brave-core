@@ -1,8 +1,8 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 56fb7f7eab407df0e74098ee9b64cfe42c53c091..85c4fa7645cbaad009c19f276b7e49fba7c8317a 100644
+index a0db274a53134fb1f1085185fc1030f6bc78917b..b9bb51e48160cc9fabd833959359b1631a6c1b9f 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -192,6 +192,7 @@ if (!is_android && !is_mac) {
+@@ -201,6 +201,7 @@ if (!is_android && !is_mac) {
            "common/crash_keys.cc",
            "common/crash_keys.h",
          ]
@@ -10,7 +10,7 @@ index 56fb7f7eab407df0e74098ee9b64cfe42c53c091..85c4fa7645cbaad009c19f276b7e49fb
  
          deps += [
            ":chrome_dll",
-@@ -518,11 +519,12 @@ if (is_win) {
+@@ -523,11 +524,12 @@ if (is_win) {
        args += [ "--keystone=0" ]
      }
    }
@@ -24,15 +24,15 @@ index 56fb7f7eab407df0e74098ee9b64cfe42c53c091..85c4fa7645cbaad009c19f276b7e49fb
      extra_substitutions = [
        "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
        "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -543,6 +545,7 @@ if (is_win) {
+@@ -547,6 +549,7 @@ if (is_win) {
        "//chrome/common:buildflags",
        "//chrome/common:version_header",
      ]
 +    deps += [ "//brave:brave_app" ]
  
-     if (enable_stripping) {
-       # At link time, preserve the global symbols specified in the .exports
-@@ -615,7 +618,7 @@ if (is_win) {
+     if (enable_updater) {
+       deps += [ ":chromium_updater_privileged_helper" ]
+@@ -623,7 +626,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -41,7 +41,7 @@ index 56fb7f7eab407df0e74098ee9b64cfe42c53c091..85c4fa7645cbaad009c19f276b7e49fb
            "-v",
            chrome_version_full,
            "-g",
-@@ -689,6 +692,7 @@ if (is_win) {
+@@ -697,6 +700,7 @@ if (is_win) {
        # this dependency directly copies the file into the framework's
        # resources directory.
        public_deps += [ ":chrome_framework_widevine_signature" ]
@@ -49,7 +49,7 @@ index 56fb7f7eab407df0e74098ee9b64cfe42c53c091..85c4fa7645cbaad009c19f276b7e49fb
      }
    }
  
-@@ -730,9 +734,11 @@ if (is_win) {
+@@ -740,9 +744,11 @@ if (is_win) {
        "--scm=0",
      ]
    }
@@ -61,7 +61,7 @@ index 56fb7f7eab407df0e74098ee9b64cfe42c53c091..85c4fa7645cbaad009c19f276b7e49fb
      if (is_chrome_branded && include_branded_entitlements) {
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
-@@ -757,6 +763,7 @@ if (is_win) {
+@@ -767,6 +773,7 @@ if (is_win) {
          info_plist_target = invoker.info_plist_target
        } else {
          info_plist_target = ":chrome_helper_plist"
@@ -69,7 +69,7 @@ index 56fb7f7eab407df0e74098ee9b64cfe42c53c091..85c4fa7645cbaad009c19f276b7e49fb
        }
  
        extra_substitutions = [
-@@ -935,6 +942,7 @@ if (is_win) {
+@@ -945,6 +952,7 @@ if (is_win) {
          sources += [ "//third_party/updater/chrome_mac_universal_prod/${updater_product_full_name}.app" ]
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
@@ -77,7 +77,7 @@ index 56fb7f7eab407df0e74098ee9b64cfe42c53c091..85c4fa7645cbaad009c19f276b7e49fb
  
          public_deps += [
            "//chrome/updater/mac:browser_install_script",
-@@ -1245,6 +1253,7 @@ if (is_win) {
+@@ -1259,6 +1267,7 @@ if (is_win) {
        chrome_dylib_version,
        "-Wl,-order_file," + rebase_path("app/framework.order", root_build_dir),
      ]
@@ -85,7 +85,7 @@ index 56fb7f7eab407df0e74098ee9b64cfe42c53c091..85c4fa7645cbaad009c19f276b7e49fb
  
      if (!is_component_build) {
        # Specify a sensible install_name for static builds. The library is
-@@ -1425,6 +1434,7 @@ if (is_win) {
+@@ -1439,6 +1448,7 @@ if (is_win) {
  
  group("dependencies") {
    public_deps = [
@@ -93,7 +93,7 @@ index 56fb7f7eab407df0e74098ee9b64cfe42c53c091..85c4fa7645cbaad009c19f276b7e49fb
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/browser",
-@@ -1490,7 +1500,7 @@ group("dependencies") {
+@@ -1505,7 +1515,7 @@ group("dependencies") {
  
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
@@ -102,7 +102,7 @@ index 56fb7f7eab407df0e74098ee9b64cfe42c53c091..85c4fa7645cbaad009c19f276b7e49fb
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1544,6 +1554,7 @@ group("resources") {
+@@ -1559,6 +1569,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
@@ -110,3 +110,11 @@ index 56fb7f7eab407df0e74098ee9b64cfe42c53c091..85c4fa7645cbaad009c19f276b7e49fb
    ]
  }
  
+@@ -1612,6 +1623,7 @@ if (!is_android) {
+     if (enable_resource_allowlist_generation) {
+       repack_allowlist = _chrome_resource_allowlist
+       deps = [ ":resource_allowlist" ]
++      repack_allowlist = brave_allowlist_file deps += [ "//brave:merge_allowlists" ]
+     }
+ 
+     if (is_chrome_branded && !is_mac) {

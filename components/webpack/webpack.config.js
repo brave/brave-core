@@ -103,10 +103,8 @@ module.exports = async function (env, argv) {
         {
           test: /\.tsx?$/,
           loader: 'ts-loader',
-          exclude: /node_modules\/(?!brave-ui)/,
           options: {
             getCustomTransformers: path.join(__dirname, './webpack-ts-transformers.js'),
-            allowTsInNodeModules: true,
             // Use generated tsconfig so that we can point at gen/ output in the
             // correct build configuration output directory.
             configFile: tsConfigPath

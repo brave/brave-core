@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/ui/brave_browser.h"
+
 #include <memory>
 #include <utility>
 
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
@@ -67,7 +68,7 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
   if (changed_flags & content::INVALIDATE_TYPE_URL) {
     if (source == tab_strip_model_->GetActiveWebContents()) {
       if (sidebar_controller_)
-        sidebar_controller_->sidebar()->UpdateSidebar();
+        sidebar_controller_->sidebar()->UpdateSidebarItemsState();
     }
   }
 #endif
@@ -122,7 +123,7 @@ void BraveBrowser::OnTabStripModelChanged(
   if (change.type() == TabStripModelChange::Type::kInserted ||
       change.type() == TabStripModelChange::Type::kRemoved ||
       selection.active_tab_changed())
-    sidebar_controller_->sidebar()->UpdateSidebar();
+    sidebar_controller_->sidebar()->UpdateSidebarItemsState();
 #endif
 }
 

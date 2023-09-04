@@ -45,8 +45,7 @@ constexpr SkColor kIconColor = SkColorSetRGB(0xf0, 0xf2, 0xff);
 constexpr SkColor kTextColor = SK_ColorWHITE;
 constexpr int kIconSize = 12;
 
-void OnTorProfileCreated(GURL onion_location, Profile* profile) {
-  Browser* browser = chrome::FindTabbedBrowser(profile, false);
+void OnTorProfileCreated(GURL onion_location, Browser* browser) {
   if (!browser)
     return;
   content::OpenURLParams open_tor(onion_location, content::Referrer(),
@@ -165,9 +164,12 @@ void OnionLocationView::Update(content::WebContents* web_contents,
     return;
   tor::OnionLocationTabHelper* helper =
       tor::OnionLocationTabHelper::FromWebContents(web_contents);
-  if (!helper)
-    return;
-  SetVisible(helper->should_show_icon() && show_page_actions);
-  reinterpret_cast<OnionLocationButtonView*>(button_.get())
-      ->SetOnionLocation(helper->onion_location());
+  const bool show_icon =
+      helper && helper->should_show_icon() && show_page_actions;
+
+  SetVisible(show_icon);
+  if (show_icon) {
+    reinterpret_cast<OnionLocationButtonView*>(button_.get())
+        ->SetOnionLocation(helper->onion_location());
+  }
 }

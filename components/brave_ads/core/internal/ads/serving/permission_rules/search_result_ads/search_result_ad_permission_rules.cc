@@ -8,11 +8,16 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/search_result_ads/search_result_ads_per_day_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/search_result_ads/search_result_ads_per_hour_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 
 namespace brave_ads {
 
 // static
 bool SearchResultAdPermissionRules::HasPermission() {
+  if (!UserHasJoinedBraveRewards()) {
+    return true;
+  }
+
   if (!PermissionRulesBase::HasPermission()) {
     return false;
   }

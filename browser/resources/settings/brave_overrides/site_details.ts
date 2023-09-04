@@ -11,6 +11,8 @@ import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 import {loadTimeData} from '../i18n_setup.js'
 import {BraveSiteDetailsElement} from '../brave_site_details/brave_site_details.js'
 
+import 'chrome://resources/brave/leo.bundle.js'
+
 RegisterPolymerComponentReplacement(
   'site-details',
   BraveSiteDetailsElement
@@ -41,7 +43,7 @@ RegisterPolymerTemplateModifications({
         getTrustedHTML`
           <site-details-permission
             category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
-            icon="cr:extension">
+            icon="autoplay-on">
           </site-details-permission>
         `)
       let curChild = 1
@@ -65,7 +67,7 @@ RegisterPolymerTemplateModifications({
           getTrustedHTML`
             <site-details-permission
               category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]"
-              icon="cr:person">
+              icon="user">
             </site-details-permission>
           `)
         const googleSignInSettings = templateContent.
@@ -89,7 +91,7 @@ RegisterPolymerTemplateModifications({
           getTrustedHTML`
             <site-details-permission
               category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]"
-              icon="settings:devices">
+              icon="smartphone-desktop">
             </site-details-permission>
           `)
         const localhostAccessSettings = templateContent.querySelector(
@@ -110,7 +112,7 @@ RegisterPolymerTemplateModifications({
           getTrustedHTML`
             <site-details-permission
               category="[[contentSettingsTypesEnum_.ETHEREUM]]"
-              icon="cr:extension">
+              icon="ethereum-on">
             </site-details-permission>
           `)
         const ethereumSettings = templateContent.
@@ -128,7 +130,7 @@ RegisterPolymerTemplateModifications({
           getTrustedHTML`
             <site-details-permission
               category="[[contentSettingsTypesEnum_.SOLANA]]"
-              icon="cr:extension">
+              icon="solana-on">
             </site-details-permission>
           `)
         const solanaSettings = templateContent.
@@ -142,43 +144,14 @@ RegisterPolymerTemplateModifications({
         }
       }
     }
+
+    // In Chromium, the VR and AR icons are the same but we want to have separate ones.
+    templateContent.querySelector('site-details-permission[icon="settings:vr-headset"]')?.setAttribute('icon', 'smartphone-hand')
+
     const usageSection = templateContent.querySelector('div#usage')
     if (!usageSection) {
       console.error(`[Brave Settings Overrides] Couldn't find usageSection item`)
     } else {
-      usageSection.insertAdjacentHTML(
-        'afterend',
-        getTrustedHTML`
-          <div id="shields">
-            <div id="shieldsHeader"
-              style="padding: 0 var(--cr-section-padding);">
-              <h2 class="first"></h2>
-            </div>
-            <div class="list-frame">
-              <site-details-permission
-                category="[[contentSettingsTypesEnum_.BRAVE_SHIELDS]]">
-              </site-details-permission>
-            </div>
-          </div>
-        `)
-      const shieldsHeader =
-        templateContent.querySelector('div#shieldsHeader h2')
-      if (!shieldsHeader) {
-        console.error(
-          '[Brave Settings Overrides] Couldn\'t find Shields header')
-      } else {
-        shieldsHeader.textContent =
-            loadTimeData.getString('siteSettingsShields')
-      }
-      const shieldsSettings = templateContent.querySelector(
-        'div#shields div.list-frame > site-details-permission:nth-child(1)')
-      if (!shieldsSettings) {
-        console.error(
-          '[Brave Settings Overrides] Couldn\'t find Shields settings')
-      } else {
-        shieldsSettings.setAttribute(
-            'label', loadTimeData.getString('siteSettingsShieldsStatus'))
-      }
       usageSection.insertAdjacentHTML(
         'afterend',
         getTrustedHTML`

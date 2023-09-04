@@ -20,7 +20,7 @@ class BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest
 };
 
 TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
-       AllowAdIfThereIsNoAdsHistory) {
+       ShouldAllowIfThereAreNoAdEvents) {
   // Arrange
 
   // Act
@@ -30,9 +30,9 @@ TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
 }
 
 TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
-       AllowAdIfDoesNotExceedCap) {
+       ShouldAllowIfDoesNotExceedCap) {
   // Arrange
-  RecordAdEvent(AdType::kNewTabPageAd, ConfirmationType::kServed);
+  RecordAdEventForTesting(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
   // Act
   AdvanceClockBy(kNewTabPageAdMinimumWaitTime.Get());
@@ -42,9 +42,9 @@ TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
 }
 
 TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
-       DoNotAllowAdIfExceedsCap) {
+       ShouldNotAllowIfExceedsCap) {
   // Arrange
-  RecordAdEvent(AdType::kNewTabPageAd, ConfirmationType::kServed);
+  RecordAdEventForTesting(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
   // Act
   AdvanceClockBy(kNewTabPageAdMinimumWaitTime.Get() - base::Milliseconds(1));

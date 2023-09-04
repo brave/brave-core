@@ -10,7 +10,8 @@ import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 import * as style from './pending_rewards_view.style'
 
 interface Props {
-  earningsLastMonth: number
+  minEarnings: number
+  maxEarnings: number
   nextPaymentDate: number
   providerPayoutStatus: ProviderPayoutStatus
 }
@@ -19,7 +20,8 @@ export function PendingRewardsView (props: Props) {
   return (
     <style.root>
       <PaymentStatusView
-        earningsLastMonth={props.earningsLastMonth}
+        minEarnings={props.minEarnings}
+        maxEarnings={props.maxEarnings}
         nextPaymentDate={props.nextPaymentDate}
         providerPayoutStatus={props.providerPayoutStatus}
       />

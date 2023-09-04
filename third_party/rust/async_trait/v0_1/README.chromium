@@ -1,0 +1,7 @@
+Name: async-trait
+URL: https://crates.io/crates/async-trait
+Description: Type erasure for async trait methods
+Version: 0.1.64
+Security Critical: yes
+License: Apache 2.0
+Revision: 6a13fce88235ebd11c0c67f419a3153dcd349eb9

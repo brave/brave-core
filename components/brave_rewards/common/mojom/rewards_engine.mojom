@@ -1,0 +1,278 @@
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+module brave_rewards.mojom;
+
+import "brave/components/brave_rewards/common/mojom/rewards.mojom";
+import "brave/components/brave_rewards/common/mojom/rewards_database.mojom";
+import "brave/components/brave_rewards/common/mojom/rewards_types.mojom";
+import "mojo/public/mojom/base/time.mojom";
+import "mojo/public/mojom/base/values.mojom";
+
+interface RewardsEngine {
+  Initialize() => (Result result);
+
+  GetEnvironment() => (Environment environment);
+
+  CreateRewardsWallet(string country)
+      => (CreateRewardsWalletResult result);
+
+  GetRewardsParameters() => (RewardsParameters properties);
+
+  GetAutoContributeProperties() => (AutoContributeProperties props);
+
+  GetPublisherMinVisitTime() => (int32 min_visit_time);
+
+  GetPublisherMinVisits() => (int32 min_visits);
+
+  GetAutoContributeEnabled() => (bool auto_contribute);
+
+  GetReconcileStamp() => (uint64 reconcile_stamp);
+
+  OnLoad(VisitData visit_data, uint64 current_time);
+
+  OnUnload(uint32 tab_id, uint64 current_time);
+
+  OnShow(uint32 tab_id, uint64 current_time);
+
+  OnHide(uint32 tab_id, uint64 current_time);
+
+  OnForeground(uint32 tab_id, uint64 current_time);
+
+  OnBackground(uint32 tab_id, uint64 current_time);
+
+  OnXHRLoad(uint32 tab_id,
+            string url,
+            map<string, string> parts,
+            string first_party_url,
+            string referrer,
+            VisitData visit_data);
+
+  SetPublisherExclude(string publisher_key, PublisherExclude exclude)
+      => (Result result);
+
+  RestorePublishers() => (Result result);
+
+  FetchPromotions() => (Result result, array<Promotion> promotion);
+
+  ClaimPromotion(string promotion_id, string payload)
+      => (Result result, string response);
+
+  AttestPromotion(string promotion_id, string solution)
+      => (Result result, Promotion? promotion);
+
+  SetPublisherMinVisitTime(int32 duration_in_seconds);
+
+  SetPublisherMinVisits(int32 visits);
+
+  SetAutoContributionAmount(double amount);
+
+  SetAutoContributeEnabled(bool enabled);
+
+  GetBalanceReport(ActivityMonth month, int32 year)
+      => (Result result, BalanceReportInfo report);
+
+  GetPublisherActivityFromUrl(uint64 window_id,
+                              VisitData visit_data,
+                              string publisher_blob);
+
+  GetAutoContributionAmount() => (double contribution_amount);
+
+  GetPublisherBanner(string publisher_id)
+      => (PublisherBanner? banner);
+
+  OneTimeTip(string publisher_id, double amount) => (Result result);
+
+  RemoveRecurringTip(string publisher_key) => (Result result);
+
+  GetCreationStamp() => (uint64 boot_stamp);
+
+  GetRewardsInternalsInfo() => (RewardsInternalsInfo info);
+
+  // DEPRECATED
+  SaveRecurringTip(RecurringTip info) => (Result result);
+
+  SendContribution(string publisher_id, double amount, bool set_monthly)
+      => (bool success);
+
+  GetRecurringTips() => (array<PublisherInfo> list);
+
+  GetOneTimeTips() => (array<PublisherInfo> list);
+
+  GetActivityInfoList(uint32 start, uint32 limit, ActivityInfoFilter? filter)
+      => (array<PublisherInfo> list);
+
+  GetPublishersVisitedCount() => (int32 count);
+
+  GetExcludedList() => (array<PublisherInfo> list);
+
+  RefreshPublisher(string publisher_key) => (PublisherStatus status);
+
+  StartContributionsForTesting();
+
+  UpdateMediaDuration(uint64 window_id,
+                      string publisher_key,
+                      uint64 duration,
+                      bool first_visit);
+
+  IsPublisherRegistered(string publisher_id) => (bool registered);
+
+  GetPublisherInfo(string publisher_key)
+      => (Result result, PublisherInfo? info);
+
+  GetPublisherPanelInfo(string publisher_key)
+      => (Result result, PublisherInfo? info);
+
+  SavePublisherInfo(uint64 window_id, PublisherInfo publisher_info)
+      => (Result result);
+
+  SetInlineTippingPlatformEnabled(InlineTipsPlatforms platform, bool enabled);
+
+  GetInlineTippingPlatformEnabled(InlineTipsPlatforms platform)
+      => (bool enabled);
+
+  GetShareURL(map<string, string> args) => (string url);
+
+  FetchBalance() => (FetchBalanceResult result);
+
+  GetExternalWallet(string wallet_type) => (GetExternalWalletResult result);
+
+  ConnectExternalWallet(string wallet_type, map<string, string> args)
+      => (ConnectExternalWalletResult result);
+
+  GetTransactionReport(ActivityMonth month, int32 year)
+      => (array<TransactionReportInfo> list);
+
+  GetContributionReport(ActivityMonth month, int32 year)
+      => (array<ContributionReportInfo> list);
+
+  GetAllContributions() => (array<ContributionInfo> list);
+
+  GetMonthlyReport(ActivityMonth month, int32 year)
+      => (Result result, MonthlyReportInfo report);
+
+  GetAllMonthlyReportIds() => (array<string> ids);
+
+  GetAllPromotions() => (map<string, Promotion> items);
+
+  Shutdown() => (Result result);
+
+  GetEventLogs() => (array<EventLog> logs);
+
+  GetRewardsWallet() => (RewardsWallet? wallet);
+};
+
+interface RewardsEngineClient {
+  LoadLegacyState() => (Result result, string data);
+
+  LoadPublisherState() => (Result result, string data);
+
+  OnReconcileComplete(Result result, ContributionInfo contribution);
+
+  OnPanelPublisherInfo(Result result,
+                       PublisherInfo publisher_info,
+                       uint64 window_id);
+
+  FetchFavIcon(string url, string favicon_key)
+      => (bool success, string favicon_url);
+
+  LoadURL(UrlRequest request) => (UrlResponse response);
+
+  PublisherListNormalized(array<PublisherInfo> list);
+
+  OnPublisherRegistryUpdated();
+
+  OnPublisherUpdated(string publisher_id);
+
+  [Sync]
+  GetBooleanState(string name) => (bool value);
+
+  [Sync]
+  SetBooleanState(string name, bool value) => ();
+
+  [Sync]
+  GetIntegerState(string name) => (int32 value);
+
+  [Sync]
+  SetIntegerState(string name, int32 value) => ();
+
+  [Sync]
+  GetDoubleState(string name) => (double value);
+
+  [Sync]
+  SetDoubleState(string name, double value) => ();
+
+  [Sync]
+  GetStringState(string name) => (string value);
+
+  [Sync]
+  SetStringState(string name, string value) => ();
+
+  [Sync]
+  GetInt64State(string name) => (int64 value);
+
+  [Sync]
+  SetInt64State(string name, int64 value) => ();
+
+  [Sync]
+  GetUint64State(string name) => (uint64 value);
+
+  [Sync]
+  SetUint64State(string name, uint64 value) => ();
+
+  [Sync]
+  GetValueState(string name) => (mojo_base.mojom.Value value);
+
+  [Sync]
+  SetValueState(string name, mojo_base.mojom.Value value) => ();
+
+  [Sync]
+  GetTimeState(string name) => (mojo_base.mojom.Time value);
+
+  [Sync]
+  SetTimeState(string name, mojo_base.mojom.Time value) => ();
+
+  [Sync]
+  ClearState(string name) => ();
+
+  [Sync]
+  GetClientCountryCode() => (string country_code);
+
+  [Sync]
+  IsAutoContributeSupportedForClient() => (bool value);
+
+  [Sync]
+  GetLegacyWallet() => (string wallet);
+
+  ShowNotification(string type, array<string> args) => (Result result);
+
+  [Sync]
+  GetClientInfo() => (ClientInfo info);
+
+  UnblindedTokensReady();
+
+  ReconcileStampReset();
+
+  RunDBTransaction(DBTransaction transaction) => (DBCommandResponse response);
+
+  Log(string file, int32 line, int32 verbose_level, string message);
+
+  ClearAllNotifications();
+
+  ExternalWalletConnected();
+
+  ExternalWalletLoggedOut();
+
+  ExternalWalletReconnected();
+
+  ExternalWalletDisconnected();
+
+  DeleteLog() => (Result result);
+
+  [Sync]
+  EncryptString(string value) => (string? encrypted);
+
+  [Sync]
+  DecryptString(string value) => (string? decrypted);
+};

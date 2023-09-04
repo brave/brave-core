@@ -6,48 +6,34 @@
 import * as React from 'react'
 
 // components
-import { Image, LoadingOverlay, LoadIcon, ImageWrapper } from './nft-content-styles'
+import { Image, ImageWrapper } from './nft-content-styles'
 
 // types
-import { BraveWallet, NFTMetadataReturnType } from '../../../constants/types'
+import { NFTMetadataReturnType } from '../../../constants/types'
 import { DisplayMode } from '../../nft-ui-messages'
-import { PinningStatusType } from '../../../page/constants/action_types'
 
 // components
 import Placeholder from '../../../assets/svg-icons/nft-placeholder.svg'
 import { NftMultimedia } from '../nft-multimedia/nft-multimedia'
+import { stripChromeImageURL } from '../../../utils/string-utils'
 
 interface Props {
   isLoading?: boolean
   displayMode?: DisplayMode
-  selectedAsset?: BraveWallet.BlockchainToken
   nftMetadata?: NFTMetadataReturnType
-  nftMetadataError?: string
-  tokenNetwork?: BraveWallet.NetworkInfo
   imageUrl?: string
-  nftPinningStatus?: PinningStatusType | undefined
-  imageIpfsUrl?: string
 }
 
 export const NftContent = (props: Props) => {
   const {
-    isLoading,
     nftMetadata,
     imageUrl,
     displayMode
   } = props
 
   const url = React.useMemo(() => {
-    return imageUrl ? imageUrl?.replace('chrome://image?', '') : Placeholder
+    return stripChromeImageURL(imageUrl) ?? Placeholder
   }, [imageUrl])
-
-  if (isLoading) {
-    return (
-      <LoadingOverlay isLoading={isLoading}>
-        <LoadIcon />
-      </LoadingOverlay>
-    )
-  }
 
   return (
     <>
@@ -58,7 +44,7 @@ export const NftContent = (props: Props) => {
           />
         </ImageWrapper>
       }
-      { displayMode === 'details' && nftMetadata &&
+      {displayMode === 'details' && nftMetadata &&
         <NftMultimedia nftMetadata={nftMetadata} />
       }
     </>

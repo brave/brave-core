@@ -60,6 +60,30 @@ def generate_braveified_node(elem, is_comment, branding_replacements_only):
         generate_braveified_node(child, is_comment, branding_replacements_only)
 
 
+def escape_element_text(elem):
+    # ph tags use $ as placeholders, so don't touch them.
+    if elem.tag == 'ph':
+        return
+
+    # comments are irrelevant, so don't touch them.
+    if elem.tag is lxml.etree.Comment:
+        return
+
+    if elem.text:
+        elem.text = elem.text.replace('$', '&#36;')
+
+    if elem.tail:
+        elem.tail = elem.tail.replace('$', '&#36;')
+
+    for child in elem:
+        escape_element_text(child)
+
+
+def escape_messages_text(xml_tree):
+    for elem in xml_tree.xpath('//message'):
+        escape_element_text(elem)
+
+
 def format_xml_style(xml_content):
     """Formats an xml file according to how Chromium GRDs are formatted"""
     xml_content = re.sub(rb'\s+desc="', rb' desc="', xml_content)
@@ -67,12 +91,14 @@ def format_xml_style(xml_content):
     xml_content = xml_content.replace(
         rb'<?xml version="1.0" encoding="UTF-8"?>',
             rb'<?xml version=\'1.0\' encoding=\'UTF-8\'?>')
+    xml_content = xml_content.replace(rb'&amp;#36;', rb'&#36;')
     return xml_content
 
 
 def write_xml_file_from_tree(string_path, xml_tree):
     """Writes out an xml tree to a file with Chromium GRD formatting
        replacements"""
+    escape_messages_text(xml_tree)
     transformed_content = lxml.etree.tostring(xml_tree,
                                               pretty_print=True,
                                               xml_declaration=True,
@@ -229,6 +255,10 @@ def get_original_grd(src_root, grd_file_path):
     if grd_file_name == 'android_chrome_strings.grd':
         return os.path.join(src_root, 'chrome', 'browser', 'ui', 'android',
                             'strings', 'android_chrome_strings.grd')
+    if grd_file_name == 'android_chrome_tab_ui_strings.grd':
+        return os.path.join(src_root, 'chrome', 'android', 'features', 'tab_ui',
+                            'java', 'strings',
+                            'android_chrome_tab_ui_strings.grd')
     return None
 
 

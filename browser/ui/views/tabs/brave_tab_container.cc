@@ -12,6 +12,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -34,7 +35,8 @@ BraveTabContainer::BraveTabContainer(
                        drag_context,
                        tab_slot_controller,
                        scroll_contents_view),
-      drag_context_(static_cast<TabDragContext*>(drag_context)) {
+      drag_context_(static_cast<TabDragContext*>(drag_context)),
+      tab_style_(TabStyle::Get()) {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return;
 
@@ -139,7 +141,7 @@ gfx::Size BraveTabContainer::CalculatePreferredSize() const {
     height += tabs::kMarginForVerticalTabContainers;
   }
 
-  return gfx::Size(TabStyle::GetStandardWidth(), height);
+  return gfx::Size(tab_style_->GetStandardWidth(), height);
 }
 
 void BraveTabContainer::UpdateClosingModeOnRemovedTab(int model_index,
@@ -233,8 +235,9 @@ void BraveTabContainer::StartInsertTabAnimation(int model_index) {
   auto* new_tab = GetTabAtModelIndex(model_index);
   gfx::Rect bounds = new_tab->bounds();
   bounds.set_height(tabs::kVerticalTabHeight);
-  const auto tab_width = new_tab->data().pinned ? tabs::kVerticalTabMinWidth
-                                                : TabStyle::GetStandardWidth();
+  const auto tab_width = new_tab->data().pinned
+                             ? tabs::kVerticalTabMinWidth
+                             : tab_style_->GetStandardWidth();
   bounds.set_width(tab_width);
   bounds.set_x(-tab_width);
   bounds.set_y((model_index > 0)
@@ -282,9 +285,8 @@ void BraveTabContainer::UpdateLayoutOrientation() {
 
   layout_helper_->set_use_vertical_tabs(
       tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()));
-  // When these two prefs are true, vertical tabs could be in floating mode.
-  layout_helper_->set_floating_mode(*vertical_tabs_floating_mode_enabled_ &&
-                                    *vertical_tabs_collapsed_);
+  layout_helper_->set_tab_strip(
+      static_cast<BraveTabStrip*>(base::to_address(tab_slot_controller_)));
   InvalidateLayout();
 }
 

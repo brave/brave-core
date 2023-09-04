@@ -1,0 +1,54 @@
+[package]
+name = "bls-signatures"
+version = "0.12.0"
+authors = ["dignifiedquire <dignifiedquire@gmail.com>"]
+license = "MIT OR Apache-2.0"
+edition = "2018"
+resolver = "2"
+
+description = "Aggregate BLS Signatures"
+documentation = "https://docs.rs/bls-signatures"
+homepage = "https://github.com/filecoin-project/bls-signatures"
+repository = "https://github.com/filecoin-project/bls-signatures"
+readme = "README.md"
+
+[dependencies]
+rayon = { version = "1", optional = true }
+rand_core = "0.6.0"
+thiserror = "1.0"
+subtle = "2.2.1"
+
+ff = "0.12"
+group = "0.12"
+pairing_lib = { version = "0.22.0", package = "pairing" }
+
+bls12_381 = { version = "=0.7.0", optional = true, features = ["experimental"] }
+sha2 = { version = "0.9", optional = true }
+hkdf = { version = "0.11.0", optional = true }
+
+blst_lib = { version = "=0.3.9", optional = true, package = "blst" }
+blstrs = { version = "0.5.0", optional = true }
+
+[workspace]
+members = [
+  "bls-signatures-ffi",
+]
+
+[features]
+default = ["pairing", "multicore"]
+multicore = ["rayon"]
+pairing = [ "bls12_381", "sha2", "hkdf" ]
+blst = [ "blst_lib", "blstrs" ]
+blst-portable = [ "blst_lib", "blst_lib/portable", "blstrs/portable" ]
+
+[dev-dependencies]
+rand = "0.8"
+base64 = "0.13.0"
+serde = { version = "1.0.106", features = ["derive"] }
+serde_json = "1.0.52"
+base64-serde = "0.6.1"
+rand_chacha = "0.3.1"
+
+[[example]]
+name = "verify"
+required-features = ["multicore"]

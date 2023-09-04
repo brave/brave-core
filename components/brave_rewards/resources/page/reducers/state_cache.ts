@@ -6,6 +6,7 @@
 import { defaultState } from './default_state'
 import { createLocalStorageScope } from '../../shared/lib/local_storage_scope'
 import { userTypeFromString } from '../../shared/lib/user_type'
+import * as Rewards from '../lib/types'
 
 const storageScope = createLocalStorageScope<'state'>('rewards')
 
@@ -31,9 +32,9 @@ function readCachedState (state: Rewards.State) {
 
   return {
     ...state,
+    isGrandfatheredUser: Boolean(cached.isGrandfatheredUser),
     userType: userTypeFromString(String(cached.userType || '')),
-    enabledAds: Boolean(cached.enabledAds),
-    enabledAdsMigrated: Boolean(cached.enabledAdsMigrated),
+    isAcSupported: Boolean(cached.isAcSupported),
     enabledContribute: Boolean(cached.enabledContribute),
     contributionMinTime: Number(cached.contributionMinTime) || 0,
     contributionMinVisits: Number(cached.contributionMinVisits) || 0,
@@ -48,7 +49,6 @@ function readCachedState (state: Rewards.State) {
     },
     adsData: {
       ...state.adsData,
-      adsEnabled: Boolean(cached.adsData.adsEnabled),
       adsPerHour: Number(cached.adsData.adsPerHour) || 0,
       adsSubdivisionTargeting:
         String(cached.adsData.adsSubdivisionTargeting || ''),
@@ -56,7 +56,10 @@ function readCachedState (state: Rewards.State) {
         String(cached.adsData.automaticallyDetectedAdsSubdivisionTargeting ||
                ''),
       shouldAllowAdsSubdivisionTargeting:
-        Boolean(cached.adsData.shouldAllowAdsSubdivisionTargeting)
+        Boolean(cached.adsData.shouldAllowAdsSubdivisionTargeting),
+      notificationAdsEnabled: Boolean(cached.adsData.notificationAdsEnabled),
+      newTabAdsEnabled: Boolean(cached.adsData.newTabAdsEnabled),
+      newsAdsEnabled: Boolean(cached.adsData.newsAdsEnabled)
     },
     currentCountryCode: String(cached.currentCountryCode),
     parameters: {

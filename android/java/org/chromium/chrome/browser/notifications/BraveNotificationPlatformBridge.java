@@ -7,7 +7,6 @@
 
 package org.chromium.chrome.browser.notifications;
 
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;

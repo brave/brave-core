@@ -6,9 +6,11 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -83,6 +85,19 @@ TEST(FilAddressUnitTest, From) {
   address = "";
   EXPECT_EQ(FilAddress::FromAddress(address).EncodeAsString(), address);
   EXPECT_TRUE(FilAddress::FromAddress(address).IsEmpty());
+
+  address = "f410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y";
+  fil_address = FilAddress::FromAddress(address);
+  EXPECT_EQ(fil_address.EncodeAsString(), address);
+  EXPECT_EQ(fil_address.protocol(), mojom::FilecoinAddressProtocol::DELEGATED);
+
+  address = "t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y";
+  fil_address = FilAddress::FromAddress(address);
+  EXPECT_EQ(fil_address.EncodeAsString(), address);
+  EXPECT_EQ(fil_address.protocol(), mojom::FilecoinAddressProtocol::DELEGATED);
+
+  address = "f420frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y";
+  EXPECT_NE(FilAddress::FromAddress(address).EncodeAsString(), address);
 }
 
 TEST(FilAddressUnitTest, IsValidAddress) {
@@ -104,6 +119,12 @@ TEST(FilAddressUnitTest, IsValidAddress) {
   EXPECT_FALSE(
       FilAddress::IsValidAddress("t1h3n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q"));
   EXPECT_FALSE(FilAddress::IsValidAddress(""));
+  EXPECT_TRUE(FilAddress::IsValidAddress(
+      "f410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y"));
+  EXPECT_TRUE(FilAddress::IsValidAddress(
+      "t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y"));
+  EXPECT_FALSE(FilAddress::IsValidAddress(
+      "f420frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y"));
 }
 
 TEST(FilAddressUnitTest, FromPayload) {
@@ -131,6 +152,11 @@ TEST(FilAddressUnitTest, FromPayload) {
       "f3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4t"
       "pa4mvigcrayh4a"));
 
+  EXPECT_TRUE(ValidatePayload("8C60A3A9530DDD22F44C0B9C219E55E693335B51",
+                              mojom::FilecoinAddressProtocol::DELEGATED,
+                              mojom::kFilecoinMainnet,
+                              "f410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y"));
+
   auto empty_address = FilAddress::FromPayload(
       {}, mojom::FilecoinAddressProtocol::SECP256K1, mojom::kFilecoinTestnet);
   EXPECT_EQ(empty_address.EncodeAsString(), "");
@@ -145,7 +171,6 @@ TEST(FilAddressUnitTest, FromPayload) {
       {}, mojom::FilecoinAddressProtocol::BLS, mojom::kFilecoinMainnet);
   EXPECT_EQ(empty_address.EncodeAsString(), "");
   EXPECT_TRUE(empty_address.IsEmpty());
-
   empty_address = FilAddress::FromPayload(
       {}, mojom::FilecoinAddressProtocol::BLS, mojom::kFilecoinTestnet);
   EXPECT_EQ(empty_address.EncodeAsString(), "");
@@ -246,6 +271,88 @@ TEST(FilAddressUnitTest, Comparison) {
       FilAddress::FromAddress(
           "t3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2"
           "oz4o4tpa4mvigcrayh4a"));
+  EXPECT_EQ(
+      FilAddress::FromAddress("f410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y"),
+      FilAddress::FromAddress("f410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y"));
+}
+
+TEST(FilAddressUnitTest, GetBytes) {
+  {
+    auto fil_address = FilAddress::FromAddress(
+        "t3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o"
+        "4t"
+        "pa4mvigcrayh4a");
+    EXPECT_EQ(
+        ToHex(base::make_span(fil_address.GetBytes())),
+        base::ToLowerASCII("0x03B5774F3D8546D3E797653A5423EFFA7AB06D4CD3587"
+                           "697D3647798D9FE739167EBEAF1EF"
+                           "053F957A7678EE4DE0E32A83"));
+    EXPECT_TRUE(ValidatePayload(
+        "B5774F3D8546D3E797653A5423EFFA7AB06D4CD3587697D3647798D9FE739167EBEAF1"
+        "EF"
+        "053F957A7678EE4DE0E32A83",
+        mojom::FilecoinAddressProtocol::BLS, mojom::kFilecoinTestnet,
+        "t3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o"
+        "4t"
+        "pa4mvigcrayh4a"));
+  }
+}
+
+TEST(FilAddressUnitTest, FromBytes) {
+  {
+    auto fil_address = FilAddress::FromAddress(
+        "t3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o"
+        "4t"
+        "pa4mvigcrayh4a");
+    EXPECT_EQ(fil_address,
+              FilAddress::FromBytes(
+                  mojom::kFilecoinTestnet,
+                  PrefixedHexStringToBytes(
+                      "0x03B5774F3D8546D3E797653A5423EFFA7AB06D4CD3587"
+                      "697D3647798D9FE739167EBEAF1EF"
+                      "053F957A7678EE4DE0E32A83")
+                      .value()));
+  }
+  {
+    auto fil_address = FilAddress::FromAddress(
+        "f3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o"
+        "4t"
+        "pa4mvigcrayh4a");
+    EXPECT_EQ(fil_address,
+              FilAddress::FromBytes(
+                  mojom::kFilecoinMainnet,
+                  PrefixedHexStringToBytes(
+                      "0x03B5774F3D8546D3E797653A5423EFFA7AB06D4CD3587"
+                      "697D3647798D9FE739167EBEAF1EF"
+                      "053F957A7678EE4DE0E32A83")
+                      .value()));
+  }
+  {
+    auto fil_address =
+        FilAddress::FromAddress("t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
+    EXPECT_EQ(fil_address,
+              FilAddress::FromBytes(
+                  mojom::kFilecoinTestnet,
+                  PrefixedHexStringToBytes(
+                      "0x013f1bf8bce258596c244ff262345965152c18baf8")
+                      .value()));
+  }
+}
+
+TEST(FilAddressUnitTest, ConvertFEVMtoFVM) {
+  EXPECT_EQ("f410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y",
+            FilAddress::FromFEVMAddress(
+                true, "0x8C60a3A9530dDD22F44C0B9c219E55E693335b51")
+                .EncodeAsString());
+
+  EXPECT_EQ("t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y",
+            FilAddress::FromFEVMAddress(
+                false, "0x8C60a3A9530dDD22F44C0B9c219E55E693335b51")
+                .EncodeAsString());
+
+  EXPECT_TRUE(FilAddress::FromFEVMAddress(
+                  false, "8C60a3A9530dDD22F44C0B9c219E55E693335b51")
+                  .IsEmpty());
 }
 
 }  // namespace brave_wallet

@@ -12,6 +12,7 @@ namespace features {
 
 BASE_DECLARE_FEATURE(kBraveCleanupSessionCookiesOnSessionRestore);
 BASE_DECLARE_FEATURE(kBraveCopyCleanLinkByDefault);
+BASE_DECLARE_FEATURE(kBraveOverrideDownloadDangerLevel);
 
 }  // namespace features
 

@@ -1,10 +1,10 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index 9144f16da6258399af7f1421098dd4c644f0774b..67b67943060cc29dbda537989e8811bbc34ac645 100644
+index 521c600c02b9020c558d5542997f97d885282dc2..2b8fc87e11ced44575c56a5af18e887ff2f233ab 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -314,6 +314,7 @@ class CORE_EXPORT HTMLCanvasElement final
+@@ -319,6 +319,7 @@ class CORE_EXPORT HTMLCanvasElement final
  
-   bool IsPlaceholder() const override { return IsOffscreenCanvasRegistered(); }
+   bool ShouldDisableAccelerationBecauseOfReadback() const;
  
 +  BRAVE_HTML_CANVAS_ELEMENT_H_
   protected:

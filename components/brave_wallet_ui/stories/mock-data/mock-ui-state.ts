@@ -8,5 +8,8 @@ import { mockedErc20ApprovalTransaction } from './mock-transaction-info'
 
 export const mockUiState: UIState = {
   transactionProviderErrorRegistry: {},
-  selectedPendingTransactionId: mockedErc20ApprovalTransaction.id
+  selectedPendingTransactionId: mockedErc20ApprovalTransaction.id,
+  isPanel: false,
+  collapsedPortfolioAccountAddresses: [],
+  collapsedPortfolioNetworkKeys: []
 }

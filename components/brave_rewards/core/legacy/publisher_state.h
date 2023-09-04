@@ -11,11 +11,11 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/publisher_settings_properties.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 }
 
 namespace brave_rewards::internal {
@@ -23,7 +23,7 @@ namespace publisher {
 
 class LegacyPublisherState {
  public:
-  explicit LegacyPublisherState(LedgerImpl& ledger);
+  explicit LegacyPublisherState(RewardsEngineImpl& engine);
 
   ~LegacyPublisherState();
 
@@ -44,7 +44,7 @@ class LegacyPublisherState {
               mojom::Result result,
               const std::string& data);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   PublisherSettingsProperties state_;
 };
 

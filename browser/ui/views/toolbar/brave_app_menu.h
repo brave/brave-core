@@ -12,7 +12,7 @@
 
 class BraveAppMenu : public AppMenu {
  public:
-  BraveAppMenu(Browser* browser, int run_types);
+  BraveAppMenu(Browser* browser, ui::MenuModel* model, int run_types);
   ~BraveAppMenu() override;
 
   BraveAppMenu(const BraveAppMenu&) = delete;

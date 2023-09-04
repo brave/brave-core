@@ -7,7 +7,7 @@
 
 #include <vector>
 
-#include "base/guid.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -57,17 +57,17 @@ TEST(BraveAdsSampleAdsTest, CalculateNormalizingConstant) {
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_1;
   ad_predictor_1.score = 1.1;
-  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+  creative_ad_predictors[base::Uuid::GenerateRandomV4().AsLowercaseString()] =
       ad_predictor_1;
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_2;
   ad_predictor_2.score = 2.2;
-  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+  creative_ad_predictors[base::Uuid::GenerateRandomV4().AsLowercaseString()] =
       ad_predictor_2;
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_3;
   ad_predictor_3.score = 3.3;
-  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+  creative_ad_predictors[base::Uuid::GenerateRandomV4().AsLowercaseString()] =
       ad_predictor_3;
 
   // Act
@@ -84,25 +84,23 @@ TEST(BraveAdsSampleAdsTest, SampleAdFromPredictorsWithZeroScores) {
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_1;
   ad_predictor_1.score = 0;
-  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+  creative_ad_predictors[base::Uuid::GenerateRandomV4().AsLowercaseString()] =
       ad_predictor_1;
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_2;
   ad_predictor_2.score = 0;
-  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+  creative_ad_predictors[base::Uuid::GenerateRandomV4().AsLowercaseString()] =
       ad_predictor_2;
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_3;
   ad_predictor_3.score = 0;
-  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+  creative_ad_predictors[base::Uuid::GenerateRandomV4().AsLowercaseString()] =
       ad_predictor_3;
 
   // Act
-  const absl::optional<CreativeNotificationAdInfo> creative_ad =
-      SampleAdFromPredictors(creative_ad_predictors);
 
   // Assert
-  EXPECT_FALSE(creative_ad);
+  EXPECT_FALSE(SampleAdFromPredictors(creative_ad_predictors));
 }
 
 TEST(BraveAdsSampleAdsTest,
@@ -111,7 +109,7 @@ TEST(BraveAdsSampleAdsTest,
   CreativeAdPredictorMap<CreativeNotificationAdInfo> creative_ad_predictors;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_1.segment = "foo-bar";
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_1;
@@ -120,7 +118,7 @@ TEST(BraveAdsSampleAdsTest,
   creative_ad_predictors[creative_ad_1.creative_instance_id] = ad_predictor_1;
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_2.segment = "foo-bar";
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_2;
@@ -129,7 +127,7 @@ TEST(BraveAdsSampleAdsTest,
   creative_ad_predictors[creative_ad_2.creative_instance_id] = ad_predictor_2;
 
   CreativeNotificationAdInfo creative_ad_3 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_3.segment = "foo-bar";
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_3;
@@ -139,11 +137,7 @@ TEST(BraveAdsSampleAdsTest,
 
   // Act
   for (int i = 0; i < 10; i++) {
-    const absl::optional<CreativeNotificationAdInfo> creative_ad =
-        SampleAdFromPredictors(creative_ad_predictors);
-    ASSERT_TRUE(creative_ad);
-
-    EXPECT_EQ(creative_ad_2, *creative_ad);
+    EXPECT_EQ(creative_ad_2, SampleAdFromPredictors(creative_ad_predictors));
   }
 
   // Assert
@@ -154,7 +148,7 @@ TEST(BraveAdsSampleAdsTest, ProbabilisticallySampleAdFromPredictors) {
   CreativeAdPredictorMap<CreativeNotificationAdInfo> creative_ad_predictors;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_1.segment = "foo-bar";
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_1;
@@ -163,7 +157,7 @@ TEST(BraveAdsSampleAdsTest, ProbabilisticallySampleAdFromPredictors) {
   creative_ad_predictors[creative_ad_1.creative_instance_id] = ad_predictor_1;
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_2.segment = "foo-bar";
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_2;

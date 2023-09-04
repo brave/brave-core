@@ -29,11 +29,17 @@ namespace {
 
 void OnPermissionRequestStatus(
     content::NavigationEntry* pending_entry,
-    content::WebContents* contents,
+    content::WebContents::Getter wc_getter,
     const GURL& request_initiator_url,
     URLLoaderThrottle::Delegate* delegate,
     const std::vector<blink::mojom::PermissionStatus>& permission_statuses) {
   DCHECK_EQ(1u, permission_statuses.size());
+
+  auto* contents = wc_getter.Run();
+  if (!contents || !pending_entry) {
+    return;
+  }
+
   // Check if current pending navigation is the one we started out with.
   // This is done to prevent us from accessing a deleted Delegate, if
   // the user navigated away while the prompt was still up, or closed the
@@ -93,7 +99,7 @@ void GoogleSignInPermissionThrottle::WillStartRequest(
   GetPermissionAndMaybeCreatePrompt(
       contents, request_initiator_url, defer,
       base::BindOnce(&OnPermissionRequestStatus,
-                     contents->GetController().GetPendingEntry(), contents,
+                     contents->GetController().GetPendingEntry(), wc_getter_,
                      request_initiator_url, delegate_));
 }
 

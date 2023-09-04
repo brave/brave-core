@@ -124,7 +124,7 @@ def generate_overrides_and_replace_strings(source_string_path):
         if textify(original_messages[i]) == textify(modified_messages[i]):
             modified_messages[i].getparent().remove(modified_messages[i])
 
-    # Remove uneeded things from the override grds
+    # Remove unneeded things from the override grds
     nodes_to_remove = [
         '//outputs',
         '//comment()',
@@ -257,15 +257,8 @@ def main():
         comment = etree.Comment(comment_text)
         grit_root.addprevious(comment)
 
-    transformed_content = etree.tostring(xml_tree,
-                                         pretty_print=True,
-                                         xml_declaration=True,
-                                         encoding='UTF-8')
-    # Fix some minor formatting differences from what Chromium outputs
-    transformed_content = (transformed_content.replace(b'/>', b' />'))
     print(f'writing file {source_string_path}')
-    with open(source_string_path, mode='wb') as f:
-        f.write(transformed_content)
+    write_xml_file_from_tree(source_string_path, xml_tree)
     print('-----------')
 
 

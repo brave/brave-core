@@ -6,8 +6,12 @@
 #ifndef BRAVE_BROWSER_DEBOUNCE_DEBOUNCE_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_DEBOUNCE_DEBOUNCE_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace debounce {
 
@@ -20,7 +24,7 @@ class DebounceServiceFactory : public BrowserContextKeyedServiceFactory {
   static DebounceServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<DebounceServiceFactory>;
+  friend base::NoDestructor<DebounceServiceFactory>;
 
   DebounceServiceFactory();
   ~DebounceServiceFactory() override;

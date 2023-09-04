@@ -24,16 +24,16 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_sku.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_tip.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace contribution {
 
 class Contribution {
  public:
-  explicit Contribution(LedgerImpl& ledger);
+  explicit Contribution(RewardsEngineImpl& engine);
 
   ~Contribution();
 
@@ -178,7 +178,7 @@ class Contribution {
   void OnMarkUnblindedTokensAsSpendable(const mojom::Result result,
                                         const std::string& contribution_id);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   Unblinded unblinded_;
   ContributionSKU sku_;
   ContributionMonthly monthly_;

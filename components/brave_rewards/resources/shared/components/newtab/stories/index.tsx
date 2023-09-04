@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -8,7 +9,6 @@ import * as knobs from '@storybook/addon-knobs'
 import { LocaleContext, createLocaleContextForTesting } from '../../../lib/locale_context'
 import { WithThemeVariables } from '../../with_theme_variables'
 import { RewardsCard } from '../rewards_card'
-import { SponsoredImageTooltip } from '../sponsored_image_tooltip'
 
 import { localeStrings } from './locale_strings'
 import * as mojom from '../../../../shared/lib/mojom'
@@ -36,17 +36,16 @@ export function Card () {
         <div style={{ width: '284px' }}>
           <RewardsCard
             rewardsEnabled={true}
+            isGrandfatheredUser={false}
             userType='connected'
             vbatDeadline={Date.parse('2023-01-01T00:00:00-05:00')}
             isUnsupportedRegion={false}
             declaredCountry='US'
-            adsEnabled={true}
-            adsSupported={true}
             needsBrowserUpgradeToServeAds={false}
             rewardsBalance={optional(91.5812)}
             exchangeCurrency='USD'
             exchangeRate={0.82}
-            providerPayoutStatus={'complete'}
+            providerPayoutStatus={'off'}
             grantInfo={showGrant ? {
               id: '',
               amount: 0.15,
@@ -64,31 +63,16 @@ export function Card () {
               }
             } : null}
             nextPaymentDate={nextPaymentDate}
-            earningsThisMonth={0.142}
-            earningsLastMonth={1.25}
+            minEarningsThisMonth={0.142}
+            maxEarningsThisMonth={1.142}
+            minEarningsLastMonth={1.00}
+            maxEarningsLastMonth={1.25}
             contributionsThisMonth={10}
             publishersVisited={4}
             canConnectAccount={true}
             onEnableRewards={actionLogger('onEnableRewards')}
-            onEnableAds={actionLogger('onEnableAds')}
             onSelectCountry={actionLogger('onSelectCountry')}
             onClaimGrant={actionLogger('onClaimGrant')}
-          />
-        </div>
-      </WithThemeVariables>
-    </LocaleContext.Provider>
-  )
-}
-
-export function SponsoredImage () {
-  return (
-    <LocaleContext.Provider value={localeContext}>
-      <WithThemeVariables>
-        <div style={{ width: '284px' }}>
-          <SponsoredImageTooltip
-            adsEnabled={false}
-            onEnableAds={actionLogger('onEnableAds')}
-            onClose={actionLogger('onClose')}
           />
         </div>
       </WithThemeVariables>

@@ -5,19 +5,7 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
-import androidx.annotation.StringDef;
-import androidx.annotation.VisibleForTesting;
-
 import org.chromium.chrome.browser.flags.CachedFeatureFlags;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.flags.StringCachedFieldTrialParameter;
-import org.chromium.chrome.browser.incognito.IncognitoUtils;
-import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
-import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
-import org.chromium.chrome.features.start_surface.StartSurfaceConfiguration;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 
 /**
  * The variation manager helps figure out the current variation and the visibility of buttons on

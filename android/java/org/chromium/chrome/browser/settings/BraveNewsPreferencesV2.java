@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,7 +39,6 @@ import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.components.browser_ui.settings.FragmentSettingsLauncher;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
@@ -52,6 +50,8 @@ import java.util.List;
 public class BraveNewsPreferencesV2 extends BravePreferenceFragment
         implements BraveNewsPreferencesDataListener, ConnectionErrorHandler,
                    FragmentSettingsLauncher {
+    public static final String PREF_SHOW_OPTIN = "show_optin";
+
     private LinearLayout mParentLayout;
     private LinearLayout mOptinLayout;
     private SwitchCompat mSwitchShowNews;
@@ -217,7 +217,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             BravePrefServiceBridge.getInstance().setNewsOptIn(true);
             SharedPreferences.Editor sharedPreferencesEditor =
                     ContextUtils.getAppSharedPreferences().edit();
-            sharedPreferencesEditor.putBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, false);
+            sharedPreferencesEditor.putBoolean(BraveNewsPreferencesV2.PREF_SHOW_OPTIN, false);
             sharedPreferencesEditor.apply();
 
             if (mIsSuggestionAvailable) {

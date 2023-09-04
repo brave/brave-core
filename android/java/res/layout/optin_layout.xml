@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginEnd="10dp"
-        tools:ignore="ContentDescription"
+        android:contentDescription="@string/close_text"
         android:src="@drawable/ic_close" />
 
     <com.airbnb.lottie.LottieAnimationView

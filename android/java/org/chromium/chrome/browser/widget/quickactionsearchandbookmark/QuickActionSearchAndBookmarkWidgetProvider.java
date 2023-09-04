@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 
@@ -62,9 +63,7 @@ import org.chromium.components.webapps.ShortcutSource;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.url.GURL;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -409,7 +408,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                         : View.GONE);
     }
 
-    private static PendingIntent createIntent(Context context, String url) {
+    private static PendingIntent createIntent(@NonNull Context context, @NonNull String url) {
         Intent intent = new Intent(
                 Intent.ACTION_VIEW, Uri.parse(url), context, ChromeLauncherActivity.class);
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
@@ -419,7 +418,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         return createPendingIntent(context, intent);
     }
 
-    private static PendingIntent createIntent(Context context, boolean startVoiceSearch) {
+    private static PendingIntent createIntent(@NonNull Context context, boolean startVoiceSearch) {
         Intent searchIntent =
                 new Intent(startVoiceSearch ? SearchActivityConstants.ACTION_START_VOICE_SEARCH
                                             : SearchActivityConstants.ACTION_START_TEXT_SEARCH);

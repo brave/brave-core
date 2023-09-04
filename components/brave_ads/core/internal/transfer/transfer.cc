@@ -8,13 +8,13 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
@@ -49,13 +49,11 @@ void Transfer::MaybeTransferAd(const int32_t tab_id,
   }
 
   if (transferring_ad_tab_id_ == tab_id) {
-    BLOG(1, "Already transferring ad for tab id " << tab_id);
-    return;
+    return BLOG(1, "Already transferring ad for tab id " << tab_id);
   }
 
   if (!DomainOrHostExists(redirect_chain, last_clicked_ad_.target_url)) {
-    BLOG(1, "Visited URL does not match the last clicked ad");
-    return;
+    return BLOG(1, "Visited URL does not match the last clicked ad");
   }
 
   TransferAd(tab_id, redirect_chain);
@@ -74,10 +72,8 @@ void Transfer::TransferAd(const int32_t tab_id,
       base::BindOnce(&Transfer::TransferAdCallback, base::Unretained(this),
                      tab_id, redirect_chain));
 
-  BLOG(1, "Transfer ad for "
-              << last_clicked_ad_.target_url << " "
-              << FriendlyDateAndTime(transfer_ad_at,
-                                     /*use_sentence_style*/ true));
+  BLOG(1, "Transfer ad for " << last_clicked_ad_.target_url << " "
+                             << FriendlyDateAndTime(transfer_ad_at));
 
   NotifyWillTransferAd(last_clicked_ad_, transfer_ad_at);
 }
@@ -95,19 +91,13 @@ void Transfer::TransferAdCallback(const int32_t tab_id,
   }
 
   const absl::optional<TabInfo> tab =
-      TabManager::GetInstance().GetForId(tab_id);
+      TabManager::GetInstance().MaybeGetForId(tab_id);
   if (!tab) {
     return FailedToTransferAd(ad);
   }
 
   if (tab->redirect_chain.empty()) {
-    // TODO(https://github.com/brave/brave-browser/issues/24970): Decouple
-    // |BrowserListObserver| from |AdsTabHelper| because right now,
-    // |OnTabDidChange| is also called when the browser becomes active or
-    // inactive, which can have an empty redirect chain if the navigation for a
-    // tab did not complete before calling |OnTabDidChange|, which caused a
-    // crash.
-    return;
+    return FailedToTransferAd(ad);
   }
 
   if (!DomainOrHostExists(redirect_chain, tab->redirect_chain.back())) {
@@ -125,11 +115,7 @@ void Transfer::LogAdEventCallback(const AdInfo& ad, const bool success) {
     return FailedToTransferAd(ad);
   }
 
-  BLOG(6, "Successfully logged transferred ad event");
-
-  BLOG(1, "Transferred ad for " << ad.target_url);
-
-  NotifyDidTransferAd(ad);
+  SuccessfullyTransferredAd(ad);
 }
 
 void Transfer::Cancel(const int32_t tab_id) {
@@ -146,6 +132,12 @@ void Transfer::Cancel(const int32_t tab_id) {
               << tab_id);
 
   NotifyCanceledTransfer(last_clicked_ad_, tab_id);
+}
+
+void Transfer::SuccessfullyTransferredAd(const AdInfo& ad) const {
+  BLOG(1, "Transferred ad for " << ad.target_url);
+
+  NotifyDidTransferAd(ad);
 }
 
 void Transfer::FailedToTransferAd(const AdInfo& ad) const {
@@ -181,16 +173,6 @@ void Transfer::NotifyFailedToTransferAd(const AdInfo& ad) const {
 }
 
 void Transfer::OnTabDidChange(const TabInfo& tab) {
-  if (tab.redirect_chain.empty()) {
-    // TODO(https://github.com/brave/brave-browser/issues/24970): Decouple
-    // |BrowserListObserver| from |AdsTabHelper| because right now,
-    // |OnTabDidChange| is also called when the browser becomes active or
-    // inactive, which can have an empty redirect chain if the navigation for a
-    // tab did not complete before calling |OnTabDidChange|, which caused a
-    // crash.
-    return;
-  }
-
   MaybeTransferAd(tab.id, tab.redirect_chain);
 }
 

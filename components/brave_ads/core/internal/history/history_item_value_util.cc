@@ -3,19 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/history_item_value_util.h"
+#include "brave/components/brave_ads/core/public/history/history_item_value_util.h"
 
 #include <utility>
 
+#include "base/json/values_util.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_ads/core/ad_content_value_util.h"
-#include "brave/components/brave_ads/core/internal/history/category_content_value_util.h"
+#include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
+#include "brave/components/brave_ads/core/public/history/category_content_value_util.h"
 
 namespace brave_ads {
 
 namespace {
 
-constexpr char kCreatedAtKey[] = "timestamp_in_seconds";
+constexpr char kCreatedAtKey[] = "created_at";
+constexpr char kLegacyCreatedAtKey[] = "timestamp_in_seconds";
 constexpr char kAdContentKey[] = "ad_content";
 constexpr char kCategoryContentKey[] = "category_content";
 
@@ -26,27 +28,22 @@ constexpr char kUIAdContentKey[] = "adContent";
 constexpr char kUICategoryContentKey[] = "categoryContent";
 
 base::Value::Dict HistoryItemToValue(const HistoryItemInfo& history_item) {
-  base::Value::Dict dict;
-
-  dict.Set(kCreatedAtKey,
-           base::NumberToString(history_item.created_at.ToDoubleT()));
-
-  dict.Set(kAdContentKey, AdContentToValue(history_item.ad_content));
-
-  dict.Set(kCategoryContentKey,
+  return base::Value::Dict()
+      .Set(kCreatedAtKey, base::TimeToValue(history_item.created_at))
+      .Set(kAdContentKey, AdContentToValue(history_item.ad_content))
+      .Set(kCategoryContentKey,
            CategoryContentToValue(history_item.category_content));
-
-  return dict;
 }
 
 base::Value::List HistoryItemToDetailRowsValue(
     const HistoryItemInfo& history_item) {
   base::Value::List list;
 
-  base::Value::Dict dict;
-  dict.Set(kUIAdContentKey, AdContentToValue(history_item.ad_content));
-  dict.Set(kUICategoryContentKey,
-           CategoryContentToValue(history_item.category_content));
+  auto dict =
+      base::Value::Dict()
+          .Set(kUIAdContentKey, AdContentToValue(history_item.ad_content))
+          .Set(kUICategoryContentKey,
+               CategoryContentToValue(history_item.category_content));
 
   list.Append(std::move(dict));
 
@@ -56,14 +53,16 @@ base::Value::List HistoryItemToDetailRowsValue(
 HistoryItemInfo HistoryItemFromValue(const base::Value::Dict& dict) {
   HistoryItemInfo history_item;
 
-  if (const auto* const value = dict.FindString(kCreatedAtKey)) {
-    double created_at_as_double = 0.0;
-    if (base::StringToDouble(*value, &created_at_as_double)) {
-      history_item.created_at = base::Time::FromDoubleT(created_at_as_double);
+  if (const auto* const value = dict.Find(kCreatedAtKey)) {
+    history_item.created_at = base::ValueToTime(value).value_or(base::Time());
+  } else if (const auto* const legacy_string_value =
+                 dict.FindString(kLegacyCreatedAtKey)) {
+    double value_as_double = 0.0;
+    if (base::StringToDouble(*legacy_string_value, &value_as_double)) {
+      history_item.created_at = base::Time::FromDoubleT(value_as_double);
     }
-  } else if (const auto created_at_value_double =
-                 dict.FindDouble(kCreatedAtKey)) {
-    history_item.created_at = base::Time::FromDoubleT(*created_at_value_double);
+  } else if (const auto legacy_double_value = dict.FindDouble(kCreatedAtKey)) {
+    history_item.created_at = base::Time::FromDoubleT(*legacy_double_value);
   }
 
   if (const auto* const value = dict.FindDict(kAdContentKey)) {
@@ -95,11 +94,12 @@ base::Value::List HistoryItemsToUIValue(const HistoryItemList& history_items) {
   int uuid = 0;
 
   for (const auto& history_item : history_items) {
-    base::Value::Dict dict;
-    dict.Set(kUIUuidKey, base::NumberToString(uuid++));
-    dict.Set(kUIJavaScriptTimestampKey,
-             history_item.created_at.ToJsTimeIgnoringNull());
-    dict.Set(kUIDetailRowsKey, HistoryItemToDetailRowsValue(history_item));
+    auto dict =
+        base::Value::Dict()
+            .Set(kUIUuidKey, base::NumberToString(uuid++))
+            .Set(kUIJavaScriptTimestampKey,
+                 history_item.created_at.ToJsTimeIgnoringNull())
+            .Set(kUIDetailRowsKey, HistoryItemToDetailRowsValue(history_item));
 
     list.Append(std::move(dict));
   }

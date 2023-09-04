@@ -1,0 +1,37 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("unit_tests") {
+  testonly = true
+
+  public_deps = [
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+
+  sources = [
+    "//brave/components/sync/service/brave_sync_auth_manager_unittest.cc",
+    "//brave/components/sync/service/brave_sync_service_impl_unittest.cc",
+  ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/brave_sync:crypto",
+    "//brave/components/brave_sync:network_time_helper",
+    "//brave/components/brave_sync:prefs",
+    "//brave/components/constants",
+    "//brave/components/sync/test:test_support",
+    "//components/os_crypt/sync:os_crypt",
+    "//components/os_crypt/sync:test_support",
+    "//components/prefs:prefs",
+    "//components/signin/public/identity_manager:test_support",
+    "//components/sync:test_support",
+    "//components/sync/engine",
+    "//components/sync/service",
+    "//content/test:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp:cpp",
+  ]
+}

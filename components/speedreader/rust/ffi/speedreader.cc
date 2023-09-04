@@ -47,7 +47,7 @@ Rewriter::Rewriter(C_SpeedReader* speedreader,
 
 Rewriter::~Rewriter() {
   if (!ended_) {
-    rewriter_free(raw_);
+    rewriter_free(raw_.ExtractAsDangling());
   }
 }
 
@@ -93,7 +93,7 @@ int Rewriter::Write(const char* chunk, size_t chunk_len) {
 
 int Rewriter::End() {
   if (!ended_ && !poisoned_) {
-    int ret = rewriter_end(raw_);
+    int ret = rewriter_end(raw_.ExtractAsDangling());
     ended_ = true;
     return ret;
   } else {

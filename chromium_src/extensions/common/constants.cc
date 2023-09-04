@@ -10,7 +10,6 @@ const int kBraveActionLeftMarginExtra = -2;
 
 const char brave_extension_id[] = "mnojpmjdmbbfmejpflffifhffcmidifd";
 const char hangouts_extension_id[] = "nkeimhogjdpnpccoofpliimaahmaaome";
-const char widevine_extension_id[] = "oimompecagnajdejgnnjijobebaeigek";
 const char crl_set_extension_id[] = "hfnkpimlhhgieaddgfemjhofmfblmnib";
 
 const char brave_webtorrent_extension_id[] = "lgjmpdmojkpocjcopdikifhejkkjglho";

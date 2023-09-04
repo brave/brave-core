@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler.h"
 
-#include "brave/components/brave_ads/core/ad_type.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/inline_content_ad_info.h"
+#include <vector>
+
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
@@ -16,6 +16,10 @@
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -23,13 +27,11 @@ namespace brave_ads {
 
 namespace {
 
-CreativeInlineContentAdInfo BuildAndSaveCreativeAd() {
-  CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
-
+InlineContentAdInfo BuildAndSaveAd() {
+  const CreativeInlineContentAdInfo creative_ad =
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeInlineContentAds({creative_ad});
-
-  return creative_ad;
+  return BuildInlineContentAd(creative_ad);
 }
 
 }  // namespace
@@ -69,6 +71,29 @@ class BraveAdsInlineContentAdEventHandlerTest
     did_fail_to_fire_event_ = true;
   }
 
+  void FireEvent(const std::string& placement_id,
+                 const std::string& creative_instance_id,
+                 const mojom::InlineContentAdEventType& event_type,
+                 const bool should_fire_event) {
+    base::MockCallback<FireInlineContentAdEventHandlerCallback> callback;
+    EXPECT_CALL(callback,
+                Run(/*success*/ should_fire_event, placement_id, event_type));
+
+    event_handler_.FireEvent(placement_id, creative_instance_id, event_type,
+                             callback.Get());
+  }
+
+  void FireEvents(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      const std::vector<mojom::InlineContentAdEventType>& event_types,
+      const bool should_fire_event) {
+    for (const auto& event_type : event_types) {
+      FireEvent(placement_id, creative_instance_id, event_type,
+                should_fire_event);
+    }
+  }
+
   InlineContentAdEventHandler event_handler_;
 
   InlineContentAdInfo ad_;
@@ -78,118 +103,157 @@ class BraveAdsInlineContentAdEventHandlerTest
   bool did_fail_to_fire_event_ = false;
 };
 
-TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireViewedEvent) {
+TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireServedEvent) {
   // Arrange
-  const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
-
-  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                           mojom::InlineContentAdEventType::kServed);
+  const InlineContentAdInfo ad = BuildAndSaveAd();
 
   // Act
-  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                           mojom::InlineContentAdEventType::kViewed);
+  FireEvent(ad.placement_id, ad.creative_instance_id,
+            mojom::InlineContentAdEventType::kServed,
+            /*should_fire_event*/ true);
+
+  // Assert
+  EXPECT_TRUE(did_serve_ad_);
+  EXPECT_FALSE(did_view_ad_);
+  EXPECT_FALSE(did_click_ad_);
+  EXPECT_FALSE(did_fail_to_fire_event_);
+  EXPECT_EQ(ad, ad_);
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kServed));
+}
+
+TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireViewedEvent) {
+  // Arrange
+  const InlineContentAdInfo ad = BuildAndSaveAd();
+
+  FireEvent(ad.placement_id, ad.creative_instance_id,
+            mojom::InlineContentAdEventType::kServed,
+            /*should_fire_event*/ true);
+
+  // Act
+  FireEvent(ad.placement_id, ad.creative_instance_id,
+            mojom::InlineContentAdEventType::kViewed,
+            /*should_fire_event*/ true);
 
   // Assert
   EXPECT_TRUE(did_serve_ad_);
   EXPECT_TRUE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
-  const InlineContentAdInfo expected_ad =
-      BuildInlineContentAd(creative_ad, kPlacementId);
-  EXPECT_EQ(expected_ad, ad_);
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
+  EXPECT_EQ(ad, ad_);
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
-       DoNotFireViewedEventIfAlreadyFired) {
+       DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
-  const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
+  const InlineContentAdInfo ad = BuildAndSaveAd();
 
-  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                           mojom::InlineContentAdEventType::kServed);
-  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                           mojom::InlineContentAdEventType::kViewed);
+  FireEvents(ad.placement_id, ad.creative_instance_id,
+             {mojom::InlineContentAdEventType::kServed,
+              mojom::InlineContentAdEventType::kViewed},
+             /*should_fire_event*/ true);
 
   // Act
-  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                           mojom::InlineContentAdEventType::kViewed);
+  FireEvent(ad.placement_id, ad.creative_instance_id,
+            mojom::InlineContentAdEventType::kViewed,
+            /*should_fire_event*/ false);
 
   // Assert
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kViewed));
+}
+
+TEST_F(BraveAdsInlineContentAdEventHandlerTest,
+       DoNotFireViewedEventIfAdPlacementWasNotServed) {
+  // Arrange
+  const InlineContentAdInfo ad = BuildAndSaveAd();
+
+  // Act
+  FireEvent(ad.placement_id, ad.creative_instance_id,
+            mojom::InlineContentAdEventType::kViewed,
+            /*should_fire_event*/ false);
+
+  // Assert
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
   // Arrange
-  const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
+  const InlineContentAdInfo ad = BuildAndSaveAd();
 
-  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                           mojom::InlineContentAdEventType::kServed);
-  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                           mojom::InlineContentAdEventType::kViewed);
+  FireEvents(ad.placement_id, ad.creative_instance_id,
+             {mojom::InlineContentAdEventType::kServed,
+              mojom::InlineContentAdEventType::kViewed},
+             /*should_fire_event*/ true);
 
   // Act
-  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                           mojom::InlineContentAdEventType::kClicked);
+  FireEvent(ad.placement_id, ad.creative_instance_id,
+            mojom::InlineContentAdEventType::kClicked,
+            /*should_fire_event*/ true);
 
   // Assert
   EXPECT_TRUE(did_serve_ad_);
   EXPECT_TRUE(did_view_ad_);
   EXPECT_TRUE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
-  const InlineContentAdInfo expected_ad =
-      BuildInlineContentAd(creative_ad, kPlacementId);
-  EXPECT_EQ(expected_ad, ad_);
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
-  EXPECT_EQ(1U, GetAdEventCount(AdType::kInlineContentAd,
-                                ConfirmationType::kClicked));
+  EXPECT_EQ(ad, ad_);
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kClicked));
 }
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
-       DoNotFireClickedEventIfMissingAdPlacement) {
+       DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
-  const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
+  const InlineContentAdInfo ad = BuildAndSaveAd();
+
+  FireEvents(ad.placement_id, ad.creative_instance_id,
+             {mojom::InlineContentAdEventType::kServed,
+              mojom::InlineContentAdEventType::kViewed,
+              mojom::InlineContentAdEventType::kClicked},
+             /*should_fire_event*/ true);
 
   // Act
-  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                           mojom::InlineContentAdEventType::kClicked);
+  FireEvent(ad.placement_id, ad.creative_instance_id,
+            mojom::InlineContentAdEventType::kClicked,
+            /*should_fire_event*/ false);
 
   // Assert
-  EXPECT_EQ(0U, GetAdEventCount(AdType::kInlineContentAd,
-                                ConfirmationType::kClicked));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kClicked));
 }
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
-       DoNotFireClickedEventIfAlreadyFired) {
+       DoNotFireClickedEventIfAdPlacementWasNotServed) {
   // Arrange
-  const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
-
-  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                           mojom::InlineContentAdEventType::kServed);
-  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                           mojom::InlineContentAdEventType::kViewed);
-  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                           mojom::InlineContentAdEventType::kClicked);
+  const InlineContentAdInfo ad = BuildAndSaveAd();
 
   // Act
-  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                           mojom::InlineContentAdEventType::kClicked);
+  FireEvent(ad.placement_id, ad.creative_instance_id,
+            mojom::InlineContentAdEventType::kViewed,
+            /*should_fire_event*/ false);
 
   // Assert
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
-  EXPECT_EQ(1U, GetAdEventCount(AdType::kInlineContentAd,
-                                ConfirmationType::kClicked));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
@@ -197,16 +261,17 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
   // Arrange
 
   // Act
-  event_handler_.FireEvent(kInvalidPlacementId, kCreativeInstanceId,
-                           mojom::InlineContentAdEventType::kServed);
+  FireEvent(kInvalidPlacementId, kCreativeInstanceId,
+            mojom::InlineContentAdEventType::kServed,
+            /*should_fire_event*/ false);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(
-      0U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kServed));
 }
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
@@ -214,33 +279,36 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
   // Arrange
 
   // Act
-  event_handler_.FireEvent(kPlacementId, kInvalidCreativeInstanceId,
-                           mojom::InlineContentAdEventType::kServed);
+  FireEvent(kPlacementId, kInvalidCreativeInstanceId,
+            mojom::InlineContentAdEventType::kServed,
+            /*should_fire_event*/ false);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(
-      0U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kServed));
 }
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
-       DoNotFireEventForUnknownCreativeInstanceId) {
+       DoNotFireEventForMissingCreativeInstanceId) {
   // Arrange
+  const InlineContentAdInfo ad = BuildAndSaveAd();
 
   // Act
-  event_handler_.FireEvent(kPlacementId, kCreativeInstanceId,
-                           mojom::InlineContentAdEventType::kServed);
+  FireEvent(ad.placement_id, kMissingCreativeInstanceId,
+            mojom::InlineContentAdEventType::kServed,
+            /*should_fire_event*/ false);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(
-      0U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                          ConfirmationType::kServed));
 }
 
 }  // namespace brave_ads

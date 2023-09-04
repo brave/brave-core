@@ -14,7 +14,6 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
-#include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/sequence_checker.h"
@@ -24,6 +23,8 @@
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace base {
+template <typename T>
+class NoDestructor;
 class SequencedTaskRunner;
 struct OnTaskRunnerDeleter;
 }  // namespace base
@@ -68,7 +69,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   void OnTorRawEnd(const std::string& status, const std::string& line) override;
 
  private:
-  friend struct base::DefaultSingletonTraits<TorLauncherFactory>;
+  friend base::NoDestructor<TorLauncherFactory>;
   friend class MockTorLauncherFactory;
 
   TorLauncherFactory();

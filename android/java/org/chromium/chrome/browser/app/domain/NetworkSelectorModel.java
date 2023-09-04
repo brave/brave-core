@@ -12,8 +12,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.chrome.browser.crypto_wallet.presenters.NetworkInfoPresenter;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.ArrayList;
@@ -31,14 +31,18 @@ public class NetworkSelectorModel {
     private final Context mContext;
     private final NetworkModel mNetworkModel;
     private final MutableLiveData<NetworkInfo> _mSelectedNetwork;
+    private final MutableLiveData<List<NetworkInfo>> _mSelectedNetworks;
     private Mode mMode;
-    public LiveData<List<NetworkInfoPresenter>> mPrimaryNetworks;
-    public LiveData<List<NetworkInfoPresenter>> mSecondaryNetworks;
+    private SelectionMode mSelectionMode;
+    public LiveData<NetworkModel.NetworkLists> mNetworkListsLd;
     private final LiveData<NetworkInfo> mSelectedNetwork;
     private String mSelectedChainId;
+    public final LiveData<List<NetworkInfo>> mSelectedNetworks;
 
-    public NetworkSelectorModel(Mode mode, NetworkModel networkModel, Context context) {
+    public NetworkSelectorModel(
+            Mode mode, SelectionMode type, NetworkModel networkModel, Context context) {
         mMode = mode;
+        mSelectionMode = type;
         if (mMode == null) {
             mMode = Mode.DEFAULT_WALLET_NETWORK;
         }
@@ -46,42 +50,41 @@ public class NetworkSelectorModel {
         mContext = context;
         _mSelectedNetwork = new MutableLiveData<>();
         mSelectedNetwork = _mSelectedNetwork;
+        _mSelectedNetworks = new MutableLiveData<>(Collections.emptyList());
+        mSelectedNetworks = _mSelectedNetworks;
         init();
     }
 
     public NetworkSelectorModel(NetworkModel networkModel, Context context) {
-        this(Mode.DEFAULT_WALLET_NETWORK, networkModel, context);
+        this(Mode.DEFAULT_WALLET_NETWORK, SelectionMode.SINGLE, networkModel, context);
     }
 
     public void init() {
         if (mMode == Mode.DEFAULT_WALLET_NETWORK) {
             _mSelectedNetwork.postValue(mNetworkModel.mDefaultNetwork.getValue());
+        } else if (SelectionMode.MULTI == mSelectionMode) {
+            LiveDataUtil.observeOnce(mNetworkModel.mNetworkLists, networkLists -> {
+                _mSelectedNetworks.postValue(
+                        NetworkUtils.nonTestNetwork(networkLists.mCoreNetworks));
+            });
         } else if (mMode == Mode.LOCAL_NETWORK_FILTER) {
             if (mSelectedChainId == null) {
                 _mSelectedNetwork.postValue(NetworkUtils.getAllNetworkOption(mContext));
             }
         }
-        mPrimaryNetworks = Transformations.map(mNetworkModel.mPrimaryNetworks, networkInfos -> {
-            List<NetworkInfoPresenter> list = new ArrayList<>();
-            if (mMode == Mode.LOCAL_NETWORK_FILTER) {
-                list.add(0,
-                        new NetworkInfoPresenter(NetworkUtils.getAllNetworkOption(mContext), true,
-                                Collections.emptyList()));
+        mNetworkListsLd = Transformations.map(mNetworkModel.mNetworkLists, networkLists -> {
+            if (networkLists == null) return new NetworkModel.NetworkLists();
+            NetworkModel.NetworkLists networkListsCopy =
+                    new NetworkModel.NetworkLists(networkLists);
+            List<NetworkInfo> allNetworkList = new ArrayList<>(networkLists.mCoreNetworks);
+            if (mMode == Mode.LOCAL_NETWORK_FILTER && SelectionMode.MULTI != mSelectionMode) {
+                NetworkInfo allNetwork = NetworkUtils.getAllNetworkOption(mContext);
+                networkListsCopy.mPrimaryNetworkList.add(0, allNetwork);
+                // Selected local network can be "All networks"
+                allNetworkList.add(0, allNetwork);
             }
-            for (NetworkInfo networkInfo : networkInfos) {
-                list.add(new NetworkInfoPresenter(
-                        networkInfo, true, mNetworkModel.getSubTestNetworks(networkInfo)));
-            }
-            updateLocalNetwork(networkInfos, mSelectedChainId);
-            return list;
-        });
-        mSecondaryNetworks = Transformations.map(mNetworkModel.mSecondaryNetworks, networkInfos -> {
-            List<NetworkInfoPresenter> list = new ArrayList<>();
-            for (NetworkInfo networkInfo : networkInfos) {
-                list.add(new NetworkInfoPresenter(networkInfo, false, Collections.emptyList()));
-            }
-            updateLocalNetwork(networkInfos, mSelectedChainId);
-            return list;
+            updateLocalNetwork(allNetworkList, mSelectedChainId);
+            return networkListsCopy;
         });
     }
 
@@ -104,13 +107,17 @@ public class NetworkSelectorModel {
             boolean hasAccountOfNetworkType =
                     mNetworkModel.hasAccountOfNetworkType(networkToBeSetAsSelected);
             if (!hasAccountOfNetworkType || mMode == Mode.DEFAULT_WALLET_NETWORK) {
+                // Mode.DEFAULT_WALLET_NETWORK is for panel network selection which means that we
+                // should change active orign's network.
+                boolean setNetworkAsDefault = mMode != Mode.DEFAULT_WALLET_NETWORK;
                 // Delegate to network model to handle account creation flow if required
-                mNetworkModel.setNetworkWithAccountCheck(networkToBeSetAsSelected, isSet -> {
-                    callback.call(isSet);
-                    if (isSet) {
-                        _mSelectedNetwork.postValue(networkToBeSetAsSelected);
-                    }
-                });
+                mNetworkModel.setNetworkWithAccountCheck(
+                        networkToBeSetAsSelected, setNetworkAsDefault, isSet -> {
+                            callback.call(isSet);
+                            if (isSet) {
+                                _mSelectedNetwork.postValue(networkToBeSetAsSelected);
+                            }
+                        });
                 return;
             }
         }
@@ -128,10 +135,17 @@ public class NetworkSelectorModel {
         }
     }
 
+    public void setSelectedNetworks(List<NetworkInfo> networkInfos) {
+        _mSelectedNetworks.postValue(networkInfos);
+    }
+
     public Mode getMode() {
         return mMode;
     }
 
+    public SelectionMode getSelectionType() {
+        return mSelectionMode;
+    }
     private void updateLocalNetwork(List<NetworkInfo> networkInfos, String chainId) {
         NetworkInfo networkInfo = NetworkUtils.findNetwork(networkInfos, chainId);
         if (networkInfo != null) {
@@ -140,4 +154,5 @@ public class NetworkSelectorModel {
     }
 
     public enum Mode { DEFAULT_WALLET_NETWORK, LOCAL_NETWORK_FILTER }
+    public enum SelectionMode { SINGLE, MULTI }
 }

@@ -16,7 +16,7 @@ namespace database {
 
 class DatabaseEventLog : public DatabaseTable {
  public:
-  explicit DatabaseEventLog(LedgerImpl& ledger);
+  explicit DatabaseEventLog(RewardsEngineImpl& engine);
   ~DatabaseEventLog() override;
 
   void Insert(const std::string& key, const std::string& value);
@@ -28,8 +28,8 @@ class DatabaseEventLog : public DatabaseTable {
   void GetLastRecords(GetEventLogsCallback callback);
 
  private:
-  void OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                       GetEventLogsCallback callback);
+  void OnGetAllRecords(GetEventLogsCallback callback,
+                       mojom::DBCommandResponsePtr response);
 };
 
 }  // namespace database

@@ -342,6 +342,7 @@ PageGraph::~PageGraph() = default;
 void PageGraph::Trace(blink::Visitor* visitor) const {
   Supplement<LocalFrame>::Trace(visitor);
   visitor->Trace(execution_context_nodes_);
+  visitor->Trace(processed_js_urls_);
 }
 
 void PageGraph::NodeCreated(blink::Node* node) {
@@ -651,13 +652,31 @@ void PageGraph::RegisterPageGraphScriptCompilation(
           .location_type = classic_script.SourceLocationType(),
       }};
 
+  // Lookup parent script id for kJavascriptUrl scripts.
   if (script_data.source.location_type ==
-      blink::ScriptSourceLocationType::kEvalForScheduledAction) {
-    RegisterScriptCompilationFromEval(execution_context, script_id,
-                                      script_data);
-  } else {
-    RegisterScriptCompilation(execution_context, script_id, script_data);
+          blink::ScriptSourceLocationType::kJavascriptUrl &&
+      script_data.source.parent_script_id == 0) {
+    auto processed_js_urls_it = processed_js_urls_.find(execution_context);
+
+    if (processed_js_urls_it != processed_js_urls_.end()) {
+      auto& processed_js_urls = processed_js_urls_it->value;
+      auto* processed_js_url_it =
+          base::ranges::find(processed_js_urls, script_data.code,
+                             &ProcessedJavascriptURL::script_code);
+
+      if (processed_js_url_it != processed_js_urls.end()) {
+        script_data.source.parent_script_id =
+            processed_js_url_it->parent_script_id;
+        processed_js_urls.erase(processed_js_url_it);
+      }
+
+      if (processed_js_urls.empty()) {
+        processed_js_urls_.erase(processed_js_urls_it);
+      }
+    }
   }
+
+  RegisterScriptCompilation(execution_context, script_id, script_data);
 }
 
 void PageGraph::RegisterPageGraphModuleCompilation(
@@ -807,6 +826,21 @@ void PageGraph::RegisterPageGraphEventListenerRemove(
                               listener_script_id);
 }
 
+void PageGraph::RegisterPageGraphJavaScriptUrl(blink::Document* document,
+                                               const KURL& url) {
+  constexpr size_t kJavascriptSchemeLength = sizeof("javascript:") - 1;
+  auto* execution_context = document->GetExecutionContext();
+
+  processed_js_urls_.insert(execution_context, Vector<ProcessedJavascriptURL>())
+      .stored_value->value.push_back(ProcessedJavascriptURL{
+          .script_code =
+              blink::DecodeURLEscapeSequences(
+                  url.GetString(), blink::DecodeURLMode::kUTF8OrIsomorphic)
+                  .Substring(kJavascriptSchemeLength),
+          .parent_script_id = GetExecutingScriptId(execution_context),
+      });
+}
+
 void PageGraph::ConsoleMessageAdded(blink::ConsoleMessage* console_message) {
   constexpr const blink::mojom::ConsoleMessageSource kValidSources[] = {
       blink::mojom::ConsoleMessageSource::kJavaScript,
@@ -857,7 +891,7 @@ void PageGraph::RegisterV8ScriptCompilationFromEval(
           .is_eval = true,
       }};
 
-  RegisterScriptCompilationFromEval(
+  RegisterScriptCompilation(
       blink::ToExecutionContext(isolate->GetCurrentContext()), script_id,
       script_data);
 }
@@ -916,9 +950,14 @@ void PageGraph::AddGraphItem(std::unique_ptr<GraphItem> graph_item) {
                                js_builtin_node);
     }
   } else if (auto* graph_edge = DynamicTo<GraphEdge>(item)) {
-    graph_edge->GetInNode()->AddInEdge(graph_edge);
-    graph_edge->GetOutNode()->AddOutEdge(graph_edge);
-    edges_.push_back(graph_edge);
+    // Connect only same-graph nodes. Multiple graphs can exist, but
+    // interconnection is not implemented.
+    if (graph_edge->GetInNode()->GetContext() ==
+        graph_edge->GetOutNode()->GetContext()) {
+      graph_edge->GetInNode()->AddInEdge(graph_edge);
+      graph_edge->GetOutNode()->AddOutEdge(graph_edge);
+      edges_.push_back(graph_edge);
+    }
   } else {
     NOTREACHED();
   }
@@ -997,6 +1036,10 @@ String PageGraph::ToGraphML() const {
                   BAD_CAST(IsRootFrame() ? "true" : "false"));
   xmlNewTextChild(desc_container_node, nullptr, BAD_CAST "frame_id",
                   XmlUtf8String(frame_id_).get());
+  if (IsRootFrame()) {
+    xmlNewTextChild(desc_container_node, NULL, BAD_CAST "url",
+                    XmlUtf8String(source_url_).get());
+  }
 
   xmlNodePtr time_container_node =
       xmlNewChild(desc_container_node, nullptr, BAD_CAST "time", nullptr);
@@ -1051,12 +1094,44 @@ NodeHTML* PageGraph::GetHTMLNode(const DOMNodeId node_id) const {
   return nullptr;
 }
 
-NodeHTMLElement* PageGraph::GetHTMLElementNode(const DOMNodeId node_id) const {
+NodeHTMLElement* PageGraph::GetHTMLElementNode(
+    absl::variant<blink::DOMNodeId, blink::Node*> node_var) {
+  blink::DOMNodeId node_id;
+  blink::Node* node = nullptr;
+  if (absl::holds_alternative<blink::DOMNodeId>(node_var)) {
+    node_id = absl::get<blink::DOMNodeId>(node_var);
+  } else {
+    node = absl::get<blink::Node*>(node_var);
+    node_id = blink::DOMNodeIds::IdForNode(node);
+  }
+
+  // This function uses node_id in most scenarios, because a node is already
+  // registered in 99.9% of calls. A single lookup in element_nodes_ is all we
+  // need.
   VLOG(1) << "GetHTMLElementNode) node id: " << node_id;
   auto element_node_it = element_nodes_.find(node_id);
   if (element_node_it != element_nodes_.end()) {
     return element_node_it->value;
   }
+
+  // We can get here when a node constructor triggers a synchronous
+  // WillSendRequest or RegisterAttributeSet event which PG should handle, but
+  // because the node is not fully constructed yet, we need to register it
+  // preemptively at this point.
+  if (!node) {
+    DCHECK(absl::holds_alternative<blink::DOMNodeId>(node_var));
+    node = blink::DOMNodeIds::NodeForId(node_id);
+    CHECK(node);
+  }
+  if (RegisterCurrentlyConstructedNode(node)) {
+    element_node_it = element_nodes_.find(node_id);
+    if (element_node_it != element_nodes_.end()) {
+      return element_node_it->value;
+    }
+  }
+
+  // If a node is not found at this point, then something is wrong and there
+  // might be another edge case we need to handle.
   CHECK(false) << "HTMLElementNode not found: " << node_id;
   return nullptr;
 }
@@ -1070,24 +1145,24 @@ NodeHTMLText* PageGraph::GetHTMLTextNode(const DOMNodeId node_id) const {
   return nullptr;
 }
 
-NodeHTMLElement* PageGraph::RegisterAndGetHTMLElementNode(blink::Node* node) {
-  RegisterCurrentlyConstructedNode(node);
-  return GetHTMLElementNode(blink::DOMNodeIds::IdForNode(node));
-}
-
-void PageGraph::RegisterCurrentlyConstructedNode(blink::Node* node) {
+bool PageGraph::RegisterCurrentlyConstructedNode(blink::Node* node) {
   auto node_it = currently_constructed_nodes_.find(node);
   if (node_it == currently_constructed_nodes_.end()) {
-    return;
+    // Node is not being constructed currently.
+    return false;
   }
-  if (!node_it->second) {
-    RegisterPageGraphNodeFullyCreated(node);
-    // Node should be removed from currently_constructed_nodes_.
-    DCHECK(!base::Contains(currently_constructed_nodes_, node));
-    // Mark the node as an already registered for the upcoming
-    // RegisterPageGraphNodeFullyCreated call.
-    currently_constructed_nodes_.emplace(node, true);
+  if (node_it->second) {
+    // Node is already registered.
+    return false;
   }
+
+  RegisterPageGraphNodeFullyCreated(node);
+  // Node should be removed from currently_constructed_nodes_.
+  DCHECK(!base::Contains(currently_constructed_nodes_, node));
+  // Mark the node as an already registered for the upcoming
+  // RegisterPageGraphNodeFullyCreated call.
+  currently_constructed_nodes_.emplace(node, true);
+  return true;
 }
 
 void PageGraph::RegisterDocumentNodeCreated(blink::Document* document) {
@@ -1104,7 +1179,11 @@ void PageGraph::RegisterDocumentNodeCreated(blink::Document* document) {
 
   const String local_tag_name(static_cast<blink::Node*>(document)->nodeName());
   auto* dom_root = AddNode<NodeDOMRoot>(node_id, local_tag_name);
-  dom_root->SetURL(NormalizeUrl(document->Url()).GetString());
+  auto url = NormalizeUrl(document->Url());
+  dom_root->SetURL(url.GetString());
+  if (!source_url_ && url.IsValid() && url.ProtocolIsInHTTPFamily()) {
+    source_url_ = url.GetString();
+  }
 
   auto execution_context_nodes_it =
       execution_context_nodes_.find(execution_context);
@@ -1117,7 +1196,7 @@ void PageGraph::RegisterDocumentNodeCreated(blink::Document* document) {
     execution_context_nodes_.insert(execution_context, std::move(nodes));
 
     if (blink::HTMLFrameOwnerElement* owner = document->LocalOwner()) {
-      NodeHTMLElement* owner_graph_node = RegisterAndGetHTMLElementNode(owner);
+      NodeHTMLElement* owner_graph_node = GetHTMLElementNode(owner);
       AddEdge<EdgeCrossDOM>(To<NodeFrameOwner>(owner_graph_node),
                             nodes.parser_node);
     } else if (blink::Document* parent_document = document->ParentDocument()) {
@@ -1177,7 +1256,7 @@ void PageGraph::RegisterHTMLTextNodeInserted(
       GetCurrentActingNode(node->GetExecutionContext());
 
   NodeHTMLElement* parent_graph_node =
-      parent_node ? RegisterAndGetHTMLElementNode(parent_node) : nullptr;
+      parent_node ? GetHTMLElementNode(parent_node) : nullptr;
   NodeHTML* prior_graph_sibling_node =
       before_sibling_id ? GetHTMLNode(before_sibling_id) : nullptr;
   NodeHTMLText* const inserted_node = GetHTMLTextNode(node_id);
@@ -1201,7 +1280,7 @@ void PageGraph::RegisterHTMLElementNodeInserted(
       GetCurrentActingNode(node->GetExecutionContext());
 
   NodeHTMLElement* parent_graph_node =
-      parent_node ? RegisterAndGetHTMLElementNode(parent_node) : nullptr;
+      parent_node ? GetHTMLElementNode(parent_node) : nullptr;
   NodeHTML* prior_graph_sibling_node =
       before_sibling_id ? GetHTMLNode(before_sibling_id) : nullptr;
   NodeHTMLElement* const inserted_node = GetHTMLElementNode(node_id);
@@ -1242,7 +1321,7 @@ void PageGraph::RegisterEventListenerAdd(blink::Node* node,
   NodeActor* const acting_node =
       GetCurrentActingNode(node->GetExecutionContext());
 
-  NodeHTMLElement* const element_node = RegisterAndGetHTMLElementNode(node);
+  NodeHTMLElement* const element_node = GetHTMLElementNode(node);
   AddEdge<EdgeEventListenerAdd>(
       acting_node, element_node, event_type, listener_id,
       script_tracker_.GetScriptNode(node->GetExecutionContext()->GetIsolate(),
@@ -1261,7 +1340,7 @@ void PageGraph::RegisterEventListenerRemove(blink::Node* node,
   NodeActor* const acting_node =
       GetCurrentActingNode(node->GetExecutionContext());
 
-  NodeHTMLElement* const element_node = RegisterAndGetHTMLElementNode(node);
+  NodeHTMLElement* const element_node = GetHTMLElementNode(node);
   AddEdge<EdgeEventListenerRemove>(
       acting_node, element_node, event_type, listener_id,
       script_tracker_.GetScriptNode(node->GetExecutionContext()->GetIsolate(),
@@ -1278,7 +1357,7 @@ void PageGraph::RegisterInlineStyleSet(blink::Node* node,
   NodeActor* const acting_node =
       GetCurrentActingNode(node->GetExecutionContext());
 
-  NodeHTMLElement* const target_node = RegisterAndGetHTMLElementNode(node);
+  NodeHTMLElement* const target_node = GetHTMLElementNode(node);
   AddEdge<EdgeAttributeSet>(acting_node, target_node, attr_name, attr_value,
                             true);
 }
@@ -1292,7 +1371,7 @@ void PageGraph::RegisterInlineStyleDelete(blink::Node* node,
   NodeActor* const acting_node =
       GetCurrentActingNode(node->GetExecutionContext());
 
-  NodeHTMLElement* const target_node = RegisterAndGetHTMLElementNode(node);
+  NodeHTMLElement* const target_node = GetHTMLElementNode(node);
   AddEdge<EdgeAttributeDelete>(acting_node, target_node, attr_name, true);
 }
 
@@ -1306,7 +1385,7 @@ void PageGraph::RegisterAttributeSet(blink::Node* node,
   NodeActor* const acting_node =
       GetCurrentActingNode(node->GetExecutionContext());
 
-  NodeHTMLElement* const target_node = RegisterAndGetHTMLElementNode(node);
+  NodeHTMLElement* const target_node = GetHTMLElementNode(node);
   AddEdge<EdgeAttributeSet>(acting_node, target_node, attr_name, attr_value);
 }
 
@@ -1319,7 +1398,7 @@ void PageGraph::RegisterAttributeDelete(blink::Node* node,
   NodeActor* const acting_node =
       GetCurrentActingNode(node->GetExecutionContext());
 
-  NodeHTMLElement* const target_node = RegisterAndGetHTMLElementNode(node);
+  NodeHTMLElement* const target_node = GetHTMLElementNode(node);
   AddEdge<EdgeAttributeDelete>(acting_node, target_node, attr_name);
 }
 
@@ -1565,7 +1644,9 @@ void PageGraph::RegisterScriptCompilation(
     const ScriptId script_id,
     const ScriptData& script_data) {
   VLOG(1) << "RegisterScriptCompilation) script id: " << script_id
-          << " script: "
+          << ", location: "
+          << static_cast<int>(script_data.source.location_type)
+          << ", script: \n"
           << (VLOG_IS_ON(2) ? script_data.code : String("<VLOG(2)>"));
 
   NodeScript* const code_node = script_tracker_.AddScriptNode(
@@ -1586,15 +1667,17 @@ void PageGraph::RegisterScriptCompilation(
     return;
   }
 
-  if (script_data.source.dom_node_id != blink::kInvalidDOMNodeId) {
+  if (script_data.source.parent_script_id) {
+    NodeScript* const parent_node = script_tracker_.GetScriptNode(
+        execution_context->GetIsolate(), script_data.source.parent_script_id);
+    AddEdge<EdgeExecute>(parent_node, code_node);
+  } else if (script_data.source.dom_node_id != blink::kInvalidDOMNodeId) {
     NodeHTMLElement* const script_elm_node =
         GetHTMLElementNode(script_data.source.dom_node_id);
     AddEdge<EdgeExecute>(script_elm_node, code_node);
   } else {
-    DCHECK(execution_context_nodes_.Contains(execution_context));
-    AddEdge<EdgeExecute>(
-        execution_context_nodes_.at(execution_context).extensions_node,
-        code_node);
+    NodeActor* const acting_node = GetCurrentActingNode(execution_context);
+    AddEdge<EdgeExecute>(acting_node, code_node);
   }
 }
 
@@ -1611,21 +1694,6 @@ void PageGraph::RegisterScriptCompilationFromAttr(
   NodeHTMLElement* const html_node =
       GetHTMLElementNode(script_data.source.dom_node_id);
   AddEdge<EdgeExecuteAttr>(html_node, code_node, attr_name);
-}
-
-void PageGraph::RegisterScriptCompilationFromEval(
-    blink::ExecutionContext* execution_context,
-    const ScriptId script_id,
-    const ScriptData& script_data) {
-  VLOG(1) << "RegisterScriptCompilationFromEval) script id: " << script_id
-          << ", parent script id: " << script_data.source.parent_script_id;
-  NodeScript* const code_node = script_tracker_.AddScriptNode(
-      execution_context->GetIsolate(), script_id, script_data);
-  if (script_data.source.parent_script_id) {
-    NodeScript* const parent_node = script_tracker_.GetScriptNode(
-        execution_context->GetIsolate(), script_data.source.parent_script_id);
-    AddEdge<EdgeExecute>(parent_node, code_node);
-  }
 }
 
 // Functions for handling storage read, write, and deletion

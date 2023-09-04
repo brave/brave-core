@@ -20,6 +20,8 @@ if (!is_ios) {
       "ad_block_filters_provider.h",
       "ad_block_filters_provider_manager.cc",
       "ad_block_filters_provider_manager.h",
+      "ad_block_localhost_filters_provider.cc",
+      "ad_block_localhost_filters_provider.h",
       "ad_block_pref_service.cc",
       "ad_block_pref_service.h",
       "ad_block_regional_service_manager.cc",
@@ -70,8 +72,8 @@ if (!is_ios) {
 
     deps = [
       "//base",
-      "//brave/components/adblock_rust_ffi",
       "//brave/components/brave_component_updater/browser",
+      "//brave/components/brave_shields/adblock:rust_lib",
       "//brave/components/brave_shields/common",
       "//brave/components/brave_shields/common:mojom",
       "//brave/components/constants",
@@ -118,8 +120,8 @@ source_set("component_installer") {
   ]
   deps = [
     "//base",
-    "//brave/components/adblock_rust_ffi",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_shields/adblock:rust_lib",
     "//components/component_updater:component_updater",
     "//crypto",
   ]

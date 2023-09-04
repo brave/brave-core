@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/incognito/BUILD.gn b/chrome/browser/incognito/BUILD.gn
-index 66131f4d7391b03bc221a1df84b5b5eddf34fe74..1a0522d2b9eb0fdc7f507cef32d84a79edf2d944 100644
+index eccefc91c69b95f6401baec6c092ed1289fd2533..9a1b28337d36275a8cc0fdb1781b13b906a0b302 100644
 --- a/chrome/browser/incognito/BUILD.gn
 +++ b/chrome/browser/incognito/BUILD.gn
-@@ -59,6 +59,7 @@ android_library("java") {
-     "//ui/android:ui_full_java",
+@@ -62,6 +62,7 @@ android_library("java") {
      "//url:gurl_java",
    ]
+ 
 +  sources += brave_private_tab_reauth_java_sources deps += brave_private_tab_reauth_java_deps
-   annotation_processor_deps = [ "//base/android/jni_generator:jni_processor" ]
    resources_package = "org.chromium.chrome.browser.incognito"
  }
+ 

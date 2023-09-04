@@ -6,14 +6,16 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
+
+import { setIconBasePath } from '@brave/leo/react/icon'
+import '@brave/leo/tokens/css/variables.css'
 
 // Components
-import App from './components/app'
+import App from './components/app.v1'
 
 // Theme
-import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
-import Theme from 'brave-ui/theme/brave-default'
-import DarkTheme from 'brave-ui/theme/brave-dark'
+
 import wireApiEventsToStore from './apiEventsToStore'
 import startReceivingPlayerEvents from './playerEventSink'
 
@@ -22,18 +24,17 @@ import store from './store'
 
 function initialize () {
   render(
-    <Provider store={store}>
-      <BraveCoreThemeProvider
-        dark={DarkTheme}
-        light={Theme}
-      >
+    <BrowserRouter>
+      <Provider store={store}>
         <App />
-      </BraveCoreThemeProvider>
-    </Provider>,
-    document.getElementById('root'))
+      </Provider>
+    </BrowserRouter>,
+    document.getElementById('root')
+  )
 }
 
 wireApiEventsToStore()
 startReceivingPlayerEvents()
+setIconBasePath('chrome-untrusted://resources/brave-icons')
 
 document.addEventListener('DOMContentLoaded', initialize)

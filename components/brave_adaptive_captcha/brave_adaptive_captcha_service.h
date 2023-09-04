@@ -13,7 +13,6 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_delegate.h"
 #include "brave/components/brave_adaptive_captcha/get_adaptive_captcha_challenge.h"
-#include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "components/keyed_service/core/keyed_service.h"

@@ -5,12 +5,7 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
-import FlashdriveIcon from '../../../assets/svg-icons/flashdrive-icon.svg'
-import { WalletButton } from '../../shared/style'
-
-interface StyleProps {
-  orb: string
-}
+import { WalletButton, Text } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -18,12 +13,10 @@ export const StyledWrapper = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  padding: 7px 0px 7px 7px;
-  background-color: none;
-  border-radius: 10px;
-  &:hover {
-    background-color: ${(p) => p.theme.color.interactive08}15;
-  }
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid ${leo.color.divider.subtle};
+  margin-bottom: 8px;
 `
 
 export const NameAndIcon = styled.div`
@@ -33,24 +26,8 @@ export const NameAndIcon = styled.div`
   flex-direction: row;
 `
 
-export const AccountNameRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: row;
-`
-
 export const AccountMenuWrapper = styled.div`
   position: relative;
-`
-
-export const AccountCircle = styled.div<StyleProps>`
-  width: 40px;
-  height: 40px;
-  border-radius: 100%;
-  background-image: url(${(p) => p.orb});
-  background-size: cover;
-  margin-right: 12px;
 `
 
 export const ButtonIcon = styled(Icon)`
@@ -83,14 +60,6 @@ export const OvalButtonText = styled.span`
   font-weight: 600;
 `
 
-export const HardwareIcon = styled.div`
-  width: 13px;
-  height: 13px;
-  background-color: ${(p) => p.theme.color.text02};
-  -webkit-mask-image: url(${FlashdriveIcon});
-  mask-image: url(${FlashdriveIcon});
-`
-
 export const AccountMenuButton = styled(WalletButton)`
   display: flex;
   align-items: center;
@@ -100,9 +69,26 @@ export const AccountMenuButton = styled(WalletButton)`
   background: none;
   pointer-events: auto;
   border: none;
+  margin: 0px;
+  padding: 0px;
 `
 
-export const AccountMenuIcon = styled(Icon)`
+export const AccountMenuIcon = styled(Icon).attrs({
+  name: 'more-vertical'
+})`
   --leo-icon-size: 24px;
-  color: ${leo.color.icon.interactive};
+  color: ${leo.color.icon.default};
+`
+
+export const AccountBalanceText = styled(Text)`
+  color: ${leo.color.text.primary};
+  margin-right: 12px;
+`
+
+export const AccountDescription = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  color: ${leo.color.text.secondary};
 `

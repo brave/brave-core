@@ -15,6 +15,7 @@ import {
 import { isComponentInStorybook } from '../utils/string-utils'
 
 const marketUiOrigin = loadTimeData.getString('braveWalletMarketUiBridgeUrl')
+export const braveWalletPanelOrigin = 'chrome://wallet-panel.top-chrome'
 
 // remove trailing /
 export const braveMarketUiOrigin = marketUiOrigin.endsWith('/') ? marketUiOrigin.slice(0, -1) : marketUiOrigin
@@ -27,7 +28,8 @@ export const enum MarketUiCommand {
   SelectDeposit = 'select-deposit',
   UpdateTradableAssets = 'update-tradable-assets',
   UpdateBuyableAssets = 'update-buyable-assets',
-  UpdateDepositableAssets = 'update-depositable-assets'
+  UpdateDepositableAssets = 'update-depositable-assets',
+  UpdateIframeHeight = 'update-iframe-height'
 }
 
 export type MarketCommandMessage = {
@@ -65,14 +67,24 @@ export type UpdateDepositableAssetsMessage = MarketCommandMessage & {
   payload: BraveWallet.BlockchainToken[]
 }
 
+export type UpdateIframeHeightMessage =
+  MarketCommandMessage & {
+    payload: number
+  }
+
 export const sendMessageToMarketUiFrame = (targetWindow: Window | null, message: MarketCommandMessage) => {
   if (targetWindow && !isComponentInStorybook()) {
     targetWindow.postMessage(message, braveMarketUiOrigin)
   }
 }
 
-export const sendMessageToWalletUi = (targetWindow: Window | null, message: MarketCommandMessage) => {
-  if (targetWindow) {
-    targetWindow.postMessage(message, braveWalletOrigin)
+export const sendMessageToWalletUi =
+  (
+    targetWindow: Window | null,
+    message: MarketCommandMessage,
+    origin: string
+  ) => {
+    if (targetWindow) {
+      targetWindow.postMessage(message, origin)
+    }
   }
-}

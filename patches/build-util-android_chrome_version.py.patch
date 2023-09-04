@@ -1,13 +1,21 @@
 diff --git a/build/util/android_chrome_version.py b/build/util/android_chrome_version.py
-index 876f485466959e1d6ac57fcf237ea305880e64ab..e0457dbb68e0e4cb4d31a2767bda92ed00d9219e 100755
+index f00cd99d2bfa5793d6ed5d96025885ad83af412f..4e49484e6bdb3648739521c6125fbacb8516c33c 100755
 --- a/build/util/android_chrome_version.py
 +++ b/build/util/android_chrome_version.py
-@@ -286,7 +286,7 @@ def GenerateVersionCodes(version_values, arch, is_next_build):
+@@ -199,6 +199,7 @@ def _GetAbisToDigitMask(build_number):
+     mapped to version code suffix.
+   """
+ 
++  from brave_version_utils import remap_build_number; build_number = remap_build_number(build_number)
+   if build_number < 5750:
+     return {
+         'arm': {
+@@ -327,7 +328,7 @@ def GenerateVersionCodes(version_values, arch, is_next_build):
    """
  
    base_version_code = int(
 -      '%s%03d00' % (version_values['BUILD'], int(version_values['PATCH'])))
-+      '%02d%02d%03d00' % (int(version_values['MINOR']) + 40, int(version_values['BUILD']), int(version_values['PATCH'])))
++      '%02d%02d%03d00' % (int(version_values['MINOR']) + 41, int(version_values['BUILD']), int(version_values['PATCH'])))
  
    if is_next_build:
      base_version_code += _NEXT_BUILD_VERSION_CODE_DIFF

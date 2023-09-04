@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/ads_client.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
@@ -18,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection.h"
+#include "brave/components/brave_ads/core/public/client/ads_client.h"
 
 namespace brave_ads {
 
@@ -34,7 +33,6 @@ GlobalState::GlobalState(AdsClient* ads_client)
   database_manager_ = std::make_unique<DatabaseManager>();
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
   history_manager_ = std::make_unique<HistoryManager>();
-  user_idle_detection_ = std::make_unique<UserIdleDetection>();
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
   tab_manager_ = std::make_unique<TabManager>();
   user_activity_manager_ = std::make_unique<UserActivityManager>();

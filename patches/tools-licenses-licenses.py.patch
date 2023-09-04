@@ -1,24 +1,24 @@
 diff --git a/tools/licenses/licenses.py b/tools/licenses/licenses.py
-index e56688f7ab2a8b0ee59d0b7389e4c87370c8fad2..dde0c9c30e71258076379851162d7a345c3e055c 100755
+index 2a6a4733128dfc5916163c1c91c26f27da1d2f0a..184496827a8001539ad54fb9496b438a921a59ea 100755
 --- a/tools/licenses/licenses.py
 +++ b/tools/licenses/licenses.py
-@@ -39,6 +39,7 @@ from spdx_writer import SpdxWriter
- _REPOSITORY_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
- sys.path.insert(0, os.path.join(_REPOSITORY_ROOT, 'build/android/gyp'))
- from util import build_utils
+@@ -39,6 +39,7 @@ _REPOSITORY_ROOT = os.path.abspath(
+     os.path.join(os.path.dirname(__file__), '..', '..'))
+ sys.path.insert(0, os.path.join(_REPOSITORY_ROOT, 'build'))
+ import action_helpers
 +from brave_license_helper import AddBraveCredits, BRAVE_THIRD_PARTY_DIRS, CheckBraveMissingLicense
  
- 
  # Paths from the root of the tree to directories to skip.
-@@ -384,6 +385,7 @@ SPECIAL_CASES = {
+ PRUNE_PATHS = set([
+@@ -414,6 +415,7 @@ SPECIAL_CASES = {
          "License File": "/third_party/selenium-atoms/LICENSE.closure",
      },
  }
 +(PRUNE_DIRS, ADDITIONAL_PATHS) = AddBraveCredits(_REPOSITORY_ROOT, PRUNE_PATHS, SPECIAL_CASES, PRUNE_DIRS, ADDITIONAL_PATHS)
  
- # Special value for 'License File' field used to indicate that the license file
- # should not be used in about:credits.
-@@ -577,7 +579,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
+ # Soon-to-be-deprecated special value for 'License File' field used to indicate
+ # that the library is not shipped so the license file should not be used in
+@@ -643,7 +645,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
        if skip in dirs:
          dirs.remove(skip)
  
@@ -28,13 +28,13 @@ index e56688f7ab2a8b0ee59d0b7389e4c87370c8fad2..dde0c9c30e71258076379851162d7a34
        # Add all subdirectories that are not marked for skipping.
        for dir in dirs:
          dirpath = os.path.join(path, dir)
-@@ -800,7 +803,8 @@ def GenerateCredits(file_template_file,
-   for path in third_party_dirs:
-     try:
-       metadata = ParseDir(path, _REPOSITORY_ROOT)
+@@ -870,7 +873,8 @@ def GenerateCredits(file_template_file,
+       metadata = ParseDir(path,
+                           _REPOSITORY_ROOT,
+                           enable_warnings=enable_warnings)
 -    except LicenseError:
 +    except LicenseError as e:
 +      CheckBraveMissingLicense(target_os, path, e)
        # TODO(phajdan.jr): Convert to fatal error (http://crbug.com/39240).
        continue
-     if metadata['License File'] == NOT_SHIPPED:
+     if metadata['Shipped'] == NO:

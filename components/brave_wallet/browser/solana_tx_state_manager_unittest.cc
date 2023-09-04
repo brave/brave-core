@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/files/scoped_temp_dir.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -16,9 +17,12 @@
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -32,20 +36,32 @@ class SolanaTxStateManagerUnitTest : public testing::Test {
 
  protected:
   void SetUp() override {
-    brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    solana_tx_state_manager_ =
-        std::make_unique<SolanaTxStateManager>(GetPrefs());
+    RegisterProfilePrefs(prefs_.registry());
+    RegisterProfilePrefsForMigration(prefs_.registry());
+    factory_ = GetTestValueStoreFactory(temp_dir_);
+    delegate_ = GetTxStorageDelegateForTest(GetPrefs(), factory_);
+    account_resolver_delegate_ =
+        std::make_unique<AccountResolverDelegateForTest>();
+    solana_tx_state_manager_ = std::make_unique<SolanaTxStateManager>(
+        GetPrefs(), delegate_.get(), account_resolver_delegate_.get());
   }
 
   PrefService* GetPrefs() { return &prefs_; }
 
   base::test::TaskEnvironment task_environment_;
+  base::ScopedTempDir temp_dir_;
+  scoped_refptr<value_store::TestValueStoreFactory> factory_;
+  std::unique_ptr<TxStorageDelegateImpl> delegate_;
+  std::unique_ptr<AccountResolverDelegateForTest> account_resolver_delegate_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<SolanaTxStateManager> solana_tx_state_manager_;
 };
 
 TEST_F(SolanaTxStateManagerUnitTest, SolanaTxMetaAndValue) {
   std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  auto sol_account = account_resolver_delegate_->RegisterAccount(
+      MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
+                    mojom::AccountKind::kDerived, from_account));
   std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
   uint64_t last_valid_block_height = 3090;
@@ -64,11 +80,10 @@ TEST_F(SolanaTxStateManagerUnitTest, SolanaTxMetaAndValue) {
   ASSERT_TRUE(msg);
   auto tx = std::make_unique<SolanaTransaction>(std::move(*msg));
 
-  SolanaTxMeta meta(std::move(tx));
+  SolanaTxMeta meta(sol_account, std::move(tx));
   meta.set_signature_status(SolanaSignatureStatus(82, 10, "", "confirmed"));
   meta.set_id(TxMeta::GenerateMetaID());
   meta.set_status(mojom::TransactionStatus::Submitted);
-  meta.set_from(from_account);
   meta.set_created_time(base::Time::Now());
   meta.set_submitted_time(base::Time::Now());
   meta.set_confirmed_time(base::Time::Now());

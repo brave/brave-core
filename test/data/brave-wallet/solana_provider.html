@@ -8,6 +8,7 @@
   var signAllTransactionsResult = ''
   var requestResult = ''
   var accountChangedResult = ''
+  var disconnectEmitted = false
 
   function registerAccountChanged() {
     window.braveSolana.on('accountChanged', result => {
@@ -16,6 +17,13 @@
         } else {
           accountChangedResult = ''
         }
+        window.domAutomationController.send('result ready')
+    })
+  }
+
+  function registerDisconnect() {
+    window.braveSolana.on('disconnect', result => {
+        disconnectEmitted = true
         window.domAutomationController.send('result ready')
     })
   }
@@ -31,17 +39,17 @@
   async function solanaDisconnect() {
     const result = await window.braveSolana.disconnect()
     if (result == undefined)
-      window.domAutomationController.send(true)
+      return true
     else
-      window.domAutomationController.send(false)
+      return false
   }
 
   function getConnectedAccount() {
-    window.domAutomationController.send(connectedAccount)
+    return connectedAccount;
   }
 
   function isSolanaConnected() {
-    window.domAutomationController.send(window.braveSolana.isConnected)
+    return window.braveSolana.isConnected;
   }
 
   function solanaSignMessage(message, encoding) {
@@ -154,36 +162,43 @@
   }
 
   function getSignMessageResult() {
-    window.domAutomationController.send(signMessageResult)
+    return signMessageResult;
   }
 
   function getSignAndSendTransactionResult() {
-    window.domAutomationController.send(signAndSendTransactionResult)
+    return signAndSendTransactionResult;
   }
 
   function getSignTransactionResult() {
-    window.domAutomationController.send(signTransactionResult)
+    return signTransactionResult;
   }
 
   function getSignAllTransactionsResult() {
-    window.domAutomationController.send(signAllTransactionsResult)
+    return signAllTransactionsResult;
   }
 
   function getRequestResult() {
-    window.domAutomationController.send(requestResult)
+    let result = requestResult;
     requestResult = ''
+    return result;
   }
 
   function getAccountChangedResult() {
-    window.domAutomationController.send(accountChangedResult)
+    let result = accountChangedResult;
     accountChangedResult = ''
+    return result;
+  }
+
+  function getDisconnectEmitted() {
+    let result = disconnectEmitted
+    disconnectEmitted = false
+    return result
   }
 
   function getIsBraveWalletViaProxy() {
     proxy1 = new Proxy(window.solana, {})
     proxy2 = new Proxy(window.braveSolana, {})
-    window.domAutomationController.send(
-        proxy1.isBraveWallet && proxy2.isBraveWallet)
+    return proxy1.isBraveWallet && proxy2.isBraveWallet;
   }
 
   async function solanaDisconnectViaProxy() {
@@ -192,9 +207,9 @@
     const result1 = await proxy1.disconnect()
     const result2 = await proxy2.disconnect()
     if (result1 === undefined && result2 === undefined)
-      window.domAutomationController.send(true)
+      return true;
     else
-      window.domAutomationController.send(false)
+      return false;
   }
 
 </script>
@@ -202,5 +217,3 @@
 <body>
 </body>
 </html>
-
-

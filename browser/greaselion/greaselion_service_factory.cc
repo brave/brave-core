@@ -8,7 +8,7 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/singleton.h"
+#include "base/no_destructor.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
@@ -27,7 +27,8 @@ namespace greaselion {
 
 // static
 GreaselionServiceFactory* GreaselionServiceFactory::GetInstance() {
-  return base::Singleton<GreaselionServiceFactory>::get();
+  static base::NoDestructor<GreaselionServiceFactory> instance;
+  return instance.get();
 }
 
 GreaselionService* GreaselionServiceFactory::GetForBrowserContext(

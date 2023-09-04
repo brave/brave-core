@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 
 import CaratDownIcon from '../../../assets/svg-icons/carat-down.svg'
 import { WalletButton } from '../../shared/style'
@@ -22,14 +23,16 @@ export const Button = styled(WalletButton)`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 36px;
+  height: 44px;
   border: none;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   font-family: Poppins;
+  font-size: 14px;
+  letter-spacing: 0.01em;
   box-sizing: border-box;
-  background-color: ${(p) => p.theme.color.background02};
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+  background-color: ${leo.color.container.highlight};
   padding: 6px 12px;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
 `
@@ -37,15 +40,17 @@ export const Button = styled(WalletButton)`
 export const Dropdown = styled.ul`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.18);
-  border-radius: 4px;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  background-color: ${(p) => p.theme.color.background02};
-  padding: 10px 12px;
   margin: 0;
+  padding: 8px 8px 0px 8px;
+  background-color: ${leo.color.container.background};
+  border-radius: 8px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   position: absolute;
   top: calc(100% + 2px);
+  left: 2px;
   z-index: 3;
 `
 

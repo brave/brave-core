@@ -1,0 +1,42 @@
+[package]
+name = "strobe-rs"
+repository = "https://github.com/rozbb/strobe-rs"
+documentation = "https://docs.rs/strobe-rs"
+description = "An implementation of the Strobe protocol framework in pure Rust"
+readme = "README.md"
+version = "0.8.1"
+edition = "2018"
+authors = ["Michael Rosenberg <michael@mrosenberg.pub>"]
+license = "MIT/Apache-2.0"
+keywords = ["crypto", "strobe", "protocol", "framework", "no_std"]
+categories = ["cryptography", "no-std"]
+
+[features]
+default = []
+std = []
+serialize_secret_state = ["serde", "serde-big-array"]
+
+[dependencies]
+bitflags = "1.3"
+byteorder = { version = "1.4", default-features = false }
+keccak = "0.1"
+serde = { version = "1", optional = true, default-features = false, features = ["derive"] }
+serde-big-array = { version = "0.4", optional = true }
+subtle = { version = "2.4", default-features = false }
+zeroize = { version = "1.5", features = ["derive"] }
+
+[dev-dependencies]
+criterion = { version = "0.4", features = ["html_reports"] }
+hex = "0.4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Criteron benches
+[[bench]]
+name = "benches"
+harness = false
+
+# Tell docs.rs to build docs with `--all-features` and `--cfg docsrs` (for nightly docs features)
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

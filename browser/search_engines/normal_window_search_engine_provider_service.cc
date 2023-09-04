@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/search_engines/normal_window_search_engine_provider_service.h"
 
@@ -31,7 +31,7 @@ NormalWindowSearchEngineProviderService::
   template_url_service_subscription_ =
       service->RegisterOnLoadedCallback(base::BindOnce(
           &NormalWindowSearchEngineProviderService::OnTemplateURLServiceLoaded,
-          base::Unretained(this), profile));
+          base::Unretained(this)));
 }
 
 NormalWindowSearchEngineProviderService::
@@ -42,8 +42,7 @@ void NormalWindowSearchEngineProviderService::Shutdown() {
   private_search_provider_guid_.Destroy();
 }
 
-void NormalWindowSearchEngineProviderService::OnTemplateURLServiceLoaded(
-    Profile* profile) {
+void NormalWindowSearchEngineProviderService::OnTemplateURLServiceLoaded() {
   template_url_service_subscription_ = {};
   PrepareInitialPrivateSearchProvider();
 }

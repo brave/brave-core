@@ -10,9 +10,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_queue_publishers.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
-
-using std::placeholders::_1;
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -24,8 +22,8 @@ const char kTableName[] = "contribution_queue_publishers";
 }  // namespace
 
 DatabaseContributionQueuePublishers::DatabaseContributionQueuePublishers(
-    LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+    RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseContributionQueuePublishers::~DatabaseContributionQueuePublishers() =
     default;
@@ -36,7 +34,7 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
     LegacyResultCallback callback) {
   if (id.empty() || list.empty()) {
     BLOG(1, "Empty data");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -59,9 +57,9 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
     transaction->commands.push_back(command->Clone());
   }
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
@@ -91,16 +89,16 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseContributionQueuePublishers::OnGetRecordsByQueueId,
-                this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(
+          &DatabaseContributionQueuePublishers::OnGetRecordsByQueueId,
+          base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
-    mojom::DBCommandResponsePtr response,
-    ContributionQueuePublishersListCallback callback) {
+    ContributionQueuePublishersListCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

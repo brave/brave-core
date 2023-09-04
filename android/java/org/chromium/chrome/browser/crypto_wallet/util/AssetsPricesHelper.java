@@ -10,7 +10,6 @@ import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class AssetsPricesHelper {
-    private static String TAG = "AssetsPricesHelper";
+    private static final String TAG = "AssetsPricesHelper";
 
     public static void fetchPrices(AssetRatioService assetRatioService, BlockchainToken[] assets,
             Callbacks.Callback1<HashMap<String, Double>> callback) {

@@ -3,26 +3,25 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { AssetFilterOption } from '../constants/types'
-import { getLocale } from '../../common/locale'
+import { DropdownFilterOption } from '../constants/types'
 
-export const HighToLowAssetsFilterOption: AssetFilterOption = {
+export const HighToLowAssetsFilterOption: DropdownFilterOption = {
   id: 'highToLow',
-  name: getLocale('braveWalletAssetFilterHighToLow')
+  name: 'braveWalletAssetFilterHighToLow'
 }
 
-export const AssetFilterOptions: AssetFilterOption[] = [
+export const AssetFilterOptions: DropdownFilterOption[] = [
   HighToLowAssetsFilterOption,
   {
     id: 'lowToHigh',
-    name: getLocale('braveWalletAssetFilterLowToHigh')
+    name: 'braveWalletAssetFilterLowToHigh'
   },
   {
     id: 'aToZ',
-    name: getLocale('braveWalletAssetFilterAToZ')
+    name: 'braveWalletAssetFilterAToZ'
   },
   {
     id: 'zToA',
-    name: getLocale('braveWalletAssetFilterZToA')
+    name: 'braveWalletAssetFilterZToA'
   }
 ]

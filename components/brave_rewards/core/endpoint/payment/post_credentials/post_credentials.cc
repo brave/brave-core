@@ -10,14 +10,14 @@
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal {
 namespace endpoint {
 namespace payment {
 
-PostCredentials::PostCredentials(LedgerImpl& ledger) : ledger_(ledger) {}
+PostCredentials::PostCredentials(RewardsEngineImpl& engine) : engine_(engine) {}
 
 PostCredentials::~PostCredentials() = default;
 
@@ -46,25 +46,25 @@ std::string PostCredentials::GeneratePayload(
 mojom::Result PostCredentials::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_CONFLICT) {
     BLOG(0, "Credentials already exist for this order");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void PostCredentials::Request(const std::string& order_id,
@@ -80,7 +80,7 @@ void PostCredentials::Request(const std::string& order_id,
   request->content = GeneratePayload(item_id, type, std::move(blinded_creds));
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  engine_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostCredentials::OnRequest(PostCredentialsCallback callback,

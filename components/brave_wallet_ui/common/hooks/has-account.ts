@@ -21,12 +21,21 @@ export function useHasAccount () {
   const { data: selectedNetwork } = useGetSelectedChainQuery()
 
   // memos
-  const hasSolAccount = React.useMemo((): boolean => { return accounts.some(account => account.coin === BraveWallet.CoinType.SOL) }, [accounts])
+  const hasSolAccount = React.useMemo((): boolean => {
+    return accounts.some(
+      (account) => account.accountId.coin === BraveWallet.CoinType.SOL
+    )
+  }, [accounts])
   const hasFilAccount = React.useMemo((): boolean => {
-    const keyringForCurrentNetwork = selectedNetwork?.chainId === BraveWallet.FILECOIN_MAINNET
-        ? BraveWallet.FILECOIN_KEYRING_ID
-        : BraveWallet.FILECOIN_TESTNET_KEYRING_ID
-    return accounts.some(account => account.coin === BraveWallet.CoinType.FIL && account.keyringId === keyringForCurrentNetwork)
+    const keyringForCurrentNetwork =
+      selectedNetwork?.chainId === BraveWallet.FILECOIN_MAINNET
+        ? BraveWallet.KeyringId.kFilecoin
+        : BraveWallet.KeyringId.kFilecoinTestnet
+    return accounts.some(
+      (account) =>
+        account.accountId.coin === BraveWallet.CoinType.FIL &&
+        account.accountId.keyringId === keyringForCurrentNetwork
+    )
   }, [accounts, selectedNetwork])
 
   const needsAccount = React.useMemo((): boolean => {

@@ -6,10 +6,11 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
-import * as EthereumBlockies from 'ethereum-blockies'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
 import {
+  AccountPageTabs,
   BraveWallet,
   SerializableTransactionInfo,
   WalletRoutes
@@ -18,9 +19,9 @@ import {
 // Utils
 import { formatDateAsRelative, serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
 import Amount from '../../../utils/amount'
+import { getPriceIdForToken } from '../../../utils/api-utils'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { getLocale } from '../../../../common/locale'
-import { WalletActions } from '../../../common/actions'
 import {
   getGasFeeFiatValue,
   getTransactionFormattedSendCurrencyTotal,
@@ -40,28 +41,33 @@ import {
 } from '../../../utils/tx-utils'
 import { findTokenBySymbol } from '../../../utils/asset-utils'
 import {
-  accountInfoEntityAdaptor,
   accountInfoEntityAdaptorInitialState
 } from '../../../common/slices/entities/account-info.entity'
-import { selectAllUserAssetsFromQueryResult } from '../../../common/slices/entities/blockchain-token.entity'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
-import { WalletSelectors } from '../../../common/selectors'
-import { getAddressLabelFromRegistry } from '../../../utils/account-utils'
+import {
+  getAddressLabel,
+  getAccountLabel,
+  findAccountByAddress
+} from '../../../utils/account-utils'
 import { openBlockExplorerURL } from '../../../utils/block-explorer-utils'
+import { makeAccountRoute } from '../../../utils/routes-utils'
 
 // Hooks
-import { useExplorer } from '../../../common/hooks'
+import { useExplorer } from '../../../common/hooks/explorer'
 import {
   useGetAccountInfosRegistryQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
-  useGetTokenSpotPriceQuery,
-  useGetUserTokensRegistryQuery
+  useGetSolanaEstimatedFeeQuery,
+  useGetTokenSpotPricesQuery,
+  walletApi
 } from '../../../common/slices/api.slice'
 import {
-  useUnsafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
+  useAccountQuery,
+  useGetCombinedTokensListQuery
+} from '../../../common/slices/api.slice.extra'
+import { useAccountOrb, useAddressOrb } from '../../../common/hooks/use-orb'
 
 // Styled Components
 import {
@@ -118,22 +124,44 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   // redux
   const dispatch = useDispatch()
-  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
-  const solFeeEstimates = useUnsafeWalletSelector(
-    WalletSelectors.solFeeEstimates
-  )
 
   // partial tx parsing
-  const gasFee = getTransactionGasFee(transaction, solFeeEstimates)
-  const isFilecoinTx = isFilecoinTransaction(transaction)
-  const isSolanaTx = isSolanaTransaction(transaction)
-  const recipient = getTransactionToAddress(transaction)
-  const approvalTarget = getTransactionApprovalTargetAddress(transaction)
-  const erc721TokenId = getTransactionErc721TokenId(transaction)
-  const isSwap = isSwapTransaction(transaction)
-  const txCoinType = getCoinFromTxDataUnion(transaction.txDataUnion)
+  const {
+    isFilecoinTx,
+    isSolanaTx,
+    recipient,
+    approvalTarget,
+    erc721TokenId,
+    isSwap,
+    txCoinType,
+  } = React.useMemo(() => {
+    return {
+      isFilecoinTx: isFilecoinTransaction(transaction),
+      isSolanaTx: isSolanaTransaction(transaction),
+      recipient: getTransactionToAddress(transaction),
+      approvalTarget: getTransactionApprovalTargetAddress(transaction),
+      erc721TokenId: getTransactionErc721TokenId(transaction),
+      isSwap: isSwapTransaction(transaction),
+      txCoinType: getCoinFromTxDataUnion(transaction.txDataUnion),
+    }
+  }, [transaction])
 
   // queries
+  const { data: solFeeEstimates } = useGetSolanaEstimatedFeeQuery(
+    txCoinType === BraveWallet.CoinType.SOL &&
+      transaction.chainId &&
+      transaction.id
+      ? {
+          chainId: transaction.chainId,
+          txId: transaction.id
+        }
+      : skipToken
+  )
+
+  const gasFee = isSolanaTx
+    ? solFeeEstimates ?? ''
+    : getTransactionGasFee(transaction)
+
   const {
     data: defaultFiatCurrency = '',
     isLoading: isLoadingDefaultFiatCurrency
@@ -152,47 +180,34 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   }, [txNetwork])
 
   const {
-    userVisibleTokensInfo,
-    isLoading: isLoadingUserVisibleTokens
-  } = useGetUserTokensRegistryQuery(undefined, {
-    selectFromResult: result => ({
-      ...result,
-      userVisibleTokensInfo: selectAllUserAssetsFromQueryResult(result)
-    })
-  })
+    data: combinedTokensList,
+    isLoading: isLoadingTokens
+  } = useGetCombinedTokensListQuery()
 
   const {
     data: accountInfosRegistry = accountInfoEntityAdaptorInitialState,
     isLoading: isLoadingAccountInfos
   } = useGetAccountInfosRegistryQuery(undefined)
 
-  const account =
-    accountInfosRegistry.entities[
-      accountInfoEntityAdaptor.selectId({ address: transaction.fromAddress })
-    ]
+  const { account } = useAccountQuery(transaction.fromAccountId)
 
   // memos & computed from queries
-  const combinedTokensList = React.useMemo(
-    () => fullTokenList.concat(userVisibleTokensInfo),
-    [fullTokenList, userVisibleTokensInfo]
-  )
-
   const txToken = findTransactionToken(
     transaction,
     combinedTokensList
   )
 
-  const recipientLabel = getAddressLabelFromRegistry(
+  const recipientLabel = getAddressLabel(
     recipient,
     accountInfosRegistry
   )
 
-  const senderLabel = getAddressLabelFromRegistry(
-    transaction.fromAddress,
+  const senderLabel = getAccountLabel(
+    transaction.fromAccountId,
     accountInfosRegistry
   )
 
-  const approvalTargetLabel = getAddressLabelFromRegistry(
+  const approvalTargetLabel = getAddressLabel(
     approvalTarget,
     accountInfosRegistry
   )
@@ -217,6 +232,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       tx: transaction,
       sellToken,
       token: txToken,
+      txAccount: account,
       txNetwork
     })
     return normalized.format(6)
@@ -235,58 +251,72 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     txNetwork
   })
 
+  const txTokenPriceIds = React.useMemo(
+    () => txToken ? [getPriceIdForToken(txToken)]: [],
+    [txToken]
+  )
+
   // price queries
   const {
-    fiatValue,
-    isLoading: isLoadingTokenSpotPrice
-  } = useGetTokenSpotPriceQuery({
-    chainId: txToken?.chainId || '',
-    contractAddress: txToken?.contractAddress || '',
-    isErc721: txToken?.isErc721 || false,
-    symbol: txToken?.symbol || '',
-    tokenId: txToken?.tokenId || ''
-  }, {
-    skip: !txToken || !normalizedTransferredValue,
-    // TODO: selector
-    selectFromResult: (result) => {
-      const price = result.data?.price || '0'
-      const fiatValue = new Amount(normalizedTransferredValue)
-        .times(price)
-        .value?.toString() || '0'
+    fiatValue: txTokenFiatValue,
+    isLoading: isLoadingTxTokenSpotPrice
+  } = useGetTokenSpotPricesQuery(
+    txTokenPriceIds.length && defaultFiatCurrency
+      ? { ids: txTokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
+    {
+      skip: !txToken || !normalizedTransferredValue,
+      // TODO: selector
+      selectFromResult: (result) => {
+        if (!result.data?.registry || !txToken) {
+          return {
+            fiatValue: '0',
+            isLoading: result.isLoading
+          }
+        }
 
-      return {
-        ...result,
-        fiatValue
+        const price = result.data.registry[getPriceIdForToken(txToken)] || '0'
+        const fiatValue = new Amount(normalizedTransferredValue)
+          .times(price)
+          .value?.toString() || '0'
+
+        return {
+          fiatValue,
+          isLoading: result.isLoading || result.isFetching
+        }
       }
     }
-  })
+    )
+
+  const networkTokenPriceIds = React.useMemo(
+    () => networkAsset ? [getPriceIdForToken(networkAsset)] : [],
+    [networkAsset]
+  )
 
   const {
     gasFeeFiat,
     isLoading: isLoadingGasAssetPrice
-  } = useGetTokenSpotPriceQuery({
-    chainId: networkAsset?.chainId || '',
-    contractAddress: networkAsset?.contractAddress || '',
-    isErc721: networkAsset?.isErc721 || false,
-    symbol: networkAsset?.symbol || '',
-    tokenId: networkAsset?.tokenId || ''
-  },
-  {
-    skip: !networkAsset || !gasFee || !txNetwork,
-    // TODO: selector
-    selectFromResult: (res) => {
-      const price = res.data?.price ?? '0'
-      const gasFeeFiat = getGasFeeFiatValue({
-        gasFee,
-        networkSpotPrice: price,
-        txNetwork
-      })
-      return ({
-        ...res,
-        gasFeeFiat
-      })
-    }
-  })
+  } = useGetTokenSpotPricesQuery(
+    networkTokenPriceIds.length && defaultFiatCurrency
+      ? { ids: networkTokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
+    {
+      // TODO: selector
+      selectFromResult: (res) => {
+        const price = res.data?.registry && networkAsset
+          ? res.data.registry[getPriceIdForToken(networkAsset)] || '0'
+          : '0'
+        const gasFeeFiat = getGasFeeFiatValue({
+          gasFee,
+          networkSpotPrice: price,
+          txNetwork
+        })
+        return ({
+          gasFeeFiat,
+          isLoading: res.isLoading || res.isFetching
+        })
+      }
+    })
 
   // state
   const [showTransactionPopup, setShowTransactionPopup] = React.useState<boolean>(false)
@@ -312,16 +342,16 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   const onClickRetryTransaction = React.useCallback(
     () => {
-      dispatch(WalletActions.retryTransaction({
-        coinType: txCoinType,
-        fromAddress: transaction.fromAddress,
-        chainId: transaction.chainId,
-        transactionId: transaction.id
-      }))
+      dispatch(
+        walletApi.endpoints.retryTransaction.initiate({
+          coinType: txCoinType,
+          chainId: transaction.chainId,
+          transactionId: transaction.id
+        })
+      )
     },
     [
       txCoinType,
-      transaction.fromAddress,
       transaction.chainId,
       transaction.id
     ]
@@ -329,16 +359,16 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   const onClickSpeedupTransaction = React.useCallback(
     () => {
-      dispatch(WalletActions.speedupTransaction({
-        coinType: txCoinType,
-        fromAddress: transaction.fromAddress,
-        chainId: transaction.chainId,
-        transactionId: transaction.id
-      }))
+      dispatch(
+        walletApi.endpoints.speedupTransaction.initiate({
+          coinType: txCoinType,
+          chainId: transaction.chainId,
+          transactionId: transaction.id
+        })
+      )
     },
     [
       txCoinType,
-      transaction.fromAddress,
       transaction.chainId,
       transaction.id
     ]
@@ -346,23 +376,26 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   const onClickCancelTransaction = React.useCallback(
     () => {
-      dispatch(WalletActions.cancelTransaction({
-        coinType: txCoinType,
-        fromAddress: transaction.fromAddress,
-        chainId: transaction.chainId,
-        transactionId: transaction.id
-      }))
+      dispatch(
+        walletApi.endpoints.cancelTransaction.initiate({
+          coinType: txCoinType,
+          chainId: transaction.chainId,
+          transactionId: transaction.id
+        })
+      )
     },
     [
       txCoinType,
-      transaction.fromAddress,
       transaction.chainId,
       transaction.id
     ]
   )
 
-  const onSelectAccount = React.useCallback((account: { address: string }) => {
-    history.push(`${WalletRoutes.Accounts}/${account.address}`)
+  const onSelectAccount = React.useCallback((account?: BraveWallet.AccountInfo) => {
+    if (!account)
+      return
+
+    history.push(makeAccountRoute(account, AccountPageTabs.AccountAssetsSub))
   }, [history])
 
   const onAddressClick = React.useCallback((address?: string) => () => {
@@ -370,10 +403,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       return
     }
 
-    const account = accountInfosRegistry.entities[
-      accountInfoEntityAdaptor.selectId({ address })
-    ]
-
+    const account = findAccountByAddress(address, accountInfosRegistry)
     if (account !== undefined) {
       onSelectAccount(account)
       return
@@ -409,14 +439,14 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   const onAssetClick = React.useCallback(
     (symbol?: string, contractAddress?: string) =>
-      isLoadingUserVisibleTokens
+      isLoadingTokens
         ? undefined
         : () => {
             if (!symbol) {
               return
             }
 
-            const asset = findTokenBySymbol(symbol, userVisibleTokensInfo)
+            const asset = findTokenBySymbol(symbol, combinedTokensList)
             if (asset) {
               onSelectAsset(asset)
             }
@@ -431,30 +461,12 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
               value: contractAddress
             })()
           },
-    [
-      onSelectAsset,
-      userVisibleTokensInfo,
-      isLoadingUserVisibleTokens,
-      txNetwork
-    ]
+    [onSelectAsset, combinedTokensList, isLoadingTokens, txNetwork]
   )
 
   // memos
-  const fromOrb = React.useMemo(() => {
-    return EthereumBlockies.create({
-      seed: transaction.fromAddress.toLowerCase(),
-      size: 8,
-      scale: 16
-    }).toDataURL()
-  }, [transaction.fromAddress])
-
-  const toOrb = React.useMemo(() => {
-    return EthereumBlockies.create({
-      seed: recipient.toLowerCase(),
-      size: 8,
-      scale: 16
-    }).toDataURL()
-  }, [recipient])
+  const fromOrb = useAccountOrb(account)
+  const toOrb = useAddressOrb(recipient)
 
   const transactionIntentDescription = React.useMemo(() => {
     switch (true) {
@@ -545,7 +557,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         return (
           <DetailRow>
             <DetailTextDark>
-              <AddressOrAsset onClick={onAddressClick(transaction.fromAddress)}>
+              <AddressOrAsset onClick={() => onSelectAccount(account)}>
                 {senderLabel}
               </AddressOrAsset>
             </DetailTextDark>
@@ -636,8 +648,8 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   }, [gasFeeFiat, defaultFiatCurrency])
 
   const formattedTransactionFiatValue = React.useMemo(() => {
-    return new Amount(fiatValue).formatAsFiat(defaultFiatCurrency)
-  }, [fiatValue, defaultFiatCurrency])
+    return new Amount(txTokenFiatValue).formatAsFiat(defaultFiatCurrency)
+  }, [txTokenFiatValue, defaultFiatCurrency])
 
   // render
   return (
@@ -708,7 +720,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                     We need to return a Transaction Time Stamp
                     to calculate Fiat value here
                   */}
-                  {isLoadingTokenSpotPrice || isLoadingDefaultFiatCurrency ? (
+                  {isLoadingTxTokenSpotPrice || isLoadingDefaultFiatCurrency ? (
                     <Skeleton {...skeletonProps} />
                   ) : (
                     formattedTransactionFiatValue || 'NOT FOUND!'

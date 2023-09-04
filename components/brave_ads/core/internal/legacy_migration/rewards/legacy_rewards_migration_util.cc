@@ -6,12 +6,12 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_util.h"
 
 #include "base/containers/extend.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
+#include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_payment_tokens_json_reader.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_payments_json_reader.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_history_json_reader.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_util.h"
-#include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_unblinded_payment_tokens_json_reader.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/payment_info.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
 namespace brave_ads::rewards {
 
@@ -28,15 +28,15 @@ absl::optional<TransactionList> BuildTransactionsFromJson(
     return absl::nullopt;
   }
 
-  const absl::optional<privacy::UnblindedPaymentTokenList>
-      unblinded_payment_tokens = json::reader::ReadUnblindedPaymentTokens(json);
-  if (!unblinded_payment_tokens) {
+  const absl::optional<PaymentTokenList> payment_tokens =
+      json::reader::ReadPaymentTokens(json);
+  if (!payment_tokens) {
     return absl::nullopt;
   }
 
   // Get a list of all unreconciled transactions
-  TransactionList transactions = GetAllUnreconciledTransactions(
-      *transaction_history, *unblinded_payment_tokens);
+  TransactionList transactions =
+      GetAllUnreconciledTransactions(*transaction_history, *payment_tokens);
 
   // Append a list of reconciled transactions for this month
   const absl::optional<TransactionList> reconciled_transactions =

@@ -210,5 +210,116 @@ IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, IpfsPermissionAPIAccess) {
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
 }
 
+IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, GetSettings) {
+  ResultCatcher catcher;
+  const Extension* extension =
+      LoadExtension(extension_dir_.AppendASCII("ipfsCompanion"));
+  ASSERT_TRUE(extension);
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetInstance()->GetForContext(
+          browser()->profile());
+  ASSERT_TRUE(service);
+
+  service->SetAllowIpfsLaunchForTest(true);
+  GetPrefs()->SetBoolean(kIPFSAutoRedirectToConfiguredGateway, true);
+  GetPrefs()->SetBoolean(kIPFSAutoFallbackToGateway, true);
+  GetPrefs()->SetInteger(kIpfsStorageMax, 2);
+
+  GetPrefs()->SetString(kIPFSPublicGatewayAddress, "https://a.b");
+  GetPrefs()->SetString(kIPFSPublicNFTGatewayAddress, "https://a.b.c");
+  GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
+
+  std::string expected_json =
+      "{\"gateway_auto_fallback_enabled\": true, "
+      "\"auto_redirect_to_configured_gateway\": true, \"storage_max\": 2, "
+      "\"gateway_url\": \"https://a.b\", \"nft_gateway_url\": "
+      "\"https://a.b.c\", \"resolve_method\": \"ask\"}";
+
+  ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+      browser()->profile(), ipfs_companion_extension_id,
+      base::StringPrintf("getSettings('%s')", expected_json.c_str())));
+  ASSERT_TRUE(catcher.GetNextResult()) << message_;
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, SetSettings) {
+  ResultCatcher catcher;
+  const Extension* extension =
+      LoadExtension(extension_dir_.AppendASCII("ipfsCompanion"));
+  ASSERT_TRUE(extension);
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetInstance()->GetForContext(
+          browser()->profile());
+  ASSERT_TRUE(service);
+
+  service->SetAllowIpfsLaunchForTest(true);
+
+  {
+    ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+        browser()->profile(), ipfs_companion_extension_id,
+        "setPublicGateway('https://ipfs.io/')"));
+    ASSERT_TRUE(catcher.GetNextResult()) << message_;
+    EXPECT_EQ(GetPrefs()->GetString(kIPFSPublicGatewayAddress),
+              "https://ipfs.io/");
+  }
+
+  {
+    ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+        browser()->profile(), ipfs_companion_extension_id,
+        "setPublicNFTGateway('https://ipfs.io/')"));
+    ASSERT_TRUE(catcher.GetNextResult()) << message_;
+    EXPECT_EQ(GetPrefs()->GetString(kIPFSPublicNFTGatewayAddress),
+              "https://ipfs.io/");
+  }
+
+  {
+    ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+        browser()->profile(), ipfs_companion_extension_id,
+        "setResolveMethod('ask')"));
+    ASSERT_TRUE(catcher.GetNextResult()) << message_;
+    EXPECT_EQ(GetPrefs()->GetInteger(kIPFSResolveMethod),
+              static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
+
+    ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+        browser()->profile(), ipfs_companion_extension_id,
+        "setResolveMethod('local')"));
+    ASSERT_TRUE(catcher.GetNextResult()) << message_;
+    EXPECT_EQ(GetPrefs()->GetInteger(kIPFSResolveMethod),
+              static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+
+    ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+        browser()->profile(), ipfs_companion_extension_id,
+        "setResolveMethod('gateway')"));
+    ASSERT_TRUE(catcher.GetNextResult()) << message_;
+    EXPECT_EQ(GetPrefs()->GetInteger(kIPFSResolveMethod),
+              static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
+
+    ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+        browser()->profile(), ipfs_companion_extension_id,
+        "setResolveMethod('disabled')"));
+    ASSERT_TRUE(catcher.GetNextResult()) << message_;
+    EXPECT_EQ(GetPrefs()->GetInteger(kIPFSResolveMethod),
+              static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_DISABLED));
+  }
+
+  {
+    ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+        browser()->profile(), ipfs_companion_extension_id,
+        "setAutoRedirectToConfiguredGateway(true)"));
+    ASSERT_TRUE(catcher.GetNextResult()) << message_;
+    EXPECT_EQ(GetPrefs()->GetBoolean(kIPFSAutoRedirectToConfiguredGateway),
+              true);
+  }
+
+  {
+    ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+        browser()->profile(), ipfs_companion_extension_id,
+        "setGatewayFallbackEnabled(true)"));
+    ASSERT_TRUE(catcher.GetNextResult()) << message_;
+    EXPECT_EQ(GetPrefs()->GetBoolean(kIPFSAutoFallbackToGateway), true);
+  }
+}
+
 }  // namespace
 }  // namespace extensions

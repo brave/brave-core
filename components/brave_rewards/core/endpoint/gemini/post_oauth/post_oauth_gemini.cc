@@ -7,18 +7,17 @@
 
 #include <utility>
 
-#include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/endpoint/gemini/gemini_utils.h"
+#include "base/uuid.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal::endpoint::gemini {
 
-PostOauth::PostOauth(LedgerImpl& ledger) : ledger_(ledger) {}
+PostOauth::PostOauth(RewardsEngineImpl& engine) : engine_(engine) {}
 
 PostOauth::~PostOauth() = default;
 
@@ -29,8 +28,9 @@ std::string PostOauth::GetUrl() {
 std::string PostOauth::GeneratePayload(const std::string& external_account_id,
                                        const std::string& code) {
   const std::string client_id = internal::gemini::GetClientId();
-  const std::string client_secret = GetClientSecret();
-  const std::string request_id = base::GenerateGUID();
+  const std::string client_secret = internal::gemini::GetClientSecret();
+  const std::string request_id =
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   base::Value::Dict dict;
   dict.Set("client_id", client_id);
@@ -51,18 +51,18 @@ mojom::Result PostOauth::ParseBody(const std::string& body,
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* access_token = dict.FindString("access_token");
   if (!access_token) {
     BLOG(0, "Missing access token");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   *token = *access_token;
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void PostOauth::Request(const std::string& external_account_id,
@@ -74,7 +74,7 @@ void PostOauth::Request(const std::string& external_account_id,
   request->content_type = "application/json";
   request->method = mojom::UrlMethod::POST;
 
-  ledger_->LoadURL(std::move(request),
+  engine_->LoadURL(std::move(request),
                    base::BindOnce(&PostOauth::OnRequest, base::Unretained(this),
                                   std::move(callback)));
 }
@@ -85,7 +85,7 @@ void PostOauth::OnRequest(PostOauthCallback callback,
   LogUrlResponse(__func__, *response, true);
 
   mojom::Result result = CheckStatusCode(response->status_code);
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     return std::move(callback).Run(result, "");
   }
 

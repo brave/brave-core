@@ -4,11 +4,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/views/tabs/tab_strip_layout_helper.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 
-#define CalculateTabBounds                                               \
-  use_vertical_tabs_&& FillGroupInfo(tab_widths)                         \
-      ? tabs::CalculateVerticalTabBounds(layout_constants, tab_widths,   \
-                                         tabstrip_width, floating_mode_) \
+#define CalculateTabBounds                                                     \
+  use_vertical_tabs_&& FillGroupInfo(tab_widths)                               \
+      ? tabs::CalculateVerticalTabBounds(layout_constants, tab_widths,         \
+                                         tabstrip_width,                       \
+                                         tab_strip_->IsVerticalTabsFloating()) \
       : CalculateTabBounds
 
 #include "src/chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc"

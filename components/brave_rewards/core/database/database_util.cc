@@ -11,7 +11,7 @@
 
 namespace {
 
-const int kCurrentVersionNumber = 39;
+const int kCurrentVersionNumber = 40;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace
@@ -99,15 +99,15 @@ int32_t GetCompatibleVersion() {
   return kCompatibleVersionNumber;
 }
 
-void OnResultCallback(mojom::DBCommandResponsePtr response,
-                      LegacyResultCallback callback) {
+void OnResultCallback(LegacyResultCallback callback,
+                      mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
-  callback(mojom::Result::LEDGER_OK);
+  callback(mojom::Result::OK);
 }
 
 int GetIntColumn(mojom::DBRecord* record, const int index) {

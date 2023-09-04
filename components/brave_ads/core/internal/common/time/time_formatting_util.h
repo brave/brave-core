@@ -20,8 +20,6 @@ std::string LongFriendlyDateAndTime(base::Time time,
 std::string FriendlyDateAndTime(base::Time time,
                                 bool use_sentence_style = true);
 
-std::string TimeAsTimestampString(base::Time time);
-
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIME_TIME_FORMATTING_UTIL_H_

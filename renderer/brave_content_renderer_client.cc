@@ -18,6 +18,7 @@
 #include "brave/components/skus/renderer/skus_render_frame_observer.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/renderer/brave_render_thread_observer.h"
+#include "brave/renderer/brave_url_loader_throttle_provider_impl.h"
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/renderer/chrome_render_thread_observer.h"
@@ -53,6 +54,7 @@ void BraveContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
   blink::WebRuntimeFeatures::EnableWebNFC(false);
+  blink::WebRuntimeFeatures::EnableAnonymousIframe(false);
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
@@ -62,10 +64,14 @@ void BraveContentRendererClient::
     blink::WebRuntimeFeatures::EnableFeatureFromString(
         "FileSystemAccessAPIExperimental", false);
   }
-  blink::WebRuntimeFeatures::EnableFeatureFromString("Serial", false);
+  if (!base::FeatureList::IsEnabled(blink::features::kBraveWebSerialAPI)) {
+    blink::WebRuntimeFeatures::EnableFeatureFromString("Serial", false);
+  }
   blink::WebRuntimeFeatures::EnableFeatureFromString(
       "SpeculationRulesPrefetchProxy", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("WebEnvironmentIntegrity",
+                                                     false);
 }
 
 BraveContentRendererClient::~BraveContentRendererClient() = default;
@@ -181,4 +187,15 @@ void BraveContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
           script_url);
   ChromeContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
       v8_context, service_worker_version_id, service_worker_scope, script_url);
+}
+
+std::unique_ptr<blink::URLLoaderThrottleProvider>
+BraveContentRendererClient::CreateURLLoaderThrottleProvider(
+    blink::URLLoaderThrottleProviderType provider_type) {
+  return std::make_unique<BraveURLLoaderThrottleProviderImpl>(
+      browser_interface_broker_.get(), provider_type, this);
+}
+
+bool BraveContentRendererClient::IsTorProcess() const {
+  return brave_observer_->is_tor_process();
 }

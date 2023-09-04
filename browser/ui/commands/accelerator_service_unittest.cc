@@ -39,7 +39,7 @@ class AcceleratorServiceUnitTest : public testing::Test {
 TEST_F(AcceleratorServiceUnitTest, CanOverrideExistingShortcut) {
   commands::AcceleratorService service(
       profile().GetPrefs(),
-      {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}});
+      {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}}, {});
 
   auto accelerators = service.GetAcceleratorsForTesting();
   ASSERT_EQ(1u, accelerators[IDC_NEW_TAB].size());
@@ -55,12 +55,12 @@ TEST_F(AcceleratorServiceUnitTest, CanOverrideExistingShortcut) {
 }
 
 TEST_F(AcceleratorServiceUnitTest, AcceleratorsArePersisted) {
-  commands::AcceleratorService service(profile().GetPrefs(), {});
+  commands::AcceleratorService service(profile().GetPrefs(), {}, {});
 
   auto accelerators = service.GetAcceleratorsForTesting();
   service.AssignAcceleratorToCommand(IDC_NEW_TAB, "Control+KeyT");
 
-  commands::AcceleratorService service2(profile().GetPrefs(), {});
+  commands::AcceleratorService service2(profile().GetPrefs(), {}, {});
   accelerators = service2.GetAcceleratorsForTesting();
 
   ASSERT_EQ(1u, accelerators[IDC_NEW_TAB].size());
@@ -71,7 +71,7 @@ TEST_F(AcceleratorServiceUnitTest, AcceleratorsArePersisted) {
 TEST_F(AcceleratorServiceUnitTest, AcceleratorsCanBeRemoved) {
   commands::AcceleratorService service(
       profile().GetPrefs(),
-      {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}});
+      {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}}, {});
   service.AssignAcceleratorToCommand(IDC_NEW_TAB, "Control+KeyK");
   auto accelerators = service.GetAcceleratorsForTesting();
   EXPECT_EQ(2u, accelerators[IDC_NEW_TAB].size());
@@ -92,10 +92,12 @@ TEST_F(AcceleratorServiceUnitTest, AcceleratorsCanBeRemoved) {
 
 TEST_F(AcceleratorServiceUnitTest, AcceleratorsCanBeReset) {
   commands::AcceleratorService service(
-      profile().GetPrefs(), {{IDC_NEW_TAB,
-                              {commands::FromCodesString("Control+KeyT"),
-                               commands::FromCodesString("Control+KeyK"),
-                               commands::FromCodesString("Control+KeyU")}}});
+      profile().GetPrefs(),
+      {{IDC_NEW_TAB,
+        {commands::FromCodesString("Control+KeyT"),
+         commands::FromCodesString("Control+KeyK"),
+         commands::FromCodesString("Control+KeyU")}}},
+      {});
 
   auto accelerators = service.GetAcceleratorsForTesting();
   ASSERT_EQ(3u, accelerators[IDC_NEW_TAB].size());
@@ -133,7 +135,8 @@ TEST_F(AcceleratorServiceUnitTest, DefaultAcceleratorsCanBeUpdated) {
         {{IDC_NEW_TAB,
           {commands::FromCodesString("Control+KeyT"),
            commands::FromCodesString("Control+KeyQ")}},
-         {IDC_NEW_WINDOW, {commands::FromCodesString("Control+KeyN")}}});
+         {IDC_NEW_WINDOW, {commands::FromCodesString("Control+KeyN")}}},
+        {});
     service.AssignAcceleratorToCommand(IDC_NEW_TAB, "Control+KeyJ");
     service.AssignAcceleratorToCommand(IDC_NEW_WINDOW, "Control+KeyW");
   }
@@ -151,7 +154,8 @@ TEST_F(AcceleratorServiceUnitTest, DefaultAcceleratorsCanBeUpdated) {
          {commands::FromCodesString("Control+KeyT"),
           commands::FromCodesString("Control+KeyY"),
           commands::FromCodesString("Control+KeyW")}},
-        {IDC_PIN_TARGET_TAB, {commands::FromCodesString("Alt+KeyP")}}}});
+        {IDC_WINDOW_PIN_TAB, {commands::FromCodesString("Alt+KeyP")}}}},
+      {});
   auto accelerators = new_service.GetAcceleratorsForTesting();
   ASSERT_EQ(4u, accelerators[IDC_NEW_TAB].size());
   EXPECT_EQ("Control+KeyT",
@@ -165,7 +169,89 @@ TEST_F(AcceleratorServiceUnitTest, DefaultAcceleratorsCanBeUpdated) {
 
   EXPECT_EQ(0u, accelerators[IDC_NEW_WINDOW].size());
 
-  ASSERT_EQ(1u, accelerators[IDC_PIN_TARGET_TAB].size());
+  ASSERT_EQ(1u, accelerators[IDC_WINDOW_PIN_TAB].size());
   EXPECT_EQ("Alt+KeyP",
-            commands::ToCodesString(accelerators[IDC_PIN_TARGET_TAB][0]));
+            commands::ToCodesString(accelerators[IDC_WINDOW_PIN_TAB][0]));
+}
+
+TEST_F(AcceleratorServiceUnitTest, DuplicateDefaultsAreIgnored) {
+  commands::AcceleratorService service(
+      profile().GetPrefs(),
+      {{IDC_FOCUS_MENU_BAR,
+        {commands::FromCodesString("Alt"), commands::FromCodesString("Alt"),
+         commands::FromCodesString("AltGr")}}},
+      {});
+  auto accelerators = service.GetAcceleratorsForTesting();
+  ASSERT_EQ(2u, accelerators[IDC_FOCUS_MENU_BAR].size());
+  EXPECT_EQ("Alt",
+            commands::ToCodesString(accelerators[IDC_FOCUS_MENU_BAR][0]));
+  EXPECT_EQ("AltGr",
+            commands::ToCodesString(accelerators[IDC_FOCUS_MENU_BAR][1]));
+
+  // Check that the modified flag is false - it has the same shortcuts as the
+  // default even though the default has two Alt accelerators.
+  auto command = service.GetCommandForTesting(IDC_FOCUS_MENU_BAR);
+  EXPECT_EQ(2u, command->accelerators.size());
+  EXPECT_FALSE(command->modified);
+
+  // Add a new accelerator - we should detect the command was modified.
+  service.AssignAcceleratorToCommand(IDC_FOCUS_MENU_BAR, "F6");
+  command = service.GetCommandForTesting(IDC_FOCUS_MENU_BAR);
+  EXPECT_EQ(3u, command->accelerators.size());
+  EXPECT_TRUE(command->modified);
+
+  // Resetting should remove the new accelerator and the modified flag should be
+  // false again.
+  service.ResetAcceleratorsForCommand(IDC_FOCUS_MENU_BAR);
+  command = service.GetCommandForTesting(IDC_FOCUS_MENU_BAR);
+  EXPECT_EQ(2u, command->accelerators.size());
+  EXPECT_FALSE(command->modified);
+
+  // If we delete one of the Alt accelerators the command should be marked as
+  // modified.
+  service.UnassignAcceleratorFromCommand(IDC_FOCUS_MENU_BAR, "Alt");
+  command = service.GetCommandForTesting(IDC_FOCUS_MENU_BAR);
+  EXPECT_EQ(1u, command->accelerators.size());
+  EXPECT_TRUE(command->modified);
+
+  // Resetting should add back the Alt accelerator.
+  service.ResetAcceleratorsForCommand(IDC_FOCUS_MENU_BAR);
+  command = service.GetCommandForTesting(IDC_FOCUS_MENU_BAR);
+  EXPECT_EQ(2u, command->accelerators.size());
+  EXPECT_FALSE(command->modified);
+}
+
+TEST_F(AcceleratorServiceUnitTest, UnmodifiableDefaultsAreReset) {
+  commands::Accelerators defaults = {
+      {IDC_FOCUS_MENU_BAR, {commands::FromCodesString("Alt+KeyF")}},
+      {IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}};
+
+  // First, move the default shortcut Ctrl+T to IDC_FOCUS_MENU_BAR
+  {
+    commands::AcceleratorService service(profile().GetPrefs(), defaults, {});
+
+    // In future, this will be unmodifiable.
+    service.AssignAcceleratorToCommand(IDC_FOCUS_MENU_BAR, "Control+KeyT");
+
+    // Another shortcut, to check it isn't affected.
+    service.AssignAcceleratorToCommand(IDC_NEW_TAB, "Control+KeyK");
+  }
+
+  // Then, relaunch the service with that as an unmodifiable shortcut.
+  {
+    commands::AcceleratorService service(
+        profile().GetPrefs(), defaults,
+        {commands::FromCodesString("Control+KeyT")});
+
+    const auto& menu_command = service.GetCommandForTesting(IDC_FOCUS_MENU_BAR);
+    ASSERT_EQ(1u, menu_command->accelerators.size());
+    EXPECT_EQ("Alt+KeyF", menu_command->accelerators[0]->codes);
+
+    const auto& nt_command = service.GetCommandForTesting(IDC_NEW_TAB);
+    ASSERT_EQ(2u, nt_command->accelerators.size());
+    EXPECT_EQ("Control+KeyK", nt_command->accelerators[0]->codes);
+    const auto& unmodifiable_accelerator = nt_command->accelerators[1];
+    EXPECT_TRUE(unmodifiable_accelerator->unmodifiable);
+    EXPECT_EQ("Control+KeyT", unmodifiable_accelerator->codes);
+  }
 }

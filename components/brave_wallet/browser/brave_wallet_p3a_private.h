@@ -16,12 +16,12 @@ class BraveWalletP3APrivate : public mojom::BraveWalletP3A {
 
   void ReportJSProvider(mojom::JSProviderType provider_type,
                         mojom::CoinType coin_type,
-                        bool use_native_wallet_enabled,
                         bool allow_provider_overwrite) override;
   void ReportOnboardingAction(
       mojom::OnboardingAction onboarding_action) override;
   void ReportTransactionSent(mojom::CoinType coin, bool new_send) override;
   void RecordActiveWalletCount(int count, mojom::CoinType coin_type) override;
+  void RecordNFTGalleryView(int nft_count) override;
 };
 
 }  // namespace brave_wallet

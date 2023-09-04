@@ -28,12 +28,25 @@ export const SegmentedControl = (props: Props) => {
 
   // Routing
   const history = useHistory()
-  const { pathname: walletLocation } = useLocation()
+  const { pathname: walletLocation, hash } = useLocation()
 
   // Methods
-  const onClick = (navOption: NavOption) => {
+  const onClick = React.useCallback((navOption: NavOption) => {
     history.push(navOption.route)
-  }
+  }, [])
+
+  const isSelected = React.useCallback(
+    (navOption: NavOption) => {
+      return navOption.route.startsWith('#')
+        ? !hash
+          // Since hashes are not necessary
+          // we default the first option as selected,
+          // if there is no hash in the route location.
+          ? navOptions[0].id === navOption.id
+          : hash === navOption.route
+        : walletLocation.includes(navOption.route)
+
+    }, [walletLocation, navOptions, hash])
 
   return (
     <ButtonsContainer
@@ -42,7 +55,7 @@ export const SegmentedControl = (props: Props) => {
       {navOptions.map((navOption: NavOption) =>
         <Button
           key={navOption.id}
-          isSelected={walletLocation.includes(navOption.route)}
+          isSelected={isSelected(navOption)}
           onClick={() => onClick(navOption)}
         >
           {getLocale(navOption.name)}

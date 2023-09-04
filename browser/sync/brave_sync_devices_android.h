@@ -9,6 +9,7 @@
 #include <jni.h>
 
 #include "base/android/jni_weak_ref.h"
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/values.h"
 #include "components/sync_device_info/device_info_tracker.h"
@@ -48,7 +49,7 @@ class BraveSyncDevicesAndroid : public syncer::DeviceInfoTracker::Observer {
       device_info_tracker_observer_{this};
 
   JavaObjectWeakGlobalRef weak_java_brave_sync_worker_;
-  Profile* profile_ = nullptr;
+  raw_ptr<Profile> profile_ = nullptr;
 };
 
 }  // namespace android

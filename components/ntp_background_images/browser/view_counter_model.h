@@ -10,12 +10,15 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
+
+class PrefService;
 
 namespace ntp_background_images {
 
 class ViewCounterModel {
  public:
-  ViewCounterModel();
+  explicit ViewCounterModel(PrefService* prefs);
   ~ViewCounterModel();
 
   ViewCounterModel(const ViewCounterModel&) = delete;
@@ -47,13 +50,15 @@ class ViewCounterModel {
   void IncreaseBackgroundWallpaperImageIndex();
 
  private:
-  static const int kInitialCountToBrandedWallpaper = 1;
-  static const int kRegularCountToBrandedWallpaper = 3;
-
   friend class NTPBackgroundImagesViewCounterTest;
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPSponsoredImagesTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
+                           NTPSponsoredImagesCountToBrandedWallpaperTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPBackgroundImagesTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPBackgroundImagesOnlyTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
+                           NTPBackgroundImagesWithSIDisabledTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
+                           NTPBackgroundImagesWithEmptyCampaignTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
                            NTPFailedToLoadSponsoredImagesTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
@@ -65,7 +70,8 @@ class ViewCounterModel {
   void RegisterPageViewForBackgroundImages();
 
   // For NTP SI.
-  int count_to_branded_wallpaper_ = 0;
+  raw_ptr<PrefService> prefs_ = nullptr;
+  int count_to_branded_wallpaper_ = 1;
   bool always_show_branded_wallpaper_ = false;
   bool show_branded_wallpaper_ = true;
   size_t current_campaign_index_ = 0;

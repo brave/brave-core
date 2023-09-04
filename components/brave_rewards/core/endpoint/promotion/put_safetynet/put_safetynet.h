@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // PUT /v2/attestations/safetynet/{nonce}
 //
@@ -36,7 +36,7 @@
 // }
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 namespace promotion {
@@ -45,7 +45,7 @@ using PutSafetynetCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PutSafetynet {
  public:
-  explicit PutSafetynet(LedgerImpl& ledger);
+  explicit PutSafetynet(RewardsEngineImpl& engine);
   ~PutSafetynet();
 
   void Request(const std::string& token,
@@ -61,7 +61,7 @@ class PutSafetynet {
 
   void OnRequest(PutSafetynetCallback callback, mojom::UrlResponsePtr response);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace promotion

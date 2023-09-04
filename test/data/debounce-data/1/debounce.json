@@ -151,5 +151,14 @@
     ],
     "action": "redirect",
     "param": "url"
+  },
+  {
+    "include": [
+      "http://blocked.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
   }
 ]

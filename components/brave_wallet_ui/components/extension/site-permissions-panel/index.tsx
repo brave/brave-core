@@ -4,27 +4,28 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import {
-  useDispatch,
-  useSelector
-} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 // Actions
 import { PanelActions } from '../../../panel/actions'
 
+// Queries
+import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
+
 // Types
-import { WalletAccountType, WalletState } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { useSelectedCoinQuery } from '../../../common/slices/api.slice'
+import { WalletSelectors } from '../../../common/selectors'
+
+// Hooks
+import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 
 // Components
-import {
-  DividerLine,
-  ConnectedAccountItem
-} from '../'
-import { CreateSiteOrigin } from '../../shared'
+import { DividerLine } from '../divider/index'
+import { ConnectedAccountItem } from '../connected-account-item/index'
+import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
 
 // Styled Components
 import {
@@ -41,14 +42,15 @@ import {
 
 export const SitePermissions = () => {
   const dispatch = useDispatch()
-  const {
-    accounts,
-    connectedAccounts,
-    activeOrigin
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
+  const connectedAccounts = useUnsafeWalletSelector(
+    WalletSelectors.connectedAccounts
+  )
 
   // api
-  const { selectedCoin } = useSelectedCoinQuery()
+  const { data: selectedAccount } = useSelectedAccountQuery()
+  const selectedCoin = selectedAccount?.accountId.coin
 
   // methods
   const onAddAccount = React.useCallback(() => {
@@ -56,8 +58,8 @@ export const SitePermissions = () => {
   }, [])
 
   // memos
-  const accountByCoinType = React.useMemo((): WalletAccountType[] => {
-    return accounts.filter((account) => account.coin === selectedCoin)
+  const accountByCoinType = React.useMemo((): BraveWallet.AccountInfo[] => {
+    return accounts.filter((account) => account.accountId.coin === selectedCoin)
   }, [accounts, selectedCoin])
 
   return (
@@ -80,7 +82,7 @@ export const SitePermissions = () => {
         <AddressScrollContainer>
           {accountByCoinType.map((account) => (
             <ConnectedAccountItem
-              key={account.id}
+              key={account.accountId.uniqueKey}
               account={account}
             />
           ))}

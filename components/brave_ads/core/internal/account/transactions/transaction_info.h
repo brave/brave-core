@@ -10,8 +10,8 @@
 #include <vector>
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/ad_type.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 namespace brave_ads {
 
@@ -29,7 +29,7 @@ struct TransactionInfo final {
   bool operator==(const TransactionInfo&) const;
   bool operator!=(const TransactionInfo&) const;
 
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 
   std::string id;
   base::Time created_at;

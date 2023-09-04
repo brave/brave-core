@@ -9,15 +9,19 @@
 #include <memory>
 
 #include "base/functional/callback_helpers.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "base/types/pass_key.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
+#include "ui/views/controls/resize_area_delegate.h"
+
 namespace views {
 class ScrollView;
-}
+class ResizeArea;
+}  // namespace views
 
 class BraveNewTabButton;
 class BrowserView;
@@ -26,7 +30,10 @@ class VerticalTabStripScrollContentsView;
 
 // Wraps TabStripRegion and show it vertically.
 class VerticalTabStripRegionView : public views::View,
-                                   public TabStripModelObserver {
+                                   public TabStripModelObserver,
+                                   public views::ResizeAreaDelegate,
+                                   public views::AnimationDelegateViews,
+                                   public views::WidgetObserver {
  public:
   METADATA_HEADER(VerticalTabStripRegionView);
 
@@ -50,6 +57,8 @@ class VerticalTabStripRegionView : public views::View,
   ~VerticalTabStripRegionView() override;
 
   State state() const { return state_; }
+  State last_state() const { return last_state_; }
+  bool is_animating() const { return width_animation_.is_animating(); }
 
   const TabStrip* tab_strip() const {
     return original_region_view_->tab_strip_;
@@ -72,11 +81,13 @@ class VerticalTabStripRegionView : public views::View,
 
   TabSearchBubbleHost* GetTabSearchBubbleHost();
 
-  int GetScrollViewViewportHeight() const;
+  int GetTabStripViewportHeight() const;
 
   void set_layout_dirty(base::PassKey<VerticalTabStripScrollContentsView>) {
     layout_dirty_ = true;
   }
+
+  void ResetExpandedWidth();
 
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
@@ -87,19 +98,36 @@ class VerticalTabStripRegionView : public views::View,
   void OnMouseEntered(const ui::MouseEvent& event) override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
   void PreferredSizeChanged() override;
+  void AddedToWidget() override;
 
   // TabStripModelObserver:
+  // TODO(sko) Remove this once the "sticky pinned tabs" is enabled by default.
+  // https://github.com/brave/brave-browser/issues/29935
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
 
+  // views::ResizeAreaDelegate
+  void OnResize(int resize_amount, bool done_resizing) override;
+
+  // views::AnimationDelegateViews:
+  void AnimationProgressed(const gfx::Animation* animation) override;
+  void AnimationEnded(const gfx::Animation* animation) override;
+
+  // views::WidgetObserver:
+  void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
+  void OnWidgetDestroying(views::Widget* widget) override;
+
  private:
-  class ScrollHeaderView;
+  class MouseWatcher;
+  class HeaderView;
 
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           OriginalTabSearchButton);
 
-  bool IsTabFullscreen() const;
+  bool IsFullscreen() const;
 
   void SetState(State state);
 
@@ -109,19 +137,28 @@ class VerticalTabStripRegionView : public views::View,
 
   void UpdateLayout(bool in_destruction = false);
 
-  void UpdateTabSearchButtonVisibility();
+  void UpdateOriginalTabSearchButtonVisibility();
 
   void OnCollapsedPrefChanged();
   void OnFloatingModePrefChanged();
 
   void ScheduleFloatingModeTimer();
+  void OnMouseExited();
+  void OnMouseEntered();
+  void OnMousePressedInTree();
 
-  gfx::Size GetPreferredSizeForState(State state, bool include_border) const;
-  int GetPreferredWidthForState(State state, bool include_border) const;
+  gfx::Size GetPreferredSizeForState(State state,
+                                     bool include_border,
+                                     bool ignore_animation) const;
+  int GetPreferredWidthForState(State state,
+                                bool include_border,
+                                bool ignore_animation) const;
 
   // Returns valid object only when the related flag is enabled.
   TabStripScrollContainer* GetTabStripScrollContainer();
 
+  // TODO(sko) Remove this once the "sticky pinned tabs" is enabled by default.
+  // https://github.com/brave/brave-browser/issues/29935
   void ScrollActiveTabToBeVisible();
 
   std::u16string GetShortcutTextForNewTabButton(BrowserView* browser_view);
@@ -132,18 +169,30 @@ class VerticalTabStripRegionView : public views::View,
   raw_ptr<TabStripRegionView> original_region_view_ = nullptr;
 
   // Contains TabStripRegion.
+  // TODO(sko) Remove this once the "sticky pinned tabs" is enabled by default.
+  // https://github.com/brave/brave-browser/issues/29935
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;
-  raw_ptr<views::View> scroll_contents_view_ = nullptr;
-  raw_ptr<ScrollHeaderView> scroll_view_header_ = nullptr;
+
+  raw_ptr<HeaderView> header_view_ = nullptr;
+  raw_ptr<views::View> contents_view_ = nullptr;
 
   // New tab button created for vertical tabs
   raw_ptr<BraveNewTabButton> new_tab_button_ = nullptr;
 
+  raw_ptr<views::View> resize_area_ = nullptr;
+  absl::optional<int> resize_offset_;
+
+  // A pointer storing the global tab style to be used.
+  const raw_ptr<const TabStyle> tab_style_;
+
   State state_ = State::kExpanded;
+  State last_state_ = State::kExpanded;
 
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember collapsed_pref_;
   BooleanPrefMember floating_mode_pref_;
+
+  IntegerPrefMember expanded_width_;
 
   base::OneShotTimer mouse_enter_timer_;
 
@@ -151,6 +200,13 @@ class VerticalTabStripRegionView : public views::View,
 
   bool layout_dirty_ = false;
   gfx::Size last_size_;
+
+  gfx::SlideAnimation width_animation_{this};
+
+  base::ScopedObservation<views::Widget, views::WidgetObserver>
+      widget_observation_{this};
+
+  std::unique_ptr<MouseWatcher> mouse_watcher_;
 
   base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };

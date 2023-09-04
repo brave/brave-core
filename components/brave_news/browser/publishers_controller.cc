@@ -29,7 +29,6 @@
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -181,6 +180,10 @@ void PublishersController::GetLocale(
       base::Unretained(this), std::move(callback)));
 }
 
+const std::string& PublishersController::GetLastLocale() const {
+  return default_locale_;
+}
+
 void PublishersController::EnsurePublishersIsUpdating() {
   // Only 1 update at a time, other calls for data will wait for
   // the current operation via the `on_current_update_complete_` OneShotEvent.
@@ -188,11 +191,11 @@ void PublishersController::EnsurePublishersIsUpdating() {
     return;
   }
   is_update_in_progress_ = true;
-  std::string region_part = brave_news::GetRegionUrlPart();
-  GURL sources_url("https://" + brave_news::GetHostname() + "/sources." +
-                   region_part + "json");
 
-  auto onRequest = base::BindOnce(
+  GURL sources_url(
+      base::StrCat({"https://", brave_news::GetHostname(), "/sources.",
+                    brave_news::kRegionUrlPart, "json"}));
+  auto on_request = base::BindOnce(
       [](PublishersController* controller,
          api_request_helper::APIRequestResult api_request_result) {
         // TODO(petemill): handle bad status or response
@@ -205,7 +208,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
         // Add user enabled statuses
         const auto& publisher_prefs =
             controller->prefs_->GetDict(prefs::kBraveNewsSources);
-        std::vector<std::string> missing_publishers_;
+        std::vector<std::string> missing_publishers;
         for (const auto&& [key, value] : publisher_prefs) {
           auto publisher_id = key;
           auto is_user_enabled = value.GetIfBool();
@@ -224,7 +227,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
             // We only care about missing publishers if the user was subscribed
             // to them.
             if (is_user_enabled.value_or(false)) {
-              missing_publishers_.push_back(publisher_id);
+              missing_publishers.push_back(publisher_id);
             }
           }
         }
@@ -254,11 +257,9 @@ void PublishersController::EnsurePublishersIsUpdating() {
           observer.OnPublishersUpdated(controller);
         }
 
-        if (base::FeatureList::IsEnabled(
-                brave_news::features::kBraveNewsV2Feature) &&
-            !missing_publishers_.empty()) {
+        if (!missing_publishers.empty()) {
           controller->unsupported_publisher_migrator_->MigrateUnsupportedFeeds(
-              missing_publishers_,
+              missing_publishers,
               base::BindOnce(
                   [](PublishersController* controller,
                      uint64_t migrated_count) {
@@ -272,18 +273,12 @@ void PublishersController::EnsurePublishersIsUpdating() {
         }
       },
       base::Unretained(this));
-  api_request_helper_->Request("GET", sources_url, "", "", std::move(onRequest),
-                               brave::private_cdn_headers,
-                               {.auto_retry_on_network_change = true});
+  api_request_helper_->Request(
+      "GET", sources_url, "", "", std::move(on_request),
+      brave::private_cdn_headers, {.auto_retry_on_network_change = true});
 }
 
 void PublishersController::UpdateDefaultLocale() {
-  if (!base::FeatureList::IsEnabled(
-          brave_news::features::kBraveNewsV2Feature)) {
-    default_locale_ = brave_news::GetV1RegionUrlPart();
-    return;
-  }
-
   auto available_locales = GetPublisherLocales(publishers_);
 
   // Locale can be "language_Script_COUNTRY.charset@variant" but Brave News

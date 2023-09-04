@@ -6,7 +6,8 @@
 import { createReducer } from 'redux-act'
 import {
   BraveWallet,
-  PanelState, PanelTypes, SerializableAddSuggestTokenRequest, SerializableDecryptRequest, SerializableGetEncryptionPublicKeyRequest, SerializableOriginInfo, SerializableSignMessageRequest, SerializableTransactionInfo
+  PanelState,
+  PanelTypes
 } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import {
@@ -15,13 +16,7 @@ import {
 import { PanelTitles } from '../../options/panel-titles'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
-const defaultOriginInfo: SerializableOriginInfo = {
-  origin: {
-    scheme: '',
-    host: '',
-    port: 0,
-    nonceIfOpaque: undefined
-  },
+const defaultOriginInfo: BraveWallet.OriginInfo = {
   originSpec: '',
   eTldPlusOne: ''
 }
@@ -45,40 +40,22 @@ const defaultState: PanelState = {
       symbolName: 'Ethereum',
       decimals: 18,
       coin: BraveWallet.CoinType.ETH,
+      supportedKeyrings: [BraveWallet.KeyringId.kDefault],
       isEip1559: true
     }
   },
-  signMessageData: [{
-    originInfo: defaultOriginInfo,
-    id: -1,
-    address: '',
-    domain: '',
-    message: '',
-    isEip712: false,
-    domainHash: '',
-    primaryHash: '',
-    messageBytes: undefined,
-    coin: BraveWallet.CoinType.ETH,
-    chainId: ''
-  }],
+  signMessageData: [],
   signAllTransactionsRequests: [],
   signTransactionRequests: [],
-  getEncryptionPublicKeyRequest: {
-    originInfo: defaultOriginInfo,
-    address: ''
-  },
-  decryptRequest: {
-    originInfo: defaultOriginInfo,
-    address: '',
-    unsafeMessage: ''
-  },
+  getEncryptionPublicKeyRequest: undefined,
+  decryptRequest: undefined,
   switchChainRequest: {
+    requestId: '',
     originInfo: defaultOriginInfo,
     chainId: ''
   },
   hardwareWalletCode: undefined,
-  suggestedTokenRequest: undefined,
-  selectedTransaction: undefined
+  selectedTransactionId: undefined
 }
 
 export const createPanelReducer = (initialState: PanelState) => {
@@ -132,21 +109,21 @@ export const createPanelReducer = (initialState: PanelState) => {
     }
   })
 
-  reducer.on(PanelActions.getEncryptionPublicKey.type, (state: any, request: SerializableGetEncryptionPublicKeyRequest) => {
+  reducer.on(PanelActions.getEncryptionPublicKey.type, (state: any, request: BraveWallet.GetEncryptionPublicKeyRequest) => {
     return {
       ...state,
       getEncryptionPublicKeyRequest: request
     }
   })
 
-  reducer.on(PanelActions.decrypt.type, (state: any, request: SerializableDecryptRequest) => {
+  reducer.on(PanelActions.decrypt.type, (state: any, request: BraveWallet.DecryptRequest) => {
     return {
       ...state,
       decryptRequest: request
     }
   })
 
-  reducer.on(PanelActions.signMessage.type, (state, payload: SerializableSignMessageRequest[]) => {
+  reducer.on(PanelActions.signMessage.type, (state, payload: BraveWallet.SignMessageRequest[]) => {
     return {
       ...state,
       signMessageData: payload
@@ -174,18 +151,15 @@ export const createPanelReducer = (initialState: PanelState) => {
     }
   })
 
-  reducer.on(PanelActions.addSuggestToken.type, (state: PanelState, payload: SerializableAddSuggestTokenRequest): PanelState => {
-    return {
-      ...state,
-      suggestedTokenRequest: payload
+  reducer.on(
+    PanelActions.setSelectedTransactionId.type,
+    (state: PanelState, payload: string | undefined): PanelState => {
+      return {
+        ...state,
+        selectedTransactionId: payload
+      }
     }
-  })
-  reducer.on(PanelActions.setSelectedTransaction.type, (state: PanelState, payload: SerializableTransactionInfo): PanelState => {
-    return {
-      ...state,
-      selectedTransaction: payload
-    }
-  })
+  )
   return reducer
 }
 

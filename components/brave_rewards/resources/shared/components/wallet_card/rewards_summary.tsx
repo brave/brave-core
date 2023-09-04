@@ -5,6 +5,7 @@
 import * as React from 'react'
 
 import { LocaleContext } from '../../lib/locale_context'
+import { UserType } from '../../lib/user_type'
 import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 import { PendingRewardsView } from './pending_rewards_view'
 import { TokenAmount } from '../token_amount'
@@ -22,33 +23,29 @@ export interface RewardsSummaryData {
   autoContributions: number
   oneTimeTips: number
   monthlyTips: number
-  pendingTips: number
 }
 
 interface Props {
   data: RewardsSummaryData
+  userType: UserType
   providerPayoutStatus: ProviderPayoutStatus
   autoContributeEnabled: boolean
   hideAdEarnings: boolean
-  earningsLastMonth: number
+  minEarningsLastMonth: number
+  maxEarningsLastMonth: number
   nextPaymentDate: number
   exchangeRate: number
   exchangeCurrency?: string
-  onViewPendingTips?: () => void
 }
 
 export function RewardsSummary (props: Props) {
   const { getString } = React.useContext(LocaleContext)
   const { data } = props
 
-  function renderRowWithNode (
-    amount: number,
-    message: React.ReactNode,
-    key: string
-  ) {
+  function renderRow (amount: number, message: string, key: string) {
     return (
       <tr>
-        <td>{message}</td>
+        <td>{getString(message)}</td>
         <td className='amount' data-test-id={`rewards-summary-${key}`}>
           <TokenAmount
             minimumFractionDigits={2}
@@ -63,30 +60,6 @@ export function RewardsSummary (props: Props) {
           />
         </td>
       </tr>
-    )
-  }
-
-  function renderRow (amount: number, message: string, key: string) {
-    const messageNode = getString(message)
-    return renderRowWithNode(amount, messageNode, key)
-  }
-
-  function renderPendingTips () {
-    if (!data.pendingTips || !props.onViewPendingTips) {
-      return null
-    }
-
-    return (
-      renderRowWithNode(data.pendingTips,
-        <style.pendingAction>
-          <button
-            data-test-id='view-pending-button'
-            onClick={props.onViewPendingTips}
-          >
-            {getString('walletPendingContributions')}
-          </button>
-        </style.pendingAction>,
-        'pending')
     )
   }
 
@@ -111,19 +84,22 @@ export function RewardsSummary (props: Props) {
               }
               {
                 props.autoContributeEnabled && renderRow(
-                  -data.autoContributions, 'walletAutoContribute', 'ac')
+                  data.autoContributions, 'walletAutoContribute', 'ac')
               }
-              {renderRow(-data.oneTimeTips, 'walletOneTimeTips', 'one-time')}
-              {renderRow(-data.monthlyTips, 'walletMonthlyTips', 'monthly')}
-              {renderPendingTips()}
+              {renderRow(data.oneTimeTips, 'walletOneTimeTips', 'one-time')}
+              {renderRow(data.monthlyTips, 'walletMonthlyTips', 'monthly')}
             </tbody>
           </table>
         </style.dataTable>
-        <PendingRewardsView
-          earningsLastMonth={props.earningsLastMonth}
-          nextPaymentDate={props.nextPaymentDate}
-          providerPayoutStatus={props.providerPayoutStatus}
-        />
+        {
+          props.userType === 'connected' &&
+            <PendingRewardsView
+              minEarnings={props.minEarningsLastMonth}
+              maxEarnings={props.maxEarningsLastMonth}
+              nextPaymentDate={props.nextPaymentDate}
+              providerPayoutStatus={props.providerPayoutStatus}
+            />
+        }
       </style.body>
     </style.root>
   )

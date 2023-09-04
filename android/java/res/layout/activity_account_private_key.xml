@@ -56,7 +56,7 @@
                 android:id ="@+id/copy_to_clipboard_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/brave_action_color"
+                android:textColor="@color/brave_text_button_color"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="16dp"
                 app:drawableEndCompat="@drawable/ic_copy"

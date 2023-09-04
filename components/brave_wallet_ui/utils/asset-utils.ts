@@ -109,7 +109,8 @@ export const getNativeTokensFromList = (tokenList: BraveWallet.BlockchainToken[]
       t.symbol.toLowerCase() === 'sol' && t.chainId === BraveWallet.SOLANA_MAINNET ||
       t.symbol.toLowerCase() === 'fil' && t.chainId === BraveWallet.FILECOIN_MAINNET ||
       t.symbol.toLowerCase() === 'avax' && t.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID ||
-      t.symbol.toLowerCase() === 'avaxc' && t.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID
+      t.symbol.toLowerCase() === 'avaxc' && t.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID ||
+      t.symbol.toLowerCase() === 'neon' && t.chainId === BraveWallet.NEON_EVM_MAINNET_CHAIN_ID
     ) {
       acc.nativeAssets.push(t)
       return acc
@@ -154,27 +155,30 @@ export const getBatTokensFromList = (tokenList: BraveWallet.BlockchainToken[]) =
 
 export type GetBlockchainTokenIdArg = Pick<
   BraveWallet.BlockchainToken,
+  | 'coin'
   | 'chainId'
   | 'contractAddress'
   | 'isErc721'
   | 'tokenId'
+  | 'isNft'
 >
 
 /**
  * @param asset The token to get an id for
  * @returns an id that can be used as a react element key
  */
-export const getAssetIdKey = (asset: GetBlockchainTokenIdArg) => {
-  return asset.isErc721
+export const getAssetIdKey = (
+  asset: Pick<
+    GetBlockchainTokenIdArg,
+    | 'contractAddress'
+    | 'chainId'
+    | 'tokenId'
+  >
+) => {
+  return asset.tokenId
     ? `${asset.contractAddress}-${asset.tokenId}-${asset.chainId}`
     : `${asset.contractAddress}-${asset.chainId}`
 }
-
-/**
- * Evaluates support for sardine
- * @returns Boolean indicating sardine support
- */
-export const isSardineSupported = () => navigator.language.toLowerCase() === 'en-us'
 
 export const findTokenByContractAddress = <
   T extends Pick<BraveWallet.BlockchainToken, 'contractAddress'>
@@ -232,7 +236,7 @@ export function filterTokensByNetworks (assets: BraveWallet.BlockchainToken[], n
 }
 
 export const checkIfTokenNeedsNetworkIcon = (
-  network: BraveWallet.NetworkInfo,
+  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'symbol'>,
   contractAddress: string
 ) => {
   return contractAddress !== '' || // non-native asset
@@ -242,3 +246,9 @@ export const checkIfTokenNeedsNetworkIcon = (
     getNetworkLogo(network.chainId, network.symbol) !==
     makeNativeAssetLogo(network.symbol, network.chainId)
 }
+
+/**
+ * Evaluates support for stripe
+ * @returns Boolean indicating stripe support
+ */
+export const isStripeSupported = () => navigator.language.toLowerCase() === 'en-us'

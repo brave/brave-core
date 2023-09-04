@@ -48,7 +48,7 @@
             base::BindOnce(                                                    \
                 &IdentityGetAuthTokenFunction::CompleteFunctionWithResult,     \
                 weak_ptr_factory_.GetWeakPtr()),                               \
-            oauth2_client_id_, token_key_, interactive);                       \
+            oauth2_client_id_, token_key_, interactive, user_gesture());       \
         return;                                                                \
       }                                                                        \
     } else {                                                                   \
@@ -56,7 +56,7 @@
         CompleteMintTokenFlow();                                               \
         /* Forcing interactive mode to try WebAuthFlow interactively. */       \
         interactivity_status_for_consent_ =                                    \
-            InteractivityStatus::kAllowedNoIdleCheck;                          \
+            InteractivityStatus::kAllowedWithActivity;                         \
         StartMintTokenFlow(IdentityMintRequestQueue::MINT_TYPE_INTERACTIVE);   \
         return;                                                                \
       }                                                                        \

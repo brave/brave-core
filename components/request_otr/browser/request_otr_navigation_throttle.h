@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "content/public/browser/navigation_throttle.h"
@@ -62,10 +63,10 @@ class RequestOTRNavigationThrottle : public content::NavigationThrottle {
   content::NavigationThrottle::ThrottleCheckResult MaybeShowInterstitial();
   void Enable1PESAndResume();
 
-  RequestOTRService* request_otr_service_ = nullptr;  // not owned
-  ephemeral_storage::EphemeralStorageService* ephemeral_storage_service_ =
-      nullptr;                           // not owned
-  PrefService* pref_service_ = nullptr;  // not owned
+  raw_ptr<RequestOTRService> request_otr_service_ = nullptr;  // not owned
+  raw_ptr<ephemeral_storage::EphemeralStorageService>
+      ephemeral_storage_service_ = nullptr;      // not owned
+  raw_ptr<PrefService> pref_service_ = nullptr;  // not owned
   std::string locale_;
 
   base::WeakPtrFactory<RequestOTRNavigationThrottle> weak_ptr_factory_{this};

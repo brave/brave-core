@@ -9,10 +9,11 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/singleton.h"
-#include "brave/components/brave_ads/core/ad_event_history.h"
+#include "brave/components/brave_ads/core/public/ads/ad_event/ad_event_history.h"
 
 namespace base {
+template <typename T>
+class NoDestructor;
 class Time;
 }  // namespace base
 
@@ -40,7 +41,7 @@ class FrequencyCappingHelper {
   void ResetAdEventHistoryForId(const std::string& id);
 
  private:
-  friend struct base::DefaultSingletonTraits<FrequencyCappingHelper>;
+  friend base::NoDestructor<FrequencyCappingHelper>;
 
   FrequencyCappingHelper();
 

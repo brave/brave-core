@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
-index cac6a061a4928e80ef3338173e685bf229748934..ae49e4de28559ae47eca49466b5a54b3ebb6e264 100644
+index 4d7ba2bfa18a741358dcc2b2171971700f04e159..b74610ae583c66d0b0f0419f05ef6be588c24adc 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 @@ -82,7 +82,7 @@ public class NotificationPlatformBridge {
@@ -20,7 +20,7 @@ index cac6a061a4928e80ef3338173e685bf229748934..ae49e4de28559ae47eca49466b5a54b3
          mNativeNotificationPlatformBridge = nativeNotificationPlatformBridge;
          Context context = ContextUtils.getApplicationContext();
          if (sNotificationManagerOverride != null) {
-@@ -588,7 +588,7 @@ public class NotificationPlatformBridge {
+@@ -585,7 +585,7 @@ public class NotificationPlatformBridge {
          }
      }
  

@@ -9,13 +9,13 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/attestation/attestation_iosx.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace attestation {
 
-AttestationIOS::AttestationIOS(LedgerImpl& ledger)
-    : Attestation(ledger), promotion_server_(ledger) {}
+AttestationIOS::AttestationIOS(RewardsEngineImpl& engine)
+    : Attestation(engine), promotion_server_(engine) {}
 
 AttestationIOS::~AttestationIOS() = default;
 
@@ -41,32 +41,32 @@ mojom::Result AttestationIOS::ParseClaimSolution(const std::string& response,
                                                  std::string* signature) {
   absl::optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* nonce_parsed = dict.FindString("nonce");
   if (!nonce_parsed) {
     BLOG(0, "Nonce is wrong");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const auto* blob_parsed = dict.FindString("blob");
   if (!blob_parsed) {
     BLOG(0, "Blob is wrong");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const auto* signature_parsed = dict.FindString("signature");
   if (!signature_parsed) {
     BLOG(0, "Signature is wrong");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   *nonce = *nonce_parsed;
   *blob = *blob_parsed;
   *signature = *signature_parsed;
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void AttestationIOS::Start(const std::string& payload, StartCallback callback) {
@@ -74,7 +74,7 @@ void AttestationIOS::Start(const std::string& payload, StartCallback callback) {
 
   if (key.empty()) {
     BLOG(0, "Key is empty");
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
   auto url_callback = base::BindOnce(
@@ -86,13 +86,13 @@ void AttestationIOS::Start(const std::string& payload, StartCallback callback) {
 void AttestationIOS::OnStart(StartCallback callback,
                              mojom::Result result,
                              const std::string& nonce) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Failed to start attestation");
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
-  std::move(callback).Run(mojom::Result::LEDGER_OK, nonce);
+  std::move(callback).Run(mojom::Result::OK, nonce);
 }
 
 void AttestationIOS::Confirm(const std::string& solution,
@@ -103,9 +103,9 @@ void AttestationIOS::Confirm(const std::string& solution,
   const mojom::Result result =
       ParseClaimSolution(solution, &nonce, &blob, &signature);
 
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Failed to parse solution");
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -117,13 +117,13 @@ void AttestationIOS::Confirm(const std::string& solution,
 }
 
 void AttestationIOS::OnConfirm(ConfirmCallback callback, mojom::Result result) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Failed to confirm attestation");
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  std::move(callback).Run(mojom::Result::LEDGER_OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 }  // namespace attestation

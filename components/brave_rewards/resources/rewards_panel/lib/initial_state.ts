@@ -14,8 +14,6 @@ export function getInitialState (): HostState {
     rewardsEnabled: false,
     balance: optional<number>(),
     settings: {
-      adsEnabled: false,
-      adsPerHour: 0,
       autoContributeEnabled: false,
       autoContributeAmount: 0
     },
@@ -33,8 +31,10 @@ export function getInitialState (): HostState {
     },
     earningsInfo: {
       nextPaymentDate: 0,
-      earningsThisMonth: 0,
-      earningsLastMonth: 0
+      minEarningsThisMonth: 0,
+      maxEarningsThisMonth: 0,
+      minEarningsLastMonth: 0,
+      maxEarningsLastMonth: 0
     },
     payoutStatus: {},
     publisherInfo: null,
@@ -45,13 +45,13 @@ export function getInitialState (): HostState {
       adEarnings: 0,
       autoContributions: 0,
       oneTimeTips: 0,
-      monthlyTips: 0,
-      pendingTips: 0
+      monthlyTips: 0
     },
     notifications: [],
     availableCountries: [],
     defaultCountry: '',
     declaredCountry: '',
+    isGrandfatheredUser: false,
     userType: 'unconnected',
     publishersVisitedCount: 0
   }

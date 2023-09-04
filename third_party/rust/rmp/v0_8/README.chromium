@@ -1,0 +1,7 @@
+Name: rmp
+URL: https://crates.io/crates/rmp
+Description: Pure Rust MessagePack serialization implementation
+Version: 0.8.11
+Security Critical: yes
+License: MIT
+Revision: 36940d05eb4ebcafddd8141b864d3afea0142376

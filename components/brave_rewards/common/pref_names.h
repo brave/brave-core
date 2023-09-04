@@ -23,8 +23,6 @@ extern const char kShowButton[];  // DEPRECATED
 extern const char kShowLocationBarButton[];
 extern const char kEnabled[];  // DEPRECATED
 extern const char kDeclaredGeo[];
-extern const char kAdsEnabledTimeDelta[];
-extern const char kAdsEnabledTimestamp[];
 extern const char kNotifications[];
 extern const char kNotificationTimerInterval[];
 extern const char kBackupNotificationInterval[];  // DEPRECATED
@@ -38,7 +36,7 @@ extern const char kBadgeText[];
 extern const char kUseRewardsStagingServer[];
 extern const char kExternalWalletType[];
 
-// Defined in native-ledger
+// Defined in core
 extern const char kServerPublisherListStamp[];
 extern const char kUpholdAnonAddress[];  // DEPRECATED
 extern const char kPromotionLastFetchStamp[];
@@ -76,11 +74,14 @@ extern const char kWalletBrave[];
 extern const char kWalletUphold[];
 extern const char kWalletBitflyer[];
 extern const char kWalletGemini[];
+extern const char kWalletZebPay[];
 extern const char kWalletCreationEnvironment[];
 
 // deprecated p3a prefs
 extern const char kAdsWereDisabled[];
 extern const char kHasAdsP3AState[];
+extern const char kAdsEnabledTimeDelta[];
+extern const char kAdsEnabledTimestamp[];
 
 }  // namespace brave_rewards::prefs
 

@@ -15,8 +15,11 @@ source_set("api") {
 
   deps = [
     "//base",
+    "//brave/components/brave_vpn/browser/api",
+    "//brave/components/brave_vpn/browser/connection:common",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
+    "//components/prefs",
     "//services/network/public/cpp",
   ]
 }
@@ -55,4 +58,15 @@ source_set("common") {
     "//services/network/public/cpp",
     "//url",
   ]
+}
+
+group("unit_tests") {
+  testonly = true
+  deps = []
+  if (!is_android) {
+    deps += [
+      "ikev2:unit_tests",
+      "wireguard:unit_tests",
+    ]
+  }
 }

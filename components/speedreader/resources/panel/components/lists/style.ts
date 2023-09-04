@@ -2,37 +2,81 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
+import { radius } from '@brave/leo/tokens/css'
 
 export const Box = styled.div`
-  border: 1px solid ${p => p.theme.color.divider01};
-  border-radius: 2000px;
-  padding: 3px;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-flow: column;
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  min-height: 48px;
+  background-color: transparent;
+`
 
-  button {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 0;
-    background-color: transparent;
-    padding: 4px 8px;
-    border: 0;
-    border-radius: 100px;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
+const GroupStyles = `
+  width: 32px;
+
+  border-radius: 0;
+  border-style: solid;
+  border-color: var(--color-button-border);
+
+  border-left-width: 0;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  border-right-width: 1px;
+
+  &:first-child {
+    border-left-width: 1px;
+    border-radius: ${radius.m} 0 0 ${radius.m};
   }
 
-  .sm {
-    font-size: 11px;
-    line-height: 1.1;
+  &:last-child {
+    border-radius: 0 ${radius.m} ${radius.m} 0;
+  }
+`
+
+export const CurrentStateIndicator = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  gap: 8px;
+  min-width: 78px;
+  height: 28px;
+  font-size: 12px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 14px;
+  letter-spacing: -0.289412px;
+
+  ${GroupStyles}
+`
+
+export const Button = styled.button<{inGroup?: boolean}>`
+  display: flex;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  justify-content: center;
+  border-radius: ${radius.m};
+  border: 0;
+  cursor: pointer;
+  align-items: center;
+  background-color: transparent;
+
+  &.is-active {
+    color: rgb(77, 82, 253);
+    background-color: var(--color-button-active);
   }
 
-  .is-active {
-    background: ${p => p.theme.color.divider01};
+  &:enabled {
+    &:hover {
+      background-color: var(--color-button-hover);
+    }
   }
+
+  ${props => props?.inGroup && GroupStyles}
 `

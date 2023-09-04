@@ -43,6 +43,8 @@ class TorNavigationThrottle : public content::NavigationThrottle,
   ThrottleCheckResult WillStartRequest() override;
   const char* GetNameForLogging() override;
 
+  static void SetSkipWaitForTorConnectedForTesting(bool skip);
+
  private:
   FRIEND_TEST_ALL_PREFIXES(TorNavigationThrottleUnitTest,
                            DeferUntilTorProcessLaunched);
@@ -50,6 +52,7 @@ class TorNavigationThrottle : public content::NavigationThrottle,
   // TorLauncherObserver:
   void OnTorCircuitEstablished(bool result) override;
 
+  static bool skip_wait_for_tor_connected_for_testing_;
   bool resume_pending_ = false;
   const raw_ref<TorLauncherFactory> tor_launcher_factory_;
 };

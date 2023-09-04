@@ -9,9 +9,14 @@ import static java.util.stream.Collectors.toMap;
 
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
+
+import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.KeyringId;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 
 import java.util.Arrays;
@@ -23,6 +28,8 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 
 public class AssetUtils {
+    private static final String TAG = "AssetUtils";
+
     public static String AURORA_SUPPORTED_CONTRACT_ADDRESSES[] = {
             "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9", // AAVE
             "0xaaaaaa20d9e0e2461697782ef11675f668207961", // AURORA
@@ -105,41 +112,68 @@ public class AssetUtils {
                 && chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID);
     }
 
-    public static String getKeyringForCoinType(int coinType) {
-        String keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
-        switch (coinType) {
-            case CoinType.ETH:
-                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
-                break;
-            case CoinType.SOL:
-                keyring = BraveWalletConstants.SOLANA_KEYRING_ID;
-                break;
-            case CoinType.FIL:
-                keyring = BraveWalletConstants.FILECOIN_KEYRING_ID;
-                break;
-            default:
-                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
-                break;
-        }
+    public static @KeyringId.EnumType int getKeyring(
+            @CoinType.EnumType int coinType, @Nullable String chainId) {
+        if (coinType == CoinType.FIL) {
+            switch (chainId) {
+                case BraveWalletConstants.FILECOIN_MAINNET:
+                    return KeyringId.FILECOIN;
 
-        return keyring;
+                case BraveWalletConstants.FILECOIN_TESTNET:
+                    return KeyringId.FILECOIN_TESTNET;
+
+                default:
+                    throw new IllegalStateException(
+                            String.format("No Filecoin keyring found for chain Id %s.", chainId));
+            }
+        } else {
+            return getKeyringForEthOrSolOnly(coinType);
+        }
     }
 
-    public static @CoinType.EnumType int getCoinForKeyring(String keyringId) {
-        int coin = CoinType.ETH; // For default keyring
-        switch (keyringId) {
-            case BraveWalletConstants.SOLANA_KEYRING_ID:
-                coin = CoinType.SOL;
-                break;
-            // Todo(pav): Un-comment once Filecoin is supported
-            // case BraveWalletConstants.FILECOIN_KEYRING_ID:
-            // case BraveWalletConstants.FILECOIN_TESTNET_KEYRING_ID:
-            //     coin = CoinType.FIL;
-            //     break;
+    public static AccountInfo[] filterAccountsByNetwork(
+            AccountInfo[] accounts, @CoinType.EnumType int coinType, @Nullable String chainId) {
+        @KeyringId.EnumType
+        int keyringId = AssetUtils.getKeyring(coinType, chainId);
+
+        return Arrays.stream(accounts)
+                .filter(acc -> acc.accountId.keyringId == keyringId)
+                .toArray(AccountInfo[] ::new);
+    }
+
+    public static AccountInfo[] filterAccountsByNetwork(
+            List<AccountInfo> accounts, @CoinType.EnumType int coinType, @Nullable String chainId) {
+        @KeyringId.EnumType
+        int keyringId = AssetUtils.getKeyring(coinType, chainId);
+
+        return accounts.stream()
+                .filter(acc -> acc.accountId.keyringId == keyringId)
+                .toArray(AccountInfo[] ::new);
+    }
+
+    /**
+     * Gets keyring Id only for coin types Ethereum and Solana.
+     * @param coinType Coin type Ethereum or Solana.
+     * @return Keyring Id for coin tpye. If coin type does not belong to Ethereum or Solana it
+     *         defaults to {@link BraveWalletConstants.DEFAULT_KEYRING_ID}.
+     */
+    public static @KeyringId.EnumType int getKeyringForEthOrSolOnly(
+            @CoinType.EnumType int coinType) {
+        switch (coinType) {
+            case CoinType.ETH:
+                return KeyringId.DEFAULT;
+            case CoinType.SOL:
+                return KeyringId.SOLANA;
+            case CoinType.FIL:
+                throw new IllegalArgumentException(
+                        "Keyring Id for Filecoin cannot be obtained by coin type. Consider using the method \"AssetUtils.getKeyring(coinType, chainId)\".");
             default:
-                // Do nothing
+                Log.e(TAG,
+                        String.format(Locale.ENGLISH,
+                                "Keyring Id for coin type %d cannot be found. Returning default keyring Id.",
+                                coinType));
+                return KeyringId.DEFAULT;
         }
-        return coin;
     }
 
     public static String mapToRampNetworkSymbol(
@@ -172,8 +206,8 @@ public class AssetUtils {
                 return "SOLANA";
             case BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID:
                 return "OPTIMISM";
-            //            case BraveWalletConstants.FILECOIN_MAINNET: return "FILECOIN"; /*not
-            //            supported yet*/
+            case BraveWalletConstants.FILECOIN_MAINNET:
+                return "FILECOIN";
             case BraveWalletConstants.MAINNET_CHAIN_ID:
             case BraveWalletConstants.CELO_MAINNET_CHAIN_ID:
             default:
@@ -212,6 +246,7 @@ public class AssetUtils {
             put(BraveWalletConstants.SEPOLIA_CHAIN_ID, Arrays.asList("eth"));
             put(BraveWalletConstants.SOLANA_TESTNET, Arrays.asList("sol"));
             put(BraveWalletConstants.SOLANA_DEVNET, Arrays.asList("sol"));
+            put(BraveWalletConstants.FILECOIN_TESTNET, Arrays.asList("fil"));
         }
     };
     public static String httpifyIpfsUrl(String url) {

@@ -5,9 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,12 +17,10 @@ import androidx.preference.Preference;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveFeatureUtil;
+import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
@@ -38,10 +34,7 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
-import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
-import org.chromium.chrome.browser.settings.BraveStatsPreferences;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
@@ -79,7 +72,6 @@ public class BraveMainPreferencesBase
     private static final String PREF_PRIVACY = "privacy";
     private static final String PREF_SHIELDS_AND_PRIVACY = "brave_shields_and_privacy";
     private static final String PREF_BRAVE_SEARCH_ENGINES = "brave_search_engines";
-    private static final String PREF_BRAVE_NEWS = "brave_news";
     private static final String PREF_BRAVE_NEWS_V2 = "brave_news_v2";
     private static final String PREF_BRAVE_PLAYLIST = "brave_playlist";
     private static final String PREF_SYNC = "brave_sync_layout";
@@ -93,7 +85,6 @@ public class BraveMainPreferencesBase
     private static final String PREF_CONTENT_SETTINGS = "content_settings";
     private static final String PREF_ABOUT_CHROME = "about_chrome";
     private static final String PREF_BACKGROUND_IMAGES = "backgroud_images";
-    private static final String PREF_BRAVE_REWARDS = "brave_rewards";
     private static final String PREF_BRAVE_WALLET = "brave_wallet";
     private static final String PREF_BRAVE_VPN = "brave_vpn";
     private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
@@ -200,14 +191,6 @@ public class BraveMainPreferencesBase
         removePreferenceIfPresent(PREF_PRIVACY);
         removePreferenceIfPresent(PREF_BRAVE_VPN_CALLOUT);
 
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
-            removePreferenceIfPresent(PREF_BRAVE_NEWS);
-            removePreferenceIfPresent(PREF_BRAVE_NEWS_V2);
-        } else if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS_V2)) {
-            removePreferenceIfPresent(PREF_BRAVE_NEWS);
-        } else {
-            removePreferenceIfPresent(PREF_BRAVE_NEWS_V2);
-        }
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
             removePreferenceIfPresent(PREF_BRAVE_PLAYLIST);
         }
@@ -220,17 +203,20 @@ public class BraveMainPreferencesBase
         // rearanges programmatically the order for the prefs from Brave and Chromium
         rearrangePreferenceOrders();
 
-        BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        if (braveRewardsNativeWorker == null || !braveRewardsNativeWorker.IsSupported()
-                || BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
-            removePreferenceIfPresent(PREF_BRAVE_REWARDS);
-        }
-
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M 
             || (NTPUtil.isReferralEnabled() && NTPBackgroundImagesBridge.enableSponsoredImages())) {
             removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
         }
         setBgPlaybackPreference();
+        setCustomTabPreference();
+    }
+
+    private void setCustomTabPreference() {
+        Preference preference = findPreference(PREF_USE_CUSTOM_TABS);
+        if (preference instanceof ChromeSwitchPreference) {
+            ((ChromeSwitchPreference) preference)
+                    .setChecked(BraveLaunchIntentDispatcher.useCustomTabs());
+        }
     }
 
     private void setBgPlaybackPreference() {
@@ -279,7 +265,7 @@ public class BraveMainPreferencesBase
         findPreference(PREF_FEATURES_SECTION).setOrder(++firstSectionOrder);
 
         findPreference(PREF_SHIELDS_AND_PRIVACY).setOrder(++firstSectionOrder);
-        findPreference(PREF_BRAVE_REWARDS).setOrder(++firstSectionOrder);
+        findPreference(PREF_BRAVE_NEWS_V2).setOrder(++firstSectionOrder);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
             findPreference(PREF_BRAVE_WALLET).setOrder(++firstSectionOrder);

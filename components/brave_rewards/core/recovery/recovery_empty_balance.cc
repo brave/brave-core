@@ -10,8 +10,8 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/recovery/recovery_empty_balance.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
@@ -26,14 +26,14 @@ const int32_t kVersion = 1;
 namespace brave_rewards::internal {
 namespace recovery {
 
-EmptyBalance::EmptyBalance(LedgerImpl& ledger)
-    : ledger_(ledger), promotion_server_(ledger) {}
+EmptyBalance::EmptyBalance(RewardsEngineImpl& engine)
+    : engine_(engine), promotion_server_(engine) {}
 
 EmptyBalance::~EmptyBalance() = default;
 
 void EmptyBalance::Check() {
   auto get_callback = std::bind(&EmptyBalance::OnAllContributions, this, _1);
-  ledger_->database()->GetAllContributions(get_callback);
+  engine_->database()->GetAllContributions(get_callback);
 }
 
 void EmptyBalance::OnAllContributions(
@@ -66,7 +66,7 @@ void EmptyBalance::GetPromotions(database::GetPromotionListCallback callback) {
   auto get_callback =
       std::bind(&EmptyBalance::OnPromotions, this, _1, callback);
 
-  ledger_->database()->GetAllPromotions(get_callback);
+  engine_->database()->GetAllPromotions(get_callback);
 }
 
 void EmptyBalance::OnPromotions(
@@ -96,13 +96,13 @@ void EmptyBalance::GetCredsByPromotions(std::vector<mojom::PromotionPtr> list) {
 
   auto get_callback = std::bind(&EmptyBalance::OnCreds, this, _1);
 
-  ledger_->database()->GetCredsBatchesByTriggers(promotion_ids, get_callback);
+  engine_->database()->GetCredsBatchesByTriggers(promotion_ids, get_callback);
 }
 
 void EmptyBalance::OnCreds(std::vector<mojom::CredsBatchPtr> list) {
   if (list.empty()) {
     BLOG(1, "Creds batch list is emtpy");
-    ledger_->state()->SetEmptyBalanceChecked(true);
+    engine_->state()->SetEmptyBalanceChecked(true);
     return;
   }
 
@@ -131,19 +131,19 @@ void EmptyBalance::OnCreds(std::vector<mojom::CredsBatchPtr> list) {
 
   if (token_list.empty()) {
     BLOG(1, "Unblinded token list is emtpy");
-    ledger_->state()->SetEmptyBalanceChecked(true);
+    engine_->state()->SetEmptyBalanceChecked(true);
     return;
   }
 
   auto save_callback = std::bind(&EmptyBalance::OnSaveUnblindedCreds, this, _1);
 
-  ledger_->database()->SaveUnblindedTokenList(std::move(token_list),
+  engine_->database()->SaveUnblindedTokenList(std::move(token_list),
                                               save_callback);
 }
 
 void EmptyBalance::OnSaveUnblindedCreds(const mojom::Result result) {
   BLOG(1, "Finished empty balance migration with result: " << result);
-  ledger_->state()->SetEmptyBalanceChecked(true);
+  engine_->state()->SetEmptyBalanceChecked(true);
 }
 
 void EmptyBalance::GetAllTokens(std::vector<mojom::PromotionPtr> list,
@@ -160,7 +160,7 @@ void EmptyBalance::GetAllTokens(std::vector<mojom::PromotionPtr> list,
   auto tokens_callback = std::bind(&EmptyBalance::ReportResults, this, _1,
                                    contribution_sum, promotion_sum);
 
-  ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(
+  engine_->database()->GetSpendableUnblindedTokensByBatchTypes(
       {mojom::CredsBatchType::PROMOTION}, tokens_callback);
 }
 
@@ -177,7 +177,7 @@ void EmptyBalance::ReportResults(std::vector<mojom::UnblindedTokenPtr> list,
 
   if (total <= 0) {
     BLOG(1, "Unblinded token total is OK");
-    ledger_->state()->SetEmptyBalanceChecked(true);
+    engine_->state()->SetEmptyBalanceChecked(true);
     return;
   }
 
@@ -189,12 +189,12 @@ void EmptyBalance::ReportResults(std::vector<mojom::UnblindedTokenPtr> list,
 }
 
 void EmptyBalance::Sent(const mojom::Result result) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     return;
   }
 
   BLOG(1, "Finished empty balance migration!");
-  ledger_->state()->SetEmptyBalanceChecked(true);
+  engine_->state()->SetEmptyBalanceChecked(true);
 }
 
 }  // namespace recovery

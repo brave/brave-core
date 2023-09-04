@@ -21,6 +21,7 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
+#include "brave/components/ipfs/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/common/channel_info.h"
@@ -465,6 +466,147 @@ ExtensionFunction::ResponseAction IpfsValidateGatewayUrlFunction::Run() {
 
 void IpfsValidateGatewayUrlFunction::OnGatewayValidated(bool success) {
   return Respond(WithArguments(success));
+}
+
+ExtensionFunction::ResponseAction IpfsGetSettingsFunction::Run() {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
+
+  base::Value::Dict response;
+  response.Set("gateway_auto_fallback_enabled",
+               prefs->GetBoolean(kIPFSAutoFallbackToGateway));
+  response.Set("auto_redirect_to_configured_gateway",
+               prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
+  response.Set("storage_max", prefs->GetInteger(kIpfsStorageMax));
+  response.Set("gateway_url", prefs->GetString(kIPFSPublicGatewayAddress));
+  response.Set("nft_gateway_url",
+               prefs->GetString(kIPFSPublicNFTGatewayAddress));
+
+  std::string resolve_method_str;
+  IPFSResolveMethodTypes resolve_method = static_cast<IPFSResolveMethodTypes>(
+      prefs->GetInteger(kIPFSResolveMethod));
+  switch (resolve_method) {
+    case IPFSResolveMethodTypes::IPFS_LOCAL:
+      resolve_method_str = "local";
+      break;
+    case IPFSResolveMethodTypes::IPFS_GATEWAY:
+      resolve_method_str = "gateway";
+      break;
+    case IPFSResolveMethodTypes::IPFS_ASK:
+      resolve_method_str = "ask";
+      break;
+    case IPFSResolveMethodTypes::IPFS_DISABLED:
+      resolve_method_str = "disabled";
+      break;
+  }
+  response.Set("resolve_method", resolve_method_str);
+
+  std::string json_string;
+  base::JSONWriter::Write(response, &json_string);
+
+  return RespondNow(WithArguments(json_string));
+}
+
+ExtensionFunction::ResponseAction IpfsSetPublicGatewayFunction::Run() {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
+
+  absl::optional<ipfs::SetPublicGateway::Params> params =
+      ipfs::SetPublicGateway::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
+
+  GURL url(params->url);
+  if (!url.is_valid()) {
+    return RespondNow(Error("Wrong url format"));
+  }
+
+  prefs->SetString(kIPFSPublicGatewayAddress, params->url);
+  return RespondNow(WithArguments(true));
+}
+
+ExtensionFunction::ResponseAction IpfsSetPublicNFTGatewayFunction::Run() {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
+
+  absl::optional<ipfs::SetPublicNFTGateway::Params> params =
+      ipfs::SetPublicNFTGateway::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
+
+  GURL url(params->url);
+  if (!url.is_valid()) {
+    return RespondNow(Error("Wrong url format"));
+  }
+
+  prefs->SetString(kIPFSPublicNFTGatewayAddress, params->url);
+  return RespondNow(WithArguments(true));
+}
+
+ExtensionFunction::ResponseAction IpfsSetResolveMethodFunction::Run() {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
+
+  absl::optional<ipfs::SetResolveMethod::Params> params =
+      ipfs::SetResolveMethod::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
+
+  IPFSResolveMethodTypes resolve_method;
+  if (params->resolve_method == "ask") {
+    resolve_method = IPFSResolveMethodTypes::IPFS_ASK;
+  } else if (params->resolve_method == "local") {
+    resolve_method = IPFSResolveMethodTypes::IPFS_LOCAL;
+  } else if (params->resolve_method == "gateway") {
+    resolve_method = IPFSResolveMethodTypes::IPFS_GATEWAY;
+  } else if (params->resolve_method == "disabled") {
+    resolve_method = IPFSResolveMethodTypes::IPFS_DISABLED;
+  } else {
+    return RespondNow(Error("Wrong arguments"));
+  }
+
+  prefs->SetInteger(kIPFSResolveMethod, static_cast<int>(resolve_method));
+  return RespondNow(WithArguments(true));
+}
+
+ExtensionFunction::ResponseAction
+IpfsSetAutoRedirectToConfiguredGatewayEnabledFunction::Run() {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
+
+  absl::optional<ipfs::SetAutoRedirectToConfiguredGatewayEnabled::Params>
+      params = ipfs::SetAutoRedirectToConfiguredGatewayEnabled::Params::Create(
+          args());
+  EXTENSION_FUNCTION_VALIDATE(params);
+
+  prefs->SetBoolean(kIPFSAutoRedirectToConfiguredGateway, params->value);
+  return RespondNow(WithArguments(true));
+}
+
+ExtensionFunction::ResponseAction IpfsSetGatewayFallbackEnabledFunction::Run() {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
+
+  absl::optional<ipfs::SetGatewayFallbackEnabled::Params> params =
+      ipfs::SetGatewayFallbackEnabled::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
+
+  prefs->SetBoolean(kIPFSAutoFallbackToGateway, params->value);
+  return RespondNow(WithArguments(true));
 }
 
 }  // namespace api

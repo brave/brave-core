@@ -12,6 +12,9 @@ if (enable_playlist) {
   brave_browser_playlist_sources += [
     "//brave/browser/playlist/playlist_service_factory.cc",
     "//brave/browser/playlist/playlist_service_factory.h",
+    "//brave/browser/playlist/playlist_tab_helper.cc",
+    "//brave/browser/playlist/playlist_tab_helper.h",
+    "//brave/browser/playlist/playlist_tab_helper_observer.h",
   ]
 
   brave_browser_playlist_deps += [
@@ -32,6 +35,11 @@ if (enable_playlist) {
     brave_browser_playlist_deps += [
       "//brave/build/android:jni_headers",
       "//mojo/public/cpp/bindings",
+    ]
+  } else {
+    brave_browser_playlist_sources += [
+      "//brave/browser/playlist/playlist_data_source.cc",
+      "//brave/browser/playlist/playlist_data_source.h",
     ]
   }
 }

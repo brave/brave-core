@@ -162,7 +162,7 @@ void RewardsBrowserTestContribution::TipPublisher(
   ASSERT_EQ(static_cast<int32_t>(multiple_tip_reconcile_status_.size()),
             number_of_contributions);
   for (const auto status : multiple_tip_reconcile_status_) {
-    ASSERT_EQ(status, mojom::Result::LEDGER_OK);
+    ASSERT_EQ(status, mojom::Result::OK);
   }
 
   if (set_monthly) {
@@ -172,7 +172,7 @@ void RewardsBrowserTestContribution::TipPublisher(
 
     // Wait for reconciliation to complete
     WaitForTipReconcileCompleted();
-    ASSERT_EQ(tip_reconcile_status_, mojom::Result::LEDGER_OK);
+    ASSERT_EQ(tip_reconcile_status_, mojom::Result::OK);
   }
 
   VerifyTip(amount, set_monthly);
@@ -197,7 +197,7 @@ void RewardsBrowserTestContribution::VerifyTip(const double amount,
                                    : "[data-test-id=rewards-summary-one-time]";
 
   test_util::WaitForElementToContain(contents(), selector,
-                                     base::StringPrintf("-%.2f BAT", amount));
+                                     base::StringPrintf("%.2f BAT", amount));
 }
 
 void RewardsBrowserTestContribution::IsBalanceCorrect() {
@@ -233,7 +233,7 @@ void RewardsBrowserTestContribution::OnReconcileComplete(
     const double amount,
     const mojom::RewardsType type,
     const mojom::ContributionProcessor processor) {
-  if (result == mojom::Result::LEDGER_OK) {
+  if (result == mojom::Result::OK) {
     UpdateContributionBalance(
         amount,
         true,
@@ -261,7 +261,7 @@ void RewardsBrowserTestContribution::OnReconcileComplete(
 
   if (type == mojom::RewardsType::ONE_TIME_TIP ||
       type == mojom::RewardsType::RECURRING_TIP) {
-    if (result == mojom::Result::LEDGER_OK) {
+    if (result == mojom::Result::OK) {
       reconciled_tip_total_ += amount;
     }
 

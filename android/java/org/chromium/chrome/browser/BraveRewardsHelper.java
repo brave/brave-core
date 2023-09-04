@@ -26,17 +26,12 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
-import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.components.browser_ui.widget.RoundedIconGenerator;
 import org.chromium.components.favicon.IconType;
 import org.chromium.components.favicon.LargeIconBridge;
@@ -82,6 +77,24 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     private Tab mTab;
     private Profile mProfile;
 
+    public static boolean isRewardsEnabled() {
+        BraveRewardsNativeWorker worker = BraveRewardsNativeWorker.getInstance();
+        return worker != null && worker.isRewardsEnabled();
+    }
+
+    public static void resetRewards() {
+        SharedPreferences.Editor sharedPreferencesEditor =
+                ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putBoolean(PREF_REWARDS_ENV_CHANGE, false);
+        sharedPreferencesEditor.putLong(PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE, 0);
+        sharedPreferencesEditor.putBoolean(PREF_REWARDS_ONBOARDING_MODAL, false);
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_ONBOARDING_MINI_MODAL, true);
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL, true);
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE, false);
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_DECLARE_GEO_MODAL, false);
+        sharedPreferencesEditor.apply();
+    }
+
     public static void setRewardsEnvChange(boolean isEnabled) {
         SharedPreferences.Editor sharedPreferencesEditor =
                 ContextUtils.getAppSharedPreferences().edit();
@@ -124,7 +137,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
                         && System.currentTimeMillis() > getNextRewardsOnboardingModalDate())
                 && shouldShowBraveRewardsOnboardingModal() && braveRewardsNativeWorker != null
                 && braveRewardsNativeWorker.IsSupported()) {
-            if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+            if (isRewardsEnabled()) {
                 setRewardsOnboardingModalShown(true);
                 return false;
             } else {

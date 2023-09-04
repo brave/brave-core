@@ -11,7 +11,7 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/values.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // POST /v1/promotions/{promotion_id}
 //
@@ -40,7 +40,7 @@
 // }
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 namespace promotion {
@@ -50,7 +50,7 @@ using PostCredsCallback =
 
 class PostCreds {
  public:
-  explicit PostCreds(LedgerImpl& ledger);
+  explicit PostCreds(RewardsEngineImpl& engine);
   ~PostCreds();
 
   void Request(const std::string& promotion_id,
@@ -68,7 +68,7 @@ class PostCreds {
 
   void OnRequest(PostCredsCallback callback, mojom::UrlResponsePtr response);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace promotion

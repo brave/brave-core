@@ -13,44 +13,44 @@
 
 namespace blink {
 
-Response InspectorPageAgent::generatePageGraph(String* data) {
+protocol::Response InspectorPageAgent::generatePageGraph(String* data) {
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
   LocalFrame* main_frame = inspected_frames_->Root();
   if (!main_frame) {
-    return Response::ServerError("No main frame found");
+    return protocol::Response::ServerError("No main frame found");
   }
 
   PageGraph* page_graph = blink::PageGraph::From(*main_frame);
   if (!page_graph) {
-    return Response::ServerError("No Page Graph for main frame");
+    return protocol::Response::ServerError("No Page Graph for main frame");
   }
 
   *data = page_graph->ToGraphML();
-  return Response::Success();
+  return protocol::Response::Success();
 #else
-  return Response::ServerError("Page Graph buildflag is disabled");
+  return protocol::Response::ServerError("Page Graph buildflag is disabled");
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 }
 
-Response InspectorPageAgent::generatePageGraphNodeReport(
+protocol::Response InspectorPageAgent::generatePageGraphNodeReport(
     int node_id,
     std::unique_ptr<protocol::Array<String>>* report) {
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
   LocalFrame* main_frame = inspected_frames_->Root();
   if (!main_frame) {
-    return Response::ServerError("No main frame found");
+    return protocol::Response::ServerError("No main frame found");
   }
 
   PageGraph* page_graph = blink::PageGraph::From(*main_frame);
   if (!page_graph) {
-    return Response::ServerError("No Page Graph for main frame");
+    return protocol::Response::ServerError("No Page Graph for main frame");
   }
 
   *report = std::make_unique<protocol::Array<String>>();
   page_graph->GenerateReportForNode(node_id, **report);
-  return Response::Success();
+  return protocol::Response::Success();
 #else
-  return Response::ServerError("Page Graph buildflag is disabled");
+  return protocol::Response::ServerError("Page Graph buildflag is disabled");
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 }
 

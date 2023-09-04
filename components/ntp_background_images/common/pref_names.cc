@@ -10,6 +10,7 @@ namespace prefs {
 
 const char kBrandedWallpaperNotificationDismissed[] =
     "brave.branded_wallpaper_notification_dismissed";
+const char kCountToBrandedWallpaper[] = "brave.count_to_branded_wallpaper";
 const char kNewTabPageShowSponsoredImagesBackgroundImage[] =
     "brave.new_tab_page.show_branded_background_image";
 const char kNewTabPageSuperReferralThemesOption[] =

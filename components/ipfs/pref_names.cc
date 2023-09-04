@@ -19,12 +19,19 @@ const char kIPFSBinaryPath[] = "brave.ipfs.binary_path";
 // local node is not available.
 const char kIPFSAutoFallbackToGateway[] = "brave.ipfs.auto_fallback_to_gateway";
 
+// Deprecated, use kIPFSAutoRedirectToConfiguredGateway instead
 // Used to automatically redirect Gateway resources with x-ipfs-path
 // header to the configured Brave IPFS gateway.
 const char kIPFSAutoRedirectGateway[] = "brave.ipfs.auto_redirect_gateway";
 
+// Deprecated, use kIPFSAutoRedirectToConfiguredGateway instead
 // Used to automatically redirect for DNSLink resources
 const char kIPFSAutoRedirectDNSLink[] = "brave.ipfs.auto_redirect_dnslink";
+
+// This is a new setting which merges kIPFSAutoRedirectGateway and
+// kIPFSAutoRedirectDNSLink
+const char kIPFSAutoRedirectToConfiguredGateway[] =
+    "brave.ipfs.auto_redirect_to_configured_gateway";
 
 // The number of times the infobar is shown to ask the user to install IPFS
 const char kIPFSInfobarCount[] = "brave.ipfs.infobar_count";
@@ -47,3 +54,6 @@ const char kIPFSPublicNFTGatewayAddress[] =
 
 // Stores list of CIDs that are pinned localy
 const char kIPFSPinnedCids[] = "brave.ipfs.local_pinned_cids";
+
+// Stores info whether IPFS promo infobar was shown yet
+const char kShowIPFSPromoInfobar[] = "brave.ipfs.show_ipfs_promo_infobar";

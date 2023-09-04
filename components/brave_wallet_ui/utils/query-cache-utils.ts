@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { EntityId, EntityState } from '@reduxjs/toolkit'
-import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 import { blockchainTokenEntityAdaptor } from '../common/slices/entities/blockchain-token.entity'
 import { GetBlockchainTokenIdArg } from './asset-utils'
 import { BraveWallet } from '../constants/types'
@@ -284,10 +284,10 @@ export const TX_CACHE_TAGS = {
       type: 'Transactions',
       id: `chainId: ${chainId}`
     } as const),
-  FROM_ADDRESS: (address: string) =>
+  FROM_ACCOUNT_ID: (fromAccountId: BraveWallet.AccountId) =>
     ({
       type: 'Transactions',
-      id: `fromAddress: ${address}`
+      id: `fromAccountId: ${fromAccountId.uniqueKey}`
     } as const),
   TXS_LIST: {
     type: 'Transactions' as const,
@@ -296,16 +296,16 @@ export const TX_CACHE_TAGS = {
   LISTS: ({
     chainId,
     coin,
-    fromAddress
+    fromAccountId
   }: {
     chainId: string | null
     coin: BraveWallet.CoinType | null
-    fromAddress: string | null
+    fromAccountId: BraveWallet.AccountId | null
   }) =>
     [
       TX_CACHE_TAGS.TXS_LIST,
       ...(coin !== null ? [TX_CACHE_TAGS.FOR_COIN_TYPE(coin)] : []),
-      ...(fromAddress ? [TX_CACHE_TAGS.FROM_ADDRESS(fromAddress)] : []),
+      ...(fromAccountId ? [TX_CACHE_TAGS.FROM_ACCOUNT_ID(fromAccountId)] : []),
       ...(chainId ? [TX_CACHE_TAGS.FOR_CHAIN_ID(chainId)] : [])
     ] as const
 } as const

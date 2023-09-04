@@ -34,6 +34,8 @@ class TestFiltersProvider : public AdBlockFiltersProvider,
   void LoadResources(
       base::OnceCallback<void(const std::string& resources_json)> cb) override;
 
+  std::string GetNameForDebugging() override;
+
  private:
   DATFileDataBuffer dat_buffer_;
   std::string rules_;

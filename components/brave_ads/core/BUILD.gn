@@ -3,77 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-static_library("core") {
-  sources = [
-    "search_result_ad/search_result_ad_converting_util.cc",
-    "search_result_ad/search_result_ad_converting_util.h",
-    "search_result_ad/search_result_ad_util.cc",
-    "search_result_ad/search_result_ad_util.h",
-  ]
+group("core") {
+  deps = [ "//brave/components/brave_ads/core/internal" ]
 
-  deps = [
-    "//base",
-    "//brave/components/brave_ads/core/internal",
-    "//brave/components/brave_search/common/",
-    "//url",
-  ]
-
-  public_deps = [
-    ":headers",
-    "//components/schema_org/common:mojom",
-  ]
-}
-
-source_set("headers") {
-  sources = [
-    "ad_constants.h",
-    "ad_content_info.h",
-    "ad_content_value_util.h",
-    "ad_event_history.h",
-    "ad_info.h",
-    "ad_type.h",
-    "ads.h",
-    "ads_callback.h",
-    "ads_client.h",
-    "ads_client_callback.h",
-    "ads_client_notifier.h",
-    "ads_client_notifier_observer.h",
-    "ads_util.h",
-    "category_content_info.h",
-    "confirmation_type.h",
-    "database.h",
-    "export.h",
-    "flags_util.h",
-    "history_filter_types.h",
-    "history_item_info.h",
-    "history_item_value_util.h",
-    "history_sort_types.h",
-    "inline_content_ad_constants.h",
-    "inline_content_ad_info.h",
-    "inline_content_ad_value_util.h",
-    "new_tab_page_ad_constants.h",
-    "new_tab_page_ad_info.h",
-    "new_tab_page_ad_value_util.h",
-    "new_tab_page_ad_wallpaper_focal_point_info.h",
-    "new_tab_page_ad_wallpaper_info.h",
-    "notification_ad_constants.h",
-    "notification_ad_info.h",
-    "notification_ad_value_util.h",
-    "page_transition_types.h",
-    "promoted_content_ad_constants.h",
-    "promoted_content_ad_info.h",
-    "promoted_content_ad_value_util.h",
-    "supported_subdivisions.h",
-  ]
-
-  deps = [
-    "//base",
-    "//sql",
-    "//url",
-  ]
-
-  public_deps = [
-    "//brave/components/brave_ads/common/interfaces",
-    "//brave/components/brave_federated/public/interfaces",
-  ]
+  public_deps = [ "//brave/components/brave_ads/core/public:headers" ]
 }

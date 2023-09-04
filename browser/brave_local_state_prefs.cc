@@ -12,6 +12,7 @@
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
@@ -25,8 +26,8 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
-#include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/misc_metrics/page_metrics_service.h"
+#include "brave/components/misc_metrics/privacy_hub_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/p3a/p3a_service.h"
@@ -71,6 +72,7 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 #endif
 
   brave_wallet::RegisterLocalStatePrefsForMigration(registry);
+  brave_search_conversion::p3a::RegisterLocalStatePrefsForMigration(registry);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -135,7 +137,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
   brave_wallet::RegisterLocalStatePrefs(registry);
 
-  misc_metrics::MenuMetrics::RegisterPrefs(registry);
+  misc_metrics::ProcessMiscMetrics::RegisterPrefs(registry);
   misc_metrics::PageMetricsService::RegisterPrefs(registry);
   brave_ads::BraveStatsHelper::RegisterLocalStatePrefs(registry);
   misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);

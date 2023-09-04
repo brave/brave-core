@@ -35,7 +35,6 @@ class BraveWalletRenderFrameObserverP3AUtil {
                         v8::Local<v8::Context>& context,
                         mojom::CoinType coin_type,
                         const char* provider_object_key,
-                        bool use_native_wallet_enabled,
                         bool allow_provider_overwrite);
 
   mojo::Remote<brave_wallet::mojom::BraveWalletP3A> brave_wallet_p3a_;

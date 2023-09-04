@@ -11,17 +11,17 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/publisher_state.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace state {
 
 class StateMigrationV1 {
  public:
-  explicit StateMigrationV1(LedgerImpl& ledger);
+  explicit StateMigrationV1(RewardsEngineImpl& engine);
   ~StateMigrationV1();
 
   void Migrate(LegacyResultCallback callback);
@@ -34,7 +34,7 @@ class StateMigrationV1 {
   void BalanceReportsSaved(mojom::Result result, LegacyResultCallback callback);
 
   std::unique_ptr<publisher::LegacyPublisherState> legacy_publisher_;
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   bool legacy_data_migrated_ = false;
 };
 

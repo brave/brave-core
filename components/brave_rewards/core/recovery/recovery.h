@@ -10,19 +10,19 @@
 #include "brave/components/brave_rewards/core/recovery/recovery_empty_balance.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace recovery {
 
 class Recovery {
  public:
-  explicit Recovery(LedgerImpl& ledger);
+  explicit Recovery(RewardsEngineImpl& engine);
   ~Recovery();
 
   void Check();
 
  private:
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   EmptyBalance empty_balance_;
 };
 

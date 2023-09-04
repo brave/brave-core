@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_rewards/core/attestation/attestation_impl.h"
 
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "build/build_config.h"
 #include "net/http/http_status_code.h"
 
@@ -23,13 +23,14 @@
 namespace brave_rewards::internal {
 namespace attestation {
 
-AttestationImpl::AttestationImpl(LedgerImpl& ledger) : Attestation(ledger) {
+AttestationImpl::AttestationImpl(RewardsEngineImpl& engine)
+    : Attestation(engine) {
 #if BUILDFLAG(IS_IOS)
-  platform_instance_ = std::make_unique<AttestationIOS>(ledger);
+  platform_instance_ = std::make_unique<AttestationIOS>(engine);
 #elif BUILDFLAG(IS_ANDROID)
-  platform_instance_ = std::make_unique<AttestationAndroid>(ledger);
+  platform_instance_ = std::make_unique<AttestationAndroid>(engine);
 #else
-  platform_instance_ = std::make_unique<AttestationDesktop>(ledger);
+  platform_instance_ = std::make_unique<AttestationDesktop>(engine);
 #endif
 }
 

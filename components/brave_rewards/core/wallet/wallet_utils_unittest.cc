@@ -7,10 +7,10 @@
 
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
-#include "brave/components/brave_rewards/core/test/test_ledger_client.h"
+#include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -70,13 +70,13 @@ class TransitionWalletCreate
       public WithParamInterface<TransitionWalletCreateParamType> {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
+  MockRewardsEngineImpl mock_engine_impl_;
 };
 
 TEST_P(TransitionWalletCreate, Paths) {
   const auto& [ignore, to, wallet_already_exists, expected] = GetParam();
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(),
+  EXPECT_CALL(*mock_engine_impl_.mock_client(),
               GetStringState(state::kWalletUphold, _))
       .Times(1)
       .WillOnce([&](const std::string&, auto callback) {
@@ -85,13 +85,13 @@ TEST_P(TransitionWalletCreate, Paths) {
                                     : "");
       });
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  ON_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
   const auto wallet =
-      TransitionWallet(mock_ledger_impl_, constant::kWalletUphold, to);
+      TransitionWallet(mock_engine_impl_, constant::kWalletUphold, to);
   EXPECT_EQ(static_cast<bool>(wallet), expected);
 
   if (wallet) {
@@ -158,19 +158,19 @@ class TransitionWalletTransition
       public WithParamInterface<TransitionWalletTransitionParamType> {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
+  MockRewardsEngineImpl mock_engine_impl_;
 };
 
 TEST_P(TransitionWalletTransition, Paths) {
   const auto& [ignore, from_wallet, to, expected] = GetParam();
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  ON_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
   const auto to_wallet =
-      TransitionWallet(mock_ledger_impl_, std::move(*from_wallet), to);
+      TransitionWallet(mock_engine_impl_, std::move(*from_wallet), to);
   EXPECT_EQ(static_cast<bool>(to_wallet), expected);
 
   if (to_wallet) {
@@ -182,7 +182,8 @@ TEST_P(TransitionWalletTransition, Paths) {
     if (to == mojom::WalletStatus::kConnected) {
       EXPECT_FALSE(to_wallet->activity_url.empty());
     } else {
-      EXPECT_TRUE(to == mojom::WalletStatus::kLoggedOut);
+      EXPECT_TRUE(to == mojom::WalletStatus::kNotConnected ||
+                  to == mojom::WalletStatus::kLoggedOut);
 
       EXPECT_TRUE(to_wallet->activity_url.empty());
 
@@ -261,11 +262,12 @@ INSTANTIATE_TEST_SUITE_P(
       "kLoggedOut__kNotConnected",
       []{
         auto wallet = mojom::ExternalWallet::New();
+        wallet->type = constant::kWalletUphold;
         wallet->status = mojom::WalletStatus::kLoggedOut;
         return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
       }(),
       mojom::WalletStatus::kNotConnected,
-      false
+      true
     },
     TransitionWalletTransitionParamType{
       "kLoggedOut__kLoggedOut",
@@ -316,11 +318,12 @@ INSTANTIATE_TEST_SUITE_P(
       "kConnected__kNotConnected",
       []{
         auto wallet = mojom::ExternalWallet::New();
+        wallet->type = constant::kWalletUphold;
         wallet->status = mojom::WalletStatus::kConnected;
         return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
       }(),
       mojom::WalletStatus::kNotConnected,
-      false
+      true
     },
     TransitionWalletTransitionParamType{
       "kConnected__kLoggedOut",

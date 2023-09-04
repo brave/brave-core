@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:fontFamily="@font/poppins_300"
+            android:fontFamily="sans-serif"
             android:textColor="@color/brave_stats_share_trackers_ads_no"
             android:textSize="26sp" />
 
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:fontFamily="@font/poppins_300"
+            android:fontFamily="sans-serif"
             android:textColor="@color/brave_stats_share_data_save_no"
             android:textSize="26sp" />
 
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:fontFamily="@font/poppins_300"
+            android:fontFamily="sans-serif"
             android:textColor="@color/brave_stats_share_time_saved_no"
             android:textSize="26sp" />
     </LinearLayout>
@@ -75,7 +75,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:fontFamily="@font/poppins_300"
+            android:fontFamily="sans-serif"
             android:gravity="center"
             android:text="@string/trackers_and_ads"
             android:textColor="@color/brave_stats_share_info"
@@ -86,7 +86,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:fontFamily="@font/poppins_300"
+            android:fontFamily="sans-serif"
             android:gravity="center"
             android:text="@string/brave_stats_text_data_saved"
             android:textColor="@color/brave_stats_share_info"
@@ -97,7 +97,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:fontFamily="@font/poppins_300"
+            android:fontFamily="sans-serif"
             android:gravity="center"
             android:text="@string/brave_stats_text_time"
             android:textColor="@color/brave_stats_share_info"

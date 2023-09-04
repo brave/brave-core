@@ -10,10 +10,16 @@
 
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler_delegate.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
 namespace brave_ads {
+
+using FireNotificationAdEventHandlerCallback =
+    base::OnceCallback<void(bool success,
+                            const std::string& placement_id,
+                            const mojom::NotificationAdEventType event_type)>;
 
 struct NotificationAdInfo;
 
@@ -38,15 +44,26 @@ class NotificationAdEventHandler final
   }
 
   void FireEvent(const std::string& placement_id,
-                 mojom::NotificationAdEventType event_type);
+                 mojom::NotificationAdEventType event_type,
+                 FireNotificationAdEventHandlerCallback callback);
 
  private:
-  void SuccessfullyFiredEvent(const NotificationAdInfo& ad,
-                              mojom::NotificationAdEventType event_type) const;
+  void FireEventCallback(const NotificationAdInfo& ad,
+                         mojom::NotificationAdEventType event_type,
+                         FireNotificationAdEventHandlerCallback callback,
+                         bool success) const;
+
+  void SuccessfullyFiredEvent(
+      const NotificationAdInfo& ad,
+      mojom::NotificationAdEventType event_type,
+      FireNotificationAdEventHandlerCallback callback) const;
   void FailedToFireEvent(const std::string& placement_id,
-                         mojom::NotificationAdEventType event_type) const;
+                         mojom::NotificationAdEventType event_type,
+                         FireNotificationAdEventHandlerCallback callback) const;
 
   raw_ptr<NotificationAdEventHandlerDelegate> delegate_ = nullptr;
+
+  base::WeakPtrFactory<NotificationAdEventHandler> weak_factory_{this};
 };
 
 }  // namespace brave_ads

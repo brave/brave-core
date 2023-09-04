@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/confirmations_issuer_util.h"
 
-#include "base/guid.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuer_constants.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_constants.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
@@ -24,7 +24,7 @@ TEST_F(BraveAdsConfirmationsIssuerUtilTest, IsValid) {
 
   for (int i = 0; i < kMaximumIssuerPublicKeys; i++) {
     issuer.public_keys.insert(
-        {/*public_key*/ base::GUID::GenerateRandomV4().AsLowercaseString(),
+        {/*public_key*/ base::Uuid::GenerateRandomV4().AsLowercaseString(),
          /*associated_value*/ 0.1});
   }
 
@@ -44,7 +44,7 @@ TEST_F(BraveAdsConfirmationsIssuerUtilTest, IsInvalid) {
 
   for (int i = 0; i < kMaximumIssuerPublicKeys + 1; i++) {
     issuer.public_keys.insert(
-        {/*public_key*/ base::GUID::GenerateRandomV4().AsLowercaseString(),
+        {/*public_key*/ base::Uuid::GenerateRandomV4().AsLowercaseString(),
          /*associated_value*/ 0.1});
   }
 

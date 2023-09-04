@@ -14,7 +14,6 @@ import android.widget.ImageView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveDialogFragment;
-import org.chromium.ui.widget.Toast;
 
 public class PlaylistWarningDialogFragment
         extends BraveDialogFragment implements View.OnClickListener {

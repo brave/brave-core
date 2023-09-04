@@ -19,9 +19,6 @@ BASE_DECLARE_FEATURE(kUserIdleDetectionFeature);
 
 bool IsUserIdleDetectionFeatureEnabled();
 
-constexpr base::FeatureParam<base::TimeDelta> kIdleTimeThreshold{
-    &kUserIdleDetectionFeature, "idle_time_threshold", base::Seconds(5)};
-
 constexpr base::FeatureParam<base::TimeDelta> kMaximumIdleTime{
     &kUserIdleDetectionFeature, "maximum_idle_time", base::Seconds(0)};
 

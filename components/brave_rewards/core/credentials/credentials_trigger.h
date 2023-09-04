@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
 namespace credential {

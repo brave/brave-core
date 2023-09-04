@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index 4e6af9a522de53d458664afe714961f3f246d9b7..4ccfc5423297d5e56ae41f7d229181ae59465742 100644
+index e9b34c78999b00440378010a8e35e6e8a502ca77..9f0b6de11c0481cf7a8583ebbd7b28d7935eb5d1 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
-@@ -113,7 +113,7 @@ group("setup_runtime_deps") {
+@@ -117,7 +117,7 @@ group("setup_runtime_deps") {
  
  packed_files_rc_file = "$target_gen_dir/mini_installer/packed_files.rc"
  
@@ -11,7 +11,7 @@ index 4e6af9a522de53d458664afe714961f3f246d9b7..4ccfc5423297d5e56ae41f7d229181ae
    script = "//chrome/tools/build/win/create_installer_archive.py"
  
    release_file = "chrome.release"
-@@ -223,7 +223,7 @@ action("mini_installer_archive") {
+@@ -227,7 +227,7 @@ action("mini_installer_archive") {
    ]
  }
  
@@ -20,12 +20,12 @@ index 4e6af9a522de53d458664afe714961f3f246d9b7..4ccfc5423297d5e56ae41f7d229181ae
    sources = [
      "mini_installer_exe_main.cc",
      packed_files_rc_file,
-@@ -280,7 +280,7 @@ executable("mini_installer") {
+@@ -284,7 +284,7 @@ executable("mini_installer") {
      no_default_deps = true
      ldflags += [ "/ENTRY:MainEntryPoint" ]
    }
 -}
-+sources -= [packed_files_rc_file] sources += [invoker.packed_files_rc_file] if (defined(invoker.extra_deps)) { deps += invoker.extra_deps } }} mini_installer("mini_installer") { packed_files_rc_file = packed_files_rc_file } mini_installer("delta_installer") { packed_files_rc_file = "$target_gen_dir/packed_delta_files.rc" extra_deps = [ "//brave:delta_installer_archive" ] }
++sources -= [packed_files_rc_file] sources += [invoker.packed_files_rc_file] if (defined(invoker.extra_deps)) { deps += invoker.extra_deps } }} mini_installer("mini_installer") { packed_files_rc_file = packed_files_rc_file } mini_installer("delta_installer_unsigned") { packed_files_rc_file = "$target_gen_dir/packed_delta_files.rc" extra_deps = [ "//brave:delta_installer_archive" ] }
  
  # previous_version_mini_installer.exe can't be generated in an x86 Debug
  # component build because it requires too much memory.

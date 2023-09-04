@@ -23,11 +23,19 @@
         if (window.notifyBrowser)
           notifyWhenCanPlay();
       }
+
       function notifyWhenCanPlay() {
-        if (window.canPlay)
-          window.domAutomationController.send("CANPLAY");
-        else
-          window.notifyBrowser = true;
+        return new Promise(resolve => {
+          const timer = setInterval(function () {
+            if (window.canPlay) {
+              clearInterval(timer);
+              resolve("CANPLAY");
+            }
+            else {
+              window.notifyBrowser = true;
+            }
+          }, 100);
+        });
       }
     </script>
 

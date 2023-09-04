@@ -6,14 +6,15 @@
 #include "brave/ios/browser/skus/skus_service_factory.h"
 
 #include "base/feature_list.h"
+#include "base/no_destructor.h"
 #include "brave/components/skus/browser/skus_service_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/features.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
-#include "ios/chrome/browser/browser_state/browser_state_otr_helper.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/web/public/browser_state.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -31,7 +32,8 @@ mojo::PendingRemote<mojom::SkusService> SkusServiceFactory::GetForBrowserState(
 
 // static
 SkusServiceFactory* SkusServiceFactory::GetInstance() {
-  return base::Singleton<SkusServiceFactory>::get();
+  static base::NoDestructor<SkusServiceFactory> instance;
+  return instance.get();
 }
 
 SkusServiceFactory::SkusServiceFactory()

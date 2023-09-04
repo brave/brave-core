@@ -689,7 +689,7 @@ TEST_F(BraveVPNServiceTest, ResetConnectionStateTest) {
   auto* test_api = static_cast<BraveVPNOSConnectionAPISim*>(GetConnectionAPI());
 
   // Set failed state before setting observer.
-  test_api->SetConnectionState(ConnectionState::CONNECT_FAILED);
+  test_api->SetConnectionStateForTesting(ConnectionState::CONNECT_FAILED);
 
   TestBraveVPNServiceObserver observer;
   AddObserver(observer.GetReceiver());
@@ -715,11 +715,35 @@ TEST_F(BraveVPNServiceTest, ConnectionStateUpdateWithPurchasedStateTest) {
   AddObserver(observer.GetReceiver());
   std::string env = skus::GetDefaultEnvironment();
   SetPurchasedState(env, PurchasedState::PURCHASED);
-  test_api->SetConnectionState(ConnectionState::CONNECTING);
+  test_api->SetConnectionStateForTesting(ConnectionState::CONNECTING);
   base::RunLoop().RunUntilIdle();
-  test_api->SetConnectionState(ConnectionState::CONNECTED);
+  test_api->SetConnectionStateForTesting(ConnectionState::CONNECTED);
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
+}
+
+TEST_F(BraveVPNServiceTest, IsConnectedWithPurchasedStateTest) {
+  auto* test_api = static_cast<BraveVPNOSConnectionAPISim*>(GetConnectionAPI());
+
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+  std::string env = skus::GetDefaultEnvironment();
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+
+  // Prepare connected state.
+  test_api->SetConnectionStateForTesting(ConnectionState::CONNECTING);
+  base::RunLoop().RunUntilIdle();
+  test_api->SetConnectionStateForTesting(ConnectionState::CONNECTED);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
+  // Gets connected for purchased user.
+  EXPECT_TRUE(service_->IsConnected());
+
+  // Check BraveVpnService gives false for IsConnected() when
+  // it's connected state but not purchased.
+  SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
+  EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
+  EXPECT_FALSE(service_->IsConnected());
 }
 
 TEST_F(BraveVPNServiceTest, DisconnectedIfDisabledByPolicy) {
@@ -730,7 +754,7 @@ TEST_F(BraveVPNServiceTest, DisconnectedIfDisabledByPolicy) {
   AddObserver(observer.GetReceiver());
   std::string env = skus::GetDefaultEnvironment();
   SetPurchasedState(env, PurchasedState::PURCHASED);
-  test_api->SetConnectionState(ConnectionState::CONNECTED);
+  test_api->SetConnectionStateForTesting(ConnectionState::CONNECTED);
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
   BlockVPNByPolicy(true);
@@ -849,12 +873,22 @@ TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
   EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
 }
 
-TEST_F(BraveVPNServiceTest, SubscribedCredentials) {
+TEST_F(BraveVPNServiceTest, SubscribedCredentialsWithTokenNoLongerValid) {
   std::string env = skus::GetDefaultEnvironment();
-  SetPurchasedState(env, PurchasedState::PURCHASED);
-  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedInfoSync());
-  OnGetSubscriberCredentialV12("Token No Longer Valid", false);
+
+  SetPurchasedState(env, PurchasedState::LOADING);
+  OnGetSubscriberCredentialV12(kTokenNoLongerValid, false);
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
+  EXPECT_TRUE(IsRetriedSkusCredential(&local_pref_service_));
+
+  // Retrying only once.
+  OnGetSubscriberCredentialV12(kTokenNoLongerValid, false);
   EXPECT_EQ(PurchasedState::FAILED, GetPurchasedInfoSync());
+  EXPECT_TRUE(IsRetriedSkusCredential(&local_pref_service_));
+
+  // Check retrying flag is cleared when we got valid subs-credential.
+  OnGetSubscriberCredentialV12("valid-subs-credentials", true);
+  EXPECT_FALSE(IsRetriedSkusCredential(&local_pref_service_));
 }
 
 // Test connection check is asked only when purchased state.

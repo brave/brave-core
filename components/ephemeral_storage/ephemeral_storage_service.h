@@ -8,32 +8,46 @@
 
 #include <map>
 #include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service_delegate.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service_observer.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "content/public/browser/storage_partition_config.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
+class EphemeralStorageBrowserTest;
+class EphemeralStorageTest;
 class HostContentSettingsMap;
+class PrefService;
 
 namespace content {
 class BrowserContext;
-class StoragePartition;
 }  // namespace content
+
+namespace permissions {
+class PermissionLifetimeManagerBrowserTest;
+}
 
 namespace ephemeral_storage {
 
-// Service to enable or disable first party ephemeral storage from external
-// actors.
+// Handles Ephemeral Storage cleanup/queuing and other events.
 class EphemeralStorageService : public KeyedService {
  public:
-  EphemeralStorageService(content::BrowserContext* context,
-                          HostContentSettingsMap* host_content_settings_map);
+  EphemeralStorageService(
+      content::BrowserContext* context,
+      HostContentSettingsMap* host_content_settings_map,
+      std::unique_ptr<EphemeralStorageServiceDelegate> delegate);
   ~EphemeralStorageService() override;
 
   void Shutdown() override;
@@ -53,36 +67,61 @@ class EphemeralStorageService : public KeyedService {
   void Enable1PESForUrlIfPossible(const GURL& url,
                                   base::OnceCallback<void(bool)> on_ready);
 
-  void FirstPartyStorageAreaInUse(const url::Origin& origin);
-  void FirstPartyStorageAreaNotInUse(const url::Origin& origin);
+  void TLDEphemeralLifetimeCreated(
+      const std::string& ephemeral_domain,
+      const content::StoragePartitionConfig& storage_partition_config);
+  void TLDEphemeralLifetimeDestroyed(
+      const std::string& ephemeral_domain,
+      const content::StoragePartitionConfig& storage_partition_config,
+      bool shields_disabled_on_one_of_hosts);
+
+  void AddObserver(EphemeralStorageServiceObserver* observer);
+  void RemoveObserver(EphemeralStorageServiceObserver* observer);
 
  private:
-  friend class EphemeralStorageForgetByDefaultBrowserTest;
+  friend EphemeralStorageBrowserTest;
+  friend EphemeralStorageTest;
+  friend permissions::PermissionLifetimeManagerBrowserTest;
+
+  void FirstPartyStorageAreaInUse(const std::string& ephemeral_domain);
+  bool FirstPartyStorageAreaNotInUse(const std::string& ephemeral_domain,
+                                     bool shields_disabled_on_one_of_hosts);
 
   void OnCanEnable1PESForUrl(const GURL& url,
                              base::OnceCallback<void(bool)> on_ready,
                              bool can_enable_1pes);
   bool IsDefaultCookieSetting(const GURL& url) const;
 
+  void CleanupTLDEphemeralAreaByTimer(const TLDEphemeralAreaKey& key,
+                                      bool cleanup_first_party_storage_area);
+  void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key,
+                               bool cleanup_first_party_storage_area);
+
   // If a website was closed, but not yet cleaned-up because of storage lifetime
   // keepalive, we store the origin into a pref to perform a cleanup on browser
   // startup. It's impossible to do a cleanup on shutdown, because the process
   // is asynchronous and cannot block the browser shutdown.
+  void ScheduleFirstPartyStorageAreasCleanupOnStartup();
   void CleanupFirstPartyStorageAreasOnStartup();
-  void CleanupFirstPartyStorageAreaByTimer(const url::Origin& origin);
-  void CleanupFirstPartyStorageArea(const url::Origin& origin);
+  void CleanupFirstPartyStorageArea(const std::string& ephemeral_domain);
 
   size_t FireCleanupTimersForTesting();
 
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
+  std::unique_ptr<EphemeralStorageServiceDelegate> delegate_;
+  raw_ptr<PrefService> prefs_ = nullptr;
   // These patterns are removed on service Shutdown.
   base::flat_set<ContentSettingsPattern> patterns_to_cleanup_on_shutdown_;
 
-  base::TimeDelta first_party_storage_areas_keep_alive_;
+  base::ObserverList<EphemeralStorageServiceObserver> observer_list_;
+
+  base::TimeDelta tld_ephemeral_area_keep_alive_;
   base::TimeDelta first_party_storage_startup_cleanup_delay_;
-  std::map<url::Origin, std::unique_ptr<base::OneShotTimer>>
-      first_party_storage_areas_to_cleanup_;
+  std::map<TLDEphemeralAreaKey, std::unique_ptr<base::OneShotTimer>>
+      tld_ephemeral_areas_to_cleanup_;
+  base::Value::List first_party_storage_areas_to_cleanup_on_startup_;
+  base::OneShotTimer first_party_storage_areas_startup_cleanup_timer_;
 
   base::WeakPtrFactory<EphemeralStorageService> weak_ptr_factory_{this};
 };

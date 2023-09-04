@@ -8,14 +8,16 @@
 #include <utility>
 
 #include "base/check_op.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_creation.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_migration.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -59,17 +61,15 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
 void DatabaseManager::CreateOrOpenCallback(
     ResultCallback callback,
     mojom::DBCommandResponseInfoPtr command_response) {
-  CHECK(command_response);
-
-  if (command_response->status !=
-          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK ||
-      !command_response->result) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to open or create database");
     NotifyFailedToCreateOrOpenDatabase();
-    std::move(callback).Run(/*success*/ false);
-    return;
+    return std::move(callback).Run(/*success*/ false);
   }
 
+  CHECK(command_response->result);
   CHECK(command_response->result->get_value()->which() ==
         mojom::DBValue::Tag::kIntValue);
   const int from_version =
@@ -80,7 +80,7 @@ void DatabaseManager::CreateOrOpenCallback(
     return Create(std::move(callback));
   }
 
-  NotifyDidCreateOrOpenDatabase();
+  NotifyDidOpenDatabase();
 
   MaybeMigrate(from_version, std::move(callback));
 }
@@ -107,7 +107,7 @@ void DatabaseManager::CreateCallback(ResultCallback callback,
 
   BLOG(1, "Created database for schema version " << to_version);
 
-  NotifyDidCreateOrOpenDatabase();
+  NotifyDidCreateDatabase();
 
   NotifyDatabaseIsReady();
 
@@ -119,8 +119,15 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   const int to_version = database::kVersion;
   if (from_version == to_version) {
     BLOG(1, "Database is up to date on schema version " << from_version);
-    std::move(callback).Run(/*success*/ true);
-    return;
+    NotifyDatabaseIsReady();
+    return std::move(callback).Run(/*success*/ true);
+  }
+
+  if (from_version > to_version) {
+    BLOG(0, "Failed to migrate database from schema version "
+                << from_version << " to schema version " << to_version);
+    NotifyFailedToMigrateDatabase(from_version, to_version);
+    return std::move(callback).Run(/*success*/ false);
   }
 
   BLOG(1, "Migrating database from schema version "
@@ -129,14 +136,14 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   NotifyWillMigrateDatabase(from_version, to_version);
 
   database::MigrateFromVersion(
-      from_version, base::BindOnce(&DatabaseManager::MigrateCallback,
+      from_version, base::BindOnce(&DatabaseManager::MigrateFromVersionCallback,
                                    weak_factory_.GetWeakPtr(), from_version,
                                    std::move(callback)));
 }
 
-void DatabaseManager::MigrateCallback(const int from_version,
-                                      ResultCallback callback,
-                                      const bool success) const {
+void DatabaseManager::MigrateFromVersionCallback(const int from_version,
+                                                 ResultCallback callback,
+                                                 const bool success) const {
   const int to_version = database::kVersion;
 
   if (!success) {
@@ -162,9 +169,15 @@ void DatabaseManager::NotifyWillCreateOrOpenDatabase() const {
   }
 }
 
-void DatabaseManager::NotifyDidCreateOrOpenDatabase() const {
+void DatabaseManager::NotifyDidCreateDatabase() const {
   for (DatabaseManagerObserver& observer : observers_) {
-    observer.OnDidCreateOrOpenDatabase();
+    observer.OnDidCreateDatabase();
+  }
+}
+
+void DatabaseManager::NotifyDidOpenDatabase() const {
+  for (DatabaseManagerObserver& observer : observers_) {
+    observer.OnDidOpenDatabase();
   }
 }
 

@@ -18,8 +18,10 @@ int NonClientHitTest(BrowserView* browser_view,
     return HTNOWHERE;
   }
 
-  int hit_test_result =
-      views::GetHitTestComponent(browser_view->toolbar(), point_in_widget);
+  // All toolbar elements are children of the container view in the toolbar.
+  DCHECK_EQ(1u, browser_view->toolbar()->children().size());
+  int hit_test_result = views::GetHitTestComponent(
+      browser_view->toolbar()->children()[0], point_in_widget);
   if (hit_test_result == HTNOWHERE || hit_test_result == HTCLIENT) {
     // The |point_in_widget| is out of toolbar or on toolbar's sub views.
     return hit_test_result;

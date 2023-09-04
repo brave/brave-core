@@ -64,17 +64,11 @@
         label="$i18n{ipfsAutoFallbackToGatewayLabel}"
         sub-label="$i18n{ipfsAutoFallbackToGatewayDesc}">
     </settings-toggle-button>
-    <settings-toggle-button id="ipfsAutoRedirectGateway"
+    <settings-toggle-button id="ipfsAutoRedirectToConfiguredGateway"
       class="cr-row"
-      pref="{{prefs.brave.ipfs.auto_redirect_gateway}}"
-      label="$i18n{ipfsAutoRedirectGatewayLabel}"
-      sub-label="$i18n{ipfsAutoRedirectGatewayDesc}">
-    </settings-toggle-button>
-    <settings-toggle-button id="ipfsAutoRedirectDNSLink"
-      class="cr-row"
-      pref="{{prefs.brave.ipfs.auto_redirect_dnslink}}"
-      label="$i18n{ipfsAutoRedirectDNSLinkLabel}"
-      sub-label="$i18n{ipfsAutoRedirectDNSLinkDesc}"
+      pref="{{prefs.brave.ipfs.auto_redirect_to_configured_gateway}}"
+      label="$i18n{ipfsAutoRedirectToGatewayWhenPossibleLabel}"
+      sub-label="$i18n{ipfsAutoRedirectToGatewayWhenPossibleDesc}"
       learn-more-url="$i18n{ipfsDNSLinkLearnMoreURL}">
     </settings-toggle-button>
 

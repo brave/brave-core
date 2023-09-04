@@ -1,0 +1,39 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "lol_html"
+  epoch = "0.3"
+  crate_type = "rlib"
+  crate_root = "crate/src/lib.rs"
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  sources = [ "crate/src/lib.rs" ]
+  edition = "2018"
+  cargo_pkg_version = "0.3.1"
+  cargo_pkg_authors = "Ivan Nikulin <inikulin@cloudflare.com, ifaaan@gmail.com>"
+  cargo_pkg_name = "lol_html"
+  cargo_pkg_description =
+      "Streaming HTML rewriter/parser with CSS selector-based API"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/cssparser/v0_27:lib",
+    "//brave/third_party/rust/encoding_rs/v0_8:lib",
+    "//brave/third_party/rust/hashbrown/v0_12:lib",
+    "//brave/third_party/rust/lazycell/v1:lib",
+    "//brave/third_party/rust/safemem/v0_3:lib",
+    "//brave/third_party/rust/selectors/v0_22:lib",
+    "//brave/third_party/rust/thiserror/v1:lib",
+    "//third_party/rust/bitflags/v1:lib",
+    "//third_party/rust/cfg_if/v1:lib",
+    "//third_party/rust/lazy_static/v1:lib",
+    "//third_party/rust/memchr/v2:lib",
+  ]
+}

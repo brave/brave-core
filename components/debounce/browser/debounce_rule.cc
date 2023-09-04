@@ -40,6 +40,16 @@ const int64_t kMaxMemoryPerRegexPattern = 2 << 11;
 // Max size of a URL is capped anyway.
 // Also cap the length of regex pattern to be extra safe
 const int64_t kMaxLengthRegexPattern = 200;
+
+// Removes trailing dot from |host_piece| if any.
+// Copied from extensions/common/url_pattern.cc
+base::StringPiece CanonicalizeHostForMatching(base::StringPiece host_piece) {
+  if (base::EndsWith(host_piece, ".")) {
+    host_piece.remove_suffix(1);
+  }
+  return host_piece;
+}
+
 }  // namespace
 
 namespace debounce {
@@ -83,8 +93,9 @@ bool DebounceRule::ParsePrependScheme(base::StringPiece value,
 bool DebounceRule::GetURLPatternSetFromValue(
     const base::Value* value,
     extensions::URLPatternSet* result) {
-  if (!value->is_list())
+  if (!value->is_list()) {
     return false;
+  }
   // Debouncing only affects HTTP or HTTPS URLs, regardless of how the rules are
   // written. (Also, don't write rules for other URL schemes, because they won't
   // work and you're just wasting everyone's time.)
@@ -92,8 +103,9 @@ bool DebounceRule::GetURLPatternSetFromValue(
   bool valid = result->Populate(
       value->GetList(), URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
       false, &error);
-  if (!valid)
+  if (!valid) {
     VLOG(1) << error;
+  }
   return valid;
 }
 
@@ -113,10 +125,13 @@ void DebounceRule::RegisterJSONConverter(
 }
 
 // static
+// All eTLD+1 calculations for debouncing should flow through here so they
+// are consistent in their private registries configuration.
 const std::string DebounceRule::GetETLDForDebounce(const std::string& host) {
+  base::StringPiece host_piece = CanonicalizeHostForMatching(host);
   return net::registry_controlled_domains::GetDomainAndRegistry(
-      host, net::registry_controlled_domains::PrivateRegistryFilter::
-                EXCLUDE_PRIVATE_REGISTRIES);
+      host_piece, net::registry_controlled_domains::PrivateRegistryFilter::
+                      EXCLUDE_PRIVATE_REGISTRIES);
 }
 
 // static
@@ -144,14 +159,16 @@ DebounceRule::ParseRules(const std::string& contents) {
   base::JSONValueConverter<DebounceRule> converter;
   for (base::Value& it : root->GetList()) {
     std::unique_ptr<DebounceRule> rule = std::make_unique<DebounceRule>();
-    if (!converter.Convert(it, rule.get()))
+    if (!converter.Convert(it, rule.get())) {
       continue;
+    }
     for (const URLPattern& pattern : rule->include_pattern_set()) {
       if (!pattern.host().empty()) {
         const std::string etldp1 =
             DebounceRule::GetETLDForDebounce(pattern.host());
-        if (!etldp1.empty())
+        if (!etldp1.empty()) {
           hosts.push_back(std::move(etldp1));
+        }
       }
     }
     rules.push_back(std::move(rule));
@@ -221,7 +238,7 @@ bool DebounceRule::ValidateAndParsePatternRegex(
   std::for_each(std::begin(match_results) + 1, std::end(match_results),
                 [parsed_value](re2::StringPiece matched_string) {
                   if (!matched_string.empty()) {
-                    matched_string.AppendToString(parsed_value);
+                    parsed_value->append(matched_string);
                   }
                 });
 
@@ -236,8 +253,9 @@ bool DebounceRule::Apply(const GURL& original_url,
   // that parses it.
   if (action_ != kDebounceRedirectToParam &&
       action_ != kDebounceBase64DecodeAndRedirectToParam &&
-      action_ != kDebounceRegexPath)
+      action_ != kDebounceRegexPath) {
     return false;
+  }
   // If URL matches an explicitly excluded pattern, this rule does not apply.
   if (exclude_pattern_set_.MatchesURL(original_url)) {
     return false;
@@ -278,8 +296,9 @@ bool DebounceRule::Apply(const GURL& original_url,
     // unescaped_value now has a string; we will check if the captured value is
     // a valid URL down below
   } else {
-    if (!net::GetValueForKeyInQuery(original_url, param_, &unescaped_value))
+    if (!net::GetValueForKeyInQuery(original_url, param_, &unescaped_value)) {
       return false;
+    }
     if ((action_ == kDebounceBase64DecodeAndRedirectToParam) &&
         (!base::Base64UrlDecode(unescaped_value,
                                 base::Base64UrlDecodePolicy::IGNORE_PADDING,
@@ -307,17 +326,20 @@ bool DebounceRule::Apply(const GURL& original_url,
     auto new_url_spec =
         base::StringPrintf("%s://%s", scheme.c_str(), unescaped_value.c_str());
     new_url = GURL(new_url_spec);
-    if (new_url.is_valid())
+    if (new_url.is_valid()) {
       DCHECK(new_url.scheme() == scheme);
+    }
   }
 
   // Failsafe: ensure we got a valid URL out of the param.
-  if (!new_url.is_valid() || !new_url.SchemeIsHTTPOrHTTPS())
+  if (!new_url.is_valid() || !new_url.SchemeIsHTTPOrHTTPS()) {
     return false;
+  }
 
   // Failsafe: never redirect to the same site.
-  if (IsSameETLDForDebounce(original_url, new_url))
+  if (IsSameETLDForDebounce(original_url, new_url)) {
     return false;
+  }
 
   *final_url = new_url;
   return true;

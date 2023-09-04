@@ -5,8 +5,7 @@
 
 #include "brave/components/brave_ads/browser/ads_service.h"
 
-#include "brave/components/brave_ads/common/constants.h"
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
 namespace brave_ads {
@@ -30,12 +29,12 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion,
                                 0);
 
-  registry->RegisterIntegerPref(prefs::kVersion, kCurrentPrefVersion);
+  registry->RegisterBooleanPref(prefs::kOptedInToNotificationAds, false);
 
-  registry->RegisterBooleanPref(prefs::kEnabled, false);
-
-  registry->RegisterIntegerPref(prefs::kNotificationAdLastScreenPositionX, 0);
-  registry->RegisterIntegerPref(prefs::kNotificationAdLastScreenPositionY, 0);
+  registry->RegisterDoublePref(
+      prefs::kNotificationAdLastNormalizedDisplayCoordinateX, 0.0);
+  registry->RegisterDoublePref(
+      prefs::kNotificationAdLastNormalizedDisplayCoordinateY, 0.0);
   registry->RegisterBooleanPref(prefs::kNotificationAdDidFallbackToCustom,
                                 false);
 
@@ -43,12 +42,10 @@ void AdsService::RegisterProfilePrefs(
 
   registry->RegisterInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
 
-  registry->RegisterIntegerPref(prefs::kIdleTimeThreshold, 15);
-
   registry->RegisterBooleanPref(prefs::kShouldAllowSubdivisionTargeting, false);
-  registry->RegisterStringPref(prefs::kSubdivisionTargetingCode, "AUTO");
-  registry->RegisterStringPref(prefs::kAutoDetectedSubdivisionTargetingCode,
-                               "");
+  registry->RegisterStringPref(prefs::kSubdivisionTargetingSubdivision, "AUTO");
+  registry->RegisterStringPref(
+      prefs::kSubdivisionTargetingAutoDetectedSubdivision, "");
 
   registry->RegisterStringPref(prefs::kCatalogId, "");
   registry->RegisterIntegerPref(prefs::kCatalogVersion, 0);
@@ -73,9 +70,6 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterBooleanPref(prefs::kHasMigratedRewardsState, false);
   registry->RegisterBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser,
                                 false);
-
-  registry->RegisterUint64Pref(prefs::kConfirmationsHash, 0);
-  registry->RegisterUint64Pref(prefs::kClientHash, 0);
 
   registry->RegisterStringPref(prefs::kBrowserVersionNumber, "");
 }

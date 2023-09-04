@@ -17,7 +17,6 @@ import Customize from './options/customize'
 import { attributeNameCardCount, Props } from './'
 import Refresh from './options/refresh'
 import { useBraveNews } from './customize/Context'
-import { loadTimeData } from '../../../../common/loadTimeData'
 
 function getFeedHashForCache (feed?: Feed) {
   return feed ? feed.hash : ''
@@ -233,9 +232,7 @@ export default function BraveNewsContent (props: Props) {
               )
             })
           }
-          <Customize onCustomizeBraveNews={() => loadTimeData.getBoolean('featureFlagBraveNewsV2Enabled')
-            ? setCustomizePage('news')
-            : props.onCustomizeBraveNews()} show={showOptions} />
+          <Customize onCustomizeBraveNews={() => setCustomizePage('news')} show={showOptions} />
           <Refresh isFetching={props.isFetching} show={showOptions && (props.isUpdateAvailable || props.isFetching)} onClick={props.onRefresh} />
           <div
             ref={setScrollTriggerRef}

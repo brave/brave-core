@@ -17,10 +17,10 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
 namespace brave_rewards {
@@ -48,6 +48,8 @@ class BraveRewardsNativeWorker
 
   std::string StringifyResult(
       brave_rewards::mojom::CreateRewardsWalletResult result);
+
+  bool IsRewardsEnabled(JNIEnv* env);
 
   void CreateRewardsWallet(
       JNIEnv* env,
@@ -90,6 +92,10 @@ class BraveRewardsNativeWorker
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& paymentId,
       const base::android::JavaParamRef<jstring>& captchaId);
+  base::android::ScopedJavaLocalRef<jstring> GetAttestationURL(JNIEnv* env);
+  base::android::ScopedJavaLocalRef<jstring> GetAttestationURLWithPaymentId(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jstring>& paymentId);
 
   base::android::ScopedJavaLocalRef<jstring> GetPublisherId(JNIEnv* env,
                                                             uint64_t tabId);
@@ -122,8 +128,6 @@ class BraveRewardsNativeWorker
 
   base::android::ScopedJavaLocalRef<jobjectArray> GetCurrentGrant(JNIEnv* env,
                                                                   int position);
-
-  void GetPendingContributionsTotal(JNIEnv* env);
 
   void GetRecurringDonations(JNIEnv* env);
 
@@ -179,6 +183,8 @@ class BraveRewardsNativeWorker
   void OnCreateRewardsWallet(
       brave_rewards::mojom::CreateRewardsWalletResult result);
 
+  void OnCompleteReset(const bool success) override;
+
   void OnResetTheWholeState(const bool success);
 
   void OnGetGetReconcileStamp(uint64_t timestamp);
@@ -187,8 +193,6 @@ class BraveRewardsNativeWorker
       brave_rewards::mojom::AutoContributePropertiesPtr properties);
 
   void OnGetAutoContributionAmount(double auto_contribution_amount);
-
-  void OnGetPendingContributionsTotal(double amount);
 
   void OnPanelPublisherInfo(brave_rewards::RewardsService* rewards_service,
                             const brave_rewards::mojom::Result result,
@@ -214,10 +218,6 @@ class BraveRewardsNativeWorker
       const double amount,
       const brave_rewards::mojom::RewardsType type,
       const brave_rewards::mojom::ContributionProcessor processor) override;
-
-  void OnPendingContributionSaved(
-      brave_rewards::RewardsService* rewards_service,
-      const brave_rewards::mojom::Result result) override;
 
   void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
@@ -253,7 +253,7 @@ class BraveRewardsNativeWorker
 
   void onPublisherBanner(brave_rewards::mojom::PublisherBannerPtr wallet);
 
-  void OnOneTimeTip(brave_rewards::mojom::Result result);
+  void OnSendContribution(bool result);
 
   void OnExternalWalletConnected() override;
 

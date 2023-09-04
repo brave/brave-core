@@ -1,0 +1,7 @@
+Name: derivation-path
+URL: https://crates.io/crates/derivation-path
+Description: Simple struct for dealing with BIP32/44/49 derivation paths
+Version: 0.2.0
+Security Critical: yes
+License: Apache 2.0
+Revision: dec9b215770cc5d4445edc02b61586b29b4f3dfb

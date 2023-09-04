@@ -71,6 +71,9 @@
   <message name="IDS_EXTENSIONS_DISABLED_UPDATE_REQUIRED_BY_POLICY" desc="Text shown in the extensions settings for extensions disabled due to minimum version requirement from enterprise policy">
     This extension is outdated and disabled by enterprise policy. It might become enabled automatically when a newer version is available.
   </message>
+  <message name="IDS_EXTENSIONS_DISABLED_PUBLISHED_IN_STORE_REQUIRED_BY_POLICY" desc="Text shown in the extensions settings for extensions disabled because they are no longer published and available on the Web Store as required by enterprise policy">
+    This extension has been disabled by enterprise policy because it is no longer available on the Web Store.
+  </message>
   <message name="IDS_EXTENSIONS_MATCHING_RESTRICTED_SITES_ALLOW" desc="The label for the dialog option to allow the extension to always run on a site that matches one or more user restricted sites.">
     Allow
   </message>
@@ -535,6 +538,23 @@
   </message>
   <message name="IDS_EXTENSIONS_SUBPAGE_BUTTON" is_accessibility_with_no_ui="true" desc="Accessibility description for a button navigating the user from an extension's settings page to its settings subpage.">
     Subpage button
+  </message>
+  <message name="IDS_EXTENSIONS_SC_TITLE" desc="Header text displayed in the Safety Check title.">
+    {NUM_EXTENSIONS, plural,
+     =1 {Review 1 extension that was taken down from the Web Store}
+     other {Review {NUM_EXTENSIONS} extensions that were taken down from the Web Store}}
+  </message>
+  <message name="IDS_EXTENSIONS_SC_DESCRIPTION" desc="Detailed message displayed in the Safety Check description section.">
+    {NUM_EXTENSIONS, plural,
+     =1 {This extension might be unsafe. Brave recommends that you remove it.}
+     other {These extensions might be unsafe. Brave recommends that you remove them.}}
+  </message>
+  <!-- Extension Safety Check review panel labels and texts for icons -->
+  <message name="IDS_EXTENSIONS_SC_KEEP_EXT" desc="The label on the overflow menu to keep an extension.">
+    Keep this extension
+  </message>
+  <message name="IDS_EXTENSIONS_SC_REMOVE_ALL" desc="The generic label for a button to remove all extensions.">
+    Remove All
   </message>
 <if expr="is_macosx">
   <message name="IDS_EXTENSIONS_INCLUDE_START_MODIFIER" desc="Error message explaining that shortcuts must start with either the Control, Alt, or Command key.">

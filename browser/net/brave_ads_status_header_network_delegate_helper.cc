@@ -8,10 +8,10 @@
 #include <string>
 #include <vector>
 
-#include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "net/base/net_errors.h"
 
@@ -21,14 +21,12 @@ int OnBeforeStartTransaction_AdsStatusHeader(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  brave_ads::AdsService* ads_service =
-      brave_ads::AdsServiceFactory::GetForProfile(
-          Profile::FromBrowserContext(ctx->browser_context));
+  Profile* profile = Profile::FromBrowserContext(ctx->browser_context);
 
   // The X-Brave-Ads-Enabled header should be added when Brave Private Ads are
   // enabled, the requested URL host is one of the Brave Search domains, and the
   // request originates from one of the Brave Search domains.
-  if (!ads_service || !ads_service->IsEnabled() ||
+  if (!profile->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled) ||
       !brave_search::IsAllowedHost(ctx->request_url) ||
       (!brave_search::IsAllowedHost(ctx->tab_origin) &&
        !brave_search::IsAllowedHost(ctx->initiator_url))) {

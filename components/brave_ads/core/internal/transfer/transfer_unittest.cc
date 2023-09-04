@@ -46,15 +46,14 @@ class BraveAdsTransferTest : public TransferObserver, public UnitTestBase {
 
 TEST_F(BraveAdsTransferTest, DoNotTransferAdIfUrlIsMissingHTTPOrHTTPSScheme) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
   transfer_->SetLastClickedAd(ad);
 
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_visible*/ true,
-      /*is_incognito*/ false);
+      /*is_visible*/ true);
 
   // Act
   transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("brave.com")});
@@ -67,15 +66,14 @@ TEST_F(BraveAdsTransferTest, DoNotTransferAdIfUrlIsMissingHTTPOrHTTPSScheme) {
 TEST_F(BraveAdsTransferTest,
        DoNotTransferAdIfTheUrlDoesNotMatchTheLastClickedAd) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
   transfer_->SetLastClickedAd(ad);
 
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
-      /*is_visible*/ true,
-      /*is_incognito*/ false);
+      /*is_visible*/ true);
 
   // Act
   transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("brave.com")});
@@ -87,15 +85,14 @@ TEST_F(BraveAdsTransferTest,
 
 TEST_F(BraveAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
   transfer_->SetLastClickedAd(ad);
 
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_visible*/ true,
-      /*is_incognito*/ false);
+      /*is_visible*/ true);
 
   transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://brave.com")});
 
@@ -110,27 +107,24 @@ TEST_F(BraveAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
 
 TEST_F(BraveAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
   transfer_->SetLastClickedAd(ad);
 
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
-      /*is_visible*/ true,
-      /*is_incognito*/ false);
+      /*is_visible*/ true);
 
   transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://foobar.com")});
 
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
-      /*is_visible*/ false,
-      /*is_incognito*/ false);
+      /*is_visible*/ false);
 
   NotifyTabDidChange(
       /*id*/ 2, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_visible*/ true,
-      /*is_incognito*/ false);
+      /*is_visible*/ true);
 
   // Act
   transfer_->MaybeTransferAd(/*tab_id*/ 2, {GURL("https://brave.com")});
@@ -144,15 +138,14 @@ TEST_F(BraveAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
 TEST_F(BraveAdsTransferTest,
        TransferAdIfTheTabIsVisibleAndTheUrlIsTheSameAsTheDomainOrHost) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
   transfer_->SetLastClickedAd(ad);
 
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_visible*/ true,
-      /*is_incognito*/ false);
+      /*is_visible*/ true);
 
   // Act
   transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://brave.com")});
@@ -165,15 +158,14 @@ TEST_F(BraveAdsTransferTest,
 
 TEST_F(BraveAdsTransferTest, FailToTransferAdIfNotVisible) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
   transfer_->SetLastClickedAd(ad);
 
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_visible*/ false,
-      /*is_incognito*/ false);
+      /*is_visible*/ false);
 
   // Act
   transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://brave.com")});
@@ -187,23 +179,21 @@ TEST_F(BraveAdsTransferTest, FailToTransferAdIfNotVisible) {
 TEST_F(BraveAdsTransferTest,
        FailToTransferAdIfTheTabUrlIsNotTheSameAsTheDomainOrHost) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
   transfer_->SetLastClickedAd(ad);
 
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_visible*/ true,
-      /*is_incognito*/ false);
+      /*is_visible*/ true);
 
   transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://brave.com")});
 
   // Act
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
-      /*is_visible*/ true,
-      /*is_incognito*/ false);
+      /*is_visible*/ true);
 
   FastForwardClockBy(base::Seconds(10));
 

@@ -12,14 +12,14 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
 namespace report {
 
 class Report {
  public:
-  explicit Report(LedgerImpl& ledger);
+  explicit Report(RewardsEngineImpl& engine);
 
   ~Report();
 
@@ -30,11 +30,11 @@ class Report {
   void GetAllMonthlyIds(GetAllMonthlyReportIdsCallback callback);
 
  private:
-  void OnBalance(const mojom::Result result,
-                 mojom::BalanceReportInfoPtr balance_report,
-                 const mojom::ActivityMonth month,
+  void OnBalance(const mojom::ActivityMonth month,
                  const uint32_t year,
-                 GetMonthlyReportCallback callback);
+                 GetMonthlyReportCallback callback,
+                 const mojom::Result result,
+                 mojom::BalanceReportInfoPtr balance_report);
 
   void OnTransactions(
       std::vector<mojom::TransactionReportInfoPtr> transaction_report,
@@ -51,7 +51,7 @@ class Report {
   void OnGetAllBalanceReports(std::vector<mojom::BalanceReportInfoPtr> reports,
                               GetAllMonthlyReportIdsCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace report

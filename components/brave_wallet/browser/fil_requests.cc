@@ -9,7 +9,10 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 
 namespace brave_wallet {
@@ -40,7 +43,15 @@ std::string getEstimateGas(const std::string& from_address,
   transaction.Set("Value", value);
   transaction.Set("GasPremium", gas_premium.empty() ? "0" : gas_premium);
   transaction.Set("GasFeeCap", gas_fee_cap.empty() ? "0" : gas_fee_cap);
-  transaction.Set("Method", 0);
+
+  auto parsed_addr = brave_wallet::FilAddress::FromAddress(to_address);
+  if (parsed_addr.protocol() == mojom::FilecoinAddressProtocol::DELEGATED) {
+    // https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0054.md#invokecontract-method-number-38444508371
+    transaction.Set("Method", "3844450837");
+  } else {
+    transaction.Set("Method", "0");
+  }
+
   transaction.Set("Version", 0);
   transaction.Set("Params", "");
   transaction.Set("GasLimit", std::to_string(gas_limit));
@@ -65,7 +76,10 @@ std::string getEstimateGas(const std::string& from_address,
   json = std::string(json::convert_string_value_to_int64("/params/0/GasLimit",
                                                          json.c_str(), false)
                          .c_str());
-  return std::string(json::convert_string_value_to_uint64("/params/0/Nonce",
+  json = std::string(json::convert_string_value_to_uint64("/params/0/Nonce",
+                                                          json.c_str(), false)
+                         .c_str());
+  return std::string(json::convert_string_value_to_uint64("/params/0/Method",
                                                           json.c_str(), false)
                          .c_str());
 }
@@ -87,12 +101,12 @@ std::string getStateSearchMsgLimited(const std::string& cid, uint64_t period) {
 }
 
 absl::optional<std::string> getSendTransaction(const std::string& signed_tx) {
-  absl::optional<base::Value> parsed_tx = base::JSONReader::Read(signed_tx);
-  if (!parsed_tx || !parsed_tx->is_dict()) {
+  base::Value::List params;
+  auto signed_tx_value = FilTransaction::DeserializeSignedTx(signed_tx);
+  if (!signed_tx_value || !signed_tx_value->is_dict()) {
     return absl::nullopt;
   }
-  base::Value::List params;
-  params.Append(std::move(*parsed_tx));
+  params.Append(std::move(signed_tx_value.value()));
 
   // TODO(cdesouza): This dictionary should be composed by GetJsonRpcDictionary.
   base::Value::Dict dict;
@@ -101,7 +115,10 @@ absl::optional<std::string> getSendTransaction(const std::string& signed_tx) {
   dict.Set("params", std::move(params));
   dict.Set("id", 1);
 
-  return GetJSON(dict);
+  auto json = GetJSON(dict);
+  // Use substring replace instead of deserializing signed_tx to prevent
+  // long to double convertion.
+  return FilTransaction::ConvertSignedTxStringFieldsToInt64("/params/0", json);
 }
 
 }  // namespace fil

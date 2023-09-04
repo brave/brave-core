@@ -10,7 +10,6 @@ package org.chromium.chrome.browser.vpn;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 
 import java.util.ArrayList;
 import java.util.List;

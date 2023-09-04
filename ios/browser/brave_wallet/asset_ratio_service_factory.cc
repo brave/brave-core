@@ -5,12 +5,13 @@
 
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
 
+#include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
-#include "ios/chrome/browser/browser_state/browser_state_otr_helper.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "ios/web/public/browser_state.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -34,7 +35,8 @@ AssetRatioService* AssetRatioServiceFactory::GetServiceForState(
 
 // static
 AssetRatioServiceFactory* AssetRatioServiceFactory::GetInstance() {
-  return base::Singleton<AssetRatioServiceFactory>::get();
+  static base::NoDestructor<AssetRatioServiceFactory> instance;
+  return instance.get();
 }
 
 AssetRatioServiceFactory::AssetRatioServiceFactory()

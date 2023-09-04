@@ -9,12 +9,15 @@
 #include <memory>
 
 #include "base/scoped_multi_source_observation.h"
+#include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
 #include "ui/views/view_observer.h"
 #include "ui/views/widget/widget_delegate.h"
 #include "ui/views/widget/widget_observer.h"
 
 class BrowserView;
 class VerticalTabStripRegionView;
+class FullscreenController;
 
 // This class wraps VerticalTabStripRegionView and show them atop a Widget.
 // Vertical tab strip could be overlaps with contents web view and
@@ -35,7 +38,9 @@ class VerticalTabStripRegionView;
 //
 class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
                                            public views::ViewObserver,
-                                           public views::WidgetObserver {
+                                           public views::WidgetObserver,
+                                           public BrowserListObserver,
+                                           public FullscreenObserver {
  public:
   METADATA_HEADER(VerticalTabStripWidgetDelegateView);
 
@@ -63,6 +68,12 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
                              const gfx::Rect& new_bounds) override;
   void OnWidgetDestroying(views::Widget* widget) override;
 
+  // BrowserListObserver:
+  void OnBrowserAdded(Browser* browser) override;
+
+  // FullscreenObserver:
+  void OnFullscreenStateChanged() override;
+
  private:
   VerticalTabStripWidgetDelegateView(BrowserView* browser_view,
                                      views::View* host);
@@ -81,6 +92,9 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
 
   base::ScopedMultiSourceObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};
+
+  base::ScopedObservation<FullscreenController, FullscreenObserver>
+      fullscreen_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_WIDGET_DELEGATE_VIEW_H_

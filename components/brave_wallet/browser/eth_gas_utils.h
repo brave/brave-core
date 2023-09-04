@@ -15,6 +15,8 @@ namespace brave_wallet {
 
 namespace eth {
 
+absl::optional<uint256_t> ScaleBaseFeePerGas(const std::string& value);
+
 bool GetSuggested1559Fees(const std::vector<std::string>& base_fee_per_gas,
                           const std::vector<double>& gas_used_ratio,
                           const std::string& oldest_block,

@@ -14,9 +14,10 @@ import {
   getWordIndicesToVerfy,
   ORDINALS
 } from '../../../../utils/ordinal-utils'
+import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
 // routes
-import { WalletRoutes } from '../../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // actions
@@ -48,6 +49,9 @@ import RecoveryPhrase from '../../../../components/desktop/recovery-phrase/recov
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 
 export const VerifyRecoveryPhrase = () => {
+  // custom hooks
+  const { braveWalletP3A } = useApiProxy()
+
   // state
   const [nextStepEnabled, setNextStepEnabled] = React.useState(false)
   const [hasSelectedWords, setHasSelectedWords] = React.useState(false)
@@ -68,9 +72,10 @@ export const VerifyRecoveryPhrase = () => {
   }, [])
 
   const onSkip = React.useCallback(() => {
+    braveWalletP3A.reportOnboardingAction(BraveWallet.OnboardingAction.CompleteRecoverySkipped);
     dispatch(WalletPageActions.walletSetupComplete(true))
     history.push(WalletRoutes.OnboardingComplete)
-  }, [])
+  }, [braveWalletP3A])
 
   const onSkipBackup = React.useCallback(() => {
     history.push(WalletRoutes.PortfolioAssets)
@@ -78,6 +83,7 @@ export const VerifyRecoveryPhrase = () => {
 
   const onNextStep = React.useCallback(() => {
     if (isOnboarding) {
+      braveWalletP3A.reportOnboardingAction(BraveWallet.OnboardingAction.Complete);
       dispatch(WalletPageActions.walletSetupComplete(true))
     }
     dispatch(WalletPageActions.walletBackupComplete())

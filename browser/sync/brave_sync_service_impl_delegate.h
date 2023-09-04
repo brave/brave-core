@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_SYNC_BRAVE_SYNC_SERVICE_IMPL_DELEGATE_H_
 #define BRAVE_BROWSER_SYNC_BRAVE_SYNC_SERVICE_IMPL_DELEGATE_H_
 
-#include "brave/components/sync/driver/sync_service_impl_delegate.h"
+#include "brave/components/sync/service/sync_service_impl_delegate.h"
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"

@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/core/ads_client_notifier.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_notifier.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -39,14 +39,23 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   // Binds the receiver by consuming the pending receiver swhich was created.
   void BindReceiver();
 
+  // Invoked when ads did initialize.
+  void NotifyDidInitializeAds() override;
+
   // Invoked when the operating system locale changes.
   void NotifyLocaleDidChange(const std::string& locale) override;
 
   // Invoked when a preference has changed for the specified |path|.
   void NotifyPrefDidChange(const std::string& path) override;
 
-  // Invoked when a resource component has been updated.
-  void NotifyDidUpdateResourceComponent(const std::string& id) override;
+  // Invoked when a resource component with |id| has been updated to
+  // |manifest_version|.
+  void NotifyDidUpdateResourceComponent(const std::string& manifest_version,
+                                        const std::string& id) override;
+
+  // Invoked when the Brave Reward wallet did change.
+  void NotifyRewardsWalletDidUpdate(const std::string& payment_id,
+                                    const std::string& recovery_seed) override;
 
   // Invoked when the page for |tab_id| has loaded and the content is available
   // for analysis. |redirect_chain| containing a list of redirect URLs that
@@ -77,15 +86,12 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   // Invoked when a browser tab is updated with the specified |redirect_chain|
   // containing a list of redirect URLs that occurred on the way to the current
   // page. The current page is the last one in the list (so even when there's no
-  // redirect, there should be one entry in the list). |is_active| is set to
-  // |true| if |tab_id| refers to the currently active tab otherwise is set to
-  // |false|. |is_browser_active| is set to |true| if the browser window is
-  // active otherwise |false|. |is_incognito| is set to |true| if the tab is
-  // incognito otherwise |false|.
+  // redirect, there should be one entry in the list). |is_visible| should be
+  // set to |true| if |tab_id| refers to the currently visible tab otherwise
+  // should be set to |false|.
   void NotifyTabDidChange(int32_t tab_id,
                           const std::vector<GURL>& redirect_chain,
-                          bool is_visible,
-                          bool is_incognito) override;
+                          bool is_visible) override;
 
   // Invoked when a browser tab with the specified |tab_id| is closed.
   void NotifyDidCloseTab(int32_t tab_id) override;
@@ -118,6 +124,9 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
 
   // Invoked when the browser did resign active.
   void NotifyBrowserDidResignActive() override;
+
+  // Invoked when the user solves an adaptive captch.
+  void NotifyDidSolveAdaptiveCaptcha() override;
 
  private:
   brave_ads::AdsClientNotifier notifier_;

@@ -9,9 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
-
-using std::placeholders::_1;
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -22,8 +20,8 @@ const char kTableName[] = "sku_transaction";
 
 }  // namespace
 
-DatabaseSKUTransaction::DatabaseSKUTransaction(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseSKUTransaction::DatabaseSKUTransaction(RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseSKUTransaction::~DatabaseSKUTransaction() = default;
 
@@ -32,7 +30,7 @@ void DatabaseSKUTransaction::InsertOrUpdate(
     LegacyResultCallback callback) {
   if (!transaction) {
     BLOG(1, "Transcation is null");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -58,9 +56,9 @@ void DatabaseSKUTransaction::InsertOrUpdate(
 
   db_transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(db_transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(db_transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseSKUTransaction::SaveExternalTransaction(
@@ -70,7 +68,7 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
   if (transaction_id.empty() || external_transaction_id.empty()) {
     BLOG(1,
          "Data is empty " << transaction_id << "/" << external_transaction_id);
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -91,9 +89,9 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseSKUTransaction::GetRecordByOrderId(
@@ -126,14 +124,14 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseSKUTransaction::OnGetRecord, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseSKUTransaction::OnGetRecord,
+                     base::Unretained(this), std::move(callback)));
 }
 
-void DatabaseSKUTransaction::OnGetRecord(mojom::DBCommandResponsePtr response,
-                                         GetSKUTransactionCallback callback) {
+void DatabaseSKUTransaction::OnGetRecord(GetSKUTransactionCallback callback,
+                                         mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

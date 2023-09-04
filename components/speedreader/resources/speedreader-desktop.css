@@ -535,8 +535,9 @@ iframe {
 
 @media (prefers-color-scheme: dark) {
   html:not([data-theme]) {
-    --background-color: #121316;
-    --article-background-color: #1E2025;
+    --background-color: #0E0F11;
+
+    --article-background-color: #1A1C20;
     --article-text-color: #ECEFF2;
     --link-color: #737ADE;
     --summary-text-color: #8C90A1;
@@ -547,6 +548,7 @@ iframe {
 
 html,
 html[data-theme='light'] {
+  scrollbar-gutter: stable;
   background-color: var(--background-color);
 
   --article-background-color: #FFFFFF;

@@ -6,53 +6,55 @@
 // import { BraveWallet } from '../constants/types'
 // import Amount from './amount'
 
-import { mockAssetPrices } from '../common/constants/mocks'
+import { mockSpotPriceRegistry } from '../common/constants/mocks'
 import { mockBasicAttentionToken } from '../stories/mock-data/mock-asset-options'
 import {
   computeFiatAmount,
-  findAssetPrice,
+  getTokenPriceFromRegistry,
+  getTokenPriceAmountFromRegistry,
   computeFiatAmountToAssetValue
 } from './pricing-utils'
 
-describe('findAssetPrice', () => {
-  it('should find the price of a coin from within a list of asset prices', () => {
-    const { symbol, chainId, contractAddress } = mockBasicAttentionToken
+describe('getTokenPriceFromRegistry', () => {
+  it('should get the price of a coin from the spot prices registry', () => {
     expect(
-      findAssetPrice(
-        mockAssetPrices,
-        symbol,
-        contractAddress,
-        chainId
-      )
+      getTokenPriceFromRegistry(mockSpotPriceRegistry, mockBasicAttentionToken)
+        ?.price
+    ).toBe('0.88')
+  })
+})
+
+describe('getTokenPriceAmountFromRegistry', () => {
+  it('should get the price amount from spot prices registry', () => {
+    expect(
+      getTokenPriceAmountFromRegistry(
+        mockSpotPriceRegistry,
+        mockBasicAttentionToken
+      ).formatAsFiat()
     ).toBe('0.88')
   })
 })
 
 describe('computeFiatAmount', () => {
   it('should find and convert the fiat value of a token', () => {
-    const { symbol, decimals, contractAddress, chainId } = mockBasicAttentionToken
-
     expect(
-      computeFiatAmount(
-        mockAssetPrices,
-        { symbol, decimals, value: '20', contractAddress, chainId }
-      ).format()
+      computeFiatAmount({
+        spotPriceRegistry: mockSpotPriceRegistry,
+        value: '20',
+        token: mockBasicAttentionToken
+      }).format()
     ).toBe('0.0000000000000000176')
   })
 })
 
 describe('computeFiatAmountToAssetValue', () => {
   it('should find and convert the fiat amoount to token value', () => {
-    const { symbol, contractAddress, chainId } = mockBasicAttentionToken
-
     expect(
-      computeFiatAmountToAssetValue(
-        '200',
-        mockAssetPrices,
-        symbol,
-        contractAddress,
-        chainId
-      ).format(6)
+      computeFiatAmountToAssetValue({
+        spotPriceRegistry: mockSpotPriceRegistry,
+        value: '200',
+        token: mockBasicAttentionToken
+      }).format(6)
     ).toBe('227.273')
   })
 })

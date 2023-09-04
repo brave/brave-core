@@ -5,8 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
 namespace {
@@ -15,7 +16,7 @@ const int kDiscoveryAttempts = 20;
 
 AccountDiscoveryManager::DiscoveryContext::DiscoveryContext(
     const mojom::CoinType& coin_type,
-    const std::string& keyring_id,
+    const mojom::KeyringId& keyring_id,
     const std::string& chain_id,
     size_t discovery_account_index,
     int attempts_left)

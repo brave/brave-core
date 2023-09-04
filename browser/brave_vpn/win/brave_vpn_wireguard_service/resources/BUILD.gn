@@ -1,0 +1,34 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/toolchain/gcc_toolchain.gni")
+
+source_set("resources") {
+  sources = [
+    "resource_loader.cc",
+    "resource_loader.h",
+  ]
+
+  deps = [
+    "//base",
+    "//base:i18n",
+    "//ui/base",
+  ]
+  if (!enable_resource_allowlist_generation) {
+    deps += [ "//chrome:packed_resources" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "resource_loader_unittest.cc" ]
+  deps = [
+    ":resources",
+    "//base",
+    "//brave/components/constants",
+    "//testing/gtest",
+  ]
+}

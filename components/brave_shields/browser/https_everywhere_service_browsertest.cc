@@ -10,9 +10,11 @@
 #include "brave/browser/brave_shields/https_everywhere_component_installer.h"
 #include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/components/constants/brave_paths.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -39,10 +41,15 @@ class HTTPSEverywhereServiceTest : public ExtensionBrowserTest {
  public:
   HTTPSEverywhereServiceTest() = default;
 
-  void SetUp() override {
+  void SetUpCommon() {
     InitEmbeddedTestServer();
     InitService();
     ExtensionBrowserTest::SetUp();
+  }
+
+  void SetUp() override {
+    feature_list_.InitAndDisableFeature(net::features::kBraveHttpsByDefault);
+    SetUpCommon();
   }
 
   void SetUpOnMainThread() override {
@@ -122,6 +129,9 @@ class HTTPSEverywhereServiceTest : public ExtensionBrowserTest {
 
     WaitForAdBlockServiceThreads();
   }
+
+ protected:
+  base::test::ScopedFeatureList feature_list_;
 };
 
 // Load a URL which has an HTTPSE rule and verify we rewrote it.
@@ -217,4 +227,30 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, RedirectsKnownSiteInIframe) {
   WaitForLoadStop(contents);
   EXPECT_EQ(GURL("https://www.digg.com/"),
             iframe_contents->GetLastCommittedURL());
+}
+
+class HTTPSEverywhereServiceTest_HttpsByDefaultEnabled
+    : public HTTPSEverywhereServiceTest {
+ public:
+  HTTPSEverywhereServiceTest_HttpsByDefaultEnabled() = default;
+
+  void SetUp() override {
+    feature_list_.InitAndEnableFeature(net::features::kBraveHttpsByDefault);
+    HTTPSEverywhereServiceTest::SetUpCommon();
+  }
+};
+
+// Verify that HTTPE rules are disabled when HTTPS by Default is enabled
+IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest_HttpsByDefaultEnabled,
+                       RedirectsKnownSite) {
+  ASSERT_TRUE(InstallHTTPSEverywhereExtension());
+  auto* settings_map =
+      HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  GURL insecure_url = embedded_test_server()->GetURL("www.digg.com", "/");
+  brave_shields::SetHttpsUpgradeControlType(
+      settings_map, brave_shields::ControlType::ALLOW, GURL());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), insecure_url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(insecure_url, contents->GetLastCommittedURL());
 }

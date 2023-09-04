@@ -1,0 +1,8 @@
+Name: tracing-core
+URL: https://crates.io/crates/tracing-core
+Description: Core primitives for application-level tracing.
+
+Version: 0.1.30
+Security Critical: yes
+License: MIT
+Revision: 8b01ea9b9c0dfc06ab101940c94e23934c4d4cc8

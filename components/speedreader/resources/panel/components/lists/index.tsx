@@ -5,58 +5,87 @@
 import * as React from 'react'
 
 import * as S from './style'
-import fontSerifSvg from '../../svg/fontSerif'
-import fontSansSvg from '../../svg/fontSans'
-import fontMonoSvg from '../../svg/fontMono'
-import fontDyslexicSvg from '../../svg/fontDyslexic'
-import contentTextOnlySvg from '../../svg/contentTextOnly'
-import contentTextWithImagesSvg from '../../svg/contentTextWithImages'
-import { FontFamily, ContentStyle } from '../../api/browser'
+import { FontFamily, FontSize, PlaybackSpeed, PlaybackState } from '../../api/browser'
+import classnames from '$web-common/classnames'
+import { loadTimeData } from '$web-common/loadTimeData'
+import Icon from '@brave/leo/react/icon'
+import { getLocale } from '$web-common/locale'
 
-const fontStyleOptions = [
+export enum MainButtonType {
+  None,
+  Tune,
+  Appearance,
+  TextToSpeech,
+  AI
+}
+
+const mainButtonsOptions = [
   {
-    title: 'Sans',
-    family: FontFamily.kSans,
-    svgIcon: fontSansSvg
+    id: 'tune',
+    type: MainButtonType.Tune,
+    iconName: 'tune',
+    title: getLocale('braveReaderModeTune')
   },
   {
-    title: 'Serif',
-    family: FontFamily.kSerif,
-    svgIcon: fontSerifSvg
+    id: 'appearance',
+    type: MainButtonType.Appearance,
+    iconName: 'characters',
+    title: getLocale('braveReaderModeAppearance')
   },
   {
-    title: 'Mono',
-    family: FontFamily.kMono,
-    svgIcon: fontMonoSvg
+    id: 'tts',
+    type: MainButtonType.TextToSpeech,
+    iconName: 'headphones',
+    hidden: true,  // TODO(boocmp): Enable in future PR.
+    title: getLocale('braveReaderModeTextToSpeech')
   },
   {
-    title: 'Dyslexic',
-    family: FontFamily.kDyslexic,
-    svgIcon: fontDyslexicSvg
+    id: 'ai',
+    type: MainButtonType.AI,
+    iconName: 'product-brave-ai',
+    hidden: !loadTimeData.getBoolean('aiChatFeatureEnabled'),
+    title: getLocale('braveReaderModeAI')
   }
 ]
 
-const contentStyleOptions = [
+const fontStyleOptions = [
   {
-    title: 'Text with images',
-    contentStyle: ContentStyle.kDefault,
-    svgIcon: contentTextWithImagesSvg
+    id: 'font-sans',
+    family: FontFamily.kSans,
+    iconName: 'readermode-sans',
+    title: getLocale('braveReaderModeAppearanceFontSans')
   },
   {
-    title: 'Text only',
-    contentStyle: ContentStyle.kTextOnly,
-    svgIcon: contentTextOnlySvg
+    id: 'font-serif',
+    family: FontFamily.kSerif,
+    iconName: 'readermode-serif',
+    title: getLocale('braveReaderModeAppearanceFontSerif')
+  },
+  {
+    id: 'font-mono',
+    family: FontFamily.kMono,
+    iconName: 'readermode-mono',
+    title: getLocale('braveReaderModeAppearanceFontMono')
+  },
+  {
+    id: 'font-dyslexic',
+    family: FontFamily.kDyslexic,
+    iconName: 'readermode-dislexyc',
+    title: getLocale('braveReaderModeAppearanceFontDyslexic')
   }
 ]
 
 type OptionType = {
+  id?: string
   isSelected: boolean
   children: JSX.Element
   onClick?: Function
   ariaLabel?: string
+  inGroup?: boolean
+  title?: string
 }
 
-function ListBox (props: React.PropsWithChildren<{}>) {
+function ListBox(props: React.PropsWithChildren<{}>) {
   return (
     <S.Box role="listbox" aria-orientation="horizontal">
       {props.children}
@@ -64,21 +93,57 @@ function ListBox (props: React.PropsWithChildren<{}>) {
   )
 }
 
-function Option (props: OptionType) {
+function ControlButton(props: OptionType) {
   const handleClick = () => {
     props.onClick?.()
   }
 
+  const buttonClass = classnames({
+    'is-active': props.isSelected,
+  })
+
   return (
-    <button
+    <S.Button
+      id={props?.id}
       role="option"
-      className={props.isSelected ? 'is-active' : ''}
+      className={buttonClass}
       aria-selected={props.isSelected}
       aria-label={props?.ariaLabel}
       onClick={handleClick}
+      inGroup={props?.inGroup}
+      title={props?.title}
     >
       {props.children}
-    </button>
+    </S.Button>
+  )
+}
+
+interface MainButtonsListProps {
+  activeButton: MainButtonType;
+  onClick?: Function
+}
+
+export function MainButtonsList(props: MainButtonsListProps) {
+  const handleClick = (active: MainButtonType) => {
+    props.onClick?.(active)
+  }
+
+  return (
+    <ListBox>
+      {mainButtonsOptions.filter(entry => { return !entry?.hidden }).map(entry => {
+        return (
+          <ControlButton
+            id={entry.id}
+            key={entry.type}
+            title={entry.title}
+            isSelected={props.activeButton === entry.type}
+            onClick={handleClick.bind(this, entry.type)}
+          >
+            <Icon name={entry.iconName} />
+          </ControlButton>
+        )
+      })}
+    </ListBox>
   )
 }
 
@@ -87,7 +152,7 @@ interface FontStyleListProps {
   onClick?: Function
 }
 
-export function FontStyleList (props: FontStyleListProps) {
+export function FontStyleList(props: FontStyleListProps) {
   const handleClick = (fontFamily: FontFamily) => {
     props.onClick?.(fontFamily)
   }
@@ -96,46 +161,176 @@ export function FontStyleList (props: FontStyleListProps) {
     <ListBox>
       {fontStyleOptions.map(entry => {
         return (
-          <Option
-            key={entry.title}
+          <ControlButton
+            id={entry?.id}
+            key={entry.family}
+            title={entry.title}
             isSelected={props.activeFontFamily === entry.family}
+            inGroup={true}
             onClick={handleClick.bind(this, entry.family)}
           >
-            <div className="sm">
-              <div>{<entry.svgIcon />}</div>
-              {entry.title}
-            </div>
-          </Option>
+            <Icon name={entry.iconName} />
+          </ControlButton>
         )
       })}
     </ListBox>
   )
 }
 
-interface ContentStyleProps {
-  activeContentStyle: ContentStyle
+interface FontSizeListProps {
+  currentSize: FontSize
   onClick?: Function
 }
 
-export function ContentList (props: ContentStyleProps) {
-  const handleClick = (contentStyle: ContentStyle) => {
-    props.onClick?.(contentStyle)
+export function FontSizeList(props: FontSizeListProps) {
+  enum ActionType {
+    Inc,
+    Dec
+  }
+
+  const updateSize = (action: ActionType) => {
+    const newSize = action === ActionType.Dec ?
+      props.currentSize - 10 : props.currentSize + 10
+
+    if (newSize >= FontSize.MIN_VALUE && newSize <= FontSize.MAX_VALUE) {
+      props.onClick?.(newSize)
+      return
+    }
+    return props.onClick?.(props.currentSize)
   }
 
   return (
     <ListBox>
-      {contentStyleOptions.map(entry => {
-        return (
-          <Option
-            key={entry.title}
-            isSelected={props.activeContentStyle === entry.contentStyle}
-            ariaLabel={entry.title}
-            onClick={handleClick.bind(this, entry.contentStyle)}
-          >
-            <div>{<entry.svgIcon />}</div>
-          </Option>
-        )
-      })}
+      <ControlButton
+        id='font-size-decrease'
+        inGroup={true}
+        isSelected={false}
+        title={getLocale('braveReaderModeFontSizeDecrease')}
+        onClick={() => updateSize(ActionType.Dec)}
+      >
+        <Icon name='minus' />
+      </ControlButton>
+      <S.CurrentStateIndicator className='group'>
+        <Icon name='font-size' />
+        <span>{props.currentSize}% </span>
+      </S.CurrentStateIndicator>
+      <ControlButton
+        id='font-size-increase'
+        inGroup={true}
+        isSelected={false}
+        title={getLocale('braveReaderModeFontSizeIncrease')}
+        onClick={() => updateSize(ActionType.Inc)}
+      >
+        <Icon name='plus-add' />
+      </ControlButton>
+    </ListBox>
+  )
+}
+
+export enum Playback {
+  Rewind,
+  Play,
+  Pause,
+  Stop,
+  Forward
+}
+
+interface PlaybackControlProps {
+  playbackState: PlaybackState
+  onClick?: Function
+}
+
+export function PlaybackControl(props: PlaybackControlProps) {
+  return (
+    <ListBox>
+      <ControlButton
+        inGroup={true}
+        isSelected={false}
+        title={getLocale('braveReaderModeTtsRewind')}
+        onClick={() => { props.onClick?.(Playback.Rewind) }}
+      >
+        <Icon name='rewind-outline' />
+      </ControlButton>
+      <ControlButton
+        inGroup={true}
+        isSelected={false}
+        title={getLocale('braveReaderModeTtsPlayPause')}
+        onClick={() => {
+          switch (props.playbackState) {
+            case PlaybackState.kPlayingThisPage:
+              props.onClick?.(Playback.Pause)
+              break
+            case PlaybackState.kPlayingAnotherPage:
+              props.onClick?.(Playback.Stop)
+              break
+            case PlaybackState.kStopped:
+              props.onClick?.(Playback.Play)
+              break
+          }
+        }}
+      >
+        <div>
+          {props.playbackState === PlaybackState.kStopped && <Icon name='play-outline' />}
+          {props.playbackState === PlaybackState.kPlayingThisPage && <Icon name='pause-outline' />}
+          {props.playbackState === PlaybackState.kPlayingAnotherPage && <Icon name='pause-outline' />}
+        </div>
+      </ControlButton>
+      <ControlButton
+        inGroup={true}
+        isSelected={false}
+        title={getLocale('braveReaderModeTtsForward')}
+        onClick={() => { props.onClick?.(Playback.Forward) }}
+      >
+        <Icon name='forward-outline' />
+      </ControlButton>
+    </ListBox>
+  )
+}
+
+interface PlaybackSpeedControlProps {
+  speed: PlaybackSpeed
+  onClick?: Function
+}
+
+export function PlaybackSpeedControl(props: PlaybackSpeedControlProps) {
+  enum ActionType {
+    Inc,
+    Dec
+  }
+
+  const updateSpeed = (action: ActionType) => {
+    const newSpeed = action === ActionType.Dec ?
+      props.speed - 10 : props.speed + 10
+    if (newSpeed >= PlaybackSpeed.MIN_VALUE &&
+      newSpeed <= PlaybackSpeed.MAX_VALUE) {
+      props.onClick?.(newSpeed)
+      return
+    }
+    return props.onClick?.(props.speed)
+  }
+
+  return (
+    <ListBox>
+      <ControlButton
+        inGroup={true}
+        isSelected={false}
+        title={getLocale('braveReaderModeTtsSpeedDecrease')}
+        onClick={() => updateSpeed(ActionType.Dec)}
+      >
+        <Icon name='minus' />
+      </ControlButton>
+      <S.CurrentStateIndicator className='group'>
+        <Icon name='speed' />
+        {props.speed}%
+      </S.CurrentStateIndicator>
+      <ControlButton
+        inGroup={true}
+        isSelected={false}
+        title={getLocale('braveReaderModeTtsSpeedIncrease')}
+        onClick={() => updateSpeed(ActionType.Inc)}
+      >
+        <Icon name='plus-add' />
+      </ControlButton>
     </ListBox>
   )
 }

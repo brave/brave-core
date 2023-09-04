@@ -19,8 +19,8 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/features.h"
-#include "brave/components/brave_wallet/common/common_util.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -28,7 +28,6 @@
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
-#include "brave/components/sidebar/sidebar_service_delegate.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -36,6 +35,10 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/common/features.h"
@@ -87,12 +90,10 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
           ? static_cast<int>(ShowSidebarOption::kShowNever)
           : static_cast<int>(ShowSidebarOption::kShowAlways));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
-  registry->RegisterBooleanPref(kSidebarAlignmentChangedTemporarily, false);
+  registry->RegisterIntegerPref(kSidePanelWidth, kDefaultSidePanelWidth);
 }
 
-SidebarService::SidebarService(PrefService* prefs,
-                               std::unique_ptr<SidebarServiceDelegate> delegate)
-    : prefs_(prefs), delegate_(std::move(delegate)) {
+SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
   DCHECK(prefs_);
   MigratePrefSidebarBuiltInItemsToHidden();
 
@@ -448,24 +449,6 @@ void SidebarService::SetSidebarShowOption(ShowSidebarOption show_options) {
   prefs_->SetInteger(kSidebarShowOption, static_cast<int>(show_options));
 }
 
-void SidebarService::MoveSidebarToRightTemporarily() {
-  if (!delegate_) {
-    CHECK_IS_TEST();
-    return;
-  }
-
-  delegate_->MoveSidebarToRightTemporarily();
-}
-
-void SidebarService::RestoreSidebarAlignmentIfNeeded() {
-  if (!delegate_) {
-    CHECK_IS_TEST();
-    return;
-  }
-
-  delegate_->RestoreSidebarAlignmentIfNeeded();
-}
-
 void SidebarService::LoadSidebarItems() {
   auto default_items_to_add = GetDefaultSidebarItems();
 
@@ -645,7 +628,8 @@ SidebarItem SidebarService::GetBuiltInItemForType(
 
       return SidebarItem();
     }
-    case SidebarItem::BuiltInItemType::kChatUI:
+    case SidebarItem::BuiltInItemType::kChatUI: {
+#if BUILDFLAG(ENABLE_AI_CHAT)
       if (ai_chat::features::IsAIChatEnabled()) {
         return SidebarItem::Create(
             brave_l10n::GetLocalizedResourceUTF16String(IDS_CHAT_UI_TITLE),
@@ -655,6 +639,10 @@ SidebarItem SidebarService::GetBuiltInItemForType(
       } else {
         return SidebarItem();
       }
+#else   // BUILDFLAG(ENABLE_AI_CHAT)
+      return SidebarItem();
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+    }
     case SidebarItem::BuiltInItemType::kNone: {
       NOTREACHED();
       break;
@@ -669,6 +657,19 @@ void SidebarService::OnPreferenceChanged(const std::string& pref_name) {
       obs.OnShowSidebarOptionChanged(GetSidebarShowOption());
     return;
   }
+}
+
+void SidebarService::AddItemAtForTesting(const SidebarItem& item,
+                                         size_t index) {
+  // Assueme that |index| is valid now in test.
+  CHECK_IS_TEST();
+
+  items_.insert(items_.begin() + index, item);
+  for (Observer& obs : observers_) {
+    obs.OnItemAdded(item, index);
+  }
+
+  UpdateSidebarItemsToPrefStore();
 }
 
 }  // namespace sidebar

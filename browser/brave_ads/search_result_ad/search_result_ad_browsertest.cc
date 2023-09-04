@@ -12,18 +12,23 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_ads/search_result_ad/search_result_ad_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/mock_ads_service.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/common/search_result_ad_feature.h"
+#include "brave/components/brave_ads/browser/ads_service_mock.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/public/feature/brave_ads_feature.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/http/http_status_code.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/request_handler_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -72,8 +77,7 @@ class ScopedTestingAdsServiceSetter {
 class SearchResultAdTest : public InProcessBrowserTest {
  public:
   SearchResultAdTest() {
-    feature_list_.InitAndEnableFeature(
-        kShouldTriggerSearchResultAdEventsFeature);
+    feature_list_.InitAndEnableFeature(kShouldSupportSearchResultAdsFeature);
   }
 
   void SetUpOnMainThread() override {
@@ -139,20 +143,21 @@ class SearchResultAdTest : public InProcessBrowserTest {
 
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
-  MockAdsService* ads_service() { return &ads_service_; }
+  AdsServiceMock* ads_service() { return &ads_service_mock_; }
 
  private:
   base::test::ScopedFeatureList feature_list_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
-  MockAdsService ads_service_;
+  AdsServiceMock ads_service_mock_;
 };
 
-IN_PROC_BROWSER_TEST_F(SearchResultAdTest, AdsDisabled) {
-  ScopedTestingAdsServiceSetter scoped_setter(ads_service());
+IN_PROC_BROWSER_TEST_F(SearchResultAdTest, UserHasNotJoinedBraveRewards) {
+  browser()->profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled,
+                                               false);
 
-  EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(false));
-  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _)).Times(0);
+  ScopedTestingAdsServiceSetter scoped_setter(ads_service());
+  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _, _)).Times(0);
 
   GURL url = GetURL(kAllowedDomain, kSearchResultUrlPath);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -164,8 +169,10 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, AdsDisabled) {
 IN_PROC_BROWSER_TEST_F(SearchResultAdTest, NotAllowedDomain) {
   ScopedTestingAdsServiceSetter scoped_setter(ads_service());
 
-  EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(true));
-  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _)).Times(0);
+  browser()->profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled,
+                                               true);
+
+  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _, _)).Times(0);
 
   GURL url = GetURL(kNotAllowedDomain, kSearchResultUrlPath);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -177,8 +184,10 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, NotAllowedDomain) {
 IN_PROC_BROWSER_TEST_F(SearchResultAdTest, BrokenSearchAdMetadata) {
   ScopedTestingAdsServiceSetter scoped_setter(ads_service());
 
-  EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(true));
-  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _)).Times(0);
+  browser()->profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled,
+                                               true);
+
+  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _, _)).Times(0);
 
   GURL url = GetURL(kAllowedDomain, "/brave_ads/search_result_ad_broken.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -237,21 +246,20 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
               base::StrCat({"data-description", index}));
     EXPECT_DOUBLE_EQ(search_result_ad->value, 0.5 + ad_index);
 
+    EXPECT_TRUE(search_result_ad->conversion);
+    EXPECT_EQ(search_result_ad->conversion->url_pattern,
+              base::StrCat({"data-conversion-url-pattern-value", index}));
     if (ad_index == 2) {
-      EXPECT_FALSE(search_result_ad->conversion);
+      EXPECT_FALSE(search_result_ad->conversion
+                       ->verifiable_advertiser_public_key_base64);
     } else {
-      EXPECT_TRUE(search_result_ad->conversion);
-      EXPECT_EQ(search_result_ad->conversion->type,
-                base::StrCat({"data-conversion-type-value", index}));
-      EXPECT_EQ(search_result_ad->conversion->url_pattern,
-                base::StrCat({"data-conversion-url-pattern-value", index}));
       EXPECT_EQ(
-          search_result_ad->conversion->advertiser_public_key,
+          search_result_ad->conversion->verifiable_advertiser_public_key_base64,
           base::StrCat({"data-conversion-advertiser-public-key-value", index}));
-      EXPECT_EQ(
-          static_cast<size_t>(search_result_ad->conversion->observation_window),
-          ad_index);
     }
+    EXPECT_EQ(static_cast<size_t>(
+                  search_result_ad->conversion->observation_window.InDays()),
+              ad_index);
 
     return true;
   }
@@ -260,15 +268,14 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
       const GURL& url) {
     auto run_loop1 = std::make_unique<base::RunLoop>();
     auto run_loop2 = std::make_unique<base::RunLoop>();
-    EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(
-                                    _, mojom::SearchResultAdEventType::kServed))
-        .Times(2);
-    EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(
-                                    _, mojom::SearchResultAdEventType::kViewed))
+    EXPECT_CALL(*ads_service(),
+                TriggerSearchResultAdEvent(
+                    _, mojom::SearchResultAdEventType::kViewed, _))
         .Times(2)
         .WillRepeatedly([this, &run_loop1, &run_loop2](
                             mojom::SearchResultAdInfoPtr ad_mojom,
-                            const mojom::SearchResultAdEventType event_type) {
+                            const mojom::SearchResultAdEventType event_type,
+                            TriggerAdEventCallback callback) {
           const bool is_search_result_ad_1 =
               CheckSampleSearchAdMetadata(ad_mojom, 1);
           const bool is_search_result_ad_2 =
@@ -298,16 +305,19 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
 IN_PROC_BROWSER_TEST_F(SampleSearchResultAdTest,
                        SearchResultAdOpenedInSameTab) {
   ScopedTestingAdsServiceSetter scoped_setter(ads_service());
-  EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(true));
+
+  browser()->profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled,
+                                               true);
 
   content::WebContents* web_contents =
       LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
 
   base::RunLoop run_loop;
-  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _))
+  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _, _))
       .WillOnce(
           [this, &run_loop](mojom::SearchResultAdInfoPtr ad_mojom,
-                            const mojom::SearchResultAdEventType event_type) {
+                            const mojom::SearchResultAdEventType event_type,
+                            TriggerAdEventCallback callback) {
             EXPECT_EQ(event_type, mojom::SearchResultAdEventType::kClicked);
             CheckSampleSearchAdMetadata(ad_mojom, 1);
             run_loop.Quit();
@@ -320,17 +330,19 @@ IN_PROC_BROWSER_TEST_F(SampleSearchResultAdTest,
 
 IN_PROC_BROWSER_TEST_F(SampleSearchResultAdTest, SearchResultAdOpenedInNewTab) {
   ScopedTestingAdsServiceSetter scoped_setter(ads_service());
-  EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(true));
+
+  browser()->profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled,
+                                               true);
 
   content::WebContents* web_contents =
       LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
 
-  EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(true));
   base::RunLoop run_loop;
-  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _))
+  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _, _))
       .WillOnce(
           [this, &run_loop](mojom::SearchResultAdInfoPtr ad_mojom,
-                            const mojom::SearchResultAdEventType event_type) {
+                            const mojom::SearchResultAdEventType event_type,
+                            TriggerAdEventCallback callback) {
             EXPECT_EQ(event_type, mojom::SearchResultAdEventType::kClicked);
             CheckSampleSearchAdMetadata(ad_mojom, 2);
             run_loop.Quit();

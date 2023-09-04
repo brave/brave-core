@@ -4,14 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import './brave_extensions_manifest_v2_subpage.js';
-import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import { WebUiListenerMixin, WebUiListenerMixinInterface } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
-import { SettingsCheckboxElement } from '../controls/settings_checkbox.js';
-import { loadTimeData } from '../i18n_setup.js';
-import { PrefsMixin, PrefsMixinInterface } from '../prefs/prefs_mixin.js'
-import { BraveDefaultExtensionsBrowserProxyImpl } from './brave_default_extensions_browser_proxy.js'
-import { getTemplate } from './brave_default_extensions_page.html.js'
-import { Router, RouteObserverMixin } from '../router.js';
+
+import {PrefsMixin, PrefsMixinInterface} from 'chrome://resources/cr_components/settings_prefs/prefs_mixin.js';
+import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+
+import {SettingsCheckboxElement} from '../controls/settings_checkbox.js';
+import {loadTimeData} from '../i18n_setup.js';
+import {RouteObserverMixin, Router} from '../router.js';
+
+import {BraveDefaultExtensionsBrowserProxyImpl} from './brave_default_extensions_browser_proxy.js'
+import {getTemplate} from './brave_default_extensions_page.html.js'
 
 const SettingBraveDefaultExtensionsPageElementBase =
   WebUiListenerMixin(PrefsMixin(RouteObserverMixin(PolymerElement))) as {

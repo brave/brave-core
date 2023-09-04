@@ -15,6 +15,7 @@
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/webcompat_reporter/buildflags/buildflags.h"
 #include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "net/base/load_flags.h"
 #include "net/base/privacy_mode.h"
 #include "services/network/public/cpp/resource_request.h"

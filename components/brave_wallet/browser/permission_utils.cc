@@ -192,12 +192,6 @@ GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
 
   mojom::OriginInfoPtr origin_info = MakeOriginInfo(origin);
 
-  query_parts.push_back(base::StringPrintf(
-      "origin-scheme=%s", origin_info->origin.scheme().c_str()));
-  query_parts.push_back(
-      base::StringPrintf("origin-host=%s", origin_info->origin.host().c_str()));
-  query_parts.push_back(
-      base::StringPrintf("origin-port=%d", origin_info->origin.port()));
   query_parts.push_back(
       base::StringPrintf("origin-spec=%s", origin_info->origin_spec.c_str()));
   query_parts.push_back(base::StringPrintf(
@@ -206,8 +200,7 @@ GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
   std::string query_str = base::JoinString(query_parts, "&");
   GURL::Replacements replacements;
   replacements.SetQueryStr(query_str);
-  std::string kConnectWithSite = "connectWithSite";
-  replacements.SetRefStr(kConnectWithSite);
+  replacements.SetRefStr("connectWithSite");
   return webui_base_url.ReplaceComponents(replacements);
 }
 

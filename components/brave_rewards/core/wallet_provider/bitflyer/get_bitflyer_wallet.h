@@ -9,13 +9,13 @@
 #include "brave/components/brave_rewards/core/wallet_provider/get_external_wallet.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace bitflyer {
 
 class GetBitFlyerWallet : public wallet_provider::GetExternalWallet {
  public:
-  explicit GetBitFlyerWallet(LedgerImpl& ledger);
+  explicit GetBitFlyerWallet(RewardsEngineImpl& engine);
 
   ~GetBitFlyerWallet() override;
 

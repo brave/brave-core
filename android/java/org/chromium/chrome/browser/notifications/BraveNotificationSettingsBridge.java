@@ -11,7 +11,6 @@ import android.annotation.TargetApi;
 import android.os.Build;
 
 import org.chromium.base.annotations.CalledByNative;
-import org.chromium.chrome.browser.notifications.NotificationSettingsBridge;
 
 /**
  * This class provides our native code to access NotificationSettingsBridge

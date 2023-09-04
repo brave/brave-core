@@ -1,10 +1,10 @@
 diff --git a/components/omnibox/browser/omnibox_edit_model.cc b/components/omnibox/browser/omnibox_edit_model.cc
-index 62e5389d6ddd81c797306a44b078ac1ceaa894e5..287bb15f8fab8ce39821a5696a131668bcf41de9 100644
+index f5bd5af7905c9c81b575e3b280a770e01587c1be..acb23a7517a209bac868709f351c23b96315e85f 100644
 --- a/components/omnibox/browser/omnibox_edit_model.cc
 +++ b/components/omnibox/browser/omnibox_edit_model.cc
-@@ -512,6 +512,7 @@ void OmniboxEditModel::AdjustTextForCopy(int sel_min,
+@@ -520,6 +520,7 @@ void OmniboxEditModel::AdjustTextForCopy(int sel_min,
        (*text == display_text_ || *text == url_for_editing_)) {
-     *url_from_text = delegate()->GetLocationBarModel()->GetURL();
+     *url_from_text = client()->GetLocationBarModel()->GetURL();
      *write_url = true;
 +    BRAVE_ADJUST_TEXT_FOR_COPY
  

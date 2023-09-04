@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 
 // redux
 import { useDispatch } from 'react-redux'
@@ -14,17 +13,42 @@ import { AccountsTabActions } from '../../../page/reducers/accounts-tab-reducer'
 
 // utils
 import { reduceAddress } from '../../../utils/reduce-address'
+import {
+  getAccountTypeDescription
+} from '../../../utils/account-utils'
+import {
+  getBalance
+} from '../../../utils/balance-utils'
+import {
+  computeFiatAmount
+} from '../../../utils/pricing-utils'
+import Amount from '../../../utils/amount'
 
 // hooks
+import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
+
+// Selectors
 import {
-  useOnClickOutside
-} from '../../../common/hooks/useOnClickOutside'
+  UISelectors,
+  WalletSelectors
+} from '../../../common/selectors'
+import {
+  useSafeUISelector,
+  useSafeWalletSelector,
+  useUnsafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
+
+// Queries
+import {
+  TokenBalancesRegistry
+} from '../../../common/slices/entities/token-balance.entity'
 
 // types
 import {
-  WalletAccountType,
+  BraveWallet,
   AccountButtonOptionsObjectType,
-  AccountModalTypes
+  AccountModalTypes,
+  SpotPriceRegistry
 } from '../../../constants/types'
 
 // options
@@ -35,17 +59,23 @@ import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
 import {
   AccountActionsMenu
 } from '../wallet-menus/account-actions-menu'
+import {
+  CreateAccountIcon
+} from '../../shared/create-account-icon/create-account-icon'
+import {
+  TokenIconsStack
+} from '../../shared/icon-stacks/token-icons-stack'
+import LoadingSkeleton from '../../shared/loading-skeleton'
 
 // style
 import {
   StyledWrapper,
   NameAndIcon,
-  AccountCircle,
   AccountMenuWrapper,
-  HardwareIcon,
-  AccountNameRow,
   AccountMenuButton,
-  AccountMenuIcon
+  AccountMenuIcon,
+  AccountBalanceText,
+  AccountDescription
 } from './style'
 
 import {
@@ -56,20 +86,37 @@ import {
   CopyIcon
 } from '../portfolio-account-item/style'
 
-export interface Props {
+import {
+  HorizontalSpace,
+  Row
+} from '../../shared/style'
+
+
+interface Props {
   onDelete?: () => void
-  onClick: (account: WalletAccountType) => void
-  account: WalletAccountType
-  isHardwareWallet: boolean
+  onClick: (account: BraveWallet.AccountInfo) => void
+  account: BraveWallet.AccountInfo
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  spotPriceRegistry: SpotPriceRegistry | undefined
 }
 
 export const AccountListItem = ({
   account,
-  isHardwareWallet,
-  onClick
+  onClick,
+  tokenBalancesRegistry,
+  spotPriceRegistry
 }: Props) => {
   // redux
   const dispatch = useDispatch()
+
+  // selectors
+  const userVisibleTokensInfo = useUnsafeWalletSelector(
+    WalletSelectors.userVisibleTokensInfo
+  )
+  const defaultFiatCurrency = useSafeWalletSelector(
+    WalletSelectors.defaultFiatCurrency
+  )
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // state
   const [showAccountMenu, setShowAccountMenu] = React.useState<boolean>(false)
@@ -90,8 +137,13 @@ export const AccountListItem = ({
   }, [onClick, account])
 
   const onRemoveAccount = React.useCallback(() => {
-    dispatch(AccountsTabActions.setAccountToRemove({ address: account.address, hardware: isHardwareWallet, coin: account.coin, name: account.name }))
-  }, [account, isHardwareWallet])
+    dispatch(
+      AccountsTabActions.setAccountToRemove({
+        accountId: account.accountId,
+        name: account.name
+      })
+    )
+  }, [account])
 
   const onShowAccountsModal = React.useCallback((modalType: AccountModalTypes) => {
     dispatch(AccountsTabActions.setShowAccountModal(true))
@@ -112,57 +164,150 @@ export const AccountListItem = ({
   }, [onSelectAccount, onRemoveAccount, onShowAccountsModal])
 
   // memos
-  const orb = React.useMemo(() => {
-    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [account.address])
+  const accountsFungibleTokens = React.useMemo(() => {
+    return userVisibleTokensInfo.filter((asset) => asset.visible)
+      .filter((token) => token.coin === account.accountId.coin)
+      .filter((token) =>
+        !token.isErc721 && !token.isErc1155 && !token.isNft)
+  }, [userVisibleTokensInfo, account])
+
+  const tokensWithBalances = React.useMemo(() => {
+    return accountsFungibleTokens
+      .filter((token) =>
+        new Amount(getBalance(account.accountId, token, tokenBalancesRegistry)).gt(0))
+  }, [accountsFungibleTokens, tokenBalancesRegistry, account])
+
+  const accountsFiatValue = React.useMemo(() => {
+    // Return an empty string to display a loading
+    // skeleton while assets are populated.
+    if (userVisibleTokensInfo.length === 0) {
+      return Amount.empty()
+    }
+
+    // Return a 0 balance if the account has no
+    // assets to display.
+    if (
+      accountsFungibleTokens
+        .length === 0
+    ) {
+      return new Amount(0)
+    }
+
+    // Wait for spot prices
+    if (!spotPriceRegistry) {
+      return Amount.empty()
+    }
+
+    const amounts =
+      accountsFungibleTokens
+        .map((asset) => {
+          const balance =
+            getBalance(account.accountId, asset, tokenBalancesRegistry)
+          return computeFiatAmount({
+            spotPriceRegistry,
+            value: balance,
+            token: asset
+          })
+        })
+
+    const reducedAmounts =
+      amounts.reduce(function (a, b) {
+        return a.plus(b)
+      })
+
+    return !reducedAmounts.isUndefined()
+      ? reducedAmounts
+      : new Amount(0)
+  }, [
+    account,
+    userVisibleTokensInfo,
+    accountsFungibleTokens,
+    tokenBalancesRegistry,
+    spotPriceRegistry
+  ])
 
   const buttonOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
-    // We are not able to remove a Primary account so we filter out this option.
-    if (account.accountType === 'Primary') {
+    // We are not able to remove a Derived account so we filter out this option.
+    if (account.accountId.kind === BraveWallet.AccountKind.kDerived) {
       return AccountButtonOptions.filter((option: AccountButtonOptionsObjectType) => option.id !== 'remove')
     }
     // We are not able to fetch Private Keys for a Hardware account so we filter out this option.
-    if (isHardwareWallet) {
+    if (account.accountId.kind === BraveWallet.AccountKind.kHardware) {
       return AccountButtonOptions.filter((option: AccountButtonOptionsObjectType) => option.id !== 'privateKey')
     }
     return AccountButtonOptions
-  }, [account, isHardwareWallet])
+  }, [account])
 
   // render
   return (
     <StyledWrapper>
       <NameAndIcon>
-        <AccountCircle orb={orb} />
+        <CreateAccountIcon
+          size='big'
+          account={account}
+          marginRight={16}
+        />
         <AccountAndAddress>
-          <AccountNameRow>
-            {isHardwareWallet && <HardwareIcon />}
-            <AccountNameButton onClick={onSelectAccount}>{account.name}</AccountNameButton>
-          </AccountNameRow>
-          <AddressAndButtonRow>
-            <AccountAddressButton onClick={onSelectAccount}>{reduceAddress(account.address)}</AccountAddressButton>
-            <CopyTooltip text={account.address}>
-              <CopyIcon />
-            </CopyTooltip>
-          </AddressAndButtonRow>
+          <AccountNameButton
+            onClick={onSelectAccount}
+          >
+            {account.name}
+          </AccountNameButton>
+          {account.address && (
+            <AddressAndButtonRow>
+              <AccountAddressButton onClick={onSelectAccount}>
+                {reduceAddress(account.address)}
+              </AccountAddressButton>
+              <CopyTooltip text={account.address}>
+                <CopyIcon />
+              </CopyTooltip>
+            </AddressAndButtonRow>
+          )}
+          <AccountDescription>
+            {getAccountTypeDescription(account.accountId.coin)}
+          </AccountDescription>
         </AccountAndAddress>
       </NameAndIcon>
-      <AccountMenuWrapper
-        ref={accountMenuRef}
-      >
-        <AccountMenuButton
-          onClick={() => setShowAccountMenu(prev => !prev)}
+      <Row width='unset'>
+        {!isPanel && !accountsFiatValue.isZero() ? (
+          tokensWithBalances.length ? (
+            <TokenIconsStack tokens={tokensWithBalances} />
+          ) : (
+            <>
+              <LoadingSkeleton width={60} height={14} />
+              <HorizontalSpace space='26px' />
+            </>
+          )
+        ) : null}
+
+        {accountsFiatValue.isUndefined() ? (
+          <>
+            <LoadingSkeleton width={60} height={14} />
+            <HorizontalSpace space='12px' />
+          </>
+        ) : (
+          <>
+            <AccountBalanceText textSize='14px' isBold={true}>
+              {accountsFiatValue.formatAsFiat(defaultFiatCurrency)}
+            </AccountBalanceText>
+          </>
+        )}
+        <AccountMenuWrapper
+          ref={accountMenuRef}
         >
-          <AccountMenuIcon
-            name='more-vertical'
-          />
-        </AccountMenuButton>
-        {showAccountMenu &&
-          <AccountActionsMenu
-            onClick={onClickButtonOption}
-            options={buttonOptions}
-          />
-        }
-      </AccountMenuWrapper>
+          <AccountMenuButton
+            onClick={() => setShowAccountMenu(prev => !prev)}
+          >
+            <AccountMenuIcon />
+          </AccountMenuButton>
+          {showAccountMenu &&
+            <AccountActionsMenu
+              onClick={onClickButtonOption}
+              options={buttonOptions}
+            />
+          }
+        </AccountMenuWrapper>
+      </Row>
     </StyledWrapper>
   )
 }

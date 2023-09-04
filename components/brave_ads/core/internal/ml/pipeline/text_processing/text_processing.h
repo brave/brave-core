@@ -40,11 +40,12 @@ class TextProcessing final {
   void SetPipeline(PipelineInfo pipeline);
   bool SetPipeline(base::Value::Dict dict);
 
-  PredictionMap Apply(const std::unique_ptr<Data>& input_data) const;
+  absl::optional<PredictionMap> Apply(std::unique_ptr<Data> input_data) const;
 
-  PredictionMap GetTopPredictions(const std::string& content) const;
+  absl::optional<PredictionMap> GetTopPredictions(
+      const std::string& text) const;
 
-  PredictionMap ClassifyPage(const std::string& content) const;
+  absl::optional<PredictionMap> ClassifyPage(const std::string& text) const;
 
  private:
   bool is_initialized_ = false;

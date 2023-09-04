@@ -8,14 +8,15 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 assert(enable_brave_vpn)
 assert(is_win)
 
-source_set("utils") {
+source_set("ras_utils") {
   sources = [
-    "utils.cc",
-    "utils.h",
+    "ras_utils.cc",
+    "ras_utils.h",
   ]
   libs = [ "rasapi32.lib" ]
   deps = [
     "//base",
+    "//brave/base",
     "//brave/components/brave_vpn/browser/connection:common",
     "//brave/components/brave_vpn/common",
   ]
@@ -30,7 +31,7 @@ source_set("win") {
   ]
 
   deps = [
-    ":utils",
+    ":ras_utils",
     "brave_vpn_helper",
     "//base",
     "//brave/components/brave_vpn/browser/api",
@@ -38,6 +39,7 @@ source_set("win") {
     "//brave/components/brave_vpn/browser/connection/ikev2",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/brave_vpn/common/win/ras",
     "//net",
     "//services/network/public/cpp",
   ]
@@ -50,8 +52,10 @@ executable("vpntool") {
     "userenv.lib",
   ]
   deps = [
+    ":ras_utils",
     ":win",
     "//base",
-    "//brave/components/brave_vpn/browser/connection/ikev2/win:utils",
+    "//brave/components/brave_vpn/browser/connection:common",
+    "//brave/components/brave_vpn/browser/connection/wireguard/win",
   ]
 }

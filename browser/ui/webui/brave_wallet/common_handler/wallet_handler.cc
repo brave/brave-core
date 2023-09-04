@@ -9,102 +9,37 @@
 #include <utility>
 #include <vector>
 
-#include "base/functional/bind.h"
-#include "base/ranges/algorithm.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "chrome/browser/profiles/profile.h"
 
+namespace brave_wallet {
+
 WalletHandler::WalletHandler(
-    mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> receiver,
+    mojo::PendingReceiver<mojom::WalletHandler> receiver,
     Profile* profile)
     : receiver_(this, std::move(receiver)),
-      profile_(profile),
-      weak_ptr_factory_(this) {}
+      keyring_service_(KeyringServiceFactory::GetServiceForContext(profile)) {}
 
 WalletHandler::~WalletHandler() = default;
 
-void WalletHandler::EnsureConnected() {
-  if (!keyring_service_) {
-    auto pending =
-        brave_wallet::KeyringServiceFactory::GetInstance()->GetForContext(
-            profile_);
-    keyring_service_.Bind(std::move(pending));
-  }
-  DCHECK(keyring_service_);
-  keyring_service_.set_disconnect_handler(base::BindOnce(
-      &WalletHandler::OnConnectionError, weak_ptr_factory_.GetWeakPtr()));
-}
-
-void WalletHandler::OnConnectionError() {
-  keyring_service_.reset();
-  EnsureConnected();
-}
-
+// TODO(apaymyshev): this is the only method in WalletHandler. Should be merged
+// into BraveWalletService.
 void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
-  EnsureConnected();
-  std::vector<std::string> ids = {brave_wallet::mojom::kDefaultKeyringId};
-  if (brave_wallet::IsFilecoinEnabled()) {
-    ids.push_back(brave_wallet::mojom::kFilecoinKeyringId);
-    ids.push_back(brave_wallet::mojom::kFilecoinTestnetKeyringId);
-  }
-  if (brave_wallet::IsSolanaEnabled()) {
-    ids.push_back(brave_wallet::mojom::kSolanaKeyringId);
+  if (!keyring_service_) {
+    std::move(callback).Run(nullptr);
+    return;
   }
 
-  if (brave_wallet::IsBitcoinEnabled()) {
-    ids.push_back(brave_wallet::mojom::kBitcoinKeyring84Id);
-    ids.push_back(brave_wallet::mojom::kBitcoinKeyring84TestId);
-  }
-
-  keyring_service_->GetKeyringsInfo(
-      ids, base::BindOnce(&WalletHandler::OnGetWalletInfo,
-                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void WalletHandler::OnGetWalletInfo(
-    GetWalletInfoCallback callback,
-    std::vector<brave_wallet::mojom::KeyringInfoPtr> keyring_infos) {
-  std::vector<brave_wallet::mojom::AppItemPtr> favorite_apps_copy(
-      favorite_apps.size());
-  std::transform(
-      favorite_apps.begin(), favorite_apps.end(), favorite_apps_copy.begin(),
-      [](const brave_wallet::mojom::AppItemPtr& favorite_app)
-          -> brave_wallet::mojom::AppItemPtr { return favorite_app.Clone(); });
-  DCHECK(keyring_infos.size()) << "Default keyring must be returned";
-  std::vector<brave_wallet::mojom::AccountInfoPtr> account_infos;
-  for (const auto& keyring_info : keyring_infos) {
-    account_infos.insert(
-        account_infos.end(),
-        std::make_move_iterator(keyring_info->account_infos.begin()),
-        std::make_move_iterator(keyring_info->account_infos.end()));
-  }
-  const auto& default_keyring = keyring_infos.front();
-  DCHECK_EQ(default_keyring->id, brave_wallet::mojom::kDefaultKeyringId);
-  std::move(callback).Run(brave_wallet::mojom::WalletInfo::New(
+  auto default_keyring =
+      keyring_service_->GetKeyringInfoSync(mojom::kDefaultKeyringId);
+  DCHECK_EQ(default_keyring->id, mojom::kDefaultKeyringId);
+  std::move(callback).Run(mojom::WalletInfo::New(
       default_keyring->is_keyring_created, default_keyring->is_locked,
-      std::move(favorite_apps_copy), default_keyring->is_backed_up,
-      std::move(account_infos), brave_wallet::IsFilecoinEnabled(),
-      brave_wallet::IsSolanaEnabled(), brave_wallet::IsBitcoinEnabled(),
-      brave_wallet::IsNftPinningEnabled(), brave_wallet::IsPanelV2Enabled()));
+      default_keyring->is_backed_up, IsFilecoinEnabled(), IsSolanaEnabled(),
+      IsBitcoinEnabled(), IsNftPinningEnabled(), IsPanelV2Enabled()));
 }
 
-void WalletHandler::AddFavoriteApp(
-    const brave_wallet::mojom::AppItemPtr app_item) {
-  favorite_apps.push_back(app_item->Clone());
-}
-
-void WalletHandler::RemoveFavoriteApp(
-    brave_wallet::mojom::AppItemPtr app_item) {
-  favorite_apps.erase(
-      base::ranges::remove_if(
-          favorite_apps,
-          [&app_item](const brave_wallet::mojom::AppItemPtr& it) -> bool {
-            return it->name == app_item->name;
-          }),
-      favorite_apps.end());
-}
+}  // namespace brave_wallet

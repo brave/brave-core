@@ -5,21 +5,17 @@
 
 #include "brave/browser/extensions/brave_webtorrent_navigation_throttle.h"
 
-#include "base/functional/bind.h"
 #include "brave/browser/extensions/brave_component_loader.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "chrome/browser/extensions/extension_service.h"
-#include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
-#include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension.h"
@@ -31,16 +27,10 @@
 namespace extensions {
 
 BraveWebTorrentNavigationThrottle::BraveWebTorrentNavigationThrottle(
-        content::NavigationHandle* navigation_handle) :
-    content::NavigationThrottle(navigation_handle),
-    resume_pending_(false) {
-  extension_registry_observer_.Observe(ExtensionRegistry::Get(
-      navigation_handle->GetWebContents()->GetBrowserContext()));
-}
+    content::NavigationHandle* navigation_handle)
+    : content::NavigationThrottle(navigation_handle) {}
 
-BraveWebTorrentNavigationThrottle::~BraveWebTorrentNavigationThrottle() {
-  timer_.Stop();
-}
+BraveWebTorrentNavigationThrottle::~BraveWebTorrentNavigationThrottle() {}
 
 content::NavigationThrottle::ThrottleCheckResult
 BraveWebTorrentNavigationThrottle::WillStartRequest() {
@@ -90,12 +80,10 @@ BraveWebTorrentNavigationThrottle::CommonWillProcessRequestResponse() {
   // So the best we can do is via URL pattern match and magnet links.
   // Headers are null when processing WillStartRequest.
   auto* headers = navigation_handle()->GetResponseHeaders();
-  bool is_torrent_file = headers ? webtorrent::IsTorrentFile(url, headers) :
-      webtorrent::TorrentURLMatched(url);
-  if ((url.SchemeIs(kMagnetScheme) || is_torrent_file) &&
-       MaybeLoadWebtorrent(web_contents->GetBrowserContext(), url)) {
-    resume_pending_ = true;
-    return content::NavigationThrottle::DEFER;
+  bool is_torrent_file = headers ? webtorrent::IsTorrentFile(url, headers)
+                                 : webtorrent::TorrentURLMatched(url);
+  if (url.SchemeIs(kMagnetScheme) || is_torrent_file) {
+    MaybeLoadWebtorrent(web_contents->GetBrowserContext(), url);
   }
 
   return content::NavigationThrottle::PROCEED;
@@ -103,21 +91,6 @@ BraveWebTorrentNavigationThrottle::CommonWillProcessRequestResponse() {
 
 const char* BraveWebTorrentNavigationThrottle::GetNameForLogging() {
   return "BraveWebTorrentNavigationThrottle";
-}
-
-void BraveWebTorrentNavigationThrottle::OnExtensionReady(
-    content::BrowserContext* browser_context,
-    const Extension* extension) {
-  if (resume_pending_ &&
-      extension->id() == brave_webtorrent_extension_id) {
-    ResumeThrottle();
-  }
-}
-
-void BraveWebTorrentNavigationThrottle::ResumeThrottle() {
-  timer_.Stop();
-  resume_pending_ = false;
-  Resume();
 }
 
 }  // namespace extensions

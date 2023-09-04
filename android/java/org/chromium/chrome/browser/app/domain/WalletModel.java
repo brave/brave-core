@@ -10,10 +10,10 @@ import android.content.Context;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
@@ -33,6 +33,7 @@ public class WalletModel {
     private final CryptoModel mCryptoModel;
     private final DappsModel mDappsModel;
     private final KeyringModel mKeyringModel;
+    private final MarketModel mMarketModel;
     private Context mContext;
     private CryptoActions mCryptoActions;
 
@@ -58,8 +59,9 @@ public class WalletModel {
                 mAssetRatioService, mCryptoActions, mSwapService);
         mDappsModel = new DappsModel(mJsonRpcService, mBraveWalletService, mKeyringService,
                 mCryptoModel.getPendingTxHelper());
-        mKeyringModel = new KeyringModel(
-                mKeyringService, mCryptoModel.getSharedData(), mBraveWalletService, mCryptoActions);
+        mKeyringModel =
+                new KeyringModel(mContext, mKeyringService, mBraveWalletService, mCryptoActions);
+        mMarketModel = new MarketModel(mAssetRatioService);
         // be careful with dependencies, must avoid cycles
         mCryptoModel.setAccountInfosFromKeyRingModel(mKeyringModel.mAccountInfos);
         init();
@@ -85,8 +87,20 @@ public class WalletModel {
                 mAssetRatioService);
         mDappsModel.resetServices(
                 mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
-        mKeyringModel.resetService(mKeyringService, braveWalletService);
+        mKeyringModel.resetService(mContext, mKeyringService, braveWalletService);
+        mMarketModel.resetService(mAssetRatioService);
         init();
+    }
+
+    public void createAccountAndSetDefaultNetwork(NetworkInfo networkInfo) {
+        getKeyringModel().addAccount(
+                networkInfo.coin, networkInfo.chainId, null, isAccountAdded -> {
+                    getNetworkModel().clearCreateAccountState();
+
+                    if (isAccountAdded) {
+                        getNetworkModel().setDefaultNetwork(networkInfo, success -> {});
+                    }
+                });
     }
 
     /*
@@ -118,6 +132,10 @@ public class WalletModel {
 
     public DappsModel getDappsModel() {
         return mDappsModel;
+    }
+
+    public MarketModel getMarketModel() {
+        return mMarketModel;
     }
 
     public KeyringService getKeyringService() {
@@ -188,29 +206,6 @@ public class WalletModel {
         @Override
         public void updateCoinType() {
             mCryptoModel.updateCoinType();
-        }
-
-        /**
-         * The network, coin, and account needs to be update whenever any of the other two are
-         * changed
-         *
-         * @param coin of current account and network, SOL, ETH etc.
-         */
-        @Override
-        public void updateCoinAccountNetworkInfo(@CoinType.EnumType int coin) {
-            if (mBraveWalletService == null) {
-                return;
-            }
-            // Update coin
-            mBraveWalletService.setSelectedCoin(coin);
-            mCryptoModel.updateCoinType(coin, isCoinUpdated -> {
-                // Update account per selected coin
-                mKeyringModel.update();
-                // Update network per selected coin
-                mCryptoModel.getNetworkModel().init();
-                // Update transactions
-                mCryptoModel.refreshTransactions();
-            });
         }
 
         @Override

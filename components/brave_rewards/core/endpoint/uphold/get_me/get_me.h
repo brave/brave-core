@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_user.h"
 
 // GET https://api.uphold.com/v0/me
@@ -111,7 +111,7 @@
 // }
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 namespace uphold {
@@ -122,7 +122,7 @@ using GetMeCallback =
 
 class GetMe {
  public:
-  explicit GetMe(LedgerImpl& ledger);
+  explicit GetMe(RewardsEngineImpl& engine);
   ~GetMe();
 
   void Request(const std::string& token, GetMeCallback callback);
@@ -137,7 +137,7 @@ class GetMe {
 
   void OnRequest(GetMeCallback callback, mojom::UrlResponsePtr response);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace uphold

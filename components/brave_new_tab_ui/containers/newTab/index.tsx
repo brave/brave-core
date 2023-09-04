@@ -28,7 +28,6 @@ import VisibilityTimer from '../../helpers/visibilityTimer'
 import { getLocale } from '../../../common/locale'
 import { NewTabActions } from '../../constants/new_tab_types'
 import { BraveNewsState } from '../../reducers/today'
-import * as mojom from '../../../brave_rewards/resources/shared/lib/mojom'
 
 // NTP features
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
@@ -39,8 +38,10 @@ import BraveNewsHint from '../../components/default/braveNews/hint'
 import GridWidget from './gridWidget'
 import SponsoredImageClickArea from '../../components/default/sponsoredImage/sponsoredImageClickArea'
 
-import { setIconBasePath } from '@brave/leo/react/icon'
+import Icon, { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
+
+import * as style from './style'
 
 interface Props {
   newTabData: NewTab.State
@@ -317,13 +318,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   startRewards = () => {
-    const { rewardsState } = this.props.newTabData
-    if (!rewardsState.rewardsEnabled ||
-      rewardsState.externalWallet?.status === mojom.WalletStatus.kNotConnected) {
-      chrome.braveRewards.openRewardsPanel()
-    } else {
-      chrome.braveRewards.enableAds()
-    }
+    chrome.braveRewards.openRewardsPanel()
   }
 
   dismissBrandedWallpaperNotification = (isUserAction: boolean) => {
@@ -502,6 +497,20 @@ class NewTabPage extends React.Component<Props, State> {
       return null
     }
 
+    const customMenuItems = [
+      {
+        label: 'rewardsOpenPanel',
+        renderIcon: () => {
+          return (
+            <style.batIcon>
+              <Icon name='product-bat-outline' />
+            </style.batIcon>
+          )
+        },
+        onClick: () => { chrome.braveRewards.openRewardsPanel() }
+      }
+    ]
+
     return (
       <Rewards
         {...rewardsState}
@@ -519,6 +528,7 @@ class NewTabPage extends React.Component<Props, State> {
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'rewards')}
         onDismissNotification={this.dismissNotification}
+        customMenuItems={customMenuItems}
       />
     )
   }
@@ -582,10 +592,6 @@ class NewTabPage extends React.Component<Props, State> {
       cryptoContent = null
     }
 
-    const BraveNewsContext = newTabData.featureFlagBraveNewsV2Enabled
-      ? BraveNewsContextProvider
-      : React.Fragment
-
     return (
       <Page.App
         dataIsReady={newTabData.initialDataLoaded}
@@ -595,7 +601,7 @@ class NewTabPage extends React.Component<Props, State> {
         colorForBackground={colorForBackground}
         data-show-news-prompt={((this.state.backgroundHasLoaded || colorForBackground) && this.state.isPromptingBraveNews) ? true : undefined}>
         <OverrideReadabilityColor override={ this.shouldOverrideReadabilityColor(this.props.newTabData) } />
-        <BraveNewsContext>
+        <BraveNewsContextProvider>
         <Page.Page
             hasImage={hasImage}
             imageSrc={this.imageSource}
@@ -674,11 +680,9 @@ class NewTabPage extends React.Component<Props, State> {
                 <FooterInfo
                   textDirection={newTabData.textDirection}
                   supportsBraveTalk={newTabData.braveTalkSupported}
-                  showBraveTalkPrompt={newTabData.braveTalkPromptAllowed && !newTabData.braveTalkPromptDismissed}
                   backgroundImageInfo={newTabData.backgroundWallpaper}
                   showPhotoInfo={!isShowingBrandedWallpaper && hasWallpaperInfo && newTabData.showBackgroundImage}
                   onClickSettings={this.openSettings}
-                  onDismissBraveTalkPrompt={this.props.actions.dismissBraveTalkPrompt}
                 />
               </Page.FooterContent>
             </Page.Footer>
@@ -688,7 +692,7 @@ class NewTabPage extends React.Component<Props, State> {
               </Page.GridItemNavigationBraveNews>
             }
           </Page.Page>
-        { newTabData.showToday && newTabData.featureFlagBraveNewsEnabled &&
+        { newTabData.showToday &&
         <BraveNews
           feed={this.props.todayData.feed}
           articleToScrollTo={this.props.todayData.articleScrollTo}
@@ -716,7 +720,6 @@ class NewTabPage extends React.Component<Props, State> {
           actions={actions}
           textDirection={newTabData.textDirection}
           showSettingsMenu={showSettingsMenu}
-          featureFlagBraveNewsEnabled={newTabData.featureFlagBraveNewsEnabled}
           featureCustomBackgroundEnabled={newTabData.featureCustomBackgroundEnabled}
           onClose={this.closeSettings}
           setActiveTab={this.state.activeSettingsTab || undefined}
@@ -757,7 +760,7 @@ class NewTabPage extends React.Component<Props, State> {
               onSave={this.saveNewTopSite}
             /> : null
         }
-        </BraveNewsContext>
+        </BraveNewsContextProvider>
       </Page.App>
     )
   }

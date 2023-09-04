@@ -18,7 +18,7 @@
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
@@ -128,6 +128,8 @@ void BraveToolbarView::Init() {
   // This will allow us to move this window by dragging toolbar.
   // See brave_non_client_hit_test_helper.h
   views::SetHitTestComponent(this, HTCAPTION);
+  DCHECK_EQ(1u, children().size());
+  views::SetHitTestComponent(children()[0], HTCAPTION);
 
   // For non-normal mode, we don't have to more.
   if (display_mode_ != DisplayMode::NORMAL) {
@@ -175,7 +177,6 @@ void BraveToolbarView::Init() {
         base::BindRepeating(&BraveToolbarView::UpdateHorizontalPadding,
                             base::Unretained(this)));
 #endif  // BUILDFLAG(IS_LINUX)
-    UpdateHorizontalPadding();
   }
 
   const auto callback = [](Browser* browser, int command,
@@ -185,19 +186,23 @@ void BraveToolbarView::Init() {
   };
 
   DCHECK(location_bar_);
-  bookmark_ =
-      AddChildViewAt(std::make_unique<BookmarkButton>(base::BindRepeating(
-                         callback, browser_, IDC_BOOKMARK_THIS_TAB)),
-                     *GetIndexOf(location_bar_));
+  // Get ToolbarView's container_view as a parent of location_bar_ because
+  // container_view's type in ToolbarView is internal to toolbar_view.cc.
+  views::View* container_view = location_bar_->parent();
+  DCHECK(container_view);
+  bookmark_ = container_view->AddChildViewAt(
+      std::make_unique<BookmarkButton>(
+          base::BindRepeating(callback, browser_, IDC_BOOKMARK_THIS_TAB)),
+      *container_view->GetIndexOf(location_bar_));
   bookmark_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->UpdateImageAndText();
 
   if (brave_wallet::IsNativeWalletEnabled() &&
       brave_wallet::IsAllowedForContext(profile)) {
-    wallet_ = AddChildViewAt(
+    wallet_ = container_view->AddChildViewAt(
         std::make_unique<WalletButton>(GetAppMenuButton(), profile),
-        *GetIndexOf(GetAppMenuButton()) - 1);
+        *container_view->GetIndexOf(GetAppMenuButton()) - 1);
     wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
     wallet_->UpdateImageAndText();
@@ -205,8 +210,9 @@ void BraveToolbarView::Init() {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsAllowedForContext(profile)) {
-    brave_vpn_ = AddChildViewAt(std::make_unique<BraveVPNButton>(browser()),
-                                *GetIndexOf(GetAppMenuButton()) - 1);
+    brave_vpn_ = container_view->AddChildViewAt(
+        std::make_unique<BraveVPNButton>(browser()),
+        *container_view->GetIndexOf(GetAppMenuButton()) - 1);
     show_brave_vpn_button_.Init(
         brave_vpn::prefs::kBraveVPNShowButton, profile->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::OnVPNButtonVisibilityChanged,
@@ -220,6 +226,7 @@ void BraveToolbarView::Init() {
 #endif
 
   brave_initialized_ = true;
+  UpdateHorizontalPadding();
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -311,14 +318,23 @@ void BraveToolbarView::UpdateBookmarkVisibility() {
 void BraveToolbarView::UpdateHorizontalPadding() {
   DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
 
+  if (!brave_initialized_) {
+    return;
+  }
+
+  // Get ToolbarView's container_view as a parent of location_bar_ because
+  // container_view's type in ToolbarView is internal to toolbar_view.cc.
+  DCHECK(location_bar_ && location_bar_->parent());
+  views::View* container_view = location_bar_->parent();
+
   if (!tabs::utils::ShouldShowVerticalTabs(browser()) ||
       tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser())) {
-    SetBorder(nullptr);
+    container_view->SetBorder(nullptr);
   } else {
     auto [leading, trailing] =
         tabs::utils::GetLeadingTrailingCaptionButtonWidth(
             browser_view_->frame());
-    SetBorder(views::CreateEmptyBorder(
+    container_view->SetBorder(views::CreateEmptyBorder(
         gfx::Insets().set_left(leading).set_right(trailing)));
   }
 }
@@ -344,10 +360,9 @@ void BraveToolbarView::ViewHierarchyChanged(
     const views::ViewHierarchyChangedDetails& details) {
   ToolbarView::ViewHierarchyChanged(details);
 
-  if (details.is_add && details.parent == this) {
-    // Mark children of this view as client area so that they are not perceived
-    // as client area.
-    // See brave_non_client_hit_test_helper.h
+  if (details.is_add && details.parent == children()[0]) {
+    // Mark children of the container view as client area so that they are not
+    // perceived as caption area. See brave_non_client_hit_test_helper.h
     views::SetHitTestComponent(details.child, HTCLIENT);
   }
 }

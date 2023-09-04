@@ -13,7 +13,6 @@
 
 #include "base/containers/extend.h"
 #include "base/containers/flat_map.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -22,8 +21,6 @@
 #include "brave/components/brave_news/browser/feed_building.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "brave/components/brave_news/common/features.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -173,58 +170,14 @@ class BraveNewsFeedBuildingTest : public testing::Test {
   BraveNewsFeedBuildingTest(const BraveNewsFeedBuildingTest&) = delete;
   BraveNewsFeedBuildingTest& operator=(const BraveNewsFeedBuildingTest&) =
       delete;
-  ~BraveNewsFeedBuildingTest() override {}
+  ~BraveNewsFeedBuildingTest() override = default;
 
  protected:
   content::BrowserTaskEnvironment browser_task_environment_;
   TestingProfile profile_;
 };
 
-TEST_F(BraveNewsFeedBuildingTest, BuildFeedV1) {
-  // Use v1 feed strategy
-  base::test::ScopedFeatureList features;
-  features.InitAndDisableFeature(brave_news::features::kBraveNewsV2Feature);
-
-  Publishers publisher_list;
-  PopulatePublishers(&publisher_list);
-
-  std::unordered_set<std::string> history_hosts = {"www.espn.com"};
-
-  std::vector<mojom::FeedItemPtr> feed_items = ParseFeedItems(GetFeedJson());
-
-  mojom::Feed feed;
-
-  ASSERT_TRUE(BuildFeed(feed_items, history_hosts, &publisher_list, &feed,
-                        profile_.GetPrefs()));
-  ASSERT_EQ(feed.pages.size(), 1u);
-  // Validate featured article is top news
-  ASSERT_TRUE(feed.featured_item->is_article());
-  ASSERT_EQ(feed.featured_item->get_article()->data->url.spec(),
-            "https://foreignpolicy.com/2021/09/01/"
-            "africa-youth-protests-senegal-sudan-ghana-eswatini/");
-  // Validate sorted by score descending
-  ASSERT_GE(feed.pages[0]->items.size(), 4u);
-  // Because we cannot access a flat list, then select the items from each card
-  // (some cards have 1 item, some have 2, etc). If the page_content_order
-  // changes, then also change here which items we access in which order.
-  ASSERT_EQ(feed.pages[0]->items[0]->items.size(), 1u);
-  ASSERT_EQ(feed.pages[0]->items[0]->items[0]->get_article()->data->url,
-            "https://www.espn.com/soccer/blog-transfer-talk/story/4465789/"
-            "live-transfer-deadline-day-will-real-madrid-land-psg-star-mbappe");
-  ASSERT_EQ(feed.pages[0]->items[1]->items.size(), 1u);
-  ASSERT_EQ(feed.pages[0]->items[1]->items[0]->get_article()->data->url,
-            "https://www.example.com/an-article/");
-  ASSERT_EQ(feed.pages[0]->items[2]->items.size(), 2u);
-  ASSERT_EQ(feed.pages[0]->items[2]->items[0]->get_article()->data->url,
-            "https://www.digitaltrends.com/computing/"
-            "logi-bolt-secure-wireless-connectivity/");
-}
-
-TEST_F(BraveNewsFeedBuildingTest, BuildFeedV2) {
-  // Use v2 feed strategy by subscribing to a channel
-  base::test::ScopedFeatureList features;
-  features.InitAndEnableFeature(brave_news::features::kBraveNewsV2Feature);
-
+TEST_F(BraveNewsFeedBuildingTest, BuildFeed) {
   ChannelsController::SetChannelSubscribedPref(profile_.GetPrefs(), "en_US",
                                                "Top Sources", true);
 
@@ -272,10 +225,6 @@ TEST_F(BraveNewsFeedBuildingTest, BuildFeedV2) {
 }
 
 TEST_F(BraveNewsFeedBuildingTest, DirectFeedsShouldAlwaysBeDisplayed) {
-  // Enable the BraveNewsV2 Feature.
-  base::test::ScopedFeatureList features;
-  features.InitAndEnableFeature(brave_news::features::kBraveNewsV2Feature);
-
   Channels channels;
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
@@ -283,58 +232,19 @@ TEST_F(BraveNewsFeedBuildingTest, DirectFeedsShouldAlwaysBeDisplayed) {
   publisher->type = mojom::PublisherType::DIRECT_SOURCE;
   publisher->user_enabled_status = mojom::UserEnabled::NOT_MODIFIED;
 
-  auto feed_item = mojom::FeedItem::NewArticle(
-      mojom::Article::New(mojom::FeedItemMetadata::New(
+  auto feed_item = mojom::FeedItem::NewArticle(mojom::Article::New(
+      mojom::FeedItemMetadata::New(
           "Technology", base::Time::Now(), "Title", "Description",
           GURL("https://example.com/article"),
           "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
           mojom::Image::NewPaddedImageUrl(
               GURL("https://example.com/article/image")),
-          publisher->publisher_id, "Source", 10, "a minute ago")));
+          publisher->publisher_id, "Source", 10, "a minute ago"),
+      false));
   EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 
   publisher->locales = std::vector<mojom::LocaleInfoPtr>();
   EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
-
-  features.Reset();
-  features.InitAndDisableFeature(brave_news::features::kBraveNewsV2Feature);
-  EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
-}
-
-TEST_F(BraveNewsFeedBuildingTest, RemovesDefaultOffItems) {
-  // Use v1 feed strategy
-  base::test::ScopedFeatureList features;
-  features.InitAndDisableFeature(brave_news::features::kBraveNewsV2Feature);
-
-  Publishers publisher_list;
-  PopulatePublishers(&publisher_list);
-  std::unordered_set<std::string> history_hosts = {};
-
-  // Set a publisher to default-off, it's items should not appear in feed
-  std::string publisher_id_to_hide = "333";
-  publisher_list.at(publisher_id_to_hide)->is_enabled = false;
-
-  auto feed_item = mojom::FeedItem::NewArticle(
-      mojom::Article::New(mojom::FeedItemMetadata::New(
-          "Technology", base::Time::Now(),
-          "Expecting First Transfer Talk: How a busy Deadline Day unfolded",
-          "The transfer window is closed and Saul Niguez is on his way to "
-          "Chelsea, while Antoine Griezmann is set to go back to Atletico "
-          "Madrid on loan from Barcelona. Check out all the deals from a busy "
-          "day.",
-          GURL("https://www.espn.com/soccer/blog-transfer-talk/story/4465789/"
-               "live-transfer-deadline-day-will-real-madrid-land-psg-star-"
-               "mbappe"),
-          "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
-          mojom::Image::NewPaddedImageUrl(
-              GURL("https://pcdn.brave.com/brave-today/cache/"
-                   "85fb134433369025b46b861a00408e61223678f55620612d980533fa6ce"
-                   "0a815.jpg.pad")),
-          publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
-          "a minute ago")));
-
-  Channels channels;
-  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 }
 
 TEST_F(BraveNewsFeedBuildingTest, RemovesUserDisabledItems) {
@@ -348,8 +258,8 @@ TEST_F(BraveNewsFeedBuildingTest, RemovesUserDisabledItems) {
   publisher_list.at(publisher_id_to_hide)->user_enabled_status =
       mojom::UserEnabled::DISABLED;
 
-  auto feed_item = mojom::FeedItem::NewArticle(
-      mojom::Article::New(mojom::FeedItemMetadata::New(
+  auto feed_item = mojom::FeedItem::NewArticle(mojom::Article::New(
+      mojom::FeedItemMetadata::New(
           "Technology", base::Time::Now(),
           "Expecting First Transfer Talk: How a busy Deadline Day unfolded",
           "The transfer window is closed and Saul Niguez is on his way to "
@@ -365,7 +275,8 @@ TEST_F(BraveNewsFeedBuildingTest, RemovesUserDisabledItems) {
                    "85fb134433369025b46b861a00408e61223678f55620612d980533fa6ce"
                    "0a815.jpg.pad")),
           publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
-          "a minute ago")));
+          "a minute ago"),
+      false));
 
   Channels channels;
   ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
@@ -383,8 +294,8 @@ TEST_F(BraveNewsFeedBuildingTest, IncludesUserEnabledItems) {
   publisher_list.at(publisher_id_to_hide)->user_enabled_status =
       mojom::UserEnabled::ENABLED;
 
-  auto feed_item = mojom::FeedItem::NewArticle(
-      mojom::Article::New(mojom::FeedItemMetadata::New(
+  auto feed_item = mojom::FeedItem::NewArticle(mojom::Article::New(
+      mojom::FeedItemMetadata::New(
           "Technology", base::Time::Now(),
           "Expecting First Transfer Talk: How a busy Deadline Day unfolded",
           "The transfer window is closed and Saul Niguez is on his way to "
@@ -400,17 +311,14 @@ TEST_F(BraveNewsFeedBuildingTest, IncludesUserEnabledItems) {
                    "85fb134433369025b46b861a00408e61223678f55620612d980533fa6ce"
                    "0a815.jpg.pad")),
           publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
-          "a minute ago")));
+          "a minute ago"),
+      false));
 
   Channels channels;
   ASSERT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 }
 
-TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsedWhenV2IsEnabled) {
-  // Enable the BraveNewsV2 Feature.
-  base::test::ScopedFeatureList features;
-  features.InitAndEnableFeature(brave_news::features::kBraveNewsV2Feature);
-
+TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsed) {
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
   auto* publisher = publisher_list["111"].get();
@@ -421,14 +329,15 @@ TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsedWhenV2IsEnabled) {
                        "Top News", std::vector<std::string>{"en_US"})});
   auto* channel = channels["Top News"].get();
 
-  auto feed_item = mojom::FeedItem::NewArticle(
-      mojom::Article::New(mojom::FeedItemMetadata::New(
+  auto feed_item = mojom::FeedItem::NewArticle(mojom::Article::New(
+      mojom::FeedItemMetadata::New(
           "Technology", base::Time::Now(), "Title", "Description",
           GURL("https://example.com/article"),
           "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
           mojom::Image::NewPaddedImageUrl(
               GURL("https://example.com/article/image")),
-          publisher->publisher_id, "Source", 10, "a minute ago")));
+          publisher->publisher_id, "Source", 10, "a minute ago"),
+      false));
 
   // Publisher: NOT_MODIFIED, Channel: Subscribed, Should display.
   EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
@@ -452,10 +361,6 @@ TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsedWhenV2IsEnabled) {
 }
 
 TEST_F(BraveNewsFeedBuildingTest, DuplicateItemsAreNotIncluded) {
-  // Use v2 feed strategy by subscribing to a channel
-  base::test::ScopedFeatureList features;
-  features.InitAndEnableFeature(brave_news::features::kBraveNewsV2Feature);
-
   ChannelsController::SetChannelSubscribedPref(profile_.GetPrefs(), "en_US",
                                                "Top Sources", true);
 

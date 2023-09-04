@@ -9,8 +9,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageView;
@@ -22,14 +20,11 @@ import com.google.android.material.slider.Slider;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveAdsNativeHelper;
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.profiles.Profile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
     private static final String TAG = "RewardsOnboarding";
@@ -67,7 +62,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
             view = LayoutInflater.from(ContextUtils.getApplicationContext()).inflate(R.layout.brave_rewards_onboarding_item_layout, null);
             TextView titleView = view.findViewById(R.id.title_view);
             titleView.setText(getTitles(context).get(position));
-            TextView textView = view.findViewById(R.id.text_view);
+            TextView textView = view.findViewById(R.id.onboarding_text_view);
             textView.setText(getTexts(context).get(position));
             AppCompatImageView imageView = view.findViewById(R.id.image_view);
             imageView.setImageResource(getImages().get(position));
@@ -146,7 +141,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
                                     R.string.ads_per_hour),
                             adsValue));
                 }
-                if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                if (BraveAdsNativeHelper.nativeIsOptedInToNotificationAds(
                             Profile.getLastUsedRegularProfile())) {
                     BraveRewardsNativeWorker.getInstance().SetAdsPerHour((int) slider.getValue());
                 }

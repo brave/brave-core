@@ -1,0 +1,8 @@
+Name: futures-timer
+URL: https://crates.io/crates/futures-timer
+Description: Timeouts for futures.
+
+Version: 3.0.2
+Security Critical: no
+License: Apache 2.0
+Revision: 30e562cdde45b8a6ee93d22094df8664ff8dfdfb

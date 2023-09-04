@@ -35,6 +35,8 @@ class SearchResultAdTabHelper
   SearchResultAdTabHelper(const SearchResultAdTabHelper&) = delete;
   SearchResultAdTabHelper& operator=(const SearchResultAdTabHelper&) = delete;
 
+  bool ShouldHandleSearchResultAdEvents() const;
+
   static void MaybeCreateForWebContents(content::WebContents* web_contents);
 
   void MaybeRetrieveSearchResultAd(content::RenderFrameHost* render_frame_host,

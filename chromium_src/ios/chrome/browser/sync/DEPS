@@ -1,4 +1,4 @@
 include_rules = [
   "+brave/browser/sync",
-  "+brave/components/sync/driver",
+  "+brave/components/sync/service",
 ]

@@ -8,11 +8,27 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/eth_gas_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
 namespace eth {
+
+TEST(EthGasUtilsTest, ScaleBaseFeePerGas) {
+  // OK: scale 0x64 (100)
+  EXPECT_EQ(ScaleBaseFeePerGas("0x64"), 133ULL);
+
+  // OK: scale 0x0 (0)
+  EXPECT_EQ(ScaleBaseFeePerGas("0x0"), 0ULL);
+
+  // KO: invalid hex
+  EXPECT_FALSE(ScaleBaseFeePerGas("invalid"));
+
+  // KO: value is too big
+  EXPECT_FALSE(
+      ScaleBaseFeePerGas(Uint256ValueToHex(kMaxSafeIntegerUint64 + 1)));
+}
 
 TEST(EthGasUtilsTest, GetSuggested1559Fees) {
   const std::vector<std::string> base_fee_per_gas{

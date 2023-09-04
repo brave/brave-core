@@ -12,8 +12,7 @@
 
 #define GetWindowFeaturesFromString                                      \
   GetWindowFeaturesFromString_ChromiumImpl(const String& feature_string, \
-                                           LocalDOMWindow* dom_window,   \
-                                           const KURL& url);             \
+                                           LocalDOMWindow* dom_window);  \
   CORE_EXPORT WebWindowFeatures GetWindowFeaturesFromString
 
 #include "src/third_party/blink/renderer/core/page/create_window.h"  // IWYU pragma: export

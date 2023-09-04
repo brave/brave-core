@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // POST /v1/captchas
 //
@@ -31,7 +31,7 @@
 // }
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 namespace promotion {
@@ -43,7 +43,7 @@ using PostCaptchaCallback =
 
 class PostCaptcha {
  public:
-  explicit PostCaptcha(LedgerImpl& ledger);
+  explicit PostCaptcha(RewardsEngineImpl& engine);
   ~PostCaptcha();
 
   void Request(PostCaptchaCallback callback);
@@ -61,7 +61,7 @@ class PostCaptcha {
 
   void OnRequest(PostCaptchaCallback callback, mojom::UrlResponsePtr response);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace promotion

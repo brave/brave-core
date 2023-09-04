@@ -40,6 +40,7 @@ struct FeedItemMetadata {
 
 struct Article {
   FeedItemMetadata data;
+  bool is_discover;
 };
 
 struct PromotedArticle {
@@ -140,6 +141,43 @@ struct Publisher {
   UserEnabled user_enabled_status = UserEnabled.NOT_MODIFIED;
 };
 
+// Used to display information about why an article was displayed.
+struct Signal {
+  bool subscribed;
+  double visit_weight;
+};
+
+struct HeroArticle {
+  FeedItemMetadata data;
+};
+
+union ArticleElements {
+  Article article;
+  HeroArticle hero;
+};
+
+struct Discover {
+  array<string> publisher_ids;
+};
+
+struct Cluster {
+  string type;
+  string id;
+  array<ArticleElements> articles;
+};
+
+union FeedItemV2 {
+  Article article;
+  HeroArticle hero;
+  PromotedArticle advert;
+  Discover discover;
+  Cluster cluster;
+};
+
+struct FeedV2 {
+  array<FeedItemV2> items;
+};
+
 struct DisplayAd {
   string uuid;
   string creative_instance_id;
@@ -184,6 +222,8 @@ interface BraveNewsController {
   GetLocale() => (string locale);
 
   GetFeed() => (Feed feed);
+  GetFeedV2() => (FeedV2 feed);
+  GetSignals() => (map<string, Signal> signals);
 
   // Deprecated by https://github.com/brave/brave-core/pull/16038. Use
   // |AddPublishersListener| instead.
@@ -229,8 +269,8 @@ interface BraveNewsController {
   // or there may be multiple sessions active. This includes if a user visits
   // a card and then navigates "back" to the same place in Brave News
   // and visits a subsequent card.
-  OnSessionCardVisitsCountChanged(uint16 cards_visited_session_total_count);
-  // Argument should be how many total cards viewed in this session.
+  OnSessionCardVisitsCountChanged(uint16 total_count);
+  // Arguments should be how many total cards and new cards viewed in this session.
   // We need the front-end to give us this since the class
   // which implements this interface may live longer than the session
   // or there may be multiple sessions active. This includes if a user visits
@@ -238,7 +278,7 @@ interface BraveNewsController {
   // and views subsequent card. In that case,
   // the UI should provide a number which increments the view count from before
   // the navigation event.
-  OnSessionCardViewsCountChanged(uint16 cards_viewed_session_total_count);
+  OnSessionCardViewsCountChanged(uint16 total_count, uint16 count_delta);
   OnPromotedItemView(string item_id, string creative_instance_id);
   OnPromotedItemVisit(string item_id, string creative_instance_id);
   OnDisplayAdVisit(string item_id, string creative_instance_id);

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="430dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rewards_onboarding_layout_id">
+
+            <ImageView
+                android:id="@+id/brave_rewards_private_ads_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/brave_rewards_private_ads_icon" />
+
+            <TextView
+                android:id="@+id/earn_tokens_for_private_ads_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_horizontal|top"
+                android:lineSpacingExtra="10sp"
+                android:text="@string/earn_tokens_for_private_ads_title"
+                android:textColor="@color/terms_of_service_text_color"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/brave_rewards_private_ads_icon" />
+
+            <TextView
+                android:id="@+id/earn_tokens_for_private_ads_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center_horizontal"
+                android:lineSpacingExtra="10sp"
+                android:text="@string/earn_tokens_for_private_ads_description"
+                android:textColor="@color/terms_of_service_text_color_default"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/earn_tokens_for_private_ads_title" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/start_using_rewards_button"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/tipping_send_button_background"
+                android:fontFamily="sans-serif-medium"
+                android:paddingHorizontal="24dp"
+                android:text="@string/start_using_rewards"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/earn_tokens_for_private_ads_description" />
+
+            <TextView
+                android:id="@+id/how_does_it_work_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="34dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/how_does_it_work"
+                android:textAllCaps="false"
+                android:textColor="@color/brave_rating_not_now_text_color"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/start_using_rewards_button" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include layout="@layout/rewards_onboarding_location_choose"
+            android:id="@+id/rewards_onboarding_location_choose_layout_id"/>
+
+        <include layout="@layout/rewards_onboarding_location_choose"
+            android:id="@+id/rewards_onboarding_location_choose_layout_id"/>
+
+        <include layout="@layout/rewards_onboarding_all_set"
+            android:id="@+id/rewards_onboarding_all_set_layout_id"/>
+
+        <include layout="@layout/rewards_onboarding_error"
+            android:id="@+id/rewards_onboarding_error_layout_id"/>
+
+    </FrameLayout>
+</ScrollView>

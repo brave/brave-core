@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
+
+#include <tuple>
 
 namespace brave_ads {
 
@@ -24,9 +26,12 @@ InlineContentAdInfo& InlineContentAdInfo::operator=(
 InlineContentAdInfo::~InlineContentAdInfo() = default;
 
 bool InlineContentAdInfo::operator==(const InlineContentAdInfo& other) const {
-  return AdInfo::operator==(other) && title == other.title &&
-         description == other.description && image_url == other.image_url &&
-         dimensions == other.dimensions && cta_text == other.cta_text;
+  const auto tie = [](const InlineContentAdInfo& ad) {
+    return std::tie(ad.title, ad.description, ad.image_url, ad.dimensions,
+                    ad.cta_text);
+  };
+
+  return AdInfo::operator==(other) && tie(*this) == tie(other);
 }
 
 bool InlineContentAdInfo::operator!=(const InlineContentAdInfo& other) const {

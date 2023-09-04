@@ -22,6 +22,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/simple_hash_client.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
@@ -86,10 +88,10 @@ constexpr char kEthErrorFetchingBalanceResult[] =
 
 }  // namespace
 
-class TestBraveWalletServiceObserverForAssetDiscovery
+class TestBraveWalletServiceObserverForAssetDiscoveryTask
     : public brave_wallet::BraveWalletServiceObserverBase {
  public:
-  TestBraveWalletServiceObserverForAssetDiscovery() = default;
+  TestBraveWalletServiceObserverForAssetDiscoveryTask() = default;
 
   void OnDiscoverAssetsStarted() override {
     on_discover_assets_started_fired_ = true;
@@ -103,7 +105,9 @@ class TestBraveWalletServiceObserverForAssetDiscovery
                 discovered_assets[i]->contract_address);
     }
     on_discover_assets_completed_fired_ = true;
-    run_loop_asset_discovery_->Quit();
+    if (run_loop_asset_discovery_) {
+      run_loop_asset_discovery_->Quit();
+    }
   }
 
   void WaitForOnDiscoverAssetsCompleted(
@@ -178,11 +182,13 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
         std::make_unique<api_request_helper::APIRequestHelper>(
             net::DefineNetworkTrafficAnnotation("asset_discovery_manager", ""),
             shared_url_loader_factory_);
+    simple_hash_client_ =
+        std::make_unique<SimpleHashClient>(shared_url_loader_factory_);
     asset_discovery_task_ = std::make_unique<AssetDiscoveryTask>(
-        api_request_helper_.get(), wallet_service_.get(), json_rpc_service_,
-        GetPrefs());
+        api_request_helper_.get(), simple_hash_client_.get(),
+        wallet_service_.get(), json_rpc_service_, GetPrefs());
     wallet_service_observer_ =
-        std::make_unique<TestBraveWalletServiceObserverForAssetDiscovery>();
+        std::make_unique<TestBraveWalletServiceObserverForAssetDiscoveryTask>();
     wallet_service_->AddObserver(wallet_service_observer_->GetReceiver());
   }
 
@@ -348,23 +354,6 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  void TestFetchNFTsFromSimpleHash(
-      const std::string& account_address,
-      const std::vector<std::string>& chain_ids,
-      mojom::CoinType coin,
-      const std::vector<mojom::BlockchainTokenPtr>& expected_nfts) {
-    base::RunLoop run_loop;
-    asset_discovery_task_->FetchNFTsFromSimpleHash(
-        account_address, chain_ids, coin,
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::BlockchainTokenPtr> nfts) {
-              ASSERT_EQ(nfts.size(), expected_nfts.size());
-              EXPECT_EQ(nfts, expected_nfts);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-  }
-
   void TestDiscoverNFTsOnAllSupportedChains(
       const std::map<mojom::CoinType, std::vector<std::string>>& chain_ids,
       const std::map<mojom::CoinType, std::vector<std::string>>& addresses,
@@ -389,7 +378,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
       const std::vector<std::string>& expected_token_contract_addresses) {
     base::RunLoop run_loop;
     asset_discovery_task_->DiscoverAssets(
-        {}, account_addresses, base::BindLambdaForTesting([&]() {
+        {}, {}, account_addresses, base::BindLambdaForTesting([&]() {
           wallet_service_observer_->WaitForOnDiscoverAssetsCompleted(
               expected_token_contract_addresses);
           EXPECT_TRUE(wallet_service_observer_->OnDiscoverAssetsStartedFired());
@@ -409,7 +398,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
 
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscovery>
+  std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscoveryTask>
       wallet_service_observer_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<ScopedTestingLocalState> local_state_;
@@ -417,9 +406,10 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
   std::unique_ptr<BraveWalletService> wallet_service_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   std::unique_ptr<AssetDiscoveryTask> asset_discovery_task_;
+  std::unique_ptr<SimpleHashClient> simple_hash_client_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
-  JsonRpcService* json_rpc_service_;
-  TxService* tx_service;
+  raw_ptr<JsonRpcService> json_rpc_service_;
+  raw_ptr<TxService> tx_service;
   base::test::ScopedFeatureList scoped_feature_list_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
@@ -956,648 +946,6 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverSPLTokensFromRegistry) {
                          "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs",
                          "ADJqxHJRfFBpyxVQ2YS8nBhfW6dumdDYGU21B4AmYLZJ",
                          "BEARs6toGY6fRGsmz2Se8NDuR2NVPRmJuLPpeF8YxCq2"});
-}
-
-TEST_F(AssetDiscoveryTaskUnitTest, GetSimpleHashNftsByWalletUrl) {
-  // Empty address yields empty URL
-  EXPECT_EQ(asset_discovery_task_->GetSimpleHashNftsByWalletUrl(
-                "", {mojom::kMainnetChainId}),
-            GURL(""));
-
-  // Empty chains yields empty URL
-  EXPECT_EQ(asset_discovery_task_->GetSimpleHashNftsByWalletUrl(
-                "0x0000000000000000000000000000000000000000", {}),
-            GURL());
-
-  // One valid chain yields correct URL
-  EXPECT_EQ(asset_discovery_task_->GetSimpleHashNftsByWalletUrl(
-                "0x0000000000000000000000000000000000000000",
-                {mojom::kMainnetChainId}),
-            GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
-                 "owners?chains=ethereum&wallet_addresses="
-                 "0x0000000000000000000000000000000000000000"));
-
-  // Two valid chains yields correct URL
-  EXPECT_EQ(asset_discovery_task_->GetSimpleHashNftsByWalletUrl(
-                "0x0000000000000000000000000000000000000000",
-                {mojom::kMainnetChainId, mojom::kOptimismMainnetChainId}),
-            GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
-                 "owners?chains=ethereum%2Coptimism&wallet_addresses="
-                 "0x0000000000000000000000000000000000000000"));
-
-  // One invalid chain yields empty URL
-  EXPECT_EQ(asset_discovery_task_->GetSimpleHashNftsByWalletUrl(
-                "0x0000000000000000000000000000000000000000",
-                {"chain ID not supported by SimpleHash"}),
-            GURL());
-}
-
-TEST_F(AssetDiscoveryTaskUnitTest, ParseNFTsFromSimpleHash) {
-  std::string json;
-  absl::optional<base::Value> json_value;
-
-  // Non dictionary JSON response yields nullopt
-  json = R"([])";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  auto result = asset_discovery_task_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::ETH);
-  ASSERT_FALSE(result);
-
-  // Missing 'nfts' key yields nullopt
-  json = R"({"foo": "bar"})";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = asset_discovery_task_->ParseNFTsFromSimpleHash(*json_value,
-                                                          mojom::CoinType::ETH);
-  ASSERT_FALSE(result);
-
-  // Dictionary type 'nfts' key yields nullopt
-  json = R"({"nfts": {}})";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = asset_discovery_task_->ParseNFTsFromSimpleHash(*json_value,
-                                                          mojom::CoinType::ETH);
-  ASSERT_FALSE(result);
-
-  // Invalid next URL (wrong host) yields empty next URL
-  json = R"({
-    "next": "https://foo.com/api/v0/nfts/owners?chains=ethereum&wallet_addresses=0x00",
-    "previous": null,
-    "nfts": [
-      {
-        "chain": "polygon",
-        "contract_address": "0x1111111111111111111111111111111111111111",
-        "token_id": "1",
-        "name": "Token #1",
-        "image_url": "https://nftimages-cdn.simplehash.com/1.png",
-        "contract": {
-          "type": "ERC721",
-          "symbol": "ONE"
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      }
-    ]
-  })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = asset_discovery_task_->ParseNFTsFromSimpleHash(*json_value,
-                                                          mojom::CoinType::ETH);
-  ASSERT_TRUE(result);
-  EXPECT_EQ(result->first, GURL());
-
-  // Invalid next URL (not https) yields empty next URL
-  json = R"({
-    "next": "http://api.simplehash.com/api/v0/nfts/owners?chains=ethereum&wallet_addresses=0x00",
-    "previous": null,
-    "nfts": [
-      {
-        "chain": "polygon",
-        "contract_address": "0x1111111111111111111111111111111111111111",
-        "token_id": "1",
-        "name": "Token #1",
-        "image_url": "https://nftimages-cdn.simplehash.com/1.png",
-        "contract": {
-          "type": "ERC721",
-          "symbol": "ONE"
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      }
-    ]
-  })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = asset_discovery_task_->ParseNFTsFromSimpleHash(*json_value,
-                                                          mojom::CoinType::ETH);
-  ASSERT_TRUE(result);
-  EXPECT_EQ(result->first, GURL());
-
-  // Unsupported CoinType yields nullopt (valid otherwise)
-  json = R"({
-    "next": null,
-    "previous": null,
-    "nfts": [
-      {
-        "chain": "polygon",
-        "contract_address": "0x1111111111111111111111111111111111111111",
-        "token_id": "1",
-        "name": "Token #1",
-        "image_url": "https://nftimages-cdn.simplehash.com/1.png",
-        "contract": {
-          "type": "ERC721",
-          "symbol": "ONE"
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      }
-    ]
-  })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = asset_discovery_task_->ParseNFTsFromSimpleHash(*json_value,
-                                                          mojom::CoinType::FIL);
-
-  // Valid, 1 ETH NFT
-  result = asset_discovery_task_->ParseNFTsFromSimpleHash(*json_value,
-                                                          mojom::CoinType::ETH);
-  ASSERT_TRUE(result);
-  EXPECT_FALSE(result->first.is_valid());
-  EXPECT_EQ(result->second.size(), 1u);
-  EXPECT_EQ(result->second[0]->contract_address,
-            "0x1111111111111111111111111111111111111111");
-  EXPECT_EQ(result->second[0]->name, "Token #1");
-  EXPECT_EQ(result->second[0]->logo,
-            "https://nftimages-cdn.simplehash.com/1.png");
-  EXPECT_EQ(result->second[0]->is_erc20, false);
-  EXPECT_EQ(result->second[0]->is_erc721, true);
-  EXPECT_EQ(result->second[0]->is_erc1155, false);
-  EXPECT_EQ(result->second[0]->is_nft, true);
-  EXPECT_EQ(result->second[0]->symbol, "ONE");
-  EXPECT_EQ(result->second[0]->decimals, 0);
-  EXPECT_EQ(result->second[0]->visible, true);
-  EXPECT_EQ(result->second[0]->token_id, "0x1");
-  EXPECT_EQ(result->second[0]->chain_id, mojom::kPolygonMainnetChainId);
-  EXPECT_EQ(result->second[0]->coin, mojom::CoinType::ETH);
-
-  // Valid, 2 ETH NFTs
-  json = R"({
-    "next": "https://api.simplehash.com/api/v0/nfts/next",
-    "previous": null,
-    "nfts": [
-      {
-        "chain": "polygon",
-        "contract_address": "0x1111111111111111111111111111111111111111",
-        "token_id": "1",
-        "name": "Token #1",
-        "image_url": "https://nftimages-cdn.simplehash.com/1.png",
-        "contract": {
-          "type": "ERC721",
-          "symbol": "ONE"
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      },
-      {
-        "chain": "ethereum",
-        "contract_address": "0x2222222222222222222222222222222222222222",
-        "token_id": "2",
-        "name": "Token #2",
-        "image_url": "https://nftimages-cdn.simplehash.com/2.png",
-        "contract": {
-          "type": "ERC721"
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      }
-    ]
-  })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = asset_discovery_task_->ParseNFTsFromSimpleHash(*json_value,
-                                                          mojom::CoinType::ETH);
-  ASSERT_TRUE(result);
-  EXPECT_EQ(result->first.spec(),
-            "https://simplehash.wallet.brave.com/api/v0/nfts/next");
-  EXPECT_EQ(result->second.size(), 2u);
-  EXPECT_EQ(result->second[0]->contract_address,
-            "0x1111111111111111111111111111111111111111");
-  EXPECT_EQ(result->second[0]->name, "Token #1");
-  EXPECT_EQ(result->second[0]->logo,
-            "https://nftimages-cdn.simplehash.com/1.png");
-  EXPECT_EQ(result->second[0]->is_erc20, false);
-  EXPECT_EQ(result->second[0]->is_erc721, true);
-  EXPECT_EQ(result->second[0]->is_erc1155, false);
-  EXPECT_EQ(result->second[0]->is_nft, true);
-  EXPECT_EQ(result->second[0]->symbol, "ONE");
-  EXPECT_EQ(result->second[0]->decimals, 0);
-  EXPECT_EQ(result->second[0]->visible, true);
-  EXPECT_EQ(result->second[0]->token_id, "0x1");
-  EXPECT_EQ(result->second[0]->chain_id, mojom::kPolygonMainnetChainId);
-  EXPECT_EQ(result->second[0]->coin, mojom::CoinType::ETH);
-
-  EXPECT_EQ(result->second[1]->contract_address,
-            "0x2222222222222222222222222222222222222222");
-  EXPECT_EQ(result->second[1]->name, "Token #2");
-  EXPECT_EQ(result->second[1]->logo,
-            "https://nftimages-cdn.simplehash.com/2.png");
-  EXPECT_EQ(result->second[1]->is_erc20, false);
-  EXPECT_EQ(result->second[1]->is_erc721, true);
-  EXPECT_EQ(result->second[1]->is_erc1155, false);
-  EXPECT_EQ(result->second[1]->is_nft, true);
-  // If symbol is null, it should be saved as an empty string
-  EXPECT_EQ(result->second[1]->symbol, "");
-  EXPECT_EQ(result->second[1]->decimals, 0);
-  EXPECT_EQ(result->second[1]->visible, true);
-  EXPECT_EQ(result->second[1]->token_id, "0x2");
-  EXPECT_EQ(result->second[1]->chain_id, mojom::kMainnetChainId);
-  EXPECT_EQ(result->second[1]->coin, mojom::CoinType::ETH);
-
-  // 6 ETH nfts, but only 1 has all necessary keys yields 1 NFT
-  //
-  // 1. Missing nothing (valid)
-  // 2. Missing chain_id
-  // 3. Missing contract_address
-  // 4. Missing token_id
-  // 5. Missing standard
-  // 6. Missing spam_score
-  json = R"({
-    "next": "https://api.simplehash.com/api/v0/nfts/next",
-    "previous": null,
-    "nfts": [
-      {
-        "chain": "polygon",
-        "contract_address": "0x1111111111111111111111111111111111111111",
-        "token_id": "1",
-        "contract": {
-          "type": "ERC721",
-          "symbol": "ONE"
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      },
-      {
-        "contract_address": "0x2222222222222222222222222222222222222222",
-        "token_id": "2",
-        "contract": {
-          "type": "ERC721",
-          "symbol": "TWO"
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      },
-      {
-        "chain": "ethereum",
-        "token_id": "3",
-        "contract": {
-          "type": "ERC721",
-          "symbol": "THREE"
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      },
-      {
-        "chain": "ethereum",
-        "contract_address": "0x4444444444444444444444444444444444444444",
-        "contract": {
-          "type": "ERC721",
-          "symbol": "FOUR"
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      },
-      {
-        "chain": "ethereum",
-        "contract_address": "0x5555555555555555555555555555555555555555",
-        "token_id": "5",
-        "contract": {
-          "symbol": "FIVE"
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      },
-      {
-        "chain": "polygon",
-        "contract_address": "0x6666666666666666666666666666666666666666",
-        "token_id": "6",
-        "contract": {
-          "type": "ERC721",
-          "symbol": "SIX"
-        },
-        "collection": {
-        }
-      }
-    ]
-  })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = asset_discovery_task_->ParseNFTsFromSimpleHash(*json_value,
-                                                          mojom::CoinType::ETH);
-  ASSERT_TRUE(result);
-  EXPECT_EQ(result->second.size(), 1u);
-
-  // 1 SOL NFT (NonFungible)
-  json = R"({
-    "next": null,
-    "previous": null,
-    "nfts": [
-      {
-        "chain": "solana",
-        "contract_address": "AvdAUsR4qgsT5HgyKCVeGjimmyu8xrG3RudFqm5txDDE",
-        "token_id": null,
-        "name": "y00t #2623",
-        "description": "y00ts is a generative art project of 15,000 NFTs.",
-        "image_url": "https://cdn.simplehash.com/assets/dc78fa011ba46fa12.png",
-        "status": "minted",
-        "contract": {
-          "type": "NonFungible",
-          "name": "y00t #2623",
-          "symbol": "Y00T"
-        },
-        "collection": {
-          "spam_score": 0
-        },
-        "extra_metadata": {
-          "is_mutable": true
-        }
-      }
-    ]
-  })";
-
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = asset_discovery_task_->ParseNFTsFromSimpleHash(*json_value,
-                                                          mojom::CoinType::SOL);
-  ASSERT_TRUE(result);
-  EXPECT_EQ(result->second.size(), 1u);
-  EXPECT_EQ(result->second[0]->contract_address,
-            "AvdAUsR4qgsT5HgyKCVeGjimmyu8xrG3RudFqm5txDDE");
-  EXPECT_EQ(result->second[0]->name, "y00t #2623");
-  EXPECT_EQ(result->second[0]->logo,
-            "https://cdn.simplehash.com/assets/"
-            "dc78fa011ba46fa12.png");
-  EXPECT_EQ(result->second[0]->is_erc20, false);
-  EXPECT_EQ(result->second[0]->is_erc721, false);
-  EXPECT_EQ(result->second[0]->is_erc1155, false);
-  EXPECT_EQ(result->second[0]->is_nft, true);
-  EXPECT_EQ(result->second[0]->symbol, "Y00T");
-  EXPECT_EQ(result->second[0]->decimals, 0);
-  EXPECT_EQ(result->second[0]->visible, true);
-  EXPECT_EQ(result->second[0]->token_id, "");
-  EXPECT_EQ(result->second[0]->coingecko_id, "");
-  EXPECT_EQ(result->second[0]->chain_id, mojom::kSolanaMainnet);
-  EXPECT_EQ(result->second[0]->coin, mojom::CoinType::SOL);
-
-  // 1 SOL NFT (NonFungibleEdition)
-  json = R"({
-    "next": null,
-    "previous": null,
-    "nfts": [
-      {
-        "nft_id": "solana.g9qugQPwCsw6JEUEXSJ2ngQ7TTqzdv69pDGfDaQ2oCe",
-        "chain": "solana",
-        "contract_address": "g9qugQPwCsw6JEUEXSJ2ngQ7TTqzdv69pDGfDaQ2oCe",
-        "token_id": null,
-        "name": "Boba Guys @ Solana Clubhouse",
-        "description": "Sign-up for early access to the Boba Guys Passport",
-        "image_url": "https://cdn.simplehash.com/assets/a3a7c3232c42963d747054c08dd219c795cf76c3b6fbdc77d5de9baa50e1a174.jpg",
-        "contract": {
-          "type": "NonFungibleEdition",
-          "name": "Boba Guys @ Solana Clubhouse",
-          "symbol": "BGSC"
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      }
-    ]
-  })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = asset_discovery_task_->ParseNFTsFromSimpleHash(*json_value,
-                                                          mojom::CoinType::SOL);
-  ASSERT_TRUE(result);
-  EXPECT_EQ(result->second.size(), 1u);
-  EXPECT_EQ(result->second[0]->contract_address,
-            "g9qugQPwCsw6JEUEXSJ2ngQ7TTqzdv69pDGfDaQ2oCe");
-  EXPECT_EQ(result->second[0]->name, "Boba Guys @ Solana Clubhouse");
-  EXPECT_EQ(
-      result->second[0]->logo,
-      "https://cdn.simplehash.com/assets/"
-      "a3a7c3232c42963d747054c08dd219c795cf76c3b6fbdc77d5de9baa50e1a174.jpg");
-  EXPECT_EQ(result->second[0]->is_erc20, false);
-  EXPECT_EQ(result->second[0]->is_erc721, false);
-  EXPECT_EQ(result->second[0]->is_erc1155, false);
-  EXPECT_EQ(result->second[0]->is_nft, true);
-  EXPECT_EQ(result->second[0]->symbol, "BGSC");
-  EXPECT_EQ(result->second[0]->decimals, 0);
-  EXPECT_EQ(result->second[0]->visible, true);
-  EXPECT_EQ(result->second[0]->token_id, "");
-  EXPECT_EQ(result->second[0]->coingecko_id, "");
-  EXPECT_EQ(result->second[0]->chain_id, mojom::kSolanaMainnet);
-  EXPECT_EQ(result->second[0]->coin, mojom::CoinType::SOL);
-
-  // 1 SOL NFT (ProgrammableNonFungible)
-  json = R"({
-    "next": null,
-    "previous": null,
-    "nfts": [
-      {
-        "nft_id": "solana.BHWBJ7XtBqJJbg9SrAUH4moeF8VpJo3WXyDh6vc1qqLG",
-        "chain": "solana",
-        "contract_address": "BHWBJ7XtBqJJbg9SrAUH4moeF8VpJo3WXyDh6vc1qqLG",
-        "token_id": null,
-        "name": "Mad Lads #8752",
-        "description": "Fock it.",
-        "image_url": "https://cdn.simplehash.com/assets/6fa3b325fd715c0b967988ad76c668b9cf41acb7aeff646ab4135095afd1dea5.png",
-        "contract": {
-          "type": "ProgrammableNonFungible",
-          "name": "Mad Lad #8752",
-          "symbol": "MAD",
-          "deployed_by": null,
-          "deployed_via_contract": null
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      }
-    ]
-  })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = asset_discovery_task_->ParseNFTsFromSimpleHash(*json_value,
-                                                          mojom::CoinType::SOL);
-  ASSERT_TRUE(result);
-  EXPECT_EQ(result->second.size(), 1u);
-  EXPECT_EQ(result->second[0]->contract_address,
-            "BHWBJ7XtBqJJbg9SrAUH4moeF8VpJo3WXyDh6vc1qqLG");
-  EXPECT_EQ(result->second[0]->name, "Mad Lads #8752");
-  EXPECT_EQ(
-      result->second[0]->logo,
-      "https://cdn.simplehash.com/assets/"
-      "6fa3b325fd715c0b967988ad76c668b9cf41acb7aeff646ab4135095afd1dea5.png");
-  EXPECT_EQ(result->second[0]->is_erc20, false);
-  EXPECT_EQ(result->second[0]->is_erc721, false);
-  EXPECT_EQ(result->second[0]->is_erc1155, false);
-  EXPECT_EQ(result->second[0]->is_nft, true);
-  EXPECT_EQ(result->second[0]->symbol, "MAD");
-  EXPECT_EQ(result->second[0]->decimals, 0);
-  EXPECT_EQ(result->second[0]->visible, true);
-  EXPECT_EQ(result->second[0]->token_id, "");
-  EXPECT_EQ(result->second[0]->coingecko_id, "");
-  EXPECT_EQ(result->second[0]->chain_id, mojom::kSolanaMainnet);
-  EXPECT_EQ(result->second[0]->coin, mojom::CoinType::SOL);
-
-  // An NFT with a spam_score > 0 will be skipped
-  json = R"({
-    "next": null,
-    "previous": null,
-    "nfts": [
-      {
-        "chain": "solana",
-        "contract_address": "AvdAUsR4qgsT5HgyKCVeGjimmyu8xrG3RudFqm5txDDE",
-        "token_id": null,
-        "name": "y00t #2623",
-        "description": "y00ts is a generative art project of 15,000 NFTs.",
-        "image_url": "https://cdn.simplehash.com/assets/dc78fa011ba46fa12.png",
-        "status": "minted",
-        "contract": {
-          "type": "NonFungible",
-          "name": "y00t #2623",
-          "symbol": "Y00T"
-        },
-        "collection": {
-          "spam_score": 100
-        },
-        "extra_metadata": {
-          "is_mutable": true
-        }
-      }
-    ]
-  })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = asset_discovery_task_->ParseNFTsFromSimpleHash(*json_value,
-                                                          mojom::CoinType::SOL);
-  ASSERT_TRUE(result);
-  EXPECT_EQ(result->second.size(), 0u);
-}
-
-TEST_F(AssetDiscoveryTaskUnitTest, FetchNFTsFromSimpleHash) {
-  std::vector<mojom::BlockchainTokenPtr> expected_nfts;
-  std::string json;
-  std::string json2;
-  std::map<GURL, std::string> responses;
-  GURL url;
-
-  // Empty account address yields empty expected_nfts
-  TestFetchNFTsFromSimpleHash("", {mojom::kMainnetChainId},
-                              mojom::CoinType::ETH, expected_nfts);
-
-  // Empty chain IDs yields empty expected_nfts
-  TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000", {},
-                              mojom::CoinType::ETH, expected_nfts);
-
-  // Unsupported chain ID yields empty expected_nfts
-  TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000", {},
-                              mojom::CoinType::FIL, expected_nfts);
-
-  // Non 2xx response yields empty expected_nfts
-  SetHTTPRequestTimeoutInterceptor();
-  TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000",
-                              {mojom::kMainnetChainId}, mojom::CoinType::ETH,
-                              expected_nfts);
-
-  // 1 NFT is parsed
-  json = R"({
-    "next": null,
-    "previous": null,
-    "nfts": [
-      {
-        "chain": "polygon",
-        "contract_address": "0x1111111111111111111111111111111111111111",
-        "token_id": "1",
-        "contract": {
-          "type": "ERC721",
-          "symbol": "ONE"
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      }
-    ]
-  })";
-  auto nft1 = mojom::BlockchainToken::New();
-  nft1->chain_id = mojom::kPolygonMainnetChainId;
-  nft1->contract_address = "0x1111111111111111111111111111111111111111";
-  nft1->token_id = "0x1";
-  nft1->is_erc721 = true;
-  nft1->is_erc1155 = false;
-  nft1->is_erc20 = false;
-  nft1->is_nft = true;
-  nft1->symbol = "ONE";
-  nft1->coin = mojom::CoinType::ETH;
-  expected_nfts.push_back(std::move(nft1));
-  url = GURL(
-      "https://simplehash.wallet.brave.com/api/v0/nfts/"
-      "owners?chains=ethereum%2Coptimism&wallet_addresses="
-      "0x0000000000000000000000000000000000000000");
-  responses[url] = json;
-  SetInterceptors(responses);
-  TestFetchNFTsFromSimpleHash(
-      "0x0000000000000000000000000000000000000000",
-      {mojom::kMainnetChainId, mojom::kOptimismMainnetChainId},
-      mojom::CoinType::ETH, expected_nfts);
-
-  // If 'next' page url is present, it should make another request
-  responses.clear();
-  json = R"({
-    "next": "https://api.simplehash.com/api/v0/nfts/next",
-    "previous": null,
-    "nfts": [
-      {
-        "chain": "polygon",
-        "contract_address": "0x1111111111111111111111111111111111111111",
-        "token_id": "1",
-        "contract": {
-          "type": "ERC721",
-          "symbol": "ONE"
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      }
-    ]
-  })";
-  responses[url] = json;
-  GURL next_url = GURL("https://simplehash.wallet.brave.com/api/v0/nfts/next");
-  json2 = R"({
-    "next": null,
-    "previous": null,
-    "nfts": [
-      {
-        "nft_id": "ethereum.0x5555555555555555555555555555555555555555.555",
-        "chain": "ethereum",
-        "contract_address": "0x5555555555555555555555555555555555555555",
-        "token_id": "555",
-        "contract": {
-          "type": "ERC721",
-          "symbol": "FIVE"
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      }
-    ]
-  })";
-  responses[next_url] = json2;
-  SetInterceptors(responses);
-  auto nft2 = mojom::BlockchainToken::New();
-  nft2->chain_id = mojom::kMainnetChainId;
-  nft2->contract_address = "0x5555555555555555555555555555555555555555";
-  nft2->token_id = "0x22b";  // "555"
-  nft2->is_erc20 = false;
-  nft2->is_erc721 = true;
-  nft2->is_erc1155 = false;
-  nft2->is_nft = true;
-  nft2->symbol = "FIVE";
-  nft2->coin = mojom::CoinType::ETH;
-  expected_nfts.push_back(std::move(nft2));
-  TestFetchNFTsFromSimpleHash(
-      "0x0000000000000000000000000000000000000000",
-      {mojom::kMainnetChainId, mojom::kOptimismMainnetChainId},
-      mojom::CoinType::ETH, expected_nfts);
 }
 
 TEST_F(AssetDiscoveryTaskUnitTest, DiscoverNFTs) {

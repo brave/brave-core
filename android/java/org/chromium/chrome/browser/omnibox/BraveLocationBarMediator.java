@@ -14,16 +14,13 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.OneshotSupplierImpl;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
-import org.chromium.chrome.browser.omnibox.voice.AssistantVoiceSearchService;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.WindowAndroid;
@@ -41,7 +38,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     private boolean mIsLocationBarFocusedFromNtpScroll;
     private Context mContext;
     private @BrandedColorScheme int mBrandedColorScheme = BrandedColorScheme.APP_DEFAULT;
-    private OneshotSupplierImpl<AssistantVoiceSearchService> mAssistantVoiceSearchServiceSupplier;
 
     public BraveLocationBarMediator(@NonNull Context context,
             @NonNull LocationBarLayout locationBarLayout,
@@ -101,21 +97,11 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         updateQRButtonColors();
     }
 
-    @Override
-    public void onAssistantVoiceSearchServiceChanged() {
-        super.onAssistantVoiceSearchServiceChanged();
-        updateQRButtonColors();
-    }
-
     void updateQRButtonColors() {
-        AssistantVoiceSearchService assistantVoiceSearchService =
-                mAssistantVoiceSearchServiceSupplier.get();
-        if (assistantVoiceSearchService == null) return;
-
         if (mLocationBarLayout instanceof BraveLocationBarLayout) {
             ((BraveLocationBarLayout) mLocationBarLayout)
-                    .setQRButtonTint(assistantVoiceSearchService.getButtonColorStateList(
-                            mBrandedColorScheme, mContext));
+                    .setQRButtonTint(
+                            ThemeUtils.getThemedToolbarIconTint(mContext, mBrandedColorScheme));
         }
     }
 

@@ -17,7 +17,6 @@ import org.junit.runner.RunWith;
 
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
-import org.chromium.chrome.test.util.browser.Features;
 
 // Currently safety check setion is not used in Brave.
 // Main purpose of these tests id to detect that something new, that we may consider valuable, is

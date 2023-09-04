@@ -36,6 +36,10 @@ class BraveNewTabButton : public NewTabButton {
   TabStrip* tab_strip() { return tab_strip_; }
   const TabStrip* tab_strip() const { return tab_strip_; }
 
+  views::InkDropContainerView* ink_drop_container() {
+    return base::to_address(ink_drop_container_);
+  }
+
   // Allow child classes to override PaintFill().
   virtual void OnPaintFill(gfx::Canvas* canvas) const;
 

@@ -237,15 +237,14 @@ export const makeSelectUserAssetIdsForChainIdFromQueryResult = () => {
   )
 }
 
-export const makeSelectAllUserAssetsForChainFromQueryResult = () => {
-  return createDraftSafeSelector(
+export const makeSelectAllUserAssetsForChainFromQueryResult =
+  () => createDraftSafeSelector(
     [
       selectTokensRegistryFromQueryResult,
       (_, chainId: EntityId) => chainId
     ],
     (registry, chainId) => getEntitiesListFromEntityState(registry, registry.idsByChainId[chainId])
   )
-}
 
 // combined tokens list
 export const selectCombinedTokensList = createDraftSafeSelector(
@@ -268,3 +267,11 @@ export const selectCombinedTokensList = createDraftSafeSelector(
     return userTokensList.concat(filteredKnownTokens)
   }
 )
+
+/**
+ * Used to select visible only tokens from useGetUserTokensRegistryQuery
+ */
+export const selectAllVisibleUserAssetsFromQueryResult =
+  createDraftSafeSelector([selectTokensRegistryFromQueryResult], (assets) =>
+    getEntitiesListFromEntityState(assets, assets.visibleTokenIds)
+  )

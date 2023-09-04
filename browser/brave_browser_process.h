@@ -59,8 +59,12 @@ namespace https_upgrade_exceptions {
 class HttpsUpgradeExceptionsService;
 }  // namespace https_upgrade_exceptions
 
+namespace localhost_permission {
+class LocalhostPermissionComponent;
+}  // namespace localhost_permission
+
 namespace misc_metrics {
-class MenuMetrics;
+class ProcessMiscMetrics;
 }  // namespace misc_metrics
 
 namespace request_otr {
@@ -103,6 +107,8 @@ class BraveBrowserProcess {
   virtual brave_shields::AdBlockService* ad_block_service() = 0;
   virtual https_upgrade_exceptions::HttpsUpgradeExceptionsService*
   https_upgrade_exceptions_service() = 0;
+  virtual localhost_permission::LocalhostPermissionComponent*
+  localhost_permission_component() = 0;
 #if BUILDFLAG(ENABLE_GREASELION)
   virtual greaselion::GreaselionDownloadService*
   greaselion_download_service() = 0;
@@ -141,7 +147,7 @@ class BraveBrowserProcess {
 #endif
   virtual brave_ads::ResourceComponent* resource_component() = 0;
   virtual brave::BraveFarblingService* brave_farbling_service() = 0;
-  virtual misc_metrics::MenuMetrics* menu_metrics() = 0;
+  virtual misc_metrics::ProcessMiscMetrics* process_misc_metrics() = 0;
 };
 
 extern BraveBrowserProcess* g_brave_browser_process;

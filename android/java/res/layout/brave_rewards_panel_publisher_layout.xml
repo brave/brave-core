@@ -43,7 +43,7 @@
             android:ellipsize="end"
             android:gravity="start"
             android:maxLines="1"
-            android:fontFamily="@font/poppins_600"
+            android:fontFamily="sans-serif"
             android:textColor="@color/rewards_panel_text_color"
             android:textSize="20sp" />
 
@@ -63,13 +63,15 @@
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
                 android:paddingTop="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:textAlignment="center"
-                android:fontFamily="@font/poppins_600"
+                android:fontFamily="sans-serif-medium"
                 android:paddingBottom="4dp"
                 android:background="@drawable/unverified_48_rounded_bg"
                 android:textColor="@color/rewards_panel_text_color"
                 android:textSize="12sp"
-                app:drawableStartCompat="@drawable/ic_unverified_state" />
+                app:drawableStartCompat="@drawable/rewards_unverified_tick_icon" />
 
             <FrameLayout
                 android:layout_width="wrap_content"

@@ -7,7 +7,10 @@ import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
-import { Playlist } from 'components/definitions/playlist'
+import {
+  ApplicationState,
+  PlaylistData
+} from 'components/playlist/browser/resources/reducers/states'
 
 // Components for playlist
 import { CloseCircleOIcon } from 'brave-ui/components/icons'
@@ -21,13 +24,13 @@ import * as playlistActions from '../actions/playlist_action_creators'
 import { getPlaylistAPI } from '../api/api'
 
 import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
-import { getAllActions } from '../api/getAllActions'
+import { getPlaylistActions } from '../api/getPlaylistActions'
 import postMessageToPlayer from '../api/playerApi'
 import { types } from '../constants/playlist_types'
 
 interface Props {
-  actions: any
-  playlistData: Playlist.State
+  actions: typeof playlistActions
+  playlistData: PlaylistData
 }
 
 interface State {
@@ -51,11 +54,16 @@ export class PlaylistPage extends React.Component<Props, State> {
   }
 
   findPlaylistWithId = (playlistId: string) => {
-    return this.props.playlistData.lists.find(playlist => playlist.id === playlistId)
+    return this.props.playlistData.lists.find(
+      playlist => playlist.id === playlistId
+    )
   }
 
   getImgSrc = (item: PlaylistMojo.PlaylistItem) => {
-    if (item.thumbnailPath.url.startsWith('http://') || item.thumbnailPath.url.startsWith('https://')) {
+    if (
+      item.thumbnailPath.url.startsWith('http://') ||
+      item.thumbnailPath.url.startsWith('https://')
+    ) {
       // Not cached yet. in this case we should show the default image
       return ''
     }
@@ -104,28 +112,60 @@ export class PlaylistPage extends React.Component<Props, State> {
       return
     }
 
-    return playlist.items.map((item: PlaylistMojo.PlaylistItem, index: any): any => {
-      const cell: Row = {
-        content: [
-          {
-            content: (
-                <PlaylistItem id={item.id} name={item.name} onClick={this.onClickItem.bind(this)}
-                    thumbnailUrl={this.getImgSrc(item)}/>
-            )
-          },
-          { content: (<span className='playlist-item-cached-state'>{item.cached ? 'Cached' : 'Not cached'}</span>) },
-          { content: (<button className='playlist-item-cache-btn' style={this.lazyTextButtonStyle} onClick={() => this.onClickDataButton(item.id)}>{item.cached ? 'Remove cache' : 'Cache'}</button>) },
-          { content: (<button style={this.lazyButtonStyle} onClick={() => this.onClickRemoveItemButton(item.id)}><CloseCircleOIcon /></button>) }
-        ]
+    return playlist.items.map(
+      (item: PlaylistMojo.PlaylistItem, index: any): any => {
+        const cell: Row = {
+          content: [
+            {
+              content: (
+                <PlaylistItem
+                  id={item.id}
+                  name={item.name}
+                  cached={item.cached}
+                  thumbnailUrl={this.getImgSrc(item)}
+                  onClick={e => this.onClickItem(e)}
+                />
+              )
+            },
+            {
+              content: (
+                <span className='playlist-item-cached-state'>
+                  {item.cached ? 'Cached' : 'Not cached'}
+                </span>
+              )
+            },
+            {
+              content: (
+                <button
+                  className='playlist-item-cache-btn'
+                  style={this.lazyTextButtonStyle}
+                  onClick={() => this.onClickDataButton(item.id)}
+                >
+                  {item.cached ? 'Remove cache' : 'Cache'}
+                </button>
+              )
+            },
+            {
+              content: (
+                <button
+                  style={this.lazyButtonStyle}
+                  onClick={() => this.onClickRemoveItemButton(item.id)}
+                >
+                  <CloseCircleOIcon />
+                </button>
+              )
+            }
+          ]
+        }
+        return cell
       }
-      return cell
-    })
+    )
   }
 
   onClickRemoveItemButton = (playlistItemId: string) => {
     const currentList = this.getCurrentPlaylist()
     if (!currentList) {
-      console.error('There\'s no selected playlist.')
+      console.error("There's no selected playlist.")
       return
     }
 
@@ -135,11 +175,11 @@ export class PlaylistPage extends React.Component<Props, State> {
   onClickDataButton = (playlistItemId: string) => {
     const currentList = this.getCurrentPlaylist()
     if (!currentList) {
-      console.error('There\'s no selected playlist.')
+      console.error("There's no selected playlist.")
       return
     }
 
-    const item = currentList.items.find((item: PlaylistMojo.PlaylistItem) => item.id === playlistItemId)
+    const item = currentList.items.find(item => item.id === playlistItemId)
     if (!item) {
       console.error(`There's item with id: ${playlistItemId}`)
       return
@@ -152,7 +192,9 @@ export class PlaylistPage extends React.Component<Props, State> {
   }
 
   get pageHasDownloadableVideo () {
-    return this.state.experimentalUrl.startsWith('https://www.youtube.com/watch')
+    return this.state.experimentalUrl.startsWith(
+      'https://www.youtube.com/watch'
+    )
   }
 
   onChangeExperimentalUrl = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -161,23 +203,26 @@ export class PlaylistPage extends React.Component<Props, State> {
 
   onClickDownloadVideo = () => {
     getPlaylistAPI().addMediaFilesFromPageToPlaylist(
-        this.props.playlistData.currentList?.id ?? '',
-        this.state.experimentalUrl)
+      this.props.playlistData.currentList?.id ?? '',
+      this.state.experimentalUrl
+    )
   }
 
   onClickItem = (itemId: string) => {
-    const item = this.getCurrentPlaylist()?.items.find((item: PlaylistMojo.PlaylistItem) => {
-      return item.id === itemId
-    })
+    const item = this.getCurrentPlaylist()?.items.find(
+      (item: PlaylistMojo.PlaylistItem) => {
+        return item.id === itemId
+      }
+    )
 
     if (!item) {
       return
     }
 
     postMessageToPlayer({
-     actionType: types.PLAYLIST_ITEM_SELECTED,
-     data: { ...item, mediaPath: { url: this.getMediaSrc(item) } }
-})
+      actionType: types.PLAYLIST_ITEM_SELECTED,
+      data: { ...item, mediaPath: { url: this.getMediaSrc(item) } }
+    })
   }
 
   createPlaylist = (playlist: PlaylistMojo.Playlist) => {
@@ -187,7 +232,7 @@ export class PlaylistPage extends React.Component<Props, State> {
   selectPlaylist = (playlistId: string) => {
     const playlist = this.findPlaylistWithId(playlistId)
     if (!playlist) return
-    getAllActions().selectPlaylist(playlist)
+    getPlaylistActions().selectPlaylist(playlist)
   }
 
   removePlaylist = (playlistId: string) => {
@@ -195,29 +240,44 @@ export class PlaylistPage extends React.Component<Props, State> {
   }
 
   onClickDownloadMediaFilesFromActiveTab = () => {
-    getPlaylistAPI().addMediaFilesFromActiveTabToPlaylist(this.props.playlistData.currentList?.id ?? '')
+    getPlaylistAPI().addMediaFilesFromActiveTabToPlaylist(
+      this.props.playlistData.currentList?.id ?? ''
+    )
   }
 
   render () {
     return (
       <div id='playlistPage'>
-        <PlaylistSelect playlists={this.props.playlistData.lists}
-            selectedPlaylist={this.getCurrentPlaylist()}
-            onCreatePlaylist= {this.createPlaylist}
-            onSelectPlaylist={this.selectPlaylist}
-            onRemovePlaylist={this.removePlaylist} />
+        <PlaylistSelect
+          playlists={this.props.playlistData.lists}
+          selectedPlaylist={this.getCurrentPlaylist()}
+          onCreatePlaylist={this.createPlaylist}
+          onSelectPlaylist={this.selectPlaylist}
+          onRemovePlaylist={this.removePlaylist}
+        />
         <div style={{ minHeight: '600px' }}>
-          <Table header={this.getPlaylistHeader()} rows={this.getPlaylistRows(this.getCurrentPlaylist())}>
+          <Table
+            header={this.getPlaylistHeader()}
+            rows={this.getPlaylistRows(this.getCurrentPlaylist())}
+          >
             YOUR PLAYLIST IS EMPTY
           </Table>
         </div>
 
-        <VideoFrame playing={!!this.props.playlistData.lastPlayerState?.playing} />
+        <VideoFrame
+          playing={!!this.props.playlistData.lastPlayerState?.playing}
+        />
 
         <div>
           <h1>Experimental</h1>
-          <button id='download-from-active-tab-btn' onClick={this.onClickDownloadMediaFilesFromActiveTab}>Download media files from the active tab</button>
-          <br /><br />
+          <button
+            id='download-from-active-tab-btn'
+            onClick={this.onClickDownloadMediaFilesFromActiveTab}
+          >
+            Download media files from the active tab
+          </button>
+          <br />
+          <br />
           <div>
             <div>URL input</div>
             <textarea
@@ -225,17 +285,19 @@ export class PlaylistPage extends React.Component<Props, State> {
               onChange={this.onChangeExperimentalUrl}
             />
             <div>
-            {
-              this.pageHasDownloadableVideo
-              ? (
+              {this.pageHasDownloadableVideo ? (
                 <div>
                   <h1>This page has a video you can download</h1>
-                  <button onClick={this.onClickDownloadVideo}>Click here to download</button>
+                  <button onClick={this.onClickDownloadVideo}>
+                    Click here to download
+                  </button>
                 </div>
               ) : (
-                <h1>Nothing to see here. Put a proper YouTube link to see the magic</h1>
-              )
-            }
+                <h1>
+                  Nothing to see here. Put a proper YouTube link to see the
+                  magic
+                </h1>
+              )}
             </div>
           </div>
         </div>
@@ -244,7 +306,7 @@ export class PlaylistPage extends React.Component<Props, State> {
   }
 }
 
-export const mapStateToProps = (state: Playlist.ApplicationState) => ({
+export const mapStateToProps = (state: ApplicationState) => ({
   playlistData: state.playlistData
 })
 
@@ -252,7 +314,4 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(playlistActions, dispatch)
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PlaylistPage)
+export default connect(mapStateToProps, mapDispatchToProps)(PlaylistPage)

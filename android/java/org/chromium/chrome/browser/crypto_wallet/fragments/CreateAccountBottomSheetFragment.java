@@ -73,9 +73,9 @@ public class CreateAccountBottomSheetFragment extends BottomSheetDialogFragment
 
     @Override
     public void onAccountClick(CryptoAccountTypeInfo cryptoAccountTypeInfo) {
-        Intent addAccountActivityIntent = new Intent(getActivity(), AddAccountActivity.class);
-        addAccountActivityIntent.putExtra(AddAccountActivity.ACCOUNT, cryptoAccountTypeInfo);
-        startActivity(addAccountActivityIntent);
+        Intent intent = AddAccountActivity.createIntentToAddAccount(
+                getContext(), cryptoAccountTypeInfo.getCoinType());
+        startActivity(intent);
         dismiss();
     }
 }

@@ -60,6 +60,7 @@ class PageDistiller {
  private:
   void StartDistill(DistillContentCallback callback);
   void OnGetOuterHTML(DistillContentCallback callback, base::Value result);
+  void OnGetText(DistillContentCallback callback, base::Value result);
   void OnPageDistilled(DistillContentCallback callback,
                        DistillationResult result,
                        std::string original_data,

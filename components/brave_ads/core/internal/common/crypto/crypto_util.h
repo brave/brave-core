@@ -26,9 +26,9 @@ std::vector<uint8_t> GenerateRandomNonce();
 
 absl::optional<std::string> Sign(const std::string& message,
                                  const std::string& secret_key);
-bool Verify(const std::string& message,
-            const std::string& public_key,
-            const std::string& signature);
+[[nodiscard]] bool Verify(const std::string& message,
+                          const std::string& public_key,
+                          const std::string& signature);
 
 std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& plaintext,
                              const std::vector<uint8_t>& nonce,

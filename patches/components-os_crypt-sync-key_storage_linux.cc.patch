@@ -1,8 +1,8 @@
 diff --git a/components/os_crypt/sync/key_storage_linux.cc b/components/os_crypt/sync/key_storage_linux.cc
-index ebe788b6e5848e605dc3cdab38d6d96226352ed6..a167e5e9892ad18b68152f3cebbed89b2ba7f540 100644
+index 1fb350f826902270165123ac0dcac39ef113bfed..3425a8b6f644b139823467ca25cbf3c6939d0497 100644
 --- a/components/os_crypt/sync/key_storage_linux.cc
 +++ b/components/os_crypt/sync/key_storage_linux.cc
-@@ -32,8 +32,7 @@
+@@ -29,8 +29,7 @@
  const char KeyStorageLinux::kFolderName[] = "Chrome Keys";
  const char KeyStorageLinux::kKey[] = "Chrome Safe Storage";
  #else
@@ -12,7 +12,15 @@ index ebe788b6e5848e605dc3cdab38d6d96226352ed6..a167e5e9892ad18b68152f3cebbed89b
  #endif
  
  namespace {
-@@ -150,7 +149,7 @@ std::unique_ptr<KeyStorageLinux> KeyStorageLinux::CreateServiceInternal(
+@@ -126,6 +125,7 @@ std::unique_ptr<KeyStorageLinux> KeyStorageLinux::CreateService(
+   std::unique_ptr<KeyStorageLinux> key_storage;
+ #if defined(USE_LIBSECRET) || defined(USE_KWALLET)
+   key_storage = CreateServiceInternal(selected_backend, config);
++  BRAVE_KEY_STORAGE_LINUX_CREATE_SERVICE
+ #endif  // defined(USE_LIBSECRET) || defined(USE_KWALLET)
+ 
+   UMA_HISTOGRAM_ENUMERATION(
+@@ -145,7 +145,7 @@ std::unique_ptr<KeyStorageLinux> KeyStorageLinux::CreateServiceInternal(
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
    static const base::NoDestructor<std::string> kDefaultApplicationName("chrome");
  #else

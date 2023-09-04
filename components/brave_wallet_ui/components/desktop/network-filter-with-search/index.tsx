@@ -25,7 +25,7 @@ interface Props {
   selectedNetwork: BraveWallet.NetworkInfo
   showNetworkDropDown: boolean
   onClick: () => void
-  onSelectNetwork?: (network: BraveWallet.NetworkInfo) => void
+  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   searchPlaceholder: string
   searchAction?: (event: any) => void | undefined
   searchAutoFocus?: boolean

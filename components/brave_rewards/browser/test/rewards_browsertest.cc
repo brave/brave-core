@@ -54,7 +54,7 @@ class WalletUpdatedWaiter : public RewardsServiceObserver {
 
   ~WalletUpdatedWaiter() override { rewards_service_->RemoveObserver(this); }
 
-  void OnRewardsWalletUpdated() override { run_loop_.Quit(); }
+  void OnRewardsWalletCreated() override { run_loop_.Quit(); }
 
   void Wait() { run_loop_.Run(); }
 
@@ -100,7 +100,7 @@ class RewardsBrowserTest : public InProcessBrowserTest {
         base::BindRepeating(
             &RewardsBrowserTest::GetTestResponse,
             base::Unretained(this)));
-    rewards_service_->SetLedgerEnvForTesting();
+    rewards_service_->SetEngineEnvForTesting();
 
     // Other
     contribution_->Initialize(browser(), rewards_service_);
@@ -146,8 +146,8 @@ class RewardsBrowserTest : public InProcessBrowserTest {
   double FetchBalance() {
     double total = -1.0;
     base::RunLoop run_loop;
-    rewards_service_->FetchBalance(
-        base::BindLambdaForTesting([&](internal::FetchBalanceResult result) {
+    rewards_service_->FetchBalance(base::BindLambdaForTesting(
+        [&](brave_rewards::FetchBalanceResult result) {
           total = result.has_value() ? result.value()->total : -1.0;
           run_loop.Quit();
         }));
@@ -176,8 +176,8 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ActivateSettingsModal) {
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
   test_util::CreateRewardsWallet(rewards_service_);
-  test_util::NavigateToPublisherPage(browser(), https_server_.get(),
-                                     "3zsistemi.si");
+  test_util::NavigateToPublisherAndWaitForUpdate(browser(), https_server_.get(),
+                                                 "3zsistemi.si");
 
   base::WeakPtr<content::WebContents> site_banner =
       context_helper_->OpenSiteBanner();
@@ -187,8 +187,8 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultPublisherAmounts) {
   test_util::CreateRewardsWallet(rewards_service_);
-  test_util::NavigateToPublisherPage(browser(), https_server_.get(),
-                                     "laurenwags.github.io");
+  test_util::NavigateToPublisherAndWaitForUpdate(browser(), https_server_.get(),
+                                                 "laurenwags.github.io");
 
   base::WeakPtr<content::WebContents> site_banner =
       context_helper_->OpenSiteBanner();
@@ -218,8 +218,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, NotVerifiedWallet) {
       contents(),
       base::BindLambdaForTesting(
           [this](content::NavigationHandle* navigation_handle) {
-            DCHECK(navigation_handle->GetURL().spec().find(
-                       internal::uphold::GetUrl() + "/authorize/") ==
+            DCHECK(navigation_handle->GetURL().spec().find("/authorize/") ==
                    std::string::npos);
 
             // Fake successful authentication

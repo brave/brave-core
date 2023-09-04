@@ -55,7 +55,7 @@
   <message name="IDS_BRAVE_VPN_UNABLE_CONNECT_INFO" desc="Description of which region VPN couldn't connect to"><ph name="PRODUCT_NAME">$1<ex>Brave Firewall + VPN</ex></ph> couldn't connect to the <ph name="REGION_NAME">$2<ex>Tokyo</ex></ph> server. You can try again, or choose another.</message>
 
   <message name="IDS_BRAVE_VPN_BUY" desc="Button title to purchase vpn">
-    Buy
+    Start free trial
   </message>
 
   <message name="IDS_BRAVE_VPN_HAS_PURCHASED" desc="Link text to redirect the user to Brave account login page. Do not translate VPN.">Already purchased VPN?</message>
@@ -239,8 +239,14 @@
     <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_TITLE" desc="A title of text shown to user when he enabled Brave VPN without DoH and we override settings">
       Brave VPN on Windows
     </message>
+    <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_TITLE" desc="A title of text shown to user when Brave VPN WireGuard is asking for fallback to IKEv2">
+      Brave VPN on Windows
+    </message>
   </if>
   <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_LEARN_MORE_TEXT" desc="A text shown to user when he enabled Brave VPN without DoH and we override settings to visit help center">
+    Learn more.
+  </message>
+  <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_LEARN_MORE_TEXT" desc="A text shown to user when Brave VPN WireGuard is asking for fallback to IKEv2">
     Learn more.
   </message>
 
@@ -257,6 +263,20 @@ However, we noticed this helper service is not running - and we don't want to le
 
 <ph name="LEARN_MORE">$1<ex>Learn more.</ex></ph>
   </message>
+  <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_TEXT" desc="A text shown to user when Brave VPN WireGuard is asking for fallback to IKEv2">
+Looks like there are some issues with the WireGuard connection. Want to enable IKEv2 fallback for a reliable VPN? Simply restart your browser.
+
+Need help with compatibility or configuration? Reach out to our friendly support team.
+You can always revert back to WireGuard on brave://settings/system.
+
+Let's get you connected!
+
+<ph name="LEARN_MORE">$1<ex>Learn more.</ex></ph>
+  </message>
+
+  <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_CHECKBOX_TEXT" desc="A text shown to user on dialog's checkbpox when Brave VPN WireGuard is asking for fallback to IKEv2">
+    Do not warn me about this anymore.
+  </message>
 
   <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_CHECKBOX_TEXT" desc="A text shown to user on dialog's checkbpox when he enabled Brave VPN and we override settings">
     Do not warn me about this anymore.
@@ -264,6 +284,15 @@ However, we noticed this helper service is not running - and we don't want to le
   <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_OK_TEXT" desc="A text shown to user on dialog's ok button when he enabled Brave VPN and we override settings">
     Ok
   </message>
+
+  <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_OK_TEXT" desc="A text shown to user on dialog's ok button when Brave VPN WireGuard is asking for fallback to IKEv2">
+    Restart browser
+  </message>
+
+  <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_CANCEL_TEXT" desc="A text shown to user on dialog's cancel button when Brave VPN WireGuard is asking for fallback to IKEv2">
+    Cancel
+  </message>
+
   <message name="IDS_BRAVE_VPN_DNS_POLICY_CHECKBOX" desc="A text shown to user on dialog's checkbpox when he enabled Brave VPN with disabled DoH by policies">
     Do not warn me about this anymore.
   </message>
@@ -279,4 +308,48 @@ However, we noticed this helper service is not running - and we don't want to le
   <message name="IDS_BRAVE_VPN_MAIN_PANEL_SESSION_EXPIRED_PART_CONTENT" desc="Content text for session expired panel">
     Please log in to your <ph name="BRAVE_ACCOUNT_BEGIN">$1</ph>Brave Account<ph name="BRAVE_ACCOUNT_END">$2</ph> to refresh your VPN session.
   </message>
+  <if expr="is_win">
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED" desc="Message to be displayed as tooltip for the system tray icon in disconnected state.">
+      Brave VPN: Disconnected
+    </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTING" desc="Message to be displayed as tooltip for the system tray icon in disconnecting state.">
+      Brave VPN: Disconnecting
+    </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTED" desc="Message to be displayed as tooltip for the system tray icon in connected state.">
+      Brave VPN: Connected
+    </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTING" desc="Message to be displayed as tooltip for the system tray icon in connecting state.">
+      Brave VPN: Connecting
+    </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR" desc="Message to be displayed as tooltip for the system tray icon in error state.">
+      Brave VPN: Error
+    </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_ACTIVE" desc="Message to be displayed as the first item in the menu for the system tray icon in connected state.">
+      Status: Connected
+    </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_INACTIVE" desc="Message to be displayed as the first item in the menu for the system tray icon in disconnected state.">
+      Status: Disconnected
+    </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_CONNECT_ITEM" desc="Title of the system tray menu item for connect command.">
+      Connect
+    </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_DISCONNECT_ITEM" desc="Title of the system tray menu item for disconnect command.">
+      Disconnect
+    </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_NOTIFICATION_CONNECTED" desc="Notification message of the system tray notification when vpn connected.">
+      Brave VPN - Connected
+    </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_NOTIFICATION_DISCONNECTED" desc="Notification message of the system tray notification when vpn disconnected.">
+      Brave VPN - Disconnected
+    </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_MANAGE_ACCOUNT_ITEM" desc="Title of the system tray menu item for the command to open an account page in the browser.">
+      Manage Account
+    </message>        
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ABOUT_ITEM" desc="Title of the system tray menu item for the command to open about page in the browser.">
+      About Brave VPN
+    </message>        
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_REMOVE_ICON_ITEM" desc="Title of the system tray menu item for the command to remove the icon from the system tray.">
+      Remove icon
+    </message>
+  </if>
 </grit-part>

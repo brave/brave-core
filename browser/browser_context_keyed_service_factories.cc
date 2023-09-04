@@ -13,10 +13,12 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/notifications/wallet_notification_service_factory.h"
+#include "brave/browser/brave_wallet/simulation_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
@@ -29,12 +31,10 @@
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
-#include "brave/browser/ui/commander/commander_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/commander/common/features.h"
+#include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
@@ -58,6 +58,8 @@
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/components/commands/common/features.h"
 #else
+#include "brave/browser/brave_shields/cookie_list_opt_in_service_factory.h"
+#include "brave/browser/brave_shields/filter_list_service_factory.h"
 #include "brave/browser/ntp_background/android/ntp_background_images_bridge.h"
 #endif
 
@@ -81,6 +83,11 @@
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_COMMANDER)
+#include "brave/browser/ui/commander/commander_service_factory.h"
+#include "brave/components/commander/common/features.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -121,17 +128,17 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if !BUILDFLAG(IS_ANDROID)
   BookmarkPrefsServiceFactory::GetInstance();
 #else
+  brave_shields::CookieListOptInServiceFactory::GetInstance();
+  brave_shields::FilterListServiceFactory::GetInstance();
   ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance();
 #endif
 
-  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature)) {
-    brave_news::BraveNewsControllerFactory::GetInstance();
-  }
-
+  brave_news::BraveNewsControllerFactory::GetInstance();
   brave_wallet::AssetRatioServiceFactory::GetInstance();
   brave_wallet::KeyringServiceFactory::GetInstance();
   brave_wallet::JsonRpcServiceFactory::GetInstance();
   brave_wallet::SwapServiceFactory::GetInstance();
+  brave_wallet::SimulationServiceFactory::GetInstance();
 #if !BUILDFLAG(IS_ANDROID)
   brave_wallet::WalletNotificationServiceFactory::GetInstance();
 #endif
@@ -142,6 +149,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
     commands::AcceleratorServiceFactory::GetInstance();
   }
+#endif
+
+#if BUILDFLAG(ENABLE_COMMANDER)
   if (base::FeatureList::IsEnabled(features::kBraveCommander)) {
     commander::CommanderServiceFactory::GetInstance();
   }
@@ -154,6 +164,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsServiceFactory::GetInstance();
 #endif
+  brave_wallet::BraveWalletIpfsServiceFactory::GetInstance();
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   brave_wallet::BraveWalletAutoPinServiceFactory::GetInstance();

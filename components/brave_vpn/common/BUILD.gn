@@ -28,6 +28,9 @@ source_set("common") {
     "//components/version_info",
     "//net",
   ]
+  if (is_win) {
+    deps += [ "//brave/components/brave_vpn/common/wireguard/win" ]
+  }
 }
 
 source_set("unit_tests") {
@@ -48,4 +51,7 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",
   ]
+  if (is_win) {
+    deps += [ "wireguard/win:unittests" ]
+  }
 }

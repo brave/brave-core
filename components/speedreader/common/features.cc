@@ -15,10 +15,6 @@ BASE_FEATURE(kSpeedreaderFeature,
              base::FEATURE_ENABLED_BY_DEFAULT);
 #endif
 
-BASE_FEATURE(kSpeedreaderPanelV2,
-             "SpeedreaderPanelV2",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
 const base::FeatureParam<int> kSpeedreaderMinOutLengthParam{
     &kSpeedreaderFeature, "min_out_length", 1000};
 

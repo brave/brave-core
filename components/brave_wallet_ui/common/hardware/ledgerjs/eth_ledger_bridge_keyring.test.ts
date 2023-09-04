@@ -92,7 +92,7 @@ test('getAccounts ledger live derivation path success', async () => {
         hardwareVendor: 'Ledger',
         deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
         coin: BraveWallet.CoinType.ETH,
-        network: undefined
+        keyringId: BraveWallet.KeyringId.kDefault
       },
       {
         address: 'address 2',
@@ -101,7 +101,7 @@ test('getAccounts ledger live derivation path success', async () => {
         hardwareVendor: 'Ledger',
         deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
         coin: BraveWallet.CoinType.ETH,
-        network: undefined
+        keyringId: BraveWallet.KeyringId.kDefault
       }
     ]
   })
@@ -135,7 +135,7 @@ test('getAccounts legacy derivation path success', async () => {
         hardwareVendor: 'Ledger',
         deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
         coin: BraveWallet.CoinType.ETH,
-        network: undefined
+        keyringId: BraveWallet.KeyringId.kDefault
       },
       {
         address: 'address 2',
@@ -144,7 +144,7 @@ test('getAccounts legacy derivation path success', async () => {
         hardwareVendor: 'Ledger',
         deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
         coin: BraveWallet.CoinType.ETH,
-        network: undefined
+        keyringId: BraveWallet.KeyringId.kDefault
       }
     ]
   })
@@ -179,7 +179,7 @@ test('getAccounts deprecated derivation path success', async () => {
         hardwareVendor: 'Ledger',
         deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
         coin: BraveWallet.CoinType.ETH,
-        network: undefined
+        keyringId: BraveWallet.KeyringId.kDefault
       },
       {
         address: 'address 2',
@@ -188,7 +188,7 @@ test('getAccounts deprecated derivation path success', async () => {
         hardwareVendor: 'Ledger',
         deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
         coin: BraveWallet.CoinType.ETH,
-        network: undefined
+        keyringId: BraveWallet.KeyringId.kDefault
       }
     ]
   })

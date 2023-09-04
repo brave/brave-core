@@ -10,7 +10,6 @@
 
 #include "base/containers/contains.h"
 #include "base/logging.h"
-#include "base/synchronization/lock.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -33,11 +32,6 @@ bool EthPendingTxTracker::UpdatePendingTransactions(
     const absl::optional<std::string>& chain_id,
     std::set<std::string>* pending_chain_ids) {
   CHECK(pending_chain_ids);
-  base::Lock* nonce_lock = nonce_tracker_->GetLock();
-  if (!nonce_lock->Try()) {
-    return false;
-  }
-
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
       chain_id, mojom::TransactionStatus::Submitted, absl::nullopt);
   auto signed_transactions = tx_state_manager_->GetTransactionsByStatus(
@@ -61,7 +55,6 @@ bool EthPendingTxTracker::UpdatePendingTransactions(
                        std::move(id)));
   }
 
-  nonce_lock->Release();
   return true;
 }
 
@@ -78,14 +71,9 @@ void EthPendingTxTracker::OnGetTxReceipt(const std::string& chain_id,
   if (error != mojom::ProviderError::kSuccess) {
     return;
   }
-  base::Lock* nonce_lock = nonce_tracker_->GetLock();
-  if (!nonce_lock->Try()) {
-    return;
-  }
 
   std::unique_ptr<EthTxMeta> meta = tx_state_manager_->GetEthTx(chain_id, id);
   if (!meta) {
-    nonce_lock->Release();
     return;
   }
   if (receipt.status) {
@@ -96,8 +84,6 @@ void EthPendingTxTracker::OnGetTxReceipt(const std::string& chain_id,
   } else if (ShouldTxDropped(*meta)) {
     DropTransaction(meta.get());
   }
-
-  nonce_lock->Release();
 }
 
 void EthPendingTxTracker::OnGetNetworkNonce(const std::string& chain_id,
@@ -132,20 +118,20 @@ bool EthPendingTxTracker::IsNonceTaken(const EthTxMeta& meta) {
 }
 
 bool EthPendingTxTracker::ShouldTxDropped(const EthTxMeta& meta) {
-  const std::string& hex_address = meta.from();
+  const std::string& address = meta.from()->address;
   const std::string& chain_id = meta.chain_id();
-  auto network_nonce_map_per_chain_id = network_nonce_map_.find(hex_address);
+  auto network_nonce_map_per_chain_id = network_nonce_map_.find(address);
   if (network_nonce_map_per_chain_id == network_nonce_map_.end() ||
       !base::Contains(network_nonce_map_per_chain_id->second, chain_id)) {
     json_rpc_service_->GetEthTransactionCount(
-        chain_id, hex_address,
+        chain_id, address,
         base::BindOnce(&EthPendingTxTracker::OnGetNetworkNonce,
-                       weak_factory_.GetWeakPtr(), chain_id, hex_address));
+                       weak_factory_.GetWeakPtr(), chain_id, address));
   } else {
-    uint256_t network_nonce = network_nonce_map_[hex_address][chain_id];
+    uint256_t network_nonce = network_nonce_map_[address][chain_id];
     network_nonce_map_per_chain_id->second.erase(chain_id);
     if (network_nonce_map_per_chain_id->second.empty()) {
-      network_nonce_map_.erase(hex_address);
+      network_nonce_map_.erase(address);
     }
     if (meta.tx()->nonce() < network_nonce) {
       return true;

@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_pin_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -16,7 +17,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_pin_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -27,7 +28,8 @@ namespace brave_wallet {
 // static
 BraveWalletAutoPinServiceFactory*
 BraveWalletAutoPinServiceFactory::GetInstance() {
-  return base::Singleton<BraveWalletAutoPinServiceFactory>::get();
+  static base::NoDestructor<BraveWalletAutoPinServiceFactory> instance;
+  return instance.get();
 }
 
 // static

@@ -12,6 +12,10 @@ CI/run-network-audit:
 - chromium_src/**/*features.cc
 - patches/chrome-VERSION.patch
 
+CI/run-upstream-tests:
+- browser/about_flags.cc
+- chromium_src/**/*features.cc
+
 CI/storybook-url:
 - "**/*.ts"
 - "**/*.tsx"

@@ -5,15 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
-#include <string>
-
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/page_transition_util.h"
@@ -62,6 +61,10 @@ UserActivityManager& UserActivityManager::GetInstance() {
 }
 
 void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {
+  if (!UserHasJoinedBraveRewards()) {
+    return;
+  }
+
   UserActivityEventInfo user_activity_event;
   user_activity_event.type = event_type;
   user_activity_event.created_at = base::Time::Now();
@@ -122,6 +125,10 @@ void UserActivityManager::RecordEventForPageTransition(
   }
 
   RecordEvent(*event_type);
+}
+
+void UserActivityManager::OnNotifyDidInitializeAds() {
+  RecordEvent(UserActivityEventType::kInitializedAds);
 }
 
 void UserActivityManager::OnNotifyUserGestureEventTriggered(

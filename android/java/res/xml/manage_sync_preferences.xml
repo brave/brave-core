@@ -22,42 +22,42 @@
         android:title="@string/sync_everything_pref"
         android:persistent="false"/>
 
-    <org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference
+    <org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference
         android:key="sync_autofill"
         android:title="@string/sync_autofill"
         android:persistent="false"/>
 
-    <org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference
+    <org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference
         android:key="sync_bookmarks"
         android:title="@string/sync_bookmarks"
         android:persistent="false"/>
 
-    <org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference
+    <org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference
         android:key="sync_payments_integration"
         android:title="@string/sync_payments_integration"
         android:persistent="false"/>
 
-    <org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference
+    <org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference
         android:key="sync_history"
         android:title="@string/sync_history"
         android:persistent="false"/>
 
-    <org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference
+    <org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference
         android:key="sync_passwords"
         android:title="@string/sync_passwords"
         android:persistent="false"/>
 
-    <org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference
+    <org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference
         android:key="sync_reading_list"
         android:title="@string/sync_reading_list"
         android:persistent="false"/>
 
-    <org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference
+    <org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference
         android:key="sync_recent_tabs"
         android:title="@string/sync_recent_tabs"
         android:persistent="false"/>
 
-    <org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference
+    <org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference
         android:key="sync_settings"
         android:title="@string/sync_settings"
         android:persistent="false"/>

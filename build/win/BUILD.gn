@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("sign.gni")
 
 group("brave") {
@@ -10,6 +11,9 @@ group("brave") {
     ":copy_exe",
     ":copy_pdb",
   ]
+  if (enable_brave_vpn) {
+    deps = [ "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service:wireguard_service" ]
+  }
 }
 
 copy("copy_exe") {
@@ -32,4 +36,10 @@ sign("create_signed_installer") {
   sources = [ "$root_out_dir/mini_installer.exe" ]
   outputs = [ "$root_out_dir/$brave_installer_exe" ]
   deps = [ "//chrome/installer/mini_installer" ]
+}
+
+sign("signed_delta_installer") {
+  sources = [ "$root_out_dir/delta_installer_unsigned.exe" ]
+  outputs = [ "$root_out_dir/delta_installer.exe" ]
+  deps = [ "//chrome/installer/mini_installer:delta_installer_unsigned" ]
 }

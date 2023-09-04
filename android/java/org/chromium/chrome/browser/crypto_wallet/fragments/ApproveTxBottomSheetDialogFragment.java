@@ -30,7 +30,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.CommandLine;
@@ -59,6 +58,7 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmati
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
 import org.chromium.chrome.browser.crypto_wallet.util.SolanaTransactionsGasHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
@@ -67,7 +67,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.url.GURL;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -78,13 +77,12 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragment {
+public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogFragment {
     private static final String TAG = "ApproveTx";
 
     public static final String TAG_FRAGMENT = ApproveTxBottomSheetDialogFragment.class.getName();
 
     private TransactionInfo mTxInfo;
-    private String mAccountName;
     private boolean mRejected;
     private boolean mApproved;
     private ApprovedTxObserver mApprovedTxObserver;
@@ -96,24 +94,22 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     private int mCoinType;
     private long mSolanaEstimatedTxFee;
     private WalletModel mWalletModel;
+    private NetworkInfo mTxNetwork;
 
     public static ApproveTxBottomSheetDialogFragment newInstance(
-            List<TransactionInfo> transactionInfos, TransactionInfo txInfo, String accountName,
+            List<TransactionInfo> transactionInfos, TransactionInfo txInfo,
             TransactionConfirmationListener listener) {
-        return new ApproveTxBottomSheetDialogFragment(
-                transactionInfos, txInfo, accountName, listener);
+        return new ApproveTxBottomSheetDialogFragment(transactionInfos, txInfo, listener);
     }
 
-    public static ApproveTxBottomSheetDialogFragment newInstance(
-            TransactionInfo txInfo, String accountName) {
+    public static ApproveTxBottomSheetDialogFragment newInstance(TransactionInfo txInfo) {
         List<TransactionInfo> infos = new ArrayList<>();
         infos.add(txInfo);
-        return newInstance(infos, txInfo, accountName, null);
+        return newInstance(infos, txInfo, null);
     }
 
-    private ApproveTxBottomSheetDialogFragment(TransactionInfo txInfo, String accountName) {
+    private ApproveTxBottomSheetDialogFragment(TransactionInfo txInfo) {
         mTxInfo = txInfo;
-        mAccountName = accountName;
         mRejected = false;
         mApproved = false;
         mExecutor = Executors.newSingleThreadExecutor();
@@ -125,9 +121,9 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     }
 
     ApproveTxBottomSheetDialogFragment(List<TransactionInfo> transactionInfos,
-            TransactionInfo txInfo, String accountName,
+            TransactionInfo txInfo,
             @Nullable TransactionConfirmationListener transactionConfirmationListener) {
-        this(txInfo, accountName);
+        this(txInfo);
         mTransactionInfos = transactionInfos;
         mTransactionConfirmationListener = transactionConfirmationListener;
     }
@@ -217,8 +213,9 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+            registerKeyringObserver(mWalletModel.getKeyringModel());
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onCreateDialog " + e);
+            Log.e(TAG, "onCreateDialog ", e);
         }
         return dialog;
     }
@@ -229,9 +226,9 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         if (mApprovedTxObserver != null) {
             if (mRejected || mApproved) {
                 // TODO(pav): 28/07/22 rename to callback or delegate, it's not an observer
-                mApprovedTxObserver.onTxApprovedRejected(mApproved, mAccountName, mTxInfo.id);
+                mApprovedTxObserver.onTxApprovedRejected(mApproved, mTxInfo.id);
             } else {
-                mApprovedTxObserver.onTxPending(mAccountName, mTxInfo.id);
+                mApprovedTxObserver.onTxPending(mTxInfo.id);
             }
         }
         if (mTransactionConfirmationListener != null) {
@@ -270,75 +267,62 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             associatedSplTokenInfo.setText(associatedSPLTokenAccountInfo);
         }
         mCoinType = TransactionUtils.getCoinFromTxDataUnion(mTxInfo.txDataUnion);
-        jsonRpcService.getNetwork(mCoinType, null, selectedNetwork -> {
-            networkName.setText(selectedNetwork.chainName);
-            keyringService.getKeyringInfo(
-                    AssetUtils.getKeyringForCoinType(mCoinType), keyringInfo -> {
-                        final AccountInfo[] accounts = keyringInfo.accountInfos;
-                        // First fill in data that does not require remote queries
-                        TokenUtils.getAllTokensFiltered(getBraveWalletService(),
-                                getBlockchainRegistry(), selectedNetwork, selectedNetwork.coin,
-                                TokenUtils.TokenType.ALL, tokenList -> {
-                                    SolanaTransactionsGasHelper solanaTransactionsGasHelper =
-                                            new SolanaTransactionsGasHelper(
-                                                    (BraveWalletBaseActivity) getActivity(),
-                                                    new TransactionInfo[] {mTxInfo});
-                                    solanaTransactionsGasHelper.maybeGetSolanaGasEstimations(() -> {
-                                        HashMap<String, Long> perTxFee =
-                                                solanaTransactionsGasHelper.getPerTxFee();
-                                        if (perTxFee.get(mTxInfo.id) != null) {
-                                            mSolanaEstimatedTxFee = perTxFee.get(mTxInfo.id);
-                                        }
-                                        if (!canUpdateUi()) return;
-                                        ParsedTransaction parsedTx = fillAssetDependentControls(
-                                                view, selectedNetwork, accounts,
-                                                new HashMap<String, Double>(), tokenList,
-                                                new HashMap<String, Double>(),
-                                                new HashMap<String, HashMap<String, Double>>(),
-                                                mSolanaEstimatedTxFee);
+        if (JavaUtils.anyNull(mWalletModel)) return;
+        mTxNetwork = mWalletModel.getNetworkModel().getNetwork(mTxInfo.chainId);
+        networkName.setText(mTxNetwork.chainName);
+        keyringService.getAllAccounts(
+                allAccounts -> {
+                    AccountInfo[] accounts = AssetUtils.filterAccountsByNetwork(
+                            allAccounts.accounts, mTxNetwork.coin, mTxNetwork.chainId);
 
-                                        // Get tokens involved in this transaction
-                                        List<BlockchainToken> tokens = new ArrayList<>();
-                                        tokens.add(Utils.makeNetworkAsset(
-                                                selectedNetwork)); // Always add native asset
-                                        if (parsedTx.getIsSwap()) {
-                                            tokens.add(parsedTx.getSellToken());
-                                            tokens.add(parsedTx.getBuyToken());
-                                        } else if (parsedTx.getToken() != null)
-                                            tokens.add(parsedTx.getToken());
-                                        BlockchainToken[] filterByTokens =
-                                                tokens.toArray(new BlockchainToken[0]);
+                    AccountInfo txAccountInfo = Utils.findAccount(accounts, mTxInfo.fromAccountId);
+                    if (txAccountInfo == null) {
+                        return;
+                    }
 
-                                        if (mWalletModel == null) return;
-                                        LiveDataUtil.observeOnce(mWalletModel.getCryptoModel()
-                                                                         .getNetworkModel()
-                                                                         .mCryptoNetworks,
-                                                allNetworks -> {
-                                                    Utils.getTxExtraInfo(
-                                                            new WeakReference<>(
-                                                                    (BraveWalletBaseActivity)
-                                                                            getActivity()),
-                                                            TokenUtils.TokenType.ALL, allNetworks,
-                                                            selectedNetwork, accounts,
-                                                            filterByTokens, false,
-                                                            (assetPrices, fullTokenList,
-                                                                    nativeAssetsBalances,
-                                                                    blockchainTokensBalances) -> {
-                                                                if (!canUpdateUi()) return;
-                                                                fillAssetDependentControls(view,
-                                                                        selectedNetwork, accounts,
-                                                                        assetPrices, fullTokenList,
-                                                                        nativeAssetsBalances,
-                                                                        blockchainTokensBalances,
-                                                                        mSolanaEstimatedTxFee);
-                                                            });
-                                                });
-                                    });
+                    ImageView icon = (ImageView) view.findViewById(R.id.account_picture);
+                    Utils.setBlockiesBitmapResourceFromAccount(
+                            mExecutor, mHandler, icon, txAccountInfo, true);
+
+                    // First fill in data that does not require remote queries
+                    TokenUtils.getAllTokensFiltered(getBraveWalletService(),
+                            getBlockchainRegistry(), mTxNetwork, mTxNetwork.coin,
+                            TokenUtils.TokenType.ALL, tokenList -> {
+                                SolanaTransactionsGasHelper solanaTransactionsGasHelper =
+                                        new SolanaTransactionsGasHelper(
+                                                (BraveWalletBaseActivity) getActivity(),
+                                                new TransactionInfo[] {mTxInfo});
+                                solanaTransactionsGasHelper.maybeGetSolanaGasEstimations(() -> {
+                                    HashMap<String, Long> perTxFee =
+                                            solanaTransactionsGasHelper.getPerTxFee();
+                                    if (perTxFee.get(mTxInfo.id) != null) {
+                                        mSolanaEstimatedTxFee = perTxFee.get(mTxInfo.id);
+                                    }
+                                    if (!canUpdateUi()) return;
+                                    ParsedTransaction parsedTx = fillAssetDependentControls(view,
+                                            mTxNetwork, txAccountInfo, accounts,
+                                            new HashMap<String, Double>(), tokenList,
+                                            new HashMap<String, Double>(),
+                                            new HashMap<String, HashMap<String, Double>>(),
+                                            mSolanaEstimatedTxFee);
+
+                                    // Get tokens involved in this transaction
+                                    List<BlockchainToken> tokens = new ArrayList<>();
+                                    tokens.add(Utils.makeNetworkAsset(
+                                            mTxNetwork)); // Always add native asset
+                                    if (parsedTx.getIsSwap()) {
+                                        tokens.add(parsedTx.getSellToken());
+                                        tokens.add(parsedTx.getBuyToken());
+                                    } else if (parsedTx.getToken() != null)
+                                        tokens.add(parsedTx.getToken());
+                                    BlockchainToken[] filterByTokens =
+                                            tokens.toArray(new BlockchainToken[0]);
+
+                                    fetchTxBalanceAndUpdateUi(view, mTxNetwork, txAccountInfo,
+                                            accounts, filterByTokens);
                                 });
-                    });
-        });
-        ImageView icon = (ImageView) view.findViewById(R.id.account_picture);
-        Utils.setBlockiesBitmapResource(mExecutor, mHandler, icon, mTxInfo.fromAddress, true);
+                            });
+                });
         Button reject = view.findViewById(R.id.reject);
         reject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -379,8 +363,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         if (mTxInfo.originInfo != null && URLUtil.isValidUrl(mTxInfo.originInfo.originSpec)) {
             TextView domain = view.findViewById(R.id.domain);
             domain.setVisibility(View.VISIBLE);
-            domain.setText(Utils.geteTLD(
-                    new GURL(mTxInfo.originInfo.originSpec), mTxInfo.originInfo.eTldPlusOne));
+            domain.setText(Utils.geteTldSpanned(mTxInfo.originInfo));
         }
     }
 
@@ -391,17 +374,36 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         }
     }
 
+    private void fetchTxBalanceAndUpdateUi(View view, NetworkInfo txNetwork,
+            AccountInfo txAccountInfo, AccountInfo[] accounts, BlockchainToken[] filterByTokens) {
+        if (mWalletModel == null) return;
+        LiveDataUtil.observeOnce(
+                mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks, allNetworks -> {
+                    Utils.getTxExtraInfo(
+                            new WeakReference<>((BraveWalletBaseActivity) getActivity()),
+                            TokenUtils.TokenType.ALL, allNetworks, txNetwork, accounts,
+                            filterByTokens, false,
+                            (assetPrices, fullTokenList, nativeAssetsBalances,
+                                    blockchainTokensBalances) -> {
+                                if (!canUpdateUi()) return;
+                                fillAssetDependentControls(view, txNetwork, txAccountInfo, accounts,
+                                        assetPrices, fullTokenList, nativeAssetsBalances,
+                                        blockchainTokensBalances, mSolanaEstimatedTxFee);
+                            });
+                });
+    }
+
     private void refreshListContentUi() {
         mRejectAllTx.setText(getString(
                 R.string.brave_wallet_queue_reject_all, String.valueOf(mTransactionInfos.size())));
     }
 
-    private ParsedTransaction fillAssetDependentControls(View view, NetworkInfo selectedNetwork,
-            AccountInfo[] accounts, HashMap<String, Double> assetPrices,
+    private ParsedTransaction fillAssetDependentControls(View view, NetworkInfo txNetwork,
+            AccountInfo txAccountInfo, AccountInfo[] accounts, HashMap<String, Double> assetPrices,
             BlockchainToken[] fullTokenList, HashMap<String, Double> nativeAssetsBalances,
             HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
             long solanaEstimatedTxFee) {
-        ParsedTransaction parsedTx = ParsedTransaction.parseTransaction(mTxInfo, selectedNetwork,
+        ParsedTransaction parsedTx = ParsedTransaction.parseTransaction(mTxInfo, txNetwork,
                 accounts, assetPrices, solanaEstimatedTxFee, fullTokenList, nativeAssetsBalances,
                 blockchainTokensBalances);
         TextView txType = view.findViewById(R.id.tx_type);
@@ -441,24 +443,24 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             String recipient =
                     TextUtils.isEmpty(parsedTx.getRecipient()) ? "..." : parsedTx.getRecipient();
             fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
-                    mAccountName, parsedTx.getSender(), "->", recipient));
+                    txAccountInfo.name, parsedTx.getSender(), "->", recipient));
         } else {
             fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
-                    mAccountName, parsedTx.getSender(), "", ""));
+                    txAccountInfo.name, parsedTx.getSender(), "", ""));
         }
-        setupPager(view, selectedNetwork, accounts, assetPrices, fullTokenList,
-                nativeAssetsBalances, blockchainTokensBalances);
+        setupPager(view, txNetwork, accounts, assetPrices, fullTokenList, nativeAssetsBalances,
+                blockchainTokensBalances);
         return parsedTx;
     }
 
-    private void setupPager(View view, NetworkInfo selectedNetwork, AccountInfo[] accounts,
+    private void setupPager(View view, NetworkInfo txNetwork, AccountInfo[] accounts,
             HashMap<String, Double> assetPrices, BlockchainToken[] fullTokenList,
             HashMap<String, Double> nativeAssetsBalances,
             HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
         ViewPager viewPager = view.findViewById(R.id.navigation_view_pager);
         ApproveTxFragmentPageAdapter adapter = new ApproveTxFragmentPageAdapter(
-                getChildFragmentManager(), mTxInfo, selectedNetwork, accounts, assetPrices,
-                fullTokenList, nativeAssetsBalances, blockchainTokensBalances, getActivity(),
+                getChildFragmentManager(), mTxInfo, txNetwork, accounts, assetPrices, fullTokenList,
+                nativeAssetsBalances, blockchainTokensBalances, getActivity(),
                 mTransactionConfirmationListener == null, mSolanaEstimatedTxFee);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
@@ -526,18 +528,15 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                 && !(mCoinType == CoinType.FIL && mTxInfo.txType == TransactionType.OTHER)) {
             return;
         }
-        JsonRpcService jsonRpcService = getJsonRpcService();
         BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-        assert jsonRpcService != null && braveWalletP3A != null;
+        assert braveWalletP3A != null;
 
-        jsonRpcService.getNetwork(mCoinType, null, selectedNetwork -> {
-            boolean countTestNetworks = CommandLine.getInstance().hasSwitch(
-                    BraveWalletConstants.P3A_COUNT_TEST_NETWORKS_SWITCH);
-            if (countTestNetworks
-                    || !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(selectedNetwork.chainId)) {
-                braveWalletP3A.reportTransactionSent(mCoinType, true);
-            }
-        });
+        boolean countTestNetworks = CommandLine.getInstance().hasSwitch(
+                BraveWalletConstants.P3A_COUNT_TEST_NETWORKS_SWITCH);
+        if (countTestNetworks
+                || !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(mTxNetwork.chainId)) {
+            braveWalletP3A.reportTransactionSent(mCoinType, true);
+        }
     }
 
     private boolean canUpdateUi() {

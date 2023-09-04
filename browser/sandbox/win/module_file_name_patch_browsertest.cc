@@ -6,15 +6,16 @@
 #include <string>
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/sandbox/win/src/module_file_name_interception.h"
 #include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
+#include "sandbox/policy/features.h"
 
 // This header is private to //content/browser and can be used only from
 // content_browser_tests, but we don't have such target, so we workaround it
 // with `nogncheck`.
 #include "content/browser/gpu/gpu_process_host.h"  // nogncheck
+
+using sandbox::policy::features::kModuleFileNamePatch;
 
 namespace {
 
@@ -41,9 +42,9 @@ class ModuleFileNameBrowserTest : public InProcessBrowserTest,
  public:
   ModuleFileNameBrowserTest() {
     if (GetParam()) {
-      feature_list_.InitAndEnableFeature(sandbox::kModuleFileNamePatch);
+      feature_list_.InitAndEnableFeature(kModuleFileNamePatch);
     } else {
-      feature_list_.InitAndDisableFeature(sandbox::kModuleFileNamePatch);
+      feature_list_.InitAndDisableFeature(kModuleFileNamePatch);
     }
   }
 

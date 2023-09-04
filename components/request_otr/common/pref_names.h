@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_REQUEST_OTR_COMMON_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_REQUEST_OTR_COMMON_PREF_NAMES_H_
 
-namespace request_otr::prefs {
+namespace request_otr {
 
 // Action for Request Off-The-Record feature
 extern const char kRequestOTRActionOption[];
 
-}  // namespace request_otr::prefs
+}  // namespace request_otr
 
 #endif  // BRAVE_COMPONENTS_REQUEST_OTR_COMMON_PREF_NAMES_H_

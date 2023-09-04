@@ -16,6 +16,7 @@
 #include "brave/components/ipfs/ipfs_json_parser.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
 #include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/base/mime_util.h"
 #include "net/base/url_util.h"

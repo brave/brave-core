@@ -12,6 +12,10 @@ extern const char kMiscMetricsMenuDismissStorage[];
 extern const char kMiscMetricsMenuGroupActionCounts[];
 extern const char kMiscMetricsMenuShownStorage[];
 extern const char kMiscMetricsPagesLoadedCount[];
+extern const char kMiscMetricsPrivacyHubViews[];
+extern const char kMiscMetricsOpenTabsStorage[];
+extern const char kMiscMetricsGroupTabsStorage[];
+extern const char kMiscMetricsPinnedTabsStorage[];
 }  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_

@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import org.chromium.chrome.browser.BraveHelper;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 
 /**

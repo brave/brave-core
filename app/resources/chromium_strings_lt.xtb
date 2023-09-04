@@ -10,12 +10,15 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="5918095577778020936">„Brave“ nori eksportuoti jūsų slaptažodžius. Įveskite „Windows“ slaptažodį, kad tai leistumėte.</translation>
 <translation id="5468853758063275923">„Brave“ yra numatytoji naršyklė</translation>
 <translation id="8522292744959221145">Jei norite patikrinti, ar slaptažodžiai apsaugoti nuo duomenų saugos pažeidimų bei kitų saugos problemų, <ph name="BEGIN_LINK"/>prisijunkite prie „Brave“<ph name="END_LINK"/>.</translation>
+<translation id="2627788872035182013">Spustelėkite „Brave“ meniu</translation>
+<translation id="8468770846533807490">{NUM_DEVICES,plural, =0{„Brave“ plėtiniai pasiekė ŽSĮ įrenginius}=1{„Brave“ plėtiniai pasiekia ŽSĮ įrenginius}one{„Brave“ plėtiniai pasiekia # ŽSĮ įrenginį}few{„Brave“ plėtiniai pasiekia # ŽSĮ įrenginius}many{„Brave“ plėtiniai pasiekia # ŽSĮ įrenginio}other{„Brave“ plėtiniai pasiekia # ŽSĮ įrenginių}}</translation>
 <translation id="8541922081612557424">Apie „Brave“</translation>
-<translation id="3528799424770515097">{COUNT,plural, =1{Administratorius automatiškai uždaro „Brave“, kai nenaudojama vieną minutę. Naršymo duomenys ištrinami. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai.}one{Administratorius automatiškai uždaro „Brave“, kai nenaudojama # minutę. Naršymo duomenys ištrinami. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai.}few{Administratorius automatiškai uždaro „Brave“, kai nenaudojama # minutes. Naršymo duomenys ištrinami. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai.}many{Administratorius automatiškai uždaro „Brave“, kai nenaudojama # minutės. Naršymo duomenys ištrinami. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai.}other{Administratorius automatiškai uždaro „Brave“, kai nenaudojama # minučių. Naršymo duomenys ištrinami. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai.}}</translation>
 <translation id="1203500561924088507">Dėkojame už diegimą. Turite iš naujo paleisti naršyklę, prieš naudodami „<ph name="BUNDLE_NAME"/>“.</translation>
 <translation id="4658574652223735641">Atminties taupymo priemonė paspartino „Brave“</translation>
+<translation id="8799570501820813406">Kol šis skirtukas buvo neaktyvus, atmintis buvo atlaisvinta, kad „Brave“ veiktų sparčiai. Galite pasirinkti visada išskirti šią svetainę, kad būtų aktyvi.</translation>
 <translation id="4798342026247191171">Nustatykite naują „Brave“ profilį</translation>
 <translation id="8132634101975074716">Esate prisijungę prie „Brave“.</translation>
+<translation id="1586284627848250203">Gauti pagalbos dėl „Brave for Testing“</translation>
 <translation id="5147525139567260139">„Brave“ skirtuko bendrinimas</translation>
 <translation id="1530633922026945685">„Brave“ reikia leidimo naudoti fotoaparatą jūsų aplinkos 3D žemėlapiui kurti</translation>
 <translation id="4449148723378534338">Peržiūrėkite pagrindinius privatumo ir saugos valdiklius naršyklėje „Brave“</translation>
@@ -50,9 +53,11 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="8418845734693287262">„Brave“ OS nepavyko sinchronizuoti duomenų, nes išsami paskyros prisijungimo informacija pasenusi.</translation>
 <translation id="2576129394594491151">Plėtinys „<ph name="EXTENSION_NAME"/>“ pakeitė, kuris puslapis rodomas paleidus „Brave“.</translation>
 <translation id="1248225940185478633">„Brave“ reikalingi fotoaparato ir mikrofono leidimai šioje svetainėje</translation>
+<translation id="2451727308784734061">Naudodami šaukinį galite greitai pasiekti Slaptažodžių tvarkyklę. Šaukinį galite perkelti į kompiuterio pagrindinį ekraną ar programų paleidimo priemonę.</translation>
 <translation id="6381750314821942592">„Brave“ netrukus bus uždaryta</translation>
 <translation id="6078442581074612226">Naudojant „Brave“</translation>
 <translation id="2485422356828889247">Pašalinti</translation>
+<translation id="70183448213529602">„Brave“ bando pakeisti esamus slaptažodžius. Įveskite „Windows“ slaptažodį, kad tai leistumėte.</translation>
 <translation id="7798069806040634998">„Brave“ reikia prieigos prie saugyklos, kad būtų galima atsisiųsti failus</translation>
 <translation id="8447483940522230788">„Brave“ pagalbos priemonė</translation>
 <translation id="7291143854620707672">Visus „Brave“ duomenis, sugeneruotus naudojant šį profilį (pvz., sukurtas žymes, istoriją, slaptažodžius ir kitus nustatymus), gali pašalinti darbo profilio administratorius. <ph name="LEARN_MORE"/></translation>
@@ -64,6 +69,7 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="6791166902140255175">„Brave“ skirtukas</translation>
 <translation id="8372880274820509128">Kad būtų papildomai užtikrintas saugumas, „Brave“ užšifruos jūsų duomenis.</translation>
 <translation id="2770231113462710648">Pakeisti numatytąją naršyklę į:</translation>
+<translation id="1187986649024576560">Šiame plėtinyje yra kenkėjiškų programų ir jis nesaugus. Pašalinkite jį iš „Brave“, kad jis nebematytų ir negalėtų pakeisti jūsų duomenų svetainėse, kuriose lankotės, įskaitant jūsų asmens informaciją.</translation>
 <translation id="2799223571221894425">Paleisti iš naujo</translation>
 <translation id="3783547330001921298">Bus sukurtas naujas <ph name="USER_EMAIL_ADDRESS"/> „Brave“ profilis</translation>
 <translation id="777113543093865885">Pašalinti iš „Brave“...</translation>
@@ -74,7 +80,6 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="2928420929544864228">Diegimas baigtas.</translation>
 <translation id="8208853227947884571">„Brave“ naujausios versijos</translation>
 <translation id="5122472867956731189">Jei svetainė bando pavogti slaptažodį ar atsisiuntėte žalingą failą, „Brave“ taip pat gali siųsti URL, įskaitant puslapio turinio dalis, Saugaus naršymo funkcijai</translation>
-<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{„Brave“ prijungta prie HID įrenginio}one{„Brave“ prijungta prie HID įrenginių}few{„Brave“ prijungta prie HID įrenginių}many{„Brave“ prijungta prie HID įrenginių}other{„Brave“ prijungta prie HID įrenginių}}</translation>
 <translation id="8755404239607088219">„Brave“ negali patikrinti jūsų slaptažodžių. Vėliau bandykite dar kartą.</translation>
 <translation id="8880183781256147665">Pridedama prie „Brave“...</translation>
 <translation id="3038232873781883849">Laukiama, kol bus įdiegta...</translation>
@@ -88,7 +93,6 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="2585240446624043880">„Brave“ negali skaityti ir rašyti į duomenų katalogą:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
-<translation id="6823651909636163674">Šis vadovas padės suprasti savo pasirinkimus, kad „Brave“ veiktų taip, kaip norite</translation>
 <translation id="2423637317249323944">„Brave“ versija <ph name="PRODUCT_VERSION"/> įdiegta</translation>
 <translation id="3286538390144397061">Paleisti iš naujo dabar</translation>
 <translation id="2339258256897053758">Trūksta „Brave“ API raktų. Bus išjungtos kai kurios „Brave“ funkcijos.</translation>
@@ -123,10 +127,13 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="2337217774418822704">Jūsų paskyrą tvarko <ph name="MANAGER_NAME"/>. Jūsų administratorius gali matyti ir redaguoti šį „Brave“ naršyklės profilį bei jo duomenis, pvz., žymes, istoriją ir slaptažodžius.</translation>
 <translation id="8090497651549769448">„Brave“ bando kopijuoti slaptažodžius. Įveskite „Windows“ slaptažodį, kad tai leistumėte.</translation>
 <translation id="7133557675784723900">„Brave“ rekomenduoja nuskaityti šį failą, nes jis gali būti pavojingas</translation>
+<translation id="1311808042904310985">Apie &amp;„Brave for Testing“</translation>
 <translation id="1152920704813762236">Apie „Brave“ OS</translation>
 <translation id="3703994572283698466">„Brave“ OS, kaip ir <ph name="BEGIN_LINK_LINUX_OSS"/>„Linux“ kūrimo aplinka<ph name="END_LINK_LINUX_OSS"/>, pasiekiama naudojant papildomą <ph name="BEGIN_LINK_CROS_OSS"/>atvirojo šaltinio programinę įrangą<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="6056473803837713617">Padėkite tobulinti „Brave“ pateikę ataskaitą apie <ph name="BEGIN_LINK"/>dabartinius nustatymus<ph name="END_LINK"/>.</translation>
 <translation id="4050175100176540509">Naujausios versijos programoje įdiegti svarbūs saugos patobulinimai ir pasiekiamos naujos funkcijos.</translation>
+<translation id="4055805654398742145">Slaptažodžių tvarkyklė</translation>
+<translation id="6217792792122501564">{COUNT,plural, =1{Organizacija automatiškai uždaro „Brave“, kai nenaudojama vieną minutę. Naršymo duomenys ištrinami. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai.}one{Organizacija automatiškai uždaro „Brave“, kai nenaudojama # minutę. Naršymo duomenys ištrinami. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai.}few{Organizacija automatiškai uždaro „Brave“, kai nenaudojama # minutes. Naršymo duomenys ištrinami. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai.}many{Organizacija automatiškai uždaro „Brave“, kai nenaudojama # minutės. Naršymo duomenys ištrinami. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai.}other{Organizacija automatiškai uždaro „Brave“, kai nenaudojama # minučių. Naršymo duomenys ištrinami. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai.}}</translation>
 <translation id="4148957013307229264">Diegiama...</translation>
 <translation id="4658486203392098459">„<ph name="PAGE_TITLE"/>“ – prisijungimas prie tinklo – „Brave“</translation>
 <translation id="2871190378186459992">Atraskite puikių „Brave“ programų, žaidimų, plėtinių ir temų.</translation>
@@ -142,6 +149,7 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="4065288863231444640">„Brave“ leidimas fone</translation>
 <translation id="8148611988012584308">Tinkinkite ir valdykite „Brave“</translation>
 <translation id="4427306783828095590">Naudojant sustiprintą apsaugą pasitelkiama papildomų priemonių sukčiavimui ir kenkėjiškoms programoms užblokuoti</translation>
+<translation id="6786534271003695094">Apie „Brave for Testing“</translation>
 <translation id="7084397798469173252">Sveiki, tai – „Brave“; atidarytas naujas naršyklės langas</translation>
 <translation id="2633397153656205379">Nepavyko atnaujinti „Brave“, įvyko klaida. <ph name="BEGIN_LINK"/>Pašalinkite „Brave“ naujinimo problemas ir naujinių klaidas.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Tęsti naudojant naują „Brave“ profilį?</translation>
@@ -161,11 +169,11 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="215320507915280336">Naudojamas tas pats rašybos tikrinimas kaip ir „Brave“ paieškoje. Tekstas, kurį įvedate naršyklėje, nusiunčiamas „Brave“. Šį veikimą visada galite pakeisti nustatymuose.</translation>
 <translation id="1912973375560256099">„Brave“ skirta taisyklė, pagal kurią leidžiamas mDNS srautas.</translation>
 <translation id="711601904575862069">Paleisti iš naujo atnaujinant „&amp;Brave“</translation>
+<translation id="2778869200975718483">{COUNT,plural, =1{Jūsų organizacija automatiškai ištrina naršymo duomenis, kai „Brave“ nenaudojama vieną minutę. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai. Esami skirtukai liks atidaryti.}one{Jūsų organizacija automatiškai ištrina naršymo duomenis, kai „Brave“ nenaudojama # minutę. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai. Esami skirtukai liks atidaryti.}few{Jūsų organizacija automatiškai ištrina naršymo duomenis, kai „Brave“ nenaudojama # minutes. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai. Esami skirtukai liks atidaryti.}many{Jūsų organizacija automatiškai ištrina naršymo duomenis, kai „Brave“ nenaudojama # minutės. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai. Esami skirtukai liks atidaryti.}other{Jūsų organizacija automatiškai ištrina naršymo duomenis, kai „Brave“ nenaudojama # minučių. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai. Esami skirtukai liks atidaryti.}}</translation>
 <translation id="8797356639448065696">„Brave“ veikia fono režimu.</translation>
 <translation id="7406627712452599344">Svečiai gali naudoti „Brave“ nepalikdami jokių duomenų.</translation>
 <translation id="5952898964075639679">Pridėkite save prie „Brave“</translation>
 <translation id="8112581848375017126">„Brave“ tyrinėja naujas funkcijas, leidžiančias svetainėms teikti tas pačias naršymo funkcijas, naudojant mažiau jūsų informacijos</translation>
-<translation id="101136574863710793">{COUNT,plural, =1{Administratorius automatiškai uždaro „Brave“, kai nenaudojama vieną minutę.}one{Administratorius automatiškai uždaro „Brave“, kai nenaudojama # minutę.}few{Administratorius automatiškai uždaro „Brave“, kai nenaudojama # minutes.}many{Administratorius automatiškai uždaro „Brave“, kai nenaudojama # minutės.}other{Administratorius automatiškai uždaro „Brave“, kai nenaudojama # minučių.}}</translation>
 <translation id="9078804073692109646">Nėra išsaugotų slaptažodžių. „Brave“ gali tikrinti jūsų slaptažodžius, kai juos išsaugote.</translation>
 <translation id="729580998737807583">Naudotojas (<ph name="EXISTING_USER"/>) jau yra prisijungęs prie šio „Brave“ profilio. Bus sukurtas naujas <ph name="USER_EMAIL_ADDRESS"/> „Brave“ profilis</translation>
 <translation id="8586264863973514035">Norėdami pritaikyti pakeitimus, paleiskite „Brave“ iš naujo</translation>
@@ -195,6 +203,7 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="5924017743176219022">Prisijungiama prie interneto...</translation>
 <translation id="5941711191222866238">Sumažinti</translation>
 <translation id="3613110494561632737">Jei „Brave“ atsitiktinai parenka jus naudoti bandomąją versiją, jūsų naršymo istorija lemia, kokius skelbimus matysite ir kokie jūsų pomėgiai bus numatomi toliau. Siekiant apsaugoti privatumą, „Brave“ reguliariai kiekvieną mėnesį ištrina jūsų pomėgius. Pomėgiai atnaujinami, kol jų nepašalinate.</translation>
+<translation id="4357808717322635817">{COUNT,plural, =1{Organizacija automatiškai uždaro „Brave“, kai nenaudojama vieną minutę.}one{Organizacija automatiškai uždaro „Brave“, kai nenaudojama # minutę.}few{Organizacija automatiškai uždaro „Brave“, kai nenaudojama # minutes.}many{Organizacija automatiškai uždaro „Brave“, kai nenaudojama # minutės.}other{Organizacija automatiškai uždaro „Brave“, kai nenaudojama # minučių.}}</translation>
 <translation id="3598551856834560515">Atnaujinkite „Brave“, kad galėtumėte pradėti sinchronizuoti</translation>
 <translation id="5225261774087485064">Įprasta, kad svetainės, kuriose lankotės, įsimena, kuo domitės, kad galėtų suasmeninti jūsų patirtį. Svetainėse taip pat gali būti renkama su „Brave“ susijusi informacija apie jūsų pomėgius.</translation>
 <translation id="6003112304606738118">Atsisiunčiama… Liko <ph name="HOURS"/> val.</translation>
@@ -229,15 +238,18 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="6327105987658262776">Naujini nėra.</translation>
 <translation id="1819119299840995223">Vykdoma kita „Brave“ operacija. Vėliau bandykite dar kartą.</translation>
 <translation id="8616874628011103667">Dabar galite lengviau naudoti „Brave“ naudodami „Brave“ paskyrą ir bendrinamus kompiuterius.</translation>
-<translation id="6365489425007284765">{COUNT,plural, =1{Administratorius automatiškai ištrina naršymo duomenis, kai „Brave“ nenaudojama vieną minutę. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai. Esami skirtukai liks atidaryti.}one{Administratorius automatiškai ištrina naršymo duomenis, kai „Brave“ nenaudojama # minutę. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai. Esami skirtukai liks atidaryti.}few{Administratorius automatiškai ištrina naršymo duomenis, kai „Brave“ nenaudojama # minutes. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai. Esami skirtukai liks atidaryti.}many{Administratorius automatiškai ištrina naršymo duomenis, kai „Brave“ nenaudojama # minutės. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai. Esami skirtukai liks atidaryti.}other{Administratorius automatiškai ištrina naršymo duomenis, kai „Brave“ nenaudojama # minučių. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai. Esami skirtukai liks atidaryti.}}</translation>
 <translation id="335632367599648646">Ar tikrai norite pašalinti „Brave"?</translation>
+<translation id="6375219077595103062">Šaukinio pridėjimas prie Slaptažodžių tvarkyklės</translation>
 <translation id="4867486350347355096"><ph name="BEGIN_BOLD"/>Kaip naudojame šiuos duomenis:<ph name="END_BOLD"/> „Brave“ gali numatyti jūsų pomėgius. Vėliau svetainė, kurioje lankotės, gali paprašyti „Brave“ peržiūrėti jūsų pomėgius, kad galėtų suasmeninti jūsų matomus skelbimus.</translation>
 <translation id="6373767849825830651">„Brave“ – tai žiniatinklio naršyklė, kurią naudojant akimirksniu paleidžiami tinklalapiai ir programos. Ji greita, stabili ir lengvai naudojama. Saugiau naršykite žiniatinklį naudodami į „Brave“ integruotą apsaugą nuo kenkėjiškų programų ir sukčiavimo.</translation>
 <translation id="2139300032719313227">„Brave“ OS paleidimas iš naujo</translation>
 <translation id="1684121725014454063">Sveiki, tai – „Brave“ profiliai</translation>
 <translation id="2675662665675552980">Ji taip pat kontroliuoja, koks puslapis rodomas, kai paleidžiate „Brave“.</translation>
+<translation id="648319183876919572">Sustiprinto saugaus naršymo funkcija padeda apsaugoti jus nuo pavojingų svetainių ir atsisiuntimų</translation>
 <translation id="5590013613412457132">Pašalinti „Brave“</translation>
+<translation id="3617744907966785605">Organizacija uždaro „Brave“, kai ji nenaudojama <ph name="TIMEOUT_DURATION"/>. Naršymo duomenys ištrinti. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai.</translation>
 <translation id="8646609321956191980">Kiekviename profilyje saugoma atskira „Brave“ informacija, pvz., žymės, istorija, slaptažodžiai ir kt.</translation>
+<translation id="2535436634051789953">Galite perjungti, kad matytumėte slaptažodžius iš kito „Brave“ profilio</translation>
 <translation id="2312399718665761438">Kad ištaisytų rašybos klaidas, „Brave“ siunčia „Brave“ tekstą, kurį įvedate teksto laukuose</translation>
 <translation id="3507835409099344374">Eiti į „Brave“ pranešimų nustatymus</translation>
 <translation id="9156965752763025780">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“.</translation>
@@ -272,6 +284,7 @@ Kai kurios funkcijos gali būti nepasiekiamos. Nurodykite kitą profilio katalog
 <translation id="7025789849649390912">Diegimas sustabdytas.</translation>
 <translation id="1705567146636171298">Atnaujinti „Brave“</translation>
 <translation id="5499063270485366718">Jei nebus naudingo vaizdo aprašo, „Brave“ bandys jums jį pateikti. Kad būtų galima kurti aprašus, vaizdai siunčiami į sistemą „Brave“.</translation>
+<translation id="2332301637111071062">Organizacija ištrina „Brave“ duomenis, kai jie nenaudojami <ph name="TIMEOUT_DURATION"/>. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai.</translation>
 <translation id="1008530050039597147">„Brave“ reikalingas fotoaparato leidimas šioje svetainėje</translation>
 <translation id="1197672524850678392">Nepavyko paleisti „Brave“. Bandykite dar kartą.</translation>
 <translation id="3405035915691517126">„Brave“ negali patikrinti jūsų slaptažodžių. Bandykite dar kartą po 24 val.</translation>
@@ -282,7 +295,6 @@ Kai kurios funkcijos gali būti nepasiekiamos. Nurodykite kitą profilio katalog
 <translation id="3403365884036456766">Nuostatų failas sugadintas ar netinkamas.
 
 „Brave“ negali atkurti nustatymų.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="7339898014177206373">Naujas langas</translation>
 <translation id="3511996232906761537">Čia saugoma žiniatinklio informacija, žymės ir kiti „Brave“ duomenys.</translation>
 <translation id="5380963249588143069">Sistemos administratorius sukonfigūravo „Brave“ atidaryti naršyklę „<ph name="ALTERNATIVE_BROWSER_NAME"/>“, norint pasiekti <ph name="TARGET_URL_HOSTNAME"/>.</translation>
@@ -324,11 +336,13 @@ Kai kurios funkcijos gali būti nepasiekiamos. Nurodykite kitą profilio katalog
 <translation id="8207657266087451193">Jei nebus naudingo vaizdo aprašo, „Brave“ bandys jums jį pateikti. Kad būtų galima kurti aprašus, vaizdai siunčiami į sistemą „Brave“. Šią parinktį galite bet kada išjungti skiltyje „Nustatymai“.</translation>
 <translation id="8622246347342688645">„Brave“ negali patikrinti jūsų slaptažodžių, nes esate neprisijungę</translation>
 <translation id="89367911614620585">Šis failas gali būti pavojingas, todėl „Brave“ jį užblokavo.</translation>
+<translation id="6098476632210317894">Organizacija uždaro „Brave“, kai ji nenaudojama <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="5196445203969439095">Nuveikite daugiau su „Brave“</translation>
 <translation id="3360368475735266712">Prisijunkite, kad galėtumėte sinchronizuoti ir suasmeninti „Brave“ skirtinguose įrenginiuose</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> anksčiau naudojo „Brave“</translation>
 <translation id="3098618823450433881">Jei norite pasiekti „Brave“ naršyklės duomenis visuose savo įrenginiuose, prisijunkite ir įjunkite sinchronizavimą</translation>
 <translation id="2569754604093464025">Jei norite gauti būsimus „Brave“ naujinius, jums reikės 10 ar naujesnės versijos „Windows“. Šiame kompiuteryje naudojama 8 versijos „Windows“.</translation>
+<translation id="8577108764439626300">Kūrėjas anuliavo šio plėtinio paskelbimą ir gali būti nesaugus. Pašalinkite jį iš „Brave“, kad jis nebematytų ir negalėtų pakeisti jūsų duomenų svetainėse, kuriose lankotės, įskaitant jūsų asmens informaciją.</translation>
 <translation id="5337999052834672687">{0,plural, =1{„Brave“ paleidimas iš naujo po dienos}one{„Brave“ paleidimas iš naujo po # dienos}few{„Brave“ paleidimas iš naujo po # dienų}many{„Brave“ paleidimas iš naujo po # dienos}other{„Brave“ paleidimas iš naujo po # dienų}}</translation>
 <translation id="6914496861676471566">Diegimo programos archyvas sugadintas arba negalioja. Atsisiųskite „Brave“ dar kartą.</translation>
 <translation id="4378573854226202617">Kad būtų galima naudoti „Brave“, reikalinga 10 ar naujesnės versijos „Windows“.</translation>
@@ -341,9 +355,12 @@ Kai kurios funkcijos gali būti nepasiekiamos. Nurodykite kitą profilio katalog
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Kaip naudojame šiuos duomenis:<ph name="END_BOLD"/> svetainėse gali būti renkama su „Brave“ susijusi informacija apie jūsų pomėgius. Pavyzdžiui, jei apsilankote svetainėje norėdami įsigyti batelius maratonui, svetainė gali prie jūsų pomėgių prisikirti maratonų bėgimą. Vėliau, apsilankius kitoje svetainėje norint užsiregistruoti į lenktynes, atsižvelgiant į jūsų pomėgius joje galės būti rodomas bėgimo batelių skelbimas.</translation>
 <translation id="3052349005266761501">Pristatoma „Brave“...</translation>
 <translation id="6283840329609797763">Nepavyko įdiegti dėl nenurodytos klaidos. Atsisiųskite „Brave“ dar kartą.</translation>
+<translation id="5128665650717824082">„Brave for Testing“ negali būti nustatyta kaip numatytoji naršyklė.</translation>
+<translation id="4668189655335212354">{NUM_DEVICES,plural, =0{„Brave“ plėtinys pasiekė ŽSĮ įrenginius}=1{„Brave“ plėtinys pasiekia vieną ŽSĮ įrenginį}one{„Brave“ plėtinys pasiekia # ŽSĮ įrenginį}few{„Brave“ plėtinys pasiekia # ŽSĮ įrenginius}many{„Brave“ plėtinys pasiekia # ŽSĮ įrenginio}other{„Brave“ plėtinys pasiekia # ŽSĮ įrenginių}}</translation>
 <translation id="2433912322225810055">Ji taip pat kontroliuoja, koks puslapis rodomas, kai paleidžiate „Brave“ arba ieškote „Omnibox“.</translation>
 <translation id="4100716194836114130">Tai jūsų „Brave“</translation>
 <translation id="4831743161813926460">„Brave“ reikia leidimo, kad galėtų naudoti fotoaparatą ir mikrofoną šioje svetainėje</translation>
+<translation id="8826492472752484139">Spustelėkite „Slaptažodžių tvarkyklė“</translation>
 <translation id="6933858244219479645">„Brave“ OS sistema</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Kokie duomenys naudojami:<ph name="END_BOLD"/> jūsų naršymo istorija, svetainių, kuriose lankėtės naudodami „Brave“ šiame įrenginyje, įrašas.</translation>
 <translation id="8862326446509486874">Neturite reikiamų teisių sistemai įdiegti. Pamėginkite įdiegimo priemonę dar kartą paleisti kaip administratorius.</translation>
@@ -356,6 +373,7 @@ Kai kurios funkcijos gali būti nepasiekiamos. Nurodykite kitą profilio katalog
 <translation id="8986207147630327271">Pridedate darbo profilį prie šios naršyklės ir suteikiate administratoriui teisę valdyti tik darbo profilį.</translation>
 <translation id="82609232232243542">Prisijungti prie „Brave“</translation>
 <translation id="3273774796888928550">Prisijunkite prie „Brave“. Jei prie paskyros norite prisijungti tik vieną kartą, galite <ph name="GUEST_LINK_BEGIN"/>naudoti įrenginį kaip svečias<ph name="GUEST_LINK_END"/>.</translation>
+<translation id="4561046754724442504">„Brave“ automatiškai uždaryta</translation>
 <translation id="5173820533850252773">„Brave“ versija yra pasenusi</translation>
 <translation id="310518206836658214">{0,plural, =1{„Brave“ bus paleista iš naujo po valandos}one{„Brave“ bus paleista iš naujo po # valandos}few{„Brave“ bus paleista iš naujo po # valandų}many{„Brave“ bus paleista iš naujo po # valandos}other{„Brave“ bus paleista iš naujo po # valandų}}</translation>
 <translation id="5190991181158966940">Jei norite gauti būsimus „Brave“ naujinius, jums reikės 10 ar naujesnės versijos „Windows“. Šiame kompiuteryje naudojama 8.1 versijos „Windows“.</translation>
@@ -368,7 +386,6 @@ Kai kurios funkcijos gali būti nepasiekiamos. Nurodykite kitą profilio katalog
 <translation id="296137235951584143">Suasmeninkite „Brave“</translation>
 <translation id="7977787072794666032">„Brave“ gali tinkamai neveikti, nes ji nebepalaikoma naudojant „Windows XP“ arba „Windows Vista“</translation>
 <translation id="8180288330711585962">Sertifikatai, kuriuos tvarko „Brave“</translation>
-<translation id="3050465115159165320">Išnaudokite visas „Brave“ galimybes</translation>
 <translation id="4484434718272972655">Kas naudoja „Brave“?</translation>
 <translation id="7173394303099002355">Patikimiausios „Brave“ saugos užtikrinimas</translation>
 <translation id="5775101967851558962">Visada išvalyti svetainių duomenis iš įrenginio uždarius „Brave“</translation>
@@ -379,6 +396,7 @@ Kai kurios funkcijos gali būti nepasiekiamos. Nurodykite kitą profilio katalog
 
 Šiai paskyrai gali būti taikomi leidimai, kuriuos jau davėte svetainėms ir programėlėms. Savo „Brave“ sinchronizavimo grandinę galite valdyti <ph name="SETTINGS_LINK_BEGIN"/>Nustatymai<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1743665722170667430">Plėtiniai, programos ir temos iš nežinomų šaltinių gali pakenkti jūsų įrenginiui. „Brave“ rekomenduoja juos įdiegti tik iš<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/></translation>
+<translation id="6184592406110188164">Šis plėtinys pažeidžia internetinės parduotuvės politiką ir gali būti nesaugus. Pašalinkite jį iš „Brave“, kad jis nebematytų ir negalėtų keisti jūsų duomenų lankomose svetainėse, įskaitant asmeninę informaciją.</translation>
 <translation id="1299765473362724475">Įspėjimas: „Brave“ negali neleisti plėtiniams įrašyti naršymo istorijos. Jei norite išjungti šį plėtinį inkognito režimu, panaikinkite šios parinkties pasirinkimą.</translation>
 <translation id="1448049584457347995">Kad „Brave“ padarytume saugesnę, išjungėme kai kuriuos plėtinius, kurių nėra „<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>“ sąraše ir kurie galėjo būti pridėti be jūsų žinios.</translation>
 <translation id="8848045066928358658">Kad „Brave“ būtų saugesnė, išjungėme toliau nurodytą plėtinį, kuris nepateiktas <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> sąraše ir tikriausiai buvo pridėtas be jūsų žinios.</translation>

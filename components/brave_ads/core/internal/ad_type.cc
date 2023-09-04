@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/ad_type.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
 
 #include "base/check.h"
+#include "base/debug/crash_logging.h"
 #include "base/notreached.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
 namespace brave_ads {
 
@@ -40,7 +41,8 @@ AdType::AdType(const std::string& value) {
   } else if (value == kSearchResultAdType) {
     value_ = kSearchResultAd;
   } else {
-    NOTREACHED_NORETURN();
+    SCOPED_CRASH_KEY_STRING32("AdType", "value", value);
+    NOTREACHED() << "Unexpected value for AdType: " << value;
   }
 }
 

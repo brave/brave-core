@@ -36,7 +36,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.components.browser_ui.settings.SearchUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;

@@ -15,7 +15,7 @@ export interface Props {
   size: 'big' | 'small'
 }
 
-function WithHideBalancePlaceholder (props: Props) {
+export function WithHideBalancePlaceholder (props: Props) {
   const {
     children,
     hideBalances,

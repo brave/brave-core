@@ -158,4 +158,9 @@ bool IsValidCommitmentString(const std::string& commitment) {
          commitment == "finalized";
 }
 
+bool IsValidEncodingString(const std::string& encoding) {
+  return encoding == "base58" || encoding == "base64" ||
+         encoding == "jsonParsed";
+}
+
 }  // namespace brave_wallet

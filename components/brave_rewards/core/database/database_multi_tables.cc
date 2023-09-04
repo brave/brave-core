@@ -9,16 +9,16 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/database/database_multi_tables.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_util.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 namespace database {
 
-DatabaseMultiTables::DatabaseMultiTables(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+DatabaseMultiTables::DatabaseMultiTables(RewardsEngineImpl& engine)
+    : engine_(engine) {}
 
 DatabaseMultiTables::~DatabaseMultiTables() = default;
 
@@ -29,7 +29,7 @@ void DatabaseMultiTables::GetTransactionReport(
   auto promotion_callback =
       std::bind(&DatabaseMultiTables::OnGetTransactionReportPromotion, this, _1,
                 month, year, callback);
-  ledger_->database()->GetAllPromotions(promotion_callback);
+  engine_->database()->GetAllPromotions(promotion_callback);
 }
 
 void DatabaseMultiTables::OnGetTransactionReportPromotion(

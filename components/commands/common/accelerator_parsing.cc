@@ -41,7 +41,7 @@ struct ModifierName {
 };
 
 const std::vector<ModifierName>& GetAllModifierNames() {
-  static const base::NoDestructor<std::vector<ModifierName>> modifier_names({
+  static const base::NoDestructor<std::vector<ModifierName>> kModifierNames({
 #if BUILDFLAG(IS_MAC)
     {.modifier = ui::EF_COMMAND_DOWN, .name = "Command"},
 #else
@@ -54,7 +54,7 @@ const std::vector<ModifierName>& GetAllModifierNames() {
         {.modifier = ui::EF_FUNCTION_DOWN, .name = "Fn"},
   });
 
-  return *modifier_names;
+  return *kModifierNames;
 }
 
 std::string KeyboardCodeToDomCodeString(ui::KeyboardCode code) {
@@ -124,19 +124,65 @@ ui::KeyEventFlags GetModifierFromKeys(
   }
   return result;
 }
+
+std::string KeyCodeToString(ui::KeyboardCode key_code) {
+  switch (key_code) {
+    case ui::VKEY_LMENU:
+    case ui::VKEY_MENU:
+      return kMenu;
+    case ui::VKEY_RMENU:
+      return kRMenu;
+    case ui::VKEY_NUMPAD0:
+      return "Num0";
+    case ui::VKEY_NUMPAD1:
+      return "Num1";
+    case ui::VKEY_NUMPAD2:
+      return "Num2";
+    case ui::VKEY_NUMPAD3:
+      return "Num3";
+    case ui::VKEY_NUMPAD4:
+      return "Num4";
+    case ui::VKEY_NUMPAD5:
+      return "Num5";
+    case ui::VKEY_NUMPAD6:
+      return "Num6";
+    case ui::VKEY_NUMPAD7:
+      return "Num7";
+    case ui::VKEY_NUMPAD8:
+      return "Num8";
+    case ui::VKEY_NUMPAD9:
+      return "Num9";
+    case ui::VKEY_ADD:
+      return "NumAdd";
+    case ui::VKEY_SUBTRACT:
+      return "NumSubtract";
+    case ui::VKEY_MULTIPLY:
+      return "NumMultiply";
+    case ui::VKEY_DIVIDE:
+      return "NumDivide";
+    case ui::VKEY_DECIMAL:
+      return "NumDecimal";
+    default:
+      auto domcode = ui::UsLayoutKeyboardCodeToDomCode(key_code);
+      ui::DomKey domkey;
+      ui::KeyboardCode out_code;
+      if (!ui::DomCodeToUsLayoutDomKey(domcode, 0, &domkey, &out_code)) {
+        return "Unknown Key: " + base::NumberToString(key_code);
+      }
+      return ui::KeycodeConverter::DomKeyToKeyString(domkey);
+  }
+}
+
 }  // namespace
+
+std::string CodeStringToKeyString(const std::string& code_string) {
+  auto code = DomCodeStringToKeyboardCode(code_string);
+  return KeyCodeToString(code);
+}
 
 std::string ToKeysString(const ui::Accelerator& accelerator) {
   std::vector<std::string> parts = GetModifierNames(accelerator.modifiers());
-  auto domcode = ui::UsLayoutKeyboardCodeToDomCode(accelerator.key_code());
-  ui::DomKey domkey;
-  ui::KeyboardCode out_code;
-  if (!ui::DomCodeToUsLayoutDomKey(domcode, 0, &domkey, &out_code)) {
-    parts.push_back("Unknown Key: " +
-                    base::NumberToString(accelerator.key_code()));
-  } else {
-    parts.push_back(ui::KeycodeConverter::DomKeyToKeyString(domkey));
-  }
+  parts.push_back(KeyCodeToString(accelerator.key_code()));
   return base::JoinString(parts, "+");
 }
 
@@ -150,6 +196,14 @@ ui::Accelerator FromCodesString(const std::string& value) {
   DCHECK(!value.empty());
   std::vector<std::string> parts = base::SplitString(
       value, "+", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+
+  // Not sure why, but some clients are encountering empty accelerators. If we
+  // encounter one in the wild, just return an empty accelerator instead of
+  // crashing:
+  // https://github.com/brave/brave-browser/issues/31419
+  if (parts.empty()) {
+    return ui::Accelerator();
+  }
 
   auto keyname = parts[parts.size() - 1];
   auto keycode = DomCodeStringToKeyboardCode(keyname);

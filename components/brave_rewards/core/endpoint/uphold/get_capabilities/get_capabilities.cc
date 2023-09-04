@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "brave/components/brave_rewards/core/endpoint/uphold/uphold_utils.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal {
@@ -19,22 +19,22 @@ using uphold::Capabilities;
 namespace endpoint {
 namespace uphold {
 
-GetCapabilities::GetCapabilities(LedgerImpl& ledger) : ledger_(ledger) {}
+GetCapabilities::GetCapabilities(RewardsEngineImpl& engine) : engine_(engine) {}
 
 GetCapabilities::~GetCapabilities() = default;
 
 void GetCapabilities::Request(const std::string& token,
-                              GetCapabilitiesCallback callback) {
+                              GetCapabilitiesCallback callback) const {
   auto request = mojom::UrlRequest::New();
   request->url = GetServerUrl("/v0/me/capabilities");
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request),
+  engine_->LoadURL(std::move(request),
                    base::BindOnce(&GetCapabilities::OnRequest,
                                   base::Unretained(this), std::move(callback)));
 }
 
 void GetCapabilities::OnRequest(GetCapabilitiesCallback callback,
-                                mojom::UrlResponsePtr response) {
+                                mojom::UrlResponsePtr response) const {
   DCHECK(response);
   LogUrlResponse(__func__, *response);
 
@@ -53,7 +53,7 @@ void GetCapabilities::OnRequest(GetCapabilitiesCallback callback,
 }
 
 std::pair<mojom::Result, GetCapabilities::CapabilityMap>
-GetCapabilities::ProcessResponse(const mojom::UrlResponse& response) {
+GetCapabilities::ProcessResponse(const mojom::UrlResponse& response) const {
   const auto status_code = response.status_code;
 
   if (status_code == net::HTTP_UNAUTHORIZED) {
@@ -63,17 +63,16 @@ GetCapabilities::ProcessResponse(const mojom::UrlResponse& response) {
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return {mojom::Result::LEDGER_ERROR, {}};
+    return {mojom::Result::FAILED, {}};
   }
 
   auto capability_map = ParseBody(response.body);
-  return {!capability_map.empty() ? mojom::Result::LEDGER_OK
-                                  : mojom::Result::LEDGER_ERROR,
+  return {!capability_map.empty() ? mojom::Result::OK : mojom::Result::FAILED,
           std::move(capability_map)};
 }
 
 GetCapabilities::CapabilityMap GetCapabilities::ParseBody(
-    const std::string& body) {
+    const std::string& body) const {
   const auto value = base::JSONReader::Read(body);
   if (!value || !value->is_list()) {
     BLOG(0, "Invalid body format!");

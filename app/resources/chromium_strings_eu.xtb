@@ -10,12 +10,15 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="5918095577778020936">Brave-ek pasahitzak esportatu nahi ditu. Hori baimentzeko, idatzi Windows pasahitza.</translation>
 <translation id="5468853758063275923">Brave da arakatzaile lehenetsia</translation>
 <translation id="8522292744959221145">Pasahitzak datuen isilpekotasunaren urratzeen eta beste segurtasun-arazoen aurka babestuta dauden egiaztatzeko, <ph name="BEGIN_LINK"/>hasi saioa Brave-en<ph name="END_LINK"/>.</translation>
+<translation id="2627788872035182013">Sakatu Brave-eko menua</translation>
+<translation id="8468770846533807490">{NUM_DEVICES,plural, =0{Brave-erako luzapen batzuk giza interfazeko gailu batzuk erabiltzen ari ziren}=1{Brave-erako luzapen batzuk giza interfazeko gailu batzuk erabiltzen ari dira}other{Brave-erako luzapen batzuk giza interfazeko # gailu erabiltzen ari dira}}</translation>
 <translation id="8541922081612557424">Brave arakatzaileari buruz</translation>
-<translation id="3528799424770515097">{COUNT,plural, =1{Administratzaileak automatikoki itxiko du Brave minutu batez erabiltzen ez bada. Arakatze-datuak ezabatuko dira. Arakatze-datuen barnean daude historia, automatikoki betetako datuak eta deskargak.}other{Administratzaileak automatikoki itxiko du Brave # minutuz erabiltzen ez bada. Arakatze-datuak ezabatuko dira. Arakatze-datuen barnean daude historia, automatikoki betetako datuak eta deskargak.}}</translation>
 <translation id="1203500561924088507">Eskerrik asko instalatzeagatik. <ph name="BUNDLE_NAME"/> erabiltzeko, arakatzailea berrabiarazi behar duzu.</translation>
 <translation id="4658574652223735641">Memoria-aurreztaileak Brave bizkortu du</translation>
+<translation id="8799570501820813406">Fitxa inaktibo zegoen bitartean, memorian tokia egin da Brave-ek bizkor funtzionatzen jarrai dezan. Webgune hau inoiz ez inaktibo ezartzea aukera dezakezu.</translation>
 <translation id="4798342026247191171">Konfiguratu Brave-eko profil berria</translation>
 <translation id="8132634101975074716">Brave-en saioa hasi duzu.</translation>
+<translation id="1586284627848250203">Lortu Brave for Testing-en inguruko laguntza</translation>
 <translation id="5147525139567260139">Partekatu Brave-eko fitxa bat</translation>
 <translation id="1530633922026945685">Brave-ek kamera erabiltzeko baimena behar du, ingurunearen hiru dimentsioko mapa bat sortzeko</translation>
 <translation id="4449148723378534338">Berrikusi pribatutasuna eta segurtasuna kontrolatzeko aukera garrantzitsuenak Brave-en</translation>
@@ -51,9 +54,11 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="8418845734693287262">Chrome OS-k ezin izan ditu sinkronizatu zure datuak, kontuan saioa hasteko xehetasunak zaharkituta daudelako.</translation>
 <translation id="2576129394594491151"><ph name="EXTENSION_NAME"/> luzapenak aldatu egin du Brave abiarazten duzunean agertzen den orria.</translation>
 <translation id="1248225940185478633">Brave-ek kamera eta mikrofonoa erabiltzeko baimenak behar ditu webgune honetan</translation>
+<translation id="2451727308784734061">Erabili lasterbidea Pasahitz-kudeatzailea zerbitzura azkar joateko. Lasterbidea ordenagailuaren hasierako pantailara edo aplikazioak exekutatzeko tresnara eraman dezakezu.</translation>
 <translation id="6381750314821942592">Brave itxi egingo da laster</translation>
 <translation id="6078442581074612226">Brave-en</translation>
 <translation id="2485422356828889247">Desinstalatu</translation>
+<translation id="70183448213529602">Lehendik dauden pasahitzak ordezten saiatzen ari da Brave. Horretarako baimena emateko, idatzi Windows-eko pasahitza.</translation>
 <translation id="7798069806040634998">Brave-ek fitxategiak deskargatzearren memorian sartzeko baimena behar du</translation>
 <translation id="8447483940522230788">Brave laguntzailea</translation>
 <translation id="7291143854620707672">Laneko profilaren administratzaileak kendu egin ditzake profil hau erabiltzean sortutako Brave-eko datuak (adibidez, sortutako laster-markak, historia, pasahitzak eta bestelako ezarpenak). <ph name="LEARN_MORE"/></translation>
@@ -65,6 +70,7 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="6791166902140255175">Brave fitxa</translation>
 <translation id="8372880274820509128">Segurtasun gehiago izateko, Brave-ek datuak enkriptatuko ditu.</translation>
 <translation id="2770231113462710648">Ezarri hau arakatzaile lehenetsia gisa:</translation>
+<translation id="1187986649024576560">Luzapenak malwarea dauka, eta ez da segurua. Ken ezazu Brave-etik, bisitatzen dituzun webguneetan zure datuak ikusi eta aldatu ezin izan ditzan, informazio pertsonala barne.</translation>
 <translation id="2799223571221894425">Abiarazi berriro</translation>
 <translation id="3783547330001921298">Brave-eko beste profil bat sortuko da <ph name="USER_EMAIL_ADDRESS"/> helbiderako</translation>
 <translation id="777113543093865885">Kendu Brave-etik…</translation>
@@ -75,7 +81,6 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="2928420929544864228">Instalatu da.</translation>
 <translation id="8208853227947884571">Eguneratuta dago Brave</translation>
 <translation id="5122472867956731189">Webguneren bat pasahitza lapurtzen saiatzen bada edo fitxategi kaltegarriren bat deskargatzen baduzu, baliteke Brave-ek URLak ere bidaltzea (orriko edukiaren zati batzuk barne) Arakatze segurua eginbideari.</translation>
-<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave HID gailu batera konektatuta dago}other{Brave HID gailuetara konektatuta dago}}</translation>
 <translation id="8755404239607088219">Brave-ek ezin ditu egiaztatu pasahitzak. Saiatu geroago.</translation>
 <translation id="8880183781256147665">Brave-era gehitzen…</translation>
 <translation id="3038232873781883849">Instalatzeko zain…</translation>
@@ -89,7 +94,6 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="2585240446624043880">Brave-ek ezin du irakurri bere datu-direktorioa eta ezin du idatzi bertan:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
-<translation id="6823651909636163674">Gida honek zure aukerak ulertzen lagunduko dizu, Brave-ek nahi duzun bezala funtziona dezan</translation>
 <translation id="2423637317249323944">Brave-en <ph name="PRODUCT_VERSION"/> bertsioa dago instalatuta</translation>
 <translation id="3286538390144397061">Berrabiarazi orain</translation>
 <translation id="2339258256897053758">Brave APIko gakoak falta dira. Brave-en funtzionalitate batzuk desgaitu egingo dira.</translation>
@@ -121,13 +125,17 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="6315734375101223238">Pertsonalizatu eta kontrolatu Brave. Zure arreta behar duen zerbait dago. Sakatu informazio gehiago ikusteko.</translation>
 <translation id="7130675370997202556">Brave irekitzeko eta arakatzen hasteko, egin klik zure izenean.</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/> erabiltzaileak Brave-eko profil honetan hasi du saioa dagoeneko. Arakatze-datuak bereizita edukitzeko, Brave-ek profil bat sor dezake zuretzat.</translation>
+<translation id="6184592406110188164">Luzapenak Brave Web Store-ren gidalerroak urratzen ditu, eta agian ez da segurua. Ken ezazu Brave-etik, bisitatzen dituzun webguneetan zure datuak ikusi eta aldatu ezin izan ditzan, informazio pertsonala barne.</translation>
 <translation id="2337217774418822704"><ph name="MANAGER_NAME"/> administratzaileak kudeatzen du kontua. Brave arakatzaileko profil hau eta profil honetako datuak (esaterako, laster-markak, historia eta pasahitzak) ikusi eta edita ditzake administratzaileak.</translation>
 <translation id="8090497651549769448">Pasahitzak kopiatzen saiatzen ari da Brave. Hori baimentzeko, idatzi Windows-eko pasahitza.</translation>
 <translation id="7133557675784723900">Brave-ek fitxategia aztertzea gomendatzen du, agian arriskutsua delako</translation>
+<translation id="1311808042904310985">Brave for Testing-i buruz</translation>
 <translation id="1152920704813762236">Chrome OS-ri buruz</translation>
 <translation id="3703994572283698466"><ph name="BEGIN_LINK_CROS_OSS"/>Kode irekiko software<ph name="END_LINK_CROS_OSS"/> gehigarriari esker da posible Chrome OS; adibidez, <ph name="BEGIN_LINK_LINUX_OSS"/>Linux-eko garapen-ingurunea<ph name="END_LINK_LINUX_OSS"/> erabiltzen da.</translation>
 <translation id="6056473803837713617">Lagundu Brave hobetzen <ph name="BEGIN_LINK"/>oraingo ezarpenen<ph name="END_LINK"/> berri emanda</translation>
 <translation id="4050175100176540509">Segurtasun-hobekuntza garrantzitsuak eta eginbide berriak dituzu erabilgarri azken bertsioan.</translation>
+<translation id="4055805654398742145">Pasahitz-kudeatzailea</translation>
+<translation id="6217792792122501564">{COUNT,plural, =1{Erakundeak automatikoki itxiko du Brave minutu batez erabiltzen ez bada. Arakatze-datuak ezabatuko dira. Arakatze-datuetan, historia, automatikoki betetako datuak eta deskargak daude.}other{Erakundeak automatikoki itxiko du Brave # minutuz erabiltzen ez bada. Arakatze-datuak ezabatuko dira. Arakatze-datuetan, historia, automatikoki betetako datuak eta deskargak daude.}}</translation>
 <translation id="4148957013307229264">Instalatzen…</translation>
 <translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Hasi saioa sarean - Brave</translation>
 <translation id="2871190378186459992">Ezagutu Brave-erako aplikazio, joko, luzapen eta gai bikainak.</translation>
@@ -143,6 +151,7 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="4065288863231444640">Onartu Brave atzeko planoan abiaraztea</translation>
 <translation id="8148611988012584308">Pertsonalizatu eta kontrolatu Brave</translation>
 <translation id="4427306783828095590">Babes handiagoa eskaintzen du phishingaren eta malwarearen aurka</translation>
+<translation id="6786534271003695094">Brave for Testing-i buruz</translation>
 <translation id="7084397798469173252">Ongi etorri Brave-era; beste leiho bat ireki da arakatzailean</translation>
 <translation id="2633397153656205379">Brave ez da eguneratu arazoren bat izan delako. <ph name="BEGIN_LINK"/>Konpondu Brave eguneratzeko arazoak eta huts egindako eguneratzeak.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Brave-eko beste profil batean egin nahi duzu aurrera?</translation>
@@ -162,11 +171,11 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="215320507915280336">Brave Bilaketa zerbitzuan erabiltzen den ortografia-zuzentzaile bera erabiltzen da. Arakatzailean idazten duzun testua Brave-ri bidaltzen zaio. Aukera horiek aldatzeko, joan ezarpenetara.</translation>
 <translation id="1912973375560256099">Brave-ek mDNS trafikoa baimentzeko sarrerako araua.</translation>
 <translation id="711601904575862069">Abiaraz ezazu berriro &amp;Brave eguneratzeko</translation>
+<translation id="2778869200975718483">{COUNT,plural, =1{Erakundeak automatikoki ezabatuko ditu arakatze-datuak Brave minutu batez erabiltzen ez bada. Arakatze-datuetan, historia, automatikoki betetako datuak eta deskargak daude. Jadanik dauden fitxak irekita mantenduko dira.}other{Erakundeak automatikoki ezabatuko ditu arakatze-datuak Brave # minutuz erabiltzen ez bada. Arakatze-datuetan, historia, automatikoki betetako datuak eta deskargak daude. Jadanik dauden fitxak irekita mantenduko dira.}}</translation>
 <translation id="8797356639448065696">Brave atzeko planoko moduan dago.</translation>
 <translation id="7406627712452599344">Gonbidatuek Brave erabil dezakete aztarnarik utzi gabe.</translation>
 <translation id="5952898964075639679">Gaitu zure burua Brave-en</translation>
 <translation id="8112581848375017126">Brave eginbide berriak probatzen ari da; haiei esker, informazio gutxiago erabilita sarea modu berean arakatzeko aukera eskainiko dute webguneek</translation>
-<translation id="101136574863710793">{COUNT,plural, =1{Administratzaileak automatikoki itxiko du Brave minutu batez erabiltzen ez bada.}other{Administratzaileak automatikoki itxiko du Brave # minutuz erabiltzen ez bada.}}</translation>
 <translation id="9078804073692109646">Ez dago pasahitzik gordeta. Gordeta dituzun pasahitzak egiaztatu egin ditzake Brave-ek.</translation>
 <translation id="729580998737807583"><ph name="EXISTING_USER"/> erabiltzaileak Brave-eko profil honetan hasi du saioa dagoeneko. Brave-eko beste profil bat sortuko da <ph name="USER_EMAIL_ADDRESS"/> helbiderako.</translation>
 <translation id="8586264863973514035">Aldaketak aplikatzeko, berrabiarazi Brave</translation>
@@ -196,6 +205,7 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="5924017743176219022">Internetera konektatzen…</translation>
 <translation id="5941711191222866238">Minimizatu</translation>
 <translation id="3613110494561632737">Brave-ek proba aktibo batean ausaz sartu bazaitu, agertzen zaizkizun iragarkietan eta behean estimatutako interesetan eragina izango du arakatze-historiak. Zure pribatutasuna babesteko, Brave-ek hilero ezabatzen ditu zure interesak. Interesak eguneratu egiten dira, haiek kendu ezean.</translation>
+<translation id="4357808717322635817">{COUNT,plural, =1{Erakundeak automatikoki itxiko du Brave minutu batez erabiltzen ez bada.}other{Erakundeak automatikoki itxiko du Brave # minutuz erabiltzen ez bada.}}</translation>
 <translation id="3598551856834560515">Eguneratu Brave sinkronizatzen hasteko</translation>
 <translation id="5225261774087485064">Bisitatzen dituzun webguneek interesatzen zaizkizun gauzak gogoratu ohi dituzte zerbitzua pertsonalizatzeko. Webguneek zure interesei buruzko informazioa ere gorde dezakete Brave-en.</translation>
 <translation id="6003112304606738118">Deskargatzen… <ph name="HOURS"/> ordu geratzen dira.</translation>
@@ -230,15 +240,18 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="6327105987658262776">Ez dago eguneratzerik erabilgarri.</translation>
 <translation id="1819119299840995223">Beste eragiketa bat egiten ari da Brave. Saiatu berriro geroago.</translation>
 <translation id="8616874628011103667">Errazagoa da Brave erabiltzea Brave-ko kontuarekin eta partekatutako ordenagailuetan.</translation>
-<translation id="6365489425007284765">{COUNT,plural, =1{Administratzaileak automatikoki ezabatuko ditu arakatze-datuak Brave minutu batez erabiltzen ez bada. Arakatze-datuen barnean daude historia, automatikoki betetako datuak eta deskargak. Jadanik dauden fitxak irekita mantenduko dira.}other{Administratzaileak automatikoki ezabatuko ditu arakatze-datuak Brave # minutuz erabiltzen ez bada. Arakatze-datuen barnean daude historia, automatikoki betetako datuak eta deskargak. Jadanik dauden fitxak irekita mantenduko dira.}}</translation>
 <translation id="335632367599648646">Ziur Brave desinstalatu nahi duzula?</translation>
+<translation id="6375219077595103062">Gehitu Pasahitz-kudeatzailea zerbitzurako lasterbide bat</translation>
 <translation id="4867486350347355096"><ph name="BEGIN_BOLD"/>Nola erabiltzen ditugu datu horiek?<ph name="END_BOLD"/> Brave-ek zure interesak estima ditzake. Beranduago, bisitatzen duzun webgune batek zure interesak ikusteko eska diezaioke Brave-i, agertzen zaizkizun iragarkiak pertsonalizatze aldera.</translation>
 <translation id="6373767849825830651">Web-orriak eta aplikazioak tximista bezain azkar abiarazten dituen web-arakatzailea da Brave. Bizkorra, egonkorra eta erabiltzeko erraza da. Brave-ek malwarearen eta phishingaren aurka dituen babes inkorporatuei esker, seguruago ibiliko zara Interneten.</translation>
 <translation id="2139300032719313227">Berrabiarazi Chrome OS</translation>
 <translation id="1684121725014454063">Ongi etorri Brave-eko profiletara</translation>
 <translation id="2675662665675552980">Brave abiarazten duzunean erakusten den orria ere kontrolatzen du.</translation>
+<translation id="648319183876919572">Arakatze seguru hobetuak are gehiago babesten zaitu webgune eta deskarga arriskutsuen aurka</translation>
 <translation id="5590013613412457132">Desinstalatu Brave</translation>
+<translation id="3617744907966785605">Erakundeak Brave ixten du <ph name="TIMEOUT_DURATION"/>z erabiltzen ez denean. Arakatze-datuak ezabatu dira. Arakatze-datuen barnean daude historia, automatikoki betetako datuak eta deskargak.</translation>
 <translation id="8646609321956191980">Profil bakoitzak Brave-eko informazio propioa dauka; adibidez, laster-markak, historia, pasahitzak eta beste</translation>
+<translation id="2535436634051789953">Brave-eko beste profil bateko pasahitzak ikustera joan zaitezke</translation>
 <translation id="2312399718665761438">Ortografia-akatsak konpondu ahal izateko, testu-eremuetan idazten duzun testua Brave-ri bidaltzen dio Brave-ek</translation>
 <translation id="3507835409099344374">Joan Brave-en jakinarazpen-ezarpenetara</translation>
 <translation id="9156965752763025780">Aldaketek Brave abiarazten duzun hurrengo aldian izango dute eragina.</translation>
@@ -272,6 +285,7 @@ Baliteke eginbide batzuk erabilgarri ez egotea. Adierazi beste profil-direktorio
 <translation id="7025789849649390912">Gelditu da instalazioa.</translation>
 <translation id="1705567146636171298">Eguneratu Brave</translation>
 <translation id="5499063270485366718">Irudiren batek ez badu azalpen lagungarririk, halako bat lortzen ahaleginduko da Brave. Azalpen horiek sortzeko, irudiak Brave-ri bidaltzen zaizkio.</translation>
+<translation id="2332301637111071062">Erakundeak Brave-eko datuak ezabatzen ditu <ph name="TIMEOUT_DURATION"/>z erabiltzen ez denean. Arakatze-datuen barnean daude historia, automatikoki betetako datuak eta deskargak.</translation>
 <translation id="1008530050039597147">Brave-ek kamera erabiltzeko baimena behar du webgune honetan</translation>
 <translation id="1197672524850678392">Ezin izan da abiarazi Brave. Saiatu berriro.</translation>
 <translation id="3405035915691517126">Brave-ek ezin ditu egiaztatu pasahitzak. Saiatu berriro 24 ordu barru.</translation>
@@ -282,7 +296,6 @@ Baliteke eginbide batzuk erabilgarri ez egotea. Adierazi beste profil-direktorio
 <translation id="3403365884036456766">Hobespenen fitxategia hondatuta dago edo ez da baliozkoa.
 
 Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="7339898014177206373">Leiho berria</translation>
 <translation id="3511996232906761537">Webguneak, laster-markak eta Brave-eko beste gauzak hemen daude.</translation>
 <translation id="5380963249588143069">Sistemaren administratzailearen konfigurazioaren arabera, Brave-ek <ph name="ALTERNATIVE_BROWSER_NAME"/> arakatzailea ireki behar du <ph name="TARGET_URL_HOSTNAME"/> helbidera joateko.</translation>
@@ -325,11 +338,13 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
 <translation id="8207657266087451193">Irudiren batek ez badu azalpen lagungarririk, halako bat lortzen ahaleginduko da Brave. Azalpen horiek sortzeko, irudiak Brave-ri bidaltzen zaizkio. Aukera hori desaktibatu nahi baduzu, joan ezarpenetara.</translation>
 <translation id="8622246347342688645">Brave-ek ezin ditu egiaztatu pasahitzak saioa hasi ez duzulako</translation>
 <translation id="89367911614620585">Baliteke fitxategia arriskutsua izatea; horregatik, blokeatu egin du Brave-ek.</translation>
+<translation id="6098476632210317894">Erakundeak Brave ixten du <ph name="TIMEOUT_DURATION"/>z erabiltzen ez denean.</translation>
 <translation id="5196445203969439095">Egin gauza gehiago Brave-ekin</translation>
 <translation id="3360368475735266712">Hasi saioa Brave gailu guztietan sinkronizatu eta pertsonalizatzeko</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> Brave erabiltzen ari da lehendik ere</translation>
 <translation id="3098618823450433881">Brave arakatzaileko gauzak gailu guztietan atzitzeko, hasi saioa eta aktibatu sinkronizazioa</translation>
 <translation id="2569754604093464025">Etorkizunean Brave-en eguneratzeak eskuratzeko, Windows 10 edo bertsio berriago bat beharko duzu. Ordenagailua Windows 8 erabiltzen ari da.</translation>
+<translation id="8577108764439626300">Garatzaileak luzapena desargitaratu du, eta agian ez da segurua. Ken ezazu Brave-etik, bisitatzen dituzun webguneetan zure datuak ikusi eta aldatu ezin izan ditzan, informazio pertsonala barne.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Berrabiarazi Brave egun bateko epean}other{Berrabiarazi Brave # eguneko epean}}</translation>
 <translation id="6914496861676471566">Instalatzailearen artxiboa hondatuta dago edo baliogabea da. Deskargatu Brave berriro.</translation>
 <translation id="4378573854226202617">Windows 10 edo sistema berriagoa behar da Brave erabiltzeko.</translation>
@@ -342,9 +357,12 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Nola erabiltzen ditugu datu horiek?<ph name="END_BOLD"/> Webguneek zure interesei buruzko informazioa gorde dezakete Brave-en; esaterako, webgune batera joaten bazara maratoi baterako oinetakoak erostera, baliteke webgune horrek "maratoiak" definitzea interes gisa. Ondorioz, beranduago beste webgune batera joaten bazara lasterketa batean izena emateko, litekeena da webgune horrek lasterketetarako oinetakoekin erlazionatutako iragarki bat erakustea zure interesetan oinarrituta.</translation>
 <translation id="3052349005266761501">Brave abiarazten…</translation>
 <translation id="6283840329609797763">Instalazioak huts egin du zehaztu gabeko errore batengatik. Deskargatu Brave berriro.</translation>
+<translation id="5128665650717824082">Brave for Testing ezin da ezarri arakatzaile lehenetsi gisa.</translation>
+<translation id="4668189655335212354">{NUM_DEVICES,plural, =0{Brave-erako luzapen bat giza interfazeko gailu batzuk erabiltzen ari zen}=1{Brave-erako luzapen bat giza interfazeko gailu bat erabiltzen ari da}other{Brave-erako luzapen bat giza interfazeko # gailu erabiltzen ari da}}</translation>
 <translation id="2433912322225810055">Brave hasten duzunean edo Omnibox-etik bilaketak egiten dituzunean erakusten den orria ere kontrolatzen du.</translation>
 <translation id="4100716194836114130">Hau da zure Brave arakatzailea</translation>
 <translation id="4831743161813926460">Brave-ek webgune honen izenean kamera eta mikrofonoa erabiltzeko baimena behar du</translation>
+<translation id="8826492472752484139">Sakatu Pasahitz-kudeatzailea</translation>
 <translation id="6933858244219479645">Chrome OS sistema</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Zein datu erabiltzen dira?<ph name="END_BOLD"/> Zure arakatze-historia eta gailu hau erabili bitartean Brave-en bidez bisitatutako webguneen erregistro bat.</translation>
 <translation id="8862326446509486874">Ez dituzu eskubide egokiak sistema mailako instalazio bat egiteko. Saiatu instalatzailea administratzaile gisa abiarazten.</translation>
@@ -357,6 +375,7 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
 <translation id="8986207147630327271">Arakatzaile honetan laneko profila gehitzera zoaz, eta laneko profilaren gaineko kontrola soilik emango diozu administratzaileari.</translation>
 <translation id="82609232232243542">Hasi saioa Brave-en</translation>
 <translation id="3273774796888928550">Hasi saioa Brave-en. Saioa behin bakarrik hasi nahi baduzu, <ph name="GUEST_LINK_BEGIN"/>erabili gailua gonbidatu gisa<ph name="GUEST_LINK_END"/>.</translation>
+<translation id="4561046754724442504">Brave automatikoki itxi da</translation>
 <translation id="5173820533850252773">Brave zaharkituta dago</translation>
 <translation id="310518206836658214">{0,plural, =1{Ordubete barru berrabiaraziko da Brave}other{# ordu barru berrabiaraziko da Brave}}</translation>
 <translation id="5190991181158966940">Etorkizunean Brave-en eguneratzeak eskuratzeko, Windows 10 edo bertsio berriago bat beharko duzu. Ordenagailu hau Windows 8.1 erabiltzen ari da.</translation>
@@ -369,7 +388,6 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
 <translation id="296137235951584143">Pertsonalizatu Brave</translation>
 <translation id="7977787072794666032">Brave-ek agian ez du behar bezala funtzionatuko, jada ez baita bateragarria Windows XP eta Windows Vista-rekin</translation>
 <translation id="8180288330711585962">Brave-ek kudeatutako ziurtagiriak</translation>
-<translation id="3050465115159165320">Atera etekinik handiena Brave-i</translation>
 <translation id="4484434718272972655">Nor erabiltzen ari da Brave?</translation>
 <translation id="7173394303099002355">Lortu Brave-en segurtasun-aukerarik sendoena</translation>
 <translation id="5775101967851558962">Brave ixten duzunean, garbitu beti webguneetako datuak gailutik</translation>

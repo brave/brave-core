@@ -12,6 +12,8 @@ source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
+    "mock_playlist_service_observer.cc",
+    "mock_playlist_service_observer.h",
     "playlist_download_request_manager_browsertests.cc",
     "playlist_render_frame_observer_browsertest.cc",
   ]
@@ -23,6 +25,7 @@ source_set("browser_tests") {
   deps = [
     "//base",
     "//brave/components/playlist/browser",
+    "//chrome/app:command_ids",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
@@ -38,6 +41,10 @@ source_set("browser_tests") {
   } else {
     deps += [ "//chrome/test:test_support_ui" ]
   }
+
+  if (enable_playlist_webui) {
+    deps += [ "//brave/browser/ui/sidebar" ]
+  }
 }
 
 source_set("unit_tests") {
@@ -45,6 +52,8 @@ source_set("unit_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
+    "mock_playlist_service_observer.cc",
+    "mock_playlist_service_observer.h",
     "playlist_p3a_unittest.cc",
     "playlist_service_unittest.cc",
   ]

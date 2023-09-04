@@ -15,6 +15,7 @@ import faveiconUrl from '../assets/svg-icons/brave-icon.svg'
 // utils
 import { loadTimeData } from '../../common/loadTimeData'
 import * as Lib from '../common/async/lib'
+import { removeDeprecatedLocalStorageKeys } from '../common/constants/local-storage-keys'
 
 // actions
 import * as WalletActions from '../common/actions/wallet_actions'
@@ -53,6 +54,10 @@ function App () {
     link.href = faveiconUrl
   }, [])
 
+  React.useEffect(() => {
+    removeDeprecatedLocalStorageKeys()
+  }, [])
+
   return (
     <Provider store={store}>
       <BrowserRouter>
@@ -76,7 +81,7 @@ function App () {
 
 function initialize () {
   initLocale(loadTimeData.data_)
-  store.dispatch(WalletActions.initialize())
+  store.dispatch(WalletActions.initialize({}))
   render(<App />, document.getElementById('root'))
 }
 

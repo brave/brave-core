@@ -18,7 +18,7 @@ import { AdsPanel } from './ads_panel'
 import { AutoContributePanel } from './auto_contribute_panel'
 import { TipsPanel } from './tips_panel'
 import { MonthlyTipsPanel } from './monthly_tips_panel'
-import { SettingsOptInForm, RewardsTourModal } from '../../shared/components/onboarding'
+import { SettingsOptInForm } from '../../shared/components/onboarding'
 import { ProviderRedirectModal } from './provider_redirect_modal'
 import { GrantList } from './grant_list'
 import { SidebarPromotionPanel } from './sidebar_promotion_panel'
@@ -27,6 +27,7 @@ import { BatIcon } from '../../shared/components/icons/bat_icon'
 import { SettingsIcon } from '../../shared/components/icons/settings_icon'
 
 import * as style from './settings.style'
+import { Action } from 'redux'
 
 export function Settings () {
   const { isAndroid } = React.useContext(PlatformContext)
@@ -35,9 +36,24 @@ export function Settings () {
   const actions = useActions()
   const rewardsData = useRewardsData((data) => data)
 
-  const [showRewardsTour, setShowRewardsTour] = React.useState(false)
+  const scrollToDeeplinkId = (deeplinkId: string) => {
+    if (deeplinkId) {
+      if (deeplinkId === 'top') {
+        window.scrollTo(0, 0)
+        return true
+      }
 
-  const handleURL = () => {
+      const element = document.querySelector(
+        `[data-deeplink-id="${deeplinkId}"`)
+      if (element) {
+        element.scrollIntoView()
+        return true
+      }
+    }
+    return false
+  }
+
+  const handleURLActions = () => {
     const { pathname } = location
 
     // Used to enable Rewards directly from the Welcome UI.
@@ -54,19 +70,75 @@ export function Settings () {
     return false
   }
 
+  class HashHandler {
+    hash: string;
+    deeplinkId: string;
+    action: (() => Action<any>) | null;
+    actionIsForSettings: boolean;
+
+    constructor(
+      hash: string,
+      action?: () => Action<any>,
+      actionIsForSettings?: boolean,
+      deeplinkId?: string) {
+      this.hash = hash
+      this.action = action ?? null
+      this.actionIsForSettings = actionIsForSettings ?? false
+      this.deeplinkId = deeplinkId ?? this.hash
+    }
+  }
+
+  const hashHandlers: HashHandler[] = [
+    new HashHandler('ads', actions.onAdsSettingsOpen, true),
+    new HashHandler(
+      'auto-contribute', actions.onAutoContributeSettingsOpen, true),
+    new HashHandler(
+      'contributions', actions.onContributionsSettingsOpen, true),
+    new HashHandler('monthly-contributions'),
+    new HashHandler('ads-history', actions.onModalAdsHistoryOpen, false, 'ads'),
+    new HashHandler('reset', actions.onModalResetOpen, false, 'top')
+  ]
+
+  const handleURLDeepLinks = () => {
+    if (!location.hash) {
+      return
+    }
+    hashHandlers.every((handler) => {
+      if (location.hash === '#' + handler.hash) {
+        if (scrollToDeeplinkId(handler.deeplinkId)) {
+          if (handler.action) {
+            if (!handler.actionIsForSettings) {
+              handler.action()
+            } else if (location.search === '?settings') {
+              handler.action()
+            }
+          }
+          clearURLPath()
+        }
+        return false
+      }
+      return true
+    })
+  }
+
+  const clearURLPath = () => {
+    history.replaceState({}, '', '/')
+  }
+
   React.useEffect(() => {
+    actions.getIsGrandfatheredUser()
     actions.getUserType()
     actions.getIsUnsupportedRegion()
     const date = new Date()
     actions.getBalanceReport(date.getMonth() + 1, date.getFullYear())
     actions.getTipTable()
-    actions.getPendingContributions()
     actions.getStatement()
     actions.getAdsData()
     actions.getExcludedSites()
     actions.getCountryCode()
     actions.getRewardsParameters()
     actions.getContributionAmount()
+    actions.getIsAutoContributeSupported()
     actions.getAutoContributeProperties()
     actions.getBalance()
     actions.fetchPromotions()
@@ -74,8 +146,10 @@ export function Settings () {
     actions.getOnboardingStatus()
     actions.getEnabledInlineTippingPlatforms()
 
-    if (handleURL()) {
-      history.replaceState({}, '', '/')
+    if (handleURLActions()) {
+      clearURLPath()
+    } else {
+      handleURLDeepLinks()
     }
   }, [rewardsData.initializing])
 
@@ -89,8 +163,6 @@ export function Settings () {
     actions.getReconcileStamp()
   }, [rewardsData.enabledContribute])
 
-  const onTakeTour = () => { setShowRewardsTour(true) }
-
   const canConnectAccount = () => {
     const {
       currentCountryCode,
@@ -102,43 +174,6 @@ export function Settings () {
       const regionInfo = parameters.walletProviderRegions[provider] || null
       return isExternalWalletProviderAllowed(currentCountryCode, regionInfo)
     })
-  }
-
-  const renderRewardsTour = () => {
-    if (!showRewardsTour) {
-      return null
-    }
-
-    const { adsData, externalWallet } = rewardsData
-
-    const onDone = () => {
-      setShowRewardsTour(false)
-    }
-
-    const onAdsPerHourChanged = (adsPerHour: number) => {
-      actions.onAdsSettingSave('adsPerHour', adsPerHour)
-    }
-
-    const onConnectAccount = () => {
-      actions.onModalConnectOpen()
-    }
-
-    const canAutoContribute =
-      !(externalWallet && externalWallet.type === 'bitflyer')
-
-    return (
-      <RewardsTourModal
-        layout={layoutKind}
-        firstTimeSetup={false}
-        adsPerHour={adsData.adsPerHour}
-        canAutoContribute={canAutoContribute}
-        canConnectAccount={canConnectAccount()}
-        onAdsPerHourChanged={onAdsPerHourChanged}
-        onConnectAccount={onConnectAccount}
-        onDone={onDone}
-        onClose={onDone}
-      />
-    )
   }
 
   const onManageClick = () => { actions.onModalResetOpen() }
@@ -167,7 +202,7 @@ export function Settings () {
 
     return (
       <style.onboarding>
-        <SettingsOptInForm onTakeTour={onTakeTour} onEnable={onEnable} />
+        <SettingsOptInForm onEnable={isAndroid ? undefined : onEnable} />
       </style.onboarding>
     )
   }
@@ -204,15 +239,7 @@ export function Settings () {
     }
 
     if (rewardsData.showOnboarding) {
-      // On Android a native modal is displayed when this page is accessed and
-      // the user has not opted-in to Rewards. For backward-compatibility with
-      // the previous Android-specific settings page, display the page content
-      // underneath the modal. Note that this behavior will need to change when
-      // Android is updated to force the user through onboarding before
-      // displaying content.
-      if (!isAndroid) {
-        return renderOnboarding()
-      }
+      return renderOnboarding()
     }
 
     return (
@@ -222,17 +249,14 @@ export function Settings () {
             <style.title>
               <BatIcon />{getString('braveRewards')}
             </style.title>
-            {
-              !isAndroid &&
-                <style.manageAction>
-                  <button
-                    onClick={onManageClick}
-                    data-test-id='manage-wallet-button'
-                  >
-                    <SettingsIcon />{getString('reset')}
-                  </button>
-                </style.manageAction>
-            }
+            <style.manageAction>
+              <button
+                onClick={onManageClick}
+                data-test-id='manage-wallet-button'
+              >
+                <SettingsIcon />{getString('reset')}
+              </button>
+            </style.manageAction>
           </style.header>
           {renderVBATNotice()}
           <style.settingGroup>
@@ -259,7 +283,7 @@ export function Settings () {
         <style.sidebar>
           {rewardsData.userType !== 'unconnected' && <GrantList />}
           <PageWallet layout={layoutKind} />
-          <SidebarPromotionPanel onTakeRewardsTour={onTakeTour} />
+          <SidebarPromotionPanel />
         </style.sidebar>
       </style.content>
     )
@@ -268,7 +292,6 @@ export function Settings () {
   return (
     <style.root className={`layout-${layoutKind}`}>
       <ProviderRedirectModal />
-      {renderRewardsTour()}
       {renderContent()}
     </style.root>
   )

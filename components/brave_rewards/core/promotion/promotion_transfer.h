@@ -11,16 +11,16 @@
 
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace promotion {
 
 class PromotionTransfer {
  public:
-  explicit PromotionTransfer(LedgerImpl& ledger);
+  explicit PromotionTransfer(RewardsEngineImpl& engine);
   ~PromotionTransfer();
 
   void Start(PostSuggestionsClaimCallback callback);
@@ -35,7 +35,7 @@ class PromotionTransfer {
                      mojom::Result result,
                      std::string drain_id) const;
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   credential::CredentialsPromotion credentials_;
 };
 

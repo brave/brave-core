@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
 assert(!is_android)
 
 source_set("brave_app_menu_unit_test") {
@@ -24,6 +26,8 @@ source_set("brave_app_menu_unit_test") {
   ]
 
   deps = [
+    "//brave/app:brave_generated_resources_grit_grit",
+    "//brave/app:generate_command_metadata",
     "//build:chromeos_buildflags",
     "//chrome/app:command_ids",
     "//chrome/browser/ui:ui",
@@ -36,4 +40,11 @@ source_set("brave_app_menu_unit_test") {
     "//content/test:test_support",
     "//ui/views:test_support",
   ]
+  if (enable_brave_vpn) {
+    sources += [ "//brave/browser/ui/toolbar/brave_vpn_menu_model_unittest.cc" ]
+    deps += [
+      "//base",
+      "//brave/components/brave_vpn/common",
+    ]
+  }
 }

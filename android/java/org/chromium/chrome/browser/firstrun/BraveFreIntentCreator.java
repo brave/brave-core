@@ -10,8 +10,6 @@ import android.content.Intent;
 
 import androidx.annotation.Nullable;
 
-import org.chromium.chrome.browser.firstrun.WelcomeOnboardingActivity;
-
 /**
  * Brave extension of FreIntentCreator.
  */

@@ -11,9 +11,20 @@
 #include <vector>
 
 #include "base/values.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
+
+namespace mojom {
+// TODO(apaymyshev): Remove these aliases eventually.
+constexpr KeyringId kDefaultKeyringId = KeyringId::kDefault;
+constexpr KeyringId kSolanaKeyringId = KeyringId::kSolana;
+constexpr KeyringId kFilecoinKeyringId = KeyringId::kFilecoin;
+constexpr KeyringId kFilecoinTestnetKeyringId = KeyringId::kFilecoinTestnet;
+constexpr KeyringId kBitcoinKeyring84Id = KeyringId::kBitcoin84;
+constexpr KeyringId kBitcoinKeyring84TestId = KeyringId::kBitcoin84Testnet;
+}  // namespace mojom
 
 using uint256_t = unsigned _BitInt(256);
 using int256_t = _BitInt(256);
@@ -80,7 +91,7 @@ struct TransactionReceipt {
   std::string contract_address;
   std::vector<Log> logs;
   std::string logs_bloom;
-  bool status;
+  bool status = false;
 };
 
 struct ImportInfo {

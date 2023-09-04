@@ -20,7 +20,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="20sp"
-        android:fontFamily="@font/poppins_600"
+        android:fontFamily="sans-serif-medium"
         android:layout_marginTop="24dp"
         android:text="@string/basic_settings"
         android:textColor="@color/rewards_panel_text_color"/>
@@ -33,7 +33,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="4dp"
         android:textSize="16sp"
-        android:fontFamily="@font/poppins_500"
+        android:fontFamily="sans-serif-medium"
         android:text="@string/how_often_do_you_see_ads"
         android:textColor="@color/rewards_panel_text_color"/>
 
@@ -44,7 +44,7 @@
         android:gravity="center"
         android:textSize="14sp"
         android:layout_marginBottom="8dp"
-        android:fontFamily="@font/poppins_500"
+        android:fontFamily="sans-serif-medium"
         android:text="@string/more_private_ads"
         android:textColor="@color/rewards_panel_secondary_text_color"/>
 
@@ -64,7 +64,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="22sp"
-        android:fontFamily="@font/poppins_600"
+        android:fontFamily="sans-serif-medium"
         android:layout_marginBottom="4dp"
         android:textColor="@color/rewards_panel_secondary_text_color"/>
 
@@ -73,6 +73,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:stepSize="1.0"
+              android:contentDescription="@string/slider"
               android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
               app:trackColor="@color/rewards_onboarding_ac_slider_track_color"
               app:trackColorActive="@color/rewards_onboarding_ac_slider_active_track_color" />
@@ -84,7 +85,7 @@
             android:gravity="center"
             android:textSize="14sp"
             android:layout_marginBottom="8dp"
-            android:fontFamily="@font/poppins_500"
+            android:fontFamily="sans-serif-medium"
             android:text="@string/you_can_change_this_later"
             android:textColor="@color/rewards_panel_secondary_text_color"/>
 

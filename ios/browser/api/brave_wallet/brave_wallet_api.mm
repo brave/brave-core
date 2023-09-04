@@ -18,9 +18,9 @@
 #include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/ios/browser/brave_wallet/tx_service_factory.h"
 #include "components/grit/brave_components_resources.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "ui/base/resource/resource_bundle.h"
 
 BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyEthereum =
@@ -130,9 +130,15 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   if (!json_rpc_service) {
     return nil;
   }
+  auto* host_content_settings_map =
+      ios::HostContentSettingsMapFactory::GetForBrowserState(browserState);
+  if (!host_content_settings_map) {
+    return nil;
+  }
 
   auto provider = std::make_unique<brave_wallet::SolanaProviderImpl>(
-      keyring_service, brave_wallet_service, tx_service, json_rpc_service,
+      *host_content_settings_map, keyring_service, brave_wallet_service,
+      tx_service, json_rpc_service,
       std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
           delegate));
   return [[BraveWalletSolanaProviderOwnedImpl alloc]

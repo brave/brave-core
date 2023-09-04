@@ -22,7 +22,7 @@ export const NftMediaIframe = styled.iframe<{ visible: boolean }>`
 `
 
 export const MediaSkeletonWrapper = styled.div`
-  width: 75%;
-  height: 500px;
+  width: 360px;
+  height: 360px;
   border-radius: 12px;
 `

@@ -5,33 +5,34 @@
 
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_util.h"
 
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::client {
+namespace brave_ads {
 
 class BraveAdsLegacyClientMigrationUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsLegacyClientMigrationUtilTest, HasMigrated) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedClientState, true);
+  SetBooleanPref(prefs::kHasMigratedClientState, true);
 
   // Act
 
   // Assert
-  EXPECT_TRUE(HasMigrated());
+  EXPECT_TRUE(HasMigratedClientState());
 }
 
 TEST_F(BraveAdsLegacyClientMigrationUtilTest, HasNotMigrated) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedClientState, false);
+  SetBooleanPref(prefs::kHasMigratedClientState, false);
 
   // Act
 
   // Assert
-  EXPECT_FALSE(HasMigrated());
+  EXPECT_FALSE(HasMigratedClientState());
 }
 
-}  // namespace brave_ads::client
+}  // namespace brave_ads

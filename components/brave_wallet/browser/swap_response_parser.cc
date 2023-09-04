@@ -46,6 +46,33 @@ absl::optional<double> ParsePriceImpactPct(const base::Value& value) {
 
 namespace brave_wallet {
 
+namespace {
+mojom::ZeroExFeePtr ParseZeroExFee(const base::Value& value) {
+  if (value.is_none()) {
+    return nullptr;
+  }
+
+  if (!value.is_dict()) {
+    return nullptr;
+  }
+
+  auto zero_ex_fee_value =
+      swap_responses::ZeroExFee::FromValue(value.GetDict());
+  if (!zero_ex_fee_value) {
+    return nullptr;
+  }
+
+  auto zero_ex_fee = mojom::ZeroExFee::New();
+  zero_ex_fee->fee_type = zero_ex_fee_value->fee_type;
+  zero_ex_fee->fee_token = zero_ex_fee_value->fee_token;
+  zero_ex_fee->fee_amount = zero_ex_fee_value->fee_amount;
+  zero_ex_fee->billing_type = zero_ex_fee_value->billing_type;
+
+  return zero_ex_fee;
+}
+
+}  // namespace
+
 mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
                                          bool expect_transaction_data) {
   // {
@@ -81,7 +108,15 @@ mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
   //       "name": "Curve",
   //       "proportion": "0",
   //     }
-  //   ]
+  //   ],
+  //   "fees": {
+  //     "zeroExFee": {
+  //       "feeType": "volume",
+  //       "feeToken": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+  //       "feeAmount": "148470027512868522",
+  //       "billingType": "on-chain"
+  //     }
+  //   }
   // }
 
   auto swap_response_value =
@@ -133,6 +168,13 @@ mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
     swap_response->sources.push_back(
         mojom::ZeroExSource::New(source_value.name, source_value.proportion));
   }
+
+  auto fees = mojom::ZeroExFees::New();
+  if (auto zero_ex_fee = ParseZeroExFee(swap_response_value->fees.zero_ex_fee);
+      zero_ex_fee) {
+    fees->zero_ex_fee = std::move(zero_ex_fee);
+  }
+  swap_response->fees = std::move(fees);
 
   return swap_response;
 }
@@ -198,9 +240,9 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value) {
   //          "outAmount": "261273",
   //          "amount": "10000",
   //          "otherAmountThreshold": "258660",
-  //          "outAmountWithSlippage": "258660",
   //          "swapMode": "ExactIn",
   //          "priceImpactPct": "0.008955716118219659",
+  //          "slippageBps": "50",
   //          "marketInfos": [
   //            {
   //              "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -250,7 +292,12 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value) {
                               &route.other_amount_threshold)) {
       return nullptr;
     }
+
     route.swap_mode = route_value.swap_mode;
+
+    if (!base::StringToInt(route_value.slippage_bps, &route.slippage_bps)) {
+      return nullptr;
+    }
 
     const auto& route_price_impact_pct =
         ParsePriceImpactPct(route_value.price_impact_pct);
@@ -329,20 +376,9 @@ mojom::JupiterSwapTransactionsPtr ParseJupiterSwapTransactions(
     return nullptr;
   }
 
-  auto swap_transactions = mojom::JupiterSwapTransactions::New();
-
-  swap_transactions->setup_transaction = "";
-  if (value->setup_transaction) {
-    swap_transactions->setup_transaction = *value->setup_transaction;
-  }
-  swap_transactions->swap_transaction = value->swap_transaction;
-
-  swap_transactions->cleanup_transaction = "";
-  if (value->cleanup_transaction) {
-    swap_transactions->cleanup_transaction = *value->cleanup_transaction;
-  }
-
-  return swap_transactions;
+  auto result = mojom::JupiterSwapTransactions::New();
+  result->swap_transaction = value->swap_transaction;
+  return result;
 }
 
 mojom::JupiterErrorResponsePtr ParseJupiterErrorResponse(
@@ -368,7 +404,8 @@ mojom::JupiterErrorResponsePtr ParseJupiterErrorResponse(
 //
 // For sample JSON response, refer to ParseJupiterQuote.
 absl::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
-  auto converted_json = std::string(json::convert_all_numbers_to_string(json));
+  auto converted_json =
+      std::string(json::convert_all_numbers_to_string(json, ""));
   if (converted_json.empty()) {
     return absl::nullopt;
   }

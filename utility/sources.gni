@@ -11,14 +11,22 @@ brave_utility_sources = [
   "//brave/utility/brave_content_utility_client.cc",
   "//brave/utility/brave_content_utility_client.h",
 ]
+
+if (is_android) {
+  brave_utility_sources += [
+    "//chrome/utility/importer/bookmark_html_reader.cc",
+    "//chrome/utility/importer/bookmark_html_reader.h",
+  ]
+}
+
 brave_utility_sources += brave_utility_importer_sources
 
 brave_utility_deps = [
   "//brave/components/ipfs/buildflags",
   "//brave/components/services/bat_ads:lib",
   "//brave/components/services/bat_ads/public/interfaces",
-  "//brave/components/services/bat_ledger:lib",
-  "//brave/components/services/bat_ledger/public/interfaces",
+  "//brave/components/services/bat_rewards:lib",
+  "//brave/components/services/bat_rewards/public/interfaces",
   "//brave/components/tor/buildflags",
   "//mojo/public/cpp/bindings",
 ]

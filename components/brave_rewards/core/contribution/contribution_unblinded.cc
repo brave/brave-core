@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave_base/random.h"
 
 using std::placeholders::_1;
@@ -92,10 +92,10 @@ void GetStatisticalVotingWinners(
 
 }  // namespace
 
-Unblinded::Unblinded(LedgerImpl& ledger)
-    : ledger_(ledger),
-      credentials_promotion_(ledger),
-      credentials_sku_(ledger) {}
+Unblinded::Unblinded(RewardsEngineImpl& engine)
+    : engine_(engine),
+      credentials_promotion_(engine),
+      credentials_sku_(engine) {}
 
 Unblinded::~Unblinded() = default;
 
@@ -104,7 +104,7 @@ void Unblinded::Start(const std::vector<mojom::CredsBatchType>& types,
                       LegacyResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(0, "Contribution id is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -120,7 +120,7 @@ void Unblinded::GetContributionInfoAndUnblindedTokens(
     GetContributionInfoAndUnblindedTokensCallback callback) {
   auto get_callback = std::bind(&Unblinded::OnUnblindedTokens, this, _1,
                                 contribution_id, callback);
-  ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(types,
+  engine_->database()->GetSpendableUnblindedTokensByBatchTypes(types,
                                                                get_callback);
 }
 
@@ -143,7 +143,7 @@ void Unblinded::OnUnblindedTokens(
     converted_list.push_back(new_item);
   }
 
-  ledger_->database()->GetContributionInfo(
+  engine_->database()->GetContributionInfo(
       contribution_id, std::bind(&Unblinded::OnGetContributionInfo, this, _1,
                                  std::move(converted_list), callback));
 }
@@ -153,7 +153,7 @@ void Unblinded::GetContributionInfoAndReservedUnblindedTokens(
     GetContributionInfoAndUnblindedTokensCallback callback) {
   auto get_callback = std::bind(&Unblinded::OnReservedUnblindedTokens, this, _1,
                                 contribution_id, callback);
-  ledger_->database()->GetReservedUnblindedTokens(contribution_id,
+  engine_->database()->GetReservedUnblindedTokens(contribution_id,
                                                   get_callback);
 }
 
@@ -176,7 +176,7 @@ void Unblinded::OnReservedUnblindedTokens(
     converted_list.push_back(new_item);
   }
 
-  ledger_->database()->GetContributionInfo(
+  engine_->database()->GetContributionInfo(
       contribution_id, std::bind(&Unblinded::OnGetContributionInfo, this, _1,
                                  converted_list, callback));
 }
@@ -195,7 +195,7 @@ void Unblinded::PrepareTokens(
     LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution not found");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -235,7 +235,7 @@ void Unblinded::PrepareTokens(
       std::make_shared<mojom::ContributionInfoPtr>(contribution->Clone()),
       types, callback);
 
-  ledger_->database()->MarkUnblindedTokensAsReserved(
+  engine_->database()->MarkUnblindedTokensAsReserved(
       token_id_list, contribution_id, reserved_callback);
 }
 
@@ -245,15 +245,15 @@ void Unblinded::OnMarkUnblindedTokensAsReserved(
     std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
     const std::vector<mojom::CredsBatchType>& types,
     LegacyResultCallback callback) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Failed to reserve unblinded tokens");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
   if (!shared_contribution) {
     BLOG(0, "Contribution was not converted successfully");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -268,7 +268,7 @@ void Unblinded::PreparePublishers(
     LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution not found");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -288,7 +288,7 @@ void Unblinded::PreparePublishers(
         std::bind(&Unblinded::OnPrepareAutoContribution, this, _1, types,
                   contribution->contribution_id, callback);
 
-    ledger_->database()->SaveContributionInfo(contribution->Clone(),
+    engine_->database()->SaveContributionInfo(contribution->Clone(),
                                               save_callback);
     return;
   }
@@ -296,7 +296,7 @@ void Unblinded::PreparePublishers(
   auto save_callback = std::bind(&Unblinded::PrepareStepSaved, this, _1, types,
                                  contribution->contribution_id, callback);
 
-  ledger_->database()->UpdateContributionInfoStep(
+  engine_->database()->UpdateContributionInfoStep(
       contribution->contribution_id, mojom::ContributionStep::STEP_PREPARE,
       save_callback);
 }
@@ -344,7 +344,7 @@ void Unblinded::OnPrepareAutoContribution(
     const std::vector<mojom::CredsBatchType>& types,
     const std::string& contribution_id,
     LegacyResultCallback callback) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Contribution not saved");
     callback(mojom::Result::RETRY);
     return;
@@ -353,7 +353,7 @@ void Unblinded::OnPrepareAutoContribution(
   auto save_callback = std::bind(&Unblinded::PrepareStepSaved, this, _1, types,
                                  contribution_id, callback);
 
-  ledger_->database()->UpdateContributionInfoStep(
+  engine_->database()->UpdateContributionInfoStep(
       contribution_id, mojom::ContributionStep::STEP_PREPARE, save_callback);
 }
 
@@ -362,7 +362,7 @@ void Unblinded::PrepareStepSaved(
     const std::vector<mojom::CredsBatchType>& types,
     const std::string& contribution_id,
     LegacyResultCallback callback) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Prepare step was not saved");
     callback(mojom::Result::RETRY);
     return;
@@ -385,7 +385,7 @@ void Unblinded::OnProcessTokens(
     LegacyResultCallback callback) {
   if (!contribution || contribution->publishers.empty()) {
     BLOG(0, "Contribution not found");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -433,7 +433,7 @@ void Unblinded::OnProcessTokens(
   }
 
   // we processed all publishers
-  callback(mojom::Result::LEDGER_OK);
+  callback(mojom::Result::OK);
 }
 
 void Unblinded::TokenProcessed(mojom::Result result,
@@ -441,7 +441,7 @@ void Unblinded::TokenProcessed(mojom::Result result,
                                const std::string& publisher_key,
                                bool final_publisher,
                                LegacyResultCallback callback) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Tokens were not processed correctly");
     callback(mojom::Result::RETRY);
     return;
@@ -450,7 +450,7 @@ void Unblinded::TokenProcessed(mojom::Result result,
   auto save_callback = std::bind(&Unblinded::ContributionAmountSaved, this, _1,
                                  contribution_id, final_publisher, callback);
 
-  ledger_->database()->UpdateContributionInfoContributedAmount(
+  engine_->database()->UpdateContributionInfoContributedAmount(
       contribution_id, publisher_key, save_callback);
 }
 
@@ -471,7 +471,7 @@ void Unblinded::Retry(const std::vector<mojom::CredsBatchType>& types,
                       LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -484,7 +484,7 @@ void Unblinded::Retry(const std::vector<mojom::CredsBatchType>& types,
 
   if (is_not_tokens && is_not_uphold_ac) {
     BLOG(0, "Retry is not for this func");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -502,7 +502,7 @@ void Unblinded::Retry(const std::vector<mojom::CredsBatchType>& types,
           &Unblinded::OnReservedUnblindedTokensForRetryAttempt, this, _1, types,
           std::make_shared<mojom::ContributionInfoPtr>(contribution->Clone()),
           callback);
-      ledger_->database()->GetReservedUnblindedTokens(
+      engine_->database()->GetReservedUnblindedTokens(
           contribution->contribution_id, get_callback);
       return;
     }
@@ -530,13 +530,13 @@ void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
     LegacyResultCallback callback) {
   if (unblinded_tokens.empty()) {
     BLOG(0, "Token list is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
   if (!shared_contribution) {
     BLOG(0, "Contribution was not converted successfully");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 

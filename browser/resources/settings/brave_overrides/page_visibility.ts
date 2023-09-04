@@ -29,7 +29,8 @@ function getPageVisibility () {
       newTab: false,
       braveIPFS: false,
       braveWallet: false,
-      braveWeb3: false
+      braveWeb3: false,
+      leoAssistant: false,
     }
   }
   // We need to specify values for every attribute in pageVisibility instead of
@@ -53,6 +54,7 @@ function getPageVisibility () {
     // custom properties
     braveSync: !loadTimeData.getBoolean('isSyncDisabled'),
     braveWallet: loadTimeData.getBoolean('isBraveWalletAllowed'),
+    leoAssistant: loadTimeData.getBoolean('isLeoAssistantAllowed'),
   }
   // Proxy so we can respond to any other property
   return new Proxy(staticProps, {

@@ -50,8 +50,8 @@ TEST_F(DeviceInfoSyncBridgeTest, LocalDelete) {
   ASSERT_FALSE(ReadAllFromStore().empty());
 
   const DeviceInfoSpecifics specifics = CreateSpecifics(1, base::Time::Now());
-  auto error = bridge()->ApplySyncChanges(bridge()->CreateMetadataChangeList(),
-                                          EntityAddList({specifics}));
+  auto error = bridge()->ApplyIncrementalSyncChanges(
+      bridge()->CreateMetadataChangeList(), EntityAddList({specifics}));
 
   ASSERT_FALSE(error);
   ASSERT_EQ(2u, bridge()->GetAllDeviceInfo().size());
@@ -87,8 +87,8 @@ TEST_F(DeviceInfoSyncBridgeTest, RemoteDelete) {
   ASSERT_FALSE(ReadAllFromStore().empty());
 
   const DeviceInfoSpecifics specifics = CreateSpecifics(1, base::Time::Now());
-  auto error = bridge()->ApplySyncChanges(bridge()->CreateMetadataChangeList(),
-                                          EntityAddList({specifics}));
+  auto error = bridge()->ApplyIncrementalSyncChanges(
+      bridge()->CreateMetadataChangeList(), EntityAddList({specifics}));
 
   ASSERT_FALSE(error);
   ASSERT_EQ(2u, bridge()->GetAllDeviceInfo().size());
@@ -124,8 +124,8 @@ TEST_F(DeviceInfoSyncBridgeTest, LocalDeleteWhenOffline) {
   ASSERT_FALSE(ReadAllFromStore().empty());
 
   const DeviceInfoSpecifics specifics = CreateSpecifics(1, base::Time::Now());
-  auto error = bridge()->ApplySyncChanges(bridge()->CreateMetadataChangeList(),
-                                          EntityAddList({specifics}));
+  auto error = bridge()->ApplyIncrementalSyncChanges(
+      bridge()->CreateMetadataChangeList(), EntityAddList({specifics}));
 
   ASSERT_FALSE(error);
   ASSERT_EQ(2u, bridge()->GetAllDeviceInfo().size());
@@ -158,7 +158,8 @@ TEST_F(DeviceInfoSyncBridgeTest, LocalDeleteWhenOffline) {
               UnorderedElementsAre(Pair(specifics.cache_guid(), _)));
 }
 
-TEST_F(DeviceInfoSyncBridgeTest, BraveApplySyncChangesForLocalDelete) {
+TEST_F(DeviceInfoSyncBridgeTest,
+       BraveApplyIncrementalSyncChangesForLocalDelete) {
   InitializeAndMergeInitialData(SyncMode::kFull);
   ASSERT_EQ(1, change_count());
 
@@ -166,7 +167,7 @@ TEST_F(DeviceInfoSyncBridgeTest, BraveApplySyncChangesForLocalDelete) {
   syncer::EntityChangeList entity_change_list;
   entity_change_list.push_back(
       EntityChange::CreateDelete(specifics.cache_guid()));
-  auto error_on_delete = bridge()->ApplySyncChanges(
+  auto error_on_delete = bridge()->ApplyIncrementalSyncChanges(
       bridge()->CreateMetadataChangeList(), std::move(entity_change_list));
   EXPECT_FALSE(error_on_delete);
   EXPECT_EQ(2, change_count());
@@ -184,7 +185,7 @@ TEST_F(DeviceInfoSyncBridgeTest,
   // An incoming deletion for the local device info should not cause a reupload
   EXPECT_CALL(*processor(), Put(CacheGuidForSuffix(kLocalSuffix), _, _))
       .Times(0);
-  absl::optional<ModelError> error = bridge()->ApplySyncChanges(
+  absl::optional<ModelError> error = bridge()->ApplyIncrementalSyncChanges(
       bridge()->CreateMetadataChangeList(), std::move(changes));
   ASSERT_FALSE(error);
 
@@ -201,8 +202,8 @@ TEST_F(DeviceInfoSyncBridgeTest, BraveExpireOldEntriesUponStartup) {
   const DeviceInfoSpecifics specifics_old =
       CreateSpecifics(2, base::Time::Now() - base::Days(57));
 
-  auto error = bridge()->ApplySyncChanges(bridge()->CreateMetadataChangeList(),
-                                          EntityAddList({specifics_old}));
+  auto error = bridge()->ApplyIncrementalSyncChanges(
+      bridge()->CreateMetadataChangeList(), EntityAddList({specifics_old}));
 
   ASSERT_FALSE(error);
   ASSERT_EQ(2u, bridge()->GetAllDeviceInfo().size());

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/daily_cap_exclusion_rule.h"
 
-#include <vector>
-
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -25,7 +23,7 @@ constexpr const char* kCampaignIds[] = {"60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
 
 class BraveAdsDailyCapExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BraveAdsDailyCapExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.campaign_id = kCampaignIds[0];
@@ -39,17 +37,15 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
+TEST_F(BraveAdsDailyCapExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.campaign_id = kCampaignIds[0];
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;
-
-  const AdEventInfo ad_event = BuildAdEvent(
+  const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -61,7 +57,7 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
 }
 
 TEST_F(BraveAdsDailyCapExclusionRuleTest,
-       AllowAdIfDoesNotExceedCapForNoMatchingCampaigns) {
+       ShouldIncludeIfDoesNotExceedCapForNoMatchingCampaigns) {
   // Arrange
   CreativeAdInfo creative_ad_1;
   creative_ad_1.campaign_id = kCampaignIds[0];
@@ -71,10 +67,8 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest,
   creative_ad_2.campaign_id = kCampaignIds[1];
 
   AdEventList ad_events;
-
-  const AdEventInfo ad_event = BuildAdEvent(
+  const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad_2, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -85,17 +79,16 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest,
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 
-TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapWithin1Day) {
+TEST_F(BraveAdsDailyCapExclusionRuleTest,
+       ShouldIncludeIfDoesNotExceedCapWithin1Day) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.campaign_id = kCampaignIds[0];
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;
-
-  const AdEventInfo ad_event = BuildAdEvent(
+  const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -108,17 +101,16 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapWithin1Day) {
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
+TEST_F(BraveAdsDailyCapExclusionRuleTest,
+       ShouldIncludeIfDoesNotExceedCapAfter1Day) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.campaign_id = kCampaignIds[0];
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;
-
-  const AdEventInfo ad_event = BuildAdEvent(
+  const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -131,17 +123,15 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDailyCapExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
+TEST_F(BraveAdsDailyCapExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.campaign_id = kCampaignIds[0];
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;
-
-  const AdEventInfo ad_event = BuildAdEvent(
+  const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 

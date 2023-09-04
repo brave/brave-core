@@ -10,10 +10,10 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace attestation {
 
@@ -24,7 +24,7 @@ using ConfirmCallback = base::OnceCallback<void(mojom::Result)>;
 
 class Attestation {
  public:
-  explicit Attestation(LedgerImpl& ledger);
+  explicit Attestation(RewardsEngineImpl& engine);
   virtual ~Attestation();
 
   virtual void Start(const std::string& payload, StartCallback callback) = 0;
@@ -33,7 +33,7 @@ class Attestation {
                        ConfirmCallback callback) = 0;
 
  protected:
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace attestation

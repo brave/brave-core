@@ -1,0 +1,41 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "html5ever"
+  epoch = "0.25"
+  crate_type = "rlib"
+  crate_root = "crate/src/lib.rs"
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  sources = [ "crate/src/lib.rs" ]
+  edition = "2018"
+  cargo_pkg_version = "0.25.1"
+  cargo_pkg_authors = "The html5ever Project Developers"
+  cargo_pkg_name = "html5ever"
+  cargo_pkg_description = "High-performance browser-grade HTML5 parser"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/mac/v0_1:lib",
+    "//brave/third_party/rust/markup5ever/v0_10:lib",
+    "//third_party/rust/log/v0_4:lib",
+  ]
+  build_deps = [
+    "//third_party/rust/proc_macro2/v1:lib",
+    "//third_party/rust/quote/v1:lib",
+    "//third_party/rust/syn/v1:lib",
+  ]
+  build_root = "crate/build.rs"
+  build_sources = [ "crate/build.rs" ]
+  build_script_outputs = [ "rules.rs" ]
+  cargo_manifest_dir =
+      rebase_path("//brave/third_party/rust/html5ever/v0_25/crate")
+  rustenv = [ "CARGO_MANIFEST_DIR=$cargo_manifest_dir" ]
+}

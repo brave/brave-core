@@ -29,8 +29,9 @@ constexpr char kSpeedreaderPrefFontSize[] = "brave.speedreader.font_size";
 
 constexpr char kSpeedreaderPrefFontFamily[] = "brave.speedreader.font_family";
 
-constexpr char kSpeedreaderPrefContentStyle[] =
-    "brave.speedreader.content_style";
+constexpr char kSpeedreaderPrefTtsVoice[] = "brave.speedreader.tts_voice";
+
+constexpr char kSpeedreaderPrefTtsSpeed[] = "brave.speedreader.tts_speed";
 
 }  // namespace speedreader
 

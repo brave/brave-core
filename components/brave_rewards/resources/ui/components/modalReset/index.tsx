@@ -62,13 +62,6 @@ export default class ModalReset extends React.PureComponent<Props, State> {
     }
   }
 
-  confirmSelection = () => {
-    const confirmed = confirm(getLocale('rewardsResetConfirmation'))
-    if (confirmed) {
-      this.props.onReset()
-    }
-  }
-
   getReset = () => {
     const visitSupportURL = (event: React.UIEvent) => {
       window.open('https://support.brave.com/hc/en-us/articles/10007969237901', '_blank', 'noopener')
@@ -130,7 +123,7 @@ export default class ModalReset extends React.PureComponent<Props, State> {
             type={'accent'}
             text={getLocale('reset')}
             size={'medium'}
-            onClick={this.confirmSelection}
+            onClick={this.props.onReset}
           />
         </StyledActionsWrapper>
       </>

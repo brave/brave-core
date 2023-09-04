@@ -69,7 +69,7 @@ class MetricLogStore : public metrics::LogStore {
   const std::string& staged_log_signature() const override;
   absl::optional<uint64_t> staged_log_user_id() const override;
   void StageNextLog() override;
-  void DiscardStagedLog() override;
+  void DiscardStagedLog(base::StringPiece reason = "") override;
   void MarkStagedLogAsSent() override;
 
   // |TrimAndPersistUnsentLogs| should not be used, since we persist everything

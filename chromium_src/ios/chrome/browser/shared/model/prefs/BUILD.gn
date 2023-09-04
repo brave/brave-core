@@ -1,0 +1,22 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ipfs/buildflags/buildflags.gni")
+
+group("prefs") {
+  deps = [
+    "//brave/components/brave_sync:prefs",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/decentralized_dns/core",
+    "//brave/components/ipfs/buildflags",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/p3a",
+    "//brave/components/p3a:buildflags",
+    "//brave/ios/browser/brave_stats",
+  ]
+  if (enable_ipfs) {
+    deps += [ "//brave/components/ipfs" ]
+  }
+}

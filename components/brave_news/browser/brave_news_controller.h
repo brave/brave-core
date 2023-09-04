@@ -13,6 +13,7 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
@@ -20,6 +21,7 @@
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
+#include "brave/components/brave_news/browser/feed_v2_builder.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
@@ -35,6 +37,7 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -88,6 +91,8 @@ class BraveNewsController : public KeyedService,
   // mojom::BraveNewsController
   void GetLocale(GetLocaleCallback callback) override;
   void GetFeed(GetFeedCallback callback) override;
+  void GetFeedV2(GetFeedV2Callback callback) override;
+  void GetSignals(GetSignalsCallback callback) override;
   void GetPublishers(GetPublishersCallback callback) override;
   void AddPublishersListener(
       mojo::PendingRemote<mojom::PublishersListener> listener) override;
@@ -118,10 +123,9 @@ class BraveNewsController : public KeyedService,
   void AddFeedListener(mojo::PendingRemote<mojom::FeedListener>) override;
   void GetDisplayAd(GetDisplayAdCallback callback) override;
   void OnInteractionSessionStarted() override;
-  void OnSessionCardVisitsCountChanged(
-      uint16_t cards_visited_session_total_count) override;
-  void OnSessionCardViewsCountChanged(
-      uint16_t cards_viewed_session_total_count) override;
+  void OnSessionCardVisitsCountChanged(uint16_t total_count) override;
+  void OnSessionCardViewsCountChanged(uint16_t total_count,
+                                      uint16_t count_delta) override;
   void OnPromotedItemView(const std::string& item_id,
                           const std::string& creative_instance_id) override;
   void OnPromotedItemVisit(const std::string& item_id,
@@ -136,6 +140,7 @@ class BraveNewsController : public KeyedService,
   void OnPublishersUpdated(brave_news::PublishersController*) override;
 
  private:
+  void OnOptInChange();
   void ConditionallyStartOrStopTimer();
   void CheckForFeedsUpdate();
   void CheckForPublishersUpdate();
@@ -148,6 +153,8 @@ class BraveNewsController : public KeyedService,
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
   api_request_helper::APIRequestHelper api_request_helper_;
   brave_private_cdn::PrivateCDNRequestHelper private_cdn_request_helper_;
+  raw_ptr<history::HistoryService> history_service_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   DirectFeedController direct_feed_controller_;
   UnsupportedPublisherMigrator unsupported_publisher_migrator_;
@@ -155,9 +162,11 @@ class BraveNewsController : public KeyedService,
   ChannelsController channels_controller_;
   FeedController feed_controller_;
   SuggestionsController suggestions_controller_;
+  std::unique_ptr<FeedV2Builder> feed_v2_builder_;
 
   PrefChangeRegistrar pref_change_registrar_;
   base::OneShotTimer timer_prefetch_;
+  base::OneShotTimer p3a_enabled_report_timer_;
   base::RepeatingTimer timer_feed_update_;
   base::RepeatingTimer timer_publishers_update_;
   base::CancelableTaskTracker task_tracker_;

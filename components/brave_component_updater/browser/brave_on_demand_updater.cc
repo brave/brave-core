@@ -7,12 +7,13 @@
 
 #include <string>
 
-#include "base/memory/singleton.h"
+#include "base/no_destructor.h"
 
 namespace brave_component_updater {
 
 BraveOnDemandUpdater* BraveOnDemandUpdater::GetInstance() {
-  return base::Singleton<BraveOnDemandUpdater>::get();
+  static base::NoDestructor<BraveOnDemandUpdater> instance;
+  return instance.get();
 }
 
 BraveOnDemandUpdater::BraveOnDemandUpdater() = default;

@@ -8,7 +8,14 @@
 
 namespace brave_ads {
 
-int GetMaximumNotificationAdsPerHourSetting();
+bool UserHasJoinedBraveRewards();
+
+bool UserHasOptedInToBraveNewsAds();
+
+bool UserHasOptedInToNewTabPageAds();
+
+bool UserHasOptedInToNotificationAds();
+int GetMaximumNotificationAdsPerHour();
 
 }  // namespace brave_ads
 

@@ -8,25 +8,25 @@
 
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/database/database_migration.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace database {
 
 class DatabaseInitialize {
  public:
-  explicit DatabaseInitialize(LedgerImpl& ledger);
+  explicit DatabaseInitialize(RewardsEngineImpl& engine);
   ~DatabaseInitialize();
 
-  void Start(LegacyResultCallback callback);
+  void Start(ResultCallback callback);
 
  private:
-  void OnInitialize(mojom::DBCommandResponsePtr response,
-                    LegacyResultCallback callback);
+  void OnInitialize(ResultCallback callback,
+                    mojom::DBCommandResponsePtr response);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   DatabaseMigration migration_;
 };
 

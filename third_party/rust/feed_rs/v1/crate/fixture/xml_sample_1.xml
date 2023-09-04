@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<catalog>
+    <book id="bk101">
+        <author>Gambardella, Matthew</author>
+        <empty1/>
+        <nest1>
+            <nest2>Nested</nest2>
+        </nest1>
+        <title>XML Developer's Guide</title>
+        <empty2></empty2>
+    </book>
+</catalog>

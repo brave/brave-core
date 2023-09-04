@@ -37,9 +37,19 @@ RegisterStyleOverride(
         --brave-settings-menu-width: var(--settings-menu-width);
         --brave-settings-menu-margin: 12px;
       }
-      cr-drawer {
-        display: none !important;
+
+      /** Styling tweaks for the settings-menu when we display it inside the
+        * drawer. */
+      cr-drawer settings-menu {
+        --brave-settings-menu-margin-v: 0;
+        --brave-settings-menu-padding: 24px;
+        --brave-settings-menu-margin: 0;
       }
+
+      cr-drawer settings-menu::part(header) {
+        display: none;
+      }
+
       #container {
         /* menu and content next to each other in the horizontal center */
         justify-content: center;

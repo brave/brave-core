@@ -6,10 +6,14 @@
 #ifndef BRAVE_BROWSER_SKUS_SKUS_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_SKUS_SKUS_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace skus {
 
@@ -26,7 +30,7 @@ class SkusServiceFactory : public BrowserContextKeyedServiceFactory {
   SkusServiceFactory& operator=(const SkusServiceFactory&) = delete;
 
  private:
-  friend struct base::DefaultSingletonTraits<SkusServiceFactory>;
+  friend base::NoDestructor<SkusServiceFactory>;
 
   SkusServiceFactory();
   ~SkusServiceFactory() override;

@@ -157,7 +157,7 @@ class AssetRatioServiceUnitTest : public testing::Test {
 TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Ramp) {
   TestGetBuyUrlV1(mojom::OnRampProvider::kRamp, mojom::kMainnetChainId,
                   "0xdeadbeef", "USDC", "55000000", "USD",
-                  "https://buy.ramp.network/"
+                  "https://app.ramp.network/"
                   "?userAddress=0xdeadbeef&swapAsset=USDC&fiatValue=55000000"
                   "&fiatCurrency=USD&hostApiKey="
                   "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf",
@@ -193,7 +193,7 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Sardine) {
 TEST_F(AssetRatioServiceUnitTest, GetSellUrl) {
   TestGetSellUrl(mojom::OffRampProvider::kRamp, mojom::kMainnetChainId,
                  "0xdeadbeef", "ETH_BAT", "250", "USD",
-                 "https://buy.ramp.network/"
+                 "https://app.ramp.network/"
                  "?userAddress=0xdeadbeef&enabledFlows=ONRAMP%2COFFRAMP"
                  "&defaultFlow=OFFRAMP&swapAsset=ETH_BAT&offrampAsset=ETH_BAT"
                  "&swapAmount=250"
@@ -416,9 +416,9 @@ TEST_F(AssetRatioServiceUnitTest, GetPriceHistoryURL) {
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetTokenInfoURL) {
-  std::string url(kAssetRatioBaseURL);
+  std::string url(GetAssetRatioBaseURL());
   EXPECT_EQ(url +
-                "v2/etherscan/"
+                "/v3/etherscan/"
                 "passthrough?module=token&action=tokeninfo&contractaddress="
                 "0xdac17f958d2ee523a2206206994597c13d831ec7",
             AssetRatioService::GetTokenInfoURL(
@@ -429,43 +429,38 @@ TEST_F(AssetRatioServiceUnitTest, GetTokenInfoURL) {
 TEST_F(AssetRatioServiceUnitTest, GetTokenInfo) {
   SetInterceptor(R"(
     {
-      "payload": {
-        "status": "1",
-        "message": "OK",
-        "result": [{
-          "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "tokenName": "Tether USD",
-          "symbol": "USDT",
-          "divisor": "6",
-          "tokenType": "ERC20",
-          "totalSupply": "39828710009874796",
-          "blueCheckmark": "true",
-          "description": "Tether gives you the joint benefits of open...",
-          "website": "https://tether.to/",
-          "email": "support@tether.to",
-          "blog": "https://tether.to/category/announcements/",
-          "reddit": "",
-          "slack": "",
-          "facebook": "",
-          "twitter": "https://twitter.com/Tether_to",
-          "bitcointalk": "",
-          "github": "",
-          "telegram": "",
-          "wechat": "",
-          "linkedin": "",
-          "discord": "",
-          "whitepaper": "https://path/to/TetherWhitePaper.pdf",
-          "tokenPriceUSD": "1.000000000000000000"
-        }]
-      },
-      "lastUpdated": "2021-12-09T22:02:23.187Z"
+      "result": [{
+        "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "tokenName": "Tether USD",
+        "symbol": "USDT",
+        "divisor": "6",
+        "tokenType": "ERC20",
+        "totalSupply": "39828710009874796",
+        "blueCheckmark": "true",
+        "description": "Tether gives you the joint benefits of open...",
+        "website": "https://tether.to/",
+        "email": "support@tether.to",
+        "blog": "https://tether.to/category/announcements/",
+        "reddit": "",
+        "slack": "",
+        "facebook": "",
+        "twitter": "https://twitter.com/Tether_to",
+        "bitcointalk": "",
+        "github": "",
+        "telegram": "",
+        "wechat": "",
+        "linkedin": "",
+        "discord": "",
+        "whitepaper": "https://path/to/TetherWhitePaper.pdf",
+        "tokenPriceUSD": "1.000000000000000000"
+      }]
     }
   )");
   GetTokenInfo("0xdac17f958d2ee523a2206206994597c13d831ec7",
                mojom::BlockchainToken::New(
                    "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether USD",
-                   "", true, false, false, false, "USDT", 6, true, "", "",
-                   "0x1", mojom::CoinType::ETH));
+                   "", true, false, false, false, false, "USDT", 6, true, "",
+                   "", "0x1", mojom::CoinType::ETH));
 
   SetInterceptor("unexpected response");
   GetTokenInfo("0xdac17f958d2ee523a2206206994597c13d831ec7", nullptr);
@@ -532,6 +527,54 @@ TEST_F(AssetRatioServiceUnitTest, GetCoinMarketsUnexpectedResponse) {
 
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
+}
+
+TEST_F(AssetRatioServiceUnitTest, GetStripeBuyURL) {
+  SetInterceptor(R"({
+      "url": "https://crypto.link.com?session_hash=abcdefgh"
+    })");
+
+  TestGetBuyUrlV1(mojom::OnRampProvider::kStripe, mojom::kMainnetChainId,
+                  "0xdeadbeef", "USDC", "55000000", "USD",
+                  "https://crypto.link.com?session_hash=abcdefgh",
+                  absl::nullopt);
+
+  // Test with unexpected response
+  SetInterceptor("mischief managed");
+  TestGetBuyUrlV1(mojom::OnRampProvider::kStripe, mojom::kMainnetChainId,
+                  "0xdeadbeef", "USDC", "55000000", "USD", "", "PARSING_ERROR");
+
+  // Test with non 2XX response
+  SetErrorInterceptor("");
+  TestGetBuyUrlV1(mojom::OnRampProvider::kStripe, mojom::kMainnetChainId,
+                  "0xdeadbeef", "USDC", "55000000", "USD", "",
+                  "INTERNAL_SERVICE_ERROR");
+}
+
+TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Coinbase) {
+  // Eth address
+  TestGetBuyUrlV1(
+      mojom::OnRampProvider::kCoinbase, mojom::kMainnetChainId,
+      "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961", "USDC", "1", "USD",
+      "https://pay.coinbase.com/"
+      "?appId=8072ff71-8469-4fef-9404-7c905e2359c9&defaultExperience=buy&"
+      "presetFiatAmount=1&destinationWallets=%5B%7B%22address%22%3A%"
+      "220xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961%22%2C%22assets%22%3A%5B%"
+      "22USDC%22%5D%2C%22blockchains%22%3A%5B%22ethereum%22%2C%22arbitrum%22%"
+      "2C%22optimism%22%2C%22polygon%22%2C%22avalanche-c-chain%22%2C%22celo%22%"
+      "5D%7D%5D",
+      absl::nullopt);
+
+  // Sol address
+  TestGetBuyUrlV1(
+      mojom::OnRampProvider::kCoinbase, mojom::kMainnetChainId,
+      "FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv", "SOL", "1", "USD",
+      "https://pay.coinbase.com/"
+      "?appId=8072ff71-8469-4fef-9404-7c905e2359c9&defaultExperience=buy&"
+      "presetFiatAmount=1&destinationWallets=%5B%7B%22address%22%3A%"
+      "22FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv%22%2C%22assets%22%3A%5B%"
+      "22SOL%22%5D%2C%22blockchains%22%3A%5B%22solana%22%5D%7D%5D",
+      absl::nullopt);
 }
 
 }  // namespace brave_wallet

@@ -20,7 +20,7 @@ import {
 
 // Styled Components
 import {
-  StyledWrapper,
+  LineChartWrapper,
   PopupButton,
   PopupButtonText
 } from './wellet-menus.style'
@@ -35,7 +35,7 @@ export const LineChartControlsMenu = (props: Props) => {
   } = props
 
   return (
-    <StyledWrapper yPosition={32}>
+    <LineChartWrapper yPosition={32}>
       {ChartTimelineOptions.map((option) =>
         <PopupButton
           key={option.id}
@@ -47,7 +47,7 @@ export const LineChartControlsMenu = (props: Props) => {
           </PopupButtonText>
         </PopupButton>
       )}
-    </StyledWrapper>
+    </LineChartWrapper>
   )
 }
 

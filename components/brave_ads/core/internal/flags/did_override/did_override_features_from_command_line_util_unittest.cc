@@ -13,25 +13,26 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/common/notification_ad_feature.h"
-#include "brave/components/brave_ads/common/search_result_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/account/account_feature.h"
+#include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
+#include "brave/components/brave_ads/core/internal/account/utility/tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
+#include "brave/components/brave_ads/core/public/feature/notification_ad_feature.h"
+#include "brave/components/brave_ads/core/public/feature/search_result_ad_feature.h"
+#include "brave/components/brave_ads/core/public/feature/user_attention_feature.h"
 #include "components/variations/variations_switches.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -48,55 +49,58 @@ struct ParamInfo final {
 } const kTests[] = {
     {{kFooBarSwitch, {}}, false},
     {{::switches::kEnableFeatures, "FooBar"}, false},
-    {{::switches::kEnableFeatures, {}}, false},
     {{::switches::kEnableFeatures,
       base::JoinString({"Foo", kUserActivityFeature.name, "Bar"}, ",")},
      true},
-    {{::switches::kEnableFeatures, kExclusionRulesFeature.name}, true},
-    {{::switches::kEnableFeatures, kAccountFeature.name}, true},
+    {{::switches::kEnableFeatures,
+      base::StrCat({kAntiTargetingFeature.name, ":param/value"})},
+     true},
+    {{::switches::kEnableFeatures,
+      base::StrCat(
+          {kEpsilonGreedyBanditFeatures.name, "<TrialName:param/value"})},
+     true},
+    {{::switches::kEnableFeatures,
+      base::StrCat({kTextClassificationFeature.name,
+                    "<TrialName.GroupName:param/value"})},
+     true},
+    {{::switches::kEnableFeatures, kAccountStatementFeature.name}, true},
+    {{::switches::kEnableFeatures, kAccountTokensFeature.name}, true},
+    {{::switches::kEnableFeatures, kAntiTargetingFeature.name}, true},
     {{::switches::kEnableFeatures, kConversionsFeature.name}, true},
     {{::switches::kEnableFeatures, kEligibleAdFeature.name}, true},
-    {{::switches::kEnableFeatures,
-      kShouldTriggerSearchResultAdEventsFeature.name},
-     true},
+    {{::switches::kEnableFeatures, kEpsilonGreedyBanditFeatures.name}, true},
+    {{::switches::kEnableFeatures, kExclusionRulesFeature.name}, true},
     {{::switches::kEnableFeatures, kInlineContentAdFeature.name}, true},
     {{::switches::kEnableFeatures, kNewTabPageAdFeature.name}, true},
     {{::switches::kEnableFeatures, kNotificationAdFeature.name}, true},
     {{::switches::kEnableFeatures, kPermissionRulesFeature.name}, true},
     {{::switches::kEnableFeatures, kPromotedContentAdFeature.name}, true},
-    {{::switches::kEnableFeatures, kAntiTargetingFeature.name}, true},
-    {{::switches::kEnableFeatures,
-      base::StrCat({kAntiTargetingFeature.name, ":param/value"})},
-     true},
-    {{::switches::kEnableFeatures, kSearchResultAdFeature.name}, true},
-    {{::switches::kEnableFeatures, kEpsilonGreedyBanditFeatures.name}, true},
-    {{::switches::kEnableFeatures,
-      base::StrCat(
-          {kEpsilonGreedyBanditFeatures.name, "<TrialName:param/value"})},
-     true},
     {{::switches::kEnableFeatures, kPurchaseIntentFeature.name}, true},
+    {{::switches::kEnableFeatures, kSearchResultAdFeature.name}, true},
     {{::switches::kEnableFeatures, kTextClassificationFeature.name}, true},
-    {{::switches::kEnableFeatures,
-      base::StrCat({kTextClassificationFeature.name,
-                    "<TrialName.GroupName:param/value"})},
-     true},
     {{::switches::kEnableFeatures, kUserActivityFeature.name}, true},
-    {{variations::switches::kForceFieldTrialParams, {}}, false},
+    {{::switches::kEnableFeatures, kUserAttentionFeature.name}, true},
+    {{::switches::kEnableFeatures, {}}, false},
     {{variations::switches::kForceFieldTrialParams, "FooBar"}, false},
     {{variations::switches::kForceFieldTrialParams,
       base::JoinString({"Foo", kUserActivityFeature.name, "Bar"}, ",")},
      true},
     {{variations::switches::kForceFieldTrialParams,
-      kExclusionRulesFeature.name},
+      kAccountStatementFeature.name},
      true},
-    {{variations::switches::kForceFieldTrialParams, kAccountFeature.name},
+    {{variations::switches::kForceFieldTrialParams, kAccountTokensFeature.name},
+     true},
+    {{variations::switches::kForceFieldTrialParams, kAntiTargetingFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams, kConversionsFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams, kEligibleAdFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams,
-      kShouldTriggerSearchResultAdEventsFeature.name},
+      kEpsilonGreedyBanditFeatures.name},
+     true},
+    {{variations::switches::kForceFieldTrialParams,
+      kExclusionRulesFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams,
       kInlineContentAdFeature.name},
@@ -112,22 +116,20 @@ struct ParamInfo final {
     {{variations::switches::kForceFieldTrialParams,
       kPromotedContentAdFeature.name},
      true},
-    {{variations::switches::kForceFieldTrialParams, kAntiTargetingFeature.name},
+    {{variations::switches::kForceFieldTrialParams,
+      kPurchaseIntentFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams,
       kSearchResultAdFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams,
-      kEpsilonGreedyBanditFeatures.name},
-     true},
-    {{variations::switches::kForceFieldTrialParams,
-      kPurchaseIntentFeature.name},
-     true},
-    {{variations::switches::kForceFieldTrialParams,
       kTextClassificationFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams, kUserActivityFeature.name},
-     true}};
+     true},
+    {{variations::switches::kForceFieldTrialParams, kUserAttentionFeature.name},
+     true},
+    {{variations::switches::kForceFieldTrialParams, {}}, false}};
 
 }  // namespace
 
@@ -179,7 +181,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsDidOverrideFeaturesFromCommandLineUtilTest,
-                         testing::ValuesIn(kTests),
+                         ::testing::ValuesIn(kTests),
                          TestParamToString);
 
 }  // namespace brave_ads

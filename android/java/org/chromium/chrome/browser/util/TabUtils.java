@@ -27,7 +27,6 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
 
-import org.chromium.base.ApplicationStatus;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
@@ -35,10 +34,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.BookmarkUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
@@ -235,6 +232,17 @@ public class TabUtils {
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openUrlInSameTab " + e);
+        }
+    }
+
+    public static void reloadIgnoringCache() {
+        try {
+            BraveActivity braveActivity = BraveActivity.getBraveActivity();
+            if (braveActivity.getActivityTab() != null) {
+                braveActivity.getActivityTab().reloadIgnoringCache();
+            }
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "reloadIgnoringCache " + e);
         }
     }
 

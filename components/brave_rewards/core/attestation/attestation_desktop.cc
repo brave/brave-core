@@ -8,13 +8,13 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/attestation/attestation_desktop.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace attestation {
 
-AttestationDesktop::AttestationDesktop(LedgerImpl& ledger)
-    : Attestation(ledger), promotion_server_(ledger) {}
+AttestationDesktop::AttestationDesktop(RewardsEngineImpl& engine)
+    : Attestation(engine), promotion_server_(engine) {}
 
 AttestationDesktop::~AttestationDesktop() = default;
 
@@ -27,32 +27,32 @@ mojom::Result AttestationDesktop::ParseClaimSolution(
 
   absl::optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* id = dict.FindString("captchaId");
   if (!id) {
     BLOG(0, "Captcha id is wrong");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const auto x_parse = dict.FindInt("x");
   if (!x_parse) {
     BLOG(0, "X is wrong");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const auto y_parse = dict.FindInt("y");
   if (!y_parse) {
     BLOG(0, "Y is wrong");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   *x = *x_parse;
   *y = *y_parse;
   *captcha_id = *id;
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void AttestationDesktop::Start(const std::string& payload,
@@ -68,8 +68,8 @@ void AttestationDesktop::DownloadCaptchaImage(StartCallback callback,
                                               mojom::Result result,
                                               const std::string& hint,
                                               const std::string& captcha_id) {
-  if (result != mojom::Result::LEDGER_OK) {
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
+  if (result != mojom::Result::OK) {
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
@@ -85,8 +85,8 @@ void AttestationDesktop::OnDownloadCaptchaImage(StartCallback callback,
                                                 const std::string& captcha_id,
                                                 mojom::Result result,
                                                 const std::string& image) {
-  if (result != mojom::Result::LEDGER_OK) {
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
+  if (result != mojom::Result::OK) {
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
@@ -97,7 +97,7 @@ void AttestationDesktop::OnDownloadCaptchaImage(StartCallback callback,
 
   std::string json;
   base::JSONWriter::Write(dict, &json);
-  std::move(callback).Run(mojom::Result::LEDGER_OK, json);
+  std::move(callback).Run(mojom::Result::OK, json);
 }
 
 void AttestationDesktop::Confirm(const std::string& solution,
@@ -108,7 +108,7 @@ void AttestationDesktop::Confirm(const std::string& solution,
   const mojom::Result result =
       ParseClaimSolution(solution, &x, &y, &captcha_id);
 
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Failed to parse solution");
     std::move(callback).Run(result);
     return;
@@ -124,13 +124,13 @@ void AttestationDesktop::Confirm(const std::string& solution,
 
 void AttestationDesktop::OnConfirm(ConfirmCallback callback,
                                    mojom::Result result) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Failed to confirm attestation");
     std::move(callback).Run(result);
     return;
   }
 
-  std::move(callback).Run(mojom::Result::LEDGER_OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 }  // namespace attestation

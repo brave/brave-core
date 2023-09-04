@@ -16,6 +16,7 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
+#include "build/buildflag.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/shell_integration.h"
 #include "chrome/common/channel_info.h"
@@ -23,11 +24,14 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
-#include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
 #include "url/origin.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/infobars/brave_ipfs_infobar_delegate.h"
+#endif
 
 namespace {
 
@@ -63,6 +67,32 @@ void SetupIPFSProtocolHandler(const std::string& protocol) {
 
 namespace ipfs {
 
+#if !BUILDFLAG(IS_ANDROID)
+class BraveIPFSInfoBarDelegateObserverImpl
+    : public BraveIPFSInfoBarDelegateObserver {
+ public:
+  explicit BraveIPFSInfoBarDelegateObserverImpl(
+      base::WeakPtr<IPFSTabHelper> ipfs_tab_helper)
+      : ipfs_tab_helper_(ipfs_tab_helper) {}
+
+  void OnRedirectToIPFS(bool enable_gateway_autoredirect) override {
+    if (ipfs_tab_helper_.get() &&
+        ipfs_tab_helper_->ipfs_resolved_url_.is_valid()) {
+      if (enable_gateway_autoredirect) {
+        ipfs_tab_helper_->pref_service_->SetBoolean(
+            kIPFSAutoRedirectToConfiguredGateway, true);
+      }
+      ipfs_tab_helper_->LoadUrl(ipfs_tab_helper_->ipfs_resolved_url_);
+    }
+  }
+
+  ~BraveIPFSInfoBarDelegateObserverImpl() override = default;
+
+ private:
+  base::WeakPtr<IPFSTabHelper> ipfs_tab_helper_;
+};
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 IPFSTabHelper::~IPFSTabHelper() = default;
 
 IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
@@ -71,11 +101,8 @@ IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
       content::WebContentsUserData<IPFSTabHelper>(*web_contents),
       pref_service_(
           user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())) {
-  auto* storage_partition =
-      web_contents->GetBrowserContext()->GetDefaultStoragePartition();
-
   resolver_ = std::make_unique<IPFSHostResolver>(
-      *storage_partition->GetNetworkContext(), kDnsDomainPrefix);
+      web_contents->GetBrowserContext(), kDnsDomainPrefix);
   pref_change_registrar_.Init(pref_service_);
   pref_change_registrar_.Add(
       kIPFSResolveMethod,
@@ -104,8 +131,7 @@ void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs, bool is_gateway_url) {
   DCHECK(!ipfs.is_valid() || ipfs.SchemeIs(kIPNSScheme));
   ipfs_resolved_url_ = ipfs.is_valid() ? ipfs : GURL();
   bool should_redirect =
-      (is_gateway_url && pref_service_->GetBoolean(kIPFSAutoRedirectGateway)) ||
-      (!is_gateway_url && pref_service_->GetBoolean(kIPFSAutoRedirectDNSLink));
+      pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway);
   if (ipfs.is_valid() && should_redirect) {
     LoadUrl(GetIPFSResolvedURL());
     return;
@@ -148,6 +174,20 @@ void IPFSTabHelper::LoadUrl(const GURL& gurl) {
 }
 
 void IPFSTabHelper::UpdateLocationBar() {
+#if !BUILDFLAG(IS_ANDROID)
+  auto* content_infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents());
+  // Check whether content_infobar_manager is present for unit tests
+  if (content_infobar_manager && ipfs_resolved_url_.is_valid() &&
+      !pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway)) {
+    BraveIPFSInfoBarDelegate::Create(
+        content_infobar_manager,
+        std::make_unique<BraveIPFSInfoBarDelegateObserverImpl>(
+            weak_ptr_factory_.GetWeakPtr()),
+        pref_service_);
+  }
+#endif
+
   if (web_contents()->GetDelegate())
     web_contents()->GetDelegate()->NavigationStateChanged(
         web_contents(), content::INVALIDATE_TYPE_URL);
@@ -207,7 +247,7 @@ bool IPFSTabHelper::IsAutoRedirectIPFSResourcesEnabled() const {
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       pref_service_->GetInteger(kIPFSResolveMethod));
   auto autoredirect_ipfs_resources_enabled =
-      pref_service_->GetBoolean(kIPFSAutoRedirectGateway);
+      pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway);
 
   return (resolve_method != ipfs::IPFSResolveMethodTypes::IPFS_DISABLED) &&
          autoredirect_ipfs_resources_enabled;

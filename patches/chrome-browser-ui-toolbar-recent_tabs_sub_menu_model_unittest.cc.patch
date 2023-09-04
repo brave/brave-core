@@ -1,13 +1,32 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-index 5bcdad635487da63deeb6d6fb6edd98fac02ef25..ddd77ac31e9c621454d6c65424c7813019395361 100644
+index bfaa95d9bc1302d872b42f5c9750b36ea95c6a5f..44fd60b9227b8f85624743898a19a051a5803a5b 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-@@ -767,7 +767,7 @@ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
-   // 5-8         <4 most-recent tabs of session>
+@@ -172,6 +172,7 @@ class RecentTabsSubMenuModelTest
+                              ->GetUnderlyingOpenTabsUIDelegateForTest());
+   }
  
-   TestRecentTabsSubMenuModel model(nullptr, browser());
--  EXPECT_EQ(9u, model.GetItemCount());
-+  BRAVE_MAX_TABS_PER_SESSION_AND_RECENCY
++  BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST
+  private:
+   raw_ptr<sync_sessions::SessionSyncService, DanglingUntriaged>
+       session_sync_service_;
+@@ -522,8 +523,8 @@ TEST_F(RecentTabsSubMenuModelTest, MaxSessionsAndRecency) {
+   EXPECT_THAT(base::span<const std::u16string>(
+                   recent_tabs_builder.GetTabTitlesSortedByRecency())
+                   .subspan(0, 3),
+-              ElementsAre(model.GetLabelAt(5), model.GetLabelAt(8),
+-                          model.GetLabelAt(11)));
++              ElementsAre(model.GetLabelAt(6), model.GetLabelAt(9),
++                          model.GetLabelAt(12)));
+ }
  
-   std::vector<std::u16string> tab_titles =
-       recent_tabs_builder.GetTabTitlesSortedByRecency();
+ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
+@@ -560,6 +561,6 @@ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
+   EXPECT_THAT(base::span<const std::u16string>(
+                   recent_tabs_builder.GetTabTitlesSortedByRecency())
+                   .subspan(0, 4),
+-              ElementsAre(model.GetLabelAt(5), model.GetLabelAt(6),
+-                          model.GetLabelAt(7), model.GetLabelAt(8)));
++              ElementsAre(model.GetLabelAt(6), model.GetLabelAt(7),
++                          model.GetLabelAt(8), model.GetLabelAt(9)));
+ }

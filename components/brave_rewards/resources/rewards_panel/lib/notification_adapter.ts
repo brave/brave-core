@@ -12,7 +12,6 @@ import {
   AutoContributeCompletedNotification,
   MonthlyContributionFailedNotification,
   GrantAvailableNotification,
-  PendingPublisherVerifiedNotification,
   ExternalWalletDisconnectedNotification,
   UpholdBATNotAllowedNotification,
   UpholdInsufficientCapabilitiesNotification
@@ -42,8 +41,7 @@ enum ExtensionNotificationType {
   GRANT = 2,
   GRANT_ADS = 3,
   TIPS_PROCESSED = 8,
-  VERIFIED_PUBLISHER = 10,
-  GENERAL_LEDGER = 12
+  GENERAL = 12
 }
 
 // Ensures that the specified object literal matches some type |T|
@@ -103,13 +101,7 @@ export function mapNotification (
         ...baseProps,
         type: 'monthly-tip-completed'
       }
-    case ExtensionNotificationType.VERIFIED_PUBLISHER:
-      return create<PendingPublisherVerifiedNotification>({
-        ...baseProps,
-        type: 'pending-publisher-verified',
-        publisherName: obj.args[0] || ''
-      })
-    case ExtensionNotificationType.GENERAL_LEDGER:
+    case ExtensionNotificationType.GENERAL:
       switch (obj.args[0]) {
         case 'wallet_disconnected':
           return create<ExternalWalletDisconnectedNotification>({

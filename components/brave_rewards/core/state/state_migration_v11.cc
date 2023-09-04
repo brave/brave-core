@@ -6,14 +6,15 @@
 #include "brave/components/brave_rewards/core/state/state_migration_v11.h"
 
 #include "base/check.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
 namespace brave_rewards::internal {
 namespace state {
 
-StateMigrationV11::StateMigrationV11(LedgerImpl& ledger) : ledger_(ledger) {}
+StateMigrationV11::StateMigrationV11(RewardsEngineImpl& engine)
+    : engine_(engine) {}
 
 StateMigrationV11::~StateMigrationV11() = default;
 
@@ -23,12 +24,12 @@ void StateMigrationV11::Migrate(LegacyResultCallback callback) {
   // their operating system we are reverting this change
 
   const auto decrypted_wallet =
-      ledger_->state()->GetEncryptedString(kWalletBrave);
+      engine_->state()->GetEncryptedString(kWalletBrave);
   if (decrypted_wallet) {
-    ledger_->SetState(kWalletBrave, decrypted_wallet.value());
+    engine_->SetState(kWalletBrave, decrypted_wallet.value());
   }
 
-  callback(mojom::Result::LEDGER_OK);
+  callback(mojom::Result::OK);
 }
 
 }  // namespace state

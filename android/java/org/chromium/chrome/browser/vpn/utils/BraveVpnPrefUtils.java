@@ -10,7 +10,6 @@ package org.chromium.chrome.browser.vpn.utils;
 import android.content.SharedPreferences;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;

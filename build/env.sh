@@ -18,7 +18,7 @@ brave_env::set_brave_env() {
       esac
     else
       case ${0##*/} in
-      *.sh)
+      env.sh)
         return 1 # NOT sourced.
         ;;
       *)

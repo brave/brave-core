@@ -18,11 +18,11 @@ const std::vector<GURL>& GetSearchEngineResultsPageUrls() {
           urls(
               {GURL("https://developer.mozilla.org/en-US/search?q=foobar"),
                GURL(R"(https://duckduckgo.com/?q=foobar&t=h_&ia=web)"),
-               GURL(R"(https://en.wikipedia.org/wiki/Foobar)"),
+               GURL(R"(https://en.wikipedia.org/wiki/foobar)"),
                GURL(R"(https://fireball.de/search?q=foobar)"),
                GURL(R"(https://github.com/search?q=foobar)"),
-               GURL(R"(https://infogalactic.com/info/Foobar)"),
-               GURL(R"(https://ja.wikipedia.org/wiki/Foobar)"),
+               GURL(R"(https://infogalactic.com/info/foobar)"),
+               GURL(R"(https://ja.wikipedia.org/wiki/foobar)"),
                GURL(R"(https://results.excite.com/serp?q=foobar)"),
                GURL(R"(https://search.brave.com/search?q=foobar&source=web)"),
                GURL(

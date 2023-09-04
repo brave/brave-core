@@ -7,6 +7,7 @@ import { Reducer } from 'redux'
 
 import { types } from '../actions/rewards_types'
 import { userTypeFromMojo } from '../../shared/lib/user_type'
+import * as Rewards from '../lib/types'
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {
@@ -18,6 +19,15 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.isInitialized')
       break
     }
+    case types.GET_IS_GRANDFATHERED_USER: {
+      chrome.send('brave_rewards.isGrandfatheredUser')
+      break
+    }
+    case types.ON_IS_GRANDFATHERED_USER: {
+      state = { ...state }
+      state.isGrandfatheredUser = action.payload.isGrandfatheredUser
+      break
+    }
     case types.GET_USER_TYPE: {
       chrome.send('brave_rewards.getUserType')
       break
@@ -25,6 +35,15 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_USER_TYPE: {
       state = { ...state }
       state.userType = userTypeFromMojo(action.payload.userType)
+      break
+    }
+    case types.GET_IS_AUTO_CONTRIBUTE_SUPPORTED: {
+      chrome.send('brave_rewards.isAutoContributeSupported')
+      break
+    }
+    case types.ON_IS_AUTO_CONTRIBUTE_SUPPORTED: {
+      state = { ...state }
+      state.isAcSupported = action.payload.isAcSupported
       break
     }
     case types.GET_AUTO_CONTRIBUTE_PROPERTIES: {
@@ -89,6 +108,78 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
+    case types.ON_MODAL_ADS_HISTORY_CLOSE: {
+      let ui = state.ui
+      ui.modalAdsHistory = false
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_MODAL_ADS_HISTORY_OPEN: {
+      let ui = state.ui
+      ui.modalAdsHistory = true
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_ADS_SETTINGS_CLOSE: {
+      let ui = state.ui
+      ui.adsSettings = false
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_ADS_SETTINGS_OPEN: {
+      let ui = state.ui
+      ui.adsSettings = true
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_AUTO_CONTRIBUTE_SETTINGS_CLOSE: {
+      let ui = state.ui
+      ui.autoContributeSettings = false
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_AUTO_CONTRIBUTE_SETTINGS_OPEN: {
+      let ui = state.ui
+      ui.autoContributeSettings = true
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_CONTRIBUTIONS_SETTINGS_CLOSE: {
+      let ui = state.ui
+      ui.contributionsSettings = false
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_CONTRIBUTIONS_SETTINGS_OPEN: {
+      let ui = state.ui
+      ui.contributionsSettings = true
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
     case types.ON_MODAL_CONNECT_CLOSE: {
       let ui = state.ui
       ui.modalConnect = false
@@ -143,16 +234,19 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
-      state = { ...state }
-      state.adsData.adsEnabled = action.payload.adsData.adsEnabled
-      state.adsData.adsPerHour = action.payload.adsData.adsPerHour
-      state.adsData.adsSubdivisionTargeting = action.payload.adsData.adsSubdivisionTargeting
-      state.adsData.automaticallyDetectedAdsSubdivisionTargeting = action.payload.adsData.automaticallyDetectedAdsSubdivisionTargeting
-      state.adsData.shouldAllowAdsSubdivisionTargeting = action.payload.adsData.shouldAllowAdsSubdivisionTargeting
-      state.adsData.subdivisions = action.payload.adsData.subdivisions
-      state.adsData.adsUIEnabled = action.payload.adsData.adsUIEnabled
-      state.adsData.adsIsSupported = action.payload.adsData.adsIsSupported
-      state.adsData.needsBrowserUpgradeToServeAds = action.payload.adsData.needsBrowserUpgradeToServeAds
+      state = {...state}
+
+      const { adsData } = action.payload
+      state.adsData.adsPerHour = adsData.adsPerHour
+      state.adsData.adsSubdivisionTargeting = adsData.adsSubdivisionTargeting
+      state.adsData.automaticallyDetectedAdsSubdivisionTargeting = adsData.automaticallyDetectedAdsSubdivisionTargeting
+      state.adsData.shouldAllowAdsSubdivisionTargeting = adsData.shouldAllowAdsSubdivisionTargeting
+      state.adsData.subdivisions = adsData.subdivisions
+      state.adsData.adsIsSupported = adsData.adsIsSupported
+      state.adsData.needsBrowserUpgradeToServeAds = adsData.needsBrowserUpgradeToServeAds
+      state.adsData.notificationAdsEnabled = adsData.notificationAdsEnabled
+      state.adsData.newTabAdsEnabled = adsData.newTabAdsEnabled
+      state.adsData.newsAdsEnabled = adsData.newsAdsEnabled
       break
     }
     case types.GET_ADS_HISTORY: {
@@ -185,8 +279,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.TOGGLE_AD_OPT_IN: {
-      chrome.send('brave_rewards.toggleAdOptIn',
-                  [action.payload.category, action.payload.optAction])
+      chrome.send('brave_rewards.toggleAdOptIn', [action.payload.categoryContent])
       break
     }
     case types.ON_TOGGLE_AD_OPT_IN: {
@@ -194,8 +287,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.TOGGLE_AD_OPT_OUT: {
-      chrome.send('brave_rewards.toggleAdOptOut',
-                  [action.payload.category, action.payload.optAction])
+      chrome.send('brave_rewards.toggleAdOptOut', [action.payload.categoryContent])
       break
     }
     case types.ON_TOGGLE_AD_OPT_OUT: {
@@ -224,12 +316,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       const value = action.payload.value
       if (key) {
         chrome.send('brave_rewards.saveAdsSetting', [key, value.toString()])
-        if (key === 'adsEnabledMigrated') {
-          state.enabledAdsMigrated = true
-        } else {
-          state.adsData = { ...state.adsData }
-          state.adsData[key] = value
-        }
+        state.adsData = { ...state.adsData }
+        state.adsData[key] = value
       }
       break
     }
@@ -248,8 +336,11 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       const data = action.payload.data
       state.adsData.adsNextPaymentDate = data.adsNextPaymentDate
       state.adsData.adsReceivedThisMonth = data.adsReceivedThisMonth
-      state.adsData.adsEarningsThisMonth = data.adsEarningsThisMonth
-      state.adsData.adsEarningsLastMonth = data.adsEarningsLastMonth
+      state.adsData.adTypesReceivedThisMonth = data.adTypesReceivedThisMonth
+      state.adsData.adsMinEarningsThisMonth = data.adsMinEarningsThisMonth
+      state.adsData.adsMaxEarningsThisMonth = data.adsMaxEarningsThisMonth
+      state.adsData.adsMinEarningsLastMonth = data.adsMinEarningsLastMonth
+      state.adsData.adsMaxEarningsLastMonth = data.adsMaxEarningsLastMonth
       break
     }
     case types.GET_ENABLED_INLINE_TIPPING_PLATFORMS: {

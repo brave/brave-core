@@ -1,12 +1,20 @@
 diff --git a/chrome/browser/download/download_target_determiner.cc b/chrome/browser/download/download_target_determiner.cc
-index 1448b13bb4da5ee7be2ef418d0ecaf3b7c1f21a9..c92dc8917eb2930e28ab1a9fa5e9bbb69101b76a 100644
+index 4a297b7842a70f90d9f335291f58e7ac04cf0f4a..36a1b86ee8d6c6b75a4ccf0d6697ba0a059935f3 100644
 --- a/chrome/browser/download/download_target_determiner.cc
 +++ b/chrome/browser/download/download_target_determiner.cc
-@@ -1259,6 +1259,7 @@ DownloadFileType::DangerLevel DownloadTargetDeterminer::GetDangerLevel(
+@@ -1256,6 +1256,7 @@ DownloadFileType::DangerLevel DownloadTargetDeterminer::GetDangerLevel(
    // contains malware.
    if (HasPromptedForPath() ||
        confirmation_reason_ != DownloadConfirmationReason::NONE ||
 +      BRAVE_DOWNLOAD_TARGET_DETERMINER_GET_DANGER_LEVEL
        !download_->GetForcedFilePath().empty())
      return DownloadFileType::NOT_DANGEROUS;
+ 
+@@ -1294,6 +1295,7 @@ DownloadFileType::DangerLevel DownloadTargetDeterminer::GetDangerLevel(
+         ui::PAGE_TRANSITION_FROM_ADDRESS_BAR) != 0 ||
+        (download_->HasUserGesture() && visits == VISITED_REFERRER)))
+     return DownloadFileType::NOT_DANGEROUS;
++  BRAVE_DOWNLOAD_TARGET_DETERMINER_GET_DANGER_LEVEL2
+   return danger_level;
+ }
  

@@ -8,9 +8,9 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
-#include "ios/chrome/browser/application_context/application_context.h"
-#include "ios/chrome/browser/browser_state/browser_state_otr_helper.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/web/public/browser_state.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -33,7 +33,8 @@ JsonRpcService* JsonRpcServiceFactory::GetServiceForState(
 
 // static
 JsonRpcServiceFactory* JsonRpcServiceFactory::GetInstance() {
-  return base::Singleton<JsonRpcServiceFactory>::get();
+  static base::NoDestructor<JsonRpcServiceFactory> instance;
+  return instance.get();
 }
 
 JsonRpcServiceFactory::JsonRpcServiceFactory()

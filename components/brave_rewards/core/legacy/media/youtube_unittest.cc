@@ -7,9 +7,9 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_rewards/core/constants.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/youtube.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=MediaYouTubeTest.*

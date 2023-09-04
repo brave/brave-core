@@ -10,7 +10,7 @@ import * as leo from '@brave/leo/tokens/css'
 
 // types
 import { BraveWallet, StringWithAutocomplete } from '../../constants/types'
-import IThemeProps from 'brave-ui/src/theme/theme-interface'
+import IThemeProps from 'brave-ui/theme/theme-interface'
 
 // colors
 import { LeoColors } from '../leo/alert-inline/leo-colors'
@@ -204,7 +204,7 @@ export const WalletLink = styled(Link)`
   &:hover {
     cursor: pointer;
   }
-  
+
   &:active {
     opacity: 0.5;
   }
@@ -239,7 +239,7 @@ export const ToggleVisibilityButton = styled.button<{
     outline-style: solid;
     outline-color: ${p => p.theme.palette.blurple300};
     outline-width: 2px;
-  } 
+  }
 `
 
 export const CopyButton = styled(WalletButton) <{
@@ -469,7 +469,7 @@ export const CircleIconWrapper = styled.div<{
   position: relative;
   ${makePaddingMixin('12px')}
   box-shadow: 0px 0px 1px rgba(66, 69, 82, 0.08), 0px 0.5px 1.5px rgba(66, 69, 82, 0.1);
-  
+
   background-color: ${p => p.theme.color.background01};
   @media (prefers-color-scheme: dark) {
     background-color: ${p => p.theme.color.background02};
@@ -518,13 +518,6 @@ export const InputLabelText = styled.label`
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text03};
   text-align: left;
-  width: 100%;
-`
-
-export const BannerWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 24px;
   width: 100%;
 `
 

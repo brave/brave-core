@@ -5,6 +5,8 @@
 
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/tor_utils.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 
@@ -12,7 +14,7 @@ using BraveLocalStateBrowserTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, BasicTest) {
   // Tor is enabled by default.
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
 
   // No bridges by default.
   auto bridges_config = TorProfileServiceFactory::GetTorBridgesConfig();
@@ -22,10 +24,10 @@ IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, BasicTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, TorEnableDisable) {
   TorProfileServiceFactory::SetTorDisabled(true);
-  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled());
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
 
   TorProfileServiceFactory::SetTorDisabled(false);
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, ChangeBridges) {

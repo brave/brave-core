@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
@@ -22,7 +23,8 @@ namespace brave_news {
 
 // static
 BraveNewsControllerFactory* BraveNewsControllerFactory::GetInstance() {
-  return base::Singleton<BraveNewsControllerFactory>::get();
+  static base::NoDestructor<BraveNewsControllerFactory> instance;
+  return instance.get();
 }
 
 // static

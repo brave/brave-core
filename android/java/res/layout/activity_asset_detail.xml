@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -291,6 +292,7 @@
             android:visibility="gone"/>
 
         <TextView
+            android:id="@+id/accounts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -308,6 +310,7 @@
             android:layout_marginBottom="24dp"/>
 
         <TextView
+            android:id="@+id/transactions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -320,9 +323,128 @@
             android:id="@+id/rv_transactions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="24dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+        <TextView
+            style="@style/BraveWalletTextView"
+            android:id="@+id/information"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/information"
+            android:textColor="@color/wallet_secondary_text_color"
+            android:visibility="gone"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view_market_coin_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="@color/brave_wallet_dn_highlight_bg_color"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            android:visibility="gone">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp" >
+
+                <TextView
+                    style="@style/BraveWalletTextViewTitle"
+                    android:id="@+id/rank"
+                    android:layout_width="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:textColor="@color/wallet_secondary_text_color"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@+id/rank_label"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/volume"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <TextView
+                    style="@style/BraveWalletTextView"
+                    android:id="@+id/rank_label"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:text="@string/rank"
+                    android:textColor="@color/wallet_secondary_text_color"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/volume_label"
+                    app:layout_constraintTop_toBottomOf="@+id/rank" />
+
+                <TextView
+                    style="@style/BraveWalletTextViewTitle"
+                    android:id="@+id/volume"
+                    android:layout_width="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:textColor="@color/wallet_secondary_text_color"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@+id/volume_label"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintLeft_toRightOf="@+id/rank"
+                    app:layout_constraintRight_toLeftOf="@+id/market_cap"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <TextView
+                    style="@style/BraveWalletTextView"
+                    android:id="@+id/volume_label"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:text="@string/volume_24_h"
+                    android:textColor="@color/wallet_secondary_text_color"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintLeft_toRightOf="@+id/rank_label"
+                    app:layout_constraintRight_toLeftOf="@+id/market_cap_label"
+                    app:layout_constraintTop_toBottomOf="@+id/volume" />
+
+                <TextView
+                    style="@style/BraveWalletTextViewTitle"
+                    android:id="@+id/market_cap"
+                    android:layout_width="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:textColor="@color/wallet_secondary_text_color"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@+id/market_cap_label"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintLeft_toRightOf="@+id/volume"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <TextView
+                    style="@style/BraveWalletTextView"
+                    android:id="@+id/market_cap_label"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:text="@string/market_cap"
+                    android:textColor="@color/wallet_secondary_text_color"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintLeft_toRightOf="@+id/volume_label"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/market_cap" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:layout_width="match_parent"

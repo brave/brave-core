@@ -10,15 +10,11 @@ package org.chromium.chrome.browser.notifications;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Process;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
@@ -27,9 +23,7 @@ import android.widget.RemoteViews;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
-import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ApplicationStatus;
-import org.chromium.chrome.browser.notifications.R;
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
 import org.chromium.components.browser_ui.notifications.NotificationMetadata;
 import org.chromium.components.browser_ui.notifications.NotificationWrapper;
@@ -64,9 +58,14 @@ public class BraveNotificationBuilder extends StandardNotificationBuilder {
     private static final int MAX_SCALABLE_PADDING_DP = 3;
 
     /**
-     * The notification body height in compact view mode for Android S.
+     * The notification body height in dp for compact view mode for Android 12 and higher.
      */
-    private static final int COMPACT_BODY_CONTAINER_HEIGHT_S = 40;
+    private static final float COMPACT_BODY_CONTAINER_HEIGHT_DP = 40f;
+
+    /**
+     * The notification title margin top in dp for compact view mode for Android 12 and higher.
+     */
+    private static final float COMPACT_TITLE_MARGIN_TOP_DP = -4f;
 
     private static Bitmap sBraveIcon;
 
@@ -130,8 +129,10 @@ public class BraveNotificationBuilder extends StandardNotificationBuilder {
         // - the dimensions become less than before.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             compactView.setViewPadding(R.id.title, 0, 0, 0, 0);
-            compactView.setViewPadding(R.id.body_container, 0, 0, 0, 0);
-            compactView.setViewLayoutHeight(R.id.body_container, COMPACT_BODY_CONTAINER_HEIGHT_S,
+            compactView.setViewLayoutMargin(R.id.title, RemoteViews.MARGIN_TOP,
+                    COMPACT_TITLE_MARGIN_TOP_DP, TypedValue.COMPLEX_UNIT_DIP);
+            compactView.setViewPadding(R.id.body_container, 0, scaledPadding, 0, 0);
+            compactView.setViewLayoutHeight(R.id.body_container, COMPACT_BODY_CONTAINER_HEIGHT_DP,
                     TypedValue.COMPLEX_UNIT_DIP);
             compactView.setViewVisibility(R.id.icon_frame, View.GONE);
             bigView.setViewVisibility(R.id.icon_frame, View.GONE);

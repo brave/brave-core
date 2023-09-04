@@ -6,15 +6,15 @@
 import * as React from 'react'
 
 // types
-import { UserAccountType, WalletAccountType } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // components
 import { SelectAccountItem } from '../select-account-item/index'
 
 export interface Props {
-  accounts: WalletAccountType[]
-  selectedAccount?: UserAccountType
-  onSelectAccount: (account: UserAccountType) => () => void
+  accounts: BraveWallet.AccountInfo[]
+  selectedAccount?: BraveWallet.AccountInfo
+  onSelectAccount: (account: BraveWallet.AccountInfo) => void
   showTooltips?: boolean
 }
 
@@ -26,15 +26,17 @@ export const SelectAccount = ({
 }: Props) => {
   return (
     <>
-      {accounts.map((account) =>
+      {accounts.map((account) => (
         <SelectAccountItem
-          key={account.id}
+          key={account.accountId.uniqueKey}
           account={account}
-          onSelectAccount={onSelectAccount(account)}
-          selectedAccount={selectedAccount}
+          onSelectAccount={() => onSelectAccount(account)}
+          isSelected={
+            selectedAccount?.accountId.uniqueKey === account.accountId.uniqueKey
+          }
           showTooltips={showTooltips}
         />
-      )}
+      ))}
     </>
   )
 }

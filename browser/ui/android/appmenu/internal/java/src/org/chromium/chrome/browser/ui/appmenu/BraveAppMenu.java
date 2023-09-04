@@ -9,12 +9,10 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Rect;
-import android.view.Menu;
 import android.view.View;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.ui.appmenu.internal.R;
-import org.chromium.ui.base.DeviceFormFactor;
 
 class BraveAppMenu extends AppMenu {
     private static final String BRAVE_IS_MENU_FROM_BOTTOM = "brave_is_menu_from_bottom";
@@ -46,7 +44,7 @@ class BraveAppMenu extends AppMenu {
         return isMenuFromBottom() ? R.style.EndIconMenuAnimBottom : R.style.EndIconMenuAnim;
     }
 
-    private static boolean isMenuFromBottom() {
+    public static boolean isMenuFromBottom() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         return sharedPreferences.getBoolean(BRAVE_IS_MENU_FROM_BOTTOM, false);
     }

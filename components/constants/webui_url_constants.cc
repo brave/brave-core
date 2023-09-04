@@ -25,6 +25,7 @@ const char kBraveRewardsPanelHost[] = "rewards-panel.top-chrome";
 const char kBraveTipPanelURL[] = "chrome://tip-panel.top-chrome";
 const char kBraveTipPanelHost[] = "tip-panel.top-chrome";
 const char kBraveNewTabJS[] = "brave_new_tab.js";
+const char kBraveNewsInternalsHost[] = "news-internals";
 const char kBraveUIRewardsURL[] = "chrome://rewards/";
 const char kBraveUIAdblockURL[] = "chrome://adblock/";
 const char kBraveUIWebcompatReporterURL[] = "chrome://webcompat/";
@@ -39,7 +40,10 @@ const char kVPNPanelHost[] = "vpn-panel.top-chrome";
 const char kBraveUIWalletPageURL[] = "chrome://wallet/";
 const char kWalletPageHost[] = "wallet";
 #if BUILDFLAG(IS_ANDROID)
-const char kWalletSwapPagePath[] = "wallet/swap";
+const char kWalletBuyPagePath[] = "/fund-wallet";
+const char kWalletSendPagePath[] = "/send";
+const char kWalletSwapPagePath[] = "/swap";
+const char kWalletDepositPagePath[] = "/deposit-funds";
 #endif  // BUILDFLAG(IS_ANDROID)
 const char kExtensionSettingsURL[] = "brave://settings/extensions";
 const char kWalletSettingsURL[] = "brave://settings/wallet";
@@ -67,6 +71,6 @@ const char kPlaylistPlayerHost[] = "playlist-player";
 const char kPlaylistPlayerURL[] = "chrome-untrusted://playlist-player/";
 const char kSpeedreaderPanelURL[] = "chrome://brave-speedreader.top-chrome";
 const char kSpeedreaderPanelHost[] = "brave-speedreader.top-chrome";
-const char kCommandsHost[] = "commands";
+const char kShortcutsURL[] = "chrome://settings/system/shortcuts";
 const char kChatUIURL[] = "chrome-untrusted://chat/";
 const char kChatUIHost[] = "chat";

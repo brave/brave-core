@@ -30,6 +30,7 @@
 #include "components/policy/core/common/policy_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
+#include "components/signin/public/base/signin_pref_names.h"
 #include "components/spellcheck/browser/pref_names.h"
 #include "components/sync/base/pref_names.h"
 #include "content/public/test/browser_test.h"
@@ -110,7 +111,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
                   ->GetFilePath(kIPFSBinaryPath)
                   .empty());
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      kIPFSAutoRedirectGateway));
+      kIPFSAutoRedirectToConfiguredGateway));
 #endif
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kIPFSCompanionEnabled));
@@ -126,9 +127,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
             brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kShowWalletIconOnToolbar));
-  EXPECT_EQ(static_cast<int>(brave_wallet::mojom::CoinType::ETH),
-            chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
-                kBraveWalletSelectedCoin));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kMRUCyclingEnabled));
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)

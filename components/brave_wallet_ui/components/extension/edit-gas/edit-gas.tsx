@@ -3,18 +3,33 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 import { getLocale } from '../../../../common/locale'
 import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
 import { UpdateUnapprovedTransactionGasFieldsType } from '../../../common/constants/action_types'
 
-import { NavButton, Panel } from '..'
+import { NavButton } from '../buttons/nav-button/index'
+import { Panel } from '../panel/index'
 
 // Utils
 import Amount from '../../../utils/amount'
+import { parseTransactionFeesWithoutPrices } from '../../../utils/tx-utils'
+import { makeNetworkAsset } from '../../../options/asset-options'
+import {
+  getPriceIdForToken
+} from '../../../utils/api-utils'
+import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
 
-// Hooks
-import { useTransactionFeesParser } from '../../../common/hooks'
+// Queries
+import {
+  useGetDefaultFiatCurrencyQuery,
+  useGetTokenSpotPricesQuery
+} from '../../../common/slices/api.slice'
+import {
+  querySubscriptionOptions60s
+} from '../../../common/slices/constants'
+
 // Styled Components
 import { ErrorText, Row } from '../../shared/style'
 import {
@@ -44,7 +59,6 @@ export enum MaxPriorityPanels {
 
 interface Props {
   onCancel: () => void
-  networkSpotPrice: string
   transactionInfo: SerializableTransactionInfo
   selectedNetwork: BraveWallet.NetworkInfo
   baseFeePerGas: string
@@ -58,7 +72,6 @@ interface Props {
 
 export const EditGas = ({
   onCancel,
-  networkSpotPrice,
   selectedNetwork,
   transactionInfo,
   baseFeePerGas,
@@ -69,8 +82,10 @@ export const EditGas = ({
   setSuggestedSliderStep,
   setMaxPriorityPanel
 }: Props) => {
-  const parseTransactionFees = useTransactionFeesParser(selectedNetwork, networkSpotPrice)
-  const transactionFees = parseTransactionFees(transactionInfo)
+  const transactionFees = React.useMemo(
+    () => parseTransactionFeesWithoutPrices(transactionInfo),
+    [transactionInfo]
+  )
   const { isEIP1559Transaction } = transactionFees
 
   // state
@@ -90,6 +105,27 @@ export const EditGas = ({
     new Amount(transactionFees.maxFeePerGas)
       .divideByDecimals(9) // Wei-per-gas → GWei-per-gas conversion
       .format()
+  )
+
+  // queries
+  const networkAsset = React.useMemo(() => {
+    return makeNetworkAsset(selectedNetwork)
+  }, [selectedNetwork])
+
+  const networkTokenPriceIds = React.useMemo(() =>
+    networkAsset
+      ? [getPriceIdForToken(networkAsset)]
+      : [],
+    [networkAsset]
+  )
+
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    networkTokenPriceIds.length && defaultFiatCurrency
+      ? { ids: networkTokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
+    querySubscriptionOptions60s
   )
 
   // methods
@@ -210,9 +246,11 @@ export const EditGas = ({
       .format(6)
     : undefined
 
-  const suggestedEIP1559FiatGasFee = suggestedEIP1559GasFee && new Amount(suggestedEIP1559GasFee)
-    .times(networkSpotPrice)
-    .formatAsFiat()
+  const suggestedEIP1559FiatGasFee = suggestedEIP1559GasFee &&
+    spotPriceRegistry &&
+    new Amount(suggestedEIP1559GasFee)
+      .times(getTokenPriceAmountFromRegistry(spotPriceRegistry, networkAsset))
+      .formatAsFiat()
 
   const customEIP1559GasFee = showCustomMaxPriorityPanel
     ? new Amount(maxFeePerGas)
@@ -221,9 +259,11 @@ export const EditGas = ({
       .divideByDecimals(selectedNetwork.decimals) // Wei → ETH conversion
       .format(6)
     : undefined
-  const customEIP1559FiatGasFee = customEIP1559GasFee && new Amount(customEIP1559GasFee)
-    .times(networkSpotPrice)
-    .formatAsFiat()
+  const customEIP1559FiatGasFee = customEIP1559GasFee &&
+    spotPriceRegistry &&
+    new Amount(customEIP1559GasFee)
+      .times(getTokenPriceAmountFromRegistry(spotPriceRegistry, networkAsset))
+      .formatAsFiat()
 
   const gasLimitComponent = React.useMemo(
     () => (
@@ -242,7 +282,7 @@ export const EditGas = ({
         )}
       </>
     ),
-    [gasLimit, handleGasLimitInputChanged]
+    [gasLimit, handleGasLimitInputChanged, spotPriceRegistry]
   )
 
   const isZeroGasPrice = React.useMemo(() => {

@@ -6,6 +6,7 @@
 import { action } from 'typesafe-actions'
 import { types } from './rewards_types'
 import * as mojom from '../../shared/lib/mojom'
+import * as Rewards from '../lib/types'
 
 export const isInitialized = () => action(types.IS_INITIALIZED)
 
@@ -14,6 +15,11 @@ export const onSettingSave = (key: string, value: any, persist: boolean = true) 
   value,
   persist
 })
+
+export const getIsGrandfatheredUser = () => action(types.GET_IS_GRANDFATHERED_USER)
+
+export const onIsGrandfatheredUser = (isGrandfatheredUser: boolean) =>
+    action(types.ON_IS_GRANDFATHERED_USER, {isGrandfatheredUser})
 
 export const onUserType =
   (userType: number) => action(types.ON_USER_TYPE, { userType })
@@ -26,6 +32,12 @@ export const onRewardsParameters = (properties: Rewards.RewardsParameters) =>
   action(types.ON_REWARDS_PARAMETERS, {
     properties
   })
+
+export const getIsAutoContributeSupported = () => action(types.GET_IS_AUTO_CONTRIBUTE_SUPPORTED)
+
+export const onIsAutoContributeSupported = (isAcSupported: boolean) => action(types.ON_IS_AUTO_CONTRIBUTE_SUPPORTED, {
+  isAcSupported
+})
 
 export const getAutoContributeProperties = () => action(types.GET_AUTO_CONTRIBUTE_PROPERTIES)
 
@@ -62,6 +74,22 @@ export const onModalResetOpen = () => action(types.ON_MODAL_RESET_OPEN)
 export const onModalConnectClose = () => action(types.ON_MODAL_CONNECT_CLOSE)
 
 export const onModalConnectOpen = () => action(types.ON_MODAL_CONNECT_OPEN)
+
+export const onModalAdsHistoryClose = () => action(types.ON_MODAL_ADS_HISTORY_CLOSE)
+
+export const onModalAdsHistoryOpen = () => action(types.ON_MODAL_ADS_HISTORY_OPEN)
+
+export const onAdsSettingsClose = () => action(types.ON_ADS_SETTINGS_CLOSE)
+
+export const onAdsSettingsOpen = () => action(types.ON_ADS_SETTINGS_OPEN)
+
+export const onAutoContributeSettingsClose = () => action(types.ON_AUTO_CONTRIBUTE_SETTINGS_CLOSE)
+
+export const onAutoContributeSettingsOpen = () => action(types.ON_AUTO_CONTRIBUTE_SETTINGS_OPEN)
+
+export const onContributionsSettingsClose = () => action(types.ON_CONTRIBUTIONS_SETTINGS_CLOSE)
+
+export const onContributionsSettingsOpen = () => action(types.ON_CONTRIBUTIONS_SETTINGS_OPEN)
 
 export const onClearAlert = (property: string) => action(types.ON_CLEAR_ALERT, {
   property
@@ -154,18 +182,16 @@ export const onToggleAdThumbDown = (result: Rewards.ToggleLikeAction) => action(
   result
 })
 
-export const toggleAdOptIn = (category: string, optAction: number) => action(types.TOGGLE_AD_OPT_IN, {
-  category,
-  optAction
+export const toggleAdOptIn = (categoryContent: Rewards.CategoryContent) => action(types.TOGGLE_AD_OPT_IN, {
+  categoryContent
 })
 
 export const onToggleAdOptIn = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_IN, {
   result
 })
 
-export const toggleAdOptOut = (category: string, optAction: number) => action(types.TOGGLE_AD_OPT_OUT, {
-  category,
-  optAction
+export const toggleAdOptOut = (categoryContent: Rewards.CategoryContent) => action(types.TOGGLE_AD_OPT_OUT, {
+  categoryContent
 })
 
 export const onToggleAdOptOut = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_OUT, {
@@ -195,13 +221,6 @@ export const onAdsSettingSave = (key: string, value: any) => action(types.ON_ADS
 
 export const getReconcileStamp = () => action(types.GET_RECONCILE_STAMP)
 
-export const getPendingContributions = () => action(types.GET_PENDING_CONTRIBUTIONS)
-
-export const onPendingContributions = (list: Rewards.PendingContribution[]) =>
-  action(types.ON_PENDING_CONTRIBUTIONS, {
-    list
-  })
-
 export const onStatement = (data: any) => action(types.ON_STATEMENT, { data })
 
 export const getStatement = () => action(types.GET_STATEMENT)
@@ -223,13 +242,6 @@ export const onInlineTipSettingChange = (key: string, value: boolean) => action(
 
 export const onInlineTipsEnabledChange = (enabled: boolean) =>
   action(types.ON_INLINE_TIPS_ENABLED_CHANGE, { enabled })
-
-export const removePendingContribution = (id: number) =>
-  action(types.REMOVE_PENDING_CONTRIBUTION, {
-    id
-  })
-
-export const removeAllPendingContribution = () => action(types.REMOVE_ALL_PENDING_CONTRIBUTION)
 
 export const restorePublisher = (publisherKey: string) => action(types.ON_RESTORE_PUBLISHER, {
   publisherKey

@@ -42,6 +42,8 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
   // AdBlockFiltersProvider
   void AddObserver(AdBlockFiltersProvider::Observer* observer);
 
+  std::string GetNameForDebugging() override;
+
  private:
   const raw_ptr<PrefService> local_state_;
 

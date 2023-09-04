@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "v8/include/v8-local-handle.h"
 #include "v8/include/v8-value.h"
 
@@ -22,8 +23,7 @@ namespace brave {
 // WrapSource and args for SafeCallFunction.
 v8::MaybeLocal<v8::Value> LoadScriptWithSafeBuiltins(
     blink::WebLocalFrame* web_frame,
-    const std::string& script,
-    const std::string& name);
+    const std::string& script);
 
 }  //  namespace brave
 

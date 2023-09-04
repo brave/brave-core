@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // POST https://api.uphold.com/v0/me/cards
 //
@@ -78,7 +78,7 @@
 // }
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint::uphold {
 
@@ -87,23 +87,23 @@ using PostCardsCallback =
 
 class PostCards {
  public:
-  explicit PostCards(LedgerImpl& ledger);
+  explicit PostCards(RewardsEngineImpl& engine);
   ~PostCards();
 
-  void Request(const std::string& token, PostCardsCallback);
+  void Request(const std::string& token, PostCardsCallback) const;
 
  private:
-  std::string GetUrl();
+  std::string GetUrl() const;
 
-  std::string GeneratePayload();
+  std::string GeneratePayload() const;
 
-  mojom::Result CheckStatusCode(int status_code);
+  mojom::Result CheckStatusCode(int status_code) const;
 
-  mojom::Result ParseBody(const std::string& body, std::string* id);
+  mojom::Result ParseBody(const std::string& body, std::string* id) const;
 
-  void OnRequest(PostCardsCallback, mojom::UrlResponsePtr);
+  void OnRequest(PostCardsCallback, mojom::UrlResponsePtr) const;
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace endpoint::uphold

@@ -5,18 +5,18 @@
 
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_server.h"
 
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace endpoint {
 
-PaymentServer::PaymentServer(LedgerImpl& ledger)
-    : post_order_(ledger),
-      post_credentials_(ledger),
-      get_credentials_(ledger),
-      post_votes_(ledger),
-      post_transaction_gemini_(ledger),
-      post_transaction_uphold_(ledger) {}
+PaymentServer::PaymentServer(RewardsEngineImpl& engine)
+    : post_order_(engine),
+      post_credentials_(engine),
+      get_credentials_(engine),
+      post_votes_(engine),
+      post_transaction_gemini_(engine),
+      post_transaction_uphold_(engine) {}
 
 PaymentServer::~PaymentServer() = default;
 

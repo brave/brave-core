@@ -33,7 +33,9 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
   SolanaTxManager(TxService* tx_service,
                   JsonRpcService* json_rpc_service,
                   KeyringService* keyring_service,
-                  PrefService* prefs);
+                  PrefService* prefs,
+                  TxStorageDelegate* delegate,
+                  AccountResolverDelegate* account_resolver_delegate);
   ~SolanaTxManager() override;
 
   using ProcessSolanaHardwareSignatureCallback =
@@ -42,7 +44,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
   // TxManager
   void AddUnapprovedTransaction(const std::string& chain_id,
                                 mojom::TxDataUnionPtr tx_data_union,
-                                const std::string& from,
+                                const mojom::AccountIdPtr& from,
                                 const absl::optional<url::Origin>& origin,
                                 const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;

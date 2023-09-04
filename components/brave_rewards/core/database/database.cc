@@ -7,39 +7,37 @@
 
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
-
-using std::placeholders::_1;
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace database {
 
-Database::Database(LedgerImpl& ledger)
-    : ledger_(ledger),
-      initialize_(ledger),
-      activity_info_(ledger),
-      balance_report_(ledger),
-      contribution_info_(ledger),
-      contribution_queue_(ledger),
-      creds_batch_(ledger),
-      event_log_(ledger),
-      external_transactions_(ledger),
-      promotion_(ledger),
-      media_publisher_info_(ledger),
-      multi_tables_(ledger),
-      publisher_info_(ledger),
-      publisher_prefix_list_(ledger),
-      recurring_tip_(ledger),
-      server_publisher_info_(ledger),
-      sku_order_(ledger),
-      sku_transaction_(ledger),
-      unblinded_token_(ledger) {}
+Database::Database(RewardsEngineImpl& engine)
+    : engine_(engine),
+      initialize_(engine),
+      activity_info_(engine),
+      balance_report_(engine),
+      contribution_info_(engine),
+      contribution_queue_(engine),
+      creds_batch_(engine),
+      event_log_(engine),
+      external_transactions_(engine),
+      promotion_(engine),
+      media_publisher_info_(engine),
+      multi_tables_(engine),
+      publisher_info_(engine),
+      publisher_prefix_list_(engine),
+      recurring_tip_(engine),
+      server_publisher_info_(engine),
+      sku_order_(engine),
+      sku_transaction_(engine),
+      unblinded_token_(engine) {}
 
 Database::~Database() = default;
 
-void Database::Initialize(LegacyResultCallback callback) {
-  initialize_.Start(callback);
+void Database::Initialize(ResultCallback callback) {
+  initialize_.Start(std::move(callback));
 }
 
 void Database::Close(LegacyResultCallback callback) {
@@ -48,9 +46,10 @@ void Database::Close(LegacyResultCallback callback) {
   command->type = mojom::DBCommand::Type::CLOSE;
 
   transaction->commands.push_back(std::move(command));
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 /**
@@ -106,10 +105,11 @@ void Database::SaveBalanceReportInfoItem(mojom::ActivityMonth month,
   balance_report_.SetAmount(month, year, type, amount, callback);
 }
 
-void Database::GetBalanceReportInfo(mojom::ActivityMonth month,
-                                    int year,
-                                    GetBalanceReportCallback callback) {
-  balance_report_.GetRecord(month, year, callback);
+void Database::GetBalanceReportInfo(
+    mojom::ActivityMonth month,
+    int year,
+    mojom::RewardsEngine::GetBalanceReportCallback callback) {
+  balance_report_.GetRecord(month, year, std::move(callback));
 }
 
 void Database::GetAllBalanceReports(GetBalanceReportListCallback callback) {

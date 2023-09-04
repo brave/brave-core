@@ -15,7 +15,8 @@ class Profile;
 
 class BraveOmniboxClientImpl : public ChromeOmniboxClient {
  public:
-  BraveOmniboxClientImpl(ChromeOmniboxEditModelDelegate* edit_model_delegate,
+  BraveOmniboxClientImpl(LocationBar* location_bar,
+                         Browser* browser,
                          Profile* profile);
   BraveOmniboxClientImpl(const BraveOmniboxClientImpl&) = delete;
   BraveOmniboxClientImpl& operator=(const BraveOmniboxClientImpl&) = delete;

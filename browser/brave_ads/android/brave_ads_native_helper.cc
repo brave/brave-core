@@ -10,36 +10,30 @@
 #include "base/android/jni_string.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_ads/android/jni_headers/BraveAdsNativeHelper_jni.h"
-#include "brave/components/brave_ads/core/ads_util.h"
+#include "brave/components/brave_ads/core/public/ads_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "chrome/browser/profiles/profile_android.h"
+#include "components/prefs/pref_service.h"
 
 namespace brave_ads {
 
 // static
-jboolean JNI_BraveAdsNativeHelper_IsBraveAdsEnabled(
+jboolean JNI_BraveAdsNativeHelper_IsOptedInToNotificationAds(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
-  if (!ads_service) {
-    return false;
-  }
-
-  return ads_service->IsEnabled();
+  return profile->GetPrefs()->GetBoolean(
+      brave_ads::prefs::kOptedInToNotificationAds);
 }
 
 // static
-void JNI_BraveAdsNativeHelper_SetAdsEnabled(
+void JNI_BraveAdsNativeHelper_SetOptedInToNotificationAds(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
     jboolean should_enable_ads) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
-  if (!ads_service) {
-    return;
-  }
-
-  ads_service->SetEnabled(should_enable_ads);
+  profile->GetPrefs()->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds,
+                                  should_enable_ads);
 }
 
 // static

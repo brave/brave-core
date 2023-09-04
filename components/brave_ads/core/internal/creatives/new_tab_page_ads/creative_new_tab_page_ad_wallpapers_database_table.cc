@@ -42,7 +42,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   return count;
 }
 
-void MigrateToV24(mojom::DBTransactionInfo* transaction) {
+void MigrateToV29(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
   DropTable(transaction, "creative_new_tab_page_ad_wallpapers");
@@ -115,12 +115,8 @@ void CreativeNewTabPageAdWallpapers::Migrate(
   CHECK(transaction);
 
   switch (to_version) {
-    case 24: {
-      MigrateToV24(transaction);
-      break;
-    }
-
-    default: {
+    case 29: {
+      MigrateToV29(transaction);
       break;
     }
   }

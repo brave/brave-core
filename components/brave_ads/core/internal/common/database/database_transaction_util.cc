@@ -8,16 +8,18 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database {
 
 namespace {
 
-void OnRunTransaction(ResultCallback callback,
-                      mojom::DBCommandResponseInfoPtr command_response) {
-  CHECK(command_response);
+void RunTransactionCallback(ResultCallback callback,
+                            mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response) {
+    return std::move(callback).Run(/*success*/ false);
+  }
 
   std::move(callback).Run(
       /*success*/ command_response->status ==
@@ -30,7 +32,7 @@ void RunTransaction(mojom::DBTransactionInfoPtr transaction,
                     ResultCallback callback) {
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnRunTransaction, std::move(callback)));
+      base::BindOnce(&RunTransactionCallback, std::move(callback)));
 }
 
 }  // namespace brave_ads::database

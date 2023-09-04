@@ -16,6 +16,7 @@
 <translation id="1100066534610197918">باز کردن در برگه جدید در گروه</translation>
 <translation id="4660777881054855091">‏مایلید به بهبود Brave کمک کنید؟</translation>
 <translation id="1105960400813249514">گرفتن عکس از صفحه‌</translation>
+<translation id="1108214977745280468">مشاهده اطلاعات آماری صفحه</translation>
 <translation id="1108938384783527433">همگام‌سازی سابقه</translation>
 <translation id="1110914759170138831">نوشتار برجسته‌شده کوتاه شد</translation>
 <translation id="1111673857033749125">نشانک‌های ذخیره‌شده در سایر دستگاه‌های شما در اینجا نشان داده می‌شوند.</translation>
@@ -29,7 +30,6 @@
 <translation id="1145536944570833626">حذف داده‌های موجود.</translation>
 <translation id="1149401351239820326">ماه انقضا</translation>
 <translation id="7083341910267693582">‏<ph name="APP_NAME"/> در Brave باز می‌شود. درصورت ادامه دادن، با <ph name="BEGIN_LINK1"/>شرایط خدمات Brave<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>شرایط خدمات تکمیلی Brave و ChromeOS<ph name="END_LINK2"/> موافقت می‌کنید.</translation>
-<translation id="1154704303112745282">صفحه <ph name="VIOLATED_URL"/> به‌صورت آفلاین دردسترس نیست</translation>
 <translation id="1173894706177603556">تغییر نام</translation>
 <translation id="1177863135347784049">سفارشی</translation>
 <translation id="1181037720776840403">حذف</translation>
@@ -39,7 +39,6 @@
 <translation id="1201402288615127009">بعدی</translation>
 <translation id="1202892408424955784">محصولات پیگیری‌شده</translation>
 <translation id="1204037785786432551">بارگیری پیوند</translation>
-<translation id="7196655759099928465">‏دکمه کنش Brave: <ph name="ACTION"/></translation>
 <translation id="1206892813135768548">کپی نوشتار پیوند</translation>
 <translation id="1209206284964581585">فعلاً پنهان شود</translation>
 <translation id="1227058898775614466">سابقه پیمایش</translation>
@@ -56,17 +55,19 @@
 <translation id="1996480094660735607">‏Brave doodle: ‏<ph name="DOODLE_DESCRIPTION"/></translation>
 <translation id="1263231323834454256">فهرست خواندن</translation>
 <translation id="1266864766717917324"><ph name="CONTENT_TYPE"/> هم‌رسانی نشد</translation>
+<translation id="1269129608791067105">سابقه را اینجا خواهید دید</translation>
 <translation id="1273937721055267968">مسدود کردن <ph name="DOMAIN"/></translation>
 <translation id="1283039547216852943">برای بزرگ کردن ضربه بزنید</translation>
-<translation id="1285310382777185058">تغییر زبان</translation>
+<translation id="194557235473047967">‏از شما خواسته می‌شود به سیستم «حساب Brave» خود وارد شوید</translation>
 <translation id="1291207594882862231">پاک کردن سابقه، کوکی‌ها، داده‌های سایت، حافظه پنهان…</translation>
+<translation id="8492076695690766757">‏گذرواژه‌هایتان از «مدیر گذرواژه Brave» برای Brave <ph name="CHROME_CHANNEL"/> حذف خواهد شد. فایل گذرواژه‌هایی را که اکنون بارگیری کردید نزد خود نگه دارید.</translation>
 <translation id="129553762522093515">اخیراً بسته‌شده</translation>
 <translation id="1298077576058087471">تا ۶۰٪ در مصرف داده صرفه‌جویی کنید، اخبار امروز را بخوانید</translation>
 <translation id="1303339473099049190">گذرواژه پیدا نشد. املای آن را بررسی و دوباره امتحان کنید.</translation>
 <translation id="1303507811548703290"><ph name="DOMAIN"/> - ارسال‌شده از <ph name="DEVICE_NAME"/></translation>
-<translation id="1310482092992808703">گروه‌بندی برگه‌ها</translation>
 <translation id="1311657260431405215">این رمزینه پاسخ‌سریع یک نشانی وب نیست: <ph name="QRCODEVALUE"/></translation>
 <translation id="1316212908214730110">chrome_stylized_highlight_</translation>
+<translation id="131655401280401879">اگر بعداً قفل نمایه را حذف کنید، اطلاعات ذخیره‌شده شما پاک خواهد شد.</translation>
 <translation id="1320912611264252795">پوشه‌های جریان ذخیره نشانک به‌صورت کامل باز شده است</translation>
 <translation id="1327257854815634930">سابقه «پیمایش» باز است.</translation>
 <translation id="6773423637732432200">‏Brave به‌روزرسانی نشد. گزینه‌های دیگر</translation>
@@ -87,7 +88,6 @@
 <translation id="13931502444227376">برای ادامه دادن، <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> نام، نشانی ایمیل، و عکس نمایه‌تان را با این سایت هم‌رسانی خواهد کرد. <ph name="BEGIN_LINK1"/>شرایط خدمات<ph name="END_LINK1"/> این سایت را ببینید.</translation>
 <translation id="1397811292916898096">جستجو با <ph name="PRODUCT_NAME"/></translation>
 <translation id="5857638389580847844">‏هروقت بخواهید می‌توانید در تنظیمات Brave نظرتان را عوض کنید. دوره‌های آزمایشی به‌موازات روش کنونی ارائه آگهی اجرا می‌شود، بنابراین تغییرات بلافاصله ظاهر نمی‌شوند.</translation>
-<translation id="1406000523432664303">«ردیابی نشود»</translation>
 <translation id="1407069428457324124">زمینه تیره</translation>
 <translation id="1407135791313364759">باز کردن همه</translation>
 <translation id="1409879593029778104">بارگیری <ph name="FILE_NAME"/> انجام نشد زیرا فایل از قبل موجود است.</translation>
@@ -110,7 +110,7 @@
 <translation id="1513352483775369820">نشانک‌ها و سابقه وب</translation>
 <translation id="1513814250881909472">برای دریافت برگه‌هایتان از دستگاه‌های دیگر، همگام‌سازی کنید</translation>
 <translation id="1513858653616922153">حذف گذرواژه</translation>
-<translation id="1514552811327923157">درخواست «جعبه ایمنی حریم خصوصی» به‌صورت کامل باز شده است</translation>
+<translation id="1514552811327923157">درخواست «جعبه شنی حریم خصوصی» به‌صورت کامل باز شده است</translation>
 <translation id="1521774566618522728">امروز فعال بود</translation>
 <translation id="8090895580117672212">‏برای مدیریت تنظیمات حساب Brave، روی دکمه «مدیریت حساب» ضربه بزنید</translation>
 <translation id="1549000191223877751">انتقال به پنجره دیگر</translation>
@@ -118,18 +118,18 @@
 <translation id="1571304935088121812">کپی کردن نام کاربری</translation>
 <translation id="1592864538817356322">محافظت استاندارد:</translation>
 <translation id="1594635596540195766"><ph name="SUGGESTIONS_COUNT"/> مورد پیشنهادی در فهرست زیر.</translation>
+<translation id="1598163867407640634">استفاده از <ph name="SITE_ETLD_PLUS_ONE"/> با <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="1977195831772110829">‏<ph name="BEGIN_BOLD"/>چگونه می‌توانید داده‌هایتان را مدیریت کنید:<ph name="END_BOLD"/> برای محافظت از حریم خصوصی شما، علایقی را که قدیمی‌تر از ۴ هفته باشد به‌طور خودکار حذف می‌کنیم. وقتی به مرور کردن ادامه می‌دهید، ممکن است علاقه‌ای مجدداً به فهرست اضافه شود. یا می‌توانید علایقی را که نمی‌خواهید Brave مدنظر قرار دهد حذف کنید.</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{حذف ۱ مورد انتخاب‌شده}one{حذف # مورد انتخاب‌شده}other{حذف # مورد انتخاب‌شده}}</translation>
 <translation id="3122582044404611732">‏محتوای جدید را در صفحه اصلی Brave کاوش کنید</translation>
 <translation id="1641113438599504367">مرور ایمن</translation>
 <translation id="164269334534774161">شما در حال تماشای کپی آفلاین این صفحه از <ph name="CREATION_TIME"/> هستید</translation>
 <translation id="1644574205037202324">سابقه</translation>
-<translation id="160450840812032879">‏انتخاب نحوه پخش خودکار پیش‌نمایش ویدیوها در صفحه اصلی Brave.</translation>
+<translation id="1657932388559784161">برگ زیرین اطلاعات آماری صفحه بسته شده است</translation>
 <translation id="1670399744444387456">پایه</translation>
 <translation id="1671236975893690980">بارگیری معلق است…</translation>
 <translation id="1672586136351118594">دیگر نشان داده نشود</translation>
 <translation id="1680919990519905526">‏خرید محتوای تصویر با «لنز Brave» <ph name="BEGIN_NEW"/>جدید<ph name="END_NEW"/></translation>
-<translation id="1682195225331129001">امتحان می‌کنید؟</translation>
 <translation id="1702543251015153180">تنظیمات زمینه تیره تغییر کند؟</translation>
 <translation id="1702907158640575240">مرورگر تحت‌مدیریت</translation>
 <translation id="1710099199314114079">عوض کردن یا بستن برگه‌ها</translation>
@@ -139,7 +139,7 @@
 <translation id="1749561566933687563">همگام‌سازی نشانک‌ها</translation>
 <translation id="1750259112639922169">گروه برگه - <ph name="TAB_COUNT"/> برگه</translation>
 <translation id="17513872634828108">بازکردن برگه‌ها</translation>
-<translation id="1754404134430936718">نوشتار کپی شد</translation>
+<translation id="9207812657123271782">‏به‌روزرسانی «مدیر گذرواژه Brave»</translation>
 <translation id="1778457539567749232">علامت‌گذاری به عنوان خوانده نشده</translation>
 <translation id="1779766957982586368">بستن پنجره</translation>
 <translation id="1791662854739702043">نصب‌شده</translation>
@@ -148,6 +148,7 @@
 <translation id="1810845389119482123">همگام‌سازی اولیه کامل نشد</translation>
 <translation id="1829244130665387512">یافتن در صفحه</translation>
 <translation id="1832459821645506983">بله، موافقم</translation>
+<translation id="5488575152752589250">‏برای دریافت مرتبط‌ترین محتوا از Brave، همگام‌سازی کنید</translation>
 <translation id="1296423691585024517">‏وقتی نسخه آزمایشی روشن باشد، «سنجش آگهی» به سایت‌هایی که بازدید می‌کنید اجازه می‌دهد اطلاعاتی را از Brave درخواست کنند که به آن‌ها کمک می‌کند عملکرد آگهی‌هایشان را بسنجند. «سنجش آگهی» ردیابی بین‌سایتی را با انتقال حداقل اطلاعات ممکن بین سایت‌ها محدود می‌کند.
 
 وقتی سابقه مرور (همه سوابق یا سابقه سایتی به‌خصوص) را حذف می‌کنید، در واقع اطلاعات سنجش مرتبط را هم حذف می‌کنید. <ph name="BEGIN_LINK"/>سابقه مرورتان<ph name="END_LINK"/> را ببینید.</translation>
@@ -159,6 +160,7 @@
 <translation id="1910950723001426294">فهرست گزینه‌های هم‌رسانی بسته است.</translation>
 <translation id="7021823858304886493">‏مجاز کردن ورود به سیستم Brave</translation>
 <translation id="1922362554271624559">زبان‌های پیشنهادشده</translation>
+<translation id="1924255092154549435">برگه گسترده شده است</translation>
 <translation id="1925021887439448749">نشانی وب سفارشی وارد کنید</translation>
 <translation id="1928696683969751773">به‌روزرسانی‌ها</translation>
 <translation id="1875543012935658554">‏Brave را دوباره باز کنید.</translation>
@@ -177,24 +179,24 @@
 <translation id="1995884366040846621">برای ادامه دادن، <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> نام، نشانی ایمیل، و عکس نمایه‌تان را با این سایت هم‌رسانی خواهد کرد. <ph name="BEGIN_LINK1"/>خط‌مشی رازداری<ph name="END_LINK1"/> این سایت را مطالعه کنید.</translation>
 <translation id="6968892567705775281">‏نوشتار اطراف در جستجوهای Brave لحاظ شوند؟</translation>
 <translation id="2009341475524975924">برای سنجش عملکرد آگهی، انواع محدودی از داده‌ها را می‌توان بین سایت‌ها هم‌رسانی کرد؛ داده‌هایی مثل زمانی از روز که آگهی به شما نشان داده شده است.</translation>
+<translation id="201060170519281460">قفل نمایه اطلاعات شما را در خودرو ایمن نگه می‌دارد، ازجمله گذرواژه‌های همگام‌سازی‌شده، پرداخت‌ها، و موارد دیگر.</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# فایل}one{# فایل}other{# فایل}}</translation>
 <translation id="2021896219286479412">کنترل‌های سایت تمام‌صفحه</translation>
 <translation id="2038563949887743358">روشن کردن درخواست سایت رایانه‌ای</translation>
 <translation id="7675869148432102528">‏<ph name="APP_NAME"/> داده‌هایی در Brave نیز دارد</translation>
 <translation id="2046634576464120978">ثبت انجام نشد</translation>
 <translation id="2049574241039454490"><ph name="FILE_SIZE_OF_TOTAL"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="2052422354554967744">جستجوی اینترنت</translation>
 <translation id="2053105195397337973">در تلاشیم روش‌هایی برای محدود کردن ردیابی پیدا کنیم که هم‌زمان به سایت‌ها امکان بدهند هرزآگهی و تقلب را متوقف کنند.</translation>
 <translation id="2056878612599315956">سایت موقتاً متوقف شد</translation>
 <translation id="2065944887543506430">{FILE_COUNT,plural, =1{۱ بارگیری انجام نشد}one{# بارگیری انجام نشد}other{# بارگیری انجام نشد}}</translation>
 <translation id="2067805253194386918">نوشتار</translation>
-<translation id="2068748236079642969">تماشای ویدیو  بعدی</translation>
 <translation id="2079545284768500474">لغو</translation>
 <translation id="2082238445998314030"><ph name="RESULT_NUMBER"/> نتیجه از <ph name="TOTAL_RESULTS"/></translation>
 <translation id="2096012225669085171">همگام‌سازی و شخصی‌سازی در همه دستگاه‌ها</translation>
 <translation id="2100273922101894616">ورود به سیستم خودکار</translation>
 <translation id="2100314319871056947">بخش‌های کوچک‌تری از نوشتار را به اشتراک بگذارید</translation>
 <translation id="2111511281910874386">رفتن به صفحه</translation>
+<translation id="2119609734654412418">نشانک‌ها را اینجا خواهید دید</translation>
 <translation id="2122601567107267586">باز کردن برنامه امکان‌پذیر نیست</translation>
 <translation id="2132122640199389833">برداشتن همه دستگاه‌های پیوندشده</translation>
 <translation id="213279576345780926"><ph name="TAB_TITLE"/> بسته شد</translation>
@@ -215,6 +217,7 @@
 <translation id="2227444325776770048">ادامه دادن به‌عنوان <ph name="USER_FULL_NAME"/></translation>
 <translation id="2230777942707397948">پنجره خالی</translation>
 <translation id="223356358902285214">فعالیت‌ها در وب و برنامه</translation>
+<translation id="2234827758954819389">راهنمای حریم خصوصی</translation>
 <translation id="2239812875700136898">کنترل داستان‌ها از دکمه «گزینه‌های یافته‌ها»</translation>
 <translation id="4808014761134300692">‏گذرواژه‌هایتان قبل‌از ذخیره شدن در «مدیر گذرواژه Brave» در دستگاهتان رمزگذاری می‌شود</translation>
 <translation id="2249635629516220541">سفارشی کردن اطلاعات مورداستفاده سایت‌ها برای نمایش آگهی به شما</translation>
@@ -237,7 +240,6 @@
 <translation id="2386938421315164605">پنهان و آشکار کردن موضوعات</translation>
 <translation id="2390510615457643724">می‌خواهید <ph name="FILE_NAME"/><ph name="FILE_SIZE"/> دوباره بارگیری شود؟</translation>
 <translation id="2394602618534698961">فایل‌هایی که بارگیری می‌کنید، اینجا نشان داده می‌شود</translation>
-<translation id="801672626447970525">‏وقتی به «حساب Brave» خود وارد می‌شوید، این ویژگی روشن می‌شود</translation>
 <translation id="2410754283952462441">انتخاب حساب</translation>
 <translation id="2414886740292270097">تاریک</translation>
 <translation id="2426805022920575512">انتخاب یک حساب دیگر</translation>
@@ -255,6 +257,7 @@
 <translation id="7229462727772664332">‏وضعیت ورود به سیستم <ph name="SITE_NAME"/>، داده‌های محصول مرور، و داده‌های سایت را در Brave خواهید دید</translation>
 <translation id="2510106555128151389">درحال نصب <ph name="WEBAPK_NAME"/>…</translation>
 <translation id="7222718784508482526">‏برای تنظیمات بیشتر مرتبط با حریم خصوصی، امنیت و جمع‌آوری داده‌ها، <ph name="BEGIN_LINK"/>همگام‌سازی و سرویس‌های Brave<ph name="END_LINK"/> را ببینید</translation>
+<translation id="2517113738956581680">برگ با اندازه کامل</translation>
 <translation id="2517472476991765520">اسکن</translation>
 <translation id="284843628681142937">‏نشانی وب صفحه‌هایی را که بازدید می‌کنید برای Brave ارسال می‌کند</translation>
 <translation id="2527209463677295330">با لحاظ کردن بخش بیشتری از نوشتار صفحه، ممکن است نتایج بهتری دریافت کنید</translation>
@@ -264,16 +267,18 @@
 <translation id="2536728043171574184">مشاهده یک کپی آفلاین از این صفحه</translation>
 <translation id="2546283357679194313">کوکی‌ها و داده‌های سایت</translation>
 <translation id="2558569818338050235">سابقه مرورتان بر آگهی‌هایی که می‌بینید تأثیر می‌گذارد</translation>
-<translation id="2561519700418191927">پیش‌نمایش ویدیو</translation>
 <translation id="2567385386134582609">تصویر</translation>
 <translation id="2567545343356994513">محافظت سریع‌تر و پیشگیرانه دربرابر وب‌سایت‌ها، بارگیری‌ها، و افزونه‌های خطرناک</translation>
 <translation id="5079947353572974060">‏پیشنهاد ارسال صفحه‌های نوشته‌شده به زبان‌های دیگر به «ترجمه Brave»</translation>
+<translation id="2571834852878229351">ایجاد گذرواژه خودم</translation>
 <translation id="6995512410824092085">‏با نحوه تنظیم Brave به‌عنوان مرورگر پیش‌فرض آشنا شوید</translation>
 <translation id="257470231920177468">وقتی روشن باشد، فهرست سایت‌هایی که بازدید می‌کنید و علایقتان را حدس می‌زنند، در اینجا نشان داده می‌شود.</translation>
 <translation id="2324920234469020158">‏این کار کوکی‌ها، حافظه پنهان و داده‌های دیگر سایت‌ها را که از نظر Brave مهم نیست پاک می‌کند.</translation>
 <translation id="2587052924345400782">نسخه جدیدتری در دسترس است</translation>
+<translation id="2589302627584222634">ایجاد قفل نمایه</translation>
 <translation id="2593272815202181319">قلم‌های با عرض ثابت</translation>
 <translation id="2603212228005142861">برای مدیریت اولویت‌هایتان، به سیستم وارد شوید</translation>
+<translation id="260403163289591229">دنبال می‌کنید</translation>
 <translation id="2604446170045642109">در تنظیمات، می‌توانید زمینه تیره را برای سایت‌ها خاموش کنید.</translation>
 <translation id="2612676031748830579">شماره کارت</translation>
 <translation id="2625189173221582860">گذرواژه کپی شد</translation>
@@ -282,6 +287,7 @@
 <translation id="2647434099613338025">افزودن زبان</translation>
 <translation id="2649068648233607930">مرورگرتان توسط <ph name="DOMAIN"/> مدیریت می‌شود</translation>
 <translation id="2650348088770008516">شرح «راهنمای حریم خصوصی» بسته شده است</translation>
+<translation id="2650408372219180431">صادر کردن و حذف کردن گذرواژه‌های ذخیره‌شده در این دستگاه</translation>
 <translation id="2650751991977523696">فایل دوباره بارگیری شود؟</translation>
 <translation id="2651091186440431324">{FILE_COUNT,plural, =1{# فایل صوتی}one{# فایل صوتی}other{# فایل صوتی}}</translation>
 <translation id="265156376773362237">پیش‌بارگذاری استاندارد</translation>
@@ -293,7 +299,7 @@
 <translation id="2711073837061989559">دوره‌های آزمایشی</translation>
 <translation id="2718352093833049315">‏فقط در Wi-Fi</translation>
 <translation id="2718846868787000099">برای نشان دادن محتوا به زبان‌های دلخواهتان، سایت‌هایی که بازدید می‌کنید می‌توانند اولویت‌هایتان را ببینند</translation>
-<translation id="2722945394406572875">درخواست «جعبه ایمنی حریم خصوصی» بسته شد</translation>
+<translation id="2722945394406572875">درخواست «جعبه شنی حریم خصوصی» بسته شد</translation>
 <translation id="2723001399770238859">صدا</translation>
 <translation id="2760989362628427051">روشن شدن زمینه تیره وقتی زمینه تیره دستگاه یا «بهینه‌سازی باتری» روشن است</translation>
 <translation id="2762000892062317888">هم‌اکنون</translation>
@@ -350,12 +356,12 @@
 <translation id="2996809686854298943">نشانی وب لازم است</translation>
 <translation id="2019027298133375428">‏وقتی یک سایت Brave برای پیش‌بارگیری خصوصی پیوندها در صفحه‌اش درخواست می‌کند، Brave صفحات را بدون کوکی‌ها ازطریق سرورهای Brave رمزگذاری و پیش‌بارگیری می‌کند. با این کار هویتتان از سایت پیش‌بارگیری‌شده پنهان می‌شود.</translation>
 <translation id="3006881078666935414">هیچ داده مصرفی وجود ندارد</translation>
-<translation id="301080557829842765">راهنمای حریم خصوصی</translation>
 <translation id="3016635187733453316">مطمئن شوید این دستگاه به اینترنت متصل باشد</translation>
 <translation id="3026955690410463085">لحاظ کردن پیوند</translation>
 <translation id="3027644380269727216">براساس فعالیت شما در سایت. این تنظیم روشن است.</translation>
 <translation id="3029276696788198026">گزینه پیش‌بارگذاری وجود ندارد</translation>
 <translation id="3029704984691124060">عبارت‌های عبور مطابقت ندارند</translation>
+<translation id="8678991866891573053">‏Brave ویژگی‌های جدیدی را کاوش می‌کند که به سایت‌ها اجازه می‌دهد با مصرف داده کمتر، همان تجربه مرور را ارائه دهند</translation>
 <translation id="3036750288708366620"><ph name="BEGIN_LINK"/>دریافت راهنمایی<ph name="END_LINK"/></translation>
 <translation id="3037177537145227281">درحال پیگیری قیمت</translation>
 <translation id="3251012123600267109">‏درخواست‌هایی برای ورود به سیستم Brave نشان می‌دهد</translation>
@@ -369,12 +375,11 @@
 <translation id="3066573403916685335">حرکت به پایین</translation>
 <translation id="3070005020161560471">ترجمه خودکار</translation>
 <translation id="1094255666887095087">‏<ph name="APP_NAME"/> در Brave باز می‌شود. درصورت ادامه دادن، با <ph name="BEGIN_LINK1"/>شرایط خدمات Brave<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>شرایط خدمات تکمیلی Brave و ChromeOS<ph name="END_LINK2"/> موافقت می‌کنید. <ph name="BEGIN_LINK3"/>خط‌مشی رازداری<ph name="END_LINK3"/> نیز اعمال می‌شود.</translation>
+<translation id="3080525922482950719">می‌توانید صفحه‌ها را برای خواندن در فرصتی دیگر یا در حالت آفلاین ذخیره کنید</translation>
 <translation id="3083194063661536258">از سیستم خارج شده‌اید. دکمه. کادر گفتگوی ورود به سیستم و روشن کردن همگام‌سازی را باز می‌کند.</translation>
 <translation id="3091010850649238832">نمایش محتوای بریده‌دان</translation>
 <translation id="821565628224723530">‏برخی از تصاویر به Brave ارسال می‌شوند تا شرح آن‌ها برایتان بهبود یابد</translation>
-<translation id="3104179992611025423">مرورگر شما را والدینتان مدیریت می‌کنند</translation>
 <translation id="3114507951000454849">اخبار <ph name="NEWS_ICON"/> امروز را بخوانید</translation>
-<translation id="311958134571892113">پیوندداده‌شده با</translation>
 <translation id="3123734510202723619">اطلاعیه‌ها</translation>
 <translation id="3134784203083076891">»</translation>
 <translation id="5063487983358782016">‏صفحه اصلی Brave</translation>
@@ -402,24 +407,22 @@
 <translation id="3250563604907490871">‏وقتی به Wi-Fi وصل شوید ویژگی توضیحات تصویر فعال خواهد شد</translation>
 <translation id="3254409185687681395">نشانک گذاری این صفحه</translation>
 <translation id="3259831549858767975">کوچک‌تر کردن همه‌چیز در صفحه</translation>
-<translation id="3264124641674805320">نحوه بارگیری محتوا برای فرصتی دیگر</translation>
 <translation id="3264259168916048410">رایانه‌تان می‌خواهد از این دستگاه برای ورود به سیستم سایتی استفاده کند</translation>
 <translation id="3265093782546847662">همه صفحه‌های <ph name="DOMAIN"/></translation>
 <translation id="3265534588625245297">مدیریت سایت‌هایی که دنبال می‌کنید</translation>
 <translation id="3269093882174072735">بارگیری تصویر</translation>
 <translation id="3280562213547448728">جستجوی گفتاری</translation>
 <translation id="82609232232243542">‏ورود به Brave</translation>
-<translation id="1793814306828610181">‏ویدیوهایی درباره نحوه استفاده از Brave</translation>
 <translation id="3290249595466894471">نمونه کوچکی از صفحات، بارگیری‌ها، فعالیت افزونه، و اطلاعات سیستم را هم ارسال می‌کند تا به کشف تهدیدهای جدید کمک کند</translation>
 <translation id="3293181007446299124">سابقه مرور شما به‌صورت خصوصی در دستگاهتان نگه داشته می‌شود و گزارش‌ها برای محافظت از هویتتان با تأخیر ارسال می‌شود</translation>
 <translation id="3303414029551471755">ادامه می‌دهید و محتوا را بارگیری می‌کنید؟</translation>
+<translation id="3305130791745726624">ارسال به دستگاه‌ها</translation>
 <translation id="3305795716056605962">ترجمه صفحه‌ها ازطریق دکمه «گزینه‌های بیشتر»</translation>
 <translation id="3319664549618064419">برای مشاهده بهتر این سایت به سایت ویژه رایانه بروید</translation>
 <translation id="3334729583274622784">پسوند فایل تغییر کند؟</translation>
 <translation id="3341262203274374114">لغو دنبال کردن ممکن نیست. مشکلی پیش آمد.</translation>
 <translation id="3359667936385849800">استفاده از ارائه‌دهنده خدمات کنونی</translation>
 <translation id="449001704952013438">‏Brave می‌تواند این علاقه را درنظر بگیرد</translation>
-<translation id="3367813778245106622">دوباره به سیستم وارد شوید یا همگام‌سازی را شروع کنید</translation>
 <translation id="2746024117903470217">‏برای هم‌رسانی این صفحه در دستگاهی دیگر، همگام‌سازی را در تنظیمات Brave در دستگاه دیگر روشن کنید</translation>
 <translation id="8801234437789558906">‏نشانک‌ها، سابقه، گذرواژه‌ها و سایر داده‌های Brave، دیگر با حساب Brave شما همگام‌سازی نمی‌شود.</translation>
 <translation id="3384347053049321195">اشتراک‌گذاری تصویر</translation>
@@ -443,6 +446,7 @@
 <translation id="3493531032208478708">درباره محتوای پیشنهادی <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="3495219333887281978">برگ زیرین ورود به سیستم نیمه‌باز شده است.</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
+<translation id="350276055892098337">ترتیب براساس قدیمی‌ترین</translation>
 <translation id="3507132249039706973">«محافظت استاندارد» روشن است</translation>
 <translation id="8669829441518807650">‏آفلاین. Brave نمی‌تواند به‌روزرسانی‌ها را بررسی کند.</translation>
 <translation id="3513704683820682405">واقعیت افزوده</translation>
@@ -490,15 +494,15 @@
 <translation id="3773856050682458546">داده‌های اصلی به‌علاوه اطلاعاتی درباره وب‌سایت‌هایی که بازدید می‌کنید و برنامه‌هایی که استفاده می‌کنید</translation>
 <translation id="3775705724665058594">ارسال به دستگاه‌هایتان</translation>
 <translation id="3791957072666773229">{TAB_COUNT,plural, =1{یک برگه}one{# برگه}other{# برگه}}</translation>
-<translation id="3803784507854318295">مدیریت پخش خودکار</translation>
+<translation id="3795154175078851242">کپی کردن تصویر با پیوند</translation>
 <translation id="3810838688059735925">فیلم</translation>
 <translation id="3810973564298564668">مدیریت</translation>
+<translation id="381861209280417772">حذف گذرواژه‌ها</translation>
 <translation id="3819178904835489326"><ph name="NUMBER_OF_DOWNLOADS"/> بارگیری حذف شد</translation>
 <translation id="3819183753496523827">آفلاین هستید. اتصال اینترنت را بررسی کنید و دوباره امتحان کنید.</translation>
 <translation id="3830886834687455630">‏برای بررسی گذرواژه‌ها، «خدمات Google Play» را به‌روز کنید</translation>
 <translation id="3856096718352044181">لطفاً تأیید کنید این ارائه‌دهندهْ معتبر است یا بعداً دوباره امتحان کنید</translation>
 <translation id="3858860766373142691">نام</translation>
-<translation id="3861633093716975811">ویدیوهای پرطرفدار</translation>
 <translation id="3874520961715512166">سایت برداشته شد</translation>
 <translation id="3892148308691398805">کپی کردن نوشتار</translation>
 <translation id="3894427358181296146">افزودن پوشه</translation>
@@ -524,9 +528,12 @@
 <translation id="5846727201643228411">‏می‌توانید موضوعات موردعلاقه را که سایت‌ها برای ارائه آگهی به شما استفاده می‌کنند ببینید یا حذف کنید. Brave علایق شما را براساس سابقه مرور اخیرتان تخمین می‌زند.</translation>
 <translation id="4000212216660919741">صفحه اصلیِ آفلاین</translation>
 <translation id="4016425174436051808">دنبال کردن ممکن نیست. مشکلی پیش آمد.</translation>
+<translation id="4024768890073681126">ولی‌تان مرورگر را مدیریت می‌کند</translation>
 <translation id="4034817413553209278">{HOURS,plural, =1{# ساعت}one{# ساعت}other{# ساعت}}</translation>
 <translation id="4035877632587724847">مجاز نیست</translation>
 <translation id="4036177530563778041">به‌راحتی از جایی که ترک کردید ادامه دهید</translation>
+<translation id="4042941173059740150">ادامه <ph name="SITE_ETLD_PLUS_ONE"/> با <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
+<translation id="4044708993631234325">برگ زیرین</translation>
 <translation id="4045764304651014138">داده‌های استفاده</translation>
 <translation id="405399507749852140">اگر قیمت در هر سایتی کاهش پیدا کرد، هشدار دریافت می‌کنید</translation>
 <translation id="4056223980640387499">سپیا</translation>
@@ -538,26 +545,28 @@
 <translation id="4095146165863963773">داده‌های برنامه پاک شود؟</translation>
 <translation id="4096227151372679484">جریان ذخیره نشانک به‌صورت نیمه باز شده است</translation>
 <translation id="4101475238162928417">برای دریافت گذرواژه‌ها، نشانک‌ها، و سایر داده‌هایتان در دستگاه‌های دیگرتان، همگام‌سازی کنید</translation>
-<translation id="410351446219883937">پخش خودکار</translation>
 <translation id="8112581848375017126">‏Brave درحال کاوش ویژگی‌های جدیدی است که به سایت‌های امکان می‌دهد تجربه مرور یکسانی را با مصرف اطلاعات شخصی کمتر ارائه دهند</translation>
 <translation id="4108314971463891922">دنبال کردن</translation>
 <translation id="4108998448622696017">رویدادهای خطرناکی را که اتفاق می‌افتد شناسایی می‌کند و درباره آن‌ها به شما هشدار می‌دهد.</translation>
 <translation id="4116038641877404294">برای استفاده از صفحه‌ها در حالت آفلاین، آن‌ها را بارگیری کنید</translation>
+<translation id="37459938731864814">‏لازم نیست این گذرواژه را به‌خاطر بسپارید. این گذرواژه در «مدیر گذرواژه Brave» برای <ph name="USERNAME"/> ذخیره خواهد شد.</translation>
 <translation id="4124152339699379357">جریان اجازه اعلان به‌صورت کامل باز شد</translation>
 <translation id="4135200667068010335">فهرست دستگاه‌هایی که می‌توان با آن‌ها برگه هم‌رسانی کرد، بسته است.</translation>
 <translation id="4137746084635924146">زبان کنونی دستگاه</translation>
 <translation id="414128724510021958">به‌طور پیش‌فرض سایت‌های ویژه رایانه درخواست می‌شود</translation>
-<translation id="4159350418181625094">‏آشنایی با Brave</translation>
 <translation id="4162867837470729563">فهرست گزینه‌های هم‌رسانی به‌صورت کامل باز شده است.</translation>
 <translation id="4170011742729630528">این سرویس در دسترس نیست؛ بعداً دوباره امتحان کنید.</translation>
 <translation id="4177222230309051052">دریافت همه نشانک‌ها</translation>
 <translation id="4177501066905053472">موضوع‌های آگهی</translation>
 <translation id="4181841719683918333">زبان‌ها</translation>
+<translation id="4188221736490993796">ترتیب براساس ی تا الف</translation>
 <translation id="4195643157523330669">باز کردن در برگهٔ جدید</translation>
 <translation id="4196597275619698563">ایجاد کارت</translation>
+<translation id="4197828496439691735">{NUM_TABS,plural, =1{یک برگه در این دستگاه}one{# برگه در این دستگاه}other{# برگه در این دستگاه}}</translation>
 <translation id="4198423547019359126">مکانی برای بارگیری دردسترس نیست</translation>
 <translation id="4202218894997543208">موضوع‌هایی که مسدود کرده‌اید</translation>
 <translation id="1675646381334855139">‏اگر کوکی‌ها را مجاز کنید، ممکن است Brave از آن‌ها برای پیش‌بارگذاری استفاده کند.</translation>
+<translation id="4225725533026049334">دنبال می‌کنید</translation>
 <translation id="4225895483398857530">میان‌بر نوار ابزار</translation>
 <translation id="4242533952199664413">باز کردن تنظیمات</translation>
 <translation id="4248098802131000011">گذرواژه خود را از نقض داده و سایر مسائل امنیتی ایمن نگه دارید</translation>
@@ -565,9 +574,11 @@
 <translation id="4249955472157341256">مرتب‌سازی براساس جدیدترین</translation>
 <translation id="4250229828105606438">نماگرفت</translation>
 <translation id="4256782883801055595">مجوزهای متن‌باز</translation>
+<translation id="7404502124231907662">‏گذرواژه‌ها از «مدیر گذرواژه Brave» حذف شود؟</translation>
 <translation id="4105986395895210872">‏<ph name="BEGIN_BOLD"/>انواع داده‌ای که استفاده می‌شود:<ph name="END_BOLD"/> سابقه مرور شما، سابقه سایت‌هایی که بااستفاده از Brave در این دستگاه از آن‌ها بازدید کرده‌اید.</translation>
 <translation id="4269820728363426813">کپی نشانی پیوند</translation>
 <translation id="4283102315569707115">به‌طور پیش‌فرض از سایت‌های ویژه رایانه درخواست شود؟</translation>
+<translation id="4285846616383034558">کوکی‌ها، حافظه نهان، و دیگر داده‌های سایت</translation>
 <translation id="4291407919474070700">‏<ph name="BEGIN_LINK"/>روشن کردن قفل صفحه در تنظیمات Android<ph name="END_LINK"/></translation>
 <translation id="4298388696830689168">سایت‌های مرتبط</translation>
 <translation id="4303044213806199882"><ph name="CURRENT_TIMESTAMP_MS"/>chrome_screenshot_‎</translation>
@@ -577,6 +588,7 @@
 <translation id="433213510553688132">دنبال می‌کنید…</translation>
 <translation id="4335835283689002019">«مرور ایمن» خاموش است</translation>
 <translation id="4351244548802238354">بستن کادر گفتگو</translation>
+<translation id="4355272626458588338">با اضافه کردن نشانک، می‌توانید به صفحه‌ای که برایتان مهم است برگردید</translation>
 <translation id="4369735607080757018">انواع محدودی از داده‌ها بین سایت‌ها هم‌رسانی می‌شود تا سایت‌ها بتوانند عملکرد آگهی‌هایشان را بسنجند، برای مثال زمانی از روز که آگهی به شما نشان داده شده است</translation>
 <translation id="4378154925671717803">تلفن</translation>
 <translation id="438319986296050901">فقط هم‌رسانی کارت</translation>
@@ -598,10 +610,8 @@
 <translation id="4484496141267039529">اتصال برقرار نیست. بعداً دوباره امتحان کنید.</translation>
 <translation id="53119194224775367">‏همه داده‌های برنامه Brave به‌طور دائم حذف خواهند شد. این داده‌ها شامل همه فایل‌ها، تنظیمات، حساب‌ها، پایگاه‌های داده و غیره می‌شود.</translation>
 <translation id="3966104135245031874">‏رمزگذاری گذرواژه‌های همگام‌سازی‌شده با «حساب Brave» شما</translation>
-<translation id="4504667196171871375">‏ازطریق Wi-Fi و داده تلفن همراه</translation>
 <translation id="4508528996305412043">منوی کارت فید باز شد</translation>
-<translation id="4508642716788467538">زبانتان را انتخاب کنید</translation>
-<translation id="4509501256689523862">درحین مرور، شخصی شدن یا نشدن آگهی‌هایی که می‌بینید به این تنظیم بستگی دارد»: <ph name="BEGIN_LINK_1"/>موضوع‌های آگهی<ph name="END_LINK_1"/>، <ph name="BEGIN_LINK_2"/>تنظیمات کوکی<ph name="END_LINK_2"/> شما، و اینکه آیا سایتی که مشاهده می‌کنید آگهی‌ها را شخصی‌سازی می‌کند یا نه</translation>
+<translation id="4509501256689523862">درحین مرور، شخصی‌سازی شدن یا نشدن آگهی‌هایی که می‌بینید به این تنظیمات بستگی دارد: <ph name="BEGIN_LINK_1"/>موضوع‌های آگهی<ph name="END_LINK_1"/>، <ph name="BEGIN_LINK_2"/>تنظیمات کوکی<ph name="END_LINK_2"/> شما، و اینکه آیا سایتی که مشاهده می‌کنید آگهی‌ها را شخصی‌سازی می‌کند یا نه</translation>
 <translation id="4513387527876475750">{DAYS,plural, =1{۱ روز قبل}one{#  روز قبل}other{#  روز قبل}}</translation>
 <translation id="451872707440238414">جستجوی نشانک‌های شما</translation>
 <translation id="1664855196866195614">‏داده‌های انتخاب‌‌شده از Brave و دستگاه‌های همگام‌سازی‌شده شما حذف شدند.
@@ -616,6 +626,7 @@
 <translation id="4565377596337484307">عدم نمایش گذرواژه</translation>
 <translation id="4572422548854449519">به حساب مدیریت‌شده وارد شوید</translation>
 <translation id="4576892426230499203">امتحان کردن گزینه تأیید دیگر</translation>
+<translation id="4577115723294378384">ترتیب براساس الف تا ی</translation>
 <translation id="4578289292431526768">بیایید شروع کنیم</translation>
 <translation id="4583164079174244168">{MINUTES,plural, =1{# دقیقه قبل}one{# دقیقه قبل}other{# دقیقه قبل}}</translation>
 <translation id="4587589328781138893">سایت‌ها</translation>
@@ -639,6 +650,7 @@
 <translation id="596869491648905318">‏جستجوی تصویر با Brave <ph name="BEGIN_NEW"/>جدید<ph name="END_NEW"/></translation>
 <translation id="4695891336199304370">{SHIPPING_OPTIONS,plural, =1{‏<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 و <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> گزینه دیگر}one{‏<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 و <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> گزینه دیگر}other{‏<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 و <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> گزینه دیگر}}</translation>
 <translation id="4699172675775169585">تصاویر و فایل‌های قرار گرفته در حافظه پنهان</translation>
+<translation id="4710167854527459075">ترتیب براساس جدیدترین</translation>
 <translation id="4719927025381752090">پیشنهاد برای ترجمه</translation>
 <translation id="4720023427747327413">بازکردن در <ph name="PRODUCT_NAME"/></translation>
 <translation id="47217992755561375">دیدن سایت‌های برتر شما</translation>
@@ -654,6 +666,7 @@
 <translation id="4763480195061959176">ویدئو</translation>
 <translation id="4766313118839197559">گذرواژه‌ها در «مدیر گذرواژه» در این دستگاه ذخیره می‌شوند</translation>
 <translation id="4766678251456904326">افزودن حساب به دستگاه</translation>
+<translation id="1996253762801922860">‏درحال راه‌اندازی ویژگی جدیدی برای حریم خصوصی آگهی هستیم به نام «سنجش آگهی». Brave اطلاعات بسیار محدودی را بین سایت‌ها و برنامه‌ها هم‌رسانی می‌کند (برای مثال زمانی‌که یک آگهی به شما نشان داده می‌شود) تا به برنامه‌ها کمک کند عملکرد آگهی‌ها را بسنجند.</translation>
 <translation id="4769095993849849966">نام جدید فایل</translation>
 <translation id="4778653490315793244">هنوز موردی برای نشان‌دادن وجود ندارد</translation>
 <translation id="4787736314074622408">می‌خواهید <ph name="ITEM_TITLE"/> را حذف کنید؟</translation>
@@ -663,9 +676,7 @@
 برای تغییر این تنظیم، <ph name="BEGIN_LINK"/>همگام‌سازی را بازنشانی کنید<ph name="END_LINK"/></translation>
 <translation id="4807098396393229769">نام روی کارت</translation>
 <translation id="481574578487123132">دستگاه‌های پیوندشده</translation>
-<translation id="4818017973810341238">راستی‌آزمایی پیوندهای دارایی دیجیتال در <ph name="VIOLATED_URL"/> انجام نشد</translation>
 <translation id="4826163340425232009">برگ زیرین ورود به سیستم.</translation>
-<translation id="4831037795716408498">بارگیری محتوا</translation>
 <translation id="4834007576107377210">برای اینکه سابقه جستجویتان را درصورت امکان حذف کنید، به دستورالعمل‌های موتور جستجو مراجعه کنید</translation>
 <translation id="4834250788637067901">‏روش‌های پرداخت، پیشنهادها، و نشانی‌های استفاده‌شده در Google Pay</translation>
 <translation id="2593289874938379417">‏Brave به منبع درخواستی دسترسی ندارد.</translation>
@@ -695,6 +706,7 @@
 <translation id="492284538114688557">کاهش قیمت شناسایی شد</translation>
 <translation id="4925120120285606924">نماگرفت <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="49268022542405662">گذرواژه‌هایتان به‌صورت فایل نوشتاری صادر و بارگیری خواهد شد. گذرواژه‌هایتان برای همه افراد و برنامه‌هایی که به پوشه مقصد دسترسی دارند نمایان خواهد بود.</translation>
+<translation id="4926901776383726965">می‌توانید تصاویر و فایل‌ها را برای مشاهده آفلاین یا هم‌رسانی در برنامه‌های دیگر ذخیره کنید</translation>
 <translation id="1955495299630319741">‏از آنجایی‌که درحال خروج از سیستم حساب مدیریت‌شده توسط <ph name="DOMAIN_NAME"/> هستید، داده‌های Brave شما از این دستگاه حذف می‌شود. این مورد در حساب Brave شما باقی می‌ماند.</translation>
 <translation id="4943703118917034429">واقعیت مجازی</translation>
 <translation id="4943872375798546930">نتیجه‌ای پیدا نشد</translation>
@@ -711,15 +723,16 @@
 <translation id="5001388021414335527">این سایت را در اینجا دنبال کنید</translation>
 <translation id="6447211988989208781">‏کنترل‌های فعالیت Brave</translation>
 <translation id="5005498671520578047">کپی گذرواژه</translation>
+<translation id="5010886807652684893">نمای تصویری</translation>
 <translation id="5011311129201317034"><ph name="SITE"/> می‌خواهد مرتبط شود</translation>
 <translation id="5016205925109358554">Serif</translation>
-<translation id="5017529052065664584">۱۵ دقیقه اخیر</translation>
 <translation id="5032430150487044192">رمزینه پاسخ‌سریع ایجاد نمی‌شود</translation>
 <translation id="5039804452771397117">اجازه دادن</translation>
 <translation id="5040262127954254034">حریم خصوصی</translation>
 <translation id="504456571576643789">مواردی که باید درنظر داشت</translation>
 <translation id="4858031288914533863">‏وقتی به سیستم وارد شده باشید، ممکن است <ph name="BEGIN_LINK1"/>انواع دیگر فعالیت<ph name="END_LINK1"/> در «حساب Brave» شما ذخیره شوند. هر زمان خواستید می‌توانید آن‌ها را حذف کنید.</translation>
 <translation id="506254248375231072">برگه‌ای باز نیست</translation>
+<translation id="5062960805900435602">به‌روزرسانی مربوط به ادغام گذرواژه بسته شد</translation>
 <translation id="4744980273298156620">‏به‌زودی وقتی برگه جدیدی باز می‌کنید، داستان‌هایی از <ph name="SITE_NAME"/> را خواهید دید. سایت‌هایی که دنبال می‌کنید در «حساب Brave» شما ذخیره می‌شوند. می‌توانید در تنظیمات «یافته‌ها»، آن‌ها را مدیریت کنید.</translation>
 <translation id="5091249083535528968">داده‌های استفاده گسترده</translation>
 <translation id="509429900233858213">خطایی روی داد.</translation>
@@ -738,21 +751,21 @@
 <translation id="5161254044473106830">عنوان مورد نیاز است</translation>
 <translation id="5170568018924773124">نمایش در پوشه</translation>
 <translation id="5171045022955879922">‏جستجو یا تایپ URL</translation>
+<translation id="5174700554036517242">برگه به ارتفاع اولیه‌اش برگردانده شد</translation>
 <translation id="8445059357334030806">‏باز کردن در Brave</translation>
+<translation id="5186634140793586141">موضوعات و جستجوهای موردعلاقه‌تان را مدیریت کنید</translation>
 <translation id="5191251636205085390">با فناوری‌های جدیدی که قرار است جایگزین کوکی‌های شخص ثالث شود آشنا شوید و آن‌ها را کنترل کنید</translation>
 <translation id="5193988420012215838">در بریده‌دان کپی شد</translation>
 <translation id="5204967432542742771">گذرواژه را وارد کنید</translation>
 <translation id="5206168361184759344">{FILE_COUNT,plural, =1{درحال بارگیری فایل…}one{درحال بارگیری # فایل…}other{درحال بارگیری # فایل…}}</translation>
 <translation id="5210286577605176222">رفتن به برگه قبلی</translation>
 <translation id="5210365745912300556">بستن برگه</translation>
-<translation id="5213672942202814946">استفاده از جستجوی گفتاری</translation>
 <translation id="5222676887888702881">خروج از سیستم</translation>
 <translation id="5227554086496586518">برای دیدن نتایج جستجو ضربه بزنید</translation>
 <translation id="5233638681132016545">برگه جدید</translation>
 <translation id="5235196193381275927">هنگام ورود به سیستم مشکلی پیش آمد</translation>
 <translation id="5246093389635966745">میان‌بر ویرایش نوار ابزار</translation>
 <translation id="5271967389191913893">دستگاه نمی‌تواند محتوا را برای بارگیری باز کند.</translation>
-<translation id="5274286919938458946">به <ph name="CARD_DETAIL"/> پیوند داده شده است</translation>
 <translation id="5292796745632149097">ارسال به</translation>
 <translation id="5300426565656326054">شخصی‌سازی آگهی مبتنی بر مرورگر</translation>
 <translation id="5304593522240415983">این قسمت باید پر شود</translation>
@@ -760,18 +773,19 @@
 <translation id="5317780077021120954">ذخیره</translation>
 <translation id="989239400026154074">‏Brave،‏ Brave را توصیه می‌کند</translation>
 <translation id="493321943777183150">‏Brave به‌دنبال راه‌های جدیدی برای کاهش ردیابی و افزایش امنیت شما درحین مرور است. Brave همچنین <ph name="BEGIN_LINK"/>علایقتان را برآورد می‌کند<ph name="END_LINK"/> و به شما امکان می‌دهد آن‌ها را مدیریت کنید. سپس سایت‌هایی که بازدید می‌کنید می‌توانند برای نمایش آگهی به شما، علایقتان را از Brave درخواست کنند.</translation>
-<translation id="5324858694974489420">تنظیمات والدین</translation>
 <translation id="1681635711794313507">‏ازآنجایی‌که صفحات پیش‌بارگذاری‌شده رمزگذاری شده‌اند و سایت پیوندشده با آن صفحات یک سایت Brave است، سرورهای Brave هنگام پیش‌بارگذاری خصوصی این صفحات، اطلاعات جدیدی دریافت نمی‌کنند.</translation>
 <translation id="5329858041417644019">مرورگرتان مدیریت نمی‌شود</translation>
 <translation id="5339031667684712858">سایت‌هایی که برداشته‌اید</translation>
 <translation id="5342314432463739672">درخواست‌های مجوز</translation>
 <translation id="53537532693258630">سایت‌هایی که برداشته‌اید در اینجا نشان داده خواهد شد</translation>
 <translation id="5355191726083956201">«محافظت بهبودیافته» روشن است</translation>
+<translation id="5361107212971249203">نوشتار</translation>
 <translation id="5375577065097716013">‏جستجوی تصویر با «لنز Brave» <ph name="BEGIN_NEW"/>جدید<ph name="END_NEW"/></translation>
+<translation id="539881862970320163">گذرواژه قوی‌ای پیشنهاد شد. صفحه‌کلید پنهان است.</translation>
 <translation id="5401851137404501592">برای ادامه دادن، <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> نام، نشانی ایمیل، و عکس نمایه‌تان را با این سایت هم‌رسانی خواهد کرد.</translation>
-<translation id="5403644198645076998">فقط بعضی از سایت‌ها مجاز هستند</translation>
 <translation id="5409881200985013443"><ph name="ONE_TIME_CODE"/> در <ph name="CLIENT_NAME"/> ارسال شود؟</translation>
-<translation id="5414836363063783498">در حال تأیید...</translation>
+<translation id="5414836363063783498">در حال تأیید کردن…</translation>
+<translation id="7606640365974248588">‏همه گذرواژه‌ها در دستگاهتان بارگیری خواهند شد و از <ph name="CHROME_CHANNEL"/> Brave برداشته می‌شوند</translation>
 <translation id="5423934151118863508">صفحاتی که بیشترین بازدید را از آنها داشته‌اید در اینجا نمایان می‌شوند</translation>
 <translation id="5424588387303617268"><ph name="GIGABYTES"/> گیگابایت در دسترس</translation>
 <translation id="543338862236136125">ویرایش گذرواژه</translation>
@@ -786,16 +800,13 @@
 <translation id="5458366071038729214">سایت‌هایی را که دنبال می‌کنید اینجا پیدا خواهید کرد</translation>
 <translation id="5468068603361015296">می‌خواهید <ph name="FILE_NAME"/> درهرصورت بارگیری شود؟</translation>
 <translation id="548278423535722844">‏باز کردن در برنامه Maps</translation>
-<translation id="7176798998723526245">‏پیمایش در Brave</translation>
 <translation id="5487521232677179737">پاک کردن داده‌ها</translation>
-<translation id="549025011754480756">نحوه جستجو با صدایتان</translation>
 <translation id="5492637351392383067">رمزگذاری درون‌دستگاهی</translation>
 <translation id="5514904542973294328">توسط سرپرست این دستگاه غیرفعال شده است</translation>
 <translation id="5515439363601853141">برای مشاهده گذرواژه‌تان، قفل صفحه را باز کنید</translation>
 <translation id="5517095782334947753">نشانک، سابقه، گذرواژه و تنظیمات دیگری از <ph name="FROM_ACCOUNT"/> دارید.</translation>
 <translation id="300369155175407115">‏اگر نسخه آزمایشی روشن باشد و Brave به‌طور تصادفی نسخه آزمایشی را برایتان فعال کرده باشد، سابقه مرورتان بر آگهی‌هایی که می‌بینید و علایقتان که در زیر برآورد شده است تأثیر می‌گذارد. برای محافظت از حریم خصوصی شما، Brave علایقتان را هر ماه به‌طور چرخشی حذف می‌کند.</translation>
 <translation id="5524843473235508879">هدایت کردن مسدود شد.</translation>
-<translation id="554297709083131118">این داده‌های مربوط به ۱۵ دقیقه گذشته حذف خواهد شد</translation>
 <translation id="5548606607480005320">بررسی ایمنی</translation>
 <translation id="5555525474779371165">انتخاب ویژگی حفاظتی «مرور ایمن»</translation>
 <translation id="5556459405103347317">بار کردن مجدد</translation>
@@ -803,6 +814,7 @@
 <translation id="5561162485081632007">رویدادهای خطرناک را درصورت وقوع شناسایی می‌کند و به شما هشدار می‌دهد</translation>
 <translation id="5561549206367097665">در انتظار شبکه…</translation>
 <translation id="5568069709869097550">ورود به سیستم ممکن نیست</translation>
+<translation id="557018954714092179">ایجاد پوشه جدید</translation>
 <translation id="5578795271662203820">جستجوی <ph name="SEARCH_ENGINE"/> برای این تصویر</translation>
 <translation id="5581519193887989363">هرزمان خواستید می‌توانید مواردی را که می‌خواهید همگام‌سازی شود در <ph name="BEGIN_LINK1"/>تنظیمات<ph name="END_LINK1"/> انتخاب کنید.</translation>
 <translation id="5590372121997663538">این رایانه را به‌خاطر بسپار</translation>
@@ -811,13 +823,17 @@
 <translation id="562289928968387744">مدیریت واکنش‌ها</translation>
 <translation id="5626134646977739690">نام:</translation>
 <translation id="5628604359369369630">خوانده‌نشده - دردسترس درحالت آفلاین</translation>
-<translation id="5639724618331995626">همه سایت‌ها مجاز هستند</translation>
+<translation id="3801854459269566477">‏ممکن است <ph name="BEGIN_LINK1"/>سابقه جستجو<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>دیگر انواع فعالیت<ph name="END_LINK2"/> در «حساب Brave» شما ذخیره شوند</translation>
+<translation id="564667659802381754">راهنمای حریم خصوصی <ph name="BEGIN_NEW"/>جدید<ph name="END_NEW"/></translation>
 <translation id="5648166631817621825">۷ روز گذشته</translation>
 <translation id="5655963694829536461">بارگیری‌هایتان را جستجو کنید</translation>
+<translation id="5657871969392618475">اطلاعات شما با قفل نمایه ایمن می‌شود</translation>
 <translation id="5659593005791499971">ایمیل</translation>
 <translation id="5665379678064389456">ایجاد رویداد در <ph name="APP_NAME"/></translation>
 <translation id="5668833306439455813">‏Brave نمی‌تواند به‌روزرسانی‌ها را بررسی کند</translation>
 <translation id="5686790454216892815">نام فایل خیلی طولانی است</translation>
+<translation id="4809211418322514799">‏Brave سایت‌های قدیمی‌تر از ۳۰ روز را به‌طور خودکار حذف می‌کند. سایت‌هایی که مجدداً از آن‌ها بازدید می‌کنید ممکن است دوباره در فهرست نمایش داده شود. یا می‌توانید سایتی را مسدود کنید تا به شما آگهی پیشنهاد ندهد. درباره <ph name="BEGIN_LINK"/>مدیریت حریم خصوصی آگهی در Brave<ph name="END_LINK"/> بیشتر بدانید.</translation>
+<translation id="569435661099256888">‏می‌توانید صفحه‌هایی را که از آن‌‎ها بازدید کرده‌اید ببینید یا آن‌ها را از سابقه پاک کنید</translation>
 <translation id="569536719314091526">با استفاده از دکمه «گزینه‌های بیشتر»، این صفحه را به زبان‌های دیگر ترجمه کنید</translation>
 <translation id="2320748512701464301">‏Brave می‌تواند به محافظت از شما دربرابر نقض داده، وب‌سایت‌های غیرایمن، و موارد دیگر کمک کند</translation>
 <translation id="570347048394355941">رفتن به برگه</translation>
@@ -841,15 +857,12 @@
 <translation id="5797949256525811424">موضوع مسدود‌شده</translation>
 <translation id="5809361687334836369">{HOURS,plural, =1{۱ ساعت قبل}one{# ساعت قبل}other{# ساعت قبل}}</translation>
 <translation id="5311273890481188673">‏حق نشر <ph name="YEAR"/> Brave LLC.‎ کلیه حقوق محفوظ است.</translation>
-<translation id="5813552293717797987">این مرورگر را <ph name="PARENT_NAME_1"/> و <ph name="PARENT_NAME_2"/> مدیریت می‌کنند.</translation>
-<translation id="5814131985548525293">برای شروع، اینجا تایپ کنید یا روی نماد صدا ضربه بزنید</translation>
 <translation id="5814749351757353073">از سایت‌های محبوبتان باخبر باشید</translation>
 <translation id="5822875253699806474">برای برگشتن سریع به سایت‌هایی که بازدید کرده‌اید، برگه‌ها و سابقه را همگام‌سازی کنید</translation>
 <translation id="583281660410589416">ناشناس</translation>
 <translation id="5833984609253377421">هم‌رسانی پیوند</translation>
 <translation id="4099502324559761073">‏برای اسکن کردن رمزینه پاسخ‌سریع، به Brave اجازه دهید از دوربین استفاده کند</translation>
 <translation id="2225291765389142805">Brave Dino</translation>
-<translation id="5842437907245493289">محصولات پیگیری‌شده در «نشانک‌ها» را ازطریق نماد پوشه سازمان‌دهی کنید</translation>
 <translation id="5853623416121554550">مکث</translation>
 <translation id="3518793343998771868">‏هیچ گزارش خرابی یا آماری به Brave ارسال نمی‌شود</translation>
 <translation id="5855546874025048181">پالایش: <ph name="REFINE_TEXT"/></translation>
@@ -877,6 +890,7 @@
 <translation id="5964869237734432770">توقف توضیحات تصویر</translation>
 <translation id="9135546826883360971">‏Brave انتخابتان را به‌خاطر می‌سپارد</translation>
 <translation id="5979084224081478209">بررسی گذرواژه‌ها</translation>
+<translation id="5985186846584605773">قفل نمایه برای خودرو ایجاد کنید</translation>
 <translation id="5995726099713306770">صفحه دوباره بارگیری شود؟</translation>
 <translation id="6456271171669383967">‏حفظ Brave</translation>
 <translation id="6000203700195075278">دنبال کردن مجدد</translation>
@@ -884,6 +898,8 @@
 <translation id="6005538289190791541">گذرواژه پیشنهادی</translation>
 <translation id="6011308810877101166">بهبود پیشنهادهای جستجو</translation>
 <translation id="6026538407078977628">گسترده کردن به‌حالت تمام‌صفحه</translation>
+<translation id="6030719887161080597">مدیریت اطلاعات مورداستفاده سایت‌ها برای سنجش عملکرد آگهی</translation>
+<translation id="6034146297924778597">سابقه ۱۵ دقیقه آخر حذف خواهد شد:</translation>
 <translation id="6039379616847168523">رفتن به برگه بعدی</translation>
 <translation id="6040143037577758943">بستن</translation>
 <translation id="604124094241169006">خودکار</translation>
@@ -894,7 +910,7 @@
 <translation id="6059830886158432458">داستان‌ها و فعالیت خود را اینجا کنترل کنید</translation>
 <translation id="6070730414166672373">‏درحال تماس با بانک\u2026</translation>
 <translation id="6085886413119427067">تعیین چگونگی اتصال به وب‌سایت‌ها ازطریق اتصالی ایمن</translation>
-<translation id="6091413777268123602">با دوره‌های آزمایشی «جعبه ایمنی حریم خصوصی»، سایت‌ها می‌توانند تجربه مرور یکسانی را با مصرف داده‌های شخصی کمتر ارائه دهند. یعنی حریم خصوصی شما افزایش و ردیابی بین‌سایتی کاهش پیدا می‌کند. هروقت دوره‌های آزمایشی جدیدی برای آزمایش کردن آماده شد، آن‌ها را اضافه می‌کنیم.</translation>
+<translation id="6091413777268123602">با دوره‌های آزمایشی «جعبه شنی حریم خصوصی»، سایت‌ها می‌توانند تجربه مرور یکسانی را با مصرف داده‌های شخصی کمتر ارائه دهند. یعنی حریم خصوصی شما افزایش و ردیابی بین‌سایتی کاهش پیدا می‌کند. هروقت دوره‌های آزمایشی جدیدی برای آزمایش کردن آماده شد، آن‌ها را اضافه می‌کنیم.</translation>
 <translation id="60923314841986378"><ph name="HOURS"/> ساعت باقی‌مانده است</translation>
 <translation id="4726571606794511368">‏اگر موتور جستجوی پیش‌فرضتان هم Brave باشد، پیشنهادهای بهتر و مرتبط‌تری درباره موضوع خواهید دید</translation>
 <translation id="6108923351542677676">تنظیم در حال انجام است...</translation>
@@ -921,6 +937,8 @@
 <translation id="6232535412751077445">فعال کردن «ردیابی نشود» به این معنی است که درخواستی به ترافیک مرور شما اضافه می‌شود. نتیجه به این بستگی دارد که وب‌سایت به درخواست‌ پاسخ بدهد یا نه و درخواست چگونه تفسیر شود.
 
 مثلاً ممکن است برخی از وب‌سایت‌ها با نمایش آگهی‌هایی که براساس وب‌سایت‌های نیستند که بازدید کرده‌اید به این درخواست پاسخ دهند. بسیاری از وب‌سایت‌ها همچنان داده‌های محصول مرور شما را جمع‌آوری و استفاده می‌کنند — مثلاً برای بهبود امنیت، ارائه محتوا، آگهی‌ها و توصیه‌ها و برای ایجاد آمارهای گزارش‌دهی.</translation>
+<translation id="3895383310037101583">‏با روشن کردن همگام‌سازی، گذرواژه‌های موجود در این دستگاه را در «حساب Brave» خود ذخیره کنید</translation>
+<translation id="6255794742848779505">ما درحال تغییر نحوه ذخیره کردن گذرواژه‌ها در این دستگاه هستیم</translation>
 <translation id="6264376385120300461">به‌هرحال بارگیری شود</translation>
 <translation id="6277522088822131679">در چاپ صفحه مشکلی پیش آمد. لطفاً دوباره امتحان کنید.</translation>
 <translation id="6277722725779679269">«پیگیری قیمت» به‌روزرسانی نشد</translation>
@@ -928,7 +946,6 @@
 <translation id="7918815962568992845">‏برگه‌ها را می‌توانید بین دستگاه‌هایی که با یک «حساب Brave» به سیستم وارد شدند ارسال کنید.</translation>
 <translation id="6295158916970320988">همه سایت‌ها</translation>
 <translation id="6297765934698848803">سازمانی که دستگاهتان را مدیریت می‌کند دوربین را خاموش کرده است.</translation>
-<translation id="6301525844455696527">به فهرست خواندن سر بزنید</translation>
 <translation id="6303969859164067831">خروج از سیستم و خاموش کردن همگام‌سازی</translation>
 <translation id="6312687380483398334">برنامه‌های وب (بی‌صدا)</translation>
 <translation id="6316139424528454185">‏نسخه Android پشتیبانی نمی‌شود</translation>
@@ -950,7 +967,6 @@
 <translation id="6395288395575013217">پیوند</translation>
 <translation id="6397616442223433927">دوباره آنلاین شدید</translation>
 <translation id="8789425457808164956">‏برای ارسال این برگه به دستگاهی دیگر، در آنجا به سیستم Brave وارد شوید</translation>
-<translation id="6402652558933147609"><ph name="ERROR_CODE"/> در <ph name="VIOLATED_URL"/></translation>
 <translation id="6404511346730675251">ویرایش نشانک</translation>
 <translation id="6406506848690869874">همگام‌سازی</translation>
 <translation id="6407224748847589805">اتصال به رایانه ممکن نیست. گزینه تأیید دیگری را امتحان کنید.</translation>
@@ -995,7 +1011,7 @@
 <translation id="6590471736817333463">تا ۶۰٪ در مصرف داده صرفه‌جویی کنید</translation>
 <translation id="6590680911007613645">مطمئن شوید گذرواژه‌ای که ذخیره می‌کنید با گذرواژه <ph name="SITE"/> مطابقت داشته باشد</translation>
 <translation id="6593061639179217415">سایت مخصوص رایانه</translation>
-<translation id="2372700594671864890">‏ببینید Brave چگونه قصد دارد با حفظ وبِ باز، از شما دربرابر ردیابی بین‌سایتی محافظت کند</translation>
+<translation id="6594347733515723558">گزینه‌های ترتیب و مشاهده</translation>
 <translation id="2466982615210189224">‏تصاویر به Brave ارسال می‌شوند تا توضیحات برایتان بهبود یابند.</translation>
 <translation id="663059986967017181">‏کپی در Brave</translation>
 <translation id="661266467055912436">امنیت را برای شما و همه کاربران دیگر وب بهبود می‌بخشد.</translation>
@@ -1048,7 +1064,7 @@
 <translation id="6828070228333235514">توقف پیگیری قیمت</translation>
 <translation id="6830728435402077660">امن نیست</translation>
 <translation id="6831043979455480757">ترجمه</translation>
-<translation id="6833996806551876956">دوره آزمایشی «جعبه ایمنی حریم خصوصی»</translation>
+<translation id="6833996806551876956">دوره آزمایشی «جعبه شنی حریم خصوصی»</translation>
 <translation id="6836206421467243968">بازیابی گروه برگه <ph name="TITLE_OF_GROUP"/> به‌عنوان گروه برگه جدید پس‌زمینه.</translation>
 <translation id="6846298663435243399">درحال بارگیری…</translation>
 <translation id="6850409657436465440">بارگیری هنوز درحال انجام است</translation>
@@ -1067,6 +1083,7 @@
 <translation id="6903907808598579934">روشن کردن همگام‌سازی</translation>
 <translation id="6908998565271542516">گزینه تأیید کردن یا نکردن وب‌سایت که به‌طور کامل باز شده است</translation>
 <translation id="6909589135458168665">پیش‌بارگیری صفحات</translation>
+<translation id="6910211073230771657">حذف شد</translation>
 <translation id="6942665639005891494">هرزمان بخواهید می‌توانید با استفاده از منوی «تنظیمات»، محل پیش‌فرض بارگیری را تغییر دهید</translation>
 <translation id="694267552845942083">اکنون درحال سفارشی کردن تنظیمات «همگام‌سازی» هستید. برای تکمیل روشن کردن همگام‌سازی، روی دکمه «تأیید» در پایین صفحه ضربه بزنید. پیمایش به بالا</translation>
 <translation id="6945221475159498467">انتخاب</translation>
@@ -1083,6 +1100,7 @@
 <translation id="7029809446516969842">گذرواژه‌ها</translation>
 <translation id="7030304022046916278">نشانی‌های وب را به «مرور ایمن» ارسال می‌کند تا بررسی شوند</translation>
 <translation id="7030585293819777123">آخرین تکلیف شما ازسر گرفته شود؟</translation>
+<translation id="7035701931849773472">گزینه‌های دیگر</translation>
 <translation id="5813862251770201080">‏با «حساب Brave» به سیستم Brave وارد شوید.</translation>
 <translation id="7038956721828960940">chrome_image_<ph name="CURRENT_TIMESTAMP_MS"/>‎</translation>
 <translation id="7054588988317389591">توضیحات تصویر دریافت شود؟</translation>
@@ -1096,6 +1114,7 @@
 <translation id="8208853227947884571">‏Brave به‌روز است</translation>
 <translation id="7105047059074518658">برای مرور آسان‌تر در دستگاه‌ها به سیستم وارد شوید</translation>
 <translation id="7106762743910369165">سازمانتان مرورگر را مدیریت می‌کند</translation>
+<translation id="7116420572655804716">برای همگام‌سازی اطلاعات و ایمن نگه داشتن داده‌هایتان در خودرو، باید یک قفل نمایه در تنظیمات امنیتی ایجاد کنید. هربار که به خودرو وارد می‌شوید از کد یا گذرواژه استفاده خواهید کرد.</translation>
 <translation id="7116588989735740310">برای برگشتن به سایت‌هایی که بازدید کرده‌اید در دستگاه‌های دیگر، برگه‌ها و سابقه را همگام‌سازی کنید</translation>
 <translation id="7130504491556983216">وقتی وب را مرور می‌کنید، فهرستی از علایق شما در اینجا نشان داده خواهد شد</translation>
 <translation id="7138678301420049075">دیگر</translation>
@@ -1114,20 +1133,23 @@
 <translation id="7207760545532569765">بازیابی <ph name="TAB_COUNT"/> برگه به‌عنوان برگه‌های جدید پس‌زمینه.</translation>
 <translation id="7222235798733126207">هم‌رسانی محدود میان سایت‌ها</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{۱ بارگیری در انتظار}one{# بارگیری در انتظار}other{# بارگیری در انتظار}}</translation>
+<translation id="72415438529550637">پیشنهاد گذرواژه بسته شد.</translation>
 <translation id="7242755609445462077">برجسته‌سازی سبک‌دار <ph name="CURRENT_DATE"/></translation>
 <translation id="8287068819750208230">‏مطمئن شوید همگام‌سازی <ph name="TARGET_DEVICE_NAME"/> در Brave روشن باشد</translation>
 <translation id="7252076891734325316">تلفن را نزدیک رایانه قرار دهید</translation>
 <translation id="4957342254208357193">‏احتمالاً دستگاه Android شما تنظیم مشابهی دارد. اگر «سنجش آگهی» در Brave و دستگاه Android شما روشن باشد، ممکن است شرکتی بتواند اثربخشی آگهی را در وب‌سایت‌هایی که بازدید می‌کنید و برنامه‌هایی که استفاده می‌کنید بسنجد.</translation>
 <translation id="727288900855680735"><ph name="ONE_TIME_CODE"/> به <ph name="ORIGIN"/> ارسال شود؟</translation>
 <translation id="7274013316676448362">سایت مسدودشده</translation>
-<translation id="7286572596625053347"><ph name="LANGUAGE"/> تغییر داده شود؟</translation>
+<translation id="7949597606523411684">‏Brave موضوعات قدیمی‌تر از ۴ هفته را به‌طور خودکار حذف می‌کند. همان‌طور که به مرور ادامه می‌دهید، ممکن است موضوعی دوباره در فهرست ظاهر شود. یا می‌توانید موضوعاتی را که نمی‌خواهید Brave با سایت‌ها هم‌رسانی کند مسدود کنید. درباره <ph name="BEGIN_LINK"/>مدیریت حریم خصوصی آگهی در Brave<ph name="END_LINK"/> بیشتر بدانید.</translation>
 <translation id="7286703216224610554">فقط واکنش هم‌رسانی می‌شود</translation>
 <translation id="7290209999329137901">عدم‌دسترسی به تغییر نام</translation>
 <translation id="7291910923717764901">توضیحات تصویر برای این صفحه اضافه شد</translation>
 <translation id="7293429513719260019">انتخاب زبان</translation>
 <translation id="729975465115245577">دستگاه شما برنامه‌ای برای ذخیره فایل گذرواژه‌ها ندارد.</translation>
+<translation id="7581648335850642193">‏احتمالاً دستگاه Android شما تنظیم مشابهی دارد. اگر این تنظیم در Brave و دستگاه Android شما روشن باشد، ممکن است شرکتی بتواند اثربخشی آگهی را در وب‌سایت‌هایی که بازدید می‌کنید و برنامه‌هایی که استفاده می‌کنید اندازه‌گیری کند.</translation>
 <translation id="1382596880054356475">‏آفلاین. Brave نمی‌تواند گذرواژه‌هایتان را بررسی کند.</translation>
 <translation id="7313188324932846546">برای تنظیم همگام‌سازی ضربه بزنید</translation>
+<translation id="7324354302972299151">‏ارسال درخواست «Do Not Track»</translation>
 <translation id="7332075081379534664">ورود به سیستم باموفقیت انجام شد</translation>
 <translation id="8716243540027092298">‏برای دریافت مرتبط‌ترین محتوا از Brave، همگام‌سازی کنید</translation>
 <translation id="7339898014177206373">پنجرهٔ جدید</translation>
@@ -1155,6 +1177,7 @@
 <translation id="7454641608352164238">فضای کافی وجود ندارد</translation>
 <translation id="7455988709578031708">براساس سابقه مرور شما. این تنظیم روشن است.</translation>
 <translation id="7456774706094330779">پیش‌بارگذاری گسترده</translation>
+<translation id="7466431077154602932">نمای فشرده</translation>
 <translation id="7474822150871987353">بدون اینکه صفحه را ترک کنید، درباره موضوعات در وب‌سایت‌ها اطلاعاتی کسب کنید. یک یا چند کلمه را در صفحه انتخاب کنید تا جستجویشان کنید.</translation>
 <translation id="7475192538862203634">اگر این مورد را مکرراً مشاهده می‌کنید، این <ph name="BEGIN_LINK"/>پیشنهادات<ph name="END_LINK"/> را امتحان کنید.</translation>
 <translation id="7475688122056506577">‏کارت SD پیدا نشد. ممکن است بعضی از فایل‌هایتان جا بیافتد.</translation>
@@ -1197,20 +1220,22 @@
 <translation id="7646772052135772216">همگام‌سازی گذرواژه کار نمی‌کند</translation>
 <translation id="7655900163790317559">درحال روشن کردن بلوتوث…</translation>
 <translation id="7658239707568436148">لغو</translation>
-<translation id="7663313374500954251">این مرورگر را <ph name="PARENT_NAME"/> مدیریت می‌کند.</translation>
 <translation id="7665369617277396874">افزودن حساب</translation>
 <translation id="766587987807204883">مقاله‌ها اینجا نشان داده می‌شوند و حتی درحالت آفلاین هم می‌توانید آن‌ها را بخوانید.</translation>
 <translation id="768232549260819724">‏GIF کپی شد</translation>
 <translation id="7682724950699840886">نکات زیر را امتحان کنید: مطمئن شوید که در دستگاهتان فضای کافی وجود داشته باشد، سعی کنید دوباره صادر کنید.</translation>
 <translation id="7686086654630106285">اطلاعات بیشتر درباره آگهی‌های پیشنهادی سایت</translation>
 <translation id="2667018639405889513">‏برخی‌از صفحاتی که بازدید می‌کنید پیش‌بارگیری شده‌اند وقتی صفحات از سایت Brave پیوند داده شده باشند، ممکن است ازطریق سرورهای Brave پیش‌بارگیری شوند.</translation>
+<translation id="7795837497684113327">‏دستگاه شما Brave را باز نکرد. برای رفع مشکل، جدیدترین به‌روزرسانی Brave را از فروشگاه برنامه بارگیری کنید.</translation>
 <translation id="7691043218961417207">کاوش محتوا برای دنبال کردن</translation>
+<translation id="7697383401610880082">دستگیره کشاندن</translation>
 <translation id="7698359219371678927">ایجاد ایمیل در <ph name="APP_NAME"/></translation>
 <translation id="7707922173985738739">استفاده از داده تلفن همراه</translation>
 <translation id="7709094866268987903">علایقی که برداشتید اینجا نشان داده خواهد شد</translation>
 <translation id="7709918231054955894">همه برگه‌هایتان را مشاهده کنید</translation>
 <translation id="772434085369393266">‏پیمایش‌ها به HTTPS ارتقا می‌یابند و پیش‌از بارگیری سایت‌هایی که از HTTPS پشتیبانی نمی‌کنند، هشدار دریافت می‌کنید. نمی‌توانید این تنظیم را تغییر دهید زیرا «محافظت پیشرفته» را فعال کرده‌اید.</translation>
 <translation id="7725024127233776428">صفحاتی را که نشانک‌گذاری می‌کنید، در اینجا نشان داده می‌شوند</translation>
+<translation id="7733878270780732638">فضای کافی در دستگاه وجود ندارد.</translation>
 <translation id="7757787379047923882">نوشتار هم‌رسانی‌شده از <ph name="DEVICE_NAME"/></translation>
 <translation id="7762668264895820836">‏کارت SD <ph name="SD_CARD_NUMBER"/></translation>
 <translation id="7764225426217299476">افزودن آدرس</translation>
@@ -1228,20 +1253,17 @@
 <translation id="78270725016672455">رایانه‌تان می‌خواهد این دستگاه را برای ورود به سیستم یک سایت ثبت کند</translation>
 <translation id="7844171778363018843">هیچ داده‌ای برای همگام‌سازی انتخاب نشده است</translation>
 <translation id="7068829570137757602">‏سرویس‌های Brave</translation>
-<translation id="7847228556075070294">سابقه، کوکی‌ها، و داده‌های دیگر حذف شدند</translation>
 <translation id="784934925303690534">محدوده زمانی</translation>
 <translation id="7851858861565204677">دستگاه‌های دیگر</translation>
 <translation id="7853202427316060426">فعالیت</translation>
 <translation id="7859988229622350291">هرگز ترجمه نشود</translation>
-<translation id="7864208933699511058">درحین مرور، شخصی شدن یا نشدن آگهی‌هایی که می‌بینید به این تنظیم، <ph name="BEGIN_LINK_1"/>آگهی‌های پیشنهادی سایت<ph name="END_LINK_1"/>، <ph name="BEGIN_LINK_2"/>تنظیمات کوکی<ph name="END_LINK_2"/> شما، و اینکه آیا سایتی که مشاهده می‌کنید آگهی‌ها را شخصی‌سازی می‌کند یا نه بستگی دارد.</translation>
+<translation id="7864208933699511058">درحین مرور، شخصی‌سازی شدن یا نشدن آگهی‌هایی که می‌بینید به این تنظیمات بستگی دارد: <ph name="BEGIN_LINK_1"/>آگهی‌های پیشنهادی سایت<ph name="END_LINK_1"/>، <ph name="BEGIN_LINK_2"/>تنظیمات کوکی<ph name="END_LINK_2"/> شما، و اینکه آیا سایتی که مشاهده می‌کنید آگهی‌ها را شخصی‌سازی می‌کند یا نه.</translation>
 <translation id="7866213166286285359">ترجمه این صفحه‌ها</translation>
 <translation id="78707286264420418"><ph name="PRODUCT_NAME"/> برای اتصال به دستگاهتان به اجازه «دستگاه‌های اطراف» نیاز دارد</translation>
 <translation id="7875915731392087153">ایجاد ایمیل</translation>
 <translation id="7876243839304621966">حذف همه</translation>
-<translation id="7879130110979560610">{READING_LIST_REMINDER_NOTIFICATION_SUBTITLE,plural, =1{<ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_ONE"/> صفحه خوانده‌نشده دارید}one{<ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY"/> صفحه خوانده‌نشده دارید}other{<ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY"/> صفحه خوانده‌نشده دارید}}</translation>
 <translation id="6143689084714664628">‏درحال اجرا در Brave</translation>
 <translation id="7887174313503389866">در گشت با راهنمای مربوط به کنترل‌های اصلی امنیت و حریم خصوصی شرکت کنید. برای گزینه‌های بیشتر، به‌طور جداگانه به هر تنظیم بروید.</translation>
-<translation id="5570166585033664196">‏نحوه استفاده از Brave</translation>
 <translation id="7903184275147100332">ممکن است یک دقیقه طول بکشد</translation>
 <translation id="7914399737746719723">برنامه نصب شد</translation>
 <translation id="7919123827536834358">این زبان‌ها به‌طور خودکار ترجمه شوند</translation>
@@ -1253,7 +1275,6 @@
 <translation id="7944772052836377867">همگام‌سازی باید هویتتان را تأیید کند</translation>
 <translation id="7947953824732555851">پذیرش و ورود به سیستم</translation>
 <translation id="7957413488482743710">کارت مجازی با پنهان کردن کارت واقعی‌تان از شما دربرابر کلاهبرداری‌های احتمالی محافظت می‌کند. <ph name="BEGIN_LINK1"/>درباره کارت‌های مجازی بیشتر بدانید<ph name="END_LINK1"/></translation>
-<translation id="7961015016161918242">هرگز</translation>
 <translation id="7961926449547174351">دسترسی به «فضای ذخیره‌سازی» را غیرفعال کرده‌اید، لطفاً برای فعال کردن آن به «تنظیمات» بروید.</translation>
 <translation id="7963646190083259054">ارائه‌دهنده:</translation>
 <translation id="2939504940637874963">‏گذرواژه‌های ذخیره‌شده را در هر دستگاهی می‌توانید استفاده کنید. این گذرواژه‌ها در «مدیر گذرواژه Brave» برای <ph name="ACCOUNT"/> ذخیره می‌شود.</translation>
@@ -1297,21 +1318,24 @@
 <translation id="2919733817273403520">‏کمک به بهبود عملکرد و ویژگی‌های Brave</translation>
 <translation id="4565206163201411670">‏فعالیت Brave شما در «آسایش دیجیتالی» نشان داده شود؟</translation>
 <translation id="8118117428362942925">اگر به راهنمایی نیاز داشتید، از ولی خود کمک بگیرید (<ph name="PARENT_NAME"/>)</translation>
+<translation id="7197888224672575280">‏فهرست‌های گذرواژه‌های ذخیره‌شده شما برای Brave و Brave <ph name="ERROR_DESCRIPTION"/> بعداز نسخه ۱۲۱ ادغام خواهد شد. می‌توانید همه گذرواژه‌های ذخیره‌شده خود را در هردو برنامه به‌طور خودکار تکمیل کنید.</translation>
 <translation id="8127542551745560481">ویرایش صفحه اصلی</translation>
 <translation id="8130309322784422030">ممکن است اطلاعات ذخیره‌شده ورود به سیستم قدیمی باشد</translation>
 <translation id="813082847718468539">مشاهدهٔ اطلاعات سایت</translation>
+<translation id="6337533477704327362">‏لازم نیست این گذرواژه را به‌خاطر بسپارید. این گذرواژه در «مدیر گذرواژه Brave» ذخیره خواهد شد.</translation>
 <translation id="8156139159503939589">به چه زبانی مطالعه می‌کنید؟</translation>
-<translation id="8168435359814927499">محتوا</translation>
 <translation id="8186512483418048923"><ph name="FILES"/> فایل باقی مانده است</translation>
-<translation id="8189750580333936930">جعبه ایمنی حریم خصوصی</translation>
+<translation id="8189750580333936930">جعبه شنی حریم خصوصی</translation>
 <translation id="8190358571722158785">۱ روز باقی‌مانده است</translation>
 <translation id="8193953846147532858"><ph name="BEGIN_LINK"/>دستگاه‌های شما<ph name="END_LINK"/> · <ph name="EMAIL"/></translation>
 <translation id="8200772114523450471">ازسرگیری</translation>
 <translation id="8209050860603202033">باز کردن تصویر</translation>
-<translation id="8216351761227087153">تماشا</translation>
+<translation id="8215740705341534369">برگ کناری</translation>
 <translation id="8218622182176210845">مدیریت حساب</translation>
+<translation id="4034729701971511794">‏می‌توانید سایت‌هایی را که نمی‌خواهید مسدود کنید. Brave همچنین سایت‌هایی را که قدیمی‌تر از ۳۰ روز باشند به‌طور خودکار از فهرست حذف می‌کند. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="8223642481677794647">منوی کارت فید</translation>
 <translation id="8236097722223016103">افزودن به نشانک‌ها</translation>
+<translation id="8237871086242677046">برگ زیرین اطلاعات آماری صفحه</translation>
 <translation id="8250920743982581267">اسناد</translation>
 <translation id="8255617931166444521">سایت‌ها فقط می‌توانند از کوکی‌هایتان برای دیدن فعالیت مرورتان در سایت خودشان استفاده کنند</translation>
 <translation id="2876689296031086375">‏ازآنجایی‌که صفحات پیش‌بارگیری‌شده رمزگذاری شده‌اند، Brave هیچ اطلاعاتی درباره محتوای صفحه پیش‌بارگیری‌شده دریافت نخواهد کرد. سرورهای Brave مطلع خواهد شد که کدام سایت‌ها خصوصی پیش‌بارگیری می‌شوند. از این اطلاعات فقط برای پیش‌بارگیری صفحات استفاده می‌شود و با سایر اطلاعات «حساب Brave» شما پیوند داده نمی‌شود.</translation>
@@ -1365,6 +1389,7 @@
 <translation id="230699814587342492">‏گذرواژه‌های Brave</translation>
 <translation id="8503813439785031346">نام کاربری</translation>
 <translation id="8505766168025405649">دیدن اعلان وضعیت بارگیری</translation>
+<translation id="8506357771923193001">بارگیری‌هایتان را اینجا خواهید دید</translation>
 <translation id="133012818630824069">‏صادر کردن گذرواژه‌های ذخیره‌شده در Brave</translation>
 <translation id="8516012719330875537">ویرایشگر تصویر</translation>
 <translation id="713191641919118540">‏علایق شما به‌طوری‌که Brave برآورد کرده است</translation>
@@ -1379,7 +1404,6 @@
 <translation id="856481929701340285">درخواست نمای رایانه</translation>
 <translation id="8570677896027847510">نمی‌توان این فایل را به‌طور ایمن بارگیری کرد</translation>
 <translation id="8571213806525832805">۴ هفته گذشته</translation>
-<translation id="8572344201470131220">تصویر کپی شد</translation>
 <translation id="8580884231102452214">‏کپی کردن GIF</translation>
 <translation id="8583805026567836021">پاک‌سازی داده‌های حساب</translation>
 <translation id="859046281437143747">قیمت را ازطریق دکمه «گزینه‌های بیشتر» پیگیری کنید</translation>
@@ -1390,16 +1414,15 @@
 <translation id="8617240290563765734">نشانی وب مشخص شده در محتوای بارگیری‌شده باز شود؟</translation>
 <translation id="8621068256433641644">تلفن</translation>
 <translation id="8636825310635137004">برای دسترسی به برگه‌هایتان در دستگاه‌های دیگر، همگام‌سازی را روشن کنید.</translation>
-<translation id="8641930654639604085">سایت‌های مخصوص بزرگ‌سالان مسدود شوند</translation>
 <translation id="864544049772947936">مدیریت پنجره‌ها (<ph name="INSTANCE_COUNTS"/>)</translation>
 <translation id="8645920082661222035">رویدادهای خطرناک را پیش از اینکه اتفاق بیفتند پیش‌بینی می‌کند و درباره آن‌ها به شما هشدار می‌دهد</translation>
 <translation id="8646467750715887511">صفحات فقط بعداز باز شدن بارگیری می‌شوند.</translation>
 <translation id="2734140769649165081">‏می‌توانید داده‌ها را در تنظیمات Brave پاک کنید</translation>
-<translation id="6464188276370426100">‏نحوه جستجو با Brave</translation>
 <translation id="8662811608048051533">شما را از سیستم اکثر سایت‌ها خارج می‌کند.</translation>
 <translation id="7436978557885042606">‏به شیوه خودتان از Brave استفاده کنید</translation>
 <translation id="8664979001105139458">نام فایل از قبل وجود دارد</translation>
 <translation id="8666759526542103597">درباره «شخصی‌سازی آگهی مبتنی بر مرورگر»</translation>
+<translation id="8676276370198826499">ثبت‌نام در <ph name="SITE_ETLD_PLUS_ONE"/> با <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="8676789164135894283">درستی‌سنجی‌های ورود به سیستم</translation>
 <translation id="8683039184091909753">تصویر</translation>
 <translation id="869891660844655955">تاریخ انقضا</translation>
@@ -1410,6 +1433,7 @@
 <translation id="8746155870861185046">هم‌رسانی مورد برجسته</translation>
 <translation id="874726034427945498">برای دیدن پیشنهادهای بهتر در نوار نشانی، برگه‌ها و سابقه را همگام‌سازی کنید</translation>
 <translation id="8748850008226585750">محتوا پنهان است</translation>
+<translation id="8754448020583829686">کپی کردن بدون پیوند</translation>
 <translation id="8756969031206844760">گذرواژه به‌روزرسانی شود؟</translation>
 <translation id="8766529642647037772">پیوند برجسته‌ای مثل این ایجاد می‌کنید؟</translation>
 <translation id="8773160212632396039">درحال پردازش درخواست</translation>
@@ -1420,6 +1444,7 @@
 <translation id="8803526663383843427">وقتی روشن است</translation>
 <translation id="8805097383171548551">برای اسکن کردن رمزینه پاسخ‌سریع، از دستگاه دوربین‌دار استفاده کنید.</translation>
 <translation id="8812260976093120287">در بعضی از وب‌سایت‌ها، می‌توانید با برنامه‌های پرداخت پشتیبانی‌شده بالا در دستگاهتان پرداخت کنید.</translation>
+<translation id="8816556050903368450">ازجمله پیوند: <ph name="ORIGIN"/></translation>
 <translation id="881688628773363275">محتوای برگه پیش‌نمایش قابل‌مشاهده نیست.</translation>
 <translation id="8820817407110198400">نشانک‌ها</translation>
 <translation id="8835786707922974220">مطمئن شوید همیشه می‌توانید به گذرواژه‌هایتان دسترسی داشته باشید</translation>
@@ -1432,13 +1457,11 @@
 <translation id="885480114717186641">می‌توانید درخواست دهید از سایت ویژه رایانه <ph name="HOST_NAME"/> استفاده کنید</translation>
 <translation id="8856607253650333758">دریافت توضیحات</translation>
 <translation id="8856931513242997049">جریان اجازه اعلان بسته شد</translation>
-<translation id="8873817150012960745">برای شروع، اینجا ضربه بزنید</translation>
 <translation id="8881973373982641723">سابقه‌ها، ازجمله سابقه موجود در چارگوش جستجو پاک می‌شود.</translation>
 <translation id="8884023684057697730"><ph name="BEGIN_BOLD"/>چگونه می‌توانید داده‌هایتان را مدیریت کنید:<ph name="END_BOLD"/> برای محافظت از حریم خصوصی شما، سایت‌های موجود در فهرست را که قدیمی‌تر از ۴ هفته باشند به‌طور خودکار حذف می‌کنیم. سایت‌هایی که مجدداً از آن‌ها بازدید می‌کنید ممکن است دوباره در فهرست نمایش داده شود. یا اگر نمی‌خواهید سایت خاصی هرگز به علایق شما پی ببرد می‌توانید آن سایت را از فهرست بردارید.</translation>
 <translation id="1984646864943401749">‏نشانی‌های وب بعضی از صفحه‌هایی که بازدید می‌کنید، اطلاعات محدودی از سیستم، و برخی از محتوای صفحه را به Brave ارسال می‌کند تا به کشف تهدیدهای جدید و محافظت از همه افراد در وب کمک کند.</translation>
 <translation id="8909135823018751308">اشتراک‌گذاری‌...</translation>
 <translation id="2684652081942622950">‏حساب Brave</translation>
-<translation id="8920114477895755567">در انتظار اطلاعات والدین.</translation>
 <translation id="8921980840204105660">برای دریافت نشانک‌هایتان از دستگاه‌های دیگر، همگام‌سازی کنید</translation>
 <translation id="8922289737868596582">برای استفاده از صفحه‌ها در حالت آفلاین، آن‌ها را با دکمه «گزینه‌های بیشتر» بارگیری کنید</translation>
 <translation id="8924575305646776101"><ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
@@ -1446,11 +1469,10 @@
 <translation id="1174893863889683998">‏فعالیت Brave شما در «آسایش دیجیتالی» برداشته شود؟</translation>
 <translation id="8942627711005830162">باز کردن در پنجره دیگر</translation>
 <translation id="8945143127965743188"><ph name="LANG"/> - این زبان بارگیری نشد. بعداً دوباره امتحان کنید.</translation>
-<translation id="8955719471735800169">برگشت به بالا</translation>
+<translation id="8955719471735800169">برگشتن به بالا</translation>
 <translation id="8965591936373831584">در انتظار</translation>
 <translation id="8970887620466824814">مشکلی پیش آمد.</translation>
 <translation id="8972098258593396643">در پوشه پیش‌فرض بارگیری شود؟</translation>
-<translation id="8987641763863173640">مدیریت تنظیمات پیش‌دید ویدیو</translation>
 <translation id="8987736167266086032">ادامه دادن از جایی که ترک کرده‌اید</translation>
 <translation id="5320085753638900910">‏سابقه مرور شما بر آگهی‌هایی که می‌بینید و علایقتان که در زیر برآورد شده است تأثیر می‌گذارد. برای محافظت از حریم خصوصی شما، Brave علایقتان را هر ماه به‌طور خودکار و چرخشی حذف می‌کند. ممکن است علایق بازآوری شود، مگر اینکه آن‌ها را بردارید.</translation>
 <translation id="8996847606757455498">انتخاب ارائه‌دهنده دیگر</translation>
@@ -1481,14 +1503,13 @@
 <translation id="9106148373857059373">جریان ذخیره نشانک بسته شده است</translation>
 <translation id="9108312223223904744">«تلفن» به‌عنوان «پشتیبان کلید امنیتی»</translation>
 <translation id="9108808586816295166">‏ممکن است DNS ایمن همیشه در دسترس نباشد</translation>
-<translation id="9128984223251192329">درخواست «جعبه ایمنی حریم خصوصی» به‌صورت نیمه باز شده است</translation>
+<translation id="9128984223251192329">درخواست «جعبه شنی حریم خصوصی» به‌صورت نیمه باز شده است</translation>
 <translation id="9131209053278896908">سایت‌های مسدودشده اینجا نشان داده می‌شود</translation>
 <translation id="9133397713400217035">کاوش درحالت آفلاین</translation>
 <translation id="9148126808321036104">ورود مجدد به سیستم</translation>
 <translation id="9158770349521403363">فقط هم‌رسانی محتوا</translation>
 <translation id="9159716826369098114">بازیابی گروه برگه <ph name="TAB_COUNT"/> برگه‌ای به‌عنوان گروه برگه جدید پس‌زمینه.</translation>
 <translation id="9169507124922466868">سابقه «پیمایش» نیمه‌باز است</translation>
-<translation id="3898880815710426825">‏Brave سایت‌هایی را که قدیمی‌تر از ۴ هفته باشند به‌طور خودکار حذف می‌کند. سایت‌هایی که مجدداً از آن‌ها بازدید می‌کنید ممکن است دوباره در فهرست نمایش داده شود. یا می‌توانید سایتی را مسدود کنید تا به شما آگهی پیشنهاد ندهد.</translation>
 <translation id="9190276265094487094">سابقه‌تان در همه دستگاه‌های همگام‌سازی‌شده دردسترس خواهد بود تا بتوانید آنچه را انجام می‌دادید ادامه دهید</translation>
 <translation id="9199368092038462496">{NUM_MINS,plural, =1{آخرین بررسی: ۱ دقیقه قبل}one{آخرین بررسی: # دقیقه قبل}other{آخرین بررسی: # دقیقه قبل}}</translation>
 <translation id="9204836675896933765">۱ فایل باقی مانده است</translation>
@@ -1505,12 +1526,13 @@
 <translation id="932327136139879170">منزل</translation>
 <translation id="938850635132480979">خطا: <ph name="ERROR_CODE"/></translation>
 <translation id="939598580284253335">گذرعبارت را وارد کنید</translation>
+<translation id="950679278154734362">برای همگام‌سازی اطلاعات و ایمن نگه داشتن داده‌هایتان در خودرو، باید یک قفل نمایه ایجاد کنید. هربار که به خودرو وارد می‌شوید از کد یا گذرواژه استفاده خواهید کرد.</translation>
+<translation id="952301137339791907">برگ زیرین اطلاعات آماری صفحه باز شده است</translation>
 <translation id="5406914950576900927">‏Brave می‌تواند از <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> برای جستجو در چین استفاده کند. در <ph name="BEGIN_LINK"/>تنظیمات<ph name="END_LINK"/> می‌توانید این را تغییر دهید.</translation>
 <translation id="962979164594783469">نصب این برنامه</translation>
 <translation id="96681097142096641">صفحه ساده‌شده نشان داده شود؟</translation>
 <translation id="968900484120156207">صفحاتی را که بازدید کرده‌اید، اینجا نمایش داده می‌شوند</translation>
 <translation id="970715775301869095"><ph name="MINUTES"/> دقیقه باقی‌مانده است</translation>
-<translation id="1118026732981966201">‏می‌توانید سایت‌هایی را که نمی‌خواهید مسدود کنید. Brave همچنین سایت‌هایی را که قدیمی‌تر از ۴ هفته باشند به‌طور خودکار از فهرست حذف می‌کند. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="981121421437150478">آفلاین</translation>
 <translation id="983192555821071799">بستن همه برگه‌ها</translation>
 <translation id="987264212798334818">موارد کلی</translation>

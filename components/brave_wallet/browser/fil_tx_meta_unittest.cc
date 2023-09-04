@@ -8,18 +8,25 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
 TEST(FilTxMeta, ToTransactionInfo) {
-  std::unique_ptr<FilTransaction> tx = std::make_unique<FilTransaction>(
-      *FilTransaction::FromTxData(mojom::FilTxData::New(
-          "1", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-          "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
-  FilTxMeta meta(std::move(tx));
+  std::unique_ptr<FilTransaction> tx =
+      std::make_unique<FilTransaction>(*FilTransaction::FromTxData(
+          false, mojom::FilTxData::New(
+                     "1", "2", "3", "4", "5",
+                     "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
+
+  const char from_address[] = "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq";
+  auto fil_account_id =
+      MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kFilecoin,
+                    mojom::AccountKind::kDerived, from_address);
+
+  FilTxMeta meta(fil_account_id, std::move(tx));
   meta.set_chain_id("0x66");
-  meta.set_from("t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq");
   base::Time::Exploded x{1981, 3, 0, 1, 2};
   base::Time confirmed_time = meta.confirmed_time();
   EXPECT_TRUE(base::Time::FromUTCExploded(x, &confirmed_time));
@@ -30,7 +37,8 @@ TEST(FilTxMeta, ToTransactionInfo) {
   mojom::TransactionInfoPtr ti = meta.ToTransactionInfo();
   EXPECT_EQ(ti->id, meta.id());
   EXPECT_EQ(ti->chain_id, meta.chain_id());
-  EXPECT_EQ(ti->from_address, meta.from());
+  EXPECT_EQ(ti->from_address, from_address);
+  EXPECT_EQ(ti->from_account_id, fil_account_id);
   EXPECT_EQ(ti->tx_status, meta.status());
   EXPECT_TRUE(ti->tx_data_union->is_fil_tx_data());
   EXPECT_EQ(ti->group_id, meta.group_id());
@@ -53,12 +61,18 @@ TEST(FilTxMeta, ToTransactionInfo) {
 }
 
 TEST(FilTxMeta, ToValue) {
-  auto transaction = FilTransaction::FromTxData(mojom::FilTxData::New(
-      "1", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
+  auto fil_account_id =
+      MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kFilecoin,
+                    mojom::AccountKind::kDerived,
+                    "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq");
+
+  auto transaction = FilTransaction::FromTxData(
+      false,
+      mojom::FilTxData::New("1", "2", "3", "4", "5",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6"));
   std::unique_ptr<FilTransaction> tx =
       std::make_unique<FilTransaction>(*transaction);
-  FilTxMeta meta(std::move(tx));
+  FilTxMeta meta(fil_account_id, std::move(tx));
   auto root = meta.ToValue();
   auto* tx_node = root.FindDict("tx");
   ASSERT_TRUE(tx_node);

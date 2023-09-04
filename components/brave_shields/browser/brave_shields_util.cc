@@ -14,6 +14,7 @@
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
+#include "brave/components/constants/url_constants.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
@@ -226,6 +227,11 @@ void ResetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
 }
 
 bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
+  if (base::FeatureList::IsEnabled(
+          ::brave_shields::features::kBraveExtensionNetworkBlocking) &&
+      url.SchemeIs(kChromeExtensionScheme)) {
+    return true;
+  }
   if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
     return false;
 
@@ -259,6 +265,11 @@ void SetAdControlType(HostContentSettingsMap* map,
 }
 
 ControlType GetAdControlType(HostContentSettingsMap* map, const GURL& url) {
+  if (base::FeatureList::IsEnabled(
+          ::brave_shields::features::kBraveExtensionNetworkBlocking) &&
+      url.SchemeIs(kChromeExtensionScheme)) {
+    return ControlType::BLOCK;
+  }
   ContentSetting setting =
       map->GetContentSetting(url, GURL(), ContentSettingsType::BRAVE_ADS);
 
@@ -316,6 +327,11 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
 
 ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                             const GURL& url) {
+  if (base::FeatureList::IsEnabled(
+          ::brave_shields::features::kBraveExtensionNetworkBlocking) &&
+      url.SchemeIs(kChromeExtensionScheme)) {
+    return ControlType::BLOCK;
+  }
   ContentSetting setting = map->GetContentSetting(
       url, GURL(), ContentSettingsType::BRAVE_COSMETIC_FILTERING);
 
@@ -693,6 +709,10 @@ bool ShouldUpgradeToHttps(
     const GURL& url,
     https_upgrade_exceptions::HttpsUpgradeExceptionsService*
         https_upgrade_exceptions_service) {
+  // Don't upgrade if we don't have an exceptions service.
+  if (!https_upgrade_exceptions_service) {
+    return false;
+  }
   // Don't upgrade if feature is disabled.
   if (!IsHttpsByDefaultFeatureEnabled()) {
     return false;
@@ -700,7 +720,6 @@ bool ShouldUpgradeToHttps(
   if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
     return false;
   }
-  DCHECK(https_upgrade_exceptions_service);
   // Don't upgrade if shields are down.
   if (!GetBraveShieldsEnabled(map, url)) {
     return false;
@@ -712,7 +731,6 @@ bool ShouldUpgradeToHttps(
   }
   // Upgrade for Standard HTTPS upgrade if host is not on the exceptions list.
   if (control_type == ControlType::BLOCK_THIRD_PARTY &&
-      https_upgrade_exceptions_service &&
       https_upgrade_exceptions_service->CanUpgradeToHTTPS(url)) {
     return true;
   }
@@ -760,12 +778,6 @@ void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
   if (!primary_pattern.IsValid()) {
     return;
   }
-
-  // Reset legacy host pattern.
-  auto legacy_host_pattern = content_settings::CreateHostPattern(url);
-  map->SetContentSettingCustomScope(
-      legacy_host_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, CONTENT_SETTING_DEFAULT);
 
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),

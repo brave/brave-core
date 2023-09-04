@@ -18,10 +18,12 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/p3a/nitro_utils/cose.h"
+#include "components/cbor/reader.h"
 #include "crypto/random.h"
 #include "net/base/url_util.h"
 #include "net/cert/pki/parsed_certificate.h"
 #include "net/cert/x509_certificate.h"
+#include "net/cert/x509_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -34,15 +36,29 @@ namespace nitro_utils {
 
 namespace {
 
-constexpr char kHashPrefix[] = "sha256:";
-constexpr size_t kHashPrefixLength = 7;
-constexpr size_t kSHA256HashLength = 32;
-constexpr size_t kUserDataMinLength = kSHA256HashLength + kHashPrefixLength;
 constexpr size_t kAttestationBodyMaxSize = 16384;
+// The user_data field contains a multihash of the TLS cert fingerprint
+// See https://multiformats.io/multihash/#the-multihash-format and
+// https://github.com/multiformats/multicodec/blob/b98f2f38fc63/table.csv#L9
+constexpr size_t kMultihashPrefixLength = 2;
+constexpr uint8_t kMultihashSHA256Code = 0x12;
+constexpr size_t kSHA256HashLength = 32;
+constexpr size_t kUserDataMinLength =
+    kMultihashPrefixLength + kSHA256HashLength;
+// AWS Nitro Enclave Root certificate downloaded from
+// https://aws-nitro-enclaves.amazonaws.com/AWS_NitroEnclaves_Root-G1.zip
+// Fingerprint `openssl x509 -fingerprint -sha256 -in root.pem -noout`
 constexpr net::SHA256HashValue kAWSRootCertFP{
     .data = {0x64, 0x1A, 0x03, 0x21, 0xA3, 0xE2, 0x44, 0xEF, 0xE4, 0x56, 0x46,
              0x31, 0x95, 0xD6, 0x06, 0x31, 0x7E, 0xD7, 0xCD, 0xCC, 0x3C, 0x17,
              0x56, 0xE0, 0x98, 0x93, 0xF3, 0xC6, 0x8F, 0x79, 0xBB, 0x5B}};
+
+// Old-style user_data is a pair of prefix:<binary digest> values
+// separated by semicolons. The first value is the TLS cert fingerprint.
+constexpr char kHashPrefix[] = "sha256:";
+constexpr size_t kHashPrefixLength = sizeof(kHashPrefix) - 1;
+constexpr size_t kUserDataOldLength =
+    2 * (kSHA256HashLength + kHashPrefixLength) + 1;
 
 net::NetworkTrafficAnnotationTag AttestationAnnotation() {
   return net::DefineNetworkTrafficAnnotation("nitro_utils_attestation", R"(
@@ -88,30 +104,52 @@ bool VerifyUserDataKey(scoped_refptr<net::X509Certificate> server_cert,
   CHECK(server_cert);
 
   const auto user_data_it = cose_map.find(cbor::Value("user_data"));
-  if (user_data_it == cose_map.end() || !user_data_it->second.is_bytestring() ||
-      user_data_it->second.GetBytestring().size() < kUserDataMinLength) {
-    LOG(ERROR) << "Nitro verification: user data is missing or is not bstr "
-               << "or is not at least " << kUserDataMinLength << " bytes";
+  if (user_data_it == cose_map.end() || !user_data_it->second.is_bytestring()) {
+    LOG(ERROR) << "Nitro verification: user data is missing or is not bstr";
     return false;
   }
-  if (memcmp(user_data_it->second.GetBytestring().data(), kHashPrefix,
-             kHashPrefixLength) != 0) {
-    LOG(ERROR) << "Nitro verification: user data is missing sha256 hash prefix";
-    return false;
-  }
+  const auto user_data_bytes = user_data_it->second.GetBytestring();
+
+  // Fingerprint of the connection TLS cert to compare against.
   const net::SHA256HashValue server_cert_fp =
       net::X509Certificate::CalculateFingerprint256(server_cert->cert_buffer());
-  if (memcmp(server_cert_fp.data,
-             user_data_it->second.GetBytestring().data() + kHashPrefixLength,
-             kSHA256HashLength) != 0) {
-    LOG(ERROR)
-        << "Nitro verification: server cert fp does not match user data fp, "
-        << "user data = "
-        << base::HexEncode(user_data_it->second.GetBytestring())
-        << ", server cert fp = " << base::HexEncode(server_cert_fp.data);
-    return false;
+
+  // The hashes in the  old and new user_data schemes have incommensurate
+  // lengths, so use the total length to distinguish between them.
+  if (user_data_bytes.size() == kUserDataOldLength) {
+    if (memcmp(user_data_bytes.data(), kHashPrefix, kHashPrefixLength) != 0) {
+      LOG(ERROR)
+          << "Nitro verification: user data is missing sha256 hash prefix";
+      return false;
+    }
+    if (memcmp(server_cert_fp.data, user_data_bytes.data() + kHashPrefixLength,
+               kSHA256HashLength) == 0) {
+      return true;
+    }
+  } else {
+    // Look for the TLS cert fingerprint as a multihash.
+    if (user_data_bytes.size() < kUserDataMinLength) {
+      LOG(ERROR) << "Nitro verification: user data is not at least "
+                 << kUserDataMinLength << " bytes";
+      return false;
+    }
+    // We only support sha2-256 fingerprints.
+    if (user_data_bytes[0] != kMultihashSHA256Code &&
+        user_data_bytes[1] != kSHA256HashLength) {
+      LOG(ERROR) << "Nitro verification: user data not a sha2-256 multihash";
+      return false;
+    }
+    if (memcmp(server_cert_fp.data,
+               user_data_bytes.data() + kMultihashPrefixLength,
+               kSHA256HashLength) == 0) {
+      return true;
+    }
   }
-  return true;
+  LOG(ERROR)
+      << "Nitro verification: server cert fp does not match user data fp, "
+      << "user data = " << base::HexEncode(user_data_bytes)
+      << ", server cert fp = " << base::HexEncode(server_cert_fp.data);
+  return false;
 }
 
 absl::optional<net::ParsedCertificateList> ParseCertificatesAndCheckRoot(
@@ -147,8 +185,7 @@ absl::optional<net::ParsedCertificateList> ParseCertificatesAndCheckRoot(
       return absl::nullopt;
     }
     if (!net::ParsedCertificate::CreateAndAddToVector(
-            net::X509Certificate::CreateCertBufferFromBytes(
-                cert_val.GetBytestring()),
+            net::x509_util::CreateCryptoBuffer(cert_val.GetBytestring()),
             parse_cert_options, &cert_chain, &cert_errors)) {
       LOG(ERROR) << "Nitro verification: failed to parse certificate: "
                  << cert_errors.ToDebugString();
@@ -264,6 +301,27 @@ void RequestAndVerifyAttestationDocument(
       base::BindOnce(&ParseAndVerifyDocument, std::move(url_loader), nonce,
                      std::move(result_callback)),
       kAttestationBodyMaxSize);
+}
+
+bool VerifyNonceForTesting(const std::vector<uint8_t>& attestation_bytes,
+                           const std::vector<uint8_t>& orig_nonce) {
+  auto document = cbor::Reader::Read(attestation_bytes);
+  if (!document.has_value() || !document.value().is_map()) {
+    LOG(ERROR) << "Nitro verification: expected cbor map for test";
+    return false;
+  }
+  return VerifyNonce(document.value().GetMap(), orig_nonce);
+}
+
+bool VerifyUserDataKeyForTesting(
+    const std::vector<uint8_t>& attestation_bytes,
+    scoped_refptr<net::X509Certificate> expected_cert) {
+  auto document = cbor::Reader::Read(attestation_bytes);
+  if (!document.has_value() || !document.value().is_map()) {
+    LOG(ERROR) << "Nitro verification: expected cbor map for test";
+    return false;
+  }
+  return VerifyUserDataKey(expected_cert, document.value().GetMap());
 }
 
 }  // namespace nitro_utils

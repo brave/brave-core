@@ -13,22 +13,23 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
-#include "brave/components/brave_ads/core/internal/common/timer/timer.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_observer.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversion_id_pattern_info.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_resource.h"
+#include "brave/components/brave_ads/core/internal/conversions/queue/conversion_queue.h"
+#include "brave/components/brave_ads/core/internal/conversions/queue/conversion_queue_delegate.h"
+#include "brave/components/brave_ads/core/internal/conversions/resource/conversion_resource.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
 namespace brave_ads {
 
-struct AdEventInfo;
+class ConversionsObserver;
+struct ConversionInfo;
 struct VerifiableConversionInfo;
 
-class Conversions final : public TabManagerObserver {
+class Conversions final : public ConversionQueueDelegate,
+                          public TabManagerObserver {
  public:
   Conversions();
 
@@ -43,77 +44,67 @@ class Conversions final : public TabManagerObserver {
   void AddObserver(ConversionsObserver* observer);
   void RemoveObserver(ConversionsObserver* observer);
 
+  // Examine potential view-through or click-through conversions through various
+  // channels, such as URL redirects or HTML pages.
   void MaybeConvert(const std::vector<GURL>& redirect_chain,
-                    const std::string& html,
-                    const ConversionIdPatternMap& conversion_id_patterns);
-
-  void Process();
+                    const std::string& html);
 
  private:
-  void GetUnprocessedConversionsCallback(
-      bool success,
-      const ConversionQueueItemList& conversion_queue_items);
-
-  void CheckRedirectChain(const std::vector<GURL>& redirect_chain,
-                          const std::string& html,
-                          const ConversionIdPatternMap& conversion_id_patterns);
-  void GetAllAdEventsCallback(std::vector<GURL> redirect_chain,
-                              std::string html,
-                              ConversionIdPatternMap conversion_id_patterns,
-                              bool success,
-                              const AdEventList& ad_events);
-  void GetAllConversionsCallback(
+  void GetCreativeSetConversions(const std::vector<GURL>& redirect_chain,
+                                 const std::string& html);
+  void GetCreativeSetConversionsCallback(
       const std::vector<GURL>& redirect_chain,
       const std::string& html,
-      const ConversionIdPatternMap& conversion_id_patterns,
-      const AdEventList& ad_events,
       bool success,
-      const ConversionList& conversions);
+      const CreativeSetConversionList& creative_set_conversions);
 
-  void Convert(const AdEventInfo& ad_event,
-               const VerifiableConversionInfo& verifiable_conversion);
-
-  void AddItemToQueue(const AdEventInfo& ad_event,
-                      const VerifiableConversionInfo& verifiable_conversion);
-  void SaveConversionQueueCallback(bool success);
-
-  void ProcessQueueItem(const ConversionQueueItemInfo& queue_item);
-  void GetConversionQueueCallback(
+  void GetAdEvents(const std::vector<GURL>& redirect_chain,
+                   const std::string& html,
+                   const CreativeSetConversionList& creative_set_conversions);
+  void GetAdEventsCallback(
+      const std::vector<GURL>& redirect_chain,
+      const std::string& html,
+      const CreativeSetConversionList& creative_set_conversions,
       bool success,
-      const ConversionQueueItemList& conversion_queue_items);
-  void ProcessQueue();
+      const AdEventList& ad_events);
 
-  void RemoveInvalidQueueItem(
-      const ConversionQueueItemInfo& conversion_queue_item);
-  void RemoveInvalidQueueItemCallback(
-      const ConversionQueueItemInfo& conversion_queue_item,
+  void CheckForConversions(
+      const std::vector<GURL>& redirect_chain,
+      const std::string& html,
+      const CreativeSetConversionList& creative_set_conversions,
+      const AdEventList& ad_events);
+  void Convert(
+      const AdEventInfo& ad_event,
+      const absl::optional<VerifiableConversionInfo>& verifiable_conversion);
+  void ConvertCallback(
+      const AdEventInfo& ad_event,
+      const absl::optional<VerifiableConversionInfo>& verifiable_conversion,
       bool success);
-  void MarkQueueItemAsProcessed(
-      const ConversionQueueItemInfo& conversion_queue_item);
-  void MarkQueueItemAsProcessedCallback(
-      const ConversionQueueItemInfo& conversion_queue_item,
-      bool success);
-  void FailedToConvertQueueItem(
-      const ConversionQueueItemInfo& conversion_queue_item);
-  void ConvertedQueueItem(const ConversionQueueItemInfo& conversion_queue_item);
 
-  void StartTimer(const ConversionQueueItemInfo& queue_item);
+  void NotifyDidConvertAd(const ConversionInfo& conversion) const;
+  void NotifyFailedToConvertAd(const std::string& creative_instance_id) const;
 
-  void NotifyConversion(
-      const ConversionQueueItemInfo& conversion_queue_item) const;
-  void NotifyConversionFailed(
-      const ConversionQueueItemInfo& conversion_queue_item) const;
+  // ConversionQueueDelegate:
+  void OnDidAddConversionToQueue(const ConversionInfo& conversion) override;
+  void OnFailedToAddConversionToQueue(
+      const ConversionInfo& conversion) override;
+  void OnWillProcessConversionQueue(const ConversionInfo& conversion,
+                                    base::Time process_at) override;
+  void OnDidProcessConversionQueue(const ConversionInfo& conversion) override;
+  void OnFailedToProcessConversionQueue(
+      const ConversionInfo& conversion) override;
+  void OnDidExhaustConversionQueue() override;
 
   // TabManagerObserver:
   void OnHtmlContentDidChange(int32_t tab_id,
                               const std::vector<GURL>& redirect_chain,
-                              const std::string& content) override;
+                              const std::string& html) override;
 
   base::ObserverList<ConversionsObserver> observers_;
 
-  ConversionsResource resource_;
+  ConversionResource resource_;
 
-  Timer timer_;
+  ConversionQueue queue_;
 
   base::WeakPtrFactory<Conversions> weak_factory_{this};
 };

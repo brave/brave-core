@@ -2,9 +2,12 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="fi">
 <translation id="130631256467250065">Muutokset tulevat voimaan, kun käynnistät laitteen seuraavan kerran.</translation>
+<translation id="1555506416658437797">muokata maksutapoja.</translation>
 <translation id="7999989146447764333">Virheraportit eivät ole käytettävissä Braveissa.</translation>
 <translation id="1953231710324290369">Tämä on suojattu Brave-sivu</translation>
+<translation id="907470742420136113">Brave yrittää muuttaa maksutapojen täyttämisen asetuksia.</translation>
 <translation id="4847979153841887006">Brave-logo</translation>
+<translation id="336808635693308470">Brave yrittää muokata maksutapoja.</translation>
 <translation id="7932149101545999102">Bravein ovat tehneet mahdolliseksi <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>-projekti ja muut <ph name="BEGIN_LINK_OSS"/>avoimen lähdekoodin ohjelmistot<ph name="END_LINK_OSS"/>.</translation>
 <translation id="8746410156982274638">Avaa
           Brave-valikko &gt;
@@ -27,6 +30,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           ja varmista, että asetus on "ei välityspalvelinta" tai "suora".</translation>
+<translation id="585620188971323280">muuttaa maksutapojen täyttämisen asetuksia.</translation>
 <translation id="2765022094254723779">Muu <ph name="BEGIN_LINK_OSS"/>avoimen lähdekoodin ohjelmisto<ph name="END_LINK_OSS"/> tukee Braveia.</translation>
 <translation id="9156965752763025780">Muutokset tulevat voimaan, kun käynnistät Bravein seuraavan kerran.</translation>
 <translation id="6477625882876869143">Bravein mahdollistivat avoimen lähdekoodin projekti <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
@@ -41,5 +45,6 @@
 <translation id="8187289872471304532">Avaa
           Sovellukset &gt; Järjestelmäasetukset &gt; Verkko &gt; Lisäasetukset &gt; Välityspalvelimet
           ja poista valinta kaikkien valittujen välityspalvelimien kohdalta.</translation>
+<translation id="4159376633403260073">Tämä on suojattu Brave for Testing ‑sivu</translation>
 <translation id="88187049159266777">Braveia ei suljettu oikein.</translation>
 </translationbundle>

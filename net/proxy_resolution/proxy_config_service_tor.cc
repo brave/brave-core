@@ -103,6 +103,8 @@ const int kTorPasswordLength = 16;
 // Default tor circuit life time is 10 minutes
 constexpr base::TimeDelta kTenMins = base::Minutes(10);
 
+bool ProxyConfigServiceTor::bypass_tor_proxy_config_for_testing_ = false;
+
 ProxyConfigServiceTor::ProxyConfigServiceTor() = default;
 
 ProxyConfigServiceTor::ProxyConfigServiceTor(const std::string& proxy_uri) {
@@ -219,8 +221,9 @@ void ProxyConfigServiceTor::RemoveObserver(Observer* observer) {
 ProxyConfigServiceTor::ConfigAvailability
 ProxyConfigServiceTor::GetLatestProxyConfig(
     net::ProxyConfigWithAnnotation* config) {
-  if (!proxy_server_.is_valid())
+  if (!proxy_server_.is_valid() || bypass_tor_proxy_config_for_testing_) {
     return CONFIG_UNSET;
+  }
 
   ProxyConfig proxy_config;
   proxy_config.proxy_rules().bypass_rules.AddRulesToSubtractImplicit();
@@ -230,6 +233,11 @@ ProxyConfigServiceTor::GetLatestProxyConfig(
       net::ProxyConfigWithAnnotation(proxy_config, kTorProxyTrafficAnnotation);
 
   return CONFIG_VALID;
+}
+
+// static
+void ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(bool bypass) {
+  bypass_tor_proxy_config_for_testing_ = bypass;
 }
 
 TorProxyMap::TorProxyMap() = default;

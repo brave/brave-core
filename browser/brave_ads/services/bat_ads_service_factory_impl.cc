@@ -8,12 +8,12 @@
 #include <memory>
 #include <utility>
 
-#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/single_thread_task_runner_thread_mode.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_ads/services/service_sandbox_type.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/public/feature/brave_ads_feature.h"
 #include "brave/components/services/bat_ads/bat_ads_service_impl.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "content/public/browser/browser_thread.h"
@@ -24,10 +24,6 @@
 namespace brave_ads {
 
 namespace {
-
-BASE_FEATURE(kInProcessBraveAdsFeature,
-             "InProcessBraveAds",
-             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Binds the |receiver| to a new provider on a background task runner.
 void BindInProcessBatAdsService(
@@ -66,10 +62,8 @@ mojo::Remote<bat_ads::mojom::BatAdsService> BatAdsServiceFactoryImpl::Launch()
     const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  const bool in_process =
-      base::FeatureList::IsEnabled(kInProcessBraveAdsFeature);
-  return in_process ? LaunchInProcessBatAdsService()
-                    : LaunchOutOfProcessBatAdsService();
+  return ShouldLaunchAsInProcessService() ? LaunchInProcessBatAdsService()
+                                          : LaunchOutOfProcessBatAdsService();
 }
 
 }  // namespace brave_ads

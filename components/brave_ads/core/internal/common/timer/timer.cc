@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 
-#include <algorithm>
-#include <cstdint>
 #include <utility>
 
 #include "base/time/time.h"
@@ -34,7 +32,7 @@ base::Time Timer::StartWithPrivacy(const base::Location& location,
                                    const base::TimeDelta delay,
                                    base::OnceClosure user_task) {
   base::TimeDelta rand_delay = RandTimeDelta(delay);
-  if (!rand_delay.is_positive()) {
+  if (rand_delay.is_negative()) {
     rand_delay = base::Seconds(1);
   }
 

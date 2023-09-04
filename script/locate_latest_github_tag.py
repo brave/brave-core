@@ -37,9 +37,10 @@ def get_github_tags(branch):
     tags = []
 
     next_request = ""
-    headers = {'Accept': 'application/vnd.github+json',
-               'Authorization': 'token ' + os.environ.get('BRAVE_GITHUB_TOKEN')
-               }
+    headers = {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': 'token ' + os.environ.get('GITHUB_TOKEN')
+    }
     tag_url = GITHUB_URL + "/repos/brave/brave-core/tags" + '?page=1&per_page=100'
 
     r = call_github_api(tag_url, headers=headers)
@@ -74,8 +75,7 @@ def main():
 
     items = get_github_tags(branch)
 
-    sorted_list = sorted(items, key=cmp_to_key(
-        loose_version_cmp), reverse=True)
+    sorted_list = sorted(items, key=cmp_to_key(loose_version_cmp), reverse=True)
     print(sorted_list[0])
 
 

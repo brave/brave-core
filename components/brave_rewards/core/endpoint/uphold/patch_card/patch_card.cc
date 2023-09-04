@@ -9,21 +9,21 @@
 
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/endpoint/uphold/uphold_utils.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoint::uphold {
 
-PatchCard::PatchCard(LedgerImpl& ledger) : ledger_(ledger) {}
+PatchCard::PatchCard(RewardsEngineImpl& engine) : engine_(engine) {}
 
 PatchCard::~PatchCard() = default;
 
-std::string PatchCard::GetUrl(const std::string& address) {
+std::string PatchCard::GetUrl(const std::string& address) const {
   return GetServerUrl("/v0/me/cards/" + address);
 }
 
-std::string PatchCard::GeneratePayload() {
+std::string PatchCard::GeneratePayload() const {
   base::Value::Dict settings;
   settings.Set("position", 1);
   settings.Set("starred", true);
@@ -36,7 +36,7 @@ std::string PatchCard::GeneratePayload() {
   return json;
 }
 
-mojom::Result PatchCard::CheckStatusCode(int status_code) {
+mojom::Result PatchCard::CheckStatusCode(int status_code) const {
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Unauthorized access");
     return mojom::Result::EXPIRED_TOKEN;
@@ -44,15 +44,15 @@ mojom::Result PatchCard::CheckStatusCode(int status_code) {
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void PatchCard::Request(const std::string& token,
                         const std::string& address,
-                        PatchCardCallback callback) {
+                        PatchCardCallback callback) const {
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(address);
   request->content = GeneratePayload();
@@ -60,13 +60,13 @@ void PatchCard::Request(const std::string& token,
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::PATCH;
 
-  ledger_->LoadURL(std::move(request),
+  engine_->LoadURL(std::move(request),
                    base::BindOnce(&PatchCard::OnRequest, base::Unretained(this),
                                   std::move(callback)));
 }
 
 void PatchCard::OnRequest(PatchCardCallback callback,
-                          mojom::UrlResponsePtr response) {
+                          mojom::UrlResponsePtr response) const {
   DCHECK(response);
   LogUrlResponse(__func__, *response);
   std::move(callback).Run(CheckStatusCode(response->status_code));

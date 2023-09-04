@@ -15,9 +15,10 @@ namespace brave_ads {
 
 bool ShouldServeAdsAtRegularIntervals();
 
-base::TimeDelta CalculateDelayBeforeServingAnAd();
-base::Time ServeAdAt();
 void SetServeAdAt(base::Time serve_ad_at);
+base::Time ServeAdAt();
+
+base::TimeDelta CalculateDelayBeforeServingAnAd();
 
 }  // namespace brave_ads
 

@@ -7,14 +7,13 @@
 
 #include <vector>
 
-#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -87,8 +86,9 @@ class WalletButtonMenuModel : public ui::SimpleMenuModel,
 
   // ui::SimpleMenuModel::Delegate override:
   void ExecuteCommand(int command_id, int event_flags) override {
-    if (command_id == HideBraveWalletIcon)
+    if (command_id == HideBraveWalletIcon) {
       prefs_->SetBoolean(kShowWalletIconOnToolbar, false);
+    }
   }
 
   void Build() {
@@ -186,7 +186,7 @@ std::string WalletButton::GetBadgeText() {
 void WalletButton::UpdateImageAndText() {
   const ui::ColorProvider* color_provider = GetColorProvider();
   SkColor icon_color = color_provider->GetColor(kColorToolbarButtonIcon);
-  auto icon = gfx::CreateVectorIcon(kWalletToolbarButtonIcon, icon_color);
+  auto icon = gfx::CreateVectorIcon(kLeoProductBraveWalletIcon, 16, icon_color);
 
   size_t icon_size = std::max(icon.width(), icon.height());
   auto badge_size = brave::BraveIconWithBadgeImageSource::GetMaxBadgeSize();
@@ -247,8 +247,9 @@ bool WalletButton::IsBubbleClosedForTesting() {
 
 views::View* WalletButton::GetAsAnchorView() {
   View* anchor_view = this;
-  if (!prefs_->GetBoolean(kShowWalletIconOnToolbar))
+  if (!prefs_->GetBoolean(kShowWalletIconOnToolbar)) {
     anchor_view = backup_anchor_view_;
+  }
   return anchor_view;
 }
 

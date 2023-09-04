@@ -1,0 +1,104 @@
+[package]
+authors = [
+    "Ashley Mannix<ashleymannix@live.com.au>",
+    "Christopher Armstrong",
+    "Dylan DPC<dylan.dpc@gmail.com>",
+    "Hunar Roop Kahlon<hunar.roop@gmail.com>"
+]
+categories = [
+    "data-structures",
+    "no-std",
+    "parser-implementations",
+    "wasm"
+]
+description = "A library to generate and parse UUIDs."
+documentation = "https://docs.rs/uuid"
+edition = "2018"
+exclude = [
+    ".github/**",
+    ".travis.yml",
+    "appveyor.yml",
+    "bors.toml"
+]
+keywords = [
+    "guid",
+    "unique",
+    "uuid"
+]
+license = "Apache-2.0 OR MIT"
+homepage = "https://github.com/uuid-rs/uuid"
+name = "uuid"
+readme = "README.md"
+repository = "https://github.com/uuid-rs/uuid"
+version = "0.8.2" # remember to update html_root_url in lib.rs
+
+[package.metadata.docs.rs]
+features = [ "guid", "serde", "slog", "v1", "v3", "v4", "v5" ]
+default-target = "x86_64-pc-windows-msvc"
+
+[package.metadata.playground]
+features = ["serde", "v1", "v3", "v4", "v5"]
+
+[badges.appveyor]
+repository = "uuid-rs/uuid"
+
+[badges.is-it-maintained-issue-resolution]
+repository = "uuid-rs/uuid"
+
+[badges.is-it-maintained-open-issues]
+repository = "uuid-rs/uuid"
+
+[badges.maintenance]
+status = "actively-developed"
+
+[badges.travis-ci]
+repository = "uuid-rs/uuid"
+
+[dependencies.getrandom]
+optional = true
+version = "0.2.0"
+
+[dependencies.md5]
+optional = true
+version = "0.7"
+
+[dependencies.serde]
+default-features = false
+optional = true
+version = "1.0.56"
+
+[dependencies.sha1]
+optional = true
+version = "0.6"
+
+[dependencies.slog]
+optional = true
+version = "2"
+
+[dev-dependencies.bincode]
+version = "1.0"
+
+[dev-dependencies.serde_derive]
+version = "1.0.79"
+
+[dev-dependencies.serde_json]
+version = "1.0"
+
+[dev-dependencies.serde_test]
+version = "1.0.56"
+
+[features]
+default = ["std"]
+guid = ["winapi"]
+std = []
+stdweb = ["getrandom", "getrandom/js"]
+v1 = []
+v3 = ["md5"]
+v4 = ["getrandom"]
+v5 = ["sha1"]
+wasm-bindgen = ["getrandom", "getrandom/js"]
+
+[target.'cfg(windows)'.dependencies.winapi]
+optional = true
+version = "0.3"
+

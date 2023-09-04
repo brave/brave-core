@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/browser/cookie_list_opt_in_service.h"
 #include "chrome/browser/browser_process.h"
@@ -17,7 +18,8 @@ namespace brave_shields {
 
 // static
 CookieListOptInServiceFactory* CookieListOptInServiceFactory::GetInstance() {
-  return base::Singleton<CookieListOptInServiceFactory>::get();
+  static base::NoDestructor<CookieListOptInServiceFactory> instance;
+  return instance.get();
 }
 
 // static

@@ -13,6 +13,7 @@
 
 #include "base/barrier_callback.h"
 #include "base/functional/callback.h"
+#include "base/gtest_prod_util.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/pin/ipfs_base_pin_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"

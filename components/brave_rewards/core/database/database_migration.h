@@ -6,23 +6,22 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_MIGRATION_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_MIGRATION_H_
 
-#include <memory>
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace database {
 
 class DatabaseMigration {
  public:
-  explicit DatabaseMigration(LedgerImpl& ledger);
+  explicit DatabaseMigration(RewardsEngineImpl& engine);
   ~DatabaseMigration();
 
-  void Start(uint32_t table_version, LegacyResultCallback callback);
+  void Start(uint32_t table_version, ResultCallback callback);
 
   static void SetTargetVersionForTesting(uint32_t version);
 
@@ -30,7 +29,12 @@ class DatabaseMigration {
   void GenerateCommand(mojom::DBTransaction* transaction,
                        const std::string& query);
 
-  const raw_ref<LedgerImpl> ledger_;
+  void RunDBTransactionCallback(ResultCallback callback,
+                                uint32_t start_version,
+                                int migrated_version,
+                                mojom::DBCommandResponsePtr response);
+
+  const raw_ref<RewardsEngineImpl> engine_;
   static uint32_t test_target_version_;
 };
 

@@ -24,6 +24,10 @@
 #include "components/prefs/pref_service.h"
 #include "components/version_info/channel.h"
 
+#if BUILDFLAG(IS_WIN)
+#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
+#endif
+
 namespace brave_vpn {
 
 namespace {
@@ -36,14 +40,35 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 #endif
   registry->RegisterStringPref(prefs::kBraveVPNEnvironment,
                                skus::GetDefaultEnvironment());
+  registry->RegisterStringPref(prefs::kBraveVPNWireguardProfileCredentials, "");
   registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
   registry->RegisterDictionaryPref(prefs::kBraveVPNSubscriberCredential);
   registry->RegisterBooleanPref(prefs::kBraveVPNLocalStateMigrated, false);
   registry->RegisterTimePref(prefs::kBraveVPNSessionExpiredDate, {});
+#if BUILDFLAG(IS_WIN)
+  registry->RegisterBooleanPref(prefs::kBraveVPNWireguardEnabled, false);
+#endif
 }
 
 }  // namespace
 
+#if BUILDFLAG(IS_WIN)
+bool IsBraveVPNWireguardEnabled(PrefService* local_state) {
+  DCHECK(IsBraveVPNFeatureEnabled());
+  return local_state->GetBoolean(prefs::kBraveVPNWireguardEnabled);
+}
+
+void MigrateWireguardFeatureFlag(PrefService* local_prefs) {
+  auto* wireguard_enabled_pref =
+      local_prefs->FindPreference(prefs::kBraveVPNWireguardEnabled);
+  if (wireguard_enabled_pref && wireguard_enabled_pref->IsDefaultValue()) {
+    local_prefs->SetBoolean(
+        prefs::kBraveVPNWireguardEnabled,
+        base::FeatureList::IsEnabled(features::kBraveVPNUseWireguardService) &&
+            brave_vpn::wireguard::IsWireguardServiceRegistered());
+  }
+}
+#endif
 void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
   if (local_prefs->GetBoolean(prefs::kBraveVPNLocalStateMigrated)) {
     return;
@@ -85,7 +110,14 @@ void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
 bool IsBraveVPNDisabledByPolicy(PrefService* prefs) {
   DCHECK(prefs);
   return prefs->FindPreference(prefs::kManagedBraveVPNDisabled) &&
+  // Need to investigate more about this.
+  // IsManagedPreference() gives false on macOS when it's configured by
+  // "defaults write com.brave.Browser.beta BraveVPNDisabled -bool true".
+  // As kManagedBraveVPNDisabled is false by default and only can be set
+  // by policy, I think skipping this condition checking will be fine.
+#if !BUILDFLAG(IS_MAC)
          prefs->IsManagedPreference(prefs::kManagedBraveVPNDisabled) &&
+#endif
          prefs->GetBoolean(prefs::kManagedBraveVPNDisabled);
 }
 
@@ -104,13 +136,13 @@ std::string GetBraveVPNEntryName(version_info::Channel channel) {
   const std::string entry_name(kBraveVPNEntryName);
   switch (channel) {
     case version_info::Channel::UNKNOWN:
-      return entry_name + "-Development";
+      return entry_name + "Development";
     case version_info::Channel::CANARY:
-      return entry_name + "-Nightly";
+      return entry_name + "Nightly";
     case version_info::Channel::DEV:
-      return entry_name + "-Dev";
+      return entry_name + "Dev";
     case version_info::Channel::BETA:
-      return entry_name + "-Beta";
+      return entry_name + "Beta";
     case version_info::Channel::STABLE:
       return entry_name;
     default:
@@ -147,6 +179,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(prefs::kBraveVPNShowButton, true);
 #if BUILDFLAG(IS_WIN)
   registry->RegisterBooleanPref(prefs::kBraveVPNShowNotificationDialog, true);
+  registry->RegisterBooleanPref(prefs::kBraveVPNWireguardFallbackDialog, true);
 #endif
 #if BUILDFLAG(IS_ANDROID)
   registry->RegisterStringPref(prefs::kBraveVPNPurchaseTokenAndroid, "");

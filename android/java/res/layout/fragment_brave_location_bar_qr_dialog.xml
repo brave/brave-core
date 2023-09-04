@@ -22,7 +22,7 @@
                android:id="@+id/back_imageview"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:contentDescription="@null"
+               android:contentDescription="@string/permissions_connect_brave_wallet_back_button_text"
                android:layout_marginStart="10dp"
                android:layout_gravity="center_vertical"
                app:srcCompat="@drawable/ic_back"

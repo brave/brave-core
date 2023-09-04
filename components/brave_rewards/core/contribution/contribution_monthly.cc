@@ -8,24 +8,24 @@
 
 #include "base/containers/cxx20_erase.h"
 #include "base/functional/bind.h"
-#include "base/guid.h"
+#include "base/uuid.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_monthly.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace contribution {
 
-ContributionMonthly::ContributionMonthly(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+ContributionMonthly::ContributionMonthly(RewardsEngineImpl& engine)
+    : engine_(engine) {}
 
 ContributionMonthly::~ContributionMonthly() = default;
 
 void ContributionMonthly::Process(absl::optional<base::Time> cutoff_time,
                                   LegacyResultCallback callback) {
-  ledger_->contribution()->GetRecurringTips(
+  engine_->contribution()->GetRecurringTips(
       [this, cutoff_time,
        callback](std::vector<mojom::PublisherInfoPtr> publishers) {
         AdvanceContributionDates(cutoff_time, callback, std::move(publishers));
@@ -53,7 +53,7 @@ void ContributionMonthly::AdvanceContributionDates(
   }
 
   // Advance the next contribution dates before attempting to add contributions.
-  ledger_->database()->AdvanceMonthlyContributionDates(
+  engine_->database()->AdvanceMonthlyContributionDates(
       publisher_ids,
       base::BindOnce(&ContributionMonthly::OnNextContributionDateAdvanced,
                      base::Unretained(this), std::move(publishers), callback));
@@ -65,7 +65,7 @@ void ContributionMonthly::OnNextContributionDateAdvanced(
     bool success) {
   if (!success) {
     BLOG(0, "Unable to advance monthly contribution dates.");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -86,18 +86,18 @@ void ContributionMonthly::OnNextContributionDateAdvanced(
     publisher->amount_percent = 100.0;
 
     auto queue = mojom::ContributionQueue::New();
-    queue->id = base::GenerateGUID();
+    queue->id = base::Uuid::GenerateRandomV4().AsLowercaseString();
     queue->type = mojom::RewardsType::RECURRING_TIP;
     queue->amount = item->weight;
     queue->partial = false;
     queue->publishers.push_back(std::move(publisher));
 
-    ledger_->database()->SaveContributionQueue(std::move(queue),
+    engine_->database()->SaveContributionQueue(std::move(queue),
                                                [](mojom::Result) {});
   }
 
-  ledger_->contribution()->CheckContributionQueue();
-  callback(mojom::Result::LEDGER_OK);
+  engine_->contribution()->CheckContributionQueue();
+  callback(mojom::Result::OK);
 }
 
 }  // namespace contribution

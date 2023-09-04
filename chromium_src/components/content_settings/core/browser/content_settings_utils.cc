@@ -5,8 +5,6 @@
 
 #include "components/content_settings/core/browser/content_settings_utils.h"
 
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
-
 #define GetRendererContentSettingRules \
   GetRendererContentSettingRules_ChromiumImpl
 

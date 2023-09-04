@@ -8,12 +8,13 @@
 #include <memory>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/core/ads_util.h"
+#include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
@@ -43,7 +44,8 @@ ViewCounterService* ViewCounterServiceFactory::GetForProfile(Profile* profile) {
 
 // static
 ViewCounterServiceFactory* ViewCounterServiceFactory::GetInstance() {
-  return base::Singleton<ViewCounterServiceFactory>::get();
+  static base::NoDestructor<ViewCounterServiceFactory> instance;
+  return instance.get();
 }
 
 ViewCounterServiceFactory::ViewCounterServiceFactory()
@@ -81,7 +83,7 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
     if (g_brave_browser_process->p3a_service() != nullptr) {
       ntp_p3a_helper = std::make_unique<NTPP3AHelperImpl>(
           g_browser_process->local_state(),
-          g_brave_browser_process->p3a_service(), ads_service);
+          g_brave_browser_process->p3a_service(), profile->GetPrefs());
     }
 
     return new ViewCounterService(

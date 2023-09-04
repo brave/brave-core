@@ -1,0 +1,7 @@
+Name: funty
+URL: https://crates.io/crates/funty
+Description: Trait generalization over the primitive types
+Version: 2.0.0
+Security Critical: no
+License: MIT
+Revision: 25ca048375e389d703a0cefb377e32c4cc0a9dc5

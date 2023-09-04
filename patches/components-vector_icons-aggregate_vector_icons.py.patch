@@ -1,5 +1,5 @@
 diff --git a/components/vector_icons/aggregate_vector_icons.py b/components/vector_icons/aggregate_vector_icons.py
-index 3e5a94a7f053ffc66f1a820073265cbfe1332b39..0175ec714b441df5e8fa58e9391e2de6bbd67755 100644
+index 3e5a94a7f053ffc66f1a820073265cbfe1332b39..fe2065a020661fc59807a39b968e7673fd247f5c 100644
 --- a/components/vector_icons/aggregate_vector_icons.py
 +++ b/components/vector_icons/aggregate_vector_icons.py
 @@ -102,7 +102,7 @@ def ExtractIconReps(icon_file_name):
@@ -20,19 +20,39 @@ index 3e5a94a7f053ffc66f1a820073265cbfe1332b39..0175ec714b441df5e8fa58e9391e2de6
    """
  
    # For each file in |file_list|, place it in |path_map| if its extension is
-@@ -129,6 +131,11 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
+@@ -129,6 +131,7 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
      if extension != ".icon":
        Error("Only filenames " + icon_name + ".icon are allowed.")
  
-+    # Check for alternative path
-+    alt_icon_path = os.path.join(alt_working_directory, os.path.basename(icon_path))
-+    if (os.path.exists(alt_icon_path)):
-+      icon_path = alt_icon_path
-+
++    icon_path = get_icon_path(icon_path, alt_working_directory)
      if icon_name not in path_map:
        path_map[icon_name] = icon_path
      else:
-@@ -205,13 +212,16 @@ def main():
+@@ -151,6 +154,7 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
+     for icon in path_map:
+       (icon_name, extension) = os.path.splitext(
+                                os.path.basename(path_map[icon]))
++      icon_name = icon
+       output_header.write("VECTOR_ICON_TEMPLATE_H({})\n".format(
+           GetIconName(icon_name)))
+   output_header.close()
+@@ -171,6 +175,7 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
+     for icon in path_map:
+       (icon_name, extension) = os.path.splitext(
+                                os.path.basename(path_map[icon]))
++      icon_name = icon
+ 
+       icon_representations = ExtractIconReps(path_map[icon])
+       icon_representation_strings = []
+@@ -193,6 +198,7 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
+   output_cc.close()
+ 
+ 
++from import_inline import inline_file_from_src; inline_file_from_src('brave/chromium_src/components/vector_icons/aggregate_vector_icons.py', globals(), locals())
+ def main():
+   parser = optparse.OptionParser()
+   parser.add_option("--working_directory",
+@@ -205,13 +211,16 @@ def main():
                      help="The path to output the CC file to.")
    parser.add_option("--output_h",
                      help="The path to output the header file to.")

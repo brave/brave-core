@@ -1,0 +1,7 @@
+Name: feed-rs
+URL: https://crates.io/crates/feed-rs
+Description: A unified feed parser that handles Atom, RSS 2.0, RSS 1.0, RSS 0.x and JSON Feed
+Version: 1.3.0
+Security Critical: no
+License: MIT
+Revision: 418d0536ac444bb2b7c00a569e32d368ae6a6b07

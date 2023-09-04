@@ -13,9 +13,14 @@ ANDROID_ONLY_PATHS = []
 
 DESKTOP_ONLY_PATHS = []
 
+_REPOSITORY_ROOT = None
+
 
 def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
                     additional_paths):
+    global _REPOSITORY_ROOT  # pylint: disable=global-statement
+    _REPOSITORY_ROOT = root
+
     # Exclude these specific paths from needing a README.chromium file.
     prune_paths.update([
         # Formerly external Brave code which has moved to brave-core
@@ -103,6 +108,13 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "License File": \
                 "/brave/third_party/rust/cxx/v1/crate/LICENSE-APACHE",
         },
+        os.path.join('brave', 'third_party', 'rust'): {
+            "Name": "rust-cxx",
+            "URL": "https://crates.io/crates/either",
+            "License": "MIT",
+            "License File": \
+                "/brave/third_party/rust/either/v1/crate/LICENSE-MIT",
+        },
         os.path.join('brave', 'vendor', 'omaha', 'third_party', 'zlib'): {
             "Name": "zlib",
             "URL": "https://zlib.net",
@@ -125,6 +137,17 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "URL": "https://github.com/brave/Sparkle",
             "License": "MIT",
         },
+        os.path.join('brave', 'third_party', 'cryptography'): {
+            "Name": "cryptography",
+            "URL": "https://cryptography.io",
+            "License": "Apache-2.0",
+            "License File": "/brave/common/licenses/Apache-2.0",
+        },
+        os.path.join('brave', 'third_party', 'macholib'): {
+            "Name": "macholib",
+            "URL": "https://github.com/ronaldoussoren/macholib",
+            "License": "MIT",
+        },
     })
 
     # Don't recurse into these directories looking for third-party code.
@@ -142,6 +165,8 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
     additional_list = list(additional_paths)
     additional_list += [
         os.path.join('brave', 'components', 'brave_new_tab_ui', 'data'),
+        os.path.join('brave', 'browser', 'brave_vpn', 'win',
+                     'brave_vpn_wireguard_service'),
         os.path.join('brave', 'components', 'filecoin'),
     ]
 
@@ -166,9 +191,24 @@ def CheckBraveMissingLicense(target_os, path, error):
         else:
             if path in ANDROID_ONLY_PATHS:
                 return  # Android failures are not relevant on desktop.
+        if not ContainsFiles(os.path.join(_REPOSITORY_ROOT, path)):
+            return  # Empty directories do not require license.
         print('\nERROR: missing license information in %s\n'
               "If this is code you added, then you'll have to add the required "
               "metadata.\nIf the path that's mentioned isn't something you "
               "added, then you probably just need to remove that obsolete path "
               "from your local checkout.\n" % path)
         raise error
+
+
+def ContainsFiles(path):
+    assert os.path.exists(path), f'{path} not found'
+
+    def reraise(e):
+        raise e
+
+    for _, _, filenames in os.walk(path, onerror=reraise):
+        if filenames:
+            return True
+
+    return False

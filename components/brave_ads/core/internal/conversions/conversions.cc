@@ -5,208 +5,35 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversions.h"
 
-#include <set>
-#include <utility>
-
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/notreached.h"
-#include "base/ranges/algorithm.h"
-#include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
-#include "brave/components/brave_ads/core/internal/common/url/url_util.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversion_queue_database_table.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_database_table.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
-#include "brave/components/brave_ads/core/internal/conversions/sorts/conversions_sort_factory.h"
-#include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
-#include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
+#include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_builder.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_info.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions_observer.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/resource/conversion_resource_id_pattern_info.h"
+#include "brave/components/brave_ads/core/internal/conversions/resource/conversion_resource_info.h"
+#include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_builder.h"
+#include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
-#include "third_party/re2/src/re2/re2.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
 
-namespace {
-
-constexpr base::TimeDelta kConvertAfter = base::Days(1);
-constexpr base::TimeDelta kDebugConvertAfter = base::Minutes(10);
-constexpr base::TimeDelta kConvertExpiredAfter = base::Minutes(1);
-
-constexpr char kSearchInUrl[] = "url";
-
-bool HasObservationWindowForAdEventExpired(
-    const base::TimeDelta observation_window,
-    const AdEventInfo& ad_event) {
-  return ad_event.created_at < base::Time::Now() - observation_window;
-}
-
-bool ShouldConvertAdEvent(const AdEventInfo& ad_event) {
-  if (ad_event.type == AdType::kInlineContentAd) {
-    // Only convert post clicks for inline content ads for opted-out and
-    // opted-in users.
-    return ad_event.confirmation_type != ConfirmationType::kViewed;
-  }
-
-  if (ad_event.type == AdType::kSearchResultAd) {
-    // Always convert search result ads for both opted-out and opted-in users.
-    return true;
-  }
-
-  // Only convert for opted-in users for all other ad types.
-  return ShouldRewardUser();
-}
-
-bool DoesConfirmationTypeMatchConversionType(
-    const ConfirmationType& confirmation_type,
-    const std::string& conversion_type) {
-  switch (confirmation_type.value()) {
-    case ConfirmationType::kViewed: {
-      return conversion_type == "postview";
-    }
-
-    case ConfirmationType::kClicked: {
-      return conversion_type == "postclick";
-    }
-
-    case ConfirmationType::kUndefined:
-    case ConfirmationType::kServed:
-    case ConfirmationType::kDismissed:
-    case ConfirmationType::kTransferred:
-    case ConfirmationType::kSaved:
-    case ConfirmationType::kFlagged:
-    case ConfirmationType::kUpvoted:
-    case ConfirmationType::kDownvoted:
-    case ConfirmationType::kConversion: {
-      return false;
-    }
-  }
-
-  NOTREACHED_NORETURN() << "Unexpected value for ConfirmationType: "
-                        << static_cast<int>(confirmation_type.value());
-}
-
-std::string ExtractConversionIdFromText(
-    const std::string& html,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& conversion_url_pattern,
-    const ConversionIdPatternMap& conversion_id_patterns) {
-  std::string conversion_id;
-  std::string conversion_id_pattern = kConversionsIdPattern.Get();
-  std::string text = html;
-
-  const auto iter = conversion_id_patterns.find(conversion_url_pattern);
-  if (iter != conversion_id_patterns.cend()) {
-    const ConversionIdPatternInfo conversion_id_pattern_info = iter->second;
-    if (conversion_id_pattern_info.search_in == kSearchInUrl) {
-      const auto url_iter = base::ranges::find_if(
-          redirect_chain, [&conversion_url_pattern](const GURL& url) {
-            return MatchUrlPattern(url, conversion_url_pattern);
-          });
-
-      if (url_iter == redirect_chain.cend()) {
-        return conversion_id;
-      }
-
-      const GURL& url = *url_iter;
-      text = url.spec();
-    }
-
-    conversion_id_pattern = conversion_id_pattern_info.id_pattern;
-  }
-
-  re2::StringPiece text_string_piece(text);
-  const RE2 r(conversion_id_pattern);
-  RE2::FindAndConsume(&text_string_piece, r, &conversion_id);
-
-  return conversion_id;
-}
-
-std::set<std::string> GetConvertedCreativeSets(const AdEventList& ad_events) {
-  std::set<std::string> creative_set_ids;
-  for (const auto& ad_event : ad_events) {
-    if (ad_event.confirmation_type != ConfirmationType::kConversion) {
-      continue;
-    }
-
-    if (creative_set_ids.find(ad_event.creative_set_id) !=
-        creative_set_ids.cend()) {
-      continue;
-    }
-
-    creative_set_ids.insert(ad_event.creative_set_id);
-  }
-
-  return creative_set_ids;
-}
-
-AdEventList FilterAdEventsForConversion(const AdEventList& ad_events,
-                                        const ConversionInfo& conversion) {
-  AdEventList filtered_ad_events;
-
-  base::ranges::copy_if(
-      ad_events, std::back_inserter(filtered_ad_events),
-      [&conversion](const AdEventInfo& ad_event) {
-        if (ad_event.creative_set_id != conversion.creative_set_id) {
-          return false;
-        }
-
-        if (!ShouldConvertAdEvent(ad_event)) {
-          return false;
-        }
-
-        if (!DoesConfirmationTypeMatchConversionType(ad_event.confirmation_type,
-                                                     conversion.type)) {
-          return false;
-        }
-
-        if (HasObservationWindowForAdEventExpired(conversion.observation_window,
-                                                  ad_event)) {
-          return false;
-        }
-
-        return true;
-      });
-
-  return filtered_ad_events;
-}
-
-ConversionList FilterConversions(const std::vector<GURL>& redirect_chain,
-                                 const ConversionList& conversions) {
-  ConversionList filtered_conversions;
-
-  base::ranges::copy_if(conversions, std::back_inserter(filtered_conversions),
-                        [&redirect_chain](const ConversionInfo& conversion) {
-                          const auto iter = base::ranges::find_if(
-                              redirect_chain, [&conversion](const GURL& url) {
-                                return MatchUrlPattern(url,
-                                                       conversion.url_pattern);
-                              });
-
-                          return iter != redirect_chain.cend();
-                        });
-
-  return filtered_conversions;
-}
-
-ConversionList SortConversions(const ConversionList& conversions) {
-  const auto sort =
-      ConversionsSortFactory::Build(ConversionSortType::kDescendingOrder);
-  CHECK(sort);
-
-  return sort->Apply(conversions);
-}
-
-}  // namespace
-
 Conversions::Conversions() {
   TabManager::GetInstance().AddObserver(this);
+  queue_.SetDelegate(this);
 }
 
 Conversions::~Conversions() {
@@ -223,356 +50,252 @@ void Conversions::RemoveObserver(ConversionsObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void Conversions::MaybeConvert(
-    const std::vector<GURL>& redirect_chain,
-    const std::string& html,
-    const ConversionIdPatternMap& conversion_id_patterns) {
+void Conversions::MaybeConvert(const std::vector<GURL>& redirect_chain,
+                               const std::string& html) {
   if (redirect_chain.empty()) {
     return;
   }
 
-  const GURL& url = redirect_chain.back();
-  if (!SchemeIsSupported(url)) {
-    BLOG(1, "URL is not supported for conversions");
-    return;
-  }
+  BLOG(1, "Checking for conversions");
 
-  CheckRedirectChain(redirect_chain, html, conversion_id_patterns);
-}
-
-void Conversions::Process() {
-  const database::table::ConversionQueue database_table;
-  database_table.GetUnprocessed(
-      base::BindOnce(&Conversions::GetUnprocessedConversionsCallback,
-                     weak_factory_.GetWeakPtr()));
+  GetCreativeSetConversions(redirect_chain, html);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Conversions::GetUnprocessedConversionsCallback(
-    const bool success,
-    const ConversionQueueItemList& conversion_queue_items) {
-  if (!success) {
-    BLOG(1, "Failed to get unprocessed conversions");
-    return;
-  }
-
-  if (conversion_queue_items.empty()) {
-    BLOG(1, "Conversion queue is empty");
-    return;
-  }
-
-  const ConversionQueueItemInfo& conversion_queue_item =
-      conversion_queue_items.front();
-
-  StartTimer(conversion_queue_item);
+void Conversions::GetCreativeSetConversions(
+    const std::vector<GURL>& redirect_chain,
+    const std::string& html) {
+  const database::table::CreativeSetConversions database_table;
+  database_table.GetAll(
+      base::BindOnce(&Conversions::GetCreativeSetConversionsCallback,
+                     weak_factory_.GetWeakPtr(), redirect_chain, html));
 }
 
-void Conversions::CheckRedirectChain(
+void Conversions::GetCreativeSetConversionsCallback(
     const std::vector<GURL>& redirect_chain,
     const std::string& html,
-    const ConversionIdPatternMap& conversion_id_patterns) {
-  BLOG(1, "Checking URL for conversions");
+    const bool success,
+    const CreativeSetConversionList& creative_set_conversions) {
+  if (!success) {
+    return BLOG(1, "Failed to get creative set conversions");
+  }
 
-  const database::table::AdEvents ad_events_database_table;
-  ad_events_database_table.GetAll(base::BindOnce(
-      &Conversions::GetAllAdEventsCallback, weak_factory_.GetWeakPtr(),
-      redirect_chain, html, conversion_id_patterns));
+  if (creative_set_conversions.empty()) {
+    return BLOG(1, "There are no creative set conversions");
+  }
+
+  GetAdEvents(redirect_chain, html, creative_set_conversions);
 }
 
-void Conversions::GetAllAdEventsCallback(
-    std::vector<GURL> redirect_chain,
-    std::string html,
-    ConversionIdPatternMap conversion_id_patterns,
+void Conversions::GetAdEvents(
+    const std::vector<GURL>& redirect_chain,
+    const std::string& html,
+    const CreativeSetConversionList& creative_set_conversions) {
+  const database::table::AdEvents database_table;
+  database_table.GetAll(base::BindOnce(
+      &Conversions::GetAdEventsCallback, weak_factory_.GetWeakPtr(),
+      redirect_chain, html, creative_set_conversions));
+}
+
+void Conversions::GetAdEventsCallback(
+    const std::vector<GURL>& redirect_chain,
+    const std::string& html,
+    const CreativeSetConversionList& creative_set_conversions,
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
-    BLOG(1, "Failed to get ad events");
-    return;
+    return BLOG(1, "Failed to get ad events");
   }
 
-  const database::table::Conversions conversions_database_table;
-  conversions_database_table.GetAll(base::BindOnce(
-      &Conversions::GetAllConversionsCallback, weak_factory_.GetWeakPtr(),
-      std::move(redirect_chain), std::move(html),
-      std::move(conversion_id_patterns), ad_events));
+  CheckForConversions(redirect_chain, html, creative_set_conversions,
+                      ad_events);
 }
 
-void Conversions::GetAllConversionsCallback(
+void Conversions::CheckForConversions(
     const std::vector<GURL>& redirect_chain,
     const std::string& html,
-    const ConversionIdPatternMap& conversion_id_patterns,
-    const AdEventList& ad_events,
-    const bool success,
-    const ConversionList& conversions) {
-  if (!success) {
-    BLOG(1, "Failed to get conversions");
-    return;
+    const CreativeSetConversionList& creative_set_conversions,
+    const AdEventList& ad_events) {
+  const CreativeSetConversionList filtered_creative_set_conversions =
+      FilterConvertedAndNonMatchingCreativeSetConversions(
+          creative_set_conversions, ad_events, redirect_chain);
+  if (filtered_creative_set_conversions.empty()) {
+    return BLOG(1, "There are no eligible creative set conversions");
   }
 
-  if (conversions.empty()) {
-    BLOG(1, "There are no conversions");
-    return;
-  }
+  CreativeSetConversionBuckets creative_set_conversion_buckets =
+      SortCreativeSetConversionsIntoBuckets(filtered_creative_set_conversions);
 
-  // Filter conversions by url pattern
-  ConversionList filtered_conversions =
-      FilterConversions(redirect_chain, conversions);
+  BLOG(1, filtered_creative_set_conversions.size()
+              << " out of " << creative_set_conversions.size()
+              << " eligible creative set conversions are sorted into "
+              << creative_set_conversion_buckets.size() << " buckets");
 
-  // Sort conversions in descending order
-  filtered_conversions = SortConversions(filtered_conversions);
+  bool did_convert = false;
 
-  // Create list of creative set ids for already converted ads
-  std::set<std::string> creative_set_ids = GetConvertedCreativeSets(ad_events);
+  // Click-through conversions should take priority over view-through
+  // conversions. Ad events are ordered in descending order by |created_at|;
+  // click events are guaranteed to occur after view events.
+  for (const auto& ad_event : ad_events) {
+    // Do we have a bucket with creative set conversions for this ad event?
+    const auto iter =
+        creative_set_conversion_buckets.find(ad_event.creative_set_id);
+    if (iter == creative_set_conversion_buckets.cend()) {
+      // No, because the creative set has already been converted, or there are
+      // no conversions for this creative set.
+      continue;
+    }
 
-  bool converted = false;
+    if (!CanConvertAdEvent(ad_event)) {
+      continue;
+    }
 
-  // Check for conversions
-  for (const auto& conversion : filtered_conversions) {
-    const AdEventList filtered_ad_events =
-        FilterAdEventsForConversion(ad_events, conversion);
+    const auto& [_, creative_set_conversion_bucket] = *iter;
+    const absl::optional<CreativeSetConversionInfo> creative_set_conversion =
+        FindNonExpiredCreativeSetConversion(creative_set_conversion_bucket,
+                                            ad_event);
+    if (!creative_set_conversion) {
+      continue;
+    }
 
-    for (const auto& ad_event : filtered_ad_events) {
-      if (creative_set_ids.find(conversion.creative_set_id) !=
-          creative_set_ids.cend()) {
-        // Creative set id has already been converted
-        continue;
-      }
+    Convert(ad_event, MaybeBuildVerifiableConversion(
+                          redirect_chain, html, resource_.get().id_patterns,
+                          *creative_set_conversion));
 
-      creative_set_ids.insert(ad_event.creative_set_id);
+    did_convert = true;
 
-      VerifiableConversionInfo verifiable_conversion;
-      verifiable_conversion.id = ExtractConversionIdFromText(
-          html, redirect_chain, conversion.url_pattern, conversion_id_patterns);
-      verifiable_conversion.public_key = conversion.advertiser_public_key;
-
-      Convert(ad_event, verifiable_conversion);
-
-      converted = true;
+    // Remove the bucket for this creative set because we should not convert
+    // another ad event from the same creative set.
+    creative_set_conversion_buckets.erase(ad_event.creative_set_id);
+    if (creative_set_conversion_buckets.empty()) {
+      // All the buckets have drained, so they will no longer contain
+      // conversions; therefore, we should consider our job done!
+      break;
     }
   }
 
-  if (!converted) {
-    BLOG(1, "There were no conversion matches");
-  } else {
-    BLOG(1, "There was a conversion match");
+  if (!did_convert) {
+    BLOG(1, "There are no matching conversions");
   }
 }
 
 void Conversions::Convert(
     const AdEventInfo& ad_event,
-    const VerifiableConversionInfo& verifiable_conversion) {
-  BLOG(1, "Conversion for "
-              << ad_event.type << " with campaign id " << ad_event.campaign_id
-              << ", creative set id " << ad_event.creative_set_id
-              << ", creative instance id " << ad_event.creative_instance_id
-              << " and advertiser id " << ad_event.advertiser_id);
+    const absl::optional<VerifiableConversionInfo>& verifiable_conversion) {
+  BLOG(1, "Conversion for " << ad_event.type << " with creative instance id "
+                            << ad_event.creative_instance_id
+                            << ", creative set id " << ad_event.creative_set_id
+                            << ", campaign id " << ad_event.campaign_id
+                            << " and advertiser id " << ad_event.advertiser_id);
 
-  AddItemToQueue(ad_event, verifiable_conversion);
+  LogAdEvent(
+      RebuildAdEvent(ad_event, ConfirmationType::kConversion,
+                     base::Time::Now()),
+      base::BindOnce(&Conversions::ConvertCallback, weak_factory_.GetWeakPtr(),
+                     ad_event, verifiable_conversion));
 }
 
-void Conversions::AddItemToQueue(
+void Conversions::ConvertCallback(
     const AdEventInfo& ad_event,
-    const VerifiableConversionInfo& verifiable_conversion) {
-  AdEventInfo conversion_ad_event = ad_event;
-  conversion_ad_event.created_at = base::Time::Now();
-  conversion_ad_event.confirmation_type = ConfirmationType::kConversion;
-
-  LogAdEvent(conversion_ad_event, base::BindOnce([](const bool success) {
-               if (!success) {
-                 BLOG(1, "Failed to log conversion event");
-                 return;
-               }
-
-               BLOG(6, "Successfully logged conversion event");
-             }));
-
-  ConversionQueueItemInfo conversion_queue_item;
-  conversion_queue_item.campaign_id = ad_event.campaign_id;
-  conversion_queue_item.creative_set_id = ad_event.creative_set_id;
-  conversion_queue_item.creative_instance_id = ad_event.creative_instance_id;
-  conversion_queue_item.advertiser_id = ad_event.advertiser_id;
-  conversion_queue_item.segment = ad_event.segment;
-  conversion_queue_item.conversion_id = verifiable_conversion.id;
-  conversion_queue_item.advertiser_public_key =
-      verifiable_conversion.public_key;
-  conversion_queue_item.ad_type = ad_event.type;
-
-  conversion_queue_item.process_at =
-      base::Time::Now() +
-      RandTimeDelta(ShouldDebug() ? kDebugConvertAfter : kConvertAfter);
-
-  database::table::ConversionQueue database_table;
-  database_table.Save({conversion_queue_item},
-                      base::BindOnce(&Conversions::SaveConversionQueueCallback,
-                                     weak_factory_.GetWeakPtr()));
-}
-
-void Conversions::SaveConversionQueueCallback(const bool success) {
-  if (!success) {
-    BLOG(1, "Failed to append conversion to queue");
-    return;
-  }
-
-  BLOG(3, "Successfully appended conversion to queue");
-
-  Process();
-}
-
-void Conversions::ProcessQueueItem(
-    const ConversionQueueItemInfo& conversion_queue_item) {
-  if (!conversion_queue_item.IsValid()) {
-    return RemoveInvalidQueueItem(conversion_queue_item);
-  }
-
-  MarkQueueItemAsProcessed(conversion_queue_item);
-}
-
-void Conversions::FailedToConvertQueueItem(
-    const ConversionQueueItemInfo& conversion_queue_item) {
-  BLOG(1, "Failed to convert "
-              << conversion_queue_item.ad_type << " with campaign id "
-              << conversion_queue_item.campaign_id << ", creative set id "
-              << conversion_queue_item.creative_set_id
-              << ", creative instance id "
-              << conversion_queue_item.creative_instance_id
-              << " and advertiser id " << conversion_queue_item.advertiser_id
-              << " "
-              << LongFriendlyDateAndTime(conversion_queue_item.process_at,
-                                         /*use_sentence_style*/ true));
-
-  NotifyConversionFailed(conversion_queue_item);
-
-  Process();
-}
-
-void Conversions::ConvertedQueueItem(
-    const ConversionQueueItemInfo& conversion_queue_item) {
-  BLOG(1, "Successfully converted "
-              << conversion_queue_item.ad_type << " with campaign id "
-              << conversion_queue_item.campaign_id << ", creative set id "
-              << conversion_queue_item.creative_set_id
-              << ", creative instance id "
-              << conversion_queue_item.creative_instance_id
-              << " and advertiser id " << conversion_queue_item.advertiser_id
-              << " "
-              << LongFriendlyDateAndTime(conversion_queue_item.process_at,
-                                         /*use_sentence_style*/ true));
-
-  NotifyConversion(conversion_queue_item);
-
-  Process();
-}
-
-void Conversions::ProcessQueue() {
-  const database::table::ConversionQueue database_table;
-  database_table.GetUnprocessed(base::BindOnce(
-      &Conversions::GetConversionQueueCallback, weak_factory_.GetWeakPtr()));
-}
-
-void Conversions::GetConversionQueueCallback(
-    const bool success,
-    const ConversionQueueItemList& conversion_queue_items) {
-  if (!success) {
-    BLOG(1, "Failed to get conversion queue");
-    return;
-  }
-
-  if (conversion_queue_items.empty()) {
-    BLOG(1, "Conversion queue is empty");
-    return;
-  }
-
-  const ConversionQueueItemInfo& conversion_queue_item =
-      conversion_queue_items.front();
-
-  ProcessQueueItem(conversion_queue_item);
-}
-
-void Conversions::RemoveInvalidQueueItem(
-    const ConversionQueueItemInfo& conversion_queue_item) {
-  const database::table::ConversionQueue database_table;
-  database_table.Delete(
-      conversion_queue_item,
-      base::BindOnce(&Conversions::RemoveInvalidQueueItemCallback,
-                     weak_factory_.GetWeakPtr(), conversion_queue_item));
-}
-
-void Conversions::RemoveInvalidQueueItemCallback(
-    const ConversionQueueItemInfo& conversion_queue_item,
+    const absl::optional<VerifiableConversionInfo>& verifiable_conversion,
     const bool success) {
   if (!success) {
-    BLOG(0, "Failed to remove invalid conversion");
-    NOTREACHED_NORETURN();
+    BLOG(1, "Failed to log conversion event");
+    return NotifyFailedToConvertAd(ad_event.creative_instance_id);
   }
 
-  FailedToConvertQueueItem(conversion_queue_item);
+  const ConversionInfo conversion =
+      BuildConversion(ad_event, verifiable_conversion);
+  queue_.Add(conversion);
 }
 
-void Conversions::MarkQueueItemAsProcessed(
-    const ConversionQueueItemInfo& conversion_queue_item) {
-  const database::table::ConversionQueue database_table;
-  database_table.Update(
-      conversion_queue_item,
-      base::BindOnce(&Conversions::MarkQueueItemAsProcessedCallback,
-                     weak_factory_.GetWeakPtr(), conversion_queue_item));
-}
-
-void Conversions::MarkQueueItemAsProcessedCallback(
-    const ConversionQueueItemInfo& conversion_queue_item,
-    const bool success) {
-  if (!success) {
-    BLOG(0, "Failed to mark conversion as processed");
-    NOTREACHED_NORETURN();
-  }
-
-  ConvertedQueueItem(conversion_queue_item);
-}
-
-void Conversions::StartTimer(
-    const ConversionQueueItemInfo& conversion_queue_item) {
-  const base::Time process_at = conversion_queue_item.process_at;
-
-  const base::Time now = base::Time::Now();
-
-  const base::TimeDelta delay =
-      now < process_at ? process_at - now : RandTimeDelta(kConvertExpiredAfter);
-
-  const base::Time process_queue_at = timer_.Start(
-      FROM_HERE, delay,
-      base::BindOnce(&Conversions::ProcessQueue, base::Unretained(this)));
-
-  BLOG(1, "Convert " << conversion_queue_item.ad_type << " with campaign id "
-                     << conversion_queue_item.campaign_id
-                     << ", creative set id "
-                     << conversion_queue_item.creative_set_id
-                     << ", creative instance id "
-                     << conversion_queue_item.creative_instance_id
-                     << " and advertiser id "
-                     << conversion_queue_item.advertiser_id << " "
-                     << FriendlyDateAndTime(process_queue_at,
-                                            /*use_sentence_style*/ true));
-}
-
-void Conversions::NotifyConversion(
-    const ConversionQueueItemInfo& conversion_queue_item) const {
+void Conversions::NotifyDidConvertAd(const ConversionInfo& conversion) const {
   for (ConversionsObserver& observer : observers_) {
-    observer.OnConversion(conversion_queue_item);
+    observer.OnDidConvertAd(conversion);
   }
 }
 
-void Conversions::NotifyConversionFailed(
-    const ConversionQueueItemInfo& conversion_queue_item) const {
+void Conversions::NotifyFailedToConvertAd(
+    const std::string& creative_instance_id) const {
   for (ConversionsObserver& observer : observers_) {
-    observer.OnConversionFailed(conversion_queue_item);
+    observer.OnFailedToConvertAd(creative_instance_id);
   }
+}
+
+void Conversions::OnDidAddConversionToQueue(const ConversionInfo& conversion) {
+  BLOG(1, "Successfully added "
+              << ConversionActionTypeToString(conversion.action_type) << " "
+              << ConversionTypeToString(conversion) << " for "
+              << conversion.ad_type << " with creative instance id "
+              << conversion.creative_instance_id << ", creative set id "
+              << conversion.creative_set_id << ", campaign id "
+              << conversion.campaign_id << " and advertiser id "
+              << conversion.advertiser_id << " to the queue");
+}
+
+void Conversions::OnFailedToAddConversionToQueue(
+    const ConversionInfo& conversion) {
+  BLOG(1,
+       "Failed to add " << ConversionActionTypeToString(conversion.action_type)
+                        << " " << ConversionTypeToString(conversion) << " for "
+                        << conversion.ad_type << " with creative instance id "
+                        << conversion.creative_instance_id
+                        << ", creative set id " << conversion.creative_set_id
+                        << ", campaign id " << conversion.campaign_id
+                        << " and advertiser id " << conversion.advertiser_id
+                        << " to the queue");
+}
+
+void Conversions::OnWillProcessConversionQueue(const ConversionInfo& conversion,
+                                               const base::Time process_at) {
+  BLOG(1, "Process " << ConversionActionTypeToString(conversion.action_type)
+                     << " " << ConversionTypeToString(conversion) << " for "
+                     << conversion.ad_type << " with creative instance id "
+                     << conversion.creative_instance_id << ", creative set id "
+                     << conversion.creative_set_id << ", campaign id "
+                     << conversion.campaign_id << " and advertiser id "
+                     << conversion.advertiser_id << " "
+                     << FriendlyDateAndTime(process_at));
+}
+
+void Conversions::OnDidProcessConversionQueue(
+    const ConversionInfo& conversion) {
+  BLOG(1, "Successfully processed "
+              << ConversionActionTypeToString(conversion.action_type) << " "
+              << ConversionTypeToString(conversion) << " for "
+              << conversion.ad_type << " with creative instance id "
+              << conversion.creative_instance_id << ", creative set id "
+              << conversion.creative_set_id << ", campaign id "
+              << conversion.campaign_id << " and advertiser id "
+              << conversion.advertiser_id);
+
+  NotifyDidConvertAd(conversion);
+}
+
+void Conversions::OnFailedToProcessConversionQueue(
+    const ConversionInfo& conversion) {
+  BLOG(1, "Failed to process "
+              << ConversionActionTypeToString(conversion.action_type) << " "
+              << ConversionTypeToString(conversion) << " for "
+              << conversion.ad_type << " with creative instance id "
+              << conversion.creative_instance_id << ", creative set id "
+              << conversion.creative_set_id << ", campaign id "
+              << conversion.campaign_id << " and advertiser id "
+              << conversion.advertiser_id);
+
+  NotifyFailedToConvertAd(conversion.creative_instance_id);
+}
+
+void Conversions::OnDidExhaustConversionQueue() {
+  BLOG(1, "Conversion queue is exhausted");
 }
 
 void Conversions::OnHtmlContentDidChange(
     const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
-    const std::string& content) {
-  MaybeConvert(redirect_chain, content, resource_.get().id_patterns);
+    const std::string& html) {
+  MaybeConvert(redirect_chain, html);
 }
 
 }  // namespace brave_ads

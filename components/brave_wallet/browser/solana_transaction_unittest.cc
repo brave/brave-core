@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -33,9 +34,6 @@ namespace brave_wallet {
 
 namespace {
 
-constexpr char kMnemonic[] =
-    "divide cruise upon flag harsh carbon filter merit once advice bright "
-    "drive";
 constexpr char kFromAccount[] = "3JjmwHtdYkPAqnvNY67aqumBCQUSzjjk3As4igo1oQ3X";
 constexpr char kToAccount[] = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
 constexpr char kTestAccount[] = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
@@ -78,25 +76,24 @@ class SolanaTransactionUnitTest : public testing::Test {
     return success;
   }
 
-  static bool AddAccount(KeyringService* service,
-                         const std::string& account_name,
-                         mojom::CoinType coin) {
-    bool success = false;
-    base::RunLoop run_loop;
-    service->AddAccount(account_name, coin,
-                        base::BindLambdaForTesting([&](bool v) {
-                          success = v;
-                          run_loop.Quit();
-                        }));
-    run_loop.Run();
-    return success;
+  static mojom::AccountInfoPtr AddAccount(KeyringService* service,
+                                          const std::string& account_name) {
+    return service->AddAccountSync(mojom::CoinType::SOL,
+                                   mojom::kSolanaKeyringId, account_name);
   }
 
-  void SetSelectedAccount(const std::string& address) {
-    keyring_service()->SetSelectedAccountForCoin(mojom::CoinType::SOL, address);
-    ASSERT_EQ(
-        keyring_service()->GetSelectedAccount(mojom::CoinType::SOL).value(),
-        address);
+  void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {
+    bool success = false;
+    base::RunLoop run_loop;
+    keyring_service()->SetSelectedAccount(
+        account_id.Clone(), base::BindLambdaForTesting([&](bool v) {
+          success = v;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    ASSERT_TRUE(success);
+    ASSERT_EQ(keyring_service()->GetSelectedSolanaDappAccount()->account_id,
+              account_id);
   }
 
  private:
@@ -113,11 +110,14 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(
       brave_wallet::features::kBraveWalletSolanaFeature);
-  ASSERT_TRUE(RestoreWallet(keyring_service(), kMnemonic, "brave", false));
+  ASSERT_TRUE(
+      RestoreWallet(keyring_service(), kMnemonicDivideCruise, "brave", false));
 
-  ASSERT_TRUE(AddAccount(keyring_service(), "Account 1", mojom::CoinType::SOL));
-  ASSERT_TRUE(AddAccount(keyring_service(), "Account 2", mojom::CoinType::SOL));
-  SetSelectedAccount(kFromAccount);
+  ASSERT_TRUE(AddAccount(keyring_service(), "Account 1"));
+  auto from_account = AddAccount(keyring_service(), "Account 2");
+  ASSERT_TRUE(from_account);
+  ASSERT_EQ(from_account->address, kFromAccount);
+  SetSelectedAccount(from_account->account_id);
 
   uint64_t last_valid_block_height = 3090;
 
@@ -224,7 +224,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   ASSERT_TRUE(Base58Decode(sign_tx_param->encoded_serialized_msg,
                            &message_bytes, kSolanaMaxTxSize, false));
   std::vector<uint8_t> signature =
-      keyring_service()->SignMessageBySolanaKeyring(kFromAccount,
+      keyring_service()->SignMessageBySolanaKeyring(*from_account->account_id,
                                                     message_bytes);
   expected_bytes.insert(expected_bytes.end(), signature.begin(),
                         signature.end());
@@ -783,11 +783,14 @@ TEST_F(SolanaTransactionUnitTest, GetSerializedMessage) {
 }
 
 TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
-  ASSERT_TRUE(RestoreWallet(keyring_service(), kMnemonic, "brave", false));
+  ASSERT_TRUE(
+      RestoreWallet(keyring_service(), kMnemonicDivideCruise, "brave", false));
 
-  ASSERT_TRUE(AddAccount(keyring_service(), "Account 1", mojom::CoinType::SOL));
-  ASSERT_TRUE(AddAccount(keyring_service(), "Account 2", mojom::CoinType::SOL));
-  SetSelectedAccount(kFromAccount);
+  ASSERT_TRUE(AddAccount(keyring_service(), "Account 1"));
+  auto from_account = AddAccount(keyring_service(), "Account 2");
+  ASSERT_TRUE(from_account);
+  ASSERT_EQ(from_account->address, kFromAccount);
+  SetSelectedAccount(from_account->account_id);
 
   // Empty message is invalid
   std::vector<uint8_t> signature_bytes;
@@ -897,7 +900,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
 
   expect_signed_tx_bytes = {2};  // 2 signatures
   std::vector<uint8_t> selected_account_sig =
-      keyring_service()->SignMessageBySolanaKeyring(kFromAccount,
+      keyring_service()->SignMessageBySolanaKeyring(*from_account->account_id,
                                                     *seriazlied_msg);
   expect_signed_tx_bytes.insert(expect_signed_tx_bytes.end(),
                                 passed_sig_bytes.begin(),

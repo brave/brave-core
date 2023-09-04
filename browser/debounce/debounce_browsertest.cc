@@ -9,14 +9,20 @@
 #include "base/scoped_observation.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
+#include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/debounce/browser/debounce_component_installer.h"
 #include "brave/components/debounce/common/features.h"
 #include "brave/components/debounce/common/pref_names.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
@@ -34,7 +40,9 @@ const char kTestDataDirectory[] = "debounce-data";
 static base::NoDestructor<std::string> gLastSiteForCookies("");
 }  // namespace
 
-namespace debounce {
+using brave_shields::ControlType;
+using brave_shields::SetCosmeticFilteringControlType;
+using debounce::DebounceComponentInstaller;
 
 class DebounceComponentInstallerWaiter
     : public DebounceComponentInstaller::Observer {
@@ -123,7 +131,8 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
   }
 
   void ToggleDebouncePref(bool on) {
-    browser()->profile()->GetPrefs()->SetBoolean(prefs::kDebounceEnabled, on);
+    browser()->profile()->GetPrefs()->SetBoolean(
+        debounce::prefs::kDebounceEnabled, on);
   }
 
   GURL add_redirect_param(const GURL& original_url, const GURL& landing_url) {
@@ -148,6 +157,20 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
+  HostContentSettingsMap* content_settings() {
+    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  }
+
+  bool IsShowingInterstitial() {
+    return chrome_browser_interstitials::IsShowingInterstitial(web_contents());
+  }
+
+  void NavigateTo(const GURL& url) {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    content::RenderFrameHost* frame = web_contents()->GetPrimaryMainFrame();
+    ASSERT_TRUE(WaitForRenderFrameReady(frame));
+  }
+
   void NavigateToURLAndWaitForRedirects(const GURL& original_url,
                                         const GURL& landing_url) {
     ui_test_utils::UrlLoadObserver load_complete(
@@ -157,8 +180,33 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
     EXPECT_EQ(web_contents()->GetLastCommittedURL(), landing_url);
   }
 
+  bool InstallAdBlockForDebounce() {
+    base::FilePath test_data_dir;
+    GetTestDataDir(&test_data_dir);
+    const extensions::Extension* ad_block_extension =
+        InstallExtension(test_data_dir.AppendASCII("adblock-data")
+                             .AppendASCII("adblock-default"),
+                         1);
+    if (!ad_block_extension) {
+      return false;
+    }
+    g_brave_browser_process->ad_block_service()
+        ->default_filters_provider()
+        ->OnComponentReady(ad_block_extension->path());
+    auto source_provider = std::make_unique<brave_shields::TestFiltersProvider>(
+        "||blocked.com^", "[]");
+    g_brave_browser_process->ad_block_service()->UseSourceProvidersForTest(
+        source_provider.get(), source_provider.get());
+    source_providers_.push_back(std::move(source_provider));
+    scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
+        g_brave_browser_process->ad_block_service()->GetTaskRunner()));
+    return tr_helper->Run();
+  }
+
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
+  std::vector<std::unique_ptr<brave_shields::TestFiltersProvider>>
+      source_providers_;
 };
 
 // Test simple redirection by query parameter.
@@ -166,6 +214,16 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, Redirect) {
   ASSERT_TRUE(InstallMockExtension());
   ToggleDebouncePref(true);
   GURL base_url = embedded_test_server()->GetURL("simple.a.com", "/");
+  GURL landing_url = embedded_test_server()->GetURL("simple.b.com", "/");
+  GURL original_url = add_redirect_param(base_url, landing_url);
+  NavigateToURLAndWaitForRedirects(original_url, landing_url);
+}
+
+// Check that URLs ending with a '.' are properly debounced.
+IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, URLThatEndsWithADot) {
+  ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
+  GURL base_url = embedded_test_server()->GetURL("simple.a.com.", "/");
   GURL landing_url = embedded_test_server()->GetURL("simple.b.com", "/");
   GURL original_url = add_redirect_param(base_url, landing_url);
   NavigateToURLAndWaitForRedirects(original_url, landing_url);
@@ -371,4 +429,24 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, ExcludePrivateRegistries) {
   NavigateToURLAndWaitForRedirects(original_url, landing_url);
 }
 
-}  // namespace debounce
+// Test that debounceable URLs on domain block list are debounced instead.
+IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, DebounceBeforeDomainBlock) {
+  GURL base_url = embedded_test_server()->GetURL("blocked.com", "/");
+  GURL landing_url = embedded_test_server()->GetURL("debounced.com", "/");
+  GURL original_url = add_redirect_param(base_url, landing_url);
+
+  // Install adblock, turn on aggressive blocking for this URL, then attempt to
+  // navigate to it. This should be interrupted by the domain block
+  // interstitial.
+  ASSERT_TRUE(InstallAdBlockForDebounce());
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
+                                  original_url);
+  NavigateTo(original_url);
+  ASSERT_TRUE(IsShowingInterstitial());
+
+  // Now install debounce and navigate to the same URL. This should debounce the
+  // URL without showing the domain block interstitial.
+  ASSERT_TRUE(InstallMockExtension());
+  NavigateToURLAndWaitForRedirects(original_url, landing_url);
+  ASSERT_FALSE(IsShowingInterstitial());
+}

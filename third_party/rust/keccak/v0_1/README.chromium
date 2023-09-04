@@ -1,0 +1,9 @@
+Name: keccak
+URL: https://crates.io/crates/keccak
+Description: Pure Rust implementation of the Keccak sponge function including the keccak-f
+and keccak-p variants
+
+Version: 0.1.3
+Security Critical: yes
+License: Apache 2.0
+Revision: 1c6b0aaeb3a86afec35390c6343d103d101fa74c

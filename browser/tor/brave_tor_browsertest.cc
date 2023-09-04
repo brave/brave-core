@@ -13,6 +13,7 @@
 #include "base/process/process.h"
 #include "base/process/process_iterator.h"
 #include "base/run_loop.h"
+#include "base/strings/strcat.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/thread_test_helper.h"
@@ -20,9 +21,11 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/tor_launcher_factory.h"
@@ -31,7 +34,10 @@
 #include "brave/components/tor/tor_utils.h"
 #include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/password_manager/chrome_password_manager_client.h"
+#include "chrome/browser/prefs/incognito_mode_prefs.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/autofill/chrome_autofill_client.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/common/chrome_paths.h"
@@ -39,6 +45,10 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/autofill/content/browser/content_autofill_driver.h"
+#include "components/autofill/content/browser/content_autofill_driver_factory.h"
+#include "components/autofill/core/browser/browser_autofill_manager.h"
+#include "components/policy/core/common/policy_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/ssl_host_state_delegate.h"
 #include "content/public/test/browser_test.h"
@@ -48,6 +58,29 @@
 #include "url/gurl.h"
 
 namespace {
+
+void TestAutofillInWindow(content::WebContents* active_contents,
+                          const GURL& fake_url,
+                          bool enabled) {
+  // Logins.
+  autofill::ChromeAutofillClient* autofill_client =
+      autofill::ChromeAutofillClient::FromWebContentsForTesting(
+          active_contents);
+  EXPECT_EQ(autofill_client->IsAutocompleteEnabled(), enabled);
+  // Passwords.
+  ChromePasswordManagerClient* client =
+      ChromePasswordManagerClient::FromWebContents(active_contents);
+  EXPECT_EQ(client->IsFillingEnabled(fake_url), enabled);
+  // Other info.
+  autofill::ContentAutofillDriver* cross_driver =
+      autofill::ContentAutofillDriverFactory::FromWebContents(active_contents)
+          ->DriverForFrame(active_contents->GetPrimaryMainFrame());
+  ASSERT_TRUE(cross_driver);
+  EXPECT_EQ(static_cast<autofill::BrowserAutofillManager*>(
+                cross_driver->autofill_manager())
+                ->IsAutofillEnabled(),
+            enabled);
+}
 
 struct MockTorLauncherObserver : public TorLauncherObserver {
  public:
@@ -116,8 +149,16 @@ class BraveTorTest : public InProcessBrowserTest {
     int tor_pid = 0;
   };
 
-  BraveTorTest() = default;
-  ~BraveTorTest() override = default;
+  BraveTorTest() {
+    // Disabling CSP on webui pages so EvalJS could be run in main world.
+    BraveSettingsUI::ShouldDisableCSPForTesting() = true;
+    BraveSettingsUI::ShouldExposeElementsForTesting() = true;
+  }
+
+  ~BraveTorTest() override {
+    BraveSettingsUI::ShouldDisableCSPForTesting() = false;
+    BraveSettingsUI::ShouldExposeElementsForTesting() = false;
+  }
 
   void SetUp() override {
     brave::RegisterPathProvider();
@@ -136,9 +177,12 @@ class BraveTorTest : public InProcessBrowserTest {
     base::RunLoop loop;
     Profile* tor_profile = nullptr;
     TorProfileManager::SwitchToTorProfile(
-        browser()->profile(), base::BindLambdaForTesting([&](Profile* p) {
-          tor_profile = p;
+        browser()->profile(), base::BindLambdaForTesting([&](Browser* browser) {
           loop.Quit();
+
+          if (browser) {
+            tor_profile = browser->profile();
+          }
         }));
     loop.Run();
     return tor_profile;
@@ -196,7 +240,7 @@ class BraveTorTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveTorTest, OpenCloseDisableTorWindow) {
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
   DownloadTorClient();
 
   // Open Tor window, wait for the Tor process to start.
@@ -218,7 +262,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, OpenCloseDisableTorWindow) {
   // Disable tor, expect executables are removed.
   {
     TorProfileServiceFactory::SetTorDisabled(true);
-    EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled());
+    EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
 
     WaitForUpdaterThread(g_brave_browser_process->tor_client_updater());
     content::RunAllTasksUntilIdle();
@@ -231,7 +275,6 @@ class BraveTorTestWithCustomProfile : public BraveTorTest {
  private:
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
-
     if (GetTestPreCount() > 0) {
       base::ScopedAllowBlockingForTesting allow_blocking;
 
@@ -248,7 +291,7 @@ class BraveTorTestWithCustomProfile : public BraveTorTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, PRE_SetupBridges) {
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
   DownloadTorClient();
 
   // No bridges by default.
@@ -299,7 +342,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, PRE_SetupBridges) {
 
   // Disable tor.
   TorProfileServiceFactory::SetTorDisabled(true);
-  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled());
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
   WaitForUpdaterThread(g_brave_browser_process->tor_client_updater());
   WaitForUpdaterThread(
       g_brave_browser_process->tor_pluggable_transport_updater());
@@ -319,8 +362,89 @@ IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, SetupBridges) {
                    nullptr));
 }
 
+IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, Incognito) {
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorManaged(browser()->profile()));
+
+  content::WebContents* web_contents = nullptr;
+
+  const auto is_element_enabled = [&](const char* id) {
+    return EvalJs(web_contents,
+                  base::StrCat({"!window.testing.torSubpage.getElementById('",
+                                id, "').disabled"}))
+        .value.GetBool();
+  };
+
+  // Disable incognito mode for this profile.
+  IncognitoModePrefs::SetAvailability(
+      browser()->profile()->GetPrefs(),
+      policy::IncognitoModeAvailability::kDisabled);
+
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorManaged(browser()->profile()));
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
+                                           GURL("brave://settings/privacy")));
+  web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_FALSE(is_element_enabled("torEnabled"));
+  EXPECT_FALSE(is_element_enabled("useBridges"));
+  EXPECT_FALSE(is_element_enabled("autoOnionLocation"));
+  EXPECT_TRUE(is_element_enabled("torSnowflake"));
+
+  auto* tor_profile = OpenTorWindow();
+  EXPECT_EQ(nullptr, tor_profile);
+
+  // Force incognito mode.
+  IncognitoModePrefs::SetAvailability(
+      browser()->profile()->GetPrefs(),
+      policy::IncognitoModeAvailability::kForced);
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorManaged(browser()->profile()));
+
+  tor_profile = OpenTorWindow();
+  EXPECT_EQ(nullptr, tor_profile);
+
+  // Allow incognito.
+  IncognitoModePrefs::SetAvailability(
+      browser()->profile()->GetPrefs(),
+      policy::IncognitoModeAvailability::kEnabled);
+  tor_profile = OpenTorWindow();
+  EXPECT_NE(nullptr, tor_profile);
+  EXPECT_TRUE(tor_profile->IsTor());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
+                                           GURL("brave://settings/privacy")));
+  web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_TRUE(is_element_enabled("torEnabled"));
+  EXPECT_TRUE(is_element_enabled("useBridges"));
+  EXPECT_TRUE(is_element_enabled("autoOnionLocation"));
+  EXPECT_TRUE(is_element_enabled("torSnowflake"));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, Autofill) {
+  GURL fake_url("http://brave.com/");
+  // Disable autofill in private windows.
+  browser()->profile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
+                                               false);
+  auto* tor_profile = OpenTorWindow();
+  EXPECT_NE(nullptr, tor_profile);
+  EXPECT_TRUE(tor_profile->IsTor());
+  Browser* tor_browser = chrome::FindBrowserWithProfile(tor_profile);
+  content::WebContents* web_contents =
+      tor_browser->tab_strip_model()->GetActiveWebContents();
+  TestAutofillInWindow(web_contents, fake_url, false);
+
+  // Enable autofill in private windows.
+  browser()->profile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
+                                               true);
+  web_contents->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(content::WaitForLoadStop(web_contents));
+  TestAutofillInWindow(web_contents, fake_url, true);
+}
+
 IN_PROC_BROWSER_TEST_F(BraveTorTest, PRE_ResetBridges) {
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
   DownloadTorClient();
   DownloadTorPluggableTransports();
 
@@ -367,7 +491,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, HttpAllowlistIsolation) {
       incognito_profile->GetSSLHostStateDelegate();
 
   // Tor window
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
   DownloadTorClient();
   auto tor = WaitForTorLaunched();
   Profile* tor_profile = tor.tor_profile;
@@ -433,7 +557,7 @@ class BraveTorTest_EnableTorHttpsOnlyFlag
 
 IN_PROC_BROWSER_TEST_P(BraveTorTest_EnableTorHttpsOnlyFlag,
                        TorWindowHttpsOnly) {
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
   DownloadTorClient();
 
   Profile* tor_profile = OpenTorWindow();

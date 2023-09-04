@@ -4,21 +4,17 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 
 // Redux
 import {
   useSelector,
-  useDispatch
 } from 'react-redux'
-import { WalletActions } from '../../../common/actions'
 
 // Types
-import { BraveWallet, WalletAccountType, WalletState } from '../../../constants/types'
-import { LOCAL_STORAGE_KEYS } from '../../../common/constants/local-storage-keys'
+import { BraveWallet, WalletState } from '../../../constants/types'
 
 // Options
-import { AllAccountsOption } from '../../../options/account-filter-options'
+import { AllAccountsOption, isAllAccountsOptionFilter } from '../../../options/account-filter-options'
 import { AllNetworksOption } from '../../../options/network-filter-options'
 
 // Components
@@ -38,9 +34,22 @@ import {
   ClickAwayArea
 } from '../network-filter-selector/style'
 
+// Hooks
+import { useAccountOrb } from '../../../common/hooks/use-orb'
+
 interface Props {
-  onSelectAccount?: (account: Pick<WalletAccountType, 'address' | 'name'>) => void
-  selectedAccount?: Pick<WalletAccountType, 'address' | 'name'>
+  onSelectAccount: (
+    account: Pick<BraveWallet.AccountInfo,
+      | 'accountId'
+      | 'address'
+      | 'name'
+    >
+  ) => void
+  selectedAccount?: Pick<BraveWallet.AccountInfo,
+    | 'accountId'
+    | 'address'
+    | 'name'
+  >
   selectedNetwork?: BraveWallet.NetworkInfo
 }
 
@@ -49,9 +58,6 @@ export const AccountFilterSelector = ({
   selectedAccount: accountProp,
   selectedNetwork: networkProp
 }: Props) => {
-  // Redux
-  const dispatch = useDispatch()
-
   // Wallet State
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const selectedAccountFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccountFilter)
@@ -65,32 +71,33 @@ export const AccountFilterSelector = ({
     setIsOpen(prevIsOpen => !prevIsOpen)
   }, [])
 
-  const onSelectAccountAndClose = React.useCallback((account: WalletAccountType) => {
-    setIsOpen(false)
-    if (onSelectAccount) {
+  const onSelectAccountAndClose = React.useCallback(
+    (account: BraveWallet.AccountInfo) => {
+      setIsOpen(false)
       onSelectAccount(account)
-      return
-    }
-    window.localStorage.setItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ACCOUNT_FILTER_OPTION, account.id)
-    dispatch(WalletActions.setSelectedAccountFilterItem(account.id))
-  }, [onSelectAccount])
+    },
+    [onSelectAccount]
+  )
 
   // Memos
-  const selectedAccount = accountProp || [...accounts, AllAccountsOption].find(account => account.id === selectedAccountFilter) || AllAccountsOption
+  const selectedAccount =
+    accountProp ||
+    [...accounts, AllAccountsOption].find(
+      (account) => account.accountId.uniqueKey === selectedAccountFilter
+    ) ||
+    AllAccountsOption
   const selectedNetwork = networkProp || selectedNetworkFilter
 
-  const orb = React.useMemo(() => {
-    return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [selectedAccount.address])
+  const orb = useAccountOrb(selectedAccount);
 
   // Filters accounts by network if a selectedNetworkFilter is selected
-  const accountsFilteredBySelectedNetworkFilter: WalletAccountType[] = React.useMemo(() => {
+  const accountsFilteredBySelectedNetworkFilter = React.useMemo(() => {
     return selectedNetwork.chainId === AllNetworksOption.chainId
       ? accounts
-      : accounts.filter((account) => account.coin === selectedNetwork.coin)
+      : accounts.filter((account) => account.accountId.coin === selectedNetwork.coin)
   }, [accounts, selectedNetwork])
 
-  const accountsList: WalletAccountType[] = React.useMemo(() => {
+  const accountsList: BraveWallet.AccountInfo[] = React.useMemo(() => {
     return [AllAccountsOption, ...accountsFilteredBySelectedNetworkFilter]
   }, [accountsFilteredBySelectedNetworkFilter])
 
@@ -98,7 +105,7 @@ export const AccountFilterSelector = ({
     <StyledWrapper>
       <DropDownButton onClick={onClick}>
         <SelectorLeftSide>
-          {selectedAccount.address !== AllAccountsOption.address &&
+          {!isAllAccountsOptionFilter(selectedAccount.accountId.uniqueKey) &&
             <AccountCircle orb={orb} />
           }
           {selectedAccount.name}
@@ -109,9 +116,10 @@ export const AccountFilterSelector = ({
         <DropDown>
           {accountsList.map(account =>
             <AccountFilterItem
-              key={account.address}
+              key={account.accountId.uniqueKey}
               account={account}
-              selected={account.address === selectedAccount.address}
+              selected={account.accountId.uniqueKey === selectedAccount.accountId.uniqueKey}
+              showCircle={!isAllAccountsOptionFilter(account.accountId.uniqueKey)}
               onSelectAccount={onSelectAccountAndClose}
             />
           )}

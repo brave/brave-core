@@ -2,12 +2,15 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
+import logging
 import os
 import subprocess
-import logging
-
-from typing import Tuple, List, Optional
+import tempfile
 from threading import Timer
+from typing import List, Optional, Tuple
+from urllib.request import urlopen
+
+from lib.util import extract_zip
 
 import components.path_util as path_util
 
@@ -84,9 +87,28 @@ def GetConfigPath(config_path: str) -> str:
   raise RuntimeError(f'Bad config {config_path}')
 
 
-def LoadJsonConfig(config_path: str) -> dict:
-  config_path = GetConfigPath(config_path)
-  with open(config_path, 'r', encoding='utf-8') as config_file:
+def DownloadFile(url: str, output: str):
+  logging.debug('Downloading %s', url)
+  f = urlopen(url)
+  data = f.read()
+  with open(output, 'wb') as output_file:
+    output_file.write(data)
+
+
+def DownloadArchiveAndUnpack(output_directory: str, url: str):
+  _, f = tempfile.mkstemp(dir=output_directory)
+  DownloadFile(url, f)
+  extract_zip(f, output_directory)
+
+
+def LoadJsonConfig(config: str, working_directory: str) -> dict:
+  if config.startswith('https://'):
+    _, config_filename = tempfile.mkstemp(dir=working_directory,
+                                          prefix='config-')
+    DownloadFile(config, config_filename)
+  else:
+    config_filename = GetConfigPath(config)
+  with open(config_filename, 'r', encoding='utf-8') as config_file:
     return json5.load(config_file)
 
 

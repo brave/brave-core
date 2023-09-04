@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/promoted_content_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/ads/promoted_content_ad_value_util.h"
 
-#include "brave/components/brave_ads/core/promoted_content_ad_constants.h"
-#include "brave/components/brave_ads/core/promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/promoted_content_ad_constants.h"
+#include "brave/components/brave_ads/core/public/ads/promoted_content_ad_info.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -16,20 +16,17 @@ constexpr char kTypeKey[] = "type";
 }  // namespace
 
 base::Value::Dict PromotedContentAdToValue(const PromotedContentAdInfo& ad) {
-  base::Value::Dict dict;
-
-  dict.Set(kTypeKey, ad.type.ToString());
-  dict.Set(kPromotedContentAdPlacementIdKey, ad.placement_id);
-  dict.Set(kPromotedContentAdCreativeInstanceIdKey, ad.creative_instance_id);
-  dict.Set(kPromotedContentAdCreativeSetIdKey, ad.creative_set_id);
-  dict.Set(kPromotedContentAdCampaignIdKey, ad.campaign_id);
-  dict.Set(kPromotedContentAdAdvertiserIdKey, ad.advertiser_id);
-  dict.Set(kPromotedContentAdSegmentKey, ad.segment);
-  dict.Set(kPromotedContentAdTitleKey, ad.title);
-  dict.Set(kPromotedContentAdDescriptionnKey, ad.description);
-  dict.Set(kPromotedContentAdTargetUrlKey, ad.target_url.spec());
-
-  return dict;
+  return base::Value::Dict()
+      .Set(kTypeKey, ad.type.ToString())
+      .Set(kPromotedContentAdPlacementIdKey, ad.placement_id)
+      .Set(kPromotedContentAdCreativeInstanceIdKey, ad.creative_instance_id)
+      .Set(kPromotedContentAdCreativeSetIdKey, ad.creative_set_id)
+      .Set(kPromotedContentAdCampaignIdKey, ad.campaign_id)
+      .Set(kPromotedContentAdAdvertiserIdKey, ad.advertiser_id)
+      .Set(kPromotedContentAdSegmentKey, ad.segment)
+      .Set(kPromotedContentAdTitleKey, ad.title)
+      .Set(kPromotedContentAdDescriptionnKey, ad.description)
+      .Set(kPromotedContentAdTargetUrlKey, ad.target_url.spec());
 }
 
 PromotedContentAdInfo PromotedContentAdFromValue(

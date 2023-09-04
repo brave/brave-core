@@ -4,9 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
-
 import {
   Route,
   Switch,
@@ -23,16 +23,15 @@ import {
 import { WalletSelectors } from '../../../../common/selectors'
 import { PageSelectors } from '../../../../page/selectors'
 
-// Hooks
+// hooks
 import {
-  useOnClickOutside
-} from '../../../../common/hooks/useOnClickOutside'
+  useBalancesFetcher
+} from '../../../../common/hooks/use-balances-fetcher'
 
 // Constants
 import {
   BraveWallet,
   UserAssetInfoType,
-  SupportedTestNetworks,
   WalletRoutes
 } from '../../../../constants/types'
 import {
@@ -44,77 +43,86 @@ import { WalletActions } from '../../../../common/actions'
 import { WalletPageActions } from '../../../../page/actions'
 
 // Utils
-import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
+import {
+  computeFiatAmount,
+  getTokenPriceAmountFromRegistry
+} from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
-import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
-import { formatAsDouble } from '../../../../utils/string-utils'
+import { getPriceIdForToken } from '../../../../utils/api-utils'
+import {
+  networkEntityAdapter
+} from '../../../../common/slices/entities/network.entity'
+import { networkSupportsAccount } from '../../../../utils/network-utils'
 
 // Options
-import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
-import { AllNetworksOption } from '../../../../options/network-filter-options'
-import { AllAccountsOption } from '../../../../options/account-filter-options'
 import { PortfolioNavOptions } from '../../../../options/nav-options'
+import {
+  AccountsGroupByOption
+} from '../../../../options/group-assets-by-options'
 
 // Components
-import { LoadingSkeleton } from '../../../shared'
+import { LoadingSkeleton } from '../../../shared/loading-skeleton/index'
 import {
   SegmentedControl
 } from '../../../shared/segmented-control/segmented-control'
-import { PortfolioAssetItem } from '../../'
+import { PortfolioAssetItem } from '../../portfolio-asset-item/index'
 import { TokenLists } from './components/token-lists/token-list'
 import {
   PortfolioOverviewChart //
 } from './components/portfolio-overview-chart/portfolio-overview-chart'
-import {
-  LineChartControlsMenu
-} from '../../wallet-menus/line-chart-controls-menu'
 import ColumnReveal from '../../../shared/animated-reveals/column-reveal'
 import { NftView } from '../nfts/nft-view'
+import {
+  BuySendSwapDepositNav
+} from './components/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
+import {
+  LineChartControls
+} from '../../line-chart/line-chart-controls/line-chart-controls'
+import {
+  PortfolioFiltersModal
+} from '../../popup-modals/filter-modals/portfolio-filters-modal'
 
 // Styled Components
 import {
   BalanceText,
   PercentBubble,
   FiatChange,
-  SelectTimelinButton,
-  SelectTimelinButtonIcon,
   SelectTimelineWrapper,
-  ControlsRow
+  ControlsRow,
+  BalanceAndButtonsWrapper,
+  BalanceAndChangeWrapper
 } from './style'
 import {
   Column,
   Row,
   HorizontalSpace
 } from '../../../shared/style'
-import { useGetVisibleNetworksQuery } from '../../../../common/slices/api.slice'
+import {
+  useGetVisibleNetworksQuery,
+  useGetPricesHistoryQuery,
+  useGetTokenSpotPricesQuery,
+  useReportActiveWalletsToP3AMutation,
+  useGetDefaultFiatCurrencyQuery
+} from '../../../../common/slices/api.slice'
+import {
+  querySubscriptionOptions60s
+} from '../../../../common/slices/constants'
 
-interface Props {
-  onToggleShowIpfsBanner: () => void
-}
-
-export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
+export const PortfolioOverview = () => {
   // routing
   const history = useHistory()
 
   // redux
   const dispatch = useDispatch()
 
-  const defaultCurrencies =
-    useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
   const userVisibleTokensInfo =
     useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
   const selectedPortfolioTimeline =
     useSafeWalletSelector(WalletSelectors.selectedPortfolioTimeline)
   const accounts =
     useUnsafeWalletSelector(WalletSelectors.accounts)
-  const transactionSpotPrices =
-    useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
-  const selectedNetworkFilter =
-    useUnsafeWalletSelector(WalletSelectors.selectedNetworkFilter)
-  const selectedAccountFilter =
-    useSafeWalletSelector(WalletSelectors.selectedAccountFilter)
   const selectedTimeline =
     useSafePageSelector(PageSelectors.selectedTimeline)
   const nftMetadata =
@@ -123,115 +131,194 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
     useSafeWalletSelector(WalletSelectors.hidePortfolioGraph)
   const hidePortfolioBalances =
     useSafeWalletSelector(WalletSelectors.hidePortfolioBalances)
-  const portfolioPriceHistory =
-    useUnsafeWalletSelector(WalletSelectors.portfolioPriceHistory)
-
+  const hidePortfolioNFTsTab =
+    useSafeWalletSelector(WalletSelectors.hidePortfolioNFTsTab)
+  const filteredOutPortfolioNetworkKeys =
+    useUnsafeWalletSelector(WalletSelectors.filteredOutPortfolioNetworkKeys)
+  const filteredOutPortfolioAccountAddresses =
+    useUnsafeWalletSelector(
+      WalletSelectors.filteredOutPortfolioAccountAddresses
+    )
+  const hidePortfolioSmallBalances =
+    useSafeWalletSelector(WalletSelectors.hidePortfolioSmallBalances)
+  const selectedGroupAssetsByItem =
+    useSafeWalletSelector(WalletSelectors.selectedGroupAssetsByItem)
 
   // queries
   const { data: networks } = useGetVisibleNetworksQuery()
+  const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
 
-  // state
-  const [showLineChartControlMenu, setShowLineChartControlMenu] =
+  // State
+  const [showPortfolioSettings, setShowPortfolioSettings] =
     React.useState<boolean>(false)
 
-  // refs
-  const lineChartControlMenuRef = React.useRef<HTMLDivElement>(null)
-
-  // hooks
-  useOnClickOutside(
-    lineChartControlMenuRef,
-    () => setShowLineChartControlMenu(false),
-    showLineChartControlMenu
-  )
-
-  // This will scrape all the user's accounts and combine the asset balances for a single asset
-  const fullAssetBalance = React.useCallback((asset: BraveWallet.BlockchainToken) => {
-    const amounts = accounts
-      .filter((account) => account.coin === asset.coin)
-      .map((account) => getBalance(account, asset))
-
-    // If a user has not yet created a FIL or SOL account,
-    // we return 0 until they create an account
-    if (amounts.length === 0) {
-      return '0'
-    }
-
-    return amounts.reduce(function (a, b) {
-      return a !== '' && b !== ''
-        ? new Amount(a).plus(b).format()
-        : ''
-    })
-  }, [accounts, getBalance])
-
-  // memos / computed
-
-  // filter the user's assets based on the selected network
-  const visibleTokensForSupportedChains = React.useMemo(() => {
-    // By default we dont show any testnetwork assets
-    if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
-      return userVisibleTokensInfo.filter((token) => !SupportedTestNetworks.includes(token.chainId))
-    }
-
-    // If chainId is Localhost we also do a check for coinType to return
-    // the correct asset
-    if (selectedNetworkFilter.chainId === BraveWallet.LOCALHOST_CHAIN_ID) {
-      return userVisibleTokensInfo.filter((token) =>
-        token.chainId === selectedNetworkFilter.chainId &&
-        token.coin === selectedNetworkFilter.coin
+  const usersFilteredAccounts = React.useMemo(() => {
+    return accounts
+      .filter(
+        (account) =>
+          !filteredOutPortfolioAccountAddresses
+            .includes(account.address)
       )
-    }
-    // Filter by all other assets by chainId's
-    return userVisibleTokensInfo.filter((token) => token.chainId === selectedNetworkFilter.chainId)
+  }, [accounts, filteredOutPortfolioAccountAddresses])
+
+  // Filters the user's tokens based on the users
+  // filteredOutPortfolioNetworkKeys pref.
+  const visibleTokensForFilteredChains = React.useMemo(() => {
+    return userVisibleTokensInfo
+      .filter(
+        (token) =>
+          !filteredOutPortfolioNetworkKeys
+            .includes(
+              networkEntityAdapter
+                .selectId(
+                  {
+                    chainId: token.chainId,
+                    coin: token.coin
+                  }
+                ).toString()
+            )
+      )
   }, [
-    selectedNetworkFilter.chainId,
-    selectedNetworkFilter.coin,
+    filteredOutPortfolioNetworkKeys,
     userVisibleTokensInfo
   ])
 
-  // Filters visibleTokensForSupportedChains if a selectedAccountFilter is selected.
-  const visibleTokensForFilteredAccount: BraveWallet.BlockchainToken[] = React.useMemo(() => {
-    return selectedAccountFilter === AllAccountsOption.id
-      ? visibleTokensForSupportedChains
-      : visibleTokensForSupportedChains.filter((token) => token.coin === accounts.find(account => account.id === selectedAccountFilter)?.coin)
-  }, [visibleTokensForSupportedChains, selectedAccountFilter, accounts])
+  const userVisibleNfts = React.useMemo(() => {
+    return visibleTokensForFilteredChains.filter(token => token.isErc721 || token.isNft)
+  }, [visibleTokensForFilteredChains])
 
-  // This looks at the users asset list and returns the full balance for each asset
+  const visiblePortfolioNetworks = React.useMemo(() => {
+    return networks.filter(
+      (network) => !filteredOutPortfolioNetworkKeys
+        .includes(networkEntityAdapter
+          .selectId(network).toString())
+    )
+  }, [networks, filteredOutPortfolioNetworkKeys])
+
+  const {
+    data: tokenBalancesRegistry,
+    isLoading: isLoadingBalances
+  } = useBalancesFetcher({
+    accounts: usersFilteredAccounts,
+    networks: visiblePortfolioNetworks
+  })
+
+  const [reportActiveWalletsToP3A] = useReportActiveWalletsToP3AMutation()
+  React.useEffect(() => {
+    ; (async () => {
+      tokenBalancesRegistry &&
+        await reportActiveWalletsToP3A(tokenBalancesRegistry)
+    })()
+
+  }, [reportActiveWalletsToP3A, tokenBalancesRegistry])
+
+  // This will scrape all the user's accounts and combine the asset balances
+  // for a single asset
+  const fullAssetBalance = React.useCallback(
+    (asset: BraveWallet.BlockchainToken) => {
+      const network = networks?.find(
+        (network) =>
+          network.coin === asset.coin &&
+          network.chainId === asset.chainId
+      )
+
+      const amounts = usersFilteredAccounts
+        .filter((account) => {
+          return network && networkSupportsAccount(network, account.accountId)
+        })
+        .map((account) =>
+          getBalance(account.accountId, asset, tokenBalancesRegistry)
+        )
+
+      // If a user has not yet created a FIL or SOL account,
+      // we return 0 until they create an account
+      if (amounts.length === 0) {
+        return '0'
+      }
+
+      return amounts.reduce(function (a, b) {
+        return a !== '' && b !== ''
+          ? new Amount(a).plus(b).format()
+          : ''
+      })
+    },
+    [usersFilteredAccounts, tokenBalancesRegistry]
+  )
+
+  // This looks at the users asset list and returns the full balance for
+  // each asset
   const userAssetList: UserAssetInfoType[] = React.useMemo(() => {
-    return visibleTokensForFilteredAccount.map((asset) => ({
+    return visibleTokensForFilteredChains.map((asset) => ({
       asset: asset,
-      assetBalance: selectedAccountFilter === AllAccountsOption.id
-        ? fullAssetBalance(asset)
-        : getBalance(accounts.find(account => account.id === selectedAccountFilter), asset)
+      assetBalance: fullAssetBalance(asset)
     }))
   }, [
-    visibleTokensForFilteredAccount,
-    selectedAccountFilter,
+    visibleTokensForFilteredChains,
     fullAssetBalance,
-    accounts
   ])
 
   const visibleAssetOptions = React.useMemo((): UserAssetInfoType[] => {
-    return userAssetList.filter(({ asset }) => asset.visible && !(asset.isErc721 || asset.isNft))
+    return userAssetList.filter(({ asset }) =>
+      asset.visible && !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
   }, [userAssetList])
 
-  // This will scrape all of the user's accounts and combine the fiat value for every asset
+  const tokenPriceIds = React.useMemo(() =>
+    visibleAssetOptions
+      .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
+      .map(({ asset }) => getPriceIdForToken(asset)),
+    [visibleAssetOptions]
+  )
+
+  const {
+    data: spotPriceRegistry,
+    isLoading: isLoadingSpotPrices
+  } = useGetTokenSpotPricesQuery(
+    !isLoadingBalances && tokenPriceIds.length && defaultFiat
+      ? { ids: tokenPriceIds, toCurrency: defaultFiat }
+      : skipToken,
+    querySubscriptionOptions60s
+  )
+
+  const {
+    data: portfolioPriceHistory,
+    isFetching: isFetchingPortfolioPriceHistory
+  } = useGetPricesHistoryQuery(
+    visibleTokensForFilteredChains.length &&
+      tokenBalancesRegistry && defaultFiat
+        ? {
+            tokens: visibleTokensForFilteredChains,
+            timeframe: selectedPortfolioTimeline,
+            vsAsset: defaultFiat,
+            tokenBalancesRegistry
+          }
+        : skipToken
+  )
+
+  // This will scrape all of the user's accounts and combine the fiat value
+  // for every asset
   const fullPortfolioFiatBalance = React.useMemo((): Amount => {
+    if (
+      visiblePortfolioNetworks.length === 0 ||
+      usersFilteredAccounts.length === 0
+    ) {
+      return Amount.zero()
+    }
+
     if (visibleAssetOptions.length === 0) {
-      return new Amount('')
+      return Amount.empty()
+    }
+
+    if (isLoadingSpotPrices || isLoadingBalances) {
+      return Amount.empty()
     }
 
     const visibleAssetFiatBalances = visibleAssetOptions
       .map((item) => {
-        return computeFiatAmount(
-          transactionSpotPrices,
-          {
-            value: item.assetBalance,
-            decimals: item.asset.decimals,
-            symbol: item.asset.symbol,
-            contractAddress: item.asset.contractAddress,
-            chainId: item.asset.chainId
-          }
-        )
+        return computeFiatAmount({
+          spotPriceRegistry,
+          value: item.assetBalance,
+          token: item.asset
+        })
       })
 
     const grandTotal = visibleAssetFiatBalances.reduce(function (a, b) {
@@ -240,48 +327,79 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
     return grandTotal
   },
     [
+      visiblePortfolioNetworks,
       visibleAssetOptions,
-      transactionSpotPrices
+      spotPriceRegistry,
+      isLoadingSpotPrices,
+      usersFilteredAccounts.length,
+      isLoadingBalances
     ])
 
   const formattedFullPortfolioFiatBalance = React.useMemo(() => {
-    return !fullPortfolioFiatBalance.isUndefined()
+    return !fullPortfolioFiatBalance.isUndefined() && defaultFiat
       ? fullPortfolioFiatBalance
-        .formatAsFiat(defaultCurrencies.fiat)
+        .formatAsFiat(defaultFiat)
       : ''
   }, [
     fullPortfolioFiatBalance,
-    defaultCurrencies.fiat
+    defaultFiat
   ])
 
-  const isZeroBalance = React.useMemo((): boolean => {
-    // In some cases we need to check if the balance is zero
-    return parseFloat(formatAsDouble(fullPortfolioFiatBalance.format())) === 0
-  }, [fullPortfolioFiatBalance])
+  const change = React.useMemo(() => {
+    if (
+      portfolioPriceHistory &&
+      portfolioPriceHistory.length !== 0 &&
+      !fullPortfolioFiatBalance.isUndefined()
+    ) {
+      const oldestValue = new Amount(portfolioPriceHistory[0].close)
+      return {
+        difference: fullPortfolioFiatBalance.isZero()
+          ? Amount.zero()
+          : fullPortfolioFiatBalance.minus(oldestValue),
+        oldestValue
+      }
+    }
+
+    // Case when portfolio change should not be displayed
+    return {
+      difference: Amount.zero(),
+      oldestValue: Amount.empty()
+    }
+  }, [
+    portfolioPriceHistory,
+    fullPortfolioFiatBalance
+  ])
 
   const percentageChange = React.useMemo(() => {
-    if (portfolioPriceHistory.length !== 0) {
-      const oldestValue =
-        new Amount(portfolioPriceHistory[0].close)
-      const difference =
-        fullPortfolioFiatBalance.minus(oldestValue)
-      return `${difference.div(oldestValue).times(100).format(2)}`
+    const { difference, oldestValue } = change
+    if (oldestValue.isUndefined()) {
+      return ''
     }
-    return '0.00'
-  }, [portfolioPriceHistory, fullPortfolioFiatBalance])
+
+    if (
+      !isFetchingPortfolioPriceHistory &&
+      oldestValue.isZero() &&
+      difference.isZero()
+    ) {
+      return '0'
+    }
+
+    return `${difference.div(oldestValue).times(100).format(2)}`
+  }, [change, isFetchingPortfolioPriceHistory])
 
   const fiatValueChange = React.useMemo(() => {
-    if (portfolioPriceHistory.length !== 0) {
-      const oldestValue =
-        new Amount(portfolioPriceHistory[0].close)
-      return fullPortfolioFiatBalance
-        .minus(oldestValue)
-        .formatAsFiat(defaultCurrencies.fiat)
+    const { difference, oldestValue } = change
+    if (oldestValue.isUndefined()) {
+      return ''
     }
-    return new Amount(0).formatAsFiat(defaultCurrencies.fiat)
-  }, [defaultCurrencies.fiat, portfolioPriceHistory])
 
-  const isPortfolioDown = Number(percentageChange) < 0
+    return difference.formatAsFiat(defaultFiat, 2)
+  }, [
+    defaultFiat,
+    change
+  ])
+
+  const isPortfolioDown = new Amount(percentageChange).lt(0)
 
   // methods
   const onChangeTimeline = React.useCallback(
@@ -291,7 +409,6 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
         id.toString()
       )
       dispatch(WalletActions.selectPortfolioTimeline(id))
-      setShowLineChartControlMenu(false)
     }, [])
 
   const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
@@ -324,6 +441,74 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
     }
   }, [selectedTimeline])
 
+  const tokenLists = React.useMemo(() => {
+    return <TokenLists
+      userAssetList={userAssetList}
+      estimatedItemSize={58}
+      horizontalPadding={20}
+      onShowPortfolioSettings={
+        () => setShowPortfolioSettings(true)
+      }
+      hideSmallBalances={hidePortfolioSmallBalances}
+      networks={visiblePortfolioNetworks}
+      accounts={usersFilteredAccounts}
+      isPortfolio
+      isV2={true}
+      tokenBalancesRegistry={tokenBalancesRegistry}
+      spotPriceRegistry={spotPriceRegistry}
+      renderToken={({ item, account }) =>
+        <PortfolioAssetItem
+          action={() => onSelectAsset(item.asset)}
+          key={getAssetIdKey(item.asset)}
+          assetBalance={
+            isLoadingBalances
+              ? ''
+              : selectedGroupAssetsByItem ===
+                AccountsGroupByOption.id
+                ? getBalance(
+                  account?.accountId,
+                  item.asset,
+                  tokenBalancesRegistry
+                )
+                : item.assetBalance
+          }
+          account={
+            selectedGroupAssetsByItem ===
+              AccountsGroupByOption.id
+              ? account
+              : undefined}
+          token={item.asset}
+          hideBalances={hidePortfolioBalances}
+          spotPrice={
+            spotPriceRegistry &&
+              !isLoadingSpotPrices
+              ? getTokenPriceAmountFromRegistry(
+                spotPriceRegistry,
+                item.asset
+              ).format()
+              : !spotPriceRegistry &&
+                !isLoadingSpotPrices &&
+                !isLoadingBalances
+                ? '0'
+                : ''
+          }
+        />
+      }
+    />
+  }, [
+    userAssetList,
+    hidePortfolioSmallBalances,
+    visiblePortfolioNetworks,
+    usersFilteredAccounts,
+    onSelectAsset,
+    selectedGroupAssetsByItem,
+    hidePortfolioBalances,
+    spotPriceRegistry,
+    isLoadingSpotPrices,
+    tokenBalancesRegistry,
+    isLoadingBalances
+  ])
+
   // effects
   React.useEffect(() => {
     dispatch(WalletPageActions.selectAsset({ asset: undefined, timeFrame: selectedTimeline }))
@@ -335,129 +520,129 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
       <Column
         fullWidth={true}
         justifyContent='flex-start'
+        margin={
+          hidePortfolioNFTsTab
+            ? '0px 0px 15px 0px'
+            : '0px'
+        }
       >
-        <Column
+        <BalanceAndButtonsWrapper
           fullWidth={true}
           alignItems='center'
-          padding='40px 0px'
+          padding='40px 32px'
         >
-          {formattedFullPortfolioFiatBalance !== '' ? (
-            <BalanceText>
-              {hidePortfolioBalances
-                ? '******'
-                : formattedFullPortfolioFiatBalance
-              }
-            </BalanceText>
-          ) : (
-            <Column padding='9px 0px'>
-              <LoadingSkeleton width={150} height={36} />
-            </Column>
-          )}
-          <Row
-            alignItems='center'
-            justifyContent='center'
-          >
+          <BalanceAndChangeWrapper>
             {formattedFullPortfolioFiatBalance !== '' ? (
-              <>
-                <FiatChange
-                  isDown={isPortfolioDown}
-                >
-                  {hidePortfolioBalances
-                    ? '*****'
-                    : `${isPortfolioDown
-                      ? ''
-                      : '+'}${fiatValueChange}`
-                  }
-                </FiatChange>
-                <PercentBubble
-                  isDown={isPortfolioDown}
-                >
-                  {hidePortfolioBalances
-                    ? '*****'
-                    : `${isPortfolioDown
-                      ? ''
-                      : '+'}${percentageChange}%`
-                  }
-                </PercentBubble>
-              </>
+              <BalanceText>
+                {hidePortfolioBalances
+                  ? '******'
+                  : formattedFullPortfolioFiatBalance
+                }
+              </BalanceText>
             ) : (
-              <>
-                <LoadingSkeleton width={55} height={24} />
-                <HorizontalSpace space='8px' />
-                <LoadingSkeleton width={55} height={24} />
-              </>
+              <Column padding='9px 0px'>
+                <LoadingSkeleton width={150} height={36} />
+              </Column>
             )}
-          </Row>
-        </Column>
-
+            <Row
+              alignItems='center'
+              justifyContent='center'
+              width='unset'
+            >
+              {fiatValueChange !== '' ? (
+                <>
+                  <FiatChange
+                    isDown={isPortfolioDown}
+                  >
+                    {hidePortfolioBalances
+                      ? '*****'
+                      : `${isPortfolioDown
+                        ? ''
+                        : '+'}${fiatValueChange}`
+                    }
+                  </FiatChange>
+                  <PercentBubble
+                    isDown={isPortfolioDown}
+                  >
+                    {hidePortfolioBalances
+                      ? '*****'
+                      : `${isPortfolioDown
+                        ? ''
+                        : '+'}${percentageChange}%`
+                    }
+                  </PercentBubble>
+                </>
+              ) : (
+                <>
+                  <LoadingSkeleton width={55} height={24} />
+                  <HorizontalSpace space='8px' />
+                  <LoadingSkeleton width={55} height={24} />
+                </>
+              )}
+            </Row>
+          </BalanceAndChangeWrapper>
+          <BuySendSwapDepositNav />
+        </BalanceAndButtonsWrapper>
         <ColumnReveal hideContent={hidePortfolioGraph}>
           <SelectTimelineWrapper
-            ref={lineChartControlMenuRef}
+            padding='0px 32px'
+            marginBottom={8}
           >
-            <SelectTimelinButton
-              onClick={() => setShowLineChartControlMenu(prev => !prev)}
-            >
-              {getLocale(
-                ChartTimelineOptions[selectedPortfolioTimeline].name
-              )}
-              <SelectTimelinButtonIcon
-                isOpen={showLineChartControlMenu}
-                name='carat-down'
-              />
-            </SelectTimelinButton>
-            {showLineChartControlMenu &&
-              <LineChartControlsMenu
-                onClick={onChangeTimeline}
-              />
-            }
+            <LineChartControls
+              onSelectTimeline={onChangeTimeline}
+              selectedTimeline={selectedPortfolioTimeline}
+            />
           </SelectTimelineWrapper>
           <PortfolioOverviewChart
-            hasZeroBalance={isZeroBalance}
+            hasZeroBalance={fullPortfolioFiatBalance.isZero()}
+            portfolioPriceHistory={portfolioPriceHistory}
+            isLoading={
+              isFetchingPortfolioPriceHistory || !portfolioPriceHistory
+            }
           />
         </ColumnReveal>
       </Column>
 
-      <ControlsRow padding='24px 0px'>
-        <SegmentedControl
-          navOptions={PortfolioNavOptions}
-          width={384}
-        />
-      </ControlsRow>
+      {!hidePortfolioNFTsTab &&
+        <ControlsRow>
+          <SegmentedControl
+            navOptions={PortfolioNavOptions}
+            width={384}
+          />
+        </ControlsRow>
+      }
 
       <Switch>
         <Route path={WalletRoutes.PortfolioAssets} exact>
-          <TokenLists
-            userAssetList={userAssetList}
-            networks={networks || []}
-            estimatedItemSize={58}
-            horizontalPadding={20}
-            renderToken={({ item }) =>
-              <PortfolioAssetItem
-                action={() => onSelectAsset(item.asset)}
-                key={getAssetIdKey(item.asset)}
-                assetBalance={item.assetBalance}
-                token={item.asset}
-                hideBalances={hidePortfolioBalances}
-              />
-            }
-          />
+          {tokenLists}
+        </Route>
+
+        <Route path={WalletRoutes.AddAssetModal} exact>
+          {tokenLists}
         </Route>
 
         <Route path={WalletRoutes.PortfolioNFTs} exact>
           <NftView
-            onToggleShowIpfsBanner={onToggleShowIpfsBanner}
+            nftsList={userVisibleNfts}
+            accounts={usersFilteredAccounts}
+            onShowPortfolioSettings={() => setShowPortfolioSettings(true)}
+            tokenBalancesRegistry={tokenBalancesRegistry}
           />
         </Route>
 
         <Route
           path={WalletRoutes.Portfolio}
           exact={true}
-          render={() => <Redirect to={WalletRoutes.PortfolioAssets} />
-          }
+          render={() => <Redirect to={WalletRoutes.PortfolioAssets} />}
         />
 
       </Switch>
 
+      {showPortfolioSettings &&
+        <PortfolioFiltersModal
+          onClose={() => setShowPortfolioSettings(false)}
+        />
+      }
     </>
   )
 }

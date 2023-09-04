@@ -12,9 +12,9 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads {
 

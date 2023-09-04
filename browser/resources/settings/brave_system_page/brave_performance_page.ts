@@ -52,23 +52,19 @@ export class SettingsBravePerformancePageElement
   override connectedCallback() {
     super.connectedCallback()
 
-    if (loadTimeData.getBoolean('batterySaverModeAvailable')) {
-      this.addWebUiListener(
-          'device-has-battery-changed',
-          this.onDeviceHasBatteryChanged_.bind(this))
-      this.performanceBrowserProxy_.getDeviceHasBattery().then(
-          this.onDeviceHasBatteryChanged_.bind(this))
-    }
+    this.addWebUiListener(
+      'device-has-battery-changed',
+      this.onDeviceHasBatteryChanged_.bind(this))
+    this.performanceBrowserProxy_.getDeviceHasBattery().then(
+      this.onDeviceHasBatteryChanged_.bind(this))
   }
 
   private showPerformancePage_(): boolean {
-    return pageVisibility?.performance !== false &&
-        loadTimeData.getBoolean('highEfficiencyModeAvailable')
+    return pageVisibility?.performance !== false
   }
 
   private showBatteryPage_(): boolean {
-    return pageVisibility?.performance !== false &&
-        loadTimeData.getBoolean('batterySaverModeAvailable')
+    return pageVisibility?.performance !== false
   }
 
   private onDeviceHasBatteryChanged_(deviceHasBattery: boolean) {

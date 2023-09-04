@@ -15,8 +15,11 @@
 
 namespace brave_wallet {
 
-SolanaTxStateManager::SolanaTxStateManager(PrefService* prefs)
-    : TxStateManager(prefs) {}
+SolanaTxStateManager::SolanaTxStateManager(
+    PrefService* prefs,
+    TxStorageDelegate* delegate,
+    AccountResolverDelegate* account_resolver_delegate)
+    : TxStateManager(prefs, delegate, account_resolver_delegate) {}
 
 SolanaTxStateManager::~SolanaTxStateManager() = default;
 
@@ -34,7 +37,7 @@ std::unique_ptr<TxMeta> SolanaTxStateManager::ValueToTxMeta(
     const base::Value::Dict& value) {
   std::unique_ptr<SolanaTxMeta> meta = std::make_unique<SolanaTxMeta>();
 
-  if (!TxStateManager::ValueToTxMeta(value, meta.get())) {
+  if (!ValueToBaseTxMeta(value, meta.get())) {
     return nullptr;
   }
 

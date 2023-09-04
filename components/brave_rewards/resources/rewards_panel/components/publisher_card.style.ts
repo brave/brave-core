@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 
+import * as leo from '@brave/leo/tokens/css'
 import * as mixins from '../../shared/lib/css_mixins'
 
 export const root = styled.div`
@@ -32,6 +33,10 @@ export const icon = styled.div`
   img {
     height: 32px;
     width: auto;
+
+    &.rounded {
+      border-radius: 50%;
+    }
   }
 `
 
@@ -70,29 +75,18 @@ export const statusIndicator = styled.div`
   align-items: center;
   gap: 4px;
 
-  .icon {
-    color: var(--brave-palette-grey200);
-    height: 13px;
-    width: auto;
-    vertical-align: middle;
-    margin-bottom: 1px;
-
-    .brave-theme-dark & {
-      color: #343A40;
-    }
-  }
-
   &.verified {
     border-color: var(--brave-palette-grey500);
-
-    .icon {
-      color: var(--brave-color-brandBatInteracting);
-    }
   }
 
   .brave-theme-dark & {
     border-color: var(--brave-palette-grey800);
   }
+`
+
+export const verifiedIcon = styled.div`
+  --leo-icon-size: 16px;
+  color: ${leo.color.gray['30']};
 `
 
 export const refreshStatus = styled.div`

@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-size_t GetHistoryItemCount();
+size_t GetHistoryItemCountForTesting();
 
 }  // namespace brave_ads
 

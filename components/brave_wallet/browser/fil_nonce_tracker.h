@@ -30,7 +30,7 @@ class FilNonceTracker : public NonceTracker {
 
   // NonceTracker
   void GetNextNonce(const std::string& chain_id,
-                    const std::string& from,
+                    const mojom::AccountIdPtr& from,
                     GetNextNonceCallback callback) override;
   uint256_t GetHighestLocallyConfirmed(
       const std::vector<std::unique_ptr<TxMeta>>& metas) override;
@@ -39,7 +39,7 @@ class FilNonceTracker : public NonceTracker {
       uint256_t start) override;
 
   void OnGetNetworkNonce(const std::string& chain_id,
-                         const std::string& from,
+                         const mojom::AccountIdPtr& from,
                          GetNextNonceCallback callback,
                          uint256_t network_nonce,
                          mojom::FilecoinProviderError error,

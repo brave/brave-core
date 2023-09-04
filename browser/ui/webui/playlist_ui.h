@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
@@ -25,7 +26,8 @@ class GURL;
 namespace playlist {
 
 class PlaylistUI : public ui::UntrustedWebUIController,
-                   public playlist::mojom::PageHandlerFactory {
+                   public playlist::mojom::PageHandlerFactory,
+                   public playlist::mojom::PlaylistNativeUI {
  public:
   static bool ShouldBlockPlaylistWebUI(content::BrowserContext* browser_context,
                                        const GURL& url);
@@ -49,12 +51,21 @@ class PlaylistUI : public ui::UntrustedWebUIController,
   void CreatePageHandler(
       mojo::PendingRemote<playlist::mojom::PlaylistServiceObserver>
           service_observer,
-      mojo::PendingReceiver<playlist::mojom::PlaylistService> service) override;
+      mojo::PendingReceiver<playlist::mojom::PlaylistService> service,
+      mojo::PendingReceiver<playlist::mojom::PlaylistNativeUI> native_ui)
+      override;
+
+  // playlist::mojom::NativeUI:
+  void ShowCreatePlaylistUI() override;
+  void ShowRemovePlaylistUI(const std::string& playlist_id) override;
+  void ShowMoveItemsUI(const std::string& playlist_id,
+                       const std::vector<std::string>& items) override;
 
  private:
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
 
   mojo::ReceiverSet<playlist::mojom::PlaylistService> service_receivers_;
+  mojo::ReceiverSet<playlist::mojom::PlaylistNativeUI> native_ui_receivers_;
 
   mojo::Receiver<playlist::mojom::PageHandlerFactory>
       page_handler_factory_receiver_{this};
@@ -68,7 +79,8 @@ class UntrustedPlaylistUIConfig : public content::WebUIConfig {
   ~UntrustedPlaylistUIConfig() override = default;
 
   std::unique_ptr<content::WebUIController> CreateWebUIController(
-      content::WebUI* web_ui) override;
+      content::WebUI* web_ui,
+      const GURL& url) override;
 
   bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
 };
@@ -79,7 +91,8 @@ class UntrustedPlaylistPlayerUIConfig : public content::WebUIConfig {
   ~UntrustedPlaylistPlayerUIConfig() override = default;
 
   std::unique_ptr<content::WebUIController> CreateWebUIController(
-      content::WebUI* web_ui) override;
+      content::WebUI* web_ui,
+      const GURL& url) override;
 };
 
 }  // namespace playlist

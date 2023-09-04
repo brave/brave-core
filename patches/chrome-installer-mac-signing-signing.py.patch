@@ -1,13 +1,13 @@
 diff --git a/chrome/installer/mac/signing/signing.py b/chrome/installer/mac/signing/signing.py
-index c45ab6cbce72539138f6da1d2ed6424a088aa6e0..fb71facba43a7165a752b4ec8549666cfd07c66a 100644
+index 1310932b4d81ea4550c59d619626ba4c0a27b4a1..b521950a42c52620d0de8ac823928878f11aa9b8 100644
 --- a/chrome/installer/mac/signing/signing.py
 +++ b/chrome/installer/mac/signing/signing.py
-@@ -69,7 +69,7 @@ def sign_part(paths, config, part):
-         part: The |model.CodeSignedProduct| to sign. The product's |path| must
-             be in |paths.work|.
-     """
--    command = ['codesign', '--sign', config.identity]
-+    command = ['codesign', '--force', '--sign', config.identity]
-     path = os.path.join(paths.work, part.path)
-     if _linker_signed_arm64_needs_force(path):
-         command.append('--force')
+@@ -15,7 +15,7 @@ from signing import commands, invoker
+ class Invoker(invoker.Base):
+ 
+     def codesign(self, config, product, path, replace_existing_signature=False):
+-        command = ['codesign', '--sign', config.identity]
++        command = ['codesign', '--force', '--sign', config.identity]
+         if replace_existing_signature:
+             command.append('--force')
+         if config.notarize.should_notarize():

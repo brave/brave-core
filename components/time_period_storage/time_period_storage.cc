@@ -134,8 +134,6 @@ uint64_t TimePeriodStorage::GetHighestValueInPeriod() const {
 }
 
 bool TimePeriodStorage::IsOnePeriodPassed() const {
-  // TODO(iefremov): This is not true 100% (if the browser was launched once
-  // per the time period just after installation, for example).
   return daily_values_.size() == period_days_;
 }
 
@@ -147,12 +145,27 @@ void TimePeriodStorage::FilterToPeriod() {
     last_saved_midnight = daily_values_.front().day;
   }
 
-  if (now_midnight - last_saved_midnight > base::TimeDelta()) {
+  // Push daily values for new days. In loop condition, add one hour
+  // to now_midnight to account for DST changes.
+  for (base::Time day_midnight = last_saved_midnight + base::Days(1);
+       day_midnight <= (now_midnight + base::Hours(1));
+       day_midnight += base::Days(1)) {
     // Day changed. Since we consider only small incoming intervals, lets just
     // save it with a new timestamp.
-    daily_values_.push_front({now_midnight, 0});
+    if (last_saved_midnight.is_null()) {
+      // If this is a brand new list, insert one daily value
+      // with now_midnight...
+      day_midnight = now_midnight;
+    }
+    daily_values_.push_front({day_midnight, 0});
     if (daily_values_.size() > period_days_) {
       daily_values_.pop_back();
+    }
+    if (last_saved_midnight.is_null()) {
+      // ...and break, so we only insert one element. We only want
+      // to insert multiple elements to make up for inactive days on
+      // existing lists, so that IsOnePeriodPassed works correctly.
+      break;
     }
   }
 }

@@ -9,7 +9,10 @@
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
+#include "brave/components/brave_news/browser/brave_news_p3a.h"
+#include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/constants/pref_names.h"
@@ -36,6 +39,10 @@
 #include "brave/browser/widevine/widevine_utils.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif
+
 #if !BUILDFLAG(ENABLE_EXTENSIONS)
 #define CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_
 #endif  // !BUILDFLAG(ENABLE_EXTENSIONS)
@@ -53,6 +60,10 @@
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
+#endif
+
+#if defined(TOOLKIT_VIEWS)
+#include "brave/components/sidebar/pref_names.h"
 #endif
 
 // This method should be periodically pruned of year+ old migrations.
@@ -133,6 +144,21 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   profile->GetPrefs()->ClearPref(kNewTabPageShowBinance);
   profile->GetPrefs()->ClearPref(kBraveSuggestedSiteSuggestionsEnabled);
 #endif
+
+#if defined(TOOLKIT_VIEWS)
+  // Added May 2023
+  if (profile->GetPrefs()->GetBoolean(
+          sidebar::kSidebarAlignmentChangedTemporarily)) {
+    // If temporarily changed, it means sidebar is set to right.
+    // Just clear alignment prefs as default alignment is changed to right.
+    profile->GetPrefs()->ClearPref(prefs::kSidePanelHorizontalAlignment);
+  }
+
+  profile->GetPrefs()->ClearPref(sidebar::kSidebarAlignmentChangedTemporarily);
+#endif
+
+  brave_news::p3a::MigrateObsoleteProfilePrefs(profile->GetPrefs());
+
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 
@@ -153,10 +179,17 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 
   decentralized_dns::MigrateObsoleteLocalStatePrefs(local_state);
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
+  // Migrating the feature flag here because dependencies relying on its value.
+  brave_vpn::MigrateWireguardFeatureFlag(local_state);
+#endif
+
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022
   local_state->ClearPref(kDefaultBrowserPromptEnabled);
 #endif
+
+  brave_search_conversion::p3a::MigrateObsoleteLocalStatePrefs(local_state);
 
   // END_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
 }

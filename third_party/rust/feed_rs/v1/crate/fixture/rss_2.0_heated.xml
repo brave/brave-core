@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0">
+    <channel>
+        <title><![CDATA[HEATED]]></title>
+        <description><![CDATA[A newsletter for people who are pissed off about the climate crisis.]]></description>
+        <link>https://heated.world</link>
+        <image>
+            <url>
+                https://cdn.substack.com/image/fetch/w_256,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2F928206cb-1a2b-47e8-810a-ca99585c7422_60x60.png
+            </url>
+            <title>HEATED</title>
+            <link>https://heated.world</link>
+        </image>
+        <generator>Substack</generator>
+        <lastBuildDate>Thu, 04 Feb 2021 06:15:20 GMT</lastBuildDate>
+        <atom:link href="https://heated.world/feed" rel="self" type="application/rss+xml"/>
+        <copyright><![CDATA[Emily Atkin]]></copyright>
+        <language><![CDATA[en]]></language>
+        <webMaster><![CDATA[heated@substack.com]]></webMaster>
+        <itunes:owner>
+            <itunes:email><![CDATA[heated@substack.com]]></itunes:email>
+            <itunes:name><![CDATA[Emily Atkin]]></itunes:name>
+        </itunes:owner>
+        <itunes:author><![CDATA[Emily Atkin]]></itunes:author>
+        <googleplay:owner><![CDATA[heated@substack.com]]></googleplay:owner>
+        <googleplay:email><![CDATA[heated@substack.com]]></googleplay:email>
+        <googleplay:author><![CDATA[Emily Atkin]]></googleplay:author>
+        <item>
+            <title><![CDATA[A conversation about Keystone XL]]></title>
+            <description>
+                <![CDATA[This past weekend, I was interviewed by Walt Hickey, the author and creator of Numlock News.]]></description>
+            <link>https://heated.world/p/a-conversation-about-keystone-xl</link>
+            <guid isPermaLink="true">https://heated.world/p/a-conversation-about-keystone-xl</guid>
+            <dc:creator><![CDATA[Emily Atkin]]></dc:creator>
+            <pubDate>Wed, 03 Feb 2021 12:00:47 GMT</pubDate>
+            <enclosure
+                    url="https://cdn.substack.com/image/fetch/h_600,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fc3a98cc3-73ff-48f8-a8bb-7b71d3211fb6_3024x4032.jpeg"
+                    length="0" type="image/jpeg"/>
+            <content:encoded><![CDATA[<p>Hello, dear paid subscriber fam! I have some good news and some bad news. The good news: Yesterday&#8217;s newsletter about <a href="https://heated.world/subscribe?utm_medium=rss&amp;utm_content=32137990">Twitter&#8217;s Big Oil ad loophole</a> went so well, MSNBC asked me to write a column about it. The bad news: I spent so long writing the column (which is now in editing) that I didn&#8217;t have time to write a newsletter for today.<br><br>Fortunately, I stil&#8230;</p>
+                        <p>
+                            <a href="https://heated.world/p/a-conversation-about-keystone-xl">
+                                Read more
+                            </a>
+                        </p>
+                    ]]></content:encoded>
+        </item>
+    </channel>
+</rss>

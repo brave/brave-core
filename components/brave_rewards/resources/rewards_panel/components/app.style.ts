@@ -8,7 +8,6 @@ export const root = styled.div`
   background: #fafcff;
   width: 410px;
   min-height: calc(var(--modal-content-block-size, '250px') + 30px);
-  padding: 13px;
   font-family: var(--brave-font-heading);
 
   .brave-theme-dark & {
@@ -22,6 +21,7 @@ export const loading = styled.div`
   align-items: center;
   justify-content: center;
   color: var(--brave-color-brandBat);
+  padding: 13px;
 
   .icon {
     flex: 0 0 auto;

@@ -1,3 +1,8 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/resources/brave_grit.gni")
 
 # JS / TS imports via `require` or `import` will be added to a list and
@@ -11,14 +16,12 @@ brave_common_web_compile_inputs = [
   # see ../definitions/README.md.
   rebase_path("../definitions/adBlock.d.ts"),
   rebase_path("../definitions/ipfs.d.ts"),
-  rebase_path("../definitions/playlist.d.ts"),
   rebase_path("../definitions/webcompatReporter.d.ts"),
   rebase_path("../definitions/chromel.d.ts"),
   rebase_path("../definitions/global.d.ts"),
   rebase_path("../definitions/newTab.d.ts"),
   rebase_path("../definitions/non-js-loaders.d.ts"),
   rebase_path("../definitions/prettier-bytes.d.ts"),
-  rebase_path("../definitions/rewards.d.ts"),
   rebase_path("../definitions/rewardsExtensions.d.ts"),
   rebase_path("../definitions/rewardsInternals.d.ts"),
   rebase_path("../definitions/throttleit.d.ts"),
@@ -36,13 +39,9 @@ brave_common_web_compile_inputs = [
   "//brave/tsconfig.json",
   "//brave/tsconfig-webpack.json",
 
-  # modifying npm dependencies warrants a re-build of all webpack
+  # modifying npm dependencies or scripts warrants a re-build of all webpack
   # and typescript builds
   "//brave/package.json",
-
-  # brave-ui changes (perhaps a manual local link which wouldn't affect
-  # //brave/package.json)
-  "//brave/node_modules/brave-ui/package.json",
 ]
 
 # Runs a frontend compiler for the specified entry point(s) and outputs a GRD file
@@ -65,19 +64,20 @@ brave_common_web_compile_inputs = [
 #       - resource ID (e.g. `IDR_RESOURCENAME_MYFILE_JS`)
 #   output_dir
 #     Optional custom path for compiled output
-#   extra_relative_path
-#     Extension resource files need to have the same relative path prefix
-#     in their GRD as the manifest.json in its (separate) GRD file
-#     So we offer an option to put a folder structure in between the GRD
-#     and the output directories so that the resource is stored as, e.g.
-#     extra/relative/path/myFile.js
+#   generate_grdp
+#     Optionally generate a Grit Part file instead of a grit file.
+#   resource_path_prefix
+#     Sometimes, as with extensions, it is desirable to specify a prefix which
+#     is used to import files. For example, the path prefix brave/foo means that
+#     to import subfolder/myFile.js you would write
+#       import('brave/foo/subfolder/myFile.js')
 #   public_asset_path
 #     Support a different URL path to access generated resources at.
 #     The default is '/' and we'll want to keep that most of the time,
-#     but if we're specifying extra_relative_path then normally a portion of
+#     but if we're specifying resource_path_prefix then normally a portion of
 #     that will need to be involved in the public_asset_path.
 #     For extensions, this is the relative path from where the manifest is to
-#     where the extra_relative_path ends.
+#     where the resource_path_prefix ends.
 #   webpack_aliases
 #     Support for web pack aliases that directly passed to webpack config.
 template("transpile_web_ui") {
@@ -119,8 +119,13 @@ template("transpile_web_ui") {
       gen_output_dir = "$root_gen_dir/brave/web-ui-$resource_name"
     }
 
-    # sole output is a GRD that includes all the resources
+    # Output is a GRD that includes all the resources, and a bundle for each
+    # entry point or a GRDP file that includes all the resources.
     grd_name = "$resource_name.grd"
+    if (defined(invoker.generate_grdp) && invoker.generate_grdp) {
+      grd_name = "$resource_name.grdp"
+    }
+
     outputs = [ "$gen_output_dir/$grd_name" ]
 
     # Base script arguments:
@@ -162,12 +167,12 @@ template("transpile_web_ui") {
       }
     }
 
-    if (defined(invoker.extra_relative_path)) {
-      args += [ "--extra_relative_path=" + invoker.extra_relative_path ]
-    }
-
     if (defined(invoker.public_asset_path)) {
       args += [ "--public_asset_path=" + invoker.public_asset_path ]
+    }
+
+    if (defined(invoker.resource_path_prefix)) {
+      args += [ "--resource_path_prefix=" + invoker.resource_path_prefix ]
     }
 
     if (is_official_build) {

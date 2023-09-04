@@ -15,11 +15,8 @@ void DeleteSegments() {
   const table::Segments database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
-      BLOG(0, "Failed to delete segments");
-      return;
+      return BLOG(0, "Failed to delete segments");
     }
-
-    BLOG(3, "Successfully deleted segments");
   }));
 }
 

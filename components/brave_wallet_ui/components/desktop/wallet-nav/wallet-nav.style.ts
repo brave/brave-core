@@ -4,30 +4,35 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 import { layoutSmallWidth, layoutTopPosition } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
-export const Wrapper = styled.div`
-  --display-text: none;
-  --icon-margin-right: 0px;
+export const Wrapper = styled.div<{
+  isPanel: boolean
+}>`
+  --nav-background: ${leo.color.container.background};
+  @media (prefers-color-scheme: dark) {
+    /* #1C2026 does not exist in design system */
+    --nav-background: ${(p) =>
+    p.isPanel
+      ? '#1C2026'
+      : leo.color.container.background
+  };
+  }
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   background-color: var(--nav-background);
-  border-radius: 12px;
-  border: 1px solid var(--nav-border);
+  border-radius: 16px;
   position: absolute;
   top: ${layoutTopPosition}px;
   left: 32px;
   overflow: visible;
   z-index: 10;
-  padding: 0px 8px;
-  transition-duration: 0.1s;
-  transition-timing-function: ease;
-  &:hover {
-    --display-text: flex;
-    --icon-margin-right: 16px;
-  }
+  width: 240px;
+  padding: 12px 0px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
   @media screen and (max-width: ${layoutSmallWidth}px) {
     flex-direction: row;
     top: unset;
@@ -38,12 +43,7 @@ export const Wrapper = styled.div`
     padding: 8px 0px;
     border-radius: 0px;
     box-shadow: 0px -8px 16px rgba(0, 0, 0, 0.04);
-    transition-duration: 0.5s;
-    --display-text: flex;
-    &:hover {
-      --display-text: flex;
-      --icon-margin-right: 0px;
-    }
+    width: unset;
   }
 `
 
@@ -53,18 +53,16 @@ export const Section = styled.div<{ showBorder?: boolean }>`
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  padding: 8px 0px;
-  transition-duration: inherit;
-  transition-timing-function: inherit;
+  padding: 12px 0px;
   border-bottom: ${(p) => p.showBorder
-    ? `1px solid var(--nav-border)`
+    ? `1px solid ${leo.color.container.highlight}`
     : 'none'};
   @media screen and (max-width: ${layoutSmallWidth}px) {
     flex-direction: row;
     padding: 0px 8px;
     border-bottom: none;
     border-right: ${(p) => p.showBorder
-    ? `1px solid var(--nav-border)`
+    ? `1px solid ${leo.color.container.highlight}`
     : 'none'};
   }
 `
@@ -72,8 +70,7 @@ export const Section = styled.div<{ showBorder?: boolean }>`
 export const PageOptionsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  transition-duration: inherit;
-  transition-timing-function: inherit;
+  width: 100%;
   @media screen and (max-width: ${layoutSmallWidth}px) {
     display: none;
   }
@@ -82,7 +79,6 @@ export const PageOptionsWrapper = styled.div`
 export const PanelOptionsWrapper = styled.div`
   display: none;
   width: 100%;
-  transition-duration: inherit;
   @media screen and (max-width: ${layoutSmallWidth}px) {
     display: flex;
   }

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_util.h"
 
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace endpoint {

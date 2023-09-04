@@ -1,11 +1,11 @@
 diff --git a/chrome/installer/mac/signing/parts.py b/chrome/installer/mac/signing/parts.py
-index 064fb1adcaab976af5e6b00322b2adc73628aa0e..d49464f6f2effb4ec1ebded7a2866b9310e08b60 100644
+index 75da7db1985663390924cada1d7281953beccdaa..32885740f212332796109a00a3d7777d8b372737 100644
 --- a/chrome/installer/mac/signing/parts.py
 +++ b/chrome/installer/mac/signing/parts.py
 @@ -10,6 +10,7 @@ import os.path
  
- from . import commands, signing
- from .model import CodeSignOptions, CodeSignedProduct, VerifyOptions
+ from signing import commands, signing
+ from signing.model import CodeSignOptions, CodeSignedProduct, VerifyOptions
 +from signing_helper import BraveModifyPartsForSigning, GenerateBraveWidevineSigFile
  
  _PROVISIONPROFILE_EXT = '.provisionprofile'

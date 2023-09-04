@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/webui/history/history_ui.cc b/chrome/browser/ui/webui/history/history_ui.cc
-index 65caa0d9521553246a6f8b6339849be23e7f5f4a..8c1a75374d37539ec2785076a34780ae899bc331 100644
+index af184ef24ae540d1883b809f98668db440b93005..370d73aada5f87db6257f672cb85624d0c258e94 100644
 --- a/chrome/browser/ui/webui/history/history_ui.cc
 +++ b/chrome/browser/ui/webui/history/history_ui.cc
-@@ -68,6 +68,7 @@ content::WebUIDataSource* CreateAndAddHistoryUIHTMLSource(Profile* profile) {
-   content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
+@@ -69,6 +69,7 @@ content::WebUIDataSource* CreateAndAddHistoryUIHTMLSource(Profile* profile) {
        profile, chrome::kChromeUIHistoryHost);
+   webui::SetupChromeRefresh2023(source);
  
 +  BRAVE_CREATE_HISTORY_UI_HTML_SOURCE
    static constexpr webui::LocalizedString kStrings[] = {

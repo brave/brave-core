@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_info.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
@@ -19,7 +19,7 @@ class BraveAdsNewTabPageAdInfoTest : public UnitTestBase {};
 TEST_F(BraveAdsNewTabPageAdInfoTest, IsValid) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
   // Act

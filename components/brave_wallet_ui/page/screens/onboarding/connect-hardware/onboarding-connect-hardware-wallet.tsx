@@ -9,7 +9,9 @@ import { useHistory } from 'react-router'
 import { CreateAccountOptionsType, WalletRoutes } from '../../../../constants/types'
 
 // components
-import { WalletPageLayout } from "../../../../components/desktop"
+import {
+  WalletPageLayout //
+} from '../../../../components/desktop/wallet-page-layout/index'
 import AddHardwareAccountModal from '../../../../components/desktop/popup-modals/add-account-modal/add-hardware-account-modal'
 
 // styles

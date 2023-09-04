@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/single_thread_task_runner.h"
+#include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/domain_block_controller_client.h"
 #include "brave/components/brave_shields/browser/domain_block_page.h"
@@ -35,24 +36,18 @@ std::pair<bool, std::string> ShouldBlockDomainOnTaskRunner(
     brave_shields::AdBlockService* ad_block_service,
     const GURL& url) {
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.DomainBlock.ShouldBlock");
-  bool did_match_exception = false;
-  bool did_match_rule = false;
-  bool did_match_important = false;
-  std::string mock_data_url;
-  std::string rewritten_url;
   // force aggressive blocking to `true` for domain blocking - these requests
   // are all "first-party", but the throttle is already only called when
   // necessary.
   bool aggressive_blocking = true;
-  ad_block_service->ShouldStartRequest(
+  auto result = ad_block_service->ShouldStartRequest(
       url, blink::mojom::ResourceType::kMainFrame, url.host(),
-      aggressive_blocking, &did_match_rule, &did_match_exception,
-      &did_match_important, &mock_data_url, &rewritten_url);
+      aggressive_blocking, false, false, false);
 
   const bool should_block =
-      did_match_important || (did_match_rule && !did_match_exception);
+      result.important || (result.matched && !result.has_exception);
 
-  return std::pair(should_block, rewritten_url);
+  return std::pair(should_block, std::string(result.rewritten_url.value));
 }
 
 }  // namespace

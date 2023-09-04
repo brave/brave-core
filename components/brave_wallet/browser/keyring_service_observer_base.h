@@ -14,17 +14,18 @@
 namespace brave_wallet {
 
 class KeyringServiceObserverBase : public mojom::KeyringServiceObserver {
-  void KeyringCreated(const std::string& keyring_id) override {}
-  void KeyringRestored(const std::string& keyring_id) override {}
+  void KeyringCreated(mojom::KeyringId keyring_id) override {}
+  void KeyringRestored(mojom::KeyringId keyring_id) override {}
   void KeyringReset() override {}
   void Locked() override {}
   void Unlocked() override {}
   void BackedUp() override {}
   void AccountsChanged() override {}
-  void AccountsAdded(mojom::CoinType coin,
-                     const std::vector<std::string>& addresses) override {}
+  void AccountsAdded(std::vector<mojom::AccountInfoPtr> accounts) override {}
   void AutoLockMinutesChanged() override {}
-  void SelectedAccountChanged(mojom::CoinType coin) override {}
+  void SelectedWalletAccountChanged(mojom::AccountInfoPtr account) override {}
+  void SelectedDappAccountChanged(mojom::CoinType coin,
+                                  mojom::AccountInfoPtr account) override {}
 };
 
 }  // namespace brave_wallet

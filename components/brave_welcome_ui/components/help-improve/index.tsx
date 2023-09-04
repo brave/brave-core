@@ -7,8 +7,7 @@ import * as React from 'react'
 
 import * as S from './style'
 import Button from '$web-components/button'
-import { WelcomeBrowserProxyImpl } from '../../api/welcome_browser_proxy'
-import { ViewType } from '../../state/component_types'
+import { P3APhase, WelcomeBrowserProxyImpl } from '../../api/welcome_browser_proxy'
 import { getLocale, splitStringForTag } from '$web-common/locale'
 
 interface InputCheckboxProps {
@@ -48,7 +47,7 @@ function HelpImprove () {
   const handleFinish = () => {
     WelcomeBrowserProxyImpl.getInstance().setP3AEnabled(isP3AEnabled)
     WelcomeBrowserProxyImpl.getInstance().setMetricsReportingEnabled(isMetricsReportingEnabled)
-    WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.HelpImprove, isFinished: true, isSkipped: false })
+    WelcomeBrowserProxyImpl.getInstance().recordP3A(P3APhase.Finished)
     window.open('chrome://newtab', '_self')
   }
 

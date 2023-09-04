@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/common/request_util.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/post_creds/post_creds.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
@@ -19,7 +19,7 @@ namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
-PostCreds::PostCreds(LedgerImpl& ledger) : ledger_(ledger) {}
+PostCreds::PostCreds(RewardsEngineImpl& engine) : engine_(engine) {}
 
 PostCreds::~PostCreds() = default;
 
@@ -31,7 +31,7 @@ std::string PostCreds::GetUrl(const std::string& promotion_id) {
 }
 
 std::string PostCreds::GeneratePayload(base::Value::List&& blinded_creds) {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     return "";
@@ -50,17 +50,17 @@ std::string PostCreds::GeneratePayload(base::Value::List&& blinded_creds) {
 mojom::Result PostCreds::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_FORBIDDEN) {
     BLOG(0, "Signature validation failed");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_CONFLICT) {
     BLOG(0, "Incorrect blinded credentials");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_GONE) {
@@ -70,15 +70,15 @@ mojom::Result PostCreds::CheckStatusCode(const int status_code) {
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 mojom::Result PostCreds::ParseBody(const std::string& body,
@@ -88,28 +88,28 @@ mojom::Result PostCreds::ParseBody(const std::string& body,
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* id = dict.FindString("claimId");
   if (!id || id->empty()) {
     BLOG(0, "Claim id is missing");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   *claim_id = *id;
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void PostCreds::Request(const std::string& promotion_id,
                         base::Value::List&& blinded_creds,
                         PostCredsCallback callback) {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
@@ -128,7 +128,7 @@ void PostCreds::Request(const std::string& promotion_id,
   request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  engine_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostCreds::OnRequest(PostCredsCallback callback,
@@ -139,7 +139,7 @@ void PostCreds::OnRequest(PostCredsCallback callback,
   std::string claim_id;
   mojom::Result result = CheckStatusCode(response->status_code);
 
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     std::move(callback).Run(result, claim_id);
     return;
   }

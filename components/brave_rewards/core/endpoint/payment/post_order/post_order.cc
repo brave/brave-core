@@ -12,7 +12,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -21,7 +21,7 @@ namespace brave_rewards::internal {
 namespace endpoint {
 namespace payment {
 
-PostOrder::PostOrder(LedgerImpl& ledger) : ledger_(ledger) {}
+PostOrder::PostOrder(RewardsEngineImpl& engine) : engine_(engine) {}
 
 PostOrder::~PostOrder() = default;
 
@@ -61,10 +61,10 @@ mojom::Result PostOrder::CheckStatusCode(const int status_code) {
 
   if (status_code != net::HTTP_CREATED) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 mojom::Result PostOrder::ParseBody(
@@ -76,7 +76,7 @@ mojom::Result PostOrder::ParseBody(
   absl::optional<base::Value> dictionary = base::JSONReader::Read(body);
   if (!dictionary || !dictionary->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = dictionary->GetDict();
@@ -88,7 +88,7 @@ mojom::Result PostOrder::ParseBody(
 
   if (order->order_id.empty()) {
     BLOG(0, "Order id empty");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const auto* total_amount = dict.FindString("totalPrice");
@@ -114,12 +114,12 @@ mojom::Result PostOrder::ParseBody(
 
   auto* items = dict.FindList("items");
   if (!items) {
-    return mojom::Result::LEDGER_OK;
+    return mojom::Result::OK;
   }
 
   if (items->size() != order_items.size()) {
     BLOG(0, "Invalid JSON");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   int count = 0;
@@ -163,7 +163,7 @@ mojom::Result PostOrder::ParseBody(
     count++;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void PostOrder::Request(const std::vector<mojom::SKUOrderItem>& items,
@@ -176,7 +176,7 @@ void PostOrder::Request(const std::vector<mojom::SKUOrderItem>& items,
   request->content = GeneratePayload(items);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  engine_->LoadURL(std::move(request), url_callback);
 }
 
 void PostOrder::OnRequest(mojom::UrlResponsePtr response,
@@ -187,7 +187,7 @@ void PostOrder::OnRequest(mojom::UrlResponsePtr response,
 
   mojom::Result result = CheckStatusCode(response->status_code);
 
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     callback(result, nullptr);
     return;
   }

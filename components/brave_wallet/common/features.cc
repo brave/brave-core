@@ -19,12 +19,7 @@ const base::FeatureParam<bool> kShowToolbarTxStatus{
 
 BASE_FEATURE(kBraveWalletFilecoinFeature,
              "BraveWalletFilecoin",
-#if BUILDFLAG(IS_ANDROID)
-             base::FEATURE_DISABLED_BY_DEFAULT
-#else
-             base::FEATURE_ENABLED_BY_DEFAULT
-#endif
-);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveWalletSolanaFeature,
              "BraveWalletSolana",
@@ -59,7 +54,7 @@ BASE_FEATURE(kBraveWalletNftPinningFeature,
 
 BASE_FEATURE(kBraveWalletPanelV2Feature,
              "BraveWalletPanelV2",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveWalletBitcoinFeature,
              "BraveWalletBitcoin",

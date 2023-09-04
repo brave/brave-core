@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:background="@drawable/p2p_rewards_inside_background">
+
+    <ImageView
+        android:id="@+id/verified_tick_mark2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@null"
+        app:layout_constraintTop_toTopOf="@id/verified_creator_text"
+        app:srcCompat="@drawable/rewards_verified_tick_icon" />
+
+    <TextView
+        android:id="@+id/verified_creator_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/brave_ui_verified_publisher"
+        android:textColor="@color/tootltip_verified_creator_text"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintStart_toEndOf="@id/verified_tick_mark2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/verified_creator_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/tootltip_verified_creator_text_secondary"
+        android:fontFamily="sans-serif"
+        android:text="@string/tipping_tooltip_description"
+        app:layout_constraintStart_toStartOf="@id/verified_tick_mark2"
+        app:layout_constraintTop_toBottomOf="@id/verified_creator_text" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

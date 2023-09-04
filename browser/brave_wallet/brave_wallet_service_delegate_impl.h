@@ -22,7 +22,8 @@
 
 namespace content {
 class BrowserContext;
-}
+class WebContents;
+}  // namespace content
 
 namespace brave_wallet {
 
@@ -37,6 +38,9 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
       const BraveWalletServiceDelegateImpl&) = delete;
   ~BraveWalletServiceDelegateImpl() override;
 
+  static void SetActiveWebContentsForTesting(
+      content::WebContents* web_contents);
+
   void IsExternalWalletInstalled(mojom::ExternalWalletType,
                                  IsExternalWalletInstalledCallback) override;
   void IsExternalWalletInitialized(
@@ -46,23 +50,19 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
                                        const std::string& password,
                                        GetImportInfoCallback callback) override;
 
-  void AddPermission(mojom::CoinType coin,
+  bool AddPermission(mojom::CoinType coin,
                      const url::Origin& origin,
-                     const std::string& account,
-                     AddPermissionCallback callback) override;
-  void HasPermission(mojom::CoinType coin,
+                     const std::string& account) override;
+  bool HasPermission(mojom::CoinType coin,
                      const url::Origin& origin,
-                     const std::string& account,
-                     HasPermissionCallback callback) override;
-  void ResetPermission(mojom::CoinType coin,
+                     const std::string& account) override;
+  bool ResetPermission(mojom::CoinType coin,
                        const url::Origin& origin,
-                       const std::string& account,
-                       ResetPermissionCallback callback) override;
-  void IsPermissionDenied(mojom::CoinType coin,
-                          const url::Origin& origin,
-                          IsPermissionDeniedCallback callback) override;
+                       const std::string& account) override;
+  bool IsPermissionDenied(mojom::CoinType coin,
+                          const url::Origin& origin) override;
 
-  mojom::OriginInfoPtr GetActiveOrigin() override;
+  absl::optional<url::Origin> GetActiveOrigin() override;
 
   void ClearWalletUIStoragePartition() override;
 
@@ -92,7 +92,7 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
                                                GetImportInfoCallback callback,
                                                bool init_success);
 
-  url::Origin GetActiveOriginInternal();
+  absl::optional<url::Origin> GetActiveOriginInternal();
   void FireActiveOriginChanged();
 
   raw_ptr<content::BrowserContext> context_ = nullptr;

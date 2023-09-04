@@ -19,10 +19,11 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/common_util.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
@@ -43,6 +44,10 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/components/playlist/common/features.h"
 #endif
 
 namespace {
@@ -150,6 +155,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
   UpdateCommandForSidebar();
   UpdateCommandForBraveVPN();
+  UpdateCommandForPlaylist();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsAllowedForContext(browser_->profile())) {
     brave_vpn_pref_change_registrar_.Init(browser_->profile()->GetPrefs());
@@ -192,6 +198,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(
       IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE,
       base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
+  UpdateCommandEnabled(
+      IDC_TOGGLE_VERTICAL_TABS_EXPANDED,
+      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
 
   UpdateCommandEnabled(IDC_CONFIGURE_BRAVE_NEWS,
                        !browser_->profile()->IsOffTheRecord());
@@ -201,6 +210,11 @@ void BraveBrowserCommandController::InitBraveCommandState() {
       base::FeatureList::IsEnabled(commands::features::kBraveCommands));
 
   UpdateCommandEnabled(IDC_SHOW_BRAVE_TALK, true);
+  UpdateCommandEnabled(IDC_TOGGLE_SHIELDS, true);
+  UpdateCommandEnabled(IDC_TOGGLE_JAVASCRIPT, true);
+  UpdateCommandEnabled(IDC_GROUP_TABS_ON_CURRENT_ORIGIN, true);
+  UpdateCommandEnabled(IDC_MOVE_GROUP_TO_NEW_WINDOW, true);
+  UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS, true);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -239,11 +253,16 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
     UpdateCommandEnabled(IDC_ABOUT_BRAVE_VPN, false);
     UpdateCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN, false);
     UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN, false);
+#if BUILDFLAG(IS_WIN)
+    UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON, false);
+#endif
     return;
   }
-
   UpdateCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL, true);
   UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON, true);
+#if BUILDFLAG(IS_WIN)
+  UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON, true);
+#endif
   UpdateCommandEnabled(IDC_SEND_BRAVE_VPN_FEEDBACK, true);
   UpdateCommandEnabled(IDC_ABOUT_BRAVE_VPN, true);
   UpdateCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN, true);
@@ -254,6 +273,16 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
     UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, vpn_service->is_purchased_user());
     UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN,
                          vpn_service->is_purchased_user());
+  }
+#endif
+}
+
+void BraveBrowserCommandController::UpdateCommandForPlaylist() {
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    UpdateCommandEnabled(
+        IDC_SHOW_PLAYLIST_BUBBLE,
+        browser_->is_type_normal() && !browser_->profile()->IsOffTheRecord());
   }
 #endif
 }
@@ -317,12 +346,6 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_BRAVE_WALLET:
       brave::ShowBraveWallet(&*browser_);
       break;
-    case IDC_ADD_NEW_PROFILE:
-      brave::AddNewProfile();
-      break;
-    case IDC_OPEN_GUEST_PROFILE:
-      brave::OpenGuestProfile();
-      break;
     case IDC_SPEEDREADER_ICON_ONCLICK:
       brave::MaybeDistillAndShowSpeedreaderBubble(&*browser_);
       break;
@@ -334,6 +357,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_SHOW_BRAVE_VPN_PANEL:
       brave::ShowBraveVPNBubble(&*browser_);
+      break;
+    case IDC_TOGGLE_BRAVE_VPN_TRAY_ICON:
+      brave::ToggleBraveVPNTrayIcon();
       break;
     case IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON:
       brave::ToggleBraveVPNButton(&*browser_);
@@ -366,6 +392,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE:
       brave::ToggleWindowTitleVisibilityForVerticalTabs(&*browser_);
       break;
+    case IDC_TOGGLE_VERTICAL_TABS_EXPANDED:
+      brave::ToggleVerticalTabStripExpanded(&*browser_);
+      break;
     case IDC_CONFIGURE_BRAVE_NEWS:
       brave::ShowBraveNewsConfigure(&*browser_);
       break;
@@ -374,6 +403,28 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_SHOW_BRAVE_TALK:
       brave::ShowBraveTalk(&*browser_);
+      break;
+    case IDC_TOGGLE_SHIELDS:
+      brave::ToggleShieldsEnabled(&*browser_);
+      break;
+    case IDC_TOGGLE_JAVASCRIPT:
+      brave::ToggleJavascriptEnabled(&*browser_);
+      break;
+    case IDC_SHOW_PLAYLIST_BUBBLE:
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+      brave::ShowPlaylistBubble(&*browser_);
+#else
+      NOTREACHED() << " This command shouldn't be enabled";
+#endif
+      break;
+    case IDC_GROUP_TABS_ON_CURRENT_ORIGIN:
+      brave::GroupTabsOnCurrentOrigin(&*browser_);
+      break;
+    case IDC_MOVE_GROUP_TO_NEW_WINDOW:
+      brave::MoveGroupToNewWindow(&*browser_);
+      break;
+    case IDC_CLOSE_DUPLICATE_TABS:
+      brave::CloseDuplicateTabs(&*browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

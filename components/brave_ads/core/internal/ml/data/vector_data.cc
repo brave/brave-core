@@ -5,11 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
-#include <cstddef>
 #include <limits>
 #include <numeric>
 #include <utility>
-#include <vector>
 
 #include "base/check_op.h"
 #include "base/ranges/algorithm.h"

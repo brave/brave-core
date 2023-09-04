@@ -12,10 +12,8 @@
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/database/database_recurring_tip.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
-
-using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 namespace database {
@@ -35,8 +33,8 @@ void MapDatabaseResultToSuccess(base::OnceCallback<void(bool)> callback,
 
 }  // namespace
 
-DatabaseRecurringTip::DatabaseRecurringTip(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseRecurringTip::DatabaseRecurringTip(RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseRecurringTip::~DatabaseRecurringTip() = default;
 
@@ -44,7 +42,7 @@ void DatabaseRecurringTip::InsertOrUpdate(mojom::RecurringTipPtr info,
                                           LegacyResultCallback callback) {
   if (!info || info->publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -66,9 +64,9 @@ void DatabaseRecurringTip::InsertOrUpdate(mojom::RecurringTipPtr info,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void DatabaseRecurringTip::InsertOrUpdate(
@@ -107,7 +105,7 @@ void DatabaseRecurringTip::InsertOrUpdate(
 
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(MapDatabaseResultToSuccess, std::move(callback)));
 }
@@ -138,7 +136,7 @@ void DatabaseRecurringTip::AdvanceMonthlyContributionDates(
     return;
   }
 
-  ledger_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(MapDatabaseResultToSuccess, std::move(callback)));
 }
@@ -153,7 +151,7 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
       "UPDATE %s SET next_contribution_at = ? "
       "WHERE next_contribution_at IS NULL",
       kTableName);
-  BindInt64(command.get(), 0, ledger_->state()->GetReconcileStamp());
+  BindInt64(command.get(), 0, engine_->state()->GetReconcileStamp());
   transaction->commands.push_back(std::move(command));
 
   command = mojom::DBCommand::New();
@@ -167,7 +165,9 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
       [](base::OnceCallback<void(absl::optional<base::Time>)> callback,
          mojom::DBCommandResponsePtr response) {
         base::Time time;
-        if (response && !response->result->get_records().empty()) {
+        if (response &&
+            response->status == mojom::DBCommandResponse::Status::RESPONSE_OK &&
+            response->result && !response->result->get_records().empty()) {
           const auto& record = response->result->get_records().front();
           int64_t timestamp = GetInt64Column(record.get(), 0);
           if (timestamp > 0) {
@@ -182,8 +182,9 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
         std::move(callback).Run(absl::nullopt);
       };
 
-  ledger_->RunDBTransaction(std::move(transaction),
-                            base::BindOnce(on_completed, std::move(callback)));
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(on_completed, std::move(callback)));
 }
 
 void DatabaseRecurringTip::GetAllRecords(GetRecurringTipsCallback callback) {
@@ -215,14 +216,15 @@ void DatabaseRecurringTip::GetAllRecords(GetRecurringTipsCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseRecurringTip::OnGetAllRecords, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseRecurringTip::OnGetAllRecords,
+                     base::Unretained(this), std::move(callback)));
 }
 
-void DatabaseRecurringTip::OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                                           GetRecurringTipsCallback callback) {
+void DatabaseRecurringTip::OnGetAllRecords(
+    GetRecurringTipsCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -249,7 +251,7 @@ void DatabaseRecurringTip::OnGetAllRecords(mojom::DBCommandResponsePtr response,
     // If a monthly contribution record does not have a valid "next contribution
     // date", then use the next auto-contribution date instead.
     if (!info->reconcile_stamp) {
-      info->reconcile_stamp = ledger_->state()->GetReconcileStamp();
+      info->reconcile_stamp = engine_->state()->GetReconcileStamp();
     }
 
     list.push_back(std::move(info));
@@ -262,7 +264,7 @@ void DatabaseRecurringTip::DeleteRecord(const std::string& publisher_key,
                                         LegacyResultCallback callback) {
   if (publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -279,9 +281,9 @@ void DatabaseRecurringTip::DeleteRecord(const std::string& publisher_key,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 }  // namespace database

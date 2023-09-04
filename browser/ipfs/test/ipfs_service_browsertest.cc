@@ -825,14 +825,14 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
       ui_test_utils::NavigateToURL(browser(), GetURL("b.com", "/simple.html")));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  auto error_caught =
-      EvalJs(contents,
-             "fetch('ipfs://"
-             "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2')"
-             "  .catch((e) => {"
-             "        window.domAutomationController.send(true);"
-             "  });",
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto error_caught = EvalJs(contents, R"(
+        new Promise(resolve => {
+          fetch('ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2')
+            .catch((e) => {
+              resolve(true);
+          });
+        });
+      )");
   ASSERT_TRUE(error_caught.error.empty());
   EXPECT_EQ(base::Value(true), error_caught.value);
 }
@@ -851,17 +851,17 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanFetchIPFSResourcesFromIPFS) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  auto got_fetch =
-      EvalJs(contents,
-             "fetch('ipfs://"
-             "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2')"
-             "  .then(response => { response.text()"
-             "      .then((response_text) => {"
-             "        const result = response_text == 'simple content 2';"
-             "        window.domAutomationController.send(result);"
-             "      })})"
-             ".catch((x) => console.log('error: ' + x));",
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto got_fetch = EvalJs(contents, R"(
+        new Promise(resolve => {
+          fetch('ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2')
+            .then(response => { response.text()
+                .then((response_text) => {
+                  const result = response_text == 'simple content 2';
+                  resolve(result);
+                })})
+          .catch((x) => console.log('error: ' + x));
+        });
+      )");
   ASSERT_TRUE(got_fetch.error.empty());
   EXPECT_EQ(base::Value(true), got_fetch.value);
 }
@@ -888,15 +888,16 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
   int child_index = 0;
   while (auto* child_frame =
              ChildFrameAt(contents->GetPrimaryMainFrame(), child_index++)) {
-    auto location =
-        EvalJs(child_frame,
-               "const timer = setInterval(function () {"
-               "  if (document.readyState == 'complete') {"
-               "    clearInterval(timer);"
-               "    window.domAutomationController.send(window.location.href);"
-               "  }"
-               "}, 100);",
-               content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+    auto location = EvalJs(child_frame, R"(
+          new Promise(resolve => {
+            const timer = setInterval(function () {
+              if (document.readyState == 'complete') {
+                clearInterval(timer);
+                resolve(window.location.href);
+              }
+            }, 100);
+          });
+        )");
 
     ASSERT_TRUE(location.error.empty());
     EXPECT_EQ(base::Value("chrome-error://chromewebdata/"), location.value);
@@ -921,15 +922,16 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIframeFromHTTP) {
   int child_index = 0;
   while (auto* child_frame =
              ChildFrameAt(contents->GetPrimaryMainFrame(), child_index++)) {
-    auto location =
-        EvalJs(child_frame,
-               "const timer = setInterval(function () {"
-               "  if (document.readyState == 'complete') {"
-               "    clearInterval(timer);"
-               "    window.domAutomationController.send(window.location.href);"
-               "  }"
-               "}, 100);",
-               content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+    auto location = EvalJs(child_frame, R"(
+          new Promise(resolve => {
+            const timer = setInterval(function () {
+              if (document.readyState == 'complete') {
+                clearInterval(timer);
+                resolve(window.location.href);
+              }
+            }, 100);
+          });
+        )");
 
     ASSERT_TRUE(location.error.empty());
     EXPECT_EQ(base::Value("chrome-error://chromewebdata/"), location.value);
@@ -956,15 +958,16 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
   int child_index = 0;
   while (auto* child_frame =
              ChildFrameAt(contents->GetPrimaryMainFrame(), child_index++)) {
-    auto location =
-        EvalJs(child_frame,
-               "const timer = setInterval(function () {"
-               "  if (document.readyState == 'complete') {"
-               "    clearInterval(timer);"
-               "    window.domAutomationController.send(window.location.href);"
-               "  }"
-               "}, 100);",
-               content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+    auto location = EvalJs(child_frame, R"(
+          new Promise(resolve => {
+            const timer = setInterval(function () {
+              if (document.readyState == 'complete') {
+                clearInterval(timer);
+                resolve(window.location.href);
+              }
+            }, 100);
+          });
+        )");
 
     ASSERT_TRUE(location.error.empty());
     EXPECT_EQ(base::Value("chrome-error://chromewebdata/"), location.value);
@@ -986,22 +989,23 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIFrameFromIPFS) {
       GURL("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC")));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  auto result =
-      EvalJs(contents,
-             "const iframe = document.createElement('iframe');"
-             "iframe.src ="
-             "  'ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2';"
-             "document.body.appendChild(iframe);"
-             "const timer = setInterval(function () {"
-             "  const iframeDoc = iframe.contentDocument || "
-             "      iframe.contentWindow.document;"
-             "  if (iframeDoc.readyState === 'complete' && "
-             "      iframeDoc.location.href !== 'about:blank') {"
-             "    clearInterval(timer);"
-             "    window.domAutomationController.send(window.location.href);"
-             "  }"
-             "}, 100);",
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result = EvalJs(contents, R"(
+        new Promise(resolve => {
+          const iframe = document.createElement('iframe');
+          iframe.src =
+            'ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2';
+          document.body.appendChild(iframe);
+          const timer = setInterval(function () {
+            const iframeDoc = iframe.contentDocument ||
+                iframe.contentWindow.document;
+            if (iframeDoc.readyState === 'complete' &&
+                iframeDoc.location.href !== 'about:blank') {
+              clearInterval(timer);
+              resolve(window.location.href);
+            }
+          }, 100);
+        });
+      )");
   ASSERT_TRUE(result.error.empty());
   // Make sure main frame URL didn't change
   auto* prefs = browser()->profile()->GetPrefs();
@@ -1027,18 +1031,18 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIPFSImageFromIPFS) {
       GURL("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC")));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  auto loaded = EvalJs(
-      contents,
-      "let img = document.createElement('img');"
-      "img.src ="
-      "  'ipfs://dbafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq';"
-      "img.onload = function () {"
-      "  window.domAutomationController.send(true);"
-      "};"
-      "img.onerror = function() {"
-      "  window.domAutomationController.send(true);"
-      "};",
-      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto loaded = EvalJs(contents, R"(
+        new Promise(resolve => {
+          let img = document.createElement('img');
+          img.src = 'ipfs://dbafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq';
+          img.onload = function () {
+            resolve(true);
+          };
+          img.onerror = function() {
+            resolve(true);
+          };
+        });
+      )");
   ASSERT_TRUE(loaded.error.empty());
   EXPECT_EQ(base::Value(true), loaded.value);
 }
@@ -1053,18 +1057,18 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIPFSImageFromHTTP) {
       ui_test_utils::NavigateToURL(browser(), GetURL("b.com", "/simple.html")));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  auto loaded = EvalJs(
-      contents,
-      "let img = document.createElement('img');"
-      "img.src ="
-      "  'ipfs://dbafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq';"
-      "img.onload = function () {"
-      "  window.domAutomationController.send(true);"
-      "};"
-      "img.onerror = function() {"
-      "  window.domAutomationController.send(true);"
-      "};",
-      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto loaded = EvalJs(contents, R"(
+        new Promise(resolve => {
+          let img = document.createElement('img');
+          img.src = 'ipfs://dbafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq';
+          img.onload = function () {
+            resolve(true);
+          };
+          img.onerror = function() {
+            resolve(true);
+          };
+        });
+      )");
   ASSERT_TRUE(loaded.error.empty());
   EXPECT_EQ(base::Value(true), loaded.value);
 }
@@ -1074,7 +1078,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, false);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, false);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1097,7 +1102,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_DISABLED));
@@ -1120,7 +1126,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1148,7 +1155,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1171,7 +1179,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1195,7 +1204,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1227,7 +1237,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1256,7 +1267,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
@@ -1283,7 +1295,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
@@ -1308,7 +1321,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
@@ -1663,6 +1677,42 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, DNSResolversConfig) {
     ASSERT_EQ(
         fake_ipfs_service()->ipfs_dns_resolver_->GetFirstDnsOverHttpsServer(),
         absl::nullopt);
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, MigrateProfilePrefs) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  {
+    prefs->ClearPref(kIPFSAutoRedirectToConfiguredGateway);
+    prefs->SetBoolean(kIPFSAutoRedirectDNSLink, true);
+    prefs->SetBoolean(kIPFSAutoRedirectGateway, false);
+
+    ipfs::IpfsService::MigrateProfilePrefs(prefs);
+    EXPECT_FALSE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
+  }
+  {
+    prefs->ClearPref(kIPFSAutoRedirectToConfiguredGateway);
+    prefs->SetBoolean(kIPFSAutoRedirectDNSLink, false);
+    prefs->SetBoolean(kIPFSAutoRedirectGateway, true);
+
+    ipfs::IpfsService::MigrateProfilePrefs(prefs);
+    EXPECT_FALSE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
+  }
+  {
+    prefs->ClearPref(kIPFSAutoRedirectToConfiguredGateway);
+    prefs->SetBoolean(kIPFSAutoRedirectDNSLink, true);
+    prefs->SetBoolean(kIPFSAutoRedirectGateway, true);
+
+    ipfs::IpfsService::MigrateProfilePrefs(prefs);
+    EXPECT_TRUE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
+  }
+  {
+    prefs->ClearPref(kIPFSAutoRedirectToConfiguredGateway);
+    prefs->SetBoolean(kIPFSAutoRedirectDNSLink, false);
+    prefs->SetBoolean(kIPFSAutoRedirectGateway, false);
+
+    ipfs::IpfsService::MigrateProfilePrefs(prefs);
+    EXPECT_FALSE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
   }
 }
 

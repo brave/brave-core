@@ -44,8 +44,6 @@ source_set("net") {
     "brave_proxying_url_loader_factory.h",
     "brave_proxying_web_socket.cc",
     "brave_proxying_web_socket.h",
-    "brave_query_filter.cc",
-    "brave_query_filter.h",
     "brave_reduce_language_network_delegate_helper.cc",
     "brave_reduce_language_network_delegate_helper.h",
     "brave_referrals_network_delegate_helper.cc",
@@ -91,6 +89,7 @@ source_set("net") {
     "//brave/components/decentralized_dns/content",
     "//brave/components/ipfs/buildflags",
     "//brave/components/update_client:buildflags",
+    "//brave/components/widevine:static_buildflags",
     "//brave/extensions:common",
     "//components/content_settings/core/browser",
     "//components/prefs",
@@ -154,6 +153,7 @@ source_set("browser_tests") {
     "//brave/browser/net",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
+    "//brave/components/query_filter",
     "//brave/components/tor/buildflags",
     "//chrome/browser",
     "//chrome/browser:browser_process",
@@ -174,7 +174,10 @@ source_set("browser_tests") {
     ]
   }
   if (enable_tor) {
-    deps += [ "//brave/components/tor" ]
+    deps += [
+      "//brave/browser/tor",
+      "//brave/components/tor",
+    ]
   }
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }
@@ -189,7 +192,6 @@ source_set("unit_tests") {
     "brave_common_static_redirect_network_delegate_helper_unittest.cc",
     "brave_httpse_network_delegate_helper_unittest.cc",
     "brave_network_delegate_base_unittest.cc",
-    "brave_query_filter_unittest.cc",
     "brave_site_hacks_network_delegate_helper_unittest.cc",
     "brave_static_redirect_network_delegate_helper_unittest.cc",
     "brave_system_request_handler_unittest.cc",
@@ -201,6 +203,8 @@ source_set("unit_tests") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser:test_support",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_rewards/browser",
+    "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common:features",
     "//brave/components/brave_shields/browser",
     "//brave/components/l10n/common:test_support",

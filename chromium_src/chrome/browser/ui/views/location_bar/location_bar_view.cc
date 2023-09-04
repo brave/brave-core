@@ -6,6 +6,7 @@
 #include "base/containers/adapters.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
+#include "brave/browser/ui/views/page_action/brave_page_action_icon_container_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 
 #define BRAVE_LAYOUT_TRAILING_DECORATIONS                                   \
@@ -18,7 +19,9 @@
 
 #define OmniboxViewViews BraveOmniboxViewViews
 #define ChromeOmniboxClient BraveOmniboxClientImpl
+#define PageActionIconContainerView BravePageActionIconContainerView
 #include "src/chrome/browser/ui/views/location_bar/location_bar_view.cc"
+#undef PageActionIconContainerView
 #undef ChromeOmniboxClient
 #undef OmniboxViewViews
 #undef BRAVE_LAYOUT_TRAILING_DECORATIONS

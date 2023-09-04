@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/new_tab_page_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_value_util.h"
 
 #include <string>
 #include <utility>
 
-#include "brave/components/brave_ads/core/new_tab_page_ad_constants.h"
-#include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_constants.h"
+#include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_info.h"
 
 namespace brave_ads {
 
@@ -18,19 +18,19 @@ constexpr char kTypeKey[] = "type";
 }  // namespace
 
 base::Value::Dict NewTabPageAdToValue(const NewTabPageAdInfo& ad) {
-  base::Value::Dict dict;
-
-  dict.Set(kTypeKey, ad.type.ToString());
-  dict.Set(kNewTabPageAdPlacementIdKey, ad.placement_id);
-  dict.Set(kNewTabPageAdCreativeInstanceIdKey, ad.creative_instance_id);
-  dict.Set(kNewTabPageAdCreativeSetIdKey, ad.creative_set_id);
-  dict.Set(kNewTabPageAdCampaignIdKey, ad.campaign_id);
-  dict.Set(kNewTabPageAdAdvertiserIdKey, ad.advertiser_id);
-  dict.Set(kNewTabPageAdSegmentKey, ad.segment);
-  dict.Set(kNewTabPageAdCompanyNameKey, ad.company_name);
-  dict.Set(kNewTabPageAdImageUrlKey, ad.image_url.spec());
-  dict.Set(kNewTabPageAdAltKey, ad.alt);
-  dict.Set(kNewTabPageAdTargetUrlKey, ad.target_url.spec());
+  auto dict =
+      base::Value::Dict()
+          .Set(kTypeKey, ad.type.ToString())
+          .Set(kNewTabPageAdPlacementIdKey, ad.placement_id)
+          .Set(kNewTabPageAdCreativeInstanceIdKey, ad.creative_instance_id)
+          .Set(kNewTabPageAdCreativeSetIdKey, ad.creative_set_id)
+          .Set(kNewTabPageAdCampaignIdKey, ad.campaign_id)
+          .Set(kNewTabPageAdAdvertiserIdKey, ad.advertiser_id)
+          .Set(kNewTabPageAdSegmentKey, ad.segment)
+          .Set(kNewTabPageAdCompanyNameKey, ad.company_name)
+          .Set(kNewTabPageAdImageUrlKey, ad.image_url.spec())
+          .Set(kNewTabPageAdAltKey, ad.alt)
+          .Set(kNewTabPageAdTargetUrlKey, ad.target_url.spec());
 
   base::Value::List wallpapers;
   for (const NewTabPageAdWallpaperInfo& wallpaper : ad.wallpapers) {

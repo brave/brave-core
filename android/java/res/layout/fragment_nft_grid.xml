@@ -28,7 +28,7 @@
             <FrameLayout
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:layout_weight=".6">
+                android:layout_weight=".5">
                 <ProgressBar
                     android:layout_gravity="start|center_vertical"
                     android:id="@+id/frag_nft_grid_pb_asset_discovery"
@@ -39,20 +39,25 @@
             </FrameLayout>
 
 
-            <android.widget.Button
+            <ImageButton
                 android:id="@+id/fragment_nft_grid_btn_change_networks"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:layout_weight=".4"
-                android:background="@drawable/rounded_holo_button"
-                android:drawableEnd="@drawable/ic_arrow_down_circular_day_night"
-                android:minHeight="0dp"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="2dp"
-                android:textAllCaps="false"
-                android:textColor="@color/brave_wallet_day_night_text_color"
+                android:background="@drawable/ic_wallet_filters"
+                android:contentDescription="@null"
                 app:autoSizeTextType="uniform" />
+
+            <ImageView
+                android:id="@+id/fragment_nft_grid_btn_add_nft"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                app:srcCompat="@drawable/ic_plus"
+                app:tint="@color/wallet_text_color"
+                android:contentDescription="@null"
+                android:background="?android:attr/selectableItemBackground"
+                />
 
         </LinearLayout>
 

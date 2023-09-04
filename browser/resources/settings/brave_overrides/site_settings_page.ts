@@ -88,6 +88,14 @@ RegisterPolymerComponentReplacement(
               lists_.permissionsAdvanced.splice(indexForIdleDetection, 1)
             }
           }
+          if (!loadTimeData.getBoolean('isBraveWebSerialApiEnabled')) {
+            let indexForSerialPorts = lists_.permissionsAdvanced.findIndex(item => item.id === ContentSettingsTypes.SERIAL_PORTS)
+            if (indexForSerialPorts === -1) {
+              console.error('Could not find SERIAL_PORTS site settings item')
+            } else {
+              lists_.permissionsAdvanced.splice(indexForSerialPorts, 1)
+            }
+          }
           let indexForAutoplay = lists_.permissionsAdvanced.findIndex(item => item.id === ContentSettingsTypes.AUTOMATIC_DOWNLOADS)
           if (indexForAutoplay === -1) {
             console.error('Could not find automatic downloads site settings item')
@@ -97,7 +105,7 @@ RegisterPolymerComponentReplacement(
               route: routes.SITE_SETTINGS_AUTOPLAY,
               id: 'autoplay',
               label: 'siteSettingsAutoplay',
-              icon: 'cr:extension',
+              icon: 'autoplay-on',
               enabledLabel: 'siteSettingsAutoplayAllow',
               disabledLabel: 'siteSettingsAutoplayBlock'
             }
@@ -110,7 +118,7 @@ RegisterPolymerComponentReplacement(
                 route: routes.SITE_SETTINGS_GOOGLE_SIGN_IN,
                 id: 'googleSignIn',
                 label: 'siteSettingsGoogleSignIn',
-                icon: 'cr:person',
+                icon: 'user',
                 enabledLabel: 'siteSettingsGoogleSignInAsk',
                 disabledLabel: 'siteSettingsGoogleSignInBlock'
               }
@@ -125,7 +133,7 @@ RegisterPolymerComponentReplacement(
                 route: routes.SITE_SETTINGS_LOCALHOST_ACCESS,
                 id: 'localhostAccess',
                 label: 'siteSettingsLocalhostAccess',
-                icon: 'settings:devices',
+                icon: 'smartphone-desktop',
                 enabledLabel: 'siteSettingsLocalhostAccessAsk',
                 disabledLabel: 'siteSettingsLocalhostAccessBlock'
               }
@@ -139,7 +147,7 @@ RegisterPolymerComponentReplacement(
                 route: routes.SITE_SETTINGS_ETHEREUM,
                 id: 'ethereum',
                 label: 'siteSettingsEthereum',
-                icon: 'cr:extension',
+                icon: 'ethereum-on',
                 enabledLabel: 'siteSettingsEthereumAsk',
                 disabledLabel: 'siteSettingsEthereumBlock'
               }
@@ -149,7 +157,7 @@ RegisterPolymerComponentReplacement(
                 route: routes.SITE_SETTINGS_SOLANA,
                 id: 'solana',
                 label: 'siteSettingsSolana',
-                icon: 'cr:extension',
+                icon: 'solana-on',
                 enabledLabel: 'siteSettingsSolanaAsk',
                 disabledLabel: 'siteSettingsSolanaBlock'
               }
@@ -162,7 +170,7 @@ RegisterPolymerComponentReplacement(
             route: routes.SITE_SETTINGS_SHIELDS_STATUS,
             id: 'braveShields',
             label: 'siteSettingsShieldsStatus',
-            icon: 'brave_settings:shields',
+            icon: 'shield-done',
             enabledLabel: 'siteSettingsShieldsDescription',
             disabledLabel: 'siteSettingsShieldsDown'
           }

@@ -14,10 +14,6 @@
 <translation id="8294286161128352783">새 탭 페이지에서만</translation>
 <translation id="6406506848690869874">동기화</translation>
 <translation id="1544192797660353713">월렛</translation>
-<translation id="2445484935443597917">새 프로필 만들기</translation>
-<translation id="744341768939279100">새 프로필 만들기</translation>
-<translation id="2666990579225592931">게스트 창 열기</translation>
-<translation id="4986483413015198747">게스트 창 열기</translation>
 <translation id="8275068909952022340">더 보기…</translation>
 <translation id="1990886731975529483">Google Widevine 설치 및 실행</translation>
 <translation id="8926389886865778422">이 메시지 그만 보기</translation>
@@ -31,7 +27,7 @@
 <translation id="3218385319396786393">이 페이지에서는 자동 재생이 차단되었습니다</translation>
 <translation id="4988333904713528597"><ph name="HOST"/>에서 자동 재생 항상 허용하기</translation>
 <translation id="4150684676757176434">계속해서 자동 재생 차단</translation>
-<translation id="8988939298652262600">Brave는 확장 프로그램의 보안 및 안전을 검토하지 않습니다. 개발자를 신뢰하는 경우에만 이 확장 프로그램을 설치하세요.</translation>
+<translation id="3477357195688115718">Brave는 확장 프로그램의 보안 및 안전을 검토하지 않습니다. 개발자를 신뢰하는 경우에만 이 확장 프로그램을 설치하세요.</translation>
 <translation id="9005883459983913482">Tor 창</translation>
 <translation id="7965178729203412357">새로운 Tor 계정</translation>
 <translation id="6924909138923993900">이 사이트용 새 Tor 연결</translation>
@@ -125,10 +121,16 @@
 <translation id="8184318863960255706">추가 정보</translation>
 <translation id="780301667611848630">아니요, 괜찮습니다.</translation>
 <translation id="1162706247109707219">확인을 클릭하면 Windows 10 이상으로 업데이트할 때까지 설치된 Brave에 매우 중요한 보안 픽스를 받지 못한다는 사실에 동의합니다. 이 경고는 다시 표시되지 않습니다.</translation>
+<translation id="9164786361657554526">확인을 클릭하면 macOS 10.15 이상으로 업데이트할 때까지 설치된 Brave에 매우 중요한 보안 픽스를 받지 못한다는 사실에 동의합니다. 이 경고는 다시 표시되지 않습니다.</translation>
+<translation id="2770465223704140727">목록에서 제거</translation>
 <translation id="2515126961943087659">Bat 광고 서비스</translation>
 <translation id="7924918279836988121">배트 원장 서비스</translation>
 <translation id="6040143037577758943">닫기</translation>
 <translation id="6665472986740899785">Brave 알림 광고</translation>
+<translation id="5582087890067572966">🎉 이제 적립됩니다!</translation>
+<translation id="4364336119478610380">이것과 같은 알림이 화면에 표시될 때는 계속 적립됩니다. 적립하기 위해 클릭할 필요가 없습니다.</translation>
+<translation id="5893017172751072752">Brave Ads 알림이 표시된다면 적립</translation>
+<translation id="3447730462826640312">적립하기 위해 클릭할 필요는 없지만 관심이 있다면 클릭해보세요!</translation>
 <translation id="4174337572777167894">웹 디스커버리 프로젝트</translation>
 <translation id="8659271182272561965">익명 검색 및 인터넷 사용 기록 데이터 일부를 보내 Brave Search 개선에 도움을 주세요.</translation>
 <translation id="1516554614404600536">Brave 툴팁</translation>
@@ -243,6 +245,18 @@
 <translation id="480565261566115689">탭 최소화</translation>
 <translation id="7194343495483122559">탭 펼치기</translation>
 <translation id="1199054713803577378">탭 최소화</translation>
+<translation id="8120600068258956006">재생목록에 추가</translation>
+<translation id="650694591627983430">이 페이지에서 찾은 미디어</translation>
+<translation id="1824323294233307883">나중에 재생에 추가됨</translation>
+<translation id="4830689155681863580">재생목록에서 열기</translation>
+<translation id="5330442669942072852">폴더 열기</translation>
+<translation id="8101564000331197174">재생목록에서 제거</translation>
+<translation id="838254185387128227">이 페이지상의 미디어 더 보기...</translation>
+<translation id="326641288623143307">선택 항목 추가</translation>
+<translation id="5856970744810677796">재생목록에서 열기</translation>
+<translation id="2803313416453193357">폴더 열기</translation>
+<translation id="333558915234875673">이 페이지상의 미디어 더 보기...</translation>
+<translation id="5145233969981669502">선택 항목 추가</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
 <translation id="7179921470347911571">지금 다시 실행</translation>
 <translation id="4472575034687746823">시작하기</translation>
@@ -257,6 +271,9 @@
 <translation id="8721331068159819483">macOS와 동일</translation>
 <translation id="1692470335103807198">더 많은 테마 받기</translation>
 <translation id="2906510232093002459">Brave 기본 이미지</translation>
+<translation id="8076492880354921740">탭</translation>
+<translation id="5860254591544742609">제목 바 표시</translation>
+<translation id="5371926069408837914">접혀 있을 때 마우스 커서를 올리면 세로 탭 패널 펼치기</translation>
 <translation id="3367129510799209147">탭 호버 모드</translation>
 <translation id="2113977810652731515">카드</translation>
 <translation id="4096343215397759358">미리보기가 있는 카드</translation>
@@ -316,7 +333,6 @@
 <translation id="3357319404342882895">엄격</translation>
 <translation id="8823559166155093873">쿠키 차단</translation>
 <translation id="5770288601196774623">교차 사이트 한정</translation>
-<translation id="6795317840397506736">기본적으로 기억 안 함</translation>
 <translation id="3587482841069643663">전체</translation>
 <translation id="7390783310074170337">기본 보기</translation>
 <translation id="130615081792797568">간단한 보기</translation>
@@ -343,22 +359,10 @@
 <translation id="4182731739150761577">전체 목록 보기</translation>
 <translation id="1340263054776016283">필터 목록 URL 입력</translation>
 <translation id="8578397014396032341">콘텐츠 필터</translation>
+<translation id="3020183492814296499">바로가기</translation>
 <translation id="5567412479632285879">Brave Rewards 비활성화됨</translation>
 <translation id="413570371620795359">Rewards 패널을 열고 활성화하여 시작하세요.</translation>
-<translation id="3849957491997306859">자동 감지됨</translation>
-<translation id="8798099450830957504">기본값</translation>
-<translation id="4851215387785619212">Brave Private Ads</translation>
-<translation id="7808122468353671181">Brave Ads를 보면 토큰이 적립됩니다. 광고는 사용자의 관심사를 기반으로 표시되며 브라우저의 성능을 저해하지 않습니다. 개인 데이터나 인터넷 사용 기록은 절대 브라우저에 남지 않습니다.</translation>
-<translation id="1758947220824279023">표시할 최대 광고 개수</translation>
-<translation id="2356652719351432565">지역 광고 관련성</translation>
-<translation id="2196950072404588793">이 설정을 켜면 Brave가 현재 지역에 적합한 광고를 표시합니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">모양</translation>
-<translation id="6112368337882254910">자동 기부</translation>
-<translation id="9132509928968869844">월간 자동 기부 한도</translation>
-<translation id="7286722244752781970">방문을 로그하기 전의 최소 페이지 시간</translation>
-<translation id="4424486208397124985">출판자 접합성을 위한 최소 방문 수</translation>
-<translation id="6248554379744796526">목록에서 비인증 사이트 표시</translation>
-<translation id="924777189963477634">자동 기부를 켜면 <ph name="BEGIN_LINK_TOS"/>이용약관<ph name="END_LINK_TOS"/> 및 <ph name="BEGIN_LINK_PP"/>개인정보처리방침<ph name="END_LINK_PP"/>에 동의하게 됩니다.</translation>
+<translation id="1051600834033686945">Brave Rewards 설정 전체 열기</translation>
 <translation id="6333347122924254968">주소 표시줄에 Brave Rewards 아이콘 표시</translation>
 <translation id="7483857210736407752">사이트상에 팁 버튼 표시</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -370,15 +374,43 @@
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
 <translation id="8792121506918889955">WebRTC IP 처리 방침</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
+<translation id="8798099450830957504">기본값</translation>
 <translation id="1822560017823072927">기본 공개 및 비공개 인터페이스</translation>
 <translation id="5825943197137337319">기본 공개 인터페이스 전용</translation>
 <translation id="1689062823386843231">프록시가 아닌 UDP 비활성화히기</translation>
 <translation id="3540231253392253941">푸시 메시지에 Google 서비스 사용</translation>
 <translation id="933652931229970927">진단 보고서 자동 전송</translation>
+<translation id="4891600875049212418">민감한 사이트 방문 시 오프더레코드 활성화</translation>
+<translation id="2356070529366658676">확인</translation>
 <translation id="4846154056248462491">나갈 때</translation>
 <translation id="2808630562319398131">Brave 리워드 데이터 재설정...</translation>
 <translation id="6438096877646138757">닫으면 쿠키가 삭제되는 사이트</translation>
 <translation id="2988792685798128092">사이트를 닫으면 삭제</translation>
+<translation id="4663317021223369617">쿠키 및 사이트 데이터</translation>
+<translation id="7050661313034564003">이 사이트의 모든 쿠키 및 로컬에 저장된 데이터 표시</translation>
+<translation id="8339059274628563283"><ph name="SITE"/>에 로컬 저장된 데이터</translation>
+<translation id="1963227389609234879">모두 삭제</translation>
+<translation id="8168435359814927499">콘텐츠</translation>
+<translation id="7702907602086592255">도메인</translation>
+<translation id="3202131003361292969">경로</translation>
+<translation id="5390743329570580756">다음에 대해 보내기:</translation>
+<translation id="6742339027238151589">스크립트에 액세스 가능</translation>
+<translation id="1067048845568873861">생성됨</translation>
+<translation id="5747552184818312860">만료</translation>
+<translation id="3858860766373142691">이름</translation>
+<translation id="361106536627977100">Flash 데이터</translation>
+<translation id="4530494379350999373">오리진</translation>
+<translation id="8195027750202970175">디스크 크기</translation>
+<translation id="9116465289595958864">최종 수정 날짜</translation>
+<translation id="4590324241397107707">데이터베이스 저장소</translation>
+<translation id="5338503421962489998">로컬 저장소</translation>
+<translation id="6032912588568283682">파일 시스템</translation>
+<translation id="8016266267177410919">임시 저장소</translation>
+<translation id="4175737294868205930">영구 저장소</translation>
+<translation id="1234808891666923653">서비스 작업자</translation>
+<translation id="3432762828853624962">공유 작업자</translation>
+<translation id="2927017729816812676">캐시 저장 공간</translation>
+<translation id="1389601498324964367">할당량 관리형 스토리지</translation>
 <translation id="814018970995616154">Brave에 저장된 안전하지 않은 사이트 목록을 이용해 URL을 확인합니다.</translation>
 <translation id="1144810021918451336">위험한 웹사이트, 다운로드 및 확장 프로그램으로부터 사용자를 보호하지 않습니다.</translation>
 <translation id="5570470519803062774">사이트 및 방패 설정</translation>
@@ -396,6 +428,11 @@
 <translation id="2903783737778379345">타사 쿠키를 통한 레거시 Google 로그인 허용 안 함</translation>
 <translation id="2570833232754279153">레거시 Google 로그인에 타사 쿠키 사용 허용 안 됨</translation>
 <translation id="6880817299303842099">레거시 Google 로그인에 타사 쿠키 사용 허용됨</translation>
+<translation id="5169650598465327872">Localhost 액세스</translation>
+<translation id="4172219483893066798">사이트가 Localhost 액세스를 요청할 수 있음</translation>
+<translation id="7181706637590665047">Localhost 리소스 액세스 허용 안 함</translation>
+<translation id="1336116824874668514">Localhost 리소스 액세스가 허용되지 않음</translation>
+<translation id="1485435696620658073">Localhost 리소스 액세스가 허용됨</translation>
 <translation id="6414370348346025511">표준 보호가 켜져 있습니다.</translation>
 <translation id="5565355416171743213">동기화 사용 시작</translation>
 <translation id="4332558599726753990">동기화 설정</translation>
@@ -462,7 +499,7 @@
     새 계정을 만들고 디바이스 하나씩 다시 추가해야 합니다.</translation>
 <translation id="4860996720371753023">계정 삭제 진행 중...</translation>
 <translation id="4094590686212463338">이 동기화 체인에 참여할 수 없습니다. 동기화 체인이 삭제되었습니다.</translation>
-<translation id="5633907266617216186">주소, 결제 정보 등</translation>
+<translation id="4908081302669157000">전화번호, 이메일, 주소</translation>
 <translation id="294985549514492876">웹 앱(PWA)</translation>
 <translation id="6285118765755298263">다른 검색 엔진 색인</translation>
 <translation id="919715748352669592">OpenSearch 사양을 준수하는 웹사이트를 자동으로 색인합니다.</translation>
@@ -518,7 +555,6 @@
 <translation id="4954512758656527938">기본 이더리움 월렛</translation>
 <translation id="7701023802820268122">기본 Solana 월렛</translation>
 <translation id="8488282162676695335">Brave 월렛</translation>
-<translation id="2356070529366658676">확인</translation>
 <translation id="6942354363301686374">확장 프로그램(대체 없음)</translation>
 <translation id="1274962333945373242">암호화폐 월렛(지원 중단)</translation>
 <translation id="702381242110464396">확장 프로그램(Brave 월렛 대체)</translation>
@@ -535,7 +571,7 @@
 <translation id="4440478655766953083">자동으로 NFT 고정</translation>
 <translation id="464460032678285850">Brave 월렛에 추가된 NFT가 자동으로 로컬 IPFS 노드에 고정됩니다.
     참고: 고정 목적으로 IPFS 대몬이 시작되어, 로컬 노드가 캐시된 데이터와 고정된 NFT를 IPFS 네트워크로 공유합니다.</translation>
-<translation id="4993345308607970390">Brave 월렛 초기화</translation>
+<translation id="2326850911705720398">초기화하고 월렛 데이터 지우기</translation>
 <translation id="5887022857624190239">고정된 NFT 지우기</translation>
 <translation id="204584113330893805">고정된 NFT는 로컬 IPFS 노드가 시작될 때 IPFS 네트워크에 호스팅됩니다.
     현재 고정된 NFT가 <ph name="NFT_COUNT"/>개 있습니다.</translation>
@@ -575,7 +611,7 @@
 <translation id="1062463687579789365">월렛 네트워크 사용자 지정</translation>
 <translation id="2234108191702901162">네트워크를 추가할 수 없음</translation>
 <translation id="8996633027318264334"><ph name="KEY_NAME"/>를 삭제하시겠습니까?</translation>
-<translation id="3316326558572563182">활성 네트워크를 월렛 네트워크 목록에 항상 표시</translation>
+<translation id="8633484167132172058">기본 네트워크를 월렛 네트워크 목록에 항상 표시</translation>
 <translation id="232693303726691609">월렛 네트워크 목록에 네트워크 표시/숨기기</translation>
 <translation id="7893578599666249602"><ph name="KEY_NAME"/>을(를) 초기화하시겠습니까?</translation>
 <translation id="2618193846561624884">기존 네트워크를 업데이트하시겠습니까?</translation>

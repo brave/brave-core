@@ -19,7 +19,6 @@ import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayout;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class RadioButtonGroupEnsOffchainResolveMethodPreference
         extends Preference implements RadioGroup.OnCheckedChangeListener {

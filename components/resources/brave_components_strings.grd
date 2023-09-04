@@ -257,7 +257,6 @@
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ENABLE_REWARDS" desc="Text of the button to enable Rewards">Enable Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_NOT_EARNING_TITLE" desc="Title of message about not yet earning from sponsored images">You can earn for seeing Sponsored Images.</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OFF_REWARDS_ON_DESCRPTION" desc="Description about turning on Sponsored Images when Rewards is on">As a Brave Rewards user, you can earn BAT for seeing Sponsored Images.</message>
-      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_ADS_OFF_DESCRIPTION" desc="Description about Sponsored Images when Ads is off">You can earn BAT for seeing Sponsored Images when you enable Brave Ads. When Brave Ads is off, turning on Sponsored Images still supports Brave's mission.</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_DESCRIPTION" desc="Description about turning off Sponsored Images">As a Brave Rewards user, you earn BAT for Sponsored Images you see. Disabling Sponsored Images will reduce how much you earn.</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_REWARDS_ON_NO_CUSTODIAN_DESCRIPTION" desc="Description about not having a connected Rewards custodian">You can earn BAT for seeing Sponsored Images when you connect a custodial account to Brave Rewards. In the meantime, you're helping to support creators with Sponsored Images.</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_REWARDS_OFF_DESCRIPTION" desc="Description about sponsored images when Rewards is off">You can earn BAT for seeing Sponsored Images with Brave Rewards. Not a Rewards user? Turning on Sponsored Images still supports Brave's mission.</message>
@@ -273,15 +272,10 @@
       <message name="IDS_BRAVE_NEW_TAB_SOLID_COLOR" desc="Solid background colors title">Solid colors</message>
       <message name="IDS_BRAVE_NEW_TAB_GRADIENT_COLOR" desc="Gradient background colors title">Gradients</message>
       <message name="IDS_BRAVE_NEW_TAB_REFRESH_BACKGROUND_ON_NEW_TAB" desc="Label for random toggle button">Refresh on every new tab</message>
+      <message name="IDS_BRAVE_NEW_TAB_REWARDS_OPEN_PANEL" desc="Label for menu item to open the Rewards panel">Open Rewards panel</message>
 
       <message name="IDS_BRAVE_TALK_PROMPT_TITLE" desc="Title for prompt about Brave Talk">
         You can start a private call in Brave.
-      </message>
-      <message name="IDS_BRAVE_TALK_PROMPT_DESCRIPTION" desc="Description for prompt about Brave Talk">
-        Start unlimited calls with friends and colleagues in Brave Talk.
-      </message>
-      <message name="IDS_BRAVE_TALK_PROMPT_ACTION" desc="Button text for prompt about Brave Talk">
-        Try it out
       </message>
 
       <message name="IDS_BRAVE_NEWS_TITLE" translateable="false" desc="Title for Brave News news feed section">
@@ -380,39 +374,41 @@
       </if>
 
       <!-- WebUI private tab resources -->
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE" desc="">Learn more</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DONE" desc="">Done</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A" desc="">This is a</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW" desc="">Private Window</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC" desc="">Brave doesn’t remember what you do in a Private Window. Sites you visit won't show up in your history, and cookies vanish when you’re done. Private Windows don’t make you completely anonymous online, though.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC1" desc="">Brave never remembers what you do in a Private Window. Sites you visit won't show up in your history. Cookies, form data, and site data vanish when you close the window.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC2" desc="">Note that your activity could still be visible to your internet service provider, passive network observers, or your employer (if you're using a work machine or network). For more privacy, open a private window with Tor.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_BUTTON" desc="">Learn more.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR" desc="">Private Window with Tor connectivity</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_DESC" desc="">Brave doesn't store browsing activity from Private Windows. With Tor connectivity, it becomes more difficult for sites to see your true IP address and for network observers to see what sites you visit. However, if your personal safety depends on remaining anonymous, use the Tor Browser instead.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_LABEL" desc="">Search Privately with</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TITLE" desc="">DuckDuckGo</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TEXT_1" desc="">With private search, Brave will use DuckDuckGo for searches in Private Windows. DuckDuckGo doesn’t track your search history, so you can search privately.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TEXT_2" desc="">In Private Windows with Tor, DuckDuckGo is the default search engine. Some of the other popular search engines are harder to use with Tor. DuckDuckGo doesn’t track your search history; with Tor, they don’t even know your IP address.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_BUTTON" desc="">Search with DuckDuckGo</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_LABEL" desc="">Make Private Windows more private</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_LABEL_2" desc="">This Private Window is more private</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TITLE" desc="">with Tor connectivity</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_1" desc="">Tor hides your IP address from the sites you visit, by routing your browsing through several Tor servers before it reaches your destination. Tor can slow down browsing and some sites might not work at all.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2" desc="">Using Private Windows only changes what Brave does on your device — it doesn't change anyone else's behavior. Tor hides your IP address from the sites you visit and makes it somewhat more difficult, but not impossible, for your ISP or employer to see what sites you are visiting. Open a Private Window with Tor from the menu, or with [[ key ]].</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON" desc="">Learn more about Tor in Brave</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS" desc="">Tor Status</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTED" desc="">Tor connected successfully</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_DISCONNECTED" desc="">Disconnected</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_SLOW" desc="">Still connecting...</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_SLOW_DESC" desc="">There's some slowness in the Tor network</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_FAILED" desc="">Tor connection failed</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING" desc="">Tor is connecting... [[percentage]]%</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONNECTING" desc="">Having problems connecting? Try <ph name="BEGIN_LINK">$1</ph>turning off<ph name="END_LINK">$2</ph> Private Window with Tor and back on again in settings.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_REENABLE" desc="">Open <ph name="BEGIN_LINK">$1</ph>Brave Settings<ph name="END_LINK">$2</ph>, disable Private Window with Tor, then re-enable.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_BRIDGES" desc=""><ph name="BEGIN_BOLD">$1</ph>Still having trouble?<ph name="END_BOLD">$2</ph> Try using <ph name="BEGIN_BRIDGES_LINK">$3</ph>bridges<ph name="END_BRIDGES_LINK">$4</ph> or <ph name="BEGIN_SUPPORT_LINK">$5</ph>contact support<ph name="END_SUPPORT_LINK">$6</ph>.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONTACT_SUPPORT" desc="">Contact support.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_PLACEHOLDER" desc="A placeholder label to display on neutral state of the input box in private new tab page">Search the web privately</message>
+      <if expr="not is_android">
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE" desc="">Learn more</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DONE" desc="">Done</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A" desc="">This is a</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW" desc="">Private Window</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC" desc="">Brave doesn’t remember what you do in a Private Window. Sites you visit won't show up in your history, and cookies vanish when you’re done. Private Windows don’t make you completely anonymous online, though.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC1" desc="">Brave never remembers what you do in a Private Window. Sites you visit won't show up in your history. Cookies, form data, and site data vanish when you close the window.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC2" desc="">Note that your activity could still be visible to your internet service provider, passive network observers, or your employer (if you're using a work machine or network). For more privacy, open a private window with Tor.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_BUTTON" desc="">Learn more.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR" desc="">Private Window with Tor connectivity</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_DESC" desc="">Brave doesn't store browsing activity from Private Windows. With Tor connectivity, it becomes more difficult for sites to see your true IP address and for network observers to see what sites you visit. However, if your personal safety depends on remaining anonymous, use the Tor Browser instead.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_LABEL" desc="">Search Privately with</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TITLE" desc="">DuckDuckGo</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TEXT_1" desc="">With private search, Brave will use DuckDuckGo for searches in Private Windows. DuckDuckGo doesn’t track your search history, so you can search privately.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TEXT_2" desc="">In Private Windows with Tor, DuckDuckGo is the default search engine. Some of the other popular search engines are harder to use with Tor. DuckDuckGo doesn’t track your search history; with Tor, they don’t even know your IP address.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_BUTTON" desc="">Search with DuckDuckGo</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_LABEL" desc="">Make Private Windows more private</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_LABEL_2" desc="">This Private Window is more private</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TITLE" desc="">with Tor connectivity</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_1" desc="">Tor hides your IP address from the sites you visit, by routing your browsing through several Tor servers before it reaches your destination. Tor can slow down browsing and some sites might not work at all.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2" desc="">Using Private Windows only changes what Brave does on your device — it doesn't change anyone else's behavior. Tor hides your IP address from the sites you visit and makes it somewhat more difficult, but not impossible, for your ISP or employer to see what sites you are visiting. Open a Private Window with Tor from the menu, or with [[ key ]].</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON" desc="">Learn more about Tor in Brave</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS" desc="">Tor Status</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTED" desc="">Tor connected successfully</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_DISCONNECTED" desc="">Disconnected</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_SLOW" desc="">Still connecting...</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_SLOW_DESC" desc="">There's some slowness in the Tor network</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_FAILED" desc="">Tor connection failed</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING" desc="">Tor is connecting... [[percentage]]%</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONNECTING" desc="">Having problems connecting? Try <ph name="BEGIN_LINK">$1</ph>turning off<ph name="END_LINK">$2</ph> Private Window with Tor and back on again in settings.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_REENABLE" desc="">Open <ph name="BEGIN_LINK">$1</ph>Brave Settings<ph name="END_LINK">$2</ph>, disable Private Window with Tor, then re-enable.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_BRIDGES" desc=""><ph name="BEGIN_BOLD">$1</ph>Still having trouble?<ph name="END_BOLD">$2</ph> Try using <ph name="BEGIN_BRIDGES_LINK">$3</ph>bridges<ph name="END_BRIDGES_LINK">$4</ph> or <ph name="BEGIN_SUPPORT_LINK">$5</ph>contact support<ph name="END_SUPPORT_LINK">$6</ph>.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONTACT_SUPPORT" desc="">Contact support.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_PLACEHOLDER" desc="A placeholder label to display on neutral state of the input box in private new tab page">Search the web privately</message>
+      </if>
 
       <!-- WebUI adblock resources -->
       <message name="IDS_ADBLOCK_ADDITIONAL_FILTERS_TITLE" desc="Title for additional filters section">Additional Filters</message>
@@ -448,25 +444,43 @@
       </if>
 
       <!-- WebUI rewards resources -->
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Brave Private Ads</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">
-        Brave Private Ads are unobtrusive and private by design. Ads are based on your interests, but no personal data or browsing history ever leaves your device. Best of all, Brave Private Ads let you earn BAT (<ph name="BEGIN_LINK">$1</ph>Basic Attention Token<ph name="END_LINK">$2</ph>) just for viewing.
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Manage Brave Ads</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESCRIPTION" desc="">
+        Control what kinds of Brave Ads you see, and how often.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESCRIPTION_EARN" desc="">
+        The more you see, the more you can earn.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NEW_TAB_AD_COUNT_LABEL" desc="">
+        New tab page ads
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NOTIFICATION_AD_COUNT_LABEL" desc="">
+        Notification ads
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NEWS_AD_COUNT_LABEL" desc="">
+        Brave News ads
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NEWS_AD_INFO" desc="">
+        Brave News contains ads that cannot be independently disabled.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NEWS_AD_INFO_DISABLED" desc="">
+        Brave News is currently disabled.
       </message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support sites and content creators. Set a monthly contribution and browse normally. <ph name="BEGIN_LINK">$1</ph>Verified sites and creators<ph name="END_LINK">$2</ph> you visit will receive contributions from you each month based on the amount of time you spend on their content.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS" desc="">Current earnings this month (estimated)</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE" desc="">Next payment date</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOTIFICATIONS_RECEIVED" desc="">Ads received this month</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS" desc="">Earnings so far this month</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE" desc="">Next earnings payout date</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TOTAL_RECEIVED" desc="">Total ads received this month</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_REGION" desc="">Sorry! Ads are not yet available in your region.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_DEVICE" desc="">Brave Rewards and Ads are not available on your device at this time.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR" desc="">Notification ad frequency</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_0" desc="">None</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_1" desc="">Up to 1 ad per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_2" desc="">Up to 2 ads per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_3" desc="">Up to 3 ads per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4" desc="">Up to 4 ads per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5" desc="">Up to 5 ads per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_10" desc="">Up to 10 ads per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_1" desc="">Max 1 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_2" desc="">Max 2 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_3" desc="">Max 3 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4" desc="">Max 4 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5" desc="">Max 5 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_10" desc="">Max 10 per hour</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_TITLE" desc="">Regional ad relevance</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DESCRIPTION" desc="">This allows Brave to show you ads meant specifically for your region.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_LEARN" desc="">Learn More</message>
@@ -510,9 +524,9 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_DEVICE_LIMIT_REACHED_TEXT" desc="">Your Brave Rewards cannot be verified because you've reached the maximum verified device limit.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_DEVICE_LIMIT_REACHED_TITLE" desc="">Error: Device limit reached</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR" desc="">Sorry there was a problem processing your request, please try again.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TEXT_1" desc="">Unfortunately, your Brave Rewards profile has been flagged, and you're not able to verify with a custodian at this time. This flag can sometimes be due to irregular Brave Ads activity, though it can also be a false positive.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TEXT_2" desc="">Note that while your Brave Rewards profile is flagged, you won't be able to verify.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TEXT_3" desc="">No action is required on your part. Your Brave Rewards profile will be automatically reevaluated on a regular basis to determine when (or if) the flag can be removed. Please try again every so often to see if the flag has been removed.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TEXT_1" desc="">Unfortunately, your Brave Rewards profile was flagged because our automated checks found some unexpected Brave Ads activity.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TEXT_2" desc="">While your profile is flagged, you may continue to see ads, but won't be eligible to receive payouts. You also won't be able to connect a custodial account to Brave Rewards.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TEXT_3" desc="">It's possible your profile was flagged in error, and no immediate action is required on your part. The flag on your profile may be removed in the future.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TEXT_4" desc=""><ph name="BEGIN_LINK">$2</ph>Learn more about Brave's process for flagging Rewards profiles.<ph name="END_LINK">$3</ph></message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TITLE" desc="">Error: Brave Rewards profile is flagged</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TEXT" desc="">Please try again after you have completed ID verification on <ph name="PROVIDER">$1<ex>Uphold</ex></ph>.</message>
@@ -585,6 +599,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_VALUE" desc="event log value">Value</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_TIME" desc="when event was logged">Logged at</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_MAIN_DISCLAIMER" desc="">WARNING: Data on these pages may be sensitive. Be careful who you share them with.</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_LOG_DISCLAIMER" desc="">WARNING: This log file may contain sensitive data. Be careful who you share it with.</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_TYPE" desc="Contribution type">Type:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTIONS" desc="">Contributions</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_DOWNLOAD_BUTTON" desc="">Download full log</message>
@@ -716,20 +731,18 @@
       <message name="IDS_BRAVE_UI_PROCESSOR_BITFLYER" desc="">bitFlyer</message>
       <message name="IDS_BRAVE_UI_PROCESSOR_GEMINI" desc="">Gemini</message>
       <message name="IDS_BRAVE_UI_PROCESSOR_UPHOLD" desc="">Uphold</message>
+      <message name="IDS_BRAVE_UI_PROCESSOR_ZEBPAY" desc="">ZebPay</message>
       <message name="IDS_BRAVE_UI_RECURRING" desc="">Recurring</message>
       <message name="IDS_BRAVE_UI_RECURRING_DONATIONS" desc="">Monthly Contributions</message>
       <message name="IDS_BRAVE_UI_RELAUNCH" desc="">Relaunch</message>
       <message name="IDS_BRAVE_UI_REMOVE" desc="">remove</message>
       <message name="IDS_BRAVE_UI_REMOVE_AD_FROM_SAVED" desc="">Remove From Saved</message>
-      <message name="IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT" desc="Notification about how much BAT do you have reserved">You’ve designated [[reservedAmount]] [[currency]] for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</message>
-      <message name="IDS_BRAVE_UI_RESERVED_MORE_LINK" desc="Text for the link that explains more about reserved amount">Learn more.</message>
       <message name="IDS_BRAVE_UI_RESET" desc="">Reset</message>
       <message name="IDS_BRAVE_UI_RESET_WALLET" desc="">Reset Brave Rewards</message>
       <message name="IDS_BRAVE_UI_CLEAR_EXCLUDE_LIST" desc="">Clear exclude list</message>
       <message name="IDS_BRAVE_UI_REVIEW_SITE_MSG" desc="">Your pinned sites have been moved to</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESET_CONFIRMATION" desc="">Are you sure you want to reset your Brave Rewards?</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT" desc="">By resetting, your current Brave Rewards profile will be deleted and you will start again with a completely new Brave Rewards profile. Before proceeding, <ph name="LINK_BEGIN">$1</ph>learn more<ph name="LINK_END">$2</ph> about resetting, just to be safe.</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESET_CONSENT" desc="">I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I've read the <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">$2</ph>.</message>
       <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
@@ -752,14 +765,6 @@
       <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="">Your Brave Rewards</message>
       <message name="IDS_BRAVE_UI_VIEW_DETAILS" desc="">View Details</message>
       <message name="IDS_BRAVE_UI_REWARDS_CREATING_TEXT" desc="">Creating your Brave Rewards profile</message>
-      <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTIONS" desc="Title of pending contribution modal">Pending contributions</message>
-      <message name="IDS_BRAVE_UI_PENDING_TYPE_RECURRING" desc="Name of recurring tip type">Monthly Contribution</message>
-      <message name="IDS_BRAVE_UI_PENDING_TYPE_TIP" desc="Name of on-demand tip type">Contribution</message>
-      <message name="IDS_BRAVE_UI_PENDING_TYPE_AC" desc="Name of auto contribute type">Auto-Contribute</message>
-      <message name="IDS_BRAVE_UI_RESERVED_ALL_LINK" desc="Link that shows all pending contributions">Show all pending contributions</message>
-      <message name="IDS_BRAVE_UI_PENDING_UNTIL" desc="Table header for pending contribution date">Pending until</message>
-      <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTION_EMPTY" desc="Text for empty pending table">No pending contributions…</message>
-      <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTION_REMOVE_ALL" desc="Text for remove all button">Remove All</message>
 
       <message name="IDS_BRAVE_UI_EXCLUDED_SITES_TEXT" desc="">Sites Excluded</message>
       <message name="IDS_BRAVE_UI_REMOVE_FROM_EXCLUDED" desc="">Remove from excluded</message>
@@ -778,12 +783,13 @@
       <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_1" desc="">Visit creators.brave.com to sign up today and start earning BAT from your fans and followers.</message>
       <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_2" desc="">Brave supports YouTube, Twitch, Vimeo and more!</message>
 
-      <message name="IDS_BRAVE_UI_GEMINI_PROMO_TITLE" desc="">Link Rewards to Gemini!</message>
-      <message name="IDS_BRAVE_UI_GEMINI_PROMO_INFO" desc="">Trade 50+ cryptos, including BAT, on Gemini. It&apos;s a secure platform to store your crypto.</message>
+      <message name="IDS_BRAVE_UI_GEMINI_PROMO_TITLE" desc="">Sign up to Gemini to store your BAT securely</message>
+      <message name="IDS_BRAVE_UI_GEMINI_PROMO_INFO_1" desc="">Connect Brave Rewards to Gemini to receive your BAT earnings directly to your Gemini account. Gemini is a full reserve and highly regulated cryptocurrency exchange and custodian.</message>
+      <message name="IDS_BRAVE_UI_GEMINI_PROMO_INFO_2" desc="">Millions of customers in 70+ countries choose Gemini to buy, sell, store, and stake over 90+ cryptos with ease.</message>
 
       <message name="IDS_BRAVE_UI_TAP_NETWORK_TITLE" desc="">Redeem BAT for Gift Cards</message>
       <message name="IDS_BRAVE_UI_TAP_NETWORK_INFO" desc="">With TAP Network, you can redeem your BAT for popular name-brand gift cards.</message>
-      <message name="IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER" desc="">* Requires Uphold Verification.</message>
+      <message name="IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER" desc="">* Requires Uphold account.</message>
 
       <message name="IDS_BRAVE_UI_UPHOLD_PROMO_TITLE" desc="">Get 2% cryptoback with the Uphold card</message>
       <message name="IDS_BRAVE_UI_UPHOLD_PROMO_INFO" desc="">Spend your crypto and other assets at nearly 50 million merchants and ATMs worldwide. Spend crypto to get crypto!</message>
@@ -818,14 +824,17 @@
       <part file="google_sign_in_permission_strings.grdp" />
       <part file="localhost_access_permission_strings.grdp" />
       <part file="rewards_strings.grdp" />
-      <part file="speedreader_strings.grdp" />
       <part file="wallet_strings.grdp" />
       <part file="tor_strings.grdp" />
       <part file="brave_news_strings.grdp" />
-      <part file="brave_shields_strings.grdp" />
-      <part file="brave_welcome_strings.grdp" />
-      <part file="ai_chat_prompts.grdp" />
-      <part file="ai_chat_ui_strings.grdp" />
+      <part file="commands.grdp" />
+      <part file="speedreader_strings.grdp" />
+      <if expr="not is_android">
+        <part file="brave_shields_strings.grdp" />
+        <part file="brave_welcome_strings.grdp" />
+        <part file="ai_chat_prompts.grdp" />
+        <part file="ai_chat_ui_strings.grdp" />
+      </if>
       <if expr="enable_brave_vpn">
         <part file="brave_vpn_strings.grdp" />
       </if>

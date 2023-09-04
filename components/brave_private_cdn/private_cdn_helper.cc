@@ -6,12 +6,14 @@
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 
 #include "base/big_endian.h"
+#include "base/no_destructor.h"
 
 namespace brave {
 
 // static
 PrivateCdnHelper* PrivateCdnHelper::GetInstance() {
-  return base::Singleton<PrivateCdnHelper>::get();
+  static base::NoDestructor<PrivateCdnHelper> instance;
+  return instance.get();
 }
 
 bool PrivateCdnHelper::RemovePadding(base::StringPiece* padded_string) const {

@@ -9,18 +9,15 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
-import org.chromium.chrome.R;
 import org.chromium.chrome.browser.toolbar.NewTabButton;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
-import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.components.browser_ui.styles.ChromeColors;
 
 public class BraveTabSwitcherModeTopToolbar extends TabSwitcherModeTopToolbar {
     // To delete in bytecode, members from parent class will be used instead.
     private View mNewTabViewButton;
     private NewTabButton mNewTabImageButton;
-    private ToggleTabStackButton mToggleTabStackButton;
     private boolean mShouldShowNewTabVariation;
     private boolean mIsIncognito;
 
@@ -52,10 +49,6 @@ public class BraveTabSwitcherModeTopToolbar extends TabSwitcherModeTopToolbar {
                 || (BottomToolbarConfiguration.isBottomToolbarEnabled()
                         && !BottomToolbarVariationManager.isNewTabButtonOnBottom());
         updateNewTabButtonVisibility();
-        // Show tab switcher button on the top in landscape mode.
-        if (BottomToolbarVariationManager.isTabSwitcherOnBottom() && !shouldShowIncognitoToggle()) {
-            mToggleTabStackButton.setVisibility(isVisible ? GONE : VISIBLE);
-        }
     }
 
     public int getToolbarColorForCurrentState() {

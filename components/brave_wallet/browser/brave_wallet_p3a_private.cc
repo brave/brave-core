@@ -10,7 +10,6 @@ namespace brave_wallet {
 void BraveWalletP3APrivate::ReportJSProvider(
     mojom::JSProviderType provider_type,
     mojom::CoinType coin_type,
-    bool use_native_wallet_enabled,
     bool allow_provider_overwrite) {}
 
 void BraveWalletP3APrivate::ReportOnboardingAction(
@@ -22,5 +21,7 @@ void BraveWalletP3APrivate::ReportTransactionSent(mojom::CoinType coin,
 void BraveWalletP3APrivate::RecordActiveWalletCount(int count,
                                                     mojom::CoinType coin_type) {
 }
+
+void BraveWalletP3APrivate::RecordNFTGalleryView(int nft_count) {}
 
 }  // namespace brave_wallet

@@ -9,6 +9,7 @@
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/browser/playlist/test/mock_playlist_service_observer.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/features.h"
@@ -29,45 +30,6 @@
 #else
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
-
-namespace playlist {
-namespace {
-
-class MockObserver : public mojom::PlaylistServiceObserver {
- public:
-  MockObserver() = default;
-  ~MockObserver() override = default;
-
-  mojo::PendingRemote<mojom::PlaylistServiceObserver> GetRemote() {
-    return observer_receiver_.BindNewPipeAndPassRemote();
-  }
-
-  // mojom::PlaylistServiceObserver:
-  MOCK_METHOD(void,
-              OnEvent,
-              (mojom::PlaylistEvent event, const std::string& playlist_id),
-              (override));
-
-  MOCK_METHOD(void,
-              OnMediaFileDownloadProgressed,
-              (const std::string& id,
-               int64_t total_bytes,
-               int64_t received_bytes,
-               int8_t percent_complete,
-               const std::string& time_remaining),
-              (override));
-
-  MOCK_METHOD(void,
-              OnMediaFilesUpdated,
-              (const GURL& page_url, std::vector<mojom::PlaylistItemPtr> items),
-              (override));
-
- private:
-  mojo::Receiver<mojom::PlaylistServiceObserver> observer_receiver_{this};
-};
-
-}  // namespace
-}  // namespace playlist
 
 class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
  public:
@@ -443,7 +405,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
                        DynamicallyAddedMedia) {
-  testing::NiceMock<playlist::MockObserver> observer;
+  testing::NiceMock<MockPlaylistServiceObserver> observer;
   auto* playlist_service =
       playlist::PlaylistServiceFactory::GetForBrowserContext(
           browser()->profile());

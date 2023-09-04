@@ -9,6 +9,7 @@ import * as mojom from '../../shared/lib/mojom'
 import {
   optional
 } from '../../../../brave_rewards/resources/shared/lib/optional'
+import * as Rewards from '../lib/types'
 
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {
@@ -56,30 +57,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     }
     case types.GET_RECONCILE_STAMP: {
       chrome.send('brave_rewards.getReconcileStamp')
-      break
-    }
-    case types.GET_PENDING_CONTRIBUTIONS: {
-      chrome.send('brave_rewards.getPendingContributions')
-      break
-    }
-    case types.ON_PENDING_CONTRIBUTIONS: {
-      state = { ...state }
-      state.pendingContributions = action.payload.list
-      const total = state.pendingContributions
-        .reduce((accumulator: number, item: Rewards.PendingContribution) => {
-          return accumulator + item.amount
-        }, 0)
-      state.pendingContributionTotal = total
-      break
-    }
-    case types.REMOVE_PENDING_CONTRIBUTION: {
-      chrome.send('brave_rewards.removePendingContribution', [
-        action.payload.id
-      ])
-      break
-    }
-    case types.REMOVE_ALL_PENDING_CONTRIBUTION: {
-      chrome.send('brave_rewards.removeAllPendingContribution')
       break
     }
     case types.GET_BALANCE: {

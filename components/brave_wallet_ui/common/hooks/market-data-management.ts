@@ -5,9 +5,13 @@
 
 import * as React from 'react'
 import Fuse from 'fuse.js'
-import { BraveWallet, MarketDataTableColumnTypes, SortOrder } from '../../constants/types'
+import { BraveWallet, MarketGridColumnTypes, SortOrder } from '../../constants/types'
 
-export const useMarketDataManagement = (marketData: BraveWallet.CoinMarket[], sortOrder: SortOrder, columnId: MarketDataTableColumnTypes) => {
+export const useMarketDataManagement = (
+  marketData: BraveWallet.CoinMarket[],
+  sortOrder: SortOrder,
+  columnId: MarketGridColumnTypes
+) => {
   const sortCoinMarketData = React.useCallback(() => {
     const sortedMarketData = [...marketData]
 
@@ -20,28 +24,33 @@ export const useMarketDataManagement = (marketData: BraveWallet.CoinMarket[], so
     return sortedMarketData
   }, [marketData, sortOrder, columnId])
 
-  const searchCoinMarkets = React.useCallback((searchList: BraveWallet.CoinMarket[], searchTerm: string) => {
-    if (!searchTerm) {
-      return searchList
-    }
+  const searchCoinMarkets = React.useCallback(
+    (searchList: BraveWallet.CoinMarket[], searchTerm: string) => {
+      if (!searchTerm) {
+        return searchList
+      }
 
-    const options = {
-      shouldSort: true,
-      threshold: 0.1,
-      location: 0,
-      distance: 0,
-      minMatchCharLength: 1,
-      keys: [
-        { name: 'name', weight: 0.5 },
-        { name: 'symbol', weight: 0.5 }
-      ]
-    }
+      const options = {
+        shouldSort: true,
+        threshold: 0.1,
+        location: 0,
+        distance: 0,
+        minMatchCharLength: 1,
+        keys: [
+          { name: 'name', weight: 0.5 },
+          { name: 'symbol', weight: 0.5 }
+        ]
+      }
 
-    const fuse = new Fuse(searchList, options)
-    const results = fuse.search(searchTerm).map((result: Fuse.FuseResult<BraveWallet.CoinMarket>) => result.item)
+      const fuse = new Fuse(searchList, options)
+      const results = fuse
+        .search(searchTerm)
+        .map((result: Fuse.FuseResult<BraveWallet.CoinMarket>) => result.item)
 
-    return results
-  }, [marketData])
+      return results
+    },
+    [marketData]
+  )
 
   return {
     sortCoinMarketData,

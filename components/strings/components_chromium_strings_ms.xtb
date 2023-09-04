@@ -2,9 +2,12 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ms">
 <translation id="130631256467250065">Perubahan anda akan dilaksanakan apabila anda memulakan semula peranti anda pada masa akan datang.</translation>
+<translation id="1555506416658437797">edit kaedah pembayaran.</translation>
 <translation id="7999989146447764333">Laporan keranapan tidak tersedia dalam Brave.</translation>
 <translation id="1953231710324290369">Anda sedang melihat halaman Brave yang selamat</translation>
+<translation id="907470742420136113">Brave sedang cuba mengubah suai tetapan untuk pengisian kaedah pembayaran.</translation>
 <translation id="4847979153841887006">Logo Brave</translation>
+<translation id="336808635693308470">Brave sedang cuba mengedit kaedah pembayaran.</translation>
 <translation id="7932149101545999102">Brave berjaya dilaksanakan melalui projek sumber terbuka <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> dan <ph name="BEGIN_LINK_OSS"/>perisian sumber terbuka<ph name="END_LINK_OSS"/> yang lain.</translation>
 <translation id="8746410156982274638">Pergi ke
           menu Brave &gt;
@@ -27,6 +30,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           dan pastikan konfigurasi anda ditetapkan kepada "tiada proksi" atau "terus".</translation>
+<translation id="585620188971323280">mengubah suai tetapan untuk pengisian kaedah pembayaran.</translation>
 <translation id="2765022094254723779">Brave juga berjaya dilaksanakan oleh <ph name="BEGIN_LINK_OSS"/>perisian sumber terbuka<ph name="END_LINK_OSS"/> yang lain.</translation>
 <translation id="9156965752763025780">Perubahan anda akan dilaksanakan apabila anda melancarkan semula Brave pada masa hadapan.</translation>
 <translation id="6477625882876869143">Brave berjaya dilaksanakan oleh projek sumber terbuka <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
@@ -41,5 +45,6 @@
 <translation id="8187289872471304532">Pergi ke
           Apikasi &gt; Pilihan Sistem &gt; Rangkaian &gt; Terperinci &gt; Proksi
           dan nyahpilih mana-mana proksi yang telah dipilih.</translation>
+<translation id="4159376633403260073">Anda melihat halaman Brave for Testing yang selamat</translation>
 <translation id="88187049159266777">Brave tidak ditutup dengan betul.</translation>
 </translationbundle>

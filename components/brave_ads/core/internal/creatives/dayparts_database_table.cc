@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
 
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/strings/string_util.h"
@@ -41,7 +40,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   return count;
 }
 
-void MigrateToV24(mojom::DBTransactionInfo* transaction) {
+void MigrateToV29(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
   DropTable(transaction, "dayparts");
@@ -49,40 +48,12 @@ void MigrateToV24(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE dayparts (campaign_id TEXT NOT NULL, dow TEXT NOT NULL, "
-      "start_minute INT NOT NULL, end_minute INT NOT NULL, PRIMARY KEY "
-      "(campaign_id, dow, start_minute, end_minute), UNIQUE(campaign_id, dow, "
-      "start_minute, end_minute) ON CONFLICT REPLACE);";
-  transaction->commands.push_back(std::move(command));
-}
-
-void MigrateToV28(mojom::DBTransactionInfo* transaction) {
-  CHECK(transaction);
-
-  // Create a temporary table with renamed |expire_at| column.
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
-      "CREATE TABLE dayparts_temp (campaign_id TEXT NOT NULL, days_of_week "
-      "TEXT NOT NULL, start_minute INT NOT NULL, end_minute INT NOT NULL, "
-      "PRIMARY KEY (campaign_id, days_of_week, start_minute, end_minute), "
+      "CREATE TABLE dayparts (campaign_id TEXT NOT NULL, days_of_week TEXT NOT "
+      "NULL, start_minute INT NOT NULL, end_minute INT NOT NULL, PRIMARY KEY "
+      "(campaign_id, days_of_week, start_minute, end_minute), "
       "UNIQUE(campaign_id, days_of_week, start_minute, end_minute) ON CONFLICT "
       "REPLACE);";
   transaction->commands.push_back(std::move(command));
-
-  // Copy columns to temporary table.
-  const std::vector<std::string> from_columns = {"campaign_id", "dow",
-                                                 "start_minute", "end_minute"};
-
-  const std::vector<std::string> to_columns = {"campaign_id", "days_of_week",
-                                               "start_minute", "end_minute"};
-
-  CopyTableColumns(transaction, "dayparts", "dayparts_temp", from_columns,
-                   to_columns,
-                   /*should_drop*/ true);
-
-  // Rename temporary table.
-  RenameTable(transaction, "dayparts_temp", "dayparts");
 }
 
 }  // namespace
@@ -132,17 +103,8 @@ void Dayparts::Migrate(mojom::DBTransactionInfo* transaction,
   CHECK(transaction);
 
   switch (to_version) {
-    case 24: {
-      MigrateToV24(transaction);
-      break;
-    }
-
-    case 28: {
-      MigrateToV28(transaction);
-      break;
-    }
-
-    default: {
+    case 29: {
+      MigrateToV29(transaction);
       break;
     }
   }

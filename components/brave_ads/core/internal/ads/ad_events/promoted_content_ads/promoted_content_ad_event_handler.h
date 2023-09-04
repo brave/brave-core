@@ -11,11 +11,16 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler_delegate.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
 namespace brave_ads {
+
+using FirePromotedContentAdEventHandlerCallback = base::OnceCallback<void(
+    bool success,
+    const std::string& placement_id,
+    const mojom::PromotedContentAdEventType event_type)>;
 
 struct CreativePromotedContentAdInfo;
 struct PromotedContentAdInfo;
@@ -43,29 +48,36 @@ class PromotedContentAdEventHandler final
 
   void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
-                 mojom::PromotedContentAdEventType event_type);
+                 mojom::PromotedContentAdEventType event_type,
+                 FirePromotedContentAdEventHandlerCallback callback);
 
  private:
   void GetForCreativeInstanceIdCallback(
       const std::string& placement_id,
       mojom::PromotedContentAdEventType event_type,
+      FirePromotedContentAdEventHandlerCallback callback,
       bool success,
       const std::string& creative_instance_id,
       const CreativePromotedContentAdInfo& creative_ad);
-
-  void FireEvent(const PromotedContentAdInfo& ad,
-                 mojom::PromotedContentAdEventType event_type);
-  void GetAdEventsCallback(const PromotedContentAdInfo& ad,
-                           mojom::PromotedContentAdEventType event_type,
-                           bool success,
-                           const AdEventList& ad_events);
+  void GetForTypeCallback(const PromotedContentAdInfo& ad,
+                          mojom::PromotedContentAdEventType event_type,
+                          FirePromotedContentAdEventHandlerCallback callback,
+                          bool success,
+                          const AdEventList& ad_events);
+  void FireEventCallback(const PromotedContentAdInfo& ad,
+                         mojom::PromotedContentAdEventType event_type,
+                         FirePromotedContentAdEventHandlerCallback callback,
+                         bool success) const;
 
   void SuccessfullyFiredEvent(
       const PromotedContentAdInfo& ad,
-      mojom::PromotedContentAdEventType event_type) const;
-  void FailedToFireEvent(const std::string& placement_id,
-                         const std::string& creative_instance_id,
-                         mojom::PromotedContentAdEventType event_type) const;
+      mojom::PromotedContentAdEventType event_type,
+      FirePromotedContentAdEventHandlerCallback callback) const;
+  void FailedToFireEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::PromotedContentAdEventType event_type,
+      FirePromotedContentAdEventHandlerCallback callback) const;
 
   raw_ptr<PromotedContentAdEventHandlerDelegate> delegate_ = nullptr;
 

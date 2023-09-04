@@ -40,7 +40,7 @@
             android:id="@+id/widget_more_option"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:contentDescription="@null"
+            android:contentDescription="@string/visibility"
             app:srcCompat="@drawable/ic_visibility_off"/>
 
     </LinearLayout>

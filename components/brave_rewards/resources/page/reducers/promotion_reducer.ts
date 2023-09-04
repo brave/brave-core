@@ -5,6 +5,7 @@
 import { Reducer } from 'redux'
 import { types } from '../actions/rewards_types'
 import { getCurrentBalanceReport } from './utils'
+import * as Rewards from '../lib/types'
 
 const getPromotion = (id: string, promotions?: Rewards.Promotion[]) => {
   if (!promotions) {

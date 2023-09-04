@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "brave/components/ai_chat/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/webui_config.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
@@ -52,7 +52,8 @@ class UntrustedChatUIConfig : public content::WebUIConfig {
   ~UntrustedChatUIConfig() override = default;
 
   std::unique_ptr<content::WebUIController> CreateWebUIController(
-      content::WebUI* web_ui) override;
+      content::WebUI* web_ui,
+      const GURL& url) override;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_H_

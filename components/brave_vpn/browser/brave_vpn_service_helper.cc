@@ -20,6 +20,7 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 
 namespace brave_vpn {
 
@@ -94,6 +95,18 @@ void SetSkusCredential(PrefService* local_prefs,
                 base::TimeToValue(expiration_time));
   local_prefs->SetDict(prefs::kBraveVPNSubscriberCredential,
                        std::move(cred_dict));
+}
+
+void SetSkusCredentialFetchingRetried(PrefService* local_prefs, bool retried) {
+  ScopedDictPrefUpdate update(local_prefs,
+                              prefs::kBraveVPNSubscriberCredential);
+  update->Set(kRetriedSkusCredentialKey, base::Value(retried));
+}
+
+bool IsRetriedSkusCredential(PrefService* local_prefs) {
+  const base::Value::Dict& sub_cred_dict =
+      local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
+  return sub_cred_dict.FindBool(kRetriedSkusCredentialKey).value_or(false);
 }
 
 base::Time GetExpirationTimeForSkusCredential(PrefService* local_prefs) {

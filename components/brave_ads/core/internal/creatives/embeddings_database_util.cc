@@ -15,11 +15,8 @@ void DeleteEmbeddings() {
   const table::Embeddings database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
-      BLOG(0, "Failed to delete embeddings");
-      return;
+      return BLOG(0, "Failed to delete embeddings");
     }
-
-    BLOG(3, "Successfully deleted embeddings");
   }));
 }
 

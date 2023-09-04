@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/dislike_exclusion_rule.h"
 
-#include "brave/components/brave_ads/core/ad_content_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
+#include "brave/components/brave_ads/core/public/history/ad_content_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -19,7 +19,7 @@ class BraveAdsDislikeExclusionRuleTest : public UnitTestBase {
   const DislikeExclusionRule exclusion_rule_;
 };
 
-TEST_F(BraveAdsDislikeExclusionRuleTest, AllowAd) {
+TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldInclude) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.advertiser_id = kAdvertiserId;
@@ -30,7 +30,7 @@ TEST_F(BraveAdsDislikeExclusionRuleTest, AllowAd) {
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDislikeExclusionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldExclude) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.advertiser_id = kAdvertiserId;

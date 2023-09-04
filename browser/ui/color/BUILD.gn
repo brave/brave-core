@@ -14,3 +14,19 @@ source_set("unit_tests") {
     "//ui/gfx",
   ]
 }
+
+copy("copy_leo_colors") {
+  sources = [ "//brave/node_modules/@brave/leo/tokens/skia/colors.h" ]
+
+  outputs = [ "$root_out_dir/gen/brave/browser/ui/color/leo/colors.h" ]
+}
+
+source_set("leo_colors") {
+  sources = get_target_outputs(":copy_leo_colors")
+
+  deps = [
+    ":copy_leo_colors",
+    "//skia",
+    "//ui/gfx",
+  ]
+}

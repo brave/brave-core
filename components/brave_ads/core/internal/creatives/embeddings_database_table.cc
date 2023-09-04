@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/embeddings_database_table.h"
 
-#include <string>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/strings/string_util.h"
@@ -100,10 +98,6 @@ void Embeddings::Migrate(mojom::DBTransactionInfo* transaction,
   switch (to_version) {
     case 27: {
       MigrateToV27(transaction);
-      break;
-    }
-
-    default: {
       break;
     }
   }

@@ -14,6 +14,10 @@
 
 namespace commands {
 
+// Converts a DomCode string to a human readable key string.
+COMPONENT_EXPORT(COMMANDS_COMMON)
+std::string CodeStringToKeyString(const std::string& code_string);
+
 // Converts an accelerator to a DomKeysString, which is all the DomKeys joined
 // around a '+' character.
 // Note: a KeysString is only really useful for displaying to  the user, as it

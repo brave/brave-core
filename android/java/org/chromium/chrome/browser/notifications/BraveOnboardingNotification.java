@@ -15,14 +15,10 @@ import android.content.Intent;
 import android.net.Uri;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.dialogs.BraveAdsNotificationDialog;
-import org.chromium.chrome.browser.notifications.BraveNotificationBuilder;
-import org.chromium.chrome.browser.notifications.NotificationBuilderBase;
-import org.chromium.chrome.browser.notifications.NotificationUmaTracker;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationPublisher;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.components.browser_ui.notifications.NotificationManagerProxyImpl;

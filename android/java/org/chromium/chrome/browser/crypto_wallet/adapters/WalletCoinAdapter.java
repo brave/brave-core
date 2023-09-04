@@ -7,9 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -18,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -50,9 +47,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         ACCOUNTS_LIST,
         SELECT_ACCOUNTS_LIST,
         BUY_ASSETS_LIST,
-        SEND_ASSETS_LIST,
-        SWAP_TO_ASSETS_LIST,
-        SWAP_FROM_ASSETS_LIST;
+        SEND_ASSETS_LIST;
     }
 
     private Context context;
@@ -106,9 +101,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             if (walletListItemType == Utils.TRANSACTION_ITEM) {
                 onWalletListItemClick.onTransactionClick(walletListItemModel.getTransactionInfo());
             } else if (walletListItemType == Utils.ASSET_ITEM) {
-                if (mType == AdapterType.BUY_ASSETS_LIST || mType == AdapterType.SEND_ASSETS_LIST
-                        || mType == AdapterType.SWAP_TO_ASSETS_LIST
-                        || mType == AdapterType.SWAP_FROM_ASSETS_LIST) {
+                if (mType == AdapterType.BUY_ASSETS_LIST || mType == AdapterType.SEND_ASSETS_LIST) {
                     for (int i = 0; i < walletListItemModelListCopy.size(); i++) {
                         WalletListItemModel item = walletListItemModelListCopy.get(i);
                         if (item.getTitle().equals(holder.titleText.getText())
@@ -231,8 +224,10 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         } else if (mType == AdapterType.ACCOUNTS_LIST
                 || mType == AdapterType.SELECT_ACCOUNTS_LIST) {
             holder.iconImg.setImageResource(android.R.color.transparent);
-            Utils.setBlockiesBitmapResource(
-                    mExecutor, mHandler, holder.iconImg, walletListItemModel.getSubTitle(), true);
+            if (walletListItemModel.getAccountInfo() != null) {
+                Utils.setBlockiesBitmapResourceFromAccount(mExecutor, mHandler, holder.iconImg,
+                        walletListItemModel.getAccountInfo(), true);
+            }
             holder.itemView.setOnLongClickListener(v -> {
                 Utils.saveTextToClipboard(context, walletListItemModel.getSubTitle(),
                         R.string.address_has_been_copied, false);
@@ -248,8 +243,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
 
     private boolean isAssetSelectionType() {
         return mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST
-                || mType == AdapterType.SEND_ASSETS_LIST || mType == AdapterType.SWAP_TO_ASSETS_LIST
-                || mType == AdapterType.SWAP_FROM_ASSETS_LIST;
+                || mType == AdapterType.SEND_ASSETS_LIST;
     }
 
     @Override
@@ -263,6 +257,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
 
     public void setWalletListItemModelList(List<WalletListItemModel> walletListItemModelList) {
         this.walletListItemModelList = walletListItemModelList;
+        walletListItemModelListCopy.clear();
         if (isAssetSelectionType()) {
             walletListItemModelListCopy.addAll(this.walletListItemModelList);
             mCheckedPositions.clear();

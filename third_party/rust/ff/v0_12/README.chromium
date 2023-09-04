@@ -1,0 +1,7 @@
+Name: ff
+URL: https://crates.io/crates/ff
+Description: Library for building and interfacing with finite fields
+Version: 0.12.1
+Security Critical: no
+License: Apache 2.0
+Revision: a35b5eb59b2026e1442b8a19dae08d4217ac23ed

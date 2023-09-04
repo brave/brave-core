@@ -15,31 +15,34 @@ public class BraveCachedFlag extends CachedFlag {
     private static final HashMap<String, Boolean> sFlags;
     static {
         sFlags = new HashMap<String, Boolean>();
+        sFlags.put(ChromeFeatureList.BASELINE_GM3_SURFACE_COLORS, false);
         sFlags.put(ChromeFeatureList.START_SURFACE_ANDROID, false);
         // Disable until we sort out UI issues
         // https://github.com/brave/brave-browser/issues/29688
         sFlags.put(ChromeFeatureList.INCOGNITO_REAUTHENTICATION_FOR_ANDROID, false);
     }
 
-    private final boolean mDefaultValue;
+    // Will be deleted in bytecode. Variable from the parent class will be used instead.
+    private boolean mDefaultValue;
 
     public BraveCachedFlag(String featureName, boolean defaultValue) {
         super(featureName, defaultValue);
 
+        maybeOverrideDefaultValue(featureName, defaultValue);
+    }
+
+    public BraveCachedFlag(String featureName, String sharedPreferenceKey, boolean defaultValue) {
+        super(featureName, sharedPreferenceKey, defaultValue);
+
+        maybeOverrideDefaultValue(featureName, defaultValue);
+    }
+
+    private void maybeOverrideDefaultValue(String featureName, boolean defaultValue) {
         // Override value if necessary.
         if (sFlags.containsKey(featureName)) {
             mDefaultValue = sFlags.get(featureName);
         } else {
             mDefaultValue = defaultValue;
         }
-    }
-
-    @Override
-    public boolean isEnabled() {
-        if (sFlags.containsKey(mFeatureName)) {
-            return CachedFeatureFlags.isEnabled(mFeatureName, mDefaultValue);
-        }
-
-        return super.isEnabled();
     }
 }

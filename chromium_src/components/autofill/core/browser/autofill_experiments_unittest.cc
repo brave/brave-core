@@ -67,8 +67,7 @@ TEST_F(
     AutofillExperimentsTest,
     IsCardUploadEnabled_TransportSyncDoesNotHaveAutofillProfileActiveDataType) {
   scoped_feature_list_.InitWithFeatures(
-      /*enabled_features=*/{features::kAutofillUpstream,
-                            features::kAutofillEnableAccountWalletStorage},
+      /*enabled_features=*/{features::kAutofillUpstream},
       /*disabled_features=*/{});
   // When we have no primary account, Sync will start in Transport-only mode
   // (if allowed).
@@ -79,8 +78,8 @@ TEST_F(
   sync_service_.GetUserSettings()->SetSelectedTypes(
       /*sync_everything=*/false,
       /*types=*/syncer::UserSelectableTypeSet(
-          syncer::UserSelectableType::kAutofill));
-  sync_service_.SetFailedDataTypes(syncer::AUTOFILL_PROFILE);
+          {syncer::UserSelectableType::kAutofill}));
+  sync_service_.SetFailedDataTypes({syncer::AUTOFILL_PROFILE});
 
   EXPECT_FALSE(IsCreditCardUploadEnabled(
       AutofillSyncSigninState::kSignedInAndSyncFeatureEnabled));

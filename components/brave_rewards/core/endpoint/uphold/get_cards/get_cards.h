@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // GET https://api.uphold.com/v0/me/cards?q=currency:BAT
 //
@@ -73,7 +73,7 @@
 // ]
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint::uphold {
 
@@ -82,21 +82,21 @@ using GetCardsCallback =
 
 class GetCards {
  public:
-  explicit GetCards(LedgerImpl& ledger);
+  explicit GetCards(RewardsEngineImpl& engine);
   ~GetCards();
 
-  void Request(const std::string& token, GetCardsCallback);
+  void Request(const std::string& token, GetCardsCallback) const;
 
  private:
-  std::string GetUrl();
+  std::string GetUrl() const;
 
-  mojom::Result CheckStatusCode(int status_code);
+  mojom::Result CheckStatusCode(int status_code) const;
 
-  mojom::Result ParseBody(const std::string& body, std::string* id);
+  mojom::Result ParseBody(const std::string& body, std::string* id) const;
 
-  void OnRequest(GetCardsCallback, mojom::UrlResponsePtr);
+  void OnRequest(GetCardsCallback, mojom::UrlResponsePtr) const;
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace endpoint::uphold

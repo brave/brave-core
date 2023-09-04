@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "base/android/jni_array.h"
@@ -16,7 +17,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
-#include "base/guid.h"
+#include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/build/android/jni_headers/NTPBackgroundImagesBridge_jni.h"
@@ -58,7 +59,8 @@ NTPBackgroundImagesBridge* NTPBackgroundImagesBridgeFactory::GetForProfile(
 // static
 NTPBackgroundImagesBridgeFactory*
 NTPBackgroundImagesBridgeFactory::GetInstance() {
-  return base::Singleton<NTPBackgroundImagesBridgeFactory>::get();
+  static base::NoDestructor<NTPBackgroundImagesBridgeFactory> instance;
+  return instance.get();
 }
 
 KeyedService* NTPBackgroundImagesBridgeFactory::BuildServiceInstanceFor(

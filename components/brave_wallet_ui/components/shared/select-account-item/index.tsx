@@ -3,10 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 
 // types
-import { BraveWallet, UserAccountType } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -32,29 +31,35 @@ import {
   AccountName,
   LeftSide,
   BigCheckMark,
-  SwitchAccountIconContainer
+  SwitchAccountIconContainer,
+  CaratDown
 } from './style'
 
+// hooks
+import { useAccountOrb } from '../../../common/hooks/use-orb'
+
 export interface Props {
-  account?: UserAccountType
-  selectedAccount?: UserAccountType
+  account?: BraveWallet.AccountInfo
+  isSelected?: boolean
   selectedNetwork?: BraveWallet.NetworkInfo
   onSelectAccount?: () => void
   showTooltips?: boolean
   fullAddress?: boolean
   hideAddress?: boolean
-  showSwitchAccountsIcon?: boolean
+  showSwitchAccountsIcon?: boolean,
+  isV2?: boolean
 }
 
 export function SelectAccountItem ({
   account,
-  selectedAccount,
+  isSelected,
   onSelectAccount,
   showTooltips,
   fullAddress,
   selectedNetwork,
   hideAddress,
-  showSwitchAccountsIcon: showSwitchAccountsLink
+  showSwitchAccountsIcon: showSwitchAccountsLink,
+  isV2
 }: Props) {
   // methods
   const onKeyPress = React.useCallback(({ key }: React.KeyboardEvent) => {
@@ -68,9 +73,7 @@ export function SelectAccountItem ({
   const accountAddress = account?.address || ''
   const accountName = account?.name || ''
 
-  const orb = React.useMemo(() => {
-    return create({ seed: accountAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [accountAddress])
+  const orb = useAccountOrb(account)
 
   const PossibleToolTip = React.useMemo(() => {
     return showTooltips ? Tooltip : ({ children }: React.PropsWithChildren<{
@@ -81,7 +84,11 @@ export function SelectAccountItem ({
 
   // render
   return (
-    <StyledWrapper onKeyPress={onKeyPress} onClick={onSelectAccount}>
+    <StyledWrapper
+      onKeyPress={onKeyPress}
+      onClick={onSelectAccount}
+      isV2={isV2}
+    >
       <LeftSide>
         {!selectedNetwork && <AccountCircle orb={orb} />}
         {selectedNetwork &&
@@ -103,7 +110,7 @@ export function SelectAccountItem ({
           >
             <Row justifyContent={'flex-start'}>
               <AccountName>{reduceAccountDisplayName(accountName, 22)}</AccountName>
-              {showSwitchAccountsLink &&
+              {showSwitchAccountsLink && !isV2 &&
                 <SwitchAccountIconContainer>
                   <SwitchAccountIcon />
                 </SwitchAccountIconContainer>
@@ -122,9 +129,10 @@ export function SelectAccountItem ({
 
         </AccountAndAddress>
       </LeftSide>
-      {accountAddress.toLowerCase() === selectedAccount?.address.toLowerCase() &&
+      {isSelected &&
         <BigCheckMark />
       }
+      {isV2 && <CaratDown />}
     </StyledWrapper>
   )
 }

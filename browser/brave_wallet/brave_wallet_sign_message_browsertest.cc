@@ -126,9 +126,7 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
     } else {
       permissions::BraveWalletPermissionContext::Cancel(web_contents());
     }
-    ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()",
-                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                  .ExtractBool(),
+    ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()").ExtractBool(),
               granted);
   }
   void CallEthereumEnable() {
@@ -170,9 +168,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {
     EXPECT_TRUE(WaitForWalletBubble(web_contents()));
     brave_wallet_service_->NotifySignMessageRequestProcessed(
         true, request_index++, nullptr, absl::nullopt);
-    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
-                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                  .ExtractString(),
+    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
               "0x670651c072cac2a3f93cb862a17378f6849c66b4516e5d5a30210868a2840e"
               "2a6a345a"
               "4f84615c591c1a47260e798babe8f2f0cce03a09dac09df79c55d8e4401b");
@@ -200,9 +196,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserRejectedRequest) {
     EXPECT_TRUE(WaitForWalletBubble(web_contents()));
     brave_wallet_service_->NotifySignMessageRequestProcessed(
         false, request_index++, nullptr, absl::nullopt);
-    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
-                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                  .ExtractString(),
+    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
               l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
   }
 }
@@ -226,9 +220,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UnknownAddress) {
     EXPECT_FALSE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
             ->IsShowingBubble());
-    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
-                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                  .ExtractString(),
+    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
               l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   }
 }
@@ -250,9 +242,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, InvalidAddressParam) {
     EXPECT_FALSE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
             ->IsShowingBubble());
-    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
-                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                  .ExtractString(),
+    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
               l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
   }
 }
@@ -276,9 +266,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, NoEthPermission) {
     EXPECT_FALSE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
             ->IsShowingBubble());
-    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
-                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                  .ExtractString(),
+    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
               l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   }
 }

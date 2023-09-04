@@ -1,0 +1,7 @@
+Name: sha3
+URL: https://crates.io/crates/sha3
+Description: SHA-3 (Keccak) hash function
+Version: 0.10.3
+Security Critical: yes
+License: Apache 2.0
+Revision: db5af59cd44e8c148f21888f3775adb4e4ff84ff

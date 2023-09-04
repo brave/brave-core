@@ -28,6 +28,12 @@ using RemoveAllTransactionsCallback = base::OnceCallback<void(bool success)>;
 class AdType;
 class ConfirmationType;
 
+TransactionInfo BuildTransaction(const std::string& creative_instance_id,
+                                 const std::string& segment,
+                                 double value,
+                                 const AdType& ad_type,
+                                 const ConfirmationType& confirmation_type);
+
 TransactionInfo AddTransaction(const std::string& creative_instance_id,
                                const std::string& segment,
                                double value,

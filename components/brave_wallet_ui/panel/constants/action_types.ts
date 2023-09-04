@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BraveWallet, SerializableOrigin, WalletAccountType } from '../../constants/types'
+import { BraveWallet } from '../../constants/types'
 
 export type AccountPayloadType = {
-  selectedAccounts: WalletAccountType[]
+  selectedAccounts: BraveWallet.AccountInfo[]
 }
 
 export type ConnectWithSitePayloadType = {
@@ -24,6 +24,11 @@ export type EthereumChainRequestPayload = {
   approved: boolean
 }
 
+export type SignMessageHardwarePayload = {
+  request: BraveWallet.SignMessageRequest
+  account: BraveWallet.AccountInfo
+}
+
 export type SignMessageProcessedPayload = {
   approved: boolean
   id: number
@@ -39,26 +44,26 @@ export type SignAllTransactionsProcessedPayload = {
 }
 
 export type SwitchEthereumChainProcessedPayload = {
+  requestId: string
   approved: boolean
-  origin: SerializableOrigin
-}
-
-export type AddSuggestTokenProcessedPayload = {
-  approved: boolean
-  contractAddress: string
 }
 
 export type GetEncryptionPublicKeyProcessedPayload = {
+  requestId: string
   approved: boolean
-  origin: SerializableOrigin
 }
 
 export type DecryptProcessedPayload = {
+  requestId: string
   approved: boolean
-  origin: SerializableOrigin
 }
 
-export type CancelConnectHardwareWalletPayload = {
-  accountAddress: string
-  coinType: BraveWallet.CoinType
+export type SignTransactionHardwarePayload = {
+  request: BraveWallet.SignTransactionRequest
+  account: BraveWallet.AccountInfo
+}
+
+export type SignAllTransactionsHardwarePayload = {
+  request: BraveWallet.SignAllTransactionsRequest
+  account: BraveWallet.AccountInfo
 }

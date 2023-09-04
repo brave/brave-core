@@ -32,9 +32,9 @@ const char* GetJupiterQuoteTemplate() {
           "outAmount": "261273",
           "amount": "10000",
           "otherAmountThreshold": "258660",
-          "outAmountWithSlippage": "258660",
           "swapMode": "ExactIn",
           "priceImpactPct": "0.008955716118219659",
+          "slippageBps": "50",
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -49,7 +49,7 @@ const char* GetJupiterQuoteTemplate() {
                 "amount": "%s",
                 "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
                 "pct": "0.003"
-			  },
+              },
               "platformFee": {
                 "amount": "0",
                 "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
@@ -72,9 +72,9 @@ const char* GetJupiterQuoteTemplateForPriceImpact() {
           "outAmount": "261273",
           "amount": "10000",
           "otherAmountThreshold": "258660",
-          "outAmountWithSlippage": "258660",
           "swapMode": "ExactIn",
           "priceImpactPct": %s,
+          "slippageBps": "50",
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -89,7 +89,7 @@ const char* GetJupiterQuoteTemplateForPriceImpact() {
                 "amount": "10000",
                 "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
                 "pct": "0.003"
-			  },
+              },
               "platformFee": {
                 "amount": "0",
                 "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
@@ -105,6 +105,7 @@ const char* GetJupiterQuoteTemplateForPriceImpact() {
 }  // namespace
 
 TEST(SwapResponseParserUnitTest, ParsePriceQuote) {
+  // Case 1: non-null zeroExFee
   std::string json(R"(
     {
       "price":"1916.27547998814058355",
@@ -131,54 +132,127 @@ TEST(SwapResponseParserUnitTest, ParsePriceQuote) {
           "name": "Uniswap_V2",
           "proportion": "1"
         }
-      ]
+      ],
+      "fees": {
+        "zeroExFee": {
+          "feeType": "volume",
+          "feeToken": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "feeAmount": "148470027512868522",
+          "billingType": "on-chain"
+        }
+      }
     }
   )");
   mojom::SwapResponsePtr swap_response =
       ParseSwapResponse(ParseJson(json), false);
   ASSERT_TRUE(swap_response);
 
-  ASSERT_EQ(swap_response->price, "1916.27547998814058355");
-  // ASSERT_EQ(swap_response->guaranteed_price, "1935.438234788021989386");
-  // ASSERT_EQ(swap_response->to, "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
-  // ASSERT_EQ(swap_response->data, "0x0");
-  ASSERT_TRUE(swap_response->guaranteed_price.empty());
-  ASSERT_TRUE(swap_response->to.empty());
-  ASSERT_TRUE(swap_response->data.empty());
+  EXPECT_EQ(swap_response->price, "1916.27547998814058355");
+  EXPECT_TRUE(swap_response->guaranteed_price.empty());
+  EXPECT_TRUE(swap_response->to.empty());
+  EXPECT_TRUE(swap_response->data.empty());
 
-  ASSERT_EQ(swap_response->value, "0");
-  ASSERT_EQ(swap_response->gas, "719000");
-  ASSERT_EQ(swap_response->estimated_gas, "719001");
-  ASSERT_EQ(swap_response->gas_price, "26000000000");
-  ASSERT_EQ(swap_response->protocol_fee, "0");
-  ASSERT_EQ(swap_response->minimum_protocol_fee, "0");
-  ASSERT_EQ(swap_response->buy_token_address,
+  EXPECT_EQ(swap_response->value, "0");
+  EXPECT_EQ(swap_response->gas, "719000");
+  EXPECT_EQ(swap_response->estimated_gas, "719001");
+  EXPECT_EQ(swap_response->gas_price, "26000000000");
+  EXPECT_EQ(swap_response->protocol_fee, "0");
+  EXPECT_EQ(swap_response->minimum_protocol_fee, "0");
+  EXPECT_EQ(swap_response->buy_token_address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-  ASSERT_EQ(swap_response->sell_token_address,
+  EXPECT_EQ(swap_response->sell_token_address,
             "0x6b175474e89094c44da98b954eedeac495271d0f");
-  ASSERT_EQ(swap_response->buy_amount, "1000000000000000000000");
-  ASSERT_EQ(swap_response->sell_amount, "1916275479988140583549706");
-  ASSERT_EQ(swap_response->allowance_target,
+  EXPECT_EQ(swap_response->buy_amount, "1000000000000000000000");
+  EXPECT_EQ(swap_response->sell_amount, "1916275479988140583549706");
+  EXPECT_EQ(swap_response->allowance_target,
             "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
-  ASSERT_EQ(swap_response->sell_token_to_eth_rate, "1900.44962824532464391");
-  ASSERT_EQ(swap_response->buy_token_to_eth_rate, "1");
-  ASSERT_EQ(swap_response->estimated_price_impact, "0.7232");
-  ASSERT_EQ(swap_response->sources.size(), 1UL);
-  ASSERT_EQ(swap_response->sources.at(0)->name, "Uniswap_V2");
-  ASSERT_EQ(swap_response->sources.at(0)->proportion, "1");
+  EXPECT_EQ(swap_response->sell_token_to_eth_rate, "1900.44962824532464391");
+  EXPECT_EQ(swap_response->buy_token_to_eth_rate, "1");
+  EXPECT_EQ(swap_response->estimated_price_impact, "0.7232");
+  EXPECT_EQ(swap_response->sources.size(), 1UL);
+  EXPECT_EQ(swap_response->sources.at(0)->name, "Uniswap_V2");
+  EXPECT_EQ(swap_response->sources.at(0)->proportion, "1");
+  ASSERT_TRUE(swap_response->fees->zero_ex_fee);
+  EXPECT_EQ(swap_response->fees->zero_ex_fee->fee_type, "volume");
+  EXPECT_EQ(swap_response->fees->zero_ex_fee->fee_token,
+            "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063");
+  EXPECT_EQ(swap_response->fees->zero_ex_fee->fee_amount, "148470027512868522");
+  EXPECT_EQ(swap_response->fees->zero_ex_fee->billing_type, "on-chain");
 
+  // Case 2: null zeroExFee
+  json = R"(
+    {
+      "price":"1916.27547998814058355",
+      "guaranteedPrice":"1935.438234788021989386",
+      "to":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+      "data":"0x0",
+      "value":"0",
+      "gas":"719000",
+      "estimatedGas":"719001",
+      "gasPrice":"26000000000",
+      "protocolFee":"0",
+      "minimumProtocolFee":"0",
+      "buyTokenAddress":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
+      "buyAmount":"1000000000000000000000",
+      "sellAmount":"1916275479988140583549706",
+      "sources":[],
+      "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+      "sellTokenToEthRate":"1900.44962824532464391",
+      "buyTokenToEthRate":"1",
+      "estimatedPriceImpact": "0.7232",
+      "sources":[],
+      "fees": {
+        "zeroExFee": null
+      }
+    }
+  )";
+  swap_response = ParseSwapResponse(ParseJson(json), false);
+  ASSERT_TRUE(swap_response);
+  EXPECT_FALSE(swap_response->fees->zero_ex_fee);
+
+  // Case 3: malformed fees field
+  json = R"(
+    {
+      "price":"1916.27547998814058355",
+      "guaranteedPrice":"1935.438234788021989386",
+      "to":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+      "data":"0x0",
+      "value":"0",
+      "gas":"719000",
+      "estimatedGas":"719001",
+      "gasPrice":"26000000000",
+      "protocolFee":"0",
+      "minimumProtocolFee":"0",
+      "buyTokenAddress":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
+      "buyAmount":"1000000000000000000000",
+      "sellAmount":"1916275479988140583549706",
+      "sources":[],
+      "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+      "sellTokenToEthRate":"1900.44962824532464391",
+      "buyTokenToEthRate":"1",
+      "estimatedPriceImpact": "0.7232",
+      "sources":[],
+      "fees": null
+    }
+  )";
+  EXPECT_FALSE(ParseSwapResponse(ParseJson(json), false));
+
+  // Case 4: other invalid cases
   json = R"({"price": "3"})";
-  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), false));
+  EXPECT_FALSE(ParseSwapResponse(ParseJson(json), false));
   json = R"({"price": 3})";
-  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), false));
+  EXPECT_FALSE(ParseSwapResponse(ParseJson(json), false));
   json = "3";
-  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), false));
+  EXPECT_FALSE(ParseSwapResponse(ParseJson(json), false));
   json = "[3]";
-  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), false));
-  ASSERT_FALSE(ParseSwapResponse(base::Value(), false));
+  EXPECT_FALSE(ParseSwapResponse(ParseJson(json), false));
+  EXPECT_FALSE(ParseSwapResponse(base::Value(), false));
 }
 
 TEST(SwapResponseParserUnitTest, ParseTransactionPayload) {
+  // Case 1: non-null zeroExFee
   std::string json(R"(
     {
       "price":"1916.27547998814058355",
@@ -205,48 +279,123 @@ TEST(SwapResponseParserUnitTest, ParseTransactionPayload) {
           "name": "Uniswap_V2",
           "proportion": "1"
         }
-      ]
+      ],
+      "fees": {
+        "zeroExFee": {
+          "feeType": "volume",
+          "feeToken": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "feeAmount": "148470027512868522",
+          "billingType": "on-chain"
+        }
+      }
     }
   )");
   mojom::SwapResponsePtr swap_response =
       ParseSwapResponse(ParseJson(json), true);
   ASSERT_TRUE(swap_response);
 
-  ASSERT_EQ(swap_response->price, "1916.27547998814058355");
-  ASSERT_EQ(swap_response->guaranteed_price, "1935.438234788021989386");
-  ASSERT_EQ(swap_response->to, "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
-  ASSERT_EQ(swap_response->data, "0x0");
+  EXPECT_EQ(swap_response->price, "1916.27547998814058355");
+  EXPECT_EQ(swap_response->guaranteed_price, "1935.438234788021989386");
+  EXPECT_EQ(swap_response->to, "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
+  EXPECT_EQ(swap_response->data, "0x0");
 
-  ASSERT_EQ(swap_response->value, "0");
-  ASSERT_EQ(swap_response->gas, "719000");
-  ASSERT_EQ(swap_response->estimated_gas, "719001");
-  ASSERT_EQ(swap_response->gas_price, "26000000000");
-  ASSERT_EQ(swap_response->protocol_fee, "0");
-  ASSERT_EQ(swap_response->minimum_protocol_fee, "0");
-  ASSERT_EQ(swap_response->buy_token_address,
+  EXPECT_EQ(swap_response->value, "0");
+  EXPECT_EQ(swap_response->gas, "719000");
+  EXPECT_EQ(swap_response->estimated_gas, "719001");
+  EXPECT_EQ(swap_response->gas_price, "26000000000");
+  EXPECT_EQ(swap_response->protocol_fee, "0");
+  EXPECT_EQ(swap_response->minimum_protocol_fee, "0");
+  EXPECT_EQ(swap_response->buy_token_address,
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-  ASSERT_EQ(swap_response->sell_token_address,
+  EXPECT_EQ(swap_response->sell_token_address,
             "0x6b175474e89094c44da98b954eedeac495271d0f");
-  ASSERT_EQ(swap_response->buy_amount, "1000000000000000000000");
-  ASSERT_EQ(swap_response->sell_amount, "1916275479988140583549706");
-  ASSERT_EQ(swap_response->allowance_target,
+  EXPECT_EQ(swap_response->buy_amount, "1000000000000000000000");
+  EXPECT_EQ(swap_response->sell_amount, "1916275479988140583549706");
+  EXPECT_EQ(swap_response->allowance_target,
             "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
-  ASSERT_EQ(swap_response->sell_token_to_eth_rate, "1900.44962824532464391");
-  ASSERT_EQ(swap_response->buy_token_to_eth_rate, "1");
-  ASSERT_EQ(swap_response->estimated_price_impact, "0.7232");
-  ASSERT_EQ(swap_response->sources.size(), 1UL);
-  ASSERT_EQ(swap_response->sources.at(0)->name, "Uniswap_V2");
-  ASSERT_EQ(swap_response->sources.at(0)->proportion, "1");
+  EXPECT_EQ(swap_response->sell_token_to_eth_rate, "1900.44962824532464391");
+  EXPECT_EQ(swap_response->buy_token_to_eth_rate, "1");
+  EXPECT_EQ(swap_response->estimated_price_impact, "0.7232");
+  EXPECT_EQ(swap_response->sources.size(), 1UL);
+  EXPECT_EQ(swap_response->sources.at(0)->name, "Uniswap_V2");
+  EXPECT_EQ(swap_response->sources.at(0)->proportion, "1");
+  ASSERT_TRUE(swap_response->fees->zero_ex_fee);
+  EXPECT_EQ(swap_response->fees->zero_ex_fee->fee_type, "volume");
+  EXPECT_EQ(swap_response->fees->zero_ex_fee->fee_token,
+            "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063");
+  EXPECT_EQ(swap_response->fees->zero_ex_fee->fee_amount, "148470027512868522");
+  EXPECT_EQ(swap_response->fees->zero_ex_fee->billing_type, "on-chain");
 
+  // Case 2: null zeroExFee
+  json = R"(
+    {
+      "price":"1916.27547998814058355",
+      "guaranteedPrice":"1935.438234788021989386",
+      "to":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+      "data":"0x0",
+      "value":"0",
+      "gas":"719000",
+      "estimatedGas":"719001",
+      "gasPrice":"26000000000",
+      "protocolFee":"0",
+      "minimumProtocolFee":"0",
+      "buyTokenAddress":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
+      "buyAmount":"1000000000000000000000",
+      "sellAmount":"1916275479988140583549706",
+      "sources":[],
+      "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+      "sellTokenToEthRate":"1900.44962824532464391",
+      "buyTokenToEthRate":"1",
+      "estimatedPriceImpact": "0.7232",
+      "sources":[],
+      "fees": {
+        "zeroExFee": null
+      }
+    }
+  )";
+  swap_response = ParseSwapResponse(ParseJson(json), true);
+  ASSERT_TRUE(swap_response);
+  EXPECT_FALSE(swap_response->fees->zero_ex_fee);
+
+  // Case 3: malformed fees field
+  json = R"(
+    {
+      "price":"1916.27547998814058355",
+      "guaranteedPrice":"1935.438234788021989386",
+      "to":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+      "data":"0x0",
+      "value":"0",
+      "gas":"719000",
+      "estimatedGas":"719001",
+      "gasPrice":"26000000000",
+      "protocolFee":"0",
+      "minimumProtocolFee":"0",
+      "buyTokenAddress":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
+      "buyAmount":"1000000000000000000000",
+      "sellAmount":"1916275479988140583549706",
+      "sources":[],
+      "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+      "sellTokenToEthRate":"1900.44962824532464391",
+      "buyTokenToEthRate":"1",
+      "estimatedPriceImpact": "0.7232",
+      "sources":[],
+      "fees": null
+    }
+  )";
+  EXPECT_FALSE(ParseSwapResponse(ParseJson(json), true));
+
+  // Case 4: other invalid cases
   json = R"({"price": "3"})";
-  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), true));
+  EXPECT_FALSE(ParseSwapResponse(ParseJson(json), true));
   json = R"({"price": 3})";
-  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), true));
+  EXPECT_FALSE(ParseSwapResponse(ParseJson(json), true));
   json = "3";
-  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), true));
+  EXPECT_FALSE(ParseSwapResponse(ParseJson(json), true));
   json = "[3]";
-  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), true));
-  ASSERT_FALSE(ParseSwapResponse(base::Value(), true));
+  EXPECT_FALSE(ParseSwapResponse(ParseJson(json), true));
+  EXPECT_FALSE(ParseSwapResponse(base::Value(), true));
 }
 
 TEST(SwapResponseParserUnitTest, ParseJupiterQuote) {
@@ -262,6 +411,7 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuote) {
   ASSERT_EQ(swap_quote->routes.at(0)->other_amount_threshold, 258660ULL);
   ASSERT_EQ(swap_quote->routes.at(0)->swap_mode, "ExactIn");
   ASSERT_EQ(swap_quote->routes.at(0)->price_impact_pct, 0.008955716118219659);
+  ASSERT_EQ(swap_quote->routes.at(0)->slippage_bps, 50);
   ASSERT_EQ(swap_quote->routes.at(0)->market_infos.size(), 1UL);
   ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->id,
             "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK");
@@ -325,6 +475,39 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuote) {
   ASSERT_FALSE(swap_quote);
 }
 
+TEST(SwapResponseParserUnitTest, ParseJupiterQuoteSlippageBps) {
+  auto* json_fmt(R"(
+    {
+      "data": [
+        {
+          "inAmount": "10000",
+          "outAmount": "261273",
+          "amount": "10000",
+          "otherAmountThreshold": "258660",
+          "swapMode": "ExactIn",
+          "priceImpactPct": "1.1",
+          "slippageBps": %s,
+          "marketInfos": []
+        }
+      ],
+      "timeTaken": "0.044471802000089156"
+    })");
+
+  // OK: valid slippageBps value
+  std::string json = base::StringPrintf(json_fmt, "\"50\"");
+  mojom::JupiterQuotePtr swap_quote = ParseJupiterQuote(ParseJson(json));
+  ASSERT_TRUE(swap_quote);
+  EXPECT_EQ(swap_quote->routes.at(0)->slippage_bps, 50);
+
+  // KO: null slippageBps value
+  json = base::StringPrintf(json_fmt, "null");
+  EXPECT_FALSE(ParseJupiterQuote(ParseJson(json)));
+
+  // KO: non-integer slippageBps value
+  json = base::StringPrintf(json_fmt, "\"50.55\"");
+  EXPECT_FALSE(ParseJupiterQuote(ParseJson(json)));
+}
+
 TEST(SwapResponseParserUnitTest, ParseJupiterQuotePriceImpact) {
   auto* json_template = GetJupiterQuoteTemplateForPriceImpact();
   std::string json = base::StringPrintf(json_template, "\"1.1\"", "\"1.1\"");
@@ -353,16 +536,12 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuotePriceImpact) {
 TEST(SwapResponseParserUnitTest, ParseJupiterSwapTransactions) {
   std::string json(R"(
     {
-      "setupTransaction": "setup",
-      "swapTransaction": "swap",
-      "cleanupTransaction": "cleanup"
+      "swapTransaction": "swap"
     })");
 
-  auto swap_transactions = ParseJupiterSwapTransactions(ParseJson(json));
-  ASSERT_TRUE(swap_transactions);
-  ASSERT_EQ(swap_transactions->setup_transaction, "setup");
-  ASSERT_EQ(swap_transactions->swap_transaction, "swap");
-  ASSERT_EQ(swap_transactions->cleanup_transaction, "cleanup");
+  auto transactions = ParseJupiterSwapTransactions(ParseJson(json));
+  ASSERT_TRUE(transactions);
+  ASSERT_EQ(transactions->swap_transaction, "swap");
 
   ASSERT_FALSE(ParseJupiterSwapTransactions(base::Value()));
   ASSERT_FALSE(ParseJupiterSwapTransactions(ParseJson(R"({"foo": "bar"})")));

@@ -46,6 +46,27 @@ bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
   return base::StringToUint64(*string_value, ret);
 }
 
+mojom::SPLTokenAmountPtr ParseAmountDict(const base::Value::Dict& value) {
+  auto* amount = value.FindString("amount");
+  if (!amount) {
+    return nullptr;
+  }
+
+  // uint8
+  auto decimals = value.FindInt("decimals");
+  if (!decimals || decimals.value() > std::numeric_limits<uint8_t>::max() ||
+      decimals.value() < 0) {
+    return nullptr;
+  }
+
+  auto* ui_amount_string = value.FindString("uiAmountString");
+  if (!ui_amount_string) {
+    return nullptr;
+  }
+
+  return mojom::SPLTokenAmount::New("", *amount, *decimals, *ui_amount_string);
+}
+
 }  // namespace
 
 namespace solana {
@@ -77,28 +98,64 @@ bool ParseGetTokenAccountBalance(const base::Value& json_value,
     return false;
   }
 
-  auto* amount_ptr = value->FindString("amount");
-  if (!amount_ptr) {
+  auto parsed_amount = ParseAmountDict(*value);
+  if (!parsed_amount) {
     return false;
   }
-  *amount = *amount_ptr;
 
-  // uint8
-  auto decimals_opt = value->FindInt("decimals");
-  if (!decimals_opt ||
-      decimals_opt.value() > std::numeric_limits<uint8_t>::max() ||
-      decimals_opt.value() < 0) {
-    return false;
-  }
-  *decimals = decimals_opt.value();
-
-  auto* ui_amount_string_ptr = value->FindString("uiAmountString");
-  if (!ui_amount_string_ptr) {
-    return false;
-  }
-  *ui_amount_string = *ui_amount_string_ptr;
-
+  *amount = parsed_amount->amount;
+  *ui_amount_string = parsed_amount->ui_amount;
+  *decimals = parsed_amount->decimals;
   return true;
+}
+
+absl::optional<std::vector<mojom::SPLTokenAmountPtr>> ParseGetSPLTokenBalances(
+    const base::Value& json_value) {
+  auto result = ParseResultDict(json_value);
+  if (!result) {
+    return absl::nullopt;
+  }
+
+  auto* value = result->FindList("value");
+  if (!value) {
+    return absl::nullopt;
+  }
+
+  std::vector<mojom::SPLTokenAmountPtr> balances;
+
+  for (const auto& account_value : *value) {
+    if (!account_value.is_dict()) {
+      return absl::nullopt;
+    }
+
+    const auto& account_dict = account_value.GetDict();
+    auto* mint =
+        account_dict.FindStringByDottedPath("account.data.parsed.info.mint");
+    if (!mint) {
+      return absl::nullopt;
+    }
+
+    auto* tokenAmount = account_dict.FindDictByDottedPath(
+        "account.data.parsed.info.tokenAmount");
+    if (!tokenAmount) {
+      return absl::nullopt;
+    }
+
+    auto parsed_amount = ParseAmountDict(*tokenAmount);
+    if (!parsed_amount) {
+      return absl::nullopt;
+    }
+
+    // Skip zero-value amounts.
+    if (parsed_amount->amount.empty() || parsed_amount->amount == "0") {
+      continue;
+    }
+
+    parsed_amount->mint = *mint;
+    balances.push_back(std::move(parsed_amount));
+  }
+
+  return balances;
 }
 
 bool ParseSendTransaction(const base::Value& json_value, std::string* tx_id) {

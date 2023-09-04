@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-int GetMinutes(int hours, int minutes);
+int GetMinutesForTesting(int hours, int minutes);
 
 }  // namespace brave_ads
 

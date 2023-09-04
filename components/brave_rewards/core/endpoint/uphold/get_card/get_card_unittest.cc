@@ -10,9 +10,9 @@
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_card/get_card.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -27,12 +27,12 @@ namespace uphold {
 class GetCardTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  GetCard card_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  GetCard card_{mock_engine_impl_};
 };
 
 TEST_F(GetCardTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -92,7 +92,7 @@ TEST_F(GetCardTest, ServerOK) {
       });
 
   base::MockCallback<GetCardCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_OK, 4.0)).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::OK, 4.0)).Times(1);
   card_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
                 "4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
 
@@ -100,7 +100,7 @@ TEST_F(GetCardTest, ServerOK) {
 }
 
 TEST_F(GetCardTest, ServerError401) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -119,7 +119,7 @@ TEST_F(GetCardTest, ServerError401) {
 }
 
 TEST_F(GetCardTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -130,7 +130,7 @@ TEST_F(GetCardTest, ServerErrorRandom) {
       });
 
   base::MockCallback<GetCardCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, 0.0)).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, 0.0)).Times(1);
   card_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
                 "4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
 

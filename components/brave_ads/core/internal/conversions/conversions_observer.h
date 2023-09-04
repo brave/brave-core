@@ -6,21 +6,21 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_OBSERVER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_OBSERVER_H_
 
+#include <string>
+
 #include "base/observer_list_types.h"
 
 namespace brave_ads {
 
-struct ConversionQueueItemInfo;
+struct ConversionInfo;
 
 class ConversionsObserver : public base::CheckedObserver {
  public:
-  // Invoked when a user converts an ad.
-  virtual void OnConversion(
-      const ConversionQueueItemInfo& conversion_queue_item) {}
+  // Invoked when an ad has converted.
+  virtual void OnDidConvertAd(const ConversionInfo& conversion) {}
 
-  // Invoked when an ad conversion fails.
-  virtual void OnConversionFailed(
-      const ConversionQueueItemInfo& conversion_queue_item) {}
+  // Invoked when an ad fails to convert.
+  virtual void OnFailedToConvertAd(const std::string& creative_instance_id) {}
 };
 
 }  // namespace brave_ads

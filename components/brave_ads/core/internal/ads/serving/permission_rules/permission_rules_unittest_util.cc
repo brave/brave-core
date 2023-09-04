@@ -6,16 +6,16 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/catalog_permission_rule_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/confirmation_tokens_permission_rule_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/issuers_permission_rule_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/unblinded_tokens_permission_rule_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/user_activity_permission_rule_unittest_util.h"
 
 namespace brave_ads {
 
 void ForcePermissionRulesForTesting() {
   ForceCatalogPermissionRuleForTesting();
+  ForceConfirmationTokensPermissionRuleForTesting();
   ForceIssuersPermissionRuleForTesting();
-  ForceUnblindedTokensPermissionRuleForTesting();
   ForceUserActivityPermissionRuleForTesting();
 }
 

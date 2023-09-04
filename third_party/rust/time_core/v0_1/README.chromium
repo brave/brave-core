@@ -1,0 +1,7 @@
+Name: time-core
+URL: https://crates.io/crates/time-core
+Description: This crate is an implementation detail and should not be relied upon directly.
+Version: 0.1.0
+Security Critical: yes
+License: Apache 2.0
+Revision: 05bdab8a70223eb1bc722b519093dfa7dd7c2b5f

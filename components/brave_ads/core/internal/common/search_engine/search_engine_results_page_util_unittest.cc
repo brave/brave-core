@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 
-#include <vector>
-
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_unittest_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -17,77 +15,67 @@ namespace brave_ads {
 
 TEST(BraveAdsSearchEngineResultsPageUtilTest, IsSearchEngineResultsPage) {
   // Arrange
-  const std::vector<GURL>& urls = GetSearchEngineResultsPageUrls();
 
   // Act
-  for (const auto& url : urls) {
-    EXPECT_TRUE(IsSearchEngineResultsPage(url));
-  }
 
   // Assert
+  for (const auto& url : GetSearchEngineResultsPageUrls()) {
+    EXPECT_TRUE(IsSearchEngineResultsPage(url));
+  }
 }
 
 TEST(BraveAdsSearchEngineResultsPageUtilTest, IsNotSearchEngineResultsPage) {
   // Arrange
-  const GURL url = GURL("https://brave.com/");
 
   // Act
 
   // Assert
-  EXPECT_FALSE(IsSearchEngineResultsPage(url));
+  EXPECT_FALSE(IsSearchEngineResultsPage(GURL("https://brave.com/")));
 }
 
 TEST(BraveAdsSearchEngineResultsPageUtilTest,
      IsNotSearchEngineResultsPageWithInvalidUrl) {
   // Arrange
-  const GURL url = GURL("INVALID_URL");
 
   // Act
 
   // Assert
-  EXPECT_FALSE(IsSearchEngineResultsPage(url));
+  EXPECT_FALSE(IsSearchEngineResultsPage(GURL("INVALID")));
 }
 
 TEST(BraveAdsSearchEngineResultsPageUtilTest, ExtractSearchTermQueryValue) {
   // Arrange
-  const std::vector<GURL>& urls = GetSearchEngineResultsPageUrls();
 
   // Act
-  for (const auto& url : urls) {
+
+  // Assert
+  for (const auto& url : GetSearchEngineResultsPageUrls()) {
     const absl::optional<std::string> search_term_query_value =
         ExtractSearchTermQueryValue(url);
     if (search_term_query_value) {
-      EXPECT_EQ("foobar", *search_term_query_value);
+      EXPECT_EQ("foobar", search_term_query_value);
     }
   }
-
-  // Assert
 }
 
 TEST(BraveAdsSearchEngineResultsPageUtilTest,
      FailToExtractSearchTermQueryValueFromUrlWithMissingQuery) {
   // Arrange
-  const GURL url = GURL("https://google.com/");
 
   // Act
-  const absl::optional<std::string> search_term_query_value =
-      ExtractSearchTermQueryValue(url);
 
   // Assert
-  EXPECT_FALSE(search_term_query_value);
+  EXPECT_FALSE(ExtractSearchTermQueryValue(GURL("https://google.com/")));
 }
 
 TEST(BraveAdsSearchEngineResultsPageUtilTest,
      FailToExtractSearchTermQueryValueFromInvalidUrl) {
   // Arrange
-  const GURL url = GURL("INVALID_URL");
 
   // Act
-  const absl::optional<std::string> search_term_query_value =
-      ExtractSearchTermQueryValue(url);
 
   // Assert
-  EXPECT_FALSE(search_term_query_value);
+  EXPECT_FALSE(ExtractSearchTermQueryValue(GURL("INVALID")));
 }
 
 }  // namespace brave_ads

@@ -40,8 +40,6 @@ function createHost (): Host {
     requestedView: null,
     rewardsEnabled: true,
     settings: {
-      adsEnabled: true,
-      adsPerHour: 3,
       autoContributeEnabled: true,
       autoContributeAmount: 5
     },
@@ -80,8 +78,10 @@ function createHost (): Host {
       currency: 'USD'
     },
     earningsInfo: {
-      earningsThisMonth: 1.2,
-      earningsLastMonth: 2.4,
+      minEarningsThisMonth: 1.2,
+      maxEarningsThisMonth: 2.1,
+      minEarningsLastMonth: 2.0,
+      maxEarningsLastMonth: 2.4,
       nextPaymentDate: Date.now() + 1000 * 60 * 60 * 24 * 3
     },
     payoutStatus: {
@@ -109,8 +109,7 @@ function createHost (): Host {
       adEarnings: 10,
       autoContributions: 10,
       oneTimeTips: -2,
-      monthlyTips: -19,
-      pendingTips: 0
+      monthlyTips: -19
     },
     notifications: [
       {
@@ -122,7 +121,8 @@ function createHost (): Host {
     availableCountries: ['US'],
     defaultCountry: 'US',
     declaredCountry: 'US',
-    userType: 'connected',
+    isGrandfatheredUser: false,
+    userType: 'unconnected',
     publishersVisitedCount: 4
   })
 
@@ -141,24 +141,6 @@ function createHost (): Host {
         declaredCountry: 'US'
       })
       return Promise.resolve('success')
-    },
-
-    setAdsEnabled (adsEnabled) {
-      stateManager.update({
-        settings: {
-          ...stateManager.getState().settings,
-          adsEnabled
-        }
-      })
-    },
-
-    setAdsPerHour (adsPerHour) {
-      stateManager.update({
-        settings: {
-          ...stateManager.getState().settings,
-          adsPerHour
-        }
-      })
     },
 
     setIncludeInAutoContribute (enabled) {
@@ -247,6 +229,11 @@ function createHost (): Host {
           break
       }
     },
+
+    closePanel() {
+      console.log('closePanel')
+    },
+
     onAppRendered () {
       console.log('onAppRendered')
     }
@@ -256,7 +243,7 @@ function createHost (): Host {
 export function MainPanel () {
   const [host] = React.useState(() => createHost())
   return (
-    <div className='brave-theme-dark'>
+    <div>
       <LocaleContext.Provider value={locale}>
         <App host={host} />
       </LocaleContext.Provider>

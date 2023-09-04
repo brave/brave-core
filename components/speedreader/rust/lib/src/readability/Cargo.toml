@@ -13,7 +13,7 @@ edition = "2018"
 [dependencies]
 bitflags         = "1.2"
 html5ever        = "0.25.1"
-kuchiki = { git = "https://github.com/brave/kuchiki", branch = "speedreader" }
+kuchiki          = "0.8.1"
 lazy_static      = "1.4"
 regex            = "1"
 serde_json       = "1.0"
@@ -24,3 +24,7 @@ url              = "2.2"
 [dev-dependencies]
 assert_approx_eq = "1.1.0"
 reqwest = { version = "0.11.6", features = ["blocking", "stream"] }
+
+[patch.crates-io.kuchiki_v0_8]
+path = "../../../../../third_party/rust/kuchiki/v0_8/crate"
+package = "kuchiki"

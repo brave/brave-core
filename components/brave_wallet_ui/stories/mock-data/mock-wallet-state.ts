@@ -7,73 +7,55 @@
 import { USDCIconUrl } from './asset-icons'
 
 // types
-import { BraveWallet, WalletAccountType, WalletState } from '../../constants/types'
+import { BraveWallet, WalletState } from '../../constants/types'
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
-import { AllAccountsOption } from '../../options/account-filter-options'
+import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options'
+import { AccountsGroupByOption } from '../../options/group-assets-by-options'
 
 // mocks
-import { mockedErc20ApprovalTransaction, mockTransactionInfo } from './mock-transaction-info'
 import { LAMPORTS_PER_SOL } from '../../common/constants/solana'
 import { mockMoonCatNFT, mockErc20TokensList } from './mock-asset-options'
 
-const mockAccount: WalletAccountType & BraveWallet.AccountInfo = {
-  accountType: 'Primary',
+const mockAccount: BraveWallet.AccountInfo = {
   address: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1',
-  coin: 60,
-  deviceId: '',
-  id: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1',
+  accountId: {
+    coin: 60,
+    keyringId: BraveWallet.KeyringId.kDefault,
+    kind: BraveWallet.AccountKind.kDerived,
+    address: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1',
+    bitcoinAccountIndex: 0,
+    uniqueKey: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1'
+  },
   name: 'Account 1',
-  tokenBalanceRegistry: {
-    '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
-    '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69': '450346'
-  },
-  nativeBalanceRegistry: {
-    [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
-    [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
-  },
-  keyringId: 'default',
-  isImported: false,
   hardware: undefined
 }
 
-const mockAccount2: WalletAccountType & BraveWallet.AccountInfo = {
-  accountType: 'Primary',
+const mockAccount2: BraveWallet.AccountInfo = {
   address: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
-  coin: 60,
-  deviceId: '',
-  id: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
+  accountId: {
+    coin: 60,
+    keyringId: BraveWallet.KeyringId.kDefault,
+    kind: BraveWallet.AccountKind.kDerived,
+    address: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
+    bitcoinAccountIndex: 0,
+    uniqueKey: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2'
+  },
   name: 'Account 2',
-  tokenBalanceRegistry: {
-    '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
-    '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69': '450346'
-  },
-  nativeBalanceRegistry: {
-    [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
-    [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
-  },
-  keyringId: 'default',
-  isImported: false,
   hardware: undefined
 }
 
-const mockAccount3: WalletAccountType & BraveWallet.AccountInfo = {
-  accountType: 'Primary',
+const mockAccount3: BraveWallet.AccountInfo = {
   address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3',
-  coin: 60,
-  deviceId: '',
-  id: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3',
+  accountId: {
+    coin: 60,
+    keyringId: BraveWallet.KeyringId.kDefault,
+    kind: BraveWallet.AccountKind.kDerived,
+    address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3',
+    bitcoinAccountIndex: 0,
+    uniqueKey: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3'
+  },
   name: 'Account 3',
-  tokenBalanceRegistry: {
-    '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
-    '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69': '450346'
-  },
-  nativeBalanceRegistry: {
-    [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
-    [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
-  },
-  keyringId: 'default',
-  isImported: false,
   hardware: undefined
 }
 
@@ -155,12 +137,6 @@ export const mockWalletState: WalletState = {
     mockAccount3
   ],
   activeOrigin: {
-    origin: {
-      scheme: 'https',
-      host: 'app.uniswap.org',
-      port: 443,
-      nonceIfOpaque: undefined
-    },
     originSpec: 'https://app.uniswap.org',
     eTldPlusOne: 'uniswap.org'
   },
@@ -177,7 +153,6 @@ export const mockWalletState: WalletState = {
   gasEstimates: undefined,
   hasIncorrectPassword: false,
   hasInitialized: true,
-  isFetchingPortfolioPriceHistory: false,
   isFilecoinEnabled: false,
   isMetaMaskInstalled: false,
   isSolanaEnabled: false,
@@ -188,41 +163,7 @@ export const mockWalletState: WalletState = {
   isWalletBackedUp: true,
   isWalletCreated: false,
   isWalletLocked: false,
-  knownTransactions: [],
-  pendingTransactions: [],
-  portfolioPriceHistory: [],
-  selectedAccount: mockAccount,
-  selectedPendingTransaction: mockedErc20ApprovalTransaction,
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
-  transactions: {
-    [mockAccount.address]: [mockTransactionInfo]
-  },
-  transactionSpotPrices: [
-    {
-      assetTimeframeChange: '',
-      fromAsset: 'eth',
-      price: '2581.2',
-      toAsset: 'usd',
-      contractAddress: '',
-      chainId: '0x1'
-    },
-    {
-      assetTimeframeChange: '',
-      fromAsset: 'eth',
-      price: '0',
-      toAsset: 'usd',
-      contractAddress: '',
-      chainId: '0x1'
-    },
-    {
-      assetTimeframeChange: '-0.18757681821254726',
-      fromAsset: 'usdc',
-      price: '0.999414',
-      toAsset: 'usd',
-      contractAddress: '0xusdc',
-      chainId: '0x1'
-    }
-  ],
   userVisibleTokensInfo: [
     {
       coingeckoId: '',
@@ -232,6 +173,7 @@ export const mockWalletState: WalletState = {
       isErc721: false,
       isErc1155: false,
       isNft: false,
+      isSpam: false,
       logo: 'chrome://erc-token-images/',
       name: 'Ethereum',
       symbol: 'ETH',
@@ -248,6 +190,7 @@ export const mockWalletState: WalletState = {
       isErc721: false,
       isErc1155: false,
       isNft: false,
+      isSpam: false,
       logo: USDCIconUrl,
       name: 'USD Coin',
       symbol: 'USDC',
@@ -264,6 +207,7 @@ export const mockWalletState: WalletState = {
       isErc721: false,
       isErc1155: false,
       isNft: false,
+      isSpam: false,
       logo: 'chrome://erc-token-images/',
       name: 'Ethereum',
       symbol: 'ETH',
@@ -280,6 +224,7 @@ export const mockWalletState: WalletState = {
       isErc721: false,
       isErc1155: false,
       isNft: false,
+      isSpam: false,
       logo: USDCIconUrl,
       name: 'USD Coin',
       symbol: 'USDC',
@@ -290,20 +235,9 @@ export const mockWalletState: WalletState = {
     },
     mockMoonCatNFT
   ],
-  transactionProviderErrorRegistry: {},
   selectedNetworkFilter: AllNetworksOptionDefault,
   selectedAssetFilter: HighToLowAssetsFilterOption.id,
-  selectedAccountFilter: AllAccountsOption.id,
-  defaultAccounts: [
-    {
-      address: mockAccount.address,
-      coin: mockAccount.coin,
-      name: mockAccount.name,
-      isImported: false,
-      hardware: undefined,
-      keyringId: 'default'
-    }
-  ],
+  selectedAccountFilter: AllAccountsOptionUniqueKey,
   onRampCurrencies: mockCurrencies,
   selectedCurrency: mockCurrency,
   passwordAttempts: 0,
@@ -313,5 +247,16 @@ export const mockWalletState: WalletState = {
   isNftPinningFeatureEnabled: false,
   isPanelV2FeatureEnabled: false,
   hidePortfolioBalances: false,
-  hidePortfolioGraph: false
+  hidePortfolioGraph: false,
+  removedFungibleTokenIds: [],
+  removedNonFungibleTokenIds: [],
+  removedNonFungibleTokens: [],
+  hidePortfolioNFTsTab: false,
+  filteredOutPortfolioNetworkKeys: [],
+  filteredOutPortfolioAccountAddresses: [],
+  hidePortfolioSmallBalances: false,
+  selectedGroupAssetsByItem: AccountsGroupByOption.id,
+  showNetworkLogoOnNfts: false,
+  isRefreshingNetworksAndTokens: false,
+  importAccountError: false,
 }

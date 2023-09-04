@@ -10,8 +10,8 @@
 
 #include "brave/ios/browser/api/opentabs/brave_opentabs_observer.h"
 
-#include "components/sync/driver/sync_service.h"
-#include "components/sync/driver/sync_service_observer.h"
+#include "components/sync/service/sync_service.h"
+#include "components/sync/service/sync_service_observer.h"
 
 @interface OpenTabsSessionListenerImpl : NSObject <OpenTabsSessionStateListener>
 - (instancetype)init:(id<OpenTabsSessionStateObserver>)observer

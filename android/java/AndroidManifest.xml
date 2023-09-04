@@ -2,14 +2,12 @@
     android:exported="false">
 </receiver>
 
-<activity android:name="org.chromium.chrome.browser.BraveRewardsDonationSentActivity"
-    android:theme="@android:style/Theme.Translucent.NoTitleBar"
-    android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" />
-
-<activity android:name="org.chromium.chrome.browser.BraveRewardsSiteBannerActivity"
-    android:theme="@style/BraveTranslucent"
+<activity
+    android:name="org.chromium.chrome.browser.rewards.tipping.RewardsTippingBannerActivity"
+    android:theme="@style/TippingBraveTranslucent"
     android:screenOrientation="sensorPortrait"
-    tools:ignore="LockedOrientationActivity" />
+    tools:ignore="LockedOrientationActivity"
+    android:exported="false" />
 
 <activity
     android:name="org.chromium.chrome.browser.BraveRewardsVerifyWalletActivity"
@@ -76,22 +74,17 @@
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>
 
-<activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity"
-    android:theme="@style/Theme.Chromium.Activity"
-    android:screenOrientation="sensorPortrait"
-    tools:ignore="LockedOrientationActivity"/>
-
 <activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity"
     android:theme="@style/Theme.Chromium.Activity"
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>
 
-<activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.SelectPurchaseMethodActivity"
+<activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.AccountSelectorActivity"
     android:theme="@style/Theme.Chromium.Activity"
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>
 
-<activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.AccountSelectorActivity"
+<activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.AddAssetActivity"
     android:theme="@style/Theme.Chromium.Activity"
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>
@@ -158,6 +151,13 @@
     android:label="@string/settings"
     android:exported="false">
 </activity>
+
+<activity 
+    android:name="org.chromium.chrome.browser.app.bookmarks.BraveBookmarkActivity"
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen"
+    android:exported="false"
+    android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+    android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize"/>
 
 <meta-data
         android:name="com.google.android.play.billingclient.version"

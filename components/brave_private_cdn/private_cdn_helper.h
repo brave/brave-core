@@ -6,8 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PRIVATE_CDN_PRIVATE_CDN_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_PRIVATE_CDN_PRIVATE_CDN_HELPER_H_
 
-#include "base/memory/singleton.h"
 #include "base/strings/string_piece.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace brave {
 
@@ -21,7 +25,7 @@ class PrivateCdnHelper final {
   bool RemovePadding(base::StringPiece* padded_string) const;
 
  private:
-  friend struct base::DefaultSingletonTraits<PrivateCdnHelper>;
+  friend base::NoDestructor<PrivateCdnHelper>;
 
   PrivateCdnHelper();
   ~PrivateCdnHelper();

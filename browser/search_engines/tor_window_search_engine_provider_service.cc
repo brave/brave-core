@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/search_engines/tor_window_search_engine_provider_service.h"
 
@@ -21,14 +21,16 @@ TorWindowSearchEngineProviderService::TorWindowSearchEngineProviderService(
   auto provider_data = TemplateURLDataFromPrepopulatedEngine(
       TemplateURLPrepopulateData::brave_search_tor);
   default_template_url_for_tor_ = std::make_unique<TemplateURL>(*provider_data);
-
-  ConfigureSearchEngineProvider();
-
-  observation_.Observe(original_template_url_service_);
 }
 
 TorWindowSearchEngineProviderService::~TorWindowSearchEngineProviderService() =
     default;
+
+void TorWindowSearchEngineProviderService::Initialize() {
+  ConfigureSearchEngineProvider();
+
+  observation_.Observe(original_template_url_service_);
+}
 
 void TorWindowSearchEngineProviderService::Shutdown() {
   PrivateWindowSearchEngineProviderServiceBase::Shutdown();

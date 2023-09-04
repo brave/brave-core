@@ -5,29 +5,58 @@
 
 #include "brave/ios/browser/api/p3a/brave_p3a_utils.h"
 
+#include "base/callback_list.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/time/time.h"
+#include "brave/components/p3a/metric_log_type.h"
+#include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/ios/browser/api/p3a/brave_histograms_controller+private.h"
 #include "components/prefs/pref_service.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+
+P3AMetricLogType const P3AMetricLogTypeSlow =
+    static_cast<P3AMetricLogType>(p3a::MetricLogType::kSlow);
+P3AMetricLogType const P3AMetricLogTypeTypical =
+    static_cast<P3AMetricLogType>(p3a::MetricLogType::kTypical);
+P3AMetricLogType const P3AMetricLogTypeExpress =
+    static_cast<P3AMetricLogType>(p3a::MetricLogType::kExpress);
+
+NSString* const P3ACreativeMetricPrefix =
+    base::SysUTF8ToNSString(p3a::kCreativeMetricPrefix);
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
 #endif
 
+@implementation P3ACallbackRegistration {
+  base::CallbackListSubscription _sub;
+}
+- (instancetype)initWithSubscription:(base::CallbackListSubscription)sub {
+  if ((self = [super init])) {
+    _sub = std::move(sub);
+  }
+  return self;
+}
+@end
+
 @implementation BraveP3AUtils {
   ChromeBrowserState* _browserState;
   PrefService* _localState;
+  scoped_refptr<p3a::P3AService> _p3aService;
 }
 
 - (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState
-                          localState:(PrefService*)localState {
+                          localState:(PrefService*)localState
+                          p3aService:
+                              (scoped_refptr<p3a::P3AService>)p3aService {
   if ((self = [super init])) {
     _browserState = mainBrowserState;
     _localState = localState;
+    _p3aService = p3aService;
   }
   return self;
 }
@@ -52,6 +81,63 @@
 
 - (BraveHistogramsController*)histogramsController {
   return [[BraveHistogramsController alloc] initWithBrowserState:_browserState];
+}
+
+- (P3ACallbackRegistration*)registerRotationCallback:
+    (void (^)(P3AMetricLogType logType, BOOL isConstellation))callback {
+  if (!_p3aService) {
+    return nil;
+  }
+  return [[P3ACallbackRegistration alloc]
+      initWithSubscription:_p3aService->RegisterRotationCallback(
+                               base::BindRepeating(^(
+                                   p3a::MetricLogType log_type,
+                                   bool is_constellation) {
+                                 callback(
+                                     static_cast<P3AMetricLogType>(log_type),
+                                     is_constellation);
+                               }))];
+}
+
+- (P3ACallbackRegistration*)registerMetricCycledCallback:
+    (void (^)(NSString* histogramName, BOOL isConstellation))callback {
+  if (!_p3aService) {
+    return nil;
+  }
+  return [[P3ACallbackRegistration alloc]
+      initWithSubscription:_p3aService->RegisterMetricCycledCallback(
+                               base::BindRepeating(^(
+                                   const std::string& histogram_name,
+                                   bool is_constellation) {
+                                 callback(
+                                     base::SysUTF8ToNSString(histogram_name),
+                                     is_constellation);
+                               }))];
+}
+
+- (void)registerDynamicMetric:(NSString*)histogramName
+                      logType:(P3AMetricLogType)logType {
+  [self registerDynamicMetric:histogramName
+                      logType:logType
+              mainThreadBound:YES];
+}
+
+- (void)registerDynamicMetric:(NSString*)histogramName
+                      logType:(P3AMetricLogType)logType
+              mainThreadBound:(BOOL)mainThreadBound {
+  if (!_p3aService) {
+    return;
+  }
+  _p3aService->RegisterDynamicMetric(base::SysNSStringToUTF8(histogramName),
+                                     static_cast<p3a::MetricLogType>(logType),
+                                     mainThreadBound);
+}
+
+- (void)removeDynamicMetric:(NSString*)histogramName {
+  if (!_p3aService) {
+    return;
+  }
+  _p3aService->RemoveDynamicMetric(base::SysNSStringToUTF8(histogramName));
 }
 
 void UmaHistogramExactLinear(NSString* name,

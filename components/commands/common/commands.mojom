@@ -9,6 +9,9 @@ struct Command {
   string name;
   int32 id;
 
+  // Indicates if the accelerators for the command have been changed.
+  bool modified;
+
   array<Accelerator> accelerators;
 };
 
@@ -21,6 +24,9 @@ struct Accelerator {
   // user but internally we should always use |codes|.
   // i.e. "Control+c"
   string keys;
+
+  // Indicates whether this shortcut can be changed.
+  bool unmodifiable;
 };
 
 interface CommandsService {
@@ -28,7 +34,11 @@ interface CommandsService {
   UnassignAcceleratorFromCommand(int32 command_id, string accelerator);
   ResetAcceleratorsForCommand(int32 command_id);
 
+  ResetAccelerators();
+
   AddCommandsListener(pending_remote<CommandsListener> listener);
+
+  GetKeyFromCode(string code) => (string key);
 };
 
 struct CommandsEvent {

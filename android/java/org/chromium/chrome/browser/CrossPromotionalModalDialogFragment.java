@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsHelper;
 
 public class CrossPromotionalModalDialogFragment
         extends BraveDialogFragment implements View.OnClickListener {

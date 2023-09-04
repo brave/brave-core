@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
+#include "base/no_destructor.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "chrome/browser/ui/browser.h"
@@ -65,7 +66,8 @@ namespace brave_adaptive_captcha {
 // static
 BraveAdaptiveCaptchaServiceFactory*
 BraveAdaptiveCaptchaServiceFactory::GetInstance() {
-  return base::Singleton<BraveAdaptiveCaptchaServiceFactory>::get();
+  static base::NoDestructor<BraveAdaptiveCaptchaServiceFactory> instance;
+  return instance.get();
 }
 
 // static

@@ -17,21 +17,12 @@ export function App () {
 
   const actions = useActions()
   const rewardsData = useRewardsData((data) => ({
-    initializing: data.initializing,
-    adsData: data.adsData,
-    enabledAdsMigrated: data.enabledAdsMigrated
+    initializing: data.initializing
   }))
 
   React.useEffect(() => {
     if (rewardsData.initializing) {
       actions.isInitialized()
-
-      if (!rewardsData.enabledAdsMigrated) {
-        const { adsEnabled, adsIsSupported } = rewardsData.adsData
-        if (adsIsSupported) {
-          actions.onAdsSettingSave('adsEnabledMigrated', adsEnabled)
-        }
-      }
     }
   }, [rewardsData.initializing])
 

@@ -7,7 +7,6 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
-#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 
 namespace brave_ads {
 
@@ -18,11 +17,8 @@ bool DoesRespectCap() {
     return true;
   }
 
-  if (PlatformHelper::GetInstance().GetType() == PlatformType::kAndroid) {
-    return true;
-  }
-
-  return BrowserManager::GetInstance().IsBrowserActive();
+  return BrowserManager::GetInstance().IsBrowserActive() &&
+         BrowserManager::GetInstance().IsBrowserInForeground();
 }
 
 }  // namespace

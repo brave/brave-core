@@ -1,18 +1,31 @@
-import("//brave/build/cargo.gni")
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
-rust_crate("lib") {
-  inputs = [
-    # Underlying library code
-    "Cargo.toml",
+import("//build/rust/rust_static_library.gni")
+
+rust_static_library("lib") {
+  crate_name = "speedreader"
+  crate_root = "src/lib.rs"
+  edition = "2018"
+  sources = [
     "src/lib.rs",
-    "src/readability/Cargo.toml",
-    "src/readability/src/dom.rs",
-    "src/readability/src/error.rs",
-    "src/readability/src/extractor.rs",
-    "src/readability/src/lib.rs",
-    "src/readability/src/scorer.rs",
-    "src/readability/src/statistics.rs",
-    "src/speedreader_readability.rs",
     "src/speedreader.rs",
+    "src/speedreader_readability.rs",
+  ]
+
+  deps = [
+    "src/readability:lib",
+    "//brave/third_party/rust/html5ever/v0_25:lib",
+    "//brave/third_party/rust/kuchiki/v0_8:lib",
+    "//brave/third_party/rust/lifeguard/v0_6:lib",
+    "//brave/third_party/rust/lol_html/v0_3:lib",
+    "//brave/third_party/rust/markup5ever/v0_10:lib",
+    "//brave/third_party/rust/thiserror/v1:lib",
+    "//brave/third_party/rust/url/v2:lib",
+    "//third_party/rust/lazy_static/v1:lib",
+    "//third_party/rust/regex/v1:lib",
+    "//third_party/rust/serde_json/v1:lib",
   ]
 }

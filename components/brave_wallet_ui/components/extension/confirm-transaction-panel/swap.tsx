@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Utils
 import { WalletSelectors } from '../../../common/selectors'
@@ -31,15 +32,11 @@ import {
   NetworkDescriptionText,
   Spacer,
   SwapAssetAmountSymbol,
-  NetworkFeeAndSettingsContainer,
-  NetworkFeeTitle,
-  NetworkFeeContainer,
-  NetworkFeeValue,
-  Settings,
-  SettingsIcon
 } from './swap.style'
 import { EditButton, NetworkText, StyledWrapper, TopRow } from './style'
-import { CreateNetworkIcon, LoadingSkeleton, withPlaceholderIcon } from '../../shared'
+import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
+import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
+import { withPlaceholderIcon } from '../../shared/create-placeholder-icon/index'
 import { IconsWrapper as SwapAssetIconWrapper, NetworkIconWrapper } from '../../shared/style'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
 import { Origin } from './common/origin'
@@ -49,6 +46,9 @@ import { EditPendingTransactionGas } from './common/gas'
 import { TransactionQueueStep } from './common/queue'
 import { Footer } from './common/footer'
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
+import {
+  PendingTransactionNetworkFeeAndSettings //
+} from '../pending-transaction-network-fee/pending-transaction-network-fee'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -58,26 +58,12 @@ import { UNKNOWN_TOKEN_COINGECKO_ID } from '../../../common/constants/magics'
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 import {
-  useSafeWalletSelector,
-  useUnsafeWalletSelector
+  useUnsafeWalletSelector //
 } from '../../../common/hooks/use-safe-selector'
 
-interface Props {
-  onConfirm: () => void
-  onReject: () => void
-}
-
-export function ConfirmSwapTransaction (props: Props) {
-  const { onConfirm, onReject } = props
-
+export function ConfirmSwapTransaction () {
   // redux
-  const defaultFiatCurrency = useSafeWalletSelector(
-    WalletSelectors.defaultFiatCurrency
-  )
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
-  const transactionInfo = useUnsafeWalletSelector(
-    WalletSelectors.selectedPendingTransaction
-  )
 
   // state
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
@@ -87,29 +73,25 @@ export function ConfirmSwapTransaction (props: Props) {
   // hooks
   const {
     transactionDetails,
-    transactionsNetwork,
     fromOrb,
     toOrb,
-    updateUnapprovedTransactionNonce
+    updateUnapprovedTransactionNonce,
+    selectedPendingTransaction,
+    onConfirm,
+    onReject
   } = usePendingTransactions()
 
   // queries
   const { data: makerAssetNetwork } = useGetNetworkQuery(
-    transactionDetails?.sellToken,
-    {
-      skip: !transactionDetails?.sellToken
-    }
+    transactionDetails?.sellToken ?? skipToken
   )
 
   const { data: takerAssetNetwork } = useGetNetworkQuery(
-    transactionDetails?.buyToken,
-    {
-      skip: !transactionDetails?.buyToken
-    }
+    transactionDetails?.buyToken ?? skipToken
   )
 
   // computed
-  const originInfo = transactionInfo?.originInfo ?? activeOrigin
+  const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
 
   // Methods
   const onToggleAdvancedTransactionSettings = () => {
@@ -118,13 +100,17 @@ export function ConfirmSwapTransaction (props: Props) {
   const onToggleEditGas = () => setIsEditingGas(!isEditingGas)
 
   // render
-  if (showAdvancedTransactionSettings && transactionDetails && transactionInfo) {
+  if (
+    showAdvancedTransactionSettings &&
+    transactionDetails &&
+    selectedPendingTransaction
+  ) {
     return (
       <AdvancedTransactionSettings
         onCancel={onToggleAdvancedTransactionSettings}
         nonce={transactionDetails.nonce}
-        chainId={transactionInfo.chainId}
-        txMetaId={transactionInfo.id}
+        chainId={selectedPendingTransaction.chainId}
+        txMetaId={selectedPendingTransaction.id}
         updateUnapprovedTransactionNonce={updateUnapprovedTransactionNonce}
       />
     )
@@ -188,28 +174,12 @@ export function ConfirmSwapTransaction (props: Props) {
         />
       </SwapDetails>
 
-      <NetworkFeeAndSettingsContainer>
-        <NetworkFeeContainer>
-          <NetworkFeeTitle>Network fee</NetworkFeeTitle>
-          <NetworkFeeValue>
-            <CreateNetworkIcon network={transactionsNetwork} marginRight={0} />
-            {transactionDetails?.gasFeeFiat ? (
-              new Amount(transactionDetails.gasFeeFiat).formatAsFiat(
-                defaultFiatCurrency
-              )
-            ) : (
-              <LoadingSkeleton width={38} />
-            )}
-            <EditButton onClick={onToggleEditGas}>
-              {getLocale('braveWalletAllowSpendEditButton')}
-            </EditButton>
-          </NetworkFeeValue>
-        </NetworkFeeContainer>
-
-        <Settings onClick={onToggleAdvancedTransactionSettings}>
-          <SettingsIcon />
-        </Settings>
-      </NetworkFeeAndSettingsContainer>
+      <PendingTransactionNetworkFeeAndSettings
+        onToggleAdvancedTransactionSettings={
+          onToggleAdvancedTransactionSettings
+        }
+        onToggleEditGas={onToggleEditGas}
+      />
 
       <Footer
         onConfirm={onConfirm}
@@ -230,34 +200,21 @@ interface SwapAssetProps {
   expectAddress?: boolean
 }
 
+const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 8 } as const
+const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
+const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
+
 function SwapAsset (props: SwapAssetProps) {
   const { type, address, orb, expectAddress, asset, amount, network } = props
 
-  // Memos
-  const AssetIconWithPlaceholder = React.useMemo(() => {
-    return (
-      asset &&
-      withPlaceholderIcon(asset.isErc721 ? NftIcon : AssetIcon, {
-        size: 'big',
-        marginLeft: 0,
-        marginRight: 8
-      })
-    )
-  }, [asset])
-
-  const networkDescription = React.useMemo(() => {
-    if (network) {
-      return getLocale('braveWalletPortfolioAssetNetworkDescription')
+  // computed
+  const isUnknownAsset = asset?.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID
+  const networkDescription = network
+    ? getLocale('braveWalletPortfolioAssetNetworkDescription')
         .replace('$1', '')
         .replace('$2', network.chainName ?? '')
         .trim()
-    }
-
-    return ''
-  }, [network])
-
-  // computed
-  const isUnknownAsset = asset?.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID
+    : ''
 
   return (
     <SwapAssetContainer top={type === 'maker'}>
@@ -290,7 +247,11 @@ function SwapAsset (props: SwapAssetProps) {
             <LoadingSkeleton circle={true} width={40} height={40} />
           ) : (
             <>
-              <AssetIconWithPlaceholder asset={asset} network={network} />
+              {asset.isErc721 ? (
+                <NftIconWithPlaceholder asset={asset} network={network} />
+              ) : (
+                <AssetIconWithPlaceholder asset={asset} network={network} />
+              )}
               {network && asset.contractAddress !== '' && (
                 <NetworkIconWrapper>
                   <CreateNetworkIcon network={network} marginRight={0} />
@@ -321,8 +282,12 @@ function SwapAsset (props: SwapAssetProps) {
             </>
           ) : (
             <>
-              <SwapAssetAmountSymbol>{amount.formatAsAsset(6, asset.symbol)}</SwapAssetAmountSymbol>
-              <NetworkDescriptionText>{networkDescription}</NetworkDescriptionText>
+              <SwapAssetAmountSymbol>
+                {amount.formatAsAsset(6, asset.symbol)}
+              </SwapAssetAmountSymbol>
+              <NetworkDescriptionText>
+                {networkDescription}
+              </NetworkDescriptionText>
             </>
           )}
         </SwapAmountColumn>

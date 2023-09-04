@@ -1,3 +1,8 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/common/typescript.gni")
 import("//build/config/locales.gni")
 
@@ -24,7 +29,7 @@ transpile_web_ui("brave_extension") {
 
   # Must match the relative path from the static GRD to the manifest.json
   # plus any other relative path we want these files to live in the extension
-  extra_relative_path = "/brave_extension/out"
+  resource_path_prefix = "brave_extension/out"
 
   # WDP node_modules is not an ancestor of its generated code, which still
   # contains module imports.

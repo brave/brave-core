@@ -15,31 +15,34 @@ static_library("browser") {
     "ntp_background_images_data.h",
     "ntp_background_images_service.cc",
     "ntp_background_images_service.h",
-    "ntp_background_images_source.cc",
-    "ntp_background_images_source.h",
     "ntp_p3a_helper.h",
     "ntp_sponsored_images_data.cc",
     "ntp_sponsored_images_data.h",
-    "ntp_sponsored_images_source.cc",
-    "ntp_sponsored_images_source.h",
     "sponsored_images_component_data.cc",
     "sponsored_images_component_data.h",
     "switches.cc",
     "switches.h",
     "url_constants.h",
-    "view_counter_model.cc",
-    "view_counter_model.h",
-    "view_counter_service.cc",
-    "view_counter_service.h",
   ]
+
+  if (!is_ios) {
+    sources += [
+      "ntp_background_images_source.cc",
+      "ntp_background_images_source.h",
+      "ntp_sponsored_images_source.cc",
+      "ntp_sponsored_images_source.h",
+      "view_counter_model.cc",
+      "view_counter_model.h",
+      "view_counter_service.cc",
+      "view_counter_service.h",
+    ]
+  }
 
   deps = [
     "//base",
-    "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/common",
+    "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/common",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/buildflags",
@@ -50,13 +53,23 @@ static_library("browser") {
     "//components/keyed_service/core",
     "//components/pref_registry:pref_registry",
     "//components/prefs",
-    "//content/public/browser",
-    "//content/public/common",
     "//crypto",
     "//services/network/public/cpp",
+    "//ui/base",
     "//ui/gfx/geometry",
     "//url",
   ]
+
+  if (is_ios) {
+    deps += [ "//brave/extensions:common" ]
+  } else {
+    deps += [
+      "//brave/components/brave_ads/browser",
+      "//brave/components/brave_referrals/browser",
+      "//content/public/browser",
+      "//content/public/common",
+    ]
+  }
 
   if (enable_custom_background) {
     sources += [

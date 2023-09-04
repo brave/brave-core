@@ -1,0 +1,54 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//build/toolchain/win/midl.gni")
+
+assert(is_win)
+assert(enable_brave_vpn)
+
+midl("brave_wireguard_manager_idl") {
+  sources = [ "brave_wireguard_manager_idl.idl" ]
+
+  writes_tlb = true
+}
+
+source_set("win") {
+  sources = [
+    "service_commands.cc",
+    "service_commands.h",
+    "service_constants.h",
+    "service_details.cc",
+    "service_details.h",
+    "storage_utils.cc",
+    "storage_utils.h",
+    "wireguard_utils.cc",
+    "wireguard_utils.h",
+  ]
+  deps = [
+    ":brave_wireguard_manager_idl",
+    "//base",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_vpn/common/win",
+    "//brave/components/brave_vpn/common/wireguard",
+    "//chrome/install_static:install_static_util",
+    "//components/version_info",
+    "//third_party/abseil-cpp:absl",
+  ]
+}
+
+source_set("unittests") {
+  testonly = true
+  sources = [ "storage_utils_unittest.cc" ]
+  deps = [
+    ":win",
+    "//base",
+    "//base/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+  ]
+}

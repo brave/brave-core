@@ -36,7 +36,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   return count;
 }
 
-void MigrateToV24(mojom::DBTransactionInfo* transaction) {
+void MigrateToV29(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
   DropTable(transaction, "segments");
@@ -95,12 +95,8 @@ void Segments::Migrate(mojom::DBTransactionInfo* transaction,
   CHECK(transaction);
 
   switch (to_version) {
-    case 24: {
-      MigrateToV24(transaction);
-      break;
-    }
-
-    default: {
+    case 29: {
+      MigrateToV29(transaction);
       break;
     }
   }

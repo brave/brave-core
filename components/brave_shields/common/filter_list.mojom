@@ -5,10 +5,27 @@
 
 module brave_shields.mojom;
 
+import "url/mojom/url.mojom";
+import "mojo/public/mojom/base/time.mojom";
+
+struct SubscriptionInfo {
+  bool enabled;
+  string title;
+  string homepage;
+  string last_updated_pretty_text;
+  url.mojom.Url subscription_url;
+  mojo_base.mojom.Time last_update_attempt;
+  mojo_base.mojom.Time last_successful_update_attempt;
+  uint16 expires;
+};
 
 interface FilterListAndroidHandler {
-  IsFilterListEnabled( string filterListUuid ) => ( bool is_enabled);
+  IsFilterListEnabled(string filterListUuid) => (bool is_enabled);
   EnableFilter(string filterListUuid, bool should_enable_filter);
+  GetSubscriptions() => (array<SubscriptionInfo> subscriptions);
+  CreateSubscription(url.mojom.Url subscription_url);
+  EnableSubscription(url.mojom.Url sub_url, bool enabled);
+  DeleteSubscription(url.mojom.Url sub_url);
 };
 
 const string kSwitchToAppUuid = "2F3DCE16-A19A-493C-A88F-2E110FBD37D6";

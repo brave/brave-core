@@ -1,24 +1,27 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as leo from '@brave/leo/tokens/css'
 
 export const enableRewardsButton = `
-  color: var(--brave-palette-white);
-  background: var(--brave-color-brandBat);
+  color: ${leo.color.white};
+  background: ${leo.color.button.background};
   border: none;
-  padding: 10px 40px;
-  border-radius: 21px;
+  padding: 12px 24px;
+  border-radius: 48px;
   font-weight: 600;
-  font-size: 14px;
-  line-height: 21px;
+  font-size: 13px;
+  line-height: 20px;
   cursor: pointer;
 
-  &:active {
-    background: var(--brave-color-brandBatActive);
-  }
-
   &[disabled] {
-    background: var(--brave-palette-grey200);
+    background: ${leo.color.primitive.gray[40]};
     cursor: default;
+
+    .brave-theme-dark & {
+      background: ${leo.color.primitive.gray[60]};
+    }
   }
 `

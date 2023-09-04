@@ -5,18 +5,24 @@
 
 #include "brave/browser/ui/toolbar/brave_vpn_menu_model.h"
 
+#include "base/feature_list.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "components/prefs/pref_service.h"
 
-BraveVPNMenuModel::BraveVPNMenuModel(Browser* browser)
-    : SimpleMenuModel(nullptr), browser_(browser) {
-  set_delegate(this);
+#if BUILDFLAG(IS_WIN)
+#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
+#endif
+
+BraveVPNMenuModel::BraveVPNMenuModel(Browser* browser,
+                                     PrefService* profile_prefs)
+    : SimpleMenuModel(this), profile_prefs_(profile_prefs), browser_(browser) {
   Build();
 }
 
@@ -29,6 +35,12 @@ void BraveVPNMenuModel::Build() {
                       IsBraveVPNButtonVisible()
                           ? IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM
                           : IDS_BRAVE_VPN_SHOW_VPN_BUTTON_MENU_ITEM);
+#if BUILDFLAG(IS_WIN)
+  AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON,
+                      IsTrayIconEnabled()
+                          ? IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM
+                          : IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM);
+#endif  // BUILDFLAG(IS_WIN)
   AddItemWithStringId(IDC_SEND_BRAVE_VPN_FEEDBACK,
                       IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM);
   AddItemWithStringId(IDC_ABOUT_BRAVE_VPN, IDS_BRAVE_VPN_ABOUT_VPN_MENU_ITEM);
@@ -41,6 +53,15 @@ void BraveVPNMenuModel::ExecuteCommand(int command_id, int event_flags) {
 }
 
 bool BraveVPNMenuModel::IsBraveVPNButtonVisible() const {
-  auto* prefs = browser_->profile()->GetPrefs();
-  return prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton);
+  return profile_prefs_->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton);
 }
+
+#if BUILDFLAG(IS_WIN)
+bool BraveVPNMenuModel::IsTrayIconEnabled() const {
+  if (tray_icon_enabled_for_testing_.has_value()) {
+    return tray_icon_enabled_for_testing_.value();
+  }
+
+  return brave_vpn::IsVPNTrayIconEnabled();
+}
+#endif

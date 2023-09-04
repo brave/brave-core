@@ -31,7 +31,9 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
   FilTxManager(TxService* tx_service,
                JsonRpcService* json_rpc_service,
                KeyringService* keyring_service,
-               PrefService* prefs);
+               PrefService* prefs,
+               TxStorageDelegate* delegate,
+               AccountResolverDelegate* account_resolver_delegate);
   ~FilTxManager() override;
   FilTxManager(const FilTxManager&) = delete;
   FilTxManager operator=(const FilTxManager&) = delete;
@@ -41,16 +43,13 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
 
   void AddUnapprovedTransaction(const std::string& chain_id,
                                 mojom::TxDataUnionPtr tx_data_union,
-                                const std::string& from,
+                                const mojom::AccountIdPtr& from,
                                 const absl::optional<url::Origin>& origin,
                                 const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& chain_id,
                           const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
-  void GetAllTransactionInfo(const absl::optional<std::string>& chain_id,
-                             const absl::optional<std::string>& from,
-                             GetAllTransactionInfoCallback) override;
   void GetTransactionMessageToSign(
       const std::string& chain_id,
       const std::string& tx_meta_id,
@@ -74,7 +73,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
       ProcessFilHardwareSignatureCallback callback);
 
   void GetEstimatedGas(const std::string& chain_id,
-                       const std::string& from,
+                       const mojom::AccountIdPtr& from_account_id,
                        const absl::optional<url::Origin>& origin,
                        const absl::optional<std::string>& group_id,
                        std::unique_ptr<FilTransaction> tx,
@@ -103,7 +102,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                                  const std::string& error_message);
   void ContinueAddUnapprovedTransaction(
       const std::string& chain_id,
-      const std::string& from,
+      const mojom::AccountIdPtr& from_account_id,
       const absl::optional<url::Origin>& origin,
       const absl::optional<std::string>& group_id,
       std::unique_ptr<FilTransaction> tx,
@@ -131,6 +130,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
       const absl::optional<std::string>& chain_id) override;
 
   std::unique_ptr<FilNonceTracker> nonce_tracker_;
+  raw_ptr<AccountResolverDelegate> account_resolver_delegate_ = nullptr;
   base::WeakPtrFactory<FilTxManager> weak_factory_{this};
 };
 

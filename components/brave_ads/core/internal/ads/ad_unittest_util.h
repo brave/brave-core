@@ -11,7 +11,7 @@ namespace brave_ads {
 class AdType;
 struct AdInfo;
 
-AdInfo BuildAd(const AdType& ad_type, bool should_use_random_guids);
+AdInfo BuildAdForTesting(const AdType& ad_type, bool should_use_random_uuids);
 
 }  // namespace brave_ads
 

@@ -32,7 +32,7 @@ class PrefService;
 class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
                                   public brave_ads::AdsServiceObserver {
  public:
-  explicit BraveNewTabMessageHandler(Profile* profile);
+  BraveNewTabMessageHandler(Profile* profile, bool was_invisible_and_restored);
   BraveNewTabMessageHandler(const BraveNewTabMessageHandler&) = delete;
   BraveNewTabMessageHandler& operator=(const BraveNewTabMessageHandler&) =
       delete;
@@ -44,7 +44,8 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   static bool CanPromptBraveTalk(base::Time now);
   static BraveNewTabMessageHandler* Create(
       content::WebUIDataSource* html_source,
-      Profile* profile);
+      Profile* profile,
+      bool was_invisible_and_restored);
 
  private:
   // WebUIMessageHandler implementation.
@@ -77,6 +78,8 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   // Weak pointer.
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
+
+  bool was_invisible_and_restored_ = false;
 
   base::ScopedObservation<brave_ads::AdsService, brave_ads::AdsServiceObserver>
       ads_service_observation_{this};

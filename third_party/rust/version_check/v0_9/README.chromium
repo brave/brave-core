@@ -1,0 +1,7 @@
+Name: version_check
+URL: https://crates.io/crates/version_check
+Description: Tiny crate to check the version of the installed/running rustc.
+Version: 0.9.4
+Security Critical: yes
+License: Apache 2.0
+Revision: 736b788c9c32c93b545cb084eac6f94f31f2872c

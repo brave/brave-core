@@ -15,8 +15,11 @@ class DatabaseManagerObserver : public base::CheckedObserver {
   // Invoked when about to create or open the database.
   virtual void OnWillCreateOrOpenDatabase() {}
 
-  // Invoked when the database was created or opened.
-  virtual void OnDidCreateOrOpenDatabase() {}
+  // Invoked when the database was created.
+  virtual void OnDidCreateDatabase() {}
+
+  // Invoked when the database was opened.
+  virtual void OnDidOpenDatabase() {}
 
   // Invoked when the database cannot be created or opened.
   virtual void OnFailedToCreateOrOpenDatabase() {}

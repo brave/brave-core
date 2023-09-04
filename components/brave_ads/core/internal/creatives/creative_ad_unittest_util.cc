@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
 
-#include "base/guid.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -13,27 +13,27 @@
 
 namespace brave_ads {
 
-CreativeAdInfo BuildCreativeAd(const bool should_use_random_guids) {
+CreativeAdInfo BuildCreativeAdForTesting(const bool should_use_random_uuids) {
   CreativeAdInfo creative_ad;
 
   creative_ad.creative_instance_id =
-      should_use_random_guids
-          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+      should_use_random_uuids
+          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kCreativeInstanceId;
 
   creative_ad.creative_set_id =
-      should_use_random_guids
-          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+      should_use_random_uuids
+          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kCreativeSetId;
 
   creative_ad.campaign_id =
-      should_use_random_guids
-          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+      should_use_random_uuids
+          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kCampaignId;
 
   creative_ad.advertiser_id =
-      should_use_random_guids
-          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+      should_use_random_uuids
+          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kAdvertiserId;
 
   creative_ad.start_at = DistantPast();
@@ -43,7 +43,7 @@ CreativeAdInfo BuildCreativeAd(const bool should_use_random_guids) {
 
   creative_ad.priority = 2;
 
-  creative_ad.ptr = 1.0;
+  creative_ad.pass_through_rate = 1.0;
 
   creative_ad.per_day = 3;
   creative_ad.per_week = 4;

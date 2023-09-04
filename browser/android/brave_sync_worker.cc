@@ -21,15 +21,15 @@
 #include "brave/components/brave_sync/qr_code_validator.h"
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
 #include "brave/components/brave_sync/time_limited_words.h"
-#include "brave/components/sync/driver/brave_sync_service_impl.h"
+#include "brave/components/sync/service/brave_sync_service_impl.h"
 
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
 #include "chrome/browser/sync/sync_service_factory.h"
 
-#include "components/sync/driver/sync_service.h"
-#include "components/sync/driver/sync_user_settings.h"
+#include "components/sync/service/sync_service.h"
+#include "components/sync/service/sync_user_settings.h"
 #include "components/unified_consent/unified_consent_metrics.h"
 
 #include "content/public/browser/browser_thread.h"
@@ -41,8 +41,8 @@
 //    removeSyncStateChangedListener
 //    requestStart
 //    requestStop
-//    setFirstSetupComplete
-//    isFirstSetupComplete
+//    setInitialSyncFeatureSetupComplete
+//    isInitialSyncFeatureSetupComplete
 
 using base::android::ConvertUTF8ToJavaString;
 using content::BrowserThread;
@@ -146,7 +146,7 @@ void BraveSyncWorker::RequestSync(JNIEnv* env) {
   // Sync was set up but then was reset via the dashboard. This also pokes the
   // SyncService to start up immediately, i.e. bypass deferred startup.
   if (service) {
-    service->GetUserSettings()->SetSyncRequested(true);
+    service->SetSyncFeatureRequested();
   }
 }
 
@@ -157,18 +157,19 @@ void BraveSyncWorker::MarkFirstSetupComplete() {
   if (!service)
     return;
 
-  service->GetUserSettings()->SetSyncRequested(true);
+  service->SetSyncFeatureRequested();
 
   // If the first-time setup is already complete, there's nothing else to do.
-  if (service->GetUserSettings()->IsFirstSetupComplete())
+  if (service->GetUserSettings()->IsInitialSyncFeatureSetupComplete()) {
     return;
+  }
 
   unified_consent::metrics::RecordSyncSetupDataTypesHistrogam(
       service->GetUserSettings(), profile_->GetPrefs());
 
   // We're done configuring, so notify SyncService that it is OK to start
   // syncing.
-  service->GetUserSettings()->SetFirstSetupComplete(
+  service->GetUserSettings()->SetInitialSyncFeatureSetupComplete(
       syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
 }
 
@@ -176,10 +177,10 @@ void BraveSyncWorker::FinalizeSyncSetup(JNIEnv* env) {
   MarkFirstSetupComplete();
 }
 
-bool BraveSyncWorker::IsFirstSetupComplete(JNIEnv* env) {
+bool BraveSyncWorker::IsInitialSyncFeatureSetupComplete(JNIEnv* env) {
   syncer::SyncService* sync_service = GetSyncService();
   return sync_service &&
-         sync_service->GetUserSettings()->IsFirstSetupComplete();
+         sync_service->GetUserSettings()->IsInitialSyncFeatureSetupComplete();
 }
 
 void BraveSyncWorker::ResetSync(JNIEnv* env) {
@@ -237,8 +238,6 @@ void BraveSyncWorker::SetEncryptionPassphrase(syncer::SyncService* service) {
       !sync_user_settings->IsUsingExplicitPassphrase() &&
       !sync_user_settings->IsTrustedVaultKeyRequired()) {
     sync_user_settings->SetEncryptionPassphrase(this->passphrase_);
-    ProfileMetrics::LogProfileSyncInfo(
-        ProfileMetrics::SYNC_CREATED_NEW_PASSPHRASE);
   }
 }
 
@@ -249,10 +248,11 @@ void BraveSyncWorker::SetDecryptionPassphrase(syncer::SyncService* service) {
   syncer::SyncUserSettings* sync_user_settings = service->GetUserSettings();
   DCHECK(sync_user_settings->IsPassphraseRequired());
 
-  if (sync_user_settings->SetDecryptionPassphrase(this->passphrase_)) {
-    ProfileMetrics::LogProfileSyncInfo(
-        ProfileMetrics::SYNC_ENTERED_EXISTING_PASSPHRASE);
-  }
+  bool set_decryption_result =
+      sync_user_settings->SetDecryptionPassphrase(this->passphrase_);
+  DCHECK(set_decryption_result);
+  VLOG_IF(3, !set_decryption_result)
+      << "[BraveSync] " << __func__ << " SetDecryptionPassphrase failed";
 }
 
 void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {

@@ -8,8 +8,10 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -28,7 +30,7 @@ constexpr const char* kCampaignIds[] = {"60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
 
 class BraveAdsDismissedExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BraveAdsDismissedExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -43,7 +45,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdWithin2DaysIfDismissedOnce) {
+       ShouldIncludeWithSameCampaignIdWithin2DaysIfDismissedOnce) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
@@ -66,12 +68,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   };
 
   AdEventList ad_events;
-
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = BuildAdEvent(
+    const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
     ad_events.push_back(ad_event);
-
     AdvanceClockBy(base::Minutes(5));
   }
 
@@ -83,8 +83,9 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdWithin2DaysIfDismissedOnceForMultipleTypes) {
+TEST_F(
+    BraveAdsDismissedExclusionRuleTest,
+    ShouldIncludeWithSameCampaignIdWithin2DaysIfDismissedOnceForMultipleTypes) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
@@ -103,23 +104,28 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   AdEventList ad_events;
 
+  const AdInfo ad_1 = BuildAdForTesting(AdType::kNotificationAd,
+                                        /*should_use_random_uuids*/ true);
   const AdEventInfo ad_event_1 =
-      BuildAdEvent(creative_ad, AdType::kNotificationAd,
-                   ConfirmationType::kDismissed, Now());
+      BuildAdEvent(ad_1, ConfirmationType::kDismissed, Now());
   ad_events.push_back(ad_event_1);
 
-  const AdEventInfo ad_event_2 = BuildAdEvent(
-      creative_ad, AdType::kNewTabPageAd, ConfirmationType::kDismissed, Now());
+  const AdInfo ad_2 = BuildAdForTesting(AdType::kNewTabPageAd,
+                                        /*should_use_random_uuids*/ true);
+  const AdEventInfo ad_event_2 =
+      BuildAdEvent(ad_2, ConfirmationType::kDismissed, Now());
   ad_events.push_back(ad_event_2);
 
+  const AdInfo ad_3 = BuildAdForTesting(AdType::kPromotedContentAd,
+                                        /*should_use_random_uuids*/ true);
   const AdEventInfo ad_event_3 =
-      BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
-                   ConfirmationType::kDismissed, Now());
+      BuildAdEvent(ad_3, ConfirmationType::kDismissed, Now());
   ad_events.push_back(ad_event_3);
 
+  const AdInfo ad_4 = BuildAdForTesting(AdType::kSearchResultAd,
+                                        /*should_use_random_uuids*/ true);
   const AdEventInfo ad_event_4 =
-      BuildAdEvent(creative_ad, AdType::kSearchResultAd,
-                   ConfirmationType::kDismissed, Now());
+      BuildAdEvent(ad_4, ConfirmationType::kDismissed, Now());
   ad_events.push_back(ad_event_4);
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
@@ -131,7 +137,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdWithin2DaysIfDismissedThenClicked) {
+       ShouldIncludeWithSameCampaignIdWithin2DaysIfDismissedThenClicked) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
@@ -153,12 +159,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       ConfirmationType::kViewed, ConfirmationType::kClicked};
 
   AdEventList ad_events;
-
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = BuildAdEvent(
+    const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
     ad_events.push_back(ad_event);
-
     AdvanceClockBy(base::Minutes(5));
   }
 
@@ -171,7 +175,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdAfter2DaysIfDismissedThenClicked) {
+       ShouldIncludeWithSameCampaignIdAfter2DaysIfDismissedThenClicked) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
@@ -193,12 +197,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       ConfirmationType::kViewed, ConfirmationType::kClicked};
 
   AdEventList ad_events;
-
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = BuildAdEvent(
+    const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
     ad_events.push_back(ad_event);
-
     AdvanceClockBy(base::Minutes(5));
   }
 
@@ -214,7 +216,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdWithin2DaysIfClickedThenDismissed) {
+       ShouldIncludeWithSameCampaignIdWithin2DaysIfClickedThenDismissed) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
@@ -236,12 +238,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       ConfirmationType::kViewed, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
-
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = BuildAdEvent(
+    const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
     ad_events.push_back(ad_event);
-
     AdvanceClockBy(base::Minutes(5));
   }
 
@@ -254,7 +254,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdAfter2DaysIfClickedThenDismissed) {
+       ShouldIncludeWithSameCampaignIdAfter2DaysIfClickedThenDismissed) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
@@ -276,12 +276,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       ConfirmationType::kViewed, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
-
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = BuildAdEvent(
+    const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
     ad_events.push_back(ad_event);
-
     AdvanceClockBy(base::Minutes(5));
   }
 
@@ -297,7 +295,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdAfter2DaysIfClickedThenDismissedTwice) {
+       ShouldIncludeWithSameCampaignIdAfter2DaysIfClickedThenDismissedTwice) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
@@ -320,12 +318,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       ConfirmationType::kViewed, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
-
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = BuildAdEvent(
+    const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
     ad_events.push_back(ad_event);
-
     AdvanceClockBy(base::Minutes(5));
   }
 
@@ -340,7 +336,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
-       DoNotAllowAdWithSameCampaignIdWithin2DaysIfClickedThenDismissedTwice) {
+       ShouldExcludeWithSameCampaignIdWithin2DaysIfClickedThenDismissedTwice) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
@@ -363,12 +359,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       ConfirmationType::kViewed, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
-
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = BuildAdEvent(
+    const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
     ad_events.push_back(ad_event);
-
     AdvanceClockBy(base::Minutes(5));
   }
 
@@ -381,7 +375,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdIfClickedThenDismissedTwiceWhenDisabled) {
+       ShouldIncludeWithSameCampaignIdIfClickedThenDismissedTwiceWhenDisabled) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_dismissed_within_time_window"] = "0s";
@@ -404,9 +398,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       ConfirmationType::kViewed, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
-
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = BuildAdEvent(
+    const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
     ad_events.push_back(ad_event);
   }
@@ -420,7 +413,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
-       AllowAdWithDifferentCampaignIdWithin2Days) {
+       ShouldIncludeWithDifferentCampaignIdWithin2Days) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
@@ -446,12 +439,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       ConfirmationType::kViewed, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
-
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = BuildAdEvent(
+    const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad_2, AdType::kNotificationAd, confirmation_type, Now());
     ad_events.push_back(ad_event);
-
     AdvanceClockBy(base::Minutes(5));
   }
 
@@ -464,7 +455,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
-       AllowAdWithDifferentCampaignIdAfter2Days) {
+       ShouldIncludeWithDifferentCampaignIdAfter2Days) {
   // Arrange
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_instance_id = kCreativeInstanceId;
@@ -479,12 +470,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       ConfirmationType::kViewed, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
-
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = BuildAdEvent(
+    const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad_2, AdType::kNotificationAd, confirmation_type, Now());
     ad_events.push_back(ad_event);
-
     AdvanceClockBy(base::Minutes(5));
   }
 

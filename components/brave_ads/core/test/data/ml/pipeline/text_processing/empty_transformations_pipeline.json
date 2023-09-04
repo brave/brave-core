@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "timestamp": "2019-03-13 17:33:31.708151",
+  "locale": "en",
+  "transformations": [],
+  "classifier": {
+    "classifier_type": "LINEAR",
+    "classes": [
+      "spam"
+    ],
+    "class_weights": {
+      "spam": [
+        -6.0868
+      ]
+    },
+    "biases": [
+      -0.9163
+    ]
+  }
+}

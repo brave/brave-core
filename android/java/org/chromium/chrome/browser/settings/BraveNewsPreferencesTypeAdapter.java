@@ -30,13 +30,11 @@ import org.chromium.brave_news.mojom.PublisherType;
 import org.chromium.brave_news.mojom.UserEnabled;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
-import org.chromium.url.mojom.Url;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private BraveNewsController mBraveNewsController;

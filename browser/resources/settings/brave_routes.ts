@@ -30,6 +30,13 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (loadTimeData.getBoolean('isBraveRewardsSupported')) {
     r.REWARDS = r.BASIC.createSection('/rewards', 'rewards')
   }
+  if (loadTimeData.getBoolean('areShortcutsSupported')) {
+    if (r.SYSTEM) {
+      r.SHORTCUTS = r.SYSTEM.createChild('/system/shortcuts')
+    } else if (!isGuest) {
+      console.error('[Brave Settings Overrides] Routes: could not find SYSTEM page')
+    }
+  }
   r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
   r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
   r.EXTENSIONS_V2 = r.EXTENSIONS.createChild('/extensions/v2')
@@ -61,7 +68,10 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   } else {
     console.error('[Brave Settings Overrides] could not find expected route /content/siteDetails')
   }
-
+  if (pageVisibility.leoAssistant) {
+    r.BRAVE_LEO_ASSISTANT =
+      r.BASIC.createSection('/leo-assistant', 'leoAssistant')
+  }
   if (r.SITE_SETTINGS) {
     r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay')
     const isGoogleSignInFeatureEnabled = loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')

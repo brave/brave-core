@@ -5,19 +5,18 @@
 
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_factory.h"
 
-#include "brave/components/brave_ads/core/ad_type.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
+#include "base/notreached.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/cash_deposit.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/non_cash_deposit.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 namespace brave_ads {
 
 std::unique_ptr<DepositInterface> DepositsFactory::Build(
-    const AdType& ad_type,
     const ConfirmationType& confirmation_type) {
-  if (ad_type == AdType::kNewTabPageAd && !ShouldRewardUser()) {
-    return nullptr;
+  if (!UserHasJoinedBraveRewards()) {
+    return std::make_unique<NonCashDeposit>();
   }
 
   switch (confirmation_type.value()) {
@@ -38,9 +37,12 @@ std::unique_ptr<DepositInterface> DepositsFactory::Build(
     }
 
     case ConfirmationType::kUndefined: {
-      return nullptr;
+      NOTREACHED_NORETURN();
     }
   }
+
+  NOTREACHED_NORETURN() << "Unexpected value for ConfirmationType: "
+                        << confirmation_type;
 }
 
 }  // namespace brave_ads

@@ -43,7 +43,11 @@ export function App (props: Props) {
     <HostContext.Provider value={props.host}>
       <WithThemeVariables>
         <style.root>
-          {loading ? <Loading /> : <Panel key={panelKey} />}
+          {loading ? <Loading /> :
+            <div className='rewards-panel' data-test-id='rewards-panel'>
+              <Panel key={panelKey} />
+            </div>
+          }
         </style.root>
       </WithThemeVariables>
     </HostContext.Provider>

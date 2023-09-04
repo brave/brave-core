@@ -5,7 +5,11 @@
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
-import Checkbox from '@brave/leo/react/checkbox'
+import { useHistory, useLocation } from 'react-router-dom'
+import Toggle from '@brave/leo/react/toggle'
+
+// Types
+import { WalletRoutes } from '../../../constants/types'
 
 // Actions
 import { WalletActions } from '../../../common/actions'
@@ -31,13 +35,16 @@ import {
   StyledWrapper,
   PopupButtonText,
   ButtonIcon,
-  CheckBoxRow
+  ToggleRow
 } from './wellet-menus.style'
 import {
   Row
 } from '../../shared/style'
 
 export const PortfolioOverviewMenu = () => {
+  // Routing
+  const history = useHistory()
+  const { pathname: walletLocation } = useLocation()
 
   // Redux
   const dispatch = useDispatch()
@@ -46,6 +53,8 @@ export const PortfolioOverviewMenu = () => {
     useSafeWalletSelector(WalletSelectors.hidePortfolioGraph)
   const hidePortfolioBalances =
     useSafeWalletSelector(WalletSelectors.hidePortfolioBalances)
+  const hidePortfolioNFTsTab =
+    useSafeWalletSelector(WalletSelectors.hidePortfolioNFTsTab)
 
   // Methods
   const onToggleHideGraph = React.useCallback(() => {
@@ -76,35 +85,67 @@ export const PortfolioOverviewMenu = () => {
         ))
   }, [hidePortfolioBalances])
 
+  const onToggleHideNFTsTab = React.useCallback(() => {
+    if (walletLocation.includes(WalletRoutes.PortfolioNFTs)) {
+      history.push(WalletRoutes.PortfolioAssets)
+    }
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB,
+      hidePortfolioNFTsTab
+        ? 'false'
+        : 'true'
+    )
+    dispatch(
+      WalletActions
+        .setHidePortfolioNFTsTab(
+          !hidePortfolioNFTsTab
+        ))
+  }, [hidePortfolioNFTsTab, walletLocation])
+
   return (
     <StyledWrapper yPosition={42}>
-      <CheckBoxRow onClick={onToggleHideBalances}>
-        <ButtonIcon name='eye-off' />
-        <PopupButtonText>
-          {getLocale('braveWalletWalletPopupHideBalances')}
-        </PopupButtonText>
-        <Checkbox
-          checked={hidePortfolioBalances}
-          onChanged={onToggleHideBalances}
-          size='normal'
-        />
-      </CheckBoxRow>
-
-      <CheckBoxRow onClick={onToggleHideGraph}>
+      <ToggleRow onClick={onToggleHideBalances}>
         <Row>
-          {/* This graph icon needs to be updated to the
-              one in figma once it is added to leo. */}
+          <ButtonIcon name='eye-on' />
+          <PopupButtonText>
+            {getLocale('braveWalletWalletPopupHideBalances')}
+          </PopupButtonText>
+          <Toggle
+            checked={!hidePortfolioBalances}
+            onChanged={onToggleHideBalances}
+            size='small'
+          />
+        </Row>
+      </ToggleRow>
+
+      <ToggleRow onClick={onToggleHideGraph}>
+        <Row>
           <ButtonIcon name='graph' />
           <PopupButtonText>
             {getLocale('braveWalletWalletPopupShowGraph')}
           </PopupButtonText>
         </Row>
-        <Checkbox
+        <Toggle
           checked={!hidePortfolioGraph}
           onChanged={onToggleHideGraph}
-          size='normal'
+          size='small'
         />
-      </CheckBoxRow>
+      </ToggleRow>
+
+      <ToggleRow onClick={onToggleHideNFTsTab}>
+        <Row>
+          <ButtonIcon name='nft' />
+          <PopupButtonText>
+            {getLocale('braveWalletWalletNFTsTab')}
+          </PopupButtonText>
+        </Row>
+        <Toggle
+          checked={!hidePortfolioNFTsTab}
+          onChanged={onToggleHideNFTsTab}
+          size='small'
+        />
+      </ToggleRow>
+
     </StyledWrapper>
   )
 }

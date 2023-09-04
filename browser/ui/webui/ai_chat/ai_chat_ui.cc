@@ -10,9 +10,9 @@
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/components/ai_chat/constants.h"
-#include "brave/components/ai_chat/pref_names.h"
-#include "brave/components/ai_chat_ui/grit/ai_chat_ui_generated_map.h"
+#include "brave/components/ai_chat/browser/constants.h"
+#include "brave/components/ai_chat/common/pref_names.h"
+#include "brave/components/ai_chat/resources/page/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
@@ -23,7 +23,6 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
-#include "services/network/public/mojom/content_security_policy.mojom.h"
 
 AIChatUI::AIChatUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui),
@@ -60,7 +59,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;");
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      "img-src 'self' chrome-untrusted://resources;");
+      "img-src 'self' blob: chrome-untrusted://resources;");
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
       "font-src 'self' data: chrome-untrusted://resources;");
@@ -80,12 +79,14 @@ void AIChatUI::BindInterface(
   browser_ = ai_chat::GetBrowserForWebContents(web_ui()->GetWebContents());
   DCHECK(browser_);
 
-  page_handler_ = std::make_unique<AIChatUIPageHandler>(
-      browser_->tab_strip_model(), profile_, std::move(receiver));
+  page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
+      web_ui()->GetWebContents(), browser_->tab_strip_model(), profile_,
+      std::move(receiver));
 }
 
 std::unique_ptr<content::WebUIController>
-UntrustedChatUIConfig::CreateWebUIController(content::WebUI* web_ui) {
+UntrustedChatUIConfig::CreateWebUIController(content::WebUI* web_ui,
+                                             const GURL& url) {
   return std::make_unique<AIChatUI>(web_ui);
 }
 

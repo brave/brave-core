@@ -13,7 +13,6 @@ EXTENSIONS_EXPORT extern const int kBraveActionLeftMarginExtra;
 
 EXTENSIONS_EXPORT extern const char brave_extension_id[];
 EXTENSIONS_EXPORT extern const char hangouts_extension_id[];
-EXTENSIONS_EXPORT extern const char widevine_extension_id[];
 EXTENSIONS_EXPORT extern const char crl_set_extension_id[];
 
 EXTENSIONS_EXPORT extern const char brave_webtorrent_extension_id[];

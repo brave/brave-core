@@ -9,15 +9,16 @@
 #include <cstdint>
 #include <string>
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads::database {
 
-int ColumnInt(mojom::DBRecordInfo* record, size_t index);
-int64_t ColumnInt64(mojom::DBRecordInfo* record, size_t index);
-double ColumnDouble(mojom::DBRecordInfo* record, size_t index);
-bool ColumnBool(mojom::DBRecordInfo* record, size_t index);
-std::string ColumnString(mojom::DBRecordInfo* record, size_t index);
+[[nodiscard]] int ColumnInt(mojom::DBRecordInfo* record, size_t index);
+[[nodiscard]] int64_t ColumnInt64(mojom::DBRecordInfo* record, size_t index);
+[[nodiscard]] double ColumnDouble(mojom::DBRecordInfo* record, size_t index);
+[[nodiscard]] bool ColumnBool(mojom::DBRecordInfo* record, size_t index);
+[[nodiscard]] std::string ColumnString(mojom::DBRecordInfo* record,
+                                       size_t index);
 
 }  // namespace brave_ads::database
 

@@ -7,7 +7,7 @@ module brave_rewards.mojom;
 
 enum RewardsPanelView {
   kDefault,
-  kRewardsTour,
+  kRewardsSetup,
   kGrantCaptcha,
   kAdaptiveCaptcha,
   kInlineTip

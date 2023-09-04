@@ -12,12 +12,16 @@ if (!is_android) {
     "//brave/browser/ui/color/brave_color_mixer.cc",
     "//brave/browser/ui/color/brave_color_mixer.h",
     "//brave/browser/ui/color/color_palette.h",
+    "//brave/browser/ui/color/playlist/playlist_color_mixer.cc",
+    "//brave/browser/ui/color/playlist/playlist_color_mixer.h",
   ]
 
   brave_browser_ui_color_mixers_deps += [
     "//brave/browser/themes",
+    "//brave/browser/ui/color:leo_colors",
     "//brave/browser/ui/tabs",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/playlist/common",
     "//brave/components/speedreader/common/buildflags",
     "//skia",
     "//ui/color",

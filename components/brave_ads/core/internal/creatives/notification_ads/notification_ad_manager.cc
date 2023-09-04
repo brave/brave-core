@@ -8,11 +8,11 @@
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/ad_type.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_ads/core/notification_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "build/build_config.h"
 
 #if BUILDFLAG(IS_ANDROID)

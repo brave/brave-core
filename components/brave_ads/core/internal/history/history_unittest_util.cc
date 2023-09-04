@@ -5,15 +5,15 @@
 
 #include "brave/components/brave_ads/core/internal/history/history_unittest_util.h"
 
-#include "brave/components/brave_ads/core/history_filter_types.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
-#include "brave/components/brave_ads/core/history_sort_types.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
+#include "brave/components/brave_ads/core/public/history/history_filter_types.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
+#include "brave/components/brave_ads/core/public/history/history_sort_types.h"
 
 namespace brave_ads {
 
-size_t GetHistoryItemCount() {
+size_t GetHistoryItemCountForTesting() {
   const HistoryItemList history_items =
       HistoryManager::Get(HistoryFilterType::kNone, HistorySortType::kNone,
                           DistantPast(), DistantFuture());

@@ -20,7 +20,7 @@ using GetSKUOrderCallback = std::function<void(mojom::SKUOrderPtr)>;
 
 class DatabaseSKUOrder : public DatabaseTable {
  public:
-  explicit DatabaseSKUOrder(LedgerImpl& ledger);
+  explicit DatabaseSKUOrder(RewardsEngineImpl& engine);
   ~DatabaseSKUOrder() override;
 
   void InsertOrUpdate(mojom::SKUOrderPtr info, LegacyResultCallback callback);
@@ -39,8 +39,8 @@ class DatabaseSKUOrder : public DatabaseTable {
                                      LegacyResultCallback callback);
 
  private:
-  void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   GetSKUOrderCallback callback);
+  void OnGetRecord(GetSKUOrderCallback callback,
+                   mojom::DBCommandResponsePtr response);
 
   void OnGetRecordItems(std::vector<mojom::SKUOrderItemPtr> list,
                         std::shared_ptr<mojom::SKUOrderPtr> shared_order,

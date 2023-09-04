@@ -19,7 +19,6 @@
 #include "brave/browser/perf/brave_perf_features_processor.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -50,6 +49,7 @@
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/components/ipfs/ipfs_service.h"
 #endif  // BUILDFLAG(ENABLE_IPFS)
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -95,6 +95,9 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   brave::SetDefaultThirdPartyCookieBlockValue(profile);
   perf::MaybeEnableBraveFeatureForPerfTesting(profile);
   brave::MigrateHttpsUpgradeSettings(profile);
+#if BUILDFLAG(ENABLE_IPFS)
+  ipfs::IpfsService::MigrateProfilePrefs(profile->GetPrefs());
+#endif
 }
 
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,
@@ -117,9 +120,7 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   DCHECK(status);
   status->UpdateGCMDriverStatus();
 #endif
-  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature)) {
-    brave_news::BraveNewsControllerFactory::GetForContext(profile);
-  }
+  brave_news::BraveNewsControllerFactory::GetForContext(profile);
   brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(profile);
   brave::URLSanitizerServiceFactory::GetForBrowserContext(profile);
 }

@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/feature_list.h"
+#include "base/no_destructor.h"
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service_win.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -25,7 +26,8 @@ namespace brave_vpn {
 
 // static
 BraveVpnDnsObserverFactory* BraveVpnDnsObserverFactory::GetInstance() {
-  return base::Singleton<BraveVpnDnsObserverFactory>::get();
+  static base::NoDestructor<BraveVpnDnsObserverFactory> instance;
+  return instance.get();
 }
 
 BraveVpnDnsObserverFactory::~BraveVpnDnsObserverFactory() = default;
@@ -45,7 +47,8 @@ KeyedService* BraveVpnDnsObserverFactory::BuildServiceInstanceFor(
 BraveVpnDnsObserverService* BraveVpnDnsObserverFactory::GetServiceForContext(
     content::BrowserContext* context) {
   if (!base::FeatureList::IsEnabled(
-          brave_vpn::features::kBraveVPNDnsProtection)) {
+          brave_vpn::features::kBraveVPNDnsProtection) ||
+      brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
     return nullptr;
   }
   DCHECK(brave_vpn::IsAllowedForContext(context));

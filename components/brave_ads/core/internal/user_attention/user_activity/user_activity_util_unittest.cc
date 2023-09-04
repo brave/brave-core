@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util.h"
+
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
@@ -133,9 +134,9 @@ TEST_F(BraveAdsUserActivityUtilTest,
   // Act
 
   // Assert
-  EXPECT_EQ(base::TimeDelta(),
-            GetTimeSinceLastUserActivityEvent(
-                events, UserActivityEventType::kTabStartedPlayingMedia));
+  EXPECT_TRUE(GetTimeSinceLastUserActivityEvent(
+                  events, UserActivityEventType::kTabStartedPlayingMedia)
+                  .is_zero());
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
@@ -148,9 +149,9 @@ TEST_F(BraveAdsUserActivityUtilTest,
   // Act
 
   // Assert
-  EXPECT_EQ(base::TimeDelta(),
-            GetTimeSinceLastUserActivityEvent(
-                events, UserActivityEventType::kTabStartedPlayingMedia));
+  EXPECT_TRUE(GetTimeSinceLastUserActivityEvent(
+                  events, UserActivityEventType::kTabStartedPlayingMedia)
+                  .is_zero());
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, ToUserActivityTriggers) {

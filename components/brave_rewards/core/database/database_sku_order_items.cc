@@ -9,9 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_sku_order_items.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
-
-using std::placeholders::_1;
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -22,8 +20,8 @@ const char kTableName[] = "sku_order_items";
 
 }  // namespace
 
-DatabaseSKUOrderItems::DatabaseSKUOrderItems(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseSKUOrderItems::DatabaseSKUOrderItems(RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseSKUOrderItems::~DatabaseSKUOrderItems() = default;
 
@@ -96,15 +94,15 @@ void DatabaseSKUOrderItems::GetRecordsByOrderId(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(
-      &DatabaseSKUOrderItems::OnGetRecordsByOrderId, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseSKUOrderItems::OnGetRecordsByOrderId,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
-    mojom::DBCommandResponsePtr response,
-    GetSKUOrderItemsCallback callback) {
+    GetSKUOrderItemsCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

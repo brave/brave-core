@@ -14,10 +14,10 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
-#include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -60,7 +60,7 @@ class BraveAdsNewTabPageAdServingTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    ForceNewTabPageAdServingVersion(1);
+    ForceNewTabPageAdServingVersionForTesting(1);
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
@@ -78,7 +78,7 @@ class BraveAdsNewTabPageAdServingTest : public UnitTestBase {
 
 TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Arrange
-  ForceNewTabPageAdServingVersion(0);
+  ForceNewTabPageAdServingVersionForTesting(0);
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(
@@ -98,7 +98,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, ServeAd) {
   ForcePermissionRulesForTesting();
 
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act
@@ -120,7 +120,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
   ForcePermissionRulesForTesting();
 
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad.wallpapers.clear();
   database::SaveCreativeNewTabPageAds({creative_ad});
 
@@ -158,7 +158,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act

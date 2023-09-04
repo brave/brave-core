@@ -8,7 +8,6 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
-#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
@@ -24,24 +23,6 @@ class BraveTabsSearchButtonTest : public InProcessBrowserTest,
  public:
   BraveTabsSearchButtonTest() = default;
   ~BraveTabsSearchButtonTest() override = default;
-
-#if BUILDFLAG(IS_WIN)
-  bool IsWin10TabSearchCaptionButtonEnabled() { return GetParam(); }
-
-  void SetUp() override {
-    if (IsWin10TabSearchCaptionButtonEnabled()) {
-      scoped_feature_list_.InitAndEnableFeature(
-          features::kWin10TabSearchCaptionButton);
-    } else {
-      scoped_feature_list_.InitAndDisableFeature(
-          features::kWin10TabSearchCaptionButton);
-    }
-    InProcessBrowserTest::SetUp();
-  }
-
- protected:
-  base::test::ScopedFeatureList scoped_feature_list_;
-#endif
 };
 
 #if BUILDFLAG(IS_WIN)

@@ -8,14 +8,9 @@
 #include <string>
 #include <utility>
 
-#include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
-#include "brave/components/commander/browser/commander_item_model.h"
 #include "brave/components/commander/common/constants.h"
 #include "brave/components/omnibox/browser/commander_action.h"
 #include "components/omnibox/browser/autocomplete_match.h"
@@ -32,7 +27,9 @@ CommanderProvider::CommanderProvider(AutocompleteProviderClient* client,
     AddListener(listener);
   }
 
-  observation_.Observe(client_->GetCommanderDelegate());
+  if (auto* delegate = client_->GetCommanderDelegate()) {
+    observation_.Observe(client_->GetCommanderDelegate());
+  }
 }
 
 CommanderProvider::~CommanderProvider() = default;
@@ -45,7 +42,10 @@ void CommanderProvider::Start(const AutocompleteInput& input,
 
   matches_.clear();
   last_input_ = input.text();
-  client_->GetCommanderDelegate()->UpdateText();
+
+  if (auto* delegate = client_->GetCommanderDelegate()) {
+    delegate->UpdateText();
+  }
 }
 
 void CommanderProvider::Stop(bool clear_cached_results,
@@ -55,7 +55,11 @@ void CommanderProvider::Stop(bool clear_cached_results,
 }
 
 void CommanderProvider::OnCommanderUpdated() {
+  // This is called the CommanderFrontEndDelegate::Observer, so a delegate must
+  // always exist at this point.
   auto* delegate = client_->GetCommanderDelegate();
+  CHECK(delegate);
+
   matches_.clear();
 
   if (!last_input_.starts_with(commander::kCommandPrefix.data())) {
@@ -68,13 +72,12 @@ void CommanderProvider::OnCommanderUpdated() {
     const auto& option = items[i];
     AutocompleteMatch match(this, rank--, false,
                             AutocompleteMatchType::BOOKMARK_TITLE);
-    match.actions.push_back(
-        base::MakeRefCounted<CommanderAction>(i, delegate->GetResultSetId()));
+    match.takeover_action =
+        base::MakeRefCounted<CommanderAction>(i, delegate->GetResultSetId());
 
     // This is neat but it would be nice if we could always show it instead of
     // only when we have a result selected.
     match.contents = option.annotation;
-    match.additional_text = delegate->GetPrompt();
     if (!option.annotation.empty()) {
       match.contents_class = {
           ACMatchClassification(0, ACMatchClassification::DIM)};

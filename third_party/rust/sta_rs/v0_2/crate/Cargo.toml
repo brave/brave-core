@@ -1,0 +1,28 @@
+[package]
+name = "sta-rs"
+version = "0.2.0"
+authors = ["Alex Davidson <coela@alxdavids.xyz>"]
+license = "MPL-2.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+strobe-rs = "0.8.1"
+strobe-rng = "0.2"
+adss-rs = "0.2"
+ppoprf = "0.2"
+rand_core = "0.6.3"
+zeroize = "1.5.5"
+
+[dev-dependencies]
+criterion = "0.4.0"
+sta-rs-test-utils = { path = "./test-utils" }
+rand = { version = "0.8.5", features = [ "std" ] }
+
+[features]
+star2 = ["sta-rs-test-utils/star2"]
+
+[[bench]]
+name = "bench"
+harness = false

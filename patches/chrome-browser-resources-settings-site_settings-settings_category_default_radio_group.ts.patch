@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts b/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts
+index 8c7966f45bdf471a5809fecc9bc24cba0abf498e..0d093d6d07c978ec0e083e1018bd78353e3ca63f 100644
+--- a/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts
++++ b/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts
+@@ -158,6 +158,7 @@ export class SettingsCategoryDefaultRadioGroupElement extends
+       case ContentSettingsTypes.WINDOW_MANAGEMENT:
+         // "Ask" vs "Blocked".
+         return ContentSetting.ASK;
++      case ContentSettingsTypes.ETHEREUM: case ContentSettingsTypes.SOLANA: case ContentSettingsTypes.GOOGLE_SIGN_IN: case ContentSettingsTypes.LOCALHOST_ACCESS: return ContentSetting.ASK; case ContentSettingsTypes.AUTOPLAY: return ContentSetting.ALLOW;
+       default:
+         assertNotReached('Invalid category: ' + this.category);
+     }

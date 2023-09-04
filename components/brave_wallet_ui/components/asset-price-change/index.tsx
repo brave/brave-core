@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { StyledWrapper, PriceChange, ArrowDown, ArrowUp } from './style'
+import { StyledWrapper, PriceChange, Arrow } from './style'
 
 export interface Props {
   isDown: boolean
@@ -16,11 +16,12 @@ export const AssetPriceChange = (props: Props) => {
   const { isDown, priceChangePercentage } = props
 
   return (
-    <StyledWrapper isDown={isDown}>
-      {isDown ? <ArrowDown /> : <ArrowUp /> }
-      <PriceChange>
-        {priceChangePercentage}
-      </PriceChange>
+    <StyledWrapper>
+      <Arrow
+        isDown={isDown}
+        name={isDown ? 'arrow-small-down' : 'arrow-small-up'}
+      />
+      <PriceChange isDown={isDown}>{priceChangePercentage}</PriceChange>
     </StyledWrapper>
   )
 }

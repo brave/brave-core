@@ -16,7 +16,7 @@ export interface Props {
   onSelectFilter: (value: string) => void
 }
 
-const AssetsFilterDropdown = (props: Props) => {
+export const AssetsFilterDropdown = (props: Props) => {
   const { options, value, closeOnSelect, onSelectFilter } = props
   const [isOpen, setIsOpen] = React.useState(false)
 

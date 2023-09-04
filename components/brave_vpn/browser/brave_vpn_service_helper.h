@@ -39,6 +39,8 @@ void ClearSubscriberCredential(PrefService* local_prefs);
 void SetSkusCredential(PrefService* local_prefs,
                        const std::string& skus_credential,
                        const base::Time& expiration_time);
+void SetSkusCredentialFetchingRetried(PrefService* local_prefs, bool retried);
+bool IsRetriedSkusCredential(PrefService* local_prefs);
 base::Time GetExpirationTimeForSkusCredential(PrefService* local_prefs);
 
 }  // namespace brave_vpn

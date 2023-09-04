@@ -1,0 +1,9 @@
+Name: futures
+URL: https://crates.io/crates/futures
+Description: An implementation of futures and streams featuring zero allocations,
+composability, and iterator-like interfaces.
+
+Version: 0.3.27
+Security Critical: no
+License: Apache 2.0
+Revision: cfc501c9c7ef53c531ed43533bb02845f65ff79e

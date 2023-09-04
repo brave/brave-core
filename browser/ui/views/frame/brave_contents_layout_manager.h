@@ -23,11 +23,18 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
     sidebar_on_left_ = sidebar_on_left;
   }
 
+  void set_reader_mode_toolbar(views::View* reader_mode_toolbar_view) {
+    reader_mode_toolbar_view_ = reader_mode_toolbar_view;
+  }
+
+  int CalculateTargetSideBarWidth() const;
+
   // ContentsLayoutManager overrides:
   void Layout(views::View* contents_container) override;
 
  private:
   raw_ptr<views::View> sidebar_container_view_ = nullptr;
+  raw_ptr<views::View> reader_mode_toolbar_view_ = nullptr;
   bool sidebar_on_left_ = true;
 };
 

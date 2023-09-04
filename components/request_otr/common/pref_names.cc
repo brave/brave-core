@@ -5,9 +5,8 @@
 
 #include "brave/components/request_otr/common/pref_names.h"
 
-namespace request_otr::prefs {
+namespace request_otr {
 
-constexpr char kRequestOTRActionOption[] =
+const char kRequestOTRActionOption[] =
     "brave.request_otr.request_otr_action_option";
-
-}  // namespace request_otr::prefs
+}  // namespace request_otr

@@ -3,6 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import {
+  layoutPanelWidth
+} from '../../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -10,7 +13,10 @@ export const StyledWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 100px;
+  padding: 24px 0px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 18px 0px;
+  }
 `
 
 export const InfoColumn = styled.div`
@@ -36,7 +42,6 @@ export const Description = styled.span`
   line-height: 18px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
-  max-width: 355px;
 `
 
 export const NetworkIcon = styled.img`
@@ -50,4 +55,5 @@ export const LeftSide = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+  margin-right: 15px;
 `

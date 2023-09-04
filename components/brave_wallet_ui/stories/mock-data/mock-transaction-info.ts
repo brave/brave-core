@@ -4,7 +4,12 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Types
-import { mockAccount, mockSolanaAccount } from '../../common/constants/mocks'
+import {
+  mockAccount,
+  mockFilecoinAccount,
+  mockSolanaAccount,
+  mockSolanaAccountInfo
+} from '../../common/constants/mocks'
 import {
   BraveWallet,
   SerializableTransactionInfo
@@ -16,8 +21,9 @@ import { FileCoinTransactionInfo } from '../../utils/tx-utils'
 import { mockOriginInfo } from './mock-origin-info'
 
 export const mockTransactionInfo: SerializableTransactionInfo = {
-  chainId: '0x0',
-  fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+  fromAccountId: mockAccount.accountId,
+  fromAddress: mockAccount.address,
+  chainId: BraveWallet.GOERLI_CHAIN_ID,
   id: '465a4d6646-kjlwf665',
   txArgs: ['0x0d8775f648430679a709e98d2b0cb6250d2887ef', '0x15ddf09c97b0000'],
   txDataUnion: {
@@ -49,12 +55,14 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
   submittedTime: { microseconds: 0 },
   confirmedTime: { microseconds: 0 },
   originInfo: mockOriginInfo,
-  groupId: undefined
+  groupId: undefined,
+  effectiveRecipient: '0x0d8775f648430679a709e98d2b0cb6250d2887ef'
 }
 
 export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
-  chainId: '0x0',
+  chainId: BraveWallet.SOLANA_MAINNET,
   fromAddress: mockSolanaAccount.address,
+  fromAccountId: mockSolanaAccount.accountId,
   id: 'sol-tx',
   txArgs: [],
   txDataUnion: {
@@ -80,28 +88,30 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
       },
       splTokenMintAddress: '',
       staticAccountKeys: [],
-      toWalletAddress: '',
+      toWalletAddress: mockSolanaAccountInfo.address,
       txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
-      version: 1
+      version: 1,
     },
     filTxData: undefined
   },
   txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
   txStatus: 0,
   txParams: ['address', 'amount'],
-  txType: BraveWallet.TransactionType.ERC20Transfer,
+  txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
   createdTime: { microseconds: 0 },
   submittedTime: { microseconds: 0 },
   confirmedTime: { microseconds: 0 },
   originInfo: mockOriginInfo,
-  groupId: undefined
+  groupId: undefined,
+  effectiveRecipient: undefined
 }
 
 export const mockFilSendTransaction: FileCoinTransactionInfo = {
   chainId: BraveWallet.FILECOIN_MAINNET,
   confirmedTime: { microseconds: BigInt(new Date().getUTCMilliseconds()) },
   createdTime: { microseconds: BigInt(new Date().getUTCMilliseconds()) },
-  fromAddress: mockAccount.address,
+  fromAddress: mockFilecoinAccount.address,
+  fromAccountId: mockFilecoinAccount.accountId,
   groupId: undefined,
   id: 'fil-send-tx',
   originInfo: undefined,
@@ -109,8 +119,7 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
   txArgs: [],
   txDataUnion: {
     filTxData: {
-      from: mockAccount.address,
-      to: mockAccount.address,
+      to: mockFilecoinAccount.address,
       value: '1000',
       nonce: '1',
       gasFeeCap: '100',
@@ -125,7 +134,8 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
   txHash: 'fil-send-tx',
   txParams: [],
   txStatus: BraveWallet.TransactionStatus.Confirmed,
-  txType: BraveWallet.TransactionType.Other
+  txType: BraveWallet.TransactionType.Other,
+  effectiveRecipient: mockAccount.address
 }
 
 export const mockedErc20ApprovalTransaction = {
@@ -189,7 +199,7 @@ export const createMockEthSwapTxArgs = ({
 
 export const createMockTransactionInfo = (arg: {
   toAddress: string
-  fromAddress: string,
+  fromAccount: BraveWallet.AccountInfo,
   sendApproveOrSellAssetContractAddress: string
   sendApproveOrSellAmount: string
   buyAmount?: string
@@ -205,7 +215,7 @@ export const createMockTransactionInfo = (arg: {
   const {
     chainId,
     coinType,
-    fromAddress,
+    fromAccount,
     isERC20Send,
     isSwap,
     sendApproveOrSellAmount,
@@ -224,7 +234,7 @@ export const createMockTransactionInfo = (arg: {
     case isERC20Approve: {
       txArgs = createMockERC20ApprovalTxArgs({
         amount: sendApproveOrSellAmount,
-        spender: fromAddress
+        spender: fromAccount.address
       })
     }
     case isERC20Send: {
@@ -235,7 +245,7 @@ export const createMockTransactionInfo = (arg: {
     }
     case isERC721Send: {
       txArgs = createMockERC721TxArgs({
-        owner: fromAddress,
+        owner: fromAccount.address,
         to: toAddress,
         tokenId: tokenId || ''
       })
@@ -263,7 +273,7 @@ export const createMockTransactionInfo = (arg: {
     ...(txBase),
     id: `${txBase.id}--${JSON.stringify(arg)}`,
     chainId,
-    fromAddress,
+    fromAccountId: fromAccount.accountId,
     txArgs
   }
 }

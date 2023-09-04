@@ -15,7 +15,8 @@ struct SearchResultAdInfo;
 class SearchResultAdEventViewed final
     : public AdEventInterface<SearchResultAdInfo> {
  public:
-  void FireEvent(const SearchResultAdInfo& ad) override;
+  void FireEvent(const SearchResultAdInfo& ad,
+                 ResultCallback callback) override;
 };
 
 }  // namespace brave_ads

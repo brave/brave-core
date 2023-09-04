@@ -5,17 +5,15 @@
 
 #include "brave/browser/ui/tabs/features.h"
 
-#include "brave/browser/ui/tabs/buildflags.h"
-
 namespace tabs::features {
 
 BASE_FEATURE(kBraveVerticalTabs,
              "BraveVerticalTabs",
-#if BUILDFLAG(VERTICAL_TAB_FLAG_DEFAULT_ON)
              base::FEATURE_ENABLED_BY_DEFAULT);
-#else
-             base::FEATURE_DISABLED_BY_DEFAULT);
-#endif
+
+BASE_FEATURE(kBraveVerticalTabsStickyPinnedTabs,
+             "BraveVerticalTabsStickyPinnedTabs",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 #if BUILDFLAG(IS_LINUX)
 BASE_FEATURE(kBraveChangeActiveTabOnScrollEvent,

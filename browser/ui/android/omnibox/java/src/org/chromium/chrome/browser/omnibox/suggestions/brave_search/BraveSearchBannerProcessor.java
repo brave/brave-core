@@ -9,8 +9,6 @@ package org.chromium.chrome.browser.omnibox.suggestions.brave_search;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-
 import org.chromium.chrome.browser.omnibox.R;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;

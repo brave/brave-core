@@ -70,16 +70,16 @@ export const StyledImageWrapper = styled('div')<Partial<Props>>`
   ${p => p.type === 'big'
     ? css`
       height: 32px;
-      width: 32px;
+      min-width: 32px;
     `
     : p.type === 'small'
     ? css`
       height: 24px;
-      width: 24px;
+      min-width: 24px;
     `
     : css`
       height: 20px;
-      width: 20px;
+      min-width: 20px;
     `
   };
 `
@@ -92,14 +92,12 @@ export const StyledImage = styled.img`
 `
 
 export const StyledVerified = styled('span')<{}>`
-  top: -6px;
+  top: -4px;
   right: -8px;
   width: 16px;
   height: 16px;
-  color: ${p => p.theme.palette.blurple500};
-  background-color: #FFFFFF;
-  border-radius: 20px;
   position: absolute;
+  --leo-icon-size: 16px;
 `
 
 export const StyledContent = styled('div')<Partial<Props>>`
@@ -108,12 +106,11 @@ export const StyledContent = styled('div')<Partial<Props>>`
 `
 
 export const StyledTitleWrap = styled('div')<Partial<Props>>`
-  display: flex;
   font-size: ${p => p.type === 'mobile' ? '16px' : '14px'};
   font-weight: ${p => p.type === 'mobile' ? '500' : '700'};
   color: ${p => p.theme.palette.grey800};
-  display: ${p => p.type === 'mobile' ? 'block' : 'flex'};
-
+  display: block;
+  overflow-wrap: anywhere;
 `
 
 export const StyledTitle = styled('span')<Partial<Props>>`

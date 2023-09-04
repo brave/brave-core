@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 
+#include "base/no_destructor.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -17,12 +18,17 @@ SharedPinnedTabService* SharedPinnedTabServiceFactory::GetForProfile(
 }
 
 SharedPinnedTabServiceFactory* SharedPinnedTabServiceFactory::GetInstance() {
-  return base::Singleton<SharedPinnedTabServiceFactory>::get();
+  static base::NoDestructor<SharedPinnedTabServiceFactory> instance;
+  return instance.get();
 }
 
 SharedPinnedTabServiceFactory::SharedPinnedTabServiceFactory()
-    : ProfileKeyedServiceFactory("SharedPinnedTabService",
-                                 ProfileSelections::BuildForAllProfiles()) {}
+    : ProfileKeyedServiceFactory(
+          "SharedPinnedTabService",
+          ProfileSelections::Builder()
+              .WithRegular(ProfileSelection::kOwnInstance)
+              .WithGuest(ProfileSelection::kOwnInstance)
+              .Build()) {}
 
 SharedPinnedTabServiceFactory::~SharedPinnedTabServiceFactory() {}
 

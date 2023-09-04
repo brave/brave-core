@@ -9,13 +9,17 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/singleton.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "build/build_config.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace brave_wallet {
 
@@ -29,15 +33,23 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   mojo::PendingRemote<mojom::BlockchainRegistry> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BlockchainRegistry> receiver);
 
+  void UpdateCoingeckoIdsMap(CoingeckoIdsMap coingecko_ids_map);
   void UpdateTokenList(TokenListMap tokens);
   void UpdateTokenList(const std::string key,
                        std::vector<mojom::BlockchainTokenPtr> list);
   void UpdateChainList(ChainList chains);
-
+  void UpdateDappList(DappListMap dapp_lists);
+  void UpdateOnRampTokenLists(OnRampTokensListMap onramp_lists);
+  void UpdateOffRampTokenLists(OffRampTokensListMap onramp_lists);
+  void UpdateOnRampCurrenciesLists(
+      std::vector<mojom::OnRampCurrency> onramp_currencies_lists);
   mojom::BlockchainTokenPtr GetTokenByAddress(const std::string& chain_id,
                                               mojom::CoinType coin,
                                               const std::string& address);
   std::vector<mojom::NetworkInfoPtr> GetPrepopulatedNetworks();
+  absl::optional<std::string> GetCoingeckoId(
+      const std::string& chain_id,
+      const std::string& contract_address);
 
   // BlockchainRegistry interface methods
   void GetTokenByAddress(const std::string& chain_id,
@@ -65,14 +77,25 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   void GetOnRampCurrencies(GetOnRampCurrenciesCallback callback) override;
   void GetPrepopulatedNetworks(
       GetPrepopulatedNetworksCallback callback) override;
+  void GetTopDapps(const std::string& chain_id,
+                   mojom::CoinType coin,
+                   GetTopDappsCallback callback) override;
+  void GetCoingeckoId(const std::string& chain_id,
+                      const std::string& contract_address,
+                      GetCoingeckoIdCallback callback) override;
 
  protected:
   std::vector<mojom::BlockchainTokenPtr>* GetTokenListFromChainId(
       const std::string& chain_id);
 
+  CoingeckoIdsMap coingecko_ids_map_;
   TokenListMap token_list_map_;
   ChainList chain_list_;
-  friend struct base::DefaultSingletonTraits<BlockchainRegistry>;
+  DappListMap dapp_lists_;
+  OnRampTokensListMap on_ramp_token_lists_;
+  OffRampTokensListMap off_ramp_token_lists_;
+  std::vector<mojom::OnRampCurrency> on_ramp_currencies_list_;
+  friend base::NoDestructor<BlockchainRegistry>;
 
   BlockchainRegistry();
 

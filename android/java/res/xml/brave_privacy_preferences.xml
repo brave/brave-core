@@ -58,6 +58,16 @@
             android:title="@string/fingerprint_language_switch"
             android:summary="@string/fingerprint_language_switch_summary"
             android:defaultValue="false" />
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:fragment="org.chromium.chrome.browser.shields.ContentFilteringFragment"
+            android:key="content_filtering"
+            android:title="@string/content_filtering_title"
+            android:summary="@string/content_filtering_summary" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="forget_first_party_storage"
+            android:title="@string/brave_forget_first_party_storage_switch"
+            android:summary="@string/brave_forget_first_party_storage_summary"
+            android:defaultValue="false" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="de_amp"
             android:title="@string/de_amp_switch"
@@ -103,20 +113,25 @@
         android:title="@string/youtube">
             <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="hide_youtube_recommended_content"
-            android:title="@string/hide_youtube_recommended_content"
+            android:title="@string/block_youtube_recommended_content"
             android:order="25"
-            android:summary="@string/hide_youtube_recommended_content_description"
+            android:summary="@string/block_youtube_recommended_content_description"
             android:defaultValue="true" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="hide_youtube_distracting_elements"
-            android:title="@string/hide_youtube_distracting_elements"
+            android:title="@string/block_youtube_distracting_elements"
             android:order="25"
-            android:summary="@string/hide_youtube_distracting_elements_description"
+            android:summary="@string/block_youtube_distracting_elements_description"
             android:defaultValue="true" />
     </PreferenceCategory>
         <PreferenceCategory
         android:key="other_privacy_settings_section"
         android:title="@string/prefs_section_other_privacy_settings"/>
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="app_links"
+            android:order="25"
+            android:title="@string/settings_app_links_label"
+            android:defaultValue="true"/>
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:fragment="org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreferencesFragment"
             android:key="webrtc_policy"
@@ -129,6 +144,13 @@
             defaultValue="false"
             android:title="@string/close_tabs_on_exit_title"
             android:summary="@string/close_tabs_on_exit_summary" />
+        <org.chromium.chrome.browser.settings.BraveDialogPreference
+            android:key="request_otr"
+            android:title="@string/request_otr"
+            android:summary="@string/request_otr_summary"
+            app:dialog_subtitle="@string/request_otr_text"
+            app:dialog_entries="@array/requestOTRTexts"
+            app:dialog_default_index="1" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="ipfs_gateway"
             android:order="25"

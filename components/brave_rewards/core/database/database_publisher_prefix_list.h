@@ -19,7 +19,7 @@ using SearchPublisherPrefixListCallback = std::function<void(bool)>;
 
 class DatabasePublisherPrefixList : public DatabaseTable {
  public:
-  explicit DatabasePublisherPrefixList(LedgerImpl& ledger);
+  explicit DatabasePublisherPrefixList(RewardsEngineImpl& engine);
   ~DatabasePublisherPrefixList() override;
 
   void Reset(publisher::PrefixListReader reader, LegacyResultCallback callback);
@@ -30,6 +30,13 @@ class DatabasePublisherPrefixList : public DatabaseTable {
  private:
   void InsertNext(publisher::PrefixIterator begin,
                   LegacyResultCallback callback);
+
+  void OnSearch(SearchPublisherPrefixListCallback callback,
+                mojom::DBCommandResponsePtr response);
+
+  void OnInsertNext(LegacyResultCallback callback,
+                    publisher::PrefixIterator iter,
+                    mojom::DBCommandResponsePtr response);
 
   absl::optional<publisher::PrefixListReader> reader_;
 };

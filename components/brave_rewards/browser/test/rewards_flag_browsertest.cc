@@ -62,7 +62,7 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
         base::BindRepeating(
             &RewardsFlagBrowserTest::GetTestResponse,
             base::Unretained(this)));
-    rewards_service_->SetLedgerEnvForTesting();
+    rewards_service_->SetEngineEnvForTesting();
 
     test_util::SetOnboardingBypassed(browser());
   }
@@ -82,368 +82,241 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
 
   void TearDownOnMainThread() override {
     RewardsFlags::SetForceParsingForTesting(false);
-
     InProcessBrowserTest::TearDownOnMainThread();
   }
 
-  void ResetWaitForCallback() {
-    callback_called_ = false;
-    wait_for_callback_ = std::make_unique<base::RunLoop>();
+  mojom::Environment GetDefaultEnvironment() {
+    return rewards_service_->GetDefaultServerEnvironment();
   }
-
-  void WaitForCallback() {
-    if (callback_called_) {
-      return;
-    }
-    wait_for_callback_->Run();
-  }
-
-  void CallbackCalled() {
-    callback_called_ = true;
-    wait_for_callback_->Quit();
-  }
-
-  void GetReconcileInterval() {
-    ResetWaitForCallback();
-    rewards_service_->GetReconcileInterval(
-        base::BindOnce(&RewardsFlagBrowserTest::OnGetReconcileIntervalWrapper,
-                       base::Unretained(this)));
-    WaitForCallback();
-  }
-
-  void GetRetryInterval() {
-    ResetWaitForCallback();
-    rewards_service_->GetRetryInterval(
-        base::BindOnce(&RewardsFlagBrowserTest::OnGetRetryIntervalWrapper,
-                       base::Unretained(this)));
-    WaitForCallback();
-  }
-
-  void GetEnvironment() {
-    ResetWaitForCallback();
-    rewards_service_->GetEnvironment(
-        base::BindOnce(&RewardsFlagBrowserTest::OnGetEnvironmentWrapper,
-                       base::Unretained(this)));
-    WaitForCallback();
-  }
-
-  void GetDebug() {
-    ResetWaitForCallback();
-    rewards_service_->GetDebug(base::BindOnce(
-        &RewardsFlagBrowserTest::OnGetDebugWrapper, base::Unretained(this)));
-    WaitForCallback();
-  }
-
-  void OnGetReconcileIntervalWrapper(int32_t interval) {
-    OnGetReconcileInterval(interval);
-    CallbackCalled();
-  }
-
-  void OnGetRetryIntervalWrapper(int32_t interval) {
-    OnGetRetryInterval(interval);
-    CallbackCalled();
-  }
-
-  void OnGetEnvironmentWrapper(mojom::Environment environment) {
-    OnGetEnvironment(environment);
-    CallbackCalled();
-  }
-
-  void OnGetDebugWrapper(bool debug) {
-    OnGetDebug(debug);
-    CallbackCalled();
-  }
-
-  MOCK_METHOD1(OnGetEnvironment, void(mojom::Environment));
-  MOCK_METHOD1(OnGetDebug, void(bool));
-  MOCK_METHOD1(OnGetReconcileInterval, void(int32_t));
-  MOCK_METHOD1(OnGetRetryInterval, void(int32_t));
 
   raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<test_util::RewardsBrowserTestResponse> response_;
-  bool callback_called_ = false;
-  std::unique_ptr<base::RunLoop> wait_for_callback_;
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsStaging) {
-  test_util::StartProcess(rewards_service_);
-  EXPECT_CALL(*this, OnGetEnvironment(mojom::Environment::STAGING)).Times(2);
-  EXPECT_CALL(*this, OnGetEnvironment(mojom::Environment::PRODUCTION)).Times(3);
-
-  testing::InSequence s;
-
-  rewards_service_->SetEnvironment(mojom::Environment::PRODUCTION);
-  GetEnvironment();
+  {
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_EQ(options->environment, GetDefaultEnvironment());
+  }
 
   {
-    rewards_service_->SetEnvironment(mojom::Environment::PRODUCTION);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "staging=true");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetEnvironment();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_EQ(options->environment, mojom::Environment::STAGING);
   }
 
   {
-    rewards_service_->SetEnvironment(mojom::Environment::PRODUCTION);
-    base::test::ScopedCommandLine scoped_command_line;
-    base::CommandLine* command_line =
-        scoped_command_line.GetProcessCommandLine();
-    command_line->AppendSwitchASCII("rewards", "staging=1");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetEnvironment();
-  }
-
-  {
-    rewards_service_->SetEnvironment(mojom::Environment::STAGING);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "staging=false");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetEnvironment();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_EQ(options->environment, mojom::Environment::PRODUCTION);
   }
 
   {
-    rewards_service_->SetEnvironment(mojom::Environment::STAGING);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "staging=foobar");
     rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetEnvironment();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_EQ(options->environment, mojom::Environment::PRODUCTION);
   }
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDebug) {
-  test_util::StartProcess(rewards_service_);
-  EXPECT_CALL(*this, OnGetDebug(true)).Times(3);
-  EXPECT_CALL(*this, OnGetDebug(false)).Times(2);
-
-  testing::InSequence s;
-
-  rewards_service_->SetDebug(true);
-  GetDebug();
+  {
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_FALSE(options->is_debug);
+  }
 
   {
-    rewards_service_->SetDebug(false);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "debug=true");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetDebug();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_TRUE(options->is_debug);
   }
 
   {
-    rewards_service_->SetDebug(false);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "debug=1");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetDebug();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_TRUE(options->is_debug);
   }
 
   {
-    rewards_service_->SetDebug(false);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "debug=false");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetDebug();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_FALSE(options->is_debug);
   }
 
   {
-    rewards_service_->SetDebug(false);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "debug=foobar");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetDebug();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_FALSE(options->is_debug);
   }
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDevelopment) {
-  test_util::StartProcess(rewards_service_);
-  EXPECT_CALL(*this, OnGetEnvironment(mojom::Environment::DEVELOPMENT))
-      .Times(2);
-  EXPECT_CALL(*this, OnGetEnvironment(mojom::Environment::PRODUCTION)).Times(3);
-
-  testing::InSequence s;
-
-  rewards_service_->SetEnvironment(mojom::Environment::PRODUCTION);
-  GetEnvironment();
+  {
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_EQ(options->environment, GetDefaultEnvironment());
+  }
 
   {
-    rewards_service_->SetEnvironment(mojom::Environment::PRODUCTION);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "development=true");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetEnvironment();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_EQ(options->environment, mojom::Environment::DEVELOPMENT);
   }
 
   {
-    rewards_service_->SetEnvironment(mojom::Environment::PRODUCTION);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "development=1");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetEnvironment();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_EQ(options->environment, mojom::Environment::DEVELOPMENT);
   }
 
   {
-    rewards_service_->SetEnvironment(mojom::Environment::PRODUCTION);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "development=false");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetEnvironment();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_EQ(options->environment, GetDefaultEnvironment());
   }
 
   {
-    rewards_service_->SetEnvironment(mojom::Environment::PRODUCTION);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "development=foobar");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetEnvironment();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_EQ(options->environment, GetDefaultEnvironment());
   }
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsReconcile) {
-  test_util::StartProcess(rewards_service_);
-  EXPECT_CALL(*this, OnGetReconcileInterval(10));
-  EXPECT_CALL(*this, OnGetReconcileInterval(0)).Times(2);
-
-  testing::InSequence s;
-
   {
-    rewards_service_->SetReconcileInterval(0);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "reconcile-interval=10");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetReconcileInterval();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_EQ(options->reconcile_interval, 10);
   }
 
   {
-    rewards_service_->SetReconcileInterval(0);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "reconcile-interval=-1");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetReconcileInterval();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_EQ(options->reconcile_interval, 0);
   }
 
   {
-    rewards_service_->SetReconcileInterval(0);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "reconcile-interval=foobar");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetReconcileInterval();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_EQ(options->reconcile_interval, 0);
   }
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsRetryInterval) {
-  test_util::StartProcess(rewards_service_);
-  EXPECT_CALL(*this, OnGetRetryInterval(10));
-  EXPECT_CALL(*this, OnGetRetryInterval(0)).Times(2);
-
-  testing::InSequence s;
-
   {
-    rewards_service_->SetRetryInterval(0);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "retry-interval=10");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetRetryInterval();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_EQ(options->retry_interval, 10);
   }
 
   {
-    rewards_service_->SetRetryInterval(0);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "retry-interval=-1");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetRetryInterval();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_EQ(options->retry_interval, 0);
   }
 
   {
-    rewards_service_->SetRetryInterval(0);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
     command_line->AppendSwitchASCII("rewards", "retry-interval=foobar");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    GetRetryInterval();
+    auto options =
+        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    EXPECT_EQ(options->retry_interval, 0);
   }
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
-  test_util::StartProcess(rewards_service_);
-  EXPECT_CALL(*this, OnGetEnvironment(mojom::Environment::STAGING));
-  EXPECT_CALL(*this, OnGetDebug(true));
-  EXPECT_CALL(*this, OnGetReconcileInterval(10));
-  EXPECT_CALL(*this, OnGetRetryInterval(1));
-
-  testing::InSequence s;
-  rewards_service_->SetEnvironment(mojom::Environment::PRODUCTION);
-  rewards_service_->SetDebug(true);
-  rewards_service_->SetReconcileInterval(0);
-  rewards_service_->SetRetryInterval(0);
-
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
   command_line->AppendSwitchASCII("rewards",
                                   "staging=true,debug=true,retry-interval=1,"
                                   "reconcile-interval=10");
-  rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-
-  GetReconcileInterval();
-  GetRetryInterval();
-  GetEnvironment();
-  GetDebug();
+  auto options =
+      rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+  EXPECT_EQ(options->environment, mojom::Environment::STAGING);
+  EXPECT_TRUE(options->is_debug);
+  EXPECT_EQ(options->reconcile_interval, 10);
+  EXPECT_EQ(options->retry_interval, 1);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
-  test_util::StartProcess(rewards_service_);
-  EXPECT_CALL(*this, OnGetEnvironment(mojom::Environment::PRODUCTION));
-  EXPECT_CALL(*this, OnGetDebug(false));
-  EXPECT_CALL(*this, OnGetReconcileInterval(0));
-  EXPECT_CALL(*this, OnGetRetryInterval(0));
-
-  testing::InSequence s;
-  rewards_service_->SetEnvironment(mojom::Environment::PRODUCTION);
-  rewards_service_->SetDebug(false);
-  rewards_service_->SetReconcileInterval(0);
-  rewards_service_->SetRetryInterval(0);
-
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
   command_line->AppendSwitchASCII("rewards",
                                   "staging=,debug=,retryinterval="
                                   "true,reconcile-interval");
-  rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-
-  GetReconcileInterval();
-  GetRetryInterval();
-  GetDebug();
-  GetEnvironment();
+  auto options =
+      rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+  EXPECT_EQ(options->environment, mojom::Environment::PRODUCTION);
+  EXPECT_FALSE(options->is_debug);
+  EXPECT_EQ(options->reconcile_interval, 0);
+  EXPECT_EQ(options->retry_interval, 0);
 }
 
 }  // namespace brave_rewards

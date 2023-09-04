@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/gtest_prod_util.h"
 #include "chrome/browser/themes/theme_service.h"
 
 namespace extensions {

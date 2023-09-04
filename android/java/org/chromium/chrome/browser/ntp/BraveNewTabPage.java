@@ -8,10 +8,6 @@ package org.chromium.chrome.browser.ntp;
 import android.app.Activity;
 import android.view.LayoutInflater;
 
-import androidx.annotation.Nullable;
-
-import org.chromium.base.jank_tracker.JankTracker;
-import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
@@ -29,6 +25,7 @@ import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
 import org.chromium.chrome.browser.toolbar.top.Toolbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
@@ -55,12 +52,12 @@ public class BraveNewTabPage extends NewTabPage {
             NativePageHost nativePageHost, Tab tab, String url,
             BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier, WindowAndroid windowAndroid,
-            JankTracker jankTracker, Supplier<Toolbar> toolbarSupplier,
-            SettingsLauncher settingsLauncher) {
+            Supplier<Toolbar> toolbarSupplier, SettingsLauncher settingsLauncher,
+            HomeSurfaceTracker homeSurfaceTracker) {
         super(activity, browserControlsStateProvider, activityTabProvider, snackbarManager,
                 lifecycleDispatcher, tabModelSelector, isTablet, uma, isInNightMode, nativePageHost,
-                tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid, jankTracker,
-                toolbarSupplier, settingsLauncher);
+                tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid,
+                toolbarSupplier, settingsLauncher, homeSurfaceTracker);
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {

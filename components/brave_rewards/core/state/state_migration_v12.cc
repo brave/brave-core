@@ -11,12 +11,13 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
 namespace brave_rewards::internal::state {
 
-StateMigrationV12::StateMigrationV12(LedgerImpl& ledger) : ledger_(ledger) {}
+StateMigrationV12::StateMigrationV12(RewardsEngineImpl& engine)
+    : engine_(engine) {}
 
 StateMigrationV12::~StateMigrationV12() = default;
 
@@ -38,7 +39,7 @@ StateMigrationV12::~StateMigrationV12() = default;
 // };
 
 bool StateMigrationV12::MigrateExternalWallet(const std::string& wallet_type) {
-  auto wallet = wallet::GetWallet(*ledger_, wallet_type);
+  auto wallet = wallet::GetWallet(*engine_, wallet_type);
   if (!wallet) {
     BLOG(1, "User doesn't have a(n) " << wallet_type << " wallet.");
     return true;
@@ -89,7 +90,7 @@ bool StateMigrationV12::MigrateExternalWallet(const std::string& wallet_type) {
     return false;
   }
 
-  if (!wallet::SetWallet(*ledger_, std::move(wallet))) {
+  if (!wallet::SetWallet(*engine_, std::move(wallet))) {
     BLOG(0, "Failed to set " << wallet_type << " wallet!");
     return false;
   }
@@ -104,8 +105,8 @@ void StateMigrationV12::Migrate(LegacyResultCallback callback) {
                [this](const std::string& wallet_type) {
                  return MigrateExternalWallet(wallet_type);
                })
-               ? mojom::Result::LEDGER_OK
-               : mojom::Result::LEDGER_ERROR);
+               ? mojom::Result::OK
+               : mojom::Result::FAILED);
 }
 
 }  // namespace brave_rewards::internal::state

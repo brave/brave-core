@@ -20,4 +20,11 @@ document.addEventListener('DOMContentLoaded', function () {
       link.textContent = 'nightly channel'
     }
   })
+  document.querySelector('div.blurb-container').after(
+    (() => {
+      const p = document.createElement('p')
+      p.textContent = '* Overridden by active variations or a command line.'
+      return p
+    })()
+  )
 });

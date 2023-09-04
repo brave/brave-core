@@ -14,7 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.base.Log;
+import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -27,6 +28,8 @@ import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.modal.BraveWalletPanel;
 import org.chromium.chrome.browser.crypto_wallet.modal.DAppsDialog;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
+import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -34,6 +37,8 @@ import org.chromium.mojo.system.MojoException;
 
 public class DAppsWalletController
         implements ConnectionErrorHandler, BraveWalletPanel.BraveWalletPanelServices {
+    private static final String TAG = DAppsWalletController.class.getSimpleName();
+    private FullscreenManager mFullscreenManager;
     private Context mContext;
     private View mAnchorViewHost;
     private AssetRatioService mAssetRatioService;
@@ -57,6 +62,14 @@ public class DAppsWalletController
         this.mContext = mContext;
         this.mAnchorViewHost = mAnchorViewHost;
         this.mActivity = BraveActivity.getChromeTabbedActivity();
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            ObservableSupplier<BrowserControlsManager> managerSupplier =
+                    activity.getBrowserControlsManagerSupplier();
+            mFullscreenManager = managerSupplier.get().getFullscreenManager();
+        } catch (BraveActivity.BraveActivityNotFoundException | NullPointerException e) {
+            Log.e(TAG, "Constructor", e);
+        }
     }
 
     public DAppsWalletController(Context mContext, View mAnchorViewHost,
@@ -101,7 +114,8 @@ public class DAppsWalletController
 
     private void showOnBoardingOrUnlock() {
         int dialogStyle = DAppsDialog.DAppsDialogStyle.BOTTOM;
-        if (shouldShowNotificationAtTop(mActivity)) {
+        if (mFullscreenManager != null && mFullscreenManager.getPersistentFullscreenMode()
+                || shouldShowNotificationAtTop(mActivity)) {
             dialogStyle = DAppsDialog.DAppsDialogStyle.TOP;
         }
         mDAppsDialog =

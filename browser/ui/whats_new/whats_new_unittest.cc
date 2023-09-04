@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "base/metrics/field_trial.h"
 #include "base/metrics/field_trial_param_associator.h"
 #include "brave/browser/ui/whats_new/pref_names.h"
@@ -49,7 +50,7 @@ class BraveWhatsNewTest : public testing::Test {
 
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
-  TestingProfile* profile_ = nullptr;
+  raw_ptr<TestingProfile> profile_ = nullptr;
   TestingProfileManager testing_profile_manager_;
 };
 

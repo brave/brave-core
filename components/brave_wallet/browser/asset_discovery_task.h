@@ -13,9 +13,11 @@
 #include <vector>
 
 #include "base/barrier_callback.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_wallet/browser/simple_hash_client.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
@@ -33,6 +35,7 @@ class AssetDiscoveryTask {
   using APIRequestResult = api_request_helper::APIRequestResult;
 
   AssetDiscoveryTask(APIRequestHelper* api_request_helper,
+                     SimpleHashClient* simple_hash_client,
                      BraveWalletService* wallet_service,
                      JsonRpcService* json_rpc_service,
                      PrefService* prefs);
@@ -41,11 +44,13 @@ class AssetDiscoveryTask {
   AssetDiscoveryTask& operator=(AssetDiscoveryTask&) = delete;
   ~AssetDiscoveryTask();
 
-  void ScheduleTask(
-      const std::map<mojom::CoinType, std::vector<std::string>>& chain_ids,
-      const std::map<mojom::CoinType, std::vector<std::string>>&
-          account_addresses,
-      base::OnceClosure callback);
+  void ScheduleTask(const std::map<mojom::CoinType, std::vector<std::string>>&
+                        fungible_chain_ids,
+                    const std::map<mojom::CoinType, std::vector<std::string>>&
+                        non_fungible_chain_ids,
+                    const std::map<mojom::CoinType, std::vector<std::string>>&
+                        account_addresses,
+                    base::OnceClosure callback);
 
  private:
   friend class AssetDiscoveryTaskUnitTest;
@@ -54,11 +59,13 @@ class AssetDiscoveryTask {
                            GetSimpleHashNftsByWalletUrl);
   FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryTaskUnitTest, ParseNFTsFromSimpleHash);
 
-  void DiscoverAssets(
-      const std::map<mojom::CoinType, std::vector<std::string>>& chain_ids,
-      const std::map<mojom::CoinType, std::vector<std::string>>&
-          account_addresses,
-      base::OnceClosure callback);
+  void DiscoverAssets(const std::map<mojom::CoinType, std::vector<std::string>>&
+                          fungible_chain_ids,
+                      const std::map<mojom::CoinType, std::vector<std::string>>&
+                          non_fungible_chain_ids,
+                      const std::map<mojom::CoinType, std::vector<std::string>>&
+                          account_addresses,
+                      base::OnceClosure callback);
 
   void MergeDiscoveredAssets(
       base::OnceClosure callback,
@@ -104,18 +111,6 @@ class AssetDiscoveryTask {
       const base::flat_set<std::string>& discovered_contract_addresses,
       std::vector<mojom::BlockchainTokenPtr> sol_token_registry);
 
-  // For discovering NFTs on Solana and Ethereum
-  using FetchNFTsFromSimpleHashCallback =
-      base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr> nfts)>;
-  void FetchNFTsFromSimpleHash(const std::string& account_address,
-                               const std::vector<std::string>& chain_ids,
-                               mojom::CoinType coin,
-                               FetchNFTsFromSimpleHashCallback callback);
-  void OnFetchNFTsFromSimpleHash(
-      std::vector<mojom::BlockchainTokenPtr> nfts_so_far,
-      mojom::CoinType coin,
-      FetchNFTsFromSimpleHashCallback callback,
-      APIRequestResult api_request_result);
   void DiscoverNFTs(
       const std::map<mojom::CoinType, std::vector<std::string>>& chain_ids,
       const std::map<mojom::CoinType, std::vector<std::string>>&
@@ -130,11 +125,9 @@ class AssetDiscoveryTask {
 
   static absl::optional<SolanaAddress> DecodeMintAddress(
       const std::vector<uint8_t>& data);
-  static GURL GetSimpleHashNftsByWalletUrl(
-      const std::string& account_address,
-      const std::vector<std::string>& chain_ids);
 
   raw_ptr<APIRequestHelper> api_request_helper_;
+  raw_ptr<SimpleHashClient> simple_hash_client_;
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<PrefService> prefs_;

@@ -44,6 +44,7 @@ constexpr int kP3AIntervalHours = 24;
 
 constexpr char kSubscriberCredentialKey[] = "credential";
 constexpr char kSkusCredentialKey[] = "skus_credential";
+constexpr char kRetriedSkusCredentialKey[] = "retried_skus_credential";
 constexpr char kSubscriberCredentialExpirationKey[] = "expiration";
 
 #if !BUILDFLAG(IS_ANDROID)

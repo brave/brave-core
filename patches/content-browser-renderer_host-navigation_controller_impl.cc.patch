@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/navigation_controller_impl.cc b/content/browser/renderer_host/navigation_controller_impl.cc
-index 0db00b9822a4c37bc9111b2895bc72bb9692ebd8..6435a7669d7136fadbd1d9d8db80e890917da0c6 100644
+index cedea5349cad993fce63cc5a0391b5bf6bb1435e..1c528de8483c9c74730108c23c9244bc5ebdf0d3 100644
 --- a/content/browser/renderer_host/navigation_controller_impl.cc
 +++ b/content/browser/renderer_host/navigation_controller_impl.cc
-@@ -3522,16 +3522,17 @@ base::WeakPtr<NavigationHandle> NavigationControllerImpl::NavigateWithoutEntry(
+@@ -3573,16 +3573,17 @@ base::WeakPtr<NavigationHandle> NavigationControllerImpl::NavigateWithoutEntry(
    // Note: we intentionally leave the pending entry in place for renderer debug
    // URLs, unlike the cases below where we clear it if the navigation doesn't
    // proceed.
@@ -12,8 +12,8 @@ index 0db00b9822a4c37bc9111b2895bc72bb9692ebd8..6435a7669d7136fadbd1d9d8db80e890
      // Renderer-debug URLs won't go through NavigationThrottlers so we have to
      // check them explicitly. See bug 913334.
      if (GetContentClient()->browser()->ShouldBlockRendererDebugURL(
--            params.url, browser_context_)) {
-+            url, browser_context_)) {
+-            params.url, browser_context_, node->current_frame_host())) {
++            url, browser_context_, node->current_frame_host())) {
        DiscardPendingEntry(false);
        return nullptr;
      }

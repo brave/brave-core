@@ -4,12 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/core/attestation/attestation.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace attestation {
 
-Attestation::Attestation(LedgerImpl& ledger) : ledger_(ledger) {}
+Attestation::Attestation(RewardsEngineImpl& engine) : engine_(engine) {}
 
 Attestation::~Attestation() = default;
 

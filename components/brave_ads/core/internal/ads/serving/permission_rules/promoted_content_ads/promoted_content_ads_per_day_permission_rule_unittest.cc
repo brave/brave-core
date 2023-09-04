@@ -19,7 +19,7 @@ class BraveAdsPromotedContentAdsPerDayPermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
-       AllowAdIfThereIsNoAdsHistory) {
+       ShouldAllowIfThereAreNoAdEvents) {
   // Arrange
 
   // Act
@@ -29,22 +29,24 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
 }
 
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
-       AllowAdIfDoesNotExceedCap) {
+       ShouldAllowIfDoesNotExceedCap) {
   // Arrange
 
   // Act
-  RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumPromotedContentAdsPerDay.Get() - 1);
+  RecordAdEventsForTesting(
+      AdType::kPromotedContentAd, ConfirmationType::kServed,
+      /*count*/ kMaximumPromotedContentAdsPerDay.Get() - 1);
 
   // Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
-       AllowAdIfDoesNotExceedCapAfter1Day) {
+       ShouldAllowIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumPromotedContentAdsPerDay.Get());
+  RecordAdEventsForTesting(AdType::kPromotedContentAd,
+                           ConfirmationType::kServed,
+                           /*count*/ kMaximumPromotedContentAdsPerDay.Get());
 
   // Act
   AdvanceClockBy(base::Days(1));
@@ -54,10 +56,11 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
 }
 
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
-       DoNotAllowAdIfExceedsCapWithin1Day) {
+       ShouldNotAllowIfExceedsCapWithin1Day) {
   // Arrange
-  RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumPromotedContentAdsPerDay.Get());
+  RecordAdEventsForTesting(AdType::kPromotedContentAd,
+                           ConfirmationType::kServed,
+                           /*count*/ kMaximumPromotedContentAdsPerDay.Get());
 
   // Act
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));

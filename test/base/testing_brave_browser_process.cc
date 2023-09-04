@@ -38,6 +38,15 @@ void TestingBraveBrowserProcess::DeleteInstance() {
   delete browser_process;
 }
 
+// static
+void TestingBraveBrowserProcess::StartTearDown() {}
+
+// static
+void TestingBraveBrowserProcess::TearDownAndDeleteInstance() {
+  TestingBraveBrowserProcess::StartTearDown();
+  TestingBraveBrowserProcess::DeleteInstance();
+}
+
 TestingBraveBrowserProcess::TestingBraveBrowserProcess() = default;
 
 TestingBraveBrowserProcess::~TestingBraveBrowserProcess() = default;
@@ -79,6 +88,11 @@ TestingBraveBrowserProcess::URLSanitizerComponentInstaller() {
 
 https_upgrade_exceptions::HttpsUpgradeExceptionsService*
 TestingBraveBrowserProcess::https_upgrade_exceptions_service() {
+  return nullptr;
+}
+
+localhost_permission::LocalhostPermissionComponent*
+TestingBraveBrowserProcess::localhost_permission_component() {
   return nullptr;
 }
 
@@ -167,7 +181,8 @@ TestingBraveBrowserProcess::brave_vpn_os_connection_api() {
 }
 #endif
 
-misc_metrics::MenuMetrics* TestingBraveBrowserProcess::menu_metrics() {
+misc_metrics::ProcessMiscMetrics*
+TestingBraveBrowserProcess::process_misc_metrics() {
   NOTREACHED();
   return nullptr;
 }

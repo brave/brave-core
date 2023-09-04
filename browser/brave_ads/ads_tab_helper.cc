@@ -8,7 +8,6 @@
 #include <string>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/sessions/content/session_tab_helper.h"
@@ -46,9 +45,6 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
 
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
-
-  is_incognito_ = !brave::IsRegularProfile(profile);
-
   ads_service_ = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service_) {
     return;
@@ -74,8 +70,7 @@ void AdsTabHelper::TabUpdated() {
 
   const bool is_visible = is_active_ && is_browser_active_;
 
-  ads_service_->NotifyTabDidChange(tab_id_.id(), redirect_chain_, is_visible,
-                                   is_incognito_);
+  ads_service_->NotifyTabDidChange(tab_id_.id(), redirect_chain_, is_visible);
 }
 
 void AdsTabHelper::RunIsolatedJavaScript(

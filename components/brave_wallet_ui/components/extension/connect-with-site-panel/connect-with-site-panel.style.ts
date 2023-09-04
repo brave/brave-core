@@ -186,7 +186,7 @@ export const IconCircle = styled.div`
   justify-content: center;
   width: 40px;
   height: 40px;
-  background-color: ${leo.color.container.interactiveBackground};
+  background-color: ${leo.color.container.interactive};
   border-radius: 40px;
   margin-right: 8px;
 `

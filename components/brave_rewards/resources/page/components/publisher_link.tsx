@@ -5,10 +5,11 @@
 
 import * as React from 'react'
 
+import Icon from '@brave/leo/react/icon'
+
 import { LocaleContext } from '../../shared/lib/locale_context'
 import { lookupPublisherPlatformName } from '../../shared/lib/publisher_platform'
 import { NewTabLink } from '../../shared/components/new_tab_link'
-import { VerifiedCheckIcon } from './icons/verified_check_icon'
 
 import * as style from './publisher_link.style'
 
@@ -34,8 +35,8 @@ export function PublisherLink (props: Props) {
           <img src={`chrome://favicon/size/64@1x/${iconPath}`} />
           {
             props.verified &&
-              <style.verified>
-                <VerifiedCheckIcon />
+              <style.verified data-test-id='verified-icon'>
+                <Icon name='verification-filled-color' />
               </style.verified>
           }
         </style.icon>

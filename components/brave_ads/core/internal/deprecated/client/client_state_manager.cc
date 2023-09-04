@@ -5,25 +5,23 @@
 
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
-#include <cstdint>
 #include <utility>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
-#include "base/hash/hash.h"
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/ad_info.h"
-#include "brave/components/brave_ads/core/ad_type.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/history_constants.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
+#include "brave/components/brave_ads/core/public/ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
+#include "build/build_config.h"
 
 namespace brave_ads {
 
@@ -65,29 +63,6 @@ mojom::UserReactionType ToggleDislikeUserReactionType(
              : mojom::UserReactionType::kDislike;
 }
 
-uint64_t GenerateHash(const std::string& value) {
-  return uint64_t{base::PersistentHash(value)};
-}
-
-void SetHash(const std::string& value) {
-  AdsClientHelper::GetInstance()->SetUint64Pref(prefs::kClientHash,
-                                                GenerateHash(value));
-}
-
-bool IsMutated(const std::string& value) {
-  return AdsClientHelper::GetInstance()->GetUint64Pref(prefs::kClientHash) !=
-         GenerateHash(value);
-}
-
-void OnSaved(const bool success) {
-  if (!success) {
-    BLOG(0, "Failed to save client state");
-    return;
-  }
-
-  BLOG(9, "Successfully saved client state");
-}
-
 }  // namespace
 
 ClientStateManager::ClientStateManager() = default;
@@ -118,8 +93,13 @@ const FlaggedAdList& ClientStateManager::GetFlaggedAds() const {
   return client_.ad_preferences.flagged_ads;
 }
 
-void ClientStateManager::Initialize(InitializeCallback callback) {
-  Load(std::move(callback));
+void ClientStateManager::Load(InitializeCallback callback) {
+  BLOG(3, "Loading client state");
+
+  AdsClientHelper::GetInstance()->Load(
+      kClientStateFilename,
+      base::BindOnce(&ClientStateManager::LoadCallback,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
@@ -185,31 +165,31 @@ mojom::UserReactionType ClientStateManager::ToggleLikeAd(
     client_.ad_preferences.filtered_advertisers.erase(iter);
   }
 
-  const mojom::UserReactionType user_reaction_type =
-      ad_content.ToggleLikeUserReactionType();
+  const mojom::UserReactionType toggled_user_reaction_type =
+      ToggleLikeUserReactionType(ad_content.user_reaction_type);
 
   for (auto& item : client_.history_items) {
     if (item.ad_content.advertiser_id == ad_content.advertiser_id) {
-      item.ad_content.user_reaction_type = user_reaction_type;
+      item.ad_content.user_reaction_type = toggled_user_reaction_type;
     }
   }
 
   Save();
 
-  return user_reaction_type;
+  return toggled_user_reaction_type;
 }
 
 mojom::UserReactionType ClientStateManager::ToggleDislikeAd(
     const AdContentInfo& ad_content) {
   CHECK(is_initialized_);
 
-  const mojom::UserReactionType user_reaction_type =
-      ad_content.ToggleDislikeUserReactionType();
+  const mojom::UserReactionType toggled_user_reaction_type =
+      ToggleDislikeUserReactionType(ad_content.user_reaction_type);
 
   const auto iter = FindFilteredAdvertiser(
       ad_content.advertiser_id, &client_.ad_preferences.filtered_advertisers);
 
-  if (user_reaction_type == mojom::UserReactionType::kNeutral) {
+  if (toggled_user_reaction_type == mojom::UserReactionType::kNeutral) {
     if (iter != client_.ad_preferences.filtered_advertisers.cend()) {
       client_.ad_preferences.filtered_advertisers.erase(iter);
     }
@@ -225,13 +205,13 @@ mojom::UserReactionType ClientStateManager::ToggleDislikeAd(
 
   for (auto& item : client_.history_items) {
     if (item.ad_content.advertiser_id == ad_content.advertiser_id) {
-      item.ad_content.user_reaction_type = user_reaction_type;
+      item.ad_content.user_reaction_type = toggled_user_reaction_type;
     }
   }
 
   Save();
 
-  return user_reaction_type;
+  return toggled_user_reaction_type;
 }
 
 mojom::UserReactionType ClientStateManager::GetUserReactionTypeForAdvertiser(
@@ -250,21 +230,20 @@ mojom::UserReactionType ClientStateManager::GetUserReactionTypeForAdvertiser(
 }
 
 mojom::UserReactionType ClientStateManager::ToggleLikeCategory(
-    const std::string& category,
-    const mojom::UserReactionType user_reaction_type) {
+    const CategoryContentInfo& category_content) {
   CHECK(is_initialized_);
 
   const auto iter = FindFilteredCategory(
-      category, &client_.ad_preferences.filtered_categories);
+      category_content.category, &client_.ad_preferences.filtered_categories);
   if (iter != client_.ad_preferences.filtered_categories.cend()) {
     client_.ad_preferences.filtered_categories.erase(iter);
   }
 
   const mojom::UserReactionType toggled_user_reaction_type =
-      ToggleLikeUserReactionType(user_reaction_type);
+      ToggleLikeUserReactionType(category_content.user_reaction_type);
 
   for (auto& item : client_.history_items) {
-    if (item.category_content.category == category) {
+    if (item.category_content.category == category_content.category) {
       item.category_content.user_reaction_type = toggled_user_reaction_type;
     }
   }
@@ -275,15 +254,14 @@ mojom::UserReactionType ClientStateManager::ToggleLikeCategory(
 }
 
 mojom::UserReactionType ClientStateManager::ToggleDislikeCategory(
-    const std::string& category,
-    const mojom::UserReactionType user_reaction_type) {
+    const CategoryContentInfo& category_content) {
   CHECK(is_initialized_);
 
   const mojom::UserReactionType toggled_user_reaction_type =
-      ToggleDislikeUserReactionType(user_reaction_type);
+      ToggleDislikeUserReactionType(category_content.user_reaction_type);
 
   const auto iter = FindFilteredCategory(
-      category, &client_.ad_preferences.filtered_categories);
+      category_content.category, &client_.ad_preferences.filtered_categories);
 
   if (toggled_user_reaction_type == mojom::UserReactionType::kNeutral) {
     if (iter != client_.ad_preferences.filtered_categories.cend()) {
@@ -292,13 +270,13 @@ mojom::UserReactionType ClientStateManager::ToggleDislikeCategory(
   } else {
     if (iter == client_.ad_preferences.filtered_categories.cend()) {
       FilteredCategoryInfo filtered_category;
-      filtered_category.name = category;
+      filtered_category.name = category_content.category;
       client_.ad_preferences.filtered_categories.push_back(filtered_category);
     }
   }
 
   for (auto& item : client_.history_items) {
-    if (item.category_content.category == category) {
+    if (item.category_content.category == category_content.category) {
       item.category_content.user_reaction_type = toggled_user_reaction_type;
     }
   }
@@ -486,16 +464,6 @@ ClientStateManager::GetTextClassificationProbabilitiesHistory() const {
   return client_.text_classification_probabilities;
 }
 
-void ClientStateManager::RemoveAllHistory() {
-  CHECK(is_initialized_);
-
-  BLOG(1, "Successfully reset client state");
-
-  client_ = {};
-
-  Save();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 void ClientStateManager::Save() {
@@ -505,28 +473,19 @@ void ClientStateManager::Save() {
 
   BLOG(9, "Saving client state");
 
-  const std::string json = client_.ToJson();
+  AdsClientHelper::GetInstance()->Save(
+      kClientStateFilename, client_.ToJson(),
+      base::BindOnce([](const bool success) {
+        if (!success) {
+          return BLOG(0, "Failed to save client state");
+        }
 
-  if (!is_mutated_) {
-    SetHash(json);
-  }
-
-  AdsClientHelper::GetInstance()->Save(kClientStateFilename, json,
-                                       base::BindOnce(&OnSaved));
+        BLOG(9, "Successfully saved client state");
+      }));
 }
 
-void ClientStateManager::Load(InitializeCallback callback) {
-  BLOG(3, "Loading client state");
-
-  AdsClientHelper::GetInstance()->Load(
-      kClientStateFilename,
-      base::BindOnce(&ClientStateManager::LoadedCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void ClientStateManager::LoadedCallback(
-    InitializeCallback callback,
-    const absl::optional<std::string>& json) {
+void ClientStateManager::LoadCallback(InitializeCallback callback,
+                                      const absl::optional<std::string>& json) {
   if (!json) {
     BLOG(3, "Client state does not exist, creating default state");
 
@@ -536,6 +495,10 @@ void ClientStateManager::LoadedCallback(
     Save();
   } else {
     if (!FromJson(*json)) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
+      // migration failure dumps.
+      base::debug::DumpWithoutCrashing();
+
       BLOG(0, "Failed to load client state");
       BLOG(3, "Failed to parse client state: " << *json);
 
@@ -545,12 +508,6 @@ void ClientStateManager::LoadedCallback(
     BLOG(3, "Successfully loaded client state");
 
     is_initialized_ = true;
-  }
-
-  is_mutated_ = IsMutated(client_.ToJson());
-
-  if (is_mutated_) {
-    BLOG(9, "Client state is mutated");
   }
 
   std::move(callback).Run(/*success */ true);

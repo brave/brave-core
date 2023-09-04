@@ -28,27 +28,18 @@ import {
   NftUiCommand,
   UpdateLoadingMessage,
   UpdateNFtMetadataErrorMessage,
-  UpdateNFtMetadataMessage,
-  UpdateNftPinningStatus,
-  UpdateSelectedAssetMessage,
-  UpdateTokenNetworkMessage
+  UpdateNFtMetadataMessage
 } from './nft-ui-messages'
-import { BraveWallet, NFTMetadataReturnType } from '../constants/types'
+import { NFTMetadataReturnType } from '../constants/types'
 
 // components
 import { NftContent } from './components/nft-content/nft-content'
-import { PinningStatusType } from '../page/constants/action_types'
 
 const App = () => {
   const [loadingNftMetadata, setLoadingNftMetadata] = React.useState<boolean>(true)
   const [displayMode, setDisplayMode] = React.useState<DisplayMode>()
-  const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>()
   const [nftMetadata, setNftMetadata] = React.useState<NFTMetadataReturnType>()
-  const [nftMetadataError, setNftMetadataError] = React.useState<string | undefined>()
-  const [tokenNetwork, setTokenNetwork] = React.useState<BraveWallet.NetworkInfo>()
   const [imageUrl, setImageUrl] = React.useState<string>()
-  const [nftPinningStatus, setNftPinningStatus] = React.useState<PinningStatusType>()
-  const [imageIpfsUrl, setImageIpfsUrl] = React.useState<string>()
 
   // handle postMessage from wallet ui by setting component state
   // each message has a payload parameter containing the event data
@@ -61,13 +52,6 @@ const App = () => {
         {
           const { payload } = message as UpdateLoadingMessage
           setLoadingNftMetadata(payload)
-          break
-        }
-
-        case NftUiCommand.UpdateSelectedAsset:
-        {
-          const { payload } = message as UpdateSelectedAssetMessage
-          setSelectedAsset(payload)
           break
         }
 
@@ -90,26 +74,11 @@ const App = () => {
         case NftUiCommand.UpdateNFTMetadataError:
         {
           const { payload } = message as UpdateNFtMetadataErrorMessage
-          setNftMetadataError(payload.error)
           setDisplayMode(payload.displayMode)
 
           break
         }
 
-        case NftUiCommand.UpdateTokenNetwork:
-        {
-          const { payload } = message as UpdateTokenNetworkMessage
-          setTokenNetwork(payload)
-          break
-        }
-
-        case NftUiCommand.UpdateNftPinningStatus:
-          {
-            const { payload } = message as UpdateNftPinningStatus
-            setNftPinningStatus(payload.status)
-            setImageIpfsUrl(payload.url || '')
-            break
-          }
       }
     }
   }, [])
@@ -128,14 +97,9 @@ const App = () => {
       >
       <NftContent
         isLoading={loadingNftMetadata}
-        selectedAsset={selectedAsset}
         nftMetadata={nftMetadata}
-        tokenNetwork={tokenNetwork}
         imageUrl={imageUrl}
         displayMode={displayMode}
-        nftMetadataError={nftMetadataError}
-        nftPinningStatus={nftPinningStatus}
-        imageIpfsUrl={imageIpfsUrl}
       />
     </BraveCoreThemeProvider>
     </BrowserRouter>

@@ -10,8 +10,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_search_conversion/utils.h"
-#include "brave/components/commander/common/constants.h"
-#include "brave/components/commander/common/features.h"
+#include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_bookmark_provider.h"
 #include "brave/components/omnibox/browser/brave_history_quick_provider.h"
 #include "brave/components/omnibox/browser/brave_history_url_provider.h"
@@ -28,19 +27,22 @@
 #include "components/omnibox/browser/history_cluster_provider.h"
 #include "components/omnibox/browser/history_fuzzy_provider.h"
 
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+#if BUILDFLAG(ENABLE_COMMANDER)
+#include "brave/components/commander/common/buildflags/buildflags.h"
+#include "brave/components/commander/common/constants.h"
+#include "brave/components/commander/common/features.h"
 #include "brave/components/omnibox/browser/commander_provider.h"
 #endif
 
-using brave_search_conversion::IsBraveSearchConversionFetureEnabled;
+using brave_search_conversion::IsBraveSearchConversionFeatureEnabled;
 
 namespace {
 // If this input has triggered the commander then only show commander results.
 void MaybeShowCommands(AutocompleteResult* result,
                        const AutocompleteInput& input) {
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+#if BUILDFLAG(ENABLE_COMMANDER)
   // If this input isn't a command, return and don't do any work.
-  if (!commander::CommanderEnabled() ||
+  if (!base::FeatureList::IsEnabled(features::kBraveCommander) ||
       !base::StartsWith(input.text(), commander::kCommandPrefix)) {
     return;
   }
@@ -67,8 +69,8 @@ void MaybeShowCommands(AutocompleteResult* result,
 
 void MaybeAddCommanderProvider(AutocompleteController::Providers& providers,
                                AutocompleteController* controller) {
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-  if (commander::CommanderEnabled()) {
+#if BUILDFLAG(ENABLE_COMMANDER)
+  if (base::FeatureList::IsEnabled(features::kBraveCommander)) {
     providers.push_back(base::MakeRefCounted<commander::CommanderProvider>(
         controller->autocomplete_provider_client(), controller));
   }
@@ -85,13 +87,13 @@ void MaybeAddCommanderProvider(AutocompleteController::Providers& providers,
 #define BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER         \
   MaybeAddCommanderProvider(providers_, this);                        \
   providers_.push_back(new TopSitesProvider(provider_client_.get())); \
-  if (IsBraveSearchConversionFetureEnabled() &&                       \
+  if (IsBraveSearchConversionFeatureEnabled() &&                      \
       !provider_client_->IsOffTheRecord())                            \
     providers_.push_back(new PromotionProvider(provider_client_.get()));
 
-// This sort should be done in the middle of
-// AutocompleteController::UpdateResult() because result should be updated
-// before notifying at the last of UpdateResult().
+// This sort should be done right after AutocompleteResult::SortAndCull() in
+// the AutocompleteController::SortCullAndAnnotateResult() to make our sorting
+// run last but before notifying.
 #define BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT \
   SortBraveSearchPromotionMatch(&result_);          \
   MaybeShowCommands(&result_, input_);

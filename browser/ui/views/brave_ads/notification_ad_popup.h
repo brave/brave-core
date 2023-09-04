@@ -109,16 +109,15 @@ class NotificationAdPopup : public views::WidgetDelegateView,
     kFadeOut
   };
 
-  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
-
   void CreatePopup(gfx::NativeWindow browser_native_window,
                    gfx::NativeView browser_native_view);
 
-  NotificationAd notification_ad_;
-
-  gfx::Point GetDefaultOriginForSize(const gfx::Size& size);
-  gfx::Point GetOriginForSize(const gfx::Size& size);
-  void SaveOrigin(const gfx::Point& origin) const;
+  bool WasNotificationAdPopupShownBefore() const;
+  void SetInitialWidgetOrigin(gfx::NativeView browser_native_view);
+  gfx::Point GetWidgetOriginForSize(const gfx::Size& size,
+                                    gfx::NativeView browser_native_view);
+  void SaveWidgetOrigin(const gfx::Point& origin,
+                        gfx::NativeView native_view) const;
 
   gfx::Size CalculateViewSize() const;
   gfx::Rect CalculateBounds();
@@ -132,22 +131,29 @@ class NotificationAdPopup : public views::WidgetDelegateView,
                         gfx::NativeView browser_native_view);
   void CloseWidgetView();
 
-  raw_ptr<NotificationAdView> notification_ad_view_ = nullptr;
-
   void FadeIn();
   void FadeOut();
 
-  const std::unique_ptr<gfx::LinearAnimation> animation_;
-  AnimationState animation_state_ = AnimationState::kIdle;
   void StartAnimation();
   void UpdateAnimation();
 
   bool IsWidgetValid() const;
 
+  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
+
+  NotificationAd notification_ad_;
+
+  raw_ptr<NotificationAdView> notification_ad_view_ = nullptr;
+
+  const std::unique_ptr<gfx::LinearAnimation> animation_;
+  AnimationState animation_state_ = AnimationState::kIdle;
+
   gfx::Point initial_mouse_pressed_location_;
   bool is_dragging_ = false;
 
   bool inside_adjust_bounds_ = false;
+
+  gfx::Point widget_origin_;
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};

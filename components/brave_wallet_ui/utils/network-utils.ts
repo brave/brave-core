@@ -21,6 +21,7 @@ export const emptyNetwork: BraveWallet.NetworkInfo = {
   symbolName: '',
   decimals: 0,
   coin: BraveWallet.CoinType.ETH,
+  supportedKeyrings: [],
   isEip1559: true
 }
 
@@ -33,11 +34,24 @@ export const getNetworkInfo = (chainId: string, coin: BraveWallet.CoinType, list
   return emptyNetwork
 }
 
-export const getNetworksByCoinType = (networks: BraveWallet.NetworkInfo[], coin: BraveWallet.CoinType): BraveWallet.NetworkInfo[] => {
+export const networkSupportsAccount = (
+  network: BraveWallet.NetworkInfo,
+  accountId: BraveWallet.AccountId
+) => {
+  return (
+    network.coin === accountId.coin &&
+    network.supportedKeyrings.includes(accountId.keyringId)
+  )
+}
+
+export const filterNetworksForAccount = (
+  networks: BraveWallet.NetworkInfo[],
+  accountId: BraveWallet.AccountId
+): BraveWallet.NetworkInfo[] => {
   if (!networks) {
     return []
   }
-  return networks.filter((network) => network.coin === coin)
+  return networks.filter((network) => networkSupportsAccount(network, accountId))
 }
 
 export const getTokensNetwork = (networks: BraveWallet.NetworkInfo[], token: BraveWallet.BlockchainToken): BraveWallet.NetworkInfo => {
@@ -65,20 +79,8 @@ export type TxDataPresence = {
 export const getCoinFromTxDataUnion = <T extends TxDataPresence> (txDataUnion: T): BraveWallet.CoinType => {
   if (txDataUnion.filTxData) { return BraveWallet.CoinType.FIL }
   if (txDataUnion.solanaTxData) { return BraveWallet.CoinType.SOL }
+  // TODO(apaymyshev): bitcoin support
   return BraveWallet.CoinType.ETH
-}
-
-export function getFilecoinKeyringIdFromNetwork (
-  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
-) {
-  if (network.coin !== BraveWallet.CoinType.FIL) {
-    return undefined
-  }
-  if (network.chainId === BraveWallet.FILECOIN_MAINNET) {
-    return BraveWallet.FILECOIN_KEYRING_ID
-  } else {
-    return BraveWallet.FILECOIN_TESTNET_KEYRING_ID
-  }
 }
 
 const EIP1559_SUPPORTED_ACCOUNT_TYPE_NAMES = [
@@ -96,7 +98,7 @@ const EIP1559_SUPPORTED_ACCOUNT_TYPE_NAMES = [
  * EVM Type-2 transactions. The return value is always false for non-EVM
  * networks.
  *
- * @param {WalletAccountType} account
+ * @param {BraveWallet.AccountInfo} account
  * @param {BraveWallet.NetworkInfo} network
  * @returns {boolean} Returns a boolean result indicating EIP-1559 support.
  */
@@ -108,4 +110,11 @@ export const hasEIP1559Support = (
     EIP1559_SUPPORTED_ACCOUNT_TYPE_NAMES.includes(accountType) &&
     network.isEip1559
   )
+}
+
+export const reduceNetworkDisplayName = (name?: string) => {
+  if (!name) {
+    return ''
+  }
+  return name.split(' ')[0]
 }

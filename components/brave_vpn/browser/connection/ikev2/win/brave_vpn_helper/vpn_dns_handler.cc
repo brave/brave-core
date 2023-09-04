@@ -14,8 +14,9 @@
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_state.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/vpn_utils.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/utils.h"
-#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_commands.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 
 namespace brave_vpn {
 
@@ -55,7 +56,7 @@ void VpnDnsHandler::SetCloseEngineResultForTesting(bool value) {
 }
 
 void VpnDnsHandler::SetConnectionResultForTesting(
-    internal::CheckConnectionResult result) {
+    ras::CheckConnectionResult result) {
   connection_result_for_testing_ = result;
 }
 
@@ -86,6 +87,11 @@ bool VpnDnsHandler::SetFilters(const std::wstring& connection_name) {
     }
     return false;
   }
+
+  // Show system notification about connected vpn.
+  brave_vpn::RunWireGuardCommandForUsers(
+      brave_vpn::kBraveVpnWireguardServiceNotifyConnectedSwitchName);
+
   return true;
 }
 
@@ -106,22 +112,21 @@ bool VpnDnsHandler::RemoveFilters(const std::wstring& connection_name) {
   return success;
 }
 
-internal::CheckConnectionResult VpnDnsHandler::GetVpnEntryStatus() {
+ras::CheckConnectionResult VpnDnsHandler::GetVpnEntryStatus() {
   VLOG(1) << __func__;
   if (connection_result_for_testing_.has_value()) {
     return connection_result_for_testing_.value();
   }
-  return internal::CheckConnection(GetBraveVPNConnectionName());
+  return ras::CheckConnection(GetBraveVPNConnectionName());
 }
 
 void VpnDnsHandler::DisconnectVPN() {
   if (connection_result_for_testing_.has_value()) {
-    connection_result_for_testing_ =
-        internal::CheckConnectionResult::DISCONNECTED;
+    connection_result_for_testing_ = ras::CheckConnectionResult::DISCONNECTED;
     return;
   }
 
-  auto result = internal::DisconnectEntry(GetBraveVPNConnectionName());
+  auto result = ras::DisconnectEntry(GetBraveVPNConnectionName());
   if (!result.success) {
     VLOG(1) << "Failed to disconnect entry:" << result.error_description;
   }
@@ -130,7 +135,7 @@ void VpnDnsHandler::DisconnectVPN() {
 void VpnDnsHandler::UpdateFiltersState() {
   VLOG(1) << __func__;
   switch (GetVpnEntryStatus()) {
-    case internal::CheckConnectionResult::CONNECTED:
+    case ras::CheckConnectionResult::CONNECTED:
       VLOG(1) << "BraveVPN connected, set filters";
       if (IsActive()) {
         VLOG(1) << "Filters are already installed";
@@ -144,7 +149,7 @@ void VpnDnsHandler::UpdateFiltersState() {
       }
       SetFiltersInstalledFlag();
       break;
-    case internal::CheckConnectionResult::DISCONNECTED:
+    case ras::CheckConnectionResult::DISCONNECTED:
       VLOG(1) << "BraveVPN Disconnected, remove filters";
       if (!RemoveFilters(GetBraveVPNConnectionName())) {
         VLOG(1) << "Failed to remove DNS filters";
@@ -191,7 +196,7 @@ void VpnDnsHandler::ScheduleExit() {
 }
 
 void VpnDnsHandler::Exit() {
-  if (GetVpnEntryStatus() == internal::CheckConnectionResult::CONNECTED) {
+  if (GetVpnEntryStatus() == ras::CheckConnectionResult::CONNECTED) {
     VLOG(1) << __func__ << " vpn is active, do not exit";
     return;
   }

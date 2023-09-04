@@ -4,7 +4,11 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Types
-import { NavOption, WalletRoutes } from '../constants/types'
+import {
+  NavOption,
+  WalletRoutes,
+  AccountPageTabs
+} from '../constants/types'
 
 export const BuySendSwapDepositOptions: NavOption[] = [
   {
@@ -17,7 +21,7 @@ export const BuySendSwapDepositOptions: NavOption[] = [
     id: 'send',
     name: 'braveWalletSend',
     icon: 'send',
-    route: WalletRoutes.Send
+    route: WalletRoutes.SendPageStart
   },
   {
     id: 'swap',
@@ -108,5 +112,77 @@ export const PortfolioNavOptions: NavOption[] = [
     name: 'braveWalletTopNavNFTS',
     icon: 'grid04',
     route: WalletRoutes.PortfolioNFTs
+  },
+]
+
+export const PortfolioAssetOptions: NavOption[] = [
+  {
+    id: 'accounts',
+    name: 'braveWalletTopNavAccounts',
+    icon: 'user-accounts',
+    route: WalletRoutes.AccountsHash
+  },
+  {
+    id: 'transactions',
+    name: 'braveWalletTransactions',
+    icon: 'activity',
+    route: WalletRoutes.TransactionsHash
+  }
+]
+
+export const EditVisibleAssetsOptions: NavOption[] = [
+  {
+    id: 'my_assets',
+    name: 'braveWalletMyAssets',
+    icon: '',
+    route: WalletRoutes.MyAssetsHash
+  },
+  {
+    id: 'available_assets',
+    name: 'braveWalletAvailableAssets',
+    icon: '',
+    route: WalletRoutes.AvailableAssetsHash
+  }
+]
+
+export const CreateAccountOptions: NavOption[] = [
+  {
+    id: 'accounts',
+    name: 'braveWalletCreateAccountButton',
+    icon: 'plus-add',
+    route: WalletRoutes.CreateAccountModalStart
+  },
+  {
+    id: 'accounts',
+    name: 'braveWalletImportAccount',
+    icon: 'product-brave-wallet',
+    route: WalletRoutes.ImportAccountModalStart
+  },
+  {
+    id: 'accounts',
+    name: 'braveWalletConnectHardwareWallet',
+    icon: 'flashdrive',
+    route: WalletRoutes.AddHardwareAccountModalStart
+  },
+]
+
+export const AccountDetailsOptions: NavOption[] = [
+  {
+    id: 'assets',
+    name: 'braveWalletAccountsAssets',
+    icon: '',
+    route: AccountPageTabs.AccountAssetsSub
+  },
+  {
+    id: 'nfts',
+    name: 'braveWalletTopNavNFTS',
+    icon: '',
+    route: AccountPageTabs.AccountNFTsSub
+  },
+  {
+    id: 'transactions',
+    name: 'braveWalletTransactions',
+    icon: '',
+    route: AccountPageTabs.AccountTransactionsSub
   },
 ]

@@ -1,20 +1,36 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 28fe2423c40e908a6a22f1d24675386b4edd1378..def90d8031f9ea26a6eb583088cf55489d70af4c 100644
+index 3d760420407464575b056318b80345a5101a3f27..662f9329678793d893172139c8a2364c06f42fab 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -275,6 +275,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+@@ -313,6 +313,7 @@ template("chrome_common_apk_or_module_tmpl") {
        "*ic_file_download_white*",  # Bottom edge seems misaligned.
        "*ic_lock.*",  # Bottom edge seems misaligned.
      ]
 +    resource_exclusion_exceptions += brave_resources_exclusion_exceptions
  
-     # Note most of these, with the exception of resource_exclusion_exceptions,
+     # Most of these, with the exception of resource_exclusion_exceptions,
      # are currently duplicated in system_webview_apk_tmpl.gni.
-@@ -380,6 +381,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
-         proguard_configs = []
-       }
-       proguard_configs += [ "//chrome/android/proguard/main.flags" ]
-+      proguard_configs += [ "//brave/android/java/proguard.flags" ]
-     }
+@@ -337,6 +338,7 @@ template("chrome_common_apk_or_module_tmpl") {
  
-     if (use_chromium_linker) {
+       proguard_enabled = true
+       proguard_configs = [ "//chrome/android/proguard/main.flags" ]
++      proguard_configs += [ "//brave/android/java/proguard.flags" ]
+       if (_is_monochrome) {
+         proguard_configs +=
+             [ "//android_webview/nonembedded/java/proguard.flags" ]
+@@ -741,6 +743,7 @@ template("chrome_common_apk_or_module_tmpl") {
+                                  "version_code",
+                                  "version_name",
+                                ])
++    _wireguard_target = "//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar" deps += [ _wireguard_target] _libwireguard_dir = get_label_info("//brave/third_party/android_deps:com_wireguard_android($default_toolchain)","target_out_dir") + "/com_wireguard_android_java/jni" if (android_64bit_target_cpu) {loadable_modules +=[ "$_libwireguard_dir/$android_app_abi/libwg-go.so" ] secondary_abi_loadable_modules +=[ "$_libwireguard_dir/$android_app_secondary_abi/libwg-go.so" ]} else {loadable_modules +=[ "$_libwireguard_dir/$android_app_abi/libwg-go.so" ]}
+   }
+ }
+ 
+@@ -769,6 +772,7 @@ template("monochrome_public_common_apk_or_module_tmpl") {
+     if (!defined(is_monochrome)) {
+       is_trichrome = true
+     }
++    deps += brave_monochrome_public_apk_or_module_tmpl_deps loadable_modules = brave_monochrome_public_apk_or_module_tmpl_loadable_modules secondary_abi_loadable_modules = brave_monochrome_public_apk_or_module_tmpl_secondary_abi_loadable_modules
+   }
+ }
+ template("chrome_public_common_apk_or_module_tmpl") {

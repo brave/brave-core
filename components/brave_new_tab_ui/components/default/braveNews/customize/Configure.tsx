@@ -9,8 +9,8 @@ import Flex from '../../../Flex'
 import Discover from './Discover'
 import { BackArrow } from './Icons'
 import Icon from '@brave/leo/react/icon'
-import Button from '$web-components/button'
-import Toggle from '$web-components/toggle'
+import Button from '@brave/leo/react/button'
+import Toggle from '@brave/leo/react/toggle'
 import SourcesList from './SourcesList'
 import DisabledPlaceholder from './DisabledPlaceholder'
 import { useBraveNews } from './Context'
@@ -18,6 +18,7 @@ import { getLocale } from '$web-common/locale'
 import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
 import { SuggestionsPage } from './Suggestions'
 import { PopularPage } from './Popular'
+import { spacing } from '@brave/leo/tokens/css'
 
 const Grid = styled.div`
   width: 100%;
@@ -47,31 +48,16 @@ const HeaderText = styled.span`
   font-weight: 500;
 `
 
-const CloseButtonContainer = styled.div`
-  &> button {
-    --inner-border-size: 0;
-    --outer-border-size: 0;
-    padding: 12px;
-    width: 32px;
-    height: 32px;
-  }
-`
-
 const BackButtonContainer = styled.div`
   grid-area: back-button;
   align-items: center;
   display: flex;
   padding: 12px;
-
-  &> button {
-    --inner-border-size: 0;
-    --outer-border-size: 0;
-  }
+  padding-left: 34px;
 `
 
-const BackButtonText = styled.span`
-  font-size: 12px;
-  line-height: 1;
+const CloseButton = styled(Button)`
+  flex-grow: 0;
 `
 
 const Hr = styled.hr`
@@ -108,7 +94,7 @@ const Content = styled.div`
   padding: 20px 64px;
 `
 
-export default function Configure () {
+export default function Configure() {
   const {
     setCustomizePage,
     customizePage,
@@ -126,7 +112,7 @@ export default function Configure () {
   if (!isBraveNewsFullyEnabled) {
     content = <DisabledPlaceholder enableBraveNews={() => toggleBraveNewsOnNTP(true)} />
   } else if (customizePage === 'suggestions') {
-    content = <SuggestionsPage/>
+    content = <SuggestionsPage />
   } else if (customizePage === 'popular') {
     content = <PopularPage />
   } else {
@@ -136,26 +122,26 @@ export default function Configure () {
   return (
     <Grid id='brave-news-configure'>
       <BackButtonContainer>
-        <Button onClick={() => setCustomizePage(null)}>
-          {BackArrow}
-          <BackButtonText>
-            {formatMessage(getLocale('braveNewsBackToDashboard'), {
-              tags: {
-                $1: content => <strong key="$1">{content}</strong>
-              }
-            })}
-          </BackButtonText>
+        <Button onClick={() => setCustomizePage(null)} kind='plain-faint'>
+          <Flex direction='row' align='center' gap={spacing[8]}>
+            {BackArrow}
+            <span>
+              {formatMessage(getLocale('braveNewsBackToDashboard'), {
+                tags: {
+                  $1: content => <strong key="$1">{content}</strong>
+                }
+              })}
+            </span>
+          </Flex>
         </Button>
       </BackButtonContainer>
       <Header direction="row-reverse" gap={12} align="center" justify="space-between">
-        <CloseButtonContainer>
-          <Button onClick={() => setCustomizePage(null)}>
-            <Icon name='close'/>
-          </Button>
-        </CloseButtonContainer>
+        <CloseButton onClick={() => setCustomizePage(null)} kind='plain-faint'>
+          <Icon name='close' />
+        </CloseButton>
         {isBraveNewsFullyEnabled && <Flex direction="row" align="center" gap={8}>
           <HeaderText>{getLocale('braveNewsTitle')}</HeaderText>
-          <Toggle isOn={true} onChange={toggleBraveNewsOnNTP} />
+          <Toggle checked={isShowOnNTPPrefEnabled} onChange={e => toggleBraveNewsOnNTP(e.detail.checked)} />
         </Flex>}
       </Header>
       <Hr />

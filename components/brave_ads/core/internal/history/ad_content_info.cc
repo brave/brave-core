@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/ad_content_info.h"
+#include "brave/components/brave_ads/core/public/history/ad_content_info.h"
+
+#include <tuple>
 
 namespace brave_ads {
 
@@ -20,30 +22,18 @@ AdContentInfo& AdContentInfo::operator=(AdContentInfo&& other) noexcept =
 
 AdContentInfo::~AdContentInfo() = default;
 
-mojom::UserReactionType AdContentInfo::ToggleLikeUserReactionType() const {
-  return user_reaction_type == mojom::UserReactionType::kLike
-             ? mojom::UserReactionType::kNeutral
-             : mojom::UserReactionType::kLike;
-}
-
-mojom::UserReactionType AdContentInfo::ToggleDislikeUserReactionType() const {
-  return user_reaction_type == mojom::UserReactionType::kDislike
-             ? mojom::UserReactionType::kNeutral
-             : mojom::UserReactionType::kDislike;
-}
-
 bool operator==(const AdContentInfo& lhs, const AdContentInfo& rhs) {
-  return lhs.type == rhs.type && lhs.placement_id == rhs.placement_id &&
-         lhs.creative_instance_id == rhs.creative_instance_id &&
-         lhs.creative_set_id == rhs.creative_set_id &&
-         lhs.campaign_id == rhs.campaign_id &&
-         lhs.advertiser_id == rhs.advertiser_id && lhs.brand == rhs.brand &&
-         lhs.brand_info == rhs.brand_info &&
-         lhs.brand_display_url == rhs.brand_display_url &&
-         lhs.brand_url == rhs.brand_url &&
-         lhs.user_reaction_type == rhs.user_reaction_type &&
-         lhs.confirmation_type == rhs.confirmation_type &&
-         lhs.is_saved == rhs.is_saved && lhs.is_flagged == rhs.is_flagged;
+  const auto tie = [](const AdContentInfo& ad_content) {
+    return std::tie(ad_content.type, ad_content.placement_id,
+                    ad_content.creative_instance_id, ad_content.creative_set_id,
+                    ad_content.campaign_id, ad_content.advertiser_id,
+                    ad_content.brand, ad_content.brand_info,
+                    ad_content.brand_display_url, ad_content.brand_url,
+                    ad_content.user_reaction_type, ad_content.confirmation_type,
+                    ad_content.is_saved, ad_content.is_flagged);
+  };
+
+  return tie(lhs) == tie(rhs);
 }
 
 bool operator!=(const AdContentInfo& lhs, const AdContentInfo& rhs) {

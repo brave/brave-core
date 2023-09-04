@@ -18,9 +18,11 @@ SkRect AdjustRingBounds(const gfx::RectF& ring_bounds);
 
 #define RectFToSkRect(ring_bounds) AdjustRingBounds(ring_bounds)
 #define DownloadToolbarButtonView DownloadToolbarButtonViewChromium
+#define FromVectorIcon(icon, color) FromVectorIcon(icon, color, 16)
 
 #include "src/chrome/browser/ui/views/download/bubble/download_toolbar_button_view.cc"
 
+#undef FromVectorIcon
 #undef DownloadToolbarButtonView
 #undef RectFToSkRect
 
@@ -55,7 +57,7 @@ SkColor DownloadToolbarButtonView::GetIconColor() const {
 
 void DownloadToolbarButtonView::PaintButtonContents(gfx::Canvas* canvas) {
   // Don't draw anything but alert icon when insecure download is in-progress.
-  if (HasInsecureDownloads(bubble_controller()->GetMainView())) {
+  if (HasInsecureDownloads()) {
     return;
   }
 
@@ -70,27 +72,40 @@ void DownloadToolbarButtonView::UpdateIcon() {
   DownloadToolbarButtonViewChromium::UpdateIcon();
 
   // Replace Icon when insecure download is in-progress.
-  if (HasInsecureDownloads(bubble_controller()->GetMainView())) {
+  if (HasInsecureDownloads()) {
     const gfx::VectorIcon* new_icon = &vector_icons::kNotSecureWarningIcon;
     SkColor icon_color =
         GetColorProvider()->GetColor(ui::kColorAlertMediumSeverityIcon);
 
-    SetImageModel(ButtonState::STATE_NORMAL,
-                  ui::ImageModel::FromVectorIcon(*new_icon, icon_color));
-    SetImageModel(ButtonState::STATE_HOVERED,
-                  ui::ImageModel::FromVectorIcon(*new_icon, icon_color));
-    SetImageModel(ButtonState::STATE_PRESSED,
-                  ui::ImageModel::FromVectorIcon(*new_icon, icon_color));
+    constexpr int kIconSize = 16;
+    SetImageModel(
+        ButtonState::STATE_NORMAL,
+        ui::ImageModel::FromVectorIcon(*new_icon, icon_color, kIconSize));
+    SetImageModel(
+        ButtonState::STATE_HOVERED,
+        ui::ImageModel::FromVectorIcon(*new_icon, icon_color, kIconSize));
+    SetImageModel(
+        ButtonState::STATE_PRESSED,
+        ui::ImageModel::FromVectorIcon(*new_icon, icon_color, kIconSize));
     SetImageModel(
         Button::STATE_DISABLED,
         ui::ImageModel::FromVectorIcon(
-            *new_icon, GetForegroundColor(ButtonState::STATE_DISABLED)));
+            *new_icon, GetForegroundColor(ButtonState::STATE_DISABLED),
+            kIconSize));
   }
 }
 
-bool DownloadToolbarButtonView::HasInsecureDownloads(
-    const std::vector<DownloadUIModel::DownloadUIModelPtr>& models) const {
-  return base::ranges::any_of(models, [](const auto& model) {
+bool DownloadToolbarButtonView::HasInsecureDownloads() {
+  auto* update_service = bubble_controller()->update_service();
+  if (!update_service || !update_service->IsInitialized()) {
+    return false;
+  }
+
+  std::vector<DownloadUIModel::DownloadUIModelPtr> all_models;
+  update_service->GetAllModelsToDisplay(all_models, /*web_app_id=*/nullptr,
+                                        /*force_backfill_download_items=*/true);
+
+  return base::ranges::any_of(all_models, [](const auto& model) {
     return (model->GetInsecureDownloadStatus() ==
                 download::DownloadItem::InsecureDownloadStatus::BLOCK ||
             model->GetInsecureDownloadStatus() ==

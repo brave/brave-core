@@ -128,8 +128,8 @@ bool HasAlreadyOpenedTorWindow(Profile* profile) {
 // to handle additional |use_new_tab| param.
 void OnTorProfileCreated(const GURL& link_url,
                          bool use_new_tab,
-                         Profile* profile) {
-  Browser* browser = chrome::FindLastActiveWithProfile(profile);
+                         Browser* browser) {
+  CHECK(browser);
   /* |ui::PAGE_TRANSITION_TYPED| is used rather than
      |ui::PAGE_TRANSITION_LINK| since this ultimately opens the link in
      another browser. This parameter is used within the tab strip model of
@@ -455,7 +455,7 @@ void BraveRenderViewContextMenu::InitMenu() {
 
 #if BUILDFLAG(ENABLE_TOR)
   // Add Open Link with Tor
-  if (!TorProfileServiceFactory::IsTorDisabled() &&
+  if (!TorProfileServiceFactory::IsTorDisabled(GetProfile()) &&
       content_type_->SupportsGroup(ContextMenuContentType::ITEM_GROUP_LINK) &&
       !params_.link_url.is_empty()) {
     const Browser* browser = GetBrowser();
@@ -491,4 +491,11 @@ void BraveRenderViewContextMenu::InitMenu() {
 #if BUILDFLAG(ENABLE_IPFS)
   BuildIPFSMenu();
 #endif
+}
+
+void BraveRenderViewContextMenu::NotifyMenuShown() {
+  auto* cb = BraveGetMenuShownCallback();
+  if (!cb->is_null()) {
+    std::move(*cb).Run(this);
+  }
 }

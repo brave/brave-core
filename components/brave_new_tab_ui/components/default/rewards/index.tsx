@@ -42,10 +42,10 @@ export function RewardsContextAdapter (props: { children: React.ReactNode }) {
 
 export interface RewardsProps {
   rewardsEnabled: boolean
+  isGrandfatheredUser: boolean
   userType: string
   isUnsupportedRegion: boolean
   declaredCountry: string
-  enabledAds: boolean
   needsBrowserUpgradeToServeAds: boolean
   balance?: number
   externalWallet?: RewardsExtension.ExternalWallet
@@ -56,7 +56,6 @@ export interface RewardsProps {
   promotions?: NewTab.Promotion[]
   totalContribution: number
   publishersVisitedCount: number
-  adsSupported?: boolean
   showContent: boolean
   stackPosition: number
   onShowContent: () => void
@@ -125,23 +124,18 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
   }
 
   const openRewardsPanel = () => {
-    chrome.braveRewards.recordNTPPanelTrigger();
-    chrome.braveRewards.openRewardsPanel()
-  }
-
-  const enableAds = () => {
-    chrome.braveRewards.enableAds()
+    chrome.braveRewards.recordNTPPanelTrigger()
+    chrome.braveRewards.showRewardsSetup()
   }
 
   return (
     <RewardsCard
       rewardsEnabled={props.rewardsEnabled}
+      isGrandfatheredUser={props.isGrandfatheredUser}
       userType={userTypeFromString(props.userType)}
       vbatDeadline={props.parameters.vbatDeadline}
       isUnsupportedRegion={props.isUnsupportedRegion}
       declaredCountry={props.declaredCountry}
-      adsEnabled={props.enabledAds}
-      adsSupported={Boolean(props.adsSupported)}
       needsBrowserUpgradeToServeAds={props.needsBrowserUpgradeToServeAds}
       rewardsBalance={optional(props.balance)}
       exchangeCurrency='USD'
@@ -150,13 +144,14 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       grantInfo={grantInfo}
       externalWallet={externalWallet}
       nextPaymentDate={adsInfo ? adsInfo.nextPaymentDate : 0}
-      earningsThisMonth={adsInfo ? adsInfo.earningsThisMonth : 0}
-      earningsLastMonth={adsInfo ? adsInfo.earningsLastMonth : 0}
+      minEarningsThisMonth={adsInfo ? adsInfo.minEarningsThisMonth : 0}
+      maxEarningsThisMonth={adsInfo ? adsInfo.maxEarningsThisMonth : 0}
+      minEarningsLastMonth={adsInfo ? adsInfo.minEarningsLastMonth : 0}
+      maxEarningsLastMonth={adsInfo ? adsInfo.maxEarningsLastMonth : 0}
       contributionsThisMonth={props.totalContribution}
       canConnectAccount={canConnectAccount()}
       publishersVisited={props.publishersVisitedCount || 0}
       onEnableRewards={openRewardsPanel}
-      onEnableAds={enableAds}
       onSelectCountry={openRewardsPanel}
       onClaimGrant={onClaimGrant}
     />

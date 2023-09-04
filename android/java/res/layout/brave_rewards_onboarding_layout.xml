@@ -73,7 +73,7 @@
                     android:textAllCaps="false"
                     android:drawableTint="@android:color/white"
                     android:focusable="true"
-                    android:fontFamily="@font/poppins_600"
+                    android:fontFamily="sans-serif-medium"
                     android:text="@string/lets_take_a_quick_tour"
                     android:textColor="@android:color/white" />
 
@@ -89,7 +89,7 @@
                     android:layout_marginTop="16dp"
                     android:textAllCaps="false"
                     android:text="@string/skip_for_now"
-                    android:fontFamily="@font/poppins_600"
+                    android:fontFamily="sans-serif-medium"
                     android:textColor="@color/rewards_panel_secondary_text_color" />
 
               </LinearLayout>
@@ -110,7 +110,7 @@
                     android:textAllCaps="false"
                     android:clickable="true"
                     android:focusable="true"
-                    android:fontFamily="@font/poppins_600"
+                    android:fontFamily="sans-serif-medium"
                     android:text="@string/go_back"
                     android:textColor="@color/rewards_panel_action_color" />
 
@@ -133,7 +133,7 @@
                     android:paddingHorizontal="32dp"
                     android:focusable="true"
                     android:textAllCaps="false"
-                    android:fontFamily="@font/poppins_600"
+                    android:fontFamily="sans-serif-medium"
                     android:text="@string/continue_text"
                     android:textColor="@android:color/white" />
 
@@ -147,7 +147,7 @@
                 android:id="@+id/brave_rewards_onboarding_layout_modal_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@null"
+                android:contentDescription="@string/close_text"
                 android:layout_gravity="end|top"
                 android:src="@drawable/btn_close"/>
 

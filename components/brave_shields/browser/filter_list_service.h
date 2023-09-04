@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_FILTER_LIST_SERVICE_H_
 
 #include <string>
+#include <vector>
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_shields/common/filter_list.mojom-forward.h"
 #include "brave/components/brave_shields/common/filter_list.mojom.h"
@@ -32,6 +33,10 @@ class FilterListService : public KeyedService,
                            IsFilterListEnabledCallback callback) override;
   void EnableFilter(const std::string& filterListUuid,
                     bool shouldEnableFilter) override;
+  void GetSubscriptions(GetSubscriptionsCallback callback) override;
+  void CreateSubscription(const GURL& subscription_url) override;
+  void EnableSubscription(const GURL& sub_url, bool enabled) override;
+  void DeleteSubscription(const GURL& sub_url) override;
 
  private:
   raw_ptr<AdBlockService> ad_block_service_ = nullptr;

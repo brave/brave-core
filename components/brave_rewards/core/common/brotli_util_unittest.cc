@@ -9,7 +9,7 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter='BraveLedgerBrotliHelpersTest.*'
+// npm run test -- brave_unit_tests --filter='RewardsBrotliHelpersTest.*'
 
 namespace {
 
@@ -30,14 +30,14 @@ constexpr char kUncompressed[] =
 namespace brave_rewards::internal {
 namespace util {
 
-class BraveLedgerBrotliHelpersTest : public testing::Test {
+class RewardsBrotliHelpersTest : public testing::Test {
  protected:
   static std::string GetInput() {
     return std::string(kCompressed.begin(), kCompressed.end());
   }
 };
 
-TEST_F(BraveLedgerBrotliHelpersTest, TestDecode) {
+TEST_F(RewardsBrotliHelpersTest, TestDecode) {
   std::string uncompressed(kUncompressed);
   std::string s;
 
@@ -54,7 +54,7 @@ TEST_F(BraveLedgerBrotliHelpersTest, TestDecode) {
   EXPECT_FALSE(DecodeBrotliString("not brotli", 16, &s));
 }
 
-TEST_F(BraveLedgerBrotliHelpersTest, TestDecodeWithBuffer) {
+TEST_F(RewardsBrotliHelpersTest, TestDecodeWithBuffer) {
   std::string s;
 
   EXPECT_TRUE(DecodeBrotliStringWithBuffer(GetInput(), 16, &s));

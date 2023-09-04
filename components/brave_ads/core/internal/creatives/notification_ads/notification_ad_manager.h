@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/containers/circular_deque.h"
-#include "brave/components/brave_ads/core/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

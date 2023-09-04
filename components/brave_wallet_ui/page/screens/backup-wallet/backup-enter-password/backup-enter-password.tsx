@@ -19,8 +19,12 @@ import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
 
 // components
-import { PasswordInput } from '../../../../components/shared'
-import { NavButton } from '../../../../components/extension'
+import {
+  PasswordInput //
+} from '../../../../components/shared/password-input/index'
+import {
+  NavButton //
+} from '../../../../components/extension/buttons/nav-button/index'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 

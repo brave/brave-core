@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types_unittest_util.h"
 
-#include <ostream>
-
-#include "base/notreached.h"
+#include "base/check.h"
 
 namespace brave_ads {
 
@@ -18,8 +16,10 @@ constexpr char kStagingEnvironment[] = "Staging";
 
 }  // namespace
 
-std::string EnvironmentTypeEnumToString(
+std::string EnvironmentTypeEnumToStringForTesting(
     const mojom::EnvironmentType environment_type) {
+  CHECK(mojom::IsKnownEnumValue(environment_type));
+
   switch (environment_type) {
     case mojom::EnvironmentType::kProduction: {
       return kProductionEnvironment;
@@ -29,9 +29,6 @@ std::string EnvironmentTypeEnumToString(
       return kStagingEnvironment;
     }
   }
-
-  NOTREACHED_NORETURN() << "Unexpected value for EnvironmentType: "
-                        << static_cast<int>(environment_type);
 }
 
 }  // namespace brave_ads

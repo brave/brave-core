@@ -26,7 +26,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
 
   // Called when the user's Rewards wallet information has been created or
   // updated.
-  virtual void OnRewardsWalletUpdated() {}
+  virtual void OnRewardsWalletCreated() {}
 
   virtual void OnFetchPromotions(RewardsService* rewards_service,
                                  const mojom::Result result,
@@ -50,12 +50,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
       const mojom::RewardsType type,
       const mojom::ContributionProcessor processor) {}
 
-  virtual void OnAdsEnabled(RewardsService* rewards_service, bool ads_enabled) {
-  }
-
-  virtual void OnPendingContributionSaved(RewardsService* rewards_service,
-                                          const mojom::Result result) {}
-
   virtual void OnPublisherListNormalized(
       RewardsService* rewards_service,
       std::vector<mojom::PublisherInfoPtr> list) {}
@@ -72,14 +66,13 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnRecurringTipRemoved(RewardsService* rewards_service,
                                      bool success) {}
 
-  virtual void OnPendingContributionRemoved(RewardsService* rewards_service,
-                                            const mojom::Result result) {}
-
   virtual void OnExternalWalletConnected() {}
 
   virtual void OnExternalWalletLoggedOut() {}
 
   virtual void OnExternalWalletReconnected() {}
+
+  virtual void OnExternalWalletDisconnected() {}
 
   virtual void OnUnblindedTokensReady(RewardsService* rewards_service) {}
 

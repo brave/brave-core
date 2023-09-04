@@ -17,6 +17,7 @@
 #include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
+#include "components/prefs/pref_service.h"
 
 namespace brave_wallet {
 
@@ -25,6 +26,7 @@ namespace brave_wallet {
 class BitcoinRpc {
  public:
   explicit BitcoinRpc(
+      PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BitcoinRpc();
 
@@ -69,6 +71,7 @@ class BitcoinRpc {
   void OnPostTransaction(PostTransactionCallback callback,
                          APIRequestResult api_request_result);
 
+  const raw_ptr<PrefService> prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;
   base::WeakPtrFactory<BitcoinRpc> weak_ptr_factory_{this};

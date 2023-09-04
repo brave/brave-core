@@ -9,22 +9,32 @@ import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-d
 
 // utils
 import { getWalletLocationTitle } from '../utils/string-utils'
+import { getLocale } from '../../common/locale'
 
 // actions
 import * as WalletPageActions from './actions/wallet_page_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
 
 // selectors
-import { WalletSelectors } from '../common/selectors'
+import {
+  UISelectors,
+  WalletSelectors
+} from '../common/selectors'
 import { PageSelectors } from './selectors'
 
 // types
 import {
-  WalletRoutes, WalletState
+  WalletOrigin,
+  WalletRoutes,
+  WalletState
 } from '../constants/types'
 
 // hooks
-import { useSafePageSelector, useSafeWalletSelector } from '../common/hooks/use-safe-selector'
+import {
+  useSafePageSelector,
+  useSafeUISelector,
+  useSafeWalletSelector
+} from '../common/hooks/use-safe-selector'
 
 // style
 import 'emptykit.css'
@@ -33,7 +43,14 @@ import {
 } from './screens/page-screen.styles'
 
 // components
-import { CryptoView, LockScreen, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
+import { CryptoView } from '../components/desktop/views/crypto/index'
+import { LockScreen } from '../components/desktop/lock-screen/index'
+import {
+  WalletPageLayout //
+} from '../components/desktop/wallet-page-layout/index'
+import {
+  WalletSubViewLayout
+} from '../components/desktop/wallet-sub-view-layout/index'
 import { Skeleton } from '../components/shared/loading-skeleton/styles'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
 import { BackupWalletRoutes } from './screens/backup-wallet/backup-wallet.routes'
@@ -47,6 +64,7 @@ import { DevBitcoin } from './screens/dev-bitcoin/dev-bitcoin'
 import {
   WalletPageWrapper
 } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import { PageTitleHeader } from '../components/desktop/card-headers/page-title-header'
 
 export const Container = () => {
   // routing
@@ -72,9 +90,13 @@ export const Container = () => {
   // page selectors (safe)
   const setupStillInProgress = useSafePageSelector(PageSelectors.setupStillInProgress)
 
+  // UI Selectors (safe)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+
   // state
   const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
   const [inputValue, setInputValue] = React.useState<string>('')
+  const [showDepositAddress, setShowDepositAddress] = React.useState<boolean>(false)
 
   // methods
   const onToggleShowRestore = React.useCallback(() => {
@@ -90,10 +112,23 @@ export const Container = () => {
       if (isWalletCreated && isWalletLocked) {
         history.push(WalletRoutes.Unlock)
       }
-    } else {
-      history.push(WalletRoutes.Restore)
+      return
     }
-  }, [walletLocation])
+    if (isPanel) {
+      chrome.tabs.create(
+        { url: `${WalletOrigin}${WalletRoutes.Restore}` },
+        () => {
+          if (chrome.runtime.lastError) {
+            console.error(
+              'tabs.create failed: ' + //
+              chrome.runtime.lastError.message
+            )
+          }
+        })
+      return
+    }
+    history.push(WalletRoutes.Restore)
+  }, [walletLocation, isPanel])
 
   const unlockWallet = React.useCallback(() => {
     dispatch(WalletActions.unlockWallet({ password: inputValue }))
@@ -116,6 +151,17 @@ export const Container = () => {
     dispatch(WalletPageActions.openWalletSettings())
   }, [])
 
+  const handleDepositScreenBack = React.useCallback(() => {
+    if (!showDepositAddress && history.length) {
+      return history.goBack()
+    }
+
+    if (showDepositAddress) {
+      // go back to asset selection
+      setShowDepositAddress(false)
+    }
+  }, [showDepositAddress, history])
+
   // computed
   const walletNotYetCreated = (!isWalletCreated || setupStillInProgress)
 
@@ -132,14 +178,16 @@ export const Container = () => {
     // so that we can return to that page after unlock
     if (
       walletLocation.includes(WalletRoutes.Accounts) ||
+      walletLocation.includes(WalletRoutes.Activity) ||
       walletLocation.includes(WalletRoutes.Backup) ||
       walletLocation.includes(WalletRoutes.DepositFundsPageStart) ||
       walletLocation.includes(WalletRoutes.FundWalletPageStart) ||
       walletLocation.includes(WalletRoutes.PortfolioAssets) ||
       walletLocation.includes(WalletRoutes.PortfolioNFTs) ||
+      walletLocation.includes(WalletRoutes.PortfolioNFTAsset) ||
       walletLocation.includes(WalletRoutes.Market) ||
       walletLocation.includes(WalletRoutes.Swap) ||
-      walletLocation.includes(WalletRoutes.Send) ||
+      walletLocation.includes(WalletRoutes.SendPageStart) ||
       walletLocation.includes(WalletRoutes.LocalIpfsNode ||
         walletLocation.includes(WalletRoutes.InspectNfts))
     ) {
@@ -153,16 +201,18 @@ export const Container = () => {
     if (toobarElement && rootElement) {
       if (
         walletLocation === WalletRoutes.Swap ||
-        walletLocation === WalletRoutes.Send ||
+        walletLocation === WalletRoutes.SendPageStart ||
         walletLocation.includes(WalletRoutes.DepositFundsPage) ||
         walletLocation.includes(WalletRoutes.FundWalletPage) ||
         walletLocation.includes(WalletRoutes.LocalIpfsNode) ||
         walletLocation.includes(WalletRoutes.InspectNfts) ||
         walletLocation.includes(WalletRoutes.PortfolioAssets) ||
         walletLocation.includes(WalletRoutes.PortfolioNFTs) ||
+        walletLocation.includes(WalletRoutes.PortfolioNFTAsset) ||
         walletLocation.includes(WalletRoutes.Market) ||
         walletLocation.includes(WalletRoutes.Activity) ||
-        walletLocation.includes(WalletRoutes.Accounts)
+        walletLocation.includes(WalletRoutes.Accounts) ||
+        walletLocation === WalletRoutes.Unlock
       ) {
         toobarElement.hidden = true
         rootElement.style.setProperty('min-height', '100vh')
@@ -227,20 +277,22 @@ export const Container = () => {
 
             {isWalletLocked &&
               <Route path={WalletRoutes.Unlock} exact={true}>
-                <WalletPageLayout>
-                  <WalletSubViewLayout>
-                    <SimplePageWrapper>
-                      <LockScreen
-                        value={inputValue}
-                        onSubmit={unlockWallet}
-                        disabled={inputValue === ''}
-                        onPasswordChanged={handlePasswordChanged}
-                        hasPasswordError={hasIncorrectPassword}
-                        onShowRestore={onToggleShowRestore}
-                      />
-                    </SimplePageWrapper>
-                  </WalletSubViewLayout>
-                </WalletPageLayout>
+                <WalletPageWrapper
+                  wrapContentInBox={true}
+                  cardWidth={680}
+                  hideNav={true}
+                  hideHeaderMenu={true}
+                  noBorderRadius={true}
+                >
+                  <LockScreen
+                    value={inputValue}
+                    onSubmit={unlockWallet}
+                    disabled={inputValue === ''}
+                    onPasswordChanged={handlePasswordChanged}
+                    hasPasswordError={hasIncorrectPassword}
+                    onShowRestore={onToggleShowRestore}
+                  />
+                </WalletPageWrapper>
               </Route>
             }
 
@@ -258,12 +310,7 @@ export const Container = () => {
 
             {!isWalletLocked &&
               <Route path={WalletRoutes.FundWalletPage} exact>
-                <WalletPageWrapper
-                  wrapContentInBox={true}
-                  cardWidth={456}
-                >
-                  <FundWalletScreen />
-                </WalletPageWrapper>
+                <FundWalletScreen />
               </Route>
             }
 
@@ -272,8 +319,18 @@ export const Container = () => {
                 <WalletPageWrapper
                   wrapContentInBox={true}
                   cardWidth={456}
+                  cardHeader={
+                    <PageTitleHeader
+                      title={getLocale('braveWalletDepositCryptoButton')}
+                      showBackButton={showDepositAddress}
+                      onBack={handleDepositScreenBack}
+                    />
+                  }
                 >
-                  <DepositFundsScreen />
+                  <DepositFundsScreen
+                    showDepositAddress={showDepositAddress}
+                    onShowDepositAddress={setShowDepositAddress}
+                  />
                 </WalletPageWrapper>
               </Route>
             }
@@ -283,6 +340,9 @@ export const Container = () => {
                 <WalletPageWrapper
                   hideHeader={true}
                   hideBackground={true}
+                  cardHeader={
+                    <PageTitleHeader title={'braveWalletSwap'} />
+                  }
                 >
                   <Swap />
                 </WalletPageWrapper>
@@ -296,10 +356,8 @@ export const Container = () => {
             )}
 
             {!isWalletLocked &&
-              <Route path={WalletRoutes.Send} exact={true}>
-                <WalletPageWrapper hideBackground={true}>
-                  <SendScreen />
-                </WalletPageWrapper>
+              <Route path={WalletRoutes.SendPage} exact>
+                <SendScreen />
               </Route>
             }
 

@@ -24,6 +24,7 @@ class FilePath;
 }
 
 class AdBlockServiceTest;
+class DebounceBrowserTest;
 
 namespace brave_shields {
 
@@ -36,11 +37,13 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
       component_updater::ComponentUpdateService* cus,
       std::string component_id,
       std::string base64_public_key,
-      std::string title);
+      std::string title,
+      bool is_default_engine = true);
   // Helper to build a particular adblock component from a catalog entry
   AdBlockComponentFiltersProvider(
       component_updater::ComponentUpdateService* cus,
-      const FilterListCatalogEntry& catalog_entry);
+      const FilterListCatalogEntry& catalog_entry,
+      bool is_default_engine = true);
   ~AdBlockComponentFiltersProvider() override;
   AdBlockComponentFiltersProvider(const AdBlockComponentFiltersProvider&) =
       delete;
@@ -55,8 +58,11 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   // is registered.
   void UnregisterComponent();
 
+  std::string GetNameForDebugging() override;
+
  private:
   friend class ::AdBlockServiceTest;
+  friend class ::DebounceBrowserTest;
 
   void OnComponentReady(const base::FilePath&);
 

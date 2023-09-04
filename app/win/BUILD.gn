@@ -1,49 +1,54 @@
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/build/config.gni")
+import("//build/config/win/visual_studio_version.gni")
 import("//build/util/branding.gni")
 import("//media/cdm/library_cdm/cdm_paths.gni")
 
 if (should_generate_symbols) {
-  action("generate_breakpad_symbols") {
-    symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
-    platform_symbols_dir = "$brave_dist_dir/$brave_product_name.pdb.syms"
+  action("generate_symbols") {
+    symbols_dir = "$brave_dist_dir/$brave_product_name.syms"
+    pdb_only_symbols_dir = "$brave_dist_dir/$brave_product_name.pdb.syms"
     outputs = [
       symbols_dir,
-      platform_symbols_dir,
+      pdb_only_symbols_dir,
     ]
-
-    # We want to use x64 dump_syms for x86. The obvious way of doing this would
-    # be to depend on dump_sums($host_toolchain). But on Windows, host_toolchain
-    # on an x64 system is actually win_clang_x86 - see BUILDCONFIG.gn. The
-    # following line works around this and is resilient to upstream changes:
-    dump_syms_toolchain = string_replace(host_toolchain, target_cpu, host_cpu)
-    dump_syms = "//third_party/breakpad:dump_syms(" + dump_syms_toolchain + ")"
-    deps = [
-      "//brave/build/win:copy_pdb",
-      dump_syms,
-    ]
-    dump_syms_path = get_label_info(dump_syms, "root_out_dir") + "/" +
-                     get_label_info(dump_syms, "name")
 
     args = [
-      "--installer-config=" +
-          rebase_path("//chrome/installer/mini_installer/chrome.release"),
-      "--symbols-dir=" + rebase_path(symbols_dir),
-      "--platform-symbols-dir=" + rebase_path(platform_symbols_dir),
-      "--build-dir=" + rebase_path(root_out_dir),
-      "--dump-syms-path=" + rebase_path(dump_syms_path),
-      "--verbose",
+      "--installer-config",
+      rebase_path("//chrome/installer/mini_installer/chrome.release"),
+      "--symbols-dir",
+      rebase_path(symbols_dir),
+      "--pdb-only-symbols-dir",
+      rebase_path(pdb_only_symbols_dir),
+      "--build-dir",
+      rebase_path(root_out_dir),
+      "--toolchain-dir",
+      rebase_path(visual_studio_path),
+      "--run-source-index",
       "--clear",
     ]
 
-    script = "//brave/tools/win/generate_breakpad_symbols.py"
+    # chrome.release doesn't contain some additional files we need.
+    args += [
+      "--additional-files",
+      "setup.exe",
+    ]
+
+    script = "//brave/tools/win/generate_symbols.py"
+
+    deps = [ "//brave/build/win:create_signed_installer" ]
   }
 } else {
-  group("generate_breakpad_symbols") {
+  group("generate_symbols") {
   }
 }
 
 group("symbol_dist_resources") {
-  public_deps = [ ":generate_breakpad_symbols" ]
+  public_deps = [ ":generate_symbols" ]
 }
 
 copy("dist_resources") {

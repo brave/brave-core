@@ -25,8 +25,10 @@ export interface ExchangeInfo {
 
 export interface EarningsInfo {
   nextPaymentDate: number
-  earningsThisMonth: number
-  earningsLastMonth: number
+  minEarningsThisMonth: number
+  maxEarningsThisMonth: number
+  minEarningsLastMonth: number
+  maxEarningsLastMonth: number
 }
 
 export interface PublisherInfo {
@@ -65,8 +67,6 @@ export interface AdaptiveCaptchaInfo {
 }
 
 export interface Settings {
-  adsEnabled: boolean
-  adsPerHour: number
   autoContributeEnabled: boolean
   autoContributeAmount: number
 }
@@ -78,7 +78,7 @@ export interface Options {
   vbatExpired: boolean
 }
 
-type RequestedView = 'rewards-tour' | 'inline-tip'
+type RequestedView = 'rewards-setup' | 'inline-tip'
 
 export interface HostState {
   openTime: number
@@ -102,6 +102,7 @@ export interface HostState {
   availableCountries: string[]
   defaultCountry: string
   declaredCountry: string
+  isGrandfatheredUser: boolean
   userType: UserType
   publishersVisitedCount: number
 }
@@ -116,8 +117,6 @@ export interface Host {
   openRewardsSettings: () => void
   refreshPublisherStatus: () => void
   setIncludeInAutoContribute: (include: boolean) => void
-  setAdsEnabled: (adsEnabled: boolean) => void
-  setAdsPerHour: (adsPerHour: number) => void
   sendTip: () => void
   handleExternalWalletAction: (action: ExternalWalletAction) => void
   handleNotificationAction: (action: NotificationAction) => void
@@ -126,5 +125,6 @@ export interface Host {
   clearGrantCaptcha: () => void
   clearAdaptiveCaptcha: () => void
   handleAdaptiveCaptchaResult: (result: AdaptiveCaptchaResult) => void
+  closePanel: () => void
   onAppRendered: () => void
 }

@@ -10,8 +10,8 @@
 
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
-#include "base/guid.h"
 #include "base/metrics/histogram_functions.h"
+#include "base/uuid.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "build/build_config.h"
 #include "components/download/public/background_service/background_download_service.h"
@@ -65,7 +65,7 @@ void AdBlockSubscriptionDownloadManager::StartDownload(const GURL& download_url,
                                                        bool from_ui) {
   download::DownloadParams download_params;
   download_params.client = download::DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS;
-  download_params.guid = base::GenerateGUID();
+  download_params.guid = base::Uuid::GenerateRandomV4().AsLowercaseString();
   download_params.callback = base::BindRepeating(
       &AdBlockSubscriptionDownloadManager::OnDownloadStarted, AsWeakPtr(),
       download_url);

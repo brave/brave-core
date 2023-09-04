@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
@@ -70,8 +71,9 @@ repack("resources") {
 
   if (!is_android && !is_ios) {
     deps += [
-      "//brave/components/ai_chat_ui:generated_resources",
       "//brave/components/brave_new_tab_ui:generated_resources",
+      "//brave/components/brave_news/browser/resources:generated_resources",
+      "//brave/components/brave_news/browser/resources:generated_resources",
       "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
       "//brave/components/brave_shields/resources/cookie_list_opt_in:cookie_list_opt_in_generated",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
@@ -81,15 +83,20 @@ repack("resources") {
     ]
 
     sources += [
-      "$root_gen_dir/brave/components/ai_chat_ui/ai_chat_ui_generated.pak",
       "$root_gen_dir/brave/components/brave_new_tab/resources/brave_new_tab_generated.pak",
+      "$root_gen_dir/brave/components/brave_news/browser/resources/brave_news_internals_generated.pak",
       "$root_gen_dir/brave/components/brave_private_new_tab/resources/page/brave_private_new_tab_generated.pak",
       "$root_gen_dir/brave/components/brave_shields/resources/cookie_list_opt_in/cookie_list_opt_in_generated.pak",
       "$root_gen_dir/brave/components/brave_shields/resources/panel/brave_shields_panel_generated.pak",
       "$root_gen_dir/brave/components/brave_welcome/resources/brave_welcome_generated.pak",
-      "$root_gen_dir/brave/components/speedreader/resources/panel/brave_speedreader_panel_generated.pak",
+      "$root_gen_dir/brave/components/speedreader/resources/panel/brave_speedreader_toolbar_generated.pak",
       "$root_gen_dir/brave/components/webcompat_reporter/resources/webcompat_reporter_generated.pak",
     ]
+  }
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/resources/page:generated_resources" ]
+    sources += [ "$root_gen_dir/brave/components/ai_chat/resources/page/ai_chat_ui_generated.pak" ]
   }
 
   if (enable_ipfs_internals_webui) {
@@ -109,7 +116,7 @@ repack("resources") {
   deps += [ "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources" ]
   sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_script_generated.pak" ]
 
-  if (enable_brave_vpn && !is_android) {
+  if (enable_brave_vpn_panel) {
     deps += [ "//brave/components/brave_vpn/resources/panel:resources" ]
     sources += [
       "$root_gen_dir/brave/components/brave_vpn/brave_vpn_panel_resources.pak",
@@ -130,9 +137,10 @@ repack("resources") {
   }
 
   if (!is_android && !is_ios) {
-    deps +=
-        [ "//brave/components/commands/browser/resources:generated_resources" ]
-    sources += [ "$root_gen_dir/brave/components/commands/browser/resources/commands_generated.pak" ]
+    deps += [
+      "//brave/browser/resources/settings/shortcuts_page:generated_resources",
+    ]
+    sources += [ "$root_gen_dir/brave/browser/resources/settings/shortcuts_page/commands_generated.pak" ]
   }
 
   output = "$root_gen_dir/components/brave_components_resources.pak"

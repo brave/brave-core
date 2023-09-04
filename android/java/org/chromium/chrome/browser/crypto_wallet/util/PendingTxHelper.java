@@ -9,7 +9,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TransactionType;
@@ -23,7 +22,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class PendingTxHelper implements TxServiceObserverImplDelegate {
@@ -32,7 +30,6 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
     private HashMap<String, TransactionInfo[]> mTxInfos;
     private boolean mReturnAll;
     private String mFilterByContractAddress;
-    private String mGoerliContractAddress;
     private final List<TransactionInfo> mTransactionInfos;
     private final List<TransactionCacheRecord> mCacheTransactionInfos;
     private boolean isFetchingTx;
@@ -45,13 +42,18 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
     public LiveData<TransactionInfo> mSelectedPendingRequest;
     public LiveData<Boolean> mHasNoPendingTxAfterProcessing;
     private TxServiceObserverImpl mTxServiceObserver;
+    private String mChainIdForTxs;
 
-    public PendingTxHelper(TxService txService, AccountInfo[] accountInfos, boolean returnAll) {
+    public PendingTxHelper(TxService txService, AccountInfo[] accountInfos, boolean returnAll,
+            String chainIdForTxs) {
+        // ChainId to fetch network specific transactions, pass null as value for `chainIdForTxs` to
+        // fetch all transactions across all networks.
+        mChainIdForTxs = chainIdForTxs;
         assert txService != null;
         mTxService = txService;
         mAccountInfos = accountInfos;
         mReturnAll = returnAll;
-        mTxInfos = new HashMap<String, TransactionInfo[]>();
+        mTxInfos = new HashMap<>();
 
         mTransactionInfos = new ArrayList<>();
         mCacheTransactionInfos = new ArrayList<>();
@@ -66,8 +68,8 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
     }
 
     public PendingTxHelper(TxService txService, AccountInfo[] accountInfos, boolean returnAll,
-            boolean shouldObserveTxUpdates) {
-        this(txService, accountInfos, returnAll);
+            boolean shouldObserveTxUpdates, String chainIdForTxs) {
+        this(txService, accountInfos, returnAll, chainIdForTxs);
         if (shouldObserveTxUpdates) {
             mTxServiceObserver = new TxServiceObserverImpl(this);
             txService.addObserver(mTxServiceObserver);
@@ -102,8 +104,8 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                     new AsyncUtils.GetAllTransactionInfoResponseContext(
                             allTxMultiResponse.singleResponseComplete, accountInfo.name);
             allTxContexts.add(allTxContext);
-            mTxService.getAllTransactionInfo(
-                    accountInfo.coin, null, accountInfo.address, allTxContext);
+            mTxService.getAllTransactionInfo(accountInfo.accountId.coin, mChainIdForTxs,
+                    accountInfo.accountId, allTxContext);
         }
         allTxMultiResponse.setWhenAllCompletedAction(() -> {
             for (AsyncUtils.GetAllTransactionInfoResponseContext allTxContext : allTxContexts) {
@@ -140,17 +142,6 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                 runWhenDone.run();
             }
         });
-    }
-
-    public String getAccountNameForTransaction(TransactionInfo transactionInfo) {
-        for (Map.Entry<String, TransactionInfo[]> entry : mTxInfos.entrySet()) {
-            for (TransactionInfo info : entry.getValue()) {
-                if (info.id.equals(transactionInfo.id)) {
-                    return entry.getKey();
-                }
-            }
-        }
-        return null;
     }
 
     public void updateTxInfosMap(TransactionInfo transactionInfo) {

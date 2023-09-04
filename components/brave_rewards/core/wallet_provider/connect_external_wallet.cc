@@ -8,22 +8,31 @@
 #include <utility>
 
 #include "base/containers/contains.h"
+#include "base/functional/bind.h"
+#include "base/location.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/logging/event_log_util.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
 namespace brave_rewards::internal {
-
+using endpoints::GetWallet;
 using endpoints::PostConnect;
+using endpoints::RequestFor;
 using wallet::GetWalletIf;
 
 namespace wallet_provider {
 
-ConnectExternalWallet::ConnectExternalWallet(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+ConnectExternalWallet::ConnectExternalWallet(RewardsEngineImpl& engine)
+    : engine_(engine) {
+  // TODO(https://github.com/brave/brave-browser/issues/31698)
+  linkage_checker_.Start(FROM_HERE, base::Minutes(1), this,
+                         &ConnectExternalWallet::CheckLinkage);
+}
 
 ConnectExternalWallet::~ConnectExternalWallet() = default;
 
@@ -31,7 +40,7 @@ void ConnectExternalWallet::Run(
     const base::flat_map<std::string, std::string>& query_parameters,
     ConnectExternalWalletCallback callback) {
   auto wallet = GetWalletIf(
-      *ledger_, WalletType(),
+      *engine_, WalletType(),
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
   if (!wallet) {
     return std::move(callback).Run(
@@ -76,7 +85,7 @@ ConnectExternalWallet::ExchangeOAuthInfo(
     return absl::nullopt;
   }
 
-  if (!wallet::SetWallet(*ledger_, std::move(wallet))) {
+  if (!wallet::SetWallet(*engine_, std::move(wallet))) {
     BLOG(0, "Failed to save " << WalletType() << " wallet!");
     return absl::nullopt;
   }
@@ -92,10 +101,10 @@ ConnectExternalWallet::GetCode(
     const std::string message = query_parameters.at("error_description");
     BLOG(1, message);
     if (base::Contains(message, "User does not meet minimum requirements")) {
-      ledger_->database()->SaveEventLog(log::kKYCRequired, WalletType());
+      engine_->database()->SaveEventLog(log::kKYCRequired, WalletType());
       return base::unexpected(mojom::ConnectExternalWalletError::kKYCRequired);
     } else if (base::Contains(message, "not available for user geolocation")) {
-      ledger_->database()->SaveEventLog(log::kRegionNotSupported, WalletType());
+      engine_->database()->SaveEventLog(log::kRegionNotSupported, WalletType());
       return base::unexpected(
           mojom::ConnectExternalWalletError::kRegionNotSupported);
     }
@@ -117,13 +126,50 @@ ConnectExternalWallet::GetCode(
   return query_parameters.at("code");
 }
 
+void ConnectExternalWallet::CheckLinkage() {
+  if (!engine_->IsReady()) {
+    return linkage_checker_.Reset();
+  }
+
+  if (GetWalletIf(
+          *engine_, WalletType(),
+          {mojom::WalletStatus::kConnected, mojom::WalletStatus::kLoggedOut})) {
+    RequestFor<GetWallet>(*engine_).Send(base::BindOnce(
+        &ConnectExternalWallet::CheckLinkageCallback, base::Unretained(this)));
+  }
+}
+
+void ConnectExternalWallet::CheckLinkageCallback(
+    endpoints::GetWallet::Result&& result) {
+  auto wallet = GetWalletIf(
+      *engine_, WalletType(),
+      {mojom::WalletStatus::kConnected, mojom::WalletStatus::kLoggedOut});
+  if (!wallet) {
+    return;
+  }
+
+  if (result.has_value()) {
+    const auto [wallet_type, linked] = std::move(result.value());
+    if (wallet_type == WalletType() && !linked) {
+      // {kConnected, kLoggedOut} ==> kNotConnected
+      if (wallet::TransitionWallet(*engine_, std::move(wallet),
+                                   mojom::WalletStatus::kNotConnected)) {
+        engine_->client()->ExternalWalletDisconnected();
+      } else {
+        BLOG(0, "Failed to transition " << WalletType() << " wallet state!");
+      }
+    }
+  }
+}
+
 void ConnectExternalWallet::OnConnect(
     ConnectExternalWalletCallback callback,
     std::string&& token,
     std::string&& address,
+    std::string&& country_id,
     endpoints::PostConnect::Result&& result) const {
   auto wallet = GetWalletIf(
-      *ledger_, WalletType(),
+      *engine_, WalletType(),
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
   if (!wallet) {
     return std::move(callback).Run(
@@ -142,7 +188,7 @@ void ConnectExternalWallet::OnConnect(
     if (const auto key = log::GetEventLogKeyForLinkingResult(
             connect_external_wallet_result.error());
         !key.empty()) {
-      ledger_->database()->SaveEventLog(
+      engine_->database()->SaveEventLog(
           key, WalletType() + std::string("/") + abbreviated_address);
     }
 
@@ -153,7 +199,7 @@ void ConnectExternalWallet::OnConnect(
   wallet->token = std::move(token);
   wallet->address = std::move(address);
   // {kNotConnected, kLoggedOut} ==> kConnected
-  if (!wallet::TransitionWallet(*ledger_, std::move(wallet),
+  if (!wallet::TransitionWallet(*engine_, std::move(wallet),
                                 mojom::WalletStatus::kConnected)) {
     BLOG(0, "Failed to transition " << WalletType() << " wallet state!");
     return std::move(callback).Run(
@@ -161,11 +207,18 @@ void ConnectExternalWallet::OnConnect(
   }
 
   from_status == mojom::WalletStatus::kNotConnected
-      ? ledger_->client()->ExternalWalletConnected()
-      : ledger_->client()->ExternalWalletReconnected();
-  ledger_->database()->SaveEventLog(
+      ? engine_->client()->ExternalWalletConnected()
+      : engine_->client()->ExternalWalletReconnected();
+  engine_->database()->SaveEventLog(
       log::kWalletVerified,
       WalletType() + std::string("/") + abbreviated_address);
+
+  // Update the user's "declared country" based on the information provided by
+  // the wallet provider.
+  if (!country_id.empty()) {
+    engine_->SetState(state::kDeclaredGeo, country_id);
+  }
+
   std::move(callback).Run({});
 }
 

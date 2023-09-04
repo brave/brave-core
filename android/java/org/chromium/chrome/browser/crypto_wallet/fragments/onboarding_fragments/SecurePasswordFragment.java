@@ -11,13 +11,10 @@ import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -160,10 +157,10 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
         BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
         if (keyringService != null) {
             keyringService.createWallet(passwordInput, recoveryPhrases -> {
-                // Go to the next page after wallet creation is done
                 if (braveWalletP3A != null) {
-                    braveWalletP3A.reportOnboardingAction(OnboardingAction.CREATED_WALLET);
+                    braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
                 }
+                // Go to the next page after wallet creation is done
                 Utils.setCryptoOnboarding(false);
                 mOnboardingViewModel.setPassword(passwordInput);
                 onNextPage.gotoNextPage(false);

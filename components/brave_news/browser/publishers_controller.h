@@ -55,6 +55,7 @@ class PublishersController {
   void GetOrFetchPublishers(GetPublishersCallback callback,
                             bool wait_for_current_update = false);
   void GetLocale(mojom::BraveNewsController::GetLocaleCallback);
+  const std::string& GetLastLocale() const;
   void EnsurePublishersIsUpdating();
   void ClearCache();
 

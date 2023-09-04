@@ -26,7 +26,8 @@ def RunNode(cmd_parts):
 
     if process.returncode != 0:
         err = stderr if len(stderr) > 0 else stdout
-        raise RuntimeError('Command \'%s\' failed\n%s' % (' '.join(cmd), err))
+        raise RuntimeError('Command \'%s\' failed\n%s' % (' '.join(cmd), err),
+                           err)
 
     return stdout
 

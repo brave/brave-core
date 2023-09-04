@@ -1,0 +1,18 @@
+[package]
+name = "adblock-cxx"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+adblock = { version = "0.8.0", default-features = false, features = ["full-regex-handling", "regex-debug-info", "css-validation"] }
+cxx = "1.0"
+serde_json = "1.0"
+thiserror = "1.0"
+
+[features]
+ios = ["adblock/content-blocking"]
+single_thread_optimizations = ["adblock/object-pooling", "adblock/unsync-regex-caching"]
+
+[lib]
+name = "adblock_cxx"
+crate-type = ["rlib"]

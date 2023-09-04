@@ -337,6 +337,133 @@
             ]
           }
         ]
+      }, {
+        "name": "getSettings",
+        "type": "function",
+        "description": "Returns list of ipfs settings",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called with settings list",
+            "parameters": [
+              {
+                "name": "settings",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      }, {
+        "name": "setResolveMethod",
+        "type": "function",
+        "description": "Returns list of ipfs settings",
+        "parameters": [
+          {
+            "name": "resolve_method",
+            "type": "string",
+            "description": "ask/disabled/gateway/local"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called with status",
+            "parameters": [
+              {
+                "name": "status",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      }, {
+        "name": "setPublicGateway",
+        "type": "function",
+        "description": "Sets public gateway value",
+        "parameters": [
+          {
+            "name": "url",
+            "type": "string",
+            "description": "Public gateway url"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called with status",
+            "parameters": [
+              {
+                "name": "status",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      }, {
+      "name": "setPublicNFTGateway",
+      "type": "function",
+      "description": "Sets public NFT gateway value",
+      "parameters": [
+        {
+          "name": "url",
+          "type": "string",
+          "description": "Public NFT gateway url"
+        },
+        {
+          "name": "callback",
+          "type": "function",
+          "description": "Function called with status",
+          "parameters": [
+            {
+              "name": "status",
+              "type": "boolean"
+            }
+          ]
+        }
+      ]
+    }, {
+        "name": "setAutoRedirectToConfiguredGatewayEnabled",
+        "type": "function",
+        "description": "Sets whether IPFS resouceces should be forwarded to the configured gateway",
+        "parameters": [
+          {
+            "name": "value",
+            "type": "boolean",
+            "description": "value"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called with status",
+            "parameters": [
+              {
+                "name": "status",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      }, {
+        "name": "setGatewayFallbackEnabled",
+        "type": "function",
+        "description": "Returns list of ipfs settings",
+        "parameters": [
+          {
+            "name": "value",
+            "type": "boolean",
+            "description": "value"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called with status",
+            "parameters": [
+              {
+                "name": "status",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

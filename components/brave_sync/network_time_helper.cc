@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "base/sequence_checker.h"
 #include "components/network_time/network_time_tracker.h"
 
@@ -28,7 +29,8 @@ namespace brave_sync {
 
 // static
 NetworkTimeHelper* NetworkTimeHelper::GetInstance() {
-  return base::Singleton<NetworkTimeHelper>::get();
+  static base::NoDestructor<NetworkTimeHelper> instance;
+  return instance.get();
 }
 
 NetworkTimeHelper::NetworkTimeHelper() = default;

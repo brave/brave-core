@@ -12,9 +12,9 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
-#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_event_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_events.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -27,22 +27,22 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_1.segment = "foo-bar1";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_2.segment = "foo-bar2";
   creative_ads.push_back(creative_ad_2);
 
   CreativeNotificationAdInfo creative_ad_3 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_3.segment = "foo-bar3";
   creative_ads.push_back(creative_ad_3);
 
   CreativeNotificationAdInfo creative_ad_4 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_4.creative_instance_id = creative_ad_2.creative_instance_id;
   creative_ad_4.segment = "foo-bar4";
   creative_ads.push_back(creative_ad_4);
@@ -85,7 +85,7 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest,
       {{kEligibleAdFeature, params}}, {});
 
   CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad.segment = "foo-bar";
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor;
@@ -109,7 +109,7 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest,
      ComputePredictorScoreWithDefaultWeights) {
   // Arrange
   CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad.segment = "foo-bar";
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor;
@@ -147,22 +147,22 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest, ComputeVoteRegistry) {
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_1.embedding = {0.0853, -0.1789, -0.4221};
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_2.embedding = {-0.0853, -0.1789, 0.4221};
   creative_ads.push_back(creative_ad_2);
 
   CreativeNotificationAdInfo creative_ad_3 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_3.embedding = {-0.0853, 0.1789, -0.4221};
   creative_ads.push_back(creative_ad_3);
 
   CreativeNotificationAdInfo creative_ad_4 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_4.creative_instance_id = creative_ad_2.creative_instance_id;
   creative_ad_4.embedding = {0.0853, -0.1789, 0.4221};
   creative_ads.push_back(creative_ad_4);
@@ -170,11 +170,11 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest, ComputeVoteRegistry) {
   TextEmbeddingHtmlEventList text_embeddings;
 
   const TextEmbeddingHtmlEventInfo text_embedding_event_1 =
-      BuildTextEmbeddingHtmlEvent(BuildTextEmbedding());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::BuildTextEmbeddingForTesting());
   text_embeddings.push_back(text_embedding_event_1);
 
   const TextEmbeddingHtmlEventInfo text_embedding_event_2 =
-      BuildTextEmbeddingHtmlEvent(BuildTextEmbedding());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::BuildTextEmbeddingForTesting());
   text_embeddings.push_back(text_embedding_event_2);
 
   // Act
@@ -197,24 +197,24 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_1.embedding = {0.0853, -0.1789, -0.4221};
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_2.embedding = {0.0853, -0.1789, -0.4221};
   creative_ads.push_back(creative_ad_2);
 
   CreativeNotificationAdInfo creative_ad_3 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_3.embedding = {0.0853, -0.1789, -0.4221};
   creative_ads.push_back(creative_ad_3);
 
   TextEmbeddingHtmlEventList text_embeddings;
 
   const TextEmbeddingHtmlEventInfo text_embedding_event_1 =
-      BuildTextEmbeddingHtmlEvent(BuildTextEmbedding());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::BuildTextEmbeddingForTesting());
   text_embeddings.push_back(text_embedding_event_1);
 
   // Act
@@ -238,22 +238,22 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_1.embedding = {0.0853, -0.1789, -0.4221};
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_2.embedding = {-0.0853, -0.1789, 0.4221};
   creative_ads.push_back(creative_ad_2);
 
   CreativeNotificationAdInfo creative_ad_3 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_3.embedding = {-0.0853, 0.1789, -0.4221};
   creative_ads.push_back(creative_ad_3);
 
   CreativeNotificationAdInfo creative_ad_4 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_4.creative_instance_id = creative_ad_2.creative_instance_id;
   creative_ad_4.embedding = {0.0853, -0.1789, 0.4221};
   creative_ads.push_back(creative_ad_4);

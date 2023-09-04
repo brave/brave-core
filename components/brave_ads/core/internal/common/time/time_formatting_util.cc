@@ -7,7 +7,6 @@
 
 #include "base/i18n/time_formatting.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
@@ -28,7 +27,7 @@ std::string FriendlyDateAndTime(const base::Time time,
                                 const bool use_sentence_style) {
   base::TimeDelta time_delta = time - base::Time::Now();
   if (time_delta.is_negative()) {
-    time_delta = base::TimeDelta();
+    time_delta = {};
   }
 
   if (time_delta.InDays() > 0) {
@@ -50,11 +49,6 @@ std::string FriendlyDateAndTime(const base::Time time,
       {use_sentence_style ? "in " : "", base::UTF16ToUTF8(time_duration),
        base::UTF16ToUTF8(time_of_day)},
       nullptr);
-}
-
-std::string TimeAsTimestampString(const base::Time time) {
-  const double timestamp = time.ToDoubleT();
-  return base::NumberToString(timestamp);
 }
 
 }  // namespace brave_ads

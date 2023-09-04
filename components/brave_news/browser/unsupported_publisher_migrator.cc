@@ -20,6 +20,7 @@
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_private_cdn/headers.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "url/gurl.h"
@@ -41,9 +42,12 @@ void UnsupportedPublisherMigrator::EnsureInitialized() {
   if (initialized_) {
     return;
   }
+
+  std::string locale =
+      brave_l10n::GetDefaultISOLanguageCodeString() == "ja" ? "ja" : "";
   GURL sources_url("https://" + brave_news::GetHostname() + "/sources." +
-                   brave_news::GetV1RegionUrlPart() + "json");
-  auto onResponse = base::BindOnce(
+                   locale + "json");
+  auto on_response = base::BindOnce(
       [](UnsupportedPublisherMigrator* migrator,
          api_request_helper::APIRequestResult result) {
         VLOG(1) << "Downloaded old sources, status: " << result.response_code();
@@ -64,7 +68,7 @@ void UnsupportedPublisherMigrator::EnsureInitialized() {
       base::Unretained(this));
 
   api_request_helper_->Request(
-      "GET", sources_url, "", "", std::move(onResponse),
+      "GET", sources_url, "", "", std::move(on_response),
       brave::private_cdn_headers, {.auto_retry_on_network_change = true});
   initialized_ = true;
 }

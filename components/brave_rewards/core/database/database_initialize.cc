@@ -7,21 +7,18 @@
 
 #include "brave/components/brave_rewards/core/database/database_initialize.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
-
-using std::placeholders::_1;
-using std::placeholders::_2;
 
 namespace brave_rewards::internal {
 namespace database {
 
-DatabaseInitialize::DatabaseInitialize(LedgerImpl& ledger)
-    : ledger_(ledger), migration_(ledger) {}
+DatabaseInitialize::DatabaseInitialize(RewardsEngineImpl& engine)
+    : engine_(engine), migration_(engine) {}
 
 DatabaseInitialize::~DatabaseInitialize() = default;
 
-void DatabaseInitialize::Start(LegacyResultCallback callback) {
+void DatabaseInitialize::Start(ResultCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   transaction->version = GetCurrentVersion();
   transaction->compatible_version = GetCompatibleVersion();
@@ -29,29 +26,28 @@ void DatabaseInitialize::Start(LegacyResultCallback callback) {
   command->type = mojom::DBCommand::Type::INITIALIZE;
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(
+  engine_->client()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&DatabaseInitialize::OnInitialize, this, _1, callback));
+      base::BindOnce(&DatabaseInitialize::OnInitialize, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void DatabaseInitialize::OnInitialize(mojom::DBCommandResponsePtr response,
-                                      LegacyResultCallback callback) {
+void DatabaseInitialize::OnInitialize(ResultCallback callback,
+                                      mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(mojom::Result::DATABASE_INIT_FAILED);
-    return;
+    return std::move(callback).Run(mojom::Result::DATABASE_INIT_FAILED);
   }
 
   if (!response->result || !response->result->get_value()->is_int_value()) {
     BLOG(0, "DB init failed");
-    callback(mojom::Result::DATABASE_INIT_FAILED);
-    return;
+    return std::move(callback).Run(mojom::Result::DATABASE_INIT_FAILED);
   }
 
   const auto current_table_version =
       response->result->get_value()->get_int_value();
-  migration_.Start(current_table_version, callback);
+  migration_.Start(current_table_version, std::move(callback));
 }
 
 }  // namespace database

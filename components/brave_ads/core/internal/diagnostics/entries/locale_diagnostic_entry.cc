@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/locale_diagnostic_entry.h"
 
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/brave_ads/core/internal/common/locale/locale_util.h"
 
 namespace brave_ads {
 
@@ -22,7 +22,7 @@ std::string LocaleDiagnosticEntry::GetName() const {
 }
 
 std::string LocaleDiagnosticEntry::GetValue() const {
-  return brave_l10n::GetDefaultLocaleString();
+  return GetLocale();
 }
 
 }  // namespace brave_ads

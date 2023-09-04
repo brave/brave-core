@@ -9,7 +9,6 @@
 
 #include "base/functional/bind.h"
 #include "base/rand_util.h"
-#include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_base.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_factory.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_feature.h"
@@ -20,8 +19,9 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
 
 namespace brave_ads {
 
@@ -61,6 +61,8 @@ void InlineContentAdServing::MaybeServeAd(
                                 std::move(callback)));
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void InlineContentAdServing::BuildUserModelCallback(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
@@ -72,8 +74,6 @@ void InlineContentAdServing::BuildUserModelCallback(
                      weak_factory_.GetWeakPtr(), user_model, dimensions,
                      std::move(callback)));
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 void InlineContentAdServing::GetForUserModelCallback(
     const UserModelInfo& user_model,
@@ -110,19 +110,7 @@ void InlineContentAdServing::ServeAd(
     return FailedToServeAd(ad.dimensions, std::move(callback));
   }
 
-  BLOG(1, "Served inline content ad:\n"
-              << "  placementId: " << ad.placement_id << "\n"
-              << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
-              << "  creativeSetId: " << ad.creative_set_id << "\n"
-              << "  campaignId: " << ad.campaign_id << "\n"
-              << "  advertiserId: " << ad.advertiser_id << "\n"
-              << "  segment: " << ad.segment << "\n"
-              << "  title: " << ad.title << "\n"
-              << "  description: " << ad.description << "\n"
-              << "  imageUrl: " << ad.image_url << "\n"
-              << "  dimensions: " << ad.dimensions << "\n"
-              << "  ctaText: " << ad.cta_text << "\n"
-              << "  targetUrl: " << ad.target_url);
+  BLOG(1, "Served inline content ad")
 
   CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);

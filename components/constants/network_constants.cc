@@ -56,6 +56,11 @@ const char kWidevineGvt1Prefix[] =
 const char kWidevineGoogleDlPrefix[] =
     "*://dl.google.com/*oimompecagnajdejgnnjijobebaeigek*";
 
+#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
+const char kWidevineGoogleDlPrefixWinArm64[] =
+    "*://dl.google.com/widevine-cdm/*";
+#endif
+
 const char kUserAgentHeader[] = "User-Agent";
 const char kBravePartnerHeader[] = "X-Brave-Partner";
 const char kBraveServicesKeyHeader[] = "BraveServiceKey";

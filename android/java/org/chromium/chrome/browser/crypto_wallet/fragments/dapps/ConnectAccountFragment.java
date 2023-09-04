@@ -6,8 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,30 +22,23 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
-import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.fragments.CreateAccountBottomSheetFragment;
 import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper.DefaultFaviconHelper;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper.FaviconImageCallback;
 import org.chromium.url.GURL;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
 
 public class ConnectAccountFragment extends BaseDAppsFragment
         implements BravePermissionAccountsListAdapter.BravePermissionDelegate {
@@ -80,8 +71,8 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     @SuppressLint("NotifyDataSetChanged")
     private void updateAccounts() {
         if (mSelectedAccount == null || mAccountInfos == null) return;
-        AccountsPermissionsHelper accountsPermissionsHelper = new AccountsPermissionsHelper(
-                getBraveWalletService(), mAccountInfos, Utils.getCurrentMojomOrigin());
+        AccountsPermissionsHelper accountsPermissionsHelper =
+                new AccountsPermissionsHelper(getBraveWalletService(), mAccountInfos);
         accountsPermissionsHelper.checkAccounts(() -> {
             mAccountsWithPermissions = accountsPermissionsHelper.getAccountsWithPermissions();
             mAccountsConnected.setText(
@@ -121,8 +112,8 @@ public class ConnectAccountFragment extends BaseDAppsFragment
         mRecyclerView = view.findViewById(R.id.accounts_list);
         mFavicon = view.findViewById(R.id.favicon);
 
-        getBraveWalletService().geteTldPlusOneFromOrigin(Utils.getCurrentMojomOrigin(),
-                origin -> { mWebSite.setText(Utils.geteTLD(origin.eTldPlusOne)); });
+        getBraveWalletService().getActiveOrigin(
+                originInfo -> { mWebSite.setText(Utils.geteTldSpanned(originInfo)); });
         initComponents();
 
         return view;
@@ -142,15 +133,12 @@ public class ConnectAccountFragment extends BaseDAppsFragment
             Log.e(TAG, "initComponents " + e);
         }
         assert mWalletModel != null;
-        mWalletModel.getKeyringModel().mAccountAllAccountsPair.observe(
-                getViewLifecycleOwner(), accountInfoListPair -> {
-                    mSelectedAccount = accountInfoListPair.first;
-                    List<AccountInfo> accountInfos = new ArrayList<>(accountInfoListPair.second);
-                    if (mSelectedAccount != null) {
-                        Utils.removeIf(
-                                accountInfos, account -> account.coin != mSelectedAccount.coin);
-                    }
-                    mAccountInfos = accountInfos.toArray(new AccountInfo[0]);
+        mWalletModel.getKeyringModel().mAllAccountsInfo.observe(
+                getViewLifecycleOwner(), allAccounts -> {
+                    mSelectedAccount = allAccounts.selectedAccount;
+                    mAccountInfos = Utils.filterAccountsByCoin(allAccounts.accounts,
+                                                 mSelectedAccount.accountId.coin)
+                                            .toArray(new AccountInfo[0]);
                     updateAccounts();
                 });
     }
@@ -158,8 +146,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     private void onFaviconAvailable(GURL pageUrl, Bitmap favicon) {
         if (favicon == null) {
             if (mDefaultFaviconHelper == null) mDefaultFaviconHelper = new DefaultFaviconHelper();
-            favicon = mDefaultFaviconHelper.getDefaultFaviconBitmap(
-                    getActivity().getResources(), pageUrl, true);
+            favicon = mDefaultFaviconHelper.getDefaultFaviconBitmap(getActivity(), pageUrl, true);
         }
         mFavicon.setImageBitmap(favicon);
         mFavicon.setVisibility(View.VISIBLE);
@@ -190,48 +177,44 @@ public class ConnectAccountFragment extends BaseDAppsFragment
 
     @Override
     public void connectAccount(AccountInfo account) {
-        getBraveWalletService().addPermission(
-                account.coin, Utils.getCurrentMojomOrigin(), account.address, success -> {
-                    if (!success) {
-                        return;
-                    }
-                    if (CoinType.SOL != account.coin) {
-                        getKeyringService().setSelectedAccount(
-                                account.address, account.coin, setSuccess -> {});
-                    }
-                    updateAccounts();
-                });
+        getBraveWalletService().addPermission(account.accountId, success -> {
+            if (!success) {
+                return;
+            }
+            if (CoinType.SOL != account.accountId.coin) {
+                getKeyringService().setSelectedAccount(account.accountId, setSuccess -> {});
+            }
+            updateAccounts();
+        });
     }
 
     @Override
     public void disconnectAccount(AccountInfo account) {
-        getBraveWalletService().resetPermission(
-                account.coin, Utils.getCurrentMojomOrigin(), account.address, success -> {
-                    if (!success) {
-                        return;
-                    }
-                    if (!mSelectedAccount.address.equals(account.address)) {
-                        updateAccounts();
-                        return;
-                    }
+        getBraveWalletService().resetPermission(account.accountId, success -> {
+            if (!success) {
+                return;
+            }
+            if (!WalletUtils.accountIdsEqual(mSelectedAccount, account)) {
+                updateAccounts();
+                return;
+            }
 
-                    assert mAccountsWithPermissions != null;
-                    Iterator<AccountInfo> it = mAccountsWithPermissions.iterator();
-                    while (it.hasNext()) {
-                        AccountInfo accountInfo = it.next();
-                        if (!accountInfo.address.equals(account.address)) {
-                            getKeyringService().setSelectedAccount(
-                                    accountInfo.address, accountInfo.coin, setSuccess -> {});
-                            break;
-                        }
-                    }
-                    updateAccounts();
-                });
+            assert mAccountsWithPermissions != null;
+            Iterator<AccountInfo> it = mAccountsWithPermissions.iterator();
+            while (it.hasNext()) {
+                AccountInfo accountInfo = it.next();
+                if (!WalletUtils.accountIdsEqual(accountInfo, account)) {
+                    getKeyringService().setSelectedAccount(accountInfo.accountId, setSuccess -> {});
+                    break;
+                }
+            }
+            updateAccounts();
+        });
     }
 
     @Override
     public void switchAccount(AccountInfo account) {
-        getKeyringService().setSelectedAccount(account.address, account.coin, setSuccess -> {
+        getKeyringService().setSelectedAccount(account.accountId, setSuccess -> {
             if (setSuccess) {
                 updateAccounts();
             }

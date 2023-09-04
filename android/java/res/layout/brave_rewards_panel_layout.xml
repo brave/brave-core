@@ -12,7 +12,7 @@
         app:cardBackgroundColor="@color/rewards_panel_bg_color"
         android:layout_height="400dp"
         app:cardCornerRadius="16dp"
-        app:cardElevation="0dp">
+        app:cardElevation="50dp">
 
                 <FrameLayout
                     android:id="@+id/panel_main_layout"

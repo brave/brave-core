@@ -32,6 +32,7 @@
 #include "components/google/core/common/google_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "components/signin/public/base/signin_pref_names.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "extensions/buildflags/buildflags.h"
 #include "extensions/common/extension_urls.h"
@@ -60,10 +61,6 @@ const char16_t kUnstoppableDomainsLearnMoreURL[] =
     u"Resolve-Methods-for-Unstoppable-Domains";
 const char16_t kEnsOffchainLookupLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup";
-const char16_t kBraveAdsLearnMoreURL[] =
-    u"https://support.brave.com/hc/en-us/articles/360026361072-Brave-Ads-FAQ";
-const char16_t kBraveTermsOfUseURL[] = u"https://brave.com/terms-of-use/";
-const char16_t kBravePrivacyPolicyURL[] = u"https://brave.com/privacy/browser/";
 const char16_t kBraveSyncGuideUrl[] =
     u"https://support.brave.com/hc/en-us/articles/360047642371-Sync-FAQ";
 const char16_t kDeAmpLearnMoreUrl[] =
@@ -190,12 +187,21 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     {"showBraveVPNButton", IDS_SETTINGS_SHOW_VPN_BUTTON},
     {"showBraveVPNButtonSubLabel", IDS_SETTINGS_SHOW_VPN_BUTTON_SUB_LABEL},
+    {"vpnPageTitle", IDS_SETTINGS_VPN_PAGE_TITLE},
+    {"useWireguardLabel", IDS_SETTINGS_VPN_PAGE_USE_WIREGUARD_TITLE},
+    {"sublabelVpnConnected", IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_CONNECTED},
+    {"sublabelVpnDisconnected",
+     IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_DISCONNECTED},
 #endif
   // Search settings
 #if BUILDFLAG(ENABLE_EXTENSIONS)
     {"braveWebDiscoveryLabel", IDS_SETTINGS_WEB_DISCOVERY_LABEL},
     {"braveWebDiscoverySubLabel", IDS_SETTINGS_WEB_DISCOVERY_SUBLABEL},
 #endif
+    {"autofillInPrivateSettingLabel",
+     IDS_SETTINGS_BRAVE_AUTOFILL_PRIVATE_WINDOWS_LABEL},
+    {"autofillInPrivateSettingDesc",
+     IDS_SETTINGS_BRAVE_AUTOFILL_PRIVATE_WINDOWS_DESC},
     {"mruCyclingSettingLabel", IDS_SETTINGS_BRAVE_MRU_CYCLING_LABEL},
     {"speedreaderSettingLabel", IDS_SETTINGS_SPEEDREADER_LABEL},
     {"speedreaderSettingSubLabel", IDS_SETTINGS_SPEEDREADER_SUB_LABEL},
@@ -358,6 +364,16 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveHelpTipsClosingLastTab", IDS_SETTINGS_CLOSING_LAST_TAB_OPTION_LABEL},
     {"braveDisableClickableMuteIndicators",
      IDS_SETTINGS_DISABLE_CLICKABLE_MUTE_INDICATORS},
+
+    // Leo Assistant Page
+    {"leoAssistant", IDS_SETTINGS_LEO_ASSISTANT},
+    {"braveLeoAssistantShowIconOnToolbarLabel",
+     IDS_SETTINGS_LEO_ASSISTANT_SHOW_ICON_ON_TOOLBAR_LABEL},
+    {"braveLeoAssistantShowSuggestedPromptsLabel",
+     IDS_SETTINGS_LEO_ASSISTANT_SHOW_SUGGESTED_PROMPTS_LABEL},
+    {"braveLeoAssistantResetAndClearDataLabel",
+     IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_LABEL},
+
     // New Tab Page
     {"braveNewTab", IDS_SETTINGS_NEW_TAB},
     {"braveNewTabBraveRewards", IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS},
@@ -375,48 +391,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveRewardsDisabledLabel", IDS_SETTINGS_BRAVE_REWARDS_DISABLED_LABEL},
     {"braveRewardsDisabledSubLabel",
      IDS_SETTINGS_BRAVE_REWARDS_DISABLED_SUB_LABEL},
-    {"braveRewardsAutoDetectedItem",
-     IDS_SETTINGS_BRAVE_REWARDS_AUTO_DETECTED_ITEM},
-    {"braveRewardsDefaultItem", IDS_SETTINGS_BRAVE_REWARDS_DEFAULT_ITEM},
-    {"braveRewardsDisabledItem", IDS_SETTINGS_BRAVE_REWARDS_DISABLED_ITEM},
-    {"braveRewardsPrivateAdsTitle",
-     IDS_SETTINGS_BRAVE_REWARDS_PRIVATE_ADS_TITLE},
-    {"braveRewardsPrivateAdsEarnTokensLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_PRIVATE_ADS_EARN_TOKENS_LABEL},
-    {"braveRewardsMaxAdsToDisplayLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_MAX_ADS_TO_DISPLAY_LABEL},
-    {"braveRewardsMaxAdsPerHour0", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_0},
-    {"braveRewardsMaxAdsPerHour1", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_1},
-    {"braveRewardsMaxAdsPerHour2", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_2},
-    {"braveRewardsMaxAdsPerHour3", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_3},
-    {"braveRewardsMaxAdsPerHour4", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4},
-    {"braveRewardsMaxAdsPerHour5", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5},
-    {"braveRewardsMaxAdsPerHour10", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_10},
-    {"braveRewardsStateLevelAdTargetingLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_LABEL},
-    {"braveRewardsAppearanceTitle",
-     IDS_SETTINGS_BRAVE_REWARDS_APPEARANCE_TITLE},
-    {"braveRewardsAutoContributeTitle",
-     IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_TITLE},
-    {"braveRewardsAutoContributeMonthlyLimitLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_MONTHLY_LIMIT_LABEL},
-    {"braveRewardsContributionUpTo", IDS_BRAVE_REWARDS_LOCAL_CONTR_UP_TO},
-    {"braveRewardsAutoContributeMinVisitTimeLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_MIN_VISIT_TIME_LABEL},
-    {"braveRewardsAutoContributeMinVisitTime5",
-     IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_5},
-    {"braveRewardsAutoContributeMinVisitTime8",
-     IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_8},
-    {"braveRewardsAutoContributeMinVisitTime60",
-     IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_60},
-    {"braveRewardsAutoContributeMinVisitsLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_MIN_VISITS_LABEL},
-    {"braveRewardsAutoContributeMinVisits1",
-     IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_1},
-    {"braveRewardsAutoContributeMinVisits5",
-     IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_5},
-    {"braveRewardsAutoContributeMinVisits10",
-     IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_10},
+    {"braveRewardsPageLabel", IDS_SETTINGS_BRAVE_REWARDS_PAGE_LABEL},
     {"braveRewardsShowBraveRewardsButtonLabel",
      IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL},
     {"braveRewardsShowTipButtonsLabel",
@@ -471,14 +446,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_LABEL},
     {"ipfsAutoFallbackToGatewayDesc",
      IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_DESC},
-    {"ipfsAutoRedirectGatewayLabel",
-     IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_LABEL},
-    {"ipfsAutoRedirectGatewayDesc",
-     IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_DESC},
-    {"ipfsAutoRedirectDNSLinkLabel",
-     IDS_SETTINGS_IPFS_AUTO_REDIRECT_DNSLINK_RESOURCES_LABEL},
-    {"ipfsAutoRedirectDNSLinkDesc",
-     IDS_SETTINGS_IPFS_AUTO_REDIRECT_DNSLINK_RESOURCES_DESC},
+    {"ipfsAutoRedirectToGatewayWhenPossibleLabel",
+     IDS_SETTINGS_IPFS_AUTO_REDIRECT_TO_GATEWAY_WHEN_POSSIBLE_LABEL},
+    {"ipfsAutoRedirectToGatewayWhenPossibleDesc",
+     IDS_SETTINGS_IPFS_AUTO_REDIRECT_TO_GATEWAY_WHEN_POSSIBLE_DESC},
     {"ipfsCompanionEnabledDesc", IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC},
     {"torEnabledLabel", IDS_SETTINGS_ENABLE_TOR_TITLE},
     {"torEnabledDesc", IDS_SETTINGS_ENABLE_TOR_DESC},
@@ -674,6 +645,18 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"siteSettingsCookieSubpage", IDS_SETTINGS_SITE_SETTINGS_COOKIE_SUBPAGE},
     {"siteSettingsCookieRemoveAll",
      IDS_SETTINGS_SITE_SETTINGS_COOKIES_REMOVE_ALL},
+
+    {"braveShortcutsPage", IDS_SETTINGS_BRAVE_SHORTCUTS_TITLE},
+    {"shortcutsPageSearchPlaceholder", IDS_SHORTCUTS_PAGE_SEARCH_PLACEHOLDER},
+    {"shortcutsPageResetAll", IDS_SHORTCUTS_PAGE_RESET_ALL},
+    {"shortcutsPageResetCommand", IDS_SHORTCUTS_PAGE_RESET_COMMAND},
+    {"shortcutsPageShortcutHint", IDS_SHORTCUTS_PAGE_SHORTCUT_HINT},
+    {"shortcutsPageShortcutInUse", IDS_SHORTCUTS_PAGE_SHORTCUT_IN_USE},
+    {"shortcutsPageShortcutUnmodifiable",
+     IDS_SHORTCUTS_PAGE_SHORTCUT_UNMODIFIABLE},
+    {"shortcutsPageCancelAddShortcut", IDS_SHORTCUTS_PAGE_CANCEL_ADD_SHORTCUT},
+    {"shortcutsPageSaveAddShortcut", IDS_SHORTCUTS_PAGE_SAVE_ADD_SHORTCUT},
+    {"shortcutsPageAddShortcut", IDS_SHORTCUTS_PAGE_ADD_SHORTCUT},
   };
 
   html_source->AddLocalizedStrings(localized_strings);
@@ -732,18 +715,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "ensOffchainLookupDesc",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_DESC,
                                  kEnsOffchainLookupLearnMoreURL));
-
-  html_source->AddString(
-      "braveRewardsStateLevelAdTargetingDescLabel",
-      l10n_util::GetStringFUTF16(
-          IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_DESC_LABEL,
-          kBraveAdsLearnMoreURL));
-
-  html_source->AddString(
-      "braveRewardsAutoContributeDescLabel",
-      l10n_util::GetStringFUTF16(
-          IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_DESC_LABEL,
-          kBraveTermsOfUseURL, kBravePrivacyPolicyURL));
 
   html_source->AddString("braveShieldsDefaultsSectionDescription2",
                          l10n_util::GetStringFUTF16(
@@ -835,6 +806,117 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   // Always disable upstream's side panel align option.
   // We add our customized option at preferred position.
   html_source->AddBoolean("showSidePanelOptions", false);
+
+  // We're reinstating these cookie-related settings that were deleted upstream
+  html_source->AddString(
+      "cacheStorageLastModified",
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SETTINGS_COOKIES_LOCAL_STORAGE_LAST_MODIFIED_LABEL));
+  html_source->AddString("cacheStorageOrigin",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL));
+  html_source->AddString(
+      "cacheStorageSize",
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
+  html_source->AddString(
+      "cookieAccessibleToScript",
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SETTINGS_COOKIES_COOKIE_ACCESSIBLE_TO_SCRIPT_LABEL));
+  html_source->AddString("cookieCacheStorage",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_CACHE_STORAGE));
+  html_source->AddString("cookieContent",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_COOKIE_CONTENT_LABEL));
+  html_source->AddString("cookieCreated",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_COOKIE_CREATED_LABEL));
+  html_source->AddString("cookieDatabaseStorage",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_DATABASE_STORAGE));
+  html_source->AddString("cookieDomain",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_COOKIE_DOMAIN_LABEL));
+  html_source->AddString("cookieExpires",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_COOKIE_EXPIRES_LABEL));
+  html_source->AddString("cookieFileSystem",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_FILE_SYSTEM));
+  html_source->AddString("cookieFlashLso",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_FLASH_LSO));
+  html_source->AddString("cookieLocalStorage",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_LOCAL_STORAGE));
+  html_source->AddString("cookieName",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_COOKIE_NAME_LABEL));
+  html_source->AddString("cookiePath",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_COOKIE_PATH_LABEL));
+  html_source->AddString("cookieSendFor",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_COOKIE_SENDFOR_LABEL));
+  html_source->AddString("cookieServiceWorker",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_SERVICE_WORKER));
+  html_source->AddString("cookieSharedWorker",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_SHARED_WORKER));
+  html_source->AddString("cookieQuotaStorage",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_QUOTA_STORAGE));
+  html_source->AddString("databaseOrigin",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL));
+  html_source->AddString("fileSystemOrigin",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL));
+  html_source->AddString(
+      "fileSystemPersistentUsage",
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SETTINGS_COOKIES_FILE_SYSTEM_PERSISTENT_USAGE_LABEL));
+  html_source->AddString(
+      "fileSystemTemporaryUsage",
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SETTINGS_COOKIES_FILE_SYSTEM_TEMPORARY_USAGE_LABEL));
+  html_source->AddString(
+      "indexedDbSize",
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
+  html_source->AddString(
+      "indexedDbLastModified",
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SETTINGS_COOKIES_LOCAL_STORAGE_LAST_MODIFIED_LABEL));
+  html_source->AddString("indexedDbOrigin",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL));
+  html_source->AddString(
+      "localStorageLastModified",
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SETTINGS_COOKIES_LOCAL_STORAGE_LAST_MODIFIED_LABEL));
+  html_source->AddString("localStorageOrigin",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL));
+  html_source->AddString(
+      "localStorageSize",
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
+  html_source->AddString("quotaOrigin",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL));
+  html_source->AddString(
+      "quotaSize", brave_l10n::GetLocalizedResourceUTF16String(
+                       IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
+  html_source->AddString("serviceWorkerOrigin",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL));
+  html_source->AddString(
+      "serviceWorkerSize",
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
 }
 
 }  // namespace settings

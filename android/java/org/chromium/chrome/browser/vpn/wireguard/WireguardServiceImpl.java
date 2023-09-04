@@ -19,7 +19,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.text.HtmlCompat;
 
 import com.wireguard.android.backend.Backend;
-import com.wireguard.android.backend.BackendException;
 import com.wireguard.android.backend.GoBackend;
 import com.wireguard.android.backend.Statistics;
 import com.wireguard.android.backend.Tunnel;
@@ -30,10 +29,8 @@ import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
 import org.chromium.chrome.browser.vpn.DisconnectVpnBroadcastReceiver;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
-import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 import java.util.Calendar;
 import java.util.Timer;

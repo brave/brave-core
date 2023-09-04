@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 
+#include "base/no_destructor.h"
 #include "base/time/time.h"
 
 namespace brave_ads {
@@ -14,7 +15,8 @@ FrequencyCappingHelper::FrequencyCappingHelper() = default;
 FrequencyCappingHelper::~FrequencyCappingHelper() = default;
 
 FrequencyCappingHelper* FrequencyCappingHelper::GetInstance() {
-  return base::Singleton<FrequencyCappingHelper>::get();
+  static base::NoDestructor<FrequencyCappingHelper> instance;
+  return instance.get();
 }
 
 void FrequencyCappingHelper::RecordAdEventForId(

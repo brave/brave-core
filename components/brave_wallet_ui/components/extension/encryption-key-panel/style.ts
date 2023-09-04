@@ -17,16 +17,8 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  padding: 15px 0px 0px 0px;
   background-color: ${(p) => p.theme.color.background01};
-`
-
-export const TopRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 100%;
-  padding: 15px 15px 0px 15px;
 `
 
 export const AccountCircle = styled.div<Partial<StyleProps>>`
@@ -47,14 +39,6 @@ export const AccountNameText = styled.span`
   line-height: 20px;
   color: ${(p) => p.theme.color.text02};
   margin-bottom: 2px;
-`
-
-export const NetworkText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
 `
 
 export const PanelTitle = styled.span`

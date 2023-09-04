@@ -15,6 +15,12 @@ import LearnMoreIcon from './assets/learn-more'
 import FavoritesIcon from './assets/favorites'
 import { getLocale } from '../../../../common/locale'
 
+export interface WidgetMenuCustomItem {
+  label: string
+  renderIcon: () => React.ReactNode
+  onClick: () => void
+}
+
 interface Props {
   menuPosition: 'right' | 'left'
   hideWidget: () => void
@@ -28,6 +34,7 @@ interface Props {
   onAddSite?: () => void
   customLinksEnabled?: boolean
   onToggleCustomLinksEnabled?: () => void
+  customMenuItems?: WidgetMenuCustomItem[]
   paddingType: 'none' | 'right' | 'default'
 }
 
@@ -88,6 +95,32 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
     this.closeMenu()
   }
 
+  renderCustomMenuItems () {
+    const { customMenuItems } = this.props
+
+    if (!customMenuItems) {
+      return null
+    }
+
+    return (
+      <>
+        {
+          customMenuItems.map((item, index) => {
+            return (
+              <StyledWidgetLink
+                key={index}
+                onClick={this.closeMenuWidget.bind(this, item.onClick)}
+              >
+                <StyledWidgetIcon>{item.renderIcon()}</StyledWidgetIcon>
+                <StyledSpan>{getLocale(item.label)}</StyledSpan>
+              </StyledWidgetLink>
+            )
+          })
+        }
+      </>
+    )
+  }
+
   render () {
     const {
       menuPosition,
@@ -99,7 +132,8 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
       onLearnMore,
       onAddSite,
       onToggleCustomLinksEnabled,
-      customLinksEnabled
+      customLinksEnabled,
+      customMenuItems
     } = this.props
     const { showMenu } = this.state
     const hideString = widgetTitle ? `${getLocale('hide')} ${widgetTitle}` : getLocale('hide')
@@ -116,6 +150,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
           menuPosition={menuPosition}
           widgetMenuPersist={widgetMenuPersist}
         >
+          { customMenuItems ? this.renderCustomMenuItems() : null }
           {
             onLearnMore
             ? <StyledWidgetLink

@@ -14,8 +14,8 @@
 #include "base/files/file_enumerator.h"
 #include "base/files/file_util.h"
 #include "base/functional/callback.h"
-#include "base/guid.h"
 #include "base/task/thread_pool.h"
+#include "base/uuid.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -75,8 +75,8 @@ std::unique_ptr<storage::BlobDataBuilder> BuildBlobWithText(
     std::string mime_type,
     std::string filename,
     std::string mime_boundary) {
-  auto blob_builder =
-      std::make_unique<storage::BlobDataBuilder>(base::GenerateGUID());
+  auto blob_builder = std::make_unique<storage::BlobDataBuilder>(
+      base::Uuid::GenerateRandomV4().AsLowercaseString());
   std::string post_data_header;
   net::AddMultipartValueForUploadWithFileName(ipfs::kFileValueName, filename,
                                               text, mime_boundary, mime_type,
@@ -95,8 +95,8 @@ std::unique_ptr<storage::BlobDataBuilder> BuildBlobWithFile(
     std::string filename,
     std::string mime_boundary,
     size_t file_size) {
-  auto blob_builder =
-      std::make_unique<storage::BlobDataBuilder>(base::GenerateGUID());
+  auto blob_builder = std::make_unique<storage::BlobDataBuilder>(
+      base::Uuid::GenerateRandomV4().AsLowercaseString());
   if (filename.empty())
     filename = upload_file_path.BaseName().MaybeAsASCII();
   std::string post_data_header;
@@ -117,8 +117,8 @@ std::unique_ptr<storage::BlobDataBuilder> BuildBlobWithFolder(
     base::FilePath upload_path,
     std::string mime_boundary,
     std::vector<ImportFileInfo> files) {
-  auto blob_builder =
-      std::make_unique<storage::BlobDataBuilder>(base::GenerateGUID());
+  auto blob_builder = std::make_unique<storage::BlobDataBuilder>(
+      base::Uuid::GenerateRandomV4().AsLowercaseString());
   for (const auto& info : files) {
     std::string data_header;
     base::FilePath::StringType relative_path;

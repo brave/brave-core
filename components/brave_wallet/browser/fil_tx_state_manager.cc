@@ -18,8 +18,11 @@
 
 namespace brave_wallet {
 
-FilTxStateManager::FilTxStateManager(PrefService* prefs)
-    : TxStateManager(prefs) {}
+FilTxStateManager::FilTxStateManager(
+    PrefService* prefs,
+    TxStorageDelegate* delegate,
+    AccountResolverDelegate* account_resolver_delegate)
+    : TxStateManager(prefs, delegate, account_resolver_delegate) {}
 
 FilTxStateManager::~FilTxStateManager() = default;
 
@@ -54,7 +57,7 @@ std::unique_ptr<TxMeta> FilTxStateManager::ValueToTxMeta(
     const base::Value::Dict& value) {
   std::unique_ptr<FilTxMeta> meta = std::make_unique<FilTxMeta>();
 
-  if (!TxStateManager::ValueToTxMeta(value, meta.get())) {
+  if (!ValueToBaseTxMeta(value, meta.get())) {
     return nullptr;
   }
   const base::Value::Dict* tx = value.FindDict("tx");

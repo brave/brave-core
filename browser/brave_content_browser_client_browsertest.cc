@@ -9,6 +9,7 @@
 #include "base/path_service.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/test/bind.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
@@ -40,7 +41,9 @@
 #include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/components/tor/onion_location_navigation_throttle.h"
+#include "brave/browser/tor/tor_profile_manager.h"
+#include "brave/components/tor/tor_navigation_throttle.h"
+#include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #endif
 
 class BraveContentBrowserClientTest : public InProcessBrowserTest {
@@ -485,9 +488,16 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
 
 #if BUILDFLAG(ENABLE_TOR)
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
-  // Don't block the mock .onion requests.
-  tor::OnionLocationNavigationThrottle::BlockOnionRequestsOutsideTorForTesting(
-      false);
+  net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
+  tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
+  base::RunLoop loop;
+  Browser* tor_browser = nullptr;
+  TorProfileManager::SwitchToTorProfile(
+      browser()->profile(), base::BindLambdaForTesting([&](Browser* browser) {
+        tor_browser = browser;
+        loop.Quit();
+      }));
+  loop.Run();
 
   const GURL onion_url =
       embedded_test_server()->GetURL("test.onion", "/onion.html");
@@ -496,10 +506,17 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
 
   ASSERT_EQ("http", onion_url.scheme());
   content::WebContents* contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
+      tor_browser->tab_strip_model()->GetActiveWebContents();
   {
     content::WebContentsConsoleObserver console_observer(contents);
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), onion_upgradable_url));
+    // filter out noises like "crbug/1173575, non-JS module files deprecated"
+    // since we are only interested in mix content error
+    console_observer.SetFilter(base::BindLambdaForTesting(
+        [](const content::WebContentsConsoleObserver::Message& message) {
+          return message.log_level == blink::mojom::ConsoleMessageLevel::kError;
+        }));
+    ASSERT_TRUE(
+        ui_test_utils::NavigateToURL(tor_browser, onion_upgradable_url));
     EXPECT_TRUE(console_observer.messages().empty());
   }
   {
@@ -509,7 +526,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
         "over HTTPS, but requested an insecure element "
         "'http://auto_upgradable_to_https.com/image.jpg'. This request was "
         "automatically upgraded to HTTPS*");
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), onion_url));
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(tor_browser, onion_url));
     ASSERT_TRUE(console_observer.Wait());
   }
   auto fetch = [](const std::string& resource) {

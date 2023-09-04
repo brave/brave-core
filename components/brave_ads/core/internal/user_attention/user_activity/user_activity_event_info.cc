@@ -5,11 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_event_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 bool operator==(const UserActivityEventInfo& lhs,
                 const UserActivityEventInfo& rhs) {
-  return lhs.type == rhs.type && lhs.created_at == rhs.created_at;
+  const auto tie = [](const UserActivityEventInfo& user_activity_event) {
+    return std::tie(user_activity_event.type, user_activity_event.created_at);
+  };
+
+  return tie(lhs) == tie(rhs);
 }
 
 bool operator!=(const UserActivityEventInfo& lhs,

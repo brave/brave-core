@@ -18,8 +18,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 
     {kAdInterestGroupAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAllowURNsInIframes, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kAnonymousIframeOriginTrial, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBackgroundResourceFetch, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kBiddingAndScoringDebugReportingAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBrowsingTopics, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBrowsingTopicsXHR, base::FEATURE_DISABLED_BY_DEFAULT},
     {kClientHintsMetaEquivDelegateCH, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -28,6 +28,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kCssSelectorFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFencedFrames, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledge, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kFledgeBiddingAndAuctionServer, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledgeConsiderKAnonymity, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledgeEnforceKAnonymity, base::FEATURE_DISABLED_BY_DEFAULT},
     {kInterestGroupStorage, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -38,7 +39,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kReduceUserAgentMinorVersion, base::FEATURE_ENABLED_BY_DEFAULT},
     {kSharedStorageAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSharedStorageSelectURLLimit, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSharedStorageReportEventLimit, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchFuture, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -64,6 +64,14 @@ constexpr base::FeatureParam<std::string>
 
 BASE_FEATURE(kFileSystemAccessAPI,
              "FileSystemAccessAPI",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveWebBluetoothAPI,
+             "BraveWebBluetoothAPI",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveWebSerialAPI,
+             "BraveWebSerialAPI",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kNavigatorConnectionAttribute,

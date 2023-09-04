@@ -1,4 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env vpython3
+
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import argparse
 import os
@@ -45,9 +50,9 @@ def parse_args():
 
 
 def check_root():
-    if os.geteuid() == 0:
-        print "We suggest not running this as root, unless you're really sure."
-        choice = raw_input("Do you want to continue? [y/N]: ")
+    if os.geteuid() == 0:  # pylint: disable=no-member
+        print("We suggest not running this as root, unless you're really sure.")
+        choice = input("Do you want to continue? [y/N]: ")
         if choice not in ('y', 'Y'):
             sys.exit(0)
 

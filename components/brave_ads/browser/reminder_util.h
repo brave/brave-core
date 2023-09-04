@@ -6,14 +6,20 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_REMINDER_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_REMINDER_UTIL_H_
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
+#include <string>
 
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+
+class GURL;
 
 namespace brave_ads {
 
-absl::optional<base::Value::Dict> GetReminder(mojom::ReminderType type);
+base::Value::Dict BuildReminder(mojom::ReminderType type);
+
+bool IsReminder(const std::string& placement_id);
+
+GURL GetReminderTargetUrl();
 
 }  // namespace brave_ads
 

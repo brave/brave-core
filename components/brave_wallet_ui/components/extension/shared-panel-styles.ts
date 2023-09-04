@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 import { WalletButton } from '../shared/style'
 import WarningTriangle from '../../assets/svg-icons/warning-triangle.svg'
-import IThemeProps from 'brave-ui/src/theme/theme-interface'
+import IThemeProps from 'brave-ui/theme/theme-interface'
 
 interface StyleProps {
   orb: string

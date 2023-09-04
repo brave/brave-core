@@ -17,7 +17,7 @@
 
 namespace brave_ads {
 
-void ForceInlineContentAdServingVersion(const int version) {
+void ForceInlineContentAdServingVersionForTesting(const int version) {
   std::map<std::string, std::string> params;
   params["version"] = base::NumberToString(version);
 

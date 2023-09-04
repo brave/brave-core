@@ -1,0 +1,7 @@
+Name: block-buffer
+URL: https://crates.io/crates/block-buffer
+Description: Fixed size buffer for block processing of data
+Version: 0.9.0
+Security Critical: yes
+License: Apache 2.0
+Revision: 5d66d5c20d58791e8b569429a88f8719094a219d

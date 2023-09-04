@@ -9,7 +9,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
 
 namespace brave_rewards::internal {

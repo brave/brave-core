@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import {SyncStatus} from '/shared/settings/people_page/sync_browser_proxy.js';
 import {sendWithPromise} from 'chrome://resources/js/cr.js';
-import {SyncStatus} from '../people_page/sync_browser_proxy.js';
 
 export type BraveDeviceInfo = {
   name: string

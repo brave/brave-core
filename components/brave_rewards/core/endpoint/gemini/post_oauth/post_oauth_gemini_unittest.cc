@@ -9,9 +9,9 @@
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_oauth/post_oauth_gemini.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -26,12 +26,12 @@ namespace gemini {
 class GeminiPostOauthTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  PostOauth oauth_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  PostOauth oauth_{mock_engine_impl_};
 };
 
 TEST_F(GeminiPostOauthTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -48,8 +48,7 @@ TEST_F(GeminiPostOauthTest, ServerOK) {
       });
 
   base::MockCallback<PostOauthCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_OK, std::string("aaaaa")))
-      .Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::OK, std::string("aaaaa"))).Times(1);
   oauth_.Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
       "1234567890", callback.Get());
@@ -58,7 +57,7 @@ TEST_F(GeminiPostOauthTest, ServerOK) {
 }
 
 TEST_F(GeminiPostOauthTest, ServerError401) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -79,7 +78,7 @@ TEST_F(GeminiPostOauthTest, ServerError401) {
 }
 
 TEST_F(GeminiPostOauthTest, ServerError403) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -100,7 +99,7 @@ TEST_F(GeminiPostOauthTest, ServerError403) {
 }
 
 TEST_F(GeminiPostOauthTest, ServerError404) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -120,7 +119,7 @@ TEST_F(GeminiPostOauthTest, ServerError404) {
 }
 
 TEST_F(GeminiPostOauthTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -131,8 +130,7 @@ TEST_F(GeminiPostOauthTest, ServerErrorRandom) {
       });
 
   base::MockCallback<PostOauthCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, std::string()))
-      .Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, std::string())).Times(1);
   oauth_.Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
       "1234567890", callback.Get());

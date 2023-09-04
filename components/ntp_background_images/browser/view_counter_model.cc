@@ -5,14 +5,20 @@
 
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 
-#include "base/check_op.h"
+#include "base/check.h"
 #include "base/logging.h"
 #include "base/rand_util.h"
+#include "brave/components/ntp_background_images/browser/features.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 
 namespace ntp_background_images {
 
-ViewCounterModel::ViewCounterModel() {
-  count_to_branded_wallpaper_ = kInitialCountToBrandedWallpaper;
+ViewCounterModel::ViewCounterModel(PrefService* prefs) : prefs_(prefs) {
+  CHECK(prefs);
+
+  count_to_branded_wallpaper_ =
+      prefs->GetInteger(prefs::kCountToBrandedWallpaper);
 }
 
 ViewCounterModel::~ViewCounterModel() = default;
@@ -52,8 +58,11 @@ bool ViewCounterModel::ShouldShowBrandedWallpaper() const {
 }
 
 void ViewCounterModel::RegisterPageView() {
-  RegisterPageViewForBrandedImages();
+  // Call BG images first to know this calling is after showing
+  // branded image or not. If this calling is from branded image
+  // showing, background image index should not be changed.
   RegisterPageViewForBackgroundImages();
+  RegisterPageViewForBrandedImages();
 }
 
 void ViewCounterModel::RegisterPageViewForBrandedImages() {
@@ -83,29 +92,20 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
   count_to_branded_wallpaper_--;
   if (count_to_branded_wallpaper_ < 0) {
     // Reset count and randomize image index for next time.
-    count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
+    count_to_branded_wallpaper_ = features::kCountToBrandedWallpaper.Get();
 
-    if (always_show_branded_wallpaper_) {
-      // Reset count and increse image index for next time.
-      count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
-      campaigns_current_branded_image_index_[current_campaign_index_]++;
-      campaigns_current_branded_image_index_[current_campaign_index_] %=
-          campaigns_total_branded_image_count_[current_campaign_index_];
+    // Randomize SI campaign branded image index for next time.
+    campaigns_current_branded_image_index_[current_campaign_index_] =
+        base::RandInt(
+            0,
+            campaigns_total_branded_image_count_[current_campaign_index_] - 1);
 
-      // Increse campaign index for next time.
-      current_campaign_index_++;
-      current_campaign_index_ %= total_campaign_count_;
-    } else {
-      // Randomize SI campaign branded image index for next time.
-      campaigns_current_branded_image_index_[current_campaign_index_] =
-          base::RandInt(
-              0, campaigns_total_branded_image_count_[current_campaign_index_] -
-                     1);
-
-      // Randomize campaign index for next time.
-      current_campaign_index_ = base::RandInt(0, total_campaign_count_ - 1);
-    }
+    // Randomize campaign index for next time.
+    current_campaign_index_ = base::RandInt(0, total_campaign_count_ - 1);
   }
+
+  prefs_->SetInteger(prefs::kCountToBrandedWallpaper,
+                     count_to_branded_wallpaper_);
 }
 
 void ViewCounterModel::RegisterPageViewForBackgroundImages() {
@@ -121,8 +121,10 @@ void ViewCounterModel::RegisterPageViewForBackgroundImages() {
     return;
 
   // Don't count when SI will be visible.
-  if (show_branded_wallpaper_ && count_to_branded_wallpaper_ == 0)
+  if (show_branded_wallpaper_ && total_campaign_count_ != 0 &&
+      count_to_branded_wallpaper_ == 0) {
     return;
+  }
 
   // Increase background image index
   current_wallpaper_image_index_++;
@@ -147,6 +149,7 @@ void ViewCounterModel::Reset() {
   total_image_count_ = 0;
   always_show_branded_wallpaper_ = false;
   current_campaign_index_ = 0;
+  total_campaign_count_ = 0;
   campaigns_total_branded_image_count_.clear();
   campaigns_current_branded_image_index_.clear();
 }

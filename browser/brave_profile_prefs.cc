@@ -15,9 +15,10 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
-#include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -109,9 +110,12 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/components/ai_chat/features.h"
-#include "brave/components/ai_chat/pref_names.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
+#include "brave/components/ai_chat/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
@@ -119,6 +123,7 @@
 #endif
 
 #if defined(TOOLKIT_VIEWS)
+#include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #endif
 
@@ -188,6 +193,14 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(brave_rewards::prefs::kShowButton, true);
 
   brave_rewards::RewardsService::RegisterProfilePrefsForMigration(registry);
+
+  brave_news::p3a::RegisterProfilePrefsForMigration(registry);
+
+  // Added May 2023
+#if defined(TOOLKIT_VIEWS)
+  registry->RegisterBooleanPref(sidebar::kSidebarAlignmentChangedTemporarily,
+                                false);
+#endif
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -197,7 +210,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_perf_predictor::PerfPredictorTabHelper::RegisterProfilePrefs(registry);
   brave_perf_predictor::P3ABandwidthSavingsTracker::RegisterProfilePrefs(
       registry);
-
+  // autofill
+  registry->RegisterBooleanPref(kBraveAutofillPrivateWindows, true);
   // appearance
   registry->RegisterBooleanPref(kShowBookmarksButton, true);
   registry->RegisterBooleanPref(kShowSidePanelButton, true);
@@ -413,9 +427,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if defined(TOOLKIT_VIEWS)
   sidebar::SidebarService::RegisterProfilePrefs(registry, chrome::GetChannel());
-  // Set false for showing sidebar on left by default.
-  registry->SetDefaultPrefValue(prefs::kSidePanelHorizontalAlignment,
-                                base::Value(false));
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -430,6 +441,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kEnableClosingLastTab, true);
 
   brave_tabs::RegisterBraveProfilePrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
     ai_chat::prefs::RegisterProfilePrefs(registry);
   }

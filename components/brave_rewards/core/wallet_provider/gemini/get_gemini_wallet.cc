@@ -9,8 +9,8 @@
 
 namespace brave_rewards::internal::gemini {
 
-GetGeminiWallet::GetGeminiWallet(LedgerImpl& ledger)
-    : wallet_provider::GetExternalWallet(ledger) {}
+GetGeminiWallet::GetGeminiWallet(RewardsEngineImpl& engine)
+    : wallet_provider::GetExternalWallet(engine) {}
 
 GetGeminiWallet::~GetGeminiWallet() = default;
 

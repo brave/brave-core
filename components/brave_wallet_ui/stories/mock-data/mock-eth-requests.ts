@@ -6,11 +6,12 @@
 import { mockNetwork } from '../../common/constants/mocks'
 import { BraveWallet } from '../../constants/types'
 import { mockOriginInfo } from './mock-origin-info'
+import { mockEthAccount } from './mock-wallet-accounts'
 
 export const mockSignMessageRequest = {
   originInfo: mockOriginInfo,
   id: -1,
-  address: '',
+  accountId: mockEthAccount.accountId,
   message: '',
   isEip712: false,
   domainHash: '',
@@ -27,17 +28,20 @@ export const mockAddChainRequest = {
 }
 
 export const mockGetEncryptionPublicKeyRequest = {
+  requestId: '',
   originInfo: mockOriginInfo,
-  address: ''
+  accountId: mockEthAccount.accountId
 }
 
 export const mockDecryptRequest = {
+  requestId: '',
   originInfo: mockOriginInfo,
-  address: '',
+  accountId: mockEthAccount.accountId,
   unsafeMessage: ''
 }
 
 export const mockSwitchChainRequest = {
+  requestId: '',
   originInfo: mockOriginInfo,
   chainId: ''
 }

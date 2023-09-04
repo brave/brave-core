@@ -6,7 +6,7 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v2.h"
 
@@ -15,12 +15,13 @@ using std::placeholders::_1;
 namespace brave_rewards::internal {
 namespace state {
 
-StateMigrationV2::StateMigrationV2(LedgerImpl& ledger) : ledger_(ledger) {}
+StateMigrationV2::StateMigrationV2(RewardsEngineImpl& engine)
+    : engine_(engine) {}
 
 StateMigrationV2::~StateMigrationV2() = default;
 
 void StateMigrationV2::Migrate(LegacyResultCallback callback) {
-  legacy_state_ = std::make_unique<LegacyBatState>(*ledger_);
+  legacy_state_ = std::make_unique<LegacyBatState>(*engine_);
 
   auto load_callback =
       std::bind(&StateMigrationV2::OnLoadState, this, _1, callback);
@@ -30,47 +31,47 @@ void StateMigrationV2::Migrate(LegacyResultCallback callback) {
 
 void StateMigrationV2::OnLoadState(mojom::Result result,
                                    LegacyResultCallback callback) {
-  if (result == mojom::Result::NO_LEDGER_STATE) {
-    BLOG(1, "No ledger state");
-    callback(mojom::Result::LEDGER_OK);
+  if (result == mojom::Result::NO_LEGACY_STATE) {
+    BLOG(1, "No engine state");
+    callback(mojom::Result::OK);
     return;
   }
 
-  if (result != mojom::Result::LEDGER_OK) {
-    BLOG(0, "Failed to load ledger state file, setting default values");
-    callback(mojom::Result::LEDGER_OK);
+  if (result != mojom::Result::OK) {
+    BLOG(0, "Failed to load engine state file, setting default values");
+    callback(mojom::Result::OK);
     return;
   }
 
-  ledger_->SetState("enabled", legacy_state_->GetRewardsMainEnabled());
+  engine_->SetState("enabled", legacy_state_->GetRewardsMainEnabled());
 
-  ledger_->SetState(kAutoContributeEnabled,
+  engine_->SetState(kAutoContributeEnabled,
                     legacy_state_->GetAutoContributeEnabled());
 
   if (legacy_state_->GetUserChangedContribution()) {
-    ledger_->SetState(kAutoContributeAmount,
+    engine_->SetState(kAutoContributeAmount,
                       legacy_state_->GetAutoContributionAmount());
   }
 
-  ledger_->SetState(kNextReconcileStamp, legacy_state_->GetReconcileStamp());
+  engine_->SetState(kNextReconcileStamp, legacy_state_->GetReconcileStamp());
 
-  ledger_->SetState(kCreationStamp, legacy_state_->GetCreationStamp());
+  engine_->SetState(kCreationStamp, legacy_state_->GetCreationStamp());
 
   const auto seed = legacy_state_->GetRecoverySeed();
-  ledger_->SetState(kRecoverySeed, base::Base64Encode(seed));
+  engine_->SetState(kRecoverySeed, base::Base64Encode(seed));
 
-  ledger_->SetState(kPaymentId, legacy_state_->GetPaymentId());
+  engine_->SetState(kPaymentId, legacy_state_->GetPaymentId());
 
-  ledger_->SetState(kInlineTipRedditEnabled,
+  engine_->SetState(kInlineTipRedditEnabled,
                     legacy_state_->GetInlineTipSetting("reddit"));
 
-  ledger_->SetState(kInlineTipTwitterEnabled,
+  engine_->SetState(kInlineTipTwitterEnabled,
                     legacy_state_->GetInlineTipSetting("twitter"));
 
-  ledger_->SetState(kInlineTipGithubEnabled,
+  engine_->SetState(kInlineTipGithubEnabled,
                     legacy_state_->GetInlineTipSetting("github"));
 
-  callback(mojom::Result::LEDGER_OK);
+  callback(mojom::Result::OK);
 }
 
 }  // namespace state

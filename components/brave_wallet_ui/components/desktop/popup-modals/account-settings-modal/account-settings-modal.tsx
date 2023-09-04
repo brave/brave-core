@@ -11,8 +11,8 @@ import {
   useSelector
 } from 'react-redux'
 
-// // actions
-import { WalletPageActions } from '../../../../page/actions'
+// actions
+import { WalletActions } from '../../../../common/actions'
 import {
   AccountsTabState,
   AccountsTabActions
@@ -30,20 +30,20 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 
 // types
 import {
-  BraveWallet
+  BraveWallet,
 } from '../../../../constants/types'
 
 // components
-import { NavButton } from '../../../extension'
+import { NavButton } from '../../../extension/buttons/nav-button/index'
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 import PopupModal from '../index'
 import PasswordInput from '../../../shared/password-input/index'
-import { create } from 'ethereum-blockies'
 
 // hooks
 import { useIsMounted } from '../../../../common/hooks/useIsMounted'
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
 import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
+import { useAccountOrb } from '../../../../common/hooks/use-orb'
 
 // style
 import {
@@ -90,13 +90,11 @@ export const AccountSettingsModal = () => {
 
   // methods
   const onViewPrivateKey = React.useCallback(async (
-    address: string,
-    coin: BraveWallet.CoinType
+    accountId: BraveWallet.AccountId
   ) => {
     const { privateKey } = await keyringService.encodePrivateKeyForExport(
-      address,
-      password,
-      coin
+      accountId,
+      password
     )
     if (isMounted) {
       return setPrivateKey(privateKey)
@@ -118,16 +116,17 @@ export const AccountSettingsModal = () => {
   }
 
   const onSubmitUpdateName = React.useCallback(() => {
-    if (selectedAccount) {
-      const isDerived = selectedAccount.accountType === 'Primary'
-      const payload = {
-        address: selectedAccount.address,
-        name: accountName,
-        isDerived: isDerived
-      }
-      const result = dispatch(WalletPageActions.updateAccountName(payload))
-      return result ? onClose() : setUpdateError(true)
+    if (!selectedAccount || !accountName) {
+      return
     }
+
+    const result = dispatch(
+      WalletActions.updateAccountName({
+        accountId: selectedAccount.accountId,
+        name: accountName
+      })
+    )
+    return result ? onClose() : setUpdateError(true)
   }, [selectedAccount, accountName, dispatch, onClose])
 
   const generateQRData = React.useCallback(() => {
@@ -157,10 +156,7 @@ export const AccountSettingsModal = () => {
     setPassword('')
     setIsCorrectPassword(true)
 
-    onViewPrivateKey(
-      selectedAccount?.address ?? '',
-      selectedAccount?.coin
-    )
+    onViewPrivateKey(selectedAccount.accountId)
   }
 
   const onHidePrivateKey = () => {
@@ -203,11 +199,7 @@ export const AccountSettingsModal = () => {
     return ''
   }, [accountModalType])
 
-  const orb = React.useMemo(() => {
-    if (selectedAccount) {
-      return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-    }
-  }, [selectedAccount])
+  const orb = useAccountOrb(selectedAccount)
 
   // effects
   React.useEffect(() => {
@@ -260,7 +252,7 @@ export const AccountSettingsModal = () => {
             </WarningWrapper>
             {privateKey
               ? <>
-                {selectedAccount?.coin === BraveWallet.CoinType.FIL &&
+                {selectedAccount?.accountId.coin === BraveWallet.CoinType.FIL &&
                   <WarningWrapper>
                     <WarningText>
                       {filPrivateKeyFormatDescriptionTextParts.beforeTag}

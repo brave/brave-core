@@ -7,19 +7,20 @@ import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 // actions
-import { WalletPageActions } from '../../../../page/actions'
+import { WalletActions } from '../../../../common/actions'
 import { AccountsTabActions, AccountsTabState } from '../../../../page/reducers/accounts-tab-reducer'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
+import { BraveWallet } from '../../../../constants/types'
 
 // hooks
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
 
 // components
-import { PopupModal } from '../..'
-import { NavButton } from '../../../extension'
-import { PasswordInput } from '../../../shared'
+import { PopupModal } from '../../popup-modals/index'
+import { NavButton } from '../../../extension/buttons/nav-button/index'
+import { PasswordInput } from '../../../shared/password-input/index'
 
 // style
 import {
@@ -47,23 +48,25 @@ export const ConfirmPasswordModal = () => {
   const { attemptPasswordEntry } = usePasswordAttempts()
 
   // methods
-  const onConfirmRemoveAccount = React.useCallback((password: string) => {
-    if (!accountToRemove) {
-      return
-    }
+  const onConfirmRemoveAccount = React.useCallback(
+    (password: string) => {
+      if (!accountToRemove) {
+        return
+      }
 
-    const { address, coin, hardware } = accountToRemove
+      const { accountId } = accountToRemove
 
-    if (hardware) {
-      dispatch(WalletPageActions.removeHardwareAccount({ address, coin }))
-    }
+      if (
+        accountId.kind === BraveWallet.AccountKind.kHardware ||
+        accountId.kind === BraveWallet.AccountKind.kImported
+      ) {
+        dispatch(WalletActions.removeAccount({ accountId, password }))
+      }
 
-    if (!hardware) {
-      dispatch(WalletPageActions.removeImportedAccount({ address, coin, password }))
-    }
-
-    dispatch(AccountsTabActions.setAccountToRemove(undefined)) // close modal
-  }, [accountToRemove, dispatch])
+      dispatch(AccountsTabActions.setAccountToRemove(undefined)) // close modal
+    },
+    [accountToRemove, dispatch]
+  )
 
   const onSubmit = React.useCallback(async () => {
     if (!password) { // require password to view key
@@ -106,7 +109,7 @@ export const ConfirmPasswordModal = () => {
       return
     }
     return getLocale('braveWalletRemoveAccountModalTitle')
-      .replace('$1', accountToRemove.name ?? accountToRemove.address)
+      .replace('$1', accountToRemove.name ?? accountToRemove.accountId.address)
   }, [accountToRemove])
 
   // render

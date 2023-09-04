@@ -3,17 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/ad_content_value_util.h"
+#include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/history/ad_content_util.h"
-#include "brave/components/brave_ads/core/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -39,7 +39,7 @@ TEST_F(BraveAdsAdContentValueUtilTest, FromValue) {
 
   // Assert
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ false);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad, kPlacementId);
   const AdContentInfo expected_ad_content =
       BuildAdContent(ad, ConfirmationType::kViewed, kTitle, kDescription);
@@ -49,7 +49,7 @@ TEST_F(BraveAdsAdContentValueUtilTest, FromValue) {
 TEST_F(BraveAdsAdContentValueUtilTest, ToValue) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ false);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad, kPlacementId);
   const AdContentInfo ad_content =
       BuildAdContent(ad, ConfirmationType::kViewed, kTitle, kDescription);

@@ -61,7 +61,7 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
         base::BindRepeating(
             &RewardsPromotionBrowserTest::GetTestResponse,
             base::Unretained(this)));
-    rewards_service_->SetLedgerEnvForTesting();
+    rewards_service_->SetEngineEnvForTesting();
 
     // Other
     promotion_->Initialize(browser(), rewards_service_);

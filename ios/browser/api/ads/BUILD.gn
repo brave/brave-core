@@ -33,9 +33,10 @@ source_set("ads") {
     ":ads_resources",
     ":brave_ads_mojom_wrappers",
     "//base",
-    "//brave/components/brave_ads/common",
+    "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_federated/public/interfaces",
+    "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/common",
     "//brave/ios/browser/api/common",
   ]
@@ -48,8 +49,8 @@ source_set("ads") {
 }
 
 ios_objc_mojom_wrappers("brave_ads_mojom_wrappers") {
-  mojom_target = "//brave/components/brave_ads/common/interfaces"
-  sources = [ "//brave/components/brave_ads/common/interfaces/brave_ads.mojom" ]
+  mojom_target = "//brave/components/brave_ads/core/mojom"
+  sources = [ "//brave/components/brave_ads/core/mojom/brave_ads.mojom" ]
   exclude_types = [
     "DBCommandInfo",
     "DBCommandBindingInfo",

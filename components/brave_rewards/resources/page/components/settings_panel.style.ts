@@ -38,7 +38,7 @@ export const title = styled.div`
   font-weight: 600;
   font-size: 22px;
   line-height: 28px;
-  color: var(--settings-panel-title-color, #495057);
+  color: var(--brave-palette-black);
 `
 
 export const config = styled.div`
@@ -84,7 +84,7 @@ export const itemLabel = styled.div`
   color: #495057;
 `
 
-export const itemDescription = styled.div`
+export const itemDetails = styled.div`
   padding-top: 8px;
   color: #686978;
 `

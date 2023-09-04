@@ -3,19 +3,24 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 
 brave_chrome_renderer_sources = [
   "//brave/renderer/brave_content_renderer_client.cc",
   "//brave/renderer/brave_content_renderer_client.h",
   "//brave/renderer/brave_render_thread_observer.cc",
   "//brave/renderer/brave_render_thread_observer.h",
+  "//brave/renderer/brave_url_loader_throttle_provider_impl.cc",
+  "//brave/renderer/brave_url_loader_throttle_provider_impl.h",
 ]
 
 brave_chrome_renderer_deps = [
   "//brave/common:mojo_bindings",
+  "//brave/components/ai_chat/common/buildflags",
   "//brave/components/brave_search/common",
   "//brave/components/brave_search/renderer",
   "//brave/components/brave_shields/common",
@@ -28,17 +33,26 @@ brave_chrome_renderer_deps = [
   "//brave/components/skus/common",
   "//brave/components/skus/renderer",
   "//brave/components/speedreader/common/buildflags",
+  "//brave/components/tor/buildflags",
   "//brave/renderer/brave_wallet",
   "//mojo/public/cpp/bindings",
   "//third_party/blink/public:blink",
   "//third_party/blink/public/common",
 ]
 
+if (enable_tor) {
+  brave_chrome_renderer_deps += [ "//brave/components/tor/renderer" ]
+}
+
 if (enable_speedreader) {
   brave_chrome_renderer_deps += [
     "//brave/components/speedreader/common",
     "//brave/components/speedreader/renderer",
   ]
+}
+
+if (enable_ai_chat) {
+  brave_chrome_renderer_deps += [ "//brave/components/ai_chat/renderer" ]
 }
 
 if (enable_playlist) {

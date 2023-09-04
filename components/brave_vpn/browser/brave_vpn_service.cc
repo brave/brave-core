@@ -23,6 +23,7 @@
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
+#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/version_info/version_info.h"
@@ -35,6 +36,10 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/url_util.h"
+
+#if BUILDFLAG(IS_WIN)
+#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
+#endif
 
 namespace brave_vpn {
 
@@ -131,7 +136,9 @@ void BraveVpnService::BindInterface(
 void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__ << " " << state;
-
+#if BUILDFLAG(IS_WIN)
+  WriteConnectionState(static_cast<int>(state));
+#endif
   // Ignore connection state change request for non purchased user.
   // This can be happened when user controls vpn via os settings.
   if (!is_purchased_user())
@@ -144,6 +151,11 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
       connection_api_->Disconnect();
       return;
     }
+#if BUILDFLAG(IS_WIN)
+    // Run tray process each time we establish connection. System tray icon
+    // manages self state to be visible/hidden due to settings.
+    wireguard::ShowBraveVpnStatusTrayIcon();
+#endif
     RecordP3A(true);
   }
 
@@ -184,13 +196,11 @@ mojom::ConnectionState BraveVpnService::GetConnectionState() const {
 }
 
 bool BraveVpnService::IsConnected() const {
-  return GetConnectionState() == ConnectionState::CONNECTED;
-}
+  if (!is_purchased_user()) {
+    return false;
+  }
 
-void BraveVpnService::RemoveVPNConnection() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  VLOG(2) << __func__;
-  connection_api_->RemoveVPNConnection();
+  return GetConnectionState() == ConnectionState::CONNECTED;
 }
 
 void BraveVpnService::Connect() {
@@ -279,9 +289,8 @@ void BraveVpnService::CreateSupportTicket(
 void BraveVpnService::GetSupportData(GetSupportDataCallback callback) {
   std::string brave_version =
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
-  std::string os_version = version_info::GetOSType();
 
-  std::move(callback).Run(brave_version, os_version,
+  std::move(callback).Run(brave_version, std::string(version_info::GetOSType()),
                           connection_api_->GetHostname(), GetTimeZoneName());
 }
 
@@ -427,7 +436,7 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
     if (connection_api_->GetRegionDataManager().IsRegionDataReady()) {
       VLOG(2) << __func__
               << ": Set as a purchased user as we have valid subscriber "
-                 "L:ntials & region data";
+                 "credentials & region data";
       SetPurchasedState(requested_env, PurchasedState::PURCHASED);
     } else {
       VLOG(2) << __func__ << ": Wait till we get valid region data.";
@@ -461,6 +470,12 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
   VLOG(2) << __func__
           << ": Checking purchased state as we doesn't have valid skus or "
              "subscriber credentials";
+
+  RequestCredentialSummary(domain);
+}
+
+void BraveVpnService::RequestCredentialSummary(const std::string& domain) {
+  // As we request new credential, clear cached value.
   ClearSubscriberCredential(local_prefs_);
 
   EnsureMojoConnected();
@@ -604,7 +619,28 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
 #if BUILDFLAG(IS_ANDROID)
     SetPurchasedState(GetCurrentEnvironment(), PurchasedState::NOT_PURCHASED);
 #else
-    auto message_id = (subscriber_credential == kTokenNoLongerValid)
+    const bool token_no_longer_valid =
+        subscriber_credential == kTokenNoLongerValid;
+
+    // If current skus-credential is from retried, don't retry to get newer
+    // skus-credential again.
+    if (token_no_longer_valid && !IsRetriedSkusCredential(local_prefs_)) {
+      VLOG(2) << __func__
+              << " : Re-trying to fetch subscriber-credential by fetching "
+                 "newer skus-credential.";
+      RequestCredentialSummary(skus::GetDomain("vpn", GetCurrentEnvironment()));
+      SetSkusCredentialFetchingRetried(local_prefs_, true);
+      return;
+    }
+
+    // If we got same error with another skus-credential, give up as we can't
+    // issue another skus-credential. It's limited resource.
+    if (token_no_longer_valid && IsRetriedSkusCredential(local_prefs_)) {
+      VLOG(2) << __func__
+              << " : Got TokenNoLongerValid again with retried skus credential";
+    }
+
+    auto message_id = token_no_longer_valid
                           ? IDS_BRAVE_VPN_PURCHASE_TOKEN_NOT_VALID
                           : IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_FETCH_FAILED;
     SetPurchasedState(GetCurrentEnvironment(), PurchasedState::FAILED,
@@ -612,6 +648,9 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
 #endif
     return;
   }
+
+  // Clear retrying flags as we got valid subscriber-credential.
+  SetSkusCredentialFetchingRetried(local_prefs_, false);
 
   // Previously cached skus credential is cleared and fetched subscriber
   // credential is cached.
@@ -727,6 +766,7 @@ void BraveVpnService::SetPurchasedState(
     return;
   }
 
+  VLOG(2) << __func__ << " : " << state;
   purchased_state_ = mojom::PurchasedInfo(state, description);
 
   for (const auto& obs : observers_)

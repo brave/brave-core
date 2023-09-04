@@ -21,9 +21,8 @@ class BraveAdsNetworkConnectionPermissionRuleTest : public UnitTestBase {
   const NetworkConnectionPermissionRule permission_rule_;
 };
 
-TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, AllowAd) {
+TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, ShouldAllow) {
   // Arrange
-  MockIsNetworkConnectionAvailable(ads_client_mock_, true);
 
   // Act
 
@@ -31,7 +30,7 @@ TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, AllowAd) {
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, ShouldNotAllow) {
   // Arrange
   MockIsNetworkConnectionAvailable(ads_client_mock_, false);
 
@@ -42,7 +41,7 @@ TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, DoNotAllowAd) {
 }
 
 TEST_F(BraveAdsNetworkConnectionPermissionRuleTest,
-       AllowAdIfPermissionRuleIsDisabled) {
+       ShouldAllowIfPermissionRuleIsDisabled) {
   // Arrange
   base::FieldTrialParams params;
   params["should_only_serve_ads_with_valid_internet_connection"] = "false";

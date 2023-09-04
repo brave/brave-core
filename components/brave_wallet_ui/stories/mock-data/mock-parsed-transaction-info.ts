@@ -14,11 +14,13 @@ import { mockNetworks } from './mock-networks'
 
 export const mockParsedTransactionInfo = parseTransactionWithPrices({
   accounts: mockWalletState.accounts,
-  fullTokenList: mockWalletState.fullTokenList,
-  spotPrices: mockWalletState.transactionSpotPrices,
+  tokensList: [
+    ...mockWalletState.userVisibleTokensInfo,
+    ...mockWalletState.fullTokenList
+  ],
+  spotPriceRegistry: {},
   tx: mockTransactionInfo,
-  userVisibleTokensList: mockWalletState.userVisibleTokensInfo,
-  solFeeEstimates: mockWalletState.solFeeEstimates,
+  gasFee: mockWalletState.solFeeEstimates?.fee.toString() ?? '',
   transactionNetwork: mockNetworks.find(
     (n) =>
       n.chainId === mockTransactionInfo.chainId &&
@@ -28,11 +30,13 @@ export const mockParsedTransactionInfo = parseTransactionWithPrices({
 
 export const mockedParsedErc20ApprovalTransaction = parseTransactionWithPrices({
   accounts: mockWalletState.accounts,
-  fullTokenList: mockWalletState.fullTokenList,
-  spotPrices: mockWalletState.transactionSpotPrices,
+  tokensList: [
+    ...mockWalletState.userVisibleTokensInfo,
+    ...mockWalletState.fullTokenList
+  ],
+  spotPriceRegistry: {},
   tx: mockedErc20ApprovalTransaction,
-  userVisibleTokensList: mockWalletState.userVisibleTokensInfo,
-  solFeeEstimates: mockWalletState.solFeeEstimates,
+  gasFee: mockWalletState.solFeeEstimates?.fee.toString() ?? '',
   transactionNetwork: mockNetworks.find(
     (n) =>
       n.chainId === mockedErc20ApprovalTransaction.chainId &&

@@ -9,7 +9,6 @@ import { useHistory } from 'react-router'
 // types
 import {
   BraveWallet,
-  WalletAccountType,
   WalletRoutes
 } from '../../../constants/types'
 
@@ -47,16 +46,17 @@ import {
 // components
 import { AccountFilterSelector } from '../../../components/desktop/account-filter-selector/account-filter-selector'
 import { NetworkFilterSelector } from '../../../components/desktop/network-filter-selector/index'
-import { PortfolioTransactionItem } from '../../../components/desktop'
-import { SearchBar } from '../../../components/shared'
+import {
+  PortfolioTransactionItem //
+} from '../../../components/desktop/portfolio-transaction-item/index'
+import { SearchBar } from '../../../components/shared/search-bar/index'
 
 // styles
 import {
   Column,
   LoadingIcon,
   Text,
-  VerticalSpacer,
-  ScrollableColumn
+  VerticalSpacer
 } from '../../../components/shared/style'
 import {
   LoadingSkeletonStyleProps,
@@ -105,7 +105,7 @@ export const TransactionsScreen: React.FC = () => {
   } = useGetAccountInfosRegistryQuery(undefined)
   const foundAccountFromParam = address
     ? accountInfosRegistry.entities[
-        accountInfoEntityAdaptor.selectId({ address })
+        accountInfoEntityAdaptor.selectIdByAddress(address)
       ]
     : undefined
 
@@ -151,12 +151,12 @@ export const TransactionsScreen: React.FC = () => {
     useGetTransactionsQuery(
       foundAccountFromParam
         ? {
-            address: foundAccountFromParam.address,
-            coinType: foundAccountFromParam.coin,
+            accountId: foundAccountFromParam.accountId,
+            coinType: foundAccountFromParam.accountId.coin,
             chainId: chainId !== AllNetworksOption.chainId ? chainId : null
           }
         : {
-            address: null,
+            accountId: null,
             chainId:
               foundNetworkFromParam?.chainId === AllNetworksOption.chainId
                 ? null
@@ -210,13 +210,13 @@ export const TransactionsScreen: React.FC = () => {
 
   // methods
   const onSelectAccount = React.useCallback(
-    ({ address, coin }: WalletAccountType): void => {
+    ({ accountId }: BraveWallet.AccountInfo): void => {
       history.push(
         updatePageParams({
-          address: address || undefined,
+          address: accountId.address,
           // reset chains filter on account select
           chainId: AllNetworksOption.chainId,
-          chainCoinType: coin
+          chainCoinType: accountId.coin
         })
       )
     },
@@ -227,7 +227,7 @@ export const TransactionsScreen: React.FC = () => {
     ({ chainId, coin }: BraveWallet.NetworkInfo) => {
       history.push(
         updatePageParams({
-          address: foundAccountFromParam?.address || AllAccountsOption.id,
+          address: foundAccountFromParam?.address,
           chainId,
           chainCoinType: coin
         })
@@ -288,7 +288,6 @@ export const TransactionsScreen: React.FC = () => {
               </Column>
             }
 
-          <ScrollableColumn>
             {filteredTransactions.map(tx =>
               <PortfolioTransactionItem
                 key={tx.id}
@@ -296,7 +295,6 @@ export const TransactionsScreen: React.FC = () => {
                 transaction={tx}
               />
             )}
-          </ScrollableColumn>
 
             {txsForSelectedChain &&
               txsForSelectedChain.length !== 0 &&

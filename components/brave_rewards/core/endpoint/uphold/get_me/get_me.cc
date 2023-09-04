@@ -10,15 +10,15 @@
 #include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/endpoint/uphold/uphold_utils.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal {
 namespace endpoint {
 namespace uphold {
 
-GetMe::GetMe(LedgerImpl& ledger) : ledger_(ledger) {}
+GetMe::GetMe(RewardsEngineImpl& engine) : engine_(engine) {}
 
 GetMe::~GetMe() = default;
 
@@ -34,10 +34,10 @@ mojom::Result GetMe::CheckStatusCode(const int status_code) {
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 mojom::Result GetMe::ParseBody(const std::string& body,
@@ -47,7 +47,7 @@ mojom::Result GetMe::ParseBody(const std::string& body,
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
@@ -60,13 +60,17 @@ mojom::Result GetMe::ParseBody(const std::string& body,
     user->member_id = *id;
   }
 
+  if (const auto* country = dict.FindString("identityCountry")) {
+    user->country_id = *country;
+  }
+
   const auto* currencies = dict.FindList("currencies");
   if (currencies) {
     const std::string currency = "BAT";
     user->bat_not_allowed = !base::Contains(*currencies, base::Value(currency));
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void GetMe::Request(const std::string& token, GetMeCallback callback) {
@@ -76,7 +80,7 @@ void GetMe::Request(const std::string& token, GetMeCallback callback) {
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  engine_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetMe::OnRequest(GetMeCallback callback, mojom::UrlResponsePtr response) {
@@ -85,7 +89,7 @@ void GetMe::OnRequest(GetMeCallback callback, mojom::UrlResponsePtr response) {
 
   internal::uphold::User user;
   mojom::Result result = CheckStatusCode(response->status_code);
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     std::move(callback).Run(result, user);
     return;
   }

@@ -103,6 +103,8 @@ class FakeDownloadDisplay : public DownloadDisplay {
 
   void Disable() override { enabled_ = false; }
 
+  bool ShouldShowExclusiveAccessBubble() override { return true; }
+
   void UpdateDownloadIcon(bool show_animation) override {
     icon_state_ = controller_->GetIconInfo().icon_state;
     is_active_ = controller_->GetIconInfo().is_active;
@@ -176,8 +178,8 @@ class MockDownloadBubbleUpdateService : public DownloadBubbleUpdateService {
     }
   }
 
-  const DownloadDisplayController::AllDownloadUIModelsInfo& GetAllModelsInfo()
-      override {
+  const DownloadDisplayController::AllDownloadUIModelsInfo& GetAllModelsInfo(
+      const web_app::AppId* web_app_id) override {
     info_ = DownloadDisplayController::AllDownloadUIModelsInfo{};
     int download_item_index = 0, offline_item_index = 0;
     // Compose a list of models from the items stored in the test fixture.
@@ -204,6 +206,7 @@ class MockDownloadBubbleUpdateService : public DownloadBubbleUpdateService {
 
   bool GetAllModelsToDisplay(
       std::vector<DownloadUIModelPtr>& models,
+      const web_app::AppId* web_app_id,
       bool force_backfill_download_items = true) override {
     models.clear();
     int download_item_index = 0, offline_item_index = 0;
@@ -243,7 +246,7 @@ class MockDownloadBubbleUpdateService : public DownloadBubbleUpdateService {
 
   MOCK_METHOD(DownloadDisplayController::ProgressInfo,
               GetProgressInfo,
-              (),
+              (const web_app::AppId*),
               (const override));
 
  private:
@@ -263,7 +266,7 @@ class MockDownloadCoreService : public DownloadCoreService {
               GetExtensionEventRouter,
               ());
   MOCK_METHOD(bool, HasCreatedDownloadManager, ());
-  MOCK_METHOD(int, NonMaliciousDownloadCount, (), (const));
+  MOCK_METHOD(int, BlockingShutdownCount, (), (const));
   MOCK_METHOD(void, CancelDownloads, ());
   MOCK_METHOD(void,
               SetDownloadManagerDelegateForTesting,
@@ -393,7 +396,7 @@ class DownloadDisplayControllerTest : public testing::Test {
     DownloadDisplayController::ProgressInfo progress_info;
     progress_info.download_count = in_progress_count_;
     progress_info.progress_percentage = in_progress_count_ > 0 ? 50 : 0;
-    EXPECT_CALL(*mock_update_service_, GetProgressInfo())
+    EXPECT_CALL(*mock_update_service_, GetProgressInfo(_))
         .WillRepeatedly(Return(progress_info));
     controller().OnNewItem(/*show_animation=*/false);
   }
@@ -409,19 +412,16 @@ class DownloadDisplayControllerTest : public testing::Test {
     progress_info.download_count = in_progress_count_;
     progress_info.progress_percentage = in_progress_count_ > 0 ? 50 : 0;
     progress_info.progress_certain = false;
-    EXPECT_CALL(*mock_update_service_, GetProgressInfo())
+    EXPECT_CALL(*mock_update_service_, GetProgressInfo(_))
         .WillRepeatedly(Return(progress_info));
     mock_update_service_->AddModel(
         MockDownloadBubbleUpdateService::ModelType::kOfflineItem);
     controller().OnNewItem(/*show_animation=*/false);
   }
 
-  void UpdateOfflineItem(int item_index,
-                         OfflineItemState state,
-                         bool is_pending_deep_scanning) {
+  void UpdateOfflineItem(int item_index, OfflineItemState state) {
     offline_items_[item_index].state = state;
     controller().OnUpdatedItem(state == OfflineItemState::COMPLETE,
-                               is_pending_deep_scanning,
                                /*may_show_details=*/true);
   }
 
@@ -443,10 +443,8 @@ class DownloadDisplayControllerTest : public testing::Test {
     } else {
       EXPECT_CALL(item(item_index), IsDone()).WillRepeatedly(Return(false));
     }
-    controller().OnUpdatedItem(
-        state == DownloadState::COMPLETE,
-        danger_type == download::DOWNLOAD_DANGER_TYPE_PROMPT_FOR_SCANNING,
-        may_show_details);
+    controller().OnUpdatedItem(state == DownloadState::COMPLETE,
+                               may_show_details);
   }
 
   void OnRemovedItem(const std::string& id) {
