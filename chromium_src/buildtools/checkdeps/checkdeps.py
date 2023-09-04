@@ -1,17 +1,18 @@
 # Copyright (c) 2021 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 """Modifies DEPS checker to support `brave/chromium_src` overrides."""
 
 import posixpath
 
-from builddeps import DepsBuilder, NormalizePath
+# pylint: disable=import-error,too-few-public-methods
+from builddeps import NormalizePath
 
 
-class BraveDepsBuilder(DepsBuilder):
+class BraveDepsChecker(DepsChecker):
     def _ApplyDirectoryRules(self, existing_rules, dir_path_local_abs):
-        directory_rules, excluded_subdirs = super(DepsBuilder,
+        directory_rules, excluded_subdirs = super(DepsChecker,
                                                   self)._ApplyDirectoryRules(
                                                       existing_rules,
                                                       dir_path_local_abs)
@@ -21,7 +22,7 @@ class BraveDepsBuilder(DepsBuilder):
             # Append rules from the original `src/...` dir.
             root_src_dir_path_norm = dir_path_norm.replace(
                 '/brave/chromium_src', '', 1)
-            directory_rules, _ = super(DepsBuilder, self)._ApplyDirectoryRules(
+            directory_rules, _ = super(DepsChecker, self)._ApplyDirectoryRules(
                 directory_rules, root_src_dir_path_norm)
 
             # Add `+src/...` rule.
@@ -41,4 +42,4 @@ class BraveDepsBuilder(DepsBuilder):
         return directory_rules, excluded_subdirs
 
 
-DepsBuilder = BraveDepsBuilder
+DepsChecker = BraveDepsChecker
