@@ -369,30 +369,36 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
           case .safe:
             self.enableDefaultTypeAndPushSettings()
           case .approvalNeeded:
-            let namesDevicesSyncChain = fetchNamesOfDevicesInSyncChain()
+            let devicesSyncChain = fetchNamesOfDevicesInSyncChain()
 
             // Showing and alert with device list; if user answers no - leave chain, if yes - enable the bookmarks type
             var alertMessage = ""
             
-            if !namesDevicesSyncChain.isEmpty {
-              alertMessage += "\(Strings.Sync.syncDevicesInSyncChainTitle):"
-              
-              for name in namesDevicesSyncChain where !name.isEmpty {
-                alertMessage += "\n\(name)"
+            if !devicesSyncChain.isEmpty {
+              for device in devicesSyncChain where !device.name.isEmpty {
+                if device.isCurrentDevice {
+                  var currentDeviceNameList = "\n\(device.name) (\(Strings.syncThisDevice))"
+                  currentDeviceNameList += alertMessage
+                  alertMessage = currentDeviceNameList
+                } else {
+                  alertMessage += "\n\(device.name)"
+                }
               }
+              
+              alertMessage = "\n\(Strings.Sync.syncDevicesInSyncChainTitle):\n" + alertMessage
             }
             
             alertMessage += "\n\n \(Strings.Sync.syncJoinChainCodewordsWarning)"
 
             let alert = UIAlertController(
-              title: Strings.syncJoinChainWarningTitle,
+              title: Strings.Sync.syncJoinChainWarningTitle,
               message: alertMessage,
               preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: Strings.yes, style: .default) { _ in
-              self.enableDefaultTypeAndPushSettings()
-            })
-            alert.addAction(UIAlertAction(title: Strings.no, style: .default) { _ in
+            alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .default) { _ in
               self.leaveIncompleteSyncChain()
+            })
+            alert.addAction(UIAlertAction(title: Strings.confirm, style: .default) { _ in
+              self.enableDefaultTypeAndPushSettings()
             })
             present(alert, animated: true, completion: nil)
           case .blocked:
@@ -448,7 +454,7 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
     return (deviceLimitLevel, nil)
   }
   
-  private func fetchNamesOfDevicesInSyncChain() -> [String] {
+  private func fetchNamesOfDevicesInSyncChain() -> [(name: String, isCurrentDevice: Bool)] {
     let deviceListJSON = syncAPI.getDeviceListJSON()
     let deviceList = fetchSyncDeviceList(listJSON: deviceListJSON)
     
@@ -460,7 +466,7 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
       return []
     }
     
-    return devices.map { $0.name ?? "" }
+    return devices.map { ($0.name ?? "", $0.isCurrentDevice) }
   }
   
   private func fetchSyncDeviceList(listJSON: String?) -> (devices: [BraveSyncDevice]?, error: DeviceRetriavalError?) {
