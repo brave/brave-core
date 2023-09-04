@@ -81,6 +81,7 @@ base::expected<mojom::FeedItemPtr, std::string> ParseFeedItem(
 
   // Further weight according to history
   metadata->score = feed_item.score.value_or(20.0);
+  metadata->pop_score = feed_item.pop_score.value_or(0.);
 
   // Extract time
   if (!base::Time::FromUTCString(feed_item.publish_time.c_str(),

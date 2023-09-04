@@ -35,6 +35,7 @@ struct FeedItemMetadata {
   string publisher_id;
   string publisher_name;
   double score;
+  double pop_score;
   string relative_time_description;
 };
 

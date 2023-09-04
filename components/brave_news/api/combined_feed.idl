@@ -34,6 +34,9 @@ namespace combined_feed {
     // The score of the item. Should be logged when not present.
     double? score;
 
+    // The popularity of the item. Not present in older versions of the API.
+    double? pop_score;
+
     // A publish date/time string in the format YYYY-MM-DD HH:MM:SS.
     DOMString publish_time;
 
