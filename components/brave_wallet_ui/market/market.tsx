@@ -200,7 +200,7 @@ const App = () => {
           <MarketGrid
             headers={marketGridHeaders}
             coinMarketData={visibleCoinMarkets}
-            showEmptyState={searchTerm !== '' || currentFilter !== 'all'}
+            showEmptyState={visibleCoinMarkets.length === 0}
             fiatCurrency={defaultCurrencies?.fiat ?? 'USD'}
             sortedBy={sortByColumnId}
             sortOrder={sortOrder}

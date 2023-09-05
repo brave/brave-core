@@ -10,7 +10,7 @@ import {
   layoutPanelWidth,
   layoutSmallWidth
 } from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
-import { WalletButton } from '../style'
+import { WalletButton, Text } from '../style'
 
 export const breakpoints = {
   panel: `${layoutPanelWidth}px`,
@@ -84,7 +84,7 @@ export const GridRowsWrapper = styled.div`
     display: none;
   }
 `
-export const Row = styled.div<{ templateColumns: string }>`
+export const GridRow = styled.div<{ templateColumns: string }>`
   display: grid;
   grid-template-columns: ${({ templateColumns }) => templateColumns};
   gap: 5px;
@@ -195,4 +195,8 @@ export const ActionButton = styled(WalletButton)`
   line-height: 16px;
   letter-spacing: 0.36px;
   color: ${leo.color.text.interactive};
+`
+
+export const EmptyStateText = styled(Text)`
+  color: ${leo.color.text.secondary};
 `
