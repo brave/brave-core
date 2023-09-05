@@ -52,7 +52,6 @@ void ShowPlaylistBubble(Browser* browser);
 void GroupTabsOnCurrentOrigin(Browser* browser);
 void MoveGroupToNewWindow(Browser* browser);
 
-bool CanCloseDuplicateTabs(Browser* browser);
 void CloseDuplicateTabs(Browser* browser);
 
 bool CanCloseTabsToLeft(Browser* browser);
