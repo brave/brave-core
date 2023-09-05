@@ -401,6 +401,13 @@ interface PanelHandler {
   Focus();
 
   IsSolanaAccountConnected(string account) => (bool connected);
+
+  // Create a permission request for users based on active web contents.
+  // The flow will be similar to dapp request permission except it is initiated
+  // from panel. Desktop front end will be opened with same #connectWitSite ref
+  // and we need to call ConnectToSite or CancelConnectToSite based on user
+  // decision.
+  RequestPermission(AccountId account_id) => (bool success);
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -1867,10 +1874,6 @@ interface BraveWalletService {
   // currently selected account does not support it.
   GetNetworkForSelectedAccountOnActiveOrigin() => (NetworkInfo? network);
   SetNetworkForSelectedAccountOnActiveOrigin(string chain_id) => (bool success);
-
-  // Adds the permission for the account on active origin.
-  AddPermission(AccountId account_id)
-    => (bool success);
 
   // Filters accounts with permissions on active origin.
   HasPermission(array<AccountId> accounts)

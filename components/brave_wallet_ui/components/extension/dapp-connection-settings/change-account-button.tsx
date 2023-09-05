@@ -8,6 +8,8 @@ import Button from '@brave/leo/react/button'
 import { useDispatch } from 'react-redux'
 
 // Actions
+import { PanelActions } from '../../../panel/actions'
+
 import {
   WalletActions
 } from '../../../common/actions'
@@ -120,8 +122,8 @@ export const ChangeAccountButton = (props: Props) => {
   // Methods
   const onClickConnect = React.useCallback(() => {
     dispatch(
-      WalletActions
-        .addSitePermission({ accountId: account.accountId })
+      PanelActions
+        .requestSitePermission({ accountId: account.accountId })
     )
     if (selectedCoin !== BraveWallet.CoinType.SOL) {
       setSelectedAccount(account.accountId)

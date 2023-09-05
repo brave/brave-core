@@ -8,6 +8,8 @@ import Button from '@brave/leo/react/button'
 import { useDispatch } from 'react-redux'
 
 // Actions
+import { PanelActions } from '../../../panel/actions'
+
 import {
   WalletActions
 } from '../../../common/actions'
@@ -124,8 +126,8 @@ export const DAppConnectionMain = (props: Props) => {
       return
     }
     dispatch(
-      WalletActions
-        .addSitePermission(
+      PanelActions
+        .requestSitePermission(
           { accountId: selectedAccount.accountId }
         )
     )

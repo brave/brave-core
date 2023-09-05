@@ -149,18 +149,6 @@ void BraveWalletServiceDelegateImpl::ContinueGetImportInfoFromExternalWallet(
   }
 }
 
-bool BraveWalletServiceDelegateImpl::AddPermission(mojom::CoinType coin,
-                                                   const url::Origin& origin,
-                                                   const std::string& account) {
-  auto type = CoinTypeToPermissionType(coin);
-  if (!type) {
-    return false;
-  }
-
-  return permissions::BraveWalletPermissionContext::AddPermission(
-      *type, context_, origin, account);
-}
-
 bool BraveWalletServiceDelegateImpl::HasPermission(mojom::CoinType coin,
                                                    const url::Origin& origin,
                                                    const std::string& account) {

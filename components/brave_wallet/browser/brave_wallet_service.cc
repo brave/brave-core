@@ -935,18 +935,6 @@ void BraveWalletService::OnBraveWalletNftDiscoveryEnabled() {
   }
 }
 
-void BraveWalletService::AddPermission(mojom::AccountIdPtr account_id,
-                                       AddPermissionCallback callback) {
-  auto origin = delegate_->GetActiveOrigin();
-  if (!origin) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  std::move(callback).Run(
-      delegate_->AddPermission(account_id->coin, *origin, account_id->address));
-}
-
 void BraveWalletService::HasPermission(
     std::vector<mojom::AccountIdPtr> accounts,
     HasPermissionCallback callback) {
