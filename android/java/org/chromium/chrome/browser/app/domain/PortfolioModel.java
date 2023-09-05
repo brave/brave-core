@@ -60,6 +60,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     private final MutableLiveData<List<NftDataModel>> _mNftHiddenModels;
     private final MutableLiveData<Boolean> _mIsDiscoveringUserAssets;
     public LiveData<Boolean> mIsDiscoveringUserAssets;
+
     private List<NetworkInfo> mAllNetworkInfos;
     public PortfolioHelper mPortfolioHelper;
 
@@ -89,11 +90,10 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
 
     // TODO(pav): We should fetch and process all portfolio list here
     public void prepareNftListMetaData(List<BlockchainToken> nftList,
-            List<BlockchainToken> hiddenNftList, List<NetworkInfo> allNetworkList,
-            PortfolioHelper portfolioHelper) {
+            List<BlockchainToken> hiddenNftList, PortfolioHelper portfolioHelper) {
         mPortfolioHelper = portfolioHelper;
-        fetchNftMetadata(nftList, allNetworkList, _mNftModels);
-        fetchNftMetadata(hiddenNftList, allNetworkList, _mNftHiddenModels);
+        fetchNftMetadata(nftList, mAllNetworkInfos, _mNftModels);
+        fetchNftMetadata(hiddenNftList, mAllNetworkInfos, _mNftHiddenModels);
     }
 
     private void fetchNftMetadata(List<BlockchainToken> nftList, List<NetworkInfo> allNetworkList,

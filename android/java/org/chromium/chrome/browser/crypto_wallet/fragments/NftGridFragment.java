@@ -62,7 +62,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.custom_layout.AutoFitVerticalGridLayoutManager;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
-import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.ui.text.SpanApplier;
@@ -414,10 +413,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                     mPortfolioHelper = portfolioHelper;
                     List<BlockchainToken> nfts = mPortfolioHelper.getUserAssets();
                     List<BlockchainToken> hiddenNfts = mPortfolioHelper.getHiddenAssets();
-                    LiveDataUtil.observeOnce(getNetworkModel().mCryptoNetworks,
-                            networkList
-                            -> mPortfolioModel.prepareNftListMetaData(
-                                    nfts, hiddenNfts, networkList, mPortfolioHelper));
+                    mPortfolioModel.prepareNftListMetaData(nfts, hiddenNfts, mPortfolioHelper);
                 });
     }
 
