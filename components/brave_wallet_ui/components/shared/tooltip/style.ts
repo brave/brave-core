@@ -36,8 +36,8 @@ export const TipWrapper = styled.div<PositionProps>`
   transform: 
     translateY(${
       (p) => p.verticalPosition === 'below'
-        ? '8px'
-        : '-105%'
+        ? '0px'
+        : '-100%'
     });
 
     z-index: 100;
