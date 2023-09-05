@@ -20,6 +20,7 @@
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_data_handler_impl.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/speedreader/common/constants.h"
@@ -35,6 +36,7 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
@@ -56,6 +58,10 @@
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
+#endif
+
 const char kTestHost[] = "a.test";
 const char kTestPageSimple[] = "/simple.html";
 const char kTestPageReadable[] = "/articles/guardian.html";
@@ -68,7 +74,12 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
   SpeedReaderBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    feature_list_.InitWithFeatures(
+        {speedreader::kSpeedreaderFeature, ai_chat::features::kAIChat}, {});
+#else
     feature_list_.InitAndEnableFeature(speedreader::kSpeedreaderFeature);
+#endif
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
@@ -661,6 +672,20 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
                            ->reader_mode_toolbar_view_.get();
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
   WaitElement(toolbar, "appearance");
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  Click(toolbar, "ai");
+  auto* side_panel = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  while (side_panel->GetCurrentEntryId() != SidePanelEntryId::kChatUI) {
+    NonBlockingDelay(base::Milliseconds(10));
+  }
+  EXPECT_EQ(SidePanelEntryId::kChatUI, side_panel->GetCurrentEntryId());
+  Click(toolbar, "ai");
+  while (side_panel->GetCurrentEntryId().has_value()) {
+    NonBlockingDelay(base::Milliseconds(10));
+  }
+  EXPECT_FALSE(side_panel->GetCurrentEntryId().has_value());
+#endif
 
   Click(toolbar, "appearance");
   {  // change theme

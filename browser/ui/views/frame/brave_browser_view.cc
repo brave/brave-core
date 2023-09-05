@@ -41,7 +41,6 @@
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -77,10 +76,6 @@
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
-#endif
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/common/features.h"
 #endif
 
 namespace {
@@ -418,23 +413,11 @@ void BraveBrowserView::ShowReaderModeToolbar() {
 }
 
 void BraveBrowserView::HideReaderModeToolbar() {
-  if (reader_mode_toolbar_view_) {
+  if (reader_mode_toolbar_view_ && reader_mode_toolbar_view_->GetVisible()) {
     reader_mode_toolbar_view_->SetVisible(false);
     Layout();
   }
 }
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-void BraveBrowserView::OpenAiChatPanel() {
-  if (!ai_chat::features::IsAIChatEnabled()) {
-    return;
-  }
-
-  SidePanelUI::GetSidePanelUIForBrowser(browser_.get())
-      ->Show(SidePanelEntryId::kChatUI);
-}
-#endif
-
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 void BraveBrowserView::ShowUpdateChromeDialog() {
