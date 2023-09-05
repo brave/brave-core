@@ -41,6 +41,7 @@ class PrefService;
 
 #if !BUILDFLAG(IS_ANDROID)
 class BraveAppMenuBrowserTest;
+class BraveAppMenuModelBrowserTest;
 class BraveBrowserCommandControllerTest;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
@@ -159,6 +160,7 @@ class BraveVpnService :
 
 #if !BUILDFLAG(IS_ANDROID)
   friend class ::BraveAppMenuBrowserTest;
+  friend class ::BraveAppMenuModelBrowserTest;
   friend class ::BraveBrowserCommandControllerTest;
 
   // BraveVPNOSConnectionAPI::Observer overrides:

@@ -50,15 +50,13 @@ Signal GetSignal(const mojom::FeedItemMetadataPtr& article,
 }
 
 double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
-  // Every N hours the popRecency half life will halve. I.e, if this was 24,
-  // every day the popularity score will be halved.
+  // Every N hours the pop_score will halve. I.e, if this was 24, every day the
+  // popularity score will be halved.
   constexpr double kPopRecencyHalfLifeInHours = 18;
 
   auto& publish_time = article->publish_time;
 
-  // TODO(fallaciousreasoning): Use the new popularity field instead.
-  // https://github.com/brave/brave-browser/issues/32173
-  double popularity = article->score == 0 ? 50 : article->score;
+  double popularity = article->pop_score == 0 ? 50 : article->pop_score;
   double multiplier = publish_time > base::Time::Now() - base::Hours(5) ? 2 : 1;
   auto dt = base::Time::Now() - publish_time;
 
@@ -352,7 +350,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
         "ad", base::Time::Now(), "Advert", "Some handy info",
         GURL("https://example.com"), "foo",
         mojom::Image::NewImageUrl(GURL("https://example.com/favicon.ico")), "",
-        "", 0.0, "Now");
+        "", 0.0, 0.0, "Now");
     result.push_back(mojom::FeedItemV2::NewAdvert(
         mojom::PromotedArticle::New(std::move(metadata), "test")));
   } else {

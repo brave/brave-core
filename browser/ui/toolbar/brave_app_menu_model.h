@@ -36,7 +36,7 @@ class BraveAppMenuModel : public AppMenuModel {
   BraveAppMenuModel& operator=(const BraveAppMenuModel&) = delete;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveAppMenuBrowserTest, BraveIpfsMenuTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveAppMenuModelBrowserTest, BraveIpfsMenuTest);
 
   // AppMenuModel overrides:
   void Build() override;
