@@ -48,6 +48,9 @@ source_set("unit_tests") {
     sources +=
         [ "//brave/components/omnibox/browser/commander_provider_unittest.cc" ]
 
-    deps += [ "//brave/components/commander/browser" ]
+    deps += [
+      "//brave/components/commander/browser",
+      "//brave/components/vector_icons",
+    ]
   }
 }
