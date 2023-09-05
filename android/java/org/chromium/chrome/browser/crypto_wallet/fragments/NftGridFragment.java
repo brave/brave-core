@@ -363,9 +363,11 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         recyclerView.setLayoutManager(
                 new AutoFitVerticalGridLayoutManager(getActivity(), 2, NFT_ITEM_WIDTH_DP));
 
-        // Show empty screen layout if no NFTs have been added.
-         boolean emptyList = walletListItemModelList.isEmpty();
-         mAddNftsContainer.setVisibility(emptyList && mSelectedTab ==  selectedTab ? View.VISIBLE : View.GONE);
+         if (mSelectedTab ==  selectedTab) {
+             // Show empty screen layout if no NFTs have been added.
+             boolean emptyList = walletListItemModelList.isEmpty();
+             mAddNftsContainer.setVisibility(emptyList ? View.VISIBLE : View.GONE);
+         }
     }
 
     private void clearAssets() {
