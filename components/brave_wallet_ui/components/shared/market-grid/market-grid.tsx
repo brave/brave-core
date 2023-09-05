@@ -29,11 +29,13 @@ import {
   GridContainer,
   Header,
   HeaderItem,
-  Row,
+  GridRow,
   GridRowsWrapper,
   SortIcon,
-  StyledWrapper
+  StyledWrapper,
+  EmptyStateText
 } from './market-grid.style'
+import { Row } from '../style'
 
 export type MarketGridProps = {
   headers: MarketGridHeader[]
@@ -134,7 +136,7 @@ export const MarketGrid = ({
     ({ index, style }: { index: number; style: React.CSSProperties }) => {
       const row = rows[index]
       return (
-        <Row
+        <GridRow
           key={row.id}
           templateColumns={gridTemplateColumns}
           style={style}
@@ -150,7 +152,7 @@ export const MarketGrid = ({
               {cell.content}
             </Cell>
           ))}
-        </Row>
+        </GridRow>
       )
     },
     [rows, gridTemplateColumns]
@@ -195,18 +197,31 @@ export const MarketGrid = ({
             </HeaderItem>
           ))}
         </Header>
-        <FixedSizeList
-          height={visibleRows * rowHeight}
-          itemCount={rows.length}
-          itemSize={rowHeight}
-          overscanCount={overScanCount}
-          width='100%'
-          outerElementType={GridRowsWrapper}
-        >
-          {renderRows}
-        </FixedSizeList>
+        {showEmptyState ? (
+          <Row
+            margin='30px 0px'
+          >
+            <EmptyStateText
+              isBold={true}
+              textSize='14px'
+            >
+              {getLocale('braveWalletMarketDataNoAssetsFound')}
+            </EmptyStateText>
+          </Row>
+        ) : (
+          <FixedSizeList
+            height={visibleRows * rowHeight}
+            itemCount={rows.length}
+            itemSize={rowHeight}
+            overscanCount={overScanCount}
+            width='100%'
+            outerElementType={GridRowsWrapper}
+          >
+            {renderRows}
+          </FixedSizeList>
+        )}
+
       </GridContainer>
-      {showEmptyState && getLocale('braveWalletMarketDataNoAssetsFound')}
       <CoinGeckoText>
         {getLocale('braveWalletPoweredByCoinGecko')}
       </CoinGeckoText>
