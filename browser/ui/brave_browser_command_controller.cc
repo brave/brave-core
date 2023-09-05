@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/debug/stack_trace.h"
 #include "base/feature_list.h"
 #include "base/notreached.h"
 #include "brave/app/brave_command_ids.h"
@@ -33,6 +34,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/tab_change_type.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync/base/command_line_switches.h"
@@ -93,17 +95,24 @@ void BraveBrowserCommandController::TabChangedAt(content::WebContents* contents,
   UpdateCommandsForSend();
 }
 
+void BraveBrowserCommandController::TabPinnedStateChanged(
+    TabStripModel* tab_strip_model,
+    content::WebContents* contents,
+    int index) {
+  UpdateCommandsForPin();
+}
+
 void BraveBrowserCommandController::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
+  LOG(ERROR) << "TabStripModelChanged: " << tab_strip_model->count() << " "
+             << tab_strip_model->IsTabPinned(0);
   BrowserCommandController::OnTabStripModelChanged(tab_strip_model, change,
                                                    selection);
 
   UpdateCommandEnabled(IDC_WINDOW_CLOSE_TABS_TO_LEFT,
                        brave::CanCloseTabsToLeft(&*browser_));
-  UpdateCommandEnabled(IDC_WINDOW_CLOSE_UNPINNED_TABS,
-                       brave::CanCloseUnpinnedTabs(&*browser_));
   UpdateCommandsForMute();
   UpdateCommandsForSend();
 }
@@ -244,6 +253,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 
   UpdateCommandsForMute();
   UpdateCommandsForSend();
+  UpdateCommandsForPin();
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -330,6 +340,11 @@ void BraveBrowserCommandController::UpdateCommandsForSend() {
       IDC_BRAVE_SEND_TAB_TO_SELF,
       send_tab_to_self::ShouldDisplayEntryPoint(
           browser_->tab_strip_model()->GetActiveWebContents()));
+}
+
+void BraveBrowserCommandController::UpdateCommandsForPin() {
+  UpdateCommandEnabled(IDC_WINDOW_CLOSE_UNPINNED_TABS,
+                       brave::CanCloseUnpinnedTabs(&*browser_));
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {

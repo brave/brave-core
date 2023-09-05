@@ -51,6 +51,9 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   void TabChangedAt(content::WebContents* contents,
                     int index,
                     TabChangeType change) override;
+  void TabPinnedStateChanged(TabStripModel* tab_strip_model,
+                             content::WebContents* contents,
+                             int index) override;
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
@@ -91,6 +94,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   void UpdateCommandsFroGroups();
   void UpdateCommandsForMute();
   void UpdateCommandsForSend();
+  void UpdateCommandsForPin();
 
   bool ExecuteBraveCommandWithDisposition(int id,
                                           WindowOpenDisposition disposition,
