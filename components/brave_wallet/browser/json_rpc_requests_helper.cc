@@ -76,4 +76,29 @@ base::flat_map<std::string, std::string> MakeCommonJsonRpcHeaders(
   return request_headers;
 }
 
+base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders() {
+  return {
+      {kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)},
+  };
+}
+
+std::string EncodeAnkrGetAccountBalanceParams(
+    const std::string& address,
+    std::vector<std::string> blockchains) {
+  base::Value::Dict dict = internal::ComposeRpcDict("ankr_getAccountBalance");
+
+  base::Value::Dict params;
+  params.Set("nativeFirst", true);
+  params.Set("walletAddress", address);
+
+  base::Value::List blockchains_list;
+  for (const auto& blockchain : blockchains) {
+    blockchains_list.Append(blockchain);
+  }
+  params.Set("blockchains", std::move(blockchains_list));
+
+  dict.Set("params", std::move(params));
+  return GetJSON(dict);
+}
+
 }  // namespace brave_wallet

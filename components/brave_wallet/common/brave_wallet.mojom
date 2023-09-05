@@ -1113,6 +1113,9 @@ const string kPalmChainId = "0x2a15c308d";
 const string kPolygonZKEVMChainId = "0x44d";
 const string kZkSyncEraChainId = "0x144";
 const string kBaseMainnetChainId = "0x2105";
+const string kFlareMainnetChainId = "0xe";
+const string kRolluxMainnetChainId = "0x23a";
+const string kSyscoinMainnetChainId = "0x39";
 
 // https://github.com/satoshilabs/slips/blob/master/slip-0044.md
 enum CoinType {
@@ -1197,6 +1200,14 @@ enum ResolveMethod {
    kAsk = 0,
    kDisabled = 1,
    kEnabled = 2,
+};
+
+struct AnkrAssetBalance {
+  BlockchainToken asset;
+  string balance;
+  string formatted_balance;
+  string balance_usd;
+  string price_usd;
 };
 
 // Deals with the ETH JSON RPC API, as well as things like the user's current
@@ -1356,6 +1367,9 @@ interface JsonRpcService {
                       string chain_id) => (array<SPLTokenAmount> balances,
                                            SolanaProviderError error,
                                            string error_message);
+
+  AnkrGetAccountBalance(string account, array<string> chain_ids)
+    => (array<AnkrAssetBalance> balances, string error_message);
 };
 
 struct BitcoinKeyId {
@@ -2005,6 +2019,8 @@ interface BraveWalletService {
   // transacted and tries next one if it is(prefs are changed).
   GenerateReceiveAddress(AccountId account_id)
     => (string? address, string? error_message);
+
+  GetAnkrSupportedChainIds() => (array<string> chain_ids);
 };
 
 // For reporting wallet related P3A metrics.

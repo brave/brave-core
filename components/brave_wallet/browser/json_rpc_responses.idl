@@ -48,4 +48,24 @@ namespace json_rpc_responses {
     DOMString transactionIndex;
     DOMString[] topics;
   };
+
+  dictionary AnkrAssetBalance {
+    DOMString blockchain;
+    DOMString tokenName;
+    DOMString tokenSymbol;
+    DOMString tokenDecimals;
+    DOMString tokenType;
+    DOMString? contractAddress;
+    DOMString holderAddress;
+    DOMString balance;
+    DOMString balanceRawInteger;
+    DOMString balanceUsd;
+    DOMString tokenPrice;
+    DOMString thumbnail;
+  };
+
+  dictionary AnkrGetAccountBalanceResult {
+    DOMString totalBalanceUsd;
+    AnkrAssetBalance[] assets;
+  };
 };

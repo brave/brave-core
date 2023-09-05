@@ -78,6 +78,11 @@ absl::optional<std::string> ConvertMultiUint64InObjectArrayToString(
     const std::vector<std::string>& keys,
     const std::string& json);
 
+namespace ankr {
+absl::optional<std::vector<mojom::AnkrAssetBalancePtr>>
+ParseGetAccountBalanceResponse(const base::Value& json_value);
+}  // namespace ankr
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_RESPONSE_PARSER_H_

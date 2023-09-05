@@ -13,6 +13,7 @@
 #include "base/environment.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -78,16 +79,29 @@ void AssetDiscoveryTask::DiscoverAssets(
                                   ? eth_it->second
                                   : std::vector<std::string>();
 
+  const auto ankr_blockchains = GetAnkrBlockchains();
+  std::vector<std::string> ankr_evm_chain_ids;
+  std::vector<std::string> non_ankr_evm_chain_ids;
+  for (const auto& chain_id : eth_chain_ids) {
+    if (ankr_blockchains.contains(chain_id)) {
+      ankr_evm_chain_ids.push_back(chain_id);
+    } else {
+      non_ankr_evm_chain_ids.push_back(chain_id);
+    }
+  }
+
   // Concurrently discover ETH ERC20s on our registry, Solana tokens on our
   // Registry and NFTs on both platforms, then merge the results
   const auto barrier_callback =
       base::BarrierCallback<std::vector<mojom::BlockchainTokenPtr>>(
-          3,
+          4,
           base::BindOnce(&AssetDiscoveryTask::MergeDiscoveredAssets,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   // Currently SPL tokens are only discovered on Solana Mainnet.
   DiscoverSPLTokensFromRegistry(sol_account_addresses, barrier_callback);
-  DiscoverERC20sFromRegistry(eth_chain_ids, eth_account_addresses,
+  DiscoverAnkrTokens(ankr_evm_chain_ids, eth_account_addresses,
+                     barrier_callback);
+  DiscoverERC20sFromRegistry(non_ankr_evm_chain_ids, eth_account_addresses,
                              barrier_callback);
   DiscoverNFTs(non_fungible_chain_ids, account_addresses, barrier_callback);
 }
@@ -107,6 +121,67 @@ void AssetDiscoveryTask::MergeDiscoveredAssets(
   std::move(callback).Run();
 }
 
+void AssetDiscoveryTask::DiscoverAnkrTokens(
+    const std::vector<std::string>& chain_ids,
+    const std::vector<std::string>& account_addresses,
+    DiscoverAssetsCompletedCallback callback) {
+  if (account_addresses.empty()) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  // Use a barrier callback to wait for all AnkrGetAccountBalance calls to
+  // complete (one for each account address).
+  const auto barrier_callback =
+      base::BarrierCallback<std::vector<mojom::AnkrAssetBalancePtr>>(
+          account_addresses.size(),
+          base::BindOnce(&AssetDiscoveryTask::MergeDiscoveredAnkrTokens,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+
+  // For each account address, call AnkrGetAccountBalance
+  for (const auto& account_address : account_addresses) {
+    auto internal_callback =
+        base::BindOnce(&AssetDiscoveryTask::OnAnkrGetAccountBalance,
+                       weak_ptr_factory_.GetWeakPtr(), barrier_callback);
+    json_rpc_service_->AnkrGetAccountBalance(account_address, chain_ids,
+                                             std::move(internal_callback));
+  }
+}
+
+void AssetDiscoveryTask::OnAnkrGetAccountBalance(
+    base::OnceCallback<void(std::vector<mojom::AnkrAssetBalancePtr>)>
+        barrier_callback,
+    std::vector<mojom::AnkrAssetBalancePtr> balances,
+    const std::string& error_message) {
+  // If the request failed, return an empty vector
+  if (!error_message.empty()) {
+    std::move(barrier_callback).Run({});
+    return;
+  }
+
+  std::move(barrier_callback).Run(std::move(balances));
+}
+
+void AssetDiscoveryTask::MergeDiscoveredAnkrTokens(
+    DiscoverAssetsCompletedCallback callback,
+    const std::vector<std::vector<mojom::AnkrAssetBalancePtr>>&
+        discovered_assets_results) {
+  // Create a vector of BlockchainTokenPtrs to return
+  std::vector<mojom::BlockchainTokenPtr> discovered_tokens;
+
+  for (const auto& discovered_assets_result : discovered_assets_results) {
+    for (const auto& balance : discovered_assets_result) {
+      if (!BraveWalletService::AddUserAsset(balance->asset.Clone(), true,
+                                            prefs_)) {
+        continue;
+      }
+      discovered_tokens.push_back(balance->asset.Clone());
+    }
+  }
+
+  std::move(callback).Run(std::move(discovered_tokens));
+}
+
 void AssetDiscoveryTask::DiscoverERC20sFromRegistry(
     const std::vector<std::string>& chain_ids,
     const std::vector<std::string>& account_addresses,
@@ -122,7 +197,8 @@ void AssetDiscoveryTask::DiscoverERC20sFromRegistry(
       BlockchainRegistry::GetInstance()->GetEthTokenListMap(chain_ids);
 
   // Create set of all user assets per chain to use to ensure we don't
-  // include assets the user has already added in the call to the BalanceScanner
+  // include assets the user has already added in the call to the
+  // BalanceScanner
   base::flat_map<std::string, base::flat_set<std::string_view>>
       user_assets_per_chain;
   for (const auto& user_asset : user_assets) {
@@ -137,8 +213,8 @@ void AssetDiscoveryTask::DiscoverERC20sFromRegistry(
                  base::flat_map<std::string, mojom::BlockchainTokenPtr>>
       chain_id_to_contract_address_to_token;
 
-  // Create a map of chain_id to a vector of contract addresses (strings, rather
-  // than BlockchainTokens) to pass to GetERC20TokenBalances
+  // Create a map of chain_id to a vector of contract addresses (strings,
+  // rather than BlockchainTokens) to pass to GetERC20TokenBalances
   base::flat_map<std::string, std::vector<std::string>>
       chain_id_to_contract_addresses;
 
@@ -430,8 +506,8 @@ void AssetDiscoveryTask::MergeDiscoveredNFTs(
 }
 
 // static
-// Parses the Account object for the `mint` field which is a 32 byte public key.
-// See
+// Parses the Account object for the `mint` field which is a 32 byte public
+// key. See
 // https://github.com/solana-labs/solana-program-library/blob/f97a3dc7cf0e6b8e346d473a8c9d02de7b213cfd/token/program/src/state.rs#L86-L105
 absl::optional<SolanaAddress> AssetDiscoveryTask::DecodeMintAddress(
     const std::vector<uint8_t>& data) {

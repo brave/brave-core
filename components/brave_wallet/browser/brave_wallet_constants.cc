@@ -108,4 +108,25 @@ const std::string GetAssetRatioBaseURL() {
   return ratios_url;
 }
 
+const base::flat_map<std::string, std::string>& GetAnkrBlockchains() {
+  static base::NoDestructor<base::flat_map<std::string, std::string>>
+      blockchains({{mojom::kArbitrumMainnetChainId, "arbitrum"},
+                   {mojom::kAvalancheMainnetChainId, "avalanche"},
+                   {mojom::kBaseMainnetChainId, "base"},
+                   {mojom::kBinanceSmartChainMainnetChainId, "bsc"},
+                   {mojom::kMainnetChainId, "eth"},
+                   {mojom::kFantomMainnetChainId, "fantom"},
+                   {mojom::kFlareMainnetChainId, "flare"},
+                   {mojom::kGnosisChainId, "gnosis"},
+                   {mojom::kOptimismMainnetChainId, "optimism"},
+                   {mojom::kPolygonMainnetChainId, "polygon"},
+                   {mojom::kPolygonZKEVMChainId, "polygon_zkevm"},
+                   {mojom::kRolluxMainnetChainId, "rollux"},
+                   {mojom::kSyscoinMainnetChainId, "syscoin"},
+                   {mojom::kZkSyncEraChainId, "zksync_era"},
+                   {mojom::kGoerliChainId, "eth_goerli"}});
+
+  return *blockchains;
+}
+
 }  // namespace brave_wallet

@@ -17,6 +17,7 @@
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -250,6 +251,20 @@ constexpr char kAccountNotCreatedError[] = "could not find account";
 }  // namespace
 
 namespace brave_wallet {
+
+namespace {
+
+absl::optional<std::string> GetAnkrBlockchainFromChainId(
+    const std::string& chain_id) {
+  auto& blockchains = GetAnkrBlockchains();
+  if (blockchains.contains(chain_id)) {
+    return blockchains.at(chain_id);
+  }
+
+  return absl::nullopt;
+}
+
+}  // namespace
 
 struct PendingAddChainRequest {
   mojom::AddChainRequestPtr request;
@@ -3412,6 +3427,63 @@ void JsonRpcService::OnGetSPLTokenBalances(
 
   std::move(callback).Run(std::move(*result),
                           mojom::SolanaProviderError::kSuccess, "");
+}
+
+void JsonRpcService::AnkrGetAccountBalance(
+    const std::string& account,
+    const std::vector<std::string>& chain_ids,
+    AnkrGetAccountBalanceCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnAnkrGetAccountBalance,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
+
+  // Translate chain ids to Ankr blockchains. Unsupported chain ids will be
+  // ignored.
+  std::vector<std::string> blockchains;
+  for (const auto& chain_id : chain_ids) {
+    if (auto blockchain = GetAnkrBlockchainFromChainId(chain_id); blockchain) {
+      blockchains.push_back(*blockchain);
+    }
+  }
+
+  std::string encoded_params =
+      EncodeAnkrGetAccountBalanceParams(account, blockchains);
+
+  api_request_helper_->Request(
+      "POST", GURL(kAnkrAdvancedAPIBaseURL), encoded_params, "application/json",
+      std::move(internal_callback), MakeBraveServicesKeyHeaders(),
+      {.auto_retry_on_network_change = false}, std::move(conversion_callback));
+}
+
+void JsonRpcService::OnAnkrGetAccountBalance(
+    AnkrGetAccountBalanceCallback callback,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(
+        {}, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  auto result =
+      ankr::ParseGetAccountBalanceResponse(api_request_result.value_body());
+  if (!result) {
+    std::move(callback).Run(
+        {}, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  for (auto& balance : *result) {
+    absl::optional<std::string> coingecko_id =
+        BlockchainRegistry::GetInstance()->GetCoingeckoId(
+            balance->asset->chain_id, balance->asset->contract_address);
+    if (coingecko_id) {
+      balance->asset->coingecko_id = *coingecko_id;
+    }
+  }
+
+  std::move(callback).Run(std::move(*result), "");
 }
 
 }  // namespace brave_wallet

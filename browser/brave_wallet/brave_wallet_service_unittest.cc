@@ -3172,4 +3172,26 @@ TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_Btc) {
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
+TEST_F(BraveWalletServiceUnitTest, GetAnkrSupportedChainIds) {
+  service_->GetAnkrSupportedChainIds(
+      base::BindLambdaForTesting([](const std::vector<std::string>& chains) {
+        std::vector<std::string> expected_chains = {
+            mojom::kArbitrumMainnetChainId,
+            mojom::kAvalancheMainnetChainId,
+            mojom::kBaseMainnetChainId,
+            mojom::kBinanceSmartChainMainnetChainId,
+            mojom::kMainnetChainId,
+            mojom::kFantomMainnetChainId,
+            mojom::kOptimismMainnetChainId,
+            mojom::kPolygonMainnetChainId,
+            mojom::kPolygonZKEVMChainId,
+            mojom::kZkSyncEraChainId,
+            mojom::kGoerliChainId};
+        EXPECT_EQ(chains.size(), expected_chains.size());
+        for (const auto& chain : chains) {
+          EXPECT_TRUE(base::Contains(expected_chains, chain));
+        }
+      }));
+}
+
 }  // namespace brave_wallet
