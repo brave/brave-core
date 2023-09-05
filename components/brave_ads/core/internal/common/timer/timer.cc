@@ -9,8 +9,13 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
+
+namespace {
+absl::optional<base::TimeDelta> g_timer_delay_for_testing;
+}  // namespace
 
 Timer::Timer() = default;
 
@@ -23,7 +28,8 @@ base::Time Timer::Start(const base::Location& location,
                         base::OnceClosure user_task) {
   Stop();
 
-  const base::Time fire_at = base::Time::Now() + delay;
+  const base::Time fire_at =
+      base::Time::Now() + g_timer_delay_for_testing.value_or(delay);
   timer_.Start(location, fire_at, std::move(user_task));
   return fire_at;
 }
@@ -51,6 +57,15 @@ bool Timer::Stop() {
   timer_.Stop();
 
   return true;
+}
+
+ScopedTimerDelaySetterForTesting::ScopedTimerDelaySetterForTesting(
+    const base::TimeDelta delay) {
+  g_timer_delay_for_testing = delay;
+}
+
+ScopedTimerDelaySetterForTesting::~ScopedTimerDelaySetterForTesting() {
+  g_timer_delay_for_testing = absl::nullopt;
 }
 
 }  // namespace brave_ads

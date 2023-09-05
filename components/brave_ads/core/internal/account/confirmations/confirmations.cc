@@ -82,7 +82,7 @@ void Confirmations::OnWillProcessConfirmationQueue(
                      << confirmation.ad_type << " with transaction id "
                      << confirmation.transaction_id
                      << " and creative instance id "
-                     << confirmation.creative_instance_id
+                     << confirmation.creative_instance_id << " "
                      << FriendlyDateAndTime(process_at));
 }
 

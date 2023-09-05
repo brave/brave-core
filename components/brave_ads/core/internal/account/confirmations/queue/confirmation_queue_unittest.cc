@@ -236,24 +236,23 @@ TEST_F(BraveAdsConfirmationQueueTest,
 
   SetConfirmationTokensForTesting(/*count*/ 2);
 
-  AdvanceClockTo(
-      TimeFromString("November 18 2023 19:00:00.000", /*is_local*/ true));
-
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
+  // Act
   {
     const absl::optional<ConfirmationInfo> confirmation =
         BuildRewardConfirmation(&token_generator_mock_, transaction,
                                 /*user_data*/ {});
     ASSERT_TRUE(confirmation);
 
+    ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(7));
     confirmation_queue_->Add(*confirmation);
 
     ASSERT_TRUE(confirmation_);
     ASSERT_TRUE(did_add_to_queue_);
-    ASSERT_TRUE(will_process_queue_at_);
+    ASSERT_EQ(Now() + base::Seconds(7), will_process_queue_at_);
     ASSERT_FALSE(did_process_queue_);
 
     ResetDelegate();
@@ -275,15 +274,19 @@ TEST_F(BraveAdsConfirmationQueueTest,
     ResetDelegate();
   }
 
-  // Act
+  ASSERT_EQ(1U, GetPendingTaskCount());
+  ASSERT_FALSE(did_exhaust_queue_);
+
+  ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(21));
   FastForwardClockToNextPendingTask();
 
+  ASSERT_TRUE(did_process_queue_);
+  ASSERT_FALSE(failed_to_process_queue_);
+  ASSERT_FALSE(did_exhaust_queue_);
+  ASSERT_EQ(1U, GetPendingTaskCount());
+
   // Assert
-  EXPECT_TRUE(confirmation_);
-  EXPECT_TRUE(did_process_queue_);
-  EXPECT_FALSE(failed_to_process_queue_);
-  EXPECT_FALSE(did_exhaust_queue_);
-  EXPECT_TRUE(HasPendingTasks());
+  EXPECT_EQ(Now() + base::Seconds(21), will_process_queue_at_);
 }
 
 TEST_F(BraveAdsConfirmationQueueTest,
@@ -297,24 +300,23 @@ TEST_F(BraveAdsConfirmationQueueTest,
          BuildCreateNonRewardConfirmationUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  AdvanceClockTo(
-      TimeFromString("November 18 2023 19:00:00.000", /*is_local*/ true));
-
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
+  // Act
   {
     const absl::optional<ConfirmationInfo> confirmation =
         BuildNonRewardConfirmation(transaction,
                                    /*user_data*/ {});
     ASSERT_TRUE(confirmation);
 
+    ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(7));
     confirmation_queue_->Add(*confirmation);
 
     ASSERT_TRUE(confirmation_);
     ASSERT_TRUE(did_add_to_queue_);
-    ASSERT_TRUE(will_process_queue_at_);
+    ASSERT_EQ(Now() + base::Seconds(7), will_process_queue_at_);
     ASSERT_FALSE(did_process_queue_);
 
     ResetDelegate();
@@ -336,15 +338,19 @@ TEST_F(BraveAdsConfirmationQueueTest,
     ResetDelegate();
   }
 
-  // Act
+  ASSERT_EQ(1U, GetPendingTaskCount());
+  ASSERT_FALSE(did_exhaust_queue_);
+
+  ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(21));
   FastForwardClockToNextPendingTask();
 
+  ASSERT_TRUE(did_process_queue_);
+  ASSERT_FALSE(failed_to_process_queue_);
+  ASSERT_FALSE(did_exhaust_queue_);
+  ASSERT_EQ(1U, GetPendingTaskCount());
+
   // Assert
-  EXPECT_TRUE(confirmation_);
-  EXPECT_TRUE(did_process_queue_);
-  EXPECT_FALSE(failed_to_process_queue_);
-  EXPECT_FALSE(did_exhaust_queue_);
-  EXPECT_TRUE(HasPendingTasks());
+  EXPECT_EQ(Now() + base::Seconds(21), will_process_queue_at_);
 }
 
 }  // namespace brave_ads
