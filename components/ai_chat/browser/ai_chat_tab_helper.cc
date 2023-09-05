@@ -14,8 +14,6 @@
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/strcat.h"
-#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/ai_chat/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/browser/constants.h"
@@ -34,7 +32,6 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/storage_partition.h"
-#include "net/http/http_status_code.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using ai_chat::mojom::CharacterType;
@@ -381,8 +378,8 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
                             : chat_history_;
 
   auto data_received_callback = base::BindRepeating(
-    &AIChatTabHelper::OnEngineCompletionDataReceived, weak_ptr_factory_.GetWeakPtr(),
-    current_navigation_id_);
+      &AIChatTabHelper::OnEngineCompletionDataReceived,
+      weak_ptr_factory_.GetWeakPtr(), current_navigation_id_);
 
   auto data_completed_callback =
       base::BindOnce(&AIChatTabHelper::OnEngineCompletionComplete,
@@ -420,9 +417,8 @@ bool AIChatTabHelper::IsRequestInProgress() {
   return is_request_in_progress_;
 }
 
-void AIChatTabHelper::OnEngineCompletionDataReceived(
-    int64_t for_navigation_id,
-    std::string result) {
+void AIChatTabHelper::OnEngineCompletionDataReceived(int64_t for_navigation_id,
+                                                     std::string result) {
   if (for_navigation_id != current_navigation_id_) {
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
     return;

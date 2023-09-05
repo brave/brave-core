@@ -6,13 +6,14 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_BROWSER_ENGINE_ENGINE_CONSUMER_LLAMA_H_
 #define BRAVE_COMPONENTS_AI_CHAT_BROWSER_ENGINE_ENGINE_CONSUMER_LLAMA_H_
 
+#include <memory>
 #include <string>
 
 #include "brave/components/ai_chat/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/browser/engine/remote_completion_client.h"
 
 namespace api_request_helper {
-  class APIRequestResult;
+class APIRequestResult;
 }  // namespace api_request_helper
 
 namespace network {
@@ -21,15 +22,17 @@ class SharedURLLoaderFactory;
 
 namespace ai_chat {
 
- using api_request_helper::APIRequestResult;
+using api_request_helper::APIRequestResult;
 
 // An AI Chat engine consumer that uses the Claude-style remote HTTP completion
 // API and builds prompts tailored to the Brave Leo model.
 class EngineConsumerLlamaRemote : public EngineConsumer {
  public:
-  explicit EngineConsumerLlamaRemote(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  explicit EngineConsumerLlamaRemote(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   EngineConsumerLlamaRemote(const EngineConsumerLlamaRemote&) = delete;
-  EngineConsumerLlamaRemote& operator=(const EngineConsumerLlamaRemote&) = delete;
+  EngineConsumerLlamaRemote& operator=(const EngineConsumerLlamaRemote&) =
+      delete;
   ~EngineConsumerLlamaRemote() override;
 
   // EngineConsumer
@@ -55,12 +58,11 @@ class EngineConsumerLlamaRemote : public EngineConsumer {
       SubmitHumanInputDataReceivedCallback callback,
       base::expected<base::Value, std::string> result);
   void OnCompletionCompleted(SubmitHumanInputCompletedCallback callback,
-                            APIRequestResult result);
+                             APIRequestResult result);
 
   std::unique_ptr<RemoteCompletionClient> api_ = nullptr;
 
   base::WeakPtrFactory<EngineConsumerLlamaRemote> weak_ptr_factory_{this};
-
 };
 
 }  // namespace ai_chat

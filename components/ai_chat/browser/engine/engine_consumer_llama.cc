@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "absl/types/optional.h"
 #include "base/functional/bind.h"
@@ -239,7 +240,8 @@ EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
   // likely it will be chosen by the server and the general string "leo"
   // provided here.
   const auto model_name = ai_chat::features::kAIModelName.Get();
-  api_ = std::make_unique<RemoteCompletionClient>(model_name, url_loader_factory);
+  api_ =
+      std::make_unique<RemoteCompletionClient>(model_name, url_loader_factory);
 }
 
 EngineConsumerLlamaRemote::~EngineConsumerLlamaRemote() = default;
@@ -280,7 +282,8 @@ void EngineConsumerLlamaRemote::OnGenerateQuestionSuggestionsResponse(
              << " but got: " << result.value_body().DebugString();
     return;
   }
-  // TODO(petemill): move common completion basic value lookup to RemoteCompletionClient
+  // TODO(petemill): move common completion basic value lookup to
+  // RemoteCompletionClient
   const std::string* completion =
       result.value_body().GetDict().FindString("completion");
   if (!completion || completion->empty()) {

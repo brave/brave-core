@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
@@ -94,10 +95,8 @@ void CheckPrompt(std::string& prompt) {
   // All queries must have the "Human" and "AI" prompt markers. We do not
   // prepend / append them here since callers may want to put them in
   // custom positions.
-  DCHECK(base::MatchPattern(prompt,
-                            base::StrCat({"*", kHumanPrompt, "*"})));
-  DCHECK(base::MatchPattern(prompt,
-                            base::StrCat({"*", kAIPrompt, "*"})));
+  DCHECK(base::MatchPattern(prompt, base::StrCat({"*", kHumanPrompt, "*"})));
+  DCHECK(base::MatchPattern(prompt, base::StrCat({"*", kAIPrompt, "*"})));
 }
 
 }  // namespace
@@ -109,7 +108,8 @@ EngineConsumerClaudeRemote::EngineConsumerClaudeRemote(
   // likley it will be chosen by the server and the general string "claude"
   // provided here.
   const auto model_name = ai_chat::features::kAIModelName.Get();
-  api_ = std::make_unique<RemoteCompletionClient>(model_name, url_loader_factory);
+  api_ =
+      std::make_unique<RemoteCompletionClient>(model_name, url_loader_factory);
 }
 
 EngineConsumerClaudeRemote::~EngineConsumerClaudeRemote() = default;
@@ -158,7 +158,8 @@ void EngineConsumerClaudeRemote::OnGenerateQuestionSuggestionsResponse(
              << " but got: " << result.value_body().DebugString();
     return;
   }
-  // TODO(petemill): move common completion basic value lookup to RemoteCompletionClient
+  // TODO(petemill): move common completion basic value lookup to
+  // RemoteCompletionClient
   const std::string* completion =
       result.value_body().GetDict().FindString("completion");
   if (!completion || completion->empty()) {
@@ -193,7 +194,7 @@ void EngineConsumerClaudeRemote::SubmitHumanInput(
       &EngineConsumerClaudeRemote::OnCompletionCompleted,
       weak_ptr_factory_.GetWeakPtr(), std::move(completed_callback));
   api_->QueryPrompt(prompt, {"</response>"}, std::move(on_complete),
-    std::move(on_data_received));
+                    std::move(on_data_received));
 }
 
 void EngineConsumerClaudeRemote::OnCompletionDataReceived(

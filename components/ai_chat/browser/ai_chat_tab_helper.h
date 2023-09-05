@@ -107,9 +107,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void OnEngineCompletionComplete(
       int64_t for_navigation_id,
       EngineConsumer::AssistantResponseResult result);
-  void OnSuggestedQuestionsResponse(
-      int64_t for_navigation_id,
-      std::vector<std::string> result);
+  void OnSuggestedQuestionsResponse(int64_t for_navigation_id,
+                                    std::vector<std::string> result);
   void OnSuggestedQuestionsChanged();
   void OnPageHasContentChanged();
 

@@ -23,7 +23,8 @@ class RemoteCompletionClientUnitTest : public testing::Test {
       : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
-    ai_chat_api_ = std::make_unique<RemoteCompletionClient>(shared_url_loader_factory_);
+    ai_chat_api_ =
+        std::make_unique<RemoteCompletionClient>(shared_url_loader_factory_);
   }
 
   ~RemoteCompletionClientUnitTest() override = default;

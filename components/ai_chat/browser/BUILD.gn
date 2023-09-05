@@ -19,15 +19,15 @@ static_library("browser") {
     "ai_chat_tab_helper.h",
     "constants.cc",
     "constants.h",
-    "page_content_fetcher.cc",
-    "page_content_fetcher.h",
+    "engine/engine_consumer.h",
     "engine/engine_consumer_claude.cc",
     "engine/engine_consumer_claude.h",
     "engine/engine_consumer_llama.cc",
     "engine/engine_consumer_llama.h",
-    "engine/engine_consumer.h",
     "engine/remote_completion_client.cc",
     "engine/remote_completion_client.h",
+    "page_content_fetcher.cc",
+    "page_content_fetcher.h",
   ]
 
   deps = [
