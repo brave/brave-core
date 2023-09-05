@@ -50,9 +50,6 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
                                        const std::string& password,
                                        GetImportInfoCallback callback) override;
 
-  bool AddPermission(mojom::CoinType coin,
-                     const url::Origin& origin,
-                     const std::string& account) override;
   bool HasPermission(mojom::CoinType coin,
                      const url::Origin& origin,
                      const std::string& account) override;

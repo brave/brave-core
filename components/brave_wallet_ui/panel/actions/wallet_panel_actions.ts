@@ -10,6 +10,7 @@ import {
   DecryptProcessedPayload,
   ShowConnectToSitePayload,
   EthereumChainRequestPayload,
+  RequestSitePermissionPayloadType,
   SignMessageProcessedPayload,
   SignAllTransactionsProcessedPayload,
   SwitchEthereumChainProcessedPayload,
@@ -25,6 +26,8 @@ import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
 export const connectToSite = createAction<ConnectWithSitePayloadType>('connectToSite')
 export const cancelConnectToSite = createAction('cancelConnectToSite')
+export const requestSitePermission
+  = createAction<RequestSitePermissionPayloadType>('requestSitePermission')
 export const visibilityChanged = createAction<boolean>('visibilityChanged')
 export const showConnectToSite = createAction<ShowConnectToSitePayload>('showConnectToSite')
 export const addEthereumChain = createAction<BraveWallet.AddChainRequest>('addEthereumChain')

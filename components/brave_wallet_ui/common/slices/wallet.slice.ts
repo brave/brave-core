@@ -15,7 +15,6 @@ import {
   ImportAccountErrorType
 } from '../../constants/types'
 import {
-  AddSitePermissionPayloadType,
   DefaultBaseCryptocurrencyChanged,
   DefaultBaseCurrencyChanged,
   DefaultEthereumWalletChanged,
@@ -197,8 +196,6 @@ export const WalletAsyncActions = {
   removeSitePermission: createAction<RemoveSitePermissionPayloadType>(
     'removeSitePermission'
   ),
-  addSitePermission:
-    createAction<AddSitePermissionPayloadType>('addSitePermission'),
   refreshNetworksAndTokens:
     createAction<RefreshOpts>('refreshNetworksAndTokens'),
   expandWalletNetworks: createAction('expandWalletNetworks'), // replace with chrome.tabs.create helper
