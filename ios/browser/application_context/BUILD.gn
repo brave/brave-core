@@ -13,6 +13,7 @@ source_set("application_context") {
   ]
   deps = [
     "//base",
+    "//brave/components/brave_component_updater/browser",
     "//brave/components/url_sanitizer/browser",
     "//ios/chrome/browser/application_context",
     "//ios/chrome/browser/shared/model/application_context",
