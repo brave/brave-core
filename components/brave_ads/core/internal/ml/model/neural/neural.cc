@@ -12,8 +12,6 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_prediction_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/logging_util.h"
-
 namespace brave_ads::ml {
 
 NeuralModel::NeuralModel() = default;
@@ -36,10 +34,12 @@ NeuralModel& NeuralModel::operator=(NeuralModel&& other) noexcept = default;
 
 NeuralModel::~NeuralModel() = default;
 
+bool NeuralModel::ModelParametersAvailable() const {
+  return !matricies_.empty();
+}
+
 PredictionMap NeuralModel::Predict(const VectorData& data) const {
   PredictionMap predictions;
-  BLOG(2, "\nneural predict go");
-  BLOG(2, matricies_.size());
 
   VectorData layer_input = data;
   for (size_t i = 0; i < matricies_.size(); i++) {
@@ -47,7 +47,6 @@ PredictionMap NeuralModel::Predict(const VectorData& data) const {
     for (const auto& vector : matricies_[i]) {
       float dot_product = vector * layer_input;
       next_layer_input.push_back(dot_product);
-      // BLOG(2, dot_product);
     }
     layer_input = VectorData(std::move(next_layer_input));
     if (post_matrix_functions_[i] == "tanh") {
@@ -63,20 +62,6 @@ PredictionMap NeuralModel::Predict(const VectorData& data) const {
     predictions[classes_[i]] = output_layer[i];
   }
 
-  // for (const auto& kv : weights_) {
-  //   const std::vector<float> vector_temp{1.0F, 2.0F, 3.0F, 4.0F, 5.0F};
-  //   const VectorData vector_data(vector_temp);
-  //   double prediction = vector_data * data;
-  //   // double prediction = kv.second * data;
-  //   // const auto iter = biases_.find(kv.first);
-  //   // if (iter != biases_.cend()) {
-  //   //   prediction += iter->second;
-  //   // }
-  //   predictions[kv.first] = prediction;
-
-  //   BLOG(2, kv.first);
-  //   BLOG(2, prediction);
-  // }
   return predictions;
 }
 
@@ -93,10 +78,9 @@ PredictionMap NeuralModel::GetTopCountPredictionsImpl(
     const VectorData& data,
     absl::optional<size_t> top_count) const {
   const PredictionMap prediction_map = Predict(data);
-  const PredictionMap prediction_map_softmax = Softmax(prediction_map);
   std::vector<std::pair<double, std::string>> prediction_order;
-  prediction_order.reserve(prediction_map_softmax.size());
-  for (const auto& prediction : prediction_map_softmax) {
+  prediction_order.reserve(prediction_map.size());
+  for (const auto& prediction : prediction_map) {
     prediction_order.emplace_back(prediction.second, prediction.first);
   }
   base::ranges::sort(base::Reversed(prediction_order));

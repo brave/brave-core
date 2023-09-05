@@ -6,14 +6,13 @@
 #include "brave/components/brave_ads/core/internal/ml/transformation/mapped_tokens_transformation.h"
 
 #include <map>
+#include <utility>
 
 #include "base/check.h"
 #include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
-#include "brave/components/brave_ads/core/internal/ml/transformation/hash_vectorizer.h"
 
 namespace brave_ads::ml {
 
@@ -28,7 +27,7 @@ MappedTokensTransformation::MappedTokensTransformation(
     std::map<std::string, std::vector<int>> token_categories_mapping)
     : Transformation(TransformationType::kMappedTokens) {
   vector_dimension_ = vector_dimension;
-  token_categories_mapping_ = token_categories_mapping;
+  token_categories_mapping_ = std::move(token_categories_mapping);
 }
 
 MappedTokensTransformation::MappedTokensTransformation(
@@ -50,11 +49,11 @@ std::unique_ptr<Data> MappedTokensTransformation::Apply(
   std::vector<std::string> tokens = base::SplitString(
       text, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
+  std::vector<float> mapped_vector;
   std::map<unsigned, double> frequencies;
   size_t tokens_length = tokens.size();
   for (size_t i = 0; i < tokens_length; i++) {
-
-    std::string token_candidate = "";
+    std::string token_candidate;
     for (size_t j = 0; j < 5; j++) {
       if (i + j >= tokens_length) {
         continue;
@@ -65,11 +64,9 @@ std::unique_ptr<Data> MappedTokensTransformation::Apply(
 
       const auto iter = token_categories_mapping_.find(token_candidate);
       if (iter == token_categories_mapping_.end()) {
-        BLOG(9, token_candidate << " - token not found in category mapping");
         continue;
       }
 
-      BLOG(2, token_candidate);
       BLOG(9, token_candidate << " - token found in category mapping");
       std::vector<int> categories = iter->second;
       for (const auto& category_index : categories) {
@@ -78,8 +75,17 @@ std::unique_ptr<Data> MappedTokensTransformation::Apply(
     }
   }
 
-  BLOG(2, "\n\ntoken mapping finished\n\n");
-  return std::make_unique<VectorData>(vector_dimension_, frequencies);
+  for (int i = 0; i < vector_dimension_; i++) {
+    unsigned category_index = i;
+    if (frequencies.find(category_index) == frequencies.end()) {
+      mapped_vector.push_back(0.0);
+    } else {
+      mapped_vector.push_back(
+          static_cast<float>(frequencies.at(category_index)));
+    }
+  }
+
+  return std::make_unique<VectorData>(mapped_vector);
 }
 
 }  // namespace brave_ads::ml

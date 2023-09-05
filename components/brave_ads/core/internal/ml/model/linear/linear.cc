@@ -32,6 +32,10 @@ LinearModel& LinearModel::operator=(LinearModel&& other) noexcept = default;
 
 LinearModel::~LinearModel() = default;
 
+bool LinearModel::ModelParametersAvailable() const {
+  return !weights_.empty();
+}
+
 PredictionMap LinearModel::Predict(const VectorData& data) const {
   PredictionMap predictions;
   for (const auto& kv : weights_) {

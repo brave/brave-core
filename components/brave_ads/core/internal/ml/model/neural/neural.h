@@ -32,6 +32,8 @@ class NeuralModel final {
 
   ~NeuralModel();
 
+  bool ModelParametersAvailable() const;
+
   PredictionMap Predict(const VectorData& data) const;
 
   PredictionMap GetTopPredictions(const VectorData& data) const;

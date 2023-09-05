@@ -202,13 +202,13 @@ void VectorData::ToDistribution() {
 }
 
 void VectorData::Softmax() {
-  double maximum = -std::numeric_limits<double>::infinity();
+  float maximum = -std::numeric_limits<float>::infinity();
   for (float& value : storage_->values()) {
     maximum = (value > maximum) ? value : maximum;
   }
-  double sum_exp = 0.0;
+  float sum_exp = 0.0;
   for (float& value : storage_->values()) {
-    const double value_exp = std::exp(value - maximum);
+    const float value_exp = std::exp(value - maximum);
     sum_exp += value_exp;
   }
   for (float& value : storage_->values()) {
