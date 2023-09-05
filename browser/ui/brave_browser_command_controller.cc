@@ -31,10 +31,12 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/tabs/tab_change_type.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync/base/command_line_switches.h"
+#include "content/public/browser/web_contents.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -84,6 +86,13 @@ BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
 
 BraveBrowserCommandController::~BraveBrowserCommandController() = default;
 
+void BraveBrowserCommandController::TabChangedAt(content::WebContents* contents,
+                                                 int index,
+                                                 TabChangeType type) {
+  UpdateCommandsForMute();
+  UpdateCommandsForSend();
+}
+
 void BraveBrowserCommandController::UpdateCommandsForTabStripStateChanged() {
   BrowserCommandController::UpdateCommandsForTabStripStateChanged();
 
@@ -91,16 +100,8 @@ void BraveBrowserCommandController::UpdateCommandsForTabStripStateChanged() {
                        brave::CanCloseTabsToLeft(&*browser_));
   UpdateCommandEnabled(IDC_WINDOW_CLOSE_UNPINNED_TABS,
                        brave::CanCloseUnpinnedTabs(&*browser_));
-  UpdateCommandEnabled(IDC_WINDOW_MUTE_ALL_TABS,
-                       brave::CanMuteAllTabs(&*browser_, false));
-  UpdateCommandEnabled(IDC_WINDOW_MUTE_OTHER_TABS,
-                       brave::CanMuteAllTabs(&*browser_, true));
-  UpdateCommandEnabled(IDC_WINDOW_UNMUTE_ALL_TABS,
-                       brave::CanUnmuteAllTabs(&*browser_));
-  UpdateCommandEnabled(
-      IDC_BRAVE_SEND_TAB_TO_SELF,
-      send_tab_to_self::ShouldDisplayEntryPoint(
-          browser_->tab_strip_model()->GetActiveWebContents()));
+  UpdateCommandsForMute();
+  UpdateCommandsForSend();
 }
 
 bool BraveBrowserCommandController::SupportsCommand(int id) const {
@@ -236,6 +237,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_SCROLL_TAB_TO_BOTTOM, true);
 
   UpdateCommandEnabled(IDC_BRAVE_SEND_TAB_TO_SELF, true);
+
+  UpdateCommandsForMute();
+  UpdateCommandsForSend();
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -306,6 +310,22 @@ void BraveBrowserCommandController::UpdateCommandForPlaylist() {
         browser_->is_type_normal() && !browser_->profile()->IsOffTheRecord());
   }
 #endif
+}
+
+void BraveBrowserCommandController::UpdateCommandsForMute() {
+  UpdateCommandEnabled(IDC_WINDOW_MUTE_ALL_TABS,
+                       brave::CanMuteAllTabs(&*browser_, false));
+  UpdateCommandEnabled(IDC_WINDOW_MUTE_OTHER_TABS,
+                       brave::CanMuteAllTabs(&*browser_, true));
+  UpdateCommandEnabled(IDC_WINDOW_UNMUTE_ALL_TABS,
+                       brave::CanUnmuteAllTabs(&*browser_));
+}
+
+void BraveBrowserCommandController::UpdateCommandsForSend() {
+  UpdateCommandEnabled(
+      IDC_BRAVE_SEND_TAB_TO_SELF,
+      send_tab_to_self::ShouldDisplayEntryPoint(
+          browser_->tab_strip_model()->GetActiveWebContents()));
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {

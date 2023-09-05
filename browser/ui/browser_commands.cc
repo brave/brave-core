@@ -439,8 +439,7 @@ void CloseTabsToLeft(Browser* browser) {
 bool CanCloseUnpinnedTabs(Browser* browser) {
   auto first_unpinned_index =
       browser->tab_strip_model()->IndexOfFirstNonPinnedTab();
-  return first_unpinned_index > 0 &&
-         first_unpinned_index < browser->tab_strip_model()->count();
+  return first_unpinned_index < browser->tab_strip_model()->count();
 }
 
 void CloseUnpinnedTabs(Browser* browser) {

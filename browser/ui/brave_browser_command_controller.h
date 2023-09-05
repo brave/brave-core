@@ -21,6 +21,11 @@
 class BraveAppMenuBrowserTest;
 class BraveAppMenuModelBrowserTest;
 class BraveBrowserCommandControllerTest;
+enum class TabChangeType;
+
+namespace content {
+class WebContents;
+}
 
 // This namespace is needed for a chromium_src override
 namespace chrome {
@@ -43,6 +48,9 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
 #endif
 
  protected:
+  void TabChangedAt(content::WebContents* contents,
+                    int index,
+                    TabChangeType change) override;
   void UpdateCommandsForTabStripStateChanged() override;
 
  private:
@@ -78,6 +86,8 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   void UpdateCommandForBraveVPN();
   void UpdateCommandForPlaylist();
   void UpdateCommandsFroGroups();
+  void UpdateCommandsForMute();
+  void UpdateCommandsForSend();
 
   bool ExecuteBraveCommandWithDisposition(int id,
                                           WindowOpenDisposition disposition,
