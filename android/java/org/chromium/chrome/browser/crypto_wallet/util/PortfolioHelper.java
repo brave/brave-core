@@ -5,9 +5,14 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import androidx.annotation.NonNull;
+
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.mojo.bindings.Callbacks;
@@ -28,12 +33,12 @@ import java.util.stream.Collectors;
 public class PortfolioHelper {
     private static final String TAG = "PortfolioHelper";
     private final WeakReference<BraveWalletBaseActivity> mActivity;
-    private NetworkInfo mSelectedNetwork;
     private List<NetworkInfo> mSelectedNetworks;
     private final AccountInfo[] mAccountInfos;
 
     // Data supplied as result
-    private List<BlockchainToken> mUserAssets; // aka selected assets
+    private final List<BlockchainToken> mUserAssets; // aka selected assets
+    private final List<BlockchainToken> mHiddenAssets;
     private Double mTotalFiatSum;
     // Always use Utils#tokenToString(BlockchainToken) to create key
     private HashMap<String, Double> mPerTokenFiatSum;
@@ -45,17 +50,13 @@ public class PortfolioHelper {
 
     public PortfolioHelper(BraveWalletBaseActivity activity, List<NetworkInfo> cryptoNetworks,
             AccountInfo[] accountInfos) {
-        mActivity = new WeakReference<BraveWalletBaseActivity>(activity);
+        mActivity = new WeakReference<>(activity);
         mCryptoNetworks = cryptoNetworks;
         mAccountInfos = accountInfos;
         mSelectedNetworks = Collections.emptyList();
         mUserAssets = new ArrayList<>();
+        mHiddenAssets = new ArrayList<>();
         mAssertSortPriorityPerCoinIndex = Collections.emptyMap();
-    }
-
-    public void setSelectedNetwork(NetworkInfo selectedNetwork) {
-        assert selectedNetwork != null;
-        mSelectedNetwork = selectedNetwork;
     }
 
     public void setFiatHistoryTimeframe(int timeframe) {
@@ -64,6 +65,10 @@ public class PortfolioHelper {
 
     public List<BlockchainToken> getUserAssets() {
         return mUserAssets;
+    }
+
+    public List<BlockchainToken> getHiddenAssets() {
+        return mHiddenAssets;
     }
 
     public Double getTotalFiatSum() {
@@ -139,6 +144,54 @@ public class PortfolioHelper {
         }
     }
 
+    public void fetchNfts(@NonNull final Callbacks.Callback1<PortfolioHelper> callback) {
+        resetResultData();
+        if (mActivity.get() == null) {
+            Log.e(TAG, "Referenced activity was null.");
+            callback.call(this);
+            return;
+        }
+        final BraveWalletBaseActivity activity = mActivity.get();
+        if (activity.isFinishing()) {
+            return;
+        }
+        if (mSelectedNetworks.isEmpty()) {
+            Log.e(TAG, "Selected network was null.");
+            callback.call(this);
+            return;
+        }
+        final BraveWalletService braveWalletService = activity.getBraveWalletService();
+        final BlockchainRegistry blockchainRegistry = activity.getBlockchainRegistry();
+        final int totalNetworks = mSelectedNetworks.size();
+        AtomicInteger userAssetsCount = new AtomicInteger();
+
+        for (NetworkInfo networkInfo : mSelectedNetworks) {
+            TokenUtils.getUserOrAllTokensFiltered(braveWalletService, blockchainRegistry,
+                    networkInfo, networkInfo.coin, TokenUtils.TokenType.NFTS, true, userAssets -> {
+                        mUserAssets.addAll(Arrays.asList(userAssets));
+
+                        if (userAssetsCount.incrementAndGet() == totalNetworks) {
+                            mUserAssets.sort(Comparator.comparing(
+                                    token -> mAssertSortPriorityPerCoinIndex.get(token.chainId)));
+                            AtomicInteger allAssets = new AtomicInteger();
+                            final List<BlockchainToken> assets = new ArrayList<>();
+                            for (NetworkInfo selectedNetwork : mSelectedNetworks) {
+                                TokenUtils.getUserOrAllTokensFiltered(braveWalletService, blockchainRegistry,
+                                        selectedNetwork, selectedNetwork.coin, TokenUtils.TokenType.NFTS, false, tokens -> {
+                                            assets.addAll(Arrays.asList(tokens));
+                                            if (allAssets.incrementAndGet() == totalNetworks) {
+                                                List<String> comparableUserAssets = mUserAssets.stream().map(Utils::tokenToString).collect(Collectors.toList());
+                                                assets.removeIf(blockChainToken -> comparableUserAssets.contains(Utils.tokenToString(blockChainToken)));
+                                                mHiddenAssets.addAll(assets);
+                                                callback.call(this);
+                                            }
+                                        });
+                            }
+                        }
+                    });
+        }
+    }
+
     private void createBalanceRecords(
             List<AssetAccountsNetworkBalance> assetAccountsNetworkBalances) {
         for (AssetAccountsNetworkBalance assetAccountsNetworkBalance :
@@ -181,9 +234,10 @@ public class PortfolioHelper {
 
     private void resetResultData() {
         mUserAssets.clear();
+        mHiddenAssets.clear();
         mTotalFiatSum = 0.0d;
-        mPerTokenFiatSum = new HashMap<String, Double>();
-        mPerTokenCryptoSum = new HashMap<String, Double>();
+        mPerTokenFiatSum = new HashMap<>();
+        mPerTokenCryptoSum = new HashMap<>();
         mFiatHistory = new AssetTimePrice[0];
     }
 

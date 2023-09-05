@@ -39,12 +39,12 @@ import org.chromium.mojo.bindings.Callbacks;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     public final LiveData<List<NftDataModel>> mNftModels;
+    public final LiveData<List<NftDataModel>> mNftHiddenModels;
     private final CryptoSharedData mSharedData;
     private final Object mLock = new Object();
     private TxService mTxService;
@@ -57,7 +57,8 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     private AssetRatioService mAssetRatioService;
     private Context mContext;
     private final MutableLiveData<List<NftDataModel>> _mNftModels;
-    private MutableLiveData<Boolean> _mIsDiscoveringUserAssets;
+    private final MutableLiveData<List<NftDataModel>> _mNftHiddenModels;
+    private final MutableLiveData<Boolean> _mIsDiscoveringUserAssets;
     public LiveData<Boolean> mIsDiscoveringUserAssets;
     private List<NetworkInfo> mAllNetworkInfos;
     public PortfolioHelper mPortfolioHelper;
@@ -79,15 +80,22 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
         mSharedData = sharedData;
         _mNftModels = new MutableLiveData<>();
         mNftModels = _mNftModels;
+        _mNftHiddenModels = new MutableLiveData<>();
+        mNftHiddenModels = _mNftHiddenModels;
         _mIsDiscoveringUserAssets = new MutableLiveData<>();
         mIsDiscoveringUserAssets = _mIsDiscoveringUserAssets;
         addServiceObservers();
     }
 
     // TODO(pav): We should fetch and process all portfolio list here
-    public void prepareNftListMetaData(List<BlockchainToken> nftList,
+    public void prepareNftListMetaData(List<BlockchainToken> nftList, List<BlockchainToken> hiddenNftList,
             List<NetworkInfo> allNetworkList, PortfolioHelper portfolioHelper) {
         mPortfolioHelper = portfolioHelper;
+        fetchNftMetadata(nftList, allNetworkList, _mNftModels);
+        fetchNftMetadata(hiddenNftList, allNetworkList, _mNftHiddenModels);
+    }
+
+    private void fetchNftMetadata(List<BlockchainToken> nftList, List<NetworkInfo> allNetworkList, MutableLiveData<List<NftDataModel>> nftModels) {
         // Filter out and calculate the size of supported NFTs.
         // The total sum will be used by `MultiResponseHandler` to detect
         // when `setWhenAllCompletedAction()` can be processed.
@@ -132,7 +140,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                         new NftMetadata(metadata.tokenMetadata, metadata.errorCode,
                                 metadata.errorMessage)));
             }
-            _mNftModels.postValue(nftDataModels);
+            nftModels.postValue(nftDataModels);
         });
     }
 
@@ -142,29 +150,24 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
         mBraveWalletService.discoverAssetsOnAllSupportedChains();
     }
 
-    public void fetchAssetsByType(TokenUtils.TokenType type, NetworkInfo selectedNetwork,
-            BraveWalletBaseActivity braveWalletBaseActivity,
-            Callbacks.Callback1<PortfolioHelper> callback) {
+    /**
+     * Fetch all NFT assets of selected networks including hidden NFTs.
+     * @param selectedNetworks list to fetch assets from
+     * @param braveWalletBaseActivity instance for native services
+     * @param callback to get the @{code PortfolioHelper} object containing result
+     */
+    public void fetchNfts(List<NetworkInfo> selectedNetworks,
+                          BraveWalletBaseActivity braveWalletBaseActivity,
+                          Callbacks.Callback1<PortfolioHelper> callback) {
         NetworkModel.getAllNetworks(
                 mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
                     mAllNetworkInfos = allNetworks;
                     mKeyringService.getAllAccounts(allAccounts -> {
                         AccountInfo[] filteredAccounts = allAccounts.accounts;
-                        List<NetworkInfo> selectedNetworks;
-                        if (selectedNetwork.chainId.equals(
-                                    NetworkUtils.getAllNetworkOption(mContext).chainId)) {
-                            selectedNetworks = NetworkUtils.nonTestNetwork(mAllNetworkInfos);
-                        } else {
-                            filteredAccounts =
-                                    AssetUtils.filterAccountsByNetwork(allAccounts.accounts,
-                                            selectedNetwork.coin, selectedNetwork.chainId);
-                            selectedNetworks = Arrays.asList(selectedNetwork);
-                        }
-
                         mPortfolioHelper = new PortfolioHelper(
                                 braveWalletBaseActivity, mAllNetworkInfos, filteredAccounts);
                         mPortfolioHelper.setSelectedNetworks(selectedNetworks);
-                        mPortfolioHelper.fetchAssetsAndDetails(type, callback);
+                        mPortfolioHelper.fetchNfts(callback);
                     });
                 });
     }

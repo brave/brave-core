@@ -58,7 +58,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
-import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.custom_layout.AutoFitVerticalGridLayoutManager;
@@ -73,6 +72,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class NftGridFragment extends Fragment implements OnWalletListItemClick {
+    private enum SelectedTab { NFTS, HIDDEN }
+
     public static final String SHOW_NFT_DISCOVERY_DIALOG = "nft_discovery_dialog";
     private static final String TAG = "NftGridFragment";
     private static final float NFT_ITEM_WIDTH_DP = 180;
@@ -98,6 +99,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     private ImageButton mBtnChangeNetwork;
     private ImageView mBtnAddNft;
     private TabLayout mTabLayout;
+    private SelectedTab mSelectedTab;
 
     private ActivityResultLauncher<Intent> mAddAssetActivityResultLauncher;
 
@@ -122,6 +124,8 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
             Log.e(TAG, "onCreate", e);
         }
         mCanRunOnceWhenResumed = true;
+        // Initial state is NFTs section.
+        mSelectedTab = SelectedTab.NFTS;
     }
 
     @Nullable
@@ -141,8 +145,11 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                mRvNft.setVisibility(tab.getPosition() == 0 ? View.VISIBLE : View.GONE);
-                mRvHiddenNft.setVisibility(tab.getPosition() == 0 ? View.GONE : View.VISIBLE);
+                final boolean nftPosition = tab.getPosition() == 0;
+                mRvNft.setVisibility(nftPosition ? View.VISIBLE : View.GONE);
+                mRvHiddenNft.setVisibility(nftPosition ? View.GONE : View.VISIBLE);
+                mSelectedTab = nftPosition ? SelectedTab.NFTS : SelectedTab.HIDDEN;
+                showEmptyMessage(nftPosition ? mWalletNftAdapter : mWalletHiddenNftAdapter);
             }
 
             @Override
@@ -183,6 +190,11 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         mRvNft = view.findViewById(R.id.rv_nft);
         mRvHiddenNft = view.findViewById(R.id.rv_hidden_nft);
         editVisibleNft.setOnClickListener(v -> showEditVisibleDialog());
+    }
+
+    private void showEmptyMessage(@Nullable final WalletNftAdapter adapter) {
+        final boolean showEmptyMessage = adapter == null || adapter.getItemCount() == 0;
+        mAddNftsContainer.setVisibility(showEmptyMessage ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -245,8 +257,18 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
             if (mPortfolioModel.mPortfolioHelper == null) return;
             mNftDataModels = nftDataModels;
             recordP3AView();
-            setUpNftList(nftDataModels, mPortfolioModel.mPortfolioHelper.getPerTokenCryptoSum(),
-                    mPortfolioModel.mPortfolioHelper.getPerTokenFiatSum());
+            mWalletNftAdapter = new WalletNftAdapter();
+            setUpNftList(mRvNft, mWalletNftAdapter, nftDataModels, mPortfolioModel.mPortfolioHelper.getPerTokenCryptoSum(),
+                    mPortfolioModel.mPortfolioHelper.getPerTokenFiatSum(), SelectedTab.NFTS);
+            mPbAssetDiscovery.setVisibility(View.INVISIBLE);
+        });
+
+        mPortfolioModel.mNftHiddenModels.observe(getViewLifecycleOwner(), nftHiddenDataModels -> {
+            if (mPortfolioModel.mPortfolioHelper == null) return;
+            mNftHiddenDataModels = nftHiddenDataModels;
+            mWalletHiddenNftAdapter = new WalletNftAdapter();
+            setUpNftList(mRvHiddenNft, mWalletHiddenNftAdapter, nftHiddenDataModels, mPortfolioModel.mPortfolioHelper.getPerTokenCryptoSum(),
+                    mPortfolioModel.mPortfolioHelper.getPerTokenFiatSum(), SelectedTab.HIDDEN);
         });
 
         mPortfolioModel.mIsDiscoveringUserAssets.observe(
@@ -328,30 +350,31 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         startActivity(intent);
     }
 
-    private void setUpNftList(List<PortfolioModel.NftDataModel> nftDataModels,
-            HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum) {
+    private void setUpNftList(RecyclerView recyclerView, WalletNftAdapter adapter, List<PortfolioModel.NftDataModel> nftDataModels,
+            HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum, SelectedTab selectedTab) {
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
 
         List<WalletListItemModel> walletListItemModelList =
                 Utils.createWalletListItemModel(nftDataModels, perTokenCryptoSum, perTokenFiatSum,
                         tokensPath, getResources(), mAllNetworkInfos);
-        mWalletNftAdapter = new WalletNftAdapter();
-        mWalletNftAdapter.setWalletListItemModelList(walletListItemModelList);
-        mWalletNftAdapter.setOnWalletListItemClick(this);
-        mRvNft.setAdapter(mWalletNftAdapter);
-        mRvNft.setLayoutManager(
+        adapter.setWalletListItemModelList(walletListItemModelList);
+        adapter.setOnWalletListItemClick(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(
                 new AutoFitVerticalGridLayoutManager(getActivity(), 2, NFT_ITEM_WIDTH_DP));
 
         // Show empty screen layout if no NFTs have been added.
-        boolean emptyList = walletListItemModelList.isEmpty();
-        mAddNftsContainer.setVisibility(emptyList ? View.VISIBLE : View.GONE);
-
-        mPbAssetDiscovery.setVisibility(View.GONE);
+         boolean emptyList = walletListItemModelList.isEmpty();
+         mAddNftsContainer.setVisibility(emptyList && mSelectedTab ==  selectedTab ? View.VISIBLE : View.GONE);
     }
 
     private void clearAssets() {
         if (mWalletNftAdapter != null) {
             mWalletNftAdapter.clear();
+        }
+
+        if (mWalletHiddenNftAdapter != null) {
+            mWalletHiddenNftAdapter.clear();
         }
     }
 
@@ -360,7 +383,12 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         PortfolioModel.NftDataModel selectedNft = JavaUtils.find(mNftDataModels,
                 nftDataModel -> AssetUtils.Filters.isSameNFT(asset, nftDataModel.token));
         if (selectedNft == null) {
-            return;
+            PortfolioModel.NftDataModel selectedHiddenNft = JavaUtils.find(mNftHiddenDataModels,
+                    nftHiddenDataModel -> AssetUtils.Filters.isSameNFT(asset, nftHiddenDataModel.token));
+            if (selectedHiddenNft == null) {
+                return;
+            }
+            selectedNft = selectedHiddenNft;
         }
 
         Intent intent = NftDetailActivity.getIntent(
@@ -373,15 +401,14 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
 
         Activity activity = getActivity();
         if (!(activity instanceof BraveWalletActivity)) return;
-        mPortfolioModel.fetchAssets(TokenUtils.TokenType.NFTS, mSelectedNetworkList,
+        mPortfolioModel.fetchNfts(mSelectedNetworkList,
                 (BraveWalletBaseActivity) activity, (portfolioHelper) -> {
                     if (!AndroidUtils.canUpdateFragmentUi(this)) return;
                     mPortfolioHelper = portfolioHelper;
                     List<BlockchainToken> nfts = mPortfolioHelper.getUserAssets();
-                    LiveDataUtil.observeOnce(getNetworkModel().mCryptoNetworks, networkInfos -> {
-                        mPortfolioModel.prepareNftListMetaData(
-                                nfts, networkInfos, mPortfolioHelper);
-                    });
+                    List<BlockchainToken> hiddenNfts = mPortfolioHelper.getHiddenAssets();
+                    LiveDataUtil.observeOnce(getNetworkModel().mCryptoNetworks, networkList -> mPortfolioModel.prepareNftListMetaData(
+                            nfts, hiddenNfts, networkList, mPortfolioHelper));
                 });
     }
 
