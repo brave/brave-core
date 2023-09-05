@@ -10,7 +10,7 @@
   GetVectorIcon_Chromium(bool is_bookmark, const TemplateURL* turl) const; \
   const gfx::VectorIcon& GetVectorIcon
 
-#include "src/components/omnibox/browser/autocomplete_match.h"
+#include "src/components/omnibox/browser/autocomplete_match.h"  // IWYU pragma: export
 
 #undef GetVectorIcon
 

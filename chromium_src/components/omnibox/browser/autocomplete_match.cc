@@ -10,7 +10,7 @@
 
 #define GetVectorIcon GetVectorIcon_Chromium
 
-#include "src/components/omnibox/browser/autocomplete_match.cc"
+#include "src/components/omnibox/browser/autocomplete_match.cc"  // IWYU pragma: export
 
 #undef GetVectorIcon
 
