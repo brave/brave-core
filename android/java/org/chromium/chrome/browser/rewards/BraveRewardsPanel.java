@@ -86,8 +86,6 @@ import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.permissions.PermissionConstants;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -1004,12 +1002,9 @@ public class BraveRewardsPanel
                         }
                     }));
         } else {
-            DecimalFormat df = new DecimalFormat("#.###");
-            df.setRoundingMode(RoundingMode.CEILING);
-            df.setMinimumFractionDigits(3);
             TextView estimatedRange = mPopupView.findViewById(R.id.estimated_range);
-            String minValue = df.format(minEarningsThisMonth);
-            String maxValue = df.format(maxEarningsThisMonth);
+            String minValue = BraveRewardsHelper.getFormattedAmount(minEarningsThisMonth);
+            String maxValue = BraveRewardsHelper.getFormattedAmount(maxEarningsThisMonth);
 
             if (maxEarningsThisMonth == 0.0) { // don't show range just show 0.000
                 estimatedRange.setText(maxValue);
@@ -1048,11 +1043,8 @@ public class BraveRewardsPanel
                         walletBalance = walletBalanceObject.getTotal();
                     }
 
-                    DecimalFormat df = new DecimalFormat("#.###");
-                    df.setRoundingMode(RoundingMode.CEILING);
-                    df.setMinimumFractionDigits(3);
                     TextView batBalanceText = mPopupView.findViewById(R.id.bat_balance_text);
-                    batBalanceText.setText(df.format(walletBalance));
+                    batBalanceText.setText(BraveRewardsHelper.getFormattedAmount(walletBalance));
                     double usdValue = walletBalance * mBraveRewardsNativeWorker.GetWalletRate();
                     String usdText = String.format(
                             mPopupView.getResources().getString(R.string.brave_ui_usd),
