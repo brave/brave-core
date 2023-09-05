@@ -35,7 +35,7 @@ export interface Props {
   isApprovalUnlimited: boolean
 }
 
-const EditAllowance = (props: Props) => {
+export const EditAllowance = (props: Props) => {
   const [allowanceType, setAllowanceType] = React.useState<AllowanceTypes>('proposed')
   const [customAllowance, setCustomAllowance] = React.useState<string>('')
 
