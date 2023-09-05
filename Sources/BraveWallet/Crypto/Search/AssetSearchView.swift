@@ -21,6 +21,7 @@ struct AssetSearchView: View {
   @State private var query = ""
   @State private var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = []
   @State private var isPresentingNetworkFilter = false
+  @State private var selectedToken: BraveWallet.BlockchainToken?
   
   public init(
     keyringStore: KeyringStore,
@@ -96,31 +97,7 @@ struct AssetSearchView: View {
                 .frame(maxWidth: .infinity)
             } else {
               ForEach(filteredTokens) { assetViewModel in
-                
-                NavigationLink(
-                  destination: {
-                    if assetViewModel.token.isErc721 {
-                      NFTDetailView(
-                        nftDetailStore: cryptoStore.nftDetailStore(for: assetViewModel.token, nftMetadata: allNFTMetadata[assetViewModel.token.id]),
-                        buySendSwapDestination: .constant(nil)
-                      ) { metadata in
-                        allNFTMetadata[assetViewModel.token.id] = metadata
-                      }
-                      .onDisappear {
-                        cryptoStore.closeNFTDetailStore(for: assetViewModel.token)
-                      }
-                    } else {
-                      AssetDetailView(
-                        assetDetailStore: cryptoStore.assetDetailStore(for: .blockchainToken(assetViewModel.token)),
-                        keyringStore: keyringStore,
-                        networkStore: cryptoStore.networkStore
-                      )
-                      .onDisappear {
-                        cryptoStore.closeAssetDetailStore(for: .blockchainToken(assetViewModel.token))
-                      }
-                    }
-                  }
-                ) {
+                Button(action: { selectedToken = assetViewModel.token }) {
                   SearchAssetView(
                     title: title(for: assetViewModel.token),
                     symbol: assetViewModel.token.symbol,
@@ -150,6 +127,40 @@ struct AssetSearchView: View {
       }
       .listStyle(.insetGrouped)
       .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+      .background(
+        NavigationLink(
+          isActive: Binding(
+            get: { selectedToken != nil },
+            set: { if !$0 { selectedToken = nil } }
+          ),
+          destination: {
+            if let selectedToken {
+              if selectedToken.isErc721 {
+                NFTDetailView(
+                  nftDetailStore: cryptoStore.nftDetailStore(for: selectedToken, nftMetadata: allNFTMetadata[selectedToken.id]),
+                  buySendSwapDestination: .constant(nil)
+                ) { metadata in
+                  allNFTMetadata[selectedToken.id] = metadata
+                }
+                .onDisappear {
+                  cryptoStore.closeNFTDetailStore(for: selectedToken)
+                }
+              } else {
+                AssetDetailView(
+                  assetDetailStore: cryptoStore.assetDetailStore(for: .blockchainToken(selectedToken)),
+                  keyringStore: keyringStore,
+                  networkStore: cryptoStore.networkStore
+                )
+                .onDisappear {
+                  cryptoStore.closeAssetDetailStore(for: .blockchainToken(selectedToken))
+                }
+              }
+            }
+          },
+          label: {
+            EmptyView()
+          })
+      )
       .navigationTitle(Strings.Wallet.searchTitle.capitalized)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -230,6 +241,9 @@ struct SearchAssetView<ImageView: View>: View {
           .foregroundColor(Color(.braveLabel))
       }
       Spacer()
+      Image(systemName: "chevron.right")
+        .font(.body.weight(.semibold))
+        .foregroundColor(Color(.separator))
     }
     .frame(maxWidth: .infinity)
     .padding(.vertical, 6)
