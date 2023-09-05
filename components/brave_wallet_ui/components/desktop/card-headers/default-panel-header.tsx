@@ -22,7 +22,8 @@ import {
 import {
   Button,
   ButtonIcon,
-  LeftRightContainer
+  LeftRightContainer,
+  ClickAwayArea
 } from './shared-panel-headers.style'
 import {
   HeaderTitle,
@@ -105,6 +106,9 @@ export const DefaultPanelHeader = (props: Props) => {
           }
         </MenuWrapper>
       </LeftRightContainer>
+      {showSettingsMenu &&
+        <ClickAwayArea />
+      }
     </Row>
   )
 }
