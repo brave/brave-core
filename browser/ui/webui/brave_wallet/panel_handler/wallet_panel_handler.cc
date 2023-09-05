@@ -9,6 +9,7 @@
 
 #include "base/functional/callback.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -82,4 +83,41 @@ void WalletPanelHandler::IsSolanaAccountConnected(
 
   std::move(callback).Run(
       tab_helper->IsSolanaAccountConnected(rfh->GetGlobalId(), account));
+}
+
+void WalletPanelHandler::RequestPermission(
+    brave_wallet::mojom::AccountIdPtr account_id,
+    RequestPermissionCallback callback) {
+  content::RenderFrameHost* rfh = nullptr;
+  if (!(rfh = active_web_contents_->GetFocusedFrame())) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  auto request_type =
+      brave_wallet::CoinTypeToPermissionRequestType(account_id->coin);
+  auto permission = brave_wallet::CoinTypeToPermissionType(account_id->coin);
+  if (!request_type || !permission) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  if (permissions::BraveWalletPermissionContext::HasRequestsInProgress(
+          rfh, *request_type)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  permissions::BraveWalletPermissionContext::RequestPermissions(
+      *permission, rfh, {account_id->address},
+      base::BindOnce(
+          [](RequestPermissionCallback cb,
+             const std::vector<blink::mojom::PermissionStatus>& responses) {
+            if (responses.empty() || responses.size() != 1u) {
+              std::move(cb).Run(false);
+            } else {
+              std::move(cb).Run(true);
+            }
+          },
+          std::move(callback)));
 }

@@ -465,13 +465,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   void AddEthereumPermission(const mojom::AccountIdPtr& account_id) {
-    base::RunLoop run_loop;
-    brave_wallet_service_->AddPermission(
-        account_id.Clone(), base::BindLambdaForTesting([&](bool success) {
-          EXPECT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    EXPECT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
+        blink::PermissionType::BRAVE_ETHEREUM, browser_context(), GetOrigin(),
+        account_id->address));
   }
 
   void ResetEthereumPermission(const mojom::AccountIdPtr& account_id) {

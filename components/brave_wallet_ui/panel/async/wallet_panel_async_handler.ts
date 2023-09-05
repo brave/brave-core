@@ -18,6 +18,7 @@ import {
   ConnectWithSitePayloadType,
   ShowConnectToSitePayload,
   EthereumChainRequestPayload,
+  RequestSitePermissionPayloadType,
   SignMessageProcessedPayload,
   SignAllTransactionsProcessedPayload,
   SwitchEthereumChainProcessedPayload,
@@ -183,6 +184,13 @@ handler.on(PanelActions.connectToSite.type, async (store: Store, payload: Connec
   const apiProxy = getWalletPanelApiProxy()
   apiProxy.panelHandler.connectToSite([payload.addressToConnect], payload.duration)
   apiProxy.panelHandler.closeUI()
+})
+
+handler.on(PanelActions.requestSitePermission.type,
+           async(store: Store, payload: RequestSitePermissionPayloadType) => {
+  const apiProxy = getWalletPanelApiProxy()
+  await apiProxy.panelHandler.requestPermission(payload.accountId)
+  // TODO(Douglashdaniel): Clear isConnectingOnMainPanel when result is false
 })
 
 handler.on(PanelActions.visibilityChanged.type, async (store: Store, isVisible) => {

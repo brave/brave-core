@@ -171,8 +171,6 @@ class BraveWalletService : public KeyedService,
   void SetNetworkForSelectedAccountOnActiveOrigin(
       const std::string& chain_id,
       SetNetworkForSelectedAccountOnActiveOriginCallback callback) override;
-  void AddPermission(mojom::AccountIdPtr account_id,
-                     AddPermissionCallback callback) override;
   void HasPermission(std::vector<mojom::AccountIdPtr> accounts,
                      HasPermissionCallback callback) override;
   void ResetPermission(mojom::AccountIdPtr account_id,
