@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@color/wallet_bg"
+    tools:context=".browser.crypto_wallet.fragments.dapps.SignMessageErrorFragment" >
+
+    <TextView
+        android:id="@+id/fragment_sign_msg_err_tv_top_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="@string/brave_wallet_security_risk_detected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="15sp" />
+
+    <View
+        android:id="@+id/fragment_sign_msg_err_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_sign_msg_err_tv_top_header" />
+
+    <LinearLayout
+        android:id="@+id/fragment_sign_msg_err_block"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginVertical="12dp"
+        android:background="@drawable/wallet_sign_msg_err_bg"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_sign_msg_err_divider"
+        tools:ignore="UseCompoundDrawables"
+        tools:layout_editor_absoluteX="3dp">
+
+        <ImageView
+            android:id="@+id/fragment_sign_msg_err_exclamation_icon"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            android:gravity="center"
+            android:maxWidth="48dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_warning_circle"
+            app:tint="@color/wallet_sign_msg_err_icon_color" />
+
+        <TextView
+            android:id="@+id/fragment_sign_msg_err_tv_host"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="center"
+            android:textColor="@color/wallet_sign_msg_err_message_color"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/fragment_sign_msg_err_tv_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="center"
+            android:textColor="@color/wallet_sign_msg_err_icon_color"
+            app:layout_constraintTop_toBottomOf="@id/fragment_sign_msg_err_tv_host" />
+
+        <TextView
+            android:id="@+id/fragment_sign_msg_err_tv_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/wallet_sign_msg_err_message_color"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="34dp"
+            android:layout_marginHorizontal="16dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/fragment_sign_msg_err_tv_url" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/fragment_sign_msg_err_btn_close"
+        style="@style/BraveWalletButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        app:layout_constraintTop_toBottomOf="@id/fragment_sign_msg_err_block"
+        android:text="@string/close_text" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

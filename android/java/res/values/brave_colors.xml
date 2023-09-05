@@ -225,6 +225,10 @@
     <color name="wallet_top_banner_color">#33E32444</color>
     <color name="wallet_error_text_color">#FF4B6A</color>
 
+    <color name="wallet_sign_msg_err_icon_color">#E6667C</color>
+    <color name="wallet_sign_msg_err_message_color">#E8E6E7</color>
+    <color name="wallet_sign_msg_err_bg_color">#FF44141B</color>
+
     <color name="vpn_callout_bg_color">#381E85</color>
     <color name="brave_plan_bg">#27155E</color>
 

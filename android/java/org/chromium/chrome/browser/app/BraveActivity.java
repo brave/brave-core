@@ -501,8 +501,20 @@ public abstract class BraveActivity extends ChromeActivity
                 openBraveWalletDAppsActivity(activityType);
                 return;
             }
-            maybeShowChainRequestLayout();
+            maybeShowSignMessageErrorsLayout();
         });
+    }
+
+    private void maybeShowSignMessageErrorsLayout() {
+        assert mBraveWalletService != null;
+        mBraveWalletService.getPendingSignMessageErrors(errors -> {
+            if (errors != null && errors.length != 0) {
+                openBraveWalletDAppsActivity(
+                        BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE_ERROR);
+                return;
+            }
+        });
+        maybeShowChainRequestLayout();
     }
 
     private void maybeShowChainRequestLayout() {
