@@ -57,7 +57,7 @@ export const optInText = styled.div`
 
 export const learnMore = styled.div`
   margin-top: 8px;
-  margin-bottom: 29px;
+  margin-bottom: 37px;
   text-align: center;
 
   &.learn-more-success {
@@ -71,6 +71,19 @@ export const learnMore = styled.div`
     font-size: 13px;
     line-height: 20px;
     letter-spacing: 0.03em;
+    text-decoration: none;
+  }
+`
+
+export const terms = styled.div`
+  color: ${leo.color.text.tertiary};
+  font-size: 11px;
+  line-height: 16px;
+  margin-bottom: -8px;
+  padding: 0 10px;
+
+  a {
+    color: ${leo.color.text.interactive};
     text-decoration: none;
   }
 `
