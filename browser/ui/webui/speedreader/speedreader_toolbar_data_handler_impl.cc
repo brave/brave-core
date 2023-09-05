@@ -73,6 +73,11 @@ SpeedreaderToolbarDataHandlerImpl::SpeedreaderToolbarDataHandlerImpl(
 
   speedreader::TtsPlayer::GetInstance()->set_delegate(
       std::make_unique<TtsPlayerDelegate>());
+
+  const auto& tts_settings = GetSpeedreaderService()->GetTtsSettings();
+  speedreader::TtsPlayer::GetInstance()->SetSpeed(
+      static_cast<double>(tts_settings.speed) / 100.0);
+  speedreader::TtsPlayer::GetInstance()->SetVoice(tts_settings.voice);
 }
 
 SpeedreaderToolbarDataHandlerImpl::~SpeedreaderToolbarDataHandlerImpl() =

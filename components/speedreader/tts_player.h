@@ -17,6 +17,7 @@
 #include "base/values.h"
 #include "content/public/browser/tts_utterance.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
 class WebContents;
@@ -58,9 +59,10 @@ class TtsPlayer {
                      public content::UtteranceEventDelegate {
    public:
     bool IsPlaying() const;
-    bool IsPlayingRequestedWebContents() const;
+    bool IsPlayingRequestedWebContents(
+        absl::optional<int> paragraph_index = absl::nullopt) const;
 
-    void Play();
+    void Play(absl::optional<int> paragraph_index = absl::nullopt);
     void Pause();
     void Resume();
     void Stop();
@@ -92,6 +94,7 @@ class TtsPlayer {
                     const std::string& error_message) override;
 
     void OnContentReady(content::WebContents* web_contents,
+                        absl::optional<int> paragraph_index,
                         base::Value content);
 
     raw_ptr<TtsPlayer> owner_ = nullptr;

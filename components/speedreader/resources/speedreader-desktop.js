@@ -43,12 +43,28 @@ const calculateReadtime = () => {
 
 const defaultSpeedreaderData = {
     showOriginalLinkText: 'View original',
+    playButtonTitle: 'Play/Pause',
     averageWordsPerMinute: 265,
     minutesText: 'min. read',
 }
 
-const extractTextToSpeak = () => {
-    const textTags = ['P', 'DIV', 'MAIN', 'ARTICLE', 'H1', 'H2', 'H3', 'H4', 'H5', 'STRONG', 'BLOCKQUOTE' ]
+const getTextContent = (element) => {
+    if (!element) {
+        return null
+    }
+    const text = element.innerText.replace(/\n|\r +/g, ' ').trim()
+    if (text.length > 0) {
+        return text
+    }
+    return null
+}
+
+const initTextToSpeak = () => {
+    if (navigator.userAgentData.mobile) {
+        return
+    }
+
+    const textTags = ['P', 'DIV', 'MAIN', 'ARTICLE', 'H1', 'H2', 'H3', 'H4', 'H5', 'STRONG', 'BLOCKQUOTE', 'EM']
 
     const extractParagraphs = (node) => {
         let paragraphs = []
@@ -68,40 +84,53 @@ const extractTextToSpeak = () => {
         return paragraphs
     }
 
-    const getTextContent = (element) => {
-        if (!element) {
-            return null
+    let textToSpeak = 0
+
+    const makeParagraph = (elem) => {
+        if (!elem) {
+            return false
         }
-        const text = element.innerText.replace(/\n|\r +/g, ' ').trim()
-        if (text.length > 0) {
-            return text
-        }
-        return null
-    }
-
-    const textToSpeak = []
-    const title = $(metaDataDivId)?.querySelector('.title')
-    const titleText = getTextContent(title)
-    if (titleText) {
-        title.setAttribute('tts-paragraph-index', textToSpeak.length)
-        textToSpeak.push(titleText)
-    }
-
-    const paragraphs = extractParagraphs($(contentDivId))
-
-    for (const p of paragraphs) {
-        const text = getTextContent(p)
+        const text = getTextContent(elem)
         if (text) {
-            p.setAttribute('tts-paragraph-index', textToSpeak.length)
-            textToSpeak.push(text)
+            elem.setAttribute('tts-paragraph-index', textToSpeak++)
+            return true
         }
+        return false
     }
+
+    const createPlayer = (p) => {
+        const player = document.createElement('span')
+        player.classList.add('tts-paragraph-player')
+        const playButton = document.createElement('span')
+        playButton.classList.add('tts-paragraph-player-button', 'tts-play-icon')
+        playButton.title = speedreaderData.playButtonTitle
+        playButton.onclick = (ev) => {
+            window.speedreader.ttsPlayPause(parseInt(p.getAttribute('tts-paragraph-index')))
+        }
+        player.insertAdjacentElement('afterbegin', playButton)
+        p.insertAdjacentElement('afterbegin', player)
+    }
+
+    makeParagraph($(metaDataDivId)?.querySelector('.title'))
+
+    extractParagraphs($(contentDivId)).forEach((p) => {
+        if (makeParagraph(p)) {
+            createPlayer(p)
+        }
+    })
+}
+
+const extractTextToSpeak = () => {
+    const paragraphs = Array.from(document.querySelectorAll('[tts-paragraph-index]'))
+        .map((p) => {
+            return getTextContent(p)
+        })
 
     return {
         title: document.title,
         author: $(metaDataDivId)?.querySelector('.author')?.textContent,
         desciption: $(metaDataDivId)?.querySelector('.subhead')?.textContent,
-        paragraphs: textToSpeak
+        paragraphs: paragraphs
     }
 }
 
@@ -125,6 +154,7 @@ const main = () => {
 
     initShowOriginalLink()
     calculateReadtime()
+    initTextToSpeak()
 }
 
 (() => { main() })()

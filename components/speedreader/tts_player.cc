@@ -81,21 +81,30 @@ bool TtsPlayer::Controller::IsPlaying() const {
   return tts->IsSpeaking();
 }
 
-bool TtsPlayer::Controller::IsPlayingRequestedWebContents() const {
+bool TtsPlayer::Controller::IsPlayingRequestedWebContents(
+    absl::optional<int> paragraph_index) const {
+  if (paragraph_index.has_value() && paragraph_index != paragraph_index_) {
+    return false;
+  }
   return playing_web_contents_ == request_web_contents_;
 }
 
-void TtsPlayer::Controller::Play() {
+void TtsPlayer::Controller::Play(absl::optional<int> paragraph_index) {
   DCHECK(request_web_contents_);
   if (IsPlayingRequestedWebContents()) {
     Observe(playing_web_contents_);
+    if (paragraph_index.has_value() && paragraph_index != paragraph_index_) {
+      paragraph_index_ = paragraph_index.value();
+      reading_start_position_ = 0;
+      reading_position_ = 0;
+    }
     Resume(true);
   } else {
     Stop();
     TtsPlayer::GetInstance()->delegate_->RequestReadingContent(
         request_web_contents_,
         base::BindOnce(&Controller::OnContentReady, base::Unretained(this),
-                       request_web_contents_));
+                       request_web_contents_, std::move(paragraph_index)));
   }
 }
 
@@ -273,6 +282,7 @@ void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
 }
 
 void TtsPlayer::Controller::OnContentReady(content::WebContents* web_contents,
+                                           absl::optional<int> paragraph_index,
                                            base::Value content) {
   if (!content.is_dict() || web_contents != request_web_contents_) {
     return;
@@ -281,7 +291,7 @@ void TtsPlayer::Controller::OnContentReady(content::WebContents* web_contents,
 
   Observe(playing_web_contents_);
 
-  paragraph_index_ = 0;
+  paragraph_index_ = paragraph_index.value_or(0);
   reading_content_ = std::move(content);
   reading_position_ = 0;
   reading_start_position_ = 0;
