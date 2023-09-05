@@ -454,7 +454,6 @@ brave_java_resources = [
   "java/res/drawable/ic_bear_arrow.xml",
   "java/res/drawable/ic_bell_icon.xml",
   "java/res/drawable/ic_bg.xml",
-  "java/res/drawable/ic_bg_video_playback.xml",
   "java/res/drawable/ic_bookmark_import_export_failed.xml",
   "java/res/drawable/ic_bookmark_import_export_success.xml",
   "java/res/drawable/ic_bookmark_menu_add.xml",

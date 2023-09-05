@@ -109,10 +109,9 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
 
   // Check permission bubble is not visible when user turns it off.
   observer.bubble_added_ = false;
-  permissions::AskWidevineInstall(
-      static_cast<Profile*>(GetActiveWebContents()->GetBrowserContext())
-          ->GetPrefs(),
-      false);
+  static_cast<Profile*>(GetActiveWebContents()->GetBrowserContext())
+      ->GetPrefs()
+      ->SetBoolean(kAskEnableWidvine, false);
   EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
                                      GURL("chrome://newtab/")));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
@@ -121,10 +120,9 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
 
   // Check permission bubble is visible when user turns it on.
   observer.bubble_added_ = false;
-  permissions::AskWidevineInstall(
-      static_cast<Profile*>(GetActiveWebContents()->GetBrowserContext())
-          ->GetPrefs(),
-      true);
+  static_cast<Profile*>(GetActiveWebContents()->GetBrowserContext())
+      ->GetPrefs()
+      ->SetBoolean(kAskEnableWidvine, true);
   EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
                                      GURL("chrome://newtab/")));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
@@ -158,7 +156,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
                        CheckOptedInPrefStateForComponent) {
   // Before we allow, opted in should be false
-  EXPECT_FALSE(IsWidevineOptedIn());
+  EXPECT_FALSE(IsWidevineEnabled());
 
   GetPermissionRequestManager()->set_auto_response_for_test(
       permissions::PermissionRequestManager::ACCEPT_ALL);
@@ -167,7 +165,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   content::RunAllTasksUntilIdle();
 
   // After we allow, opted in pref should be true
-  EXPECT_TRUE(IsWidevineOptedIn());
+  EXPECT_TRUE(IsWidevineEnabled());
   EXPECT_TRUE(observer.bubble_added_);
 
   // Reset observer and check permission bubble isn't created again.

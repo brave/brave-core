@@ -58,7 +58,7 @@ namespace component_updater {
 void RegisterWidevineCdmComponent(ComponentUpdateService* cus,
                                   base::OnceClosure callback) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  if (!IsWidevineOptedIn()) {
+  if (!IsWidevineEnabled()) {
     return;
   }
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
@@ -326,7 +326,7 @@ void RegisterWidevineCdmComponent(
     base::OnceClosure callback) {
   VLOG(1) << "RegisterWidevineCdmComponent";
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  if (!IsWidevineOptedIn()) {
+  if (!IsWidevineEnabled()) {
     return;
   }
   CHECK(url_loader_factory);

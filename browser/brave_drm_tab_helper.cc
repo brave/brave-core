@@ -43,8 +43,8 @@ void ReloadIfActive(content::WebContents* web_contents) {
   if (GetActiveWebContents() == web_contents)
     web_contents->GetController().Reload(content::ReloadType::NORMAL, false);
 }
-#endif
-#endif
+#endif  // !BUILDFLAG(IS_LINUX)
+#endif  // !BUILDFLAG(IS_ANDROID)
 }  // namespace
 
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
@@ -79,7 +79,7 @@ bool BraveDrmTabHelper::ShouldShowWidevineOptIn() const {
   // If the user already opted in, don't offer it.
   PrefService* prefs =
       static_cast<Profile*>(web_contents()->GetBrowserContext())->GetPrefs();
-  if (IsWidevineOptedIn() || !prefs->GetBoolean(kAskEnableWidvine)) {
+  if (IsWidevineEnabled() || !prefs->GetBoolean(kAskEnableWidvine)) {
     return false;
   }
 
@@ -99,7 +99,7 @@ void BraveDrmTabHelper::DidStartNavigation(
 void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
   is_widevine_requested_ = true;
 #if BUILDFLAG(IS_ANDROID)
-  bool for_restart = false;
+  bool for_restart = true;
 #else
   bool for_restart = false;
 #endif
@@ -125,11 +125,11 @@ void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
     // reloaded automatically.
     if (is_widevine_requested_)
       ReloadIfActive(web_contents());
-#endif
+#endif  // BUILDFLAG(IS_LINUX)
     // Stop observing component update event.
     observer_.Reset();
   }
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveDrmTabHelper);

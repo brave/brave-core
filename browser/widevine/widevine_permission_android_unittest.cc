@@ -127,15 +127,15 @@ TEST_F(WidevinePermissionAndroidTest, WidevineUtilsTest) {
 
   EnableWidevineCdm();
   EXPECT_TRUE(local_state()->GetBoolean(kWidevineEnabled));
-  EXPECT_TRUE(IsWidevineOptedIn());
+  EXPECT_TRUE(IsWidevineEnabled());
 
   DisableWidevineCdm();
   EXPECT_FALSE(local_state()->GetBoolean(kWidevineEnabled));
-  EXPECT_FALSE(IsWidevineOptedIn());
+  EXPECT_FALSE(IsWidevineEnabled());
 
-  SetWidevineOptedIn(true);
+  SetWidevineEnabled(true);
   EXPECT_TRUE(local_state()->GetBoolean(kWidevineEnabled));
-  EXPECT_TRUE(IsWidevineOptedIn());
+  EXPECT_TRUE(IsWidevineEnabled());
 }
 
 TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
@@ -177,9 +177,9 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
 TEST_F(WidevinePermissionAndroidTest, PermissionWidevineUtilsTest) {
   SanityCheck();
 
-  permissions::AskWidevineInstall(profile()->GetPrefs(), false);
+  profile()->GetPrefs()->SetBoolean(kAskEnableWidvine, false);
   EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(kAskEnableWidvine));
-  permissions::AskWidevineInstall(profile()->GetPrefs(), true);
+  profile()->GetPrefs()->SetBoolean(kAskEnableWidvine, true);
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(kAskEnableWidvine));
 
   std::vector<permissions::PermissionRequest*> requests;

@@ -5,16 +5,10 @@
 
 #include "brave/components/permissions/permission_widevine_utils.h"
 
-#include "brave/components/constants/pref_names.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/request_type.h"
-#include "components/prefs/pref_service.h"
 
 namespace permissions {
-
-void AskWidevineInstall(PrefService* prefs, bool ask) {
-  prefs->SetBoolean(kAskEnableWidvine, ask);
-}
 
 bool HasWidevinePermissionRequest(
     const std::vector<permissions::PermissionRequest*>& requests) {

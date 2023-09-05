@@ -42,7 +42,6 @@ BraveRendererUpdater::BraveRendererUpdater(
   brave_wallet_ethereum_provider_.Init(kDefaultEthereumWallet, pref_service);
   brave_wallet_solana_provider_.Init(kDefaultSolanaWallet, pref_service);
   de_amp_enabled_.Init(de_amp::kDeAmpPrefEnabled, pref_service);
-
   widevine_enabled_.Init(kWidevineEnabled, local_state);
 
   CheckActiveWallet();
@@ -194,7 +193,6 @@ void BraveRendererUpdater::UpdateRenderer(
 
   PrefService* pref_service = profile_->GetPrefs();
   bool de_amp_enabled = de_amp::IsDeAmpEnabled(pref_service);
-
   bool widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
 
   (*renderer_configuration)

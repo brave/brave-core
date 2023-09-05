@@ -8,12 +8,9 @@
 
 #include <vector>
 
-class PrefService;
-
 namespace permissions {
 class PermissionRequest;
 
-void AskWidevineInstall(PrefService* prefs, bool ask);
 bool HasWidevinePermissionRequest(
     const std::vector<permissions::PermissionRequest*>& requests);
 

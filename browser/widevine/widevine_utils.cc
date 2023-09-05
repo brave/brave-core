@@ -85,10 +85,11 @@ void InstallWidevineOnceRegistered() {
 }  // namespace
 
 void EnableWidevineCdm() {
-  if (IsWidevineOptedIn())
+  if (IsWidevineEnabled()) {
     return;
+  }
 
-  SetWidevineOptedIn(true);
+  SetWidevineEnabled(true);
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
   RegisterWidevineCdmComponent(g_browser_process->component_updater(),
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
@@ -99,10 +100,11 @@ void EnableWidevineCdm() {
 }
 
 void DisableWidevineCdm() {
-  if (!IsWidevineOptedIn())
+  if (!IsWidevineEnabled()) {
     return;
+  }
 
-  SetWidevineOptedIn(false);
+  SetWidevineEnabled(false);
 }
 
 int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart) {
@@ -133,11 +135,11 @@ void RegisterWidevineLocalstatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kWidevineEnabled, false);
 }
 
-bool IsWidevineOptedIn() {
+bool IsWidevineEnabled() {
   return g_browser_process->local_state()->GetBoolean(kWidevineEnabled);
 }
 
-void SetWidevineOptedIn(bool opted_in) {
+void SetWidevineEnabled(bool opted_in) {
   g_browser_process->local_state()->SetBoolean(kWidevineEnabled, opted_in);
 }
 

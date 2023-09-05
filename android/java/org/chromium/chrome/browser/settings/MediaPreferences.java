@@ -23,7 +23,7 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
 /* Class for Media section of main preferences */
 public class MediaPreferences
         extends BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
-    public static final String PREF_WIDEVINE_OPTED_IN = "widevine_opted_in";
+    public static final String PREF_WIDEVINE_ENABLED = "widevine_enabled";
     public static final String PREF_BACKGROUND_VIDEO_PLAYBACK = "background_video_playback";
 
     @Override
@@ -41,7 +41,7 @@ public class MediaPreferences
         super.onActivityCreated(savedInstanceState);
 
         ChromeSwitchPreference enableWidevinePref =
-                (ChromeSwitchPreference) findPreference(PREF_WIDEVINE_OPTED_IN);
+                (ChromeSwitchPreference) findPreference(PREF_WIDEVINE_ENABLED);
         if (enableWidevinePref != null) {
             enableWidevinePref.setChecked(
                     BraveLocalState.get().getBoolean(BravePref.WIDEVINE_ENABLED));
@@ -63,9 +63,9 @@ public class MediaPreferences
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String key = preference.getKey();
         boolean shouldRelaunch = false;
-        if (PREF_WIDEVINE_OPTED_IN.equals(key)) {
+        if (PREF_WIDEVINE_ENABLED.equals(key)) {
             ChromeSwitchPreference enableWidevinePref =
-                    (ChromeSwitchPreference) findPreference(PREF_WIDEVINE_OPTED_IN);
+                    (ChromeSwitchPreference) findPreference(PREF_WIDEVINE_ENABLED);
             BraveLocalState.get().setBoolean(BravePref.WIDEVINE_ENABLED,
                     !BraveLocalState.get().getBoolean(BravePref.WIDEVINE_ENABLED));
             shouldRelaunch = true;
