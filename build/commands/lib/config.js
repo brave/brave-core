@@ -317,7 +317,7 @@ Config.prototype.buildArgs = function () {
     target_cpu: this.targetArch,
     is_official_build: this.isOfficialBuild(),
     is_debug: this.isDebug(),
-    dcheck_always_on: getNPMConfig(['dcheck_always_on']) || this.isComponentBuild(),
+    dcheck_always_on: true, // getNPMConfig(['dcheck_always_on']) || this.isComponentBuild(),
     brave_channel: this.channel,
     brave_google_api_key: this.braveGoogleApiKey,
     brave_google_api_endpoint: this.googleApiEndpoint,
