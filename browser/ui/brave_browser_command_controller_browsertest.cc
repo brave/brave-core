@@ -17,6 +17,7 @@
 #include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -321,4 +322,36 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
             browser()->tab_strip_model()->GetWebContentsAt(0)->GetVisibleURL());
   EXPECT_EQ(t2,
             browser()->tab_strip_model()->GetWebContentsAt(1)->GetVisibleURL());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       BraveCommandsCloseUnpinnedTabs) {
+  // Should start with one open tab which isn't pinned.
+  EXPECT_TRUE(brave::CanCloseUnpinnedTabs(browser()));
+
+  chrome::PinTab(browser());
+  EXPECT_FALSE(brave::CanCloseUnpinnedTabs(browser()));
+
+  GURL unpinned("https://example.com");
+  chrome::AddTabAt(browser(), unpinned, 1, false);
+  EXPECT_TRUE(brave::CanCloseUnpinnedTabs(browser()));
+
+  GURL will_pin("https://will.pin");
+  chrome::AddTabAt(browser(), will_pin, 2, true);
+  EXPECT_TRUE(brave::CanCloseUnpinnedTabs(browser()));
+
+  chrome::PinTab(browser());
+  EXPECT_TRUE(brave::CanCloseUnpinnedTabs(browser()));
+
+  auto* tsm = browser()->tab_strip_model();
+  EXPECT_EQ(3, tsm->count());
+
+  brave::CloseUnpinnedTabs(browser());
+  EXPECT_EQ(2, tsm->count());
+
+  for (int i = 0; i < tsm->count(); ++i)
+  EXPECT_TRUE(tsm->IsTabPinned(i));
+
+  EXPECT_EQ(GURL("about:blank"), tsm->GetWebContentsAt(0)->GetVisibleURL());
+  EXPECT_EQ(will_pin, tsm->GetWebContentsAt(1)->GetVisibleURL());
 }
