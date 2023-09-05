@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/browser/ai_chat_api.h"
+#include "brave/components/ai_chat/browser/engine/remote_completion_client.h"
 
 #include <base/containers/flat_map.h>
 
@@ -57,7 +57,7 @@ base::Value::Dict CreateApiParametersDict(
   base::Value::Dict dict;
 
   base::Value::List stop_sequences;
-  stop_sequences.Append(AIChatAPI::GetHumanPromptSegment());
+  stop_sequences.Append(RemoteCompletionClient::GetHumanPromptSegment());
   for (auto& item : additional_stop_sequences) {
     stop_sequences.Append(item);
   }
@@ -105,11 +105,11 @@ const GURL GetEndpointBaseUrl() {
 }  // namespace
 
 // static
-std::string AIChatAPI::GetHumanPromptSegment() {
+std::string RemoteCompletionClient::GetHumanPromptSegment() {
   return base::StrCat({"\n\n", kHumanPrompt, " "});
 }
 
-AIChatAPI::AIChatAPI(
+RemoteCompletionClient::RemoteCompletionClient(
     std::string model_name,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : model_name_(model_name),
@@ -125,9 +125,9 @@ AIChatAPI::AIChatAPI(
   }
 }
 
-AIChatAPI::~AIChatAPI() = default;
+RemoteCompletionClient::~RemoteCompletionClient() = default;
 
-void AIChatAPI::QueryPrompt(
+void RemoteCompletionClient::QueryPrompt(
     const std::string& prompt,
     const std::vector<std::string> extra_stop_sequences,
     api_request_helper::APIRequestHelper::ResultCallback
@@ -173,7 +173,7 @@ void AIChatAPI::QueryPrompt(
   }
 }
 
-void AIChatAPI::ClearAllQueries() {
+void RemoteCompletionClient::ClearAllQueries() {
   // TODO(nullhook): Keep track of in-progress requests and cancel them
   // individually. This would be useful to keep some in-progress requests alive.
   api_request_helper_.CancelAll();

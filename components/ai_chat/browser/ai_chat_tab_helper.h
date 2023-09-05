@@ -12,7 +12,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
-#include "brave/components/ai_chat/browser/ai_chat_api.h"
 #include "brave/components/ai_chat/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "components/favicon/core/favicon_driver_observer.h"

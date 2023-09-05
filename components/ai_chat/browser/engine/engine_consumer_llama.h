@@ -9,7 +9,7 @@
 #include <string>
 
 #include "brave/components/ai_chat/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/browser/ai_chat_api.h"
+#include "brave/components/ai_chat/browser/engine/remote_completion_client.h"
 
 namespace api_request_helper {
   class APIRequestResult;
@@ -57,7 +57,7 @@ class EngineConsumerLlamaRemote : public EngineConsumer {
   void OnCompletionCompleted(SubmitHumanInputCompletedCallback callback,
                             APIRequestResult result);
 
-  std::unique_ptr<AIChatAPI> api_ = nullptr;
+  std::unique_ptr<RemoteCompletionClient> api_ = nullptr;
 
   base::WeakPtrFactory<EngineConsumerLlamaRemote> weak_ptr_factory_{this};
 

@@ -17,7 +17,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/types/expected.h"
-#include "brave/components/ai_chat/browser/ai_chat_api.h"
+#include "brave/components/ai_chat/browser/engine/remote_completion_client.h"
 #include "brave/components/ai_chat/common/features.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
@@ -80,7 +80,7 @@ std::string BuildClaudePrompt(
                 {GetConversationHistoryString(conversation_history)}, nullptr);
 
   std::string prompt = base::StrCat(
-      {AIChatAPI::GetHumanPromptSegment(), prompt_segment_article,
+      {RemoteCompletionClient::GetHumanPromptSegment(), prompt_segment_article,
        base::ReplaceStringPlaceholders(
            l10n_util::GetStringUTF8(IDS_AI_CHAT_ASSISTANT_PROMPT_SEGMENT),
            {prompt_segment_history, question_part}, nullptr),
@@ -109,7 +109,7 @@ EngineConsumerClaudeRemote::EngineConsumerClaudeRemote(
   // likley it will be chosen by the server and the general string "claude"
   // provided here.
   const auto model_name = ai_chat::features::kAIModelName.Get();
-  api_ = std::make_unique<AIChatAPI>(model_name, url_loader_factory);
+  api_ = std::make_unique<RemoteCompletionClient>(model_name, url_loader_factory);
 }
 
 EngineConsumerClaudeRemote::~EngineConsumerClaudeRemote() = default;
@@ -125,7 +125,7 @@ void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
   std::string prompt;
   std::vector<std::string> stop_sequences;
   prompt = base::StrCat(
-      {AIChatAPI::GetHumanPromptSegment(),
+      {RemoteCompletionClient::GetHumanPromptSegment(),
        base::ReplaceStringPlaceholders(
            l10n_util::GetStringUTF8(is_video
                                         ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
@@ -158,7 +158,7 @@ void EngineConsumerClaudeRemote::OnGenerateQuestionSuggestionsResponse(
              << " but got: " << result.value_body().DebugString();
     return;
   }
-  // TODO(petemill): move common completion basic value lookup to AIChatAPI
+  // TODO(petemill): move common completion basic value lookup to RemoteCompletionClient
   const std::string* completion =
       result.value_body().GetDict().FindString("completion");
   if (!completion || completion->empty()) {
@@ -215,17 +215,16 @@ void EngineConsumerClaudeRemote::OnCompletionCompleted(
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
   if (success) {
-    std::string completion = "";
+    std::string completion;
     // We're checking for a value body in case for non-streaming API results.
     if (result.value_body().is_dict()) {
-      if (const std::string* completion_raw =
-              result.value_body().GetDict().FindString("completion")) {
-        // Trimming necessary for Llama 2 which prepends responses with a " ".
-        completion = base::TrimWhitespaceASCII(*completion_raw, base::TRIM_ALL);
-      }
+      completion = *result.value_body().GetDict().FindString("completion");
+      // Trimming necessary for Llama 2 which prepends responses with a " ".
+      completion = base::TrimWhitespaceASCII(completion, base::TRIM_ALL);
+    } else {
+      completion = "";
     }
     std::move(callback).Run(base::ok(std::move(completion)));
-    return;
   }
   // Handle error
   mojom::APIError error =

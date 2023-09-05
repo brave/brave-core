@@ -19,7 +19,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
-#include "brave/components/ai_chat/browser/ai_chat_api.h"
+#include "brave/components/ai_chat/browser/engine/remote_completion_client.h"
 #include "brave/components/ai_chat/common/features.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
@@ -239,7 +239,7 @@ EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
   // likely it will be chosen by the server and the general string "leo"
   // provided here.
   const auto model_name = ai_chat::features::kAIModelName.Get();
-  api_ = std::make_unique<AIChatAPI>(model_name, url_loader_factory);
+  api_ = std::make_unique<RemoteCompletionClient>(model_name, url_loader_factory);
 }
 
 EngineConsumerLlamaRemote::~EngineConsumerLlamaRemote() = default;
@@ -280,7 +280,7 @@ void EngineConsumerLlamaRemote::OnGenerateQuestionSuggestionsResponse(
              << " but got: " << result.value_body().DebugString();
     return;
   }
-  // TODO(petemill): move common completion basic value lookup to AIChatAPI
+  // TODO(petemill): move common completion basic value lookup to RemoteCompletionClient
   const std::string* completion =
       result.value_body().GetDict().FindString("completion");
   if (!completion || completion->empty()) {

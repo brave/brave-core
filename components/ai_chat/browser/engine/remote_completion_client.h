@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_API_H_
-#define BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_API_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_BROWSER_ENGINE_REMOTE_COMPLETION_CLIENT_H_
+#define BRAVE_COMPONENTS_AI_CHAT_BROWSER_ENGINE_REMOTE_COMPLETION_CLIENT_H_
 
 #include <memory>
 #include <string>
@@ -24,16 +24,16 @@ namespace ai_chat {
 // conversation prompts.
 constexpr char kHumanPrompt[] = "Human:";
 
-class AIChatAPI {
+class RemoteCompletionClient {
  public:
   static std::string GetHumanPromptSegment();
 
-  explicit AIChatAPI(
+  explicit RemoteCompletionClient(
       std::string model_name,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  AIChatAPI(const AIChatAPI&) = delete;
-  AIChatAPI& operator=(const AIChatAPI&) = delete;
-  ~AIChatAPI();
+  RemoteCompletionClient(const RemoteCompletionClient&) = delete;
+  RemoteCompletionClient& operator=(const RemoteCompletionClient&) = delete;
+  ~RemoteCompletionClient();
 
   // This function queries both types of APIs: SSE and non-SSE.
   // In non-SSE cases, only the data_completed_callback will be triggered.
@@ -54,4 +54,4 @@ class AIChatAPI {
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_API_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_BROWSER_ENGINE_REMOTE_COMPLETION_CLIENT_H_

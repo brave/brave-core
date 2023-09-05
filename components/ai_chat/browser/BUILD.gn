@@ -13,8 +13,6 @@ if (is_official_build) {
 
 static_library("browser") {
   sources = [
-    "ai_chat_api.cc",
-    "ai_chat_api.h",
     "ai_chat_metrics.cc",
     "ai_chat_metrics.h",
     "ai_chat_tab_helper.cc",
@@ -28,6 +26,8 @@ static_library("browser") {
     "engine/engine_consumer_llama.cc",
     "engine/engine_consumer_llama.h",
     "engine/engine_consumer.h",
+    "engine/remote_completion_client.cc",
+    "engine/remote_completion_client.h",
   ]
 
   deps = [
