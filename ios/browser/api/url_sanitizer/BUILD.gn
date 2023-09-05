@@ -16,4 +16,5 @@ source_set("url_sanitizer") {
     "//net",
     "//url",
   ]
+  frameworks = [ "Foundation.framework" ]
 }

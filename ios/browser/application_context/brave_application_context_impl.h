@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
 #include "ios/chrome/browser/application_context/application_context_impl.h"

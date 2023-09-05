@@ -3,18 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include <string>
-
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
 
+#include <string>
+
+#import "base/command_line.h"
+#import "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
-
-#import "base/command_line.h"
-#import "base/task/sequenced_task_runner.h"
-
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 
 BraveApplicationContextImpl::BraveApplicationContextImpl(
@@ -28,7 +26,6 @@ BraveApplicationContextImpl::BraveApplicationContextImpl(
                              country) {}
 
 BraveApplicationContextImpl::~BraveApplicationContextImpl() {
-  DCHECK_EQ(this, GetApplicationContext());
   SetApplicationContext(nullptr);
 }
 

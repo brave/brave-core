@@ -20,7 +20,7 @@ OBJC_EXPORT
  @param url The URL to be sanitized.
  @return A sanitized NSURL object.
  */
-- (nullable NSURL*)sanitizedURL:(NSURL*)url;
+- (nullable NSURL*)sanitizeURL:(NSURL*)url;
 
 @end
 

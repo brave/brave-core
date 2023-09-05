@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface URLSanitizerService (Private)
 
 - (instancetype)initWithURLSanitizerService:
-    (raw_ptr<brave::URLSanitizerService>)urlSanitizer;
+    (brave::URLSanitizerService*)urlSanitizer;
 
 @end
 

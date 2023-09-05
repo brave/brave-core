@@ -21,7 +21,7 @@
 @implementation URLSanitizerService
 
 - (instancetype)initWithURLSanitizerService:
-    (raw_ptr<brave::URLSanitizerService>)urlSanitizer {
+    (brave::URLSanitizerService*)urlSanitizer {
   self = [super init];
   if (self) {
     urlSanitizer_ = urlSanitizer;
@@ -29,7 +29,7 @@
   return self;
 }
 
-- (nullable NSURL*)sanitizedURL:(NSURL*)url {
+- (nullable NSURL*)sanitizeURL:(NSURL*)url {
   DCHECK(urlSanitizer_);
   GURL gurl = net::GURLWithNSURL(url);
   GURL cleanURL = urlSanitizer_->SanitizeURL(gurl);
