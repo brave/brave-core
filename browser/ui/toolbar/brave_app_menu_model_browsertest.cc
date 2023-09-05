@@ -45,9 +45,9 @@
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
 #endif
 
-class BraveAppMenuBrowserTest : public InProcessBrowserTest {
+class BraveAppMenuModelBrowserTest : public InProcessBrowserTest {
  public:
-  BraveAppMenuBrowserTest() {
+  BraveAppMenuModelBrowserTest() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     scoped_feature_list_.InitWithFeatures(
         {skus::features::kSkusFeature, brave_vpn::features::kBraveVPN}, {});
@@ -191,7 +191,7 @@ void CheckHistoryCommandsAreInOrderInMenuModel(
 // Brave menu is inserted based on corresponding commands enable status.
 // So, this doesn't test for each profiles(normal, private, tor and guest).
 // Instead, BraveBrowserCommandControllerTest will do that.
-IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
+IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
   std::vector<int> commands_in_order_for_normal_profile = {
     IDC_NEW_TAB,
     IDC_NEW_WINDOW,
@@ -379,7 +379,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 // Check vpn menu based on purchased status.
-IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BraveVPNMenuTest) {
+IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, BraveVPNMenuTest) {
   std::vector<int> commands_enabled_for_non_purchased = {
       IDC_SHOW_BRAVE_VPN_PANEL,
   };
@@ -408,7 +408,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BraveVPNMenuTest) {
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BraveIpfsMenuTest) {
+IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, BraveIpfsMenuTest) {
   CheckIpfsCommandsAreDisabledForMode(
       browser(), ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
   CheckIpfsCommandsAreDisabledForMode(browser(),

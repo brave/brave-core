@@ -239,7 +239,7 @@ TEST_F(BraveNewsFeedBuildingTest, DirectFeedsShouldAlwaysBeDisplayed) {
           "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
           mojom::Image::NewPaddedImageUrl(
               GURL("https://example.com/article/image")),
-          publisher->publisher_id, "Source", 10, "a minute ago"),
+          publisher->publisher_id, "Source", 10, 0, "a minute ago"),
       false));
   EXPECT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 
@@ -274,7 +274,7 @@ TEST_F(BraveNewsFeedBuildingTest, RemovesUserDisabledItems) {
               GURL("https://pcdn.brave.com/brave-today/cache/"
                    "85fb134433369025b46b861a00408e61223678f55620612d980533fa6ce"
                    "0a815.jpg.pad")),
-          publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
+          publisher_id_to_hide, "ESPN - Football", 14.525910905005045, 0,
           "a minute ago"),
       false));
 
@@ -310,7 +310,7 @@ TEST_F(BraveNewsFeedBuildingTest, IncludesUserEnabledItems) {
               GURL("https://pcdn.brave.com/brave-today/cache/"
                    "85fb134433369025b46b861a00408e61223678f55620612d980533fa6ce"
                    "0a815.jpg.pad")),
-          publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
+          publisher_id_to_hide, "ESPN - Football", 14.525910905005045, 0,
           "a minute ago"),
       false));
 
@@ -336,7 +336,7 @@ TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsed) {
           "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
           mojom::Image::NewPaddedImageUrl(
               GURL("https://example.com/article/image")),
-          publisher->publisher_id, "Source", 10, "a minute ago"),
+          publisher->publisher_id, "Source", 10, 0, "a minute ago"),
       false));
 
   // Publisher: NOT_MODIFIED, Channel: Subscribed, Should display.
