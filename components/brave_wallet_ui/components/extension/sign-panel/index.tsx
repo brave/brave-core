@@ -13,7 +13,7 @@ import { useAccountOrb } from '../../../common/hooks/use-orb'
 import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, SignDataSteps } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -62,11 +62,6 @@ interface Props {
   signMessageData: BraveWallet.SignMessageRequest[]
   onCancel: () => void
   showWarning: boolean
-}
-
-enum SignDataSteps {
-  SignRisk = 0,
-  SignData = 1
 }
 
 const onClickLearnMore = () => {

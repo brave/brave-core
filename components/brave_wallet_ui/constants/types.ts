@@ -1334,3 +1334,8 @@ export type SafeBlowfishSolanaResponse = SafeBlowfishResponseBase & {
 export type SafeBlowfishSimulationResponse =
   | SafeBlowfishEvmResponse
   | SafeBlowfishSolanaResponse
+
+export enum SignDataSteps {
+  SignRisk = 0,
+  SignData = 1
+}
