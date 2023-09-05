@@ -40,7 +40,7 @@ TEST(BraveInlineContentAdFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsInlineContentAdFeatureEnabled());
 }
 
-TEST(BraveInlineContentAdFeatureTest, GetMaximumAdsPerHour) {
+TEST(BraveInlineContentAdFeatureTest, MaximumAdsPerHour) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -85,7 +85,7 @@ TEST(BraveInlineContentAdFeatureTest, DefaultMaximumAdsPerHourWhenDisabled) {
   EXPECT_EQ(6, kMaximumInlineContentAdsPerHour.Get());
 }
 
-TEST(BraveInlineContentAdFeatureTest, GetMaximumAdsPerDay) {
+TEST(BraveInlineContentAdFeatureTest, MaximumAdsPerDay) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;

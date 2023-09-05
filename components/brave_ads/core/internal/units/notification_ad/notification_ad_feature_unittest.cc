@@ -40,7 +40,7 @@ TEST(BraveAdsNotificationAdFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsNotificationAdFeatureEnabled());
 }
 
-TEST(BraveAdsNotificationAdFeatureTest, GetDefaultAdsPerHour) {
+TEST(BraveAdsNotificationAdFeatureTest, DefaultAdsPerHour) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -85,7 +85,7 @@ TEST(BraveAdsNotificationAdFeatureTest, DefaultDefaultAdsPerHourWhenDisabled) {
   EXPECT_EQ(10, kDefaultNotificationAdsPerHour.Get());
 }
 
-TEST(BraveAdsNotificationAdFeatureTest, GetMaximumAdsPerDay) {
+TEST(BraveAdsNotificationAdFeatureTest, MaximumAdsPerDay) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;

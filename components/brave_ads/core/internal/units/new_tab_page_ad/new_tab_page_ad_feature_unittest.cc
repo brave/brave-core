@@ -40,7 +40,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsNewTabPageAdFeatureEnabled());
 }
 
-TEST(BraveAdsNewTabPageAdFeatureTest, GetMaximumAdsPerHour) {
+TEST(BraveAdsNewTabPageAdFeatureTest, MaximumAdsPerHour) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -85,7 +85,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerHourWhenDisabled) {
   EXPECT_EQ(4, kMaximumNewTabPageAdsPerHour.Get());
 }
 
-TEST(BraveAdsNewTabPageAdFeatureTest, GetMaximumAdsPerDay) {
+TEST(BraveAdsNewTabPageAdFeatureTest, MaximumAdsPerDay) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -130,7 +130,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerDayWhenDisabled) {
   EXPECT_EQ(20, kMaximumNewTabPageAdsPerDay.Get());
 }
 
-TEST(BraveAdsNewTabPageAdFeatureTest, GetMinimumWaitTime) {
+TEST(BraveAdsNewTabPageAdFeatureTest, MinimumWaitTime) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;

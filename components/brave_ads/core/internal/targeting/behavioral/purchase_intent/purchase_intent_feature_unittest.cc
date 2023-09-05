@@ -41,7 +41,7 @@ TEST(BraveAdsPurchaseIntentFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsPurchaseIntentFeatureEnabled());
 }
 
-TEST(BraveAdsPurchaseIntentFeatureTest, GetPurchaseIntentResourceVersion) {
+TEST(BraveAdsPurchaseIntentFeatureTest, PurchaseIntentResourceVersion) {
   // Arrange
   base::FieldTrialParams params;
   params["resource_version"] = "0";
@@ -87,7 +87,7 @@ TEST(BraveAdsPurchaseIntentFeatureTest,
   EXPECT_EQ(1, kPurchaseIntentResourceVersion.Get());
 }
 
-TEST(BraveAdsPurchaseIntentFeatureTest, GetPurchaseIntentThreshold) {
+TEST(BraveAdsPurchaseIntentFeatureTest, PurchaseIntentThreshold) {
   // Arrange
   base::FieldTrialParams params;
   params["threshold"] = "5";
@@ -133,7 +133,7 @@ TEST(BraveAdsPurchaseIntentFeatureTest,
   EXPECT_EQ(3, kPurchaseIntentThreshold.Get());
 }
 
-TEST(BraveAdsPurchaseIntentFeatureTest, GetPurchaseIntentTimeWindow) {
+TEST(BraveAdsPurchaseIntentFeatureTest, PurchaseIntentTimeWindow) {
   // Arrange
   base::FieldTrialParams params;
   params["time_window"] = "1d";

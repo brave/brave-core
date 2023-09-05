@@ -40,7 +40,7 @@ TEST(BraveAdsEligibleAdFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsEligibleAdFeatureEnabled());
 }
 
-TEST(BraveAdsEligibleAdFeatureTest, GetBrowsingHistoryMaxCount) {
+TEST(BraveAdsEligibleAdFeatureTest, BrowsingHistoryMaxCount) {
   // Arrange
   base::FieldTrialParams params;
   params["browsing_history_max_count"] = "666";
@@ -86,7 +86,7 @@ TEST(BraveAdsEligibleAdFeatureTest,
   EXPECT_EQ(5'000, kBrowsingHistoryMaxCount.Get());
 }
 
-TEST(BraveAdsEligibleAdFeatureTest, GetBrowsingHistoryRecentDayRange) {
+TEST(BraveAdsEligibleAdFeatureTest, BrowsingHistoryRecentDayRange) {
   // Arrange
   base::FieldTrialParams params;
   params["browsing_history_recent_day_range"] = "7";

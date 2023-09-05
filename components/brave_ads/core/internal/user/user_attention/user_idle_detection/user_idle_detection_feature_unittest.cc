@@ -40,7 +40,7 @@ TEST(BraveAdsUserIdleDetectionFeatureTest, IsDisabled) {
   EXPECT_FALSE(base::FeatureList::IsEnabled(kUserIdleDetectionFeature));
 }
 
-TEST(BraveAdsUserIdleDetectionFeatureTest, GetMaximumIdleTime) {
+TEST(BraveAdsUserIdleDetectionFeatureTest, MaximumIdleTime) {
   // Arrange
   base::FieldTrialParams params;
   params["maximum_idle_time"] = "30m";

@@ -40,7 +40,7 @@ TEST(BraveAdsServingFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsInlineContentAdServingFeatureEnabled());
 }
 
-TEST(BraveAdsInlineContentAdServingFeatureTest, GetServingVersion) {
+TEST(BraveAdsInlineContentAdServingFeatureTest, ServingVersion) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;

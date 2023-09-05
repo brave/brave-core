@@ -14,7 +14,7 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsSearchResultAdFeatureTest, GetMaximumAdsPerHour) {
+TEST(BraveAdsSearchResultAdFeatureTest, MaximumAdsPerHour) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -59,7 +59,7 @@ TEST(BraveAdsSearchResultAdFeatureTest, DefaultMaximumAdsPerHourWhenDisabled) {
   EXPECT_EQ(10, kMaximumSearchResultAdsPerHour.Get());
 }
 
-TEST(BraveAdsSearchResultAdFeatureTest, GetMaximumAdsPerDay) {
+TEST(BraveAdsSearchResultAdFeatureTest, MaximumAdsPerDay) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;

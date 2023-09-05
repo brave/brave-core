@@ -40,7 +40,7 @@ TEST(BraveAdsUserActivityFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsUserActivityFeatureEnabled());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, GetTriggers) {
+TEST(BraveAdsUserActivityFeatureTest, Triggers) {
   // Arrange
   base::FieldTrialParams params;
   params["triggers"] = "01=0.5;010203=1.0;0203=0.75";
@@ -89,7 +89,7 @@ TEST(BraveAdsUserActivityFeatureTest, DefaultTriggersWhenDisabled) {
       kUserActivityTriggers.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, GetTimeWindow) {
+TEST(BraveAdsUserActivityFeatureTest, TimeWindow) {
   // Arrange
   base::FieldTrialParams params;
   params["time_window"] = "2h";
@@ -134,7 +134,7 @@ TEST(BraveAdsUserActivityFeatureTest, DefaultTimeWindowWhenDisabled) {
   EXPECT_EQ(base::Minutes(15), kUserActivityTimeWindow.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, GetThreshold) {
+TEST(BraveAdsUserActivityFeatureTest, Threshold) {
   // Arrange
   base::FieldTrialParams params;
   params["threshold"] = "7.0";

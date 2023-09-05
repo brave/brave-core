@@ -39,7 +39,7 @@ TEST(BraveAdsNewTabPageAdServingFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsNewTabPageAdServingFeatureEnabled());
 }
 
-TEST(BraveAdsNewTabPageAdServingFeatureTest, GetServingVersion) {
+TEST(BraveAdsNewTabPageAdServingFeatureTest, ServingVersion) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
