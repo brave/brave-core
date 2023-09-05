@@ -15,14 +15,11 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/transfer/transfer_feature.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
-
-namespace {
-constexpr base::TimeDelta kTransferAdAfter = base::Seconds(10);
-}  // namespace
 
 Transfer::Transfer() {
   TabManager::GetInstance().AddObserver(this);
@@ -68,7 +65,7 @@ void Transfer::TransferAd(const int32_t tab_id,
   transferring_ad_tab_id_ = tab_id;
 
   const base::Time transfer_ad_at = timer_.Start(
-      FROM_HERE, kTransferAdAfter,
+      FROM_HERE, kTransferredAfter.Get(),
       base::BindOnce(&Transfer::TransferAdCallback, base::Unretained(this),
                      tab_id, redirect_chain));
 

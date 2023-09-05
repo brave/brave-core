@@ -1101,6 +1101,7 @@ static_library("internal") {
     "targeting/geographical/subdivision/supported_subdivisions.cc",
     "transfer/transfer.cc",
     "transfer/transfer.h",
+    "transfer/transfer_feature.cc",
     "transfer/transfer_observer.h",
     "units/ad_handler.cc",
     "units/ad_handler.h",
