@@ -51,7 +51,10 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   void TabChangedAt(content::WebContents* contents,
                     int index,
                     TabChangeType change) override;
-  void UpdateCommandsForTabStripStateChanged() override;
+  void OnTabStripModelChanged(
+      TabStripModel* tab_strip_model,
+      const TabStripModelChange& change,
+      const TabStripSelectionChange& selection) override;
 
  private:
   friend class ::BraveAppMenuBrowserTest;

@@ -8,17 +8,13 @@
 
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 
-#define UpdateCommandsForTabStripStateChanged           \
-  UpdateCommandsForTabStripStateChanged_Chromium1();    \
-                                                        \
- protected:                                             \
-  virtual void UpdateCommandsForTabStripStateChanged(); \
-                                                        \
- private:                                               \
-  void UpdateCommandsForTabStripStateChanged_Chromium2
+#define OnTabStripModelChanged                \
+  OnTabStripModelChanged_Unused();            \
+  friend class BraveBrowserCommandController; \
+  void OnTabStripModelChanged
 
 #include "src/chrome/browser/ui/browser_command_controller.h"  // IWYU pragma: export
 
-#undef UpdateCommandsForTabStripStateChanged
+#undef OnTabStripModelChanged
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_COMMAND_CONTROLLER_H_

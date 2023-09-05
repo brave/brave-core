@@ -93,8 +93,12 @@ void BraveBrowserCommandController::TabChangedAt(content::WebContents* contents,
   UpdateCommandsForSend();
 }
 
-void BraveBrowserCommandController::UpdateCommandsForTabStripStateChanged() {
-  BrowserCommandController::UpdateCommandsForTabStripStateChanged();
+void BraveBrowserCommandController::OnTabStripModelChanged(
+    TabStripModel* tab_strip_model,
+    const TabStripModelChange& change,
+    const TabStripSelectionChange& selection) {
+  BrowserCommandController::OnTabStripModelChanged(tab_strip_model, change,
+                                                   selection);
 
   UpdateCommandEnabled(IDC_WINDOW_CLOSE_TABS_TO_LEFT,
                        brave::CanCloseTabsToLeft(&*browser_));
