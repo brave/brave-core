@@ -7,6 +7,7 @@ import * as React from 'react'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { NewTabLink } from '../new_tab_link'
+import { TermsOfService } from '../terms_of_service'
 import { LoadingIcon } from '../icons/loading_icon'
 import { ErrorIcon } from './icons/error_icon'
 import { CountrySelect } from './country_select'
@@ -181,6 +182,9 @@ export function RewardsOptIn (props: Props) {
           {getString('onboardingHowDoesItWork')}
         </NewTabLink>
       </style.learnMore>
+      <style.terms>
+        <TermsOfService />
+      </style.terms>
     </style.root>
   )
 }
