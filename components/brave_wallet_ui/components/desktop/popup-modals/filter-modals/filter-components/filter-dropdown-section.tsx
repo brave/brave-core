@@ -94,6 +94,7 @@ export const FilterDropdownSection = (props: Props) => {
           <Description
             textSize='12px'
             isBold={false}
+            textAlign='left'
           >
             {description}
           </Description>
