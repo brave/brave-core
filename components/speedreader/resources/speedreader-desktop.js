@@ -64,7 +64,7 @@ const initTextToSpeak = () => {
         return
     }
 
-    const textTags = ['P', 'DIV', 'MAIN', 'ARTICLE', 'H1', 'H2', 'H3', 'H4', 'H5', 'STRONG', 'BLOCKQUOTE', 'EM']
+    const textTags = ['P', 'DIV', 'MAIN', 'ARTICLE', 'H1', 'H2', 'H3', 'H4', 'H5', 'STRONG', 'BLOCKQUOTE']
 
     const extractParagraphs = (node) => {
         let paragraphs = []
