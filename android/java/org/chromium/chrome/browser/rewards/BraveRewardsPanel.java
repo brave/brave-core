@@ -106,7 +106,8 @@ public class BraveRewardsPanel
             "https://support.brave.com/hc/en-us/articles/6539887971469";
     public static final String NEW_SIGNUP_DISABLED_URL =
             "https://support.brave.com/hc/en-us/articles/9312922941069";
-    private static final String ADS_PAYOUT_STATUS_URL = "https://community.brave.com/t/ads-payout-status-update/287895";
+    private static final String ADS_PAYOUT_STATUS_URL =
+            "https://community.brave.com/t/ads-payout-status-update/287895";
     private static final String SUPPORT_URL = "https://support.brave.com";
     private static final String BRAVE_REWARDS_PAGE = "https://brave.com/rewards";
     private static final String BRAVE_REWARDS_CHANGES_PAGE = "https://brave.com/rewards-changes";
@@ -1054,11 +1055,15 @@ public class BraveRewardsPanel
                         ContextUtils.getApplicationContext().getResources(),
                         R.drawable.rewards_panel_payout_processing_bg, null));
                 payoutBannerImg.setVisibility(View.GONE);
-                SpannableString spannableBannerText = spannableClickSpan(String.format(mPopupView.getResources().getString(
+                SpannableString spannableBannerText = spannableClickSpan(
+                        String.format(mPopupView.getResources().getString(
                                               R.string.rewards_panel_payout_processing_text),
                                 currentDate,
                                 mPopupView.getResources().getString(
-                                        R.string.rewards_panel_payout_check_status_text)), mPopupView.getResources().getString(R.string.rewards_panel_payout_check_status_text), ADS_PAYOUT_STATUS_URL);
+                                        R.string.rewards_panel_payout_check_status_text)),
+                        mPopupView.getResources().getString(
+                                R.string.rewards_panel_payout_check_status_text),
+                        ADS_PAYOUT_STATUS_URL);
                 payoutBannerText.setMovementMethod(LinkMovementMethod.getInstance());
                 payoutBannerText.setText(spannableBannerText);
             } else if (payoutStatus.equals(PAYOUT_STATUS_COMPLETE)) {
@@ -1066,10 +1071,11 @@ public class BraveRewardsPanel
                         ContextUtils.getApplicationContext().getResources(),
                         R.drawable.rewards_panel_payout_complete_bg, null));
                 payoutBannerImg.setImageResource(R.drawable.ic_payout_status_complete);
-                SpannableString spannableBannerText = spannableClickSpan(String.format(
-                        mPopupView.getResources().getString(
-                                R.string.rewards_panel_payout_complete_text),
-                        currentDate, mPopupView.getResources().getString(R.string.support)), mPopupView.getResources().getString(R.string.support), SUPPORT_URL);
+                SpannableString spannableBannerText = spannableClickSpan(
+                        String.format(mPopupView.getResources().getString(
+                                              R.string.rewards_panel_payout_complete_text),
+                                currentDate, mPopupView.getResources().getString(R.string.support)),
+                        mPopupView.getResources().getString(R.string.support), SUPPORT_URL);
                 payoutBannerText.setMovementMethod(LinkMovementMethod.getInstance());
                 payoutBannerText.setText(spannableBannerText);
             }
@@ -1653,19 +1659,18 @@ public class BraveRewardsPanel
         return ss;
     }
 
-    private SpannableString spannableClickSpan(String mainText, String clickableText, String clickUrl) {
+    private SpannableString spannableClickSpan(
+            String mainText, String clickableText, String clickUrl) {
         Spanned textMain = BraveRewardsHelper.spannedFromHtmlString(mainText);
 
         SpannableString ss = new SpannableString(textMain.toString());
 
-        NoUnderlineClickableSpan clickableSpan = new NoUnderlineClickableSpan(
-                mActivity, R.color.brave_rewards_modal_theme_color, (textView) -> {
-                    CustomTabActivity.showInfoPage(mActivity, clickUrl);
-                });
+        NoUnderlineClickableSpan clickableSpan =
+                new NoUnderlineClickableSpan(mActivity, R.color.brave_rewards_modal_theme_color,
+                        (textView) -> { CustomTabActivity.showInfoPage(mActivity, clickUrl); });
         int clickableTextIndex = mainText.indexOf(clickableText);
 
-        ss.setSpan(clickableSpan, clickableTextIndex,
-                clickableTextIndex + clickableText.length(),
+        ss.setSpan(clickableSpan, clickableTextIndex, clickableTextIndex + clickableText.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return ss;
     }
