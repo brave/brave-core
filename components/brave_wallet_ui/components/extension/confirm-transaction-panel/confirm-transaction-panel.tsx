@@ -26,8 +26,6 @@ import {
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
 import Tooltip from '../../shared/tooltip/index'
 import withPlaceholderIcon from '../../shared/create-placeholder-icon'
-
-// Components
 import { PanelTab } from '../panel-tab/index'
 import { TransactionDetailBox } from '../transaction-box/index'
 import EditAllowance from '../edit-allowance'
@@ -36,6 +34,10 @@ import AdvancedTransactionSettings from '../advanced-transaction-settings'
 import { Erc20ApproveTransactionInfo } from './erc-twenty-transaction-info'
 import { TransactionInfo } from './transaction-info'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
+import { Footer } from './common/footer'
+import { TransactionQueueSteps } from './common/queue'
+import { Origin } from './common/origin'
+import { EditPendingTransactionGas } from './common/gas'
 
 // Styled Components
 import {
@@ -72,11 +74,6 @@ import {
   WarningBoxTitleRow
 } from '../shared-panel-styles'
 import { Column, Row } from '../../shared/style'
-
-import { Footer } from './common/footer'
-import { TransactionQueueStep } from './common/queue'
-import { Origin } from './common/origin'
-import { EditPendingTransactionGas } from './common/gas'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
@@ -123,7 +120,10 @@ export const ConfirmTransactionPanel = () => {
     onReject,
     gasFee,
     insufficientFundsError,
-    insufficientFundsForGasError
+    insufficientFundsForGasError,
+    queueNextTransaction,
+    transactionQueueNumber,
+    transactionsQueueLength
   } = usePendingTransactions()
 
   // queries
@@ -214,7 +214,11 @@ export const ConfirmTransactionPanel = () => {
           </AddressAndOrb>
         )}
 
-        <TransactionQueueStep />
+        <TransactionQueueSteps
+          queueNextTransaction={queueNextTransaction}
+          transactionQueueNumber={transactionQueueNumber}
+          transactionsQueueLength={transactionsQueueLength}
+        />
       </TopRow>
 
       {isERC20Approve ? (
