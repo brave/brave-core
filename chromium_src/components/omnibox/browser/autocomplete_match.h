@@ -6,9 +6,14 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_AUTOCOMPLETE_MATCH_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_AUTOCOMPLETE_MATCH_H_
 
+#include "build/build_config.h"
+#include "components/omnibox/browser/buildflags.h"
+
+#if (!BUILDFLAG(IS_ANDROID) || BUILDFLAG(ENABLE_VR)) && !BUILDFLAG(IS_IOS)
 #define GetVectorIcon                                                      \
   GetVectorIcon_Chromium(bool is_bookmark, const TemplateURL* turl) const; \
   const gfx::VectorIcon& GetVectorIcon
+#endif
 
 #include "src/components/omnibox/browser/autocomplete_match.h"  // IWYU pragma: export
 

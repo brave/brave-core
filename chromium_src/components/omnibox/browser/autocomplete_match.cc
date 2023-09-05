@@ -8,12 +8,7 @@
 #include "brave/components/omnibox/browser/commander_provider.h"
 #include "brave/components/vector_icons/vector_icons.h"
 
-#define GetVectorIcon GetVectorIcon_Chromium
-
-#include "src/components/omnibox/browser/autocomplete_match.cc"  // IWYU pragma: export
-
-#undef GetVectorIcon
-
+#if (!BUILDFLAG(IS_ANDROID) || BUILDFLAG(ENABLE_VR)) && !BUILDFLAG(IS_IOS)
 const gfx::VectorIcon& AutocompleteMatch::GetVectorIcon(
     bool is_bookmark,
     const TemplateURL* turl) const {
@@ -22,3 +17,10 @@ const gfx::VectorIcon& AutocompleteMatch::GetVectorIcon(
   }
   return GetVectorIcon_Chromium(is_bookmark, turl);
 }
+
+#define GetVectorIcon GetVectorIcon_Chromium
+#endif
+
+#include "src/components/omnibox/browser/autocomplete_match.cc"  // IWYU pragma: export
+
+#undef GetVectorIcon
