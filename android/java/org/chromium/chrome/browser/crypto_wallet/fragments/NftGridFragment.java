@@ -258,7 +258,8 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
             mNftDataModels = nftDataModels;
             recordP3AView();
             mWalletNftAdapter = new WalletNftAdapter();
-            setUpNftList(mRvNft, mWalletNftAdapter, nftDataModels, mPortfolioModel.mPortfolioHelper.getPerTokenCryptoSum(),
+            setUpNftList(mRvNft, mWalletNftAdapter, nftDataModels,
+                    mPortfolioModel.mPortfolioHelper.getPerTokenCryptoSum(),
                     mPortfolioModel.mPortfolioHelper.getPerTokenFiatSum(), SelectedTab.NFTS);
             mPbAssetDiscovery.setVisibility(View.INVISIBLE);
         });
@@ -267,7 +268,8 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
             if (mPortfolioModel.mPortfolioHelper == null) return;
             mNftHiddenDataModels = nftHiddenDataModels;
             mWalletHiddenNftAdapter = new WalletNftAdapter();
-            setUpNftList(mRvHiddenNft, mWalletHiddenNftAdapter, nftHiddenDataModels, mPortfolioModel.mPortfolioHelper.getPerTokenCryptoSum(),
+            setUpNftList(mRvHiddenNft, mWalletHiddenNftAdapter, nftHiddenDataModels,
+                    mPortfolioModel.mPortfolioHelper.getPerTokenCryptoSum(),
                     mPortfolioModel.mPortfolioHelper.getPerTokenFiatSum(), SelectedTab.HIDDEN);
         });
 
@@ -350,8 +352,10 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         startActivity(intent);
     }
 
-    private void setUpNftList(RecyclerView recyclerView, WalletNftAdapter adapter, List<PortfolioModel.NftDataModel> nftDataModels,
-            HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum, SelectedTab selectedTab) {
+    private void setUpNftList(RecyclerView recyclerView, WalletNftAdapter adapter,
+            List<PortfolioModel.NftDataModel> nftDataModels,
+            HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum,
+            SelectedTab selectedTab) {
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
 
         List<WalletListItemModel> walletListItemModelList =
@@ -363,11 +367,11 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         recyclerView.setLayoutManager(
                 new AutoFitVerticalGridLayoutManager(getActivity(), 2, NFT_ITEM_WIDTH_DP));
 
-         if (mSelectedTab ==  selectedTab) {
-             // Show empty screen layout if no NFTs have been added.
-             boolean emptyList = walletListItemModelList.isEmpty();
-             mAddNftsContainer.setVisibility(emptyList ? View.VISIBLE : View.GONE);
-         }
+        if (mSelectedTab == selectedTab) {
+            // Show empty screen layout if no NFTs have been added.
+            boolean emptyList = walletListItemModelList.isEmpty();
+            mAddNftsContainer.setVisibility(emptyList ? View.VISIBLE : View.GONE);
+        }
     }
 
     private void clearAssets() {
@@ -386,7 +390,8 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                 nftDataModel -> AssetUtils.Filters.isSameNFT(asset, nftDataModel.token));
         if (selectedNft == null) {
             PortfolioModel.NftDataModel selectedHiddenNft = JavaUtils.find(mNftHiddenDataModels,
-                    nftHiddenDataModel -> AssetUtils.Filters.isSameNFT(asset, nftHiddenDataModel.token));
+                    nftHiddenDataModel
+                    -> AssetUtils.Filters.isSameNFT(asset, nftHiddenDataModel.token));
             if (selectedHiddenNft == null) {
                 return;
             }
@@ -403,14 +408,16 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
 
         Activity activity = getActivity();
         if (!(activity instanceof BraveWalletActivity)) return;
-        mPortfolioModel.fetchNfts(mSelectedNetworkList,
-                (BraveWalletBaseActivity) activity, (portfolioHelper) -> {
+        mPortfolioModel.fetchNfts(
+                mSelectedNetworkList, (BraveWalletBaseActivity) activity, (portfolioHelper) -> {
                     if (!AndroidUtils.canUpdateFragmentUi(this)) return;
                     mPortfolioHelper = portfolioHelper;
                     List<BlockchainToken> nfts = mPortfolioHelper.getUserAssets();
                     List<BlockchainToken> hiddenNfts = mPortfolioHelper.getHiddenAssets();
-                    LiveDataUtil.observeOnce(getNetworkModel().mCryptoNetworks, networkList -> mPortfolioModel.prepareNftListMetaData(
-                            nfts, hiddenNfts, networkList, mPortfolioHelper));
+                    LiveDataUtil.observeOnce(getNetworkModel().mCryptoNetworks,
+                            networkList
+                            -> mPortfolioModel.prepareNftListMetaData(
+                                    nfts, hiddenNfts, networkList, mPortfolioHelper));
                 });
     }
 

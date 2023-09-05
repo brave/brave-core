@@ -88,14 +88,16 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     }
 
     // TODO(pav): We should fetch and process all portfolio list here
-    public void prepareNftListMetaData(List<BlockchainToken> nftList, List<BlockchainToken> hiddenNftList,
-            List<NetworkInfo> allNetworkList, PortfolioHelper portfolioHelper) {
+    public void prepareNftListMetaData(List<BlockchainToken> nftList,
+            List<BlockchainToken> hiddenNftList, List<NetworkInfo> allNetworkList,
+            PortfolioHelper portfolioHelper) {
         mPortfolioHelper = portfolioHelper;
         fetchNftMetadata(nftList, allNetworkList, _mNftModels);
         fetchNftMetadata(hiddenNftList, allNetworkList, _mNftHiddenModels);
     }
 
-    private void fetchNftMetadata(List<BlockchainToken> nftList, List<NetworkInfo> allNetworkList, MutableLiveData<List<NftDataModel>> nftModels) {
+    private void fetchNftMetadata(List<BlockchainToken> nftList, List<NetworkInfo> allNetworkList,
+            MutableLiveData<List<NftDataModel>> nftModels) {
         // Filter out and calculate the size of supported NFTs.
         // The total sum will be used by `MultiResponseHandler` to detect
         // when `setWhenAllCompletedAction()` can be processed.
@@ -157,8 +159,8 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
      * @param callback to get the @{code PortfolioHelper} object containing result
      */
     public void fetchNfts(List<NetworkInfo> selectedNetworks,
-                          BraveWalletBaseActivity braveWalletBaseActivity,
-                          Callbacks.Callback1<PortfolioHelper> callback) {
+            BraveWalletBaseActivity braveWalletBaseActivity,
+            Callbacks.Callback1<PortfolioHelper> callback) {
         NetworkModel.getAllNetworks(
                 mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
                     mAllNetworkInfos = allNetworks;

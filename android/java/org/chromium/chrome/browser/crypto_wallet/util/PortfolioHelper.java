@@ -176,12 +176,19 @@ public class PortfolioHelper {
                             AtomicInteger allAssets = new AtomicInteger();
                             final List<BlockchainToken> assets = new ArrayList<>();
                             for (NetworkInfo selectedNetwork : mSelectedNetworks) {
-                                TokenUtils.getUserOrAllTokensFiltered(braveWalletService, blockchainRegistry,
-                                        selectedNetwork, selectedNetwork.coin, TokenUtils.TokenType.NFTS, false, tokens -> {
+                                TokenUtils.getUserOrAllTokensFiltered(braveWalletService,
+                                        blockchainRegistry, selectedNetwork, selectedNetwork.coin,
+                                        TokenUtils.TokenType.NFTS, false, tokens -> {
                                             assets.addAll(Arrays.asList(tokens));
                                             if (allAssets.incrementAndGet() == totalNetworks) {
-                                                List<String> comparableUserAssets = mUserAssets.stream().map(Utils::tokenToString).collect(Collectors.toList());
-                                                assets.removeIf(blockChainToken -> comparableUserAssets.contains(Utils.tokenToString(blockChainToken)));
+                                                List<String> comparableUserAssets =
+                                                        mUserAssets.stream()
+                                                                .map(Utils::tokenToString)
+                                                                .collect(Collectors.toList());
+                                                assets.removeIf(blockChainToken
+                                                        -> comparableUserAssets.contains(
+                                                                Utils.tokenToString(
+                                                                        blockChainToken)));
                                                 mHiddenAssets.addAll(assets);
                                                 callback.call(this);
                                             }
