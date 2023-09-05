@@ -3600,6 +3600,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_EXPIRATION_TIME_SECTION" desc="An expiration time section template for Sign with Ethereum message details" translateable="false">
       <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Expiration time:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_EXPIRATION_TIME_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
     </message>
+    <message name="IDS_BRAVE_WALLET_SECURITY_RISK_DETECTED" desc="Sign in with Brave Wallet Error Security risk">
+      Security risk detected
+    </message>
     <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_ADDRESS" desc="Add custom asset dialog Token contract address field for Solana NFT">
       Token address
     </message>

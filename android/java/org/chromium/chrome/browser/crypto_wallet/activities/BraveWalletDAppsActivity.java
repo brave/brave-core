@@ -26,6 +26,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddSwitchChainN
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddTokenFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.ConnectAccountFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.EncryptionKeyFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageErrorFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignTransactionFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SiweMessageFragment;
@@ -61,7 +62,8 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         SIGN_TRANSACTION(8),
         SIGN_ALL_TRANSACTIONS(9),
         SIWE_MESSAGE(10),
-        FINISH(11);
+        SIGN_MESSAGE_ERROR(11),
+        FINISH(12);
 
         private int mValue;
         private static Map sMap = new HashMap<>();
@@ -185,6 +187,8 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
             mFragment = new SignMessageFragment();
         } else if (mActivityType == ActivityType.SIWE_MESSAGE) {
             mFragment = new SiweMessageFragment();
+        } else if (mActivityType == ActivityType.SIGN_MESSAGE_ERROR) {
+            mFragment = new SignMessageErrorFragment();
         } else if (mActivityType == ActivityType.ADD_TOKEN) {
             mFragment = new AddTokenFragment();
         } else if (mActivityType == ActivityType.CONFIRM_TRANSACTION) {
