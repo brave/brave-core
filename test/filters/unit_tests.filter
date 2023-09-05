@@ -780,3 +780,12 @@
 -WebUsbServiceImplTest.*
 -WellKnownChangePasswordNavigationThrottleTest.*
 -ZipFileInstallerTest.*
+
+# Tests disabled for interactive session. Will be removed once upstream fixes
+# them
+# https://bravesoftware.slack.com/archives/C7VLGSR55/p1693821378068639
+- CompoundTabContainerTest.GetIndexOfFirstNonClosingTab
+- CompoundTabContainerTest.MoveTabBetweenContainers
+- CompoundTabContainerTest.PinDuringUnpinAnimation
+- CompoundTabContainerTest.PinnedTabReparents
+- TabContainerTest.PreferredWidthDuringAnimation
