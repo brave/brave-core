@@ -25,9 +25,7 @@ BraveApplicationContextImpl::BraveApplicationContextImpl(
                              locale,
                              country) {}
 
-BraveApplicationContextImpl::~BraveApplicationContextImpl() {
-  SetApplicationContext(nullptr);
-}
+inline BraveApplicationContextImpl::~BraveApplicationContextImpl() = default;
 
 brave_component_updater::BraveComponent::Delegate*
 BraveApplicationContextImpl::brave_component_updater_delegate() {
