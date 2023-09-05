@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
->
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -226,6 +225,9 @@
                 android:textSize="12sp" />
 
         </LinearLayout>
+
+        <include layout="@layout/brave_rewards_panel_payout_layout" />
+
     </LinearLayout>
 
 </merge>

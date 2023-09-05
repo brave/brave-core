@@ -59,6 +59,8 @@ class BraveRewardsNativeWorker
 
   double GetVbatDeadline(JNIEnv* env);
 
+  base::android::ScopedJavaLocalRef<jstring> GetPayoutStatus(JNIEnv* env);
+
   void GetUserType(JNIEnv* env);
 
   void FetchBalance(JNIEnv* env);

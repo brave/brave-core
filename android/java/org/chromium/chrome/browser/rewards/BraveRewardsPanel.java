@@ -106,6 +106,9 @@ public class BraveRewardsPanel
             "https://support.brave.com/hc/en-us/articles/6539887971469";
     public static final String NEW_SIGNUP_DISABLED_URL =
             "https://support.brave.com/hc/en-us/articles/9312922941069";
+    private static final String ADS_PAYOUT_STATUS_URL =
+            "https://community.brave.com/t/ads-payout-status-update/287895";
+    private static final String SUPPORT_URL = "https://support.brave.com";
     private static final String BRAVE_REWARDS_PAGE = "https://brave.com/rewards";
     private static final String BRAVE_REWARDS_CHANGES_PAGE = "https://brave.com/rewards-changes";
 
@@ -144,6 +147,11 @@ public class BraveRewardsPanel
     private static final String ERROR_CONVERT_PROBI = "ERROR";
     public static final String WALLET_GENERATION_DISABLED_ERROR = "wallet-generation-disabled";
 
+    // Payout status
+    private static final String PAYOUT_STATUS_PENDING = "pending";
+    private static final String PAYOUT_STATUS_PROCESSING = "processing";
+    private static final String PAYOUT_STATUS_COMPLETE = "complete";
+
     private static final int CLICK_DISABLE_INTERVAL = 1000; // In milliseconds
 
     public enum NotificationClickAction {
@@ -165,6 +173,7 @@ public class BraveRewardsPanel
     private BraveRewardsHelper mIconFetcher;
 
     private LinearLayout mRewardsSummaryDetailLayout;
+    private LinearLayout mPayoutStatusBannerLayout;
     private CardView mRewardsTipLayout;
     private LinearLayout mBtnTip;
     private ImageView mImgTip;
@@ -339,6 +348,8 @@ public class BraveRewardsPanel
         mRewardsMainLayout = mPopupView.findViewById(R.id.rewards_main_layout);
         mRewardsSummaryDetailLayout =
                 mPopupView.findViewById(R.id.brave_rewards_panel_summary_layout_id);
+        mPayoutStatusBannerLayout =
+                mPopupView.findViewById(R.id.brave_rewards_panel_payout_layout_id);
         mRewardsTipLayout = mPopupView.findViewById(R.id.brave_rewards_panel_tip_layout_id);
 
         mRewardsVbatExpireNoticeModal =
@@ -347,6 +358,7 @@ public class BraveRewardsPanel
 
         mWalletBalanceProgress = mPopupView.findViewById(R.id.wallet_progress_bar_group);
     }
+
     // Rewards main layout changes
     private void showRewardsMainUI() {
         if (mRewardsMainLayout == null) {
@@ -1013,6 +1025,61 @@ public class BraveRewardsPanel
                 estimatedRange.setText(estimatedValue);
             }
         }
+        showPayoutStatusBanner(nextPaymentDate);
+    }
+
+    private void showPayoutStatusBanner(double nextPaymentDate) {
+        String payoutStatus = mBraveRewardsNativeWorker.getPayoutStatus();
+        if (mPayoutStatusBannerLayout != null && !TextUtils.isEmpty(payoutStatus)
+                && mExternalWallet != null
+                && mExternalWallet.getStatus() == WalletStatus.CONNECTED) {
+            String currentDate = (String) android.text.format.DateFormat.format("MMMM", new Date());
+            mPayoutStatusBannerLayout.setVisibility(View.VISIBLE);
+            ImageView payoutBannerImg = mPopupView.findViewById(R.id.payout_banner_img);
+            TextView payoutBannerText = mPopupView.findViewById(R.id.payout_banner_text);
+            if (payoutStatus.equals(PAYOUT_STATUS_PENDING)) {
+                if (nextPaymentDate > 0) {
+                    String nextPayoutDate = (String) android.text.format.DateFormat.format(
+                            "MMMM dd", new Date((long) nextPaymentDate));
+                    mPayoutStatusBannerLayout.setBackgroundDrawable(ResourcesCompat.getDrawable(
+                            ContextUtils.getApplicationContext().getResources(),
+                            R.drawable.rewards_panel_payout_processing_bg, null));
+                    payoutBannerImg.setImageResource(R.drawable.ic_payout_status_pending);
+                    payoutBannerText.setText(
+                            String.format(mPopupView.getResources().getString(
+                                                  R.string.rewards_panel_payout_pending_text),
+                                    currentDate, nextPayoutDate));
+                }
+            } else if (payoutStatus.equals(PAYOUT_STATUS_PROCESSING)) {
+                mPayoutStatusBannerLayout.setBackgroundDrawable(ResourcesCompat.getDrawable(
+                        ContextUtils.getApplicationContext().getResources(),
+                        R.drawable.rewards_panel_payout_processing_bg, null));
+                payoutBannerImg.setVisibility(View.GONE);
+                SpannableString spannableBannerText = spannableClickSpan(
+                        String.format(mPopupView.getResources().getString(
+                                              R.string.rewards_panel_payout_processing_text),
+                                currentDate,
+                                mPopupView.getResources().getString(
+                                        R.string.rewards_panel_payout_check_status_text)),
+                        mPopupView.getResources().getString(
+                                R.string.rewards_panel_payout_check_status_text),
+                        ADS_PAYOUT_STATUS_URL);
+                payoutBannerText.setMovementMethod(LinkMovementMethod.getInstance());
+                payoutBannerText.setText(spannableBannerText);
+            } else if (payoutStatus.equals(PAYOUT_STATUS_COMPLETE)) {
+                mPayoutStatusBannerLayout.setBackgroundDrawable(ResourcesCompat.getDrawable(
+                        ContextUtils.getApplicationContext().getResources(),
+                        R.drawable.rewards_panel_payout_complete_bg, null));
+                payoutBannerImg.setImageResource(R.drawable.ic_payout_status_complete);
+                SpannableString spannableBannerText = spannableClickSpan(
+                        String.format(mPopupView.getResources().getString(
+                                              R.string.rewards_panel_payout_complete_text),
+                                currentDate, mPopupView.getResources().getString(R.string.support)),
+                        mPopupView.getResources().getString(R.string.support), SUPPORT_URL);
+                payoutBannerText.setMovementMethod(LinkMovementMethod.getInstance());
+                payoutBannerText.setText(spannableBannerText);
+            }
+        }
     }
 
     @Override
@@ -1588,6 +1655,22 @@ public class BraveRewardsPanel
 
         ss.setSpan(clickableSpan, learnMoreIndex,
                 learnMoreIndex + mActivity.getResources().getString(R.string.learn_more).length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return ss;
+    }
+
+    private SpannableString spannableClickSpan(
+            String mainText, String clickableText, String clickUrl) {
+        Spanned textMain = BraveRewardsHelper.spannedFromHtmlString(mainText);
+
+        SpannableString ss = new SpannableString(textMain.toString());
+
+        NoUnderlineClickableSpan clickableSpan =
+                new NoUnderlineClickableSpan(mActivity, R.color.brave_rewards_modal_theme_color,
+                        (textView) -> { CustomTabActivity.showInfoPage(mActivity, clickUrl); });
+        int clickableTextIndex = mainText.indexOf(clickableText);
+
+        ss.setSpan(clickableSpan, clickableTextIndex, clickableTextIndex + clickableText.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return ss;
     }
