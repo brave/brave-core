@@ -50,6 +50,7 @@ export const NftAssetHeader = ({ assetName, tokenId, showSendButton, onBack, onS
     >
       <Row
         justifyContent='flex-start'
+        margin='0px 6px 0px 0px'
       >
         <CircleButton
           size={28}
