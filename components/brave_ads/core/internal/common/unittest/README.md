@@ -115,6 +115,10 @@ You can add one or more responses per request, which will be returned in the giv
 
     MockUrlResponses(ads_client_mock_, url_responses);
 
+## Mocking Settings
+
+See [settings_unittest_util.h](../../settings/settings_unittest_util.h).
+
 ## Mocking Client
 
 | mock  | type  | default  | example  |

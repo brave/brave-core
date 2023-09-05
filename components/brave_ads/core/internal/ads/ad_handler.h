@@ -9,11 +9,11 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_handler.h"
-#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_handler.h"
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_handler.h"
-#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_handler.h"
-#include "brave/components/brave_ads/core/internal/ads/search_result_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/inline_content_ad/inline_content_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad/new_tab_page_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad/notification_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad/promoted_content_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_observer.h"

@@ -37,11 +37,11 @@
 #include "brave/components/brave_ads/browser/feature/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/reminder_util.h"
-#include "brave/components/brave_ads/core/public/ad_constants.h"
 #include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads/notification_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/feature/brave_ads_feature.h"
 #include "brave/components/brave_ads/core/public/feature/notification_ad_feature.h"
@@ -1523,11 +1523,11 @@ void AdsServiceImpl::ResetAdEventHistoryForId(const std::string& id) {
 }
 
 void AdsServiceImpl::GetBrowsingHistory(const int max_count,
-                                        const int days_ago,
+                                        const int recent_day_range,
                                         GetBrowsingHistoryCallback callback) {
   const std::u16string search_text;
   history::QueryOptions options;
-  options.SetRecentDayRange(days_ago);
+  options.SetRecentDayRange(recent_day_range);
   options.max_count = max_count;
   options.duplicate_policy = history::QueryOptions::REMOVE_ALL_DUPLICATES;
   history_service_->QueryHistory(

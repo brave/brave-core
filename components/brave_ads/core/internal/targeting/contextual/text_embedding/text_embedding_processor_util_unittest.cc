@@ -16,36 +16,6 @@ namespace brave_ads {
 
 class BraveAdsTextEmbeddingProcessorUtilTest : public UnitTestBase {};
 
-TEST_F(BraveAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
-  // Arrange
-  const std::vector<std::tuple<std::string, std::string>> samples = {
-      {R"(<meta property="og:title" content="test">)", "test"},
-      {R"(<meta property="og:title" content=" testing   ">)", "testing"},
-      {R"(<meta property="og:title" content="test (string) - for 78 unittest 246">)",
-       "test string for unittest"},
-      {R"(<meta property="og:title" content="Test this,string - for UNiTTeST">)",
-       "test this string for unittest"},
-      {R"(<meta property="og:title" content="Test string, string,... for unittest">)",
-       "test string string for unittest"},
-      {R"(<meta property="og:title" content="Test string1, string2,... for unittest">)",
-       "test for unittest"},
-      {R"(<meta property="og:tt" content=" testing   ">)", {}},
-      {R"(<meta property="og:title" cc=" testing   ">)", {}},
-      {R"(<meta property="og:title" content="test")", {}},
-      {R"(meta property="og:title" content="test">)", {}},
-      {"<div>", {}},
-      {"<>", {}},
-      {" ", {}},
-      {{}, {}}};
-
-  for (const auto& [html, expected_text] : samples) {
-    // Act
-
-    // Assert
-    EXPECT_EQ(expected_text, SanitizeHtml(html));
-  }
-}
-
 TEST_F(BraveAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
   // Arrange
   const std::vector<std::tuple<std::string, std::string>> samples = {
@@ -61,9 +31,8 @@ TEST_F(BraveAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
       {" ", {}},
       {{}, {}}};
 
+  // Act
   for (const auto& [text, expected_sanitized_text] : samples) {
-    // Act
-
     // Assert
     EXPECT_EQ(expected_sanitized_text, SanitizeText(text));
   }

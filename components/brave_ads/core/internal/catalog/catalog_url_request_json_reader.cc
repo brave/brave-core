@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/json/json_helper.h"
-#include "brave/components/brave_ads/core/public/ad_constants.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "url/gurl.h"
 
 namespace brave_ads::json::reader {

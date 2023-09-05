@@ -43,7 +43,7 @@ void AppendSignalToHistory(
 
 KeywordList ToKeywords(const std::string& value) {
   return base::SplitString(
-      StripNonAlphaNumericCharacters(base::ToLowerASCII(value)), " ",
+      base::ToLowerASCII(StripNonAlphaNumericCharacters(value)), " ",
       base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 }
 

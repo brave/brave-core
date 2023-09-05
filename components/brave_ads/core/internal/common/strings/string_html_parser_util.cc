@@ -14,29 +14,33 @@ constexpr int kPrefixPadding = 2;
 
 namespace brave_ads {
 
-std::string ParseHtmlTagAttribute(const std::string& html,
-                                  const std::string& tag_substr,
-                                  const std::string& tag_attribute) {
-  std::string tag_text;
-  re2::RE2::PartialMatch(html, base::StrCat({"(<[^>]*", tag_substr, "[^<]*>)"}),
-                         &tag_text);
+std::string ParseHtmlTagNameAttribute(const std::string& html,
+                                      const std::string& tag,
+                                      const std::string& name_attribute) {
+  std::string tag_value;
+  re2::RE2::PartialMatch(html, base::StrCat({"(<[^>]*", tag, "[^<]*>)"}),
+                         &tag_value);
 
-  std::string trailing;
-  re2::RE2::PartialMatch(tag_text, base::StrCat({"(", tag_attribute, "=.*>)"}),
-                         &trailing);
+  std::string text;
+  re2::RE2::PartialMatch(tag_value,
+                         base::StrCat({"(", name_attribute, "=.*>)"}), &text);
 
-  std::string attribute_text;
-  if (trailing.length() > tag_attribute.length() + kPrefixPadding) {
-    const std::string delimiter =
-        trailing.substr(tag_attribute.length() + 1, 1);
-    re2::RE2::PartialMatch(
-        trailing,
-        base::StrCat({"(", delimiter, "[^", delimiter, "]*", delimiter, ")"}),
-        &attribute_text);
-    attribute_text =
-        attribute_text.substr(1, attribute_text.length() - kPrefixPadding);
+  if (text.length() <= name_attribute.length() + kPrefixPadding) {
+    return {};
   }
-  return attribute_text;
+
+  const std::string delimiter = text.substr(name_attribute.length() + 1, 1);
+
+  const std::string r =
+      base::StrCat({"(", delimiter, "[^", delimiter, "]*", delimiter, ")"});
+
+  std::string name_attribute_value;
+  if (!re2::RE2::PartialMatch(text, r, &name_attribute_value)) {
+    return {};
+  }
+
+  return name_attribute_value.substr(
+      1, name_attribute_value.length() - kPrefixPadding);
 }
 
 }  // namespace brave_ads

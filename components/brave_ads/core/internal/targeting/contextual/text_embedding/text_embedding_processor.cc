@@ -9,6 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
+#include "brave/components/brave_ads/core/internal/common/strings/string_html_parser_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
@@ -20,6 +21,13 @@
 #include "url/gurl.h"
 
 namespace brave_ads {
+
+namespace {
+
+constexpr char kTag[] = "og:title";
+constexpr char kNameAttribute[] = "content";
+
+}  // namespace
 
 TextEmbeddingProcessor::TextEmbeddingProcessor(TextEmbeddingResource& resource)
     : resource_(resource) {
@@ -35,7 +43,8 @@ void TextEmbeddingProcessor::Process(const std::string& html) {
     return;
   }
 
-  const std::string text = SanitizeHtml(html);
+  const std::string text =
+      SanitizeText(ParseHtmlTagNameAttribute(html, kTag, kNameAttribute));
   if (text.empty()) {
     return BLOG(1, "No text available for embedding");
   }

@@ -5,7 +5,6 @@
 
 source_set("headers") {
   sources = [
-    "ad_constants.h",
     "ad_info.h",
     "ad_type.h",
     "ads.h",
@@ -25,6 +24,7 @@ source_set("headers") {
     "ads/promoted_content_ad_info.h",
     "ads/promoted_content_ad_value_util.h",
     "ads_callback.h",
+    "ads_constants.h",
     "ads_util.h",
     "client/ads_client.h",
     "client/ads_client_callback.h",

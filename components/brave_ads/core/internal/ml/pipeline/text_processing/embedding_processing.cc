@@ -80,7 +80,7 @@ TextEmbeddingInfo EmbeddingProcessing::EmbedText(
 
   for (const auto& token : tokens) {
     const auto iter = embedding_pipeline_.embeddings.find(token);
-    if (iter == embedding_pipeline_.embeddings.end()) {
+    if (iter == embedding_pipeline_.embeddings.cend()) {
       BLOG(9,
            token << " - text embedding token not found in resource vocabulary");
       continue;

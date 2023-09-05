@@ -309,7 +309,7 @@ class AdsServiceImpl : public AdsService,
   void ResetAdEventHistoryForId(const std::string& id) override;
 
   void GetBrowsingHistory(int max_count,
-                          int days_ago,
+                          int recent_day_range,
                           GetBrowsingHistoryCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL

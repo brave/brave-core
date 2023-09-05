@@ -96,6 +96,7 @@ absl::optional<PredictionMap> TextProcessing::Apply(
 absl::optional<PredictionMap> TextProcessing::GetTopPredictions(
     const std::string& text) const {
   std::string stripped_text = StripNonAlphaCharacters(text);
+
   const absl::optional<PredictionMap> predictions =
       Apply(std::make_unique<TextData>(std::move(stripped_text)));
   if (!predictions) {
