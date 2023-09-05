@@ -25,7 +25,7 @@ enum AssetDetailType: Identifiable {
   var id: String {
     switch self {
     case .blockchainToken(let token):
-      return token.tokenId
+      return token.id
     case .coinMarket(let coinMarket):
       return coinMarket.id
     }
