@@ -17,6 +17,13 @@ class AutocompleteProviderClient;
 class AutocompleteProviderListener;
 
 namespace commander {
+
+// Used to distinguish matches for command items from regular
+// AutocompleteMatches. Other match types are defined in an enum, but to avoid
+// patching as much as possible, we're just using this marker in the
+// additional_info lookup to determine whether to show our custom icon.
+constexpr char kCommanderMatchMarker[] = "command-match";
+
 class CommanderProvider
     : public AutocompleteProvider,
       public commander::CommanderFrontendDelegate::Observer {
