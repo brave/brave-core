@@ -16,6 +16,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/optimization_guide/optimization_guide_internals/webui/url_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -44,6 +45,15 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, NTPFaviconTest) {
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, LoadWebUIURLWithBadSchemeTest) {
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), GURL("http://settings/")));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, DisabledFeatureURLLoadTest) {
+  // We disabled optimization hints but loading related url should not be
+  // crashed. See https://bugs.chromium.org/p/chromium/issues/detail?id=1476101
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), GURL(content::GetWebUIURLString(
+                     optimization_guide_internals::
+                         kChromeUIOptimizationGuideInternalsHost))));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {

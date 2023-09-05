@@ -30,6 +30,8 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/url_constants.h"
+#include "components/optimization_guide/core/optimization_guide_features.h"
+#include "components/optimization_guide/optimization_guide_internals/webui/url_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_utils.h"
@@ -315,6 +317,14 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
     return WebUI::kNoWebUI;
   }
 #endif
+
+  // Early return to prevent upstream create its WebUI.
+  if (url.host_piece() == optimization_guide_internals::
+                              kChromeUIOptimizationGuideInternalsHost &&
+      !optimization_guide::features::IsOptimizationHintsEnabled()) {
+    return WebUI::kNoWebUI;
+  }
+
   Profile* profile = Profile::FromBrowserContext(browser_context);
   WebUIFactoryFunction function =
       GetWebUIFactoryFunction(nullptr, profile, url);
