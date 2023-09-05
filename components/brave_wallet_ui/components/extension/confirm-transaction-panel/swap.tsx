@@ -43,7 +43,7 @@ import { Origin } from './common/origin'
 import { EditPendingTransactionGas } from './common/gas'
 
 // Components
-import { TransactionQueueStep } from './common/queue'
+import { TransactionQueueSteps } from './common/queue'
 import { Footer } from './common/footer'
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
 import {
@@ -78,7 +78,10 @@ export function ConfirmSwapTransaction () {
     updateUnapprovedTransactionNonce,
     selectedPendingTransaction,
     onConfirm,
-    onReject
+    onReject,
+    queueNextTransaction,
+    transactionQueueNumber,
+    transactionsQueueLength
   } = usePendingTransactions()
 
   // queries
@@ -124,7 +127,11 @@ export function ConfirmSwapTransaction () {
     <StyledWrapper>
       <TopRow>
         <NetworkText />
-        <TransactionQueueStep />
+        <TransactionQueueSteps
+          queueNextTransaction={queueNextTransaction}
+          transactionQueueNumber={transactionQueueNumber}
+          transactionsQueueLength={transactionsQueueLength}
+        />
       </TopRow>
 
       <HeaderTitle>{getLocale('braveWalletSwapReviewHeader')}</HeaderTitle>

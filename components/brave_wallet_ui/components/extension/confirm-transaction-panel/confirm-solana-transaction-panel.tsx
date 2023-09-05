@@ -25,6 +25,8 @@ import CreateSiteOrigin from '../../shared/create-site-origin/index'
 import PanelTab from '../panel-tab'
 import { TransactionInfo } from './transaction-info'
 import { SolanaTransactionDetailBox } from '../transaction-box/solana-transaction-detail-box'
+import { TransactionQueueSteps } from './common/queue'
+import { Footer } from './common/footer'
 
 // Styles
 import { Skeleton } from '../../shared/loading-skeleton/styles'
@@ -58,8 +60,6 @@ import {
   SmallLoadIcon
 } from './style'
 import { StatusBubble } from '../../shared/style'
-import { TransactionQueueStep } from './common/queue'
-import { Footer } from './common/footer'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
@@ -93,7 +93,10 @@ export const ConfirmSolanaTransactionPanel = () => {
     selectedPendingTransactionGroupIndex,
     selectedPendingTransaction,
     onConfirm,
-    onReject
+    onReject,
+    queueNextTransaction,
+    transactionQueueNumber,
+    transactionsQueueLength
   } = usePendingTransactions()
   const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
 
@@ -123,7 +126,11 @@ export const ConfirmSolanaTransactionPanel = () => {
 
       <TopRow>
         <NetworkText>{transactionsNetwork.chainName}</NetworkText>
-        <TransactionQueueStep />
+        <TransactionQueueSteps
+          queueNextTransaction={queueNextTransaction}
+          transactionQueueNumber={transactionQueueNumber}
+          transactionsQueueLength={transactionsQueueLength}
+        />
       </TopRow>
 
       <AccountCircleWrapper>
