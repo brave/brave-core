@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index cc4fbda7ddfa830909de196359217c82182331de..f725e33eb318d880b6001d64396151b77fc2ebf0 100644
+index 8ffa857f767e88ade3a2ef8f92a1aa05a9f0d032..bf05c1b027ece40fe2b3f6ea96d3cfb49a5d9a31 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -694,6 +694,7 @@ static_library("ui") {
@@ -10,7 +10,7 @@ index cc4fbda7ddfa830909de196359217c82182331de..f725e33eb318d880b6001d64396151b7
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -4296,10 +4297,13 @@ static_library("ui") {
+@@ -4298,10 +4299,13 @@ static_library("ui") {
        ]
        deps += [ "//chrome/updater/app/server/win:updater_legacy_idl_idl" ]
      } else {
