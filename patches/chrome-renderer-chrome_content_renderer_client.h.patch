@@ -1,27 +1,8 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.h b/chrome/renderer/chrome_content_renderer_client.h
-index 1155b6757064a0501d5f7207b08f659f95160554..ad9b04c91795fa540ff6f6a51bcf90cbdf07a396 100644
+index 1155b6757064a0501d5f7207b08f659f95160554..2b7b1021afb97d47a6a1332bd8e43369401f0887 100644
 --- a/chrome/renderer/chrome_content_renderer_client.h
 +++ b/chrome/renderer/chrome_content_renderer_client.h
-@@ -35,6 +35,8 @@
- #include "services/service_manager/public/cpp/local_interface_provider.h"
- #include "third_party/blink/public/common/thread_safe_browser_interface_broker_proxy.h"
- #include "v8/include/v8-forward.h"
-+#include "components/pdf/renderer/pdf_accessibility_tree.h"
-+ #include "brave/components/ai_chat/renderer/page_content_extractor.h"
- 
- #if BUILDFLAG(IS_WIN)
- #include "chrome/common/conflicts/remote_module_watcher_win.h"
-@@ -211,7 +213,8 @@ class ChromeContentRendererClient
-   static blink::WebPlugin* CreatePlugin(
-       content::RenderFrame* render_frame,
-       const blink::WebPluginParams& params,
--      const chrome::mojom::PluginInfo& plugin_info);
-+      const chrome::mojom::PluginInfo& plugin_info,
-+      service_manager::BinderRegistry* registry);
- #endif
- 
- #if BUILDFLAG(ENABLE_PLUGINS) && BUILDFLAG(ENABLE_EXTENSIONS)
-@@ -233,6 +236,7 @@ class ChromeContentRendererClient
+@@ -233,6 +233,7 @@ class ChromeContentRendererClient
  #endif
  
   private:
@@ -29,11 +10,3 @@ index 1155b6757064a0501d5f7207b08f659f95160554..ad9b04c91795fa540ff6f6a51bcf90cb
    FRIEND_TEST_ALL_PREFIXES(ChromeContentRendererClientTest, NaClRestriction);
    FRIEND_TEST_ALL_PREFIXES(ChromeContentRendererClientTest,
                             ShouldSuppressErrorPage);
-@@ -270,6 +274,7 @@ class ChromeContentRendererClient
-   std::unique_ptr<ChromeRenderThreadObserver> chrome_observer_;
-   std::unique_ptr<web_cache::WebCacheImpl> web_cache_impl_;
-   std::unique_ptr<chrome::WebRtcLoggingAgentImpl> webrtc_logging_agent_impl_;
-+  raw_ptr<service_manager::BinderRegistry> registry_;
- 
- #if BUILDFLAG(ENABLE_SPELLCHECK)
-   std::unique_ptr<SpellCheck> spellcheck_;

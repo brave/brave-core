@@ -1,16 +1,7 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index 43fc365662842d453189bc60b98abc46678b802e..d5ceb9766b38f6b03763ad17bf347dfff2d047f4 100644
+index 43fc365662842d453189bc60b98abc46678b802e..bd69a8172af2ac67f6e24d8041725b60a0e8a096 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
-@@ -565,7 +565,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
-     content::RenderFrame* render_frame) {
-   ChromeRenderFrameObserver* render_frame_observer =
-       new ChromeRenderFrameObserver(render_frame, web_cache_impl_.get());
--  service_manager::BinderRegistry* registry = render_frame_observer->registry();
-+  registry_ = render_frame_observer->registry();
- 
-   new prerender::PrerenderRenderFrameObserver(render_frame);
- 
 @@ -579,7 +579,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
        ChromeExtensionsRendererClient::GetInstance()->extension_dispatcher());
  #endif
@@ -20,40 +11,6 @@ index 43fc365662842d453189bc60b98abc46678b802e..d5ceb9766b38f6b03763ad17bf347dff
            render_frame, should_allow_for_content_settings,
            std::move(content_settings_delegate));
    if (chrome_observer_.get()) {
-@@ -593,7 +593,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
- 
- #if BUILDFLAG(ENABLE_EXTENSIONS)
-   ChromeExtensionsRendererClient::GetInstance()->RenderFrameCreated(
--      render_frame, registry);
-+      render_frame, registry_);
- #endif
- 
- #if BUILDFLAG(ENABLE_PPAPI)
-@@ -605,7 +605,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
- #endif
- 
- #if BUILDFLAG(SAFE_BROWSING_DB_LOCAL) || BUILDFLAG(SAFE_BROWSING_DB_REMOTE)
--  safe_browsing::ThreatDOMDetails::Create(render_frame, registry);
-+  safe_browsing::ThreatDOMDetails::Create(render_frame, registry_);
- #endif
- 
- #if BUILDFLAG(ENABLE_PRINTING)
-@@ -748,13 +748,13 @@ void ChromeContentRendererClient::RenderFrameCreated(
-   new SpellCheckProvider(render_frame, spellcheck_.get(), this);
- 
- #if BUILDFLAG(HAS_SPELLCHECK_PANEL)
--  new SpellCheckPanel(render_frame, registry, this);
-+  new SpellCheckPanel(render_frame, registry_, this);
- #endif  // BUILDFLAG(HAS_SPELLCHECK_PANEL)
- #endif
- #if BUILDFLAG(ENABLE_FEED_V2)
-   if (render_frame->IsMainFrame() &&
-       base::FeatureList::IsEnabled(feed::kWebFeed)) {
--    new feed::RssLinkReader(render_frame, registry);
-+    new feed::RssLinkReader(render_frame, registry_);
-   }
- #endif
- 
 @@ -766,6 +766,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
                                  render_frame));
    }
@@ -62,31 +19,3 @@ index 43fc365662842d453189bc60b98abc46678b802e..d5ceb9766b38f6b03763ad17bf347dff
  }
  
  void ChromeContentRendererClient::WebViewCreated(
-@@ -870,7 +871,7 @@ bool ChromeContentRendererClient::OverrideCreatePlugin(
-   GetPluginInfoHost()->GetPluginInfo(
-       url, render_frame->GetWebFrame()->Top()->GetSecurityOrigin(),
-       orig_mime_type, &plugin_info);
--  *plugin = CreatePlugin(render_frame, params, *plugin_info);
-+  *plugin = CreatePlugin(render_frame, params, *plugin_info, registry_);
- #else  // !BUILDFLAG(ENABLE_PLUGINS)
-   PluginUMAReporter::GetInstance()->ReportPluginMissing(orig_mime_type, url);
-   if (orig_mime_type == kPDFMimeType) {
-@@ -928,7 +929,8 @@ ChromeContentRendererClient::GetPluginInfoHost() {
- WebPlugin* ChromeContentRendererClient::CreatePlugin(
-     content::RenderFrame* render_frame,
-     const WebPluginParams& original_params,
--    const chrome::mojom::PluginInfo& plugin_info) {
-+    const chrome::mojom::PluginInfo& plugin_info,
-+    service_manager::BinderRegistry* registry) {
-   const WebPluginInfo& info = plugin_info.plugin;
-   const std::string& actual_mime_type = plugin_info.actual_mime_type;
-   const std::u16string& group_name = plugin_info.group_name;
-@@ -1109,7 +1111,7 @@ WebPlugin* ChromeContentRendererClient::CreatePlugin(
-         if (info.path.value() == ChromeContentClient::kPDFInternalPluginPath) {
-           return pdf::CreateInternalPlugin(
-               std::move(params), render_frame,
--              std::make_unique<ChromePdfInternalPluginDelegate>());
-+              std::make_unique<ChromePdfInternalPluginDelegate>(), registry);
-         }
- #endif  // BUILDFLAG(ENABLE_PDF)
- 
