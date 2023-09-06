@@ -17,6 +17,7 @@
 #undef TabGroupStyle
 
 const int TabGroupStyle::kStrokeThicknessForVerticalTabs = 4;
+const int TabGroupStyle::kTitleAdjustment = 2;
 
 SkPath TabGroupStyle::GetUnderlinePath(gfx::Rect local_bounds) const {
   if (!ShouldShowVerticalTabs()) {
@@ -55,4 +56,9 @@ bool TabGroupStyle::ShouldShowVerticalTabs() const {
   }
 
   return tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser());
+}
+
+int TabGroupStyle::GetTitleAdjustmentToTabGroupHeaderDesiredWidth(
+    const std::u16string title) const {
+  return kTitleAdjustment;
 }
