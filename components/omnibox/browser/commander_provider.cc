@@ -72,6 +72,7 @@ void CommanderProvider::OnCommanderUpdated() {
     const auto& option = items[i];
     AutocompleteMatch match(this, rank--, false,
                             AutocompleteMatchType::BOOKMARK_TITLE);
+    match.RecordAdditionalInfo(kCommanderMatchMarker, true);
     match.takeover_action =
         base::MakeRefCounted<CommanderAction>(i, delegate->GetResultSetId());
 
@@ -82,8 +83,7 @@ void CommanderProvider::OnCommanderUpdated() {
       match.contents_class = {
           ACMatchClassification(0, ACMatchClassification::DIM)};
     }
-    match.description =
-        base::StrCat({commander::kCommandPrefix, u" ", option.title});
+    match.description = option.title;
     match.allowed_to_be_default_match = true;
     match.swap_contents_and_description = true;
     // We don't want to change the prompt at all while the user is going through
@@ -92,9 +92,6 @@ void CommanderProvider::OnCommanderUpdated() {
     match.description_class = {
         ACMatchClassification(0, ACMatchClassification::DIM)};
 
-    // All commands have a ":> " prefix added to them, so make sure we take it
-    // into account when mapping over the matched ranges.
-    const int offset = commander::kCommandPrefix.size() + 1;
     for (size_t j = 0; j < option.matched_ranges.size(); ++j) {
       auto range = option.matched_ranges[j];
       // If the match has no length (as in the case of the empty string match)
@@ -103,18 +100,24 @@ void CommanderProvider::OnCommanderUpdated() {
         continue;
       }
 
-      // Start the match classification at the start of the matching range.
-      match.description_class.push_back(ACMatchClassification(
-          range.start() + offset, ACMatchClassification::MATCH));
+      // If the match starts from the beginning of the text, convert our
+      // starting style to MATCH.
+      if (range.start() == 0) {
+        match.description_class[0].style = ACMatchClassification::MATCH;
+      } else {
+        // Otherwise, change the style to be match, from this token onwards.
+        match.description_class.push_back(
+            ACMatchClassification(range.start(), ACMatchClassification::MATCH));
+      }
 
       // If the end of the range isn't the last character in the string, and
       // this range doesn't intersect with the next one, change the
       // classification back to DIM from the end of this range.
-      if (range.end() + offset < match.description.size() &&
+      if (range.end() < match.description.size() &&
           (j + 1 >= option.matched_ranges.size() ||
            option.matched_ranges[j + 1].start() > range.end())) {
-        match.description_class.push_back(ACMatchClassification(
-            range.end() + offset, ACMatchClassification::DIM));
+        match.description_class.push_back(
+            ACMatchClassification(range.end(), ACMatchClassification::DIM));
       }
     }
     matches_.push_back(match);

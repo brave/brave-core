@@ -21,6 +21,7 @@
 #include "brave/components/commander/common/constants.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
@@ -29,8 +30,6 @@
 #include "ui/gfx/range/range.h"
 
 namespace {
-const unsigned int kClassificationOffset =
-    1u + commander::kCommandPrefix.size();
 
 class FakeCommanderDelegate : public commander::CommanderFrontendDelegate {
  public:
@@ -157,10 +156,10 @@ TEST_F(CommanderProviderTest, ItemsAreConvertedToMatches) {
 
   EXPECT_EQ(2u, provider()->matches().size());
 
-  EXPECT_EQ(u":> First", provider()->matches()[0].description);
+  EXPECT_EQ(u"First", provider()->matches()[0].description);
   EXPECT_EQ(u"Ctrl+F", provider()->matches()[0].contents);
 
-  EXPECT_EQ(u":> Second", provider()->matches()[1].description);
+  EXPECT_EQ(u"Second", provider()->matches()[1].description);
   EXPECT_EQ(u"Ctrl+S", provider()->matches()[1].contents);
 
   for (const auto& match : provider()->matches()) {
@@ -231,19 +230,15 @@ TEST_F(CommanderProviderTest, OneCharMatchIsHighlighted) {
 
   EXPECT_EQ(1u, provider()->matches().size());
   const auto& c = provider()->matches()[0].description_class;
-  ASSERT_EQ(3u, c.size());
-
-  // :> is DIM
-  EXPECT_EQ(0u, c[0].offset);
-  EXPECT_EQ(ACMatchClassification::DIM, c[0].style);
+  ASSERT_EQ(2u, c.size());
 
   // F is MATCH
-  EXPECT_EQ(kClassificationOffset, c[1].offset);
-  EXPECT_EQ(ACMatchClassification::MATCH, c[1].style);
+  EXPECT_EQ(0u, c[0].offset);
+  EXPECT_EQ(ACMatchClassification::MATCH, c[0].style);
 
   // oo should be DIM, as it didn't match
-  EXPECT_EQ(1u + kClassificationOffset, c[2].offset);
-  EXPECT_EQ(ACMatchClassification::DIM, c[2].style);
+  EXPECT_EQ(1u, c[1].offset);
+  EXPECT_EQ(ACMatchClassification::DIM, c[1].style);
 }
 
 // Note: The AutocompleteClassifier gets unhappy if the style switches back and
@@ -260,24 +255,19 @@ TEST_F(CommanderProviderTest, AdjacentMatchesDontSwitchBackAndForth) {
 
   const auto& c = provider()->matches()[0].description_class;
   EXPECT_EQ(1u, provider()->matches().size());
-  ASSERT_EQ(4u, c.size());
-
-  // :> Foo
-  // :> is DIM
-  EXPECT_EQ(0u, c[0].offset);
-  EXPECT_EQ(ACMatchClassification::DIM, c[0].style);
+  ASSERT_EQ(3u, c.size());
 
   // F is MATCH, but shouldn't add a closing DIM
-  EXPECT_EQ(kClassificationOffset, c[1].offset);
-  EXPECT_EQ(ACMatchClassification::MATCH, c[1].style);
+  EXPECT_EQ(0u, c[0].offset);
+  EXPECT_EQ(ACMatchClassification::MATCH, c[0].style);
 
   // first o is also MATCH
-  EXPECT_EQ(1u + kClassificationOffset, c[2].offset);
-  EXPECT_EQ(ACMatchClassification::MATCH, c[2].style);
+  EXPECT_EQ(1u, c[1].offset);
+  EXPECT_EQ(ACMatchClassification::MATCH, c[1].style);
 
   // second o should be DIM, as it didn't match
-  EXPECT_EQ(2u + kClassificationOffset, c[3].offset);
-  EXPECT_EQ(ACMatchClassification::DIM, c[3].style);
+  EXPECT_EQ(2u, c[2].offset);
+  EXPECT_EQ(ACMatchClassification::DIM, c[2].style);
 }
 
 TEST_F(CommanderProviderTest, FullLengthMatchIsApplied) {
@@ -291,16 +281,11 @@ TEST_F(CommanderProviderTest, FullLengthMatchIsApplied) {
 
   const auto& c = provider()->matches()[0].description_class;
   EXPECT_EQ(1u, provider()->matches().size());
-  ASSERT_EQ(2u, c.size());
-
-  // :> Foo
-  // :> is DIM
-  EXPECT_EQ(0u, c[0].offset);
-  EXPECT_EQ(ACMatchClassification::DIM, c[0].style);
+  ASSERT_EQ(1u, c.size());
 
   // Foo is MATCH
-  EXPECT_EQ(kClassificationOffset, c[1].offset);
-  EXPECT_EQ(ACMatchClassification::MATCH, c[1].style);
+  EXPECT_EQ(0u, c[0].offset);
+  EXPECT_EQ(ACMatchClassification::MATCH, c[0].style);
 }
 
 TEST_F(CommanderProviderTest, MatchesCanHaveGaps) {
@@ -314,23 +299,36 @@ TEST_F(CommanderProviderTest, MatchesCanHaveGaps) {
 
   const auto& c = provider()->matches()[0].description_class;
   EXPECT_EQ(1u, provider()->matches().size());
-  ASSERT_EQ(5u, c.size());
+  ASSERT_EQ(4u, c.size());
 
-  // |:> |Foo Bar is DIM
+  // |Fo|o Bar is MATCH
   EXPECT_EQ(0u, c[0].offset);
-  EXPECT_EQ(ACMatchClassification::DIM, c[0].style);
+  EXPECT_EQ(ACMatchClassification::MATCH, c[0].style);
 
-  // :> |Fo|o Bar is MATCH
-  EXPECT_EQ(kClassificationOffset, c[1].offset);
-  EXPECT_EQ(ACMatchClassification::MATCH, c[1].style);
+  EXPECT_EQ(2u, c[1].offset);
+  EXPECT_EQ(ACMatchClassification::DIM, c[1].style);
 
-  EXPECT_EQ(2u + kClassificationOffset, c[2].offset);
-  EXPECT_EQ(ACMatchClassification::DIM, c[2].style);
+  // Foo |Ba|r is MATCH
+  EXPECT_EQ(4u, c[2].offset);
+  EXPECT_EQ(ACMatchClassification::MATCH, c[2].style);
 
-  // :> Foo |Ba|r is MATCH
-  EXPECT_EQ(4u + kClassificationOffset, c[3].offset);
-  EXPECT_EQ(ACMatchClassification::MATCH, c[3].style);
+  EXPECT_EQ(6u, c[3].offset);
+  EXPECT_EQ(ACMatchClassification::DIM, c[3].style);
+}
 
-  EXPECT_EQ(6u + kClassificationOffset, c[4].offset);
-  EXPECT_EQ(ACMatchClassification::DIM, c[4].style);
+TEST_F(CommanderProviderTest, MatchesHaveCustomIcon) {
+  provider()->Start(
+      CreateInput(base::StrCat({commander::kCommandPrefix, u"FoBa"})), false);
+
+  delegate()->Notify(
+      {commander::CommandItemModel(u"Foo Bar",
+                                   {gfx::Range(0, 2), gfx::Range(4, 6)}, u""),
+       commander::CommandItemModel(u"Fizz Bazz",
+                                   {gfx::Range(0, 2), gfx::Range(4, 6)}, u"")},
+      u"What thing?");
+
+  EXPECT_EQ(2u, provider()->matches().size());
+  for (const auto& result : provider()->matches()) {
+    EXPECT_EQ(&kLeoCaratRightIcon, &result.GetVectorIcon(false, nullptr));
+  }
 }

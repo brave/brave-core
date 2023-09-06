@@ -24,6 +24,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_browser_bookmark_plural.icon",
     "leo_browser_extensions.icon",
     "leo_browser_sidebar_right.icon",
+    "leo_carat_right.icon",
     "leo_check_circle_filled.icon",
     "leo_check_circle_outline.icon",
     "leo_chrome_cast.icon",
