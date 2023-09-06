@@ -99,7 +99,7 @@ export const optInAction = styled.div`
 
 export const optInLearnMore = styled.div`
   margin-top: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
   text-align: center;
 
   a {
@@ -108,6 +108,20 @@ export const optInLearnMore = styled.div`
     font-size: 13px;
     line-height: 20px;
     letter-spacing: 0.03em;
+    text-decoration: none;
+  }
+`
+
+export const optInTerms = styled.div.attrs({
+  'data-theme': 'dark'
+})`
+  color: ${leo.color.text.tertiary};
+  text-align: center;
+  font-size: 11px;
+  line-height: 16px;
+
+  a {
+    color: ${leo.color.text.interactive};
     text-decoration: none;
   }
 `

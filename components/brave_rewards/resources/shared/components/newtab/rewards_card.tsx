@@ -21,6 +21,7 @@ import { EarningsRange } from '../earnings_range'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
 import { NewTabLink } from '../new_tab_link'
+import { TermsOfService } from '../terms_of_service'
 import { GrantOverlay } from './grant_overlay'
 import { SelectCountryCard } from './select_country_card'
 import { PaymentStatusView } from '../payment_status_view'
@@ -245,6 +246,9 @@ export function RewardsCard (props: Props) {
             {getString('rewardsHowDoesItWork')}
           </NewTabLink>
         </style.optInLearnMore>
+        <style.optInTerms>
+          <TermsOfService text={getString('rewardsOptInTerms')} />
+        </style.optInTerms>
       </style.root>
     )
   }

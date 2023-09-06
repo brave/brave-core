@@ -6,6 +6,7 @@ import * as React from 'react'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { NewTabLink } from '../new_tab_link'
+import { TermsOfService } from '../terms_of_service'
 import { BatIcon } from '../icons/bat_icon'
 import { OptInIcon } from './icons/optin_icon'
 import { MainButton } from './main_button'
@@ -47,6 +48,9 @@ export function SettingsOptInForm (props: Props) {
           {getString('rewardsLearnMore')}
         </NewTabLink>
       </style.learnMore>
+      <style.terms>
+        <TermsOfService />
+      </style.terms>
     </style.root>
   )
 }
