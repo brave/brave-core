@@ -326,7 +326,7 @@ test("brave_unit_tests") {
   }
 
   if (enable_widevine) {
-    deps += [ "//brave/browser/widevine:unittest" ]
+    deps += [ "//brave/browser/widevine:unittests" ]
   }
 
   if (enable_brave_vpn) {

@@ -5,6 +5,8 @@
 
 #include "brave/browser/widevine/widevine_utils.h"
 
+#include <string>
+
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/task/task_traits.h"
@@ -72,34 +74,37 @@ void DeleteOldWidevineBinary() {
 
 void ClearWidevinePrefs(Profile* profile) {
   PrefService* prefs = profile->GetPrefs();
-  prefs->ClearPref(kWidevineOptedIn);
+  prefs->ClearPref(kWidevineEnabled);
 }
 
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
 void InstallWidevineOnceRegistered() {
   component_updater::BraveOnDemandUpdate(kWidevineComponentId);
 }
-
+#endif
 }  // namespace
 
-void EnableWidevineCdmComponent() {
-  if (IsWidevineOptedIn())
+void EnableWidevineCdm() {
+  if (IsWidevineEnabled()) {
     return;
+  }
 
-  SetWidevineOptedIn(true);
+  SetWidevineEnabled(true);
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
   RegisterWidevineCdmComponent(g_browser_process->component_updater(),
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
                                g_browser_process->shared_url_loader_factory(),
 #endif
                                base::BindOnce(&InstallWidevineOnceRegistered));
+#endif
 }
 
-void DisableWidevineCdmComponent() {
-  if (!IsWidevineOptedIn())
+void DisableWidevineCdm() {
+  if (!IsWidevineEnabled()) {
     return;
+  }
 
-  SetWidevineOptedIn(false);
-  g_browser_process->component_updater()->UnregisterComponent(
-      kWidevineComponentId);
+  SetWidevineEnabled(false);
 }
 
 int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart) {
@@ -107,6 +112,8 @@ int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart) {
   return for_restart
              ? IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER
              : IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL;
+#elif BUILDFLAG(IS_ANDROID)
+  return IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_ANDROID;
 #else
   return IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT;
 #endif
@@ -119,26 +126,21 @@ void RequestWidevinePermission(content::WebContents* web_contents,
                    new WidevinePermissionRequest(web_contents, for_restart));
 }
 
-void DontAskWidevineInstall(content::WebContents* web_contents, bool dont_ask) {
-  Profile* profile = static_cast<Profile*>(web_contents->GetBrowserContext());
-  profile->GetPrefs()->SetBoolean(kAskWidevineInstall, !dont_ask);
-}
-
 void RegisterWidevineProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(kWidevineOptedIn, false);
+  registry->RegisterBooleanPref(kWidevineEnabled, false);
 }
 
 void RegisterWidevineLocalstatePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kWidevineOptedIn, false);
+  registry->RegisterBooleanPref(kWidevineEnabled, false);
 }
 
-bool IsWidevineOptedIn() {
-  return g_browser_process->local_state()->GetBoolean(kWidevineOptedIn);
+bool IsWidevineEnabled() {
+  return g_browser_process->local_state()->GetBoolean(kWidevineEnabled);
 }
 
-void SetWidevineOptedIn(bool opted_in) {
-  g_browser_process->local_state()->SetBoolean(kWidevineOptedIn, opted_in);
+void SetWidevineEnabled(bool opted_in) {
+  g_browser_process->local_state()->SetBoolean(kWidevineEnabled, opted_in);
 }
 
 void MigrateWidevinePrefs(Profile* profile) {
@@ -148,10 +150,10 @@ void MigrateWidevinePrefs(Profile* profile) {
   // If migration is done, local state doesn't have default value because
   // they were explicitly set by primary prefs' value. After that, we don't
   // need to try migration again and prefs from profiles are already cleared.
-  if (local_state->FindPreference(kWidevineOptedIn)->IsDefaultValue()) {
+  if (local_state->FindPreference(kWidevineEnabled)->IsDefaultValue()) {
     PrefService* prefs = profile->GetPrefs();
-    local_state->SetBoolean(kWidevineOptedIn,
-                            prefs->GetBoolean(kWidevineOptedIn));
+    local_state->SetBoolean(kWidevineEnabled,
+                            prefs->GetBoolean(kWidevineEnabled));
   }
 
   // Clear deprecated prefs.

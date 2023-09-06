@@ -115,7 +115,7 @@ base::Value::List GetEnsOffchainResolveMethodList() {
 BraveDefaultExtensionsHandler::BraveDefaultExtensionsHandler()
     : weak_ptr_factory_(this) {
 #if BUILDFLAG(ENABLE_WIDEVINE)
-  was_widevine_enabled_ = IsWidevineOptedIn();
+  was_widevine_enabled_ = ::IsWidevineEnabled();
 #endif
 }
 
@@ -212,7 +212,7 @@ void BraveDefaultExtensionsHandler::InitializePrefCallbacks() {
 #if BUILDFLAG(ENABLE_WIDEVINE)
   local_state_change_registrar_.Init(g_browser_process->local_state());
   local_state_change_registrar_.Add(
-      kWidevineOptedIn,
+      kWidevineEnabled,
       base::BindRepeating(
           &BraveDefaultExtensionsHandler::OnWidevineEnabledChanged,
           base::Unretained(this)));
@@ -226,8 +226,9 @@ void BraveDefaultExtensionsHandler::InitializePrefCallbacks() {
 
 bool BraveDefaultExtensionsHandler::IsRestartNeeded() {
 #if BUILDFLAG(ENABLE_WIDEVINE)
-  if (was_widevine_enabled_ != IsWidevineOptedIn())
+  if (was_widevine_enabled_ != ::IsWidevineEnabled()) {
     return true;
+  }
 #endif
 
   return false;
@@ -334,7 +335,7 @@ void BraveDefaultExtensionsHandler::SetWidevineEnabled(
 #if BUILDFLAG(ENABLE_WIDEVINE)
   CHECK_EQ(args.size(), 1U);
   bool enabled = args[0].GetBool();
-  enabled ? EnableWidevineCdmComponent() : DisableWidevineCdmComponent();
+  enabled ? EnableWidevineCdm() : DisableWidevineCdm();
   AllowJavascript();
 #endif
 }
@@ -345,7 +346,7 @@ void BraveDefaultExtensionsHandler::IsWidevineEnabled(
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
 #if BUILDFLAG(ENABLE_WIDEVINE)
-                            base::Value(IsWidevineOptedIn()));
+                            base::Value(::IsWidevineEnabled()));
 #else
                             base::Value(false));
 #endif
@@ -366,7 +367,7 @@ void BraveDefaultExtensionsHandler::OnWidevineEnabledChanged() {
   if (IsJavascriptAllowed()) {
     FireWebUIListener("widevine-enabled-changed",
 #if BUILDFLAG(ENABLE_WIDEVINE)
-                      base::Value(IsWidevineOptedIn()));
+                      base::Value(::IsWidevineEnabled()));
 #else
                       base::Value(false));
 #endif

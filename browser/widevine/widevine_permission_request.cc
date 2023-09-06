@@ -6,13 +6,20 @@
 #include "brave/browser/widevine/widevine_permission_request.h"
 
 #include "brave/browser/widevine/widevine_utils.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/permissions/permission_widevine_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/permissions/request_type.h"
+#include "components/prefs/pref_service.h"
+#include "components/url_formatter/elide_url.h"
 #include "components/vector_icons/vector_icons.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
 
 // static
 bool WidevinePermissionRequest::is_test_ = false;
@@ -33,31 +40,45 @@ WidevinePermissionRequest::WidevinePermissionRequest(
 
 WidevinePermissionRequest::~WidevinePermissionRequest() = default;
 
+#if BUILDFLAG(IS_ANDROID)
+std::u16string WidevinePermissionRequest::GetDialogMessageText() const {
+  return l10n_util::GetStringFUTF16(
+      GetWidevinePermissionRequestTextFrangmentResourceId(false),
+      url_formatter::FormatUrlForSecurityDisplay(
+          requesting_origin(),
+          url_formatter::SchemeDisplay::OMIT_CRYPTOGRAPHIC));
+}
+#else
 std::u16string WidevinePermissionRequest::GetMessageTextFragment() const {
   return brave_l10n::GetLocalizedResourceUTF16String(
       GetWidevinePermissionRequestTextFrangmentResourceId(for_restart_));
 }
+#endif
 
 void WidevinePermissionRequest::PermissionDecided(ContentSetting result,
                                                   bool is_one_time,
                                                   bool is_final_decision) {
   // Permission granted
   if (result == ContentSetting::CONTENT_SETTING_ALLOW) {
-#if BUILDFLAG(IS_LINUX)
-    // Prevent relaunch during the browser test.
-    // This will cause abnormal termination during the test.
-    if (for_restart_ && !is_test_) {
-      // Try relaunch after handling permission grant logics in this turn.
-      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-          FROM_HERE, base::BindOnce(&chrome::AttemptRelaunch));
-    }
-#endif
     if (!for_restart_) {
-      EnableWidevineCdmComponent();
+      EnableWidevineCdm();
+    } else {
+#if BUILDFLAG(IS_ANDROID)
+      EnableWidevineCdm();
+#endif
+      // Prevent relaunch during the browser test.
+      // This will cause abnormal termination during the test.
+      if (!is_test_) {
+        // Try relaunch after handling permission grant logics in this turn.
+        base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+            FROM_HERE, base::BindOnce(&chrome::AttemptRelaunch));
+      }
     }
     // Permission denied
   } else if (result == ContentSetting::CONTENT_SETTING_BLOCK) {
-    DontAskWidevineInstall(web_contents_, dont_ask_widevine_install_);
+    Profile* profile =
+        static_cast<Profile*>(web_contents_->GetBrowserContext());
+    profile->GetPrefs()->SetBoolean(kAskEnableWidvine, !get_dont_ask_again());
     // Cancelled
   } else {
     DCHECK(result == CONTENT_SETTING_DEFAULT);

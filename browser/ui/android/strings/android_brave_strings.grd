@@ -804,6 +804,24 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_SECTION_DISPLAY" desc='Title of "Display" section of preferences. [CHAR-LIMIT=32]'>
         Display
       </message>
+      <message name="IDS_PREFS_MEDIA" desc="Title of Media settings, which allows the user to change media settings. [CHAR-LIMIT=32]">
+        Media
+      </message>
+      <message name="IDS_PREFS_ENABLE_WIDEVINE_TITLE" desc="Title for widevine preference in controls section">
+        Widevine DRM
+      </message>
+      <message name="IDS_PREFS_ENABLE_WIDEVINE_SUMMARY" desc="Summary for preference that enables widevine drm.">
+        Use Widevine digital rights management (DRM) to view protected media content in the browser.
+      </message>
+      <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TITLE" desc="Title for Widevine permission request.">
+        Allow protected content
+      </message>
+      <message name="IDS_WIDEVINE_PERMISSION_REQUEST_LINK" desc="Text fragment for link used in Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
+          <ph name="BEGIN_LINK">&lt;LINK&gt;</ph>Learn more about Widevine<ph name="END_LINK">&lt;/LINK&gt;</ph>
+      </message>
+      <message name="IDS_WIDEVINE_PERMISSION_REQUEST_PRIMARY_BUTTON_TEXT" desc="Primary button text for Widevine permission request.">
+          Allow (Relaunch Now)
+      </message>
       <message name="IDS_PREFS_APPEARANCE" desc="Title of Appearance settings, which allows the user to change display settings. [CHAR-LIMIT=32]">
         Appearance
       </message>

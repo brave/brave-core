@@ -3,18 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#define CreateJavaDelegate                                      \
+  Java_PermissionDialogController_createDialog_BraveImpl(       \
+      JNIEnv* env, const base::android::JavaRef<jobject>& obj); \
+  virtual void CreateJavaDelegate
 #include "components/permissions/android/permission_prompt/permission_dialog_delegate.h"
+#undef CreateJavaDelegate
 
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/permissions/android/jni_headers/BravePermissionDialogDelegate_jni.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
+#include "brave/components/permissions/permission_widevine_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/android/jni_headers/PermissionDialogController_jni.h"
 #include "components/permissions/android/permission_prompt/permission_prompt_android.h"
 #include "components/permissions/features.h"
 #include "components/strings/grit/components_strings.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 namespace permissions {
 namespace {
@@ -62,20 +69,47 @@ void ApplyLifetimeToPermissionRequests(
   }
 }
 
-void Java_PermissionDialogController_createDialog_BraveImpl(
-    JNIEnv* env,
-    const base::android::JavaRef<jobject>& delegate) {
-  SetLifetimeOptions(delegate);
-  Java_PermissionDialogController_createDialog(env, delegate);
+void ApplyDontAskAgainOption(JNIEnv* env,
+                             const JavaParamRef<jobject>& obj,
+                             PermissionPromptAndroid* permission_prompt) {
+  if (permission_prompt->delegate()->Requests().size() < 1) {
+    return;
+  }
+
+  const bool dont_ask_again =
+      Java_BravePermissionDialogDelegate_getDontAskAgain(env, obj);
+  PermissionRequest* request = permission_prompt->delegate()->Requests()[0];
+  request->set_dont_ask_again(dont_ask_again);
 }
 
 }  // namespace
+
+void PermissionDialogJavaDelegate::
+    Java_PermissionDialogController_createDialog_BraveImpl(
+        JNIEnv* env,
+        const base::android::JavaRef<jobject>& j_delegate) {
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  if (HasWidevinePermissionRequest(
+          permission_prompt_->delegate()->Requests())) {
+    Java_BravePermissionDialogDelegate_setIsWidevinePermissionRequest(
+        env, j_delegate, true);
+  }
+#endif
+  if (ShouldShowLifetimeOptions(permission_prompt_->delegate())) {
+    SetLifetimeOptions(j_delegate);
+  }
+
+  Java_PermissionDialogController_createDialog(env, j_delegate);
+}
+
 }  // namespace permissions
 
-#define BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT \
-  ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_);
-#define BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL \
-  ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_);
+#define BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT                    \
+  ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_); \
+  ApplyDontAskAgainOption(env, obj, permission_prompt_);
+#define BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL                    \
+  ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_); \
+  ApplyDontAskAgainOption(env, obj, permission_prompt_);
 #define Java_PermissionDialogController_createDialog \
   Java_PermissionDialogController_createDialog_BraveImpl
 

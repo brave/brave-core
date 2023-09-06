@@ -15,16 +15,20 @@
 #include "build/build_config.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#endif
+
 using component_updater::ComponentUpdateService;
 
 namespace {
+#if !BUILDFLAG(IS_ANDROID)
 bool IsAlreadyRegistered(ComponentUpdateService* cus) {
   return base::Contains(cus->GetComponentIDs(), kWidevineComponentId);
 }
@@ -39,18 +43,20 @@ void ReloadIfActive(content::WebContents* web_contents) {
   if (GetActiveWebContents() == web_contents)
     web_contents->GetController().Reload(content::ReloadType::NORMAL, false);
 }
-#endif
-
+#endif  // !BUILDFLAG(IS_LINUX)
+#endif  // !BUILDFLAG(IS_ANDROID)
 }  // namespace
 
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
     : WebContentsObserver(contents),
       content::WebContentsUserData<BraveDrmTabHelper>(*contents),
       brave_drm_receivers_(contents, this) {
+#if !BUILDFLAG(IS_ANDROID)
   auto* updater = g_browser_process->component_updater();
   // We don't need to observe if widevine is already registered.
   if (!IsAlreadyRegistered(updater))
     observer_.Observe(updater);
+#endif
 }
 
 BraveDrmTabHelper::~BraveDrmTabHelper() = default;
@@ -73,7 +79,7 @@ bool BraveDrmTabHelper::ShouldShowWidevineOptIn() const {
   // If the user already opted in, don't offer it.
   PrefService* prefs =
       static_cast<Profile*>(web_contents()->GetBrowserContext())->GetPrefs();
-  if (IsWidevineOptedIn() || !prefs->GetBoolean(kAskWidevineInstall)) {
+  if (IsWidevineEnabled() || !prefs->GetBoolean(kAskEnableWidvine)) {
     return false;
   }
 
@@ -92,14 +98,20 @@ void BraveDrmTabHelper::DidStartNavigation(
 
 void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
   is_widevine_requested_ = true;
+#if BUILDFLAG(IS_ANDROID)
+  bool for_restart = true;
+#else
+  bool for_restart = false;
+#endif
 
   if (ShouldShowWidevineOptIn() && !is_permission_requested_) {
     is_permission_requested_ = true;
-    RequestWidevinePermission(web_contents(), false /* for_restart */);
+    RequestWidevinePermission(web_contents(), for_restart);
   }
 }
 
 void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
+#if !BUILDFLAG(IS_ANDROID)
   if (event == ComponentUpdateService::Observer::Events::COMPONENT_UPDATED &&
       id == kWidevineComponentId) {
 #if BUILDFLAG(IS_LINUX)
@@ -113,10 +125,11 @@ void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
     // reloaded automatically.
     if (is_widevine_requested_)
       ReloadIfActive(web_contents());
-#endif
+#endif  // BUILDFLAG(IS_LINUX)
     // Stop observing component update event.
     observer_.Reset();
   }
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveDrmTabHelper);
