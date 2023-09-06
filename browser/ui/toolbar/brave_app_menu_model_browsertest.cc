@@ -519,7 +519,7 @@ void CheckMenuIcons(ui::MenuModel* menu,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuItemsHaveIcons) {
+IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuItemsHaveIcons) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   BraveAppMenuModel model(browser_view->toolbar(), browser());
   model.Init();
