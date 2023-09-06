@@ -86,11 +86,25 @@
                 android:textAllCaps="false"
                 android:textColor="@color/brave_rating_not_now_text_color"
                 android:textSize="13sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/start_using_rewards_button" />
+
+            <TextView
+                android:id="@+id/tos_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginVertical="16dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center_horizontal"
+                android:textColor="@color/terms_of_service_text_color_default"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/how_does_it_work_main" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include layout="@layout/rewards_onboarding_location_choose"
