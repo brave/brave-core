@@ -1493,8 +1493,7 @@ interface TxServiceObserver {
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
 interface TxService {
-  // Used to add a transaction. Missing origin is expected to come from chrome://wallet.
-  AddUnapprovedTransaction(TxDataUnion tx_data_union, AccountId from, url.mojom.Origin? origin)
+  AddUnapprovedTransaction(TxDataUnion tx_data_union, AccountId from)
     => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction

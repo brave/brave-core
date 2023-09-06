@@ -1618,8 +1618,7 @@ export function createWalletApi () {
                 isEIP1559
                   ? toTxDataUnion({ ethTxData1559: txData1559 })
                   : toTxDataUnion({ ethTxData: txData }),
-                payload.fromAccount.accountId,
-                null
+                payload.fromAccount.accountId
               )
 
             if (!success && errorMessage) {
@@ -1673,8 +1672,7 @@ export function createWalletApi () {
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
                 toTxDataUnion({ filTxData: filTxData }),
-                payload.fromAccount.accountId,
-                null
+                payload.fromAccount.accountId
               )
 
             if (!success && errorMessage) {
@@ -1735,8 +1733,7 @@ export function createWalletApi () {
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
                 toTxDataUnion({ solanaTxData: txData ?? undefined }),
-                payload.fromAccount.accountId,
-                null
+                payload.fromAccount.accountId
               )
 
             if (!success && errorMessage) {
@@ -1786,8 +1783,7 @@ export function createWalletApi () {
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
                 toTxDataUnion({ btcTxData }),
-                payload.fromAccount.accountId,
-                null
+                payload.fromAccount.accountId
               )
 
             if (!success && errorMessage) {
@@ -1968,8 +1964,7 @@ export function createWalletApi () {
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
                 toTxDataUnion({ solanaTxData: txData }),
-                payload.fromAccount.accountId,
-                null
+                payload.fromAccount.accountId
               )
 
             if (!success) {

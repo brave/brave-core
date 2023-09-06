@@ -301,14 +301,14 @@ void EthereumProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
                          keyring_info->account_infos, from)) {
     // Set chain_id to current chain_id.
     tx_data_1559->chain_id = chain->chain_id;
-    tx_service_->AddUnapprovedTransaction(
+    tx_service_->AddUnapprovedTransactionWithOrigin(
         mojom::TxDataUnion::NewEthTxData1559(std::move(tx_data_1559)),
         account_id.Clone(), origin,
         base::BindOnce(&EthereumProviderImpl::OnAddUnapprovedTransactionAdapter,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id)));
   } else {
-    tx_service_->AddUnapprovedTransaction(
+    tx_service_->AddUnapprovedTransactionWithOrigin(
         mojom::TxDataUnion::NewEthTxData(std::move(tx_data_1559->base_data)),
         account_id.Clone(), origin,
         base::BindOnce(&EthereumProviderImpl::OnAddUnapprovedTransactionAdapter,

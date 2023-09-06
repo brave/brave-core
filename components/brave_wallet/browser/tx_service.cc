@@ -163,6 +163,14 @@ void TxService::BindFilTxManagerProxy(
 void TxService::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     mojom::AccountIdPtr from,
+    AddUnapprovedTransactionCallback callback) {
+  AddUnapprovedTransactionWithOrigin(std::move(tx_data_union), std::move(from),
+                                     absl::nullopt, std::move(callback));
+}
+
+void TxService::AddUnapprovedTransactionWithOrigin(
+    mojom::TxDataUnionPtr tx_data_union,
+    mojom::AccountIdPtr from,
     const absl::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
   if (!account_resolver_delegate_->ValidateAccountId(from)) {

@@ -303,15 +303,13 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
     }
     return await apiProxy.txService.addUnapprovedTransaction(
       toTxDataUnion({ ethTxData1559: txData1559 }),
-      payload.fromAccount.accountId,
-      null
+      payload.fromAccount.accountId
     )
   }
 
   return await apiProxy.txService.addUnapprovedTransaction(
     toTxDataUnion({ ethTxData: txData }),
-    payload.fromAccount.accountId,
-    null
+    payload.fromAccount.accountId
   )
 }
 
@@ -328,8 +326,7 @@ export async function sendFilTransaction(payload: SendFilTransactionParams) {
   }
   return await apiProxy.txService.addUnapprovedTransaction(
     toTxDataUnion({ filTxData: filTxData }),
-    payload.fromAccount.accountId,
-    null
+    payload.fromAccount.accountId
   )
 }
 
@@ -342,8 +339,7 @@ export async function sendSolTransaction(payload: SendSolTransactionParams) {
   )
   return await txService.addUnapprovedTransaction(
     toTxDataUnion({ solanaTxData: value.txData ?? undefined }),
-    payload.fromAccount.accountId,
-    null
+    payload.fromAccount.accountId
   )
 }
 
@@ -364,8 +360,7 @@ export async function sendSolanaSerializedTransaction(
 
   return await txService.addUnapprovedTransaction(
     toTxDataUnion({ solanaTxData: result.txData ?? undefined }),
-    payload.accountId,
-    null
+    payload.accountId
   )
 }
 
