@@ -8,6 +8,7 @@
 # These tests fail because they expect the infobar count to be 1, but we
 # display an additional confirmation infobar for P3A
 -All/PageSpecificSiteDataDialogBrowserTest.*/*
+-PageSpecificSiteDataDialogBrowserTest.*
 
 # These tests fail because they expect an additional Manifest V2 deprecation
 # warning, which is disabled in Brave.
@@ -98,6 +99,7 @@
 -NoCancelSearchPreloadUnifiedBrowserTest.SuggestionChangeAfterStartPrerender
 -NoCancelSearchPreloadUnifiedFallbackBrowserTest.OpenPrefetchedResponseInBackgroundedTab
 -NoCancelSearchPreloadUnifiedFallbackBrowserTest.ServingToPrerenderingUntilCompletion
+-PreloadingConfigHoldbackSearchPreloadUnifiedBrowserTest.PrerenderDSEHoldbackTest
 -PrerenderDataSaverProtocolTest.CheckReportedDisabledByDataSaverPreloadingState
 -SearchPreloadUnifiedFallbackBrowserTest.FetchPrerenderActivated
 -SearchPreloadUnifiedFallbackBrowserTest.FetchPrerenderFetch
@@ -118,8 +120,10 @@
 -All/LookalikeUrlNavigationThrottlePrerenderBrowserTest.ShowInterstitialAfterActivation/*
 -All/LookalikeUrlNavigationThrottleSignedExchangeBrowserTest.*/*
 -All/PDFExtensionPrerenderTest.*
--All/PrerenderOmniboxSearchSuggestionReloadBrowserTest.*
 -All/PrerenderingChangePasswordNavigationThrottleBrowserTest.*
+-All/PrerenderNewTabPageBrowserTest.NewTabPagePrerenderNonHttps/*
+-All/PrerenderNewTabPageBrowserTest.PrerenderTriggeredByNewTabPageAndActivate/*
+-All/PrerenderOmniboxSearchSuggestionReloadBrowserTest.*
 -All/SafeBrowsingBlockingPageDelayedWarningPrerenderingBrowserTest.*
 -All/SafeBrowsingPrerenderBrowserTest.*
 -All/SafeBrowsingThreatDetailsPrerenderBrowserTest.*
@@ -139,6 +143,7 @@
 -CredentialManagerPrerenderBrowserTest.*
 -DevToolsAutofillTest.TriggerCreditCardInIframe
 -DomDistillerTabUtilsPrerenderTest.*
+-DSEPrerenderHoldbackSearchPreloadUnifiedBrowserTest.PrerenderDSEHoldbackTest
 -EventPage/DeclarativeNetRequestApiPrerenderingTest.*
 -ExtensionApiTabPrerenderingTest.Prerendering
 -ExtensionWebRequestApiPrerenderingTest.Load
@@ -225,6 +230,7 @@
 -TabUIHelperWithPrerenderingTest.*
 -ThumbnailReadinessTrackerPrerenderTest.*
 -TranslateFrameBinderPrerenderBrowserTest.*
+-TranslateManagerPrerenderBrowserTest.*
 -ViewSourcePrerenderTest.*
 -WebAppDeclarativeLinkCapturingPrerenderBrowserTest.*
 -WebAppNavigatePrerenderingBrowserTest.*
@@ -241,9 +247,11 @@
 # Fledge, and Interest Groups, etc.)
 -All/BrowsingDataModelBrowserTest.AttributionReportingAccessReportedCorrectly/*
 -All/BrowsingDataModelBrowserTest.AuctionWinReportedCorrectly/*
+-All/BrowsingDataModelBrowserTest.PrivateAggregationHandledCorrectly/*
 -All/BrowsingDataModelBrowserTest.TopicsAccessReportedCorrectly/*
--AttestationBrowsingTopicsBrowserTest.AttestedSiteCanGetBrowsingTopics
+-AttestationBrowsingTopicsBrowserTest.*
 -ChromeAttributionBrowserTest.AttestedSiteCanReceiveAttributionReport
+-ChromeAttributionBrowserTest.UnattestedSiteCannotReceiveAttributionReport
 -PrivacySandboxSettingsEventReportingBrowserTest.AutomaticBeaconDestinationEnrolled
 -PrivacySandboxSettingsEventReportingBrowserTest.AutomaticBeaconDestinationNotEnrolled
 -PrivacySandboxSettingsAttestPrivateAggregationInProtectedAudienceBrowserTest.CrossOrigin_Enrolled_Success
@@ -268,15 +276,18 @@
 -GetIsolatedWebAppBrowsingDataCommandBrowserTest.*
 -InstallIsolatedWebAppFromCommandLineFromFileBrowserTest.AppFromCommandLineIsInstalled
 -InstallIsolatedWebAppFromCommandLineFromUrlBrowserTest.AppFromCommandLineIsInstalled
+-IsolatedWebAppApplyUpdateCommandBrowserTest.Succeeds/DevModeBundle
 -IsolatedWebAppBrowserServiceWorkerPushTest.ServiceWorkerPartitionedWhenWakingUpDueToPushNotification
 -IsolatedWebAppBrowserServiceWorkerTest.ServiceWorkerPartitioned
 -IsolatedWebAppBrowsingDataClearingTest.CacheCleared
+-IsolatedWebAppBrowsingDataClearingTest.ClearBrowserDataAllTime
 -IsolatedWebAppBrowsingDataClearingTest.CookieCleared
+-IsolatedWebAppBrowsingDataClearingTest.DataClearedOnUninstall
+-IsolatedWebAppBrowsingDataClearingTest.LocalStorageCleared
 -IsolatedWebAppDevToolsTest.ErrorPage
--IsolatedWebAppsDeveloperModeAllowedPolicyTest.MockTcp/0
--IsolatedWebAppsDeveloperModeAllowedPolicyTest.MockUdp/0
 -IsolatedWebAppErrorPageTest.SetsCorrectMessageForErrorCode
 -IsolatedWebAppErrorPageTest.UsesWebAppErrorPage
+-IsolatedWebAppUpdatePrepareAndStoreCommandBrowserTest.Succeeds/DevModeBundle
 -WebAppTagIsolatedWebAppTest.IsolatedWebAppTaskCreated
 -WebAppTagIsolatedWebAppTest.IsolatedWebAppTaskTitleFallbackToAppName
 
@@ -307,14 +318,16 @@
 -TrustedVaultEncryptionKeysTabHelperBrowserTest.ShouldBindAddRecoveryMethodApiInMainFrame
 -TrustedVaultEncryptionKeysTabHelperBrowserTest.ShouldNotBindEncryptionKeysApiInPrerendering
 
-# These tests fail because BRAVE_COSMETIC_FILTERING has an initial default value
-# of CONTENT_SETTING_DEFAULT which is not allowed as an integer value by
-# content_settings::ParseContentSettingValue
-# https://github.com/brave/brave-browser/issues/25733
--UnusedSitePermissionsServiceBrowserTest.RevokeAllContentSettingTypes
--UnusedSitePermissionsServiceBrowserTest.TestIncognitoProfile
--UnusedSitePermissionsServiceBrowserTest.TestNavigationUpdatesLastUsedDate
--UnusedSitePermissionsServiceBrowserTest.TestRevokeUnusedPermissions
+# These tests fail because we patch
+# AccountConsistencyModeManager::ComputeAccountConsistencyMethod to return
+# AccountConsistencyMethod::kDisabled
+-ContextMenuWithFilteringForSupervisedUsersBrowserTest.SaveLinkAsEntryIsEnabledForUrlsAllowedByAsyncCheckerForChild
+-ContextMenuWithoutFilteringForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsBlockedByAsyncCheckerForChild
+-ContextMenuWithoutFilteringForSupervisedUsersBrowserTest.SaveLinkAsEntryIsEnabledForUrlsAllowedByAsyncCheckerForChild
+
+# These tests fail because "Isolated Web Apps are not enabled, or Isolated Web 
+# App Developer Mode is not enabled or blocked by policy."
+-GarbageCollectStoragePartitionsCommandBrowserTest.UninstalledAppsHaveStoragePartitionsCleanedUp
 
 # These tests fail because of the following failed DCHECK in web_view_guest.cc:
 # render_frame_host->IsActive() || (content::SiteIsolationPolicy::IsSiteIsolationForGuestsEnabled() && render_frame_host->IsInLifecycleState( RenderFrameHost::LifecycleState::kPendingDeletion))
@@ -328,7 +341,7 @@
 # these channels, which breaks test communication.
 -FileSystemAccessBrowserTest.RevokePermissionAfter*
 
-# This test checks data sent do DownloadProtectionService (url, filename, etc.)
+# This test checks data sent to DownloadProtectionService (url, filename, etc.)
 # which we filter for privacy reasons.
 -FileSystemAccessBrowserTest.SafeBrowsing
 
@@ -355,15 +368,20 @@
 # service to set ANTI_ABUSE setting to BLOCK).
 -ExtensionContentSettingsApiTest.Standard
 
-# These tests fails because we block 3p cookies
+# These tests fail because we block 3p cookies
 -RuntimeFeatureStateBrowserTest.ThirdPartyCookieAllowedByUserBypass
 -BackgroundPage/ExtensionPreferenceApiTest.OnChange/0
 -BackgroundPage/ExtensionPreferenceApiTest.OnChangeSplit/0
 -BackgroundPage/ExtensionPreferenceApiTest.Standard/0
 -EventPage/ExtensionPreferenceApiEventPageTest.ThirdPartyCookiesAllowed/0
 
+# These tests fail because we disable creation of CookieControlsIconView in
+# PageActionIconController::Init's switch
+-OldCookieControlsBubbleViewTest.*
+
 # These tests fail because we set kPrivacySandboxApisEnabled pref to false.
 -BackgroundPage/ExtensionPreferenceApiTest.PrivacySandboxMigration/0
+-PrivacySandboxSettingsEventReportingBrowserTest.ReportEventCustomURLDestinationEnrolled
 
 # These tests fail because of the shields. Didn't investigate in depth, but
 # the tests pass when run with --disable-brave-extension.
@@ -538,6 +556,8 @@
 # These tests fail because we intentionally disable prefs::kEnableMediaRouter
 -All/CastMirroringServiceHostBrowserTestTabSwitcher.SwitchTabSource/*
 -CastMirroringServiceHostBrowserTest.PauseSession
+-ProfileKeyedServiceBrowserTest.SystemProfileOTR_ServicesThatCanBeCreated
+-ProfileKeyedServiceBrowserTest.SystemProfileParent_ServicesThatCanBeCreated
 
 # These tests fail because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
@@ -550,6 +570,12 @@
 
 # This test fails because of the following CHECK in identity_test_utils.cc:
 # !primary_account_info.IsEmpty()
+-All/SupervisedUserRegionalURLFilterTest.RegionIsAdded/*
+-All/SupervisedUserServiceBrowserTest.LocalPolicies/Regular
+-All/SupervisedUserServiceBrowserTest.LocalPolicies/Supervised
+-All/SupervisedUserServiceBrowserTest.ProfileName/Regular
+-All/SupervisedUserServiceBrowserTest.ProfileName/Supervised
+-IpProtectionAuthTokenProviderBrowserTest.NetworkServiceCanRequestTokens
 -SupervisionRemovalExtensionTest.RemoveCustodianApprovalRequirement
 
 # These tests fail or time out because IdentityManager never loads refresh
@@ -584,11 +610,15 @@
 -All/DIPSTabHelperBrowserTest.*/*
 -DIPSBounceDetectorBrowserTest.*
 -DIPSBounceTrackingDevToolsIssueTest.BounceTrackingDevToolsIssue
+-DIPSWebAuthnBrowserTest.ReportRedirectorsInChain_OmitSitesWithWebAuthnAssertions
 -DIPSWebAuthnBrowserTest.WebAuthnAssertion_ConfirmWCOCallback
 -OpenerHeuristicBrowserTest.*
 
 # These tests fail on CI but pass locally
 -All/PermissionPromptBubbleBaseViewBrowserTest.InvokeUi_storage_access/*
+-AutoPictureInPictureTabHelperBrowserTest.ImmediatelyClosesAutopipIfTabIsAlreadyFocused
+-AutoPictureInPictureTabHelperBrowserTest.OpensAndClosesVideoAutopip
+-AutoPictureInPictureTabHelperBrowserTest.ShowsMostRecentlyHiddenTab
 -DeviceChooserExtensionBrowserTests/DeviceChooserExtensionBrowserTest.ChooserAnchoredToExtensionIcon/WebHid
 -DeviceChooserExtensionBrowserTests/DeviceChooserExtensionBrowserTest.ChooserAnchoredToExtensionIcon/WebUsb
 -InstallPreloadedVerifiedAppCommandTest.SuccessCrossOriginManifest
@@ -646,6 +676,7 @@
 
 # These tests fail because we are modifying the HttpsUpgrades feature.
 -HttpsUpgradesBrowserTest.AllowlistEntryExpires/*
+-HttpsUpgradesBrowserTest.EnterpriseAllowlistDisablesHttpsFirstModeForSiteEngagament/*
 -HttpsUpgradesBrowserTest.EnterpriseAllowlistDisablesUpgrades/*
 -HttpsUpgradesBrowserTest.HttpPageHttpPost_NotUpgraded/*
 -HttpsUpgradesBrowserTest.HttpParentHttpSubframeNavigation_NotUpgraded/*
@@ -662,12 +693,16 @@
 -HttpsUpgradesBrowserTest.SlowHttps_ShouldInterstitial/*
 -HttpsUpgradesBrowserTest.URLsAutocompletedWithHttpSchemeAreUpgraded/*
 -HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgrades/*
+-HttpsUpgradesBrowserTest.UrlWithHttpScheme_BrokenSSL_ShouldInterstitial_TypicallySecureUser/*
+-HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgradesAllowlist/AllAutoHFM
+-HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgradesAllowlist/HttpsFirstModeForTypicallySecureUsersAndHttpsUpgrades
 -HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgradesAllowlist/HttpsFirstModeWithSiteEngagementAndHttpsUpgrades
 -HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgradesAllowlist/HttpsUpgradesOnly
 -HttpsUpgradesBrowserTest.UrlWithHttpScheme_BrokenSSL_ShouldInterstitial/*
 -HttpsUpgradesBrowserTest.UrlWithHttpScheme_BrokenSSL_ShouldInterstitial_SiteEngagement/*
 -HttpsUpgradesBrowserTest.UrlWithHttpScheme_ShouldUpgrade/*
 -HttpsUpgradesBrowserTest.UrlWithHttpsScheme_ShouldLoad/*
+-HttpsUpgradesPrefsBrowserTest.PrefStatesRecorded
 
 # These tests fail because we change the Learn More link in the HTTPS First
 # interstitial.
@@ -678,15 +713,22 @@
 -HttpsUpgradesBrowserTest.InterstitialLearnMoreLink/HttpsFirstModeAndHttpsUpgrades
 -HttpsUpgradesBrowserTest.InterstitialLearnMoreLink/HttpsFirstModeOnly
 
-# These tests fail because we change the Learn More link in the HTTPS First
-# interstitial.
--HttpsOnlyModeBrowserTest.InterstitialLearnMoreLink
--HttpsUpgradesBrowserTest.InterstitialLearnMoreLink
--HttpsUpgradesBrowserTest.InterstitialLearnMoreLink/BothHttpsFirstModeAndHttpsUpgrades
--HttpsUpgradesBrowserTest.InterstitialLearnMoreLink/HttpsFirstModeOnly
-
 # These tests crash because we disable 
 # enterprise_connectors::kLocalContentAnalysisEnabled feature
+-All/ContentAnalysisAfterPrintPreviewBrowserTest.*/*
+-All/ContentAnalysisBeforePrintPreviewBrowserTest.PrintWithPreview/4
+-All/ContentAnalysisBeforePrintPreviewBrowserTest.PrintWithPreview/5
+-All/ContentAnalysisBeforePrintPreviewBrowserTest.PrintWithPreview/6
+-All/ContentAnalysisBeforePrintPreviewBrowserTest.PrintWithPreview/7
+-All/ContentAnalysisBeforePrintPreviewBrowserTest.SystemPrintFromPrintPreview/4
+-All/ContentAnalysisBeforePrintPreviewBrowserTest.SystemPrintFromPrintPreview/5
+-All/ContentAnalysisBeforePrintPreviewBrowserTest.SystemPrintFromPrintPreview/6
+-All/ContentAnalysisBeforePrintPreviewBrowserTest.SystemPrintFromPrintPreview/7
+-All/ContentAnalysisBeforePrintPreviewBrowserTest.WindowDotPrint/4
+-All/ContentAnalysisBeforePrintPreviewBrowserTest.WindowDotPrint/6
+-All/ContentAnalysisScriptedPreviewlessPrintAfterDialogBrowserTest.*/*
+-All/ContentAnalysisScriptedPreviewlessPrintBeforeDialogBrowserTest.*/*
+-ConnectorsServiceAnalysisProfileBrowserTest.Affiliation/*
 -ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/1
 -ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/10
 -ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/11
@@ -777,6 +819,8 @@
 -ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/6
 -ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/7
 -ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/9
+-ContentAnalysisDialogAppearanceBrowserTest.*
+-ContentAnalysisDialogCustomMessageAppearanceBrowserTest.*
 -EnterpriseReportingPrivateGetContextInfoBaseBrowserTest.TestAllProviderNamesSet
 -IsClipboardPasteContentAllowedTest.AllFilesBlocked
 -IsClipboardPasteContentAllowedTest.SomeFilesBlocked
@@ -786,11 +830,19 @@
 -ThreadProfilerBrowserTest.*
 
 # These fail because we disable kPartitionedCookies
+-All/BrowsingDataModelBrowserTest.PartitionedLocalStorageRemoved/*
 -ReadAnythingAppControllerTest.*
 -StorageAccessAPIEnterprisePolicyBrowserTest.PartitionedStorage/*
 -StorageAccessAPIWithNoRequiredTopLevelInteractionBrowserTest.TopLevelUserInteractionNotRequired
 -StorageAccessAPIWithoutImplicitGrantBrowserTest.NestedSameOriginCookieAccess_CrossSiteAncestorChain
 -StorageAccessAPIWithoutImplicitGrantBrowserTest.NestedSameSiteCookieAccess_CrossSiteAncestorChain
+
+# These tests fail because we override CookieSettingsBase::IsCookieAccessAllowed
+# (specifically, CookieSettingsBase::IsCookieAccessAllowedImpl) and the override
+# allows access to the cookie to which Chromium disallows access
+# (BraveIsAllowedThirdParty)
+-ChromeSharedDictionaryBrowserTest.BlockReadingCrossOrigin
+-ChromeSharedDictionaryBrowserTest.BlockWritingCrossOrigin
 
 # These fail because we disable kFirstPartySets
 -RequestStorageAccessForBrowserTest.ThirdPartyGrantsExpireOverIPC
@@ -818,8 +870,10 @@
 
 # This test fails because we override the support article URL to point to our
 # own support article
+-WebHidExtensionBrowserTest.DeviceConnectAndOpenDeviceWhenServiceWorkerStopped
 -WebHidExtensionBrowserTest.HidConnectionTracker
 -WebHidExtensionFeatureEnabledBrowserTest.HidConnectionTracker
+-WebUsbExtensionFeatureEnabledBrowserTest.UsbConnectionTracker
 
 # These tests fail because we disable field trials via
 # disable_fieldtrial_testing_config
@@ -834,26 +888,27 @@
 # can be removed at that time
 -ExtensionActionRunnerWithUserHostControlsBrowserTest.HandleUserSiteSettingModified_ExtensionHasNoAccess
 
-# These tests fail because we disable page_info::kPageInfoCookiesSubpage
--PageInfoBubbleViewBrowserTestCookiesSubpage.ClickingFpsButton
--PageInfoBubbleViewBrowserTestCookiesSubpage.ToggleForBlockingThirdPartyCookies
-
 # These tests fail because we don't support the search companion.
 -CompanionPage*
 -SidePanelCompanion2BrowserEnabledTest.FeatureEnabled
 
 # These tests fail because they enable the kChromeRefresh2023 feature, which our
 # code is not expecting.
+-All/BrowserFrameColorProviderTest.BaselineThemeIgnoresNativeThemeColor/1
+-All/BrowserFrameColorProviderTest.BrowserFrameTracksBrowserColorVariant/1
 -All/BrowserFrameColorProviderTest.BrowserFrameTracksIsGrayscale/1
+-All/BrowserFrameColorProviderTest.GrayscaleUsesBaselinePalette/1
 -All/BrowserFrameColorProviderTest.IncognitoAlwaysDarkMode/1
--All/BrowserFrameColorProviderTest.IncognitoAlwaysIgnoresIsGrayscale/1
 -All/BrowserFrameColorProviderTest.IncognitoAlwaysIgnoresUserColor/1
+-All/BrowserFrameColorProviderTest.IncognitoIsAlwaysGrayscale/1
 -All/BrowserFrameColorProviderTest.TracksBrowserColorScheme/1
+-All/BrowserFrameColorProviderTest.UseDeviceIgnoresTheme/1
 -All/BrowserFrameColorProviderTest.UserColorProfilePrefTrackedCorrectly/1
 -All/BrowserFrameColorProviderTest.UserColorTracksAutogeneratedThemeColor/1
 -AppMenuBrowserTestRefreshOnly.*
 -BrowserCommandControllerBrowserTestRefreshOnly.*
 -FirstRunIntroPixelTest.InvokeUi_default/CR2023
+-ProfileMenuViewPixelTest.InvokeUi_default/*
 -ProfilePickerUIPixelTest.InvokeUi_default/CR2023
 -RealboxHandlerIconTest/BrowserTestWithParam.ActionVectorIcons/0
 -RealboxHandlerIconTest/BrowserTestWithParam.ActionVectorIcons/2
@@ -863,6 +918,8 @@
 -RealboxHandlerIconTest/BrowserTestWithParam.MatchVectorIcons/2
 -RealboxHandlerIconTest/BrowserTestWithParam.PedalVectorIcons/0
 -RealboxHandlerIconTest/BrowserTestWithParam.PedalVectorIcons/2
+-TestWebAppMenuModelCR2023.CommandStatusTest
+-TestWebAppMenuModelCR2023.ModelHasIcons
 
 # These tests fail because we do not allow most request client hints
 -RedirectUaReductionBrowserTest.NormalRedirectRequest
@@ -884,6 +941,7 @@
 
 # These tests fail because we set kSafeBrowsingExtendedReportingOptInAllowed
 # pref value to false.
+-AntiPhishingTelemetryBrowserTestWithThreatTypeAndIsolationSetting/AntiPhishingTelemetryBrowserTest.CheckReportCloseTabOnInterstitial/*
 -AntiPhishingTelemetryBrowserTestWithThreatTypeAndIsolationSetting/AntiPhishingTelemetryBrowserTest.CheckReportListsInteractions/*
 -AntiPhishingTelemetryBrowserTestWithThreatTypeAndIsolationSetting/AntiPhishingTelemetryBrowserTest.CheckReportListsInteractionsNoExplicitInterstitialDecision/*
 
@@ -903,6 +961,15 @@
 
 # These fail because we disalbe history_clusters::internal::kJourneys.
 -RenameJourneys/HistoryClustersPolicyTest.HistoryClustersVisible/*
+
+# These tests fail because we disable
+# optimization_guide::features::kRemoteOptimizationGuideFetching
+-ParametrizedTests/PreloadingModelKeyedServiceTest.FeatureFlagIsWorking/*
+
+# These test fail because we remove description and 3p cookies toggle from the
+# Page Info cookies view.
+-All/PageInfoBubbleViewBrowserTestCookiesSubpage.LinkInDescriptionForCookiesSettings/*
+-All/PageInfoBubbleViewBrowserTestCookiesSubpage.ToggleForBlockingThirdPartyCookies/1
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
@@ -937,6 +1004,7 @@
 -All/DownloadReferrerPolicyTest.*
 -All/ExtensionWebstorePrivateApiTestParameterized.*
 -All/GetAuthTokenFunctionEnableGranularPermissionsTest.EnableGranularPermissions/*
+-All/HeadlessModeDumpDomCommandBrowserTestWithSubResourceTimeout.HeadlessDumpDomWithSubResourceTimeout/*
 -All/IdentityGetProfileUserInfoFunctionTestWithAccountStatusParam.*
 -All/IntentPickerBubbleViewBrowserTest.*
 -All/LoginPromptBrowserTest.*
@@ -949,9 +1017,11 @@
 -All/OtherFrameNavigationDownloadBrowserTest_AdFrame.*
 -All/PageLoadMetricsBackForwardCacheBrowserTest.*
 -All/PasswordBubbleBrowserTest.*
+-All/PDFExtensionAccessibilityTreeDumpTest.*
 -All/PDFExtensionContentSettingJSTest.*
 -All/PDFExtensionHitTestTest.*
 -All/PDFExtensionJSTest.*
+-All/PDFExtensionPrintingTest.*
 -All/PDFExtensionServiceWorkerJSTest.*
 -All/PDFExtensionTest.*
 -All/PDFExtensionWebUICodeCacheJSTest.*
@@ -1022,6 +1092,7 @@
 -BrowserTabRestoreTest.RecentTabsMenuTabDisposition
 -BrowserTest.*
 -BrowserViewTest.*
+-BrowserViewTestRefreshOnly.*
 -BrowsingDataCounterUtilsBrowserTest.*
 -BrowsingDataRemoverBrowserTest.*
 -BrowsingTopicsAnnotationGoldenDataBrowserTest.GoldenData
@@ -1060,13 +1131,12 @@
 -ComponentCloudPolicyTest.*
 -ComponentUpdaterPolicyTest.*
 -ConsumerDeepScanningBrowserTest.*
--ContentAnalysisDialogAppearanceBrowserTest.*
--ContentAnalysisDialogCustomMessageAppearanceBrowserTest.*
 -ContentAutofillDriverBrowserTest.*
 -ContentFaviconDriverTest.*
 -ContentScriptApiPrerenderingTest.*
 -ContentScriptApiTest.*
 -ContentSettingBubbleDialogTest.*
+-ContentSettingBubbleModelMediaStreamTest.BubbleContentForNonBlockedMic
 -ContentSettingImageModelBrowserTest.*
 -ContentSettingsBackForwardCacheBrowserTest.*
 -ContentSettingsTest.*
@@ -1186,8 +1256,11 @@
 -GuestStartupBrowserCreatorPickerTest.*
 -HangoutServicesBrowserTest.*
 -HeadlessModeDumpDomCommandBrowserTest.HeadlessDumpDom
+-HeadlessModeDumpDomCommandBrowserTestWithTimeout.HeadlessDumpDomWithTimeout
 -HeadlessModeLazyLoadingPrintToPdfCommandBrowserTest.HeadlessLazyLoadingPrintToPdf
 -HeadlessModePrintToPdfCommandBrowserTest.HeadlessPrintToPdf
+-HeadlessModePrintToPdfCommandBrowserTest.HeadlessTaggedPrintToPdf/*
+-HeadlessModeTaggedPrintToPdfCommandBrowserTest.HeadlessTaggedPrintToPdf/*
 -HintsFetcherBrowserTest.*
 -HintsFetcherSearchPageBrowserTest.*
 -HistoryBrowserTest.*
@@ -1367,12 +1440,16 @@
 -PrivacyBudgetBrowserTestWithUkmRecording.*
 -PrivacyBudgetReidScoreBrowserTestWithUkmRecording.ReidIsReported
 -PrivacySandboxDialogHelperTestWithParamInstance/PrivacySandboxDialogHelperTestWithParam.*
+-PrivacySandboxDialogViewBrowserTest.InvokeUi_Notice
+-PrivacySandboxNoticeBubbleBrowserTest.InvokeUi_NoticeBubble
 -PrivacySandboxSettingsBrowserTest.*
+-PrivacySandboxSettingsEventReportingBrowserTest.ReportEventCustomURLDestinationNotEnrolled
 -PrivateNetworkAccessWithFeatureEnabledBrowserTest.*
 -ProcessManagementTest.*
 -ProcessManagerBrowserTest.*
 -ProfileBrowserTest.*
 -ProfileBrowserTestWithoutDestroyProfile.*
+-ProfileCustomizationBrowserTest.IPH
 -ProfileCustomizationBubbleBrowserTest.*
 -ProfileCustomizationDialogBrowserTest.*
 -ProfileKeyedServiceBrowserTest.GuestProfileOTR_NeededServices
@@ -1429,8 +1506,10 @@
 -RunInBackgroundTest.*
 -SafeBrowsingBlockingPageBrowserTestWithThreatTypeAndIsolationSetting/SafeBrowsingBlockingPageBrowserTest.*
 -SafeBrowsingBlockingPageEnhancedProtectionMessageTest.*
+-SafeBrowsingBlockingPageHashRealTimeCheckTest.TriggerHitReportAndClientSafeBrowsingReportRequest
 -SafeBrowsingBlockingPageRealTimeUrlCheckTest.*
 -SafeBrowsingBlockingPageWithDelayedWarningsBrowserTest/SafeBrowsingBlockingPageDelayedWarningBrowserTest.*
+-SafeBrowsingHatsSurveyBrowserTestWithThreatTypeAndIsolationSetting/SafeBrowsingHatsSurveyBrowserTest.ReportSentToSbAndAttachedForHats/*
 -SafeBrowsingNetworkContext/NetworkContextConfigurationBrowserTest.*
 -SafeBrowsingNetworkContext/NetworkContextConfigurationDataPacBrowserTest.*
 -SafeBrowsingNetworkContext/NetworkContextConfigurationFilePacBrowserTest.*
@@ -1586,6 +1665,7 @@
 -UkmConsentParamBrowserTests/UkmConsentParamBrowserTest.*
 -UkmWorkerBrowserTest.*
 -UnifiedConsentBrowserTest.*
+-UnifiedConsentSyncToSigninBrowserTest.*
 -UpdatedGreaseFeatureParamTest.*
 -UpdateServiceTest.*
 -UseCounterPageLoadMetricsObserverBrowserTest.*

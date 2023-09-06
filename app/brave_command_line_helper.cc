@@ -40,9 +40,9 @@ void BraveCommandLineHelper::ParseCSV(
 }
 
 void BraveCommandLineHelper::Parse() {
-  ParseCSV(command_line_.GetSwitchValueASCII(switches::kEnableFeatures),
+  ParseCSV(command_line_->GetSwitchValueASCII(switches::kEnableFeatures),
            &enabled_features_);
-  ParseCSV(command_line_.GetSwitchValueASCII(switches::kDisableFeatures),
+  ParseCSV(command_line_->GetSwitchValueASCII(switches::kDisableFeatures),
            &disabled_features_);
   // Remove enabled features that are also disabled. When processing
   // features, if the same feature is enabled and disabled the latter takes
@@ -57,8 +57,9 @@ void BraveCommandLineHelper::Parse() {
 }
 
 void BraveCommandLineHelper::AppendSwitch(const char* switch_key) {
-  if (!command_line_.HasSwitch(switch_key))
-    command_line_.AppendSwitch(switch_key);
+  if (!command_line_->HasSwitch(switch_key)) {
+    command_line_->AppendSwitch(switch_key);
+  }
 }
 
 void BraveCommandLineHelper::AppendFeatures(
@@ -91,11 +92,12 @@ void BraveCommandLineHelper::AppendCSV(
       ss << ",";
     ss << *it;
   }
-  command_line_.AppendSwitchASCII(switch_key, ss.str());
+  command_line_->AppendSwitchASCII(switch_key, ss.str());
 }
 
 void BraveCommandLineHelper::AppendSwitchASCII(const char* switch_key,
                                                const char* value) {
-  if (!command_line_.HasSwitch(switch_key))
-    command_line_.AppendSwitchASCII(switch_key, value);
+  if (!command_line_->HasSwitch(switch_key)) {
+    command_line_->AppendSwitchASCII(switch_key, value);
+  }
 }

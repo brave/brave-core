@@ -13,10 +13,17 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/futures_macro/v0_3/crate/src/executor.rs",
+    "//brave/third_party/rust/futures_macro/v0_3/crate/src/join.rs",
+    "//brave/third_party/rust/futures_macro/v0_3/crate/src/lib.rs",
+    "//brave/third_party/rust/futures_macro/v0_3/crate/src/select.rs",
+    "//brave/third_party/rust/futures_macro/v0_3/crate/src/stream_select.rs",
+  ]
+  inputs = []
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.3.27"
   cargo_pkg_name = "futures-macro"

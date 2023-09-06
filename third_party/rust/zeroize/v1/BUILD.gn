@@ -13,10 +13,19 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/zeroize/v1/crate/src/aarch64.rs",
+    "//brave/third_party/rust/zeroize/v1/crate/src/lib.rs",
+    "//brave/third_party/rust/zeroize/v1/crate/src/x86.rs",
+    "//brave/third_party/rust/zeroize/v1/crate/tests/zeroize_derive.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/zeroize/v1/crate/CHANGELOG.md",
+    "//brave/third_party/rust/zeroize/v1/crate/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "1.5.5"
   cargo_pkg_authors = "The RustCrypto Project Developers"

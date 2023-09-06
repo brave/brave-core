@@ -118,7 +118,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_wallet:brave_wallet_delegate",
   "//brave/browser/brave_wallet:tab_helper",
   "//brave/browser/component_updater",
-  "//brave/browser/content_settings",
   "//brave/browser/ethereum_remote_client/buildflags",
   "//brave/browser/gcm_driver",
   "//brave/browser/metrics/buildflags",

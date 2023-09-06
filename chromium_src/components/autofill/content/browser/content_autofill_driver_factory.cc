@@ -16,14 +16,14 @@ class BraveBrowserAutofillManager : public BrowserAutofillManager {
 
   bool IsAutofillEnabled() const override {
     auto enabled = BrowserAutofillManager::IsAutofillEnabled();
-    if (client()->GetProfileType() !=
+    if (client().GetProfileType() !=
             profile_metrics::BrowserProfileType::kIncognito &&
-        client()->GetProfileType() !=
+        client().GetProfileType() !=
             profile_metrics::BrowserProfileType::kOtherOffTheRecordProfile) {
       return enabled;
     }
     enabled = enabled &&
-              client()->GetPrefs()->GetBoolean(kBraveAutofillPrivateWindows);
+              client().GetPrefs()->GetBoolean(kBraveAutofillPrivateWindows);
     return enabled;
   }
 };

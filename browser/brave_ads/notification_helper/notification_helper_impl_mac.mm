@@ -156,11 +156,6 @@ bool NotificationHelperImplMac::CanShowNotifications() {
     return false;
   }
 
-  if (base::mac::IsAtMostOS10_13()) {
-    VLOG(1) << "Native notifications are not supported prior to macOS 10.14";
-    return false;
-  }
-
   if (!IsAuthorized()) {
     return false;
   }

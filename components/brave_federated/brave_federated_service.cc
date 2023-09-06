@@ -30,9 +30,8 @@ BraveFederatedService::BraveFederatedService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : prefs_(prefs),
       local_state_(local_state),
-      browser_context_path_(browser_context_path),
       url_loader_factory_(url_loader_factory) {
-  Init();
+  Init(browser_context_path);
 }
 
 BraveFederatedService::~BraveFederatedService() = default;
@@ -48,7 +47,7 @@ DataStoreService* BraveFederatedService::GetDataStoreService() const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void BraveFederatedService::Init() {
+void BraveFederatedService::Init(const base::FilePath& browser_context_path) {
   VLOG(1) << "Initialising federated service";
 
   local_state_change_registrar_.Init(local_state_);
@@ -57,8 +56,7 @@ void BraveFederatedService::Init() {
       base::BindRepeating(&BraveFederatedService::OnPreferenceChanged,
                           base::Unretained(this)));
 
-  base::FilePath db_path(
-      browser_context_path_.AppendASCII("data_store.sqlite"));
+  base::FilePath db_path(browser_context_path.AppendASCII("data_store.sqlite"));
   data_store_service_ = std::make_unique<DataStoreService>(db_path);
   data_store_service_->Init();
 

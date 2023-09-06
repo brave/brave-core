@@ -12,7 +12,8 @@
       const net::CanonicalCookie& cookie, const GURL& url,            \
       const net::SiteForCookies& site_for_cookies,                    \
       const absl::optional<url::Origin>& top_frame_origin,            \
-      net::CookieSettingOverrides overrides) const;                   \
+      net::CookieSettingOverrides overrides,                          \
+      net::CookieInclusionStatus* cookie_inclusion_status) const;     \
   net::NetworkDelegate::PrivacySetting IsEphemeralPrivacyModeEnabled( \
       const GURL& url, const net::SiteForCookies& site_for_cookies,   \
       const absl::optional<url::Origin>& top_frame_origin,            \

@@ -9,10 +9,53 @@ cargo_crate("lib") {
   epoch = "3"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/address/errors.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/address/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/address/network.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/address/payload.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/address/protocol.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/bigint/bigint_ser.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/bigint/biguint_ser.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/bigint/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/chainid/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/clock/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/clock/quantize.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/commcid/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/consensus/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/crypto/hash.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/crypto/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/crypto/signature.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/deal/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/econ/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/error/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/event/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/lib.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/math.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/message.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/piece/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/piece/zero.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/randomness/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/receipt.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/reward.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/sector/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/sector/post.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/sector/registered_proof.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/sector/seal.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/smooth/alpha_beta_filter.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/smooth/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/smooth/smooth_func.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/state/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/sys/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/sys/out.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/src/version/mod.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/tests/address_test.rs",
+    "//brave/third_party/rust/fvm_shared/v3/crate/tests/commcid_tests.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/fvm_shared/v3/crate/CHANGELOG.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2021"
   cargo_pkg_version = "3.3.0"
   cargo_pkg_authors =

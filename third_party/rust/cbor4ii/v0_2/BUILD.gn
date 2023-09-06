@@ -13,10 +13,28 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/benches/bench_de.rs",
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/benches/bench_ser.rs",
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/src/core.rs",
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/src/core/dec.rs",
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/src/core/enc.rs",
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/src/core/types.rs",
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/src/core/utils.rs",
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/src/error.rs",
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/src/lib.rs",
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/src/serde.rs",
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/src/serde/de.rs",
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/src/serde/ser.rs",
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/src/util.rs",
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/tests/decode.rs",
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/tests/serde.rs",
+    "//brave/third_party/rust/cbor4ii/v0_2/crate/tests/serde_cbor.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/cbor4ii/v0_2/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.2.14"
   cargo_pkg_authors = "quininer <quininer@live.com>"

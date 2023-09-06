@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/download/internal/android/BUILD.gn b/chrome/browser/download/internal/android/BUILD.gn
+index 09361f7e30a09edab1618d563788972ffed92a21..3889826c2d235e9e376af53b811e04d441b61b47 100644
+--- a/chrome/browser/download/internal/android/BUILD.gn
++++ b/chrome/browser/download/internal/android/BUILD.gn
+@@ -200,6 +200,7 @@ android_resources("java_resources") {
+     "java/res/values/ids.xml",
+     "java/res/values/styles.xml",
+   ]
++  sources += brave_download_internal_java_resources
+ 
+   deps = [
+     "//chrome/browser/download/android:java_resources",

@@ -222,6 +222,7 @@ const Config = function () {
   this.use_libfuzzer = false
   this.brave_ai_chat_endpoint = getNPMConfig(['brave_ai_chat_endpoint']) || ''
   this.androidAabToApk = false
+  this.enable_dangling_raw_ptr_checks = false
 
   if (process.env.GOMA_DIR !== undefined) {
     this.realGomaDir = process.env.GOMA_DIR
@@ -393,6 +394,7 @@ Config.prototype.buildArgs = function () {
     enable_updater: this.isOfficialBuild(),
     enable_update_notifications: this.isOfficialBuild(),
     brave_ai_chat_endpoint: this.brave_ai_chat_endpoint,
+    enable_dangling_raw_ptr_checks: this.enable_dangling_raw_ptr_checks,
     ...this.extraGnArgs,
   }
 
@@ -560,12 +562,6 @@ Config.prototype.buildArgs = function () {
     // We want it to be enabled for all configurations
     args.disable_android_lint = false
 
-    if (this.targetArch === 'arm64') {
-      // TODO: Ideally we should properly compile our rust libraries in order to
-      // be able to use default 'standard' flow integrity. For now just revert
-      // it to 'pac'.
-      args.arm_control_flow_integrity = 'pac'
-    }
     args.android_aab_to_apk = this.androidAabToApk
 
     // These do not exist on android
@@ -674,6 +670,7 @@ Config.prototype.buildArgs = function () {
     delete args.v8_enable_verify_heap
     delete args.brave_variations_server_url
     delete args.brave_ai_chat_endpoint
+    delete args.enable_dangling_raw_ptr_checks
   }
 
   return args

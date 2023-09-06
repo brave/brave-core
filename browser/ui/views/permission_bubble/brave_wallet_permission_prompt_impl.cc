@@ -46,3 +46,8 @@ permissions::PermissionPromptDisposition
 BraveWalletPermissionPromptImpl::GetPromptDisposition() const {
   return permissions::PermissionPromptDisposition::ANCHORED_BUBBLE;
 }
+
+absl::optional<gfx::Rect>
+BraveWalletPermissionPromptImpl::GetViewBoundsInScreen() const {
+  return absl::nullopt;
+}

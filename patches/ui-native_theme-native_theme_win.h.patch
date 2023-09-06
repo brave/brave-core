@@ -1,5 +1,5 @@
 diff --git a/ui/native_theme/native_theme_win.h b/ui/native_theme/native_theme_win.h
-index 2793ad166bfc872b456a6536f7401b150e39bc61..a8255c5eb712f628191ffd5e658d0504a960f3de 100644
+index ea47878d12046bca8ceb01bc8459de77a6402a44..2a574a60ba72d23d1b85d0b52a394eedcf10c1cb 100644
 --- a/ui/native_theme/native_theme_win.h
 +++ b/ui/native_theme/native_theme_win.h
 @@ -76,6 +76,7 @@ class NATIVE_THEME_EXPORT NativeThemeWin : public NativeTheme,

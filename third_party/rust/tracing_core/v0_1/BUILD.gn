@@ -13,10 +13,33 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/tracing_core/v0_1/crate/src/callsite.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/src/dispatcher.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/src/event.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/src/field.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/src/lazy.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/src/lib.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/src/metadata.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/src/parent.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/src/span.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/src/spin/mod.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/src/spin/mutex.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/src/spin/once.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/src/stdlib.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/src/subscriber.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/tests/common/mod.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/tests/dispatch.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/tests/global_dispatch.rs",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/tests/macros.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/tracing_core/v0_1/crate/CHANGELOG.md",
+    "//brave/third_party/rust/tracing_core/v0_1/crate/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.1.30"
   cargo_pkg_authors = "Tokio Contributors <team@tokio.rs>"

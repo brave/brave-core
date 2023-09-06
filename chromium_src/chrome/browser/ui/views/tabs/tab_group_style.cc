@@ -56,3 +56,8 @@ bool TabGroupStyle::ShouldShowVerticalTabs() const {
 
   return tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser());
 }
+
+int ChromeRefresh2023TabGroupStyle::GetTabGroupOverlapAdjustment() {
+  return ChromeRefresh2023TabGroupStyle_ChromiumImpl::
+      GetTabGroupOverlapAdjustment();
+}

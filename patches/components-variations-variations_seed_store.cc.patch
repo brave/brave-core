@@ -1,5 +1,5 @@
 diff --git a/components/variations/variations_seed_store.cc b/components/variations/variations_seed_store.cc
-index eadc6c3b03696d4ab220d907dc14f36d401f4063..fe038faeb86edcdfea9cca0e37d3cf260a6137b6 100644
+index 823d77d73aa641949258ed5a00e2cc4e58a418f6..b4f6286b1ee37064240f06a20cfca70118b212d7 100644
 --- a/components/variations/variations_seed_store.cc
 +++ b/components/variations/variations_seed_store.cc
 @@ -51,6 +51,7 @@ const base::FeatureParam<bool> kVariationsAsyncProcessing{

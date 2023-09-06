@@ -40,7 +40,7 @@ TEST(EthCallDataBuilderTest, Transfer) {
       "0f0000000000000000000000000000000000000000000000000de0b6b3a7640000");
 }
 
-TEST(EthCallDataBuilderTest, BalanceOf) {
+TEST(EthCallDataBuilderTest, BalanceOf_erc20) {
   std::string data;
   BalanceOf("0x4e02f254184E904300e0775E4b8eeCB1", &data);
   ASSERT_EQ(data,
@@ -139,7 +139,7 @@ TEST(EthCallDataBuilderTest, SafeTransferFrom) {
             "0000000000000000000000000000000000000000000000000000000000000000");
 }
 
-TEST(EthCallDataBuilderTest, BalanceOf) {
+TEST(EthCallDataBuilderTest, BalanceOf_erc1155) {
   std::string data;
   uint256_t token_id;
   ASSERT_TRUE(HexValueToUint256("0x1", &token_id));

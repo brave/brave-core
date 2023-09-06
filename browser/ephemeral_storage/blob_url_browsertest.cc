@@ -190,8 +190,10 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
 
     // Close the first a.com tab, ensure all blobs created there become obsolete
     // and can't be fetched.
-    ASSERT_TRUE(browser()->tab_strip_model()->CloseWebContentsAt(
-        1, TabCloseTypes::CLOSE_NONE));
+    const int previous_tab_count = browser()->tab_strip_model()->count();
+    browser()->tab_strip_model()->CloseWebContentsAt(1,
+                                                     TabCloseTypes::CLOSE_NONE);
+    EXPECT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
     content::RunAllTasksUntilIdle();
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
       auto* rfh = a_com2_registered_blobs[idx].rfh.get();
@@ -267,8 +269,10 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
 
     // Close the first a.com tab, ensure all blobs created there become obsolete
     // and can't be fetched.
-    ASSERT_TRUE(browser()->tab_strip_model()->CloseWebContentsAt(
-        1, TabCloseTypes::CLOSE_NONE));
+    const int previous_tab_count = browser()->tab_strip_model()->count();
+    browser()->tab_strip_model()->CloseWebContentsAt(1,
+                                                     TabCloseTypes::CLOSE_NONE);
+    EXPECT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
     content::RunAllTasksUntilIdle();
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
       auto* rfh = a_com2_registered_blobs[idx].rfh.get();
@@ -507,9 +511,6 @@ IN_PROC_BROWSER_TEST_P(BlobUrlBrowserTest, ReplaceStateToAddAuthorityToBlob) {
   EXPECT_FALSE(
       base::MatchPattern(new_contents->GetVisibleURL().spec(), "*spoof*"));
 
-  // The currently implemented behavior is that the URL gets rewritten to
-  // about:blank#blocked. The content of the page stays the same.
-  EXPECT_EQ(content::kBlockedURL, new_contents->GetVisibleURL().spec());
   EXPECT_EQ(
       origin.Serialize() + " potato",
       EvalJs(new_contents, "self.origin + ' ' + document.body.innerText;"));
@@ -518,5 +519,5 @@ IN_PROC_BROWSER_TEST_P(BlobUrlBrowserTest, ReplaceStateToAddAuthorityToBlob) {
   // This seems unfortunate -- can we fix it?
   std::string window_location =
       EvalJs(new_contents, "window.location.href;").ExtractString();
-  EXPECT_TRUE(base::MatchPattern(window_location, "*spoof*"));
+  EXPECT_FALSE(base::MatchPattern(window_location, "*spoof*"));
 }

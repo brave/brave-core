@@ -13,10 +13,21 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/serde_repr/v0_1/crate/src/lib.rs",
+    "//brave/third_party/rust/serde_repr/v0_1/crate/src/parse.rs",
+    "//brave/third_party/rust/serde_repr/v0_1/crate/tests/compiletest.rs",
+    "//brave/third_party/rust/serde_repr/v0_1/crate/tests/test.rs",
+    "//brave/third_party/rust/serde_repr/v0_1/crate/tests/ui/empty_enum.rs",
+    "//brave/third_party/rust/serde_repr/v0_1/crate/tests/ui/missing_repr.rs",
+    "//brave/third_party/rust/serde_repr/v0_1/crate/tests/ui/multiple_others.rs",
+    "//brave/third_party/rust/serde_repr/v0_1/crate/tests/ui/non_unit_variant.rs",
+    "//brave/third_party/rust/serde_repr/v0_1/crate/tests/ui/not_enum.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/serde_repr/v0_1/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.1.7"
   cargo_pkg_authors = "David Tolnay <dtolnay@gmail.com>"

@@ -9,10 +9,60 @@ cargo_crate("lib") {
   epoch = "0.4"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chrono/v0_4/crate/benches/chrono.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/benches/serde.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/date.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/datetime/mod.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/datetime/rustc_serialize.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/datetime/serde.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/datetime/tests.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/format/locales.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/format/mod.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/format/parse.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/format/parsed.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/format/scan.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/format/strftime.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/lib.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/month.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/naive/date.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/naive/datetime/mod.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/naive/datetime/rustc_serialize.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/naive/datetime/serde.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/naive/datetime/tests.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/naive/internals.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/naive/isoweek.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/naive/mod.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/naive/time/mod.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/naive/time/rustc_serialize.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/naive/time/serde.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/naive/time/tests.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/offset/fixed.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/offset/local/mod.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/offset/local/stub.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/offset/local/tz_info/mod.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/offset/local/tz_info/parser.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/offset/local/tz_info/rule.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/offset/local/tz_info/timezone.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/offset/local/unix.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/offset/local/windows.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/offset/mod.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/offset/utc.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/oldtime.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/round.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/traits.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/src/weekday.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/tests/dateutils.rs",
+    "//brave/third_party/rust/chrono/v0_4/crate/tests/wasm.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/chrono/v0_4/crate/.github/pull_request_template.md",
+    "//brave/third_party/rust/chrono/v0_4/crate/CHANGELOG.md",
+    "//brave/third_party/rust/chrono/v0_4/crate/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.4.24"
   cargo_pkg_name = "chrono"

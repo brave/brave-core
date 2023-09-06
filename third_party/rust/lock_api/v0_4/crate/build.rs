@@ -1,4 +1,5 @@
 fn main() {
+    return; #[allow(unused)]
     let cfg = autocfg::new();
 
     if cfg.probe_rustc_version(1, 61) {

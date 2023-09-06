@@ -1,0 +1,24 @@
+From 4e24c13a8ddc7599c2c164b2c7d9eaa2d83e2d80 Mon Sep 17 00:00:00 2001
+From: bridiver <34129+bridiver@users.noreply.github.com>
+Date: Wed, 23 Aug 2023 13:14:39 -0700
+Subject: [PATCH] autocfg
+
+---
+ third_party/rust/num_traits/v0_2/crate/build.rs | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/third_party/rust/num_traits/v0_2/crate/build.rs b/third_party/rust/num_traits/v0_2/crate/build.rs
+index c7bf364f1c..21558be654 100644
+--- a/third_party/rust/num_traits/v0_2/crate/build.rs
++++ b/third_party/rust/num_traits/v0_2/crate/build.rs
+@@ -3,6 +3,7 @@ extern crate autocfg;
+ use std::env;
+ 
+ fn main() {
++    return; #[allow(unused)]
+     let ac = autocfg::new();
+ 
+     // If the "i128" feature is explicity requested, don't bother probing for it.
+-- 
+2.34.1
+

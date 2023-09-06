@@ -150,6 +150,11 @@ brave_java_resources = [
   "java/res/drawable-night-xhdpi/ic_cookie_background.png",
   "java/res/drawable-night-xxhdpi/ic_cookie_background.png",
   "java/res/drawable-night-xxxhdpi/ic_cookie_background.png",
+  "java/res/drawable-night/bookmark_empty_state_illustration.xml",
+  "java/res/drawable-night/history_empty_state_illustration.xml",
+  "java/res/drawable-night/phone_recent_tab_empty_state_illustration.xml",
+  "java/res/drawable-night/reading_list_empty_state_illustration.xml",
+  "java/res/drawable-night/tablet_recent_tab_empty_state_illustration.xml",
   "java/res/drawable-night/tipping_background_success.xml",
   "java/res/drawable-nodpi/dylan_malval_sea_min.webp",
   "java/res/drawable-nodpi/eth.png",
@@ -1021,6 +1026,14 @@ brave_java_resources = [
 
 brave_base_module_resources =
     [ "java/res_chromium_base/drawable-night/themed_app_icon.xml" ]
+
+brave_download_internal_java_resources =
+    [ "java/res/drawable-night/downloads_empty_state_illustration.xml" ]
+
+brave_android_features_java_resources = [
+  "java/res/drawable-night/phone_tab_switcher_empty_state_illustration.xml",
+  "java/res/drawable-night/tablet_tab_switcher_empty_state_illustration.xml",
+]
 
 # XML preprocessing
 brave_java_preprocess_xml_sources =

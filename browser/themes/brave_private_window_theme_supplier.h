@@ -22,7 +22,7 @@ class BravePrivateWindowThemeSupplier : public CustomThemeSupplier {
   ~BravePrivateWindowThemeSupplier() override;
 
   void AddColorMixers(ui::ColorProvider* provider,
-                      const ui::ColorProviderManager::Key& key) const override;
+                      const ui::ColorProviderKey& key) const override;
 
   // false if this is for tor window.
   bool for_private_window_ = true;

@@ -9,10 +9,20 @@ cargo_crate("lib") {
   epoch = "0.12"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/bls_signatures/v0_12/crate/benches/serialize.rs",
+    "//brave/third_party/rust/bls_signatures/v0_12/crate/benches/sign.rs",
+    "//brave/third_party/rust/bls_signatures/v0_12/crate/benches/verify.rs",
+    "//brave/third_party/rust/bls_signatures/v0_12/crate/examples/verify.rs",
+    "//brave/third_party/rust/bls_signatures/v0_12/crate/src/error.rs",
+    "//brave/third_party/rust/bls_signatures/v0_12/crate/src/key.rs",
+    "//brave/third_party/rust/bls_signatures/v0_12/crate/src/lib.rs",
+    "//brave/third_party/rust/bls_signatures/v0_12/crate/src/signature.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/bls_signatures/v0_12/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.12.0"
   cargo_pkg_authors = "dignifiedquire <dignifiedquire@gmail.com>"

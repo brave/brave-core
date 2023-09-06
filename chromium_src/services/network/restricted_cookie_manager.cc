@@ -59,12 +59,9 @@ net::CookieOptions RestrictedCookieManager::MakeOptionsForSet(
     mojom::RestrictedCookieManagerRole role,
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const net::IsolationInfo& isolation_info,
-    const CookieSettings& cookie_settings,
-    const net::FirstPartySetMetadata& first_party_set_metadata) const {
-  net::CookieOptions cookie_options =
-      ::network::MakeOptionsForSet(role, url, site_for_cookies, isolation_info,
-                                   cookie_settings, first_party_set_metadata);
+    const CookieSettings& cookie_settings) const {
+  net::CookieOptions cookie_options = ::network::MakeOptionsForSet(
+      role, url, site_for_cookies, cookie_settings);
   net::FillEphemeralStorageParams(url, site_for_cookies, BoundTopFrameOrigin(),
                                   cookie_store_->cookie_access_delegate(),
                                   &cookie_options);
@@ -75,12 +72,9 @@ net::CookieOptions RestrictedCookieManager::MakeOptionsForGet(
     mojom::RestrictedCookieManagerRole role,
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const net::IsolationInfo& isolation_info,
-    const CookieSettings& cookie_settings,
-    const net::FirstPartySetMetadata& first_party_set_metadata) const {
-  net::CookieOptions cookie_options =
-      ::network::MakeOptionsForGet(role, url, site_for_cookies, isolation_info,
-                                   cookie_settings, first_party_set_metadata);
+    const CookieSettings& cookie_settings) const {
+  net::CookieOptions cookie_options = ::network::MakeOptionsForGet(
+      role, url, site_for_cookies, cookie_settings);
   net::FillEphemeralStorageParams(url, site_for_cookies, BoundTopFrameOrigin(),
                                   cookie_store_->cookie_access_delegate(),
                                   &cookie_options);

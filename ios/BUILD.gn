@@ -108,10 +108,7 @@ ios_framework_bundle("brave_core_ios_framework") {
 
   info_plist = "Info.plist"
 
-  configs += [
-    ":internal_config",
-    "//build/config/compiler:enable_arc",
-  ]
+  configs += [ ":internal_config" ]
 
   deps = [
     ":brave_core_umbrella_header",

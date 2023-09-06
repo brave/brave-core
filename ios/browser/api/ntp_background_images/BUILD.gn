@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("ntp_background_images") {
-  configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
     "ntp_background_image+private.h",
     "ntp_background_image.h",

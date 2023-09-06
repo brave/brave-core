@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py b/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py
-index fad978bd8a1eb4905796377b4f4504c360054a18..ca58c2fb5ac3a4b68d252e908eff6d828e528be5 100644
+index 39e7f5eefa7da758409e45f4962c7ec0e4780808..6292c46c79051f4fedc868f2fa85584ccf6e1937 100644
 --- a/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py
 +++ b/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py
-@@ -34,6 +34,7 @@ class TaskQueue(object):
+@@ -43,6 +43,7 @@ class TaskQueue(object):
                  # TODO(crbug.com/1190269) - we can't use more than 56
                  # cores on Windows or Python3 may hang.
                  self._pool_size = min(self._pool_size, 56)
 +            from brave_task_queue_helper import limit_pool_size; limit_pool_size(self)
              self._pool = multiprocessing.Pool(self._pool_size,
                                                package_initializer().init)
-         self._requested_tasks = []  # List of (workload, func, args, kwargs)
+         self._requested_tasks = []  # List of _Task

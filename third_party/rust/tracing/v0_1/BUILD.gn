@@ -9,10 +9,52 @@ cargo_crate("lib") {
   epoch = "0.1"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/tracing/v0_1/crate/benches/baseline.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/benches/dispatch_get_clone.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/benches/dispatch_get_ref.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/benches/empty_span.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/benches/enter_span.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/benches/event.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/benches/shared.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/benches/span_fields.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/benches/span_no_fields.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/benches/span_repeated.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/src/dispatcher.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/src/field.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/src/instrument.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/src/level_filters.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/src/lib.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/src/macros.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/src/span.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/src/stdlib.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/src/subscriber.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/enabled.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/event.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/filter_caching_is_lexically_scoped.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/filters_are_not_reevaluated_for_the_same_span.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/filters_are_reevaluated_for_different_call_sites.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/filters_dont_leak.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/future_send.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/macro_imports.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/macros.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/macros_incompatible_concat.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/macros_redefined_core.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/max_level_hint.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/multiple_max_level_hints.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/no_subscriber.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/register_callsite_deadlock.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/scoped_clobbers_default.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/span.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/subscriber.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/tracing/v0_1/crate/CHANGELOG.md",
+    "//brave/third_party/rust/tracing/v0_1/crate/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.1.37"
   cargo_pkg_authors =

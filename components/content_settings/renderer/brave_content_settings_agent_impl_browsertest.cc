@@ -221,9 +221,9 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     content_settings()->SetContentSettingCustomScope(
         top_level_page_pattern(), ContentSettingsPattern::Wildcard(),
         ContentSettingsType::BRAVE_REFERRERS, CONTENT_SETTING_BLOCK);
-    ContentSettingsForOneType settings;
-    content_settings()->GetSettingsForOneType(
-        ContentSettingsType::BRAVE_REFERRERS, &settings);
+    ContentSettingsForOneType settings =
+        content_settings()->GetSettingsForOneType(
+            ContentSettingsType::BRAVE_REFERRERS);
     // default plus new setting
     EXPECT_EQ(settings.size(), 2u);
   }
@@ -232,9 +232,9 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     content_settings()->SetContentSettingCustomScope(
         top_level_page_pattern(), ContentSettingsPattern::Wildcard(),
         ContentSettingsType::BRAVE_REFERRERS, CONTENT_SETTING_ALLOW);
-    ContentSettingsForOneType settings;
-    content_settings()->GetSettingsForOneType(
-        ContentSettingsType::BRAVE_REFERRERS, &settings);
+    ContentSettingsForOneType settings =
+        content_settings()->GetSettingsForOneType(
+            ContentSettingsType::BRAVE_REFERRERS);
     // default plus new setting
     EXPECT_EQ(settings.size(), 2u);
   }
@@ -562,9 +562,9 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
 // TODO(iefremov): We should reduce the copy-paste amount in these tests.
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        BlockReferrerByDefault) {
-  ContentSettingsForOneType settings;
-  content_settings()->GetSettingsForOneType(
-      ContentSettingsType::BRAVE_REFERRERS, &settings);
+  ContentSettingsForOneType settings =
+      content_settings()->GetSettingsForOneType(
+          ContentSettingsType::BRAVE_REFERRERS);
   // default setting
   EXPECT_EQ(settings.size(), 1u)
       << "There should not be any visible referrer rules.";
@@ -622,9 +622,9 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        BlockReferrerByDefaultRedirects) {
-  ContentSettingsForOneType settings;
-  content_settings()->GetSettingsForOneType(
-      ContentSettingsType::BRAVE_REFERRERS, &settings);
+  ContentSettingsForOneType settings =
+      content_settings()->GetSettingsForOneType(
+          ContentSettingsType::BRAVE_REFERRERS);
   // default setting
   EXPECT_EQ(settings.size(), 1u)
       << "There should not be any visible referrer rules.";

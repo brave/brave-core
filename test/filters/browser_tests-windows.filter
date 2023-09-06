@@ -7,6 +7,9 @@
 
 # These tests fail on CI but pass locally
 -AutofillContextMenuManagerFeedbackUIBrowserTest.DisplaysFeedbackDialogUI
+-AutomationApiTest.*
+-AutomationApiTestWithLanguageDetection.DetectedLanguage
+-ManifestUpdateManagerBrowserTest.UninstallDialogCancelStillShowsAppUpdateDialog
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
 -TabHoverCardBubbleViewDialogBrowserTest.InvokeUi_tab_hover_card
 
@@ -44,7 +47,6 @@
 
 -All/MediaEngagementAutoplayBrowserTest.*
 -All/ExternallyManagedBrowserTestWithPrefMigrationRead.ReinstallPolicyAppWithLocallyInstalledApp/1
--All/PDFExtensionAccessibilityTreeDumpTest.*
 -All/PDFPluginDisabledTest.*
 -All/WebAppOfflinePageTest.WebAppOfflinePageIsDisplayed/*
 -All/WebAppOfflinePageTest.WebAppOfflineWithEmptyServiceWorker/*

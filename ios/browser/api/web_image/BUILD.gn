@@ -4,8 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("web_image") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "image_downloader.h",
     "image_downloader.mm",

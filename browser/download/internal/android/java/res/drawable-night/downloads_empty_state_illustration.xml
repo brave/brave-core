@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+  <path
+      android:pathData="M48,0L48,0A48,48 0,0 1,96 48L96,48A48,48 0,0 1,48 96L48,96A48,48 0,0 1,0 48L0,48A48,48 0,0 1,48 0z">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startX="47.63"
+          android:startY="-15.63"
+          android:endX="48.613"
+          android:endY="152.939"
+          android:type="linear">
+        <item android:offset="0" android:color="#002A2ADE"/>
+        <item android:offset="1" android:color="#3F2A2ADE"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M48.584,24.052C48.584,23.61 48.226,23.252 47.784,23.252C47.342,23.252 46.984,23.61 46.984,24.052H48.584ZM46.984,24.052V58.545H48.584V24.052H46.984Z"
+      android:fillColor="#7C91FF"/>
+  <path
+      android:pathData="M35.104,46.193L46.37,57.459C47.151,58.241 48.417,58.241 49.198,57.459L60.465,46.193"
+      android:strokeWidth="1.6"
+      android:fillColor="#00000000"
+      android:strokeColor="#7C91FF"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M24,58.545V63.948C24,68.367 27.582,71.948 32,71.948H64C68.418,71.948 72,68.367 72,63.948V58.545"
+      android:strokeWidth="1.6"
+      android:fillColor="#00000000"
+      android:strokeColor="#7C91FF"
+      android:strokeLineCap="round"/>
+</vector>
+

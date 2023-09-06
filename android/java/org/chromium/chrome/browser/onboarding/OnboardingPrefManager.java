@@ -68,7 +68,7 @@ public class OnboardingPrefManager {
     public static final int EXISTING_USER_REWARDS_OFF_ONBOARDING = 1;
     public static final int EXISTING_USER_REWARDS_ON_ONBOARDING = 2;
 
-    private static boolean isOnboardingNotificationShown;
+    private static boolean sIsOnboardingNotificationShown;
 
     public static boolean isNotification;
 
@@ -217,15 +217,16 @@ public class OnboardingPrefManager {
 
     public void showOnboarding(Context context) {
         Intent intent = new Intent(context, OnboardingActivity.class);
+        intent.setAction(Intent.ACTION_VIEW);
         context.startActivity(intent);
     }
 
     public boolean isOnboardingNotificationShown() {
-        return isOnboardingNotificationShown;
+        return sIsOnboardingNotificationShown;
     }
 
     public void setOnboardingNotificationShown(boolean isShown) {
-        isOnboardingNotificationShown = isShown;
+        sIsOnboardingNotificationShown = isShown;
     }
 
     public void onboardingNotification() {

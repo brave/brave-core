@@ -1,8 +1,8 @@
 diff --git a/third_party/rust/serde/v1/BUILD.gn b/third_party/rust/serde/v1/BUILD.gn
-index 0cc7bd91f39cd6cff8349a73791d04e6cca24509..a38b6be5763eaf26914291d9f685f4f38192dff0 100644
+index d0ca46e3b1f2867098e01121892b5c90dbdfa825..73bda1ba3fe2530f8a4541472311ed14ab4384a5 100644
 --- a/third_party/rust/serde/v1/BUILD.gn
 +++ b/third_party/rust/serde/v1/BUILD.gn
-@@ -30,4 +30,5 @@ cargo_crate("lib") {
+@@ -59,4 +59,5 @@ cargo_crate("lib") {
    ]
    build_root = "crate/build.rs"
    build_sources = [ "crate/build.rs" ]

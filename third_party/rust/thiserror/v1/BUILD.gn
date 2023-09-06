@@ -9,10 +9,51 @@ cargo_crate("lib") {
   epoch = "1"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/thiserror/v1/crate/build.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/src/aserror.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/src/display.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/src/lib.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/src/provide.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/compiletest.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/test_backtrace.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/test_deprecated.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/test_display.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/test_error.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/test_expr.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/test_from.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/test_generics.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/test_lints.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/test_option.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/test_path.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/test_source.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/test_transparent.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/bad-field-attr.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/concat-display.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/duplicate-enum-source.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/duplicate-fmt.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/duplicate-struct-source.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/duplicate-transparent.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/from-backtrace-backtrace.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/from-not-source.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/lifetime.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/missing-fmt.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/no-display.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/source-enum-not-error.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/source-struct-not-error.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/transparent-display.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/transparent-enum-many.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/transparent-enum-source.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/transparent-struct-many.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/transparent-struct-source.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/unexpected-field-fmt.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/unexpected-struct-source.rs",
+    "//brave/third_party/rust/thiserror/v1/crate/tests/ui/union.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/thiserror/v1/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "1.0.38"
   cargo_pkg_authors = "David Tolnay <dtolnay@gmail.com>"

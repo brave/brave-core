@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("chromium_lottie_animation") {
-  configs += [ "//build/config/compiler:enable_arc" ]
   sources = [ "chromium_lottie_animation.mm" ]
   deps = [ "//ios/public/provider/chrome/browser/lottie:lottie_animation_api" ]
 }

@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/cr_elements/cr_shared_vars.css b/ui/webui/resources/cr_elements/cr_shared_vars.css
-index 4284ed5cacfce7abdab11886b13961e737085dff..f4b0538dad940fe4a333ef15ea6ad186b58e019a 100644
+index 84997fba2cecac4e296abdb5be6a79ec15118fc0..41155a924dcd98e97cc0320f57c5bc2a77178c8b 100644
 --- a/ui/webui/resources/cr_elements/cr_shared_vars.css
 +++ b/ui/webui/resources/cr_elements/cr_shared_vars.css
 @@ -5,6 +5,7 @@

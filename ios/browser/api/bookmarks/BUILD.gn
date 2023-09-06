@@ -7,8 +7,6 @@ import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
 source_set("bookmarks") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "bookmark_model_listener_ios.h",
     "bookmark_model_listener_ios.mm",

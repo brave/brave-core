@@ -67,8 +67,7 @@ HttpsUpgradesNavigationThrottle::MaybeCreateThrottleFor(
   security_interstitials::https_only_mode::HttpInterstitialState
       interstitial_state;
   interstitial_state.enabled_by_pref =
-      (base::FeatureList::IsEnabled(features::kHttpsFirstModeV2) && prefs &&
-       prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)) ||
+      (prefs && prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)) ||
       (map && brave_shields::ShouldForceHttps(map, request_url));
 
   StatefulSSLHostStateDelegate* state =
@@ -81,7 +80,7 @@ HttpsUpgradesNavigationThrottle::MaybeCreateThrottleFor(
       HttpsFirstModeServiceFactory::GetForProfile(profile);
   if (hfm_service) {
     // Can be null in some cases, e.g. when using Ash sign-in profile.
-    hfm_service->MaybeEnableHttpsFirstModeForUrl(profile, handle->GetURL());
+    hfm_service->MaybeEnableHttpsFirstModeForUrl(handle->GetURL());
   }
   // StatefulSSLHostStateDelegate can be null during tests.
   if (state && state->IsHttpsEnforcedForHost(handle->GetURL().host(),
@@ -106,5 +105,5 @@ HttpsUpgradesNavigationThrottle::MaybeCreateThrottleFor(
   HttpsOnlyModeTabHelper::CreateForWebContents(handle->GetWebContents());
 
   return std::make_unique<HttpsUpgradesNavigationThrottle>(
-      handle, std::move(blocking_page_factory), interstitial_state);
+      handle, profile, std::move(blocking_page_factory), interstitial_state);
 }
