@@ -8,6 +8,8 @@ package org.chromium.chrome.browser.app.domain;
 import android.content.Context;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -29,6 +31,7 @@ import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.observers.BraveWalletServiceObserverImpl;
 import org.chromium.chrome.browser.crypto_wallet.observers.BraveWalletServiceObserverImpl.BraveWalletServiceObserverImplDelegate;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
@@ -89,11 +92,12 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     }
 
     // TODO(pav): We should fetch and process all portfolio list here
-    public void prepareNftListMetaData(List<BlockchainToken> nftList,
-            List<BlockchainToken> hiddenNftList, PortfolioHelper portfolioHelper) {
+    public void prepareNftListMetaData(@NonNull final PortfolioHelper portfolioHelper) {
         mPortfolioHelper = portfolioHelper;
-        fetchNftMetadata(nftList, mAllNetworkInfos, _mNftModels);
-        fetchNftMetadata(hiddenNftList, mAllNetworkInfos, _mNftHiddenModels);
+        final List<BlockchainToken> nfts = mPortfolioHelper.getUserAssets();
+        final List<BlockchainToken> hiddenNfts = mPortfolioHelper.getHiddenAssets();
+        fetchNftMetadata(nfts, mAllNetworkInfos, _mNftModels);
+        fetchNftMetadata(hiddenNfts, mAllNetworkInfos, _mNftHiddenModels);
     }
 
     private void fetchNftMetadata(List<BlockchainToken> nftList, List<NetworkInfo> allNetworkList,
@@ -154,11 +158,12 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
 
     /**
      * Fetch all NFT assets of selected networks including hidden NFTs.
+     * @param fragment the fragment making the call
      * @param selectedNetworks list to fetch assets from
      * @param braveWalletBaseActivity instance for native services
      * @param callback to get the @{code PortfolioHelper} object containing result
      */
-    public void fetchNfts(List<NetworkInfo> selectedNetworks,
+    public void fetchNfts(@NonNull final Fragment fragment, List<NetworkInfo> selectedNetworks,
             BraveWalletBaseActivity braveWalletBaseActivity,
             Callbacks.Callback1<PortfolioHelper> callback) {
         NetworkModel.getAllNetworks(
@@ -169,7 +174,13 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                         mPortfolioHelper = new PortfolioHelper(
                                 braveWalletBaseActivity, mAllNetworkInfos, filteredAccounts);
                         mPortfolioHelper.setSelectedNetworks(selectedNetworks);
-                        mPortfolioHelper.fetchNfts(callback);
+                        mPortfolioHelper.fetchNfts(portfolioHelper -> {
+                            if (!AndroidUtils.canUpdateFragmentUi(fragment)) {
+                                return;
+                            }
+                            prepareNftListMetaData(portfolioHelper);
+                            callback.call(portfolioHelper);
+                        });
                     });
                 });
     }

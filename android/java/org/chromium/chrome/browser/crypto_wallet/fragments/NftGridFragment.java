@@ -54,7 +54,6 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletNftAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
-import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
@@ -407,14 +406,8 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
 
         Activity activity = getActivity();
         if (!(activity instanceof BraveWalletActivity)) return;
-        mPortfolioModel.fetchNfts(
-                mSelectedNetworkList, (BraveWalletBaseActivity) activity, (portfolioHelper) -> {
-                    if (!AndroidUtils.canUpdateFragmentUi(this)) return;
-                    mPortfolioHelper = portfolioHelper;
-                    List<BlockchainToken> nfts = mPortfolioHelper.getUserAssets();
-                    List<BlockchainToken> hiddenNfts = mPortfolioHelper.getHiddenAssets();
-                    mPortfolioModel.prepareNftListMetaData(nfts, hiddenNfts, mPortfolioHelper);
-                });
+        mPortfolioModel.fetchNfts(this, mSelectedNetworkList, (BraveWalletBaseActivity) activity,
+                (portfolioHelper) -> { mPortfolioHelper = portfolioHelper; });
     }
 
     private void showEditVisibleDialog() {
