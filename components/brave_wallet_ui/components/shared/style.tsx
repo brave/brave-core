@@ -122,16 +122,20 @@ export const Row = styled.div<FlexProps & {
   box-sizing: border-box;
 `
 
-export const Column = styled.div<FlexProps & {
-  fullWidth?: boolean
-  fullHeight?: boolean
-  color?: ThemeColor
-  padding?: number | string
-  margin?: number | string
-}>`
+export const Column = styled.div<
+  FlexProps & {
+    width?: string
+    height?: string
+    fullWidth?: boolean
+    fullHeight?: boolean
+    color?: ThemeColor
+    padding?: number | string
+    margin?: number | string
+  }
+>`
   font-family: 'Poppins';
-  height: ${(p) => p.fullHeight ? '100%' : 'unset'};
-  width: ${(p) => p.fullWidth ? '100%' : 'unset'};
+  height: ${(p) => (p.fullHeight ? '100%' : p?.height || 'unset')};
+  width: ${(p) => (p.fullWidth ? '100%' : p?.width || 'unset')};
   flex: ${(p) => p.flex ?? 'unset'};
   display: flex;
   flex-direction: column;
