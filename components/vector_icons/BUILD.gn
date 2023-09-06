@@ -43,6 +43,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_history.icon",
     "leo_import_arrow.icon",
     "leo_info_outline.icon",
+    "leo_key.icon",
     "leo_launch.icon",
     "leo_message_heart.icon",
     "leo_network_speed_fast.icon",

@@ -494,7 +494,6 @@ void CheckMenuIcons(ui::MenuModel* menu,
                     int submenu_depth,
                     std::u16string path = u"") {
   constexpr int kIconlessCommands[] = {
-      IDC_VIEW_PASSWORDS,
       // Header, with no icon
       IDC_RECENT_TABS_NO_DEVICE_TABS,
       // Header, with no icon
