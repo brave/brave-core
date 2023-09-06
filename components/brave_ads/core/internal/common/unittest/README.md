@@ -98,7 +98,7 @@ You can add one or more responses per request, which will be returned in the giv
     const URLResponseMap url_responses = {
       "/foo/bar", {
         {
-           net::HTTP_INTERNAL_SERVER_ERROR, "Internal server error"
+           net::HTTP_INTERNAL_SERVER_ERROR, "Program say to kill, to disassemble, to make dead"
         },
         {
            net::HTTP_CREATED, "To me there's no creativity without boundaries"

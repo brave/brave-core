@@ -40,7 +40,7 @@ TEST(BraveAdsNotificationAdServingFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsNotificationAdServingFeatureEnabled());
 }
 
-TEST(BraveAdsNotificationAdServingFeatureTest, GetServingVersion) {
+TEST(BraveAdsNotificationAdServingFeatureTest, ServingVersion) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;

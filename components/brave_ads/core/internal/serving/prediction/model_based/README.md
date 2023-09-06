@@ -1,4 +1,4 @@
-# Creative Ad Model Based Prediction
+# Model Based Prediction
 
 Predict a creative ad to deliver to the user.
 

@@ -18,9 +18,9 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/history_constants.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/public/ad_info.h"
-#include "brave/components/brave_ads/core/public/ad_type.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
+#include "brave/components/brave_ads/core/public/units/ad_info.h"
+#include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "build/build_config.h"
 
 namespace brave_ads {

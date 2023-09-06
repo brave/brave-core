@@ -15,7 +15,7 @@
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup_widget.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_view.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_view_factory.h"
-#include "brave/components/brave_ads/browser/feature/custom_notification_ad_feature.h"
+#include "brave/components/brave_ads/browser/units/notification_ad/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"

@@ -6,9 +6,9 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
 
 #include "base/uuid.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
+#include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
 #include "url/gurl.h"
 
 namespace brave_ads {

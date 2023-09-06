@@ -1,4 +1,4 @@
-# Creative Ad Embedding Based Prediction
+# Embedding Based Prediction
 
 Predict a creative ad to deliver to the user.
 

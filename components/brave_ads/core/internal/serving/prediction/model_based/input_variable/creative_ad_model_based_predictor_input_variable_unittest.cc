@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model_builder_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

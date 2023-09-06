@@ -8,10 +8,10 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
+#include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

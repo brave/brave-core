@@ -7,11 +7,11 @@ import("//brave/build/config.gni")
 
 static_library("browser") {
   sources = [
-    "ads_p2a.cc",
-    "ads_p2a.h",
     "ads_service.cc",
     "ads_service.h",
     "ads_service_observer.h",
+    "analytics/p2a/ads_p2a.cc",
+    "analytics/p2a/ads_p2a.h",
     "component_updater/component_info.h",
     "component_updater/component_util.cc",
     "component_updater/component_util.h",
@@ -19,13 +19,13 @@ static_library("browser") {
     "component_updater/resource_component.h",
     "component_updater/resource_component_observer.h",
     "component_updater/resource_info.h",
-    "feature/custom_notification_ad_constants.h",
-    "feature/custom_notification_ad_feature.cc",
-    "feature/custom_notification_ad_feature.h",
-    "frequency_capping_helper.cc",
-    "frequency_capping_helper.h",
-    "reminder_util.cc",
-    "reminder_util.h",
+    "reminder/reminder_util.cc",
+    "reminder/reminder_util.h",
+    "units/notification_ad/custom_notification_ad_constants.h",
+    "units/notification_ad/custom_notification_ad_feature.cc",
+    "units/notification_ad/custom_notification_ad_feature.h",
+    "user/user_interaction/ad_events/frequency_capping_helper.cc",
+    "user/user_interaction/ad_events/frequency_capping_helper.h",
   ]
 
   configs += [ "//build/config/compiler:wexit_time_destructors" ]
@@ -56,10 +56,10 @@ static_library("browser") {
   sources += [
     "ads_service_impl.cc",
     "ads_service_impl.h",
-    "ads_tooltips_delegate.h",
     "bat_ads_service_factory.h",
-    "device_id.cc",
-    "device_id.h",
+    "device_id/device_id.cc",
+    "device_id/device_id.h",
+    "tooltips/ads_tooltips_delegate.h",
   ]
 
   deps += [

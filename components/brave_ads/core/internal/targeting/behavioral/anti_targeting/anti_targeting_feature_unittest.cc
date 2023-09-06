@@ -40,7 +40,7 @@ TEST(BraveAdsAntiTargetingFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsAntiTargetingFeatureEnabled());
 }
 
-TEST(BraveAdsAntiTargetingFeatureTest, GetAntiTargetingResourceVersion) {
+TEST(BraveAdsAntiTargetingFeatureTest, AntiTargetingResourceVersion) {
   // Arrange
   base::FieldTrialParams params;
   params["resource_version"] = "0";

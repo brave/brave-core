@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state_holder.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
+#include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_manager.h"
 #include "brave/components/brave_ads/core/public/client/ads_client.h"
 
 namespace brave_ads {
