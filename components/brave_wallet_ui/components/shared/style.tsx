@@ -12,9 +12,6 @@ import * as leo from '@brave/leo/tokens/css'
 import { BraveWallet, StringWithAutocomplete } from '../../constants/types'
 import IThemeProps from 'brave-ui/theme/theme-interface'
 
-// colors
-import { LeoColors } from '../leo/alert-inline/leo-colors'
-
 // utils
 import { stripERC20TokenImageURL } from '../../utils/string-utils'
 
@@ -99,13 +96,15 @@ export const backgroundColorMixin = css<{
 `
 
 // Containers
-export const Row = styled.div<FlexProps & {
-  maxWidth?: CSSProperties['maxWidth']
-  margin?: number | string
-  padding?: number | string
-  width?: '100%' | 'unset'
-  marginBottom?: number
-}>`
+export const Row = styled.div<
+  FlexProps & {
+    maxWidth?: CSSProperties['maxWidth']
+    margin?: number | string
+    padding?: number | string
+    width?: '100%' | 'unset'
+    marginBottom?: number | string
+  }
+>`
   font-family: 'Poppins';
   display: flex;
   flex-direction: row;
@@ -115,10 +114,17 @@ export const Row = styled.div<FlexProps & {
   gap: ${(p) => p.gap ?? 'unset'};
   width: ${(p) => p.width ?? '100%'};
   max-width: ${(p) => p.maxWidth ?? 'unset'};
-  margin: ${(p) => p.margin ?? 0};
+  margin: ${(p) => p.margin ?? 'unset'};
+  ${(p) =>
+    p?.marginBottom || p?.marginBottom === 0
+      ? css`
+          margin-bottom: ${typeof p?.marginBottom === 'number'
+            ? `${p.marginBottom}px`
+            : p?.marginBottom || 'unset'};
+        `
+      : ''}
   position: relative;
   ${makePaddingMixin(0)}
-  margin-bottom: ${(p) => p.marginBottom ?? 0}px;
   box-sizing: border-box;
 `
 
@@ -355,18 +361,14 @@ export const WarningTriangleFilledIcon = styled.div<{
   mask-size: 100%;
   background-color: ${(p) => p?.color
     ? p.theme.color[p.color]
-    : LeoColors['light.system.feedback.warning.icon']
+    : leo.color.systemfeedback.warningIcon
   };
   -webkit-mask-image: url(${WarningTriangleFilled});
   mask-repeat: no-repeat;
   mask-image: url(${WarningTriangleFilled});
   @media (prefers-color-scheme: dark) {
     color: ${(p) => p.theme.palette.blurple300};
-    background-color: ${(p) => p?.color
-    ? p.theme.color[p.color]
-    : LeoColors['dark.system.feedback.warning.icon']
   };
-  }
 `
 
 export const WarningCircleFilledIcon = styled.div<{
@@ -378,16 +380,10 @@ export const WarningCircleFilledIcon = styled.div<{
   mask-repeat: no-repeat;
   background-color: ${(p) => p?.color
     ? p.theme.color[p.color]
-    : LeoColors['light.system.feedback.error.icon']
+    : leo.color.systemfeedback.errorIcon
   };
   -webkit-mask-image: url(${WarningCircleFilled});
   mask-image: url(${WarningCircleFilled});
-  @media (prefers-color-scheme: dark) {
-    background-color: ${(p) => p?.color
-    ? p.theme.color[p.color]
-    : LeoColors['dark.system.feedback.error.icon']
-  };
-  }
 `
 
 export const CloseIcon = styled.div`
