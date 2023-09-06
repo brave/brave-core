@@ -244,29 +244,17 @@ void EthereumProviderImpl::SwitchEthereumChain(const std::string& chain_id,
   }
 }
 
-void EthereumProviderImpl::ContinueGetDefaultKeyringInfo(
+void EthereumProviderImpl::SendOrSignTransactionInternal(
     RequestCallback callback,
     base::Value id,
     const std::string& normalized_json_request,
-    const url::Origin& origin,
-    bool sign_only,
-    mojom::NetworkInfoPtr chain) {
-  keyring_service_->GetKeyringInfo(
-      mojom::kDefaultKeyringId,
-      base::BindOnce(&EthereumProviderImpl::OnGetNetworkAndDefaultKeyringInfo,
-                     weak_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(id), normalized_json_request, origin,
-                     std::move(chain), sign_only));
-}
+    bool sign_only) {
+  url::Origin origin = delegate_->GetOrigin();
+  mojom::NetworkInfoPtr chain =
+      json_rpc_service_->GetNetworkSync(mojom::CoinType::ETH, origin);
+  mojom::KeyringInfoPtr keyring_info =
+      keyring_service_->GetKeyringInfoSync(mojom::kDefaultKeyringId);
 
-void EthereumProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
-    RequestCallback callback,
-    base::Value id,
-    const std::string& normalized_json_request,
-    const url::Origin& origin,
-    mojom::NetworkInfoPtr chain,
-    bool sign_only,
-    mojom::KeyringInfoPtr keyring_info) {
   bool reject = false;
   if (!chain || !keyring_info) {
     mojom::ProviderError code = mojom::ProviderError::kInternalError;
@@ -930,19 +918,11 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
     }
     SwitchEthereumChain(chain_id, std::move(callback), std::move(id));
   } else if (method == kEthSendTransaction) {
-    json_rpc_service_->GetNetwork(
-        mojom::CoinType::ETH, delegate_->GetOrigin(),
-        base::BindOnce(&EthereumProviderImpl::ContinueGetDefaultKeyringInfo,
-                       weak_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(id), normalized_json_request,
-                       delegate_->GetOrigin(), false));
+    SendOrSignTransactionInternal(std::move(callback), std::move(id),
+                                  std::move(normalized_json_request), false);
   } else if (method == kEthSignTransaction) {
-    json_rpc_service_->GetNetwork(
-        mojom::CoinType::ETH, delegate_->GetOrigin(),
-        base::BindOnce(&EthereumProviderImpl::ContinueGetDefaultKeyringInfo,
-                       weak_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(id), normalized_json_request,
-                       delegate_->GetOrigin(), true));
+    SendOrSignTransactionInternal(std::move(callback), std::move(id),
+                                  std::move(normalized_json_request), true);
   } else if (method == kEthSendRawTransaction) {
     std::string signed_transaction;
     if (!ParseEthSendRawTransactionParams(normalized_json_request,
