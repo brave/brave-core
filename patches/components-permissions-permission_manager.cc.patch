@@ -6,7 +6,7 @@ index 357c6ed0613de77411b9aea8b3c954e7d6cc0146..5089d8bef800c84f5bd77675814c5235
      base::OnceCallback<void(const std::vector<PermissionStatus>&)>
          permission_status_callback) {
    DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-+  BRAVE_FORCED_REQUESTING_ORIGIN
++  BRAVE_REQUEST_PERMISSION_FROM_CURRENT_DOCUMENT
    RequestPermissionsInternal(render_frame_host, request_description,
                               std::move(permission_status_callback));
  }
@@ -14,7 +14,7 @@ index 357c6ed0613de77411b9aea8b3c954e7d6cc0146..5089d8bef800c84f5bd77675814c5235
        PermissionUtil::PermissionTypeToContentSettingType(permission);
  
    const GURL requesting_origin =
-+      BRAVE_FORCED_REQUESTING_ORIGIN
++      BRAVE_GET_PERMISSION_RESULT_FOR_CURRENT_DOCUMENT
        PermissionUtil::GetLastCommittedOriginAsURL(render_frame_host);
    const GURL embedding_origin =
        GetEmbeddingOrigin(render_frame_host, requesting_origin);

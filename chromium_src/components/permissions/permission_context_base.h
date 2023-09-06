@@ -49,10 +49,7 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
       const base::RepeatingCallback<
           PermissionLifetimeManager*(content::BrowserContext*)>& factory);
 
-  void DecidePermission(const PermissionRequestID& id,
-                        const GURL& requesting_origin,
-                        const GURL& embedding_origin,
-                        bool user_gesture,
+  void DecidePermission(permissions::PermissionRequestData request_data,
                         BrowserPermissionCallback callback) override;
 
   bool IsPendingGroupedRequestsEmptyForTesting();
