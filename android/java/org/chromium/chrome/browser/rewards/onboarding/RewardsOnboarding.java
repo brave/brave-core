@@ -96,6 +96,15 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         View howDoseItWorkMainButton = mMainLayout.findViewById(R.id.how_does_it_work_main);
         howDoseItWorkMainButton.setOnClickListener(v -> { showRewardsTour(); });
 
+        String termsOfServiceText = String.format(
+                mPopupView.getContext().getString(R.string.brave_rewards_onboarding_tos_text),
+                mPopupView.getContext().getString(R.string.terms_of_service),
+                mPopupView.getContext().getString(R.string.privacy_policy));
+        TextView tosText = mMainLayout.findViewById(R.id.tos_text);
+        tosText.setMovementMethod(LinkMovementMethod.getInstance());
+        tosText.setText(BraveRewardsHelper.tosSpannableString(
+                termsOfServiceText, R.color.brave_rewards_modal_theme_color));
+
         // Location choose layout views
         mLocationChooseLayout =
                 mPopupView.findViewById(R.id.rewards_onboarding_location_choose_layout_id);
