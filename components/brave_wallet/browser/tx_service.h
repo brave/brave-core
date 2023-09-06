@@ -78,7 +78,6 @@ class TxService : public KeyedService,
   void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
                                 mojom::AccountIdPtr from,
                                 const absl::optional<url::Origin>& origin,
-                                const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(mojom::CoinType coin_type,
                           const std::string& chain_id,

@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
@@ -91,7 +90,6 @@ TEST_F(SolanaTxStateManagerUnitTest, SolanaTxMetaAndValue) {
       "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpRzr"
       "FmBV6UjKdiSZkQUW");
   meta.set_origin(url::Origin::Create(GURL("https://test.brave.com/")));
-  meta.set_group_id("mockGroupId");
   meta.set_chain_id(mojom::kSolanaMainnet);
 
   base::Value::Dict meta_value = meta.ToValue();

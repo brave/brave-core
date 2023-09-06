@@ -5,8 +5,6 @@
 
 import * as React from 'react'
 
-// types
-import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import Amount from '../../../utils/amount'
@@ -52,15 +50,7 @@ import {
   AccountCircleWrapper,
   ArrowIcon,
   FromToRow,
-  GroupBox,
-  GroupBoxColumn,
-  GroupBoxTitle,
-  GroupBoxText,
-  GroupEnumeration,
-  SmallLoadIcon
 } from './style'
-import { StatusBubble } from '../../shared/style'
-import { getTransactionStatusString } from '../../../utils/tx-utils'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
@@ -89,8 +79,6 @@ export const ConfirmSolanaTransactionPanel = () => {
     transactionsNetwork,
     transactionTitle,
     isSolanaDappTransaction,
-    groupTransactions,
-    selectedPendingTransactionGroupIndex,
     selectedPendingTransaction,
     onConfirm,
     onReject,
@@ -198,34 +186,6 @@ export const ConfirmSolanaTransactionPanel = () => {
             </WarningTitle>
           </WarningBoxTitleRow>
         </WarningBox>
-      }
-
-      {(groupTransactions.length > 0 &&
-        selectedPendingTransactionGroupIndex >= 0 &&
-        selectedPendingTransaction) &&
-        <GroupBox>
-          <GroupBoxColumn>
-            <GroupBoxTitle>
-              Transaction group
-            </GroupBoxTitle>
-            {
-              groupTransactions.map((txn, idx) =>
-                <GroupBoxText dark={selectedPendingTransactionGroupIndex === idx} key={idx}>
-                  <GroupEnumeration>
-                    [{idx + 1}/{groupTransactions.length}]
-                  </GroupEnumeration>
-
-                  <StatusBubble status={txn.txStatus} />
-
-                  {getTransactionStatusString(txn.txStatus)}
-
-                  {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted]
-                    .includes(txn.txStatus) && <SmallLoadIcon />}
-                </GroupBoxText>
-              )
-            }
-          </GroupBoxColumn>
-        </GroupBox>
       }
 
       <TabRow>

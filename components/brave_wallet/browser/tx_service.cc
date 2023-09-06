@@ -164,7 +164,6 @@ void TxService::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     mojom::AccountIdPtr from,
     const absl::optional<url::Origin>& origin,
-    const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
   if (!account_resolver_delegate_->ValidateAccountId(from)) {
     std::move(callback).Run(
@@ -176,7 +175,7 @@ void TxService::AddUnapprovedTransaction(
   auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
   GetTxManager(coin_type)->AddUnapprovedTransaction(
       json_rpc_service_->GetChainIdSync(coin_type, origin),
-      std::move(tx_data_union), from, origin, group_id, std::move(callback));
+      std::move(tx_data_union), from, origin, std::move(callback));
 }
 
 void TxService::ApproveTransaction(mojom::CoinType coin_type,

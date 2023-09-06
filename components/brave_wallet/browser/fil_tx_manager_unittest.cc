@@ -164,18 +164,16 @@ class FilTxManagerUnitTest : public testing::Test {
     return url::Origin::Create(GURL("https://brave.com"));
   }
 
-  void AddUnapprovedTransaction(
-      const std::string& chain_id,
-      mojom::FilTxDataPtr tx_data,
-      const mojom::AccountIdPtr& from,
-      const absl::optional<url::Origin>& origin,
-      std::string* meta_id,
-      const absl::optional<std::string>& group_id = absl::nullopt) {
+  void AddUnapprovedTransaction(const std::string& chain_id,
+                                mojom::FilTxDataPtr tx_data,
+                                const mojom::AccountIdPtr& from,
+                                const absl::optional<url::Origin>& origin,
+                                std::string* meta_id) {
     auto tx_data_union = mojom::TxDataUnion::NewFilTxData(std::move(tx_data));
 
     base::RunLoop run_loop;
     fil_tx_manager()->AddUnapprovedTransaction(
-        chain_id, std::move(tx_data_union), from, origin, group_id,
+        chain_id, std::move(tx_data_union), from, origin,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           ASSERT_TRUE(success);
@@ -474,35 +472,6 @@ TEST_F(FilTxManagerUnitTest, SomeSiteOrigin) {
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->origin(),
             url::Origin::Create(GURL("https://some.site.com")));
-  EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
-}
-
-TEST_F(FilTxManagerUnitTest, AddUnapprovedTransactionWithGroupId) {
-  const auto from_account = FilTestAcc(0);
-  const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
-  SetGasEstimateInterceptor(from_account, to_account);
-  auto tx_data = mojom::FilTxData::New("" /* nonce */, "" /* gas_premium */,
-                                       "" /* gas_fee_cap */, "" /* gas_limit */,
-                                       "" /* max_fee */, to_account, "11");
-  std::string meta_id;
-
-  // Transaction with group_id
-  AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
-                           from_account, absl::nullopt, &meta_id,
-                           "mockGroupId");
-  auto tx_meta =
-      fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id);
-  ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->group_id(), "mockGroupId");
-  EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
-
-  // Transaction with empty group_id
-  AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
-                           from_account, absl::nullopt, &meta_id);
-  tx_meta =
-      fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id);
-  ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->group_id(), absl::nullopt);
   EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
 }
 

@@ -522,7 +522,7 @@ void SolanaProviderImpl::SignAndSendTransaction(
 
   tx_service_->AddUnapprovedTransaction(
       mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()),
-      account->account_id.Clone(), delegate_->GetOrigin(), absl::nullopt,
+      account->account_id.Clone(), delegate_->GetOrigin(),
       base::BindOnce(&SolanaProviderImpl::OnAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }

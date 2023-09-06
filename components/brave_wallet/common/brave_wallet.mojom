@@ -1464,7 +1464,6 @@ struct TransactionInfo {
   mojo_base.mojom.TimeDelta submitted_time;
   mojo_base.mojom.TimeDelta confirmed_time;
   OriginInfo? origin_info;
-  string? group_id;
   string chain_id;
   // Currently only available for ETH and FIL
   // Represent effective recipient of the transaction
@@ -1495,7 +1494,7 @@ interface TxServiceObserver {
 // transactions.
 interface TxService {
   // Used to add a transaction. Missing origin is expected to come from chrome://wallet.
-  AddUnapprovedTransaction(TxDataUnion tx_data_union, AccountId from, url.mojom.Origin? origin, string? group_id)
+  AddUnapprovedTransaction(TxDataUnion tx_data_union, AccountId from, url.mojom.Origin? origin)
     => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction

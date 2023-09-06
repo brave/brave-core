@@ -7,8 +7,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/strings/stringprintf.h"
-#include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -105,8 +103,6 @@ mojom::TransactionInfoPtr GetCannedScanSolanaTransactionParams(
   if (origin) {
     meta.set_origin(url::Origin::Create(GURL(*origin)));
   }
-
-  meta.set_group_id("mockGroupId");
 
   return meta.ToTransactionInfo();
 }

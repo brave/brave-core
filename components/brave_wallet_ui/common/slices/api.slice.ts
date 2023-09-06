@@ -1619,7 +1619,6 @@ export function createWalletApi () {
                   ? toTxDataUnion({ ethTxData1559: txData1559 })
                   : toTxDataUnion({ ethTxData: txData }),
                 payload.fromAccount.accountId,
-                null,
                 null
               )
 
@@ -1675,7 +1674,6 @@ export function createWalletApi () {
               await txService.addUnapprovedTransaction(
                 toTxDataUnion({ filTxData: filTxData }),
                 payload.fromAccount.accountId,
-                null,
                 null
               )
 
@@ -1738,7 +1736,6 @@ export function createWalletApi () {
               await txService.addUnapprovedTransaction(
                 toTxDataUnion({ solanaTxData: txData ?? undefined }),
                 payload.fromAccount.accountId,
-                null,
                 null
               )
 
@@ -1790,7 +1787,6 @@ export function createWalletApi () {
               await txService.addUnapprovedTransaction(
                 toTxDataUnion({ btcTxData }),
                 payload.fromAccount.accountId,
-                null,
                 null
               )
 
@@ -1973,7 +1969,6 @@ export function createWalletApi () {
               await txService.addUnapprovedTransaction(
                 toTxDataUnion({ solanaTxData: txData }),
                 payload.fromAccount.accountId,
-                null,
                 null
               )
 

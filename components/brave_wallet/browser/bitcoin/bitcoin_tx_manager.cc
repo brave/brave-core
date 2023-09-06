@@ -53,7 +53,6 @@ void BitcoinTxManager::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
-    const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
   const auto& btc_tx_data = tx_data_union->get_btc_tx_data();
 

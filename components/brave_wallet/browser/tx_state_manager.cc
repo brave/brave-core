@@ -99,11 +99,6 @@ bool TxStateManager::ValueToBaseTxMeta(const base::Value::Dict& value,
     DCHECK(!meta->origin()->opaque());
   }
 
-  const std::string* group_id = value.FindString("group_id");
-  if (group_id) {
-    meta->set_group_id(*group_id);
-  }
-
   const auto* chain_id_string = value.FindString("chain_id");
   if (!chain_id_string) {
     return false;
