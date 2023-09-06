@@ -5,6 +5,8 @@
 
 import("//brave/android/brave_java_resources.gni")
 import("//brave/android/brave_java_sources.gni")
+import(
+    "//brave/android/java/org/chromium/chrome/browser/vpn/billing/billing_sources.gni")
 import("//brave/build/android/bytecode/bytecode_rewriter.gni")
 
 declare_args() {
@@ -41,12 +43,9 @@ brave_chrome_java_deps = [
   "//brave/components/url_sanitizer/common/mojom:mojom_java",
   "//brave/components/variations/android:java",
   "//brave/third_party/android_deps:com_airbnb_android_java",
-  "//brave/third_party/android_deps:com_android_billingclient_java",
   "//brave/third_party/android_deps:com_android_installreferrer_java",
   "//brave/third_party/android_deps:com_brave_playlist_java",
   "//brave/third_party/android_deps:com_github_bumptech_glide_java",
-  "//brave/third_party/android_deps:com_google_android_datatransport_transport_backend_cct_java",
-  "//brave/third_party/android_deps:com_google_android_datatransport_transport_runtime_java",
   "//brave/third_party/android_deps:com_google_android_exoplayer_exoplayer_common_java",
   "//brave/third_party/android_deps:com_google_android_exoplayer_exoplayer_core_java",
   "//brave/third_party/android_deps:com_google_android_exoplayer_exoplayer_database_java",
@@ -63,9 +62,7 @@ brave_chrome_java_deps = [
   "//brave/third_party/android_deps:google_play_services_safetynet_java",
   "//brave/third_party/zxing:zxing_java",
   "//third_party/android_deps:com_android_support_support_annotations_java",
-  "//third_party/android_deps:com_google_auto_value_auto_value_annotations_java",
   "//third_party/android_deps:com_google_code_gson_gson_java",
-  "//third_party/android_deps:google_firebase_firebase_messaging_java",
   "//third_party/android_deps:google_play_services_vision_common_java",
   "//third_party/android_deps:google_play_services_vision_java",
   "//third_party/android_deps:javax_inject_javax_inject_java",
@@ -76,6 +73,8 @@ brave_chrome_java_deps = [
   "//third_party/androidx:androidx_room_room_runtime_java",
   "//url/mojom:url_mojom_origin_java",
 ]
+
+brave_chrome_java_deps += brave_app_vpn_billing_deps
 
 brave_chrome_all_java_deps = [
   "//brave/android/features/tab_ui:java",

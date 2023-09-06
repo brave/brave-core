@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.vpn.utils;
+package org.chromium.chrome.browser.vpn.billing;
 
 import static com.android.billingclient.api.BillingClient.BillingResponseCode.OK;
 
@@ -32,6 +32,8 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.util.BraveConstants;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -14,6 +14,7 @@ import android.util.Pair;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
+import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 
 import java.util.TimeZone;
