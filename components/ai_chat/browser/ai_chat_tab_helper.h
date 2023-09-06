@@ -104,9 +104,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
                              bool is_video = false);
   void OnEngineCompletionDataReceived(int64_t for_navigation_id,
                                       std::string result);
-  void OnEngineCompletionComplete(
-      int64_t for_navigation_id,
-      EngineConsumer::AssistantResponseResult result);
+  void OnEngineCompletionComplete(int64_t for_navigation_id,
+                                  EngineConsumer::CompletionResult result);
   void OnSuggestedQuestionsResponse(int64_t for_navigation_id,
                                     std::vector<std::string> result);
   void OnSuggestedQuestionsChanged();

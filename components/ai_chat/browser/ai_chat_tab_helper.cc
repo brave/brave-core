@@ -434,7 +434,7 @@ void AIChatTabHelper::OnEngineCompletionDataReceived(int64_t for_navigation_id,
 
 void AIChatTabHelper::OnEngineCompletionComplete(
     int64_t for_navigation_id,
-    EngineConsumer::AssistantResponseResult result) {
+    EngineConsumer::CompletionResult result) {
   if (for_navigation_id != current_navigation_id_) {
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
     return;

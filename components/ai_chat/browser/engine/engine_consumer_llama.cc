@@ -24,7 +24,7 @@
 #include "brave/components/ai_chat/common/features.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
-#include "net/http/http_status_code.h"
+
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -269,32 +269,14 @@ void EngineConsumerLlamaRemote::GenerateQuestionSuggestions(
 
 void EngineConsumerLlamaRemote::OnGenerateQuestionSuggestionsResponse(
     SuggestedQuestionsCallback callback,
-    APIRequestResult result) {
-  auto success = result.Is2XXResponseCode();
-  if (!success) {
-    LOG(ERROR) << "Error getting question suggestions. Code: "
-               << result.response_code();
-    return;
-  }
-  // Validate
-  if (!result.value_body().is_dict()) {
-    DVLOG(1) << "Expected dictionary for question suggestion result"
-             << " but got: " << result.value_body().DebugString();
-    return;
-  }
-  // TODO(petemill): move common completion basic value lookup to
-  // RemoteCompletionClient
-  const std::string* completion =
-      result.value_body().GetDict().FindString("completion");
-  if (!completion || completion->empty()) {
-    DVLOG(1) << "Expected completion param for question suggestion"
-             << " result but got: " << result.value_body().DebugString();
+    CompletionResult result) {
+  if (!result.has_value() || result->empty()) {
+    // Query resulted in error
+    LOG(ERROR) << "Error getting question suggestions.";
     return;
   }
 
-  DVLOG(2) << "Received " << (success ? "success" : "failed")
-           << " suggested questions response: " << completion;
-
+  // Success
   // Llama 2 results look something like this:
   // Can ChatGPT actually summarize a seven-hour video in under a minute?</li>
   // <li>What are the limitations of ChatGPT's browsing capabilities, and how
@@ -307,7 +289,7 @@ void EngineConsumerLlamaRemote::OnGenerateQuestionSuggestionsResponse(
 
   // Split out the questions using </li>
   std::vector<std::string> questions = base::SplitStringUsingSubstr(
-      *completion, "</li>", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      *result, "</li>", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   // Remove the last entry in questions if it doesn't contain an <li> tag
   // which means its not an actually a question
@@ -336,59 +318,13 @@ void EngineConsumerLlamaRemote::SubmitHumanInput(
     const std::string& page_content,
     const ConversationHistory& conversation_history,
     const std::string& human_input,
-    SubmitHumanInputDataReceivedCallback data_received_callback,
-    SubmitHumanInputCompletedCallback completed_callback) {
+    CompletionDataReceivedCallback data_received_callback,
+    CompletionCompletedCallback completed_callback) {
   std::string prompt = BuildLlama2Prompt(conversation_history, page_content,
                                          is_video, human_input);
-  auto on_data_received = base::BindRepeating(
-      &EngineConsumerLlamaRemote::OnCompletionDataReceived,
-      weak_ptr_factory_.GetWeakPtr(), std::move(data_received_callback));
-  auto on_complete = base::BindOnce(
-      &EngineConsumerLlamaRemote::OnCompletionCompleted,
-      weak_ptr_factory_.GetWeakPtr(), std::move(completed_callback));
   DCHECK(api_);
-  api_->QueryPrompt(prompt, {"</response>"}, std::move(on_complete),
-                    std::move(on_data_received));
-}
-
-void EngineConsumerLlamaRemote::OnCompletionDataReceived(
-    SubmitHumanInputDataReceivedCallback callback,
-    base::expected<base::Value, std::string> result) {
-  // TODO(petemill): Have all of this handled by common AI API helper class
-  if (!result.has_value() || !result->is_dict()) {
-    return;
-  }
-
-  if (const std::string* completion =
-          result->GetDict().FindString("completion")) {
-    callback.Run(std::move(*completion));
-  }
-}
-
-void EngineConsumerLlamaRemote::OnCompletionCompleted(
-    SubmitHumanInputCompletedCallback callback,
-    APIRequestResult result) {
-  // TODO(petemill): Have all of this handled by common AI API helper class
-  const bool success = result.Is2XXResponseCode();
-  // Handle successful request
-  if (success) {
-    std::string completion;
-    // We're checking for a value body in case for non-streaming API results.
-    if (result.value_body().is_dict()) {
-      completion = *result.value_body().GetDict().FindString("completion");
-      // Trimming necessary for Llama 2 which prepends responses with a " ".
-      completion = base::TrimWhitespaceASCII(completion, base::TRIM_ALL);
-    } else {
-      completion = "";
-    }
-    std::move(callback).Run(base::ok(std::move(completion)));
-  }
-  // Handle error
-  mojom::APIError error =
-      (net::HTTP_TOO_MANY_REQUESTS == result.response_code())
-          ? mojom::APIError::RateLimitReached
-          : mojom::APIError::ConnectionIssue;
-  std::move(callback).Run(base::unexpected(std::move(error)));
+  api_->QueryPrompt(prompt, {"</response>"}, std::move(completed_callback),
+                    std::move(data_received_callback));
 }
 
 void EngineConsumerLlamaRemote::SanitizeInput(std::string& input) {

@@ -145,35 +145,17 @@ void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
 
 void EngineConsumerClaudeRemote::OnGenerateQuestionSuggestionsResponse(
     SuggestedQuestionsCallback callback,
-    APIRequestResult result) {
-  auto success = result.Is2XXResponseCode();
-  if (!success) {
-    LOG(ERROR) << "Error getting question suggestions. Code: "
-               << result.response_code();
-    return;
-  }
-  // Validate
-  if (!result.value_body().is_dict()) {
-    DVLOG(1) << "Expected dictionary for question suggestion result"
-             << " but got: " << result.value_body().DebugString();
-    return;
-  }
-  // TODO(petemill): move common completion basic value lookup to
-  // RemoteCompletionClient
-  const std::string* completion =
-      result.value_body().GetDict().FindString("completion");
-  if (!completion || completion->empty()) {
-    DVLOG(1) << "Expected completion param for question suggestion"
-             << " result but got: " << result.value_body().DebugString();
+    CompletionResult result) {
+  if (!result.has_value() || result->empty()) {
+    // Query resulted in error
+    LOG(ERROR) << "Error getting question suggestions.";
     return;
   }
 
-  DVLOG(2) << "Received " << (success ? "success" : "failed")
-           << " suggested questions response: " << completion;
-
-  std::vector<std::string> questions = base::SplitString(
-      *completion, "|", base::WhitespaceHandling::TRIM_WHITESPACE,
-      base::SplitResult::SPLIT_WANT_NONEMPTY);
+  // Success
+  std::vector<std::string> questions =
+      base::SplitString(*result, "|", base::WhitespaceHandling::TRIM_WHITESPACE,
+                        base::SplitResult::SPLIT_WANT_NONEMPTY);
   std::move(callback).Run(std::move(questions));
 }
 
@@ -182,57 +164,13 @@ void EngineConsumerClaudeRemote::SubmitHumanInput(
     const std::string& page_content,
     const ConversationHistory& conversation_history,
     const std::string& human_input,
-    SubmitHumanInputDataReceivedCallback data_received_callback,
-    SubmitHumanInputCompletedCallback completed_callback) {
+    CompletionDataReceivedCallback data_received_callback,
+    CompletionCompletedCallback completed_callback) {
   std::string prompt = BuildClaudePrompt(human_input, page_content, is_video,
                                          conversation_history);
   CheckPrompt(prompt);
-  auto on_data_received = base::BindRepeating(
-      &EngineConsumerClaudeRemote::OnCompletionDataReceived,
-      weak_ptr_factory_.GetWeakPtr(), std::move(data_received_callback));
-  auto on_complete = base::BindOnce(
-      &EngineConsumerClaudeRemote::OnCompletionCompleted,
-      weak_ptr_factory_.GetWeakPtr(), std::move(completed_callback));
-  api_->QueryPrompt(prompt, {"</response>"}, std::move(on_complete),
-                    std::move(on_data_received));
-}
-
-void EngineConsumerClaudeRemote::OnCompletionDataReceived(
-    SubmitHumanInputDataReceivedCallback callback,
-    base::expected<base::Value, std::string> result) {
-  if (!result.has_value() || !result->is_dict()) {
-    return;
-  }
-
-  if (const std::string* completion =
-          result->GetDict().FindString("completion")) {
-    callback.Run(std::move(*completion));
-  }
-}
-
-void EngineConsumerClaudeRemote::OnCompletionCompleted(
-    SubmitHumanInputCompletedCallback callback,
-    APIRequestResult result) {
-  const bool success = result.Is2XXResponseCode();
-  // Handle successful request
-  if (success) {
-    std::string completion;
-    // We're checking for a value body in case for non-streaming API results.
-    if (result.value_body().is_dict()) {
-      completion = *result.value_body().GetDict().FindString("completion");
-      // Trimming necessary for Llama 2 which prepends responses with a " ".
-      completion = base::TrimWhitespaceASCII(completion, base::TRIM_ALL);
-    } else {
-      completion = "";
-    }
-    std::move(callback).Run(base::ok(std::move(completion)));
-  }
-  // Handle error
-  mojom::APIError error =
-      (net::HTTP_TOO_MANY_REQUESTS == result.response_code())
-          ? mojom::APIError::RateLimitReached
-          : mojom::APIError::ConnectionIssue;
-  std::move(callback).Run(base::unexpected(std::move(error)));
+  api_->QueryPrompt(prompt, {"</response>"}, std::move(completed_callback),
+                    std::move(data_received_callback));
 }
 
 void EngineConsumerClaudeRemote::SanitizeInput(std::string& input) {

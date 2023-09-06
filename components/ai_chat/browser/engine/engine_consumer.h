@@ -11,7 +11,6 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/types/expected.h"
-#include "base/values.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 
 namespace ai_chat {
@@ -23,11 +22,15 @@ class EngineConsumer {
  public:
   using SuggestedQuestionsCallback =
       base::OnceCallback<void(std::vector<std::string>)>;
-  using AssistantResponseResult = base::expected<std::string, mojom::APIError>;
-  using SubmitHumanInputDataReceivedCallback =
+
+  using CompletionResult = base::expected<std::string, mojom::APIError>;
+
+  using CompletionDataReceivedCallback =
       base::RepeatingCallback<void(std::string)>;
-  using SubmitHumanInputCompletedCallback =
-      base::OnceCallback<void(AssistantResponseResult)>;
+
+  using CompletionCompletedCallback =
+      base::OnceCallback<void(CompletionResult)>;
+
   using ConversationHistory = std::vector<mojom::ConversationTurn>;
 
   EngineConsumer() = default;
@@ -44,8 +47,8 @@ class EngineConsumer {
       const std::string& page_content,
       const ConversationHistory& conversation_history,
       const std::string& human_input,
-      SubmitHumanInputDataReceivedCallback data_received_callback,
-      SubmitHumanInputCompletedCallback completed_callback) = 0;
+      CompletionDataReceivedCallback data_received_callback,
+      CompletionCompletedCallback completed_callback) = 0;
   virtual void SanitizeInput(std::string& input) = 0;
   virtual void ClearAllQueries() = 0;
 };

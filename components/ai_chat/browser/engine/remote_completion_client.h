@@ -10,6 +10,11 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
+#include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
+#include "brave/components/ai_chat/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 
 namespace network {
@@ -17,6 +22,8 @@ class SharedURLLoaderFactory;
 }  // namespace network
 
 namespace ai_chat {
+
+using api_request_helper::APIRequestResult;
 
 // TODO(petemill): Is this meant to be shared by both Claude and Llama? It's not
 // used to start the llama prompts but it is for Claude, but it's set for both
@@ -37,19 +44,27 @@ class RemoteCompletionClient {
 
   // This function queries both types of APIs: SSE and non-SSE.
   // In non-SSE cases, only the data_completed_callback will be triggered.
-  void QueryPrompt(const std::string& prompt,
-                   const std::vector<std::string> stop_sequences,
-                   api_request_helper::APIRequestHelper::ResultCallback
-                       data_completed_callback,
-                   api_request_helper::APIRequestHelper::DataReceivedCallback
-                       data_received_callback = base::NullCallback());
+  void QueryPrompt(
+      const std::string& prompt,
+      const std::vector<std::string> stop_sequences,
+      EngineConsumer::CompletionCompletedCallback data_completed_callback,
+      EngineConsumer::CompletionDataReceivedCallback data_received_callback =
+          base::NullCallback());
   // Clears all in-progress requests
   void ClearAllQueries();
 
  private:
+  void OnQueryDataReceived(
+      EngineConsumer::CompletionDataReceivedCallback callback,
+      base::expected<base::Value, std::string> result);
+  void OnQueryCompleted(EngineConsumer::CompletionCompletedCallback callback,
+                        APIRequestResult result);
+
   std::string model_name_;
   std::vector<std::string> default_stop_sequences_;
   api_request_helper::APIRequestHelper api_request_helper_;
+
+  base::WeakPtrFactory<RemoteCompletionClient> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat

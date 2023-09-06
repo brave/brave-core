@@ -45,20 +45,15 @@ class EngineConsumerClaudeRemote : public EngineConsumer {
       const std::string& page_content,
       const ConversationHistory& conversation_history,
       const std::string& human_input,
-      SubmitHumanInputDataReceivedCallback data_received_callback,
-      SubmitHumanInputCompletedCallback completed_callback) override;
+      CompletionDataReceivedCallback data_received_callback,
+      CompletionCompletedCallback completed_callback) override;
   void SanitizeInput(std::string& input) override;
   void ClearAllQueries() override;
 
  private:
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
-      APIRequestResult result);
-  void OnCompletionDataReceived(
-      SubmitHumanInputDataReceivedCallback callback,
-      base::expected<base::Value, std::string> result);
-  void OnCompletionCompleted(SubmitHumanInputCompletedCallback callback,
-                             APIRequestResult result);
+      CompletionResult result);
 
   std::unique_ptr<RemoteCompletionClient> api_ = nullptr;
 
