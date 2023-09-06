@@ -23,4 +23,5 @@ source_set("keyed_service") {
     "//services/network/public/cpp",
   ]
   public_configs = [ ":external" ]
+  frameworks = [ "Foundation.framework" ]
 }
