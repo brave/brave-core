@@ -95,15 +95,13 @@ void CookiesViewHandler::RegisterMessages() {
                           base::Unretained(this)));
 }
 
-void CookiesViewHandler::TreeNodesAdded(ui::TreeModel* model,
-                                        ui::TreeModelNode* parent,
-                                        size_t start,
-                                        size_t count) {}
+void CookiesViewHandler::TreeNodeAdded(ui::TreeModel* model,
+                                       ui::TreeModelNode* parent,
+                                       size_t index) {}
 
-void CookiesViewHandler::TreeNodesRemoved(ui::TreeModel* model,
-                                          ui::TreeModelNode* parent,
-                                          size_t start,
-                                          size_t count) {
+void CookiesViewHandler::TreeNodeRemoved(ui::TreeModel* model,
+                                         ui::TreeModelNode* parent,
+                                         size_t index) {
   // Skip if there is a batch update in progress.
   if (batch_update_) {
     return;
