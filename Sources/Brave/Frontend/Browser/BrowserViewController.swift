@@ -1069,6 +1069,8 @@ public class BrowserViewController: UIViewController {
     }
     searchController?.additionalSafeAreaInsets = additionalInsets
     favoritesController?.additionalSafeAreaInsets = additionalInsets
+    
+    tabsBar.reloadDataAndRestoreSelectedTab(isAnimated: false)
   }
 
   override public var canBecomeFirstResponder: Bool {
