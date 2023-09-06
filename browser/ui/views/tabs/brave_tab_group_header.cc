@@ -64,11 +64,13 @@ void BraveTabGroupHeader::AddedToWidget() {
 
 void BraveTabGroupHeader::VisualsChanged() {
   TabGroupHeader::VisualsChanged();
-  if (!ShouldShowVerticalTabs())
+  if (!ShouldShowVerticalTabs()) {
     return;
+  }
 
   title_->SetEnabledColor(GetGroupBackgroundColorForVerticalTabs(
       group().value(), base::to_address(tab_slot_controller_)));
+  title_->SetSubpixelRenderingEnabled(false);
 
   auto font_list = title_->font_list();
   title_->SetFontList(font_list.DeriveWithWeight(gfx::Font::Weight::MEDIUM)
@@ -82,15 +84,17 @@ void BraveTabGroupHeader::VisualsChanged() {
 
 void BraveTabGroupHeader::Layout() {
   TabGroupHeader::Layout();
-  if (!ShouldShowVerticalTabs())
+  if (!ShouldShowVerticalTabs()) {
     return;
+  }
 
   LayoutTitleChip();
 }
 
 bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     return false;
+  }
 
   return tabs::utils::ShouldShowVerticalTabs(
       tab_slot_controller_->GetBrowser());
