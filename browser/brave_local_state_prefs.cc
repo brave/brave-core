@@ -16,6 +16,7 @@
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_search_conversion/p3a.h"
@@ -128,6 +129,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::RegisterLocalStatePrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_AI_CHAT)
   skus::RegisterLocalStatePrefs(registry);
 #endif
 
