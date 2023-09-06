@@ -103,6 +103,8 @@ source_set("ui") {
       "session_crashed_bubble_brave.cc",
       "side_panel/ai_chat/ai_chat_side_panel_utils.cc",
       "side_panel/ai_chat/ai_chat_side_panel_utils.h",
+      "toolbar/app_menu_icons.cc",
+      "toolbar/app_menu_icons.h",
       "toolbar/bookmark_bar_sub_menu_model.cc",
       "toolbar/bookmark_bar_sub_menu_model.h",
       "toolbar/brave_app_menu_model.cc",

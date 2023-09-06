@@ -80,7 +80,6 @@ class BraveAppMenuModel : public AppMenuModel {
   std::unordered_map<int, std::unique_ptr<ui::SimpleMenuModel>>
       ipns_keys_submenu_models_;
 #endif
-  std::vector<std::unique_ptr<ui::SimpleMenuModel>> sub_menus_;
 };
 
 #endif  // BRAVE_BROWSER_UI_TOOLBAR_BRAVE_APP_MENU_MODEL_H_
