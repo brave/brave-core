@@ -161,39 +161,40 @@ public class PortfolioHelper {
             return;
         }
         final BraveWalletService braveWalletService = activity.getBraveWalletService();
+        if (braveWalletService == null) {
+            Log.e(TAG, "BraveWalletService was null.");
+            callback.call(this);
+            return;
+        }
         final BlockchainRegistry blockchainRegistry = activity.getBlockchainRegistry();
+        if (blockchainRegistry == null) {
+            Log.e(TAG, "BlockchainRegistry was null.");
+            callback.call(this);
+            return;
+        }
         final int totalNetworks = mSelectedNetworks.size();
-        AtomicInteger userAssetsCount = new AtomicInteger();
-
+        AtomicInteger count = new AtomicInteger();
+        final List<BlockchainToken> assets = new ArrayList<>();
         for (NetworkInfo networkInfo : mSelectedNetworks) {
-            TokenUtils.getUserOrAllTokensFiltered(braveWalletService, blockchainRegistry,
-                    networkInfo, networkInfo.coin, TokenUtils.TokenType.NFTS, true, userAssets -> {
+            TokenUtils.getUserAndAllTokensFiltered(braveWalletService, blockchainRegistry,
+                    networkInfo, networkInfo.coin, TokenUtils.TokenType.NFTS,
+                    (allAssets, userAssets) -> {
                         mUserAssets.addAll(Arrays.asList(userAssets));
-
-                        if (userAssetsCount.incrementAndGet() == totalNetworks) {
+                        assets.addAll(Arrays.asList(allAssets));
+                        if (count.incrementAndGet() == totalNetworks) {
                             mUserAssets.sort(Comparator.comparing(
                                     token -> mAssertSortPriorityPerCoinIndex.get(token.chainId)));
-                            AtomicInteger allAssets = new AtomicInteger();
-                            final List<BlockchainToken> assets = new ArrayList<>();
-                            for (NetworkInfo selectedNetwork : mSelectedNetworks) {
-                                TokenUtils.getUserOrAllTokensFiltered(braveWalletService,
-                                        blockchainRegistry, selectedNetwork, selectedNetwork.coin,
-                                        TokenUtils.TokenType.NFTS, false, tokens -> {
-                                            assets.addAll(Arrays.asList(tokens));
-                                            if (allAssets.incrementAndGet() == totalNetworks) {
-                                                List<String> comparableUserAssets =
-                                                        mUserAssets.stream()
-                                                                .map(Utils::tokenToString)
-                                                                .collect(Collectors.toList());
-                                                assets.removeIf(blockChainToken
-                                                        -> comparableUserAssets.contains(
-                                                                Utils.tokenToString(
-                                                                        blockChainToken)));
-                                                mHiddenAssets.addAll(assets);
-                                                callback.call(this);
-                                            }
-                                        });
-                            }
+
+                            List<String> comparableUserAssets =
+                                    mUserAssets.stream()
+                                            .map(Utils::tokenToString)
+                                            .collect(Collectors.toList());
+                            assets.removeIf(blockChainToken
+                                    -> comparableUserAssets.contains(
+                                            Utils.tokenToString(blockChainToken)));
+                            mHiddenAssets.addAll(assets);
+
+                            callback.call(this);
                         }
                     });
         }
