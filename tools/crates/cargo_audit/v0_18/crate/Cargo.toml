@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.63"
+rust-version = "1.67.0"
 name = "cargo-audit"
-version = "0.17.6"
+version = "0.18.1"
 authors = ["Tony Arcieri <bascule@gmail.com>"]
 exclude = ["tests/"]
 description = "Audit Cargo.lock for crates with security vulnerabilities"
@@ -65,7 +65,7 @@ version = "0.1"
 optional = true
 
 [dependencies.rustsec]
-version = "0.27.0"
+version = "0.28.0"
 features = ["dependency-tree"]
 
 [dependencies.serde]
@@ -102,8 +102,6 @@ binary-scanning = [
 ]
 default = ["binary-scanning"]
 fix = ["rustsec/fix"]
-vendored-libgit2 = ["rustsec/vendored-libgit2"]
-vendored-openssl = ["rustsec/vendored-openssl"]
 
 [badges.maintenance]
 status = "actively-developed"

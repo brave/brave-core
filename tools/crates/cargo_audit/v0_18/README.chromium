@@ -1,7 +1,7 @@
 Name: cargo-audit
 URL: https://crates.io/crates/cargo-audit
 Description: Audit Cargo.lock for crates with security vulnerabilities
-Version: 0.17.6
+Version: 0.18.1
 Security Critical: no
 License: Apache 2.0
-Revision: 6f82509cb43a249c3395533b1fcbe5e116ae02b5
+Revision: f4d757fb1d93436cbea1eff334eb35eab3d09fa7
