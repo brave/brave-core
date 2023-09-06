@@ -20,7 +20,6 @@
 #include "components/keyed_service/core/keyed_service.h"
 
 class GURL;
-class PrefRegistrySimple;
 
 namespace reduce_language {
 
