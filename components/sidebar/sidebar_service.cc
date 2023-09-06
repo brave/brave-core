@@ -78,9 +78,7 @@ SidebarItem::BuiltInItemType GetPrevBuiltInItemFor(
   auto* iter_end = std::cend(SidebarService::kDefaultBuiltInItemTypes);
   auto* iter = std::find(iter_begin, iter_end, item);
 
-  if (iter_end == iter) {
-    return *std::prev(iter_end);
-  }
+  CHECK(iter_end != iter);
 
   if (iter_begin == iter) {
     return SidebarItem::BuiltInItemType::kNone;

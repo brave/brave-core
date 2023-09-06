@@ -214,6 +214,8 @@ class SidebarServiceTest : public testing::Test {
     service_.reset();
   }
 
+  PrefService* GetPrefs() { return &prefs_; }
+
   TestingPrefServiceSimple prefs_;
   NiceMock<MockSidebarServiceObserver> observer_;
   std::unique_ptr<SidebarService> service_;
@@ -239,7 +241,8 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
   EXPECT_EQ(1UL, service_->GetHiddenDefaultSidebarItems().size());
 
   // Add again.
-  // New item will be added at last.
+  // New item will be added as first,
+  // according to the defined order
   EXPECT_CALL(observer_, OnItemAdded(item, 0)).Times(1);
   service_->AddItem(item);
   testing::Mock::VerifyAndClearExpectations(&observer_);
@@ -877,7 +880,7 @@ TEST_F(SidebarServiceTestWithPlaylist, GetDefaultPanelItem) {
   EXPECT_FALSE(service_->GetDefaultPanelItem());
 }
 
-class SidebarServiceOrderingTest : public testing::Test {
+class SidebarServiceOrderingTest : public SidebarServiceTest {
  public:
   SidebarServiceOrderingTest() = default;
   SidebarServiceOrderingTest(const SidebarServiceOrderingTest&) = delete;
@@ -889,38 +892,12 @@ class SidebarServiceOrderingTest : public testing::Test {
 
   ~SidebarServiceOrderingTest() override = default;
 
-  PrefService* GetPrefs() { return profile_->GetPrefs(); }
-
-  SidebarService* GetSidebarService() { return sidebar_service_; }
-
   void SetUp() override {
     testing::Test::SetUp();
-
 #if BUILDFLAG(ENABLE_AI_CHAT)
     scoped_feature_list_.InitAndEnableFeature(ai_chat::features::kAIChat);
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-
-    auto registry = base::MakeRefCounted<user_prefs::PrefRegistrySyncable>();
-    sidebar::SidebarServiceFactory::GetInstance();
-    RegisterUserProfilePrefs(registry.get());
-    registry->RegisterDictionaryPref("brave");
-    registry->RegisterDictionaryPref("brave.sidebar");
-
-    sync_preferences::PrefServiceMockFactory factory;
-    auto pref_service = factory.CreateSyncable(registry.get());
-    auto* pref_service_ptr = pref_service.get();
-
-    auto builder = TestingProfile::Builder();
-    builder.SetPrefService(std::move(pref_service));
-    profile_ = builder.Build();
-
-    ASSERT_EQ(pref_service_ptr, profile_->GetPrefs());
-  }
-
-  void InitSideBarService() {
-    sidebar_service_ =
-        sidebar::SidebarServiceFactory::GetForProfile(profile_.get());
-    sidebar_service_->AddObserver(&observer_);
+    SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::CANARY);
   }
 
   bool ValidateBuiltInTypesOrdering(
@@ -929,7 +906,7 @@ class SidebarServiceOrderingTest : public testing::Test {
     const auto default_btin_types_count = defined_order.size();
     std::vector<SidebarItem> only_builtin_types;
     base::ranges::copy_if(
-        sidebar_service_->items(), std::back_inserter(only_builtin_types),
+        service_->items(), std::back_inserter(only_builtin_types),
         [](const SidebarItem& item) {
           return item.built_in_item_type != SidebarItem::BuiltInItemType::kNone;
         });
@@ -947,19 +924,15 @@ class SidebarServiceOrderingTest : public testing::Test {
   }
 
   void LoadFromPrefsTest(
-      base::Value::Dict sidebar_prefs,
+      const base::Value::Dict& sidebar_prefs,
       const std::vector<SidebarItem::BuiltInItemType>& defined_order,
-      const size_t& expected_items_loaded) {
-    // base::Value::Dict
-    // sidebar(ParseTestJson(sidebar_all_builtin_visible_json));
+      const size_t expected_items_loaded) {
     GetPrefs()->Set(kSidebarItems,
                     std::move(sidebar_prefs.Find("sidebar_items")->Clone()));
-    GetPrefs()->SetInteger(kSidebarShowOption, 0);
-    EXPECT_EQ(0, GetPrefs()->GetInteger(kSidebarShowOption));
 
-    InitSideBarService();
+    InitService();
 
-    EXPECT_EQ(expected_items_loaded, GetSidebarService()->items().size());
+    EXPECT_EQ(expected_items_loaded, service_->items().size());
     EXPECT_TRUE(ValidateBuiltInTypesOrdering(defined_order))
         << "Wrong order detected";
   }
@@ -968,23 +941,18 @@ class SidebarServiceOrderingTest : public testing::Test {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   base::test::ScopedFeatureList scoped_feature_list_;
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-  content::BrowserTaskEnvironment task_environment_{
-      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
-  std::unique_ptr<TestingProfile> profile_;
-  raw_ptr<SidebarService> sidebar_service_;
-  NiceMock<MockSidebarServiceObserver> observer_;
 };
 
 TEST_F(SidebarServiceOrderingTest, BuiltInItemsDefaultOrder) {
-  InitSideBarService();
+  InitService();
   EXPECT_EQ(
 #if BUILDFLAG(ENABLE_AI_CHAT)
       5UL,
 #else
       4UL,
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-      GetSidebarService()->items().size());
-  EXPECT_EQ(0UL, GetSidebarService()->GetHiddenDefaultSidebarItems().size());
+      service_->items().size());
+  EXPECT_EQ(0UL, service_->GetHiddenDefaultSidebarItems().size());
 
   EXPECT_TRUE(
       ValidateBuiltInTypesOrdering({SidebarItem::BuiltInItemType::kBraveTalk,
@@ -998,6 +966,10 @@ TEST_F(SidebarServiceOrderingTest, BuiltInItemsDefaultOrder) {
 
 TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
   base::Value::Dict sidebar(ParseTestJson(sidebar_all_builtin_visible_json));
+
+  const auto* sidebar_items = sidebar.FindList("sidebar_items");
+  CHECK(sidebar_items);
+
   LoadFromPrefsTest(std::move(sidebar),
                     {
                         SidebarItem::BuiltInItemType::kChatUI,
@@ -1007,14 +979,18 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
                         SidebarItem::BuiltInItemType::kBraveTalk,
                     },
 #if BUILDFLAG(ENABLE_AI_CHAT)
-                    8UL
+                    sidebar_items->size()
 #else
-                    7UL
+                    sidebar_items->size() - 1
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
   );
 }
 TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
   base::Value::Dict sidebar(ParseTestJson(sidebar_builtin_wallet_hidden_json));
+
+  const auto* sidebar_items = sidebar.FindList("sidebar_items");
+  CHECK(sidebar_items);
+
   LoadFromPrefsTest(std::move(sidebar),
                     {
                         SidebarItem::BuiltInItemType::kBraveTalk,
@@ -1023,15 +999,19 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
                         SidebarItem::BuiltInItemType::kChatUI,
                     },
 #if BUILDFLAG(ENABLE_AI_CHAT)
-                    7UL
+                    sidebar_items->size()
 #else
-                    6UL
+                    sidebar_items->size() - 1
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
   );
 }
 TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAiChatBuiltInNotListed) {
   base::Value::Dict sidebar(
       ParseTestJson(sidebar_builtin_ai_chat_not_listed_json));
+
+  const auto* sidebar_items = sidebar.FindList("sidebar_items");
+  CHECK(sidebar_items);
+
   LoadFromPrefsTest(std::move(sidebar),
                     {
                         SidebarItem::BuiltInItemType::kBraveTalk,
@@ -1041,9 +1021,9 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAiChatBuiltInNotListed) {
                         SidebarItem::BuiltInItemType::kWallet,
                     },
 #if BUILDFLAG(ENABLE_AI_CHAT)
-                    8UL
+                    sidebar_items->size() + 1
 #else
-                    7UL
+                    sidebar_items->size()
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
   );
 }
