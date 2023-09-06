@@ -240,4 +240,6 @@
     <color name="rewards_private_ads_icon_color12">#AF1769</color>
     <color name="rewards_private_ads_icon_color13">#0C5FA3</color>
     <color name="rewards_estimated_earning_close_color">#EDEEF1</color>
+    <color name="rewards_tipping_progress_bar">@android:color/white</color>
+
 </resources>

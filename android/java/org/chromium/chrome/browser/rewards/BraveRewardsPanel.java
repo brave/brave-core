@@ -75,6 +75,7 @@ import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rewards.onboarding.RewardsOnboarding;
+import org.chromium.chrome.browser.rewards.tipping.PopupWindowTippingTabletUI;
 import org.chromium.chrome.browser.rewards.tipping.RewardsTippingBannerActivity;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.BraveConstants;
@@ -162,7 +163,7 @@ public class BraveRewardsPanel
         TURN_ON_ADS;
     }
 
-    private boolean shouldShowOnboardingForConnectAccount;
+    private boolean mShouldShowOnboardingForConnectAccount;
 
     private final View mAnchorView;
     private final PopupWindow mPopupWindow;
@@ -203,7 +204,7 @@ public class BraveRewardsPanel
     private View mNotificationLayout;
     private View mNotificationPermissionLayout;
     private boolean mClaimInProcess;
-    private boolean notificationShown;
+    private boolean mNotificationShown;
 
     private View mBraveRewardsOnboardingModalView;
     private View mRewardsResponseModal;
@@ -219,6 +220,8 @@ public class BraveRewardsPanel
     private View mBalanceDataViewGroups;
     private View mEstimatedToolTip;
     private View mVbatUserdrainToolTip;
+    private PopupWindowTippingTabletUI mPopupWindowTippingTabletUI;
+    private boolean mIsTablet;
 
     public BraveRewardsPanel(View anchorView) {
         mCurrentNotificationId = "";
@@ -336,9 +339,9 @@ public class BraveRewardsPanel
         mPopupView = (ViewGroup) inflater.inflate(R.layout.brave_rewards_panel_layout, null);
 
         int deviceWidth = ConfigurationUtils.getDisplayMetrics(mActivity).get("width");
-        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(mActivity);
+        mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(mActivity);
 
-        mPopupWindow.setWidth((int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95)));
+        mPopupWindow.setWidth((int) (mIsTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95)));
 
         mBravePanelShadow = mPopupView.findViewById(R.id.panel_shadow);
         mBraveRewardsOnboardingView =
@@ -413,10 +416,17 @@ public class BraveRewardsPanel
 
         TextView btnSendTip = mPopupView.findViewById(R.id.btn_send_tip);
         btnSendTip.setOnClickListener(view -> {
-            Intent intent = new Intent(
-                    ContextUtils.getApplicationContext(), RewardsTippingBannerActivity.class);
-            intent.putExtra(RewardsTippingBannerActivity.TAB_ID_EXTRA, mCurrentTabId);
-            mActivity.startActivityForResult(intent, BraveConstants.SITE_BANNER_REQUEST_CODE);
+            if (mIsTablet) {
+                mPopupWindowTippingTabletUI =
+                        PopupWindowTippingTabletUI.newInstance(mAnchorView, mCurrentTabId);
+                mPopupWindowTippingTabletUI.show(mBraveActivity.getSupportFragmentManager(),
+                        "PopupWindowTippingTabletUITag");
+            } else {
+                Intent intent = new Intent(
+                        ContextUtils.getApplicationContext(), RewardsTippingBannerActivity.class);
+                intent.putExtra(RewardsTippingBannerActivity.TAB_ID_EXTRA, mCurrentTabId);
+                mActivity.startActivityForResult(intent, BraveConstants.SITE_BANNER_REQUEST_CODE);
+            }
         });
 
         mBtnTip = mPopupView.findViewById(R.id.tip_btn);
@@ -839,7 +849,7 @@ public class BraveRewardsPanel
             mRewardsMainLayout.setForeground(
                     new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
             enableControls(false, mRewardsMainLayout);
-            notificationShown = true;
+            mNotificationShown = true;
         }
 
         setNotificationButtoClickListener(notificationClickAction);
@@ -1197,8 +1207,8 @@ public class BraveRewardsPanel
 
     @Override
     public void OnRewardsParameters() {
-        if (shouldShowOnboardingForConnectAccount) {
-            shouldShowOnboardingForConnectAccount = false;
+        if (mShouldShowOnboardingForConnectAccount) {
+            mShouldShowOnboardingForConnectAccount = false;
             showBraveRewardsOnboarding(true);
         } else if (mExternalWallet != null) {
             if (mBraveRewardsNativeWorker.getVbatDeadline() > 0) {
@@ -1240,8 +1250,7 @@ public class BraveRewardsPanel
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             int deviceWidth = ConfigurationUtils.getDisplayMetrics(activity).get("width");
-            boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(activity);
-            deviceWidth = (int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95));
+            deviceWidth = (int) (mIsTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95));
             RewardsOnboarding panel = new RewardsOnboarding(mAnchorView, deviceWidth);
             panel.showLikePopDownMenu();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
@@ -1373,7 +1382,7 @@ public class BraveRewardsPanel
         View closeButton = mNotificationPermissionLayout.findViewById(R.id.close_text_button);
         closeButton.setOnClickListener((v) -> {
             mNotificationPermissionLayout.setVisibility(View.GONE);
-            if (!notificationShown) {
+            if (!mNotificationShown) {
                 mNotificationLayout.setVisibility(View.GONE);
             }
         });
@@ -1385,7 +1394,7 @@ public class BraveRewardsPanel
         turnOnNotification.setOnClickListener((v) -> {
             mNotificationPermissionLayout.setVisibility(View.GONE);
             BravePermissionUtils.notificationSettingPage(mAnchorView.getContext());
-            if (!notificationShown) {
+            if (!mNotificationShown) {
                 mNotificationLayout.setVisibility(View.GONE);
             }
         });
@@ -2171,6 +2180,11 @@ public class BraveRewardsPanel
 
     public void dismiss() {
         mPopupWindow.dismiss();
+        if (mPopupWindowTippingTabletUI != null && mPopupWindowTippingTabletUI.getDialog() != null
+                && mPopupWindowTippingTabletUI.getDialog().isShowing()
+                && !mPopupWindowTippingTabletUI.isRemoving()) {
+            mPopupWindowTippingTabletUI.getDialog().dismiss();
+        }
     }
 
     public boolean isShowing() {
