@@ -6,5 +6,5 @@ index bf081cdef85dd1c05d8f016d991cff963112de37..2c1b8df701f526bfab8d325f139197b6
    ]
    build_root = "crate/build.rs"
    build_sources = [ "crate/build.rs" ]
-+  features += [ "basetsd", "cfg", "cfgmgr32", "devpropdef", "excpt", "ktmtypes", "libloaderapi", "limits", "ntdef", "ntstatus", "processthreadsapi", "reason", "rpcndr", "timezoneapi", "vadefs", "vcruntime", "wincontypes", "wingdi", "windef", "winreg", "winuser", "wtypesbase" ]
++  features += [ "basetsd", "cfg", "cfgmgr32", "devpropdef", "excpt", "handleapi", "ktmtypes", "libloaderapi", "limits", "ntdef", "ntstatus", "processthreadsapi", "reason", "rpcndr", "timezoneapi", "vadefs", "vcruntime", "wincontypes", "wingdi", "windef", "winreg", "winuser", "wtypesbase" ]
  }
