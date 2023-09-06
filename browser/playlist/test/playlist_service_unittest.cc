@@ -1027,24 +1027,29 @@ TEST_F(PlaylistServiceUnitTest, ReorderItemFromPlaylist) {
                        order_checker({"1", "2", "3", "4", "5", "target"}));
 
   // Move to the left ----------------------------------------------------------
-  service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 4);
+  service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 4,
+                                   base::DoNothing());
   service->GetPlaylist(playlist::kDefaultPlaylistID,
                        order_checker({"1", "2", "3", "4", "target", "5"}));
 
-  service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 2);
+  service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 2,
+                                   base::DoNothing());
   service->GetPlaylist(playlist::kDefaultPlaylistID,
                        order_checker({"1", "2", "target", "3", "4", "5"}));
 
-  service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 0);
+  service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 0,
+                                   base::DoNothing());
   service->GetPlaylist(playlist::kDefaultPlaylistID,
                        order_checker({"target", "1", "2", "3", "4", "5"}));
 
   // Move to the right ---------------------------------------------------------
-  service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 3);
+  service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 3,
+                                   base::DoNothing());
   service->GetPlaylist(playlist::kDefaultPlaylistID,
                        order_checker({"1", "2", "3", "target", "4", "5"}));
 
-  service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 5);
+  service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 5,
+                                   base::DoNothing());
   service->GetPlaylist(playlist::kDefaultPlaylistID,
                        order_checker({"1", "2", "3", "4", "5", "target"}));
 }

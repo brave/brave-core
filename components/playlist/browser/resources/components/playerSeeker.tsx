@@ -9,11 +9,6 @@ import styled from 'styled-components'
 import { color, font } from '@brave/leo/tokens/css'
 
 import { formatTimeInSeconds } from '../utils/timeFormatter'
-import {
-  DragController,
-  InitialState,
-  Target
-} from '../utils/dragDropController'
 
 interface Props {
   videoElement: HTMLVideoElement | null
@@ -73,44 +68,45 @@ const StyledProgress = styled.progress.attrs(
   }
 `
 
-class SeekerDragController extends DragController<
-  InitialState & { playing: boolean; value: number },
-  Target
-> {
+class DragController {
   constructor (
     videoElement: HTMLVideoElement,
-    progressElem: React.RefObject<HTMLProgressElement>,
+    progressElem: HTMLProgressElement,
     updateProgressValue: (value: number) => void
   ) {
-    super('horizontal')
-
-    this.initialState = {
-      clientPos: 0,
-      target: undefined,
-      playing: !videoElement.paused,
-      value: progressElem.current!.value
-    }
-
     this.#videoElement = videoElement
-    this.#progressElem = progressElem.current!
+    this.#progressElem = progressElem
     this.#updateProgressValue = updateProgressValue
-
-    this.addTargetElement({ elementRef: progressElem })
   }
 
   #videoElement: HTMLVideoElement
   #progressElem: HTMLProgressElement
   #updateProgressValue: (value: number) => void
 
+  #isMouseDown = false
+  #isDragging = false
+
+  // Indicate the state of the video when mouse was down.
+  #initialState?: {
+    playing: boolean
+    clientX: number
+    value: number
+  } = undefined
+
   interpolatePxToValue = (clientX: number) => {
     // clientWidth : clientX = max : newValue
     return (clientX / this.#progressElem.clientWidth) * this.#progressElem.max
   }
 
-  onDragStart = () => {
-    this.initialState = {
-      ...this.initialState,
-      playing: !this.#videoElement.paused,
+  onMouseDown = (event: MouseEvent) => {
+    if (!this.#videoElement) {
+      return
+    }
+
+    this.#isMouseDown = true
+    this.#initialState = {
+      playing: !this.#videoElement?.paused,
+      clientX: event.clientX,
       value: this.#progressElem.value
     }
 
@@ -118,14 +114,37 @@ class SeekerDragController extends DragController<
     this.#videoElement.pause()
 
     this.#videoElement.currentTime = this.interpolatePxToValue(
-      this.initialState.clientPos - this.#progressElem.offsetLeft
+      this.#initialState.clientX - this.#progressElem.offsetLeft
     )
+
+    document.addEventListener('mousemove', this.onMouseMove)
+    document.addEventListener('mouseup', this.onMouseUp)
   }
 
-  onDragUpdate = (target: Target, clientPos: number) => {
+  onMouseMove = (event: MouseEvent) => {
+    if (!this.#videoElement) {
+      return
+    }
+
+    if (!this.#isMouseDown) {
+      return
+    }
+
+    const dragThreshold = 5
+    if (
+      !this.#isDragging &&
+      Math.abs(event.clientX - this.#initialState!.clientX) > dragThreshold
+    ) {
+      this.#isDragging = true
+    }
+
+    if (!this.#isDragging) {
+      return
+    }
+
     // Update value
     const newTime = this.interpolatePxToValue(
-      clientPos - this.#progressElem.offsetLeft
+      event.clientX - this.#progressElem.offsetLeft
     )
 
     const oldTime = this.#videoElement.currentTime
@@ -139,24 +158,28 @@ class SeekerDragController extends DragController<
     }
   }
 
-  onDragEnd = (target: Target, clientPos: number) => {
-    this.#videoElement.currentTime = this.interpolatePxToValue(
-      clientPos - this.#progressElem.offsetLeft
-    )
+  onMouseUp = (event: MouseEvent) => {
+    document.removeEventListener('mousemove', this.onMouseMove)
+    document.removeEventListener('mouseup', this.onMouseUp)
 
-    // Restore the playing state.
-    if (this.#videoElement.paused && this.initialState.playing) {
-      this.#videoElement.play()
+    if (!this.#videoElement) {
+      return
     }
-  }
 
-  onClick = () => {
-    this.#videoElement.currentTime = this.interpolatePxToValue(
-      this.initialState.clientPos - this.#progressElem.offsetLeft
-    )
+    this.#isMouseDown = false
+
+    if (this.#isDragging) {
+      this.#videoElement.currentTime = this.interpolatePxToValue(
+        event.clientX - this.#progressElem.offsetLeft
+      )
+    } else {
+      this.#videoElement.currentTime = this.interpolatePxToValue(
+        this.#initialState!.clientX - this.#progressElem.offsetLeft
+      )
+    }
 
     // Restore the playing state.
-    if (this.#videoElement.paused && this.initialState.playing) {
+    if (this.#videoElement.paused && this.#initialState!.playing) {
       this.#videoElement.play()
     }
   }
@@ -198,13 +221,17 @@ export default function PlayerSeeker ({ videoElement }: Props) {
       return
     }
 
-    const dragController = new SeekerDragController(
+    const dragController = new DragController(
       videoElement,
-      progressElementRef,
+      progressElem,
       setCurrentTime
     )
+    progressElem.addEventListener('mousedown', dragController.onMouseDown)
     return () => {
-      dragController.cleanUp()
+      progressElem.removeEventListener('mousedown', dragController.onMouseDown)
+      // Make sure we don't have event listeners on document.
+      document.removeEventListener('mousemove', dragController.onMouseMove)
+      document.removeEventListener('mousemove', dragController.onMouseUp)
     }
   }, [progressElementRef.current])
 

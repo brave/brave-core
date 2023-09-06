@@ -140,7 +140,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                     for (int i = 0; i < playlistItems.size(); i++) {
                         PlaylistItemModel playlistItemModel = playlistItems.get(i);
                         mPlaylistService.reorderItemFromPlaylist(playlistItemModel.getPlaylistId(),
-                                playlistItemModel.getId(), (short) i);
+                                playlistItemModel.getId(), (short) i, (result) -> {});
                     }
                     if (playlistItems.size() > 0) {
                         loadPlaylist(playlistItems.get(0).getPlaylistId());

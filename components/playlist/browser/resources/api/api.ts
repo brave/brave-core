@@ -114,9 +114,12 @@ class API {
   reorderItemFromPlaylist (
     playlistId: string,
     itemId: string,
-    position: number
+    position: number,
+    callback: (result: boolean) => void
   ) {
-    this.#pageHandler.reorderItemFromPlaylist(playlistId, itemId, position)
+    this.#pageHandler
+      .reorderItemFromPlaylist(playlistId, itemId, position)
+      .then(({ result }) => callback(result))
   }
 
   // Events --------------------------------------------------------------------

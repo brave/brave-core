@@ -6,6 +6,8 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { useSelector } from 'react-redux'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 import { color, font, spacing } from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
@@ -26,14 +28,14 @@ import { formatBytes } from '../utils/bytesFormatter'
 import { ApplicationState, CachingProgress } from '../reducers/states'
 import { getPlaylistAPI } from '../api/api'
 import { BouncingBars } from './bouncingBars'
-import { ItemDragController } from './itemDragController'
 
 interface Props {
   playlist: Playlist
   item: PlaylistItemMojo
   isEditing: boolean
   isSelected?: boolean
-  dragController: ItemDragController
+  shouldBeHidden: boolean
+  onClick: (item: PlaylistItemMojo) => void
 }
 
 const ThumbnailStyle = css`
@@ -70,18 +72,25 @@ const DefaultThumbnail = styled.div`
   content: url(${DefaultThumbnailIcon});
 `
 
-const itemHeight = 86
-
-const PlaylistItemContainer = styled.li<{ isActive: boolean }>`
+const PlaylistItemContainer = styled.li<{
+  isActive: boolean
+  shouldBeHidden: boolean
+}>`
   display: flex;
   position: relative;
   padding: ${spacing.m} ${spacing.xl} ${spacing.m} ${spacing.m};
-  height: ${`${itemHeight}px`};
+  height: 86px;
   align-items: center;
   gap: ${spacing.xl};
   & > a {
     margin-right: calc(-1 * ${spacing.xl});
   }
+
+  ${p =>
+    p.shouldBeHidden &&
+    css`
+      visibility: hidden;
+    `}
 
   align-self: stretch;
   ${p =>
@@ -191,12 +200,13 @@ function Thumbnail ({
   )
 }
 
-export default function PlaylistItem ({
+export function PlaylistItem ({
   playlist,
   item,
   isEditing,
   isSelected,
-  dragController
+  shouldBeHidden,
+  onClick
 }: Props) {
   const {
     id,
@@ -239,36 +249,13 @@ export default function PlaylistItem ({
   )
   const isPlaying = currentItemId === item.id
 
-  const containerElementRef = React.useRef<HTMLLIElement>(null)
-
-  React.useEffect(() => {
-    if (!item || !containerElementRef.current) return
-
-    if (containerElementRef.current) {
-      dragController.addTargetElement({
-        item,
-        elementRef: containerElementRef,
-        height: itemHeight
-      })
-    }
-
-    return () => {
-      let index = dragController.targets.findIndex(
-        t => t.elementRef === containerElementRef
-      )
-      if (index !== -1) dragController.targets.splice(index, 1)
-
-      index = dragController.targets.findIndex(t => t.item.id === item.id)
-      if (index !== -1) dragController.targets.splice(index, 1)
-    }
-  }, [containerElementRef.current, item])
-
   return (
     <PlaylistItemContainer
-      ref={containerElementRef}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       isActive={(isEditing && isSelected) || isPlaying}
+      shouldBeHidden={shouldBeHidden}
+      onClick={() => onClick(item)}
     >
       <a ref={anchorElem} href={`#${id}`} />
       {isEditing && (
@@ -349,5 +336,22 @@ export default function PlaylistItem ({
         onDismissMenu={() => setShowingMenu(false)}
       />
     </PlaylistItemContainer>
+  )
+}
+
+export function SortablePlaylistItem (props: Props) {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: props.item.id })
+
+  if (transform) transform.x = 0
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition
+  }
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <PlaylistItem {...props} />
+    </div>
   )
 }

@@ -6,13 +6,31 @@
 import * as React from 'react'
 import { RouteComponentProps, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
+import {
+  DndContext,
+  DragStartEvent,
+  DragOverlay,
+  UniqueIdentifier,
+  DragEndEvent,
+  useSensor,
+  TouchSensor,
+  PointerSensor,
+  MouseSensor,
+  useSensors
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy
+} from '@dnd-kit/sortable'
+import { Transform } from '@dnd-kit/utilities'
 
 import { color } from '@brave/leo/tokens/css'
 import LeoButton from '@brave/leo/react/button'
 
 import { PlaylistItem as PlaylistItemMojo } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m'
 
-import PlaylistItem from './playlistItem'
+import { SortablePlaylistItem, PlaylistItem } from './playlistItem'
 import {
   PlaylistEditMode,
   useLastPlayerState,
@@ -23,7 +41,6 @@ import postMessageToPlayer from '../api/playerApi'
 import { types } from '../constants/player_types'
 import { getPlaylistActions } from '../api/getPlaylistActions'
 import { getPlaylistAPI } from '../api/api'
-import { ItemDragController } from './itemDragController'
 
 interface MatchParams {
   playlistId: string
@@ -118,18 +135,18 @@ export default function PlaylistFolder ({
   const [selectedSet, setSelectedSet] = React.useState(new Set<string>())
   const editMode = usePlaylistEditMode()
 
+  const [draggedId, setDraggedId] = React.useState<UniqueIdentifier | null>(
+    null
+  )
+
   React.useEffect(() => {
     if (editMode !== PlaylistEditMode.BULK_EDIT)
       setSelectedSet(new Set<string>())
   }, [editMode])
 
-  const dragControllerRef = React.useRef(new ItemDragController())
-
   // Share single callback among multiple items.
   const onItemClick = React.useCallback(
     item => {
-      if (draggedOrder) setDraggedOrder(undefined)
-
       if (!playlist) return
 
       if (editMode === PlaylistEditMode.BULK_EDIT) {
@@ -153,32 +170,23 @@ export default function PlaylistFolder ({
   )
 
   const [draggedOrder, setDraggedOrder] = React.useState<
-    PlaylistItemMojo[] | undefined
-  >(undefined)
+    PlaylistItemMojo[] | null
+  >(null)
 
-  dragControllerRef.current.onClickItem = onItemClick
-  dragControllerRef.current.onDragItemStarted = () => {}
-  dragControllerRef.current.onDragItemUpdated = (item, indexDelta) => {
-    if (!playlist) return
-
-    const index = playlist.items.findIndex(i => i.id === item.id)
-    if (index + indexDelta === draggedOrder?.findIndex(i => i.id === item.id)) {
-      return
-    }
-
-    let newOrder = [...playlist.items]
-    newOrder.splice(index + indexDelta, 0, newOrder.splice(index, 1)[0])
-    setDraggedOrder(newOrder)
-  }
-  dragControllerRef.current.onDragItemEnded = item => {
-    if (!playlist) return
-
-    const index = draggedOrder!.findIndex(i => i.id === item.id)
-    getPlaylistAPI().reorderItemFromPlaylist(playlist.id!, item.id, index)
-    setDraggedOrder(undefined)
-  }
-  dragControllerRef.current.canDrag =
-    editMode !== PlaylistEditMode.BULK_EDIT && !lastPlayerState?.shuffleEnabled
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: { distance: 40 }
+    }),
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 40 }
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 40
+      }
+    })
+  )
 
   if (!playlist) {
     // After deleting a playlist from header, this could happen. In this case,
@@ -192,7 +200,102 @@ export default function PlaylistFolder ({
       ? lastPlayerState.currentList?.items ?? playlist?.items
       : playlist?.items)
 
-  return (
+  const getPlaylistItem = (
+    item: PlaylistItemMojo | undefined,
+    isDraggable: boolean,
+    shouldBeHidden: boolean
+  ) => {
+    if (!item) return null
+
+    if (!isDraggable) {
+      return (
+        <PlaylistItem
+          key={item.id}
+          playlist={playlist}
+          item={item}
+          isEditing={editMode === PlaylistEditMode.BULK_EDIT}
+          isSelected={selectedSet.has(item.id)}
+          shouldBeHidden={shouldBeHidden}
+          onClick={onItemClick}
+        />
+      )
+    }
+
+    return (
+      <SortablePlaylistItem
+        key={item.id}
+        playlist={playlist}
+        item={item}
+        isEditing={editMode === PlaylistEditMode.BULK_EDIT}
+        isSelected={selectedSet.has(item.id)}
+        shouldBeHidden={shouldBeHidden}
+        onClick={onItemClick}
+      />
+    )
+  }
+
+  const WrapWithDragContext = (children: any) => {
+    const canDrag =
+      editMode !== PlaylistEditMode.BULK_EDIT &&
+      !lastPlayerState?.shuffleEnabled
+    return canDrag ? (
+      <DndContext
+        sensors={sensors}
+        onDragStart={(event: DragStartEvent) => {
+          setDraggedId(event.active.id)
+          setDraggedOrder([...itemsToRender])
+        }}
+        onDragEnd={(event: DragEndEvent) => {
+          setDraggedId(null)
+          if (!draggedOrder) return
+
+          const { active, over } = event
+          if (!over) return
+
+          if (active.id !== over.id) {
+            const oldIndex = draggedOrder.findIndex(i => i.id === active.id)
+            const newIndex = draggedOrder.findIndex(i => i.id === over.id)
+            // Lock the order until updating completes.
+            setDraggedOrder(arrayMove(draggedOrder, oldIndex, newIndex))
+
+            getPlaylistAPI().reorderItemFromPlaylist(
+              playlist.id!,
+              '' + active.id,
+              newIndex,
+              () => setDraggedOrder(null)
+            )
+          }
+        }}
+        onDragCanceled={() => {
+          setDraggedId(null)
+        }}
+      >
+        <SortableContext
+          items={itemsToRender}
+          strategy={verticalListSortingStrategy}
+        >
+          {children}
+        </SortableContext>
+        <DragOverlay
+          modifiers={[
+            ({ transform }: { transform: Transform }) => {
+              return { ...transform, x: 0 }
+            }
+          ]}
+        >
+          {getPlaylistItem(
+            itemsToRender.find(i => i.id === draggedId),
+            /* isDraggable */ true,
+            /* shouldBeHidden */ false
+          )}
+        </DragOverlay>
+      </DndContext>
+    ) : (
+      <>{children}</>
+    )
+  }
+
+  return WrapWithDragContext(
     <>
       {editMode === PlaylistEditMode.BULK_EDIT && (
         <EditActionsContainer
@@ -200,16 +303,14 @@ export default function PlaylistFolder ({
           selectedIds={selectedSet}
         />
       )}
-      {itemsToRender.map(item => (
-        <PlaylistItem
-          key={item.id}
-          playlist={playlist}
-          item={item}
-          isEditing={editMode === PlaylistEditMode.BULK_EDIT}
-          isSelected={selectedSet.has(item.id)}
-          dragController={dragControllerRef.current}
-        />
-      ))}
+      {itemsToRender.map(i =>
+        getPlaylistItem(
+          i /* shouldBeHidden */,
+          /* isDraggable */ editMode !== PlaylistEditMode.BULK_EDIT &&
+            !lastPlayerState?.shuffleEnabled,
+          /* shouldBeHidden */ i.id === draggedId
+        )
+      )}
     </>
   )
 }

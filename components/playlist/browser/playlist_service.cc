@@ -225,9 +225,11 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
   return true;
 }
 
-void PlaylistService::ReorderItemFromPlaylist(const std::string& playlist_id,
-                                              const std::string& item_id,
-                                              int16_t position) {
+void PlaylistService::ReorderItemFromPlaylist(
+    const std::string& playlist_id,
+    const std::string& item_id,
+    int16_t position,
+    ReorderItemFromPlaylistCallback callback) {
   VLOG(2) << __func__ << " " << playlist_id << " " << item_id;
 
   DCHECK(!item_id.empty());
@@ -266,6 +268,8 @@ void PlaylistService::ReorderItemFromPlaylist(const std::string& playlist_id,
   for (auto& observer : observers_) {
     observer->OnPlaylistUpdated(GetPlaylist(target_playlist_id));
   }
+
+  std::move(callback).Run(true);
 }
 
 bool PlaylistService::MoveItem(const PlaylistId& from,
