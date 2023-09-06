@@ -20,6 +20,7 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
+#include "ui/accessibility/ax_tree_observer.h"
 
 class PrefService;
 
@@ -38,7 +39,8 @@ class AIChatMetrics;
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AIChatTabHelper : public content::WebContentsObserver,
                         public content::WebContentsUserData<AIChatTabHelper>,
-                        public favicon::FaviconDriverObserver {
+                        public favicon::FaviconDriverObserver,
+                        public ui::AXTreeObserver {
  public:
   class Observer : public base::CheckedObserver {
    public:
@@ -118,6 +120,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
   void TitleWasSet(content::NavigationEntry* entry) override;
+  void DidStopLoading() override;
+
+  // AXTree Observer:
+  void OnChildTreeConnectionChanged(ui::AXNode* host_node) override;
 
   // favicon::FaviconDriverObserver
   void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,

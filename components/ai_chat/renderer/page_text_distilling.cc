@@ -113,18 +113,17 @@ void AddTextNodesToVector(const ui::AXNode* node,
 void DistillPageText(
     content::RenderFrame* render_frame,
     base::OnceCallback<void(const absl::optional<std::string>&)> callback) {
-  auto snapshotter = render_frame->CreateAXTreeSnapshotter(
-      ui::AXMode::kWebContents | ui::AXMode::kHTML | ui::AXMode::kScreenReader |
-      ui::AXMode::kPDF);
+  auto snapshotter = render_frame->CreateAXTreeSnapshotter(ui::kAXModeComplete);
   ui::AXTreeUpdate snapshot;
   snapshotter->Snapshot(
-      /* max_nodes= */ 9000, /* timeout= */ base::Seconds(4), &snapshot);
+      /* max_nodes= */ 9000, /* timeout= */ {}, &snapshot);
+  bool is_pdf =
+      base::CommandLine::ForCurrentProcess()->HasSwitch("pdf-renderer");
   ui::AXTree tree(snapshot);
 
-  LOG(ERROR) << "IsPdfRenderer: "
-             << base::CommandLine::ForCurrentProcess()->HasSwitch(
-                    "pdf-renderer")
-             << "\n";
+  if (is_pdf) {
+    LOG(ERROR) << "INSIDE PDF RENDER_FRAME\n";
+  }
 
   std::vector<const ui::AXNode*> content_root_nodes;
   std::vector<const ui::AXNode*> content_nodes;

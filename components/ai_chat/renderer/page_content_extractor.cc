@@ -93,9 +93,9 @@ PageContentExtractor::PageContentExtractor(
       global_world_id_(global_world_id),
       isolated_world_id_(isolated_world_id),
       weak_ptr_factory_(this) {
-  if (!render_frame->IsMainFrame()) {
-    return;
-  }
+  // if (!render_frame->IsMainFrame()) {
+  //   return;
+  // }
   // Bind mojom API to allow browser to communicate with this class
   // Being a RenderFrameObserver, this object is scoped to the RenderFrame.
   // Unretained is safe here because `registry` is also scoped to the

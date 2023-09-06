@@ -27,14 +27,15 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
+#include "content/browser/renderer_host/render_frame_host_impl.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/http/http_status_code.h"
-#include "ui/base/l10n/l10n_util.h"
-#include "ui/accessibility/platform/inspect/ax_inspect.h"
 #include "ui/accessibility/platform/ax_platform_node.h"
+#include "ui/accessibility/platform/inspect/ax_inspect.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/gfx/native_widget_types.h"
 
 using ai_chat::mojom::CharacterType;
 using ai_chat::mojom::ConversationTurn;
@@ -44,6 +45,45 @@ using ui::AXPropertyFilter;
 namespace {
 static const auto kAllowedSchemes = base::MakeFixedFlatSet<base::StringPiece>(
     {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
+
+ui::AXPlatformNodeDelegate* FindPDFNode(ui::AXPlatformNodeDelegate* node) {
+  auto* node_internal =
+      content::BrowserAccessibility::FromAXPlatformNodeDelegate(node);
+  DCHECK(node_internal);
+  if (node_internal->GetRole() == ax::mojom::Role::kPdfRoot) {
+    return node;
+  }
+
+  for (unsigned int i = 0; i < node_internal->PlatformChildCount(); ++i) {
+    content::BrowserAccessibility* child = node_internal->PlatformGetChild(i);
+    ui::AXPlatformNodeDelegate* result = FindPDFNode(child);
+    if (result) {
+      return result;
+    }
+  }
+  return nullptr;
+}
+
+std::string DumpPdfAccessibilityTree(ui::AXPlatformNode* node) {
+  std::string ax_tree_dump;
+
+  std::string name = node->GetDelegate()->GetStringAttribute(
+      ax::mojom::StringAttribute::kName);
+  base::ReplaceChars(name, "\r\n", "", &name);
+  if (!name.empty()) {
+    ax_tree_dump += name;
+  }
+  ax_tree_dump += " ";
+
+  for (unsigned int i = 0; i < node->GetDelegate()->GetChildCount(); ++i) {
+    gfx::NativeViewAccessible child = node->GetDelegate()->ChildAtIndex(i);
+    ui::AXPlatformNode* child_node =
+        ui::AXPlatformNode::FromNativeViewAccessible(child);
+    ax_tree_dump += DumpPdfAccessibilityTree(child_node);
+  }
+
+  return ax_tree_dump;
+}
 }  // namespace
 
 namespace ai_chat {
@@ -211,12 +251,22 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
     return;
   }
 
-  // MIME sniffing
-  // if (web_contents()->GetContentsMimeType() == "application/pdf") {
-  //   // ui::AXPlatformNode::NotifyAddAXModeFlags(ui::kAXModeComplete);
-  //   std::string contents = web_contents()->DumpAccessibilityTree(true,
-  //   DefaultFilters()); LOG(ERROR) << contents << "\n";
-  // }
+  if (web_contents()->GetContentsMimeType() == "application/pdf") {
+    // Enable AXMode to access to AX objects, similar to
+    // --force-renderer-accessibility
+    // ui::AXPlatformNode::NotifyAddAXModeFlags(ui::kAXModeComplete);
+    auto* rfh = static_cast<content::RenderFrameHostImpl*>(
+        web_contents()->GetPrimaryMainFrame());
+    content::BrowserAccessibilityManager* a11y_manager =
+        rfh->browser_accessibility_manager();
+    ui::AXPlatformNodeDelegate* root =
+        a11y_manager->GetBrowserAccessibilityRoot();
+    ui::AXPlatformNodeDelegate* pdf_root = FindPDFNode(root);
+    if (pdf_root) {
+      ui::AXPlatformNode* node = ui::AXPlatformNode::Create(pdf_root);
+      LOG(ERROR) << DumpPdfAccessibilityTree(node) << "\n";
+    }
+  }
 
   is_page_text_fetch_in_progress_ = false;
   if (contents_text.empty()) {
@@ -841,6 +891,24 @@ void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
     CleanUp();
     MaybeGeneratePageText();
   }
+}
+
+void AIChatTabHelper::DidStopLoading() {
+  if (!this->IsInObserverList() &&
+      web_contents()->GetContentsMimeType() == "application/pdf") {
+    auto* rfh_impl = static_cast<content::RenderFrameHostImpl*>(
+        web_contents()->GetPrimaryMainFrame());
+    content::BrowserAccessibilityManager* a11y_manager =
+        rfh_impl->browser_accessibility_manager();
+    if (a11y_manager) {
+      a11y_manager->ax_tree()->AddObserver(this);
+      LOG(ERROR) << "Started observing AXTree\n";
+    }
+  }
+}
+
+void AIChatTabHelper::OnChildTreeConnectionChanged(ui::AXNode* host_node) {
+  LOG(ERROR) << "ChildTree Connection changed\n";
 }
 
 void AIChatTabHelper::OnFaviconUpdated(
