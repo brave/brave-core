@@ -88,6 +88,11 @@ class PlaylistService : public KeyedService,
     Delegate& operator=(const Delegate&) = delete;
     virtual ~Delegate() = default;
 
+    virtual void SanitizeImage(
+        std::unique_ptr<std::string> image,
+        base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)>
+            callback) = 0;
+
     virtual content::WebContents* GetActiveWebContents() = 0;
   };
 
@@ -336,6 +341,10 @@ class PlaylistService : public KeyedService,
   base::SequencedTaskRunner* GetTaskRunner() override;
 
   // PlaylistThumbnailDownloader::Delegate overrides:
+  void SanitizeImage(
+      std::unique_ptr<std::string> image,
+      base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)> callback)
+      override;
   // Called when thumbnail image file is downloaded.
   void OnThumbnailDownloaded(const std::string& id,
                              const base::FilePath& path) override;

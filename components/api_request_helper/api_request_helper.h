@@ -134,7 +134,7 @@ class APIRequestHelper {
     void OnResponse(ResponseConversionCallback conversion_callback,
                     const std::unique_ptr<std::string> response_body);
 
-    // Decode one shot reponses
+    // Decode one shot responses
     void OnParseJsonResponse(
         APIRequestResult result,
         data_decoder::DataDecoder::ValueOrError result_value);
@@ -197,20 +197,6 @@ class APIRequestHelper {
       const base::flat_map<std::string, std::string>& headers = {},
       const APIRequestOptions& request_options = {});
 
-  using DownloadCallback = base::OnceCallback<void(
-      base::FilePath,
-      const base::flat_map<std::string, std::string>& /*response_headers*/)>;
-
-  // TODO(petemill): Move Download (and OnDownload) to a separate module,
-  // it does not share much from this file, which is meant to be for JSON APIs.
-  Ticket Download(const GURL& url,
-                  const std::string& payload,
-                  const std::string& payload_content_type,
-                  const base::FilePath& path,
-                  DownloadCallback callback,
-                  const base::flat_map<std::string, std::string>& headers = {},
-                  const APIRequestOptions& request_options = {});
-
   void Cancel(const Ticket& ticket);
   void CancelAll();
 
@@ -242,8 +228,6 @@ class APIRequestHelper {
   void DeleteAndSendResult(Ticket iter,
                            ResultCallback callback,
                            APIRequestResult result);
-
-  void OnDownload(Ticket iter, DownloadCallback callback, base::FilePath path);
 
   net::NetworkTrafficAnnotationTag annotation_tag_;
   URLLoaderHandlerList url_loaders_;

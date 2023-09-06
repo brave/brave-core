@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/containers/flat_set.h"
 #include "base/files/file_enumerator.h"
 #include "base/files/file_util.h"
@@ -685,6 +686,20 @@ void PlaylistService::DownloadThumbnail(const mojom::PlaylistItemPtr& item) {
   thumbnail_downloader_->DownloadThumbnail(
       item->id, GURL(item->thumbnail_source),
       GetPlaylistItemDirPath(item->id).Append(kThumbnailFileName));
+}
+
+void PlaylistService::SanitizeImage(
+    std::unique_ptr<std::string> image,
+    base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)> callback) {
+  if (!delegate_) {
+    CHECK_IS_TEST();
+    auto bytes = base::MakeRefCounted<base::RefCountedBytes>(
+        reinterpret_cast<const unsigned char*>(image->data()), image->size());
+    std::move(callback).Run(bytes);
+    return;
+  }
+
+  delegate_->SanitizeImage(std::move(image), std::move(callback));
 }
 
 void PlaylistService::OnThumbnailDownloaded(const std::string& id,
