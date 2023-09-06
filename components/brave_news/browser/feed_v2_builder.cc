@@ -28,6 +28,7 @@
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/features.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -50,40 +51,27 @@ Signal GetSignal(const mojom::FeedItemMetadataPtr& article,
 }
 
 double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
-  // Every N hours the pop_score will halve. I.e, if this was 24, every day the
-  // popularity score will be halved.
-  constexpr double kPopRecencyHalfLifeInHours = 18;
+  const double pop_recency_half_life_in_hours =
+      features::kBraveNewsPopScoreHalfLife.Get();
 
   auto& publish_time = article->publish_time;
 
-  double popularity = article->pop_score == 0 ? 50 : article->pop_score;
+  double popularity = article->pop_score == 0
+                          ? features::kBraveNewsPopScoreFallback.Get()
+                          : article->pop_score;
   double multiplier = publish_time > base::Time::Now() - base::Hours(5) ? 2 : 1;
   auto dt = base::Time::Now() - publish_time;
 
   return multiplier * popularity *
-         pow(0.5, dt.InHours() / kPopRecencyHalfLifeInHours);
+         pow(0.5, dt.InHours() / pop_recency_half_life_in_hours);
 }
 
 double GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
                         const Signal& signal) {
-  // Weighting for unsubscribed sources. Small but non-zero, so we still include
-  // them in the feed.
-  constexpr double kSourceSubscribedMin = 1e-5;
-
-  // Weighting for subscribed sources (either this or |kSourceSubscribedMin|
-  // will be applied).
-  constexpr double kSourceSubscribedMax = 1;
-
-  // Multiplier for unvisited sources. |visit_weighting| is in the range [0, 1]
-  // inclusive and will be shifted by this (i.e. [0, 1] ==> [0.2, 1.2]). This
-  // ensures we still show unvisited sources in the feed.
-  constexpr double kSourceVisitsMin = 0.2;
-
+  const double source_visits_min = features::kBraveNewsSourceVisitsMin.Get();
   double source_visits_projected =
-      kSourceVisitsMin + signal->visit_weight * (1 - kSourceVisitsMin);
-  double source_subscribed_projected =
-      signal->subscribed ? kSourceSubscribedMax : kSourceSubscribedMin;
-  return source_visits_projected * source_subscribed_projected *
+      source_visits_min + signal->visit_weight * (1 - source_visits_min);
+  return source_visits_projected * signal->subscribed_weight *
          GetPopRecency(article);
 }
 
@@ -213,7 +201,7 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
 mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
     ArticleInfos& articles) {
   return PickRouletteAndRemove(articles, [](const auto& signal) {
-    return !signal->subscribed && signal->visit_weight == 0;
+    return signal->subscribed_weight != 0 && signal->visit_weight == 0;
   });
 }
 
@@ -235,19 +223,17 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles) {
   result.push_back(mojom::FeedItemV2::NewHero(
       mojom::HeroArticle::New(std::move(hero_article))));
 
-  // Minimum number of articles in an inline block.
-  constexpr int kBlockInlineMin = 1;
-
-  // Maximum number of articles in an inline block.
-  constexpr int kBlockInlineMax = 5;
-  auto follow_count = GetNormal(kBlockInlineMin, kBlockInlineMax + 1);
+  const int block_min_inline = features::kBraveNewsMinBlockCards.Get();
+  const int block_max_inline = features::kBraveNewsMaxBlockCards.Get();
+  auto follow_count = GetNormal(block_min_inline, block_max_inline + 1);
   for (auto i = 0; i < follow_count; ++i) {
     // Ratio of inline articles to discovery articles.
     // discover ratio % of the time, we should do a discover card here instead
     // of a roulette card.
     // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
-    constexpr double kInlineDiscoveryRatio = 0.25;
-    bool is_discover = base::RandDouble() < kInlineDiscoveryRatio;
+    const double inline_discovery_ratio =
+        features::kBraveNewsInlineDiscoveryRatio.Get();
+    bool is_discover = base::RandDouble() < inline_discovery_ratio;
     auto generated = is_discover ? PickDiscoveryArticleAndRemove(articles)
                                  : PickRouletteAndRemove(articles);
     if (!generated) {

@@ -8,8 +8,8 @@ import { color, effect, radius, spacing } from '@brave/leo/tokens/css'
 export default styled.div`
   background: ${color.container.background};
   box-shadow: ${effect.elevation[7]};
-  border-radius: ${radius[8]};
+  border-radius: ${radius.m};
   border: 1px solid ${color.gray[20]};
   color: ${color.text.primary};
-  padding: ${spacing[8]};
+  padding: ${spacing.m};
 `
