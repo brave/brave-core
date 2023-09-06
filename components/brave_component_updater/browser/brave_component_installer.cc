@@ -1,17 +1,16 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/component_updater/brave_component_installer.h"
+#include "brave/components/brave_component_updater/browser/brave_component_installer.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/base64.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "base/json/json_string_value_serializer.h"
 #include "base/values.h"
 #include "base/version.h"
@@ -19,7 +18,6 @@
 #include "components/crx_file/id_util.h"
 #include "components/update_client/update_client.h"
 #include "components/update_client/update_client_errors.h"
-#include "components/update_client/utils.h"
 #include "crypto/sha2.h"
 
 using brave_component_updater::BraveComponent;
@@ -48,10 +46,7 @@ bool RewriteManifestFile(const base::FilePath& extension_root,
 
   base::FilePath manifest_path =
       extension_root.Append(FILE_PATH_LITERAL("manifest.json"));
-  if (!base::WriteFile(manifest_path, manifest_json)) {
-    return false;
-  }
-  return true;
+  return base::WriteFile(manifest_path, manifest_json);
 }
 
 std::string GetManifestString(base::Value::Dict* manifest,

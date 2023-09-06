@@ -17,13 +17,13 @@
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
-#include "brave/browser/component_updater/brave_component_updater_delegate.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/net/brave_system_request_handler.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
+#include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -197,9 +197,9 @@ brave_component_updater::BraveComponent::Delegate*
 BraveBrowserProcessImpl::brave_component_updater_delegate() {
   if (!brave_component_updater_delegate_) {
     brave_component_updater_delegate_ =
-        std::make_unique<brave::BraveComponentUpdaterDelegate>();
+        std::make_unique<brave::BraveComponentUpdaterDelegate>(
+            component_updater(), local_state(), GetApplicationLocale());
   }
-
   return brave_component_updater_delegate_.get();
 }
 
