@@ -1,8 +1,16 @@
 diff --git a/build/rust/cargo_crate.gni b/build/rust/cargo_crate.gni
-index 56357ff0cfa6416bf83d336510a783dfcfda0cd7..da4b63919cf970af7e5f876951a5846d900cb339 100644
+index 427fcf69da0b5b15f972b58e3988c7d103bae80d..12cfea27becb565b28ba667f1efb326c2754de68 100644
 --- a/build/rust/cargo_crate.gni
 +++ b/build/rust/cargo_crate.gni
-@@ -203,7 +203,7 @@ template("cargo_crate") {
+@@ -153,6 +153,7 @@ template("cargo_crate") {
+     manifest_dir = rebase_path(build_gn_dir + "/crate", "")
+   }
+   _rustenv += [ "CARGO_MANIFEST_DIR=${manifest_dir}" ]
++  _rustenv -= [ "CARGO_MANIFEST_DIR=${manifest_dir}" ]
+ 
+   # cargo_crate() should set library_configs, executable_configs,
+   # proc_macro_configs. Not configs.
+@@ -214,7 +215,7 @@ template("cargo_crate") {
                                   "rustenv",
                                   "dev_deps",
                                 ])
