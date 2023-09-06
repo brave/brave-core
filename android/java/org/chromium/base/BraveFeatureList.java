@@ -5,6 +5,9 @@
 
 package org.chromium.base;
 
+/**
+ * A list of feature flags exposed to Java.
+ */
 public abstract class BraveFeatureList {
     public static final String NATIVE_BRAVE_WALLET = "NativeBraveWallet";
     public static final String USE_DEV_UPDATER_URL = "UseDevUpdaterUrl";
@@ -28,4 +31,5 @@ public abstract class BraveFeatureList {
     public static final String HTTPS_BY_DEFAULT = "HttpsByDefault";
     public static final String BRAVE_FORGET_FIRST_PARTY_STORAGE = "BraveForgetFirstPartyStorage";
     public static final String BRAVE_REQUEST_OTR_TAB = "BraveRequestOTRTab";
+    public static final String AI_CHAT = "AIChat";
 }

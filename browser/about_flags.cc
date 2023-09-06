@@ -402,7 +402,7 @@
       "brave-ai-chat",                                         \
       "Brave AI Chat",                                         \
       "Summarize articles and engage in conversation with AI", \
-      kOsWin | kOsMac | kOsLinux,                              \
+      kOsWin | kOsMac | kOsLinux | kOsAndroid,                 \
       FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),          \
   })
 #else

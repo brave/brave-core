@@ -50,6 +50,9 @@ import org.chromium.chrome.features.start_surface.StartSurface;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
+/**
+ * Brave's extension for TabbedAppMenuPropertiesDelegate
+ */
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
     private Menu mMenu;
     private AppMenuDelegate mAppMenuDelegate;
@@ -146,6 +149,18 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 braveWallet.setVisible(false);
             }
         }
+        MenuItem braveLeo = menu.findItem(R.id.brave_leo_id);
+        if (braveLeo != null) {
+            if (ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
+                braveLeo.setVisible(true);
+                if (shouldShowIconBeforeItem()) {
+                    braveLeo.setIcon(
+                            AppCompatResources.getDrawable(mContext, R.drawable.ic_brave_ai));
+                }
+            } else {
+                braveLeo.setVisible(false);
+            }
+        }
 
         MenuItem bravePlaylist = menu.findItem(R.id.brave_playlist_id);
         if (bravePlaylist != null) {
@@ -236,8 +251,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         mMenu.removeItem(R.id.brave_playlist_id);
         mMenu.removeItem(R.id.brave_speedreader_id);
         mMenu.removeItem(R.id.exit_id);
-        if (BraveVpnUtils.isBraveVpnFeatureEnable())
+        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
             mMenu.removeItem(R.id.request_brave_vpn_row_menu_id);
+        }
     }
 
     @Override

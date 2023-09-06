@@ -462,6 +462,7 @@ brave_java_resources = [
   "java/res/drawable/ic_bookmark_menu_view.xml",
   "java/res/drawable/ic_brave.xml",
   "java/res/drawable/ic_brave_36.xml",
+  "java/res/drawable/ic_brave_ai.xml",
   "java/res/drawable/ic_brave_battery.xml",
   "java/res/drawable/ic_brave_logo.xml",
   "java/res/drawable/ic_brave_mobiledata.xml",

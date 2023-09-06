@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
-#include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/common/pref_names.h"
@@ -16,13 +15,17 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
+#include "chrome/browser/ui/browser.h"
+#endif
 
 AIChatUI::AIChatUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui),
@@ -76,12 +79,13 @@ void AIChatUI::BindInterface(
     embedder_->ShowUI();
   }
 
+#if !BUILDFLAG(IS_ANDROID)
   browser_ = ai_chat::GetBrowserForWebContents(web_ui()->GetWebContents());
   DCHECK(browser_);
-
   page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
       web_ui()->GetWebContents(), browser_->tab_strip_model(), profile_,
       std::move(receiver));
+#endif
 }
 
 std::unique_ptr<content::WebUIController>

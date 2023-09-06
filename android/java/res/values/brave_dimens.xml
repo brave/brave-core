@@ -25,7 +25,6 @@
     <dimen name="verify_wallet_margin2">7dp</dimen>
     <dimen name="verify_wallet_margin3">4dp</dimen>
 
-
     <dimen name="verify_wallet_header1_font_size_land">14sp</dimen>
     <dimen name="verify_wallet_header2_font_size_land">12sp</dimen>
     <dimen name="verify_wallet_header3_font_size_land">10sp</dimen>
@@ -57,4 +56,6 @@
 
     <!-- NTP dimens override -->
     <dimen name="tile_grid_layout_min_horizontal_spacing">0dp</dimen>
+
+    <dimen name="custom_tabs_control_container_leo_height">0dp</dimen>
 </resources>

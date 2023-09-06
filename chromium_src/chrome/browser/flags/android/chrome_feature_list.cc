@@ -6,6 +6,7 @@
 #include "base/feature_override.h"
 #include "brave/browser/android/preferences/features.h"
 #include "brave/browser/android/safe_browsing/features.h"
+#include "brave/components/ai_chat/common/features.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_search_conversion/features.h"
@@ -22,6 +23,7 @@
 
 // clang-format off
 #define kForceWebContentsDarkMode kForceWebContentsDarkMode,            \
+    &ai_chat::features::kAIChat,                                        \
     &brave_rewards::features::kBraveRewards,                            \
     &brave_search_conversion::features::kOmniboxBanner,                 \
     &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,           \
