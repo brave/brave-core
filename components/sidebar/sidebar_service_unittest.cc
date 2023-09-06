@@ -8,11 +8,13 @@
 
 #include "base/containers/contains.h"
 #include "base/ranges/algorithm.h"
+#include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
+#include "brave/components/sidebar/sidebar_p3a.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/version_info/channel.h"
@@ -78,6 +80,7 @@ class SidebarServiceTest : public testing::Test {
   TestingPrefServiceSimple prefs_;
   NiceMock<MockSidebarServiceObserver> observer_;
   std::unique_ptr<SidebarService> service_;
+  base::HistogramTester histogram_tester_;
 };
 
 TEST_F(SidebarServiceTest, AddRemoveItems) {
@@ -684,6 +687,29 @@ TEST_F(SidebarServiceTest, SidebarShowOptionsDefaultTestNonStable) {
   InitService();
   EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
             service_->GetSidebarShowOption());
+}
+
+TEST_F(SidebarServiceTest, SidebarEnabledHistogram) {
+  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
+  InitService();
+  histogram_tester_.ExpectUniqueSample(p3a::kSidebarEnabledHistogramName, 1, 1);
+
+  prefs_.SetInteger(
+      kSidebarShowOption,
+      static_cast<int>(SidebarService::ShowSidebarOption::kShowOnClick));
+  histogram_tester_.ExpectUniqueSample(p3a::kSidebarEnabledHistogramName, 1, 2);
+
+  prefs_.SetInteger(
+      kSidebarShowOption,
+      static_cast<int>(SidebarService::ShowSidebarOption::kShowNever));
+  histogram_tester_.ExpectBucketCount(p3a::kSidebarEnabledHistogramName,
+                                      INT_MAX - 1, 1);
+
+  prefs_.SetInteger(
+      kSidebarShowOption,
+      static_cast<int>(SidebarService::ShowSidebarOption::kShowAlways));
+  histogram_tester_.ExpectBucketCount(p3a::kSidebarEnabledHistogramName, 1, 3);
+  histogram_tester_.ExpectTotalCount(p3a::kSidebarEnabledHistogramName, 4);
 }
 
 class SidebarServiceTestWithPlaylist : public SidebarServiceTest {
