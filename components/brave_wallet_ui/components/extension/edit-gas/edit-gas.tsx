@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+import Alert from '@brave/leo/react/alert'
 
 import { getLocale } from '../../../../common/locale'
 import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
@@ -31,7 +32,7 @@ import {
 } from '../../../common/slices/constants'
 
 // Styled Components
-import { ErrorText, Row } from '../../shared/style'
+import { Column, ErrorText, Row, Text } from '../../shared/style'
 import {
   StyledWrapper,
   FormColumn,
@@ -50,7 +51,6 @@ import {
   SliderValue,
   WarningText
 } from './edit-gas.styles'
-import AlertInline from '../../leo/alert-inline/alert-inline'
 
 export enum MaxPriorityPanels {
   setSuggested = 0,
@@ -332,12 +332,9 @@ export const EditGas = ({
     maxPriorityFeePerGas
   ])
 
-  const isCustomGasBelowBaseFee = React.useMemo(
-    () =>
-      isEIP1559Transaction &&
-      new Amount(maxFeePerGas).multiplyByDecimals(9).lt(baseFeePerGas),
-    [isEIP1559Transaction, maxFeePerGas, baseFeePerGas]
-  )
+  const isCustomGasBelowBaseFee =
+    isEIP1559Transaction &&
+    new Amount(maxFeePerGas).multiplyByDecimals(9).lt(baseFeePerGas)
 
   // effects
   React.useEffect(() => {
@@ -421,13 +418,20 @@ export const EditGas = ({
               </MaximumFeeText>
             </MaximumFeeRow>
             {isCustomGasBelowBaseFee && (
-              <Row>
-                <AlertInline
-                  alertType='danger'
-                  message={getLocale(
-                    'braveWalletGasFeeLimitLowerThanBaseFeeWarning'
-                  )}
-                />
+              <Row margin={'16px 0px'}>
+                <Alert mode='simple' type='error'>
+                  <Column
+                    alignItems='center'
+                    justifyContent='center'
+                    fullHeight
+                  >
+                    <Text textAlign='left' textSize='14px'>
+                      {getLocale(
+                        'braveWalletGasFeeLimitLowerThanBaseFeeWarning'
+                      )}
+                    </Text>
+                  </Column>
+                </Alert>
               </Row>
             )}
           </FormColumn>

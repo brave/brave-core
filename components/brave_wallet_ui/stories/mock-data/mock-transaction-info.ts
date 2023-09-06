@@ -36,11 +36,11 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
         value: '0x15ddf09c97b0000',
         data: Array.from(new Uint8Array(24)),
         signOnly: false,
-        signedTransaction: undefined
+        signedTransaction: undefined,
       },
       chainId: '0x0',
-      maxPriorityFeePerGas: '',
-      maxFeePerGas: '',
+      maxPriorityFeePerGas: '1',
+      maxFeePerGas: '1',
       gasEstimation: undefined
     },
     ethTxData: undefined,
