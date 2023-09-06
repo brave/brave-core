@@ -240,17 +240,23 @@ class TabsBarViewController: UIViewController {
     }
   }
 
-  func reloadDataAndRestoreSelectedTab() {
+  func reloadDataAndRestoreSelectedTab(isAnimated: Bool? = nil) {
     collectionView.reloadData()
 
     guard let tabManager = tabManager, let selectedTabIndex = selectedTabIndexPath else {
       return
     }
+    
+    var scrollTabsBarAnimated = !tabManager.isRestoring
+    
+    if let isAnimated = isAnimated {
+      scrollTabsBarAnimated = isAnimated
+    }
 
     if selectedTabIndex.row < tabList.count() {
       collectionView.selectItem(
         at: selectedTabIndex,
-        animated: (!tabManager.isRestoring),
+        animated: scrollTabsBarAnimated,
         scrollPosition: .centeredHorizontally)
     }
   }
