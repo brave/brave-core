@@ -106,8 +106,6 @@ void BraveBrowserCommandController::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
-  LOG(ERROR) << "TabStripModelChanged: " << tab_strip_model->count() << " "
-             << tab_strip_model->IsTabPinned(0);
   BrowserCommandController::OnTabStripModelChanged(tab_strip_model, change,
                                                    selection);
 
@@ -115,6 +113,7 @@ void BraveBrowserCommandController::OnTabStripModelChanged(
                        brave::CanCloseTabsToLeft(&*browser_));
   UpdateCommandsForMute();
   UpdateCommandsForSend();
+  UpdateCommandsForPin();
 }
 
 bool BraveBrowserCommandController::SupportsCommand(int id) const {

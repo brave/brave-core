@@ -35,7 +35,6 @@
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
-#include "gtest/gtest.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
@@ -370,35 +369,26 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_EQ(will_pin, tsm->GetWebContentsAt(1)->GetVisibleURL());
 }
 
-// IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
-//                        BraveCommandsCloseUnpinnedTabs) {
-//   // Should start with one open tab which isn't pinned.
-//   EXPECT_TRUE(brave::CanCloseUnpinnedTabs(browser()));
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       BraveCommandsAddAllToNewGroup) {
+  auto* command_controller = browser()->command_controller();
+  auto* tsm = browser()->tab_strip_model();
 
-//   chrome::PinTab(browser());
-//   EXPECT_FALSE(brave::CanCloseUnpinnedTabs(browser()));
+  GURL url("https://example.com");
+  chrome::AddTabAt(browser(), url, 1, false);
+  chrome::AddTabAt(browser(), url, 2, false);
+  chrome::AddTabAt(browser(), url, 3, false);
+  chrome::AddTabAt(browser(), url, 4, false);
 
-//   GURL unpinned("https://example.com");
-//   chrome::AddTabAt(browser(), unpinned, 1, false);
-//   EXPECT_TRUE(brave::CanCloseUnpinnedTabs(browser()));
+  EXPECT_EQ(5, tsm->count());
+  command_controller->ExecuteCommand(IDC_WINDOW_ADD_ALL_TABS_TO_NEW_GROUP);
+  EXPECT_EQ(5, tsm->count());
 
-//   GURL will_pin("https://will.pin");
-//   chrome::AddTabAt(browser(), will_pin, 2, true);
-//   EXPECT_TRUE(brave::CanCloseUnpinnedTabs(browser()));
+  // All tabs should have the same group.
+  auto group = tsm->GetTabGroupForTab(0);
+  EXPECT_TRUE(group.has_value());
 
-//   chrome::PinTab(browser());
-//   EXPECT_TRUE(brave::CanCloseUnpinnedTabs(browser()));
-
-//   auto* tsm = browser()->tab_strip_model();
-//   EXPECT_EQ(3, tsm->count());
-
-//   brave::CloseUnpinnedTabs(browser());
-//   EXPECT_EQ(2, tsm->count());
-
-//   for (int i = 0; i < tsm->count(); ++i) {
-//     EXPECT_TRUE(tsm->IsTabPinned(i));
-//   }
-
-//   EXPECT_EQ(GURL("about:blank"), tsm->GetWebContentsAt(0)->GetVisibleURL());
-//   EXPECT_EQ(will_pin, tsm->GetWebContentsAt(1)->GetVisibleURL());
-// }
+  for (int i = 1; i < tsm->count(); ++i) {
+    EXPECT_EQ(group, tsm->GetTabGroupForTab(i));
+  }
+}
