@@ -301,7 +301,7 @@ std::wstring GetBrowserProgId() {
 
   const auto suffix = ShellUtil::GetCurrentInstallationSuffix(brave_exe);
   std::wstring brave_html =
-      base::StrCat({install_static::GetProgIdPrefix(), suffix});
+      base::StrCat({install_static::GetBrowserProgIdPrefix(), suffix});
 
   // ProgIds cannot be longer than 39 characters.
   // Ref: http://msdn.microsoft.com/en-us/library/aa911706.aspx.

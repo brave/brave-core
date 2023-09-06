@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_rewards/core/database/database_activity_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
@@ -59,9 +60,9 @@ std::string GenerateActivityFilterQuery(const int start,
   }
 
   if (!filter->non_verified) {
-    const std::string status =
-        base::StringPrintf(" AND spi.status != %1d AND spi.address != ''",
-                           mojom::PublisherStatus::NOT_VERIFIED);
+    const std::string status = base::StringPrintf(
+        " AND spi.status != %1d AND spi.address != ''",
+        base::to_underlying(mojom::PublisherStatus::NOT_VERIFIED));
     query += status;
   }
 

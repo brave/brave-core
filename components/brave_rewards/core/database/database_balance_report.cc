@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_rewards/core/database/database_balance_report.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
@@ -21,7 +22,7 @@ namespace {
 const char kTableName[] = "balance_report_info";
 
 std::string GetBalanceReportId(mojom::ActivityMonth month, int year) {
-  return base::StringPrintf("%u_%u", year, month);
+  return base::StringPrintf("%u_%u", year, base::to_underlying(month));
 }
 
 std::string GetTypeColumn(mojom::ReportType type) {

@@ -26,7 +26,7 @@ const char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
       stub_tab_->tab_id = SessionID::NewUnique();                           \
     }                                                                       \
     tabs_in_session[kMaxTabsPerSessionToShow] = stub_tab_.get();            \
-    BuildOtherDevicesTabItem(kBraveStubSessionTag,                          \
+    BuildOtherDevicesTabItem(this, kBraveStubSessionTag,                    \
                              *tabs_in_session[kMaxTabsPerSessionToShow]);   \
   }
 

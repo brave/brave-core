@@ -13,6 +13,7 @@
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ptr_exclusion.h"
+#include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "chrome/browser/download/bubble/download_bubble_ui_controller.h"
 #include "chrome/browser/download/bubble/download_bubble_utils.h"
@@ -186,7 +187,7 @@ class MockDownloadBubbleUpdateService : public DownloadBubbleUpdateService {
     for (ModelType type : model_types_) {
       if (type == ModelType::kDownloadItem) {
         auto model = DownloadItemModel::Wrap(
-            download_items_.at(download_item_index++).get());
+            download_items_->at(download_item_index++).get());
         if (!model->ShouldShowInBubble()) {
           continue;
         }
@@ -194,7 +195,7 @@ class MockDownloadBubbleUpdateService : public DownloadBubbleUpdateService {
       } else {
         auto model = OfflineItemModel::Wrap(
             OfflineItemModelManagerFactory::GetForBrowserContext(profile_),
-            offline_items_.at(offline_item_index++));
+            offline_items_->at(offline_item_index++));
         if (!model->ShouldShowInBubble()) {
           continue;
         }
@@ -214,14 +215,14 @@ class MockDownloadBubbleUpdateService : public DownloadBubbleUpdateService {
     for (ModelType type : model_types_) {
       if (type == ModelType::kDownloadItem) {
         auto model = DownloadItemModel::Wrap(
-            download_items_.at(download_item_index++).get());
+            download_items_->at(download_item_index++).get());
         if (model->ShouldShowInBubble()) {
           models.push_back(std::move(model));
         }
       } else {
         auto model = OfflineItemModel::Wrap(
             OfflineItemModelManagerFactory::GetForBrowserContext(profile_),
-            offline_items_.at(offline_item_index++));
+            offline_items_->at(offline_item_index++));
         if (model->ShouldShowInBubble()) {
           models.push_back(std::move(model));
         }
@@ -253,8 +254,9 @@ class MockDownloadBubbleUpdateService : public DownloadBubbleUpdateService {
   raw_ptr<Profile> profile_;
   DownloadDisplayController::AllDownloadUIModelsInfo info_;
   std::vector<ModelType> model_types_;
-  const std::vector<std::unique_ptr<StrictMockDownloadItem>>& download_items_;
-  const OfflineItemList& offline_items_;
+  const raw_ref<const std::vector<std::unique_ptr<StrictMockDownloadItem>>>
+      download_items_;
+  const raw_ref<const OfflineItemList> offline_items_;
 };
 
 class MockDownloadCoreService : public DownloadCoreService {

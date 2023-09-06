@@ -14,7 +14,7 @@
 namespace {
 
 void AddBraveColorMixer(ui::ColorProvider* provider,
-                        const ui::ColorProviderManager::Key& key) {
+                        const ui::ColorProviderKey& key) {
 #if !BUILDFLAG(IS_ANDROID)
   AddBraveThemeColorMixer(provider, key);
   AddBravifiedChromeThemeColorMixer(provider, key);
@@ -24,7 +24,7 @@ void AddBraveColorMixer(ui::ColorProvider* provider,
 }  // namespace
 
 void AddChromeColorMixer(ui::ColorProvider* provider,
-                         const ui::ColorProviderManager::Key& key) {
+                         const ui::ColorProviderKey& key) {
   AddChromeColorMixer_ChromiumImpl(provider, key);
   AddBraveColorMixer(provider, key);
 }

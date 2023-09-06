@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index d32b663370c0a568928579560cef97bd4aff8d3d..6b2716b6f8fb008d3b583ad123cb9de1dbe6db18 100644
+index 595d30a92a0994015b1f9b3d7d425f96677f4a0c..e6b5eb9770ab4dabfb366ac03a62fe1de2a73d2b 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
-@@ -365,6 +365,7 @@ void GetChromeProgIdEntries(
+@@ -370,6 +370,7 @@ void GetChromeProgIdEntries(
    app_info.delegate_clsid = install_static::GetLegacyCommandExecuteImplClsid();
  
    GetProgIdEntries(app_info, entries);
@@ -10,7 +10,7 @@ index d32b663370c0a568928579560cef97bd4aff8d3d..6b2716b6f8fb008d3b583ad123cb9de1
  
    if (!app_info.delegate_clsid.empty()) {
      auto delegate_execute_entries =
-@@ -461,6 +462,7 @@ void GetShellIntegrationEntries(
+@@ -465,6 +466,7 @@ void GetShellIntegrationEntries(
  
    const std::wstring html_prog_id(GetBrowserProgId(suffix));
    for (int i = 0; ShellUtil::kPotentialFileAssociations[i] != nullptr; i++) {
@@ -18,7 +18,7 @@ index d32b663370c0a568928579560cef97bd4aff8d3d..6b2716b6f8fb008d3b583ad123cb9de1
      entries->push_back(std::make_unique<RegistryEntry>(
          capabilities + L"\\FileAssociations",
          ShellUtil::kPotentialFileAssociations[i], html_prog_id));
-@@ -485,6 +487,7 @@ void GetAppExtRegistrationEntries(
+@@ -489,6 +491,7 @@ void GetAppExtRegistrationEntries(
    std::wstring key_name =
        base::StrCat({ShellUtil::kRegClasses, kFilePathSeparator, ext,
                      kFilePathSeparator, ShellUtil::kRegOpenWithProgids});
@@ -26,7 +26,7 @@ index d32b663370c0a568928579560cef97bd4aff8d3d..6b2716b6f8fb008d3b583ad123cb9de1
    entries->push_back(
        std::make_unique<RegistryEntry>(key_name, prog_id, std::wstring()));
  }
-@@ -1740,8 +1743,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
+@@ -1742,8 +1745,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
      L".htm", L".html",  L".pdf",  L".shtml", L".svg",
      L".xht", L".xhtml", L".webp", nullptr};
  const wchar_t* ShellUtil::kBrowserProtocolAssociations[] = {L"http", L"https",

@@ -13,10 +13,12 @@ cargo_crate("buildrs_support") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/lib.rs"
+  sources =
+      [ "//brave/third_party/rust/string_cache_codegen/v0_5/crate/lib.rs" ]
+  inputs = []
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.5.2"
   cargo_pkg_authors = "The Servo Project Developers"

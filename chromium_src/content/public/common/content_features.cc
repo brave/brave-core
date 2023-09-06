@@ -14,8 +14,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAttributionFencedFrameReportingBeacon, base::FEATURE_DISABLED_BY_DEFAULT},
     {kDigitalGoodsApi, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFedCm, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kFedCmIframeSupport, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kFedCmUserInfo, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFirstPartySets, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIdleDetection, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNotificationTriggers, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -23,7 +21,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kSignedExchangeReportingForDistributors,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kSignedHTTPExchange, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kWebEnvironmentIntegrity, base::FEATURE_DISABLED_BY_DEFAULT},
 #if BUILDFLAG(IS_ANDROID)
     {kWebNfc, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif

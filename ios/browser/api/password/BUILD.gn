@@ -7,8 +7,6 @@ import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
 source_set("password") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "brave_password_api+private.h",
     "brave_password_api.h",

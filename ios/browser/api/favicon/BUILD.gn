@@ -4,8 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 source_set("favicon") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "favicon_driver.h",
     "favicon_driver.mm",

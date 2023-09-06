@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/brave_layout_constants.h"
 
@@ -19,6 +19,9 @@ absl::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
   switch (constant) {
     case TAB_HEIGHT: {
       return (touch ? 41 : 30) + GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
+    }
+    case TAB_SEPARATOR_HEIGHT: {
+      return 24;
     }
     default:
       break;

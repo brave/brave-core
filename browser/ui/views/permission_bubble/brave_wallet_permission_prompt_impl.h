@@ -29,6 +29,7 @@ class BraveWalletPermissionPromptImpl : public permissions::PermissionPrompt {
   TabSwitchingBehavior GetTabSwitchingBehavior() override;
   permissions::PermissionPromptDisposition GetPromptDisposition()
       const override;
+  absl::optional<gfx::Rect> GetViewBoundsInScreen() const override;
 
  private:
   void ShowBubble();

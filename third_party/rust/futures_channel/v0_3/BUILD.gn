@@ -13,10 +13,26 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/futures_channel/v0_3/crate/benches/sync_mpsc.rs",
+    "//brave/third_party/rust/futures_channel/v0_3/crate/build.rs",
+    "//brave/third_party/rust/futures_channel/v0_3/crate/no_atomic_cas.rs",
+    "//brave/third_party/rust/futures_channel/v0_3/crate/src/lib.rs",
+    "//brave/third_party/rust/futures_channel/v0_3/crate/src/lock.rs",
+    "//brave/third_party/rust/futures_channel/v0_3/crate/src/mpsc/mod.rs",
+    "//brave/third_party/rust/futures_channel/v0_3/crate/src/mpsc/queue.rs",
+    "//brave/third_party/rust/futures_channel/v0_3/crate/src/mpsc/sink_impl.rs",
+    "//brave/third_party/rust/futures_channel/v0_3/crate/src/oneshot.rs",
+    "//brave/third_party/rust/futures_channel/v0_3/crate/tests/channel.rs",
+    "//brave/third_party/rust/futures_channel/v0_3/crate/tests/mpsc-close.rs",
+    "//brave/third_party/rust/futures_channel/v0_3/crate/tests/mpsc-size_hint.rs",
+    "//brave/third_party/rust/futures_channel/v0_3/crate/tests/mpsc.rs",
+    "//brave/third_party/rust/futures_channel/v0_3/crate/tests/oneshot.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/futures_channel/v0_3/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.3.27"
   cargo_pkg_name = "futures-channel"
@@ -36,6 +52,4 @@ cargo_crate("lib") {
     "sink",
     "std",
   ]
-  build_root = "crate/build.rs"
-  build_sources = [ "crate/build.rs" ]
 }

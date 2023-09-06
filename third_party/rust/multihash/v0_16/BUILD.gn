@@ -9,10 +9,23 @@ cargo_crate("lib") {
   epoch = "0.16"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/multihash/v0_16/crate/benches/multihash.rs",
+    "//brave/third_party/rust/multihash/v0_16/crate/examples/custom_table.rs",
+    "//brave/third_party/rust/multihash/v0_16/crate/examples/manual_mh.rs",
+    "//brave/third_party/rust/multihash/v0_16/crate/src/arb.rs",
+    "//brave/third_party/rust/multihash/v0_16/crate/src/error.rs",
+    "//brave/third_party/rust/multihash/v0_16/crate/src/hasher.rs",
+    "//brave/third_party/rust/multihash/v0_16/crate/src/hasher_impl.rs",
+    "//brave/third_party/rust/multihash/v0_16/crate/src/lib.rs",
+    "//brave/third_party/rust/multihash/v0_16/crate/src/multihash.rs",
+    "//brave/third_party/rust/multihash/v0_16/crate/src/multihash_impl.rs",
+    "//brave/third_party/rust/multihash/v0_16/crate/tests/lib.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/multihash/v0_16/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.16.3"
   cargo_pkg_authors = "dignifiedquire <dignifiedquire@gmail.com>, David Craven <david@craven.ch>, Volker Mische <volker.mische@gmail.com>"

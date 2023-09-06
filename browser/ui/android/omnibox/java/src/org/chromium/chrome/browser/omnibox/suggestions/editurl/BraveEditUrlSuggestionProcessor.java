@@ -10,7 +10,7 @@ package org.chromium.chrome.browser.omnibox.suggestions.editurl;
 import android.content.Context;
 
 import org.chromium.base.supplier.Supplier;
-import org.chromium.chrome.browser.omnibox.suggestions.FaviconFetcher;
+import org.chromium.chrome.browser.omnibox.styles.OmniboxImageSupplier;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -21,9 +21,9 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
     private boolean mHasClearedOmniboxForFocus;
 
     public BraveEditUrlSuggestionProcessor(Context context, SuggestionHost suggestionHost,
-            UrlBarDelegate locationBarDelegate, FaviconFetcher faviconFetcher,
+            UrlBarDelegate locationBarDelegate, OmniboxImageSupplier imageSupplier,
             Supplier<Tab> tabSupplier, Supplier<ShareDelegate> shareDelegateSupplier) {
-        super(context, suggestionHost, locationBarDelegate, faviconFetcher, tabSupplier,
+        super(context, suggestionHost, locationBarDelegate, imageSupplier, tabSupplier,
                 shareDelegateSupplier);
     }
 

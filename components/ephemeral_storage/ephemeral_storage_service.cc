@@ -132,9 +132,9 @@ void EphemeralStorageService::OnCanEnable1PESForUrl(
 }
 
 bool EphemeralStorageService::IsDefaultCookieSetting(const GURL& url) const {
-  ContentSettingsForOneType settings;
-  host_content_settings_map_->GetSettingsForOneType(
-      ContentSettingsType::COOKIES, &settings);
+  ContentSettingsForOneType settings =
+      host_content_settings_map_->GetSettingsForOneType(
+          ContentSettingsType::COOKIES);
 
   for (const auto& setting : settings) {
     if (setting.primary_pattern.Matches(url) &&

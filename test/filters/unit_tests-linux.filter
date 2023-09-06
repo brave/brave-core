@@ -8,6 +8,10 @@
 # These fail because we override IdentityManager::GetAccountsInCookieJar
 -SupervisedUserURLFilterTest.UrlsNotRequiringGuardianApprovalAllowed
 
+# These fail because we disable DIPS via dips::kFeature
+-All/DIPSDatabasePopupsTest.*
+-DIPSDatabaseBounceTableGarbageCollectionTest.*
+
 # These fail because we disable prefs::kSafeBrowsingScoutReportingEnabled.
 -Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabled/1
 -Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabledTwoClients/1

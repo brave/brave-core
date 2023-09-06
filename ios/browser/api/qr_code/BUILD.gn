@@ -4,8 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 source_set("qr_code") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "qr_code_generator.h",
     "qr_code_generator.mm",

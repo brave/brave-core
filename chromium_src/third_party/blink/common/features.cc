@@ -15,17 +15,22 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kMixedContentAutoupgrade, base::FEATURE_ENABLED_BY_DEFAULT},
     {kPrefetchPrivacyChanges, base::FEATURE_ENABLED_BY_DEFAULT},
     {kReducedReferrerGranularity, base::FEATURE_ENABLED_BY_DEFAULT},
+    {kUACHOverrideBlank, base::FEATURE_ENABLED_BY_DEFAULT},
 
+    {kAdAuctionReportingWithMacroApi, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAdInterestGroupAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAllowURNsInIframes, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBackgroundResourceFetch, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBiddingAndScoringDebugReportingAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBrowsingTopics, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBrowsingTopicsXHR, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kClientHintsFormFactor, base::FEATURE_DISABLED_BY_DEFAULT},
     {kClientHintsMetaEquivDelegateCH, base::FEATURE_DISABLED_BY_DEFAULT},
     {kComputePressure, base::FEATURE_DISABLED_BY_DEFAULT},
     {kConversionMeasurement, base::FEATURE_DISABLED_BY_DEFAULT},
     {kCssSelectorFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kEventTimingReportAllEarlyEntriesOnPaintedPresentation,
+     base::FEATURE_DISABLED_BY_DEFAULT},
     {kFencedFrames, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledge, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledgeBiddingAndAuctionServer, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -44,6 +49,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kSpeculationRulesPrefetchFuture, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTextFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kWebEnvironmentIntegrity, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 // Allow certain client hints in request header.

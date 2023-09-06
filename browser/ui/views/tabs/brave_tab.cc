@@ -135,8 +135,9 @@ int BraveTab::GetWidthOfLargestSelectableRegion() const {
     selectable_width -= alert_indicator_button_->width();
   }
 
-  if (close_button_->GetVisible())
+  if (close_button_->GetVisible()) {
     selectable_width -= close_button_->width();
+  }
 
   return std::max(0, selectable_width);
 }
@@ -157,8 +158,9 @@ void BraveTab::ActiveStateChanged() {
 }
 
 absl::optional<SkColor> BraveTab::GetGroupColor() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     return Tab::GetGroupColor();
+  }
 
   // Hide tab border with group color as it doesn't go well with vertical tabs.
   if (tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
@@ -222,12 +224,6 @@ void BraveTab::Layout() {
     if (showing_close_button_) {
       close_button_->SetX(GetLocalBounds().CenterPoint().x() -
                           (close_button_->width() / 2));
-      gfx::Insets* current_padding =
-          close_button_->GetProperty(views::kInternalPaddingKey);
-      DCHECK(current_padding);
-
-      // Use the same padding for all sides.
-      close_button_->SetButtonPadding(gfx::Insets(current_padding->left()));
 
       // In order to reset ink drop bounds based on new padding.
       auto* ink_drop = views::InkDrop::Get(close_button_)->GetInkDrop();
@@ -303,8 +299,9 @@ bool BraveTab::ShouldRenderAsNormalTab() const {
 }
 
 bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     return false;
+  }
 
   return tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
          width() <= tabs::kVerticalTabMinWidth;

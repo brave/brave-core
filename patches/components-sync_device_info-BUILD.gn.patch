@@ -1,8 +1,8 @@
 diff --git a/components/sync_device_info/BUILD.gn b/components/sync_device_info/BUILD.gn
-index f8530dd2472012d7c3e93e52166e8b612e74a89f..87de713b7b7cfcff5dc0f6d3bdd5cc178ebce93f 100644
+index a5dd5cb4fa5f78b600f825e25e7f699102f8d425..f42f8e91e95775e4b5d4d28f50cec667e723e967 100644
 --- a/components/sync_device_info/BUILD.gn
 +++ b/components/sync_device_info/BUILD.gn
-@@ -95,6 +95,7 @@ static_library("sync_device_info") {
+@@ -92,6 +92,7 @@ static_library("sync_device_info") {
    if (is_chromeos_ash) {
      deps += [ "//chromeos/ash/components/system" ]
    }

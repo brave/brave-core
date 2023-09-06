@@ -16,10 +16,7 @@ config("mojom_header_config") {
 }
 
 source_set("brave_wallet") {
-  configs += [
-    ":mojom_header_config",
-    "//build/config/compiler:enable_arc",
-  ]
+  configs += [ ":mojom_header_config" ]
   sources = [
     "brave_wallet_api+private.h",
     "brave_wallet_api.h",

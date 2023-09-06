@@ -11,9 +11,10 @@ import override_utils
 GOMACC_PATTERN_TO_REPLACE = (r'gomacc(\.exe)', r'(gomacc|redirect_cc)(\.exe)')
 
 # pylint: disable=used-before-assignment
-assert GOMACC_PATTERN_TO_REPLACE[0] in _GOMA_CMD_LINE_RE.pattern
-_GOMA_CMD_LINE_RE = re.compile(
-    _GOMA_CMD_LINE_RE.pattern.replace(*GOMACC_PATTERN_TO_REPLACE))
+assert GOMACC_PATTERN_TO_REPLACE[0] in _CLANG_WRAPPER_CMD_LINE_RE.pattern
+_CLANG_WRAPPER_CMD_LINE_RE = re.compile(
+    _CLANG_WRAPPER_CMD_LINE_RE.pattern.replace(*GOMACC_PATTERN_TO_REPLACE),
+    re.VERBOSE)
 
 
 @override_utils.override_function(globals())

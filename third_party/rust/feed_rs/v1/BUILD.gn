@@ -9,10 +9,33 @@ cargo_crate("lib") {
   epoch = "1"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/feed_rs/v1/crate/src/lib.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/model.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/atom/mod.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/atom/tests.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/fuzz.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/itunes.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/json/mod.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/json/tests.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/mediarss.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/mod.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/rss0/mod.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/rss0/tests.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/rss1/mod.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/rss1/tests.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/rss2/mod.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/rss2/tests.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/util.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/util/mod.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/util/test.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/xml/mod.rs",
+    "//brave/third_party/rust/feed_rs/v1/crate/src/xml/tests.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/feed_rs/v1/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2021"
   cargo_pkg_version = "1.3.0"
   cargo_pkg_authors =

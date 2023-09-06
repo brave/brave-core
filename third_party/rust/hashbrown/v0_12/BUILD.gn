@@ -13,10 +13,39 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/hashbrown/v0_12/crate/benches/bench.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/benches/insert_unique_unchecked.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/external_trait_impls/mod.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/external_trait_impls/rayon/helpers.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/external_trait_impls/rayon/map.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/external_trait_impls/rayon/mod.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/external_trait_impls/rayon/raw.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/external_trait_impls/rayon/set.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/external_trait_impls/serde.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/lib.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/macros.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/map.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/raw/alloc.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/raw/bitmask.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/raw/generic.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/raw/mod.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/raw/sse2.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/rustc_entry.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/scopeguard.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/src/set.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/tests/hasher.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/tests/rayon.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/tests/serde.rs",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/tests/set.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/hashbrown/v0_12/crate/CHANGELOG.md",
+    "//brave/third_party/rust/hashbrown/v0_12/crate/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2021"
   cargo_pkg_version = "0.12.3"
   cargo_pkg_authors = "Amanieu d'Antras <amanieu@gmail.com>"
@@ -30,5 +59,6 @@ cargo_crate("lib") {
   features = [
     "ahash",
     "inline-more",
+    "raw",
   ]
 }

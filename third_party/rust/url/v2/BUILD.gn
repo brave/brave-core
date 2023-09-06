@@ -9,10 +9,22 @@ cargo_crate("lib") {
   epoch = "2"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/url/v2/crate/src/host.rs",
+    "//brave/third_party/rust/url/v2/crate/src/lib.rs",
+    "//brave/third_party/rust/url/v2/crate/src/origin.rs",
+    "//brave/third_party/rust/url/v2/crate/src/parser.rs",
+    "//brave/third_party/rust/url/v2/crate/src/path_segments.rs",
+    "//brave/third_party/rust/url/v2/crate/src/quirks.rs",
+    "//brave/third_party/rust/url/v2/crate/src/slicing.rs",
+    "//brave/third_party/rust/url/v2/crate/tests/data.rs",
+    "//brave/third_party/rust/url/v2/crate/tests/debugger_visualizer.rs",
+    "//brave/third_party/rust/url/v2/crate/tests/unit.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/url/v2/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "2.3.1"
   cargo_pkg_authors = "The rust-url developers"

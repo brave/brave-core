@@ -13,10 +13,17 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/android_system_properties/v0_1/crate/examples/time_zone.rs",
+    "//brave/third_party/rust/android_system_properties/v0_1/crate/src/lib.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/android_system_properties/v0_1/crate/CONTRIBUTING.md",
+    "//brave/third_party/rust/android_system_properties/v0_1/crate/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.1.5"
   cargo_pkg_authors = "Nicolas Silva <nical@fastmail.com>"

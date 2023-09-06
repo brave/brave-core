@@ -84,7 +84,7 @@ BraveSpoofCheckerLookalikeURLMatchType const
 - (instancetype)initWithEntry:(url_formatter::TopDomainEntry)entry {
   if ((self = [super init])) {
     _domain = base::SysUTF8ToNSString(entry.domain) ?: @"";
-    _isTop500 = entry.is_top_500;
+    _isTopBucket = entry.is_top_bucket;
     _skeletonType = static_cast<BraveSpoofCheckerLookalikeURLMatchType>(
         entry.skeleton_type);
   }

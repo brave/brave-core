@@ -970,10 +970,6 @@ test("brave_browser_tests") {
     ]
   }
 
-  if (is_apple) {
-    configs += [ "//build/config/compiler:enable_arc" ]
-  }
-
   if (use_aura) {
     deps += [ "//ui/aura:test_support" ]
   }
@@ -1208,7 +1204,6 @@ if (is_android) {
     sources = [
       "//brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/brave_wallet/BraveWalletUtilsTest.java",
-      "//brave/android/javatests/org/chromium/chrome/browser/contextmenu/BraveContextMenuPopulatorTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/language/settings/BraveLanguageSettingsTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/privacy/settings/BravePrivacySettingsTest.java",

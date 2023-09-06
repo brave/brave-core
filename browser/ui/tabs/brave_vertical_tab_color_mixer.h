@@ -6,16 +6,14 @@
 #ifndef BRAVE_BROWSER_UI_TABS_BRAVE_VERTICAL_TAB_COLOR_MIXER_H_
 #define BRAVE_BROWSER_UI_TABS_BRAVE_VERTICAL_TAB_COLOR_MIXER_H_
 
-#include "ui/color/color_provider_manager.h"
+#include "ui/color/color_provider_key.h"
 
 namespace tabs {
 
-void AddBraveVerticalTabLightThemeColorMixer(
-    ui::ColorProvider* provider,
-    const ui::ColorProviderManager::Key& key);
-void AddBraveVerticalTabDarkThemeColorMixer(
-    ui::ColorProvider* provider,
-    const ui::ColorProviderManager::Key& key);
+void AddBraveVerticalTabLightThemeColorMixer(ui::ColorProvider* provider,
+                                             const ui::ColorProviderKey& key);
+void AddBraveVerticalTabDarkThemeColorMixer(ui::ColorProvider* provider,
+                                            const ui::ColorProviderKey& key);
 
 }  // namespace tabs
 

@@ -34,7 +34,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabsSearchButtonTest, HideShowSettingTest) {
   EXPECT_TRUE(prefs->GetBoolean(kTabsSearchShow));
 
   views::View* button = nullptr;
-  if (WindowFrameUtil::IsWin10TabSearchCaptionButtonEnabled(browser())) {
+  if (WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(browser())) {
     auto* frame_view = BrowserView::GetBrowserViewForBrowser(browser())
                            ->frame()
                            ->GetFrameView();

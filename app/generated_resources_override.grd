@@ -109,6 +109,9 @@ are declared in tools/grit/grit_rule.gni.
         <part file="shared_settings_strings_override.grdp" />
       </if>
 
+      <if expr="not is_android">
+        </if>
+
       <if expr="enable_extensions">
         <part file="extensions_strings_override.grdp" />
       </if>
@@ -333,6 +336,10 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         </if>
 
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       <if expr="is_macosx">
             </if>
       <if expr="not is_macosx">
@@ -603,6 +610,9 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
 
+      <message name="IDS_NTP_WEBSTORE_TOAST_MESSAGE" desc="The message displayed on the New Tab Page toast that directs users to the Brave webstore themes.">
+        You can find older colors in the Web Store
+      </message>
       <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_FAVORITE_PEOPLE_WELCOME_TITLE" desc="Title of the opt-in UI for Google Photos in the new tab page emphasizing on favorite profiles.">
         See memories of your favorite profiles and more
       </message>
@@ -683,6 +693,10 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
 
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -1223,8 +1237,9 @@ are declared in tools/grit/grit_rule.gni.
     <if expr="is_android">
       </if>
 
-    <if expr="not chromeos_lacros and not is_android and _google_chrome">
+    <if expr="enable_search_engine_choice">
       </if>
-  </messages>
+
+    </messages>
 </release>
 </grit>

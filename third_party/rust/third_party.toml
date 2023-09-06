@@ -272,6 +272,16 @@ cargo_manifest_dir =
 rustenv = [ "CARGO_MANIFEST_DIR=$cargo_manifest_dir" ]
 '''
 
+[dependencies.lock_api]
+version = "0.4.9"
+allow-first-party-usage = false
+gn-variables-lib = '''
+rustflags = [
+  "--cfg",
+  "has_const_fn_trait_bound",
+]
+'''
+
 [dependencies.typenum]
 version = "1"
 allow-first-party-usage = false
@@ -290,6 +300,15 @@ rustenv = [
 version = "0.4"
 allow-first-party-usage = false
 build-script-outputs = [ "radix_bases.rs" ]
+gn-variables-lib = '''
+rustflags = [
+  "--cfg",
+  "has_try_from",
+]
+if (current_cpu == "arm64" || current_cpu == "x64") {
+  rustflags += [ "--cfg", "u64_digit" ]
+}
+'''
 
 [dependencies.selectors]
 version = "0.23"

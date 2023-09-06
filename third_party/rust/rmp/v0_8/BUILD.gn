@@ -13,10 +13,60 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/rmp/v0_8/crate/benches/bench.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/decode/bytes.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/decode/dec.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/decode/ext.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/decode/mod.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/decode/sint.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/decode/str.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/decode/uint.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/encode/bin.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/encode/buffer.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/encode/dec.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/encode/ext.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/encode/map.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/encode/mod.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/encode/sint.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/encode/str.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/encode/uint.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/encode/vec.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/errors.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/lib.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/src/marker.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/decode/array.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/decode/bin.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/decode/bool.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/decode/ext.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/decode/float.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/decode/map.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/decode/mod.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/decode/null.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/decode/sint.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/decode/string.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/decode/uint.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/encode/array.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/encode/bin.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/encode/bool.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/encode/ext.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/encode/float.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/encode/int.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/encode/map.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/encode/mod.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/encode/null.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/encode/string.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/mirror.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/func/mod.rs",
+    "//brave/third_party/rust/rmp/v0_8/crate/tests/lib.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/rmp/v0_8/crate/CHANGELOG.md",
+    "//brave/third_party/rust/rmp/v0_8/crate/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.8.11"
   cargo_pkg_authors = "Evgeny Safronov <division494@gmail.com>"

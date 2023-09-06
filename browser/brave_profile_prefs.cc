@@ -49,7 +49,6 @@
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
-#include "components/autofill/core/common/autofill_prefs.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
@@ -399,7 +398,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(
       password_manager::prefs::kPasswordLeakDetectionEnabled,
       base::Value(false));
-  registry->SetDefaultPrefValue(autofill::prefs::kAutofillWalletImportEnabled,
+  registry->SetDefaultPrefValue(syncer::prefs::internal::kSyncPayments,
                                 base::Value(false));
 
   // Default search engine version

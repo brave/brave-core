@@ -13,7 +13,7 @@ namespace prefs {
 // BraveVPN is connected, otherwise this pref is empty. Final decision
 // about whether or not to override actual DNS state will be made in
 // stub_resolver_config_reader.
-extern const char kBraveVpnDnsConfig[];
+inline constexpr char kBraveVpnDnsConfig[] = "brave.brave_vpn.dns_config";
 }  // namespace prefs
 
 #include "src/chrome/common/pref_names.h"  // IWYU pragma: export

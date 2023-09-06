@@ -8,13 +8,13 @@
 
 #include <memory>
 
-#define BRAVE_RECENT_TABS_SUB_MENU_MODEL_H_        \
- private:                                          \
+#define local_tab_cancelable_task_tracker_         \
+  local_tab_cancelable_task_tracker_;              \
   std::unique_ptr<sessions::SessionTab> stub_tab_; \
-  friend class BraveRecentTabsSubMenuModel;        \
-                                                   \
- public:
+  friend class BraveRecentTabsSubMenuModel
+
 #include "src/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h"  // IWYU pragma: export
-#undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_H_
+
+#undef local_tab_cancelable_task_tracker_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TOOLBAR_RECENT_TABS_SUB_MENU_MODEL_H_

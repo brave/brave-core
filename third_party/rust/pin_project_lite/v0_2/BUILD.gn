@@ -13,10 +13,68 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/src/lib.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/auxiliary/mod.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/compiletest.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/drop_order.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/default/enum.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/default/enum.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/default/struct.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/default/struct.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/multifields/enum.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/multifields/enum.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/multifields/struct.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/multifields/struct.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/enum-all.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/enum-all.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/enum-mut.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/enum-mut.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/enum-none.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/enum-none.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/enum-ref.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/enum-ref.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/struct-all.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/struct-all.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/struct-mut.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/struct-mut.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/struct-none.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/struct-none.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/struct-ref.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/naming/struct-ref.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/pinned_drop/enum.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/pinned_drop/enum.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/pinned_drop/struct.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/pinned_drop/struct.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/pub/enum.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/pub/enum.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/pub/struct.expanded.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expand/pub/struct.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/expandtest.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/include/basic.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/lint.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/proper_unpin.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/test.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/ui/pin_project/conflict-drop.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/ui/pin_project/conflict-unpin.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/ui/pin_project/invalid-bounds.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/ui/pin_project/invalid.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/ui/pin_project/overlapping_lifetime_names.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/ui/pin_project/overlapping_unpin_struct.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/ui/pin_project/packed.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/ui/pin_project/unpin_sneaky.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/ui/pin_project/unsupported.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/ui/pinned_drop/call-drop-inner.rs",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/ui/pinned_drop/conditional-drop-impl.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/CHANGELOG.md",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/README.md",
+    "//brave/third_party/rust/pin_project_lite/v0_2/crate/tests/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.2.9"
   cargo_pkg_name = "pin-project-lite"

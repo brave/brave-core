@@ -13,10 +13,21 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/libsecp256k1_core/v0_3/crate/src/der.rs",
+    "//brave/third_party/rust/libsecp256k1_core/v0_3/crate/src/ecdh.rs",
+    "//brave/third_party/rust/libsecp256k1_core/v0_3/crate/src/ecdsa.rs",
+    "//brave/third_party/rust/libsecp256k1_core/v0_3/crate/src/ecmult.rs",
+    "//brave/third_party/rust/libsecp256k1_core/v0_3/crate/src/error.rs",
+    "//brave/third_party/rust/libsecp256k1_core/v0_3/crate/src/field.rs",
+    "//brave/third_party/rust/libsecp256k1_core/v0_3/crate/src/group.rs",
+    "//brave/third_party/rust/libsecp256k1_core/v0_3/crate/src/lib.rs",
+    "//brave/third_party/rust/libsecp256k1_core/v0_3/crate/src/scalar.rs",
+  ]
+  inputs = []
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.3.0"
   cargo_pkg_authors = "Wei Tang <hi@that.world>"

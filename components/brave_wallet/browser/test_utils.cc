@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/memory/raw_ref.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/task/sequenced_task_runner.h"
@@ -24,12 +25,12 @@ void WaitForTxStorageDelegateInitialized(TxStorageDelegate* delegate) {
       observation_.Observe(delegate);
     }
 
-    void OnStorageInitialized() override { run_loop_.Quit(); }
+    void OnStorageInitialized() override { run_loop_->Quit(); }
 
    private:
     base::ScopedObservation<TxStorageDelegate, TxStorageDelegate::Observer>
         observation_{this};
-    base::RunLoop& run_loop_;
+    raw_ref<base::RunLoop> run_loop_;
   } observer(delegate, run_loop);
   run_loop.Run();
 }

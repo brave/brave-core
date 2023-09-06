@@ -3,7 +3,7 @@
 set -euo pipefail
 
 usage() {
-  echo "usage: $0 <input_dir> <output_dir> <packaging_dir> <is_development> <mac_provisioning_profile> <mac_signing_identifier> <notarize> <notary_user> <notary_password> <notary_asc_provider>"
+  echo "usage: $0 <input_dir> <output_dir> <packaging_dir> <is_development> <mac_provisioning_profile> <mac_signing_identifier> <notarize> <notary_user> <notary_password> <notary_team_id>"
 }
 
 if [[ ${#} -lt "7" ]]; then
@@ -40,10 +40,10 @@ if [[ ${#} -gt "6" ]]; then
             exit 1
         fi
     fi
-    NOTARIZE_ARGS="${NOTARIZE} --notary-user $NOTARY_USER --notary-password $NOTARY_PASSWORD"
+    NOTARIZE_ARGS="${NOTARIZE} --notary-arg=--apple-id=$NOTARY_USER --notary-arg=--password --notary-arg $NOTARY_PASSWORD"
     if [[ "${10}" != "" ]]; then
-      NOTARY_ASC_PROVIDER="${10}"
-      NOTARIZE_ARGS="$NOTARIZE_ARGS --notary-asc-provider ${NOTARY_ASC_PROVIDER}"
+      NOTARY_TEAM_ID="${10}"
+      NOTARIZE_ARGS="$NOTARIZE_ARGS --notary-arg=--team-id --notary-arg ${NOTARY_TEAM_ID}"
     fi
   else
     NOTARIZE="False"

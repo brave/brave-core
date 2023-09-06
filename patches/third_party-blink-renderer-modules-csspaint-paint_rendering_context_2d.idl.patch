@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl b/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
-index 404d6be12d6d697b98766f32ae832cbbba830627..f8e52113b88261744d5503816b34145c42a81afe 100644
+index 7db5f95341a0e2ef8039112afd3c64a00912f623..4367eff02314a9b7e17121ae4c9d2c936b0fc61d 100644
 --- a/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
 @@ -63,10 +63,10 @@

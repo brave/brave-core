@@ -9,10 +9,40 @@ cargo_crate("lib") {
   epoch = "0.8"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/uuid/v0_8/crate/benches/format_str.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/benches/invalid_parse_str.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/benches/mod.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/benches/serde_support.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/benches/slog_support/mod.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/benches/slog_support/parse_str.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/benches/valid_parse_str.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/adapter/compact.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/adapter/mod.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/builder/error.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/builder/mod.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/error.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/lib.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/parser/error.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/parser/mod.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/prelude.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/serde_support.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/slog_support.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/test_util.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/v1.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/v3.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/v4.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/v5.rs",
+    "//brave/third_party/rust/uuid/v0_8/crate/src/winapi_support.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/uuid/v0_8/crate/CODE_OF_CONDUCT.md",
+    "//brave/third_party/rust/uuid/v0_8/crate/CONTRIBUTING.md",
+    "//brave/third_party/rust/uuid/v0_8/crate/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.8.2"
   cargo_pkg_authors = "Ashley Mannix<ashleymannix@live.com.au>, Christopher Armstrong, Dylan DPC<dylan.dpc@gmail.com>, Hunar Roop Kahlon<hunar.roop@gmail.com>"

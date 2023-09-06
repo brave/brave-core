@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
@@ -236,7 +237,8 @@ void DatabaseContributionInfo::GetOneTimeTips(const mojom::ActivityMonth month,
   command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
-  const std::string formatted_month = base::StringPrintf("%02d", month);
+  const std::string formatted_month =
+      base::StringPrintf("%02d", base::to_underlying(month));
 
   BindString(command.get(), 0, formatted_month);
   BindString(command.get(), 1, std::to_string(year));
@@ -317,7 +319,8 @@ void DatabaseContributionInfo::GetContributionReport(
   command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
-  const std::string formatted_month = base::StringPrintf("%02d", month);
+  const std::string formatted_month =
+      base::StringPrintf("%02d", base::to_underlying(month));
 
   BindString(command.get(), 0, formatted_month);
   BindString(command.get(), 1, std::to_string(year));
