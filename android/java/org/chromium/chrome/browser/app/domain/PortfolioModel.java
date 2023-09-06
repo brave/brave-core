@@ -91,15 +91,6 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
         addServiceObservers();
     }
 
-    // TODO(pav): We should fetch and process all portfolio list here
-    public void prepareNftListMetaData(@NonNull final PortfolioHelper portfolioHelper) {
-        mPortfolioHelper = portfolioHelper;
-        final List<BlockchainToken> nfts = mPortfolioHelper.getUserAssets();
-        final List<BlockchainToken> hiddenNfts = mPortfolioHelper.getHiddenAssets();
-        fetchNftMetadata(nfts, mAllNetworkInfos, _mNftModels);
-        fetchNftMetadata(hiddenNfts, mAllNetworkInfos, _mNftHiddenModels);
-    }
-
     private void fetchNftMetadata(List<BlockchainToken> nftList, List<NetworkInfo> allNetworkList,
             MutableLiveData<List<NftDataModel>> nftModels) {
         // Filter out and calculate the size of supported NFTs.
@@ -178,7 +169,12 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                             if (!AndroidUtils.canUpdateFragmentUi(fragment)) {
                                 return;
                             }
-                            prepareNftListMetaData(portfolioHelper);
+                            mPortfolioHelper = portfolioHelper;
+                            final List<BlockchainToken> nfts = mPortfolioHelper.getUserAssets();
+                            final List<BlockchainToken> hiddenNfts =
+                                    mPortfolioHelper.getHiddenAssets();
+                            fetchNftMetadata(nfts, mAllNetworkInfos, _mNftModels);
+                            fetchNftMetadata(hiddenNfts, mAllNetworkInfos, _mNftHiddenModels);
                             callback.call(portfolioHelper);
                         });
                     });
@@ -215,6 +211,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
 
     public void clearNftModels() {
         _mNftModels.postValue(Collections.emptyList());
+        _mNftHiddenModels.postValue(Collections.emptyList());
     }
 
     private void addServiceObservers() {
