@@ -3660,6 +3660,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_NFTS" desc="NFTs as title">
       NFTs
     </message>
+    <message name="IDS_BRAVE_WALLET_HIDDEN" desc="Hidden NFT section">
+      Hidden
+    </message>
     <message name="IDS_VBAT_SUPPORTED_REGION_TITLE" desc="Vbat modal title text for supported region">
       Action required: Connect a custodial account or your vBAT will be lost
     </message>

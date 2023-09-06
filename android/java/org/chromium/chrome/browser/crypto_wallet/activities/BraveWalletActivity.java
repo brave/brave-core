@@ -27,6 +27,7 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.chromium.base.ActivityState;
 import org.chromium.base.ApplicationStatus;
@@ -53,7 +54,6 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
-import org.chromium.chrome.browser.custom_layout.BottomNavigationViewWithIndicator;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.components.browser_ui.modaldialog.AppModalPresenter;
@@ -80,7 +80,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private CryptoFragmentPageAdapter mCryptoFragmentPageAdapter;
     private ModalDialogManager mModalDialogManager;
     private CryptoWalletOnboardingPagerAdapter mCryptoWalletOnboardingPagerAdapter;
-    private BottomNavigationViewWithIndicator mBottomNavigationView;
+    private BottomNavigationView mBottomNavigationView;
     private ViewPager2 mViewPager;
     private boolean mShowBiometricPrompt;
     private boolean mIsFromDapps;
