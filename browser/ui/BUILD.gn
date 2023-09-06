@@ -550,6 +550,7 @@ source_set("ui") {
     "//components/infobars/content",
     "//components/omnibox/browser:vector_icons",
     "//components/optimization_guide/core:features",
+    "//components/optimization_guide/optimization_guide_internals/webui:url_constants",
     "//components/prefs",
     "//components/resources:components_resources_grit",
     "//components/search_engines",
@@ -1078,6 +1079,7 @@ source_set("browser_tests") {
       "//chrome/test:test_support_ui",
       "//components/javascript_dialogs",
       "//components/optimization_guide/core:features",
+      "//components/optimization_guide/optimization_guide_internals/webui:url_constants",
       "//components/prefs",
       "//content/test:test_support",
     ]
