@@ -11,7 +11,7 @@
 #include "ios/chrome/browser/flags/ios_chrome_field_trials.h"
 #include "ios/web/public/init/web_main_parts.h"
 
-class ApplicationContextImpl;
+class BraveApplicationContextImpl;
 class PrefService;
 
 namespace base {
@@ -36,7 +36,7 @@ class BraveWebMainParts : public web::WebMainParts {
   void PostCreateThreads() override;
   void SetupFieldTrials();
 
-  std::unique_ptr<ApplicationContextImpl> application_context_;
+  std::unique_ptr<BraveApplicationContextImpl> application_context_;
 
   // Statistical testing infrastructure for the entire browser. NULL until
   // SetUpMetricsAndFieldTrials is called.
