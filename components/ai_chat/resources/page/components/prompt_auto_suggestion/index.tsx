@@ -17,7 +17,7 @@ interface PromptAutoSuggestionProps {
 function PromptAutoSuggestion (props: PromptAutoSuggestionProps) {
   return (
     <div className={styles.box}>
-      <Icon name="product-brave-ai" className={styles.icon} />
+      <Icon name="product-brave-leo" className={styles.icon} />
       <h1>{getLocale('enableQuestionsTitle')}</h1>
       <p>{getLocale('enableQuestionsDesc')}</p>
       <div className={styles.actionsBox}>
