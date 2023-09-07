@@ -277,7 +277,7 @@ export const Nfts = (props: Props) => {
   }, [nftList, hiddenNfts, allSpamNfts, isLoadingSimpleHashList])
 
 
-  const getRenderedList = () => {
+  const renderedList = React.useMemo(() => {
     switch (selectedTab) {
       case 'nfts':
         return sortedNfts;
@@ -288,12 +288,12 @@ export const Nfts = (props: Props) => {
       default:
         return sortedNfts;
     }
-  }
+  }, [selectedTab, sortedNfts, sortedHiddenNfts, sortedSpamNfts, sortedNfts])
 
   // Returns a list of assets based on provided account
   const getFilteredNftsByAccount = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
-      return getRenderedList().filter(
+      return renderedList.filter(
         (nft) =>
           nft.coin === account.accountId.coin &&
           new Amount(
@@ -301,13 +301,13 @@ export const Nfts = (props: Props) => {
           ).gte('1')
       )
     },
-    [getRenderedList, tokenBalancesRegistry]
+    [renderedList, tokenBalancesRegistry]
   )
 
   // Returns a list of assets based on provided network
   const getAssetsByNetwork = React.useCallback(
     (network: BraveWallet.NetworkInfo) => {
-      return getRenderedList()
+      return renderedList
         .filter(
           (asset) =>
             networkEntityAdapter
@@ -319,7 +319,7 @@ export const Nfts = (props: Props) => {
             networkEntityAdapter
               .selectId(network).toString()
         )
-    }, [getRenderedList])
+    }, [renderedList])
 
   const renderGridViewItem = React.useCallback(
     (nft: BraveWallet.BlockchainToken) => {
@@ -398,7 +398,7 @@ export const Nfts = (props: Props) => {
       listUiByAccounts
     ) : (
       <NftGrid>
-        {getRenderedList().map(renderGridViewItem)}
+        {renderedList.map(renderGridViewItem)}
         {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
       </NftGrid>
     )
@@ -406,7 +406,7 @@ export const Nfts = (props: Props) => {
     listUiByAccounts,
     listUiByNetworks,
     selectedGroupAssetsByItem,
-    getRenderedList,
+    renderedList,
     selectedTab
   ])
 
