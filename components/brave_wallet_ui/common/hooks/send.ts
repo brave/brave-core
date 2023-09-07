@@ -5,6 +5,9 @@
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query'
+
+// Types
 import {
   BraveWallet,
   GetEthAddrReturnInfo,
@@ -68,10 +71,15 @@ export function useSend (isSendTab?: boolean) {
   const [addressWarning, setAddressWarning] = React.useState<string | undefined>(undefined)
   const [selectedSendAsset, setSelectedSendAsset] = React.useState<BraveWallet.BlockchainToken | undefined>(undefined)
   const [showFilecoinFEVMWarning, setShowFilecoinFEVMWarning] = React.useState<boolean>(false)
-  const { data: fevmTranslatedAddresses } = useGetFVMAddressQuery({
-    coin: selectedSendAsset?.coin,
-    addresses: [toAddressOrUrl],
-    isMainNet: selectedSendAsset?.chainId === BraveWallet.FILECOIN_MAINNET})
+  const { data: fevmTranslatedAddresses } = useGetFVMAddressQuery(
+    selectedSendAsset?.coin === BraveWallet.CoinType.FIL
+      ? {
+          coin: selectedSendAsset?.coin,
+          addresses: [toAddressOrUrl],
+          isMainNet: selectedSendAsset?.chainId === BraveWallet.FILECOIN_MAINNET
+        }
+      : skipToken
+  )
 
   const selectSendAsset = (asset: BraveWallet.BlockchainToken | undefined) => {
     if (asset?.isErc721 || asset?.isNft) {

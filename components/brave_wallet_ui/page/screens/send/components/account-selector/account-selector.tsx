@@ -102,13 +102,15 @@ export const AccountSelector = (props: Props) => {
   [accountsByNetwork])
 
   const { data: fvmTranslatedAddresses } = useGetFVMAddressQuery(
-    selectedNetwork && evmAddressesforFVMTranslation.length
-    ? {
-        coin: selectedNetwork.coin,
-        addresses: evmAddressesforFVMTranslation,
-        isMainNet: selectedNetwork.chainId === BraveWallet.FILECOIN_MAINNET
-      }
-    : skipToken
+    selectedNetwork &&
+      selectedNetwork?.coin === BraveWallet.CoinType.FIL &&
+      evmAddressesforFVMTranslation.length
+      ? {
+          coin: selectedNetwork.coin,
+          addresses: evmAddressesforFVMTranslation,
+          isMainNet: selectedNetwork.chainId === BraveWallet.FILECOIN_MAINNET
+        }
+      : skipToken
   )
 
   // Hooks
