@@ -3,8 +3,15 @@ declare namespace WebcompatReporter {
     reporterState: State | undefined
   }
 
+  export interface DialogArgs {
+    url: string
+    adBlockSetting: string
+    fpBlockSetting: string
+    shieldsEnabled: string
+  }
+
   export interface State {
-    siteUrl: string
+    dialogArgs: DialogArgs
     submitted: boolean
   }
 }

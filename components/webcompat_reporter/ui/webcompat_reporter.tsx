@@ -39,7 +39,7 @@ function loadDialogArgs () {
     console.error('Error parsing incoming dialog args: ', dialogArgsRaw, e)
   }
 
-  getActions().setSiteUrl(dialogArgs.siteUrl)
+  getActions().setDialogArgs(dialogArgs)
 }
 
 function initialize () {

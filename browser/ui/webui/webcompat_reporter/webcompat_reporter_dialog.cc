@@ -12,7 +12,10 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
+#include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/components/brave_shields/common/brave_shields_panel.mojom-shared.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/webcompat_reporter/browser/fields.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -24,9 +27,15 @@
 using content::WebContents;
 using content::WebUIMessageHandler;
 
+namespace webcompat_reporter {
+
+namespace {
+
 constexpr int kDialogMinHeight = 100;
 constexpr int kDialogMaxHeight = 700;
 constexpr int kDialogWidth = 375;
+
+}  // namespace
 
 // A ui::WebDialogDelegate that specifies the webcompat reporter's appearance.
 class WebcompatReporterDialogDelegate : public ui::WebDialogDelegate {
@@ -102,9 +111,33 @@ bool WebcompatReporterDialogDelegate::ShouldShowDialogTitle() const {
   return false;
 }
 
-void OpenWebcompatReporterDialog(content::WebContents* initiator) {
+void OpenReporterDialog(content::WebContents* initiator) {
+  bool shields_enabled = false;
+  brave_shields::mojom::FingerprintMode fp_block_mode =
+      brave_shields::mojom::FingerprintMode::STANDARD;
+  brave_shields::mojom::AdBlockMode ad_block_mode =
+      brave_shields::mojom::AdBlockMode::STANDARD;
+  brave_shields::BraveShieldsDataController* shields_data_controller =
+      brave_shields::BraveShieldsDataController::FromWebContents(initiator);
+  if (shields_data_controller != nullptr) {
+    shields_enabled = shields_data_controller->GetBraveShieldsEnabled();
+    fp_block_mode = shields_data_controller->GetFingerprintMode();
+    ad_block_mode = shields_data_controller->GetAdBlockMode();
+  }
+
+  // Remove query and fragments from reported URL.
+  GURL::Replacements replacements;
+  replacements.ClearQuery();
+  replacements.ClearRef();
+  GURL report_url =
+      initiator->GetLastCommittedURL().ReplaceComponents(replacements);
+
   base::Value::Dict params_dict;
-  params_dict.Set("siteUrl", initiator->GetLastCommittedURL().spec());
+  params_dict.Set(kSiteURLField, report_url.spec());
+  params_dict.Set(kShieldsEnabledField, shields_enabled);
+  params_dict.Set(kAdBlockSettingField, GetAdBlockModeString(ad_block_mode));
+  params_dict.Set(kFPBlockSettingField,
+                  GetFingerprintModeString(fp_block_mode));
 
   gfx::Size min_size(kDialogWidth, kDialogMinHeight);
   gfx::Size max_size(kDialogWidth, kDialogMaxHeight);
@@ -113,3 +146,5 @@ void OpenWebcompatReporterDialog(content::WebContents* initiator) {
       std::make_unique<WebcompatReporterDialogDelegate>(std::move(params_dict)),
       initiator, min_size, max_size);
 }
+
+}  // namespace webcompat_reporter
