@@ -10,6 +10,7 @@ use rustsec::platforms::{platform::PlatformReq, OS};
 use crate::binary_format::BinaryFormat;
 
 pub fn filter_report_by_binary_type(binary_type: &BinaryFormat, report: &mut rustsec::Report) {
+    // Filter vulnerabilities
     let vulns = &mut report.vulnerabilities;
     assert_eq!(
         vulns.list.len(),
@@ -21,8 +22,12 @@ pub fn filter_report_by_binary_type(binary_type: &BinaryFormat, report: &mut rus
         .retain(|vuln| advisory_applicable_to_binary(binary_type, &vuln.affected));
     vulns.count = vulns.list.len();
     vulns.found = !vulns.list.is_empty();
-    // TODO: warnings do not have information about the platform they affect,
-    // so they're impossible to filter at this layer. This requires modifications to the `rustsec` crate.
+
+    // Filter warnings
+    let warns = &mut report.warnings;
+    warns.iter_mut().for_each(|(_kind, warnings)| {
+        warnings.retain(|w| advisory_applicable_to_binary(binary_type, &w.affected))
+    });
 }
 
 fn advisory_applicable_to_binary(

@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.18.1 (2023-08-31)
+
+### Fixed
+
+- Release workflow: don't enable `fix` and `vendored-openssl` features ([#980])
+
+[#980]: https://github.com/rustsec/rustsec/pull/980
+
+## 0.18.0 (2023-08-31)
+
+### Added
+
+ - Implement proper attribution for advisories licensed under CC-BY ([#955])
+ - `cargo audit bin` no longer shows warnings not applicable to the binary type (e.g. no more reports of Windows-only unsoundness in ELF binaries). Previously this was implemented for vulnerabilities, but not warnings. ([#964])
+
+### Changed
+
+ - Upgraded to `rustsec` v0.28, bringing performance, security and compatibility improvements, but also temporarily dropping support for CPU platforms other than x86 and ARM. See the [rustsec changelog](https://github.com/rustsec/rustsec/blob/main/rustsec/CHANGELOG.md) for details.
+
+[#955]: https://github.com/rustsec/rustsec/pull/955
+[#964]: https://github.com/rustsec/rustsec/pull/964
+
 ## 0.17.6 (2023-05-10)
 
 ### Added
