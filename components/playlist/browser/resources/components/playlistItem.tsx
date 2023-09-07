@@ -83,6 +83,7 @@ const PlaylistItemContainer = styled.li<{
   height: 86px;
   align-items: center;
   gap: ${spacing.xl};
+  user-select: none;
   & > a {
     margin-right: calc(-1 * ${spacing.xl});
   }
