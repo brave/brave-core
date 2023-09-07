@@ -373,15 +373,17 @@ public class BraveRewardsPanel
         }
         mRewardsMainLayout.setVisibility(View.VISIBLE);
         mEstimatedToolTip = mPopupView.findViewById(R.id.estimated_earnings_tooltip);
-        mayBeShowEstimatedToolTip();
+        maybeShowEstimatedToolTip();
 
         mVbatUserdrainToolTip = mPopupView.findViewById(R.id.vbat_userdrain_tooltip);
-        mayBeShowVbatUserdrainToolTip();
+        maybeShowVbatUserdrainToolTip();
 
         TextView loggedOutStateText = mPopupView.findViewById(R.id.logged_out_state_text);
-        loggedOutStateText.setText(String.format(
-                mActivity.getResources().getString(R.string.logged_out_state_dialog_text),
-                getWalletString(mBraveRewardsNativeWorker.getExternalWalletType())));
+        if (mExternalWallet != null) {
+            loggedOutStateText.setText(String.format(
+                    mActivity.getResources().getString(R.string.logged_out_state_dialog_text),
+                    getWalletString(mExternalWallet.getType())));
+        }
         mBalanceDataViewGroups = mPopupView.findViewById(R.id.balance_display_group);
 
         setVisibilityForLoggedOutState();
@@ -446,7 +448,7 @@ public class BraveRewardsPanel
         monthYearText.setText(monthYear);
     }
     @SuppressLint("ClickableViewAccessibility")
-    private void mayBeShowEstimatedToolTip() {
+    private void maybeShowEstimatedToolTip() {
         View estimatedEarningsText = mPopupView.findViewById(R.id.estimated_earnings);
         View estimatedTooltipGroup = mPopupView.findViewById(R.id.estimated_tooltip_group);
         clickManageAds();
@@ -456,7 +458,7 @@ public class BraveRewardsPanel
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void mayBeShowVbatUserdrainToolTip() {
+    private void maybeShowVbatUserdrainToolTip() {
         View vBatUserdrainHelpImg = mPopupView.findViewById(R.id.vbat_userdrain_help_img);
         View vBatUserdrainTooltipGroup = mPopupView.findViewById(R.id.vbat_userdrain_tooltip_group);
         vBatUserdrainHelpImg.setOnClickListener(
@@ -1120,10 +1122,8 @@ public class BraveRewardsPanel
                                 ? View.GONE
                                 : View.VISIBLE);
                 mWalletBalanceProgress.setVisibility(View.GONE);
-                if (mBraveRewardsNativeWorker.isGrandfatheredUser()
-                        && mBraveRewardsNativeWorker.getExternalWalletType().equals(
-                                BraveWalletProvider.ZEBPAY)
-                        && mExternalWallet != null
+                if (mBraveRewardsNativeWorker.isGrandfatheredUser() && mExternalWallet != null
+                        && mExternalWallet.getType().equals(BraveWalletProvider.ZEBPAY)
                         && mExternalWallet.getStatus() == WalletStatus.CONNECTED) {
                     mPopupView.findViewById(R.id.vbat_userdrain_help_img)
                             .setVisibility(View.VISIBLE);
@@ -1801,7 +1801,7 @@ public class BraveRewardsPanel
         }
         int walletStatus = mExternalWallet.getStatus();
         if (mBraveRewardsNativeWorker != null) {
-            String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
+            String walletType = mExternalWallet.getType();
             if (walletStatus == WalletStatus.CONNECTED
                     && (walletType.equals(BraveWalletProvider.UPHOLD)
                             || walletType.equals(BraveWalletProvider.BITFLYER)
@@ -1836,7 +1836,7 @@ public class BraveRewardsPanel
         SharedPreferences.Editor editor = sharedPref.edit();
         int rightDrawable = 0;
         int textId = 0;
-        String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
+        String walletType = mExternalWallet.getType();
 
         switch (status) {
             case WalletStatus.NOT_CONNECTED:
