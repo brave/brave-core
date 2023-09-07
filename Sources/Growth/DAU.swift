@@ -63,6 +63,11 @@ public class DAU {
       Logger.module.info("Development build detected, no server ping.")
       return false
     }
+    
+    guard Preferences.DAU.sendUsagePing.value else {
+      Logger.module.debug("DAU ping disabled by the user.")
+      return false
+    }
 
     // Sending ping immediately
     sendPingToServerInternal()
