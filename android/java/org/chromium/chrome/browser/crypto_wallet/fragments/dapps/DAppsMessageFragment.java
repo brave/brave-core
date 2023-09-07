@@ -63,8 +63,8 @@ public class DAppsMessageFragment extends BaseDAppsFragment {
             message = mCurrentSignMessageRequest.signData.getSolanaSignData().message;
             isEip712 = false;
         } else if (mCurrentSignMessageRequest.signData.which() == SignDataUnion.Tag.EthSiweData) {
-            message = mCurrentSignMessageRequest.signData.getEthSiweData().statement; //??
-            isEip712 = true;
+            message = mCurrentSignMessageRequest.signData.getEthSiweData().statement;
+            isEip712 = false;
         } else {
             message = "";
             isEip712 = false;
@@ -88,7 +88,7 @@ public class DAppsMessageFragment extends BaseDAppsFragment {
 
     private void updateText(boolean unicodeEscape, final String message, final boolean isEip712) {
         if (mCurrentSignMessageRequest.signData.which() == SignDataUnion.Tag.EthSiweData) {
-            updateTextSiwe(unicodeEscape, message, isEip712);
+            updateTextSiwe(unicodeEscape, message);
         } else {
             updateTextEthSign(unicodeEscape, message, isEip712);
         }
@@ -115,8 +115,7 @@ public class DAppsMessageFragment extends BaseDAppsFragment {
         mSignMessageText.setText(TextUtils.concat(domainPart, messagePart));
     }
 
-    private void updateTextSiwe(
-            boolean unicodeEscape, final String message, final boolean isEip712) {
+    private void updateTextSiwe(boolean unicodeEscape, final String message) {
         assert mCurrentSignMessageRequest.signData.which() == SignDataUnion.Tag.EthSiweData;
 
         ArrayList<Spanned> allDetails = new ArrayList<>();
