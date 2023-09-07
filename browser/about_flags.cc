@@ -40,6 +40,7 @@
 #include "components/flags_ui/feature_entry.h"
 #include "components/flags_ui/feature_entry_macros.h"
 #include "components/flags_ui/flags_state.h"
+#include "components/omnibox/common/omnibox_features.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
@@ -394,6 +395,16 @@
 #define BRAVE_AI_CHAT
 #define BRAVE_AI_CHAT_HISTORY
 #endif
+
+#define BRAVE_OMNIBOX_FEATURES                                              \
+  EXPAND_FEATURE_ENTRIES({                                                  \
+      "brave-omnibox-tab-switch-by-default",                                \
+      "Brave Tab Switch by Default",                                        \
+      "Prefer switching to already open tabs, rather than navigating in a " \
+      "new tab",                                                            \
+      kOsWin | kOsLinux | kOsMac,                                           \
+      FEATURE_VALUE_TYPE(omnibox::kOmniboxTabSwitchByDefault),              \
+  })
 
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
@@ -890,6 +901,7 @@
   BRAVE_SHARED_PINNED_TABS                                                     \
   BRAVE_AI_CHAT                                                                \
   BRAVE_AI_CHAT_HISTORY                                                        \
+  BRAVE_OMNIBOX_FEATURES                                                       \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

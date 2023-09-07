@@ -842,6 +842,7 @@
       <if expr="enable_brave_vpn">
         <part file="brave_vpn_strings.grdp" />
       </if>
+      <part file="omnibox_strings.grdp" />
     </messages>
   </release>
 </grit>

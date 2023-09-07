@@ -19,6 +19,7 @@ source_set("unit_tests") {
     "//brave/components/omnibox/browser/brave_shortcuts_provider_unittest.cc",
     "//brave/components/omnibox/browser/omnibox_autocomplete_unittest.cc",
     "//brave/components/omnibox/browser/topsites_provider_unittest.cc",
+    "brave_autocomplete_result_unittest.cc",
     "promotion_unittest.cc",
   ]
 

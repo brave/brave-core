@@ -11,8 +11,14 @@
   void RemoveMatch(const ACMatches::iterator& it);        \
   void SortAndCull
 
+#define ConvertOpenTabMatches                                        \
+  ConvertOpenTabMatches_Chromium(AutocompleteProviderClient* client, \
+                                 const AutocompleteInput* input);    \
+  void ConvertOpenTabMatches
+
 #include "src/components/omnibox/browser/autocomplete_result.h"  // IWYU pragma: export
 
+#undef ConvertOpenTabMatches
 #undef SortAndCull
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_AUTOCOMPLETE_RESULT_H_

@@ -20,4 +20,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kRichAutocompletion, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
+BASE_FEATURE(kOmniboxTabSwitchByDefault,
+             "OmniboxTabSwitchByDefault",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace omnibox
