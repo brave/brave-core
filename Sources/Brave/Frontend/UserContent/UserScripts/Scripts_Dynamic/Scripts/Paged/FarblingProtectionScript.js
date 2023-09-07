@@ -86,7 +86,7 @@ window.__firefox__.execute(function($) {
     // 2. Farble plugin data
     // Injects fake plugins with fake mime-types
     // Random plugins are determined by the plugin data
-    const farblePlugins = (pluginData) => {
+    const farblePlugins = (fakePluginData) => {
       // Function that create a fake mime-type based on the given fake data
       const makeFakeMimeType = (fakeData) => {
         return Object.create(window.MimeType.prototype, {
@@ -130,34 +130,42 @@ window.__firefox__.execute(function($) {
         // We need the original length so we can reference it (as we will change it)
         const plugins = window.navigator.plugins
         const originalPluginsLength = plugins.length
-
-        // Adds a fake plugin for the given index on fakePluginData
-        const addPluginAtIndex = (newPlugin, index) => {
-          const pluginPosition = originalPluginsLength + index
-          window.navigator.plugins[pluginPosition] = newPlugin
-          window.navigator.plugins[newPlugin.name] = newPlugin
-        }
-
-        for (const [index, pluginData] of fakePluginData.entries()) {
-          const newPlugin = makeFakePlugin(pluginData)
-          addPluginAtIndex(newPlugin, index)
-        }
-
-        // Adjust the length of the original plugin array
-        Reflect.defineProperty(window.navigator.plugins, 'length', {
-          value: originalPluginsLength + fakePluginData.length
+        const pluginsPrototype = Object.getPrototypeOf(window.navigator.plugins)
+        
+        const fakePlugins = fakePluginData.map((pluginData) => {
+          return makeFakePlugin(pluginData)
         })
-
-        // Patch `PluginArray.item(index)` function to return the correct item
-        // otherwise it returns `undefined`
-        const originalItemFunction = plugins.item
-        window.PluginArray.prototype.item = function (index) {
+        
+        // Adds a fake plugin for the given index on fakePluginData
+        fakePlugins.forEach((newPlugin, index) => {
+          const pluginPosition = originalPluginsLength + index
+          pluginsPrototype[pluginPosition] = newPlugin
+          pluginsPrototype[newPlugin.name] = newPlugin
+        })
+        
+        // Farble the `item` method on the plugins array
+        const originalItem = window.navigator.plugins.item
+        pluginsPrototype.item = function (index) {
           if (index < originalPluginsLength) {
-            return Reflect.apply(originalItemFunction, plugins, arguments)
+            return Reflect.apply(originalItem, this, arguments)
           } else {
-            return plugins[index]
+            const farbledIndex = index - originalPluginsLength
+            return fakePlugins[farbledIndex]
           }
         }
+        
+        // Farble the `namedItem` method on the plugins array
+        const originalNamedItem = window.navigator.plugins.namedItem
+        pluginsPrototype.namedItem = function (name) {
+          let namedPlugin = Reflect.apply(originalNamedItem, this, arguments)
+          if (namedPlugin) { return namedPlugin }
+          return fakePlugins.find((plugin) => plugin.name === name )
+        }
+        
+        // Adjust the length of the original plugin array
+        Reflect.defineProperty(pluginsPrototype, 'length', {
+          value: originalPluginsLength + fakePlugins.length
+        })
       }
     }
 
@@ -242,30 +250,46 @@ window.__firefox__.execute(function($) {
       })
     }
 
-    // A value between 0.99 and 1 to fudge the audio data
-    // A value between 0.99 to 1 means the values in the destination will
-    // always be within the expected range of -1 and 1.
-    // This small decrease should not affect affect legitimite users of this api.
-    // But will affect fingerprinters by introducing a small random change.
-    const fudgeFactor = args['fudgeFactor']
-    farbleAudio(fudgeFactor)
+    try {
+      // A value between 0.99 and 1 to fudge the audio data
+      // A value between 0.99 to 1 means the values in the destination will
+      // always be within the expected range of -1 and 1.
+      // This small decrease should not affect affect legitimite users of this api.
+      // But will affect fingerprinters by introducing a small random change.
+      const fudgeFactor = args['fudgeFactor']
+      farbleAudio(fudgeFactor)
+    } catch (error) {
+      console.error(`Failed to farble audio: ${error}`)
+    }
 
-    // Fake data that is to be used to construct fake plugins
-    const fakePluginData = args['fakePluginData']
-    farblePlugins(fakePluginData)
+    try {
+      // Fake data that is to be used to construct fake plugins
+      const fakePluginData = args['fakePluginData']
+      farblePlugins(fakePluginData)
+    } catch (error) {
+      console.error(`Failed to farble plugins: ${error}`)
+    }
 
-    // A value representing a fake voice name that will be used to add a fake voice
-    const fakeVoiceName = args['fakeVoiceName']
-    // This value is used to get a random index between 0 and voices.length
-    // It's important to have a value between 0 - 1 in order to be within the
-    // array bounds
-    const randomVoiceIndexScale = args['randomVoiceIndexScale']
-    farbleVoices(fakeVoiceName, randomVoiceIndexScale)
+    try {
+      // A value representing a fake voice name that will be used to add a fake voice
+      const fakeVoiceName = args['fakeVoiceName']
+      // This value is used to get a random index between 0 and voices.length
+      // It's important to have a value between 0 - 1 in order to be within the
+      // array bounds
+      const randomVoiceIndexScale = args['randomVoiceIndexScale']
+      farbleVoices(fakeVoiceName, randomVoiceIndexScale)
+    } catch (error) {
+      console.error(`Failed to farble voices: ${error}`)
+    }
 
-    // This value lets us pick a value between 2 and window.navigator.hardwareConcurrency
-    // It is a value between 0 and 1. For example 0.5 will give us 3 and
-    // thus return 2 + 3 = 5 for hardware concurrency
-    const randomHardwareIndexScale = args['randomHardwareIndexScale']
-    farbleHardwareConcurrency(randomHardwareIndexScale)
+    try {
+      // This value lets us pick a value between 2 and window.navigator.hardwareConcurrency
+      // It is a value between 0 and 1. For example 0.5 will give us 3 and
+      // thus return 2 + 3 = 5 for hardware concurrency
+      const randomHardwareIndexScale = args['randomHardwareIndexScale']
+      farbleHardwareConcurrency(randomHardwareIndexScale)
+    } catch (error) {
+      console.error(`Failed to farble hardware concurrency: ${error}`)
+    }
   })();
 });
