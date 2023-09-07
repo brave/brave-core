@@ -7,9 +7,17 @@ import XCTest
 import Combine
 import BraveCore
 import BigNumber
+import Preferences
 @testable import BraveWallet
 
 class SendTokenStoreTests: XCTestCase {
+  override func setUp() {
+    Preferences.Wallet.showTestNetworks.value = true
+  }
+  override func tearDown() {
+    Preferences.Wallet.showTestNetworks.reset()
+  }
+  
   private var cancellables: Set<AnyCancellable> = []
   private let batSymbol = "BAT"
   
@@ -534,6 +542,33 @@ class SendTokenStoreTests: XCTestCase {
     }
   }
   
+  /// Test making a FIL Send transaction on filecoin mainnet
+  func testMakeSendFILTransaction() {
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy, mockAssetManager) = setupServices()
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      assetRatioService: MockAssetRatioService(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: .previewToken,
+      ipfsApi: TestIpfsAPI(),
+      userAssetManager: mockAssetManager
+    )
+    store.selectedSendToken = .mockFilToken
+    let ex = expectation(description: "send-fil-transaction")
+    store.sendToken(amount: "1") { success, _ in
+      defer { ex.fulfill() }
+      XCTAssertTrue(success)
+    }
+    waitForExpectations(timeout: 3) { error in
+      XCTAssertNil(error)
+    }
+  }
+
   /// Test Solana System Program transaction is created with correct lamports value for the `mockSolToken` (9 decimals)
   func testSendSolAmount() {
     let mockBalance: UInt64 = 47
@@ -1017,7 +1052,9 @@ class SendTokenStoreTests: XCTestCase {
     store.$resolvedAddress
       .dropFirst(3) // Initial value, reset to nil in `sendAddress` didSet, reset to nil in `validateEthereumSendAddress`
       .sink { resolvedAddress in
-        defer { resolvedAddressExpectation.fulfill() }
+        defer {
+          resolvedAddressExpectation.fulfill()
+        }
         XCTAssertEqual(resolvedAddress, expectedAddress)
       }.store(in: &cancellables)
     store.sendAddress = domain
@@ -1482,28 +1519,50 @@ class SendTokenStoreTests: XCTestCase {
     await fulfillment(of: [didSelectSendTokenExpectation, setSelectedAccountExpectation, setNetworkExpectation], timeout: 1)
   }
 
-  /// Test `didSelect(account:token:)` with a new token that is on a different coin type (ex. Ethereum -> Solana).
+  /// Test `didSelect(account:token:)` with a new token that is on a different coin type (ex. Ethereum -> Solana, Solana -> Filecoin).
   @MainActor func testDidSelectCoinTypeSwitch() async {
     let solMainnet: BraveWallet.BlockchainToken = BraveWallet.NetworkInfo.mockSolana.nativeToken
       .copy(asVisibleAsset: true)
+    let filTokenMainnet: BraveWallet.BlockchainToken = .mockFilToken.copy(asVisibleAsset: true)
     var selectedNetwork: BraveWallet.NetworkInfo = .mockGoerli
-    let allNetworks: [BraveWallet.NetworkInfo] = [.mockGoerli, .mockSolana]
+    var selectedNetworkToBe: BraveWallet.NetworkInfo = .mockSolana
+    var selectedAccount: BraveWallet.AccountInfo = account
+    let allNetworks: [BraveWallet.NetworkInfo] = [.mockGoerli, .mockSolana, .mockFilecoinMainnet]
     let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy, mockAssetManager) = setupServices(
-      selectedAccount: account,
-      userAssets: [.mockGoerli: [usdcGoerli], .mockSolana: [solMainnet]],
+      selectedAccount: selectedAccount,
+      userAssets: [.mockGoerli: [usdcGoerli], .mockSolana: [solMainnet], .mockFilecoinMainnet: [filTokenMainnet]],
       selectedCoin: .eth,
       allNetworks: allNetworks
     )
+    
+    let didSelectSendFilTokenExpectation = expectation(description: "didSelectSendFilTokenExpectation")
+    let setSelectedFilAccountExpectation = expectation(description: "setSelectedFilAccountExpectation")
+    let setFilNetworkExpectation = expectation(description: "setFilNetworkExpectation")
+    
+    let didSelectSendTokenExpectation = expectation(description: "didSelectSendTokenExpectation")
     let setSelectedAccountExpectation = expectation(description: "setSelectedAccountExpectation")
+    let setNetworkExpectation = expectation(description: "setNetworkExpectation")
+    
     keyringService._setSelectedAccount = { accountId, completion in
-      defer { setSelectedAccountExpectation.fulfill() }
-      XCTAssertEqual(accountId.address, BraveWallet.AccountInfo.mockSolAccount.address)
+      defer {
+        if accountId.coin == .sol {
+          setSelectedAccountExpectation.fulfill()
+        } else {
+          setSelectedFilAccountExpectation.fulfill()
+        }
+      }
+      XCTAssertEqual(accountId.address, selectedAccount.address)
       completion(true)
     }
-    let setNetworkExpectation = expectation(description: "setNetworkExpectation")
     rpcService._setNetwork = { chainId, coin, origin, completion in
-      defer { setNetworkExpectation.fulfill() }
-      XCTAssertEqual(chainId, solMainnet.chainId)
+      defer {
+        if coin == .sol {
+          setNetworkExpectation.fulfill()
+        } else {
+          setFilNetworkExpectation.fulfill()
+        }
+      }
+      XCTAssertEqual(chainId, selectedNetworkToBe.chainId)
       selectedNetwork = allNetworks.first(where: { $0.chainId == chainId }) ?? selectedNetwork
       completion(true)
     }
@@ -1536,15 +1595,34 @@ class SendTokenStoreTests: XCTestCase {
     await fulfillment(of: [sendTokenExpectation], timeout: 1)
     cancellables.removeAll()
     
-    let didSelectSendTokenExpectation = expectation(description: "didSelectSendTokenExpectation")
+    // select solana mainnet
+    selectedAccount = .mockSolAccount
     store.$selectedSendToken
       .dropFirst()
       .sink { selectedSendToken in
-        defer { didSelectSendTokenExpectation.fulfill() }
+        defer {
+          didSelectSendTokenExpectation.fulfill()
+        }
         XCTAssertEqual(selectedSendToken, solMainnet)
       }
       .store(in: &cancellables)
     store.didSelect(account: .mockSolAccount, token: solMainnet)
     await fulfillment(of: [didSelectSendTokenExpectation, setSelectedAccountExpectation, setNetworkExpectation], timeout: 1)
+    cancellables.removeAll()
+    
+    // select filecoin mainnet
+    selectedAccount = .mockFilAccount
+    selectedNetworkToBe = .mockFilecoinMainnet
+    store.$selectedSendToken
+      .dropFirst()
+      .sink { selectedSendToken in
+        defer {
+          didSelectSendFilTokenExpectation.fulfill()
+        }
+        XCTAssertEqual(selectedSendToken, filTokenMainnet)
+      }
+      .store(in: &cancellables)
+    store.didSelect(account: .mockFilAccount, token: filTokenMainnet)
+    await fulfillment(of: [didSelectSendFilTokenExpectation, setSelectedFilAccountExpectation, setFilNetworkExpectation], timeout: 1)
   }
 }

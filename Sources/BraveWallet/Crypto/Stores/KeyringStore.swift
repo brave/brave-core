@@ -222,7 +222,7 @@ public class KeyringStore: ObservableObject {
     Task { @MainActor in // fetch all KeyringInfo for all coin types
       let selectedAccount = await keyringService.allAccounts().selectedAccount
       let selectedAccountAddress = selectedAccount?.address
-      let allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
+      let allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes())
       if let defaultKeyring = allKeyrings.first(where: { $0.id == BraveWallet.KeyringId.default }) {
         self.defaultKeyring = defaultKeyring
         self.isDefaultKeyringLoaded = true
@@ -356,7 +356,7 @@ public class KeyringStore: ObservableObject {
         self.updateKeyringInfo()
         self.resetKeychainStoredPassword()
       }
-      for coin in WalletConstants.supportedCoinTypes {
+      for coin in WalletConstants.supportedCoinTypes(.dapps) { // only coin types support dapps have permission management 
         Domain.clearAllWalletPermissions(for: coin)
       }
       Preferences.Wallet.sortOrderFilter.reset()
@@ -369,10 +369,17 @@ public class KeyringStore: ObservableObject {
     }
   }
 
-  func addPrimaryAccount(_ name: String, coin: BraveWallet.CoinType, completion: ((Bool) -> Void)? = nil) {
+  /// `chainId` is only for .fil or .btc coin type
+  /// correct `BraveWallet.KeyringId` will be returned from `keyringIdForNewAccount`
+  func addPrimaryAccount(
+    _ name: String,
+    coin: BraveWallet.CoinType,
+    chainId: String,
+    completion: ((Bool) -> Void)? = nil
+  ) {
     keyringService.addAccount(
       coin,
-      keyringId: coin.keyringId,
+      keyringId: BraveWallet.KeyringId.keyringId(for: coin, on: chainId),
       accountName: name
     ) { accountInfo in
       self.updateKeyringInfo()
@@ -380,18 +387,17 @@ public class KeyringStore: ObservableObject {
     }
   }
 
+  /// `chainId` is only for .fil or .btc coin type
   func addSecondaryAccount(
     _ name: String,
     coin: BraveWallet.CoinType,
+    chainId: String,
     privateKey: String,
     completion: ((BraveWallet.AccountInfo?) -> Void)? = nil
   ) {
     if coin == .fil {
-      rpcService.network(.fil, origin: nil) { [self] defaultNetwork in
-        let networkId = defaultNetwork.chainId.caseInsensitiveCompare(BraveWallet.FilecoinMainnet) == .orderedSame ? BraveWallet.FilecoinMainnet : BraveWallet.FilecoinTestnet
-        keyringService.importFilecoinAccount(name, privateKey: privateKey, network: networkId) { accountInfo in
-          completion?(accountInfo)
-        }
+      keyringService.importFilecoinAccount(name, privateKey: privateKey, network: chainId) { accountInfo in
+        completion?(accountInfo)
       }
     } else {
       keyringService.importAccount(name, privateKey: privateKey, coin: coin) { accountInfo in

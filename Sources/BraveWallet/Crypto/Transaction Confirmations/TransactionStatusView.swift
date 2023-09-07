@@ -41,8 +41,7 @@ struct TransactionStatusView: View {
           Button {
             if let tx = confirmationStore.allTxs.first(where: { $0.id == confirmationStore.activeTransactionId }),
                let txNetwork = networkStore.allChains.first(where: { $0.chainId == tx.chainId }),
-               let baseURL = txNetwork.blockExplorerUrls.first.map(URL.init(string:)),
-               let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)") {
+               let url = txNetwork.txBlockExplorerLink(txHash: tx.txHash, for: txNetwork.coin) {
               openWalletURL(url)
             }
           } label: {

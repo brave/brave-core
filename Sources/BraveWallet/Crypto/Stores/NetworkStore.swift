@@ -109,7 +109,7 @@ public class NetworkStore: ObservableObject {
     _ network: BraveWallet.NetworkInfo,
     isForOrigin: Bool
   ) async -> SetSelectedChainError? {
-    let keyringId = network.coin.keyringId
+    let keyringId = BraveWallet.KeyringId.keyringId(for: network.coin, on: network.chainId)
     let keyringInfo = await keyringService.keyringInfo(keyringId)
     if keyringInfo.accountInfos.isEmpty {
       // Need to prompt user to create new account via alert

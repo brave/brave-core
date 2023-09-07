@@ -15,11 +15,13 @@ class UserAssetsStoreTests: XCTestCase {
   
   let networks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
     .eth: [.mockMainnet],
-    .sol: [.mockSolana]
+    .sol: [.mockSolana],
+    .fil: [.mockFilecoinMainnet]
   ]
   let tokenRegistry: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [
     .eth: [.mockUSDCToken],
-    .sol: [.mockSpdToken]
+    .sol: [.mockSpdToken],
+    .fil: [.mockFilToken]
   ]
   
   private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBlockchainRegistry, BraveWallet.TestAssetRatioService) {
@@ -73,6 +75,15 @@ class UserAssetsStoreTests: XCTestCase {
               ],
               sortOrder: 1)
           )
+        } else if network.chainId == BraveWallet.FilecoinMainnet {
+          result.append(
+            NetworkAssets(
+              network: .mockFilecoinMainnet,
+              tokens: [
+                BraveWallet.NetworkInfo.mockFilecoinMainnet.nativeToken.copy(asVisibleAsset: true)
+              ],
+              sortOrder: 1)
+          )
         }
       }
       return result
@@ -92,7 +103,7 @@ class UserAssetsStoreTests: XCTestCase {
       .dropFirst()
       .sink { assetStores in
         defer { assetStoresException.fulfill() }
-        XCTAssertEqual(assetStores.count, 6)
+        XCTAssertEqual(assetStores.count, 7)
         
         XCTAssertEqual(assetStores[0].token.symbol, BraveWallet.NetworkInfo.mockSolana.nativeToken.symbol)
         XCTAssertTrue(assetStores[0].token.visible)
@@ -117,6 +128,10 @@ class UserAssetsStoreTests: XCTestCase {
         XCTAssertEqual(assetStores[5].token.symbol, BraveWallet.BlockchainToken.mockUSDCToken.symbol)
         XCTAssertFalse(assetStores[5].token.visible)
         XCTAssertEqual(assetStores[5].network, BraveWallet.NetworkInfo.mockMainnet)
+        
+        XCTAssertEqual(assetStores[6].token.symbol, BraveWallet.BlockchainToken.mockFilToken.symbol)
+        XCTAssertTrue(assetStores[6].token.visible)
+        XCTAssertEqual(assetStores[6].network, BraveWallet.NetworkInfo.mockFilecoinMainnet)
       }
       .store(in: &cancellables)
     
@@ -153,6 +168,15 @@ class UserAssetsStoreTests: XCTestCase {
                 BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true),
                 .mockSolanaNFTToken.copy(asVisibleAsset: true),
                 .mockSpdToken
+              ],
+              sortOrder: 1)
+          )
+        } else if network.chainId == BraveWallet.FilecoinMainnet {
+          result.append(
+            NetworkAssets(
+              network: .mockFilecoinMainnet,
+              tokens: [
+                BraveWallet.NetworkInfo.mockFilecoinMainnet.nativeToken.copy(asVisibleAsset: true)
               ],
               sortOrder: 1)
           )

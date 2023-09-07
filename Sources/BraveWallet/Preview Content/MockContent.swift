@@ -134,6 +134,24 @@ extension BraveWallet.BlockchainToken {
     chainId: BraveWallet.SolanaMainnet,
     coin: .sol
   )
+  
+  static let mockFilToken: BraveWallet.BlockchainToken = .init(
+    contractAddress: "",
+    name: "Filcoin",
+    logo: "",
+    isErc20: false,
+    isErc721: false,
+    isErc1155: false,
+    isNft: false,
+    isSpam: false,
+    symbol: "FIL",
+    decimals: 18,
+    visible: false,
+    tokenId: "",
+    coingeckoId: "",
+    chainId: BraveWallet.FilecoinMainnet,
+    coin: .fil
+  )
 }
 
 extension BraveWallet.AccountInfo {
@@ -348,6 +366,36 @@ extension BraveWallet.TransactionInfo {
       effectiveRecipient: nil // Currently only available for ETH and FIL
     )
   }
+  /// Filecoin Unapproved Send
+  static let mockFilUnapprovedSend = BraveWallet.TransactionInfo(
+    id: UUID().uuidString,
+    fromAddress: "t165quq7gkjh6ebshr7qi2ud7vycel4m7x6dvfvgb",
+    from: BraveWallet.AccountInfo.mockFilAccount.accountId,
+    txHash: "",
+    txDataUnion:
+        .init(filTxData:
+            .init(nonce: "",
+                  gasPremium: "100911",
+                  gasFeeCap: "101965",
+                  gasLimit: "1527953",
+                  maxFee: "0",
+                  to: "t1xqhfiydm2yq6augugonr4zpdllh77iw53aexztb",
+                  value: "1000000000000000000"
+                 )
+        ),
+    txStatus: .unapproved,
+    txType: .other,
+    txParams: [],
+    txArgs: [
+    ],
+    createdTime: Date(timeIntervalSince1970: 1636399671), // Monday, November 8, 2021 7:27:51 PM
+    submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
+    confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
+    originInfo: nil,
+    groupId: nil,
+    chainId: BraveWallet.FilecoinMainnet,
+    effectiveRecipient: nil
+  )
   static private func _transactionBase64ToData(_ base64String: String) -> [NSNumber] {
     guard let data = Data(base64Encoded: base64String) else { return [] }
     return Array(data).map(NSNumber.init(value:))

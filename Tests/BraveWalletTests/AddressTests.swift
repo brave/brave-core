@@ -86,4 +86,27 @@ class AddressTests: XCTestCase {
     XCTAssertNotEqual(address, result)
     XCTAssertEqual(zwspAddress, result)
   }
+  
+  func testIsFILAddress() {
+    let isMainnetAddressTrue = "f1ysqn2zflyeb1jqqi2bqbomgjtodunoplkfedbpa"
+    XCTAssertTrue(isMainnetAddressTrue.isFILAddress)
+    
+    let isTestnetAddressTrue = "t165quq7gkjh6ebshr7qi2ud7vycel4m7x6dvfvga"
+    XCTAssertTrue(isTestnetAddressTrue.isFILAddress)
+    
+    let isAddressFalseWrongPrefix = "a1ysqn2zflyeb1jqqi2bqbomgjtodunoplkfedbpa"
+    XCTAssertFalse(isAddressFalseWrongPrefix.isFILAddress)
+    
+    let isAddressFalseCorrentLength1 = "f1ysqn2zflyeb1jqqi2bqbomgjtodunoplkfedbpa"
+    XCTAssertTrue(isAddressFalseCorrentLength1.isFILAddress)
+    
+    let isAddressFalseCorrentLength2 = "f1ysqn2zflyeb1jqqi2bqbomgjtodunoplkfedbpa2ba"
+    XCTAssertTrue(isAddressFalseCorrentLength2.isFILAddress)
+    
+    let isAddressFalseCorrentLength3 = "f1ysqn2zflyeb1jqqi2bqbomgjtodunoplkfedbpaf1ysqn2zflyeb1jqqi2bqbomgjtodunoplkfedbpa1gdu"
+    XCTAssertTrue(isAddressFalseCorrentLength3.isFILAddress)
+    
+    let isAddressFalseWrongLength = "f1ysqn2zflyeb1jqqi2bqbomgjtodundbpa"
+    XCTAssertFalse(isAddressFalseWrongLength.isFILAddress)
+  }
 }

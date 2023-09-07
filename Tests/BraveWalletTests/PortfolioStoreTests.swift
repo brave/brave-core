@@ -40,10 +40,19 @@ import Preferences
     $0.address = "mock_sol_id_2"
     $0.name = "Solana Account 2"
   }
+  let filAccount1: BraveWallet.AccountInfo = .mockFilAccount
+  let filAccount2 = (BraveWallet.AccountInfo.mockFilAccount.copy() as! BraveWallet.AccountInfo).then {
+    $0.address = "mock_fil_id_2"
+    $0.name = "Filecoin Account 2"
+  }
+  let filTestnetAccount: BraveWallet.AccountInfo = .mockFilTestnetAccount
+
   // Networks
   let ethNetwork: BraveWallet.NetworkInfo = .mockMainnet
   let goerliNetwork: BraveWallet.NetworkInfo = .mockGoerli
   let solNetwork: BraveWallet.NetworkInfo = .mockSolana
+  let filMainnet: BraveWallet.NetworkInfo = .mockFilecoinMainnet
+  let filTestnet: BraveWallet.NetworkInfo = .mockFilecoinTestnet
   // ETH Asset, balance, price, history
   let mockETHBalanceAccount1: Double = 0.896
   let mockETHPrice: String = "3059.99" // ETH value = $2741.75104
@@ -79,19 +88,53 @@ import Preferences
     .init(date: Date(), price: "250.00")
   ]
   
+  // FIL Asset, balance, price, history on filecoin mainnet
+  let mockFILBalanceAccount1: Double = 1
+  let mockFILPrice: String = "4.00" // FIL value on mainnet = $4.00
+  lazy var mockFILAssetPrice: BraveWallet.AssetPrice = .init(
+    fromAsset: "fil", toAsset: "usd",
+    price: mockFILPrice, assetTimeframeChange: "-57.23"
+  )
+  lazy var mockFILPriceHistory: [BraveWallet.AssetTimePrice] = [
+    .init(date: Date(timeIntervalSinceNow: -1000), price: "4.06"),
+    .init(date: Date(), price: mockFILPrice)
+  ]
+  // FIL Asset, balance on filecoin testnet
+  let mockFILBalanceTestnet: Double = 100 // FIL value on testnet = $400.00
+  
   var totalBalance: String {
     let totalEthBalanceValue: Double = (Double(mockETHAssetPrice.price) ?? 0) * mockETHBalanceAccount1
     var totalUSDCBalanceValue: Double = 0
     totalUSDCBalanceValue += (Double(mockUSDCAssetPrice.price) ?? 0) * mockUSDCBalanceAccount1
     totalUSDCBalanceValue += (Double(mockUSDCAssetPrice.price) ?? 0) * mockUSDCBalanceAccount2
     let totalSolBalanceValue: Double = (Double(mockSOLAssetPrice.price) ?? 0) * mockSOLBalance
-    let totalBalanceValue = totalEthBalanceValue + totalSolBalanceValue + totalUSDCBalanceValue
+    let totalFilBalanceValue: Double = (Double(mockFILAssetPrice.price) ?? 0) * mockFILBalanceAccount1
+    let totalBalanceValue = totalEthBalanceValue + totalSolBalanceValue + totalUSDCBalanceValue + totalFilBalanceValue
     return currencyFormatter.string(from: NSNumber(value: totalBalanceValue)) ?? ""
   }
   
   private func setupStore() -> PortfolioStore {
     let mockSOLLamportBalance: UInt64 = 3876535000 // ~3.8765 SOL
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    
+    // config filecoin on mainnet
+    let mockFilAccountInfos: [BraveWallet.AccountInfo] = [filAccount1, filAccount2]
+    let mockFilUserAssets: [BraveWallet.BlockchainToken] = [
+      BraveWallet.NetworkInfo.mockFilecoinMainnet.nativeToken.copy(asVisibleAsset: true)
+    ]
+    let mockFilBalanceInWei = formatter.weiString(
+      from: mockFILBalanceAccount1,
+      radix: .decimal,
+      decimals: Int(BraveWallet.BlockchainToken.mockFilToken.decimals)
+    ) ?? ""
+    // config filecoin on testnet
+    let mockFilTestnetAccountInfos: [BraveWallet.AccountInfo] = [filTestnetAccount]
+    let mockFilTestnetBalanceInWei = formatter.weiString(
+      from: mockFILBalanceTestnet,
+      radix: .decimal,
+      decimals: Int(BraveWallet.BlockchainToken.mockFilToken.decimals)
+    ) ?? ""
+    
     // config Solana
     let mockSolAccountInfos: [BraveWallet.AccountInfo] = [solAccount1, solAccount2]
     let mockSolUserAssets: [BraveWallet.BlockchainToken] = [
@@ -125,6 +168,10 @@ import Preferences
       goerliNetwork.nativeToken.copy(asVisibleAsset: true)
     ]
     
+    let mockFilTestnetUserAssets: [BraveWallet.BlockchainToken] = [
+      filTestnet.nativeToken.copy(asVisibleAsset: true)
+    ]
+    
     let ethKeyring: BraveWallet.KeyringInfo = .init(
       id: BraveWallet.KeyringId.default,
       isKeyringCreated: true,
@@ -139,6 +186,20 @@ import Preferences
       isBackedUp: true,
       accountInfos: mockSolAccountInfos
     )
+    let filKeyring: BraveWallet.KeyringInfo = .init(
+      id: .filecoin,
+      isKeyringCreated: true,
+      isLocked: false,
+      isBackedUp: true,
+      accountInfos: mockFilAccountInfos
+    )
+    let filTestnetKeyring: BraveWallet.KeyringInfo = .init(
+      id: .filecoinTestnet,
+      isKeyringCreated: true,
+      isLocked: false,
+      isBackedUp: true,
+      accountInfos: mockFilTestnetAccountInfos
+    )
     
     // setup test services
     let keyringService = BraveWallet.TestKeyringService()
@@ -149,7 +210,7 @@ import Preferences
     }
     keyringService._allAccounts = {
       $0(.init(
-        accounts: ethKeyring.accountInfos + solKeyring.accountInfos,
+        accounts: ethKeyring.accountInfos + solKeyring.accountInfos + filKeyring.accountInfos + filTestnetKeyring.accountInfos,
         selectedAccount: ethKeyring.accountInfos.first,
         ethDappSelectedAccount: ethKeyring.accountInfos.first,
         solDappSelectedAccount: solKeyring.accountInfos.first
@@ -164,19 +225,31 @@ import Preferences
       case .sol:
         completion([self.solNetwork])
       case .fil:
-        XCTFail("Should not fetch filecoin network")
+        completion([self.filMainnet, self.filTestnet])
       case .btc:
         XCTFail("Should not fetch bitcoin network")
       @unknown default:
         XCTFail("Should not fetch unknown network")
       }
     }
-    rpcService._balance = { accountAddress, _, chainId, completion in
-      // eth mainnet balance
-      if chainId == self.ethNetwork.chainId, accountAddress == self.ethAccount1.address {
-        completion(ethBalanceWei, .success, "")
-      } else {
-        completion("", .success, "")
+    rpcService._balance = { accountAddress, coin, chainId, completion in
+      // eth balance
+      if coin == .eth {
+        if chainId == self.ethNetwork.chainId, accountAddress == self.ethAccount1.address {
+          completion(ethBalanceWei, .success, "")
+        } else {
+          completion("", .success, "")
+        }
+      } else { // .fil
+        if chainId == self.filMainnet.chainId {
+          if accountAddress == self.filAccount1.address {
+            completion(mockFilBalanceInWei, .success, "")
+          } else {
+            completion("", .success, "")
+          }
+        } else {
+          completion(mockFilTestnetBalanceInWei, .success, "")
+        }
       }
     }
     rpcService._erc20TokenBalance = { contractAddress, accountAddress, _, completion in
@@ -200,7 +273,7 @@ import Preferences
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { priceIds, _, _, completion in
-      completion(true, [self.mockETHAssetPrice, self.mockUSDCAssetPrice, self.mockSOLAssetPrice])
+      completion(true, [self.mockETHAssetPrice, self.mockUSDCAssetPrice, self.mockSOLAssetPrice, self.mockFILAssetPrice])
     }
     assetRatioService._priceHistory = { priceId, _, _, completion in
       switch priceId {
@@ -210,6 +283,8 @@ import Preferences
         completion(true, self.mockETHPriceHistory)
       case BraveWallet.BlockchainToken.mockUSDCToken.assetRatioId:
         completion(true, self.mockUSDCPriceHistory)
+      case "fil":
+        completion(true, self.mockFILPriceHistory) // for both mainnet and testnet
       default:
         completion(false, [])
       }
@@ -218,9 +293,11 @@ import Preferences
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getAllVisibleAssetsInNetworkAssets = { networks in
       [
-        NetworkAssets(network: .mockMainnet, tokens: mockEthUserAssets.filter({ $0.visible == true }), sortOrder: 0),
-        NetworkAssets(network: .mockSolana, tokens: mockSolUserAssets.filter({ $0.visible == true }), sortOrder: 1),
-        NetworkAssets(network: .mockGoerli, tokens: mockEthGoerliUserAssets.filter({ $0.visible == true }), sortOrder: 2)
+        NetworkAssets(network: .mockMainnet, tokens: mockEthUserAssets.filter(\.visible), sortOrder: 0),
+        NetworkAssets(network: .mockSolana, tokens: mockSolUserAssets.filter(\.visible), sortOrder: 1),
+        NetworkAssets(network: .mockGoerli, tokens: mockEthGoerliUserAssets.filter(\.visible), sortOrder: 2),
+        NetworkAssets(network: .mockFilecoinMainnet, tokens: mockFilUserAssets.filter(\.visible), sortOrder: 3),
+        NetworkAssets(network: .mockFilecoinTestnet, tokens: mockFilTestnetUserAssets.filter(\.visible), sortOrder: 4)
       ].filter { networkAsset in networks.contains(where: { $0 == networkAsset.network }) }
     }
     return PortfolioStore(
@@ -248,6 +325,7 @@ import Preferences
       .sink { assetGroups in
         defer { assetGroupsExpectation.fulfill() }
         XCTAssertEqual(assetGroups.count, 2) // empty (no balance, price, history), populated
+        
         guard let lastUpdatedAssetGroups = assetGroups.last else {
           XCTFail("Unexpected test result")
           return
@@ -257,8 +335,9 @@ import Preferences
           XCTFail("Unexpected test result")
           return
         }
-        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Goerli
-        XCTAssertEqual(group.assets.count, 3)
+        
+        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Goerli, FIL on Filecoin mainnet, FIL on Filecoin testnet
+        XCTAssertEqual(group.assets.count, 4)
         // ETH Mainnet (value ~= $2741.7510399999996)
         XCTAssertEqual(group.assets[safe: 0]?.token.symbol,
                        BraveWallet.BlockchainToken.previewToken.symbol)
@@ -268,6 +347,7 @@ import Preferences
                        self.mockETHPriceHistory)
         XCTAssertEqual(group.assets[safe: 0]?.quantity,
                        String(format: "%.04f", self.mockETHBalanceAccount1))
+        
         // SOL (value = $775.3)
         XCTAssertEqual(group.assets[safe: 1]?.token.symbol,
                        BraveWallet.BlockchainToken.mockSolToken.symbol)
@@ -277,19 +357,33 @@ import Preferences
                        self.mockSOLPriceHistory)
         XCTAssertEqual(group.assets[safe: 1]?.quantity,
                        String(format: "%.04f", self.mockSOLBalance))
-        // USDC (value $0.04)
+        
+        // FIL (value $4.00) on mainnet
         XCTAssertEqual(group.assets[safe: 2]?.token.symbol,
-                       BraveWallet.BlockchainToken.mockUSDCToken.symbol)
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
         XCTAssertEqual(group.assets[safe: 2]?.price,
-                       self.mockUSDCAssetPrice.price)
+                       self.mockFILAssetPrice.price)
         XCTAssertEqual(group.assets[safe: 2]?.history,
-                       self.mockUSDCPriceHistory)
+                       self.mockFILPriceHistory)
         XCTAssertEqual(group.assets[safe: 2]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceAccount1))
+        
+        // USDC (value $0.04)
+        XCTAssertEqual(group.assets[safe: 3]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockUSDCToken.symbol)
+        XCTAssertEqual(group.assets[safe: 3]?.price,
+                       self.mockUSDCAssetPrice.price)
+        XCTAssertEqual(group.assets[safe: 3]?.history,
+                       self.mockUSDCPriceHistory)
+        XCTAssertEqual(group.assets[safe: 3]?.quantity,
                        String(format: "%.04f", self.mockUSDCBalanceAccount1 + self.mockUSDCBalanceAccount2))
+        
         // ETH Goerli (value = 0), hidden because test networks not selected by default
-        XCTAssertNil(group.assets[safe: 3])
+        // FIL Testnet (value = $400.00), hidden because test networks not selected by default
+        XCTAssertNil(group.assets[safe: 4])
       }
       .store(in: &cancellables)
+
     
     // test that `update()` will assign new value to `balance` publisher
     let balanceExpectation = expectation(description: "update-balance")
@@ -338,8 +432,8 @@ import Preferences
           XCTFail("Unexpected test result")
           return
         }
-        // USDC on Ethereum mainnet, SOL on Solana mainnet, ETH on Ethereum mainnet
-        XCTAssertEqual(group.assets.count, 4)
+        // USDC on Ethereum mainnet, SOL on Solana mainnet, ETH on Ethereum mainnet, FIL on Filecoin mainnet and FIL on Filecoin testnet
+        XCTAssertEqual(group.assets.count, 6)
         // ETH Goerli (value = $0)
         XCTAssertEqual(group.assets[safe: 0]?.token.symbol,
                        BraveWallet.BlockchainToken.previewToken.symbol)
@@ -349,15 +443,25 @@ import Preferences
                        BraveWallet.BlockchainToken.mockUSDCToken.symbol)
         XCTAssertEqual(group.assets[safe: 1]?.quantity,
                        String(format: "%.04f", self.mockUSDCBalanceAccount1 + self.mockUSDCBalanceAccount2))
-        // SOL (value = $775.3)
+        // FIL (value = $4.00) on filecoin mainnet
         XCTAssertEqual(group.assets[safe: 2]?.token.symbol,
-                       BraveWallet.BlockchainToken.mockSolToken.symbol)
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
         XCTAssertEqual(group.assets[safe: 2]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceAccount1))
+        // FIL (value = $400.00) on filecoin testnet
+        XCTAssertEqual(group.assets[safe: 3]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
+        XCTAssertEqual(group.assets[safe: 3]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceTestnet))
+        // SOL (value = $775.3)
+        XCTAssertEqual(group.assets[safe: 4]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockSolToken.symbol)
+        XCTAssertEqual(group.assets[safe: 4]?.quantity,
                        String(format: "%.04f", self.mockSOLBalance))
         // ETH Mainnet (value ~= $2741.7510399999996)
-        XCTAssertEqual(group.assets[safe: 3]?.token.symbol,
+        XCTAssertEqual(group.assets[safe: 5]?.token.symbol,
                        BraveWallet.BlockchainToken.previewToken.symbol)
-        XCTAssertEqual(group.assets[safe: 3]?.quantity,
+        XCTAssertEqual(group.assets[safe: 5]?.quantity,
                        String(format: "%.04f", self.mockETHBalanceAccount1))
       }.store(in: &cancellables)
 
@@ -368,10 +472,10 @@ import Preferences
       isHidingSmallBalances: store.filters.isHidingSmallBalances,
       isHidingUnownedNFTs: store.filters.isHidingUnownedNFTs,
       isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
-      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2].map {
+      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2, filAccount1, filAccount2, filTestnetAccount].map {
         .init(isSelected: true, model: $0)
       },
-      networks: [ethNetwork, goerliNetwork, solNetwork].map {
+      networks: [ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet].map {
         .init(isSelected: true, model: $0)
       }
     ))
@@ -399,8 +503,8 @@ import Preferences
           XCTFail("Unexpected test result")
           return
         }
-        // ETH on Ethereum mainnet, SOL on Solana mainnet
-        XCTAssertEqual(group.assets.count, 2) // USDC, ETH Goerli hidden for small balance
+        // ETH on Ethereum mainnet, SOL on Solana mainnet, FIL on Filecoin mainnet and testnet
+        XCTAssertEqual(group.assets.count, 4) // USDC, ETH Goerli hidden for small balance
         // ETH Mainnet (value ~= $2741.7510399999996)
         XCTAssertEqual(group.assets[safe: 0]?.token.symbol,
                        BraveWallet.BlockchainToken.previewToken.symbol)
@@ -411,8 +515,18 @@ import Preferences
                        BraveWallet.BlockchainToken.mockSolToken.symbol)
         XCTAssertEqual(group.assets[safe: 1]?.quantity,
                        String(format: "%.04f", self.mockSOLBalance))
+        // FIL (value = $400) on Filecoin testnet
+        XCTAssertEqual(group.assets[safe: 2]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
+        XCTAssertEqual(group.assets[safe: 2]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceTestnet))
+        // FIL (value = $4) on Filecoin mainnet
+        XCTAssertEqual(group.assets[safe: 3]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
+        XCTAssertEqual(group.assets[safe: 3]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceAccount1))
         // USDC (value = $0.04), hidden
-        XCTAssertNil(group.assets[safe: 2])
+        XCTAssertNil(group.assets[safe: 4])
       }.store(in: &cancellables)
     store.saveFilters(.init(
       groupBy: store.filters.groupBy,
@@ -420,10 +534,10 @@ import Preferences
       isHidingSmallBalances: true,
       isHidingUnownedNFTs: store.filters.isHidingUnownedNFTs,
       isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
-      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2].map {
+      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2, filAccount1, filAccount2, filTestnetAccount].map {
         .init(isSelected: true, model: $0)
       },
-      networks: [ethNetwork, goerliNetwork, solNetwork].map {
+      networks: [ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet].map {
         .init(isSelected: true, model: $0)
       }
     ))
@@ -451,8 +565,8 @@ import Preferences
           XCTFail("Unexpected test result")
           return
         }
-        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Goerli
-        XCTAssertEqual(group.assets.count, 4)
+        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Goerli, FIL on mainnet and testnet
+        XCTAssertEqual(group.assets.count, 6)
         // ETH Mainnet (value ~= $2741.7510399999996)
         XCTAssertEqual(group.assets[safe: 0]?.token.symbol,
                        BraveWallet.BlockchainToken.previewToken.symbol)
@@ -463,15 +577,25 @@ import Preferences
                        BraveWallet.BlockchainToken.mockSolToken.symbol)
         XCTAssertEqual(group.assets[safe: 1]?.quantity,
                        String(format: "%.04f", self.mockSOLBalance))
-        // USDC (value = $0.03, ethAccount2 hidden!)
+        // FIL (value = $400) on testnet
         XCTAssertEqual(group.assets[safe: 2]?.token.symbol,
-                       BraveWallet.BlockchainToken.mockUSDCToken.symbol)
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
         XCTAssertEqual(group.assets[safe: 2]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceTestnet))
+        // FIL (value = $4) on mainnet
+        XCTAssertEqual(group.assets[safe: 3]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
+        XCTAssertEqual(group.assets[safe: 3]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceAccount1))
+        // USDC (value = $0.03, ethAccount2 hidden!)
+        XCTAssertEqual(group.assets[safe: 4]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockUSDCToken.symbol)
+        XCTAssertEqual(group.assets[safe: 4]?.quantity,
                        String(format: "%.04f", self.mockUSDCBalanceAccount1)) // verify account 2 hidden
         // ETH Goerli (value = $0)
-        XCTAssertEqual(group.assets[safe: 03]?.token.symbol,
+        XCTAssertEqual(group.assets[safe: 5]?.token.symbol,
                        self.goerliNetwork.nativeToken.symbol)
-        XCTAssertEqual(group.assets[safe: 3]?.quantity, String(format: "%.04f", 0))
+        XCTAssertEqual(group.assets[safe: 5]?.quantity, String(format: "%.04f", 0))
       }.store(in: &cancellables)
     store.saveFilters(.init(
       groupBy: store.filters.groupBy,
@@ -479,10 +603,10 @@ import Preferences
       isHidingSmallBalances: false,
       isHidingUnownedNFTs: store.filters.isHidingUnownedNFTs,
       isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
-      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2].map { // deselect ethAccount2
+      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2, filAccount1, filAccount2, filTestnetAccount].map { // deselect ethAccount2
         .init(isSelected: $0 != ethAccount2, model: $0)
       },
-      networks: [ethNetwork, goerliNetwork, solNetwork].map {
+      networks: [ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet].map {
         .init(isSelected: true, model: $0)
       }
     ))
@@ -510,24 +634,34 @@ import Preferences
           XCTFail("Unexpected test result")
           return
         }
-        // ETH on Ethereum mainnet, USDC on Ethereum mainnet, ETH on Goerli
-        XCTAssertEqual(group.assets.count, 3)
+        // ETH on Ethereum mainnet, USDC on Ethereum mainnet, ETH on Goerli, FIL on mainnet and testnet
+        XCTAssertEqual(group.assets.count, 5)
         // ETH Mainnet (value ~= $2741.7510399999996)
         XCTAssertEqual(group.assets[safe: 0]?.token.symbol,
                        BraveWallet.BlockchainToken.previewToken.symbol)
         XCTAssertEqual(group.assets[safe: 0]?.quantity,
                        String(format: "%.04f", self.mockETHBalanceAccount1))
-        // USDC (value = $0.04)
+        // FIL (value = $400) on testnet
         XCTAssertEqual(group.assets[safe: 1]?.token.symbol,
-                       BraveWallet.BlockchainToken.mockUSDCToken.symbol)
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
         XCTAssertEqual(group.assets[safe: 1]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceTestnet))
+        // FIL (value = $4) on mainnet
+        XCTAssertEqual(group.assets[safe: 2]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
+        XCTAssertEqual(group.assets[safe: 2]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceAccount1))
+        // USDC (value = $0.04)
+        XCTAssertEqual(group.assets[safe: 3]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockUSDCToken.symbol)
+        XCTAssertEqual(group.assets[safe: 3]?.quantity,
                        String(format: "%.04f", self.mockUSDCBalanceAccount1 + self.mockUSDCBalanceAccount2))
         // ETH Goerli (value = $0)
-        XCTAssertEqual(group.assets[safe: 2]?.token.symbol,
+        XCTAssertEqual(group.assets[safe: 4]?.token.symbol,
                        self.goerliNetwork.nativeToken.symbol)
-        XCTAssertEqual(group.assets[safe: 2]?.quantity, String(format: "%.04f", 0))
+        XCTAssertEqual(group.assets[safe: 4]?.quantity, String(format: "%.04f", 0))
         // SOL (value = $0, SOL networks hidden)
-        XCTAssertNil(group.assets[safe: 3])
+        XCTAssertNil(group.assets[safe: 5])
       }.store(in: &cancellables)
     store.saveFilters(.init(
       groupBy: store.filters.groupBy,
@@ -535,11 +669,11 @@ import Preferences
       isHidingSmallBalances: false,
       isHidingUnownedNFTs: store.filters.isHidingUnownedNFTs,
       isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
-      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2].map {
+      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2, filAccount1, filAccount2, filTestnetAccount].map {
         .init(isSelected: true, model: $0)
       },
-      networks: [ethNetwork, goerliNetwork, solNetwork].map { // only select Ethereum networks
-        .init(isSelected: $0.coin == .eth, model: $0)
+      networks: [ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet].map { // only select Ethereum networks
+        .init(isSelected: $0.coin == .eth || $0.coin == .fil, model: $0)
       }
     ))
     await fulfillment(of: [networksExpectation], timeout: 1)
@@ -563,11 +697,14 @@ import Preferences
           return
         }
         // grouping by .account; 1 for each of the 4 accounts
-        XCTAssertEqual(lastUpdatedAssetGroups.count, 4)
+        XCTAssertEqual(lastUpdatedAssetGroups.count, 7)
         guard let ethAccount1Group = lastUpdatedAssetGroups[safe: 0],
               let solAccount1Group = lastUpdatedAssetGroups[safe: 1],
-              let ethAccount2Group = lastUpdatedAssetGroups[safe: 2],
-              let solAccount2Group = lastUpdatedAssetGroups[safe: 3] else {
+              let filTestnetAccountGroup = lastUpdatedAssetGroups[safe: 2],
+              let filAccount1Group = lastUpdatedAssetGroups[safe: 3],
+              let ethAccount2Group = lastUpdatedAssetGroups[safe: 4],
+              let solAccount2Group = lastUpdatedAssetGroups[safe: 5],
+              let filAccount2Group = lastUpdatedAssetGroups[safe: 6] else {
           XCTFail("Unexpected test result")
           return
         }
@@ -596,6 +733,22 @@ import Preferences
         XCTAssertEqual(solAccount1Group.assets[safe: 0]?.quantity,
                        String(format: "%.04f", self.mockSOLBalance))
         
+        XCTAssertEqual(filTestnetAccountGroup.groupType, .account(self.filTestnetAccount))
+        XCTAssertEqual(filTestnetAccountGroup.assets.count, 1)
+        // FIL (value = $400)
+        XCTAssertEqual(filTestnetAccountGroup.assets[safe: 0]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
+        XCTAssertEqual(filTestnetAccountGroup.assets[safe: 0]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceTestnet))
+        
+        XCTAssertEqual(filAccount1Group.groupType, .account(self.filAccount1))
+        XCTAssertEqual(filAccount1Group.assets.count, 1)
+        // FIL (value = $4)
+        XCTAssertEqual(filAccount1Group.assets[safe: 0]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
+        XCTAssertEqual(filAccount1Group.assets[safe: 0]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceAccount1))
+        
         XCTAssertEqual(ethAccount2Group.groupType, .account(self.ethAccount2))
         XCTAssertEqual(ethAccount2Group.assets.count, 3) // ETH Mainnet, USDC, ETH Goerli
         // USDC (value $0.01)
@@ -618,6 +771,13 @@ import Preferences
         XCTAssertEqual(solAccount2Group.assets[safe: 0]?.token.symbol,
                        BraveWallet.BlockchainToken.mockSolToken.symbol)
         XCTAssertEqual(solAccount2Group.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
+        
+        XCTAssertEqual(filAccount2Group.groupType, .account(self.filAccount2))
+        XCTAssertEqual(filAccount2Group.assets.count, 1)
+        // FIL (value = $0)
+        XCTAssertEqual(filAccount2Group.assets[safe: 0]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
+        XCTAssertEqual(filAccount2Group.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
       }
       .store(in: &cancellables)
     store.saveFilters(.init(
@@ -626,10 +786,10 @@ import Preferences
       isHidingSmallBalances: store.filters.isHidingSmallBalances,
       isHidingUnownedNFTs: store.filters.isHidingUnownedNFTs,
       isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
-      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2].map {
+      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2, filAccount1, filAccount2, filTestnetAccount].map {
         .init(isSelected: true, model: $0)
       },
-      networks: [ethNetwork, goerliNetwork, solNetwork].map {
+      networks: [ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet].map {
         .init(isSelected: true, model: $0)
       }
     ))
@@ -648,9 +808,11 @@ import Preferences
           return
         }
         // grouping by .account; 1 for each of the 2 accounts selected accounts
-        XCTAssertEqual(lastUpdatedAssetGroups.count, 2)
+        XCTAssertEqual(lastUpdatedAssetGroups.count, 4)
         guard let ethAccount1Group = lastUpdatedAssetGroups[safe: 0],
-              let solAccountGroup = lastUpdatedAssetGroups[safe: 1] else {
+              let solAccountGroup = lastUpdatedAssetGroups[safe: 1],
+              let filTestnetAccountGroup = lastUpdatedAssetGroups[safe: 2],
+              let filAccount1Group = lastUpdatedAssetGroups[safe: 3] else {
           XCTFail("Unexpected test result")
           return
         }
@@ -671,9 +833,27 @@ import Preferences
                        BraveWallet.BlockchainToken.mockSolToken.symbol)
         XCTAssertEqual(solAccountGroup.assets[safe: 0]?.quantity,
                        String(format: "%.04f", self.mockSOLBalance))
-        // ethAccount2 hidden as it's de-selected, solAccount2 hidden for small balance
-        XCTAssertNil(lastUpdatedAssetGroups[safe: 2])
-        XCTAssertNil(lastUpdatedAssetGroups[safe: 3])
+        
+        XCTAssertEqual(filTestnetAccountGroup.groupType, .account(self.filTestnetAccount))
+        XCTAssertEqual(filTestnetAccountGroup.assets.count, 1)
+        // FIL (value = $400)
+        XCTAssertEqual(filTestnetAccountGroup.assets[safe: 0]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
+        XCTAssertEqual(filTestnetAccountGroup.assets[safe: 0]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceTestnet))
+        
+        XCTAssertEqual(filAccount1Group.groupType, .account(self.filAccount1))
+        XCTAssertEqual(filAccount1Group.assets.count, 1)
+        // FIL (value = $4)
+        XCTAssertEqual(filAccount1Group.assets[safe: 0]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
+        XCTAssertEqual(filAccount1Group.assets[safe: 0]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceAccount1))
+        
+        // ethAccount2 hidden as it's de-selected, solAccount2 hidden for small balance, filAccount2 hidden for small balance
+        XCTAssertNil(lastUpdatedAssetGroups[safe: 4])
+        XCTAssertNil(lastUpdatedAssetGroups[safe: 5])
+        XCTAssertNil(lastUpdatedAssetGroups[safe: 6])
       }
       .store(in: &cancellables)
     store.saveFilters(.init(
@@ -682,10 +862,10 @@ import Preferences
       isHidingSmallBalances: true,
       isHidingUnownedNFTs: store.filters.isHidingUnownedNFTs,
       isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
-      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2].map {
+      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2, filAccount1, filAccount2, filTestnetAccount].map {
         .init(isSelected: $0 != ethAccount2, model: $0)
       },
-      networks: [ethNetwork, goerliNetwork, solNetwork].map {
+      networks: [ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet].map {
         .init(isSelected: true, model: $0)
       }
     ))
@@ -709,11 +889,13 @@ import Preferences
           XCTFail("Unexpected test result")
           return
         }
-        // grouping by .network; 1 for each of the 2 networks, with Goerli group hidden due to 0 balance.
-        XCTAssertEqual(lastUpdatedAssetGroups.count, 3)
+        // grouping by .network; 1 for each of the 2 networks
+        XCTAssertEqual(lastUpdatedAssetGroups.count, 5)
         guard let ethMainnetGroup = lastUpdatedAssetGroups[safe: 0],
               let solMainnetGroup = lastUpdatedAssetGroups[safe: 1],
-              let ethGoerliGroup = lastUpdatedAssetGroups[safe: 2] else {
+              let filTestnetGroup = lastUpdatedAssetGroups[safe: 2],
+              let filMainnetGroup = lastUpdatedAssetGroups[safe: 3],
+              let ethGoerliGroup = lastUpdatedAssetGroups[safe: 4] else {
           XCTFail("Unexpected test result")
           return
         }
@@ -738,6 +920,22 @@ import Preferences
         XCTAssertEqual(solMainnetGroup.assets[safe: 0]?.quantity,
                        String(format: "%.04f", self.mockSOLBalance))
         
+        XCTAssertEqual(filTestnetGroup.groupType, .network(.mockFilecoinTestnet))
+        XCTAssertEqual(filTestnetGroup.assets.count, 1) // FIL on testnet
+        // FIL (value = $400)
+        XCTAssertEqual(filTestnetGroup.assets[safe: 0]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
+        XCTAssertEqual(filTestnetGroup.assets[safe: 0]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceTestnet))
+        
+        XCTAssertEqual(filMainnetGroup.groupType, .network(.mockFilecoinMainnet))
+        XCTAssertEqual(filMainnetGroup.assets.count, 1) // FIL on mainnet
+        // FIL (value = $4)
+        XCTAssertEqual(filMainnetGroup.assets[safe: 0]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
+        XCTAssertEqual(filMainnetGroup.assets[safe: 0]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceAccount1))
+        
         XCTAssertEqual(ethGoerliGroup.groupType, .network(.mockGoerli))
         XCTAssertEqual(ethGoerliGroup.assets.count, 1) // ETH Goerli
         // ETH Goerli (value = $0)
@@ -752,10 +950,10 @@ import Preferences
       isHidingSmallBalances: store.filters.isHidingSmallBalances,
       isHidingUnownedNFTs: store.filters.isHidingUnownedNFTs,
       isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
-      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2].map {
+      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2, filAccount1, filAccount2, filTestnetAccount].map {
         .init(isSelected: true, model: $0)
       },
-      networks: [ethNetwork, goerliNetwork, solNetwork].map {
+      networks: [ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet].map {
         .init(isSelected: true, model: $0)
       }
     ))
@@ -773,9 +971,11 @@ import Preferences
           XCTFail("Unexpected test result")
           return
         }
-        // grouping by .network; 1 group for Solana network
-        XCTAssertEqual(lastUpdatedAssetGroups.count, 1)
-        guard let solMainnetGroup = lastUpdatedAssetGroups[safe: 0] else {
+        // grouping by .network; 1 group for Solana network, 1 group for Filecoin mainnet, 1 group for Filecoin testnet
+        XCTAssertEqual(lastUpdatedAssetGroups.count, 3)
+        guard let solMainnetGroup = lastUpdatedAssetGroups[safe: 0],
+              let filTestnetGroup = lastUpdatedAssetGroups[safe: 1],
+              let filMainnetGroup = lastUpdatedAssetGroups[safe: 2]  else {
           XCTFail("Unexpected test result")
           return
         }
@@ -786,10 +986,26 @@ import Preferences
                        BraveWallet.BlockchainToken.mockSolToken.symbol)
         XCTAssertEqual(solMainnetGroup.assets[safe: 0]?.quantity,
                        String(format: "%.04f", self.mockSOLBalance))
+        
+        XCTAssertEqual(filTestnetGroup.groupType, .network(.mockFilecoinTestnet))
+        XCTAssertEqual(filTestnetGroup.assets.count, 1) // FIL
+        // FIL (value = $400)
+        XCTAssertEqual(filTestnetGroup.assets[safe: 0]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
+        XCTAssertEqual(filTestnetGroup.assets[safe: 0]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceTestnet))
+        
+        XCTAssertEqual(filMainnetGroup.groupType, .network(.mockFilecoinMainnet))
+        XCTAssertEqual(filMainnetGroup.assets.count, 1) // FIL
+        // FIL (value = $4)
+        XCTAssertEqual(filMainnetGroup.assets[safe: 0]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockFilToken.symbol)
+        XCTAssertEqual(filMainnetGroup.assets[safe: 0]?.quantity,
+                       String(format: "%.04f", self.mockFILBalanceAccount1))
         // eth mainnet group hidden as network de-selected
-        XCTAssertNil(lastUpdatedAssetGroups[safe: 1])
+        XCTAssertNil(lastUpdatedAssetGroups[safe: 3])
         // goerli network group hidden for small balance
-        XCTAssertNil(lastUpdatedAssetGroups[safe: 2])
+        XCTAssertNil(lastUpdatedAssetGroups[safe: 4])
       }
       .store(in: &cancellables)
     store.saveFilters(.init(
@@ -798,10 +1014,10 @@ import Preferences
       isHidingSmallBalances: true,
       isHidingUnownedNFTs: store.filters.isHidingUnownedNFTs,
       isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
-      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2].map {
+      accounts: [ethAccount1, ethAccount2, solAccount1, solAccount2, filAccount1, filAccount2, filTestnetAccount].map {
         .init(isSelected: true, model: $0)
       },
-      networks: [ethNetwork, goerliNetwork, solNetwork].map { // hide ethNetwork
+      networks: [ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet].map { // hide ethNetwork
         .init(isSelected: $0 != ethNetwork, model: $0)
       }
     ))

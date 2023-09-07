@@ -84,7 +84,24 @@ extension BraveWalletJsonRpcService {
           }
         }
       }
-    case .fil, .btc:
+    case .fil:
+      balance(account.address, coin: account.coin, chainId: network.chainId) { amount, status, _ in
+        guard status == .success && !amount.isEmpty else {
+          completion(nil)
+          return
+        }
+        let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+        if let valueString = formatter.decimalString(
+          for: "\(amount)",
+          radix: .decimal,
+          decimals: Int(token.decimals)
+        ) {
+          completion(Double(valueString))
+        } else {
+          completion(nil)
+        }
+      }
+    case .btc:
       completion(nil)
     @unknown default:
       completion(nil)
@@ -182,7 +199,24 @@ extension BraveWalletJsonRpcService {
           }
         }
       }
-    case .fil, .btc:
+    case .fil:
+      balance(accountAddress, coin: token.coin, chainId: network.chainId) { amount, status, _ in
+        guard status == .success && !amount.isEmpty else {
+          completion(nil)
+          return
+        }
+        let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+        if let valueString = formatter.decimalString(
+          for: "\(amount)",
+          radix: .decimal,
+          decimals: Int(token.decimals)
+        ) {
+          completion(BDouble(valueString))
+        } else {
+          completion(nil)
+        }
+      }
+    case .btc:
       completion(nil)
     @unknown default:
       completion(nil)
@@ -261,9 +295,15 @@ extension BraveWalletJsonRpcService {
   /// Returns an array of all networks for the supported coin types. Result will exclude test networks if test networks is set to
   /// not shown in Wallet Settings
   @MainActor func allNetworksForSupportedCoins(respectTestnetPreference: Bool = true) async -> [BraveWallet.NetworkInfo] {
+    await allNetworks(for: WalletConstants.supportedCoinTypes().elements, respectTestnetPreference: respectTestnetPreference)
+  }
+
+  /// Returns an array of all networks for givin coins. Result will exclude test networks if test networks is set to
+  /// not shown in Wallet Settings
+  @MainActor func allNetworks(for coins: [BraveWallet.CoinType], respectTestnetPreference: Bool = true) async -> [BraveWallet.NetworkInfo] {
     await withTaskGroup(of: [BraveWallet.NetworkInfo].self) { @MainActor [weak self] group -> [BraveWallet.NetworkInfo] in
       guard let self = self else { return [] }
-      for coinType in WalletConstants.supportedCoinTypes {
+      for coinType in coins {
         group.addTask { @MainActor in
           let chains = await self.allNetworks(coinType)
           return chains.filter { // localhost not supported

@@ -53,7 +53,10 @@ struct AccountsHeaderView: View {
           Color.clear
             .sheet(isPresented: $isPresentingAddAccount) {
               NavigationView {
-                AddAccountView(keyringStore: keyringStore)
+                AddAccountView(
+                  keyringStore: keyringStore,
+                  networkStore: networkStore
+                )
               }
               .navigationViewStyle(StackNavigationViewStyle())
             }

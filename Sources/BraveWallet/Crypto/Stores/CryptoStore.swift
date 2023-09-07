@@ -410,13 +410,13 @@ public class CryptoStore: ObservableObject {
 
   @MainActor
   func fetchPendingTransactions() async -> [BraveWallet.TransactionInfo] {
-    let allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
-    var allChainIdsForCoin: [BraveWallet.CoinType: [String]] = [:]
-    for coin in WalletConstants.supportedCoinTypes {
+    let allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes())
+    var allNetworksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [:]
+    for coin in WalletConstants.supportedCoinTypes() {
       let allNetworks = await rpcService.allNetworks(coin)
-      allChainIdsForCoin[coin] = allNetworks.map(\.chainId)
+      allNetworksForCoin[coin] = allNetworks
     }
-    return await txService.pendingTransactions(chainIdsForCoin: allChainIdsForCoin, for: allKeyrings)
+    return await txService.pendingTransactions(networksForCoin: allNetworksForCoin, for: allKeyrings)
   }
 
   @MainActor
@@ -560,13 +560,11 @@ extension CryptoStore: BraveWalletKeyringServiceObserver {
     rejectAllPendingWebpageRequests()
   }
   public func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
-    Task { @MainActor [weak self] in
-      if let newCoin = WalletConstants.supportedCoinTypes.first(where: { $0.keyringId == keyringId }) {
-        self?.userAssetManager.migrateUserAssets(for: newCoin, completion: {
-          self?.updateAssets()
-        })
-      }
-    }
+    // 1. We don't need to rely on this observer method to migrate user visible assets
+    // when user creates a new wallet, since in this case `CryptoStore` has not yet been initialized
+    // 2. We don't need to rely on this observer method to migrate user visible assets
+    // when user creates or imports a new account with a new keyring since any new
+    // supported coin type / keyring will be migrated inside `CryptoStore`'s init()
   }
   public func keyringRestored(_ keyringId: BraveWallet.KeyringId) {
     // This observer method will only get called when user restore a wallet

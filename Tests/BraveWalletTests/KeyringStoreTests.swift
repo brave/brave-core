@@ -26,6 +26,8 @@ class KeyringStoreTests: XCTestCase {
         completion(.mockSolanaKeyringInfo)
       case BraveWallet.KeyringId.filecoin:
         completion(.mockFilecoinKeyringInfo)
+      case BraveWallet.KeyringId.filecoinTestnet:
+        completion(.mockFilecoinTestnetKeyringInfo)
       default:
         completion(.init())
       }
@@ -66,14 +68,14 @@ class KeyringStoreTests: XCTestCase {
       rpcService: rpcService
     )
     
-    let expectedKeyrings = [BraveWallet.KeyringInfo.mockDefaultKeyringInfo, BraveWallet.KeyringInfo.mockSolanaKeyringInfo]
+    let expectedKeyrings = [BraveWallet.KeyringInfo.mockDefaultKeyringInfo, BraveWallet.KeyringInfo.mockSolanaKeyringInfo, BraveWallet.KeyringInfo.mockFilecoinKeyringInfo, BraveWallet.KeyringInfo.mockFilecoinTestnetKeyringInfo]
     
     let allTokensExpectation = expectation(description: "allKeyrings")
     store.$allKeyrings
       .dropFirst()
       .sink { allKeyrings in
         defer { allTokensExpectation.fulfill() }
-        XCTAssertEqual(allKeyrings.count, 2)
+        XCTAssertEqual(allKeyrings.count, 4)
         for keyring in allKeyrings {
           XCTAssertTrue(expectedKeyrings.contains(where: { $0.id == keyring.id }))
         }

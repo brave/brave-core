@@ -104,8 +104,7 @@ struct AssetDetailView: View {
               if !txSummary.txHash.isEmpty {
                 Button(action: {
                   if let txNetwork = self.networkStore.allChains.first(where: { $0.chainId == txSummary.txInfo.chainId }),
-                     let baseURL = txNetwork.blockExplorerUrls.first.map(URL.init(string:)),
-                     let url = baseURL?.appendingPathComponent("tx/\(txSummary.txHash)") {
+                     let url = txNetwork.txBlockExplorerLink(txHash: txSummary.txHash, for: txNetwork.coin) {
                     openWalletURL(url)
                   }
                 }) {
@@ -211,7 +210,10 @@ struct AssetDetailView: View {
       Color.clear
         .sheet(isPresented: $isShowingAddAccount) {
           NavigationView {
-            AddAccountView(keyringStore: keyringStore)
+            AddAccountView(
+              keyringStore: keyringStore,
+              networkStore: networkStore
+            )
           }
           .navigationViewStyle(StackNavigationViewStyle())
         }

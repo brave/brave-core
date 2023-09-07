@@ -42,6 +42,12 @@ public class TransactionConfirmationStore: ObservableObject {
   @Published var transactionDetails: String = ""
   /// The gas esitimation for this eip1559 transaction
   @Published var eip1559GasEstimation: BraveWallet.GasEstimation1559?
+  /// The gas premium for filcoin transaction
+  @Published var filTxGasPremium: String?
+  /// The gas limit for filcoin transaction
+  @Published var filTxGasLimit: String?
+  /// The gas fee cap for filcoin transaction
+  @Published var filTxGasFeeCap: String?
   /// The origin info of this transaction
   @Published var originInfo: BraveWallet.OriginInfo?
   /// This is an id for the unppproved transaction that is currently displayed on screen
@@ -218,7 +224,8 @@ public class TransactionConfirmationStore: ObservableObject {
       clearTrasactionInfoBeforeUpdate()
       
       let coin = transaction.coin
-      let keyring = await keyringService.keyringInfo(coin.keyringId)
+      let keyringId = BraveWallet.KeyringId.keyringId(for: transaction.coin, on: transaction.chainId)
+      let keyring = await keyringService.keyringInfo(keyringId)
       if !allNetworks.contains(where: { $0.chainId == transaction.chainId }) {
         allNetworks = await rpcService.allNetworksForSupportedCoins()
       }
@@ -285,6 +292,10 @@ public class TransactionConfirmationStore: ObservableObject {
     isBalanceSufficient = true
     isSolTokenTransferWithAssociatedTokenAccountCreation = false
     isUnlimitedApprovalRequested = false
+    // Filecoin Tx
+    filTxGasPremium = nil
+    filTxGasLimit = nil
+    filTxGasFeeCap = nil
   }
   
   private var assetRatios: [String: Double] = [:]
@@ -533,6 +544,37 @@ public class TransactionConfirmationStore: ObservableObject {
           }
         }
       }
+    case let .filSend(details):
+      symbol = details.sendToken?.symbol ?? ""
+      value = details.sendAmount
+      fiat = details.sendFiat ?? ""
+    
+      filTxGasPremium = details.gasPremium
+      filTxGasLimit = details.gasLimit
+      filTxGasFeeCap = details.gasFeeCap
+      
+      if let gasFee = details.gasFee {
+        gasValue = gasFee.fee
+        gasFiat = gasFee.fiat
+        gasSymbol = activeParsedTransaction.networkSymbol
+        gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
+        
+        if let gasBalance = gasTokenBalanceCache["\(network.nativeToken.symbol)\(activeParsedTransaction.fromAddress)"] {
+          if let gasValue = BDouble(gasFee.fee),
+             BDouble(gasBalance) > gasValue {
+            isBalanceSufficient = true
+          } else {
+            isBalanceSufficient = false
+          }
+        } else if shouldFetchGasTokenBalance {
+          if let account = keyring.accountInfos.first(where: { $0.address == activeParsedTransaction.fromAddress }) {
+            await fetchGasTokenBalance(token: network.nativeToken, account: account, network: network)
+          }
+        }
+      }
+      if let token = details.sendToken {
+        totalFiat = totalFiat(value: value, tokenAssetRatioId: token.assetRatioId, gasValue: gasValue, gasSymbol: gasSymbol, assetRatios: assetRatios, currencyFormatter: currencyFormatter)
+      }
     case .other:
       break
     }
@@ -555,13 +597,13 @@ public class TransactionConfirmationStore: ObservableObject {
   }
   
   @MainActor private func fetchAllTransactions() async -> [BraveWallet.TransactionInfo] {
-    let allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
-    var allChainIdsForCoin: [BraveWallet.CoinType: [String]] = [:]
-    for coin in WalletConstants.supportedCoinTypes {
+    let allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes())
+    var allNetworksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [:]
+    for coin in WalletConstants.supportedCoinTypes() {
       let allNetworks = await rpcService.allNetworks(coin)
-      allChainIdsForCoin[coin] = allNetworks.map(\.chainId)
+      allNetworksForCoin[coin] = allNetworks
     }
-    return await txService.pendingTransactions(chainIdsForCoin: allChainIdsForCoin, for: allKeyrings)
+    return await txService.pendingTransactions(networksForCoin: allNetworksForCoin, for: allKeyrings)
       .sorted(by: { $0.createdTime > $1.createdTime })
   }
 

@@ -256,8 +256,8 @@ struct NewSiteConnectionView_Previews: PreviewProvider {
       coin: .eth,
       keyringStore: {
         let store = KeyringStore.previewStoreWithWalletCreated
-        store.addPrimaryAccount("Account 2", coin: .eth, completion: nil)
-        store.addPrimaryAccount("Account 3", coin: .eth, completion: nil)
+        store.addPrimaryAccount("Account 2", coin: .eth, chainId: BraveWallet.MainnetChainId, completion: nil)
+        store.addPrimaryAccount("Account 3", coin: .eth, chainId: BraveWallet.MainnetChainId, completion: nil)
         return store
       }(),
       onConnect: { _ in },

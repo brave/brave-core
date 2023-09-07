@@ -62,8 +62,7 @@ struct TransactionDetailsView: View {
           if !transactionDetailsStore.transaction.txHash.isEmpty {
             Button(action: {
               if let txNetwork = self.networkStore.allChains.first(where: { $0.chainId == transactionDetailsStore.transaction.chainId }),
-                 let baseURL = txNetwork.blockExplorerUrls.first.map(URL.init(string:)),
-                 let url = baseURL?.appendingPathComponent("tx/\(transactionDetailsStore.transaction.txHash)") {
+                 let url = txNetwork.txBlockExplorerLink(txHash: transactionDetailsStore.transaction.txHash, for: txNetwork.coin) {
                 openWalletURL(url)
               }
             }) {

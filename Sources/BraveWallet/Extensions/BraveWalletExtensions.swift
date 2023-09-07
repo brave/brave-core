@@ -16,8 +16,14 @@ extension BraveWallet.TransactionInfo {
     }
   }
   var isEIP1559Transaction: Bool {
-    guard let ethTxData1559 = txDataUnion.ethTxData1559 else { return false }
-    return !ethTxData1559.maxPriorityFeePerGas.isEmpty && !ethTxData1559.maxFeePerGas.isEmpty
+    if coin == .eth {
+      guard let ethTxData1559 = txDataUnion.ethTxData1559 else { return false }
+      return !ethTxData1559.maxPriorityFeePerGas.isEmpty && !ethTxData1559.maxFeePerGas.isEmpty
+    } else if coin == .fil {
+      guard let filTxData = txDataUnion.filTxData else { return false }
+      return !filTxData.gasPremium.isEmpty && !filTxData.gasFeeCap.isEmpty
+    }
+    return false
   }
   var ethTxToAddress: String {
     // Eth transaction are all coming as `ethTxData1559`
@@ -104,18 +110,18 @@ extension BraveWallet.AccountId {
 }
 
 extension BraveWallet.CoinType {
-  public var keyringId: BraveWallet.KeyringId {
+  public var keyringIds: [BraveWallet.KeyringId] {
     switch self {
     case .eth:
-      return BraveWallet.KeyringId.default
+      return [.default]
     case .sol:
-      return BraveWallet.KeyringId.solana
+      return [.solana]
     case .fil:
-      return BraveWallet.KeyringId.filecoin
+      return [.filecoin, .filecoinTestnet]
     case .btc:
-      return BraveWallet.KeyringId.bitcoin84
+      return [.bitcoin84, .bitcoin84Testnet]
     @unknown default:
-      return BraveWallet.KeyringId.default
+      return [.default]
     }
   }
   
@@ -246,6 +252,18 @@ extension BraveWallet.NetworkInfo {
   var walletUserAssetGroupId: String {
     "\(coin.rawValue).\(chainId)"
   }
+  
+  /// Generate the link for a submitted transaction with given transaction hash and coin type. 
+  func txBlockExplorerLink(txHash: String, for coin: BraveWallet.CoinType) -> URL? {
+    if coin != .fil,
+       let baseURL = blockExplorerUrls.first.map(URL.init(string:)) {
+      return baseURL?.appendingPathComponent("tx/\(txHash)")
+    } else if var urlComps = blockExplorerUrls.first.map(URLComponents.init(string:)) {
+      urlComps?.queryItems = [URLQueryItem(name: "cid", value: txHash)]
+      return urlComps?.url
+    }
+    return nil
+  }
 }
 
 extension BraveWallet.BlockchainToken {
@@ -339,6 +357,23 @@ extension BraveWallet.OnRampProvider {
 extension BraveWallet.CoinMarket {
   static func abbreviateToBillion(input: Double) -> Double {
     input / 1000000000
+  }
+}
+
+extension BraveWallet.KeyringId {
+  static func keyringId(for coin: BraveWallet.CoinType, on chainId: String) -> BraveWallet.KeyringId {
+    switch coin {
+    case .eth:
+      return .default
+    case .sol:
+      return .solana
+    case .fil:
+      return chainId == BraveWallet.FilecoinMainnet ? .filecoin : .filecoinTestnet
+    case.btc:
+      return chainId == BraveWallet.BitcoinMainnet ? .bitcoin84 : .bitcoin84Testnet
+    @unknown default:
+      return .default
+    }
   }
 }
 

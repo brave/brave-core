@@ -143,7 +143,7 @@ class SelectAccountTokenStore: ObservableObject {
   }
   
   @MainActor func update() async {
-    let allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
+    let allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes())
     let allNetworks = await rpcService.allNetworksForSupportedCoins()
     self.allNetworks = allNetworks
     // setup network filters if not currently setup
@@ -157,14 +157,18 @@ class SelectAccountTokenStore: ObservableObject {
     self.accountSections = allKeyrings.flatMap { keyring in
       let tokensForCoin = allVisibleUserAssets.filter { $0.coin == keyring.coin }
       return keyring.accountInfos.map { account in
-        let tokenBalances = tokensForCoin.map { token in
-          AccountSection.TokenBalance(
-            token: token,
-            network: allNetworks.first(where: { $0.chainId == token.chainId }) ?? .init(),
-            balance: cachedBalance(for: token, in: account),
-            price: cachedPrice(for: token, in: account),
-            nftMetadata: cachedMetadata(for: token)
-          )
+        let tokenBalances = tokensForCoin.compactMap { token in
+          let tokenNetwork = allNetworks.first(where: { $0.chainId == token.chainId }) ?? .init()
+          if tokenNetwork.supportedKeyrings.contains(keyring.id.rawValue as NSNumber) {
+            return AccountSection.TokenBalance(
+              token: token,
+              network: allNetworks.first(where: { $0.chainId == token.chainId }) ?? .init(),
+              balance: cachedBalance(for: token, in: account),
+              price: cachedPrice(for: token, in: account),
+              nftMetadata: cachedMetadata(for: token)
+            )
+          }
+          return nil
         }
         return AccountSection(
           account: account,
@@ -306,7 +310,7 @@ class SelectAccountTokenStore: ObservableObject {
 #if DEBUG
 extension SelectAccountTokenStore {
   func setupForTesting() {
-    allNetworks = [.mockMainnet, .mockGoerli, .mockSolana, .mockSolanaTestnet]
+    allNetworks = [.mockMainnet, .mockGoerli, .mockSolana, .mockSolanaTestnet, .mockFilecoinMainnet, .mockFilecoinTestnet]
   }
 }
 #endif

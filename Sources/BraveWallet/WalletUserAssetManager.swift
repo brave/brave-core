@@ -7,6 +7,7 @@ import Foundation
 import Data
 import BraveCore
 import Preferences
+import CoreData
 
 public protocol WalletUserAssetManagerType: AnyObject {
   func getAllVisibleAssetsInNetworkAssets(networks: [BraveWallet.NetworkInfo]) -> [NetworkAssets]
@@ -87,19 +88,39 @@ public class WalletUserAssetManager: WalletUserAssetManagerType {
     WalletUserAssetGroup.removeGroup(groupId, completion: completion)
   }
   
-  public func migrateUserAssets(for coin: BraveWallet.CoinType? = nil, completion: (() -> Void)? = nil) {
-    guard !Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.value else {
-      completion?()
-      return
+  public func migrateUserAssets(completion: (() -> Void)? = nil) {
+    Task { @MainActor in
+      if !Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.value {
+        migrateUserAssets(for: Array(WalletConstants.supportedCoinTypes()), completion: completion)
+      } else {
+        let allNetworks = await rpcService.allNetworksForSupportedCoins(respectTestnetPreference: false)
+        DataController.performOnMainContext { context in
+          let newCoins = self.allNewCoinsIntroduced(networks: allNetworks, context: context)
+          if !newCoins.isEmpty {
+            self.migrateUserAssets(for: newCoins, completion: completion)
+          } else {
+            completion?()
+          }
+        }
+      }
     }
+  }
+  
+  private func allNewCoinsIntroduced(networks: [BraveWallet.NetworkInfo], context: NSManagedObjectContext) -> [BraveWallet.CoinType] {
+    guard let assetGroupIds = WalletUserAssetGroup.getAllGroups(context: context)?.map({ group in
+      group.groupId
+    }) else { return WalletConstants.supportedCoinTypes().elements }
+    var newCoins: Set<BraveWallet.CoinType> = []
+    for network in networks where !assetGroupIds.contains("\(network.coin.rawValue).\(network.chainId)") {
+      newCoins.insert(network.coin)
+    }
+    return Array(newCoins)
+  }
+  
+  private func migrateUserAssets(for coins: [BraveWallet.CoinType], completion: (() -> Void)?) {
     Task { @MainActor in
       var fetchedUserAssets: [String: [BraveWallet.BlockchainToken]] = [:]
-      var networks: [BraveWallet.NetworkInfo] = []
-      if let coin = coin {
-        networks = await rpcService.allNetworks(coin)
-      } else {
-        networks = await rpcService.allNetworksForSupportedCoins(respectTestnetPreference: false)
-      }
+      let networks: [BraveWallet.NetworkInfo] = await rpcService.allNetworks(for: coins, respectTestnetPreference: false)
       let networkAssets = await walletService.allUserAssets(in: networks)
       for networkAsset in networkAssets {
         fetchedUserAssets["\(networkAsset.network.coin.rawValue).\(networkAsset.network.chainId)"] = networkAsset.tokens

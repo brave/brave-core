@@ -355,6 +355,8 @@ struct WalletPanelView: View {
         }
       }
       return true
+    } else if account.coin == .fil {
+      return true
     } else {
       return false
     }
@@ -518,7 +520,7 @@ struct WalletPanelView: View {
       }
     }
     .onAppear {
-      if let accountCreationRequest = WalletProviderAccountCreationRequestManager.shared.firstPendingRequest(for: origin, coinTypes: Array(WalletConstants.supportedCoinTypes)) {
+      if let accountCreationRequest = WalletProviderAccountCreationRequestManager.shared.firstPendingRequest(for: origin, coinTypes: WalletConstants.supportedCoinTypes(.dapps).elements) {
         presentWalletWithContext(.createAccount(accountCreationRequest))
       } else if let request = WalletProviderPermissionRequestsManager.shared.firstPendingRequest(for: origin, coinTypes: [.eth, .sol]) {
         presentWalletWithContext(.requestPermissions(request, onPermittedAccountsUpdated: { accounts in

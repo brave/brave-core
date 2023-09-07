@@ -23,6 +23,10 @@ extension BraveWallet.AccountInfo: Identifiable {
   public var coin: BraveWallet.CoinType {
     accountId.coin
   }
+  
+  public var keyringId: BraveWallet.KeyringId {
+    accountId.keyringId
+  }
 }
 
 extension BraveWallet.TransactionInfo: Identifiable {

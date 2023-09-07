@@ -358,6 +358,34 @@ extension BraveWallet.NetworkInfo {
     supportedKeyrings: [BraveWallet.KeyringId.solana.rawValue].map(NSNumber.init(value:)),
     isEip1559: false
   )
+  static let mockFilecoinMainnet: BraveWallet.NetworkInfo = .init(
+    chainId: BraveWallet.FilecoinMainnet,
+    chainName: "Filecoin Mainnet",
+    blockExplorerUrls: [""],
+    iconUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [URL(string: "https://rpc.ankr.com/filecoin")!],
+    symbol: "FIL",
+    symbolName: "Filecoin",
+    decimals: 18,
+    coin: .fil,
+    supportedKeyrings: [BraveWallet.KeyringId.filecoin.rawValue].map(NSNumber.init(value:)),
+    isEip1559: true
+  )
+  static let mockFilecoinTestnet: BraveWallet.NetworkInfo = .init(
+    chainId: BraveWallet.FilecoinTestnet,
+    chainName: "Filecoin Testnet",
+    blockExplorerUrls: [""],
+    iconUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [URL(string: "https://rpc.ankr.com/filecoin_testnet")!],
+    symbol: "FIL",
+    symbolName: "Filecoin",
+    decimals: 18,
+    coin: .fil,
+    supportedKeyrings: [BraveWallet.KeyringId.filecoinTestnet.rawValue].map(NSNumber.init(value:)),
+    isEip1559: true
+  )
 }
 
 #endif
