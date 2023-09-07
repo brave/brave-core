@@ -14,6 +14,13 @@
 
 namespace brave_ads {
 
+namespace {
+
+constexpr char kVersionKey[] = "version";
+constexpr char kSitesKey[] = "sites";
+
+}  // namespace
+
 AntiTargetingInfo::AntiTargetingInfo() = default;
 
 AntiTargetingInfo::AntiTargetingInfo(AntiTargetingInfo&& other) noexcept =
@@ -29,7 +36,7 @@ base::expected<AntiTargetingInfo, std::string>
 AntiTargetingInfo::CreateFromValue(const base::Value::Dict dict) {
   AntiTargetingInfo anti_targeting;
 
-  if (const absl::optional<int> version = dict.FindInt("version")) {
+  if (const absl::optional<int> version = dict.FindInt(kVersionKey)) {
     if (kAntiTargetingResourceVersion.Get() != *version) {
       return base::unexpected("Failed to load from JSON, version mismatch");
     }
@@ -37,7 +44,7 @@ AntiTargetingInfo::CreateFromValue(const base::Value::Dict dict) {
     anti_targeting.version = *version;
   }
 
-  const auto* const sites_dict = dict.FindDict("sites");
+  const auto* const sites_dict = dict.FindDict(kSitesKey);
   if (!sites_dict) {
     return base::unexpected("Failed to load from JSON, sites missing");
   }
@@ -48,16 +55,15 @@ AntiTargetingInfo::CreateFromValue(const base::Value::Dict dict) {
           "Failed to load from JSON, sites not of type list");
     }
 
-    std::set<GURL> anti_targeting_sites;
     for (const auto& site : sites.GetList()) {
       if (!site.is_string()) {
         return base::unexpected(
             "Failed to load from JSON, site not of type string");
       }
-      anti_targeting_sites.insert(GURL(site.GetString()));
-    }
 
-    anti_targeting.sites[creative_set_id] = std::move(anti_targeting_sites);
+      anti_targeting.creative_sets[creative_set_id].insert(
+          GURL(site.GetString()));
+    }
   }
 
   return anti_targeting;

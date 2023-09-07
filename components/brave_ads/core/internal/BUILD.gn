@@ -804,6 +804,8 @@ static_library("internal") {
     "serving/eligible_ads/eligible_ads_feature.h",
     "serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule.cc",
     "serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule.h",
+    "serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule_util.cc",
+    "serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule_util.h",
     "serving/eligible_ads/exclusion_rules/conversion_exclusion_rule.cc",
     "serving/eligible_ads/exclusion_rules/conversion_exclusion_rule.h",
     "serving/eligible_ads/exclusion_rules/creative_instance_exclusion_rule.cc",
