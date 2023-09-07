@@ -201,7 +201,8 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
   if (adblock_result.rewritten_url.has_value &&
       GURL(std::string(adblock_result.rewritten_url.value)).is_valid() &&
       (ctx->method == "GET" || ctx->method == "HEAD" ||
-       ctx->method == "OPTIONS")) {
+       ctx->method == "OPTIONS") &&
+      ctx->aggressive_blocking) {
     ctx->new_url_spec = std::string(adblock_result.rewritten_url.value);
   }
 

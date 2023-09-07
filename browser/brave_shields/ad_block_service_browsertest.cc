@@ -1781,6 +1781,32 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RemoveparamTopLevelNavigation) {
   ASSERT_TRUE(dynamic_server_.ShutdownAndWaitUntilComplete());
 }
 
+// `$removeparam` should not be activated in default blocking mode
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultNoRemoveparam) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  DisableAggressiveMode();
+
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  UpdateAdBlockInstanceWithRules("*$subdocument,removeparam=evil");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  GURL frame_url = embedded_test_server()->GetURL(
+      "frame.com", "/cosmetic_frame.html?evil=true&test=true");
+  content::NavigateIframeToURL(contents, "iframe", frame_url);
+
+  ASSERT_NE(nullptr,
+            content::FrameMatchingPredicateOrNullptr(
+                contents->GetPrimaryPage(),
+                base::BindRepeating(content::FrameHasSourceUrl, frame_url)));
+}
+
 // Verify that scripts violating a Content Security Policy from a `$csp` rule
 // are not loaded.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {
