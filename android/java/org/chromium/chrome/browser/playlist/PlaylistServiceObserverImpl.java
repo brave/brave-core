@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.playlist;
 
 import org.chromium.mojo.system.MojoException;
+import org.chromium.playlist.mojom.Playlist;
 import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistServiceObserver;
 import org.chromium.url.mojom.Url;
@@ -58,6 +59,9 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
 
     @Override
     public void onItemDeleted(String id) {}
+
+    @Override
+    public void onPlaylistUpdated(Playlist list) {}
 
     @Override
     public void close() {

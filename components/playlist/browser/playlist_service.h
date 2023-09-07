@@ -168,9 +168,11 @@ class PlaylistService : public KeyedService,
   void MoveItem(const std::string& from_playlist_id,
                 const std::string& to_playlist_id,
                 const std::string& item_id) override;
-  void ReorderItemFromPlaylist(const std::string& playlist_id,
-                               const std::string& item_id,
-                               int16_t position) override;
+  void ReorderItemFromPlaylist(
+      const std::string& playlist_id,
+      const std::string& item_id,
+      int16_t position,
+      ReorderItemFromPlaylistCallback callback) override;
   void UpdateItem(mojom::PlaylistItemPtr item) override;
   void UpdateItemLastPlayedPosition(const std::string& id,
                                     int32_t last_played_position) override;

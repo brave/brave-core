@@ -101,7 +101,8 @@ interface PlaylistService {
 
   RemoveItemFromPlaylist(string playlist_id, string item_id);
   MoveItem(string from_playlist_id, string to_playlist_id, string item_id);
-  ReorderItemFromPlaylist(string playlist_id, string item_id, int16 position);
+  ReorderItemFromPlaylist(string playlist_id, string item_id, int16 position)
+      => (bool result);
 
   // If you want to update a specific field, using the version for the feild
   // would be better to gurantee the data consistency. We have many concurrent
@@ -157,6 +158,8 @@ interface PlaylistServiceObserver {
   OnItemDeleted(string id);
   OnItemAddedToList(string playlist_id, string item_id);
   OnItemRemovedFromList(string playlist_id, string item_id);
+
+  OnPlaylistUpdated(Playlist playlist);
 
   OnMediaFileDownloadProgressed(
       string id,
