@@ -5,7 +5,7 @@
 
 import * as React from 'react';
 import Card from './feed/Card';
-import { FeedV2 } from '../../../../../out/Component/gen/brave/components/brave_news/common/brave_news.mojom.m';
+import { FeedV2 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 
 interface Counts {
   advert: number,
