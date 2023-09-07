@@ -46,7 +46,7 @@ public class BraveSearchBannerProcessor implements DropdownItemProcessor {
                 mUrlBarDelegate.loadUrl("https://search.brave.com/search?q="
                                 + mUrlBarEditingTextProvider.getTextWithoutAutocomplete()
                                 + "&action=makeDefault",
-                        PageTransition.LINK, System.currentTimeMillis());
+                        PageTransition.LINK, System.currentTimeMillis(), /*openInNewTab=*/false);
             }
 
             @Override
