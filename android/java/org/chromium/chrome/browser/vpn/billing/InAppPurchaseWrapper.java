@@ -187,7 +187,7 @@ public class InAppPurchaseWrapper {
 
         mBillingClient.queryProductDetailsAsync(
                 queryProductDetailsParams, (billingResult, productDetailsList) -> {
-                    if (billingResult.getResponseCode() == OK) {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                         for (ProductDetails productDetail : productDetailsList) {
                             productDetails.put(productDetail.getProductId(), productDetail);
                         }
@@ -209,7 +209,7 @@ public class InAppPurchaseWrapper {
                                                    .build(),
                 (billingResult, purchases) -> {
                     Purchase activePurchase = null;
-                    if (billingResult.getResponseCode() == OK) {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                         for (Purchase purchase : purchases) {
                             if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
                                 activePurchase = purchase;
@@ -250,7 +250,7 @@ public class InAppPurchaseWrapper {
                         .build();
         if (!purchase.isAcknowledged()) {
             mBillingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
-                if (billingResult.getResponseCode() == OK) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     BraveVpnPrefUtils.setSubscriptionPurchase(true);
                     BraveVpnUtils.openBraveVpnProfileActivity(context);
                     BraveVpnUtils.showToast(

@@ -20,13 +20,9 @@ import org.chromium.base.Log;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.profiles.Profile;
-
-import org.chromium.base.task.PostTask;
-import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.LiveDataUtil;
-
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
@@ -48,12 +44,12 @@ public abstract class BraveVpnParentActivity
     abstract void showRestoreMenu(boolean shouldShowRestore);
     abstract void updateProfileView();
 
-    // Pass @{code ActivityResultRegistry} reference explicitly to avoid crash
-    // https://github.com/brave/brave-browser/issues/31882
     public BraveVpnParentActivity() {
         mProfileSupplier = new OneshotSupplierImpl<>();
     }
 
+    // Pass @{code ActivityResultRegistry} reference explicitly to avoid crash
+    // https://github.com/brave/brave-browser/issues/31882
     ActivityResultLauncher<Intent> mIntentActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), getActivityResultRegistry(),
             result -> {
@@ -76,10 +72,6 @@ public abstract class BraveVpnParentActivity
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         mProfileSupplier.set(Profile.getLastUsedRegularProfile());
-        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
-                    BraveVpnParentActivity.this);
-        }
     }
 
     protected void verifySubscription() {
