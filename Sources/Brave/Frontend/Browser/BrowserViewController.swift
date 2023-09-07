@@ -2,19 +2,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
 import UIKit
 import WebKit
 import Shared
 import Storage
 import SnapKit
-import SwiftyJSON
 import Data
 import BraveShared
 import BraveCore
 import CoreData
 import StoreKit
-import SafariServices
 import BraveUI
 import NetworkExtension
 import FeedKit
@@ -199,9 +196,6 @@ public class BrowserViewController: UIViewController {
   var navigationToolbar: ToolbarProtocol {
     return toolbar ?? topToolbar
   }
-
-  /// Keep track of the URL request that was upgraded so that we can add it to the HTTPS page stats
-  var pendingHTTPUpgrades = [String: URLRequest]()
 
   // Keep track of allowed `URLRequest`s from `webView(_:decidePolicyFor:decisionHandler:)` so
   // that we can obtain the originating `URLRequest` when a `URLResponse` is received. This will
@@ -589,14 +583,6 @@ public class BrowserViewController: UIViewController {
 
   func shouldShowFooterForTraitCollection(_ previousTraitCollection: UITraitCollection) -> Bool {
     return previousTraitCollection.verticalSizeClass != .compact && previousTraitCollection.horizontalSizeClass != .regular
-  }
-
-  func toggleSnackBarVisibility(show: Bool) {
-    if show {
-      UIView.animate(withDuration: 0.1, animations: { self.alertStackView.isHidden = false })
-    } else {
-      alertStackView.isHidden = true
-    }
   }
   
   private func updateUsingBottomBar(using traitCollection: UITraitCollection) {
