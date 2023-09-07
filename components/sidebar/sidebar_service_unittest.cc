@@ -984,6 +984,7 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
   );
 }
+
 TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
   base::Value::Dict sidebar(ParseTestJson(sidebar_builtin_wallet_hidden_json));
 
@@ -1004,6 +1005,7 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
   );
 }
+
 TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAiChatBuiltInNotListed) {
   base::Value::Dict sidebar(
       ParseTestJson(sidebar_builtin_ai_chat_not_listed_json));
