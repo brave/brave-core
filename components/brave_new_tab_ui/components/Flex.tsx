@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 
 interface FlexProps {
-  align?: 'start' | 'end' | 'center' | 'flex-end' | 'flex-start' | 'self-start' | 'self-end'
+  align?: 'start' | 'end' | 'center' | 'flex-end' | 'flex-start' | 'self-start' | 'self-end' | 'stretch';
   justify?: 'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly' | 'left' | 'right'
   direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse'
   gap?: number | string
