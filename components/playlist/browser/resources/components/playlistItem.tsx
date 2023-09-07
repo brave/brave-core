@@ -34,6 +34,7 @@ interface Props {
   item: PlaylistItemMojo
   isEditing: boolean
   isSelected?: boolean
+  canReorder: boolean
   shouldBeHidden: boolean
   onClick: (item: PlaylistItemMojo) => void
 }
@@ -341,7 +342,7 @@ export function PlaylistItem ({
 
 export function SortablePlaylistItem (props: Props) {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: props.item.id })
+    useSortable({ id: props.item.id, disabled: !props.canReorder })
 
   if (transform) transform.x = 0
   const style = {
