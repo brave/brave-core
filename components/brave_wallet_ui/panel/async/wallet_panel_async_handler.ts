@@ -515,7 +515,6 @@ handler.on(PanelActions.signAllTransactionsProcessed.type, async (store: Store, 
 })
 
 handler.on(PanelActions.signMessageError.type, async (store: Store) => {
-  store.dispatch(PanelActions.navigateTo('siweError'))
   const { panelHandler } = getWalletPanelApiProxy()
   panelHandler.showUI()
 })

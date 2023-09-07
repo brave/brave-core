@@ -55,37 +55,29 @@ export const SignInWithEthereumError = () => {
   const signMessageErrorData =
     useUnsafePanelSelector(PanelSelectors.signMessageErrorData)
 
-  // Memos
-  const errorData = React.useMemo(() => {
-    if (signMessageErrorData.length === 0) {
-      return undefined
-    }
-    return signMessageErrorData[0]
-  }, [signMessageErrorData])
+  // Computed
+  const errorData =
+    signMessageErrorData.length === 0
+      ? undefined
+      : signMessageErrorData[0]
 
-  const errorMessage = React.useMemo(() => {
-    if (!errorData?.localizedErrMsg && !errorData?.type) {
-      return ''
-    }
-    if (
-      errorData.type === BraveWallet.SignMessageErrorType.kAccountMismatched
-    ) {
-      const message = errorData.localizedErrMsg
-      const address =
-        message.substring(
-          message.indexOf('(') + 1,
-          message.indexOf(')')
-        )
-      return message.replace(address, reduceAddress(address))
-    }
-    return errorData.localizedErrMsg
-  }, [
-    errorData?.localizedErrMsg,
-    errorData?.type
-  ])
+  const message = errorData?.localizedErrMsg ?? ''
+  const address =
+    message.substring(
+      message.indexOf('(') + 1,
+      message.indexOf(')')
+    )
+
+  const errorMessage =
+    !errorData?.localizedErrMsg && !errorData?.type
+      ? ''
+      : errorData.type ===
+        BraveWallet.SignMessageErrorType.kAccountMismatched
+        ? message.replace(address, reduceAddress(address))
+        : errorData.localizedErrMsg
 
   // Methods
-  const onClickViewOnChainList = React.useCallback(() => {
+  const onClickViewOnChainList = () => {
     if (!errorData?.chainId) {
       return
     }
@@ -98,14 +90,14 @@ export const SignInWithEthereumError = () => {
           )
         }
       })
-  }, [errorData?.chainId])
+  }
 
-  const onClickClose = React.useCallback(() => {
+  const onClickClose = () => {
     if (!errorData?.id) {
       return
     }
     dispatch(PanelActions.signMessageErrorProcessed(errorData.id))
-  }, [errorData?.id])
+  }
 
   return (
     <StyledWrapper>

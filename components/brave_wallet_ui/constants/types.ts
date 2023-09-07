@@ -115,7 +115,6 @@ export type PanelTypes =
   | 'transactionDetails'
   | 'activity' // Transactions
   | 'transactionStatus'
-  | 'siweError'
 
 export type NavTypes =
   | 'crypto'

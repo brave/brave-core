@@ -54,6 +54,7 @@ import {
   ScrollableColumn
 } from '../../shared/style'
 
+// Helpers
 export const getKeyLocale = (key: string) => {
   const capitalized = key.charAt(0).toUpperCase() + key.slice(1)
   const localeString = `braveWallet${capitalized}`
@@ -61,6 +62,40 @@ export const getKeyLocale = (key: string) => {
     ? key
     : getLocale(localeString)
 }
+
+const getFormattedKeyValue =
+  (key: string, data?: BraveWallet.SIWEMessage) => {
+    if (!data) {
+      return ''
+    }
+    if (key === 'origin') {
+      return <CodeBlock>
+        {
+          JSON.stringify(
+            Object.fromEntries(
+              Object.entries(data[key])
+                .filter(([k]) => !k.includes('nonceIfOpaque'))
+            )
+          )
+        }
+      </CodeBlock>
+    }
+    if (key === 'uri') {
+      return data[key].url
+    }
+    if (key === 'resources') {
+      return data[key]?.map(
+        (resource) => {
+          return <React.Fragment
+            key={resource.url}
+          >
+            <span>{resource.url}</span>
+            <VerticalSpace space='4px' />
+          </React.Fragment>
+        })
+    }
+    return data[key].toString()
+  }
 
 interface Props {
   data: BraveWallet.SignMessageRequest
@@ -83,49 +118,15 @@ export const SignInWithEthereum = (props: Props) => {
     data.accountId || skipToken
   )
 
-  // Methods
-  const getFormattedKeyValue =
-    React.useCallback((key: string) => {
-      if (!data.signData.ethSiweData) {
-        return ''
-      }
-      if (key === 'origin') {
-        return <CodeBlock>
-          {
-            JSON.stringify(
-              Object.fromEntries(
-                Object.entries(data.signData.ethSiweData[key])
-                  .filter(([k]) => !k.includes('nonceIfOpaque'))
-              )
-            )
-          }
-        </CodeBlock>
-      }
-      if (key === 'uri') {
-        return data.signData.ethSiweData[key].url
-      }
-      if (key === 'resources') {
-        return data.signData.ethSiweData[key]?.map(
-          (resource) => {
-            return <React.Fragment
-              key={resource.url}
-            >
-              <span>{resource.url}</span>
-              <VerticalSpace space='4px' />
-            </React.Fragment>
-          })
-      }
-      return data.signData.ethSiweData[key].toString()
-    }, [data.signData.ethSiweData])
-
-  // Memos
-  const dataKeys = React.useMemo(() => {
-    if (!data.signData.ethSiweData) {
-      return []
-    }
-    return Object.keys(data.signData.ethSiweData)
-      .filter((key) => data.signData?.ethSiweData?.[key] !== null)
-  }, [data.signData.ethSiweData])
+  // Computed
+  const dataKeys =
+    !data.signData.ethSiweData
+      ? []
+      : Object.keys(data.signData.ethSiweData)
+        .filter(
+          (key) =>
+            data.signData?.ethSiweData?.[key] !== null
+        )
 
   const hasMessageAndResource =
     data.signData.ethSiweData?.statement &&
@@ -176,7 +177,12 @@ export const SignInWithEthereum = (props: Props) => {
                   textSize='12px'
                   isBold={false}
                 >
-                  {getFormattedKeyValue(objectKey)}
+                  {
+                    getFormattedKeyValue(
+                      objectKey,
+                      data.signData.ethSiweData
+                    )
+                  }
                 </DetailsInfoText>
               </Row>
               {dataKeys.length - 1 !== key &&

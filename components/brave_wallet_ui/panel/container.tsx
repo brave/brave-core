@@ -135,6 +135,8 @@ function Container () {
   const getEncryptionPublicKeyRequest = useUnsafePanelSelector(PanelSelectors.getEncryptionPublicKeyRequest)
   const decryptRequest = useUnsafePanelSelector(PanelSelectors.decryptRequest)
   const connectingAccounts = useUnsafePanelSelector(PanelSelectors.connectingAccounts)
+  const signMessageErrorData =
+    useUnsafePanelSelector(PanelSelectors.signMessageErrorData)
 
   // queries & mutations
   const [setSelectedAccount] = useSetSelectedAccountMutation()
@@ -469,6 +471,14 @@ function Container () {
     )
   }
 
+  if (signMessageErrorData.length !== 0) {
+    return (
+      <PanelWrapper>
+        <SignInWithEthereumError />
+      </PanelWrapper>
+    )
+  }
+
   if (selectedPanel === 'signData') {
     return (
       <PanelWrapper isLonger={true}>
@@ -492,14 +502,6 @@ function Container () {
             signMode={selectedPanel === 'signAllTransactions' ? 'signAllTxs' : 'signTx'}
           />
         </LongWrapper>
-      </PanelWrapper>
-    )
-  }
-
-  if (selectedPanel === 'siweError') {
-    return (
-      <PanelWrapper>
-        <SignInWithEthereumError />
       </PanelWrapper>
     )
   }
