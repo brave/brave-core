@@ -48,6 +48,10 @@ class PlaylistRenderFrameObserverBrowserTest;
 class PlaylistDownloadRequestManagerBrowserTest;
 class PrefService;
 
+namespace gfx {
+class Image;
+}  // namespace gfx
+
 namespace playlist {
 
 class MediaDetectorComponentManager;
@@ -114,6 +118,9 @@ class PlaylistService : public KeyedService,
 #endif  // BUILDFLAG(IS_ANDROID)
 
   bool GetThumbnailPath(const std::string& id, base::FilePath* thumbnail_path);
+
+  void DownloadThumbnail(const GURL& url,
+                         base::OnceCallback<void(gfx::Image)> callback);
 
   // This returns candidate path, which possibly doesn't have file extension.
   // Don't depend on this method to access the actual cache on the local disk.

@@ -15,6 +15,7 @@
 #include "brave/browser/ui/views/playlist/playlist_action_dialogs.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/playlist/selectable_list_view.h"
+#include "brave/browser/ui/views/playlist/thumbnail_provider.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -115,6 +116,8 @@ class AddBubble : public PlaylistActionBubbleView {
   void OnSelectionChanged();
 
   raw_ptr<SelectableItemsView> list_view_ = nullptr;
+
+  std::unique_ptr<ThumbnailProvider> thumbnail_provider_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -319,7 +322,9 @@ AddBubble::AddBubble(Browser* browser,
                      PlaylistActionIconView* anchor,
                      playlist::PlaylistTabHelper* playlist_tab_helper,
                      const std::vector<playlist::mojom::PlaylistItemPtr>& items)
-    : PlaylistActionBubbleView(browser, anchor, playlist_tab_helper) {
+    : PlaylistActionBubbleView(browser, anchor, playlist_tab_helper),
+      thumbnail_provider_(
+          std::make_unique<ThumbnailProvider>(playlist_tab_helper)) {
   // What this look like
   // https://user-images.githubusercontent.com/5474642/243532255-f82fc740-eea0-4c52-b43a-378ab703d229.png
   SetTitle(l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_TO_PLAYLIST));
@@ -342,8 +347,9 @@ AddBubble::AddBubble(Browser* browser,
       /*corner_radius=*/4.f, kColorBravePlaylistListBorder));
 
   list_view_ = scroll_view->SetContents(std::make_unique<SelectableItemsView>(
-      items, base::BindRepeating(&AddBubble::OnSelectionChanged,
-                                 base::Unretained(this))));
+      thumbnail_provider_.get(), items,
+      base::BindRepeating(&AddBubble::OnSelectionChanged,
+                          base::Unretained(this))));
   list_view_->SetSelected(items);
 
   // Fix preferred width. This is for ignoring insets that could be added by

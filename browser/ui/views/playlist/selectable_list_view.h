@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
+#include "brave/browser/ui/views/playlist/thumbnail_provider.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/grit/generated_resources.h"
@@ -22,6 +23,9 @@
 namespace views {
 class ImageView;
 }  // namespace views
+
+class ThumbnailProvider;
+class ThumbnailView;
 
 class SelectableView : public views::Button {
  public:
@@ -39,6 +43,8 @@ class SelectableView : public views::Button {
 
   void SetSelected(bool selected);
 
+  base::OnceCallback<void(const gfx::Image&)> GetThumbnailSetter();
+
   // views::Button:
   int GetHeightForWidth(int width) const override;
   void OnThemeChanged() override;
@@ -55,6 +61,7 @@ class SelectableView : public views::Button {
   bool selected_ = false;
 
   raw_ptr<views::ImageView> selected_icon_ = nullptr;
+  raw_ptr<ThumbnailView> thumbnail_view_ = nullptr;
 };
 
 template <typename T>
@@ -66,6 +73,7 @@ struct SelectableDataTraits<playlist::mojom::PlaylistItemPtr> {
       const playlist::mojom::PlaylistItemPtr& item) {
     return item->id;
   }
+
   static const std::string& GetName(
       const playlist::mojom::PlaylistItemPtr& item) {
     return item->name;
@@ -93,24 +101,26 @@ template <class DataType,
           bool need_at_least_one_selected = false>
 class SelectableListView : public views::BoxLayoutView {
  public:
-  SelectableListView(const std::vector<DataType>& data,
+  SelectableListView(ThumbnailProvider* thumbnail_provider,
+                     const std::vector<DataType>& data,
                      base::RepeatingCallback<void()> on_selection_changed)
-      : on_selection_changed_(on_selection_changed) {
+      : thumbnail_provider_(thumbnail_provider),
+        on_selection_changed_(on_selection_changed) {
+    CHECK(thumbnail_provider_);
+
     SetOrientation(views::BoxLayout::Orientation::kVertical);
 
     for (const auto& d : data) {
       auto id = SelectableDataTraits<DataType>::GetId(d);
       data_.insert({id, d.Clone()});
-      child_views_.insert(
-          {id, AddChildView(std::make_unique<SelectableView>(
-                   id, SelectableDataTraits<DataType>::GetName(d),
-                   // TODO(sko) We can't set the item's thumbnail for now. We
-                   // need some prerequisite.
-                   //  * Download the thumbnail from network
-                   //  * Sanitize the image
-                   gfx::Image(),
-                   base::BindRepeating(&SelectableListView::OnViewPressed,
-                                       base::Unretained(this))))});
+
+      auto* selectable_view = AddChildView(std::make_unique<SelectableView>(
+          id, SelectableDataTraits<DataType>::GetName(d), gfx::Image(),
+          base::BindRepeating(&SelectableListView::OnViewPressed,
+                              base::Unretained(this))));
+      thumbnail_provider->GetThumbnail(d,
+                                       selectable_view->GetThumbnailSetter());
+      child_views_.insert({id, selectable_view});
     }
   }
   ~SelectableListView() override = default;
@@ -182,6 +192,8 @@ class SelectableListView : public views::BoxLayoutView {
 
     on_selection_changed_.Run();
   }
+
+  raw_ptr<ThumbnailProvider> thumbnail_provider_;
 
   base::RepeatingCallback<void()> on_selection_changed_;
 
