@@ -9,6 +9,7 @@ use abscissa_core::terminal::{
     Color::{self, Red, Yellow},
 };
 use rustsec::{
+    advisory::License,
     cargo_lock::{
         dependency::{self, graph::EdgeDirection, Dependency},
         Lockfile, Package,
@@ -249,11 +250,7 @@ impl Presenter {
         tree: &dependency::Tree,
     ) {
         self.print_attr(Red, "Crate:    ", &vulnerability.package.name);
-        self.print_attr(
-            Red,
-            "Version:  ",
-            &vulnerability.package.version.to_string(),
-        );
+        self.print_attr(Red, "Version:  ", vulnerability.package.version.to_string());
         self.print_metadata(&vulnerability.advisory, Red);
 
         if vulnerability.versions.patched().is_empty() {
@@ -285,7 +282,7 @@ impl Presenter {
         let color = self.warning_color(self.deny_warning_kinds.contains(&warning.kind));
 
         self.print_attr(color, "Crate:    ", &warning.package.name);
-        self.print_attr(color, "Version:  ", &warning.package.version.to_string());
+        self.print_attr(color, "Version:  ", warning.package.version.to_string());
         self.print_attr(color, "Warning:  ", warning.kind.as_str());
 
         if let Some(metadata) = &warning.advisory {
@@ -311,10 +308,21 @@ impl Presenter {
         self.print_attr(color, "Date:     ", &metadata.date);
         self.print_attr(color, "ID:       ", &metadata.id);
 
-        if let Some(url) = metadata.id.url() {
-            self.print_attr(color, "URL:      ", &url);
-        } else if let Some(url) = &metadata.url {
-            self.print_attr(color, "URL:      ", url);
+        if metadata.license == License::CcBy40 {
+            // We must preserve the original URL from the `url` field
+            if let Some(url) = &metadata.url {
+                self.print_attr(color, "URL:      ", url);
+            } else if let Some(url) = &metadata.id.url() {
+                self.print_attr(color, "URL:      ", url);
+            }
+        } else {
+            // Prefer ID URL because the `url` field usually points to a bug tracker
+            // or any other non-canonical source rather than an actual security advisory
+            if let Some(url) = &metadata.id.url() {
+                self.print_attr(color, "URL:      ", url);
+            } else if let Some(url) = &metadata.url {
+                self.print_attr(color, "URL:      ", url);
+            }
         }
 
         if let Some(cvss) = &metadata.cvss {

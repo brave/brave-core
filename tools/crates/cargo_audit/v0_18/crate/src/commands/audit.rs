@@ -1,5 +1,7 @@
 //! The `cargo audit` subcommand
 
+#![allow(unused_qualifications)] // TODO(tarcieri): remove when we're on clap v4.x
+
 #[cfg(feature = "fix")]
 mod fix;
 
