@@ -63,8 +63,7 @@ class IPFSHostResolver : public network::ResolveHostClientBase {
   std::string resolving_host_;
   std::string prefix_;
   absl::optional<std::string> dnslink_;
-  absl::optional<network::mojom::NetworkContext*> network_context_for_testing_ =
-      nullptr;
+  absl::optional<network::mojom::NetworkContext*> network_context_for_testing_;
 
   raw_ptr<content::BrowserContext> browser_context_;
   HostTextResultsCallback resolved_callback_;
