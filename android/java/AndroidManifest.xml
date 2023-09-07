@@ -159,6 +159,11 @@
     android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
     android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize"/>
 
+<activity
+    android:name="org.chromium.chrome.browser.brave_leo.BraveLeoActivity"
+    android:theme="@style/Theme.Chromium.Activity.FakeTranslucent"
+    android:exported="false"/>
+
 <meta-data
         android:name="com.google.android.play.billingclient.version"
         android:value="4.0.0" />

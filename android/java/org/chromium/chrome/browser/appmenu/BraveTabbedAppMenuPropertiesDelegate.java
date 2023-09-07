@@ -52,6 +52,9 @@ import org.chromium.chrome.features.start_surface.StartSurface;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
+/**
+ * Brave's extension for TabbedAppMenuPropertiesDelegate
+ */
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
     private Menu mMenu;
     private AppMenuDelegate mAppMenuDelegate;
@@ -148,6 +151,18 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 }
             } else {
                 braveWallet.setVisible(false);
+            }
+        }
+        MenuItem braveLeo = menu.findItem(R.id.brave_leo_id);
+        if (braveLeo != null) {
+            if (ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
+                braveLeo.setVisible(true);
+                if (shouldShowIconBeforeItem()) {
+                    braveLeo.setIcon(
+                            AppCompatResources.getDrawable(mContext, R.drawable.ic_brave_ai));
+                }
+            } else {
+                braveLeo.setVisible(false);
             }
         }
 

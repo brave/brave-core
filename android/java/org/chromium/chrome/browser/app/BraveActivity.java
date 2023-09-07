@@ -83,6 +83,7 @@ import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
+import org.chromium.chrome.browser.brave_leo.BraveLeoActivity;
 import org.chromium.chrome.browser.brave_news.BraveNewsConnectionErrorHandler;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
@@ -214,6 +215,7 @@ public abstract class BraveActivity extends ChromeActivity
             "brave://rewards/#verify";
     public static final String BRAVE_REWARDS_SETTINGS_MONTHLY_URL = "brave://rewards/#monthly";
     public static final String REWARDS_AC_SETTINGS_URL = "brave://rewards/contribute";
+    public static final String BRAVE_AI_CHAT_URL = "chrome-untrusted://chat";
     public static final String REWARDS_LEARN_MORE_URL = "https://brave.com/faq-rewards/#unclaimed-funds";
     public static final String BRAVE_TERMS_PAGE =
             "https://basicattentiontoken.org/user-terms-of-service/";
@@ -398,6 +400,8 @@ public abstract class BraveActivity extends ChromeActivity
             }
         } else if (id == R.id.brave_speedreader_id) {
             enableSpeedreaderMode();
+        } else if (id == R.id.brave_leo_id) {
+            openBraveLeo();
         } else {
             return false;
         }
@@ -1726,6 +1730,10 @@ public abstract class BraveActivity extends ChromeActivity
         if (currentTab != null) {
             BraveSpeedReaderUtils.enableSpeedreaderMode(currentTab);
         }
+    }
+
+    private void openBraveLeo() {
+        BraveLeoActivity.showPage(this, BRAVE_AI_CHAT_URL);
     }
 
     public static ChromeTabbedActivity getChromeTabbedActivity() {

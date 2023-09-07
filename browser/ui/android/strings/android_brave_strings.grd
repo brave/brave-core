@@ -4002,6 +4002,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_NO_AVAILABLE_ASSETS" desc="No availible assets title for empty asset list">
       No available assets
     </message>
+    <message name="IDS_MENU_BRAVE_LEO" desc="Brave AI menu item text">
+      Brave Leo
+    </message>
   </messages>
   </release>
 </grit>

@@ -67,6 +67,13 @@ source_set("ui") {
     ]
   }
 
+  if (enable_ai_chat) {
+    sources += [
+      "webui/ai_chat/ai_chat_ui.cc",
+      "webui/ai_chat/ai_chat_ui.h",
+    ]
+  }
+
   if (!is_android) {
     sources += [
       "brave_browser.cc",
@@ -207,8 +214,6 @@ source_set("ui") {
 
     if (enable_ai_chat) {
       sources += [
-        "webui/ai_chat/ai_chat_ui.cc",
-        "webui/ai_chat/ai_chat_ui.h",
         "webui/ai_chat/ai_chat_ui_page_handler.cc",
         "webui/ai_chat/ai_chat_ui_page_handler.h",
         "webui/settings/brave_settings_leo_assistant_handler.cc",
