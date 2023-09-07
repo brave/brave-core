@@ -18,6 +18,7 @@ extension Preferences {
     public static let installationDate = Option<Date?>(key: "dau.installation-date", default: nil)
     /// The app launch date after retention
     public static let appRetentionLaunchDate = Option<Date?>(key: "dau.app-retention-launch-date", default: nil)
+    public static let sendUsagePing = Option<Bool>(key: "dau.send-usage-ping", default: true)
   }
   
   public final class URP {

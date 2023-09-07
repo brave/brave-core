@@ -890,6 +890,24 @@ extension Strings {
       value: "Quality Settings",
       comment: "Title for the quality settings view"
     )
+    
+    public static let sendUsagePingTitle =
+    NSLocalizedString(
+      "settings.sendUsagePingTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Automatically send daily usage ping to Brave",
+      comment: "Title to explain the daily usage ping toggle"
+    )
+    
+    public static let sendUsagePingDescription =
+    NSLocalizedString(
+      "settings.sendUsagePingDescription",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "This anonymous private ping lets Brave estimate active users.",
+      comment: "Description to explain the daily usage ping toggle"
+    )
   }
 }
 

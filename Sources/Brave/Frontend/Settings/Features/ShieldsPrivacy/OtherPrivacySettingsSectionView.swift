@@ -8,6 +8,7 @@ import Preferences
 import Strings
 import BraveShared
 import Data
+import Growth
 
 struct OtherPrivacySettingsSectionView: View {
   @State private var showPrivateBrowsingConfirmation = false
@@ -72,6 +73,11 @@ struct OtherPrivacySettingsSectionView: View {
         title: Strings.P3A.settingTitle,
         subtitle: Strings.P3A.settingSubtitle,
         toggle: $settings.isP3AEnabled
+      )
+      OptionToggleView(
+        title: Strings.Settings.sendUsagePingTitle,
+        subtitle: Strings.Settings.sendUsagePingDescription,
+        option: Preferences.DAU.sendUsagePing
       )
     } header: {
       Text(Strings.otherPrivacySettingsSection)
