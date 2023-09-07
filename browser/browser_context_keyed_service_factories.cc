@@ -177,11 +177,11 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
   EphemeralStorageServiceFactory::GetInstance();
   PermissionLifetimeManagerFactory::GetInstance();
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn::BraveVpnServiceFactory::GetInstance();
-#endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_AI_CHAT)
   skus::SkusServiceFactory::GetInstance();
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  brave_vpn::BraveVpnServiceFactory::GetInstance();
 #endif
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
