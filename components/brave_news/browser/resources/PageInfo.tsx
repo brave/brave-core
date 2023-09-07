@@ -6,6 +6,7 @@
 import Dropdown from '@brave/leo/react/dropdown';
 import * as React from 'react';
 import { pages, useInspectContext } from './context';
+import Flex from '../../../brave_new_tab_ui/components/Flex';
 
 interface Props {
 }
@@ -13,12 +14,12 @@ interface Props {
 export default function PageInfo(props: Props) {
   const { page, setPage } = useInspectContext();
 
-  return <div>
+  return <Flex direction='column' gap={8} align='stretch'>
     <div>
       <Dropdown value={page} onChange={e => setPage(e.detail.value)}>
         <span slot="label">Page</span>
         {pages.map(p => <leo-option key={p}>{p}</leo-option>)}
       </Dropdown>
     </div>
-  </div>
+  </Flex>
 }

@@ -12,6 +12,7 @@ import Input from '@brave/leo/react/input';
 import Flex from '../../../brave_new_tab_ui/components/Flex'
 import { Channel, Publisher } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import styled from 'styled-components';
+import FeedStats, { getFeedStats } from './FeedStats';
 
 interface Props {
 }
@@ -20,13 +21,19 @@ const Container = styled(Flex)`
   width: 800px;
 `
 
-function SignalCards<T>({ items, sort, filter, getName, getKey }: { items: T[], sort: 'name' | 'subscribed' | 'visitWeight', filter: string, getName: (item: T) => string, getKey: (item: T) => string }) {
+function SignalCards<T>({ items, sort, filter, getName, getKey, stats }: { items: T[], sort: 'name' | 'subscribed' | 'visitWeight' | 'shownCount', filter: string, getName: (item: T) => string, getKey: (item: T) => string, stats: { [key: string]: number } }) {
   const { signals } = useInspectContext()
 
   const filteredAndSorted = items
     .filter(item => getName(item).toLowerCase().includes(filter))
     .sort((a, b) => {
       if (sort === 'name') return getName(a).localeCompare(getName(b))
+
+      if (sort === 'shownCount') {
+        const aCount = stats[getKey(a)] ?? 0
+        const bCount = stats[getKey(b)] ?? 0
+        return bCount - aCount
+      }
 
       const aSignal = signals[getKey(a)]
       const bSignal = signals[getKey(b)]
@@ -41,6 +48,8 @@ function SignalCards<T>({ items, sort, filter, getName, getKey }: { items: T[], 
       <b>Subscribed Weighting:</b> {signals[getKey(a)]?.subscribedWeight.toString()}
       <br />
       <b>Visit Weighting:</b> {signals[getKey(a)]?.visitWeight}
+      <br />
+      <b>Shown count:</b> {stats[getKey(a)] ?? 0}
     </Card>)}
   </>
 }
@@ -50,10 +59,12 @@ const getPublisherKey = (p: Publisher) => p.publisherId
 const getPublisherName = (p: Publisher) => p.publisherName
 
 export default function SignalsPage(props: Props) {
-  const { publishers, channels } = useInspectContext();
+  const { publishers, channels, feed } = useInspectContext();
   const [show, setShow] = React.useState<'all' | 'publishers' | 'channels'>('all')
-  const [sort, setSort] = React.useState<'name' | 'subscribed' | 'visitWeight'>('visitWeight')
+  const [sort, setSort] = React.useState<'name' | 'subscribed' | 'visitWeight' | 'shownCount'>('visitWeight')
   const [filter, setFilter] = React.useState('')
+  const [truncate, setTruncate] = React.useState(250)
+  const { channelStats, publisherStats, counts } = getFeedStats(feed, truncate)
 
   return <Container direction='column'>
     <h2>Signals Page</h2>
@@ -72,17 +83,26 @@ export default function SignalsPage(props: Props) {
         <leo-option>name</leo-option>
         <leo-option>subscribed</leo-option>
         <leo-option>visitWeight</leo-option>
+        <leo-option>shownCount</leo-option>
       </Dropdown>
+      <Input type="text" hasErrors={false} showErrors={false} mode='outline' size='normal' value={truncate} onChange={e => setTruncate(parseInt((e.target as any).value))}>
+        Consider first {"{n}"} cards
+      </Input>
+    </Flex>
+
+    <Flex direction='column' gap={8}>
+      <b>Stats:</b>
+      <FeedStats {...counts} />
     </Flex>
 
     <Flex direction='column' gap={8}>
       {show !== 'channels' && <>
         <b>Publishers</b>
-        <SignalCards filter={filter} getKey={getPublisherKey} getName={getPublisherName} items={Object.values(publishers)} sort={sort} />
+        <SignalCards filter={filter} getKey={getPublisherKey} getName={getPublisherName} items={Object.values(publishers)} sort={sort} stats={publisherStats} />
       </>}
       {show !== 'publishers' && <>
         <b>Channels</b>
-        <SignalCards filter={filter} getKey={getChannelKey} getName={getChannelKey} items={Object.values(channels)} sort={sort} />
+        <SignalCards filter={filter} getKey={getChannelKey} getName={getChannelKey} items={Object.values(channels)} sort={sort} stats={channelStats} />
       </>}
     </Flex>
   </Container>
