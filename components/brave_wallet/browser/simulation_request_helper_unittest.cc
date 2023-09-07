@@ -30,11 +30,13 @@ namespace {
 
 mojom::TransactionInfoPtr GetCannedScanEVMTransactionParams(
     bool eip1559,
+    bool is_eth_send,
     absl::optional<std::string> origin) {
   auto base_tx_data = mojom::TxData::New(
       "0x09", "0x4a817c800", "0x5208",
       "0x3535353535353535353535353535353535353535", "0xde0b6b3a7640000",
-      std::vector<uint8_t>(), false, absl::nullopt);
+      is_eth_send ? std::vector<uint8_t>() : std::vector<uint8_t>({10u}), false,
+      absl::nullopt);
 
   auto tx =
       eip1559
@@ -149,16 +151,17 @@ mojom::SignAllTransactionsRequestPtr MakeSolanaSignAllTransactionsRequest(
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMType0DefaultOrigin) {
-  auto tx_info = GetCannedScanEVMTransactionParams(false, absl::nullopt);
+  // OK: Params for legacy (type-0) EVM native asset transfer is encoded
+  // correctly.
+  auto tx_info = GetCannedScanEVMTransactionParams(false, true, absl::nullopt);
   auto encoded_params = evm::EncodeScanTransactionParams(tx_info);
-
   std::string expected_params(R"(
     {
       "metadata":{
         "origin":"https://brave.com"
       },
       "txObject":{
-        "data":"0x0",
+        "data":"0x",
         "from":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
         "to":"0x3535353535353535353535353535353535353535",
         "value":"0xde0b6b3a7640000"
@@ -166,15 +169,35 @@ TEST(SimulationRequestHelperUnitTest,
       "userAccount":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4"
     }
   )");
+  ASSERT_TRUE(encoded_params);
+  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 
-  // OK: Params for legacy (type-0) EVM transaction is encoded correctly.
+  // OK: Params for legacy (type-0) EVM contract interaction is encoded
+  // properly.
+  tx_info = GetCannedScanEVMTransactionParams(false, false, absl::nullopt);
+  encoded_params = evm::EncodeScanTransactionParams(tx_info);
+  expected_params = R"(
+    {
+      "metadata":{
+        "origin":"https://brave.com"
+      },
+      "txObject":{
+        "data":"0x0a",
+        "from":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+        "to":"0x3535353535353535353535353535353535353535",
+        "value":"0xde0b6b3a7640000"
+      },
+      "userAccount":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4"
+    }
+  )";
   ASSERT_TRUE(encoded_params);
   EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 }
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMType2DefaultOrigin) {
-  auto tx_info = GetCannedScanEVMTransactionParams(true, absl::nullopt);
+  // OK: Params for EIP-1559 (type-2) EVM ETH transfer is encoded correctly.
+  auto tx_info = GetCannedScanEVMTransactionParams(true, true, absl::nullopt);
   auto encoded_params = evm::EncodeScanTransactionParams(tx_info);
   std::string expected_params(R"(
     {
@@ -182,7 +205,7 @@ TEST(SimulationRequestHelperUnitTest,
         "origin":"https://brave.com"
       },
       "txObject":{
-        "data":"0x0",
+        "data":"0x",
         "from":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
         "to":"0x3535353535353535353535353535353535353535",
         "value":"0xde0b6b3a7640000"
@@ -190,16 +213,37 @@ TEST(SimulationRequestHelperUnitTest,
       "userAccount":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4"
     }
   )");
+  ASSERT_TRUE(encoded_params);
+  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 
-  // OK: Params for EIP-1559 (type-2) EVM transaction is encoded correctly.
+  // OK: Params for EIP-1559 (type-2) EVM contract interaction is encoded
+  // correctly.
+  tx_info = GetCannedScanEVMTransactionParams(true, false, absl::nullopt);
+  encoded_params = evm::EncodeScanTransactionParams(tx_info);
+  expected_params = R"(
+    {
+      "metadata":{
+        "origin":"https://brave.com"
+      },
+      "txObject":{
+        "data":"0x0a",
+        "from":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+        "to":"0x3535353535353535353535353535353535353535",
+        "value":"0xde0b6b3a7640000"
+      },
+      "userAccount":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4"
+    }
+  )";
   ASSERT_TRUE(encoded_params);
   EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 }
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMType0CustomOrigin) {
+  // OK: Custom origin for ETH transfer is encoded in params metadata
+  // correctly.
   auto tx_info =
-      GetCannedScanEVMTransactionParams(false, "https://example.com");
+      GetCannedScanEVMTransactionParams(false, true, "https://example.com");
   auto encoded_params = evm::EncodeScanTransactionParams(tx_info);
   std::string expected_params(R"(
     {
@@ -207,7 +251,7 @@ TEST(SimulationRequestHelperUnitTest,
         "origin":"https://example.com"
       },
       "txObject":{
-        "data":"0x0",
+        "data":"0x",
         "from":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
         "to":"0x3535353535353535353535353535353535353535",
         "value":"0xde0b6b3a7640000"
@@ -215,15 +259,38 @@ TEST(SimulationRequestHelperUnitTest,
       "userAccount":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4"
     }
   )");
+  ASSERT_TRUE(encoded_params);
+  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 
-  // OK: Custom origin is encoded in params metadata correctly.
+  // OK: Custom origin for contract interaction is encoded in params metadata
+  // correctly.
+  tx_info =
+      GetCannedScanEVMTransactionParams(false, false, "https://example.com");
+  encoded_params = evm::EncodeScanTransactionParams(tx_info);
+  expected_params = R"(
+    {
+      "metadata":{
+        "origin":"https://example.com"
+      },
+      "txObject":{
+        "data":"0x0a",
+        "from":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+        "to":"0x3535353535353535353535353535353535353535",
+        "value":"0xde0b6b3a7640000"
+      },
+      "userAccount":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4"
+    }
+  )";
   ASSERT_TRUE(encoded_params);
   EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 }
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMType2CustomOrigin) {
-  auto tx_info = GetCannedScanEVMTransactionParams(true, "https://example.com");
+  // OK: Custom origin for ETH transfer is encoded in params metadata
+  // correctly.
+  auto tx_info =
+      GetCannedScanEVMTransactionParams(true, true, "https://example.com");
   auto encoded_params = evm::EncodeScanTransactionParams(tx_info);
   std::string expected_params(R"(
     {
@@ -231,7 +298,7 @@ TEST(SimulationRequestHelperUnitTest,
         "origin":"https://example.com"
       },
       "txObject":{
-        "data":"0x0",
+        "data":"0x",
         "from":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
         "to":"0x3535353535353535353535353535353535353535",
         "value":"0xde0b6b3a7640000"
@@ -239,8 +306,28 @@ TEST(SimulationRequestHelperUnitTest,
       "userAccount":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4"
     }
   )");
+  ASSERT_TRUE(encoded_params);
+  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 
-  // OK: Custom origin is encoded in params metadata correctly.
+  // OK: Custom origin for contract interaction is encoded in params metadata
+  // correctly.
+  tx_info =
+      GetCannedScanEVMTransactionParams(true, false, "https://example.com");
+  encoded_params = evm::EncodeScanTransactionParams(tx_info);
+  expected_params = R"(
+    {
+      "metadata":{
+        "origin":"https://example.com"
+      },
+      "txObject":{
+        "data":"0x0a",
+        "from":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+        "to":"0x3535353535353535353535353535353535353535",
+        "value":"0xde0b6b3a7640000"
+      },
+      "userAccount":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4"
+    }
+  )";
   ASSERT_TRUE(encoded_params);
   EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 }
@@ -417,7 +504,7 @@ TEST(SimulationRequestHelperUnitTest,
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaInvalidTxData) {
-  auto tx_info = GetCannedScanEVMTransactionParams(false, absl::nullopt);
+  auto tx_info = GetCannedScanEVMTransactionParams(false, true, absl::nullopt);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
   auto encoded_params = solana::EncodeScanTransactionParams(request);
