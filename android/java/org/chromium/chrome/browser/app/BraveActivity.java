@@ -34,7 +34,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.android.billingclient.api.Purchase;
 import com.brave.playlist.util.ConstantUtils;
 import com.brave.playlist.util.PlaylistPreferenceUtils;
 import com.brave.playlist.util.PlaylistUtils;
@@ -645,26 +644,21 @@ public abstract class BraveActivity extends ChromeActivity
 
     private void verifySubscription() {
         InAppPurchaseWrapper.getInstance().queryPurchases();
-        LiveDataUtil.observeOnce(InAppPurchaseWrapper.getInstance().getPurchases(), purchases -> {
-            Purchase activePurchase = null;
-            for (Purchase purchase : purchases) {
-                if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-                    activePurchase = purchase;
-                    break;
-                }
-            }
-            if (activePurchase != null) {
-                mPurchaseToken = activePurchase.getPurchaseToken();
-                mProductId = activePurchase.getProducts().get(0).toString();
-                BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken, mProductId,
-                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
-            } else {
-                BraveVpnApiResponseUtils.queryPurchaseFailed(BraveActivity.this);
-                if (!mIsVerification) {
-                    BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
-                }
-            }
-        });
+        LiveDataUtil.observeOnce(
+                InAppPurchaseWrapper.getInstance().getActivePurchase(), activePurchase -> {
+                    if (activePurchase != null) {
+                        mPurchaseToken = activePurchase.getPurchaseToken();
+                        mProductId = activePurchase.getProducts().get(0).toString();
+                        BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken,
+                                mProductId, BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT,
+                                getPackageName());
+                    } else {
+                        BraveVpnApiResponseUtils.queryPurchaseFailed(BraveActivity.this);
+                        if (!mIsVerification) {
+                            BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
+                        }
+                    }
+                });
     }
 
     @Override

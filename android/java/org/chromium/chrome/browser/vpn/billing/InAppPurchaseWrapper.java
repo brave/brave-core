@@ -1,13 +1,9 @@
-/**
- * Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.vpn.billing;
-
-import static com.android.billingclient.api.BillingClient.BillingResponseCode.OK;
 
 import android.app.Activity;
 import android.content.Context;
@@ -55,18 +51,32 @@ public class InAppPurchaseWrapper {
 
     public enum SubscriptionType { MONTHLY, YEARLY }
 
-    public interface QueryProductDetailsResponse {
-        default void onProductDetails(Map<String, ProductDetails> productDetails) {}
+    private MutableLiveData<Purchase> mutableActivePurchase = new MutableLiveData();
+    private LiveData<Purchase> activePurchase = mutableActivePurchase;
+    private void setActivePurchase(Purchase purchase) {
+        mutableActivePurchase.postValue(purchase);
     }
 
-    private MutableLiveData<List<Purchase>> mutablePurchases = new MutableLiveData();
-    private LiveData<List<Purchase>> purchases = mutablePurchases;
-    private void setPurchases(List<Purchase> purchases) {
-        mutablePurchases.postValue(purchases);
+    public LiveData<Purchase> getActivePurchase() {
+        return activePurchase;
     }
 
-    public LiveData<List<Purchase>> getPurchases() {
-        return purchases;
+    private MutableLiveData<ProductDetails> mutableMonthlyProductDetails = new MutableLiveData();
+    private LiveData<ProductDetails> monthlyProductDetails = mutableMonthlyProductDetails;
+    private void setMonthlyProductDetails(ProductDetails productDetails) {
+        mutableMonthlyProductDetails.postValue(productDetails);
+    }
+    public LiveData<ProductDetails> getMonthlyProductDetails() {
+        return monthlyProductDetails;
+    }
+
+    private MutableLiveData<ProductDetails> mutableYearlyProductDetails = new MutableLiveData();
+    private LiveData<ProductDetails> yearlyProductDetails = mutableYearlyProductDetails;
+    private void setYearlyProductDetails(ProductDetails productDetails) {
+        mutableYearlyProductDetails.postValue(productDetails);
+    }
+    public LiveData<ProductDetails> getYearlyProductDetails() {
+        return yearlyProductDetails;
     }
 
     private InAppPurchaseWrapper() {}
@@ -161,12 +171,15 @@ public class InAppPurchaseWrapper {
         }
     }
 
-    public void queryProductDetailsAsync(SubscriptionType subscriptionType,
-            QueryProductDetailsResponse queryProductDetailsResponse) {
+    public void queryProductDetailsAsync() {
         Map<String, ProductDetails> productDetails = new HashMap<>();
         List<QueryProductDetailsParams.Product> products = new ArrayList<>();
         products.add(QueryProductDetailsParams.Product.newBuilder()
-                             .setProductId(getProductId(subscriptionType))
+                             .setProductId(getProductId(SubscriptionType.MONTHLY))
+                             .setProductType(BillingClient.ProductType.SUBS)
+                             .build());
+        products.add(QueryProductDetailsParams.Product.newBuilder()
+                             .setProductId(getProductId(SubscriptionType.YEARLY))
                              .setProductType(BillingClient.ProductType.SUBS)
                              .build());
         QueryProductDetailsParams queryProductDetailsParams =
@@ -178,7 +191,10 @@ public class InAppPurchaseWrapper {
                         for (ProductDetails productDetail : productDetailsList) {
                             productDetails.put(productDetail.getProductId(), productDetail);
                         }
-                        queryProductDetailsResponse.onProductDetails(productDetails);
+                        setMonthlyProductDetails(
+                                productDetails.get(getProductId(SubscriptionType.MONTHLY)));
+                        setYearlyProductDetails(
+                                productDetails.get(getProductId(SubscriptionType.YEARLY)));
                     } else {
                         Log.e(TAG,
                                 "queryProductDetailsAsync failed"
@@ -191,12 +207,19 @@ public class InAppPurchaseWrapper {
         mBillingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder()
                                                    .setProductType(BillingClient.ProductType.SUBS)
                                                    .build(),
-                (billingResult, list) -> {
+                (billingResult, purchases) -> {
+                    Purchase activePurchase = null;
                     if (billingResult.getResponseCode() == OK) {
-                        setPurchases(list);
+                        for (Purchase purchase : purchases) {
+                            if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                                activePurchase = purchase;
+                                break;
+                            }
+                        }
                     } else {
                         Log.e(TAG, "queryPurchases failed" + billingResult.getDebugMessage());
                     }
+                    setActivePurchase(activePurchase);
                 });
     }
 
@@ -216,12 +239,8 @@ public class InAppPurchaseWrapper {
         BillingResult billingResult = mBillingClient.launchBillingFlow(activity, billingFlowParams);
     }
 
-    public void processPurchases(Context context, List<Purchase> purchases) {
-        for (Purchase purchase : purchases) {
-            if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-                acknowledgePurchase(context, purchase);
-            }
-        }
+    public void processPurchases(Context context, Purchase activePurchase) {
+        acknowledgePurchase(context, activePurchase);
     }
 
     private void acknowledgePurchase(Context context, Purchase purchase) {
@@ -251,7 +270,11 @@ public class InAppPurchaseWrapper {
             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                 if (purchases != null) {
                     mRetryCount = 0;
-                    processPurchases(context, purchases);
+                    for (Purchase purchase : purchases) {
+                        if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                            processPurchases(context, purchase);
+                        }
+                    }
                 }
             } else if (billingResult.getResponseCode()
                     == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {

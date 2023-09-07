@@ -37,9 +37,9 @@ public class BraveVpnApiResponseUtils {
             if (!BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
                 InAppPurchaseWrapper.getInstance().queryPurchases();
                 LiveDataUtil.observeOnce(
-                        InAppPurchaseWrapper.getInstance().getPurchases(), purchases -> {
+                        InAppPurchaseWrapper.getInstance().getActivePurchase(), activePurchase -> {
                             InAppPurchaseWrapper.getInstance().processPurchases(
-                                    activity, purchases);
+                                    activity, activePurchase);
                         });
             }
             BraveVpnNativeWorker.getInstance().getTimezonesForRegions();
