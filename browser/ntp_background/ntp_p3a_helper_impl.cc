@@ -17,6 +17,7 @@
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
+#include "brave/components/brave_ads/core/public/transfer/transfer_feature.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_service.h"
@@ -47,7 +48,6 @@ constexpr char kExpireTimeKey[] = "expiry_time";
 constexpr base::TimeDelta kCountExpiryTime = base::Days(30);
 
 constexpr base::TimeDelta kStartLandingCheckTime = base::Milliseconds(750);
-constexpr base::TimeDelta kLandingTime = base::Seconds(10);
 
 bool IsRewardsDisabled(PrefService* prefs) {
   return !prefs->GetBoolean(brave_rewards::prefs::kEnabled) &&
@@ -251,7 +251,7 @@ void NTPP3AHelperImpl::OnLandingStartCheck(
     return;
   }
   landing_check_timer_.Start(
-      FROM_HERE, kLandingTime,
+      FROM_HERE, brave_ads::kTransferredAfter.Get(),
       base::BindOnce(&NTPP3AHelperImpl::OnLandingEndCheck,
                      base::Unretained(this), creative_instance_id,
                      *last_tab_hostname_));

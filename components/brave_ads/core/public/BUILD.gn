@@ -28,6 +28,7 @@ source_set("headers") {
     "history/history_sort_types.h",
     "prefs/pref_names.h",
     "targeting/geographical/subdivision/supported_subdivisions.h",
+    "transfer/transfer_feature.h",
     "units/ad_info.h",
     "units/ad_type.h",
     "units/inline_content_ad/inline_content_ad_constants.h",
