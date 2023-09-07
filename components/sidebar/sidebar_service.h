@@ -47,11 +47,11 @@ class SidebarService : public KeyedService {
   static constexpr SidebarItem::BuiltInItemType kDefaultBuiltInItemTypes[] = {
       SidebarItem::BuiltInItemType::kBraveTalk,
       SidebarItem::BuiltInItemType::kWallet,
+      SidebarItem::BuiltInItemType::kChatUI,
       SidebarItem::BuiltInItemType::kBookmarks,
       SidebarItem::BuiltInItemType::kReadingList,
       SidebarItem::BuiltInItemType::kHistory,
-      SidebarItem::BuiltInItemType::kPlaylist,
-      SidebarItem::BuiltInItemType::kChatUI};
+      SidebarItem::BuiltInItemType::kPlaylist};
   static_assert(
       std::size(kDefaultBuiltInItemTypes) ==
           static_cast<size_t>(SidebarItem::BuiltInItemType::kBuiltInItemLast),
