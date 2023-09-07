@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_state_manager.h"
+#include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
