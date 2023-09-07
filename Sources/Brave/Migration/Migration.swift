@@ -321,7 +321,6 @@ fileprivate extension Preferences {
     // Block Stats
     migrate(key: "adblock", to: Preferences.BlockStats.adsCount)
     migrate(key: "tracking_protection", to: Preferences.BlockStats.trackersCount)
-    migrate(key: "httpse", to: Preferences.BlockStats.httpsUpgradeCount)
     migrate(key: "fp_protection", to: Preferences.BlockStats.fingerprintingCount)
     migrate(key: "safebrowsing", to: Preferences.BlockStats.phishingCount)
 

@@ -289,7 +289,6 @@ public class PlaylistMimeTypeDetector {
 
 class PlaylistWebLoader: UIView {
   fileprivate static var pageLoadTimeout = 300.0
-  private var pendingHTTPUpgrades = [String: URLRequest]()
   private var pendingRequests = [String: URLRequest]()
 
   private let tab = Tab(
@@ -636,14 +635,6 @@ extension PlaylistWebLoader: WKNavigationDelegate {
     var request: URLRequest?
     if let url = responseURL {
       request = pendingRequests.removeValue(forKey: url.absoluteString)
-    }
-
-    if let url = responseURL, let urlHost = responseURL?.normalizedHost() {
-      // If an upgraded https load happens with a host which was upgraded, increase the stats
-      if url.scheme == "https", let _ = pendingHTTPUpgrades.removeValue(forKey: urlHost) {
-        BraveGlobalShieldStats.shared.httpse += 1
-        tab.contentBlocker.stats = tab.contentBlocker.stats.adding(httpsCount: 1)
-      }
     }
 
     // TODO: REFACTOR to support Multiple Windows Better

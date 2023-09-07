@@ -451,16 +451,6 @@ extension BrowserViewController: WKNavigationDelegate {
     let canShowInWebView = navigationResponse.canShowMIMEType && (webView != pendingDownloadWebView)
     let forceDownload = webView == pendingDownloadWebView
 
-    if let url = responseURL, let urlHost = responseURL?.normalizedHost() {
-      // If an upgraded https load happens with a host which was upgraded, increase the stats
-      if url.scheme == "https", let _ = pendingHTTPUpgrades.removeValue(forKey: urlHost) {
-        BraveGlobalShieldStats.shared.httpse += 1
-        if let stats = tab?.contentBlocker.stats {
-          tab?.contentBlocker.stats = stats.adding(httpsCount: 1)
-        }
-      }
-    }
-
     // Check if this response should be handed off to Passbook.
     if let passbookHelper = OpenPassBookHelper(request: request, response: response, canShowInWebView: canShowInWebView, forceDownload: forceDownload, browserViewController: self) {
       // Open our helper and cancel this response from the webview.

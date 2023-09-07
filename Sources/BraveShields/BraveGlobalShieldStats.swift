@@ -25,13 +25,6 @@ open class BraveGlobalShieldStats {
     }
   }
 
-  public var httpse: Int = 0 {
-    didSet {
-      Preferences.BlockStats.httpsUpgradeCount.value = httpse
-      postUpdateNotification()
-    }
-  }
-
   public var scripts: Int = 0 {
     didSet {
       Preferences.BlockStats.scriptsCount.value = scripts
@@ -67,7 +60,6 @@ open class BraveGlobalShieldStats {
   fileprivate init() {
     adblock = Preferences.BlockStats.adsCount.value
     trackingProtection = Preferences.BlockStats.trackersCount.value
-    httpse = Preferences.BlockStats.httpsUpgradeCount.value
     images = Preferences.BlockStats.imagesCount.value
     scripts = Preferences.BlockStats.scriptsCount.value
     fpProtection = Preferences.BlockStats.fingerprintingCount.value

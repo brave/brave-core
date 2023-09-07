@@ -15,7 +15,6 @@ extension Preferences {
     public static let scriptsCount = Option<Int>(key: "stats.scripts", default: 0)
     public static let imagesCount = Option<Int>(key: "stats.images", default: 0)
     public static let phishingCount = Option<Int>(key: "stats.phishing", default: 0)
-    public static let httpsUpgradeCount = Option<Int>(key: "stats.http-upgrade", default: 0)
     public static let fingerprintingCount = Option<Int>(key: "stats.fingerprinting", default: 0)
   }
   public final class BlockFileVersion {
