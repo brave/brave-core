@@ -68,7 +68,6 @@ export default function SignalsPage(props: Props) {
   return <Container direction='column'>
     <h2>Signals</h2>
     <Flex direction='row' gap={8}>
-
       <div>
         Publishers: {Object.keys(publishers).length}
         <br />
