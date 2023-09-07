@@ -9,10 +9,19 @@ import WalletPageStory from '../../../stories/wrappers/wallet-page-story-wrapper
 import { SignPanel } from './index'
 
 import {
-  BraveWallet
+  BraveWallet,
+  Url
 } from '../../../constants/types'
 import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
 import { mockEthAccount } from '../../../stories/mock-data/mock-wallet-accounts'
+
+let mockURLPath = new Url()
+let mockIPFSPath = new Url()
+const urlPath = 'https://www.test.com'
+const ipftPath =
+  'ipfs://bafybeiemxf5abjwjbikoz4 mc3a3dla6ual3jsgpdr4cjr3oz3evfyavwq/'
+mockURLPath.url = urlPath
+mockIPFSPath.url = ipftPath
 
 const signMessageData: BraveWallet.SignMessageRequest = {
   id: 0,
@@ -30,8 +39,9 @@ const signMessageData: BraveWallet.SignMessageRequest = {
       nonce: '5f654',
       notBefore: '',
       requestId: '22',
-      resources: undefined,
-      statement: 'This is a test statement',
+      resources: [mockIPFSPath, mockURLPath],
+      statement:
+        'I accept the Brave Terms of Service: http://address.com/tos',
       uri: {
         url: mockOriginInfo.originSpec
       },

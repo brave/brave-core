@@ -42,7 +42,8 @@ import {
   CloseIcon,
   DetailsKeyText,
   DetailsInfoText,
-  CodeBlock
+  CodeBlock,
+  URLText
 } from './sign_in_with_ethereum.style'
 import {
   Row,
@@ -103,6 +104,17 @@ export const SignInWithEthereum = (props: Props) => {
       if (key === 'uri') {
         return data.signData.ethSiweData[key].url
       }
+      if (key === 'resources') {
+        return data.signData.ethSiweData[key]?.map(
+          (resource) => {
+            return <React.Fragment
+              key={resource.url}
+            >
+              <span>{resource.url}</span>
+              <VerticalSpace space='4px' />
+            </React.Fragment>
+          })
+      }
       return data.signData.ethSiweData[key].toString()
     }, [data.signData.ethSiweData])
 
@@ -114,6 +126,10 @@ export const SignInWithEthereum = (props: Props) => {
     return Object.keys(data.signData.ethSiweData)
       .filter((key) => data.signData?.ethSiweData?.[key] !== null)
   }, [data.signData.ethSiweData])
+
+  const hasMessageAndResource =
+    data.signData.ethSiweData?.statement &&
+    data.signData.ethSiweData?.resources
 
   if (showDetails) {
     return (
@@ -192,7 +208,7 @@ export const SignInWithEthereum = (props: Props) => {
       </>
       <Column
         fullWidth={true}
-        padding='16px'
+        padding='16px 16px 0px 16px'
       >
         <FavIcon
           src={`chrome://favicon/size/64@1x/${data.originInfo.originSpec}`}
@@ -218,7 +234,7 @@ export const SignInWithEthereum = (props: Props) => {
         <MessageBox>
           {account &&
             <Row
-              padding='13px 9px'
+              padding='8px 9px 12px 9px'
               justifyContent='flex-start'
             >
               <CreateAccountIcon
@@ -247,10 +263,11 @@ export const SignInWithEthereum = (props: Props) => {
           }
           <Column
             fullWidth={true}
-            padding='0px 16px 26px 16px'
+            padding='0px 16px 16px 16px'
           >
             <MessageText
               textSize='14px'
+              isBold={false}
             >
               {
                 getLocale('braveWalletSignInWithBraveWalletMessage')
@@ -272,6 +289,50 @@ export const SignInWithEthereum = (props: Props) => {
               </Row>
             </Row>
           </Column>
+          {hasMessageAndResource &&
+            <Column
+              fullWidth={true}
+              padding='0px 16px 8px 16px'
+              alignItems='flex-start'
+            >
+              <VerticalDivider />
+              <VerticalSpace space='16px' />
+              <Title
+                isBold={true}
+                textSize='14px'
+              >
+                {getLocale('braveWalletSignTransactionMessageTitle')}:
+              </Title>
+              <VerticalSpace space='4px' />
+              <URLText
+                textSize='14px'
+                isBold={false}
+              >
+                {data.signData.ethSiweData?.statement ?? ''}
+              </URLText>
+              <VerticalSpace space='16px' />
+              <Title
+                isBold={true}
+                textSize='14px'
+              >
+                {getLocale('braveWalletResources')}:
+              </Title>
+              <VerticalSpace space='4px' />
+              {data.signData.ethSiweData?.resources?.map((resource) =>
+                <React.Fragment
+                  key={resource.url}
+                >
+                  <URLText
+                    textSize='14px'
+                    isBold={false}
+                  >
+                    {resource.url}
+                  </URLText>
+                  <VerticalSpace space='4px' />
+                </React.Fragment>
+              )}
+            </Column>
+          }
         </MessageBox>
       </Column>
       <Row

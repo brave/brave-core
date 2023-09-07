@@ -25,13 +25,16 @@ export const StyledWrapper = styled.div`
 
 export const MessageBox = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   flex-direction: column;
   width: 100%;
+  max-height: 280px;
   padding: 12px 16px;
   background-color: ${leo.color.container.background};
   border-radius: 12px;
+  overflow-x: hidden;
+  overflow-y: auto;
 `
 
 export const Title = styled(Text)`
@@ -52,6 +55,10 @@ export const MessageText = styled(Title)`
   line-height: 24px;
   text-align: left;
   flex-wrap: wrap;
+`
+
+export const URLText = styled(MessageText)`
+  word-break: break-all;
 `
 
 export const DetailsKeyText = styled(Title)`
