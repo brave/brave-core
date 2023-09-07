@@ -39,18 +39,6 @@ NativeWebState::NativeWebState(Browser* browser, bool off_the_record)
   session_id_ =
       SyncedWindowDelegateBrowserAgent::FromBrowser(browser_)->GetSessionId();
 
-  // Create session storage with an empty item storage
-  NSMutableArray<CRWNavigationItemStorage*>* item_storages =
-      [[NSMutableArray alloc] init];
-  CRWNavigationItemStorage* item = [[CRWNavigationItemStorage alloc] init];
-  [item_storages addObject:item];
-
-  CRWSessionStorage* session_storage = [[CRWSessionStorage alloc] init];
-  session_storage.stableIdentifier = [[NSUUID UUID] UUIDString];
-  session_storage.uniqueIdentifier = SessionID::NewUnique();
-  session_storage.itemStorages = [item_storages copy];
-  session_storage.userAgentType = web::UserAgentType::MOBILE;
-
   // Create BrowserState
   ChromeBrowserState* browser_state = browser->GetBrowserState();
   if (off_the_record) {
@@ -60,8 +48,7 @@ NativeWebState::NativeWebState(Browser* browser, bool off_the_record)
   // Create WebState with parameters
   web::WebState::CreateParams create_params(browser_state);
   create_params.last_active_time = base::Time::Now();
-  auto web_state =
-      web::WebState::CreateWithStorageSession(create_params, session_storage);
+  auto web_state = web::WebState::Create(create_params);
   web_state->ForceRealized();
 
   // Setup Observers of the WebState
