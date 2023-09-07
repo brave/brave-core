@@ -10,16 +10,16 @@ extension BraveWalletTxService {
   
   // Fetches all pending transactions for all given keyrings
   func pendingTransactions(
-    chainIdsForCoin: [BraveWallet.CoinType: [String]],
+    networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]],
     for keyrings: [BraveWallet.KeyringInfo]
   ) async -> [BraveWallet.TransactionInfo] {
-    await allTransactions(chainIdsForCoin: chainIdsForCoin, for: keyrings)
+    await allTransactions(networksForCoin: networksForCoin, for: keyrings)
       .filter { $0.txStatus == .unapproved }
   }
   
   // Fetches all transactions for all given keyrings
   func allTransactions(
-    chainIdsForCoin: [BraveWallet.CoinType: [String]],
+    networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]],
     for keyrings: [BraveWallet.KeyringInfo]
   ) async -> [BraveWallet.TransactionInfo] {
     return await withTaskGroup(
@@ -27,13 +27,13 @@ extension BraveWalletTxService {
       body: { @MainActor group in
         for keyring in keyrings {
           guard let keyringCoin = keyring.coin,
-                let chainIdsForKeyringCoin = chainIdsForCoin[keyringCoin] else {
+                let networksForKeyringCoin = networksForCoin[keyringCoin] else {
             continue
           }
-          for chainId in chainIdsForKeyringCoin {
-            for info in keyring.accountInfos {
+          for info in keyring.accountInfos {
+            for network in networksForKeyringCoin where network.supportedKeyrings.contains(keyring.id.rawValue as NSNumber) {
               group.addTask { @MainActor in
-                await self.allTransactionInfo(info.coin, chainId: chainId, from: info.address)
+                await self.allTransactionInfo(info.coin, chainId: network.chainId, from: info.address)
               }
             }
           }
@@ -55,7 +55,7 @@ extension BraveWalletTxService {
     return await withTaskGroup(
       of: [BraveWallet.TransactionInfo].self,
       body: { @MainActor group in
-        for network in networks {
+        for network in networks where network.supportedKeyrings.contains(accountInfo.accountId.keyringId.rawValue as NSNumber) {
           group.addTask { @MainActor in
             await self.allTransactionInfo(accountInfo.coin, chainId: network.chainId, from: accountInfo.address)
           }

@@ -79,7 +79,7 @@ class NFTStoreTests: XCTestCase {
       case .sol:
         completion([solNetwork])
       case .fil:
-        XCTFail("Should not fetch filecoin network")
+        completion([.mockFilecoinTestnet])
       case .btc:
         XCTFail("Should not fetch btc network")
       @unknown default:

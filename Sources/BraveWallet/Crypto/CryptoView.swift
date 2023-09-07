@@ -120,6 +120,7 @@ public struct CryptoView: View {
               NavigationView {
                 AccountSelectionView(
                   keyringStore: keyringStore,
+                  networkStore: store.networkStore,
                   onDismiss: {
                     dismissAction()
                   }
@@ -212,6 +213,7 @@ public struct CryptoView: View {
               NavigationView {
                 AddAccountView(
                   keyringStore: keyringStore,
+                  networkStore: store.networkStore,
                   preSelectedCoin: request.coinType,
                   onCreate: {
                     // request is fullfilled.

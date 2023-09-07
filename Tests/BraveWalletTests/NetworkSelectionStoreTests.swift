@@ -15,7 +15,8 @@ import Preferences
 
   private let allNetworks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
     .eth: [.mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon],
-    .sol: [.mockSolana, .mockSolanaTestnet]
+    .sol: [.mockSolana, .mockSolanaTestnet],
+    .fil: [.mockFilecoinTestnet]
   ]
   
   private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestSwapService) {
@@ -24,7 +25,7 @@ import Preferences
     
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._keyringInfo = { keyringId, completion in
-      let isEthereumKeyringId = keyringId == BraveWallet.CoinType.eth.keyringId
+      let isEthereumKeyringId = keyringId == BraveWallet.KeyringId.default
       let keyring: BraveWallet.KeyringInfo = .init(
         id: BraveWallet.KeyringId.default,
         isKeyringCreated: true,
@@ -218,11 +219,11 @@ import Preferences
     keyringService._keyringInfo = { keyringId, completion in
       let accountInfos: [BraveWallet.AccountInfo]
       switch keyringId {
-      case BraveWallet.CoinType.eth.keyringId:
+      case BraveWallet.KeyringId.default:
         accountInfos = accountInfosDict[.eth, default: []]
-      case BraveWallet.CoinType.sol.keyringId:
+      case BraveWallet.KeyringId.solana:
         accountInfos = accountInfosDict[.sol, default: []]
-      case BraveWallet.CoinType.fil.keyringId:
+      case BraveWallet.KeyringId.filecoin:
         accountInfos = accountInfosDict[.fil, default: []]
       default:
         accountInfos = []
@@ -272,5 +273,21 @@ import Preferences
     
     let didSwitchNetworks = await store.handleDismissAddAccount()
     XCTAssertTrue(didSwitchNetworks, "Expected to switch networks as an account was created")
+    
+    // create filecoin account
+    let selectFilecoinMainnetSuccess = await store.selectNetwork(.mockFilecoinMainnet)
+    XCTAssertFalse(selectFilecoinMainnetSuccess, "Expected failure to select network due to no accounts")
+    XCTAssertTrue(store.isPresentingNextNetworkAlert, "Expected to present next network alert")
+    
+    store.handleCreateAccountAlertResponse(shouldCreateAccount: true)
+    
+    XCTAssertFalse(store.isPresentingNextNetworkAlert, "Expected to set isPresentingNextNetworkAlert to false to hide alert")
+    XCTAssertTrue(store.isPresentingAddAccount, "Expected to set isPresentingAddAccount to true to present add network")
+    
+    // simulate an account created
+    accountInfosDict[.fil] = [.mockFilAccount]
+    
+    let didSwitchToFilecoinMainnet = await store.handleDismissAddAccount()
+    XCTAssertTrue(didSwitchToFilecoinMainnet, "Expected to switch networks as an account was created")
   }
 }

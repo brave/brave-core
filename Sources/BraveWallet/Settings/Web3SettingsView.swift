@@ -253,7 +253,7 @@ private struct WalletSettingsView: View {
         .foregroundColor(Color(.secondaryBraveLabel))
     ) {
       Group {
-        ForEach(Array(WalletConstants.supportedCoinTypes)) { coin in
+        ForEach(WalletConstants.supportedCoinTypes(.dapps)) { coin in
           NavigationLink(
             destination:
               DappsSettings(

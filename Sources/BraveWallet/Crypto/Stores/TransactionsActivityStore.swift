@@ -70,7 +70,7 @@ class TransactionsActivityStore: ObservableObject {
     updateTask?.cancel()
     updateTask = Task { @MainActor in
       let allKeyrings = await self.keyringService.keyrings(
-        for: WalletConstants.supportedCoinTypes
+        for: WalletConstants.supportedCoinTypes()
       )
       let allAccountInfos = allKeyrings.flatMap(\.accountInfos)
       // setup network filters if not currently setup
@@ -81,14 +81,10 @@ class TransactionsActivityStore: ObservableObject {
       }
       let networks = networkFilters.filter(\.isSelected).map(\.model)
       let networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = Dictionary(grouping: networks, by: \.coin)
-      
-      let chainIdsForCoin = networksForCoin.mapValues { networks in
-        networks.map(\.chainId)
-      }
       let allNetworksAllCoins = networksForCoin.values.flatMap { $0 }
       
       let allTransactions = await txService.allTransactions(
-        chainIdsForCoin: chainIdsForCoin, for: allKeyrings
+        networksForCoin: networksForCoin, for: allKeyrings
       ).filter { $0.txStatus != .rejected }
       let userVisibleTokens = assetManager.getAllVisibleAssetsInNetworkAssets(networks: allNetworksAllCoins).flatMap(\.tokens)
       let allTokens = await blockchainRegistry.allTokens(

@@ -25,7 +25,9 @@ import Preferences
     .mockUSDCToken.copy(asVisibleAsset: true).then { $0.chainId = BraveWallet.GoerliChainId },
     .mockSolToken.copy(asVisibleAsset: true),
     .mockSpdToken.copy(asVisibleAsset: false), // not visible
-    .mockSolanaNFTToken.copy(asVisibleAsset: true).then { $0.chainId = BraveWallet.SolanaTestnet }
+    .mockSolanaNFTToken.copy(asVisibleAsset: true).then { $0.chainId = BraveWallet.SolanaTestnet },
+    .mockFilToken.copy(asVisibleAsset: true),
+    .mockFilToken.copy(asVisibleAsset: true).then { $0.chainId = BraveWallet.FilecoinTestnet}
   ]
   private var allUserAssetsInNetworkAssets: [NetworkAssets] {
     [
@@ -48,15 +50,27 @@ import Preferences
         network: .mockSolanaTestnet,
         tokens: [allUserAssets[4]],
         sortOrder: 3
+      ),
+      NetworkAssets(
+        network: .mockFilecoinMainnet,
+        tokens: [allUserAssets[5]],
+        sortOrder: 4
+      ),
+      NetworkAssets(
+        network: .mockFilecoinTestnet,
+        tokens: [allUserAssets[6]],
+        sortOrder: 5
       )
     ]
   }
   
-  private let allNetworks: [BraveWallet.NetworkInfo] = [
-    .mockMainnet,
-    .mockGoerli,
-    .mockSolana,
-    .mockSolanaTestnet
+  private let allNetworks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
+    .eth: [.mockMainnet,
+           .mockGoerli],
+    .sol: [.mockSolana,
+           .mockSolanaTestnet],
+    .fil: [.mockFilecoinMainnet,
+           .mockFilecoinTestnet]
   ]
   
   private let mockEthAccount2: BraveWallet.AccountInfo = .init(
@@ -92,6 +106,8 @@ import Preferences
       name: "sol mock nft name",
       description: "sol mock nft description"
     )
+    let mockFILBalance: Double = 1
+    let mockFILPrice: String = "4.06" // FIL value = $4.06
     
     let ethBalanceWei = formatter.weiString(
       from: mockETHBalance,
@@ -112,10 +128,19 @@ import Preferences
     let mockSOLAssetPrice: BraveWallet.AssetPrice = .init(
       fromAsset: "sol", toAsset: "usd",
       price: mockSOLPrice, assetTimeframeChange: "-57.23")
+    let filBalanceWei = formatter.weiString(
+      from: mockFILBalance,
+      radix: .decimal,
+      decimals: Int(allUserAssets[5].decimals)
+    ) ?? ""
+    let mockFILAssetPrice: BraveWallet.AssetPrice = .init(
+      fromAsset: "fil", toAsset: "usd",
+      price: mockFILPrice, assetTimeframeChange: "-57.23")
     
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._keyringInfo = { keyringId, completion in
-      if keyringId == BraveWallet.KeyringId.default {
+      switch keyringId {
+      case .default:
         let keyring: BraveWallet.KeyringInfo = .init(
           id: BraveWallet.KeyringId.default,
           isKeyringCreated: true,
@@ -124,7 +149,7 @@ import Preferences
           accountInfos: [.mockEthAccount, self.mockEthAccount2]
         )
         completion(keyring)
-      } else {
+      case .solana:
         let keyring: BraveWallet.KeyringInfo = .init(
           id: BraveWallet.KeyringId.solana,
           isKeyringCreated: true,
@@ -133,14 +158,24 @@ import Preferences
           accountInfos: [.mockSolAccount]
         )
         completion(keyring)
+      case .filecoin:
+        completion(.mockFilecoinKeyringInfo)
+      case .filecoinTestnet:
+        completion(.mockFilecoinTestnetKeyringInfo)
+      default:
+        completion(.mockDefaultKeyringInfo)
       }
     }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._allNetworks = { coin, completion in
-      completion(self.allNetworks.filter { $0.coin == coin })
+      completion(self.allNetworks[coin] ?? [])
     }
-    rpcService._balance = { accountAddress, _, _, completion in
-      completion(ethBalanceWei, .success, "") // eth balance for both eth accounts
+    rpcService._balance = { accountAddress, coin, _, completion in
+      if coin == .eth {
+        completion(ethBalanceWei, .success, "") // eth balance for both eth accounts
+      } else { // .fil
+        completion(filBalanceWei, .success, "")
+      }
     }
     rpcService._erc20TokenBalance = { contractAddress, accountAddress, _, completion in
       if accountAddress == self.mockEthAccount2.address {
@@ -191,7 +226,7 @@ import Preferences
     }
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { priceIds, _, _, completion in
-      completion(true, [mockETHAssetPrice, mockUSDCAssetPrice, mockSOLAssetPrice])
+      completion(true, [mockETHAssetPrice, mockUSDCAssetPrice, mockSOLAssetPrice, mockFILAssetPrice])
     }
 
     let store = SelectAccountTokenStore(
@@ -217,7 +252,7 @@ import Preferences
           XCTFail("Unexpected test setup")
           return
         }
-        XCTAssertEqual(accountSections.count, 3) // 2 eth accounts, 1 sol accounts
+        XCTAssertEqual(accountSections.count, 5) // 2 eth accounts, 1 sol accounts, 2 filecoin account, 1 filecoin testnet accout
         
         XCTAssertEqual(accountSections[safe: 0]?.account, .mockEthAccount)
         XCTAssertEqual(accountSections[safe: 0]?.tokenBalances[safe: 0]?.token, self.allUserAssets[0]) // ETH
@@ -231,6 +266,12 @@ import Preferences
         XCTAssertEqual(accountSections[safe: 2]?.tokenBalances[safe: 0]?.token, self.allUserAssets[2]) // SOL
         XCTAssertEqual(accountSections[safe: 2]?.tokenBalances[safe: 1]?.token, self.allUserAssets[4]) // Solana NFT
         XCTAssertNil(accountSections[safe: 2]?.tokenBalances[safe: 2]) // `mockSpdToken` is not visible
+        
+        XCTAssertEqual(accountSections[safe: 3]?.account, .mockFilAccount)
+        XCTAssertEqual(accountSections[safe: 3]?.tokenBalances[safe: 0]?.token, self.allUserAssets[5]) // FIL on mainnet
+        
+        XCTAssertEqual(accountSections[safe: 4]?.account, .mockFilTestnetAccount)
+        XCTAssertEqual(accountSections[safe: 4]?.tokenBalances[safe: 0]?.token, self.allUserAssets[6]) // FIL on testnet
       }.store(in: &cancellables)
 
     await store.update()
@@ -238,7 +279,7 @@ import Preferences
     
     // verify `filteredAccountSections` which get displayed in UI
     var accountSections = store.filteredAccountSections
-    XCTAssertEqual(accountSections.count, 3) // 2 eth accounts, 1 sol accounts
+    XCTAssertEqual(accountSections.count, 5) // 2 eth accounts, 1 sol accounts, 2 fil accounts
     
     // Account 1
     XCTAssertEqual(accountSections[safe: 0]?.account, .mockEthAccount)
@@ -273,10 +314,24 @@ import Preferences
     XCTAssertEqual(accountSections[safe: 2]?.tokenBalances[safe: 1]?.balance, mockNFTBalance)
     XCTAssertEqual(accountSections[safe: 2]?.tokenBalances[safe: 1]?.nftMetadata, mockNFTMetadata)
     
+    // Filecoin account on mainnet
+    XCTAssertEqual(accountSections[safe: 3]?.account, .mockFilAccount)
+    XCTAssertEqual(accountSections[safe: 3]?.tokenBalances[safe: 0]?.token, self.allUserAssets[5]) // FIL
+    XCTAssertEqual(accountSections[safe: 3]?.tokenBalances[safe: 0]?.network.chainId, BraveWallet.FilecoinMainnet)
+    XCTAssertEqual(accountSections[safe: 3]?.tokenBalances[safe: 0]?.balance, mockFILBalance)
+    XCTAssertEqual(accountSections[safe: 3]?.tokenBalances[safe: 0]?.price, "$4.06")
+    
+    // Filecoin account on testnet
+    XCTAssertEqual(accountSections[safe: 4]?.account, .mockFilTestnetAccount)
+    XCTAssertEqual(accountSections[safe: 4]?.tokenBalances[safe: 0]?.token, self.allUserAssets[6]) // FIL
+    XCTAssertEqual(accountSections[safe: 4]?.tokenBalances[safe: 0]?.network.chainId, BraveWallet.FilecoinTestnet)
+    XCTAssertEqual(accountSections[safe: 4]?.tokenBalances[safe: 0]?.balance, mockFILBalance)
+    XCTAssertEqual(accountSections[safe: 4]?.tokenBalances[safe: 0]?.price, "$4.06")
+    
     // Test with zero balances shown
     store.isHidingZeroBalances = false
     accountSections = store.filteredAccountSections
-    XCTAssertEqual(accountSections.count, 3) // 2 eth accounts, 1 sol accounts
+    XCTAssertEqual(accountSections.count, 5) // 2 eth accounts, 1 sol accounts, 2 fil accounts
     
     // Account 1
     XCTAssertEqual(accountSections[safe: 0]?.account, .mockEthAccount)
@@ -292,6 +347,14 @@ import Preferences
     XCTAssertEqual(accountSections[safe: 2]?.account, .mockSolAccount)
     XCTAssertEqual(accountSections[safe: 2]?.tokenBalances[safe: 0]?.token, self.allUserAssets[2]) // SOL
     XCTAssertEqual(accountSections[safe: 2]?.tokenBalances[safe: 1]?.token, self.allUserAssets[4]) // Solana NFT
+    
+    // Filecoin account on mainnet
+    XCTAssertEqual(accountSections[safe: 3]?.account, .mockFilAccount)
+    XCTAssertEqual(accountSections[safe: 3]?.tokenBalances[safe: 0]?.token, self.allUserAssets[5]) // FIL
+    
+    // Filecoin account on testnet
+    XCTAssertEqual(accountSections[safe: 4]?.account, .mockFilTestnetAccount)
+    XCTAssertEqual(accountSections[safe: 4]?.tokenBalances[safe: 0]?.token, self.allUserAssets[6]) // FIL
   }
   
   func testNetworkFilter() {
@@ -300,6 +363,7 @@ import Preferences
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
     let assetRatioService = BraveWallet.TestAssetRatioService()
+    let mockFilecoinTestToken: BraveWallet.BlockchainToken = .mockFilToken.copy(asVisibleAsset: true).then { $0.chainId = BraveWallet.FilecoinTestnet }
 
     let store = SelectAccountTokenStore(
       didSelect: { _, _ in },
@@ -343,6 +407,26 @@ import Preferences
             balance: 4
           )
         ]
+      ),
+      .init(
+        account: .mockFilAccount,
+        tokenBalances: [
+          .init(
+            token: .mockFilToken,
+            network: .mockFilecoinMainnet,
+            balance: 1
+          )
+        ]
+      ),
+      .init(
+        account: .mockFilTestnetAccount,
+        tokenBalances: [
+          .init(
+            token: mockFilecoinTestToken,
+            network: .mockFilecoinTestnet,
+            balance: 2
+          )
+        ]
       )
     ]
     // all networks
@@ -350,7 +434,9 @@ import Preferences
       .init(isSelected: true, model: .mockMainnet),
       .init(isSelected: true, model: .mockGoerli),
       .init(isSelected: true, model: .mockSolana),
-      .init(isSelected: true, model: .mockSolanaTestnet)
+      .init(isSelected: true, model: .mockSolanaTestnet),
+      .init(isSelected: true, model: .mockFilecoinMainnet),
+      .init(isSelected: true, model: .mockFilecoinTestnet)
     ]
     XCTAssertEqual(store.filteredAccountSections, store.accountSections)
     // Ethereum mainnet
@@ -379,6 +465,36 @@ import Preferences
             token: .mockSolToken,
             network: .mockSolana,
             balance: 3
+          )
+        ]
+      )
+    ])
+    // Filecoin mainnet
+    store.networkFilters = [.init(isSelected: true, model: .mockFilecoinMainnet)]
+    XCTAssertEqual(store.filteredAccountSections.count, 1)
+    XCTAssertEqual(store.filteredAccountSections, [
+      .init(
+        account: .mockFilAccount,
+        tokenBalances: [
+          .init(
+            token: .mockFilToken,
+            network: .mockFilecoinMainnet,
+            balance: 1
+          )
+        ]
+      )
+    ])
+    // Filecoin testnet
+    store.networkFilters = [.init(isSelected: true, model: .mockFilecoinTestnet)]
+    XCTAssertEqual(store.filteredAccountSections.count, 1)
+    XCTAssertEqual(store.filteredAccountSections, [
+      .init(
+        account: .mockFilTestnetAccount,
+        tokenBalances: [
+          .init(
+            token: mockFilecoinTestToken,
+            network: .mockFilecoinTestnet,
+            balance: 2
           )
         ]
       )

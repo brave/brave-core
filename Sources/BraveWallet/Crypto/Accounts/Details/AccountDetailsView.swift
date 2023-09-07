@@ -181,7 +181,7 @@ private struct AccountDetailsHeaderView: View {
 }
 
 #if DEBUG
-struct AccountDetailsViewController_Previews: PreviewProvider {
+struct AccountDetailsView_Previews: PreviewProvider {
   static var previews: some View {
     AccountDetailsView(
       keyringStore: .previewStoreWithWalletCreated,

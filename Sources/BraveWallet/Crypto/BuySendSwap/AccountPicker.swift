@@ -35,6 +35,7 @@ struct AccountPicker: View {
       NavigationView {
         AccountSelectionView(
           keyringStore: keyringStore,
+          networkStore: networkStore,
           onDismiss: { isPresentingPicker = false }
         )
       }

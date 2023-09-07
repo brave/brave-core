@@ -604,7 +604,7 @@ extension Tab: BraveWalletKeyringServiceObserver {
       // check domain already has some permitted accounts for this Tab's URLOrigin
       let permissionRequestManager = WalletProviderPermissionRequestsManager.shared
       let allAccounts = await keyringService.allAccounts().accounts
-      for coin in WalletConstants.supportedCoinTypes {
+      for coin in WalletConstants.supportedCoinTypes(.dapps) {
         let allAccountsForCoin = allAccounts.filter { $0.coin == coin }
         if permissionRequestManager.hasPendingRequest(for: origin, coinType: coin) {
           let pendingRequests = permissionRequestManager.pendingRequests(for: origin, coinType: coin)

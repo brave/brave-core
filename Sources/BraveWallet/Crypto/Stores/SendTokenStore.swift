@@ -78,6 +78,7 @@ public class SendTokenStore: ObservableObject {
     case snsError(domain: String)
     case ensError(domain: String)
     case udError(domain: String)
+    case notFilAddress
 
     var errorDescription: String? {
       switch self {
@@ -99,6 +100,8 @@ public class SendTokenStore: ObservableObject {
         return String.localizedStringWithFormat(Strings.Wallet.sendErrorDomainNotRegistered, BraveWallet.CoinType.eth.localizedTitle)
       case .udError:
         return String.localizedStringWithFormat(Strings.Wallet.sendErrorDomainNotRegistered, BraveWallet.CoinType.eth.localizedTitle)
+      case .notFilAddress:
+        return Strings.Wallet.sendErrorInvalidRecipientAddress
       }
     }
     
@@ -311,7 +314,9 @@ public class SendTokenStore: ObservableObject {
         await validateEthereumSendAddress(fromAddress: selectedAccount.address)
       case .sol:
         await validateSolanaSendAddress(fromAddress: selectedAccount.address)
-      case .fil, .btc:
+      case .fil:
+        validateFilcoinSendAddress()
+      case .btc:
         break
       @unknown default:
         break
@@ -407,6 +412,10 @@ public class SendTokenStore: ObservableObject {
     addressError = nil
   }
   
+  private func validateFilcoinSendAddress() {
+    addressError = sendAddress.isFILAddress ? nil : .notFilAddress
+  }
+  
   public func enableENSOffchainLookup() {
     Task { @MainActor in
       rpcService.setEnsOffchainLookupResolveMethod(.enabled)
@@ -488,6 +497,8 @@ public class SendTokenStore: ObservableObject {
         self.sendTokenOnEth(amount: amount, token: token, fromAddress: selectedAccount.address, completion: completion)
       case .sol:
         self.sendTokenOnSol(amount: amount, token: token, fromAddress: selectedAccount.address, completion: completion)
+      case .fil:
+        self.sendTokenOnFil(amount: amount, token: token, fromAddress: selectedAccount.address, completion: completion)
       default:
         completion(false, Strings.Wallet.internalErrorMessage)
       }
@@ -610,6 +621,34 @@ public class SendTokenStore: ObservableObject {
           }
         }
       }
+    }
+  }
+  
+  private func sendTokenOnFil(
+    amount: String,
+    token: BraveWallet.BlockchainToken,
+    fromAddress: String,
+    completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
+  ) {
+    let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: Int(token.decimals)))
+    guard let weiString = weiFormatter.weiString(from: amount.normalizedDecimals, decimals: Int(token.decimals)) else {
+      completion(false, Strings.Wallet.internalErrorMessage)
+      return
+    }
+    
+    isMakingTx = true
+    let filTxData = BraveWallet.FilTxData(
+      nonce: "",
+      gasPremium: "",
+      gasFeeCap: "",
+      gasLimit: "",
+      maxFee: "0",
+      to: sendAddress,
+      value: weiString
+    )
+    self.txService.addUnapprovedTransaction(BraveWallet.TxDataUnion(filTxData: filTxData), from: fromAddress, origin: nil, groupId: nil) { success, txMetaId, errorMessage in
+      self.isMakingTx = false
+      completion(success, errorMessage)
     }
   }
   

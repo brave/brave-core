@@ -263,6 +263,47 @@ struct PendingTransactionView: View {
           switch viewMode {
           case .transaction:
             VStack(spacing: 0) {
+              if confirmationStore.activeParsedTransaction.coin == .fil {
+                if let gasLimit = confirmationStore.filTxGasLimit {
+                  HStack {
+                    Text("Gas Limit")
+                      .foregroundColor(Color(.bravePrimary))
+                    Spacer()
+                    Text("\(gasLimit) \(confirmationStore.gasSymbol)")
+                      .foregroundColor(Color(.bravePrimary))
+                      .multilineTextAlignment(.trailing)
+                  }
+                  .padding()
+                  .accessibilityElement(children: .contain)
+                  Divider()
+                }
+                if let gasPremium = confirmationStore.filTxGasPremium {
+                  HStack {
+                    Text("Gas Premium")
+                      .foregroundColor(Color(.bravePrimary))
+                    Spacer()
+                    Text("\(gasPremium) \(confirmationStore.gasSymbol)")
+                      .foregroundColor(Color(.bravePrimary))
+                      .multilineTextAlignment(.trailing)
+                  }
+                  .padding()
+                  .accessibilityElement(children: .contain)
+                  Divider()
+                }
+                if let gasFeeCap = confirmationStore.filTxGasFeeCap {
+                  HStack {
+                    Text("Gas Fee Cap")
+                      .foregroundColor(Color(.bravePrimary))
+                    Spacer()
+                    Text("\(gasFeeCap) \(confirmationStore.gasSymbol)")
+                      .foregroundColor(Color(.bravePrimary))
+                      .multilineTextAlignment(.trailing)
+                  }
+                  .padding()
+                  .accessibilityElement(children: .contain)
+                  Divider()
+                }
+              }
               HStack {
                 VStack(alignment: .leading) {
                   Text(confirmationStore.activeParsedTransaction.coin == .sol ? Strings.Wallet.transactionFee : Strings.Wallet.gasFee)
@@ -275,6 +316,7 @@ struct PendingTransactionView: View {
                 VStack(alignment: .trailing) {
                   Text("\(confirmationStore.gasValue) \(confirmationStore.gasSymbol)")
                     .foregroundColor(Color(.bravePrimary))
+                    .multilineTextAlignment(.trailing)
                   Text(confirmationStore.gasFiat)
                     .font(.footnote)
                 }
@@ -319,6 +361,7 @@ struct PendingTransactionView: View {
                       .foregroundColor(Color(.secondaryBraveLabel))
                     Text("\(confirmationStore.value) \(confirmationStore.symbol) + \(confirmationStore.gasValue) \(confirmationStore.gasSymbol)")
                       .foregroundColor(Color(.bravePrimary))
+                      .multilineTextAlignment(.trailing)
                     HStack(spacing: 4) {
                       if !confirmationStore.isBalanceSufficient {
                         Text(Strings.Wallet.insufficientBalance)

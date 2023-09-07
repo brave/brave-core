@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
+import BraveCore
 
 extension String {
   /// Truncates an address to only show the first 4 digits and last 4 digits
@@ -41,6 +42,16 @@ extension String {
     let hex = removingHexPrefix
     // Check the length and the rest of the char is a hex digit
     return hex.count == 40 && hex.allSatisfy(\.isHexDigit)
+  }
+  
+  /// Check if the string is a valid FIL address
+  var isFILAddress: Bool {
+    if starts(with: BraveWallet.FilecoinMainnet) || starts(with: BraveWallet.FilecoinTestnet) {// FIL address has to start with `f` or `t`
+      if count == 41 || count == 86 || count == 44 { // secp256k have 41 address length and BLS keys have 86 and FEVM f410 keys have 44
+        return true
+      }
+    }
+    return false
   }
   
   /// Strip prefix if it exists, ex. 'ethereum:'

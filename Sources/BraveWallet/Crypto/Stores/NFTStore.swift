@@ -115,7 +115,7 @@ public class NFTStore: ObservableObject {
     self.updateTask = Task { @MainActor in
       self.allAccounts = await keyringService.allAccounts().accounts
         .filter { account in
-          WalletConstants.supportedCoinTypes.contains(account.coin)
+          WalletConstants.supportedCoinTypes().contains(account.coin)
         }
       self.allNetworks = await rpcService.allNetworksForSupportedCoins()
       let filters = self.filters

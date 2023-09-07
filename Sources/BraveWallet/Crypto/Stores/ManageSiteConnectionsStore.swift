@@ -41,7 +41,7 @@ class ManageSiteConnectionsStore: ObservableObject {
   /// Fetch all site connections with 1+ accounts connected
   func fetchSiteConnections() {
     var connections = [SiteConnection]()
-    for coin in WalletConstants.supportedCoinTypes {
+    for coin in WalletConstants.supportedCoinTypes(.dapps) { // only coin types support dapps have site connection screen
       let domains = Domain.allDomainsWithWalletPermissions(for: coin)
       connections.append(contentsOf: domains.map {
         var connectedAddresses = [String]()

@@ -25,12 +25,13 @@ import Preferences
     let currentChainId = currentNetwork.chainId
     let allNetworks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
       .eth: [.mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon, .mockCustomNetwork],
-      .sol: [.mockSolana, .mockSolanaTestnet]
+      .sol: [.mockSolana, .mockSolanaTestnet],
+      .fil: [.mockFilecoinMainnet, .mockFilecoinTestnet]
     ]
     
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._keyringInfo = { keyringId, completion in
-      let isEthereumKeyringId = keyringId == BraveWallet.CoinType.eth.keyringId
+      let isEthereumKeyringId = keyringId == BraveWallet.KeyringId.default
       let keyring: BraveWallet.KeyringInfo = .init(
         id: BraveWallet.KeyringId.default,
         isKeyringCreated: true,
@@ -151,6 +152,10 @@ import Preferences
     let error = await store.setSelectedChain(.mockSolana, isForOrigin: false)
     XCTAssertEqual(error, .selectedChainHasNoAccounts, "Expected chain has no accounts error")
     XCTAssertNotEqual(store.defaultSelectedChainId, BraveWallet.NetworkInfo.mockSolana.chainId)
+    
+    let selectFilecoinMainnetError = await store.setSelectedChain(.mockFilecoinMainnet, isForOrigin: false)
+    XCTAssertEqual(selectFilecoinMainnetError, .selectedChainHasNoAccounts, "Expected chain has no accounts error")
+    XCTAssertNotEqual(store.defaultSelectedChainId, BraveWallet.NetworkInfo.mockFilecoinMainnet.chainId)
   }
   
   func testUpdateChainList() async {
@@ -171,7 +176,9 @@ import Preferences
       .mockGoerli,
       .mockSepolia,
       .mockPolygon,
-      .mockCustomNetwork
+      .mockCustomNetwork,
+      .mockFilecoinMainnet,
+      .mockFilecoinTestnet
     ]
     
     let expectedCustomChains: [BraveWallet.NetworkInfo] = [
@@ -184,7 +191,8 @@ import Preferences
       .dropFirst()
       .sink { allChains in
         defer { allChainsExpectation.fulfill() }
-        XCTAssertEqual(allChains, expectedAllChains)
+        XCTAssertEqual(allChains.count, expectedAllChains.count)
+        XCTAssertTrue(allChains.allSatisfy(expectedAllChains.contains(_:)))
       }
       .store(in: &cancellables)
     

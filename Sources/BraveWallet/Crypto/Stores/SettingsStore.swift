@@ -121,7 +121,7 @@ public class SettingsStore: ObservableObject {
     walletService.reset()
     
     keychain.resetPasswordInKeychain(key: KeyringStore.passwordKeychainKey)
-    for coin in WalletConstants.supportedCoinTypes {
+    for coin in WalletConstants.supportedCoinTypes() {
       Domain.clearAllWalletPermissions(for: coin)
       Preferences.Wallet.reset(for: coin)
     }

@@ -179,6 +179,17 @@ extension TransactionParser {
         gasFee: parsedTransaction.gasFee,
         networkSymbol: parsedTransaction.networkSymbol
       )
+    case let .filSend(details):
+      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.sendAmount, details.sendToken?.symbol ?? "", details.sendFiat ?? "")
+      return .init(
+        txInfo: transaction,
+        namedFromAddress: parsedTransaction.namedFromAddress,
+        toAddress: parsedTransaction.toAddress,
+        namedToAddress: parsedTransaction.namedToAddress,
+        title: title,
+        gasFee: details.gasFee,
+        networkSymbol: parsedTransaction.networkSymbol
+      )
     case .other:
       return .init(txInfo: .init(), namedFromAddress: "", toAddress: "", namedToAddress: "", title: "", gasFee: nil, networkSymbol: "")
     }

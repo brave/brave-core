@@ -75,10 +75,20 @@ public struct WalletConstants {
     BraveWallet.MainnetChainId,
     BraveWallet.FilecoinMainnet
   ]
+ 
+  public enum SupportedCoinTypesMode {
+    case general
+    case dapps
+  }
   
-  /// The currently supported coin types.
-  public static var supportedCoinTypes: OrderedSet<BraveWallet.CoinType> {
-    return [.eth, .sol]
+  /// The currently supported coin types in wallet
+  public static func supportedCoinTypes(_ mode: SupportedCoinTypesMode = .general) -> OrderedSet<BraveWallet.CoinType> {
+    switch mode {
+    case .general:
+      return [.eth, .sol, .fil]
+    case .dapps:
+      return [.eth, .sol]
+    }
   }
   
   /// The supported Ethereum Name Service (ENS) extensions

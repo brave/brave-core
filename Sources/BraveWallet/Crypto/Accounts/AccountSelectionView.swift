@@ -11,6 +11,7 @@ import BraveUI
 /// Displays all accounts and will update the selected account to the account tapped on.
 struct AccountSelectionView: View {
   @ObservedObject var keyringStore: KeyringStore
+  var networkStore: NetworkStore
   let onDismiss: () -> Void
   
   @State private var isPresentingAddAccount: Bool = false
@@ -47,7 +48,10 @@ struct AccountSelectionView: View {
     }
     .sheet(isPresented: $isPresentingAddAccount) {
       NavigationView {
-        AddAccountView(keyringStore: keyringStore)
+        AddAccountView(
+          keyringStore: keyringStore,
+          networkStore: networkStore
+        )
       }
       .navigationViewStyle(.stack)
     }
@@ -60,10 +64,11 @@ struct AccountSelectionView_Previews: PreviewProvider {
     AccountSelectionView(
       keyringStore: {
         let store = KeyringStore.previewStoreWithWalletCreated
-        store.addPrimaryAccount("Account 2", coin: .eth, completion: nil)
-        store.addPrimaryAccount("Account 3", coin: .eth, completion: nil)
+        store.addPrimaryAccount("Account 2", coin: .eth, chainId: BraveWallet.MainnetChainId, completion: nil)
+        store.addPrimaryAccount("Account 3", coin: .eth, chainId: BraveWallet.MainnetChainId, completion: nil)
         return store
       }(),
+      networkStore: .previewStore,
       onDismiss: {}
     )
   }

@@ -78,8 +78,16 @@ class AccountActivityStore: ObservableObject {
       let coin = account.coin
       let networksForAccountCoin = await rpcService.allNetworks(coin)
         .filter { $0.chainId != BraveWallet.LocalhostChainId } // localhost not supported
+      let networksForAccount = networksForAccountCoin.filter { // .fil coin type has two different keyring ids
+        $0.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
+      }
       
-      let allVisibleUserAssets = assetManager.getAllVisibleAssetsInNetworkAssets(networks: networksForAccountCoin)
+      struct NetworkAssets: Equatable {
+        let network: BraveWallet.NetworkInfo
+        let tokens: [BraveWallet.BlockchainToken]
+        let sortOrder: Int
+      }
+      let allVisibleUserAssets = assetManager.getAllVisibleAssetsInNetworkAssets(networks: networksForAccount)
       let allTokens = await blockchainRegistry.allTokens(in: networksForAccountCoin).flatMap(\.tokens)
       var updatedUserVisibleAssets: [AssetViewModel] = []
       var updatedUserVisibleNFTs: [NFTAssetViewModel] = []
@@ -110,7 +118,7 @@ class AccountActivityStore: ObservableObject {
       self.userVisibleAssets = updatedUserVisibleAssets
       self.userVisibleNFTs = updatedUserVisibleNFTs
       
-      let keyringForAccount = await keyringService.keyringInfo(coin.keyringId)
+      let keyringForAccount = await keyringService.keyringInfo(account.keyringId)
       typealias TokenNetworkAccounts = (token: BraveWallet.BlockchainToken, network: BraveWallet.NetworkInfo, accounts: [BraveWallet.AccountInfo])
       let allTokenNetworkAccounts = allVisibleUserAssets.flatMap { networkAssets in
         networkAssets.tokens.map { token in

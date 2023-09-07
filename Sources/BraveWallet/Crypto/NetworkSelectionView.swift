@@ -76,7 +76,11 @@ struct NetworkSelectionView: View {
           isPresented: $store.isPresentingAddAccount
         ) {
           NavigationView {
-            AddAccountView(keyringStore: keyringStore, preSelectedCoin: store.nextNetwork?.coin)
+            AddAccountView(
+              keyringStore: keyringStore,
+              networkStore: networkStore,
+              preSelectedCoin: store.nextNetwork?.coin
+            )
           }
           .navigationViewStyle(.stack)
           .onDisappear {

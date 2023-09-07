@@ -1976,6 +1976,13 @@ extension Strings {
       value: "Domain doesn\'t have a linked %@ address",
       comment: "An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address`"
     )
+    public static let sendErrorInvalidRecipientAddress = NSLocalizedString(
+      "wallet.sendErrorInvalidRecipientAddress",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Invalid recipient address",
+      comment: "An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid"
+    )
     public static let customNetworkChainIdTitle = NSLocalizedString(
       "wallet.customNetworkChainIdTitle",
       tableName: "BraveWallet",

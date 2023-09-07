@@ -75,7 +75,8 @@ class TransactionDetailsStore: ObservableObject {
         return
       }
       self.network = network
-      let keyring = await keyringService.keyringInfo(coin.keyringId)
+      let keringId = BraveWallet.KeyringId.keyringId(for: coin, on: transaction.chainId)
+      let keyring = await keyringService.keyringInfo(keringId)
       var allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: network.coin) + tokenInfoCache.map(\.value)
       let userVisibleTokens: [BraveWallet.BlockchainToken] = assetManager.getAllUserAssetsInNetworkAssets(networks: [network]).flatMap { $0.tokens }
       let unknownTokenContractAddresses = transaction.tokenContractAddresses
@@ -167,6 +168,13 @@ class TransactionDetailsStore: ObservableObject {
       case let .solSwapTransaction(details):
         self.title = Strings.Wallet.solanaSwapTransactionTitle
         self.value = details.fromAmount
+      case let .filSend(details):
+        self.title = Strings.Wallet.sent
+        self.value = String(format: "%@ %@", details.sendAmount, details.sendToken?.symbol ?? "")
+        self.fiat = details.sendFiat
+        if let sendToken = details.sendToken, let tokenPrice = assetRatios[sendToken.assetRatioId.lowercased()] {
+          self.marketPrice = currencyFormatter.string(from: NSNumber(value: tokenPrice)) ?? "$0.00"
+        }
       case .other:
         break
       }

@@ -17,7 +17,7 @@ private extension BraveWallet.AccountInfo {
     self.init(
       accountId: .init(
         coin: coin,
-        keyringId: coin.keyringId,
+        keyringId: coin.keyringIds.first ?? .default,
         kind: .derived,
         address: address,
         bitcoinAccountIndex: 0,
@@ -49,17 +49,28 @@ class TransactionParserTests: XCTestCase {
       $0.name = "Solana Account 2"
       $0.address = "0xeeeeeeeeeeffffffffff11111111112222222222"
       $0.accountId.address = "0xeeeeeeeeeeffffffffff11111111112222222222"
+    },
+    (BraveWallet.AccountInfo.mockFilTestnetAccount.copy() as! BraveWallet.AccountInfo).then {
+      $0.name = "Filecoin Testnet 1"
+      $0.address = "fil_testnet_address_1"
+      $0.accountId.address = "fil_testnet_address_1"
+    },
+    (BraveWallet.AccountInfo.mockFilTestnetAccount.copy() as! BraveWallet.AccountInfo).then {
+      $0.name = "Filecoin Testnet 2"
+      $0.address = "fil_testnet_address_2"
+      $0.accountId.address = "fil_testnet_address_2"
     }
   ]
   private let tokens: [BraveWallet.BlockchainToken] = [
-    .previewToken, .previewDaiToken, .mockUSDCToken, .mockSolToken, .mockSpdToken, .mockSolanaNFTToken
+    .previewToken, .previewDaiToken, .mockUSDCToken, .mockSolToken, .mockSpdToken, .mockSolanaNFTToken, .mockFilToken
   ]
   let assetRatios: [String: Double] = [
     "eth": 1,
     BraveWallet.BlockchainToken.previewDaiToken.assetRatioId.lowercased(): 2,
     BraveWallet.BlockchainToken.mockUSDCToken.assetRatioId.lowercased(): 3,
     "sol": 20,
-    BraveWallet.BlockchainToken.mockSpdToken.assetRatioId.lowercased(): 15
+    BraveWallet.BlockchainToken.mockSpdToken.assetRatioId.lowercased(): 15,
+    "fil": 2
   ]
   
   func testEthSendTransaction() {
@@ -1089,5 +1100,101 @@ class TransactionParserTests: XCTestCase {
       instruction: createAccountWithSeedInstruction
     )
     XCTAssertNoDifference(expectedParsedCreateAccountWithSeed, TransactionParser.parseSolanaInstruction(createAccountWithSeedInstruction))
+  }
+  
+  func testFilecoinSendTransfer() {
+    let network: BraveWallet.NetworkInfo = .mockFilecoinTestnet
+    let fromAccount: BraveWallet.AccountInfo = (BraveWallet.AccountInfo.mockFilTestnetAccount.copy() as! BraveWallet.AccountInfo).then {
+      $0.address = "fil_testnet_address_1"
+      $0.name = "Filecoin Testnet 1"
+    }
+    let toAccount = (BraveWallet.AccountInfo.mockFilTestnetAccount.copy() as! BraveWallet.AccountInfo).then {
+      $0.address = "fil_testnet_address_2"
+      $0.name = "Filecoin Testnet 2"
+    }
+    
+    let transactionData: BraveWallet.FilTxData = .init(
+      nonce: "",
+      gasPremium: "100911",
+      gasFeeCap: "101965",
+      gasLimit: "1527953",
+      maxFee: "0",
+      to: toAccount.address,
+      value: "1000000000000000000"
+    )
+    let transaction = BraveWallet.TransactionInfo(
+      id: "8",
+      fromAddress: fromAccount.address,
+      from: fromAccount.accountId,
+      txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffggggg1234",
+      txDataUnion: .init(filTxData: transactionData),
+      txStatus: .unapproved,
+      txType: .other,
+      txParams: [],
+      txArgs: [
+      ],
+      createdTime: Date(),
+      submittedTime: Date(),
+      confirmedTime: Date(),
+      originInfo: nil,
+      groupId: nil,
+      chainId: BraveWallet.FilecoinTestnet,
+      effectiveRecipient: nil
+    )
+    let expectedParsedTransaction = ParsedTransaction(
+      transaction: transaction,
+      namedFromAddress: fromAccount.name,
+      fromAddress: fromAccount.address,
+      namedToAddress: toAccount.name,
+      toAddress: toAccount.address,
+      networkSymbol: "FIL",
+      details: .filSend(
+        .init(
+          sendToken: .mockFilToken,
+          sendValue: "1000000000000000000",
+          sendAmount: "1",
+          sendFiat: "$2.00",
+          gasPremium: "0.000000000000100911",
+          gasLimit: "0.000000000001527953",
+          gasFeeCap: "0.000000000000101965",
+          gasFee: GasFee(
+            fee: "0.000000155797727645",
+            fiat: "$0.0000003116"
+          )
+        )
+      )
+    )
+    
+    guard let parsedTransaction = TransactionParser.parseTransaction(
+      transaction: transaction,
+      network: network,
+      accountInfos: accountInfos,
+      visibleTokens: tokens,
+      allTokens: tokens,
+      assetRatios: assetRatios,
+      solEstimatedTxFee: nil,
+      currencyFormatter: currencyFormatter
+    ) else {
+      XCTFail("Failed to parse filecoinSendTransfer transaction")
+      return
+    }
+    
+    XCTAssertEqual(expectedParsedTransaction.fromAddress, parsedTransaction.fromAddress)
+    XCTAssertEqual(expectedParsedTransaction.namedFromAddress, parsedTransaction.namedFromAddress)
+    XCTAssertEqual(expectedParsedTransaction.toAddress, parsedTransaction.toAddress)
+    XCTAssertEqual(expectedParsedTransaction.networkSymbol, parsedTransaction.networkSymbol)
+    guard case let .filSend(expectedDetails) = expectedParsedTransaction.details,
+          case let .filSend(parsedDetails) = parsedTransaction.details else {
+      XCTFail("Incorrectly parsed solanaSystemTransfer transaction")
+      return
+    }
+  
+    XCTAssertEqual(expectedDetails.sendValue, parsedDetails.sendValue)
+    XCTAssertEqual(expectedDetails.sendAmount, parsedDetails.sendAmount)
+    XCTAssertEqual(expectedDetails.sendFiat, parsedDetails.sendFiat)
+    XCTAssertEqual(expectedDetails.gasPremium, parsedDetails.gasPremium)
+    XCTAssertEqual(expectedDetails.gasLimit, parsedDetails.gasLimit)
+    XCTAssertEqual(expectedDetails.gasFeeCap, parsedDetails.gasFeeCap)
+    XCTAssertEqual(expectedDetails.gasFee, parsedDetails.gasFee)
   }
 }
