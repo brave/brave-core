@@ -7,22 +7,26 @@
 import {
   BraveWallet,
   CoinTypes,
-  SerializableTransactionInfo
+  SerializableTransactionInfo,
+  TxSimulationOptInStatus
 } from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // utils
 import { toMojoUnion } from '../../../utils/mojo-utils'
+import { handleEndpointError } from '../../../utils/api-utils'
 
 /**
- * disabled until we have an opt-in screen
+ * Will be `undefined` until a preference is set
  */
-let isTxSimulationEnabled = false
+let txSimulationOptInStatus: TxSimulationOptInStatus = 'unset'
 
-export const getIsTxSimulationEnabled = () => isTxSimulationEnabled
+export const getIsTxSimulationOptInStatus = () => txSimulationOptInStatus
 
-export const setIsTxSimulationEnabled = (enabled: boolean) => {
-  isTxSimulationEnabled = enabled
+export const setTxSimulationOptInStatus = (
+  enabled: TxSimulationOptInStatus
+) => {
+  txSimulationOptInStatus = enabled
 }
 
 export const transactionSimulationEndpoints = ({
@@ -30,20 +34,23 @@ export const transactionSimulationEndpoints = ({
   query
 }: WalletApiEndpointBuilderParams) => {
   return {
-    getIsTxSimulationEnabled: query<boolean, void>({
+    getIsTxSimulationOptInStatus: query<TxSimulationOptInStatus, void>({
       queryFn: async (arg, api, extraOptions, baseQuery) => {
         return {
-          data: getIsTxSimulationEnabled()
+          data: getIsTxSimulationOptInStatus()
         }
       },
       providesTags: ['TransactionSimulationsEnabled']
     }),
 
-    setIsTxSimulationEnabled: mutation<boolean, boolean>({
-      queryFn: async (enabled, api, extraOptions, baseQuery) => {
-        setIsTxSimulationEnabled(enabled)
+    setIsTxSimulationOptInStatus: mutation<
+      TxSimulationOptInStatus,
+      TxSimulationOptInStatus
+    >({
+      queryFn: async (status, api, extraOptions, baseQuery) => {
+        setTxSimulationOptInStatus(status)
         return {
-          data: enabled
+          data: status
         }
       },
       invalidatesTags: ['TransactionSimulationsEnabled']
@@ -55,12 +62,10 @@ export const transactionSimulationEndpoints = ({
         coinType: BraveWallet.CoinType
       }
     >({
-      queryFn: async (txArg, { dispatch }, extraOptions, baseQuery) => {
+      queryFn: async (txArg, { endpoint }, extraOptions, baseQuery) => {
         try {
-          if (!getIsTxSimulationEnabled()) {
-            return {
-              error: 'Transaction simulation is not enabled'
-            }
+          if (getIsTxSimulationOptInStatus() !== 'allowed') {
+            throw new Error('Transaction simulation is not enabled')
           }
 
           const api = baseQuery(undefined).data
@@ -68,7 +73,7 @@ export const transactionSimulationEndpoints = ({
 
           if (txArg.coinType !== BraveWallet.CoinType.ETH) {
             throw new Error(
-              `Invalid transaction argument cointype for EVM simulation: ${
+              `Invalid EVM transaction argument cointype for EVM simulation: ${
                 txArg.coinType //
               }`
             )
@@ -81,7 +86,7 @@ export const transactionSimulationEndpoints = ({
 
           if (!result) {
             throw new Error(
-              `transaction simulation not supported for chain/coin: ${
+              `EVM transaction simulation not supported for chain/coin: ${
                 txArg.chainId //
               }/${txArg.coinType}`
             )
@@ -95,7 +100,7 @@ export const transactionSimulationEndpoints = ({
 
           if (!tx) {
             throw new Error(
-              `could not lookup tx by meta-ID/coin: ${
+              `could not lookup EVM tx by meta-ID/coin: ${
                 txArg.id //
               }/${txArg.coinType}`
             )
@@ -104,28 +109,29 @@ export const transactionSimulationEndpoints = ({
           const { errorResponse, errorString, response } =
             await simulationService.scanEVMTransaction(tx, navigator.language)
 
-          if (errorResponse) {
-            const error = `${errorString}: ${errorResponse}`
-            const message = `Transaction Simulation error: ${error}`
-            console.log(message)
-            return {
-              error
-            }
+          if (errorResponse || errorString) {
+            throw new Error(
+              `EVM Transaction Simulation error for tx: ${
+                JSON.stringify(tx, undefined, 2)
+              } -- ${
+                errorString //
+              } -- ${errorResponse}`
+            )
           }
 
           if (!response) {
-            throw new Error('empty simulation response')
+            throw new Error('empty EVM simulation response')
           }
 
           return {
             data: response
           }
         } catch (error) {
-          const message = `Failed to simulate transaction: ${error}`
-          console.log(message)
-          return {
-            error: message
-          }
+          return handleEndpointError(
+            endpoint,
+            'Failed to simulate EVM transaction',
+            error
+          )
         }
       }
     }),
@@ -145,17 +151,14 @@ export const transactionSimulationEndpoints = ({
         >['id']
       }
     >({
-      queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
-          if (!getIsTxSimulationEnabled()) {
-            return {
-              error: 'Transaction simulation is not enabled'
-            }
+          if (getIsTxSimulationOptInStatus() !== 'allowed') {
+            throw new Error('Transaction simulation is not enabled')
           }
 
           const api = baseQuery(undefined).data
           const { simulationService, braveWalletService, txService } = api
-          const { getPendingSignAllTransactionsRequests } = braveWalletService
 
           const params: Parameters<
             BraveWallet.SimulationServiceRemote['scanSolanaTransaction']
@@ -167,7 +170,8 @@ export const transactionSimulationEndpoints = ({
 
           switch (arg.mode) {
             case 'signAllTransactionsRequest': {
-              const { requests} = await getPendingSignAllTransactionsRequests()
+              const { requests } = await braveWalletService //
+                .getPendingSignAllTransactionsRequests()
 
               params.signAllTransactionsRequest = requests.find(
                 (r) => r.id === arg?.id
@@ -195,18 +199,15 @@ export const transactionSimulationEndpoints = ({
             }
 
             default: {
-              return {
-                error: `unsupported SVM simulation mode: ${arg.mode}`
-              }
+              throw new Error(`Unsupported SVM simulation mode: ${arg.mode}`)
             }
           }
 
           const request = params[arg.mode]
           if (!request) {
-            console.log(`unable to find ${arg.mode} Id: ${arg.id}`)
-            return {
-              error: 'request/transaction not found'
-            }
+            throw new Error(
+              `Unable to find ${arg.mode || 'MODE'} with Id: ${arg.id}`
+            )
           }
 
           const { result } = await simulationService.hasTransactionScanSupport(
@@ -216,7 +217,7 @@ export const transactionSimulationEndpoints = ({
 
           if (!result) {
             throw new Error(
-              `transaction simulation not supported for chain/coin: ${
+              `Solana transaction simulation not supported for chain/coin: ${
                 request.chainId //
               }/${CoinTypes.SOL}`
             )
@@ -228,28 +229,28 @@ export const transactionSimulationEndpoints = ({
               navigator.language
             )
 
-          if (errorResponse) {
-            const error = `${errorString}: ${errorResponse}`
-            const message = `Transaction Simulation error: ${error}`
-            console.log(message)
-            return {
-              error
-            }
+          if (errorResponse || errorString) {
+            throw new Error(
+              `scanSolanaTransaction({${
+                //
+                JSON.stringify(toMojoUnion(params, arg.mode))
+              }}) failed -- ${errorString}: ${errorResponse}`
+            )
           }
 
           if (!response) {
-            throw new Error('empty simulation response')
+            throw new Error('empty Solana simulation response')
           }
 
           return {
             data: response
           }
         } catch (error) {
-          const message = `Failed to simulate transaction: ${error}`
-          console.log(message)
-          return {
-            error: message
-          }
+          return handleEndpointError(
+            endpoint,
+            'Failed to simulate Solana transaction',
+            error
+          )
         }
       }
     })
