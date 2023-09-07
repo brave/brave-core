@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/chromium_src/chrome/browser/ui/commander/bookmark_command_source.h"
-
-#include "src/chrome/browser/ui/commander/bookmark_command_source.cc"  // IWYU pragma: export
+#include "brave/browser/ui/commander/brave_bookmark_command_source.h"
 
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#include "src/chrome/browser/ui/commander/bookmark_command_source.cc"
 
 namespace commander {
 

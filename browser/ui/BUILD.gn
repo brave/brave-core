@@ -255,8 +255,11 @@ source_set("ui") {
 
   if (enable_commander) {
     sources += [
+      "commander/brave_bookmark_command_source.h",
       "commander/brave_simple_command_source.cc",
       "commander/brave_simple_command_source.h",
+      "commander/brave_tab_command_source.h",
+      "commander/brave_window_command_source.h",
       "commander/commander_service.cc",
       "commander/commander_service.h",
       "commander/commander_service_factory.cc",
