@@ -355,9 +355,6 @@ export class BaseQueryCache {
     return this._nftImageIpfsGateWayUrlRegistry[trimmedURL]
   }
 
-  //
-  // Internals
-  //
   getEnabledCoinTypes = async () => {
     if (!this._enabledCoinTypes || !this._enabledCoinTypes.length) {
       // network type flags
