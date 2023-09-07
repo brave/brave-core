@@ -1,5 +1,5 @@
 diff --git a/crypto/aead.cc b/crypto/aead.cc
-index bb556f8afb92f4b57bf8da7c5c5b2629841e80aa..97c32028f288d30e366ade9ad0b4216984f0e9f8 100644
+index b3b26d9553bd230fd5049e13f11e1760fd9efa7f..eb5ef899165aaf4da8e67deb286ebf8276172071 100644
 --- a/crypto/aead.cc
 +++ b/crypto/aead.cc
 @@ -130,6 +130,7 @@ size_t Aead::KeyLength() const {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/importer/importer_list.cc b/chrome/browser/importer/importer_list.cc
-index d31c78f65d2a65907a97bc02d5013d3ddc19eec6..7e651588666ddae715a58f51d3a2da7eac06a849 100644
+index 0919ea2f5abfeff75d485350eb4c7c14f30f1973..7a4a450be6beec9a763da3aeb0a30bbcd7b6f247 100644
 --- a/chrome/browser/importer/importer_list.cc
 +++ b/chrome/browser/importer/importer_list.cc
-@@ -163,20 +163,30 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
+@@ -164,20 +164,30 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
    if (shell_integration::IsFirefoxDefaultBrowser()) {
      DetectFirefoxProfiles(locale, &profiles);
      DetectBuiltinWindowsProfiles(&profiles);
