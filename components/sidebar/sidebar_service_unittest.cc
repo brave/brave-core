@@ -893,7 +893,6 @@ class SidebarServiceOrderingTest : public SidebarServiceTest {
   ~SidebarServiceOrderingTest() override = default;
 
   void SetUp() override {
-    testing::Test::SetUp();
 #if BUILDFLAG(ENABLE_AI_CHAT)
     scoped_feature_list_.InitAndEnableFeature(ai_chat::features::kAIChat);
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
