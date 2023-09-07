@@ -22,7 +22,6 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
-import org.chromium.chrome.browser.customtabs.CustomTabIntentDataProvider;
 import org.chromium.chrome.browser.customtabs.TranslucentCustomTabActivity;
 import org.chromium.ui.util.ColorUtils;
 
@@ -61,8 +60,8 @@ public class BraveLeoActivity extends TranslucentCustomTabActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(CustomTabsIntent.EXTRA_TITLE_VISIBILITY_STATE, CustomTabsIntent.NO_TITLE);
         intent.putExtra(CustomTabsIntent.EXTRA_ENABLE_URLBAR_HIDING, false);
-        intent.putExtra(CustomTabIntentDataProvider.EXTRA_INITIAL_ACTIVITY_HEIGHT_PX,
-                INITIAL_ACTIVITY_HEIGHT_PX);
+        intent.putExtra(
+                CustomTabsIntent.EXTRA_INITIAL_ACTIVITY_HEIGHT_PX, INITIAL_ACTIVITY_HEIGHT_PX);
         intent.putExtra(CustomTabsIntent.EXTRA_COLOR_SCHEME,
                 ColorUtils.inNightMode(context) ? COLOR_SCHEME_DARK : COLOR_SCHEME_LIGHT);
         intent.setData(Uri.parse(url));
