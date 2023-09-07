@@ -88,7 +88,7 @@ public class DAppsMessageFragment extends BaseDAppsFragment {
 
     private void updateText(boolean unicodeEscape, final String message, final boolean isEip712) {
         if (mCurrentSignMessageRequest.signData.which() == SignDataUnion.Tag.EthSiweData) {
-            updateTextSiwe(unicodeEscape, message);
+            updateTextSiwe();
         } else {
             updateTextEthSign(unicodeEscape, message, isEip712);
         }
@@ -115,47 +115,36 @@ public class DAppsMessageFragment extends BaseDAppsFragment {
         mSignMessageText.setText(TextUtils.concat(domainPart, messagePart));
     }
 
-    private void updateTextSiwe(boolean unicodeEscape, final String message) {
+    private void updateTextSiwe() {
         assert mCurrentSignMessageRequest.signData.which() == SignDataUnion.Tag.EthSiweData;
 
         ArrayList<Spanned> allDetails = new ArrayList<>();
         addDetail(allDetails, R.string.wallet_siwe_message_details_origin_section,
-                getOriginJson(mCurrentSignMessageRequest.signData.getEthSiweData().origin),
-                unicodeEscape);
+                getOriginJson(mCurrentSignMessageRequest.signData.getEthSiweData().origin));
         addDetail(allDetails, R.string.wallet_siwe_message_details_address_section,
-                mCurrentSignMessageRequest.signData.getEthSiweData().address, unicodeEscape);
+                mCurrentSignMessageRequest.signData.getEthSiweData().address);
         addDetail(allDetails, R.string.wallet_siwe_message_details_statement_section,
-                mCurrentSignMessageRequest.signData.getEthSiweData().statement, unicodeEscape);
+                mCurrentSignMessageRequest.signData.getEthSiweData().statement);
         addDetail(allDetails, R.string.wallet_siwe_message_details_uri_section,
-                mCurrentSignMessageRequest.signData.getEthSiweData().uri.url, unicodeEscape);
+                mCurrentSignMessageRequest.signData.getEthSiweData().uri.url);
         addDetail(allDetails, R.string.wallet_siwe_message_details_version_section,
-                Integer.toString(mCurrentSignMessageRequest.signData.getEthSiweData().version),
-                unicodeEscape);
+                Integer.toString(mCurrentSignMessageRequest.signData.getEthSiweData().version));
         addDetail(allDetails, R.string.wallet_siwe_message_details_chain_id_section,
-                Long.toString(mCurrentSignMessageRequest.signData.getEthSiweData().chainId),
-                unicodeEscape);
+                Long.toString(mCurrentSignMessageRequest.signData.getEthSiweData().chainId));
         addDetail(allDetails, R.string.wallet_siwe_message_details_nonce_section,
-                mCurrentSignMessageRequest.signData.getEthSiweData().nonce, unicodeEscape);
+                mCurrentSignMessageRequest.signData.getEthSiweData().nonce);
         addDetail(allDetails, R.string.wallet_siwe_message_details_issued_at_section,
-                mCurrentSignMessageRequest.signData.getEthSiweData().issuedAt, unicodeEscape);
+                mCurrentSignMessageRequest.signData.getEthSiweData().issuedAt);
         addDetail(allDetails, R.string.wallet_siwe_message_details_expiration_time_section,
-                mCurrentSignMessageRequest.signData.getEthSiweData().expirationTime, unicodeEscape);
+                mCurrentSignMessageRequest.signData.getEthSiweData().expirationTime);
 
         mSignMessageText.setText(TextUtils.concat(allDetails.toArray(new Spanned[0])));
     }
 
-    private String escapeIfNeed(String detail, boolean unicodeEscape) {
-        if (TextUtils.isEmpty(detail)) return null;
-        if (unicodeEscape) return Validations.unicodeEscape(detail);
-        return detail;
-    }
-
-    private void addDetail(
-            ArrayList<Spanned> allDetails, int captionId, String value, boolean unicodeEscape) {
+    private void addDetail(ArrayList<Spanned> allDetails, int captionId, String value) {
         if (TextUtils.isEmpty(value)) return;
 
-        allDetails.add(AndroidUtils.formatHTML(
-                getString(captionId, Html.escapeHtml(escapeIfNeed(value, unicodeEscape)))));
+        allDetails.add(AndroidUtils.formatHTML(getString(captionId, Html.escapeHtml(value))));
     }
 
     private String getOriginJson(Origin origin) {
