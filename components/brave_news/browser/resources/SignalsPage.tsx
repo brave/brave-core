@@ -7,6 +7,7 @@ import * as React from 'react';
 import { useInspectContext } from './context';
 import Card from './feed/Card';
 import Radio from '@brave/leo/react/radioButton'
+import Button from '@brave/leo/react/button'
 import Dropdown from '@brave/leo/react/dropdown';
 import Input from '@brave/leo/react/input';
 import Flex from '../../../brave_new_tab_ui/components/Flex'
@@ -27,17 +28,16 @@ function SignalCards<T>({ items, sort, filter, getName, getKey, stats }: { items
   const filteredAndSorted = items
     .filter(item => getName(item).toLowerCase().includes(filter))
     .sort((a, b) => {
-      if (sort === 'name') return getName(a).localeCompare(getName(b))
+      const aSignal = signals[getKey(a)]
+      const bSignal = signals[getKey(b)]
+
+      if (sort === 'name' || !aSignal || !bSignal) return getName(a).localeCompare(getName(b))
 
       if (sort === 'shownCount') {
         const aCount = stats[getKey(a)] ?? 0
         const bCount = stats[getKey(b)] ?? 0
         return bCount - aCount
       }
-
-      const aSignal = signals[getKey(a)]
-      const bSignal = signals[getKey(b)]
-
       if (sort === 'subscribed') return bSignal.subscribedWeight - aSignal.subscribedWeight
       return bSignal.visitWeight - aSignal.visitWeight
     })
@@ -59,16 +59,23 @@ const getPublisherKey = (p: Publisher) => p.publisherId
 const getPublisherName = (p: Publisher) => p.publisherName
 
 export default function SignalsPage(props: Props) {
-  const { publishers, channels, feed } = useInspectContext();
+  const { publishers, channels, feed, truncate, setTruncate } = useInspectContext();
   const [show, setShow] = React.useState<'all' | 'publishers' | 'channels'>('all')
   const [sort, setSort] = React.useState<'name' | 'subscribed' | 'visitWeight' | 'shownCount'>('visitWeight')
   const [filter, setFilter] = React.useState('')
-  const [truncate, setTruncate] = React.useState(250)
   const { channelStats, publisherStats, counts } = getFeedStats(feed, truncate)
 
   return <Container direction='column'>
-    <h2>Signals Page</h2>
+    <h2>Signals</h2>
     <Flex direction='row' gap={8}>
+
+      <div>
+        Publishers: {Object.keys(publishers).length}
+        <br />
+        Channels: {Object.keys(channels).length}
+        <br />
+        <Button onClick={() => window.location.reload()}>Refresh</Button>
+      </div>
       <Flex direction='column' gap={8}>
         Show only:
         <Radio name='show' value="all" currentValue={show} onChange={e => setShow(e.detail.value)} />
