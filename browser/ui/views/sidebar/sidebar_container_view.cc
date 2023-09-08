@@ -24,6 +24,7 @@
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -34,10 +35,14 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/native_web_keyboard_event.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/events/event_observer.h"
 #include "ui/events/types/event_type.h"
@@ -48,6 +53,11 @@
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/components/ai_chat/common/features.h"
+#endif
 
 namespace {
 
@@ -115,13 +125,14 @@ void SidebarContainerView::Init() {
 
   sidebar_model_ = browser_->sidebar_controller()->model();
   sidebar_model_observation_.Observe(sidebar_model_);
+  browser_->tab_strip_model()->AddObserver(this);
 
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
   DCHECK(browser_view);
 
   auto* side_panel_registry =
       SidePanelCoordinator::GetGlobalSidePanelRegistry(browser_);
-  panel_registry_observation_.Observe(side_panel_registry);
+  panel_registry_observations_.AddObservation(side_panel_registry);
 
   for (const auto& entry : side_panel_registry->entries()) {
     DVLOG(1) << "Observing panel entry in ctor: " << entry->name();
@@ -226,21 +237,6 @@ void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
 void SidebarContainerView::UpdateSidebarItemsState() {
   // control view has items.
   sidebar_control_view_->Update();
-}
-
-bool SidebarContainerView::HasActiveContextualEntry() {
-  auto* web_contents = browser_->tab_strip_model()->GetActiveWebContents();
-  if (!web_contents) {
-    return false;
-  }
-
-  auto* active_contextual_registry = SidePanelRegistry::Get(web_contents);
-  if (active_contextual_registry &&
-      active_contextual_registry->active_entry()) {
-    return true;
-  }
-
-  return false;
 }
 
 void SidebarContainerView::MenuClosed() {
@@ -676,9 +672,7 @@ void SidebarContainerView::HideSidebarForShowOption() {
 }
 
 bool SidebarContainerView::ShouldUseAnimation() const {
-  auto* controller = browser_->sidebar_controller();
-  return !controller->GetIsPanelOperationFromActiveTabChangeAndReset() &&
-         gfx::Animation::ShouldRenderRichAnimation();
+  return gfx::Animation::ShouldRenderRichAnimation();
 }
 
 void SidebarContainerView::UpdateToolbarButtonVisibility() {
@@ -716,11 +710,6 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
   DVLOG(1) << "Panel shown: " << entry->name();
   auto* controller = browser_->sidebar_controller();
 
-  // Asked to set here because SidebarController doesn't know non-managed entry
-  // activation.
-  // Set browser active panel when panel is shown.
-  controller->SetBrowserActivePanelKey(entry->key());
-
   // Handling if |entry| is managed one.
   for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
     if (!item.open_in_panel) {
@@ -744,12 +733,6 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   // Make sure item is deselected
   DVLOG(1) << "Panel hidden: " << entry->name();
   auto* controller = browser_->sidebar_controller();
-
-  // Asked to clear here because SidebarController doesn't know non-managed
-  // entry's de-activation. Clear browser active panel when panel is hidden.
-  if (!side_panel_coordinator_->GetCurrentEntryId()) {
-    controller->ClearBrowserActivePanelKey();
-  }
 
   // Handling if |entry| is managed one.
   for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
@@ -787,6 +770,76 @@ void SidebarContainerView::OnEntryWillDeregister(SidePanelRegistry* registry,
   DVLOG(1) << "Unobserving panel entry in registry observer: " << entry->name();
   panel_entry_observations_.RemoveObservation(entry);
 }
+
+void SidebarContainerView::OnTabStripModelChanged(
+    TabStripModel* tab_strip_model,
+    const TabStripModelChange& change,
+    const TabStripSelectionChange& selection) {
+  if (change.type() == TabStripModelChange::kInserted) {
+    for (const auto& contents : change.GetInsert()->contents) {
+      CreateAndRegisterEntries(contents.contents);
+    }
+    return;
+  }
+
+  if (change.type() == TabStripModelChange::kRemoved) {
+    for (const auto& contents : change.GetRemove()->contents) {
+      DeregisterEntries(contents.contents);
+    }
+    return;
+  }
+}
+
+void SidebarContainerView::DeregisterEntries(content::WebContents* contents) {
+  auto* registry = SidePanelRegistry::Get(contents);
+  if (!registry) {
+    return;
+  }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (ai_chat::features::IsAIChatEnabled()) {
+    registry->Deregister(SidePanelEntryKey(SidePanelEntry::Id::kChatUI));
+  }
+#endif
+
+  panel_registry_observations_.RemoveObservation(registry);
+}
+
+void SidebarContainerView::CreateAndRegisterEntries(
+    content::WebContents* contents) {
+  auto* registry = SidePanelRegistry::Get(contents);
+  if (!registry) {
+    return;
+  }
+
+  panel_registry_observations_.AddObservation(registry);
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (ai_chat::features::IsAIChatEnabled()) {
+    registry->Register(std::make_unique<SidePanelEntry>(
+        SidePanelEntry::Id::kChatUI,
+        l10n_util::GetStringUTF16(IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE),
+        ui::ImageModel(),
+        base::BindRepeating(&SidebarContainerView::CreateAIChatSidePanelWebView,
+                            base::Unretained(this))));
+  }
+#endif
+}
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+std::unique_ptr<views::View>
+SidebarContainerView::CreateAIChatSidePanelWebView() {
+  auto web_view = std::make_unique<SidePanelWebUIViewT<AIChatUI>>(
+      base::RepeatingClosure(), base::RepeatingClosure(),
+      std::make_unique<BubbleContentsWrapperT<AIChatUI>>(
+          GURL(kChatUIURL), browser_->profile(),
+          IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE,
+          /*webui_resizes_host=*/false,
+          /*esc_closes_ui=*/false));
+  web_view->ShowUI();
+  return web_view;
+}
+#endif
 
 BEGIN_METADATA(SidebarContainerView, views::View)
 END_METADATA

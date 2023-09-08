@@ -384,11 +384,8 @@ source_set("ui") {
       }
     }
     if (enable_ai_chat) {
-      sources += [
-        "views/side_panel/ai_chat/ai_chat_side_panel_coordinator.cc",
-        "views/side_panel/ai_chat/ai_chat_side_panel_coordinator.h",
-        "views/side_panel/ai_chat/ai_chat_side_panel_utils_views.cc",
-      ]
+      sources +=
+          [ "views/side_panel/ai_chat/ai_chat_side_panel_utils_views.cc" ]
     }
     if (use_aura) {
       sources += [
