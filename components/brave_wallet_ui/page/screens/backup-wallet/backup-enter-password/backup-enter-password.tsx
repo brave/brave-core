@@ -93,6 +93,11 @@ export const BackupEnterPassword: React.FC = () => {
     setPassword(value)
   }
 
+  const goBackUrl =
+    history.action === 'POP'
+      ? WalletRoutes.PortfolioAssets
+      : undefined
+
   // render
   return (
     <CenteredPageLayout>
@@ -102,6 +107,7 @@ export const BackupEnterPassword: React.FC = () => {
           <StepsNavigation
             currentStep={WalletRoutes.OnboardingExplainRecoveryPhrase}
             steps={[]}
+            goBackUrl={goBackUrl}
           />
 
           <div>
