@@ -31,8 +31,8 @@ class BitcoinSerializerStream {
   void PushBytesReversed(base::span<const uint8_t> bytes);
 
  private:
-  std::vector<uint8_t>& to() { return to_; }
-  std::vector<uint8_t>& to_;
+  std::vector<uint8_t>& to() { return to_.get(); }
+  raw_ref<std::vector<uint8_t>> to_;
 };
 
 // TODO(apaymyshev): test with reference test vectors.
