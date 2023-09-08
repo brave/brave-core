@@ -49,10 +49,12 @@ class PlaylistActionDialog : public views::DialogDelegateView {
         ->Show();
   }
 
-  ~PlaylistActionDialog() override = default;
+  ~PlaylistActionDialog() override;
 
  protected:
   PlaylistActionDialog();
+
+  std::unique_ptr<ThumbnailProvider> thumbnail_provider_;
 };
 
 class PlaylistNewPlaylistDialog : public PlaylistActionDialog,
@@ -63,7 +65,8 @@ class PlaylistNewPlaylistDialog : public PlaylistActionDialog,
   using PassKey = base::PassKey<PlaylistActionDialog>;
 
   PlaylistNewPlaylistDialog(PassKey, playlist::PlaylistService* service);
-  ~PlaylistNewPlaylistDialog() override = default;
+  ~PlaylistNewPlaylistDialog() override;
+
   // PlaylistActionDialog:
   views::View* GetInitiallyFocusedView() override;
 

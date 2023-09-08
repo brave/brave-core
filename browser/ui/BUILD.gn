@@ -1037,6 +1037,8 @@ source_set("ui") {
       "views/playlist/playlist_action_icon_view.h",
       "views/playlist/selectable_list_view.cc",
       "views/playlist/selectable_list_view.h",
+      "views/playlist/thumbnail_provider.cc",
+      "views/playlist/thumbnail_provider.h",
       "views/playlist/thumbnail_view.cc",
       "views/playlist/thumbnail_view.h",
       "views/side_panel/playlist/playlist_contents_wrapper.cc",

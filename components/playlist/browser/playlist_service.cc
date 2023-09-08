@@ -1167,6 +1167,13 @@ bool PlaylistService::GetThumbnailPath(const std::string& id,
   return true;
 }
 
+void PlaylistService::DownloadThumbnail(
+    const GURL& url,
+    base::OnceCallback<void(gfx::Image)> callback) {
+  thumbnail_downloader_->DownloadThumbnail(url.spec(), url,
+                                           std::move(callback));
+}
+
 bool PlaylistService::GetMediaPath(const std::string& id,
                                    base::FilePath* media_path) {
   constexpr base::FilePath::CharType kMediaFileName[] =

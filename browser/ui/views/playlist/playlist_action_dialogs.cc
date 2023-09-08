@@ -54,8 +54,9 @@ class TiledItemsView : public views::BoxLayoutView {
   static constexpr gfx::Size kThumbnailSize = gfx::Size(64, 48);
   static constexpr int kCornerRadius = 4;
 
-  explicit TiledItemsView(
-      const std::vector<playlist::mojom::PlaylistItemPtr>& items) {
+  TiledItemsView(const std::vector<playlist::mojom::PlaylistItemPtr>& items,
+                 ThumbnailProvider* thumbnail_provider)
+      : thumbnail_provider_(thumbnail_provider) {
     DCHECK_GE(items.size(), 1u);
 
     SetPreferredSize(gfx::Size(464, 72));
@@ -96,15 +97,13 @@ class TiledItemsView : public views::BoxLayoutView {
                                   kThumbnailSize.height() / 2);
 
     for (size_t i = 0; i < kMaxTileCount && i < items.size(); i++) {
-      // TODO(sko) We can't set the item's thumbnail for now. We need some
-      // prerequisite.
-      //  * Download the thumbnail from network
-      //  * Sanitize the image
       views::View* row = i < kMaxTileCount / 2 ? container->children().front()
                                                : container->children().back();
 
       auto* thumbnail =
           row->AddChildView(std::make_unique<ThumbnailView>(gfx::Image()));
+      thumbnail_provider_->GetThumbnail(items[i],
+                                        thumbnail->GetThumbnailSetter());
       thumbnail->SetPreferredSize(tile_size);
     }
 
@@ -112,6 +111,8 @@ class TiledItemsView : public views::BoxLayoutView {
   }
 
   ~TiledItemsView() override = default;
+
+  raw_ptr<ThumbnailProvider> thumbnail_provider_;
 };
 
 BEGIN_METADATA(TiledItemsView, views::BoxLayoutView)
@@ -163,6 +164,8 @@ PlaylistActionDialog::PlaylistActionDialog() {
   SetShowCloseButton(false);
 }
 
+PlaylistActionDialog::~PlaylistActionDialog() = default;
+
 BEGIN_METADATA(PlaylistActionDialog, views::DialogDelegateView)
 END_METADATA
 
@@ -173,6 +176,7 @@ PlaylistNewPlaylistDialog::PlaylistNewPlaylistDialog(
     PassKey,
     playlist::PlaylistService* service)
     : service_(service) {
+  thumbnail_provider_ = std::make_unique<ThumbnailProvider>(*service_);
   const auto kSpacing = 24;
   SetBorder(views::CreateEmptyBorder(gfx::Insets(kSpacing)));
   SetLayoutManager(std::make_unique<views::BoxLayout>(
@@ -240,7 +244,8 @@ PlaylistNewPlaylistDialog::PlaylistNewPlaylistDialog(
 
     items_list_view_ =
         scroll_view->SetContents(std::make_unique<SelectableItemsView>(
-            default_playlist->items, base::DoNothing()));
+            thumbnail_provider_.get(), default_playlist->items,
+            base::DoNothing()));
   }
 
   // It's okay to bind Unretained(this) as this callback is invoked by the base
@@ -248,6 +253,8 @@ PlaylistNewPlaylistDialog::PlaylistNewPlaylistDialog(
   SetAcceptCallback(base::BindOnce(&PlaylistNewPlaylistDialog::CreatePlaylist,
                                    base::Unretained(this)));
 }
+
+PlaylistNewPlaylistDialog::~PlaylistNewPlaylistDialog() = default;
 
 views::View* PlaylistNewPlaylistDialog::GetInitiallyFocusedView() {
   return name_textfield_;
@@ -352,6 +359,11 @@ PlaylistMoveDialog::PlaylistMoveDialog(PassKey, MoveParam param)
 PlaylistMoveDialog::PlaylistMoveDialog(
     absl::variant<raw_ptr<playlist::PlaylistTabHelper>, MoveParam> source)
     : source_(std::move(source)) {
+  thumbnail_provider_ =
+      is_from_tab_helper()
+          ? std::make_unique<ThumbnailProvider>(get_tab_helper().get())
+          : std::make_unique<ThumbnailProvider>(*get_move_param().service);
+
   set_margins(gfx::Insets(24));
 
   SetTitle(l10n_util::GetStringUTF16(IDS_PLAYLIST_MOVE_MEDIA_DIALOG_TITLE));
@@ -363,14 +375,16 @@ PlaylistMoveDialog::PlaylistMoveDialog(
   if (is_from_tab_helper()) {
     const auto& items = get_tab_helper()->saved_items();
     DCHECK(items.size());
-    AddChildView(std::make_unique<TiledItemsView>(items));
+    AddChildView(
+        std::make_unique<TiledItemsView>(items, thumbnail_provider_.get()));
   } else {
     auto service = get_move_param().service;
     std::vector<playlist::mojom::PlaylistItemPtr> items;
     for (const auto& item_id : get_move_param().items) {
       items.push_back(service->GetPlaylistItem(item_id));
     }
-    AddChildView(std::make_unique<TiledItemsView>(items));
+    AddChildView(
+        std::make_unique<TiledItemsView>(items, thumbnail_provider_.get()));
   }
 
   contents_container_ = AddChildView(std::make_unique<views::BoxLayoutView>());
@@ -417,6 +431,7 @@ void PlaylistMoveDialog::EnterChoosePlaylistMode() {
       /*corner_radius=*/4.f, kColorBravePlaylistListBorder));
   list_view_ =
       scroll_view->SetContents(std::make_unique<SelectablePlaylistsView>(
+          thumbnail_provider_.get(),
           is_from_tab_helper() ? get_tab_helper()->GetAllPlaylists()
                                : get_move_param().service->GetAllPlaylists(),
           base::DoNothing()));
