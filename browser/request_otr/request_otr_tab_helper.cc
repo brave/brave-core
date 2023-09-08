@@ -63,7 +63,8 @@ void RequestOTRTabHelper::DidFinishNavigation(
 
   // History service is already patched so request-otr URLs never get added,
   // but this explicit delete operation will also remove previous visits
-  // and delete any associated favicons.
+  // and delete any associated favicons. This will also remove the site from
+  // omnibox autocomplete.
   Profile* profile = Profile::FromBrowserContext(browser_context);
   history::HistoryService* history_service =
       HistoryServiceFactory::GetForProfile(profile,
