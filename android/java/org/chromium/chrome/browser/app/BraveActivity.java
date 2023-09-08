@@ -501,21 +501,6 @@ public abstract class BraveActivity extends ChromeActivity
                         BraveWalletDAppsActivity.ActivityType.SIGN_ALL_TRANSACTIONS);
                 return;
             }
-            maybeShowSignMessageRequestLayout();
-        });
-    }
-
-    private void maybeShowSignMessageRequestLayout() {
-        assert mBraveWalletService != null;
-        mBraveWalletService.getPendingSignMessageRequests(requests -> {
-            if (requests != null && requests.length != 0) {
-                BraveWalletDAppsActivity.ActivityType activityType =
-                        (requests[0].signData.which() == SignDataUnion.Tag.EthSiweData)
-                        ? BraveWalletDAppsActivity.ActivityType.SIWE_MESSAGE
-                        : BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE;
-                openBraveWalletDAppsActivity(activityType);
-                return;
-            }
             maybeShowSignMessageErrorsLayout();
         });
     }
@@ -529,7 +514,22 @@ public abstract class BraveActivity extends ChromeActivity
                 return;
             }
         });
-        maybeShowChainRequestLayout();
+        maybeShowSignMessageRequestLayout();
+    }
+
+    private void maybeShowSignMessageRequestLayout() {
+        assert mBraveWalletService != null;
+        mBraveWalletService.getPendingSignMessageRequests(requests -> {
+            if (requests != null && requests.length != 0) {
+                BraveWalletDAppsActivity.ActivityType activityType =
+                        (requests[0].signData.which() == SignDataUnion.Tag.EthSiweData)
+                        ? BraveWalletDAppsActivity.ActivityType.SIWE_MESSAGE
+                        : BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE;
+                openBraveWalletDAppsActivity(activityType);
+                return;
+            }
+            maybeShowChainRequestLayout();
+        });
     }
 
     private void maybeShowChainRequestLayout() {
