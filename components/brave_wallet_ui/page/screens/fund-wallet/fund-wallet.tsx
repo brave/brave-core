@@ -457,7 +457,6 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
                       account={selectedAccount}
                       onSelectAccount={openAccountSearch}
                       showTooltips
-                      fullAddress
                       showSwitchAccountsIcon
                       isV2={true}
                     />
