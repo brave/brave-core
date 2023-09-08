@@ -63,13 +63,14 @@ GURL TranslateMagnetURL(const GURL& url) {
 }
 
 GURL TranslateTorrentUIURLReversed(const GURL& url) {
-  GURL translatedURL(base::UnescapeURLComponent(
+  GURL translated_url(base::UnescapeURLComponent(
       url.query(),
       base::UnescapeRule::URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS |
           base::UnescapeRule::PATH_SEPARATORS));
   GURL::Replacements replacements;
   replacements.SetRefStr(url.ref_piece());
-  return translatedURL.ReplaceComponents(replacements);
+  return GURL(kWebTorrentScheme +
+              translated_url.ReplaceComponents(replacements).spec());
 }
 
 bool HandleTorrentURLReverseRewrite(GURL* url,

@@ -12,6 +12,7 @@
 #include "base/test/bind.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_webtorrent/browser/magnet_protocol_handler.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -354,8 +355,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), torrent_extension_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
 
-  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-               torrent_url().spec().c_str())
+  EXPECT_EQ(contents->GetLastCommittedURL().spec(),
+            webtorrent::kWebTorrentScheme + torrent_url().spec())
       << "URL visible to users should stay as the torrent URL";
   content::NavigationEntry* entry =
       contents->GetController().GetLastCommittedEntry();

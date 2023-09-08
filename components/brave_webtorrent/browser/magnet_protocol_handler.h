@@ -13,6 +13,8 @@
 
 namespace webtorrent {
 
+constexpr char kWebTorrentScheme[] = "webtorrent:";
+
 GURL TranslateMagnetURL(const GURL& url);
 
 GURL TranslateTorrentUIURLReversed(const GURL& url);
