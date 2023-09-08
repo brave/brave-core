@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.models.BraveVpnWireguardProfileCredentials;
 import org.chromium.chrome.browser.vpn.split_tunnel.SplitTunnelActivity;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
+import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -274,5 +275,10 @@ public class BraveVpnUtils {
         // ...and then reset the timestamps so we don't report the same session again.
         BraveVpnPrefUtils.setSessionStartTimeMs(-1);
         BraveVpnPrefUtils.setSessionEndTimeMs(-1);
+    }
+
+    public static void showToast(String message) {
+        Context context = ContextUtils.getApplicationContext();
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 }
