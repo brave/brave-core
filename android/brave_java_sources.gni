@@ -5,6 +5,8 @@
 
 import("//brave/android/features/tab_ui/brave_tab_management_java_sources.gni")
 import("//brave/android/feed/brave_feed_java_sources.gni")
+import(
+    "//brave/android/java/org/chromium/chrome/browser/vpn/billing/sources.gni")
 import("//brave/browser/brave_ads/android/java_sources.gni")
 import("//brave/browser/flags/brave_flags_java_sources.gni")
 import("//brave/browser/incognito/android/java_sources.gni")
@@ -471,7 +473,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/vpn/utils/BraveVpnPrefUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/utils/BraveVpnProfileUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/utils/BraveVpnUtils.java",
-  "../../brave/android/java/org/chromium/chrome/browser/vpn/utils/InAppPurchaseWrapper.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/wireguard/TunnelModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardConfigUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardServiceImpl.java",
@@ -487,6 +488,7 @@ brave_java_sources += brave_rewards_java_sources
 brave_java_sources += brave_feed_java_sources
 brave_java_sources += brave_public_tab_management_java_sources
 brave_java_sources += brave_share_java_sources
+brave_java_sources += brave_app_vpn_billing_sources
 
 brave_browser_ui_android_appmenu_internal_sources = [
   "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java",
