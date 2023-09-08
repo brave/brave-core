@@ -5,22 +5,22 @@
     <message name="IDS_READER_MODE_MINUTES_TEXT" desc="Text of the read time element">min. read</message>
 
     <if expr="not is_android">
-      <message name="IDS_SPEEDREADER_ICON_TURN_OFF_READER_MODE" desc="Accessible text shown when a page is in Reader Mode">Turn off speedreader</message>
-      <message name="IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE" desc="Accessible text shown when a page can be distilled">Turn on speedreader</message>
-      <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_SITE_LABEL" desc="Used for a toogble button label">Always use speedreader for this site</message>
-      <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_SITE_ACC" desc="Accessible text for the toggle to enable or disable speedreader per site">
-        Toggle to turn on/off speedreader for this website.
+      <message name="IDS_SPEEDREADER_ICON_TURN_OFF_READER_MODE" desc="Accessible text shown when a page is in Reader Mode">Turn off Speedreader</message>
+      <message name="IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE" desc="Accessible text shown when a page can be distilled">Turn on Speedreader</message>
+      <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_SITE_LABEL" desc="Used for a toogle button label">Always use Speedreader for this site</message>
+      <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_SITE_ACC" desc="Accessible text for the toggle to enable or disable Speedreader per site">
+        Toggle to turn on/off Speedreader for this website.
       </message>
-      <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_ALL_SITES_LABEL" desc="Used for a toogble button label">Always use speedreader for all sites</message>
-      <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_ALL_SITES_ACC" desc="Accessible text for the toggle to enable or disable speedreader per site">
-        Toggle to turn on/off speedreader for all websites.
+      <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_ALL_SITES_LABEL" desc="Used for a toogble button label">Always use Speedreader for all sites</message>
+      <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_ALL_SITES_ACC" desc="Accessible text for the toggle to enable or disable Speedreader per site">
+        Toggle to turn on/off Speedreader for all websites.
       </message>
-      <message name="IDS_READER_MODE_NOTE_LABEL" desc="Used for note label">Not all sites provide speedreader capabilities.</message>
+      <message name="IDS_READER_MODE_NOTE_LABEL" desc="Used for note label">Not all sites provide Speedreader capabilities.</message>
       <message name="IDS_READER_MODE_CAPTION" desc="Used for toolbar label">Speedreader</message>
       <message name="IDS_READER_MODE_CLOSE" desc="Used for close button in toolbar">Close</message>
-      <message name="IDS_READER_MODE_EXIT" desc="Used for exit button in toolbar">Exit speedreader</message>
+      <message name="IDS_READER_MODE_EXIT" desc="Used for exit button in toolbar">Exit Speedreader</message>
       <message name="IDS_READER_MODE_VOICE" desc="Used for label of the voice dropdown">Voice</message>
-      <message name="IDS_READER_MODE_TUNE" desc="Tooltop for tune button">Tune speedreader</message>
+      <message name="IDS_READER_MODE_TUNE" desc="Tooltop for tune button">Tune Speedreader</message>
       <message name="IDS_READER_MODE_APPEARANCE" desc="Tooltip for appearance button">Appearance settings</message>
       <message name="IDS_READER_MODE_APPEARANCE_THEME_LIGHT" desc="Tooltip for light theme button">Light theme</message>
       <message name="IDS_READER_MODE_APPEARANCE_THEME_SEPIA" desc="Tooltip for sepia theme button">Sepia theme</message>
