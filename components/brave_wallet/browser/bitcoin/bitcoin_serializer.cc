@@ -39,8 +39,7 @@ void PushScriptCodeForSigninig(const DecodedBitcoinAddress& decoded_address,
   stream.PushBytes(kSuffix);
 }
 
-std::array<uint8_t, crypto::kSHA256Length> HashPrevouts(
-    const BitcoinTransaction& tx) {
+SHA256HashArray HashPrevouts(const BitcoinTransaction& tx) {
   DCHECK_EQ(tx.sighash_type(), kBitcoinSigHashAll);
 
   std::vector<uint8_t> data;
@@ -52,8 +51,7 @@ std::array<uint8_t, crypto::kSHA256Length> HashPrevouts(
   return DoubleSHA256Hash(data);
 }
 
-std::array<uint8_t, crypto::kSHA256Length> HashSequence(
-    const BitcoinTransaction& tx) {
+SHA256HashArray HashSequence(const BitcoinTransaction& tx) {
   DCHECK_EQ(tx.sighash_type(), kBitcoinSigHashAll);
 
   std::vector<uint8_t> data;
@@ -91,8 +89,7 @@ void PushOutput(const BitcoinTransaction::TxOutput& output,
   stream.PushSizeAndBytes(AddressToScriptPubkey(output.address));
 }
 
-std::array<uint8_t, crypto::kSHA256Length> HashOutputs(
-    const BitcoinTransaction& tx) {
+SHA256HashArray HashOutputs(const BitcoinTransaction& tx) {
   DCHECK_EQ(tx.sighash_type(), kBitcoinSigHashAll);
 
   std::vector<uint8_t> data;

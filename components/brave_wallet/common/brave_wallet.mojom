@@ -1374,10 +1374,12 @@ struct BitcoinAccountInfo {
 
 struct BitcoinBalance {
   uint64 total_balance;
-  map<string, uint64> balances;
+  map<string, uint64> balances;  // address -> balance of that address(sum of all related utxos)
 };
 
 interface BitcoinWalletService {
+  // Fetches BitcoinBalance struct for all addresses associated with account_id.
+  // Now includes both confirmed and mempool utxos.
   GetBalance(string network_id, AccountId account_id) => (BitcoinBalance? balance, string? error_message);
   GetBitcoinAccountInfo(string network_id, AccountId account_id) => (BitcoinAccountInfo? account_info);
   SendTo(string network_id, AccountId account_id, string address_to, uint64 amount, uint64 fee) => (string txid, string error);

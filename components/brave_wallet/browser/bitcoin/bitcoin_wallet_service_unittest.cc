@@ -150,10 +150,10 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
 
     if (request.method == net::HttpRequestHeaders::kPostMethod &&
         request.url.path_piece() == "/tx") {
-      base::StringPiece request_string(request.request_body->elements()
-                                           ->at(0)
-                                           .As<network::DataElementBytes>()
-                                           .AsStringPiece());
+      auto request_string(request.request_body->elements()
+                              ->at(0)
+                              .As<network::DataElementBytes>()
+                              .AsStringPiece());
       captured_raw_tx_ = request_string;
       url_loader_factory_.AddResponse(request.url.spec(), kTxid3);
       return;
@@ -186,11 +186,6 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
 
     url_loader_factory_.AddResponse(request.url.spec(), "",
                                     net::HTTP_NOT_FOUND);
-    // base::StringPiece request_string(request.request_body->elements()
-    //                                      ->at(0)
-    //                                      .As<network::DataElementBytes>()
-    //                                      .AsStringPiece());
-    // base::Value::Dict dict = base::test::ParseJsonDict(request_string);
   }
 
   mojom::AccountIdPtr account_id() const {
@@ -227,12 +222,13 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBalance) {
 
   // GetBalance works.
   auto expected_balance = mojom::BitcoinBalance::New();
-  expected_balance->total_balance = 128332;
   for (auto& addr : address_stats_map_) {
     expected_balance->balances[addr.first] = 0;
   }
-  expected_balance->balances[address_0_] = 11666;
-  expected_balance->balances[address_6_] = 116666;
+  expected_balance->balances[address_0_] = 10000 - 5000 + 8888 - 2222;
+  expected_balance->balances[address_6_] = 100000 - 50000 + 88888 - 22222;
+  expected_balance->total_balance = expected_balance->balances[address_0_] +
+                                    expected_balance->balances[address_6_];
   EXPECT_CALL(callback,
               Run(EqualsMojo(expected_balance), absl::optional<std::string>()));
   bitcoin_wallet_service_->GetBalance(mojom::kBitcoinMainnet, account_id(),

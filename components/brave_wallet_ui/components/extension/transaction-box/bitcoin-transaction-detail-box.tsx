@@ -17,7 +17,7 @@ import {
   DetailColumn,
 } from './style'
 
-export interface Props {
+interface Props {
   data: BraveWallet.BtcTxData | undefined
 }
 

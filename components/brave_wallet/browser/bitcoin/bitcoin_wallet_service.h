@@ -75,7 +75,6 @@ class BitcoinWalletService : public KeyedService,
                          const std::string& address_to,
                          uint64_t amount,
                          CreateTransactionCallback callback);
-  void CreateTransactionTaskDone(CreateTransactionTask* task);
 
   using SignAndPostTransactionCallback =
       base::OnceCallback<void(std::string, BitcoinTransaction, std::string)>;
@@ -96,6 +95,8 @@ class BitcoinWalletService : public KeyedService,
       const mojom::AccountId& account_id);
 
  private:
+  friend CreateTransactionTask;
+
   void OnGetAddressStatsForBalance(
       scoped_refptr<GetBalanceContext> context,
       std::string address,
@@ -119,6 +120,7 @@ class BitcoinWalletService : public KeyedService,
 
   bool SignTransactionInternal(BitcoinTransaction& tx,
                                const mojom::AccountIdPtr& account_id);
+  void CreateTransactionTaskDone(CreateTransactionTask* task);
 
   raw_ptr<KeyringService> keyring_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

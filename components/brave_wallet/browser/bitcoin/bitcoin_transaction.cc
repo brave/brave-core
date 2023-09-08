@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 
+#include <string_view>
 #include <utility>
 
 #include "base/ranges/algorithm.h"
@@ -16,7 +17,7 @@ namespace brave_wallet {
 namespace {
 
 bool ReadStringTo(const base::Value::Dict& dict,
-                  base::StringPiece key,
+                  std::string_view key,
                   std::string& to) {
   auto* str = dict.FindString(key);
   if (!str) {
@@ -27,7 +28,7 @@ bool ReadStringTo(const base::Value::Dict& dict,
 }
 
 bool ReadUint64StringTo(const base::Value::Dict& dict,
-                        base::StringPiece key,
+                        std::string_view key,
                         uint64_t& to) {
   auto* str = dict.FindString(key);
   if (!str) {
@@ -37,7 +38,7 @@ bool ReadUint64StringTo(const base::Value::Dict& dict,
 }
 
 bool ReadUint32StringTo(const base::Value::Dict& dict,
-                        base::StringPiece key,
+                        std::string_view key,
                         uint32_t& to) {
   auto* str = dict.FindString(key);
   if (!str) {
@@ -47,7 +48,7 @@ bool ReadUint32StringTo(const base::Value::Dict& dict,
 }
 
 template <class T>
-bool ReadDictTo(const base::Value::Dict& dict, base::StringPiece key, T& to) {
+bool ReadDictTo(const base::Value::Dict& dict, std::string_view key, T& to) {
   auto* key_dict = dict.FindDict(key);
   if (!key_dict) {
     return false;
@@ -61,7 +62,7 @@ bool ReadDictTo(const base::Value::Dict& dict, base::StringPiece key, T& to) {
 }
 
 bool ReadHexByteArrayTo(const base::Value::Dict& dict,
-                        base::StringPiece key,
+                        std::string_view key,
                         std::vector<uint8_t>& to) {
   auto* str = dict.FindString(key);
   if (!str) {

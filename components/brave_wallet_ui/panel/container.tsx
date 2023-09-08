@@ -414,14 +414,18 @@ function Container () {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
-          {isBitcoinTransaction(selectedPendingTransaction) ? (
+          {isBitcoinTransaction(selectedPendingTransaction) && (
             <ConfirmBitcoinTransactionPanel />
-          ) : isSolanaTransaction(selectedPendingTransaction) ? (
+          )}
+          {isSolanaTransaction(selectedPendingTransaction) && (
             <ConfirmSolanaTransactionPanel />
-          ) : isEthereumTransaction(selectedPendingTransaction) ||
-            isFilecoinTransaction(selectedPendingTransaction) ? (
+          )}
+          {isEthereumTransaction(selectedPendingTransaction) && (
             <ConfirmTransactionPanel />
-          ) : null}
+          )}
+          {isFilecoinTransaction(selectedPendingTransaction) && (
+            <ConfirmTransactionPanel />
+          )}
         </LongWrapper>
       </PanelWrapper>
     )

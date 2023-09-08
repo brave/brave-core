@@ -429,7 +429,6 @@ TEST_F(BitcoinRpcUnitTest, GetUtxoList) {
 }
 
 TEST_F(BitcoinRpcUnitTest, PostTransaction) {
-  // using PostTransactionResult = base::expected<std::string, std::string>;
   base::MockCallback<bitcoin_rpc::BitcoinRpc::PostTransactionCallback> callback;
 
   const std::string req_url = mainnet_rpc_url_ + "tx";
