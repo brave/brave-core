@@ -49,6 +49,12 @@ class CatalogUrlRequest final {
   void RetryCallback();
   void StopRetrying();
 
+  void NotifyWillFetchCatalog(base::Time fetch_at) const;
+  void NotifyDidFetchCatalog(const CatalogInfo& catalog) const;
+  void NotifyFailedToFetchCatalog() const;
+  void NotifyWillRetryFetchingCatalog(base::Time retry_at) const;
+  void NotifyDidRetryFetchingCatalog() const;
+
   raw_ptr<CatalogUrlRequestDelegate> delegate_ = nullptr;
 
   bool is_periodically_fetching_ = false;

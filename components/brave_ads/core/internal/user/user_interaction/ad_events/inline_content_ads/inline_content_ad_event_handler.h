@@ -78,6 +78,14 @@ class InlineContentAdEventHandler final
       mojom::InlineContentAdEventType event_type,
       FireInlineContentAdEventHandlerCallback callback) const;
 
+  void NotifyDidFireInlineContentAdEvent(
+      const InlineContentAdInfo& ad,
+      mojom::InlineContentAdEventType event_type) const;
+  void NotifyFailedToFireInlineContentAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::InlineContentAdEventType event_type) const;
+
   raw_ptr<InlineContentAdEventHandlerDelegate> delegate_ = nullptr;
 
   base::WeakPtrFactory<InlineContentAdEventHandler> weak_factory_{this};

@@ -115,9 +115,7 @@ void CatalogUrlRequest::FetchAfterDelay() {
 
   BLOG(1, "Fetch catalog " << FriendlyDateAndTime(fetch_at));
 
-  if (delegate_) {
-    delegate_->OnWillFetchCatalog(fetch_at);
-  }
+  NotifyWillFetchCatalog(fetch_at);
 }
 
 void CatalogUrlRequest::SuccessfullyFetchedCatalog(const CatalogInfo& catalog) {
@@ -125,9 +123,7 @@ void CatalogUrlRequest::SuccessfullyFetchedCatalog(const CatalogInfo& catalog) {
 
   BLOG(1, "Successfully fetched catalog");
 
-  if (delegate_) {
-    delegate_->OnDidFetchCatalog(catalog);
-  }
+  NotifyDidFetchCatalog(catalog);
 
   FetchAfterDelay();
 }
@@ -135,9 +131,7 @@ void CatalogUrlRequest::SuccessfullyFetchedCatalog(const CatalogInfo& catalog) {
 void CatalogUrlRequest::FailedToFetchCatalog() {
   BLOG(1, "Failed to fetch catalog");
 
-  if (delegate_) {
-    delegate_->OnFailedToFetchCatalog();
-  }
+  NotifyFailedToFetchCatalog();
 
   Retry();
 }
@@ -152,23 +146,52 @@ void CatalogUrlRequest::Retry() {
 
   BLOG(1, "Retry fetching catalog " << FriendlyDateAndTime(retry_at));
 
-  if (delegate_) {
-    delegate_->OnWillRetryFetchingCatalog(retry_at);
-  }
+  NotifyWillRetryFetchingCatalog(retry_at);
 }
 
 void CatalogUrlRequest::RetryCallback() {
   BLOG(1, "Retry fetching catalog");
 
-  if (delegate_) {
-    delegate_->OnDidRetryFetchingCatalog();
-  }
+  NotifyDidRetryFetchingCatalog();
 
   Fetch();
 }
 
 void CatalogUrlRequest::StopRetrying() {
   retry_timer_.Stop();
+}
+
+void CatalogUrlRequest::NotifyWillFetchCatalog(
+    const base::Time fetch_at) const {
+  if (delegate_) {
+    delegate_->OnWillFetchCatalog(fetch_at);
+  }
+}
+
+void CatalogUrlRequest::NotifyDidFetchCatalog(
+    const CatalogInfo& catalog) const {
+  if (delegate_) {
+    delegate_->OnDidFetchCatalog(catalog);
+  }
+}
+
+void CatalogUrlRequest::NotifyFailedToFetchCatalog() const {
+  if (delegate_) {
+    delegate_->OnFailedToFetchCatalog();
+  }
+}
+
+void CatalogUrlRequest::NotifyWillRetryFetchingCatalog(
+    const base::Time retry_at) const {
+  if (delegate_) {
+    delegate_->OnWillRetryFetchingCatalog(retry_at);
+  }
+}
+
+void CatalogUrlRequest::NotifyDidRetryFetchingCatalog() const {
+  if (delegate_) {
+    delegate_->OnDidRetryFetchingCatalog();
+  }
 }
 
 }  // namespace brave_ads

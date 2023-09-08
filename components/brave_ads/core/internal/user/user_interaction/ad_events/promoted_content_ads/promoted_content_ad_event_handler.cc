@@ -206,24 +206,7 @@ void PromotedContentAdEventHandler::SuccessfullyFiredEvent(
     FirePromotedContentAdEventHandlerCallback callback) const {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
-  if (delegate_) {
-    switch (event_type) {
-      case mojom::PromotedContentAdEventType::kServed: {
-        delegate_->OnDidFirePromotedContentAdServedEvent(ad);
-        break;
-      }
-
-      case mojom::PromotedContentAdEventType::kViewed: {
-        delegate_->OnDidFirePromotedContentAdViewedEvent(ad);
-        break;
-      }
-
-      case mojom::PromotedContentAdEventType::kClicked: {
-        delegate_->OnDidFirePromotedContentAdClickedEvent(ad);
-        break;
-      }
-    }
-  }
+  NotifyDidFirePromotedContentAdEvent(ad, event_type);
 
   std::move(callback).Run(/*success*/ true, ad.placement_id, event_type);
 }
@@ -239,12 +222,45 @@ void PromotedContentAdEventHandler::FailedToFireEvent(
               << event_type << " event for placement id " << placement_id
               << " and creative instance id " << creative_instance_id);
 
+  NotifyFailedToFirePromotedContentAdEvent(placement_id, creative_instance_id,
+                                           event_type);
+
+  std::move(callback).Run(/*success*/ false, placement_id, event_type);
+}
+
+void PromotedContentAdEventHandler::NotifyDidFirePromotedContentAdEvent(
+    const PromotedContentAdInfo& ad,
+    mojom::PromotedContentAdEventType event_type) const {
+  if (!delegate_) {
+    return;
+  }
+
+  switch (event_type) {
+    case mojom::PromotedContentAdEventType::kServed: {
+      delegate_->OnDidFirePromotedContentAdServedEvent(ad);
+      break;
+    }
+
+    case mojom::PromotedContentAdEventType::kViewed: {
+      delegate_->OnDidFirePromotedContentAdViewedEvent(ad);
+      break;
+    }
+
+    case mojom::PromotedContentAdEventType::kClicked: {
+      delegate_->OnDidFirePromotedContentAdClickedEvent(ad);
+      break;
+    }
+  }
+}
+
+void PromotedContentAdEventHandler::NotifyFailedToFirePromotedContentAdEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const mojom::PromotedContentAdEventType event_type) const {
   if (delegate_) {
     delegate_->OnFailedToFirePromotedContentAdEvent(
         placement_id, creative_instance_id, event_type);
   }
-
-  std::move(callback).Run(/*success*/ false, placement_id, event_type);
 }
 
 }  // namespace brave_ads

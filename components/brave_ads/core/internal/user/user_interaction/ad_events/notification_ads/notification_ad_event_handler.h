@@ -61,6 +61,13 @@ class NotificationAdEventHandler final
                          mojom::NotificationAdEventType event_type,
                          FireNotificationAdEventHandlerCallback callback) const;
 
+  void NotifyDidFireNotificationAdEvent(
+      const NotificationAdInfo& ad,
+      mojom::NotificationAdEventType event_type) const;
+  void NotifyFailedToFireNotificationAdEvent(
+      const std::string& placement_id,
+      mojom::NotificationAdEventType event_type) const;
+
   raw_ptr<NotificationAdEventHandlerDelegate> delegate_ = nullptr;
 
   base::WeakPtrFactory<NotificationAdEventHandler> weak_factory_{this};

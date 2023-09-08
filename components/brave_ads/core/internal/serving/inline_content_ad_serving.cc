@@ -82,10 +82,8 @@ void InlineContentAdServing::GetForUserModelCallback(
     const bool had_opportunity,
     const CreativeInlineContentAdList& creative_ads) {
   if (had_opportunity) {
-    if (delegate_) {
-      delegate_->OnOpportunityAroseToServeInlineContentAd(
-          GetTopChildSegments(user_model));
-    }
+    NotifyOpportunityAroseToServeInlineContentAd(
+        GetTopChildSegments(user_model));
   }
 
   if (creative_ads.empty()) {
@@ -113,9 +111,7 @@ void InlineContentAdServing::ServeAd(
   CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 
-  if (delegate_) {
-    delegate_->OnDidServeInlineContentAd(ad);
-  }
+  NotifyDidServeInlineContentAd(ad);
 
   std::move(callback).Run(ad.dimensions, ad);
 }
@@ -123,11 +119,29 @@ void InlineContentAdServing::ServeAd(
 void InlineContentAdServing::FailedToServeAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
+  NotifyFailedToServeInlineContentAd();
+
+  std::move(callback).Run(dimensions, /*ad*/ absl::nullopt);
+}
+
+void InlineContentAdServing::NotifyOpportunityAroseToServeInlineContentAd(
+    const SegmentList& segments) const {
+  if (delegate_) {
+    delegate_->OnOpportunityAroseToServeInlineContentAd(segments);
+  }
+}
+
+void InlineContentAdServing::NotifyDidServeInlineContentAd(
+    const InlineContentAdInfo& ad) const {
+  if (delegate_) {
+    delegate_->OnDidServeInlineContentAd(ad);
+  }
+}
+
+void InlineContentAdServing::NotifyFailedToServeInlineContentAd() const {
   if (delegate_) {
     delegate_->OnFailedToServeInlineContentAd();
   }
-
-  std::move(callback).Run(dimensions, /*ad*/ absl::nullopt);
 }
 
 }  // namespace brave_ads

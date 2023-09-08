@@ -29,7 +29,7 @@ class BraveAdsDaypartExclusionRuleTest : public UnitTestBase {
   const DaypartExclusionRule exclusion_rule_;
 };
 
-TEST_F(BraveAdsDaypartExclusionRuleTest, AllowWhenNoDayparts) {
+TEST_F(BraveAdsDaypartExclusionRuleTest, ShouldIncludeWhenNoDayparts) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -40,7 +40,8 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, AllowWhenNoDayparts) {
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfMatchesDayOfWeekAndTimeSlot) {
+TEST_F(BraveAdsDaypartExclusionRuleTest,
+       ShouldIncludeIfMatchesDayOfWeekAndTimeSlot) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -58,7 +59,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfMatchesDayOfWeekAndTimeSlot) {
 }
 
 TEST_F(BraveAdsDaypartExclusionRuleTest,
-       AllowIfMatchesDayOfWeekAndTimeSlotWhenMultipleDaysOfWeek) {
+       ShouldIncludeIfMatchesDayOfWeekAndTimeSlotWhenMultipleDaysOfWeek) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -76,7 +77,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
 }
 
 TEST_F(BraveAdsDaypartExclusionRuleTest,
-       AllowIfMatchesDayOfWeekAndTimeSlotWhenMultipleTimeSlots) {
+       ShouldIncludeIfMatchesDayOfWeekAndTimeSlotWhenMultipleTimeSlots) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;

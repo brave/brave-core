@@ -62,6 +62,17 @@ class ConversionQueue final : public AdsClientNotifierObserver {
       bool success,
       const ConversionQueueItemList& conversion_queue_items);
 
+  void NotifyFailedToAddConversionToQueue(
+      const ConversionInfo& conversion) const;
+  void NotifyDidAddConversionToQueue(const ConversionInfo& conversion) const;
+  void NotifyWillProcessConversionQueue(const ConversionInfo& conversion,
+                                        base::Time process_at) const;
+  void NotifyDidProcessConversionQueue(const ConversionInfo& conversion) const;
+  void NotifyFailedToProcessConversionQueue(
+      const ConversionInfo& conversion) const;
+  void NotifyFailedToProcessNextConversionInQueue() const;
+  void NotifyDidExhaustConversionQueue() const;
+
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;
 

@@ -62,34 +62,7 @@ void NotificationAdEventHandler::SuccessfullyFiredEvent(
     FireNotificationAdEventHandlerCallback callback) const {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
-  if (delegate_) {
-    switch (event_type) {
-      case mojom::NotificationAdEventType::kServed: {
-        delegate_->OnDidFireNotificationAdServedEvent(ad);
-        break;
-      }
-
-      case mojom::NotificationAdEventType::kViewed: {
-        delegate_->OnDidFireNotificationAdViewedEvent(ad);
-        break;
-      }
-
-      case mojom::NotificationAdEventType::kClicked: {
-        delegate_->OnDidFireNotificationAdClickedEvent(ad);
-        break;
-      }
-
-      case mojom::NotificationAdEventType::kDismissed: {
-        delegate_->OnDidFireNotificationAdDismissedEvent(ad);
-        break;
-      }
-
-      case mojom::NotificationAdEventType::kTimedOut: {
-        delegate_->OnDidFireNotificationAdTimedOutEvent(ad);
-        break;
-      }
-    }
-  }
+  NotifyDidFireNotificationAdEvent(ad, event_type);
 
   std::move(callback).Run(/*success*/ true, ad.placement_id, event_type);
 }
@@ -103,11 +76,52 @@ void NotificationAdEventHandler::FailedToFireEvent(
   BLOG(1, "Failed to fire notification ad "
               << event_type << " event for placement id " << placement_id);
 
+  NotifyFailedToFireNotificationAdEvent(placement_id, event_type);
+
+  std::move(callback).Run(/*success*/ false, placement_id, event_type);
+}
+
+void NotificationAdEventHandler::NotifyDidFireNotificationAdEvent(
+    const NotificationAdInfo& ad,
+    mojom::NotificationAdEventType event_type) const {
+  if (!delegate_) {
+    return;
+  }
+
+  switch (event_type) {
+    case mojom::NotificationAdEventType::kServed: {
+      delegate_->OnDidFireNotificationAdServedEvent(ad);
+      break;
+    }
+
+    case mojom::NotificationAdEventType::kViewed: {
+      delegate_->OnDidFireNotificationAdViewedEvent(ad);
+      break;
+    }
+
+    case mojom::NotificationAdEventType::kClicked: {
+      delegate_->OnDidFireNotificationAdClickedEvent(ad);
+      break;
+    }
+
+    case mojom::NotificationAdEventType::kDismissed: {
+      delegate_->OnDidFireNotificationAdDismissedEvent(ad);
+      break;
+    }
+
+    case mojom::NotificationAdEventType::kTimedOut: {
+      delegate_->OnDidFireNotificationAdTimedOutEvent(ad);
+      break;
+    }
+  }
+}
+
+void NotificationAdEventHandler::NotifyFailedToFireNotificationAdEvent(
+    const std::string& placement_id,
+    const mojom::NotificationAdEventType event_type) const {
   if (delegate_) {
     delegate_->OnFailedToFireNotificationAdEvent(placement_id, event_type);
   }
-
-  std::move(callback).Run(/*success*/ false, placement_id, event_type);
 }
 
 }  // namespace brave_ads

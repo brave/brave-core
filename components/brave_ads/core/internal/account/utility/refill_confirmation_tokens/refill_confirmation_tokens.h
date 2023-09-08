@@ -72,6 +72,14 @@ class RefillConfirmationTokens final {
 
   void Reset();
 
+  void NotifyWillRefillConfirmationTokens() const;
+  void NotifyCaptchaRequiredToRefillConfirmationTokens(
+      const std::string& captcha_id) const;
+  void NotifyDidRefillConfirmationTokens() const;
+  void NotifyFailedToRefillConfirmationTokens() const;
+  void NotifyWillRetryRefillingConfirmationTokens(base::Time retry_at) const;
+  void NotifyDidRetryRefillingConfirmationTokens() const;
+
   const raw_ptr<TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
 

@@ -102,9 +102,7 @@ void SubdivisionUrlRequest::FetchAfterDelay() {
 
   BLOG(1, "Fetch subdivision " << FriendlyDateAndTime(fetch_at));
 
-  if (delegate_) {
-    delegate_->OnWillFetchSubdivision(fetch_at);
-  }
+  NotifyWillFetchSubdivision(fetch_at);
 }
 
 void SubdivisionUrlRequest::SuccessfullyFetchedSubdivision(
@@ -113,9 +111,7 @@ void SubdivisionUrlRequest::SuccessfullyFetchedSubdivision(
 
   BLOG(1, "Successfully fetched subdivision");
 
-  if (delegate_) {
-    delegate_->OnDidFetchSubdivision(subdivision);
-  }
+  NotifyDidFetchSubdivision(subdivision);
 
   FetchAfterDelay();
 }
@@ -123,9 +119,7 @@ void SubdivisionUrlRequest::SuccessfullyFetchedSubdivision(
 void SubdivisionUrlRequest::FailedToFetchSubdivision() {
   BLOG(1, "Failed to fetch subdivision");
 
-  if (delegate_) {
-    delegate_->OnFailedToFetchSubdivision();
-  }
+  NotifyFailedToFetchSubdivision();
 
   Retry();
 }
@@ -140,23 +134,52 @@ void SubdivisionUrlRequest::Retry() {
 
   BLOG(1, "Retry fetching subdivision " << FriendlyDateAndTime(retry_at));
 
-  if (delegate_) {
-    delegate_->OnWillRetryFetchingSubdivision(retry_at);
-  }
+  NotifyWillRetryFetchingSubdivision(retry_at);
 }
 
 void SubdivisionUrlRequest::RetryCallback() {
   BLOG(1, "Retry fetching subdivision");
 
-  if (delegate_) {
-    delegate_->OnDidRetryFetchingSubdivision();
-  }
+  NotifyDidRetryFetchingSubdivision();
 
   Fetch();
 }
 
 void SubdivisionUrlRequest::StopRetrying() {
   retry_timer_.Stop();
+}
+
+void SubdivisionUrlRequest::NotifyWillFetchSubdivision(
+    const base::Time fetch_at) const {
+  if (delegate_) {
+    delegate_->OnWillFetchSubdivision(fetch_at);
+  }
+}
+
+void SubdivisionUrlRequest::NotifyDidFetchSubdivision(
+    const std::string& subdivision) const {
+  if (delegate_) {
+    delegate_->OnDidFetchSubdivision(subdivision);
+  }
+}
+
+void SubdivisionUrlRequest::NotifyFailedToFetchSubdivision() const {
+  if (delegate_) {
+    delegate_->OnFailedToFetchSubdivision();
+  }
+}
+
+void SubdivisionUrlRequest::NotifyWillRetryFetchingSubdivision(
+    const base::Time retry_at) const {
+  if (delegate_) {
+    delegate_->OnWillRetryFetchingSubdivision(retry_at);
+  }
+}
+
+void SubdivisionUrlRequest::NotifyDidRetryFetchingSubdivision() const {
+  if (delegate_) {
+    delegate_->OnDidRetryFetchingSubdivision();
+  }
 }
 
 }  // namespace brave_ads

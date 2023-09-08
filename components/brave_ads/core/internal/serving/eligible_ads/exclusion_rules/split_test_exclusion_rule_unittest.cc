@@ -35,7 +35,8 @@ class BraveAdsSplitTestExclusionRuleTest : public UnitTestBase {
   const SplitTestExclusionRule exclusion_rule_;
 };
 
-TEST_F(BraveAdsSplitTestExclusionRuleTest, AllowIfNoFieldTrialAndNoAdGroup) {
+TEST_F(BraveAdsSplitTestExclusionRuleTest,
+       ShouldIncludeIfNoFieldTrialAndNoAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -46,7 +47,8 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest, AllowIfNoFieldTrialAndNoAdGroup) {
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsSplitTestExclusionRuleTest, DoNotAllowIfNoFieldTrialAndAdGroup) {
+TEST_F(BraveAdsSplitTestExclusionRuleTest,
+       ShouldExcludeIfNoFieldTrialAndAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -58,7 +60,8 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest, DoNotAllowIfNoFieldTrialAndAdGroup) {
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsSplitTestExclusionRuleTest, AllowIfFieldTrialAndNoAdGroup) {
+TEST_F(BraveAdsSplitTestExclusionRuleTest,
+       ShouldIncludeIfFieldTrialAndNoAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -73,7 +76,8 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest, AllowIfFieldTrialAndNoAdGroup) {
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsSplitTestExclusionRuleTest, AllowIfFieldTrialMatchesAdGroup) {
+TEST_F(BraveAdsSplitTestExclusionRuleTest,
+       ShouldIncludeIfFieldTrialMatchesAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -90,7 +94,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest, AllowIfFieldTrialMatchesAdGroup) {
 }
 
 TEST_F(BraveAdsSplitTestExclusionRuleTest,
-       DoNotAllowIfFieldTrialDoesNotMatchAdGroup) {
+       ShouldExcludeIfFieldTrialDoesNotMatchAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;

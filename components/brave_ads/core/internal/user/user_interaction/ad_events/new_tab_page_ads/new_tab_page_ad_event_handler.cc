@@ -196,24 +196,7 @@ void NewTabPageAdEventHandler::SuccessfullyFiredEvent(
     FireNewTabPageAdEventHandlerCallback callback) const {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
-  if (delegate_) {
-    switch (event_type) {
-      case mojom::NewTabPageAdEventType::kServed: {
-        delegate_->OnDidFireNewTabPageAdServedEvent(ad);
-        break;
-      }
-
-      case mojom::NewTabPageAdEventType::kViewed: {
-        delegate_->OnDidFireNewTabPageAdViewedEvent(ad);
-        break;
-      }
-
-      case mojom::NewTabPageAdEventType::kClicked: {
-        delegate_->OnDidFireNewTabPageAdClickedEvent(ad);
-        break;
-      }
-    }
-  }
+  NotifyDidFireNewTabPageAdEvent(ad, event_type);
 
   std::move(callback).Run(/*success*/ true, ad.placement_id, event_type);
 }
@@ -229,12 +212,45 @@ void NewTabPageAdEventHandler::FailedToFireEvent(
               << event_type << " event for placement id " << placement_id
               << " and creative instance id " << creative_instance_id);
 
+  NotifyFailedToFireNewTabPageAdEvent(placement_id, creative_instance_id,
+                                      event_type);
+
+  std::move(callback).Run(/*success*/ false, placement_id, event_type);
+}
+
+void NewTabPageAdEventHandler::NotifyDidFireNewTabPageAdEvent(
+    const NewTabPageAdInfo& ad,
+    mojom::NewTabPageAdEventType event_type) const {
+  if (!delegate_) {
+    return;
+  }
+
+  switch (event_type) {
+    case mojom::NewTabPageAdEventType::kServed: {
+      delegate_->OnDidFireNewTabPageAdServedEvent(ad);
+      break;
+    }
+
+    case mojom::NewTabPageAdEventType::kViewed: {
+      delegate_->OnDidFireNewTabPageAdViewedEvent(ad);
+      break;
+    }
+
+    case mojom::NewTabPageAdEventType::kClicked: {
+      delegate_->OnDidFireNewTabPageAdClickedEvent(ad);
+      break;
+    }
+  }
+}
+
+void NewTabPageAdEventHandler::NotifyFailedToFireNewTabPageAdEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const mojom::NewTabPageAdEventType event_type) const {
   if (delegate_) {
     delegate_->OnFailedToFireNewTabPageAdEvent(
         placement_id, creative_instance_id, event_type);
   }
-
-  std::move(callback).Run(/*success*/ false, placement_id, event_type);
 }
 
 }  // namespace brave_ads
