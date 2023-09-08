@@ -5,11 +5,7 @@
 
 package org.chromium.chrome.browser.tasks.tab_management;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.chrome.browser.flags.CachedFeatureFlags;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 
 public class BraveTabUiFeatureUtilities {
