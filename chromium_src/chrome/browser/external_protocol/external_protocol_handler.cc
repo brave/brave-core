@@ -32,10 +32,9 @@ void ExternalProtocolHandler::LaunchUrl(
 #endif
 ) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  if (webtorrent::CanHandleMagnetProtocol(url, web_contents_getter)) {
-    webtorrent::HandleMagnetProtocol(url, web_contents_getter, page_transition,
-                                     has_user_gesture, is_in_fenced_frame_tree,
-                                     initiating_origin, initiator_document);
+  if (webtorrent::HandleMagnetProtocol(
+          url, web_contents_getter, page_transition, has_user_gesture,
+          is_in_fenced_frame_tree, initiating_origin, initiator_document)) {
     return;
   }
 #endif

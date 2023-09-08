@@ -19,6 +19,7 @@
 #include "content/public/browser/weak_document_ptr.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/common/constants.h"
+#include "ui/base/page_transition_types.h"
 
 namespace webtorrent {
 
@@ -42,9 +43,11 @@ void LoadMagnetURL(const GURL& url,
 
   DCHECK(IsMagnetProtocol(url));
   DCHECK(IsWebtorrentEnabled(web_contents->GetBrowserContext()));
-  web_contents->GetController().LoadURL(
-      url, content::Referrer(),
-      ui::PageTransition::PAGE_TRANSITION_AUTO_TOPLEVEL, std::string());
+  page_transition = ui::PageTransitionIsMainFrame(page_transition)
+                        ? page_transition
+                        : ui::PageTransition::PAGE_TRANSITION_AUTO_TOPLEVEL;
+  web_contents->GetController().LoadURL(url, content::Referrer(),
+                                        page_transition, std::string());
 }
 
 }  // namespace
@@ -114,30 +117,34 @@ bool HandleMagnetURLRewrite(GURL* url,
   return false;
 }
 
-bool CanHandleMagnetProtocol(
-    const GURL& url,
-    const content::WebContents::Getter& web_contents_getter) {
-  if (!IsMagnetProtocol(url)) {
-    return false;
-  }
-
-  content::WebContents* web_contents = web_contents_getter.Run();
-  return web_contents && IsWebtorrentEnabled(web_contents->GetBrowserContext());
-}
-
-void HandleMagnetProtocol(const GURL& url,
+bool HandleMagnetProtocol(const GURL& url,
                           content::WebContents::Getter web_contents_getter,
                           ui::PageTransition page_transition,
                           bool has_user_gesture,
                           bool is_in_fenced_frame_tree,
                           const absl::optional<url::Origin>& initiating_origin,
                           content::WeakDocumentPtr initiator_document) {
-  DCHECK(url.SchemeIs(kMagnetScheme));
+  if (!IsMagnetProtocol(url)) {
+    return false;
+  }
+
+  // Handle subframe magnet links only if a user gesture is present.
+  if (!ui::PageTransitionIsMainFrame(page_transition) && !has_user_gesture) {
+    return false;
+  }
+
+  content::WebContents* web_contents = web_contents_getter.Run();
+  if (!web_contents ||
+      !IsWebtorrentEnabled(web_contents->GetBrowserContext())) {
+    return false;
+  }
+
   content::GetUIThreadTaskRunner({})->PostTask(
       FROM_HERE,
       base::BindOnce(&LoadMagnetURL, url, web_contents_getter, page_transition,
                      has_user_gesture, is_in_fenced_frame_tree,
                      initiating_origin, std::move(initiator_document)));
+  return true;
 }
 
 }  // namespace webtorrent

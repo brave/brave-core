@@ -9,6 +9,7 @@
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "content/public/browser/weak_document_ptr.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/page_transition_types.h"
 
 namespace webtorrent {
 
@@ -23,11 +24,7 @@ bool HandleTorrentURLRewrite(GURL* url,
 bool HandleMagnetURLRewrite(GURL* url,
                             content::BrowserContext* browser_context);
 
-bool CanHandleMagnetProtocol(
-    const GURL& url,
-    const content::WebContents::Getter& web_contents_getter);
-
-void HandleMagnetProtocol(const GURL& url,
+bool HandleMagnetProtocol(const GURL& url,
                           content::WebContents::Getter web_contents_getter,
                           ui::PageTransition page_transition,
                           bool has_user_gesture,
