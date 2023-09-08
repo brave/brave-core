@@ -20,6 +20,12 @@ export interface TabOption {
   labelSummary?: string | number;
 }
 
+export type NftTabOptionId = 'nfts' | 'hidden' | 'spam'
+
+export interface NftTabOption extends TabOption {
+  id: NftTabOptionId
+}
+
 interface Props {
   options: TabOption[]
   onSelect: (selected: TabOption) => void

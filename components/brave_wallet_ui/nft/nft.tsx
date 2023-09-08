@@ -78,7 +78,6 @@ const App = () => {
 
           break
         }
-
       }
     }
   }, [])

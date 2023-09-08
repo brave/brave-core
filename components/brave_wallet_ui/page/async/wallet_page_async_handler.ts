@@ -28,7 +28,7 @@ import {
 } from '../../common/async/lib'
 import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
-import { getNetwork } from '../../common/slices/api.slice'
+import { getNetwork } from '../../utils/api-utils'
 
 const handler = new AsyncActionHandler()
 

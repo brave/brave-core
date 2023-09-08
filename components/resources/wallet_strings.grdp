@@ -954,9 +954,12 @@
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_DISCLAIMER" desc="NFT tab empty state disclaimer">Compatible with NFTs on Solana (SPL) and Ethereum (ERC-721).</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB" desc="NFTs tab label">NFTs</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_HIDDEN" desc="Hidden label">Hidden</message>
+  <message name="IDS_BRAVE_WALLET_NFTS_TAB_SPAM" desc="Spam label">Spam</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_HIDE" desc="Hide menu item label">Hide</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_UNHIDE" desc="Unhide menu item label">Unhide</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_EDIT" desc="Hide menu item label">Edit</message>
+  <message name="IDS_BRAVE_WALLET_NFT_UNSPAM" desc="Unspam option label">Not spam</message>
+  <message name="IDS_BRAVE_WALLET_NFT_MOVE_TO_SPAM" desc="Move to spam option label">Move to spam</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_NFT_MODAL_TITLE" desc="NFT Import NFT modal title">Import NFT</message>
   <message name="IDS_BRAVE_WALLET_EDIT_NFT_MODAL_TITLE" desc="NFT Import NFT modal title">Edit NFT</message>
   <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_HEADER" desc="Enable NFT auto-discovery modal header">Want your NFTs displayed automatically?</message>

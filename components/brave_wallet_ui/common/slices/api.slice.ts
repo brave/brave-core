@@ -23,8 +23,7 @@ import {
   SendFilTransactionParams,
   SendSolTransactionParams,
   SerializableTransactionInfo,
-  SPLTransferFromParams,
-  SupportedCoinTypes
+  SPLTransferFromParams
 } from '../../constants/types'
 import {
   CancelTransactionPayload,
@@ -3029,6 +3028,7 @@ export const {
   useLazyGetTokensRegistryQuery,
   useLazyGetTransactionsQuery,
   useLazyGetUserTokensRegistryQuery,
+  useGetSimpleHashSpamNftsQuery,
   useNewUnapprovedTxAddedMutation,
   useOpenPanelUIMutation,
   usePrefetch,
@@ -3058,6 +3058,7 @@ export const {
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
   useUpdateUserTokenMutation,
+  useUpdateNftSpamStatusMutation
 } = walletApi
 
 // Derived Data Queries
@@ -3208,84 +3209,6 @@ async function getSelectedNetwork(
   const { braveWalletService } = api
   return (await braveWalletService.getNetworkForSelectedAccountOnActiveOrigin())
     .network ?? undefined
-}
-
-//
-// Internals
-//
-async function getEnabledCoinTypes(
-  api: WalletApiProxy
-) {
-  const { walletHandler } = api
-
-  // network type flags
-  const {
-    walletInfo: { isFilecoinEnabled, isSolanaEnabled, isBitcoinEnabled }
-  } = await walletHandler.getWalletInfo()
-
-  // Get All Networks
-  const enabledCoinTypes = SupportedCoinTypes.filter((coin) => {
-    // MULTICHAIN: While we are still in development for FIL and SOL,
-    // we will not use their networks unless enabled by brave://flags
-    return (
-      (coin === BraveWallet.CoinType.FIL && isFilecoinEnabled) ||
-      (coin === BraveWallet.CoinType.SOL && isSolanaEnabled) ||
-      (coin === BraveWallet.CoinType.BTC && isBitcoinEnabled) ||
-      coin === BraveWallet.CoinType.ETH
-    )
-  })
-
-  return enabledCoinTypes
-}
-
-async function getAllNetworksList(
-  api: WalletApiProxy
-) {
-  const { jsonRpcService } = api
-
-  const enabledCoinTypes = await getEnabledCoinTypes(api)
-
-  // Get All Networks
-  const networks = (
-    await mapLimit(
-      enabledCoinTypes, 10, (async (coin: number) => {
-        const { networks } = await jsonRpcService.getAllNetworks(coin)
-        return networks
-      })
-    )
-  ).flat(1)
-
-  return networks
-}
-
-export async function getNetwork(
-  api: WalletApiProxy,
-  arg: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
-): Promise<BraveWallet.NetworkInfo | undefined> {
-  const networksList = await getAllNetworksList(api)
-
-  return networksList.find(
-    (n) => n.chainId === arg.chainId && n.coin === arg.coin
-  )
-}
-
-export async function getVisibleNetworksList(
-  api: WalletApiProxy
-) {
-  const { jsonRpcService } = api
-
-  const enabledCoinTypes = await getEnabledCoinTypes(api)
-
-  const networks = (
-    await mapLimit(enabledCoinTypes, 10, async (coin: number) => {
-      const { networks } = await jsonRpcService.getAllNetworks(coin)
-      const { chainIds: hiddenChainIds } =
-        await jsonRpcService.getHiddenNetworks(coin)
-      return networks.filter((n) => !hiddenChainIds.includes(n.chainId))
-    })
-  ).flat(1)
-
-  return networks
 }
 
 // panel internals
