@@ -649,8 +649,8 @@ bool BraveContentBrowserClient::CanCreateWindow(
     if (request_otr::RequestOTRService* request_otr_service =
             request_otr::RequestOTRServiceFactory::GetForBrowserContext(
                 web_contents->GetBrowserContext())) {
-      // TODO this doesn't work, url is about:blank. Are we already protected
-      // from this?
+      // TODO(pilgrim) this doesn't work, url is about:blank. Are we already
+      // protected from this?
       if (request_otr_service->RequestedOTR(
               web_contents->GetLastCommittedURL())) {
         *no_javascript_access = true;
