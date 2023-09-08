@@ -143,6 +143,8 @@ using content::WebContents;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/chrome_content_browser_client_extensions_part.h"
 #include "extensions/browser/extension_registry.h"
+#include "extensions/common/constants.h"
+
 using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
@@ -154,7 +156,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/browser/extensions/brave_webtorrent_navigation_throttle.h"
-#include "brave/components/brave_webtorrent/browser/content_browser_client_helper.h"
+#include "brave/components/brave_webtorrent/browser/magnet_protocol_handler.h"
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)
@@ -776,20 +778,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     const absl::optional<url::Origin>& initiating_origin,
     content::RenderFrameHost* initiator_document,
     mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory) {
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  if (webtorrent::IsMagnetProtocol(url)) {
-    auto weak_initiator_document =
-        initiator_document ? initiator_document->GetWeakDocumentPtr()
-                           : content::WeakDocumentPtr();
-
-    webtorrent::HandleMagnetProtocol(url, web_contents_getter, page_transition,
-                                     has_user_gesture, is_in_fenced_frame_tree,
-                                     initiating_origin,
-                                     std::move(weak_initiator_document));
-    return true;
-  }
-#endif
-
   if (brave_rewards::IsRewardsProtocol(url)) {
     brave_rewards::HandleRewardsProtocol(url, web_contents_getter,
                                          page_transition);
@@ -961,8 +949,8 @@ void BraveContentBrowserClient::MaybeHideReferrer(
     blink::mojom::ReferrerPtr* referrer) {
   DCHECK(referrer && !referrer->is_null());
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  if (document_url.SchemeIs(kChromeExtensionScheme) ||
-      request_url.SchemeIs(kChromeExtensionScheme)) {
+  if (document_url.SchemeIs(extensions::kExtensionScheme) ||
+      request_url.SchemeIs(extensions::kExtensionScheme)) {
     return;
   }
 #endif

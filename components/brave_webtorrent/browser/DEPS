@@ -7,7 +7,7 @@ include_rules = [
 
 # Existing exceptions
 specific_include_rules = {
-  "content_browser_client_helper.h": [
+  "magnet_protocol_handler\.(h|cc)": [
     "+chrome/browser/external_protocol/external_protocol_handler.h",
   ],
   "webtorrent_util.cc": [
