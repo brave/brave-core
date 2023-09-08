@@ -110,15 +110,14 @@ extension BrowserViewController: WKNavigationDelegate {
   // them then iOS will actually first open Safari, which then redirects to the app store. This works but it will
   // leave a 'Back to Safari' button in the status bar, which we do not want.
   fileprivate func isStoreURL(_ url: URL) -> Bool {
-    if url.scheme == "http" || url.scheme == "https" {
-      if url.host == "itunes.apple.com" {
-        return true
-      }
-    }
-    if url.scheme == "itms-appss" || url.scheme == "itmss" {
+    let isStoreScheme = ["itms-apps", "itms-appss", "itmss"].contains(url.scheme)
+    if isStoreScheme {
       return true
     }
-    return false
+
+    let isHttpScheme = ["http", "https"].contains(url.scheme)
+    let isAppStoreHost = ["itunes.apple.com", "apps.apple.com", "appsto.re"].contains(url.host)
+    return isHttpScheme && isAppStoreHost
   }
 
   // This is the place where we decide what to do with a new navigation action. There are a number of special schemes
