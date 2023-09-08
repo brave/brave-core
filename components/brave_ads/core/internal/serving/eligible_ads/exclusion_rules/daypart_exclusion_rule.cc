@@ -34,9 +34,9 @@ bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
 
   const base::Time now = base::Time::Now();
 
-  const int local_time_in_minutes = GetLocalTimeInMinutes(now);
-
   const int day_of_week = GetDayOfWeek(now, /*is_local*/ true);
+
+  const int local_time_in_minutes = GetLocalTimeInMinutes(now);
 
   return base::ranges::any_of(
       creative_ad.dayparts,
