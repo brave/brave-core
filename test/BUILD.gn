@@ -1036,14 +1036,12 @@ test("brave_browser_tests") {
   if (enable_speedreader) {
     sources += [ "//brave/browser/speedreader/speedreader_browsertest.cc" ]
     deps += [
+      "//brave/components/ai_chat/common/buildflags",
       "//brave/components/speedreader",
       "//brave/components/speedreader/common:mojom",
     ]
     if (enable_ai_chat) {
-      deps += [
-        "//brave/components/ai_chat/common:common",
-        "//brave/components/ai_chat/common/buildflags:buildflags",
-      ]
+      deps += [ "//brave/components/ai_chat/common" ]
     }
   }
 
