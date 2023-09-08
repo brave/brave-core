@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/playlist/thumbnail_provider.h"
 
+#include <utility>
+
 #include "base/containers/flat_map.h"
 #include "base/containers/lru_cache.h"
 #include "base/files/file_path.h"
@@ -110,7 +112,7 @@ void ThumbnailProvider::GetThumbnail(
 
   if (list->id == playlist::kDefaultPlaylistID) {
     // If list is default folder, return default thumbnail image
-    // TODO
+    // TODO(sko) We need to set default player folder icon soon.
     std::move(callback).Run({});
     return;
   }
@@ -130,6 +132,7 @@ void ThumbnailProvider::OnGotThumbnail(
     base::OnceCallback<void(const gfx::Image&)> callback,
     gfx::Image thumbnail) {
   if (!thumbnail.IsEmpty()) {
+    DCHECK(!id.empty());
     GetInMemoryCache(service_).Put({id, thumbnail});
   }
 
