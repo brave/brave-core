@@ -6,7 +6,7 @@
 import("//brave/android/features/tab_ui/brave_tab_management_java_sources.gni")
 import("//brave/android/feed/brave_feed_java_sources.gni")
 import(
-    "//brave/android/java/org/chromium/chrome/browser/vpn/billing/billing_sources.gni")
+    "//brave/android/java/org/chromium/chrome/browser/vpn/billing/sources.gni")
 import("//brave/browser/brave_ads/android/java_sources.gni")
 import("//brave/browser/flags/brave_flags_java_sources.gni")
 import("//brave/browser/incognito/android/java_sources.gni")

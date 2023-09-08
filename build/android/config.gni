@@ -6,7 +6,7 @@
 import("//brave/android/brave_java_resources.gni")
 import("//brave/android/brave_java_sources.gni")
 import(
-    "//brave/android/java/org/chromium/chrome/browser/vpn/billing/billing_sources.gni")
+    "//brave/android/java/org/chromium/chrome/browser/vpn/billing/sources.gni")
 import("//brave/build/android/bytecode/bytecode_rewriter.gni")
 
 declare_args() {
