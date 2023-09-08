@@ -20,7 +20,7 @@ class PlaylistTabHelper;
 
 class ThumbnailProvider final {
  public:
-  explicit ThumbnailProvider(playlist::PlaylistService* service);
+  explicit ThumbnailProvider(playlist::PlaylistService& service);
   explicit ThumbnailProvider(playlist::PlaylistTabHelper* tab_helper);
 
   ThumbnailProvider(ThumbnailProvider&) = delete;
@@ -34,10 +34,11 @@ class ThumbnailProvider final {
 
  private:
   void OnGotThumbnail(const std::string& id,
+                      bool from_network,
                       base::OnceCallback<void(const gfx::Image&)> callback,
                       gfx::Image thumbnail);
 
-  raw_ptr<playlist::PlaylistService> service_;
+  raw_ref<playlist::PlaylistService> service_;
 
   base::WeakPtrFactory<ThumbnailProvider> weak_ptr_factory_{this};
 };

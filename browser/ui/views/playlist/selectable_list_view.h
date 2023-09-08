@@ -24,7 +24,6 @@ namespace views {
 class ImageView;
 }  // namespace views
 
-class ThumbnailProvider;
 class ThumbnailView;
 
 class SelectableView : public views::Button {

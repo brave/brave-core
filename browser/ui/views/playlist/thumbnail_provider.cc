@@ -43,13 +43,11 @@ bool IsItemThumbnailCached(const playlist::mojom::PlaylistItemPtr& item) {
 
 }  // namespace
 
-ThumbnailProvider::ThumbnailProvider(playlist::PlaylistService* service)
-    : service_(service) {
-  CHECK(service);
-}
+ThumbnailProvider::ThumbnailProvider(playlist::PlaylistService& service)
+    : service_(service) {}
 
 ThumbnailProvider::ThumbnailProvider(playlist::PlaylistTabHelper* tab_helper)
-    : ThumbnailProvider(playlist::PlaylistServiceFactory::GetForBrowserContext(
+    : ThumbnailProvider(*playlist::PlaylistServiceFactory::GetForBrowserContext(
           tab_helper->web_contents()->GetBrowserContext())) {}
 
 ThumbnailProvider::~ThumbnailProvider() = default;
@@ -58,13 +56,6 @@ void ThumbnailProvider::GetThumbnail(
     const playlist::mojom::PlaylistItemPtr& item,
     base::OnceCallback<void(const gfx::Image&)> callback) {
   DVLOG(2) << __FUNCTION__;
-  auto& in_memory_cache = GetInMemoryCache(service_);
-  if (auto iter = in_memory_cache.Get(item->id);
-      iter != in_memory_cache.end()) {
-    std::move(callback).Run(iter->second);
-    return;
-  }
-
   if (IsItemThumbnailCached(item)) {
     if (base::FilePath thumbnail_path;
         net::FileURLToFilePath(item->thumbnail_path, &thumbnail_path)) {
@@ -85,7 +76,7 @@ void ThumbnailProvider::GetThumbnail(
               thumbnail_path),
           base::BindOnce(&ThumbnailProvider::OnGotThumbnail,
                          weak_ptr_factory_.GetWeakPtr(), item->id,
-                         std::move(callback)));
+                         /*from_network=*/false, std::move(callback)));
       return;
     }
   }
@@ -95,10 +86,18 @@ void ThumbnailProvider::GetThumbnail(
     return;
   }
 
-  service_->DownloadThumbnail(item->thumbnail_source,
-                              base::BindOnce(&ThumbnailProvider::OnGotThumbnail,
-                                             weak_ptr_factory_.GetWeakPtr(),
-                                             item->id, std::move(callback)));
+  auto& in_memory_cache = GetInMemoryCache(base::to_address(service_));
+  if (auto iter = in_memory_cache.Get(item->id);
+      iter != in_memory_cache.end()) {
+    std::move(callback).Run(iter->second);
+    return;
+  }
+
+  service_->DownloadThumbnail(
+      item->thumbnail_source,
+      base::BindOnce(&ThumbnailProvider::OnGotThumbnail,
+                     weak_ptr_factory_.GetWeakPtr(), item->id,
+                     /*from_network=*/true, std::move(callback)));
 }
 
 void ThumbnailProvider::GetThumbnail(
@@ -129,11 +128,17 @@ void ThumbnailProvider::GetThumbnail(
 
 void ThumbnailProvider::OnGotThumbnail(
     const std::string& id,
+    bool from_network,
     base::OnceCallback<void(const gfx::Image&)> callback,
     gfx::Image thumbnail) {
   if (!thumbnail.IsEmpty()) {
     DCHECK(!id.empty());
-    GetInMemoryCache(service_).Put({id, thumbnail});
+    auto& in_memory_cache = GetInMemoryCache(base::to_address(service_));
+    if (from_network) {
+      in_memory_cache.Put({id, thumbnail});
+    } else if (in_memory_cache.Peek(id) != in_memory_cache.end()) {
+      in_memory_cache.Erase(in_memory_cache.Get(id));
+    }
   }
 
   std::move(callback).Run(thumbnail);

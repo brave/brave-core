@@ -176,7 +176,7 @@ PlaylistNewPlaylistDialog::PlaylistNewPlaylistDialog(
     PassKey,
     playlist::PlaylistService* service)
     : service_(service) {
-  thumbnail_provider_ = std::make_unique<ThumbnailProvider>(service_.get());
+  thumbnail_provider_ = std::make_unique<ThumbnailProvider>(*service_);
   const auto kSpacing = 24;
   SetBorder(views::CreateEmptyBorder(gfx::Insets(kSpacing)));
   SetLayoutManager(std::make_unique<views::BoxLayout>(
@@ -362,7 +362,7 @@ PlaylistMoveDialog::PlaylistMoveDialog(
   thumbnail_provider_ =
       is_from_tab_helper()
           ? std::make_unique<ThumbnailProvider>(get_tab_helper().get())
-          : std::make_unique<ThumbnailProvider>(get_move_param().service.get());
+          : std::make_unique<ThumbnailProvider>(*get_move_param().service);
 
   set_margins(gfx::Insets(24));
 
