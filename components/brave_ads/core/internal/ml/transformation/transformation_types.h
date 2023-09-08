@@ -9,11 +9,11 @@
 namespace brave_ads::ml {
 
 enum class TransformationType {
-  kLowercase = 0,
+  kDistribution = 0,
   kHashedNGrams,
+  kLowercase,
   kMappedTokens,
   kNormalization,
-  kDistribution
 };
 
 }  // namespace brave_ads::ml

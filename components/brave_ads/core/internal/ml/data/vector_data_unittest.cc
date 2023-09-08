@@ -246,36 +246,40 @@ TEST_F(BraveAdsVectorDataTest, ApplyToDistribution) {
   constexpr double kTolerance = 1e-6;
   VectorData vector_data({1.0, 2.0, 4.0, 0.03, 0.0});
   vector_data.ToDistribution();
-  std::vector<float> data_distribution = vector_data.GetData();
-  EXPECT_TRUE((std::fabs(0.14224751 - data_distribution[0]) < kTolerance) &&
-              (std::fabs(0.28449502 - data_distribution[1]) < kTolerance) &&
-              (std::fabs(0.56899004 - data_distribution[2]) < kTolerance) &&
-              (std::fabs(0.00426743 - data_distribution[3]) < kTolerance) &&
-              (std::fabs(0.0 - data_distribution[4]) < kTolerance));
+  std::vector<float> vector_distribution = vector_data.GetData();
+  ASSERT_TRUE(vector_distribution.size() == 5);
+  EXPECT_TRUE(
+      (std::fabs(0.14224751 - vector_distribution.at(0)) < kTolerance) &&
+      (std::fabs(0.28449502 - vector_distribution.at(1)) < kTolerance) &&
+      (std::fabs(0.56899004 - vector_distribution.at(2)) < kTolerance) &&
+      (std::fabs(0.00426743 - vector_distribution.at(3)) < kTolerance) &&
+      (std::fabs(0.0 - vector_distribution.at(4)) < kTolerance));
 }
 
 TEST_F(BraveAdsVectorDataTest, ApplyTanh) {
   constexpr double kTolerance = 1e-6;
   VectorData vector_data({1.0, -2.0, 4.0, 0.03, 0.0});
   vector_data.Tanh();
-  std::vector<float> data_tanh = vector_data.GetData();
-  EXPECT_TRUE((std::fabs(0.76159416 - data_tanh[0]) < kTolerance) &&
-              (std::fabs(-0.9640275 - data_tanh[1]) < kTolerance) &&
-              (std::fabs(0.99932929 - data_tanh[2]) < kTolerance) &&
-              (std::fabs(0.02999100 - data_tanh[3]) < kTolerance) &&
-              (std::fabs(0.0 - data_tanh[4]) < kTolerance));
+  std::vector<float> vector_tanh = vector_data.GetData();
+  ASSERT_TRUE(vector_tanh.size() == 5);
+  EXPECT_TRUE((std::fabs(0.76159416 - vector_tanh.at(0)) < kTolerance) &&
+              (std::fabs(-0.9640275 - vector_tanh.at(1)) < kTolerance) &&
+              (std::fabs(0.99932929 - vector_tanh.at(2)) < kTolerance) &&
+              (std::fabs(0.02999100 - vector_tanh.at(3)) < kTolerance) &&
+              (std::fabs(0.0 - vector_tanh.at(4)) < kTolerance));
 }
 
 TEST_F(BraveAdsVectorDataTest, ApplySoftmax) {
   constexpr double kTolerance = 1e-6;
   VectorData vector_data({1.0, -2.0, 4.0, 0.03, 0.0});
   vector_data.Softmax();
-  std::vector<float> data_softmax = vector_data.GetData();
-  EXPECT_TRUE((std::fabs(0.04569906 - data_softmax[0]) < kTolerance) &&
-              (std::fabs(0.00227522 - data_softmax[1]) < kTolerance) &&
-              (std::fabs(0.91789023 - data_softmax[2]) < kTolerance) &&
-              (std::fabs(0.01732374 - data_softmax[3]) < kTolerance) &&
-              (std::fabs(0.01681175 - data_softmax[4]) < kTolerance));
+  std::vector<float> vector_softmax = vector_data.GetData();
+  ASSERT_TRUE(vector_softmax.size() == 5);
+  EXPECT_TRUE((std::fabs(0.04569906 - vector_softmax.at(0)) < kTolerance) &&
+              (std::fabs(0.00227522 - vector_softmax.at(1)) < kTolerance) &&
+              (std::fabs(0.91789023 - vector_softmax.at(2)) < kTolerance) &&
+              (std::fabs(0.01732374 - vector_softmax.at(3)) < kTolerance) &&
+              (std::fabs(0.01681175 - vector_softmax.at(4)) < kTolerance));
 }
 
 TEST_F(BraveAdsVectorDataTest, ComputeSimilarity) {

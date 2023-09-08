@@ -50,6 +50,8 @@ class VectorDataStorage {
     return points_[index];
   }
 
+  std::vector<uint32_t>& points() { return points_; }
+  const std::vector<uint32_t>& points() const { return points_; }
   std::vector<float>& values() { return values_; }
   const std::vector<float>& values() const { return values_; }
   size_t DimensionCount() const { return dimension_count_; }
@@ -255,6 +257,21 @@ size_t VectorData::GetNonZeroElementCount() const {
 
 const std::vector<float>& VectorData::GetData() const {
   return storage_->values();
+}
+
+const std::vector<float>& VectorData::GetData(
+    std::vector<float>& dense_vector) const {
+  size_t dimension_count = GetDimensionCount();
+  if (storage_->values().size() == dimension_count) {
+    return storage_->values();
+  }
+  if (dense_vector.size() != dimension_count) {
+    return storage_->values();
+  }
+  for (size_t i = 0; i < storage_->points().size(); i++) {
+    dense_vector[storage_->points()[i]] = storage_->values()[i];
+  }
+  return dense_vector;
 }
 
 }  // namespace brave_ads::ml

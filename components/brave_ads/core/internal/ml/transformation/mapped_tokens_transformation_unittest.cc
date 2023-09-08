@@ -5,13 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/mapped_tokens_transformation.h"
 
+#include <cstddef>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
-#include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -19,7 +19,7 @@ namespace brave_ads::ml {
 
 class BraveAdsMappedTokensTransformationTest : public UnitTestBase {};
 
-TEST_F(BraveAdsMappedTokensTransformationTest, MappedTokensTest) {
+TEST_F(BraveAdsMappedTokensTransformationTest, MappedTokens) {
   // Arrange
   constexpr double kTolerance = 1e-6;
 
@@ -37,17 +37,22 @@ TEST_F(BraveAdsMappedTokensTransformationTest, MappedTokensTest) {
   data = to_mapped_tokens.Apply(data);
   const VectorData* const transformed_vector_data =
       static_cast<VectorData*>(data.get());
-  const std::vector<float> transformed_vector_values =
-      transformed_vector_data->GetData();
+
+  std::vector<float> transformed_vector_values(
+      transformed_vector_data->GetDimensionCount());
+  transformed_vector_values =
+      transformed_vector_data->GetData(transformed_vector_values);
 
   // Assert
   ASSERT_EQ(DataType::kVector, data->GetType());
-  EXPECT_TRUE((std::fabs(1.0 - transformed_vector_values[0]) < kTolerance) &&
-              (std::fabs(2.0 - transformed_vector_values[1]) < kTolerance) &&
-              (std::fabs(0.0 - transformed_vector_values[2]) < kTolerance) &&
-              (std::fabs(1.0 - transformed_vector_values[3]) < kTolerance) &&
-              (std::fabs(1.0 - transformed_vector_values[4]) < kTolerance) &&
-              (std::fabs(1.0 - transformed_vector_values[5]) < kTolerance));
+  ASSERT_TRUE(transformed_vector_values.size() ==
+              static_cast<size_t>(vector_dimension));
+  EXPECT_TRUE((std::fabs(1.0 - transformed_vector_values.at(0)) < kTolerance) &&
+              (std::fabs(2.0 - transformed_vector_values.at(1)) < kTolerance) &&
+              (std::fabs(0.0 - transformed_vector_values.at(2)) < kTolerance) &&
+              (std::fabs(1.0 - transformed_vector_values.at(3)) < kTolerance) &&
+              (std::fabs(1.0 - transformed_vector_values.at(4)) < kTolerance) &&
+              (std::fabs(1.0 - transformed_vector_values.at(5)) < kTolerance));
 }
 
 }  // namespace brave_ads::ml

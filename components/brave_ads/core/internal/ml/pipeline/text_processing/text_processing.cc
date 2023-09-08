@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
-#include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_info.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -69,63 +68,70 @@ bool TextProcessing::SetPipeline(base::Value::Dict dict) {
   return is_initialized_;
 }
 
+absl::optional<PredictionMap> TextProcessing::Predict(
+    VectorData* vector_data) const {
+  if (linear_model_.HasModelParameters()) {
+    return linear_model_.GetTopPredictions(*vector_data);
+  }
+  if (neural_model_.HasModelParameters()) {
+    return neural_model_.GetTopPredictions(*vector_data);
+  }
+  return absl::nullopt;
+}
+
 absl::optional<PredictionMap> TextProcessing::Apply(
     std::unique_ptr<Data> input_data) const {
-  std::unique_ptr<Data> current_data = std::move(input_data);
-  CHECK(current_data);
+  std::unique_ptr<Data> mutable_input_data = std::move(input_data);
+  CHECK(mutable_input_data);
 
   const size_t transformation_count = transformations_.size();
   for (size_t i = 0; i < transformation_count; ++i) {
-    current_data = transformations_[i]->Apply(current_data);
-    if (!current_data) {
+    mutable_input_data = transformations_[i]->Apply(mutable_input_data);
+    if (!mutable_input_data) {
       BLOG(0, "TextProcessing transformation failed due to an invalid model");
       return absl::nullopt;
     }
   }
-
-  if (current_data->GetType() != DataType::kVector) {
-    BLOG(0, "Linear model predictions failed due to an invalid model");
+  if (mutable_input_data->GetType() != DataType::kVector) {
+    BLOG(0, "Predictions failed due to an invalid model");
     return absl::nullopt;
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/31180): Refactor
-  // TextProcessing to make it more reliable.
-  if (linear_model_.ModelParametersAvailable()) {
-    const VectorData* const vector_data =
-        static_cast<VectorData*>(current_data.get());
-    return linear_model_.GetTopPredictions(*vector_data);
-  }
+  return Predict(static_cast<VectorData*>(mutable_input_data.get()));
+}
 
-  if (neural_model_.ModelParametersAvailable()) {
-    const VectorData* const vector_data =
-        static_cast<VectorData*>(current_data.get());
-    return neural_model_.GetTopPredictions(*vector_data);
-  }
+absl::optional<PredictionMap> TextProcessing::GetPredictions(
+    const std::string& text) const {
+  std::string stripped_text = StripNonAlphaCharacters(text);
+  absl::optional<PredictionMap> predictions =
+      Apply(std::make_unique<TextData>(std::move(stripped_text)));
+  return predictions;
+}
 
-  return absl::nullopt;
+// static
+PredictionMap TextProcessing::FilterPredictions(
+    const PredictionMap& predictions) {
+  const double expected_probability =
+      1.0 / std::max(1.0, static_cast<double>(predictions.size()));
+  PredictionMap top_predictions;
+  for (const auto& [segment, probability] : predictions) {
+    if (probability > expected_probability) {
+      top_predictions[segment] = probability;
+      BLOG(6, segment);
+      BLOG(6, probability);
+    }
+  }
+  return top_predictions;
 }
 
 absl::optional<PredictionMap> TextProcessing::GetTopPredictions(
     const std::string& text) const {
-  std::string stripped_text = StripNonAlphaCharacters(text);
-
-  const absl::optional<PredictionMap> predictions =
-      Apply(std::make_unique<TextData>(std::move(stripped_text)));
+  const absl::optional<PredictionMap> predictions = GetPredictions(text);
   if (!predictions) {
     return absl::nullopt;
   }
-
-  const double expected_prob =
-      1.0 / std::max(1.0, static_cast<double>(predictions->size()));
-  PredictionMap category_probabilities;
-  for (const auto& [category, probability] : *predictions) {
-    if (probability > expected_prob) {
-      category_probabilities[category] = probability;
-      BLOG(6, category);
-      BLOG(6, probability);
-    }
-  }
-  return category_probabilities;
+  PredictionMap top_predictions = FilterPredictions(*predictions);
+  return top_predictions;
 }
 
 absl::optional<PredictionMap> TextProcessing::ClassifyPage(

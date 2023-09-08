@@ -11,6 +11,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
+#include "brave/components/brave_ads/core/internal/ml/model/neural/neural_architecture_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::ml {
@@ -21,7 +22,7 @@ class NeuralModel final {
 
   explicit NeuralModel(const std::string& model);
   NeuralModel(std::vector<std::vector<VectorData>> matricies,
-              std::vector<std::string> post_matrix_functions,
+              std::vector<std::string>& post_matrix_functions,
               std::vector<std::string> classes);
 
   NeuralModel(const NeuralModel&);
@@ -32,7 +33,7 @@ class NeuralModel final {
 
   ~NeuralModel();
 
-  bool ModelParametersAvailable() const;
+  bool HasModelParameters() const;
 
   PredictionMap Predict(const VectorData& data) const;
 
@@ -46,9 +47,7 @@ class NeuralModel final {
       const VectorData& data,
       absl::optional<size_t> top_count) const;
 
-  std::vector<std::vector<VectorData>> matricies_;
-  std::vector<std::string> post_matrix_functions_;
-  std::vector<std::string> classes_;
+  NeuralArchitectureInfo neural_architecture_info_;
 };
 
 }  // namespace brave_ads::ml

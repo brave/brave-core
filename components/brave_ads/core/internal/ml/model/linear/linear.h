@@ -31,7 +31,7 @@ class LinearModel final {
 
   ~LinearModel();
 
-  bool ModelParametersAvailable() const;
+  bool HasModelParameters() const;
 
   PredictionMap Predict(const VectorData& data) const;
 

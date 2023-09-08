@@ -10,7 +10,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
-#include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -36,12 +35,13 @@ TEST_F(BraveAdsDistributionTransformationTest, DistributionTest) {
 
   // Assert
   ASSERT_EQ(DataType::kVector, data->GetType());
+  ASSERT_TRUE(transformed_vector_values.size() == 5);
   EXPECT_TRUE(
-      (std::fabs(0.14224751 - transformed_vector_values[0]) < kTolerance) &&
-      (std::fabs(0.28449502 - transformed_vector_values[1]) < kTolerance) &&
-      (std::fabs(0.56899004 - transformed_vector_values[2]) < kTolerance) &&
-      (std::fabs(0.00426743 - transformed_vector_values[3]) < kTolerance) &&
-      (std::fabs(0.0 - transformed_vector_values[4]) < kTolerance));
+      (std::fabs(0.14224751 - transformed_vector_values.at(0)) < kTolerance) &&
+      (std::fabs(0.28449502 - transformed_vector_values.at(1)) < kTolerance) &&
+      (std::fabs(0.56899004 - transformed_vector_values.at(2)) < kTolerance) &&
+      (std::fabs(0.00426743 - transformed_vector_values.at(3)) < kTolerance) &&
+      (std::fabs(0.0 - transformed_vector_values.at(4)) < kTolerance));
 }
 
 }  // namespace brave_ads::ml

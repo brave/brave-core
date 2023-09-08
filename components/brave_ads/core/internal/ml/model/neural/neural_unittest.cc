@@ -16,7 +16,7 @@ namespace brave_ads::ml {
 
 class BraveAdsNeuralTest : public UnitTestBase {};
 
-TEST_F(BraveAdsNeuralTest, PredictionTest) {
+TEST_F(BraveAdsNeuralTest, Prediction) {
   // Arrange
   constexpr double kTolerance = 1e-6;
 
@@ -44,7 +44,7 @@ TEST_F(BraveAdsNeuralTest, PredictionTest) {
       (std::fabs(0.19850080 - sample_predictions.at("class_3")) < kTolerance));
 }
 
-TEST_F(BraveAdsNeuralTest, TopPredictionsTest) {
+TEST_F(BraveAdsNeuralTest, TopPredictions) {
   // Arrange
   constexpr double kTolerance = 1e-6;
 

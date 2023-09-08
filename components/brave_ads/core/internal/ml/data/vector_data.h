@@ -57,6 +57,7 @@ class VectorData final : public Data {
   float GetNorm() const;
 
   const std::vector<float>& GetData() const;
+  const std::vector<float>& GetData(std::vector<float>& dense_vector) const;
 
  private:
   std::unique_ptr<class VectorDataStorage> storage_;

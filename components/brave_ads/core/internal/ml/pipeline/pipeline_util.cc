@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_util.h"
 
+#include <cstddef>
+
 #include <map>
 #include <memory>
 #include <string>
@@ -26,399 +28,508 @@ namespace brave_ads::ml::pipeline {
 
 namespace {
 
-absl::optional<TransformationPtr> ParsePipelineTransformationHashedNgrams(
-    const base::Value::Dict* item_dict) {
-  const auto* const params_dict = item_dict->FindDict("params");
-  if (!params_dict) {
-    return absl::nullopt;
-  }
-
-  const absl::optional<int> num_buckets = params_dict->FindInt("num_buckets");
-  if (!num_buckets) {
-    return absl::nullopt;
-  }
-
-  const auto* const ngrams_range_list = params_dict->FindList("ngrams_range");
-  if (!ngrams_range_list) {
-    return absl::nullopt;
-  }
-
+std::vector<int> FillSubgrams(const base::Value::List* ngrams_range) {
   std::vector<int> subgrams;
-  for (const base::Value& subgram : *ngrams_range_list) {
+  for (const base::Value& subgram : *ngrams_range) {
     if (!subgram.is_int()) {
-      return absl::nullopt;
+      return {};
     }
     subgrams.push_back(subgram.GetInt());
   }
+  return subgrams;
+}
 
+absl::optional<TransformationPtr> ParsePipelineTransformationHashedNgrams(
+    const base::Value::Dict* transformation_dict) {
+  const auto* const transformation_params =
+      transformation_dict->FindDict("params");
+  if (!transformation_params) {
+    return absl::nullopt;
+  }
+
+  const absl::optional<int> num_buckets =
+      transformation_params->FindInt("num_buckets");
+  if (!num_buckets) {
+    return absl::nullopt;
+  }
+  const auto* const ngrams_range =
+      transformation_params->FindList("ngrams_range");
+  if (!ngrams_range) {
+    return absl::nullopt;
+  }
+  std::vector<int> subgrams = FillSubgrams(ngrams_range);
+  if (subgrams.empty()) {
+    return absl::nullopt;
+  }
   return std::make_unique<HashedNGramsTransformation>(*num_buckets, subgrams);
 }
 
-absl::optional<TransformationPtr> ParsePipelineTransformationMappedTokens(
-    const auto* const item_dict) {
-  const absl::optional<int> dimension = item_dict->FindInt("dimension");
-  if (!dimension) {
-    return absl::nullopt;
-  }
-
-  const auto* const token_categories_mapping_dict =
-      item_dict->FindDict("mapping");
-  if (!token_categories_mapping_dict) {
-    return absl::nullopt;
-  }
-
-  int vector_dimension = *dimension;
+std::map<std::string, std::vector<int>> FillTokensCategoriesMapping(
+    const base::Value::Dict* mapping) {
   std::map<std::string, std::vector<int>> token_categories_mapping;
-
-  for (const auto [token, mapping] : *token_categories_mapping_dict) {
-    const auto* mapping_list = mapping.GetIfList();
-    if (!mapping_list) {
+  for (const auto [token, categories] : *mapping) {
+    const auto* category_indexes = categories.GetIfList();
+    if (!category_indexes) {
       continue;
     }
 
     std::string token_text = token;
-    std::vector<int> mapped_categories;
-    mapped_categories.reserve(mapping_list->size());
-    for (const base::Value& mapping_index : *mapping_list) {
-      if (!mapping_index.is_double() && !mapping_index.is_int()) {
-        return absl::nullopt;
+    std::vector<int> mapped_category_indexes;
+    mapped_category_indexes.reserve(category_indexes->size());
+    for (const base::Value& category_index : *category_indexes) {
+      if (!category_index.is_double() && !category_index.is_int()) {
+        return {};
       }
-
-      mapped_categories.push_back(static_cast<int>(mapping_index.GetInt()));
+      mapped_category_indexes.push_back(
+          static_cast<int>(category_index.GetInt()));
     }
+    token_categories_mapping[token_text] = mapped_category_indexes;
+  }
+  return token_categories_mapping;
+}
 
-    token_categories_mapping[token_text] = mapped_categories;
+absl::optional<TransformationPtr> ParsePipelineTransformationMappedTokens(
+    const auto* const transformation_dict) {
+  const absl::optional<int> dimension =
+      transformation_dict->FindInt("dimension");
+  if (!dimension) {
+    return absl::nullopt;
+  }
+
+  const auto* const mapping = transformation_dict->FindDict("mapping");
+  if (!mapping) {
+    return absl::nullopt;
+  }
+  int vector_dimension = *dimension;
+  std::map<std::string, std::vector<int>> token_categories_mapping =
+      FillTokensCategoriesMapping(mapping);
+  if (token_categories_mapping.empty()) {
+    return absl::nullopt;
   }
 
   return std::make_unique<MappedTokensTransformation>(vector_dimension,
                                                       token_categories_mapping);
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/24940): Reduce cognitive
-// complexity.
-absl::optional<TransformationVector> ParsePipelineTransformations(
-    const base::Value::List& list) {
+absl::optional<TransformationPtr> AddPipelineTransformation(
+    const std::string& transformation_type,
+    const base::Value::Dict* transformation_dict) {
+  if (transformation_type == "TO_LOWER") {
+    return std::make_unique<LowercaseTransformation>();
+  }
+
+  if (transformation_type == "NORMALIZE") {
+    return std::make_unique<NormalizationTransformation>();
+  }
+
+  if (transformation_type == "HASHED_NGRAMS") {
+    absl::optional<TransformationPtr> hashed_ngrams_transformation =
+        ParsePipelineTransformationHashedNgrams(transformation_dict);
+    if (!hashed_ngrams_transformation) {
+      return absl::nullopt;
+    }
+    return std::move(*hashed_ngrams_transformation);
+  }
+
+  if (transformation_type == "MAPPED_TOKENS") {
+    absl::optional<TransformationPtr> mapped_tokens_transformation =
+        ParsePipelineTransformationMappedTokens(transformation_dict);
+    if (!mapped_tokens_transformation) {
+      return absl::nullopt;
+    }
+    return std::move(*mapped_tokens_transformation);
+  }
+
+  if (transformation_type == "TO_DISTRIBUTION") {
+    return std::make_unique<DistributionTransformation>();
+  }
+
+  return absl::nullopt;
+}
+
+TransformationVector ParsePipelineTransformations(
+    const base::Value::List& transformations) {
   TransformationVector transformation_vector;
 
-  for (const auto& item : list) {
-    const auto* const item_dict = item.GetIfDict();
-    if (!item_dict) {
-      return absl::nullopt;
+  for (const auto& transformation : transformations) {
+    const auto* const transformation_dict = transformation.GetIfDict();
+    if (!transformation_dict) {
+      return {};
     }
 
     const std::string* const transformation_type =
-        item_dict->FindString("transformation_type");
+        transformation_dict->FindString("transformation_type");
     if (!transformation_type) {
-      return absl::nullopt;
+      return {};
     }
-
-    if (*transformation_type == "TO_LOWER") {
-      transformation_vector.push_back(
-          std::make_unique<LowercaseTransformation>());
+    absl::optional<TransformationPtr> next_transformation =
+        AddPipelineTransformation(*transformation_type, transformation_dict);
+    if (!next_transformation) {
+      return {};
     }
-
-    if (*transformation_type == "NORMALIZE") {
-      transformation_vector.push_back(
-          std::make_unique<NormalizationTransformation>());
-    }
-
-    if (*transformation_type == "HASHED_NGRAMS") {
-      absl::optional<TransformationPtr> hashed_ngrams_transformation =
-          ParsePipelineTransformationHashedNgrams(item_dict);
-      if (!hashed_ngrams_transformation) {
-        return absl::nullopt;
-      }
-      transformation_vector.push_back(std::move(*hashed_ngrams_transformation));
-    }
-
-    if (*transformation_type == "MAPPED_TOKENS") {
-      absl::optional<TransformationPtr> mapped_tokens_transformation =
-          ParsePipelineTransformationMappedTokens(item_dict);
-      if (!mapped_tokens_transformation) {
-        return absl::nullopt;
-      }
-      transformation_vector.push_back(std::move(*mapped_tokens_transformation));
-    }
-
-    if (*transformation_type == "TO_DISTRIBUTION") {
-      transformation_vector.push_back(
-          std::make_unique<DistributionTransformation>());
-    }
+    transformation_vector.push_back(std::move(*next_transformation));
   }
-
   return transformation_vector;
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/24941): Reduce
-// cognitive complexity.
 std::vector<std::string> ParsePipelineClassifierClasses(
-    const base::Value::Dict& dict) {
-  const auto* const classes_list = dict.FindList("classes");
-  if (!classes_list) {
+    const base::Value::Dict& classifier) {
+  const auto* const classifier_classes = classifier.FindList("classes");
+  if (!classifier_classes) {
     return {};
   }
 
   std::vector<std::string> classes;
-  classes.reserve(classes_list->size());
-  for (const base::Value& item : *classes_list) {
-    if (!item.is_string()) {
+  classes.reserve(classifier_classes->size());
+  for (const base::Value& classifier_class : *classifier_classes) {
+    if (!classifier_class.is_string()) {
       return {};
     }
-
-    const std::string& class_name = item.GetString();
+    const std::string& class_name = classifier_class.GetString();
     if (class_name.empty()) {
       return {};
     }
-
     classes.push_back(class_name);
   }
   return classes;
 }
 
-std::map<std::string, VectorData> ParsePipelineClassifierWeights(
-    const base::Value::Dict& dict,
-    const std::vector<std::string>& classes) {
-  const auto* const class_weights_dict = dict.FindDict("class_weights");
-  if (!class_weights_dict) {
-    return {};
-  }
+std::map<std::string, VectorData> FillClassWeights(
+    const base::Value::Dict* class_weights,
+    const std::vector<std::string>& classes_names) {
+  std::map</*class_name*/ std::string, /*weights*/ VectorData>
+      filled_class_weights;
 
-  std::map</*class_name*/ std::string, /*weights*/ VectorData> class_weights;
-  for (const std::string& class_name : classes) {
-    const auto* const list = class_weights_dict->FindList(class_name);
-    if (!list) {
+  for (const std::string& class_name : classes_names) {
+    const auto* const weights = class_weights->FindList(class_name);
+    if (!weights) {
       return {};
     }
-
-    std::vector<float> class_coef_weights;
-    class_coef_weights.reserve(list->size());
-    for (const base::Value& item : *list) {
-      if (!item.is_double() && !item.is_int()) {
+    std::vector<float> class_coefficient_weights;
+    class_coefficient_weights.reserve(weights->size());
+    for (const base::Value& weight : *weights) {
+      if (!weight.is_double() && !weight.is_int()) {
         return {};
       }
-
-      class_coef_weights.push_back(static_cast<float>(item.GetDouble()));
+      class_coefficient_weights.push_back(
+          static_cast<float>(weight.GetDouble()));
     }
-
-    class_weights[class_name] = VectorData(std::move(class_coef_weights));
+    filled_class_weights[class_name] =
+        VectorData(std::move(class_coefficient_weights));
   }
-  return class_weights;
+  return filled_class_weights;
 }
 
-std::map<std::string, double> ParsePipelineClassifierBiases(
-    const base::Value::Dict& dict,
-    std::vector<std::string> classes) {
-  const auto* const biases_list = dict.FindList("biases");
-  if (!biases_list || biases_list->size() != classes.size()) {
+std::map<std::string, VectorData> ParsePipelineClassifierWeights(
+    const base::Value::Dict& classifier,
+    const std::vector<std::string>& classes) {
+  const auto* const class_weights = classifier.FindDict("class_weights");
+  if (!class_weights) {
     return {};
   }
 
-  std::map</*class_name*/ std::string, /*bias*/ double> biases;
-  for (size_t i = 0; i < biases_list->size(); i++) {
-    const base::Value& bias = (*biases_list)[i];
+  std::map<std::string, VectorData> filled_class_weights =
+      FillClassWeights(class_weights, classes);
+  if (filled_class_weights.empty()) {
+    return {};
+  }
+  return filled_class_weights;
+}
+
+std::map<std::string, double> FillBiases(
+    const base::Value::List* biases,
+    const std::vector<std::string>& classes) {
+  std::map</*class_name*/ std::string, /*bias*/ double> filled_biases;
+
+  for (size_t i = 0; i < biases->size(); i++) {
+    const base::Value& bias = (*biases)[i];
     if (!bias.is_double() && !bias.is_int()) {
       return {};
     }
-
-    biases[classes[i]] = bias.GetDouble();
+    filled_biases[classes[i]] = bias.GetDouble();
   }
-  return biases;
+  return filled_biases;
+}
+
+std::map<std::string, double> ParsePipelineClassifierBiases(
+    const base::Value::Dict& classifier,
+    const std::vector<std::string>& classes) {
+  const auto* const biases = classifier.FindList("biases");
+  if (!biases || biases->size() != classes.size()) {
+    return {};
+  }
+
+  std::map<std::string, double> filled_biases = FillBiases(biases, classes);
+  if (filled_biases.empty()) {
+    return {};
+  }
+  return filled_biases;
+}
+
+LinearModel ParsePipelineClassifierLinear(const base::Value::Dict& classifier) {
+  std::vector<std::string> classes = ParsePipelineClassifierClasses(classifier);
+  if (classes.empty()) {
+    LinearModel();
+  }
+  std::map<std::string, VectorData> class_weights =
+      ParsePipelineClassifierWeights(classifier, classes);
+  if (class_weights.empty()) {
+    LinearModel();
+  }
+  std::map<std::string, double> biases =
+      ParsePipelineClassifierBiases(classifier, classes);
+  if (biases.empty()) {
+    LinearModel();
+  }
+  return {std::move(class_weights), std::move(biases)};
+}
+
+std::vector<std::string> FillPostMatrixFunctions(
+    const base::Value::List* post_matrix_functions) {
+  std::vector<std::string> filled_post_matrix_functions;
+  filled_post_matrix_functions.reserve(post_matrix_functions->size());
+
+  for (const base::Value& post_matrix_function : *post_matrix_functions) {
+    if (!post_matrix_function.is_string()) {
+      return {};
+    }
+    const std::string& post_matrix_function_type =
+        post_matrix_function.GetString();
+    if (post_matrix_function_type.empty()) {
+      return {};
+    }
+    filled_post_matrix_functions.push_back(post_matrix_function_type);
+  }
+  return filled_post_matrix_functions;
 }
 
 std::vector<std::string> ParsePipelineClassifierPostMatrixFunctions(
-    const base::Value::Dict& dict) {
-  const auto* const post_matrix_functions_list =
-      dict.FindList("neural_post_matrix_functions");
-  if (!post_matrix_functions_list) {
+    const base::Value::Dict& classifier) {
+  const auto* const post_matrix_functions =
+      classifier.FindList("neural_post_matrix_functions");
+  if (!post_matrix_functions) {
     return {};
   }
 
-  std::vector<std::string> post_matrix_functions;
-  post_matrix_functions.reserve(post_matrix_functions_list->size());
-  for (const base::Value& item : *post_matrix_functions_list) {
-    if (!item.is_string()) {
-      return {};
-    }
-
-    const std::string& function_type = item.GetString();
-    if (function_type.empty()) {
-      return {};
-    }
-
-    post_matrix_functions.push_back(function_type);
+  std::vector<std::string> filled_post_matrix_functions =
+      FillPostMatrixFunctions(post_matrix_functions);
+  if (filled_post_matrix_functions.empty()) {
+    return {};
   }
-  return post_matrix_functions;
+  return filled_post_matrix_functions;
 }
 
-std::vector<std::vector<VectorData>> ParsePipelineClassifierMatrixData(
-    const base::Value::Dict& dict) {
-  const auto* const neural_matricies_names_list =
-      dict.FindList("neural_matricies_names");
-
-  if (!neural_matricies_names_list) {
-    return {};
+std::vector<float> FillMatrixRow(const base::Value::List* matrix_row) {
+  std::vector<float> matrix_row_data;
+  matrix_row_data.reserve(matrix_row->size());
+  for (const base::Value& weight : *matrix_row) {
+    if (!weight.is_double() && !weight.is_int()) {
+      return {};
+    }
+    matrix_row_data.push_back(static_cast<float>(weight.GetDouble()));
   }
+  return matrix_row_data;
+}
 
-  const auto* const neural_matricies_dimensions_dict =
-      dict.FindDict("neural_matricies_dimensions");
-  if (!neural_matricies_dimensions_dict) {
-    return {};
-  }
+std::vector<VectorData> FillMatrix(
+    const base::Value::Dict* neural_matricies_data,
+    const std::string& matrix_name,
+    size_t matrix_dimension_rows) {
+  std::vector<VectorData> matrix;
 
-  const auto* const neural_matricies_data_dict =
-      dict.FindDict("neural_matricies_data");
-  if (!neural_matricies_data_dict) {
-    return {};
-  }
-
-  std::vector<std::vector<VectorData>> matricies;
-  for (const auto& matrix_name_value : *neural_matricies_names_list) {
-    if (!matrix_name_value.is_string()) {
+  for (size_t j = 0; j < matrix_dimension_rows; j++) {
+    const std::string matrix_row_name =
+        base::StrCat({matrix_name, "-", std::to_string(j)});
+    const auto* const matrix_row =
+        neural_matricies_data->FindList(matrix_row_name);
+    if (!matrix_row) {
       return {};
     }
 
-    const std::string& matrix_name = matrix_name_value.GetString();
+    std::vector<float> matrix_row_data = FillMatrixRow(matrix_row);
+    if (matrix_row_data.empty()) {
+      return {};
+    }
+    matrix.emplace_back(std::move(matrix_row_data));
+  }
+  return matrix;
+}
+
+std::vector<std::vector<VectorData>> FillMatricies(
+    const base::Value::List* neural_matricies_names,
+    const base::Value::Dict* neural_matricies_dimensions,
+    const base::Value::Dict* neural_matricies_data) {
+  std::vector<std::vector<VectorData>> matricies;
+
+  for (const auto& neural_matricies_name : *neural_matricies_names) {
+    if (!neural_matricies_name.is_string()) {
+      return {};
+    }
+
+    const std::string& matrix_name = neural_matricies_name.GetString();
     const auto* const matrix_dimensions =
-        neural_matricies_dimensions_dict->FindList(matrix_name);
+        neural_matricies_dimensions->FindList(matrix_name);
     if (!matrix_dimensions) {
       return {};
     }
-
     const base::Value& matrix_dimension = (*matrix_dimensions)[0];
     if (!matrix_dimension.is_double() && !matrix_dimension.is_int()) {
       return {};
     }
-
-    std::vector<VectorData> matrix;
-    size_t matrix_dimension_rows = matrix_dimension.GetInt();
-    for (size_t j = 0; j < matrix_dimension_rows; j++) {
-      const std::string matrix_row_name =
-          base::StrCat({matrix_name, "-", std::to_string(j)});
-
-      const auto* const matrix_row =
-          neural_matricies_data_dict->FindList(matrix_row_name);
-      if (!matrix_row) {
-        return {};
-      }
-
-      std::vector<float> matrix_row_data;
-      matrix_row_data.reserve(matrix_row->size());
-      for (const base::Value& item : *matrix_row) {
-        if (!item.is_double() && !item.is_int()) {
-          return {};
-        }
-
-        matrix_row_data.push_back(static_cast<float>(item.GetDouble()));
-      }
-
-      matrix.emplace_back(std::move(matrix_row_data));
+    std::vector<VectorData> matrix = FillMatrix(
+        neural_matricies_data, matrix_name, matrix_dimension.GetInt());
+    if (matrix.empty()) {
+      return {};
     }
-
     matricies.push_back(matrix);
   }
   return matricies;
 }
 
-absl::optional<LinearModel> ParsePipelineClassifierLinear(
-    const base::Value::Dict& dict) {
-  const std::string* const classifier_type = dict.FindString("classifier_type");
-  if (!classifier_type || *classifier_type != "LINEAR") {
-    return absl::nullopt;
-  }
-  std::vector<std::string> classes = ParsePipelineClassifierClasses(dict);
-  if (classes.empty()) {
-    return absl::nullopt;
+std::vector<std::vector<VectorData>> ParsePipelineClassifierMatrixData(
+    const base::Value::Dict& classifier) {
+  const auto* const neural_matricies_names =
+      classifier.FindList("neural_matricies_names");
+  if (!neural_matricies_names) {
+    return {};
   }
 
-  std::map<std::string, VectorData> class_weights =
-      ParsePipelineClassifierWeights(dict, classes);
-  if (class_weights.empty()) {
-    return absl::nullopt;
+  const auto* const neural_matricies_dimensions =
+      classifier.FindDict("neural_matricies_dimensions");
+  if (!neural_matricies_dimensions) {
+    return {};
   }
-
-  std::map<std::string, double> biases =
-      ParsePipelineClassifierBiases(dict, classes);
-  if (biases.empty()) {
-    return absl::nullopt;
+  const auto* const neural_matricies_data =
+      classifier.FindDict("neural_matricies_data");
+  if (!neural_matricies_data) {
+    return {};
   }
-
-  return LinearModel(std::move(class_weights), std::move(biases));
+  std::vector<std::vector<VectorData>> matricies =
+      FillMatricies(neural_matricies_names, neural_matricies_dimensions,
+                    neural_matricies_data);
+  if (matricies.empty()) {
+    return {};
+  }
+  return matricies;
 }
 
-absl::optional<NeuralModel> ParsePipelineClassifierNeural(
-    const base::Value::Dict& dict) {
-  const std::string* const classifier_type = dict.FindString("classifier_type");
-  if (!classifier_type || *classifier_type != "NEURAL") {
-    return absl::nullopt;
-  }
-
-  std::vector<std::string> classes = ParsePipelineClassifierClasses(dict);
+NeuralModel ParsePipelineClassifierNeural(const base::Value::Dict& classifier) {
+  std::vector<std::string> classes = ParsePipelineClassifierClasses(classifier);
   if (classes.empty()) {
-    return absl::nullopt;
+    return {};
   }
-
   std::vector<std::string> post_matrix_functions =
-      ParsePipelineClassifierPostMatrixFunctions(dict);
-
+      ParsePipelineClassifierPostMatrixFunctions(classifier);
   std::vector<std::vector<VectorData>> matricies =
-      ParsePipelineClassifierMatrixData(dict);
+      ParsePipelineClassifierMatrixData(classifier);
+  return {std::move(matricies), post_matrix_functions, std::move(classes)};
+}
 
-  return NeuralModel(std::move(matricies), std::move(post_matrix_functions),
-                     std::move(classes));
+int ParsePipelineValueVersion(base::Value::Dict& dict) {
+  const absl::optional<int> version = dict.FindInt("version");
+  if (!version) {
+    return 0;
+  }
+  return *version;
+}
+
+std::string ParsePipelineValueTimestamp(base::Value::Dict& dict) {
+  const std::string* const timestamp = dict.FindString("timestamp");
+  if (!timestamp) {
+    return {};
+  }
+  return *timestamp;
+}
+
+std::string ParsePipelineValueLocale(base::Value::Dict& dict) {
+  const std::string* const locale = dict.FindString("locale");
+  if (!locale) {
+    return {};
+  }
+  return *locale;
+}
+
+TransformationVector ParsePipelineValueTransformations(
+    base::Value::Dict& dict) {
+  const auto* transformations = dict.FindList("transformations");
+  if (!transformations) {
+    return {};
+  }
+  TransformationVector transformation_vector =
+      ParsePipelineTransformations(*transformations);
+  if (transformation_vector.empty()) {
+    return {};
+  }
+  return transformation_vector;
+}
+
+std::string ParsePipelineValueClassifierType(base::Value::Dict& dict) {
+  const auto* classifier_dict = dict.FindDict("classifier");
+  if (!classifier_dict) {
+    return {};
+  }
+  const std::string* const classifier_type =
+      classifier_dict->FindString("classifier_type");
+  if (!classifier_type) {
+    return {};
+  }
+  return *classifier_type;
+}
+
+LinearModel ParsePipelineValueClassifierLinear(
+    base::Value::Dict& dict,
+    const std::string& classifier_type) {
+  if (classifier_type == "LINEAR") {
+    const auto* classifier = dict.FindDict("classifier");
+    if (!classifier) {
+      return {};
+    }
+    return ParsePipelineClassifierLinear(*classifier);
+  }
+  return {};
+}
+
+NeuralModel ParsePipelineValueClassifierNeural(
+    base::Value::Dict& dict,
+    const std::string& classifier_type) {
+  if (classifier_type == "NEURAL") {
+    const auto* classifier = dict.FindDict("classifier");
+    if (!classifier) {
+      return {};
+    }
+    return ParsePipelineClassifierNeural(*classifier);
+  }
+  return {};
 }
 
 }  // namespace
 
 absl::optional<PipelineInfo> ParsePipelineValue(base::Value::Dict dict) {
-  const absl::optional<int> version = dict.FindInt("version");
-  if (!version) {
+  const int version = ParsePipelineValueVersion(dict);
+  const std::string timestamp = ParsePipelineValueTimestamp(dict);
+  const std::string locale = ParsePipelineValueLocale(dict);
+  if ((version == 0) || (timestamp.empty()) || (locale.empty())) {
     return absl::nullopt;
   }
 
-  const std::string* const timestamp = dict.FindString("timestamp");
-  if (!timestamp) {
+  TransformationVector transformations =
+      ParsePipelineValueTransformations(dict);
+  if (transformations.empty()) {
     return absl::nullopt;
   }
 
-  const std::string* const locale = dict.FindString("locale");
-  if (!locale) {
+  const std::string classifier_type = ParsePipelineValueClassifierType(dict);
+  LinearModel linear_model =
+      ParsePipelineValueClassifierLinear(dict, classifier_type);
+  NeuralModel neural_model =
+      ParsePipelineValueClassifierNeural(dict, classifier_type);
+  if ((!linear_model.HasModelParameters()) &&
+      (!neural_model.HasModelParameters())) {
     return absl::nullopt;
   }
 
-  const auto* transformations_list = dict.FindList("transformations");
-  if (!transformations_list) {
-    return absl::nullopt;
-  }
-  absl::optional<TransformationVector> transformations =
-      ParsePipelineTransformations(*transformations_list);
-  if (!transformations) {
-    return absl::nullopt;
-  }
-
-  const auto* classifier_dict = dict.FindDict("classifier");
-  if (!classifier_dict) {
-    return absl::nullopt;
-  }
-
-  absl::optional<LinearModel> linear_model =
-      ParsePipelineClassifierLinear(*classifier_dict);
-
-  absl::optional<NeuralModel> neural_model =
-      ParsePipelineClassifierNeural(*classifier_dict);
-
-  if ((!linear_model) && (!neural_model)) {
-    return absl::nullopt;
-  }
-  if (!linear_model) {
-    linear_model = LinearModel();
-  }
-  if (!neural_model) {
-    neural_model = NeuralModel();
-  }
-
-  return PipelineInfo(*version, *timestamp, *locale,
-                      std::move(*transformations), std::move(*linear_model),
-                      std::move(*neural_model));
+  return PipelineInfo(version, timestamp, locale, std::move(transformations),
+                      std::move(linear_model), std::move(neural_model));
 }
 
 }  // namespace brave_ads::ml::pipeline

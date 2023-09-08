@@ -31,11 +31,17 @@ class MappedTokensTransformation final : public Transformation {
 
   explicit MappedTokensTransformation(const std::string& parameters);
 
+  static std::vector<std::string> GetTokensFromText(
+      const std::unique_ptr<Data>& input_data);
+
+  std::map<unsigned, double> GetCategoryFrequencies(
+      std::vector<std::string> tokens) const;
+
   std::unique_ptr<Data> Apply(
       const std::unique_ptr<Data>& input_data) const override;
 
  private:
-  int vector_dimension_;
+  int vector_dimension_ = 0;
   std::map<std::string, std::vector<int>> token_categories_mapping_;
 };
 
