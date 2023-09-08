@@ -349,9 +349,14 @@ function Container () {
     )
   }
 
-  if (isWalletLocked && !isPanelV2FeatureEnabled) {
-    return (
-      <PanelWrapper isLonger={false}>
+  if (isWalletLocked) {
+    return isPanelV2FeatureEnabled
+      ? <BrowserRouter>
+        <PanelWrapper width={390} height={650}>
+          <PageContainer />
+        </PanelWrapper>
+      </BrowserRouter>
+      : <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
           <LockPanel
             onSubmit={unlockWallet}
@@ -359,7 +364,6 @@ function Container () {
           />
         </StyledExtensionWrapper>
       </PanelWrapper>
-    )
   }
 
   if (selectedPanel === 'transactionStatus' && selectedTransactionId) {
