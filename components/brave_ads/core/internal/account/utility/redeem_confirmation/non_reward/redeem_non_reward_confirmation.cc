@@ -108,9 +108,7 @@ void RedeemNonRewardConfirmation::SuccessfullyRedeemedConfirmation(
               << confirmation.transaction_id << " and creative instance id "
               << confirmation.creative_instance_id);
 
-  if (delegate_) {
-    delegate_->OnDidRedeemConfirmation(confirmation);
-  }
+  NotifyDidRedeemConfirmation(confirmation);
 }
 
 void RedeemNonRewardConfirmation::FailedToRedeemConfirmation(
@@ -122,6 +120,19 @@ void RedeemNonRewardConfirmation::FailedToRedeemConfirmation(
               << confirmation.transaction_id << " and creative instance id "
               << confirmation.creative_instance_id);
 
+  NotifyFailedToRedeemConfirmation(confirmation, should_retry);
+}
+
+void RedeemNonRewardConfirmation::NotifyDidRedeemConfirmation(
+    const ConfirmationInfo& confirmation) const {
+  if (delegate_) {
+    delegate_->OnDidRedeemConfirmation(confirmation);
+  }
+}
+
+void RedeemNonRewardConfirmation::NotifyFailedToRedeemConfirmation(
+    const ConfirmationInfo& confirmation,
+    const bool should_retry) const {
   if (delegate_) {
     delegate_->OnFailedToRedeemConfirmation(confirmation, should_retry);
   }

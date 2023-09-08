@@ -79,9 +79,7 @@ void RefillConfirmationTokens::Refill() {
 
   is_processing_ = true;
 
-  if (delegate_) {
-    delegate_->OnWillRefillConfirmationTokens();
-  }
+  NotifyWillRefillConfirmationTokens();
 
   GenerateTokens();
 
@@ -251,13 +249,8 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
 
 void RefillConfirmationTokens::ParseAndRequireCaptcha(
     const base::Value::Dict& dict) const {
-  const absl::optional<std::string> captcha_id = ParseCaptchaId(dict);
-  if (!captcha_id) {
-    return;
-  }
-
-  if (delegate_) {
-    delegate_->OnCaptchaRequiredToRefillConfirmationTokens(*captcha_id);
+  if (const absl::optional<std::string> captcha_id = ParseCaptchaId(dict)) {
+    NotifyCaptchaRequiredToRefillConfirmationTokens(*captcha_id);
   }
 }
 
@@ -268,15 +261,11 @@ void RefillConfirmationTokens::SuccessfullyRefilled() {
 
   is_processing_ = false;
 
-  if (delegate_) {
-    delegate_->OnDidRefillConfirmationTokens();
-  }
+  NotifyDidRefillConfirmationTokens();
 }
 
 void RefillConfirmationTokens::FailedToRefill(const bool should_retry) {
-  if (delegate_) {
-    delegate_->OnFailedToRefillConfirmationTokens();
-  }
+  NotifyFailedToRefillConfirmationTokens();
 
   if (should_retry) {
     return Retry();
@@ -291,15 +280,11 @@ void RefillConfirmationTokens::Retry() {
       base::BindOnce(&RefillConfirmationTokens::RetryCallback,
                      weak_factory_.GetWeakPtr()));
 
-  if (delegate_) {
-    delegate_->OnWillRetryRefillingConfirmationTokens(retry_at);
-  }
+  NotifyWillRetryRefillingConfirmationTokens(retry_at);
 }
 
 void RefillConfirmationTokens::RetryCallback() {
-  if (delegate_) {
-    delegate_->OnDidRetryRefillingConfirmationTokens();
-  }
+  NotifyDidRetryRefillingConfirmationTokens();
 
   ShouldRequestSignedTokens() ? RequestSignedTokens() : GetSignedTokens();
 }
@@ -313,6 +298,45 @@ void RefillConfirmationTokens::Reset() {
 
   tokens_.reset();
   blinded_tokens_.reset();
+}
+
+void RefillConfirmationTokens::NotifyWillRefillConfirmationTokens() const {
+  if (delegate_) {
+    delegate_->OnWillRefillConfirmationTokens();
+  }
+}
+
+void RefillConfirmationTokens::NotifyCaptchaRequiredToRefillConfirmationTokens(
+    const std::string& captcha_id) const {
+  if (delegate_) {
+    delegate_->OnCaptchaRequiredToRefillConfirmationTokens(captcha_id);
+  }
+}
+
+void RefillConfirmationTokens::NotifyDidRefillConfirmationTokens() const {
+  if (delegate_) {
+    delegate_->OnDidRefillConfirmationTokens();
+  }
+}
+
+void RefillConfirmationTokens::NotifyFailedToRefillConfirmationTokens() const {
+  if (delegate_) {
+    delegate_->OnFailedToRefillConfirmationTokens();
+  }
+}
+
+void RefillConfirmationTokens::NotifyWillRetryRefillingConfirmationTokens(
+    const base::Time retry_at) const {
+  if (delegate_) {
+    delegate_->OnWillRetryRefillingConfirmationTokens(retry_at);
+  }
+}
+
+void RefillConfirmationTokens::NotifyDidRetryRefillingConfirmationTokens()
+    const {
+  if (delegate_) {
+    delegate_->OnDidRetryRefillingConfirmationTokens();
+  }
 }
 
 }  // namespace brave_ads

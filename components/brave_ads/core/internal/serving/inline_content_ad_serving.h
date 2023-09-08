@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 
@@ -61,6 +62,11 @@ class InlineContentAdServing final {
                MaybeServeInlineContentAdCallback callback);
   void FailedToServeAd(const std::string& dimensions,
                        MaybeServeInlineContentAdCallback callback);
+
+  void NotifyOpportunityAroseToServeInlineContentAd(
+      const SegmentList& segments) const;
+  void NotifyDidServeInlineContentAd(const InlineContentAdInfo& ad) const;
+  void NotifyFailedToServeInlineContentAd() const;
 
   raw_ptr<InlineContentAdServingDelegate> delegate_ = nullptr;
 

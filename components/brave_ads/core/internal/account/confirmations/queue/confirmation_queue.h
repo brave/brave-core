@@ -50,6 +50,16 @@ class ConfirmationQueue final : public AdsClientNotifierObserver,
 
   void ResetTimerBackoffDelay();
 
+  void NotifyDidAddConfirmationToQueue(
+      const ConfirmationInfo& confirmation) const;
+  void NotifyWillProcessConfirmationQueue(const ConfirmationInfo& confirmation,
+                                          base::Time process_at) const;
+  void NotifyDidProcessConfirmationQueue(
+      const ConfirmationInfo& confirmation) const;
+  void NotifyFailedToProcessConfirmationQueue(
+      const ConfirmationInfo& confirmation) const;
+  void NotifyDidExhaustConfirmationQueue() const;
+
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;
 

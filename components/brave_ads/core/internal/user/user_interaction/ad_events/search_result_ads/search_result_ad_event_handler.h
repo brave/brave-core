@@ -96,6 +96,13 @@ class SearchResultAdEventHandler final
                          mojom::SearchResultAdEventType event_type,
                          FireSearchResultAdEventHandlerCallback callback) const;
 
+  void NotifyDidFireSearchResultAdEvent(
+      const SearchResultAdInfo& ad,
+      mojom::SearchResultAdEventType event_type) const;
+  void NotifyFailedToFireSearchResultAdEvent(
+      const SearchResultAdInfo& ad,
+      mojom::SearchResultAdEventType event_type) const;
+
   raw_ptr<SearchResultAdEventHandlerDelegate> delegate_ = nullptr;
 
   base::WeakPtrFactory<SearchResultAdEventHandler> weak_factory_{this};

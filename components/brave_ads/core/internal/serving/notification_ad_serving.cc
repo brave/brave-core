@@ -111,10 +111,8 @@ void NotificationAdServing::GetForUserModelCallback(
     const bool had_opportunity,
     const CreativeNotificationAdList& creative_ads) {
   if (had_opportunity) {
-    if (delegate_) {
-      delegate_->OnOpportunityAroseToServeNotificationAd(
-          GetTopChildSegments(user_model));
-    }
+    NotifyOpportunityAroseToServeNotificationAd(
+        GetTopChildSegments(user_model));
   }
 
   if (creative_ads.empty()) {
@@ -180,19 +178,35 @@ void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {
   CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 
-  if (delegate_) {
-    delegate_->OnDidServeNotificationAd(ad);
-  }
+  NotifyDidServeNotificationAd(ad);
 }
 
 void NotificationAdServing::FailedToServeAd() {
   is_serving_ = false;
 
+  NotifyFailedToServeNotificationAd();
+
+  RetryServingAdAtNextInterval();
+}
+
+void NotificationAdServing::NotifyOpportunityAroseToServeNotificationAd(
+    const SegmentList& segments) const {
+  if (delegate_) {
+    delegate_->OnOpportunityAroseToServeNotificationAd(segments);
+  }
+}
+
+void NotificationAdServing::NotifyDidServeNotificationAd(
+    const NotificationAdInfo& ad) const {
+  if (delegate_) {
+    delegate_->OnDidServeNotificationAd(ad);
+  }
+}
+
+void NotificationAdServing::NotifyFailedToServeNotificationAd() const {
   if (delegate_) {
     delegate_->OnFailedToServeNotificationAd();
   }
-
-  RetryServingAdAtNextInterval();
 }
 
 void NotificationAdServing::OnNotifyPrefDidChange(const std::string& path) {

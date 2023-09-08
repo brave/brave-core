@@ -113,9 +113,7 @@ void RedeemPaymentTokens::SuccessfullyRedeemed(
 
   RemovePaymentTokens(payment_tokens);
 
-  if (delegate_) {
-    delegate_->OnDidRedeemPaymentTokens(payment_tokens);
-  }
+  NotifyDidRedeemPaymentTokens(payment_tokens);
 
   ScheduleNextRedemption();
 }
@@ -123,9 +121,7 @@ void RedeemPaymentTokens::SuccessfullyRedeemed(
 void RedeemPaymentTokens::FailedToRedeem(const bool should_retry) {
   BLOG(1, "Failed to redeem payment tokens");
 
-  if (delegate_) {
-    delegate_->OnFailedToRedeemPaymentTokens();
-  }
+  NotifyFailedToRedeemPaymentTokens();
 
   if (should_retry) {
     Retry();
@@ -136,9 +132,7 @@ void RedeemPaymentTokens::ScheduleNextRedemption() {
   const base::Time redeem_at = ScheduleNextTokenRedemptionAt();
   SetNextTokenRedemptionAt(redeem_at);
 
-  if (delegate_) {
-    delegate_->OnDidScheduleNextPaymentTokenRedemption(redeem_at);
-  }
+  NotifyDidScheduleNextPaymentTokenRedemption(redeem_at);
 
   MaybeRedeemAfterDelay(wallet_);
 }
@@ -151,25 +145,54 @@ void RedeemPaymentTokens::Retry() {
 
   BLOG(1, "Retry redeeming payment tokens " << FriendlyDateAndTime(retry_at));
 
-  if (delegate_) {
-    delegate_->OnWillRetryRedeemingPaymentTokens(retry_at);
-  }
+  NotifyWillRetryRedeemingPaymentTokens(retry_at);
 }
 
 void RedeemPaymentTokens::RetryCallback() {
   BLOG(1, "Retry redeeming payment tokens");
 
-  if (delegate_) {
-    delegate_->OnDidRetryRedeemingPaymentTokens();
-  }
-
   is_processing_ = false;
+
+  NotifyDidRetryRedeemingPaymentTokens();
 
   Redeem();
 }
 
 void RedeemPaymentTokens::StopRetrying() {
   retry_timer_.Stop();
+}
+
+void RedeemPaymentTokens::NotifyDidRedeemPaymentTokens(
+    const PaymentTokenList& payment_tokens) const {
+  if (delegate_) {
+    delegate_->OnDidRedeemPaymentTokens(payment_tokens);
+  }
+}
+
+void RedeemPaymentTokens::NotifyFailedToRedeemPaymentTokens() const {
+  if (delegate_) {
+    delegate_->OnFailedToRedeemPaymentTokens();
+  }
+}
+
+void RedeemPaymentTokens::NotifyDidScheduleNextPaymentTokenRedemption(
+    const base::Time redeem_at) const {
+  if (delegate_) {
+    delegate_->OnDidScheduleNextPaymentTokenRedemption(redeem_at);
+  }
+}
+
+void RedeemPaymentTokens::NotifyWillRetryRedeemingPaymentTokens(
+    const base::Time retry_at) const {
+  if (delegate_) {
+    delegate_->OnWillRetryRedeemingPaymentTokens(retry_at);
+  }
+}
+
+void RedeemPaymentTokens::NotifyDidRetryRedeemingPaymentTokens() const {
+  if (delegate_) {
+    delegate_->OnDidRetryRedeemingPaymentTokens();
+  }
 }
 
 }  // namespace brave_ads
