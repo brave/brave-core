@@ -130,6 +130,7 @@ describe('Transaction Parsing utils', () => {
             ethTxData: {} as any,
             filTxData: undefined,
             solanaTxData: undefined,
+            btcTxData: undefined,
             ethTxData1559: {
               ...mockTransactionInfo.txDataUnion.ethTxData1559,
               baseData: {
@@ -167,6 +168,7 @@ describe('Transaction Parsing utils', () => {
             ethTxData: {} as any,
             filTxData: undefined,
             solanaTxData: undefined,
+            btcTxData: undefined,
             ethTxData1559: {
               ...mockTransactionInfo.txDataUnion.ethTxData1559,
               baseData: {
@@ -254,6 +256,7 @@ describe('Transaction Parsing utils', () => {
             ethTxData: {} as any,
             filTxData: undefined,
             solanaTxData: undefined,
+            btcTxData: undefined,
             ethTxData1559: {
               ...mockTransactionInfo.txDataUnion.ethTxData1559,
               baseData: {
@@ -286,6 +289,7 @@ describe('Transaction Parsing utils', () => {
             ethTxData: {} as any,
             filTxData: undefined,
             solanaTxData: undefined,
+            btcTxData: undefined,
             ethTxData1559: {
               ...mockTransactionInfo.txDataUnion.ethTxData1559,
               baseData: {
@@ -338,6 +342,7 @@ describe('Transaction Parsing utils', () => {
               ethTxData: {} as any,
               filTxData: undefined,
               solanaTxData: undefined,
+              btcTxData: undefined,
               ethTxData1559: {
                 ...baseMockTransactionInfo.txDataUnion.ethTxData1559,
                 baseData: {
@@ -357,6 +362,7 @@ describe('Transaction Parsing utils', () => {
               ethTxData: {} as any,
               filTxData: undefined,
               solanaTxData: undefined,
+              btcTxData: undefined,
               ethTxData1559: {
                 ...baseMockTransactionInfo.txDataUnion.ethTxData1559,
                 baseData: {
@@ -378,6 +384,7 @@ describe('Transaction Parsing utils', () => {
               ethTxData: {} as any,
               filTxData: undefined,
               solanaTxData: undefined,
+              btcTxData: undefined,
               ethTxData1559: {
                 ...baseMockTransactionInfo.txDataUnion.ethTxData1559,
                 baseData: {

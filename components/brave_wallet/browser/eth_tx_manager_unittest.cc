@@ -31,6 +31,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
@@ -269,6 +270,7 @@ class EthTxManagerUnitTest : public testing::Test {
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, keyring_service_.get(), GetPrefs(),
         temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
+    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
 
     keyring_service_->CreateWallet("testing123", base::DoNothing());
     base::RunLoop().RunUntilIdle();

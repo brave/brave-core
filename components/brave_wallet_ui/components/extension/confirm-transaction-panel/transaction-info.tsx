@@ -41,7 +41,7 @@ export const TransactionInfo = ({
     isSolanaTransaction,
     isFilecoinTransaction,
     transactionsNetwork,
-    sendOptions,
+    solanaSendOptions,
     hasFeeEstimatesError,
     isLoadingGasFee,
     gasFee,
@@ -251,34 +251,34 @@ export const TransactionInfo = ({
             {getLocale('braveWalletSwapInsufficientBalance')}
           </TransactionText>
         )}
-      {sendOptions && <Divider />}
-      {!!Number(sendOptions?.maxRetries?.maxRetries) && (
+      {solanaSendOptions && <Divider />}
+      {!!Number(solanaSendOptions?.maxRetries?.maxRetries) && (
         <>
           <TransactionTitle>
             {getLocale('braveWalletSolanaMaxRetries')}
           </TransactionTitle>
           <TransactionTypeText>
-            {Number(sendOptions?.maxRetries?.maxRetries)}
+            {Number(solanaSendOptions?.maxRetries?.maxRetries)}
           </TransactionTypeText>
         </>
       )}
-      {sendOptions?.preflightCommitment && (
+      {solanaSendOptions?.preflightCommitment && (
         <>
           <TransactionTitle>
             {getLocale('braveWalletSolanaPreflightCommitment')}
           </TransactionTitle>
           <TransactionTypeText>
-            {sendOptions.preflightCommitment}
+            {solanaSendOptions.preflightCommitment}
           </TransactionTypeText>
         </>
       )}
-      {sendOptions?.skipPreflight && (
+      {solanaSendOptions?.skipPreflight && (
         <>
           <TransactionTitle>
             {getLocale('braveWalletSolanaSkipPreflight')}
           </TransactionTitle>
           <TransactionTypeText>
-            {sendOptions.skipPreflight.skipPreflight.toString()}
+            {solanaSendOptions.skipPreflight.skipPreflight.toString()}
           </TransactionTypeText>
         </>
       )}

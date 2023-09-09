@@ -27,7 +27,7 @@ import {
   getTransactionFormattedSendCurrencyTotal,
   getTransactionGasFee,
   getTransactionStatusString,
-  isFilecoinTransaction,
+  isEthereumTransaction,
   isSolanaTransaction,
   getTransactionToAddress,
   getIsTxApprovalUnlimited,
@@ -127,7 +127,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   // partial tx parsing
   const {
-    isFilecoinTx,
+    isEthereumTx,
     isSolanaTx,
     recipient,
     approvalTarget,
@@ -136,7 +136,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     txCoinType,
   } = React.useMemo(() => {
     return {
-      isFilecoinTx: isFilecoinTransaction(transaction),
+      isEthereumTx: isEthereumTransaction(transaction),
       isSolanaTx: isSolanaTransaction(transaction),
       recipient: getTransactionToAddress(transaction),
       approvalTarget: getTransactionApprovalTargetAddress(transaction),
@@ -802,8 +802,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                 BraveWallet.TransactionStatus.Submitted,
                 BraveWallet.TransactionStatus.Approved
               ].includes(transaction.txStatus) &&
-                !isSolanaTx &&
-                !isFilecoinTx && (
+                isEthereumTx && (
                   <>
                     <TransactionPopupItem
                       onClick={onClickSpeedupTransaction}
@@ -817,8 +816,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                 )}
 
               {BraveWallet.TransactionStatus.Error === transaction.txStatus &&
-                !isSolanaTx &&
-                !isFilecoinTx && (
+                isEthereumTx && (
                   <TransactionPopupItem
                     onClick={onClickRetryTransaction}
                     text={getLocale('braveWalletTransactionRetry')}

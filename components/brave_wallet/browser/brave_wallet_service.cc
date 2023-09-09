@@ -1420,7 +1420,6 @@ base::Value::Dict BraveWalletService::GetDefaultBitcoinAssets() {
       asset.Set("coingecko_id", "btc");
     } else if (network_id == "testnet") {
       asset.Set("symbol", "tBTC");
-      asset.Set("coingecko_id", "btc");
     } else {
       NOTREACHED();
     }

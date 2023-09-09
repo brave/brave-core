@@ -8,18 +8,14 @@
 #include <memory>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
 
-// TOOD(apaymyshev): tests for this class
 namespace brave_wallet {
 
-BitcoinBlockTracker::BitcoinBlockTracker(
-    JsonRpcService* json_rpc_service,
-    BitcoinWalletService* bitcoin_wallet_service)
-    : BlockTracker(json_rpc_service),
-      bitcoin_wallet_service_(bitcoin_wallet_service) {}
+BitcoinBlockTracker::BitcoinBlockTracker(bitcoin_rpc::BitcoinRpc* bitcoin_rpc)
+    : bitcoin_rpc_(bitcoin_rpc) {}
 
 BitcoinBlockTracker::~BitcoinBlockTracker() = default;
 
@@ -36,9 +32,17 @@ void BitcoinBlockTracker::Start(const std::string& chain_id,
 }
 
 void BitcoinBlockTracker::GetBlockHeight(const std::string& chain_id) {
-  bitcoin_wallet_service_->bitcoin_rpc().GetChainHeight(
+  bitcoin_rpc_->GetChainHeight(
       chain_id, base::BindOnce(&BitcoinBlockTracker::OnGetBlockHeight,
                                weak_ptr_factory_.GetWeakPtr(), chain_id));
+}
+
+absl::optional<uint32_t> BitcoinBlockTracker::GetLatestHeight(
+    const std::string& chain_id) const {
+  if (!base::Contains(latest_height_map_, chain_id)) {
+    return absl::nullopt;
+  }
+  return latest_height_map_.at(chain_id);
 }
 
 void BitcoinBlockTracker::OnGetBlockHeight(
@@ -47,12 +51,13 @@ void BitcoinBlockTracker::OnGetBlockHeight(
   if (!latest_height.has_value()) {
     return;
   }
-  if (latest_height_ == latest_height) {
+  auto cur_latest_height = GetLatestHeight(chain_id);
+  if (cur_latest_height && cur_latest_height.value() == latest_height) {
     return;
   }
-  latest_height_ = latest_height.value();
+  latest_height_map_[chain_id] = latest_height.value();
   for (auto& observer : observers_) {
-    observer.OnLatestHeightUpdated(chain_id, latest_height_);
+    observer.OnLatestHeightUpdated(chain_id, latest_height.value());
   }
 }
 

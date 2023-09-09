@@ -2506,10 +2506,10 @@ KeyringService::GetBitcoinAddresses(const mojom::AccountId& account_id) {
 
   // TODO(apaymyshev): store used addresses indexes in prefs.
 
-  // TODO(apaymyshev): temporarily just return first 30 recieve and 20 change
+  // TODO(apaymyshev): temporarily just return first 5 recieve and 5 change
   // addresses.
   std::vector<std::pair<std::string, mojom::BitcoinKeyIdPtr>> addresses;
-  for (auto i = 0; i < 30; ++i) {
+  for (auto i = 0; i < 5; ++i) {
     auto key_id =
         mojom::BitcoinKeyId::New(account_id.bitcoin_account_index, 0, i);
     auto address = bitcoin_keyring->GetAddress(*key_id);
@@ -2518,7 +2518,7 @@ KeyringService::GetBitcoinAddresses(const mojom::AccountId& account_id) {
     }
     addresses.emplace_back(*address, std::move(key_id));
   }
-  for (auto i = 0; i < 20; ++i) {
+  for (auto i = 0; i < 5; ++i) {
     auto key_id =
         mojom::BitcoinKeyId::New(account_id.bitcoin_account_index, 1, i);
     auto address = bitcoin_keyring->GetAddress(*key_id);

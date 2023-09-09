@@ -98,14 +98,12 @@ export const ConfirmTransactionPanel = () => {
   // custom hooks
   const {
     foundTokenInfoByContractAddress,
-    fromAccountName,
-    fromAddress,
+    fromAccount,
     fromOrb,
     isERC20Approve,
     isERC721SafeTransferFrom,
     isERC721TransferFrom,
-    isSolanaTransaction,
-    isFilecoinTransaction,
+    isEthereumTransaction,
     isAssociatedTokenAccountCreation,
     onEditAllowanceSave,
     toOrb,
@@ -158,7 +156,7 @@ export const ConfirmTransactionPanel = () => {
   }
 
   // render
-  if (!transactionDetails || !selectedPendingTransaction) {
+  if (!transactionDetails || !selectedPendingTransaction || !fromAccount) {
     return <StyledWrapper>
       <Skeleton width={'100%'} height={'100%'} enableAnimation />
     </StyledWrapper>
@@ -270,8 +268,8 @@ export const ConfirmTransactionPanel = () => {
             width={'unset'}
           >
             <Row maxWidth={isContract ? '70px' : 'unset'} width={'unset'}>
-              <Tooltip text={fromAddress} isAddress={true} position={'left'}>
-                <AccountNameText>{fromAccountName}</AccountNameText>
+              <Tooltip text={fromAccount.address} isAddress={true} position={'left'}>
+                <AccountNameText>{fromAccount.name}</AccountNameText>
               </Tooltip>
             </Row>
             <ArrowIcon />
@@ -355,7 +353,7 @@ export const ConfirmTransactionPanel = () => {
           onSubmit={onSelectTab('details')}
           text='Details'
         />
-        {!isSolanaTransaction && !isFilecoinTransaction && (
+        {isEthereumTransaction && (
           <AdvancedTransactionSettingsButton
             onSubmit={onToggleAdvancedTransactionSettings}
           />

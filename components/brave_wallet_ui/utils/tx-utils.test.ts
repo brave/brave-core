@@ -238,6 +238,7 @@ describe('check for insufficient funds errors', () => {
           ethTxData: {} as any,
           filTxData: undefined,
           solanaTxData: undefined,
+          btcTxData: undefined,
           ethTxData1559: {
             ...mockTxData,
             baseData: {
@@ -308,6 +309,7 @@ describe('check for insufficient funds errors', () => {
         ethTxData: {} as any,
         filTxData: undefined,
         solanaTxData: undefined,
+        btcTxData: undefined,
         ethTxData1559: {
           ...mockTransactionInfo.txDataUnion.ethTxData1559,
           baseData: {
@@ -421,6 +423,7 @@ describe('check for insufficient funds errors', () => {
           ethTxData: {} as any,
           filTxData: undefined,
           solanaTxData: undefined,
+          btcTxData: undefined,
           ethTxData1559: {
             ...mockTransactionInfo.txDataUnion.ethTxData1559,
             baseData: {
@@ -505,6 +508,7 @@ describe('check for insufficient funds errors', () => {
           ethTxData: {} as any,
           filTxData: undefined,
           solanaTxData: undefined,
+          btcTxData: undefined,
           ethTxData1559: {
             ...mockTransactionInfo.txDataUnion.ethTxData1559,
             baseData: {
@@ -579,6 +583,7 @@ describe('toTxDataUnion', () => {
     expect(union.ethTxData).toBe(undefined)
     expect(union.ethTxData1559).toBe(undefined)
     expect(union.solanaTxData).toBe(undefined)
+    expect(union.btcTxData).toBe(undefined)
   })
 })
 

@@ -31,8 +31,8 @@ eth_abi::Bytes4 GetFunctionHashBytes4(const std::string& input);
 eth_abi::Bytes32 Namehash(const std::string& name);
 
 // sha256(sha256(input))
-std::array<uint8_t, crypto::kSHA256Length> DoubleSHA256Hash(
-    base::span<const uint8_t> input);
+using SHA256HashArray = std::array<uint8_t, crypto::kSHA256Length>;
+SHA256HashArray DoubleSHA256Hash(base::span<const uint8_t> input);
 
 // ripemd160(sha256(input))
 std::vector<uint8_t> Hash160(base::span<const uint8_t> input);

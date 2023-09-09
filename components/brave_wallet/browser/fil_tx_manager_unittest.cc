@@ -87,6 +87,7 @@ class FilTxManagerUnitTest : public testing::Test {
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, keyring_service_.get(), &prefs_,
         temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
+    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
 
     keyring_service_->CreateWallet(kMnemonicDivideCruise, "brave",
                                    base::DoNothing());

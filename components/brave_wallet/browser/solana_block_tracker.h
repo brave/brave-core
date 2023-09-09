@@ -63,6 +63,7 @@ class SolanaBlockTracker : public BlockTracker {
   std::map<std::string, base::Time> latest_blockhash_expired_time_map_;
   base::ObserverList<Observer> observers_;
 
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   base::WeakPtrFactory<SolanaBlockTracker> weak_ptr_factory_;
 };
 

@@ -83,7 +83,8 @@ describe('getCoinFromTxDataUnion', () => {
       filTxData: {} as BraveWallet.FilTxData,
       ethTxData: undefined,
       ethTxData1559: undefined,
-      solanaTxData: undefined
+      solanaTxData: undefined,
+      btcTxData: undefined
     })).toEqual(BraveWallet.CoinType.FIL)
   })
   it('Ethereum transaction', () => {
@@ -91,7 +92,8 @@ describe('getCoinFromTxDataUnion', () => {
       filTxData: undefined,
       ethTxData: {} as BraveWallet.TxData,
       ethTxData1559: undefined,
-      solanaTxData: undefined
+      solanaTxData: undefined,
+      btcTxData: undefined
     })).toEqual(BraveWallet.CoinType.ETH)
   })
   it('Ethereum1559 transaction', () => {
@@ -99,7 +101,8 @@ describe('getCoinFromTxDataUnion', () => {
       filTxData: undefined,
       ethTxData: undefined,
       ethTxData1559: {} as BraveWallet.TxData1559,
-      solanaTxData: undefined
+      solanaTxData: undefined,
+      btcTxData: undefined
     })).toEqual(BraveWallet.CoinType.ETH)
   })
   it('Solana transaction', () => {
@@ -107,7 +110,17 @@ describe('getCoinFromTxDataUnion', () => {
       filTxData: undefined,
       ethTxData: undefined,
       ethTxData1559: undefined,
-      solanaTxData: {} as BraveWallet.SolanaTxData
+      solanaTxData: {} as BraveWallet.SolanaTxData,
+      btcTxData: undefined
     })).toEqual(BraveWallet.CoinType.SOL)
+  })
+  it('Bitcoin transaction', () => {
+    expect(getCoinFromTxDataUnion({
+      filTxData: undefined,
+      ethTxData: undefined,
+      ethTxData1559: undefined,
+      solanaTxData: undefined,
+      btcTxData: {} as BraveWallet.BtcTxData
+    })).toEqual(BraveWallet.CoinType.BTC)
   })
 })

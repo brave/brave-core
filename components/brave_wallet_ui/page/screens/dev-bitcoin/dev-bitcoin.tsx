@@ -15,14 +15,21 @@ import {
 
 const StyledWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   width: 100%;
   padding-top: 32px;
 `
 
-const AccountInfoSection = styled.div``
+const AccountInfoSection = styled.div`
+  margin: 10px;
+  padding: 5px;
+`
+const BalanceSection = styled.div`
+  margin: 10px;
+  padding: 5px;
+`
 
 const AddressesHeader = styled.h2`
   margin-bottom: 0;
@@ -68,7 +75,7 @@ interface CreateAccountSectionProps {
 
 const CreateAccountSection = (props: CreateAccountSectionProps) => {
   const createBtcAccount = async () => {
-    const {accountInfo} = await getAPIProxy().keyringService.addAccount(
+    const { accountInfo } = await getAPIProxy().keyringService.addAccount(
       BraveWallet.CoinType.BTC,
       BraveWallet.KeyringId.kBitcoin84Testnet,
       'BTC Account'
@@ -86,25 +93,156 @@ const CreateAccountSection = (props: CreateAccountSectionProps) => {
   )
 }
 
+interface GetBalanceSectionProps {
+  accountId: BraveWallet.AccountId
+}
+
+const GetBalanceSection = (props: GetBalanceSectionProps) => {
+  const [loading, setLoading] = useState<boolean>(true)
+  const [balance, setBalance] = useState<
+    BraveWallet.BitcoinBalance | undefined
+  >()
+
+  React.useEffect(() => {
+    fetchBalance()
+  }, [])
+
+  const fetchBalance = async () => {
+    setLoading(true)
+    const result = await getAPIProxy().bitcoinWalletService.getBalance(
+      defaultNetworkId,
+      props.accountId
+    )
+    setBalance(result.balance || undefined)
+    setLoading(false)
+  }
+
+  return (
+    <BalanceSection>
+      <h1>getBalance</h1>
+      {loading ? (
+        <LoadingSkeleton useLightTheme={true} width={300} height={100} />
+      ) : (
+        <>
+          <button onClick={fetchBalance}>Reload</button>
+          <h2>balance: {balance?.totalBalance.toString()}</h2>
+          <ul>
+            {balance?.balances &&
+              Object.entries(balance.balances as { [key: string]: BigInt }).map(
+                ([address, balance]) => {
+                  return (
+                    <li key={address}>
+                      <AddressLine>
+                        <Address>{address}</Address>
+                        <Balance>{balance.toString()}</Balance>
+                      </AddressLine>
+                    </li>
+                  )
+                }
+              )}
+          </ul>
+        </>
+      )}
+    </BalanceSection>
+  )
+}
+
+interface GetBitcoinAccountInfoSectionProps {
+  accountId: BraveWallet.AccountId
+}
+
+const GetBitcoinAccountInfoSection = (
+  props: GetBitcoinAccountInfoSectionProps
+) => {
+  const [loading, setLoading] = useState<boolean>(true)
+  const [accountInfo, setAccountInfo] = useState<
+    BraveWallet.BitcoinAccountInfo | undefined
+  >()
+
+  const fetchAccountInfo = async () => {
+    setLoading(true)
+
+    const accountInfo =
+      await getAPIProxy().bitcoinWalletService.getBitcoinAccountInfo(
+        defaultNetworkId,
+        props.accountId
+      )
+    setAccountInfo(accountInfo.accountInfo || undefined)
+    setLoading(false)
+  }
+
+  React.useEffect(() => {
+    fetchAccountInfo()
+  }, [])
+
+  return (
+    <AccountInfoSection>
+      <h1>getBitcoinAccountInfo</h1>
+      {loading ? (
+        <LoadingSkeleton useLightTheme={true} width={300} height={100} />
+      ) : (
+        <>
+          <button onClick={fetchAccountInfo}>Reload</button>
+          <h2>
+            {accountInfo?.name} balance: {accountInfo?.balance.toString()}
+          </h2>
+          <AddressesHeader>Receiving Addresses</AddressesHeader>
+          <ul>
+            {accountInfo?.addressInfos
+              .filter((a) => !a.keyId.change)
+              .map((a) => {
+                return (
+                  <li key={a.addressString}>
+                    <AddressLine>
+                      <Address>{a.addressString}</Address>
+                      <Balance>
+                        {a.utxoList !== null ? a.balance.toString() : 'N/A'}
+                      </Balance>
+                    </AddressLine>
+                  </li>
+                )
+              })}
+          </ul>
+          <AddressesHeader>Change Addresses</AddressesHeader>
+          <ul>
+            {accountInfo?.addressInfos
+              .filter((a) => a.keyId.change)
+              .map((a) => {
+                return (
+                  <li key={a.addressString}>
+                    <AddressLine>
+                      <Address>{a.addressString}</Address>
+                      <Balance>
+                        {a.utxoList !== null ? a.balance.toString() : 'N/A'}
+                      </Balance>
+                    </AddressLine>
+                  </li>
+                )
+              })}
+          </ul>
+        </>
+      )}
+    </AccountInfoSection>
+  )
+}
+
 interface AccountSectionProps {
   accountId: BraveWallet.AccountId
 }
 
 const AccountSection = (props: AccountSectionProps) => {
-  const [loading, setLoading] = useState<boolean>(true)
-
-  const [accountInfo, setAccountInfo] =
-    useState<BraveWallet.BitcoinAccountInfo | undefined>()
-
   const [sendToAddress, setSendToAddress] = useState<string>('')
 
   const [sendToAmount, setSendToAmount] = useState<number>(1000)
   const [sendToFee, setSendToFee] = useState<number>(300)
   const [sending, setSending] = useState<boolean>(false)
-  const [sendResult, setSendResult] = useState<{
-    txid: string
-    error: string
-  } | undefined>()
+  const [sendResult, setSendResult] = useState<
+    | {
+        txid: string
+        error: string
+      }
+    | undefined
+  >()
 
   const handlesendToAddressInputChanged = ({
     target: { value }
@@ -124,16 +262,6 @@ const AccountSection = (props: AccountSectionProps) => {
     setSendToFee(Number(value))
   }
 
-  const fetchAccountInfo = async () => {
-    const accountInfo =
-      await getAPIProxy().bitcoinWalletService.getBitcoinAccountInfo(
-        defaultNetworkId,
-        props.accountId
-      )
-    setAccountInfo(accountInfo.accountInfo || undefined)
-    setLoading(false)
-  }
-
   const doSend = async () => {
     setSendResult(undefined)
     setSending(false)
@@ -150,63 +278,20 @@ const AccountSection = (props: AccountSectionProps) => {
     setSendResult(result)
   }
 
-  React.useEffect(() => {
-    fetchAccountInfo()
-  }, [])
-
-  if (loading) {
-    return (
-      <StyledWrapper>
-        <LoadingSkeleton useLightTheme={true} width={300} height={500} />
-      </StyledWrapper>
-    )
-  }
-
   return (
     <StyledWrapper>
-      <AccountInfoSection>
-        <button onClick={fetchAccountInfo}>Reload</button>
-        <h2>
-          {accountInfo?.name} balance: {accountInfo?.balance.toString()}
-        </h2>
-        <AddressesHeader>Receiving Addresses</AddressesHeader>
-        <ul>
-          {accountInfo?.addressInfos
-            .filter((a) => !a.keyId.change)
-            .map((a) => {
-              return (
-                <li key={a.addressString}>
-                  <AddressLine>
-                    <Address>{a.addressString}</Address>
-                    <Balance>{a.balance.toString()}</Balance>
-                  </AddressLine>
-                </li>
-              )
-            })}
-        </ul>
-        <AddressesHeader>Change Addresses</AddressesHeader>
-        <ul>
-          {accountInfo?.addressInfos
-            .filter((a) => a.keyId.change)
-            .map((a) => {
-              return (
-                <li key={a.addressString}>
-                  <AddressLine>
-                    <Address>{a.addressString}</Address>
-                    <Balance>{a.balance.toString()}</Balance>
-                  </AddressLine>
-                </li>
-              )
-            })}
-        </ul>
-      </AccountInfoSection>
+      <GetBalanceSection accountId={props.accountId}></GetBalanceSection>
+      <GetBitcoinAccountInfoSection
+        accountId={props.accountId}
+      ></GetBitcoinAccountInfoSection>
+
       <SendToSection>
         <h2>Send to:</h2>
         <SendToLine>
           <label>Address:</label>
           <input
             style={{ width: '35em', marginLeft: '1em' }}
-            type="text"
+            type='text'
             value={sendToAddress}
             onChange={handlesendToAddressInputChanged}
           ></input>
@@ -215,7 +300,7 @@ const AccountSection = (props: AccountSectionProps) => {
           <label>Amount:</label>
           <input
             style={{ width: '35em', marginLeft: '1em' }}
-            type="number"
+            type='number'
             value={sendToAmount}
             onChange={handlesendToAmountInputChanged}
           ></input>
@@ -224,7 +309,7 @@ const AccountSection = (props: AccountSectionProps) => {
           <label>Fee:</label>
           <input
             style={{ width: '35em', marginLeft: '1em' }}
-            type="number"
+            type='number'
             value={sendToFee}
             onChange={handlesendToFeeInputChanged}
           ></input>
@@ -260,7 +345,7 @@ export const DevBitcoin = () => {
   return accountId ? (
     <AccountSection accountId={accountId} />
   ) : (
-    <CreateAccountSection setAccountId={setAccountId}/>
+    <CreateAccountSection setAccountId={setAccountId} />
   )
 }
 

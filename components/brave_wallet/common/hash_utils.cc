@@ -74,8 +74,7 @@ eth_abi::Bytes32 Namehash(const std::string& name) {
   return hash;
 }
 
-std::array<uint8_t, crypto::kSHA256Length> DoubleSHA256Hash(
-    base::span<const uint8_t> input) {
+SHA256HashArray DoubleSHA256Hash(base::span<const uint8_t> input) {
   return crypto::SHA256Hash(crypto::SHA256Hash(input));
 }
 
