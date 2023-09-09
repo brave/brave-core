@@ -540,109 +540,109 @@ const util = {
       }
     }
 
-    if (config.targetOS === 'android') {
+    // if (config.targetOS === 'android') {
 
-      let braveOverwrittenFiles = new Set();
-      const removeUnlistedAndroidResources = (braveOverwrittenFiles) => {
-        const suspectedDir = path.join(config.srcDir, 'chrome', 'android', 'java', 'res')
+    //   let braveOverwrittenFiles = new Set();
+    //   const removeUnlistedAndroidResources = (braveOverwrittenFiles) => {
+    //     const suspectedDir = path.join(config.srcDir, 'chrome', 'android', 'java', 'res')
 
-        let untrackedChromiumFiles = util.runGit(suspectedDir, ['ls-files', '--others', '--exclude-standard'], true).split('\n')
-        let untrackedChromiumPaths = [];
-        for (const untrackedChromiumFile of untrackedChromiumFiles) {
-          untrackedChromiumPath = path.join(suspectedDir, untrackedChromiumFile)
+    //     let untrackedChromiumFiles = util.runGit(suspectedDir, ['ls-files', '--others', '--exclude-standard'], true).split('\n')
+    //     let untrackedChromiumPaths = [];
+    //     for (const untrackedChromiumFile of untrackedChromiumFiles) {
+    //       untrackedChromiumPath = path.join(suspectedDir, untrackedChromiumFile)
 
-          if (!fs.statSync(untrackedChromiumPath).isDirectory()) {
-            untrackedChromiumPaths.push(untrackedChromiumPath);
-          }
-        }
+    //       if (!fs.statSync(untrackedChromiumPath).isDirectory()) {
+    //         untrackedChromiumPaths.push(untrackedChromiumPath);
+    //       }
+    //     }
 
-        const isChildOf = (child, parent) => {
-          const relative = path.relative(parent, child);
-          return relative && !relative.startsWith('..') && !path.isAbsolute(relative);
-        }
+    //     const isChildOf = (child, parent) => {
+    //       const relative = path.relative(parent, child);
+    //       return relative && !relative.startsWith('..') && !path.isAbsolute(relative);
+    //     }
 
-        for (const untrackedChromiumPath of untrackedChromiumPaths) {
-          if (isChildOf(untrackedChromiumPath, suspectedDir) && !braveOverwrittenFiles.has(untrackedChromiumPath)) {
-            fs.removeSync(untrackedChromiumPath);
-            console.log(`Deleted not listed file: ${untrackedChromiumPath}`);
-          }
-        }
-      }
+    //     for (const untrackedChromiumPath of untrackedChromiumPaths) {
+    //       if (isChildOf(untrackedChromiumPath, suspectedDir) && !braveOverwrittenFiles.has(untrackedChromiumPath)) {
+    //         fs.removeSync(untrackedChromiumPath);
+    //         console.log(`Deleted not listed file: ${untrackedChromiumPath}`);
+    //       }
+    //     }
+    //   }
 
-      let androidIconSet = ''
-      if (config.channel === 'development') {
-        androidIconSet = 'res_brave_default'
-      }
-      else if (config.channel === '') {
-        androidIconSet = 'res_brave'
-      } else if (config.channel === 'beta') {
-        androidIconSet = 'res_brave_beta'
-      } else if (config.channel === 'dev') {
-        androidIconSet = 'res_brave_dev'
-      } else if (config.channel === 'nightly') {
-        androidIconSet = 'res_brave_nightly'
-      }
+    //   let androidIconSet = ''
+    //   if (config.channel === 'development') {
+    //     androidIconSet = 'res_brave_default'
+    //   }
+    //   else if (config.channel === '') {
+    //     androidIconSet = 'res_brave'
+    //   } else if (config.channel === 'beta') {
+    //     androidIconSet = 'res_brave_beta'
+    //   } else if (config.channel === 'dev') {
+    //     androidIconSet = 'res_brave_dev'
+    //   } else if (config.channel === 'nightly') {
+    //     androidIconSet = 'res_brave_nightly'
+    //   }
 
-      const androidTranslateResSource = path.join(config.braveCoreDir, 'components', 'translate','content' , 'android', 'java', 'res')
-      const androidTranslateResDest = path.join(config.srcDir, 'components', 'translate','content' , 'android', 'java', 'res')
-      const androidIconSource = path.join(braveAppDir, 'theme', 'brave', 'android', androidIconSet)
-      const androidIconDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_chromium')
-      const androidIconBaseSource = path.join(braveAppDir, 'theme', 'brave', 'android', androidIconSet + '_base')
-      const androidIconBaseDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_chromium_base')
-      const androidResSource = path.join(config.braveCoreDir, 'android', 'java', 'res')
-      const androidResDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res')
-      const androidResTemplateSource = path.join(config.braveCoreDir, 'android', 'java', 'res_template')
-      const androidResTemplateDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_template')
-      const androidContentPublicResSource = path.join(config.braveCoreDir, 'content', 'public', 'android', 'java', 'res')
-      const androidContentPublicResDest = path.join(config.srcDir, 'content', 'public', 'android', 'java', 'res')
-      const androidTouchtoFillResSource = path.join(config.braveCoreDir, 'browser', 'touch_to_fill', 'android', 'internal', 'java', 'res')
-      const androidTouchtoFillResDest = path.join(config.srcDir, 'chrome', 'browser', 'touch_to_fill', 'android', 'internal', 'java', 'res')
-      const androidToolbarResSource = path.join(config.braveCoreDir, 'browser', 'ui', 'android', 'toolbar', 'java', 'res')
-      const androidToolbarResDest = path.join(config.srcDir, 'chrome', 'browser', 'ui', 'android', 'toolbar', 'java', 'res')
-      const androidComponentsWidgetResSource = path.join(config.braveCoreDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
-      const androidComponentsWidgetResDest = path.join(config.srcDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
-      const androidComponentsStylesResSource = path.join(config.braveCoreDir, 'components', 'browser_ui', 'styles', 'android', 'java', 'res')
-      const androidComponentsStylesResDest = path.join(config.srcDir, 'components', 'browser_ui', 'styles', 'android', 'java', 'res')
-      const androidSafeBrowsingResSource = path.join(config.braveCoreDir, 'browser', 'safe_browsing', 'android', 'java', 'res')
-      const androidSafeBrowsingResDest = path.join(config.srcDir, 'chrome', 'browser', 'safe_browsing', 'android', 'java', 'res')
+    //   const androidTranslateResSource = path.join(config.braveCoreDir, 'components', 'translate','content' , 'android', 'java', 'res')
+    //   const androidTranslateResDest = path.join(config.srcDir, 'components', 'translate','content' , 'android', 'java', 'res')
+    //   const androidIconSource = path.join(braveAppDir, 'theme', 'brave', 'android', androidIconSet)
+    //   const androidIconDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_chromium')
+    //   const androidIconBaseSource = path.join(braveAppDir, 'theme', 'brave', 'android', androidIconSet + '_base')
+    //   const androidIconBaseDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_chromium_base')
+    //   const androidResSource = path.join(config.braveCoreDir, 'android', 'java', 'res')
+    //   const androidResDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res')
+    //   const androidResTemplateSource = path.join(config.braveCoreDir, 'android', 'java', 'res_template')
+    //   const androidResTemplateDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_template')
+    //   const androidContentPublicResSource = path.join(config.braveCoreDir, 'content', 'public', 'android', 'java', 'res')
+    //   const androidContentPublicResDest = path.join(config.srcDir, 'content', 'public', 'android', 'java', 'res')
+    //   const androidTouchtoFillResSource = path.join(config.braveCoreDir, 'browser', 'touch_to_fill', 'android', 'internal', 'java', 'res')
+    //   const androidTouchtoFillResDest = path.join(config.srcDir, 'chrome', 'browser', 'touch_to_fill', 'android', 'internal', 'java', 'res')
+    //   const androidToolbarResSource = path.join(config.braveCoreDir, 'browser', 'ui', 'android', 'toolbar', 'java', 'res')
+    //   const androidToolbarResDest = path.join(config.srcDir, 'chrome', 'browser', 'ui', 'android', 'toolbar', 'java', 'res')
+    //   const androidComponentsWidgetResSource = path.join(config.braveCoreDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
+    //   const androidComponentsWidgetResDest = path.join(config.srcDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
+    //   const androidComponentsStylesResSource = path.join(config.braveCoreDir, 'components', 'browser_ui', 'styles', 'android', 'java', 'res')
+    //   const androidComponentsStylesResDest = path.join(config.srcDir, 'components', 'browser_ui', 'styles', 'android', 'java', 'res')
+    //   const androidSafeBrowsingResSource = path.join(config.braveCoreDir, 'browser', 'safe_browsing', 'android', 'java', 'res')
+    //   const androidSafeBrowsingResDest = path.join(config.srcDir, 'chrome', 'browser', 'safe_browsing', 'android', 'java', 'res')
 
-      // Mapping for copying Brave's Android resource into chromium folder.
-      const copyAndroidResourceMapping = {
-        [androidTranslateResSource]: [androidTranslateResDest],
-        [androidIconSource]: [androidIconDest],
-        [androidIconBaseSource]: [androidIconBaseDest],
-        [androidResSource]: [androidResDest],
-        [androidResTemplateSource]: [androidResTemplateDest],
-        [androidContentPublicResSource]: [androidContentPublicResDest],
-        [androidTouchtoFillResSource]: [androidTouchtoFillResDest],
-        [androidToolbarResSource]: [androidToolbarResDest],
-        [androidComponentsWidgetResSource]: [androidComponentsWidgetResDest],
-        [androidComponentsStylesResSource]: [androidComponentsStylesResDest],
-        [androidSafeBrowsingResSource]: [androidSafeBrowsingResDest]
-      }
+    //   // Mapping for copying Brave's Android resource into chromium folder.
+    //   const copyAndroidResourceMapping = {
+    //     [androidTranslateResSource]: [androidTranslateResDest],
+    //     [androidIconSource]: [androidIconDest],
+    //     [androidIconBaseSource]: [androidIconBaseDest],
+    //     [androidResSource]: [androidResDest],
+    //     [androidResTemplateSource]: [androidResTemplateDest],
+    //     [androidContentPublicResSource]: [androidContentPublicResDest],
+    //     [androidTouchtoFillResSource]: [androidTouchtoFillResDest],
+    //     [androidToolbarResSource]: [androidToolbarResDest],
+    //     [androidComponentsWidgetResSource]: [androidComponentsWidgetResDest],
+    //     [androidComponentsStylesResSource]: [androidComponentsStylesResDest],
+    //     [androidSafeBrowsingResSource]: [androidSafeBrowsingResDest]
+    //   }
 
-      console.log('copy Android app icons and app resources')
-      Object.entries(copyAndroidResourceMapping).map(([sourcePath, destPaths]) => {
-        let androidSourceFiles = []
-        if (fs.statSync(sourcePath).isDirectory()) {
-          androidSourceFiles = util.walkSync(sourcePath)
-        } else {
-          androidSourceFiles = [sourcePath]
-        }
+    //   console.log('copy Android app icons and app resources')
+    //   Object.entries(copyAndroidResourceMapping).map(([sourcePath, destPaths]) => {
+    //     let androidSourceFiles = []
+    //     if (fs.statSync(sourcePath).isDirectory()) {
+    //       androidSourceFiles = util.walkSync(sourcePath)
+    //     } else {
+    //       androidSourceFiles = [sourcePath]
+    //     }
 
-        for (const destPath of destPaths) {
-          for (const androidSourceFile of androidSourceFiles) {
-            let destinationFile = path.join(destPath, path.relative(sourcePath, androidSourceFile))
-            if (!fs.existsSync(destinationFile) || util.calculateFileChecksum(androidSourceFile) != util.calculateFileChecksum(destinationFile)) {
-              fs.copySync(androidSourceFile, destinationFile)
-            }
-            braveOverwrittenFiles.add(destinationFile);
-          }
-        }
-      })
-      removeUnlistedAndroidResources(braveOverwrittenFiles)
-    }
-    Log.progressFinish('update branding')
+    //     for (const destPath of destPaths) {
+    //       for (const androidSourceFile of androidSourceFiles) {
+    //         let destinationFile = path.join(destPath, path.relative(sourcePath, androidSourceFile))
+    //         if (!fs.existsSync(destinationFile) || util.calculateFileChecksum(androidSourceFile) != util.calculateFileChecksum(destinationFile)) {
+    //           fs.copySync(androidSourceFile, destinationFile)
+    //         }
+    //         braveOverwrittenFiles.add(destinationFile);
+    //       }
+    //     }
+    //   })
+    //   removeUnlistedAndroidResources(braveOverwrittenFiles)
+    // }
+    Log.progressFinish('update branding for whitelabel')
   },
 
   touchOverriddenChromiumSrcFiles: () => {
