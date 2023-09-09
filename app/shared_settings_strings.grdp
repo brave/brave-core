@@ -220,23 +220,23 @@
     Make searches and browsing better
   </message>
   <message name="IDS_SETTINGS_ENABLE_URL_KEYED_ANONYMIZED_DATA_COLLECTION_DESC" desc="The description of the checkbox to enable/disable url keyed anonymized data collection.">
-    Sends URLs of pages you visit to Brave
+    Sends URLs of pages you visit to Ping
   </message>
   <message name="IDS_SETTINGS_SPELLING_PREF" desc="The documentation string of the 'Use Spelling' preference">
     Enhanced spell check
   </message>
-  <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF" desc="The label of the checkbox to enable/disable crash and user metrics logging. This string does not need a Brave counter-part because it will only be visible if Brave-branded.">
-    Help improve Brave's features and performance
+  <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF" desc="The label of the checkbox to enable/disable crash and user metrics logging. This string does not need a Ping counter-part because it will only be visible if Ping-branded.">
+    Help improve Ping's features and performance
   </message>
   <if expr="is_fuchsia">
     <then>
       <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging">
-        Automatically sends usage statistics to Brave. You can turn crash reports on or off in your device's settings.
+        Automatically sends usage statistics to Ping. You can turn crash reports on or off in your device's settings.
       </message>
     </then>
     <else>
       <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging">
-        Automatically sends usage statistics and crash reports to Brave
+        Automatically sends usage statistics and crash reports to Ping
       </message>
     </else>
   </if>
@@ -244,7 +244,7 @@
     Show suggestions for similar pages when a page can't be found
   </message>
   <message name="IDS_SETTINGS_LINKDOCTOR_PREF_DESC" desc="The description of the 'Use Link Doctor' preference to help with navigation errors.">
-    Sends the web address of the page you're trying to reach to Brave
+    Sends the web address of the page you're trying to reach to Ping
   </message>
   <message name="IDS_SETTINGS_SUGGEST_PREF" desc="The label of the checkbox to enable/disable sending omnibox input to the user's default search engine to get additional suggestions.">
     Improve search suggestions
@@ -261,7 +261,7 @@
     Sync is paused
   </message>
   <message name="IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT" desc="The text displayed to prompt users to sign in to chrome.">
-    Get Brave smarts in Brave
+    Get Ping smarts in Ping
   </message>
   <message name="IDS_SETTINGS_PEOPLE_SYNC_TURN_OFF" desc="The label for the button that lets the user turn off profile syncing with their gaia account.">
     Turn off
@@ -289,7 +289,7 @@
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_CONFIRM" desc="The text to display on the button to confirm the user wishes to stop syncing.">
     Clear and Sign Out
   </message>
-  <message name="IDS_SETTINGS_PEOPLE_SIGN_OUT" desc="The label of the button that lets user sign-out of Brave.">
+  <message name="IDS_SETTINGS_PEOPLE_SIGN_OUT" desc="The label of the button that lets user sign-out of Ping.">
     Sign out
   </message>
   <!-- Sync Control Subpage (strings used by the <settings-sync-controls> element) -->
@@ -317,8 +317,8 @@
   <message name="IDS_SETTINGS_APPS_CHECKBOX_SUBLABEL" desc="Sublabel for the checkbox which enables or disables syncing apps between multiple browser instances.">
     Apps sync is set in system Settings
   </message>
-  <message name="IDS_SETTINGS_NON_PERSONALIZED_SERVICES_SECTION_LABEL" desc="Title for a section that shows options for various Brave services">
-    Other Brave services
+  <message name="IDS_SETTINGS_NON_PERSONALIZED_SERVICES_SECTION_LABEL" desc="Title for a section that shows options for various Ping services">
+    Other Ping services
   </message>
   <message name="IDS_SETTINGS_CUSTOMIZE_SYNC" desc="Label for the radio button to customize sync data types.">
     Customize sync
@@ -340,8 +340,8 @@
   <message name="IDS_SETTINGS_SUBMIT_PASSPHRASE" desc="Text for the button which, when clicked, submits a sync password for verification.">
     Submit
   </message>
-  <message name="IDS_SETTINGS_ENCRYPT_WITH_GOOGLE_CREDENTIALS_LABEL" desc="Label for the radio button which, when selected, causes synced settings to be encrypted with the Brave login for the current browser profile.">
-    Encrypt synced passwords with your Brave sync chain
+  <message name="IDS_SETTINGS_ENCRYPT_WITH_GOOGLE_CREDENTIALS_LABEL" desc="Label for the radio button which, when selected, causes synced settings to be encrypted with the Ping login for the current browser profile.">
+    Encrypt synced passwords with your Ping sync chain
   </message>
   <message name="IDS_SETTINGS_BOOKMARKS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing bookmarks between multiple browser instances.">
     Bookmarks
@@ -361,7 +361,7 @@
   <message name="IDS_SETTINGS_INCORRECT_PASSPHRASE_ERROR" desc="Message when the passphrase is incorrect.">
     The passphrase you entered is incorrect
   </message>
-  <message name="IDS_SETTINGS_NEW_MANAGE_SYNCED_DATA_TITLE_UNIFIED_CONSENT" desc="Title for the link to manage Brave Sync data via Brave Dashboard when unified consent is enabled.">
+  <message name="IDS_SETTINGS_NEW_MANAGE_SYNCED_DATA_TITLE_UNIFIED_CONSENT" desc="Title for the link to manage Ping Sync data via Ping Dashboard when unified consent is enabled.">
     Review your synced data
   </message>
   <message name="IDS_SETTINGS_NEW_SYNC_ADVANCED_DEVICE_PAGE_TITLE" desc="Name of the settings page which manages device data used by sync when lacros is enabled.">
@@ -370,14 +370,14 @@
   <message name="IDS_SETTINGS_NEW_SYNC_ADVANCED_BROWSER_PAGE_TITLE" desc="Name of the settings page which manages browser data used by sync when lacros is enabled.">
     Manage browser sync
   </message>
-  <message name="IDS_SETTINGS_NEW_MANAGE_SYNCED_DATA_SUBTITLE_UNIFIED_CONSENT" desc="Subtitle for the link to manage Brave Sync data via Brave Dashboard when unified consent is enabled.">
-    Across your apps and Brave browser
+  <message name="IDS_SETTINGS_NEW_MANAGE_SYNCED_DATA_SUBTITLE_UNIFIED_CONSENT" desc="Subtitle for the link to manage Ping Sync data via Ping Dashboard when unified consent is enabled.">
+    Across your apps and Ping browser
   </message>
-  <message name="IDS_SETTINGS_NEW_MANAGE_BROWSER_SYNCED_DATA_TITLE" desc="Title for the link to manage Brave Browser Sync data via browser settings.">
-    Manage Brave browser sync
+  <message name="IDS_SETTINGS_NEW_MANAGE_BROWSER_SYNCED_DATA_TITLE" desc="Title for the link to manage Ping Browser Sync data via browser settings.">
+    Manage Ping browser sync
   </message>
   <message name="IDS_SETTINGS_SYNC_SYNC_AND_NON_PERSONALIZED_SERVICES" desc="The name of the settings page and the label of the button that takes the user to manage their sync and non-personalized services settings.">
-    Sync and Brave services
+    Sync and Ping services
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_CONFIRMATION_PLACEHOLDER" desc="Placeholder for the confirm-passphrase field.">
     Confirm passphrase
@@ -403,20 +403,20 @@
     <if expr="chromeos_ash">
     <!-- TODO(crbug.com/1231500): Remove this string after Lacros side-by-side rollout stage. -->
     <message name="IDS_SYNC_SETTINGS_SIDE_BY_SIDE_WARNING_ASH" desc="The warning message that is shown when lacros side-by-side mode is enabled.">
-      Changes you make here apply only to Brave Browser. To make changes to your Lacros Brave Browser settings, open Lacros Brave Browser and go to settings.
+      Changes you make here apply only to Ping Browser. To make changes to your Lacros Ping Browser settings, open Lacros Ping Browser and go to settings.
     </message>
   </if>
 
   <if expr="chromeos_lacros">
     <!-- TODO(crbug.com/1231500): Remove this string after Lacros side-by-side rollout stage. -->
     <message name="IDS_SYNC_SETTINGS_SIDE_BY_SIDE_WARNING_LACROS" desc="The warning message that is shown when lacros side-by-side mode is enabled.">
-      Changes you make here apply only to Lacros Brave Browser. To make changes to your Brave Browser settings, open Brave Browser and go to settings.
+      Changes you make here apply only to Lacros Ping Browser. To make changes to your Ping Browser settings, open Ping Browser and go to settings.
     </message>
   </if>
 
   <if expr="is_chromeos">
     <message name="IDS_BROWSER_SETTINGS_SYNC_FEATURE_LABEL" desc="Label describing the browser sync feature.">
-      Your data will be synced across all Brave browsers where you have turned on sync for this account. For ChromeOS sync options, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>ChromeOS settings<ph name="LINK_END">&lt;/a&gt;</ph>.
+      Your data will be synced across all Ping browsers where you have turned on sync for this account. For ChromeOS sync options, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>ChromeOS settings<ph name="LINK_END">&lt;/a&gt;</ph>.
     </message>
   </if>
 

@@ -159,14 +159,14 @@
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
-      <!-- Brave Settings WebUI strings -->
+      <!-- Ping Settings WebUI strings -->
       <part file="brave_settings_strings.grdp" />
 
       <!--Add new items to the appropriate sections below -->
 
       <!-- App Menu -->
-      <message name="IDS_SHOW_BRAVE_REWARDS" desc="The show Brave Rewards menu in the app menu">
-        Brave Rewards
+      <message name="IDS_SHOW_BRAVE_REWARDS" desc="The show Ping Rewards menu in the app menu">
+        Ping Rewards
       </message>
       <message name="IDS_BOOKMAR_BAR_MENU_SHOW_ALWAYS" desc="The name of the context menu item to always show bookmark bar">
         Always
@@ -205,10 +205,10 @@
            Only on the new tab page
         </message>
       </if>
-      <message name="IDS_SHOW_BRAVE_SYNC" desc="The show brave sync menu in the app menu">
+      <message name="IDS_SHOW_BRAVE_SYNC" desc="The show ping sync menu in the app menu">
         Sync
       </message>
-      <message name="IDS_SHOW_BRAVE_WALLET" desc="The show Brave Wallet menu item (app menu)">
+      <message name="IDS_SHOW_BRAVE_WALLET" desc="The show Ping Wallet menu item (app menu)">
         Wallet
       </message>
       <message name="IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS" desc="The history sub-menu item to show sessions from other devices">
@@ -231,17 +231,17 @@
         </message>
       </if>
       <message name="IDS_WIDEVINE_INSTALL_MESSAGE" desc="Bubble info text when Widevine is not installed. 'Widevine' is the name of a plugin and should not be translated.">
-        Widevine is sometimes needed to play media on a webpage. It's a Google extension loaded from Google servers, which Brave cannot inspect. By installing, you'll agree to Google's terms of use.
+        Widevine is sometimes needed to play media on a webpage. It's a Google extension loaded from Google servers, which Ping cannot inspect. By installing, you'll agree to Google's terms of use.
       </message>
       <message name="IDS_WIDEVINE_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT" desc="Message shown on the bottom of the widevine permissions bubble.">
         <ph name="LEARN_MORE_ABOUT_WIDEVINE">$1<ex>Learn more about Widevine</ex></ph>.
-Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/extensions</ex></ph>.
+Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>ping://settings/extensions</ex></ph>.
       </message>
       <message name="IDS_WIDEVINE_PERMISSIONS_BUBBLE_LEARN_MORE" desc="Message shown on the bottom of the widevine permissions bubble.">
         Learn more about Widevine
       </message>
       <message name="IDS_PERMISSIONS_BUBBLE_SETTINGS_EXTENSIONS_LINK" desc="Settings extenions link in the widevine permission bubble footnote description." translateable="false">
-        brave://settings/extensions
+        ping://settings/extensions
       </message>
       <message name="IDS_BRAVE_PERMISSIONS_BUBBLE_PROMPT" desc="The label that is used to introduce permission request details to the user in a popup.">
         <ph name="SITE_NAME">$1<ex>google.com</ex></ph> is asking you to
@@ -259,8 +259,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
 
       <!-- Extensions -->
-      <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Brave. Asks the user if they want to install a particular extension or app.">
-        Brave does not review extensions for security and safety. Install this extension only if you trust the developer.
+      <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Ping. Asks the user if they want to install a particular extension or app.">
+        Ping does not review extensions for security and safety. Install this extension only if you trust the developer.
       </message>
 
       <!-- Permissions -->
@@ -313,23 +313,23 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
 
       <!-- Sync Infobars -->
-      <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
-        Brave Sync has been upgraded and requires setup
+      <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Ping Sync and need to perform setup again for the new version.">
+        Ping Sync has been upgraded and requires setup
       </message>
-      <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND" desc="Command text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
+      <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND" desc="Command text shown to users who used a previous version of Ping Sync and need to perform setup again for the new version.">
         Begin Setup
       </message>
       <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_MESSAGE" desc="Message text shown to users who's Sync account was deleted. Is used along with IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_LINK_TEXT">
-        This Brave Sync account was deleted from another device. If you didn’t mean to disable Sync,<ph name="LINK_TEXT">$1<ex>re-create the account</ex></ph>
+        This Ping Sync account was deleted from another device. If you didn’t mean to disable Sync,<ph name="LINK_TEXT">$1<ex>re-create the account</ex></ph>
       </message>
       <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_LINK_TEXT" desc="Link text shown to users who's Sync account was deleted. When user clicks the link, Sync Setup page is opened. Is used along with IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_MESSAGE">
-        <ph name="INFOBAR_TEXT">$1<ex>This Brave Sync account was deleted from another device. If you didn’t mean to disable Sync,</ex></ph>re-create the account
+        <ph name="INFOBAR_TEXT">$1<ex>This Ping Sync account was deleted from another device. If you didn’t mean to disable Sync,</ex></ph>re-create the account
       </message>
       <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_BUTTON" desc="Button text shown to users who's Sync account was disabled. This button prevents further show of the infobar.">
         OK
       </message>
       <message name="IDS_BRAVE_SYNC_CANNOT_RUN_INFOBAR_MESSAGE" desc="Message text shown to users when Sync service cannot run and additional attention is required">
-        Sync service could not be started, Brave Sync is not running
+        Sync service could not be started, Ping Sync is not running
       </message>
       <message name="IDS_BRAVE_SYNC_CANNOT_RUN_INFOBAR_DONT_SHOW_BUTTON" desc="Button text on Sync is not running informer. This button makes the informer fo not appear again">
         Don't show again
@@ -395,7 +395,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Open Link in Private Window with Tor
         </message>
         <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="Title case: The name of the open a link in private window with Tor command">
-          Open Link in Brave Private Window with Tor
+          Open Link in Ping Private Window with Tor
         </message>
         <message name="IDS_APP_MENU_IPFS_SHARE_LOCAL_FILE" desc="Title case: The text label of a menu item to share local file using IPFS.">
           Import and Share a File
@@ -439,7 +439,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Open link in private window with Tor
         </message>
         <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="The name of the open a link in private window with Tor command">
-          Open link in Brave private window with Tor
+          Open link in Ping private window with Tor
         </message>
         <message name="IDS_APP_MENU_IPFS_SHARE_LOCAL_FOLDER" desc="The text label of a menu item to share local folder using IPFS.">
           Import and share a directory
@@ -462,27 +462,27 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if>
 
-      <!-- Brave Rewards Extension -->
+      <!-- Ping Rewards Extension -->
       <if expr="use_titlecase">
-        <message name="IDS_HIDE_BRAVE_REWARDS_ACTION_ICON" desc="The menu item to hide the Brave Rewards icon on the location bar">
-          Hide Brave Rewards Icon
+        <message name="IDS_HIDE_BRAVE_REWARDS_ACTION_ICON" desc="The menu item to hide the Ping Rewards icon on the location bar">
+          Hide Ping Rewards Icon
         </message>
       </if>
       <if expr="not use_titlecase">
-        <message name="IDS_HIDE_BRAVE_REWARDS_ACTION_ICON" desc="The menu item to hide the Brave Rewards icon on the location bar">
-          Hide Brave Rewards icon
+        <message name="IDS_HIDE_BRAVE_REWARDS_ACTION_ICON" desc="The menu item to hide the Ping Rewards icon on the location bar">
+          Hide Ping Rewards icon
         </message>
       </if>
 
-      <!-- Brave Wallet Extension -->
+      <!-- Ping Wallet Extension -->
       <if expr="use_titlecase">
-        <message name="IDS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for hiding the Brave Wallet icon on the toolbar">
-          Hide Brave Wallet Icon
+        <message name="IDS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for hiding the Ping Wallet icon on the toolbar">
+          Hide Ping Wallet Icon
         </message>
       </if>
       <if expr="not use_titlecase">
-        <message name="IDS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for hiding the Brave Wallet icon on the toolbar">
-          Hide Brave Wallet icon
+        <message name="IDS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for hiding the Ping Wallet icon on the toolbar">
+          Hide Ping Wallet icon
         </message>
       </if>
 
@@ -494,8 +494,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_EXTENSIONS_BRAVE_ITEM_CHROME_WEB_STORE" desc="Label for button to visit the Web Extensions Store.">
         View in Web Extensions Store
       </message>
-      <message name="IDS_EXTENSIONS_BRAVE_PRIVATE_WARNING" desc="Warns the user that Brave cannot prevent extensions from recording history in private mode and Tor mode">
-        Warning: Brave cannot prevent extensions from recording your browsing history.
+      <message name="IDS_EXTENSIONS_BRAVE_PRIVATE_WARNING" desc="Warns the user that Ping cannot prevent extensions from recording history in private mode and Tor mode">
+        Warning: Ping cannot prevent extensions from recording your browsing history.
       </message>
       <message name="IDS_EXTENSIONS_BRAVE_SPANNING_WARNING" desc="Warns the user that extension will make network connection not through Tor when it is in spanning mode">
         If this extension makes network requests, they will not use Tor or private mode.
@@ -506,24 +506,24 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
 
       <!-- App shortcuts -->
       <if expr="not is_win">
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_NIGHTLY" desc="Name for the Brave Apps Start Menu folder name.">
-          Brave Browser Nightly Apps
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_NIGHTLY" desc="Name for the Ping Apps Start Menu folder name.">
+          Ping Browser Nightly Apps
         </message>
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_BETA" desc="Name for the Brave Apps Start Menu folder name.">
-          Brave Browser Beta Apps
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_BETA" desc="Name for the Ping Apps Start Menu folder name.">
+          Ping Browser Beta Apps
         </message>
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_DEV" desc="Name for the Brave Apps Start Menu folder name.">
-          Brave Browser Dev Apps
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_DEV" desc="Name for the Ping Apps Start Menu folder name.">
+          Ping Browser Dev Apps
         </message>
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_STABLE" desc="Name for the Brave Apps Start Menu folder name.">
-          Brave Browser Apps
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_STABLE" desc="Name for the Ping Apps Start Menu folder name.">
+          Ping Browser Apps
         </message>
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_DEVELOPMENT" desc="Name for the Brave Apps Start Menu folder name.">
-          Brave Browser Development Apps
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_DEVELOPMENT" desc="Name for the Ping Apps Start Menu folder name.">
+          Ping Browser Development Apps
         </message>
       </if>
 
-      <!-- Brave crash report permission ask dialog -->
+      <!-- Ping crash report permission ask dialog -->
       <if expr="not is_android">
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_OK_BUTTON_LABEL" desc="The text for ok button">
           Allow
@@ -535,13 +535,13 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Don't ask again
         </message>
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_CONTENT_TEXT" desc="The contents for crash report ask dialog">
-          Help improve Brave's product stability by automatically sending diagnostic reports when the Brave Browser crashes or freezes.
+          Help improve Ping's product stability by automatically sending diagnostic reports when the Ping Browser crashes or freezes.
         </message>
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_HEADER_TEXT" desc="The header text for crash report ask dialog">
-          <ph name="BROWSER_NAME">$1<ex>Brave Browser</ex></ph> quit unexpectedly.
+          <ph name="BROWSER_NAME">$1<ex>Ping Browser</ex></ph> quit unexpectedly.
         </message>
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_HEADER_TEXT_BROWSER_NAME_PART" desc="This is used for replacing BROWSER_NAME from above HEADER_TEXT.">
-          Brave Browser
+          Ping Browser
         </message>
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT" desc="The footnote text for crash report ask dialog.">
           You can change <ph name="SETTING_TEXT">$1<ex>this</ex></ph> at any time in browser settings.
@@ -568,12 +568,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_DONT_ASK_AGAIN_LABEL" desc="The text for checkbox in the dialog">
           Don't ask me again
         </message>
-        <!-- Brave search conversion promotion -->
+        <!-- Ping search conversion promotion -->
         <message name="IDS_BRAVE_SEARCH_CONVERSION_INPUT_APPEND_LABEL" desc="The text that appended to the input query in button type match">
-          - Brave Search
+          - Ping Search
         </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL" desc="The text for detailed description about brave search in promotion match">
-          Support independent search with better privacy. Brave search doesn't track you, your queries, or your clicks.
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL" desc="The text for detailed description about ping search in promotion match">
+          Support independent search with better privacy. Ping search doesn't track you, your queries, or your clicks.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL_FIRST_PART" desc="The text for finding the first sentence from above. Both should have the same translation.">
           Support independent search with better privacy.
@@ -582,19 +582,19 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Time to ditch big tech.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_DESC" desc="The text for the banner type description">
-          Brave doesn't track you, your queries, or your clicks. And it's 100% independent of Big Tech.
+          Ping doesn't track you, your queries, or your clicks. And it's 100% independent of Big Tech.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_TITLE" desc="The text for the banner type title">
-          Don't Google it. Can't Bing it. Just Brave it.
+          Don't Google it. Can't Bing it. Just Ping it.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_DESC" desc="The text for the banner type description">
-          Brave doesn't track you, your queries, or your clicks. And it's 100% independent.
+          Ping doesn't track you, your queries, or your clicks. And it's 100% independent.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_TITLE" desc="The text for the banner type title">
           Search and you will find. Privately.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_DESC" desc="The text for the banner type description">
-          Brave doesn't track you, your queries, or your clicks. And it's 100% independent of Big Tech.
+          Ping doesn't track you, your queries, or your clicks. And it's 100% independent of Big Tech.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_TITLE" desc="The text for the banner type title">
           AI-infused search with a unique index.
@@ -603,7 +603,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Fully private, 100% independent, and with great AI features.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL" desc="The text for the try button in the promotion match">
-          Try Brave Search
+          Try Ping Search
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_CLOSE_BUTTON_TOOLTIP" desc="The tooltip text for the dismiss button in a promotion match">
           Dismiss
@@ -615,14 +615,14 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Maybe later
         </message>
         <message name="IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON" desc="Announcement when the dismiss button is focused.">
-          Dismiss Brave search conversion, press Enter to remove this suggestion
+          Dismiss Ping search conversion, press Enter to remove this suggestion
         </message>
         <!-- web Discovery InfoBar -->
         <message name="IDS_WEB_DISCOVERY_INFOBAR_MESSAGE" desc="The text for web discovery infobar message">
-          Help improve <ph name="SEARCH_NAME">$1<ex>Brave Search</ex></ph> by sending anonymous usage data.  <ph name="MORE_INFO">$2<ex>More info</ex></ph>
+          Help improve <ph name="SEARCH_NAME">$1<ex>Ping Search</ex></ph> by sending anonymous usage data.  <ph name="MORE_INFO">$2<ex>More info</ex></ph>
         </message>
-        <message name="IDS_WEB_DISCOVERY_INFOBAR_MESSAGE_BRAVE_SEARCH" desc="The text for brave search part in message">
-          Brave Search
+        <message name="IDS_WEB_DISCOVERY_INFOBAR_MESSAGE_BRAVE_SEARCH" desc="The text for ping search part in message">
+          Ping Search
         </message>
         <message name="IDS_WEB_DISCOVERY_INFOBAR_MESSAGE_MORE_INFO" desc="The text for more info link part in message">
           More info
@@ -641,12 +641,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </if>
         <if expr="is_win">
           <message name="IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT" desc="The text for obsolete system confirm dialog">
-            By clicking OK, you acknowledge that your installation of Brave will NOT receive critical security fixes until you update to Windows 10 or later. This warning will NOT show again.
+            By clicking OK, you acknowledge that your installation of Ping will NOT receive critical security fixes until you update to Windows 10 or later. This warning will NOT show again.
           </message>
         </if>
         <if expr="is_macosx">
           <message name="IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT" desc="The text for obsolete system confirm dialog">
-            By clicking OK, you acknowledge that your installation of Brave will NOT receive critical security fixes until you update to macOS 10.15 or later. This warning will NOT show again.
+            By clicking OK, you acknowledge that your installation of Ping will NOT receive critical security fixes until you update to macOS 10.15 or later. This warning will NOT show again.
           </message>
         </if>
 
@@ -656,7 +656,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if>
 
-      <!-- Brave Ads -->
+      <!-- Ping Ads -->
       <message name="IDS_SERVICE_BAT_ADS" desc="The bat ads utility process">
         Bat Ads Service
       </message>
@@ -667,7 +667,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Close
       </message>
       <message name="IDS_BRAVE_ADS_NOTIFICATION_AD_ACCESSIBLE_NAME" desc="Text to be spoken when a notification ad is shown">
-        Brave Notification Ad
+        Ping Notification Ad
       </message>
       <message name="IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_TITLE" desc="The notification title to show when an external wallet is connected">
         &#x1F389; You're now earning!
@@ -676,23 +676,23 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         You earn whenever a notification like this appears on your screen. You don't need to click to earn.
       </message>
       <message name="IDS_BRAVE_ADS_NOTIFICATION_CLICKED_SAME_AD_MULTIPLE_TIMES_TITLE" desc="The notification title to show when a user clicks an ad multiple times">
-        You earn when a Brave Ads notification appears
+        You earn when a Ping Ads notification appears
       </message>
       <message name="IDS_BRAVE_ADS_NOTIFICATION_CLICKED_SAME_AD_MULTIPLE_TIMES_BODY" desc="The notification body to show when a user clicks an ad multiple times">
         You don't need to click to earn, but do click if you're interested!
       </message>
 
-      <!-- Brave Search -->
+      <!-- Ping Search -->
       <message name="IDS_SETTINGS_WEB_DISCOVERY_LABEL" desc="Description that shows settings for toggle Web Discovery">
         Web Discovery Project
       </message>
       <message name="IDS_SETTINGS_WEB_DISCOVERY_SUBLABEL" desc="Description that shows under main toggle setting for Web Discovery">
-        Contribute some anonymous search &amp; browsing data to refine Brave Search.
+        Contribute some anonymous search &amp; browsing data to refine Ping Search.
       </message>
 
-      <!-- Brave Tooltips -->
+      <!-- Ping Tooltips -->
       <message name="IDS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_ACCESSIBLE_NAME" desc="Text to be spoken when a tooltip is shown">
-        Brave Tooltip
+        Ping Tooltip
       </message>
 
       <!-- Sidebar -->
@@ -832,15 +832,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
 
       <!-- Stats -->
       <message name="IDS_BRAVE_STATS_USAGE_PING_SETTING" desc="Description that shows in settings for toggling stats usage pings">
-        Automatically send daily usage ping to Brave
+        Automatically send daily usage ping to Ping
       </message>
       <message name="IDS_BRAVE_STATS_USAGE_PING_SETTING_SUBITEM" desc="Description that shows under main toggle setting for usage pings">
-        This anonymous, private ping lets Brave estimate active users.
+        This anonymous, private ping lets Ping estimate active users.
       </message>
 
       <!-- P3A -->
       <message name="IDS_BRAVE_CONFIRM_P3A_INFO_BAR" desc="Text that shows on the info bar where user acknowledges the P3A message">
-        Brave uses completely private product analytics to estimate the overall usage of certain features
+        Ping uses completely private product analytics to estimate the overall usage of certain features
       </message>
       <message name="IDS_BRAVE_CONFIRM_P3A_INFO_BAR_ACKNOWLEDGE" desc="OK button that shows on the info bar where user acknowledges the P3A message">
         Got it
@@ -852,7 +852,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Allow privacy-preserving product analytics (P3A)
       </message>
       <message name="IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM" desc="Description that shows under main toggle setting for P3A">
-        This completely anonymized info helps Brave estimate the overall usage of certain features and make them better for you.
+        This completely anonymized info helps Ping estimate the overall usage of certain features and make them better for you.
       </message>
 
       <!-- Web3 detection -->
@@ -891,7 +891,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Learn more about IPFS and privacy
       </message>
       <message name="IDS_BRAVE_IPFS_INFOBAR_TEXT" desc="Text that promotes turning on autoredirect to the configured gateway setting">
-        This page is available on the IPFS network. Would you like to load IPFS pages using Brave's built-in support (via ipfs:// or ipns://)?
+        This page is available on the IPFS network. Would you like to load IPFS pages using Ping's built-in support (via ipfs:// or ipns://)?
       </message>
       <message name="IDS_BRAVE_IPFS_INFOBAR_APPROVE" desc="Turns on promoted setting">
         Always
@@ -906,7 +906,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Learn how this affects my privacy
       </message>
 
-      <!-- Brave Wayback Machine -->
+      <!-- Ping Wayback Machine -->
       <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">
         Sorry, that page is missing.
       </message>
@@ -923,13 +923,13 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Don't ask me again
       </message>
 
-      <!-- Brave's copyright statement -->
+      <!-- Ping's copyright statement -->
       <message name="IDS_BRAVE_VERSION_UI_LICENSE" desc="The label below the copyright message, containing the URLs.">
-        Brave is made available to you under the <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) and includes <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> under a variety of other licenses.
+        Ping is made available to you under the <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) and includes <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> under a variety of other licenses.
         You can read <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instructions on how to download and build for yourself<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>source code used to create this copy<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.
       </message>
 
-      <!-- Brave's tab context menu -->
+      <!-- Ping's tab context menu -->
       <if expr="not use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
           Bookmark all tabs...
@@ -990,18 +990,18 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if>
 
-      <!-- Brave VPN -->
+      <!-- Ping VPN -->
       <if expr="enable_brave_vpn">
         <message name="IDS_SETTINGS_VPN_PAGE_TITLE" desc="Title of the vpn settings page">
-          Brave VPN
+          Ping VPN
         </message>
         <message name="IDS_SETTINGS_VPN_PAGE_USE_WIREGUARD_TITLE" desc="Title of the WireGuard option on the vpn settings page">
-          Use WireGuard protocol in Brave VPN
+          Use WireGuard protocol in Ping VPN
         </message>
-        <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_CONNECTED" desc="Title of the WireGuard sub label on the vpn settings page when brave vpn connected">
-          This setting cannot be changed while Brave VPN is connected.
+        <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_CONNECTED" desc="Title of the WireGuard sub label on the vpn settings page when ping vpn connected">
+          This setting cannot be changed while Ping VPN is connected.
         </message>
-        <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_DISCONNECTED" desc="Title of the WireGuard sub label on the vpn settings page when brave vpn connected">
+        <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_DISCONNECTED" desc="Title of the WireGuard sub label on the vpn settings page when ping vpn connected">
           Requires browser restart.
         </message>
         <message name="IDS_SETTINGS_SHOW_VPN_BUTTON" desc="The label for showing vpn button in the toolbar">
@@ -1016,11 +1016,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_BRAVE_VPN_TOGGLE_MENU_ITEM_TEXT" desc="Text for vpn toggle button in app menu.">
           Toggle VPN
         </message>
-        <message name="IDS_BRAVE_VPN_MENU" desc="The Brave VPN item (app menu)">
-          Brave VPN
+        <message name="IDS_BRAVE_VPN_MENU" desc="The Ping VPN item (app menu)">
+          Ping VPN
         </message>
         <message name="IDS_BRAVE_VPN_ABOUT_VPN_MENU_ITEM" desc="The menu item for showing about vpn">
-          About Brave VPN
+          About Ping VPN
         </message>
         <message name="IDS_BRAVE_VPN_STATUS_LABEL_CONNECTING" desc="The text for vpn status label in connecting">
           Connecting...
@@ -1081,7 +1081,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Full Disk Access required
       </message>
       <message name="IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_MESSAGE" desc="The label for full disk access dialog message">
-        Brave needs Full Disk Access to import your Bookmarks from Safari.
+        Ping needs Full Disk Access to import your Bookmarks from Safari.
       </message>
       <message name="IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_LINK_TEXT" desc="The label for full disk access dialog link text">
         Learn how to grant Full Disk Access from your System Preferences.
@@ -1109,10 +1109,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Ready for the best privacy online?
       </message>
       <message name="IDS_FIRSTRUN_DLG_CONTENTS_TEXT" desc="Text for FirstRun dialog contents">
-        Set Brave as your default browser to get Brave's privacy protections on every web page you open.
+        Set Ping as your default browser to get Ping's privacy protections on every web page you open.
       </message>
       <message name="IDS_FIRSTRUN_DLG_OK_BUTTON_LABEL" desc="Text for FirstRun dialog ok button">
-        Set Brave as default
+        Set Ping as default
       </message>
       <message name="IDS_FIRSTRUN_DLG_CANCEL_BUTTON_LABEL" desc="Text for FirstRun dialog cancel button">
         Maybe later

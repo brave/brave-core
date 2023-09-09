@@ -325,7 +325,7 @@
   <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_DEVICE_VISIBILITY_ALT1" desc="Text for search result item which, when clicked, navigates the user to Nearby Share change device visibility button in settings. Alternate phrase for: 'Nearby Share visibility'">
     Nearby Share discoverability
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_CONTACTS" desc="Text for search result item which, when clicked, navigates the user to Nearby Share manage contacts row in settings that opens Brave Contacts.">
+  <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_CONTACTS" desc="Text for search result item which, when clicked, navigates the user to Nearby Share manage contacts row in settings that opens Ping Contacts.">
     Nearby Share contacts
   </message>
   <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_DATA_USAGE" desc="Text for search result item which, when clicked, navigates the user to Nearby Share edit data usage button in settings.">
@@ -371,7 +371,7 @@
     Add account
   </message>
   <message name="IDS_OS_SETTINGS_TAG_PEOPLE_ACCOUNTS_ADD_V2" desc="Text for search result item which, when clicked, navigates the user to accounts settings, with a button to add a new account.">
-    Add Brave sync chain
+    Add Ping sync chain
   </message>
   <message name="IDS_OS_SETTINGS_TAG_PEOPLE_ACCOUNTS_REMOVE" desc="Text for search result item which, when clicked, navigates the user to accounts settings, with an option to remove an account.">
     Remove account
@@ -451,25 +451,25 @@
   <message name="IDS_OS_SETTINGS_TAG_PARENTAL_CONTROLS_ALT2" desc="Text for search result item which, when clicked, navigates the user to parental control settings. Alternate phrase for: 'Parental controls', 'Child accounts'">
     Family Link
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_SYNC_AND_GOOGLE_SERVICES" desc="Text for search result item which, when clicked, navigates the user to settings for Sync (syncs data between multiple Chromebooks) and Brave Services.">
-    Sync and Brave services
+  <message name="IDS_OS_SETTINGS_TAG_SYNC_AND_GOOGLE_SERVICES" desc="Text for search result item which, when clicked, navigates the user to settings for Sync (syncs data between multiple Chromebooks) and Ping Services.">
+    Sync and Ping services
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_SYNC_ENCRYPTION_OPTIONS" desc="Text for search result item which, when clicked, navigates the user to sync settings, with an option to choose whether synced data is encrypted with the user's Brave account password or with a custom password chosen by the user. Alternate phrase for: 'Sync encryption password'">
+  <message name="IDS_OS_SETTINGS_TAG_SYNC_ENCRYPTION_OPTIONS" desc="Text for search result item which, when clicked, navigates the user to sync settings, with an option to choose whether synced data is encrypted with the user's Ping account password or with a custom password chosen by the user. Alternate phrase for: 'Sync encryption password'">
     Sync encryption options
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_SYNC_ENCRYPTION_OPTIONS_ALT1" desc="Text for search result item which, when clicked, navigates the user to sync settings, with an option to choose whether synced data is encrypted with the user's Brave account password or with a custom password chosen by the user. Alternate phrase for: 'Sync encryption options'">
+  <message name="IDS_OS_SETTINGS_TAG_SYNC_ENCRYPTION_OPTIONS_ALT1" desc="Text for search result item which, when clicked, navigates the user to sync settings, with an option to choose whether synced data is encrypted with the user's Ping account password or with a custom password chosen by the user. Alternate phrase for: 'Sync encryption options'">
     Sync encryption password
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_SYNC_MANAGEMENT" desc="Text for search result item which, when clicked, navigates the user to sync settings, with the option to decide which types of data are synced via Brave Sync.">
+  <message name="IDS_OS_SETTINGS_TAG_SYNC_MANAGEMENT" desc="Text for search result item which, when clicked, navigates the user to sync settings, with the option to decide which types of data are synced via Ping Sync.">
     Sync management
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_IMPROVE_SEARCH_SUGGESTIONS" desc="Text for search result item which, when clicked, navigates the user to Brave services settings, with a toggle to enable/disable a feature which requests suggestions from the user's default search engine.">
+  <message name="IDS_OS_SETTINGS_TAG_IMPROVE_SEARCH_SUGGESTIONS" desc="Text for search result item which, when clicked, navigates the user to Ping services settings, with a toggle to enable/disable a feature which requests suggestions from the user's default search engine.">
     Improve search suggestions
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_MAKE_SEARCHES_AND_BROWSER_BETTER" desc="Text for search result item which, when clicked, navigates the user to Brave services settings, with a toggle to enable/disable a feature which sends URLs of pages the user has visited to Brave, which helps to improve search/browsing results.">
-    Send URLs of pages you visit to Brave
+  <message name="IDS_OS_SETTINGS_TAG_MAKE_SEARCHES_AND_BROWSER_BETTER" desc="Text for search result item which, when clicked, navigates the user to Ping services settings, with a toggle to enable/disable a feature which sends URLs of pages the user has visited to Ping, which helps to improve search/browsing results.">
+    Send URLs of pages you visit to Ping
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_GOOGLE_DRIVE_SEARCH_SUGGESTIONS" desc="Text for search result item which, when clicked, navigates the user to Brave services settings, with a toggle to enable/disable a feature which provides suggestions to visit Google Drive items when the user types in the address bar.">
+  <message name="IDS_OS_SETTINGS_TAG_GOOGLE_DRIVE_SEARCH_SUGGESTIONS" desc="Text for search result item which, when clicked, navigates the user to Ping services settings, with a toggle to enable/disable a feature which provides suggestions to visit Google Drive items when the user types in the address bar.">
     Show Google Drive suggestions
   </message>
 
@@ -789,44 +789,44 @@
   <message name="IDS_OS_SETTINGS_TAG_QUICK_ANSWERS_UNIT_CONVERSION" desc="Text for search result item which, when clicked, navigates the user to Quick Answers settings, with a toggle to enable/disable the Quick Answers unit conversion functionality.">
     Quick Answers unit conversion
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings.">
-    Brave Assistant
+  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT" desc="Text for search result item which, when clicked, navigates the user to Ping Assistant settings.">
+    Ping Assistant
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_RELATED_INFO" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with a toggle to enable/disable letting Assistant show info related to what's on the screen.">
-    Brave Assistant related information
+  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_RELATED_INFO" desc="Text for search result item which, when clicked, navigates the user to Ping Assistant settings, with a toggle to enable/disable letting Assistant show info related to what's on the screen.">
+    Ping Assistant related information
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_QUICK_ANSWERS" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with a toggle to enable/disable letting Assistant show related info when the user right-clicks.">
-    Brave Assistant quick answers
+  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_QUICK_ANSWERS" desc="Text for search result item which, when clicked, navigates the user to Ping Assistant settings, with a toggle to enable/disable letting Assistant show related info when the user right-clicks.">
+    Ping Assistant quick answers
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_OK_GOOGLE" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with a toggle to enable/disable letting users summon the Assistant by saying 'Ok Brave' out loud. Alternate phrase for: 'Okay Brave', 'Hey Brave'">
-    Brave Assistant "Ok Brave"
+  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_OK_GOOGLE" desc="Text for search result item which, when clicked, navigates the user to Ping Assistant settings, with a toggle to enable/disable letting users summon the Assistant by saying 'Ok Ping' out loud. Alternate phrase for: 'Okay Ping', 'Hey Ping'">
+    Ping Assistant "Ok Ping"
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_OK_GOOGLE_ALT1" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with a toggle to enable/disable letting users summon the Assistant by saying 'Ok Brave' out loud. Alternate phrase for: 'Brave Assistant 'Ok Brave'', 'Hey Brave'">
-    Okay Brave
+  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_OK_GOOGLE_ALT1" desc="Text for search result item which, when clicked, navigates the user to Ping Assistant settings, with a toggle to enable/disable letting users summon the Assistant by saying 'Ok Ping' out loud. Alternate phrase for: 'Ping Assistant 'Ok Ping'', 'Hey Ping'">
+    Okay Ping
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_OK_GOOGLE_ALT2" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with a toggle to enable/disable letting users summon the Assistant by saying 'Ok Brave' out loud. Alternate phrase for: 'Brave Assistant 'Ok Brave'', 'Okay Brave'">
-    Hey Brave
+  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_OK_GOOGLE_ALT2" desc="Text for search result item which, when clicked, navigates the user to Ping Assistant settings, with a toggle to enable/disable letting users summon the Assistant by saying 'Ok Ping' out loud. Alternate phrase for: 'Ping Assistant 'Ok Ping'', 'Okay Ping'">
+    Hey Ping
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_NOTIFICATIONS" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with a toggle to enable/disable Assistant notifications.">
-    Brave Assistant Notifications
+  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_NOTIFICATIONS" desc="Text for search result item which, when clicked, navigates the user to Ping Assistant settings, with a toggle to enable/disable Assistant notifications.">
+    Ping Assistant Notifications
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_PREFERRED_INPUT" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with a toggle to enable/disable having the preferred input be voice instead of keyboard.">
-    Brave Assistant voice input
+  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_PREFERRED_INPUT" desc="Text for search result item which, when clicked, navigates the user to Ping Assistant settings, with a toggle to enable/disable having the preferred input be voice instead of keyboard.">
+    Ping Assistant voice input
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TURN_OFF" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with an option to turn functionality off. Alternate phrase for: 'Disable Brave Assistant'">
-    Turn off Brave Assistant
+  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TURN_OFF" desc="Text for search result item which, when clicked, navigates the user to Ping Assistant settings, with an option to turn functionality off. Alternate phrase for: 'Disable Ping Assistant'">
+    Turn off Ping Assistant
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TURN_OFF_ALT1" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with an option to turn functionality off. Alternate phrase for: 'Turn off Brave Assistant'">
-    Disable Brave Assistant
+  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TURN_OFF_ALT1" desc="Text for search result item which, when clicked, navigates the user to Ping Assistant settings, with an option to turn functionality off. Alternate phrase for: 'Turn off Ping Assistant'">
+    Disable Ping Assistant
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TURN_ON" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with an option to turn functionality on. Alternate phrase for: 'Enable Brave Assistant'">
-    Turn on Brave Assistant
+  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TURN_ON" desc="Text for search result item which, when clicked, navigates the user to Ping Assistant settings, with an option to turn functionality on. Alternate phrase for: 'Enable Ping Assistant'">
+    Turn on Ping Assistant
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TURN_ON_ALT1" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with an option to turn functionality on. Alternate phrase for: 'Turn on Brave Assistant'">
-    Enable Brave Assistant
+  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TURN_ON_ALT1" desc="Text for search result item which, when clicked, navigates the user to Ping Assistant settings, with an option to turn functionality on. Alternate phrase for: 'Turn on Ping Assistant'">
+    Enable Ping Assistant
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TRAIN_VOICE_MODEL" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with an option to train a voice model to listen for commands such as 'Okay Brave' or 'Hey Brave'">
-    Train Brave Assistant voice model
+  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TRAIN_VOICE_MODEL" desc="Text for search result item which, when clicked, navigates the user to Ping Assistant settings, with an option to train a voice model to listen for commands such as 'Okay Ping' or 'Hey Ping'">
+    Train Ping Assistant voice model
   </message>
 
   <!-- Apps section. -->
@@ -1004,10 +1004,10 @@
   <message name="IDS_OS_SETTINGS_TAG_PRIVACY_VERIFIED_ACCESS" desc="Text for search result item which, when clicked, navigates the user to privacy settings, with a toggle to enable/disable verified access.">
     Verified access
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRIVACY_CRASH_REPORTS" desc="Text for search result item which, when clicked, navigates the user to privacy settings, with a toggle to enable/disable allowing usage statistics and crash reports to be sent to Brave. Alternate phrase for: 'Feedback reports'">
+  <message name="IDS_OS_SETTINGS_TAG_PRIVACY_CRASH_REPORTS" desc="Text for search result item which, when clicked, navigates the user to privacy settings, with a toggle to enable/disable allowing usage statistics and crash reports to be sent to Ping. Alternate phrase for: 'Feedback reports'">
     Usage statistics and crash reports
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRIVACY_CRASH_REPORTS_ALT1" desc="Text for search result item which, when clicked, navigates the user to privacy settings, with a toggle to enable/disable allowing usage statistics and crash reports to be sent to Brave. Alternate phrase for: 'Usage statistics and crash reports'">
+  <message name="IDS_OS_SETTINGS_TAG_PRIVACY_CRASH_REPORTS_ALT1" desc="Text for search result item which, when clicked, navigates the user to privacy settings, with a toggle to enable/disable allowing usage statistics and crash reports to be sent to Ping. Alternate phrase for: 'Usage statistics and crash reports'">
     Feedback reports
   </message>
   <message name="IDS_OS_SETTINGS_TAG_PRIVACY_PERIPHERAL_DATA_ACCESS_PROTECTION" desc="Text for search result item which, when clicked, navigates the user to privacy settings, with a toggle to enable/disable peripheral data access protection. Alternate phrases include: 'PCIe', 'Thunderbolt', 'USB', 'USB4', 'USB-C'">
@@ -1410,8 +1410,8 @@
   <message name="IDS_OS_SETTINGS_TAG_A11Y_SWITCH_ACCESS_AUTO_SCAN_KEYBOARD" desc="Text for search result item which, when clicked, navigates the user to accessibility switch access settings, with a slider to set the auto-scan repeat rate.">
     Switch access keyboard auto-scan
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_LABELS_FROM_GOOGLE" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable getting image descriptions from Brave.">
-    Get image descriptions from Brave
+  <message name="IDS_OS_SETTINGS_TAG_A11Y_LABELS_FROM_GOOGLE" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable getting image descriptions from Ping.">
+    Get image descriptions from Ping
   </message>
 
   <!-- Reset section. -->
@@ -1447,10 +1447,10 @@
   <message name="IDS_OS_SETTINGS_TAG_ABOUT_HELP" desc="Text for search result item which, when clicked, navigates the user to 'About ChromeOS' settings, with a link which opens the 'Help' app.">
     Help
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ABOUT_REPORT_ISSUE" desc="Text for search result item which, when clicked, navigates the user to 'About ChromeOS' settings, with a link which opens the 'Send feedback to Brave' app. Alternate phrase for: 'Report a bug'">
+  <message name="IDS_OS_SETTINGS_TAG_ABOUT_REPORT_ISSUE" desc="Text for search result item which, when clicked, navigates the user to 'About ChromeOS' settings, with a link which opens the 'Send feedback to Ping' app. Alternate phrase for: 'Report a bug'">
     Report an issue
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ABOUT_REPORT_ISSUE_ALT1" desc="Text for search result item which, when clicked, navigates the user to 'About ChromeOS' settings, with a link which opens the 'Send feedback to Brave' app. Alternate phrase for: 'Report an issue'">
+  <message name="IDS_OS_SETTINGS_TAG_ABOUT_REPORT_ISSUE_ALT1" desc="Text for search result item which, when clicked, navigates the user to 'About ChromeOS' settings, with a link which opens the 'Send feedback to Ping' app. Alternate phrase for: 'Report an issue'">
     Report a bug
   </message>
   <message name="IDS_OS_SETTINGS_TAG_ABOUT_TERMS_OF_SERVICE" desc="Text for search result item which, when clicked, navigates the user to 'About ChromeOS' settings, with a link to the Terms of Service.">

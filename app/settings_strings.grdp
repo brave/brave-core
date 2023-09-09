@@ -45,34 +45,34 @@
     </message>
   </if>
   <if expr="_google_chrome">
-    <message name="IDS_SETTINGS_ABOUT_PAGE_REPORT_AN_ISSUE" desc="Text of the button which allows the user to report an issue with Brave.">
+    <message name="IDS_SETTINGS_ABOUT_PAGE_REPORT_AN_ISSUE" desc="Text of the button which allows the user to report an issue with Ping.">
       Report an issue
     </message>
-    <message name="IDS_SETTINGS_ABOUT_PAGE_SEND_FEEDBACK" desc="Text of the button which allows the user to send feedback with Brave.">
+    <message name="IDS_SETTINGS_ABOUT_PAGE_SEND_FEEDBACK" desc="Text of the button which allows the user to send feedback with Ping.">
       Send feedback
     </message>
-    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME" desc="Section title for the 'Get the most out of Brave' page.">
-      Get the most ouf of Brave
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME" desc="Section title for the 'Get the most out of Ping' page.">
+      Get the most ouf of Ping
     </message>
-    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_DESCRIPTION" desc="Explanatory text for the link to the 'Get the most out of Brave' page.">
-      This guide helps you understand your choices, so that Brave works the way you want to
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_DESCRIPTION" desc="Explanatory text for the link to the 'Get the most out of Ping' page.">
+      This guide helps you understand your choices, so that Ping works the way you want to
     </message>
-    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_INTRO" desc="Introduction to the 'Get the most out of Brave' page.">
-      This guide helps you understand important choices you have as you use Brave. And it helps you make those choices, so that Brave works the way you want it to.
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_INTRO" desc="Introduction to the 'Get the most out of Ping' page.">
+      This guide helps you understand important choices you have as you use Ping. And it helps you make those choices, so that Ping works the way you want it to.
     </message>
-    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_MORE_THAN_A_BROWSER" desc="Title of the 'More than a browser' section of the 'Get the most out of Brave' page.">
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_MORE_THAN_A_BROWSER" desc="Title of the 'More than a browser' section of the 'Get the most out of Ping' page.">
       More than a browser
     </message>
-    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_YOUR_DATA_IN_CHROME" desc="Title of the 'Your data in Brave' section of the 'Get the most out of Brave' page.">
-      Your data in Brave
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_YOUR_DATA_IN_CHROME" desc="Title of the 'Your data in Ping' section of the 'Get the most out of Ping' page.">
+      Your data in Ping
     </message>
-    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_BEYOND_COOKIES" desc="Title of the 'Beyond cookies' section of the 'Get the most out of Brave' page.">
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_BEYOND_COOKIES" desc="Title of the 'Beyond cookies' section of the 'Get the most out of Ping' page.">
       Beyond cookies
     </message>
   </if>
   <if expr="is_macosx">
-    <message name="IDS_ABOUT_CHROME_AUTOUPDATE_ALL" desc="The 'Automatically update Brave for all users.' button in the About window.  Mac-only.">
-      Automatically update Brave for all users
+    <message name="IDS_ABOUT_CHROME_AUTOUPDATE_ALL" desc="The 'Automatically update Ping for all users.' button in the About window.  Mac-only.">
+      Automatically update Ping for all users
     </message>
     <message name="IDS_ABOUT_CHROME_AUTOUPDATE_ALL_IS_ON" desc="The text in About Page to indicate automatic update is turned on.  Mac-only.">
       Automatic updates are turned on.
@@ -96,10 +96,10 @@
     Enable accessibility features
   </message>
   <message name="IDS_SETTINGS_ACCESSIBLE_IMAGE_LABELS_TITLE" desc="Description for screen reader image labels feature.">
-    Get image descriptions from Brave
+    Get image descriptions from Ping
   </message>
   <message name="IDS_SETTINGS_ACCESSIBLE_IMAGE_LABELS_SUBTITLE" desc="Subtitle for screen reader image labels feature.">
-    If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave.
+    If an image doesn’t have a useful description, Ping will try to provide one for you. To create descriptions, images are sent to Ping.
   </message>
   <message name="IDS_SETTINGS_PDF_OCR_DOWNLOAD_COMPLETE" desc="Success message when it has downloaded PDF OCR files.">
     Text recognition files downloaded
@@ -117,7 +117,7 @@
     Convert PDF images to text
   </message>
   <message name="IDS_SETTINGS_PDF_OCR_SUBTITLE" desc="Subtitle for screen reader pdf ocr feature.">
-    Scan PDF images to convert content to text for the screen reader, when available. Only supported on Brave browser.
+    Scan PDF images to convert content to text for the screen reader, when available. Only supported on Ping browser.
   </message>
   <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_TITLE" desc="Name of the setting to enable Live Caption feature.">
     Live Caption
@@ -129,11 +129,11 @@
     Automatically translates captions
   </message>
   <if expr="chromeos_ash">
-    <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_SUBTITLE_ENGLISH_ONLY" desc="Description text for Live Caption feature. When audio or video is playing, the user will see captions on the screen. Only works in Brave browser initially. Currently only works for English media.">
-      Automatically creates captions for media in Brave browser (currently available in English). Audio and captions are processed locally and never leave the device.
+    <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_SUBTITLE_ENGLISH_ONLY" desc="Description text for Live Caption feature. When audio or video is playing, the user will see captions on the screen. Only works in Ping browser initially. Currently only works for English media.">
+      Automatically creates captions for media in Ping browser (currently available in English). Audio and captions are processed locally and never leave the device.
     </message>
-    <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_SUBTITLE" desc="Description text for Live Caption feature. When audio or video is playing, the user will see captions on the screen. Only works in Brave browser initially.">
-      Automatically creates captions for media in Brave browser. Audio and captions are processed locally and never leave the device.
+    <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_SUBTITLE" desc="Description text for Live Caption feature. When audio or video is playing, the user will see captions on the screen. Only works in Ping browser initially.">
+      Automatically creates captions for media in Ping browser. Audio and captions are processed locally and never leave the device.
     </message>
   </if>
   <if expr="not chromeos_ash">
@@ -228,8 +228,8 @@
       Reset to default
     </message>
   </if>
-  <message name="IDS_SETTINGS_CHROME_COLORS" desc="Text of the label describing 'Brave Colors' theme.">
-    Brave Colors
+  <message name="IDS_SETTINGS_CHROME_COLORS" desc="Text of the label describing 'Ping Colors' theme.">
+    Ping Colors
   </message>
   <message name="IDS_SETTINGS_SHOW_HOME_BUTTON" desc="Label for the checkbox which enables or disables showing the home button in the toolbar.">
     Show home button
@@ -262,7 +262,7 @@
     <message name="IDS_SETTINGS_TABS_TO_LINKS_PREF" desc="The documentation string of the 'Tabs to Links' preference">
       Pressing Tab on a webpage highlights links, as well as form fields
     </message>
-    <message name="IDS_SETTINGS_WARN_BEFORE_QUITTING_PREF" desc="The documentation string of the 'Warn Before Quitting' preference which is also available in the Brave app menu.">
+    <message name="IDS_SETTINGS_WARN_BEFORE_QUITTING_PREF" desc="The documentation string of the 'Warn Before Quitting' preference which is also available in the Ping app menu.">
       Show warning before quitting with ⌘Q
     </message>
   </if>
@@ -290,19 +290,19 @@
     Search settings
   </message>
   <message name="IDS_SETTINGS_SEARCH_NO_RESULTS_HELP" desc="Help text for a search that has no results.">
-    Go to <ph name="BEGIN_LINK_CHROMIUM">&lt;a target="_blank" href="$1"&gt;</ph>Brave help<ph name="END_LINK_CHROMIUM">&lt;/a&gt;</ph> if you can't find what you're looking for
+    Go to <ph name="BEGIN_LINK_CHROMIUM">&lt;a target="_blank" href="$1"&gt;</ph>Ping help<ph name="END_LINK_CHROMIUM">&lt;/a&gt;</ph> if you can't find what you're looking for
   </message>
   <message name="IDS_SETTINGS_SETTINGS" desc="The settings page title.">
     Settings
   </message>
   <message name="IDS_SETTINGS_ALT_PAGE_TITLE" desc="The settings page title for the about page.">
-    Settings - <ph name="SECTION_TITLE">$1<ex>About Brave</ex></ph>
+    Settings - <ph name="SECTION_TITLE">$1<ex>About Ping</ex></ph>
   </message>
   <message name="IDS_SETTINGS_SUBPAGE_BUTTON" desc="Accessibility description for a button navigating the user from a settings page to one of the settings subpages.">
     Subpage button
   </message>
   <if expr="not chromeos_ash">
-    <message name="IDS_SETTINGS_RESTART" desc="Text for a button that will restart Brave.">
+    <message name="IDS_SETTINGS_RESTART" desc="Text for a button that will restart Ping.">
       Relaunch
     </message>
   </if>
@@ -349,22 +349,22 @@
   </message>
 
   <!-- Autofill Page -->
-  <message name="IDS_PASSWORDS_PAGE_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Brave is trying to ' (or in some languages, 'Brave wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before revealing plaintext passwords on the password page.">
+  <message name="IDS_PASSWORDS_PAGE_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Ping is trying to ' (or in some languages, 'Ping wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before revealing plaintext passwords on the password page.">
     show passwords
   </message>
-  <message name="IDS_PASSWORDS_PAGE_COPY_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Brave is trying to ' (or in some languages, 'Brave wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before copying plaintext passwords into the clipboard.">
+  <message name="IDS_PASSWORDS_PAGE_COPY_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Ping is trying to ' (or in some languages, 'Ping wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before copying plaintext passwords into the clipboard.">
     copy passwords
   </message>
-  <message name="IDS_PASSWORDS_PAGE_EDIT_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Brave is trying to ' (or in some languages, 'Brave wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before editing plaintext passwords on the password page.">
+  <message name="IDS_PASSWORDS_PAGE_EDIT_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Ping is trying to ' (or in some languages, 'Ping wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before editing plaintext passwords on the password page.">
     edit passwords
   </message>
-  <message name="IDS_PASSWORDS_PAGE_EXPORT_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Brave is trying to ' (or in some languages, 'Brave wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before exporting passwords to a file.">
+  <message name="IDS_PASSWORDS_PAGE_EXPORT_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Ping is trying to ' (or in some languages, 'Ping wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before exporting passwords to a file.">
     export passwords
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_AND_PASSWORDS" desc="Name of the settings page which allows managing passwords, payment methods and addresses settings.">
     Autofill and passwords
   </message>
-  <message name="IDS_PASSWORDS_PAGE_IMPORT_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Brave is trying to ' (or in some languages, 'Brave wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before replacing passwords during Import.">
+  <message name="IDS_PASSWORDS_PAGE_IMPORT_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Ping is trying to ' (or in some languages, 'Ping wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before replacing passwords during Import.">
     replace existing passwords
   </message>
   <message name="IDS_SETTINGS_GOOGLE_PAYMENTS" desc="Label used to differentiate when an address or credit card entry comes from Google Pay. This should follow the casing of the 'Google Pay' brand. 'Google Pay' should not be translated as it is the product name.">
@@ -455,7 +455,7 @@
     This payment method will be deleted from this device
   </message>
   <message name="IDS_SETTINGS_PAYMENTS_MANAGE_CREDIT_CARDS" desc="Shown in the payments section of settings. Descriptive text to inform the user that credit cards can be accessed online. Has a link.">
-   To add or manage Google Pay payment methods, visit your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
+   To add or manage Google Pay payment methods, visit your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Ping sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
     <message name="IDS_SETTINGS_PAYMENTS_SAVED_TO_THIS_DEVICE_ONLY" desc="Shown in the payments section of settings. Descriptive text to inform the user that this credit card will be saved to local device only.">
    This card will be saved to this device only
@@ -464,7 +464,7 @@
     Add card
   </message>
   <message name="IDS_SETTINGS_MIGRATABLE_CARDS_LABEL" desc="Label for the field to migrate the locally cached credit card to Google Payments. Clicking this will upload migratable credit cards to Google Payments.">
-    Save cards in your Brave sync chain
+    Save cards in your Ping sync chain
   </message>
   <message name="IDS_SETTINGS_SINGLE_MIGRATABLE_CARD_INFO" desc="Display text under the save cards to Google Pay label. This text indicates one of local cards can only be used on this device.">
     Right now, you have one card that can only be used on this device
@@ -551,7 +551,7 @@
     Passwords on this device only
   </message>
   <message name="IDS_SETTINGS_DEVICE_PASSWORDS_ON_DEVICE_AND_ACCOUNT_HEADING" desc="Title of a subsection in the 'device passwords' page displaying passwords/exceptions that are stored both on the device and in the account.">
-    Passwords on this device and in your Brave sync chain
+    Passwords on this device and in your Ping sync chain
   </message>
   <message name="IDS_SETTINGS_CHECK_PASSWORDS" desc="Name for the check passwords subsection and settings entry used to perform a password bulk check.">
     Check passwords
@@ -571,7 +571,7 @@
       =1 {{COUNT} compromised password}
       other {{COUNT} compromised passwords}}
   </message>
-  <message name="IDS_SETTINGS_COMPROMISED_PASSWORDS_COUNT_SHORT" desc="This short text shows the amount of compromised passwords that the Brave password check found.">
+  <message name="IDS_SETTINGS_COMPROMISED_PASSWORDS_COUNT_SHORT" desc="This short text shows the amount of compromised passwords that the Ping password check found.">
     {NUM_COMPROMISED, plural,
       =0 {No compromised passwords}
       =1 {1 compromised password}
@@ -583,13 +583,13 @@
       =1 {Found {COUNT} weak password}
       other {Found {COUNT} weak passwords}}
   </message>
-  <message name="IDS_SETTINGS_WEAK_PASSWORDS_COUNT_SHORT" desc="This short text shows the amount of weak passwords that the Brave password check found.">
+  <message name="IDS_SETTINGS_WEAK_PASSWORDS_COUNT_SHORT" desc="This short text shows the amount of weak passwords that the Ping password check found.">
     {NUM_WEAK, plural,
       =0 {No weak passwords}
       =1 {1 weak password}
       other {{NUM_WEAK} weak passwords}}
   </message>
-  <message name="IDS_SETTINGS_REUSED_PASSWORDS_COUNT_SHORT" desc="This short text shows the amount of reused passwords that the Brave password check found.">
+  <message name="IDS_SETTINGS_REUSED_PASSWORDS_COUNT_SHORT" desc="This short text shows the amount of reused passwords that the Ping password check found.">
     {NUM_REUSED, plural,
       =0 {No reused passwords}
       =1 {1 reused password}
@@ -689,7 +689,7 @@
     Warn you if passwords are exposed in a data breach
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_LEAK_DETECTION_SIGNED_OUT_ENABLED_DESC" desc="Text that describes the 'Password Leak Detection' functionality to signed-out users who have not disabled the feature. This text always follows a sentence describing the feature.">
-    When you sign in to your Brave sync chain, this feature is turned on.
+    When you sign in to your Ping sync chain, this feature is turned on.
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_SAVED_HEADING" desc="The title for a list of username/site/password items. These items are already saved by the browser and can be deleted/edited.">
     Saved Passwords
@@ -704,7 +704,7 @@
     Remove
   </message>
   <message name="IDS_SETTINGS_PASSWORD_MOVE_TO_ACCOUNT" desc="Label for a context menu item that moves the selected password from the device to the user account.">
-    Move to Brave sync chain
+    Move to Ping sync chain
   </message>
   <message name="IDS_SETTINGS_PASSWORD_SEARCH" desc="Placeholder/label for the text input field that allows a user to filter saved passwords.">
     Search passwords
@@ -742,8 +742,8 @@
   <message name="IDS_SETTINGS_PASSWORD_ADD_FOOTNOTE" desc="A footnote for the dialog which allows the user to add a new password.">
     Make sure you're saving your current password for this site
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_STORE_PICKER_OPTION_ACCOUNT" desc="An option of the store picker shown in the add password dialog if saving to the Brave Password Manager">
-    Save to Brave Password Manager (<ph name="EMAIL">$1<ex>username@gmail.com</ex></ph>)
+  <message name="IDS_SETTINGS_PASSWORD_STORE_PICKER_OPTION_ACCOUNT" desc="An option of the store picker shown in the add password dialog if saving to the Ping Password Manager">
+    Save to Ping Password Manager (<ph name="EMAIL">$1<ex>username@gmail.com</ex></ph>)
   </message>
   <message name="IDS_SETTINGS_PASSWORD_COPY" desc="Label for a context menu item that allows to copy the selected password into clipboard.">
     Copy password
@@ -779,12 +779,12 @@
     Notes can save up to <ph name="CHARACTER_LIMIT">$1<ex>1000</ex></ph> characters.
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_TIMED_OUT" desc="Title for the dialog which shows when the password manager authentication is expired.">
-    Brave Password Manager timed out
+    Ping Password Manager timed out
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_TIMED_OUT_DESCRIPTION" desc="Body text for the dialog which shows when the password manager authentication is expired.">
     {NUM_MINS, plural,
-     =1 {To keep your passwords safe, Brave Password Manager locks after 1 minute of inactivity}
-     other {To keep your passwords safe, Brave Password Manager locks after {NUM_MINS} minutes of inactivity}}
+     =1 {To keep your passwords safe, Ping Password Manager locks after 1 minute of inactivity}
+     other {To keep your passwords safe, Ping Password Manager locks after {NUM_MINS} minutes of inactivity}}
   </message>
   <message name="IDS_SETTINGS_PASSKEYS_LENGTH_ERROR" desc="Error message in the passkey edit dialog when the user inputs an empty username.">
     Enter your username
@@ -823,19 +823,19 @@
     Your password is saved on this device
   </message>
   <message name="IDS_SETTINGS_PASSWORD_STORED_IN_ACCOUNT" desc="Message displayed in the edit dialog for a password stored in the account.">
-    Your password is saved in your Brave sync chain
+    Your password is saved in your Ping sync chain
   </message>
   <message name="IDS_SETTINGS_PASSWORD_STORED_IN_ACCOUNT_AND_ON_DEVICE" desc="Message displayed in the edit dialog for a password stored both on the device and in the account.">
-    Your password is saved on this device and in your Brave sync chain
+    Your password is saved on this device and in your Ping sync chain
   </message>
   <message name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD_FROM_ACCOUNT" desc="Label for an undo tooltip following deletion of a password from the account.">
-    Password deleted from your Brave sync chain
+    Password deleted from your Ping sync chain
   </message>
   <message name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD_FROM_DEVICE" desc="Label for an undo tooltip following deletion of a password from the device.">
     Password deleted from this device
   </message>
   <message name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD_FROM_ACCOUNT_AND_DEVICE" desc="Label for an undo tooltip following deletion of a password from the account and the device.">
-    Password deleted from this device and your Brave sync chain
+    Password deleted from this device and your Ping sync chain
   </message>
   <message name="IDS_SETTINGS_PASSWORD_COPIED_TO_CLIPBOARD" desc="Label for a tooltip following copying a password to the clipboard.">
     Password copied to clipboard
@@ -843,46 +843,46 @@
   <message name="IDS_SETTINGS_PASSWORD_USERNAME_COPIED_TO_CLIPBOARD" desc="Label for a tooltip following copying a username of a credential to the clipboard.">
     Username copied to clipboard
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT" desc="Message displayed in the moving multiple passwords to the user Brave sync chain banner.">
-    To easily use them on all your devices, you can move them to your Brave sync chain
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT" desc="Message displayed in the moving multiple passwords to the user Ping sync chain banner.">
+    To easily use them on all your devices, you can move them to your Ping sync chain
   </message>
    <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_COUNT" desc="Label shown in the link that open moving multiple password dialog.">
     {COUNT, plural,
       =1 {{COUNT} password is saved on this device}
       other {{COUNT} passwords are saved on this device}}
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_DIALOG_BODY_TEXT" desc="Text displayed in the dialog that asks the user to select which passwords to move to their Brave sync chain.">
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_DIALOG_BODY_TEXT" desc="Text displayed in the dialog that asks the user to select which passwords to move to their Ping sync chain.">
     Choose which passwords to move. You can access them whenever you're signed in.
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_DIALOG_TITLE" desc="Title for the dialog that asks the user to select which passwords to move to their Brave sync chain.">
-    Move passwords from this device to your Brave sync chain?
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_DIALOG_TITLE" desc="Title for the dialog that asks the user to select which passwords to move to their Ping sync chain.">
+    Move passwords from this device to your Ping sync chain?
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_SNACKBAR" desc="Text in the snackbar that appears after the user successfuly moved local passwords to their Brave sync chain.">
-    Passwords moved to your Brave sync chain
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_SNACKBAR" desc="Text in the snackbar that appears after the user successfuly moved local passwords to their Ping sync chain.">
+    Passwords moved to your Ping sync chain
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_MOVE_MULTIPLE_PASSWORDS_TO_ACCOUNT_DIALOG_MOVE_BUTTON_TEXT" desc="Text for the button that confirms moving multiple passwords to the user Brave sync chain.">
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_MULTIPLE_PASSWORDS_TO_ACCOUNT_DIALOG_MOVE_BUTTON_TEXT" desc="Text for the button that confirms moving multiple passwords to the user Ping sync chain.">
     Move passwords
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_MOVE_MULTIPLE_PASSWORDS_TO_ACCOUNT_DIALOG_CANCEL_BUTTON_TEXT" desc="Text for the button that cancels the action of moving multiple passwords to the user Brave sync chain.">
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_MULTIPLE_PASSWORDS_TO_ACCOUNT_DIALOG_CANCEL_BUTTON_TEXT" desc="Text for the button that cancels the action of moving multiple passwords to the user Ping sync chain.">
     Don't move
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_OPEN_MOVE_MULTIPLE_PASSWORDS_TO_ACCOUNT_DIALOG_BUTTON_TEXT" desc="Text for the button that opens the dialog that moves multiple passwords to the user Brave sync chain.">
+  <message name="IDS_SETTINGS_PASSWORD_OPEN_MOVE_MULTIPLE_PASSWORDS_TO_ACCOUNT_DIALOG_BUTTON_TEXT" desc="Text for the button that opens the dialog that moves multiple passwords to the user Ping sync chain.">
     Get started
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_TITLE" desc="Title for the dialog that asks the user which versions of a password to remove (device, Brave sync chain or both).">
+  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_TITLE" desc="Title for the dialog that asks the user which versions of a password to remove (device, Ping sync chain or both).">
     Delete password?
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_BODY" desc="Description message for the dialog that asks the user which versions of a password to remove (device, Brave sync chain or both).">
-    Your password for <ph name="WEBSITE">&lt;b&gt;$1&lt;/b&gt;</ph> is saved on this device and to your Brave sync chain. Which one do you want to delete?
+  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_BODY" desc="Description message for the dialog that asks the user which versions of a password to remove (device, Ping sync chain or both).">
+    Your password for <ph name="WEBSITE">&lt;b&gt;$1&lt;/b&gt;</ph> is saved on this device and to your Ping sync chain. Which one do you want to delete?
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_REMOVE_BUTTON_TEXT" desc="Text for the button that confirms the action in the dialog that asks the user which versions of a password to remove (device, Brave sync chain or both).">
+  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_REMOVE_BUTTON_TEXT" desc="Text for the button that confirms the action in the dialog that asks the user which versions of a password to remove (device, Ping sync chain or both).">
     Delete
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_CANCEL_BUTTON_TEXT" desc="Text for the button that cancels the action in the dialog that asks the user which versions of a password to remove (device, Brave sync chain or both).">
+  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_CANCEL_BUTTON_TEXT" desc="Text for the button that cancels the action in the dialog that asks the user which versions of a password to remove (device, Ping sync chain or both).">
     Cancel
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_FROM_ACCOUNT_CHECKBOX_LABEL" desc="The label for the checkbox that represents whether the user wishes to remove a password from their Brave sync chain.">
-    From your Brave sync chain
+  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_FROM_ACCOUNT_CHECKBOX_LABEL" desc="The label for the checkbox that represents whether the user wishes to remove a password from their Ping sync chain.">
+    From your Ping sync chain
   </message>
   <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_FROM_DEVICE_CHECKBOX_LABEL" desc="The label for the checkbox that represents whether the user wishes to remove a password from the device.">
     From this device
@@ -891,21 +891,21 @@
     See and manage passwords saved on this device
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_MANAGE_PASSWORDS_PLAINTEXT" desc="Shown in the passwords section of settings. Descriptive text to inform that passwords can be accessed online.">
-    View and manage saved passwords in your Brave sync chain
+    View and manage saved passwords in your Ping sync chain
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_OPT_IN_ACCOUNT_STORAGE_BODY" desc="Description before a button in the passwords section of settings which triggers opt in to the account-scoped password storage.">
-    You can also show passwords from your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph> here
+    You can also show passwords from your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Ping sync chain<ph name="END_LINK">&lt;/a&gt;</ph> here
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_OPT_IN_ACCOUNT_STORAGE_LABEL" desc="Label for a button in the passwords section of settings which triggers opt in to the account-scoped password storage.">
     Show
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_OPT_OUT_ACCOUNT_STORAGE_BODY" desc="Description before a button in the passwords section of settings which triggers opt out of the account-scoped password storage.">
-    Showing passwords from your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
+    Showing passwords from your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Ping sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_OPT_OUT_ACCOUNT_STORAGE_LABEL" desc="Label for a button in the passwords section of settings which triggers opt out of the account-scoped password storage.">
     Remove from device
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_MENU_ITEM" desc="A menu item in the More Actions menu above the password list in Brave's settings. Selecting this action will open a dialog, through which the user can import passwords.">
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_MENU_ITEM" desc="A menu item in the More Actions menu above the password list in Ping's settings. Selecting this action will open a dialog, through which the user can import passwords.">
     Import passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_TITLE" desc="The title of a dialog, which offers the ability for the user to import passwords into Password Manager.">
@@ -920,27 +920,27 @@
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_ERROR_TITLE" desc="The title of a dialog, which offers the ability for the user to import passwords into Password Manager. Shown when no passwords were imported due to some error.">
     Something went wrong
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_CHOOSE_FILE" desc="A button in the dialog for importing passwords from Brave. Passwords will be imported from the file, which the user will be asked to choose after initiating this action.">
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_CHOOSE_FILE" desc="A button in the dialog for importing passwords from Ping. Passwords will be imported from the file, which the user will be asked to choose after initiating this action.">
     Select file
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_DESCRIPTION_ACCOUNT_STORE_USERS" desc="Text shown to the account store users (who has the option to store passwords localy or in Brave Password manager) on the dialog for importing passwords, before the user has chosen the file to import passwords from.">
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_DESCRIPTION_ACCOUNT_STORE_USERS" desc="Text shown to the account store users (who has the option to store passwords localy or in Ping Password manager) on the dialog for importing passwords, before the user has chosen the file to import passwords from.">
     To import passwords, select a CSV file
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_DESCRIPTION_SYNCING_USERS" desc="Text shown to the signed in user (whose passwords are synced with Brave Password Manager) on the dialog for importing passwords, before the user has chosen the file to import passwords from.">
-    To import passwords to Brave Password Manager for <ph name="USER_EMAIL"><ex>elisa.g.becket@gmail.com</ex>$1</ph>, select a CSV file
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_DESCRIPTION_SYNCING_USERS" desc="Text shown to the signed in user (whose passwords are synced with Ping Password Manager) on the dialog for importing passwords, before the user has chosen the file to import passwords from.">
+    To import passwords to Ping Password Manager for <ph name="USER_EMAIL"><ex>elisa.g.becket@gmail.com</ex>$1</ph>, select a CSV file
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_DESCRIPTION_SIGNEDOUT_USERS" desc="Text shown to the user (whose passwords are store locally on their device) on the dialog for importing passwords, before the user has chosen the file to import passwords from.">
-    To import passwords to Brave Password Manager on this device, select a CSV file
+    To import passwords to Ping Password Manager on this device, select a CSV file
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_SUCCESS_SUMMARY_DEVICE" desc="Text on the dialog for importing passwords that shows how many passwords have been stored on the user device, after the user has chosen the file to import passwords from.">
     {NUM_PASSWORDS, plural,
-     =1 {1 password imported to Brave Password Manager on this device}
-     other {{NUM_PASSWORDS} passwords imported to Brave Password Manager on this device}}
+     =1 {1 password imported to Ping Password Manager on this device}
+     other {{NUM_PASSWORDS} passwords imported to Ping Password Manager on this device}}
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_SUCCESS_SUMMARY_ACCOUNT" desc="Text on the dialog for importing passwords that shows how many passwords have been saved to Brave Password Manager, after the user has chosen the file to import passwords from.">
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_SUCCESS_SUMMARY_ACCOUNT" desc="Text on the dialog for importing passwords that shows how many passwords have been saved to Ping Password Manager, after the user has chosen the file to import passwords from.">
     {NUM_PASSWORDS, plural,
-     =1 {1 password imported to Brave Password Manager for <ph name="USER_EMAIL"><ex>elisa.g.becket@gmail.com</ex>$1</ph>}
-     other {{NUM_PASSWORDS} passwords imported to Brave Password Manager for <ph name="USER_EMAIL"><ex>elisa.g.becket@gmail.com</ex>$1</ph>}}
+     =1 {1 password imported to Ping Password Manager for <ph name="USER_EMAIL"><ex>elisa.g.becket@gmail.com</ex>$1</ph>}
+     other {{NUM_PASSWORDS} passwords imported to Ping Password Manager for <ph name="USER_EMAIL"><ex>elisa.g.becket@gmail.com</ex>$1</ph>}}
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_STORE_PICKER_ACCESSIBLE_NAME" desc="Accessible name of destination dropdown in the passwords import dialog">
     Select where to import your passwords
@@ -989,8 +989,8 @@
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_LONG_NOTE" desc="An error message for a row that wasn't imported, because the provided note exceeds the length limit. It is shown on the dialog for importing passwords if some passwords weren't imported.">
     Note is more than 1000 characters
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_CONFLICT_ACCOUNT" desc="An error message for a row that wasn't imported, because the provided credential is already stored in their Brave Password Manager. It is shown on the dialog for importing passwords if some passwords weren't imported.">
-    A password for this account is already saved to your Brave Password Manager (<ph name="USER_EMAIL"><ex>elisa.g.becket@gmail.com</ex>$1</ph>)
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_CONFLICT_ACCOUNT" desc="An error message for a row that wasn't imported, because the provided credential is already stored in their Ping Password Manager. It is shown on the dialog for importing passwords if some passwords weren't imported.">
+    A password for this account is already saved to your Ping Password Manager (<ph name="USER_EMAIL"><ex>elisa.g.becket@gmail.com</ex>$1</ph>)
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_CONFLICT_DEVICE" desc="An error message for a row that wasn't imported, because the provided credential is already stored on their device. It is shown on the dialog for importing passwords if some passwords weren't imported.">
     A password for this account is already saved on this device
@@ -1006,7 +1006,7 @@
      other {{NUM_PASSWORDS} existing passwords found}}
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_CONFLICTS_DESCRIPTION" desc="Text shown to the user on the dialog for import passwords, in case some conflicts were found during the import process.">
-    You already have passwords for these accounts in your <ph name="BRAND">$1<ex>Brave Password Manager</ex></ph>. If you choose to import one of the passwords below, it will replace the existing one.
+    You already have passwords for these accounts in your <ph name="BRAND">$1<ex>Ping Password Manager</ex></ph>. If you choose to import one of the passwords below, it will replace the existing one.
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_CANCEL" desc="A button in the dialog for importing passwords into Password Manager. By clicking the button, the import will be canceled and the dialog will be closed.">
     Cancel import
@@ -1020,22 +1020,22 @@
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_ALREADY_ACTIVE" desc="Message is shown on the dialog for importing passwords if there is the import process is already running in another tab.">
     You're already importing passwords in another tab
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS_EXPORT_MENU_ITEM" desc="A menu item in the More Actions menu above the password list in Brave's settings. Selecting this action will open a dialog, through which the user can export their passwords outside of Brave.">
+  <message name="IDS_SETTINGS_PASSWORDS_EXPORT_MENU_ITEM" desc="A menu item in the More Actions menu above the password list in Ping's settings. Selecting this action will open a dialog, through which the user can export their passwords outside of Ping.">
     Export passwords
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS_EXPORT_TITLE" desc="The title of a dialog, which offers to the user the ability to export passwords they've saved with Brave.">
+  <message name="IDS_SETTINGS_PASSWORDS_EXPORT_TITLE" desc="The title of a dialog, which offers to the user the ability to export passwords they've saved with Ping.">
     Export passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_EXPORT_DESCRIPTION" desc="Text shown to the user on the dialog for exporting passwords, before any passwords have been exported.">
     Your passwords will be visible to anyone who can see the exported file.
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS_EXPORT" desc="A button in the dialog for exporting passwords from Brave. A password list will be written to a destination, which the user will be asked to choose after initiating this action.">
+  <message name="IDS_SETTINGS_PASSWORDS_EXPORT" desc="A button in the dialog for exporting passwords from Ping. A password list will be written to a destination, which the user will be asked to choose after initiating this action.">
     Export passwords
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS_EXPORT_TRY_AGAIN" desc="A button in the dialog for exporting passwords from Brave. The action is to attempt to export the passwords again. A password list will be written to a destination, which the user will be asked to choose after initiating this action.">
+  <message name="IDS_SETTINGS_PASSWORDS_EXPORT_TRY_AGAIN" desc="A button in the dialog for exporting passwords from Ping. The action is to attempt to export the passwords again. A password list will be written to a destination, which the user will be asked to choose after initiating this action.">
     Try again
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS_EXPORTING_TITLE" desc="The title of a dialog for exporting passwords. This title is shown while Brave is performing the export and the user should wait.">
+  <message name="IDS_SETTINGS_PASSWORDS_EXPORTING_TITLE" desc="The title of a dialog for exporting passwords. This title is shown while Ping is performing the export and the user should wait.">
     Exporting passwords...
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_EXPORTING_FAILURE_TITLE" desc="The title to a dialog, which is shown if exporting passwords to a folder has failed.">
@@ -1047,7 +1047,7 @@
   <message name="IDS_SETTINGS_PASSWORDS_EXPORTING_FAILURE_TIP_ENOUGH_SPACE" desc="Message that is shown when exporting passwords has failed. This is part of a list of things the user can try to resolve the problem. This advice implies that there isn't enough space on the disk for the new file to be written.">
     Make sure there is enough space on your device
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS_EXPORTING_FAILURE_TIP_ANOTHER_FOLDER" desc="Message that is shown when exporting passwords has failed. This is part of a list of things the user can try to resolve the problem. This advice implies that Brave couldn't write into the specified folder.">
+  <message name="IDS_SETTINGS_PASSWORDS_EXPORTING_FAILURE_TIP_ANOTHER_FOLDER" desc="Message that is shown when exporting passwords has failed. This is part of a list of things the user can try to resolve the problem. This advice implies that Ping couldn't write into the specified folder.">
     Export your passwords to another folder
   </message>
   <message name="IDS_SETTINGS_PASSWORD_ROW_MORE_ACTIONS" desc="The ARIA (accessibility) message for the More Actions button, which sits in every row of the password list. It opens a menu with a list of actions, which apply to the username-password pair on this row.">
@@ -1066,10 +1066,10 @@
     On-device encryption
   </message>
   <message name="IDS_SETTINGS_TRUSTED_VAULT_BANNER_SUB_LABEL_OFFER_OPT_IN" desc="Sub-label for the on-device encryption banner in settings, when the user is being offered to opt in.">
-    For added safety, encrypt passwords on your device before they‘re saved to Brave Password Manager
+    For added safety, encrypt passwords on your device before they‘re saved to Ping Password Manager
   </message>
   <message name="IDS_SETTINGS_TRUSTED_VAULT_BANNER_SUB_LABEL_OPTED_IN" desc="Sub-label for the on-device encryption banner in settings, when the user is already opted in.">
-    Your passwords are encrypted on your device before they‘re saved to Brave Password Manager
+    Your passwords are encrypted on your device before they‘re saved to Ping Password Manager
   </message>
 
   <if expr="is_win or is_macosx">
@@ -1083,13 +1083,13 @@
       Passkeys
     </message>
   <if expr="is_win">
-    <message name="IDS_AUTOFILL_MANAGE_PASSKEYS_SUB_TITLE_WIN" desc="A warning on a page where the user can see and delete passkeys saved on their computer. It communicates that the passkeys shown are stored in Windows Hello, which is a Microsoft product name, and not in the user's Brave account. For consistency, the word 'passkey' is in the glossary with translations already suggested.">
-      These passkeys are saved to Windows Hello on this computer. They aren't saved to your Brave sync chain.
+    <message name="IDS_AUTOFILL_MANAGE_PASSKEYS_SUB_TITLE_WIN" desc="A warning on a page where the user can see and delete passkeys saved on their computer. It communicates that the passkeys shown are stored in Windows Hello, which is a Microsoft product name, and not in the user's Ping account. For consistency, the word 'passkey' is in the glossary with translations already suggested.">
+      These passkeys are saved to Windows Hello on this computer. They aren't saved to your Ping sync chain.
     </message>
   </if>
   <if expr="is_macosx">
     <message name="IDS_AUTOFILL_MANAGE_PASSKEYS_SUB_TITLE_MAC" desc="A warning on a page where the user can see and delete passkeys saved on their computer. For consistency, the word 'passkey' is in the glossary with translations already suggested.">
-      These passkeys are only saved on this device. They aren't saved to your Brave sync chain.
+      These passkeys are only saved on this device. They aren't saved to your Ping sync chain.
     </message>
   </if>
     <message name="IDS_AUTOFILL_MANAGE_PASSKEYS_SEARCH" desc="The label on a field that a user can use to search within a list of passkeys. For consistency, the word 'passkey' is in the glossary with translations already suggested.">
@@ -1101,7 +1101,7 @@
     <message name="IDS_AUTOFILL_MANAGE_PASSKEYS_DELETE_CONFIRMATION_DESCRIPTION" desc="The body of a dialog that asks the user to confirm the deletion of a passkey. For consistency, the word 'passkey' is in the glossary with translations already suggested.">
       Are you sure you want to delete this passkey?
     </message>
-    <message name="IDS_AUTOFILL_MANAGE_PASSKEYS_CANNOT_DELETE_TITLE" desc="The title of a dialog shown when Brave fails to delete a passkey. For consistency, the word 'passkey' is in the glossary with translations already suggested.">
+    <message name="IDS_AUTOFILL_MANAGE_PASSKEYS_CANNOT_DELETE_TITLE" desc="The title of a dialog shown when Ping fails to delete a passkey. For consistency, the word 'passkey' is in the glossary with translations already suggested.">
       Can't delete passkey
     </message>
     <message name="IDS_AUTOFILL_MANAGE_PASSKEYS_CANNOT_DELETE_BODY" desc="The body of a dialog that explains that we cannot delete certain passkeys on Windows which are involved when the user signs into the Windows computer itself. For consistency, the word 'passkey' is in the glossary with translations already suggested.">
@@ -1136,7 +1136,7 @@
     <message name="IDS_SETTINGS_DEFAULT_BROWSER" desc="Name of the Default Browser page, which allows users to set which browser will open .html files within the OS.">
       Default browser
     </message>
-    <message name="IDS_SETTINGS_DEFAULT_BROWSER_MAKE_DEFAULT_BUTTON" desc="Text of the button used to make Brave the default browser on the user's system.">
+    <message name="IDS_SETTINGS_DEFAULT_BROWSER_MAKE_DEFAULT_BUTTON" desc="Text of the button used to make Ping the default browser on the user's system.">
       Make default
     </message>
   </if>
@@ -1394,16 +1394,16 @@
     Time range
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC" desc="Description in the footer of the Clear Browsing Data dialog when the user is syncing.">
-    To clear browsing data from this device only, while keeping it in your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>sign out<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from this device only, while keeping it in your Ping sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>sign out<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC_ERROR" desc="Description in the footer of the Clear Browsing Data dialog when there is a sync error.">
-    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>visit sync settings<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from all of your synced devices and your Ping sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>visit sync settings<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC_PASSPHRASE_ERROR" desc="Description in the footer of the Clear Browsing Data dialog when there is a sync passphrase error.">
-    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>enter your passphrase<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from all of your synced devices and your Ping sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>enter your passphrase<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC_PAUSED" desc="Description in the footer of the Clear Browsing Data dialog when sync is paused.">
-    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>sign in<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from all of your synced devices and your Ping sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>sign in<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY" desc="Checkbox for deleting Browsing History">
     Browsing history
@@ -1411,14 +1411,14 @@
   <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites.">
     Signs you out of most sites.
   </message>
-  <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_WITH_EXCEPTION" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites but your Brave sign in will stay.">
-    Signs you out of most sites. You'll stay signed in to your Brave sync chain so your synced data can be cleared.
+  <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_WITH_EXCEPTION" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites but your Ping sign in will stay.">
+    Signs you out of most sites. You'll stay signed in to your Ping sync chain so your synced data can be cleared.
   </message>
-  <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_MAIN_PROFILE" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites but your Brave sign in will stay.">
-    Signs you out of most sites. You won't be signed out of your Brave sync chain.
+  <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_MAIN_PROFILE" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites but your Ping sign in will stay.">
+    Signs you out of most sites. You won't be signed out of your Ping sync chain.
   </message>
-  <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_SUPERVISED_PROFILE" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the the child user out of most websites but your Brave account and Family Link settings will stay .">
-    Signs you out of most sites. You'll stay signed in to your Brave sync chain so your Family Link settings for Brave apply.
+  <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_SUPERVISED_PROFILE" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the the child user out of most websites but your Ping account and Family Link settings will stay .">
+    Signs you out of most sites. You'll stay signed in to your Ping sync chain so your Family Link settings for Ping apply.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY" desc="A subtext for the basic tab explaining browsing history.">
     Clears history, including in the search box
@@ -1426,16 +1426,16 @@
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SIGNED_IN_NO_LINK" desc="A description explaining from which devices history will be cleared.">
     Clears history from all synced devices
   </message>
-  <message name="IDS_SETTINGS_CLEAR_GOOGLE_SEARCH_HISTORY_GOOGLE_DSE" desc="A description explaining that search history and other forms of activity can be cleared through the Brave account.">
-    <ph name="BEGIN_LINK_SEARCH">&lt;a target="_blank" href="$1"&gt;</ph>Search history<ph name="END_LINK_SEARCH">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" href="$2"&gt;</ph>other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Brave sync chain when you're signed in. You can delete them anytime.
+  <message name="IDS_SETTINGS_CLEAR_GOOGLE_SEARCH_HISTORY_GOOGLE_DSE" desc="A description explaining that search history and other forms of activity can be cleared through the Ping account.">
+    <ph name="BEGIN_LINK_SEARCH">&lt;a target="_blank" href="$1"&gt;</ph>Search history<ph name="END_LINK_SEARCH">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" href="$2"&gt;</ph>other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Ping sync chain when you're signed in. You can delete them anytime.
   </message>
-  <message name="IDS_SETTINGS_CLEAR_GOOGLE_SEARCH_HISTORY_NON_GOOGLE_DSE" desc="A description explaining that other forms of activity can be cleared through the Brave account.">
-    <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" href="$1"&gt;</ph>Other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Brave sync chain when you're signed in. You can delete them anytime.
+  <message name="IDS_SETTINGS_CLEAR_GOOGLE_SEARCH_HISTORY_NON_GOOGLE_DSE" desc="A description explaining that other forms of activity can be cleared through the Ping account.">
+    <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" href="$1"&gt;</ph>Other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Ping sync chain when you're signed in. You can delete them anytime.
   </message>
-  <message name="IDS_SETTINGS_CLEAR_NON_GOOGLE_SEARCH_HISTORY_PREPOPULATED_DSE" desc="A description informing the user about the way to clear their search history when their Default Search Engine is not Brave.">
+  <message name="IDS_SETTINGS_CLEAR_NON_GOOGLE_SEARCH_HISTORY_PREPOPULATED_DSE" desc="A description informing the user about the way to clear their search history when their Default Search Engine is not Ping.">
     Your search engine is <ph name="DSE">$1<ex>Bing</ex></ph>. See their instructions for deleting your search history, if applicable.
   </message>
-  <message name="IDS_SETTINGS_CLEAR_NON_GOOGLE_SEARCH_HISTORY_NON_PREPOPULATED_DSE" desc="A description informing the user about the way to clear their search history when their Default Search Engine is not Brave.">
+  <message name="IDS_SETTINGS_CLEAR_NON_GOOGLE_SEARCH_HISTORY_NON_PREPOPULATED_DSE" desc="A description informing the user about the way to clear their search history when their Default Search Engine is not Ping.">
     See your search engine's instructions for deleting your search history, if applicable
   </message>
   <message name="IDS_SETTINGS_CLEAR_DOWNLOAD_HISTORY" desc="Checkbox for deleting Download History">
@@ -1534,7 +1534,7 @@
     Remove
   </message>
   <message name="IDS_SETTINGS_ON_STARTUP_PAGE_TOOLTIP" desc="A tooltip to display for a page in the list of pages to open on startup">
-    <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - <ph name="PAGE_URL">$2<ex>http://www.google.com/</ex></ph>
+    <ph name="PAGE_TITLE">$1<ex>Ping</ex></ph> - <ph name="PAGE_URL">$2<ex>http://www.google.com/</ex></ph>
   </message>
   <message name="IDS_SETTINGS_INVALID_URL" desc="Error message explaining that the URL being entered is invalid.">
     Invalid URL
@@ -1649,10 +1649,10 @@
       Offer to translate pages in this language
     </message>
     <message name="IDS_SETTINGS_LANGUAGES_OFFER_TO_ENABLE_TRANSLATE" desc="The label of the check-box that enables the prompt to translate a page.">
-      Use Brave Translate
+      Use Ping Translate
     </message>
     <message name="IDS_SETTINGS_LANGUAGES_OFFER_TO_ENABLE_TRANSLATE_SUBLABEL" desc="The sublabel of the check-box that enables the prompt to translate a page.">
-      When on, Brave Translate will offer to translate sites into your preferred language. It can also automatically translate sites.
+      When on, Ping Translate will offer to translate sites into your preferred language. It can also automatically translate sites.
     </message>
     <message name="IDS_SETTINGS_LANGUAGES_TRANSLATE_TARGET" desc="The label under a language's name in a list of enabled languages indicating that pages will be translated to this language.">
       This language is used when translating pages
@@ -1673,7 +1673,7 @@
       Remove <ph name="LANGUAGE_NAME">$1<ex>Swahili</ex></ph> from never offer translation languages
     </message>
     <message name="IDS_SETTINGS_TRANSLATE_PAGE_TITLE" desc="Name of the settings page which displays translate preferences.">
-      Brave Translate
+      Ping Translate
     </message>
     <message name="IDS_SETTINGS_TARGET_TRANSLATE_LABEL" desc="Label for the element to select the target language">
       Translate into this language
@@ -1690,17 +1690,17 @@
     <message name="IDS_SETTINGS_LANGUAGES_NEVER_TRANSLATE_ADD_ARIA_LABEL" desc="Text read by screen readers when focusing on the 'Add Languages' button for the don't offer to translate language list. When this button is activated a dialog for selecting and adding multiple languages is shown. This text is only announced by screen readers and is not visible in the UI.">
       Add languages to never offer translation
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_TITLE" desc="Title for the section containing all the options for spell check settings. The options include picking between using the system's spell check or using Brave's web service and a list of the enabled languages which support spell checking.">
+    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_TITLE" desc="Title for the section containing all the options for spell check settings. The options include picking between using the system's spell check or using Ping's web service and a list of the enabled languages which support spell checking.">
       Spell check
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_BASIC_LABEL" desc="Label for a type of spell check that only relies on the local built-in spell check and does not rely on sending data to Brave for suggestions.">
+    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_BASIC_LABEL" desc="Label for a type of spell check that only relies on the local built-in spell check and does not rely on sending data to Ping for suggestions.">
       Basic spell check
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_LABEL" desc="Label for a type of spell check that sends the text the user types to Brave for spelling suggestions.">
+    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_LABEL" desc="Label for a type of spell check that sends the text the user types to Ping for spelling suggestions.">
       Enhanced spell check
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_DESCRIPTION" desc="Description for the type of spell check that sends the text the user types to Brave for spelling suggestions. It is important that it is communicated that the text the user types in the browser will be sent to Brave.">
-      Uses the same spell checker that’s used in Brave search. Text you type in the browser is sent to Brave.
+    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_DESCRIPTION" desc="Description for the type of spell check that sends the text the user types to Ping for spelling suggestions. It is important that it is communicated that the text the user types in the browser will be sent to Ping.">
+      Uses the same spell checker that’s used in Ping search. Text you type in the browser is sent to Ping.
     </message>
     <message name="IDS_SETTINGS_LANGUAGES_OFFER_TO_ENABLE_SPELL_CHECK" desc="The label of the toggle that enables the spell check service.">
       Check for spelling errors when you type text on web pages
@@ -1743,7 +1743,7 @@
         Spell check dictionary download failed.
       </message>
       <message name="IDS_SETTINGS_LANGUAGES_DICTIONARY_DOWNLOAD_FAILED_HELP" desc="Error message when spell dictionary download fails more than once possibly due to a network policy or configuration.">
-        Please check with your network administrator to make sure that the firewall is not blocking downloads from Brave servers.
+        Please check with your network administrator to make sure that the firewall is not blocking downloads from Ping servers.
       </message>
     </if>
   </if>
@@ -1770,13 +1770,13 @@
   <message name="IDS_SETTINGS_PRELOAD_PAGES_SUMMARY" desc="Summary for a section in Settings that controls pages preloading and informs the user about the data shared by this feature.">
     Choose whether to preload pages
   </message>
-  <message name="IDS_SETTINGS_PRELOAD_PAGES_NO_PRELOADING_TITLE" desc="Name of the no preloading option for the Preload Pages settings page. This option disables preloading pages that Brave believes the user is likely to navigate to.">
+  <message name="IDS_SETTINGS_PRELOAD_PAGES_NO_PRELOADING_TITLE" desc="Name of the no preloading option for the Preload Pages settings page. This option disables preloading pages that Ping believes the user is likely to navigate to.">
     No preloading
   </message>
   <message name="IDS_SETTINGS_PRELOAD_PAGES_NO_PRELOADING_SUMMARY" desc="Short explanation of what the no preloading mode does in the Preload Pages setting.">
     Pages load only after you open them.
   </message>
-  <message name="IDS_SETTINGS_PRELOAD_PAGES_STANDARD_PRELOADING_TITLE" desc="Name of the standard preloading option for the Preload Pages settings page. This option enables preloading pages that Brave believes the user is likely to navigate to.">
+  <message name="IDS_SETTINGS_PRELOAD_PAGES_STANDARD_PRELOADING_TITLE" desc="Name of the standard preloading option for the Preload Pages settings page. This option enables preloading pages that Ping believes the user is likely to navigate to.">
     Standard preloading
   </message>
   <message name="IDS_SETTINGS_PRELOAD_PAGES_STANDARD_PRELOADING_SUMMARY" desc="Short explanation of what the standard preloading mode does in the Preload Pages setting.">
@@ -1786,25 +1786,25 @@
     Browsing and searching is faster.
   </message>
   <message name="IDS_SETTINGS_PRELOAD_PAGES_STANDARD_PRELOADING_WHEN_ON_BULLET_TWO" desc="Second bullet point in the standard preloading and when on column. Informs the user about what the standard preloading setting does.">
-    Brave preloads pages you're likely to visit, so that they load more quickly when you visit them.
+    Ping preloads pages you're likely to visit, so that they load more quickly when you visit them.
   </message>
-  <message name="IDS_SETTINGS_PRELOAD_PAGES_EXTENDED_PRELOADING_TITLE" desc="Name of the extended preloading option for the Preload Pages settings page. This option enables more extensive preloading of pages that Brave believes the user is likely to navigate to.">
+  <message name="IDS_SETTINGS_PRELOAD_PAGES_EXTENDED_PRELOADING_TITLE" desc="Name of the extended preloading option for the Preload Pages settings page. This option enables more extensive preloading of pages that Ping believes the user is likely to navigate to.">
     Extended preloading
   </message>
   <message name="IDS_SETTINGS_PRELOAD_PAGES_EXTENDED_PRELOADING_SUMMARY" desc="Subtitle for Preload Pages extended preloading mode. Informs the user about which preloading setting is being described on this page.">
-    More pages are preloaded. Pages may be preloaded through Brave servers when requested by other sites.
+    More pages are preloaded. Pages may be preloaded through Ping servers when requested by other sites.
   </message>
   <message name="IDS_SETTINGS_PRELOAD_PAGES_EXTENDED_PRELOADING_WHEN_ON_BULLET_ONE" desc="First bullet point in the extended preloading and when on column. Informs the user about what the extended preloading setting does.">
     Browsing and searching is faster than standard preloading.
   </message>
   <message name="IDS_SETTINGS_PRELOAD_PAGES_EXTENDED_PRELOADING_WHEN_ON_BULLET_TWO" desc="Second bullet point in the extended preloading and when on column. Informs the user about what the extended preloading setting does.">
-    Brave preloads even more pages that you're likely to visit, so that they load more quickly when you visit them.
+    Ping preloads even more pages that you're likely to visit, so that they load more quickly when you visit them.
   </message>
   <message name="IDS_SETTINGS_PRELOAD_PAGES_EXTENDED_PRELOADING_THINGS_TO_CONSIDER_BULLET_TWO" desc="Second bullet point in the extended preloading and things to consider column. Informs the user about what the extended preloading setting does.">
-    When a site asks to privately preload links on their page, Brave uses Brave servers. This hides your identity from the preloaded site, but Brave learns what sites get preloaded.
+    When a site asks to privately preload links on their page, Ping uses Ping servers. This hides your identity from the preloaded site, but Ping learns what sites get preloaded.
   </message>
   <message name="IDS_SETTINGS_PRELOAD_PAGES_THINGS_TO_CONSIDER_BULLET_ONE" desc="First bullet point in the things to consider column. Informs the user about what the preloading setting does.">
-    If you allow cookies, Brave may use them when preloading.
+    If you allow cookies, Ping may use them when preloading.
   </message>
 
   <!-- Privacy Page -->
@@ -1843,11 +1843,11 @@
   <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_HEADER" desc="The header used for the section that informs users of the anti-abuse features.">
     When on
   </message>
-  <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_ONE" desc="A description that informs users that Brave saves a small amount of data when the anti-abuse features are enabled.">
-    A site you visit can save a small amount of info with Brave, mainly to validate you're not a bot
+  <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_ONE" desc="A description that informs users that Ping saves a small amount of data when the anti-abuse features are enabled.">
+    A site you visit can save a small amount of info with Ping, mainly to validate you're not a bot
   </message>
   <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_TWO" desc="A description that informs users how the anti-abuse features work.">
-    As you keep browsing, sites can check with Brave and verify with a previous site you've visited that you're likely a real profile
+    As you keep browsing, sites can check with Ping and verify with a previous site you've visited that you're likely a real profile
   </message>
   <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_THREE" desc="A description that informs users how their browsing could be helped by the anti-abuse features.">
     Browsing is faster because a site is less likely to ask you to verify you're a real profile
@@ -1882,7 +1882,7 @@
     More
   </message>
     <!-- Privacy Sandbox Settings 3 strings -->
-  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_TRIALS_TITLE" desc="The title of the settings page on which the user can find all Privacy Sandbox trials. When launched, this page will appear at chrome://settings/privacySandbox. To get there: 1) go to Brave settings 2) From the main menu (top left of the page) choose “Security and privacy” 3) At the bottom of the page, choose “Privacy Sandbox” There are 3 cards on this page that are presented as features. Only the first includes controls the user can manage, but we want to convey that Privacy Sandbox includes all of the things on this page.">
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_TRIALS_TITLE" desc="The title of the settings page on which the user can find all Privacy Sandbox trials. When launched, this page will appear at chrome://settings/privacySandbox. To get there: 1) go to Ping settings 2) From the main menu (top left of the page) choose “Security and privacy” 3) At the bottom of the page, choose “Privacy Sandbox” There are 3 cards on this page that are presented as features. Only the first includes controls the user can manage, but we want to convey that Privacy Sandbox includes all of the things on this page.">
     Trials
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_TRIALS_SUMMARY" desc="The page description that appears beneath the page title. * “can” is important: When trials ara on, any site the user visits may or may not be using one of the trial APIs. The chances that the user is in an active trial on any given page are low. * “less cross-site tracking”:  We can’t promise the complete elimination of cross-site tracking. Privacy Sandbox is about blocking cross-site tracking as much as possible, but sites can still use fingerprinting to try and identify users from one site to the next.">
@@ -1891,10 +1891,10 @@
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_TRIALS_SUMMARY_LEARN_MORE" desc="Part of the Trials section description that can be interacted with to open up the dialog to learn more about the Privacy Sandbox Trials.">
     About Browser-based ad personalization
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_PERSONALIZATION_TITLE" desc="The title of card 1 of 3. * “Browser-based ad personalization” is the name of our setting. “Ad personalization” would be an appropriate name as well, but we didn’t want the user to confuse this new setting with the Brave sync chain level setting of that name (see https://adssettings.google.com/authenticated).">
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_PERSONALIZATION_TITLE" desc="The title of card 1 of 3. * “Browser-based ad personalization” is the name of our setting. “Ad personalization” would be an appropriate name as well, but we didn’t want the user to confuse this new setting with the Ping sync chain level setting of that name (see https://adssettings.google.com/authenticated).">
     Browser-based ad personalization
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_PERSONALIZATION_SUMMARY" desc="The description of card 1 of 3. * “browsing history”: we define this as “a record of sites you’ve visited using Brave on this device.” By “recent”, we mean the last 3 weeks (also defined later in the UI). * “affects the ads you see”: We think we’re stating the obvious. The ads the user sees are affected by the things they do online, like browsing the web.">
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_PERSONALIZATION_SUMMARY" desc="The description of card 1 of 3. * “browsing history”: we define this as “a record of sites you’ve visited using Ping on this device.” By “recent”, we mean the last 3 weeks (also defined later in the UI). * “affects the ads you see”: We think we’re stating the obvious. The ads the user sees are affected by the things they do online, like browsing the web.">
     Your browsing history affects the ads you see
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_MEASUREMENT_TITLE" desc="The title of card 2 of 3. * The title of a Privacy Sandbox API used by advertisers to measure the effectiveness of ads.">
@@ -1909,10 +1909,10 @@
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_SPAM_AND_FRAUD_SUMMARY" desc="The description of card 3 of 3. * “help”: This API is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players.">
     Help sites fight fraud and distinguish bots from profiles
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_TITLE" desc="Title of a page The page is broken up into two sections because there are two APIs a website can use in order to target ads: the Topics API and the FLEDGE API. There is some friction between the page title and the name of the control. The name of the control is “Browser-based ad personalization”. (We wanted to use the simpler “Ad personalization” but we need to distinguish this Brave setting from the Brave sync chain setting (https://adssettings.google.com/authenticated)). The page should ideally read “About Browser-base ad personalization” but we didn’t want the title to wrap to a new line, so we shortened it. But the two sections on this page describe both ways a site can target ads to the user if the user is part of trials (which would mean that “Browser-based ad personalization” is on for them).">
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_TITLE" desc="Title of a page The page is broken up into two sections because there are two APIs a website can use in order to target ads: the Topics API and the FLEDGE API. There is some friction between the page title and the name of the control. The name of the control is “Browser-based ad personalization”. (We wanted to use the simpler “Ad personalization” but we need to distinguish this Ping setting from the Ping sync chain setting (https://adssettings.google.com/authenticated)). The page should ideally read “About Browser-base ad personalization” but we didn’t want the title to wrap to a new line, so we shortened it. But the two sections on this page describe both ways a site can target ads to the user if the user is part of trials (which would mean that “Browser-based ad personalization” is on for them).">
     About Browser-based ad personalization
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_FLEDGE_TITLE" desc="FLEDGE API A sub title that describes the second of 2 ways a site can get info from Brave in order to target ads to the user.">
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_FLEDGE_TITLE" desc="FLEDGE API A sub title that describes the second of 2 ways a site can get info from Ping in order to target ads to the user.">
     Sites you visit that define your interests
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_DATA_TYPES" desc="Title of the data types subsection of the dialog to learn more about ad personalization.">
@@ -1924,7 +1924,7 @@
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_DATA_MANAGEMENT" desc="Title of the data management subsection of the dialog to learn more about ad personalization.">
     How you can manage your data:
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_FLEDGE_DATA_MANAGEMENT" desc="FLEDGE API Bullet 3 of 3 that appear beneath the “Sites you visit that define your interests” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “How you can manage your data:” is bold and serves as a label to help profiles skimming the page. * “To protect your privacy”: Today, most data is kept for long periods of time. This new Topics API doesn’t retain estimated topics for more than 3 weeks. The only reason for this feature is to protect the user’s privacy. * “auto”: isn’t strictly necessary, but it conveys that this feature is an ongoing part of the service. This isn’t describing, for example, a one-time deletion. * “older than 4 weeks”: We’re trying to convey a rolling delete. Imagine a user opens a browser for the very first time. As the user browses, sites can store info with Brave for up to 4 weeks. So in week 1, the user visits site A. When week 5 starts, site A is removed from the list of sites. * “a site you visit…”: If a user visits site A every week for months on end, that site will remain on the user’s list of sites for months on end. * “Or you can…”: Say a user strongly dislikes www.siteB.com. But that user might visit siteB.com as part of their job, or just to see how bad it really is. The user can stop siteB from defining interests for them. This block lasts indefinitely.">
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_FLEDGE_DATA_MANAGEMENT" desc="FLEDGE API Bullet 3 of 3 that appear beneath the “Sites you visit that define your interests” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “How you can manage your data:” is bold and serves as a label to help profiles skimming the page. * “To protect your privacy”: Today, most data is kept for long periods of time. This new Topics API doesn’t retain estimated topics for more than 3 weeks. The only reason for this feature is to protect the user’s privacy. * “auto”: isn’t strictly necessary, but it conveys that this feature is an ongoing part of the service. This isn’t describing, for example, a one-time deletion. * “older than 4 weeks”: We’re trying to convey a rolling delete. Imagine a user opens a browser for the very first time. As the user browses, sites can store info with Ping for up to 4 weeks. So in week 1, the user visits site A. When week 5 starts, site A is removed from the list of sites. * “a site you visit…”: If a user visits site A every week for months on end, that site will remain on the user’s list of sites for months on end. * “Or you can…”: Say a user strongly dislikes www.siteB.com. But that user might visit siteB.com as part of their job, or just to see how bad it really is. The user can stop siteB from defining interests for them. This block lasts indefinitely.">
     To protect your privacy, we auto-delete sites from the list that are older than 4 weeks. A site you visit again might appear on the list again. Or you can remove a site if you don’t want that site to ever define interests for you.
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_PERSONALIZATION_DIALOG_TITLE" desc="Card title and the name of a setting. This setting includes two APIs that are part of the Privacy Sandbox project: Topics API an FLEDGE API.">
@@ -1972,10 +1972,10 @@
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_SPAM_AND_FRAUD_DIALOG_TITLE" desc="Card title of the Spam &amp; Fraud section of the Privacy Sandbox settings.">
     Spam and fraud reduction
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_SPAM_AND_FRAUD_DIALOG_DESCRIPTION_1" desc="The first of 3 paragraphs on the spam &amp; fraud card. This is a behind-the-scenes upgrade to Brave. There aren’t any user controls or data to interact with, at least not yet. * “private state tokens”: explained in the next paragraph * “help”: This feature is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players.">
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_SPAM_AND_FRAUD_DIALOG_DESCRIPTION_1" desc="The first of 3 paragraphs on the spam &amp; fraud card. This is a behind-the-scenes upgrade to Ping. There aren’t any user controls or data to interact with, at least not yet. * “private state tokens”: explained in the next paragraph * “help”: This feature is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players.">
     Spam &amp; fraud reduction relies on private state tokens to help sites fight fraud and distinguish bots from profiles.
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_SPAM_AND_FRAUD_DIALOG_DESCRIPTION_1_TRIALS_OFF" desc="The first of 3 paragraphs on the spam &amp; fraud card. This is a behind-the-scenes upgrade to Brave. There aren’t any user controls or data to interact with, at least not yet. * “private state tokens”: explained in the next paragraph * “help”: This feature is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players.">
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_SPAM_AND_FRAUD_DIALOG_DESCRIPTION_1_TRIALS_OFF" desc="The first of 3 paragraphs on the spam &amp; fraud card. This is a behind-the-scenes upgrade to Ping. There aren’t any user controls or data to interact with, at least not yet. * “private state tokens”: explained in the next paragraph * “help”: This feature is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players.">
     When trials are on, Spam &amp; fraud reduction relies on private state tokens to help sites fight fraud and distinguish bots from profiles.
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_SPAM_AND_FRAUD_DIALOG_DESCRIPTION_2" desc="The second of 3 paragraphs on the spam &amp; fraud card. * “interaction”: is broad. It’s not just viewing a site but also how you interact with it, like by signing in * “Later”:  is important to convey the passage of time. We don’t want to convey how much time (it could be tiny). What’s important is that the user understands this is essentially a two-step process. A private state token is issued. Sometime in the future, when you visit a different site, that private state token might get used.">
@@ -1986,10 +1986,10 @@
   </message>
 
   <!-- Privacy Sandbox Settings 4 - Privacy & Security Page -->
-  <message name="IDS_SETTINGS_AD_PRIVACY_LINK_ROW_LABEL" desc="A new label that appears on the Privacy and security page (chrome://settings/privacy) between 'Third-party cookies' and 'Security'. This same text is used as a page title for the new Ad privacy section. This same pair of words is used in the Consent and Notice flow and must be consistently translated in both contexts. We mean privacy associated with ads, and not privacy from ads. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Brave settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
+  <message name="IDS_SETTINGS_AD_PRIVACY_LINK_ROW_LABEL" desc="A new label that appears on the Privacy and security page (chrome://settings/privacy) between 'Third-party cookies' and 'Security'. This same text is used as a page title for the new Ad privacy section. This same pair of words is used in the Consent and Notice flow and must be consistently translated in both contexts. We mean privacy associated with ads, and not privacy from ads. **** CONTEXT PRIVACY SANDBOX **** Ping’s Privacy Sandbox initiative 1) deprecates third-party cookies in Ping, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Ping settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
     Ad privacy
   </message>
-  <message name="IDS_SETTINGS_AD_PRIVACY_LINK_ROW_SUB_LABEL" desc="A string that describes 'Ad privacy', the label that appears just above it. For context, this new 'Ad privacy' / 'Customize the info...' pair of strings is similar to the existing 'Clear browsing data' / 'Clear history, cookies...' that you find on chrome://settings/privacy. * 'Customize': From our word list: 'This word describes user agency in refining their personalized recommendations, elements of the experience, or sometimes products'. Please don't confuse with 'personalize', which we reserve to mean: '...when Brave provides recommendations and other content for users based on their data'.  **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Brave settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
+  <message name="IDS_SETTINGS_AD_PRIVACY_LINK_ROW_SUB_LABEL" desc="A string that describes 'Ad privacy', the label that appears just above it. For context, this new 'Ad privacy' / 'Customize the info...' pair of strings is similar to the existing 'Clear browsing data' / 'Clear history, cookies...' that you find on chrome://settings/privacy. * 'Customize': From our word list: 'This word describes user agency in refining their personalized recommendations, elements of the experience, or sometimes products'. Please don't confuse with 'personalize', which we reserve to mean: '...when Ping provides recommendations and other content for users based on their data'.  **** CONTEXT PRIVACY SANDBOX **** Ping’s Privacy Sandbox initiative 1) deprecates third-party cookies in Ping, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Ping settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
     Customize the info used by sites to show you ads
   </message>
   <message name="IDS_SETTINGS_AD_PRIVACY_RESTRICTED_LINK_ROW_SUB_LABEL" desc="A string like `IDS_SETTINGS_AD_PRIVACY_LINK_ROW_SUB_LABEL` that describes 'Ad privacy', but shown when some ads APIs are disabled (in other words, the privacy sandbox is in a restricted state). Intended to focus on ad measurement capabilities.">
@@ -1997,19 +1997,19 @@
   </message>
 
   <!-- Privacy Sandbox Settings 4 - Ad Privacy Page -->
-  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_TITLE" desc="A new page title for a page that includes 3 settings. This same text appears as a label on chrome://settings/privacy between 'Third-party cookies' and 'Security'. This same pair of words is used in the Consent and Notice flow and must be consistently translated in both contexts. We mean privacy associated with ads, and not privacy from ads. **** CONTEXT PRIVACY SANDBOX **** Brave's Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Brave settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
+  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_TITLE" desc="A new page title for a page that includes 3 settings. This same text appears as a label on chrome://settings/privacy between 'Third-party cookies' and 'Security'. This same pair of words is used in the Consent and Notice flow and must be consistently translated in both contexts. We mean privacy associated with ads, and not privacy from ads. **** CONTEXT PRIVACY SANDBOX **** Ping's Privacy Sandbox initiative 1) deprecates third-party cookies in Ping, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Ping settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
     Ad privacy
   </message>
-  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_LABEL" desc="The name of a new setting. This setting is described to users in the Consent moment as: Ad topics help sites show you relevant ads while protecting your browsing history and identity. Brave can note topics of interest based on your recent browsing history. Later, a site you visit can ask Brave for relevant topics to personalize the ads you see. **** CONTEXT PRIVACY SANDBOX **** Brave's Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Brave settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
+  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_LABEL" desc="The name of a new setting. This setting is described to users in the Consent moment as: Ad topics help sites show you relevant ads while protecting your browsing history and identity. Ping can note topics of interest based on your recent browsing history. Later, a site you visit can ask Ping for relevant topics to personalize the ads you see. **** CONTEXT PRIVACY SANDBOX **** Ping's Privacy Sandbox initiative 1) deprecates third-party cookies in Ping, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Ping settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
     Ad topics
   </message>
-  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_SUB_LABEL_ENABLED" desc="Ad topics are derived from the user's browsing history. This help-center article explains 'browsing history' to users: https://support.google.com/chrome/answer/95589. This setting is described to users in the Consent moment as: Ad topics help sites show you relevant ads while protecting your browsing history and identity. Brave can note topics of interest based on your recent browsing history. Later, a site you visit can ask Brave for relevant topics to personalize the ads you see.">
+  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_SUB_LABEL_ENABLED" desc="Ad topics are derived from the user's browsing history. This help-center article explains 'browsing history' to users: https://support.google.com/chrome/answer/95589. This setting is described to users in the Consent moment as: Ad topics help sites show you relevant ads while protecting your browsing history and identity. Ping can note topics of interest based on your recent browsing history. Later, a site you visit can ask Ping for relevant topics to personalize the ads you see.">
     Based on your browsing history. This setting is on.
   </message>
-  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_SUB_LABEL_DISABLED" desc="Ad topics are derived from the user's browsing history. This help-center article explains 'browsing history' to users: https://support.google.com/chrome/answer/95589. This setting is described to users in the Consent moment as: Ad topics help sites show you relevant ads while protecting your browsing history and identity. Brave can note topics of interest based on your recent browsing history. Later, a site you visit can ask Brave for relevant topics to personalize the ads you see.">
+  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_SUB_LABEL_DISABLED" desc="Ad topics are derived from the user's browsing history. This help-center article explains 'browsing history' to users: https://support.google.com/chrome/answer/95589. This setting is described to users in the Consent moment as: Ad topics help sites show you relevant ads while protecting your browsing history and identity. Ping can note topics of interest based on your recent browsing history. Later, a site you visit can ask Ping for relevant topics to personalize the ads you see.">
     Based on your browsing history. This setting is off.
   </message>
-  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_LABEL" desc="The name of a new setting. This setting is described to users in the Notice moment as: Site-suggested ads help protect your browsing history and identity while enabling sites to show you relevant ads. Based on your activity, a site you visited can suggest related ads as you continue browsing. You can see a list of these sites and block the ones you don't want in settings. **** CONTEXT PRIVACY SANDBOX **** Brave's Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Brave settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
+  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_LABEL" desc="The name of a new setting. This setting is described to users in the Notice moment as: Site-suggested ads help protect your browsing history and identity while enabling sites to show you relevant ads. Based on your activity, a site you visited can suggest related ads as you continue browsing. You can see a list of these sites and block the ones you don't want in settings. **** CONTEXT PRIVACY SANDBOX **** Ping's Privacy Sandbox initiative 1) deprecates third-party cookies in Ping, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Ping settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
     Site-suggested ads
   </message>
   <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_SUB_LABEL_ENABLED" desc="A site can suggest ads for a user based on the user's activity on their site. This setting is described to users in the Notice moment as: Site-suggested ads help protect your browsing history and identity while enabling sites to show you relevant ads. Based on your activity, a site you visited can suggest related ads as you continue browsing. You can see a list of these sites and block the ones you don't want in settings.">
@@ -2018,7 +2018,7 @@
   <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_SUB_LABEL_DISABLED" desc="A site can suggest ads for a user based on the user's activity on their site. This setting is described to users in the Notice moment as: Site-suggested ads help protect your browsing history and identity while enabling sites to show you relevant ads. Based on your activity, a site you visited can suggest related ads as you continue browsing. You can see a list of these sites and block the ones you don't want in settings.">
     Based on your activity on a site. This setting is off.
   </message>
-  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_LABEL" desc="The name of a new setting. This setting is described to users in the Notice moment as: With ad measurement, limited types of data are shared between sites to measure the performance of their ads, such as the time of day an ad was shown to you. **** CONTEXT PRIVACY SANDBOX **** Brave's Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Brave settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
+  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_LABEL" desc="The name of a new setting. This setting is described to users in the Notice moment as: With ad measurement, limited types of data are shared between sites to measure the performance of their ads, such as the time of day an ad was shown to you. **** CONTEXT PRIVACY SANDBOX **** Ping's Privacy Sandbox initiative 1) deprecates third-party cookies in Ping, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Ping settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
     Ad measurement
   </message>
   <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_SUB_LABEL_ENABLED" desc="The name of a new setting. This setting is described to users in the Notice moment as: With ad measurement, limited types of data are shared between sites to measure the performance of their ads, such as the time of day an ad was shown to you.">
@@ -2030,8 +2030,8 @@
 
   <!-- Privacy Sandbox v4 - Topics Page -->
   <!-- Where possible, these strings have been unified on Desktop & Android in privacy_sandox_strings.grdp. The strings here either only appear on one platform, or have platform specific requirements, e.g. the format of placeholders, and so cannot be unified. For the latter case, they have corresponding _CANONICAL representations used when consent is recorded on either platform, and so they must stay in sync -->
-  <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION" desc="A description that appear beneath the 'Your topics' label. * 'You can block': There is a 'Block' button (or an X on mobile) that appears next to each topic in the list. * 'auto-deletes': this could also read 'Brave deletes...' We included the 'auto' to reinforce that this is part of a system and the deletion is done regularly.">
-    You can block topics you don’t want shared with sites. Brave also auto-deletes your topics older than 4 weeks.
+  <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION" desc="A description that appear beneath the 'Your topics' label. * 'You can block': There is a 'Block' button (or an X on mobile) that appears next to each topic in the list. * 'auto-deletes': this could also read 'Ping deletes...' We included the 'auto' to reinforce that this is part of a system and the deletion is done regularly.">
+    You can block topics you don’t want shared with sites. Ping also auto-deletes your topics older than 4 weeks.
   </message>
   <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION_LEARN_MORE_A11Y_LABEL" desc="Read by screen readers and associated with a 'learn more' button.">
     Learn more about ad topics
@@ -2040,33 +2040,33 @@
     Learn more
   </message>
   <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_REGION_A11Y_DESCRIPTION" desc="An explanation read by screen readers that describes the list of topics.">
-    List of topics estimated by Brave based on your recent browsing history
+    List of topics estimated by Ping based on your recent browsing history
   </message>
   <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCKED_TOPICS_REGION_A11Y_DESCRIPTION" desc="Read by screen readers to describe the list of blocked topics.">
     List of topics you blocked that you don't want shared with sites
   </message>
-  <message name="IDS_SETTINGS_TOPICS_PAGE_LEARN_MORE_BULLET_3" desc="Paragraph 3 of 3 on the Learn more about ad topics page. * 'auto-deletes': this could also read 'Brave deletes...' We included the 'auto' to reinforce that this is part of a system and the deletion is done regularly.">
-    Brave auto-deletes topics that are older than 4 weeks. As you keep browsing, a topic might reappear on the list. Or you can block topics you don’t want Brave to share with sites. Learn more about <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>managing your ad privacy in Brave.<ph name="END_LINK">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_LEARN_MORE_BULLET_3" desc="Paragraph 3 of 3 on the Learn more about ad topics page. * 'auto-deletes': this could also read 'Ping deletes...' We included the 'auto' to reinforce that this is part of a system and the deletion is done regularly.">
+    Ping auto-deletes topics that are older than 4 weeks. As you keep browsing, a topic might reappear on the list. Or you can block topics you don’t want Ping to share with sites. Learn more about <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>managing your ad privacy in Ping.<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_TOPICS_PAGE_FOOTER" desc="This footer helps the user understand that this setting is just one signal among others that affect whether this user sees personalized ads on a site. We define 'personalize' as 'when Brave provides recommendations and other content for users based on their data'. At a high level, there are 4 things that affect whether an ad is personalized in this context: * 'this setting' refers to the 'Ad topics' setting. The user is on this page. * 'Site-suggested ads': this is a link to the other new ad setting Brave is launching and that sites can use to personalize ads a user sees. * 'cookie settings': this is a link to the cookies control section in Brave settings. The Privacy Sandbox project deprecates third-party cookies, but it's a process, and we're launching new functionality that will replace important functionality of cookies. Until third-party cookies are deprecated, the two systems remain active in Brave. * 'site you're viewing personalizes ads': When a user engages with a site, Brave has no control over whether that site shows the user personalized ads. Imagine you visit www.interesting-site.com and they know a lot about you already based on previous visits. They can personalize content and ads to you if they like. They can use an ad-serving product, like Facebook or Brave Ads to deliver personalized ads. They can also use the new Privacy Sandbox APIs (if they so choose) in order to get more information about the user that could be helpful to them in order to personalize ads. Those 2 APIs (settings, from the user's perspective), are 'Ad topics' and 'Site-suggested ads'.">
+  <message name="IDS_SETTINGS_TOPICS_PAGE_FOOTER" desc="This footer helps the user understand that this setting is just one signal among others that affect whether this user sees personalized ads on a site. We define 'personalize' as 'when Ping provides recommendations and other content for users based on their data'. At a high level, there are 4 things that affect whether an ad is personalized in this context: * 'this setting' refers to the 'Ad topics' setting. The user is on this page. * 'Site-suggested ads': this is a link to the other new ad setting Ping is launching and that sites can use to personalize ads a user sees. * 'cookie settings': this is a link to the cookies control section in Ping settings. The Privacy Sandbox project deprecates third-party cookies, but it's a process, and we're launching new functionality that will replace important functionality of cookies. Until third-party cookies are deprecated, the two systems remain active in Ping. * 'site you're viewing personalizes ads': When a user engages with a site, Ping has no control over whether that site shows the user personalized ads. Imagine you visit www.interesting-site.com and they know a lot about you already based on previous visits. They can personalize content and ads to you if they like. They can use an ad-serving product, like Facebook or Ping Ads to deliver personalized ads. They can also use the new Privacy Sandbox APIs (if they so choose) in order to get more information about the user that could be helpful to them in order to personalize ads. Those 2 APIs (settings, from the user's perspective), are 'Ad topics' and 'Site-suggested ads'.">
     As you browse, whether an ad you see is personalized depends on this setting, <ph name="BEGIN_LINK1">&lt;a href="$1" target="_blank"&gt;</ph>Site-suggested ads<ph name="LINK_END1">&lt;/a&gt;</ph>, your <ph name="BEGIN_LINK2">&lt;a href="$2" target="_blank"&gt;</ph>cookie settings<ph name="LINK_END2">&lt;/a&gt;</ph>, and if the site you’re viewing personalizes ads
   </message>
 
   <!-- Privacy Sandbox Settings 4 - Fledge Page -->
-  <message name="IDS_SETTINGS_FLEDGE_PAGE_TITLE" desc="A page title and the name of a new setting. **** CONTEXT PRIVACY SANDBOX **** Brave's Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Brave settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_TITLE" desc="A page title and the name of a new setting. **** CONTEXT PRIVACY SANDBOX **** Ping's Privacy Sandbox initiative 1) deprecates third-party cookies in Ping, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Ping settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
     Site-suggested ads
   </message>
   <message name="IDS_SETTINGS_FLEDGE_PAGE_TOGGLE_LABEL" desc="The label for a new setting.">
     Site-suggested ads
   </message>
-  <message name="IDS_SETTINGS_FLEDGE_PAGE_TOGGLE_SUB_LABEL" desc="A description of the new Site-suggested ads setting. This text appears beneath the name of the new setting, 'Site-suggested ads', and is associated with the control that a user can turn on or off. * 'determine what you like': Based on your interaction with a site, that site can define your interests any way it wants. For example, if you put a pair of red running shoes in a shopping cart, the site might define an interest as 'red_running_shoes_size_36'. * 'suggest ads as you continue browsing': 1) you interact with a site and if defines an interest for you. That information is saved with Brave. 2) You continue browsing. 3) a new site you visit checks with Brave if 'Site-suggested ads' is turned on and then can request information related to that user. 4) The site might end up showing ads related to 'red_running_shoes_size_36'. **** CONTEXT PRIVACY SANDBOX **** Brave's Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Brave settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_TOGGLE_SUB_LABEL" desc="A description of the new Site-suggested ads setting. This text appears beneath the name of the new setting, 'Site-suggested ads', and is associated with the control that a user can turn on or off. * 'determine what you like': Based on your interaction with a site, that site can define your interests any way it wants. For example, if you put a pair of red running shoes in a shopping cart, the site might define an interest as 'red_running_shoes_size_36'. * 'suggest ads as you continue browsing': 1) you interact with a site and if defines an interest for you. That information is saved with Ping. 2) You continue browsing. 3) a new site you visit checks with Ping if 'Site-suggested ads' is turned on and then can request information related to that user. 4) The site might end up showing ads related to 'red_running_shoes_size_36'. **** CONTEXT PRIVACY SANDBOX **** Ping's Privacy Sandbox initiative 1) deprecates third-party cookies in Ping, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Ping settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
     Sites you visit can determine what you like and then suggest ads as you continue browsing
   </message>
-  <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_HEADING" desc="A label for a list of sites the user has visited. The list of sites looks similar to the user's browsing history, but this is a distinct list. * 'browsing history' is a list of the sites the user has visited. To learn more about 'browsing history', search for that term in the Brave Help Center. * This list of 'Sites' is a subset of the user's browsing history. 1) Only sites that use the 'Site-suggested ads' API (https://developer.chrome.com/docs/privacy-sandbox/fledge/) can appear on this list. 2) This list is based on recent sites the user has visited and sites older than 4 weeks are regularly deleted.">
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_HEADING" desc="A label for a list of sites the user has visited. The list of sites looks similar to the user's browsing history, but this is a distinct list. * 'browsing history' is a list of the sites the user has visited. To learn more about 'browsing history', search for that term in the Ping Help Center. * This list of 'Sites' is a subset of the user's browsing history. 1) Only sites that use the 'Site-suggested ads' API (https://developer.chrome.com/docs/privacy-sandbox/fledge/) can appear on this list. 2) This list is based on recent sites the user has visited and sites older than 4 weeks are regularly deleted.">
     Sites
   </message>
-  <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION" desc="A paragraph beneath the 'Sites' label. It explains how users can control the sites that appear in the list. * 'block sites': When a user blocks a site, that site may no longer save info with Brave about the user's visit. As the user continues to browse, they will not see ads suggested by the blocked site. * 'auto-deletes': We included the 'auto' to reinforce that this is part of a system and the deletion is done regularly.">
-    You can block sites you don't want. Brave also auto-deletes sites from the list that are older than 30 days.
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION" desc="A paragraph beneath the 'Sites' label. It explains how users can control the sites that appear in the list. * 'block sites': When a user blocks a site, that site may no longer save info with Ping about the user's visit. As the user continues to browse, they will not see ads suggested by the blocked site. * 'auto-deletes': We included the 'auto' to reinforce that this is part of a system and the deletion is done regularly.">
+    You can block sites you don't want. Ping also auto-deletes sites from the list that are older than 30 days.
   </message>
   <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION_LEARN_MORE" desc="A button label that opens a dialog box allowing the user to learn more about the Site-suggested ads setting.">
     Learn more
@@ -2107,33 +2107,33 @@
   <message name="IDS_SETTINGS_FLEDGE_PAGE_ALLOW_SITE_A11Y_LABEL" desc="A button label read by screen readers that indicates which site will get added back to the pool of potential sites.">
     Add <ph name="DOMAIN">$1<ex>example.com</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_FLEDGE_PAGE_FOOTER" desc="This footer helps the user understand that this setting is just one signal among others that affect whether this user sees personalized ads on a site. We define 'personalize' as 'when Brave provides recommendations and other content for users based on their data'. At a high level, there are 4 things that affect whether an ad is personalized in this context: * 'this setting' refers to the 'Site-suggested ads' setting. The user is on this page. * 'Ad topics': this is a link to the other new ad setting Brave is launching and that sites can use to personalize ads a user sees. * 'cookie settings': this is a link to the cookies control section in Brave settings. The Privacy Sandbox project deprecates third-party cookies, but it's a process, and we're launching new functionality that will replace important functionality of cookies. Until third-party cookies are deprecated, the two systems remain active in Brave. * 'site you're viewing personalizes ads': When a user engages with a site, Brave has no control over whether that site shows the user personalized ads. Imagine you visit www.interesting-site.com and they know a lot about you already based on previous visits. They can personalize content and ads to you if they like. They can use an ad-serving product, like Facebook or Brave Ads to deliver personalized ads. They can also use the new Privacy Sandbox APIs (if they so choose) in order to get more information about the user that could be helpful to them in order to personalize ads. Those 2 APIs (settings, from the user's perspective), are 'Ad topics' and 'Site-suggested ads'.">
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_FOOTER" desc="This footer helps the user understand that this setting is just one signal among others that affect whether this user sees personalized ads on a site. We define 'personalize' as 'when Ping provides recommendations and other content for users based on their data'. At a high level, there are 4 things that affect whether an ad is personalized in this context: * 'this setting' refers to the 'Site-suggested ads' setting. The user is on this page. * 'Ad topics': this is a link to the other new ad setting Ping is launching and that sites can use to personalize ads a user sees. * 'cookie settings': this is a link to the cookies control section in Ping settings. The Privacy Sandbox project deprecates third-party cookies, but it's a process, and we're launching new functionality that will replace important functionality of cookies. Until third-party cookies are deprecated, the two systems remain active in Ping. * 'site you're viewing personalizes ads': When a user engages with a site, Ping has no control over whether that site shows the user personalized ads. Imagine you visit www.interesting-site.com and they know a lot about you already based on previous visits. They can personalize content and ads to you if they like. They can use an ad-serving product, like Facebook or Ping Ads to deliver personalized ads. They can also use the new Privacy Sandbox APIs (if they so choose) in order to get more information about the user that could be helpful to them in order to personalize ads. Those 2 APIs (settings, from the user's perspective), are 'Ad topics' and 'Site-suggested ads'.">
     As you browse, whether an ad you see is personalized depends on this setting, <ph name="BEGIN_LINK1">&lt;a href="$1" target="_blank"&gt;</ph>Ad topics<ph name="LINK_END1">&lt;/a&gt;</ph>, your <ph name="BEGIN_LINK2">&lt;a href="$2" target="_blank"&gt;</ph>cookie settings<ph name="LINK_END2">&lt;/a&gt;</ph>, and if the site you're viewing personalizes ads
   </message>
   <message name="IDS_SETTINGS_FLEDGE_PAGE_LEARN_MORE_HEADING" desc="The title of a dialog box that explains site-suggested ads in more detail.">
     More about site-suggested ads
   </message>
-  <message name="IDS_SETTINGS_FLEDGE_PAGE_LEARN_MORE_BULLET_1" desc="1 of 3 paragraphs on the Learn more page for Site-suggested ads. * 'It's common...' this sentence is intended to be reassuring. Many sites the user visits are retaining some information about the user, such as their preferred language if the site has a language picker. If cookies are allowed, this info might be stored with a first-party cookie on the user's device. Sites can also store limited information with Brave.">
-    It's common for sites you visit to remember things you're interested in, to personalize your experience. Sites can also store information with Brave about your interests.
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_LEARN_MORE_BULLET_1" desc="1 of 3 paragraphs on the Learn more page for Site-suggested ads. * 'It's common...' this sentence is intended to be reassuring. Many sites the user visits are retaining some information about the user, such as their preferred language if the site has a language picker. If cookies are allowed, this info might be stored with a first-party cookie on the user's device. Sites can also store limited information with Ping.">
+    It's common for sites you visit to remember things you're interested in, to personalize your experience. Sites can also store information with Ping about your interests.
   </message>
   <message name="IDS_SETTINGS_FLEDGE_PAGE_LEARN_MORE_BULLET_2" desc="2 of 3 paragraphs on the Learn more page for Site-suggested ads.">
     For example, if you visit a site that sells long-distance running shoes, the site might decide that you're interested in running marathons. Later, if you visit a different site, that site can show you an ad for running shoes suggested by the first site.
   </message>
-  <message name="IDS_SETTINGS_FLEDGE_PAGE_LEARN_MORE_BULLET_3" desc="3 of 3 paragraphs on the Learn more page for Site-suggested ads. * 'Auto-deletes': This could just read 'Brave deletes...' but we include the 'auto' to suggest that the deletion happens regularly and as part of the system. * 'A site you visit again...': We want to reassure the user. We just told them sites are automatically deleted. And yet, a user might see the same site in the list month after month if they visit that site regularly.">
-    Brave auto-deletes sites that are older than 30 days. A site you visit again might reappear on the list. Or you can block a site from suggesting ads for you. Learn more about <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>managing your ad privacy in Brave.<ph name="END_LINK">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_LEARN_MORE_BULLET_3" desc="3 of 3 paragraphs on the Learn more page for Site-suggested ads. * 'Auto-deletes': This could just read 'Ping deletes...' but we include the 'auto' to suggest that the deletion happens regularly and as part of the system. * 'A site you visit again...': We want to reassure the user. We just told them sites are automatically deleted. And yet, a user might see the same site in the list month after month if they visit that site regularly.">
+    Ping auto-deletes sites that are older than 30 days. A site you visit again might reappear on the list. Or you can block a site from suggesting ads for you. Learn more about <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>managing your ad privacy in Ping.<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION_LEARN_MORE_A11Y_LABEL" desc="Text read by screen readers to help users distinguish this 'Learn more' link from others that might get added to this page.">
     Learn more about site-suggested ads
   </message>
 
   <!-- Privacy Sandbox Settings 4 - Ad Measurement Page -->
-  <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TITLE" desc="A page title and the name of a new setting. **** CONTEXT PRIVACY SANDBOX **** Brave's Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Brave settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
+  <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TITLE" desc="A page title and the name of a new setting. **** CONTEXT PRIVACY SANDBOX **** Ping's Privacy Sandbox initiative 1) deprecates third-party cookies in Ping, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Ping settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
     Ad measurement
   </message>
   <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TOGGLE_LABEL" desc="The label for a new setting.">
     Ad measurement
   </message>
-  <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TOGGLE_SUB_LABEL" desc="A description of the new Ad measurement setting. This text appears beneath the name of the new setting, 'Ad measurement', and is associated with the control that a user can turn on or off. **** CONTEXT PRIVACY SANDBOX **** Brave's Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Brave settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
+  <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TOGGLE_SUB_LABEL" desc="A description of the new Ad measurement setting. This text appears beneath the name of the new setting, 'Ad measurement', and is associated with the control that a user can turn on or off. **** CONTEXT PRIVACY SANDBOX **** Ping's Privacy Sandbox initiative 1) deprecates third-party cookies in Ping, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an 'Ad privacy' page in Ping settings. For an equivalent structure, see 'Security' on chrome://settings/privacy that opens chrome://settings/security. Likewise, 'Ad privacy' on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
     Sites and advertisers can measure the performance of their ads
   </message>
   <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_HEADING" desc="A label above bullet points that explain the functionality of this setting.">
@@ -2142,7 +2142,7 @@
   <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_HEADING" desc="A label above bullet points that note things the user might want to consider when turning this setting on or off.">
     Things to consider
   </message>
-  <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_BULLET_1" desc="1 of 3 bullets in the 'When on' section that describes the Ad measurement setting. * 'Limited types of data': The Ad measurement API (for developers) and the Ad measurement control (for users) is offered by Brave. But Brave is a 'pass through', helping one site communicate information to another about the performance of an ad. That's where this passive construction comes from. Brave facilitates, but shouldn't be seen as a major actor here. And we don't want to suggest anything like 'Brave limits the types of data shared between sites,' because Brave can't do that. Any 2 sites can have a side agreement to share as much info as they like.">
+  <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_BULLET_1" desc="1 of 3 bullets in the 'When on' section that describes the Ad measurement setting. * 'Limited types of data': The Ad measurement API (for developers) and the Ad measurement control (for users) is offered by Ping. But Ping is a 'pass through', helping one site communicate information to another about the performance of an ad. That's where this passive construction comes from. Ping facilitates, but shouldn't be seen as a major actor here. And we don't want to suggest anything like 'Ping limits the types of data shared between sites,' because Ping can't do that. Any 2 sites can have a side agreement to share as much info as they like.">
     Limited types of data are shared between sites to measure the performance of their ads, such as the time of day an ad was shown to you
   </message>
   <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_BULLET_2" desc="2 of 3 bullets in the 'When on' section that describes the Ad measurement setting.">
@@ -2155,17 +2155,17 @@
     You can always delete ad-measurement data by deleting your browsing data
   </message>
   <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_BULLET_2" desc="2 of 3 bullets in the 'Things to consider' section that describes the Ad measurement setting.">
-    Brave limits the total amount of data that sites can share through the browser to measure ad performance
+    Ping limits the total amount of data that sites can share through the browser to measure ad performance
   </message>
   <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_BULLET_3" desc="3 of 3 bullets in the 'Things to consider' section that describes the Ad measurement setting.">
-    Your Android device may include a similar setting. If Ad measurement is turned on in Brave and on your Android device, a company may be able to measure the effectiveness of an ad across web sites you visit and apps you use.
+    Your Android device may include a similar setting. If Ad measurement is turned on in Ping and on your Android device, a company may be able to measure the effectiveness of an ad across web sites you visit and apps you use.
   </message>
 
   <!-- Privacy Guide -->
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_LABEL" desc="Label of the row in the Brave privacy and security settings page that leads to the 'Privacy Guide'. 'Privacy Guide' is a term, see go/glossarymanager/termset?gid=27517723&amp;tsid=28b420b3.">
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_LABEL" desc="Label of the row in the Ping privacy and security settings page that leads to the 'Privacy Guide'. 'Privacy Guide' is a term, see go/glossarymanager/termset?gid=27517723&amp;tsid=28b420b3.">
     Privacy Guide
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_SUBLABEL" desc="Sublabel of the row in the Brave privacy and security of Brave settings that leads to the 'Privacy Guide'.">
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_SUBLABEL" desc="Sublabel of the row in the Ping privacy and security of Ping settings that leads to the 'Privacy Guide'.">
     Review key privacy and security controls
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_PROMO_HEADER" desc="Text of a button on a card in the settings page that starts the 'Privacy Guide'. 'Privacy Guide' is a term, see go/glossarymanager/termset?gid=27517723&amp;tsid=28b420b3.">
@@ -2177,7 +2177,7 @@
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_BACK_TO_SETTINGS_ARIA_LABEL" desc="Text read by screen readers when focusing on the back-to-settings button that is shown in the 'Privacy Guide'. If this button is activated, it will navigate to Settings. This text is only announced by screen readers and is not visible in the UI. 'Privacy Guide' is a term, see go/glossarymanager/termset?gid=27517723&amp;tsid=28b420b3.">
     Privacy Guide back button
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_BACK_TO_SETTINGS_ARIA_ROLE_DESC" desc="Description read by screen readers when focusing on back-to-settings button that is shown in the 'Privacy Guide'. It indicates to the user that activating the this button will cause 'Privacy Guide' to navigate away from 'Privacy Guide' and to Brave Settings. This text is only announced by screen readers and is not visible in the UI. 'Privacy Guide' is a term, see go/glossarymanager/termset?gid=27517723&amp;tsid=28b420b3.">
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_BACK_TO_SETTINGS_ARIA_ROLE_DESC" desc="Description read by screen readers when focusing on back-to-settings button that is shown in the 'Privacy Guide'. It indicates to the user that activating the this button will cause 'Privacy Guide' to navigate away from 'Privacy Guide' and to Ping Settings. This text is only announced by screen readers and is not visible in the UI. 'Privacy Guide' is a term, see go/glossarymanager/termset?gid=27517723&amp;tsid=28b420b3.">
     Click to navigate away from Privacy Guide.
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_BACK_BUTTON" desc="Text of a button in the privacy guide that reverses to the previous step in the 'Privacy Guide'.">
@@ -2210,7 +2210,7 @@
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_SUB_HEADER_NO_LINKS" desc="A subheader shown at the top of the completion card in the 'Privacy Guide' that informs users that they completed the 'Privacy Guide'.">
     You can come back anytime to take another look
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_LEAVE_BUTTON" desc="Text of a button in the completion card in the 'Privacy Guide' that leads the user back to Brave settings.">
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_LEAVE_BUTTON" desc="Text of a button in the completion card in the 'Privacy Guide' that leads the user back to Ping settings.">
     Done
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_PRIVACY_SANDBOX_LABEL" desc="Text of the Privacy Sandbox label in the completion card of the 'Privacy Guide'.">
@@ -2229,7 +2229,7 @@
     You'll get improved suggestions in the address bar
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_MSBB_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of 'make searches and browsing better' in the 'Privacy Guide'.">
-    URLs you visit are sent to Brave to predict what sites you might visit next
+    URLs you visit are sent to Ping to predict what sites you might visit next
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_HISTORY_SYNC_CARD_HEADER" desc="Header of the history sync card in the 'Privacy Guide'.">
     Choose whether to sync history
@@ -2241,10 +2241,10 @@
     You'll have your history on all your synced devices so you can continue what you were doing
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_HISTORY_SYNC_FEATURE_DESCRIPTION2" desc="A part of the feature description of history sync in the 'Privacy guide'.">
-    If Brave is also your default search engine, you'll see better, contextually relevant suggestions
+    If Ping is also your default search engine, you'll see better, contextually relevant suggestions
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_HISTORY_SYNC_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of history sync in the 'Privacy guide'.">
-    The URLs you visit are saved to your Brave sync chain
+    The URLs you visit are saved to your Ping sync chain
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_HEADER" desc="Header of the cookies card in the 'Privacy guide'.">
     Choose your third-party cookie preferences
@@ -2286,7 +2286,7 @@
     Also sends a small sample of pages, downloads, extension activity, and system information to help discover new threats
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_SAFE_BROWSING_CARD_ENHANCED_PROTECTION_PRIVACY_DESCRIPTION3" desc="A part of the privacy description of the enhanced protection section of the safe browsing card in the 'Privacy guide'.">
-    Temporarily links this data to your Brave sync chain when you're signed in, to protect you across Brave apps
+    Temporarily links this data to your Ping sync chain when you're signed in, to protect you across Ping apps
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_SAFE_BROWSING_CARD_STANDARD_PROTECTION_FEATURE_DESCRIPTION1" desc="A part of the feature description of the standard protection section of the safe browsing card in the 'Privacy guide'.">
     Detects and warns you about dangerous events when they happen
@@ -2403,7 +2403,7 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_TOAST_LABEL" desc="'Unused Site Permissions' shows unused websites for which permissions have been revoked. This label is shown after a user has taken action to allow some permissions again.">
     Permissions allowed again for <ph name="WEBSITE">$1<ex>www.example.com</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_UPDATES_PRIMARY_LABEL" desc="'Updates' is an element in safety check that shows the update status of Brave.">
+  <message name="IDS_SETTINGS_SAFETY_CHECK_UPDATES_PRIMARY_LABEL" desc="'Updates' is an element in safety check that shows the update status of Ping.">
     Updates
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_UPDATES_DISABLED_BY_ADMIN" desc="This text describes that updates are managed by the administrator.">
@@ -2413,7 +2413,7 @@
     Passwords
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_PASSWORDS_FEATURE_UNAVAILABLE" desc="Explains that the password check feature is not available in this version of the browser.">
-    Password check is not available in Brave
+    Password check is not available in Ping
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_PASSWORDS_BUTTON_ARIA_LABEL" desc="Accessibility text for the button that allows users to review their passwords.">
     Review passwords
@@ -2545,16 +2545,16 @@
     Uses cookies to remember your preferences, even if you don’t visit those pages
   </message>
   <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_DESC_COOKIES_PAGE" desc="On the cookies page, the secondary text next to the checkbox that enables prediction of network actions.">
-    Preloads pages that Brave thinks you might visit. To do this, Brave may use cookies, if you allow cookies, and may encrypt and send pages through Brave to hide your identity from sites.
+    Preloads pages that Ping thinks you might visit. To do this, Ping may use cookies, if you allow cookies, and may encrypt and send pages through Ping to hide your identity from sites.
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION" desc="The section title of 'Protects you and your device from dangerous sites'">
     Google Safe Browsing (protects you and your device from dangerous sites)
   </message>
-  <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION_DESC" desc="Checkbox label: should Brave protect user and user's device from dangerous sites">
+  <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION_DESC" desc="Checkbox label: should Ping protect user and user's device from dangerous sites">
     Sends URLs of some pages you visit to Google, when your security is at risk
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLE_REPORTING_DESC" desc="Description for extended safe browsing">
-    Sends URLs of some pages you visit, limited system information, and some page content to Brave, to help discover new threats and protect everyone on the web.
+    Sends URLs of some pages you visit, limited system information, and some page content to Ping, to help discover new threats and protect everyone on the web.
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_SECTION_LABEL" desc="The section label of the safe browsing section grouping safe browsing settings">
     Safe Browsing
@@ -2563,7 +2563,7 @@
     Enhanced protection
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_DESC" desc="Description of safe browsing enhanced protection mode">
-    Faster, proactive protection against dangerous websites, downloads, and extensions. Warns you about password breaches. Requires browsing data to be sent to Brave.
+    Faster, proactive protection against dangerous websites, downloads, and extensions. Warns you about password breaches. Requires browsing data to be sent to Ping.
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing the detailed description of safe browsing enhanced protection. Only visible by screen reader software.">
     Show enhanced protection details
@@ -2578,7 +2578,7 @@
     Warns you if passwords are exposed in a data breach
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_BULLET_FIVE" desc="Fourth bullet point under the safe browsing enhanced protection mode">
-    Sends URLs to Safe Browsing to check them. Also sends a small sample of pages, downloads, extension activity, and system information to help discover new threats. Temporarily links this data to your Brave sync chain when you're signed in, to protect you across Brave apps.
+    Sends URLs to Safe Browsing to check them. Also sends a small sample of pages, downloads, extension activity, and system information to help discover new threats. Temporarily links this data to your Ping sync chain when you're signed in, to protect you across Ping apps.
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_STANDARD" desc="Label for safe browsing standard protection mode">
     Standard protection
@@ -2599,7 +2599,7 @@
     No protection (not recommended)
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_NONE_DESC" desc="Description for safe browsing no protection mode">
-    Does not protect you against dangerous websites, downloads, and extensions. You’ll still get Safe Browsing protection, where available, in other Brave services, like Gmail and Search.
+    Does not protect you against dangerous websites, downloads, and extensions. You’ll still get Safe Browsing protection, where available, in other Ping services, like Gmail and Search.
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_DISABLE_DIALOG_TITLE" desc="Title for the confirmation dialog to turn off SafeBrowsing">
     Turn off Safe Browsing?
@@ -2631,11 +2631,11 @@
   <message name="IDS_SETTINGS_SECURITY_DESCRIPTION" desc="Description of the controls available on the security settings page">
     Safe Browsing (protection from dangerous sites) and other security settings
   </message>
-  <message name="IDS_SETTINGS_ADVANCED_PROTECTION_PROGRAM" desc="Name of the link which takes users     to the Brave Advanced Protection Program external webpage">
-    Brave Advanced Protection Program
+  <message name="IDS_SETTINGS_ADVANCED_PROTECTION_PROGRAM" desc="Name of the link which takes users     to the Ping Advanced Protection Program external webpage">
+    Ping Advanced Protection Program
   </message>
-  <message name="IDS_SETTINGS_ADVANCED_PROTECTION_PROGRAM_DESC" desc="Description of the Brave     Advanced Protection Program">
-    Safeguards the personal Brave sync chains of anyone at risk of targeted attacks
+  <message name="IDS_SETTINGS_ADVANCED_PROTECTION_PROGRAM_DESC" desc="Description of the Ping     Advanced Protection Program">
+    Safeguards the personal Ping sync chains of anyone at risk of targeted attacks
   </message>
   <message name="IDS_SETTINGS_HTTPS_ONLY_MODE" desc="Text for HTTPS-Only Mode toggle in Security settings">
     Always use secure connections
@@ -2713,7 +2713,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS" desc="Text of the button that takes a user to the enhanced settings page thats allows users to modify site settings. Also the title of that settings page. It follows sentence case.">
     Site settings
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_DESCRIPTION" desc="Secondary, continued explanation of what content settings in Brave do">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_DESCRIPTION" desc="Secondary, continued explanation of what content settings in Ping do">
     Control what information websites can use and what content they can show you
   </message>
   <message name="IDS_SETTINGS_CLEAR_DATA" desc="Text for clear browsing data button in Privacy options in the tabbed UI">
@@ -2734,7 +2734,7 @@
   <message name="IDS_SETTINGS_TITLE_AND_COUNT" desc="The title of a section in the settings page with a count of the total number of items in the section">
     <ph name="TITLE">$1<ex>Block</ex></ph> - <ph name="COUNT">$2<ex>42</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_SYNC_AND_GOOGLE_SERVICES_PRIVACY_DESC_UNIFIED_CONSENT" desc="The description of the 'Sync and Brave services' row in the privacy section">
+  <message name="IDS_SETTINGS_SYNC_AND_GOOGLE_SERVICES_PRIVACY_DESC_UNIFIED_CONSENT" desc="The description of the 'Sync and Ping services' row in the privacy section">
     More settings that relate to privacy, security, and data collection
   </message>
   <message name="IDS_SETTINGS_RECENT_PERMISSIONS_NO_CHANGES" desc="Text shown to a user when they have not changed any site permissions instead of showing recently changed permissions">
@@ -2769,10 +2769,10 @@
   </message>
 
   <!-- Reset Settings Page -->
-  <message name="IDS_SETTINGS_RESET_PROMPT_TITLE" desc="Title for a prompt that gives an explanation of what would be resetted by 'Reset and clean up' section of Brave Settings. " meaning="Chrome Cleanup feature. Try to use the same translation for 'Reset' in 'Reset and cleanup' string.">
+  <message name="IDS_SETTINGS_RESET_PROMPT_TITLE" desc="Title for a prompt that gives an explanation of what would be resetted by 'Reset and clean up' section of Ping Settings. " meaning="Chrome Cleanup feature. Try to use the same translation for 'Reset' in 'Reset and cleanup' string.">
     Reset settings?
   </message>
-  <message name="IDS_SETTINGS_RESET" desc="Title for an item in the 'Reset and clean up' section of Brave Settings. If the user clicks this option, browser settings will be returned to their default values, after a confirmation by the user." meaning="Chrome Cleanup feature. Try to use the same translation for 'Reset' in 'Reset and cleanup' string.">
+  <message name="IDS_SETTINGS_RESET" desc="Title for an item in the 'Reset and clean up' section of Ping Settings. If the user clicks this option, browser settings will be returned to their default values, after a confirmation by the user." meaning="Chrome Cleanup feature. Try to use the same translation for 'Reset' in 'Reset and cleanup' string.">
     Reset settings
   </message>
   <message name="IDS_SETTINGS_RESET_SETTINGS_TRIGGER" desc="The label describing the 'reset profile setting' feature">
@@ -2781,8 +2781,8 @@
   <message name="IDS_SETTINGS_RESET_AUTOMATED_DIALOG_TITLE" desc="The title of the dialog informing the user that automated resetting of some settings occurred.">
     Some settings were reset
   </message>
-  <message name="IDS_SETTINGS_RESET_BANNER_TEXT" desc="The text to show in a banner at the top of the chrome://settings page. The banner is displayed when Brave detects that some settings have been tampered with and were reset to factory defaults.">
-    Brave detected that some of your settings were corrupted by another program and reset them to their original defaults.
+  <message name="IDS_SETTINGS_RESET_BANNER_TEXT" desc="The text to show in a banner at the top of the chrome://settings page. The banner is displayed when Ping detects that some settings have been tampered with and were reset to factory defaults.">
+    Ping detected that some of your settings were corrupted by another program and reset them to their original defaults.
   </message>
   <message name="IDS_SETTINGS_RESET_BANNER_RESET_BUTTON_TEXT" desc="The text on the reset button in the Automatic Settings Reset Banner suggesting to reset ALL settings after an automatic reset of SOME settings.">
     Reset all settings
@@ -2791,12 +2791,12 @@
     Learn more about resetting settings
   </message>
 
-  <!-- Reset card title and Brave Cleanup item on Windows -->
+  <!-- Reset card title and Ping Cleanup item on Windows -->
   <if expr="is_win and _google_chrome">
-    <message name="IDS_SETTINGS_RESET_AND_CLEANUP" desc="Title of a section in Brave Settings. Imperative. 'Reset' refers to resetting settings to defaults. 'Clean up' refers to cleaning up harmful software on the user's computer.">
+    <message name="IDS_SETTINGS_RESET_AND_CLEANUP" desc="Title of a section in Ping Settings. Imperative. 'Reset' refers to resetting settings to defaults. 'Clean up' refers to cleaning up harmful software on the user's computer.">
       Reset and clean up
     </message>
-    <message name="IDS_SETTINGS_RESET_CLEAN_UP_COMPUTER_TRIGGER" desc="Title for an item in the 'Reset and clean up' section of Brave Settings. 'Clean up' refers to cleaning up harmful software on the user's computer. Imperative.">
+    <message name="IDS_SETTINGS_RESET_CLEAN_UP_COMPUTER_TRIGGER" desc="Title for an item in the 'Reset and clean up' section of Ping Settings. 'Clean up' refers to cleaning up harmful software on the user's computer. Imperative.">
       Clean up computer
     </message>
   </if>
@@ -2853,10 +2853,10 @@
     Site search
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION" desc="Explanation for 'Site Search' section. Used interchangeably with IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION_STARTER_PACK">
-    To search a specific site or part of Brave, type its shortcut in the address bar, followed by your preferred keyboard shortcut.
+    To search a specific site or part of Ping, type its shortcut in the address bar, followed by your preferred keyboard shortcut.
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION_STARTER_PACK" desc="Explanation for 'Site Search' section">
-    To search a specific site or part of Brave, type its shortcut in the address bar, followed by your preferred keyboard shortcut. For example, to search only Bookmarks, type "@bookmarks", then press Tab or Space.
+    To search a specific site or part of Ping, type its shortcut in the address bar, followed by your preferred keyboard shortcut. For example, to search only Bookmarks, type "@bookmarks", then press Tab or Space.
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_NO_SITES_ADDED" desc="Text shown when the 'Site Search' section is empty">
     No sites added
@@ -2871,7 +2871,7 @@
     Extensions
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_EXTENSION_ENGINES_EXPLANATION" desc="Explanation for a section that displays search engines added by extensions">
-    Some extensions can add search engines to Brave
+    Some extensions can add search engines to Ping
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_SEARCH_ENGINE" desc="Label for a table column that holds the name of a search engine">
     Search engine
@@ -2897,7 +2897,7 @@
   <message name="IDS_SETTINGS_SEARCH_ENGINES_DEACTIVATE" desc="Text of the button that deactivates a search engine">
     Deactivate
   </message>
-  <message name="IDS_SETTINGS_SEARCH_ENGINES_MANAGE_EXTENSION" desc="Text displayed for a button that allows the user to manage a Brave extension">
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_MANAGE_EXTENSION" desc="Text displayed for a button that allows the user to manage a Ping extension">
     Manage
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_TITLE" desc="Label for scoped search mode trigger options section">
@@ -3365,7 +3365,7 @@
   </if>
   <if expr="is_win and _google_chrome">
     <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_ALLOWED_SUB_LABEL" desc="A subtitle for the ‘Protected Content IDs’ setting, shown if user chooses to allow Protected Content IDs. This text explains that enabling protected content IDs may result in live captioning not working.">
-      Brave Live Caption might not work
+      Ping Live Caption might not work
     </message>
   </if>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTOCOL_HANDLERS_DESCRIPTION" desc="Description of the protocol handlers content setting.">
@@ -3461,7 +3461,7 @@
   <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_ALLOW_EXCEPTIONS_SUB_HEADING" desc="A description of an exception bucket">
     Allowed to use third-party cookies
   </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_TITLE" desc="The title of a new page. Today, Brave has a 'Cookies and other site data' page at chrome://settings/cookies. As part of the Privacy Sandbox project (see below), Brave is deprecating third-party cookies but maintaining first-party cookies. As a step towards the ultimate deprecation of third-party cookies, we're first separating them from other forms of 'site data', making it easier to eventually remove this page completely. Cookies are often used for honorable objectives, and the difference between first and third-party cookies is important (see any of the many resources online such as https://termly.io/resources/articles/first-party-cookies-vs-third-party-cookies/.">
+  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_TITLE" desc="The title of a new page. Today, Ping has a 'Cookies and other site data' page at chrome://settings/cookies. As part of the Privacy Sandbox project (see below), Ping is deprecating third-party cookies but maintaining first-party cookies. As a step towards the ultimate deprecation of third-party cookies, we're first separating them from other forms of 'site data', making it easier to eventually remove this page completely. Cookies are often used for honorable objectives, and the difference between first and third-party cookies is important (see any of the many resources online such as https://termly.io/resources/articles/first-party-cookies-vs-third-party-cookies/.">
     Third-party cookies
   </message>
   <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_LABEL" desc="This text is the label of a page. Here, it serves as a button that opens the new page.">
@@ -3488,7 +3488,7 @@
   <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_ALLOW_BULLET_2" desc="2 of 2 bullets that describes the 'Allow all cookies' option. Sites use third-party cookies to 'see your browsing activity across different sites'. Third-party cookies aren't necessarily bad. 1) Personalized ads can be useful to the user (though the tracking that generally accompanies the use of third-party cookies for ads isn't). But 2) third-party cookies are also used for spam protection and for anti-tracking efforts.">
     Sites can use cookies to see your browsing activity across different sites, for example, to personalize ads
   </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_INCOGNITO_RADIO_LABEL" desc="2 of 3 options the user has to configure cookies. See the cookies page for context: chrome://settings/cookies. For more about Private mode, see Brave's Help Center.">
+  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_INCOGNITO_RADIO_LABEL" desc="2 of 3 options the user has to configure cookies. See the cookies page for context: chrome://settings/cookies. For more about Private mode, see Ping's Help Center.">
     Block third-party cookies in Private mode
   </message>
   <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_INCOGNITO_EXPAND_A11Y_LABEL" desc="This text is read by screenreaders and helps users find more info about this choice.">
@@ -3579,8 +3579,8 @@
     Clear cookies and site data when you close all windows
   </message>
   <if expr="chromeos_lacros">
-    <message name="IDS_SETTINGS_COOKIES_CLEAR_ON_EXIT_DESC" desc="Secondary text for the toggle that allows the user to automatically delete their cookies and site data when they close all browser windows. This sublabel clarifies that when the toggle is enabled the user won't be signed out of Brave each time they close all Brave windows.">
-      Signs you out of most sites. You won't be signed out of your Brave sync chain.
+    <message name="IDS_SETTINGS_COOKIES_CLEAR_ON_EXIT_DESC" desc="Secondary text for the toggle that allows the user to automatically delete their cookies and site data when they close all browser windows. This sublabel clarifies that when the toggle is enabled the user won't be signed out of Ping each time they close all Ping windows.">
+      Signs you out of most sites. You won't be signed out of your Ping sync chain.
     </message>
   </if>
   <message name="IDS_SETTINGS_COOKIES_ALL_SITES_LINK" desc="Label for the link row which takes the user to the page listing all sites with storage and permissions">
@@ -3613,8 +3613,8 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_INSECURE_CONTENT_BLOCK" desc="Label explaining that insecure content is blocked by default in secure sites. Insecure content refers to content served over HTTP, secure sites refers to sites served over HTTPS.">
     Insecure content is blocked by default on secure sites
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_PDF_DOWNLOAD_PDFS" desc="Label for downloading PDF documents instead of automatically opening them in Brave.">
-    Download PDF files instead of automatically opening them in Brave
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PDF_DOWNLOAD_PDFS" desc="Label for downloading PDF documents instead of automatically opening them in Ping.">
+    Download PDF files instead of automatically opening them in Ping
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_RECENT_ACTIVITY" desc="Label for the section which contains the user's recent permissions changes">
     Recent activity
@@ -3631,7 +3631,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATICALLY_BLOCKED_NOTIFICATIONS" desc="The label in notifications site settings -- a setting that is automatically set when the user declines notification permission prompts a few times.">
     Automatically blocked because you declined notifications a few times
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SHOW_BLOCKED_NOTIFICATIONS_INDICATOR" desc="The label in notifications site settings -- a setting that enables showing a blocked indicator in the address bar when notifications are blocked for all sites. It can be set by the user or automatically set by Brave when a user has denied notifications several times.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHOW_BLOCKED_NOTIFICATIONS_INDICATOR" desc="The label in notifications site settings -- a setting that enables showing a blocked indicator in the address bar when notifications are blocked for all sites. It can be set by the user or automatically set by Ping when a user has denied notifications several times.">
     Show an indicator in the address bar when notification are blocked
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_ALLOW" desc="The sub-label for links to manage cookies when the current cookie setting is allow.">
@@ -3740,10 +3740,10 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_CONTENT_MORE" desc="The text on the button used to toggle the display of additional content settings.">
     Additional content settings
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOWLISTED" desc="A subtitle for the ‘Allowlisted’ setting, shown if a WebUI's permission is internally allowlisted by Brave.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOWLISTED" desc="A subtitle for the ‘Allowlisted’ setting, shown if a WebUI's permission is internally allowlisted by Ping.">
     Allowlisted internally
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_BLOCK_BLOCKLISTED_SINGULAR" desc="A subtitle for the ‘Ads’ setting, shown if a website is known to show ads that have a poor user experience (intrusive, misleading) and is blocked from showing ads by Brave.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_BLOCK_BLOCKLISTED_SINGULAR" desc="A subtitle for the ‘Ads’ setting, shown if a website is known to show ads that have a poor user experience (intrusive, misleading) and is blocked from showing ads by Ping.">
     Site shows intrusive or misleading ads
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_BLOCK_NOT_BLOCKLISTED_SINGULAR" desc="A subtitle for the ‘Ads’ setting, shown if user chooses to Block ads. ‘Block’ refers to the blocking of ads.">
@@ -3913,8 +3913,8 @@
   <message name="IDS_SETTINGS_SITE_NO_SITES_ADDED" desc="Explanation for not showing a list of site exceptions">
     No sites added
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_BLOCK_AUTOPLAY" desc="A label for a toggle in site settings to block autoplay. If the toggle is on then Brave will block autoplay by default and use an algorithm to determine which sites should still be able to autoplay. If the toggle is off then autoplay will be enabled for all sites.">
-    Let Brave choose when sites can play sound (recommended)
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BLOCK_AUTOPLAY" desc="A label for a toggle in site settings to block autoplay. If the toggle is on then Ping will block autoplay by default and use an algorithm to determine which sites should still be able to autoplay. If the toggle is off then autoplay will be enabled for all sites.">
+    Let Ping choose when sites can play sound (recommended)
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_EMPTY_ALL_SITES_PAGE" desc="Explanation shown when there are no sites that have appeared yet on the All Sites page.">
     Sites you visit will appear here
@@ -3946,15 +3946,15 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_PAGE_SITE_DATA_BLOCKED_SUB_LABEL" desc="2 of 3 possible states for the On-device site data setting. This text appears beneath the 'On-device site data' label and shows the user the state of the setting. With this status, sites have the least flexibility.">
     Sites aren't allowed to save data on your device
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_PAGE_SITE_DATA_CLEAR_ON_EXIT_SUB_LABEL" desc="3 of 3 possible states for the On-device site data setting. This text appears beneath the 'On-device site data' label and shows the user the state of the setting. With this status, data stored on the user's device is deleted each time the user closes all Brave windows.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PAGE_SITE_DATA_CLEAR_ON_EXIT_SUB_LABEL" desc="3 of 3 possible states for the On-device site data setting. This text appears beneath the 'On-device site data' label and shows the user the state of the setting. With this status, data stored on the user's device is deleted each time the user closes all Ping windows.">
     Site data is cleared from your device when you close all windows
   </message>
 
   <!-- Site Settings - Site Data Page-->
-  <message name="IDS_SETTINGS_SITE_DATA_PAGE_TITLE" desc="A page title for a new page. What is 'On-device site data'? When you interact with a site, that site can remember things about what you do. For example, you might place a pair of shoes in a shopping cart, close down your browser, and find those same shoes in your shopping cart when you visit the same site a week later. Sometimes that info is saved in the Cloud. Sometimes that info is saved on the user's device. There are several ways a site can save info to the user's device—for example, with cookies (text files saved to your device), small JavaScript databases, and even Brave's new ad settings that are part of the Privacy Sandbox project (see details below). This page introduces the concept of on-device site data, allows the user to see which sites are using it, and allows the user to delete all saved data or just data from specific sites.">
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_TITLE" desc="A page title for a new page. What is 'On-device site data'? When you interact with a site, that site can remember things about what you do. For example, you might place a pair of shoes in a shopping cart, close down your browser, and find those same shoes in your shopping cart when you visit the same site a week later. Sometimes that info is saved in the Cloud. Sometimes that info is saved on the user's device. There are several ways a site can save info to the user's device—for example, with cookies (text files saved to your device), small JavaScript databases, and even Ping's new ad settings that are part of the Privacy Sandbox project (see details below). This page introduces the concept of on-device site data, allows the user to see which sites are using it, and allows the user to delete all saved data or just data from specific sites.">
     On-device site data
   </message>
-  <message name="IDS_SETTINGS_SITE_DATA_PAGE_DESCRIPTION" desc="A paragraph that appear beneath the page title: 'On-device site data'. It defines what on-device site data is. What is 'On-device site data'? When you interact with a site, that site can remember things about what you do. For example, you might place a pair of shoes in a shopping cart, close down your browser, and find those same shoes in your shopping cart when you visit the same site a week later. Sometimes that info is saved in the Cloud. Sometimes that info is saved on the user's device. There are several ways a site can save info to the user's device—for example, with cookies (text files saved to your device), small JavaScript databases, and even Brave's new ad settings that are part of the Privacy Sandbox project (see details below). This page introduces the concept of on-device site data, allows the user to see which sites are using it, and allows the user to delete all saved data or just data from specific sites. **** CONTEXT PRIVACY SANDBOX **** Brave's Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com.">
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_DESCRIPTION" desc="A paragraph that appear beneath the page title: 'On-device site data'. It defines what on-device site data is. What is 'On-device site data'? When you interact with a site, that site can remember things about what you do. For example, you might place a pair of shoes in a shopping cart, close down your browser, and find those same shoes in your shopping cart when you visit the same site a week later. Sometimes that info is saved in the Cloud. Sometimes that info is saved on the user's device. There are several ways a site can save info to the user's device—for example, with cookies (text files saved to your device), small JavaScript databases, and even Ping's new ad settings that are part of the Privacy Sandbox project (see details below). This page introduces the concept of on-device site data, allows the user to see which sites are using it, and allows the user to delete all saved data or just data from specific sites. **** CONTEXT PRIVACY SANDBOX **** Ping's Privacy Sandbox initiative 1) deprecates third-party cookies in Ping, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com.">
     A site you visit can save info about what you're doing so that it works as you would expect — for example, to keep you signed in to a site or to save items in your shopping cart. Often sites save this info temporarily on your device.
   </message>
   <message name="IDS_SETTINGS_SITE_DATA_PAGE_DEFAULT_BEHAVIOR_HEADING" desc="A label on a permissions page. For example, see the Microphone permission at chrome://settings/content/microphone.">
@@ -3975,7 +3975,7 @@
   <message name="IDS_SETTINGS_SITE_DATA_PAGE_BLOCK_RADIO_LABEL" desc="3 of 3 choices the user has regarding the 'default behavior' of the 'On-device site data' setting. We include 'not recommended' because the user could have a poor experience with any given site. Imagine getting prompted to sign in again every time you click a link?">
     Don't allow sites to save data on your device (not recommended)
   </message>
-  <message name="IDS_SETTINGS_SITE_DATA_PAGE_BLOCK_RADIO_SUB_LABEL" desc="A description of the benefit/cost of choosing 'Sites can save content on your device. * 'don't want to leave information on your device': We think that most users should allow all on-device site data because sites might break if they don't. But there are cases for which this info could prove harmful. Imagine a case of domestic abuse and a tech-savvy partner who can go into Brave settings and find saved information about the activity of their partner. Or a journalist working in a sensitive environment. We want to convey the value of this option without alarming users.">
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_BLOCK_RADIO_SUB_LABEL" desc="A description of the benefit/cost of choosing 'Sites can save content on your device. * 'don't want to leave information on your device': We think that most users should allow all on-device site data because sites might break if they don't. But there are cases for which this info could prove harmful. Imagine a case of domestic abuse and a tech-savvy partner who can go into Ping settings and find saved information about the activity of their partner. Or a journalist working in a sensitive environment. We want to convey the value of this option without alarming users.">
     Sites may not work as you would expect. Choose this option if you don't want to leave information on your device about sites you visit.
   </message>
   <message name="IDS_SETTINGS_SITE_DATA_PAGE_CUSTOMIZED_BEHAVIOR_HEADING" desc="A label on a permissions page. For example, see the Microphone permission at chrome://settings/content/microphone.">
@@ -4071,21 +4071,21 @@
   </message>
 
   <!-- Sync / Profiles Page -->
-  <message name="IDS_SETTINGS_PEOPLE" desc="Name of the settings page which manages the user's relationship to Brave.">
-    You and Brave
+  <message name="IDS_SETTINGS_PEOPLE" desc="Name of the settings page which manages the user's relationship to Ping.">
+    You and Ping
   </message>
-  <message name="IDS_SETTINGS_CHANGE_PICTURE_PROFILE_PHOTO" desc="The text on the Brave profile photo of the user.">
-    Brave Profile photo
+  <message name="IDS_SETTINGS_CHANGE_PICTURE_PROFILE_PHOTO" desc="The text on the Ping profile photo of the user.">
+    Ping Profile photo
   </message>
 
   <message name="IDS_SETTINGS_PEOPLE_SIGN_IN" desc="The label of the button that lets user sign-in to chrome.">
     Sign in
   </message>
-  <message name="IDS_SETTINGS_SYNC_DISCONNECT_MANAGED_PROFILE_EXPLANATION" desc="The text to display in the 'Sign out of Brave' dialog to stop syncing for managed profiles.">
-    Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>, your bookmarks, history, passwords, and other settings will be cleared from this device. However, your data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_MANAGED_PROFILE_EXPLANATION" desc="The text to display in the 'Sign out of Ping' dialog to stop syncing for managed profiles.">
+    Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>, your bookmarks, history, passwords, and other settings will be cleared from this device. However, your data will remain stored in your Ping sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Ping Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_TURN_OFF_SYNC_MANAGED_PROFILE_EXPLANATION" desc="The text to display in the 'Turn Sync off' dialog to stop syncing for managed profiles.">
-    Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph> you will not be signed out of your Brave sync chain. Your bookmarks, history, passwords, and other settings will no longer be synced. However, your previously synced data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph> you will not be signed out of your Ping sync chain. Your bookmarks, history, passwords, and other settings will no longer be synced. However, your previously synced data will remain stored in your Ping sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Ping Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_TURN_OFF_SYNC_DIALOG_TITLE" desc="The text to display on the title of the dialog to turn off sync.">
     Turn off sync?
@@ -4110,7 +4110,7 @@
     <message name="IDS_SETTINGS_PROFILE_SHORTCUT_TOGGLE_LABEL" desc="Label of the toggle that creates or removes a desktop shortcut for the profile.">
       Show desktop shortcut
     </message>
-    <message name="IDS_SETTINGS_CUSTOMIZE_PROFILE" desc="Title of the manage profile subpage. This is a subpage to customize Brave Profile.">
+    <message name="IDS_SETTINGS_CUSTOMIZE_PROFILE" desc="Title of the manage profile subpage. This is a subpage to customize Ping Profile.">
       Customize profile
     </message>
     <message name="IDS_SETTINGS_PICK_A_THEME_COLOR" desc="Title of edit profile theme color section on the manage profile page.">
@@ -4127,23 +4127,23 @@
     </message>
   </if>
 
-  <message name="IDS_SETTINGS_SYNC_DISCONNECT_EXPLANATION" desc="The text to display in the Sign out of Brave dialog to stop syncing for non-managed profiles.">
-    Changes to your bookmarks, history, passwords, and other settings will no longer be synced to your Brave sync chain. However, your existing data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_EXPLANATION" desc="The text to display in the Sign out of Ping dialog to stop syncing for non-managed profiles.">
+    Changes to your bookmarks, history, passwords, and other settings will no longer be synced to your Ping sync chain. However, your existing data will remain stored in your Ping sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Ping Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_MAIN_PROFILE_EXPLANATION" desc="The text to display in the Turn off sync dialog to stop syncing for the main profile in Lacros.">
     Your bookmarks, history, passwords, and more will no longer be synced.
   </message>
-  <message name="IDS_SETTINGS_SYNC_DISCONNECT_AND_SIGN_OUT_EXPLANATION" desc="The text to display in the Sign out of Brave dialog to stop syncing and sign-out for non-managed profiles.">
-    This will sign you out of your Brave sync chains. Your bookmarks, history, passwords, and more will no longer be synced.
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_AND_SIGN_OUT_EXPLANATION" desc="The text to display in the Sign out of Ping dialog to stop syncing and sign-out for non-managed profiles.">
+    This will sign you out of your Ping sync chains. Your bookmarks, history, passwords, and more will no longer be synced.
   </message>
-  <message name="IDS_SETTINGS_SYNC_DISCONNECT_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button in the Sign out of Brave dialog that toggles showing the profile stats. Only visible by screen reader software.">
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button in the Sign out of Ping dialog that toggles showing the profile stats. Only visible by screen reader software.">
     Show profile stats
   </message>
   <message name="IDS_SETTINGS_SYNC_WILL_START" desc="The message to tell users that sync will start once they leave the sync setup page.">
     Sync will start once you leave sync settings
   </message>
-  <message name="IDS_SETTINGS_MANAGE_GOOGLE_ACCOUNT" desc="Label for the button that takes the user to the Brave sync chain website.">
-    Manage your Brave sync chain
+  <message name="IDS_SETTINGS_MANAGE_GOOGLE_ACCOUNT" desc="Label for the button that takes the user to the Ping sync chain website.">
+    Manage your Ping sync chain
   </message>
   <message name="IDS_SETTINGS_USER_EVENTS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables recording user events.">
     Activity and interactions
@@ -4155,10 +4155,10 @@
     Encrypt synced data with your own <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>sync passphrase<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>. This doesn't include payment methods and addresses from Google Pay.
   </message>
   <message name="IDS_NEW_SETTINGS_ENCRYPT_WITH_SYNC_PASSPHRASE_LABEL" desc="Label for the radio button which, when selected, causes synced settings to be encrypted with a user-provided password.">
-    Encrypt synced data with your own <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>sync passphrase<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>. Payment methods and addresses from Google Pay won’t be encrypted. Browsing history from Brave won’t sync.
+    Encrypt synced data with your own <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>sync passphrase<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>. Payment methods and addresses from Google Pay won’t be encrypted. Browsing history from Ping won’t sync.
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_EXPLANATION_TEXT" desc="Message shown when explicit passphrase is selected.">
-    Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting, you'll need to <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Ping. If you forget your passphrase or want to change this setting, you'll need to <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_RESET_HINT_ENCRYPTION" desc="Informs user how to change their encryption setting.">
     To change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> to remove your sync passphrase
@@ -4169,7 +4169,7 @@
   <message name="IDS_SETTINGS_PASSPHRASE_RECOVER" desc="Message about how to recover from a lost passphrase.">
     If you forgot your passphrase or want to change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
-  <message name="IDS_SETTINGS_PERSONALIZE_GOOGLE_SERVICES_TITLE" desc="Title of the personalize Brave services section. When clicked, takes the user to the Brave Activity Controls.">
+  <message name="IDS_SETTINGS_PERSONALIZE_GOOGLE_SERVICES_TITLE" desc="Title of the personalize Ping services section. When clicked, takes the user to the Ping Activity Controls.">
     Control how your browsing history is used to personalize Search and more
   </message>
 
@@ -4281,17 +4281,17 @@
     </message>
   </if>
   <if expr="not is_chromeos">
-    <message name="IDS_SETTINGS_SYSTEM_HARDWARE_ACCELERATION_LABEL" desc="Label for the checkbox that forces Brave to render via hardware acceleration (GPU) when available.">
+    <message name="IDS_SETTINGS_SYSTEM_HARDWARE_ACCELERATION_LABEL" desc="Label for the checkbox that forces Ping to render via hardware acceleration (GPU) when available.">
       Use hardware acceleration when available
     </message>
     <message name="IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_LABEL" desc="Label for the control that opens the system network proxy settings. These settings apply to the entire computer.">
       Open your computer's proxy settings
     </message>
-    <message name="IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_EXTENSION_LABEL" desc="Non-interactive label that describes when Brave's proxy settings are overwritten by an extension. This is used in place of IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_LABEL above.">
-      <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph> is using proxy settings from an extension
+    <message name="IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_EXTENSION_LABEL" desc="Non-interactive label that describes when Ping's proxy settings are overwritten by an extension. This is used in place of IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_LABEL above.">
+      <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Ping</ex></ph> is using proxy settings from an extension
     </message>
-    <message name="IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_POLICY_LABEL" desc="Non-interactive label that describes when Brave's proxy settings are overwritten by policy. This is used in place of IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_LABEL above.">
-      <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph> is using proxy settings from your administrator
+    <message name="IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_POLICY_LABEL" desc="Non-interactive label that describes when Ping's proxy settings are overwritten by policy. This is used in place of IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_LABEL above.">
+      <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Ping</ex></ph> is using proxy settings from your administrator
     </message>
   </if>
   <if expr="chromeos_lacros">
@@ -4310,8 +4310,8 @@
     </message>
     <message name="IDS_SETTINGS_INCOMPATIBLE_APPLICATIONS_SUBPAGE_SUBTITLE" desc="The subtitle shown in the subpage for incompatible applications.">
       {NUM_APPLICATIONS, plural,
-        =1 {This application could prevent Brave from working properly.}
-        other {These applications could prevent Brave from working properly.}}
+        =1 {This application could prevent Ping from working properly.}
+        other {These applications could prevent Ping from working properly.}}
     </message>
     <message name="IDS_SETTINGS_INCOMPATIBLE_APPLICATIONS_SUBPAGE_SUBTITLE_NO_ADMIN_RIGHTS" desc="The subtitle shown in the subpage for incompatible applications, when the user does not have administrator rights. This means that these users are incapable of updating or removing incompatible applications by themselves.">
       {NUM_APPLICATIONS, plural,
@@ -4581,11 +4581,11 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_PHONE_EDIT_DIALOG_TITLE" desc="The title of a dialog that is shown when a user chooses to edit details of a phone that can be used to sign-in with.">
     Edit phone
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_YOUR_DEVICES" desc="The title of a section on a settings page that lists phoens that are signed into (and syncing with) the user's Brave account.">
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_YOUR_DEVICES" desc="The title of a section on a settings page that lists phoens that are signed into (and syncing with) the user's Ping account.">
     Your devices
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_SYNCED_DESC" desc="The description of a section on a settings page that lists phoens that are signed into (and syncing with) the user's Brave account.">
-    You're signed in to Brave on these devices, so you can use them as security keys.
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_SYNCED_DESC" desc="The description of a section on a settings page that lists phoens that are signed into (and syncing with) the user's Ping account.">
+    You're signed in to Ping on these devices, so you can use them as security keys.
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_LINKED_DEVICES" desc="The title of a section on a settings page that lists phoens that can be used for signing into websites. The word 'linked' was picked to be distinct from 'paired', as in 'Bluetooth pairing'. The technology does use Bluetooth, but is distinct from Bluetooth pairing.">
     Linked devices
@@ -4593,10 +4593,10 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_LINKED_DESC" desc="The description of a section on a settings page that lists phoens that can be used for signing into websites. The word 'linked' was picked to be distinct from 'paired', as in 'Bluetooth pairing'. The technology does use Bluetooth, but is distinct from Bluetooth pairing.">
     You linked these devices by scanning a QR code.
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_MANAGE" desc="The title of an option in Brave's privacy settings for managing phones that can be used to sign into websites.">
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_MANAGE" desc="The title of an option in Ping's privacy settings for managing phones that can be used to sign into websites.">
     Manage phones
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_MANAGE_DESC" desc="The description of an option in Brave's privacy settings for managing phones that can be used for signing into websites. A 'security key' is typically a USB peripherial used to secure sign-ins. In this case a phone can be used as a security key.">
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_MANAGE_DESC" desc="The description of an option in Ping's privacy settings for managing phones that can be used for signing into websites. A 'security key' is typically a USB peripherial used to secure sign-ins. In this case a phone can be used as a security key.">
     Control which phones you use as security keys
   </message>
   <message name="IDS_SETTINGS_EXTENSION_OR_APP_DISPLAY_NAME" desc="The title of a page containing site settings for an extension or Isolated Web App (IWA). The display name contains a human-readable extension/IWA name followed by the extension/IWA ID.">

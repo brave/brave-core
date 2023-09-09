@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Brave Settings WebUI strings (included from brave_generated_resources.grd). -->
+<!-- Ping Settings WebUI strings (included from brave_generated_resources.grd). -->
 <grit-part>
 
   <!--Add new items to the appropriate sections below -->
 
   <!-- Strings not associated with a particular section-->
-  <message name="IDS_SETTINGS_RESTART_NOTICE" desc="Notifies the user that they need to relaunch Brave">
-    Your changes will take effect the next time you relaunch Brave.
+  <message name="IDS_SETTINGS_RESTART_NOTICE" desc="Notifies the user that they need to relaunch Ping">
+    Your changes will take effect the next time you relaunch Ping.
   </message>
-  <message name="IDS_SETTINGS_RELAUNCH_BUTTON_LABEL" desc="Notifies the user that they need to relaunch Brave">
+  <message name="IDS_SETTINGS_RELAUNCH_BUTTON_LABEL" desc="Notifies the user that they need to relaunch Ping">
     Relaunch Now
   </message>
 
@@ -29,8 +29,8 @@
   </message>
 
   <!-- Settings / Appearance -->
-  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES" desc="The label for brave theme change setting options">
-    Brave colors
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES" desc="The label for ping theme change setting options">
+    Ping colors
   </message>
   <message name="IDS_BRAVE_THEME_TYPE_LIGHT" desc="Text for light theme type">
     Light
@@ -57,7 +57,7 @@
     Get more themes
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_DEFAULT_IMAGES_OPTION_LABEL" desc="The label for choosing default images over super referral">
-    Brave default images
+    Ping default images
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_SECTION" desc="The label for section containing settings related to tabs">
     Tabs
@@ -101,8 +101,8 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BOOKMARKS" desc="The label for settings checkbox controlling whether or not bookmarks show up in autocomplete">
     Bookmarks
   </message>
-  <message name="IDS_SETTINGS_SHOW_BRAVE_NEWS_BUTTON_LABEL" desc="The label for the settings switch controlling whether the Brave News button is shown in the toolbar">
-    Show Brave News button in address bar
+  <message name="IDS_SETTINGS_SHOW_BRAVE_NEWS_BUTTON_LABEL" desc="The label for the settings switch controlling whether the Ping News button is shown in the toolbar">
+    Show Ping News button in address bar
   </message>
   <message name="IDS_SETTINGS_SHOW_BOOKMARK_BAR" desc="The label for settings switch controlling the permanent visibility of bookmarks bar">
     Show bookmarks
@@ -162,8 +162,8 @@
   <message name="IDS_SETTINGS_NEW_TAB" desc="The text label for the New Tab settings page">
     New Tab Page
   </message>
-  <message name="IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS" desc="The label for Brave Rewards show/hide feature toggle">
-    Brave Rewards
+  <message name="IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS" desc="The label for Ping Rewards show/hide feature toggle">
+    Ping Rewards
   </message>
   <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS" desc="The label for New Tab Page shows customization">
     New tab page shows
@@ -191,7 +191,7 @@
         Pin
       </message>
       <message name="IDS_SETTINGS_SHORTCUT_PINNED" desc="The label for pinned state description">
-        Brave is already pinned
+        Ping is already pinned
       </message>
     </if>
     <if expr="is_macosx">
@@ -202,7 +202,7 @@
         Dock
       </message>
       <message name="IDS_SETTINGS_SHORTCUT_PINNED" desc="The label for docked state description">
-        Brave is already in Dock
+        Ping is already in Dock
       </message>
     </if>
   </if>
@@ -223,22 +223,22 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DOWN" desc="Label for shields status down site settings.">
     Shields Down
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_TITLE" desc="The title for Brave shields section in settings">
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_TITLE" desc="The title for Ping shields section in settings">
     Shields
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE" desc="The title for Brave shields Defaults sub-section in settings">
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE" desc="The title for Ping shields Defaults sub-section in settings">
     Block trackers and ads which follow you across the web.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_1" desc="The description for Brave shields Defaults sub-section in settings">
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_1" desc="The description for Ping shields Defaults sub-section in settings">
     These are the default Shields settings. They apply to all websites unless you change something in the Shields panel on a particular site. Changing these won't affect your existing per-site settings.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2" desc="The description for Brave shields Defaults sub-section in settings.">
-    This will block most ads on websites, not Brave Private Ads — those are controlled in the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Brave Rewards<ph name="END_LINK">&lt;/a&gt;</ph> settings.
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2" desc="The description for Ping shields Defaults sub-section in settings.">
+    This will block most ads on websites, not Ping Private Ads — those are controlled in the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Ping Rewards<ph name="END_LINK">&lt;/a&gt;</ph> settings.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2_REWARDS_DISABLED" desc="The description for Brave shields Defaults sub-section in settings when Brave Rewards is disabled.">
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2_REWARDS_DISABLED" desc="The description for Ping shields Defaults sub-section in settings when Ping Rewards is disabled.">
     This will block most ads on websites.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_SHOW_STATS_BLOCKED_BADGE_LABEL" desc="Default Brave show stats blocked badge control setting label">
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_SHOW_STATS_BLOCKED_BADGE_LABEL" desc="Default Ping show stats blocked badge control setting label">
     Show the number of blocked items on the Shields icon
   </message>
   <message name="IDS_SETTINGS_DE_AMP_LABEL" desc="The label to activate De-AMP feature">
@@ -253,13 +253,13 @@
   <message name="IDS_SETTINGS_DEBOUNCE_SUB_LABEL" desc="The sub-label describing debounce feature">
     Enable support for bypassing top-level redirect tracking URLs.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_CONTROL_LABEL" desc="Default Brave reduce language control setting label">
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_CONTROL_LABEL" desc="Default Ping reduce language control setting label">
     Prevent sites from fingerprinting me based on my language preferences
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_SUBITEM" desc="Description that shows under main toggle setting for reduce language control setting label">
     Enabling this setting reduces how much web sites can learn about your language preferences.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_AD_CONTROL_LABEL" desc="Default Brave block cross-site trackers control setting label">
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_AD_CONTROL_LABEL" desc="Default Ping block cross-site trackers control setting label">
     Trackers &amp; ads blocking
   </message>
   <message name="IDS_SETTINGS_BLOCK_ADS_TRACKERS_AGGRESSIVE" desc="Select value">
@@ -271,10 +271,10 @@
   <message name="IDS_SETTINGS_ALLOW_ADS_TRACKERS" desc="Select value">
     Disabled
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_NO_SCRIPT_CONTROL_LABEL" desc="Default Brave script blocking control setting label">
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_NO_SCRIPT_CONTROL_LABEL" desc="Default Ping script blocking control setting label">
     Block scripts
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL" desc="Default Brave fingerprinting control setting label">
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL" desc="Default Ping fingerprinting control setting label">
     Block fingerprinting
   </message>
   <message name="IDS_SETTINGS_STANDARD_FINGERPRINTING" desc="Select value">
@@ -286,7 +286,7 @@
   <message name="IDS_SETTINGS_STRICT_FINGERPRINTING" desc="Select value">
     Strict, may break sites
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_UPGRADE_CONTROL_LABEL" desc="Default Brave https upgrade control setting label">
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_UPGRADE_CONTROL_LABEL" desc="Default Ping https upgrade control setting label">
     Upgrade connections to HTTPS
   </message>
   <message name="IDS_SETTINGS_STANDARD_HTTPS_UPGRADE" desc="Select value">
@@ -298,7 +298,7 @@
   <message name="IDS_SETTINGS_STRICT_HTTPS_UPGRADE" desc="Select value">
     Strict
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Brave cookies control setting label">
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Ping cookies control setting label">
     Block cookies
   </message>
   <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_COOKIES" desc="Select value">
@@ -310,13 +310,13 @@
   <message name="IDS_SETTINGS_BLOCK_ALL_COOKIES" desc="Select value">
     All
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DEFAULT_VIEW_LABEL" desc="Default Brave view title label">
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DEFAULT_VIEW_LABEL" desc="Default Ping view title label">
     Default view
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_SIMPLE_VIEW_LABEL" desc="Default Brave simple view title label">
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_SIMPLE_VIEW_LABEL" desc="Default Ping simple view title label">
     Simple view
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_ADVANCED_VIEW_LABEL" desc="Default Brave advanced view title label">
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_ADVANCED_VIEW_LABEL" desc="Default Ping advanced view title label">
     Advanced view
   </message>
 
@@ -395,21 +395,21 @@
     Shortcuts
   </message>
 
-  <!-- Settings / Brave Rewards -->
+  <!-- Settings / Ping Rewards -->
   <message name="IDS_SETTINGS_BRAVE_REWARDS_TITLE" desc="The text label for the Rewards settings page">
-    Brave Rewards
+    Ping Rewards
   </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_DISABLED_LABEL" desc="The text label for the Rewards disabled state">
-    Brave Rewards is disabled
+    Ping Rewards is disabled
   </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_DISABLED_SUB_LABEL" desc="The text sublabel for the Rewards disabled state">
     Open Rewards panel to enable and get started
   </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_PAGE_LABEL" desc="The text label for the link to the Rewards settings page">
-    Open full Brave Rewards settings
+    Open full Ping Rewards settings
   </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
-    Show Brave Rewards icon in address bar
+  <message name="IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Ping Rewards button">
+    Show Ping Rewards icon in address bar
   </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_SHOW_TIP_BUTTONS_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons">
     Show Tip buttons on sites
@@ -468,7 +468,7 @@
     Automatically send diagnostic reports
   </message>
   <message name="IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF_DESC" desc="The description of the checkbox to enable/disable sending diagnostic reports (crashes, hangs).">
-    Help improve Brave's product stability by automatically sending diagnostic reports when the Brave Browser crashes or freezes.
+    Help improve Ping's product stability by automatically sending diagnostic reports when the Ping Browser crashes or freezes.
   </message>
   <!-- Request OTR -->
   <if expr="enable_request_otr">
@@ -494,7 +494,7 @@
     On exit
   </message>
   <message name="IDS_SETTINGS_RESET_REWARDS_DATA" desc="The label for opening rewards manage wallet dialog">
-    Reset Brave Rewards data...
+    Reset Ping Rewards data...
   </message>
 
   <!-- Settings / Privacy and security / Cookies and other site data -->
@@ -589,7 +589,7 @@
   <!-- Settings / Privacy and security / Security -->
   <!-- Safe browsing -->
   <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_BULLET_TWO" desc="Second bullet point under the safe browsing standard protection mode">
-    Checks URLs with a list of unsafe sites stored in Brave.
+    Checks URLs with a list of unsafe sites stored in Ping.
   </message>
   <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_NONE_DESC" desc="Description for safe browsing no protection mode">
     Does not protect you against dangerous websites, downloads, and extensions.
@@ -669,55 +669,55 @@
   </message>
 
   <!-- Settings / Sync -->
-  <message name="IDS_SETTINGS_BRAVE_SYNC_TITLE" desc="The title for Brave Sync in settings">
+  <message name="IDS_SETTINGS_BRAVE_SYNC_TITLE" desc="The title for Ping Sync in settings">
     Sync
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_ACTION_LABEL" desc="Brave Sync setup action label">
+  <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_ACTION_LABEL" desc="Ping Sync setup action label">
     Start using sync
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_TITLE" desc="Title for the Brave Sync settings setup section">
+  <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_TITLE" desc="Title for the Ping Sync settings setup section">
     Sync Setup
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_SUBTITLE" desc="Subtitle for the Brave Sync settings setup section">
-    To start, you will need Brave installed on all the devices you plan to sync. Then, securely link them together with a sync code.
+  <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_SUBTITLE" desc="Subtitle for the Ping Sync settings setup section">
+    To start, you will need Ping installed on all the devices you plan to sync. Then, securely link them together with a sync code.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGE_ACTION_LABEL" desc="Brave Sync manage action label">
+  <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGE_ACTION_LABEL" desc="Ping Sync manage action label">
     Manage your synced devices
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_COULD_NOT_SYNC_ACTION_LABEL" desc="Could not sync devices action label. It is displayed in the case when Brave Sync could not decrypt code words and start work">
-    Could not sync Brave on your devices
+  <message name="IDS_SETTINGS_BRAVE_SYNC_COULD_NOT_SYNC_ACTION_LABEL" desc="Could not sync devices action label. It is displayed in the case when Ping Sync could not decrypt code words and start work">
+    Could not sync Ping on your devices
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGER_TITLE" desc="Brave Sync manager title">
+  <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGER_TITLE" desc="Ping Sync manager title">
     Sync Manager
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_SETTINGS_TITLE" desc="Brave Sync settings title">
+  <message name="IDS_SETTINGS_BRAVE_SYNC_SETTINGS_TITLE" desc="Ping Sync settings title">
     Sync Settings
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_SETTINGS_SUBTITLE" desc="Brave Sync settings subtitle">
+  <message name="IDS_SETTINGS_BRAVE_SYNC_SETTINGS_SUBTITLE" desc="Ping Sync settings subtitle">
     Manage what information you would like to sync between devices. These settings only affect this device.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_TITLE" desc="Brave Sync device list title">
+  <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_TITLE" desc="Ping Sync device list title">
     Device List
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_SUBTITLE" desc="Brave Sync device list subtitle">
+  <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_SUBTITLE" desc="Ping Sync device list subtitle">
     The device list below includes all devices in your sync chain. Each device can be managed from any other device.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_NAME_COLUMN" desc="Brave Sync device list table column title for device name">
+  <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_NAME_COLUMN" desc="Ping Sync device list table column title for device name">
     Device Name
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_NAME_THIS_DEVICE" desc="Brave Sync device list label for device which is the device the user is currently using">
+  <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_NAME_THIS_DEVICE" desc="Ping Sync device list label for device which is the device the user is currently using">
     <ph name="DEVICE_NAME">$1<ex>my-computer-1</ex></ph> (This Device)
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_LAST_ACTIVE_COLUMN" desc="Brave Sync device list table column title for last active date">
+  <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_LAST_ACTIVE_COLUMN" desc="Ping Sync device list table column title for last active date">
     Last Active
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_REMOVE_COLUMN" desc="Brave Sync device list table column title for remove other device buttons">
+  <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_REMOVE_COLUMN" desc="Ping Sync device list table column title for remove other device buttons">
     Remove
   </message>
-  <message name="IDS_BRAVE_SYNC_SETUP_TITLE" desc="The Brave Sync title.">
+  <message name="IDS_BRAVE_SYNC_SETUP_TITLE" desc="The Ping Sync title.">
     Sync Setup
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_WORD_COUNT" desc="Text for Brave Sync word count message.">
+  <message name="IDS_SETTINGS_BRAVE_SYNC_WORD_COUNT" desc="Text for Ping Sync word count message.">
     Word count: <ph name="WORD_COUNT">$1<ex>24</ex></ph>
   </message>
   <message name="IDS_SETTINGS_BRAVE_SYNC_COPIED_TEXT" desc="The success state telling the user that a secret code was copied to the clipboard">
@@ -730,7 +730,7 @@
     There was an error displaying the QR code, please refresh and try again.
   </message>
   <message name="IDS_BRAVE_SYNC_SETUP_DESCRIPTION" desc="The Sync phrase explaining what happens when you start a new sync chain. Appears when sync is disabled.">
-    To start, you will need Brave installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.
+    To start, you will need Ping installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.
   </message>
   <message name="IDS_BRAVE_SYNC_START_NEW_CHAIN_BUTTON" desc="The Sync button that triggers a modal to start a new sync chian">
     Start a new Sync Chain
@@ -751,7 +751,7 @@
     Sync Chain QR Code
   </message>
   <message name="IDS_BRAVE_SYNC_SCAN_CODE_DESCRIPTION_PARTIAL_1" desc="The Sync instructions for the `scan sync code` modal partial phrase (1)">
-    On your mobile device, navigate to Brave Sync in the Settings panel and click the button
+    On your mobile device, navigate to Ping Sync in the Settings panel and click the button
   </message>
   <message name="IDS_BRAVE_SYNC_SCAN_CODE_DESCRIPTION_PARTIAL_2" desc="The Sync instructions for the `scan sync code` modal partial phrase (2)">
     “Scan Sync Code”.
@@ -763,7 +763,7 @@
     Sync Chain Code
   </message>
   <message name="IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_1" desc="The Sync instructions for the `view sync code` modal partial phrase (1)">
-    On your target computer, navigate to Brave Sync in settings and click the button
+    On your target computer, navigate to Ping Sync in settings and click the button
   </message>
   <message name="IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_2" desc="The Sync instructions for the `view sync code` modal partial phrase (2)">
     “I have a Sync Code”.
@@ -808,7 +808,7 @@
     Internal account delete error
   </message>
   <message name="IDS_BRAVE_SYNC_CODE_FROM_DEPRECATED_VERSION" desc="Text for error when trying to use old version sync code after v1 sunset date.">
-    This code was generated by a deprecated version of Brave, please upgrade your other device first
+    This code was generated by a deprecated version of Ping, please upgrade your other device first
   </message>
   <message name="IDS_BRAVE_SYNC_CODE_EXPIRED" desc="Text for error when trying to use the sync code which has expired.">
     This code has expired. Please generate a new one on your other device and try again.
@@ -826,17 +826,17 @@
     Are you sure you want to remove the selected device from the sync chain?
   </message>
   <message name="IDS_BRAVE_SYNC_FINAL_SECURITY_WARNING_TEXT" desc="Confirmation message prompt to make sure the user aware his data will be shared with other devices in chain">
-    Warning: this will share your Brave data, including potentially your passwords, with the device that generated these code words.
+    Warning: this will share your Ping data, including potentially your passwords, with the device that generated these code words.
 
     Please double check that these code words were generated by a device that you own.
 
     Are you sure you want to do this?
   </message>
-  <message name="IDS_BRAVE_SYNC_PASSPHRASE_DECRYPTION_ERROR_MESSAGE" desc="Warning message that informs user about Brave Sync is not running and browser needs to have access to secure OS passwords store">
-    Brave could not access your operating system's safe storage. This is what's used to secure data such as passwords and cookies; it's also required for Brave Sync to connect your browser profile between devices. This means Brave Sync is not running. To resolve this issue, please see the <ph name="BEGIN_LINK_SYNC_GUIDE">&lt;a target="_blank" href="$1"&gt;</ph>Brave Sync troubleshooting guide<ph name="END_LINK_SYNC_GUIDE">&lt;/a&gt;</ph>.
+  <message name="IDS_BRAVE_SYNC_PASSPHRASE_DECRYPTION_ERROR_MESSAGE" desc="Warning message that informs user about Ping Sync is not running and browser needs to have access to secure OS passwords store">
+    Ping could not access your operating system's safe storage. This is what's used to secure data such as passwords and cookies; it's also required for Ping Sync to connect your browser profile between devices. This means Ping Sync is not running. To resolve this issue, please see the <ph name="BEGIN_LINK_SYNC_GUIDE">&lt;a target="_blank" href="$1"&gt;</ph>Ping Sync troubleshooting guide<ph name="END_LINK_SYNC_GUIDE">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_BRAVE_SYNC_PASSPHRASE_DECRYPTION_SS_UNLOCKED_ERROR_MESSAGE" desc="Warning">
-    It looks like the sync encryption key is different from the one used when you first set up Brave Sync. The easiest fix here is to reset and re-join the sync chain using the passphrase from one of your other synced devices.
+    It looks like the sync encryption key is different from the one used when you first set up Ping Sync. The easiest fix here is to reset and re-join the sync chain using the passphrase from one of your other synced devices.
   </message>
   <message name="IDS_BRAVE_SYNC_LEAVE_AND_REJOIN_THE_CHAIN_BUTTON" desc="Button which does reset the sync and offers to re-join the sync chain">
     Reset and re-join sync chain
@@ -848,7 +848,7 @@
     Permanently delete account
   </message>
   <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_DESCRIPTION_PARTIAL_1" desc="">
-    Deleting your account will remove your encrypted data from Brave servers and disable Sync on all of your connected devices.
+    Deleting your account will remove your encrypted data from Ping servers and disable Sync on all of your connected devices.
   </message>
   <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_DESCRIPTION_PARTIAL_2" desc="">
     It will not however delete the data that is stored locally on those devices.
@@ -885,7 +885,7 @@
   </message>
 
   <!-- Settings / Extensions -->
-  <message name="IDS_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_TITLE" desc="The title for Brave default extensions in settings">
+  <message name="IDS_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_TITLE" desc="The title for Ping default extensions in settings">
     Extensions
   </message>
   <message name="IDS_SETTINGS_GOOGLE_LOGIN_FOR_EXTENSIONS" desc="Label for a switch control which allows Google login for extension">
@@ -988,7 +988,7 @@
     Automatically redirect .onion sites
   </message>
   <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_DESC" desc="Text fragment for onion site component">
-    Brave will switch to the .onion version of a website when available, and automatically open all .onion domains in a Tor window.
+    Ping will switch to the .onion version of a website when available, and automatically open all .onion domains in a Tor window.
   </message>
   <message name="IDS_SETTINGS_WEBTORRENT_ENABLED_DESC" desc="The description for WebTorrent switch in settings">
     Uses WebTorrent to display torrents directly in the browser. Supports torrent files and magnet links.
@@ -1000,7 +1000,7 @@
     Manifest V2 extensions
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_SUBLABEL" desc="The sub label of manage v2 extensions link in settings">
-    The following Manifest V2 extensions will be removed from the Chrome Web Store, but are still supported in Brave. Toggle to download and install, or to uninstall.
+    The following Manifest V2 extensions will be removed from the Chrome Web Store, but are still supported in Ping. Toggle to download and install, or to uninstall.
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_TOAST_CONFIRM" desc="The label of the error toast button in settings">
     Close
@@ -1044,7 +1044,7 @@
     Default Solana wallet
   </message>
   <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE" desc="Select control value for which web3 provider to use">
-    Brave Wallet
+    Ping Wallet
   </message>
   <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_ASK" desc="Select control value for which web3 provider to use">
     Ask
@@ -1056,7 +1056,7 @@
     Crypto Wallets (Deprecated)
   </message>
   <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE_PREFER_EXTENSIONS" desc="Select control value for which web3 provider to use">
-    Extensions (Brave Wallet fallback)
+    Extensions (Ping Wallet fallback)
   </message>
   <message name="IDS_SETTINGS_DEFAULT_BASE_CURRENCY_DESC" desc="The default base currency to use for the wallet prices">
     Default base currency
@@ -1064,8 +1064,8 @@
   <message name="IDS_SETTINGS_DEFAULT_BASE_CRYPTOCURRENCY_DESC" desc="The default base cryptocurrency to use for the wallet prices">
     Default base cryptocurrency
   </message>
-  <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for showing the Brave wallet panel icon on the toolbar">
-    Show Brave Wallet icon on toolbar
+  <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for showing the Ping wallet panel icon on the toolbar">
+    Show Ping Wallet icon on toolbar
   </message>
   <message name="IDS_SETTINGS_ENABLE_NFT_DISCOVERY_LABEL" desc="The label for enabling NFT discovery">
     Enable NFT discovery
@@ -1073,11 +1073,11 @@
   <message name="IDS_SETTINGS_ENABLE_NFT_DISCOVERY_DESC" desc="The description for enabling NFT discovery">
     Automatically add NFTs you own to the Wallet using third party APIs.
   </message>
-  <message name="IDS_SETTINGS_AUTO_LOCK_MINUTES" desc="The title for the amount of minutes it takes for the Brave Wallet to automatically lock">
-    Automatically lock Brave Wallet
+  <message name="IDS_SETTINGS_AUTO_LOCK_MINUTES" desc="The title for the amount of minutes it takes for the Ping Wallet to automatically lock">
+    Automatically lock Ping Wallet
   </message>
-  <message name="IDS_SETTINGS_AUTO_LOCK_MINUTES_DESC" desc="The description for the amount of minutes it takes for the Brave Wallet to automatically lock">
-    The number of minutes to wait until the Brave Wallet is automatically locked
+  <message name="IDS_SETTINGS_AUTO_LOCK_MINUTES_DESC" desc="The description for the amount of minutes it takes for the Ping Wallet to automatically lock">
+    The number of minutes to wait until the Ping Wallet is automatically locked
   </message>
   <message name="IDS_SETTINGS_WALLET_NETWORKS_ITEM" desc="The label for opening wallet networks list">
     Wallet Networks
@@ -1092,7 +1092,7 @@
     Automatically pin NFTs
   </message>
   <message name="IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING_DESC" desc="Enable NFT pinning description">
-    NFTs which are added to the Brave Wallet may be automatically pinned to the local IPFS node.
+    NFTs which are added to the Ping Wallet may be automatically pinned to the local IPFS node.
     Note: IPFS daemon may be started for the pinning purposes so your local node will share cached data and pinned NFTs to the IPFS network.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
@@ -1137,7 +1137,7 @@
   <message name="IDS_SETTINGS_WALLET_SOL_NETWORK_LIST_TITLE" desc="The title of the list with wallet solana networks">
     Solana networks
   </message>
-  <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_TEST_NETWORKS" desc="The description for showing the Brave wallet test networks">
+  <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_TEST_NETWORKS" desc="The description for showing the Ping wallet test networks">
     Show test networks
   </message>
 
@@ -1244,13 +1244,13 @@
     Gateway
   </message>
   <message name="IDS_IPFS_RESOLVE_OPTION_LOCAL" desc="Select control value for which IPFS resolve method to use">
-    Brave local IPFS node
+    Ping local IPFS node
   </message>
   <message name="IDS_IPFS_RESOLVE_OPTION_DISABLED" desc="Select control value for which IPFS resolve method to use">
     Disabled
   </message>
   <message name="IDS_SETTINGS_IPFS_METHOD_DESC" desc="The description of IPFS protocol on settings page">
-    <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_MPL">&lt;/a&gt;</ph> about Brave local IPFS node and gateway privacy considerations.
+    <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_MPL">&lt;/a&gt;</ph> about Ping local IPFS node and gateway privacy considerations.
   </message>
   <message name="IDS_SETTINGS_IPFS_PUBLIC_GATEWAY_DESC" desc="The description of changing IPFS public gateway">
     IPFS public gateway address
@@ -1265,7 +1265,7 @@
     IPFS public gateway fallback
   </message>
   <message name="IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_DESC" desc="The description for the switch of automatically fallback to IPFS public gateway">
-    Automatically fall back to public IPFS gateway if your Brave local IPFS node cannot be reached.
+    Automatically fall back to public IPFS gateway if your Ping local IPFS node cannot be reached.
   </message>
   <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_TO_GATEWAY_WHEN_POSSIBLE_LABEL">
     Automatically redirect requests for IPFS network resources to the configured gateway.
@@ -1275,7 +1275,7 @@
     Note: If local node is selected, resource will be requested directly from your computer and cached data may be provided to the IPFS network for some time.
   </message>
   <message name="IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC" desc="The description for IPFS companion switch in settings">
-    Uses the IPFS Companion extension for enhanced IPFS support in Brave, including access to common IPFS tasks from your browser bar.
+    Uses the IPFS Companion extension for enhanced IPFS support in Ping, including access to common IPFS tasks from your browser bar.
   </message>
   <message name="IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_LABEL" desc="The text label for Maximum IPFS cache size field">
     Maximum IPFS cache size (GB)
@@ -1308,10 +1308,10 @@
     Rotate key
   </message>
   <message name="IDS_SETTINGS_IPFS_ROTATION_STOP_ERROR" desc="The error message of the dialog when unable to stop ipfs node">
-    Unable to stop Brave local IPFS node
+    Unable to stop Ping local IPFS node
   </message>
   <message name="IDS_SETTINGS_IPFS_ROTATION_LAUNCH_ERROR" desc="The error message of the dialog when unable to launch ipfs node">
-    Unable to launch Brave local IPFS node
+    Unable to launch Ping local IPFS node
   </message>
   <message name="IDS_SETTINGS_IPFS_PEER_NODE_RESTART" desc="The message to restart node if peers were chagned on IPFS Settings page">
     Restart node to apply changes
@@ -1379,11 +1379,11 @@
     Invalid gateway address
   </message>
   <message name="IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS_ORIGIN_ISOLATION" desc="The error message used when user input an invalid gateway address without origin isolation">
-    Only a valid IPFS gateway with Origin isolation enabled can be used in Brave
+    Only a valid IPFS gateway with Origin isolation enabled can be used in Ping
   </message>
 
   <!-- Settings / Help tips -->
-  <message name="IDS_SETTINGS_HELP_TIPS" desc="Title for an item in the 'Help tips' section of Brave Settings">
+  <message name="IDS_SETTINGS_HELP_TIPS" desc="Title for an item in the 'Help tips' section of Ping Settings">
     Help tips
   </message>
   <message name="IDS_SETTINGS_HELP_TIPS_SHOW_BRAVE_WAYBACK_MACHINE_PROMPT" desc="The label describing the 'wayback machine' toggle option">
@@ -1400,7 +1400,7 @@
   </message>
 
   <!-- Settings / Leo Assistant -->
-  <message name="IDS_SETTINGS_LEO_ASSISTANT" desc="Title for an item in the 'Leo Assistant' section of Brave Settings">
+  <message name="IDS_SETTINGS_LEO_ASSISTANT" desc="Title for an item in the 'Leo Assistant' section of Ping Settings">
     Leo
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_ICON_ON_TOOLBAR_LABEL" desc="The text for settings option">
@@ -1423,7 +1423,7 @@
   </message>
   <if expr="not is_android">
     <message name="IDS_BRAVE_AVATAR_LABEL_56" desc="The label for the avatar_edgy_brave.png avatar.">
-      Avatar Edgy Brave
+      Avatar Edgy Ping
     </message>
     <message name="IDS_BRAVE_AVATAR_LABEL_57" desc="The label for the avatar_edgy_ocean.png avatar.">
       Avatar Edgy Ocean
@@ -1444,7 +1444,7 @@
       Avatar Paladin Rewards
     </message>
     <message name="IDS_BRAVE_AVATAR_LABEL_63" desc="The label for the avatar_paladin_brave.png avatar.">
-      Avatar Paladin Brave
+      Avatar Paladin Ping
     </message>
     <message name="IDS_BRAVE_AVATAR_LABEL_64" desc="The label for the avatar_paladin_ocean.png avatar.">
       Avatar Paladin Ocean
@@ -1465,7 +1465,7 @@
       Avatar Gleam Rewards
     </message>
     <message name="IDS_BRAVE_AVATAR_LABEL_70" desc="The label for the avatar_gleam_brave.png avatar.">
-      Avatar Gleam Brave
+      Avatar Gleam Ping
     </message>
     <message name="IDS_BRAVE_AVATAR_LABEL_71" desc="The label for the avatar_gleam_ocean.png avatar.">
       Avatar Gleam Ocean
@@ -1486,7 +1486,7 @@
       Avatar Oval Rewards
     </message>
     <message name="IDS_BRAVE_AVATAR_LABEL_77" desc="The label for the avatar_oval_brave.png avatar.">
-      Avatar Oval Brave
+      Avatar Oval Ping
     </message>
     <message name="IDS_BRAVE_AVATAR_LABEL_78" desc="The label for the avatar_oval_ocean.png avatar.">
       Avatar Oval Ocean
@@ -1507,7 +1507,7 @@
       Avatar Bonbon Rewards
     </message>
     <message name="IDS_BRAVE_AVATAR_LABEL_84" desc="The label for the avatar_bonbon_brave.png avatar.">
-      Avatar Bonbon Brave
+      Avatar Bonbon Ping
     </message>
     <message name="IDS_BRAVE_AVATAR_LABEL_85" desc="The label for the avatar_bonbon_ocean.png avatar.">
       Avatar Bonbon Ocean
