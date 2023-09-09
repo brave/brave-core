@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//third_party/widevine/cdm/widevine.gni")
+
 brave_components_permissions_sources = [
   "//brave/components/permissions/brave_permission_manager.cc",
   "//brave/components/permissions/brave_permission_manager.h",
@@ -28,10 +30,18 @@ brave_components_permissions_sources = [
   "//brave/components/permissions/permission_origins.h",
 ]
 
+if (enable_widevine) {
+  brave_components_permissions_sources += [
+    "//brave/components/permissions/permission_widevine_utils.cc",
+    "//brave/components/permissions/permission_widevine_utils.h",
+  ]
+}
+
 brave_components_permissions_deps = [
   "//base",
   "//brave/components/brave_wallet/browser:permission_utils",
   "//brave/components/brave_wallet/common:mojom",
+  "//brave/components/constants:constants",
   "//brave/components/l10n/common",
   "//brave/components/resources:strings_grit",
   "//components/content_settings/core/browser",

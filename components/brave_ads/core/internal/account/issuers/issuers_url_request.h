@@ -49,6 +49,12 @@ class IssuersUrlRequest final {
   void RetryCallback();
   void StopRetrying();
 
+  void NotifyDidFetchIssuers(const IssuersInfo& issuers) const;
+  void NotifyFailedToFetchIssuers() const;
+  void NotifyWillFetchIssuers(base::Time fetch_at) const;
+  void NotifyWillRetryFetchingIssuers(base::Time retry_at) const;
+  void NotifyDidRetryFetchingIssuers() const;
+
   raw_ptr<IssuersUrlRequestDelegate> delegate_ = nullptr;
 
   bool is_periodically_fetching_ = false;

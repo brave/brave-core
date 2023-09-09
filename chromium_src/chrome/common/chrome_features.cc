@@ -14,13 +14,16 @@
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kHttpsFirstModeV2, base::FEATURE_ENABLED_BY_DEFAULT},
     {kKAnonymityService, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSCTAuditing, base::FEATURE_DISABLED_BY_DEFAULT},
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+    {kDesktopPWAsLinkCapturing, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif
 #if BUILDFLAG(IS_ANDROID)
     {kPrivacyGuideAndroidPostMVP, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
+    {kSCTAuditing, base::FEATURE_DISABLED_BY_DEFAULT},
 #if !BUILDFLAG(IS_ANDROID)
+    {kPrivacyGuide3, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTrustSafetySentimentSurvey, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTrustSafetySentimentSurveyV2, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif

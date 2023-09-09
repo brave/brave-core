@@ -2,8 +2,10 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+import { mapLimit } from 'async'
 import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../common/constants/magics'
-import { BraveWallet, SupportedTestNetworks } from '../constants/types'
+import WalletApiProxy from '../common/wallet_api_proxy'
+import { BraveWallet, SupportedCoinTypes, SupportedTestNetworks } from '../constants/types'
 
 export const getPriceIdForToken = (
   token: Pick<
@@ -49,4 +51,70 @@ export function handleEndpointError(
   return {
     error: friendlyMessage
   }
+}
+
+export async function getEnabledCoinTypes(api: WalletApiProxy) {
+  const {
+    isFilecoinEnabled, isSolanaEnabled, isBitcoinEnabled
+  } = (await api.walletHandler.getWalletInfo()).walletInfo
+
+  // Get All Networks
+  return SupportedCoinTypes.filter((coin) => {
+    // MULTICHAIN: While we are still in development for FIL and SOL,
+    // we will not use their networks unless enabled by brave://flags
+    return (
+      (coin === BraveWallet.CoinType.FIL && isFilecoinEnabled) ||
+      (coin === BraveWallet.CoinType.SOL && isSolanaEnabled) ||
+      (coin === BraveWallet.CoinType.BTC && isBitcoinEnabled) ||
+      coin === BraveWallet.CoinType.ETH
+    )
+  })
+}
+
+export async function getAllNetworksList(api: WalletApiProxy) {
+  const { jsonRpcService } = api
+
+  const enabledCoinTypes = await getEnabledCoinTypes(api)
+
+  // Get All Networks
+  const networks = (
+    await mapLimit(
+      enabledCoinTypes, 10, (async (coin: number) => {
+        const { networks } = await jsonRpcService.getAllNetworks(coin)
+        return networks
+      })
+    )
+  ).flat(1)
+
+  return networks
+}
+
+export async function getNetwork(
+  api: WalletApiProxy,
+  arg: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
+): Promise<BraveWallet.NetworkInfo | undefined> {
+  const networksList = await getAllNetworksList(api)
+
+  return networksList.find(
+    (n) => n.chainId === arg.chainId && n.coin === arg.coin
+  )
+}
+
+export async function getVisibleNetworksList(
+  api: WalletApiProxy
+) {
+  const { jsonRpcService } = api
+
+  const enabledCoinTypes = await getEnabledCoinTypes(api)
+
+  const networks = (
+    await mapLimit(enabledCoinTypes, 10, async (coin: number) => {
+      const { networks } = await jsonRpcService.getAllNetworks(coin)
+      const { chainIds: hiddenChainIds } =
+        await jsonRpcService.getHiddenNetworks(coin)
+      return networks.filter((n) => !hiddenChainIds.includes(n.chainId))
+    })
+  ).flat(1)
+
+  return networks
 }

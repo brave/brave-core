@@ -19,6 +19,6 @@ provideStrings({
   acceptButtonLabel: 'Accept and begin',
   pageContentWarning: 'Disconnect to stop sending this page content to Leo, and start a new conversation',
   errorNetworkLabel: 'There was a network issue connecting to Leo, check your connection and try again.',
-  errorRateLimit: 'You\'ve reached the maximum number of questions for Leo. Please try again in a few hours.',
+  errorRateLimit: 'Leo is too busy right now. Please try again in a few minutes.',
   retryButtonLabel: 'Retry'
 })

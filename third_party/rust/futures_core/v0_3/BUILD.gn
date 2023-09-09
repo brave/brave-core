@@ -13,10 +13,21 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/futures_core/v0_3/crate/build.rs",
+    "//brave/third_party/rust/futures_core/v0_3/crate/no_atomic_cas.rs",
+    "//brave/third_party/rust/futures_core/v0_3/crate/src/future.rs",
+    "//brave/third_party/rust/futures_core/v0_3/crate/src/lib.rs",
+    "//brave/third_party/rust/futures_core/v0_3/crate/src/stream.rs",
+    "//brave/third_party/rust/futures_core/v0_3/crate/src/task/__internal/atomic_waker.rs",
+    "//brave/third_party/rust/futures_core/v0_3/crate/src/task/__internal/mod.rs",
+    "//brave/third_party/rust/futures_core/v0_3/crate/src/task/mod.rs",
+    "//brave/third_party/rust/futures_core/v0_3/crate/src/task/poll.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/futures_core/v0_3/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.3.27"
   cargo_pkg_name = "futures-core"
@@ -30,6 +41,4 @@ cargo_crate("lib") {
     "alloc",
     "std",
   ]
-  build_root = "crate/build.rs"
-  build_sources = [ "crate/build.rs" ]
 }

@@ -163,7 +163,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private static final String TAG = "BraveToolbar";
 
     private static final String YOUTUBE_DOMAIN = "youtube.com";
-    private static final List<String> mBraveSearchEngineDefaultRegions =
+    private static final List<String> BRAVE_SEARCH_ENGINE_DEFAULT_REGIONS =
             Arrays.asList("CA", "DE", "FR", "GB", "US", "AT", "ES", "MX", "BR", "AR", "IN");
     private static final long MB_10 = 10000000;
     private static final long MINUTES_10 = 10 * 60 * 1000;
@@ -217,7 +217,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private FilterListAndroidHandler mFilterListAndroidHandler;
     private PlaylistService mPlaylistService;
 
-    private enum BIGTECH_COMPANY { Google, Facebook, Amazon }
+    private enum BigtechCompany { Google, Facebook, Amazon }
 
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -330,18 +330,18 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         });
         mBraveShieldsContentSettingsObserver = new BraveShieldsContentSettingsObserver() {
             @Override
-            public void blockEvent(int tabId, String block_type, String subresource) {
-                mBraveShieldsHandler.addStat(tabId, block_type, subresource);
+            public void blockEvent(int tabId, String blockType, String subresource) {
+                mBraveShieldsHandler.addStat(tabId, blockType, subresource);
                 Tab currentTab = getToolbarDataProvider().getTab();
                 if (currentTab == null || currentTab.getId() != tabId) {
                     return;
                 }
                 mBraveShieldsHandler.updateValues(tabId);
                 if (!isIncognito() && OnboardingPrefManager.getInstance().isBraveStatsEnabled()
-                        && (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)
-                                || block_type.equals(BraveShieldsContentSettings
-                                                             .RESOURCE_IDENTIFIER_TRACKERS))) {
-                    addStatsToDb(block_type, subresource, currentTab.getUrl().getSpec());
+                        && (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)
+                                || blockType.equals(BraveShieldsContentSettings
+                                                            .RESOURCE_IDENTIFIER_TRACKERS))) {
+                    addStatsToDb(blockType, subresource, currentTab.getUrl().getSpec());
                 }
             }
 
@@ -864,12 +864,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     + mBraveShieldsHandler.getAdsBlockedCount(tabId);
 
             String displayTrackerName = "";
-            if (blockerNamesList.contains(BIGTECH_COMPANY.Google.name())) {
-                displayTrackerName = BIGTECH_COMPANY.Google.name();
-            } else if (blockerNamesList.contains(BIGTECH_COMPANY.Facebook.name())) {
-                displayTrackerName = BIGTECH_COMPANY.Facebook.name();
-            } else if (blockerNamesList.contains(BIGTECH_COMPANY.Amazon.name())) {
-                displayTrackerName = BIGTECH_COMPANY.Amazon.name();
+            if (blockerNamesList.contains(BigtechCompany.Google.name())) {
+                displayTrackerName = BigtechCompany.Google.name();
+            } else if (blockerNamesList.contains(BigtechCompany.Facebook.name())) {
+                displayTrackerName = BigtechCompany.Facebook.name();
+            } else if (blockerNamesList.contains(BigtechCompany.Amazon.name())) {
+                displayTrackerName = BigtechCompany.Amazon.name();
             }
 
             String trackerText = "";
@@ -1345,8 +1345,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             BraveActivity.getBraveActivity().getActivityTab().getUrl().getSpec())
                     && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
                     && OnboardingPrefManager.getInstance().getUrlFocusCount() == 1
-                    && !mBraveSearchEngineDefaultRegions.contains(countryCode)) {
+                    && !BRAVE_SEARCH_ENGINE_DEFAULT_REGIONS.contains(countryCode)) {
                 Intent searchActivityIntent = new Intent(context, SearchActivity.class);
+                searchActivityIntent.setAction(Intent.ACTION_VIEW);
                 context.startActivity(searchActivityIntent);
             }
 

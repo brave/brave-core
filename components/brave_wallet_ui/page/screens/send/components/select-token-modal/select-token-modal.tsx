@@ -55,6 +55,12 @@ import CloseIcon from '../../../../../assets/svg-icons/close.svg'
 
 // Components
 import { TokenListItem } from '../token-list-item/token-list-item'
+import {
+  TokenListItemSkeleton
+} from '../token-list-item/token_list_item_skeleton'
+import {
+  LoadingSkeleton
+} from '../../../../../components/shared/loading-skeleton/index'
 import { NetworkFilterWithSearch } from '../../../../../components/desktop/network-filter-with-search'
 
 // Styled Components
@@ -265,8 +271,12 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     // Memos
     const emptyTokensList = React.useMemo(() => {
-      return accounts.map((account) => getTokensBySearchValue(account)).flat(1).length === 0
-    }, [accounts, getTokensBySearchValue])
+      return !isLoadingBalances &&
+        accounts.map(
+          (account) =>
+            getTokensBySearchValue(account)
+        ).flat(1).length === 0
+    }, [accounts, getTokensBySearchValue, isLoadingBalances])
 
     const modalTitle = React.useMemo(() => {
       if (selectedSendOption === SendPageTabHashes.nft) {
@@ -276,6 +286,26 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     }, [selectedSendOption])
 
     const tokensByAccount = React.useMemo(() => {
+      if (isLoadingBalances) {
+        return (
+          <Column columnWidth='full'>
+            <AccountSection
+              rowWidth='full'
+              verticalPadding={9}
+              horizontalPadding={16}
+            >
+              <LoadingSkeleton width={80} height={14} />
+            </AccountSection>
+            <Column
+              columnWidth='full'
+              horizontalPadding={8}>
+              <TokenListItemSkeleton
+                isNFT={selectedSendOption === SendPageTabHashes.nft}
+              />
+            </Column>
+          </Column>
+        )
+      }
       if (emptyTokensList) {
         return <Text textSize='14px' isBold={false} textColor='text03'>
           {getLocale('braveWalletNoAvailableTokens')}
@@ -332,7 +362,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       getAccountFiatValue,
       emptyTokensList,
       selectedSendOption,
-      tokenBalancesRegistry
+      tokenBalancesRegistry,
+      isLoadingBalances
     ])
 
     // render

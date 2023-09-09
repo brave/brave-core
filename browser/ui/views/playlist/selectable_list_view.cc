@@ -35,8 +35,8 @@ SelectableView::SelectableView(const std::string& id,
   SetPreferredSize(gfx::Size(288, 64));
 
   constexpr gfx::Size kThumbnailSize(64, 48);
-  auto* thumbnail = AddChildView(std::make_unique<ThumbnailView>(image_));
-  thumbnail->SetPreferredSize(kThumbnailSize);
+  thumbnail_view_ = AddChildView(std::make_unique<ThumbnailView>(image_));
+  thumbnail_view_->SetPreferredSize(kThumbnailSize);
 
   auto* title =
       AddChildView(std::make_unique<views::Label>(base::UTF8ToUTF16(name_)));
@@ -74,6 +74,11 @@ void SelectableView::SetSelected(bool selected) {
   selected_icon_->SetVisible(selected_);
 
   UpdateBackground();
+}
+
+base::OnceCallback<void(const gfx::Image&)>
+SelectableView::GetThumbnailSetter() {
+  return thumbnail_view_->GetThumbnailSetter();
 }
 
 void SelectableView::UpdateBackground() {

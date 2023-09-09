@@ -8,6 +8,7 @@ package org.chromium.chrome.browser;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -16,10 +17,14 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
 import android.text.Html;
+import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.style.ClickableSpan;
+import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.view.TouchDelegate;
 import android.view.View;
@@ -30,14 +35,18 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.browser_ui.widget.RoundedIconGenerator;
 import org.chromium.components.favicon.IconType;
 import org.chromium.components.favicon.LargeIconBridge;
+import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.url.GURL;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -513,5 +522,46 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         } else {
             return Html.fromHtml(string);
         }
+    }
+
+    public static String getFormattedAmount(double amount) {
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
+        numberFormat.setRoundingMode(RoundingMode.CEILING);
+        numberFormat.setMinimumFractionDigits(3);
+        return numberFormat.format(amount);
+    }
+
+    public static SpannableString tosSpannableString(String text, int colorRes) {
+        Context context = ContextUtils.getApplicationContext();
+        Spanned textSpanned = spannedFromHtmlString(text);
+        SpannableString textSpannableString = new SpannableString(textSpanned.toString());
+
+        NoUnderlineClickableSpan termsOfServiceClickableSpan =
+                new NoUnderlineClickableSpan(context, colorRes, (textView) -> {
+                    CustomTabActivity.showInfoPage(context, BraveActivity.BRAVE_TERMS_PAGE);
+                });
+
+        NoUnderlineClickableSpan privacyPolicyClickableSpan =
+                new NoUnderlineClickableSpan(context, colorRes, (textView) -> {
+                    CustomTabActivity.showInfoPage(context, BraveActivity.BRAVE_PRIVACY_POLICY);
+                });
+
+        setSpan(context, text, textSpannableString, R.string.terms_of_service,
+                termsOfServiceClickableSpan); // terms of service
+        setSpan(context, text, textSpannableString, R.string.privacy_policy,
+                privacyPolicyClickableSpan); // privacy policy
+        return textSpannableString;
+    }
+
+    public static void setSpan(Context context, String text, SpannableString tosTextSS,
+            int stringId, ClickableSpan clickableSpan) {
+        String spanString = context.getResources().getString(stringId);
+        int spanLength = spanString.length();
+        int index = text.indexOf(spanString);
+        tosTextSS.setSpan(
+                clickableSpan, index, index + spanLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        Typeface typeface = Typeface.create("sans-serif", Typeface.NORMAL);
+        tosTextSS.setSpan(new StyleSpan(typeface.getStyle()), index, index + spanLength,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 }

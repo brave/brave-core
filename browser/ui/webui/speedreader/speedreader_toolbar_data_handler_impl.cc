@@ -23,6 +23,11 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "ui/color/color_provider.h"
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#endif
+
 namespace {
 class TtsPlayerDelegate : public speedreader::TtsPlayer::Delegate {
  public:
@@ -133,11 +138,21 @@ void SpeedreaderToolbarDataHandlerImpl::ViewOriginal() {
 }
 
 void SpeedreaderToolbarDataHandlerImpl::AiChat() {
-  if (!browser_ || !browser_->window()) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (!ai_chat::features::IsAIChatEnabled() || !browser_) {
     return;
   }
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  static_cast<BraveBrowserWindow*>(browser_->window())->OpenAiChatPanel();
+  auto* side_panel = SidePanelUI::GetSidePanelUIForBrowser(browser_.get());
+  if (!side_panel) {
+    return;
+  }
+
+  if (auto entry = side_panel->GetCurrentEntryId();
+      entry == SidePanelEntryId::kChatUI) {
+    side_panel->Close();
+  } else {
+    side_panel->Show(SidePanelEntryId::kChatUI);
+  }
 #endif
 }
 

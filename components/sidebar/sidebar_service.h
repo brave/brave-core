@@ -14,6 +14,7 @@
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "brave/components/sidebar/sidebar_item.h"
+#include "brave/components/sidebar/sidebar_p3a.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/version_info/channel.h"
@@ -46,11 +47,11 @@ class SidebarService : public KeyedService {
   static constexpr SidebarItem::BuiltInItemType kDefaultBuiltInItemTypes[] = {
       SidebarItem::BuiltInItemType::kBraveTalk,
       SidebarItem::BuiltInItemType::kWallet,
+      SidebarItem::BuiltInItemType::kChatUI,
       SidebarItem::BuiltInItemType::kBookmarks,
       SidebarItem::BuiltInItemType::kReadingList,
       SidebarItem::BuiltInItemType::kHistory,
-      SidebarItem::BuiltInItemType::kPlaylist,
-      SidebarItem::BuiltInItemType::kChatUI};
+      SidebarItem::BuiltInItemType::kPlaylist};
   static_assert(
       std::size(kDefaultBuiltInItemTypes) ==
           static_cast<size_t>(SidebarItem::BuiltInItemType::kBuiltInItemLast),
@@ -125,6 +126,8 @@ class SidebarService : public KeyedService {
   raw_ptr<PrefService> prefs_ = nullptr;
 
   std::vector<SidebarItem> items_;
+
+  p3a::SidebarP3A sidebar_p3a_;
 
   base::ObserverList<Observer> observers_;
   PrefChangeRegistrar pref_change_registrar_;

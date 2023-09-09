@@ -164,8 +164,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                         blink::DocumentLoader* loader,
                         base::TimeTicks finish_time,
                         int64_t encoded_data_length,
-                        int64_t decoded_body_length,
-                        bool should_report_corb_blocking);
+                        int64_t decoded_body_length);
   void DidFailLoading(
       blink::CoreProbeSink* sink,
       uint64_t identifier,

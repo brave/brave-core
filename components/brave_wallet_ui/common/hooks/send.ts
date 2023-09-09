@@ -3,8 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { assertNotReached } from 'chrome://resources/js/assert_ts.js';
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query'
+
+// Types
 import {
   BraveWallet,
   GetEthAddrReturnInfo,
@@ -38,8 +42,7 @@ import {
 } from '../constants/domain-extensions'
 import { getChecksumEthAddress } from '../async/lib'
 
-// ToDo: Remove isSendTab prop once we fully migrate to Send Tab
-export function useSend (isSendTab?: boolean) {
+export function useSend () {
   // redux
   const dispatch = useDispatch()
   const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
@@ -68,10 +71,15 @@ export function useSend (isSendTab?: boolean) {
   const [addressWarning, setAddressWarning] = React.useState<string | undefined>(undefined)
   const [selectedSendAsset, setSelectedSendAsset] = React.useState<BraveWallet.BlockchainToken | undefined>(undefined)
   const [showFilecoinFEVMWarning, setShowFilecoinFEVMWarning] = React.useState<boolean>(false)
-  const { data: fevmTranslatedAddresses } = useGetFVMAddressQuery({
-    coin: selectedSendAsset?.coin,
-    addresses: [toAddressOrUrl],
-    isMainNet: selectedSendAsset?.chainId === BraveWallet.FILECOIN_MAINNET})
+  const { data: fevmTranslatedAddresses } = useGetFVMAddressQuery(
+    selectedSendAsset?.coin === BraveWallet.CoinType.FIL
+      ? {
+          coin: selectedSendAsset?.coin,
+          addresses: [toAddressOrUrl],
+          isMainNet: selectedSendAsset?.chainId === BraveWallet.FILECOIN_MAINNET
+        }
+      : skipToken
+  )
 
   const selectSendAsset = (asset: BraveWallet.BlockchainToken | undefined) => {
     if (asset?.isErc721 || asset?.isNft) {
@@ -110,7 +118,7 @@ export function useSend (isSendTab?: boolean) {
       }
       setAddressWarning('')
       setAddressError(getLocale('braveWalletNotValidChecksumAddressError'))
-      return false      
+      return false
   }, [setAddressWarning, setAddressError])
 
   const setNotRegisteredError = React.useCallback(() => {
@@ -188,7 +196,7 @@ export function useSend (isSendTab?: boolean) {
       return
     }
 
-    if (selectedAccount && selectedSendAsset && 
+    if (selectedAccount && selectedSendAsset &&
       selectedAccount.accountId.coin === BraveWallet.CoinType.ETH &&
       (selectedSendAsset.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
         selectedSendAsset.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
@@ -332,6 +340,25 @@ export function useSend (isSendTab?: boolean) {
     })
   }, [selectedAccount?.address, fullTokenList, handleUDAddressLookUp, handleDomainLookupResponse])
 
+  const processBitcoinAddress = React.useCallback((addressOrUrl: string) => {
+    // TODO(apaymyshev): support btc address aliases(UD, SNS)
+
+    setToAddress(addressOrUrl)
+
+    // Do nothing if value is an empty string
+    if (addressOrUrl === '') {
+      setAddressWarning('')
+      setAddressError('')
+      // eslint-disable-next-line no-useless-return
+      return
+    }
+
+    // Check if value is the same as the sending address
+    // TODO(apaymyshev): should prohibit self transfers?
+
+    // TODO(apaymyshev): validate address format.
+  }, [])
+
   const processAddressOrUrl = React.useCallback((addressOrUrl: string) => {
     if (!selectedAccount) {
       return
@@ -345,12 +372,17 @@ export function useSend (isSendTab?: boolean) {
       processFilecoinAddress(addressOrUrl)
     } else if (selectedAccount.accountId.coin === BraveWallet.CoinType.SOL) {
       processSolanaAddress(addressOrUrl)
+    } else if (selectedAccount.accountId.coin === BraveWallet.CoinType.BTC) {
+      processBitcoinAddress(addressOrUrl)
+    } else {
+      assertNotReached(`Unknown coin ${selectedAccount.accountId.coin}`)
     }
   }, [
     selectedAccount,
     processEthereumAddress,
     processFilecoinAddress,
-    processSolanaAddress
+    processSolanaAddress,
+    processBitcoinAddress
   ])
 
   const updateToAddressOrUrl = React.useCallback((addressOrUrl: string) => {
@@ -358,20 +390,12 @@ export function useSend (isSendTab?: boolean) {
     processAddressOrUrl(addressOrUrl)
   }, [processAddressOrUrl])
 
-  const resetSendFields = React.useCallback((reselectSendAsset?: boolean) => {
-    if (isSendTab) {
-      selectSendAsset(undefined)
-      setToAddressOrUrl('')
-      setSendAmount('')
-      setShowFilecoinFEVMWarning(false)
-      return
-    }
-    if (reselectSendAsset) {
-      selectSendAsset(sendAssetOptions[0])
-    }
+  const resetSendFields = React.useCallback(() => {
+    selectSendAsset(undefined)
     setToAddressOrUrl('')
     setSendAmount('')
-  }, [selectSendAsset, isSendTab, sendAssetOptions])
+    setShowFilecoinFEVMWarning(false)
+  }, [selectSendAsset])
 
   const submitSend = React.useCallback(() => {
     if (!selectedSendAsset) {
@@ -440,7 +464,7 @@ export function useSend (isSendTab?: boolean) {
           splTokenMintAddress: selectedSendAsset.contractAddress
         })
       )
-      resetSendFields(true)
+      resetSendFields()
       return
     }
 
@@ -461,9 +485,7 @@ export function useSend (isSendTab?: boolean) {
     }
 
     if (selectedSendAsset.isErc721 || selectedSendAsset.isErc20) {
-      if (isSendTab) {
-        resetSendFields()
-      }
+      resetSendFields()
       return
     }
 
@@ -511,8 +533,7 @@ export function useSend (isSendTab?: boolean) {
     selectedNetwork,
     sendAmount,
     toAddress,
-    resetSendFields,
-    isSendTab
+    resetSendFields
   ])
 
   // memos
@@ -530,22 +551,6 @@ export function useSend (isSendTab?: boolean) {
       ? 'fromAmountDecimalsOverflow'
       : undefined
   }, [sendAmount, selectedSendAsset])
-
-  // effects
-  React.useEffect(() => {
-    if (isSendTab) {
-      return
-    }
-    // We also check that coinType matches here because localhost
-    // networks share the same chainId
-    if (
-      selectedSendAsset?.chainId === selectedNetwork?.chainId &&
-      selectedSendAsset?.coin === selectedNetwork?.coin
-    ) {
-      return
-    }
-    selectSendAsset(sendAssetOptions[0])
-  }, [sendAssetOptions, selectedSendAsset, selectedNetwork, isSendTab])
 
   return {
     setSendAmount,

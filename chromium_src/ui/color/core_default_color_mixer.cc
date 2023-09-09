@@ -10,11 +10,10 @@
 namespace ui {
 
 void AddBraveCoreDefaultColorMixer(ColorProvider* provider,
-                                   const ColorProviderManager::Key& key) {
+                                   const ColorProviderKey& key) {
   ColorMixer& mixer = provider->AddMixer();
 
-  const bool dark_mode =
-      key.color_mode == ColorProviderManager::ColorMode::kDark;
+  const bool dark_mode = key.color_mode == ColorProviderKey::ColorMode::kDark;
 
   mixer[kColorAlertMediumSeverityIcon] = {
       dark_mode ? SkColorSetRGB(0xBB, 0x88, 0x00)
@@ -22,7 +21,7 @@ void AddBraveCoreDefaultColorMixer(ColorProvider* provider,
 }
 
 void AddCoreDefaultColorMixer(ColorProvider* provider,
-                              const ColorProviderManager::Key& key) {
+                              const ColorProviderKey& key) {
   AddCoreDefaultColorMixer_Chromium(provider, key);
   AddBraveCoreDefaultColorMixer(provider, key);
 }

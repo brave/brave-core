@@ -17,6 +17,7 @@ export const HeaderTitle = styled.span<{
   font-weight: ${(p) => p.isPanel ? 600 : 500};
   line-height: ${(p) => p.isPanel ? 24 : 40}px;
   color: ${leo.color.text.primary};
+  word-break: break-all;
 `
 
 export const MenuWrapper = styled.div`
@@ -63,7 +64,6 @@ export const SendButton = styled(WalletButton)`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  align-self: flex-end;
   padding: 12px 16px;
   background: ${leo.color.button.background};
   border-radius: 1000px;

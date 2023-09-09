@@ -4,7 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 source_set("version_info") {
-  configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
     "version_info_ios.h",
     "version_info_ios.mm",

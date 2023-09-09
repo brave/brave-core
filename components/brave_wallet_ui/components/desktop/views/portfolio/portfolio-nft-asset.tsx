@@ -28,7 +28,7 @@ import {
   useUnsafeWalletSelector
 } from '../../../../common/hooks/use-safe-selector'
 import {
-  useGetNetworkQuery
+  useGetNetworkQuery,
 } from '../../../../common/slices/api.slice'
 import {
   useScopedBalanceUpdater

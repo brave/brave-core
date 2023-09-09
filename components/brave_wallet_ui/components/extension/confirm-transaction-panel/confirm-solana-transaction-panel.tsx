@@ -25,6 +25,8 @@ import CreateSiteOrigin from '../../shared/create-site-origin/index'
 import PanelTab from '../panel-tab'
 import { TransactionInfo } from './transaction-info'
 import { SolanaTransactionDetailBox } from '../transaction-box/solana-transaction-detail-box'
+import { TransactionQueueSteps } from './common/queue'
+import { Footer } from './common/footer'
 
 // Styles
 import { Skeleton } from '../../shared/loading-skeleton/styles'
@@ -58,8 +60,7 @@ import {
   SmallLoadIcon
 } from './style'
 import { StatusBubble } from '../../shared/style'
-import { TransactionQueueStep } from './common/queue'
-import { Footer } from './common/footer'
+import { getTransactionStatusString } from '../../../utils/tx-utils'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
@@ -80,7 +81,7 @@ export const ConfirmSolanaTransactionPanel = () => {
 
   // custom hooks
   const {
-    fromAddress,
+    fromAccount,
     fromOrb,
     isAssociatedTokenAccountCreation,
     toOrb,
@@ -88,12 +89,14 @@ export const ConfirmSolanaTransactionPanel = () => {
     transactionsNetwork,
     transactionTitle,
     isSolanaDappTransaction,
-    fromAccountName,
     groupTransactions,
     selectedPendingTransactionGroupIndex,
     selectedPendingTransaction,
     onConfirm,
-    onReject
+    onReject,
+    queueNextTransaction,
+    transactionQueueNumber,
+    transactionsQueueLength
   } = usePendingTransactions()
   const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
 
@@ -109,7 +112,8 @@ export const ConfirmSolanaTransactionPanel = () => {
   if (
     !transactionDetails ||
     !selectedPendingTransaction ||
-    !transactionsNetwork
+    !transactionsNetwork ||
+    !fromAccount
   ) {
     return (
       <StyledWrapper>
@@ -123,7 +127,11 @@ export const ConfirmSolanaTransactionPanel = () => {
 
       <TopRow>
         <NetworkText>{transactionsNetwork.chainName}</NetworkText>
-        <TransactionQueueStep />
+        <TransactionQueueSteps
+          queueNextTransaction={queueNextTransaction}
+          transactionQueueNumber={transactionQueueNumber}
+          transactionsQueueLength={transactionsQueueLength}
+        />
       </TopRow>
 
       <AccountCircleWrapper>
@@ -138,14 +146,14 @@ export const ConfirmSolanaTransactionPanel = () => {
       </URLText>
       <FromToRow>
         <Tooltip
-          text={fromAddress}
+          text={fromAccount.address}
           isAddress={true}
           position='left'
         >
-          <AccountNameText>{fromAccountName}</AccountNameText>
+          <AccountNameText>{fromAccount.name}</AccountNameText>
         </Tooltip>
 
-        {transactionDetails.recipient && transactionDetails.recipient !== fromAddress &&
+        {transactionDetails.recipient && transactionDetails.recipient !== fromAccount.address &&
           <>
             <ArrowIcon />
             <Tooltip
@@ -209,13 +217,7 @@ export const ConfirmSolanaTransactionPanel = () => {
 
                   <StatusBubble status={txn.txStatus} />
 
-                  {txn.txStatus === BraveWallet.TransactionStatus.Unapproved && getLocale('braveWalletTransactionStatusUnapproved')}
-                  {txn.txStatus === BraveWallet.TransactionStatus.Approved && getLocale('braveWalletTransactionStatusApproved')}
-                  {txn.txStatus === BraveWallet.TransactionStatus.Rejected && getLocale('braveWalletTransactionStatusRejected')}
-                  {txn.txStatus === BraveWallet.TransactionStatus.Submitted && getLocale('braveWalletTransactionStatusSubmitted')}
-                  {txn.txStatus === BraveWallet.TransactionStatus.Confirmed && getLocale('braveWalletTransactionStatusConfirmed')}
-                  {txn.txStatus === BraveWallet.TransactionStatus.Error && getLocale('braveWalletTransactionStatusError')}
-                  {txn.txStatus === BraveWallet.TransactionStatus.Dropped && getLocale('braveWalletTransactionStatusDropped')}
+                  {getTransactionStatusString(txn.txStatus)}
 
                   {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted]
                     .includes(txn.txStatus) && <SmallLoadIcon />}

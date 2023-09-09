@@ -40,7 +40,7 @@ TEST(BraveAdsConversionsFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsConversionFeatureEnabled());
 }
 
-TEST(BraveAdsConversionsFeatureTest, GetConversionResourceVersion) {
+TEST(BraveAdsConversionsFeatureTest, ConversionResourceVersion) {
   // Arrange
   base::FieldTrialParams params;
   params["resource_version"] = "0";
@@ -86,7 +86,7 @@ TEST(BraveAdsConversionsFeatureTest,
   EXPECT_EQ(1, kConversionResourceVersion.Get());
 }
 
-TEST(BraveAdsConversionsFeatureTest, GetConversionIdPattern) {
+TEST(BraveAdsConversionsFeatureTest, ConversionIdPattern) {
   // Arrange
   base::FieldTrialParams params;
   params["html_meta_tag_id_pattern"] = "*";

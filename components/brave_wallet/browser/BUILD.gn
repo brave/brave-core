@@ -35,16 +35,16 @@ static_library("browser") {
     "asset_ratio_service.h",
     "bitcoin/bitcoin_block_tracker.cc",
     "bitcoin/bitcoin_block_tracker.h",
-    "bitcoin/bitcoin_database_synchronizer.cc",
-    "bitcoin/bitcoin_database_synchronizer.h",
     "bitcoin/bitcoin_rpc.cc",
     "bitcoin/bitcoin_rpc.h",
+    "bitcoin/bitcoin_serializer.cc",
+    "bitcoin/bitcoin_serializer.h",
     "bitcoin/bitcoin_transaction.cc",
     "bitcoin/bitcoin_transaction.h",
-    "bitcoin/bitcoin_transaction_database.cc",
-    "bitcoin/bitcoin_transaction_database.h",
     "bitcoin/bitcoin_tx_manager.cc",
     "bitcoin/bitcoin_tx_manager.h",
+    "bitcoin/bitcoin_tx_meta.cc",
+    "bitcoin/bitcoin_tx_meta.h",
     "bitcoin/bitcoin_tx_state_manager.cc",
     "bitcoin/bitcoin_tx_state_manager.h",
     "bitcoin/bitcoin_wallet_service.cc",
@@ -213,6 +213,7 @@ static_library("browser") {
   }
   deps = [
     ":constants",
+    ":generated_bitcoin_rpc_responses",
     ":generated_blockchain_list_schemas",
     ":generated_json_rpc_responses",
     ":generated_simulation_responses",
@@ -417,6 +418,16 @@ source_set("test_support") {
 
 generated_types("generated_blockchain_list_schemas") {
   sources = [ "blockchain_list_schemas.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [
+    ":browser",
+    "test:brave_wallet_unit_tests",
+  ]
+}
+
+generated_types("generated_bitcoin_rpc_responses") {
+  sources = [ "bitcoin_rpc_responses.idl" ]
   root_namespace = "brave_wallet::%(namespace)s"
   deps = [ "//base" ]
   visibility = [

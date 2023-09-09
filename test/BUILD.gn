@@ -114,15 +114,14 @@ test("brave_unit_tests") {
     "//brave/common/brave_content_client_unittest.cc",
     "//brave/common/profiler/thread_profile_configuration_unittest.cc",
     "//brave/components/assist_ranker/ranker_model_loader_impl_unittest.cc",
-    "//brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_converting_util_unittest.cc",
-    "//brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_handler_unittest.cc",
-    "//brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_util_unittest.cc",
-    "//brave/components/brave_ads/content/browser/search_result_ad/test_web_page_util.cc",
-    "//brave/components/brave_ads/content/browser/search_result_ad/test_web_page_util.h",
-    "//brave/components/brave_ads/core/internal/feature/brave_ads_feature_unittest.cc",
-    "//brave/components/brave_ads/core/internal/feature/notification_ad_feature_unittest.cc",
-    "//brave/components/brave_ads/core/internal/feature/search_result_ad_feature_unittest.cc",
-    "//brave/components/brave_ads/core/internal/feature/user_attention_feature_unittest.cc",
+    "//brave/components/brave_ads/content/browser/units/search_result_ad/search_result_ad_converting_util_unittest.cc",
+    "//brave/components/brave_ads/content/browser/units/search_result_ad/search_result_ad_handler_unittest.cc",
+    "//brave/components/brave_ads/content/browser/units/search_result_ad/search_result_ad_util_unittest.cc",
+    "//brave/components/brave_ads/content/browser/units/search_result_ad/test_web_page_util.cc",
+    "//brave/components/brave_ads/content/browser/units/search_result_ad/test_web_page_util.h",
+    "//brave/components/brave_ads/core/internal/ads_feature_unittest.cc",
+    "//brave/components/brave_ads/core/internal/units/notification_ad/notification_ad_feature_unittest.cc",
+    "//brave/components/brave_ads/core/internal/units/search_result_ad/search_result_ad_feature_unittest.cc",
     "//brave/components/brave_perf_predictor/browser/bandwidth_linreg_unittest.cc",
     "//brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor_unittest.cc",
     "//brave/components/brave_perf_predictor/browser/named_third_party_registry_unittest.cc",
@@ -326,7 +325,7 @@ test("brave_unit_tests") {
   }
 
   if (enable_widevine) {
-    deps += [ "//brave/browser/widevine:unittest" ]
+    deps += [ "//brave/browser/widevine:unittests" ]
   }
 
   if (enable_brave_vpn) {
@@ -715,10 +714,10 @@ test("brave_browser_tests") {
   ]
 
   sources = [
-    "//brave/browser/brave_ads/brave_stats_helper_browsertest.cc",
-    "//brave/browser/brave_ads/notification_helper/notification_helper_impl_mock.cc",
-    "//brave/browser/brave_ads/notification_helper/notification_helper_impl_mock.h",
-    "//brave/browser/brave_ads/search_result_ad/search_result_ad_browsertest.cc",
+    "//brave/browser/brave_ads/analytics/p3a/brave_stats_helper_browsertest.cc",
+    "//brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl_mock.cc",
+    "//brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl_mock.h",
+    "//brave/browser/brave_ads/units/search_result_ad/search_result_ad_browsertest.cc",
     "//brave/browser/brave_content_browser_client_browsertest.cc",
     "//brave/browser/brave_prefs_browsertest.cc",
     "//brave/browser/brave_scheme_load_browsertest.cc",
@@ -975,10 +974,6 @@ test("brave_browser_tests") {
     ]
   }
 
-  if (is_apple) {
-    configs += [ "//build/config/compiler:enable_arc" ]
-  }
-
   if (use_aura) {
     deps += [ "//ui/aura:test_support" ]
   }
@@ -1040,9 +1035,13 @@ test("brave_browser_tests") {
   if (enable_speedreader) {
     sources += [ "//brave/browser/speedreader/speedreader_browsertest.cc" ]
     deps += [
+      "//brave/components/ai_chat/common/buildflags",
       "//brave/components/speedreader",
       "//brave/components/speedreader/common:mojom",
     ]
+    if (enable_ai_chat) {
+      deps += [ "//brave/components/ai_chat/common" ]
+    }
   }
 
   if (enable_playlist) {
@@ -1218,7 +1217,6 @@ if (is_android) {
     sources = [
       "//brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/brave_wallet/BraveWalletUtilsTest.java",
-      "//brave/android/javatests/org/chromium/chrome/browser/contextmenu/BraveContextMenuPopulatorTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/language/settings/BraveLanguageSettingsTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/privacy/settings/BravePrivacySettingsTest.java",

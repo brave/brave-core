@@ -59,6 +59,11 @@ class MockPlaylistServiceObserver
               (override));
   MOCK_METHOD(void, OnItemDeleted, (const std::string& id), (override));
 
+  MOCK_METHOD(void,
+              OnPlaylistUpdated,
+              (playlist::mojom::PlaylistPtr),
+              (override));
+
  private:
   mojo::Receiver<playlist::mojom::PlaylistServiceObserver> observer_receiver_{
       this};

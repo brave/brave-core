@@ -31,8 +31,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
-import com.android.billingclient.api.Purchase;
 import com.brave.playlist.util.ConstantUtils;
 import com.brave.playlist.util.PlaylistPreferenceUtils;
 import com.brave.playlist.util.PlaylistUtils;
@@ -83,6 +84,7 @@ import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
+import org.chromium.chrome.browser.brave_leo.BraveLeoActivity;
 import org.chromium.chrome.browser.brave_news.BraveNewsConnectionErrorHandler;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
@@ -158,23 +160,23 @@ import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
-import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
+import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnCalloutDialogFragment;
 import org.chromium.chrome.browser.vpn.fragments.LinkVpnSubscriptionDialogFragment;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnApiResponseUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
-import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.embedder_support.util.UrlConstants;
@@ -188,7 +190,6 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -216,10 +217,11 @@ public abstract class BraveActivity extends ChromeActivity
             "brave://rewards/#verify";
     public static final String BRAVE_REWARDS_SETTINGS_MONTHLY_URL = "brave://rewards/#monthly";
     public static final String REWARDS_AC_SETTINGS_URL = "brave://rewards/contribute";
+    public static final String BRAVE_AI_CHAT_URL = "chrome-untrusted://chat";
     public static final String REWARDS_LEARN_MORE_URL = "https://brave.com/faq-rewards/#unclaimed-funds";
     public static final String BRAVE_TERMS_PAGE =
             "https://basicattentiontoken.org/user-terms-of-service/";
-    public static final String BRAVE_PRIVACY_POLICY = "https://brave.com/privacy/#rewards";
+    public static final String BRAVE_PRIVACY_POLICY = "https://brave.com/privacy/browser/#rewards";
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     private static final String PREF_CLEAR_ON_EXIT = "clear_on_exit";
     public static final String OPEN_URL = "open_url";
@@ -291,7 +293,8 @@ public abstract class BraveActivity extends ChromeActivity
         super.onResumeWithNative();
         BraveActivityJni.get().restartStatsUpdater();
         if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(BraveActivity.this);
+            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
+                    BraveActivity.this, null);
             BraveVpnNativeWorker.getInstance().addObserver(this);
 
             BraveVpnUtils.reportBackgroundUsageP3A();
@@ -390,7 +393,13 @@ public abstract class BraveActivity extends ChromeActivity
                         BraveVpnUtils.showProgressDialog(BraveActivity.this,
                                 getResources().getString(R.string.vpn_connect_text));
                         if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
-                            verifySubscription();
+                            MutableLiveData<Boolean> _billingConnectionState =
+                                    new MutableLiveData();
+                            LiveData<Boolean> billingConnectionState = _billingConnectionState;
+                            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
+                                    BraveActivity.this, _billingConnectionState);
+                            LiveDataUtil.observeOnce(billingConnectionState,
+                                    isConnected -> { verifySubscription(); });
                         } else {
                             BraveVpnUtils.dismissProgressDialog();
                             BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
@@ -400,6 +409,8 @@ public abstract class BraveActivity extends ChromeActivity
             }
         } else if (id == R.id.brave_speedreader_id) {
             enableSpeedreaderMode();
+        } else if (id == R.id.brave_leo_id) {
+            openBraveLeo();
         } else {
             return false;
         }
@@ -632,19 +643,22 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void verifySubscription() {
-        List<Purchase> purchases = InAppPurchaseWrapper.getInstance().queryPurchases();
-        if (purchases != null && purchases.size() == 1) {
-            Purchase purchase = purchases.get(0);
-            mPurchaseToken = purchase.getPurchaseToken();
-            mProductId = purchase.getSkus().get(0).toString();
-            BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken, mProductId,
-                    BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
-        } else {
-            BraveVpnApiResponseUtils.queryPurchaseFailed(BraveActivity.this);
-            if (!mIsVerification) {
-                BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
-            }
-        }
+        InAppPurchaseWrapper.getInstance().queryPurchases();
+        LiveDataUtil.observeOnce(
+                InAppPurchaseWrapper.getInstance().getActivePurchase(), activePurchase -> {
+                    if (activePurchase != null) {
+                        mPurchaseToken = activePurchase.getPurchaseToken();
+                        mProductId = activePurchase.getProducts().get(0).toString();
+                        BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken,
+                                mProductId, BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT,
+                                getPackageName());
+                    } else {
+                        BraveVpnApiResponseUtils.queryPurchaseFailed(BraveActivity.this);
+                        if (!mIsVerification) {
+                            BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -726,6 +740,7 @@ public abstract class BraveActivity extends ChromeActivity
                     new Intent(BraveActivity.this, BraveVpnProfileActivity.class);
             braveVpnProfileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             braveVpnProfileIntent.putExtra(BraveVpnUtils.VERIFY_CREDENTIALS_FAILED, true);
+            braveVpnProfileIntent.setAction(Intent.ACTION_VIEW);
             startActivity(braveVpnProfileIntent);
         }
     }
@@ -741,7 +756,7 @@ public abstract class BraveActivity extends ChromeActivity
             List<Integer> dataTypes = Arrays.asList(
                     BrowsingDataType.HISTORY, BrowsingDataType.COOKIES, BrowsingDataType.CACHE);
 
-            int[] dataTypesArray = CollectionUtil.integerListToIntArray(new ArrayList<>(dataTypes));
+            int[] dataTypesArray = CollectionUtil.integerCollectionToIntArray(dataTypes);
 
             // has onBrowsingDataCleared() as an @Override callback from implementing
             // BrowsingDataBridge.OnClearBrowsingDataListener
@@ -1232,6 +1247,7 @@ public abstract class BraveActivity extends ChromeActivity
         Intent playlistActivityIntent = new Intent(context, PlaylistHostActivity.class);
         playlistActivityIntent.putExtra(ConstantUtils.PLAYLIST_ID, playlistId);
         playlistActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        playlistActivityIntent.setAction(Intent.ACTION_VIEW);
         context.startActivity(playlistActivityIntent);
     }
 
@@ -1335,6 +1351,7 @@ public abstract class BraveActivity extends ChromeActivity
         braveWalletIntent.putExtra(Utils.RESTART_WALLET_ACTIVITY_SETUP, setupAction);
         braveWalletIntent.putExtra(Utils.RESTART_WALLET_ACTIVITY_RESTORE, restoreAction);
         braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        braveWalletIntent.setAction(Intent.ACTION_VIEW);
         startActivity(braveWalletIntent);
     }
 
@@ -1347,6 +1364,7 @@ public abstract class BraveActivity extends ChromeActivity
         Intent braveWalletIntent = new Intent(this, BraveWalletDAppsActivity.class);
         braveWalletIntent.putExtra("activityType", activityType.getValue());
         braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        braveWalletIntent.setAction(Intent.ACTION_VIEW);
         startActivity(braveWalletIntent);
     }
 
@@ -1726,6 +1744,10 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
+    private void openBraveLeo() {
+        BraveLeoActivity.showPage(this, BRAVE_AI_CHAT_URL);
+    }
+
     public static ChromeTabbedActivity getChromeTabbedActivity() {
         return (ChromeTabbedActivity) getActivityOfType(ChromeTabbedActivity.class);
     }
@@ -1894,14 +1916,6 @@ public abstract class BraveActivity extends ChromeActivity
     interface Natives {
         void restartStatsUpdater();
         String getSafeBrowsingApiKey();
-    }
-
-    @Override
-    public void initializeCompositor() {
-        super.initializeCompositor();
-
-        BraveTabUiFeatureUtilities.maybeOverrideEnableTabGroupAutoCreationPreference(
-                ContextUtils.getApplicationContext());
     }
 
     private void initBraveWalletService() {

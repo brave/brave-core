@@ -25,6 +25,7 @@
 #include "brave/ios/browser/api/bookmarks/exporter/bookmark_html_writer.h"
 #include "brave/ios/browser/api/bookmarks/exporter/bookmarks_encoder.h"
 #include "components/bookmarks/browser/bookmark_node.h"
+#include "components/bookmarks/browser/bookmark_uuids.h"
 #include "components/strings/grit/components_strings.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
@@ -178,15 +179,12 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
 - (std::unique_ptr<bookmarks::BookmarkNode>)getRootNode {
   return std::make_unique<bookmarks::BookmarkNode>(
-      /*id=*/0,
-      base::Uuid::ParseLowercase(bookmarks::BookmarkNode::kRootNodeUuid),
-      GURL());
+      /*id=*/0, base::Uuid::ParseLowercase(bookmarks::kRootNodeUuid), GURL());
 }
 
 - (std::unique_ptr<bookmarks::BookmarkNode>)getBookmarksBarNode {
   auto node = std::make_unique<bookmarks::BookmarkNode>(
-      /*id=*/1,
-      base::Uuid::ParseLowercase(bookmarks::BookmarkNode::kBookmarkBarNodeUuid),
+      /*id=*/1, base::Uuid::ParseLowercase(bookmarks::kBookmarkBarNodeUuid),
       GURL());
   node->SetTitle(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_BOOKMARK_BAR_FOLDER_NAME));
@@ -195,9 +193,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
 - (std::unique_ptr<bookmarks::BookmarkNode>)getOtherBookmarksNode {
   auto node = std::make_unique<bookmarks::BookmarkNode>(
-      /*id=*/2,
-      base::Uuid::ParseLowercase(
-          bookmarks::BookmarkNode::kOtherBookmarksNodeUuid),
+      /*id=*/2, base::Uuid::ParseLowercase(bookmarks::kOtherBookmarksNodeUuid),
       GURL());
   node->SetTitle(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_BOOKMARK_BAR_OTHER_FOLDER_NAME));
@@ -206,9 +202,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
 - (std::unique_ptr<bookmarks::BookmarkNode>)getMobileBookmarksNode {
   auto node = std::make_unique<bookmarks::BookmarkNode>(
-      /*id=*/3,
-      base::Uuid::ParseLowercase(
-          bookmarks::BookmarkNode::kMobileBookmarksNodeUuid),
+      /*id=*/3, base::Uuid::ParseLowercase(bookmarks::kMobileBookmarksNodeUuid),
       GURL());
   node->SetTitle(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_BOOKMARK_BAR_MOBILE_FOLDER_NAME));

@@ -31,6 +31,7 @@ public class BraveSettingsActivity extends SettingsActivity {
         if (item.getItemId() == R.id.close_menu_id) {
             Intent intent = new Intent(this, ChromeTabbedActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intent.setAction(Intent.ACTION_VIEW);
             startActivity(intent);
             return true;
         }

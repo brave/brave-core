@@ -40,7 +40,7 @@ import org.chromium.ui.KeyboardVisibilityDelegate;
  */
 public class BraveWalletResetPreference
         extends Preference implements Preference.OnPreferenceClickListener {
-    private String TAG = "BraveWalletResetPreference";
+    private static final String TAG = "BraveWalletResetPref";
 
     private int mPrefAccentColor;
     private final String mConfirmationPhrase;
@@ -148,6 +148,7 @@ public class BraveWalletResetPreference
         Intent intent =
                 new Intent(BraveActivity.getChromeTabbedActivity(), ChromeTabbedActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setAction(Intent.ACTION_VIEW);
         BraveActivity.getChromeTabbedActivity().startActivity(intent);
     }
 }

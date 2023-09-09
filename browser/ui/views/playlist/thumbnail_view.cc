@@ -44,19 +44,18 @@ class DefaultThumbnailBackground : public views::Background {
 }  // namespace
 
 ThumbnailView::ThumbnailView(const gfx::Image& thumbnail) {
-  if (thumbnail.IsEmpty()) {
-    SetImage(ui::ImageModel::FromResourceId(IDR_PLAYLIST_DEFAULT_THUMBNAIL));
-    SetBackground(std::make_unique<DefaultThumbnailBackground>());
-  } else {
-    SetImage(ui::ImageModel::FromImage(thumbnail));
-  }
-
-  UpdateImageSize();
+  SetThumbnail(thumbnail);
   SetHorizontalAlignment(views::ImageViewBase::Alignment::kCenter);
   SetVerticalAlignment(views::ImageViewBase::Alignment::kCenter);
 }
 
 ThumbnailView::~ThumbnailView() = default;
+
+base::OnceCallback<void(const gfx::Image&)>
+ThumbnailView::GetThumbnailSetter() {
+  return base::BindOnce(&ThumbnailView::SetThumbnail,
+                        weak_ptr_factory_.GetWeakPtr());
+}
 
 void ThumbnailView::UpdateImageSize() {
   if (is_updating_image_size_) {
@@ -72,21 +71,35 @@ void ThumbnailView::UpdateImageSize() {
     return;
   }
 
-  if (GetPreferredSize().IsEmpty()) {
+  const auto preferred_size = GetPreferredSize();
+
+  if (preferred_size.IsEmpty()) {
     SetImageSize(image_size);
   }
 
-  const bool is_portrait = image_size.width() < image_size.height();
+  const bool resize_on_horizontal_axis =
+      std::abs(preferred_size.width() - image_size.width()) >
+      std::abs(preferred_size.height() - image_size.height());
   const float resize_ratio =
-      is_portrait
-          ? GetPreferredSize().height() /
-                static_cast<float>(image_size.height())
-          : GetPreferredSize().width() / static_cast<float>(image_size.width());
+      resize_on_horizontal_axis
+          ? preferred_size.height() / static_cast<float>(image_size.height())
+          : preferred_size.width() / static_cast<float>(image_size.width());
   SetImageSize(gfx::ScaleToCeiledSize(image_size, resize_ratio));
 }
 
 void ThumbnailView::PreferredSizeChanged() {
   ImageView::PreferredSizeChanged();
+  UpdateImageSize();
+}
+
+void ThumbnailView::SetThumbnail(const gfx::Image& thumbnail) {
+  if (thumbnail.IsEmpty()) {
+    SetImage(ui::ImageModel::FromResourceId(IDR_PLAYLIST_DEFAULT_THUMBNAIL));
+    SetBackground(std::make_unique<DefaultThumbnailBackground>());
+  } else {
+    SetImage(ui::ImageModel::FromImage(thumbnail));
+  }
+
   UpdateImageSize();
 }
 

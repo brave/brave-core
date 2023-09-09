@@ -49,6 +49,12 @@ class SubdivisionUrlRequest final {
   void RetryCallback();
   void StopRetrying();
 
+  void NotifyWillFetchSubdivision(base::Time fetch_at) const;
+  void NotifyDidFetchSubdivision(const std::string& subdivision) const;
+  void NotifyFailedToFetchSubdivision() const;
+  void NotifyWillRetryFetchingSubdivision(base::Time retry_at) const;
+  void NotifyDidRetryFetchingSubdivision() const;
+
   raw_ptr<SubdivisionUrlRequestDelegate> delegate_ = nullptr;
 
   bool is_periodically_fetching_ = false;

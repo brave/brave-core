@@ -13,24 +13,26 @@
 #include "content/public/test/browser_test.h"
 
 namespace {
-constexpr bool kWidevineOptedInTestValue = true;
+constexpr bool kWidevineEnabledTestValue = true;
 }  // namespace
 
 using WidevinePrefsMigrationTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(WidevinePrefsMigrationTest, PrefMigrationTest) {
-  g_browser_process->local_state()->ClearPref(kWidevineOptedIn);
-  EXPECT_TRUE(g_browser_process->local_state()->
-      FindPreference(kWidevineOptedIn)->IsDefaultValue());
+  g_browser_process->local_state()->ClearPref(kWidevineEnabled);
+  EXPECT_TRUE(g_browser_process->local_state()
+                  ->FindPreference(kWidevineEnabled)
+                  ->IsDefaultValue());
 
   // Set profile prefs explicitly for migration test.
-  browser()->profile()->GetPrefs()->SetBoolean(kWidevineOptedIn,
-                                               kWidevineOptedInTestValue);
+  browser()->profile()->GetPrefs()->SetBoolean(kWidevineEnabled,
+                                               kWidevineEnabledTestValue);
 
   // Migrate and check it's done properly with previous profile prefs value.
   MigrateWidevinePrefs(browser()->profile());
-  EXPECT_FALSE(g_browser_process->local_state()->
-      FindPreference(kWidevineOptedIn)->IsDefaultValue());
-  EXPECT_EQ(kWidevineOptedInTestValue,
-            g_browser_process->local_state()->GetBoolean(kWidevineOptedIn));
+  EXPECT_FALSE(g_browser_process->local_state()
+                   ->FindPreference(kWidevineEnabled)
+                   ->IsDefaultValue());
+  EXPECT_EQ(kWidevineEnabledTestValue,
+            g_browser_process->local_state()->GetBoolean(kWidevineEnabled));
 }

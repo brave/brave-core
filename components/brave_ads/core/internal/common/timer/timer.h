@@ -59,6 +59,13 @@ class Timer final {
   base::WallClockTimer timer_;
 };
 
+class ScopedTimerDelaySetterForTesting final {
+ public:
+  explicit ScopedTimerDelaySetterForTesting(base::TimeDelta delay);
+
+  ~ScopedTimerDelaySetterForTesting();
+};
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIMER_TIMER_H_

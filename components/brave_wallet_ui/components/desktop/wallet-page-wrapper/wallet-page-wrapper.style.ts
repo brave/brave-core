@@ -165,6 +165,7 @@ export const CardHeaderWrapper = styled.div<{
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: 0px;
+    z-index: 10;
   }
 `
 

@@ -35,21 +35,14 @@ impl TryFrom<http::Request<Vec<u8>>> for ffi::HttpRequest {
         let mut headers: Vec<String> = Vec::new();
 
         for (key, value) in req.headers().iter() {
-            let value = value
-                .to_str()
-                .map_err(|_| InternalError::UnhandledVariant)?;
+            let value = value.to_str().map_err(|_| InternalError::UnhandledVariant)?;
             let header = format!("{}: {}", key.as_str(), value);
             headers.push(header);
         }
 
         let body = req.body().to_vec();
 
-        Ok(ffi::HttpRequest {
-            url,
-            method,
-            headers,
-            body,
-        })
+        Ok(ffi::HttpRequest { url, method, headers, body })
     }
 }
 
@@ -96,17 +89,10 @@ impl NativeClient {
         req: ffi::HttpRequest,
     ) -> Result<http::Response<Vec<u8>>, InternalError> {
         let (tx, rx) = oneshot::channel();
-        let context = Box::new(HttpRoundtripContext {
-            tx,
-            client: self.clone(),
-        });
+        let context = Box::new(HttpRoundtripContext { tx, client: self.clone() });
 
         let fetcher = ffi::shim_executeRequest(
-            &self
-                .ctx
-                .try_borrow()
-                .map_err(|_| InternalError::BorrowFailed)?
-                .ctx,
+            &self.ctx.try_borrow().map_err(|_| InternalError::BorrowFailed)?.ctx,
             &req,
             |context, resp| {
                 let _ = context.tx.send(resp.into());
@@ -144,9 +130,7 @@ impl HTTPClient for NativeClient {
                 debug!("woke up!");
                 context.client.try_run_until_stalled();
             },
-            Box::new(WakeupContext {
-                client: self.clone(),
-            }),
+            Box::new(WakeupContext { client: self.clone() }),
         )
     }
 

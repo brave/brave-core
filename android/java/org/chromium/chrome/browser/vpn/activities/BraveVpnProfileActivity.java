@@ -17,10 +17,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
+import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
@@ -68,12 +72,18 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
             public void onClick(View v) {
                 BraveVpnUtils.showProgressDialog(BraveVpnProfileActivity.this,
                         getResources().getString(R.string.vpn_connect_text));
-                if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
-                    mBraveVpnPrefModel = new BraveVpnPrefModel();
-                    BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
-                } else {
-                    verifySubscription();
-                }
+                MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+                LiveData<Boolean> billingConnectionState = _billingConnectionState;
+                InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
+                        BraveVpnProfileActivity.this, _billingConnectionState);
+                LiveDataUtil.observeOnce(billingConnectionState, isConnected -> {
+                    if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+                        mBraveVpnPrefModel = new BraveVpnPrefModel();
+                        BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
+                    } else {
+                        verifySubscription();
+                    }
+                });
             }
         });
 
@@ -84,10 +94,19 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
                 BraveVpnUtils.openBraveVpnSupportActivity(BraveVpnProfileActivity.this);
             }
         });
+    }
 
+    @Override
+    public void finishNativeInitialization() {
+        super.finishNativeInitialization();
         if (getIntent() != null
                 && getIntent().getBooleanExtra(BraveVpnUtils.VERIFY_CREDENTIALS_FAILED, false)) {
-            verifySubscription();
+            MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+            LiveData<Boolean> billingConnectionState = _billingConnectionState;
+            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
+                    BraveVpnProfileActivity.this, _billingConnectionState);
+            LiveDataUtil.observeOnce(
+                    billingConnectionState, isConnected -> { verifySubscription(); });
         }
     }
 
@@ -101,7 +120,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
 
     @Override
     protected void triggerLayoutInflation() {
-        mFirstRunFlowSequencer = new BraveFirstRunFlowSequencer(this) {
+        mFirstRunFlowSequencer = new BraveFirstRunFlowSequencer(this, getProfileSupplier()) {
             @Override
             public void onFlowIsKnown(Bundle freProperties) {
                 initializeViews();

@@ -220,6 +220,7 @@
     <color name="wallet_secondary_layout_text_color">#495057</color>
     <color name="recovery_phrase_text_color">#F8F9FA</color>
     <color name="wallet_toolbar_bg_color">#F8F9FA</color>
+    <color name="chip_outline_selected_color">#F8F9FA</color>
     <color name="tab_color">#FF4081</color>
     <color name="wallet_bg">#FFFFFF</color>
     <color name="wallet_edittext_outline_color">#AEB1C2</color>
@@ -256,6 +257,9 @@
 
     <color name="rewards_panel_foreground_color">#80000000</color>
     <color name="rewards_divider_color">#E9E9F4</color>
+
+    <color name="rewards_panel_payout_processing_bg_color">#E8F4FF</color>
+    <color name="rewards_panel_payout_complete_bg_color">#CBF1D1</color>
 
     <!--  Brave Wallet DApp  -->
     <color name="brave_wallet_dapp_text_color">#171919</color>

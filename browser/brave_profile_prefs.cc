@@ -16,7 +16,7 @@
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
-#include "brave/components/brave_ads/browser/ads_p2a.h"
+#include "brave/components/brave_ads/browser/analytics/p2a/ads_p2a.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
@@ -49,7 +49,6 @@
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
-#include "components/autofill/core/common/autofill_prefs.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
@@ -230,7 +229,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // We don't need to display "don't ask widevine prompt option" in settings
   // if widevine is disabled.
   // F/u issue: https://github.com/brave/brave-browser/issues/7000
-  registry->RegisterBooleanPref(kAskWidevineInstall, true);
+  registry->RegisterBooleanPref(kAskEnableWidvine, true);
 
   // Default Brave shields
   registry->RegisterBooleanPref(kNoScriptControlType, false);
@@ -400,7 +399,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(
       password_manager::prefs::kPasswordLeakDetectionEnabled,
       base::Value(false));
-  registry->SetDefaultPrefValue(autofill::prefs::kAutofillWalletImportEnabled,
+  registry->SetDefaultPrefValue(syncer::prefs::internal::kSyncPayments,
                                 base::Value(false));
 
   // Default search engine version

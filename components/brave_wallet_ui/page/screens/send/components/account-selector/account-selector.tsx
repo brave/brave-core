@@ -78,6 +78,13 @@ export const AccountSelector = (props: Props) => {
       return []
     }
 
+    // TODO(apaymyshev): for bitcoin we need design how to send coins between
+    // accounts as there is no direct receving address for btc.
+    // Now just return empty list for send-to account picker.
+    if (selectedAccountId.coin === BraveWallet.CoinType.BTC) {
+      return []
+    }
+
     if (selectedAccountId.coin === BraveWallet.CoinType.FIL) {
       const filecoinAccounts = accounts.filter((account) =>
         (account.accountId.keyringId === selectedAccountId?.keyringId))
@@ -102,13 +109,15 @@ export const AccountSelector = (props: Props) => {
   [accountsByNetwork])
 
   const { data: fvmTranslatedAddresses } = useGetFVMAddressQuery(
-    selectedNetwork && evmAddressesforFVMTranslation.length
-    ? {
-        coin: selectedNetwork.coin,
-        addresses: evmAddressesforFVMTranslation,
-        isMainNet: selectedNetwork.chainId === BraveWallet.FILECOIN_MAINNET
-      }
-    : skipToken
+    selectedNetwork &&
+      selectedNetwork?.coin === BraveWallet.CoinType.FIL &&
+      evmAddressesforFVMTranslation.length
+      ? {
+          coin: selectedNetwork.coin,
+          addresses: evmAddressesforFVMTranslation,
+          isMainNet: selectedNetwork.chainId === BraveWallet.FILECOIN_MAINNET
+        }
+      : skipToken
   )
 
   // Hooks

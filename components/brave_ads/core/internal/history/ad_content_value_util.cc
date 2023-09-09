@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/public/ad_type.h"
 #include "brave/components/brave_ads/core/public/history/ad_content_info.h"
+#include "brave/components/brave_ads/core/public/units/ad_type.h"
 
 namespace brave_ads {
 

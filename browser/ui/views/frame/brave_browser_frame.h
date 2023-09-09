@@ -10,6 +10,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/views/frame/browser_frame.h"
+#include "ui/color/color_provider_key.h"
 
 class CustomThemeSupplier;
 
@@ -26,7 +27,7 @@ class BraveBrowserFrame : public BrowserFrame {
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
   const ui::NativeTheme* GetNativeTheme() const override;
 #endif
-  ui::ColorProviderManager::ThemeInitializerSupplier* GetCustomTheme()
+  ui::ColorProviderKey::ThemeInitializerSupplier* GetCustomTheme()
       const override;
   views::internal::RootView* CreateRootView() override;
 

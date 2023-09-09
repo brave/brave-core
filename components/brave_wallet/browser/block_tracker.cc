@@ -10,10 +10,7 @@
 
 namespace brave_wallet {
 
-BlockTracker::BlockTracker(JsonRpcService* json_rpc_service)
-    : json_rpc_service_(json_rpc_service) {
-  DCHECK(json_rpc_service_);
-}
+BlockTracker::BlockTracker() = default;
 
 BlockTracker::~BlockTracker() = default;
 

@@ -8,13 +8,15 @@ import("//ios/build/config.gni")
 
 source_set("browser_state") {
   sources = [
-    "brave_browser_state_keyed_service_factories.cc",
     "brave_browser_state_keyed_service_factories.h",
+    "brave_browser_state_keyed_service_factories.mm",
   ]
   deps = [
     "//base",
     "//brave/ios/browser/brave_wallet",
+    "//brave/ios/browser/component_updater",
     "//brave/ios/browser/favicon",
     "//brave/ios/browser/skus",
+    "//brave/ios/browser/url_sanitizer",
   ]
 }

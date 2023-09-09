@@ -13,10 +13,24 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/lib.rs"
+  sources = [
+    "//brave/third_party/rust/selectors/v0_22/crate/attr.rs",
+    "//brave/third_party/rust/selectors/v0_22/crate/bloom.rs",
+    "//brave/third_party/rust/selectors/v0_22/crate/build.rs",
+    "//brave/third_party/rust/selectors/v0_22/crate/builder.rs",
+    "//brave/third_party/rust/selectors/v0_22/crate/context.rs",
+    "//brave/third_party/rust/selectors/v0_22/crate/lib.rs",
+    "//brave/third_party/rust/selectors/v0_22/crate/matching.rs",
+    "//brave/third_party/rust/selectors/v0_22/crate/nth_index_cache.rs",
+    "//brave/third_party/rust/selectors/v0_22/crate/parser.rs",
+    "//brave/third_party/rust/selectors/v0_22/crate/sink.rs",
+    "//brave/third_party/rust/selectors/v0_22/crate/tree.rs",
+    "//brave/third_party/rust/selectors/v0_22/crate/visitor.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/selectors/v0_22/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/lib.rs" ]
   edition = "2015"
   cargo_pkg_version = "0.22.0"
   cargo_pkg_authors = "The Servo Project Developers"

@@ -75,6 +75,7 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Shields.DomainFingerprintSettingsBelowGlobal",
     "Brave.Shields.FingerprintBlockSetting",
     "Brave.Shields.UsageStatus",
+    "Brave.Sidebar.Enabled",
     "Brave.SpeedReader.Enabled",
     "Brave.SpeedReader.ToggleCount",
     "Brave.Today.DirectFeedsTotal",

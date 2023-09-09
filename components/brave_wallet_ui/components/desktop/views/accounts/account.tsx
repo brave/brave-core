@@ -402,12 +402,13 @@ export const Account = () => {
         >
           {nonFungibleTokens?.length !== 0 ? (
             <NftGrid>
-              {nonFungibleTokens?.map((nft) =>
+              {nonFungibleTokens?.map((nft: BraveWallet.BlockchainToken) =>
                 <NFTGridViewItem
-                  isHidden={false}
                   key={getAssetIdKey(nft)}
                   token={nft}
                   onSelectAsset={() => onSelectAsset(nft)}
+                  isTokenHidden={false}
+                  isTokenSpam={false}
                 />
               )}
             </NftGrid>

@@ -99,8 +99,8 @@
       <if expr="not is_android">
         <part file="brave_shields_resources.grdp" />
         <part file="brave_private_new_tab_resources.grdp" />
-        <part file="../ai_chat/resources/page/ai_chat_ui_resources.grdp" />
       </if>
+      <part file="../ai_chat/resources/page/ai_chat_ui_resources.grdp" />
       <part file="brave_wallet_resources.grdp" />
     </includes>
   </release>

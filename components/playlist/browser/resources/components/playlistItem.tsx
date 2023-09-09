@@ -6,6 +6,8 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { useSelector } from 'react-redux'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 import { color, font, spacing } from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
@@ -32,6 +34,8 @@ interface Props {
   item: PlaylistItemMojo
   isEditing: boolean
   isSelected?: boolean
+  canReorder: boolean
+  shouldBeHidden: boolean
   onClick: (item: PlaylistItemMojo) => void
 }
 
@@ -47,6 +51,7 @@ const StyledThumbnail = styled.div<{ src: string }>`
   ${ThumbnailStyle}
   background-image: url(${p => p.src});
   background-size: cover;
+  background-position: center;
 `
 
 const StyledProgressBar = styled(ProgressBar)`
@@ -68,15 +73,26 @@ const DefaultThumbnail = styled.div`
   content: url(${DefaultThumbnailIcon});
 `
 
-const PlaylistItemContainer = styled.li<{ isActive: boolean }>`
+const PlaylistItemContainer = styled.li<{
+  isActive: boolean
+  shouldBeHidden: boolean
+}>`
   display: flex;
+  position: relative;
   padding: ${spacing.m} ${spacing.xl} ${spacing.m} ${spacing.m};
   height: 86px;
   align-items: center;
   gap: ${spacing.xl};
+  user-select: none;
   & > a {
     margin-right: calc(-1 * ${spacing.xl});
   }
+
+  ${p =>
+    p.shouldBeHidden &&
+    css`
+      visibility: hidden;
+    `}
 
   align-self: stretch;
   ${p =>
@@ -186,11 +202,12 @@ function Thumbnail ({
   )
 }
 
-export default function PlaylistItem ({
+export function PlaylistItem ({
   playlist,
   item,
   isEditing,
   isSelected,
+  shouldBeHidden,
   onClick
 }: Props) {
   const {
@@ -236,10 +253,11 @@ export default function PlaylistItem ({
 
   return (
     <PlaylistItemContainer
-      onClick={() => !showingMenu && onClick(item)}
       onMouseEnter={() => setHovered(true)}
-      onMouseLeave={e => setHovered(false)}
+      onMouseLeave={() => setHovered(false)}
       isActive={(isEditing && isSelected) || isPlaying}
+      shouldBeHidden={shouldBeHidden}
+      onClick={() => onClick(item)}
     >
       <a ref={anchorElem} href={`#${id}`} />
       {isEditing && (
@@ -320,5 +338,22 @@ export default function PlaylistItem ({
         onDismissMenu={() => setShowingMenu(false)}
       />
     </PlaylistItemContainer>
+  )
+}
+
+export function SortablePlaylistItem (props: Props) {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: props.item.id, disabled: !props.canReorder })
+
+  if (transform) transform.x = 0
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition
+  }
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <PlaylistItem {...props} />
+    </div>
   )
 }

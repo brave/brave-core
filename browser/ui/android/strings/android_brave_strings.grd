@@ -804,6 +804,24 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_SECTION_DISPLAY" desc='Title of "Display" section of preferences. [CHAR-LIMIT=32]'>
         Display
       </message>
+      <message name="IDS_PREFS_MEDIA" desc="Title of Media settings, which allows the user to change media settings. [CHAR-LIMIT=32]">
+        Media
+      </message>
+      <message name="IDS_PREFS_ENABLE_WIDEVINE_TITLE" desc="Title for widevine preference in controls section">
+        Widevine DRM
+      </message>
+      <message name="IDS_PREFS_ENABLE_WIDEVINE_SUMMARY" desc="Summary for preference that enables widevine drm.">
+        Use Widevine digital rights management (DRM) to view protected media content in the browser.
+      </message>
+      <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TITLE" desc="Title for Widevine permission request.">
+        Allow protected content
+      </message>
+      <message name="IDS_WIDEVINE_PERMISSION_REQUEST_LINK" desc="Text fragment for link used in Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
+          <ph name="BEGIN_LINK">&lt;LINK&gt;</ph>Learn more about Widevine<ph name="END_LINK">&lt;/LINK&gt;</ph>
+      </message>
+      <message name="IDS_WIDEVINE_PERMISSION_REQUEST_PRIMARY_BUTTON_TEXT" desc="Primary button text for Widevine permission request.">
+          Allow (Relaunch Now)
+      </message>
       <message name="IDS_PREFS_APPEARANCE" desc="Title of Appearance settings, which allows the user to change display settings. [CHAR-LIMIT=32]">
         Appearance
       </message>
@@ -1509,6 +1527,21 @@ Are you sure you want to do this?
       <message name="IDS_LEARN_MORE_ABOUT_SPONSORED_IMAGES" desc="Title for brave rewards bottom sheet.">
         Learn more about sponsored images
       </message>
+      <message name="IDS_REWARDS_PANEL_PAYOUT_PENDING_TEXT" desc="Text for rewards panel payout pending text">
+        The payout for <ph name="CURRENT_MONTH">%1$s</ph> rewards will begin processing by <ph name="PAYOUT_DATE">%2$s</ph>.
+      </message>
+      <message name="IDS_REWARDS_PANEL_PAYOUT_PROCESSING_TEXT" desc="Text for rewards panel payout processing text">
+        The payout for <ph name="CURRENT_MONTH">%1$s</ph> rewards is in progress. <ph name="CHECK_STATUS">%2$s</ph>
+      </message>
+      <message name="IDS_REWARDS_PANEL_PAYOUT_COMPLETE_TEXT" desc="Text for rewards panel payout complete text">
+        The payout for <ph name="CURRENT_MONTH">%1$s</ph> rewards has completed. <ph name="SUPPORT">%2$s</ph>
+      </message>
+      <message name="IDS_REWARDS_PANEL_PAYOUT_CHECK_STATUS_TEXT" desc="Text for rewards panel payout check status text">
+        Check status
+      </message>
+
+
+
       <message name="IDS_SPONSORED_IMAGES_BOTTOM_SHEET_TEXT" desc="Text for SI bottom sheet.">
         For every sponsored image you view, you receive 70% of the revenue in tokens. With Brave Ads, you're always in control of the ads you see.
       </message>
@@ -1796,6 +1829,9 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_PRIVACY_POLICY" desc="Brave rewards tos text">
         Privacy Policy
+      </message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOS_TEXT" desc="Brave rewards onboarding tos text">
+        By enabling Rewards, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph> and <ph name="PRIVACY_POLICY">%2$s</ph>.
       </message>
       <message name="IDS_TAKE_QUICK_TOUR" desc="Brave rewards quick tour text">
         Let’s take a quick tour
@@ -3027,7 +3063,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_DAPPS_CONNECTION_REQUEST_MSG" desc="A message shown to user when a DApp site request to connect with Brave wallet">
     This page wants to interact with Brave Wallet
     </message>
-    <message name="IDS_CONNECTION_ERROR" desc="Always on vpn text">
+    <message name="IDS_VPN_CONNECTION_ERROR" desc="Vpn connection error message">
       Connection error
     </message>
     <message name="IDS_BRAVE_WALLET_NETWORK_SELECTION_ERROR" desc="Network activity toolbar title">
@@ -3645,6 +3681,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_NFTS" desc="NFTs as title">
       NFTs
     </message>
+    <message name="IDS_BRAVE_WALLET_HIDDEN" desc="Hidden NFT section">
+      Hidden
+    </message>
     <message name="IDS_VBAT_SUPPORTED_REGION_TITLE" desc="Vbat modal title text for supported region">
       Action required: Connect a custodial account or your vBAT will be lost
     </message>
@@ -3962,6 +4001,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_NO_AVAILABLE_ASSETS" desc="No availible assets title for empty asset list">
       No available assets
+    </message>
+    <message name="IDS_MENU_BRAVE_LEO" desc="Brave AI menu item text">
+      Brave Leo
     </message>
   </messages>
   </release>

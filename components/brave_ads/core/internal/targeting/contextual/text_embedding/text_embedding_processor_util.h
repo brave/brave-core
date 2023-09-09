@@ -10,7 +10,6 @@
 
 namespace brave_ads {
 
-std::string SanitizeHtml(const std::string& html);
 std::string SanitizeText(const std::string& text);
 
 }  // namespace brave_ads

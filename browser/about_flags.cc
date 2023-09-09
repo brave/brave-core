@@ -13,9 +13,9 @@
 #include "brave/browser/ethereum_remote_client/features.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
-#include "brave/components/brave_ads/browser/feature/custom_notification_ad_feature.h"
-#include "brave/components/brave_ads/core/public/feature/brave_ads_feature.h"
-#include "brave/components/brave_ads/core/public/feature/notification_ad_feature.h"
+#include "brave/components/brave_ads/browser/units/notification_ad/custom_notification_ad_feature.h"
+#include "brave/components/brave_ads/core/public/ads_feature.h"
+#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_news/common/features.h"
@@ -402,7 +402,7 @@
       "brave-ai-chat",                                         \
       "Brave AI Chat",                                         \
       "Summarize articles and engage in conversation with AI", \
-      kOsWin | kOsMac | kOsLinux,                              \
+      kOsWin | kOsMac | kOsLinux | kOsAndroid,                 \
       FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),          \
   })
 #else

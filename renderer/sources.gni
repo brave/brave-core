@@ -8,6 +8,7 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 brave_chrome_renderer_sources = [
   "//brave/renderer/brave_content_renderer_client.cc",
@@ -65,6 +66,10 @@ if (enable_brave_vpn) {
     brave_chrome_renderer_deps +=
         [ "//brave/components/brave_vpn/renderer/android:android" ]
   }
+}
+
+if (enable_widevine) {
+  brave_chrome_renderer_deps += [ "//third_party/widevine/cdm:headers" ]
 }
 
 # do not add anything else here

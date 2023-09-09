@@ -6,12 +6,14 @@
 #include "chrome/browser/ui/bookmarks/bookmark_utils.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "build/build_config.h"
 #include "chrome/grit/theme_resources.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
@@ -61,6 +63,10 @@ void BraveToggleBookmarkBarState(content::BrowserContext* browser_context) {
 
 namespace chrome {
 
+namespace {
+constexpr int kLeoFolderIconSize = 16;
+}
+
 bool IsAppsShortcutEnabled(Profile* profile) {
   return false;
 }
@@ -72,49 +78,12 @@ bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
 #if defined(TOOLKIT_VIEWS)
 ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
                                      absl::variant<int, SkColor> color) {
-  int default_id =
-#if BUILDFLAG(IS_WIN)
-      IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_LIGHT;
-#elif BUILDFLAG(IS_LINUX)
-      IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_LIGHT;
-#else
-      IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIGHT;
-#endif
-
-  const auto generator = [](int default_id, BookmarkFolderIconType icon_type,
-                            absl::variant<int, SkColor> color,
-                            const ui::ColorProvider* color_provider) {
-    gfx::ImageSkia folder;
-    SkColor sk_color;
-    if (absl::holds_alternative<SkColor>(color)) {
-      sk_color = absl::get<SkColor>(color);
-    } else {
-      DCHECK(color_provider);
-      sk_color = color_provider->GetColor(absl::get<ui::ColorId>(color));
-    }
-
-    const int resource_id = color_utils::IsDark(sk_color)
-#if BUILDFLAG(IS_WIN)
-                                ? IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_LIGHT
-                                : IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_DARK;
-#elif BUILDFLAG(IS_LINUX)
-                                ? IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_LIGHT
-                                : IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_DARK;
-#else
-                                ? IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIGHT
-                                : IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_DARK;
-#endif
-    folder = *ui::ResourceBundle::GetSharedInstance()
-                  .GetNativeImageNamed(resource_id)
-                  .ToImageSkia();
-    return gfx::ImageSkia(std::make_unique<RTLFlipSource>(folder),
-                          folder.size());
-  };
-  const gfx::Size size =
-      ui::ResourceBundle::GetSharedInstance().GetImageNamed(default_id).Size();
-  return ui::ImageModel::FromImageGenerator(
-      base::BindRepeating(generator, default_id, icon_type, std::move(color)),
-      size);
+  if (absl::holds_alternative<SkColor>(color)) {
+    return ui::ImageModel::FromVectorIcon(
+        kLeoFolderIcon, absl::get<SkColor>(color), kLeoFolderIconSize);
+  }
+  return ui::ImageModel::FromVectorIcon(kLeoFolderIcon, absl::get<int>(color),
+                                        kLeoFolderIconSize);
 }
 #endif
 

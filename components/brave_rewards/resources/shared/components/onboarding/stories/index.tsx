@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import styled from 'styled-components';
 
 import { LocaleContext, createLocaleContextForTesting } from '../../../lib/locale_context'
 import { WithThemeVariables } from '../../with_theme_variables'
@@ -26,13 +27,21 @@ interface StoryWrapperProps {
   children: React.ReactNode
 }
 
+const style = {
+  wrapper: styled.div`
+    border-radius: 8px;
+    box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
+    width: 410px;
+  `
+}
+
 function StoryWrapper (props: StoryWrapperProps) {
   return (
     <LocaleContext.Provider value={localeContext}>
       <WithThemeVariables>
-        <div style={props.style || {}}>
+        <style.wrapper style={{...props.style || {}}}>
           {props.children}
-        </div>
+        </style.wrapper>
       </WithThemeVariables>
     </LocaleContext.Provider>
   )
@@ -144,7 +153,7 @@ OptInError3.storyName = 'Opt In (Error: unexpected error)'
 
 export function SettingsOptIn () {
   return (
-    <StoryWrapper style={{ width: '619px' }}>
+    <StoryWrapper style={{ width: '600px' }}>
       <SettingsOptInForm
         onEnable={actionLogger('onEnable')}
       />

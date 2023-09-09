@@ -11,7 +11,7 @@ export interface Props {
   onSubmit?: () => void
 }
 
-const AdvancedTransactionSettingsButton = (props: Props) => {
+export const AdvancedTransactionSettingsButton = (props: Props) => {
   const { onSubmit } = props
   return (
     <StyledButton onClick={onSubmit}>

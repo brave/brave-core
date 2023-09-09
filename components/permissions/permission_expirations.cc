@@ -31,6 +31,11 @@ constexpr base::StringPiece kRequestingOriginKey = "ro";
 constexpr base::StringPiece kEmbeddingOriginKey = "eo";
 constexpr base::StringPiece kContentSettingKey = "cs";
 
+template <typename Container, typename ConstIterator>
+typename Container::iterator ConstCastIterator(Container& c, ConstIterator it) {
+  return c.erase(it, it);
+}
+
 }  // namespace
 
 // static
@@ -163,9 +168,9 @@ PermissionExpirations::RemoveExpiredPermissionsImpl(
     std::vector<PermissionExpirationKey> expiration_keys_to_clear_prefs;
     auto iterator_pair = predicate.Run(key_expirations_map);
     auto key_expirations_begin_it =
-        base::ConstCastIterator(key_expirations_map, iterator_pair.first);
+        ConstCastIterator(key_expirations_map, iterator_pair.first);
     auto key_expirations_end_it =
-        base::ConstCastIterator(key_expirations_map, iterator_pair.second);
+        ConstCastIterator(key_expirations_map, iterator_pair.second);
     for (auto key_expirations_it = key_expirations_begin_it;
          key_expirations_it != key_expirations_end_it; ++key_expirations_it) {
       const auto& expiration_key = key_expirations_it->first;

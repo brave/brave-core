@@ -56,6 +56,7 @@ static_library("browser") {
     "//services/preferences/public/cpp",
     "//third_party/blink/public/common",
     "//third_party/re2",
+    "//ui/gfx",
     "//url",
   ]
 }

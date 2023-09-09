@@ -79,13 +79,21 @@ absl::optional<std::string> EncodeScanTransactionParams(
     // }
     tx_object.Set("value", tx_data->base_data->value);
     tx_object.Set("to", tx_data->base_data->to);
-    tx_object.Set("data", ToHex(tx_data->base_data->data));
+    if (tx_data->base_data->data.empty()) {
+      tx_object.Set("data", "0x");
+    } else {
+      tx_object.Set("data", ToHex(tx_data->base_data->data));
+    }
   } else if (tx_info->tx_data_union->is_eth_tx_data()) {
     const auto& tx_data = tx_info->tx_data_union->get_eth_tx_data();
 
     tx_object.Set("value", tx_data->value);
     tx_object.Set("to", tx_data->to);
-    tx_object.Set("data", ToHex(tx_data->data));
+    if (tx_data->data.empty()) {
+      tx_object.Set("data", "0x");
+    } else {
+      tx_object.Set("data", ToHex(tx_data->data));
+    }
   } else {
     return absl::nullopt;
   }

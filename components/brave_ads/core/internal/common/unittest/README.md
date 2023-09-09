@@ -98,7 +98,7 @@ You can add one or more responses per request, which will be returned in the giv
     const URLResponseMap url_responses = {
       "/foo/bar", {
         {
-           net::HTTP_INTERNAL_SERVER_ERROR, "Internal server error"
+           net::HTTP_INTERNAL_SERVER_ERROR, "Program say to kill, to disassemble, to make dead"
         },
         {
            net::HTTP_CREATED, "To me there's no creativity without boundaries"
@@ -114,6 +114,10 @@ You can add one or more responses per request, which will be returned in the giv
     }
 
     MockUrlResponses(ads_client_mock_, url_responses);
+
+## Mocking Settings
+
+See [settings_unittest_util.h](../../settings/settings_unittest_util.h).
 
 ## Mocking Client
 

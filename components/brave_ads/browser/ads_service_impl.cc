@@ -25,29 +25,29 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/browser/brave_ads/notification_helper/notification_helper.h"
-#include "brave/browser/brave_ads/notifications/notification_ad_platform_bridge.h"
+#include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
+#include "brave/browser/brave_ads/units/notification_ad/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
-#include "brave/components/brave_ads/browser/ads_p2a.h"
+#include "brave/components/brave_ads/browser/analytics/p2a/ads_p2a.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
-#include "brave/components/brave_ads/browser/device_id.h"
-#include "brave/components/brave_ads/browser/feature/custom_notification_ad_feature.h"
-#include "brave/components/brave_ads/browser/frequency_capping_helper.h"
-#include "brave/components/brave_ads/browser/reminder_util.h"
-#include "brave/components/brave_ads/core/public/ad_constants.h"
-#include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_value_util.h"
-#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/ads/notification_ad_value_util.h"
+#include "brave/components/brave_ads/browser/device_id/device_id.h"
+#include "brave/components/brave_ads/browser/reminder/reminder_util.h"
+#include "brave/components/brave_ads/browser/units/notification_ad/custom_notification_ad_feature.h"
+#include "brave/components/brave_ads/browser/user/user_interaction/ad_events/frequency_capping_helper.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
+#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
-#include "brave/components/brave_ads/core/public/feature/brave_ads_feature.h"
-#include "brave/components/brave_ads/core/public/feature/notification_ad_feature.h"
-#include "brave/components/brave_ads/core/public/feature/user_attention_feature.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/core/public/units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/units/new_tab_page_ad/new_tab_page_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_feature.h"
+#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/user/user_attention/user_idle_detection/user_idle_detection_feature.h"
 #include "brave/components/brave_ads/resources/grit/bat_ads_resources.h"
 #include "brave/components/brave_federated/data_stores/async_data_store.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -72,7 +72,7 @@
 #endif
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_adaptive_captcha/pref_names.h"
-#include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
+#include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -1523,11 +1523,11 @@ void AdsServiceImpl::ResetAdEventHistoryForId(const std::string& id) {
 }
 
 void AdsServiceImpl::GetBrowsingHistory(const int max_count,
-                                        const int days_ago,
+                                        const int recent_day_range,
                                         GetBrowsingHistoryCallback callback) {
   const std::u16string search_text;
   history::QueryOptions options;
-  options.SetRecentDayRange(days_ago);
+  options.SetRecentDayRange(recent_day_range);
   options.max_count = max_count;
   options.duplicate_policy = history::QueryOptions::REMOVE_ALL_DUPLICATES;
   history_service_->QueryHistory(

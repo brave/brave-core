@@ -14,6 +14,13 @@ namespace brave_ads {
 
 base::TimeDelta RandTimeDelta(base::TimeDelta time_delta);
 
+class ScopedRandTimeDeltaSetterForTesting final {
+ public:
+  explicit ScopedRandTimeDeltaSetterForTesting(base::TimeDelta time_delta);
+
+  ~ScopedRandTimeDeltaSetterForTesting();
+};
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RANDOM_RANDOM_UTIL_H_

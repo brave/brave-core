@@ -12,8 +12,8 @@ include_rules = [
 # Existing exceptions
 specific_include_rules = {
   "ads_service_impl.cc": [
-    "+brave/browser/brave_ads/notification_helper/notification_helper.h",
-    "+brave/browser/brave_ads/notifications/notification_ad_platform_bridge.h",
+    "+brave/browser/brave_ads/application_state/notification_helper/notification_helper.h",
+    "+brave/browser/brave_ads/units/notification_ad/notification_ad_platform_bridge.h",
     "+brave/browser/profiles/profile_util.h",
     "+brave/common/brave_channel_info.h",
     "+brave/browser/brave_browser_process.h",
@@ -35,7 +35,7 @@ specific_include_rules = {
     "+chrome/browser/ui/android/tab_model/tab_model_list.h",
   ],
   "ads_service_impl.h": [
-    "+brave/browser/brave_ads/background_helper/background_helper.h",
+    "+brave/browser/brave_ads/application_state/background_helper/background_helper.h",
     "+chrome/browser/notifications/notification_handler.h",
     "+mojo/public/cpp/bindings/associated_receiver.h",
     "+mojo/public/cpp/bindings/associated_remote.h",

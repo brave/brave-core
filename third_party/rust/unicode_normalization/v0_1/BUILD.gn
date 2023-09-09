@@ -13,10 +13,27 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/unicode_normalization/v0_1/crate/benches/bench.rs",
+    "//brave/third_party/rust/unicode_normalization/v0_1/crate/src/__test_api.rs",
+    "//brave/third_party/rust/unicode_normalization/v0_1/crate/src/decompose.rs",
+    "//brave/third_party/rust/unicode_normalization/v0_1/crate/src/lib.rs",
+    "//brave/third_party/rust/unicode_normalization/v0_1/crate/src/lookups.rs",
+    "//brave/third_party/rust/unicode_normalization/v0_1/crate/src/no_std_prelude.rs",
+    "//brave/third_party/rust/unicode_normalization/v0_1/crate/src/normalize.rs",
+    "//brave/third_party/rust/unicode_normalization/v0_1/crate/src/perfect_hash.rs",
+    "//brave/third_party/rust/unicode_normalization/v0_1/crate/src/quick_check.rs",
+    "//brave/third_party/rust/unicode_normalization/v0_1/crate/src/recompose.rs",
+    "//brave/third_party/rust/unicode_normalization/v0_1/crate/src/replace.rs",
+    "//brave/third_party/rust/unicode_normalization/v0_1/crate/src/stream_safe.rs",
+    "//brave/third_party/rust/unicode_normalization/v0_1/crate/src/tables.rs",
+    "//brave/third_party/rust/unicode_normalization/v0_1/crate/src/test.rs",
+  ]
+  inputs =
+      [ "//brave/third_party/rust/unicode_normalization/v0_1/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.1.22"
   cargo_pkg_authors =

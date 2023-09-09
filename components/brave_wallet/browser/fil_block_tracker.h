@@ -55,6 +55,7 @@ class FilBlockTracker : public BlockTracker {
   std::map<std::string, uint64_t> latest_height_map_;
   base::ObserverList<Observer> observers_;
 
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   base::WeakPtrFactory<FilBlockTracker> weak_ptr_factory_;
 };
 

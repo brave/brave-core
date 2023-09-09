@@ -5,6 +5,8 @@
 
 import("//brave/android/features/tab_ui/brave_tab_management_java_sources.gni")
 import("//brave/android/feed/brave_feed_java_sources.gni")
+import(
+    "//brave/android/java/org/chromium/chrome/browser/vpn/billing/sources.gni")
 import("//brave/browser/brave_ads/android/java_sources.gni")
 import("//brave/browser/flags/brave_flags_java_sources.gni")
 import("//brave/browser/incognito/android/java_sources.gni")
@@ -75,6 +77,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbar.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsAdapterFeedCard.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsConnectionErrorHandler.java",
@@ -209,7 +212,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/web_ui/WebUiActivityType.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/AutoFitVerticalGridLayoutManager.java",
-  "../../brave/android/java/org/chromium/chrome/browser/custom_layout/BottomNavigationViewWithIndicator.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/HeightWrappingViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/LockableNestedScrollView.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/NonSwipeableViewPager.java",
@@ -370,6 +372,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWalletResetTxHistoryAndNoncePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreferencesFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/MediaPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/NetworkListBaseAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/SearchEngineTabModelSelectorObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/SearchPreference.java",
@@ -470,7 +473,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/vpn/utils/BraveVpnPrefUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/utils/BraveVpnProfileUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/utils/BraveVpnUtils.java",
-  "../../brave/android/java/org/chromium/chrome/browser/vpn/utils/InAppPurchaseWrapper.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/wireguard/TunnelModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardConfigUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardServiceImpl.java",
@@ -486,6 +488,7 @@ brave_java_sources += brave_rewards_java_sources
 brave_java_sources += brave_feed_java_sources
 brave_java_sources += brave_public_tab_management_java_sources
 brave_java_sources += brave_share_java_sources
+brave_java_sources += brave_app_vpn_billing_sources
 
 brave_browser_ui_android_appmenu_internal_sources = [
   "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java",

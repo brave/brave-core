@@ -19,12 +19,12 @@ import {
   ER20TransferParams,
   ERC721TransferFromParams,
   ETHFilForwarderTransferFromParams,
+  SendBtcTransactionParams,
   SendEthTransactionParams,
   SendFilTransactionParams,
   SendSolTransactionParams,
   SerializableTransactionInfo,
-  SPLTransferFromParams,
-  SupportedCoinTypes
+  SPLTransferFromParams
 } from '../../constants/types'
 import {
   CancelTransactionPayload,
@@ -74,6 +74,7 @@ import { pricingEndpoints } from './endpoints/pricing.endpoints'
 import { nftsEndpoints } from './endpoints/nfts.endpoints'
 
 // utils
+import { handleEndpointError } from '../../utils/api-utils';
 import { findAccountByAccountId, getAccountType } from '../../utils/account-utils'
 import { cacher, TX_CACHE_TAGS } from '../../utils/query-cache-utils'
 import type WalletApiProxy from '../wallet_api_proxy'
@@ -215,10 +216,18 @@ export function createWalletApi () {
       // Account Info
       //
       getAccountInfosRegistry: query<AccountInfoEntityState, void>({
-        queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
-          const { cache } = baseQuery(undefined)
-          return {
-            data: await cache.getAccountsRegistry()
+        queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
+          try {
+            const { cache } = baseQuery(undefined)
+            return {
+              data: await cache.getAccountsRegistry()
+            }
+          } catch (error) {
+            return handleEndpointError(
+              endpoint,
+              'Unable to fetch accounts',
+              error
+            )
           }
         },
         providesTags: (res, err) =>
@@ -253,7 +262,6 @@ export function createWalletApi () {
         queryFn: async (accountId, api, extraOptions, baseQuery) => {
           const {
             cache,
-            // apiProxy
             data: { keyringService }
           } = baseQuery(undefined)
 
@@ -286,7 +294,7 @@ export function createWalletApi () {
       // Default Currencies
       //
       getDefaultFiatCurrency: query<string, void>({
-        queryFn: async (arg, api, extraOptions, baseQuery) => {
+        queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { braveWalletService } = baseQuery(undefined).data
             const { currency } =
@@ -296,15 +304,17 @@ export function createWalletApi () {
               data: defaultFiatCurrency
             }
           } catch (error) {
-            return {
-              error: 'Unable to fetch default fiat currency'
-            }
+            return handleEndpointError(
+              endpoint,
+              'Unable to fetch default fiat currency',
+              error
+            )
           }
         },
         providesTags: ['DefaultFiatCurrency']
       }),
       setDefaultFiatCurrency: mutation<string, string>({
-        queryFn: async (currencyArg, api, extraOptions, baseQuery) => {
+        queryFn: async (currencyArg, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { braveWalletService } = baseQuery(undefined).data
             braveWalletService.setDefaultBaseCurrency(currencyArg)
@@ -312,9 +322,11 @@ export function createWalletApi () {
               data: currencyArg
             }
           } catch (error) {
-            return {
-              error: `Unable to set default fiat currency to ${currencyArg}`
-            }
+            return handleEndpointError(
+              endpoint,
+              `Unable to set default fiat currency to ${currencyArg}`,
+              error
+            )
           }
         },
         invalidatesTags: ['DefaultFiatCurrency']
@@ -323,17 +335,18 @@ export function createWalletApi () {
       // Networks
       //
       getNetworksRegistry: query<NetworksRegistry, void>({
-        queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { cache } = baseQuery(undefined)
             return {
               data: await cache.getNetworksRegistry()
             }
           } catch (error) {
-            console.error(error)
-            return {
-              error: `Unable to fetch AllNetworks ${error}`
-            }
+            return handleEndpointError(
+              endpoint,
+              `Unable to fetch Networks Registry ${error}`,
+              error
+            )
           }
         },
         providesTags: (res, err, arg) =>
@@ -342,7 +355,7 @@ export function createWalletApi () {
             : [{ type: 'Network', id: NETWORK_TAG_IDS.REGISTRY }]
       }),
       getSwapSupportedNetworkIds: query<string[], void>({
-        queryFn: async (arg, api, extraOptions, baseQuery) => {
+        queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
           try {
             const {
               data: { swapService },
@@ -373,12 +386,11 @@ export function createWalletApi () {
               data: swapChainIds
             }
           } catch (error) {
-            console.error(error)
-            return {
-              error: `Error occurred within "getSwapSupportedNetworks": ${
-                error.toString() //
-              }`
-            }
+            return handleEndpointError(
+              endpoint,
+              'Unable to get Swap-Supported Networks',
+              error
+            )
           }
         },
         providesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SWAP_SUPPORTED }]
@@ -390,16 +402,17 @@ export function createWalletApi () {
         invalidatesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }]
       }),
       getSelectedChain: query<BraveWallet.NetworkInfo | undefined, void>({
-        queryFn: async (arg, api, extraOptions, baseQuery) => {
+        queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
           try {
             return {
               data: await getSelectedNetwork(baseQuery(undefined).data)
             }
           } catch (error) {
-            console.error(error)
-            return {
-              error: `Unable to fetch the currently selected chain`
-            }
+            return handleEndpointError(
+              endpoint,
+              `Unable to fetch the currently selected chain`,
+              error
+            )
           }
         },
         providesTags: (res, err) =>
@@ -416,7 +429,7 @@ export function createWalletApi () {
       >({
         queryFn: async (
           { chainId, coin },
-          { dispatch },
+          { endpoint },
           extraOptions,
           baseQuery
         ) => {
@@ -452,14 +465,15 @@ export function createWalletApi () {
               data: { selectedAccountId }
             }
           } catch (error) {
-            console.error(error)
-            return {
-              error: `Unable to change selected network to: (chainId: ${
+            return handleEndpointError(
+              endpoint,
+              `Unable to change selected network to: (chainId: ${
                 chainId //
               }, coin: ${
                 coin //
-              })`
-            }
+              })`,
+              error
+            )
           }
         },
         invalidatesTags: (result, error, { coin }) => [
@@ -497,7 +511,7 @@ export function createWalletApi () {
       // Tokens
       //
       getTokensRegistry: query<BlockchainTokenEntityAdaptorState, void>({
-        queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
           try {
             const {
               cache,
@@ -592,10 +606,11 @@ export function createWalletApi () {
               data: tokensByChainIdRegistry
             }
           } catch (error) {
-            console.error(error)
-            return {
-              error: `Unable to fetch Tokens Registry: ${error}`
-            }
+            return handleEndpointError(
+              endpoint,
+              'Unable to fetch Tokens Registry',
+              error
+            )
           }
         },
         providesTags: cacher.providesRegistry('KnownBlockchainTokens'),
@@ -605,15 +620,17 @@ export function createWalletApi () {
         }
       }),
       getUserTokensRegistry: query<BlockchainTokenEntityAdaptorState, void>({
-        queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
           try {
             return {
               data: await baseQuery(undefined).cache.getUserTokensRegistry()
             }
           } catch (error) {
-            return {
-              error: 'Unable to fetch UserTokens Registry'
-            }
+            return handleEndpointError(
+              endpoint,
+              'Unable to fetch UserTokens Registry',
+              error
+            )
           }
         },
         onCacheEntryAdded: (_, { dispatch }) => {
@@ -673,7 +690,7 @@ export function createWalletApi () {
         ]
       }),
       removeUserToken: mutation<boolean, BraveWallet.BlockchainToken>({
-        queryFn: async (tokenArg, api, extraOptions, baseQuery) => {
+        queryFn: async (tokenArg, { endpoint }, extraOptions, baseQuery) => {
           const {
             cache,
             data: { braveWalletService }
@@ -692,9 +709,11 @@ export function createWalletApi () {
               data: true
             }
           } catch (error) {
-            return {
-              error: `Unable to remove user asset: ${getAssetIdKey(tokenArg)}`
-            }
+            return handleEndpointError(
+              endpoint,
+              `Unable to remove user asset: ${getAssetIdKey(tokenArg)}`,
+              error
+            )
           }
         },
         invalidatesTags: (_, __, tokenArg) => [
@@ -747,7 +766,7 @@ export function createWalletApi () {
         {
           queryFn: async (
             { isVisible, token },
-            api,
+            { endpoint },
             extraOptions,
             baseQuery
           ) => {
@@ -765,11 +784,13 @@ export function createWalletApi () {
               )
               return { data: success }
             } catch (error) {
-              return {
-                error: `Could not user update asset visibility for token: ${
+              return handleEndpointError(
+                endpoint,
+                `Could not user update asset visibility for token: ${
                   getAssetIdKey(token) // token identifier
-                }`
-              }
+                }`,
+                error
+              )
             }
           },
           invalidatesTags: (res, err, arg) =>
@@ -782,18 +803,17 @@ export function createWalletApi () {
         }
       ),
       invalidateUserTokensRegistry: mutation<boolean, void>({
-        queryFn: async (arg, api, extraOptions, baseQuery) => {
+        queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { cache } = baseQuery(undefined)
             cache.clearUserTokensRegistry()
             return { data: true }
           } catch (error) {
-            const message = 'Could not invalidate user tokens registry'
-            console.log(message)
-            console.error(error)
-            return {
-              error: message
-            }
+            return handleEndpointError(
+              endpoint,
+              'Could not invalidate user tokens registry',
+              error
+            )
           }
         },
         invalidatesTags: (res, err, arg) =>
@@ -894,15 +914,15 @@ export function createWalletApi () {
                     accountId
                   )
 
-                if (errorMessage) {
+                if (errorMessage || balance === null) {
                   console.log(`getBalance error: ${errorMessage}`)
                   return {
-                    error: errorMessage
+                    error: errorMessage || 'Unknown error'
                   }
                 }
 
                 return {
-                  data: Amount.normalize(balance.toString())
+                  data: Amount.normalize(balance.totalBalance.toString())
                 }
               }
               default: {
@@ -1031,7 +1051,12 @@ export function createWalletApi () {
         TokenBalancesRegistry,
         GetTokenBalancesForChainIdArg[]
       >({
-        queryFn: async (args, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (
+          args,
+          { dispatch, endpoint },
+          extraOptions,
+          baseQuery
+        ) => {
           try {
             const result = await mapLimit(
               args,
@@ -1229,14 +1254,13 @@ export function createWalletApi () {
               }, {})
             }
           } catch (error) {
-            const msg = `Unable to fetch getTokenBalancesForChainId(
-              ${JSON.stringify(args, undefined, 2)}
-            ) error: ${error?.message ?? error}`
-
-            console.error(msg)
-            return {
-              error: msg
-            }
+            return handleEndpointError(
+              endpoint,
+              `Unable to fetch getTokenBalancesForChainId(
+                ${JSON.stringify(args, undefined, 2)}
+              )`,
+              error
+            )
           }
         },
         providesTags: (result, err, args) =>
@@ -1260,7 +1284,12 @@ export function createWalletApi () {
         TokenBalancesRegistry,
         GetTokenBalancesRegistryArg[]
       >({
-        queryFn: async (args, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (
+          args,
+          { dispatch, endpoint },
+          extraOptions,
+          baseQuery
+        ) => {
           try {
             const userTokens = await dispatch(
               walletApi.endpoints.getUserTokensRegistry.initiate()
@@ -1322,9 +1351,11 @@ export function createWalletApi () {
               }, {})
             }
           } catch (error) {
-            return {
-              error: `Error calling getTokenBalancesRegistry: ${error}`
-            }
+            return handleEndpointError(
+              endpoint,
+              `Error calling getTokenBalancesRegistry: ${error}`,
+              error
+            )
           }
         },
         providesTags: (result, err, args) =>
@@ -1343,7 +1374,7 @@ export function createWalletApi () {
       >({
         queryFn: async (
           { coin, chainId, address },
-          { dispatch },
+          { endpoint },
           extraOptions,
           baseQuery
         ) => {
@@ -1389,13 +1420,13 @@ export function createWalletApi () {
               }
             }
           } catch (error) {
-            console.error(error)
-            return {
-              error: `Unable to fetch balance(
+            return handleEndpointError(
+              endpoint,
+              `Unable to fetch balance(
                 ${JSON.stringify({ coin, chainId, address }, undefined, 2)}
-              )
-              error: ${error?.message ?? error}`
-            }
+              )`,
+              error
+            )
           }
         },
         providesTags: (result, err, arg) => [
@@ -1409,20 +1440,28 @@ export function createWalletApi () {
       // Transactions
       //
       getFVMAddress: query<GetFVMAddressResult, GetFVMAddressArg>({
-        queryFn: async (arg, api, extraOptions, baseQuery) => {
+        queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
           if (arg.coin !== BraveWallet.CoinType.FIL) {
-            return { data: undefined }
+            // invalid coin type
+            return { data: {} }
           }
           try {
             const { braveWalletService } = baseQuery(undefined).data
-            const convertResult = (await braveWalletService.convertFEVMToFVMAddress(arg.isMainNet, arg.addresses)).result
+            const convertResult = (
+              await braveWalletService.convertFEVMToFVMAddress(
+                arg.isMainNet,
+                arg.addresses
+              )
+            ).result
             return {
               data: convertResult
             }
-          } catch(error) {
-            return {
-              error: `Unable to getFVMAddress`
-            }
+          } catch (error) {
+            return handleEndpointError(
+              endpoint,
+              'Unable to getFVMAddress',
+              error
+            )
           }
         }
       }),
@@ -1438,7 +1477,7 @@ export function createWalletApi () {
       >({
         queryFn: async (
           { accountId: fromAccountId, coinType, chainId },
-          { dispatch },
+          { endpoint },
           extraOptions,
           baseQuery
         ) => {
@@ -1450,7 +1489,7 @@ export function createWalletApi () {
             // TODO(apaymyshev): getAllTransactionInfo already supports getting
             // transaction for all accounts.
             const txInfos =
-            fromAccountId && coinType !== null
+              fromAccountId && coinType !== null
                 ? (
                     await txService.getAllTransactionInfo(
                       coinType,
@@ -1492,10 +1531,15 @@ export function createWalletApi () {
               data: sortedTxs
             }
           } catch (error) {
-            return {
-              error: `Unable to fetch txs for account: ${fromAccountId?.uniqueKey} (${coinType})
-              error: ${error?.message ?? error}`
-            }
+            return handleEndpointError(
+              endpoint,
+              `Unable to fetch txs for account: ${
+                fromAccountId?.uniqueKey //
+              } (${
+                coinType //
+              })`,
+              error
+            )
           }
         },
         providesTags: (res, err, arg) =>
@@ -1514,7 +1558,7 @@ export function createWalletApi () {
         { success: boolean },
         SendEthTransactionParams
       >({
-        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (payload, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { txService } = baseQuery(undefined).data
             /***
@@ -1591,11 +1635,13 @@ export function createWalletApi () {
               data: { success }
             }
           } catch (error) {
-            return {
-              error: `Failed to create Eth transaction: ${
+            return handleEndpointError(
+              endpoint,
+              `Failed to create Eth transaction: ${
                 error || 'unknown error'
-              } ::payload:: ${JSON.stringify(payload)}`
-            }
+              } ::payload:: ${JSON.stringify(payload)}`,
+              error
+            )
           }
         },
         invalidatesTags: (res, err, arg) =>
@@ -1611,7 +1657,7 @@ export function createWalletApi () {
         { success: boolean },
         SendFilTransactionParams
       >({
-        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (payload, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { txService } = baseQuery(undefined).data
 
@@ -1645,7 +1691,11 @@ export function createWalletApi () {
               data: { success }
             }
           } catch (error) {
-            return { error: 'Failed to send Fil transaction' }
+            return handleEndpointError(
+              endpoint,
+              'Failed to send Fil transaction',
+              error
+            )
           }
         },
         invalidatesTags: (res, err, arg) =>
@@ -1661,7 +1711,7 @@ export function createWalletApi () {
         { success: boolean },
         SendSolTransactionParams
       >({
-        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (payload, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { solanaTxManagerProxy, txService } =
               baseQuery(undefined).data
@@ -1704,7 +1754,59 @@ export function createWalletApi () {
               data: { success }
             }
           } catch (error) {
-            return { error: 'Failed to send Sol transaction' }
+            return handleEndpointError(
+              endpoint,
+              'Failed to send Sol transaction',
+              error
+            )
+          }
+        },
+        invalidatesTags: (res, err, arg) =>
+          err
+            ? []
+            : TX_CACHE_TAGS.LISTS({
+                coin: arg.fromAccount.accountId.coin,
+                fromAccountId: arg.fromAccount.accountId,
+                chainId: null
+              })
+      }),
+      sendBtcTransaction: mutation<
+        { success: boolean },
+        SendBtcTransactionParams
+      >({
+        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+          try {
+            const { txService } = baseQuery(undefined).data
+
+            const btcTxData: BraveWallet.BtcTxData = {
+              to: payload.to,
+              amount: BigInt(payload.value),
+              fee: BigInt(0),
+              inputs: [],
+              outputs: []
+            }
+
+            const { errorMessage, success } =
+              await txService.addUnapprovedTransaction(
+                toTxDataUnion({ btcTxData }),
+                payload.fromAccount.accountId,
+                null,
+                null
+              )
+
+            if (!success && errorMessage) {
+              return {
+                error: `Failed to send Btc transaction: ${
+                  errorMessage || 'unknown error'
+                }`
+              }
+            }
+
+            return {
+              data: { success }
+            }
+          } catch (error) {
+            return { error: 'Failed to send Btc transaction' }
           }
         },
         invalidatesTags: (res, err, arg) =>
@@ -1721,8 +1823,14 @@ export function createWalletApi () {
         | SendEthTransactionParams
         | SendFilTransactionParams
         | SendSolTransactionParams
+        | SendBtcTransactionParams
       >({
-        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (
+          payload,
+          { dispatch, endpoint },
+          extraOptions,
+          baseQuery
+        ) => {
           try {
             const coin = payload.fromAccount.accountId.coin
             switch (coin) {
@@ -1756,6 +1864,16 @@ export function createWalletApi () {
                   data: result
                 }
               }
+              case BraveWallet.CoinType.BTC: {
+                const result: { success: boolean } = await dispatch(
+                  walletApi.endpoints.sendBtcTransaction.initiate(
+                    payload as SendBtcTransactionParams
+                  )
+                ).unwrap()
+                return {
+                  data: result
+                }
+              }
               default: {
                 return {
                   error: `Unsupported coin type" ${coin}`
@@ -1763,24 +1881,24 @@ export function createWalletApi () {
               }
             }
           } catch (error) {
-            console.log(
-              'Sending unapproved transaction failed: ' +
-                `from=${payload.fromAccount.address} err=${error}`
+            return handleEndpointError(
+              endpoint,
+              `Sending unapproved transaction failed:
+                from=${payload.fromAccount.address}
+              `,
+              error
             )
-            return {
-              error: error
-            }
           }
         }
         // invalidatesTags: handled by other 'send-X-Transaction` methods
       }),
       sendERC20Transfer: mutation<{ success: boolean }, ER20TransferParams>({
-        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
-          const errMsg = `Failed making ERC20 transfer data, to: ${
-            payload.to //
-          }, value: ${
-            payload.value //
-          }`
+        queryFn: async (
+          payload,
+          { dispatch, endpoint },
+          extraOptions,
+          baseQuery
+        ) => {
           try {
             const { ethTxManagerProxy } = baseQuery(undefined).data
             const { data, success } =
@@ -1789,10 +1907,13 @@ export function createWalletApi () {
                 payload.value
               )
             if (!success) {
-              console.error(errMsg)
-              return {
-                error: errMsg
-              }
+              throw new Error(
+                `Failed making ERC20 transfer data, to: ${
+                  payload.to //
+                }, value: ${
+                  payload.value //
+                }`
+              )
             }
 
             const result: { success: boolean } = await dispatch(
@@ -1813,13 +1934,17 @@ export function createWalletApi () {
               data: result
             }
           } catch (error) {
-            return { error: errMsg }
+            return handleEndpointError(
+              endpoint,
+              'Failed to send ERC20 Transfer',
+              error
+            )
           }
         }
         // invalidatesTags: handled by other 'send-X-Transaction` methods
       }),
       sendSPLTransfer: mutation<{ success: boolean }, SPLTransferFromParams>({
-        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (payload, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { solanaTxManagerProxy, txService } =
               baseQuery(undefined).data
@@ -1866,11 +1991,13 @@ export function createWalletApi () {
               }
             }
           } catch (error) {
-            const msg = `SPL Transfer failed:
-                to: ${payload.to}
-                value: ${payload.value}`
-            console.error(msg)
-            return { error: msg }
+            return handleEndpointError(
+              endpoint,
+              `SPL Transfer failed:
+                  to: ${payload.to}
+                  value: ${payload.value}`,
+              error
+            )
           }
         },
         invalidatesTags: (res, err, arg) =>
@@ -1884,7 +2011,12 @@ export function createWalletApi () {
         { success: boolean },
         ERC721TransferFromParams
       >({
-        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (
+          payload,
+          { dispatch, endpoint },
+          extraOptions,
+          baseQuery
+        ) => {
           try {
             const { ethTxManagerProxy } = baseQuery(undefined).data
             const { data, success } =
@@ -1896,12 +2028,11 @@ export function createWalletApi () {
               )
 
             if (!success) {
-              const msg = `Failed making ERC721 transferFrom data,
-              from: ${payload.fromAccount.address}
-              to: ${payload.to},
-              tokenId: ${payload.tokenId}`
-              console.log(msg)
-              return { error: msg }
+              throw new Error(`Failed making ERC721 transferFrom data,
+                from: ${payload.fromAccount.address}
+                to: ${payload.to},
+                tokenId: ${payload.tokenId}
+              `)
             }
 
             const result: { success: boolean } = await dispatch(
@@ -1922,7 +2053,11 @@ export function createWalletApi () {
               data: result
             }
           } catch (error) {
-            return { error: '' }
+            return handleEndpointError(
+              endpoint,
+              'Failed to send ERC721 Transfer',
+              error
+            )
           }
         },
         invalidatesTags: (res, err, arg) =>
@@ -1936,18 +2071,22 @@ export function createWalletApi () {
         { success: boolean },
         ETHFilForwarderTransferFromParams
       >({
-        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (
+          payload,
+          { dispatch, endpoint },
+          extraOptions,
+          baseQuery
+        ) => {
           try {
             const { ethTxManagerProxy } = baseQuery(undefined).data
             const { data, success } =
               await ethTxManagerProxy.makeFilForwarderTransferData(payload.to)
 
             if (!success) {
-              const msg = `Failed making FilForwarder transferFrom data,
-            from: ${payload.fromAccount.address}
-            to: ${payload.to}`
-              console.log(msg)
-              return { error: msg }
+              throw new Error(`Failed making FilForwarder transferFrom data,
+                from: ${payload.fromAccount.address}
+                to: ${payload.to}
+              `)
             }
 
             const result: { success: boolean } = await dispatch(
@@ -1968,7 +2107,11 @@ export function createWalletApi () {
               data: result
             }
           } catch (error) {
-            return { error: '' }
+            return handleEndpointError(
+              endpoint,
+              'Failed to send ETH-Fil-Forwarder Transfer',
+              error
+            )
           }
         },
         invalidatesTags: (res, err, arg) =>
@@ -1981,7 +2124,12 @@ export function createWalletApi () {
 
       approveERC20Allowance: mutation<{ success: boolean }, ApproveERC20Params>(
         {
-          queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+          queryFn: async (
+            payload,
+            { dispatch, endpoint },
+            extraOptions,
+            baseQuery
+          ) => {
             try {
               const { ethTxManagerProxy } = baseQuery(undefined).data
 
@@ -1992,14 +2140,11 @@ export function createWalletApi () {
                 )
 
               if (!success) {
-                const msg = `Failed making ERC20 approve data
-                contract: ${payload.contractAddress}
-                spender: ${payload.spenderAddress}
-                allowance: ${payload.allowance}`
-                console.error(msg)
-                return {
-                  error: msg
-                }
+                throw new Error(`Failed making ERC20 approve data
+                  contract: ${payload.contractAddress}
+                  spender: ${payload.spenderAddress}
+                  allowance: ${payload.allowance}
+                `)
               }
 
               const result: { success: boolean } = await dispatch(
@@ -2014,7 +2159,11 @@ export function createWalletApi () {
 
               return { data: result }
             } catch (error) {
-              return { error: '' }
+              return handleEndpointError(
+                endpoint,
+                'Failed to send ETH-Fil-Forwarder Transfer',
+                error
+              )
             }
           },
           invalidatesTags: (res, err, arg) =>
@@ -2031,7 +2180,10 @@ export function createWalletApi () {
           txId: string
           status: BraveWallet.TransactionStatus
         },
-        Pick<SerializableTransactionInfo, 'txStatus' | 'id' | 'chainId' | 'fromAccountId'> & {
+        Pick<
+          SerializableTransactionInfo,
+          'txStatus' | 'id' | 'chainId' | 'fromAccountId'
+        > & {
           coinType: BraveWallet.CoinType
         }
       >({
@@ -2116,7 +2268,7 @@ export function createWalletApi () {
           coinType: BraveWallet.CoinType
         }
       >({
-        queryFn: async (txInfo, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (txInfo, { endpoint }, extraOptions, baseQuery) => {
           try {
             const api = baseQuery(undefined).data
             const { txService, braveWalletP3A } = api
@@ -2148,9 +2300,11 @@ export function createWalletApi () {
               data: { success: true }
             }
           } catch (error) {
-            return {
-              error: `Unable to approve transaction: ${error}`
-            }
+            return handleEndpointError(
+              endpoint,
+              `Unable to approve transaction: ${error}`,
+              error
+            )
           }
         },
         invalidatesTags: (res, err, arg) =>
@@ -2333,9 +2487,11 @@ export function createWalletApi () {
               data: { success: true }
             }
           } catch (error) {
-            return {
-              error: `Unable to approve hardware transaction: ${error}`
-            }
+            return handleEndpointError(
+              store.endpoint,
+              `Unable to approve hardware transaction: ${error}`,
+              error
+            )
           }
         },
         invalidatesTags: (res, err, arg) =>
@@ -2347,7 +2503,7 @@ export function createWalletApi () {
           coinType: BraveWallet.CoinType
         }
       >({
-        queryFn: async (tx, api, extraOptions, baseQuery) => {
+        queryFn: async (tx, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { txService } = baseQuery(undefined).data
             await txService.rejectTransaction(tx.coinType, tx.chainId, tx.id)
@@ -2355,16 +2511,18 @@ export function createWalletApi () {
               data: { success: true }
             }
           } catch (error) {
-            return {
-              error: `Unable to reject transaction: ${error}`
-            }
+            return handleEndpointError(
+              endpoint,
+              'Unable to reject transaction',
+              error
+            )
           }
         },
         invalidatesTags: (res, err, arg) =>
           err ? [] : [TX_CACHE_TAGS.ID(arg.id)]
       }),
       rejectAllTransactions: mutation<{ success: boolean }, void>({
-        queryFn: async (_arg, { dispatch }) => {
+        queryFn: async (_arg, { dispatch, endpoint }) => {
           try {
             const pendingTxs: SerializableTransactionInfo[] = (
               await dispatch(
@@ -2397,9 +2555,11 @@ export function createWalletApi () {
               data: { success: true }
             }
           } catch (error) {
-            return {
-              error: `Unable to reject all transactions: ${error}`
-            }
+            return handleEndpointError(
+              endpoint,
+              'Unable to reject all transactions',
+              error
+            )
           }
         }
         // invalidatesTags handled by rejectTransaction
@@ -2408,7 +2568,7 @@ export function createWalletApi () {
         { success: boolean },
         UpdateUnapprovedTransactionGasFieldsType
       >({
-        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (payload, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { ethTxManagerProxy } = baseQuery(undefined).data
 
@@ -2468,12 +2628,11 @@ export function createWalletApi () {
               data: result
             }
           } catch (error) {
-            console.error(error)
-            return {
-              error: `An error occurred while updating an transaction's gas: ${
-                error //
-              }`
-            }
+            return handleEndpointError(
+              endpoint,
+              'An error occurred while updating an transaction\'s gas',
+              error
+            )
           }
         },
         invalidatesTags: (res, err, arg) =>
@@ -2483,11 +2642,7 @@ export function createWalletApi () {
         { success: boolean },
         UpdateUnapprovedTransactionSpendAllowanceType
       >({
-        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
-          const errMsg =
-            'Failed to update unapproved transaction: ' +
-            `id=${payload.txMetaId} ` +
-            `allowance=${payload.allowance}`
+        queryFn: async (payload, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { ethTxManagerProxy } = baseQuery(undefined).data
             const { data, success } =
@@ -2514,18 +2669,24 @@ export function createWalletApi () {
               )
 
             if (!result.success) {
-              return {
-                error: errMsg
-              }
+              throw new Error(`Failed to set data for unapproved transaction:
+                chainId=${payload.chainId}
+                txMetaId=${payload.txMetaId}
+                data=${data.join(',')}
+              `)
             }
 
             return {
               data: result
             }
           } catch (error) {
-            return {
-              error: errMsg + ` - ${error}`
-            }
+            return handleEndpointError(
+              endpoint,
+              `Failed to update unapproved transaction:
+                id=${payload.txMetaId}
+                allowance=${payload.allowance}`,
+              error
+            )
           }
         },
         invalidatesTags: (res, err, arg) =>
@@ -2535,11 +2696,7 @@ export function createWalletApi () {
         { success: boolean },
         UpdateUnapprovedTransactionNonceType
       >({
-        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
-          const errorMsg =
-            'Failed to update unapproved transaction nonce: ' +
-            `id=${payload.txMetaId} ` +
-            `nonce=${payload.nonce}`
+        queryFn: async (payload, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { ethTxManagerProxy } = baseQuery(undefined).data
 
@@ -2551,12 +2708,19 @@ export function createWalletApi () {
               )
 
             if (!result.success) {
-              return { error: errorMsg }
+              throw new Error('setting nonce failed')
             }
 
             return { data: result }
           } catch (error) {
-            return { error: errorMsg + ` - ${error}` }
+            return handleEndpointError(
+              endpoint,
+              'Failed to update unapproved transaction nonce: ' +
+                `id=${payload.txMetaId} ` +
+                `chainId=${payload.chainId} ` +
+                `nonce=${payload.nonce}`,
+              error
+            )
           }
         },
         invalidatesTags: (res, err, arg) =>
@@ -2564,7 +2728,7 @@ export function createWalletApi () {
       }),
       retryTransaction: mutation<{ success: boolean }, RetryTransactionPayload>(
         {
-          queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+          queryFn: async (payload, { endpoint }, extraOptions, baseQuery) => {
             try {
               const { txService } = baseQuery(undefined).data
 
@@ -2585,12 +2749,13 @@ export function createWalletApi () {
 
               return { data: result }
             } catch (error) {
-              return {
-                error:
-                  'Retry transaction failed: ' +
+              return handleEndpointError(
+                endpoint,
+                'Retry transaction failed: ' +
                   `id=${payload.transactionId} ` +
-                  `err=${error}`
-              }
+                  `err=${error}`,
+                error
+              )
             }
           },
           invalidatesTags: (res, err, arg) =>
@@ -2601,7 +2766,7 @@ export function createWalletApi () {
         { success: boolean },
         CancelTransactionPayload
       >({
-        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (payload, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { txService } = baseQuery(undefined).data
 
@@ -2613,24 +2778,20 @@ export function createWalletApi () {
             )
 
             if (!result.success) {
-              return {
-                error:
-                  'Cancel transaction failed: ' +
-                  `id=${payload.transactionId} ` +
-                  `err=${result.errorMessage}`
-              }
+              throw new Error(result.errorMessage || 'Unknown error')
             }
 
             return {
               data: { success: result.success }
             }
           } catch (error) {
-            return {
-              error:
-                'Cancel transaction failed: ' +
-                `id=${payload.transactionId} ` +
-                `err=${error}`
-            }
+            return handleEndpointError(
+              endpoint,
+              'Cancel transaction failed: ' +
+              `id=${payload.transactionId} ` +
+              `err=${error}`,
+              error
+            )
           }
         },
         invalidatesTags: (res, err, arg) =>
@@ -2640,7 +2801,7 @@ export function createWalletApi () {
         { success: boolean },
         SpeedupTransactionPayload
       >({
-        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (payload, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { txService } = baseQuery(undefined).data
 
@@ -2664,12 +2825,13 @@ export function createWalletApi () {
               data: { success: result.success }
             }
           } catch (error) {
-            return {
-              error:
-                'Speedup transaction failed: ' +
-                `id=${payload.transactionId} ` +
-                `err=${error}`
-            }
+            return handleEndpointError(
+              endpoint,
+              'Speedup transaction failed: ' +
+              `id=${payload.transactionId} ` +
+              `err=${error}`,
+              error
+            )
           }
         },
         invalidatesTags: (res, err, arg) =>
@@ -2712,7 +2874,7 @@ export function createWalletApi () {
         string,
         { address: string; coin: number; chainId: string }
       >({
-        queryFn: async (arg, api, extraOptions, baseQuery) => {
+        queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { jsonRpcService } = baseQuery(undefined).data
             const { bytecode, error, errorMessage } =
@@ -2726,10 +2888,11 @@ export function createWalletApi () {
               data: bytecode
             }
           } catch (error) {
-            console.log(error)
-            return {
-              error: `Was unable to fetch bytecode for address: ${arg.address}.`
-            }
+            return handleEndpointError(
+              endpoint,
+              `Unable to fetch bytecode for address: ${arg.address}.`,
+              error
+            )
           }
         }
       }),
@@ -2740,7 +2903,7 @@ export function createWalletApi () {
         BraveWallet.GasEstimation1559,
         string // chainId
       >({
-        queryFn: async (chainIdArg, { dispatch }, extraOptions, baseQuery) => {
+        queryFn: async (chainIdArg, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { data: api } = baseQuery(undefined)
             const { ethTxManagerProxy } = api
@@ -2763,15 +2926,17 @@ export function createWalletApi () {
               data: estimation
             }
           } catch (error) {
-            return {
-              error: `Failed to estimate EVM gas: ${error}`
-            }
+            return handleEndpointError(
+              endpoint,
+              `Failed to estimate EVM gas: ${error}`,
+              error
+            )
           }
         },
         providesTags: ['GasEstimation1559']
       }),
       getSolanaEstimatedFee: query<string, { chainId: string; txId: string }>({
-        queryFn: async (arg, api, extraOptions, baseQuery) => {
+        queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
           try {
             const { solanaTxManagerProxy } = baseQuery(undefined).data
             const { errorMessage, fee } =
@@ -2788,12 +2953,11 @@ export function createWalletApi () {
               data: fee.toString()
             }
           } catch (error) {
-            const msg = `Unable to fetch Solana fees - txId: ${arg.txId}`
-            console.error(msg)
-            console.error(error)
-            return {
-              error: msg
-            }
+            return handleEndpointError(
+              endpoint,
+              `Unable to fetch Solana fees - txId: ${arg.txId}`,
+              error
+            )
           }
         },
         providesTags: (res, er, arg) => [
@@ -2871,7 +3035,7 @@ export const {
   useGetHardwareAccountDiscoveryBalanceQuery,
   useGetIpfsGatewayTranslatedNftUrlQuery,
   useGetIPFSUrlFromGatewayLikeUrlQuery,
-  useGetIsTxSimulationEnabledQuery,
+  useGetIsTxSimulationOptInStatusQuery,
   useGetNetworksRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
   useGetNftMetadataQuery,
@@ -2907,7 +3071,7 @@ export const {
   useLazyGetGasEstimation1559Query,
   useLazyGetIpfsGatewayTranslatedNftUrlQuery,
   useLazyGetIPFSUrlFromGatewayLikeUrlQuery,
-  useLazyGetIsTxSimulationEnabledQuery,
+  useLazyGetIsTxSimulationOptInStatusQuery,
   useLazyGetNetworksRegistryQuery,
   useLazyGetNftDiscoveryEnabledStatusQuery,
   useLazyGetPendingTokenSuggestionRequestsQuery,
@@ -2924,6 +3088,7 @@ export const {
   useLazyGetTokensRegistryQuery,
   useLazyGetTransactionsQuery,
   useLazyGetUserTokensRegistryQuery,
+  useGetSimpleHashSpamNftsQuery,
   useNewUnapprovedTxAddedMutation,
   useOpenPanelUIMutation,
   usePrefetch,
@@ -2941,6 +3106,7 @@ export const {
   useSendSPLTransferMutation,
   useSendTransactionMutation,
   useSetDefaultFiatCurrencyMutation,
+  useSetIsTxSimulationOptInStatusMutation,
   useSetNetworkMutation,
   useSetNftDiscoveryEnabledMutation,
   useSetSelectedAccountMutation,
@@ -2952,6 +3118,7 @@ export const {
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
   useUpdateUserTokenMutation,
+  useUpdateNftSpamStatusMutation
 } = walletApi
 
 // Derived Data Queries
@@ -3102,84 +3269,6 @@ async function getSelectedNetwork(
   const { braveWalletService } = api
   return (await braveWalletService.getNetworkForSelectedAccountOnActiveOrigin())
     .network ?? undefined
-}
-
-//
-// Internals
-//
-async function getEnabledCoinTypes(
-  api: WalletApiProxy
-) {
-  const { walletHandler } = api
-
-  // network type flags
-  const {
-    walletInfo: { isFilecoinEnabled, isSolanaEnabled, isBitcoinEnabled }
-  } = await walletHandler.getWalletInfo()
-
-  // Get All Networks
-  const enabledCoinTypes = SupportedCoinTypes.filter((coin) => {
-    // MULTICHAIN: While we are still in development for FIL and SOL,
-    // we will not use their networks unless enabled by brave://flags
-    return (
-      (coin === BraveWallet.CoinType.FIL && isFilecoinEnabled) ||
-      (coin === BraveWallet.CoinType.SOL && isSolanaEnabled) ||
-      (coin === BraveWallet.CoinType.BTC && isBitcoinEnabled) ||
-      coin === BraveWallet.CoinType.ETH
-    )
-  })
-
-  return enabledCoinTypes
-}
-
-async function getAllNetworksList(
-  api: WalletApiProxy
-) {
-  const { jsonRpcService } = api
-
-  const enabledCoinTypes = await getEnabledCoinTypes(api)
-
-  // Get All Networks
-  const networks = (
-    await mapLimit(
-      enabledCoinTypes, 10, (async (coin: number) => {
-        const { networks } = await jsonRpcService.getAllNetworks(coin)
-        return networks
-      })
-    )
-  ).flat(1)
-
-  return networks
-}
-
-export async function getNetwork(
-  api: WalletApiProxy,
-  arg: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
-): Promise<BraveWallet.NetworkInfo | undefined> {
-  const networksList = await getAllNetworksList(api)
-
-  return networksList.find(
-    (n) => n.chainId === arg.chainId && n.coin === arg.coin
-  )
-}
-
-export async function getVisibleNetworksList(
-  api: WalletApiProxy
-) {
-  const { jsonRpcService } = api
-
-  const enabledCoinTypes = await getEnabledCoinTypes(api)
-
-  const networks = (
-    await mapLimit(enabledCoinTypes, 10, async (coin: number) => {
-      const { networks } = await jsonRpcService.getAllNetworks(coin)
-      const { chainIds: hiddenChainIds } =
-        await jsonRpcService.getHiddenNetworks(coin)
-      return networks.filter((n) => !hiddenChainIds.includes(n.chainId))
-    })
-  ).flat(1)
-
-  return networks
 }
 
 // panel internals

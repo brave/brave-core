@@ -6,49 +6,27 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 
+import { setIconBasePath } from '@brave/leo/react/icon'
 import styled from 'styled-components'
-import InspectContext, { useInspectContext } from './context'
-import PageInfo from './PageInfo'
 import FeedPage from './FeedPage'
 import SignalsPage from './SignalsPage'
-import Button from '@brave/leo/react/button'
-import { spacing } from '@brave/leo/tokens/css'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import InspectContext from './context'
 
 setIconBasePath('//resources/brave-icons')
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 200px auto 200px;
+  grid-template-columns: 400px auto;
   padding: 16px;
   gap: 8px;
 `
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing.m};
-  max-width: 800px;
-  margin: 0 auto;
-`
 
 function App() {
-  const { page, publishers, channels } = useInspectContext()
-
   return (
     <Grid>
-      <PageInfo />
-      <Container>
-        {page === 'feed' && <FeedPage />}
-        {page === 'signals' && <SignalsPage />}
-      </Container>
-      <div>
-        Publishers: {Object.keys(publishers).length}
-        <br />
-        Channels: {Object.keys(channels).length}
-        <br />
-        <Button onClick={() => window.location.reload()}>Refresh</Button>
-      </div>
+      <SignalsPage />
+      <FeedPage />
     </Grid>
   )
 }

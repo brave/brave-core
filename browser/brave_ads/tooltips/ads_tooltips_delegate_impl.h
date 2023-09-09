@@ -9,7 +9,7 @@
 #include <string>
 
 #include "brave/browser/brave_ads/tooltips/ads_tooltips_controller.h"
-#include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
+#include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
 
 class Profile;
 

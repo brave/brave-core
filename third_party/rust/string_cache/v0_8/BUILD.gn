@@ -11,12 +11,21 @@ cargo_crate("lib") {
 
   # Only for usage from third-party crates. Add the crate to
   # third_party.toml to use it from first-party code.
-  visibility = [ "//third_party/rust/*" ]
+  visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/string_cache/v0_8/crate/examples/simple.rs",
+    "//brave/third_party/rust/string_cache/v0_8/crate/src/atom.rs",
+    "//brave/third_party/rust/string_cache/v0_8/crate/src/dynamic_set.rs",
+    "//brave/third_party/rust/string_cache/v0_8/crate/src/lib.rs",
+    "//brave/third_party/rust/string_cache/v0_8/crate/src/static_sets.rs",
+    "//brave/third_party/rust/string_cache/v0_8/crate/src/trivial_impls.rs",
+    "//brave/third_party/rust/string_cache/v0_8/crate/tests/small-stack.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/string_cache/v0_8/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.8.7"
   cargo_pkg_authors = "The Servo Project Developers"

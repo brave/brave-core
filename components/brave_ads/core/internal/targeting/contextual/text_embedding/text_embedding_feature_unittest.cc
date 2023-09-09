@@ -41,7 +41,7 @@ TEST(BraveAdsTextEmbeddingFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsTextEmbeddingFeatureEnabled());
 }
 
-TEST(BraveAdsTextEmbeddingFeatureTest, GetTextEmbeddingResourceVersion) {
+TEST(BraveAdsTextEmbeddingFeatureTest, TextEmbeddingResourceVersion) {
   // Arrange
   base::FieldTrialParams params;
   params["resource_version"] = "0";
@@ -87,7 +87,7 @@ TEST(BraveAdsTextEmbeddingFeatureTest,
   EXPECT_EQ(1, kTextEmbeddingResourceVersion.Get());
 }
 
-TEST(BraveAdsTextEmbeddingFeatureTest, GetTextEmbeddingsHistorySize) {
+TEST(BraveAdsTextEmbeddingFeatureTest, TextEmbeddingsHistorySize) {
   // Arrange
   base::FieldTrialParams params;
   params["history_size"] = "42";

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/memory/raw_ref.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
@@ -29,18 +30,19 @@ namespace brave_shields {
 namespace {
 
 typedef struct ListDefaultOverrideConstants {
-  const base::Feature& feature;
+  const raw_ref<const base::Feature> feature;
   const char* local_override_pref;
   const char* list_uuid;
 } ListDefaultOverrideConstants;
 
 const ListDefaultOverrideConstants kCookieListConstants{
-    .feature = kBraveAdblockCookieListDefault,
+    .feature = raw_ref<const base::Feature>(kBraveAdblockCookieListDefault),
     .local_override_pref = prefs::kAdBlockCookieListSettingTouched,
     .list_uuid = kCookieListUuid};
 
 const ListDefaultOverrideConstants kMobileNotificationsListConstants{
-    .feature = kBraveAdblockMobileNotificationsListDefault,
+    .feature = raw_ref<const base::Feature>(
+        kBraveAdblockMobileNotificationsListDefault),
     .local_override_pref = prefs::kAdBlockMobileNotificationsListSettingTouched,
     .list_uuid = kMobileNotificationsListUuid};
 
@@ -132,7 +134,7 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
     const bool list_touched =
         local_state_->GetBoolean(constants.local_override_pref);
 
-    if (base::FeatureList::IsEnabled(constants.feature) && !list_touched) {
+    if (base::FeatureList::IsEnabled(*constants.feature) && !list_touched) {
       base::Value::Dict list_entry;
       list_entry.Set("enabled", true);
       regional_filters_dict_with_overrides.Set(constants.list_uuid,
@@ -210,7 +212,7 @@ bool AdBlockRegionalServiceManager::IsFilterListEnabled(
 
   for (const auto& constants : kOverrideConstants) {
     if (uuid == constants.list_uuid &&
-        base::FeatureList::IsEnabled(constants.feature) &&
+        base::FeatureList::IsEnabled(*constants.feature) &&
         !local_state_->GetBoolean(constants.local_override_pref)) {
       return true;
     }

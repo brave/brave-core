@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/signin/account_consistency_mode_manager.cc b/chrome/browser/signin/account_consistency_mode_manager.cc
-index a7853cc014069560f3f21077243599d32364a4e5..5fd431fd299fbf8f8ab86c590854885c6f325f05 100644
+index c495783de021a0984e30edaef6227cdcbf783839..2704a2d7b09f5b2f6845deb080fc014f2c0df2ab 100644
 --- a/chrome/browser/signin/account_consistency_mode_manager.cc
 +++ b/chrome/browser/signin/account_consistency_mode_manager.cc
 @@ -185,6 +185,7 @@ AccountConsistencyModeManager::ComputeAccountConsistencyMethod(

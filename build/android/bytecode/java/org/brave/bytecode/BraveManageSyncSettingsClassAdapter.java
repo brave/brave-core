@@ -21,8 +21,5 @@ public class BraveManageSyncSettingsClassAdapter extends BraveClassVisitor {
 
         deleteField(sBraveManageSyncSettingsClassName, "mSyncEncryption");
         makeProtectedField(sManageSyncSettingsClassName, "mSyncEncryption");
-
-        deleteField(sBraveManageSyncSettingsClassName, "mSyncPaymentsIntegration");
-        makeProtectedField(sManageSyncSettingsClassName, "mSyncPaymentsIntegration");
     }
 }

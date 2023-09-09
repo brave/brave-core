@@ -48,6 +48,10 @@ class PlaylistRenderFrameObserverBrowserTest;
 class PlaylistDownloadRequestManagerBrowserTest;
 class PrefService;
 
+namespace gfx {
+class Image;
+}  // namespace gfx
+
 namespace playlist {
 
 class MediaDetectorComponentManager;
@@ -88,6 +92,11 @@ class PlaylistService : public KeyedService,
     Delegate& operator=(const Delegate&) = delete;
     virtual ~Delegate() = default;
 
+    virtual void SanitizeImage(
+        std::unique_ptr<std::string> image,
+        base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)>
+            callback) = 0;
+
     virtual content::WebContents* GetActiveWebContents() = 0;
   };
 
@@ -109,6 +118,9 @@ class PlaylistService : public KeyedService,
 #endif  // BUILDFLAG(IS_ANDROID)
 
   bool GetThumbnailPath(const std::string& id, base::FilePath* thumbnail_path);
+
+  void DownloadThumbnail(const GURL& url,
+                         base::OnceCallback<void(gfx::Image)> callback);
 
   // This returns candidate path, which possibly doesn't have file extension.
   // Don't depend on this method to access the actual cache on the local disk.
@@ -163,9 +175,11 @@ class PlaylistService : public KeyedService,
   void MoveItem(const std::string& from_playlist_id,
                 const std::string& to_playlist_id,
                 const std::string& item_id) override;
-  void ReorderItemFromPlaylist(const std::string& playlist_id,
-                               const std::string& item_id,
-                               int16_t position) override;
+  void ReorderItemFromPlaylist(
+      const std::string& playlist_id,
+      const std::string& item_id,
+      int16_t position,
+      ReorderItemFromPlaylistCallback callback) override;
   void UpdateItem(mojom::PlaylistItemPtr item) override;
   void UpdateItemLastPlayedPosition(const std::string& id,
                                     int32_t last_played_position) override;
@@ -336,6 +350,10 @@ class PlaylistService : public KeyedService,
   base::SequencedTaskRunner* GetTaskRunner() override;
 
   // PlaylistThumbnailDownloader::Delegate overrides:
+  void SanitizeImage(
+      std::unique_ptr<std::string> image,
+      base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)> callback)
+      override;
   // Called when thumbnail image file is downloaded.
   void OnThumbnailDownloaded(const std::string& id,
                              const base::FilePath& path) override;

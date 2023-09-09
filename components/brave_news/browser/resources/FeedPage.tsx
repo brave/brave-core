@@ -11,6 +11,7 @@ import Cluster from './feed/Cluster';
 import Discover from './feed/Discover'
 import HeroArticle from './feed/Hero';
 import styled from 'styled-components';
+import { spacing } from '@brave/leo/tokens/css';
 
 interface Props {
 }
@@ -21,13 +22,20 @@ const FeedContainer = styled.div`
   gap: 12px;
 `
 
-const MAX_ITEMS = 250;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing.m};
+  max-width: 800px;
+  margin: 0 auto;
+`
+
 export default function FeedPage(props: Props) {
-  const { feed } = useInspectContext();
-  return <div>
-    The Feed ({feed?.items.length} items. Truncated at {MAX_ITEMS})
+  const { feed, truncate } = useInspectContext();
+  return <Container>
+    <h2>The Feed ({feed?.items.length} items. Truncated at {truncate})</h2>
     <FeedContainer>
-      {feed?.items.slice(0, MAX_ITEMS).map((item, index) => {
+      {feed?.items.slice(0, truncate).map((item, index) => {
         if (item.advert) {
           return <Advert info={item.advert} key={index} />
         }
@@ -47,5 +55,5 @@ export default function FeedPage(props: Props) {
         throw new Error("Invalid item!" + JSON.stringify(item))
       })}
     </FeedContainer>
-  </div>
+  </Container>
 }

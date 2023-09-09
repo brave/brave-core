@@ -53,6 +53,10 @@ const playlistReducer: Reducer<PlaylistData | undefined> = (
 
     case types.PLAYLIST_UPDATED:
       const updatedPlaylist = action.payload
+      for (const item of updatedPlaylist.items) {
+        fixUpThumbnailURL(item)
+        fixUpMediaURL(item)
+      }
       state = { ...state, lists: [...state.lists] }
       if (state.currentList?.id === updatedPlaylist.id) {
         state.currentList = updatedPlaylist

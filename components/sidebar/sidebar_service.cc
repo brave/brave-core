@@ -72,6 +72,51 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
   return SidebarItem::BuiltInItemType::kNone;
 }
 
+SidebarItem::BuiltInItemType GetPrevBuiltInItemFor(
+    const SidebarItem::BuiltInItemType& item) {
+  auto* iter_begin = std::cbegin(SidebarService::kDefaultBuiltInItemTypes);
+  auto* iter_end = std::cend(SidebarService::kDefaultBuiltInItemTypes);
+  auto* iter = std::find(iter_begin, iter_end, item);
+
+  CHECK(iter_end != iter);
+
+  if (iter_begin == iter) {
+    return SidebarItem::BuiltInItemType::kNone;
+  }
+
+  return *std::prev(iter);
+}
+
+size_t GetBuiltInItemIndexToInsert(const std::vector<SidebarItem>& items,
+                                   const SidebarItem& item) {
+  auto prev_builtin_item = GetPrevBuiltInItemFor(item.built_in_item_type);
+
+  auto find_prev_builtin_in_items = [&]() {
+    return std::find_if(items.cbegin(), items.cend(),
+                        [&prev_builtin_item](const SidebarItem& item) {
+                          return IsBuiltInType(item) &&
+                                 item.built_in_item_type == prev_builtin_item;
+                        });
+  };
+
+  auto insert_pos_it = items.cend();
+
+  while (insert_pos_it == items.cend() &&
+         SidebarItem::BuiltInItemType::kNone != prev_builtin_item) {
+    insert_pos_it = find_prev_builtin_in_items();
+
+    if (insert_pos_it != items.cend()) {
+      break;
+    }
+
+    prev_builtin_item = GetPrevBuiltInItemFor(prev_builtin_item);
+  }
+
+  return insert_pos_it == items.cend()
+             ? 0
+             : std::distance(items.cbegin(), insert_pos_it) + 1;
+}
+
 }  // namespace
 
 bool SidebarItemUpdate::operator==(const SidebarItemUpdate& update) const {
@@ -93,7 +138,8 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
   registry->RegisterIntegerPref(kSidePanelWidth, kDefaultSidePanelWidth);
 }
 
-SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
+SidebarService::SidebarService(PrefService* prefs)
+    : prefs_(prefs), sidebar_p3a_(prefs) {
   DCHECK(prefs_);
   MigratePrefSidebarBuiltInItemsToHidden();
 
@@ -266,11 +312,18 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
 
 void SidebarService::AddItem(const SidebarItem& item) {
   DCHECK(IsValidItem(item));
-  items_.push_back(item);
-
-  for (Observer& obs : observers_) {
-    // Index starts at zero.
-    obs.OnItemAdded(item, items_.size() - 1);
+  if (IsWebType(item)) {
+    items_.push_back(item);
+    for (Observer& obs : observers_) {
+      // Index starts at zero.
+      obs.OnItemAdded(item, items_.size() - 1);
+    }
+  } else {
+    const size_t pos_to_insert = GetBuiltInItemIndexToInsert(items(), item);
+    items_.insert(items_.begin() + pos_to_insert, item);
+    for (Observer& obs : observers_) {
+      obs.OnItemAdded(item, pos_to_insert);
+    }
   }
 
   UpdateSidebarItemsToPrefStore();

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/scripts/web_idl/composition_parts.py b/third_party/blink/renderer/bindings/scripts/web_idl/composition_parts.py
-index 9e3214af0354f44739f65478f6f97981d1d40339..b771d6f5550f433e99823187f7906d827932bdec 100644
+index 6d965b89b03d09860c0063251cf021424d3fe9a7..11c8c1697190c6d8795274acd7efc3381a6d5630 100644
 --- a/third_party/blink/renderer/bindings/scripts/web_idl/composition_parts.py
 +++ b/third_party/blink/renderer/bindings/scripts/web_idl/composition_parts.py
 @@ -157,6 +157,7 @@ class Location(object):

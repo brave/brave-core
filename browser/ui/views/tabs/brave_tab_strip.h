@@ -30,6 +30,8 @@ class BraveTabStrip : public TabStrip {
       const ui::LocatedEvent& event,
       const ui::ListSelectionModel& original_selection) override;
   void AddedToWidget() override;
+  absl::optional<int> GetCustomBackgroundId(
+      BrowserFrameActiveState active_state) const override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(ColorPaletteTest, LightThemeMinimumContrast);
@@ -38,9 +40,6 @@ class BraveTabStrip : public TabStrip {
   bool ShouldShowVerticalTabs() const;
 
   // TabStrip overrides:
-  SkColor GetTabBackgroundColor(
-      TabActive active,
-      BrowserFrameActiveState active_state) const override;
   SkColor GetTabSeparatorColor() const override;
   bool ShouldDrawStrokes() const override;
   int GetStrokeThickness() const override;

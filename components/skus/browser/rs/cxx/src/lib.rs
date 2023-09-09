@@ -364,6 +364,7 @@ impl CppSDK {
     }
 }
 
+#[allow(improper_ctypes_definitions)]
 #[repr(transparent)]
 pub struct RefreshOrderCallback(
     pub  extern "C" fn(
@@ -420,6 +421,7 @@ async fn fetch_order_credentials_task(
     }
 }
 
+#[allow(improper_ctypes_definitions)]
 #[repr(transparent)]
 pub struct PrepareCredentialsPresentationCallback(
     pub  extern "C" fn(
@@ -450,9 +452,10 @@ async fn prepare_credentials_presentation_task(
     }
 }
 
+#[allow(improper_ctypes_definitions)]
 #[repr(transparent)]
 pub struct CredentialSummaryCallback(
-    pub extern "C" fn(
+    pub  extern "C" fn(
         callback_state: *mut ffi::CredentialSummaryCallbackState,
         result: ffi::SkusResult,
         summary: &str,
@@ -479,7 +482,7 @@ async fn credential_summary_task(
         .map_err(|e| e.into())
     {
         Ok(Some(summary)) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &summary),
-        Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, "{}"), // none, empty
+        Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, "{}"), /* none, empty */
         Err(e) => callback.0(callback_state.into_raw(), e, "{}"), // none, empty
     }
 }

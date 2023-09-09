@@ -16,11 +16,9 @@
 
 namespace brave_wallet {
 
-class JsonRpcService;
-
 class BlockTracker {
  public:
-  explicit BlockTracker(JsonRpcService* json_rpc_service);
+  BlockTracker();
   virtual ~BlockTracker();
 
   virtual void Start(const std::string& chain_id, base::TimeDelta interval) = 0;
@@ -31,7 +29,6 @@ class BlockTracker {
  protected:
   // <chain_id, timer>
   std::map<std::string, std::unique_ptr<base::RepeatingTimer>> timers_;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
 };
 
 }  // namespace brave_wallet

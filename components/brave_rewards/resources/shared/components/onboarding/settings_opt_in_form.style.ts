@@ -9,7 +9,7 @@ import * as leo from '@brave/leo/tokens/css'
 
 export const root = styled.div`
   background-color: ${leo.color.white};
-  border-radius: 4px;
+  border-radius: 16px;
   font-family: var(--brave-font-heading);
   text-align: center;
   padding: 44px;
@@ -79,7 +79,7 @@ export const enable = styled.div.attrs({
 export const learnMore = styled.div.attrs({
   'data-theme': 'light'
 })`
-  margin: 20px 0 8px;
+  margin: 20px 0 37px;
   text-align: center;
 
   a {
@@ -88,6 +88,20 @@ export const learnMore = styled.div.attrs({
     font-size: 13px;
     line-height: 20px;
     letter-spacing: 0.03em;
+    text-decoration: none;
+  }
+`
+
+export const terms = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  color: ${leo.color.text.tertiary};
+  font-size: 11px;
+  line-height: 16px;
+  margin-bottom: -8px;
+
+  a {
+    color: ${leo.color.text.interactive};
     text-decoration: none;
   }
 `

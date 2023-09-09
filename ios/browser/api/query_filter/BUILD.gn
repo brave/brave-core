@@ -4,8 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("query_filter") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "utils.h",
     "utils.mm",

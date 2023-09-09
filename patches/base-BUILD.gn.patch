@@ -1,8 +1,8 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index 304223b58a7062e3a6ae466d54b9e877708e5cb3..42d684f60658336b564a8754ecf51ec87a17ee27 100644
+index 6e6f24e479cce61b5f189faed40601e8f3e82ef9..96b0c277a9a89d28a7862104f9c2b0bb803dfc0e 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -4433,6 +4433,7 @@ if (is_android) {
+@@ -4396,6 +4396,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/task/ThreadPoolTaskExecutor.java",
        "android/java/src/org/chromium/base/task/UiThreadTaskExecutor.java",
      ]

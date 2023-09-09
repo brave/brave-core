@@ -150,6 +150,11 @@ brave_java_resources = [
   "java/res/drawable-night-xhdpi/ic_cookie_background.png",
   "java/res/drawable-night-xxhdpi/ic_cookie_background.png",
   "java/res/drawable-night-xxxhdpi/ic_cookie_background.png",
+  "java/res/drawable-night/bookmark_empty_state_illustration.xml",
+  "java/res/drawable-night/history_empty_state_illustration.xml",
+  "java/res/drawable-night/phone_recent_tab_empty_state_illustration.xml",
+  "java/res/drawable-night/reading_list_empty_state_illustration.xml",
+  "java/res/drawable-night/tablet_recent_tab_empty_state_illustration.xml",
   "java/res/drawable-night/tipping_background_success.xml",
   "java/res/drawable-nodpi/dylan_malval_sea_min.webp",
   "java/res/drawable-nodpi/eth.png",
@@ -357,7 +362,6 @@ brave_java_resources = [
   "java/res/drawable/blue_rounded_button.xml",
   "java/res/drawable/blue_rounded_notification_bg.xml",
   "java/res/drawable/bookmark_menu_bg.xml",
-  "java/res/drawable/bottom_navigation_gradient_separator.xml",
   "java/res/drawable/bottomsheet_rewards_background.xml",
   "java/res/drawable/bottomsheet_rewards_tipping_success_background.xml",
   "java/res/drawable/bottomsheet_top_bar.xml",
@@ -454,7 +458,6 @@ brave_java_resources = [
   "java/res/drawable/ic_bear_arrow.xml",
   "java/res/drawable/ic_bell_icon.xml",
   "java/res/drawable/ic_bg.xml",
-  "java/res/drawable/ic_bg_video_playback.xml",
   "java/res/drawable/ic_bookmark_import_export_failed.xml",
   "java/res/drawable/ic_bookmark_import_export_success.xml",
   "java/res/drawable/ic_bookmark_menu_add.xml",
@@ -463,6 +466,7 @@ brave_java_resources = [
   "java/res/drawable/ic_bookmark_menu_view.xml",
   "java/res/drawable/ic_brave.xml",
   "java/res/drawable/ic_brave_36.xml",
+  "java/res/drawable/ic_brave_ai.xml",
   "java/res/drawable/ic_brave_battery.xml",
   "java/res/drawable/ic_brave_logo.xml",
   "java/res/drawable/ic_brave_mobiledata.xml",
@@ -547,6 +551,7 @@ brave_java_resources = [
   "java/res/drawable/ic_logo_zebpay.xml",
   "java/res/drawable/ic_logo_zebpay_white.xml",
   "java/res/drawable/ic_mask.xml",
+  "java/res/drawable/ic_media.xml",
   "java/res/drawable/ic_menu.xml",
   "java/res/drawable/ic_menu_close.xml",
   "java/res/drawable/ic_new_tab_page.xml",
@@ -577,6 +582,8 @@ brave_java_resources = [
   "java/res/drawable/ic_p3a_checkbox_outline.xml",
   "java/res/drawable/ic_password.xml",
   "java/res/drawable/ic_payment_methods.xml",
+  "java/res/drawable/ic_payout_status_complete.xml",
+  "java/res/drawable/ic_payout_status_pending.xml",
   "java/res/drawable/ic_pending_tx_notification_bg.xml",
   "java/res/drawable/ic_pending_tx_notification_icon.xml",
   "java/res/drawable/ic_phone.xml",
@@ -666,6 +673,8 @@ brave_java_resources = [
   "java/res/drawable/rewards_panel_background.xml",
   "java/res/drawable/rewards_panel_information_for_unverified_background.xml",
   "java/res/drawable/rewards_panel_notification_date_bg.xml",
+  "java/res/drawable/rewards_panel_payout_complete_bg.xml",
+  "java/res/drawable/rewards_panel_payout_processing_bg.xml",
   "java/res/drawable/rewards_panel_unverified_off_bg.xml",
   "java/res/drawable/rewards_points_center_background.xml",
   "java/res/drawable/rewards_points_center_background_selected.xml",
@@ -799,6 +808,7 @@ brave_java_resources = [
   "java/res/layout/brave_rewards_onboarding_modal.xml",
   "java/res/layout/brave_rewards_panel_layout.xml",
   "java/res/layout/brave_rewards_panel_notification_layout.xml",
+  "java/res/layout/brave_rewards_panel_payout_layout.xml",
   "java/res/layout/brave_rewards_panel_publisher_layout.xml",
   "java/res/layout/brave_rewards_panel_settings_layout.xml",
   "java/res/layout/brave_rewards_panel_summary_layout.xml",
@@ -955,6 +965,7 @@ brave_java_resources = [
   "java/res/layout/wallet_nft_item.xml",
   "java/res/layout/web_notification_icon_frame_brave.xml",
   "java/res/layout/web_notification_small_icon.xml",
+  "java/res/layout/widevine_permission_request_custom_view.xml",
   "java/res/menu/bookmark_tab_menu.xml",
   "java/res/menu/exit_settings_menu.xml",
   "java/res/menu/menu_account_selector.xml",
@@ -1008,6 +1019,7 @@ brave_java_resources = [
   "java/res/xml/developer_preferences.xml",
   "java/res/xml/ens_preferences.xml",
   "java/res/xml/legal_information_preferences.xml",
+  "java/res/xml/media_preferences.xml",
   "java/res/xml/play_yt_video_in_browser_preferences.xml",
   "java/res/xml/qa_preferences.xml",
   "java/res/xml/quick_action_search_and_bookmark_widget_info.xml",
@@ -1017,6 +1029,14 @@ brave_java_resources = [
 
 brave_base_module_resources =
     [ "java/res_chromium_base/drawable-night/themed_app_icon.xml" ]
+
+brave_download_internal_java_resources =
+    [ "java/res/drawable-night/downloads_empty_state_illustration.xml" ]
+
+brave_android_features_java_resources = [
+  "java/res/drawable-night/phone_tab_switcher_empty_state_illustration.xml",
+  "java/res/drawable-night/tablet_tab_switcher_empty_state_illustration.xml",
+]
 
 # XML preprocessing
 brave_java_preprocess_xml_sources =

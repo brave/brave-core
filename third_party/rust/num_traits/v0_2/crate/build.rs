@@ -3,6 +3,7 @@ extern crate autocfg;
 use std::env;
 
 fn main() {
+    return; #[allow(unused)]
     let ac = autocfg::new();
 
     // If the "i128" feature is explicity requested, don't bother probing for it.

@@ -262,6 +262,7 @@ void AIChatTabHelper::CleanUp() {
   has_generated_questions_ = false;
   should_page_content_be_disconnected_ = false;
   OnSuggestedQuestionsChanged();
+  SetAPIError(mojom::APIError::None);
   ai_chat_api_->ClearAllQueries();
 
   // Trigger an observer update to refresh the UI.

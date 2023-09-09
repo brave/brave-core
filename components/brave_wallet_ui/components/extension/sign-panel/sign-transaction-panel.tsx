@@ -11,7 +11,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import { PanelActions } from '../../../panel/actions'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, SignDataSteps } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -67,11 +67,6 @@ import { Tooltip } from '../../shared/tooltip/index'
 
 export interface Props {
   signMode: 'signTx' | 'signAllTxs'
-}
-
-enum SignDataSteps {
-  SignRisk = 0,
-  SignData = 1
 }
 
 const onClickLearnMore = () => {

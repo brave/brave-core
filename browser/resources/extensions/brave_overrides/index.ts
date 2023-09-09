@@ -4,3 +4,4 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import './extensions_detail_view.js'
+import './side_bar.js'

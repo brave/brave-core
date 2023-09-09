@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/containers/flat_set.h"
 #include "base/files/file_enumerator.h"
 #include "base/files/file_util.h"
@@ -225,40 +226,51 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
   return true;
 }
 
-void PlaylistService::ReorderItemFromPlaylist(const std::string& playlist_id,
-                                              const std::string& item_id,
-                                              int16_t position) {
+void PlaylistService::ReorderItemFromPlaylist(
+    const std::string& playlist_id,
+    const std::string& item_id,
+    int16_t position,
+    ReorderItemFromPlaylistCallback callback) {
   VLOG(2) << __func__ << " " << playlist_id << " " << item_id;
 
   DCHECK(!item_id.empty());
 
-  ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
   auto target_playlist_id =
       playlist_id.empty() ? kDefaultPlaylistID : playlist_id;
-  base::Value::Dict* playlist_value =
-      playlists_update->FindDict(target_playlist_id);
-  DCHECK(playlist_value) << " Playlist " << playlist_id << " not found";
 
-  auto target_playlist = ConvertValueToPlaylist(
-      *playlist_value, prefs_->GetDict(kPlaylistItemsPref));
-  DCHECK_GT(target_playlist->items.size(), static_cast<size_t>(position));
-  auto it = base::ranges::find_if(
-      target_playlist->items,
-      [&item_id](const auto& item) { return item->id == item_id; });
-  DCHECK(it != target_playlist->items.end());
+  {
+    ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
+    base::Value::Dict* playlist_value =
+        playlists_update->FindDict(target_playlist_id);
+    DCHECK(playlist_value) << " Playlist " << playlist_id << " not found";
 
-  auto old_position = std::distance(target_playlist->items.begin(), it);
-  if (old_position == position) {
-    return;
+    auto target_playlist = ConvertValueToPlaylist(
+        *playlist_value, prefs_->GetDict(kPlaylistItemsPref));
+    DCHECK_GT(target_playlist->items.size(), static_cast<size_t>(position));
+    auto it = base::ranges::find_if(
+        target_playlist->items,
+        [&item_id](const auto& item) { return item->id == item_id; });
+    DCHECK(it != target_playlist->items.end());
+
+    auto old_position = std::distance(target_playlist->items.begin(), it);
+    if (old_position == position) {
+      return;
+    }
+
+    if (old_position < position) {
+      std::rotate(it, it + 1, target_playlist->items.begin() + position + 1);
+    } else {
+      std::rotate(target_playlist->items.begin() + position, it, it + 1);
+    }
+    playlists_update->Set(target_playlist_id,
+                          ConvertPlaylistToValue(target_playlist));
   }
 
-  if (old_position < position) {
-    std::rotate(it, it + 1, target_playlist->items.begin() + position + 1);
-  } else {
-    std::rotate(target_playlist->items.begin() + position, it, it + 1);
+  for (auto& observer : observers_) {
+    observer->OnPlaylistUpdated(GetPlaylist(target_playlist_id));
   }
-  playlists_update->Set(target_playlist_id,
-                        ConvertPlaylistToValue(target_playlist));
+
+  std::move(callback).Run(true);
 }
 
 bool PlaylistService::MoveItem(const PlaylistId& from,
@@ -685,6 +697,20 @@ void PlaylistService::DownloadThumbnail(const mojom::PlaylistItemPtr& item) {
   thumbnail_downloader_->DownloadThumbnail(
       item->id, GURL(item->thumbnail_source),
       GetPlaylistItemDirPath(item->id).Append(kThumbnailFileName));
+}
+
+void PlaylistService::SanitizeImage(
+    std::unique_ptr<std::string> image,
+    base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)> callback) {
+  if (!delegate_) {
+    CHECK_IS_TEST();
+    auto bytes = base::MakeRefCounted<base::RefCountedBytes>(
+        reinterpret_cast<const unsigned char*>(image->data()), image->size());
+    std::move(callback).Run(bytes);
+    return;
+  }
+
+  delegate_->SanitizeImage(std::move(image), std::move(callback));
 }
 
 void PlaylistService::OnThumbnailDownloaded(const std::string& id,
@@ -1139,6 +1165,13 @@ bool PlaylistService::GetThumbnailPath(const std::string& id,
     return false;
   }
   return true;
+}
+
+void PlaylistService::DownloadThumbnail(
+    const GURL& url,
+    base::OnceCallback<void(gfx::Image)> callback) {
+  thumbnail_downloader_->DownloadThumbnail(url.spec(), url,
+                                           std::move(callback));
 }
 
 bool PlaylistService::GetMediaPath(const std::string& id,

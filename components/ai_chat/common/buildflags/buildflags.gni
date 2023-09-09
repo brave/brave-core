@@ -9,6 +9,6 @@ import("//build/config/ui.gni")
 declare_args() {
   enable_ai_chat =
       (brave_channel == "nightly" || brave_channel == "development") &&
-      (is_win || is_mac || is_linux)
+      (is_win || is_mac || is_linux || is_android)
   brave_ai_chat_endpoint = ""
 }

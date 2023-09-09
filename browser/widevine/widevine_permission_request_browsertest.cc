@@ -11,8 +11,10 @@
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/permissions/permission_widevine_utils.h"
 #include "brave/components/widevine/constants.h"
 #include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ssl/cert_verifier_browser_test.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -107,7 +109,9 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
 
   // Check permission bubble is not visible when user turns it off.
   observer.bubble_added_ = false;
-  DontAskWidevineInstall(GetActiveWebContents(), true);
+  static_cast<Profile*>(GetActiveWebContents()->GetBrowserContext())
+      ->GetPrefs()
+      ->SetBoolean(kAskEnableWidvine, false);
   EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
                                      GURL("chrome://newtab/")));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
@@ -116,7 +120,9 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
 
   // Check permission bubble is visible when user turns it on.
   observer.bubble_added_ = false;
-  DontAskWidevineInstall(GetActiveWebContents(), false);
+  static_cast<Profile*>(GetActiveWebContents()->GetBrowserContext())
+      ->GetPrefs()
+      ->SetBoolean(kAskEnableWidvine, true);
   EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
                                      GURL("chrome://newtab/")));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
@@ -150,7 +156,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
                        CheckOptedInPrefStateForComponent) {
   // Before we allow, opted in should be false
-  EXPECT_FALSE(IsWidevineOptedIn());
+  EXPECT_FALSE(IsWidevineEnabled());
 
   GetPermissionRequestManager()->set_auto_response_for_test(
       permissions::PermissionRequestManager::ACCEPT_ALL);
@@ -159,7 +165,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   content::RunAllTasksUntilIdle();
 
   // After we allow, opted in pref should be true
-  EXPECT_TRUE(IsWidevineOptedIn());
+  EXPECT_TRUE(IsWidevineEnabled());
   EXPECT_TRUE(observer.bubble_added_);
 
   // Reset observer and check permission bubble isn't created again.

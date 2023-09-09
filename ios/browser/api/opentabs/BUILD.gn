@@ -7,8 +7,6 @@ import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
 source_set("opentabs") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "brave_opentabs_api+private.h",
     "brave_opentabs_api.h",

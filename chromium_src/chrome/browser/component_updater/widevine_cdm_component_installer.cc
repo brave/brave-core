@@ -58,7 +58,7 @@ namespace component_updater {
 void RegisterWidevineCdmComponent(ComponentUpdateService* cus,
                                   base::OnceClosure callback) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  if (!IsWidevineOptedIn()) {
+  if (!IsWidevineEnabled()) {
     return;
   }
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
@@ -173,7 +173,7 @@ CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
     const base::FilePath& install_dir) {
   // It would be nice to call the super implementation here. But it is private
   // and (at the time of this writing) a no-op anyways.
-  if (base::DirectoryExists(GetPlatformDirectory(install_dir))) {
+  if (base::DirectoryExists(media::GetPlatformSpecificDirectory(install_dir))) {
     LOG(WARNING) << "It seems upstream now supports Widevine on Arm64. "
                     "Consider removing our WIDEVINE_ARM64_DLL_FIX.";
     return CrxInstaller::Result(0);
@@ -252,7 +252,8 @@ void WidevineArm64DllInstaller::OnArm64DllDownloadComplete(
 
 bool WidevineArm64DllInstaller::ExtractArm64Dll(base::FilePath zip_path) {
   VLOG(2) << "Extracting Arm64 DLL.";
-  base::FilePath arm64_directory = GetPlatformDirectory(install_dir_);
+  base::FilePath arm64_directory =
+      media::GetPlatformSpecificDirectory(install_dir_);
   base::File::Error error;
   if (base::CreateDirectoryAndGetError(arm64_directory, &error)) {
     if (!zip::Unzip(zip_path, arm64_directory)) {
@@ -326,7 +327,7 @@ void RegisterWidevineCdmComponent(
     base::OnceClosure callback) {
   VLOG(1) << "RegisterWidevineCdmComponent";
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  if (!IsWidevineOptedIn()) {
+  if (!IsWidevineEnabled()) {
     return;
   }
   CHECK(url_loader_factory);

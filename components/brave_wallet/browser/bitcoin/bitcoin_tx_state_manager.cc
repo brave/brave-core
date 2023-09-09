@@ -7,11 +7,12 @@
 
 #include <utility>
 
-#include "base/notreached.h"
+#include "base/strings/strcat.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 
 namespace brave_wallet {
@@ -19,13 +20,24 @@ namespace brave_wallet {
 BitcoinTxStateManager::BitcoinTxStateManager(
     PrefService* prefs,
     TxStorageDelegate* delegate,
-    JsonRpcService* json_rpc_service,
     AccountResolverDelegate* account_resolver_delegate)
     : TxStateManager(prefs, delegate, account_resolver_delegate) {}
 
 BitcoinTxStateManager::~BitcoinTxStateManager() = default;
 
-// TODO(apaymyshev): test that
+std::unique_ptr<BitcoinTxMeta> BitcoinTxStateManager::GetBitcoinTx(
+    const std::string& chain_id,
+    const std::string& id) {
+  return std::unique_ptr<BitcoinTxMeta>{static_cast<BitcoinTxMeta*>(
+      TxStateManager::GetTx(chain_id, id).release())};
+}
+
+std::unique_ptr<BitcoinTxMeta> BitcoinTxStateManager::ValueToBitcoinTxMeta(
+    const base::Value::Dict& value) {
+  return std::unique_ptr<BitcoinTxMeta>{
+      static_cast<BitcoinTxMeta*>(ValueToTxMeta(value).release())};
+}
+
 std::string BitcoinTxStateManager::GetTxPrefPathPrefix(
     const absl::optional<std::string>& chain_id) {
   if (chain_id.has_value()) {
@@ -42,10 +54,22 @@ mojom::CoinType BitcoinTxStateManager::GetCoinType() const {
 
 std::unique_ptr<TxMeta> BitcoinTxStateManager::ValueToTxMeta(
     const base::Value::Dict& value) {
-  // TODO(apaymyshev): implement
-  NOTIMPLEMENTED();
+  std::unique_ptr<BitcoinTxMeta> meta = std::make_unique<BitcoinTxMeta>();
 
-  return nullptr;
+  if (!ValueToBaseTxMeta(value, meta.get())) {
+    return nullptr;
+  }
+  const base::Value::Dict* tx = value.FindDict("tx");
+  if (!tx) {
+    return nullptr;
+  }
+  absl::optional<BitcoinTransaction> tx_from_value =
+      BitcoinTransaction::FromValue(*tx);
+  if (!tx_from_value) {
+    return nullptr;
+  }
+  meta->set_tx(std::make_unique<BitcoinTransaction>(std::move(*tx_from_value)));
+  return meta;
 }
 
 }  // namespace brave_wallet

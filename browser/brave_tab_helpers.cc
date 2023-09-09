@@ -7,8 +7,8 @@
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
-#include "brave/browser/brave_ads/ads_tab_helper.h"
-#include "brave/browser/brave_ads/search_result_ad/search_result_ad_tab_helper.h"
+#include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
+#include "brave/browser/brave_ads/units/search_result_ad/search_result_ad_tab_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"

@@ -307,6 +307,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
 
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   raw_ptr<AccountResolverDelegate> account_resolver_delegate_ = nullptr;
 
   base::WeakPtrFactory<EthTxManager> weak_factory_{this};

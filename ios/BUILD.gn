@@ -19,7 +19,9 @@ import("//brave/ios/browser/api/query_filter/headers.gni")
 import("//brave/ios/browser/api/session_restore/headers.gni")
 import("//brave/ios/browser/api/skus/headers.gni")
 import("//brave/ios/browser/api/url/headers.gni")
+import("//brave/ios/browser/api/url_sanitizer/headers.gni")
 import("//brave/ios/browser/api/web/web_state/headers.gni")
+import("//brave/ios/browser/url_sanitizer/headers.gni")
 import("//build/config/compiler/compiler.gni")
 import("//build/config/ios/rules.gni")
 
@@ -68,6 +70,8 @@ brave_core_public_headers = [
 
 brave_core_public_headers += ads_public_headers
 brave_core_public_headers += brave_shields_public_headers
+brave_core_public_headers += browser_api_url_sanitizer_public_headers
+brave_core_public_headers += browser_url_sanitizer_public_headers
 brave_core_public_headers += brave_stats_public_headers
 brave_core_public_headers += brave_wallet_public_headers
 brave_core_public_headers += browser_api_certificate_public_headers
@@ -104,10 +108,7 @@ ios_framework_bundle("brave_core_ios_framework") {
 
   info_plist = "Info.plist"
 
-  configs += [
-    ":internal_config",
-    "//build/config/compiler:enable_arc",
-  ]
+  configs += [ ":internal_config" ]
 
   deps = [
     ":brave_core_umbrella_header",

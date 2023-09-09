@@ -24,6 +24,7 @@ BASE_DECLARE_FEATURE(kBraveWalletDappsSupportFeature);
 BASE_DECLARE_FEATURE(kBraveWalletENSL2Feature);
 BASE_DECLARE_FEATURE(kBraveWalletSnsFeature);
 BASE_DECLARE_FEATURE(kBraveWalletBitcoinFeature);
+extern const base::FeatureParam<int> kBitcoinRpcThrottle;
 
 }  // namespace features
 }  // namespace brave_wallet

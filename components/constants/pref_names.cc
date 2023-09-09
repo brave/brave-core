@@ -32,8 +32,8 @@ const char kStatsReportingEnabled[] = "brave.stats.reporting_enabled";
 // threshold ping was sent.
 const char kThresholdQuery[] = "brave.stats.threshold_query";
 const char kWeekOfInstallation[] = "brave.stats.week_of_installation";
-const char kWidevineOptedIn[] = "brave.widevine_opted_in";
-const char kAskWidevineInstall[] = "brave.ask_widevine_install";
+const char kWidevineEnabled[] = "brave.widevine_opted_in";
+const char kAskEnableWidvine[] = "brave.ask_widevine_install";
 const char kShowBookmarksButton[] = "brave.show_bookmarks_button";
 const char kShowSidePanelButton[] = "brave.show_side_panel_button";
 const char kLocationBarIsWide[] = "brave.location_bar_is_wide";

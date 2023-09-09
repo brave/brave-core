@@ -269,11 +269,23 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        RewardsPageIsNotAllowedInPrivateWindow) {
+  // Check webui host with non chrome scheme is allowed to load in private
+  // window. chrome scheme is used because brave scheme is already replaced with
+  // chrome when IsURLAllowedInIncognito() is called. Verify brave scheme url
+  // with TestURLIsNotLoadedInPrivateWindow().
+  EXPECT_FALSE(
+      IsURLAllowedInIncognito(GURL("chrome://rewards"), browser()->profile()));
+  EXPECT_TRUE(
+      IsURLAllowedInIncognito(GURL("http://rewards"), browser()->profile()));
   TestURLIsNotLoadedInPrivateWindow("brave://rewards");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        WalletPageIsNotAllowedInPrivateWindow) {
+  EXPECT_FALSE(
+      IsURLAllowedInIncognito(GURL("chrome://wallet"), browser()->profile()));
+  EXPECT_TRUE(
+      IsURLAllowedInIncognito(GURL("http://wallet"), browser()->profile()));
   TestURLIsNotLoadedInPrivateWindow("brave://wallet");
 }
 
@@ -284,11 +296,19 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        BraveSyncPageIsNotAllowedInPrivateWindow) {
+  EXPECT_FALSE(
+      IsURLAllowedInIncognito(GURL("chrome://sync"), browser()->profile()));
+  EXPECT_TRUE(
+      IsURLAllowedInIncognito(GURL("http://sync"), browser()->profile()));
   TestURLIsNotLoadedInPrivateWindow("brave://sync");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        BraveWelcomePageIsNotAllowedInPrivateWindow) {
+  EXPECT_FALSE(
+      IsURLAllowedInIncognito(GURL("chrome://welcome"), browser()->profile()));
+  EXPECT_TRUE(
+      IsURLAllowedInIncognito(GURL("http://welcome"), browser()->profile()));
   TestURLIsNotLoadedInPrivateWindow("brave://welcome");
 }
 

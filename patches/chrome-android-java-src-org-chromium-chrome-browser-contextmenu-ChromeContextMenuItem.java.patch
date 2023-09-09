@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index 7daa27cc9cfa48fb1cb4314d06c1f2de299fc38b..86567850d549132ceabe511470f765ba1aed2e87 100644
+index 587083a0603b65134c5aaed5be2b884b5aca712b..d43358e14e2bc8b51d9e12f374e0d9099e00bd58 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-@@ -42,7 +42,7 @@ class ChromeContextMenuItem {
+@@ -41,7 +41,7 @@ class ChromeContextMenuItem {
              Item.SHOP_IMAGE_WITH_GOOGLE_LENS, Item.SHARE_IMAGE, Item.DIRECT_SHARE_IMAGE, Item.CALL,
              Item.SEND_MESSAGE, Item.ADD_TO_CONTACTS, Item.COPY, Item.SAVE_VIDEO,
              Item.OPEN_IN_CHROME, Item.OPEN_IN_NEW_TAB_IN_GROUP, Item.SHARE_HIGHLIGHT,
@@ -11,7 +11,7 @@ index 7daa27cc9cfa48fb1cb4314d06c1f2de299fc38b..86567850d549132ceabe511470f765ba
      @Retention(RetentionPolicy.SOURCE)
      public @interface Item {
          // Values are numerated from 0 and can't have gaps.
-@@ -90,7 +90,7 @@ class ChromeContextMenuItem {
+@@ -89,7 +89,7 @@ class ChromeContextMenuItem {
          int REMOVE_HIGHLIGHT = 33;
          int LEARN_MORE = 34;
          // ALWAYS UPDATE!
@@ -20,7 +20,7 @@ index 7daa27cc9cfa48fb1cb4314d06c1f2de299fc38b..86567850d549132ceabe511470f765ba
      }
  
      /**
-@@ -132,6 +132,7 @@ class ChromeContextMenuItem {
+@@ -131,6 +131,7 @@ class ChromeContextMenuItem {
              R.id.contextmenu_share_highlight, // Item.SHARE_HIGHLIGHT
              R.id.contextmenu_remove_highlight, // Item.REMOVE_HIGHLIGHT
              R.id.contextmenu_learn_more, // Item.LEARN_MORE
@@ -28,7 +28,7 @@ index 7daa27cc9cfa48fb1cb4314d06c1f2de299fc38b..86567850d549132ceabe511470f765ba
      };
  
      /**
-@@ -173,6 +174,7 @@ class ChromeContextMenuItem {
+@@ -172,6 +173,7 @@ class ChromeContextMenuItem {
              R.string.contextmenu_share_highlight, // Item.SHARE_HIGHLIGHT
              R.string.contextmenu_remove_highlight, // Item.REMOVE_HIGHLIGHT
              R.string.contextmenu_learn_more, // Item.LEARN_MORE

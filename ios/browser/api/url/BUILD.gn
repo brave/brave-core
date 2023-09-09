@@ -4,8 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 source_set("url") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "url_formatter.h",
     "url_formatter.mm",
@@ -28,7 +26,6 @@ source_set("url") {
     "//components/url_formatter",
     "//components/url_formatter/spoof_checks/top_domains:common",
     "//components/url_formatter/spoof_checks/top_domains:generate_top_domains_trie",
-    "//components/url_formatter/spoof_checks/top_domains:top500_domains",
     "//net",
     "//url",
   ]

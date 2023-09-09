@@ -13,10 +13,24 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/futures_timer/v3/crate/src/lib.rs",
+    "//brave/third_party/rust/futures_timer/v3/crate/src/native.rs",
+    "//brave/third_party/rust/futures_timer/v3/crate/src/native/arc_list.rs",
+    "//brave/third_party/rust/futures_timer/v3/crate/src/native/atomic_waker.rs",
+    "//brave/third_party/rust/futures_timer/v3/crate/src/native/delay.rs",
+    "//brave/third_party/rust/futures_timer/v3/crate/src/native/global.rs",
+    "//brave/third_party/rust/futures_timer/v3/crate/src/native/heap.rs",
+    "//brave/third_party/rust/futures_timer/v3/crate/src/native/heap_timer.rs",
+    "//brave/third_party/rust/futures_timer/v3/crate/src/native/timer.rs",
+    "//brave/third_party/rust/futures_timer/v3/crate/src/wasm.rs",
+    "//brave/third_party/rust/futures_timer/v3/crate/tests/smoke.rs",
+    "//brave/third_party/rust/futures_timer/v3/crate/tests/timeout.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/futures_timer/v3/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "3.0.2"
   cargo_pkg_authors = "Alex Crichton <alex@alexcrichton.com>"

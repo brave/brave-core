@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { mapLimit } from 'async'
 import { EntityId } from '@reduxjs/toolkit'
 
 // types
@@ -19,12 +20,10 @@ import {
   getAssetIdKey
 } from '../../../utils/asset-utils'
 import { cacher } from '../../../utils/query-cache-utils'
+import { getAllNetworksList, getNetwork, handleEndpointError } from '../../../utils/api-utils'
 
 // entities
 import { blockchainTokenEntityAdaptor } from '../entities/blockchain-token.entity'
-
-// api
-import { getNetwork } from '../api.slice'
 
 export interface CommonNftMetadata {
   attributes?: any[]
@@ -294,6 +293,99 @@ export const nftsEndpoints = ({
           return { error: message }
         }
       }
+    }),
+    getSimpleHashSpamNfts: query<BraveWallet.BlockchainToken[], void>({
+      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { data: api, cache } = baseQuery(undefined)
+          const { braveWalletService } = api
+          const chainIds = (await getAllNetworksList(api)).map(
+            (network) => network.chainId
+          )
+
+          const { accounts } = await cache.getAllAccounts()
+          const spamNfts = (
+            await mapLimit(
+              accounts,
+              10,
+              async (account: BraveWallet.AccountInfo) => {
+                let currentCursor: string | null = null
+                const accountSpamNfts = []
+
+                do {
+                  const {
+                    tokens,
+                    cursor
+                  }: {
+                    tokens: BraveWallet.BlockchainToken[]
+                    cursor: string | null
+                  } = await braveWalletService.getSimpleHashSpamNFTs(
+                    account.address,
+                    chainIds,
+                    account.accountId.coin,
+                    currentCursor
+                  )
+
+                  accountSpamNfts.push(...tokens)
+                  currentCursor = cursor
+                } while (currentCursor)
+
+                return accountSpamNfts
+              }
+            )
+          ).flat(1)
+
+          return {
+            data: spamNfts
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to fetch spam NFTs',
+            error
+          )
+        }
+      },
+      providesTags: ['SimpleHashSpamNFTs']
+    }),
+    updateNftSpamStatus: mutation<
+      boolean,
+      {
+        tokenId: EntityId
+        status: boolean
+      }
+    >({
+      queryFn: async (arg, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { cache, data: api } = baseQuery(undefined)
+          const reg = await cache.getUserTokensRegistry()
+          const token = reg.entities[arg.tokenId]
+
+          if (!token) throw new Error('Token not found')
+
+          const { braveWalletService } = api
+          const { success } = await braveWalletService.setAssetSpamStatus(
+            token,
+            arg.status
+          )
+          return {
+            data: success
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Error setting NFT spam status',
+            error
+          )
+        }
+      },
+      invalidatesTags: (_res, err, arg) =>
+        err
+          ? ['SimpleHashSpamNFTs', 'UserBlockchainTokens']
+          : [
+              { type: 'SimpleHashSpamNFTs', id: arg.tokenId },
+              { type: 'UserBlockchainTokens', id: arg.tokenId }
+            ]
     })
   }
 }

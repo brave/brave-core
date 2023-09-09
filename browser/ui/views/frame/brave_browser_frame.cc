@@ -13,6 +13,7 @@
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "ui/color/color_provider_key.h"
 
 BraveBrowserFrame::BraveBrowserFrame(BrowserView* browser_view)
     : BrowserFrame(browser_view), view_(browser_view) {
@@ -41,7 +42,7 @@ const ui::NativeTheme* BraveBrowserFrame::GetNativeTheme() const {
 }
 #endif
 
-ui::ColorProviderManager::ThemeInitializerSupplier*
+ui::ColorProviderKey::ThemeInitializerSupplier*
 BraveBrowserFrame::GetCustomTheme() const {
   // To provider private(tor) windows's theme color via color provider,
   // we use |theme_supplier_| for both as upstream doesn't use separated

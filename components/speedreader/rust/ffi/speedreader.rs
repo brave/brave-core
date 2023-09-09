@@ -1,3 +1,8 @@
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use super::*;
 use libc::{c_void, strlen};
 use std::panic::{self, AssertUnwindSafe};
@@ -78,19 +83,13 @@ pub extern "C" fn rewriter_new(
 
 /// Set up minimal length of the output content.
 #[no_mangle]
-pub extern "C" fn rewriter_set_min_out_length(
-    rewriter: *mut CRewriter,
-    min_out_length: i32
-) {
+pub extern "C" fn rewriter_set_min_out_length(rewriter: *mut CRewriter, min_out_length: i32) {
     let rewriter: &mut Box<dyn SpeedReaderProcessor> = leak_void_to_box!(rewriter);
     rewriter.set_min_out_length(min_out_length);
 }
 
 #[no_mangle]
-pub extern "C" fn rewriter_set_theme(
-    rewriter: *mut CRewriter,
-    theme: *const c_char,
-) {
+pub extern "C" fn rewriter_set_theme(rewriter: *mut CRewriter, theme: *const c_char) {
     let rewriter: &mut Box<dyn SpeedReaderProcessor> = leak_void_to_box!(rewriter);
     let the_theme = unsafe {
         let c_s = theme;
@@ -100,10 +99,7 @@ pub extern "C" fn rewriter_set_theme(
 }
 
 #[no_mangle]
-pub extern "C" fn rewriter_set_font_family(
-    rewriter: *mut CRewriter,
-    font: *const c_char,
-) {
+pub extern "C" fn rewriter_set_font_family(rewriter: *mut CRewriter, font: *const c_char) {
     let rewriter: &mut Box<dyn SpeedReaderProcessor> = leak_void_to_box!(rewriter);
     let the_font = unsafe {
         let c_s = font;
@@ -113,10 +109,7 @@ pub extern "C" fn rewriter_set_font_family(
 }
 
 #[no_mangle]
-pub extern "C" fn rewriter_set_font_size(
-    rewriter: *mut CRewriter,
-    size: *const c_char,
-) {
+pub extern "C" fn rewriter_set_font_size(rewriter: *mut CRewriter, size: *const c_char) {
     let rewriter: &mut Box<dyn SpeedReaderProcessor> = leak_void_to_box!(rewriter);
     let the_size = unsafe {
         let c_s = size;
@@ -126,10 +119,7 @@ pub extern "C" fn rewriter_set_font_size(
 }
 
 #[no_mangle]
-pub extern "C" fn rewriter_set_content_style(
-    rewriter: *mut CRewriter,
-    style: *const c_char,
-) {
+pub extern "C" fn rewriter_set_content_style(rewriter: *mut CRewriter, style: *const c_char) {
     let rewriter: &mut Box<dyn SpeedReaderProcessor> = leak_void_to_box!(rewriter);
     let the_style = unsafe {
         let c_s = style;
@@ -179,5 +169,5 @@ pub extern "C" fn rewriter_end(rewriter: *mut CRewriter) -> c_int {
 pub extern "C" fn rewriter_free(rewriter: *mut CRewriter) {
     // Clean up the memory by converting the pointer back
     // into a Box and letting the Box be dropped.
-    void_to_box!(rewriter);
+    drop(void_to_box!(rewriter));
 }

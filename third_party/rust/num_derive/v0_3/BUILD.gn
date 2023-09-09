@@ -13,10 +13,26 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/num_derive/v0_3/crate/src/lib.rs",
+    "//brave/third_party/rust/num_derive/v0_3/crate/src/test.rs",
+    "//brave/third_party/rust/num_derive/v0_3/crate/tests/empty_enum.rs",
+    "//brave/third_party/rust/num_derive/v0_3/crate/tests/issue-6.rs",
+    "//brave/third_party/rust/num_derive/v0_3/crate/tests/issue-9.rs",
+    "//brave/third_party/rust/num_derive/v0_3/crate/tests/newtype-2015.rs",
+    "//brave/third_party/rust/num_derive/v0_3/crate/tests/newtype.rs",
+    "//brave/third_party/rust/num_derive/v0_3/crate/tests/num_derive_without_num.rs",
+    "//brave/third_party/rust/num_derive/v0_3/crate/tests/trivial-2015.rs",
+    "//brave/third_party/rust/num_derive/v0_3/crate/tests/trivial.rs",
+    "//brave/third_party/rust/num_derive/v0_3/crate/tests/with_custom_values.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/num_derive/v0_3/crate/README.md",
+    "//brave/third_party/rust/num_derive/v0_3/crate/RELEASES.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.3.3"
   cargo_pkg_authors = "The Rust Project Developers"

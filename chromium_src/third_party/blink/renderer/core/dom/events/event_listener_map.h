@@ -14,7 +14,7 @@
   static bool AddListenerToVector(                          \
       EventListenerVector* vector, EventListener* listener, \
       const AddEventListenerOptionsResolved* options,       \
-      RegisteredEventListener* registered_listener);        \
+      RegisteredEventListener** registered_listener);       \
   void CopyEventListenersNotCreatedFromMarkupToTarget
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 

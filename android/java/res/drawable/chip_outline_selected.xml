@@ -5,9 +5,9 @@
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/wallet_toolbar_bg_color" />
+    <solid android:color="@color/chip_outline_selected_color" />
     <stroke
-        android:width="6dp"
+        android:width="8dp"
         android:color="@android:color/transparent" />
     <corners android:radius="30dp" />
 </shape>

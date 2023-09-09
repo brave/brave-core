@@ -64,11 +64,12 @@
                 android:src="@drawable/modern_toolbar_shadow"
                 tools:ignore="ContentDescription" />
 
-            <org.chromium.chrome.browser.custom_layout.BottomNavigationViewWithIndicator
+            <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/wallet_bottom_navigation"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:background="@color/wallet_toolbar_bg_color"
+                app:itemTextColor="@color/wallet_bottom_navigation_color"
                 app:itemHorizontalTranslationEnabled="false"
                 app:itemIconTint="@color/wallet_bottom_navigation_color"
                 app:labelVisibilityMode="labeled"

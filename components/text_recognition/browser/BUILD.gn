@@ -40,7 +40,5 @@ component("browser") {
       "Foundation.framework",
       "Vision.framework",
     ]
-
-    configs += [ "//build/config/compiler:enable_arc" ]
   }
 }

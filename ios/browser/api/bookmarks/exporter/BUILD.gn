@@ -7,8 +7,6 @@ import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
 source_set("exporter") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "bookmark_html_writer.cc",
     "bookmark_html_writer.h",

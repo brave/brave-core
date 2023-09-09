@@ -146,7 +146,8 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
       /*url*/ net::GURLWithNSURL(history.url),
       /*time*/ base::Time::FromNSDate(history.dateAdded),
       /*context_id=*/0,
-      /*nav_entry_id=*/0, /*referrer=*/GURL(),
+      /*nav_entry_id=*/0, /*local_navigation_id=*/absl::nullopt,
+      /*referrer=*/GURL(),
       /*redirect_list*/ history::RedirectList(),
       /*transition*/
       isURLTyped ? ui::PAGE_TRANSITION_TYPED : ui::PAGE_TRANSITION_LINK,

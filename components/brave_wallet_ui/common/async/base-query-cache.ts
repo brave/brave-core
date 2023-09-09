@@ -43,6 +43,7 @@ import { addChainIdToToken, getAssetIdKey } from '../../utils/asset-utils'
 import { addLogoToToken } from './lib'
 import { makeNetworkAsset } from '../../options/asset-options'
 import { isIpfs } from '../../utils/string-utils'
+import { getEnabledCoinTypes } from '../../utils/api-utils'
 
 /**
  * A function to return the ref to either the main api proxy, or a mocked proxy
@@ -74,6 +75,7 @@ export class BaseQueryCache {
   private _userTokensRegistry?: BlockchainTokenEntityAdaptorState
   private _nftImageIpfsGateWayUrlRegistry: Record<string, string | null> = {}
   private _extractedIPFSUrlRegistry: Record<string, string | undefined> = {}
+  private _enabledCoinTypes: number[]
 
   getWalletInfo = async () => {
     if (!this._walletInfo) {
@@ -351,6 +353,15 @@ export class BaseQueryCache {
     }
 
     return this._nftImageIpfsGateWayUrlRegistry[trimmedURL]
+  }
+
+  getEnabledCoinTypes = async () => {
+    if (!this._enabledCoinTypes || !this._enabledCoinTypes.length) {
+      // network type flags
+      this._enabledCoinTypes = await getEnabledCoinTypes(apiProxyFetcher())
+    }
+
+    return this._enabledCoinTypes
   }
 }
 

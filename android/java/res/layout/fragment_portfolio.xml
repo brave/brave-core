@@ -18,7 +18,7 @@
         android:orientation="vertical">
 
         <com.google.android.material.tabs.TabLayout
-            android:layout_marginHorizontal="8dp"
+            android:layout_margin="16dp"
             android:id="@+id/portfolio_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
@@ -26,7 +26,7 @@
             android:background="@drawable/wallet_chip_outline"
 
             app:tabSelectedTextColor="@color/brave_wallet_day_night_text_color"
-            app:tabTextAppearance="@style/BraveChipTabTextAppearance"
+            app:tabTextAppearance="@style/BraveTabTextAppearance"
             app:tabGravity="fill"
             app:tabIndicatorColor="@android:color/transparent"
             app:tabIndicatorGravity="stretch"

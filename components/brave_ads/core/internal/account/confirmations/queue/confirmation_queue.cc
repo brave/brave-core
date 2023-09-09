@@ -36,9 +36,7 @@ void ConfirmationQueue::Add(const ConfirmationInfo& confirmation) {
 
   AddConfirmationQueueItem(confirmation);
 
-  if (delegate_) {
-    delegate_->OnDidAddConfirmationToQueue(confirmation);
-  }
+  NotifyDidAddConfirmationToQueue(confirmation);
 
   if (ShouldProcessQueueItem()) {
     ProcessQueueItemAfterDelay(confirmation);
@@ -58,9 +56,7 @@ void ConfirmationQueue::ProcessQueueItemAfterDelay(
       base::BindOnce(&ConfirmationQueue::ProcessQueueItem,
                      base::Unretained(this), confirmation));
 
-  if (delegate_) {
-    delegate_->OnWillProcessConfirmationQueue(confirmation, process_at);
-  }
+  NotifyWillProcessConfirmationQueue(confirmation, process_at);
 }
 
 void ConfirmationQueue::ProcessQueueItem(const ConfirmationInfo& confirmation) {
@@ -81,13 +77,11 @@ void ConfirmationQueue::SuccessfullyProcessedQueueItem(
     const ConfirmationInfo& confirmation) {
   CHECK(IsValid(confirmation));
 
+  ResetTimerBackoffDelay();
+
   RemoveConfirmationQueueItem(confirmation);
 
-  if (delegate_) {
-    delegate_->OnDidProcessConfirmationQueue(confirmation);
-  }
-
-  ResetTimerBackoffDelay();
+  NotifyDidProcessConfirmationQueue(confirmation);
 
   ProcessNextQueueItem();
 }
@@ -101,9 +95,7 @@ void ConfirmationQueue::FailedToProcessQueueItem(
     RemoveConfirmationQueueItem(confirmation);
   }
 
-  if (delegate_) {
-    delegate_->OnFailedToProcessConfirmationQueue(confirmation);
-  }
+  NotifyFailedToProcessConfirmationQueue(confirmation);
 
   ProcessNextQueueItem();
 }
@@ -112,11 +104,7 @@ void ConfirmationQueue::ProcessNextQueueItem() {
   const absl::optional<ConfirmationInfo> confirmation =
       MaybeGetNextConfirmationQueueItem();
   if (!confirmation) {
-    if (delegate_) {
-      delegate_->OnDidExhaustConfirmationQueue();
-    }
-
-    return;
+    return NotifyDidExhaustConfirmationQueue();
   }
 
   ProcessQueueItemAfterDelay(*confirmation);
@@ -124,6 +112,41 @@ void ConfirmationQueue::ProcessNextQueueItem() {
 
 void ConfirmationQueue::ResetTimerBackoffDelay() {
   timer_.Stop();
+}
+
+void ConfirmationQueue::NotifyDidAddConfirmationToQueue(
+    const ConfirmationInfo& confirmation) const {
+  if (delegate_) {
+    delegate_->OnDidAddConfirmationToQueue(confirmation);
+  }
+}
+
+void ConfirmationQueue::NotifyWillProcessConfirmationQueue(
+    const ConfirmationInfo& confirmation,
+    const base::Time process_at) const {
+  if (delegate_) {
+    delegate_->OnWillProcessConfirmationQueue(confirmation, process_at);
+  }
+}
+
+void ConfirmationQueue::NotifyDidProcessConfirmationQueue(
+    const ConfirmationInfo& confirmation) const {
+  if (delegate_) {
+    delegate_->OnDidProcessConfirmationQueue(confirmation);
+  }
+}
+
+void ConfirmationQueue::NotifyFailedToProcessConfirmationQueue(
+    const ConfirmationInfo& confirmation) const {
+  if (delegate_) {
+    delegate_->OnFailedToProcessConfirmationQueue(confirmation);
+  }
+}
+
+void ConfirmationQueue::NotifyDidExhaustConfirmationQueue() const {
+  if (delegate_) {
+    delegate_->OnDidExhaustConfirmationQueue();
+  }
 }
 
 void ConfirmationQueue::OnNotifyDidInitializeAds() {

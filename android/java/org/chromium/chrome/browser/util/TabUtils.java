@@ -269,6 +269,7 @@ public class TabUtils {
     public static void bringChromeTabbedActivityToTheTop(Activity activity) {
         Intent braveActivityIntent = new Intent(activity, ChromeTabbedActivity.class);
         braveActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        braveActivityIntent.setAction(Intent.ACTION_VIEW);
         activity.startActivity(braveActivityIntent);
     }
 

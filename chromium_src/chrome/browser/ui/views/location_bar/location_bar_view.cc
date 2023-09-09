@@ -9,12 +9,13 @@
 #include "brave/browser/ui/views/page_action/brave_page_action_icon_container_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 
-#define BRAVE_LAYOUT_TRAILING_DECORATIONS                                   \
-  auto right_most = GetTrailingViews();                                     \
-  for (auto* item : base::Reversed(right_most)) {                           \
-    if (item->GetVisible())                                                 \
-      trailing_decorations.AddDecoration(vertical_padding, location_height, \
-                                         false, 0, 0, item);                \
+#define BRAVE_LAYOUT_TRAILING_DECORATIONS                                    \
+  auto right_most = GetTrailingViews();                                      \
+  for (auto* item : base::Reversed(right_most)) {                            \
+    if (item->GetVisible())                                                  \
+      trailing_decorations.AddDecoration(vertical_padding, location_height,  \
+                                         false, 0, /*intra_item_padding=*/0, \
+                                         0, item);                           \
   }
 
 #define OmniboxViewViews BraveOmniboxViewViews

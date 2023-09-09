@@ -17,27 +17,27 @@ namespace brave_ads {
 
 class BraveAdsStringHtmlParserUtilTest : public UnitTestBase {};
 
-TEST_F(BraveAdsStringHtmlParserUtilTest, ParseHtmlTagAttributeSimple) {
+TEST_F(BraveAdsStringHtmlParserUtilTest, ParseHtmlTagNameAttributeSimple) {
   // Arrange
-  const std::string meta_html_tag =
+  const std::string html_meta_tag =
       R"(<meta property="og:title" content="this is info ">)";
-  const std::string meta_html_with_foobar_tag =
+  const std::string html_meta_with_foobar_tag =
       R"(<meta property="og:title" foo="bar" content="this is info ">)";
-  const std::string non_meta_html_tag =
+  const std::string non_html_meta_tag =
       R"(<div href="brave.com" content="this is info ">)";
   const std::vector<std::tuple<
       /*html*/ std::string, /*tag_substr*/ std::string,
       /*tag_attribute*/ std::string,
       /*expected_html_tag_attribute*/ std::string>>
       samples = {
-          {meta_html_tag, "og:title", "content", "this is info "},
-          {meta_html_tag, "title", "content", "this is info "},
-          {meta_html_tag, "title", "foo", {}},
-          {meta_html_with_foobar_tag, "og:title", "content", "this is info "},
-          {meta_html_with_foobar_tag, "og:title", "foo", "bar"},
-          {non_meta_html_tag, "og:title", "content", {}},
-          {non_meta_html_tag, "href", "content", "this is info "},
-          {non_meta_html_tag, "href", "foo", {}},
+          {html_meta_tag, "og:title", "content", "this is info "},
+          {html_meta_tag, "title", "content", "this is info "},
+          {html_meta_tag, "title", "foo", {}},
+          {html_meta_with_foobar_tag, "og:title", "content", "this is info "},
+          {html_meta_with_foobar_tag, "og:title", "foo", "bar"},
+          {non_html_meta_tag, "og:title", "content", {}},
+          {non_html_meta_tag, "href", "content", "this is info "},
+          {non_html_meta_tag, "href", "foo", {}},
           {R"(<div property="og:title" )"
            R"(content="The quick brown fox jumps over the lazy dog.">)",
            "og:title", "content",
@@ -65,7 +65,7 @@ TEST_F(BraveAdsStringHtmlParserUtilTest, ParseHtmlTagAttributeSimple) {
                     expected_html_tag_attribute] : samples) {
     // Act
     const std::string html_tag_attribute =
-        ParseHtmlTagAttribute(html, tag_substr, tag_attribute);
+        ParseHtmlTagNameAttribute(html, tag_substr, tag_attribute);
 
     // Assert
     EXPECT_EQ(expected_html_tag_attribute, html_tag_attribute);

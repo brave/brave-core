@@ -15,24 +15,24 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
-#include "brave/components/brave_ads/core/public/feature/notification_ad_feature.h"
-#include "brave/components/brave_ads/core/public/feature/search_result_ad_feature.h"
-#include "brave/components/brave_ads/core/public/feature/user_attention_feature.h"
+#include "brave/components/brave_ads/core/internal/units/inline_content_ad/inline_content_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/units/new_tab_page_ad/new_tab_page_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/units/promoted_content_ad/promoted_content_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_feature.h"
+#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_feature.h"
+#include "brave/components/brave_ads/core/public/units/search_result_ad/search_result_ad_feature.h"
+#include "brave/components/brave_ads/core/public/user/user_attention/user_idle_detection/user_idle_detection_feature.h"
 #include "components/variations/variations_switches.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -79,7 +79,7 @@ struct ParamInfo final {
     {{::switches::kEnableFeatures, kSearchResultAdFeature.name}, true},
     {{::switches::kEnableFeatures, kTextClassificationFeature.name}, true},
     {{::switches::kEnableFeatures, kUserActivityFeature.name}, true},
-    {{::switches::kEnableFeatures, kUserAttentionFeature.name}, true},
+    {{::switches::kEnableFeatures, kUserIdleDetectionFeature.name}, true},
     {{::switches::kEnableFeatures, {}}, false},
     {{variations::switches::kForceFieldTrialParams, "FooBar"}, false},
     {{variations::switches::kForceFieldTrialParams,
@@ -127,7 +127,8 @@ struct ParamInfo final {
      true},
     {{variations::switches::kForceFieldTrialParams, kUserActivityFeature.name},
      true},
-    {{variations::switches::kForceFieldTrialParams, kUserAttentionFeature.name},
+    {{variations::switches::kForceFieldTrialParams,
+      kUserIdleDetectionFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams, {}}, false}};
 

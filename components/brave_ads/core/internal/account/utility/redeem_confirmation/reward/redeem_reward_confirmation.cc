@@ -321,14 +321,25 @@ void RedeemRewardConfirmation::SuccessfullyRedeemedConfirmation(
     const ConfirmationInfo& confirmation) {
   LogPaymentTokenStatus();
 
-  if (delegate_) {
-    delegate_->OnDidRedeemConfirmation(confirmation);
-  }
+  NotifyDidRedeemConfirmation(confirmation);
 }
 
 void RedeemRewardConfirmation::FailedToRedeemConfirmation(
     const ConfirmationInfo& confirmation,
     const bool should_retry) {
+  NotifyFailedToRedeemConfirmation(confirmation, should_retry);
+}
+
+void RedeemRewardConfirmation::NotifyDidRedeemConfirmation(
+    const ConfirmationInfo& confirmation) const {
+  if (delegate_) {
+    delegate_->OnDidRedeemConfirmation(confirmation);
+  }
+}
+
+void RedeemRewardConfirmation::NotifyFailedToRedeemConfirmation(
+    const ConfirmationInfo& confirmation,
+    const bool should_retry) const {
   if (delegate_) {
     delegate_->OnFailedToRedeemConfirmation(confirmation, should_retry);
   }

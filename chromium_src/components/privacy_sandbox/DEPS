@@ -2,5 +2,6 @@ specific_include_rules = {
   "privacy_sandbox_settings_unittest.cc": [
     "+brave/components/privacy_sandbox",
     "+chrome/test/base/testing_profile.h",
+    "+content/public/browser/content_browser_client.h"
   ],
 }

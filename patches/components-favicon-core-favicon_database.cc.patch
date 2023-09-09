@@ -1,5 +1,5 @@
 diff --git a/components/favicon/core/favicon_database.cc b/components/favicon/core/favicon_database.cc
-index 1e71a09d8c8f7626a05b08912283fe8b2a05f7ed..043768fa22ba38d9ddb742a4861dee171496cb44 100644
+index 788cc58a8d04f366d1afd228128e3abbcb3179a4..840298c001ddeec4d033dcaecfa9ed900805867d 100644
 --- a/components/favicon/core/favicon_database.cc
 +++ b/components/favicon/core/favicon_database.cc
 @@ -445,6 +445,7 @@ FaviconBitmapID FaviconDatabase::AddFaviconBitmap(

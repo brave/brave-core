@@ -9,10 +9,77 @@ cargo_crate("lib") {
   epoch = "0.2"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/benches/enter.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/benches/filter.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/benches/filter_log.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/benches/fmt.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/benches/support/mod.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/field/debug.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/field/delimited.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/field/display.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/field/mod.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/filter/directive.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/filter/env/directive.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/filter/env/field.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/filter/env/mod.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/filter/filter_fn.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/filter/layer_filters.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/filter/level.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/filter/mod.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/filter/targets.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/fmt/fmt_layer.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/fmt/format/json.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/fmt/format/mod.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/fmt/format/pretty.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/fmt/mod.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/fmt/time/datetime.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/fmt/time/mod.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/fmt/writer.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/layer/context.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/layer/layered.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/layer/mod.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/layer/tests.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/lib.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/prelude.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/registry/extensions.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/registry/mod.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/registry/sharded.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/registry/stack.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/reload.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/sync.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/thread.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/src/util.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/cached_layer_filters_dont_break_other_layers.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/duplicate_spans.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/field_filter.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/filter.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/filter_log.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/fmt_max_level_hint.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/hinted_layer_filters_dont_break_other_layers.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/layer_filter_interests_are_cached.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/layer_filters/boxed.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/layer_filters/downcast_raw.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/layer_filters/filter_scopes.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/layer_filters/main.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/layer_filters/targets.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/layer_filters/trees.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/multiple_layer_filter_interests_cached.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/registry_max_level_hint.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/registry_with_subscriber.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/reload.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/same_len_filters.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/support.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/unhinted_layer_filters_dont_break_other_layers.rs",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/tests/utils.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/CHANGELOG.md",
+    "//brave/third_party/rust/tracing_subscriber/v0_2/crate/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.2.25"
   cargo_pkg_authors = "Eliza Weisman <eliza@buoyant.io>, David Barsky <me@davidbarsky.com>, Tokio Contributors <team@tokio.rs>"

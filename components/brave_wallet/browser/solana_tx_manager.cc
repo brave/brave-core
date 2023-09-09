@@ -43,9 +43,9 @@ SolanaTxManager::SolanaTxManager(
                                                  account_resolver_delegate),
           std::make_unique<SolanaBlockTracker>(json_rpc_service),
           tx_service,
-          json_rpc_service,
           keyring_service,
           prefs),
+      json_rpc_service_(json_rpc_service),
       weak_ptr_factory_(this) {
   GetSolanaBlockTracker()->AddObserver(this);
 }

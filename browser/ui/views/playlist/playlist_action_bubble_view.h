@@ -6,14 +6,14 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_ACTION_BUBBLE_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_ACTION_BUBBLE_VIEW_H_
 
+#include "ui/views/bubble/bubble_dialog_delegate_view.h"
+
 class Browser;
 class PlaylistActionIconView;
 
 namespace playlist {
 class PlaylistTabHelper;
 }  // namespace playlist
-
-#include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
 class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
  public:

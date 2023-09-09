@@ -924,6 +924,7 @@ provideStrings({
   braveNftsTabEmptyStateDisclaimer: 'Compatible with NFTs on Solana (SPL) and Ethereum (ERC-721).',
   braveNftsTab: 'NFTs',
   braveNftsTabHidden: 'Hidden',
+  braveNftsTabSpam: 'Spam',
   braveNftsTabHide: 'Hide',
   braveNftsTabUnhide: 'Unhide',
   braveNftsTabEdit: 'Edit',
@@ -976,6 +977,8 @@ provideStrings({
   braveWalletNftPinningErrorTooltipReasonThree: 'Not enough space on local node',
   braveWalletImportNftModalTitle: 'Import NFT',
   braveWalletEditNftModalTitle: 'Edit NFT',
+  braveWalletNftMoveToSpam: 'Move to spam',
+  braveWalletNftUnspam: 'Not spam',
 
   // NFT auto discovery modal
   braveWalletEnableNftAutoDiscoveryModalHeader: 'Want your NFTs displayed automatically?',

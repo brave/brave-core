@@ -26,8 +26,6 @@ import {
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
 import Tooltip from '../../shared/tooltip/index'
 import withPlaceholderIcon from '../../shared/create-placeholder-icon'
-
-// Components
 import { PanelTab } from '../panel-tab/index'
 import { TransactionDetailBox } from '../transaction-box/index'
 import EditAllowance from '../edit-allowance'
@@ -36,6 +34,10 @@ import AdvancedTransactionSettings from '../advanced-transaction-settings'
 import { Erc20ApproveTransactionInfo } from './erc-twenty-transaction-info'
 import { TransactionInfo } from './transaction-info'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
+import { Footer } from './common/footer'
+import { TransactionQueueSteps } from './common/queue'
+import { Origin } from './common/origin'
+import { EditPendingTransactionGas } from './common/gas'
 
 // Styled Components
 import {
@@ -73,11 +75,6 @@ import {
 } from '../shared-panel-styles'
 import { Column, Row } from '../../shared/style'
 
-import { Footer } from './common/footer'
-import { TransactionQueueStep } from './common/queue'
-import { Origin } from './common/origin'
-import { EditPendingTransactionGas } from './common/gas'
-
 type confirmPanelTabs = 'transaction' | 'details'
 
 const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 0 } as const
@@ -101,14 +98,12 @@ export const ConfirmTransactionPanel = () => {
   // custom hooks
   const {
     foundTokenInfoByContractAddress,
-    fromAccountName,
-    fromAddress,
+    fromAccount,
     fromOrb,
     isERC20Approve,
     isERC721SafeTransferFrom,
     isERC721TransferFrom,
-    isSolanaTransaction,
-    isFilecoinTransaction,
+    isEthereumTransaction,
     isAssociatedTokenAccountCreation,
     onEditAllowanceSave,
     toOrb,
@@ -123,7 +118,10 @@ export const ConfirmTransactionPanel = () => {
     onReject,
     gasFee,
     insufficientFundsError,
-    insufficientFundsForGasError
+    insufficientFundsForGasError,
+    queueNextTransaction,
+    transactionQueueNumber,
+    transactionsQueueLength
   } = usePendingTransactions()
 
   // queries
@@ -158,7 +156,7 @@ export const ConfirmTransactionPanel = () => {
   }
 
   // render
-  if (!transactionDetails || !selectedPendingTransaction) {
+  if (!transactionDetails || !selectedPendingTransaction || !fromAccount) {
     return <StyledWrapper>
       <Skeleton width={'100%'} height={'100%'} enableAnimation />
     </StyledWrapper>
@@ -214,7 +212,11 @@ export const ConfirmTransactionPanel = () => {
           </AddressAndOrb>
         )}
 
-        <TransactionQueueStep />
+        <TransactionQueueSteps
+          queueNextTransaction={queueNextTransaction}
+          transactionQueueNumber={transactionQueueNumber}
+          transactionsQueueLength={transactionsQueueLength}
+        />
       </TopRow>
 
       {isERC20Approve ? (
@@ -266,8 +268,8 @@ export const ConfirmTransactionPanel = () => {
             width={'unset'}
           >
             <Row maxWidth={isContract ? '70px' : 'unset'} width={'unset'}>
-              <Tooltip text={fromAddress} isAddress={true} position={'left'}>
-                <AccountNameText>{fromAccountName}</AccountNameText>
+              <Tooltip text={fromAccount.address} isAddress={true} position={'left'}>
+                <AccountNameText>{fromAccount.name}</AccountNameText>
               </Tooltip>
             </Row>
             <ArrowIcon />
@@ -351,7 +353,7 @@ export const ConfirmTransactionPanel = () => {
           onSubmit={onSelectTab('details')}
           text='Details'
         />
-        {!isSolanaTransaction && !isFilecoinTransaction && (
+        {isEthereumTransaction && (
           <AdvancedTransactionSettingsButton
             onSubmit={onToggleAdvancedTransactionSettings}
           />

@@ -43,6 +43,9 @@ class Confirmations final : public ConfirmationQueueDelegate,
   void ConfirmCallback(const TransactionInfo& transaction,
                        const UserDataInfo& user_data);
 
+  void NotifyDidConfirm(const ConfirmationInfo& confirmation) const;
+  void NotifyFailedToConfirm(const ConfirmationInfo& confirmation) const;
+
   // ConfirmationQueueDelegate:
   void OnDidAddConfirmationToQueue(
       const ConfirmationInfo& confirmation) override;

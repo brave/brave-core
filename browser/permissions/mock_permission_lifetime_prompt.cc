@@ -37,4 +37,9 @@ void MockPermissionLifetimePrompt::ResetFactory() {
   factory_ = nullptr;
 }
 
+absl::optional<gfx::Rect> MockPermissionLifetimePrompt::GetViewBoundsInScreen()
+    const {
+  return absl::nullopt;
+}
+
 }  // namespace permissions

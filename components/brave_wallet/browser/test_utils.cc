@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/memory/raw_ref.h"
 #include "base/notreached.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
@@ -185,6 +186,10 @@ mojom::AccountIdPtr AccountUtils::FindAccountIdByAddress(
 }
 
 void WaitForTxStorageDelegateInitialized(TxStorageDelegate* delegate) {
+  if (delegate->IsInitialized()) {
+    return;
+  }
+
   base::RunLoop run_loop;
   class TestTxStorageDelegateObserver : public TxStorageDelegate::Observer {
    public:
@@ -194,12 +199,12 @@ void WaitForTxStorageDelegateInitialized(TxStorageDelegate* delegate) {
       observation_.Observe(delegate);
     }
 
-    void OnStorageInitialized() override { run_loop_.Quit(); }
+    void OnStorageInitialized() override { run_loop_->Quit(); }
 
    private:
     base::ScopedObservation<TxStorageDelegate, TxStorageDelegate::Observer>
         observation_{this};
-    base::RunLoop& run_loop_;
+    raw_ref<base::RunLoop> run_loop_;
   } observer(delegate, run_loop);
   run_loop.Run();
 }

@@ -38,18 +38,20 @@ import {
 } from '../../../../../common/constants/local-storage-keys'
 import {
   useGetNftDiscoveryEnabledStatusQuery,
+  useGetSimpleHashSpamNftsQuery,
   useSetNftDiscoveryEnabledMutation
 } from '../../../../../common/slices/api.slice'
 import { getBalance } from '../../../../../utils/balance-utils'
 import { AccountsGroupByOption, NetworksGroupByOption } from '../../../../../options/group-assets-by-options'
 import { useApiProxy } from '../../../../../common/hooks/use-api-proxy'
+import { getAssetIdKey } from '../../../../../utils/asset-utils'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
 import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
 import { EnableNftDiscoveryModal } from '../../../popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
 import { AutoDiscoveryEmptyState } from './auto-discovery-empty-state/auto-discovery-empty-state'
-import { TabOption, Tabs } from '../../../../shared/tabs/tabs'
+import { NftTabOption, NftTabOptionId, Tabs } from '../../../../shared/tabs/tabs'
 import { NftIpfsBanner } from '../../../nft-ipfs-banner/nft-ipfs-banner'
 
 // styles
@@ -82,6 +84,8 @@ interface Props {
   tokenBalancesRegistry: TokenBalancesRegistry | undefined
 }
 
+const compareFn = (a: BraveWallet.BlockchainToken, b: BraveWallet.BlockchainToken) => a.name.localeCompare(b.name)
+
 export const Nfts = (props: Props) => {
   const {
     nftList,
@@ -107,7 +111,7 @@ export const Nfts = (props: Props) => {
   const [showNftDiscoveryModal, setShowNftDiscoveryModal] = React.useState<boolean>(
     localStorage.getItem(LOCAL_STORAGE_KEYS.IS_ENABLE_NFT_AUTO_DISCOVERY_MODAL_HIDDEN) === null
   )
-  const [selectedTab, setSelectedTab] = React.useState<string>('nfts')
+  const [selectedTab, setSelectedTab] = React.useState<NftTabOptionId>('nfts')
   const [showSearchBar, setShowSearchBar] = React.useState<boolean>(false)
 
   // hooks
@@ -117,6 +121,7 @@ export const Nfts = (props: Props) => {
 
   // queries
   const { data: isNftAutoDiscoveryEnabled } = useGetNftDiscoveryEnabledStatusQuery()
+  const { data: simpleHashSpamNfts = [], isLoading: isLoadingSimpleHashList } = useGetSimpleHashSpamNftsQuery()
 
   // mutations
   const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
@@ -161,7 +166,7 @@ export const Nfts = (props: Props) => {
     dispatch(WalletActions.refreshNetworksAndTokens({}))
   }, [])
 
-  const onSelectTab = React.useCallback((selectedTab: TabOption) => {
+  const onSelectTab = React.useCallback((selectedTab: NftTabOption) => {
     setSelectedTab(selectedTab.id)
   }, [])
 
@@ -188,43 +193,102 @@ export const Nfts = (props: Props) => {
   }, [nftList]);
 
   // memos
-  const [sortedNfts, sortedHiddenNfts] = React.useMemo(() => {
-    const compareFn = (a: BraveWallet.BlockchainToken, b: BraveWallet.BlockchainToken) => a.name.localeCompare(b.name)
+  const [userNonSpamNfts, userMarkedSpamNfts] = React.useMemo(() => {
+    return nftList.reduce(
+      (result: [BraveWallet.BlockchainToken[], BraveWallet.BlockchainToken[]], nft: BraveWallet.BlockchainToken) => {
+        if (!nft.isSpam) {
+          result[0].push(nft)
+        } else {
+          result[1].push(nft)
+        }
+        return result
+      },
+      [[], []]
+    )
+  }, [nftList])
 
+  const [hiddenNftsIds, userNonSpamNftIds] = React.useMemo(() => {
+    return [
+      hiddenNfts.map(nft => getAssetIdKey(nft)),
+      userNonSpamNfts.map((nft) => getAssetIdKey(nft))
+    ]
+  }, [hiddenNfts, userNonSpamNfts])
+
+  const [allSpamNfts, allSpamNftsIds] = React.useMemo(() => {
+    // filter out NFTs user has marked not spam
+    // and hidden NFTs
+    const nonSpamAndHidden = userNonSpamNftIds.concat(hiddenNftsIds)
+    const simpleHashList = simpleHashSpamNfts.filter(
+      (nft) =>
+        !nonSpamAndHidden.includes(getAssetIdKey(nft))
+    )
+    const simpleHashListIds = simpleHashList.map((nft) => getAssetIdKey(nft))
+    // add NFTs user has marked as NFT if they are not in the list
+    // to avoid duplicates
+    const fullSpamList = [
+      ...simpleHashList,
+      ...userMarkedSpamNfts.filter(
+        (nft) => !simpleHashListIds.includes(getAssetIdKey(nft))
+      )
+    ]
+
+    return [
+      fullSpamList,
+      fullSpamList.map((nft) => getAssetIdKey(nft))
+    ]
+  }, [userMarkedSpamNfts, simpleHashSpamNfts, hiddenNftsIds, userNonSpamNftIds])
+
+  const [sortedNfts, sortedHiddenNfts, sortedSpamNfts] = React.useMemo(() => {
     if (searchValue === '') {
       return [
-        nftList.slice().sort(compareFn),
-        hiddenNfts.slice().sort(compareFn)
+        userNonSpamNfts.slice().sort(compareFn),
+        hiddenNfts.slice().sort(compareFn),
+        allSpamNfts.slice().sort(compareFn)
       ]
     }
 
     return [
-      nftList.filter(searchNfts).sort(compareFn),
-      hiddenNfts.filter(searchNfts).sort(compareFn)
+      userNonSpamNfts.filter(searchNfts).sort(compareFn),
+      hiddenNfts.filter(searchNfts).sort(compareFn),
+      allSpamNfts.filter(searchNfts).sort(compareFn)
     ]
-  }, [searchValue, nftList, hiddenNfts, searchNfts])
+  }, [searchValue, userNonSpamNfts, hiddenNfts, allSpamNfts, searchNfts])
 
   const tabOptions = React.useMemo(() => {
-    const tabOptions: TabOption[] = [
+    const tabOptions: NftTabOption[] = [
       {
         id: 'nfts',
         label: getLocale('braveNftsTab'),
-        labelSummary: nftList.length || undefined
+        labelSummary: userNonSpamNfts.length || undefined
       },
       {
         id: 'hidden',
         label: getLocale('braveNftsTabHidden'),
         labelSummary: hiddenNfts.length || undefined
+      },
+      {
+        id: 'spam',
+        label: getLocale('braveNftsTabSpam'),
+        labelSummary: !isLoadingSimpleHashList ? allSpamNfts.length : ''
       }
     ]
 
     return tabOptions
-  }, [nftList, hiddenNfts])
+  }, [nftList, hiddenNfts, allSpamNfts, isLoadingSimpleHashList])
 
 
   const renderedList = React.useMemo(() => {
-    return selectedTab === 'nfts' ? sortedNfts : sortedHiddenNfts
-  }, [selectedTab, sortedNfts, sortedHiddenNfts])
+    switch (selectedTab) {
+      case 'nfts':
+        return sortedNfts;
+      case 'hidden':
+        return sortedHiddenNfts;
+      case 'spam':
+        return sortedSpamNfts;
+      default:
+        return sortedNfts;
+    }
+  }, [selectedTab, sortedNfts, sortedHiddenNfts, sortedSpamNfts, sortedNfts])
 
   // Returns a list of assets based on provided account
   const getFilteredNftsByAccount = React.useCallback(
@@ -257,6 +321,23 @@ export const Nfts = (props: Props) => {
         )
     }, [renderedList])
 
+  const renderGridViewItem = React.useCallback(
+    (nft: BraveWallet.BlockchainToken) => {
+      const assetId = getAssetIdKey(nft)
+
+      return (
+        <NFTGridViewItem
+          key={assetId}
+          token={nft}
+          onSelectAsset={() => onSelectAsset(nft)}
+          isTokenHidden={hiddenNftsIds.includes(assetId)}
+          isTokenSpam={allSpamNftsIds.includes(assetId)}
+        />
+      )
+    },
+    [hiddenNftsIds, allSpamNftsIds, onSelectAsset]
+  )
+
   const listUiByAccounts = React.useMemo(() => {
     return accounts.map((account) => (
       <Row
@@ -273,21 +354,14 @@ export const Nfts = (props: Props) => {
             hasBorder={false}
           >
             <NftGrid>
-              {getFilteredNftsByAccount(account).map((nft) => (
-                <NFTGridViewItem
-                  isHidden={selectedTab === 'hidden'}
-                  key={`${nft.tokenId}-${nft.contractAddress}`}
-                  token={nft}
-                  onSelectAsset={() => onSelectAsset(nft)}
-                />
-              ))}
+              {getFilteredNftsByAccount(account).map(renderGridViewItem)}
               {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
             </NftGrid>
           </AssetGroupContainer>
         )}
       </Row>
     ))
-  }, [accounts, getFilteredNftsByAccount, onSelectAsset])
+  }, [accounts, getFilteredNftsByAccount, onSelectAsset, selectedTab])
 
   const listUiByNetworks = React.useMemo(() => {
     return networks?.map((network) =>
@@ -304,14 +378,7 @@ export const Nfts = (props: Props) => {
             hasBorder={false}
           >
             <NftGrid>
-              {getAssetsByNetwork(network).map((nft) => (
-                <NFTGridViewItem
-                  isHidden={selectedTab === 'hidden'}
-                  key={`${nft.tokenId}-${nft.contractAddress}`}
-                  token={nft}
-                  onSelectAsset={() => onSelectAsset(nft)}
-                />
-              ))}
+              {getAssetsByNetwork(network).map(renderGridViewItem)}
               {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
             </NftGrid>
           </AssetGroupContainer>
@@ -325,22 +392,23 @@ export const Nfts = (props: Props) => {
   ])
 
   const listUi = React.useMemo(() => {
-    return selectedGroupAssetsByItem === NetworksGroupByOption.id
-      ? listUiByNetworks
-      : selectedGroupAssetsByItem === AccountsGroupByOption.id
-        ? listUiByAccounts
-        : <NftGrid>
-          {renderedList.map(nft => (
-            <NFTGridViewItem
-              isHidden={selectedTab === 'hidden'}
-              key={`${nft.tokenId}-${nft.contractAddress}`}
-              token={nft}
-              onSelectAsset={() => onSelectAsset(nft)}
-            />
-          ))}
-          {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
-        </NftGrid>
-  }, [listUiByAccounts, listUiByNetworks, selectedGroupAssetsByItem, renderedList])
+    return selectedGroupAssetsByItem === NetworksGroupByOption.id ? (
+      listUiByNetworks
+    ) : selectedGroupAssetsByItem === AccountsGroupByOption.id ? (
+      listUiByAccounts
+    ) : (
+      <NftGrid>
+        {renderedList.map(renderGridViewItem)}
+        {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
+      </NftGrid>
+    )
+  }, [
+    listUiByAccounts,
+    listUiByNetworks,
+    selectedGroupAssetsByItem,
+    renderedList,
+    selectedTab
+  ])
 
   // effects
   React.useEffect(() => {

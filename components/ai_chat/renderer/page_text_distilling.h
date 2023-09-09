@@ -19,6 +19,7 @@ namespace ai_chat {
 
 void DistillPageText(
     content::RenderFrame* render_frame,
+    int32_t isolated_world_id,
     base::OnceCallback<void(const absl::optional<std::string>&)>);
 
 }  // namespace ai_chat

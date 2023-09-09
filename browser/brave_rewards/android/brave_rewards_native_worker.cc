@@ -157,6 +157,21 @@ double BraveRewardsNativeWorker::GetVbatDeadline(JNIEnv* env) {
   return 0.0;
 }
 
+base::android::ScopedJavaLocalRef<jstring>
+BraveRewardsNativeWorker::GetPayoutStatus(JNIEnv* env) {
+  std::string wallet_type;
+  std::string payout_status;
+  if (brave_rewards_service_) {
+    wallet_type = brave_rewards_service_->GetExternalWalletType();
+    if (parameters_) {
+      if (!parameters_->payout_status.empty()) {
+        payout_status = parameters_->payout_status.at(wallet_type);
+      }
+    }
+  }
+  return base::android::ConvertUTF8ToJavaString(env, payout_status);
+}
+
 void BraveRewardsNativeWorker::GetUserType(JNIEnv* env) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetUserType(base::BindOnce(

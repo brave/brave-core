@@ -1,8 +1,8 @@
 diff --git a/third_party/rust/winapi/v0_3/BUILD.gn b/third_party/rust/winapi/v0_3/BUILD.gn
-index f7edafac06ae7c016abd3e3f28c0764ec04bdfa0..2feb2565f5cf8690d78a1a496b2b303ab337a198 100644
+index 95af7eea1cd47086ebabaac7ab42a6305d4e70b0..87c3ada4a20dde6c2e0a0dad0372b30c7a3b6087 100644
 --- a/third_party/rust/winapi/v0_3/BUILD.gn
 +++ b/third_party/rust/winapi/v0_3/BUILD.gn
-@@ -42,4 +42,5 @@ cargo_crate("lib") {
+@@ -452,4 +452,5 @@ cargo_crate("lib") {
    ]
    build_root = "crate/build.rs"
    build_sources = [ "crate/build.rs" ]

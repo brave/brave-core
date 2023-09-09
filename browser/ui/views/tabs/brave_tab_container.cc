@@ -313,6 +313,10 @@ void BraveTabContainer::CompleteAnimationAndLayout() {
     return;
 
   TabContainerImpl::CompleteAnimationAndLayout();
+
+  // Should force tabs to layout as they might not change bounds, which makes
+  // insets not updated.
+  base::ranges::for_each(children(), &views::View::Layout);
 }
 
 void BraveTabContainer::OnPaintBackground(gfx::Canvas* canvas) {

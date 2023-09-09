@@ -56,6 +56,7 @@ export const FilterToggleSection = (props: Props) => {
           <Description
             textSize='12px'
             isBold={false}
+            textAlign='left'
           >
             {description}
           </Description>

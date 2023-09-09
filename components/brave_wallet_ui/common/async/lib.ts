@@ -24,11 +24,11 @@ import {
 } from '../../utils/network-utils'
 import { getAccountType } from '../../utils/account-utils'
 import { getAssetIdKey, isNativeAsset } from '../../utils/asset-utils'
-import { getVisibleNetworksList } from '../slices/api.slice'
 import {
   makeNativeAssetLogo,
   makeNetworkAsset
 } from '../../options/asset-options'
+import { getVisibleNetworksList } from '../../utils/api-utils'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'

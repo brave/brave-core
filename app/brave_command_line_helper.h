@@ -8,6 +8,7 @@
 
 #include <string>
 #include <unordered_set>
+#include "base/memory/raw_ref.h"
 
 namespace base {
 class CommandLine;
@@ -35,7 +36,7 @@ class BraveCommandLineHelper {
   void AppendCSV(const char* switch_key,
                  const std::unordered_set<std::string>& values);
 
-  base::CommandLine& command_line_;
+  const raw_ref<base::CommandLine> command_line_;
   std::unordered_set<std::string> enabled_features_;
   std::unordered_set<std::string> disabled_features_;
 };

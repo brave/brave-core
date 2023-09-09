@@ -18,7 +18,7 @@ class GURL;
 namespace brave_ads {
 
 using AntiTargetingSiteList = std::set<GURL>;
-using AntiTargetingMap =
+using AntiTargetingCreativeSetMap =
     std::map</*creative_set_id*/ std::string, AntiTargetingSiteList>;
 
 struct AntiTargetingInfo final {
@@ -36,7 +36,7 @@ struct AntiTargetingInfo final {
       base::Value::Dict dict);
 
   int version = 0;
-  AntiTargetingMap sites;
+  AntiTargetingCreativeSetMap creative_sets;
 };
 
 }  // namespace brave_ads

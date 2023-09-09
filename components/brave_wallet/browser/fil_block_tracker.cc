@@ -15,7 +15,7 @@
 namespace brave_wallet {
 
 FilBlockTracker::FilBlockTracker(JsonRpcService* json_rpc_service)
-    : BlockTracker(json_rpc_service), weak_ptr_factory_(this) {}
+    : json_rpc_service_(json_rpc_service), weak_ptr_factory_(this) {}
 
 FilBlockTracker::~FilBlockTracker() = default;
 

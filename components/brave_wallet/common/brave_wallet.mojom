@@ -124,10 +124,17 @@ enum SolanaProviderError {
   kBlockStatusNotAvailableYet = -32014
 };
 
+enum BitcoinProviderError {
+  kSuccess = ProviderError.kSuccess,  // No error
+  kUnknown = ProviderError.kUnknown,
+  kInternalError = JsonRpcError.kInternalError,
+};
+
 union ProviderErrorUnion {
   ProviderError provider_error;
   SolanaProviderError solana_provider_error;
   FilecoinProviderError filecoin_provider_error;
+  BitcoinProviderError bitcoin_provider_error;
 };
 
 // There is one EthereumProvider per renderer, the renderer communicates
@@ -1356,7 +1363,7 @@ struct BitcoinAddressInfo {
   BitcoinKeyId key_id;
   string address_string;
   uint64 balance;
-  array<BitcoinUnspentOutput> utxo_list;
+  array<BitcoinUnspentOutput>? utxo_list;
 };
 
 struct BitcoinAccountInfo {
@@ -1365,8 +1372,15 @@ struct BitcoinAccountInfo {
   uint64 balance;
 };
 
+struct BitcoinBalance {
+  uint64 total_balance;
+  map<string, uint64> balances;  // address -> balance of that address(sum of all related utxos)
+};
+
 interface BitcoinWalletService {
-  GetBalance(string network_id, AccountId account_id) => (string balance, string error_message);
+  // Fetches BitcoinBalance struct for all addresses associated with account_id.
+  // Now includes both confirmed and mempool utxos.
+  GetBalance(string network_id, AccountId account_id) => (BitcoinBalance? balance, string? error_message);
   GetBitcoinAccountInfo(string network_id, AccountId account_id) => (BitcoinAccountInfo? account_info);
   SendTo(string network_id, AccountId account_id, string address_to, uint64 amount, uint64 fee) => (string txid, string error);
 };
@@ -1410,11 +1424,30 @@ struct FilTxData {
   string value;
 };
 
+struct BtcTxInput {
+  string address;
+  uint64 value;
+};
+
+struct BtcTxOutput {
+  string address;
+  uint64 value;
+};
+
+struct BtcTxData {
+  string to;
+  uint64 amount;
+  uint64 fee;
+  array<BtcTxInput> inputs;
+  array<BtcTxOutput> outputs;
+};
+
 union TxDataUnion {
   TxData eth_tx_data;
   TxData1559 eth_tx_data_1559;
   SolanaTxData solana_tx_data;
   FilTxData fil_tx_data;
+  BtcTxData btc_tx_data;
 };
 
 struct TransactionInfo {

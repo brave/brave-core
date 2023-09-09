@@ -43,7 +43,7 @@ class SignalCalculator {
                     SignalsCallback callback,
                     history::QueryResults results);
 
-  bool IsPublisherSubscribed(const mojom::PublisherPtr& publisher);
+  double GetSubscribedWeight(const mojom::PublisherPtr& publisher);
 
   base::CancelableTaskTracker task_tracker_;
 

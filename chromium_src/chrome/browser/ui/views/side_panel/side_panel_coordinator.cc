@@ -5,9 +5,11 @@
 
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "chrome/grit/generated_resources.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -53,7 +55,9 @@ absl::optional<SidePanelEntry::Id> GetDefaultEntryId(Profile* profile) {
 #define IDS_TOOLTIP_SIDE_PANEL_HIDE IDS_TOOLTIP_SIDEBAR_HIDE
 #define IDS_TOOLTIP_SIDE_PANEL_SHOW IDS_TOOLTIP_SIDEBAR_SHOW
 
+#define SidePanel BraveSidePanel
 #include "src/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc"
+#undef SidePanel
 #undef IDS_TOOLTIP_SIDE_PANEL_HIDE
 #undef IDS_TOOLTIP_SIDE_PANEL_SHOW
 #undef BRAVE_SIDE_PANEL_COORDINATOR_CREATE_HEADER

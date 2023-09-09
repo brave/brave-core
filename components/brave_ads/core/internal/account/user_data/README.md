@@ -6,10 +6,10 @@
 
 ## User Data Submitted when Redeeming Anonymous Confirmations
 
-Included in the confirmation payload for non-Brave Rewards and Brave Rewards users. See [anonymous confirmation redemption](../tokens/redeem_confirmation/README.md).
+Included in the confirmation payload for non-Brave Rewards and Brave Rewards users. See [anonymous confirmation redemption](../utility/redeem_confirmation/README.md).
 
 | user data  | optional  | mutable  | description  |
-|---|---|---|---|---|
+|---|---|---|---|
 | conversion  | yes  | no  | Conversion action and encrypted verifiable envelope.  |
 
 ### Additional User Data Submitted for Brave Rewards Users
@@ -17,7 +17,7 @@ Included in the confirmation payload for non-Brave Rewards and Brave Rewards use
 Should only be included in the confirmation payload for users who have joined Brave Rewards.
 
 | user data  | optional  | mutable  | description  |
-|---|---|---|---|---|
+|---|---|---|---|
 | buildChannel  | no  | no  | Browser build channel.  |
 | catalog  | no  | no  |  Catalog identifier.  |
 | createdAtTimestamp  | no  | no  | Privacy-preserving [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp.  |
@@ -32,7 +32,7 @@ Should only be included in the confirmation payload for users who have joined Br
 
 ## User Data Submitted when Redeeming Identifiable Payment Tokens
 
-See [identifiable payment token redemption](../tokens/redeem_payment_tokens/README.md).
+See [identifiable payment token redemption](../utility/redeem_payment_tokens/README.md).
 
 | user data  | optional  | mutable  | description  |
 |---|---|---|---|

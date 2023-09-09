@@ -69,8 +69,14 @@ import {
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
 import { useHasAccount } from '../common/hooks/has-account'
-import { isSolanaTransaction } from '../utils/tx-utils'
+import {
+  isBitcoinTransaction,
+  isEthereumTransaction,
+  isFilecoinTransaction,
+  isSolanaTransaction
+} from '../utils/tx-utils'
 import { ConfirmSolanaTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-solana-transaction-panel'
+import { ConfirmBitcoinTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-bitcoin-transaction-panel'
 import { SignTransactionPanel } from '../components/extension/sign-panel/sign-transaction-panel'
 import { useDispatch } from 'react-redux'
 import { SelectCurrency } from '../components/buy-send-swap/select-currency/select-currency'
@@ -349,9 +355,14 @@ function Container () {
     )
   }
 
-  if (isWalletLocked && !isPanelV2FeatureEnabled) {
-    return (
-      <PanelWrapper isLonger={false}>
+  if (isWalletLocked) {
+    return isPanelV2FeatureEnabled
+      ? <BrowserRouter>
+        <PanelWrapper width={390} height={650}>
+          <PageContainer />
+        </PanelWrapper>
+      </BrowserRouter>
+      : <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
           <LockPanel
             onSubmit={unlockWallet}
@@ -359,7 +370,6 @@ function Container () {
           />
         </StyledExtensionWrapper>
       </PanelWrapper>
-    )
   }
 
   if (selectedPanel === 'transactionStatus' && selectedTransactionId) {
@@ -404,10 +414,18 @@ function Container () {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
-          {isSolanaTransaction(selectedPendingTransaction)
-            ? <ConfirmSolanaTransactionPanel />
-            : <ConfirmTransactionPanel />
-          }
+          {isBitcoinTransaction(selectedPendingTransaction) && (
+            <ConfirmBitcoinTransactionPanel />
+          )}
+          {isSolanaTransaction(selectedPendingTransaction) && (
+            <ConfirmSolanaTransactionPanel />
+          )}
+          {isEthereumTransaction(selectedPendingTransaction) && (
+            <ConfirmTransactionPanel />
+          )}
+          {isFilecoinTransaction(selectedPendingTransaction) && (
+            <ConfirmTransactionPanel />
+          )}
         </LongWrapper>
       </PanelWrapper>
     )

@@ -113,11 +113,19 @@ const char kDownloadScanningLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018192491-How-do-I-fix-file-download-errors-";
 
+// Note: This is the same as the above URL. This is done to decouple the URLs,
+// in case the support page is split apart into separate pages in the future.
+const char kDownloadBlockedLearnMoreURL[] =
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018192491-How-do-I-fix-file-download-errors-";
+
 const char kExtensionControlledSettingLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018185651-How-do-I-stop-extensions-from-changing-my-settings-";
 
 const char kExtensionInvalidRequestURL[] = "chrome-extension://invalid/";
+
+const char kFamilyGroupSiteURL[] = "https://support.brave.com/";
 
 const char kFlashDeprecationLearnMoreURL[] =
     "https://blog.chromium.org/2017/07/so-long-and-thanks-for-all-flash.html";

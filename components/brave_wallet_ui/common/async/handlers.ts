@@ -29,7 +29,6 @@ import {
 } from '../../page/constants/action_types'
 
 // Utils
-
 import getAPIProxy from './bridge'
 import {
   refreshSitePermissions,
@@ -40,9 +39,9 @@ import {
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
 import {
-  getVisibleNetworksList,
   walletApi
 } from '../slices/api.slice'
+import { getVisibleNetworksList } from '../../utils/api-utils'
 
 const handler = new AsyncActionHandler()
 
