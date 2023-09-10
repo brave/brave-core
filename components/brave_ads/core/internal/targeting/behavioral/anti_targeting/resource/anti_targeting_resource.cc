@@ -37,6 +37,22 @@ AntiTargetingResource::~AntiTargetingResource() {
   AdsClientHelper::RemoveObserver(this);
 }
 
+AntiTargetingSiteList AntiTargetingResource::GetSites(
+    const std::string& creative_set_id) const {
+  if (!anti_targeting_) {
+    return {};
+  }
+
+  const auto iter = anti_targeting_->creative_sets.find(creative_set_id);
+  if (iter == anti_targeting_->creative_sets.cend()) {
+    return {};
+  }
+
+  const auto& [_, sites] = *iter;
+
+  return sites;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void AntiTargetingResource::MaybeLoad() {

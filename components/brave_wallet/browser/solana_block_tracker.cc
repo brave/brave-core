@@ -24,7 +24,7 @@ constexpr base::TimeDelta kExpiredTimeDelta =
 }
 
 SolanaBlockTracker::SolanaBlockTracker(JsonRpcService* json_rpc_service)
-    : BlockTracker(json_rpc_service), weak_ptr_factory_(this) {}
+    : json_rpc_service_(json_rpc_service), weak_ptr_factory_(this) {}
 
 SolanaBlockTracker::~SolanaBlockTracker() = default;
 

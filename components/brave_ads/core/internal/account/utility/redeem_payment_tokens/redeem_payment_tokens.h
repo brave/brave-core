@@ -53,6 +53,13 @@ class RedeemPaymentTokens final {
   void RetryCallback();
   void StopRetrying();
 
+  void NotifyDidRedeemPaymentTokens(
+      const PaymentTokenList& payment_tokens) const;
+  void NotifyFailedToRedeemPaymentTokens() const;
+  void NotifyDidScheduleNextPaymentTokenRedemption(base::Time redeem_at) const;
+  void NotifyWillRetryRedeemingPaymentTokens(base::Time retry_at) const;
+  void NotifyDidRetryRedeemingPaymentTokens() const;
+
   raw_ptr<RedeemPaymentTokensDelegate> delegate_ = nullptr;
 
   WalletInfo wallet_;

@@ -57,6 +57,11 @@ class NewTabPageAdServing final {
                MaybeServeNewTabPageAdCallback callback);
   void FailedToServeAd(MaybeServeNewTabPageAdCallback callback);
 
+  void NotifyOpportunityAroseToServeNewTabPageAd(
+      const SegmentList& segments) const;
+  void NotifyDidServeNewTabPageAd(const NewTabPageAdInfo& ad) const;
+  void NotifyFailedToServeNewTabPageAd() const;
+
   raw_ptr<NewTabPageAdServingDelegate> delegate_ = nullptr;
 
   std::unique_ptr<EligibleNewTabPageAdsBase> eligible_ads_;

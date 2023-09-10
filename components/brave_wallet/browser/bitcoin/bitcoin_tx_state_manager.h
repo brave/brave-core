@@ -21,20 +21,26 @@ class Value;
 namespace brave_wallet {
 
 class TxMeta;
+class BitcoinTxMeta;
 class TxStorageDelegate;
-class JsonRpcService;
 
 class BitcoinTxStateManager : public TxStateManager {
  public:
   BitcoinTxStateManager(PrefService* prefs,
                         TxStorageDelegate* delegate,
-                        JsonRpcService* json_rpc_service,
                         AccountResolverDelegate* account_resolver_delegate);
   ~BitcoinTxStateManager() override;
   BitcoinTxStateManager(const BitcoinTxStateManager&) = delete;
   BitcoinTxStateManager operator=(const BitcoinTxStateManager&) = delete;
 
+  std::unique_ptr<BitcoinTxMeta> GetBitcoinTx(const std::string& chain_id,
+                                              const std::string& id);
+  std::unique_ptr<BitcoinTxMeta> ValueToBitcoinTxMeta(
+      const base::Value::Dict& value);
+
  private:
+  FRIEND_TEST_ALL_PREFIXES(BitcoinTxStateManagerUnitTest, GetTxPrefPathPrefix);
+
   mojom::CoinType GetCoinType() const override;
 
   std::unique_ptr<TxMeta> ValueToTxMeta(

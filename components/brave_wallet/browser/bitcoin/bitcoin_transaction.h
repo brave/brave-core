@@ -11,90 +11,123 @@
 #include <string>
 #include <vector>
 
-#include "base/strings/string_number_conversions.h"
-#include "base/values.h"
+#include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_wallet::bitcoin {
+namespace brave_wallet {
 
-struct Outpoint {
-  Outpoint();
-  ~Outpoint();
-  Outpoint(const Outpoint& other);
-  Outpoint& operator=(const Outpoint& other);
-  Outpoint(Outpoint&& other);
-  Outpoint& operator=(Outpoint&& other);
+class BitcoinTransaction {
+ public:
+  struct Outpoint {
+    Outpoint();
+    ~Outpoint();
+    Outpoint(const Outpoint& other);
+    Outpoint& operator=(const Outpoint& other);
+    Outpoint(Outpoint&& other);
+    Outpoint& operator=(Outpoint&& other);
+    bool operator==(const Outpoint& other) const;
+    bool operator!=(const Outpoint& other) const;
 
-  // TODO(apaymyshev): enforce 32 bytes array?
-  std::vector<uint8_t> txid;
-  uint32_t index = 0;
+    base::Value::Dict ToValue() const;
+    static absl::optional<Outpoint> FromValue(const base::Value::Dict& value);
 
-  std::string txid_hex() const { return base::HexEncode(txid); }
+    SHA256HashArray txid;
+    uint32_t index = 0;
+  };
 
-  bool operator<(const Outpoint& other) const {
-    return std::tie(txid, index) < std::tie(other.txid, other.index);
-  }
+  struct TxInput {
+    TxInput();
+    ~TxInput();
+    TxInput(const TxInput& other) = delete;
+    TxInput& operator=(const TxInput& other) = delete;
+    TxInput(TxInput&& other);
+    TxInput& operator=(TxInput&& other);
+    bool operator==(const TxInput& other) const;
+    bool operator!=(const TxInput& other) const;
+
+    TxInput Clone() const;
+    base::Value::Dict ToValue() const;
+    static absl::optional<TxInput> FromValue(const base::Value::Dict& value);
+
+    static absl::optional<TxInput> FromRpcUtxo(
+        const std::string& address,
+        const bitcoin_rpc::UnspentOutput& utxo);
+
+    std::string utxo_address;
+    Outpoint utxo_outpoint;
+    uint64_t utxo_value = 0;
+
+    std::vector<uint8_t> script_sig;  // scriptSig aka unlock script.
+    std::vector<uint8_t> witness;     // serialized witness stack.
+    uint32_t n_sequence() const;
+
+    bool IsSigned() const;
+  };
+
+  struct TxOutput {
+    TxOutput();
+    ~TxOutput();
+    TxOutput(const TxOutput& other) = delete;
+    TxOutput& operator=(const TxOutput& other) = delete;
+    TxOutput(TxOutput&& other);
+    TxOutput& operator=(TxOutput&& other);
+    bool operator==(const TxOutput& other) const;
+    bool operator!=(const TxOutput& other) const;
+
+    TxOutput Clone() const;
+    base::Value::Dict ToValue() const;
+    static absl::optional<TxOutput> FromValue(const base::Value::Dict& value);
+
+    std::string address;
+    uint64_t amount = 0;
+  };
+
+  BitcoinTransaction();
+  ~BitcoinTransaction();
+  BitcoinTransaction(const BitcoinTransaction& other) = delete;
+  BitcoinTransaction& operator=(const BitcoinTransaction& other) = delete;
+  BitcoinTransaction(BitcoinTransaction&& other);
+  BitcoinTransaction& operator=(BitcoinTransaction&& other);
+  bool operator==(const BitcoinTransaction& other) const;
+  bool operator!=(const BitcoinTransaction& other) const;
+
+  BitcoinTransaction Clone() const;
+  base::Value::Dict ToValue() const;
+  static absl::optional<BitcoinTransaction> FromValue(
+      const base::Value::Dict& value);
+
+  bool IsSigned() const;
+  uint64_t TotalInputsAmount() const;
+
+  uint8_t sighash_type() const;
+
+  std::string to() const { return to_; }
+  void set_to(const std::string& to) { to_ = to; }
+
+  uint64_t amount() const { return amount_; }
+  void set_amount(uint64_t amount) { amount_ = amount; }
+
+  uint64_t fee() const { return fee_; }
+  void set_fee(uint64_t fee) { fee_ = fee; }
+
+  const std::vector<TxInput>& inputs() const { return inputs_; }
+  std::vector<TxInput>& inputs() { return inputs_; }
+  const std::vector<TxOutput>& outputs() const { return outputs_; }
+  std::vector<TxOutput>& outputs() { return outputs_; }
+
+  uint32_t locktime() const { return locktime_; }
+  void set_locktime(uint32_t locktime) { locktime_ = locktime; }
+
+ private:
+  std::vector<TxInput> inputs_;
+  std::vector<TxOutput> outputs_;
+  uint32_t locktime_ = 0;
+  std::string to_;
+  uint64_t amount_ = 0;
+  uint64_t fee_ = 0;
 };
 
-struct Input {
-  Input();
-  ~Input();
-  Input(const Input& other);
-  Input& operator=(const Input& other);
-  Input(Input&& other);
-  Input& operator=(Input&& other);
-
-  Outpoint outpoint;
-  std::string scriptpubkey;
-  std::string scriptpubkey_type;
-  std::string scriptpubkey_address;
-
-  // TODO(apaymyshev): support large values
-  uint64_t value = 0;
-
-  // TODO(apaymyshev): need these fields
-  // scriptsig
-  // scriptsig_asm
-  // witness
-  // is_coinbase
-  // sequence
-};
-
-struct Output {
-  Output();
-  ~Output();
-  Output(const Output& other);
-  Output& operator=(const Output& other);
-  Output(Output&& other);
-  Output& operator=(Output&& other);
-
-  Outpoint outpoint;
-  std::string scriptpubkey_type;
-  std::string scriptpubkey_address;
-  // TODO(apaymyshev): support large values
-  // https://blockstream.info/api/tx/b36bced99cc459506ad2b3af6990920b12f6dc84f9c7ed0dd2c3703f94a4b692
-  uint64_t value = 0;
-};
-
-struct Transaction {
-  static absl::optional<Transaction> FromRpcValue(const base::Value& value);
-
-  Transaction();
-  ~Transaction();
-  Transaction(const Transaction& other);
-  Transaction& operator=(const Transaction& other);
-  Transaction(Transaction&& other);
-  Transaction& operator=(Transaction&& other);
-
-  std::string txid;
-
-  std::vector<Input> vin;
-  std::vector<Output> vout;
-
-  uint32_t block_height = 0;
-
-  bool operator<(const Transaction& other) const;
-};
-
-}  // namespace brave_wallet::bitcoin
+}  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_TRANSACTION_H_

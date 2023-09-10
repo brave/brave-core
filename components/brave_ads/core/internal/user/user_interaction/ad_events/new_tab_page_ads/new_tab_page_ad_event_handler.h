@@ -75,6 +75,14 @@ class NewTabPageAdEventHandler final : public NewTabPageAdEventHandlerDelegate {
                          mojom::NewTabPageAdEventType event_type,
                          FireNewTabPageAdEventHandlerCallback callback) const;
 
+  void NotifyDidFireNewTabPageAdEvent(
+      const NewTabPageAdInfo& ad,
+      mojom::NewTabPageAdEventType event_type) const;
+  void NotifyFailedToFireNewTabPageAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::NewTabPageAdEventType event_type) const;
+
   raw_ptr<NewTabPageAdEventHandlerDelegate> delegate_ = nullptr;
 
   base::WeakPtrFactory<NewTabPageAdEventHandler> weak_factory_{this};

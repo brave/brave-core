@@ -35,21 +35,25 @@ DecodedBitcoinAddress::DecodedBitcoinAddress(DecodedBitcoinAddress&& other) =
 DecodedBitcoinAddress& DecodedBitcoinAddress::operator=(
     DecodedBitcoinAddress&& other) = default;
 
-// TODO(apaymyshev): should also return decoded address kind(pubkey hash, script
-// hash, etc).
 absl::optional<DecodedBitcoinAddress> DecodeBitcoinAddress(
-    const std::string& address,
-    bool testnet) {
+    const std::string& address) {
   // TODO(apaymyshev): support legacy addresses.
   auto bech_result = bech32::Decode(address);
 
   // https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#segwit-address-format
-  if (bech_result.second.empty() ||
-      bech_result.first != (testnet ? "tb" : "bc")) {
+  if (bech_result.second.empty()) {
     return absl::nullopt;
   }
 
   DecodedBitcoinAddress result;
+  if (bech_result.first == "tb") {
+    result.testnet = true;
+  } else if (bech_result.first == "bc") {
+    result.testnet = false;
+  } else {
+    return absl::nullopt;
+  }
+
   if (bech_result.second[0] > 16) {
     return absl::nullopt;
   }

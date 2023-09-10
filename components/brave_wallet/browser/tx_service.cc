@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_manager.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -29,6 +30,10 @@ namespace {
 
 mojom::CoinType GetCoinTypeFromTxDataUnion(
     const mojom::TxDataUnion& tx_data_union) {
+  if (tx_data_union.is_eth_tx_data_1559() || tx_data_union.is_eth_tx_data()) {
+    return mojom::CoinType::ETH;
+  }
+
   if (tx_data_union.is_solana_tx_data()) {
     return mojom::CoinType::SOL;
   }
@@ -37,7 +42,11 @@ mojom::CoinType GetCoinTypeFromTxDataUnion(
     return mojom::CoinType::FIL;
   }
 
-  return mojom::CoinType::ETH;
+  if (tx_data_union.is_btc_tx_data()) {
+    return mojom::CoinType::BTC;
+  }
+
+  NOTREACHED_NORETURN();
 }
 
 size_t CalculatePendingTxCount(
@@ -79,8 +88,8 @@ TxService::TxService(JsonRpcService* json_rpc_service,
   if (IsBitcoinEnabled()) {
     CHECK(bitcoin_wallet_service);
     tx_manager_map_[mojom::CoinType::BTC] = std::make_unique<BitcoinTxManager>(
-        this, json_rpc_service, bitcoin_wallet_service, keyring_service, prefs,
-        delegate_.get(), account_resolver_delegate_.get());
+        this, bitcoin_wallet_service, keyring_service, prefs, delegate_.get(),
+        account_resolver_delegate_.get());
   }
 }
 

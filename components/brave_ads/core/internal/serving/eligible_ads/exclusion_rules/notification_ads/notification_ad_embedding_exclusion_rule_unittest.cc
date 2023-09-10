@@ -22,7 +22,7 @@ class EmbeddingExclusionRuleTest : public UnitTestBase {
   const EmbeddingExclusionRule exclusion_rule_;
 };
 
-TEST_F(EmbeddingExclusionRuleTest, AllowIfNoEmbeddingV2) {
+TEST_F(EmbeddingExclusionRuleTest, ShouldIncludeIfNoEmbeddingV2) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -44,7 +44,7 @@ TEST_F(EmbeddingExclusionRuleTest, AllowIfNoEmbeddingV2) {
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(EmbeddingExclusionRuleTest, AllowIfEmbeddingV2) {
+TEST_F(EmbeddingExclusionRuleTest, ShouldIncludeIfEmbeddingV2) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -111,7 +111,7 @@ TEST_F(EmbeddingExclusionRuleTest, DisallowIfEmptyEmbeddingV3) {
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(EmbeddingExclusionRuleTest, AllowIfEmbeddingV3) {
+TEST_F(EmbeddingExclusionRuleTest, ShouldIncludeIfEmbeddingV3) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;

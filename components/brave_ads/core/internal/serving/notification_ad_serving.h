@@ -70,6 +70,11 @@ class NotificationAdServing final : public AdsClientNotifierObserver {
   void ServeAd(const NotificationAdInfo& ad);
   void FailedToServeAd();
 
+  void NotifyOpportunityAroseToServeNotificationAd(
+      const SegmentList& segments) const;
+  void NotifyDidServeNotificationAd(const NotificationAdInfo& ad) const;
+  void NotifyFailedToServeNotificationAd() const;
+
   // AdsClientNotifierObserver:
   void OnNotifyPrefDidChange(const std::string& path) override;
 

@@ -44,17 +44,10 @@ void ConversionQueue::AddCallback(
     const ConversionQueueItemInfo& conversion_queue_item,
     const bool success) {
   if (!success) {
-    if (delegate_) {
-      delegate_->OnFailedToAddConversionToQueue(
-          conversion_queue_item.conversion);
-    }
-
-    return;
+    return NotifyFailedToAddConversionToQueue(conversion_queue_item.conversion);
   }
 
-  if (delegate_) {
-    delegate_->OnDidAddConversionToQueue(conversion_queue_item.conversion);
-  }
+  NotifyDidAddConversionToQueue(conversion_queue_item.conversion);
 
   if (ShouldProcessQueueItem(conversion_queue_item)) {
     ProcessQueueItemAfterDelay(conversion_queue_item);
@@ -86,10 +79,8 @@ void ConversionQueue::ProcessQueueItemAfterDelay(
       base::BindOnce(&ConversionQueue::ProcessQueueItem, base::Unretained(this),
                      conversion_queue_item));
 
-  if (delegate_) {
-    delegate_->OnWillProcessConversionQueue(conversion_queue_item.conversion,
-                                            process_at);
-  }
+  NotifyWillProcessConversionQueue(conversion_queue_item.conversion,
+                                   process_at);
 }
 
 void ConversionQueue::ProcessQueueItem(
@@ -121,19 +112,14 @@ void ConversionQueue::MarkQueueItemAsProcessedCallback(
 
 void ConversionQueue::SuccessfullyProcessedQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  if (delegate_) {
-    delegate_->OnDidProcessConversionQueue(conversion_queue_item.conversion);
-  }
+  NotifyDidProcessConversionQueue(conversion_queue_item.conversion);
 
   ProcessNextQueueItem();
 }
 
 void ConversionQueue::FailedToProcessQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  if (delegate_) {
-    delegate_->OnFailedToProcessConversionQueue(
-        conversion_queue_item.conversion);
-  }
+  NotifyFailedToProcessConversionQueue(conversion_queue_item.conversion);
 
   ProcessNextQueueItem();
 }
@@ -149,19 +135,11 @@ void ConversionQueue::ProcessNextQueueItemCallback(
     const bool success,
     const ConversionQueueItemList& conversion_queue_items) {
   if (!success) {
-    if (delegate_) {
-      delegate_->OnFailedToProcessNextConversionInQueue();
-    }
-
-    return;
+    return NotifyFailedToProcessNextConversionInQueue();
   }
 
   if (conversion_queue_items.empty()) {
-    if (delegate_) {
-      delegate_->OnDidExhaustConversionQueue();
-    }
-
-    return;
+    return NotifyDidExhaustConversionQueue();
   }
 
   const ConversionQueueItemInfo& conversion_queue_item =
@@ -172,6 +150,54 @@ void ConversionQueue::ProcessNextQueueItemCallback(
 
 void ConversionQueue::OnNotifyDidInitializeAds() {
   ProcessNextQueueItem();
+}
+
+void ConversionQueue::NotifyFailedToAddConversionToQueue(
+    const ConversionInfo& conversion) const {
+  if (delegate_) {
+    delegate_->OnFailedToAddConversionToQueue(conversion);
+  }
+}
+
+void ConversionQueue::NotifyDidAddConversionToQueue(
+    const ConversionInfo& conversion) const {
+  if (delegate_) {
+    delegate_->OnDidAddConversionToQueue(conversion);
+  }
+}
+
+void ConversionQueue::NotifyWillProcessConversionQueue(
+    const ConversionInfo& conversion,
+    const base::Time process_at) const {
+  if (delegate_) {
+    delegate_->OnWillProcessConversionQueue(conversion, process_at);
+  }
+}
+
+void ConversionQueue::NotifyDidProcessConversionQueue(
+    const ConversionInfo& conversion) const {
+  if (delegate_) {
+    delegate_->OnDidProcessConversionQueue(conversion);
+  }
+}
+
+void ConversionQueue::NotifyFailedToProcessConversionQueue(
+    const ConversionInfo& conversion) const {
+  if (delegate_) {
+    delegate_->OnFailedToProcessConversionQueue(conversion);
+  }
+}
+
+void ConversionQueue::NotifyFailedToProcessNextConversionInQueue() const {
+  if (delegate_) {
+    delegate_->OnFailedToProcessNextConversionInQueue();
+  }
+}
+
+void ConversionQueue::NotifyDidExhaustConversionQueue() const {
+  if (delegate_) {
+    delegate_->OnDidExhaustConversionQueue();
+  }
 }
 
 }  // namespace brave_ads

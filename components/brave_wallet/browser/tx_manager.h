@@ -21,7 +21,6 @@ class PrefService;
 namespace brave_wallet {
 
 class BlockTracker;
-class JsonRpcService;
 class KeyringService;
 class TxService;
 
@@ -31,7 +30,6 @@ class TxManager : public TxStateManager::Observer,
   TxManager(std::unique_ptr<TxStateManager> tx_state_manager,
             std::unique_ptr<BlockTracker> block_tracker,
             TxService* tx_service,
-            JsonRpcService* json_rpc_service,
             KeyringService* keyring_service,
             PrefService* prefs);
   ~TxManager() override;
@@ -93,10 +91,9 @@ class TxManager : public TxStateManager::Observer,
 
   std::unique_ptr<TxStateManager> tx_state_manager_;
   std::unique_ptr<BlockTracker> block_tracker_;
-  raw_ptr<TxService> tx_service_ = nullptr;             // NOT OWNED
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;  // NOT OWNED
-  raw_ptr<KeyringService> keyring_service_ = nullptr;   // NOT OWNED
-  raw_ptr<PrefService> prefs_ = nullptr;                // NOT OWNED
+  raw_ptr<TxService> tx_service_ = nullptr;
+  raw_ptr<KeyringService> keyring_service_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
   std::set<std::string> pending_chain_ids_;
 
  private:

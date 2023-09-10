@@ -23,7 +23,8 @@ interface Arg {
 const coinTypesMapping = {
   [BraveWallet.CoinType.SOL]: CoinTypes.SOL,
   [BraveWallet.CoinType.ETH]: CoinTypes.ETH,
-  [BraveWallet.CoinType.FIL]: CoinTypes.FIL
+  [BraveWallet.CoinType.FIL]: CoinTypes.FIL,
+  [BraveWallet.CoinType.BTC]: CoinTypes.BTC,
 }
 
 export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
@@ -39,7 +40,7 @@ export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
 
     const nonSolArgs = arg.accounts
       .flatMap((account) => account.accountId.coin !== CoinTypes.SOL &&
-        arg.tokens && coinTypesMapping[account.accountId.coin]
+        arg.tokens && coinTypesMapping[account.accountId.coin] !== undefined
           ? [
               {
                 accountId: account.accountId,

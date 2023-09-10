@@ -15,6 +15,8 @@
 
 namespace brave_wallet {
 
+constexpr uint8_t kBitcoinSigHashAll = 1;
+
 // TODO(apaymyshev): support more
 enum BitcoinAddressType {
   kWitnessV0ScriptHash,
@@ -33,11 +35,11 @@ struct DecodedBitcoinAddress {
   BitcoinAddressType address_type;
   std::vector<uint8_t> pubkey_hash;
   uint8_t witness_version = 0;
+  bool testnet = false;
 };
 
 absl::optional<DecodedBitcoinAddress> DecodeBitcoinAddress(
-    const std::string& address,
-    bool testnet);
+    const std::string& address);
 
 std::string PubkeyToSegwitAddress(const std::vector<uint8_t>& pubkey,
                                   bool testnet);

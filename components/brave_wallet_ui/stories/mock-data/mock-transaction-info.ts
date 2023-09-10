@@ -45,7 +45,8 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
     },
     ethTxData: undefined,
     solanaTxData: undefined,
-    filTxData: undefined
+    filTxData: undefined,
+    btcTxData: undefined
   },
   txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
   txStatus: 0,
@@ -92,7 +93,8 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
       txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
       version: 1,
     },
-    filTxData: undefined
+    filTxData: undefined,
+    btcTxData: undefined
   },
   txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
   txStatus: 0,
@@ -129,7 +131,8 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
     },
     ethTxData: undefined,
     ethTxData1559: undefined,
-    solanaTxData: undefined
+    solanaTxData: undefined,
+    btcTxData: undefined
   },
   txHash: 'fil-send-tx',
   txParams: [],

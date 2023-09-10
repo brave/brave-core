@@ -16,6 +16,8 @@
 
 namespace brave_wallet {
 
+class EthTransaction;
+
 class EthereumKeyring : public HDKeyring {
  public:
   EthereumKeyring() = default;

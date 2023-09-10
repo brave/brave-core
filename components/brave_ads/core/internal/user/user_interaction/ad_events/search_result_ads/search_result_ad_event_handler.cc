@@ -287,24 +287,7 @@ void SearchResultAdEventHandler::SuccessfullyFiredEvent(
     FireSearchResultAdEventHandlerCallback callback) const {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
-  if (delegate_) {
-    switch (event_type) {
-      case mojom::SearchResultAdEventType::kServed: {
-        delegate_->OnDidFireSearchResultAdServedEvent(ad);
-        break;
-      }
-
-      case mojom::SearchResultAdEventType::kViewed: {
-        delegate_->OnDidFireSearchResultAdViewedEvent(ad);
-        break;
-      }
-
-      case mojom::SearchResultAdEventType::kClicked: {
-        delegate_->OnDidFireSearchResultAdClickedEvent(ad);
-        break;
-      }
-    }
-  }
+  NotifyDidFireSearchResultAdEvent(ad, event_type);
 
   std::move(callback).Run(/*success*/ true, ad.placement_id, event_type);
 }
@@ -319,11 +302,42 @@ void SearchResultAdEventHandler::FailedToFireEvent(
               << event_type << " event for placement_id " << ad.placement_id
               << " and creative instance id " << ad.creative_instance_id);
 
+  NotifyFailedToFireSearchResultAdEvent(ad, event_type);
+
+  std::move(callback).Run(/*success*/ false, ad.placement_id, event_type);
+}
+
+void SearchResultAdEventHandler::NotifyDidFireSearchResultAdEvent(
+    const SearchResultAdInfo& ad,
+    mojom::SearchResultAdEventType event_type) const {
+  if (!delegate_) {
+    return;
+  }
+
+  switch (event_type) {
+    case mojom::SearchResultAdEventType::kServed: {
+      delegate_->OnDidFireSearchResultAdServedEvent(ad);
+      break;
+    }
+
+    case mojom::SearchResultAdEventType::kViewed: {
+      delegate_->OnDidFireSearchResultAdViewedEvent(ad);
+      break;
+    }
+
+    case mojom::SearchResultAdEventType::kClicked: {
+      delegate_->OnDidFireSearchResultAdClickedEvent(ad);
+      break;
+    }
+  }
+}
+
+void SearchResultAdEventHandler::NotifyFailedToFireSearchResultAdEvent(
+    const SearchResultAdInfo& ad,
+    mojom::SearchResultAdEventType event_type) const {
   if (delegate_) {
     delegate_->OnFailedToFireSearchResultAdEvent(ad, event_type);
   }
-
-  std::move(callback).Run(/*success*/ false, ad.placement_id, event_type);
 }
 
 }  // namespace brave_ads

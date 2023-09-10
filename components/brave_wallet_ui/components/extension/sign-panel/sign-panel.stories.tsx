@@ -12,14 +12,11 @@ import {
   BraveWallet
 } from '../../../constants/types'
 import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
-import { mockAccount } from '../../../common/constants/mocks'
+import { mockEthAccount } from '../../../stories/mock-data/mock-wallet-accounts'
 
 const signMessageData: BraveWallet.SignMessageRequest = {
   id: 0,
-  accountId: {
-    ...mockAccount.accountId,
-    address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-  },
+  accountId: mockEthAccount.accountId,
   message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.',
   originInfo: mockOriginInfo,
   coin: BraveWallet.CoinType.ETH,

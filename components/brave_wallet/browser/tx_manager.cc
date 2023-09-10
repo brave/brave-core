@@ -14,7 +14,6 @@
 #include "base/logging.h"
 #include "brave/components/brave_wallet/browser/block_tracker.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
@@ -24,17 +23,14 @@ namespace brave_wallet {
 TxManager::TxManager(std::unique_ptr<TxStateManager> tx_state_manager,
                      std::unique_ptr<BlockTracker> block_tracker,
                      TxService* tx_service,
-                     JsonRpcService* json_rpc_service,
                      KeyringService* keyring_service,
                      PrefService* prefs)
     : tx_state_manager_(std::move(tx_state_manager)),
       block_tracker_(std::move(block_tracker)),
       tx_service_(tx_service),
-      json_rpc_service_(json_rpc_service),
       keyring_service_(keyring_service),
       prefs_(prefs) {
   DCHECK(tx_service_);
-  DCHECK(json_rpc_service_);
   DCHECK(keyring_service_);
 
   tx_state_manager_->AddObserver(this);

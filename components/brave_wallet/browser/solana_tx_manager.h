@@ -178,7 +178,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
 
   SolanaTxStateManager* GetSolanaTxStateManager();
   SolanaBlockTracker* GetSolanaBlockTracker();
-
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   base::WeakPtrFactory<SolanaTxManager> weak_ptr_factory_;
 };
 

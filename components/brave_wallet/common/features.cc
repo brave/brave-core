@@ -59,6 +59,8 @@ BASE_FEATURE(kBraveWalletPanelV2Feature,
 BASE_FEATURE(kBraveWalletBitcoinFeature,
              "BraveWalletBitcoin",
              base::FEATURE_DISABLED_BY_DEFAULT);
+const base::FeatureParam<int> kBitcoinRpcThrottle{&kBraveWalletBitcoinFeature,
+                                                  "rpc_throttle", 0};
 
 }  // namespace features
 }  // namespace brave_wallet

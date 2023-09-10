@@ -26,7 +26,8 @@ import {
   isSolanaTransaction,
   parseTransactionWithPrices,
   sortTransactionByDate,
-  findTransactionToken
+  findTransactionToken,
+  isEthereumTransaction
 } from '../../utils/tx-utils'
 import { makeNetworkAsset } from '../../options/asset-options'
 
@@ -157,7 +158,7 @@ export const usePendingTransactions = () => {
 
   const { data: gasEstimates, isLoading: isLoadingGasEstimates } =
     useGetGasEstimation1559Query(
-      transactionInfo && txCoinType !== BraveWallet.CoinType.SOL
+      transactionInfo && txCoinType === BraveWallet.CoinType.ETH
         ? transactionInfo.chainId
         : skipToken,
       defaultQuerySubscriptionOptions
@@ -512,6 +513,11 @@ export const usePendingTransactions = () => {
     , [isSolanaDappTransaction, transactionDetails?.isSwap])
 
   const isLoadingGasFee = React.useMemo(() => {
+    // TODO(apaymyshev): handle bitcoin
+    if (txCoinType === BraveWallet.CoinType.BTC) {
+      return false;
+    }
+
     // SOL
     if (txCoinType === BraveWallet.CoinType.SOL) {
       return isLoadingSolFeeEstimates
@@ -636,10 +642,10 @@ export const usePendingTransactions = () => {
     currentTokenAllowance,
     isCurrentAllowanceUnlimited,
     foundTokenInfoByContractAddress,
-    fromAccountName: txAccount?.name,
-    fromAddress: txAccount?.address,
+    fromAccount: txAccount,
     fromOrb,
     isConfirmButtonDisabled,
+    isEthereumTransaction: isEthereumTransaction(transactionInfo),
     isERC20Approve,
     isERC721SafeTransferFrom,
     isERC721TransferFrom,
@@ -657,7 +663,7 @@ export const usePendingTransactions = () => {
     transactionsNetwork,
     transactionsQueueLength,
     transactionTitle,
-    sendOptions: transactionInfo?.txDataUnion.solanaTxData?.sendOptions,
+    solanaSendOptions: transactionInfo?.txDataUnion.solanaTxData?.sendOptions,
     updateUnapprovedTransactionGasFields,
     updateUnapprovedTransactionNonce,
     groupTransactions,

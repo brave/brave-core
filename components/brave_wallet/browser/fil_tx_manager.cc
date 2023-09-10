@@ -13,7 +13,6 @@
 
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_block_tracker.h"
 #include "brave/components/brave_wallet/browser/fil_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
@@ -22,7 +21,6 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -39,11 +37,11 @@ FilTxManager::FilTxManager(TxService* tx_service,
                                                     account_resolver_delegate),
                 std::make_unique<FilBlockTracker>(json_rpc_service),
                 tx_service,
-                json_rpc_service,
                 keyring_service,
                 prefs),
       nonce_tracker_(std::make_unique<FilNonceTracker>(GetFilTxStateManager(),
                                                        json_rpc_service)),
+      json_rpc_service_(json_rpc_service),
       account_resolver_delegate_(account_resolver_delegate) {
   GetFilBlockTracker()->AddObserver(this);
 }

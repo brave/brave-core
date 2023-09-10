@@ -31,7 +31,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, AdAllowedAfter1Hour) {
+TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, ShouldIncludeAfter1Hour) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -52,7 +52,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, AdAllowedAfter1Hour) {
 }
 
 TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
-       AdAllowedAfter1HourForMultipleTypes) {
+       ShouldIncludeAfter1HourForMultipleTypes) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -87,7 +87,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
 }
 
 TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
-       DoNotAllowTheSameAdWithin1Hour) {
+       ShouldExcludeTheSameAdWithin1Hour) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;

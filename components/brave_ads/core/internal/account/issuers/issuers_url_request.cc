@@ -102,9 +102,7 @@ void IssuersUrlRequest::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
 
   BLOG(1, "Successfully fetched issuers");
 
-  if (delegate_) {
-    delegate_->OnDidFetchIssuers(issuers);
-  }
+  NotifyDidFetchIssuers(issuers);
 
   FetchAfterDelay();
 }
@@ -112,9 +110,7 @@ void IssuersUrlRequest::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
 void IssuersUrlRequest::FailedToFetchIssuers() {
   BLOG(1, "Failed to fetch issuers");
 
-  if (delegate_) {
-    delegate_->OnFailedToFetchIssuers();
-  }
+  NotifyFailedToFetchIssuers();
 
   Retry();
 }
@@ -128,9 +124,7 @@ void IssuersUrlRequest::FetchAfterDelay() {
 
   BLOG(1, "Fetch issuers " << FriendlyDateAndTime(fetch_at));
 
-  if (delegate_) {
-    delegate_->OnWillFetchIssuers(fetch_at);
-  }
+  NotifyWillFetchIssuers(fetch_at);
 }
 
 void IssuersUrlRequest::Retry() {
@@ -143,23 +137,52 @@ void IssuersUrlRequest::Retry() {
 
   BLOG(1, "Retry fetching issuers " << FriendlyDateAndTime(retry_at));
 
-  if (delegate_) {
-    delegate_->OnWillRetryFetchingIssuers(retry_at);
-  }
+  NotifyWillRetryFetchingIssuers(retry_at);
 }
 
 void IssuersUrlRequest::RetryCallback() {
   BLOG(1, "Retry fetching issuers");
 
-  if (delegate_) {
-    delegate_->OnDidRetryFetchingIssuers();
-  }
+  NotifyDidRetryFetchingIssuers();
 
   Fetch();
 }
 
 void IssuersUrlRequest::StopRetrying() {
   retry_timer_.Stop();
+}
+
+void IssuersUrlRequest::NotifyDidFetchIssuers(
+    const IssuersInfo& issuers) const {
+  if (delegate_) {
+    delegate_->OnDidFetchIssuers(issuers);
+  }
+}
+
+void IssuersUrlRequest::NotifyFailedToFetchIssuers() const {
+  if (delegate_) {
+    delegate_->OnFailedToFetchIssuers();
+  }
+}
+
+void IssuersUrlRequest::NotifyWillFetchIssuers(
+    const base::Time fetch_at) const {
+  if (delegate_) {
+    delegate_->OnWillFetchIssuers(fetch_at);
+  }
+}
+
+void IssuersUrlRequest::NotifyWillRetryFetchingIssuers(
+    const base::Time retry_at) const {
+  if (delegate_) {
+    delegate_->OnWillRetryFetchingIssuers(retry_at);
+  }
+}
+
+void IssuersUrlRequest::NotifyDidRetryFetchingIssuers() const {
+  if (delegate_) {
+    delegate_->OnDidRetryFetchingIssuers();
+  }
 }
 
 }  // namespace brave_ads

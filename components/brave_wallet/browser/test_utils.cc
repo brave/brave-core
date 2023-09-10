@@ -186,6 +186,10 @@ mojom::AccountIdPtr AccountUtils::FindAccountIdByAddress(
 }
 
 void WaitForTxStorageDelegateInitialized(TxStorageDelegate* delegate) {
+  if (delegate->IsInitialized()) {
+    return;
+  }
+
   base::RunLoop run_loop;
   class TestTxStorageDelegateObserver : public TxStorageDelegate::Observer {
    public:

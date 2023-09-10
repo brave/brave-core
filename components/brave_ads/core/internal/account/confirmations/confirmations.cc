@@ -66,6 +66,20 @@ void Confirmations::ConfirmCallback(const TransactionInfo& transaction,
   queue_.Add(*confirmation);
 }
 
+void Confirmations::NotifyDidConfirm(
+    const ConfirmationInfo& confirmation) const {
+  if (delegate_) {
+    delegate_->OnDidConfirm(confirmation);
+  }
+}
+
+void Confirmations::NotifyFailedToConfirm(
+    const ConfirmationInfo& confirmation) const {
+  if (delegate_) {
+    delegate_->OnFailedToConfirm(confirmation);
+  }
+}
+
 void Confirmations::OnDidAddConfirmationToQueue(
     const ConfirmationInfo& confirmation) {
   BLOG(1, "Successfully added "
@@ -94,9 +108,7 @@ void Confirmations::OnDidProcessConfirmationQueue(
               << confirmation.transaction_id << " and creative instance id "
               << confirmation.creative_instance_id);
 
-  if (delegate_) {
-    delegate_->OnDidConfirm(confirmation);
-  }
+  NotifyDidConfirm(confirmation);
 }
 
 void Confirmations::OnFailedToProcessConfirmationQueue(
@@ -107,9 +119,7 @@ void Confirmations::OnFailedToProcessConfirmationQueue(
               << confirmation.transaction_id << " and creative instance id "
               << confirmation.creative_instance_id);
 
-  if (delegate_) {
-    delegate_->OnFailedToConfirm(confirmation);
-  }
+  NotifyFailedToConfirm(confirmation);
 }
 
 void Confirmations::OnDidExhaustConfirmationQueue() {

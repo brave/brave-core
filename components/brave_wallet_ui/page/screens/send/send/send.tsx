@@ -137,7 +137,7 @@ export const Send = (props: Props) => {
     selectSendAsset,
     searchingForDomain,
     processAddressOrUrl
-  } = useSend(true)
+  } = useSend()
 
   // Queries & Mutations
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()

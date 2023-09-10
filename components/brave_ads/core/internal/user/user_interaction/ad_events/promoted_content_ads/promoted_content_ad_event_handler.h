@@ -79,6 +79,14 @@ class PromotedContentAdEventHandler final
       mojom::PromotedContentAdEventType event_type,
       FirePromotedContentAdEventHandlerCallback callback) const;
 
+  void NotifyDidFirePromotedContentAdEvent(
+      const PromotedContentAdInfo& ad,
+      mojom::PromotedContentAdEventType event_type) const;
+  void NotifyFailedToFirePromotedContentAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::PromotedContentAdEventType event_type) const;
+
   raw_ptr<PromotedContentAdEventHandlerDelegate> delegate_ = nullptr;
 
   base::WeakPtrFactory<PromotedContentAdEventHandler> weak_factory_{this};

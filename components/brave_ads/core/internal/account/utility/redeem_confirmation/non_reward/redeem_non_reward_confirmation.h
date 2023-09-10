@@ -49,6 +49,10 @@ class RedeemNonRewardConfirmation final {
   void FailedToRedeemConfirmation(const ConfirmationInfo& confirmation,
                                   bool should_retry);
 
+  void NotifyDidRedeemConfirmation(const ConfirmationInfo& confirmation) const;
+  void NotifyFailedToRedeemConfirmation(const ConfirmationInfo& confirmation,
+                                        bool should_retry) const;
+
   base::WeakPtr<RedeemConfirmationDelegate> delegate_ = nullptr;
 };
 

@@ -30,9 +30,7 @@ class AntiTargetingResource final : public AdsClientNotifierObserver {
 
   bool IsInitialized() const { return static_cast<bool>(anti_targeting_); }
 
-  const absl::optional<AntiTargetingInfo>& get() const {
-    return anti_targeting_;
-  }
+  AntiTargetingSiteList GetSites(const std::string& creative_set_id) const;
 
  private:
   void MaybeLoad();
