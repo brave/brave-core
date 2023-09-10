@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/check_is_test.h"
+#include "base/containers/flat_map.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -16,7 +17,6 @@
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -27,15 +27,9 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/display/screen.h"
 #include "ui/gfx/canvas.h"
+#include "ui/gfx/image/image_skia_operations.h"
+#include "ui/gfx/skbitmap_operations.h"
 #include "ui/views/view_utils.h"
-
-namespace {
-
-// Size of the drop indicator.
-int g_drop_indicator_width = 0;
-int g_drop_indicator_height = 0;
-
-}  // namespace
 
 BraveTabContainer::BraveTabContainer(
     TabContainerController& controller,
@@ -76,14 +70,6 @@ BraveTabContainer::BraveTabContainer(
                           base::Unretained(this)));
 
   UpdateLayoutOrientation();
-
-  if (g_drop_indicator_width == 0) {
-    // Direction doesn't matter, both images are the same size.
-    gfx::ImageSkia* drop_image =
-        GetDropArrowImage(DropArrow::Position::Horizontal, true);
-    g_drop_indicator_width = drop_image->width();
-    g_drop_indicator_height = drop_image->height();
-  }
 }
 
 BraveTabContainer::~BraveTabContainer() {
@@ -409,7 +395,12 @@ BraveTabContainer::DropArrow::DropArrow(const BrowserRootView::DropIndex& index,
   params.z_order = ui::ZOrderLevel::kFloatingUIElement;
   params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;
   params.accept_events = false;
-  params.bounds = gfx::Rect(g_drop_indicator_width, g_drop_indicator_height);
+
+  // All drop images has the same size.
+  const gfx::ImageSkia* drop_image =
+      GetDropArrowImage(Position::Horizontal, false);
+  params.bounds = gfx::Rect(drop_image->width(), drop_image->height());
+
   params.context = context->GetNativeWindow();
   arrow_window_->Init(std::move(params));
   arrow_view_ =
@@ -510,13 +501,18 @@ gfx::Rect BraveTabContainer::GetDropBounds(int drop_index,
     center = header->y() + tabs::kVerticalTabsSpacing / 2;
   }
 
+  // Since all drop indicator images are the same size, we will use the right
+  // arrow image to determine the height and width.
+  const gfx::ImageSkia* drop_image = GetDropArrowImage(
+      BraveTabContainer::DropArrow::Position::Horizontal, false);
+
   // Determine the screen bounds.
-  gfx::Point drop_loc(is_tab_pinned ? center - g_drop_indicator_width / 2 : 0,
-                      is_tab_pinned ? tab->y() - g_drop_indicator_height
-                                    : center - g_drop_indicator_height / 2);
+  gfx::Point drop_loc(is_tab_pinned ? center - drop_image->width() / 2 : 0,
+                      is_tab_pinned ? tab->y() - drop_image->height()
+                                    : center - drop_image->height() / 2);
   ConvertPointToScreen(this, &drop_loc);
-  gfx::Rect drop_bounds(drop_loc.x(), drop_loc.y(), g_drop_indicator_width,
-                        g_drop_indicator_height);
+  gfx::Rect drop_bounds(drop_loc.x(), drop_loc.y(), drop_image->width(),
+                        drop_image->height());
 
   // If the rect doesn't fit on the monitor, push the arrow to the bottom.
   display::Screen* screen = display::Screen::GetScreen();
@@ -535,10 +531,35 @@ gfx::Rect BraveTabContainer::GetDropBounds(int drop_index,
 gfx::ImageSkia* BraveTabContainer::GetDropArrowImage(
     BraveTabContainer::DropArrow::Position pos,
     bool beneath) {
-  return ui::ResourceBundle::GetSharedInstance().GetImageSkiaNamed(
-      pos == BraveTabContainer::DropArrow::Position::Vertical
-          ? (beneath ? IDR_TAB_DROP_UP : IDR_TAB_DROP_DOWN)
-          : (beneath ? IDR_TAB_DROP_LEFT : IDR_TAB_DROP_RIGHT));
+  typedef BraveTabContainer::DropArrow::Position Position;
+  typedef SkBitmapOperations::RotationAmount RotationAmount;
+  static base::NoDestructor<
+      base::flat_map<std::pair<Position, bool>, gfx::ImageSkia>>
+      drop_images([] {
+        gfx::ImageSkia* top_arrow_image =
+            ui::ResourceBundle::GetSharedInstance().GetImageSkiaNamed(
+                IDR_TAB_DROP_UP);
+
+        base::flat_map<std::pair<Position, bool>, gfx::ImageSkia>
+            position_to_images;
+
+        position_to_images.emplace(std::make_pair(Position::Vertical, true),
+                                   *top_arrow_image);
+        position_to_images.emplace(
+            std::make_pair(Position::Horizontal, false),
+            gfx::ImageSkiaOperations::CreateRotatedImage(
+                *top_arrow_image, RotationAmount::ROTATION_90_CW));
+        position_to_images.emplace(
+            std::make_pair(Position::Vertical, false),
+            gfx::ImageSkiaOperations::CreateRotatedImage(
+                *top_arrow_image, RotationAmount::ROTATION_180_CW));
+        position_to_images.emplace(
+            std::make_pair(Position::Horizontal, true),
+            gfx::ImageSkiaOperations::CreateRotatedImage(
+                *top_arrow_image, RotationAmount::ROTATION_270_CW));
+        return position_to_images;
+      }());
+  return &drop_images->find(std::make_pair(pos, beneath))->second;
 }
 
 void BraveTabContainer::SetDropArrow(
