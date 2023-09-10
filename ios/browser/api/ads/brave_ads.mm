@@ -8,6 +8,7 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 
 #import "ads_client_bridge.h"
 #import "ads_client_ios.h"
@@ -97,6 +98,12 @@ static NSString* const kBraveNewsOptedInPrefKey =
     base::SysUTF8ToNSString(brave_news::prefs::kBraveNewsOptedIn);
 static NSString* const kNewTabPageShowTodayPrefKey =
     base::SysUTF8ToNSString(brave_news::prefs::kNewTabPageShowToday);
+static NSString* const kNewTabPageShowBackgroundImagePrefKey =
+    base::SysUTF8ToNSString(
+        ntp_background_images::prefs::kNewTabPageShowBackgroundImage);
+static NSString* const kNewTabPageShowSponsoredImagesBackgroundImagePrefKey =
+    base::SysUTF8ToNSString(ntp_background_images::prefs::
+                                kNewTabPageShowSponsoredImagesBackgroundImage);
 
 namespace {
 
@@ -171,10 +178,12 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     }
 
     // TODO(https://github.com/brave/brave-browser/issues/32112): Remove the
-    // code that permanently enables Brave Today preferences when the issue is
-    // resolved.
+    // code that permanently enables Brave Today and New Tab Page preferences
+    // when the issue is resolved.
     self.prefs[kBraveNewsOptedInPrefKey] = @(true);
     self.prefs[kNewTabPageShowTodayPrefKey] = @(true);
+    self.prefs[kNewTabPageShowBackgroundImagePrefKey] = @(true);
+    self.prefs[kNewTabPageShowSponsoredImagesBackgroundImagePrefKey] = @(true);
 
     [self setupNetworkMonitoring];
 
