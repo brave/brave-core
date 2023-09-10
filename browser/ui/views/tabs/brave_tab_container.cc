@@ -531,8 +531,8 @@ gfx::Rect BraveTabContainer::GetDropBounds(int drop_index,
 gfx::ImageSkia* BraveTabContainer::GetDropArrowImage(
     BraveTabContainer::DropArrow::Position pos,
     bool beneath) {
-  typedef BraveTabContainer::DropArrow::Position Position;
-  typedef SkBitmapOperations::RotationAmount RotationAmount;
+  using BraveTabContainer::DropArrow::Position Position;
+  using SkBitmapOperations::RotationAmount RotationAmount;
   static base::NoDestructor<
       base::flat_map<std::pair<Position, bool>, gfx::ImageSkia>>
       drop_images([] {
