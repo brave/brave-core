@@ -19,7 +19,7 @@ namespace brave_ads::ml {
 
 class BraveAdsMappedTokensTransformationTest : public UnitTestBase {};
 
-TEST_F(BraveAdsMappedTokensTransformationTest, MappedTokens) {
+TEST_F(BraveAdsMappedTokensTransformationTest, ToMappedTokens) {
   // Arrange
   constexpr double kTolerance = 1e-6;
 
@@ -53,6 +53,96 @@ TEST_F(BraveAdsMappedTokensTransformationTest, MappedTokens) {
               (std::fabs(1.0 - transformed_vector_values.at(3)) < kTolerance) &&
               (std::fabs(1.0 - transformed_vector_values.at(4)) < kTolerance) &&
               (std::fabs(1.0 - transformed_vector_values.at(5)) < kTolerance));
+}
+
+TEST_F(BraveAdsMappedTokensTransformationTest, EmptyText) {
+  // Arrange
+  constexpr double kTolerance = 1e-6;
+
+  constexpr char kTestString[] = "";
+  std::unique_ptr<Data> data = std::make_unique<TextData>(kTestString);
+
+  int vector_dimension = 6;
+  std::map<std::string, std::vector<int>> token_categories_mapping = {
+      {"is", {1}}, {"this", {5}}, {"test-string", {0, 3}}, {"simple", {1, 4}}};
+
+  const MappedTokensTransformation to_mapped_tokens(vector_dimension,
+                                                    token_categories_mapping);
+
+  // // Act
+  data = to_mapped_tokens.Apply(data);
+  const VectorData* const transformed_vector_data =
+      static_cast<VectorData*>(data.get());
+
+  std::vector<float> transformed_vector_values(
+      transformed_vector_data->GetDimensionCount());
+  transformed_vector_values =
+      transformed_vector_data->GetData(transformed_vector_values);
+
+  // Assert
+  ASSERT_EQ(DataType::kVector, data->GetType());
+  ASSERT_TRUE(transformed_vector_values.size() ==
+              static_cast<size_t>(vector_dimension));
+  EXPECT_TRUE((std::fabs(0 - transformed_vector_values.at(0)) < kTolerance) &&
+              (std::fabs(0 - transformed_vector_values.at(1)) < kTolerance) &&
+              (std::fabs(0 - transformed_vector_values.at(2)) < kTolerance) &&
+              (std::fabs(0 - transformed_vector_values.at(3)) < kTolerance) &&
+              (std::fabs(0 - transformed_vector_values.at(4)) < kTolerance) &&
+              (std::fabs(0 - transformed_vector_values.at(5)) < kTolerance));
+}
+
+TEST_F(BraveAdsMappedTokensTransformationTest, EmptyMap) {
+  // Arrange
+  constexpr double kTolerance = 1e-6;
+
+  constexpr char kTestString[] = "this is a simple test string";
+  std::unique_ptr<Data> data = std::make_unique<TextData>(kTestString);
+
+  int vector_dimension = 6;
+  std::map<std::string, std::vector<int>> token_categories_mapping = {};
+
+  const MappedTokensTransformation to_mapped_tokens(vector_dimension,
+                                                    token_categories_mapping);
+
+  // // Act
+  data = to_mapped_tokens.Apply(data);
+  const VectorData* const transformed_vector_data =
+      static_cast<VectorData*>(data.get());
+
+  std::vector<float> transformed_vector_values(
+      transformed_vector_data->GetDimensionCount());
+  transformed_vector_values =
+      transformed_vector_data->GetData(transformed_vector_values);
+
+  // Assert
+  ASSERT_EQ(DataType::kVector, data->GetType());
+  ASSERT_TRUE(transformed_vector_values.size() ==
+              static_cast<size_t>(vector_dimension));
+  EXPECT_TRUE((std::fabs(0 - transformed_vector_values.at(0)) < kTolerance) &&
+              (std::fabs(0 - transformed_vector_values.at(1)) < kTolerance) &&
+              (std::fabs(0 - transformed_vector_values.at(2)) < kTolerance) &&
+              (std::fabs(0 - transformed_vector_values.at(3)) < kTolerance) &&
+              (std::fabs(0 - transformed_vector_values.at(4)) < kTolerance) &&
+              (std::fabs(0 - transformed_vector_values.at(5)) < kTolerance));
+}
+
+TEST_F(BraveAdsMappedTokensTransformationTest, NonTextData) {
+  // Arrange
+  VectorData vector_data({1.0, 2.0, 4.0, 0.03, 0.0});
+  std::unique_ptr<Data> data = std::make_unique<VectorData>(vector_data);
+
+  int vector_dimension = 6;
+  std::map<std::string, std::vector<int>> token_categories_mapping = {
+      {"is", {1}}, {"this", {5}}, {"test-string", {0, 3}}, {"simple", {1, 4}}};
+
+  const MappedTokensTransformation to_mapped_tokens(vector_dimension,
+                                                    token_categories_mapping);
+
+  // // Act
+  data = to_mapped_tokens.Apply(data);
+
+  // Assert
+  EXPECT_TRUE(data == nullptr);
 }
 
 }  // namespace brave_ads::ml

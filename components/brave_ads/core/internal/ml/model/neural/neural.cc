@@ -20,10 +20,12 @@ NeuralModel::NeuralModel(std::vector<std::vector<VectorData>> matricies,
                          std::vector<std::string> classes) {
   std::vector<PostMatrixFunctionType> post_matrix_functions_types;
   for (const auto& post_matrix_function : post_matrix_functions) {
-    if (post_matrix_function == "tanh") {
-      post_matrix_functions_types.push_back(PostMatrixFunctionType::kTanh);
-    } else if (post_matrix_function == "softmax") {
+    if (post_matrix_function == "softmax") {
       post_matrix_functions_types.push_back(PostMatrixFunctionType::kSoftmax);
+    } else if (post_matrix_function == "tanh") {
+      post_matrix_functions_types.push_back(PostMatrixFunctionType::kTanh);
+    } else {
+      post_matrix_functions_types.push_back(PostMatrixFunctionType::kNone);
     }
   }
   neural_architecture_info_ = NeuralArchitectureInfo(
@@ -35,10 +37,6 @@ NeuralModel::NeuralModel(NeuralModel&& other) noexcept = default;
 NeuralModel& NeuralModel::operator=(NeuralModel&& other) noexcept = default;
 
 NeuralModel::~NeuralModel() = default;
-
-bool NeuralModel::HasModelParameters() const {
-  return !neural_architecture_info_.matricies.empty();
-}
 
 PredictionMap NeuralModel::Predict(const VectorData& data) const {
   PredictionMap predictions;
@@ -70,7 +68,7 @@ PredictionMap NeuralModel::Predict(const VectorData& data) const {
 }
 
 PredictionMap NeuralModel::GetTopPredictions(const VectorData& data) const {
-  return GetTopCountPredictionsImpl(data, absl::nullopt);
+  return GetTopCountPredictionsImpl(data, data.GetDimensionCount());
 }
 
 PredictionMap NeuralModel::GetTopCountPredictions(const VectorData& data,
@@ -78,9 +76,8 @@ PredictionMap NeuralModel::GetTopCountPredictions(const VectorData& data,
   return GetTopCountPredictionsImpl(data, top_count);
 }
 
-PredictionMap NeuralModel::GetTopCountPredictionsImpl(
-    const VectorData& data,
-    absl::optional<size_t> top_count) const {
+PredictionMap NeuralModel::GetTopCountPredictionsImpl(const VectorData& data,
+                                                      size_t top_count) const {
   const PredictionMap predictions = Predict(data);
   std::vector<std::pair<double, std::string>> prediction_order;
   prediction_order.reserve(predictions.size());
@@ -90,8 +87,8 @@ PredictionMap NeuralModel::GetTopCountPredictionsImpl(
   base::ranges::sort(base::Reversed(prediction_order));
 
   PredictionMap top_predictions;
-  if (top_count && *top_count < prediction_order.size()) {
-    prediction_order.resize(*top_count);
+  if (top_count < prediction_order.size()) {
+    prediction_order.resize(top_count);
   }
   for (const auto& [probability, segment] : prediction_order) {
     top_predictions[segment] = probability;

@@ -20,8 +20,8 @@ struct PipelineInfo final {
                std::string timestamp,
                std::string locale,
                TransformationVector transformations,
-               LinearModel linear_model,
-               NeuralModel neural_model);
+               absl::optional<LinearModel> linear_model,
+               absl::optional<NeuralModel> neural_model);
 
   PipelineInfo(PipelineInfo&&) noexcept;
   PipelineInfo& operator=(PipelineInfo&&) noexcept;
@@ -32,8 +32,8 @@ struct PipelineInfo final {
   std::string timestamp;
   std::string locale;
   TransformationVector transformations;
-  LinearModel linear_model;
-  NeuralModel neural_model;
+  absl::optional<LinearModel> linear_model;
+  absl::optional<NeuralModel> neural_model;
 };
 
 }  // namespace brave_ads::ml::pipeline

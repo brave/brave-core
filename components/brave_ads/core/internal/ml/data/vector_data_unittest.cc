@@ -13,6 +13,8 @@
 
 namespace brave_ads::ml {
 
+constexpr double kTolerance = 1e-6;
+
 class BraveAdsVectorDataTest : public UnitTestBase {};
 
 TEST_F(BraveAdsVectorDataTest, DenseVectorDataInitialization) {
@@ -42,8 +44,6 @@ TEST_F(BraveAdsVectorDataTest, SparseVectorDataInitialization) {
 
 TEST_F(BraveAdsVectorDataTest, DenseDenseProduct) {
   // Arrange
-  constexpr double kTolerance = 1e-6;
-
   const std::vector<float> vector_5{1.0, 2.0, 3.0, 4.0, 5.0};
   const VectorData dense_vector_data_5(vector_5);
 
@@ -66,7 +66,6 @@ TEST_F(BraveAdsVectorDataTest, DenseDenseProduct) {
 
 TEST_F(BraveAdsVectorDataTest, SparseSparseProduct) {
   // Arrange
-  constexpr double kTolerance = 1e-6;
 
   // Dense equivalent is [1, 0, 2]
   const std::map<unsigned, double> sparse_vector_3 = {{0U, 1.0}, {2U, 2.0}};
@@ -88,8 +87,6 @@ TEST_F(BraveAdsVectorDataTest, SparseSparseProduct) {
 
 TEST_F(BraveAdsVectorDataTest, SparseDenseProduct) {
   // Arrange
-  constexpr double kTolerance = 1e-6;
-
   const std::vector<float> vector_5{1.0, 2.0, 3.0, 4.0, 5.0};
   const VectorData dense_vector_data_5(vector_5);
 
@@ -223,27 +220,30 @@ TEST_F(BraveAdsVectorDataTest, NormalizeSparseVector) {
 }
 
 TEST_F(BraveAdsVectorDataTest, GetSum) {
-  constexpr double kTolerance = 1e-6;
   const VectorData vector_data_1({1.0, 2.0, 3.0, 4.0, 5.0});
   const VectorData vector_data_2({-1.0, 1.0, 2.0, -2.0, 2.0, 1.0, 1.0});
+  const VectorData vector_data_3;
   double sum_1 = vector_data_1.GetSum();
   double sum_2 = vector_data_2.GetSum();
+  double sum_3 = vector_data_3.GetSum();
   EXPECT_TRUE(std::fabs(15.0 - sum_1) < kTolerance);
   EXPECT_TRUE(std::fabs(4.0 - sum_2) < kTolerance);
+  EXPECT_TRUE(std::fabs(0 - sum_3) < kTolerance);
 }
 
 TEST_F(BraveAdsVectorDataTest, GetNorm) {
-  constexpr double kTolerance = 1e-6;
   const VectorData vector_data_1({1.0, 2.0, 3.0, 4.0, 5.0});
   const VectorData vector_data_2({-1.0, 1.0, 2.0, -2.0, 2.0, 1.0, 1.0});
+  const VectorData vector_data_3;
   double norm_1 = vector_data_1.GetNorm();
   double norm_2 = vector_data_2.GetNorm();
+  double norm_3 = vector_data_3.GetNorm();
   EXPECT_TRUE(std::fabs(7.416198487 - norm_1) < kTolerance);
   EXPECT_TRUE(std::fabs(4.0 - norm_2) < kTolerance);
+  EXPECT_TRUE(std::fabs(0 - norm_3) < kTolerance);
 }
 
 TEST_F(BraveAdsVectorDataTest, ApplyToDistribution) {
-  constexpr double kTolerance = 1e-6;
   VectorData vector_data({1.0, 2.0, 4.0, 0.03, 0.0});
   vector_data.ToDistribution();
   std::vector<float> vector_distribution = vector_data.GetData();
@@ -256,8 +256,14 @@ TEST_F(BraveAdsVectorDataTest, ApplyToDistribution) {
       (std::fabs(0.0 - vector_distribution.at(4)) < kTolerance));
 }
 
+TEST_F(BraveAdsVectorDataTest, ApplyToDistributionEmptyVector) {
+  VectorData vector_data;
+  vector_data.ToDistribution();
+  std::vector<float> vector_distribution = vector_data.GetData();
+  EXPECT_TRUE(vector_distribution.empty());
+}
+
 TEST_F(BraveAdsVectorDataTest, ApplyTanh) {
-  constexpr double kTolerance = 1e-6;
   VectorData vector_data({1.0, -2.0, 4.0, 0.03, 0.0});
   vector_data.Tanh();
   std::vector<float> vector_tanh = vector_data.GetData();
@@ -269,8 +275,14 @@ TEST_F(BraveAdsVectorDataTest, ApplyTanh) {
               (std::fabs(0.0 - vector_tanh.at(4)) < kTolerance));
 }
 
+TEST_F(BraveAdsVectorDataTest, ApplyTanhEmptyVector) {
+  VectorData vector_data;
+  vector_data.Tanh();
+  std::vector<float> vector_tanh = vector_data.GetData();
+  EXPECT_TRUE(vector_tanh.empty());
+}
+
 TEST_F(BraveAdsVectorDataTest, ApplySoftmax) {
-  constexpr double kTolerance = 1e-6;
   VectorData vector_data({1.0, -2.0, 4.0, 0.03, 0.0});
   vector_data.Softmax();
   std::vector<float> vector_softmax = vector_data.GetData();
@@ -280,6 +292,13 @@ TEST_F(BraveAdsVectorDataTest, ApplySoftmax) {
               (std::fabs(0.91789023 - vector_softmax.at(2)) < kTolerance) &&
               (std::fabs(0.01732374 - vector_softmax.at(3)) < kTolerance) &&
               (std::fabs(0.01681175 - vector_softmax.at(4)) < kTolerance));
+}
+
+TEST_F(BraveAdsVectorDataTest, ApplySoftmaxEmptyVector) {
+  VectorData vector_data;
+  vector_data.Softmax();
+  std::vector<float> vector_softmax = vector_data.GetData();
+  EXPECT_TRUE(vector_softmax.empty());
 }
 
 TEST_F(BraveAdsVectorDataTest, ComputeSimilarity) {

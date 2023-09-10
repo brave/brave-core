@@ -39,7 +39,7 @@ TextProcessing& TextProcessing::operator=(TextProcessing&& other) noexcept =
 TextProcessing::~TextProcessing() = default;
 
 TextProcessing::TextProcessing(TransformationVector transformations,
-                               LinearModel linear_model)
+                               absl::optional<LinearModel> linear_model)
     : is_initialized_(true) {
   linear_model_ = std::move(linear_model);
   transformations_ = std::move(transformations);
@@ -70,11 +70,11 @@ bool TextProcessing::SetPipeline(base::Value::Dict dict) {
 
 absl::optional<PredictionMap> TextProcessing::Predict(
     VectorData* vector_data) const {
-  if (linear_model_.HasModelParameters()) {
-    return linear_model_.GetTopPredictions(*vector_data);
+  if (linear_model_) {
+    return linear_model_->GetTopPredictions(*vector_data);
   }
-  if (neural_model_.HasModelParameters()) {
-    return neural_model_.GetTopPredictions(*vector_data);
+  if (neural_model_) {
+    return neural_model_->GetTopPredictions(*vector_data);
   }
   return absl::nullopt;
 }

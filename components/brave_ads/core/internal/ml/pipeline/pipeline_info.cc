@@ -13,8 +13,8 @@ PipelineInfo::PipelineInfo(const int version,
                            std::string timestamp,
                            std::string locale,
                            TransformationVector transformations,
-                           LinearModel linear_model,
-                           NeuralModel neural_model)
+                           absl::optional<LinearModel> linear_model,
+                           absl::optional<NeuralModel> neural_model)
     : version(version),
       timestamp(std::move(timestamp)),
       locale(std::move(locale)),

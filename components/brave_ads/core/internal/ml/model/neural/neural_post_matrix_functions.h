@@ -9,8 +9,9 @@
 namespace brave_ads::ml {
 
 enum class PostMatrixFunctionType {
-  kTanh = 0,
+  kNone = 0,
   kSoftmax,
+  kTanh,
 };
 
 }  // namespace brave_ads::ml

@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "brave/components/brave_ads/core/internal/ml/model/neural/neural_architecture_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::ml {
 
@@ -33,8 +32,6 @@ class NeuralModel final {
 
   ~NeuralModel();
 
-  bool HasModelParameters() const;
-
   PredictionMap Predict(const VectorData& data) const;
 
   PredictionMap GetTopPredictions(const VectorData& data) const;
@@ -43,9 +40,8 @@ class NeuralModel final {
                                        size_t top_count) const;
 
  private:
-  PredictionMap GetTopCountPredictionsImpl(
-      const VectorData& data,
-      absl::optional<size_t> top_count) const;
+  PredictionMap GetTopCountPredictionsImpl(const VectorData& data,
+                                           size_t top_count) const;
 
   NeuralArchitectureInfo neural_architecture_info_;
 };
