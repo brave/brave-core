@@ -187,6 +187,12 @@ SkColor BraveVerticalTabStyle::GetTargetTabBackgroundColor(
                                                          hovered);
   }
 
+  if (selection_state == TabStyle::TabSelectionState::kSelected) {
+    // Use the same color if th tab is selected via multiselection.
+    return BraveGM2TabStyle::GetTargetTabBackgroundColor(selection_state,
+                                                         hovered);
+  }
+
   const ui::ColorProvider* cp = tab()->GetColorProvider();
   if (!cp) {
     return gfx::kPlaceholderColor;
