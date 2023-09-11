@@ -1,342 +1,402 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/rewards_settings_gradient_bg">
-
-
-    <TextView
-        android:id="@+id/btn_verify_wallet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="14dp"
-        android:background="@drawable/wallet_verify_button"
-        android:drawablePadding="8dp"
-        android:fontFamily="sans-serif-medium"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="6dp"
-        android:text="@string/brave_ui_wallet_button_connect"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="13sp"
-        app:drawableEndCompat="@drawable/ic_verify_wallet_arrow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/verify_wallet_arrow_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="8dp"
-        android:contentDescription="@null"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/btn_verify_wallet"
-        app:layout_constraintStart_toEndOf="@id/btn_verify_wallet"
-        app:layout_constraintTop_toTopOf="@id/btn_verify_wallet"
-        app:srcCompat="@drawable/ic_arrow_down" />
-
-    <TextView
-        android:id="@+id/estimated_earnings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:alpha="0.65"
-        android:drawablePadding="4dp"
-        android:fontFamily="sans-serif"
-        android:letterSpacing="0.02"
-        android:text="@string/estimated_earnings"
-        android:textColor="@android:color/white"
-        android:textSize="11sp"
-        app:drawableEndCompat="@drawable/ic_reward_info_outline"
-        app:layout_constraintStart_toStartOf="@+id/ads_monthly_statement_text"
-        app:layout_constraintTop_toTopOf="parent" />
-
-      
-        <ImageView
-        android:id="@+id/estimated_earnings_tooltip_triangle"
-        android:layout_width="12sp"
-        android:layout_height="6dp"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/tooltip_arrow"
-        android:contentDescription="@null"
-        android:layout_marginEnd="46dp"
-        app:layout_constraintBottom_toTopOf="@id/estimated_earnings_tooltip"
-        app:layout_constraintEnd_toEndOf="@id/estimated_earnings_tooltip"/>
-
-    <TextView
-        android:id="@+id/estimated_earnings_tooltip"
-        android:layout_width="194dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/p2p_rewards_inside_background"
-        android:elevation="39dp"
-        android:fontFamily="sans-serif"
-        android:paddingStart="16dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="32dp"
-        android:paddingEnd="40dp"
-        android:textSize="12sp"
-        android:text="@string/estimated_tooltip_text"
-        android:textColor="@color/terms_of_service_text_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/estimated_earnings" />
-
-    <TextView
-        android:id="@+id/manage_ads_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="39dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/manage_ads"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="12dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:textColor="@color/rewards_manage_ads_color"
-        android:textSize="12sp"
-        app:drawableRightCompat="@drawable/carat_right"
-        app:layout_constraintBottom_toBottomOf="@id/estimated_earnings_tooltip"
-        app:layout_constraintStart_toStartOf="@id/estimated_earnings_tooltip" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/manage_ads_close_button"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:contentDescription="@null"
-        android:elevation="90dp"
-        app:layout_constraintEnd_toEndOf="@+id/estimated_earnings_tooltip"
-        app:layout_constraintTop_toTopOf="@+id/estimated_earnings_tooltip"
-        app:srcCompat="@drawable/ic_baseline_close_24"
-        app:tint="@color/rewards_estimated_earning_close_color" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/estimated_tooltip_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="estimated_earnings_tooltip_triangle,estimated_earnings_tooltip,manage_ads_text,manage_ads_close_button" />
-
-
-    <TextView
-        android:id="@+id/ads_monthly_statement_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
-        android:alpha="0.65"
-        android:background="@drawable/brave_rewards_ads_month_background"
-        android:fontFamily="sans-serif"
-        android:letterSpacing="0.02"
-        android:paddingHorizontal="4dp"
-        android:paddingVertical="2dp"
-        android:textColor="@android:color/white"
-        android:textSize="11sp"
-        app:layout_constraintEnd_toStartOf="@+id/estimated_range"
-        app:layout_constraintTop_toBottomOf="@id/estimated_earnings" />
-
-    <TextView
-        android:id="@+id/estimated_range"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:fontFamily="sans-serif"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/ads_monthly_statement_text"
-        app:layout_constraintEnd_toStartOf="@+id/bat_text1"
-        app:layout_constraintTop_toTopOf="@id/ads_monthly_statement_text" />
-
-    <TextView
-        android:id="@+id/empty_unverified_state_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="4dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/empty_unverified_state_text"
-        android:textColor="@android:color/white"
-        android:alpha="0.65"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/ads_monthly_statement_text"
-        app:layout_constraintEnd_toStartOf="@id/bat_ads_balance_learn_more_text"
-        app:layout_constraintTop_toTopOf="@id/ads_monthly_statement_text" />
-
-    <TextView
-        android:id="@+id/bat_ads_balance_learn_more_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="34dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/menu_learn_more"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/estimated_range"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/estimated_range" />
-
-    <TextView
-        android:id="@+id/bat_text1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:alpha="0.65"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/bat_text"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/estimated_range"
-        app:layout_constraintEnd_toStartOf="@id/empty_unverified_state_text"
-        app:layout_constraintTop_toTopOf="@id/estimated_range" />
-
-
-    <TextView
-        android:id="@+id/balance_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
-        android:alpha="0.65"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/balance"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_verify_wallet" />
-
-    <TextView
-        android:id="@+id/bat_balance_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:fontFamily="sans-serif-medium"
-        android:textColor="@android:color/white"
-        android:textSize="32sp"
-        app:layout_constraintStart_toStartOf="@id/balance_text"
-        app:layout_constraintTop_toBottomOf="@id/balance_text" />
-
-    <TextView
-        android:id="@+id/bat_text2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="4dp"
-        android:alpha="0.65"
-        android:text="@string/bat_text"
-        android:fontFamily="sans-serif"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/bat_balance_text"
-        app:layout_constraintStart_toEndOf="@id/bat_balance_text" />
-
-    <TextView
-        android:id="@+id/usd_balance_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="13dp"
-        android:alpha="0.65"
-        android:fontFamily="sans-serif-medium"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@id/brave_rewards_panel_summary_layout_id"
-        app:layout_constraintStart_toStartOf="@id/bat_balance_text"
-        app:layout_constraintTop_toBottomOf="@id/bat_balance_text" />
-
-    <ProgressBar
-        android:id="@+id/wallet_balance_progress"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_centerInParent="true"
-        android:indeterminateTint="@android:color/white"
-        android:elevation="9dp"
-        android:layout_marginVertical="16dp"
-        android:layout_marginStart="24dp"
-        app:layout_constraintBottom_toTopOf="@id/brave_rewards_panel_summary_layout_id"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/balance_text"
-        />
-
-    <TextView
-        android:id="@+id/loading_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:text="@string/loading"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:layout_marginStart="4dp"
-        app:layout_constraintTop_toTopOf="@id/wallet_balance_progress"
-        app:layout_constraintStart_toEndOf="@id/wallet_balance_progress"
-        app:layout_constraintBottom_toBottomOf="@id/wallet_balance_progress" />
-
-    <LinearLayout
-        android:id="@+id/brave_rewards_panel_summary_layout_id"
+    android:layout_marginTop="12dp"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginBottom="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="5dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:background="@drawable/rewards_settings_gradient_bg">
 
-        <include layout="@layout/brave_rewards_panel_summary_layout" />
-    </LinearLayout>
+        <TextView
+            android:id="@+id/btn_verify_wallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/wallet_verify_button"
+            android:drawablePadding="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="6dp"
+            android:text="@string/brave_ui_wallet_button_connect"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="13sp"
+            app:drawableEndCompat="@drawable/ic_verify_wallet_arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/verify_wallet_arrow_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@null"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/btn_verify_wallet"
+            app:layout_constraintStart_toEndOf="@id/btn_verify_wallet"
+            app:layout_constraintTop_toTopOf="@id/btn_verify_wallet"
+            app:srcCompat="@drawable/ic_arrow_down" />
 
-    <TextView
-        android:id="@+id/logged_out_state_text"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/rewards_logged_out_state_gradient_bg"
-        android:fontFamily="sans-serif-medium"
-        android:padding="12dp"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        android:lineSpacingExtra="4sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/brave_rewards_panel_summary_layout_id"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_verify_wallet" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/balance_display_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="bat_balance_text,bat_text2,usd_balance_text" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/estimated_earnings_range_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:constraint_referenced_ids="estimated_range,bat_text1" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/wallet_progress_bar_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:constraint_referenced_ids="wallet_balance_progress,loading_text" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/estimated_not_connected_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="empty_unverified_state_text,bat_ads_balance_learn_more_text" />
+        <TextView
+            android:id="@+id/estimated_earnings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="36dp"
+            android:alpha="0.65"
+            android:drawablePadding="4dp"
+            android:letterSpacing="0.02"
+            android:fontFamily="sans-serif"
+            android:text="@string/estimated_earnings"
+            android:textColor="@android:color/white"
+            android:textSize="11sp"
+            app:drawableEndCompat="@drawable/ic_reward_info_outline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+            android:id="@+id/estimated_earnings_tooltip_triangle"
+            android:layout_width="12sp"
+            android:layout_height="6dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/tooltip_arrow"
+            android:contentDescription="@null"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toTopOf="@id/estimated_earnings_tooltip"
+            app:layout_constraintEnd_toEndOf="@id/estimated_earnings_tooltip"/>
+
+        <TextView
+            android:id="@+id/estimated_earnings_tooltip"
+            android:layout_width="194dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/p2p_rewards_inside_background"
+            android:elevation="39dp"
+            android:fontFamily="sans-serif"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="32dp"
+            android:paddingEnd="40dp"
+            android:textSize="12sp"
+            android:text="@string/estimated_tooltip_text"
+            android:textColor="@color/terms_of_service_text_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/estimated_earnings" />
+
+        <TextView
+            android:id="@+id/manage_ads_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="39dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/manage_ads"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:textColor="@color/rewards_manage_ads_color"
+            android:textSize="12sp"
+            app:drawableRightCompat="@drawable/carat_right"
+            app:layout_constraintBottom_toBottomOf="@id/estimated_earnings_tooltip"
+            app:layout_constraintStart_toStartOf="@id/estimated_earnings_tooltip" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/manage_ads_close_button"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="@null"
+            android:elevation="90dp"
+            app:layout_constraintEnd_toEndOf="@+id/estimated_earnings_tooltip"
+            app:layout_constraintTop_toTopOf="@+id/estimated_earnings_tooltip"
+            app:srcCompat="@drawable/ic_baseline_close_24"
+            app:tint="@color/rewards_estimated_earning_close_color" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/estimated_tooltip_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="estimated_earnings_tooltip_triangle,estimated_earnings_tooltip,manage_ads_text,manage_ads_close_button" />
+
+
+        <TextView
+            android:id="@+id/ads_monthly_statement_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/brave_rewards_ads_month_background"
+            android:paddingHorizontal="4dp"
+            android:letterSpacing="0.02"
+            android:paddingVertical="2dp"
+            android:alpha="0.65"
+            android:fontFamily="sans-serif"
+            android:textColor="@android:color/white"
+            android:textSize="11sp"
+            app:layout_constraintStart_toStartOf="@id/estimated_earnings"
+            app:layout_constraintTop_toBottomOf="@id/estimated_earnings" />
+
+        <TextView
+            android:id="@+id/estimated_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:fontFamily="sans-serif"
+            app:layout_constraintBottom_toBottomOf="@id/ads_monthly_statement_text"
+            app:layout_constraintStart_toEndOf="@id/ads_monthly_statement_text"
+            app:layout_constraintTop_toTopOf="@id/ads_monthly_statement_text" />
+
+        <TextView
+            android:id="@+id/empty_unverified_state_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/empty_unverified_state_text"
+            android:textColor="@android:color/white"
+            android:alpha="0.65"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/ads_monthly_statement_text"
+            app:layout_constraintStart_toEndOf="@id/ads_monthly_statement_text"
+            app:layout_constraintTop_toTopOf="@id/ads_monthly_statement_text" />
+
+        <TextView
+            android:id="@+id/bat_ads_balance_learn_more_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/menu_learn_more"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ads_monthly_statement_text"
+            app:layout_constraintStart_toEndOf="@+id/empty_unverified_state_text"
+            app:layout_constraintTop_toTopOf="@+id/ads_monthly_statement_text" />
+
+        <TextView
+            android:id="@+id/bat_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:alpha="0.65"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/bat_text"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/estimated_range"
+            app:layout_constraintStart_toEndOf="@id/estimated_range"
+            app:layout_constraintTop_toTopOf="@id/estimated_range" />
+
+
+        <TextView
+            android:id="@+id/balance_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:alpha="0.65"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/balance"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_verify_wallet" />
+
+        <TextView
+            android:id="@+id/bat_balance_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@android:color/white"
+            android:textSize="32sp"
+            app:layout_constraintStart_toStartOf="@id/balance_text"
+            app:layout_constraintTop_toBottomOf="@id/balance_text" />
+
+        <TextView
+            android:id="@+id/bat_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="4dp"
+            android:alpha="0.65"
+            android:text="@string/bat_text"
+            android:fontFamily="sans-serif"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/bat_balance_text"
+            app:layout_constraintStart_toEndOf="@id/bat_balance_text" />
+
+        <ImageView
+            android:id="@+id/vbat_userdrain_help_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="4dp"
+            android:contentDescription="@null"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/bat_text2"
+            app:layout_constraintStart_toEndOf="@id/bat_text2"
+            app:layout_constraintTop_toTopOf="@id/bat_text2"
+            app:srcCompat="@drawable/ic_help_outline" />
+
+        <ImageView
+            android:id="@+id/vbat_userdrain_tooltip_triangle"
+            android:layout_width="12sp"
+            android:layout_height="6dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/tooltip_arrow"
+            android:contentDescription="@null"
+            app:layout_constraintTop_toBottomOf="@id/vbat_userdrain_help_img"
+            app:layout_constraintStart_toStartOf="@id/vbat_userdrain_help_img"
+            app:layout_constraintEnd_toEndOf="@id/vbat_userdrain_help_img"/>
+
+        <TextView
+            android:id="@+id/vbat_userdrain_tooltip"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/p2p_rewards_inside_background"
+            android:elevation="39dp"
+            android:fontFamily="sans-serif"
+            android:padding="16dp"
+            android:textSize="12sp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/vbat_userdrain_tooltip_text"
+            android:textColor="@color/terms_of_service_text_color"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toStartOf="@id/vbat_userdrain_tooltip_triangle"
+            app:layout_constraintEnd_toEndOf="@id/vbat_userdrain_tooltip_triangle"
+            app:layout_constraintTop_toBottomOf="@id/vbat_userdrain_tooltip_triangle"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/vbat_userdrain_tooltip_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="vbat_userdrain_tooltip_triangle,vbat_userdrain_tooltip" />
+
+        <TextView
+            android:id="@+id/usd_balance_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="13dp"
+            android:alpha="0.65"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/brave_rewards_panel_summary_layout_id"
+            app:layout_constraintStart_toStartOf="@id/bat_balance_text"
+            app:layout_constraintTop_toBottomOf="@id/bat_balance_text" />
+
+        <ProgressBar
+            android:id="@+id/wallet_balance_progress"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerInParent="true"
+            android:indeterminateTint="@android:color/white"
+            android:elevation="9dp"
+            android:layout_marginVertical="16dp"
+            android:layout_marginStart="24dp"
+            app:layout_constraintBottom_toTopOf="@id/brave_rewards_panel_summary_layout_id"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/balance_text"
+            />
+
+        <TextView
+            android:id="@+id/loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="@string/loading"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:layout_marginStart="4dp"
+            app:layout_constraintTop_toTopOf="@id/wallet_balance_progress"
+            app:layout_constraintStart_toEndOf="@id/wallet_balance_progress"
+            app:layout_constraintBottom_toBottomOf="@id/wallet_balance_progress" />
+
+        <LinearLayout
+            android:id="@+id/brave_rewards_panel_summary_layout_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <include layout="@layout/brave_rewards_panel_summary_layout" />
+            <!-- <include
+                android:id="@+id/brave_rewards_panel_tip_layout_id"
+                layout="@layout/brave_rewards_panel_tip_layout" /> -->
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/logged_out_state_text"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rewards_logged_out_state_gradient_bg"
+            android:fontFamily="sans-serif-medium"
+            android:padding="12dp"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:lineSpacingExtra="4sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/brave_rewards_panel_summary_layout_id"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_verify_wallet" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/balance_display_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="bat_balance_text,bat_text2,usd_balance_text" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/estimated_earnings_range_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="estimated_range,bat_text1" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/wallet_progress_bar_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="wallet_balance_progress,loading_text" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/estimated_not_connected_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="empty_unverified_state_text,bat_ads_balance_learn_more_text" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
