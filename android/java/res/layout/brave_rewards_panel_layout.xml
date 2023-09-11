@@ -62,20 +62,8 @@
                         android:visibility="gone"
                         android:orientation="vertical">
 
-                        <androidx.cardview.widget.CardView 
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginEnd="12dp"
-                            android:layout_marginBottom="16dp"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="5dp">
-
-                            <include
-                                layout="@layout/wallet_balance_layout" />
-
-                        </androidx.cardview.widget.CardView>
+                        <include
+                            layout="@layout/wallet_balance_layout" />
 
                         <include
                             android:id="@+id/brave_rewards_panel_tip_layout_id"
