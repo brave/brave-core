@@ -230,8 +230,10 @@ class IpfsService : public KeyedService,
 #endif
   base::TimeDelta CalculatePeersRetryTime();
 
-  void OnGatewayValidationComplete(BoolCallback callback,
-    const GURL& initial_url, api_request_helper::APIRequestResult response) const;
+  void OnGatewayValidationComplete(
+      BoolCallback callback,
+      const GURL& initial_url,
+      api_request_helper::APIRequestResult response) const;
 
   void OnGetConnectedPeers(GetConnectedPeersCallback,
                            int retries,

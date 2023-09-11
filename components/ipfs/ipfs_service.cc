@@ -998,14 +998,14 @@ void IpfsService::OnGarbageCollection(
 }
 
 void IpfsService::PreWarmShareableLink(const GURL& url) {
-  api_request_helper_->Request("HEAD", url, std::string(), std::string(),
-                       base::BindOnce(&IpfsService::OnPreWarmComplete,
-                                      base::Unretained(this)),
-                       GetHeaders(url));
+  api_request_helper_->Request(
+      "HEAD", url, std::string(), std::string(),
+      base::BindOnce(&IpfsService::OnPreWarmComplete, base::Unretained(this)),
+      GetHeaders(url));
 }
 
 void IpfsService::OnPreWarmComplete(
-  [[maybe_unused]] api_request_helper::APIRequestResult response) {
+    [[maybe_unused]] api_request_helper::APIRequestResult response) {
   if (prewarm_callback_for_testing_)
     std::move(prewarm_callback_for_testing_).Run();
 }
