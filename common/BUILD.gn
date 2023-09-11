@@ -43,74 +43,8 @@ source_set("channel_info") {
   }
 }
 
-source_set("common") {
-  visibility = brave_common_visibility_targets +
-               # These are layering violation and need to be fixed
-               [ "//brave/components/brave_ads/browser" ]
-  if (!is_android && !is_ios) {
-    visibility += [ "//brave/components/ipfs/test:brave_ipfs_browser_tests" ]
-  }
-
-  deps = []
-
-  sources = [
-    "brave_channel_info.cc",
-    "brave_channel_info.h",
-    "resource_bundle_helper.cc",
-    "resource_bundle_helper.h",
-  ]
-
-  public_deps = [ "//brave/components/constants" ]
-
-  if (!is_android && !is_ios) {
-    deps += [ "//brave/common/importer" ]
-  }
-
-  if (enable_extensions) {
-    sources += [
-      "extensions/brave_extensions_api_provider.cc",
-      "extensions/brave_extensions_api_provider.h",
-      "extensions/brave_extensions_client.cc",
-      "extensions/brave_extensions_client.h",
-    ]
-
-    deps += [
-      "//brave/components/brave_component_updater/browser",
-      "//brave/components/https_upgrade_exceptions/browser",
-      "//extensions/common:common_constants",
-    ]
-
-    public_deps += [ "extensions/api" ]
-  }
-
-  deps += [
-    ":mojo_bindings",
-    "//base",
-    "//brave/chromium_src:common",
-    "//brave/extensions:common",
-    "//components/version_info:channel",
-    "//extensions/buildflags",
-    "//services/service_manager",
-    "//ui/base",
-  ]
-
-  if (!is_ios) {
-    sources += [
-      "brave_content_client.cc",
-      "brave_content_client.h",
-    ]
-
-    deps += [
-      "//brave/components/resources",
-      "//brave/components/resources:static_resources_grit",
-      "//chrome/common",
-      "//chrome/common:channel_info",
-      "//chrome/common:constants",
-      "//components/resources",
-      "//content/public/common",
-      "//third_party/widevine/cdm:buildflags",
-    ]
-  }
+group("common") {
+  public_deps = [ "//chrome/common" ]
 }
 
 config("constants_configs") {
