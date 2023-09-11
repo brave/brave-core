@@ -2,7 +2,7 @@ mod fetch;
 mod present;
 
 use chrono::Utc;
-use tracing::instrument;
+use tracing::{error, instrument};
 
 use crate::errors::{InternalError, SkusError};
 use crate::models::*;
@@ -49,9 +49,10 @@ where
                     if let Some(expires_at) = expires_at {
                         // attempt to refresh credentials if we're within 5 days of expiry
                         if Utc::now().naive_utc() > (expires_at - chrono::Duration::days(5)) {
+                            error!("Within 5 days of expiry; refreshing order credentials.");
                             let refreshed = self.refresh_order_credentials(order_id).await;
                             if refreshed.is_err() {
-                                continue;
+                                error!("Error refreshing order credentials.");
                             }
                         }
                     }
@@ -101,23 +102,24 @@ where
                     if let Some(expires_at) = expires_at {
                         // attempt to refresh credentials if we're within 5 days of expiry
                         if Utc::now().naive_utc() > (expires_at - chrono::Duration::days(5)) {
+                            error!("Within 5 days of expiry; refreshing order credentials.");
                             let refreshed = self.refresh_order_credentials(order_id).await;
                             if refreshed.is_err() {
-                                continue;
+                                error!("Error refreshing order credentials.");
                             }
                         }
                     }
-                    let active = matches!(
-                        self.matching_time_limited_credential(&item.id).await,
-                        Ok(Some(_))
-                    );
 
-                    return Ok(Some(CredentialSummary {
-                        order,
-                        remaining_credential_count: 1,
-                        expires_at,
-                        active,
-                    }));
+                    if let Ok(Some(_)) = self.matching_time_limited_credential(&item.id).await {
+                        return Ok(Some(CredentialSummary {
+                            order,
+                            remaining_credential_count: 1,
+                            expires_at,
+                            active: true,
+                        }));
+                    }
+
+                    error!("No matches found for credential summary.");
                 }
             };
         } // for
