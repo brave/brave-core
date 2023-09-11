@@ -163,6 +163,10 @@ void ConfirmBubble::PlaylistTabHelperWillBeDestroyed() {
 
 void ConfirmBubble::OnSavedItemsChanged(
     const std::vector<playlist::mojom::PlaylistItemPtr>& items) {
+  if (auto* widget = GetWidget(); !widget || widget->IsClosed()) {
+    return;
+  }
+
   ResetChildViews();
   SizeToContents();
 }
@@ -266,8 +270,10 @@ void ConfirmBubble::RemoveFromPlaylist() {
   base::ranges::transform(saved_items, std::back_inserter(items),
                           [](const auto& item) { return item->Clone(); });
 
-  playlist_tab_helper_->RemoveItems(std::move(items));
+  // Before closing widget, try resetting observer to avoid crash on Win11
+  playlist_tab_helper_observation_.Reset();
 
+  playlist_tab_helper_->RemoveItems(std::move(items));
   GetWidget()->Close();
 }
 
