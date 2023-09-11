@@ -172,6 +172,14 @@ void BraveRewardsNativeWorker::OnGetUserType(
       static_cast<int>(user_type));
 }
 
+bool BraveRewardsNativeWorker::IsGrandfatheredUser(JNIEnv* env) {
+  bool is_grandfathered_user = false;
+  if (brave_rewards_service_) {
+    is_grandfathered_user = brave_rewards_service_->IsGrandfatheredUser();
+  }
+  return is_grandfathered_user;
+}
+
 void BraveRewardsNativeWorker::FetchBalance(JNIEnv* env) {
   if (brave_rewards_service_) {
     brave_rewards_service_->FetchBalance(base::BindOnce(
