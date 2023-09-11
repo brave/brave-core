@@ -848,7 +848,7 @@ public class Utils {
         return bitmap;
     }
 
-    public static void setBlockiesBitmapResource(ExecutorService executor, Handler handler,
+    public static void setTextGeneratedBlockies(ExecutorService executor, Handler handler,
             ImageView iconImg, String source, boolean makeLowerCase) {
         executor.execute(() -> {
             final Bitmap bitmap = Blockies.createIcon(source, makeLowerCase, true);
@@ -865,14 +865,7 @@ public class Utils {
         // TODO(apaymyshev): need to hash uniqueKey string for bitcoin accounts(same as for desktop)
         String source =
                 accountInfo.address != null ? accountInfo.address : accountInfo.accountId.uniqueKey;
-        executor.execute(() -> {
-            final Bitmap bitmap = Blockies.createIcon(source, makeLowerCase, true);
-            handler.post(() -> {
-                if (iconImg != null) {
-                    iconImg.setImageBitmap(bitmap);
-                }
-            });
-        });
+        setTextGeneratedBlockies(executor, handler, iconImg, source, makeLowerCase);
     }
 
     public static void setBlockiesBackground(ExecutorService executor, Handler handler, View view,

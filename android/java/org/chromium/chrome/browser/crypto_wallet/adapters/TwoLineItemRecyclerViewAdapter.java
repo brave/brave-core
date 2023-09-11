@@ -5,26 +5,37 @@
 
 package org.chromium.chrome.browser.crypto_wallet.adapters;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final List<TwoLineItem> mValues;
+    private final ExecutorService mExecutor;
+    private final Handler mHandler;
     private ORIENTATION mOrientation;
 
     public TwoLineItemRecyclerViewAdapter(List<TwoLineItem> items, ORIENTATION orientation) {
         mValues = items;
         mOrientation = orientation;
+        mExecutor = Executors.newSingleThreadExecutor();
+        mHandler = new Handler(Looper.getMainLooper());
     }
 
     public TwoLineItemRecyclerViewAdapter(List<TwoLineItem> items) {
@@ -50,27 +61,32 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         TwoLineItem twoLineItem = mValues.get(position);
+        ViewHolder viewHolder = (ViewHolder) holder;
+        AndroidUtils.gone(viewHolder.mIvIcon);
         if (twoLineItem.getType() == TwoLineItem.TYPE_TEXT) {
-            ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.mTvSubtitle.setVisibility(View.VISIBLE);
             viewHolder.mItem = twoLineItem;
             TwoLineItemText itemDataSourceText = (TwoLineItemText) twoLineItem;
-            if (itemDataSourceText.getTitle() == null) {
+            if (itemDataSourceText.title == null) {
                 viewHolder.mTvTitle.setVisibility(View.GONE);
             } else {
-                viewHolder.mTvTitle.setText(itemDataSourceText.getTitle());
+                viewHolder.mTvTitle.setText(itemDataSourceText.title);
             }
-            if (itemDataSourceText.getSubTitle() == null) {
+            if (itemDataSourceText.subTitle == null) {
                 viewHolder.mTvSubtitle.setVisibility(View.GONE);
             } else {
-                viewHolder.mTvSubtitle.setText(itemDataSourceText.getSubTitle());
+                viewHolder.mTvSubtitle.setText(itemDataSourceText.subTitle);
             }
 
+            if (itemDataSourceText.imageType == ImageType.BLOCKIE) {
+                AndroidUtils.show(viewHolder.mIvIcon);
+                Utils.setTextGeneratedBlockies(
+                        mExecutor, mHandler, viewHolder.mIvIcon, itemDataSourceText.imgData, true);
+            }
             if (itemDataSourceText.updateViewCb != null) {
                 itemDataSourceText.updateViewCb.call(viewHolder.mTvTitle, viewHolder.mTvSubtitle);
             }
         } else if (twoLineItem.getType() == TwoLineItem.TYPE_HEADER) {
-            ViewHolder viewHolder = (ViewHolder) holder;
             TwoLineItemHeader itemDataSourceHeader = (TwoLineItemHeader) twoLineItem;
             viewHolder.mTvTitle.setText(itemDataSourceHeader.mHeader);
             viewHolder.mTvSubtitle.setVisibility(View.GONE);
@@ -88,12 +104,14 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        public ImageView mIvIcon;
         public final TextView mTvTitle;
         public final TextView mTvSubtitle;
         public TwoLineItem mItem;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            mIvIcon = itemView.findViewById(R.id.item_create_account_iv_icon);
             mTvTitle = itemView.findViewById(R.id.item_fragment_two_line_title);
             mTvSubtitle = itemView.findViewById(R.id.item_fragment_two_line_sub_title);
         }
@@ -113,15 +131,16 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     }
 
     public static class TwoLineItemText implements TwoLineItem {
-        private String title;
-        private String subTitle;
+        public String title;
+        public String subTitle;
+        public ImageType imageType;
+        public String imgData;
 
         private Callbacks.Callback2<TextView, TextView> updateViewCb;
 
         public TwoLineItemText(String title, String subTitle,
                 Callbacks.Callback2<TextView, TextView> customUiChanges) {
-            this.title = title;
-            this.subTitle = subTitle;
+            this(title, subTitle);
             this.updateViewCb = customUiChanges;
         }
 
@@ -134,25 +153,17 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             this.title = title;
         }
 
-        public String getTitle() {
-            return title;
-        }
-
         public void setTitle(String title) {
             this.title = title;
-        }
-
-        public String getSubTitle() {
-            return subTitle;
-        }
-
-        public void setSubTitle(String subTitle) {
-            this.subTitle = subTitle;
         }
 
         @Override
         public int getType() {
             return TYPE_TEXT;
+        }
+
+        public ImageType getImageType() {
+            return imageType;
         }
     }
 
@@ -176,5 +187,6 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         }
     }
 
+    public enum ImageType { NONE, BLOCKIE }
     public enum ORIENTATION { HORIZONTAL, VERTICAL }
 }

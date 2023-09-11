@@ -23,6 +23,7 @@ public class AddressUtils {
      */
     public static String getTruncatedAddress(String address) {
         int prefixLength = address.startsWith("0x") ? 6 : 4;
-        return (address.substring(0, prefixLength) + "…" + address.substring(address.length() - 4));
+        return (address.substring(0, prefixLength) + "***"
+                + address.substring(address.length() - 4));
     }
 }

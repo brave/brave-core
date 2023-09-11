@@ -900,6 +900,7 @@ brave_java_resources = [
   "java/res/layout/fragment_sign_message.xml",
   "java/res/layout/fragment_sign_message_error.xml",
   "java/res/layout/fragment_sign_tx_message.xml",
+  "java/res/layout/fragment_siwe.xml",
   "java/res/layout/fragment_transaction.xml",
   "java/res/layout/fragment_transaction_details.xml",
   "java/res/layout/fragment_transactions.xml",
