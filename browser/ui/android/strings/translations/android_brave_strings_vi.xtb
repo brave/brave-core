@@ -1,9 +1,20 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="vi">
+<translation id="8631427463833030968">Quản lý quảng cáo</translation>
+<translation id="7630214457764713113">Sao chép liên kết sạch</translation>
 <translation id="885805571521218129">Điều này phản ánh phạm vi thu nhập ước tính của bạn cho Brave Quảng cáo trong tháng này.</translation>
 <translation id="3478449063771497234">Đã tắt thông báo</translation>
+<translation id="2862978891748913252">Chọn quốc gia của bạn</translation>
+<translation id="3970520675790340955">Chọn quốc gia của bạn để chúng tôi có thể hiển thị cho bạn các tùy chọn và quảng cáo phù hợp cho khu vực của bạn.</translation>
+<translation id="7301741773883122509">Bây giờ bạn có thể nhận được phần thưởng cho việc xem quảng cáo. Bạn có thể giúp làm cho web trở thành một nơi tốt hơn cho tất cả mọi người. Và điều đó thật tuyệt vời!</translation>
+<translation id="6439128034594289376">Tuyệt vời! Tất cả đã sẵn sàng!</translation>
 <translation id="370665806235115550">Đang tải...</translation>
+<translation id="7931127789630755251">Kiếm token cho các quảng cáo riêng tư mà bạn thấy trong Brave</translation>
+<translation id="7859066142771796818">Sử dụng token để mua thẻ quà tặng, đổi lấy các loại tiền khác, hỗ trợ người sáng tạo nội dung, và hơn thế nữa.</translation>
+<translation id="3863981251715594911">Nó hoạt động như thế nào?</translation>
+<translation id="5547108999862247665">Brave Phần thưởng hoạt động như thế nào?</translation>
+<translation id="2965798296974325760">Bắt đầu sử dụng Rewards</translation>
 <translation id="8220484609979012449">\n\nBạn vẫn có thể gửi các khoản đóng góp bằng tiền điện tử cho người sáng tạo nội dung này bằng cách sử dụng ví Web3 của mình.</translation>
 <translation id="6385969012847057348">Người sáng tạo nội dung này không thể nhận đóng góp từ <ph name="CUSTODIAN"/>.</translation>
 <translation id="6268134562674951939">Bạn không có đủ token</translation>
@@ -169,7 +180,7 @@
 <translation id="9110294136812584522">Các trang web có thể yêu cầu sử dụng Đăng nhập bằng Google cũ thông qua cookie của bên thứ ba</translation>
 <translation id="2903783737778379345">Không cho phép Đăng nhập bằng Google cũ thông qua cookie của bên thứ ba</translation>
 <translation id="6880817299303842099">Cho phép sử dụng cookie của bên thứ ba cho Đăng nhập bằng Google cũ</translation>
-<translation id="5169650598465327872">Truy cập localhost</translation>
+<translation id="2136412236435693622">Truy cập localhost</translation>
 <translation id="4172219483893066798">Các trang web có thể yêu cầu quyền truy cập vào tài nguyên localhost</translation>
 <translation id="7181706637590665047">Không cho phép truy cập vào tài nguyên localhost</translation>
 <translation id="1485435696620658073">Được phép truy cập tài nguyên localhost</translation>
@@ -396,6 +407,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="734105583050813665">Bitflyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
+<translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Uphold có thể sẽ cần bạn phải xác thực danh tính căn cứ vào các dịch vụ bạn yêu cầu.</translation>
 <translation id="3200197118442451932">Brave Software Inc. không xử lý, lưu trữ hoặc truy cập bất kỳ thông tin cá nhân nào mà bạn cung cấp cho <ph name="WALLET_PROVIDER"/> khi bạn thiết lập tài khoản với họ.</translation>
 <translation id="1665118090708049096">Đi đến tài khoản <ph name="WALLET_PROVIDER"/> của tôi</translation>
@@ -422,6 +434,12 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="6883611015375728278">Chặn tất cả cookie</translation>
 <translation id="4941539331405513605">Chặn cookie liên trang</translation>
 <translation id="5657156137487675418">Cho phép mọi cookie.</translation>
+<translation id="1553643198679271031">Yêu cầu Ẩn danh</translation>
+<translation id="4891600875049212418">Để chế độ ẩn danh khi truy cập các trang web nhạy cảm</translation>
+<translation id="1388619247102737054">Vô hiệu hóa lịch sử trình duyệt và lưu trữ cục bộ khi các trang web yêu cầu</translation>
+<translation id="1876882294512858963">Luôn luôn Ẩn danh</translation>
+<translation id="554464532999080267">Hỏi trước khi Ẩn danh (tiêu chuẩn)</translation>
+<translation id="926857659063503456">Không bao giờ Ẩn danh</translation>
 <translation id="3895527457258986253">Chặn Vân tay</translation>
 <translation id="7854108565842971747">Đây là những cài đặt Lá chắn mặc định cho các trang web mới. Thay đổi chúng sẽ không ảnh hưởng đến các cài đặt cho từng trang web hiện tại của bạn.</translation>
 <translation id="218587021686734263">Ngăn chặn dấu vân tay thông qua cài đặt ngôn ngữ</translation>
@@ -545,6 +563,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="1689062823386843231">Cho phép UDP không proxy</translation>
 <translation id="1483493594462132177">Gửi</translation>
 <translation id="538450413584738399">Swap</translation>
+<translation id="1366855498335432549">Ký quỹ</translation>
 <translation id="1420318137760245955">Chào mừng đến với Ví Brave</translation>
 <translation id="8339846196588658366">Canh giữ tài sản tiền mã hóa của bạn và theo dõi hiệu suất đầu tư. Tất cả ngay trong trình duyệt riêng tư Brave.</translation>
 <translation id="4472575034687746823">Bắt đầu</translation>
@@ -561,7 +580,8 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="375882617301124395">Sao lưu ví tiền mã hóa của bạn</translation>
 <translation id="8289942708804097960">Mua tiền mã hóa bằng thẻ tín dụng hoặc ghi nợ.</translation>
 <translation id="841880029259839903">Gửi tiền điện tử hoặc chuyển từ tài khoản này sang tài khoản khác.</translation>
-<translation id="8226778393040773102">Swap token và tài sản</translation>
+<translation id="151939837774436299">Hoán đổi token và tài sản.</translation>
+<translation id="5512897350309216422">Gửi tiền điện tử vào Ví Brave.</translation>
 <translation id="1783600039044302171">Bảo mật tiền điện tử của bạn bằng mật khẩu</translation>
 <translation id="3726490322412361740">Nhập mật khẩu</translation>
 <translation id="3038243139480464605">Xác minh mật khẩu</translation>
@@ -602,13 +622,6 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="1144810021918451336">Không bảo vệ bạn khỏi các trang web, nội dung tải xuống và tiện ích mở rộng nguy hiểm.</translation>
 <translation id="5760476995887363522">Các cụm từ không khớp. Vui lòng thử lại.</translation>
 <translation id="2360588547830602174">Khôi phục tài khoản không thành công. Vui lòng thử lại.</translation>
-<translation id="6748108480210050150">Từ</translation>
-<translation id="3318280255740629162">25%</translation>
-<translation id="2636487255623744079">50%</translation>
-<translation id="8654192805213365413">75%</translation>
-<translation id="6159566011642056819">Đến (ước tính)</translation>
-<translation id="6998989275928107238">Đến</translation>
-<translation id="2589431635772931954">Địa chỉ hoặc URL</translation>
 <translation id="5517732667776806421">Thiếu thông tin tổng kiểm</translation>
 <translation id="4006711930669471508">Thông tin tổng kiểm không hợp lệ</translation>
 <translation id="1987317783729300807">Tài khoản</translation>
@@ -636,7 +649,6 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="8475984867371585028">Chỉnh sửa NFT nhìn thấy</translation>
 <translation id="5050890334032852465">Lưu danh sách theo dõi tài khoản</translation>
 <translation id="7755766175599167100">Tìm kiếm token</translation>
-<translation id="3835223348537121988">Số dư:</translation>
 <translation id="3956169227169516344">Chọn phương thức mua hàng</translation>
 <translation id="8488282162676695335">Ví Brave</translation>
 <translation id="3784455785234192852">Khóa</translation>
@@ -650,7 +662,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="8239147115686034860">Tự động khóa Ví Brave</translation>
 <translation id="414639769490080648">Số phút phải chờ cho đến khi Ví Brave được tự động khóa lại</translation>
 <translation id="2326850911705720398">Thiết lập lại và xóa dữ liệu ví</translation>
-<translation id="4322846864135539519">Bạn có chắc chắn muốn đặt lại Phần thưởng Brave của mình không? Nếu ví của bạn không được sao lưu, việc đặt lại sẽ khiến bạn mất hết tất cả dữ liệu tài khoản (bao gồm mọi khoản tiền liên quan). Nhập "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
+<translation id="6567712397896147805">Bạn có chắc chắn muốn đặt lại Ví Brave của mình không? Nếu ví của bạn không được sao lưu thì việc đặt lại sẽ khiến bạn mất tất cả dữ liệu tài khoản (bao gồm mọi khoản tiền liên quan). Nhập "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
 <translation id="6915083716464390008">Chọn một trong các tùy chọn sau</translation>
 <translation id="7667423728712601865">Mua tiền mã hóa bằng thẻ Visa hoặc Mastercard.</translation>
 <translation id="3101839349578102016">Mua ngay bằng tài khoản ngân hàng của bạn. Phí thấp hơn.</translation>
@@ -767,8 +779,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="5045550434625856497">Mật khẩu sai</translation>
 <translation id="1367951781824006909">Chọn tệp</translation>
 <translation id="8648684608605749476">Chặn các cookie của bên thứ ba trong chế độ Ẩn danh</translation>
-<translation id="1118876217803190221">Số dư không đủ</translation>
-<translation id="3025158262797849291">Định dạng số không được công nhận</translation>
 <translation id="5932938770824268122">Khóa Bí Mật</translation>
 <translation id="2472882733835903303">Hiển thị khóa riêng tư</translation>
 <translation id="4391056902675005799">Ẩn khóa riêng tư</translation>
@@ -813,14 +823,12 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="1254969878422524947">Giới hạn tiền thưởng trên xăng (Gwei)</translation>
 <translation id="7373308452149471621">Giới hạn giá trên xăng (Gwei)</translation>
 <translation id="5891811606602061966">Không nhập được tài khoản, vui lòng hãy thử lại.</translation>
-<translation id="1822506443689803572">Brave sử dụng <ph name="DEX_PROVIDER"/> làm bộ tổng hợp DEX.</translation>
 <translation id="5061574358754621254">Dữ liệu giá được cung cấp bởi CoinGecko</translation>
-<translation id="4626407663177532837">Báo giá bao gồm một khoản phí Brave 0,875%.</translation>
 <translation id="8574289650879708853">Thêm tài sản tùy chỉnh</translation>
 <translation id="1255896809210433555">Thêm NFT</translation>
 <translation id="7791543448312431591">Thêm</translation>
 <translation id="6600400596821238377">Tên token</translation>
-<translation id="4432966365400169165">Địa chỉ hợp đồng token</translation>
+<translation id="3797613444743816037">Địa chỉ đào</translation>
 <translation id="4092152169181928870">Ký hiệu token</translation>
 <translation id="4351811224047421378">Số thập phân chính xác</translation>
 <translation id="547122651977318828">ID token (chỉ dành cho ERC721)</translation>
@@ -920,6 +928,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="6044189892950611565">Kênh thông báo cho Trình duyệt Brave</translation>
 <translation id="1173919438868967364">Chọn tài khoản</translation>
 <translation id="8922793255489232731">Không thể tải múi giờ phù hợp cho: <ph name="VALUE"/></translation>
+<translation id="7084757528071133475">Đang tải xuống tệp dữ liệu ví \u2022 <ph name="percentage"/>%%</translation>
 <translation id="6471216025161697462">Đã kết nối với <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Dùng thử</translation>
 <translation id="7733890291091968191">Hiển thị thông báo Web3</translation>
@@ -1002,8 +1011,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="8382368767453083629">Khởi tạo multisig 2</translation>
 <translation id="77243237706803459">Khởi tạo đào 2</translation>
 <translation id="583281660410589416">Không xác định</translation>
-<translation id="2862978891748913252">Chọn quốc gia của bạn</translation>
-<translation id="3832588024105436400">Chọn quốc gia của bạn để chúng tôi có thể hiển thị cho bạn các tùy chọn và quảng cáo phù hợp cho khu vực của bạn. <ph name="PRIVACY_POLICY"/></translation>
 <translation id="5666264859501108700">Khu vực Phần thưởng Brave của bạn đã được đặt thành <ph name="COUNTRY_NAME"/>.</translation>
 <translation id="909076461795862330">Rất tiếc, đã xảy ra lỗi khi cố gắng thiết lập Phần thưởng Brave. Vui lòng thử lại.</translation>
 <translation id="7352651011704765696">Đã xảy ra sự cố</translation>
@@ -1060,10 +1067,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="7748944510530490017">Mạng chính</translation>
 <translation id="2781668117338732220">Mạng phụ</translation>
 <translation id="282560918037172384">Mạng thử nghiệm</translation>
-<translation id="6309721369749814582">Tên miền <ph name="DOMAIN"/> chưa được đăng ký</translation>
-<translation id="4071347720273751665">Có vẻ như bạn đã nhập địa chỉ ENS. Chúng tôi sẽ cần sử dụng trình phân giải của bên thứ ba để giải quyết yêu cầu này. Trình phân giải này có thể xem địa chỉ IP và tên miền của bạn. <ph name="LEARN_MORE"/></translation>
-<translation id="4096049525705855774">Sử dụng tên miền ngoại tuyến ENS</translation>
-<translation id="4982630604810554641">Đang tìm tên miền...</translation>
 <translation id="3586775666459823714">NFTs</translation>
 <translation id="707569835145765061">Hành động bắt buộc: Kết nối tài khoản lưu ký nếu không vBAT của bạn sẽ bị mất</translation>
 <translation id="1776742005329298234">Vào <ph name="DUE_DATE"/>, chúng tôi sẽ ngừng hỗ trợ cho số dư BAT ảo hiện có. Kết nối tài khoản lưu ký trước ngày này để chúng tôi có thể chuyển số dư kiếm được của bạn sang tài khoản lưu ký của bạn, nếu không số dư của bạn sẽ bị mất.</translation>

@@ -1,9 +1,18 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sl">
+<translation id="7630214457764713113">Kopirajte čisto povezavo</translation>
 <translation id="885805571521218129">To odraža vaš predvideni razpon zaslužka za Brave Oglase ta mesec.</translation>
 <translation id="3478449063771497234">Obvestila so izključena</translation>
+<translation id="2862978891748913252">Izberite svojo državo</translation>
+<translation id="3970520675790340955">Izberite svojo državo, da vam lahko pokažemo prave možnosti in oglase za vašo regijo.</translation>
+<translation id="6439128034594289376">Juhu! Vse je pripravljeno!</translation>
 <translation id="370665806235115550">Nalaganje ...</translation>
+<translation id="7931127789630755251">Zaslužite žetone za zasebne oglase, ki jih vidite v Brave</translation>
+<translation id="7859066142771796818">Uporabite žetone za nakup darilnih kartic, zamenjavo za druge valute, podporo ustvarjalcem vsebine in še več.</translation>
+<translation id="3863981251715594911">Kako deluje?</translation>
+<translation id="5547108999862247665">Kako delujejo Nagrade Brave?</translation>
+<translation id="2965798296974325760">Začnite uporabljati Rewards</translation>
 <translation id="8220484609979012449">\n\nŠe vedno lahko pošiljate kripto prispevke temu ustvarjalcu s svojo denarnico Web3.</translation>
 <translation id="6385969012847057348">Ta ustvarjalec ne more prejemati prispevkov od <ph name="CUSTODIAN"/>.</translation>
 <translation id="6268134562674951939">Nimate dovolj žetonov</translation>
@@ -169,7 +178,6 @@
 <translation id="9110294136812584522">Spletna mesta lahko prek piškotkov tretjih oseb zahtevajo uporabo stare prijave v Google</translation>
 <translation id="2903783737778379345">Spletnim mestom ne dovolite stare prijave v Google</translation>
 <translation id="6880817299303842099">Uporabo piškotkov tretjih oseb za stare prijave v Google je dovoljena</translation>
-<translation id="5169650598465327872">Dostop lokalnega gostitelja</translation>
 <translation id="4172219483893066798">Spletna mesta lahko zahtevajo dostop do virov lokalnega gostitelja</translation>
 <translation id="7181706637590665047">Ne dovoli dostopa do virov lokalnega gostitelja</translation>
 <translation id="1485435696620658073">Dovoljen dostop do virov lokalnega gostitelja</translation>
@@ -422,6 +430,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="6883611015375728278">Blokiraj vse piškotke</translation>
 <translation id="4941539331405513605">Blokiraj piškotke drugih spletnih mest</translation>
 <translation id="5657156137487675418">Dovoli vse piškotke</translation>
+<translation id="4891600875049212418">Ko obiščete občutljiva spletna mesta, preklopite v Nezabeleženi način</translation>
 <translation id="3895527457258986253">Blokiraj ustvarjanje prstnih odtisov</translation>
 <translation id="7854108565842971747">To so privzete nastavitve za Shields glede novih spletnih mest. Če jih spremenite, to ne bo vplivalo na vaše obstoječe nastavitve za posamezno spletno mesto.</translation>
 <translation id="218587021686734263">Preprečite prstne odtise prek jezikovnih nastavitev</translation>
@@ -545,6 +554,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="1689062823386843231">Onemogoči UDP, ki ne poteka prek strežnika proxy</translation>
 <translation id="1483493594462132177">Pošlji</translation>
 <translation id="538450413584738399">Menjava</translation>
+<translation id="1366855498335432549">Vplačaj</translation>
 <translation id="1420318137760245955">Dobrodošli v novi Brave denarnici</translation>
 <translation id="8339846196588658366">Hranite kripto sredstva in spremljajte uspešnost portfelja. Vse direktno iz Brave brskalnika za zasebnost.</translation>
 <translation id="4472575034687746823">Kako začeti</translation>
@@ -561,7 +571,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="375882617301124395">Varnostno kopirajte svojo kripto denarnico</translation>
 <translation id="8289942708804097960">Kupite kriptovalute s kreditno ali debetno kartico.</translation>
 <translation id="841880029259839903">Pošljite kripto ali pa ga prenesite z enega računa na drugega.</translation>
-<translation id="8226778393040773102">Zamenjajte žetone in sredstva</translation>
 <translation id="1783600039044302171">Zavarujte svoj kripto z geslom</translation>
 <translation id="3726490322412361740">Vnesite geslo</translation>
 <translation id="3038243139480464605">Potrdi geslo</translation>
@@ -602,13 +611,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="1144810021918451336">Pred nevarnimi spletnimi mesti, prenosi in razširitvami vam ne nudi zaščite.</translation>
 <translation id="5760476995887363522">Besedne zveze se niso ujemale. Prosim poskusite ponovno.</translation>
 <translation id="2360588547830602174">Obnovitev računa ni uspela. Poskusite znova.</translation>
-<translation id="6748108480210050150">Od</translation>
-<translation id="3318280255740629162">25%</translation>
-<translation id="2636487255623744079">50%</translation>
-<translation id="8654192805213365413">75%</translation>
-<translation id="6159566011642056819">Do (ocena)</translation>
-<translation id="6998989275928107238">Za</translation>
-<translation id="2589431635772931954">Naslov ali URL</translation>
 <translation id="5517732667776806421">Manjkajo podatki o kontrolni vsoti</translation>
 <translation id="4006711930669471508">Neveljavni podatki o kontrolni vsoti</translation>
 <translation id="1987317783729300807">Računi</translation>
@@ -636,7 +638,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="8475984867371585028">Uredite vidne NFT-je</translation>
 <translation id="5050890334032852465">Shrani seznam za spremljanje računa</translation>
 <translation id="7755766175599167100">Išči žetone</translation>
-<translation id="3835223348537121988">Stanje:</translation>
 <translation id="3956169227169516344">Izberite način nakupa</translation>
 <translation id="8488282162676695335">Denarnica Brave</translation>
 <translation id="3784455785234192852">Zakleni</translation>
@@ -650,7 +651,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="8239147115686034860">Samodejno zakleni Brave denarnice</translation>
 <translation id="414639769490080648">Število minut čakanja, da se Brave  denarnica samodejno zaklene</translation>
 <translation id="2326850911705720398">Ponastavi in počisti podatke denarnice</translation>
-<translation id="4322846864135539519">Ste prepričani, da želite ponastaviti svoje nagrade Brave? Če vaša denarnica ni varnostno kopirana, boste zaradi ponastavitve izgubili vse podatke o računu (vključno z vsemi povezanimi sredstvi). Napišite "<ph name="CONFIRMATION_PHRASE"/>", da potrdite.</translation>
 <translation id="6915083716464390008">Izberite eno od naslednjih možnosti</translation>
 <translation id="7667423728712601865">Kupite kriptovaluto s kartico Visa ali Mastercard.</translation>
 <translation id="3101839349578102016">Takojšnji nakup z vašim bančnim računom. Nižje pristojbine.</translation>
@@ -767,8 +767,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="5045550434625856497">Nepravilno geslo</translation>
 <translation id="1367951781824006909">Izberite datoteko</translation>
 <translation id="8648684608605749476">Blokiranje piškotkov drugih mest v načinu brez beleženja dejavnosti</translation>
-<translation id="1118876217803190221">Ni dovolj sredstev</translation>
-<translation id="3025158262797849291">Neprepoznan format številke</translation>
 <translation id="5932938770824268122">Zasebni lljuč</translation>
 <translation id="2472882733835903303">Pokaži zasebni ključ</translation>
 <translation id="4391056902675005799">Skrij zasebni ključ</translation>
@@ -813,14 +811,12 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="1254969878422524947">Omejitev prispevka na plin (Gwei)</translation>
 <translation id="7373308452149471621">Omejitev cene za plin (Gwei)</translation>
 <translation id="5891811606602061966">Računa ni bilo mogoče uvoziti. Poskusite znova.</translation>
-<translation id="1822506443689803572">Brave uporablja <ph name="DEX_PROVIDER"/> kot agregator DEX.</translation>
 <translation id="5061574358754621254">Podatke o cenah omogoča CoinGecko</translation>
-<translation id="4626407663177532837">Ponudba vključuje 0,875 % provizije Brave.</translation>
 <translation id="8574289650879708853">Dodajte sredstvo po meri</translation>
 <translation id="1255896809210433555">Dodaj NFT</translation>
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="6600400596821238377">Ime žetona</translation>
-<translation id="4432966365400169165">Naslov pogodbe žetona</translation>
+<translation id="3797613444743816037">Naslov kovnice</translation>
 <translation id="4092152169181928870">Simbol žetona</translation>
 <translation id="4351811224047421378">Decimalke natančnosti</translation>
 <translation id="547122651977318828">ID žetona (samo za ERC721)</translation>
@@ -1002,8 +998,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="8382368767453083629">Inicializiraj multisig 2</translation>
 <translation id="77243237706803459">Inicializiraj kovnico 2</translation>
 <translation id="583281660410589416">Neznano</translation>
-<translation id="2862978891748913252">Izberite svojo državo</translation>
-<translation id="3832588024105436400">Izberite svojo državo, da vam bomo lahko prikazali ustrezne možnosti in oglase za vašo regijo. <ph name="PRIVACY_POLICY"/></translation>
 <translation id="5666264859501108700">Vaša regija za nagrade Brave je bila nastavljena na <ph name="COUNTRY_NAME"/>.</translation>
 <translation id="909076461795862330">Na žalost je med poskusom nastavitve nagrad Brave prišlo do napake. Poskusite znova.</translation>
 <translation id="7352651011704765696">Prišlo je do napake</translation>
@@ -1060,10 +1054,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="7748944510530490017">Primarna omrežja</translation>
 <translation id="2781668117338732220">Sekundarna omrežja</translation>
 <translation id="282560918037172384">Testna omrežja</translation>
-<translation id="6309721369749814582">Domena <ph name="DOMAIN"/> ni registrirana</translation>
-<translation id="4071347720273751665">Kot kaže, ste vnesli naslov ENS. Za razrešitev te zahteve se bomo morali obrniti na tretjo osebo, ki bo morda lahko videla vaš naslov IP in domeno.<ph name="LEARN_MORE"/>.</translation>
-<translation id="4096049525705855774">Uporabite domeno ENS izven verige</translation>
-<translation id="4982630604810554641">Iskanje domene ...</translation>
 <translation id="3586775666459823714">NFT-ji</translation>
 <translation id="707569835145765061">Zahtevano dejanje: povežite skrbniški račun, sicer bo vaš vBAT izgubljen</translation>
 <translation id="1776742005329298234">Dne <ph name="DUE_DATE"/> bomo ukinili podporo za obstoječa virtualna stanja BAT. Povežite skrbniški račun pred tem datumom, da bomo lahko vaše zasluženo stanje prenesli na vaš skrbniški račun, sicer bo vaše stanje izgubljeno.</translation>

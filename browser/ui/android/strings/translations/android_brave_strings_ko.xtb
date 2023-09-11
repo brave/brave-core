@@ -1,9 +1,20 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ko">
+<translation id="8631427463833030968">광고 관리</translation>
+<translation id="7630214457764713113">클린 링크 복사</translation>
 <translation id="885805571521218129">이번 달 Brave Ads로 적립되는 예상액 범위입니다.</translation>
 <translation id="3478449063771497234">알림 비활성화됨</translation>
+<translation id="2862978891748913252">국가 선택</translation>
+<translation id="3970520675790340955">국가를 선택하세요. 그래야 지역에 맞는 옵션과 광고를 표시해드릴 수 있습니다.</translation>
+<translation id="7301741773883122509">이제 광고를 보고 리워드를 받을 수 있습니다. 웹을 모두를 위한 더 나은 공간으로 만드는 데 일조하고 계십니다. 멋진 일이죠!</translation>
+<translation id="6439128034594289376">야호! 설정이 다 끝났습니다!</translation>
 <translation id="370665806235115550">로딩중...</translation>
+<translation id="7931127789630755251">Brave에서 프라이빗 광고를 보면 토큰 적립</translation>
+<translation id="7859066142771796818">토큰은 기프트카드 구입, 다른 통화로 환전, 콘텐츠 제작자 후원 등에 사용 가능합니다.</translation>
+<translation id="3863981251715594911">원리가 무엇인가요?</translation>
+<translation id="5547108999862247665">Brave Rewards는 어떻게 작동하나요?</translation>
+<translation id="2965798296974325760">리워드 사용 시작</translation>
 <translation id="8220484609979012449">\n\nWeb3 월렛을 사용하여 이 제작자에게 암호화폐 후원금을 보낼 수 있습니다.</translation>
 <translation id="6385969012847057348">이 제작자는 <ph name="CUSTODIAN"/>에서 보낸 후원금을 받을 수 없습니다.</translation>
 <translation id="6268134562674951939">토큰이 충분하지 않음</translation>
@@ -169,7 +180,7 @@
 <translation id="9110294136812584522">사이트가 타사 쿠키를 통해 레거시 Google 로그인을 사용할지 물어볼 수 있도록 허용</translation>
 <translation id="2903783737778379345">타사 쿠키를 통한 레거시 Google 로그인 허용 안 함</translation>
 <translation id="6880817299303842099">레거시 Google 로그인에 타사 쿠키 사용 허용됨</translation>
-<translation id="5169650598465327872">Localhost 액세스</translation>
+<translation id="2136412236435693622">Localhost 액세스</translation>
 <translation id="4172219483893066798">사이트가 Localhost 액세스를 요청할 수 있음</translation>
 <translation id="7181706637590665047">Localhost 리소스 액세스 허용 안 함</translation>
 <translation id="1485435696620658073">Localhost 리소스 액세스가 허용됨</translation>
@@ -396,6 +407,7 @@
 <translation id="6569877533335686968">유지</translation>
 <translation id="734105583050813665">Bitflyer</translation>
 <translation id="8533411848724153701">제미니</translation>
+<translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Uphold가 요청된 서비스에 기반하여 귀하의 신원 확인을 요구할 수도 있습니다.</translation>
 <translation id="3200197118442451932">Brave Software Inc.는 사용자가 계정을 생성할 때 <ph name="WALLET_PROVIDER"/>에 제공하는 개인 정보를 처리, 저장 또는 액세스하지 않습니다.</translation>
 <translation id="1665118090708049096">내 <ph name="WALLET_PROVIDER"/> 계정으로 이동</translation>
@@ -422,6 +434,12 @@
 <translation id="6883611015375728278">모든 쿠키 차단</translation>
 <translation id="4941539331405513605">교차 사이트 쿠키 차단</translation>
 <translation id="5657156137487675418">모든 쿠키 허용</translation>
+<translation id="1553643198679271031">오프더레코드 요청</translation>
+<translation id="4891600875049212418">민감한 사이트 방문 시 오프더레코드 활성화</translation>
+<translation id="1388619247102737054">사이트가 요청하면 브라우저 기록 및 로컬 스토리지를 비활성화합니다.</translation>
+<translation id="1876882294512858963">항상 오프더레코드</translation>
+<translation id="554464532999080267">오프더레코드로 진행하기 전 묻기(기본)</translation>
+<translation id="926857659063503456">오프더레코드로 안 함</translation>
 <translation id="3895527457258986253">지문 차단</translation>
 <translation id="7854108565842971747">새 사이트에 적용되는 기본 Shields 설정이 있습니다. 설정을 변경해도 기존 사이트별 설정에는 영향을 주지 않습니다.</translation>
 <translation id="218587021686734263">언어 설정을 통한 핑거프린팅 방지</translation>
@@ -545,6 +563,7 @@
 <translation id="1689062823386843231">프록시가 아닌 UDP 비활성화히기</translation>
 <translation id="1483493594462132177">전송</translation>
 <translation id="538450413584738399">스왑(Swap)</translation>
+<translation id="1366855498335432549">입금</translation>
 <translation id="1420318137760245955">새로운 Brave 월렛에 오신 것을 환영합니다</translation>
 <translation id="8339846196588658366">보호관리 계정에 암호화폐 자산 보유부터 포트폴리오 실적 추적까지. Brave 프라이버시 브라우저에서 모두 이용합니다.</translation>
 <translation id="4472575034687746823">시작하기</translation>
@@ -561,7 +580,8 @@
 <translation id="375882617301124395">암호화폐 월렛 백업</translation>
 <translation id="8289942708804097960">신용/직불카드로 암호화폐를 구입할 수 있습니다.</translation>
 <translation id="841880029259839903">한 계정에서 다른 계정으로 암호화폐를 보내거나 이전합니다.</translation>
-<translation id="8226778393040773102">토큰 및 자산 스왑</translation>
+<translation id="151939837774436299">토큰 및 자산을 스왑합니다.</translation>
+<translation id="5512897350309216422">Brave 월렛에 암호화폐를 예치합니다.</translation>
 <translation id="1783600039044302171">비밀번호로 암호화폐 안전하게 보호</translation>
 <translation id="3726490322412361740">비밀번호 입력</translation>
 <translation id="3038243139480464605">검증 비밀번호</translation>
@@ -602,13 +622,6 @@
 <translation id="1144810021918451336">위험한 웹사이트, 다운로드 및 확장 프로그램으로부터 사용자를 보호하지 않습니다.</translation>
 <translation id="5760476995887363522">문구가 일치하지 않습니다. 다시 시도하세요.</translation>
 <translation id="2360588547830602174">계정 복구에 실패했습니다. 다시 시도하세요.</translation>
-<translation id="6748108480210050150">보내는 이</translation>
-<translation id="3318280255740629162">25%</translation>
-<translation id="2636487255623744079">50%</translation>
-<translation id="8654192805213365413">75%</translation>
-<translation id="6159566011642056819">최대(추산)</translation>
-<translation id="6998989275928107238">받는이</translation>
-<translation id="2589431635772931954">주소 또는 URL</translation>
 <translation id="5517732667776806421">체크섬 정보 누락</translation>
 <translation id="4006711930669471508">유효하지 않은 체크섬 정보</translation>
 <translation id="1987317783729300807">계정</translation>
@@ -636,7 +649,6 @@
 <translation id="8475984867371585028">표시되는 NFT 편집</translation>
 <translation id="5050890334032852465">계정 주시목록 저장</translation>
 <translation id="7755766175599167100">토큰 검색</translation>
-<translation id="3835223348537121988">잔액:</translation>
 <translation id="3956169227169516344">구매 수단 선택</translation>
 <translation id="8488282162676695335">Brave 월렛</translation>
 <translation id="3784455785234192852">잠금</translation>
@@ -650,7 +662,7 @@
 <translation id="8239147115686034860">Brave 월렛 자동 잠금</translation>
 <translation id="414639769490080648">동작이 없을 때 Brave 월렛이 자동으로 잠길 때까지의 시간(분)</translation>
 <translation id="2326850911705720398">초기화하고 월렛 데이터 지우기</translation>
-<translation id="4322846864135539519">Brave Rewards을 초기화하시겠습니까? 월렛이 백업되어 있지 않은 경우 초기화하면 모든 계정 데이터(그 안에 담긴 자금 포함)를 잃을 수 있습니다. 확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"를 직접 입력하세요.</translation>
+<translation id="6567712397896147805">Brave 월렛을 초기화하시겠습니까? 월렛이 백업되어 있지 않은 경우 초기화하면 모든 계정 데이터(그 안에 담긴 자금 포함)를 잃을 수 있습니다. 확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"를 직접 입력하세요.</translation>
 <translation id="6915083716464390008">다음 옵션 중 하나 선택</translation>
 <translation id="7667423728712601865">Visa 또는 Mastercard로 암호화폐를 구입할 수 있습니다.</translation>
 <translation id="3101839349578102016">은행 계좌로 즉시 매수. 수수료는 더 낮게.</translation>
@@ -767,8 +779,6 @@
 <translation id="5045550434625856497">비밀번호가 잘못되었습니다.</translation>
 <translation id="1367951781824006909">파일 선택</translation>
 <translation id="8648684608605749476">시크릿 모드에서 타사 쿠키 차단</translation>
-<translation id="1118876217803190221">잔액 부족</translation>
-<translation id="3025158262797849291">인식할 수 없는 숫자 형식</translation>
 <translation id="5932938770824268122">개인키</translation>
 <translation id="2472882733835903303">비공개 키 표시</translation>
 <translation id="4391056902675005799">비공개 키 숨기기</translation>
@@ -813,14 +823,12 @@
 <translation id="1254969878422524947">가스당 팁 한도(Gwei)</translation>
 <translation id="7373308452149471621">가스당 가격 한도(Gwei)</translation>
 <translation id="5891811606602061966">계정 가져오기에 실패했습니다. 다시 시도하세요.</translation>
-<translation id="1822506443689803572">Brave는 DEX 애그리게이터로 <ph name="DEX_PROVIDER"/>를 사용합니다.</translation>
 <translation id="5061574358754621254">CoinGecko에서 제공한 가격 데이터</translation>
-<translation id="4626407663177532837">견적에는 Brave 수수료 0.875%가 포함됩니다.</translation>
 <translation id="8574289650879708853">사용자 정의 자산 추가</translation>
 <translation id="1255896809210433555">NFT 추가</translation>
 <translation id="7791543448312431591">추가</translation>
 <translation id="6600400596821238377">토큰 이름</translation>
-<translation id="4432966365400169165">토큰 컨트랙트 주소</translation>
+<translation id="3797613444743816037">민트 주소</translation>
 <translation id="4092152169181928870">토큰 기호</translation>
 <translation id="4351811224047421378">소수 자릿수</translation>
 <translation id="547122651977318828">토큰 ID(ERC721에만 해당)</translation>
@@ -920,6 +928,7 @@
 <translation id="6044189892950611565">Brave 브라우저의 알림 채널</translation>
 <translation id="1173919438868967364">계정 선택</translation>
 <translation id="8922793255489232731">다음에 일치하는 시간대를 가져올 수 없음: <ph name="VALUE"/></translation>
+<translation id="7084757528071133475">월렛 데이터 파일 다운로드 중 \u2022 <ph name="percentage"/>%%</translation>
 <translation id="6471216025161697462"><ph name="VALUE"/>에 연결됨</translation>
 <translation id="1968852757206592413">평가판</translation>
 <translation id="7733890291091968191">Web3 알림 표시</translation>
@@ -1002,8 +1011,6 @@
 <translation id="8382368767453083629">multisig 2 초기화</translation>
 <translation id="77243237706803459">민트 2 초기화</translation>
 <translation id="583281660410589416">알 수 없음</translation>
-<translation id="2862978891748913252">국가 선택</translation>
-<translation id="3832588024105436400">국가를 선택하세요. 그래야 지역에 맞는 옵션과 광고를 표시해드릴 수 있습니다. <ph name="PRIVACY_POLICY"/></translation>
 <translation id="5666264859501108700">Brave Rewards 지역이 <ph name="COUNTRY_NAME"/>인 것으로 설정되었습니다.</translation>
 <translation id="909076461795862330">Brave Rewards를 설정하는 중에 오류가 발생했습니다. 다시 시도하세요.</translation>
 <translation id="7352651011704765696">문제가 생겼습니다</translation>
@@ -1060,10 +1067,6 @@
 <translation id="7748944510530490017">주사용 네트워크</translation>
 <translation id="2781668117338732220">보조 네트워크</translation>
 <translation id="282560918037172384">테스트 네트워크</translation>
-<translation id="6309721369749814582">도메인 <ph name="DOMAIN"/> 등록되지 않음</translation>
-<translation id="4071347720273751665">ENS 주소를 입력하신 것 같습니다. 이 요청을 해석하려면 제3자 해석기를 사용해야 하므로 IP 주소와 도메인을 해당 제3자가 볼 수 있습니다. <ph name="LEARN_MORE"/></translation>
-<translation id="4096049525705855774">ENS 오프체인 도메인 사용</translation>
-<translation id="4982630604810554641">도메인 검색 중...</translation>
 <translation id="3586775666459823714">NFT</translation>
 <translation id="707569835145765061">조치 필요: 보호관리 계정을 연결하지 않으면 vBAT 소실 예정</translation>
 <translation id="1776742005329298234"><ph name="DUE_DATE"/> 부로, 기존 가상 BAT 잔액 지원이 중단됩니다. 이 날짜 이전에 보호관리 계정을 연결하시면 적립되어 있는 잔액을 보호관리 계정으로 이전해드릴 수 있으나, 이를 원치 않으시면 잔액이 소실됩니다.</translation>
