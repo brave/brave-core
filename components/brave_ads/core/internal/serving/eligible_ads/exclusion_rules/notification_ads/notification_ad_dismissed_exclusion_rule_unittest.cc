@@ -86,7 +86,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
 TEST_F(
     BraveAdsDismissedExclusionRuleTest,
-    ShouldIncludeWithSameCampaignIdWithin2DaysIfDismissedOnceForMultipleTypes) {
+    ShouldIncludeWithSameCampaignIdWithin2DaysIfDismissedOnceForMultipleAdTypes) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";

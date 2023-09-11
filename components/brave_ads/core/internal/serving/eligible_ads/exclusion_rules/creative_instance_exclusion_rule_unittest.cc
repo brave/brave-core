@@ -53,7 +53,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, ShouldIncludeAfter1Hour) {
 }
 
 TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
-       ShouldIncludeAfter1HourForMultipleTypes) {
+       ShouldIncludeAfter1HourForMultipleAdTypes) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;

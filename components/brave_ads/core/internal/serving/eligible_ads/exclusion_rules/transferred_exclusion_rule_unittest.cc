@@ -81,7 +81,7 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 }
 
 TEST_F(BraveAdsTransferredExclusionRuleTest,
-       ShouldIncludeWithDifferentCampaignIdWithin2DaysForMultipleTypes) {
+       ShouldIncludeWithDifferentCampaignIdWithin2DaysForMultipleAdTypes) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_transferred_within_time_window"] = "2d";

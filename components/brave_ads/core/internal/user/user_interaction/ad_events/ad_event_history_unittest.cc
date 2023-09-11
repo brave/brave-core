@@ -85,7 +85,7 @@ TEST_F(BraveAdsAdEventHistoryTest, RecordAdEventForMultipleIds) {
   EXPECT_EQ(expected_history, history);
 }
 
-TEST_F(BraveAdsAdEventHistoryTest, RecordAdEventForMultipleTypes) {
+TEST_F(BraveAdsAdEventHistoryTest, RecordAdEventForMultipleAdTypes) {
   // Arrange
   RecordAdEventForTesting(kID1, AdType::kNotificationAd,
                           ConfirmationType::kViewed);
