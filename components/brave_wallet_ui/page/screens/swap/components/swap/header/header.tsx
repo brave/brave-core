@@ -5,6 +5,14 @@
 
 import * as React from 'react'
 
+// Selectors
+import {
+  useSafeUISelector
+} from '../../../../../../common/hooks/use-safe-selector'
+import {
+  UISelectors
+} from '../../../../../../common/selectors'
+
 // Queries
 import {
   useGetSelectedChainQuery,
@@ -57,6 +65,9 @@ import {
 } from '../../shared-swap.styles'
 
 export const Header = () => {
+  // Selectors
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+
   // Queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: supportedNetworks } = useGetSwapSupportedNetworksQuery()
@@ -114,23 +125,27 @@ export const Header = () => {
 
   return (
     <Wrapper>
-      <Row rowHeight='full' verticalAlign='center'>
-        <BraveLogo />
-        <HiddenResponsiveRow maxWidth={570}>
-          <HorizontalDivider
-            height={22}
-            marginRight={12}
-            dividerTheme='darker'
-          />
-          <Text
-            textSize='18px'
-            textColor='text02'
-            isBold={true}
-          >
-            {getLocale('braveSwap')}
-          </Text>
-        </HiddenResponsiveRow>
-      </Row>
+      {isPanel ? (
+        <HorizontalSpacer size={2} />
+      ) : (
+        <Row rowHeight='full' verticalAlign='center'>
+          <BraveLogo />
+          <HiddenResponsiveRow maxWidth={570}>
+            <HorizontalDivider
+              height={22}
+              marginRight={12}
+              dividerTheme='darker'
+            />
+            <Text
+              textSize='18px'
+              textColor='text02'
+              isBold={true}
+            >
+              {getLocale('braveSwap')}
+            </Text>
+          </HiddenResponsiveRow>
+        </Row>
+      )}
       <Row>
         <SelectorWrapper ref={networkSelectorRef}>
           <SelectTokenOrNetworkButton
