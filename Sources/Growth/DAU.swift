@@ -146,7 +146,7 @@ public class DAU {
   struct ParamsAndPrefs {
     let queryParams: [URLQueryItem]
     let headers: [String: String]
-    let lastLaunchInfoPreference: [Optional<Int>]
+    let lastLaunchInfoPreference: [Int]
   }
   
   func migrateInvalidWeekOfInstallPref() {

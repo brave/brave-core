@@ -7,9 +7,6 @@ import Shared
 import os.log
 import Combine
 
-/// An empty protocol simply here to force the developer to use a user defaults encodable value via generic constraint
-public protocol UserDefaultsEncodable {}
-
 /// The applications preferences container
 ///
 /// Properties in this object should be of the the type `Option` with the object which is being
@@ -32,7 +29,7 @@ extension Preferences {
   /// An entry in the `Preferences`
   ///
   /// `ValueType` defines the type of value that will stored in the UserDefaults object
-  public class Option<ValueType: UserDefaultsEncodable & Equatable>: ObservableObject {
+  public class Option<ValueType: Equatable>: ObservableObject {
     /// The list of observers for this option
     private let observers = WeakList<PreferencesObserver>()
     /// The UserDefaults container that you wish to save to
@@ -43,22 +40,9 @@ extension Preferences {
     @Published public var value: ValueType {
       didSet {
         if value == oldValue { return }
-
-        // Check if `ValueType` is something that can be nil
-        if value is ExpressibleByNilLiteral {
-          // We have to use a weird workaround to determine if it can be placed in the UserDefaults.
-          // `nil` (NSNull when its bridged to ObjC) can be placed in a dictionary, but not in UserDefaults.
-          let dictionary = NSMutableDictionary(object: value, forKey: self.key as NSString)
-          // If the value we pull out of the dictionary is NSNull, we know its nil and should remove it
-          // from the UserDefaults rather than attempt to set it
-          if let value = dictionary[self.key], value is NSNull {
-            container.removeObject(forKey: self.key)
-          } else {
-            container.set(value, forKey: self.key)
-          }
-        } else { 
-          container.set(value, forKey: self.key)
-        }
+        
+        writePreferenceValue(container, key, value)
+        
         container.synchronize()
 
         let key = self.key
@@ -79,18 +63,172 @@ extension Preferences {
     public func reset() {
       value = defaultValue
     }
-
-    /// Creates a preference
-    public init(key: String, default: ValueType, container: UserDefaults = Preferences.defaultContainer) {
+    
+    private var writePreferenceValue: ((UserDefaults, String, ValueType) -> Void)
+    
+    fileprivate init(
+      key: String,
+      initialValue: ValueType,
+      defaultValue: ValueType,
+      container: UserDefaults = Preferences.defaultContainer,
+      writePreferenceValue: @escaping (UserDefaults, String, ValueType) -> Void
+    ) {
       self.key = key
       self.container = container
-      self.defaultValue = `default`
-      value = (container.value(forKey: key) as? ValueType) ?? `default`
+      self.value = initialValue
+      self.defaultValue = defaultValue
+      self.writePreferenceValue = writePreferenceValue
     }
   }
 }
 
-extension Optional: UserDefaultsEncodable where Wrapped: UserDefaultsEncodable {}
+extension Preferences.Option {
+  /// Creates a preference and fetches the initial value from the container the default way
+  private convenience init(
+    key: String,
+    defaultValue: ValueType,
+    container: UserDefaults
+  ) where ValueType: UserDefaultsEncodable {
+    let initialValue = (container.value(forKey: key) as? ValueType) ?? defaultValue
+    self.init(
+      key: key,
+      initialValue: initialValue,
+      defaultValue: defaultValue,
+      container: container,
+      writePreferenceValue: { $0.set($2, forKey: $1) }
+    )
+  }
+  /// Creates a preference storing a user defaults supported value type
+  public convenience init(
+    key: String,
+    default: ValueType,
+    container: UserDefaults = Preferences.defaultContainer
+  ) where ValueType: UserDefaultsEncodable {
+    self.init(key: key, defaultValue: `default`, container: container)
+  }
+  /// Creates a preference storing an array of user defaults supported value types
+  public convenience init<V>(
+    key: String,
+    default: ValueType,
+    container: UserDefaults = Preferences.defaultContainer
+  ) where V: UserDefaultsEncodable, ValueType == [V] {
+    self.init(key: key, defaultValue: `default`, container: container)
+  }
+  /// Creates a preference storing an dictionary of user defaults supported value types
+  public convenience init<K, V>(
+    key: String, default: ValueType,
+    container: UserDefaults = Preferences.defaultContainer
+  ) where K: StringProtocol, V: UserDefaultsEncodable, ValueType == [K: V] {
+    self.init(key: key, defaultValue: `default`, container: container)
+  }
+}
+
+extension Preferences.Option where ValueType: ExpressibleByNilLiteral {
+  /// Creates a preference and fetches the initial value from the container the default way
+  private convenience init<V>(
+    key: String,
+    defaultValue: ValueType,
+    container: UserDefaults
+  ) where V: UserDefaultsEncodable, ValueType == V? {
+    let initialValue = (container.value(forKey: key) as? ValueType) ?? defaultValue
+    self.init(
+      key: key,
+      initialValue: initialValue,
+      defaultValue: defaultValue,
+      container: container,
+      writePreferenceValue: { container, key, value in
+        if let value = value {
+          container.set(value, forKey: key)
+        } else {
+          container.removeObject(forKey: key)
+        }
+      }
+    )
+  }
+  /// Creates a preference storing an optional user defaults supported value type
+  public convenience init<V>(
+    key: String,
+    default: ValueType,
+    container: UserDefaults = Preferences.defaultContainer
+  ) where ValueType == V?, V: UserDefaultsEncodable {
+    self.init(key: key, defaultValue: `default`, container: container)
+  }
+  /// Creates a preference storing an optional array of user defaults supported value types
+  public convenience init<V>(
+    key: String,
+    default: ValueType,
+    container: UserDefaults = Preferences.defaultContainer
+  ) where V: UserDefaultsEncodable, ValueType == [V]? {
+    self.init(key: key, defaultValue: `default`, container: container)
+  }
+  /// Creates a preference storing an optional dictionary of user defaults supported value types
+  public convenience init<K, V>(
+    key: String,
+    default: ValueType,
+    container: UserDefaults = Preferences.defaultContainer
+  ) where K: StringProtocol, V: UserDefaultsEncodable, ValueType == [K: V]? {
+    self.init(key: key, defaultValue: `default`, container: container)
+  }
+}
+
+extension Preferences.Option {
+  /// Creates a preference storing a raw representable where the raw value is a user defaults supported value type
+  public convenience init(
+    key: String,
+    default: ValueType,
+    container: UserDefaults = Preferences.defaultContainer
+  ) where ValueType: RawRepresentable, ValueType.RawValue: UserDefaultsEncodable {
+    let initialValue: ValueType = {
+      if let rawValue = (container.value(forKey: key) as? ValueType.RawValue) {
+        if let value = ValueType(rawValue: rawValue) {
+          return value
+        } else {
+          Logger.module.error("Failed to load enum preference \"\(key)\" with raw value \(String(describing: rawValue))")
+        }
+      }
+      return `default`
+    }()
+    self.init(
+      key: key,
+      initialValue: initialValue,
+      defaultValue: `default`,
+      container: container,
+      writePreferenceValue: { $0.setValue($2.rawValue, forKey: $1) }
+    )
+  }
+  
+  /// Creates a preference storing an optional raw representable where the raw value is a user defaults
+  /// supported value type
+  public convenience init<R>(
+    key: String,
+    default: ValueType,
+    container: UserDefaults = Preferences.defaultContainer
+  ) where ValueType == R?, R: RawRepresentable, R.RawValue: UserDefaultsEncodable {
+    let initialValue: R? = {
+      if let rawValue = (container.value(forKey: key) as? R.RawValue) {
+        return R(rawValue: rawValue)
+      }
+      return nil
+    }()
+    self.init(
+      key: key,
+      initialValue: initialValue,
+      defaultValue: `default`,
+      container: container,
+      writePreferenceValue: { container, key, value in
+        if let value = value {
+          container.setValue(value.rawValue, forKey: key)
+        } else {
+          container.removeObject(forKey: key)
+        }
+      }
+    )
+  }
+}
+
+/// An empty protocol simply here to force the developer to use a user defaults encodable value via generic constraint.
+/// DO NOT ADD CONFORMANCE TO ANY OTHER TYPES. These are specifically the types supported by UserDefaults
+public protocol UserDefaultsEncodable: Equatable {}
 extension Bool: UserDefaultsEncodable {}
 extension Int: UserDefaultsEncodable {}
 extension UInt: UserDefaultsEncodable {}

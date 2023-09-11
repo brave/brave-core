@@ -233,7 +233,7 @@ var package = Package(
       ],
       plugins: ["LoggerPlugin"]
     ),
-    .target(name: "Preferences", dependencies: ["Shared"]),
+    .target(name: "Preferences", dependencies: ["Shared"], plugins: ["LoggerPlugin"]),
     .target(
       name: "Onboarding",
       dependencies: [

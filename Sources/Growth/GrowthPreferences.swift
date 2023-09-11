@@ -8,7 +8,7 @@ import Preferences
 
 extension Preferences {
   public final class DAU {
-    public static let lastLaunchInfo = Option<[Int?]?>(key: "dau.last-launch-info", default: nil)
+    public static let lastLaunchInfo = Option<[Int]?>(key: "dau.last-launch-info", default: nil)
     public static let weekOfInstallation = Option<String?>(key: "dau.week-of-installation", default: nil)
     // On old codebase we checked existence of `dau_stat` to determine whether it's first server ping.
     // We need to translate that to use the new `firstPingParam` preference.
