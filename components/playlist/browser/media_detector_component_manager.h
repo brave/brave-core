@@ -54,6 +54,9 @@ class MediaDetectorComponentManager {
   bool ShouldHideMediaSrcAPI(const GURL& url) const;
   void SetUseLocalListToHideMediaSrcAPI();
 
+  bool ShouldUseFakeUA(const GURL& url) const;
+  void SetUseLocalListToUseFakeUA();
+
   const std::vector<net::SchemefulSite>& sites_to_hide_media_src_api() const {
     return sites_to_hide_media_src_api_;
   }
@@ -72,6 +75,7 @@ class MediaDetectorComponentManager {
   std::string base_script_;
 
   std::vector<net::SchemefulSite> sites_to_hide_media_src_api_;
+  std::vector<net::SchemefulSite> sites_to_use_fake_ua_;
 
   base::flat_map<net::SchemefulSite, std::string> site_specific_detectors_;
 

@@ -51,6 +51,9 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
 
     absl::variant<std::string, base::WeakPtr<content::WebContents>>
         url_or_contents;
+
+    bool should_force_fake_ua = false;
+
     Callback callback = base::NullCallback();
   };
 
@@ -96,7 +99,7 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
   void RunMediaDetector(Request request);
 
   bool ReadyToRunMediaDetectorScript() const;
-  void CreateWebContents();
+  void CreateWebContents(bool should_force_fake_ua);
   void GetMedia(content::WebContents* contents);
   void OnGetMedia(base::WeakPtr<content::WebContents> contents,
                   base::Value value);

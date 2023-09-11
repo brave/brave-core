@@ -246,6 +246,7 @@ class PlaylistService : public KeyedService,
   // contents that is different from the given |contents|.
   bool ShouldGetMediaFromBackgroundWebContents(
       content::WebContents* contents) const;
+  bool ShouldUseFakeUA(const GURL& url) const;
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);

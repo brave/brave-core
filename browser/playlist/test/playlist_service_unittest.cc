@@ -75,8 +75,9 @@ namespace playlist {
 //
 class FakeDownloadRequestManager : public PlaylistDownloadRequestManager {
  public:
-  FakeDownloadRequestManager()
-      : PlaylistDownloadRequestManager(nullptr, nullptr) {}
+  explicit FakeDownloadRequestManager(
+      MediaDetectorComponentManager* component_manager)
+      : PlaylistDownloadRequestManager(nullptr, component_manager) {}
   ~FakeDownloadRequestManager() override = default;
 
   // PlaylistDownloadRequestManager:
@@ -232,13 +233,15 @@ class PlaylistServiceUnitTest : public testing::Test {
     testing::Test::TearDown();
   }
 
+ protected:
+  std::unique_ptr<MediaDetectorComponentManager> detector_manager_;
+
  private:
   content::BrowserTaskEnvironment task_environment_{
       content::BrowserTaskEnvironment::IO_MAINLOOP};
 
   TestingPrefServiceSimple local_state_;
   std::unique_ptr<TestingProfile> profile_;
-  std::unique_ptr<MediaDetectorComponentManager> detector_manager_;
   std::unique_ptr<PlaylistService> service_;
 
   std::unique_ptr<base::ScopedTempDir> temp_dir_;
@@ -356,7 +359,7 @@ TEST_F(PlaylistServiceUnitTest, MediaDownloadFailed) {
 TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
   auto* service = playlist_service();
   service->download_request_manager_ =
-      std::make_unique<FakeDownloadRequestManager>();
+      std::make_unique<FakeDownloadRequestManager>(detector_manager_.get());
   auto* fake_download_request_manager =
       static_cast<FakeDownloadRequestManager*>(
           service->download_request_manager_.get());

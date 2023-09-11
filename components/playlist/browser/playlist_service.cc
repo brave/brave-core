@@ -112,6 +112,7 @@ void PlaylistService::AddMediaFilesFromContentsToPlaylist(
     request.url_or_contents = contents->GetWeakPtr();
   }
 
+  request.should_force_fake_ua = ShouldUseFakeUA(contents->GetVisibleURL());
   request.callback = base::BindOnce(
       &PlaylistService::AddMediaFilesFromItems, weak_factory_.GetWeakPtr(),
       playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id, cache,
@@ -425,6 +426,7 @@ void PlaylistService::FindMediaFilesFromContents(
     request.url_or_contents = contents->GetWeakPtr();
   }
 
+  request.should_force_fake_ua = ShouldUseFakeUA(contents->GetVisibleURL());
   request.callback = base::BindOnce(std::move(callback), current_url);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
@@ -670,8 +672,21 @@ bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
     return true;
   }
 
+  CHECK(contents);
+  const auto& url = contents->GetVisibleURL();
+
+  return ShouldUseFakeUA(url) ||
+         download_request_manager_->media_detector_component_manager()
+             ->ShouldHideMediaSrcAPI(url);
+}
+
+bool PlaylistService::ShouldUseFakeUA(const GURL& url) const {
+  if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
+    return true;
+  }
+
   return download_request_manager_->media_detector_component_manager()
-      ->ShouldHideMediaSrcAPI(contents->GetVisibleURL());
+      ->ShouldUseFakeUA(url);
 }
 
 void PlaylistService::OnPlaylistItemDirCreated(
@@ -876,6 +891,7 @@ void PlaylistService::RecoverLocalDataForItem(
   PlaylistDownloadRequestManager::Request request;
   DCHECK(!item->page_source.spec().empty());
   request.url_or_contents = item->page_source.spec();
+  request.should_force_fake_ua = ShouldUseFakeUA(item->page_source);
   request.callback = std::move(update_media_src_and_recover);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
