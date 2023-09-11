@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 
 #include <algorithm>
+#include <utility>
 #include <vector>
 
 #include "base/check_is_test.h"

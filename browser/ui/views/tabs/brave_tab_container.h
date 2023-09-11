@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_
 
+#include <memory>
+
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 
 #include "chrome/browser/ui/tabs/tab_style.h"
