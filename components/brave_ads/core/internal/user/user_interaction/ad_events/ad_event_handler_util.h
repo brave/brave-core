@@ -1,12 +1,14 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_USER_INTERACTION_AD_EVENTS_AD_EVENT_HANDLER_UTIL_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_USER_INTERACTION_AD_EVENTS_AD_EVENT_HANDLER_UTIL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_USER_INTERACTION_AD_EVENTS_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_EVENT_HANDLER_UTIL_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_USER_INTERACTION_AD_EVENTS_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_EVENT_HANDLER_UTIL_H_
 
+#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
 namespace brave_ads {
 
@@ -17,6 +19,49 @@ bool HasFiredAdEvent(const AdInfo& ad,
                      const AdEventList& ad_events,
                      const ConfirmationType& confirmation_type);
 
+template <typename T>
+bool WasAdServed(const AdInfo& ad,
+                 const AdEventList& ad_events,
+                 const T& event_type) {
+  CHECK(mojom::IsKnownEnumValue(event_type));
+
+  return event_type == T::kServed ||
+         HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed);
+}
+
+template <typename T>
+bool ShouldDebounceViewedAdEvent(const AdInfo& ad,
+                                 const AdEventList& ad_events,
+                                 const T& event_type) {
+  CHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(WasAdServed(ad, ad_events, event_type));
+
+  return event_type == T::kViewed &&
+         HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed);
+}
+
+template <typename T>
+bool ShouldDebounceClickedAdEvent(const AdInfo& ad,
+                                  const AdEventList& ad_events,
+                                  const T& event_type) {
+  CHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(WasAdServed(ad, ad_events, event_type));
+
+  return event_type == T::kClicked &&
+         HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked);
+}
+
+template <typename T>
+bool ShouldDebounceAdEvent(const AdInfo& ad,
+                           const AdEventList& ad_events,
+                           const T& event_type) {
+  CHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(WasAdServed(ad, ad_events, event_type));
+
+  return ShouldDebounceViewedAdEvent(ad, ad_events, event_type) ||
+         ShouldDebounceClickedAdEvent(ad, ad_events, event_type);
+}
+
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_USER_INTERACTION_AD_EVENTS_AD_EVENT_HANDLER_UTIL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_USER_INTERACTION_AD_EVENTS_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_EVENT_HANDLER_UTIL_H_
