@@ -58,7 +58,7 @@ void CatalogUrlRequest::Fetch() {
     return;
   }
 
-  BLOG(1, "Fetching catalog " << BuildCatalogUrlPath());
+  BLOG(1, "Fetch catalog");
 
   is_fetching_ = true;
 
@@ -74,8 +74,6 @@ void CatalogUrlRequest::Fetch() {
 
 void CatalogUrlRequest::FetchCallback(
     const mojom::UrlResponseInfo& url_response) {
-  BLOG(1, "Fetched catalog");
-
   BLOG(7, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 

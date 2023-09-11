@@ -59,7 +59,7 @@ void IssuersUrlRequest::Fetch() {
     return;
   }
 
-  BLOG(1, "Fetching issuers " << BuildIssuersUrlPath());
+  BLOG(1, "Fetch issuers");
 
   is_fetching_ = true;
 
@@ -75,8 +75,6 @@ void IssuersUrlRequest::Fetch() {
 
 void IssuersUrlRequest::FetchCallback(
     const mojom::UrlResponseInfo& url_response) {
-  BLOG(1, "Fetched issuers");
-
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 

@@ -55,7 +55,7 @@ void SubdivisionUrlRequest::Fetch() {
     return;
   }
 
-  BLOG(1, "Fetching subdivision " << BuildSubdivisionUrlPath());
+  BLOG(1, "Fetch subdivision");
 
   is_fetching_ = true;
 
@@ -72,8 +72,6 @@ void SubdivisionUrlRequest::Fetch() {
 
 void SubdivisionUrlRequest::FetchCallback(
     const mojom::UrlResponseInfo& url_response) {
-  BLOG(1, "Fetched subdivision");
-
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 

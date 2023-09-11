@@ -88,8 +88,7 @@ void RedeemRewardConfirmation::Redeem(
 void RedeemRewardConfirmation::CreateConfirmation(
     RedeemRewardConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation) {
-  BLOG(1, "CreateConfirmation");
-  BLOG(2, "POST /v3/confirmation/{transactionId}/{credential}");
+  BLOG(1, "Create reward confirmation");
 
   CreateRewardConfirmationUrlRequestBuilder url_request_builder(confirmation);
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -108,8 +107,6 @@ void RedeemRewardConfirmation::CreateConfirmationCallback(
     RedeemRewardConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation,
     const mojom::UrlResponseInfo& url_response) {
-  BLOG(1, "OnCreateConfirmation");
-
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
@@ -123,7 +120,7 @@ void RedeemRewardConfirmation::CreateConfirmationCallback(
 void RedeemRewardConfirmation::FetchPaymentToken(
     RedeemRewardConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation) {
-  BLOG(1, "FetchPaymentToken");
+  BLOG(1, "Fetch payment token");
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -141,8 +138,6 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
     RedeemRewardConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation,
     const mojom::UrlResponseInfo& url_response) {
-  BLOG(1, "OnFetchPaymentToken");
-
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
