@@ -61,6 +61,8 @@ class BraveRewardsNativeWorker
 
   void GetUserType(JNIEnv* env);
 
+  bool IsGrandfatheredUser(JNIEnv* env);
+
   void FetchBalance(JNIEnv* env);
 
   void GetPublisherInfo(JNIEnv* env,

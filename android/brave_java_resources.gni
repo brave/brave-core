@@ -541,6 +541,7 @@ brave_java_resources = [
   "java/res/drawable/ic_hearts.xml",
   "java/res/drawable/ic_help.xml",
   "java/res/drawable/ic_help_filled.xml",
+  "java/res/drawable/ic_help_outline.xml",
   "java/res/drawable/ic_home_screen_widget.xml",
   "java/res/drawable/ic_homepage.xml",
   "java/res/drawable/ic_info.xml",
