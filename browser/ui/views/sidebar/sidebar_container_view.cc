@@ -18,6 +18,9 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
@@ -775,8 +778,40 @@ void SidebarContainerView::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
+  SharedPinnedTabService* shared_pinned_tab_service = nullptr;
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+    shared_pinned_tab_service =
+        SharedPinnedTabServiceFactory::GetForProfile(browser_->profile());
+  }
+
+  // When shared pinned tab service is enabled, one WebContents instance is
+  // shared across multiple windows. Do resgister/unregister side panel entry
+  // when it's set.
+  if (shared_pinned_tab_service &&
+      (change.type() == TabStripModelChange::kReplaced)) {
+    auto* replace = change.GetReplace();
+    if (shared_pinned_tab_service->IsSharedContents(replace->new_contents)) {
+      CreateAndRegisterEntries(replace->new_contents);
+    }
+
+    if (shared_pinned_tab_service->IsSharedContents(replace->old_contents)) {
+      DeregisterEntries(replace->old_contents);
+    }
+
+    return;
+  }
+
   if (change.type() == TabStripModelChange::kInserted) {
     for (const auto& contents : change.GetInsert()->contents) {
+      // Don't need to handle when dummy contents is inserted.
+      // We'll do proper registration when it's replaced with shared web
+      // contents.
+      if (shared_pinned_tab_service &&
+          shared_pinned_tab_service->IsDummyContents(contents.contents)) {
+        DVLOG(1) << " Ignored - Dummy tab is inserted for shared pinned "
+                    "tabs.";
+        continue;
+      }
       CreateAndRegisterEntries(contents.contents);
     }
     return;
@@ -784,6 +819,12 @@ void SidebarContainerView::OnTabStripModelChanged(
 
   if (change.type() == TabStripModelChange::kRemoved) {
     for (const auto& contents : change.GetRemove()->contents) {
+      if (shared_pinned_tab_service &&
+          shared_pinned_tab_service->IsDummyContents(contents.contents)) {
+        DVLOG(1) << " Ignored - Dummy tab is removed for shared pinned tabs.";
+        continue;
+      }
+
       DeregisterEntries(contents.contents);
     }
     return;
