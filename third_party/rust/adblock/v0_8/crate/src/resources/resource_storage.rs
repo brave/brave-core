@@ -215,7 +215,7 @@ fn template_argument_regex(i: usize) -> Regex {
 fn patch_template_scriptlet(mut template: String, args: &[impl AsRef<str>]) -> String {
     // `regex` treats `$` as a special character. Instead, `$$` is interpreted as a literal `$`
     // character.
-    args.iter().enumerate().for_each(|(i, arg)| {
+    args.iter().take(TEMPLATE_ARGUMENT_RE.len()).enumerate().for_each(|(i, arg)| {
         template = TEMPLATE_ARGUMENT_RE[i]
             .replace(&template, arg.as_ref().replace('$', "$$"))
             .to_string();
@@ -556,6 +556,30 @@ mod scriptlet_storage_tests {
         assert_eq!(
             resources.get_scriptlet_resource(r#"googletagservices.com/gpt, { "test": true }"#, Default::default()),
             Err(ScriptletResourceError::ScriptletArgObjectSyntaxUnsupported),
+        );
+    }
+
+    /// Currently, only 9 template arguments are supported - but reaching that limit should not
+    /// cause a panic.
+    #[test]
+    fn patch_argslist_many_args() {
+        let resources = ResourceStorage::from_resources([
+            Resource {
+                name: "abort-current-script.js".into(),
+                aliases: vec!["acs.js".into()],
+                kind: ResourceType::Mime(MimeType::ApplicationJavascript),
+                content: base64::encode("{{1}} {{2}} {{3}} {{4}} {{5}} {{6}} {{7}} {{8}} {{9}} {{10}} {{11}} {{12}}"),
+                dependencies: vec![],
+                permission: Default::default(),
+            },
+        ]);
+
+        let args = parse_scriptlet_args("acs, this, probably, is, going, to, break, brave, and, crash, it, instead, of, ignoring, it");
+        assert_eq!(args, vec!["acs", "this", "probably", "is", "going", "to", "break", "brave", "and", "crash", "it", "instead", "of", "ignoring", "it"]);
+
+        assert_eq!(
+            resources.get_scriptlet_resource("acs, this, probably, is, going, to, break, brave, and, crash, it, instead, of, ignoring, it", Default::default()),
+            Ok("this probably is going to break brave and crash {{10}} {{11}} {{12}}".to_string()),
         );
     }
 
