@@ -18,7 +18,7 @@ BrowserCaptionButtonContainer::BrowserCaptionButtonContainer(
     BrowserFrameViewWin* frame_view)
     : BrowserCaptionButtonContainer_ChromiumImpl(frame_view),
       frame_view_(frame_view) {
-  if (WindowFrameUtil::IsWin10TabSearchCaptionButtonEnabled(
+  if (WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(
           frame_view_->browser_view()->browser())) {
     pref_change_registrar_.Init(
         frame_view_->browser_view()->GetProfile()->GetPrefs());

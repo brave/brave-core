@@ -9,10 +9,37 @@ cargo_crate("lib") {
   epoch = "0.1"
   crate_type = "proc-macro"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/async_trait/v0_1/crate/build.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/src/args.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/src/bound.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/src/expand.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/src/lib.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/src/lifetime.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/src/parse.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/src/receiver.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/compiletest.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/executor/mod.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/test.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/ui/arg-implementation-detail.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/ui/bare-trait-object.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/ui/consider-restricting.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/ui/delimiter-span.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/ui/lifetime-defined-here.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/ui/lifetime-span.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/ui/missing-async-in-impl.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/ui/missing-async-in-trait.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/ui/missing-body.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/ui/must-use.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/ui/self-span.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/ui/send-not-implemented.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/ui/unreachable.rs",
+    "//brave/third_party/rust/async_trait/v0_1/crate/tests/ui/unsupported-self.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/async_trait/v0_1/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.1.64"
   cargo_pkg_authors = "David Tolnay <dtolnay@gmail.com>"

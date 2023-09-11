@@ -13,10 +13,22 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/rmp_serde/v0_15/crate/benches/buf.rs",
+    "//brave/third_party/rust/rmp_serde/v0_15/crate/src/config.rs",
+    "//brave/third_party/rust/rmp_serde/v0_15/crate/src/decode.rs",
+    "//brave/third_party/rust/rmp_serde/v0_15/crate/src/encode.rs",
+    "//brave/third_party/rust/rmp_serde/v0_15/crate/src/lib.rs",
+    "//brave/third_party/rust/rmp_serde/v0_15/crate/tests/decode.rs",
+    "//brave/third_party/rust/rmp_serde/v0_15/crate/tests/decode_derive.rs",
+    "//brave/third_party/rust/rmp_serde/v0_15/crate/tests/encode.rs",
+    "//brave/third_party/rust/rmp_serde/v0_15/crate/tests/encode_derive.rs",
+    "//brave/third_party/rust/rmp_serde/v0_15/crate/tests/round.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/rmp_serde/v0_15/crate/CHANGELOG.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.15.5"
   cargo_pkg_authors = "Evgeny Safronov <division494@gmail.com>"

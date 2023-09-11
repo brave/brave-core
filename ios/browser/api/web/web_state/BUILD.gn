@@ -7,8 +7,6 @@ import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
 source_set("web_state") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "web_state+private.h",
     "web_state.h",

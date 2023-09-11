@@ -5,6 +5,7 @@ use std::io::Write;
 use std::path::Path;
 
 fn main() {
+  /*
     let pointer_width = env::var("CARGO_CFG_TARGET_POINTER_WIDTH");
     let u64_digit = pointer_width.as_ref().map(String::as_str) == Ok("64");
     if u64_digit {
@@ -32,6 +33,7 @@ fn main() {
     }
 
     autocfg::rerun_path("build.rs");
+  */
 
     write_radix_bases().unwrap();
 }

@@ -1,3 +1,8 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use core::iter;
 use std::collections::HashMap;
 
@@ -11,7 +16,7 @@ use serde_json::Value;
 use sha2::Sha512;
 
 use crate::errors::{InternalError, SkusError};
-use crate::http::{HttpHandler, delay_from_response};
+use crate::http::{delay_from_response, HttpHandler};
 use crate::models::*;
 use crate::sdk::SDK;
 use crate::{HTTPClient, StorageClient};
@@ -134,8 +139,8 @@ where
                                 match item_creds.state {
                                     CredentialState::GeneratedCredentials
                                     | CredentialState::SubmittedCredentials => {
-                                        // we have generated, or performed submission, reuse the creds
-                                        // we created for signing.
+                                        // we have generated, or performed submission, reuse the
+                                        // creds we created for signing.
                                         creds
                                     }
                                     CredentialState::ActiveCredentials
@@ -194,7 +199,8 @@ where
                         );
                         request_with_retries.await?;
                     }
-                    // length of the blinded tokens is less than 1, no credentials for signing
+                    // length of the blinded tokens is less than 1, no
+                    // credentials for signing
                 }
                 CredentialType::SingleUse => {
                     let blinded_creds: Vec<BlindedToken> =
@@ -255,7 +261,8 @@ where
                     );
                     request_with_retries.await?;
                 }
-                CredentialType::TimeLimited => (), // Time limited credentials do not require a submission step
+                CredentialType::TimeLimited => (), /* Time limited credentials do not require a
+                                                    * submission step */
             }
         }
         Ok(())
@@ -297,7 +304,9 @@ where
 
                 match resp.status() {
                     http::StatusCode::OK => Ok(resp),
-                    http::StatusCode::ACCEPTED => Err(InternalError::RetryLater(delay_from_response(&resp))),
+                    http::StatusCode::ACCEPTED => {
+                        Err(InternalError::RetryLater(delay_from_response(&resp)))
+                    }
                     http::StatusCode::NOT_FOUND => Err(InternalError::NotFound),
                     _ => Err(resp.into()),
                 }
@@ -355,7 +364,8 @@ where
                         // so we can clear out the used tokens at the end of the loop
                         time_limited_v2_creds.push(item_id.to_string());
 
-                        // Rederive blinded creds so that the proof will fail if different creds were signed
+                        // Rederive blinded creds so that the proof will fail if different creds
+                        // were signed
                         let my_blinded_creds: Vec<BlindedToken> =
                             item_creds.creds.iter().map(|t| t.blind()).collect();
 
@@ -373,12 +383,13 @@ where
                                 // for batch verification
                                 if bc.encode_base64() == sbc.encode_base64() {
                                     bucket_blinded_creds.push(*bc);
-                                    for t in &item_creds.creds{
+                                    for t in &item_creds.creds {
                                         // find the original token from our list of creds
                                         // that matches up with this blinded token so we can
                                         // add to our bucket creds for verification
-                                        if t.blind().encode_base64() == bc.encode_base64(){
-                                            bucket_creds.push(Token::from_bytes(&t.to_bytes()).unwrap());
+                                        if t.blind().encode_base64() == bc.encode_base64() {
+                                            bucket_creds
+                                                .push(Token::from_bytes(&t.to_bytes()).unwrap());
                                         }
                                     }
                                 }
@@ -390,10 +401,10 @@ where
                         // are the unblinded form of the bucket_blinded_creds
                         let unblinded_creds = batch_proof
                             .verify_and_unblind::<Sha512, _>(
-                                &bucket_creds, // just the creds server says it signed
+                                &bucket_creds,         // just the creds server says it signed
                                 &bucket_blinded_creds, // the blinded creds
-                                &signed_creds, // the signed creds from server
-                                &public_key, // the server's public key
+                                &signed_creds,         // the signed creds from server
+                                &public_key,           // the server's public key
                             )
                             .or(Err(InternalError::InvalidProof))?;
 
@@ -420,7 +431,8 @@ where
                     if let Some(item_creds) =
                         self.client.get_single_use_item_creds(&item_id).await?
                     {
-                        // Rederive blinded creds so that the proof will fail if different creds were signed
+                        // Rederive blinded creds so that the proof will fail if different creds
+                        // were signed
                         let blinded_creds: Vec<BlindedToken> =
                             item_creds.creds.iter().map(|t| t.blind()).collect();
 
@@ -454,7 +466,7 @@ where
                                 )
                             })?
                             .and_hms_opt(0, 0, 0)
-                            .unwrap(),  //  guaranteed to succeed because of (0, 0, 0)
+                            .unwrap(), //  guaranteed to succeed because of (0, 0, 0)
                         expires_at: NaiveDate::parse_from_str(&expires_at, "%Y-%m-%d")
                             .map_err(|_| {
                                 InternalError::InvalidResponse(
@@ -462,7 +474,7 @@ where
                                 )
                             })?
                             .and_hms_opt(0, 0, 0)
-                            .unwrap(),  //  guaranteed to succeed because of (0, 0, 0)
+                            .unwrap(), //  guaranteed to succeed because of (0, 0, 0)
                         token,
                     };
                     if let Some(item_creds) = time_limited_creds.get_mut(&item_id) {

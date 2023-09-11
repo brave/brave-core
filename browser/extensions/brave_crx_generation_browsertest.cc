@@ -66,6 +66,7 @@ class InstallCrxFileWaiter : public extensions::InstallObserver {
   }
 
   void OnFinishCrxInstall(content::BrowserContext* context,
+                          const extensions::CrxInstaller& installer,
                           const std::string& extension_id,
                           bool success) override {
     did_install_extension_ = success;

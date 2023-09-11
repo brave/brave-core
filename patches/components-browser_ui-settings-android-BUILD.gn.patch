@@ -1,5 +1,5 @@
 diff --git a/components/browser_ui/settings/android/BUILD.gn b/components/browser_ui/settings/android/BUILD.gn
-index 55fd2ccd2e56af0ec8a46eff8946d42ffb0d96a4..94205e8a0cc4b90d4e5f037e1d49e4dd6d687200 100644
+index 2fa1b261017fca82b35adf3902f9e9420d840322..c4d3de22f9b12ad195af4cfca423f7ebbb6403c1 100644
 --- a/components/browser_ui/settings/android/BUILD.gn
 +++ b/components/browser_ui/settings/android/BUILD.gn
 @@ -48,6 +48,7 @@ android_library("java") {

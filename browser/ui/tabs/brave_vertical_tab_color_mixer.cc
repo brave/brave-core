@@ -10,6 +10,7 @@
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_mixer.h"
 #include "ui/color/color_provider.h"
+#include "ui/color/color_provider_key.h"
 #include "ui/color/color_recipe.h"
 
 namespace {
@@ -39,7 +40,7 @@ ChromeColorIds GetMappedChromeColorId(BraveColorIds brave_color_id) {
 }
 
 ui::ColorTransform GetCustomColorOrDefaultColor(
-    const scoped_refptr<ui::ColorProviderManager::ThemeInitializerSupplier>&
+    const scoped_refptr<ui::ColorProviderKey::ThemeInitializerSupplier>&
         custom_theme,
     BraveColorIds color_id,
     SkColor color) {
@@ -63,9 +64,8 @@ ui::ColorTransform GetCustomColorOrDefaultColor(
 
 namespace tabs {
 
-void AddBraveVerticalTabLightThemeColorMixer(
-    ui::ColorProvider* provider,
-    const ui::ColorProviderManager::Key& key) {
+void AddBraveVerticalTabLightThemeColorMixer(ui::ColorProvider* provider,
+                                             const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
   static constexpr const auto kDefaultColorMap =
@@ -89,9 +89,8 @@ void AddBraveVerticalTabLightThemeColorMixer(
   }
 }
 
-void AddBraveVerticalTabDarkThemeColorMixer(
-    ui::ColorProvider* provider,
-    const ui::ColorProviderManager::Key& key) {
+void AddBraveVerticalTabDarkThemeColorMixer(ui::ColorProvider* provider,
+                                            const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
   static constexpr const auto kDefaultColorMap =

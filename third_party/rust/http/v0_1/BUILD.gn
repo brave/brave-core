@@ -9,10 +9,45 @@ cargo_crate("lib") {
   epoch = "0.1"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/http/v0_1/crate/benches/header_map/basic.rs",
+    "//brave/third_party/rust/http/v0_1/crate/benches/header_map/mod.rs",
+    "//brave/third_party/rust/http/v0_1/crate/benches/header_map/vec_map.rs",
+    "//brave/third_party/rust/http/v0_1/crate/benches/header_name.rs",
+    "//brave/third_party/rust/http/v0_1/crate/benches/header_value.rs",
+    "//brave/third_party/rust/http/v0_1/crate/benches/uri.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/byte_str.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/convert.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/error.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/extensions.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/header/map.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/header/mod.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/header/name.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/header/value.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/lib.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/method.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/request.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/response.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/status.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/uri/authority.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/uri/builder.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/uri/mod.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/uri/path.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/uri/port.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/uri/scheme.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/uri/tests.rs",
+    "//brave/third_party/rust/http/v0_1/crate/src/version.rs",
+    "//brave/third_party/rust/http/v0_1/crate/tests/header_map.rs",
+    "//brave/third_party/rust/http/v0_1/crate/tests/header_map_fuzz.rs",
+    "//brave/third_party/rust/http/v0_1/crate/tests/status_code.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/http/v0_1/crate/CHANGELOG.md",
+    "//brave/third_party/rust/http/v0_1/crate/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2015"
   cargo_pkg_version = "0.1.21"
   cargo_pkg_authors = "Alex Crichton <alex@alexcrichton.com>, Carl Lerche <me@carllerche.com>, Sean McArthur <sean@seanmonstar.com>"

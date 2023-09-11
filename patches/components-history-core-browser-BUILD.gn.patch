@@ -1,10 +1,10 @@
 diff --git a/components/history/core/browser/BUILD.gn b/components/history/core/browser/BUILD.gn
-index 6a8274d040f7a51c05dcfb4dcdfa932c9210c4d4..8bad047a94f96524c2a4af22ca854c981bd4023f 100644
+index 8db9ac9378ea2f979ab7a8e6beb33987a704c795..7f3682b60eda9def297efdacb1f198281f996946 100644
 --- a/components/history/core/browser/BUILD.gn
 +++ b/components/history/core/browser/BUILD.gn
-@@ -159,6 +159,7 @@ static_library("browser") {
-   if (is_ios) {
-     deps += [ "//base/ios" ]
+@@ -155,6 +155,7 @@ static_library("browser") {
+       "android/visit_sql_handler.h",
+     ]
    }
 +  import("//brave/components/history/core/browser/sources.gni") sources += brave_components_history_core_browser_sources deps += brave_components_history_core_browser_deps
  }

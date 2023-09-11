@@ -16,6 +16,7 @@ android_library("java") {
     "//chrome/android:chrome_java",
     "//chrome/android/features/tab_ui:tab_suggestions_java",
     "//chrome/browser/android/lifecycle:java",
+    "//chrome/browser/browser_controls/android:java",
     "//chrome/browser/flags:java",
     "//chrome/browser/preferences:java",
     "//chrome/browser/tabmodel:java",

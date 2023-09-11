@@ -552,9 +552,8 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
 
 ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
                                          const GURL& url) {
-  ContentSettingsForOneType fingerprinting_rules;
-  map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-                             &fingerprinting_rules);
+  ContentSettingsForOneType fingerprinting_rules =
+      map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2);
 
   ContentSetting fp_setting =
       GetBraveFPContentSettingFromRules(fingerprinting_rules, url);
@@ -814,16 +813,14 @@ bool MaybeChangeReferrer(bool allow_referrers,
 }
 
 ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map) {
-  ContentSettingsForOneType fp_rules;
-  map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-                             &fp_rules);
+  ContentSettingsForOneType fp_rules =
+      map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2);
   return GetFPSettingCountFromRules(fp_rules);
 }
 
 ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map) {
-  ContentSettingsForOneType cosmetic_rules;
-  map->GetSettingsForOneType(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                             &cosmetic_rules);
+  ContentSettingsForOneType cosmetic_rules =
+      map->GetSettingsForOneType(ContentSettingsType::BRAVE_COSMETIC_FILTERING);
   return GetAdsSettingCountFromRules(cosmetic_rules);
 }
 

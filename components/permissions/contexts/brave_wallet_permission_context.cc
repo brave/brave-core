@@ -373,8 +373,8 @@ BraveWalletPermissionContext::GetWebSitesWithPermission(
 
   HostContentSettingsMap* map =
       PermissionsClient::Get()->GetSettingsMap(context);
-  ContentSettingsForOneType settings;
-  map->GetSettingsForOneType(content_settings_type, &settings);
+  ContentSettingsForOneType settings =
+      map->GetSettingsForOneType(content_settings_type);
 
   std::vector<std::string> result;
   for (const auto& setting : settings) {

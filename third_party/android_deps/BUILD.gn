@@ -82,7 +82,7 @@ android_aar_prebuilt("com_github_bumptech_disklrucache_java") {
 }
 
 android_aar_prebuilt("com_google_android_play_core_java") {
-  aar_path = "libs/com_google_android_play_core/core-1.10.0.aar"
+  aar_path = "libs/com_google_android_play_core/core-1.10.3.aar"
   info_path =
       "libs/com_google_android_play_core/com_google_android_play_core.info"
 }

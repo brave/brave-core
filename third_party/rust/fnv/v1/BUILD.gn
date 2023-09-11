@@ -13,10 +13,11 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/lib.rs"
+  sources = [ "//brave/third_party/rust/fnv/v1/crate/lib.rs" ]
+  inputs = [ "//brave/third_party/rust/fnv/v1/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/lib.rs" ]
   edition = "2015"
   cargo_pkg_version = "1.0.7"
   cargo_pkg_authors = "Alex Crichton <alex@alexcrichton.com>"

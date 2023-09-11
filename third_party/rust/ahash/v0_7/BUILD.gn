@@ -13,10 +13,29 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/ahash/v0_7/crate/build.rs",
+    "//brave/third_party/rust/ahash/v0_7/crate/src/aes_hash.rs",
+    "//brave/third_party/rust/ahash/v0_7/crate/src/convert.rs",
+    "//brave/third_party/rust/ahash/v0_7/crate/src/fallback_hash.rs",
+    "//brave/third_party/rust/ahash/v0_7/crate/src/hash_map.rs",
+    "//brave/third_party/rust/ahash/v0_7/crate/src/hash_quality_test.rs",
+    "//brave/third_party/rust/ahash/v0_7/crate/src/hash_set.rs",
+    "//brave/third_party/rust/ahash/v0_7/crate/src/lib.rs",
+    "//brave/third_party/rust/ahash/v0_7/crate/src/operations.rs",
+    "//brave/third_party/rust/ahash/v0_7/crate/src/random_state.rs",
+    "//brave/third_party/rust/ahash/v0_7/crate/src/specialize.rs",
+    "//brave/third_party/rust/ahash/v0_7/crate/tests/bench.rs",
+    "//brave/third_party/rust/ahash/v0_7/crate/tests/map_tests.rs",
+    "//brave/third_party/rust/ahash/v0_7/crate/tests/nopanic.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/ahash/v0_7/crate/FAQ.md",
+    "//brave/third_party/rust/ahash/v0_7/crate/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.7.6"
   cargo_pkg_authors = "Tom Kaitchuck <Tom.Kaitchuck@gmail.com>"

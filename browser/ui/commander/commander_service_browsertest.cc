@@ -133,8 +133,14 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
       base::BindLambdaForTesting([&]() { return !commander()->IsShowing(); }));
 }
 
+// This test is flaky on macOS CI.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_CommandsAreUpdatedViaOmnibox DISABLED_CommandsAreUpdatedViaOmnibox
+#else
+#define MAYBE_CommandsAreUpdatedViaOmnibox CommandsAreUpdatedViaOmnibox
+#endif
 IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
-                       CommandsAreUpdatedViaOmnibox) {
+                       MAYBE_CommandsAreUpdatedViaOmnibox) {
   omnibox()->SetUserText(
       base::StrCat({commander::kCommandPrefix, u" NT Right"}));
 
@@ -149,7 +155,14 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
 #endif
 }
 
-IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, CommandsCanBeSelected) {
+// This test is flaky on macOS CI.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_CommandsCanBeSelected DISABLED_CommandsCanBeSelected
+#else
+#define MAYBE_CommandsCanBeSelected CommandsCanBeSelected
+#endif
+IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
+                       MAYBE_CommandsCanBeSelected) {
   omnibox()->SetUserText(
       base::StrCat({commander::kCommandPrefix, u" New tab"}));
 
@@ -169,8 +182,15 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, CommandsCanBeSelected) {
   EXPECT_EQ(2, browser()->tab_strip_model()->count());
 }
 
+// This test is flaky on macOS CI.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_CompositeCommandsCanBeSelected \
+  DISABLED_CompositeCommandsCanBeSelected
+#else
+#define MAYBE_CompositeCommandsCanBeSelected CompositeCommandsCanBeSelected
+#endif
 IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
-                       CompositeCommandsCanBeSelected) {
+                       MAYBE_CompositeCommandsCanBeSelected) {
   omnibox()->SetUserText(
       base::StrCat({commander::kCommandPrefix, u" Pin tab"}));
 

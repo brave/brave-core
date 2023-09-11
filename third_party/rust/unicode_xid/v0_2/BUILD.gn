@@ -13,10 +13,17 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/unicode_xid/v0_2/crate/benches/xid.rs",
+    "//brave/third_party/rust/unicode_xid/v0_2/crate/src/lib.rs",
+    "//brave/third_party/rust/unicode_xid/v0_2/crate/src/tables.rs",
+    "//brave/third_party/rust/unicode_xid/v0_2/crate/src/tests.rs",
+    "//brave/third_party/rust/unicode_xid/v0_2/crate/tests/exhaustive_tests.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/unicode_xid/v0_2/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2015"
   cargo_pkg_version = "0.2.4"
   cargo_pkg_authors = "erick.tryzelaar <erick.tryzelaar@gmail.com>, kwantam <kwantam@gmail.com>, Manish Goregaokar <manishsmail@gmail.com>"

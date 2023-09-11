@@ -9,10 +9,16 @@ cargo_crate("lib") {
   epoch = "0.1"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/bigdecimal/v0_1/crate/examples/floating-precision.rs",
+    "//brave/third_party/rust/bigdecimal/v0_1/crate/examples/repeated_squares.rs",
+    "//brave/third_party/rust/bigdecimal/v0_1/crate/src/lib.rs",
+    "//brave/third_party/rust/bigdecimal/v0_1/crate/src/macros.rs",
+  ]
+  inputs = []
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2015"
   cargo_pkg_version = "0.1.2"
   cargo_pkg_authors = "Andrew Kubera"

@@ -4,7 +4,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 source_set("base") {
-  configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
     "base_values+private.h",
     "base_values.h",

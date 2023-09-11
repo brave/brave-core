@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
-index baff459f7fc37af49fd5edb2772802cb47b9ffc8..bf0a76d7a7d1b3c161e0f67b986f6d909aced6fa 100644
+index 226720a6d80fef873dd78acef84d0905c94ec422..0af999981980ee5271d0772a6c027e64987c5bb6 100644
 --- a/components/content_settings/core/browser/content_settings_default_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_default_provider.cc
-@@ -360,6 +360,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
-   }
-   prefs_->ClearPref(kDeprecatedEnableDRM);
- #endif  // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_WIN)
+@@ -335,6 +335,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
+   prefs_->ClearPref(kObsoletePpapiBrokerDefaultPref);
+ #endif  // !BUILDFLAG(IS_ANDROID)
+ #endif  // !BUILDFLAG(IS_IOS)
 +BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES
  }
  

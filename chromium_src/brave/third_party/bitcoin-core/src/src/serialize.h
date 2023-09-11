@@ -7,7 +7,9 @@
 #define BRAVE_CHROMIUM_SRC_BRAVE_THIRD_PARTY_BITCOIN_CORE_SRC_SRC_SERIALIZE_H_
 
 #include <ios>
+#include <streambuf>
 #include <string>
+#include <vector>
 
 #include "base/check.h"
 

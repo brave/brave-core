@@ -199,6 +199,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         Intent intent = new Intent(getActivity(), ChromeTabbedActivity.class);
                         intent.putExtra(BraveActivity.OPEN_URL, BraveVpnUtils.getBraveAccountUrl());
                         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        intent.setAction(Intent.ACTION_VIEW);
                         getActivity().finish();
                         startActivity(intent);
                         return true;

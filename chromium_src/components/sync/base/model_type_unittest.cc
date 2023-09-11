@@ -14,7 +14,7 @@ TEST_F(ModelTypeTest, EncryptableUserTypes) {
 
 // This test is supposed to fail when sync types are increased/decreased
 TEST_F(ModelTypeTest, ModelTypeCounts) {
-  EXPECT_EQ(static_cast<int>(ModelTypeForHistograms::kMaxValue), 60);
+  EXPECT_EQ(static_cast<int>(ModelTypeForHistograms::kMaxValue), 61);
 }
 
 }  // namespace

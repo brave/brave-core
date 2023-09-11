@@ -1,0 +1,22 @@
+From 4217a857d39dded221b63239893c200251ceaffe Mon Sep 17 00:00:00 2001
+From: bridiver <34129+bridiver@users.noreply.github.com>
+Date: Wed, 23 Aug 2023 07:34:18 -0700
+Subject: [PATCH] patch build.rs
+
+---
+ third_party/rust/lock_api/v0_4/crate/build.rs | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/third_party/rust/lock_api/v0_4/crate/build.rs b/third_party/rust/lock_api/v0_4/crate/build.rs
+index 886a3454c3..f52f18e7b3 100644
+--- a/third_party/rust/lock_api/v0_4/crate/build.rs
++++ b/third_party/rust/lock_api/v0_4/crate/build.rs
+@@ -1,4 +1,5 @@
+ fn main() {
++    return; #[allow(unused)]
+     let cfg = autocfg::new();
+ 
+     if cfg.probe_rustc_version(1, 61) {
+-- 
+2.34.1
+

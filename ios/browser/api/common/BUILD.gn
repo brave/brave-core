@@ -7,8 +7,6 @@ import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
 source_set("common") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "common_operations.h",
     "common_operations.mm",

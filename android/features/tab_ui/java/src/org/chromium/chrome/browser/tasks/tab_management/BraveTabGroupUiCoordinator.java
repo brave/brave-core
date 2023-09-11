@@ -16,6 +16,7 @@ import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -40,6 +41,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
     private IncognitoStateObserver mIncognitoStateObserver;
 
     public BraveTabGroupUiCoordinator(@NonNull Activity activity, @NonNull ViewGroup parentView,
+            @NonNull BrowserControlsStateProvider browserControlsStateProvider,
             @NonNull IncognitoStateProvider incognitoStateProvider,
             @NonNull ScrimCoordinator scrimCoordinator,
             @NonNull ObservableSupplier<Boolean> omniboxFocusStateSupplier,
@@ -52,11 +54,11 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             @NonNull TabCreatorManager tabCreatorManager,
             @NonNull OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             @NonNull SnackbarManager snackbarManager) {
-        super(activity, parentView, incognitoStateProvider, scrimCoordinator,
-                omniboxFocusStateSupplier, bottomSheetController, activityLifecycleDispatcher,
-                isWarmOnResumeSupplier, tabModelSelector, tabContentManager, rootView,
-                dynamicResourceLoaderSupplier, tabCreatorManager, layoutStateProviderSupplier,
-                snackbarManager);
+        super(activity, parentView, browserControlsStateProvider, incognitoStateProvider,
+                scrimCoordinator, omniboxFocusStateSupplier, bottomSheetController,
+                activityLifecycleDispatcher, isWarmOnResumeSupplier, tabModelSelector,
+                tabContentManager, rootView, dynamicResourceLoaderSupplier, tabCreatorManager,
+                layoutStateProviderSupplier, snackbarManager);
 
         mIncognitoStateProvider = incognitoStateProvider;
 

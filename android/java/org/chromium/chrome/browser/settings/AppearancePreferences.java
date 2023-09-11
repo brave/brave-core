@@ -197,7 +197,6 @@ public class AppearancePreferences extends BravePreferenceFragment
         } else if (PREF_BRAVE_ENABLE_TAB_GROUPS.equals(key)) {
             SharedPreferencesManager.getInstance().writeBoolean(
                     BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
-            shouldRelaunch = true;
         } else if (PREF_BRAVE_ENABLE_SPEEDREADER.equals(key)) {
             UserPrefs.get(Profile.getLastUsedRegularProfile())
                     .setBoolean(BravePref.SPEEDREADER_PREF_ENABLED, (boolean) newValue);

@@ -7,7 +7,6 @@ import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
 source_set("browser_state") {
-  configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
     "brave_browser_state_keyed_service_factories.h",
     "brave_browser_state_keyed_service_factories.mm",

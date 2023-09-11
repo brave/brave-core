@@ -1027,6 +1027,9 @@
   <message name="IDS_BRAVE_SETTINGS_GET_MORE_EXTENSIONS_LABEL" desc="The label of get more extensions link in settings">
     Get more extensions
   </message>
+  <message name="IDS_BRAVE_SETTINGS_GET_MORE_EXTENSIONS_SUBLABEL" desc="The sub-label of get more extensions link in settings">
+    Open Web Store
+  </message>
 
   <!-- Settings / Wallet -->
   <message name="IDS_SETTINGS_DEFAULT_ETHEREUM_WALLET_DESC" desc="The default cryptocurrency wallet for the Ethereum blockchain">

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-index bfaa95d9bc1302d872b42f5c9750b36ea95c6a5f..319bc449e57307c471eb5f9fbab8b9687b10c5f1 100644
+index b12ca875746ef64c05cbc9a1de0769a8f3c65f47..b6631a139856938ce38c81d8ddefe0e3899d0ccb 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-@@ -554,6 +554,7 @@ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
+@@ -612,6 +612,7 @@ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
        {ui::MenuModel::TYPE_COMMAND, true},    // <tab>
        // max tabs per sessions is 4, so only the 4 most tabs will show,
        // independent of which window they came from.

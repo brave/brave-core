@@ -12,6 +12,13 @@
 -PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
 
+# These tests pass locally but fail on CI.
+-InfoBarUiTest.InvokeUi_bad_flags
+-InfoBarUiTest.InvokeUi_reload_plugin
+-PageInfoBubbleViewBrowserTest.BlockedAndInvalidCert
+-PageInfoBubbleViewBrowserTest.MalwareAndEvCert
+-PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*

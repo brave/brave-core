@@ -7,8 +7,6 @@ import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
 source_set("browser") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "brave_web_client.h",
     "brave_web_client.mm",

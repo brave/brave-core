@@ -51,4 +51,5 @@
 
   <if expr="chrome_root_store_supported">
     </if>
-</grit-part>
+
+  </grit-part>

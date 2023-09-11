@@ -1,8 +1,8 @@
 diff --git a/sandbox/win/BUILD.gn b/sandbox/win/BUILD.gn
-index 35acb314136dedd089a68e071a14ae78040a68c4..985804a223823dfe4cc75a44b72c9be3e5770590 100644
+index e9d67c43a84d6b1cf60743c4814b9e74e26a4e02..669883c32b824d615053dcc39823d320556b39d8 100644
 --- a/sandbox/win/BUILD.gn
 +++ b/sandbox/win/BUILD.gn
-@@ -173,6 +173,7 @@ static_library("sandbox") {
+@@ -186,6 +186,7 @@ static_library("sandbox") {
      "ntdll.lib",
      "userenv.lib",
    ]

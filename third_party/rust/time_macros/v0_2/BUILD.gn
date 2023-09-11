@@ -13,10 +13,31 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/date.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/datetime.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/error.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/format_description/ast.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/format_description/format_item.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/format_description/lexer.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/format_description/mod.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/format_description/public/component.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/format_description/public/mod.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/format_description/public/modifier.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/helpers/mod.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/helpers/string.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/lib.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/offset.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/quote.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/serde_format_description.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/shim.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/time.rs",
+    "//brave/third_party/rust/time_macros/v0_2/crate/src/to_tokens.rs",
+  ]
+  inputs = []
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2021"
   cargo_pkg_version = "0.2.8"
   cargo_pkg_authors = "Jacob Pratt <open-source@jhpratt.dev>, Time contributors"

@@ -3,6 +3,7 @@ extern crate autocfg;
 use std::env;
 
 fn main() {
+    return; #[allow(unused)]
     let ac = autocfg::new();
     if ac.probe_type("i128") {
         println!("cargo:rustc-cfg=has_i128");

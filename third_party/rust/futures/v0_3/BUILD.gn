@@ -9,10 +9,72 @@ cargo_crate("lib") {
   epoch = "0.3"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/futures/v0_3/crate/src/lib.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/_require_features.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/async_await_macros.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/auto_traits.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/bilock.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/compat.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/eager_drop.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/eventual.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/future_abortable.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/future_basic_combinators.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/future_fuse.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/future_inspect.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/future_join.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/future_join_all.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/future_obj.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/future_select_all.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/future_select_ok.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/future_shared.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/future_try_flatten_stream.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/future_try_join_all.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/io_buf_reader.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/io_buf_writer.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/io_cursor.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/io_line_writer.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/io_lines.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/io_read.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/io_read_exact.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/io_read_line.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/io_read_to_end.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/io_read_to_string.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/io_read_until.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/io_window.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/io_write.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/lock_mutex.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/macro_comma_support.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/object_safety.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/oneshot.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/ready_queue.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/recurse.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/sink.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/sink_fanout.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/stream.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/stream_abortable.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/stream_buffer_unordered.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/stream_catch_unwind.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/stream_futures_ordered.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/stream_futures_unordered.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/stream_into_async_read.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/stream_peekable.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/stream_select_all.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/stream_select_next_some.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/stream_split.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/stream_try_stream.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/stream_unfold.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/task_arc_wake.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/task_atomic_waker.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/test_macro.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests/try_join.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests_disabled/all.rs",
+    "//brave/third_party/rust/futures/v0_3/crate/tests_disabled/stream.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/futures/v0_3/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.3.27"
   cargo_pkg_name = "futures"

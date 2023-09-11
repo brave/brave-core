@@ -7,16 +7,16 @@
 #include "brave/components/brave_page_graph/common/buildflags.h"
 #include "third_party/blink/renderer/core/probe/core_probes.h"
 
-#define BRAVE_EVENT_TARGET_ADD_EVENT_LISTENER_INTERNAL              \
-  IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                           \
-    probe::RegisterPageGraphEventListenerAdd(this, event_type,      \
-                                             &registered_listener); \
+#define BRAVE_EVENT_TARGET_ADD_EVENT_LISTENER_INTERNAL             \
+  IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                          \
+    probe::RegisterPageGraphEventListenerAdd(this, event_type,     \
+                                             registered_listener); \
   })
 
-#define BRAVE_EVENT_TARGET_REMOVE_EVENT_LISTENER_INTERNAL              \
-  IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                              \
-    probe::RegisterPageGraphEventListenerRemove(this, event_type,      \
-                                                &registered_listener); \
+#define BRAVE_EVENT_TARGET_REMOVE_EVENT_LISTENER_INTERNAL             \
+  IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                             \
+    probe::RegisterPageGraphEventListenerRemove(this, event_type,     \
+                                                registered_listener); \
   })
 
 #define SetAttributeEventListener SetAttributeEventListener_ChromiumImpl

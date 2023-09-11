@@ -1,26 +1,26 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-index 57be3c740517a3a9259f73b964bbc2d71a2ed0ef..1811dd966f7a9ee578737fe891eec714b6a6459e 100644
+index cc2951ae1d3a7694b5b2f2691ddd76e436d715bc..1cbb9a2a67b35d9b53db23262c4b71ad0dca1d7c 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 @@ -47,7 +47,7 @@ public class SiteSettingsCategory {
              Type.PROTECTED_MEDIA, Type.SENSORS, Type.SOUND, Type.USB, Type.VIRTUAL_REALITY,
              Type.USE_STORAGE, Type.AUTO_DARK_WEB_CONTENT, Type.REQUEST_DESKTOP_SITE,
              Type.FEDERATED_IDENTITY_API, Type.THIRD_PARTY_COOKIES, Type.SITE_DATA, Type.ANTI_ABUSE,
--            Type.NUM_ENTRIES})
-+            Type.NUM_ENTRIES, Type.AUTOPLAY, Type.BRAVE_GOOGLE_SIGN_IN, Type.BRAVE_LOCALHOST_ACCESS})
+-            Type.ZOOM, Type.NUM_ENTRIES})
++            Type.ZOOM, Type.NUM_ENTRIES, Type.AUTOPLAY, Type.BRAVE_GOOGLE_SIGN_IN, Type.BRAVE_LOCALHOST_ACCESS})
      @Retention(RetentionPolicy.SOURCE)
      public @interface Type {
          // All updates here must also be reflected in {@link #preferenceKey(int)
-@@ -81,10 +81,11 @@ public class SiteSettingsCategory {
-         int THIRD_PARTY_COOKIES = 26;
+@@ -82,10 +82,11 @@ public class SiteSettingsCategory {
          int SITE_DATA = 27;
          int ANTI_ABUSE = 28;
-+        int AUTOPLAY = 29; int BRAVE_GOOGLE_SIGN_IN = 30; int BRAVE_LOCALHOST_ACCESS = 31;
+         int ZOOM = 29;
++        int AUTOPLAY = 30; int BRAVE_GOOGLE_SIGN_IN = 31; int BRAVE_LOCALHOST_ACCESS = 32;
          /**
           * Number of handled categories used for calculating array sizes.
           */
--        int NUM_ENTRIES = 29;
-+        int NUM_ENTRIES = 32;
+-        int NUM_ENTRIES = 30;
++        int NUM_ENTRIES = 33;
      }
  
      private final BrowserContextHandle mBrowserContextHandle;

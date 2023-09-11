@@ -4,8 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 source_set("models") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "brave_certificate_enums.h",
     "brave_certificate_fingerprint.h",

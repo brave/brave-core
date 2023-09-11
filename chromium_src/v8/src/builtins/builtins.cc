@@ -16,7 +16,7 @@ namespace internal {
 static std::string ToPageGraphArg(Isolate* isolate, Handle<Object> object) {
 #ifdef OBJECT_PRINT  // Enabled with v8_enable_object_print=true gn arg.
   std::ostringstream stream;
-  object->Print(stream);
+  Print(*object, stream);
   return stream.str();
 #else   // OBJECT_PRINT
   return Object::NoSideEffectsToString(isolate, object)->ToCString().get();

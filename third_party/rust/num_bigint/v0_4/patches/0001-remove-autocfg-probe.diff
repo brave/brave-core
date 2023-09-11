@@ -1,0 +1,32 @@
+From 5913c99a92cc3e77033010b346bf8328465a42f1 Mon Sep 17 00:00:00 2001
+From: bridiver <34129+bridiver@users.noreply.github.com>
+Date: Tue, 22 Aug 2023 16:06:53 -0700
+Subject: [PATCH] temp2
+
+---
+ third_party/rust/num_bigint/v0_4/crate/build.rs | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/third_party/rust/num_bigint/v0_4/crate/build.rs b/third_party/rust/num_bigint/v0_4/crate/build.rs
+index 284c22fe1a..3daed5e8d3 100644
+--- a/third_party/rust/num_bigint/v0_4/crate/build.rs
++++ b/third_party/rust/num_bigint/v0_4/crate/build.rs
+@@ -5,7 +5,6 @@ use std::io::Write;
+ use std::path::Path;
+ 
+ fn main() {
+-  /*
+     let pointer_width = env::var("CARGO_CFG_TARGET_POINTER_WIDTH");
+     let u64_digit = pointer_width.as_ref().map(String::as_str) == Ok("64");
+     if u64_digit {
+@@ -33,7 +32,6 @@ fn main() {
+     }
+ 
+     autocfg::rerun_path("build.rs");
+-  */
+ 
+     write_radix_bases().unwrap();
+ }
+-- 
+2.34.1
+

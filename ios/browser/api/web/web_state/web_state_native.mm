@@ -26,189 +26,18 @@
 #error "This file requires ARC support."
 #endif
 
-#pragma mark - BackForwardList
-
-// Back Forward List for use in Navigation Manager
-@interface BackForwardList : NSObject
-@property(nonatomic, readonly, copy) WKBackForwardListItem* currentItem;
-@property(nonatomic, readonly, copy) NSArray<WKBackForwardListItem*>* backList;
-@property(nonatomic, readonly, copy)
-    NSArray<WKBackForwardListItem*>* forwardList;
-@end
-
-@implementation BackForwardList
-@synthesize currentItem;
-@synthesize backList;
-@synthesize forwardList;
-
-- (instancetype)init {
-  self = [super init];
-  return self;
-}
-
-- (WKBackForwardListItem*)itemAtIndex:(NSInteger)index {
-  if (index == 0) {
-    return currentItem;
-  }
-
-  if (index > 0 && forwardList.count) {
-    return forwardList[index - 1];
-  }
-
-  if (backList.count) {
-    return backList[backList.count + index];
-  }
-
-  return nullptr;
-}
-
-- (WKBackForwardListItem*)backItem {
-  return backList.lastObject;
-}
-
-- (WKBackForwardListItem*)forwardItem {
-  return forwardList.firstObject;
-}
-@end
-
-#pragma mark - NavigationProxy
-
-@interface NavigationProxy : NSObject <CRWWebViewNavigationProxy>
-@end
-
-@implementation NavigationProxy
-- (instancetype)init {
-  if ((self = [super init])) {
-  }
-  return self;
-}
-
-- (NSURL*)URL {
-  return net::NSURLWithGURL(GURL(url::kAboutBlankURL));
-}
-
-- (WKBackForwardList*)backForwardList {
-  return (WKBackForwardList*)[[BackForwardList alloc] init];
-}
-@end
-
-#pragma mark - NavigationDelegate
-
 namespace brave {
-class NavigationDelegate : public web::NavigationManagerDelegate {
- public:
-  NavigationDelegate(web::WebState* web_state);
-  ~NavigationDelegate() override;
-  void ClearDialogs() override;
-  void RecordPageStateInNavigationItem() override;
-  void LoadCurrentItem(web::NavigationInitiationType type) override;
-  void LoadIfNecessary() override;
-  void Reload() override;
-  void OnNavigationItemCommitted(web::NavigationItem* item) override;
-  web::WebState* GetWebState() override;
-  void SetWebStateUserAgent(web::UserAgentType user_agent_type) override;
-  id<CRWWebViewNavigationProxy> GetWebViewNavigationProxy() const override;
-  void GoToBackForwardListItem(WKBackForwardListItem* wk_item,
-                               web::NavigationItem* item,
-                               web::NavigationInitiationType type,
-                               bool has_user_gesture) override;
-
-  void RemoveWebView() override;
-  web::NavigationItemImpl* GetPendingItem() override;
-  GURL GetCurrentURL() const override;
-
- private:
-  web::WebState* web_state_;
-};
-
-NavigationDelegate::~NavigationDelegate() = default;
-
-id<CRWWebViewNavigationProxy> NavigationDelegate::GetWebViewNavigationProxy()
-    const {
-  return [[NavigationProxy alloc] init];
-}
-
-web::WebState* NavigationDelegate::GetWebState() {
-  return web_state_;
-}
-
-web::NavigationItemImpl* NavigationDelegate::GetPendingItem() {
-  return nullptr;
-}
-
-NavigationDelegate::NavigationDelegate(web::WebState* web_state)
-    : web_state_(web_state) {
-  // Not needed on iOS
-}
-
-void NavigationDelegate::ClearDialogs() {
-  // Not needed on iOS
-}
-
-void NavigationDelegate::RecordPageStateInNavigationItem() {
-  // Not needed on iOS
-}
-
-void NavigationDelegate::LoadCurrentItem(web::NavigationInitiationType type) {
-  // Not needed on iOS
-}
-
-void NavigationDelegate::LoadIfNecessary() {
-  // Not needed on iOS
-}
-
-void NavigationDelegate::Reload() {
-  // Not needed on iOS
-}
-
-void NavigationDelegate::OnNavigationItemCommitted(web::NavigationItem* item) {
-  // Not needed on iOS
-}
-
-void NavigationDelegate::SetWebStateUserAgent(
-    web::UserAgentType user_agent_type) {
-  // Not needed on iOS
-}
-
-void NavigationDelegate::GoToBackForwardListItem(
-    WKBackForwardListItem* wk_item,
-    web::NavigationItem* item,
-    web::NavigationInitiationType type,
-    bool has_user_gesture) {
-  // Not needed on iOS
-}
-
-void NavigationDelegate::RemoveWebView() {
-  // Not needed on iOS
-}
-
-GURL NavigationDelegate::GetCurrentURL() const {
-  return GURL();
-}
 
 #pragma mark NativeWebState
 
 NativeWebState::NativeWebState(Browser* browser, bool off_the_record)
     : browser_(browser),
       session_id_(SessionID::InvalidValue()),
-      navigation_delegate_(nullptr),
       web_state_(nullptr),
       web_state_observer_(nullptr) {
   // First setup SessionID for the web-state
   session_id_ =
       SyncedWindowDelegateBrowserAgent::FromBrowser(browser_)->GetSessionId();
-
-  // Create session storage with an empty item storage
-  NSMutableArray<CRWNavigationItemStorage*>* item_storages =
-      [[NSMutableArray alloc] init];
-  CRWNavigationItemStorage* item = [[CRWNavigationItemStorage alloc] init];
-  [item_storages addObject:item];
-
-  CRWSessionStorage* session_storage = [[CRWSessionStorage alloc] init];
-  session_storage.stableIdentifier = [[NSUUID UUID] UUIDString];
-  session_storage.uniqueIdentifier = SessionID::NewUnique();
-  session_storage.itemStorages = [item_storages copy];
-  session_storage.userAgentType = web::UserAgentType::MOBILE;
 
   // Create BrowserState
   ChromeBrowserState* browser_state = browser->GetBrowserState();
@@ -219,18 +48,12 @@ NativeWebState::NativeWebState(Browser* browser, bool off_the_record)
   // Create WebState with parameters
   web::WebState::CreateParams create_params(browser_state);
   create_params.last_active_time = base::Time::Now();
-  auto web_state =
-      web::WebState::CreateWithStorageSession(create_params, session_storage);
+  auto web_state = web::WebState::Create(create_params);
   web_state->ForceRealized();
 
   // Setup Observers of the WebState
   web_state_ = web_state.get();
   web_state_observer_ = std::make_unique<Observer>(this);
-
-  // Setup Navigation Delegate for the WebState
-  navigation_delegate_ = std::make_unique<NavigationDelegate>(web_state_);
-  static_cast<web::NavigationManagerImpl*>(web_state_->GetNavigationManager())
-      ->SetDelegate(navigation_delegate_.get());
 
   // Insert the WebState into the Browser && Activate it
   browser_->GetWebStateList()->InsertWebState(
@@ -255,7 +78,6 @@ NativeWebState::~NativeWebState() {
   }
 
   // Cleanup everything else in reverse order of construction
-  navigation_delegate_.reset();
   web_state_ = nullptr;
   session_id_ = SessionID::InvalidValue();
   browser_ = nullptr;
@@ -298,7 +120,8 @@ void NativeWebState::SetURL(const GURL& url) {
     navigation_manager->AddPendingItem(
         url, web::Referrer(), ui::PAGE_TRANSITION_TYPED,
         web::NavigationInitiationType::BROWSER_INITIATED,
-        /*is_post_navigation=*/false, web::HttpsUpgradeType::kNone);
+        /*is_post_navigation=*/false, /*is_error_navigation*/ false,
+        web::HttpsUpgradeType::kNone);
 
     navigation_manager->CommitPendingItem();
     static_cast<web::WebStateImpl*>(web_state_)->OnPageLoaded(url, true);

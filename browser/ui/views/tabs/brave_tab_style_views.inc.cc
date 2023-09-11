@@ -19,7 +19,7 @@ class BraveGM2TabStyle : public GM2TabStyleViews {
   ~BraveGM2TabStyle() override = default;
 
  protected:
-  TabStyle::TabColors CalculateColors() const override;
+  TabStyle::TabColors CalculateTargetColors() const override;
 
   Tab* tab() { return base::to_address(tab_); }
   const Tab* tab() const { return base::to_address(tab_); }
@@ -31,8 +31,8 @@ class BraveGM2TabStyle : public GM2TabStyleViews {
 BraveGM2TabStyle::BraveGM2TabStyle(Tab* tab)
     : GM2TabStyleViews(tab), tab_(tab) {}
 
-TabStyle::TabColors BraveGM2TabStyle::CalculateColors() const {
-  auto colors = GM2TabStyleViews::CalculateColors();
+TabStyle::TabColors BraveGM2TabStyle::CalculateTargetColors() const {
+  auto colors = GM2TabStyleViews::CalculateTargetColors();
   const SkColor inactive_non_hovered_fg_color = SkColorSetA(
       colors.foreground_color,
       gfx::Tween::IntValueBetween(0.7, SK_AlphaTRANSPARENT, SK_AlphaOPAQUE));
@@ -69,6 +69,9 @@ class BraveVerticalTabStyle : public BraveGM2TabStyle {
  private:
   bool ShouldShowVerticalTabs() const;
   bool IsInGroupAndNotActive() const;
+  SkColor GetTargetTabBackgroundColor(
+      TabStyle::TabSelectionState selection_state,
+      bool hovered) const override;
 };
 
 BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab) : BraveGM2TabStyle(tab) {
@@ -171,8 +174,27 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
     CHECK(widget);
     const SkColor tab_stroke_color =
         widget->GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator);
-    PaintBackgroundStroke(canvas, TabActive::kActive, tab_stroke_color);
+    PaintBackgroundStroke(canvas, TabStyle::TabSelectionState::kActive,
+                          tab_stroke_color);
   }
+}
+
+SkColor BraveVerticalTabStyle::GetTargetTabBackgroundColor(
+    TabStyle::TabSelectionState selection_state,
+    bool hovered) const {
+  if (!ShouldShowVerticalTabs()) {
+    return BraveGM2TabStyle::GetTargetTabBackgroundColor(selection_state,
+                                                         hovered);
+  }
+
+  const ui::ColorProvider* cp = tab()->GetColorProvider();
+  if (!cp) {
+    return gfx::kPlaceholderColor;
+  }
+
+  return cp->GetColor(selection_state == TabStyle::TabSelectionState::kActive
+                          ? kColorBraveVerticalTabActiveBackground
+                          : kColorBraveVerticalTabInactiveBackground);
 }
 
 bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {

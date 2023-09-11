@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc b/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
-index 141eebfb386c09bcac13a136fc05abe6e2afcaab..500c238c175a44190bea1249917e731935e5ddcb 100644
+index 996c19fc0df15b5abfe3a4a2eceb9bc8a2f3da31..89c0c7e83a0dc1a96fe15f927f699aa87c68aeb6 100644
 --- a/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
-@@ -216,7 +216,7 @@ int GetMicrotasksScopeDepth(v8::Isolate* isolate,
+@@ -218,7 +218,7 @@ int GetMicrotasksScopeDepth(v8::Isolate* isolate,
  
  }  // namespace
  
@@ -11,7 +11,7 @@ index 141eebfb386c09bcac13a136fc05abe6e2afcaab..500c238c175a44190bea1249917e7319
      ScriptState* script_state,
      const ClassicScript& classic_script,
      v8::ScriptOrigin origin,
-@@ -260,7 +260,7 @@ v8::MaybeLocal<v8::Script> V8ScriptRunner::CompileScript(
+@@ -262,7 +262,7 @@ v8::MaybeLocal<v8::Script> V8ScriptRunner::CompileScript(
    return script;
  }
  

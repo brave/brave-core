@@ -433,6 +433,7 @@ public class BraveWalletPanel implements DialogInterface {
         mBtnSelectedNetwork = mPopupView.findViewById(R.id.btn_dapps_panel_networks);
         mBtnSelectedNetwork.setOnClickListener(v -> {
             Intent intent = new Intent(mActivity, NetworkSelectorActivity.class);
+            intent.setAction(Intent.ACTION_VIEW);
             mActivity.startActivity(intent);
         });
         mCvSolConnectionStatus = mPopupView.findViewById(R.id.v_dapps_panel_sol_connection_status);
@@ -450,7 +451,9 @@ public class BraveWalletPanel implements DialogInterface {
         mAccountChangeAnchor.setOnClickListener(v -> {
             try {
                 BraveActivity activity = BraveActivity.getBraveActivity();
-                activity.startActivity(new Intent(activity, AccountSelectorActivity.class));
+                Intent intent = new Intent(activity, AccountSelectorActivity.class);
+                intent.setAction(Intent.ACTION_VIEW);
+                activity.startActivity(intent);
             } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "setUpViews AccountChangeAnchor click " + e);
             }

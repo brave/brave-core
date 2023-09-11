@@ -12,6 +12,8 @@ if (!is_ios) {
     "//brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h",
     "//brave/components/content_settings/core/browser/brave_content_settings_utils.cc",
     "//brave/components/content_settings/core/browser/brave_content_settings_utils.h",
+    "//brave/components/content_settings/core/browser/brave_global_value_map.cc",
+    "//brave/components/content_settings/core/browser/brave_global_value_map.h",
   ]
 
   brave_components_content_settings_core_browser_deps += [

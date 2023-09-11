@@ -10,7 +10,9 @@ namespace syncer {
 SyncSessionDurationsMetricsRecorder::SyncSessionDurationsMetricsRecorder(
     SyncService* sync_service,
     signin::IdentityManager* identity_manager)
-    : sync_service_(sync_service), identity_manager_(identity_manager) {}
+    : sync_service_(sync_service),
+      identity_manager_(identity_manager),
+      history_sync_recorder_(sync_service) {}
 
 SyncSessionDurationsMetricsRecorder::~SyncSessionDurationsMetricsRecorder() {}
 

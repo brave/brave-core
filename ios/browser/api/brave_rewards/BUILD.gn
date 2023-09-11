@@ -13,10 +13,7 @@ config("external_config") {
 }
 
 source_set("brave_rewards") {
-  configs += [
-    ":external_config",
-    "//build/config/compiler:enable_arc",
-  ]
+  configs += [ ":external_config" ]
 
   sources = [
     "brave_rewards_api.h",

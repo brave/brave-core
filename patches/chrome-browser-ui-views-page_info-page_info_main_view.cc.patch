@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_info/page_info_main_view.cc b/chrome/browser/ui/views/page_info/page_info_main_view.cc
-index 9800155375fa4fb592a0e7ddc041b669b3f9bc98..7b8e1ca57504f9ca04238b057ed7095164b3793b 100644
+index f076917a8c9135f0c4c8cab129ee73fcbc3527f9..f4bf49cbe475d588f93d53e674657b238347b9d8 100644
 --- a/chrome/browser/ui/views/page_info/page_info_main_view.cc
 +++ b/chrome/browser/ui/views/page_info/page_info_main_view.cc
-@@ -554,6 +554,7 @@ gfx::Size PageInfoMainView::CalculatePreferredSize() const {
+@@ -507,6 +507,7 @@ gfx::Size PageInfoMainView::CalculatePreferredSize() const {
    if (site_settings_view_) {
      width = std::max(width, site_settings_view_->GetPreferredSize().width());
      width = std::max(width, permissions_view_->GetPreferredSize().width());
