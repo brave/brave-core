@@ -70,7 +70,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
-        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
+        /*should_use_random_uuids*/ true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -161,7 +162,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
-        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
+        /*should_use_random_uuids*/ true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -199,7 +201,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
-        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
+        /*should_use_random_uuids*/ true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -240,7 +243,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
-        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
+        /*should_use_random_uuids*/ true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -278,7 +282,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
-        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
+        /*should_use_random_uuids*/ true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -320,7 +325,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
-        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
+        /*should_use_random_uuids*/ true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -361,7 +367,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
-        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
+        /*should_use_random_uuids*/ true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -400,7 +407,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
-        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
+        /*should_use_random_uuids*/ true);
     ad_events.push_back(ad_event);
   }
 
@@ -441,7 +449,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
-        creative_ad_2, AdType::kNotificationAd, confirmation_type, Now());
+        creative_ad_2, AdType::kNotificationAd, confirmation_type, Now(),
+        /*should_use_random_uuids*/ true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -472,7 +481,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
-        creative_ad_2, AdType::kNotificationAd, confirmation_type, Now());
+        creative_ad_2, AdType::kNotificationAd, confirmation_type, Now(),
+        /*should_use_random_uuids*/ true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }

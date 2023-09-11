@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/common/instance_id_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
+#include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
@@ -26,12 +27,16 @@ namespace brave_ads {
 AdEventInfo BuildAdEventForTesting(const CreativeAdInfo& creative_ad,
                                    const AdType& ad_type,
                                    const ConfirmationType& confirmation_type,
-                                   const base::Time created_at) {
+                                   const base::Time created_at,
+                                   const bool should_use_random_uuids) {
   AdEventInfo ad_event;
 
   ad_event.type = ad_type;
   ad_event.confirmation_type = confirmation_type;
-  ad_event.placement_id = base::Uuid::GenerateRandomV4().AsLowercaseString();
+  ad_event.placement_id =
+      should_use_random_uuids
+          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
+          : kPlacementId;
   ad_event.campaign_id = creative_ad.campaign_id;
   ad_event.creative_set_id = creative_ad.creative_set_id;
   ad_event.creative_instance_id = creative_ad.creative_instance_id;
