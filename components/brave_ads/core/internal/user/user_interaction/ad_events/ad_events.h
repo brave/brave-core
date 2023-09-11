@@ -24,11 +24,11 @@ class ConfirmationType;
 struct AdEventInfo;
 struct AdInfo;
 
-void LogAdEvent(const AdInfo& ad,
-                const ConfirmationType& confirmation_type,
-                AdEventCallback callback);
+void RecordAdEvent(const AdInfo& ad,
+                   const ConfirmationType& confirmation_type,
+                   AdEventCallback callback);
 
-void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback);
+void RecordAdEvent(const AdEventInfo& ad_event, AdEventCallback callback);
 
 void PurgeExpiredAdEvents(AdEventCallback callback);
 void PurgeOrphanedAdEvents(mojom::AdType ad_type, AdEventCallback callback);

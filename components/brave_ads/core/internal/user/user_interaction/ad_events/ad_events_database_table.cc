@@ -222,7 +222,8 @@ void MigrateToV32(mojom::DBTransactionInfo* transaction) {
 
 }  // namespace
 
-void AdEvents::LogEvent(const AdEventInfo& ad_event, ResultCallback callback) {
+void AdEvents::RecordEvent(const AdEventInfo& ad_event,
+                           ResultCallback callback) {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   InsertOrUpdate(&*transaction, {ad_event});

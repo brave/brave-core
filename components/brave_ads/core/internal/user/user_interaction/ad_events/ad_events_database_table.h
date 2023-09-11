@@ -21,7 +21,7 @@ using GetAdEventsCallback =
 
 class AdEvents final : public TableInterface {
  public:
-  void LogEvent(const AdEventInfo& ad_event, ResultCallback callback);
+  void RecordEvent(const AdEventInfo& ad_event, ResultCallback callback);
 
   void GetAll(GetAdEventsCallback callback) const;
 

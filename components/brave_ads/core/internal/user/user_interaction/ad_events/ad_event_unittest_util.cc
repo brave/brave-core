@@ -69,8 +69,8 @@ void RecordAdEventsForTesting(const AdType& type,
 }
 
 void FireAdEventForTesting(const AdEventInfo& ad_event) {
-  LogAdEvent(ad_event,
-             base::BindOnce([](const bool success) { CHECK(success); }));
+  RecordAdEvent(ad_event,
+                base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
 void FireAdEventsForTesting(const AdEventInfo& ad_event, const size_t count) {

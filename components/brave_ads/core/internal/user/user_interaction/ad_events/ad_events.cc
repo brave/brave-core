@@ -23,23 +23,23 @@
 
 namespace brave_ads {
 
-void LogAdEvent(const AdInfo& ad,
-                const ConfirmationType& confirmation_type,
-                AdEventCallback callback) {
-  LogAdEvent(BuildAdEvent(ad, confirmation_type, base::Time::Now()),
-             std::move(callback));
+void RecordAdEvent(const AdInfo& ad,
+                   const ConfirmationType& confirmation_type,
+                   AdEventCallback callback) {
+  RecordAdEvent(BuildAdEvent(ad, confirmation_type, base::Time::Now()),
+                std::move(callback));
 }
 
-void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
+void RecordAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
   RecordAdEvent(ad_event);
 
   database::table::AdEvents database_table;
-  database_table.LogEvent(ad_event,
-                          base::BindOnce(
-                              [](AdEventCallback callback, const bool success) {
-                                std::move(callback).Run(success);
-                              },
-                              std::move(callback)));
+  database_table.RecordEvent(
+      ad_event, base::BindOnce(
+                    [](AdEventCallback callback, const bool success) {
+                      std::move(callback).Run(success);
+                    },
+                    std::move(callback)));
 }
 
 void PurgeExpiredAdEvents(AdEventCallback callback) {
