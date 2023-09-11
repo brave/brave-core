@@ -34,8 +34,9 @@ const SITE_INFO = {
   title: "Microsoft is hiking the price of Xbox Series X and Xbox Game Pass"
 }
 
-interface StoryProps {
-  hasQuestions: boolean,
+interface StoryArgs {
+  hasQuestions: boolean
+  hasSeenAgreement: boolean
   currentErrorState: APIError
 }
 
@@ -46,10 +47,11 @@ export default {
   },
   args: {
     hasQuestions: true,
+    hasSeenAgreement: false,
     currentErrorState: select('Current Status', APIError, APIError.RateLimitReached)
   },
   decorators: [
-    (Story: any) => {
+    (Story: any, options: any) => {
       const [conversationHistory] = React.useState<ConversationTurn[]>(HISTORY)
       const [suggestedQuestions] = React.useState<string[]>(SAMPLE_QUESTIONS)
       const [isGenerating] = React.useState(false)
@@ -57,8 +59,8 @@ export default {
       const [userAutoGeneratePref] = React.useState<AutoGenerateQuestionsPref>()
       const [siteInfo] = React.useState<SiteInfo | null>(SITE_INFO)
       const [favIconUrl] = React.useState<string>()
-      const [currentError] = React.useState<APIError>(APIError.RateLimitReached)
-      const [hasSeenAgreement] = React.useState(false)
+      const [currentError] = React.useState<APIError>(options.args.currentErrorState)
+      const [hasSeenAgreement] = React.useState(options.args.hasSeenAgreement)
 
       const generateSuggestedQuestions = () => {}
       const setUserAllowsAutoGenerating = () => {}
@@ -91,7 +93,7 @@ export default {
   ]
 }
 
-export const _Main = (props: StoryProps) => {
+export const _Main = (props: StoryArgs) => {
   return (
     <div className={styles.container}>
       <Main />
