@@ -395,6 +395,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   omnibox::RegisterBraveProfilePrefs(registry);
 
+  // Do not mark Password Manager app menu item as new
+  registry->SetDefaultPrefValue(
+      password_manager::prefs::kPasswordsPrefWithNewLabelUsed,
+      base::Value(true));
+
   // Password leak detection should be disabled
   registry->SetDefaultPrefValue(
       password_manager::prefs::kPasswordLeakDetectionEnabled,
