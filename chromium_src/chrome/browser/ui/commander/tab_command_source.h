@@ -3,10 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_COMMANDER_BRAVE_TAB_COMMAND_SOURCE_H_
-#define BRAVE_BROWSER_UI_COMMANDER_BRAVE_TAB_COMMAND_SOURCE_H_
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_COMMANDER_TAB_COMMAND_SOURCE_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_COMMANDER_TAB_COMMAND_SOURCE_H_
 
 #include "chrome/browser/ui/commander/command_source.h"
+
+#include "src/chrome/browser/ui/commander/tab_command_source.h"  // IWYU pragma: export
 
 namespace commander {
 
@@ -27,4 +29,4 @@ class BraveTabCommandSource : public CommandSource {
 
 }  // namespace commander
 
-#endif  // BRAVE_BROWSER_UI_COMMANDER_BRAVE_TAB_COMMAND_SOURCE_H_
+#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_COMMANDER_TAB_COMMAND_SOURCE_H_

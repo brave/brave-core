@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/commander/brave_window_command_source.h"
+#include "chrome/browser/ui/commander/window_command_source.h"
 
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
