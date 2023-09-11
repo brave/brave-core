@@ -21,6 +21,7 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
@@ -155,7 +156,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         }
         MenuItem braveLeo = menu.findItem(R.id.brave_leo_id);
         if (braveLeo != null) {
-            if (ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
+            if (BraveConfig.AI_CHAT_ENABLED
+                    && ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
                 braveLeo.setVisible(true);
                 if (shouldShowIconBeforeItem()) {
                     braveLeo.setIcon(
