@@ -9,11 +9,9 @@
 #include <utility>
 
 #include "base/files/file_util.h"
-#include "base/json/json_reader.h"
 #include "base/memory/raw_ref.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "brave/base/process/process_launcher.h"
@@ -31,14 +29,10 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
 #include "net/base/url_util.h"
 #include "net/http/http_request_headers.h"
-#include "net/http/http_response_headers.h"
-#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
@@ -48,7 +42,6 @@
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/service_process_host.h"
-#include "content/public/browser/storage_partition.h"
 #endif
 
 namespace {
@@ -100,6 +93,11 @@ base::flat_map<std::string, std::string> GetHeaders(const GURL& url) {
       {net::HttpRequestHeaders::kOrigin, url::Origin::Create(url).Serialize()}};
 }
 
+absl::optional<std::string> ConvertPlainStringToJsonArray(
+    const std::string& json) {
+  return base::StrCat({"[\"", json, "\"]"});
+}
+
 }  // namespace
 
 namespace ipfs {
@@ -128,6 +126,9 @@ IpfsService::IpfsService(
       ipfs_p3a_(this, prefs),
       weak_factory_(this) {
   DCHECK(!user_data_dir.empty());
+
+  api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory);
 
   // Return early since g_brave_browser_process and ipfs_client_updater are not
   // available in unit tests.
@@ -428,16 +429,10 @@ void IpfsService::AddPin(const std::vector<std::string>& cids,
   }
   gurl = net::AppendQueryParameter(gurl, "recursive",
                                    recursive ? "true" : "false");
-
-  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
-      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
-  auto iter =
-      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
-
-  iter->get()->Request(
+  api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnPinAddResult, base::Unretained(this),
-                     cids.size(), recursive, iter, std::move(callback)),
+                     cids.size(), recursive, std::move(callback)),
       GetHeaders(gurl),
       api_request_helper::APIRequestOptions{.timeout = base::Minutes(2)});
 }
@@ -454,15 +449,10 @@ void IpfsService::RemovePin(const std::vector<std::string>& cids,
     gurl = net::AppendQueryParameter(gurl, kArgQueryParam, cid);
   }
 
-  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
-      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
-  auto iter =
-      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
-
-  iter->get()->Request(
+  api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnPinRemoveResult, base::Unretained(this),
-                     iter, std::move(callback)),
+                     std::move(callback)),
       GetHeaders(gurl));
 }
 
@@ -550,14 +540,10 @@ void IpfsService::GetPins(const absl::optional<std::vector<std::string>>& cids,
   gurl = net::AppendQueryParameter(gurl, "type", type);
   gurl = net::AppendQueryParameter(gurl, "quiet", quiet ? "true" : "false");
 
-  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
-      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
-  auto iter =
-      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
-  iter->get()->Request(
+  api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnGetPinsResult, base::Unretained(this),
-                     iter, std::move(callback)),
+                     std::move(callback)),
       GetHeaders(gurl));
 }
 
@@ -697,15 +683,10 @@ void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback,
     return;
   }
   auto gurl = server_endpoint_.Resolve(kSwarmPeersPath);
-  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
-      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
-
-  auto iter =
-      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
-  iter->get()->Request(
+  api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnGetConnectedPeers, base::Unretained(this),
-                     iter, std::move(callback),
+                     std::move(callback),
                      retries.value_or(kPeersDefaultRetries)),
       GetHeaders(gurl));
 }
@@ -719,12 +700,10 @@ base::TimeDelta IpfsService::CalculatePeersRetryTime() {
 }
 
 void IpfsService::OnGetConnectedPeers(
-    APIRequestList::iterator iter,
     GetConnectedPeersCallback callback,
     int retry_number,
     api_request_helper::APIRequestResult response) {
   int response_code = response.response_code();
-  requests_list_.erase(iter);
 
   bool success = response.Is2XXResponseCode();
   last_peers_retry_value_for_test_ = retry_number;
@@ -762,26 +741,18 @@ void IpfsService::GetAddressesConfig(GetAddressesConfigCallback callback) {
 
   GURL gurl = net::AppendQueryParameter(server_endpoint_.Resolve(kConfigPath),
                                         kArgQueryParam, kAddressesField);
-
-  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
-      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
-
-  auto iter =
-      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
-  iter->get()->Request(
+  api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnGetAddressesConfig, base::Unretained(this),
-                     iter, std::move(callback)),
+                     std::move(callback)),
       GetHeaders(gurl));
 }
 
 void IpfsService::OnGetAddressesConfig(
-    APIRequestList::iterator iter,
     GetAddressesConfigCallback callback,
     api_request_helper::APIRequestResult response) {
   int response_code = response.response_code();
   bool success = response.Is2XXResponseCode();
-  requests_list_.erase(iter);
 
   ipfs::AddressesConfig addresses_config;
   if (!success) {
@@ -935,23 +906,16 @@ void IpfsService::GetRepoStats(GetRepoStatsCallback callback) {
       net::AppendQueryParameter(server_endpoint_.Resolve(ipfs::kRepoStatsPath),
                                 ipfs::kRepoStatsHumanReadableParamName,
                                 ipfs::kRepoStatsHumanReadableParamValue);
-  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
-      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
-
-  auto iter =
-      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
-  iter->get()->Request(
+  api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
-      base::BindOnce(&IpfsService::OnRepoStats, base::Unretained(this), iter,
+      base::BindOnce(&IpfsService::OnRepoStats, base::Unretained(this),
                      std::move(callback)),
       GetHeaders(gurl));
 }
 
-void IpfsService::OnRepoStats(APIRequestList::iterator iter,
-                              GetRepoStatsCallback callback,
+void IpfsService::OnRepoStats(GetRepoStatsCallback callback,
                               api_request_helper::APIRequestResult response) {
   int response_code = response.response_code();
-  requests_list_.erase(iter);
 
   bool success = response.Is2XXResponseCode();
 
@@ -975,23 +939,16 @@ void IpfsService::GetNodeInfo(GetNodeInfoCallback callback) {
 
   GURL gurl = server_endpoint_.Resolve(ipfs::kNodeInfoPath);
 
-  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
-      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
-
-  auto iter =
-      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
-  iter->get()->Request(
+  api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
-      base::BindOnce(&IpfsService::OnNodeInfo, base::Unretained(this), iter,
+      base::BindOnce(&IpfsService::OnNodeInfo, base::Unretained(this),
                      std::move(callback)),
       GetHeaders(gurl));
 }
 
-void IpfsService::OnNodeInfo(APIRequestList::iterator iter,
-                             GetNodeInfoCallback callback,
+void IpfsService::OnNodeInfo(GetNodeInfoCallback callback,
                              api_request_helper::APIRequestResult response) {
   int response_code = response.response_code();
-  requests_list_.erase(iter);
 
   bool success = response.Is2XXResponseCode();
 
@@ -1015,24 +972,17 @@ void IpfsService::RunGarbageCollection(GarbageCollectionCallback callback) {
 
   GURL gurl = server_endpoint_.Resolve(ipfs::kGarbageCollectionPath);
 
-  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
-      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
-
-  auto iter =
-      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
-  iter->get()->Request(
+  api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnGarbageCollection, base::Unretained(this),
-                     iter, std::move(callback)),
+                     std::move(callback)),
       GetHeaders(gurl));
 }
 
 void IpfsService::OnGarbageCollection(
-    APIRequestList::iterator iter,
     GarbageCollectionCallback callback,
     api_request_helper::APIRequestResult response) {
   int response_code = response.response_code();
-  requests_list_.erase(iter);
 
   bool success = response.Is2XXResponseCode();
   if (!success) {
@@ -1048,21 +998,14 @@ void IpfsService::OnGarbageCollection(
 }
 
 void IpfsService::PreWarmShareableLink(const GURL& url) {
-  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
-      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
-
-  auto iter =
-      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
-  iter->get()->Request("HEAD", url, std::string(), std::string(),
+  api_request_helper_->Request("HEAD", url, std::string(), std::string(),
                        base::BindOnce(&IpfsService::OnPreWarmComplete,
-                                      base::Unretained(this), iter),
+                                      base::Unretained(this)),
                        GetHeaders(url));
 }
 
 void IpfsService::OnPreWarmComplete(
-    APIRequestList::iterator iter,
-    api_request_helper::APIRequestResult response) {
-  requests_list_.erase(iter);
+  [[maybe_unused]] api_request_helper::APIRequestResult response) {
   if (prewarm_callback_for_testing_)
     std::move(prewarm_callback_for_testing_).Run();
 }
@@ -1082,11 +1025,9 @@ void IpfsService::OnPreWarmComplete(
 //  }
 //}
 void IpfsService::OnGetPinsResult(
-    APIRequestList::iterator iter,
     GetPinsCallback callback,
     api_request_helper::APIRequestResult response) {
   int response_code = response.response_code();
-  requests_list_.erase(iter);
 
   if (!response.Is2XXResponseCode()) {
     VLOG(1) << "Fail to get pins, response_code = " << response_code;
@@ -1108,11 +1049,9 @@ void IpfsService::OnGetPinsResult(
 void IpfsService::OnPinAddResult(
     size_t cids_count_in_request,
     bool recursive,
-    APIRequestList::iterator iter,
     AddPinCallback callback,
     api_request_helper::APIRequestResult response) {
   int response_code = response.response_code();
-  requests_list_.erase(iter);
 
   if (!response.Is2XXResponseCode()) {
     VLOG(1) << "Fail to add pin, response_code = " << response_code;
@@ -1140,11 +1079,9 @@ void IpfsService::OnPinAddResult(
 }
 
 void IpfsService::OnPinRemoveResult(
-    APIRequestList::iterator iter,
     RemovePinCallback callback,
     api_request_helper::APIRequestResult response) {
   int response_code = response.response_code();
-  requests_list_.erase(iter);
 
   if (!response.Is2XXResponseCode()) {
     VLOG(1) << "Fail to remove pin, response_code = " << response_code;
@@ -1169,39 +1106,34 @@ void IpfsService::ValidateGateway(const GURL& url, BoolCallback callback) {
   std::string path = "/ipfs/";
   path += kGatewayValidationCID;
   replacements.SetPathStr(path);
-  GURL validationUrl = url.ReplaceComponents(replacements);
-  auto url_loader = CreateURLLoader(validationUrl, "GET");
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
+  GURL validation_url = url.ReplaceComponents(replacements);
+
+  auto conversion_callback = base::BindOnce(&ConvertPlainStringToJsonArray);
+  api_request_helper_->Request(
+      "GET", validation_url, "", "",
       base::BindOnce(&IpfsService::OnGatewayValidationComplete,
-                     base::Unretained(this), iter, std::move(callback), url));
+                     base::Unretained(this), std::move(callback), url),
+      {}, {}, std::move(conversion_callback));
 }
 
 void IpfsService::OnGatewayValidationComplete(
-    SimpleURLLoaderList::iterator iter,
     BoolCallback callback,
     const GURL& initial_url,
-    std::unique_ptr<std::string> response_body) {
-  auto* url_loader = iter->get();
-  auto final_url = url_loader->GetFinalURL();
+    api_request_helper::APIRequestResult response) const {
+  int response_code = response.response_code();
 
-  int error_code = url_loader->NetError();
-  int response_code = -1;
-  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
-    response_code = url_loader->ResponseInfo()->headers->response_code();
-  url_loaders_.erase(iter);
-
-  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
+  bool success = response.Is2XXResponseCode();
   if (!success) {
-    VLOG(1) << "Fail to validate gateway, error_code = " << error_code
-            << " response_code = " << response_code;
+    VLOG(1) << "Fail to validate gateway, response_code = " << response_code;
   }
 
+  std::string error;
   if (success) {
-    std::string valid_host = base::StringPrintf(
+    const auto final_url = response.final_url();
+    const std::string valid_host = base::StringPrintf(
         "%s.ipfs.%s", kGatewayValidationCID, initial_url.host().c_str());
-    success = (*response_body == kGatewayValidationResult) &&
+    success = (response.body() ==
+               ConvertPlainStringToJsonArray(kGatewayValidationResult)) &&
               (initial_url.host() != final_url.host()) &&
               (initial_url.scheme() == final_url.scheme()) &&
               (final_url.host() == valid_host);

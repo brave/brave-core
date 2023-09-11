@@ -49,7 +49,6 @@ class SequencedTaskRunner;
 
 namespace network {
 class SharedURLLoaderFactory;
-class SimpleURLLoader;
 }  // namespace network
 
 class PrefRegistrySimple;
@@ -191,10 +190,6 @@ class IpfsService : public KeyedService,
   void OnConfigLoaded(GetConfigCallback, const std::pair<bool, std::string>&);
 
  private:
-  using APIRequestList =
-      std::list<std::unique_ptr<api_request_helper::APIRequestHelper>>;
-  using SimpleURLLoaderList =
-      std::list<std::unique_ptr<network::SimpleURLLoader>>;
   FRIEND_TEST_ALL_PREFIXES(IpfsServiceBrowserTest,
                            UpdaterRegistrationSuccessLaunch);
   FRIEND_TEST_ALL_PREFIXES(IpfsServiceBrowserTest,
@@ -221,16 +216,13 @@ class IpfsService : public KeyedService,
                           NodeCallback callback);
 
   // Local pins
-  void OnGetPinsResult(APIRequestList::iterator iter,
-                       GetPinsCallback callback,
+  void OnGetPinsResult(GetPinsCallback callback,
                        api_request_helper::APIRequestResult response);
   void OnPinAddResult(size_t cids_count_in_request,
                       bool recursive,
-                      APIRequestList::iterator iter,
                       AddPinCallback callback,
                       api_request_helper::APIRequestResult response);
-  void OnPinRemoveResult(APIRequestList::iterator iter,
-                         RemovePinCallback callback,
+  void OnPinRemoveResult(RemovePinCallback callback,
                          api_request_helper::APIRequestResult response);
   void OnRemovePinCli(BoolCallback callback,
                       std::set<std::string> cids,
@@ -238,29 +230,21 @@ class IpfsService : public KeyedService,
 #endif
   base::TimeDelta CalculatePeersRetryTime();
 
-  void OnGatewayValidationComplete(SimpleURLLoaderList::iterator iter,
-                                   BoolCallback callback,
-                                   const GURL& initial_url,
-                                   std::unique_ptr<std::string> response_body);
+  void OnGatewayValidationComplete(BoolCallback callback,
+    const GURL& initial_url, api_request_helper::APIRequestResult response) const;
 
-  void OnGetConnectedPeers(APIRequestList::iterator iter,
-                           GetConnectedPeersCallback,
+  void OnGetConnectedPeers(GetConnectedPeersCallback,
                            int retries,
                            api_request_helper::APIRequestResult response);
-  void OnGetAddressesConfig(APIRequestList::iterator iter,
-                            GetAddressesConfigCallback callback,
+  void OnGetAddressesConfig(GetAddressesConfigCallback callback,
                             api_request_helper::APIRequestResult response);
-  void OnRepoStats(APIRequestList::iterator iter,
-                   GetRepoStatsCallback callback,
+  void OnRepoStats(GetRepoStatsCallback callback,
                    api_request_helper::APIRequestResult response);
-  void OnNodeInfo(APIRequestList::iterator iter,
-                  GetNodeInfoCallback callback,
+  void OnNodeInfo(GetNodeInfoCallback callback,
                   api_request_helper::APIRequestResult response);
-  void OnGarbageCollection(APIRequestList::iterator iter,
-                           GarbageCollectionCallback callback,
+  void OnGarbageCollection(GarbageCollectionCallback callback,
                            api_request_helper::APIRequestResult responsey);
-  void OnPreWarmComplete(APIRequestList::iterator iter,
-                         api_request_helper::APIRequestResult response);
+  void OnPreWarmComplete(api_request_helper::APIRequestResult response);
 
   std::string GetStorageSize();
   void OnDnsConfigChanged(absl::optional<std::string> dns_server);
@@ -275,8 +259,7 @@ class IpfsService : public KeyedService,
 
   const raw_ptr<PrefService> prefs_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  APIRequestList requests_list_;
-  SimpleURLLoaderList url_loaders_;
+  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   BlobContextGetterFactoryPtr blob_context_getter_factory_;
 
   base::queue<BoolCallback> pending_launch_callbacks_;
