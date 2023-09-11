@@ -18,6 +18,11 @@ namespace {
 
 bool DoesRespectCap(const AdEventList& ad_events,
                     const CreativeAdInfo& creative_ad) {
+  if (creative_ad.daily_cap == 0) {
+    // Always respect cap if set to 0.
+    return true;
+  }
+
   return DoesRespectCampaignCap(creative_ad, ad_events,
                                 ConfirmationType::kServed, base::Days(1),
                                 creative_ad.daily_cap);
