@@ -365,6 +365,40 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+                       MagnetIframeWithUserGestureOpensWebtorrent) {
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
+  EXPECT_EQ(true, content::ExecJs(contents, "createMagnetIframe(false);"));
+  ASSERT_TRUE(WaitForLoadStop(contents));
+
+  EXPECT_EQ(contents->GetLastCommittedURL(), magnet_url());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+                       MagnetIframeWithoutUserGestureDoesNotOpenWebtorrent) {
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
+  EXPECT_EQ(true, content::ExecJs(contents, "createMagnetIframe(false);",
+                                  content::EXECUTE_SCRIPT_NO_USER_GESTURE));
+  ASSERT_TRUE(WaitForLoadStop(contents));
+
+  EXPECT_EQ(contents->GetLastCommittedURL(), magnet_html_url());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+                       MagnetIframeSandboxedDoesNotOpenWebtorrent) {
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
+  EXPECT_EQ(true, content::ExecJs(contents, "createMagnetIframe(true);"));
+  ASSERT_TRUE(WaitForLoadStop(contents));
+
+  EXPECT_EQ(contents->GetLastCommittedURL(), magnet_html_url());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
                        NoReverseRewriteTorrentURLForInvalidQuery) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
