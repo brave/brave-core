@@ -202,18 +202,23 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
     SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_SEARCH));
     SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_TAB_SEARCH));
     SetBubbleArrow(views::BubbleBorder::LEFT_TOP);
+    SetBorder(nullptr);
   }
 
   ~VerticalTabSearchButton() override = default;
 
   // BraveTabSearchButton:
-  void OnThemeChanged() override {
-    BraveTabSearchButton::OnThemeChanged();
+  void UpdateColors() override {
+    BraveTabSearchButton::UpdateColors();
 
+    // Override images set from UpdateIcon().
     SetImageModel(views::Button::STATE_NORMAL,
                   ui::ImageModel::FromVectorIcon(
                       kLeoSearchIcon, kColorBraveVerticalTabHeaderButtonColor,
                       /* icon_size= */ 16));
+    SetImageModel(views::Button::STATE_HOVERED, ui::ImageModel());
+    SetImageModel(views::Button::STATE_PRESSED, ui::ImageModel());
+    SetBackground(nullptr);
   }
 };
 
@@ -489,7 +494,7 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
     layout_ = SetLayoutManager(std::make_unique<views::BoxLayout>(
         views::BoxLayout::Orientation::kHorizontal));
     layout_->set_cross_axis_alignment(
-        views::BoxLayout::CrossAxisAlignment::kCenter);
+        views::BoxLayout::CrossAxisAlignment::kStretch);
 
     toggle_button_ = AddChildView(std::make_unique<ToggleButton>(
         std::move(toggle_callback), region_view));
