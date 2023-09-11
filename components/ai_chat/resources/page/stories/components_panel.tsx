@@ -13,17 +13,10 @@ import '@brave/leo/tokens/css/variables.css'
 
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import Main from '../components/main'
-import ConversationList from '../components/conversation_list'
-import InputBox from '../components/input_box'
-import { useInput } from '../state/hooks'
-import { CharacterType, ConversationTurnVisibility, APIError  } from '../api/page_handler'
-import PrivacyMessage from '../components/privacy_message'
-import SiteTitle from '../components/site_title'
-import PromptAutoSuggestion from '../components/prompt_auto_suggestion'
-import ErrorRateLimit from '../components/error_rate_limit'
-import ErrorConnection from '../components/error_connection'
+import { CharacterType, ConversationTurnVisibility, APIError, SiteInfo,AutoGenerateQuestionsPref, ConversationTurn } from '../api/page_handler'
+import Context from '../state/context'
 
-const DATA = [
+const HISTORY = [
   {text: 'What is pointer compression?', characterType: CharacterType.HUMAN, visibility: ConversationTurnVisibility.VISIBLE },
   {text: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.', characterType: CharacterType.ASSISTANT, visibility: ConversationTurnVisibility.VISIBLE },
   {text: 'What is taylor series?', characterType: CharacterType.HUMAN, visibility: ConversationTurnVisibility.VISIBLE },
@@ -36,6 +29,10 @@ const SAMPLE_QUESTIONS = [
   "Any injuries?",
   "Why did google executives disregard this character in the company?"
 ]
+
+const SITE_INFO = {
+  title: "Microsoft is hiking the price of Xbox Series X and Xbox Game Pass"
+}
 
 interface StoryProps {
   hasQuestions: boolean,
@@ -53,10 +50,41 @@ export default {
   },
   decorators: [
     (Story: any) => {
+      const [conversationHistory] = React.useState<ConversationTurn[]>(HISTORY)
+      const [suggestedQuestions] = React.useState<string[]>(SAMPLE_QUESTIONS)
+      const [isGenerating] = React.useState(false)
+      const [canGenerateQuestions] = React.useState(false)
+      const [userAutoGeneratePref] = React.useState<AutoGenerateQuestionsPref>()
+      const [siteInfo] = React.useState<SiteInfo | null>(SITE_INFO)
+      const [favIconUrl] = React.useState<string>()
+      const [currentError] = React.useState<APIError>(APIError.RateLimitReached)
+      const [hasSeenAgreement] = React.useState(false)
+
+      const generateSuggestedQuestions = () => {}
+      const setUserAllowsAutoGenerating = () => {}
+      const handleAgreeClick = () => {}
+
+      const store = {
+        conversationHistory,
+        isGenerating,
+        suggestedQuestions,
+        canGenerateQuestions,
+        userAutoGeneratePref,
+        siteInfo,
+        favIconUrl,
+        currentError,
+        hasSeenAgreement,
+        generateSuggestedQuestions,
+        setUserAllowsAutoGenerating,
+        handleAgreeClick
+      }
+
       return (
-        <ThemeProvider>
-          <Story />
-        </ThemeProvider>
+        <Context.Provider value={store}>
+          <ThemeProvider>
+            <Story />
+          </ThemeProvider>
+        </Context.Provider>
       )
     },
     withKnobs
@@ -64,75 +92,9 @@ export default {
 }
 
 export const _Main = (props: StoryProps) => {
-  const { value, setValue } = useInput();
-  const [hasSeenAgreement] = React.useState(true)
-
-  const handleSubmit = () => {
-    setValue('')
-  }
-
-  const handleInputChange = (e: any) => {
-    const target = e.target as HTMLInputElement
-    setValue(target.value)
-  }
-
-  let conversationList = <PrivacyMessage />
-  let siteTitleElement = null
-  let promptAutoSuggestionElement = null
-  let currentErrorElement = null
-
-  if (hasSeenAgreement) {
-    conversationList = (
-      <ConversationList
-        list={DATA}
-        isLoading={false}
-        suggestedQuestions={props.hasQuestions ? SAMPLE_QUESTIONS : []}
-        onQuestionSubmit={() => {}}
-      />
-    )
-
-    siteTitleElement = (
-      <SiteTitle siteInfo={{ title: "Microsoft is hiking the price of Xbox Series X and Xbox Game Pass" }} favIconUrl="" />
-    )
-
-    promptAutoSuggestionElement = (
-      <PromptAutoSuggestion
-      />
-    )
-console.log(props.currentErrorState)
-    if (props.currentErrorState === APIError.RateLimitReached) {
-      currentErrorElement = (
-        <ErrorRateLimit />
-      )
-    }
-
-    if (props.currentErrorState === APIError.ConnectionIssue) {
-      currentErrorElement = (
-        <ErrorConnection />
-      )
-    }
-  }
-
-  const inputBox = (
-    <InputBox
-      value={value}
-      onInputChange={handleInputChange}
-      onSubmit={handleSubmit}
-      hasSeenAgreement={hasSeenAgreement}
-      onHandleAgreeClick={() => {}}
-      disabled={false}
-    />
-  )
-
   return (
     <div className={styles.container}>
-      <Main
-        conversationList={conversationList}
-        inputBox={inputBox}
-        siteTitle={siteTitleElement}
-        promptAutoSuggestion={promptAutoSuggestionElement}
-        currentErrorElement={currentErrorElement}
-      />
+      <Main />
     </div>
   )
 }

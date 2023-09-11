@@ -10,11 +10,9 @@ import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 
 import styles from './style.module.scss'
-import { SiteInfo } from '../../api/page_handler'
+import DataContext from '../../state/context'
 
 interface SiteTitleProps {
-  siteInfo?: SiteInfo
-  favIconUrl?: string
   onDisconnectButtonClick?: () => void
 }
 
@@ -42,6 +40,7 @@ function Tooltip(props: ToolTipProps) {
 function SiteTitle (props: SiteTitleProps) {
   const [isTooltipVisible, setIsTooltipVisible] = React.useState(false)
   const timerId = React.useRef<Timer | undefined>();
+  const { siteInfo, favIconUrl } = React.useContext(DataContext)
 
   const showTooltipWithDelay = () => {
     timerId.current = setTimeout(() => {
@@ -64,10 +63,10 @@ function SiteTitle (props: SiteTitleProps) {
     <div className={styles.box}>
       <Tooltip isVisible={isTooltipVisible} />
       <div className={styles.favIconBox}>
-        { props.favIconUrl && <img src={props.favIconUrl} /> }
+        { favIconUrl && <img src={favIconUrl} /> }
       </div>
       <div className={styles.titleBox}>
-        <p className={styles.title}>{props.siteInfo?.title}</p>
+        <p className={styles.title}>{siteInfo?.title}</p>
       </div>
       <div
         aria-describedby='page-content-warning-tooltip'
