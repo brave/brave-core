@@ -8,6 +8,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/ranges/algorithm.h"
 
@@ -38,6 +39,8 @@ SortCreativeAdsIntoPrioritizedBuckets(const T& creative_ads) {
 template <typename T>
 std::pair</*priority*/ int, /*creative_ads*/ T> GetHighestPriorityBucket(
     const base::flat_map<int, T>& buckets) {
+  CHECK(!buckets.empty());
+
   const auto iter = base::ranges::min_element(
       buckets,
       [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });
