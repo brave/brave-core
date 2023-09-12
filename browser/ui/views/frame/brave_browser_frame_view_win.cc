@@ -24,18 +24,16 @@ BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(BrowserFrame* frame,
   frame_graphic_.reset(
       new BraveWindowFrameGraphic(browser_view->browser()->profile()));
 
-    DCHECK(browser_view->browser());
-    auto* prefs = browser_view->browser()->profile()->GetPrefs();
-    using_vertical_tabs_.Init(
-        brave_tabs::kVerticalTabsEnabled, prefs,
-        base::BindRepeating(
-            &BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
-            base::Unretained(this)));
-    showing_window_title_for_vertical_tabs_.Init(
-        brave_tabs::kVerticalTabsShowTitleOnWindow, prefs,
-        base::BindRepeating(
-            &BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
-            base::Unretained(this)));
+  DCHECK(browser_view->browser());
+  auto* prefs = browser_view->browser()->profile()->GetPrefs();
+  using_vertical_tabs_.Init(
+      brave_tabs::kVerticalTabsEnabled, prefs,
+      base::BindRepeating(&BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
+                          base::Unretained(this)));
+  showing_window_title_for_vertical_tabs_.Init(
+      brave_tabs::kVerticalTabsShowTitleOnWindow, prefs,
+      base::BindRepeating(&BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
+                          base::Unretained(this)));
 }
 
 BraveBrowserFrameViewWin::~BraveBrowserFrameViewWin() = default;

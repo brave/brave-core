@@ -208,5 +208,5 @@ bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
 }  // namespace
 
 std::unique_ptr<TabStyleViews> TabStyleViews::CreateForTab(Tab* tab) {
-    return std::make_unique<BraveVerticalTabStyle>(tab);
+  return std::make_unique<BraveVerticalTabStyle>(tab);
 }

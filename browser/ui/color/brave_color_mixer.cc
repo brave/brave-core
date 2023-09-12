@@ -474,7 +474,7 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
       GetToolbarInkDropColor(mixer)};
 
-    tabs::AddBraveVerticalTabDarkThemeColorMixer(provider, key);
+  tabs::AddBraveVerticalTabDarkThemeColorMixer(provider, key);
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {

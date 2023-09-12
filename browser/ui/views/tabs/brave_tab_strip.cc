@@ -253,12 +253,12 @@ void BraveTabStrip::UpdateTabContainer() {
       layout_lock =
           base::ScopedClosureRunner(brave_tab_container->LockLayout());
 
-        brave_tab_container->SetScrollEnabled(using_vertical_tabs);
+      brave_tab_container->SetScrollEnabled(using_vertical_tabs);
 
-        // Make dragged views on top of container's layer.
-        drag_context->SetPaintToLayer();
-        drag_context->layer()->SetFillsBoundsOpaquely(false);
-        drag_context->parent()->ReorderChildView(drag_context, -1);
+      // Make dragged views on top of container's layer.
+      drag_context->SetPaintToLayer();
+      drag_context->layer()->SetFillsBoundsOpaquely(false);
+      drag_context->parent()->ReorderChildView(drag_context, -1);
     } else {
       // Container should be attached before TabDragContext so that dragged
       // views can be atop container.
@@ -271,7 +271,7 @@ void BraveTabStrip::UpdateTabContainer() {
       layout_lock =
           base::ScopedClosureRunner(brave_tab_container->LockLayout());
 
-        GetDragContext()->DestroyLayer();
+      GetDragContext()->DestroyLayer();
     }
 
     // Resets TabSlotViews for the new TabContainer.

@@ -600,24 +600,24 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
   // The default state is kExpanded, so reset animation state to 1.0.
   width_animation_.Reset(1.0);
 
-    header_view_ = AddChildView(std::make_unique<HeaderView>(
-        base::BindRepeating(
-            [](VerticalTabStripRegionView* container, const ui::Event& event) {
-              // Note that Calling SetValue() doesn't trigger
-              // OnCollapsedPrefChanged() for this view.
-              if (container->state_ == State::kExpanded) {
-                container->collapsed_pref_.SetValue(true);
-                container->SetState(State::kCollapsed);
-              } else {
-                container->collapsed_pref_.SetValue(false);
-                container->SetState(State::kExpanded);
-              }
-            },
-            this),
-        this));
-    contents_view_ =
-        AddChildView(std::make_unique<VerticalTabStripScrollContentsView>(
-            this, original_region_view_->tab_strip_));
+  header_view_ = AddChildView(std::make_unique<HeaderView>(
+      base::BindRepeating(
+          [](VerticalTabStripRegionView* container, const ui::Event& event) {
+            // Note that Calling SetValue() doesn't trigger
+            // OnCollapsedPrefChanged() for this view.
+            if (container->state_ == State::kExpanded) {
+              container->collapsed_pref_.SetValue(true);
+              container->SetState(State::kCollapsed);
+            } else {
+              container->collapsed_pref_.SetValue(false);
+              container->SetState(State::kExpanded);
+            }
+          },
+          this),
+      this));
+  contents_view_ =
+      AddChildView(std::make_unique<VerticalTabStripScrollContentsView>(
+          this, original_region_view_->tab_strip_));
   header_view_->toggle_button()->SetHighlighted(state_ == State::kExpanded);
 
   new_tab_button_ = AddChildView(std::make_unique<VerticalTabNewTabButton>(
@@ -793,23 +793,23 @@ void VerticalTabStripRegionView::Layout() {
       {contents_bounds.x(),
        contents_bounds.bottom() - new_tab_button_->height()});
 
-    const gfx::Size header_size{contents_bounds.width(),
-                                tabs::kVerticalTabHeight + kHeaderInset * 2};
-    header_view_->SetPosition(contents_bounds.origin());
-    header_view_->SetSize(header_size);
+  const gfx::Size header_size{contents_bounds.width(),
+                              tabs::kVerticalTabHeight + kHeaderInset * 2};
+  header_view_->SetPosition(contents_bounds.origin());
+  header_view_->SetSize(header_size);
 
-    contents_view_->SetSize(
-        {contents_bounds.width(), contents_bounds.height() -
-                                      new_tab_button_->height() -
-                                      header_view_->height()});
-    contents_view_->SetPosition({contents_bounds.origin().x(),
-                                 header_view_->y() + header_view_->height()});
-    UpdateOriginalTabSearchButtonVisibility();
+  contents_view_->SetSize(
+      {contents_bounds.width(), contents_bounds.height() -
+                                    new_tab_button_->height() -
+                                    header_view_->height()});
+  contents_view_->SetPosition({contents_bounds.origin().x(),
+                               header_view_->y() + header_view_->height()});
+  UpdateOriginalTabSearchButtonVisibility();
 
-    // Put resize area on the right side, overlapped with contents.
-    constexpr int kResizeAreaWidth = 4;
-    resize_area_->SetBounds(width() - kResizeAreaWidth, contents_bounds.y(),
-                            kResizeAreaWidth, contents_bounds.height());
+  // Put resize area on the right side, overlapped with contents.
+  constexpr int kResizeAreaWidth = 4;
+  resize_area_->SetBounds(width() - kResizeAreaWidth, contents_bounds.y(),
+                          kResizeAreaWidth, contents_bounds.height());
 }
 
 void VerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {

@@ -18,7 +18,6 @@
 #include "ui/views/controls/resize_area_delegate.h"
 
 namespace views {
-class ScrollView;
 class ResizeArea;
 }  // namespace views
 
