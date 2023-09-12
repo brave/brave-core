@@ -117,7 +117,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &android_webview::features::kWebViewMeasureScreenCoverage,
 #endif
     &apps::features::kLinkCapturingInfoBar,
-    &attribution_reporting::kAttributionReportingNullAggregatableReports,
+    &attribution_reporting::features::
+        kAttributionReportingNullAggregatableReports,
+    &attribution_reporting::features::kConversionMeasurement,
     &autofill::features::kAutofillEnableOfferNotificationForPromoCodes,
     &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
     &autofill::features::test::kAutofillServerCommunication,
@@ -132,7 +134,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kClientHintsFormFactor,
     &blink::features::kClientHintsMetaEquivDelegateCH,
     &blink::features::kComputePressure,
-    &blink::features::kConversionMeasurement,
     &blink::features::kCssSelectorFragmentAnchor,
     &blink::features::kEventTimingReportAllEarlyEntriesOnPaintedPresentation,
     &blink::features::kFencedFrames,
