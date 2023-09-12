@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.Log;
+import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
@@ -32,9 +33,11 @@ import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccou
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper.DefaultFaviconHelper;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper.FaviconImageCallback;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.url.GURL;
 
 import java.util.HashSet;
@@ -175,17 +178,28 @@ public class ConnectAccountFragment extends BaseDAppsFragment
         return mSelectedAccount;
     }
 
+    // Stolen from BraveRewardsHelper.java
+    private static ChromeTabbedActivity getChromeTabbedActivity() {
+        return BraveActivity.getChromeTabbedActivity();
+    }
+
+    private static Tab currentActiveChromeTabbedActivityTab() {
+        ChromeTabbedActivity activity = getChromeTabbedActivity();
+        if (activity == null || activity.getTabModelSelector() == null) {
+            return null;
+        }
+        return activity.getActivityTab();
+    }
+
     @Override
     public void connectAccount(AccountInfo account) {
-        getBraveWalletService().addPermission(account.accountId, success -> {
-            if (!success) {
-                return;
+        Tab tab = currentActiveChromeTabbedActivityTab();
+        if (tab != null) {
+            if (tab.getWebContents() != null) {
+                ConnectAccountFragmentJni.get().connectAccount(
+                        account.address, tab.getWebContents());
             }
-            if (CoinType.SOL != account.accountId.coin) {
-                getKeyringService().setSelectedAccount(account.accountId, setSuccess -> {});
-            }
-            updateAccounts();
-        });
+        }
     }
 
     @Override
@@ -227,5 +241,10 @@ public class ConnectAccountFragment extends BaseDAppsFragment
             return activity.getActivityTab().getUrl().getOrigin();
         }
         return GURL.emptyGURL();
+    }
+
+    @NativeMethods
+    interface Natives {
+        void connectAccount(String accountAddress, WebContents webContents);
     }
 }

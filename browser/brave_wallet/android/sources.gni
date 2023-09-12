@@ -17,6 +17,7 @@ brave_browser_brave_wallet_android_sources = [
   "//brave/browser/permissions/brave_dapp_permission_prompt_dialog_controller_android.h",
   "//brave/browser/permissions/brave_wallet_permission_prompt_android.cc",
   "//brave/browser/permissions/brave_wallet_permission_prompt_android.h",
+  "//brave/browser/permissions/connect_account_android.cc",
 ]
 
 brave_browser_brave_wallet_android_deps = [
