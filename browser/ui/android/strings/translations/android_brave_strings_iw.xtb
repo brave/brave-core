@@ -1,9 +1,20 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="iw">
+<translation id="8631427463833030968">נהל הודעות</translation>
+<translation id="7630214457764713113">העתק קישור נקי</translation>
 <translation id="885805571521218129">זה משקף את טווח הרווחים המשוער שלך עבור מודעות Brave החודש.</translation>
 <translation id="3478449063771497234">ההתראות מושבתות</translation>
+<translation id="2862978891748913252">בחר את המדינה שלך</translation>
+<translation id="3970520675790340955">בחר את המדינה שלך כדי שנוכל להראות לך את האפשרויות והמודעות הנכונות עבור האזור שלך.</translation>
+<translation id="7301741773883122509">עכשיו אתה יכול לקבל תגמול על צפייה במודעות. אתה עוזר להפוך את האינטרנט למקום טוב יותר עבור כולם. וזה מדהים!</translation>
+<translation id="6439128034594289376">וואו! אתה מוכן!</translation>
 <translation id="370665806235115550">טוען...</translation>
+<translation id="7931127789630755251">הרווח אסימונים עבור מודעות פרטיות שאתה רואה ב-Brave</translation>
+<translation id="7859066142771796818">השתמש באסימונים כדי לקנות כרטיסי מתנה, להחליף למטבעות אחרים, לתמוך ביוצרי תוכן ועוד.</translation>
+<translation id="3863981251715594911">איך זה עובד?</translation>
+<translation id="5547108999862247665">כיצד פועלים Brave Rewards?</translation>
+<translation id="2965798296974325760">התחל להשתמש ב-Rewards</translation>
 <translation id="8220484609979012449">אתה עדיין יכול לשלוח העברות קריפטו ליוצר זה באמצעות ארנק Web3 שלך.</translation>
 <translation id="6385969012847057348">היוצר הזה לא יכול לקבל הכנסות מ<ph name="CUSTODIAN"/></translation>
 <translation id="6268134562674951939">אין לך מספיק אסימונים</translation>
@@ -169,7 +180,7 @@
 <translation id="9110294136812584522">אתרים יכולים לבקש להשתמש בכניסה מדור קודם של Google באמצעות קובצי Cookie של צד שלישי</translation>
 <translation id="2903783737778379345">אל תאפשר כניסה של Google מדור קודם באמצעות קובצי Cookie של צד שלישי</translation>
 <translation id="6880817299303842099">מותר להשתמש בקובצי Cookie של צד שלישי לצורך כניסה מדור קודם של Google</translation>
-<translation id="5169650598465327872">גישת Localhost</translation>
+<translation id="2136412236435693622">גישה ל-Localhost</translation>
 <translation id="4172219483893066798">אתרים יכולים לבקש גישה למשאבי localhost</translation>
 <translation id="7181706637590665047">אל תאפשר גישה למשאבי localhost</translation>
 <translation id="1485435696620658073">מורשה לגשת למשאבי localhost</translation>
@@ -397,6 +408,7 @@
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="734105583050813665">Bitflyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
+<translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Uphold עשויה לדרוש ממך לאמת את זהותך על בסיס השירותים המבוקשים.</translation>
 <translation id="3200197118442451932">Brave Software Inc. אינה מעבדת, מאחסנת או ניגשת למידע האישי שאתה מספק ל-<ph name="WALLET_PROVIDER"/> כאשר אתה מקים חשבון אצלם.</translation>
 <translation id="1665118090708049096">עבור לחשבון <ph name="WALLET_PROVIDER"/> 1 שלי</translation>
@@ -423,6 +435,12 @@
 <translation id="6883611015375728278">חסימת כל העוגיות</translation>
 <translation id="4941539331405513605">חסום קבצי עוגייה חוצי-אתרים</translation>
 <translation id="5657156137487675418">הרשאת כל קבצי העוגיות</translation>
+<translation id="1553643198679271031">בקש Off-The-Record</translation>
+<translation id="4891600875049212418">עברו ל-Off-The-Record בעת ביקור באתרים רגישים</translation>
+<translation id="1388619247102737054">משבית את היסטוריית הדפדפן והאחסון המקומי כאשר אתרים מבקשים זאת</translation>
+<translation id="1876882294512858963">תמיד לך ל-Off-The-Record</translation>
+<translation id="554464532999080267">שאל לפני מעבר ל-Of-The-Record (סטנדרטי)</translation>
+<translation id="926857659063503456">לעולם אל תלך ל-Off-The-Record</translation>
 <translation id="3895527457258986253">חסום טביעות אצבע</translation>
 <translation id="7854108565842971747">אלו הן הגדרות ברירת המחדל של Shields עבור אתרים חדשים. שינוי הגדרות אלו לא ישפיע על ההגדרות הספציפיות הקיימות עבור אתר מסוים.</translation>
 <translation id="218587021686734263">מנע טביעת אצבע באמצעות הגדרות שפה</translation>
@@ -546,6 +564,7 @@
 <translation id="1689062823386843231">השבתת UDP ללא פרוקסי</translation>
 <translation id="1483493594462132177">שלח</translation>
 <translation id="538450413584738399">Swap</translation>
+<translation id="1366855498335432549">הפקדה</translation>
 <translation id="1420318137760245955">ברוכים הבאים ל-Brave Wallet החדש</translation>
 <translation id="8339846196588658366">החזק נכסי קריפטו במשמורת שלך ועקוב אחרי ביצועי תיק ההשקעות. כל זה ישירות בדפדפן הפרטיות של Brave.</translation>
 <translation id="4472575034687746823">תחילת העבודה</translation>
@@ -562,7 +581,8 @@
 <translation id="375882617301124395">גבה את ארנק הקריפטו שלך</translation>
 <translation id="8289942708804097960">קנה קריפטו עם כרטיס אשראי או חיוב.</translation>
 <translation id="841880029259839903">שלח מטבע קריפטו או העבר מחשבון אחד לשני.</translation>
-<translation id="8226778393040773102">החלפת אסימונים ונכסים</translation>
+<translation id="151939837774436299">החלפת אסימונים ונכסים</translation>
+<translation id="5512897350309216422">הפקד קריפטו לארנק Brave.</translation>
 <translation id="1783600039044302171">אבטח את מטבע הקריפטו שלך עם סיסמה</translation>
 <translation id="3726490322412361740">יש להזין ססמה</translation>
 <translation id="3038243139480464605">אמת סיסמה</translation>
@@ -603,13 +623,6 @@
 <translation id="1144810021918451336">אינו מגן מפני אתרים הורדות והרחבות שעלולים לסכן אותך.</translation>
 <translation id="5760476995887363522">ביטויים לא תואמים, יש לנסות שוב.</translation>
 <translation id="2360588547830602174">שחזור חשבון נכשלה. נסה שוב.</translation>
-<translation id="6748108480210050150">מאת</translation>
-<translation id="3318280255740629162">25%</translation>
-<translation id="2636487255623744079">50%</translation>
-<translation id="8654192805213365413">75%</translation>
-<translation id="6159566011642056819">עד (הערכה)</translation>
-<translation id="6998989275928107238">אל</translation>
-<translation id="2589431635772931954">כתובת או URL</translation>
 <translation id="5517732667776806421">חסר מידע על סכום בדיקה</translation>
 <translation id="4006711930669471508">מידע סכום ביקורת לא חוקי</translation>
 <translation id="1987317783729300807">חשבונות</translation>
@@ -637,7 +650,6 @@
 <translation id="8475984867371585028">ערוך NFT גלויים</translation>
 <translation id="5050890334032852465">שמור רשימת צפייה של החשבון</translation>
 <translation id="7755766175599167100">חפש אסימונים</translation>
-<translation id="3835223348537121988">יתרה:</translation>
 <translation id="3956169227169516344">בחר שיטת רכישה</translation>
 <translation id="8488282162676695335">ארנק Brave</translation>
 <translation id="3784455785234192852">נעל</translation>
@@ -651,7 +663,7 @@
 <translation id="8239147115686034860">נעילה אוטומטית של Brave Wallet</translation>
 <translation id="414639769490080648">מספר הדקות להמתנה עד שה-Brave Wallet יינעל אוטומטית</translation>
 <translation id="2326850911705720398">אפס ונקה את נתוני הארנק</translation>
-<translation id="4322846864135539519">האם את/ה בטוח/ה שברצונך לאפס את ה-Brave Rewards שלך? אם הארנק שלך לא מגובה, איפוס יגרום לך לאבד את כל נתוני החשבון (כולל כל הכספים הקשורים אליו). יש להקליד "<ph name="CONFIRMATION_PHRASE"/>" כדי לאשר.</translation>
+<translation id="6567712397896147805">האם אתה בטוח שברצונך לאפס את ארנק Brave שלך? אם הארנק שלך לא מגובה, איפוס יגרום לך לאבד את כל נתוני החשבון (כולל כל הכספים הקשורים אליו). הקלד <ph name="CONFIRMATION_PHRASE"/> כדי לאשר.</translation>
 <translation id="6915083716464390008">בחר אחת מהאפשרויות הבאות</translation>
 <translation id="7667423728712601865">רכשו קריפטו באמצעות ויזה או מאסטרקארד.</translation>
 <translation id="3101839349578102016">קנייה מיידית עם חשבון הבנק שלך. עמלות נמוכות יותר.</translation>
@@ -768,8 +780,6 @@
 <translation id="5045550434625856497">סיסמה שגויה</translation>
 <translation id="1367951781824006909">בחר קובץ</translation>
 <translation id="8648684608605749476">‏חסימת קובצי cookie של צד שלישי במצב אנונימי</translation>
-<translation id="1118876217803190221">אין מספיק בעובר ושב</translation>
-<translation id="3025158262797849291">פורמט מספר לא מזוהה</translation>
 <translation id="5932938770824268122">מפתח פרטי</translation>
 <translation id="2472882733835903303">הצג מפתח פרטי</translation>
 <translation id="4391056902675005799">הסתר מפתח פרטי</translation>
@@ -815,14 +825,12 @@
 <translation id="1254969878422524947">הגבלת טיפ לפי הדלק(Gwei)</translation>
 <translation id="7373308452149471621">הגבלת מחיר דלק (Gwei)</translation>
 <translation id="5891811606602061966">ייבוא החשבון נכשל. נסה שוב.</translation>
-<translation id="1822506443689803572">Brave משתמש ב-<ph name="DEX_PROVIDER"/> כאגרגטור DEX.</translation>
 <translation id="5061574358754621254">נתוני המחירים מופעלים על ידי CoinGecko</translation>
-<translation id="4626407663177532837">הצעת המחיר כוללת עמלת Brave של 0.875%.</translation>
 <translation id="8574289650879708853">הוסף נכס מותאם אישית</translation>
 <translation id="1255896809210433555">הוסף NFT</translation>
 <translation id="7791543448312431591">הוספה</translation>
 <translation id="6600400596821238377">שם Token</translation>
-<translation id="4432966365400169165">כתובת חוזה אסימון</translation>
+<translation id="3797613444743816037">כתובת הטבעה</translation>
 <translation id="4092152169181928870">סמל אסימון</translation>
 <translation id="4351811224047421378">רמת דיוק עשרוני</translation>
 <translation id="547122651977318828">ID של טוקן (רק עבור ERC721)</translation>
@@ -922,6 +930,7 @@
 <translation id="6044189892950611565">ערוץ התראות עבור Brave Browser</translation>
 <translation id="1173919438868967364">בחירת חשבון</translation>
 <translation id="8922793255489232731">לא ניתן היה להשיג אזור זמן תואם עבור: <ph name="VALUE"/></translation>
+<translation id="7084757528071133475">מוריד קובץ נתוני ארנק \u2022 <ph name="percentage"/>\u0025</translation>
 <translation id="6471216025161697462">מחובר אל <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">ניסיון</translation>
 <translation id="7733890291091968191">הצגת התראות Web3</translation>
@@ -1004,8 +1013,6 @@
 <translation id="8382368767453083629">אתחול multisig 2</translation>
 <translation id="77243237706803459">אתחול mint 2</translation>
 <translation id="583281660410589416">לא ידוע</translation>
-<translation id="2862978891748913252">בחרו את המדינה שלכם</translation>
-<translation id="3832588024105436400">בחר את המדינה שלך כדי שנוכל להראות לך את האפשרויות והמודעות הנכונות עבור האזור שלך.<ph name="PRIVACY_POLICY"/></translation>
 <translation id="5666264859501108700">אזור ה-Brave Rewards שלך הוגדר ל-<ph name="COUNTRY_NAME"/></translation>
 <translation id="909076461795862330">למרבה הצער, אירעה שגיאה בעת ניסיון להגדיר את Brave Rewards. בבקשה נסה שוב.</translation>
 <translation id="7352651011704765696">משהו השתבש</translation>
@@ -1062,10 +1069,6 @@
 <translation id="7748944510530490017">רשתות ראשוניות</translation>
 <translation id="2781668117338732220">רשתות משניות</translation>
 <translation id="282560918037172384">בדיקת רשתות</translation>
-<translation id="6309721369749814582">דומיין <ph name="DOMAIN"/> אינו רשום</translation>
-<translation id="4071347720273751665">נראה שהזנת כתובת ENS. נצטרך להשתמש בפותר צד שלישי כדי לפתור בקשה זו, שאולי יוכל לראות את כתובת ה-IP והדומיין שלך. <ph name="LEARN_MORE"/></translation>
-<translation id="4096049525705855774">השתמשו בדומיין אופ-צ'יין ENS</translation>
-<translation id="4982630604810554641">מחפש דומיין...</translation>
 <translation id="3586775666459823714">NFTs</translation>
 <translation id="707569835145765061">פעולה נדרשת: יש לשייך חשבון משמורת, אחרת ה-vBAT שלך יאבדו</translation>
 <translation id="1776742005329298234">בתאריך <ph name="DUE_DATE"/> אנו נפסיק את התמיכה ביתרות BAT וירטואליות הקיימות. יש לחבר חשבון משמורת לפני תאריך זה כדי לאפשר לנו להעביר את היתרה שהרווחת לחשבון משמורת שלך, אחרת היתרה שלך תבוטל.</translation>

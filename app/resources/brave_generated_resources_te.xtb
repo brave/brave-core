@@ -25,6 +25,7 @@
 <translation id="8712637175834984815">అర్థమైంది</translation>
 <translation id="4394049700291259645">ఆపివెయ్యి</translation>
 <translation id="8428213095426709021">సెట్టింగ్‌లు</translation>
+<translation id="7473891865547856676">వద్దు, ధన్యవాదాలు</translation>
 <translation id="4474155171896946103">అన్ని టాబ్‌లను బుక్‌మార్క్ చెయ్యి...</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{ట్యాబ్‌ను మ్యూట్ చేయి}other{ట్యాబ్‌లను మ్యూట్ చేయి}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{ట్యాబ్‌ని అన్‌మ్యూట్ చేయి}other{ట్యాబ్‌లను అన్‌మ్యూట్ చేయి}}</translation>
@@ -37,6 +38,10 @@
 <translation id="8041089156583427627">ప్రతిస్పందనను పంపండి</translation>
 <translation id="945522503751344254">అభిప్రాయాన్ని పంపండి</translation>
 <translation id="7537601449003285327">విధి పట్టీకి పిన్ చేయి</translation>
+<translation id="385051799172605136">వెనుకకు</translation>
+<translation id="5317780077021120954">సేవ్ చేయి</translation>
+<translation id="8261506727792406068">తొలగించు</translation>
+<translation id="7525067979554623046">సృష్టించు</translation>
 <translation id="9156965752763025780">మీ మార్పులు మీరు Braveని మరుసటిసారి ప్రారంభించినప్పుడు ప్రభావాన్ని చూపుతాయి.</translation>
 <translation id="4472575034687746823">ప్రారంభించండి</translation>
 <translation id="6786747875388722282">ఎక్స్‌టెన్షన్‌లు</translation>
@@ -83,6 +88,7 @@
 <translation id="1736420071277903564">కంప్యూటర్</translation>
 <translation id="2653659639078652383">సమర్పించు</translation>
 <translation id="8137559199583651773">పొడిగింపులను నిర్వహించండి</translation>
+<translation id="5840822070878669614">Brave వెబ్ స్టోర్‌ను తెరువు</translation>
 <translation id="1426410128494586442">అవును</translation>
 <translation id="1327977588028644528">గేట్‌వే</translation>
 <translation id="8425213833346101688">మార్చు</translation>

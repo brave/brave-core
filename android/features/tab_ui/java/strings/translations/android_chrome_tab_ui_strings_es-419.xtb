@@ -3,7 +3,6 @@
 <translationbundle lang="es-419">
 <translation id="1075622780330595106">Últimamente no usaste <ph name="NUMBER_OF_TABS"/> de tus pestañas. ¿Quieres cerrarlas?</translation>
 <translation id="125153950246128346">Presiona para ver otra pestaña</translation>
-<translation id="955456285524876618">Puedes encontrar todas las pestañas cerradas en Pestañas recientes en el menú principal de Brave</translation>
 <translation id="1657719826150349398">Mover la pestaña hacia abajo</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> pestaña}other{<ph name="TABS_COUNT_MANY"/> pestañas}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Agregar <ph name="TABS_COUNT_ONE"/> pestaña seleccionada a favoritos}other{Agregar <ph name="TABS_COUNT_MANY"/> pestañas seleccionadas a favoritos}}</translation>
@@ -45,6 +44,7 @@
 <translation id="5073204694187207510">Oculta la cuadrícula de pantalla completa</translation>
 <translation id="5076161749301278626">¿Quieres ver las opiniones de la tienda?</translation>
 <translation id="5082793167783849073">Forma un grupo para comparar las páginas rápidamente. Para comenzar, mantén presionado un vínculo.</translation>
+<translation id="5339733443032484186">Tu pestaña más reciente</translation>
 <translation id="5490235265819901748">Se expandió el grupo de pestañas</translation>
 <translation id="5494920125229734069">Seleccionar todo</translation>
 <translation id="5556417849629758491">Ver información de la tienda (la opción está disponible cerca de la parte superior de la pantalla)</translation>
@@ -64,6 +64,7 @@
 <translation id="6549021453810473782">Consulta la información sobre la tienda.</translation>
 <translation id="6562820390860419811">Mover la pestaña a la izquierda</translation>
 <translation id="6615455863669487791">Mostrarme</translation>
+<translation id="6398241160085205003">Puedes encontrar todas tus pestañas cerradas en la opción Pestañas recientes del menú principal de Brave.</translation>
 <translation id="6840760312327750441">Para agrupar pestañas, mantén presionada una y arrástrala hasta otra.</translation>
 <translation id="6856809498882026482">Ocultar el modo de selección múltiple</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Compartir pestaña}other{Compartir pestañas}}</translation>
@@ -92,6 +93,9 @@
 <translation id="9150694013019234766">Alterna entre las pestañas que aparecen en el grupo de pestañas cerca de la parte inferior de la pantalla</translation>
 <translation id="9169594135889675189">Agrega una pestaña nueva al grupo</translation>
 <translation id="959682366969460160">Organízate</translation>
+<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
+        =1 {Puedes ver las pestañas que has cerrado en la sección Pestañas recientes del menú principal de Brave. La pestaña privada no estará disponible.}
+        other {Puedes ver las pestañas que has cerrado en la sección Pestañas recientes del menú principal de Brave. Las # pestañas privadas no estarán disponibles.}}</translation>
 <translation id="3228718275011575753">¿Cerrar todas las pestañas privadas?</translation>
-<translation id="1922184283901690941">La actividad que hayas realizado en estas pestañas privadas se eliminará de este dispositivo</translation>
+<translation id="6687920250729800417">La actividad que hayas realizado en estas pestañas privadas se eliminará de este dispositivo</translation>
 </translationbundle>

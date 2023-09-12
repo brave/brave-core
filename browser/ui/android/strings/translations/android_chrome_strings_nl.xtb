@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
+<translation id="1011749477052068769">Hierheen verplaatsen</translation>
 <translation id="1016498331642356377">Zoek snel met je stem. Tik en houd vast om deze snelkoppeling te bewerken.</translation>
+<translation id="2566435362010629810">Brave Dev</translation>
 <translation id="1028699632127661925">Verzenden naar <ph name="DEVICE_NAME"/>…</translation>
 <translation id="103269572468856066">Ook gegevens van deze sites en apps wissen?</translation>
 <translation id="1034259925032978114">Venster is geopend</translation>
@@ -49,6 +51,7 @@ Alleen iemand met je wachtwoordzin kan je versleutelde gegevens lezen. De wachtw
 <translation id="1240288207750131269"><ph name="LANG"/> laden</translation>
 <translation id="1240903469550363138"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> deelt je naam, e-mailadres, adres en profielfoto met deze site om door te gaan. Bekijk het <ph name="BEGIN_LINK1"/>privacybeleid<ph name="END_LINK1"/> en de <ph name="BEGIN_LINK2"/>servicevoorwaarden<ph name="END_LINK2"/> van deze site.</translation>
 <translation id="124116460088058876">Meer talen</translation>
+<translation id="4078574862195461280">Je wachtwoorden worden verwijderd uit Brave Wachtwoordmanager voor <ph name="CHROME_CHANNEL"/>. Je houdt het wachtwoordbestand dat je net hebt gedownload.</translation>
 <translation id="1242883863226959074">apparaat</translation>
 <translation id="124678866338384709">Huidig tabblad sluiten</translation>
 <translation id="1246905108078336582">Suggestie verwijderen van klembord?</translation>
@@ -60,14 +63,12 @@ Alleen iemand met je wachtwoordzin kan je versleutelde gegevens lezen. De wachtw
 <translation id="1283039547216852943">Tik om uit te vouwen</translation>
 <translation id="194557235473047967">Je wordt gevraagd in te loggen op je Brave-account.</translation>
 <translation id="1291207594882862231">Geschiedenis, cookies, sitegegevens, cachegeheugen wissen</translation>
-<translation id="8492076695690766757">Je wachtwoorden worden verwijderd uit Brave Wachtwoordmanager voor Brave <ph name="CHROME_CHANNEL"/>. Je houdt het wachtwoordbestand dat je net hebt gedownload.</translation>
 <translation id="129553762522093515">Recent gesloten</translation>
 <translation id="1298077576058087471">Bespaar tot 60% data, lees het nieuws van vandaag</translation>
 <translation id="1303339473099049190">Kan dat wachtwoord niet vinden. Check de spelling en probeer het opnieuw.</translation>
 <translation id="1303507811548703290"><ph name="DOMAIN"/>: verzonden vanaf <ph name="DEVICE_NAME"/></translation>
 <translation id="1311657260431405215">Deze QR-code is geen URL: <ph name="QRCODEVALUE"/></translation>
 <translation id="1316212908214730110">chrome_stylized_highlight_</translation>
-<translation id="131655401280401879">Je opgeslagen informatie wordt gewist als je de profielvergrendeling later verwijdert.</translation>
 <translation id="1320912611264252795">Proces voor bookmark opslaan is op volledige hoogte geopend</translation>
 <translation id="1327257854815634930">Navigatiegeschiedenis is geopend</translation>
 <translation id="6773423637732432200">Brave kan niet updaten. Meer opties</translation>
@@ -115,6 +116,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="8090895580117672212">Tik op de knop 'Account beheren' om je Brave-account te beheren</translation>
 <translation id="1549000191223877751">Naar ander venster</translation>
 <translation id="1705567146636171298">Brave updaten</translation>
+<translation id="1568636008098739136">Deze pagina beluisteren. Tik en houd vast om deze sneltoets te bewerken.</translation>
 <translation id="1571304935088121812">Gebruikersnaam kopiëren</translation>
 <translation id="1592864538817356322">Standaardbeveiliging:</translation>
 <translation id="1594635596540195766"><ph name="SUGGESTIONS_COUNT"/> voorgestelde items in de onderstaande lijst.</translation>
@@ -190,8 +192,8 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="2056878612599315956">Site onderbroken</translation>
 <translation id="2065944887543506430">{FILE_COUNT,plural, =1{1 download mislukt}other{# downloads mislukt}}</translation>
 <translation id="2067805253194386918">sms</translation>
-<translation id="2079545284768500474">Ongedaan maken</translation>
 <translation id="2082238445998314030">Resultaat <ph name="RESULT_NUMBER"/> van <ph name="TOTAL_RESULTS"/></translation>
+<translation id="2093731487903423814">afgelopen 15 minuten</translation>
 <translation id="2096012225669085171">Synchronisatie en personalisatie op meerdere apparaten</translation>
 <translation id="2100273922101894616">Automatisch inloggen</translation>
 <translation id="2100314319871056947">Verdeel de tekst in kleinere stukken en deel in meerdere keren.</translation>
@@ -237,11 +239,13 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="3587672679800759167">Totale gegevens gebruikt door Brave, inclusief accounts, bookmarks en opgeslagen instellingen</translation>
 <translation id="2767094839186957509">Privacybeleid van Brave</translation>
 <translation id="2359808026110333948">Doorgaan</translation>
+<translation id="2362083820973145409">Ingelogd als <ph name="USER_NAME"/>. <ph name="USER_EMAIL"/>. Hiermee worden de instellingen geopend.</translation>
 <translation id="2386938421315164605">Onderwerpen verbergen en zichtbaar maken</translation>
 <translation id="2390510615457643724">Wil je <ph name="FILE_NAME"/><ph name="FILE_SIZE"/> opnieuw downloaden?</translation>
 <translation id="2394602618534698961">Gedownloade bestanden zie je hier</translation>
 <translation id="2410754283952462441">Een account selecteren</translation>
 <translation id="2414886740292270097">Donker</translation>
+<translation id="2421705177906985956">Geen sites om nu te tonen</translation>
 <translation id="2426805022920575512">Een ander account kiezen</translation>
 <translation id="2433507940547922241">Vormgeving</translation>
 <translation id="2435457462613246316">Wachtwoord bekijken</translation>
@@ -272,7 +276,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="5079947353572974060">Aanbieden om pagina's in andere talen naar Brave Translate te sturen</translation>
 <translation id="2571834852878229351">Zelf een maken</translation>
 <translation id="6995512410824092085">Meer informatie over hoe je Brave instelt als standaardbrowser</translation>
-<translation id="257470231920177468">Als deze optie aanstaat, zie je hier een lijst met sites die je bezoekt en die je interesses raden.</translation>
+<translation id="7242554556818074465">Log in op al je apparaten om je tabbladen te bekijken vanaf elk apparaat waarop je Brave gebruikt</translation>
 <translation id="2324920234469020158">Hiermee worden cookies, het cachegeheugen en andere gegevens gewist van sites waarvan Brave denkt dat deze niet belangrijk zijn.</translation>
 <translation id="2587052924345400782">Nieuwere versie beschikbaar</translation>
 <translation id="2589302627584222634">Profielvergrendeling instellen</translation>
@@ -286,6 +290,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="2643064289437760082">Je kunt de gegevens van advertentiemetingen altijd verwijderen door je browsegegevens te verwijderen</translation>
 <translation id="2647434099613338025">Taal toevoegen</translation>
 <translation id="2649068648233607930">Je browser wordt beheerd door <ph name="DOMAIN"/></translation>
+<translation id="2650077116157640844">Meer over gesynchroniseerde apparaten</translation>
 <translation id="2650348088770008516">Uitleg over privacygids is gesloten</translation>
 <translation id="2650408372219180431">Exporteer en verwijder wachtwoorden die op dit apparaat zijn opgeslagen</translation>
 <translation id="2650751991977523696">Bestand opnieuw downloaden?</translation>
@@ -344,6 +349,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="2961208450284224863">{READING_LIST_UNREAD_PAGE_COUNT,plural, =1{<ph name="READING_LIST_UNREAD_PAGE_COUNT_ONE"/> ongelezen pagina}other{<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> ongelezen pagina's}}</translation>
 <translation id="2961210776189273067">Titel</translation>
 <translation id="296370266220139811">Bespaar tijd en typ minder</translation>
+<translation id="297771753501244313">Sorteren op laatst geopend</translation>
 <translation id="2979639724566107830">Openen in nieuw venster</translation>
 <translation id="2981364137500752533">Je kunt maximaal 5 vensters hebben.</translation>
 <translation id="2983102365694924129">Gebaseerd op je activiteit op een site. Deze instelling staat uit.</translation>
@@ -354,6 +360,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="2994959273484668146"><ph name="DOMAIN"/> verwijderen</translation>
 <translation id="2996291259634659425">Wachtwoordzin maken</translation>
 <translation id="2996809686854298943">URL vereist</translation>
+<translation id="2996932914629936323">Hiermee wordt de geschiedenis van al je gesynchroniseerde apparaten gewist</translation>
 <translation id="2019027298133375428">Als een Brave-site vraagt om links op de sitepagina privé vooraf te laden, versleutelt en laadt Brave de pagina's vooraf via Brave-servers zonder cookies. Hierdoor wordt je identiteit voor de vooraf geladen site verborgen.</translation>
 <translation id="3006881078666935414">Geen gebruiksgegevens</translation>
 <translation id="3016635187733453316">Controleer of dit apparaat verbinding heeft met internet</translation>
@@ -376,14 +383,12 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="3070005020161560471">Automatisch vertalen</translation>
 <translation id="1094255666887095087"><ph name="APP_NAME"/> wordt geopend in Brave. Als je doorgaat, ga je akkoord met de <ph name="BEGIN_LINK1"/>Servicevoorwaarden van Brave<ph name="END_LINK1"/> en met de <ph name="BEGIN_LINK2"/>Aanvullende servicevoorwaarden van Brave en Brave OS<ph name="END_LINK2"/>. Het <ph name="BEGIN_LINK3"/>Privacybeleid<ph name="END_LINK3"/> is ook van toepassing.</translation>
 <translation id="3080525922482950719">Je kunt pagina's opslaan en later of offline lezen</translation>
-<translation id="3083194063661536258">Afgemeld. Knop. Er wordt een dialoogvenster geopend om in te loggen en synchronisatie aan te zetten.</translation>
 <translation id="3091010850649238832">Content op het klembord bekijken</translation>
 <translation id="821565628224723530">Sommige afbeeldingen worden naar Brave gestuurd om de beschrijvingen voor je te verbeteren</translation>
 <translation id="3114507951000454849">Lees het nieuws van vandaag <ph name="NEWS_ICON"/></translation>
 <translation id="3123734510202723619">Aankondigingen</translation>
 <translation id="3134784203083076891">'</translation>
 <translation id="5063487983358782016">Homepage van Brave</translation>
-<translation id="3157931365184549694">Herstellen</translation>
 <translation id="3166827708714933426">Sneltoetsen voor tabbladen en vensters</translation>
 <translation id="7249949543831830993">Brave is hier al actief.</translation>
 <translation id="3167258285411721858">Je kunt de mobiele site opvragen voor <ph name="HOST_NAME"/></translation>
@@ -395,7 +400,6 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="1892217432793359605"><ph name="BEGIN_LINK1"/>Zoekgeschiedenis<ph name="END_LINK1"/> en <ph name="BEGIN_LINK2"/>andere vormen van activiteit<ph name="END_LINK2"/> kunnen worden opgeslagen op je Brave-account als je bent ingelogd. Je kunt ze wanneer je wilt verwijderen.</translation>
 <translation id="321773570071367578">Als je je wachtwoordzin bent vergeten of deze instelling wilt wijzigen, <ph name="BEGIN_LINK"/>stel je de synchronisatie opnieuw in<ph name="END_LINK"/></translation>
 <translation id="3220943972464248773">Bevestig dat jij het bent als je je wachtwoorden wilt synchroniseren</translation>
-<translation id="3223522355830797639">Je bank wil bevestigen dat jij het bent.</translation>
 <translation id="9047551989591319903">Brave als beveiligingssleutel</translation>
 <translation id="3232754137068452469">Webapp</translation>
 <translation id="3234978181857588512">Opslaan op apparaat</translation>
@@ -418,11 +422,11 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="3303414029551471755">Doorgaan met het downloaden van de content?</translation>
 <translation id="3305130791745726624">Naar apparaten sturen</translation>
 <translation id="3305795716056605962">Vertaal pagina's via de knop Meer opties</translation>
-<translation id="3319664549618064419">Schakel over naar de desktopsite voor een betere weergave van deze site</translation>
 <translation id="3334729583274622784">Bestandsextensie wijzigen?</translation>
 <translation id="3341262203274374114">Niet meer volgen is mislukt. Er is iets misgegaan.</translation>
 <translation id="3359667936385849800">Je huidige serviceprovider gebruiken</translation>
 <translation id="449001704952013438">Brave kan deze interesse in overweging nemen</translation>
+<translation id="3373701465337594448">Als deze optie aanstaat, zie je hier een lijst met sites die je bezoekt en die je interesses raden</translation>
 <translation id="2746024117903470217">Als je deze pagina wilt delen met een ander apparaat, zet je op het andere apparaat de synchronisatie aan via de Brave-instellingen</translation>
 <translation id="8801234437789558906">Je bookmarks, geschiedenis, wachtwoorden en andere Brave-gegevens worden niet meer gesynchroniseerd met je Brave-account</translation>
 <translation id="3384347053049321195">Afbeelding delen</translation>
@@ -434,9 +438,9 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="3421726884497337397">Kies wanneer je cookies van derden wilt blokkeren</translation>
 <translation id="5265419033369521352">Beschermt je op Brave en kan worden gebruikt om de beveiliging in andere Brave-apps te verbeteren als je bent ingelogd</translation>
 <translation id="3429160811076349561">Proeffuncties staan uit</translation>
-<translation id="3432973700170747422">Laatste 15 minuten verwijderen</translation>
 <translation id="3435465986463792564">Heb je veel vensters open? Beheer ze hier.</translation>
 <translation id="3435738964857648380">Beveiliging</translation>
+<translation id="3439276997620616816">Hier vind je je recente tabbladen</translation>
 <translation id="3443221991560634068">De huidige pagina opnieuw laden</translation>
 <translation id="3444179773590444986">Feedback delen over donker thema voor sites?</translation>
 <translation id="7384339501748168186">Ter bescherming van je privacy vult Brave je wachtwoord niet automatisch in dit veld in.</translation>
@@ -445,6 +449,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="3479552764303398839">Niet nu</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/> over voorgestelde content</translation>
 <translation id="3495219333887281978">Inlogblad onderaan is op halve hoogte geopend.</translation>
+<translation id="3498338220321963224">Je opgeslagen gegevens worden gewist als de profielvergrendeling later wordt verwijderd.</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="350276055892098337">Sorteren op oudste</translation>
 <translation id="3507132249039706973">Standaardbeveiliging staat aan</translation>
@@ -467,9 +472,9 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="3587596251841506391">Bijdragen aan veiliger internet</translation>
 <translation id="3597179440835065298">Krijg betere suggesties</translation>
 <translation id="3602290021589620013">Voorbeeld</translation>
-<translation id="360901359071773787">Laatste 15 minuten verwijderen?</translation>
 <translation id="3616113530831147358">Audio</translation>
 <translation id="3622349720008044802">Vensters beheren</translation>
+<translation id="3623240789707551553">{DOMAIN_COUNT,plural, =1{+ 1 site}other{+ # sites}}</translation>
 <translation id="3631987586758005671">Delen met <ph name="DEVICE_NAME"/></translation>
 <translation id="363596933471559332">Log automatisch in bij websites met de opgeslagen inloggegevens. Als de functie uitstaat, moet je je identiteit verifiëren voordat je kunt inloggen bij een website.</translation>
 <translation id="3636940436873918441">Voorkeurstalen</translation>
@@ -479,6 +484,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="3692944402865947621">Downloaden van <ph name="FILE_NAME"/> mislukt omdat de opslaglocatie niet bereikbaar is.</translation>
 <translation id="3697705478071004188">Sorteren op site</translation>
 <translation id="3699022356773522638">Bestand downloaden?</translation>
+<translation id="3701515417135397388">Waarschuwen als een wachtwoord is gelekt bij een gegevenslek</translation>
 <translation id="371230970611282515">Voorspelt en waarschuwt je voor gevaarlijke gebeurtenissen voordat deze plaatsvinden.</translation>
 <translation id="3714981814255182093">De zoekbalk openen</translation>
 <translation id="5805364706385912897">Omdat deze pagina te veel geheugen gebruikt, heeft Brave de pagina onderbroken.</translation>
@@ -493,6 +499,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="1138681184697033370">Servicevoorwaarden van Brave</translation>
 <translation id="3773856050682458546">Basisgegevens en informatie over de websites die je bezoekt en de apps die je gebruikt</translation>
 <translation id="3775705724665058594">Naar je apparaten sturen</translation>
+<translation id="3777796259512476958">Hiermee word je uitgelogd van de meeste sites</translation>
 <translation id="3791957072666773229">{TAB_COUNT,plural, =1{1 tabblad}other{# tabbladen}}</translation>
 <translation id="3795154175078851242">Afbeelding kopiëren met link</translation>
 <translation id="3810838688059735925">Video</translation>
@@ -501,6 +508,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="3819178904835489326"><ph name="NUMBER_OF_DOWNLOADS"/> downloads verwijderd</translation>
 <translation id="3819183753496523827">Je bent offline. Check de internetverbinding en probeer het opnieuw.</translation>
 <translation id="3830886834687455630">Update Brave Play-services om je wachtwoorden te checken</translation>
+<translation id="3847319713229060696">Helpen om het internet voor iedereen veiliger te maken</translation>
 <translation id="3856096718352044181">Controleer of dit een geldige provider is of probeer het later opnieuw</translation>
 <translation id="3858860766373142691">Naam</translation>
 <translation id="3874520961715512166">Site verwijderd</translation>
@@ -510,6 +518,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="3924911262913579434"><ph name="SAFE_BROWSING_MODE"/> staat aan</translation>
 <translation id="3927692899758076493">Sans Serif</translation>
 <translation id="3928666092801078803">Mijn gegevens combineren</translation>
+<translation id="3931947361983910192">de afgelopen 4 weken</translation>
 <translation id="3932390316856284148">Inlogblad onderaan is op volledige hoogte geopend.</translation>
 <translation id="3934366560681368531">'</translation>
 <translation id="393697183122708255">Gesproken zoekopdracht niet beschikbaar</translation>
@@ -519,6 +528,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="4908545308856135643">Wachtwoordzinversleuteling is niet van toepassing op betaalmethoden en adressen van Google Pay. Alleen iemand met je wachtwoordzin kan je versleutelde gegevens lezen. De wachtwoordzin wordt niet verzonden naar of opgeslagen door Brave. Als je je wachtwoordzin vergeet of deze instelling wilt wijzigen, moet je de synchronisatie resetten. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
 <translation id="1453002554835005700">Brave kan je wachtwoorden niet checken</translation>
 <translation id="3969863827134279083">Naar boven</translation>
+<translation id="397105322502079400">Berekenen...</translation>
 <translation id="397583555483684758">Synchronisatie werkt niet meer</translation>
 <translation id="3976396876660209797">Verwijder de snelkoppeling en maak deze opnieuw</translation>
 <translation id="3981902534690264083">Adverteerders kunnen inzicht krijgen in hoe advertenties presteren</translation>
@@ -531,7 +541,6 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="4024768890073681126">Je browser wordt beheerd door je ouder</translation>
 <translation id="4034817413553209278">{HOURS,plural, =1{# uur}other{# uur}}</translation>
 <translation id="4035877632587724847">Niet toestaan</translation>
-<translation id="4036177530563778041">Ga makkelijk verder waar je gebleven was</translation>
 <translation id="4042941173059740150">Doorgaan naar <ph name="SITE_ETLD_PLUS_ONE"/> met <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="4044708993631234325">Blad onderaan</translation>
 <translation id="4045764304651014138">Gebruiksgegevens</translation>
@@ -539,6 +548,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="4056223980640387499">Sepia</translation>
 <translation id="4062305924942672200">Juridische informatie</translation>
 <translation id="4072805772816336153">Probeer het later opnieuw</translation>
+<translation id="4080602171844412446">Gerelateerde inzichten</translation>
 <translation id="4084682180776658562">Bookmark maken</translation>
 <translation id="4521874409998847950">Van <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>geleverd door Brave<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="409109920254068737">Je kunt deze tablet gebruiken om in te loggen op het apparaat waarop deze QR-code wordt getoond.</translation>
@@ -553,6 +563,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="4124152339699379357">Proces voor meldingsrechten is op volledige hoogte geopend</translation>
 <translation id="4135200667068010335">De lijst met apparaten om een tabblad mee te delen is gesloten.</translation>
 <translation id="4137746084635924146">Huidige apparaattaal</translation>
+<translation id="2244754938072041239">Brave Canary</translation>
 <translation id="414128724510021958">Desktopsites standaard aangevraagd</translation>
 <translation id="4162867837470729563">Lijst met deelopties op volledige hoogte.</translation>
 <translation id="4170011742729630528">De service is niet beschikbaar. Probeer het later opnieuw.</translation>
@@ -566,6 +577,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="4198423547019359126">Geen beschikbare downloadlocaties</translation>
 <translation id="4202218894997543208">Onderwerpen die je hebt geblokkeerd</translation>
 <translation id="1675646381334855139">Als je cookies toestaat, kan Brave deze voor vooraf laden gebruiken.</translation>
+<translation id="4216511743389425832">Deze pagina beluisteren</translation>
 <translation id="4225725533026049334">Je volgt</translation>
 <translation id="4225895483398857530">Snelkoppeling voor werkbalk</translation>
 <translation id="4242533952199664413">Instellingen openen</translation>
@@ -582,6 +594,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="4291407919474070700"><ph name="BEGIN_LINK"/>Schermvergrendeling aanzetten via Android-instellingen<ph name="END_LINK"/></translation>
 <translation id="4298388696830689168">Gekoppelde sites</translation>
 <translation id="4303044213806199882">chrome_screenshot_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
+<translation id="4304713468139749426">Wachtwoordmanager</translation>
 <translation id="4307992518367153382">Basisinstellingen</translation>
 <translation id="4320177379694898372">Geen internetverbinding</translation>
 <translation id="4321739720395210191">Kan de camera niet openen. Start het apparaat opnieuw op en probeer het nogmaals.</translation>
@@ -598,8 +611,8 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="4405224443901389797">Verplaatsen naar…</translation>
 <translation id="4405636711880428279">Je virtuele kaart verwijderen?</translation>
 <translation id="4409271659088619928">Je zoekmachine is <ph name="DSE"/>. Bekijk de instructies van je zoekmachine voor het verwijderen van je zoekgeschiedenis (indien van toepassing).</translation>
-<translation id="441383202534727410">Het kan tot een week duren voordat je hier een lijst met sites ziet op basis van je browsegeschiedenis.</translation>
 <translation id="5749788945734786627">Je Brave-account beheren</translation>
+<translation id="3867960878171682773">Als je je Brave-gegevens wilt synchroniseren en je gegevens wilt beveiligen in de auto, moet je een profielvergrendeling instellen. Je gebruikt elke keer dat je in de auto stapt een code of wachtwoord.</translation>
 <translation id="4425140285732600465">Prijs wordt gevolgd. Krijg meldingen bij een prijsdaling op een site.</translation>
 <translation id="442518031075347249">Je kunt je virtuele kaart niet meer gebruiken met Brave Pay. <ph name="BEGIN_LINK1"/>Meer informatie over virtuele kaarten<ph name="END_LINK1"/></translation>
 <translation id="4428065317363009941">Advertentiepersonalisatie</translation>
@@ -610,6 +623,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="4484496141267039529">Geen verbinding. Probeer het later opnieuw.</translation>
 <translation id="53119194224775367">Alle app-gegevens voor Brave worden definitief verwijderd. Dit omvat alle bestanden, instellingen, accounts, databases, enzovoort.</translation>
 <translation id="3966104135245031874">Gesynchroniseerde wachtwoorden versleutelen met je Brave-account</translation>
+<translation id="4491323382106587961">Kies een account. Op dit moment geselecteerd: <ph name="EMAIL"/>.</translation>
 <translation id="4508528996305412043">Feedkaartmenu is geopend</translation>
 <translation id="4509501256689523862">Of een advertentie wordt gepersonaliseerd terwijl je browst, is afhankelijk van deze instelling, <ph name="BEGIN_LINK_1"/>advertentieonderwerpen<ph name="END_LINK_1"/>, je <ph name="BEGIN_LINK_2"/>cookie-instellingen<ph name="END_LINK_2"/> en of de site die je bekijkt advertenties personaliseert.</translation>
 <translation id="4513387527876475750">{DAYS,plural, =1{# dag geleden}other{# dagen geleden}}</translation>
@@ -617,6 +631,7 @@ Als je je browsegeschiedenis verwijdert (alles of alleen de geschiedenis voor ee
 <translation id="1664855196866195614">De geselecteerde gegevens zijn verwijderd uit Brave en van je gesynchroniseerde apparaten.
 
 Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopdrachten en activiteit uit andere Brave-services) beschikbaar zijn via <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="4523326818319942067">afgelopen uur</translation>
 <translation id="452750746583162491">Je gesynchroniseerde gegevens controleren</translation>
 <translation id="4528638190900283934">Log in voor extra functies</translation>
 <translation id="4532845899244822526">Map kiezen</translation>
@@ -668,6 +683,7 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="4766678251456904326">Account toevoegen aan apparaat</translation>
 <translation id="1996253762801922860">We lanceren een nieuwe privacyfunctie voor advertenties: advertentiemeting. Brave deelt alleen zeer beperkte informatie tussen sites en apps, zoals wanneer een advertentie aan jou is getoond, zodat de prestaties van advertenties kunnen worden gemeten.</translation>
 <translation id="4769095993849849966">Nieuwe bestandsnaam</translation>
+<translation id="4775646243557794597"><ph name="TIME_PERIOD"/> verwijderd</translation>
 <translation id="4778653490315793244">Er is nog niets om te laten zien</translation>
 <translation id="4787736314074622408">Wil je <ph name="ITEM_TITLE"/> verwijderen?</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
@@ -726,6 +742,7 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="5010886807652684893">Visuele weergave</translation>
 <translation id="5011311129201317034"><ph name="SITE"/> wil verbinding maken</translation>
 <translation id="5016205925109358554">Serif</translation>
+<translation id="5017529052065664584">Afgelopen 15 minuten</translation>
 <translation id="5032430150487044192">Kan geen QR-code maken</translation>
 <translation id="5039804452771397117">Toestaan</translation>
 <translation id="5040262127954254034">Privacy</translation>
@@ -743,7 +760,6 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="5115811374190515607">naar <ph name="PRODUCT_NAME"/></translation>
 <translation id="5118713593561876160">Interesses</translation>
 <translation id="5122378528687922675">Vraag zo nodig je ouder (<ph name="PARENT_NAME_1"/> of <ph name="PARENT_NAME_2"/>) om hulp</translation>
-<translation id="5126510351761255129">Je kaart verifiëren</translation>
 <translation id="5132942445612118989">Je wachtwoorden, geschiedenis en meer synchroniseren op al je apparaten</translation>
 <translation id="5139940364318403933">Meer informatie over het gebruik van Google Drive</translation>
 <translation id="5142281402488957685">Trek omlaag om te vernieuwen voor nieuwe stories</translation>
@@ -765,6 +781,7 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="5233638681132016545">Nieuw tabblad</translation>
 <translation id="5235196193381275927">Er is iets misgegaan bij het inloggen</translation>
 <translation id="5246093389635966745">Snelkoppeling voor werkbalk bewerken</translation>
+<translation id="5264813352784073502">afgelopen 24 uur</translation>
 <translation id="5271967389191913893">Het apparaat kan de content niet openen die moet worden gedownload.</translation>
 <translation id="5292796745632149097">Verzenden naar</translation>
 <translation id="5300426565656326054">Browsergebaseerde advertentiepersonalisatie</translation>
@@ -777,6 +794,7 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="5329858041417644019">Je browser wordt niet beheerd.</translation>
 <translation id="5339031667684712858">Door jou verwijderde sites</translation>
 <translation id="5342314432463739672">Rechtenverzoeken</translation>
+<translation id="534580735623577507">Geen sites van de <ph name="TIME_PERIOD"/></translation>
 <translation id="53537532693258630">Hier zie je sites die je hebt verwijderd</translation>
 <translation id="5355191726083956201">Geoptimaliseerde beveiliging staat aan</translation>
 <translation id="5361107212971249203">tekst</translation>
@@ -785,12 +803,12 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="5401851137404501592"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> deelt je naam, e-mailadres en profielfoto met deze site om door te gaan.</translation>
 <translation id="5409881200985013443"><ph name="ONE_TIME_CODE"/> doorgeven op <ph name="CLIENT_NAME"/>?</translation>
 <translation id="5414836363063783498">Verifiëren…</translation>
-<translation id="7606640365974248588">Alle wachtwoorden worden gedownload op je apparaat en verwijderd uit Brave <ph name="CHROME_CHANNEL"/></translation>
 <translation id="5423934151118863508">Hier zie je de meest bezochte pagina's</translation>
 <translation id="5424588387303617268"><ph name="GIGABYTES"/> GB beschikbaar</translation>
 <translation id="543338862236136125">Wachtwoord bewerken</translation>
 <translation id="5433691172869980887">Gebruikersnaam gekopieerd</translation>
 <translation id="5438292632479953702">Opnieuw downloaden</translation>
+<translation id="5441137934526263133">Werkt de site niet? Cookies van derden worden geblokkeerd.</translation>
 <translation id="5441466871879044658">Vertalen naar deze taal</translation>
 <translation id="5441522332038954058">Naar de adresbalk gaan</translation>
 <translation id="5444999712122199445">Terug naar site</translation>
@@ -808,6 +826,7 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="300369155175407115">Tijdens actieve proeven en als Brave je willekeurig in een actieve proef heeft geplaatst, heeft je browsegeschiedenis invloed op de advertenties die je te zien krijgt en de interesses zoals hieronder geschat. Ter bescherming van je privacy verwijdert Brave je interesses elke maand op voortschrijdende basis.</translation>
 <translation id="5524843473235508879">Omleiding geblokkeerd.</translation>
 <translation id="5548606607480005320">Veiligheidscheck</translation>
+<translation id="4362225295386962644">Als je een wachtwoord gebruikt, waarschuwt Brave je als het online is gepubliceerd. Als dit wordt gedaan, zijn je wachtwoorden en gebruikersnamen versleuteld, zodat ze door niemand (ook niet Brave) kunnen worden gelezen.</translation>
 <translation id="5555525474779371165">Je Safe Browsing-bescherming kiezen</translation>
 <translation id="5556459405103347317">Opnieuw laden</translation>
 <translation id="555816257274242153">Prijs volgen gestopt</translation>
@@ -818,6 +837,7 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="5578795271662203820">Zoeken op <ph name="SEARCH_ENGINE"/> naar afbeelding</translation>
 <translation id="5581519193887989363">Je kunt altijd in de <ph name="BEGIN_LINK1"/>instellingen<ph name="END_LINK1"/> bepalen wat je wilt synchroniseren.</translation>
 <translation id="5590372121997663538">Deze computer onthouden</translation>
+<translation id="5596627076506792578">Meer opties</translation>
 <translation id="5620163320393916465">Geen opgeslagen wachtwoorden</translation>
 <translation id="5620928963363755975">Vind je bestanden en pagina's in 'Downloads' via de knop 'Meer opties'</translation>
 <translation id="562289928968387744">Reacties beheren</translation>
@@ -846,6 +866,7 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="5752232708629533680">Alleen gif delen</translation>
 <translation id="416316836590748269">Je kunt met je stem zoeken in Brave</translation>
 <translation id="5754350196967618083">Kan Discover niet vernieuwen</translation>
+<translation id="5755162682436943950">Uitgelogd. Er wordt een dialoogvenster geopend om in te loggen en synchronisatie aan te zetten.</translation>
 <translation id="5763514718066511291">Tik om de URL voor deze app te kopiëren</translation>
 <translation id="5765517223145864268">Vertel ons wat je ervan vindt. Of <ph name="BEGIN_LINK"/>wijzig je instellingen<ph name="END_LINK"/>.</translation>
 <translation id="5765780083710877561">Beschrijving:</translation>
@@ -854,6 +875,7 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="5780792035410621042">Als je wachtwoorden wilt kopiëren, moet je eerst een schermvergrendeling instellen op je apparaat</translation>
 <translation id="5793665092639000975">Er wordt <ph name="SPACE_USED"/> van de <ph name="SPACE_AVAILABLE"/> gebruikt</translation>
 <translation id="5795872532621730126">Zoeken en browsen</translation>
+<translation id="5797521893972859201">Hiermee wis je de geschiedenis, waaronder die in het zoekvak</translation>
 <translation id="5797949256525811424">Geblokkeerd onderwerp</translation>
 <translation id="5809361687334836369">{HOURS,plural, =1{# uur geleden}other{# uur geleden}}</translation>
 <translation id="5311273890481188673">Copyright © <ph name="YEAR"/> Brave LLC. Alle rechten voorbehouden.</translation>
@@ -873,7 +895,6 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="5864419784173784555">Wachten op andere download…</translation>
 <translation id="6538479075382111079">Hiermee worden automatisch gebruiksstatistieken en crashrapporten naar Brave verzonden</translation>
 <translation id="5869522115854928033">Opgeslagen wachtwoorden</translation>
-<translation id="5876496397064130037">Taak hervat</translation>
 <translation id="5604589745019948682">Als je een site wilt volgen, ga je naar de site, open je het Brave-menu en tik je op Volgen.</translation>
 <translation id="5879072387416556377">Krijg betere suggesties</translation>
 <translation id="5916664084637901428">Aan</translation>
@@ -884,6 +905,7 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="5951119116059277034">Live pagina bekijken</translation>
 <translation id="305870044889644984">Helpcentrum van Brave openen in een nieuw tabblad</translation>
 <translation id="5957442310066583693">Tik op de startknop om je populaire sites te bekijken</translation>
+<translation id="59577092665511740">Kies een account.</translation>
 <translation id="5958275228015807058">Vind je bestanden en pagina's in Downloads</translation>
 <translation id="5958994127112619898">Pagina vereenvoudigen</translation>
 <translation id="5962718611393537961">Tik om samen te vouwen</translation>
@@ -899,12 +921,10 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="6011308810877101166">Zoeksuggesties verbeteren</translation>
 <translation id="6026538407078977628">Uitvouwen naar volledig scherm</translation>
 <translation id="6030719887161080597">Informatie beheren die sites gebruiken om advertentieprestaties te meten</translation>
-<translation id="6034146297924778597">De geschiedenis van de afgelopen 15 minuten wordt verwijderd:</translation>
 <translation id="6039379616847168523">Naar het volgende tabblad gaan</translation>
 <translation id="6040143037577758943">Sluiten</translation>
 <translation id="604124094241169006">Automatisch</translation>
 <translation id="6042308850641462728">Meer</translation>
-<translation id="6049046116080614938">Ingelogd als <ph name="USER_NAME"/>. <ph name="USER_EMAIL"/>. Knop. Hiermee worden de instellingen geopend.</translation>
 <translation id="604996488070107836">Download van <ph name="FILE_NAME"/> mislukt vanwege een onbekende fout.</translation>
 <translation id="605721222689873409">JJ</translation>
 <translation id="6059830886158432458">Beheer hier je artikelen en activiteiten</translation>
@@ -923,7 +943,6 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="6140912465461743537">Land/regio</translation>
 <translation id="6150320133806434356">Bookmark opgeslagen</translation>
 <translation id="6154478581116148741">Zet de schermvergrendeling aan via Instellingen om je wachtwoorden te exporteren vanaf dit apparaat</translation>
-<translation id="6159729262978459665">Hiermee wordt de geschiedenis van alle gesynchroniseerde apparaten gewist.</translation>
 <translation id="7087658909840709934">Pagina's waarvan Brave denkt dat je ze waarschijnlijk gaat bezoeken, worden vooraf geladen.</translation>
 <translation id="6186394685773237175">Geen gehackte wachtwoorden gevonden</translation>
 <translation id="6192907950379606605">Afbeeldingsbeschrijvingen ophalen</translation>
@@ -954,7 +973,6 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken
 <translation id="6324997754869598316">(Fout <ph name="ERROR_CODE"/>)</translation>
 <translation id="6333140779060797560">Delen via <ph name="APPLICATION"/></translation>
 <translation id="6337234675334993532">Versleuteling</translation>
-<translation id="6340910702212418132">Wachtwoordmanager <ph name="BEGIN_NEW"/>Nieuw<ph name="END_NEW"/></translation>
 <translation id="6341580099087024258">Vragen waar bestanden moeten worden opgeslagen</translation>
 <translation id="6342069812937806050">Zojuist</translation>
 <translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 en nog <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> andere}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 en nog <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> andere}}</translation>
@@ -963,6 +981,8 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken
 <translation id="6363990818884053551">Bevestig dat jij het bent om de synchronisatie te starten</translation>
 <translation id="6364438453358674297">Suggestie verwijderen uit geschiedenis?</translation>
 <translation id="806493401838431801">Pagina's waarvan Brave denkt dat je ze waarschijnlijk gaat bezoeken, worden vaker vooraf geladen. Deze instelling kan leiden tot meer datagebruik.</translation>
+<translation id="6382848304055775421">Exporteren</translation>
+<translation id="7546916476671876555">Als je je Brave-gegevens wilt synchroniseren en je gegevens wilt beveiligen in de auto, moet je een profielvergrendeling instellen in de beveiligingsinstellingen. Je gebruikt elke keer dat je in de auto stapt een code of wachtwoord.</translation>
 <translation id="6394791151443660613">Zoeken: <ph name="SEARCH_QUERY"/></translation>
 <translation id="6395288395575013217">LINK</translation>
 <translation id="6397616442223433927">Weer online</translation>
@@ -1031,6 +1051,7 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken
 <translation id="6649642165559792194">Afbeelding bekijken <ph name="BEGIN_NEW"/>Nieuw<ph name="END_NEW"/></translation>
 <translation id="6657585470893396449">Wachtwoord</translation>
 <translation id="6659594942844771486">Browsertabblad</translation>
+<translation id="9145803563102831353">Wachtwoorden die op dit apparaat zijn opgeslagen, kunnen op dit moment niet worden gebruikt voor verschillende Brave-kanalen. Na Brave 121 worden de wachtwoorden die op je apparaat zijn opgeslagen voor Brave en <ph name="CHROME_CHANNEL"/> samengevoegd. Je kunt ze dan in beide apps gebruiken.</translation>
 <translation id="666731172850799929">Openen in <ph name="APP_NAME"/></translation>
 <translation id="6671495933530132209">Afbeelding kopiëren</translation>
 <translation id="6672917148207387131"><ph name="DOMAIN"/> toevoegen</translation>
@@ -1099,7 +1120,6 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken
 <translation id="7029390216614421513">Plaats de QR-/streepjescode binnen dit kader.</translation>
 <translation id="7029809446516969842">Wachtwoorden</translation>
 <translation id="7030304022046916278">Stuurt URL's naar Safe Browsing om deze te checken</translation>
-<translation id="7030585293819777123">Doorgaan met je laatste taak?</translation>
 <translation id="7035701931849773472">Andere opties</translation>
 <translation id="5813862251770201080">Log in bij Brave met je Brave-account</translation>
 <translation id="7038956721828960940">chrome_image_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
@@ -1114,13 +1134,13 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken
 <translation id="8208853227947884571">Brave is up-to-date</translation>
 <translation id="7105047059074518658">Log in om makkelijker te browsen op apparaten</translation>
 <translation id="7106762743910369165">Je browser wordt beheerd door je organisatie</translation>
-<translation id="7116420572655804716">Als je je informatie wilt synchroniseren en je gegevens wilt beveiligen in de auto, moet je een profielvergrendeling instellen in de beveiligingsinstellingen. Je gebruikt elke keer dat je in de auto stapt een code of wachtwoord.</translation>
 <translation id="7116588989735740310">Synchroniseer je tabbladen en geschiedenis om terug te gaan naar sites die je op andere apparaten hebt bezocht</translation>
 <translation id="7130504491556983216">Hier komt een lijst met interesses als je browst op internet.</translation>
 <translation id="7138678301420049075">Overige</translation>
 <translation id="7146622961999026732">Zo te zien zijn deze sites en apps belangrijk voor jou:</translation>
 <translation id="7149893636342594995">Afgelopen 24 uur</translation>
 <translation id="604991236434948997">Als je een QR-code wilt scannen, wijzig je de instellingen zodat Brave de camera kan gebruiken</translation>
+<translation id="7168323970702333693">Ingelogd als <ph name="USER_NAME"/>. Hiermee worden de instellingen geopend.</translation>
 <translation id="7173114856073700355">Instellingen openen</translation>
 <translation id="7177466738963138057">Je kunt dit later wijzigen in Instellingen</translation>
 <translation id="7177873915659574692">Kan geen QR-code maken. De URL is langer dan <ph name="CHARACTER_LIMIT"/> tekens.</translation>
@@ -1218,7 +1238,9 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken
 <translation id="7638584964844754484">Onjuiste wachtwoordzin</translation>
 <translation id="7641339528570811325">Browsegegevens wissen</translation>
 <translation id="7646772052135772216">Wachtwoordsynchronisatie werkt niet</translation>
+<translation id="7655240423373329753">afgelopen 7 dagen</translation>
 <translation id="7655900163790317559">Bluetooth aanzetten…</translation>
+<translation id="7656721520530864426">Geen sites</translation>
 <translation id="7658239707568436148">Annuleren</translation>
 <translation id="7665369617277396874">Account toevoegen</translation>
 <translation id="766587987807204883">Hier zie je artikelen die je zelfs kunt lezen wanneer je offline bent</translation>
@@ -1281,7 +1303,6 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken
 <translation id="7968014550143838305">Toegevoegd aan leeslijst</translation>
 <translation id="7971136598759319605">1 dag geleden actief</translation>
 <translation id="7975379999046275268">Pagina bekijken <ph name="BEGIN_NEW"/>Nieuw<ph name="END_NEW"/></translation>
-<translation id="7981085434646346979">Ingelogd als <ph name="USER_NAME"/>. Knop. Hiermee worden de instellingen geopend.</translation>
 <translation id="7986497153528221272">Als je wachtwoorden wilt bekijken, moet je eerst een schermvergrendeling instellen op je apparaat</translation>
 <translation id="7995059495660416932">Je ziet content zodra deze beschikbaar komt</translation>
 <translation id="799576009106109668">Je browst sneller, omdat content proactief wordt geladen op basis van je huidige webpagina</translation>
@@ -1312,24 +1333,24 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken
 <translation id="808747664143081553">Verbonden met apparaat</translation>
 <translation id="8090732854597034573">Vraag zo nodig je ouder om hulp</translation>
 <translation id="1501443023467711714">Log in om Brave te personaliseren</translation>
+<translation id="8101414242770404289">Geen tabbladen in <ph name="TIME_PERIOD"/></translation>
 <translation id="3249150807062904185">Door verder te gaan, ga je akkoord met de <ph name="BEGIN_TOS_LINK"/>Servicevoorwaarden<ph name="END_TOS_LINK"/>.\nBrave stuurt gebruiks- en crashgegevens naar Brave om de app te helpen verbeteren. <ph name="BEGIN_UMA_LINK"/>Beheren<ph name="END_UMA_LINK"/></translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8107530384992929318">Sorteeropties sluiten</translation>
 <translation id="2919733817273403520">Help de functies en prestaties van Brave te verbeteren</translation>
 <translation id="4565206163201411670">Brave-activiteit in Digitaal welzijn bekijken?</translation>
 <translation id="8118117428362942925">Vraag zo nodig je ouder (<ph name="PARENT_NAME"/>) om hulp</translation>
-<translation id="7197888224672575280">Je lijsten met opgeslagen wachtwoorden voor Brave en Brave <ph name="ERROR_DESCRIPTION"/> worden samengevoegd na versie 121. Je kunt al je opgeslagen wachtwoorden dan automatisch invullen in beide apps.</translation>
 <translation id="8127542551745560481">Homepage bewerken</translation>
 <translation id="8130309322784422030">Je opgeslagen inloggegevens zijn misschien verouderd</translation>
 <translation id="813082847718468539">Sitegegevens bekijken</translation>
 <translation id="6337533477704327362">Je hoeft dit wachtwoord niet te onthouden. Het wordt opgeslagen in Brave Wachtwoordmanager.</translation>
-<translation id="8156139159503939589">Welke talen lees je?</translation>
 <translation id="8186512483418048923"><ph name="FILES"/> bestanden over</translation>
 <translation id="8189750580333936930">Privacy Sandbox</translation>
 <translation id="8190358571722158785">1 dag resterend</translation>
 <translation id="8193953846147532858"><ph name="BEGIN_LINK"/>Je apparaten<ph name="END_LINK"/> · <ph name="EMAIL"/></translation>
 <translation id="8200772114523450471">Doorgaan</translation>
 <translation id="8209050860603202033">Afbeelding openen</translation>
+<translation id="8210770465353466621">Hier vind je je tabbladen</translation>
 <translation id="8215740705341534369">Zijblad</translation>
 <translation id="8218622182176210845">Je account beheren</translation>
 <translation id="4034729701971511794">Je kunt ongewenste sites blokkeren. Brave verwijdert sites die ouder zijn dan 30 dagen ook automatisch uit de lijst. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
@@ -1363,6 +1384,7 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken
 <translation id="8414396119627470038">Log in bij <ph name="SITE_ETLD_PLUS_ONE"/> met <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="2100587595569959771">Meer informatie over advertentiepersonalisatie in Brave</translation>
 <translation id="8419244640277402268">Opnemen</translation>
+<translation id="8422250855136581222">Geen tabbladen op dit apparaat</translation>
 <translation id="5735840612282428689">Pagina gestuurd. Als je deze wilt bekijken, open je Brave op je <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="8427875596167638501">Voorbeeldtabblad is half geopend</translation>
 <translation id="8428213095426709021">Instellingen</translation>
@@ -1418,7 +1440,6 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken
 <translation id="8645920082661222035">Voorspelt en waarschuwt je over gevaarlijke gebeurtenissen voordat deze plaatsvinden</translation>
 <translation id="8646467750715887511">Pagina's worden pas geladen nadat je ze opent.</translation>
 <translation id="2734140769649165081">Je kunt de gegevens wissen in de Brave-instellingen</translation>
-<translation id="8662811608048051533">Hiermee word je uitgelogd van de meeste sites.</translation>
 <translation id="7436978557885042606">Gebruik Brave op jouw manier</translation>
 <translation id="8664979001105139458">Bestandsnaam bestaat al</translation>
 <translation id="8666759526542103597">Over browsergebaseerde advertentiepersonalisatie</translation>
@@ -1457,7 +1478,6 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken
 <translation id="885480114717186641">Je kunt de desktopsite opvragen voor <ph name="HOST_NAME"/></translation>
 <translation id="8856607253650333758">Beschrijvingen ophalen</translation>
 <translation id="8856931513242997049">Proces voor meldingsrechten gesloten</translation>
-<translation id="8881973373982641723">Hiermee wis je de geschiedenis, waaronder die in het zoekvak.</translation>
 <translation id="8884023684057697730"><ph name="BEGIN_BOLD"/>Hoe je je gegevens kunt beheren:<ph name="END_BOLD"/> Ter bescherming van je privacy verwijderen we automatisch sites uit de lijst die ouder zijn dan 4 weken. Een site die je opnieuw bezoekt, kan weer op de lijst komen te staan. Je kunt ook sites verwijderen als je niet wilt dat deze interesses voor je definiëren.</translation>
 <translation id="1984646864943401749">Stuurt URL's van sommige pagina's die je bezoekt, beperkte systeeminformatie en bepaalde paginacontent naar Brave om nieuwe dreigingen te ontdekken en iedereen op internet te beschermen.</translation>
 <translation id="8909135823018751308">Delen</translation>
@@ -1478,8 +1498,10 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken
 <translation id="8996847606757455498">Een andere provider kiezen</translation>
 <translation id="8998289560386111590">Niet beschikbaar op je apparaat</translation>
 <translation id="3275122921244685452">Je logt in met een account dat wordt beheerd door <ph name="MANAGED_DOMAIN"/> waarmee je de eigenaar beheer geeft over je Brave-gegevens. Je gegevens worden permanent gekoppeld aan dit account. Als je uitlogt van Brave, worden je gegevens van dit apparaat verwijderd. Ze blijven echter opgeslagen in je Brave-account.</translation>
+<translation id="9012585441087414258">Beschermt tegen sites, downloads en extensies die als gevaarlijk zijn bestempeld. Als een pagina iets verdachts doet, worden URL's en delen van de paginacontent naar Google Safe Browsing gestuurd.</translation>
 <translation id="9022774213089566801">Veelbezocht</translation>
 <translation id="9022871169049522985">Sites en adverteerders kunnen de prestaties van hun advertenties meten</translation>
+<translation id="9035378196785279980">Verplaatsen naar\u2026</translation>
 <translation id="9041669420854607037">{FILE_COUNT,plural, =1{# video}other{# video's}}</translation>
 <translation id="9042893549633094279">Privacy en beveiliging</translation>
 <translation id="9050666287014529139">Wachtwoordzin</translation>
@@ -1510,8 +1532,10 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken
 <translation id="9158770349521403363">Alleen content delen</translation>
 <translation id="9159716826369098114">Tabbladgroep van <ph name="TAB_COUNT"/> tabbladen herstellen als een nieuwe tabbladgroep op de achtergrond.</translation>
 <translation id="9169507124922466868">Navigatiegeschiedenis is half geopend</translation>
+<translation id="4947625801334180582">Brave Bèta</translation>
 <translation id="9190276265094487094">Je krijgt je geschiedenis op al je gesynchroniseerde apparaten, zodat je kunt doorgaan met waar je mee bezig was</translation>
 <translation id="9199368092038462496">{NUM_MINS,plural, =1{1 minuut geleden gecheckt}other{# minuten geleden gecheckt}}</translation>
+<translation id="9204021776105550328">Verwijderen</translation>
 <translation id="9204836675896933765">1 bestand over</translation>
 <translation id="9205933215779845960">Kan die pagina niet vinden. Check je spelling of voer een zoekopdracht uit met <ph name="SEARCH_ENGINE"/>.</translation>
 <translation id="9206873250291191720">A</translation>
@@ -1524,9 +1548,9 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken
 <translation id="2830145431802238213">Lite-versie van Brave gebruiken</translation>
 <translation id="928550791203542716"><ph name="SITE_NAME"/> volgen</translation>
 <translation id="932327136139879170">Homepage</translation>
+<translation id="93533588269984624">Alle wachtwoorden worden gedownload op je apparaat en verwijderd uit <ph name="CHROME_CHANNEL"/></translation>
 <translation id="938850635132480979">Fout: <ph name="ERROR_CODE"/></translation>
 <translation id="939598580284253335">Wachtwoordzin opgeven</translation>
-<translation id="950679278154734362">Als je je informatie wilt synchroniseren en je gegevens wilt beveiligen in de auto, moet je een profielvergrendeling instellen. Je gebruikt elke keer dat je in de auto stapt een code of wachtwoord.</translation>
 <translation id="952301137339791907">Blad onderaan met pagina-inzichten is geopend</translation>
 <translation id="5406914950576900927">Brave kan <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> gebruiken voor zoekopdrachten in China. Je kunt dit wijzigen in <ph name="BEGIN_LINK"/>Instellingen<ph name="END_LINK"/>.</translation>
 <translation id="962979164594783469">Deze app installeren</translation>
