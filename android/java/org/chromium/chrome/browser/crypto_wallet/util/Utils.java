@@ -849,15 +849,22 @@ public class Utils {
     }
 
     public static void setTextGeneratedBlockies(ExecutorService executor, Handler handler,
-            ImageView iconImg, String source, boolean makeLowerCase) {
+            ImageView iconImg, String blockieSourceText, boolean makeLowerCase,
+            boolean isCircular) {
         executor.execute(() -> {
-            final Bitmap bitmap = Blockies.createIcon(source, makeLowerCase, true);
+            final Bitmap bitmap = Blockies.createIcon(blockieSourceText, makeLowerCase, isCircular);
             handler.post(() -> {
                 if (iconImg != null) {
                     iconImg.setImageBitmap(bitmap);
                 }
             });
         });
+    }
+
+    public static void setTextGeneratedBlockies(ExecutorService executor, Handler handler,
+            ImageView iconImg, String blockieSourceText, boolean makeLowerCase) {
+        setTextGeneratedBlockies(
+                executor, handler, iconImg, blockieSourceText, makeLowerCase, true);
     }
 
     public static void setBlockiesBitmapResourceFromAccount(ExecutorService executor,

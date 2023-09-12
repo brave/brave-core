@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.app.helpers;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -17,7 +16,6 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.ImageView;
 
