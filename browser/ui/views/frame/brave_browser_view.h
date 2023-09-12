@@ -93,6 +93,7 @@ class BraveBrowserView : public BrowserView,
 #endif
 
   bool IsSidebarVisible() const;
+  void SetSidePanelOperationByActiveTabChange(bool tab_change);
 
   VerticalTabStripWidgetDelegateView*
   vertical_tab_strip_widget_delegate_view() {

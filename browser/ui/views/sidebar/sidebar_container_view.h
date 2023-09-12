@@ -78,6 +78,10 @@ class SidebarContainerView
 
   bool IsFullscreenForCurrentEntry() const;
 
+  void set_operation_from_active_tab_change(bool tab_change) {
+    operation_from_active_tab_change_ = tab_change;
+  }
+
   // Sidebar overrides:
   void SetSidebarShowOption(
       sidebar::SidebarService::ShowSidebarOption show_option) override;
@@ -134,7 +138,7 @@ class SidebarContainerView
   void AddChildViews();
   void UpdateBackground();
   void ShowOptionsEventDetectWidget(bool show);
-  bool ShouldUseAnimation() const;
+  bool ShouldUseAnimation();
 
   // Show control view. panel's visibility depends on |show_side_panel|.
   void ShowSidebar(bool show_side_panel);
@@ -177,6 +181,8 @@ class SidebarContainerView
   void CreateAndRegisterEntries(content::WebContents* contents);
   void DeregisterEntries(content::WebContents* contents);
 
+  bool GetIsPanelOperationFromActiveTabChangeAndReset();
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<views::View> CreateAIChatSidePanelWebView();
 #endif
@@ -188,6 +194,7 @@ class SidebarContainerView
   raw_ptr<SidebarControlView> sidebar_control_view_ = nullptr;
   bool initialized_ = false;
   bool sidebar_on_left_ = true;
+  bool operation_from_active_tab_change_ = false;
   base::OneShotTimer sidebar_hide_timer_;
   sidebar::SidebarService::ShowSidebarOption show_sidebar_option_ =
       sidebar::SidebarService::ShowSidebarOption::kShowAlways;

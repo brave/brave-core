@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -48,6 +49,9 @@ absl::optional<SidePanelEntry::Id> GetDefaultEntryId(Profile* profile) {
     }                                                          \
   }
 
+#define BRAVE_ON_TAB_STRIP_MODEL_CHANGED        \
+  static_cast<BraveBrowserView*>(browser_view_) \
+      ->SetSidePanelOperationByActiveTabChange(true);
 // Undef upstream's to avoid redefined error.
 #undef IDS_TOOLTIP_SIDE_PANEL_HIDE
 #undef IDS_TOOLTIP_SIDE_PANEL_SHOW
@@ -60,5 +64,6 @@ absl::optional<SidePanelEntry::Id> GetDefaultEntryId(Profile* profile) {
 #undef SidePanel
 #undef IDS_TOOLTIP_SIDE_PANEL_HIDE
 #undef IDS_TOOLTIP_SIDE_PANEL_SHOW
+#undef BRAVE_ON_TAB_STRIP_MODEL_CHANGED
 #undef BRAVE_SIDE_PANEL_COORDINATOR_CREATE_HEADER
 #undef BRAVE_SIDE_PANEL_COORDINATOR_SHOW

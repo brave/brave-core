@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc b/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc
-index eac30a8386acea27f7b3133b0480d3ab65e1d5ab..a6747fa7c17671d52f1196131e490d6fcbe4bea4 100644
+index eac30a8386acea27f7b3133b0480d3ab65e1d5ab..6059d305457bb4ec93f14dbfa7b9f92592f1c307 100644
 --- a/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc
 +++ b/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc
 @@ -247,6 +247,7 @@ SidePanelRegistry* SidePanelCoordinator::GetGlobalSidePanelRegistry(
@@ -18,3 +18,11 @@ index eac30a8386acea27f7b3133b0480d3ab65e1d5ab..a6747fa7c17671d52f1196131e490d6f
    return header;
  }
  
+@@ -955,6 +957,7 @@ void SidePanelCoordinator::OnTabStripModelChanged(
+   if (!selection.active_tab_changed()) {
+     return;
+   }
++  BRAVE_ON_TAB_STRIP_MODEL_CHANGED
+   // Handle removing the previous tab's contextual registry if one exists and
+   // update the combobox.
+   auto* old_contextual_registry =

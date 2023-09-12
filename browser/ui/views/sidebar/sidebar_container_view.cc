@@ -674,8 +674,13 @@ void SidebarContainerView::HideSidebarForShowOption() {
   }
 }
 
-bool SidebarContainerView::ShouldUseAnimation() const {
-  return gfx::Animation::ShouldRenderRichAnimation();
+bool SidebarContainerView::GetIsPanelOperationFromActiveTabChangeAndReset() {
+  return std::exchange(operation_from_active_tab_change_, false);
+}
+
+bool SidebarContainerView::ShouldUseAnimation() {
+  return !GetIsPanelOperationFromActiveTabChangeAndReset() &&
+         gfx::Animation::ShouldRenderRichAnimation();
 }
 
 void SidebarContainerView::UpdateToolbarButtonVisibility() {
