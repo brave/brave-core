@@ -323,14 +323,12 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 
 #if defined(TOOLKIT_VIEWS)
   // Vertical tab strip prefs
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     (*s_brave_allowlist)[brave_tabs::kVerticalTabsEnabled] =
         settings_api::PrefType::PREF_TYPE_BOOLEAN;
     (*s_brave_allowlist)[brave_tabs::kVerticalTabsFloatingEnabled] =
         settings_api::PrefType::PREF_TYPE_BOOLEAN;
     (*s_brave_allowlist)[brave_tabs::kVerticalTabsShowTitleOnWindow] =
         settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  }
 #endif
   return *s_brave_allowlist;
 }

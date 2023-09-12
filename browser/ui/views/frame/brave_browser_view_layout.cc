@@ -24,9 +24,6 @@ void BraveBrowserViewLayout::Layout(views::View* host) {
   if (!vertical_tab_strip_host_.get())
     return;
 
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-      << "vertical_tab_strip_host_ should be set only when this flag is on";
-
   if (!tabs::utils::ShouldShowVerticalTabs(browser_view_->browser())) {
     vertical_tab_strip_host_->SetBorder(nullptr);
     vertical_tab_strip_host_->SetBoundsRect({});
@@ -77,9 +74,6 @@ void BraveBrowserViewLayout::LayoutSidePanelView(
 }
 
 int BraveBrowserViewLayout::LayoutTabStripRegion(int top) {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-    return BrowserViewLayout::LayoutTabStripRegion(top);
-
   if (tabs::utils::ShouldShowVerticalTabs(browser_view_->browser())) {
     // In case we're using vertical tabstrip, we can decide the position
     // after we finish laying out views in top container.

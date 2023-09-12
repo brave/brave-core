@@ -75,8 +75,6 @@ class BraveVerticalTabStyle : public BraveGM2TabStyle {
 };
 
 BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab) : BraveGM2TabStyle(tab) {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-      << "This class should be used only when the flag is on.";
 }
 
 SkPath BraveVerticalTabStyle::GetPath(
@@ -210,9 +208,5 @@ bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
 }  // namespace
 
 std::unique_ptr<TabStyleViews> TabStyleViews::CreateForTab(Tab* tab) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     return std::make_unique<BraveVerticalTabStyle>(tab);
-  }
-
-  return std::make_unique<BraveGM2TabStyle>(tab);
 }

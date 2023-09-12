@@ -18,10 +18,6 @@ void BrowserFrameViewLayoutLinux::SetBoundsForButton(
     views::Button* button,
     ButtonAlignment align) {
   OpaqueBrowserFrameViewLayout::SetBoundsForButton(button_id, button, align);
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return;
-  }
-
   if (!view_) {
     CHECK_IS_TEST();
     return;

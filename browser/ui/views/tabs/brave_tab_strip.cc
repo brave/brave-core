@@ -162,9 +162,6 @@ void BraveTabStrip::MaybeStartDrag(
 
 void BraveTabStrip::AddedToWidget() {
   TabStrip::AddedToWidget();
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return;
-  }
 
   if (BrowserView::GetBrowserViewForBrowser(GetBrowser())) {
     UpdateTabContainer();
@@ -226,9 +223,6 @@ absl::optional<int> BraveTabStrip::GetCustomBackgroundId(
 }
 
 void BraveTabStrip::UpdateTabContainer() {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-      << "This should be called only when the flag is on.";
-
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
   const bool should_use_compound_tab_container =
       using_vertical_tabs ||
@@ -397,10 +391,6 @@ void BraveTabStrip::UpdateTabContainer() {
 }
 
 bool BraveTabStrip::ShouldShowVerticalTabs() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return false;
-  }
-
   return tabs::utils::ShouldShowVerticalTabs(GetBrowser());
 }
 

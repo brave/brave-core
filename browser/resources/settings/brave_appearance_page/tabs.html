@@ -13,7 +13,6 @@
 <div class="cr-row">$i18n{appearanceSettingsTabsSection}</div>
 <div class="list-frame">
   <!-- Vertical Tab strip -->
-  <template is="dom-if" if="[[isVerticalTabStripFeatureEnabled()]]">
     <settings-toggle-button
       class="cr-row list-item"
       pref="{{prefs.brave.tabs.vertical_tabs_enabled}}"
@@ -37,7 +36,6 @@
           </settings-checkbox>
         </div>
     </template>  <!-- vertical_tabs_enabled.value -->
-  </template>  <!-- isVerticalTabStripFeatureEnabled()-->
 
   <!-- Tab search button visibility -->
   <settings-toggle-button

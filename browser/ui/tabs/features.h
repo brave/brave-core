@@ -9,7 +9,6 @@
 #include "base/feature_list.h"
 namespace tabs::features {
 
-BASE_DECLARE_FEATURE(kBraveVerticalTabs);
 BASE_DECLARE_FEATURE(kBraveVerticalTabsStickyPinnedTabs);
 
 #if BUILDFLAG(IS_LINUX)

@@ -57,11 +57,6 @@ BraveBrowserFrameViewLinuxNative::BraveBrowserFrameViewLinuxNative(
 BraveBrowserFrameViewLinuxNative::~BraveBrowserFrameViewLinuxNative() = default;
 
 void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    BrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages();
-    return;
-  }
-
   auto* browser = browser_view()->browser();
   DCHECK(browser);
 
@@ -116,9 +111,7 @@ void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
 void BraveBrowserFrameViewLinuxNative::Layout() {
   BrowserFrameViewLinuxNative::Layout();
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    UpdateLeadingTrailingCaptionButtonWidth();
-  }
+  UpdateLeadingTrailingCaptionButtonWidth();
 }
 
 views::Button* BraveBrowserFrameViewLinuxNative::FrameButtonToButton(
@@ -137,8 +130,6 @@ views::Button* BraveBrowserFrameViewLinuxNative::FrameButtonToButton(
 
 void BraveBrowserFrameViewLinuxNative::
     UpdateLeadingTrailingCaptionButtonWidth() {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
-
   auto* browser = browser_view()->browser();
   DCHECK(browser);
   std::pair<int, int> new_leading_trailing_caption_button_width;

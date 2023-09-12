@@ -189,11 +189,6 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 
   html_source->AddBoolean("extensionsManifestV2Feature",
                           base::FeatureList::IsEnabled(kExtensionsManifestV2));
-#if defined(TOOLKIT_VIEWS)
-  html_source->AddBoolean(
-      "verticalTabStripFeatureEnabled",
-      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
-#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   html_source->AddBoolean("isLeoAssistantAllowed",

@@ -13,18 +13,11 @@
 
 void BraveTabSearchBubbleHost::SetBubbleArrow(
     views::BubbleBorder::Arrow arrow) {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-      << "Should be called only when the vertical tab feature is enabled.";
   arrow_ = arrow;
 }
 
 bool BraveTabSearchBubbleHost::ShowTabSearchBubble(
     bool triggered_by_keyboard_shortcut) {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return TabSearchBubbleHost::ShowTabSearchBubble(
-        triggered_by_keyboard_shortcut);
-  }
-
   bool result =
       TabSearchBubbleHost::ShowTabSearchBubble(triggered_by_keyboard_shortcut);
   if (!arrow_ || !result) {

@@ -35,9 +35,6 @@
 namespace tabs::utils {
 
 bool SupportsVerticalTabs(const Browser* browser) {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-      << "Don't call this before checking the feature flag.";
-
   if (!browser) {
     // During unit tests, |browser| can be null.
     CHECK_IS_TEST();

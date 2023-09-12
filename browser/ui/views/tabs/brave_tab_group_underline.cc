@@ -81,8 +81,5 @@ gfx::Rect BraveTabGroupUnderline::CalculateTabGroupUnderlineBounds(
 }
 
 bool BraveTabGroupUnderline::ShouldShowVerticalTabs() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-    return false;
-
   return tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser());
 }

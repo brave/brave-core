@@ -25,7 +25,6 @@ BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(BrowserFrame* frame,
   frame_graphic_.reset(
       new BraveWindowFrameGraphic(browser_view->browser()->profile()));
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     DCHECK(browser_view->browser());
     auto* prefs = browser_view->browser()->profile()->GetPrefs();
     using_vertical_tabs_.Init(
@@ -38,7 +37,6 @@ BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(BrowserFrame* frame,
         base::BindRepeating(
             &BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
             base::Unretained(this)));
-  }
 }
 
 BraveBrowserFrameViewWin::~BraveBrowserFrameViewWin() = default;
@@ -74,10 +72,6 @@ void BraveBrowserFrameViewWin::OnPaint(gfx::Canvas* canvas) {
 }
 
 int BraveBrowserFrameViewWin::GetTopInset(bool restored) const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return BrowserFrameViewWin::GetTopInset(restored);
-  }
-
   if (auto* browser = browser_view()->browser();
       tabs::utils::ShouldShowVerticalTabs(browser) &&
       !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {

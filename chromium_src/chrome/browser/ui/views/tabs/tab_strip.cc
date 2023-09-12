@@ -35,8 +35,7 @@
 // seems to be the most efficient way for now. If we could split this into
 // another file or child class, that'd be great.
 #define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX                \
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&    \
-      tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {       \
+  if (tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {       \
     tabs::UpdateInsertionIndexForVerticalTabs(                               \
         dragged_bounds, first_dragged_tab_index, num_dragged_tabs,           \
         dragged_group, candidate_index, tab_strip_->controller_.get(),       \
@@ -46,14 +45,12 @@
   }
 
 #define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS      \
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&   \
-      tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {      \
+  if (tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {      \
     return tabs::CalculateBoundsForVerticalDraggedViews(views, tab_strip_); \
   }
 
 #define BRAVE_TAB_DRAG_CONTEXT_IMPL_PAINT_CHILDREN                        \
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) && \
-      tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {    \
+  if (tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {    \
     for (const ZOrderableTabContainerElement& child : orderable_children) \
       if (!child.view()->layer()) {                                       \
         child.view()->Paint(paint_info);                                  \

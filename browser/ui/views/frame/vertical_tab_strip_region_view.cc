@@ -596,9 +596,6 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
       browser_(browser_view->browser()),
       original_region_view_(region_view),
       tab_style_(TabStyle::Get()) {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-      << "This view should be created only when this flag is on";
-
   browser_->tab_strip_model()->AddObserver(this);
 
   SetNotifyEnterExitOnChild(true);

@@ -50,8 +50,7 @@ void BraveOpaqueBrowserFrameView::OnPaint(gfx::Canvas* canvas) {
 }
 
 int BraveOpaqueBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
-      tabs::utils::ShouldShowVerticalTabs(browser_view()->browser())) {
+  if (tabs::utils::ShouldShowVerticalTabs(browser_view()->browser())) {
     auto hit_test_caption_button = [](views::Button* button,
                                       const gfx::Point& point) {
       return button && button->GetVisible() &&
@@ -83,9 +82,6 @@ int BraveOpaqueBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
 void BraveOpaqueBrowserFrameView::
     UpdateCaptionButtonPlaceholderContainerBackground() {
   OpaqueBrowserFrameView::UpdateCaptionButtonPlaceholderContainerBackground();
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return;
-  }
 
   DCHECK(browser_view());
   auto* browser = browser_view()->browser();
@@ -120,11 +116,6 @@ void BraveOpaqueBrowserFrameView::
 }
 
 void BraveOpaqueBrowserFrameView::PaintClientEdge(gfx::Canvas* canvas) const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    OpaqueBrowserFrameView::PaintClientEdge(canvas);
-    return;
-  }
-
   // Don't draw client edge next to toolbar when it's in vertical tab stirp mode
   DCHECK(browser_view());
   auto* browser = browser_view()->browser();

@@ -27,10 +27,6 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
     return getTemplate()
   }
 
-  private isVerticalTabStripFeatureEnabled() {
-    return loadTimeData.getBoolean('verticalTabStripFeatureEnabled')
-  }
-
   private tabTooltipModes_ = [
     { value: 1, name: this.i18n('appearanceSettingsTabHoverModeCard') },
     {

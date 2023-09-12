@@ -93,9 +93,6 @@ BraveCompoundTabContainer::BraveCompoundTabContainer(
 void BraveCompoundTabContainer::SetAvailableWidthCallback(
     base::RepeatingCallback<int()> available_width_callback) {
   CompoundTabContainer::SetAvailableWidthCallback(available_width_callback);
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-    return;
-
   if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()) &&
       available_width_callback) {
     pinned_tab_container_->SetAvailableWidthCallback(
@@ -302,8 +299,7 @@ Tab* BraveCompoundTabContainer::AddTab(std::unique_ptr<Tab> tab,
                                        TabPinned pinned) {
   auto* new_tab =
       CompoundTabContainer::AddTab(std::move(tab), model_index, pinned);
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
-      !tabs::utils::ShouldShowVerticalTabs(
+  if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
     return new_tab;
   }
@@ -426,9 +422,8 @@ gfx::Rect BraveCompoundTabContainer::ConvertUnpinnedContainerIdealBoundsToLocal(
 }
 
 bool BraveCompoundTabContainer::ShouldShowVerticalTabs() const {
-  return base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
-         tabs::utils::ShouldShowVerticalTabs(
-             tab_slot_controller_->GetBrowser());
+  return tabs::utils::ShouldShowVerticalTabs(
+      tab_slot_controller_->GetBrowser());
 }
 
 void BraveCompoundTabContainer::UpdateUnpinnedContainerSize() {

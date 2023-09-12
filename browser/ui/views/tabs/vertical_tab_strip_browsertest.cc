@@ -114,9 +114,7 @@ void FullscreenNotificationObserver::Wait() {
 
 class VerticalTabStripBrowserTest : public InProcessBrowserTest {
  public:
-  VerticalTabStripBrowserTest()
-      : feature_list_(tabs::features::kBraveVerticalTabs) {}
-
+  VerticalTabStripBrowserTest() = default;
   ~VerticalTabStripBrowserTest() override = default;
 
   const BraveBrowserView* browser_view() const {

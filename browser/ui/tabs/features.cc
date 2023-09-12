@@ -7,10 +7,6 @@
 
 namespace tabs::features {
 
-BASE_FEATURE(kBraveVerticalTabs,
-             "BraveVerticalTabs",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 BASE_FEATURE(kBraveVerticalTabsStickyPinnedTabs,
              "BraveVerticalTabsStickyPinnedTabs",
              base::FEATURE_ENABLED_BY_DEFAULT);

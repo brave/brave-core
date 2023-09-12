@@ -98,10 +98,6 @@ void BraveTabMenuModel::Build(int selected_tab_count) {
   AddItemWithStringId(CommandRestoreTab, GetRestoreTabCommandStringId());
   AddItemWithStringId(CommandBookmarkAllTabs, IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
 
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return;
-  }
-
   AddSeparator(ui::NORMAL_SEPARATOR);
   AddCheckItemWithStringId(CommandShowVerticalTabs,
                            IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);

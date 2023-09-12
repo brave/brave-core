@@ -159,8 +159,7 @@ void BraveToolbarView::Init() {
       base::BindRepeating(&BraveToolbarView::OnLocationBarIsWideChanged,
                           base::Unretained(this)));
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
-      tabs::utils::SupportsVerticalTabs(browser_)) {
+  if (tabs::utils::SupportsVerticalTabs(browser_)) {
     show_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsEnabled,
         profile->GetOriginalProfile()->GetPrefs(),
@@ -316,8 +315,6 @@ void BraveToolbarView::UpdateBookmarkVisibility() {
 }
 
 void BraveToolbarView::UpdateHorizontalPadding() {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
-
   if (!brave_initialized_) {
     return;
   }

@@ -15,10 +15,6 @@ BraveOmniboxPopupViewViews::~BraveOmniboxPopupViewViews() = default;
 
 gfx::Rect BraveOmniboxPopupViewViews::GetTargetBounds() const {
   auto bounds = OmniboxPopupViewViews::GetTargetBounds();
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return bounds;
-  }
-
   if (auto* browser = location_bar_view_->browser();
       tabs::utils::ShouldShowVerticalTabs(browser) &&
       !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {

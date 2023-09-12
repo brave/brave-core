@@ -39,7 +39,6 @@ BraveTabContextMenuContents::BraveTabContextMenuContents(
       browser_(const_cast<Browser*>(controller->browser())),
       controller_(controller) {
   const bool is_vertical_tab =
-      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
       tabs::utils::ShouldShowVerticalTabs(browser_);
 
   model_ = std::make_unique<BraveTabMenuModel>(
@@ -66,10 +65,6 @@ void BraveTabContextMenuContents::RunMenuAt(const gfx::Point& point,
 }
 
 bool BraveTabContextMenuContents::IsCommandIdChecked(int command_id) const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return ui::SimpleMenuModel::Delegate::IsCommandIdChecked(command_id);
-  }
-
   if (command_id == BraveTabMenuModel::CommandShowVerticalTabs) {
     return tabs::utils::ShouldShowVerticalTabs(browser_);
   }
@@ -86,10 +81,6 @@ bool BraveTabContextMenuContents::IsCommandIdEnabled(int command_id) const {
 }
 
 bool BraveTabContextMenuContents::IsCommandIdVisible(int command_id) const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
-  }
-
   if (command_id == BraveTabMenuModel::CommandShowVerticalTabs) {
     return tabs::utils::SupportsVerticalTabs(browser_);
   }
