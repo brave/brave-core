@@ -11,6 +11,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tab.state.CriticalPersistedTabData;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelFilter;
@@ -34,9 +35,10 @@ public abstract class BraveTabGroupModelFilter extends TabModelFilter {
      * Call from {@link TabGroupModelFilter} will be redirected here via bytrcode.
      */
     public int getParentId(Tab tab) {
-        if (isTabModelRestored() && !mIsResetting
+        if (linkClicked(tab.getLaunchType())
                 && SharedPreferencesManager.getInstance().readBoolean(
-                        BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, true)) {
+                        BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, true)
+                && isTabModelRestored() && !mIsResetting) {
             Tab parentTab = TabModelUtils.getTabById(
                     getTabModel(), CriticalPersistedTabData.from(tab).getParentId());
             if (parentTab != null) {
@@ -47,5 +49,12 @@ public abstract class BraveTabGroupModelFilter extends TabModelFilter {
         // Otherwise just call parent.
         return (int) BraveReflectionUtil.InvokeMethod(
                 TabGroupModelFilter.class, this, "getParentId", Tab.class, tab);
+    }
+
+    /**
+     * Determine if a launch type is the result of linked being clicked.
+     */
+    private boolean linkClicked(@TabLaunchType int type) {
+        return type == TabLaunchType.FROM_LINK || type == TabLaunchType.FROM_LONGPRESS_FOREGROUND;
     }
 }
