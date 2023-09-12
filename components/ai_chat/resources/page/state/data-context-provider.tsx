@@ -105,9 +105,6 @@ function DataContextProvider (props: DataContextProviderProps) {
         setUserAutoGeneratePref(autoGenerate)
       })
 
-    // When the target tab changes, clean tab-specific data
-    getPageHandlerInstance().callbackRouter.onTargetTabChanged.addListener(initialiseForTargetTab)
-
     getPageHandlerInstance().callbackRouter.onFaviconImageDataChanged.addListener((faviconImageData: number[]) => setFavIconUrl(toBlobURL(faviconImageData)))
     getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener((siteInfo: SiteInfo) => setSiteInfo(siteInfo))
     getPageHandlerInstance().callbackRouter.onAPIResponseError.addListener((error: APIError) => setCurrentError(error))
