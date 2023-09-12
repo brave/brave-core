@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ai_chat/browser/constants.h"
@@ -80,11 +81,20 @@ void AIChatUI::BindInterface(
   }
 
 #if !BUILDFLAG(IS_ANDROID)
-  browser_ = ai_chat::GetBrowserForWebContents(web_ui()->GetWebContents());
+  content::WebContents* current_web_contents = web_ui()->GetWebContents();
+  browser_ = ai_chat::GetBrowserForWebContents(current_web_contents);
   DCHECK(browser_);
+
+  content::BrowserContext* context = current_web_contents->GetBrowserContext();
+  auto skus_service_getter = base::BindRepeating(
+      [](content::BrowserContext* context) {
+        return skus::SkusServiceFactory::GetForContext(context);
+      },
+      context);
+
   page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
-      web_ui()->GetWebContents(), browser_->tab_strip_model(), profile_,
-      std::move(receiver));
+      current_web_contents, browser_->tab_strip_model(), profile_,
+      std::move(receiver), skus_service_getter);
 #endif
 }
 

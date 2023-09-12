@@ -17,6 +17,8 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
+#include "brave/components/skus/browser/skus_utils.h"
+#include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -44,7 +46,9 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       content::WebContents* owner_web_contents,
       TabStripModel* tab_strip_model,
       Profile* profile,
-      mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver);
+      mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver,
+      base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
+          skus_service_getter);
 
   AIChatUIPageHandler(const AIChatUIPageHandler&) = delete;
   AIChatUIPageHandler& operator=(const AIChatUIPageHandler&) = delete;
@@ -67,6 +71,8 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void ClearConversationHistory() override;
   void RetryAPIRequest() override;
   void GetAPIResponseError(GetAPIResponseErrorCallback callback) override;
+  void UserHasValidPremiumCredentials(
+      UserHasValidPremiumCredentialsCallback callback) override;
 
   // content::WebContentsObserver:
   void OnVisibilityChanged(content::Visibility visibility) override;
@@ -92,6 +98,12 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
   absl::optional<mojom::SiteInfo> BuildSiteInfo();
 
+  void EnsureMojoConnected();
+  void OnMojoConnectionError();
+  void OnCredentialSummary(UserHasValidPremiumCredentialsCallback callback,
+                           const std::string& domain,
+                           const std::string& summary_string);
+
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
@@ -104,6 +116,10 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       chat_tab_helper_observation_{this};
 
   mojo::Receiver<ai_chat::mojom::PageHandler> receiver_;
+
+  base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
+      skus_service_getter_;
+  mojo::Remote<skus::mojom::SkusService> skus_service_;
 
   base::WeakPtrFactory<AIChatUIPageHandler> weak_ptr_factory_{this};
 };

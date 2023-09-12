@@ -9,7 +9,9 @@
 #include <utility>
 #include <vector>
 
+#include "base/json/json_reader.h"
 #include "base/notreached.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
@@ -37,10 +39,13 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     content::WebContents* owner_web_contents,
     TabStripModel* tab_strip_model,
     Profile* profile,
-    mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver)
+    mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver,
+    base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
+        skus_service_getter)
     : content::WebContentsObserver(owner_web_contents),
       profile_(profile),
-      receiver_(this, std::move(receiver)) {
+      receiver_(this, std::move(receiver)),
+      skus_service_getter_(skus_service_getter) {
   DCHECK(tab_strip_model);
   // Detect if we are in target-tab mode, or standalone mode. Standalone mode
   // means Chat is opened as its own tab in the tab strip and not a side panel.
@@ -197,6 +202,52 @@ void AIChatUIPageHandler::MarkAgreementAccepted() {
                                    true);
 }
 
+void AIChatUIPageHandler::UserHasValidPremiumCredentials(
+    UserHasValidPremiumCredentialsCallback callback) {
+  skus_service_->CredentialSummary(
+      "domain - TODO", base::BindOnce(&AIChatUIPageHandler::OnCredentialSummary,
+                                      base::Unretained(this),
+                                      std::move(callback), "domain - TODO"));
+}
+
+void AIChatUIPageHandler::OnCredentialSummary(
+    UserHasValidPremiumCredentialsCallback callback,
+    const std::string& domain,
+    const std::string& summary_string) {
+  auto env = skus::GetEnvironmentForDomain(domain);
+  std::string summary_string_trimmed;
+  base::TrimWhitespaceASCII(summary_string, base::TrimPositions::TRIM_ALL,
+                            &summary_string_trimmed);
+  if (summary_string_trimmed.length() == 0) {
+    // no credential found; person needs to login
+    std::move(callback).Run(false);
+    return;
+  }
+
+  absl::optional<base::Value> records_v = base::JSONReader::Read(
+      summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
+
+  // Early return when summary is invalid or it's empty dict.
+  if (!records_v || !records_v->is_dict()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  // Empty dict - clean user.
+  if (records_v->GetDict().empty()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  const bool active = (*records_v).GetDict().FindBool("active").value_or(false);
+  if (!active) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  std::move(callback).Run(true);
+}
+
 void AIChatUIPageHandler::OnHistoryUpdate() {
   if (page_.is_bound()) {
     page_->OnConversationHistoryUpdate();
@@ -325,6 +376,21 @@ void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {
         (visibility == content::Visibility::VISIBLE) ? true : false;
     active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
   }
+}
+
+void AIChatUIPageHandler::EnsureMojoConnected() {
+  if (!skus_service_) {
+    auto pending = skus_service_getter_.Run();
+    skus_service_.Bind(std::move(pending));
+  }
+  DCHECK(skus_service_);
+  skus_service_.set_disconnect_handler(base::BindOnce(
+      &AIChatUIPageHandler::OnMojoConnectionError, base::Unretained(this)));
+}
+
+void AIChatUIPageHandler::OnMojoConnectionError() {
+  skus_service_.reset();
+  EnsureMojoConnected();
 }
 
 }  // namespace ai_chat

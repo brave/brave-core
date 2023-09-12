@@ -63,6 +63,7 @@ interface PageHandler {
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
+  UserHasValidPremiumCredentials() => (bool result);
 };
 
 interface ChatUIPage {
