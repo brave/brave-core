@@ -23,7 +23,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.chromium.base.Log;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -43,13 +42,16 @@ import org.chromium.url.GURL;
 import java.util.HashSet;
 import java.util.Iterator;
 
+/**
+ * Fragment used to connect Dapps to the crypto account
+ */
 public class ConnectAccountFragment extends BaseDAppsFragment
         implements BravePermissionAccountsListAdapter.BravePermissionDelegate {
     private static final String TAG = "ConnectAccount";
 
     private TextView mWebSite;
     private TextView mAccountsConnected;
-    private TextView mbtNewAccount;
+    private TextView mButtonNewAccount;
     private ImageView mFavicon;
     private AccountInfo[] mAccountInfos;
     private HashSet<AccountInfo> mAccountsWithPermissions;
@@ -102,8 +104,8 @@ public class ConnectAccountFragment extends BaseDAppsFragment
         View view = inflater.inflate(R.layout.fragment_connect_account, container, false);
         mWebSite = view.findViewById(R.id.fragment_connect_account_website);
         mAccountsConnected = view.findViewById(R.id.fragment_connect_account_accounts_connected);
-        mbtNewAccount = view.findViewById(R.id.fragment_connect_account_new_account_id);
-        mbtNewAccount.setOnClickListener(new View.OnClickListener() {
+        mButtonNewAccount = view.findViewById(R.id.fragment_connect_account_new_account_id);
+        mButtonNewAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BottomSheetDialogFragment sheetDialogFragment =
