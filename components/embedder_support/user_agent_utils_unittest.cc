@@ -5,10 +5,8 @@
 
 #include "components/embedder_support/user_agent_utils.h"
 #include "base/command_line.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_command_line.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/version.h"
 #include "components/embedder_support/switches.h"
 #include "components/version_info/version_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -40,47 +38,6 @@ TEST(UserAgentUtilsTest, UserAgentMetadata) {
       ContainsBrandVersion(metadata.brand_version_list, product_brand_version));
 }
 
-TEST(UserAgentUtilsTest, DoNotClampPlatformVersion) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitWithFeatures(
-      {blink::features::kAllowCertainClientHints},
-      {blink::features::kClampPlatformVersionClientHint});
-  auto metadata = GetUserAgentMetadata_ChromiumImpl();
-  auto brave_metadata = GetUserAgentMetadata(nullptr);
-  EXPECT_EQ(metadata, brave_metadata);
-}
-
-TEST(UserAgentUtilsTest, ClampPlatformVersion) {
-  static const char kClampedValue[] = "7775777";
-  base::test::ScopedFeatureList feature_list;
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(blink::features::kAllowCertainClientHints,
-                                base::FieldTrialParams());
-  base::FieldTrialParams parameters;
-  parameters[blink::features::kClampPlatformVersionClientHintPatchValue.name] =
-      kClampedValue;
-  enabled_features.emplace_back(
-      blink::features::kClampPlatformVersionClientHint, parameters);
-  feature_list.InitWithFeaturesAndParameters(enabled_features, {});
-
-  auto metadata = GetUserAgentMetadata_ChromiumImpl();
-  auto brave_metadata = GetUserAgentMetadata(nullptr);
-
-  base::Version platform_version(metadata.platform_version);
-  base::Version brave_platform_version(brave_metadata.platform_version);
-
-  EXPECT_EQ(3u, platform_version.components().size());
-  EXPECT_EQ(3u, brave_platform_version.components().size());
-  EXPECT_EQ(platform_version.components()[0],
-            brave_platform_version.components()[0]);
-  EXPECT_EQ(platform_version.components()[1],
-            brave_platform_version.components()[1]);
-  EXPECT_NE(platform_version.components()[2],
-            brave_platform_version.components()[2]);
-  EXPECT_EQ(kClampedValue,
-            base::NumberToString(brave_platform_version.components()[2]));
-}
-
 TEST(UserAgentUtilsTest, UserAgentFromCommandLine) {
   constexpr char kCmdUserAgentValue[] =
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
@@ -89,9 +46,7 @@ TEST(UserAgentUtilsTest, UserAgentFromCommandLine) {
   command_line.GetProcessCommandLine()->AppendSwitchASCII(kUserAgent,
                                                           kCmdUserAgentValue);
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitWithFeatures(
-      {blink::features::kAllowCertainClientHints},
-      {blink::features::kClampPlatformVersionClientHint});
+  feature_list.InitAndEnableFeature(blink::features::kAllowCertainClientHints);
   ASSERT_TRUE(
       base::FeatureList::IsEnabled(blink::features::kUACHOverrideBlank));
   const auto brave_metadata = GetUserAgentMetadata(nullptr);
