@@ -161,7 +161,7 @@
 
 <meta-data
         android:name="com.google.android.play.billingclient.version"
-        android:value="4.0.0" />
+        android:value="6.0.1" />
 
 <activity android:name="com.android.billingclient.api.ProxyBillingActivity"
     android:theme="@style/BraveProxyBillingActivityTheme"
@@ -195,6 +195,7 @@
 
 <service
     android:name="org.chromium.chrome.browser.vpn.wireguard.WireguardService"
+    android:foregroundServiceType="dataSync"
     android:exported="false">
 </service>
 

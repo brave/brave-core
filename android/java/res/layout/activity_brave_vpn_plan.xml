@@ -21,10 +21,6 @@
         android:fadeScrollbars="false"
         android:scrollbars="vertical">
 
-        <FrameLayout 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
             <LinearLayout
                 android:id="@+id/plan_layout"
                 android:layout_width="match_parent"
@@ -84,6 +80,7 @@
                         android:layout_marginStart="24dp"
                         android:layout_marginEnd="24dp"
                         android:layout_marginTop="14dp"
+                        android:baselineAligned="false"
                         android:padding="16dp"
                         android:background="@drawable/monthly_selector"
                         android:orientation="horizontal">
@@ -120,13 +117,29 @@
 
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/monthly_subscription_amount_text"
+                        <FrameLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/white"
-                            android:layout_gravity="center"
-                            android:textSize="16sp"/>
+                            android:layout_height="wrap_content">
+
+                            <ProgressBar
+                                android:id="@+id/monthly_plan_progress"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:visibility="gone"
+                                android:layout_gravity="center"
+                                android:indeterminate="true"/>
+
+                            <TextView
+                                android:id="@+id/monthly_subscription_amount_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@android:color/white"
+                                android:layout_gravity="start"
+                                android:gravity="start"
+                                android:textAlignment="textStart"
+                                android:textSize="16sp"/>
+
+                        </FrameLayout>
 
                     </LinearLayout>
 
@@ -180,16 +193,30 @@
                         android:layout_gravity="center"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/yearly_subscription_amount_text"
+                        <FrameLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/white"
-                            android:layout_gravity="start"
-                            android:gravity="start"
-                            android:textAlignment="textStart"
-                            android:layout_marginBottom="2dp"
-                            android:textSize="16sp"/>
+                            android:layout_height="wrap_content">
+
+                            <ProgressBar
+                                android:id="@+id/yearly_plan_progress"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:visibility="gone"
+                                android:layout_gravity="center"
+                                android:indeterminate="true"/>
+
+                            <TextView
+                                android:id="@+id/yearly_subscription_amount_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@android:color/white"
+                                android:layout_gravity="start"
+                                android:gravity="start"
+                                android:textAlignment="textStart"
+                                android:layout_marginBottom="2dp"
+                                android:textSize="16sp"/>
+
+                        </FrameLayout>
 
                         <TextView
                             android:id="@+id/removed_value_tv"
@@ -220,16 +247,6 @@
                     android:textSize="14sp"/>
 
             </LinearLayout>
-
-            <ProgressBar
-                    android:id="@+id/plan_progress"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:visibility="gone"
-                    android:layout_gravity="center"
-                    android:indeterminate="true"/>
-
-        </FrameLayout>
 
     </ScrollView>
 </LinearLayout>

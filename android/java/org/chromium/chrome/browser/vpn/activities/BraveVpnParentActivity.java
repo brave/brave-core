@@ -12,8 +12,9 @@ import android.util.Pair;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
-import com.android.billingclient.api.Purchase;
 import com.wireguard.android.backend.GoBackend;
 import com.wireguard.crypto.KeyPair;
 
@@ -23,19 +24,18 @@ import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
+import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.vpn.billing.PurchaseModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnWireguardProfileCredentials;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnApiResponseUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
-import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
-import org.chromium.ui.widget.Toast;
-
-import java.util.List;
 
 public abstract class BraveVpnParentActivity
         extends AsyncInitializationActivity implements BraveVpnObserver {
@@ -47,12 +47,12 @@ public abstract class BraveVpnParentActivity
     abstract void showRestoreMenu(boolean shouldShowRestore);
     abstract void updateProfileView();
 
-    // Pass @{code ActivityResultRegistry} reference explicitly to avoid crash
-    // https://github.com/brave/brave-browser/issues/31882
     public BraveVpnParentActivity() {
         mProfileSupplier = new OneshotSupplierImpl<>();
     }
 
+    // Pass @{code ActivityResultRegistry} reference explicitly to avoid crash
+    // https://github.com/brave/brave-browser/issues/31882
     ActivityResultLauncher<Intent> mIntentActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), getActivityResultRegistry(),
             result -> {
@@ -66,10 +66,8 @@ public abstract class BraveVpnParentActivity
                     } else {
                         updateProfileView();
                     }
-                    Toast.makeText(this,
-                                 getResources().getString(R.string.permission_was_cancelled),
-                                 Toast.LENGTH_SHORT)
-                            .show();
+                    BraveVpnUtils.showToast(
+                            getResources().getString(R.string.permission_was_cancelled));
                 }
             });
 
@@ -77,29 +75,27 @@ public abstract class BraveVpnParentActivity
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         mProfileSupplier.set(Profile.getLastUsedRegularProfile());
-        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
-                    BraveVpnParentActivity.this);
-        }
     }
 
     protected void verifySubscription() {
         mBraveVpnPrefModel = new BraveVpnPrefModel();
-        List<Purchase> purchases = InAppPurchaseWrapper.getInstance().queryPurchases();
-        if (purchases != null && purchases.size() == 1) {
-            Purchase purchase = purchases.get(0);
-            mBraveVpnPrefModel.setPurchaseToken(purchase.getPurchaseToken());
-            mBraveVpnPrefModel.setProductId(purchase.getSkus().get(0).toString());
-            BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
-                    mBraveVpnPrefModel.getPurchaseToken(), mBraveVpnPrefModel.getProductId(),
-                    BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
-        } else {
-            if (!mIsVerification) {
-                BraveVpnApiResponseUtils.queryPurchaseFailed(BraveVpnParentActivity.this);
+        MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
+        LiveData<PurchaseModel> activePurchases = _activePurchases;
+        InAppPurchaseWrapper.getInstance().queryPurchases(_activePurchases);
+        LiveDataUtil.observeOnce(activePurchases, activePurchaseModel -> {
+            if (activePurchaseModel != null) {
+                mBraveVpnPrefModel.setPurchaseToken(activePurchaseModel.getPurchaseToken());
+                mBraveVpnPrefModel.setProductId(activePurchaseModel.getProductId());
+                BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
+                        mBraveVpnPrefModel.getPurchaseToken(), mBraveVpnPrefModel.getProductId(),
+                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
             } else {
+                if (!mIsVerification) {
+                    BraveVpnApiResponseUtils.queryPurchaseFailed(BraveVpnParentActivity.this);
+                }
                 BraveVpnUtils.dismissProgressDialog();
             }
-        }
+        });
     }
 
     @Override
@@ -121,9 +117,7 @@ public abstract class BraveVpnParentActivity
                 } else {
                     mIsVerification = false;
                     showRestoreMenu(true);
-                    Toast.makeText(BraveVpnParentActivity.this, R.string.already_subscribed,
-                                 Toast.LENGTH_SHORT)
-                            .show();
+                    BraveVpnUtils.showToast(getResources().getString(R.string.already_subscribed));
                     BraveVpnUtils.dismissProgressDialog();
                 }
             } else {
@@ -181,7 +175,7 @@ public abstract class BraveVpnParentActivity
 
             checkForVpn(braveVpnWireguardProfileCredentials, mBraveVpnPrefModel);
         } else {
-            Toast.makeText(this, R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG).show();
+            BraveVpnUtils.showToast(getResources().getString(R.string.vpn_profile_creation_failed));
             BraveVpnUtils.dismissProgressDialog();
         }
     }
