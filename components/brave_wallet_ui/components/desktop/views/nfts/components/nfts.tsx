@@ -47,11 +47,10 @@ import { useApiProxy } from '../../../../../common/hooks/use-api-proxy'
 import { getAssetIdKey } from '../../../../../utils/asset-utils'
 
 // components
-import SearchBar from '../../../../shared/search-bar'
 import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
 import { EnableNftDiscoveryModal } from '../../../popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
 import { AutoDiscoveryEmptyState } from './auto-discovery-empty-state/auto-discovery-empty-state'
-import { NftTabOption, NftTabOptionId, Tabs } from '../../../../shared/tabs/tabs'
+
 import { NftIpfsBanner } from '../../../nft-ipfs-banner/nft-ipfs-banner'
 
 // styles
@@ -64,7 +63,6 @@ import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
 import {
   ButtonIcon,
   CircleButton,
-  SearchBarWrapper,
   ControlBarWrapper,
   SearchButtonWrapper,
   ContentWrapper
@@ -75,6 +73,7 @@ import {
   TokenBalancesRegistry
 } from '../../../../../common/slices/entities/token-balance.entity'
 import { NftGridViewItemSkeleton } from '../../portfolio/components/nft-grid-view/nft-grid-view-item-skeleton'
+import { NftDropdown, NftDropdownOption } from './nft-group-selector/nft-group-selector'
 
 interface Props {
   networks: BraveWallet.NetworkInfo[]
@@ -106,12 +105,10 @@ export const Nfts = (props: Props) => {
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // state
-  const [searchValue, setSearchValue] = React.useState<string>('')
   const [showAddNftModal, setShowAddNftModal] = React.useState<boolean>(false)
   const [showNftDiscoveryModal, setShowNftDiscoveryModal] = React.useState<boolean>(
     localStorage.getItem(LOCAL_STORAGE_KEYS.IS_ENABLE_NFT_AUTO_DISCOVERY_MODAL_HIDDEN) === null
   )
-  const [selectedTab, setSelectedTab] = React.useState<NftTabOptionId>('nfts')
   const [showSearchBar, setShowSearchBar] = React.useState<boolean>(false)
 
   // hooks
@@ -121,16 +118,12 @@ export const Nfts = (props: Props) => {
 
   // queries
   const { data: isNftAutoDiscoveryEnabled } = useGetNftDiscoveryEnabledStatusQuery()
-  const { data: simpleHashSpamNfts = [], isLoading: isLoadingSimpleHashList } = useGetSimpleHashSpamNftsQuery()
+  const { data: simpleHashSpamNfts = [] } = useGetSimpleHashSpamNftsQuery()
 
   // mutations
   const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
 
   // methods
-  const onSearchValueChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value)
-  }, [])
-
   const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
     history.push(
       `${WalletRoutes.PortfolioNFTs //
@@ -166,26 +159,8 @@ export const Nfts = (props: Props) => {
     dispatch(WalletActions.refreshNetworksAndTokens({}))
   }, [])
 
-  const onSelectTab = React.useCallback((selectedTab: NftTabOption) => {
-    setSelectedTab(selectedTab.id)
-  }, [])
-
-  const searchNfts = React.useCallback((item: BraveWallet.BlockchainToken) => {
-    const tokenId = new Amount(item.tokenId).toNumber().toString()
-
-    return (
-      item.name.toLowerCase() === searchValue.toLowerCase() ||
-      item.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-      item.symbol.toLocaleLowerCase() === searchValue.toLowerCase() ||
-      item.symbol.toLowerCase().includes(searchValue.toLowerCase()) ||
-      tokenId === searchValue.toLowerCase() ||
-      tokenId.includes(searchValue.toLowerCase())
-    )
-  }, [searchValue])
-
-  const onCloseSearchBar = React.useCallback(() => {
-    setShowSearchBar(false)
-    setSearchValue('')
+  const onSelectOption = React.useCallback((selectedOption: NftDropdownOption) => {
+    setSelectedOption(selectedOption)
   }, [])
 
   React.useEffect(() => {
@@ -239,56 +214,41 @@ export const Nfts = (props: Props) => {
   }, [userMarkedSpamNfts, simpleHashSpamNfts, hiddenNftsIds, userNonSpamNftIds])
 
   const [sortedNfts, sortedHiddenNfts, sortedSpamNfts] = React.useMemo(() => {
-    if (searchValue === '') {
-      return [
-        userNonSpamNfts.slice().sort(compareFn),
-        hiddenNfts.slice().sort(compareFn),
-        allSpamNfts.slice().sort(compareFn)
-      ]
-    }
-
     return [
-      userNonSpamNfts.filter(searchNfts).sort(compareFn),
-      hiddenNfts.filter(searchNfts).sort(compareFn),
-      allSpamNfts.filter(searchNfts).sort(compareFn)
+      userNonSpamNfts.slice().sort(compareFn),
+      hiddenNfts.slice().sort(compareFn),
+      allSpamNfts.slice().sort(compareFn)
     ]
-  }, [searchValue, userNonSpamNfts, hiddenNfts, allSpamNfts, searchNfts])
+  }, [userNonSpamNfts, hiddenNfts, allSpamNfts])
 
-  const tabOptions = React.useMemo(() => {
-    const tabOptions: NftTabOption[] = [
+  const dropDownOptions = React.useMemo(() => {
+    return [
       {
-        id: 'nfts',
-        label: getLocale('braveNftsTab'),
-        labelSummary: userNonSpamNfts.length || undefined
+        id: 'collected',
+        label: 'Collected',
+        labelSummary: sortedNfts.length
       },
       {
         id: 'hidden',
         label: getLocale('braveNftsTabHidden'),
-        labelSummary: hiddenNfts.length || undefined
-      },
-      {
-        id: 'spam',
-        label: getLocale('braveNftsTabSpam'),
-        labelSummary: !isLoadingSimpleHashList ? allSpamNfts.length : ''
+        labelSummary: hiddenNfts.concat(allSpamNfts).length
       }
-    ]
+    ].slice() as NftDropdownOption[]
+  }, [hiddenNfts, allSpamNfts, sortedNfts])
 
-    return tabOptions
-  }, [nftList, hiddenNfts, allSpamNfts, isLoadingSimpleHashList])
-
-
+  // selected option state
+  const [selectedOption, setSelectedOption] = React.useState<NftDropdownOption>(dropDownOptions[0])
+  console.log('parent', selectedOption)
   const renderedList = React.useMemo(() => {
-    switch (selectedTab) {
-      case 'nfts':
-        return sortedNfts;
+    switch (selectedOption.id) {
+      case 'collected':
+        return sortedNfts
       case 'hidden':
-        return sortedHiddenNfts;
-      case 'spam':
-        return sortedSpamNfts;
+        return sortedHiddenNfts.concat(sortedSpamNfts)
       default:
         return sortedNfts;
     }
-  }, [selectedTab, sortedNfts, sortedHiddenNfts, sortedSpamNfts, sortedNfts])
+  }, [selectedOption, sortedNfts, sortedHiddenNfts, sortedSpamNfts, sortedNfts])
 
   // Returns a list of assets based on provided account
   const getFilteredNftsByAccount = React.useCallback(
@@ -361,7 +321,7 @@ export const Nfts = (props: Props) => {
         )}
       </Row>
     ))
-  }, [accounts, getFilteredNftsByAccount, onSelectAsset, selectedTab])
+  }, [accounts, getFilteredNftsByAccount, onSelectAsset])
 
   const listUiByNetworks = React.useMemo(() => {
     return networks?.map((network) =>
@@ -387,8 +347,7 @@ export const Nfts = (props: Props) => {
     )
   }, [
     getAssetsByNetwork,
-    networks,
-    selectedTab
+    networks
   ])
 
   const listUi = React.useMemo(() => {
@@ -406,8 +365,7 @@ export const Nfts = (props: Props) => {
     listUiByAccounts,
     listUiByNetworks,
     selectedGroupAssetsByItem,
-    renderedList,
-    selectedTab
+    renderedList
   ])
 
   // effects
@@ -439,31 +397,24 @@ export const Nfts = (props: Props) => {
         isNFTView={true}
       >
         {!showSearchBar &&
-          <Tabs options={tabOptions} onSelect={onSelectTab} />
+          <NftDropdown
+            selectedOption={selectedOption}
+            options={dropDownOptions}
+            onSelect={onSelectOption}
+          />
         }
         <Row
           width={showSearchBar ? '100%' : 'unset'}
         >
-          <SearchBarWrapper
-            margin='0px 12px 0px 0px'
-            showSearchBar={showSearchBar}
-          >
-            <SearchBar
-              placeholder={getLocale('braveWalletSearchText')}
-              action={onSearchValueChange}
-              value={searchValue}
-              isV2={true}
-            />
-          </SearchBarWrapper>
           {showSearchBar &&
             <Row
               width='unset'
             >
-              <CircleButton
+              {/* <CircleButton
                 onClick={onCloseSearchBar}
               >
                 <ButtonIcon name='close' />
-              </CircleButton>
+              </CircleButton> */}
             </Row>
           }
           {!showSearchBar &&

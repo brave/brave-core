@@ -16,32 +16,43 @@ import {
   DropdownContainer
 } from './nft-group-selector.styles'
 
-export type NftGroupId = 'collected' | 'hidden' | 'spam'
+export type NftDropdownOptionId = 'collected' | 'hidden'
 
-export interface DropdownOption {
-  id: NftGroupId
+export interface NftDropdownOption {
+  id: NftDropdownOptionId
   label: string
+  labelSummary: string | number;
 }
 
 interface Props {
-  selectedOption: DropdownOption
-  options: DropdownOption[]
-  onSelect: (optionId: NftGroupId) => void
+  selectedOption: NftDropdownOption
+  options: NftDropdownOption[]
+  onSelect: (optionId: NftDropdownOption) => void
 }
 
-export const NftGroupSelector = ({ selectedOption, options, onSelect }: Props) => {
+export const NftDropdown = ({selectedOption, options, onSelect }: Props) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false)
+
+  const onSelectOption = (option: NftDropdownOption) => {
+    setIsOpen(false)
+    if(selectedOption.id === option.id) return
+    onSelect(option)
+  }
+
+  console.log(selectedOption)
 
   return (
     <DropdownContainer>
       <DropdownButton onClick={() => setIsOpen((open) => !open)}>
-        <DropdownButtonText>{selectedOption.id}</DropdownButtonText>
-        <DropdownButtonLabel>8</DropdownButtonLabel>
+        <DropdownButtonText>{selectedOption.label}</DropdownButtonText>
+        <DropdownButtonLabel>
+          {selectedOption.labelSummary}
+        </DropdownButtonLabel>
         <DropDownIcon name='carat-down' isOpen={isOpen} />
       </DropdownButton>
       <DropDown isOpen={isOpen}>
         {options.map((option) => (
-          <DropDownItem key={option.id} onClick={() => onSelect(option.id)}>
+          <DropDownItem key={option.id} onClick={() => onSelectOption(option)}>
             {option.label}
           </DropDownItem>
         ))}

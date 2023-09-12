@@ -31,7 +31,6 @@ import { WalletSelectors } from '../../../../../../common/selectors'
 
 // Utils
 import { stripERC20TokenImageURL } from '../../../../../../utils/string-utils'
-import Amount from '../../../../../../utils/amount'
 
 // components
 import { NftIconWithNetworkIcon } from '../../../../../shared/nft-icon/nft-icon-with-network-icon'
@@ -43,11 +42,12 @@ import {
   NFTWrapper,
   NFTText,
   IconWrapper,
-  VerticalMenuIcon,
-  VerticalMenu,
+  MoreIcon,
   DIVForClickableArea,
-  NFTSymbol
+  NFTSymbol,
+  MoreButton
 } from './style'
+import { Row } from '../../../../../shared/style'
 
 interface Props {
   token: BraveWallet.BlockchainToken
@@ -121,22 +121,16 @@ export const NFTGridViewItem = (props: Props) => {
   return (
     <>
       <NFTWrapper>
-        <VerticalMenu
-          onClick={onToggleShowMore}
-        >
-          <VerticalMenuIcon />
-        </VerticalMenu>
-        {showMore && (
-          <NftMorePopup
-            isTokenHidden={isTokenHidden}
-            isTokenSpam={isTokenSpam}
-            onEditNft={onEditNft}
-            onHideNft={onHideNft}
-            onUnHideNft={onUnHideNft}
-            onMoveToSpam={onMoveToSpam}
-            onUnSpam={onUnSpam}
-          />
-        )}
+        <NftMorePopup
+          isOpen={showMore}
+          isTokenHidden={isTokenHidden}
+          isTokenSpam={isTokenSpam}
+          onEditNft={onEditNft}
+          onHideNft={onHideNft}
+          onUnHideNft={onUnHideNft}
+          onMoveToSpam={onMoveToSpam}
+          onUnSpam={onUnSpam}
+        />
         <DIVForClickableArea onClick={onSelectAsset} />
         <IconWrapper>
           <NftIconWithNetworkIcon
@@ -147,10 +141,12 @@ export const NFTGridViewItem = (props: Props) => {
             hideNetworkIcon={!showNetworkLogoOnNfts}
           />
         </IconWrapper>
-        <NFTText>
-          {token.name}{' '}
-          {token.tokenId ? '#' + new Amount(token.tokenId).toNumber() : ''}
-        </NFTText>
+        <Row justifyContent='space-between' margin='8px 0 0 0'>
+          <NFTText>{token.name} </NFTText>
+          <MoreButton onClick={onToggleShowMore}>
+            <MoreIcon name='more-horizontal' />
+          </MoreButton>
+        </Row>
         {token.symbol !== '' && <NFTSymbol>{token.symbol}</NFTSymbol>}
       </NFTWrapper>
       {showEditModal && (

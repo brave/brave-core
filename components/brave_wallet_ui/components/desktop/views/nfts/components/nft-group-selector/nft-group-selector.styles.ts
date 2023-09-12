@@ -77,6 +77,7 @@ export const DropDown = styled.div<{ isOpen: boolean }>`
   transition: opacity 0.3s, transform 0.3s;
   opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
   transform: translateY(${({ isOpen }) => (isOpen ? '0' : '-10px')});
+  z-index: 2;
 `
 
 export const DropDownItem = styled(WalletButton)`

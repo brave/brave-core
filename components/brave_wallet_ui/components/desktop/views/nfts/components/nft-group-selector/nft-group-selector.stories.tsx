@@ -4,12 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { DropdownOption, NftGroupSelector } from './nft-group-selector'
+import { NftDropdownOption, NftDropdown } from './nft-group-selector'
 
-const options: DropdownOption[] = [{ id: 'collected', label: 'Collected' }]
+const options: NftDropdownOption[] = [{ id: 'collected', label: 'Collected' }]
 
 export const _NftGroupSelector = () => {
-  return <NftGroupSelector selectedOption={options[0]} options={options} onSelect={(optionId) => console.log(optionId)}/>
+  return <NftDropdown selectedOption={options[0]} options={options} onSelect={(optionId) => console.log(optionId)}/>
 }
 
 _NftGroupSelector.storyName = 'NftGroupSelector'

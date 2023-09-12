@@ -7,14 +7,15 @@ import * as React from 'react'
 
 // Styled Components
 import {
-  StyledWrapper,
+  ButtonIcon,
+  Popup,
   PopupButton,
   PopupButtonText,
-  ButtonIcon,
 } from './nft-more-popup.styles'
 import { getLocale } from '../../../../../../../common/locale'
 
 interface Props {
+  isOpen: boolean
   isTokenHidden: boolean
   isTokenSpam: boolean
   onEditNft: () => void
@@ -26,6 +27,7 @@ interface Props {
 
 export const NftMorePopup = (props: Props) => {
   const {
+    isOpen,
     isTokenHidden,
     isTokenSpam,
     onEditNft,
@@ -36,7 +38,7 @@ export const NftMorePopup = (props: Props) => {
   } = props
 
   return (
-    <StyledWrapper>
+    <Popup isOpen={isOpen}>
       <PopupButton onClick={onEditNft}>
         <ButtonIcon name='edit-pencil' />
         <PopupButtonText>{getLocale('braveNftsTabEdit')}</PopupButtonText>
@@ -64,6 +66,6 @@ export const NftMorePopup = (props: Props) => {
           </PopupButton>
         </>
       )}
-    </StyledWrapper>
+    </Popup>
   )
 }
