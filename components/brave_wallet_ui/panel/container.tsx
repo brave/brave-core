@@ -79,7 +79,6 @@ import { ConfirmSolanaTransactionPanel } from '../components/extension/confirm-t
 import { ConfirmBitcoinTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-bitcoin-transaction-panel'
 import { SignTransactionPanel } from '../components/extension/sign-panel/sign-transaction-panel'
 import { useDispatch } from 'react-redux'
-import { SelectCurrency } from '../components/buy-send-swap/select-currency/select-currency'
 import { ConfirmSwapTransaction } from '../components/extension/confirm-transaction-panel/swap'
 import { TransactionStatus } from '../components/extension/post-confirmation'
 import { useSafePanelSelector, useSafeWalletSelector, useUnsafePanelSelector, useUnsafeWalletSelector } from '../common/hooks/use-safe-selector'
@@ -326,14 +325,6 @@ function Container () {
       })
     )
   }
-
-  const onBack = React.useCallback(() => {
-    navigateTo('buy')
-  }, [])
-
-  const onSelectCurrency = React.useCallback(() => {
-    dispatch(WalletPanelActions.navigateTo('buy'))
-  }, [])
 
   React.useEffect(() => {
     if (needsAccount && selectedPanel === 'main') {
@@ -688,27 +679,6 @@ function Container () {
           />
         </LongWrapper>
       </WelcomePanelWrapper>
-    )
-  }
-
-  if (selectedPanel === 'currencies') {
-    return (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
-          <Panel
-            navAction={navigateTo}
-            title={panelTitle}
-            useSearch={false}
-          >
-            <ScrollContainer>
-              <SelectCurrency
-                onBack={onBack}
-                onSelectCurrency={onSelectCurrency}
-              />
-            </ScrollContainer>
-          </Panel>
-        </StyledExtensionWrapper>
-      </PanelWrapper>
     )
   }
 

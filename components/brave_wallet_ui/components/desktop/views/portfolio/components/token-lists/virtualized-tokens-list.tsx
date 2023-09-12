@@ -4,7 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { VariableSizeList as List } from 'react-window'
+import {
+  VariableSizeList as List, //
+  ListChildComponentProps
+} from 'react-window'
 
 // types
 import {
@@ -65,7 +68,7 @@ const LIST_STYLE = {
 
 const getListItemKey = (i: number, data: UserAssetInfoType[]) => getAssetIdKey(data[i].asset)
 
-export const VirtualizedTokensList = ({
+export const VirtualizedTokensList = React.memo(({
   renderToken,
   userAssetList,
   estimatedItemSize,
@@ -82,6 +85,19 @@ export const VirtualizedTokensList = ({
     (Math.min(maxTokens, userAssetList.length || 1)) // min: 1, max: 4.5
   const listHeight = estimatedItemSize * minimumItems
 
+  // methods
+  const renderListChild = React.useCallback(
+    (itemProps: ListChildComponentProps<UserAssetInfoType[]>) => (
+      <ListItem
+        data={itemProps.data[itemProps.index]}
+        index={itemProps.index}
+        renderToken={renderToken}
+        style={itemProps.style}
+      />
+    ),
+    [renderToken]
+  )
+
   // render
   return (
     <List
@@ -94,13 +110,7 @@ export const VirtualizedTokensList = ({
       overscanCount={20}
       itemKey={getListItemKey}
       style={LIST_STYLE}
-      children={(itemProps) => (
-        <ListItem
-          {...itemProps}
-          data={itemProps.data[itemProps.index]}
-          renderToken={renderToken}
-        />
-      )}
+      children={renderListChild}
     />
   )
-}
+})

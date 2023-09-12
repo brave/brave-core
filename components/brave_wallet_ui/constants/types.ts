@@ -114,7 +114,6 @@ export type PanelTypes =
   | 'switchEthereumChain'
   | 'transactionDetails'
   | 'activity' // Transactions
-  | 'currencies'
   | 'transactionStatus'
 
 export type NavTypes =
@@ -249,8 +248,10 @@ export interface WalletState {
   selectedAssetFilter: string
   selectedGroupAssetsByItem: string
   selectedAccountFilter: string
-  onRampCurrencies: BraveWallet.OnRampCurrency[]
-  selectedCurrency: BraveWallet.OnRampCurrency | undefined
+  /**
+   * used for "buy" and "deposit" screens
+   */
+  selectedDepositAssetId?: string | undefined
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean
   isNftPinningFeatureEnabled: boolean
@@ -644,13 +645,14 @@ export enum WalletRoutes {
   OnboardingConnectHardwareWalletStart = '/crypto/onboarding/connect-hardware-wallet',
   OnboardingConnectHardwareWallet = '/crypto/onboarding/connect-hardware-wallet/:accountTypeName?',
 
-
   // onboarding complete
   OnboardingComplete = '/crypto/onboarding/complete',
 
   // fund wallet page
   FundWalletPageStart = '/crypto/fund-wallet',
-  FundWalletPage = '/crypto/fund-wallet/:tokenId?',
+  FundWalletPage = '/crypto/fund-wallet/token/:currencyCode?/:buyAmount?',
+  FundWalletPurchaseOptionsPage = '/crypto/fund-wallet/purchase/' +
+    ':currencyCode/:buyAmount',
   DepositFundsPageStart = '/crypto/deposit-funds',
   DepositFundsPage = '/crypto/deposit-funds/:tokenId?',
 
@@ -693,13 +695,13 @@ export enum WalletRoutes {
   PortfolioAssets = '/crypto/portfolio/assets',
   PortfolioNFTs = '/crypto/portfolio/nfts',
   PortfolioNFTAsset = '/crypto/portfolio/nfts/' +
-  ':chainId/' +
-  ':contractAddress/' +
-  ':tokenId?',
+    ':chainId/' +
+    ':contractAddress/' +
+    ':tokenId?',
   PortfolioAsset = '/crypto/portfolio/assets/' +
-  ':chainIdOrMarketSymbol/' +
-  ':contractOrSymbol?/' +
-  ':tokenId?',
+    ':chainIdOrMarketSymbol/' +
+    ':contractOrSymbol?/' +
+    ':tokenId?',
   PortfolioSub = '/crypto/portfolio/:assetsOrNfts/:chainIdOrMarketSymbol?',
 
   // portfolio asset modals
@@ -711,10 +713,10 @@ export enum WalletRoutes {
   // send
   SendPageStart = '/send',
   SendPage = '/send/' +
-  ':chainId?/' +
-  ':accountAddress?/' +
-  ':contractAddressOrSymbol?/' +
-  ':tokenId?',
+    ':chainId?/' +
+    ':accountAddress?/' +
+    ':contractAddressOrSymbol?/' +
+    ':tokenId?',
 
   // dev bitcoin screen
   DevBitcoin = '/dev-bitcoin',

@@ -97,10 +97,6 @@ export const getBalance = (): Promise<string> => {
   })
 }
 
-export const getBuyAssetUrl = () => {
-  return 'brave.com'
-}
-
 export const getBlockchainTokenInfo = async (
   contractAddress: string
 ): Promise<GetBlockchainTokenInfoReturnInfo> => {

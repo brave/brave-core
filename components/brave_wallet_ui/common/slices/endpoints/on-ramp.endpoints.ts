@@ -20,6 +20,7 @@ import {
 } from '../../../utils/asset-utils'
 import { addLogoToToken } from '../../async/lib'
 import { mapLimit } from 'async'
+import { handleEndpointError } from '../../../utils/api-utils'
 
 export const onRampEndpoints = ({
   query
@@ -234,6 +235,66 @@ export const onRampEndpoints = ({
         }
         return ['OnRampAssets']
       }
-    })
+    }),
+
+    getOnRampFiatCurrencies: query<BraveWallet.OnRampCurrency[], void>({
+      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { currencies } =
+            await api.blockchainRegistry.getOnRampCurrencies()
+          if (!currencies.length) {
+            throw new Error('No currencies found')
+          }
+          return {
+            data: currencies
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to fetch on-ramp fiat currencies',
+            error
+          )
+        }
+      }
+    }),
+
+    getBuyUrl: query<string, {
+      onRampProvider: BraveWallet.OnRampProvider,
+      chainId: string,
+      address: string,
+      assetSymbol: string,
+      amount: string,
+      currencyCode: string
+    }>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { url, error } = await api.assetRatioService.getBuyUrlV1(
+            arg.onRampProvider,
+            arg.chainId,
+            arg.address,
+            arg.assetSymbol,
+            arg.amount,
+            arg.currencyCode
+          )
+
+          if (error) {
+            throw new Error(error)
+          }
+
+          return {
+            data: url
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Failed to get buy URL for: ${JSON.stringify(arg, undefined, 2)}`,
+            error
+          )
+        }
+      },
+    }),
   }
+
 }

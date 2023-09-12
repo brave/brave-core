@@ -25,12 +25,6 @@ import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { CurrencySymbols } from '../../../utils/currency-symbols'
 import Amount from '../../../utils/amount'
-import { WalletSelectors } from '../../../common/selectors'
-
-// Hooks
-import {
-  useUnsafeWalletSelector //
-} from '../../../common/hooks/use-safe-selector'
 
 // Components
 import {
@@ -65,7 +59,6 @@ import {
 } from './style'
 
 import { BubbleContainer } from '../shared-styles'
-
 
 export type BuySendSwapInputType =
   | 'toAmount'
@@ -105,6 +98,7 @@ export interface Props {
   onRefresh?: () => void
   onPaste?: () => void
   onShowCurrencySelection?: () => void
+  selectedCurrencyCode: string
 }
 
 const onClickLearnMore = () => {
@@ -121,7 +115,7 @@ const onClickLearnMore = () => {
   )
 }
 
-function SwapInputComponent (props: Props) {
+export function SwapInputComponent (props: Props) {
   const {
     autoFocus,
     selectedAsset,
@@ -149,17 +143,12 @@ function SwapInputComponent (props: Props) {
     onSelectSlippageTolerance,
     onSelectExpiration,
     onShowSelection,
-    onShowCurrencySelection
+    onShowCurrencySelection,
+    selectedCurrencyCode
   } = props
   const [spin, setSpin] = React.useState<number>(0)
   const [expandSelector, setExpandSelector] = React.useState<boolean>(false)
   const [showSlippageWarning, setShowSlippageWarning] = React.useState<boolean>(false)
-
-  // redux
-  const reduxSelectedCurrency = useUnsafeWalletSelector(
-    WalletSelectors.selectedCurrency
-  )
-  const currencies = useUnsafeWalletSelector(WalletSelectors.onRampCurrencies)
 
   // methods
   const toggleExpandSelector = () => {
@@ -268,10 +257,6 @@ function SwapInputComponent (props: Props) {
     setShowSlippageWarning(false)
   }, [customSlippageTolerance])
 
-  const selectedCurrency = React.useMemo(() => {
-    return reduxSelectedCurrency || currencies[0]
-  }, [reduxSelectedCurrency, currencies])
-
   const fromAmountHasErrors = validationError && [
     'insufficientBalance',
     'insufficientFundsForGas',
@@ -331,7 +316,7 @@ function SwapInputComponent (props: Props) {
                   isV2={isV2}
                   role='currency'
                 >
-                  {CurrencySymbols[selectedCurrency?.currencyCode]}
+                  {CurrencySymbols[selectedCurrencyCode]}
                 </AssetTicker>
                 <CaratDownIcon name='carat-down' />
                 <Spacer />

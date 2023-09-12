@@ -83,7 +83,6 @@ async function refreshWalletInfo (store: Store, payload: RefreshOpts = {}) {
   store.dispatch(WalletActions.setMetaMaskInstalled(mmResult.installed))
 
   await store.dispatch(refreshSitePermissions())
-  store.dispatch(WalletActions.getOnRampCurrencies())
 }
 
 async function updateAccountInfo (store: Store) {
@@ -343,12 +342,6 @@ handler.on(WalletActions.addAccount.type, async (_store: Store, payload: AddAcco
   const { keyringService } = getAPIProxy()
   const result = await keyringService.addAccount(payload.coin, payload.keyringId, payload.accountName)
   return !!result.accountInfo
-})
-
-handler.on(WalletActions.getOnRampCurrencies.type, async (store: Store) => {
-  const { blockchainRegistry } = getAPIProxy()
-  const currencies = (await blockchainRegistry.getOnRampCurrencies()).currencies
-  await store.dispatch(WalletActions.setOnRampCurrencies(currencies))
 })
 
 handler.on(

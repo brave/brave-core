@@ -309,7 +309,7 @@ export const Container = () => {
             }
 
             {!isWalletLocked &&
-              <Route path={WalletRoutes.FundWalletPage} exact>
+              <Route path={WalletRoutes.FundWalletPageStart}>
                 <FundWalletScreen />
               </Route>
             }
