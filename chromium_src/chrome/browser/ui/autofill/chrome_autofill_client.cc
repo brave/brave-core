@@ -9,6 +9,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/autofill/payments/webauthn_dialog_controller_impl.h"
 #include "chrome/browser/ui/page_info/page_info_dialog.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 
 namespace autofill {
 
