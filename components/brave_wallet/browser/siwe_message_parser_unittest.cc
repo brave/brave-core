@@ -173,7 +173,7 @@ TEST_F(SIWEMessageParserTest, AddressError) {
   }
 }
 
-TEST_F(SIWEMessageParserTest, StatementError) {
+TEST_F(SIWEMessageParserTest, Statement) {
   for (const std::string& invalid_case : {
            "", "\n", "statement", "\nstatement", "\nstatement\n",
            "\n\x80statement\n\n",  // non-ASCII char
@@ -259,7 +259,9 @@ TEST_F(SIWEMessageParserTest, CommonErrors) {
       if (state_info.state == State::kOptionalFields) {
         // This is valid for optional field
         if (invalid_case ==
-            base::StrCat({state_info.token, state_info.value})) {
+                base::StrCat({state_info.token, state_info.value}) ||
+            // This has been tested in invalid issued_at
+            invalid_case.empty()) {
           continue;
         }
         message = base::StrCat({state_info.prefix, "\n", invalid_case});

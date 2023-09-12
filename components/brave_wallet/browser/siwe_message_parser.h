@@ -7,8 +7,17 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SIWE_MESSAGE_PARSER_H_
 
 #include <string>
+#include <string_view>
+#include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
+class GURL;
+
+namespace url {
+class Origin;
+}  // namespace url
 
 namespace brave_wallet {
 
@@ -16,8 +25,8 @@ namespace brave_wallet {
 // https://eips.ethereum.org/EIPS/eip-4361#message-format
 class SIWEMessageParser {
  public:
-  SIWEMessageParser() = default;
-  ~SIWEMessageParser() = default;
+  SIWEMessageParser();
+  ~SIWEMessageParser();
   SIWEMessageParser(const SIWEMessageParser&) = delete;
   SIWEMessageParser& operator=(const SIWEMessageParser&) = delete;
 
@@ -43,6 +52,21 @@ class SIWEMessageParser {
 
  private:
   friend class SIWEMessageParserTest;
+
+  bool ParseSchemeAndDomain(std::string_view& msg_view, url::Origin& origin);
+  bool ParseAddress(std::string_view& msg_view, std::string& address);
+  bool ParseStatement(std::string_view& msg_view,
+                      absl::optional<std::string>& statement);
+  bool ParseURI(std::string_view& msg_view, GURL& uri);
+  bool ParseVersion(std::string_view& msg_view, uint32_t& version);
+  bool ParseChainId(std::string_view& msg_view, uint64_t& chain_id);
+  bool ParseNonce(std::string_view& msg_view, std::string& nonce);
+  bool ParseIssuedAt(std::string_view& msg_view, std::string& issued_at);
+  bool ParseOptionalStringField(std::string_view& msg_view,
+                                const std::string& name,
+                                absl::optional<std::string>& value);
+  bool ParseOptionalResources(std::string_view& msg_view,
+                              absl::optional<std::vector<GURL>>& resources);
 
   static std::string GetStartingTokenForTesting();
   static std::string GetURITokenForTesting();
