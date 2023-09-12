@@ -7,7 +7,9 @@ package org.chromium.chrome.browser.misc_metrics;
 
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.misc_metrics.mojom.PrivacyHubMetrics;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -15,25 +17,27 @@ import org.chromium.mojo.system.MessagePipeHandle;
 import org.chromium.mojo.system.impl.CoreImpl;
 
 @JNINamespace("chrome::android")
-public class PrivacyHubMetricsFactory {
+public class MiscAndroidMetricsFactory {
     private static final Object lock = new Object();
-    private static PrivacyHubMetricsFactory instance;
+    private static MiscAndroidMetricsFactory instance;
 
-    public static PrivacyHubMetricsFactory getInstance() {
+    public static MiscAndroidMetricsFactory getInstance() {
         synchronized (lock) {
             if (instance == null) {
-                instance = new PrivacyHubMetricsFactory();
+                instance = new MiscAndroidMetricsFactory();
             }
         }
         return instance;
     }
 
-    private PrivacyHubMetricsFactory() {}
+    private MiscAndroidMetricsFactory() {}
 
-    public PrivacyHubMetrics getMetricsService(ConnectionErrorHandler connectionErrorHandler) {
-        long nativeHandle = PrivacyHubMetricsFactoryJni.get().getInterfaceToPrivacyHubMetrics();
+    public MiscAndroidMetrics getMetricsService(ConnectionErrorHandler connectionErrorHandler) {
+        Profile profile = Utils.getProfile(false); // always use regular profile
+        long nativeHandle =
+                MiscAndroidMetricsFactoryJni.get().getInterfaceToMiscAndroidMetrics(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
-        PrivacyHubMetrics metricsService = PrivacyHubMetrics.MANAGER.attachProxy(handle, 0);
+        MiscAndroidMetrics metricsService = MiscAndroidMetrics.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) metricsService).getProxyHandler();
         handler.setErrorHandler(connectionErrorHandler);
 
@@ -46,6 +50,6 @@ public class PrivacyHubMetricsFactory {
 
     @NativeMethods
     interface Natives {
-        long getInterfaceToPrivacyHubMetrics();
+        long getInterfaceToMiscAndroidMetrics(Profile profile);
     }
 }

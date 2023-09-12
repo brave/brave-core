@@ -10,6 +10,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/p3a_utils/bucket.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -23,6 +24,8 @@ const char kSearchPromoBannerBHistogramName[] = "Brave.Search.Promo.BannerB";
 const char kSearchPromoBannerCHistogramName[] = "Brave.Search.Promo.BannerC";
 const char kSearchPromoBannerDHistogramName[] = "Brave.Search.Promo.BannerD";
 const char kSearchPromoNTPHistogramName[] = "Brave.Search.Promo.NewTabPage";
+const char kSearchQueriesBeforeChurnHistogramName[] =
+    "Brave.Search.QueriesBeforeChurn";
 
 namespace {
 
@@ -40,6 +43,9 @@ const char kBannerDShownKey[] = "banner_d.shown";
 const char kBannerDTriggeredKey[] = "banner_d.triggered";
 
 const char kSwitchSearchEngineMetric[] = "Brave.Search.SwitchEngine";
+
+const int kMaxStoredQueryCount = 41;
+const int kQueriesBeforeChurnBuckets[] = {0, 1, 2, 5, 10, 20, 40};
 
 const char* GetPromoShownKeyName(ConversionType type) {
   switch (type) {
@@ -114,7 +120,7 @@ void UpdateHistograms(PrefService* prefs) {
   VLOG(1) << "SearchConversionP3A: updating histograms";
 
   const bool default_engine_triggered =
-      prefs->GetBoolean(prefs::kP3ADefaultEngineChanged);
+      prefs->GetBoolean(prefs::kP3ADefaultEngineConverted);
   const base::Value::Dict& action_statuses =
       prefs->GetDict(prefs::kP3AActionStatuses);
   for (const auto type : types) {
@@ -163,7 +169,10 @@ void RecordPromoAction(PrefService* prefs, const char* action_key_name) {
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kP3AActionStatuses);
 
-  registry->RegisterBooleanPref(prefs::kP3ADefaultEngineChanged, false);
+  registry->RegisterBooleanPref(prefs::kP3ADefaultEngineConverted, false);
+
+  registry->RegisterIntegerPref(prefs::kP3AQueryCountBeforeChurn, 0);
+  registry->RegisterBooleanPref(prefs::kP3AAlreadyChurned, false);
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
@@ -224,10 +233,35 @@ void RecordPromoTrigger(PrefService* prefs, ConversionType type) {
   RecordPromoAction(prefs, key_name);
 }
 
-void RecordDefaultEngineChange(PrefService* prefs) {
-  VLOG(1) << "SearchConversionP3A: default engine changed";
-  prefs->SetBoolean(prefs::kP3ADefaultEngineChanged, true);
+void RecordLocationBarQuery(PrefService* prefs) {
+  const int total = prefs->GetInteger(prefs::kP3AQueryCountBeforeChurn);
+  if (total >= kMaxStoredQueryCount) {
+    return;
+  }
+  prefs->SetInteger(prefs::kP3AQueryCountBeforeChurn, total + 1);
+}
+
+void RecordDefaultEngineConversion(PrefService* prefs) {
+  VLOG(1) << "SearchConversionP3A: default engine converted";
+  prefs->SetBoolean(prefs::kP3ADefaultEngineConverted, true);
+  prefs->ClearPref(prefs::kP3AQueryCountBeforeChurn);
   UpdateHistograms(prefs);
+}
+
+void RecordDefaultEngineChurn(PrefService* prefs) {
+  VLOG(1) << "SearchConversionP3A: default engine churned";
+  const bool already_churned = prefs->GetBoolean(prefs::kP3AAlreadyChurned);
+  const int total = prefs->GetInteger(prefs::kP3AQueryCountBeforeChurn);
+  if (already_churned && total == 0) {
+    // If the user already churned before, only report if they have made at
+    // least one query. This will handle the case of the user switching to
+    // another engine on multiple profiles.
+    return;
+  }
+  p3a_utils::RecordToHistogramBucket(kSearchQueriesBeforeChurnHistogramName,
+                                     kQueriesBeforeChurnBuckets, total);
+  prefs->SetBoolean(prefs::kP3AAlreadyChurned, true);
+  prefs->ClearPref(prefs::kP3AQueryCountBeforeChurn);
 }
 
 }  // namespace p3a

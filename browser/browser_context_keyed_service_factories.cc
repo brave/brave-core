@@ -64,6 +64,7 @@
 #else
 #include "brave/browser/brave_shields/cookie_list_opt_in_service_factory.h"
 #include "brave/browser/brave_shields/filter_list_service_factory.h"
+#include "brave/browser/misc_metrics/misc_android_metrics_factory.h"
 #include "brave/browser/ntp_background/android/ntp_background_images_bridge.h"
 #endif
 
@@ -206,6 +207,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderServiceFactory::GetInstance();
+#endif
+
+#if BUILDFLAG(IS_ANDROID)
+  misc_metrics::MiscAndroidMetricsFactory::GetInstance();
 #endif
 }
 

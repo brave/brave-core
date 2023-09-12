@@ -19,6 +19,13 @@ if (!is_android) {
     "//brave/browser/misc_metrics/vertical_tab_metrics.cc",
     "//brave/browser/misc_metrics/vertical_tab_metrics.h",
   ]
+} else {
+  brave_browser_misc_metrics_sources += [
+    "//brave/browser/misc_metrics/misc_android_metrics.cc",
+    "//brave/browser/misc_metrics/misc_android_metrics.h",
+    "//brave/browser/misc_metrics/misc_android_metrics_factory.cc",
+    "//brave/browser/misc_metrics/misc_android_metrics_factory.h",
+  ]
 }
 
 brave_browser_misc_metrics_deps = [
@@ -38,4 +45,4 @@ if (enable_ai_chat) {
 }
 
 brave_browser_misc_metrics_android_sources =
-    [ "//brave/browser/misc_metrics/privacy_hub_metrics_factory_android.cc" ]
+    [ "//brave/browser/misc_metrics/misc_android_metrics_factory_android.cc" ]

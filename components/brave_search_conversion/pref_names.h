@@ -18,8 +18,12 @@ constexpr char kMaybeLaterClickedTime[] =
 constexpr char kP3AActionStatuses[] =
     "brave.brave_search_conversion.action_statuses";
 
-constexpr char kP3ADefaultEngineChanged[] =
+constexpr char kP3ADefaultEngineConverted[] =
     "brave.brave_search_conversion.default_changed";
+const char kP3AQueryCountBeforeChurn[] =
+    "brave.brave_search_conversion.query_count";
+const char kP3AAlreadyChurned[] =
+    "brave.brave_search_conversion.already_churned";
 
 constexpr char kP3ABannerShown[] =
     "brave.brave_search_conversion.banner_shown";  // DEPRECATED

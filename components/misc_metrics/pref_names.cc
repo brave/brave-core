@@ -22,4 +22,9 @@ const char kMiscMetricsGroupTabsStorage[] =
     "brave.misc_metrics.group_tabs_storage";
 const char kMiscMetricsPinnedTabsStorage[] =
     "brave.misc_metrics.pinned_tabs_storage";
+
+const char kMiscMetricsSearchSwitchedAwayFromBrave[] =
+    "brave.misc_metrics.search_switched_from_brave";
+const char kMiscMetricsSearchBraveQueryCount[] =
+    "brave.misc_metrics.search_brave_query_count";
 }  // namespace misc_metrics

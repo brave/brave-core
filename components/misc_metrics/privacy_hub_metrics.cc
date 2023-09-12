@@ -32,14 +32,6 @@ void PrivacyHubMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kMiscMetricsPrivacyHubViews);
 }
 
-#if BUILDFLAG(IS_ANDROID)
-mojo::PendingRemote<mojom::PrivacyHubMetrics> PrivacyHubMetrics::MakeRemote() {
-  mojo::PendingRemote<mojom::PrivacyHubMetrics> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-#endif  // BUILDFLAG(IS_ANDROID)
-
 void PrivacyHubMetrics::RecordView() {
   view_storage_.AddDelta(1u);
   RecordViewCount();

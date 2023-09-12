@@ -31,6 +31,7 @@ import org.chromium.ui.modelutil.PropertyModel;
 class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSuggestionHost {
     private static final String AUTOCOMPLETE_ENABLED = "brave.autocomplete_enabled";
 
+    private Context mContext;
     private boolean mNativeInitialized;
     private DropdownItemViewInfoListManager mDropdownViewInfoListManager;
 
@@ -52,6 +53,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSug
                 modalDialogManagerSupplier, activityTabSupplier, shareDelegateSupplier,
                 locationBarDataProvider, bringTabToFrontCallback, tabWindowManagerSupplier,
                 bookmarkState, omniboxActionDelegate, openHistoryClustersDelegate);
+        mContext = context;
     }
 
     @Override
