@@ -886,7 +886,6 @@ test("brave_browser_tests") {
     "//brave/components/brave_wallet/renderer",
     "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
     "//brave/components/brave_wayback_machine/buildflags",
-    "//brave/components/brave_webtorrent/browser",
     "//brave/components/constants",
     "//brave/components/de_amp/browser/test:browser_tests",
     "//brave/components/de_amp/common:common",
@@ -1145,7 +1144,7 @@ test("brave_browser_tests") {
     data = [ "data/ntp_background/background.jpg" ]
   }
 
-  # API tests
+  # API tests and extension deps
   if (enable_extensions) {
     sources += [
       "//brave/browser/extensions/brave_shields_apitest.cc",
@@ -1154,7 +1153,10 @@ test("brave_browser_tests") {
       "//chrome/browser/extensions/extension_apitest.cc",
       "//chrome/browser/extensions/extension_apitest.h",
     ]
-    deps += [ "//brave/browser/extensions/api/identity/test:browsertests" ]
+    deps += [
+      "//brave/browser/extensions/api/identity/test:browsertests",
+      "//brave/components/brave_webtorrent/browser",
+    ]
   }
 
   if (is_android) {
