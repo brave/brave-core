@@ -17,7 +17,7 @@ import SuccessLightGif from '../../../assets/svg-icons/nft-ipfs/success-light.gi
 interface Props {
   size: string | undefined
   status: OverallPinningStatus
-  isAutopinEnabled: boolean
+  isAutopinEnabled?: boolean
 }
 
 export const NftPinningStatusAnimation = ({ size, status, isAutopinEnabled }: Props) => {

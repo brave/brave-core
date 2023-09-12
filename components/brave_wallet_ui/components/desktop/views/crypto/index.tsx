@@ -11,7 +11,7 @@ import {
   Switch,
   Redirect
 } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 // actions
 import { AccountsTabState } from '../../../../page/reducers/accounts-tab-reducer'
@@ -45,7 +45,6 @@ import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/
 import TransactionsScreen from '../../../../page/screens/transactions/transactions-screen'
 import { LocalIpfsNodeScreen } from '../../local-ipfs-node/local-ipfs-node'
 import { InspectNftsScreen } from '../../inspect-nfts/inspect-nfts'
-import { WalletPageActions } from '../../../../page/actions'
 import {
   Column
 } from '../../../shared/style'
@@ -91,8 +90,6 @@ export const CryptoView = (props: Props) => {
 
   const isNftPinningFeatureEnabled = useSafeWalletSelector(WalletSelectors.isNftPinningFeatureEnabled)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-
-  const dispatch = useDispatch()
 
   // state
   // const [hideNav, setHideNav] = React.useState<boolean>(false)
@@ -183,12 +180,6 @@ export const CryptoView = (props: Props) => {
     onShowBackup,
     showBackupWarning
   ])
-
-  // effects
-  React.useEffect(() => {
-    dispatch(WalletPageActions.getLocalIpfsNodeStatus())
-    dispatch(WalletPageActions.getIsAutoPinEnabled())
-  }, [])
 
   // render
   return (

@@ -24,6 +24,7 @@ import { getAllNetworksList, getNetwork, handleEndpointError } from '../../../ut
 
 // entities
 import { blockchainTokenEntityAdaptor } from '../entities/blockchain-token.entity'
+import { apiProxyFetcher } from '../../async/base-query-cache'
 
 export interface CommonNftMetadata {
   attributes?: any[]
@@ -45,7 +46,7 @@ export const nftsEndpoints = ({
       },
       GetBlockchainTokenIdArg
     >({
-      queryFn: async (tokenArg, _api, _extraOptions, baseQuery) => {
+      queryFn: async (tokenArg, { endpoint }, _extraOptions, baseQuery) => {
         try {
           if (!tokenArg.isErc721) {
             throw new Error(
@@ -73,16 +74,17 @@ export const nftsEndpoints = ({
             }
           }
         } catch (error) {
-          console.error('Error fetching ERC-721 metadata', error)
-          return {
-            error: `Error fetching ERC-721 metadata: ${error}`
-          }
+          return handleEndpointError(
+            endpoint,
+            'Error fetching ERC-721 metadata',
+            error
+          )
         }
       },
       providesTags: cacher.cacheByBlockchainTokenArg('ERC721Metadata')
     }),
     getNftDiscoveryEnabledStatus: query<boolean, void>({
-      queryFn: async (_arg, _api, _extraOptions, baseQuery) => {
+      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { braveWalletService } = baseQuery(undefined).data
           const result = await braveWalletService.getNftDiscoveryEnabled()
@@ -90,8 +92,11 @@ export const nftsEndpoints = ({
             data: result.enabled
           }
         } catch (error) {
-          console.error('Error getting NFT discovery status: ', error)
-          return { error: 'Failed to fetch NFT auto-discovery status' }
+          return handleEndpointError(
+            endpoint,
+            'Error getting NFT discovery status: ',
+            error
+          )
         }
       },
       providesTags: ['NftDiscoveryEnabledStatus']
@@ -100,7 +105,7 @@ export const nftsEndpoints = ({
       boolean, // success
       boolean
     >({
-      queryFn: async (arg, _api, _extraOptions, baseQuery) => {
+      queryFn: async (arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { braveWalletService } = baseQuery(undefined).data
           await braveWalletService.setNftDiscoveryEnabled(arg)
@@ -109,16 +114,17 @@ export const nftsEndpoints = ({
             data: true
           }
         } catch (error) {
-          console.error('Error setting NFT discovery status: ', error)
-          return {
-            error: 'Failed to set NFT auto-discovery status'
-          }
+          return handleEndpointError(
+            endpoint,
+            'Error setting NFT discovery status: ',
+            error
+          )
         }
       },
       invalidatesTags: ['NftDiscoveryEnabledStatus']
     }),
     getNftMetadata: query<NFTMetadataReturnType, BraveWallet.BlockchainToken>({
-      queryFn: async (arg, _api, _extraOptions, baseQuery) => {
+      queryFn: async (arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
           const { jsonRpcService } = api
@@ -186,13 +192,11 @@ export const nftsEndpoints = ({
             data: nftMetadata
           }
         } catch (error) {
-          const message =
-            'Error fetching NFT metadata: ' + error?.message ||
-            JSON.stringify(error)
-          console.error(message)
-          return {
-            error: message
-          }
+          return handleEndpointError(
+            endpoint,
+            'Error fetching NFT metadata',
+            error
+          )
         }
       },
       providesTags: (_result, err, arg) =>
@@ -204,7 +208,7 @@ export const nftsEndpoints = ({
       BraveWallet.TokenPinStatus | undefined,
       BraveWallet.BlockchainToken
     >({
-      queryFn: async (arg, _api, _extraOptions, baseQuery) => {
+      queryFn: async (arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { data: api } = baseQuery(undefined)
           const { braveWalletPinService } = api
@@ -222,13 +226,11 @@ export const nftsEndpoints = ({
 
           throw new Error('Local pinning status is null')
         } catch (error) {
-          const message =
-            'Error fetching NFT Pinning status: ' + error?.message ||
-            JSON.stringify(error)
-          console.error(message)
-          return {
-            error: message
-          }
+          return handleEndpointError(
+            endpoint,
+            'Error fetching NFT Pinning status',
+            error
+          )
         }
       },
       providesTags: (_result, err, arg) =>
@@ -237,7 +239,7 @@ export const nftsEndpoints = ({
           : [{ type: 'NFTPinningStatus', id: getAssetIdKey(arg) }]
     }),
     getAutopinEnabled: query<boolean, void>({
-      queryFn: async (_arg, _api, _extraOptions, baseQuery) => {
+      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { braveWalletAutoPinService } = baseQuery(undefined).data
           const result = await braveWalletAutoPinService.isAutoPinEnabled()
@@ -246,19 +248,39 @@ export const nftsEndpoints = ({
             data: result.enabled
           }
         } catch (error) {
-          console.error('Error getting autopin status: ', error)
-          const message =
-            'Error getting auto-pin status: ' + error?.message ||
-            JSON.stringify(error)
-          return {
-            error: message
-          }
+          return handleEndpointError(
+            endpoint,
+            'Error getting autopin status',
+            error
+          )
         }
       },
       providesTags: ['AutoPinEnabled']
     }),
+    setAutopinEnabled: mutation<
+    boolean, // success
+    boolean
+  >({
+    queryFn: async (arg, { endpoint }, _extraOptions, baseQuery) => {
+      try {
+        const { braveWalletAutoPinService } = baseQuery(undefined).data
+        await braveWalletAutoPinService.setAutoPinEnabled(arg)
+        
+        return {
+          data: true
+        }
+      } catch (error) {
+        return handleEndpointError(
+          endpoint,
+          'Error setting autopin status',
+          error
+        )
+      }
+    },
+    invalidatesTags: ['AutoPinEnabled']
+  }),
     getIPFSUrlFromGatewayLikeUrl: query<string | null, string>({
-      queryFn: async (urlArg, store, extraOptions, baseQuery) => {
+      queryFn: async (urlArg, { endpoint}, _extraOptions, baseQuery) => {
         try {
           const { cache } = baseQuery(undefined)
           const ipfsUrl = await cache.getExtractedIPFSUrlFromGatewayLikeUrl(
@@ -268,15 +290,16 @@ export const nftsEndpoints = ({
             data: ipfsUrl || null
           }
         } catch (error) {
-          const message = 'Failed to get IPFS URL from gateway-like URL'
-          console.log(`${message}: %s`, urlArg.trim(), error)
-          console.error(error)
-          return { error: message }
+         return handleEndpointError(
+           endpoint,
+           'Failed to get IPFS URL from gateway-like URL',
+           error
+         )
         }
       }
     }),
     getIpfsGatewayTranslatedNftUrl: query<string | null, string>({
-      queryFn: async (urlArg, store, extraOptions, baseQuery) => {
+      queryFn: async (urlArg, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { cache } = baseQuery(undefined)
           const translatedUrl = await cache.getIpfsGatewayTranslatedNftUrl(
@@ -287,10 +310,11 @@ export const nftsEndpoints = ({
             data: translatedUrl || urlArg.trim()
           }
         } catch (error) {
-          const message = 'Failed to translate NFT IPFS gateway URL'
-          console.log(`${message}: %s`, urlArg.trim(), error)
-          console.error(error)
-          return { error: message }
+          return handleEndpointError(
+            endpoint,
+            'Failed to translate NFT IPFS gateway URL',
+            error
+          )
         }
       }
     }),
@@ -386,6 +410,68 @@ export const nftsEndpoints = ({
               { type: 'SimpleHashSpamNFTs', id: arg.tokenId },
               { type: 'UserBlockchainTokens', id: arg.tokenId }
             ]
-    })
+    }),
+    getNftsPinningStatus: query<
+      {[key: string]: {
+        code: BraveWallet.TokenPinStatusCode | undefined
+        error: BraveWallet.PinError | undefined
+      }},
+      void
+    >({
+      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { braveWalletPinService } = apiProxyFetcher()
+          const { cache } = baseQuery(undefined)
+          const reg = await cache.getUserTokensRegistry()
+          const visibleTokens = reg.visibleTokenIds.map(id => reg.entities[id]).filter(token => token?.isErc721 || token?.isNft)
+          const results = await mapLimit(
+            visibleTokens,
+            10,
+            async (token: BraveWallet.BlockchainToken) =>
+              await braveWalletPinService.getTokenStatus(token)
+          )
+          const pinningStatus = {}
+          visibleTokens.forEach((token, index) => {
+            if (token) {
+              const { status, error } = results[index]
+              pinningStatus[getAssetIdKey(token)] = { code: status?.local?.code, error }
+            }
+          })
+          return {
+            data: pinningStatus
+          }
+        } catch (error) {
+          return handleEndpointError(endpoint, 'Error getting NFTs pinning status', error)
+        }
+      },
+      providesTags: ['NFTSPinningStatus']
+    }),
+    getLocalIpfsNodeStatus: query<boolean, void>({
+      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { braveWalletPinService } = baseQuery(undefined).data
+          const isNodeRunning = await (await braveWalletPinService.isLocalNodeRunning()).result
+
+          return {
+            data: isNodeRunning
+          }
+        } catch (error) {
+          return handleEndpointError(endpoint, 'Error fetching local node status', error)
+        }
+      },
+      providesTags: ['LocalIPFSNodeStatus']
+    }),
+    updateLocalIpfsNodeStatus: mutation<boolean, boolean>({
+      queryFn: async (arg, { endpoint }, _extraOptions, _baseQuery) => {
+        try {
+          return {
+            data: arg
+          }
+        } catch (error) {
+          return handleEndpointError(endpoint, 'Error fetching local node status', error)
+        }
+      },
+      invalidatesTags: ['LocalIPFSNodeStatus']
+    }),
   }
 }

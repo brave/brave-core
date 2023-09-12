@@ -10,16 +10,17 @@ import { mapLimit } from 'async'
 import { BraveWallet } from '../../constants/types'
 
 // selectors
-import { PageSelectors } from '../../page/selectors'
 import { WalletSelectors } from '../selectors'
-import { useSafePageSelector, useSafeWalletSelector, useUnsafePageSelector, useUnsafeWalletSelector } from './use-safe-selector'
+import {
+  useSafeWalletSelector,
+  useUnsafeWalletSelector
+} from './use-safe-selector'
 
 // utils
 import { LOCAL_STORAGE_KEYS } from '../constants/local-storage-keys'
-import { getAssetIdKey } from '../../utils/asset-utils'
-import { PinningStatusType } from '../../page/constants/action_types'
 import { useLib } from './useLib'
 import { areSupportedForPinning } from '../../common/async/lib'
+import { useGetAutopinEnabledQuery, useGetNftsPinningStatusQuery } from '../slices/api.slice'
 
 export enum OverallPinningStatus {
   PINNING_FINISHED,
@@ -31,6 +32,8 @@ type PinnableNftsState = Array<{
   canBePinned: boolean
   token: BraveWallet.BlockchainToken
 }>
+
+const POLLING_INTERVAL_IN_MS = 3000
 
 export function useNftPin () {
   // state
@@ -44,15 +47,17 @@ export function useNftPin () {
 
   // redux
   const isNftPinningFeatureEnabled = useSafeWalletSelector(WalletSelectors.isNftPinningFeatureEnabled)
-  const nftsPinningStatus = useUnsafePageSelector(PageSelectors.nftsPinningStatus)
-  const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
-
+  
+ // queries
+ const { data: isAutoPinEnabled } = useGetAutopinEnabledQuery()
+ const { data: nftsPinningStatus } = useGetNftsPinningStatusQuery(undefined, { pollingInterval: POLLING_INTERVAL_IN_MS })
 
   // hooks
   const { isTokenPinningSupported } = useLib()
 
   // memos
   const pinnedNftsCount = React.useMemo(() => {
+    if (!nftsPinningStatus) return 0
     return Object.keys(nftsPinningStatus).reduce((accumulator, currentValue) => {
       const status = nftsPinningStatus[currentValue]
       if (status?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNED) {
@@ -64,6 +69,7 @@ export function useNftPin () {
   }, [nftsPinningStatus])
 
   const inProgressNftCount = React.useMemo(() => {
+    if (!nftsPinningStatus) return 0
     return Object.keys(nftsPinningStatus).reduce((accumulator, currentValue) => {
       const status = nftsPinningStatus[currentValue]
       if (status?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS ||
@@ -107,10 +113,6 @@ export function useNftPin () {
       return !prev
     })
   }, [])
-
-  const getNftPinningStatus = React.useCallback((token: BraveWallet.BlockchainToken): PinningStatusType | undefined => {
-    return nftsPinningStatus[getAssetIdKey(token)]
-  }, [nftsPinningStatus])
 
   // effects
   React.useEffect(() => {
@@ -159,7 +161,6 @@ export function useNftPin () {
     pinnableNfts,
     isIpfsBannerVisible,
     pinningStatusSummary,
-    onToggleShowIpfsBanner,
-    getNftPinningStatus
+    onToggleShowIpfsBanner
   }
 }

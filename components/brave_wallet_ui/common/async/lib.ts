@@ -40,7 +40,6 @@ import { AllNetworksOption, AllNetworksOptionDefault } from '../../options/netwo
 import { AllAccountsOptionUniqueKey, applySelectedAccountFilter } from '../../options/account-filter-options'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
-import { WalletPageActions } from '../../page/actions'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 import { IPFS_PROTOCOL, isIpfs, stripERC20TokenImageURL } from '../../utils/string-utils'
 import { toTxDataUnion } from '../../utils/tx-utils'
@@ -252,8 +251,6 @@ export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo
       .filter(token => removedAssetIds.includes(getAssetIdKey(token)))
     await dispatch(WalletActions.setVisibleTokensInfo(userVisibleTokensInfo))
     await dispatch(WalletActions.setRemovedNonFungibleTokens(removedNfts))
-    const nfts = userVisibleTokensInfo.filter((asset) => asset.isErc721 || asset.isNft)
-    dispatch(WalletPageActions.getNftsPinningStatus(nfts))
   }
 }
 

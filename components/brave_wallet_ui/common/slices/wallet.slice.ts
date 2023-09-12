@@ -215,9 +215,6 @@ export const WalletAsyncActions = {
   addAccount: createAction<AddAccountPayloadType>('addAccount'), // alias for keyringService.addAccount
   getOnRampCurrencies: createAction('getOnRampCurrencies'),
   autoLockMinutesChanged: createAction('autoLockMinutesChanged'), // No reducer or API logic for this (UNUSED)
-  updateTokenPinStatus: createAction<BraveWallet.BlockchainToken>(
-    'updateTokenPinStatus'
-  ),
   updateAccountName: createAction<UpdateAccountNamePayloadType>(
     'updateAccountName'
   ),

@@ -33,7 +33,5 @@ export const mockPageState: PageState = {
     .replace('velvet', 'THIRD')
     .concat(` ${mockedMnemonic} LAST`),
   enablingAutoPin: false,
-  isAutoPinEnabled: false,
-  nftsPinningStatus: {},
-  isLocalIpfsNodeRunning: false
+  isAutoPinEnabled: false
 }

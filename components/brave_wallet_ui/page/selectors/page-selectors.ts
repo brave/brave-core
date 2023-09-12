@@ -22,9 +22,6 @@ export const setupStillInProgress = ({ page }: State) => page.setupStillInProgre
 export const showIsRestoring = ({ page }: State) => page.showIsRestoring
 export const showRecoveryPhrase = ({ page }: State) => page.showRecoveryPhrase
 export const walletTermsAcknowledged = ({ page }: State) => page.walletTermsAcknowledged
-export const enablingAutoPin = ({ page }: State) => page.enablingAutoPin
-export const isAutoPinEnabled = ({ page }: State) => page.isAutoPinEnabled
-export const isLocalIpfsNodeRunning = ({ page }: State) => page.isLocalIpfsNodeRunning
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects and lists)
 export const importWalletError = ({ page }: State) => page.importWalletError
@@ -34,4 +31,3 @@ export const nftMetadataError = ({ page }: State) => page.nftMetadataError
 export const selectedAsset = ({ page }: State) => page?.selectedAsset
 export const pinStatusOverview = ({ page }: State) => page.pinStatusOverview
 export const selectedCoinMarket = ({ page }: State) => page.selectedCoinMarket
-export const nftsPinningStatus = ({ page }: State) => page.nftsPinningStatus

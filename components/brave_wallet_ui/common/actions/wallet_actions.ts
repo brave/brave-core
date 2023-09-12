@@ -64,7 +64,6 @@ export const {
   setVisibleTokensInfo,
   unlocked,
   unlockWallet,
-  updateTokenPinStatus,
   updateUserAsset,
   setHidePortfolioGraph,
   setHidePortfolioBalances,

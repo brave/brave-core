@@ -8,7 +8,6 @@ import { Store } from './async/types'
 import { BraveWallet } from '../constants/types'
 import { objectEquals } from '../utils/object-utils'
 import { makeSerializableTransaction } from '../utils/model-serialization-utils'
-import { WalletPageActions } from '../page/actions'
 import { walletApi } from './slices/api.slice'
 import { getCoinFromTxDataUnion } from '../utils/network-utils'
 
@@ -192,14 +191,11 @@ export function makeJsonRpcServiceObserver (store: Store) {
 
   export function  makeBraveWalletPinServiceObserver (store: Store) {
     const braveWalletServiceObserverReceiver = new BraveWallet.BraveWalletPinServiceObserverReceiver({
-      onTokenStatusChanged: function (service, token, status) {
-        store.dispatch(WalletPageActions.updateNftPinningStatus({
-          token,
-          status
-        }))
+      onTokenStatusChanged: function (_service, _token, _status) {
+        store.dispatch(walletApi.endpoints.getNftsPinningStatus.initiate())
       },
       onLocalNodeStatusChanged: function (status) {
-        store.dispatch(WalletPageActions.updateLocalIpfsNodeStatus(status))
+        store.dispatch(walletApi.endpoints.updateLocalIpfsNodeStatus.initiate(status))
       }
     })
     return braveWalletServiceObserverReceiver
@@ -208,9 +204,7 @@ export function makeJsonRpcServiceObserver (store: Store) {
   export function  makeBraveWalletAutoPinServiceObserver (store: Store) {
     const braveWalletAutoPinServiceObserverReceiver = new BraveWallet.WalletAutoPinServiceObserverReceiver({
       onAutoPinStatusChanged: function (enabled) {
-        store.dispatch(WalletPageActions.updateAutoPinEnabled(
-          enabled
-        ))
+        store.dispatch(walletApi.endpoints.setAutopinEnabled.initiate(enabled))
       }
     })
     return braveWalletAutoPinServiceObserverReceiver
