@@ -790,20 +790,24 @@ void SidebarContainerView::OnTabStripModelChanged(
         SharedPinnedTabServiceFactory::GetForProfile(browser_->profile());
   }
 
-  // When shared pinned tab service is enabled, one WebContents instance is
-  // shared across multiple windows. Do resgister/unregister side panel entry
-  // when it's set.
-  if (shared_pinned_tab_service &&
-      (change.type() == TabStripModelChange::kReplaced)) {
+  // Need to [de]register contextual registry when tab is replaced.
+  // Ex, tab is discarded or shared pinned tab feature is used
+  // When replaced web contents is dummy contents from shared pinned tab,
+  // we don't need to handle about it.
+  if ((change.type() == TabStripModelChange::kReplaced)) {
     auto* replace = change.GetReplace();
-    if (shared_pinned_tab_service->IsSharedContents(replace->new_contents)) {
+
+    // Don't need to register for shared pinned tab's dummy contents.
+    if (!shared_pinned_tab_service ||
+        !shared_pinned_tab_service->IsDummyContents(replace->new_contents)) {
       CreateAndRegisterEntries(replace->new_contents);
     }
 
-    if (shared_pinned_tab_service->IsSharedContents(replace->old_contents)) {
+    // Don't need to deregister for shared pinned tab's dummy contents.
+    if (!shared_pinned_tab_service ||
+        !shared_pinned_tab_service->IsDummyContents(replace->old_contents)) {
       DeregisterEntries(replace->old_contents);
     }
-
     return;
   }
 
@@ -861,6 +865,7 @@ void SidebarContainerView::CreateAndRegisterEntries(
 
   panel_registry_observations_.AddObservation(registry);
 
+  // Register here for an entry that is used for all tabs.
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
     registry->Register(std::make_unique<SidePanelEntry>(
