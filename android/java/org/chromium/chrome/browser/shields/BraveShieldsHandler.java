@@ -16,6 +16,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.text.SpannableString;
+import android.text.method.ScrollingMovementMethod;
 import android.text.style.StyleSpan;
 import android.util.Pair;
 import android.view.ContextThemeWrapper;
@@ -72,6 +73,7 @@ import java.util.Map;
  */
 public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCallback {
     private static final String TAG = "BraveShieldsHandler";
+    private static final int URL_SPEC_MAX_LINES = 3;
 
     private static class BlockersInfo {
         public BlockersInfo() {
@@ -802,7 +804,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
     private void setUpReportBrokenSiteLayout() {
         TextView mReportSiteUrlText = mReportBrokenSiteLayout.findViewById(R.id.report_site_url);
-        mReportSiteUrlText.setText(mHost);
+        mReportSiteUrlText.setText(mUrlSpec);
+        mReportSiteUrlText.setMovementMethod(new ScrollingMovementMethod());
 
         Button mCancelButton = mReportBrokenSiteLayout.findViewById(R.id.btn_cancel);
         mCancelButton.setOnClickListener(new View.OnClickListener() {
