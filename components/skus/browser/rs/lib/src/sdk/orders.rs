@@ -183,9 +183,9 @@ where
 
         let request_with_retries = FutureRetry::new(
             || async {
-                let mut builder = http::Request::builder();
-                builder.method("POST");
-                builder.uri(format!("{}/v1/orders", self.base_url));
+                let builder = http::Request::builder()
+                    .method("POST")
+                    .uri(format!("{}/v1/orders", self.base_url));
 
                 let body = to_vec(&order).or(Err(InternalError::SerializationFailed))?;
 
@@ -213,9 +213,9 @@ where
     pub async fn fetch_order(&self, order_id: &str) -> Result<Order, SkusError> {
         let request_with_retries = FutureRetry::new(
             || async {
-                let mut builder = http::Request::builder();
-                builder.method("GET");
-                builder.uri(format!("{}/v1/orders/{}", self.base_url, order_id));
+                let builder = http::Request::builder()
+                    .method("GET")
+                    .uri(format!("{}/v1/orders/{}", self.base_url, order_id));
 
                 let req = builder.body(vec![]).unwrap();
                 let resp = self.fetch(req).await?;
@@ -242,9 +242,7 @@ where
         event!(Level::DEBUG, order_id = order_id, "submit_receipt called");
         let request_with_retries = FutureRetry::new(
             || async {
-                let mut builder = http::Request::builder();
-                builder.method("POST");
-                builder.uri(format!(
+                let builder = http::Request::builder().method("POST").uri(format!(
                     "{}/v1/orders/{}/submit-receipt",
                     self.base_url, order_id
                 ));

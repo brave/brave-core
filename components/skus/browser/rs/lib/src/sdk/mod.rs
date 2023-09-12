@@ -8,6 +8,8 @@ use std::cell::RefCell;
 use std::fmt;
 
 use chrono::{DateTime, Utc};
+#[cfg(feature = "wasm")]
+use git_version::git_version;
 use tracing::{event, Level};
 
 use crate::cache::CacheNode;

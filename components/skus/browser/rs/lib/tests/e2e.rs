@@ -1,13 +1,13 @@
 use std::cell::RefCell;
-use std::{thread, time};
 use std::cell::RefMut;
 use std::collections::HashMap;
 use std::fmt;
 use std::io::Read;
+use std::{thread, time};
 
 use async_std::task;
 use async_trait::async_trait;
-use isahc::prelude::*;
+use isahc::{prelude::*, HttpClient};
 use tracing::{debug, Level};
 use tracing_subscriber::FmtSubscriber;
 
@@ -48,8 +48,8 @@ impl HTTPClient for CLIClient {
         &self,
         req: http::Request<Vec<u8>>,
     ) -> Result<http::Response<Vec<u8>>, InternalError> {
-        let client = HttpClient::default();
-        return match client.send_async(req).await {
+        let client = HttpClient::new().unwrap();
+        return match client.send(req) {
             Ok(response) => Ok(response.map(|b| {
                 let body: Result<Vec<u8>, _> = b.bytes().collect();
                 body.unwrap()
@@ -89,11 +89,15 @@ impl KVStore for CLIStore {
 
 #[test]
 fn skus_e2e_works() {
-    let subscriber = FmtSubscriber::builder().with_max_level(Level::TRACE).finish();
+    let subscriber = FmtSubscriber::builder()
+        .with_max_level(Level::TRACE)
+        .finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
     task::block_on(async {
-        let client = CLIClient { store: RefCell::new(CLIStore(HashMap::new())) };
+        let client = CLIClient {
+            store: RefCell::new(CLIStore(HashMap::new())),
+        };
         let sdk = skus::sdk::SDK::new(client, Environment::Testing, None, None);
         sdk.initialize().await;
 
@@ -105,17 +109,23 @@ fn skus_e2e_works() {
 
         sdk.fetch_order_credentials(&order.id).await.unwrap();
 
-        sdk.present_order_credentials(&order.id, &order.location, "/").await.unwrap();
+        sdk.present_order_credentials(&order.id, &order.location, "/")
+            .await
+            .unwrap();
     });
 }
 
 #[test]
 fn skus_tlv2_e2e_works() {
-    let subscriber = FmtSubscriber::builder().with_max_level(Level::TRACE).finish();
+    let subscriber = FmtSubscriber::builder()
+        .with_max_level(Level::TRACE)
+        .finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
     task::block_on(async {
-        let client = CLIClient { store: RefCell::new(CLIStore(HashMap::new())) };
+        let client = CLIClient {
+            store: RefCell::new(CLIStore(HashMap::new())),
+        };
         let sdk = skus::sdk::SDK::new(client, Environment::Testing, None, None);
         sdk.initialize().await;
 
@@ -132,10 +142,15 @@ fn skus_tlv2_e2e_works() {
         sdk.fetch_order_credentials(&order.id).await.unwrap();
 
         for _ in 1..=3 {
-            sdk.present_order_credentials(&order.id, &order.location, "/").await.unwrap();
+            sdk.present_order_credentials(&order.id, &order.location, "/")
+                .await
+                .unwrap();
         }
         // should all be spent by this point, only 5 per day per that sku
-        match sdk.present_order_credentials(&order.id, &order.location, "/").await {
+        match sdk
+            .present_order_credentials(&order.id, &order.location, "/")
+            .await
+        {
             Err(sku_err) => {
                 println!("{}", sku_err);
             }
@@ -151,7 +166,10 @@ fn skus_tlv2_e2e_works() {
 
         // fetch again and make sure we have still presented all creds
         sdk.fetch_order_credentials(&order.id).await.unwrap();
-        match sdk.present_order_credentials(&order.id, &order.location, "/").await {
+        match sdk
+            .present_order_credentials(&order.id, &order.location, "/")
+            .await
+        {
             Err(sku_err) => {
                 println!("{}", sku_err);
             }
@@ -164,11 +182,15 @@ fn skus_tlv2_e2e_works() {
 
 #[test]
 fn has_credentials_works() {
-    let subscriber = FmtSubscriber::builder().with_max_level(Level::TRACE).finish();
+    let subscriber = FmtSubscriber::builder()
+        .with_max_level(Level::TRACE)
+        .finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
     task::block_on(async {
-        let client = CLIClient { store: RefCell::new(CLIStore(HashMap::new())) };
+        let client = CLIClient {
+            store: RefCell::new(CLIStore(HashMap::new())),
+        };
         let sdk = skus::sdk::SDK::new(client, Environment::Testing, None, None);
         sdk.initialize().await;
 
@@ -181,11 +203,15 @@ fn has_credentials_works() {
 
 #[test]
 fn skus_5m_tlv2_e2e_works() {
-    let subscriber = FmtSubscriber::builder().with_max_level(Level::TRACE).finish();
+    let subscriber = FmtSubscriber::builder()
+        .with_max_level(Level::TRACE)
+        .finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
     task::block_on(async {
-        let client = CLIClient { store: RefCell::new(CLIStore(HashMap::new())) };
+        let client = CLIClient {
+            store: RefCell::new(CLIStore(HashMap::new())),
+        };
         let sdk = skus::sdk::SDK::new(client, Environment::Staging, None, None);
         sdk.initialize().await;
 
@@ -201,12 +227,14 @@ fn skus_5m_tlv2_e2e_works() {
         // go ahead and see if we attempt to re-initialize, hope not
         sdk.fetch_order_credentials(&order.id).await.unwrap();
 
-		let four_min = time::Duration::from_millis(4*60000);
+        let four_min = time::Duration::from_millis(4 * 60000);
 
-		for _ in 1..=30 {
-        	sdk.present_order_credentials(&order.id, &order.location, "/").await.unwrap();
-			let now = time::Instant::now();
-			thread::sleep(four_min);
-		}
+        for _ in 1..=30 {
+            sdk.present_order_credentials(&order.id, &order.location, "/")
+                .await
+                .unwrap();
+            let now = time::Instant::now();
+            thread::sleep(four_min);
+        }
     });
 }

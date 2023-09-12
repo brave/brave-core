@@ -14,7 +14,7 @@ use web_sys::{EventTarget, HtmlDocument, Request, RequestInit, RequestMode, Resp
 use tracing_subscriber::fmt::format::Pretty;
 use tracing_subscriber::fmt::time::UtcTime;
 use tracing_subscriber::util::SubscriberInitExt;
-use tracing_subscriber::{filter::LevelFilter, layer::SubscriberExt, registry::Registry};
+use tracing_subscriber::{filter::LevelFilter, layer::SubscriberExt};
 use tracing_web::{performance_layer, MakeConsoleWriter};
 
 use skus::{errors, http::http, sdk, tracing, Environment, HTTPClient, KVClient, KVStore};
@@ -68,7 +68,9 @@ pub fn initialize(
         let env = env.parse::<Environment>().or(Err("invalid environment"))?;
 
         let level_filter = match log_level {
-            Some(log_level) => log_level.parse::<LevelFilter>().or(Err("invalid log level"))?,
+            Some(log_level) => log_level
+                .parse::<LevelFilter>()
+                .or(Err("invalid log level"))?,
             None => LevelFilter::DEBUG,
         };
 
@@ -142,8 +144,10 @@ impl JSSDK {
         let sdk = self.sdk.clone();
 
         let future = async move {
-            let window: ChromeWindow =
-                web_sys::window().ok_or("couldn't get window")?.dyn_into().unwrap();
+            let window: ChromeWindow = web_sys::window()
+                .ok_or("couldn't get window")?
+                .dyn_into()
+                .unwrap();
             if let Some(chrome) = window.chrome() {
                 if let Some(skus) = chrome.braveSkus() {
                     return JsFuture::from(skus.refresh_order(&order_id)).await;
@@ -163,7 +167,10 @@ impl JSSDK {
         let sdk = self.sdk.clone();
 
         let future = async move {
-            let resp = sdk.submit_receipt(&order_id, &receipt).await.map_err(JsError::from)?;
+            let resp = sdk
+                .submit_receipt(&order_id, &receipt)
+                .await
+                .map_err(JsError::from)?;
             let js_value = serde_wasm_bindgen::to_value(&resp)?;
             Ok(js_value)
         };
@@ -176,8 +183,10 @@ impl JSSDK {
         let sdk = self.sdk.clone();
 
         let future = async move {
-            let order =
-                sdk.submit_order_credentials_to_sign(&order_id).await.map_err(JsError::from)?;
+            let order = sdk
+                .submit_order_credentials_to_sign(&order_id)
+                .await
+                .map_err(JsError::from)?;
             let js_value = serde_wasm_bindgen::to_value(&order)?;
             Ok(js_value)
         };
@@ -190,15 +199,20 @@ impl JSSDK {
         let sdk = self.sdk.clone();
 
         let future = async move {
-            let window: ChromeWindow =
-                web_sys::window().ok_or("couldn't get window")?.dyn_into().unwrap();
+            let window: ChromeWindow = web_sys::window()
+                .ok_or("couldn't get window")?
+                .dyn_into()
+                .unwrap();
             if let Some(chrome) = window.chrome() {
                 if let Some(skus) = chrome.braveSkus() {
                     return JsFuture::from(skus.fetch_order_credentials(&order_id)).await;
                 }
             }
 
-            let order = sdk.fetch_order_credentials(&order_id).await.map_err(JsError::from)?;
+            let order = sdk
+                .fetch_order_credentials(&order_id)
+                .await
+                .map_err(JsError::from)?;
             let js_value = serde_wasm_bindgen::to_value(&order)?;
             Ok(js_value)
         };
@@ -211,7 +225,10 @@ impl JSSDK {
         let sdk = self.sdk.clone();
 
         let future = async move {
-            let order = sdk.delete_order_credentials(&order_id).await.map_err(JsError::from)?;
+            let order = sdk
+                .delete_order_credentials(&order_id)
+                .await
+                .map_err(JsError::from)?;
             let js_value = serde_wasm_bindgen::to_value(&order)?;
             Ok(js_value)
         };
@@ -235,8 +252,10 @@ impl JSSDK {
                 }
             }
 
-            if let Some(credential_summary) =
-                sdk.matching_credential_summary(&subdomain).await.map_err(JsError::from)?
+            if let Some(credential_summary) = sdk
+                .matching_credential_summary(&subdomain)
+                .await
+                .map_err(JsError::from)?
             {
                 return {
                     let js_value = serde_wasm_bindgen::to_value(&credential_summary)?;
@@ -360,7 +379,9 @@ impl KVClient for JSClient {
 
     #[allow(clippy::needless_lifetimes)]
     fn get_store<'a>(&'a self) -> Result<RefMut<'a, JSStorage>, errors::InternalError> {
-        self.local_storage.try_borrow_mut().or(Err(errors::InternalError::BorrowFailed))
+        self.local_storage
+            .try_borrow_mut()
+            .or(Err(errors::InternalError::BorrowFailed))
     }
 }
 
@@ -397,8 +418,12 @@ impl KVStore for JSStorage {
 #[async_trait(?Send)]
 impl HTTPClient for JSClient {
     fn set_cookie(&self, value: &str) {
-        let document =
-            web_sys::window().unwrap().document().unwrap().dyn_into::<HtmlDocument>().unwrap();
+        let document = web_sys::window()
+            .unwrap()
+            .document()
+            .unwrap()
+            .dyn_into::<HtmlDocument>()
+            .unwrap();
 
         tracing::debug!("set cookie: {}", value);
         document.set_cookie(value).unwrap();
@@ -433,7 +458,10 @@ impl HTTPClient for JSClient {
         let request = Request::new_with_str_and_init(&req.uri().to_string(), &opts).unwrap();
 
         for (key, value) in req.headers().iter() {
-            request.headers().set(key.as_str(), value.to_str().unwrap()).unwrap();
+            request
+                .headers()
+                .set(key.as_str(), value.to_str().unwrap())
+                .unwrap();
         }
 
         let r = JsFuture::from(window.fetch_with_request(&request))
@@ -443,14 +471,13 @@ impl HTTPClient for JSClient {
         assert!(r.is_instance_of::<Response>());
         let r: Response = r.dyn_into().unwrap();
 
-        let mut response = http::Response::builder();
-        response.status(r.status());
+        let mut response = http::Response::builder().status(r.status());
 
         let headers: Headers = r.headers().dyn_into().unwrap();
 
         for value in headers.entries() {
             let header: (String, String) = value.unwrap().into_serde().unwrap();
-            response.header(&header.0 as &str, &header.1 as &str);
+            response = response.header(&header.0 as &str, &header.1 as &str);
         }
 
         let body = JsFuture::from(r.array_buffer().unwrap()).await;
