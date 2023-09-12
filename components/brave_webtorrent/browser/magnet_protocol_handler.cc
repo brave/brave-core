@@ -69,8 +69,9 @@ GURL TranslateTorrentUIURLReversed(const GURL& url) {
           base::UnescapeRule::PATH_SEPARATORS));
   GURL::Replacements replacements;
   replacements.SetRefStr(url.ref_piece());
-  return GURL(kWebTorrentScheme +
-              translated_url.ReplaceComponents(replacements).spec());
+  return GURL(
+      base::StrCat({url::kWebTorrentScheme, ":",
+                    translated_url.ReplaceComponents(replacements).spec()}));
 }
 
 bool HandleTorrentURLReverseRewrite(GURL* url,

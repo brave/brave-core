@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "base/path_service.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
@@ -356,7 +357,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
   ASSERT_TRUE(WaitForLoadStop(contents));
 
   EXPECT_EQ(contents->GetLastCommittedURL().spec(),
-            webtorrent::kWebTorrentScheme + torrent_url().spec())
+            base::StrCat({url::kWebTorrentScheme, ":", torrent_url().spec()}))
       << "URL visible to users should stay as the torrent URL";
   content::NavigationEntry* entry =
       contents->GetController().GetLastCommittedEntry();
