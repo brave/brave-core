@@ -18,6 +18,7 @@
 #include "content/public/browser/web_contents.h"
 #include "net/base/url_util.h"
 #include "net/http/http_response_headers.h"
+#include "content/public/browser/web_contents_observer.h"
 
 namespace tor {
 
@@ -28,10 +29,12 @@ bool GetOnionLocation(const net::HttpResponseHeaders* headers,
   DCHECK(onion_location);
 
   onion_location->clear();
-  std::string name = "onion-location";
+  constexpr const char kHeaderName[] = "onion-location";
 
-  if (!headers || !headers->EnumerateHeader(nullptr, name, onion_location))
+  if (!headers ||
+      !headers->EnumerateHeader(nullptr, kHeaderName, onion_location)) {
     return false;
+  }
   return true;
 }
 
@@ -86,7 +89,8 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
     }
     // If user prefers opening it automatically
     if (pref_service_->GetBoolean(prefs::kAutoOnionRedirect)) {
-      delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(), url);
+      delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(), url,
+                                 false);
     } else {
       OnionLocationTabHelper::SetOnionLocation(
           navigation_handle()->GetWebContents(), url);
@@ -106,8 +110,8 @@ OnionLocationNavigationThrottle::WillStartRequest() {
     GURL url = navigation_handle()->GetURL();
     if (url.SchemeIsHTTPOrHTTPS() && net::IsOnion(url)) {
       if (pref_service_->GetBoolean(prefs::kAutoOnionRedirect)) {
-        delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(),
-                                   std::move(url));
+        delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(), url,
+                                   navigation_handle()->IsRendererInitiated());
       } else {
         OnionLocationTabHelper::SetOnionLocation(
             navigation_handle()->GetWebContents(), url);

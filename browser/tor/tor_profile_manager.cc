@@ -10,15 +10,15 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/components/tor/tor_profile_service.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_window.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
@@ -42,17 +42,24 @@ TorProfileManager& TorProfileManager::GetInstance() {
 }
 
 // static
-void TorProfileManager::SwitchToTorProfile(
-    Profile* original_profile,
-    base::OnceCallback<void(Browser*)> callback) {
+Browser* TorProfileManager::SwitchToTorProfile(Profile* original_profile) {
   Profile* tor_profile =
       TorProfileManager::GetInstance().GetTorProfile(original_profile);
   if (!tor_profile) {
-    return std::move(callback).Run(nullptr);
+    return nullptr;
   }
-  profiles::OpenBrowserWindowForProfile(
-      std::move(callback), /*always_create=*/false,
-      /*is_new_profile=*/false, /*unblock_extensions=*/false, tor_profile);
+
+  // Find an existing Tor Browser, making a new one if no such Browser is
+  // located.
+  Browser* browser = chrome::FindTabbedBrowser(tor_profile, false);
+  if (!browser && Browser::GetCreationStatusForProfile(tor_profile) ==
+                      Browser::CreationStatus::kOk) {
+    browser = Browser::Create(Browser::CreateParams(tor_profile, true));
+  }
+  if (browser) {
+    browser->window()->Activate();
+  }
+  return browser;
 }
 
 // static
@@ -82,8 +89,9 @@ Profile* TorProfileManager::GetTorProfile(Profile* profile) {
 
   const std::string context_id = tor_profile->UniqueId();
   auto it = tor_profiles_.find(context_id);
-  if (it != tor_profiles_.end())
+  if (it != tor_profiles_.end()) {
     return it->second;
+  }
 
   InitTorProfileUserPrefs(tor_profile);
 
@@ -101,13 +109,15 @@ Profile* TorProfileManager::GetTorProfile(Profile* profile) {
 }
 
 void TorProfileManager::CloseAllTorWindows() {
-  for (const auto& it : tor_profiles_)
+  for (const auto& it : tor_profiles_) {
     CloseTorProfileWindows(it.second);
+  }
 }
 
 void TorProfileManager::OnBrowserRemoved(Browser* browser) {
-  if (!browser || !browser->profile()->IsTor())
+  if (!browser || !browser->profile()->IsTor()) {
     return;
+  }
 
   if (!GetTorBrowserCount()) {
     tor::TorProfileService* service =

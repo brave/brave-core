@@ -144,15 +144,7 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
   }
 
   Browser* OpenTorWindow() {
-    base::RunLoop loop;
-    Browser* tor_browser = nullptr;
-    TorProfileManager::SwitchToTorProfile(
-        browser()->profile(), base::BindLambdaForTesting([&](Browser* browser) {
-          tor_browser = browser;
-          loop.Quit();
-        }));
-    loop.Run();
-    return tor_browser;
+    return TorProfileManager::SwitchToTorProfile(browser()->profile());
   }
 
  private:
@@ -452,4 +444,53 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, HTTPHost) {
   web_contents =
       browser_list->get(0)->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetVisibleURL(), url);
+}
+
+IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
+                       RenderInitiatedNavigations) {
+  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
+                                               true);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com")));
+
+  const char kScript[] = R"js(
+    // Spam user.
+    for (let i = 0; i < 5; i++) {
+      document.location.href = 'http://spam' + i + '.onion'
+    }
+  )js";
+
+  // Renderer initiated navigations.
+  ui_test_utils::BrowserChangeObserver browser_creation_observer(
+      nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+  content::ExecJs(browser()->tab_strip_model()->GetActiveWebContents(),
+                  kScript);
+  browser_creation_observer.Wait();
+
+  BrowserList* browser_list = BrowserList::GetInstance();
+  EXPECT_EQ(2U, browser_list->size());
+  EXPECT_TRUE(browser_list->get(1)->profile()->IsTor());
+  EXPECT_EQ(1, browser_list->get(1)->tab_strip_model()->count());
+  auto* tor_tab = browser_list->get(1)->tab_strip_model()->GetWebContentsAt(0);
+  EXPECT_EQ(GURL("http://spam4.onion"), tor_tab->GetVisibleURL());
+
+  // Browser initiated navigation.
+  content::TestNavigationObserver nav_observer(
+      browser()->tab_strip_model()->GetActiveWebContents());
+  browser()->tab_strip_model()->GetActiveWebContents()->GetController().LoadURL(
+      GURL("http://user.onion"), content::Referrer(), ui::PAGE_TRANSITION_TYPED,
+      {});
+  nav_observer.Wait();
+
+  EXPECT_EQ(2U, browser_list->size());
+  EXPECT_TRUE(browser_list->get(1)->profile()->IsTor());
+  EXPECT_EQ(2, browser_list->get(1)->tab_strip_model()->count());
+  EXPECT_EQ(GURL("http://spam4.onion"), browser_list->get(1)
+                                            ->tab_strip_model()
+                                            ->GetWebContentsAt(0)
+                                            ->GetVisibleURL());
+  EXPECT_EQ(GURL("http://user.onion"), browser_list->get(1)
+                                           ->tab_strip_model()
+                                           ->GetWebContentsAt(1)
+                                           ->GetVisibleURL());
 }

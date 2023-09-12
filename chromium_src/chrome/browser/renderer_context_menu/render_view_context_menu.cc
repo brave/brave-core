@@ -285,12 +285,14 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       break;
 #endif
 #if BUILDFLAG(ENABLE_TOR)
-    case IDC_CONTENT_CONTEXT_OPENLINKTOR:
-      TorProfileManager::SwitchToTorProfile(
-          GetProfile(),
-          base::BindRepeating(OnTorProfileCreated, params_.link_url,
-                              HasAlreadyOpenedTorWindow(GetProfile())));
-      break;
+    case IDC_CONTENT_CONTEXT_OPENLINKTOR: {
+      const bool has_tor_window = HasAlreadyOpenedTorWindow(GetProfile());
+      Browser* tor_browser =
+          TorProfileManager::SwitchToTorProfile(GetProfile());
+      if (tor_browser) {
+        OnTorProfileCreated(params_.link_url, has_tor_window, tor_browser);
+      }
+    } break;
 #endif
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
     case IDC_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE:

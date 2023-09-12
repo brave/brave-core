@@ -15,6 +15,7 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -44,15 +45,6 @@ constexpr SkColor kOpenInTorBg = SkColorSetRGB(0x6a, 0x37, 0x85);
 constexpr SkColor kIconColor = SkColorSetRGB(0xf0, 0xf2, 0xff);
 constexpr SkColor kTextColor = SK_ColorWHITE;
 constexpr int kIconSize = 12;
-
-void OnTorProfileCreated(GURL onion_location, Browser* browser) {
-  if (!browser)
-    return;
-  content::OpenURLParams open_tor(onion_location, content::Referrer(),
-                                  WindowOpenDisposition::SWITCH_TO_TAB,
-                                  ui::PAGE_TRANSITION_TYPED, false);
-  browser->OpenURL(open_tor);
-}
 
 // Sets the focus and ink drop highlight path to match the background
 // along with it's corner radius.
@@ -129,9 +121,13 @@ class OnionLocationButtonView : public views::LabelButton {
   }
 
   void ButtonPressed() {
-    TorProfileManager::SwitchToTorProfile(
-        profile_,
-        base::BindRepeating(&OnTorProfileCreated, GURL(onion_location_)));
+    if (Browser* tor_browser =
+            TorProfileManager::SwitchToTorProfile(profile_)) {
+      content::OpenURLParams open_tor(onion_location_, content::Referrer(),
+                                      WindowOpenDisposition::SWITCH_TO_TAB,
+                                      ui::PAGE_TRANSITION_TYPED, false);
+      tor_browser->OpenURL(open_tor);
+    }
   }
 
   GURL onion_location_;

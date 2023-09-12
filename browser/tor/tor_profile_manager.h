@@ -9,17 +9,16 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
-#include "base/functional/callback.h"
 #include "base/no_destructor.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "chrome/browser/ui/browser_list_observer.h"
+
+class Browser;
 
 class TorProfileManager : public BrowserListObserver, public ProfileObserver {
  public:
   static TorProfileManager& GetInstance();
-  static void SwitchToTorProfile(Profile* original_profile,
-                                 base::OnceCallback<void(Browser*)> callback);
+  static Browser* SwitchToTorProfile(Profile* original_profile);
   static void CloseTorProfileWindows(Profile* tor_profile);
   Profile* GetTorProfile(Profile* original_profile);
 

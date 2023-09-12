@@ -95,8 +95,7 @@ void BraveIncognitoMenuView::AddTorButton() {
 }
 
 void BraveIncognitoMenuView::OnTorProfileButtonClicked() {
-  TorProfileManager::SwitchToTorProfile(browser()->profile(),
-                                        base::DoNothing());
+  TorProfileManager::SwitchToTorProfile(browser()->profile());
 }
 
 std::u16string BraveIncognitoMenuView::GetAccessibleWindowTitle() const {
