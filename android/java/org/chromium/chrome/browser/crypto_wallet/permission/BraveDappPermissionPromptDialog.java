@@ -54,6 +54,9 @@ import org.chromium.url.GURL;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Dialog to grant website permissions to use Dapps
+ */
 public class BraveDappPermissionPromptDialog
         implements ModalDialogProperties.Controller, ImageDownloadCallback, ConnectionErrorHandler {
     private static final String TAG = "BraveDappPermission";
@@ -120,7 +123,7 @@ public class BraveDappPermissionPromptDialog
 
         setupDurationSpinner(customView);
 
-        InitBraveWalletService();
+        initBraveWalletService();
         TextView domain = customView.findViewById(R.id.domain);
         mBraveWalletService.getActiveOrigin(
                 originInfo -> { domain.setText(Utils.geteTldSpanned(originInfo)); });
@@ -138,7 +141,7 @@ public class BraveDappPermissionPromptDialog
                         .with(ModalDialogProperties.FILTER_TOUCH_FOR_SECURITY, true)
                         .build();
         mModalDialogManager.showDialog(mPropertyModel, ModalDialogType.APP);
-        InitKeyringService();
+        initKeyringService();
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.dismissWalletPanelOrDialog();
@@ -189,7 +192,7 @@ public class BraveDappPermissionPromptDialog
         return (ViewGroup) viewParent;
     }
 
-    private void InitBraveWalletService() {
+    private void initBraveWalletService() {
         if (mBraveWalletService != null) {
             return;
         }
@@ -293,7 +296,7 @@ public class BraveDappPermissionPromptDialog
 
     @Override
     public void onDismiss(PropertyModel model, int dismissalCause) {
-        DisconnectMojoServices();
+        disconnectMojoServices();
         BraveDappPermissionPromptDialogJni.get().onDialogDismissed(mNativeDialogController);
         mNativeDialogController = 0;
     }
@@ -303,7 +306,7 @@ public class BraveDappPermissionPromptDialog
         mModalDialogManager.dismissDialog(mPropertyModel, DialogDismissalCause.DISMISSED_BY_NATIVE);
     }
 
-    public void DisconnectMojoServices() {
+    public void disconnectMojoServices() {
         mMojoServicesClosed = true;
         if (mKeyringService != null) {
             mKeyringService.close();
@@ -322,10 +325,10 @@ public class BraveDappPermissionPromptDialog
         }
         mKeyringService.close();
         mKeyringService = null;
-        InitKeyringService();
+        initKeyringService();
     }
 
-    protected void InitKeyringService() {
+    protected void initKeyringService() {
         if (mKeyringService != null) {
             return;
         }
