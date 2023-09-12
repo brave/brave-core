@@ -868,6 +868,14 @@
           FEATURE_VALUE_TYPE(features::kBraveCopyCleanLinkByDefault),          \
       },                                                                       \
       {                                                                        \
+          "brave-global-privacy-control-enabled",                              \
+          "Enable Global Privacy Control",                                     \
+          "Enable the Sec-GPC request header and the "                         \
+          "navigator.globalPrivacyControl JS API",                             \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(blink::features::kBraveGlobalPrivacyControl),     \
+      },                                                                       \
+      {                                                                        \
           "https-by-default",                                                  \
           "Use HTTPS by Default",                                              \
           "Attempt to connect to all websites using HTTPS before falling "     \
