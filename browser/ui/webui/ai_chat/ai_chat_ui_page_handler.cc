@@ -12,6 +12,7 @@
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/browser/constants.h"
+#include "brave/components/ai_chat/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/common/pref_names.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
@@ -123,13 +124,16 @@ void AIChatUIPageHandler::GetConversationHistory(
 
 void AIChatUIPageHandler::GetSuggestedQuestions(
     GetSuggestedQuestionsCallback callback) {
-  if (active_chat_tab_helper_) {
-    bool can_generate;
-    mojom::AutoGenerateQuestionsPref auto_generate;
-    std::move(callback).Run(active_chat_tab_helper_->GetSuggestedQuestions(
-                                can_generate, auto_generate),
-                            can_generate, auto_generate);
+  if (!active_chat_tab_helper_) {
+    std::move(callback).Run({}, false,
+                            mojom::AutoGenerateQuestionsPref::Disabled);
+    return;
   }
+  bool can_generate;
+  mojom::AutoGenerateQuestionsPref auto_generate;
+  std::move(callback).Run(active_chat_tab_helper_->GetSuggestedQuestions(
+                              can_generate, auto_generate),
+                          can_generate, auto_generate);
 }
 
 void AIChatUIPageHandler::GenerateQuestions() {
@@ -150,21 +154,23 @@ void AIChatUIPageHandler::GetSiteInfo(GetSiteInfoCallback callback) {
 }
 
 void AIChatUIPageHandler::OpenBraveLeoSettings() {
-  if (active_chat_tab_helper_) {
-    active_chat_tab_helper_->web_contents()->OpenURL(
-        {GURL("brave://settings/leo-assistant"), content::Referrer(),
-         WindowOpenDisposition::NEW_FOREGROUND_TAB, ui::PAGE_TRANSITION_LINK,
-         false});
-  }
+  auto* contents_to_navigate = (active_chat_tab_helper_)
+                                   ? active_chat_tab_helper_->web_contents()
+                                   : web_contents();
+  contents_to_navigate->OpenURL({GURL("brave://settings/leo-assistant"),
+                                 content::Referrer(),
+                                 WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                                 ui::PAGE_TRANSITION_LINK, false});
 }
 
 void AIChatUIPageHandler::OpenBraveLeoWiki() {
-  if (active_chat_tab_helper_) {
-    active_chat_tab_helper_->web_contents()->OpenURL(
-        {GURL("https://github.com/brave/brave-browser/wiki/Brave-Leo"),
-         content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
-         ui::PAGE_TRANSITION_LINK, false});
-  }
+  auto* contents_to_navigate = (active_chat_tab_helper_)
+                                   ? active_chat_tab_helper_->web_contents()
+                                   : web_contents();
+  contents_to_navigate->OpenURL(
+      {GURL("https://github.com/brave/brave-browser/wiki/Brave-Leo"),
+       content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+       ui::PAGE_TRANSITION_LINK, false});
 }
 
 void AIChatUIPageHandler::DisconnectPageContents() {
@@ -187,9 +193,11 @@ void AIChatUIPageHandler::RetryAPIRequest() {
 
 void AIChatUIPageHandler::GetAPIResponseError(
     GetAPIResponseErrorCallback callback) {
-  if (active_chat_tab_helper_) {
-    std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
+  if (!active_chat_tab_helper_) {
+    std::move(callback).Run(mojom::APIError::None);
+    return;
   }
+  std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
@@ -320,11 +328,11 @@ absl::optional<mojom::SiteInfo> AIChatUIPageHandler::BuildSiteInfo() {
 
 void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {
   // WebUI visibility changed (not target tab)
-  if (active_chat_tab_helper_) {
-    bool is_visible =
-        (visibility == content::Visibility::VISIBLE) ? true : false;
-    active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
+  if (!active_chat_tab_helper_) {
+    return;
   }
+  bool is_visible = (visibility == content::Visibility::VISIBLE) ? true : false;
+  active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
 }
 
 }  // namespace ai_chat
