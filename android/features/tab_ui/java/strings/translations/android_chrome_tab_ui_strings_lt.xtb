@@ -3,7 +3,6 @@
 <translationbundle lang="lt">
 <translation id="1075622780330595106">Pastaruoju metu nebuvo naudojama tiek skirtukų: <ph name="NUMBER_OF_TABS"/>. Uždaryti juos?</translation>
 <translation id="125153950246128346">Palieskite, kad peržiūrėtumėte kitą skirtuką</translation>
-<translation id="955456285524876618">Uždarytus skirtukus rasite prie naujausių skirtukų „Brave“ pagrindiniame meniu</translation>
 <translation id="1657719826150349398">Perkelti skirtuką į apačią</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> skirtukas}one{<ph name="TABS_COUNT_MANY"/> skirtukas}few{<ph name="TABS_COUNT_MANY"/> skirtukai}many{<ph name="TABS_COUNT_MANY"/> skirtuko}other{<ph name="TABS_COUNT_MANY"/> skirtukų}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Pažymėti <ph name="TABS_COUNT_ONE"/> pasirinktą skirtuką}one{Pažymėti <ph name="TABS_COUNT_MANY"/> pasirinktą skirtuką}few{Pažymėti <ph name="TABS_COUNT_MANY"/> pasirinktus skirtukus}many{Pažymėti <ph name="TABS_COUNT_MANY"/> pasirinkto skirtuko}other{Pažymėti <ph name="TABS_COUNT_MANY"/> pasirinktų skirtukų}}</translation>
@@ -45,6 +44,7 @@
 <translation id="5073204694187207510">Slėpti viso ekrano tinklelį</translation>
 <translation id="5076161749301278626">Peržiūrėti parduotuvės apžvalgas?</translation>
 <translation id="5082793167783849073">Sparčiai palyginkite puslapius sukūrę grupę. Jei norite pradėti, palieskite ir palaikykite nuorodą.</translation>
+<translation id="5339733443032484186">Jūsų paskutinis skirtukas</translation>
 <translation id="5490235265819901748">Skirtukų grupė išskleista</translation>
 <translation id="5494920125229734069">Pasirinkti viską</translation>
 <translation id="5556417849629758491">Peržiūrėkite parduotuvės informaciją; parinktis pasiekiama ekrano viršuje</translation>
@@ -64,6 +64,7 @@
 <translation id="6549021453810473782">Peržiūrėti parduotuvės informaciją</translation>
 <translation id="6562820390860419811">Perkelti skirtuką į kairę</translation>
 <translation id="6615455863669487791">Rodyti</translation>
+<translation id="6398241160085205003">Uždarytus skirtukus rasite prie naujausių skirtukų „Brave“ pagrindiniame meniu.</translation>
 <translation id="6840760312327750441">Norėdami grupuoti skirtukus, palieskite ir palaikykite skirtuką. Tada nuvilkite jį į kitą skirtuką.</translation>
 <translation id="6856809498882026482">Slėpti kelių elementų pasirinkimo režimą</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Bendrinti skirtuką}one{Bendrinti skirtukus}few{Bendrinti skirtukus}many{Bendrinti skirtukus}other{Bendrinti skirtukus}}</translation>
@@ -92,6 +93,9 @@
 <translation id="9150694013019234766">Skirtukus perjunkite skirtukų grupėje netoli ekrano apačios</translation>
 <translation id="9169594135889675189">Pridėti naują skirtuką prie grupės</translation>
 <translation id="959682366969460160">Sutvarkykite</translation>
+<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
+ =1 {Uždarytus skirtukus galite rasti „Brave“ pagrindinio meniu skiltyje „Naujausi skirtukai“. Jūsų inkognito režimu atidaryti ir uždaryti skirtukai nebus prieinami.}
+ other {Uždarytus skirtukus galite rasti „Brave“ pagrindinio meniu skiltyje „Naujausi skirtukai“. Jūsų # inkognito režimu atidaryti ir uždaryti skirtukai nebus prieinami.}}</translation>
 <translation id="3228718275011575753">Užverti visus inkognito skirtukus?</translation>
-<translation id="1922184283901690941">Jūsų veikla šiuose inkognito skirtukuose šiame įrenginyje bus išvalyta</translation>
+<translation id="6687920250729800417">Jūsų veikla šiuose inkognito skirtukuose bus pašalinta iš šio įrenginio.</translation>
 </translationbundle>

@@ -3,15 +3,16 @@
 <translationbundle lang="cy">
 <translation id="1026101648481255140">Parhau i Osod</translation>
 <translation id="7099479769133613710">Ail-lansiwch i ddiweddaru &amp;ChromeOS</translation>
+<translation id="2479110114759182442">Mae Brave yn argymell eich bod yn adolygu'r estyniad hwn</translation>
 <translation id="1065672644894730302">Ni ellir darllen eich dewisiadau.
 
 Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiadau yn cael eu cadw.</translation>
+<translation id="7577672138294294152">Mae dy riant wedi diffodd "Caniatâd ar gyfer gwefannau, apiau ac estyniadau" ar gyfer Brave</translation>
 <translation id="2796517443093885402">Gall Brave helpu i'ch amddiffyn rhag toriadau data, estyniadau gwael a rhagor</translation>
 <translation id="5918095577778020936">Mae Brave am allforio eich cyfrineiriau. Teipiwch eich cyfrinair Windows i ganiatáu hyn.</translation>
 <translation id="5468853758063275923">Brave yw eich porwr diofyn</translation>
 <translation id="8522292744959221145">I wirio a yw'ch cyfrineiriau'n ddiogel rhag toriadau data a phroblemau diogelwch eraill, <ph name="BEGIN_LINK"/>mewngofnodwch i Brave<ph name="END_LINK"/>.</translation>
 <translation id="2627788872035182013">Cliciwch y ddewislen Brave</translation>
-<translation id="8468770846533807490">{NUM_DEVICES,plural, =0{Roedd estyniadau Brave yn cyrchu dyfeisiau HID}=1{Mae estyniadau Brave yn cyrchu dyfeisiau HID}two{Mae estyniadau Brave yn cyrchu # ddyfais HID}few{Mae estyniadau Brave yn cyrchu # dyfais HID}many{Mae estyniadau Brave yn cyrchu # dyfais HID}other{Mae estyniadau Brave yn cyrchu # dyfais HID}}</translation>
 <translation id="8541922081612557424">Ynghylch Brave</translation>
 <translation id="1203500561924088507">Diolch am osod. Rhaid i chi ailgychwyn eich porwr cyn defnyddio <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="4658574652223735641">Mae Arbedwr Cof wedi gwneud Brave yn Gyflymach</translation>
@@ -43,6 +44,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="831418749472885028">I wirio a yw'ch cyfrineiriau eraill yn ddiogel rhag toriadau data a phroblemau diogelwch eraill, <ph name="BEGIN_LINK"/>mewngofnodwch i Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Dewiswch a ddylid cynnwys hanes Brave i gael profiadau mwy personol yng ngwasanaethau Brave</translation>
 <translation id="849607431499549468">Gwybodaeth am sut mae Brave yn rheoli ei dystysgrifau gwraidd</translation>
+<translation id="4375530476448642348">{COUNT,plural, =1{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am 1 funud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau yn aros ar agor.}zero{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am # munud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau yn aros ar agor.}two{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am # funud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau yn aros ar agor.}few{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am # munud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau yn aros ar agor.}many{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am # munud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau yn aros ar agor.}other{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am # munud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau yn aros ar agor.}}</translation>
 <translation id="142389341645668510">Personoleiddio Brave</translation>
 <translation id="2174917724755363426">Gosod heb ei gwblhau. Ydych chi'n siŵr eich bod am ganslo?</translation>
 <translation id="8745514854244955877">Brave - Mewngofnodi Rhwydwaith - <ph name="PAGE_TITLE"/></translation>
@@ -53,6 +55,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="2359808026110333948">Parhau</translation>
 <translation id="8418845734693287262">Ni allai ChromeOS gysoni'ch data gan fod manylion mewngofnodi eich cyfrif yn hen.</translation>
 <translation id="2576129394594491151">Mae'r estyniad "<ph name="EXTENSION_NAME"/>" wedi newid pa dudalen sy'n cael ei dangos pan fyddwch yn dechrau Brave.</translation>
+<translation id="5617265241715541684">{NUM_DEVICES,plural, =0{Roedd 1 ddyfais HID yn cael ei chyrchu gan un neu'n fwy o estyniadau Brave}=1{Mae 1 ddyfais HID yn cael ei chyrchu gan un neu'n fwy o estyniadau Brave}two{Mae # ddyfais HID yn cael eu cyrchu gan un neu'n fwy o estyniadau Brave}few{Mae # dyfais HID yn cael eu cyrchu gan un neu'n fwy o estyniadau Brave}many{Mae # dyfais HID yn cael eu cyrchu gan un neu'n fwy o estyniadau Brave}other{Mae # dyfais HID yn cael eu cyrchu gan un neu'n fwy o estyniadau Brave}}</translation>
 <translation id="1248225940185478633">Mae angen caniatâd camera a meicroffon ar Brave ar gyfer y wefan hon</translation>
 <translation id="2451727308784734061">Defnyddiwch eich llwybr byr i gyrraedd Rheolwr Cyfrineiriau yn gyflym. Gallwch symud eich llwybr byr i sgrîn hafan neu lansiwr ap eich cyfrifiadur.</translation>
 <translation id="6381750314821942592">Bydd Brave yn cau yn fuan</translation>
@@ -65,7 +68,6 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="6252796827759111076">Parhau i ddefnyddio Brave</translation>
 <translation id="7387051847644272380">Bu gwall system weithredu wrth osod. Lawrlwythwch Brave eto.</translation>
 <translation id="2648689842065142443">Os ydych yn rhannu dyfais, gall ffrindiau a theulu bori ar wahân a gosod Brave yn yr union ffordd y maent eisiau</translation>
-<translation id="5926459996518749366">Gwnaeth Brave rwysto'r ffeil archif hon oherwydd mae'n bosib ei bod yn cuddio drwgwedd</translation>
 <translation id="6384359666082467439">Croeso i Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Tab Brave</translation>
 <translation id="8372880274820509128">Ar gyfer diogelwch ychwanegol, bydd Brave yn amgryptio'ch data.</translation>
@@ -85,6 +87,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="8880183781256147665">Wrthi'n ychwanegu at Brave...</translation>
 <translation id="3038232873781883849">Wrthi'n aros i osod...</translation>
 <translation id="7918740962659365265">Helpwch i wneud Brave yn well drwy anfon adroddiadau damweiniau a <ph name="UMA_LINK"/> at Brave</translation>
+<translation id="2332543193474246254">{NUM_DEVICES,plural, =0{Roedd 1 ddyfais USB yn cael ei chyrchu gan un neu'n fwy o estyniadau Brave}=1{Mae 1 ddyfais USB yn cael ei chyrchu gan un neu'n fwy o estyniadau Brave}two{Mae # ddyfais USB yn cael eu cyrchu gan un neu'n fwy o estyniadau Brave}few{Mae # dyfais USB yn cael eu cyrchu gan un neu'n fwy o estyniadau Brave}many{Mae # dyfais USB yn cael eu cyrchu gan un neu'n fwy o estyniadau Brave}other{Mae # dyfais USB yn cael eu cyrchu gan un neu'n fwy o estyniadau Brave}}</translation>
 <translation id="5320085753638900910">Mae eich hanes pori yn effeithio ar yr hysbysebion rydych yn eu gweld a'r diddordebau fel yr amcangyfrifir isod. Er mwyn amddiffyn eich preifatrwydd, mae Brave yn dileu'ch diddordebau yn awtomatig bob mis. Gall diddordebau ail-lwytho oni bai eich bod yn eu tynnu.</translation>
 <translation id="7365690458036015383">Methodd y gosodwr ag anghywasgu archif. Lawrlwythwch Brave eto.</translation>
 <translation id="8919461291440820124">Mae Brave yn defnyddio'ch meicroffon.</translation>
@@ -143,6 +146,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="4222932583846282852">Wrthi'n canslo...</translation>
 <translation id="1853997773668795891">Cysylltu eich data Brave â'r cyfrif hwn?</translation>
 <translation id="3262506503470845422">Cael help gyda Brave</translation>
+<translation id="4281844954008187215">Telerau Gwasanaeth</translation>
 <translation id="7691786510374174420">Methwyd y gosodiad oherwydd gwall amhenodol. Os yw Brave yn rhedeg ar hyn o bryd, caewch ef a rhowch gynnig arall arni.</translation>
 <translation id="4304713468139749426">Rheolwr Cyfrineiriau</translation>
 <translation id="4334294535648607276">Lawrlwytho wedi'i gwblhau.</translation>
@@ -171,7 +175,6 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="215320507915280336">Mae hwn yn defnyddio'r un gwiriwr sillafu â'r un sy'n cael ei ddefnyddio yn Brave Search. Anfonir testun rydych yn ei deipio yn y porwr at Brave. Gallwch newid yr ymddygiad hwn yn y gosodiadau ar unrhyw adeg.</translation>
 <translation id="1912973375560256099">Rheol dod i mewn ar gyfer Brave i ganiatáu traffig mDNS.</translation>
 <translation id="711601904575862069">Ail-lansiwch i Ddiweddaru &amp;Brave</translation>
-<translation id="2778869200975718483">{COUNT,plural, =1{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am 1 funud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau presennol yn aros ar agor.}zero{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am # munud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau presennol yn aros ar agor.}two{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am # funud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau presennol yn aros ar agor.}few{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am # munud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau presennol yn aros ar agor.}many{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am # munud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau presennol yn aros ar agor.}other{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am # munud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau presennol yn aros ar agor.}}</translation>
 <translation id="8797356639448065696">Mae Brave yn y modd cefndir.</translation>
 <translation id="7406627712452599344">Gall gwesteion ddefnyddio Brave heb adael unrhyw beth ar ôl.</translation>
 <translation id="5952898964075639679">Ychwanegu eich hun at Brave</translation>
@@ -195,11 +198,13 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="232381795826373334">Agor ffeiliau PDF yn Brave</translation>
 <translation id="5381032481466106256">Pan fydd ymlaen, byddwch hefyd yn cael eich allgofnodi o Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Mae diweddariad Cromiwm ar gael}=1{Mae diweddariad Cromiwm ar gael}two{Mae diweddariad Brave wedi bod ar gael ers # ddiwrnod}few{Mae diweddariad Brave wedi bod ar gael ers # diwrnod}many{Mae diweddariad Brave wedi bod ar gael ers # diwrnod}other{Mae diweddariad Brave wedi bod ar gael ers # diwrnod}}</translation>
+<translation id="1023472437588692618">Dileu data gwefan o'ch dyfais bob amser pan fyddwch yn cau Brave</translation>
 <translation id="5646769069113654257">Ailgychwynnwch Brave nawr</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Dangos Brave yn yr iaith hon</translation>
 <translation id="7207456302801184289">Croeso i Brave</translation>
 <translation id="8054200348483755053">Gwnaeth Brave ganfod bod yr eitemau hyn yn cynnwys drwgwedd:</translation>
+<translation id="3955583201925082436">Mae Brave yn gwirio i sicrhau bod gan eich porwr y gosodiadau mwyaf diogel yn rheolaidd. Byddwn yn rhoi gwybod i chi os oes angen i chi adolygu unrhyw beth.</translation>
 <translation id="5895138241574237353">Ailgychwyn</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Mewngofnodi Rhwydwaith</translation>
 <translation id="5924017743176219022">Wrthi'n cysylltu â'r Rhyngrwyd...</translation>
@@ -210,6 +215,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="5225261774087485064">Mae'n gyffredin i wefannau y byddwch yn ymweld â nhw gofio pethau y mae gennych ddiddordeb ynddynt, i bersonoleiddio'ch profiad. Gall gwefannau hefyd storio gwybodaeth am eich diddordebau gyda Brave.</translation>
 <translation id="6003112304606738118">Wrthi'n lawrlwytho... Mae <ph name="HOURS"/> awr ar ôl</translation>
 <translation id="6040143037577758943">Cau</translation>
+<translation id="1268000445919601231">Mae Brave yn rhwystro rhai lawrlwythiadau</translation>
 <translation id="505042220086416644">Mae fersiwn newydd o Brave ar gael, ac mae'n gyflymach nag erioed.</translation>
 <translation id="9071554113102421877">&amp;Agor yn Brave</translation>
 <translation id="7861579472672677409">Mae <ph name="EXTENSION_NAME"/> wedi'i ychwanegu at Brave</translation>
@@ -223,6 +229,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="991182453936521413">Bydd Brave yn cau ac yn dileu data yn fuan</translation>
 <translation id="7006260220514217183">Mae Pori'n Ddiogel wedi'i ddiffodd. Mae Brave yn argymell ei droi ymlaen.</translation>
 <translation id="4060970194201477024">Gallwch newid rhwng proffiliau Brave yma</translation>
+<translation id="3156047523158042818">Yn dibynnu ar eich gosodiadau, mae'n bosib y bydd Brave hefyd yn anfon cwcis a'ch URL presennol</translation>
 <translation id="4368341489795135329">Gwnewch yn siŵr eich bod wedi mewngofnodi i Brave ar eich <ph name="TARGET_DEVICE_NAME"/> a rhowch gynnig arall arni.</translation>
 <translation id="8320964054148936490">Mae gan y cyfrifiadur hwn fersiwn fwy diweddar o Brave eisoes. Os nad yw'r feddalwedd yn gweithio, dadosodwch Brave a rhowch gynnig arall arni.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Bydd Brave yn ail-lansio nawr}=1{Bydd Brave yn ail-lansio mewn 1 eiliad}two{Bydd Brave yn ail-lansio mewn # eiliad}few{Bydd Brave yn ail-lansio mewn # eiliad}many{Bydd Brave yn ail-lansio mewn # eiliad}other{Bydd Brave yn ail-lansio mewn # eiliad}}</translation>
@@ -243,6 +250,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="335632367599648646">Ydych chi'n siŵr eich bod am ddadosod Brave?</translation>
 <translation id="6375219077595103062">Ychwanegu llwybr byr at y Rheolwr Cyfrineiriau</translation>
 <translation id="4867486350347355096"><ph name="BEGIN_BOLD"/>Sut rydym yn defnyddio'r data hyn:<ph name="END_BOLD"/> Gall Brave amcangyfrif eich diddordebau. Yn nes ymlaen, gall gwefan rydych yn ymweld â hi ofyn i Brave weld eich diddordebau er mwyn personoleiddio'r hysbysebion rydych yn eu gweld.</translation>
+<translation id="3256100650978957522">Logo Brave tu mewn i sgrîn gyfrifiadur.</translation>
 <translation id="6373767849825830651">Porwr gwe yw Brave sy'n rhedeg tudalennau gwe a rhaglenni mewn chwinciad. Mae'n gyflym, sefydlog ac yn hawdd ei ddefnyddio. Porwch y we yn fwy diogel gyda diogelwch rhag maleiswedd a gwe-rwydo pwrpasol yn Brave.</translation>
 <translation id="2139300032719313227">Ailgychwyn ChromeOS</translation>
 <translation id="1684121725014454063">Croeso i broffiliau Brave</translation>
@@ -257,6 +265,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="9156965752763025780">Bydd eich newidiadau yn dod i rym y tro nesaf y byddwch yn ail-lansio Brave.</translation>
 <translation id="245693535809364497">Mae angen caniatâd camera ar Brave i greu map 3D o'ch amgylchoedd</translation>
 <translation id="5060669762365466104">Mae'n debyg y bydd gwefannau'n gweithio fel y disgwyliwch ond ni fyddant yn eich cofio ar ôl i chi gau pob ffenestr Brave</translation>
+<translation id="9210457680074341078">Os ydych hefyd yn cadw eich nodau tudalen yn eich Cyfrif Brave, gallwch olrhain prisiau cynnyrch yn Brave a chael gwybod pan fydd y pris yn gostwng</translation>
 <translation id="6676384891291319759">Cyrchu'r Rhyngrwyd</translation>
 <translation id="1363996462118479832">Ni allai ChromeOS gysoni'ch data oherwydd gwall wrth fewngofnodi.</translation>
 <translation id="1257247502847251159">Mae angen caniatâd meicroffon ar Brave ar gyfer y wefan hon</translation>
@@ -267,7 +276,6 @@ Mae'n bosib na fydd rhai nodweddion ar gael. Rhowch gyfeiriadur proffil gwahanol
 <translation id="6666624454809779082">Mae Brave eisoes wedi'i osod ar gyfer pob defnyddiwr ar eich cyfrifiadur.</translation>
 <translation id="5360050006043219962">I gael mynediad at eich holl bethau Brave ar draws eich holl ddyfeisiau, mewngofnodwch, yna trowch gysoni ymlaen.</translation>
 <translation id="3136039682492230890">Mae Brave yn argymell sganio'r ffeil hon oherwydd y gallai fod yn beryglus.</translation>
-<translation id="8291513491595858997">Mae dy riant wedi diffodd "Caniatadau ar gyfer gwefannau, apiau ac estyniadau" ar gyfer Brave. Ni chaniateir galluogi'r <ph name="EXTENSION_TYPE_PARAMETER"/> hwn.</translation>
 <translation id="1547295885616600893">Mae ChromeOS yn bosib drwy <ph name="BEGIN_LINK_CROS_OSS"/>feddalwedd ffynhonnell agored<ph name="END_LINK_CROS_OSS"/> ychwanegol.</translation>
 <translation id="8211837073776713955">Mae Brave yn gadael i chi wybod a yw'ch cyfrineiriau byth wedi'u darganfod</translation>
 <translation id="4879299985215961051">Gwnaeth Brave rwystro'r ffeil hon oherwydd bod maleiswedd ynddi</translation>
@@ -286,10 +294,12 @@ baru <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></transla
 <translation id="7025789849649390912">Wedi Stopio Gosod.</translation>
 <translation id="1705567146636171298">Diweddaru Brave</translation>
 <translation id="5499063270485366718">Os nad oes gan ddelwedd ddisgrifiad defnyddiol, bydd Brave yn ceisio darparu un ar eich cyfer. Rydym yn anfon delweddau at Brave er mwyn creu disgrifiadau.</translation>
+<translation id="5966368554860795750">Addasu Brave for Testing</translation>
 <translation id="2332301637111071062">Mae eich sefydliad yn dileu data Brave pan na chaiff ei ddefnyddio am <ph name="TIMEOUT_DURATION"/>. Gallai hyn gynnwys hanes, awtolenwi, a lawrlwythiadau.</translation>
 <translation id="1008530050039597147">Mae angen caniatâd camera ar Brave ar gyfer y wefan hon</translation>
 <translation id="1197672524850678392">Methu â lansio Brave. Rhowch gynnig arall arni.</translation>
 <translation id="3405035915691517126">Ni all Brave wirio'ch cyfrineiriau. Rhowch gynnig arall arni ar ôl 24 awr.</translation>
+<translation id="5755581833598928580">Defnyddiwch Brave unrhyw bryd y byddwch yn clicio dolenni mewn negeseuon, dogfennau ac apiau eraill</translation>
 <translation id="5516268345616100622">Rheolydd Tasgau - Brave</translation>
 <translation id="713191641919118540">Eich diddordebau fel yr amcangyfrifir gan Brave</translation>
 <translation id="9068395155143628872">Mae Mesur hysbysebion yn caniatáu i wefannau rydych yn ymweld â nhw ofyn am wybodaeth o Brave sy'n helpu'r wefan i fesur perfformiad eu hysbysebion. Mae Mesur hysbysebion yn cyfyngu ar olrhain traws-wefan drwy drosglwyddo cyn lleied o wybodaeth â phosib rhwng gwefannau.</translation>
@@ -352,14 +362,12 @@ Ni all Brave adfer eich gosodiadau.</translation>
 <translation id="6431861494713261006">Dewisol: Helpu i wella nodweddion a pherfformiad ChromeOS drwy anfon data diagnostig a defnydd at Brave yn awtomatig.</translation>
 <translation id="2097604701283463988">Mae Brave yn Hen</translation>
 <translation id="8550334526674375523">Mae'r proffil gwaith hwn yn hollol ar wahân i'ch proffil personol.</translation>
-<translation id="2452889775041290116">Mae dy riant wedi diffodd "Caniatadau ar gyfer gwefannau, apiau ac estyniadau" ar gyfer Brave. Ni chaniateir ychwanegu'r <ph name="EXTENSION_TYPE_PARAMETER"/> hwn.</translation>
 <translation id="227028348235968071">Gall Brave wirio'ch cyfrineiriau pan fyddwch yn mewngofnodi gyda'ch Cyfrif Brave</translation>
 <translation id="8121009781989288430">Hawlfraint <ph name="YEAR"/> Awduron Brave. Cedwir Pob Hawl.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Sut rydym yn defnyddio'r data hyn:<ph name="END_BOLD"/> Gall gwefannau storio gwybodaeth am eich diddordebau gyda Brave. Er enghraifft, os ydych yn ymweld â gwefan i brynu esgidiau ar gyfer marathon, mae'n bosib y bydd y wefan yn diffinio'ch diddordeb fel rhedeg marathon. Yn ddiweddarach, os byddwch yn ymweld â gwefan wahanol i gofrestru ar gyfer ras, gall y wefan honno ddangos hysbyseb i chi ar gyfer esgidiau rhedeg yn seiliedig ar eich diddordebau.</translation>
 <translation id="3052349005266761501">Wrthi'n lansio Brave...</translation>
 <translation id="6283840329609797763">Methwyd y gosodiad oherwydd gwall amhenodol. Lawrlwythwch Brave eto.</translation>
 <translation id="5128665650717824082">Ni ellir gwneud Brave for Testing yn borwr diofyn i chi.</translation>
-<translation id="4668189655335212354">{NUM_DEVICES,plural, =0{Roedd estyniad Brave yn cyrchu dyfeisiau HID}=1{Mae estyniad Brave yn cyrchu 1 ddyfais HID}two{Mae estyniad Brave yn cyrchu # ddyfais HID}few{Mae estyniad Brave yn cyrchu # dyfais HID}many{Mae estyniad Brave yn cyrchu # dyfais HID}other{Mae estyniad Brave yn cyrchu # dyfais HID}}</translation>
 <translation id="2433912322225810055">Mae hefyd yn rheoli pa dudalen sy'n cael ei dangos pan fyddwch yn cychwyn Brave neu'n chwilio o'r Omniflwch.</translation>
 <translation id="4100716194836114130">Dyma eich Brave</translation>
 <translation id="4831743161813926460">Mae angen caniatâd ar Brave i gael mynediad at eich camera a'ch meicroffon ar gyfer y wefan hon</translation>
@@ -391,7 +399,6 @@ Ni all Brave adfer eich gosodiadau.</translation>
 <translation id="8180288330711585962">Tystysgrifau a reolir gan Brave</translation>
 <translation id="4484434718272972655">Pwy sy'n defnyddio Brave?</translation>
 <translation id="7173394303099002355">Cael diogelwch cryfaf Brave</translation>
-<translation id="5775101967851558962">Clirio data gwefan o'ch dyfais bob amser pan fyddwch yn cau Brave</translation>
 <translation id="8992261409816268381">Awduron Brave</translation>
 <translation id="137466361146087520">Beta Google Chrome</translation>
 <translation id="7535429826459677826">Google Chrome Dev</translation>

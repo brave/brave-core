@@ -3,7 +3,6 @@
 <translationbundle lang="de">
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> von deinen Tabs wurden längere Zeit nicht verwendet. Möchtest du sie schließen?</translation>
 <translation id="125153950246128346">Tippen, um einen anderen Tab zu sehen</translation>
-<translation id="955456285524876618">Deine geschlossenen Tabs findest du im Brave-Hauptmenü unter „Zuletzt geöffnete Tabs“</translation>
 <translation id="1657719826150349398">Tab nach unten verschieben</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> Tab}other{<ph name="TABS_COUNT_MANY"/> Tabs}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ausgewählten Tab als Lesezeichen speichern}other{<ph name="TABS_COUNT_MANY"/> ausgewählte Tabs als Lesezeichen speichern}}</translation>
@@ -45,6 +44,7 @@
 <translation id="5073204694187207510">Vollbildraster ausblenden</translation>
 <translation id="5076161749301278626">Möchtest du dir Händlerrezensionen ansehen?</translation>
 <translation id="5082793167783849073">Du kannst Seiten schnell miteinander vergleichen, indem du eine Gruppe erstellst. Berühre und halte einen Link, um den Vorgang zu starten.</translation>
+<translation id="5339733443032484186">Dein letzter Tab</translation>
 <translation id="5490235265819901748">Tabgruppe maximiert</translation>
 <translation id="5494920125229734069">Alle auswählen</translation>
 <translation id="5556417849629758491">Geschäftsinformationen anzeigen, Option ist oben auf dem Bildschirm verfügbar</translation>
@@ -64,6 +64,7 @@
 <translation id="6549021453810473782">Händlerinfo anzeigen</translation>
 <translation id="6562820390860419811">Tab nach links bewegen</translation>
 <translation id="6615455863669487791">Zeigen</translation>
+<translation id="6398241160085205003">Deine geschlossenen Tabs findest du im Brave-Hauptmenü unter „Zuletzt geöffnete Tabs“.</translation>
 <translation id="6840760312327750441">Wenn du Tabs gruppieren möchtest, berühre und halte einen Tab. Ziehe ihn dann auf einen anderen Tab.</translation>
 <translation id="6856809498882026482">Modus für die Mehrfachauswahl ausblenden</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Tab teilen}other{Tabs teilen}}</translation>
@@ -92,6 +93,9 @@
 <translation id="9150694013019234766">Am unteren Bildschirmrand kannst du zwischen den Tabs in deiner Tabgruppe wechseln</translation>
 <translation id="9169594135889675189">Der Gruppe einen neuen Tab hinzufügen</translation>
 <translation id="959682366969460160">Besser organisiert</translation>
+<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
+=1 {Ihre geschlossenen Registerkarten finden Sie unter Letzte Registerkarten im Brave-Hauptmenü. Ihre private Registerkarte ist nicht mehr verfügbar.}
+other {Sie finden Ihre geschlossenen Registerkarten unter Letzte Registerkarten im Brave-Hauptmenü. Ihre # privaten Registerkarten sind nicht mehr verfügbar.}}</translation>
 <translation id="3228718275011575753">Alle privaten Tabs schließen?</translation>
-<translation id="1922184283901690941">Ihre Aktivität in diesen privaten Tabs wird von diesem Gerät gelöscht</translation>
+<translation id="6687920250729800417">Ihre Aktivität in diesen privaten Tabs wird von diesem Gerät gelöscht</translation>
 </translationbundle>
