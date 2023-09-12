@@ -213,7 +213,8 @@ where
     pub async fn fetch_order(&self, order_id: &str) -> Result<Order, SkusError> {
         let request_with_retries = FutureRetry::new(
             || async {
-                let builder = http::Request::builder()
+                let mut binding = http::Request::builder();
+                let builder = binding
                     .method("GET")
                     .uri(format!("{}/v1/orders/{}", self.base_url, order_id));
 
@@ -242,7 +243,8 @@ where
         event!(Level::DEBUG, order_id = order_id, "submit_receipt called");
         let request_with_retries = FutureRetry::new(
             || async {
-                let builder = http::Request::builder().method("POST").uri(format!(
+                let mut binding = http::Request::builder();
+                let builder = binding.method("POST").uri(format!(
                     "{}/v1/orders/{}/submit-receipt",
                     self.base_url, order_id
                 ));

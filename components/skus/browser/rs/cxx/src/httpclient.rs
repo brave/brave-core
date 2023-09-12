@@ -50,7 +50,8 @@ impl From<ffi::HttpResponse<'_>> for Result<http::Response<Vec<u8>>, InternalErr
     fn from(resp: ffi::HttpResponse<'_>) -> Self {
         match resp.result {
             ffi::SkusResult::Ok => {
-                let mut response = http::Response::builder().status(resp.return_code);
+                let mut binding = http::Response::builder();
+                let mut response = binding.status(resp.return_code);
 
                 for header in resp.headers {
                     let header = header.to_string();
