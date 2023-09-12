@@ -719,8 +719,8 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
       continue;
     }
     if (entry->key().id() == sidebar::SidePanelIdFromSideBarItem(item)) {
-      auto side_bar_index = sidebar_model_->GetIndexOf(item);
-      controller->ActivateItemAt(side_bar_index);
+      const auto sidebar_index = sidebar_model_->GetIndexOf(item);
+      controller->ActivateItemAt(sidebar_index);
       return;
     }
   }
@@ -744,8 +744,14 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
     }
 
     if (entry->key().id() == sidebar::SidePanelIdFromSideBarItem(item)) {
-      auto side_bar_index = sidebar_model_->GetIndexOf(item);
-      if (controller->IsActiveIndex(side_bar_index)) {
+      const auto sidebar_index = sidebar_model_->GetIndexOf(item);
+      // Only deactivate sidebar item for hidden |entry| when it was active
+      // and it's not active one now.
+      // It can happen when shown & hidden entries have same sidebar item(ex,
+      // different tab uses ai-chat). In this case, don't need to deactivate
+      // item because same item should be activated.
+      if (controller->IsActiveIndex(sidebar_index) &&
+          side_panel_coordinator_->GetCurrentEntryId() != entry->key().id()) {
         controller->ActivateItemAt(absl::nullopt);
         return;
       }
