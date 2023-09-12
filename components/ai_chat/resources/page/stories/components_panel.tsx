@@ -47,7 +47,7 @@ export default {
   },
   args: {
     hasQuestions: true,
-    hasSeenAgreement: false,
+    hasSeenAgreement: true,
     currentErrorState: select('Current Status', APIError, APIError.RateLimitReached)
   },
   decorators: [

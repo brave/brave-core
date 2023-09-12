@@ -9,14 +9,10 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 import styles from './style.module.scss'
-import { CharacterType } from '../../api/page_handler'
+import getPageHandlerInstance, { CharacterType } from '../../api/page_handler'
 import DataContext from '../../state/context'
 
-interface ConversationListProps {
-  onQuestionSubmit: (question: string) => void
-}
-
-function ConversationList (props: ConversationListProps) {
+function ConversationList () {
   // Scroll the last conversation item in to view when entries are added.
   const lastConversationEntryElementRef = React.useRef<HTMLDivElement>(null)
   const { isGenerating, conversationHistory, suggestedQuestions } = React.useContext(DataContext)
@@ -32,6 +28,10 @@ function ConversationList (props: ConversationListProps) {
       lastConversationEntryElementRef.current.scrollIntoView(false)
     }
   }, [conversationHistory.length, isGenerating, lastConversationEntryElementRef.current?.clientHeight])
+
+  const handleQuestionSubmit = (question: string) => {
+    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question)
+  }
 
   return (
     <>
@@ -77,7 +77,7 @@ function ConversationList (props: ConversationListProps) {
           </div>
           <div className={styles.questionsList}>
             {suggestedQuestions.map((question, id) => (
-              <Button key={id} kind='outline' onClick={() => props.onQuestionSubmit(question)}>
+              <Button key={id} kind='outline' onClick={() => handleQuestionSubmit(question)}>
                 <span className={styles.buttonText}>
                   {question}
                 </span>

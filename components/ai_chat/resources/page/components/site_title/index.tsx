@@ -11,10 +11,7 @@ import Button from '@brave/leo/react/button'
 
 import styles from './style.module.scss'
 import DataContext from '../../state/context'
-
-interface SiteTitleProps {
-  onDisconnectButtonClick?: () => void
-}
+import getPageHandlerInstance from '../../api/page_handler'
 
 type Timer = ReturnType<typeof setTimeout>
 
@@ -37,7 +34,7 @@ function Tooltip(props: ToolTipProps) {
   )
 }
 
-function SiteTitle (props: SiteTitleProps) {
+function SiteTitle () {
   const [isTooltipVisible, setIsTooltipVisible] = React.useState(false)
   const timerId = React.useRef<Timer | undefined>();
   const { siteInfo, favIconUrl } = React.useContext(DataContext)
@@ -57,6 +54,10 @@ function SiteTitle (props: SiteTitleProps) {
     if (e.key === "Escape") {
       setIsTooltipVisible(false)
     }
+  }
+
+  const handlePageContentDisconnect = () => {
+    getPageHandlerInstance().pageHandler.disconnectPageContents()
   }
 
    return (
@@ -81,7 +82,7 @@ function SiteTitle (props: SiteTitleProps) {
         <Button
           aria-label="Disconnect"
           kind="plain-faint"
-          onClick={props.onDisconnectButtonClick}
+          onClick={handlePageContentDisconnect}
         >
           <Icon name="link-broken" />
         </Button>

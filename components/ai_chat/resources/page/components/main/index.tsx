@@ -19,23 +19,9 @@ import getPageHandlerInstance, { AutoGenerateQuestionsPref, APIError } from '../
 import DataContext from '../../state/context'
 
 function Main () {
-  const { siteInfo, userAutoGeneratePref, setUserAllowsAutoGenerating, generateSuggestedQuestions,
-    hasSeenAgreement, currentError } = React.useContext(DataContext)
+  const { siteInfo, userAutoGeneratePref, hasSeenAgreement, currentError } = React.useContext(DataContext)
 
   const apiHasError = !!currentError && (currentError !== APIError.None)
-
-  const handleQuestionSubmit = (question: string) => {
-    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question)
-  }
-
-  const handlePageContentDisconnect = () => {
-    getPageHandlerInstance().pageHandler.disconnectPageContents()
-  }
-
-  const handleOnEnableAutoGenerateQuestion = () => {
-    setUserAllowsAutoGenerating(true)
-    generateSuggestedQuestions()
-  }
 
   const handleSettingsClick = () => {
     getPageHandlerInstance().pageHandler.openBraveLeoSettings()
@@ -52,25 +38,18 @@ function Main () {
 
   if (hasSeenAgreement) {
     conversationListElement = (
-      <ConversationList
-        onQuestionSubmit={handleQuestionSubmit}
-      />
+      <ConversationList />
     )
 
     if (siteInfo) {
       siteTitleElement = (
-        <SiteTitle
-          onDisconnectButtonClick={handlePageContentDisconnect}
-      />
+        <SiteTitle />
       )
     }
 
     if (userAutoGeneratePref === AutoGenerateQuestionsPref.Unset && userAutoGeneratePref) {
       promptAutoSuggestionElement = (
-        <PromptAutoSuggestion
-          onEnable={handleOnEnableAutoGenerateQuestion}
-          onDismiss={() => setUserAllowsAutoGenerating(false)}
-        />
+        <PromptAutoSuggestion />
       )
     }
 
