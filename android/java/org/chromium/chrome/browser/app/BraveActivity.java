@@ -961,6 +961,7 @@ public abstract class BraveActivity extends ChromeActivity
             BraveSyncWorker.get();
         }
 
+        initMiscAndroidMetrics();
         checkForNotificationData();
 
         if (RateUtils.getInstance().isLastSessionShown()) {
@@ -2018,7 +2019,6 @@ public abstract class BraveActivity extends ChromeActivity
         initBraveWalletService();
         initKeyringService();
         initJsonRpcService();
-        initMiscAndroidMetrics();
         initSwapService();
         setupWalletModel();
     }
