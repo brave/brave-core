@@ -11,10 +11,14 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.vpn.billing.PurchaseModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 
 import java.util.TimeZone;
@@ -35,12 +39,13 @@ public class BraveVpnApiResponseUtils {
     public static void handleOnGetSubscriberCredential(Activity activity, boolean isSuccess) {
         if (isSuccess) {
             if (!BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
-                InAppPurchaseWrapper.getInstance().queryPurchases();
-                LiveDataUtil.observeOnce(
-                        InAppPurchaseWrapper.getInstance().getActivePurchase(), activePurchase -> {
-                            InAppPurchaseWrapper.getInstance().processPurchases(
-                                    activity, activePurchase);
-                        });
+                MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
+                LiveData<PurchaseModel> activePurchases = _activePurchases;
+                InAppPurchaseWrapper.getInstance().queryPurchases(_activePurchases);
+                LiveDataUtil.observeOnce(activePurchases, activePurchaseModel -> {
+                    InAppPurchaseWrapper.getInstance().processPurchases(
+                            activity, activePurchaseModel.getPurchase());
+                });
             }
             BraveVpnNativeWorker.getInstance().getTimezonesForRegions();
         } else {

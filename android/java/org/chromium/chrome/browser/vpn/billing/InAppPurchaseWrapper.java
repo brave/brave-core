@@ -28,6 +28,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.util.BraveConstants;
+import org.chromium.chrome.browser.vpn.billing.PurchaseModel;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
@@ -50,16 +51,6 @@ public class InAppPurchaseWrapper {
     private static Object mutex = new Object();
 
     public enum SubscriptionType { MONTHLY, YEARLY }
-
-    private MutableLiveData<Purchase> mutableActivePurchase = new MutableLiveData();
-    private LiveData<Purchase> activePurchase = mutableActivePurchase;
-    private void setActivePurchase(Purchase purchase) {
-        mutableActivePurchase.postValue(purchase);
-    }
-
-    public LiveData<Purchase> getActivePurchase() {
-        return activePurchase;
-    }
 
     private MutableLiveData<ProductDetails> mutableMonthlyProductDetails = new MutableLiveData();
     private LiveData<ProductDetails> monthlyProductDetails = mutableMonthlyProductDetails;
@@ -203,23 +194,24 @@ public class InAppPurchaseWrapper {
                 });
     }
 
-    public void queryPurchases() {
+    public void queryPurchases(MutableLiveData<PurchaseModel> mutableActivePurchases) {
         mBillingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder()
                                                    .setProductType(BillingClient.ProductType.SUBS)
                                                    .build(),
                 (billingResult, purchases) -> {
-                    Purchase activePurchase = null;
+                    PurchaseModel activePurchaseModel = null;
                     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                         for (Purchase purchase : purchases) {
                             if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-                                activePurchase = purchase;
+                                activePurchaseModel = new PurchaseModel(purchase.getPurchaseToken(),
+                                        purchase.getProducts().get(0).toString(), purchase);
                                 break;
                             }
                         }
                     } else {
                         Log.e(TAG, "queryPurchases failed" + billingResult.getDebugMessage());
                     }
-                    setActivePurchase(activePurchase);
+                    mutableActivePurchases.postValue(activePurchaseModel);
                 });
     }
 

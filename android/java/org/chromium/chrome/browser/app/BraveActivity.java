@@ -170,6 +170,7 @@ import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.vpn.billing.PurchaseModel;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnCalloutDialogFragment;
 import org.chromium.chrome.browser.vpn.fragments.LinkVpnSubscriptionDialogFragment;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnApiResponseUtils;
@@ -639,12 +640,14 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void verifySubscription() {
-        InAppPurchaseWrapper.getInstance().queryPurchases();
+        MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
+        LiveData<PurchaseModel> activePurchases = _activePurchases;
+        InAppPurchaseWrapper.getInstance().queryPurchases(_activePurchases);
         LiveDataUtil.observeOnce(
-                InAppPurchaseWrapper.getInstance().getActivePurchase(), activePurchase -> {
-                    if (activePurchase != null) {
-                        mPurchaseToken = activePurchase.getPurchaseToken();
-                        mProductId = activePurchase.getProducts().get(0).toString();
+                activePurchases, activePurchaseModel -> {
+                    if (activePurchaseModel != null) {
+                        mPurchaseToken = activePurchaseModel.getPurchaseToken();
+                        mProductId = activePurchaseModel.getProductId();
                         BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken,
                                 mProductId, BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT,
                                 getPackageName());
