@@ -3121,8 +3121,7 @@ export const {
   useUpdateUserAssetVisibleMutation,
   useUpdateUserTokenMutation,
   useUpdateNftSpamStatusMutation,
-  useSetAutopinEnabledMutation,
-  useUpdateLocalIpfsNodeStatusMutation
+  useSetAutopinEnabledMutation
 } = walletApi
 
 // Derived Data Queries

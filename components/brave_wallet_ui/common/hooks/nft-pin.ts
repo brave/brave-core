@@ -34,6 +34,9 @@ type PinnableNftsState = Array<{
 }>
 
 const POLLING_INTERVAL_IN_MS = 3000
+const POLLING_CONFIG = {
+  pollingInterval: POLLING_INTERVAL_IN_MS
+}
 
 export function useNftPin () {
   // state
@@ -50,7 +53,7 @@ export function useNftPin () {
   
  // queries
  const { data: isAutoPinEnabled } = useGetAutopinEnabledQuery()
- const { data: nftsPinningStatus } = useGetNftsPinningStatusQuery(undefined, { pollingInterval: POLLING_INTERVAL_IN_MS })
+ const { data: nftsPinningStatus } = useGetNftsPinningStatusQuery(undefined, POLLING_CONFIG)
 
   // hooks
   const { isTokenPinningSupported } = useLib()
