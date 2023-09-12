@@ -47,7 +47,8 @@ class BraveWalletPermissionPrompt
  protected:
   // BraveDappPermissionPromptDialogController::Delegate:
   void OnDialogDismissed() override;
-  void ConnectToSite(const std::vector<std::string>& accounts) override;
+  void ConnectToSite(const std::vector<std::string>& accounts,
+                     int permission_lifetime_option) override;
   void CancelConnectToSite() override;
 
  private:

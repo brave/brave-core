@@ -12,7 +12,9 @@ import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,6 +28,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.PermissionLifetimeOption;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
@@ -64,6 +67,8 @@ public class BraveDappPermissionPromptDialog
     private String mFavIconURL;
     private ImageView mFavIconImage;
     private RecyclerView mRecyclerView;
+    private Spinner mDurationSpinner;
+
     private BravePermissionAccountsListAdapter mAccountsListAdapter;
     private int mRequestId; // Used for favicon downloader
     private KeyringService mKeyringService;
@@ -113,6 +118,8 @@ public class BraveDappPermissionPromptDialog
         setFavIcon();
         mRecyclerView = customView.findViewById(R.id.accounts_list);
 
+        setupDurationSpinner(customView);
+
         InitBraveWalletService();
         TextView domain = customView.findViewById(R.id.domain);
         mBraveWalletService.getActiveOrigin(
@@ -148,6 +155,26 @@ public class BraveDappPermissionPromptDialog
             Log.e(TAG, "show " + e);
         }
         initAccounts();
+    }
+
+    private void setupDurationSpinner(View customView) {
+        mDurationSpinner = customView.findViewById(R.id.duration_spinner);
+        String[] items =
+                new String[] {"until I close this site", "for 24 hours", "for 1 week", "forever"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                mContext, android.R.layout.simple_spinner_dropdown_item, items);
+        mDurationSpinner.setAdapter(adapter);
+    }
+
+    @PermissionLifetimeOption.EnumType
+    int getPermissionLifetimeOption() {
+        int[] items_value =
+                new int[] {PermissionLifetimeOption.PAGE_CLOSED, PermissionLifetimeOption.K24_HOURS,
+                        PermissionLifetimeOption.K7_DAYS, PermissionLifetimeOption.FOREVER};
+
+        @PermissionLifetimeOption.EnumType
+        int option = items_value[mDurationSpinner.getSelectedItemPosition()];
+        return option;
     }
 
     @NonNull
@@ -253,7 +280,7 @@ public class BraveDappPermissionPromptDialog
     public void onClick(PropertyModel model, @ButtonType int buttonType) {
         if (buttonType == ButtonType.POSITIVE) {
             BraveDappPermissionPromptDialogJni.get().onPrimaryButtonClicked(
-                    mNativeDialogController, getSelectedAccounts());
+                    mNativeDialogController, getSelectedAccounts(), getPermissionLifetimeOption());
             mModalDialogManager.dismissDialog(
                     mPropertyModel, DialogDismissalCause.POSITIVE_BUTTON_CLICKED);
         } else if (buttonType == ButtonType.NEGATIVE) {
@@ -308,8 +335,8 @@ public class BraveDappPermissionPromptDialog
 
     @NativeMethods
     interface Natives {
-        void onPrimaryButtonClicked(
-                long nativeBraveDappPermissionPromptDialogController, String[] accounts);
+        void onPrimaryButtonClicked(long nativeBraveDappPermissionPromptDialogController,
+                String[] accounts, int permissionLifetimeOption);
         void onNegativeButtonClicked(long nativeBraveDappPermissionPromptDialogController);
         void onDialogDismissed(long nativeBraveDappPermissionPromptDialogController);
     }

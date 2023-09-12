@@ -29,6 +29,22 @@
         android:textColor="@color/wallet_text_color"
         android:textSize="15sp" />
 
+        <TextView
+            android:id="@+id/duration_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Remember my decision"
+tools:ignore="HardcodedText"
+            android:textColor="@color/wallet_text_color"
+            android:textSize="16sp" />
+        <Spinner
+            android:id="@+id/duration_spinner"
+            android:layout_marginStart="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:textColor="@color/wallet_text_color" />
+
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"

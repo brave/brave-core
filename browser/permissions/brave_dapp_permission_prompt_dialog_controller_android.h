@@ -23,7 +23,8 @@ class BraveDappPermissionPromptDialogController {
   class Delegate {
    public:
     virtual void OnDialogDismissed() = 0;
-    virtual void ConnectToSite(const std::vector<std::string>& accounts) = 0;
+    virtual void ConnectToSite(const std::vector<std::string>& accounts,
+                               int permission_lifetime_option) = 0;
     virtual void CancelConnectToSite() = 0;
   };
 
@@ -39,7 +40,8 @@ class BraveDappPermissionPromptDialogController {
 
   void OnPrimaryButtonClicked(
       JNIEnv* env,
-      const base::android::JavaParamRef<jobjectArray>& accounts);
+      const base::android::JavaParamRef<jobjectArray>& accounts,
+      int permission_lifetime_option);
   void OnNegativeButtonClicked(JNIEnv* env);
   void OnDialogDismissed(JNIEnv* env);
 

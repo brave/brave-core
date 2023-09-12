@@ -27,14 +27,18 @@ BraveWalletPermissionPrompt::BraveWalletPermissionPrompt(
 BraveWalletPermissionPrompt::~BraveWalletPermissionPrompt() {}
 
 void BraveWalletPermissionPrompt::ConnectToSite(
-    const std::vector<std::string>& accounts) {
+    const std::vector<std::string>& accounts,
+    int permission_lifetime_option) {
+  brave_wallet::mojom::PermissionLifetimeOption lifetime_enum =
+      static_cast<brave_wallet::mojom::PermissionLifetimeOption>(
+          permission_lifetime_option);
+  CHECK(IsKnownEnumValue(lifetime_enum));
+
   has_interacted_with_dialog_ = true;
   dialog_controller_.reset();
-  // TODO(SergeyZhukovsky): Use the real option that the user chooses, using
-  // `kForever` here is for landing new API changes separately.
+
   permissions::BraveWalletPermissionContext::AcceptOrCancel(
-      accounts, brave_wallet::mojom::PermissionLifetimeOption::kForever,
-      web_contents_);
+      accounts, lifetime_enum, web_contents_);
 }
 
 void BraveWalletPermissionPrompt::CancelConnectToSite() {
