@@ -16,9 +16,9 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "net/base/url_util.h"
 #include "net/http/http_response_headers.h"
-#include "content/public/browser/web_contents_observer.h"
 
 namespace tor {
 
