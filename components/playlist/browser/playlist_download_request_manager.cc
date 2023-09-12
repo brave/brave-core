@@ -67,10 +67,12 @@ PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
 
 PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
 
-void PlaylistDownloadRequestManager::CreateWebContents() {
+void PlaylistDownloadRequestManager::CreateWebContents(
+    bool should_force_fake_ua) {
   content::WebContents::CreateParams create_params(context_, nullptr);
   web_contents_ = content::WebContents::Create(create_params);
-  if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
+  if (should_force_fake_ua ||
+      base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
     DVLOG(2) << __func__ << " Faked UA to detect media files";
     blink::UserAgentOverride user_agent(
         "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) "
@@ -134,7 +136,7 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
   if (absl::holds_alternative<std::string>(request.url_or_contents)) {
     // Start to request on clean slate, so that result won't be affected by
     // previous page.
-    CreateWebContents();
+    CreateWebContents(request.should_force_fake_ua);
 
     requested_url_ = GURL(absl::get<std::string>(request.url_or_contents));
     DCHECK(requested_url_.is_valid());
@@ -142,7 +144,8 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
     DVLOG(2) << "Load URL to detect media files: " << requested_url_.spec();
     auto load_url_params =
         content::NavigationController::LoadURLParams(requested_url_);
-    if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
+    if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA) ||
+        request.should_force_fake_ua) {
       load_url_params.override_user_agent =
           content::NavigationController::UA_OVERRIDE_TRUE;
     }
@@ -358,7 +361,7 @@ void PlaylistDownloadRequestManager::ConfigureWebPrefsForBackgroundWebContents(
 content::WebContents*
 PlaylistDownloadRequestManager::GetBackgroundWebContentsForTesting() {
   if (!web_contents_) {
-    CreateWebContents();
+    CreateWebContents(false);
   }
 
   return web_contents_.get();
