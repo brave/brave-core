@@ -6,7 +6,6 @@
 #include "brave/browser/ui/views/frame/brave_browser_frame_mac.h"
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"

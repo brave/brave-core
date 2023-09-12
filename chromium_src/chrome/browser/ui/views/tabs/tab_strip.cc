@@ -7,7 +7,6 @@
 
 #include <cmath>
 
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_compound_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"

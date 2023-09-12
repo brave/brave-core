@@ -5,7 +5,6 @@
 
 #include "chrome/browser/ui/views/tabs/tab_group_style.h"
 
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 
 #define TabGroupStyle TabGroupStyle_ChromiumImpl

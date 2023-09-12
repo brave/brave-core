@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"

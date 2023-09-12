@@ -5,7 +5,6 @@
 
 #include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
 
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"

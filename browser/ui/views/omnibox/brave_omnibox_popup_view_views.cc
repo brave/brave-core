@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/omnibox/brave_omnibox_popup_view_views.h"
 
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.h"

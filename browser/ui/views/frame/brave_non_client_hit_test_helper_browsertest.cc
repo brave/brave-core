@@ -5,7 +5,6 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/reload_button.h"

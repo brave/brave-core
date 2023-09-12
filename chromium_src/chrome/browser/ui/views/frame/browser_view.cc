@@ -7,7 +7,6 @@
 // therefore avoid undef before use.
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "brave/browser/ui/views/infobars/brave_infobar_container_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
