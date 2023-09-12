@@ -929,7 +929,7 @@
 <translation id="6044189892950611565">Канал за известия за Brave Browser</translation>
 <translation id="1173919438868967364">Избиране на акаунт</translation>
 <translation id="8922793255489232731">Неуспешно получаване на съответстваща часова зона за: <ph name="VALUE"/></translation>
-<translation id="7084757528071133475">Изтегля се файл с данни на портфейла \u2022 <ph name="percentage"/>%%</translation>
+<translation id="7084757528071133475">Изтегля се файл с данни на портфейла \u2022 <ph name="percentage"/>\u0025</translation>
 <translation id="6471216025161697462">Свързан с <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Пробен период</translation>
 <translation id="7733890291091968191">Показване на известия от Web3</translation>

@@ -928,7 +928,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="6044189892950611565">Kanál s upozorneniami pre prehliadač Brave</translation>
 <translation id="1173919438868967364">Vybrať účet</translation>
 <translation id="8922793255489232731">Nepodarilo sa získať zodpovedajúce časové pásmo pre: <ph name="VALUE"/></translation>
-<translation id="7084757528071133475">Sťahuje sa súbor s údajmi peňaženky \u2022 <ph name="percentage"/>%%</translation>
+<translation id="7084757528071133475">Sťahuje sa súbor s údajmi peňaženky \u2022 <ph name="percentage"/>\u0025</translation>
 <translation id="6471216025161697462">Pripojené k <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Skúšobná verzia</translation>
 <translation id="7733890291091968191">Zobrazenie upozornení Web3</translation>

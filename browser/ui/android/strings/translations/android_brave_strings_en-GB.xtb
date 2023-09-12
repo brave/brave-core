@@ -928,7 +928,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="6044189892950611565">Notification channel for Brave browser</translation>
 <translation id="1173919438868967364">Select account</translation>
 <translation id="8922793255489232731">Couldn't get matching timezone for : <ph name="VALUE"/></translation>
-<translation id="7084757528071133475">Downloading wallet data file \u2022 <ph name="percentage"/>%%</translation>
+<translation id="7084757528071133475">Downloading wallet data file \u2022 <ph name="percentage"/>\u0025</translation>
 <translation id="6471216025161697462">Connected to <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Trial</translation>
 <translation id="7733890291091968191">Display Web3 notifications</translation>

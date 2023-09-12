@@ -924,7 +924,7 @@
 <translation id="6044189892950611565">قناة الإشعار لمتصفح Brave</translation>
 <translation id="1173919438868967364">تحديد حساب</translation>
 <translation id="8922793255489232731">تعذّر الحصول على المنطقة الزمنية المطابقة لـ: <ph name="VALUE"/></translation>
-<translation id="7084757528071133475">جارٍ تنزيل ملف بيانات المحفظة \u2022 <ph name="percentage"/>%%</translation>
+<translation id="7084757528071133475">جارٍ تنزيل ملف بيانات المحفظة \u2022 <ph name="percentage"/>\u0025</translation>
 <translation id="6471216025161697462">متصل بـ <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">إصدار تجريبي</translation>
 <translation id="7733890291091968191">عرض إشعارات Web3</translation>

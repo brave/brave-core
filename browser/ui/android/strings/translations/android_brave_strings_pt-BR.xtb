@@ -928,7 +928,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="6044189892950611565">Canal de notificações do navegador Brave</translation>
 <translation id="1173919438868967364">Selecionar conta</translation>
 <translation id="8922793255489232731">Não foi possível obter o fuso horário correspondente para: <ph name="VALUE"/></translation>
-<translation id="7084757528071133475">Baixando arquivo de dados da carteira \u2022 <ph name="percentage"/>%%</translation>
+<translation id="7084757528071133475">Baixando arquivo de dados da carteira \u2022 <ph name="percentage"/>\u0025</translation>
 <translation id="6471216025161697462">Conectado a <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Teste</translation>
 <translation id="7733890291091968191">Exibir notificações Web3</translation>

@@ -928,7 +928,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="6044189892950611565">Kanál oznámení pro prohlížeč Brave</translation>
 <translation id="1173919438868967364">Zvolit účet</translation>
 <translation id="8922793255489232731">Nepodařilo se získat odpovídající časové pásmo pro: <ph name="VALUE"/></translation>
-<translation id="7084757528071133475">Stahování datového souboru peněženky \u2022 <ph name="percentage"/>%%</translation>
+<translation id="7084757528071133475">Stahování datového souboru peněženky \u2022 <ph name="percentage"/>\u0025</translation>
 <translation id="6471216025161697462">Připojeno k <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Zkušební období</translation>
 <translation id="7733890291091968191">Zobrazit oznámení Web3</translation>

@@ -927,7 +927,7 @@
 <translation id="6044189892950611565">Brave ব্রাউজারের জন্য বিজ্ঞপ্তির চ্যানেল</translation>
 <translation id="1173919438868967364">অ্যাকাউন্ট নির্বাচন করুন</translation>
 <translation id="8922793255489232731">এর জন্য ম্যাচিং টাইমজোন পাওয়া যায়নি: <ph name="VALUE"/></translation>
-<translation id="7084757528071133475">ওয়ালেট ডেটা ফাইল ডাউনলোড করা হচ্ছে \u2022 <ph name="percentage"/>%%</translation>
+<translation id="7084757528071133475">ওয়ালেট ডেটা ফাইল ডাউনলোড করা হচ্ছে \u2022 <ph name="percentage"/>\u0025</translation>
 <translation id="6471216025161697462"><ph name="VALUE"/>-এ সংযুক্ত হয়েছে</translation>
 <translation id="1968852757206592413">ট্রায়াল</translation>
 <translation id="7733890291091968191">Web3 বিজ্ঞপ্তি প্রদর্শন করুন</translation>

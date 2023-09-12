@@ -930,7 +930,7 @@
 <translation id="6044189892950611565">ערוץ התראות עבור Brave Browser</translation>
 <translation id="1173919438868967364">בחירת חשבון</translation>
 <translation id="8922793255489232731">לא ניתן היה להשיג אזור זמן תואם עבור: <ph name="VALUE"/></translation>
-<translation id="7084757528071133475">מוריד קובץ נתוני ארנק \u2022 <ph name="percentage"/>%%</translation>
+<translation id="7084757528071133475">מוריד קובץ נתוני ארנק \u2022 <ph name="percentage"/>\u0025</translation>
 <translation id="6471216025161697462">מחובר אל <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">ניסיון</translation>
 <translation id="7733890291091968191">הצגת התראות Web3</translation>
