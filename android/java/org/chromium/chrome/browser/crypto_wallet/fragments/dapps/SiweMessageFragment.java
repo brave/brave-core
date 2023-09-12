@@ -35,6 +35,7 @@ import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.brave_wallet.mojom.SiweMessage;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.DappsModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
@@ -73,6 +74,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     private ExecutorService mExecutor;
     private Handler mHandler;
     private WalletModel mWalletModel;
+    private DappsModel mDappsModel;
     private TextView mTvAccountDetails;
     private View mIvFavNetworkContainer;
     private RecyclerView mRvDetails;
@@ -88,6 +90,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+            mDappsModel = mWalletModel.getDappsModel();
             registerKeyringObserver(mWalletModel.getKeyringModel());
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreate ", e);
@@ -115,9 +118,9 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         return view;
     }
 
-    private void notifySignMessageRequestProcessed(boolean approved) {
-        getBraveWalletService().notifySignMessageRequestProcessed(
-                approved, mCurrentSignMessageRequest.id, null, null);
+    private void notifySignMessageRequestProcessed(boolean isApproved) {
+        if (mDappsModel == null) return;
+        mDappsModel.notifySignMessageRequestProcessed(isApproved, mCurrentSignMessageRequest.id);
         fillSignMessageInfo(false);
     }
 
@@ -126,7 +129,8 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     }
 
     private void fillSignMessageInfo(boolean init) {
-        getBraveWalletService().getPendingSignMessageRequests(requests -> {
+        if (mDappsModel == null) return;
+        mDappsModel.getPendingSignMessageRequests(requests -> {
             if (requests == null || requests.length == 0) {
                 Intent intent = new Intent();
                 getActivity().setResult(Activity.RESULT_OK, intent);
