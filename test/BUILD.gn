@@ -886,6 +886,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_wallet/renderer",
     "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
     "//brave/components/brave_wayback_machine/buildflags",
+    "//brave/components/brave_webtorrent/browser",
     "//brave/components/constants",
     "//brave/components/de_amp/browser/test:browser_tests",
     "//brave/components/de_amp/common:common",
