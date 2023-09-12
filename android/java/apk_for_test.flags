@@ -541,6 +541,10 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediatorBase {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.notifications.permissions.NotificationPermissionRationaleDialogController {
     *** wrapDialogDismissalCallback(...);
     public <init>(...);
