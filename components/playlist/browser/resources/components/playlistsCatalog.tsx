@@ -7,6 +7,18 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { Link } from 'react-router-dom'
 
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  DragStartEvent
+} from '@dnd-kit/core'
+import {
+  SortableContext,
+  arrayMove,
+  verticalListSortingStrategy
+} from '@dnd-kit/sortable'
+
 import Icon from '@brave/leo/react/icon'
 import { color, spacing } from '@brave/leo/tokens/css'
 
@@ -21,9 +33,24 @@ import {
   useTotalSize
 } from '../reducers/states'
 
-interface ThumbnailProps {
+import { getPlaylistAPI } from '../api/api'
+import { getPlaylistActions } from '../api/getPlaylistActions'
+import {
+  restrictToVerticalAxis,
+  useDraggedId,
+  useDraggedOrder,
+  useSensorsWithThreshold,
+  useVerticallySortable
+} from '../utils/dragDropUtils'
+
+type ThumbnailProps = {
   isDefaultPlaylist: boolean
   thumbnailUrl: string | undefined
+}
+
+type PlaylistCardProps = {
+  playlist: Playlist
+  shouldBeHidden?: boolean
 }
 
 const StyledLink = styled(Link)`
@@ -31,7 +58,15 @@ const StyledLink = styled(Link)`
   color: unset;
 `
 
-const PlaylistCardContainer = styled.div<ThumbnailProps>`
+const PlaylistCardContainer = styled.div<
+  ThumbnailProps & Omit<PlaylistCardProps, 'playlist'>
+>`
+  ${p =>
+    p.shouldBeHidden &&
+    css`
+      visibility: hidden;
+    `}
+
   /* Default Playlist background */
   ${p =>
     p.isDefaultPlaylist &&
@@ -136,7 +171,7 @@ function PlaylistThumbnail (props: ThumbnailProps) {
 }
 
 // A card UI for representing a playlist.
-function PlaylistCard ({ playlist }: { playlist: Playlist }) {
+function PlaylistCard ({ playlist, shouldBeHidden }: PlaylistCardProps) {
   const isDefaultPlaylist = playlist.id === 'default'
   const thumbnailUrl = React.useMemo(() => {
     return playlist.items?.find(item => item.thumbnailPath?.url)?.thumbnailPath
@@ -152,6 +187,7 @@ function PlaylistCard ({ playlist }: { playlist: Playlist }) {
       <PlaylistCardContainer
         isDefaultPlaylist={isDefaultPlaylist}
         thumbnailUrl={thumbnailUrl}
+        shouldBeHidden={shouldBeHidden}
       >
         {isDefaultPlaylist && <PlayLaterCardOverlay />}
         <PlaylistThumbnail
@@ -171,6 +207,18 @@ function PlaylistCard ({ playlist }: { playlist: Playlist }) {
   )
 }
 
+function SortablePlaylistCard (props: PlaylistCardProps) {
+  const { attributes, listeners, setNodeRef, style } = useVerticallySortable({
+    id: props.playlist.id!
+  })
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <PlaylistCard {...props} />
+    </div>
+  )
+}
+
 const PlaylistsCatalogFlexBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -184,11 +232,75 @@ export default function PlaylistsCatalog () {
     applicationState => applicationState.playlistData?.lists
   )
 
+  const [draggedId, setDraggedId] = useDraggedId()
+  const [draggedOrder, setDraggedOrder] = useDraggedOrder<Playlist>()
+
+  const sensors = useSensorsWithThreshold()
+
   return (
-    <PlaylistsCatalogFlexBox>
-      {playlists?.map((playlist: Playlist) => {
-        return <PlaylistCard key={playlist.id} playlist={playlist} />
-      })}
-    </PlaylistsCatalogFlexBox>
+    <DndContext
+      sensors={sensors}
+      onDragStart={(event: DragStartEvent) => {
+        setDraggedId(event.active.id)
+        setDraggedOrder(playlists ? [...playlists] : [])
+      }}
+      onDragEnd={(event: DragEndEvent) => {
+        setDraggedId(null)
+        if (!draggedOrder) return
+
+        const { active, over } = event
+        if (!over || active.id === over.id) {
+          setDraggedOrder(null)
+          return
+        }
+
+        if (active.id !== over.id) {
+          const oldIndex = draggedOrder.findIndex(i => i.id === active.id)
+          const newIndex = draggedOrder.findIndex(i => i.id === over.id)
+          // Lock the order until updating completes.
+          setDraggedOrder(arrayMove(draggedOrder, oldIndex, newIndex))
+
+          getPlaylistAPI().reorderPlaylist('' + draggedId, newIndex, result => {
+            if (!result) {
+              setDraggedOrder(null)
+              return
+            }
+
+            // Reload playlists with new order
+            getPlaylistAPI()
+              .getAllPlaylists()
+              .then(({ playlists }) => {
+                getPlaylistActions().playlistLoaded(playlists)
+                setDraggedOrder(null)
+              })
+          })
+        }
+      }}
+      onDragCanceled={() => {
+        setDraggedId(null)
+      }}
+    >
+      <PlaylistsCatalogFlexBox>
+        <SortableContext
+          items={(draggedOrder ?? playlists)?.map(p => p.id!) ?? []}
+          strategy={verticalListSortingStrategy}
+        >
+          {(draggedOrder ?? playlists)?.map((playlist: Playlist) => {
+            return (
+              <SortablePlaylistCard
+                key={playlist.id}
+                playlist={playlist}
+                shouldBeHidden={draggedId === playlist.id}
+              />
+            )
+          })}
+        </SortableContext>
+      </PlaylistsCatalogFlexBox>
+      <DragOverlay modifiers={restrictToVerticalAxis}>
+        {playlists && draggedId && (
+          <PlaylistCard playlist={playlists.find(p => p.id === draggedId)!} />
+        )}
+      </DragOverlay>
+    </DndContext>
   )
 }

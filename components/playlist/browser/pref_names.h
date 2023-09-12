@@ -20,6 +20,10 @@ namespace playlist {
 //      }                                       ^ same item
 constexpr char kPlaylistsPref[] = "brave.playlist.lists";
 
+// Stores order of playlists.
+// ["id1", "id2" ... ]
+constexpr char kPlaylistOrderPref[] = "brave.playlist.lists_order";
+
 // Stores playlist item key-value pairs in a dict. Each item has unique key and
 // it's metadata(such as, title, media file path and etc..).
 constexpr char kPlaylistItemsPref[] = "brave.playlist.items";

@@ -75,6 +75,7 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
   // release Playlist feature officially, we should migrate items
   // instead of deleting them.
   CleanUpMalformedPlaylistItems();
+  MigratePlaylistValues();
 
   CleanUpOrphanedPlaylistItemDirs();
 }
@@ -486,11 +487,14 @@ mojom::PlaylistPtr PlaylistService::GetPlaylist(const std::string& id) {
 
 std::vector<mojom::PlaylistPtr> PlaylistService::GetAllPlaylists() {
   std::vector<mojom::PlaylistPtr> playlists;
+  const auto& playlists_dict = prefs_->GetDict(kPlaylistsPref);
   const auto& items_dict = prefs_->GetDict(kPlaylistItemsPref);
-  for (const auto [id, playlist_value] : prefs_->GetDict(kPlaylistsPref)) {
-    DCHECK(playlist_value.is_dict());
+
+  for (const auto& id : prefs_->GetList(kPlaylistOrderPref)) {
+    auto* playlist_value = playlists_dict.Find(id.GetString());
+    DCHECK(playlist_value->is_dict());
     playlists.push_back(
-        ConvertValueToPlaylist(playlist_value.GetDict(), items_dict));
+        ConvertValueToPlaylist(playlist_value->GetDict(), items_dict));
   }
 
   playlist_p3a_.ReportNewUsage();
@@ -594,13 +598,46 @@ void PlaylistService::CreatePlaylist(mojom::PlaylistPtr playlist,
     playlist->id = base::Token::CreateRandom().ToString();
   } while (playlist->id == kDefaultPlaylistID);
 
-  ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
-  playlists_update->Set(playlist->id.value(), ConvertPlaylistToValue(playlist));
+  {
+    ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
+    playlists_update->Set(playlist->id.value(),
+                          ConvertPlaylistToValue(playlist));
+
+    ScopedListPrefUpdate playlists_order_update(prefs_, kPlaylistOrderPref);
+    playlists_order_update->Append(playlist->id.value());
+  }
 
   NotifyPlaylistChanged(mojom::PlaylistEvent::kListCreated,
                         playlist->id.value());
 
   std::move(callback).Run(playlist.Clone());
+}
+
+void PlaylistService::ReorderPlaylist(const std::string& playlist_id,
+                                      int16_t position,
+                                      ReorderPlaylistCallback callback) {
+  {
+    ScopedListPrefUpdate playlist_order_update(prefs_, kPlaylistOrderPref);
+    auto it = base::ranges::find(*playlist_order_update, playlist_id);
+    if (it == playlist_order_update->end()) {
+      std::move(callback).Run(false);
+      return;
+    }
+
+    auto old_position = std::distance(playlist_order_update->begin(), it);
+    if (old_position == position) {
+      std::move(callback).Run(true);
+      return;
+    }
+
+    if (old_position < position) {
+      std::rotate(it, it + 1, playlist_order_update->begin() + position + 1);
+    } else {
+      std::rotate(playlist_order_update->begin() + position, it, it + 1);
+    }
+  }
+
+  std::move(callback).Run(true);
 }
 
 content::WebContents* PlaylistService::GetBackgroundWebContentsForTesting() {
@@ -771,6 +808,9 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
     }
 
     playlists_update->Remove(playlist_id);
+
+    ScopedListPrefUpdate playlists_order_update(prefs_, kPlaylistOrderPref);
+    playlists_order_update->EraseValue(base::Value(playlist_id));
   }
 
   NotifyPlaylistChanged(mojom::PlaylistEvent::kListRemoved, playlist_id);
@@ -794,8 +834,10 @@ void PlaylistService::ResetAll() {
   }
 
   prefs_->ClearPref(kPlaylistsPref);
+  prefs_->ClearPref(kPlaylistOrderPref);
 
-  // Removes data on disk ------------------------------------------------------
+  // Removes data on disk
+  // ------------------------------------------------------
   GetTaskRunner()->PostTask(FROM_HERE,
                             base::GetDeletePathRecursivelyCallback(base_dir_));
 }
@@ -1151,6 +1193,12 @@ void PlaylistService::CleanUpMalformedPlaylistItems() {
   for (const auto* pref_key : {kPlaylistsPref, kPlaylistItemsPref}) {
     prefs_->ClearPref(pref_key);
   }
+}
+
+void PlaylistService::MigratePlaylistValues() {
+  base::Value::List order = prefs_->GetList(kPlaylistOrderPref).Clone();
+  MigratePlaylistOrder(prefs_->GetDict(kPlaylistsPref), order);
+  prefs_->SetList(kPlaylistOrderPref, std::move(order));
 }
 
 void PlaylistService::CleanUpOrphanedPlaylistItemDirs() {

@@ -122,6 +122,16 @@ class API {
       .then(({ result }) => callback(result))
   }
 
+  reorderPlaylist (
+    playlistId: string,
+    position: number,
+    callback: (result: boolean) => void
+  ) {
+    this.#pageHandler
+      .reorderPlaylist(playlistId, position)
+      .then(({ result }) => callback(result))
+  }
+
   // Events --------------------------------------------------------------------
   addEventListener (listener: PlaylistEventListener) {
     this.#pageCallbackRouter.onEvent.addListener(listener)

@@ -13,6 +13,9 @@ namespace playlist {
 
 bool IsItemValueMalformed(const base::Value::Dict& dict);
 
+void MigratePlaylistOrder(const base::Value::Dict& playlists,
+                          base::Value::List& order);
+
 // Converters between mojom::PlaylistItem and base::Value --------------------
 mojom::PlaylistItemPtr ConvertValueToPlaylistItem(
     const base::Value::Dict& dict);
