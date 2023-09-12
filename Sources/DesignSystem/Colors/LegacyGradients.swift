@@ -75,8 +75,8 @@ extension BraveGradient {
   public static var lightGradient01: BraveGradient {
     .init(
       stops: [
-        .init(color: DesignSystemColor.gradient01_step0.color, position: 0),
-        .init(color: DesignSystemColor.gradient01_step1.color, position: 1.0),
+        .init(color: LegacyDesignSystemColor.gradient01_step0.color, position: 0),
+        .init(color: LegacyDesignSystemColor.gradient01_step1.color, position: 1.0),
       ],
       angle: .figmaDegrees(126)
     )
@@ -84,8 +84,8 @@ extension BraveGradient {
   public static var darkGradient01: BraveGradient {
     .init(
       stops: [
-        .init(color: DesignSystemColor.gradient01_step0.color, position: 0),
-        .init(color: DesignSystemColor.gradient01_step1.color, position: 1.0),
+        .init(color: LegacyDesignSystemColor.gradient01_step0.color, position: 0),
+        .init(color: LegacyDesignSystemColor.gradient01_step1.color, position: 1.0),
       ],
       angle: .figmaDegrees(130)
     )
@@ -93,9 +93,9 @@ extension BraveGradient {
   public static var lightGradient02: BraveGradient {
     .init(
       stops: [
-        .init(color: DesignSystemColor.gradient02_step0.color, position: 0),
-        .init(color: DesignSystemColor.gradient02_step1.color, position: 0.56),
-        .init(color: DesignSystemColor.gradient02_step2.color, position: 1.0),
+        .init(color: LegacyDesignSystemColor.gradient02_step0.color, position: 0),
+        .init(color: LegacyDesignSystemColor.gradient02_step1.color, position: 0.56),
+        .init(color: LegacyDesignSystemColor.gradient02_step2.color, position: 1.0),
       ],
       angle: .figmaDegrees(122.5)
     )
@@ -103,9 +103,9 @@ extension BraveGradient {
   public static var lightAlternateGradient02: BraveGradient {
     .init(
       stops: [
-        .init(color: DesignSystemColor.gradient02_alt_step0.color, position: 0.16),
-        .init(color: DesignSystemColor.gradient02_alt_step1.color, position: 0.63),
-        .init(color: DesignSystemColor.gradient02_alt_step2.color, position: 1.0),
+        .init(color: LegacyDesignSystemColor.gradient02_alt_step0.color, position: 0.16),
+        .init(color: LegacyDesignSystemColor.gradient02_alt_step1.color, position: 0.63),
+        .init(color: LegacyDesignSystemColor.gradient02_alt_step2.color, position: 1.0),
       ],
       angle: .figmaDegrees(304.5)
     )
@@ -113,9 +113,9 @@ extension BraveGradient {
   public static var darkGradient02: BraveGradient {
     .init(
       stops: [
-        .init(color: DesignSystemColor.gradient02_step0.color, position: 0.06),
-        .init(color: DesignSystemColor.gradient02_step1.color, position: 0.44),
-        .init(color: DesignSystemColor.gradient02_step2.color, position: 1.0),
+        .init(color: LegacyDesignSystemColor.gradient02_step0.color, position: 0.06),
+        .init(color: LegacyDesignSystemColor.gradient02_step1.color, position: 0.44),
+        .init(color: LegacyDesignSystemColor.gradient02_step2.color, position: 1.0),
       ],
       angle: .figmaDegrees(314)
     )
@@ -123,9 +123,9 @@ extension BraveGradient {
   public static var darkAlternateGradient02: BraveGradient {
     .init(
       stops: [
-        .init(color: DesignSystemColor.gradient02_alt_step0.color, position: 0.12),
-        .init(color: DesignSystemColor.gradient02_alt_step1.color, position: 0.47),
-        .init(color: DesignSystemColor.gradient02_alt_step2.color, position: 1.0),
+        .init(color: LegacyDesignSystemColor.gradient02_alt_step0.color, position: 0.12),
+        .init(color: LegacyDesignSystemColor.gradient02_alt_step1.color, position: 0.47),
+        .init(color: LegacyDesignSystemColor.gradient02_alt_step2.color, position: 1.0),
       ],
       angle: .figmaDegrees(135)
     )
@@ -133,8 +133,8 @@ extension BraveGradient {
   public static var gradient03: BraveGradient {
     .init(
       stops: [
-        .init(color: DesignSystemColor.gradient03_step0.color, position: 0),
-        .init(color: DesignSystemColor.gradient03_step1.color, position: 0.985),
+        .init(color: LegacyDesignSystemColor.gradient03_step0.color, position: 0),
+        .init(color: LegacyDesignSystemColor.gradient03_step1.color, position: 0.985),
       ],
       angle: .figmaDegrees(306)
     )
@@ -142,8 +142,8 @@ extension BraveGradient {
   public static var gradient05: BraveGradient {
     .init(
       stops: [
-        .init(color: DesignSystemColor.gradient05_step0.color, position: 0),
-        .init(color: DesignSystemColor.gradient05_step1.color, position: 1),
+        .init(color: LegacyDesignSystemColor.gradient05_step0.color, position: 0),
+        .init(color: LegacyDesignSystemColor.gradient05_step1.color, position: 1),
       ],
       angle: .figmaDegrees(126)
     )

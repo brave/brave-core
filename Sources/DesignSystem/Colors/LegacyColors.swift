@@ -4,15 +4,15 @@
 
 import UIKit
 
-enum DesignSystemColor: String {
+enum LegacyDesignSystemColor: String {
   case background01
   case background02
   case background03
-
+  
   case text01
   case text02
   case text03
-
+  
   case interactive01
   case interactive02
   case interactive03
@@ -21,10 +21,10 @@ enum DesignSystemColor: String {
   case interactive06
   case interactive07
   case interactive08
-
+  
   case focusBorder = "focus-border"
   case disabled
-
+  
   case divider01
 
   case errorBackground = "error-background"
@@ -69,49 +69,49 @@ enum DesignSystemColor: String {
 
 extension UIColor {
   public static var braveBackground: UIColor {
-    DesignSystemColor.background02.color
+    LegacyDesignSystemColor.background02.color
   }
   public static var secondaryBraveBackground: UIColor {
-    DesignSystemColor.background01.color
+    LegacyDesignSystemColor.background01.color
   }
   public static var tertiaryBraveBackground: UIColor {
-    DesignSystemColor.background03.color
+    LegacyDesignSystemColor.background03.color
   }
   public static var braveGroupedBackground: UIColor {
-    DesignSystemColor.background01.color
+    LegacyDesignSystemColor.background01.color
   }
   public static var secondaryBraveGroupedBackground: UIColor {
-    DesignSystemColor.background02.color
+    LegacyDesignSystemColor.background02.color
   }
   public static var tertiaryBraveGroupedBackground: UIColor {
-    DesignSystemColor.background01.color
+    LegacyDesignSystemColor.background01.color
   }
   public static var braveLabel: UIColor {
-    DesignSystemColor.text02.color
+    LegacyDesignSystemColor.text02.color
   }
   public static var secondaryBraveLabel: UIColor {
-    DesignSystemColor.text03.color
+    LegacyDesignSystemColor.text03.color
   }
   public static var bravePrimary: UIColor {
-    DesignSystemColor.text01.color
+    LegacyDesignSystemColor.text01.color
   }
   public static var braveLighterOrange: UIColor {
-    DesignSystemColor.interactive03.color
+    LegacyDesignSystemColor.interactive03.color
   }
   public static var braveOrange: UIColor {
-    DesignSystemColor.interactive02.color
+    LegacyDesignSystemColor.interactive02.color
   }
   public static var braveDarkerOrange: UIColor {
-    DesignSystemColor.interactive01.color
+    LegacyDesignSystemColor.interactive01.color
   }
   public static var braveLighterBlurple: UIColor {
-    DesignSystemColor.interactive06.color
+    LegacyDesignSystemColor.interactive06.color
   }
   public static var braveBlurple: UIColor {
-    DesignSystemColor.interactive05.color
+    LegacyDesignSystemColor.interactive05.color
   }
   public static var braveDarkerBlurple: UIColor {
-    DesignSystemColor.interactive04.color
+    LegacyDesignSystemColor.interactive04.color
   }
   public static var braveBlurpleTint: UIColor {
     .init {
@@ -122,49 +122,49 @@ extension UIColor {
     }
   }
   public static var braveSeparator: UIColor {
-    DesignSystemColor.divider01.color
+    LegacyDesignSystemColor.divider01.color
   }
   public static var braveErrorLabel: UIColor {
-    DesignSystemColor.errorText.color
+    LegacyDesignSystemColor.errorText.color
   }
   public static var braveErrorBorder: UIColor {
-    DesignSystemColor.errorBorder.color
+    LegacyDesignSystemColor.errorBorder.color
   }
   public static var braveErrorBackground: UIColor {
-    DesignSystemColor.errorBackground.color
+    LegacyDesignSystemColor.errorBackground.color
   }
   public static var braveWarningLabel: UIColor {
-    DesignSystemColor.warningText.color
+    LegacyDesignSystemColor.warningText.color
   }
   public static var braveWarningBorder: UIColor {
-    DesignSystemColor.warningBorder.color
+    LegacyDesignSystemColor.warningBorder.color
   }
   public static var braveWarningBackground: UIColor {
-    DesignSystemColor.warningBackground.color
+    LegacyDesignSystemColor.warningBackground.color
   }
   public static var braveInfoLabel: UIColor {
-    DesignSystemColor.infoText.color
+    LegacyDesignSystemColor.infoText.color
   }
   public static var braveInfoBorder: UIColor {
-    DesignSystemColor.infoBorder.color
+    LegacyDesignSystemColor.infoBorder.color
   }
   public static var braveInfoBackground: UIColor {
-    DesignSystemColor.infoBackground.color
+    LegacyDesignSystemColor.infoBackground.color
   }
   public static var braveSuccessLabel: UIColor {
-    DesignSystemColor.successText.color
+    LegacyDesignSystemColor.successText.color
   }
   public static var braveSuccessBackground: UIColor {
-    DesignSystemColor.successBackground.color
+    LegacyDesignSystemColor.successBackground.color
   }
   public static var braveDisabled: UIColor {
-    DesignSystemColor.disabled.color
+    LegacyDesignSystemColor.disabled.color
   }
   public static var primaryButtonTint: UIColor {
-    DesignSystemColor.interactive07.color
+    LegacyDesignSystemColor.interactive07.color
   }
   public static var secondaryButtonTint: UIColor {
-    DesignSystemColor.interactive08.color
+    LegacyDesignSystemColor.interactive08.color
   }
 }
 
