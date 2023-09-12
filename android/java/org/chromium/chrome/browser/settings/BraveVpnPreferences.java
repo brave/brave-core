@@ -38,6 +38,7 @@ import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.vpn.billing.PurchaseModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.models.BraveVpnWireguardProfileCredentials;
@@ -376,14 +377,15 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             };
 
     private void verifyPurchase(boolean isVerification) {
-        InAppPurchaseWrapper.getInstance().queryPurchases();
+        MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
+        LiveData<PurchaseModel> activePurchases = _activePurchases;
+        InAppPurchaseWrapper.getInstance().queryPurchases(_activePurchases);
         LiveDataUtil.observeOnce(
-                InAppPurchaseWrapper.getInstance().getActivePurchase(), activePurchase -> {
+                activePurchases, activePurchaseModel -> {
                     mBraveVpnPrefModel = new BraveVpnPrefModel();
-                    if (activePurchase != null) {
-                        mBraveVpnPrefModel.setPurchaseToken(activePurchase.getPurchaseToken());
-                        mBraveVpnPrefModel.setProductId(
-                                activePurchase.getProducts().get(0).toString());
+                    if (activePurchaseModel != null) {
+                        mBraveVpnPrefModel.setPurchaseToken(activePurchaseModel.getPurchaseToken());
+                        mBraveVpnPrefModel.setProductId(activePurchaseModel.getProductId());
                         if (BraveVpnPrefUtils.isResetConfiguration()) {
                             BraveVpnUtils.dismissProgressDialog();
                             BraveVpnUtils.openBraveVpnProfileActivity(getActivity());
