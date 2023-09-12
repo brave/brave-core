@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.Log;
@@ -40,6 +41,7 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
+import org.chromium.chrome.browser.crypto_wallet.fragments.TwoLineItemBottomSheetFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.WalletBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.AddressUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
@@ -47,6 +49,8 @@ import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.url.mojom.Url;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -65,7 +69,9 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
 
     private List<String> mTabTitles;
     private SignMessageRequest mCurrentSignMessageRequest;
-    private SiweMessage mSiweMessage;
+    private SiweMessage mSiweMessageData;
+    private TextView mTvOrigin;
+    private TextView mTvUrl;
     private ImageView mIvFav;
     private ImageView mIvFavNetwork;
     private TextView mNetworkName;
@@ -75,7 +81,6 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     private Handler mHandler;
     private WalletModel mWalletModel;
     private DappsModel mDappsModel;
-    private TextView mTvAccountDetails;
     private View mIvFavNetworkContainer;
     private RecyclerView mRvDetails;
     private TwoLineItemRecyclerViewAdapter mTwoLineAdapter;
@@ -102,10 +107,11 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_siwe, container, false);
         mIvFav = view.findViewById(R.id.frag_siwe_iv_fav);
+        mTvOrigin = view.findViewById(R.id.frag_siwe_tv_origin);
+        mTvUrl = view.findViewById(R.id.frag_siwe_tv_url);
         mIvFavNetwork = view.findViewById(R.id.frag_siwe_iv_fav_nw_icon);
-        mIvFavNetworkContainer = view.findViewById(R.id.frag_siwe_cv_fav_nw_container);
-        mTvAccountDetails = view.findViewById(R.id.frag_siwe_tv_account);
         mNetworkName = view.findViewById(R.id.frag_siwe_msg_tv_network_name);
+        mIvFavNetworkContainer = view.findViewById(R.id.frag_siwe_cv_fav_nw_container);
         mRvDetails = view.findViewById(R.id.frag_siwe_rv);
         mTwoLineAdapter = new TwoLineItemRecyclerViewAdapter(Collections.emptyList());
         mRvDetails.setAdapter(mTwoLineAdapter);
@@ -140,11 +146,16 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
 
             mCurrentSignMessageRequest = requests[0];
             if (mCurrentSignMessageRequest.signData.which() == SignDataUnion.Tag.EthSiweData) {
-                mSiweMessage = mCurrentSignMessageRequest.signData.getEthSiweData();
+                mSiweMessageData = mCurrentSignMessageRequest.signData.getEthSiweData();
             }
             if (init) {
                 mBtCancel.setOnClickListener(v -> { notifySignMessageRequestProcessed(false); });
                 mBtSign.setOnClickListener(v -> { notifySignMessageRequestProcessed(true); });
+            }
+            if (mCurrentSignMessageRequest.originInfo != null
+                    && URLUtil.isValidUrl(mCurrentSignMessageRequest.originInfo.originSpec)) {
+                mTvOrigin.setText(mCurrentSignMessageRequest.originInfo.eTldPlusOne);
+                mTvUrl.setText(Utils.geteTldSpanned(mCurrentSignMessageRequest.originInfo));
             }
             updateDetails(mCurrentSignMessageRequest.chainId, mCurrentSignMessageRequest.accountId);
             updateNetwork(mCurrentSignMessageRequest.chainId);
@@ -193,18 +204,18 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
             items.add(details);
             items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
         }
-        if (mSiweMessage != null) {
-            if (!TextUtils.isEmpty(mSiweMessage.statement)) {
+        if (mSiweMessageData != null) {
+            if (!TextUtils.isEmpty(mSiweMessageData.statement)) {
                 TwoLineItemRecyclerViewAdapter.TwoLineItemText message =
                         new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
-                                getString(R.string.message) + ":", mSiweMessage.statement);
+                                getString(R.string.message) + ":", mSiweMessageData.statement);
                 items.add(message);
             }
-            if (mSiweMessage.resources != null && mSiweMessage.resources.length > 0) {
+            if (mSiweMessageData.resources != null && mSiweMessageData.resources.length > 0) {
                 TwoLineItemRecyclerViewAdapter.TwoLineItemText resource =
                         new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
                                 getString(R.string.resources) + ":",
-                                getSiweResources(mSiweMessage.resources));
+                                getSiweResources(mSiweMessageData.resources));
                 items.add(resource);
             }
         }
