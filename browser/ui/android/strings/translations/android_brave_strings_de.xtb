@@ -1,9 +1,20 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="de">
+<translation id="8631427463833030968">Anzeigen verwalten</translation>
+<translation id="7630214457764713113">Reinen Link kopieren</translation>
 <translation id="885805571521218129">Dies stellt Ihre geschätzte Verdienstspanne für Brave-Anzeigen dar.</translation>
 <translation id="3478449063771497234">Benachrichtigungen sind deaktiviert</translation>
+<translation id="2862978891748913252">Wählen Sie Ihr Land aus</translation>
+<translation id="3970520675790340955">Wählen Sie Ihr Land aus, damit wir Ihnen die richtigen Optionen und Anzeigen für Ihre Region anzeigen können.</translation>
+<translation id="7301741773883122509">Jetzt können Sie für das Ansehen von Anzeigen belohnt werden. Noch dazu helfen Sie, das Web zu einem besseren Ort für alle zu machen. Und das ist spitze!</translation>
+<translation id="6439128034594289376">Hurra, Sie sind startklar!</translation>
 <translation id="370665806235115550">Laden...</translation>
+<translation id="7931127789630755251">Erhalten Sie Tokens für private Anzeigen, die Sie in Brave sehen</translation>
+<translation id="7859066142771796818">Kaufen Sie mit Tokens Geschenkgutscheine, tauschen Sie sie in andere Währungen um, unterstützen Sie Content-Ersteller und vieles mehr.</translation>
+<translation id="3863981251715594911">Wie funktioniert das?</translation>
+<translation id="5547108999862247665">Wie funktioniert Brave Rewards?</translation>
+<translation id="2965798296974325760">Beginnen Sie, Rewards zu nutzen</translation>
 <translation id="8220484609979012449">\n\nSie können trotzdem Kyptobeiträge an diesen Ersteller senden, indem Sie Ihr Web3-Wallet nutzen.</translation>
 <translation id="6385969012847057348">Der Ersteller kann keine Beiträge von <ph name="CUSTODIAN"/> erhalten.</translation>
 <translation id="6268134562674951939">Sie haben nicht genügend Token</translation>
@@ -169,7 +180,7 @@
 <translation id="9110294136812584522">Websites können über Cookies von Drittanbietern darum bitten, die alte Google-Anmeldung verwenden zu dürfen</translation>
 <translation id="2903783737778379345">Alte Google-Anmeldung über Cookies von Drittanbietern nicht zulassen</translation>
 <translation id="6880817299303842099">Berechtigt, Cookies von Drittanbietern für die alte Google-Anmeldung zu verwenden</translation>
-<translation id="5169650598465327872">Localhost-Zugriff</translation>
+<translation id="2136412236435693622">Localhost-Zugriff</translation>
 <translation id="4172219483893066798">Websites dürfen Zugriff auf Localhost-Ressourcen anfordern.</translation>
 <translation id="7181706637590665047">Zugriff auf Localhost-Ressourcen nicht erlauben</translation>
 <translation id="1485435696620658073">Zugriff auf Localhost-Ressourcen erlaubt</translation>
@@ -396,6 +407,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="6569877533335686968">Aufrechterhalten</translation>
 <translation id="734105583050813665">Bitflyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
+<translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Uphold fordert Sie möglicherweise auf, Ihre Identität zu verifizieren. Dies beruht auf den von Ihnen angeforderten Services.</translation>
 <translation id="3200197118442451932">Brave Software Inc. verarbeitet, speichert oder greift auf keine der persönlichen Informationen zu, die Sie <ph name="WALLET_PROVIDER"/> zur Verfügung stellen, wenn Sie dort ein Konto einrichten.</translation>
 <translation id="1665118090708049096">Zu meinem <ph name="WALLET_PROVIDER"/>-Konto wechseln</translation>
@@ -422,6 +434,12 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="6883611015375728278">Alle Cookies blockieren</translation>
 <translation id="4941539331405513605">Cross-Site-Cookies blockieren</translation>
 <translation id="5657156137487675418">Alle Cookies erlauben</translation>
+<translation id="1553643198679271031">Vertraulich anfordern</translation>
+<translation id="4891600875049212418">Nutzen Sie den Vertraulichen Modus, um vertrauliche Seiten anzusehen</translation>
+<translation id="1388619247102737054">Deaktiviert den Browserverlauf und die lokale Speicherung, wenn Websites dies verlangen</translation>
+<translation id="1876882294512858963">Immer vertraulich fortfahren</translation>
+<translation id="554464532999080267">Fragen, bevor Sie vertraulich fortfahren (Standard)</translation>
+<translation id="926857659063503456">Nie vertraulich fortfahren</translation>
 <translation id="3895527457258986253">Fingerprinting blockieren</translation>
 <translation id="7854108565842971747">Dies sind die Standardeinstellungen für Schutz für neue Seiten. Wenn Sie die folgenden Einstellungen ändern, hat dies keine Auswirkung auf die Einstellungen, die Sie für bestimmte Websites gemacht haben</translation>
 <translation id="218587021686734263">Fingerprinting über die Spracheinstellungen verhindern</translation>
@@ -545,6 +563,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1689062823386843231">Nicht-proxisiertes UDP deaktivieren</translation>
 <translation id="1483493594462132177">Senden</translation>
 <translation id="538450413584738399">Swap</translation>
+<translation id="1366855498335432549">Einzahlen</translation>
 <translation id="1420318137760245955">Willkommen zur neuen Brave Wallet</translation>
 <translation id="8339846196588658366">Halten Sie Krypto-Assets in Ihrer Verwahrung und verfolgen Sie die Portfolio-Performance. Alles direkt über den Brave-Datenschutzbrowser.</translation>
 <translation id="4472575034687746823">Start</translation>
@@ -561,7 +580,8 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="375882617301124395">Sichern Sie Ihre Krypto-Wallet</translation>
 <translation id="8289942708804097960">Kryptowährung mit Kredit- oder Debitkarte kaufen.</translation>
 <translation id="841880029259839903">Kryptowährungen senden oder zwischen Konten überweisen.</translation>
-<translation id="8226778393040773102">Token und Assets tauschen</translation>
+<translation id="151939837774436299">Token und Assets tauschen.</translation>
+<translation id="5512897350309216422">Einzahlung von Kryptowährungen auf Brave Wallet.</translation>
 <translation id="1783600039044302171">Schütze deine Kryptowährung mit einem Passwort</translation>
 <translation id="3726490322412361740">Passwort eingeben</translation>
 <translation id="3038243139480464605">Passwort verifizieren</translation>
@@ -602,13 +622,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1144810021918451336">Schützt Sie nicht vor gefährlichen Websites, Downloads und Erweiterungen.</translation>
 <translation id="5760476995887363522">Die Formulierungen stimmen nicht überein. Bitte erneut versuchen.</translation>
 <translation id="2360588547830602174">Die Wiederherstellung des Kontos schlug fehl. Bitte erneut versuchen.</translation>
-<translation id="6748108480210050150">Von</translation>
-<translation id="3318280255740629162">25 %</translation>
-<translation id="2636487255623744079">50 %</translation>
-<translation id="8654192805213365413">75 %</translation>
-<translation id="6159566011642056819">Bis (Schätzung)</translation>
-<translation id="6998989275928107238">An</translation>
-<translation id="2589431635772931954">Adresse oder URL</translation>
 <translation id="5517732667776806421">Fehlende Prüfsummeninformationen</translation>
 <translation id="4006711930669471508">Ungültige Prüfsummeninformationen</translation>
 <translation id="1987317783729300807">Konten</translation>
@@ -636,7 +649,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8475984867371585028">Sichtbare NFTs bearbeiten</translation>
 <translation id="5050890334032852465">Konto-Überwachungsliste speichern</translation>
 <translation id="7755766175599167100">Token suchen</translation>
-<translation id="3835223348537121988">Guthaben:</translation>
 <translation id="3956169227169516344">Kaufmethode wählen</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Sperren</translation>
@@ -650,7 +662,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8239147115686034860">Brave Wallet automatisch sperren</translation>
 <translation id="414639769490080648">Die Anzahl der Minuten, die gewartet werden soll, bis die Brave Wallet automatisch gesperrt wird</translation>
 <translation id="2326850911705720398">Wallet-Daten zurücksetzen und löschen</translation>
-<translation id="4322846864135539519">Möchten Sie Ihre Brave-Belohnungen wirklich zurücksetzen? Wenn Ihre Wallet nicht gesichert wird, führt das Zurücksetzen dazu, dass alle Ihre Kontodaten (einschließlich zugehöriger Geldmittel) verloren gehen. Geben Sie zur Bestätigung "<ph name="CONFIRMATION_PHRASE"/>" ein.</translation>
+<translation id="6567712397896147805">Sind Sie sicher, dass Sie Ihre Brave Wallet zurücksetzen möchten? Wenn Ihre Wallet nicht gesichert ist, verlieren Sie beim Zurücksetzen alle Kontodaten (einschließlich aller damit verbundenen Guthaben). Tippen Sie "<ph name="CONFIRMATION_PHRASE"/>" zur Bestätigung.</translation>
 <translation id="6915083716464390008">Wählen Sie eine der folgenden Optionen aus</translation>
 <translation id="7667423728712601865">Kryptowährung mit Visa oder Mastercard kaufen.</translation>
 <translation id="3101839349578102016">Sofortkauf mit Ihrem Bankkonto. Niedrigere Gebühren.</translation>
@@ -767,8 +779,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="5045550434625856497">Falsches Passwort</translation>
 <translation id="1367951781824006909">Datei auswählen</translation>
 <translation id="8648684608605749476">Cookies von Drittanbietern im Inkognitomodus blockieren</translation>
-<translation id="1118876217803190221">Guthaben reicht nicht aus.</translation>
-<translation id="3025158262797849291">Unbekanntes Zahlenformat</translation>
 <translation id="5932938770824268122">Private Key</translation>
 <translation id="2472882733835903303">Privaten Schlüssel anzeigen</translation>
 <translation id="4391056902675005799">Privaten Schlüssel ausblenden</translation>
@@ -813,14 +823,12 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="1254969878422524947">Trinkgeldbegrenzung für Gebühren (Gwei)</translation>
 <translation id="7373308452149471621">Preisgrenze pro Gebühr (Gwei)</translation>
 <translation id="5891811606602061966">Fehler beim Importieren des Kontos. Bitte versuchen Sie es erneut.</translation>
-<translation id="1822506443689803572">Brave verwendet <ph name="DEX_PROVIDER"/> als DEX-Aggregator.</translation>
 <translation id="5061574358754621254">Preisdaten zur Verfügung gestellt von CoinGecko</translation>
-<translation id="4626407663177532837">Angebot beinhaltet eine Brave-Gebühr von 0,875 %.</translation>
 <translation id="8574289650879708853">Benutzerdefiniertes Asset hinzufügen</translation>
 <translation id="1255896809210433555">NFT hinzufügen</translation>
 <translation id="7791543448312431591">Hinzufügen</translation>
 <translation id="6600400596821238377">Tokenname</translation>
-<translation id="4432966365400169165">Token-Vertragsadresse</translation>
+<translation id="3797613444743816037">Prägungsadresse</translation>
 <translation id="4092152169181928870">Tokensymbol</translation>
 <translation id="4351811224047421378">Dezimalstellen der Genauigkeit</translation>
 <translation id="547122651977318828">Token-ID (nur für ERC721)</translation>
@@ -920,6 +928,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="6044189892950611565">Benachrichtigungskanal für den Brave-Browser</translation>
 <translation id="1173919438868967364">Konto auswählen</translation>
 <translation id="8922793255489232731">Passende Zeitzone für <ph name="VALUE"/> konnte nicht abgerufen werden</translation>
+<translation id="7084757528071133475">Herunterladen der Walletdatei \u2022 <ph name="percentage"/> %%</translation>
 <translation id="6471216025161697462">Verbunden mit <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Testversion</translation>
 <translation id="7733890291091968191">Web3-Benachrichtigung anzeigen</translation>
@@ -1002,8 +1011,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="8382368767453083629">Multisignatur 2 initialisieren</translation>
 <translation id="77243237706803459">Prägung 2 initialisieren</translation>
 <translation id="583281660410589416">Unbekannt</translation>
-<translation id="2862978891748913252">Wählen Sie Ihr Land aus</translation>
-<translation id="3832588024105436400">Wählen Sie Ihr Land aus, damit wir Ihnen die richtigen Optionen und Anzeigen für Ihre Region anzeigen können. <ph name="PRIVACY_POLICY"/></translation>
 <translation id="5666264859501108700"><ph name="COUNTRY_NAME"/> wurde als Ihre Region für Brave-Belohnungen festgelegt.</translation>
 <translation id="909076461795862330">Beim Versuch, Brave-Belohnungen einzurichten, ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.</translation>
 <translation id="7352651011704765696">Etwas ist schiefgegangen</translation>
@@ -1060,10 +1067,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="7748944510530490017">Primäre Netzwerke</translation>
 <translation id="2781668117338732220">Sekundärnetzwerke</translation>
 <translation id="282560918037172384">Testnetzwerke</translation>
-<translation id="6309721369749814582">Domäne <ph name="DOMAIN"/> ist nicht registriert</translation>
-<translation id="4071347720273751665">Es sieht so aus, als hätten Sie eine ENS-Adresse eingegeben. Wir müssen einen Auflöser eines Drittanbieters verwenden, um diese Anfrage aufzulösen. Dieser kann möglicherweise Ihre IP-Adresse und Ihre Domain sehen. <ph name="LEARN_MORE"/></translation>
-<translation id="4096049525705855774">ENS-Offchain-Domain verwenden</translation>
-<translation id="4982630604810554641">Domain wird gesucht …</translation>
 <translation id="3586775666459823714">NFTs</translation>
 <translation id="707569835145765061">Aktion erforderlich: Verknüpfen Sie ein Depotkonto oder Ihr vBAT geht verloren</translation>
 <translation id="1776742005329298234">Am <ph name="DUE_DATE"/> werden wir die Unterstützung für bestehende virtuelle BAT-Guthaben einstellen. Verknüpfen Sie vor diesem Datum ein Depotkonto, damit wir Ihr verdientes Guthaben auf Ihr Depotkonto übertragen können. Andernfalls geht Ihr Guthaben verloren.</translation>

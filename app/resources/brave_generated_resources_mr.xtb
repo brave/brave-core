@@ -25,6 +25,7 @@
 <translation id="8712637175834984815">समजले</translation>
 <translation id="4394049700291259645">अक्षम करा</translation>
 <translation id="8428213095426709021">सेटिंग्ज</translation>
+<translation id="7473891865547856676">नाही, नको</translation>
 <translation id="4474155171896946103">सर्व टॅब बुकमार्क करा...</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{टॅब म्यूट करा}one{टॅब म्यूट करा}other{टॅब म्यूट करा}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{टॅब अनम्यूट करा}one{टॅब अनम्यूट करा}other{टॅब अनम्यूट करा}}</translation>
@@ -37,6 +38,10 @@
 <translation id="8041089156583427627">अभिप्राय पाठवा</translation>
 <translation id="945522503751344254">अभिप्राय पाठवा</translation>
 <translation id="7537601449003285327">टास्कबारवर पिन करा</translation>
+<translation id="385051799172605136">मागील</translation>
+<translation id="5317780077021120954">सेव्ह करा</translation>
+<translation id="8261506727792406068">हटवा</translation>
+<translation id="7525067979554623046">तयार करा</translation>
 <translation id="9156965752763025780">तुम्ही पुढल्या वेळी Brave रीलाँच कराल तोपर्यंत तुमचे बदल प्रभावी होतील.</translation>
 <translation id="4472575034687746823">प्रारंभ करा</translation>
 <translation id="6786747875388722282">विस्तार</translation>
@@ -88,6 +93,7 @@
 <translation id="1736420071277903564">काँप्युटर</translation>
 <translation id="2653659639078652383">सबमिट करा</translation>
 <translation id="8137559199583651773">विस्तार व्यवस्थापित करा</translation>
+<translation id="5840822070878669614">Brave वेब स्टोअर उघडा</translation>
 <translation id="1426410128494586442">होय</translation>
 <translation id="1327977588028644528">गेटवे</translation>
 <translation id="8425213833346101688">बदल करा</translation>

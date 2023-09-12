@@ -3,7 +3,6 @@
 <translationbundle lang="no">
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> av fanene dine er ikke brukt i det siste. Vil du lukke dem?</translation>
 <translation id="125153950246128346">Trykk for å se en annen fane</translation>
-<translation id="955456285524876618">Du finner de lukkede fanene dine under Nylige faner på hovedmenyen i Brave</translation>
 <translation id="1657719826150349398">Flytt fanen nedover</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> fane}other{<ph name="TABS_COUNT_MANY"/> faner}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Sett <ph name="TABS_COUNT_ONE"/> valgt fane som bokmerke}other{Sett <ph name="TABS_COUNT_MANY"/> valgte faner som bokmerker}}</translation>
@@ -45,6 +44,7 @@
 <translation id="5073204694187207510">Skjul fullskjermrutenett</translation>
 <translation id="5076161749301278626">Vil du se butikkanmeldelser?</translation>
 <translation id="5082793167783849073">Sammenlign sider raskt ved å lage en gruppe. For å begynne, trykk og hold på en link.</translation>
+<translation id="5339733443032484186">Den siste fanen du brukte</translation>
 <translation id="5490235265819901748">Fanegruppen er utvidet</translation>
 <translation id="5494920125229734069">Velg alle</translation>
 <translation id="5556417849629758491">Vis butikkinformasjon – alternativet er tilgjengelig nær toppen av skjermen</translation>
@@ -64,6 +64,7 @@
 <translation id="6549021453810473782">Se butikkinformasjon</translation>
 <translation id="6562820390860419811">Flytt fanen mot venstre</translation>
 <translation id="6615455863669487791">Vis meg</translation>
+<translation id="6398241160085205003">Du finner de lukkede fanene dine under Nylige faner på hovedmenyen i Brave.</translation>
 <translation id="6840760312327750441">For å gruppere faner, trykk og hold på en fane. Dra den deretter oppå en annen fane.</translation>
 <translation id="6856809498882026482">Skjul flervalgsmodus</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Del fanen}other{Del fanene}}</translation>
@@ -92,6 +93,9 @@
 <translation id="9150694013019234766">Bytt mellom faner i fanegruppen på nedre del av skjermen</translation>
 <translation id="9169594135889675189">Legg til ny fane i gruppen</translation>
 <translation id="959682366969460160">Få orden på ting</translation>
+<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
+        =1 {Du kan finne de lukkede fanene dine i Nylige faner under Brave-hovedmeny. Den private fanen din vil ikke være tilgjengelig.}
+        other {Du kan finne de lukkede fanene dine i Nylige faner under Brave-hovedmeny. Dine # private faner vil ikke være tilgjengelige.}}</translation>
 <translation id="3228718275011575753">Vil du lukke alle private faner?</translation>
-<translation id="1922184283901690941">Aktiviteten din på disse Private fanene slettes fra denne enheten</translation>
+<translation id="6687920250729800417">Aktiviteten din i disse private fanene vil fjernes fra denne enheten</translation>
 </translationbundle>
