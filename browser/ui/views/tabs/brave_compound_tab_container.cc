@@ -133,8 +133,6 @@ base::OnceClosure BraveCompoundTabContainer::LockLayout() {
 }
 
 void BraveCompoundTabContainer::SetScrollEnabled(bool enabled) {
-  DCHECK(base::FeatureList::IsEnabled(
-      tabs::features::kBraveVerticalTabsStickyPinnedTabs));
   if (enabled == !!scroll_view_) {
     return;
   }
@@ -204,13 +202,6 @@ void BraveCompoundTabContainer::Layout() {
     return;
   }
 
-  if (!base::FeatureList::IsEnabled(
-          tabs::features::kBraveVerticalTabsStickyPinnedTabs)) {
-    // We use flex layout manager so let it do its job.
-    views::View::Layout();
-    return;
-  }
-
   const auto contents_bounds = GetContentsBounds();
 
   // Pinned container gets however much space it wants.
@@ -242,12 +233,7 @@ gfx::Size BraveCompoundTabContainer::CalculatePreferredSize() const {
     return CompoundTabContainer::CalculatePreferredSize();
   }
 
-  const auto sticky_pinned_tabs_enabled = base::FeatureList::IsEnabled(
-      tabs::features::kBraveVerticalTabsStickyPinnedTabs);
-
-  auto preferred_size = sticky_pinned_tabs_enabled
-                            ? CompoundTabContainer::CalculatePreferredSize()
-                            : views::View::CalculatePreferredSize();
+  auto preferred_size = CompoundTabContainer::CalculatePreferredSize();
 
   // Check if we can expand height to fill the entire scroll area's viewport.
   for (auto* parent_view = parent(); parent_view;
@@ -258,12 +244,7 @@ gfx::Size BraveCompoundTabContainer::CalculatePreferredSize() const {
       continue;
     }
 
-    if (sticky_pinned_tabs_enabled) {
-      preferred_size.set_height(region_view->GetTabStripViewportHeight());
-    } else {
-      preferred_size.set_height(std::max(
-          region_view->GetTabStripViewportHeight(), preferred_size.height()));
-    }
+    preferred_size.set_height(region_view->GetTabStripViewportHeight());
     break;
   }
 
@@ -275,13 +256,7 @@ gfx::Size BraveCompoundTabContainer::GetMinimumSize() const {
     return CompoundTabContainer::GetMinimumSize();
   }
 
-  if (base::FeatureList::IsEnabled(
-          tabs::features::kBraveVerticalTabsStickyPinnedTabs)) {
-    return {};
-  }
-
-  // We use flex layout manager so let it do its job.
-  return views::View::GetMinimumSize();
+  return {};
 }
 
 views::SizeBounds BraveCompoundTabContainer::GetAvailableSize(
@@ -354,9 +329,7 @@ void BraveCompoundTabContainer::OnThemeChanged() {
 }
 
 void BraveCompoundTabContainer::PaintChildren(const views::PaintInfo& info) {
-  if (ShouldShowVerticalTabs() &&
-      base::FeatureList::IsEnabled(
-          tabs::features::kBraveVerticalTabsStickyPinnedTabs)) {
+  if (ShouldShowVerticalTabs()) {
     // Bypass CompoundTabContainer::PaintChildren() implementation.
     // CompoundTabContainer calls children's View::Paint() even when they have
     // their own layer, which shouldn't happen.
