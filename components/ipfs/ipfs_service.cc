@@ -123,8 +123,7 @@ IpfsService::IpfsService(
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      ipfs_p3a_(this, prefs),
-      weak_factory_(this) {
+      ipfs_p3a_(this, prefs) {
   DCHECK(!user_data_dir.empty());
 
   api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
@@ -145,7 +144,7 @@ IpfsService::IpfsService(
 
   ipfs_dns_resolver_subscription_ =
       ipfs_dns_resolver_->AddObserver(base::BindRepeating(
-          &IpfsService::OnDnsConfigChanged, base::Unretained(this)));
+          &IpfsService::OnDnsConfigChanged, weak_factory_.GetWeakPtr()));
 }
 
 IpfsService::~IpfsService() {
@@ -232,9 +231,9 @@ void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
           .Pass());
 
   ipfs_service_.set_disconnect_handler(
-      base::BindOnce(&IpfsService::OnIpfsCrashed, base::Unretained(this)));
+      base::BindOnce(&IpfsService::OnIpfsCrashed, weak_factory_.GetWeakPtr()));
   ipfs_service_->SetCrashHandler(base::BindOnce(
-      &IpfsService::OnIpfsDaemonCrashed, base::Unretained(this)));
+      &IpfsService::OnIpfsDaemonCrashed, weak_factory_.GetWeakPtr()));
 
   auto config = mojom::IpfsConfig::New(
       executable_path, GetConfigFilePath(), GetDataPath(),
@@ -243,7 +242,7 @@ void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
 
   ipfs_service_->Launch(
       std::move(config),
-      base::BindOnce(&IpfsService::OnIpfsLaunched, base::Unretained(this)));
+      base::BindOnce(&IpfsService::OnIpfsLaunched, weak_factory_.GetWeakPtr()));
 #endif
 }
 
@@ -251,7 +250,7 @@ void IpfsService::RestartDaemon() {
   if (!IsDaemonLaunched())
     return;
   auto launch_callback =
-      base::BindOnce(&IpfsService::LaunchDaemon, base::Unretained(this));
+      base::BindOnce(&IpfsService::LaunchDaemon, weak_factory_.GetWeakPtr());
   ShutdownDaemon(base::BindOnce(
       [](base::OnceCallback<void(BoolCallback)> launch_callback,
          const bool success) {
@@ -431,7 +430,7 @@ void IpfsService::AddPin(const std::vector<std::string>& cids,
                                    recursive ? "true" : "false");
   api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
-      base::BindOnce(&IpfsService::OnPinAddResult, base::Unretained(this),
+      base::BindOnce(&IpfsService::OnPinAddResult, weak_factory_.GetWeakPtr(),
                      cids.size(), recursive, std::move(callback)),
       GetHeaders(gurl),
       api_request_helper::APIRequestOptions{.timeout = base::Minutes(2)});
@@ -451,8 +450,8 @@ void IpfsService::RemovePin(const std::vector<std::string>& cids,
 
   api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
-      base::BindOnce(&IpfsService::OnPinRemoveResult, base::Unretained(this),
-                     std::move(callback)),
+      base::BindOnce(&IpfsService::OnPinRemoveResult,
+                     weak_factory_.GetWeakPtr(), std::move(callback)),
       GetHeaders(gurl));
 }
 
@@ -542,7 +541,7 @@ void IpfsService::GetPins(const absl::optional<std::vector<std::string>>& cids,
 
   api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
-      base::BindOnce(&IpfsService::OnGetPinsResult, base::Unretained(this),
+      base::BindOnce(&IpfsService::OnGetPinsResult, weak_factory_.GetWeakPtr(),
                      std::move(callback)),
       GetHeaders(gurl));
 }
@@ -685,8 +684,8 @@ void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback,
   auto gurl = server_endpoint_.Resolve(kSwarmPeersPath);
   api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
-      base::BindOnce(&IpfsService::OnGetConnectedPeers, base::Unretained(this),
-                     std::move(callback),
+      base::BindOnce(&IpfsService::OnGetConnectedPeers,
+                     weak_factory_.GetWeakPtr(), std::move(callback),
                      retries.value_or(kPeersDefaultRetries)),
       GetHeaders(gurl));
 }
@@ -743,8 +742,8 @@ void IpfsService::GetAddressesConfig(GetAddressesConfigCallback callback) {
                                         kArgQueryParam, kAddressesField);
   api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
-      base::BindOnce(&IpfsService::OnGetAddressesConfig, base::Unretained(this),
-                     std::move(callback)),
+      base::BindOnce(&IpfsService::OnGetAddressesConfig,
+                     weak_factory_.GetWeakPtr(), std::move(callback)),
       GetHeaders(gurl));
 }
 
@@ -908,7 +907,7 @@ void IpfsService::GetRepoStats(GetRepoStatsCallback callback) {
                                 ipfs::kRepoStatsHumanReadableParamValue);
   api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
-      base::BindOnce(&IpfsService::OnRepoStats, base::Unretained(this),
+      base::BindOnce(&IpfsService::OnRepoStats, weak_factory_.GetWeakPtr(),
                      std::move(callback)),
       GetHeaders(gurl));
 }
@@ -941,7 +940,7 @@ void IpfsService::GetNodeInfo(GetNodeInfoCallback callback) {
 
   api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
-      base::BindOnce(&IpfsService::OnNodeInfo, base::Unretained(this),
+      base::BindOnce(&IpfsService::OnNodeInfo, weak_factory_.GetWeakPtr(),
                      std::move(callback)),
       GetHeaders(gurl));
 }
@@ -974,8 +973,8 @@ void IpfsService::RunGarbageCollection(GarbageCollectionCallback callback) {
 
   api_request_helper_->Request(
       "POST", gurl, std::string(), std::string(),
-      base::BindOnce(&IpfsService::OnGarbageCollection, base::Unretained(this),
-                     std::move(callback)),
+      base::BindOnce(&IpfsService::OnGarbageCollection,
+                     weak_factory_.GetWeakPtr(), std::move(callback)),
       GetHeaders(gurl));
 }
 
@@ -998,10 +997,10 @@ void IpfsService::OnGarbageCollection(
 }
 
 void IpfsService::PreWarmShareableLink(const GURL& url) {
-  api_request_helper_->Request(
-      "HEAD", url, std::string(), std::string(),
-      base::BindOnce(&IpfsService::OnPreWarmComplete, base::Unretained(this)),
-      GetHeaders(url));
+  api_request_helper_->Request("HEAD", url, std::string(), std::string(),
+                               base::BindOnce(&IpfsService::OnPreWarmComplete,
+                                              weak_factory_.GetWeakPtr()),
+                               GetHeaders(url));
 }
 
 void IpfsService::OnPreWarmComplete(
@@ -1112,7 +1111,7 @@ void IpfsService::ValidateGateway(const GURL& url, BoolCallback callback) {
   api_request_helper_->Request(
       "GET", validation_url, "", "",
       base::BindOnce(&IpfsService::OnGatewayValidationComplete,
-                     base::Unretained(this), std::move(callback), url),
+                     weak_factory_.GetWeakPtr(), std::move(callback), url),
       {}, {}, std::move(conversion_callback));
 }
 

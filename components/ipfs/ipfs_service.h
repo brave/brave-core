@@ -288,7 +288,7 @@ class IpfsService : public KeyedService,
 #endif
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   IpfsP3A ipfs_p3a_;
-  base::WeakPtrFactory<IpfsService> weak_factory_;
+  base::WeakPtrFactory<IpfsService> weak_factory_{this};
 };
 
 }  // namespace ipfs
