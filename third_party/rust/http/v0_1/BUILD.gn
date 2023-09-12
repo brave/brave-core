@@ -61,6 +61,6 @@ cargo_crate("lib") {
   deps = [
     "//brave/third_party/rust/bytes/v0_4:lib",
     "//brave/third_party/rust/fnv/v1:lib",
-    "//third_party/rust/itoa/v0_4:lib",
+    "//brave/third_party/rust/itoa/v0_4:lib",
   ]
 }
