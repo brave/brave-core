@@ -28,6 +28,7 @@
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
+#include "brave/browser/request_otr/request_otr_service_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
@@ -39,7 +40,6 @@
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
-#include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 
@@ -101,10 +101,6 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_service_factory.h"
-#endif
-
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
-#include "brave/browser/request_otr/request_otr_service_factory.h"
 #endif
 
 namespace brave {
@@ -189,9 +185,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
     playlist::PlaylistServiceFactory::GetInstance();
   }
 #endif
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRServiceFactory::GetInstance();
-#endif
 
   BraveSyncAlertsServiceFactory::GetInstance();
 

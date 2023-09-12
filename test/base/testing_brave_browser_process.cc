@@ -72,13 +72,11 @@ TestingBraveBrowserProcess::debounce_component_installer() {
   return nullptr;
 }
 
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
 request_otr::RequestOTRComponentInstallerPolicy*
 TestingBraveBrowserProcess::request_otr_component_installer() {
   NOTREACHED();
   return nullptr;
 }
-#endif
 
 brave::URLSanitizerComponentInstaller*
 TestingBraveBrowserProcess::URLSanitizerComponentInstaller() {

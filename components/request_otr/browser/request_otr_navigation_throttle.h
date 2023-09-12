@@ -22,10 +22,6 @@ namespace content {
 class NavigationHandle;
 }  // namespace content
 
-namespace ephemeral_storage {
-class EphemeralStorageService;
-}  // namespace ephemeral_storage
-
 namespace request_otr {
 
 class RequestOTRService;

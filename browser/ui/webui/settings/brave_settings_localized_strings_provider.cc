@@ -19,7 +19,6 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
-#include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
@@ -274,13 +273,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_INTERFACE_ONLY},
     {"disableNonProxiedUdp",
      IDS_SETTINGS_WEBRTC_POLICY_DISABLE_NON_PROXIED_UDP},
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
     {"requestOTRLabel", IDS_SETTINGS_REQUEST_OTR_LABEL},
     {"requestOTRSubLabel", IDS_SETTINGS_REQUEST_OTR_SUB_LABEL},
     {"requestOTRDefault", IDS_SETTINGS_REQUEST_OTR_DEFAULT},
     {"requestOTRAlways", IDS_SETTINGS_REQUEST_OTR_ALWAYS},
     {"requestOTRNever", IDS_SETTINGS_REQUEST_OTR_NEVER},
-#endif
     {"braveSync", IDS_SETTINGS_BRAVE_SYNC_TITLE},
     {"braveSyncSetupActionLabel", IDS_SETTINGS_BRAVE_SYNC_SETUP_ACTION_LABEL},
     {"braveSyncSetupTitle", IDS_SETTINGS_BRAVE_SYNC_SETUP_TITLE},

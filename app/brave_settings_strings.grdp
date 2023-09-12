@@ -474,23 +474,21 @@
     Help improve Brave's product stability by automatically sending diagnostic reports when the Brave Browser crashes or freezes.
   </message>
   <!-- Request OTR -->
-  <if expr="enable_request_otr">
-    <message name="IDS_SETTINGS_REQUEST_OTR_LABEL" desc="Request OTR setting label">
-      Go Off-The-Record when visiting sensitive sites
-    </message>
-    <message name="IDS_SETTINGS_REQUEST_OTR_SUB_LABEL" desc="Request OTR setting sub-label">
-      Learn more
-    </message>
-    <message name="IDS_SETTINGS_REQUEST_OTR_DEFAULT" desc="Select value">
-      Ask
-    </message>
-    <message name="IDS_SETTINGS_REQUEST_OTR_ALWAYS" desc="Select value">
-      Always
-    </message>
-    <message name="IDS_SETTINGS_REQUEST_OTR_NEVER" desc="Select value">
-      Never
-    </message>
-  </if>
+  <message name="IDS_SETTINGS_REQUEST_OTR_LABEL" desc="Request OTR setting label">
+    Go Off-The-Record when visiting sensitive sites
+  </message>
+  <message name="IDS_SETTINGS_REQUEST_OTR_SUB_LABEL" desc="Request OTR setting sub-label">
+    Learn more
+  </message>
+  <message name="IDS_SETTINGS_REQUEST_OTR_DEFAULT" desc="Select value">
+    Ask
+  </message>
+  <message name="IDS_SETTINGS_REQUEST_OTR_ALWAYS" desc="Select value">
+    Always
+  </message>
+  <message name="IDS_SETTINGS_REQUEST_OTR_NEVER" desc="Select value">
+    Never
+  </message>
 
   <!-- Settings / Privacy and security / Clear Browsing Data dialog -->
   <message name="IDS_SETTINGS_BRAVE_ON_EXIT" desc="Clear Browsing Data dialog On exit tab label">

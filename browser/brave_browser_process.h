@@ -14,7 +14,6 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -68,9 +67,7 @@ class ProcessMiscMetrics;
 }  // namespace misc_metrics
 
 namespace request_otr {
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
 class RequestOTRComponentInstallerPolicy;
-#endif
 }  // namespace request_otr
 
 namespace ntp_background_images {
@@ -115,10 +112,8 @@ class BraveBrowserProcess {
 #endif
   virtual debounce::DebounceComponentInstaller*
   debounce_component_installer() = 0;
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
   virtual request_otr::RequestOTRComponentInstallerPolicy*
   request_otr_component_installer() = 0;
-#endif
   virtual brave::URLSanitizerComponentInstaller*
   URLSanitizerComponentInstaller() = 0;
   virtual brave_shields::HTTPSEverywhereService* https_everywhere_service() = 0;

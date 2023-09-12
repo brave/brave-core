@@ -63,9 +63,7 @@ class ProcessMiscMetrics;
 }  // namespace misc_metrics
 
 namespace request_otr {
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
 class RequestOTRComponentInstallerPolicy;
-#endif
 }  // namespace request_otr
 
 namespace ntp_background_images {
@@ -120,10 +118,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   greaselion::GreaselionDownloadService* greaselion_download_service() override;
 #endif
   debounce::DebounceComponentInstaller* debounce_component_installer() override;
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRComponentInstallerPolicy*
   request_otr_component_installer() override;
-#endif
   brave::URLSanitizerComponentInstaller* URLSanitizerComponentInstaller()
       override;
   brave_shields::HTTPSEverywhereService* https_everywhere_service() override;
@@ -193,10 +189,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
   std::unique_ptr<debounce::DebounceComponentInstaller>
       debounce_component_installer_;
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
   std::unique_ptr<request_otr::RequestOTRComponentInstallerPolicy>
       request_otr_component_installer_;
-#endif
   std::unique_ptr<brave::URLSanitizerComponentInstaller>
       url_sanitizer_component_installer_;
   bool created_https_everywhere_service_ = false;

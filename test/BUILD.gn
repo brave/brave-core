@@ -15,7 +15,6 @@ import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
-import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/test/testing.gni")
@@ -1119,6 +1118,7 @@ test("brave_browser_tests") {
     deps += [
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
+      "//brave/browser/request_otr:browser_tests",
       "//brave/browser/sharing_hub:browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
       "//brave/components/brave_wallet/browser:test_support",
@@ -1131,12 +1131,6 @@ test("brave_browser_tests") {
 
   if (enable_commander) {
     deps += [ "//brave/browser/ui/commander:browser_tests" ]
-  }
-
-  if (enable_request_otr) {
-    if (!is_android) {
-      deps += [ "//brave/browser/request_otr:browser_tests" ]
-    }
   }
 
   if (enable_custom_background) {

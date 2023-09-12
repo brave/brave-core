@@ -32,7 +32,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
-#include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/request_otr/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -64,10 +64,6 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/common/features.h"
-#endif
-
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
-#include "brave/components/request_otr/common/features.h"
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
@@ -152,17 +148,15 @@
           FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature),            \
       }))
 
-#define REQUEST_OTR_FEATURE_ENTRIES                                           \
-  IF_BUILDFLAG(                                                               \
-      ENABLE_REQUEST_OTR,                                                     \
-      EXPAND_FEATURE_ENTRIES({                                                \
-          "brave-request-otr-tab",                                            \
-          "Enable Request-OTR Tab",                                           \
-          "Suggest going off-the-record when visiting potentially sensitive " \
-          "URLs",                                                             \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(request_otr::features::kBraveRequestOTRTab),     \
-      }))
+#define REQUEST_OTR_FEATURE_ENTRIES                                       \
+  EXPAND_FEATURE_ENTRIES({                                                \
+      "brave-request-otr-tab",                                            \
+      "Enable Request-OTR Tab",                                           \
+      "Suggest going off-the-record when visiting potentially sensitive " \
+      "URLs",                                                             \
+      kOsDesktop | kOsAndroid,                                            \
+      FEATURE_VALUE_TYPE(request_otr::features::kBraveRequestOTRTab),     \
+  })
 
 #define BRAVE_MODULE_FILENAME_PATCH                                            \
   IF_BUILDFLAG(                                                                \

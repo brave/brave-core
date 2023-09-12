@@ -3,10 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "build/build_config.h"
-
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
 
 #include "brave/browser/request_otr/request_otr_service_factory.h"
 #include "brave/components/request_otr/browser/request_otr_service.h"
@@ -40,10 +37,6 @@ bool BraveTabRequestedOffTheRecord(content::WebContents* web_contents) {
 #define IsOffTheRecord() \
   IsOffTheRecord() || BraveTabRequestedOffTheRecord(web_contents())
 
-#endif
-
 #include "src/chrome/browser/history/history_tab_helper.cc"
 
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
 #undef IsOffTheRecord
-#endif

@@ -33,7 +33,6 @@ source_set("browser_process") {
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ipfs/buildflags",
-    "//brave/components/request_otr/common/buildflags",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
     "//chrome/browser:browser_process",

@@ -39,7 +39,7 @@
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
-#include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/request_otr/browser/request_otr_service.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -116,10 +116,6 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/common/features.h"
 #include "brave/components/ai_chat/common/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
-#include "brave/components/request_otr/browser/request_otr_service.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -542,9 +538,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   translate::RegisterBraveProfilePrefsForMigration(registry);
 
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRService::RegisterProfilePrefs(registry);
-#endif
 }
 
 }  // namespace brave

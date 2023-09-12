@@ -43,6 +43,8 @@
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
+#include "brave/components/request_otr/browser/request_otr_component_installer.h"
+#include "brave/components/request_otr/common/features.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "build/build_config.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
@@ -86,11 +88,6 @@
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
-#endif
-
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
-#include "brave/components/request_otr/browser/request_otr_component_installer.h"
-#include "brave/components/request_otr/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -229,9 +226,7 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   greaselion_download_service();
 #endif
   debounce_component_installer();
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr_component_installer();
-#endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader_rewriter_service();
 #endif
@@ -319,7 +314,6 @@ BraveBrowserProcessImpl::debounce_component_installer() {
   return debounce_component_installer_.get();
 }
 
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
 request_otr::RequestOTRComponentInstallerPolicy*
 BraveBrowserProcessImpl::request_otr_component_installer() {
   if (!base::FeatureList::IsEnabled(
@@ -333,7 +327,6 @@ BraveBrowserProcessImpl::request_otr_component_installer() {
   }
   return request_otr_component_installer_.get();
 }
-#endif
 
 brave::URLSanitizerComponentInstaller*
 BraveBrowserProcessImpl::URLSanitizerComponentInstaller() {

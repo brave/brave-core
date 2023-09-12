@@ -33,6 +33,7 @@
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/request_otr/request_otr_service_factory.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
@@ -71,7 +72,8 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
-#include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/request_otr/browser/request_otr_navigation_throttle.h"
+#include "brave/components/request_otr/browser/request_otr_service.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -123,12 +125,6 @@
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
-
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
-#include "brave/browser/request_otr/request_otr_service_factory.h"
-#include "brave/components/request_otr/browser/request_otr_navigation_throttle.h"
-#include "brave/components/request_otr/browser/request_otr_service.h"
-#endif
 
 using blink::web_pref::WebPreferences;
 using brave_shields::BraveShieldsWebContentsObserver;
@@ -641,7 +637,6 @@ bool BraveContentBrowserClient::CanCreateWindow(
       container_type, target_url, referrer, frame_name, disposition, features,
       user_gesture, opener_suppressed, no_javascript_access);
 
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
   // If the user has requested going off-the-record on this site, don't allow
   // opening new windows via script
   if (content::WebContents* web_contents =
@@ -657,7 +652,6 @@ bool BraveContentBrowserClient::CanCreateWindow(
       }
     }
   }
-#endif
 
   return can_create_window && google_sign_in_permission::CanCreateWindow(
                                   opener, opener_url, target_url);
@@ -1156,7 +1150,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     }
   }
 
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
   // Request Off-The-Record
   if (auto request_otr_throttle =
           request_otr::RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
@@ -1167,7 +1160,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
               g_browser_process->GetApplicationLocale())) {
     throttles.push_back(std::move(request_otr_throttle));
   }
-#endif
 
   return throttles;
 }
@@ -1256,7 +1248,6 @@ content::StoragePartitionConfig
 BraveContentBrowserClient::GetStoragePartitionConfigForSite(
     content::BrowserContext* browser_context,
     const GURL& site) {
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
   if (auto* request_otr_service =
           request_otr::RequestOTRServiceFactory::GetForBrowserContext(
               browser_context)) {
@@ -1268,7 +1259,6 @@ BraveContentBrowserClient::GetStoragePartitionConfigForSite(
           /*in_memory=*/true);
     }
   }
-#endif
 
   return ChromeContentBrowserClient::GetStoragePartitionConfigForSite(
       browser_context, site);

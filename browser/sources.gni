@@ -184,7 +184,7 @@ brave_chrome_browser_deps = [
   "//brave/components/p3a:buildflags",
   "//brave/components/playlist/common/buildflags",
   "//brave/components/privacy_sandbox",
-  "//brave/components/request_otr/common/buildflags",
+  "//brave/components/request_otr/common",
   "//brave/components/resources",
   "//brave/components/skus/browser",
   "//brave/components/skus/common",
@@ -272,10 +272,6 @@ if (enable_speedreader) {
     "//brave/components/speedreader/common",
     "//brave/components/speedreader/common:mojom",
   ]
-}
-
-if (enable_request_otr) {
-  brave_chrome_browser_deps += [ "//brave/components/request_otr/common" ]
 }
 
 if (enable_ai_chat) {

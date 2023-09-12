@@ -18,6 +18,7 @@
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
+#include "brave/browser/request_otr/request_otr_tab_helper.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
@@ -25,7 +26,7 @@
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
-#include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/request_otr/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -77,11 +78,6 @@
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
-#endif
-
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
-#include "brave/browser/request_otr/request_otr_tab_helper.h"
-#include "brave/components/request_otr/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -170,12 +166,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   if (!web_contents->GetBrowserContext()->IsOffTheRecord()) {
     ntp_background_images::NTPTabHelper::CreateForWebContents(web_contents);
     misc_metrics::PageMetricsTabHelper::CreateForWebContents(web_contents);
-#if BUILDFLAG(ENABLE_REQUEST_OTR)
     if (base::FeatureList::IsEnabled(
             request_otr::features::kBraveRequestOTRTab)) {
       RequestOTRTabHelper::CreateForWebContents(web_contents);
     }
-#endif
   }
 
 #if BUILDFLAG(ENABLE_PLAYLIST)

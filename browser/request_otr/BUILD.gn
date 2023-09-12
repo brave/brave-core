@@ -3,13 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/request_otr/common/buildflags/buildflags.gni")
-
-assert(enable_request_otr)
-
 source_set("browser_tests") {
   testonly = true
-  check_includes = false
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [ "//brave/browser/request_otr/request_otr_browsertest.cc" ]

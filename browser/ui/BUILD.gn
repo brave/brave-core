@@ -13,7 +13,6 @@ import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
-import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -200,12 +199,7 @@ source_set("ui") {
       "whats_new/whats_new_util.h",
     ]
 
-    if (enable_request_otr) {
-      deps += [
-        "//brave/components/request_otr/common",
-        "//brave/components/request_otr/common/buildflags:buildflags",
-      ]
-    }
+    deps += [ "//brave/components/request_otr/common" ]
 
     if (enable_pin_shortcut) {
       sources += [
@@ -530,6 +524,8 @@ source_set("ui") {
     "//brave/components/p3a_utils",
     "//brave/components/playlist/common/buildflags",
     "//brave/components/query_filter",
+    "//brave/components/request_otr/browser",
+    "//brave/components/request_otr/common",
     "//brave/components/resources:static_resources",
     "//brave/components/skus/browser",
     "//brave/components/skus/browser/resources:generated_resources",
@@ -699,13 +695,6 @@ source_set("ui") {
       "views/speedreader/reader_mode_toolbar_view.h",
       "views/speedreader/speedreader_icon_view.cc",
       "views/speedreader/speedreader_icon_view.h",
-    ]
-  }
-
-  if (enable_request_otr) {
-    deps += [
-      "//brave/components/request_otr/browser",
-      "//brave/components/request_otr/common",
     ]
   }
 
