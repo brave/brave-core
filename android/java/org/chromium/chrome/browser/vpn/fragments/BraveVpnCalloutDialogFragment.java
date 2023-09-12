@@ -19,7 +19,6 @@ import org.chromium.chrome.browser.BraveDialogFragment;
 import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
-import org.chromium.ui.widget.Toast;
 
 public class BraveVpnCalloutDialogFragment
         extends BraveDialogFragment implements View.OnClickListener {
@@ -44,7 +43,7 @@ public class BraveVpnCalloutDialogFragment
     public void onClick(View view) {
         if (view.getId() == R.id.btn_enable) {
             if (!InternetConnection.isNetworkAvailable(getActivity())) {
-                Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+                BraveVpnUtils.showToast(getResources().getString(R.string.no_internet));
             } else {
                 BraveVpnUtils.openBraveVpnPlansActivity(getActivity());
             }
