@@ -1,4 +1,4 @@
-use chrono::{NaiveDateTime, Utc};
+use chrono::NaiveDateTime;
 use hmac::Hmac;
 use http::uri;
 use serde::{Deserialize, Serialize};
@@ -93,8 +93,9 @@ where
                         let verification_key =
                             cred.unblinded_cred.derive_verification_key::<Sha512>();
 
-                        let signature =
-                            verification_key.sign::<HmacSha512>(issuer.as_bytes()).encode_base64();
+                        let signature = verification_key
+                            .sign::<HmacSha512>(issuer.as_bytes())
+                            .encode_base64();
 
                         let redemption = TimeLimitedV2CredentialRedemption {
                             valid_from: tlv2_cred.valid_from,
@@ -105,7 +106,9 @@ where
                         };
 
                         // burn that cred
-                        self.client.spend_time_limited_v2_item_cred(&item.id, i).await?;
+                        self.client
+                            .spend_time_limited_v2_item_cred(&item.id, &tlv2_cred.issuer_id, i)
+                            .await?;
 
                         // our presentation/redemption
                         (
@@ -122,8 +125,9 @@ where
                             .get_single_use_item_creds(&item.id)
                             .await?
                             .ok_or(InternalError::ItemCredentialsMissing)?;
-                        let unblinded_creds =
-                            creds.unblinded_creds.ok_or(InternalError::ItemCredentialsMissing)?;
+                        let unblinded_creds = creds
+                            .unblinded_creds
+                            .ok_or(InternalError::ItemCredentialsMissing)?;
 
                         // retrieve the next unspent token
                         let (i, cred) = unblinded_creds
@@ -137,8 +141,9 @@ where
                         let verification_key =
                             cred.unblinded_cred.derive_verification_key::<Sha512>();
                         // FIXME change the payload we're creating the binding with
-                        let signature =
-                            verification_key.sign::<HmacSha512>(issuer.as_bytes()).encode_base64();
+                        let signature = verification_key
+                            .sign::<HmacSha512>(issuer.as_bytes())
+                            .encode_base64();
 
                         let redemption = json!({
                             "issuer": issuer,
@@ -157,7 +162,7 @@ where
                             .await?
                             .ok_or(InternalError::ItemCredentialsMissing)?;
 
-                        if Utc::now().naive_utc() > cred.expires_at {
+                        if self.now().naive_utc() > cred.expires_at {
                             return Err(InternalError::ItemCredentialsExpired.into());
                         }
 
@@ -221,7 +226,9 @@ where
         if let Some(orders) = self.client.get_orders().await? {
             for order in orders {
                 if order.location_matches(&self.environment, domain) {
-                    match self.prepare_order_credentials_presentation(&order.id, domain, path).await
+                    match self
+                        .prepare_order_credentials_presentation(&order.id, domain, path)
+                        .await
                     {
                         Ok(Some(value)) => return Ok(Some(value)),
                         Ok(None) => continue,
@@ -246,8 +253,9 @@ where
         domain: &str,
         path: &str,
     ) -> Result<Option<String>, SkusError> {
-        if let Some(value) =
-            self.prepare_order_credentials_presentation(order_id, domain, path).await?
+        if let Some(value) = self
+            .prepare_order_credentials_presentation(order_id, domain, path)
+            .await?
         {
             // NOTE web server which recieves the cookie should unset it
             self.client.set_cookie(&value);

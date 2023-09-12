@@ -8,7 +8,7 @@ use std::collections::HashMap;
 
 use challenge_bypass_ristretto::voprf::*;
 
-use chrono::{NaiveDate, NaiveDateTime, Utc};
+use chrono::{NaiveDate, NaiveDateTime};
 use futures_retry::FutureRetry;
 use rand::rngs::OsRng;
 use serde::{Deserialize, Serialize};
@@ -77,12 +77,15 @@ where
     ) -> Result<Vec<BlindedToken>, SkusError> {
         let mut csprng = OsRng;
 
-        let creds: Vec<Token> =
-            iter::repeat_with(|| Token::random::<Sha512, _>(&mut csprng)).take(num_creds).collect();
+        let creds: Vec<Token> = iter::repeat_with(|| Token::random::<Sha512, _>(&mut csprng))
+            .take(num_creds)
+            .collect();
 
         let blinded_creds: Vec<BlindedToken> = creds.iter().map(|t| t.blind()).collect();
 
-        self.client.upsert_time_limited_v2_item_creds(item_id, creds).await?;
+        self.client
+            .upsert_time_limited_v2_item_creds(item_id, creds)
+            .await?;
 
         Ok(blinded_creds)
     }
@@ -110,8 +113,9 @@ where
 
                     let mut num_creds: usize = 0;
                     if let Some(ref metadata) = order.metadata {
-                        let num_intervals =
-                            metadata.num_intervals.ok_or(InternalError::OrderMisconfiguration)?;
+                        let num_intervals = metadata
+                            .num_intervals
+                            .ok_or(InternalError::OrderMisconfiguration)?;
                         let num_per_interval = metadata
                             .num_per_interval
                             .ok_or(InternalError::OrderMisconfiguration)?;
@@ -129,7 +133,7 @@ where
                                     .await?
                                     .iter()
                                     .any(|cred| {
-                                        Utc::now().naive_utc()
+                                        self.now().naive_utc()
                                             > (cred.valid_to - chrono::Duration::days(5))
                                     });
 
@@ -168,7 +172,10 @@ where
                     // request.  this happens if we currently are full with credentials
 
                     if !blinded_creds.is_empty() {
-                        let claim_req = ItemCredentialsRequest { item_id: item.id, blinded_creds };
+                        let claim_req = ItemCredentialsRequest {
+                            item_id: item.id,
+                            blinded_creds,
+                        };
 
                         let request_with_retries = FutureRetry::new(
                             || async {
@@ -218,12 +225,17 @@ where
                                 let blinded_creds: Vec<BlindedToken> =
                                     creds.iter().map(|t| t.blind()).collect();
 
-                                self.client.init_single_use_item_creds(&item.id, creds).await?;
+                                self.client
+                                    .init_single_use_item_creds(&item.id, creds)
+                                    .await?;
                                 blinded_creds
                             }
                         };
 
-                    let claim_req = ItemCredentialsRequest { item_id: item.id, blinded_creds };
+                    let claim_req = ItemCredentialsRequest {
+                        item_id: item.id,
+                        blinded_creds,
+                    };
 
                     let request_with_retries = FutureRetry::new(
                         || async {
@@ -296,7 +308,10 @@ where
             || async move {
                 let mut builder = http::Request::builder();
                 builder.method("GET");
-                builder.uri(format!("{}/v1/orders/{}/credentials", self.base_url, order_id));
+                builder.uri(format!(
+                    "{}/v1/orders/{}/credentials",
+                    self.base_url, order_id
+                ));
 
                 let req = builder.body(vec![]).unwrap();
 
@@ -487,7 +502,9 @@ where
         }
 
         for (item_id, item_creds) in time_limited_creds.into_iter() {
-            self.client.store_time_limited_creds(&item_id, item_creds).await?;
+            self.client
+                .store_time_limited_creds(&item_id, item_creds)
+                .await?;
         }
 
         Ok(())

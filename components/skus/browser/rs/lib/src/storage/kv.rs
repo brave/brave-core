@@ -5,7 +5,7 @@ use std::fmt::Debug;
 use async_trait::async_trait;
 use challenge_bypass_ristretto::voprf::*;
 
-use chrono::{NaiveDateTime, Utc};
+use chrono::NaiveDateTime;
 
 use crate::errors::InternalError;
 use crate::models::*;
@@ -207,9 +207,10 @@ where
 
                         item_creds.unblinded_creds = Some(new_creds);
 
-                        credentials
-                            .items
-                            .insert((&item_id).to_string(), Credentials::TimeLimitedV2(item_creds)); // insert truncated
+                        credentials.items.insert(
+                            (&item_id).to_string(),
+                            Credentials::TimeLimitedV2(item_creds),
+                        ); // insert truncated
                     }
                     _ => (), // only care about time limted for the test
                 }
@@ -316,7 +317,11 @@ where
                     state: CredentialState::GeneratedCredentials,
                 });
 
-                if credentials.items.insert(item_id.to_string(), tlv2_creds).is_some() {
+                if credentials
+                    .items
+                    .insert(item_id.to_string(), tlv2_creds)
+                    .is_some()
+                {
                     return Err(InternalError::StorageWriteFailed(
                         "Item credentials were already initialized".to_string(),
                     ));
@@ -337,7 +342,9 @@ where
         let mut state: KVState = store.get_state()?;
 
         if state.credentials.is_none() {
-            state.credentials = Some(CredentialsState { items: HashMap::new() });
+            state.credentials = Some(CredentialsState {
+                items: HashMap::new(),
+            });
         }
 
         if let Some(credentials) = state.credentials.as_mut() {
@@ -347,7 +354,11 @@ where
                 unblinded_creds: None,
                 issuer_id: None,
             });
-            if credentials.items.insert(item_id.to_string(), creds).is_some() {
+            if credentials
+                .items
+                .insert(item_id.to_string(), creds)
+                .is_some()
+            {
                 return Err(InternalError::StorageWriteFailed(
                     "Item credentials were already initialized".to_string(),
                 ));
@@ -399,7 +410,7 @@ where
                                         })
                                         .collect(),
                                 ),
-                                issuer_id: Some(issuer_id.to_string()),
+                                issuer_id: issuer_id.to_string(),
                                 valid_from: from,
                                 valid_to: to,
                             });
@@ -416,7 +427,9 @@ where
                 return store.set_state(&state);
             }
         }
-        Err(InternalError::StorageWriteFailed("Item credentials were not initiated".to_string()))
+        Err(InternalError::StorageWriteFailed(
+            "Item credentials were not initiated".to_string(),
+        ))
     }
 
     #[instrument]
@@ -453,13 +466,16 @@ where
                 return store.set_state(&state);
             }
         }
-        Err(InternalError::StorageWriteFailed("Item credentials were not initiated".to_string()))
+        Err(InternalError::StorageWriteFailed(
+            "Item credentials were not initiated".to_string(),
+        ))
     }
 
     #[instrument]
     async fn spend_time_limited_v2_item_cred(
         &self,
         item_id: &str,
+        issuer_id: &str,
         index: usize,
     ) -> Result<(), InternalError> {
         let mut store = self.get_store()?;
@@ -470,11 +486,9 @@ where
                 match item_credentials {
                     Credentials::TimeLimitedV2(item_credentials) => {
                         if let Some(creds) = item_credentials.unblinded_creds.as_mut() {
-                            // iterate over each time limited cred, and find where now is between
+                            // iterate over each time limited cred, and find the right issuer
                             for tlv2_cred in creds {
-                                if Utc::now().naive_utc() < tlv2_cred.valid_to
-                                    && Utc::now().naive_utc() > tlv2_cred.valid_from
-                                {
+                                if tlv2_cred.issuer_id == issuer_id {
                                     // find an open unblinded token to spend
                                     if let Some(unblinded_creds) =
                                         tlv2_cred.unblinded_creds.as_mut()
@@ -494,7 +508,9 @@ where
                 }
             }
         }
-        Err(InternalError::StorageWriteFailed("Item credentials were not completed".to_string()))
+        Err(InternalError::StorageWriteFailed(
+            "Item credentials were not completed".to_string(),
+        ))
     }
 
     #[instrument]
@@ -524,7 +540,9 @@ where
                 }
             }
         }
-        Err(InternalError::StorageWriteFailed("Item credentials were not completed".to_string()))
+        Err(InternalError::StorageWriteFailed(
+            "Item credentials were not completed".to_string(),
+        ))
     }
 
     #[instrument]
@@ -536,7 +554,9 @@ where
         let mut state: KVState = store.get_state()?;
 
         if state.credentials.is_none() {
-            state.credentials = Some(CredentialsState { items: HashMap::new() });
+            state.credentials = Some(CredentialsState {
+                items: HashMap::new(),
+            });
         }
 
         if let Some(credentials) = state.credentials.as_mut() {
@@ -569,7 +589,9 @@ where
         let mut state: KVState = store.get_state()?;
 
         if state.credentials.is_none() {
-            state.credentials = Some(CredentialsState { items: HashMap::new() });
+            state.credentials = Some(CredentialsState {
+                items: HashMap::new(),
+            });
         }
 
         if let Some(credentials) = state.credentials.as_mut() {

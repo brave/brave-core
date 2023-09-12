@@ -77,7 +77,7 @@ impl FromStr for Environment {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct Wallet {
     pub id: String,
     pub environment: String,
@@ -96,7 +96,7 @@ impl Wallet {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct Promotion {
     pub id: String,
     pub approximate_value: f64,
@@ -111,7 +111,7 @@ pub struct Promotion {
     pub suggestion_value: f64,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct Claim {
     pub promotion_id: String,
     pub tokens: String,
@@ -119,7 +119,7 @@ pub struct Claim {
     pub complete: bool,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct UnredeemedToken {
     pub token: String,
     pub unblinded_token: String,
@@ -127,7 +127,7 @@ pub struct UnredeemedToken {
     pub promotion_id: String,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "kebab-case")]
 pub enum CredentialType {
     SingleUse,
@@ -135,7 +135,7 @@ pub enum CredentialType {
     TimeLimitedV2,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct OrderMetadata {
     pub stripe_checkout_session_id: Option<String>,
     pub payment_processor: Option<String>,
@@ -143,7 +143,7 @@ pub struct OrderMetadata {
     pub num_per_interval: Option<usize>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct OrderItem {
     pub id: String,
     pub order_id: String,
@@ -159,7 +159,7 @@ pub struct OrderItem {
     pub credential_type: CredentialType,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct CredentialSummary {
     pub order: Order,
     pub remaining_credential_count: usize,
@@ -167,7 +167,7 @@ pub struct CredentialSummary {
     pub active: bool,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct Order {
     pub id: String,
     pub created_at: NaiveDateTime,
@@ -183,7 +183,7 @@ pub struct Order {
     pub last_paid_at: Option<NaiveDateTime>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct SubmitReceipt {
     pub external_id: String,
     pub vendor: String,
@@ -215,6 +215,15 @@ pub struct SingleUseCredential {
     pub spent: bool,
 }
 
+#[cfg(test)]
+impl PartialEq for SingleUseCredential {
+    fn eq(&self, other: &SingleUseCredential) -> bool {
+        serde_json::to_string(&self.unblinded_cred).unwrap()
+            == serde_json::to_string(&other.unblinded_cred).unwrap()
+            && self.spent == other.spent
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SingleUseCredentials {
     pub item_id: String,
@@ -223,10 +232,23 @@ pub struct SingleUseCredentials {
     pub issuer_id: Option<String>,
 }
 
+#[cfg(test)]
+impl PartialEq for SingleUseCredentials {
+    fn eq(&self, other: &SingleUseCredentials) -> bool {
+        let self_creds = serde_json::to_string(&self.creds).unwrap();
+        let other_creds = serde_json::to_string(&other.creds).unwrap();
+        self.item_id == other.item_id
+            && self_creds == other_creds
+            && self.unblinded_creds == other.unblinded_creds
+            && self.issuer_id == other.issuer_id
+    }
+}
+
+#[cfg_attr(test, derive(PartialEq))]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TimeLimitedV2Credential {
     pub unblinded_creds: Option<Vec<SingleUseCredential>>,
-    pub issuer_id: Option<String>,
+    pub issuer_id: String,
     pub valid_from: NaiveDateTime,
     pub valid_to: NaiveDateTime,
 }
@@ -239,6 +261,18 @@ pub struct TimeLimitedV2Credentials {
     pub state: CredentialState,
 }
 
+#[cfg(test)]
+impl PartialEq for TimeLimitedV2Credentials {
+    fn eq(&self, other: &TimeLimitedV2Credentials) -> bool {
+        let self_creds = serde_json::to_string(&self.creds).unwrap();
+        let other_creds = serde_json::to_string(&other.creds).unwrap();
+        self.item_id == other.item_id
+            && self_creds == other_creds
+            && self.unblinded_creds == other.unblinded_creds
+            && self.state == other.state
+    }
+}
+#[cfg_attr(test, derive(PartialEq))]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TimeLimitedCredential {
     pub item_id: String,
@@ -247,6 +281,7 @@ pub struct TimeLimitedCredential {
     pub token: String,
 }
 
+#[cfg_attr(test, derive(PartialEq))]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TimeLimitedCredentials {
     pub item_id: String,

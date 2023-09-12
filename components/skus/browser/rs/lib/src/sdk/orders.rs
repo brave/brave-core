@@ -107,8 +107,11 @@ impl TryFrom<OrderResponse> for Order {
         let total_price = order.total_price.parse::<f64>().map_err(|_| {
             InternalError::InvalidResponse("Could not parse total price".to_string())
         })?;
-        let items: Result<Vec<OrderItem>, _> =
-            order.items.into_iter().map(|item| item.try_into()).collect();
+        let items: Result<Vec<OrderItem>, _> = order
+            .items
+            .into_iter()
+            .map(|item| item.try_into())
+            .collect();
         Ok(Order {
             id: order.id,
             created_at: order.created_at.naive_utc(),
@@ -241,11 +244,15 @@ where
             || async {
                 let mut builder = http::Request::builder();
                 builder.method("POST");
-                builder.uri(format!("{}/v1/orders/{}/submit-receipt", self.base_url, order_id));
+                builder.uri(format!(
+                    "{}/v1/orders/{}/submit-receipt",
+                    self.base_url, order_id
+                ));
 
                 let receipt_bytes = receipt.as_bytes().to_vec();
-                let req =
-                    builder.body(receipt_bytes).map_err(|_| InternalError::SerializationFailed)?;
+                let req = builder
+                    .body(receipt_bytes)
+                    .map_err(|_| InternalError::SerializationFailed)?;
 
                 let resp = self.fetch(req).await?;
                 event!(

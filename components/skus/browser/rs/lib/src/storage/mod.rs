@@ -55,6 +55,7 @@ pub trait StorageClient {
     async fn spend_time_limited_v2_item_cred(
         &self,
         item_id: &str,
+        issuer_id: &str,
         index: usize,
     ) -> Result<(), InternalError>;
     async fn spend_single_use_item_cred(
