@@ -643,21 +643,19 @@ public abstract class BraveActivity extends ChromeActivity
         MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
         LiveData<PurchaseModel> activePurchases = _activePurchases;
         InAppPurchaseWrapper.getInstance().queryPurchases(_activePurchases);
-        LiveDataUtil.observeOnce(
-                activePurchases, activePurchaseModel -> {
-                    if (activePurchaseModel != null) {
-                        mPurchaseToken = activePurchaseModel.getPurchaseToken();
-                        mProductId = activePurchaseModel.getProductId();
-                        BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken,
-                                mProductId, BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT,
-                                getPackageName());
-                    } else {
-                        BraveVpnApiResponseUtils.queryPurchaseFailed(BraveActivity.this);
-                        if (!mIsVerification) {
-                            BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
-                        }
-                    }
-                });
+        LiveDataUtil.observeOnce(activePurchases, activePurchaseModel -> {
+            if (activePurchaseModel != null) {
+                mPurchaseToken = activePurchaseModel.getPurchaseToken();
+                mProductId = activePurchaseModel.getProductId();
+                BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken, mProductId,
+                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
+            } else {
+                BraveVpnApiResponseUtils.queryPurchaseFailed(BraveActivity.this);
+                if (!mIsVerification) {
+                    BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
+                }
+            }
+        });
     }
 
     @Override
