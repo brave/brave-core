@@ -3,7 +3,6 @@
 <translationbundle lang="zh-CN">
 <translation id="1075622780330595106">您有 <ph name="NUMBER_OF_TABS"/> 个标签页最近未被使用过。关闭它们？</translation>
 <translation id="125153950246128346">点按即可查看另一标签页</translation>
-<translation id="955456285524876618">您可通过在 Brave 主菜单中点击“最近打开的标签页”找到您已关闭的标签页</translation>
 <translation id="1657719826150349398">下移标签页</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> 个标签页}other{<ph name="TABS_COUNT_MANY"/> 个标签页}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{为 <ph name="TABS_COUNT_ONE"/> 个所选标签页添加书签}other{为 <ph name="TABS_COUNT_MANY"/> 个所选标签页添加书签}}</translation>
@@ -45,6 +44,7 @@
 <translation id="5073204694187207510">隐藏“全屏网格状视图”按钮</translation>
 <translation id="5076161749301278626">查看商店评价？</translation>
 <translation id="5082793167783849073">通过分组快速比较网页。为此，请先轻触并按住某个链接。</translation>
+<translation id="5339733443032484186">您的最后一个标签页</translation>
 <translation id="5490235265819901748">已展开标签页组</translation>
 <translation id="5494920125229734069">全选</translation>
 <translation id="5556417849629758491">查看商店信息，屏幕顶部附近有可用选项</translation>
@@ -64,6 +64,7 @@
 <translation id="6549021453810473782">查看商店信息</translation>
 <translation id="6562820390860419811">左移标签页</translation>
 <translation id="6615455863669487791">演示一下</translation>
+<translation id="6398241160085205003">通过在 Brave 主菜单中点击“最近打开的标签页”，您可以找到已关闭的标签页。</translation>
 <translation id="6840760312327750441">要将标签页分组，请轻触并按住某个标签页，然后拖动到另一个标签页上。</translation>
 <translation id="6856809498882026482">隐藏多选模式</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{分享标签页}other{分享标签页}}</translation>
@@ -92,6 +93,9 @@
 <translation id="9150694013019234766">在屏幕底部附近的标签页组中切换标签页</translation>
 <translation id="9169594135889675189">向组中添加新标签页</translation>
 <translation id="959682366969460160">让各项内容井井有条</translation>
+<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
+        =1 {您可以在 Brave 主菜单下的最近标签中找到已关闭的标签页。 您的无痕选项卡将不可用。}
+        other {您可以在 Brave 主菜单下的最近标签中找到已关闭的标签页。 您的 # 无痕标签页将不可用。}}</translation>
 <translation id="3228718275011575753">关闭所有无痕标签页？</translation>
-<translation id="1922184283901690941">您在这些无痕标签页中的活动将从该设备中清除</translation>
+<translation id="6687920250729800417">您在这些私人标签页中的活动将从本设备删除</translation>
 </translationbundle>

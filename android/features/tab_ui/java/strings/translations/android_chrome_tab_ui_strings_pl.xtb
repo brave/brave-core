@@ -3,7 +3,6 @@
 <translationbundle lang="pl">
 <translation id="1075622780330595106">Karty, które ostatnio nie były używane: <ph name="NUMBER_OF_TABS"/>. Zamknąć je?</translation>
 <translation id="125153950246128346">Kliknij, by zobaczyć inną kartę</translation>
-<translation id="955456285524876618">Zamknięte karty znajdziesz w sekcji Ostatnie karty w menu głównym Brave</translation>
 <translation id="1657719826150349398">Przesuń kartę w dół</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> karta}few{<ph name="TABS_COUNT_MANY"/> karty}many{<ph name="TABS_COUNT_MANY"/> kart}other{<ph name="TABS_COUNT_MANY"/> karty}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Dodaj do zakładek <ph name="TABS_COUNT_ONE"/> wybraną kartę}few{Dodaj do zakładek <ph name="TABS_COUNT_MANY"/> wybrane karty}many{Dodaj do zakładek <ph name="TABS_COUNT_MANY"/> wybranych kart}other{Dodaj do zakładek <ph name="TABS_COUNT_MANY"/> wybranej karty}}</translation>
@@ -45,6 +44,7 @@
 <translation id="5073204694187207510">Ukryj siatkę pełnego ekranu</translation>
 <translation id="5076161749301278626">Wyświetlić opinie o sklepie?</translation>
 <translation id="5082793167783849073">Możesz szybko porównać strony, tworząc ich grupę. Aby to zrobić, naciśnij i przytrzymaj link.</translation>
+<translation id="5339733443032484186">Ostatnia karta</translation>
 <translation id="5490235265819901748">Grupa kart została rozwinięta</translation>
 <translation id="5494920125229734069">Wybierz wszystko</translation>
 <translation id="5556417849629758491">Wyświetl informacje o sklepie, opcja dostępna u góry ekranu</translation>
@@ -64,6 +64,7 @@
 <translation id="6549021453810473782">Wyświetl informacje o sklepie</translation>
 <translation id="6562820390860419811">Przenieś kartę w lewo</translation>
 <translation id="6615455863669487791">Pokaż mi</translation>
+<translation id="6398241160085205003">Zamknięte karty znajdziesz w sekcji Ostatnie karty w menu głównym Brave.</translation>
 <translation id="6840760312327750441">Aby pogrupować karty, naciśnij i przytrzymaj jedną z nich. Następnie przeciągnij ją na inną kartę.</translation>
 <translation id="6856809498882026482">Ukryj tryb wielokrotnego wyboru</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Udostępnij kartę}few{Udostępnij karty}many{Udostępnij karty}other{Udostępnij karty}}</translation>
@@ -92,6 +93,9 @@
 <translation id="9150694013019234766">W grupie kart w dolnej części ekranu możesz przełączać się między kartami</translation>
 <translation id="9169594135889675189">Dodaj nową kartę do grupy</translation>
 <translation id="959682366969460160">Większy porządek</translation>
+<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
+        =1 {Zamknięte karty można znaleźć w sekcji Ostatnie karty w menu głównym Brave. Karta prywatna nie będzie dostępna.}
+        other {Zamknięte karty można znaleźć w sekcji Ostatnie karty w menu głównym Brave. Karty prywatne (#) nie będą dostępne.}}</translation>
 <translation id="3228718275011575753">Zamknąć wszystkie zakładki prywatne?</translation>
-<translation id="1922184283901690941">Twoja historia przeglądania w trybie prywatnym zostanie usunięta z tego urządzenia</translation>
+<translation id="6687920250729800417">Twoja historia przeglądania w trybie prywatnym zostanie usunięta z tego urządzenia</translation>
 </translationbundle>

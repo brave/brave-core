@@ -3,7 +3,6 @@
 <translationbundle lang="pt-BR">
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> das suas guias não foram usadas recentemente. Fechar todas elas?</translation>
 <translation id="125153950246128346">Toque para ver outra guia</translation>
-<translation id="955456285524876618">É possível encontrar suas guias fechadas na opção "Guias recentes" no menu principal do Brave</translation>
 <translation id="1657719826150349398">Mover guia para baixo</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> guia}one{<ph name="TABS_COUNT_MANY"/> guia}other{<ph name="TABS_COUNT_MANY"/> guias}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Adicionar <ph name="TABS_COUNT_ONE"/> guia selecionada aos favoritos}one{Adicionar <ph name="TABS_COUNT_MANY"/> guia selecionada aos favoritos}other{Adicionar <ph name="TABS_COUNT_MANY"/> guias selecionadas aos favoritos}}</translation>
@@ -45,6 +44,7 @@
 <translation id="5073204694187207510">Ocultar grade de tela cheia</translation>
 <translation id="5076161749301278626">Ver avaliações da loja?</translation>
 <translation id="5082793167783849073">Compare as páginas rapidamente criando um grupo. Para começar, toque em um link e mantenha-o pressionado.</translation>
+<translation id="5339733443032484186">Sua última guia</translation>
 <translation id="5490235265819901748">Grupo de guias expandido</translation>
 <translation id="5494920125229734069">Selecionar tudo</translation>
 <translation id="5556417849629758491">Ver informações da loja, opção disponível perto da parte superior da tela</translation>
@@ -64,6 +64,7 @@
 <translation id="6549021453810473782">Ver informações da loja</translation>
 <translation id="6562820390860419811">Mover guia para a esquerda</translation>
 <translation id="6615455863669487791">Exibir</translation>
+<translation id="6398241160085205003">É possível encontrar suas guias fechadas na opção "Guias recentes" no menu principal do Brave.</translation>
 <translation id="6840760312327750441">Para agrupar guias, toque em uma delas e a mantenha pressionada. Depois disso, arraste-a para outra guia.</translation>
 <translation id="6856809498882026482">Ocultar modo de seleção múltipla</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Compartilhar guia}one{Compartilhar guia}other{Compartilhar guias}}</translation>
@@ -92,6 +93,9 @@
 <translation id="9150694013019234766">Alterne entre as guias do seu grupo de guias perto da parte inferior da tela</translation>
 <translation id="9169594135889675189">Adicionar nova guia ao grupo</translation>
 <translation id="959682366969460160">Organize-se</translation>
+<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
+=1 {Você encontrará sua aba fechada na seção 'Abas recentes' no menu principal do Brave. Sua aba Privada não estará disponível.}
+other {Você encontrará suas abas fechadas na seção 'Abas recentes' no menu principal do Brave. Suas # abas Privadas não estarão disponíveis.}}</translation>
 <translation id="3228718275011575753">Fechar todas as guias privadas?</translation>
-<translation id="1922184283901690941">Sua atividade nessas guias privadas será excluída deste dispositivo</translation>
+<translation id="6687920250729800417">Sua atividade nestas abas privadas será removida deste dispositivo.</translation>
 </translationbundle>
