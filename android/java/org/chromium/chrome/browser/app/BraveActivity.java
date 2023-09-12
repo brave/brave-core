@@ -50,7 +50,6 @@ import org.chromium.base.Log;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -113,10 +112,7 @@ import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
 import org.chromium.chrome.browser.misc_metrics.PrivacyHubMetricsConnectionErrorHandler;
 import org.chromium.chrome.browser.misc_metrics.PrivacyHubMetricsFactory;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
-import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
-import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController.RationaleDelegate;
-import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionRationaleDialogController;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.NewTabPageManager;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -943,7 +939,7 @@ public abstract class BraveActivity extends ChromeActivity
             BraveSyncWorker.get();
         }
 
-        checkAndshowNotificationWarningDialog();
+        checkForNotificationData();
 
         if (RateUtils.getInstance().isLastSessionShown()) {
             RateUtils.getInstance().setPrefNextRateDate();
@@ -1210,18 +1206,6 @@ public abstract class BraveActivity extends ChromeActivity
         }, 500);
     }
 
-    public void maybeShowNotificationPermissionRetionale() {
-        Supplier<RationaleDelegate> rationaleUIDelegateSupplier = ()
-                -> new NotificationPermissionRationaleDialogController(
-                        this, getModalDialogManager());
-        NotificationPermissionController mNotificationPermissionController =
-                new NotificationPermissionController(
-                        getWindowAndroid(), rationaleUIDelegateSupplier);
-        NotificationPermissionController.attach(
-                getWindowAndroid(), mNotificationPermissionController);
-        mNotificationPermissionController.requestPermissionIfNeeded(false /* contextual */);
-    }
-
     public void setDormantUsersPrefs() {
         OnboardingPrefManager.getInstance().setDormantUsersPrefs();
         RetentionNotificationUtil.scheduleDormantUsersNotifications(this);
@@ -1378,16 +1362,6 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-    private void showNotificationWarningDialog() {
-        BraveNotificationWarningDialog notificationWarningDialog =
-                BraveNotificationWarningDialog.newInstance(
-                        BraveNotificationWarningDialog.FROM_LAUNCHED_BRAVE_ACTIVITY);
-        notificationWarningDialog.setCancelable(false);
-        notificationWarningDialog.setDismissListener(mCloseDialogListener);
-        notificationWarningDialog.show(getSupportFragmentManager(),
-                BraveNotificationWarningDialog.NOTIFICATION_WARNING_DIALOG_TAG);
-    }
-
     private BraveNotificationWarningDialog.DismissListener mCloseDialogListener =
             new BraveNotificationWarningDialog.DismissListener() {
                 @Override
@@ -1395,23 +1369,6 @@ public abstract class BraveActivity extends ChromeActivity
                     checkForNotificationData();
                 }
             };
-
-    private void checkAndshowNotificationWarningDialog() {
-        OnboardingPrefManager.getInstance().updateLaunchCount();
-        if (OnboardingPrefManager.getInstance().launchCount() >= 3
-                && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(this)
-                && !OnboardingPrefManager.getInstance()
-                            .isNotificationPermissionEnablingDialogShown()) {
-            if (BravePermissionUtils.hasNotificationPermission(this)) {
-                showNotificationWarningDialog();
-            } else {
-                maybeShowNotificationPermissionRetionale();
-            }
-            OnboardingPrefManager.getInstance().setNotificationPermissionEnablingDialogShown(true);
-        } else {
-            checkForNotificationData();
-        }
-    }
 
     private void checkForNotificationData() {
         Intent notifIntent = getIntent();

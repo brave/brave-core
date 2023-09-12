@@ -859,12 +859,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                     highlightView.stopAnimation();
                                     viewGroup.removeView(highlightView);
                                 }
-                                try {
-                                    BraveActivity.getBraveActivity()
-                                            .maybeShowNotificationPermissionRetionale();
-                                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                                    Log.e(TAG, "showTooltip dismiss " + e);
-                                }
                             })
                             .contentView(R.layout.brave_shields_tooltip_layout)
                             .build();

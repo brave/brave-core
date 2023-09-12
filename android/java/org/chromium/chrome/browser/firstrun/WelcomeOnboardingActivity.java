@@ -9,8 +9,10 @@ package org.chromium.chrome.browser.firstrun;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
+import android.Manifest;
 import android.animation.LayoutTransition;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
@@ -24,6 +26,9 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse;
@@ -51,6 +56,9 @@ import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.Locale;
 
+/**
+ * This is on boarding activity
+ * */
 public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     // mInitializeViewsDone and mInvokePostWorkAtInitializeViews are accessed
     // from the same thread, so no need to use extra locks
@@ -209,6 +217,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         new Handler().postDelayed(this::nextOnboardingStep, delayMillis);
     }
 
+    ActivityResultLauncher<String> mRequestPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(), isGranted -> { startTimer(3000); });
+
     private void nextOnboardingStep() {
         if (isActivityFinishingOrDestroyed()) return;
 
@@ -236,8 +247,11 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 }
             }, 200);
 
-            startTimer(3000);
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                mRequestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            } else {
+                startTimer(3000);
+            }
         } else if (mCurrentStep == 1) {
             int margin = mIsTablet ? 200 : 30;
             setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.3f, margin, true);
