@@ -28,7 +28,6 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.util.BraveConstants;
-import org.chromium.chrome.browser.vpn.billing.PurchaseModel;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
@@ -48,26 +47,26 @@ public class InAppPurchaseWrapper {
     private int mRetryCount;
 
     private static volatile InAppPurchaseWrapper sInAppPurchaseWrapper;
-    private static Object mutex = new Object();
+    private static Object sMutex = new Object();
 
     public enum SubscriptionType { MONTHLY, YEARLY }
 
-    private MutableLiveData<ProductDetails> mutableMonthlyProductDetails = new MutableLiveData();
-    private LiveData<ProductDetails> monthlyProductDetails = mutableMonthlyProductDetails;
+    private MutableLiveData<ProductDetails> mMutableMonthlyProductDetails = new MutableLiveData();
+    private LiveData<ProductDetails> mMonthlyProductDetails = mMutableMonthlyProductDetails;
     private void setMonthlyProductDetails(ProductDetails productDetails) {
-        mutableMonthlyProductDetails.postValue(productDetails);
+        mMutableMonthlyProductDetails.postValue(productDetails);
     }
     public LiveData<ProductDetails> getMonthlyProductDetails() {
-        return monthlyProductDetails;
+        return mMonthlyProductDetails;
     }
 
-    private MutableLiveData<ProductDetails> mutableYearlyProductDetails = new MutableLiveData();
-    private LiveData<ProductDetails> yearlyProductDetails = mutableYearlyProductDetails;
+    private MutableLiveData<ProductDetails> mMutableYearlyProductDetails = new MutableLiveData();
+    private LiveData<ProductDetails> mYearlyProductDetails = mMutableYearlyProductDetails;
     private void setYearlyProductDetails(ProductDetails productDetails) {
-        mutableYearlyProductDetails.postValue(productDetails);
+        mMutableYearlyProductDetails.postValue(productDetails);
     }
     public LiveData<ProductDetails> getYearlyProductDetails() {
-        return yearlyProductDetails;
+        return mYearlyProductDetails;
     }
 
     private InAppPurchaseWrapper() {}
@@ -75,7 +74,7 @@ public class InAppPurchaseWrapper {
     public static InAppPurchaseWrapper getInstance() {
         InAppPurchaseWrapper result = sInAppPurchaseWrapper;
         if (result == null) {
-            synchronized (mutex) {
+            synchronized (sMutex) {
                 result = sInAppPurchaseWrapper;
                 if (result == null) sInAppPurchaseWrapper = result = new InAppPurchaseWrapper();
             }
@@ -104,11 +103,11 @@ public class InAppPurchaseWrapper {
         if (!mBillingClient.isReady()) {
             try {
                 mBillingClient.startConnection(new BillingClientStateListener() {
-                    private int retryCount;
+                    private int mRetryCount;
                     @Override
                     public void onBillingServiceDisconnected() {
-                        retryCount++;
-                        if (retryCount <= 3) {
+                        mRetryCount++;
+                        if (mRetryCount <= 3) {
                             startBillingServiceConnection(context, billingClientConnectionState);
                         }
                     }
@@ -116,7 +115,7 @@ public class InAppPurchaseWrapper {
                     public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
                         if (billingResult.getResponseCode()
                                 == BillingClient.BillingResponseCode.OK) {
-                            retryCount = 0;
+                            mRetryCount = 0;
                             if (billingClientConnectionState != null) {
                                 billingClientConnectionState.postValue(true);
                             }
