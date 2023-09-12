@@ -10,7 +10,7 @@ import {
 } from 'chrome://resources/brave/polymer_overriding.js'
 import { loadTimeData } from '../i18n_setup.js'
 import '../brave_system_page/brave_performance_page.js'
-// <if expr="enable_brave_vpn and is_win">
+// <if expr="enable_brave_vpn_wireguard">
 import '../brave_system_page/brave_vpn_page.js'
 // </if>
 import '../shortcuts_page/shortcuts_page.js'
@@ -81,8 +81,7 @@ RegisterPolymerTemplateModifications({
         </settings-toggle-button>
       `
     )
-
-    // <if expr="enable_brave_vpn and is_win">
+    // <if expr="enable_brave_vpn_wireguard">
     templateContent.appendChild(
       html`
         <settings-brave-vpn-page prefs="{{prefs}}">

@@ -11,12 +11,11 @@
 #include "brave/components/brave_vpn/browser/connection/wireguard/brave_vpn_wireguard_connection_api_base.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
-#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
 
 namespace brave_vpn {
 
 namespace {
-constexpr char kCloudflareIPv4[] = "1.1.1.1";
 // Timer to recheck the service launch after some time.
 constexpr int kWireguardServiceRestartTimeoutSec = 5;
 }  // namespace
@@ -70,7 +69,7 @@ void BraveVPNWireguardConnectionAPI::PlatformConnectImpl(
   auto vpn_server_hostname = GetHostname();
   auto config = brave_vpn::wireguard::CreateWireguardConfig(
       credentials.client_private_key, credentials.server_public_key,
-      vpn_server_hostname, credentials.mapped_ip4_address, kCloudflareIPv4);
+      vpn_server_hostname, credentials.mapped_ip4_address);
   if (!config.has_value()) {
     VLOG(1) << __func__ << " : failed to get correct credentials";
     UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);

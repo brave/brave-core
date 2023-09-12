@@ -18,6 +18,7 @@ source_set("api") {
     "//brave/components/brave_vpn/browser/api",
     "//brave/components/brave_vpn/browser/connection:common",
     "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_vpn/common/mojom",
     "//components/prefs",
     "//services/network/public/cpp",
@@ -36,6 +37,7 @@ group("connection") {
 
   if (is_mac) {
     deps += [ "ikev2/mac" ]
+    deps += [ "wireguard/mac" ]
   }
 }
 

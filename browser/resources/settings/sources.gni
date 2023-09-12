@@ -120,7 +120,7 @@ brave_settings_non_web_component_files = [
   "shortcuts_page/shortcuts_page.ts",
 ]
 
-if (enable_brave_vpn && is_win) {
+if (enable_brave_vpn_wireguard) {
   brave_settings_web_component_files +=
       [ "brave_system_page/brave_vpn_page.ts" ]
   brave_settings_non_web_component_files +=
