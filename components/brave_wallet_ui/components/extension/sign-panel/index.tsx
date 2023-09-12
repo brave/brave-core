@@ -27,6 +27,7 @@ import { NavButton } from '../buttons/nav-button/index'
 import { PanelTab } from '../panel-tab/index'
 import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
 import { SignInWithEthereum } from './sign_in_with_ethereum'
+import { SignCowSwapOrder } from './cow_swap_order'
 
 // Styled Components
 import {
@@ -37,7 +38,6 @@ import {
   NetworkText,
   PanelTitle,
   MessageBox,
-  MessageHeader,
   MessageText,
   ButtonRow,
   WarningTitleRow
@@ -58,6 +58,9 @@ import {
   URLText,
   WarningIcon
 } from '../shared-panel-styles'
+import {
+  EthSignTypedData //
+} from './common/eth_sign_typed_data'
 
 interface Props {
   signMessageData: BraveWallet.SignMessageRequest[]
@@ -178,6 +181,20 @@ export const SignPanel = (props: Props) => {
     )
   }
 
+  if (selectedQueueData.signData.ethSignTypedData?.meta?.cowSwapOrder) {
+    return (
+      <SignCowSwapOrder
+        data={selectedQueueData}
+        onQueueNextSignMessage={onQueueNextSignMessage}
+        queueNumber={signMessageQueueInfo.queueNumber}
+        queueLength={signMessageQueueInfo.queueLength}
+        onCancel={onCancel}
+        onSignIn={onSign}
+        isDisabled={isDisabled}
+      />
+    )
+  }
+
   // render
   return (
     <StyledWrapper>
@@ -229,12 +246,10 @@ export const SignPanel = (props: Props) => {
             />
           </TabRow>
 
-          {(hasUnicode(
+          {hasUnicode(
             selectedQueueData
               .signData
-              .ethStandardSignData?.message ?? '') ||
-            hasUnicode(ethSignTypedData?.message ?? '') ||
-            hasUnicode(ethSignTypedData?.domain ?? '')) &&
+              .ethStandardSignData?.message ?? '') &&
             <WarningBox warningType='warning'>
               <WarningTitleRow>
                 <WarningIcon color={'warningIcon'} />
@@ -256,29 +271,7 @@ export const SignPanel = (props: Props) => {
             </WarningBox>
           }
 
-          {ethSignTypedData && (
-            <MessageBox height='180px'>
-              <MessageHeader>
-                {getLocale('braveWalletSignTransactionEIP712MessageDomain')}:
-              </MessageHeader>
-              <MessageText>
-                {!renderUnicode && hasUnicode(ethSignTypedData.domain)
-                  ? unicodeEscape(ethSignTypedData.domain)
-                  : ethSignTypedData.domain
-                }
-              </MessageText>
-
-              <MessageHeader>
-                {getLocale('braveWalletSignTransactionMessageTitle')}:
-              </MessageHeader>
-              <MessageText>
-                {!renderUnicode && hasUnicode(ethSignTypedData.message)
-                  ? unicodeEscape(ethSignTypedData.message)
-                  : ethSignTypedData.message
-                }
-              </MessageText>
-            </MessageBox>
-          )}
+          <EthSignTypedData data={ethSignTypedData} />
 
           {ethStandardSignData && (
             <MessageBox>

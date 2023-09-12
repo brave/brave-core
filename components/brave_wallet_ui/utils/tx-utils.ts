@@ -1681,12 +1681,13 @@ export const parseTransactionWithPrices = ({
   return {
     token,
     sellToken,
+    sellAmountWei,
     weiTransferredValue,
     value: normalizedTransferredValue,
     ...txBase,
     ...getTransactionFiatValues({
       gasFee,
-      sellAmountWei: sellAmountWei?.value?.toString(),
+      sellAmountWei: sellAmountWei?.format(),
       networkSpotPrice,
       normalizedTransferredValue,
       spotPriceRegistry,

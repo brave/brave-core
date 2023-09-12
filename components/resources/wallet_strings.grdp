@@ -309,6 +309,7 @@
   <message name="IDS_BRAVE_WALLET_SIGN_WARNING_TITLE" desc="Sign panel risk title">Sign at your own risk</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_MESSAGE_TITLE" desc="Sign panel message title">Message</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_TITLE" desc="Sign panel EIP-712 message title">Details</message>
+  <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_HIDE_DETAILS" desc="Sign panel EIP-712 message hide details">Hide details</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_DOMAIN" desc="Sign panel EIP-712 message domain">Domain</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_BUTTON" desc="Sign panel sign button">Sign</message>
   <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_TITLE" desc="Provide Encryption Key Panel Title">A DApp is requesting your public encryption key</message>

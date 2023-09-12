@@ -17,6 +17,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
+#include "brave/components/brave_wallet/common/eth_requests.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/json_rpc_requests.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
@@ -105,6 +106,32 @@ const char kRequestJsonRPC[] = "2.0";
 }  // namespace
 
 namespace brave_wallet {
+
+namespace {
+constexpr char kCowSwapTypeHash[] =
+    "D5A25BA2E97094AD7D83DC28A6572DA797D6B3E7FC6663BD93EFB789FC17E489";
+
+mojom::EthSignTypedDataMetaPtr ParseCowSwapOrder(
+    const base::Value::Dict& value) {
+  const auto cow_swap_order_value =
+      eth_requests::CowSwapOrder::FromValue(value);
+  if (!cow_swap_order_value) {
+    return nullptr;
+  }
+
+  auto cow_swap_order = mojom::CowSwapOrder::New();
+  cow_swap_order->buy_token = cow_swap_order_value->buy_token;
+  cow_swap_order->buy_amount = cow_swap_order_value->buy_amount;
+  cow_swap_order->sell_token = cow_swap_order_value->sell_token;
+  cow_swap_order->sell_amount = cow_swap_order_value->sell_amount;
+  cow_swap_order->deadline = cow_swap_order_value->valid_to;
+  cow_swap_order->receiver = cow_swap_order_value->receiver;
+
+  return mojom::EthSignTypedDataMeta::NewCowSwapOrder(
+      std::move(cow_swap_order));
+}
+
+}  // namespace
 
 mojom::TxDataPtr ParseEthTransactionParams(const std::string& json,
                                            std::string* from) {
@@ -437,9 +464,10 @@ bool ParseEthSignTypedDataParams(const std::string& json,
                                  base::Value::Dict* domain_out,
                                  EthSignTypedDataHelper::Version version,
                                  std::vector<uint8_t>* domain_hash_out,
-                                 std::vector<uint8_t>* primary_hash_out) {
+                                 std::vector<uint8_t>* primary_hash_out,
+                                 mojom::EthSignTypedDataMetaPtr* meta_out) {
   if (!address || !message_out || !domain_out || !domain_hash_out ||
-      !primary_hash_out) {
+      !primary_hash_out || !meta_out) {
     return false;
   }
 
@@ -499,6 +527,13 @@ bool ParseEthSignTypedDataParams(const std::string& json,
   auto primary_hash = helper->GetTypedDataPrimaryHash(*primary_type, *message);
   if (!primary_hash) {
     return false;
+  }
+
+  auto type_hash = base::HexEncode(helper->GetTypeHash(*primary_type));
+  if (type_hash == kCowSwapTypeHash) {
+    *meta_out = ParseCowSwapOrder(*message);
+  } else {
+    *meta_out = nullptr;
   }
 
   *domain_hash_out = domain_hash->first;

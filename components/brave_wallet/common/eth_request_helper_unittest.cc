@@ -827,10 +827,11 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   base::Value::Dict domain;
   std::vector<uint8_t> domain_hash;
   std::vector<uint8_t> primary_hash;
+  mojom::EthSignTypedDataMetaPtr meta;
 
   EXPECT_TRUE(ParseEthSignTypedDataParams(json, &address, &message, &domain,
                                           EthSignTypedDataHelper::Version::kV4,
-                                          &domain_hash, &primary_hash));
+                                          &domain_hash, &primary_hash, &meta));
 
   EXPECT_EQ(address, "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826");
   EXPECT_EQ(message, expected_message);
@@ -858,6 +859,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   ASSERT_TRUE(message_to_sign);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*message_to_sign)),
             expected_message_to_sign);
+  EXPECT_FALSE(meta);
 
   // Test with extra fields in the message.
   json = base::StringPrintf(json_tmpl.c_str(), R"({
@@ -874,7 +876,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   })");
   EXPECT_TRUE(ParseEthSignTypedDataParams(json, &address, &message, &domain,
                                           EthSignTypedDataHelper::Version::kV4,
-                                          &domain_hash, &primary_hash));
+                                          &domain_hash, &primary_hash, &meta));
   // OK: extraneous message properties are sanitized.
   EXPECT_EQ(message, expected_message);
 
@@ -892,6 +894,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   ASSERT_TRUE(message_to_sign);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*message_to_sign)),
             expected_message_to_sign);
+  EXPECT_FALSE(meta);
 }
 
 TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {

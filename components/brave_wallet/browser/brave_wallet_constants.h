@@ -466,6 +466,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_DOMAIN},
     {"braveWalletSignTransactionEIP712MessageTitle",
      IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_TITLE},
+    {"braveWalletSignTransactionEIP712MessageHideDetails",
+     IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_HIDE_DETAILS},
     {"braveWalletSignTransactionButton",
      IDS_BRAVE_WALLET_SIGN_TRANSACTION_BUTTON},
     {"braveWalletProvideEncryptionKeyTitle",
