@@ -10,7 +10,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.res.Resources;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -19,8 +18,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -54,7 +51,6 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 
@@ -199,42 +195,9 @@ public class RewardsTippingPanelFragment
         String termsOfServiceText = String.format(res.getString(R.string.brave_rewards_tos_text),
                 res.getString(R.string.terms_of_service), res.getString(R.string.privacy_policy));
 
-        SpannableString spannableString = stringToSpannableString(termsOfServiceText);
+        SpannableString spannableString = BraveRewardsHelper.tosSpannableString(
+                termsOfServiceText, R.color.terms_of_service_text_color);
         proceedTextView.setText(spannableString);
-    }
-
-    private SpannableString stringToSpannableString(String text) {
-        Spanned textSpanned = BraveRewardsHelper.spannedFromHtmlString(text);
-        SpannableString textSpannableString = new SpannableString(textSpanned.toString());
-
-        NoUnderlineClickableSpan termsOfServiceClickableSpan = new NoUnderlineClickableSpan(
-                getActivity(), R.color.terms_of_service_text_color, (textView) -> {
-                    CustomTabActivity.showInfoPage(getActivity(), BraveActivity.BRAVE_TERMS_PAGE);
-                });
-
-        NoUnderlineClickableSpan privacyPolicyClickableSpan = new NoUnderlineClickableSpan(
-                getActivity(), R.color.terms_of_service_text_color, (textView) -> {
-                    CustomTabActivity.showInfoPage(
-                            getActivity(), BraveActivity.BRAVE_PRIVACY_POLICY);
-                });
-
-        setSpan(text, textSpannableString, R.string.terms_of_service,
-                termsOfServiceClickableSpan); // terms of service
-        setSpan(text, textSpannableString, R.string.privacy_policy,
-                privacyPolicyClickableSpan); // privacy policy
-        return textSpannableString;
-    }
-
-    private void setSpan(
-            String text, SpannableString tosTextSS, int stringId, ClickableSpan clickableSpan) {
-        String spanString = getResources().getString(stringId);
-        int spanLength = spanString.length();
-        int index = text.indexOf(spanString);
-        tosTextSS.setSpan(
-                clickableSpan, index, index + spanLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        Typeface typeface = Typeface.create("sans-serif", Typeface.NORMAL);
-        tosTextSS.setSpan(new StyleSpan(typeface.getStyle()), index, index + spanLength,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     @Override
@@ -375,8 +338,8 @@ public class RewardsTippingPanelFragment
                     getActivity().finish();
                 });
 
-        setSpan(text, textSpannableString, R.string.monthly_contributions,
-                monthlyContributionClickableSpan);
+        BraveRewardsHelper.setSpan(getActivity(), text, textSpannableString,
+                R.string.monthly_contributions, monthlyContributionClickableSpan);
 
         return textSpannableString;
     }

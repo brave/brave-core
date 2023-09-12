@@ -1755,6 +1755,9 @@ Are you sure you want to do this?
       <message name="IDS_PRIVACY_POLICY" desc="Brave rewards tos text">
         Privacy Policy
       </message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOS_TEXT" desc="Brave rewards onboarding tos text">
+        By enabling Rewards, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph> and <ph name="PRIVACY_POLICY">%2$s</ph>.
+      </message>
       <message name="IDS_TAKE_QUICK_TOUR" desc="Brave rewards quick tour text">
         Let’s take a quick tour
       </message>
