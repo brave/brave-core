@@ -69,7 +69,6 @@
 <translation id="4942016616604700968">Aktiver belønninger</translation>
 <translation id="5684562942023496754">Du kan tjene på at se sponsorerede billeder.</translation>
 <translation id="8934374643857605034">Som bruger af Brave Rewards kan du optjene BAT på at se sponsorerede billeder.</translation>
-<translation id="5236449703984229754">Du kan tjene BAT på at se sponsorerede billeder, når du slår Brave-reklamer til. Når Brave-reklamer er deaktiveret, støtter du stadig Brave ved at slå sponsorerede billeder til.</translation>
 <translation id="1570714748649804013">Som bruger af Brave Rewards får du BAT for de sponsorerede billeder, du ser. Hvis du slår sponsorerede billeder fra, vil du tjene mindre.</translation>
 <translation id="8998727244653964783">Du kan optjene BAT på at se sponsorede billeder, når du forbinder en depotkonto med Brave Rewards. I mellemtiden hjælper du med at støtte skaberne ved at se sponsorerede billeder.</translation>
 <translation id="5512383650263136662">Du kan tjene BAT på at se sponsorerede billeder med Brave Rewards. Bruger du ikke Rewards? Du støtter stadig Braves mission ved at slå sponsorerede billeder til.</translation>
@@ -171,23 +170,29 @@
 <translation id="7616645803364270729">E-mail, Twitter etc.</translation>
 <translation id="5299848999918506028">Tak!</translation>
 <translation id="76550953340008122">Tak for at du har fortalt Braves udviklere om at der er fejl på siden. Vi vil gøre vores bedste for at ordne fejlen!</translation>
-<translation id="4851215387785619212">Brave Private Ads</translation>
-<translation id="6480303618073442141">Brave Private Ads er med vilje diskrete og private. Reklamer baseres på dine interesser, men ingen personlig data eller browserhistorik forlader din enhed. Det allerbedste er, at Brave Private Ads giver dig BAT (<ph name="BEGIN_LINK"/>Basic Attention Token<ph name="END_LINK"/>) for at se dem.</translation>
+<translation id="4046860372562593546">Administrér Brave Ads</translation>
+<translation id="5136973036012418831">Administrér, hvilken slags Brave Ads du ser og hvor ofte.</translation>
+<translation id="4759608598194750161">Jo flere du ser, jo mere kan du indtjene.</translation>
+<translation id="7526443283522395161">Ny fane side annoncer</translation>
+<translation id="7968650944098083708">Notifikationsannoncer</translation>
+<translation id="6390952132783970876">Brave News-annoncer</translation>
+<translation id="7516281787184495886">Brave News indeholder annoncer, der ikke uafhængigt kan deaktiveres.</translation>
+<translation id="8008378848677625233">Brave News er p.t. deaktiveret.</translation>
 <translation id="6112368337882254910">Auto-Bidrag</translation>
 <translation id="557705068184766514">En automatisk måde at støtte websteder og indholdsskabere på. Indstil et månedligt bidrag, og surf som normalt. <ph name="BEGIN_LINK"/>Verificerede websteder og skabere<ph name="END_LINK"/>, som du besøger, vil modtage bidrag fra dig hver måned baseret på den tid, du bruger på deres indhold.</translation>
-<translation id="3325399124634342726">Aktuel indtjening i denne måned (anslået)</translation>
-<translation id="8593551638387217772">Næste betalingsdato</translation>
-<translation id="4428871418618312983">Annoncer modtaget denne måned</translation>
+<translation id="6688567880783357035">Indtjeninger i denne måned til dato</translation>
+<translation id="949044897316791211">Næste udbetalingsdato for indtjening</translation>
+<translation id="2211646556917925490">Samlet antal annoncer modtaget denne måned</translation>
 <translation id="4229016885653790965">Beklager! Annoncer er ikke tilgængelige i din region endnu.</translation>
 <translation id="2539279826042558064">Brave Belønninger er ikke tilgængelig på din enhed</translation>
 <translation id="5736977383725358876">Frekvens for notifikationsannoncer</translation>
 <translation id="7701040980221191251">Ingen</translation>
-<translation id="767929144984201135">Op til 1 annonce i timen</translation>
-<translation id="3122281951051829161">Op til 2 annoncer i timen</translation>
-<translation id="3431180326971210034">Op til 3 annoncer i timen</translation>
-<translation id="8718553520664259870">Op til 4 annoncer i timen</translation>
-<translation id="8827015466803589071">Op til 5 annoncer i timen</translation>
-<translation id="2293009346092992234">Op til 10 annoncer i timen</translation>
+<translation id="480668534656787076">Maks. 1 i timen</translation>
+<translation id="5752876108361080593">Maks. 2 i timen</translation>
+<translation id="2045394140010452696">Maks. 3 i timen</translation>
+<translation id="7669818429836128915">Maks. 4 i timen</translation>
+<translation id="7136536490586989815">Maks. 5 i timen</translation>
+<translation id="5751102711563374080">Maks. 10 i timen</translation>
 <translation id="2356652719351432565">Regional relevans for annoncer</translation>
 <translation id="3216275550298493597">Dette lader Brave vise dig reklamer, som er henvendt specifikt til din region.</translation>
 <translation id="8446884382197647889">Få mere at vide</translation>
@@ -228,9 +233,9 @@
 <translation id="8826352442759228526">Din Brave Belønninger kunne ikke verificeres, da du har nået den maksimalt verificerede enhedsgrænse.</translation>
 <translation id="1221593978088944142">Fejl: Enhedsgrænse nået</translation>
 <translation id="3113653894794167793">Beklager, der opstod et problem under behandlingen af din anmodning, prøv igen.</translation>
-<translation id="3509185560119586847">Din Brave-profil er blevet markeret, og du kan ikke bekræfte med en tilsynsførende lige nu. Denne markering kan skyldes uregelmæssig Brave Ads-adfærd, men kan også være en falsk positiv.</translation>
-<translation id="5031451251720571882">Bemærk, at du ikke kan verificere, så længe din Brave Rewards-profil er markeret.</translation>
-<translation id="7301759045821910866">Du behøver ikke at foretage dig noget. Din Brave Rewards-profil bliver automatisk evalueret på en jævnlig basis for at afgøre, hvornår (eller om) markeringen kan fjernes. Prøv igen senere for at se, om markeringen er blevet fjernet.</translation>
+<translation id="6895088073061692390">Desværre er din Brave Rewards-profil blevet markeret, da vores automatiske systemer opdagede nogle uventede Brave Ads-aktiviteter.</translation>
+<translation id="4229056297802204697">Mens din profil er markeret, kan du fortsat se reklamer, men du vil ikke være berettiget til at modtage udbetalinger. Du vil heller ikke kunne tilknytte en forvaltningskonto til Brave Rewards.</translation>
+<translation id="5124846913141379164">Det er muligt, at din profil er blevet markeret ved en fejl, og at du ikke behøver at foretage dig noget. Markeringen på din profil kan blive fjernet i fremtiden.</translation>
 <translation id="280350148043792509"><ph name="BEGIN_LINK"/>Få mere at vide om Braves proces med at markere Rewards-profiler.<ph name="END_LINK"/></translation>
 <translation id="5028274575541726856">Fejl: Brave Rewards-profil er markeret</translation>
 <translation id="2607420597216860026">Prøv igen, når du har udført ID-validering på <ph name="PROVIDER"/>.</translation>
@@ -408,6 +413,7 @@
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6569877533335686968">Behold</translation>
+<translation id="6011108706830742093">ZebPay</translation>
 <translation id="6354568176665589146">Tilbagevendende</translation>
 <translation id="2799223571221894425">Genstart</translation>
 <translation id="1110535155349301542">fjern</translation>
@@ -417,7 +423,6 @@
 <translation id="5669281110673664811">Ryd ekskluderingsliste</translation>
 <translation id="1797334173232638045">Dine fastgjorte sider er flyttet til</translation>
 <translation id="3074127054582480056">Bemærk</translation>
-<translation id="3659457123782988823">Er du sikker på, at du vil nulstille din Brave Belønninger?</translation>
 <translation id="1666001796278936721">Ved at nulstille bliver din nuværende Brave-belønningsprofil slettet, og du begynder forfra med en helt ny Brave-belønningsprofil. Inden du fortsætter, <ph name="LINK_BEGIN"/>kan du lære mere<ph name="LINK_END"/> om at nulstille, så du er helt sikker.</translation>
 <translation id="4806029412510565611">Jeg har forstået, at min nuværende Brave Rewards-profil og Brave Rewards-data vil blive slettet fra min enhed, og jeg har læst den <ph name="LINK_BEGIN"/>understøttende artikel om at nulstille<ph name="LINK_END"/>.</translation>
 <translation id="3494964159182650590">Belønningsoversigt</translation>
@@ -585,14 +590,16 @@
 <translation id="6053826678715267477">Tillad adgang til localhost-ressourcer</translation>
 <translation id="2973562729984406132"><ph name="URL"/> ønsker adgang til localhost-ressourcer</translation>
 <translation id="7717357606512850995">Kontrollér status</translation>
-<translation id="7306880305145342514">Tillykke! Dine belønninger for <ph name="MONTH"/> er klar!</translation>
-<translation id="8321551803834323117">Din <ph name="MONTH"/>-indtjening på <ph name="AMOUNT"/> ankommer om <ph name="DAYS"/>.</translation>
-<translation id="4645002846573756017">Din <ph name="MONTH"/>-indtjening på <ph name="AMOUNT"/> er på vej. Hold øje med dem!</translation>
+<translation id="6473937687348632190">Udbetalingen af dine <ph name="MONTH"/>-belønninger er afsluttet.</translation>
+<translation id="1711367267038576241">Udbetalingen af dine <ph name="MONTH"/>-belønninger bliver behandlet fra  <ph name="DATE"/>.</translation>
+<translation id="8193714877171133821">Udbetalingen af dine <ph name="MONTH"/>-belønninger er under behandling.</translation>
+<translation id="6583902294974160967">Support</translation>
 <translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Log ind i <ph name="PROVIDER"/><ph name="END_BOLD"/> for at se din saldo</translation>
 <translation id="2659764755126740206">Gå til min <ph name="PROVIDER"/>-konto</translation>
 <translation id="2394961582378297792">Logget ud</translation>
 <translation id="7091980679045978090">Anslået indtjening</translation>
 <translation id="7934950257968365573">Log på din <ph name="PROVIDER"/>-konto</translation>
+<translation id="8631427463833030968">Administrér annoncer</translation>
 <translation id="590733288489975971">Belønninger fra reklamer</translation>
 <translation id="5308380583665731573">Forbind</translation>
 <translation id="3026978804849658576">Se opgørelse</translation>
@@ -616,7 +623,6 @@
 <translation id="2359808026110333948">Fortsæt</translation>
 <translation id="885805571521218129">Dette viser din omtrentlige indtjening for Brave Ads denne måned.</translation>
 <translation id="3863981251715594911">Hvordan virker det?</translation>
-<translation id="5572389477027204985">Aktiver Brave Ads</translation>
 <translation id="4782365133987903299">Du har <ph name="DAYS"/> tilbage at modtage</translation>
 <translation id="7931127789630755251">Optjen tokens for private reklamer, du ser i Brave</translation>
 <translation id="2278423362884506724">Støt indholdsskabere, og brug dine tokens til at købe gavekort, bytte til andre møntenheder og mere.</translation>
@@ -624,6 +630,7 @@
 <translation id="2862978891748913252">Vælg land</translation>
 <translation id="3717922248131893262">For fortsat at bruge Brave-belønninger skal du vælge dit land, så vi kan vise dig de rette valgmuligheder, og reklamer i dit område.<ph name="LINK_BEGIN"/>Privatlivspolitik<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">Begynd at bruge Rewards</translation>
+<translation id="818003031290137834">Nu, hvor du er tilknyttet ZebPay, bliver en eventuel tidligere saldo, du måtte have haft, indbetalt på din ZebPay-konto som del af din næste udbetaling af indtjeninger. Når den ankommer, vil du se dine BAT opdateret som del af din Rewards-saldo.</translation>
 <translation id="2221902203895354376">En poletbevilling er tilgængelig!</translation>
 <translation id="2956070106555335453">Resumé</translation>
 <translation id="2369994359029526515">Ikke-bekræftet skaber</translation>
@@ -637,7 +644,6 @@
 <translation id="6727102863431372879">Indstil</translation>
 <translation id="8853725596990766789">Ændr beløb</translation>
 <translation id="1609556006143307897">Du hjælper med at understøtte indholdsskabere</translation>
-<translation id="6605147707233193230">Aktivér for at hjælpe med at støtte indholdsskabere</translation>
 <translation id="654447476965480878">Lær mere om at optjene BAT</translation>
 <translation id="4105212447337987768">Den <ph name="DATE"/> vil vi ophøre med at understøtte eksisterende virtuelle BAT-saldi. Tilslut en depotkonto inden denne dato, så vi kan overføre din optjente saldo til din depotkonto, ellers vil din saldo gå tabt.</translation>
 <translation id="5684206602316433615">Den <ph name="DATE"/>, vil vi ophøre med at understøtte eksisterende virtuelle BAT-saldi. Der er desværre ingen tilgængelige depotbanker i din region (<ph name="REGION"/>) til at hæve din indtjening. Indtil da kan du stadig bidrage til dine yndlingsskabere.</translation>
@@ -676,6 +682,7 @@
 <translation id="5547108999862247665">Hvordan fungerer Brave Rewards?</translation>
 <translation id="3970520675790340955">Vælg dit land, så vi kan vise dig de rette valgmuligheder og reklamer i dit område.</translation>
 <translation id="6945221475159498467">Vælg</translation>
+<translation id="3279158300746391749">Tryk på <ph name="BAT_ICON"/> BAT-ikonet i URL-bjælken for at begynde.</translation>
 <translation id="8465790416279415448">Hvis du fortsætter, accepterer du vores <ph name="TOS_LINK_BEGIN"/>Servicevilkpr<ph name="TOS_LINK_END"/> og <ph name="PP_LINK_BEGIN"/>Privatlivspolitik<ph name="PP_LINK_END"/>.</translation>
 <translation id="1015443539415537847">Brave Rewards er ikke tilgængelige</translation>
 <translation id="5007776270364097327">Det ser desværre ud til, at du befinder dig i en region, hvor Brave Rewards ikke er tilgængelige.</translation>
@@ -721,6 +728,7 @@
 <translation id="2326876601333401685">Denne RPC-metode er ikke understøttet.</translation>
 <translation id="1128992132632883337">Der opstod en fejl ved svartolkning</translation>
 <translation id="5382339341735118861">Der opstod en general anmodningsbehandlingsfejl</translation>
+<translation id="7123780456696055383">Den anmodede ressource er ikke tilgængelig</translation>
 <translation id="1680597601664421644">Den mnemoteknik, der importeres, er ikke gyldig i Brave Wallet</translation>
 <translation id="4641919696349069826">En anmodning er allerede under behandling</translation>
 <translation id="872806943696014633">Transaktionsdata mangler</translation>
@@ -836,7 +844,7 @@
 <translation id="2484275747844666540">Opret ny pung</translation>
 <translation id="3662348701117072366">Importer eksisterende pung</translation>
 <translation id="7150150391368236519">Forbind hardware-wallet</translation>
-<translation id="4192112279662688596">Eller</translation>
+<translation id="7501957181231305652">eller</translation>
 <translation id="375882617301124395">Backup din crypto-wallet</translation>
 <translation id="180032279811483155">På det næste trin vil du se en gendannelsessætning på <ph name="RECOVERY_PHRASE_LENGTH"/> ord, som du kan bruge til at gendanne dine primære crypto-konti. Opbevar den et sikkert sted. Din gendannelsessætning er den eneste måde at få adgang på, hvis du har glemt din adgangskode, du mister din enhed, eller hvis du vil skifte wallet.</translation>
 <translation id="5024543173656851695">Jeg er indforstået med, at hvis jeg mister mine gendannelsesord, vil jeg ikke kunne tilgå min kryptotegnebog.</translation>
@@ -863,6 +871,7 @@
 <translation id="5168349973342709369">Indtast adgangskode for at åbne wallet</translation>
 <translation id="9111102763498581341">Lås op</translation>
 <translation id="5045550434625856497">Ugyldig adgangskode</translation>
+<translation id="9195657745688986798">Lås wallet op</translation>
 <translation id="9175546523521600401">Lås tegnebog</translation>
 <translation id="765834632354589737">Sikkerhedskopiér Tegnebog</translation>
 <translation id="1108298724135935307">Forbundne websteder</translation>
@@ -883,10 +892,10 @@
 <translation id="6346952829206698721">Indsæt fra udklipsholder</translation>
 <translation id="1121335910737476837">Primære crypto-konti</translation>
 <translation id="6969147029062037757">Importerede konti</translation>
-<translation id="4057718162494343222">Du kan oprette primære konti i Brave-wallet, som kan sikkerhedskopieres eller gendannes via din gendannelsessætning. Besøg vores kontohjælp for at få mere at vide om kontotyper.</translation>
-<translation id="1011614786846182272">Disse konti kan bruges sammen med Web3 DApps og kan vises i din portefølje. Vær dog opmærksom på, at sekundære konti ikke kan gendannes via gendannelsessætningen fra din primære kontos backup.</translation>
+<translation id="3926119534765499672">Tilknyttede hardware wallets</translation>
 <translation id="1940465339426637378">Aktiver</translation>
 <translation id="2236507293802791911">Synlige aktiver</translation>
+<translation id="3188393374551744535">Kontosaldo</translation>
 <translation id="7525067979554623046">Opret</translation>
 <translation id="4771176409524282426">Opret konto</translation>
 <translation id="2471867767872178363">Opret <ph name="BLOCKCHAIN_NETWORK"/>-konto</translation>
@@ -895,17 +904,20 @@
 <translation id="7080614857771109950">Understøtter EVM-kompatible aktiver på Ethereums blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Understøtter SPL-kompatible aktiver på Solanas blockchain</translation>
 <translation id="4541295941776129088">Gem FIL-aktiv</translation>
+<translation id="29759539656432505">Gem BTC-aktiver</translation>
 <translation id="8500387257977999003">Privat nøgle <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Importér</translation>
 <translation id="232925166623833246">Importér fra hardware-tegnebog</translation>
 <translation id="4324198334837993695">Hardware</translation>
 <translation id="3067168166931605141">Kontonavn</translation>
+<translation id="1011614786846182272">Disse konti kan bruges sammen med Web3 DApps og kan vises i din portefølje. Vær dog opmærksom på, at sekundære konti ikke kan gendannes via gendannelsessætningen fra din primære kontos backup.</translation>
 <translation id="1136772623587250243">Indsæt privat nøgle fra udklipsholderen</translation>
 <translation id="7978412674231730200">Privat nøgle</translation>
 <translation id="2795015351889043417">JSON-fil</translation>
 <translation id="5468881191994555667">Vælg fil</translation>
 <translation id="795667975304826397">Ingen fil valgt</translation>
 <translation id="5891811606602061966">Kunne ikke importere konto. Prøv igen.</translation>
+<translation id="6566535583781706170">Importér konto</translation>
 <translation id="5051929972046200722">Vælg din hardware-walletenhed</translation>
 <translation id="5745936663807461565">Opret forbindelse fra din <ph name="HARDWARE_DEVICE"/>-wallet direkte til din computer.</translation>
 <translation id="4350216031085285578">Lås din enhed op, og vælg<ph name="BLOCKCHAIN_NETWORK"/>-appen.</translation>
@@ -930,7 +942,6 @@
 <translation id="4220693114674044366">Token-adresse</translation>
 <translation id="4092152169181928870">Polet-symbol</translation>
 <translation id="4351811224047421378">Decimalpræcision</translation>
-<translation id="4982060163914604175">Tilføj <ph name="CONTRACT_ADDRESS"/>som brugerdefineret token</translation>
 <translation id="7978047524114351365">Ingen aktiver valgt</translation>
 <translation id="9040455159722359521">Søg aktiver eller kontaktadresse</translation>
 <translation id="6018178824574796106">Kunne ikke tilføje tilpasset polet. Prøv igen.</translation>
@@ -945,6 +956,8 @@
 <translation id="7657130382217527063">BEMÆRK: Privat nøgle tildeles som en hex-kodet JSON, som indeholder privat nøgle- og protokoloplysninger. <ph name="LINK_START"/>Læs mere <ph name="LINK_END"/>.</translation>
 <translation id="42126664696688958">Eksportér</translation>
 <translation id="1366855498335432549">Indsæt</translation>
+<translation id="6322030314101903925">Ingen tilgængelige aktiver</translation>
+<translation id="836614343069504000">Indbetal eller køb tokens for at komme i gang. Hvis du ikke ser tokens fra en importeret konto, skal du tjekke filtrene og visningsindstillingerne. Ukendte tokens skal muligvis tilføjes som skræddersyede aktiver.</translation>
 <translation id="2902856457593699108">Vis nøgle</translation>
 <translation id="8033497299373164724">Skjul nøgle</translation>
 <translation id="2702143907607790516">Kunne ikke opdatere kontonavnet. Prøv igen.</translation>
@@ -1145,6 +1158,8 @@
 <translation id="7340805872138998391">Kunne ikke låse op for enhed. Prøv at oprette forbindelse igen</translation>
 <translation id="1984410139271779110">Intern fejl. Ukendt grund.</translation>
 <translation id="6989562355845156390">godkend</translation>
+<translation id="7790702794900303639">Ingen konti tilgængelige</translation>
+<translation id="1216453084986761639">Konti med en saldo vil blive vist her.</translation>
 <translation id="4674380028960132654">Ledger: Denne signatur matching ikke den rigtige adresse</translation>
 <translation id="3183932890629254743">Hardware-konto ikke fundet</translation>
 <translation id="4287068151777838754">JSON-data ikke forventet</translation>
@@ -1192,16 +1207,19 @@
 <translation id="5522073372365069684">Køb med Ramp</translation>
 <translation id="6153197326949684688">Sælg med <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="7902920577183739843">Køb med Sardine</translation>
+<translation id="3301984548406568819">Finans- og transaktionsdata bliver behandlet af vores onramp-partnere. Brave indsamler ikke og har ikke adgang til sådanne data.</translation>
 <translation id="6534275647567011533">Køb med Transak</translation>
-<translation id="7090793929823292625">Køb med Stripe</translation>
+<translation id="5973390321030037823">Køb med Link</translation>
+<translation id="1932640759496708012">Køb med Coinbase Pay</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
-<translation id="5653537958566609044">Stripe</translation>
+<translation id="7295150312737713113">Link fra Stripe</translation>
+<translation id="7191335763519723663">Coinbase Pay</translation>
 <translation id="7667423728712601865">Køb krypto med Visa eller Mastercard.</translation>
 <translation id="3648994606506382289">Den nemmeste, hurtigste og billigste måde at købe crypto på med kort og bankoverførsel.</translation>
 <translation id="3101839349578102016">Køb øjeblikkeligt med din bankkonto. Lavere gebyrer.</translation>
-<translation id="626166403314596986">Køb krypto med Stripe på crypto.link.</translation>
+<translation id="8280898387224328221">Betal med kredit-, debet- eller bankkonto</translation>
 <translation id="8528916244724490964">Alle netværk</translation>
 <translation id="7721139939763655123">Lav til Høj</translation>
 <translation id="5458608274117818139">Høj til Lav</translation>
@@ -1211,6 +1229,7 @@
 <translation id="4505808287964755387">Gruppér efter</translation>
 <translation id="8491675129455635799">Gruppér aktiver efter</translation>
 <translation id="5331775401966766526">Filtre og skærmindstillinger</translation>
+<translation id="5332541468425943610">NFT-visningsindstillinger</translation>
 <translation id="886032538431162695">Sortér aktiver</translation>
 <translation id="6080181976198929758">Sortér efter fiat-værdi eller navn</translation>
 <translation id="2563815561570398537">Skjul små beløb</translation>
@@ -1224,6 +1243,10 @@
 <translation id="1398414935371867469">Solana + SVM-kæder</translation>
 <translation id="2588471487641583523">Filecoin</translation>
 <translation id="5774718649402782121">Bitcoin</translation>
+<translation id="7058248670699639973">Netværkslogo</translation>
+<translation id="4378208228955237306">Vis netværkslogo på NFTs</translation>
+<translation id="5472199803712163015">Spam-NFTs</translation>
+<translation id="5722321409991816187">Vis spam-NFTs</translation>
 <translation id="7662492121143629144">Alle konti</translation>
 <translation id="6954150712710630841">Transaktionen er indberettet</translation>
 <translation id="905855245798176174">Transaktionen er blevet sendt til netværket og afventer bekræftelse.</translation>
@@ -1427,15 +1450,22 @@
 <translation id="6779155810671793329">Polet Kontrakt Adresse</translation>
 <translation id="871123550184744265">Token decimal</translation>
 <translation id="4038384774641714579">Du kan vise dette aktiv igen ved at klikke på "+ Synlige aktiver"-knappen i bunden af "Portefølje"-fanen</translation>
+<translation id="4700610707948897993">Mine aktiver</translation>
+<translation id="3282486790225768605">Tilgængelige aktiver</translation>
+<translation id="6282772530968686800">Fandt du ikke dit aktiv på listen?</translation>
+<translation id="1353726744456297797">Hvis du ikke fandt dit aktiv på denne liste, kan du tilføje det manuelt med knappen nedenfor</translation>
+<translation id="4543171429371680949">Aktiv ikke fundet</translation>
 <translation id="1026825928738055872">Er du sikker på, du vil fjerne "<ph name="ACCOUNT_NAME"/>"?</translation>
 <translation id="3910551537328657217">Anmod om funktion</translation>
 <translation id="7657322905916621147">Gendannelsessætning skal være på 12, 15, 18, 21 eller 24 tegn</translation>
 <translation id="5026874946691314267">Vis ikke dette igen</translation>
 <translation id="434502623875309667">Adresseopløsning kræver offchain netværksanmodninger. Ønsker du at fortsætte?</translation>
 <translation id="2779500703989728346">NFT</translation>
-<translation id="4709355193533327244">Ingen transaktioner at vise endnu.</translation>
-<translation id="4931644613135313937">Når du har foretaget en transaktion, vil du kunne se den her.</translation>
+<translation id="1893207255459018302">Ingen transaktionshistorie</translation>
+<translation id="5356382676355994980">Transaktioner foretaget med din Brave Wallet dukker op her.</translation>
 <translation id="3033638954295674319">Der gik noget galt under overførsel af NFT-oplysninger. Prøv igen senere.</translation>
+<translation id="2612436523196658045">ETH-adresse bliver oversat til Filecoin-adressen.</translation>
+<translation id="3282354360699748542"><ph name="FILECOIN_ADDRESS"/>-adressen i Filecoin-navnemellemrummet bliver brugt til transaktionen.</translation>
 <translation id="2540568096903252632">Indtast en adgangskode for at fortsætte</translation>
 <translation id="3356580495013324916">Indtast adgangskoden til din Brave Wallet, så du kan begynde at lave backup.</translation>
 <translation id="7545441766078366279">Godkend <ph name="TOKEN"/></translation>
@@ -1490,8 +1520,8 @@
 <translation id="3797613444743816037">Mint-adresse</translation>
 <translation id="7951915459354237451">Gebyrgrænsen er sat lavere end grundgebyret. Din transaktion kan tage lang tid eller mislykkes.</translation>
 <translation id="2227702748249086756">Kunne ikke hente prisestimater</translation>
-<translation id="5361710044667743492">Hvorfor er det ikke tilgængeligt?</translation>
-<translation id="3668838456083358569">Visse NFT-data ligger på en centraliseret server som AWS, Google Cloud, osv. I disse tilfælde er det ikke muligt at fastgøre dine NFT-data til IPFS-netværket.</translation>
+<translation id="6580621526400120372">Hvorfor er visse NFTs ikke berettigede?</translation>
+<translation id="620930608106217992">Visse NFT-data ligger på centraliserede servere som AWS, Google Cloud, osv. I disse tilfælde er det ikke muligt at fastgøre dine NFT-data til IPFS-netværket.</translation>
 <translation id="4637031024914696767">Ved at slå IPFS til i Brave bliver dine NFTs automatisk fastgjort. Det er den bedste måde at lave en sikker backup af dine NFTs.</translation>
 <translation id="2319971828691864975">Kom i gang med IFPS</translation>
 <translation id="7906328323880284538">Den sikreste måde at hoste NFT'er</translation>
@@ -1501,7 +1531,8 @@
 <translation id="6241155642582182934">Slå IPFS til i Brave for at lave automatisk backup af dine NFTs for ekstra sikkerhed.</translation>
 <translation id="654964147165509548">NFT'er fastgøres til din lokale IPFS-node.</translation>
 <translation id="4910182786472608576"><ph name="PINNED"/> understøttede NFT'er fastgøres til din lokale IPFS-node.</translation>
-<translation id="1474962961180773583"><ph name="PINNABLE"/> ud af <ph name="TOTAL"/> er tilgængelige!</translation>
+<translation id="1607117719941506821"><ph name="PINNABLE"/> NFT er berettiget</translation>
+<translation id="7056553112112778467"><ph name="PINNABLE"/> NFTs er berettigede</translation>
 <translation id="6852656829524945421">Kan ikke fastgøres</translation>
 <translation id="9019535252716288146">Du kører et IPFS-knudepunkt</translation>
 <translation id="5584313306739463968">Lokal IPFS-node kører ikke</translation>
@@ -1527,6 +1558,7 @@
 <translation id="487317695605278176">Når en NFT er fundet, vises den her.</translation>
 <translation id="7481581122016027177">Kan du ikke se dine NFT'er?</translation>
 <translation id="7756624047234151641"><ph name="REFRESH"/>Genindlæs<ph name="REFRESH_END"/> eller <ph name="IMPORT"/>importér manuelt<ph name="IMPORT_END"/></translation>
+<translation id="3840001806553580474">Opdaterer</translation>
 <translation id="4608324163534970318">Netværksgebyrer</translation>
 <translation id="3155170474926428993">Tor Startprogram</translation>
 <translation id="3745016858329272300">Generel info</translation>
@@ -1591,6 +1623,7 @@
 <translation id="1297570508541015874">Amerikanske nyheder</translation>
 <translation id="1459693405370120464">Vejr</translation>
 <translation id="8366057325711477500">Internationale nyheder</translation>
+<translation id="7625025537587898155">Tilføj ny profil</translation>
 <translation id="7481312909269577407">Frem</translation>
 <translation id="302781076327338683">Genindlæs uden cache</translation>
 <translation id="7211681214230730336">Genindlæs og ryd cache</translation>
@@ -1622,6 +1655,7 @@
 <translation id="9148058034647219655">Afslut</translation>
 <translation id="3770620323585347665">Navngiv vindue</translation>
 <translation id="2154710561487035718">Kopier webadresse</translation>
+<translation id="2722817840640790566">Åbn gæsteprofil</translation>
 <translation id="8445059357334030806">Åbn i Brave</translation>
 <translation id="1111843722790053332">Åben i PWA-vindue</translation>
 <translation id="907981618023904259">Web-app indstillinger</translation>
@@ -1720,6 +1754,7 @@
 <translation id="2548853975094084059">Luk Brave Wallet-panel</translation>
 <translation id="3765209580429944524">Vis Brave VPN-panel</translation>
 <translation id="5989009326527614692">Slå knap til Brave VPN værktøjslinje fra/til</translation>
+<translation id="7334332308395652803">Slå Brave VPN-bakkeikon til/fra</translation>
 <translation id="4326011033480357140">Send Brave VPN-feedback</translation>
 <translation id="2345974803401546682">Om Brave VPN</translation>
 <translation id="8934783170241943640">Administrér Brave VPN-plan</translation>
@@ -1738,21 +1773,46 @@
 <translation id="2158862020143233462">Slå Shields fra/til</translation>
 <translation id="4610630726762318759">Slå javascript fra/til</translation>
 <translation id="188822869499214197">Vis vindue til afspilningsliste</translation>
+<translation id="3202536111478033084">Gruppér faner baseret på nuværende oprindelse</translation>
+<translation id="6002210667729577411">Flyt gruppe til nyt vindue</translation>
+<translation id="253980346046488815">Luk duplikerede faner</translation>
+<translation id="9210143726807220086">Slå lodrette faner til/fra – udvidet</translation>
 <translation id="5182394825813677917">Søg efter en kommando eller genvej</translation>
 <translation id="4138119885026877702">Nulstil alle til standard</translation>
 <translation id="8247915960543694908">Opret ny genvej. Tryk på de ønskede taster for at skabe en ny binding</translation>
 <translation id="1344005710343072293">Denne kombination bliver brugt til <ph name="COMMAND"/>. Hvis du gemmer, bliver genvejen overskrevet.</translation>
 <translation id="831931573200952705">Denne kombination bliver brugt til <ph name="COMMAND"/> og kan ikke ændres.</translation>
 <translation id="3537006124004887164">Denne kombination bliver brugt til <ph name="COMMAND"/> og kan ikke ændres. Prøv at ændre den gennem 'App genveje' i Systemindstillinger.</translation>
-<translation id="8303087505226646884">Brave Speedreader</translation>
+<translation id="8591883849678260674">Se originalen</translation>
+<translation id="1969654232209826429">min. læsning</translation>
+<translation id="906598168058463050">Sluk for speedreader</translation>
+<translation id="8948558186299884715">Tænd for speedreader</translation>
+<translation id="1385842054306112120">Brug altid speedreader til denne side</translation>
+<translation id="8028940590935492959">Slå til/fra for at tænde/slukke speedreader for denne hjemmeside.</translation>
+<translation id="1022901542006152519">Brug altid speedreader på alle sider</translation>
+<translation id="3460907549384263858">Slå til/fra for at tænde/slukke speedreader for alle hjemmesider.</translation>
+<translation id="8745592921916491483">Ikke alle sider understøtter speedreader.</translation>
 <translation id="1013121820689882118">Speedreader</translation>
-<translation id="8112297508607107861">Indlæs altid fart speedreader-funktionen for <ph name="HOST_NAME"/></translation>
-<translation id="6278428485366576908">Tema</translation>
-<translation id="8710842507289500830">Skrifttype</translation>
-<translation id="8168435359814927499">Indhold</translation>
-<translation id="7451953332310475840">Slå læsetilstand til/fra kun på denne webside. Hvis du vil slå Speedreader fra på hele din browserprofil, skal du besøge <ph name="LINK_BEFORE"/>Indstillinger.<ph name="LINK_AFTER"/></translation>
-<translation id="7701466644604753106">Tænd for speedreader</translation>
-<translation id="763042262431778831">SLUK for speedreader</translation>
+<translation id="1103345585203110275">Forlad speedreader</translation>
+<translation id="6315170314923504164">Stemme</translation>
+<translation id="57748525762025171">Fintun speedreader</translation>
+<translation id="251940709686581010">Indstillinger for udseende</translation>
+<translation id="4809927044794281115">Lyst tema</translation>
+<translation id="5595850093882577201">Sepia-tema</translation>
+<translation id="1407069428457324124">Mørkt tema</translation>
+<translation id="9050211734566144118">Systemtema</translation>
+<translation id="812549962360031312">Sans</translation>
+<translation id="5016205925109358554">Serif</translation>
+<translation id="2593272815202181319">Enkelt tegnafstand</translation>
+<translation id="8960352557529001690">Ordblind</translation>
+<translation id="8189819085033738728">Formindsk skriftstørrelsen</translation>
+<translation id="1952725803106139986">Forstør skriftstørrelsen</translation>
+<translation id="7239710518122372020">Tekst til tale</translation>
+<translation id="4330722796577425585">Spol tilbage</translation>
+<translation id="1199355487114804640">Afspil/Pause</translation>
+<translation id="1689210457482459023">Sænk afspilningshastigheden</translation>
+<translation id="5872363163901278000">Hæv afspilningshastigheden</translation>
+<translation id="8178821080790541548">Brave AI</translation>
 <translation id="6303294677342628402">Afskærmning</translation>
 <translation id="8458987127502506209">Aktivér Brave-skjolde</translation>
 <translation id="7509914170164691086">Skjolde er OPPE <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>
@@ -1830,6 +1890,10 @@
 <translation id="917619443165595947">Sørg venligst for, at siden og/eller opfølgende forespørgsler ikke indeholder personlig eller følsom information. Opsummeringen og svar på spørgsmål er ikke nødvendigvis nøjagtig information, så du bør ikke stole på genereret tekst, der relaterer til helbred, personlig sikkerhed eller finansielle anliggender.</translation>
 <translation id="1829889011559313790">Spørg Brave AI</translation>
 <translation id="7226268079740406209">Der opstod en fejl under skabelsen af din tekst, prøv venligst igen.</translation>
+<translation id="1171287413830401223">Aktivér anbefalede spørgsmål?</translation>
+<translation id="8723991872343294222">Brave AI kan automatisk foreslå spørgsmål baseret på indholdet på siden. Du kan deaktivere den senere i Indstillinger.</translation>
+<translation id="3435896845095436175">Aktivér</translation>
+<translation id="7473891865547856676">Nej tak</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: Tilsluttet</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: Afbrudt</translation>
 <translation id="3541307549916475335">Panel-interface for Brave VPN</translation>
@@ -1889,9 +1953,25 @@ Brave har en hjælpetjeneste, der beskytter dig mod denne afsløring, ved at fil
 Vi har dog bemærket, at denne hjælpetjeneste ikke er slået til, og vi vil gerne sikre os, at du er beskyttet. Vi har ændret DNS-indstillingerne i browseren for at beskytte dig mod afsløringen. Denne indstilling er aktiveret og låst, mens VPN er forbundet.
 
 <ph name="LEARN_MORE"/></translation>
+<translation id="4828320950595742243">Det ser ud til, at der er nogle problemer med WireGuard-forbindelsen. Vil du aktivere IKEv2-tilbagefald for en pålidelig VPN? Du skal blot genstarte din browser.
+
+Har du brug for hjælp til kompatibilitet eller konfigurering? Kontakt vores hjælpsomme support team.
+Du kan altid gå tilbage til WireGuard på brave://flags/#brave-vpn-wireguard.
+
+Lad os få dig tilknyttet!
+
+<ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Advar mig ikke om dette længere.</translation>
 <translation id="2740531572673183784">OK</translation>
+<translation id="7896201779114201779">Genstart browser</translation>
 <translation id="9061845622728745852">Tidszone:</translation>
 <translation id="8295393906499561642">Din session er udløbet</translation>
 <translation id="3312623558576021182">Log ind på din <ph name="BRAVE_ACCOUNT_BEGIN"/>Brave-konto<ph name="BRAVE_ACCOUNT_END"/> for at opdatere din VPN-session.</translation>
+<translation id="6021669293402055982">Brave VPN: Frakoblet</translation>
+<translation id="958268166261124668">Brave VPN: Tilsluttet</translation>
+<translation id="1313124107969703758">Brave VPN: Fejl</translation>
+<translation id="8273420301954598554">Status: Forbundet</translation>
+<translation id="7155657348064536843">Status: Ikke forbundet</translation>
+<translation id="1498770726476841108">Administrér konto</translation>
+<translation id="6825718953004242472">Fjern ikon</translation>
 </translationbundle>

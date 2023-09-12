@@ -3,7 +3,6 @@
 <translationbundle lang="sw">
 <translation id="1075622780330595106">Hujatumia vichupo vyako <ph name="NUMBER_OF_TABS"/> hivi karibuni. Je, tuvifunge?</translation>
 <translation id="125153950246128346">Gusa ili uone kichupo kingine</translation>
-<translation id="955456285524876618">Unaweza kupata vichupo vyako ulivyovifunga kwenye vichupo vya Hivi Karibuni chini ya menyu kuu ya Brave</translation>
 <translation id="1657719826150349398">Sogeza kichupo chini</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{Kichupo <ph name="TABS_COUNT_ONE"/>}other{Vichupo <ph name="TABS_COUNT_MANY"/>}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Alamisha kichupo <ph name="TABS_COUNT_ONE"/> kilichochaguliwa}other{Alamisha vichupo <ph name="TABS_COUNT_MANY"/> vilivyochaguliwa}}</translation>
@@ -45,6 +44,7 @@
 <translation id="5073204694187207510">Ficha gridi ya skrini nzima</translation>
 <translation id="5076161749301278626">Je, unaona maoni kuhusu duka?</translation>
 <translation id="5082793167783849073">Linganisha kurasa kwa haraka kwa kuanzisha kikundi. Ili uanze, gusa na ushikilie kiungo.</translation>
+<translation id="5339733443032484186">Kichupo chako cha mwisho</translation>
 <translation id="5490235265819901748">Kikundi cha vichupo kimepanuliwa</translation>
 <translation id="5494920125229734069">Chagua zote</translation>
 <translation id="5556417849629758491">Angalia maelezo ya duka, chaguo hili linapatikana karibu na sehemu ya juu ya skrini</translation>
@@ -64,6 +64,7 @@
 <translation id="6549021453810473782">Angalia maelezo ya duka</translation>
 <translation id="6562820390860419811">Sogeza kichupo kushoto</translation>
 <translation id="6615455863669487791">Nionyeshe</translation>
+<translation id="6398241160085205003">Unaweza kupata vichupo ulivyofunga kwenye vichupo vya Hivi Karibuni kwenye menyu kuu ya Brave.</translation>
 <translation id="6840760312327750441">Ili upange vichupo katika makundi, gusa na ushikilie kichupo. Kisha, kiburute kwenye kichupo kingine.</translation>
 <translation id="6856809498882026482">Ficha hali ya kuchagua vingi</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Shiriki kichupo}other{Shiriki vichupo}}</translation>
@@ -92,6 +93,9 @@
 <translation id="9150694013019234766">Badili kati ya vichupo vilivyo katika kikundi chako cha vichupo karibu na sehemu ya chini ya skrini</translation>
 <translation id="9169594135889675189">Ongeza kichupo kipya kwenye kikundi</translation>
 <translation id="959682366969460160">Weka kwa utaratibu</translation>
+<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
+        =1 {Unaweza kupata vichupo vyako vilivyofungwa kwenye vichupo vya Hivi Karibuni chini ya menyu kuu ya Brave. Kichupo chako cha Faragha hakitapatikana.}
+     other {Unaweza kupata vichupo vyako vilivyofungwa kwenye vichupo vya Hivi Karibuni chini ya menyu kuu ya Brave. Vichupo vyako vya Faragha havitapatikana.}}</translation>
 <translation id="3228718275011575753">Ungependa kufunga vichupo vyote vya Faragha?</translation>
-<translation id="1922184283901690941">Shughuli zako katika vichupo hivi vya Faragha zitafutwa kwenye kifaa hiki</translation>
+<translation id="6687920250729800417">Shughuli zako katika vichupo hivi vya Faragha zitaondolewa kwenye kifaa hiki</translation>
 </translationbundle>

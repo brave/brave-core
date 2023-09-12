@@ -3,7 +3,6 @@
 <translationbundle lang="ar">
 <translation id="1075622780330595106">لم يتم استخدام <ph name="NUMBER_OF_TABS"/> من علامات التبويب مؤخرًا. هل تريد إغلاقها؟</translation>
 <translation id="125153950246128346">يُرجى النقر للاطِّلاع على علامة تبويب أخرى</translation>
-<translation id="955456285524876618">‏يمكنك العثور على علامات التبويب المغلقة في "علامات التبويب الأخيرة" ضمن قائمة Brave الرئيسية.</translation>
 <translation id="1657719826150349398">نقل علامة التبويب إلى الأسفل</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{علامة تبويب واحدة (<ph name="TABS_COUNT_ONE"/>)}zero{<ph name="TABS_COUNT_MANY"/> علامة تبويب}two{علامتا تبويب (<ph name="TABS_COUNT_MANY"/>)}few{<ph name="TABS_COUNT_MANY"/> علامات تبويب}many{<ph name="TABS_COUNT_MANY"/> علامة تبويب}other{<ph name="TABS_COUNT_MANY"/> علامة تبويب}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{وضع إشارة على علامة تبويب واحدة (<ph name="TABS_COUNT_ONE"/>) محدَّدة}zero{وضع إشارة على <ph name="TABS_COUNT_MANY"/> علامة تبويب محدَّدة}two{وضع إشارة على علامتَي تبويب (<ph name="TABS_COUNT_MANY"/>) محدَّدتين}few{وضع إشارة على <ph name="TABS_COUNT_MANY"/> علامات تبويب محدَّدة}many{وضع إشارة على <ph name="TABS_COUNT_MANY"/> علامة تبويب محدَّدة}other{وضع إشارة على <ph name="TABS_COUNT_MANY"/> علامة تبويب محدَّدة}}</translation>
@@ -45,6 +44,7 @@
 <translation id="5073204694187207510">إخفاء شبكة ملء الشاشة</translation>
 <translation id="5076161749301278626">هل تريد الاطّلاع على مراجعات المتجر؟</translation>
 <translation id="5082793167783849073">يُرجى مقارنة الصفحات بسرعة من خلال إنشاء مجموعة. للبدء، المس رابطًا مع الاستمرار.</translation>
+<translation id="5339733443032484186">علامة التبويب الأخيرة</translation>
 <translation id="5490235265819901748">تم توسيع مجموعة علامات التبويب.</translation>
 <translation id="5494920125229734069">اختيار الكل</translation>
 <translation id="5556417849629758491">عرض معلومات المتجر، وهو خيار متاح بالقرب من أعلى الشاشة</translation>
@@ -64,6 +64,7 @@
 <translation id="6549021453810473782">عرض معلومات المتجر</translation>
 <translation id="6562820390860419811">نقل علامة التبويب إلى اليمين</translation>
 <translation id="6615455863669487791">عرض</translation>
+<translation id="6398241160085205003">‏يمكنك العثور على علامات التبويب المغلقة في قسم "علامات التبويب الأخيرة" ضمن قائمة Brave الرئيسية.</translation>
 <translation id="6840760312327750441">لتجميع علامات التبويب، المس علامة التبويب مع الاستمرار. ثم اسحبها إلى علامة تبويب أخرى.</translation>
 <translation id="6856809498882026482">إخفاء وضع التحديد المتعدد</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{مشاركة علامة التبويب}zero{مشاركة علامات التبويب}two{مشاركة علامتَي التبويب}few{مشاركة علامات التبويب}many{مشاركة علامات التبويب}other{مشاركة علامات التبويب}}</translation>
@@ -92,6 +93,9 @@
 <translation id="9150694013019234766">يمكنك التبديل بين علامات التبويب ضمن المجموعة بالقرب من أسفل الشاشة.</translation>
 <translation id="9169594135889675189">إضافة علامة تبويب جديدة للمجموعة</translation>
 <translation id="959682366969460160">بدء التنظيم</translation>
+<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
+        =1 {يمكنك العثور على علامات التبويب المغلقة في علامات التبويب الأخيرة ضمن قائمة Brave الرئيسية. لن تكون علامة التبويب الخاصة متاحة.}
+        other {يمكنك العثور على علامات التبويب المغلقة في علامات التبويب الأخيرة ضمن قائمة Brave الرئيسية. لن تكون # علامات التبويب الخاصة بك متاحة.}}</translation>
 <translation id="3228718275011575753">هل ترغب في إغلاق جميع علامات التبويب الخاصة؟</translation>
-<translation id="1922184283901690941">سيتم مسح الأنشطة الخاصة بك في علامات التبويب الخاصة هذه من هذا الجهاز</translation>
+<translation id="6687920250729800417">ستتم إزالة نشاطك في علامات التبويب الخاصة هذه من هذا الجهاز</translation>
 </translationbundle>
