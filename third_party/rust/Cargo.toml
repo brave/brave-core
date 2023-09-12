@@ -677,7 +677,7 @@ path = "itertools/v0_10/crate"
 package = "itertools"
 
 [patch.crates-io.itoa_v0_4]
-path = "../../../third_party/rust/itoa/v0_4/crate"
+path = "itoa/v0_4/crate"
 package = "itoa"
 
 [patch.crates-io.itoa_v1]
