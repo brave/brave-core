@@ -145,7 +145,7 @@ void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
 
 void EngineConsumerClaudeRemote::OnGenerateQuestionSuggestionsResponse(
     SuggestedQuestionsCallback callback,
-    CompletionResult result) {
+    GenerationResult result) {
   if (!result.has_value() || result->empty()) {
     // Query resulted in error
     LOG(ERROR) << "Error getting question suggestions.";
@@ -159,13 +159,13 @@ void EngineConsumerClaudeRemote::OnGenerateQuestionSuggestionsResponse(
   std::move(callback).Run(std::move(questions));
 }
 
-void EngineConsumerClaudeRemote::SubmitHumanInput(
+void EngineConsumerClaudeRemote::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
     const ConversationHistory& conversation_history,
     const std::string& human_input,
-    CompletionDataReceivedCallback data_received_callback,
-    CompletionCompletedCallback completed_callback) {
+    GenerationDataCallback data_received_callback,
+    GenerationCompletedCallback completed_callback) {
   std::string prompt = BuildClaudePrompt(human_input, page_content, is_video,
                                          conversation_history);
   CheckPrompt(prompt);
@@ -174,9 +174,6 @@ void EngineConsumerClaudeRemote::SubmitHumanInput(
 }
 
 void EngineConsumerClaudeRemote::SanitizeInput(std::string& input) {
-  // Prevent indirect prompt injections being sent to the AI model.
-  // Include break-out strings contained in prompts, as well as the base
-  // model command separators.
   base::ReplaceSubstringsAfterOffset(&input, 0, kHumanPrompt, "");
   // TODO(petemill): Do we need to strip the versions of these without newlines?
   base::ReplaceSubstringsAfterOffset(&input, 0, kHumanPromptPlaceholder, "");

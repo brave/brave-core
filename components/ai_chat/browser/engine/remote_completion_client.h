@@ -47,17 +47,16 @@ class RemoteCompletionClient {
   void QueryPrompt(
       const std::string& prompt,
       const std::vector<std::string> stop_sequences,
-      EngineConsumer::CompletionCompletedCallback data_completed_callback,
-      EngineConsumer::CompletionDataReceivedCallback data_received_callback =
+      EngineConsumer::GenerationCompletedCallback data_completed_callback,
+      EngineConsumer::GenerationDataCallback data_received_callback =
           base::NullCallback());
   // Clears all in-progress requests
   void ClearAllQueries();
 
  private:
-  void OnQueryDataReceived(
-      EngineConsumer::CompletionDataReceivedCallback callback,
-      base::expected<base::Value, std::string> result);
-  void OnQueryCompleted(EngineConsumer::CompletionCompletedCallback callback,
+  void OnQueryDataReceived(EngineConsumer::GenerationDataCallback callback,
+                           base::expected<base::Value, std::string> result);
+  void OnQueryCompleted(EngineConsumer::GenerationCompletedCallback callback,
                         APIRequestResult result);
 
   std::string model_name_;

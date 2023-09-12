@@ -385,9 +385,9 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
       base::BindOnce(&AIChatTabHelper::OnEngineCompletionComplete,
                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id_);
 
-  engine_->SubmitHumanInput(is_video_, article_text_, history, question_part,
-                            std::move(data_received_callback),
-                            std::move(data_completed_callback));
+  engine_->GenerateAssistantResponse(
+      is_video_, article_text_, history, question_part,
+      std::move(data_received_callback), std::move(data_completed_callback));
 
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
@@ -434,7 +434,7 @@ void AIChatTabHelper::OnEngineCompletionDataReceived(int64_t for_navigation_id,
 
 void AIChatTabHelper::OnEngineCompletionComplete(
     int64_t for_navigation_id,
-    EngineConsumer::CompletionResult result) {
+    EngineConsumer::GenerationResult result) {
   if (for_navigation_id != current_navigation_id_) {
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
     return;

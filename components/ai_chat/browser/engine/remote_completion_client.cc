@@ -132,8 +132,8 @@ RemoteCompletionClient::~RemoteCompletionClient() = default;
 void RemoteCompletionClient::QueryPrompt(
     const std::string& prompt,
     const std::vector<std::string> extra_stop_sequences,
-    EngineConsumer::CompletionCompletedCallback data_completed_callback,
-    EngineConsumer::CompletionDataReceivedCallback
+    EngineConsumer::GenerationCompletedCallback data_completed_callback,
+    EngineConsumer::GenerationDataCallback
         data_received_callback /* = base::NullCallback() */) {
   const GURL api_base_url = GetEndpointBaseUrl();
 
@@ -182,7 +182,7 @@ void RemoteCompletionClient::ClearAllQueries() {
 }
 
 void RemoteCompletionClient::OnQueryDataReceived(
-    EngineConsumer::CompletionDataReceivedCallback callback,
+    EngineConsumer::GenerationDataCallback callback,
     base::expected<base::Value, std::string> result) {
   if (!result.has_value() || !result->is_dict()) {
     return;
@@ -195,7 +195,7 @@ void RemoteCompletionClient::OnQueryDataReceived(
 }
 
 void RemoteCompletionClient::OnQueryCompleted(
-    EngineConsumer::CompletionCompletedCallback callback,
+    EngineConsumer::GenerationCompletedCallback callback,
     APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
   // Handle successful request

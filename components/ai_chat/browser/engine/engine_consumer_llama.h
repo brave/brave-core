@@ -40,20 +40,20 @@ class EngineConsumerLlamaRemote : public EngineConsumer {
       const bool& is_video,
       const std::string& page_content,
       SuggestedQuestionsCallback callback) override;
-  void SubmitHumanInput(
+  void GenerateAssistantResponse(
       const bool& is_video,
       const std::string& page_content,
       const ConversationHistory& conversation_history,
       const std::string& human_input,
-      CompletionDataReceivedCallback data_received_callback,
-      CompletionCompletedCallback completed_callback) override;
+      GenerationDataCallback data_received_callback,
+      GenerationCompletedCallback completed_callback) override;
   void SanitizeInput(std::string& input) override;
   void ClearAllQueries() override;
 
  private:
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
-      CompletionResult result);
+      GenerationResult result);
 
   std::unique_ptr<RemoteCompletionClient> api_ = nullptr;
 

@@ -269,7 +269,7 @@ void EngineConsumerLlamaRemote::GenerateQuestionSuggestions(
 
 void EngineConsumerLlamaRemote::OnGenerateQuestionSuggestionsResponse(
     SuggestedQuestionsCallback callback,
-    CompletionResult result) {
+    GenerationResult result) {
   if (!result.has_value() || result->empty()) {
     // Query resulted in error
     LOG(ERROR) << "Error getting question suggestions.";
@@ -313,13 +313,13 @@ void EngineConsumerLlamaRemote::OnGenerateQuestionSuggestionsResponse(
   std::move(callback).Run(std::move(questions));
 }
 
-void EngineConsumerLlamaRemote::SubmitHumanInput(
+void EngineConsumerLlamaRemote::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
     const ConversationHistory& conversation_history,
     const std::string& human_input,
-    CompletionDataReceivedCallback data_received_callback,
-    CompletionCompletedCallback completed_callback) {
+    GenerationDataCallback data_received_callback,
+    GenerationCompletedCallback completed_callback) {
   std::string prompt = BuildLlama2Prompt(conversation_history, page_content,
                                          is_video, human_input);
   DCHECK(api_);
