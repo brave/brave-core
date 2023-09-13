@@ -859,6 +859,15 @@ void SidebarContainerView::DeregisterEntries(content::WebContents* contents) {
 #endif
 
   panel_registry_observations_.RemoveObservation(registry);
+
+  for (const auto& entry : registry->entries()) {
+    if (panel_entry_observations_.IsObservingSource(entry.get())) {
+      DVLOG(1) << "Removing panel entry observation from removed contextual "
+                  "registry : "
+               << entry->name();
+      panel_entry_observations_.RemoveObservation(entry.get());
+    }
+  }
 }
 
 void SidebarContainerView::CreateAndRegisterEntries(
@@ -881,6 +890,15 @@ void SidebarContainerView::CreateAndRegisterEntries(
                             base::Unretained(this))));
   }
 #endif
+
+  for (const auto& entry : registry->entries()) {
+    if (!panel_entry_observations_.IsObservingSource(entry.get())) {
+      DVLOG(1) << "Observing existing panel entry from newly added contextual "
+                  "registry : "
+               << entry->name();
+      panel_entry_observations_.AddObservation(entry.get());
+    }
+  }
 }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
