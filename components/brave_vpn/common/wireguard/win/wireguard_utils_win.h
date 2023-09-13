@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_WIREGUARD_UTILS_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_WIREGUARD_UTILS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_WIREGUARD_UTILS_WIN_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_WIREGUARD_UTILS_WIN_H_
 
 #include <string>
+#include <tuple>
 
 #include "base/functional/callback.h"
-#include "brave/components/brave_vpn/common/wireguard/constants.h"
+#include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
@@ -36,4 +37,4 @@ void ShowBraveVpnStatusTrayIcon();
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_WIREGUARD_UTILS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_WIREGUARD_UTILS_WIN_H_

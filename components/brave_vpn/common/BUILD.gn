@@ -19,6 +19,7 @@ source_set("common") {
     "pref_names.h",
   ]
   deps = [
+    "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/p3a_utils",
     "//brave/components/skus/browser",
     "//brave/components/skus/common",
