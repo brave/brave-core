@@ -100,6 +100,11 @@ BASE_FEATURE(kBraveRoundTimeStamps,
              "BraveRoundTimeStamps",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
+// Enables the Global Privacy Control header and navigator APIs.
+BASE_FEATURE(kBraveGlobalPrivacyControl,
+             "BraveGlobalPrivacyControl",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
 // Enable EventSource connection pool limit per eTLD+1.
 BASE_FEATURE(kRestrictEventSourcePool,
              "RestrictEventSourcePool",
