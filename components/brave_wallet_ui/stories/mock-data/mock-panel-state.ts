@@ -30,5 +30,12 @@ export const mockPanelState: PanelState = {
   decryptRequest: mockDecryptRequest,
   switchChainRequest: mockSwitchChainRequest,
   hardwareWalletCode: undefined,
-  selectedTransactionId: undefined
+  selectedTransactionId: undefined,
+  signMessageErrorData: [{
+    chainId: '1',
+    localizedErrMsg: 'This is an error message, unable to sign.',
+    type: 1,
+    id: '1',
+    originInfo: mockOriginInfo
+  }]
 }

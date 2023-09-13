@@ -143,6 +143,8 @@ static_library("browser") {
     "simulation_response_parser.h",
     "simulation_service.cc",
     "simulation_service.h",
+    "siwe_message_parser.cc",
+    "siwe_message_parser.h",
     "sns_resolver_task.cc",
     "sns_resolver_task.h",
     "solana_account_meta.cc",

@@ -65,6 +65,7 @@ import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.SignDataUnion;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
@@ -500,16 +501,31 @@ public abstract class BraveActivity extends ChromeActivity
                         BraveWalletDAppsActivity.ActivityType.SIGN_ALL_TRANSACTIONS);
                 return;
             }
-            maybeShowSignMessageRequestLayout();
+            maybeShowSignMessageErrorsLayout();
         });
+    }
+
+    private void maybeShowSignMessageErrorsLayout() {
+        assert mBraveWalletService != null;
+        mBraveWalletService.getPendingSignMessageErrors(errors -> {
+            if (errors != null && errors.length != 0) {
+                openBraveWalletDAppsActivity(
+                        BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE_ERROR);
+                return;
+            }
+        });
+        maybeShowSignMessageRequestLayout();
     }
 
     private void maybeShowSignMessageRequestLayout() {
         assert mBraveWalletService != null;
         mBraveWalletService.getPendingSignMessageRequests(requests -> {
             if (requests != null && requests.length != 0) {
-                openBraveWalletDAppsActivity(BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE);
-
+                BraveWalletDAppsActivity.ActivityType activityType =
+                        (requests[0].signData.which() == SignDataUnion.Tag.EthSiweData)
+                        ? BraveWalletDAppsActivity.ActivityType.SIWE_MESSAGE
+                        : BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE;
+                openBraveWalletDAppsActivity(activityType);
                 return;
             }
             maybeShowChainRequestLayout();

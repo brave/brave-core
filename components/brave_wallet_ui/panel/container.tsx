@@ -94,6 +94,9 @@ import {
 import { useSelectedAccountQuery } from '../common/slices/api.slice.extra'
 import { usePendingTransactions } from '../common/hooks/use-pending-transaction'
 import PageContainer from '../page/container'
+import {
+  SignInWithEthereumError
+} from '../components/extension/sign-panel/sign_in_with_ethereum_error'
 
 // Allow BigInts to be stringified
 (BigInt.prototype as any).toJSON = function () {
@@ -132,6 +135,8 @@ function Container () {
   const getEncryptionPublicKeyRequest = useUnsafePanelSelector(PanelSelectors.getEncryptionPublicKeyRequest)
   const decryptRequest = useUnsafePanelSelector(PanelSelectors.decryptRequest)
   const connectingAccounts = useUnsafePanelSelector(PanelSelectors.connectingAccounts)
+  const signMessageErrorData =
+    useUnsafePanelSelector(PanelSelectors.signMessageErrorData)
 
   // queries & mutations
   const [setSelectedAccount] = useSetSelectedAccountMutation()
@@ -462,6 +467,14 @@ function Container () {
             panelType='change'
           />
         </LongWrapper>
+      </PanelWrapper>
+    )
+  }
+
+  if (signMessageErrorData.length !== 0) {
+    return (
+      <PanelWrapper>
+        <SignInWithEthereumError />
       </PanelWrapper>
     )
   }

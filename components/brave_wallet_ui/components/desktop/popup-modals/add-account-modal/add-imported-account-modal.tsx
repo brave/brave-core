@@ -129,9 +129,12 @@ export const ImportAccountModal = () => {
     history.push(WalletRoutes.Accounts)
   }, [setImportError])
 
-  const importAccount = React.useCallback((accountName: string, privateKey: string, coin: BraveWallet.CoinType) => {
-    dispatch(WalletActions.importAccount({ accountName, privateKey, coin }))
-  }, [])
+  const importAccount = React.useCallback(
+    (accountName: string, privateKey: string, coin: BraveWallet.CoinType) => {
+      dispatch(
+        WalletActions
+          .importAccount({ accountName, privateKey, coin }))
+    }, [])
 
   const importFilecoinAccount = React.useCallback(
     (
@@ -209,7 +212,11 @@ export const ImportAccountModal = () => {
           filecoinNetwork
         )
       } else {
-        importAccount(accountName, privateKey, selectedAccountType?.coin || BraveWallet.CoinType.ETH)
+        importAccount(
+          accountName,
+          privateKey,
+          selectedAccountType?.coin || BraveWallet.CoinType.ETH
+        )
       }
       return
     }

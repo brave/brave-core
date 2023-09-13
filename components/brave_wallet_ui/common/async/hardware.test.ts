@@ -138,11 +138,13 @@ const getMockedProxyServices = (
       }
     },
     txService: {
-      getTransactionMessageToSign: (coinType: BraveWallet.CoinType, chainId: string, id: string): GetTransactionMessageToSignReturnInfo | undefined => {
-        expect(id).toStrictEqual(expectedId)
-        expect(chainId).toStrictEqual(expectedChainId)
-        return messageToSign
-      }
+      getTransactionMessageToSign:
+        (coinType: BraveWallet.CoinType, chainId: string, id: string):
+          GetTransactionMessageToSignReturnInfo | undefined => {
+          expect(id).toStrictEqual(expectedId)
+          expect(chainId).toStrictEqual(expectedChainId)
+          return messageToSign
+        }
     },
     ethTxManagerProxy: {
       getNonceForHardwareTransaction: (chainId: string, id: string): GetNonceForHardwareTransactionReturnInfo | undefined => {
@@ -188,7 +190,11 @@ const signEthTransactionWithLedger = (vrs?: SignatureVRS, signatureResponse?: bo
   const signed = signatureResponse ? { status: signatureResponse } : undefined
   const apiProxy = getMockedProxyServices(txInfo.chainId, txInfo.id, { nonce: '0x1' }, messageToSign,
     signed)
-  return signLedgerEthereumTransaction(apiProxy as unknown as WalletApiProxy, expectedPath, txInfo, BraveWallet.CoinType.ETH, mockedKeyring as unknown as LedgerBridgeKeyring)
+  return signLedgerEthereumTransaction(
+    apiProxy as unknown as WalletApiProxy,
+    expectedPath, txInfo, BraveWallet.CoinType.ETH,
+    mockedKeyring as unknown as LedgerBridgeKeyring
+  )
 }
 
 const signSolTransactionWithLedger = (expectedSignature: Buffer, signatureResponse?: boolean): Promise<SignHardwareTransactionType> => {
@@ -226,7 +232,11 @@ const signFilTransactionWithLedger = (expectedSignature: SignedLotusMessage, sig
   const signed = signatureResponse ? { status: signatureResponse } : undefined
   const apiProxy = getMockedProxyServices(txInfo.chainId, txInfo.id, { nonce: 1 }, messageToSign,
     signed, JSON.stringify(expectedSignature))
-  return signLedgerFilecoinTransaction(apiProxy as unknown as WalletApiProxy, txInfo, BraveWallet.CoinType.FIL, mockedKeyring as unknown as FilecoinLedgerKeyring)
+  return signLedgerFilecoinTransaction(
+    apiProxy as unknown as WalletApiProxy,
+    txInfo, BraveWallet.CoinType.FIL,
+    mockedKeyring as unknown as FilecoinLedgerKeyring
+  )
 }
 
 const hardwareTransactionErrorResponse = (errorId: string, code: string = ''): SignHardwareTransactionType => {
@@ -246,14 +256,34 @@ const signTransactionWithTrezor = (signed: Success<EthereumSignedTx> | Unsuccess
 
 test('Test sign raw Eth Ledger transaction', () => {
   const mockedKeyring = getMockedLedgerEthKeyring('', '')
-  return expect(signRawTransactionWithHardwareKeyring(mockedKeyring.type(), BraveWallet.CoinType.ETH)).resolves.toStrictEqual(hardwareTransactionErrorResponse('braveWalletHardwareOperationUnsupportedError'))
+  return expect(
+    signRawTransactionWithHardwareKeyring(
+      mockedKeyring.type(),
+      BraveWallet.CoinType.ETH
+    ))
+    .resolves
+    .toStrictEqual(
+      hardwareTransactionErrorResponse(
+        'braveWalletHardwareOperationUnsupportedError'
+      )
+    )
 })
 
 test('Test sign Ledger transaction, approved, no message to sign', () => {
   const txInfo = getMockedTransactionInfo()
   const apiProxy = getMockedProxyServices(txInfo.chainId, txInfo.id, { nonce: '0x1' })
-  return expect(signLedgerEthereumTransaction(apiProxy as unknown as WalletApiProxy,
-    'path', txInfo, BraveWallet.CoinType.ETH)).resolves.toStrictEqual(hardwareTransactionErrorResponse('braveWalletNoMessageToSignError'))
+  return expect(
+    signLedgerEthereumTransaction(
+      apiProxy as unknown as WalletApiProxy,
+      'path',
+      txInfo,
+      BraveWallet.CoinType.ETH
+    )).resolves
+    .toStrictEqual(
+      hardwareTransactionErrorResponse(
+        'braveWalletNoMessageToSignError'
+      )
+    )
 })
 
 test('Test sign Ledger transaction, approved, device error', () => {
@@ -295,15 +325,15 @@ test('Test sign Trezor transaction, approved, processed', () => {
 
 test('Test sign Ledger FIL transaction, signed', () => {
   const message = {
-      'From': 't1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q',
-      'GasFeeCap': '3',
-      'GasLimit': 4,
-      'GasPremium': '2',
-      'Method': 0,
-      'Nonce': 1,
-      'Params': '',
-      'To': 't1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy',
-      'Value': '11'
+    'From': 't1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q',
+    'GasFeeCap': '3',
+    'GasLimit': 4,
+    'GasPremium': '2',
+    'Method': 0,
+    'Nonce': 1,
+    'Params': '',
+    'To': 't1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy',
+    'Value': '11'
   }
   const expectedSignature = {
     Message: message,

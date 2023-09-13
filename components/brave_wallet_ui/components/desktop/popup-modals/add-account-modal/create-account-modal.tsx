@@ -93,7 +93,9 @@ export const CreateAccountModal = () => {
 
   const suggestedAccountName = React.useMemo(() => {
     const accountTypeLength = accounts.filter((account) => account.accountId.coin === selectedAccountType?.coin).length + 1
-    return `${selectedAccountType?.name} ${getLocale('braveWalletAccount')} ${accountTypeLength}`
+    return `${selectedAccountType?.name //
+      } ${getLocale('braveWalletSubviewAccount')} ${ //
+      accountTypeLength}`
   }, [accounts, selectedAccountType])
 
   const targetKeyringId = React.useMemo(() => {
