@@ -34,18 +34,10 @@ function Main () {
   let siteTitleElement = null
   let promptAutoSuggestionElement = null
   let currentErrorElement = null
-  let eraseConversationButtonElement = null
 
   if (hasSeenAgreement) {
     conversationListElement = (
       <ConversationList />
-    )
-
-    eraseConversationButtonElement = (
-      <Button kind="plain-faint" aria-label="Erase conversation history"
-      title="Erase conversation history" onClick={handleEraseClick}>
-          <Icon name="erase" />
-      </Button>
     )
 
     if (siteInfo) {
@@ -85,7 +77,12 @@ function Main () {
           <div className={styles.logoTitle}>Brave <span>Leo</span></div>
         </div>
         <div className={styles.actions}>
-          {eraseConversationButtonElement}
+          {hasSeenAgreement && (
+            <Button kind="plain-faint" aria-label="Erase conversation history"
+            title="Erase conversation history" onClick={handleEraseClick}>
+                <Icon name="erase" />
+            </Button>
+          )}
           <Button kind="plain-faint" aria-label="Settings"
           title="Settings" onClick={handleSettingsClick}>
               <Icon name="settings" />

@@ -32,7 +32,7 @@ function ConversationList () {
   const handleQuestionSubmit = (question: string) => {
     getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question)
   }
-console.log(shouldDisableUserInput)
+
   return (
     <>
       <div>
