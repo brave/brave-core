@@ -57,8 +57,7 @@ class SharedPinnedTabService : public KeyedService,
 
   void CacheWebContentsIfNeeded(
       Browser* browser,
-      const std::vector<std::unique_ptr<TabStripModel::DetachedWebContents>>&
-          web_contents);
+      const std::vector<std::unique_ptr<DetachedWebContents>>& web_contents);
 
   // KeyedService:
   void Shutdown() override;
