@@ -17,7 +17,6 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_show_options_event_detect_widget.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
@@ -180,12 +179,7 @@ class SidebarContainerView
 
   void CreateAndRegisterEntries(content::WebContents* contents);
   void DeregisterEntries(content::WebContents* contents);
-
   bool GetIsPanelOperationFromActiveTabChangeAndReset();
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  std::unique_ptr<views::View> CreateAIChatSidePanelWebView();
-#endif
 
   raw_ptr<BraveBrowser> browser_ = nullptr;
   raw_ptr<SidePanelCoordinator> side_panel_coordinator_ = nullptr;

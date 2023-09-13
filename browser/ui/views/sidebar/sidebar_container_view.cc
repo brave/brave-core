@@ -26,6 +26,7 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/sidebar_item.h"
@@ -69,6 +70,33 @@ using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
 sidebar::SidebarService* GetSidebarService(BraveBrowser* browser) {
   return sidebar::SidebarServiceFactory::GetForProfile(browser->profile());
 }
+
+SharedPinnedTabService* GetSharedPinnedTabService(Profile* profile) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+    return SharedPinnedTabServiceFactory::GetForProfile(profile);
+  }
+
+  return nullptr;
+}
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+std::unique_ptr<views::View> CreateAIChatSidePanelWebView(
+    base::WeakPtr<Profile> profile) {
+  if (!profile) {
+    NOTREACHED_NORETURN();
+  }
+
+  auto web_view = std::make_unique<SidePanelWebUIViewT<AIChatUI>>(
+      base::RepeatingClosure(), base::RepeatingClosure(),
+      std::make_unique<BubbleContentsWrapperT<AIChatUI>>(
+          GURL(kChatUIURL), profile.get(),
+          IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE,
+          /*webui_resizes_host=*/false,
+          /*esc_closes_ui=*/false));
+  web_view->ShowUI();
+  return web_view;
+}
+#endif
 
 }  // namespace
 
@@ -789,11 +817,8 @@ void SidebarContainerView::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
-  SharedPinnedTabService* shared_pinned_tab_service = nullptr;
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
-    shared_pinned_tab_service =
-        SharedPinnedTabServiceFactory::GetForProfile(browser_->profile());
-  }
+  SharedPinnedTabService* shared_pinned_tab_service =
+      GetSharedPinnedTabService(browser_->profile());
 
   // Need to [de]register contextual registry when tab is replaced.
   // Ex, tab is discarded or shared pinned tab feature is used
@@ -852,12 +877,6 @@ void SidebarContainerView::DeregisterEntries(content::WebContents* contents) {
     return;
   }
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  if (ai_chat::features::IsAIChatEnabled()) {
-    registry->Deregister(SidePanelEntryKey(SidePanelEntry::Id::kChatUI));
-  }
-#endif
-
   panel_registry_observations_.RemoveObservation(registry);
 
   for (const auto& entry : registry->entries()) {
@@ -882,12 +901,13 @@ void SidebarContainerView::CreateAndRegisterEntries(
   // Register here for an entry that is used for all tabs.
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
+    // If |registry| already has it, it's no-op.
     registry->Register(std::make_unique<SidePanelEntry>(
         SidePanelEntry::Id::kChatUI,
         l10n_util::GetStringUTF16(IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE),
         ui::ImageModel(),
-        base::BindRepeating(&SidebarContainerView::CreateAIChatSidePanelWebView,
-                            base::Unretained(this))));
+        base::BindRepeating(&CreateAIChatSidePanelWebView,
+                            browser_->profile()->GetWeakPtr())));
   }
 #endif
 
@@ -899,22 +919,24 @@ void SidebarContainerView::CreateAndRegisterEntries(
       panel_entry_observations_.AddObservation(entry.get());
     }
   }
-}
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-std::unique_ptr<views::View>
-SidebarContainerView::CreateAIChatSidePanelWebView() {
-  auto web_view = std::make_unique<SidePanelWebUIViewT<AIChatUI>>(
-      base::RepeatingClosure(), base::RepeatingClosure(),
-      std::make_unique<BubbleContentsWrapperT<AIChatUI>>(
-          GURL(kChatUIURL), browser_->profile(),
-          IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE,
-          /*webui_resizes_host=*/false,
-          /*esc_closes_ui=*/false));
-  web_view->ShowUI();
-  return web_view;
+  SharedPinnedTabService* shared_pinned_tab_service =
+      GetSharedPinnedTabService(browser_->profile());
+
+  // When a tab is moved from another window and it has active contextual entry,
+  // SidePanelCoordinator handles it and make it visible after it's added to new
+  // window. However, SidePanelCoordinator doesn't handle shared pinned tab's
+  // contextual entry because it only response active tab changing. We switch
+  // shared pinned tab by replacing tab. So, need special handling here for
+  // shared pinned tab. With this, shared pinned tab across multiple windows
+  // will have proper panel open state.
+  if (shared_pinned_tab_service &&
+      shared_pinned_tab_service->IsSharedContents(contents)) {
+    if (auto active_entry = registry->active_entry()) {
+      OnEntryShown(*active_entry);
+    }
+  }
 }
-#endif
 
 BEGIN_METADATA(SidebarContainerView, views::View)
 END_METADATA
