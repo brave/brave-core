@@ -54,7 +54,6 @@ if (!is_ios) {
   group("browser_dependencies") {
     deps = [
       "browser",
-      "chromium_src:browser",
       "chromium_src/chrome/app",
       "common",
       "//components/omnibox/common",

@@ -17,7 +17,6 @@ source_set("svg") {
   ]
 
   sources += [
-    "//third_party/skia/include/codec/SkPixmapUtils.h",
     "//third_party/skia/src/codec/SkBmpBaseCodec.cpp",
     "//third_party/skia/src/codec/SkBmpCodec.cpp",
     "//third_party/skia/src/codec/SkBmpMaskCodec.cpp",
