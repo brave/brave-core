@@ -56,10 +56,9 @@ void ConnectZebPayWallet::OnAuthorize(
 
   auto [access_token, linking_info, deposit_id] = std::move(result.value());
 
-  auto on_connect =
-      base::BindOnce(&ConnectZebPayWallet::OnConnect, base::Unretained(this),
-                     std::move(callback), std::move(access_token),
-                     std::move(deposit_id), std::string());
+  auto on_connect = base::BindOnce(
+      &ConnectZebPayWallet::OnConnect, base::Unretained(this),
+      std::move(callback), std::move(access_token), std::move(deposit_id));
 
   RequestFor<PostConnectZebPay>(*engine_, std::move(linking_info))
       .Send(std::move(on_connect));

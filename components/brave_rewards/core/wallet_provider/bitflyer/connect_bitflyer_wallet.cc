@@ -97,9 +97,9 @@ void ConnectBitFlyerWallet::OnAuthorize(ConnectExternalWalletCallback callback,
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
   }
 
-  auto on_connect = base::BindOnce(
-      &ConnectBitFlyerWallet::OnConnect, base::Unretained(this),
-      std::move(callback), std::move(token), std::move(address), std::string());
+  auto on_connect =
+      base::BindOnce(&ConnectBitFlyerWallet::OnConnect, base::Unretained(this),
+                     std::move(callback), std::move(token), std::move(address));
 
   RequestFor<PostConnectBitflyer>(*engine_, std::move(linking_info))
       .Send(std::move(on_connect));

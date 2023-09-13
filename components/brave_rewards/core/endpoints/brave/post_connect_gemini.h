@@ -20,7 +20,10 @@
 // }
 // clang-format on
 //
-// Response body: -
+// Response body:
+// {
+//   "geoCountry": "US"
+// }
 
 namespace brave_rewards::internal {
 class RewardsEngineImpl;

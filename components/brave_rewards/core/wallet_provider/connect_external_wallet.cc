@@ -166,7 +166,6 @@ void ConnectExternalWallet::OnConnect(
     ConnectExternalWalletCallback callback,
     std::string&& token,
     std::string&& address,
-    std::string&& country_id,
     endpoints::PostConnect::Result&& result) const {
   auto wallet = GetWalletIf(
       *engine_, WalletType(),
@@ -214,10 +213,9 @@ void ConnectExternalWallet::OnConnect(
       WalletType() + std::string("/") + abbreviated_address);
 
   // Update the user's "declared country" based on the information provided by
-  // the wallet provider.
-  if (!country_id.empty()) {
-    engine_->SetState(state::kDeclaredGeo, country_id);
-  }
+  // the linking endpoint.
+  CHECK(result.has_value() && !result.value().empty());
+  engine_->SetState(state::kDeclaredGeo, result.value());
 
   std::move(callback).Run({});
 }
