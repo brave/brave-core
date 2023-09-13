@@ -9,7 +9,7 @@ RegisterPolymerTemplateModifications({
   'settings-sync-controls': (templateContent) => {
     // Remove payment integration from settings-sync-controls
     let paymentIntegrationToggle =
-      templateContent.querySelector('cr-toggle[checked="{{syncPrefs.paymentsIntegrationEnabled}}"]')
+      templateContent.querySelector('cr-toggle[checked="{{syncPrefs.paymentsSynced}}"]')
     if (!paymentIntegrationToggle) {
       console.error('[Brave Settings Overrides] Could not find sync control payment toggle')
       return
