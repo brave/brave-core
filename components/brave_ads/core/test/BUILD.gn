@@ -11,6 +11,8 @@ source_set("brave_ads_unit_tests") {
   testonly = true
 
   sources = [
+    "//brave/components/brave_ads/core/internal/account/account_observer_unittest_helper.cc",
+    "//brave/components/brave_ads/core/internal/account/account_observer_unittest_helper.h",
     "//brave/components/brave_ads/core/internal/account/account_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate_mock.cc",
     "//brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate_mock.h",
@@ -346,6 +348,8 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/history/filters/date_range_history_filter_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/history_item_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/history_item_value_util_unittest.cc",
+    "//brave/components/brave_ads/core/internal/history/history_manager_observer_unittest_helper.cc",
+    "//brave/components/brave_ads/core/internal/history/history_manager_observer_unittest_helper.h",
     "//brave/components/brave_ads/core/internal/history/history_manager_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/history_unittest_util.cc",
     "//brave/components/brave_ads/core/internal/history/history_unittest_util.h",
