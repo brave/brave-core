@@ -82,6 +82,7 @@ const std::map<int, const gfx::VectorIcon&>& GetCommandIcons() {
           {IDC_SHOW_BRAVE_SYNC, kLeoProductSyncIcon},
           {IDC_ROUTE_MEDIA, kLeoChromeCastIcon},
           {IDC_INSTALL_PWA, kLeoPwaInstallIcon},
+          {IDC_OPEN_IN_PWA_WINDOW, kLeoLaunchIcon},
           {IDC_SIDEBAR_SHOW_OPTION_MENU, kLeoBrowserSidebarRightIcon},
       });
   return *kCommandIcons.get();
