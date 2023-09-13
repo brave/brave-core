@@ -17,9 +17,9 @@ void MockFlags();
 void MockShowNotificationAd(AdsClientMock& mock);
 void MockCloseNotificationAd(AdsClientMock& mock);
 
-void MockRecordAdEventForId(const AdsClientMock& mock);
-void MockGetAdEventHistory(const AdsClientMock& mock);
-void MockResetAdEventHistoryForId(const AdsClientMock& mock);
+void MockCacheAdEventForInstanceId(const AdsClientMock& mock);
+void MockGetCachedAdEvents(const AdsClientMock& mock);
+void MockResetAdEventCacheForInstanceId(const AdsClientMock& mock);
 
 void MockSave(AdsClientMock& mock);
 void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir);

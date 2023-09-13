@@ -189,9 +189,9 @@ void UnitTestBase::MockAdsClient() {
   MockShowNotificationAd(ads_client_mock_);
   MockCloseNotificationAd(ads_client_mock_);
 
-  MockRecordAdEventForId(ads_client_mock_);
-  MockGetAdEventHistory(ads_client_mock_);
-  MockResetAdEventHistoryForId(ads_client_mock_);
+  MockCacheAdEventForInstanceId(ads_client_mock_);
+  MockGetCachedAdEvents(ads_client_mock_);
+  MockResetAdEventCacheForInstanceId(ads_client_mock_);
 
   MockSave(ads_client_mock_);
   MockLoad(ads_client_mock_, temp_dir_);

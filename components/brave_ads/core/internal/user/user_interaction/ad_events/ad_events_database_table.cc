@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
@@ -276,9 +277,13 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
   command->sql = base::ReplaceStringPlaceholders(
       "DELETE FROM $1 WHERE creative_set_id NOT IN (SELECT creative_set_id "
       "from creative_ads) AND creative_set_id NOT IN (SELECT creative_set_id "
-      "from creative_set_conversions) AND DATETIME('now') >= "
-      "DATETIME(created_at, '1601-01-01 00:00:00', '+3 month');",
-      {GetTableName()}, nullptr);
+      "from creative_set_conversions) AND DATETIME((created_at / 1000000) - "
+      "11644473600, 'unixepoch') <= DATETIME(($2 / 1000000) - 11644473600, "
+      "'unixepoch', '-3 month');",
+      {GetTableName(),
+       base::NumberToString(
+           base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds())},
+      nullptr);
   transaction->commands.push_back(std::move(command));
 
   RunTransaction(std::move(transaction), std::move(callback));
@@ -292,10 +297,10 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(
-      "DELETE FROM $1 WHERE placement_id IN (SELECT placement_id from $2 GROUP "
-      "BY placement_id having count(*) = 1) AND confirmation_type IN (SELECT "
-      "confirmation_type from $3 WHERE confirmation_type = 'served') AND type "
-      "= '$4';",
+      "DELETE FROM $1 WHERE placement_id IN (SELECT placement_id from $2 "
+      "GROUP BY placement_id having count(*) = 1) AND confirmation_type IN "
+      "(SELECT confirmation_type from $3 WHERE confirmation_type = 'served') "
+      "AND type = '$4';",
       {GetTableName(), GetTableName(), GetTableName(),
        AdType(ad_type).ToString()},
       nullptr);

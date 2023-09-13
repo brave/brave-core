@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
@@ -192,9 +193,13 @@ void Deposits::PurgeExpired(ResultCallback callback) const {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(
-      "DELETE FROM $1 WHERE DATETIME('now') >= "
-      "DATETIME(expire_at, '1601-01-01 00:00:00');",
-      {GetTableName()}, nullptr);
+      "DELETE FROM $1 WHERE DATETIME(($2 / 1000000) - 11644473600, "
+      "'unixepoch') >= DATETIME((expire_at / 1000000) - 11644473600, "
+      "'unixepoch');",
+      {GetTableName(),
+       base::NumberToString(
+           base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds())},
+      nullptr);
   transaction->commands.push_back(std::move(command));
 
   RunTransaction(std::move(transaction), std::move(callback));

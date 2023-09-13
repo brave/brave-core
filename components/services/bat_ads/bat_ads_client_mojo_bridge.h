@@ -64,14 +64,14 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
 
   void UpdateAdRewards() override;
 
-  void RecordAdEventForId(const std::string& id,
-                          const std::string& ad_type,
-                          const std::string& confirmation_type,
-                          base::Time time) const override;
-  std::vector<base::Time> GetAdEventHistory(
+  void CacheAdEventForInstanceId(const std::string& id,
+                                 const std::string& ad_type,
+                                 const std::string& confirmation_type,
+                                 base::Time time) const override;
+  std::vector<base::Time> GetCachedAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
-  void ResetAdEventHistoryForId(const std::string& id) const override;
+  void ResetAdEventCacheForInstanceId(const std::string& id) const override;
 
   void GetBrowsingHistory(
       int max_count,

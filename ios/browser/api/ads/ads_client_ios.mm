@@ -64,24 +64,25 @@ void AdsClientIOS::ShowReminder(const brave_ads::mojom::ReminderType type) {
   [bridge_ showReminder:type];
 }
 
-void AdsClientIOS::RecordAdEventForId(const std::string& id,
-                                      const std::string& ad_type,
-                                      const std::string& confirmation_type,
-                                      const base::Time time) const {
-  [bridge_ recordAdEventForId:id
-                       adType:ad_type
-             confirmationType:confirmation_type
-                         time:time];
+void AdsClientIOS::CacheAdEventForInstanceId(
+    const std::string& id,
+    const std::string& ad_type,
+    const std::string& confirmation_type,
+    const base::Time time) const {
+  [bridge_ cacheAdEventForInstanceId:id
+                              adType:ad_type
+                    confirmationType:confirmation_type
+                                time:time];
 }
 
-std::vector<base::Time> AdsClientIOS::GetAdEventHistory(
+std::vector<base::Time> AdsClientIOS::GetCachedAdEvents(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
-  return [bridge_ getAdEventHistory:ad_type confirmationType:confirmation_type];
+  return [bridge_ getCachedAdEvents:ad_type confirmationType:confirmation_type];
 }
 
-void AdsClientIOS::ResetAdEventHistoryForId(const std::string& id) const {
-  [bridge_ resetAdEventHistoryForId:id];
+void AdsClientIOS::ResetAdEventCacheForInstanceId(const std::string& id) const {
+  [bridge_ resetAdEventCacheForInstanceId:id];
 }
 
 void AdsClientIOS::UrlRequest(brave_ads::mojom::UrlRequestInfoPtr url_request,

@@ -81,14 +81,14 @@ interface BatAdsClient {
 
   UpdateAdRewards();
 
-  RecordAdEventForId(string id,
+  CacheAdEventForInstanceId(string id,
                      string ad_type,
                      string confirmation_type,
                      mojo_base.mojom.Time time);
   [Sync]
-  GetAdEventHistory(string ad_type, string confirmation_type) =>
+  GetCachedAdEvents(string ad_type, string confirmation_type) =>
       (array<mojo_base.mojom.Time> ad_events);
-  ResetAdEventHistoryForId(string id);
+  ResetAdEventCacheForInstanceId(string id);
 
   GetBrowsingHistory(int32 max_count, int32 days_ago) =>
       (array<url.mojom.Url> history);

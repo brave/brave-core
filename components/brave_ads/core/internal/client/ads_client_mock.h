@@ -46,16 +46,17 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD0(UpdateAdRewards, void());
 
-  MOCK_CONST_METHOD4(RecordAdEventForId,
+  MOCK_CONST_METHOD4(CacheAdEventForInstanceId,
                      void(const std::string& id,
                           const std::string& type,
                           const std::string& confirmation_type,
                           const base::Time time));
   MOCK_CONST_METHOD2(
-      GetAdEventHistory,
+      GetCachedAdEvents,
       std::vector<base::Time>(const std::string& ad_type,
                               const std::string& confirmation_type));
-  MOCK_CONST_METHOD1(ResetAdEventHistoryForId, void(const std::string& id));
+  MOCK_CONST_METHOD1(ResetAdEventCacheForInstanceId,
+                     void(const std::string& id));
 
   MOCK_METHOD3(GetBrowsingHistory,
                void(const int max_count,

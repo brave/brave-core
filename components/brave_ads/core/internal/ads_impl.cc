@@ -21,6 +21,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration.h"
+#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_cache_util.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/history/ad_content_info.h"
@@ -207,7 +208,7 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
               return std::move(callback).Run(/*success*/ false);
             }
 
-            RebuildAdEventHistoryFromDatabase();
+            RebuildAdEventCache();
 
             BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
             std::move(callback).Run(/*success*/ true);
@@ -324,7 +325,7 @@ void AdsImpl::PurgeOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
     return FailedToInitialize(std::move(callback));
   }
 
-  RebuildAdEventHistoryFromDatabase();
+  RebuildAdEventCache();
 
   rewards::Migrate(base::BindOnce(&AdsImpl::MigrateRewardsStateCallback,
                                   weak_factory_.GetWeakPtr(), std::move(wallet),
