@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
+#include "brave/components/brave_wallet/browser/ethereum_provider_service.h"
 
 #include <algorithm>
 #include <memory>
@@ -27,6 +27,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/browser/brave_wallet/ethereum_provider_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
@@ -36,6 +37,7 @@
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
+#include "brave/components/brave_wallet/browser/ethereum_provider_host.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -100,14 +102,15 @@ void GetErrorCodeMessage(base::Value formed_response,
   }
 }
 
-void ValidateErrorCode(EthereumProviderImpl* provider,
+void ValidateErrorCode(mojo::ReceiverId receiver_id,
+                       EthereumProviderService* service,
                        const std::string& payload,
                        mojom::ProviderError expected) {
-  bool callback_is_called = false;
-  provider->AddEthereumChain(
-      payload,
+  base::RunLoop run_loop;
+  service->AddEthereumChain(
+      receiver_id, payload,
       base::BindLambdaForTesting(
-          [&callback_is_called, &expected](
+          [&run_loop, &expected](
               base::Value id, base::Value formed_response, const bool reject,
               const std::string& first_allowed_account,
               const bool update_bind_js_properties) {
@@ -117,10 +120,10 @@ void ValidateErrorCode(EthereumProviderImpl* provider,
                                 &error_message);
             EXPECT_EQ(error, expected);
             ASSERT_FALSE(error_message.empty());
-            callback_is_called = true;
+            run_loop.Quit();
           }),
       base::Value());
-  ASSERT_TRUE(callback_is_called);
+  run_loop.Run();
 }
 
 std::vector<uint8_t> DecodeHexHash(const std::string& hash_hex) {
@@ -201,9 +204,9 @@ class TestEventsListener : public brave_wallet::mojom::EventsListener {
   mojo::Receiver<brave_wallet::mojom::EventsListener> observer_receiver_{this};
 };
 
-class EthereumProviderImplUnitTest : public testing::Test {
+class EthereumProviderServiceUnitTest : public testing::Test {
  public:
-  EthereumProviderImplUnitTest()
+  EthereumProviderServiceUnitTest()
       : browser_task_environment_(
             base::test::TaskEnvironment::TimeSource::MOCK_TIME),
         shared_url_loader_factory_(
@@ -247,12 +250,15 @@ class EthereumProviderImplUnitTest : public testing::Test {
             PermissionManagerFactory::GetInstance()->BuildServiceInstanceFor(
                 browser_context()))));
 
-    provider_ = std::make_unique<EthereumProviderImpl>(
-        host_content_settings_map(), json_rpc_service(), tx_service(),
-        keyring_service(), brave_wallet_service_,
-        std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
-            web_contents(), web_contents()->GetPrimaryMainFrame()),
-        prefs());
+    service_ =
+        EthereumProviderServiceFactory::GetServiceForContext(browser_context());
+    provider_ = std::make_unique<EthereumProviderHost>();
+
+    auto ethereum_provider_service_receiver = provider_->BindRemote();
+    current_receiver_id_ = service_->Bind(
+        std::move(ethereum_provider_service_receiver),
+        std::make_unique<BraveWalletProviderDelegateImpl>(
+            web_contents(), web_contents()->GetPrimaryMainFrame()));
 
     observer_ = std::make_unique<TestEventsListener>();
     provider_->Init(observer_->GetReceiver());
@@ -339,8 +345,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
   std::vector<std::string> GetAllowedAccounts(
       bool include_accounts_when_locked) {
-    const auto allowed_accounts =
-        provider()->GetAllowedAccounts(include_accounts_when_locked);
+    const auto allowed_accounts = service()->GetAllowedAccounts(
+        current_receiver_id_, include_accounts_when_locked);
     EXPECT_TRUE(allowed_accounts);
     return *allowed_accounts;
   }
@@ -350,8 +356,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
       bool format_json_rpc_response = false) {
     base::RunLoop run_loop;
     std::pair<bool, base::Value> response;
-    provider()->CommonRequestOrSendAsync(
-        input_value,
+    service()->CommonRequestOrSendAsync(
+        current_receiver_id_, input_value,
         base::BindLambdaForTesting(
             [&](base::Value id, base::Value formed_response, const bool reject,
                 const std::string& first_allowed_account,
@@ -367,7 +373,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
   std::vector<std::string> RequestEthereumPermissions() {
     std::vector<std::string> allowed_accounts;
     base::RunLoop run_loop;
-    provider()->RequestEthereumPermissions(
+    service()->RequestEthereumPermissions(
+        current_receiver_id_,
         base::BindLambdaForTesting(
             [&](base::Value id, base::Value formed_response, const bool reject,
                 const std::string& first_allowed_account,
@@ -385,7 +392,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     return allowed_accounts;
   }
 
-  EthereumProviderImpl::RequestCallback CreateResponseCallback(
+  EthereumProviderService::RequestCallback CreateResponseCallback(
       base::RunLoop& run_loop,
       std::pair<bool, base::Value>& response) {
     return base::BindLambdaForTesting(
@@ -415,6 +422,13 @@ class EthereumProviderImplUnitTest : public testing::Test {
     return response;
   }
 
+  void Request(base::Value input,
+               base::RunLoop& run_loop,
+               std::pair<bool, base::Value>& response) {
+    provider()->Request(std::move(input),
+                        CreateResponseCallback(run_loop, response));
+  }
+
   std::pair<bool, base::Value> Send(const std::string& method,
                                     base::Value params) {
     base::RunLoop run_loop;
@@ -434,14 +448,15 @@ class EthereumProviderImplUnitTest : public testing::Test {
     return response;
   }
 
-  ~EthereumProviderImplUnitTest() override = default;
+  ~EthereumProviderServiceUnitTest() override = default;
 
   content::TestWebContents* web_contents() { return web_contents_.get(); }
   TxService* tx_service() { return tx_service_; }
   JsonRpcService* json_rpc_service() { return json_rpc_service_; }
   KeyringService* keyring_service() { return keyring_service_; }
   AccountUtils GetAccountUtils() { return AccountUtils(keyring_service_); }
-  EthereumProviderImpl* provider() { return provider_.get(); }
+  EthereumProviderService* service() { return service_; }
+  EthereumProviderHost* provider() { return provider_.get(); }
   content::BrowserContext* browser_context() { return &profile_; }
   PrefService* prefs() { return profile_.GetPrefs(); }
   HostContentSettingsMap* host_content_settings_map() {
@@ -490,7 +505,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
       return;
     }
     base::RunLoop run_loop;
-    provider()->Web3ClientVersion(
+    service()->Web3ClientVersion(
         base::BindLambdaForTesting(
             [&](base::Value id, base::Value formed_response, const bool reject,
                 const std::string& first_allowed_account,
@@ -519,8 +534,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
     }
 
     base::RunLoop run_loop;
-    provider()->SignMessage(
-        address, message,
+    service()->SignMessage(
+        current_receiver_id_, address, message,
         base::BindLambdaForTesting(
             [&](base::Value id, base::Value formed_response, const bool reject,
                 const std::string& first_allowed_account,
@@ -534,7 +549,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
               run_loop.Quit();
             }),
         base::Value());
-    // Wait for EthereumProviderImpl::ContinueSignMessage
+    // Wait for EthereumProviderService::ContinueSignMessage
     browser_task_environment_.RunUntilIdle();
     brave_wallet_service_->NotifySignMessageRequestProcessed(
         user_approved, brave_wallet_service_->sign_message_id_ - 1,
@@ -553,8 +568,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
     }
 
     base::RunLoop run_loop;
-    provider()->SignMessage(
-        address, message,
+    service()->SignMessage(
+        current_receiver_id_, address, message,
         base::BindLambdaForTesting(
             [&](base::Value id, base::Value formed_response, const bool reject,
                 const std::string& first_allowed_account,
@@ -568,7 +583,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
               run_loop.Quit();
             }),
         base::Value());
-    // Wait for EthereumProviderImpl::ContinueSignMessage
+    // Wait for EthereumProviderService::ContinueSignMessage
     browser_task_environment_.RunUntilIdle();
     if (user_approved) {
       brave_wallet_service_->NotifySignMessageRequestProcessed(
@@ -588,7 +603,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     }
 
     base::RunLoop run_loop;
-    provider()->RecoverAddress(
+    service()->RecoverAddress(
         message, signature,
         base::BindLambdaForTesting(
             [&](base::Value id, base::Value formed_response, const bool reject,
@@ -620,8 +635,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
     }
 
     base::RunLoop run_loop;
-    provider()->SignTypedMessage(
-        address, message, domain_hash, primary_hash, std::move(domain),
+    service()->SignTypedMessage(
+        current_receiver_id_, address, message, domain_hash, primary_hash,
+        std::move(domain),
         base::BindLambdaForTesting(
             [&](base::Value id, base::Value formed_response, const bool reject,
                 const std::string& first_allowed_account,
@@ -635,7 +651,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
               run_loop.Quit();
             }),
         base::Value());
-    // Wait for EthereumProviderImpl::ContinueSignMessage
+    // Wait for EthereumProviderService::ContinueSignMessage
     browser_task_environment_.RunUntilIdle();
     if (user_approved) {
       brave_wallet_service_->NotifySignMessageRequestProcessed(
@@ -648,7 +664,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
   // current request id will be returned
   int SignMessageRequest(const std::string& address,
                          const std::string& message) {
-    provider()->SignMessage(address, message, base::DoNothing(), base::Value());
+    service()->SignMessage(current_receiver_id_, address, message,
+                           base::DoNothing(), base::Value());
     base::RunLoop().RunUntilIdle();
     return brave_wallet_service_->sign_message_id_ - 1;
   }
@@ -785,8 +802,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
                            mojom::ProviderError* error_out,
                            std::string* error_message_out) {
     base::RunLoop run_loop;
-    provider_->SwitchEthereumChain(
-        chain_id,
+    service_->SwitchEthereumChain(
+        current_receiver_id_, chain_id,
         base::BindLambdaForTesting(
             [&](base::Value id, base::Value formed_response, const bool reject,
                 const std::string& first_allowed_account,
@@ -809,8 +826,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
                               mojom::ProviderError* error_out,
                               std::string* error_message_out) {
     base::RunLoop run_loop;
-    provider_->GetEncryptionPublicKey(
-        address,
+    service_->GetEncryptionPublicKey(
+        current_receiver_id_, address,
         base::BindLambdaForTesting([&](base::Value id,
                                        base::Value formed_response, bool reject,
                                        const std::string& first_allowed_account,
@@ -852,8 +869,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
                std::string* error_message_out) {
     *unsafe_message = "";
     base::RunLoop run_loop;
-    provider_->Decrypt(
-        encrypted_data_json, address, GetOrigin(),
+    service_->Decrypt(
+        current_receiver_id_, encrypted_data_json, address, GetOrigin(),
         base::BindLambdaForTesting([&](base::Value id,
                                        base::Value formed_response, bool reject,
                                        const std::string& first_allowed_account,
@@ -891,8 +908,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
                        mojom::ProviderError* error_out,
                        std::string* error_message_out) {
     base::RunLoop run_loop;
-    provider_->AddSuggestToken(
-        token.Clone(),
+    service_->AddSuggestToken(
+        current_receiver_id_, token.Clone(),
         base::BindLambdaForTesting(
             [&](base::Value id, base::Value formed_response, const bool reject,
                 const std::string& first_allowed_account,
@@ -946,7 +963,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   std::unique_ptr<TestEventsListener> observer_;
   network::TestURLLoaderFactory url_loader_factory_;
-  std::unique_ptr<EthereumProviderImpl> provider_;
+  raw_ptr<EthereumProviderService> service_;
+  std::unique_ptr<EthereumProviderHost> provider_;
+  mojo::ReceiverId current_receiver_id_;
 
  private:
   std::unique_ptr<ScopedTestingLocalState> local_state_;
@@ -961,55 +980,45 @@ class EthereumProviderImplUnitTest : public testing::Test {
   TestingProfile profile_;
 };
 
-TEST_F(EthereumProviderImplUnitTest, ValidateBrokenPayloads) {
-  ValidateErrorCode(provider(), "", mojom::ProviderError::kInvalidParams);
-  ValidateErrorCode(provider(), R"({})", mojom::ProviderError::kInvalidParams);
-  ValidateErrorCode(provider(), R"({"params": []})",
+TEST_F(EthereumProviderServiceUnitTest, ValidateBrokenPayloads) {
+  mojo::ReceiverId id = current_receiver_id_;
+  ValidateErrorCode(id, service(), "", mojom::ProviderError::kInvalidParams);
+  ValidateErrorCode(id, service(), R"({})",
                     mojom::ProviderError::kInvalidParams);
-  ValidateErrorCode(provider(), R"({"params": [{}]})",
+  ValidateErrorCode(id, service(), R"({"params": []})",
                     mojom::ProviderError::kInvalidParams);
-  ValidateErrorCode(provider(), R"({"params": {}})",
+  ValidateErrorCode(id, service(), R"({"params": [{}]})",
                     mojom::ProviderError::kInvalidParams);
-  ValidateErrorCode(provider(), R"({"params": [{
+  ValidateErrorCode(id, service(), R"({"params": {}})",
+                    mojom::ProviderError::kInvalidParams);
+  ValidateErrorCode(id, service(), R"({"params": [{
         "chainName": 'Binance1 Smart Chain',
       }]})",
                     mojom::ProviderError::kInvalidParams);
-  ValidateErrorCode(provider(), R"({"params": [{
+  ValidateErrorCode(id, service(), R"({"params": [{
       "chainId": '0x386'
     }]})",
                     mojom::ProviderError::kInvalidParams);
-  ValidateErrorCode(provider(), R"({"params": [{
+  ValidateErrorCode(id, service(), R"({"params": [{
       "rpcUrls": ['https://bsc-dataseed.binance.org/'],
     }]})",
                     mojom::ProviderError::kInvalidParams);
-  ValidateErrorCode(provider(), R"({"params": [{
+  ValidateErrorCode(id, service(), R"({"params": [{
       "chainName": 'Binance1 Smart Chain',
       "rpcUrls": ['https://bsc-dataseed.binance.org/'],
     }]})",
                     mojom::ProviderError::kInvalidParams);
 }
 
-TEST_F(EthereumProviderImplUnitTest, EmptyDelegate) {
-  EthereumProviderImpl provider_impl(
-      host_content_settings_map(), json_rpc_service(), tx_service(),
-      keyring_service(), brave_wallet_service_, nullptr, prefs());
-  ValidateErrorCode(&provider_impl,
-                    R"({"params": [{
-        "chainId": "0x111",
-        "chainName": "Binance1 Smart Chain",
-        "rpcUrls": ["https://bsc-dataseed.binance.org/"]
-      }]})",
-                    mojom::ProviderError::kInternalError);
-}
-
-TEST_F(EthereumProviderImplUnitTest, OnAddEthereumChain) {
+TEST_F(EthereumProviderServiceUnitTest, OnAddEthereumChain) {
   GURL url("https://brave.com");
   Navigate(url);
   base::RunLoop run_loop;
 
   // Test missing valid rpc URLs.
   base::RunLoop run_loop2;
-  provider()->AddEthereumChain(
+  service()->AddEthereumChain(
+      current_receiver_id_,
       R"({"params": [{
         "chainId": "0x222",
         "chainName": "Bad Chain",
@@ -1033,11 +1042,13 @@ TEST_F(EthereumProviderImplUnitTest, OnAddEthereumChain) {
   run_loop2.Run();
 }
 
-TEST_F(EthereumProviderImplUnitTest, OnAddEthereumChainRequestCompletedError) {
+TEST_F(EthereumProviderServiceUnitTest,
+       OnAddEthereumChainRequestCompletedError) {
   GURL url("https://brave.com");
   Navigate(url);
   base::RunLoop run_loop;
-  provider()->AddEthereumChain(
+  service()->AddEthereumChain(
+      current_receiver_id_,
       R"({"params": [{
         "chainId": "0x111",
         "chainName": "Binance1 Smart Chain",
@@ -1056,13 +1067,12 @@ TEST_F(EthereumProviderImplUnitTest, OnAddEthereumChainRequestCompletedError) {
             run_loop.Quit();
           }),
       base::Value());
-  provider()->OnAddEthereumChainRequestCompleted("0x111", "test message");
-  provider()->OnAddEthereumChainRequestCompleted("0x111", "test message");
+  service()->OnAddEthereumChainRequestCompleted("0x111", "test message");
+  service()->OnAddEthereumChainRequestCompleted("0x111", "test message");
   run_loop.Run();
 }
 
-TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
-  bool callback_called = false;
+TEST_F(EthereumProviderServiceUnitTest, AddAndApproveTransaction) {
   std::string tx_hash;
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
@@ -1079,28 +1089,13 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
       "\"gas\":\"0x0974\",\"to\":"
       "\"0xbe862ad9abfe6f22bcb087716c7d89a26051f74c\","
       "\"value\":\"0x016345785d8a0000\"}]}";
-  absl::optional<base::Value> response = base::JSONReader::Read(
+  absl::optional<base::Value> input = base::JSONReader::Read(
       normalized_json_request, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                    base::JSONParserOptions::JSON_PARSE_RFC);
-  provider()->Request(
-      response->Clone(),
-      base::BindLambdaForTesting(
-          [&](base::Value id, base::Value formed_response, const bool reject,
-              const std::string& first_allowed_account,
-              const bool update_bind_js_properties) {
-            if (formed_response.type() == base::Value::Type::STRING) {
-              tx_hash = formed_response.GetString();
-            }
-            mojom::ProviderError error = mojom::ProviderError::kUnknown;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(formed_response), &error,
-                                &error_message);
-            EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-            EXPECT_FALSE(tx_hash.empty());
-            EXPECT_TRUE(error_message.empty());
-            callback_called = true;
-          }));
-  base::RunLoop().RunUntilIdle();
+  std::pair<bool, base::Value> response;
+  base::RunLoop run_loop;
+  Request(input->Clone(), run_loop, response);
+
   const auto& chain_id =
       json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, GetOrigin());
   std::vector<mojom::TransactionInfoPtr> infos =
@@ -1124,11 +1119,21 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
 
   EXPECT_TRUE(
       ApproveTransaction(chain_id, infos[0]->id, &error, &error_message));
-  base::RunLoop().RunUntilIdle();
+  run_loop.Run();
+  // Check callback
+  EXPECT_FALSE(response.first);
+  if (response.second.type() == base::Value::Type::STRING) {
+    tx_hash = response.second.GetString();
+  }
+  mojom::ProviderError cb_error = mojom::ProviderError::kUnknown;
+  std::string cb_error_message;
+  GetErrorCodeMessage(std::move(response.second), &cb_error, &cb_error_message);
+  EXPECT_EQ(cb_error, mojom::ProviderError::kSuccess);
+  EXPECT_FALSE(tx_hash.empty());
+  EXPECT_TRUE(cb_error_message.empty());
 
   EXPECT_EQ(error, mojom::ProviderError::kSuccess);
   EXPECT_TRUE(error_message.empty());
-  EXPECT_TRUE(callback_called);
   infos = GetAllTransactionInfo(account_0->account_id, chain_id);
   ASSERT_EQ(infos.size(), 1UL);
   EXPECT_EQ(infos[0]->from_account_id, account_0->account_id);
@@ -1137,11 +1142,10 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
 }
 
-TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransactionError) {
+TEST_F(EthereumProviderServiceUnitTest, AddAndApproveTransactionError) {
   // We don't need to check every error type since that is checked by
   // eth_tx_manager_unittest but make sure an error type is handled
   // correctly.
-  bool callback_called = false;
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
 
@@ -1156,34 +1160,24 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransactionError) {
       "\",\"gasPrice\":\"0x09184e72a000\","
       "\"gas\":\"0x0974\",\"to\":\"0xbe8\","
       "\"value\":\"0x016345785d8a0000\"}]}";
-  absl::optional<base::Value> response = base::JSONReader::Read(
+  absl::optional<base::Value> input = base::JSONReader::Read(
       normalized_json_request, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                    base::JSONParserOptions::JSON_PARSE_RFC);
-  provider()->Request(
-      response->Clone(),
-      base::BindLambdaForTesting(
-          [&](base::Value id, base::Value formed_response, const bool reject,
-              const std::string& first_allowed_account,
-              const bool update_bind_js_properties) {
-            std::string hash;
-            if (formed_response.type() == base::Value::Type::STRING) {
-              hash = formed_response.GetString();
-            }
-            mojom::ProviderError error = mojom::ProviderError::kUnknown;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(formed_response), &error,
-                                &error_message);
-            EXPECT_NE(error, mojom::ProviderError::kSuccess);
-            EXPECT_TRUE(hash.empty());
-            EXPECT_FALSE(error_message.empty());
-            callback_called = true;
-          }));
-  browser_task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  auto response = Request(input->Clone());
+
+  std::string hash;
+  if (response.second.type() == base::Value::Type::STRING) {
+    hash = response.second.GetString();
+  }
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(response.second), &error, &error_message);
+  EXPECT_NE(error, mojom::ProviderError::kSuccess);
+  EXPECT_TRUE(hash.empty());
+  EXPECT_FALSE(error_message.empty());
 }
 
-TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransactionNoPermission) {
-  bool callback_called = false;
+TEST_F(EthereumProviderServiceUnitTest, AddAndApproveTransactionNoPermission) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
 
@@ -1195,34 +1189,24 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransactionNoPermission) {
       "\"gas\":\"0x0974\",\"to\":"
       "\"0xbe862ad9abfe6f22bcb087716c7d89a26051f74c\","
       "\"value\":\"0x016345785d8a0000\"}]}";
-  absl::optional<base::Value> response = base::JSONReader::Read(
+  absl::optional<base::Value> input = base::JSONReader::Read(
       normalized_json_request, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                    base::JSONParserOptions::JSON_PARSE_RFC);
-  provider()->Request(
-      response->Clone(),
-      base::BindLambdaForTesting(
-          [&](base::Value id, base::Value formed_response, const bool reject,
-              const std::string& first_allowed_account,
-              const bool update_bind_js_properties) {
-            std::string hash;
-            if (formed_response.type() == base::Value::Type::STRING) {
-              hash = formed_response.GetString();
-            }
-            mojom::ProviderError error = mojom::ProviderError::kUnknown;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(formed_response), &error,
-                                &error_message);
-            EXPECT_NE(error, mojom::ProviderError::kSuccess);
-            EXPECT_TRUE(hash.empty());
-            EXPECT_FALSE(error_message.empty());
-            callback_called = true;
-          }));
-  browser_task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  auto response = Request(input->Clone());
+
+  std::string hash;
+  if (response.second.type() == base::Value::Type::STRING) {
+    hash = response.second.GetString();
+  }
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(response.second), &error, &error_message);
+  EXPECT_NE(error, mojom::ProviderError::kSuccess);
+  EXPECT_TRUE(hash.empty());
+  EXPECT_FALSE(error_message.empty());
 }
 
-TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
-  bool callback_called = false;
+TEST_F(EthereumProviderServiceUnitTest, AddAndApprove1559Transaction) {
   std::string tx_hash;
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
@@ -1237,28 +1221,13 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
       "\",\"maxFeePerGas\":\"0x1\",\"maxPriorityFeePerGas\":\"0x1\","
       "\"gas\":\"0x1\",\"to\":\"0xbe862ad9abfe6f22bcb087716c7d89a26051f74c\","
       "\"value\":\"0x00\"}]}";
-  absl::optional<base::Value> response = base::JSONReader::Read(
+  absl::optional<base::Value> input = base::JSONReader::Read(
       normalized_json_request, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                    base::JSONParserOptions::JSON_PARSE_RFC);
-  provider()->Request(
-      response->Clone(),
-      base::BindLambdaForTesting(
-          [&](base::Value id, base::Value formed_response, const bool reject,
-              const std::string& first_allowed_account,
-              const bool update_bind_js_properties) {
-            if (formed_response.type() == base::Value::Type::STRING) {
-              tx_hash = formed_response.GetString();
-            }
-            mojom::ProviderError error = mojom::ProviderError::kUnknown;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(formed_response), &error,
-                                &error_message);
-            EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-            EXPECT_FALSE(tx_hash.empty());
-            EXPECT_TRUE(error_message.empty());
-            callback_called = true;
-          }));
-  browser_task_environment_.RunUntilIdle();
+  std::pair<bool, base::Value> response;
+  base::RunLoop run_loop;
+  Request(input->Clone(), run_loop, response);
+
   const auto& chain_id =
       json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, GetOrigin());
   std::vector<mojom::TransactionInfoPtr> infos =
@@ -1279,11 +1248,20 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
 
   EXPECT_TRUE(
       ApproveTransaction(chain_id, infos[0]->id, &error, &error_message));
-  base::RunLoop().RunUntilIdle();
+  // Check callback
+  EXPECT_FALSE(response.first);
+  if (response.second.type() == base::Value::Type::STRING) {
+    tx_hash = response.second.GetString();
+  }
+  mojom::ProviderError cb_error = mojom::ProviderError::kUnknown;
+  std::string cb_error_message;
+  GetErrorCodeMessage(std::move(response.second), &cb_error, &cb_error_message);
+  EXPECT_EQ(cb_error, mojom::ProviderError::kSuccess);
+  EXPECT_FALSE(tx_hash.empty());
+  EXPECT_TRUE(cb_error_message.empty());
 
   EXPECT_EQ(error, mojom::ProviderError::kSuccess);
   EXPECT_TRUE(error_message.empty());
-  EXPECT_TRUE(callback_called);
   infos = GetAllTransactionInfo(account_0->account_id, chain_id);
   ASSERT_EQ(infos.size(), 1UL);
   EXPECT_EQ(infos[0]->from_account_id, account_0->account_id);
@@ -1293,81 +1271,10 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
   EXPECT_EQ(infos[0]->chain_id, chain_id);
 }
 
-TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
-  std::string tx_hash;
-  CreateWallet();
-  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
-
-  GURL url("https://brave.com");
-  Navigate(url);
-  SetNetwork(mojom::kSepoliaChainId, GetOrigin());
-  // Wait for EthTxStateManager::ChainChangedEvent to be called.
-  browser_task_environment_.RunUntilIdle();
-
-  AddEthereumPermission(account_0->account_id);
-  std::string normalized_json_request =
-      "{\"id\":\"1\",\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransaction\","
-      "\"params\":[{\"from\":\"" +
-      account_0->address +
-      "\",\"maxFeePerGas\":\"0x1\",\"maxPriorityFeePerGas\":\"0x1\","
-      "\"gas\":\"0x1\",\"to\":\"0xbe862ad9abfe6f22bcb087716c7d89a26051f74c\","
-      "\"value\":\"0x00\"}]}";
-  absl::optional<base::Value> response = base::JSONReader::Read(
-      normalized_json_request, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                   base::JSONParserOptions::JSON_PARSE_RFC);
-  provider()->Request(
-      response->Clone(),
-      base::BindLambdaForTesting(
-          [&](base::Value id, base::Value formed_response, const bool reject,
-              const std::string& first_allowed_account,
-              const bool update_bind_js_properties) {
-            tx_hash.clear();
-            if (formed_response.type() == base::Value::Type::STRING) {
-              tx_hash = formed_response.GetString();
-            }
-            mojom::ProviderError error = mojom::ProviderError::kUnknown;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(formed_response), &error,
-                                &error_message);
-            EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-            EXPECT_FALSE(tx_hash.empty());
-            EXPECT_TRUE(error_message.empty());
-          }));
-  browser_task_environment_.RunUntilIdle();
-  provider()->Request(
-      response->Clone(),
-      base::BindLambdaForTesting(
-          [&](base::Value id, base::Value formed_response, const bool reject,
-              const std::string& first_allowed_account,
-              const bool update_bind_js_properties) {
-            tx_hash.clear();
-            if (formed_response.type() == base::Value::Type::STRING) {
-              tx_hash = formed_response.GetString();
-            }
-            mojom::ProviderError error = mojom::ProviderError::kUnknown;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(formed_response), &error,
-                                &error_message);
-            EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-            EXPECT_FALSE(tx_hash.empty());
-            EXPECT_TRUE(error_message.empty());
-          }));
-  browser_task_environment_.RunUntilIdle();
-  std::vector<mojom::TransactionInfoPtr> infos =
-      GetAllTransactionInfo(account_0->account_id, mojom::kSepoliaChainId);
-  ASSERT_EQ(infos.size(), 2UL);
-  ASSERT_TRUE(infos[0]->tx_data_union->is_eth_tx_data_1559());
-  EXPECT_EQ(infos[0]->tx_data_union->get_eth_tx_data_1559()->chain_id,
-            mojom::kSepoliaChainId);
-  EXPECT_EQ(infos[1]->tx_data_union->get_eth_tx_data_1559()->chain_id,
-            mojom::kSepoliaChainId);
-}
-
-TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionError) {
+TEST_F(EthereumProviderServiceUnitTest, AddAndApprove1559TransactionError) {
   // We don't need to check every error type since that is checked by
   // eth_tx_manager_unittest but make sure an error type is handled
   // correctly.
-  bool callback_called = false;
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
 
@@ -1382,34 +1289,24 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionError) {
       "\"gasPrice\":\"0x01\", "
       "\"gas\":\"0x00\",\"to\":\"0xbe862ad9abfe6f22bcb087716c7d89a26051f74c\","
       "\"value\":\"0x00\"}]}";
-  absl::optional<base::Value> response = base::JSONReader::Read(
+  absl::optional<base::Value> input = base::JSONReader::Read(
       normalized_json_request, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                    base::JSONParserOptions::JSON_PARSE_RFC);
-  provider()->Request(
-      response->Clone(),
-      base::BindLambdaForTesting(
-          [&](base::Value id, base::Value formed_response, const bool reject,
-              const std::string& first_allowed_account,
-              const bool update_bind_js_properties) {
-            std::string tx_hash;
-            if (formed_response.type() == base::Value::Type::STRING) {
-              tx_hash = formed_response.GetString();
-            }
-            mojom::ProviderError error = mojom::ProviderError::kUnknown;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(formed_response), &error,
-                                &error_message);
-            EXPECT_NE(error, mojom::ProviderError::kSuccess);
-            EXPECT_TRUE(tx_hash.empty());
-            EXPECT_FALSE(error_message.empty());
-            callback_called = true;
-          }));
-  browser_task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  auto response = Request(input->Clone());
+  std::string tx_hash;
+  if (response.second.type() == base::Value::Type::STRING) {
+    tx_hash = response.second.GetString();
+  }
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(response.second), &error, &error_message);
+  EXPECT_NE(error, mojom::ProviderError::kSuccess);
+  EXPECT_TRUE(tx_hash.empty());
+  EXPECT_FALSE(error_message.empty());
 }
 
-TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoPermission) {
-  bool callback_called = false;
+TEST_F(EthereumProviderServiceUnitTest,
+       AddAndApprove1559TransactionNoPermission) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
 
@@ -1420,33 +1317,23 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoPermission) {
       "\",\"maxFeePerGas\":\"0x0\",\"maxPriorityFeePerGas\":\"0x0\","
       "\"gas\":\"0x00\",\"to\":\"0xbe862ad9abfe6f22bcb087716c7d89a26051f74c\","
       "\"value\":\"0x00\"}]}";
-  absl::optional<base::Value> response = base::JSONReader::Read(
+  absl::optional<base::Value> input = base::JSONReader::Read(
       normalized_json_request, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                    base::JSONParserOptions::JSON_PARSE_RFC);
-  provider()->Request(
-      response->Clone(),
-      base::BindLambdaForTesting(
-          [&](base::Value id, base::Value formed_response, const bool reject,
-              const std::string& first_allowed_account,
-              const bool update_bind_js_properties) {
-            std::string tx_hash;
-            if (formed_response.type() == base::Value::Type::STRING) {
-              tx_hash = formed_response.GetString();
-            }
-            mojom::ProviderError error = mojom::ProviderError::kUnknown;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(formed_response), &error,
-                                &error_message);
-            EXPECT_NE(error, mojom::ProviderError::kSuccess);
-            EXPECT_TRUE(tx_hash.empty());
-            EXPECT_FALSE(error_message.empty());
-            callback_called = true;
-          }));
-  browser_task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  auto response = Request(input->Clone());
+  std::string tx_hash;
+  if (response.second.type() == base::Value::Type::STRING) {
+    tx_hash = response.second.GetString();
+  }
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(response.second), &error, &error_message);
+  EXPECT_NE(error, mojom::ProviderError::kSuccess);
+  EXPECT_TRUE(tx_hash.empty());
+  EXPECT_FALSE(error_message.empty());
 }
 
-TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionNotNewSetup) {
+TEST_F(EthereumProviderServiceUnitTest, RequestEthereumPermissionNotNewSetup) {
   bool new_setup_callback_called = false;
   SetCallbackForNewSetupNeededForTesting(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
@@ -1464,7 +1351,8 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionNotNewSetup) {
   EXPECT_FALSE(new_setup_callback_called);
 }
 
-TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
+TEST_F(EthereumProviderServiceUnitTest,
+       RequestEthereumPermissionsNoPermission) {
   bool new_setup_callback_called = false;
   SetCallbackForNewSetupNeededForTesting(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
@@ -1472,7 +1360,8 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
 
-  provider()->RequestEthereumPermissions(
+  service()->RequestEthereumPermissions(
+      current_receiver_id_,
       base::BindLambdaForTesting(
           [&](base::Value id, base::Value formed_response, const bool reject,
               const std::string& first_allowed_account,
@@ -1491,12 +1380,13 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
   EXPECT_FALSE(new_setup_callback_called);
 }
 
-TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
+TEST_F(EthereumProviderServiceUnitTest, RequestEthereumPermissionsNoWallet) {
   bool new_setup_callback_called = false;
   SetCallbackForNewSetupNeededForTesting(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
   base::RunLoop run_loop;
-  provider()->RequestEthereumPermissions(
+  service()->RequestEthereumPermissions(
+      current_receiver_id_,
       base::BindLambdaForTesting(
           [&](base::Value id, base::Value formed_response, const bool reject,
               const std::string& first_allowed_account,
@@ -1518,7 +1408,8 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
   SetCallbackForNewSetupNeededForTesting(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
   base::RunLoop run_loop2;
-  provider()->RequestEthereumPermissions(
+  service()->RequestEthereumPermissions(
+      current_receiver_id_,
       base::BindLambdaForTesting(
           [&](base::Value id, base::Value formed_response, const bool reject,
               const std::string& first_allowed_account,
@@ -1536,7 +1427,8 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
   EXPECT_FALSE(new_setup_callback_called);
 }
 
-TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
+TEST_F(EthereumProviderServiceUnitTest,
+       RequestEthereumPermissionsWithAccounts) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   auto account_1 = GetAccountUtils().EnsureEthAccount(1);
@@ -1573,7 +1465,8 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
   host_content_settings_map()->SetContentSettingDefaultScope(
       url, url, ContentSettingsType::BRAVE_ETHEREUM, CONTENT_SETTING_BLOCK);
   base::RunLoop run_loop;
-  provider()->RequestEthereumPermissions(
+  service()->RequestEthereumPermissions(
+      current_receiver_id_,
       base::BindLambdaForTesting([&](base::Value id,
                                      base::Value formed_response,
                                      const bool reject,
@@ -1596,7 +1489,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
   EXPECT_THAT(RequestEthereumPermissions(), ElementsAre(address_0, address_1));
 }
 
-TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
+TEST_F(EthereumProviderServiceUnitTest, RequestEthereumPermissionsLocked) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   auto address_0 = base::ToLowerASCII(account_0->address);
@@ -1612,7 +1505,8 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
   EXPECT_THAT(GetAllowedAccounts(true), ElementsAre(address_0));
   std::vector<std::string> allowed_accounts;
   base::RunLoop run_loop;
-  provider()->RequestEthereumPermissions(
+  service()->RequestEthereumPermissions(
+      current_receiver_id_,
       base::BindLambdaForTesting(
           [&](base::Value id, base::Value formed_response, const bool reject,
               const std::string& first_allowed_account,
@@ -1641,7 +1535,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
   EXPECT_THAT(allowed_accounts, ElementsAre(address_0));
 }
 
-TEST_F(EthereumProviderImplUnitTest, SignMessage) {
+TEST_F(EthereumProviderServiceUnitTest, SignMessage) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   std::string signature;
@@ -1702,7 +1596,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessage) {
   EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
 }
 
-TEST_F(EthereumProviderImplUnitTest, RecoverAddress) {
+TEST_F(EthereumProviderServiceUnitTest, RecoverAddress) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
 
@@ -1756,7 +1650,7 @@ TEST_F(EthereumProviderImplUnitTest, RecoverAddress) {
             l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 }
 
-TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
+TEST_F(EthereumProviderServiceUnitTest, SignTypedMessage) {
   EXPECT_EQ(
       json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, absl::nullopt),
       "0x1");
@@ -1874,7 +1768,7 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
   EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
 }
 
-TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
+TEST_F(EthereumProviderServiceUnitTest, SignMessageRequestQueue) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   std::string hardware = "0xA99D71De40D67394eBe68e4D0265cA6C9D421029";
@@ -1889,7 +1783,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   // If there is allowed account which is also selected then only
   // this account may be used for signin process.
   // another_hd_account is not allowed because it has no permission.
-  // Also see EthereumProviderImpl.FilterAccounts method.
+  // Also see EthereumProviderService.FilterAccounts method.
   auto account_1 = GetAccountUtils().EnsureEthAccount(1);
   SetSelectedAccount(account_1->account_id);
 
@@ -1976,7 +1870,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 0u);
 }
 
-TEST_F(EthereumProviderImplUnitTest, ChainChangedEvent) {
+TEST_F(EthereumProviderServiceUnitTest, ChainChangedEvent) {
   GURL url("https://brave.com");
   Navigate(url);
 
@@ -2004,7 +1898,7 @@ TEST_F(EthereumProviderImplUnitTest, ChainChangedEvent) {
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(observer_.get()));
 }
 
-TEST_F(EthereumProviderImplUnitTest, AccountsChangedEvent) {
+TEST_F(EthereumProviderServiceUnitTest, AccountsChangedEvent) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   auto account_1 = GetAccountUtils().EnsureEthAccount(1);
@@ -2037,7 +1931,7 @@ TEST_F(EthereumProviderImplUnitTest, AccountsChangedEvent) {
   EXPECT_FALSE(observer_->AccountsChangedFired());
 }
 
-TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
+TEST_F(EthereumProviderServiceUnitTest, EthSubscribe) {
   CreateWallet();
 
   // Unsupported subscription type
@@ -2118,7 +2012,7 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
 
   const auto& chain_id =
       json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, GetOrigin());
-  EXPECT_TRUE(provider_->eth_block_tracker_.IsRunning(chain_id));
+  EXPECT_TRUE(service_->eth_block_tracker_.IsRunning(chain_id));
 
   // The second unsubscribe should stop the block tracker
   request_payload_json = base::StringPrintf(R"({"id":1,"jsonrpc:": "2.0",
@@ -2129,10 +2023,10 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
       request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                 base::JSONParserOptions::JSON_PARSE_RFC);
   response = CommonRequestOrSendAsync(request_payload.value());
-  EXPECT_FALSE(provider_->eth_block_tracker_.IsRunning(chain_id));
+  EXPECT_FALSE(service_->eth_block_tracker_.IsRunning(chain_id));
 }
 
-TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogs) {
+TEST_F(EthereumProviderServiceUnitTest, EthSubscribeLogs) {
   CreateWallet();
 
   // Unsupported subscription type
@@ -2212,7 +2106,7 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogs) {
       request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                 base::JSONParserOptions::JSON_PARSE_RFC);
   response = CommonRequestOrSendAsync(request_payload.value());
-  EXPECT_TRUE(provider_->eth_logs_tracker_.IsRunning());
+  EXPECT_TRUE(service_->eth_logs_tracker_.IsRunning());
 
   // The second unsubscribe should stop the block tracker
   request_payload_json = base::StringPrintf(R"({"id":1,"jsonrpc:": "2.0",
@@ -2223,10 +2117,10 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogs) {
       request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                 base::JSONParserOptions::JSON_PARSE_RFC);
   response = CommonRequestOrSendAsync(request_payload.value());
-  EXPECT_FALSE(provider_->eth_logs_tracker_.IsRunning());
+  EXPECT_FALSE(service_->eth_logs_tracker_.IsRunning());
 }
 
-TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogsFiltered) {
+TEST_F(EthereumProviderServiceUnitTest, EthSubscribeLogsFiltered) {
   CreateWallet();
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
@@ -2287,10 +2181,10 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogsFiltered) {
       request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                 base::JSONParserOptions::JSON_PARSE_RFC);
   response = CommonRequestOrSendAsync(request_payload.value());
-  EXPECT_FALSE(provider_->eth_logs_tracker_.IsRunning());
+  EXPECT_FALSE(service_->eth_logs_tracker_.IsRunning());
 }
 
-TEST_F(EthereumProviderImplUnitTest, Web3ClientVersion) {
+TEST_F(EthereumProviderServiceUnitTest, Web3ClientVersion) {
   std::string expected_version = base::StringPrintf(
       "BraveWallet/v%s", version_info::GetBraveChromiumVersionNumber().c_str());
   std::string version;
@@ -2302,7 +2196,7 @@ TEST_F(EthereumProviderImplUnitTest, Web3ClientVersion) {
   EXPECT_TRUE(error_message.empty());
 }
 
-TEST_F(EthereumProviderImplUnitTest, AccountsChangedEventSelectedAccount) {
+TEST_F(EthereumProviderServiceUnitTest, AccountsChangedEventSelectedAccount) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   auto account_1 = GetAccountUtils().EnsureEthAccount(1);
@@ -2354,7 +2248,7 @@ TEST_F(EthereumProviderImplUnitTest, AccountsChangedEventSelectedAccount) {
   observer_->Reset();
 }
 
-TEST_F(EthereumProviderImplUnitTest, GetAllowedAccounts) {
+TEST_F(EthereumProviderServiceUnitTest, GetAllowedAccounts) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   auto account_1 = GetAccountUtils().EnsureEthAccount(1);
@@ -2414,7 +2308,7 @@ TEST_F(EthereumProviderImplUnitTest, GetAllowedAccounts) {
   EXPECT_THAT(GetAllowedAccounts(true), IsEmpty());
 }
 
-TEST_F(EthereumProviderImplUnitTest, SignMessageHardware) {
+TEST_F(EthereumProviderServiceUnitTest, SignMessageHardware) {
   CreateWallet();
   std::string address = "0xA99D71De40D67394eBe68e4D0265cA6C9D421029";
   auto added_hw_account = AddHardwareAccount(address);
@@ -2451,7 +2345,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageHardware) {
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 }
 
-TEST_F(EthereumProviderImplUnitTest, SwitchEthereumChain) {
+TEST_F(EthereumProviderServiceUnitTest, SwitchEthereumChain) {
   // CreateWallet();
   CreateBraveWalletTabHelper();
   Navigate(GURL("https://bravesoftware.com"));
@@ -2496,8 +2390,8 @@ TEST_F(EthereumProviderImplUnitTest, SwitchEthereumChain) {
 
   // one request per origin
   base::RunLoop run_loop;
-  provider()->SwitchEthereumChain(
-      "0x1",
+  service()->SwitchEthereumChain(
+      current_receiver_id_, "0x1",
       base::BindLambdaForTesting(
           [&](base::Value id, base::Value formed_response, const bool reject,
               const std::string& first_allowed_account,
@@ -2519,7 +2413,7 @@ TEST_F(EthereumProviderImplUnitTest, SwitchEthereumChain) {
       "0x1");
 }
 
-TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
+TEST_F(EthereumProviderServiceUnitTest, AddEthereumChainSwitchesForInnactive) {
   CreateBraveWalletTabHelper();
   Navigate(GURL("https://bravesoftware.com"));
   brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
@@ -2531,8 +2425,8 @@ TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
         "rpcUrls": ["https://goerli-infura.brave.com/"]
       }]})";
   base::RunLoop run_loop;
-  provider()->AddEthereumChain(
-      params,
+  service()->AddEthereumChain(
+      current_receiver_id_, params,
       base::BindLambdaForTesting(
           [&](base::Value id, base::Value formed_response, const bool reject,
               const std::string& first_allowed_account,
@@ -2557,7 +2451,7 @@ TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
       "0x5");
 }
 
-TEST_F(EthereumProviderImplUnitTest, AddSuggestToken) {
+TEST_F(EthereumProviderServiceUnitTest, AddSuggestToken) {
   CreateBraveWalletTabHelper();
   Navigate(GURL("https://brave.com"));
   brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
@@ -2585,7 +2479,7 @@ TEST_F(EthereumProviderImplUnitTest, AddSuggestToken) {
   EXPECT_FALSE(error_message.empty());
 }
 
-TEST_F(EthereumProviderImplUnitTest, GetEncryptionPublicKey) {
+TEST_F(EthereumProviderServiceUnitTest, GetEncryptionPublicKey) {
   RestoreWallet(kMnemonicDivideCruise, "brave", false);
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
 
@@ -2637,7 +2531,7 @@ TEST_F(EthereumProviderImplUnitTest, GetEncryptionPublicKey) {
   EXPECT_FALSE(error_message.empty());
 }
 
-TEST_F(EthereumProviderImplUnitTest, Decrypt) {
+TEST_F(EthereumProviderServiceUnitTest, Decrypt) {
   RestoreWallet(kMnemonicDivideCruise, "brave", false);
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   auto address_0 = account_0->address;
@@ -2748,7 +2642,7 @@ TEST_F(EthereumProviderImplUnitTest, Decrypt) {
   EXPECT_FALSE(error_message.empty());
 }
 
-TEST_F(EthereumProviderImplUnitTest, RequestEthCoinbase) {
+TEST_F(EthereumProviderServiceUnitTest, RequestEthCoinbase) {
   // Wallet that is not created should return empty base::Value for eth_coinbase
   std::string request_payload_json =
       R"({"id":1,"jsonrpc:": "2.0","method":"eth_coinbase"})";
@@ -2782,7 +2676,8 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthCoinbase) {
 
   std::vector<std::string> allowed_accounts;
   base::RunLoop run_loop;
-  provider()->RequestEthereumPermissions(
+  service()->RequestEthereumPermissions(
+      current_receiver_id_,
       base::BindLambdaForTesting(
           [&](base::Value id, base::Value formed_response, const bool reject,
               const std::string& first_allowed_account,
@@ -2817,7 +2712,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthCoinbase) {
   EXPECT_EQ(response.second, base::Value(address_0));
 }
 
-TEST_F(EthereumProviderImplUnitTest, ProviderResponseFormat) {
+TEST_F(EthereumProviderServiceUnitTest, ProviderResponseFormat) {
   base::Value input = base::test::ParseJson(
       R"({"id":"1","jsonrpc":"2.0","method":"eth_chainId"})");
   const std::string success_rpc_response =

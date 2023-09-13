@@ -39,7 +39,6 @@ class AccountDiscoveryManager;
 class EthTransaction;
 class FilTransaction;
 class KeyringServiceUnitTest;
-class EthereumProviderImplUnitTest;
 class SolanaProviderImplUnitTest;
 class FilecoinKeyring;
 class JsonRpcService;
@@ -283,7 +282,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                            ConnectWithNoSolanaAccount);
 
   friend class BraveWalletServiceUnitTest;
-  friend class EthereumProviderImplUnitTest;
+  friend class EthereumProviderServiceUnitTest;
   friend class SolanaProviderImplUnitTest;
   friend class KeyringServiceAccountDiscoveryUnitTest;
   friend class EthTxManagerUnitTest;
