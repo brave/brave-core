@@ -164,7 +164,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &companion::features::internal::kSidePanelCompanion,
     &companion::features::internal::kSidePanelCompanion2,
     &companion::visual_search::features::kVisualSearchSuggestions,
-    &content::kServiceWorkerAutoPreload,
     &content_settings::features::kThirdPartyCookieDeprecationCookieSettings,
     &content_settings::features::kUserBypassUI,
     &enterprise_connectors::kLocalContentAnalysisEnabled,
@@ -212,6 +211,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #endif
     &features::kPrivacySandboxAdsAPIsOverride,
     &features::kSCTAuditing,
+    &features::kServiceWorkerAutoPreload,
     &features::kSignedExchangeReportingForDistributors,
     &features::kSignedHTTPExchange,
     &features::kSupportSearchSuggestionForPrerender2,
