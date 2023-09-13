@@ -512,8 +512,14 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CONTENT_FILTERING_SUMMARY" desc="Summary for Content Filtering settings.">
         Enable custom filters that block regional and language-specific trackers and Annoyances
       </message>
-      <message name="IDS_FILTER_LISTS_TITLE" desc="Title for Filter Lists settings.">
-        Filter Lists
+      <message name="IDS_CONTENT_FILTERS_TITLE" desc="Title for Content Filters settings.">
+        Content Filters
+      </message>
+      <message name="IDS_FILTER_LISTS" desc="Title for filter lists.">
+        Filter lists
+      </message>
+      <message name="IDS_FILTER_LISTS_SUMMARY" desc="Summary text for Filter lists.">
+        Additional popular community lists. Note that enabling too many filters will degrade browsing speeds.
       </message>
       <message name="IDS_CUSTOM_FILTER_LISTS" desc="Title for Custom filter lists.">
         Custom filter lists
