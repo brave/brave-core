@@ -32,6 +32,7 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     private final Handler mHandler;
     private ORIENTATION mOrientation;
     private LayoutInflater mLayoutInflater;
+    public int mSubTextAlignment;
 
     public TwoLineItemRecyclerViewAdapter(List<TwoLineItem> items, ORIENTATION orientation) {
         mValues = items;
@@ -75,7 +76,13 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         TwoLineItem twoLineItem = mValues.get(position);
         if (twoLineItem.getType() == TwoLineItem.TYPE_TEXT) {
             ViewHolder viewHolder = (ViewHolder) holder;
-            AndroidUtils.gone(viewHolder.mIvIconContainer);
+            // Only vertical layout support image icon and blockies
+            if (ORIENTATION.VERTICAL == mOrientation) {
+                AndroidUtils.gone(viewHolder.mIvIconContainer);
+            }
+            if (mSubTextAlignment != 0) {
+                viewHolder.mTvSubtitle.setTextAlignment(mSubTextAlignment);
+            }
             viewHolder.mTvSubtitle.setVisibility(View.VISIBLE);
             viewHolder.mItem = twoLineItem;
             TwoLineItemText itemDataSourceText = (TwoLineItemText) twoLineItem;
@@ -90,7 +97,8 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
                 viewHolder.mTvSubtitle.setText(itemDataSourceText.subTitle);
             }
 
-            if (itemDataSourceText.imageType == ImageType.BLOCKIE) {
+            if (ORIENTATION.VERTICAL == mOrientation
+                    && itemDataSourceText.imageType == ImageType.BLOCKIE) {
                 AndroidUtils.show(viewHolder.mIvIconContainer);
                 Utils.setTextGeneratedBlockies(mExecutor, mHandler, viewHolder.mIvIcon,
                         itemDataSourceText.imgData, true, false);
@@ -100,7 +108,9 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             }
         } else if (twoLineItem.getType() == TwoLineItem.TYPE_HEADER) {
             ViewHolder viewHolder = (ViewHolder) holder;
-            AndroidUtils.gone(viewHolder.mIvIconContainer);
+            if (ORIENTATION.VERTICAL == mOrientation) {
+                AndroidUtils.gone(viewHolder.mIvIconContainer);
+            }
             TwoLineItemHeader itemDataSourceHeader = (TwoLineItemHeader) twoLineItem;
             viewHolder.mTvTitle.setText(itemDataSourceHeader.mHeader);
             viewHolder.mTvSubtitle.setVisibility(View.GONE);

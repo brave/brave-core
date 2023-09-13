@@ -3135,7 +3135,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_URL" desc="Add network panel url label">
       Network URL
     </message>
-    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CHAIN_ID" desc="Add network panel chain id label">
+    <message name="IDS_BRAVE_WALLET_CHAIN_ID" desc="Title for wallet chain id label">
       Chain ID
     </message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CURRENCY_SYMBOL" desc="Add network panel symbol label">
@@ -3573,38 +3573,35 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_NON_ASCII_CHARACTERS_ASCII" desc="A title to view an ASCII message if Unicode characters detected">
       View message in ASCII encoding
     </message>
-    <message name="IDS_WALLET_SIGN_MESSAGE_DETAILS_DOMAIN_SECTION" desc="A domain section template of sign message details" translateable="false">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Domain:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_DOMAIN_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
-    </message>
     <message name="IDS_WALLET_SIGN_MESSAGE_DETAILS_MESSAGE_SECTION" desc="A message section template of sign message details" translateable="false">
       <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Message:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_MESSAGE_TEXT">%1$s</ph>
     </message>
-    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_ORIGIN_SECTION" desc="An origin section template for Sign with Ethereum message details" translateable="false">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Origin:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_ORIGIN_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    <message name="IDS_BRAVE_WALLET_ORIGIN" desc="Title for hyperlink Origin Label">
+      Origin
     </message>
-    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_ADDRESS_SECTION" desc="An address section template for Sign with Ethereum message details" translateable="false">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Address:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_ADDRESS_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    <message name="IDS_BRAVE_WALLET_ADDRESS" desc="Title for account Address Label">
+      Address
     </message>
-    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_STATEMENT_SECTION" desc="A statement section template for Sign with Ethereum message details" translateable="false">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Statement:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_STATEMENT_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    <message name="IDS_BRAVE_WALLET_STATEMENT" desc="Title for Statement Label">
+      Statement
     </message>
-    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_URI_SECTION" desc="An URI section template for Sign with Ethereum message details" translateable="false">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>URI:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_URI_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    <message name="IDS_BRAVE_WALLET_URI" desc="Title for URI Label">
+      URI
     </message>
-    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_VERSION_SECTION" desc="A version section template for Sign with Ethereum message details" translateable="false">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Version:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_VERSION_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    <message name="IDS_BRAVE_WALLET_VERSION" desc="Title for Version Label">
+      Version
     </message>
-    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_CHAIN_ID_SECTION" desc="A chain id section template for Sign with Ethereum message details" translateable="false">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Chain id:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_CHAIN_ID_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    <message name="IDS_BRAVE_WALLET_NONCE" desc="Title for Nonce Label">
+      Nonce
     </message>
-    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_NONCE_SECTION" desc="A nonce section template for Sign with Ethereum message details" translateable="false">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Nonce:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_NONCE_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    <message name="IDS_BRAVE_WALLET_ISSUED_AT" desc="Title for Issued at Label">
+      Issued at
     </message>
-    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_ISSUED_AT_SECTION" desc="An issued at section template for Sign with Ethereum message details" translateable="false">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Issued at:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_ISSUED_AT_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    <message name="IDS_BRAVE_WALLET_EXPIRATION_TIME" desc="Title for Expiration time Label">
+      Expiration time
     </message>
-    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_EXPIRATION_TIME_SECTION" desc="An expiration time section template for Sign with Ethereum message details" translateable="false">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Expiration time:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_EXPIRATION_TIME_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    <message name="IDS_WALLET_SIGN_MESSAGE_DETAILS_DOMAIN_SECTION" desc="A domain section template of sign message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Domain:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_DOMAIN_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
     </message>
     <message name="IDS_BRAVE_WALLET_SECURITY_RISK_DETECTED" desc="Sign in with Brave Wallet Error Security risk">
       Security risk detected
@@ -4049,6 +4046,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET" desc="Sign in with Brave Wallet Title">
       Sign in with Brave Wallet
+    </message>
+    <message name="IDS_BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET_MESSAGE" desc="Sign in with Brave Wallet Message">
+      You are signing into <ph name="ORIGIN">%1$s<ex>login.xyz</ex></ph>. Brave wallet will share your wallet address with <ph name="ORIGIN">%1$s<ex>login.xyz</ex></ph>.
+    </message>
+    <message name="IDS_BRAVE_WALLET_SEE_DETAILS" desc="See details button title">
+      See details
+    </message>
+    <message name="IDS_RESOURCES" desc="Label for resources action button to view url etc.">
+      Resources
     </message>
   </messages>
   </release>

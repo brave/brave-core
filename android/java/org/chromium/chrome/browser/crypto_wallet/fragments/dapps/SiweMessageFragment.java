@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -24,6 +23,9 @@ import android.widget.TextView;
 
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountId;
@@ -49,8 +51,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.url.mojom.Url;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -173,10 +173,6 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         if (accountInfo == null) return;
         assert (accountInfo.address != null);
 
-        String accountText =
-                accountInfo.name + "\n" + AddressUtils.getTruncatedAddress(accountInfo.address);
-        mTvAccountDetails.setText(accountText);
-
         List<TwoLineItemRecyclerViewAdapter.TwoLineItem> items = new ArrayList<>();
         TwoLineItemRecyclerViewAdapter.TwoLineItemText account =
                 new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
@@ -193,10 +189,9 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
             builder.append(separator);
             builder.append(getString(R.string.brave_wallet_sign_in_with_brave_wallet_message,
                     mCurrentSignMessageRequest.originInfo.eTldPlusOne));
-            SpannableString seeDetails = Utils.createSpanForSurroundedPhrase(
-                    requireContext(), R.string.brave_wallet_see_details, (v) -> {});
             builder.append(separator);
-            builder.append(seeDetails);
+            builder.append(AndroidUtils.createClickableSpanString(requireContext(),
+                    R.string.brave_wallet_see_details, (view) -> { showSiweDetails(); }));
             details.updateViewCb = textView -> {
                 textView.setMovementMethod(LinkMovementMethod.getInstance());
                 textView.setText(builder);
@@ -255,5 +250,48 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
                 "file://" + tokensPath + "/" + logo, Integer.MIN_VALUE, mIvFavNetwork, null, true);
         AndroidUtils.show(mIvFavNetworkContainer);
         mNetworkName.setText(network.chainName);
+    }
+
+    private void showSiweDetails() {
+        assert mCurrentSignMessageRequest.signData.which() == SignDataUnion.Tag.EthSiweData;
+
+        List<TwoLineItemRecyclerViewAdapter.TwoLineItem> items = new ArrayList<>();
+        addDetail(items, R.string.brave_wallet_origin, getOriginJson(mSiweMessageData.origin));
+        addDetail(items, R.string.brave_wallet_address, mSiweMessageData.address);
+        addDetail(items, R.string.brave_wallet_statement, mSiweMessageData.statement);
+        addDetail(items, R.string.brave_wallet_uri, mSiweMessageData.uri.url);
+        addDetail(items, R.string.brave_wallet_version, Integer.toString(mSiweMessageData.version));
+        addDetail(items, R.string.brave_wallet_chain_id, Long.toString(mSiweMessageData.chainId));
+        addDetail(items, R.string.brave_wallet_nonce, mSiweMessageData.nonce);
+        addDetail(items, R.string.brave_wallet_issued_at, mSiweMessageData.issuedAt);
+        addDetail(items, R.string.brave_wallet_expiration_time, mSiweMessageData.expirationTime);
+        TwoLineItemBottomSheetFragment fragment = TwoLineItemBottomSheetFragment.newInstance(items);
+        fragment.mTitle = getString(R.string.brave_wallet_see_details);
+        fragment.show(getParentFragmentManager(), TAG);
+    }
+
+    private void addDetail(List<TwoLineItemRecyclerViewAdapter.TwoLineItem> allDetails,
+            @StringRes int id, String value) {
+        if (TextUtils.isEmpty(value)) return;
+        allDetails.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(getString(id), value));
+        allDetails.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
+    }
+
+    private String getOriginJson(org.chromium.url.internal.mojom.Origin origin) {
+        if (origin == null) return null;
+
+        try {
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("scheme", origin.scheme);
+            jsonObject.put("host", origin.host);
+            jsonObject.put("port", origin.port);
+
+            return jsonObject.toString();
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        return null;
     }
 }

@@ -906,6 +906,7 @@ brave_java_resources = [
   "java/res/layout/fragment_transactions.xml",
   "java/res/layout/fragment_troubleshooting_onboarding.xml",
   "java/res/layout/fragment_two_line_item_list.xml",
+  "java/res/layout/fragment_two_line_item_sheet.xml",
   "java/res/layout/fragment_unlock_wallet.xml",
   "java/res/layout/fragment_verify_recovery_phrase.xml",
   "java/res/layout/fragment_vpn_callout_dialog.xml",

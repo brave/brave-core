@@ -276,7 +276,7 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
         details.add(new TwoLineItemText(getString(R.string.brave_wallet_allow_add_network_url),
                 getActiveRpcEndpointUrl(networkInfo)));
         details.add(new TwoLineItemText(
-                getString(R.string.brave_wallet_allow_add_network_chain_id), networkInfo.chainId));
+                getString(R.string.brave_wallet_chain_id), networkInfo.chainId));
         details.add(new TwoLineItemText(
                 getString(R.string.brave_wallet_allow_add_network_currency_symbol),
                 networkInfo.symbol));
