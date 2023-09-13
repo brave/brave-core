@@ -9,11 +9,13 @@
 
 #include <utility>
 
+#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_piece.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
@@ -54,14 +56,17 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 base::Value::Dict CreateApiParametersDict(
     const std::string& prompt,
     const std::string& model_name,
+    const base::flat_set<base::StringPiece>& stop_sequences,
     const std::vector<std::string> additional_stop_sequences,
     const bool is_sse_enabled) {
   base::Value::Dict dict;
 
-  base::Value::List stop_sequences;
-  stop_sequences.Append(RemoteCompletionClient::GetHumanPromptSegment());
+  base::Value::List all_stop_sequences;
   for (auto& item : additional_stop_sequences) {
-    stop_sequences.Append(item);
+    all_stop_sequences.Append(item);
+  }
+  for (auto& item : stop_sequences) {
+    all_stop_sequences.Append(item);
   }
 
   const double temp = ai_chat::features::kAITemperature.Get();
@@ -74,7 +79,7 @@ base::Value::Dict CreateApiParametersDict(
   dict.Set("top_k", -1);  // disabled
   dict.Set("top_p", 0.999);
   dict.Set("model", model_name);
-  dict.Set("stop_sequences", std::move(stop_sequences));
+  dict.Set("stop_sequences", std::move(all_stop_sequences));
   dict.Set("stream", is_sse_enabled);
 
   DVLOG(1) << __func__ << " Prompt: |" << prompt << "|\n";
@@ -107,14 +112,13 @@ const GURL GetEndpointBaseUrl() {
 }  // namespace
 
 // static
-std::string RemoteCompletionClient::GetHumanPromptSegment() {
-  return base::StrCat({"\n\n", kHumanPrompt, " "});
-}
 
 RemoteCompletionClient::RemoteCompletionClient(
     std::string model_name,
+    const base::flat_set<base::StringPiece>& stop_sequences,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : model_name_(model_name),
+      stop_sequences_(stop_sequences),
       api_request_helper_(GetNetworkTrafficAnnotationTag(),
                           url_loader_factory) {
   // Validate configuration
@@ -145,8 +149,9 @@ void RemoteCompletionClient::QueryPrompt(
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
 
-  const base::Value::Dict& dict = CreateApiParametersDict(
-      prompt, model_name_, std::move(extra_stop_sequences), is_sse_enabled);
+  const base::Value::Dict& dict =
+      CreateApiParametersDict(prompt, model_name_, stop_sequences_,
+                              std::move(extra_stop_sequences), is_sse_enabled);
   base::flat_map<std::string, std::string> headers;
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
   headers.emplace("Accept", "text/event-stream");

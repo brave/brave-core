@@ -10,8 +10,10 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
+#include "base/strings/string_piece_forward.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
@@ -25,19 +27,13 @@ namespace ai_chat {
 
 using api_request_helper::APIRequestResult;
 
-// TODO(petemill): Is this meant to be shared by both Claude and Llama? It's not
-// used to start the llama prompts but it is for Claude, but it's set for both
-// as a stop sequence (and currently the only stop sequence used by the
-// conversation prompts.
-constexpr char kHumanPrompt[] = "Human:";
-
 class RemoteCompletionClient {
  public:
-  static std::string GetHumanPromptSegment();
-
-  explicit RemoteCompletionClient(
+  RemoteCompletionClient(
       std::string model_name,
+      const base::flat_set<base::StringPiece>& stop_sequences,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+
   RemoteCompletionClient(const RemoteCompletionClient&) = delete;
   RemoteCompletionClient& operator=(const RemoteCompletionClient&) = delete;
   ~RemoteCompletionClient();
@@ -60,7 +56,7 @@ class RemoteCompletionClient {
                         APIRequestResult result);
 
   std::string model_name_;
-  std::vector<std::string> default_stop_sequences_;
+  const base::flat_set<base::StringPiece> stop_sequences_;
   api_request_helper::APIRequestHelper api_request_helper_;
 
   base::WeakPtrFactory<RemoteCompletionClient> weak_ptr_factory_{this};

@@ -10,11 +10,14 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/fixed_flat_set.h"
+#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/pattern.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/types/expected.h"
@@ -33,15 +36,25 @@ namespace {
 using mojom::CharacterType;
 using mojom::ConversationTurn;
 
-// Note the blank spaces intentionally added
+// Marks the beginning of human entries for the model.
+// Must be prepended to our prompt, and is appending to the end of Claude prompt
+// (as a stop sequence, so it gets stripped).
+constexpr char kHumanPromptSequence[] = "\n\nHuman: ";
+// Smaller version of the above that we strip from any input text.
+constexpr char kHumanPrompt[] = "Human:";
 
-constexpr char kHumanPromptPlaceholder[] = "\nH: ";
+// Marks the beginning of assistant entries for the model
+constexpr char kAIPromptSequence[] = "\n\nAssistant: ";
+// Smaller version of the above that we strip from any input text.
 constexpr char kAIPrompt[] = "Assistant:";
+
+// Produced by our custom prompt:
+// (note the blank spaces intentionally added)
+constexpr char kHumanPromptPlaceholder[] = "\nH: ";
 constexpr char kAIPromptPlaceholder[] = "\n\nA: ";
 
-std::string GetAssistantPromptSegment() {
-  return base::StrCat({"\n\n", kAIPrompt});
-}
+static constexpr auto kStopSequences =
+    base::MakeFixedFlatSet<base::StringPiece>({kHumanPromptSequence});
 
 std::string GetConversationHistoryString(
     const std::vector<ConversationTurn>& conversation_history) {
@@ -81,11 +94,11 @@ std::string BuildClaudePrompt(
                 {GetConversationHistoryString(conversation_history)}, nullptr);
 
   std::string prompt = base::StrCat(
-      {RemoteCompletionClient::GetHumanPromptSegment(), prompt_segment_article,
+      {kHumanPromptSequence, prompt_segment_article,
        base::ReplaceStringPlaceholders(
            l10n_util::GetStringUTF8(IDS_AI_CHAT_ASSISTANT_PROMPT_SEGMENT),
            {prompt_segment_history, question_part}, nullptr),
-       GetAssistantPromptSegment(), " <response>\n"});
+       kAIPromptSequence, " <response>\n"});
 
   return prompt;
 }
@@ -95,8 +108,10 @@ void CheckPrompt(std::string& prompt) {
   // All queries must have the "Human" and "AI" prompt markers. We do not
   // prepend / append them here since callers may want to put them in
   // custom positions.
-  DCHECK(base::MatchPattern(prompt, base::StrCat({"*", kHumanPrompt, "*"})));
-  DCHECK(base::MatchPattern(prompt, base::StrCat({"*", kAIPrompt, "*"})));
+  DCHECK(base::MatchPattern(prompt,
+                            base::StrCat({"*", kHumanPromptSequence, "*"})));
+  DCHECK(
+      base::MatchPattern(prompt, base::StrCat({"*", kAIPromptSequence, "*"})));
 }
 
 }  // namespace
@@ -108,8 +123,10 @@ EngineConsumerClaudeRemote::EngineConsumerClaudeRemote(
   // likley it will be chosen by the server and the general string "claude"
   // provided here.
   const auto model_name = ai_chat::features::kAIModelName.Get();
-  api_ =
-      std::make_unique<RemoteCompletionClient>(model_name, url_loader_factory);
+  base::flat_set<base::StringPiece> stop_sequences(kStopSequences.begin(),
+                                                   kStopSequences.end());
+  api_ = std::make_unique<RemoteCompletionClient>(model_name, stop_sequences,
+                                                  url_loader_factory);
 }
 
 EngineConsumerClaudeRemote::~EngineConsumerClaudeRemote() = default;
@@ -125,14 +142,14 @@ void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
   std::string prompt;
   std::vector<std::string> stop_sequences;
   prompt = base::StrCat(
-      {RemoteCompletionClient::GetHumanPromptSegment(),
+      {kHumanPromptSequence,
        base::ReplaceStringPlaceholders(
            l10n_util::GetStringUTF8(is_video
                                         ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
                                         : IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
            {page_content}, nullptr),
        "\n\n", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROMPT_SEGMENT),
-       GetAssistantPromptSegment(), " <response>"});
+       kAIPromptSequence, "<response>"});
   CheckPrompt(prompt);
   stop_sequences.push_back("</response>");
 
@@ -175,6 +192,7 @@ void EngineConsumerClaudeRemote::GenerateAssistantResponse(
 
 void EngineConsumerClaudeRemote::SanitizeInput(std::string& input) {
   base::ReplaceSubstringsAfterOffset(&input, 0, kHumanPrompt, "");
+  base::ReplaceSubstringsAfterOffset(&input, 0, kAIPrompt, "");
   // TODO(petemill): Do we need to strip the versions of these without newlines?
   base::ReplaceSubstringsAfterOffset(&input, 0, kHumanPromptPlaceholder, "");
   base::ReplaceSubstringsAfterOffset(&input, 0, kAIPromptPlaceholder, "");
