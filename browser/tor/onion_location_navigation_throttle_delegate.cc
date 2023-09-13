@@ -36,8 +36,7 @@ class TorNavigationInitiator
   friend class WebContentsUserData;
 
   // Used only for pointer comparasion.
-  const raw_ptr<content::WebContents, DanglingUntriaged>
-      initiator_web_contents_ = nullptr;
+  const raw_ptr<content::WebContents> initiator_web_contents_ = nullptr;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
@@ -92,13 +91,14 @@ OnionLocationNavigationThrottleDelegate::
     ~OnionLocationNavigationThrottleDelegate() = default;
 
 void OnionLocationNavigationThrottleDelegate::OpenInTorWindow(
-    content::WebContents* context,
+    content::WebContents* web_contents,
     const GURL& onion_location,
     bool renderer_initiated) {
-  Profile* profile = Profile::FromBrowserContext(context->GetBrowserContext());
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
   Browser* tor_browser = TorProfileManager::SwitchToTorProfile(profile);
   if (renderer_initiated) {
-    OpenURLInTor(tor_browser, onion_location, context);
+    OpenURLInTor(tor_browser, onion_location, web_contents);
   } else {
     OpenURLInTor(tor_browser, onion_location, nullptr);
   }
