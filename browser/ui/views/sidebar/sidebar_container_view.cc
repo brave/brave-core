@@ -792,41 +792,16 @@ void SidebarContainerView::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
-  SharedPinnedTabService* shared_pinned_tab_service =
-      GetSharedPinnedTabService(browser_->profile());
-
   // Need to [de]register contextual registry when tab is replaced.
-  // Ex, tab is discarded or shared pinned tab feature is used
-  // When replaced web contents is dummy contents from shared pinned tab,
-  // we don't need to handle about it.
   if ((change.type() == TabStripModelChange::kReplaced)) {
     auto* replace = change.GetReplace();
-
-    // Don't need to register for shared pinned tab's dummy contents.
-    if (!shared_pinned_tab_service ||
-        !shared_pinned_tab_service->IsDummyContents(replace->new_contents)) {
-      StartObservingContextualSidePanelRegistry(replace->new_contents);
-    }
-
-    // Don't need to deregister for shared pinned tab's dummy contents.
-    if (!shared_pinned_tab_service ||
-        !shared_pinned_tab_service->IsDummyContents(replace->old_contents)) {
-      StopObservingContextualSidePanelRegistry(replace->old_contents);
-    }
+    StartObservingContextualSidePanelRegistry(replace->new_contents);
+    StopObservingContextualSidePanelRegistry(replace->old_contents);
     return;
   }
 
   if (change.type() == TabStripModelChange::kInserted) {
     for (const auto& contents : change.GetInsert()->contents) {
-      // Don't need to handle when dummy contents is inserted.
-      // We'll do proper registration when it's replaced with shared web
-      // contents.
-      if (shared_pinned_tab_service &&
-          shared_pinned_tab_service->IsDummyContents(contents.contents)) {
-        DVLOG(1) << " Ignored - Dummy tab is inserted for shared pinned "
-                    "tabs.";
-        continue;
-      }
       StartObservingContextualSidePanelRegistry(contents.contents);
     }
     return;
@@ -834,12 +809,6 @@ void SidebarContainerView::OnTabStripModelChanged(
 
   if (change.type() == TabStripModelChange::kRemoved) {
     for (const auto& contents : change.GetRemove()->contents) {
-      if (shared_pinned_tab_service &&
-          shared_pinned_tab_service->IsDummyContents(contents.contents)) {
-        DVLOG(1) << " Ignored - Dummy tab is removed for shared pinned tabs.";
-        continue;
-      }
-
       StopObservingContextualSidePanelRegistry(contents.contents);
     }
     return;
@@ -887,12 +856,13 @@ void SidebarContainerView::StartObservingContextualSidePanelRegistry(
       GetSharedPinnedTabService(browser_->profile());
 
   // When a tab is moved from another window and it has active contextual entry,
-  // SidePanelCoordinator handles it and make it visible after it's added to new
+  // SidePanelCoordinator handles it and make it visible after it's moved to new
   // window. However, SidePanelCoordinator doesn't handle shared pinned tab's
-  // contextual entry because it only response active tab changing. We switch
-  // shared pinned tab by replacing tab. So, need special handling here for
-  // shared pinned tab. With this, shared pinned tab across multiple windows
-  // will have proper panel open state.
+  // activation because it only have interests about active tab changing. We
+  // switch shared pinned tab by replacing tab. With below special handling,
+  // shared pinned tab across multiple windows will have proper panel open
+  // state. If per-tab side panel is opened for shared pinned tab, all other
+  // windows also should have same visible side panel.
   if (shared_pinned_tab_service &&
       shared_pinned_tab_service->IsSharedContents(contents)) {
     if (auto active_entry = registry->active_entry()) {

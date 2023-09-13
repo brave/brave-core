@@ -13,7 +13,7 @@
   friend class BraveSidePanelCoordinator; \
   virtual std::unique_ptr<views::View> CreateHeader
 
-#include "src/chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
+#include "src/chrome/browser/ui/views/side_panel/side_panel_coordinator.h"  // IWYU pragma: export
 
 #undef CreateHeader
 
