@@ -191,8 +191,8 @@ export function makeJsonRpcServiceObserver (store: Store) {
 
   export function  makeBraveWalletPinServiceObserver (store: Store) {
     const braveWalletServiceObserverReceiver = new BraveWallet.BraveWalletPinServiceObserverReceiver({
-      onTokenStatusChanged: function (_service, _token, _status) {
-        store.dispatch(walletApi.endpoints.getNftsPinningStatus.initiate())
+      onTokenStatusChanged: function (_service, token, status) {
+        store.dispatch(walletApi.endpoints.updateNftsPinningStatus.initiate({ token, status }))
       },
       onLocalNodeStatusChanged: function (_status) {
         store.dispatch(walletApi.util.invalidateTags(['LocalIPFSNodeStatus']))

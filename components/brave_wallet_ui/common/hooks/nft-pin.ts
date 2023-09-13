@@ -33,11 +33,6 @@ type PinnableNftsState = Array<{
   token: BraveWallet.BlockchainToken
 }>
 
-const POLLING_INTERVAL_IN_MS = 3000
-const POLLING_CONFIG = {
-  pollingInterval: POLLING_INTERVAL_IN_MS
-}
-
 export function useNftPin () {
   // state
   const [nonFungibleTokens, setNonFungibleTokens] = React.useState<PinnableNftsState>([])
@@ -53,7 +48,7 @@ export function useNftPin () {
   
  // queries
  const { data: isAutoPinEnabled } = useGetAutopinEnabledQuery()
- const { data: nftsPinningStatus } = useGetNftsPinningStatusQuery(undefined, POLLING_CONFIG)
+ const { data: nftsPinningStatus } = useGetNftsPinningStatusQuery()
 
   // hooks
   const { isTokenPinningSupported } = useLib()

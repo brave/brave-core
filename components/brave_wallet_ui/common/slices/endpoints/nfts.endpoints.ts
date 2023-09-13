@@ -279,7 +279,7 @@ export const nftsEndpoints = ({
       invalidatesTags: ['AutoPinEnabled']
     }),
     getIPFSUrlFromGatewayLikeUrl: query<string | null, string>({
-      queryFn: async (urlArg, { endpoint}, _extraOptions, baseQuery) => {
+      queryFn: async (urlArg, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { cache } = baseQuery(undefined)
           const ipfsUrl = await cache.getExtractedIPFSUrlFromGatewayLikeUrl(
@@ -289,11 +289,11 @@ export const nftsEndpoints = ({
             data: ipfsUrl || null
           }
         } catch (error) {
-         return handleEndpointError(
-           endpoint,
-           'Failed to get IPFS URL from gateway-like URL',
-           error
-         )
+          return handleEndpointError(
+            endpoint,
+            'Failed to get IPFS URL from gateway-like URL',
+            error
+          )
         }
       }
     }),
@@ -412,18 +412,22 @@ export const nftsEndpoints = ({
     }),
     getNftsPinningStatus: query<
       /** `getAssetIdKey(asset)` */
-      {[assetIdKey: string]: {
-        code: BraveWallet.TokenPinStatusCode | undefined
-        error: BraveWallet.PinError | undefined
-      }},
+      {
+        [assetIdKey: string]: {
+          code: BraveWallet.TokenPinStatusCode | undefined
+          error: BraveWallet.PinError | undefined
+        }
+      },
       void
     >({
       queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
-           const { data: api, cache } = baseQuery(undefined)
+          const { data: api, cache } = baseQuery(undefined)
           const { braveWalletPinService } = api
           const reg = await cache.getUserTokensRegistry()
-          const visibleTokens = reg.visibleTokenIds.map(id => reg.entities[id]).filter(token => token?.isErc721 || token?.isNft)
+          const visibleTokens = reg.visibleTokenIds
+            .map((id) => reg.entities[id])
+            .filter((token) => token?.isErc721 || token?.isNft)
           const results = await mapLimit(
             visibleTokens,
             10,
@@ -434,14 +438,21 @@ export const nftsEndpoints = ({
           visibleTokens.forEach((token, index) => {
             if (token) {
               const { status, error } = results[index]
-              pinningStatus[getAssetIdKey(token)] = { code: status?.local?.code, error }
+              pinningStatus[getAssetIdKey(token)] = {
+                code: status?.local?.code,
+                error
+              }
             }
           })
           return {
             data: pinningStatus
           }
         } catch (error) {
-          return handleEndpointError(endpoint, 'Error getting NFTs pinning status', error)
+          return handleEndpointError(
+            endpoint,
+            'Error getting NFTs pinning status',
+            error
+          )
         }
       },
       providesTags: ['NFTSPinningStatus']
@@ -450,13 +461,19 @@ export const nftsEndpoints = ({
       queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { braveWalletPinService } = baseQuery(undefined).data
-          const isNodeRunning = await (await braveWalletPinService.isLocalNodeRunning()).result
+          const isNodeRunning = await (
+            await braveWalletPinService.isLocalNodeRunning()
+          ).result
 
           return {
             data: isNodeRunning
           }
         } catch (error) {
-          return handleEndpointError(endpoint, 'Error fetching local node status', error)
+          return handleEndpointError(
+            endpoint,
+            'Error fetching local node status',
+            error
+          )
         }
       },
       providesTags: ['LocalIPFSNodeStatus']
