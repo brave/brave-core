@@ -56,23 +56,23 @@ AdBlockService::SourceProviderObserver::~SourceProviderObserver() {
 }
 
 void AdBlockService::SourceProviderObserver::OnChanged() {
-  auto filter_set = std::make_unique<rust::Box<adblock::FilterSet>>(
-      adblock::new_filter_set());
-  rust::Box<adblock::FilterSet>* filter_set_ptr = filter_set.get();
-  auto on_loaded_cb =
-      base::BindOnce(&AdBlockService::SourceProviderObserver::OnFilterSetLoaded,
-                     weak_factory_.GetWeakPtr(), std::move(filter_set));
+  auto on_loaded_cb = base::BindOnce(
+      &AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded,
+      weak_factory_.GetWeakPtr());
   if (is_filter_provider_manager_) {
     static_cast<AdBlockFiltersProviderManager*>(filters_provider_.get())
         ->LoadFilterSetForEngine(adblock_engine_->IsDefaultEngine(),
-                                 filter_set_ptr, std::move(on_loaded_cb));
+                                 std::move(on_loaded_cb));
   } else {
-    filters_provider_->LoadFilterSet(filter_set_ptr, std::move(on_loaded_cb));
+    filters_provider_->LoadFilterSet(std::move(on_loaded_cb));
   }
 }
 
-void AdBlockService::SourceProviderObserver::OnFilterSetLoaded(
-    std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
+void AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded(
+    base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
+  auto filter_set = std::make_unique<rust::Box<adblock::FilterSet>>(
+      adblock::new_filter_set());
+  std::move(cb).Run(filter_set.get());
   filter_set_ = std::move(filter_set);
   // multiple AddObserver calls are ignored
   resource_provider_->AddObserver(this);
