@@ -16,6 +16,8 @@ interface Store {
   siteInfo: SiteInfo | null
   favIconUrl: string | undefined
   currentError: APIError | undefined
+  apiHasError: boolean
+  shouldDisableUserInput: boolean
   generateSuggestedQuestions: () => void
   setUserAllowsAutoGenerating: (value: boolean) => void
   handleAgreeClick: () => void
@@ -27,10 +29,12 @@ const defaultStore = {
   isGenerating: false,
   canGenerateQuestions: false,
   hasSeenAgreement: false,
+  apiHasError: false,
+  shouldDisableUserInput: false,
   userAutoGeneratePref: undefined,
   siteInfo: null,
   favIconUrl: undefined,
-  currentError: undefined,
+  currentError: APIError.None,
   generateSuggestedQuestions: () => {},
   setUserAllowsAutoGenerating: () => {},
   handleAgreeClick: () => {}

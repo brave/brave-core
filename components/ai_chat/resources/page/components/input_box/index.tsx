@@ -11,20 +11,19 @@ import Icon from '@brave/leo/react/icon'
 
 import styles from './style.module.scss'
 import DataContext from '../../state/context'
-import getPageHandlerInstance, { APIError } from '../../api/page_handler'
+import getPageHandlerInstance from '../../api/page_handler'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
 
 function InputBox () {
   const [inputText, setInputText] = React.useState('')
-  const { currentError, isGenerating, hasSeenAgreement, handleAgreeClick } = React.useContext(DataContext)
+  const { hasSeenAgreement, handleAgreeClick, shouldDisableUserInput } = React.useContext(DataContext)
 
   const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
   const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
 
-  const apiHasError = !!currentError && (currentError !== APIError.None)
-  const isInputDisabled = apiHasError || isGenerating || isCharLimitExceeded
+  const isInputDisabled = shouldDisableUserInput || isCharLimitExceeded
 
   if (!hasSeenAgreement) {
     return (
