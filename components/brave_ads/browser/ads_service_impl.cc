@@ -1595,7 +1595,7 @@ void AdsServiceImpl::Save(const std::string& name,
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&base::ImportantFileWriter::WriteFileAtomically,
-                     base_path_.AppendASCII(name), value, base::StringPiece()),
+                     base_path_.AppendASCII(name), value, std::string_view()),
       std::move(callback));
 }
 

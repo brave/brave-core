@@ -4,11 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <string_view>
 #include <utility>
 #include <vector>
 
 #include "base/strings/strcat.h"
-#include "base/strings/string_piece.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/browser/ads_service_mock.h"
@@ -34,7 +34,7 @@ constexpr char kSearchResultAdClickUrl[] =
 constexpr char kPlacementId[] = "placement_id";
 
 blink::mojom::WebPagePtr CreateTestWebPage(
-    std::vector<base::StringPiece> attributes_to_skip = {}) {
+    std::vector<std::string_view> attributes_to_skip = {}) {
   blink::mojom::WebPagePtr web_page = blink::mojom::WebPage::New();
   web_page->entities = CreateTestWebPageEntities(std::move(attributes_to_skip));
   return web_page;

@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_url_request_builder.h"
-#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_url_request_json_reader_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "net/http/http_status_code.h"

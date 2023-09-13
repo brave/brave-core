@@ -17,11 +17,11 @@ namespace brave_ads {
 std::string BoolToString(bool value);
 
 std::vector<float> DelimitedStringToVector(const std::string& string,
-                                           base::StringPiece delimiter);
+                                           std::string_view delimiter);
 
 template <typename T>
 std::string VectorToDelimitedString(const std::vector<T>& vector_components,
-                                    const base::StringPiece delimiter) {
+                                    const std::string_view delimiter) {
   std::vector<std::string> string_components;
   string_components.reserve(vector_components.size());
   for (const auto& vector_component : vector_components) {

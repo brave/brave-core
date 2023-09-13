@@ -9,12 +9,12 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
@@ -78,7 +78,7 @@ struct ParamInfo final {
 SegmentList GetSegmentList() {
   SegmentList segments;
   base::ranges::transform(GetSegments(), std::back_inserter(segments),
-                          [](const base::StringPiece& segment) {
+                          [](const std::string_view& segment) {
                             return static_cast<std::string>(segment);
                           });
   return segments;
@@ -127,7 +127,7 @@ class BraveAdsTopSegmentsTest
         {"technology & computing", mojom::NotificationAdEventType::kDismissed},
         {"technology & computing", mojom::NotificationAdEventType::kClicked}};
 
-    for (const base::StringPiece segment : GetSegments()) {
+    for (const std::string_view segment : GetSegments()) {
       epsilon_greedy_bandit_processor_->Process(
           {static_cast<std::string>(segment),
            mojom::NotificationAdEventType::kDismissed});

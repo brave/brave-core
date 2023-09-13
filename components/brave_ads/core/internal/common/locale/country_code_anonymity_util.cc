@@ -5,15 +5,16 @@
 
 #include "brave/components/brave_ads/core/internal/common/locale/country_code_anonymity_util.h"
 
+#include <string_view>
+
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
-#include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 
 namespace {
 
 constexpr auto kCountryCodeAnonymitySet =
-    base::MakeFixedFlatSet<base::StringPiece>({
+    base::MakeFixedFlatSet<std::string_view>({
         "US",  // United States of America
         "CA",  // Canada
         "GB",  // United Kingdom (Great Britain and Northern Ireland)
@@ -146,7 +147,7 @@ constexpr auto kCountryCodeAnonymitySet =
         "ZW"   // Zimbabwe
     });
 
-constexpr auto kOtherCountryCodes = base::MakeFixedFlatSet<base::StringPiece>({
+constexpr auto kOtherCountryCodes = base::MakeFixedFlatSet<std::string_view>({
     "AS",  // American Samoa
     "AI",  // Anguilla
     "AQ",  // Antarctica

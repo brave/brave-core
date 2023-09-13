@@ -112,7 +112,7 @@ class SearchResultAdTest : public InProcessBrowserTest {
     InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
-  GURL GetURL(base::StringPiece domain, const std::string& path) const {
+  GURL GetURL(std::string_view domain, const std::string& path) const {
     base::StringPairs replacements;
     replacements.emplace_back(std::make_pair(
         "REPLACE_WITH_HTTP_PORT",
@@ -126,7 +126,7 @@ class SearchResultAdTest : public InProcessBrowserTest {
   std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
       const net::test_server::HttpRequest& request) {
     const GURL url = request.GetURL();
-    const base::StringPiece path = url.path_piece();
+    const std::string_view path = url.path_piece();
 
     if (!base::StartsWith(path, kClickRedirectPath)) {
       return nullptr;

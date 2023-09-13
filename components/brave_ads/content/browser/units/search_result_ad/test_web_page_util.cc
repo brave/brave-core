@@ -10,7 +10,6 @@
 
 #include "base/containers/contains.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_piece.h"
 #include "components/schema_org/common/metadata.mojom.h"
 
 namespace brave_ads {
@@ -42,7 +41,7 @@ schema_org::mojom::ValuesPtr CreateVectorValuesPtr(bool value) {
 class TestWebPageEntitiesConstructor final {
  public:
   explicit TestWebPageEntitiesConstructor(
-      std::vector<base::StringPiece> attributes_to_skip)
+      std::vector<std::string_view> attributes_to_skip)
       : attributes_to_skip_(std::move(attributes_to_skip)) {
     web_page_entities_ = CreateWebPageEntities();
   }
@@ -73,7 +72,7 @@ class TestWebPageEntitiesConstructor final {
 
   template <typename T>
   void AddProperty(std::vector<schema_org::mojom::PropertyPtr>* properties,
-                   base::StringPiece name,
+                   std::string_view name,
                    T value) {
     if (base::Contains(attributes_to_skip_, name)) {
       return;
@@ -114,13 +113,13 @@ class TestWebPageEntitiesConstructor final {
   }
 
   std::vector<::schema_org::mojom::EntityPtr> web_page_entities_;
-  std::vector<base::StringPiece> attributes_to_skip_;
+  std::vector<std::string_view> attributes_to_skip_;
 };
 
 }  // namespace
 
 std::vector<::schema_org::mojom::EntityPtr> CreateTestWebPageEntities(
-    std::vector<base::StringPiece> attributes_to_skip) {
+    std::vector<std::string_view> attributes_to_skip) {
   TestWebPageEntitiesConstructor constructor(std::move(attributes_to_skip));
   return constructor.GetTestWebPageEntities();
 }

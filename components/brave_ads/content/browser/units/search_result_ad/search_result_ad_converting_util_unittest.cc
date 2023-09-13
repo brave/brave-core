@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/content/browser/units/search_result_ad/search_result_ad_converting_util.h"
 
+#include <string_view>
 #include <utility>
 
-#include "base/strings/string_piece.h"
 #include "brave/components/brave_ads/content/browser/units/search_result_ad/test_web_page_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "components/schema_org/common/metadata.mojom.h"

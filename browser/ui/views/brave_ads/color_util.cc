@@ -6,11 +6,10 @@
 #include "brave/browser/ui/views/brave_ads/color_util.h"
 
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_piece.h"
 
 namespace brave_ads {
 
-bool RgbStringToSkColor(base::StringPiece rgb, SkColor* color) {
+bool RgbStringToSkColor(std::string_view rgb, SkColor* color) {
   CHECK(color);
 
   // Expect three RGB color components with length == 2, e.g. 42fe4c.

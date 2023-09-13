@@ -21,7 +21,7 @@ std::string BoolToString(const bool value) {
 }
 
 std::vector<float> DelimitedStringToVector(const std::string& string,
-                                           const base::StringPiece delimiter) {
+                                           const std::string_view delimiter) {
   const std::vector<std::string> string_components = base::SplitString(
       string, delimiter, base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 

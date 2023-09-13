@@ -7,9 +7,9 @@
 
 namespace brave_ads {
 
-base::span<const base::StringPiece> GetAmazonSearchEngineDomainExtensions() {
+base::span<const std::string_view> GetAmazonSearchEngineDomainExtensions() {
   // See https://www.amazon.com/gp/navigation-country/select-country.
-  static constexpr base::StringPiece kExtensions[] = {
+  static constexpr std::string_view kExtensions[] = {
       "ae",     "ca",     "cn", "co.jp", "co.uk", "com", "com.au",
       "com.br", "com.mx", "de", "eg",    "es",    "fr",  "in",
       "it",     "nl",     "pl", "sa",    "se",    "sp",  "tr"};
@@ -17,8 +17,8 @@ base::span<const base::StringPiece> GetAmazonSearchEngineDomainExtensions() {
   return kExtensions;
 }
 
-base::span<const base::StringPiece> GetGoogleSearchEngineDomainExtensions() {
-  static constexpr base::StringPiece kExtensions[] = {
+base::span<const std::string_view> GetGoogleSearchEngineDomainExtensions() {
+  static constexpr std::string_view kExtensions[] = {
       "ac",     "ad",     "ae",     "al",     "am",     "as",     "at",
       "az",     "ba",     "be",     "bf",     "bg",     "bi",     "bj",
       "bs",     "bt",     "ca",     "cat",    "cd",     "cf",     "cg",
@@ -51,8 +51,8 @@ base::span<const base::StringPiece> GetGoogleSearchEngineDomainExtensions() {
   return kExtensions;
 }
 
-base::span<const base::StringPiece> GetMojeekSearchEngineDomainExtensions() {
-  static constexpr base::StringPiece kExtensions[] = {"co.uk", "com"};
+base::span<const std::string_view> GetMojeekSearchEngineDomainExtensions() {
+  static constexpr std::string_view kExtensions[] = {"co.uk", "com"};
 
   return kExtensions;
 }
