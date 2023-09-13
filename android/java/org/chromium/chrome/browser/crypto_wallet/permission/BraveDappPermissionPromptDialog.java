@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.ConnectAccountFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.components.browser_ui.modaldialog.ModalDialogView;
@@ -228,6 +229,22 @@ public class BraveDappPermissionPromptDialog
                         }
                     }
                     mAccountsListAdapter.notifyDataSetChanged();
+
+                    // We are on the flow from ConnectAccountFragment.connectAccount
+                    if (ConnectAccountFragment.connectAccountInProgressData != null) {
+                        ConnectAccountFragment
+                                .ConnectAccountInProgressData connectAccountInProgressData =
+                                ConnectAccountFragment.connectAccountInProgressData;
+                        ConnectAccountFragment.connectAccountInProgressData = null;
+
+                        final String[] selectedAccounts = {
+                                connectAccountInProgressData.accountAddress};
+                        BraveDappPermissionPromptDialogJni.get().onPrimaryButtonClicked(
+                                mNativeDialogController, selectedAccounts,
+                                connectAccountInProgressData.permissionLifetimeOption);
+                        mModalDialogManager.dismissDialog(
+                                mPropertyModel, DialogDismissalCause.POSITIVE_BUTTON_CLICKED);
+                    }
                 });
     }
 
