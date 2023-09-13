@@ -197,8 +197,7 @@ void ConnectGeminiWallet::OnPostAccount(ConnectExternalWalletCallback callback,
 
   auto on_connect =
       base::BindOnce(&ConnectGeminiWallet::OnConnect, base::Unretained(this),
-                     std::move(callback), std::move(token), recipient_id,
-                     std::move(country_id));
+                     std::move(callback), std::move(token), recipient_id);
 
   RequestFor<PostConnectGemini>(*engine_, std::move(linking_info),
                                 std::move(recipient_id))
