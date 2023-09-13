@@ -1,5 +1,11 @@
+# Copyright (c) 2017 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/build/config.gni")
 import("//brave/build/mac/config.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//build/util/branding.gni")
 import("//chrome/common/features.gni")
 import("//chrome/version.gni")
@@ -88,6 +94,9 @@ group("brave") {
   exe_path = "$app_path/Contents/MacOS/$chrome_product_full_name"
   write_file("$root_out_dir/brave_helper",
              [ string_replace(rebase_path(exe_path), " ", "\\ ") ])
+  if (enable_brave_vpn) {
+    deps = [ "//brave/browser/brave_vpn/mac/brave_vpn_wireguard_bridge" ]
+  }
 }
 
 ds_store_file_name = "DS_Store"

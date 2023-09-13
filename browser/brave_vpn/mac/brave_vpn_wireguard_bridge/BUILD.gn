@@ -1,0 +1,99 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/browser/brave_vpn/mac/brave_vpn_wireguard_bridge/branding.gni")
+import("//brave/build/mac/config.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//build/apple/compile_entitlements.gni")
+import("//build/apple/compile_plist.gni")
+import("//build/apple/tweak_info_plist.gni")
+import("//build/config/mac/rules.gni")
+
+assert(enable_brave_vpn)
+assert(is_mac)
+
+tweak_info_plist("wireguard_bridge_plist") {
+  info_plist = "Info.plist"
+}
+
+compile_entitlements("wg-app-entitlement") {
+  entitlements_templates = [ "app-entitlements.plist" ]
+  output_name = "$root_gen_dir/wg-app-entitlements.plist"
+  substitutions = [
+    "DEVELOPMENT_TEAM=$mac_development_team_id",
+    "APP_ID_MACOS=$mac_bundle_identifier",
+  ]
+}
+
+compile_entitlements("network-extension-entitlement") {
+  entitlements_templates = [ "network-extension-entitlement.plist" ]
+  output_name = "$root_gen_dir/wg-network-extension-entitlement.plist"
+  substitutions = [
+    "DEVELOPMENT_TEAM=$mac_development_team_id",
+    "APP_ID_MACOS=$mac_bundle_identifier",
+  ]
+}
+
+bundle_data("wireguard_provisionprofile") {
+  sources = [ "//brave/third_party/wireguard-apple/embedded.provisionprofile" ]
+  outputs = [ "{{bundle_contents_dir}}/{{source_file_part}}" ]
+}
+
+bundle_data("wireguard_network_extension") {
+  sources =
+      [ "//brave/third_party/wireguard-apple/WireGuardNetworkExtension.appex" ]
+  outputs = [ "{{bundle_contents_dir}}/PlugIns/{{source_file_part}}" ]
+}
+
+source_set("runner") {
+  sources = [
+    "brave_vpn_runner_mac.h",
+    "brave_vpn_runner_mac.mm",
+    "keychain_mac.h",
+    "keychain_mac.mm",
+    "utils.cc",
+    "utils.h",
+  ]
+  deps = [
+    "//base",
+    "//third_party/abseil-cpp:absl",
+  ]
+}
+
+mac_app_bundle("brave_vpn_wireguard_bridge") {
+  info_plist_target = ":wireguard_bridge_plist"
+  output_name = "BraveVpnWireguardBridge"
+  sources = [ "brave_vpn_wireguard_bridge.cc" ]
+  extra_substitutions = [
+    "APP_ID_MACOS=$mac_bundle_identifier",
+    "DEVELOPMENT_TEAM=$mac_development_team_id",
+  ]
+
+  deps = [
+    ":wg-app-entitlement",
+    ":network-extension-entitlement",
+    ":runner",
+    ":wireguard_network_extension",
+    ":wireguard_provisionprofile",
+    "//base",
+  ]
+
+  frameworks = [
+    "NetworkExtension.framework",
+    "Foundation.framework",
+    "Security.framework",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "utils_unittest.cc" ]
+
+  deps = [
+    ":runner",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+  ]
+}
