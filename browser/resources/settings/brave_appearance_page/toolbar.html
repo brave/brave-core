@@ -50,7 +50,7 @@
   <settings-brave-appearance-tabs prefs="{{prefs}}""></settings-brave-appearance-tabs>
   <settings-brave-appearance-sidebar prefs="{{prefs}}"></settings-brave-appearance-sidebar>
 </if>
-<if expr="enable_brave_vpn">
+<if expr="enable_brave_vpn_wireguard">
   <template is="dom-if" if="[[showBraveVPNOption_()]]">
     <settings-toggle-button
       pref="{{prefs.brave.brave_vpn.show_button}}"

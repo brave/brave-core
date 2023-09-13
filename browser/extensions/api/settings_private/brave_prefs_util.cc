@@ -166,7 +166,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   (*s_brave_allowlist)[brave_vpn::prefs::kBraveVPNShowButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
   (*s_brave_allowlist)[brave_vpn::prefs::kBraveVPNWireguardEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif

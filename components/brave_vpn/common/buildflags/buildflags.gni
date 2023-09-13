@@ -10,3 +10,8 @@ declare_args() {
   # vpn panel is desktop specific UI.
   enable_brave_vpn_panel = is_win || is_mac
 }
+
+declare_args() {
+  # Wireguard is available only on Windows.
+  enable_brave_vpn_wireguard = is_win && enable_brave_vpn
+}
