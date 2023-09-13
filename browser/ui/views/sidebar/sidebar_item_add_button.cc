@@ -10,10 +10,10 @@
 
 #include "base/functional/bind.h"
 #include "base/time/time.h"
-#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -43,20 +43,11 @@ SidebarItemAddButton::SidebarItemAddButton(
 SidebarItemAddButton::~SidebarItemAddButton() = default;
 
 void SidebarItemAddButton::OnButtonPressed() {
-  if (IsBubbleVisible())
+  if (IsBubbleVisible()) {
     return;
+  }
 
   ShowBubble();
-}
-
-void SidebarItemAddButton::OnThemeChanged() {
-  View::OnThemeChanged();
-
-  UpdateButtonImages();
-}
-
-void SidebarItemAddButton::AddedToWidget() {
-  UpdateButtonImages();
 }
 
 void SidebarItemAddButton::OnWidgetDestroying(views::Widget* widget) {
@@ -74,31 +65,15 @@ bool SidebarItemAddButton::IsBubbleVisible() const {
 }
 
 void SidebarItemAddButton::UpdateButtonImages() {
-  SkColor button_base_color = SK_ColorWHITE;
-  SkColor button_disabled_color = SK_ColorWHITE;
-  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
-    button_base_color = color_provider->GetColor(kColorSidebarButtonBase);
-    button_disabled_color =
-        color_provider->GetColor(kColorSidebarAddButtonDisabled);
-  }
-
-  // Update add button image based on enabled state.
-  SetImage(views::Button::STATE_NORMAL, nullptr);
-  SetImage(views::Button::STATE_DISABLED, nullptr);
-  SetImage(views::Button::STATE_HOVERED, nullptr);
-  SetImage(views::Button::STATE_PRESSED, nullptr);
-  auto& bundle = ui::ResourceBundle::GetSharedInstance();
-  if (GetEnabled()) {
-    SetImage(views::Button::STATE_NORMAL,
-             gfx::CreateVectorIcon(kSidebarAddItemIcon, button_base_color));
-    SetImage(views::Button::STATE_HOVERED,
-             bundle.GetImageSkiaNamed(IDR_SIDEBAR_ITEM_ADD_FOCUSED));
-    SetImage(views::Button::STATE_PRESSED,
-             bundle.GetImageSkiaNamed(IDR_SIDEBAR_ITEM_ADD_FOCUSED));
-  } else {
-    SetImage(views::Button::STATE_NORMAL,
-             gfx::CreateVectorIcon(kSidebarAddItemIcon, button_disabled_color));
-  }
+  SetImageModel(STATE_NORMAL,
+                ui::ImageModel::FromVectorIcon(
+                    kLeoPlusAddIcon, kColorSidebarButtonBase, kIconSize));
+  SetImageModel(STATE_PRESSED,
+                ui::ImageModel::FromVectorIcon(
+                    kLeoPlusAddIcon, kColorSidebarButtonPressed, kIconSize));
+  SetImageModel(STATE_DISABLED, ui::ImageModel::FromVectorIcon(
+                                    kLeoPlusAddIcon,
+                                    kColorSidebarAddButtonDisabled, kIconSize));
 }
 
 BEGIN_METADATA(SidebarItemAddButton, SidebarButtonView)

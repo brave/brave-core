@@ -32,18 +32,10 @@ aggregate_vector_icons("brave_vector_icons") {
 
   if (toolkit_views) {
     sources += [
-      "sidebar_add_item.icon",
-      "sidebar_bookmarks.icon",
-      "sidebar_brave_talk.icon",
-      "sidebar_chat.icon",
-      "sidebar_crypto_wallet.icon",
       "sidebar_edit.icon",
-      "sidebar_history.icon",
       "sidebar_item_added_check.icon",
       "sidebar_items_down_arrow.icon",
       "sidebar_items_up_arrow.icon",
-      "sidebar_reading_list.icon",
-      "sidebar_settings.icon",
       "sidebar_trash.icon",
       "vertical_tab_strip_toggle_button.icon",
     ]

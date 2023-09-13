@@ -32,7 +32,6 @@ class SidebarItemView : public SidebarButtonView {
   void ClearHorizontalBorder();
 
   // views::ImageButton overrides:
-  void OnPaintBackground(gfx::Canvas* canvas) override;
   void OnPaintBorder(gfx::Canvas* canvas) override;
   bool IsTriggerableEvent(const ui::Event& e) override;
 
