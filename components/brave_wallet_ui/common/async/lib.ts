@@ -149,30 +149,6 @@ export async function getBlockchainTokenInfo (contractAddress: string): Promise<
   return (await apiProxy.assetRatioService.getTokenInfo(contractAddress))
 }
 
-export async function getBuyAssetUrl (args: {
-  asset: BraveWallet.BlockchainToken
-  onRampProvider: BraveWallet.OnRampProvider
-  chainId: string
-  address: string
-  amount: string
-  currencyCode: string
-}) {
-  const { assetRatioService } = getAPIProxy()
-  const { url, error } = await assetRatioService.getBuyUrlV1(
-    args.onRampProvider,
-    args.chainId,
-    args.address,
-    args.asset.symbol,
-    args.amount,
-    args.currencyCode
-  )
-
-  if (error) {
-    console.log(`Failed to get buy URL: ${error}`)
-  }
-
-  return url
-}
 
 export async function getSellAssetUrl (args: {
   asset: BraveWallet.BlockchainToken

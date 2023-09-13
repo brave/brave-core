@@ -17,15 +17,20 @@ import {
 // utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
-import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
+import {
+  checkIfTokenNeedsNetworkIcon,
+  getAssetIdKey
+} from '../../../utils/asset-utils'
 import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
 import { getPriceIdForToken } from '../../../utils/api-utils'
+import { WalletSelectors } from '../../../common/selectors'
 
 // hooks
 import {
   useGetNetworkQuery,
   useGetTokenSpotPricesQuery
 } from '../../../common/slices/api.slice'
+import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 
 // components
 import { IconsWrapper, MediumAssetIcon, NetworkIconWrapper } from '../style'
@@ -48,7 +53,6 @@ import { LoadIcon } from './buy-option-item-styles'
 interface Props {
   onClick?: (token: BraveWallet.BlockchainToken) => void
   token: BraveWallet.BlockchainToken
-  isSelected?: boolean
   isPanel?: boolean
   /** Set this to a currency-code to fetch & display the token's price */
   selectedCurrency?: string
@@ -64,10 +68,14 @@ const NftAssetIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(({
   onClick,
   token,
-  isSelected,
   isPanel,
   selectedCurrency
-}: Props, forwardedRef) => {
+}, ref) => {
+  // redux
+  const selectedOnRampAssetId = useSafeWalletSelector(
+    WalletSelectors.selectedOnRampAssetId
+  )
+
   // query Params
   const tokenIds = React.useMemo(() => {
     return [getPriceIdForToken(token)]
@@ -100,7 +108,6 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(({
     return token.symbol
   }, [tokenNetwork, isPanel, token])
 
-  // memos
   const price = React.useMemo(() => {
     return priceRegistry
       ? getTokenPriceAmountFromRegistry(priceRegistry, token)
@@ -114,6 +121,9 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(({
     }
   }, [onClick, token])
 
+  // computed
+  const isSelected = getAssetIdKey(token) === selectedOnRampAssetId
+
   // render
   if (!token.visible) {
     return null
@@ -121,7 +131,7 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(({
 
   return (
     <BuyAssetOptionWrapper
-      ref={forwardedRef}
+      ref={ref}
       isSelected={isSelected}
       onClick={handleOnClick}
     >
@@ -168,7 +178,6 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(({
       )}
     </BuyAssetOptionWrapper>
   )
-}
-)
+})
 
 export default BuyAssetOptionItem

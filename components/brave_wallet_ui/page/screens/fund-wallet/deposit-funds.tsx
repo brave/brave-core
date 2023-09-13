@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useParams } from 'react-router'
 
@@ -16,6 +16,7 @@ import {
   getBatTokensFromList,
   getAssetIdKey
 } from '../../../utils/asset-utils'
+import { WalletActions } from '../../../common/slices/wallet.slice'
 
 // types
 import {
@@ -29,7 +30,6 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 
 // hooks
 import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
-import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
 import {
   useGetMainnetsQuery,
   useGetNetworkQuery
@@ -91,12 +91,12 @@ export const DepositFundsScreen = (props: Props) => {
   const { tokenId } = useParams<{ tokenId?: string }>()
 
   // redux
+  const dispatch = useDispatch()
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
 
   // custom hooks
   const { copyToClipboard, isCopied, resetCopyState } = useCopyToClipboard()
-  const scrollIntoView = useScrollIntoView()
 
   // state
   const [showAccountSearch, setShowAccountSearch] = React.useState<boolean>(false)
@@ -276,21 +276,6 @@ export const DepositFundsScreen = (props: Props) => {
     }
   }, [copyAddressToClipboard])
 
-  const checkIsDepositAssetSelected = React.useCallback((asset: BraveWallet.BlockchainToken) => {
-    if (selectedAsset) {
-      return selectedAsset.contractAddress.toLowerCase() === asset.contractAddress.toLowerCase() &&
-        selectedAsset.symbol.toLowerCase() === asset.symbol.toLowerCase() &&
-        selectedAsset.chainId === asset.chainId
-    }
-    return false
-  }, [selectedAsset])
-
-  const handleScrollIntoView = React.useCallback((asset: BraveWallet.BlockchainToken, ref: HTMLButtonElement | null) => {
-    if (checkIsDepositAssetSelected(asset)) {
-      scrollIntoView(ref)
-    }
-  }, [checkIsDepositAssetSelected, scrollIntoView])
-
   // effects
   React.useEffect(() => {
     let subscribed = true
@@ -354,7 +339,6 @@ export const DepositFundsScreen = (props: Props) => {
       {!showDepositAddress && (
         <>
           <SelectAssetWrapper>
-
             <FilterTokenRow horizontalPadding={0} isV2={false}>
               <Column
                 flex={1}
@@ -378,11 +362,13 @@ export const DepositFundsScreen = (props: Props) => {
                 estimatedItemSize={itemSize}
                 renderToken={({ item: { asset } }) => (
                   <BuyAssetOptionItem
-                    isSelected={checkIsDepositAssetSelected(asset)}
                     key={getAssetIdKey(asset)}
                     token={asset}
-                    onClick={setSelectedAsset}
-                    ref={(ref) => handleScrollIntoView(asset, ref)}
+                    onClick={() =>
+                      dispatch(
+                        WalletActions.selectOnRampAssetId(getAssetIdKey(asset))
+                      )
+                    }
                   />
                 )}
               />
@@ -415,30 +401,29 @@ export const DepositFundsScreen = (props: Props) => {
       )}
 
       {/* Creates wallet Account if needed for deposit */}
-      {needsAccount && showDepositAddress && selectedAssetNetwork &&
+      {needsAccount && showDepositAddress && selectedAssetNetwork && (
         <CreateAccountTab
           network={selectedAssetNetwork}
           onCancel={goBackToSelectAssets}
         />
-      }
+      )}
 
       {/* Address display & Account selection/search */}
-      {!needsAccount && showDepositAddress &&
+      {!needsAccount && showDepositAddress && (
         <>
-          {!showAccountSearch &&
+          {!showAccountSearch && (
             <Column gap={'16px'}>
-
               <Column alignItems='flex-start'>
                 <Title>{depositTitleText}</Title>
 
-                {selectedAssetNetwork &&
+                {selectedAssetNetwork && (
                   <Description>
-                    {
-                      getLocale('braveWalletDepositOnlySendOnXNetwork')
-                        .replace('$1', selectedAssetNetwork.chainName)
-                    }
+                    {getLocale('braveWalletDepositOnlySendOnXNetwork').replace(
+                      '$1',
+                      selectedAssetNetwork.chainName
+                    )}
                   </Description>
-                }
+                )}
               </Column>
 
               <Row>
@@ -459,7 +444,6 @@ export const DepositFundsScreen = (props: Props) => {
               </Row>
 
               <Column gap={'4px'}>
-
                 <AddressTextLabel>Address:</AddressTextLabel>
 
                 <Row gap={'12px'}>
@@ -473,11 +457,10 @@ export const DepositFundsScreen = (props: Props) => {
 
                 {isCopied && <CopiedToClipboardConfirmation />}
               </Column>
-
             </Column>
-          }
+          )}
 
-          {showAccountSearch &&
+          {showAccountSearch && (
             <SearchWrapper>
               <SelectHeader
                 title={getLocale('braveWalletSelectAccount')}
@@ -496,9 +479,9 @@ export const DepositFundsScreen = (props: Props) => {
                 />
               </ScrollContainer>
             </SearchWrapper>
-          }
+          )}
         </>
-      }
+      )}
     </>
   )
 }

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+/* eslint-disable @typescript-eslint/key-spacing */
 import { assert } from 'chrome://resources/js/assert_ts.js'
 
 // redux
@@ -32,6 +33,7 @@ import {
   mockEthAccountInfo,
   mockFilecoinAccountInfo,
   mockFilecoinMainnetNetwork,
+  mockOnRampCurrencies,
   mockSolanaAccountInfo,
   mockSolanaMainnetNetwork,
   mockSplNft
@@ -146,11 +148,13 @@ export class MockedWalletApiProxy {
 
   userAssets: BraveWallet.BlockchainToken[] = mockAccountAssetOptions
 
-  evmSimulationResponse: BraveWallet.EVMSimulationResponse
+  evmSimulationResponse:
+    | BraveWallet.EVMSimulationResponse
     | SafeBlowfishEvmResponse
     | null = null
 
-  svmSimulationResponse: BraveWallet.SolanaSimulationResponse
+  svmSimulationResponse:
+    | BraveWallet.SolanaSimulationResponse
     | SafeBlowfishSolanaResponse
     | null = null
 
@@ -262,6 +266,49 @@ export class MockedWalletApiProxy {
       overrides.simulationOptInStatus ?? this.txSimulationOptInStatus
   }
 
+  assetsRatioService: Partial<
+    InstanceType<typeof BraveWallet.AssetRatioServiceInterface>
+  > = {
+    getBuyUrlV1: async (
+      provider,
+      chainId,
+      address,
+      symbol,
+      amount,
+      currencyCode
+    ) => {
+      if (
+        !provider ||
+        !chainId ||
+        !address ||
+        !symbol ||
+        !amount ||
+        !currencyCode
+      ) {
+        return {
+          url: '',
+          error: 'missing param(s)'
+        }
+      }
+      return {
+        url: `provider=${
+          provider //
+        }&chainId=${
+          chainId //
+        }&address=${
+          address //
+        }&symbol=${
+          symbol //
+        }&amount=${
+          amount //
+        }&currencyCode=${
+          currencyCode //
+        }`,
+        error: null
+      }
+    }
+  }
+
   blockchainRegistry: Partial<
     InstanceType<typeof BraveWallet.BlockchainRegistryInterface>
   > = {
@@ -275,9 +322,15 @@ export class MockedWalletApiProxy {
 
     getBuyTokens: async (provider, chainId) => {
       return {
-        tokens: this.blockchainTokens.filter(t => t.chainId === chainId)
+        tokens: this.blockchainTokens.filter((t) => t.chainId === chainId)
       }
     },
+
+    getOnRampCurrencies: async () => {
+      return {
+        currencies: mockOnRampCurrencies
+      }
+    }
   }
 
   braveWalletService: Partial<
