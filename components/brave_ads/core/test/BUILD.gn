@@ -474,6 +474,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/settings/settings_unittest.cc",
     "//brave/components/brave_ads/core/internal/settings/settings_unittest_util.cc",
     "//brave/components/brave_ads/core/internal/settings/settings_unittest_util.h",
+    "//brave/components/brave_ads/core/internal/tabs/tab_manager_unittest.cc",
     "//brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature_unittest.cc",
     "//brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource_unittest.cc",
     "//brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature_unittest.cc",
