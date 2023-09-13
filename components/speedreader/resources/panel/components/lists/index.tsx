@@ -42,7 +42,7 @@ const mainButtonsOptions = [
   {
     id: 'ai',
     type: MainButtonType.AI,
-    iconName: 'product-brave-ai',
+    iconName: 'product-brave-leo',
     hidden: !loadTimeData.getBoolean('aiChatFeatureEnabled'),
     title: getLocale('braveReaderModeAI')
   }

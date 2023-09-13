@@ -74,7 +74,7 @@ function Main () {
     <main className={styles.main}>
       <div className={styles.header}>
         <div className={styles.logo}>
-          <Icon name="product-brave-ai" />
+          <Icon name="product-brave-leo" />
           <div className={styles.logoTitle}>Brave <span>Leo</span></div>
         </div>
         <div className={styles.actions}>

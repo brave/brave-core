@@ -81,7 +81,7 @@ export default function SignalsPage(props: Props) {
         <Radio name='show' value="publishers" currentValue={show} onChange={e => setShow(e.detail.value)} />
         <Radio name='show' value="channels" currentValue={show} onChange={e => setShow(e.detail.value)} />
       </Flex>
-      <Input size='normal' hasErrors={false} showErrors={false} mode='outline' type='text' placeholder='filter...' value={filter} onInput={e => setFilter((e.target as any).value)}>
+      <Input placeholder='filter...' value={filter} onInput={e => setFilter(e.detail.value)}>
         Filter
       </Input>
       <Dropdown value={sort} onChange={e => setSort(e.detail.value)}>

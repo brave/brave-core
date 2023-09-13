@@ -59,7 +59,7 @@ function ConversationList () {
         return (
           <div key={id} ref={elementRef} className={turnClass}>
             <div className={avatarStyles}>
-              <Icon name={isHuman ? 'user-circle' : 'product-brave-ai'} />
+              <Icon name={isHuman ? 'user-circle' : 'product-brave-leo'} />
             </div>
             <div className={styles.message}>
               {turn.text}
@@ -72,7 +72,7 @@ function ConversationList () {
       {suggestedQuestions.length > 0 && (
         <div className={styles.suggestedQuestionsBox}>
           <div className={styles.suggestedQuestionLabel}>
-            <Icon name="product-brave-ai" />
+            <Icon name="product-brave-leo" />
             <div>Suggested follow-ups</div>
           </div>
           <div className={styles.questionsList}>
