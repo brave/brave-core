@@ -202,8 +202,6 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   }
 
  private:
-  base::test::ScopedFeatureList feature_list_;
-
   std::unique_ptr<base::RunLoop> run_loop_;
 };
 
