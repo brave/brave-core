@@ -124,14 +124,13 @@ interface PlaylistService {
   // Creates a new playlist with given |playlist| and return created Playlist
   // with a new ID of the playlist.
   CreatePlaylist(Playlist playlist) => (Playlist created_list);
-
+  ReorderPlaylist(string playlist_id, int16 position) => (bool result);
   RemovePlaylist(string id);
+  RenamePlaylist(string playlist_id, string playlist_name)
+      => (Playlist updated_playlist);
 
   // Removes all stored data and resets preferences to default values.
   ResetAll();
-
-  RenamePlaylist(string playlist_id, string playlist_name)
-  => (Playlist updated_playlist);
 
   AddObserver(pending_remote<PlaylistServiceObserver> observer);
 };

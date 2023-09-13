@@ -10,20 +10,13 @@ import {
   DndContext,
   DragStartEvent,
   DragOverlay,
-  UniqueIdentifier,
-  DragEndEvent,
-  useSensor,
-  TouchSensor,
-  PointerSensor,
-  MouseSensor,
-  useSensors
+  DragEndEvent
 } from '@dnd-kit/core'
 import {
   arrayMove,
   SortableContext,
   verticalListSortingStrategy
 } from '@dnd-kit/sortable'
-import { Transform } from '@dnd-kit/utilities'
 
 import { color } from '@brave/leo/tokens/css'
 import LeoButton from '@brave/leo/react/button'
@@ -41,6 +34,12 @@ import postMessageToPlayer from '../api/playerApi'
 import { types } from '../constants/player_types'
 import { getPlaylistActions } from '../api/getPlaylistActions'
 import { getPlaylistAPI } from '../api/api'
+import {
+  restrictToVerticalAxis,
+  useDraggedId,
+  useDraggedOrder,
+  useSensorsWithThreshold
+} from '../utils/dragDropUtils'
 
 interface MatchParams {
   playlistId: string
@@ -135,10 +134,6 @@ export default function PlaylistFolder ({
   const [selectedSet, setSelectedSet] = React.useState(new Set<string>())
   const editMode = usePlaylistEditMode()
 
-  const [draggedId, setDraggedId] = React.useState<UniqueIdentifier | null>(
-    null
-  )
-
   React.useEffect(() => {
     if (editMode !== PlaylistEditMode.BULK_EDIT)
       setSelectedSet(new Set<string>())
@@ -169,25 +164,10 @@ export default function PlaylistFolder ({
     [playlist, selectedSet, editMode]
   )
 
-  const [draggedOrder, setDraggedOrder] = React.useState<
-    PlaylistItemMojo[] | null
-  >(null)
+  const [draggedId, setDraggedId] = useDraggedId()
+  const [draggedOrder, setDraggedOrder] = useDraggedOrder<PlaylistItemMojo>()
 
-  const dragThreshold = 10
-  const sensors = useSensors(
-    useSensor(MouseSensor, {
-      activationConstraint: { distance: dragThreshold }
-    }),
-    useSensor(PointerSensor, {
-      activationConstraint: { distance: dragThreshold }
-    }),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 250,
-        tolerance: dragThreshold
-      }
-    })
-  )
+  const sensors = useSensorsWithThreshold()
 
   if (!playlist) {
     // After deleting a playlist from header, this could happen. In this case,
@@ -238,7 +218,10 @@ export default function PlaylistFolder ({
         if (!draggedOrder) return
 
         const { active, over } = event
-        if (!over) return
+        if (!over || active.id === over.id) {
+          setDraggedOrder(null)
+          return
+        }
 
         if (active.id !== over.id) {
           const oldIndex = draggedOrder.findIndex(i => i.id === active.id)
@@ -276,13 +259,7 @@ export default function PlaylistFolder ({
           )
         )}
       </SortableContext>
-      <DragOverlay
-        modifiers={[
-          ({ transform }: { transform: Transform }) => {
-            return { ...transform, x: 0 }
-          }
-        ]}
-      >
+      <DragOverlay modifiers={restrictToVerticalAxis}>
         {getPlaylistItem(
           itemsToRender.find(i => i.id === draggedId),
           /* forDragOverlay */ true,
