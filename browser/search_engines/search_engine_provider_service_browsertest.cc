@@ -238,6 +238,9 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   Profile* tor_profile = tor_browser->profile();
   EXPECT_TRUE(tor_profile->IsTor());
 
+  // Wait for the search provider to initialize.
+  base::RunLoop().RunUntilIdle();
+
   const int default_provider_id =
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR;
   auto* tor_service = TemplateURLServiceFactory::GetForProfile(tor_profile);
