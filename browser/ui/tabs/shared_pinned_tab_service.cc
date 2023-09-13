@@ -130,8 +130,7 @@ SharedPinnedTabService::GetTabRendererDataForDummyContents(
 
 void SharedPinnedTabService::CacheWebContentsIfNeeded(
     Browser* browser,
-    const std::vector<std::unique_ptr<TabStripModel::DetachedWebContents>>&
-        web_contents) {
+    const std::vector<std::unique_ptr<DetachedWebContents>>& web_contents) {
   DVLOG(2) << __FUNCTION__;
   DCHECK(!profile_will_be_destroyed_);
 
