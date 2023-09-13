@@ -539,10 +539,10 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
                 "createViewProvider", true, ViewProvider.class, Context.class,
                 MVCListAdapter.ModelList.class));
-        Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
-                        "loadUrlForOmniboxMatch", true, void.class, int.class,
-                        AutocompleteMatch.class, GURL.class, long.class, boolean.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
+                "loadUrlForOmniboxMatch", true, void.class, int.class, AutocompleteMatch.class,
+                GURL.class, long.class, boolean.class, boolean.class));
 
         // Check for method type declaration changes here
         Assert.assertTrue(methodExists(
