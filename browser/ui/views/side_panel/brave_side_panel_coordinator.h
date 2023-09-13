@@ -6,7 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_COORDINATOR_H_
 #define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_COORDINATOR_H_
 
-#include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
+#include <memory>
+
+#include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"  // IWYU pragma: export
 
 class BraveSidePanelCoordinator : public SidePanelCoordinator {
  public:

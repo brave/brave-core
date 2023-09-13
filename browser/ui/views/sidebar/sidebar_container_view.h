@@ -177,7 +177,8 @@ class SidebarContainerView
   void StartBrowserWindowEventMonitoring();
   void StopBrowserWindowEventMonitoring();
 
-  void CreateAndRegisterEntries(content::WebContents* contents);
+  void StartObservingContextualSidePanelRegistry(
+      content::WebContents* contents);
   void StopObservingContextualSidePanelRegistry(content::WebContents* contents);
   bool GetIsPanelOperationFromActiveTabChangeAndReset();
 

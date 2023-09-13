@@ -26,7 +26,6 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/sidebar_item.h"
@@ -58,11 +57,6 @@
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
-#include "brave/components/ai_chat/common/features.h"
-#endif
-
 namespace {
 
 using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
@@ -78,25 +72,6 @@ SharedPinnedTabService* GetSharedPinnedTabService(Profile* profile) {
 
   return nullptr;
 }
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-std::unique_ptr<views::View> CreateAIChatSidePanelWebView(
-    base::WeakPtr<Profile> profile) {
-  if (!profile) {
-    NOTREACHED_NORETURN();
-  }
-
-  auto web_view = std::make_unique<SidePanelWebUIViewT<AIChatUI>>(
-      base::RepeatingClosure(), base::RepeatingClosure(),
-      std::make_unique<BubbleContentsWrapperT<AIChatUI>>(
-          GURL(kChatUIURL), profile.get(),
-          IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE,
-          /*webui_resizes_host=*/false,
-          /*esc_closes_ui=*/false));
-  web_view->ShowUI();
-  return web_view;
-}
-#endif
 
 }  // namespace
 
@@ -830,7 +805,7 @@ void SidebarContainerView::OnTabStripModelChanged(
     // Don't need to register for shared pinned tab's dummy contents.
     if (!shared_pinned_tab_service ||
         !shared_pinned_tab_service->IsDummyContents(replace->new_contents)) {
-      CreateAndRegisterEntries(replace->new_contents);
+      StartObservingContextualSidePanelRegistry(replace->new_contents);
     }
 
     // Don't need to deregister for shared pinned tab's dummy contents.
@@ -852,7 +827,7 @@ void SidebarContainerView::OnTabStripModelChanged(
                     "tabs.";
         continue;
       }
-      CreateAndRegisterEntries(contents.contents);
+      StartObservingContextualSidePanelRegistry(contents.contents);
     }
     return;
   }
@@ -890,7 +865,7 @@ void SidebarContainerView::StopObservingContextualSidePanelRegistry(
   }
 }
 
-void SidebarContainerView::CreateAndRegisterEntries(
+void SidebarContainerView::StartObservingContextualSidePanelRegistry(
     content::WebContents* contents) {
   auto* registry = SidePanelRegistry::Get(contents);
   if (!registry) {
@@ -898,19 +873,6 @@ void SidebarContainerView::CreateAndRegisterEntries(
   }
 
   panel_registry_observations_.AddObservation(registry);
-
-  // Register here for an entry that is used for all tabs.
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  if (ai_chat::features::IsAIChatEnabled()) {
-    // If |registry| already has it, it's no-op.
-    registry->Register(std::make_unique<SidePanelEntry>(
-        SidePanelEntry::Id::kChatUI,
-        l10n_util::GetStringUTF16(IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE),
-        ui::ImageModel(),
-        base::BindRepeating(&CreateAIChatSidePanelWebView,
-                            browser_->profile()->GetWeakPtr())));
-  }
-#endif
 
   for (const auto& entry : registry->entries()) {
     if (!panel_entry_observations_.IsObservingSource(entry.get())) {
