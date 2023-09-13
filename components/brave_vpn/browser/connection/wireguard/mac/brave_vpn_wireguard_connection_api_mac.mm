@@ -29,10 +29,6 @@ WireguardOSConnectionAPIMac::WireguardOSConnectionAPIMac(
 
 WireguardOSConnectionAPIMac::~WireguardOSConnectionAPIMac() = default;
 
-void WireguardOSConnectionAPIMac::RequestNewProfileCredentials() {
-  NOTIMPLEMENTED();
-}
-
 void WireguardOSConnectionAPIMac::PlatformConnectImpl(
     const wireguard::WireguardProfileCredentials& credentials) {
   if (credentials.IsValid()) {

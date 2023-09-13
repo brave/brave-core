@@ -41,7 +41,6 @@ class BraveVPNWireguardConnectionAPI
 
  protected:
   // BraveVPNWireguardConnectionAPIBase
-  void RequestNewProfileCredentials() override;
   void PlatformConnectImpl(
       const wireguard::WireguardProfileCredentials& credentials) override;
 

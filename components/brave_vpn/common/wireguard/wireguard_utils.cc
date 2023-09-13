@@ -5,7 +5,10 @@
 
 #include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
 
+#include "base/base64.h"
 #include "base/strings/string_util.h"
+#include "crypto/openssl_util.h"
+#include "third_party/boringssl/src/include/openssl/curve25519.h"
 
 namespace brave_vpn {
 
@@ -48,6 +51,14 @@ absl::optional<std::string> CreateWireguardConfig(
   base::ReplaceSubstringsAfterOffset(&config, 0, "{dns_servers}",
                                      kCloudflareIPv4);
   return config;
+}
+
+wireguard::WireguardKeyPair GenerateNewX25519Keypair() {
+  crypto::EnsureOpenSSLInit();
+  uint8_t pubkey[32] = {}, privkey[32] = {};
+  X25519_keypair(pubkey, privkey);
+  return std::make_tuple(base::Base64Encode(pubkey),
+                         base::Base64Encode(privkey));
 }
 
 }  // namespace wireguard

@@ -8,6 +8,7 @@
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
+#include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_vpn {
@@ -31,7 +32,7 @@ void BraveVPNWireguardConnectionAPIBase::SetSelectedRegion(
   ResetConnectionInfo();
 }
 
-void BraveVPNWireguardConnectionAPIBase::OnWireguardKeypairGenerated(
+void BraveVPNWireguardConnectionAPIBase::RequestNewProfileCredentials(
     brave_vpn::wireguard::WireguardKeyPair key_pair) {
   if (!key_pair.has_value()) {
     VLOG(1) << __func__ << " : failed to get keypair";
@@ -104,7 +105,7 @@ void BraveVPNWireguardConnectionAPIBase::FetchProfileCredentials() {
           local_prefs()->GetString(
               prefs::kBraveVPNWireguardProfileCredentials));
   if (!existing_credentials.has_value()) {
-    RequestNewProfileCredentials();
+    RequestNewProfileCredentials(wireguard::GenerateNewX25519Keypair());
     return;
   }
   GetAPIRequest()->VerifyCredentials(
@@ -132,7 +133,7 @@ void BraveVPNWireguardConnectionAPIBase::OnVerifyCredentials(
   if (!success || !existing_credentials.has_value()) {
     VLOG(1) << __func__ << " : credentials verification failed ( " << result
             << " ), request new";
-    RequestNewProfileCredentials();
+    RequestNewProfileCredentials(wireguard::GenerateNewX25519Keypair());
     return;
   }
   PlatformConnectImpl(existing_credentials.value());
