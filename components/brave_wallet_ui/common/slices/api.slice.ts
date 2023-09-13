@@ -72,6 +72,7 @@ import { braveRewardsApiEndpoints } from './endpoints/rewards.endpoints'
 import { p3aEndpoints } from './endpoints/p3a.endpoints'
 import { pricingEndpoints } from './endpoints/pricing.endpoints'
 import { nftsEndpoints } from './endpoints/nfts.endpoints'
+import { qrCodeEndpoints } from './endpoints/qr-code.endpoints'
 
 // utils
 import { handleEndpointError } from '../../utils/api-utils';
@@ -3003,6 +3004,8 @@ export function createWalletApi () {
     .injectEndpoints({ endpoints: coingeckoEndpoints })
     // token suggestion request endpoints
     .injectEndpoints({ endpoints: tokenSuggestionsEndpoints })
+    // QR Code generator endpoints
+    .injectEndpoints({ endpoints: qrCodeEndpoints })
 }
 
 export type WalletApi = ReturnType<typeof createWalletApi>
@@ -3037,20 +3040,24 @@ export const {
   useGetIpfsGatewayTranslatedNftUrlQuery,
   useGetIPFSUrlFromGatewayLikeUrlQuery,
   useGetIsTxSimulationOptInStatusQuery,
+  useGetLocalIpfsNodeStatusQuery,
   useGetNetworksRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
   useGetNftMetadataQuery,
   useGetNftPinningStatusQuery,
+  useGetNftsPinningStatusQuery,
   useGetOffRampAssetsQuery,
   useGetOnRampAssetsQuery,
   useGetOnRampFiatCurrenciesQuery,
   useGetPendingTokenSuggestionRequestsQuery,
   useGetPriceHistoryQuery,
   useGetPricesHistoryQuery,
+  useGetQrCodeImageQuery,
   useGetRewardsBalanceQuery,
   useGetRewardsEnabledQuery,
   useGetSelectedAccountIdQuery,
   useGetSelectedChainQuery,
+  useGetSimpleHashSpamNftsQuery,
   useGetSolanaEstimatedFeeQuery,
   useGetSolanaTransactionSimulationQuery,
   useGetSwapSupportedNetworkIdsQuery,
@@ -3060,7 +3067,6 @@ export const {
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
-  useGetLocalIpfsNodeStatusQuery,
   useInvalidateTransactionsCacheMutation,
   useIsEip1559ChangedMutation,
   useLazyGetAccountInfosRegistryQuery,
@@ -3092,8 +3098,6 @@ export const {
   useLazyGetTokensRegistryQuery,
   useLazyGetTransactionsQuery,
   useLazyGetUserTokensRegistryQuery,
-  useGetSimpleHashSpamNftsQuery,
-  useGetNftsPinningStatusQuery,
   useNewUnapprovedTxAddedMutation,
   useOpenPanelUIMutation,
   usePrefetch,
@@ -3110,6 +3114,7 @@ export const {
   useSendSolTransactionMutation,
   useSendSPLTransferMutation,
   useSendTransactionMutation,
+  useSetAutopinEnabledMutation,
   useSetDefaultFiatCurrencyMutation,
   useSetIsTxSimulationOptInStatusMutation,
   useSetNetworkMutation,
@@ -3118,14 +3123,13 @@ export const {
   useSpeedupTransactionMutation,
   useTransactionStatusChangedMutation,
   useUnapprovedTxUpdatedMutation,
+  useUpdateNftSpamStatusMutation,
+  useUpdateNftsPinningStatusMutation,
   useUpdateUnapprovedTransactionGasFieldsMutation,
   useUpdateUnapprovedTransactionNonceMutation,
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
-  useUpdateUserTokenMutation,
-  useUpdateNftSpamStatusMutation,
-  useSetAutopinEnabledMutation,
-  useUpdateNftsPinningStatusMutation
+  useUpdateUserTokenMutation
 } = walletApi
 
 // Derived Data Queries

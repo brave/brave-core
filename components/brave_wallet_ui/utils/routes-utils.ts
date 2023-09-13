@@ -66,3 +66,26 @@ export const makeFundWalletPurchaseOptionsRoute = (
     currencyCode
   ).replace(':buyAmount', buyAmount)
 }
+
+export const makeDepositFundsRoute = (
+  searchText?: string,
+  chainId?: string,
+  coinType?: string
+) => {
+  const params = new URLSearchParams()
+  if (searchText) {
+    params?.append('search', searchText)
+  }
+  if (chainId) {
+    params?.append('chainId', chainId)
+  }
+  if (coinType) {
+    params?.append('coinType', coinType)
+  }
+
+  const paramsString = params ? params.toString() : undefined
+
+  return `${WalletRoutes.DepositFundsPage}${
+    paramsString ? `?${paramsString}` : ''
+  }`
+}

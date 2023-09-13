@@ -31,6 +31,7 @@ import {
 } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
 import { makeNetworkAsset } from '../../../../options/asset-options'
+import { makeDepositFundsRoute } from '../../../../utils/routes-utils'
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -412,9 +413,7 @@ export const PortfolioAsset = (props: Props) => {
   }, [selectedAssetFromParams?.symbol])
 
   const onSelectDeposit = React.useCallback(() => {
-    history.push(
-      `${WalletRoutes.DepositFundsPageStart}/${selectedAssetFromParams?.symbol}`
-    )
+    history.push(makeDepositFundsRoute(selectedAssetFromParams?.symbol))
   }, [selectedAssetFromParams?.symbol])
 
   React.useEffect(() => {

@@ -10,10 +10,7 @@ import { DepositFundsScreen } from './deposit-funds'
 
 export const _DepositFundsScreen = () => {
   return <WalletPageStory>
-    <DepositFundsScreen
-      showDepositAddress={false}
-      onShowDepositAddress={() => {}}
-    />
+    <DepositFundsScreen />
   </WalletPageStory>
 }
 
