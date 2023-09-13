@@ -794,18 +794,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
 }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
-class SidebarBrowserTestWithVerticalTabs : public SidebarBrowserTest {
- public:
-  SidebarBrowserTestWithVerticalTabs() {
-    feature_list_.InitAndEnableFeature(tabs::features::kBraveVerticalTabs);
-  }
-  ~SidebarBrowserTestWithVerticalTabs() override = default;
-
-  base::test::ScopedFeatureList feature_list_;
-};
-
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithVerticalTabs,
-                       SidebarRightSideTest) {
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarRightSideTest) {
   // Sidebar is on right by default
   EXPECT_FALSE(IsSidebarUIOnLeft());
 

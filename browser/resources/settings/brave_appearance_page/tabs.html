@@ -13,31 +13,29 @@
 <div class="cr-row">$i18n{appearanceSettingsTabsSection}</div>
 <div class="list-frame">
   <!-- Vertical Tab strip -->
-  <template is="dom-if" if="[[isVerticalTabStripFeatureEnabled()]]">
-    <settings-toggle-button
-      class="cr-row list-item"
-      pref="{{prefs.brave.tabs.vertical_tabs_enabled}}"
-      label="$i18n{appearanceSettingsTabsUseVerticalTabs}">
-    </settings-toggle-button>
-    <template
-      is="dom-if"
-      if="[[prefs.brave.tabs.vertical_tabs_enabled.value]]">
-        <div class="cr-row">
-          <settings-checkbox
-            class="cr-row list-item"
-            pref="{{prefs.brave.tabs.vertical_tabs_show_title_on_window}}"
-            label="$i18n{appearanceSettingsTabsShowWindowTitle}">
-          </settings-checkbox>
-        </div>
-        <div class="cr-row">
-          <settings-checkbox
-            class="cr-row list-item"
-            pref="{{prefs.brave.tabs.vertical_tabs_floating_enabled}}"
-            label="$i18n{appearanceSettingsTabsFloatOnMouseOver}">
-          </settings-checkbox>
-        </div>
-    </template>  <!-- vertical_tabs_enabled.value -->
-  </template>  <!-- isVerticalTabStripFeatureEnabled()-->
+  <settings-toggle-button
+    class="cr-row list-item"
+    pref="{{prefs.brave.tabs.vertical_tabs_enabled}}"
+    label="$i18n{appearanceSettingsTabsUseVerticalTabs}">
+  </settings-toggle-button>
+  <template
+    is="dom-if"
+    if="[[prefs.brave.tabs.vertical_tabs_enabled.value]]">
+      <div class="cr-row">
+        <settings-checkbox
+          class="cr-row list-item"
+          pref="{{prefs.brave.tabs.vertical_tabs_show_title_on_window}}"
+          label="$i18n{appearanceSettingsTabsShowWindowTitle}">
+        </settings-checkbox>
+      </div>
+      <div class="cr-row">
+        <settings-checkbox
+          class="cr-row list-item"
+          pref="{{prefs.brave.tabs.vertical_tabs_floating_enabled}}"
+          label="$i18n{appearanceSettingsTabsFloatOnMouseOver}">
+        </settings-checkbox>
+      </div>
+  </template>  <!-- vertical_tabs_enabled.value -->
 
   <!-- Tab search button visibility -->
   <settings-toggle-button

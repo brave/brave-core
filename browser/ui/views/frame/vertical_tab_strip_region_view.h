@@ -13,13 +13,11 @@
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "base/types/pass_key.h"
-#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
 #include "ui/views/controls/resize_area_delegate.h"
 
 namespace views {
-class ScrollView;
 class ResizeArea;
 }  // namespace views
 
@@ -30,7 +28,6 @@ class VerticalTabStripScrollContentsView;
 
 // Wraps TabStripRegion and show it vertically.
 class VerticalTabStripRegionView : public views::View,
-                                   public TabStripModelObserver,
                                    public views::ResizeAreaDelegate,
                                    public views::AnimationDelegateViews,
                                    public views::WidgetObserver {
@@ -100,14 +97,6 @@ class VerticalTabStripRegionView : public views::View,
   void PreferredSizeChanged() override;
   void AddedToWidget() override;
 
-  // TabStripModelObserver:
-  // TODO(sko) Remove this once the "sticky pinned tabs" is enabled by default.
-  // https://github.com/brave/brave-browser/issues/29935
-  void OnTabStripModelChanged(
-      TabStripModel* tab_strip_model,
-      const TabStripModelChange& change,
-      const TabStripSelectionChange& selection) override;
-
   // views::ResizeAreaDelegate
   void OnResize(int resize_amount, bool done_resizing) override;
 
@@ -157,21 +146,12 @@ class VerticalTabStripRegionView : public views::View,
   // Returns valid object only when the related flag is enabled.
   TabStripScrollContainer* GetTabStripScrollContainer();
 
-  // TODO(sko) Remove this once the "sticky pinned tabs" is enabled by default.
-  // https://github.com/brave/brave-browser/issues/29935
-  void ScrollActiveTabToBeVisible();
-
   std::u16string GetShortcutTextForNewTabButton(BrowserView* browser_view);
 
   raw_ptr<Browser> browser_ = nullptr;
 
   raw_ptr<views::View> original_parent_of_region_view_ = nullptr;
   raw_ptr<TabStripRegionView> original_region_view_ = nullptr;
-
-  // Contains TabStripRegion.
-  // TODO(sko) Remove this once the "sticky pinned tabs" is enabled by default.
-  // https://github.com/brave/brave-browser/issues/29935
-  raw_ptr<views::ScrollView> scroll_view_ = nullptr;
 
   raw_ptr<HeaderView> header_view_ = nullptr;
   raw_ptr<views::View> contents_view_ = nullptr;

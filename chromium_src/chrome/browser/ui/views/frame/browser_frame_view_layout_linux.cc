@@ -6,7 +6,6 @@
 #include "src/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.cc"
 
 #include "base/check_is_test.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
@@ -18,10 +17,6 @@ void BrowserFrameViewLayoutLinux::SetBoundsForButton(
     views::Button* button,
     ButtonAlignment align) {
   OpaqueBrowserFrameViewLayout::SetBoundsForButton(button_id, button, align);
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return;
-  }
-
   if (!view_) {
     CHECK_IS_TEST();
     return;

@@ -12,7 +12,6 @@
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/color/leo/colors.h"
 #include "brave/browser/ui/tabs/brave_vertical_tab_color_mixer.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -385,9 +384,7 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
       GetToolbarInkDropColor(mixer)};
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    tabs::AddBraveVerticalTabLightThemeColorMixer(provider, key);
-  }
+  tabs::AddBraveVerticalTabLightThemeColorMixer(provider, key);
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
@@ -477,9 +474,7 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
       GetToolbarInkDropColor(mixer)};
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    tabs::AddBraveVerticalTabDarkThemeColorMixer(provider, key);
-  }
+  tabs::AddBraveVerticalTabDarkThemeColorMixer(provider, key);
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {

@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
@@ -24,9 +23,6 @@ namespace {
 SkColor GetGroupBackgroundColorForVerticalTabs(
     const tab_groups::TabGroupId& group_id,
     TabSlotController* controller) {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-      << "This should be called only when the flag is on.";
-
   if (!controller->GetBrowser()
            ->tab_strip_model()
            ->group_model()
@@ -92,18 +88,11 @@ void BraveTabGroupHeader::Layout() {
 }
 
 bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return false;
-  }
-
   return tabs::utils::ShouldShowVerticalTabs(
       tab_slot_controller_->GetBrowser());
 }
 
 void BraveTabGroupHeader::LayoutTitleChip() {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-      << "This should be called only when the flag is on.";
-
   auto title_bounds = GetContentsBounds();
   title_bounds.Inset(gfx::Insets(kPaddingForGroup * 2));
   title_chip_->SetBoundsRect(title_bounds);

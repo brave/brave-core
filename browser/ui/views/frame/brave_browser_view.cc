@@ -24,7 +24,6 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_rewards/tip_panel_bubble_host.h"
@@ -196,7 +195,6 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 #endif
 
   const bool supports_vertical_tabs =
-      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
       tabs::utils::SupportsVerticalTabs(browser_.get());
   if (supports_vertical_tabs) {
     vertical_tab_strip_host_view_ =
@@ -339,10 +337,6 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return BrowserView::GetTabStripVisible();
-  }
-
   if (tabs::utils::ShouldShowVerticalTabs(browser())) {
     return false;
   }
@@ -352,10 +346,6 @@ bool BraveBrowserView::GetTabStripVisible() const {
 
 #if BUILDFLAG(IS_WIN)
 bool BraveBrowserView::GetSupportsTitle() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return BrowserView::GetSupportsTitle();
-  }
-
   if (tabs::utils::SupportsVerticalTabs(browser())) {
     return true;
   }
@@ -646,10 +636,6 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
     return true;
   }
 
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return false;
-  }
-
   if (tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser())) {
     return true;
   }
@@ -667,8 +653,7 @@ void BraveBrowserView::OnThemeChanged() {
 }
 
 TabSearchBubbleHost* BraveBrowserView::GetTabSearchBubbleHost() {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
-      !tabs::utils::ShouldShowVerticalTabs(browser()) ||
+  if (!tabs::utils::ShouldShowVerticalTabs(browser()) ||
       WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(browser())) {
     return BrowserView::GetTabSearchBubbleHost();
   }

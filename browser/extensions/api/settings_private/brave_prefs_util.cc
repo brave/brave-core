@@ -8,7 +8,6 @@
 #include "base/feature_list.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -323,14 +322,12 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 
 #if defined(TOOLKIT_VIEWS)
   // Vertical tab strip prefs
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    (*s_brave_allowlist)[brave_tabs::kVerticalTabsEnabled] =
-        settings_api::PrefType::PREF_TYPE_BOOLEAN;
-    (*s_brave_allowlist)[brave_tabs::kVerticalTabsFloatingEnabled] =
-        settings_api::PrefType::PREF_TYPE_BOOLEAN;
-    (*s_brave_allowlist)[brave_tabs::kVerticalTabsShowTitleOnWindow] =
-        settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  }
+  (*s_brave_allowlist)[brave_tabs::kVerticalTabsEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[brave_tabs::kVerticalTabsFloatingEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[brave_tabs::kVerticalTabsShowTitleOnWindow] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   return *s_brave_allowlist;
 }

@@ -16,7 +16,6 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -192,15 +191,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
   UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_SUBMENU, true);
 
-  UpdateCommandEnabled(
-      IDC_TOGGLE_VERTICAL_TABS,
-      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
-  UpdateCommandEnabled(
-      IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE,
-      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
-  UpdateCommandEnabled(
-      IDC_TOGGLE_VERTICAL_TABS_EXPANDED,
-      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
+  UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS, true);
+  UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE, true);
+  UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS_EXPANDED, true);
 
   UpdateCommandEnabled(IDC_CONFIGURE_BRAVE_NEWS,
                        !browser_->profile()->IsOffTheRecord());
