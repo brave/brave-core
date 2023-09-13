@@ -18,6 +18,14 @@ void HandleRewardsProtocol(const GURL& url,
                            content::WebContents::OnceGetter web_contents_getter,
                            ui::PageTransition page_transition);
 
+bool IsValidWalletProviderRedirect(const GURL& referrer_url,
+                                   const GURL& redirect_url);
+
+bool IsValidWalletProviderRedirectImpl(
+    const GURL& referrer_url,
+    const GURL& redirect_url,
+    const std::map<std::string, std::vector<GURL>>& allowed_referrer_urls);
+
 }  // namespace brave_rewards
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_PROTOCOL_HANDLER_H_

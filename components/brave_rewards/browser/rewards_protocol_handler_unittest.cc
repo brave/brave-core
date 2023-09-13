@@ -20,7 +20,7 @@ namespace brave_rewards {
 
 GURL TransformUrl(const GURL& url);
 
-bool IsValidWalletProviderRedirect(
+bool IsValidWalletProviderRedirectImpl(
     const GURL& referrer_url,
     const GURL& redirect_url,
     const std::map<std::string, std::vector<GURL>>& allowed_referrer_urls);
@@ -60,14 +60,14 @@ TEST_P(RewardsProtocolHandlerTest, Paths) {
       {"bitflyer", {GURL("https://bitflyer.com")}},
       {"uphold", {GURL("https://uphold.com")}}};
 
-  EXPECT_EQ(IsValidWalletProviderRedirect(
+  EXPECT_EQ(IsValidWalletProviderRedirectImpl(
                 GURL(referrer_url), GURL(redirect_url), allowed_referrer_urls),
             result);
 }
 
 // clang-format off
 INSTANTIATE_TEST_SUITE_P(
-  IsValidWalletProviderRedirect,
+  IsValidWalletProviderRedirectImpl,
   RewardsProtocolHandlerTest,
   Values(
     RewardsProtocolHandlerTestParamType{

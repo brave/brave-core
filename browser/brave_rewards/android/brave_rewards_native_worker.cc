@@ -25,6 +25,7 @@
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
@@ -1026,6 +1027,7 @@ void BraveRewardsNativeWorker::SetAutoContributeEnabled(
     bool isAutoContributeEnabled) {
   if (brave_rewards_service_) {
     brave_rewards_service_->SetAutoContributeEnabled(isAutoContributeEnabled);
+    brave_rewards::IsValidWalletProviderRedirect(GURL(""), GURL(""));
   }
 }
 

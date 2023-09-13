@@ -33,7 +33,38 @@ GURL TransformUrl(const GURL& url) {
                        : ""}));
 }
 
-bool IsValidWalletProviderRedirect(
+bool IsValidWalletProviderRedirect(const GURL& referrer_url,
+                                   const GURL& redirect_url) {
+  static const auto kAllowedReferrerUrls{[] {
+    std::map<std::string, std::vector<GURL>> allowed_urls{
+        {"bitflyer",
+         {GURL(BUILDFLAG(BITFLYER_PRODUCTION_URL)),
+          GURL(BUILDFLAG(BITFLYER_SANDBOX_URL))}},
+        {"gemini",
+         {GURL(BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL)),
+          GURL(BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL))}},
+        {"uphold",
+         {GURL(BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)),
+          GURL(BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL))}},
+        {"zebpay",
+         {GURL(BUILDFLAG(ZEBPAY_PRODUCTION_OAUTH_URL)),
+          GURL(BUILDFLAG(ZEBPAY_SANDBOX_OAUTH_URL))}}};
+
+    for (const auto& [wallet_provider, urls] : allowed_urls) {
+      DCHECK(base::ranges::none_of(
+          urls,
+          [](const GURL& url) { return !url.is_valid() || !url.has_host(); }))
+          << wallet_provider << " has malformed referrer URL(s)!";
+    }
+
+    return allowed_urls;
+  }()};
+
+  return IsValidWalletProviderRedirectImpl(referrer_url, redirect_url,
+                                           kAllowedReferrerUrls);
+}
+
+bool IsValidWalletProviderRedirectImpl(
     const GURL& referrer_url,
     const GURL& redirect_url,
     const std::map<std::string, std::vector<GURL>>& allowed_referrer_urls) {
@@ -76,33 +107,7 @@ void LoadRewardsURL(const GURL& redirect_url,
     return;
   }
 
-  static const auto kAllowedReferrerUrls{[] {
-    std::map<std::string, std::vector<GURL>> allowed_urls{
-        {"bitflyer",
-         {GURL(BUILDFLAG(BITFLYER_PRODUCTION_URL)),
-          GURL(BUILDFLAG(BITFLYER_SANDBOX_URL))}},
-        {"gemini",
-         {GURL(BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL)),
-          GURL(BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL))}},
-        {"uphold",
-         {GURL(BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)),
-          GURL(BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL))}},
-        {"zebpay",
-         {GURL(BUILDFLAG(ZEBPAY_PRODUCTION_OAUTH_URL)),
-          GURL(BUILDFLAG(ZEBPAY_SANDBOX_OAUTH_URL))}}};
-
-    for (const auto& [wallet_provider, urls] : allowed_urls) {
-      DCHECK(base::ranges::none_of(
-          urls,
-          [](const GURL& url) { return !url.is_valid() || !url.has_host(); }))
-          << wallet_provider << " has malformed referrer URL(s)!";
-    }
-
-    return allowed_urls;
-  }()};
-
-  if (IsValidWalletProviderRedirect(web_contents->GetURL(), redirect_url,
-                                    kAllowedReferrerUrls)) {
+  if (IsValidWalletProviderRedirect(web_contents->GetURL(), redirect_url)) {
     web_contents->GetController().LoadURL(
         TransformUrl(redirect_url), content::Referrer(), page_transition, "");
   }
