@@ -836,7 +836,7 @@ void SidebarContainerView::OnTabStripModelChanged(
     // Don't need to deregister for shared pinned tab's dummy contents.
     if (!shared_pinned_tab_service ||
         !shared_pinned_tab_service->IsDummyContents(replace->old_contents)) {
-      DeregisterEntries(replace->old_contents);
+      StopObservingContextualSidePanelRegistry(replace->old_contents);
     }
     return;
   }
@@ -865,13 +865,14 @@ void SidebarContainerView::OnTabStripModelChanged(
         continue;
       }
 
-      DeregisterEntries(contents.contents);
+      StopObservingContextualSidePanelRegistry(contents.contents);
     }
     return;
   }
 }
 
-void SidebarContainerView::DeregisterEntries(content::WebContents* contents) {
+void SidebarContainerView::StopObservingContextualSidePanelRegistry(
+    content::WebContents* contents) {
   auto* registry = SidePanelRegistry::Get(contents);
   if (!registry) {
     return;

@@ -178,7 +178,7 @@ class SidebarContainerView
   void StopBrowserWindowEventMonitoring();
 
   void CreateAndRegisterEntries(content::WebContents* contents);
-  void DeregisterEntries(content::WebContents* contents);
+  void StopObservingContextualSidePanelRegistry(content::WebContents* contents);
   bool GetIsPanelOperationFromActiveTabChangeAndReset();
 
   raw_ptr<BraveBrowser> browser_ = nullptr;
