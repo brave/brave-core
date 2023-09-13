@@ -120,6 +120,9 @@ bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
 }
 
 void UnitTestBase::FastForwardClockBy(const base::TimeDelta time_delta) {
+  CHECK(!time_delta.is_zero())
+      << "If time stood still, each moment would be stopped; frozen";
+
   CHECK(time_delta.is_positive())
       << "You Can't Travel Back in Time, Scientists Say! Unless, of course, "
          "you are travelling at 88 mph";
@@ -149,6 +152,9 @@ bool UnitTestBase::HasPendingTasks() const {
 }
 
 void UnitTestBase::AdvanceClockBy(const base::TimeDelta time_delta) {
+  CHECK(!time_delta.is_zero())
+      << "If time stood still, each moment would be stopped; frozen";
+
   CHECK(time_delta.is_positive())
       << "You Can't Travel Back in Time, Scientists Say! Unless, of course, "
          "you are travelling at 88 mph";
