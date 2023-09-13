@@ -20,9 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import org.chromium.base.Callback;
 import org.chromium.base.Log;
+import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.PermissionLifetimeOption;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -193,13 +197,37 @@ public class ConnectAccountFragment extends BaseDAppsFragment
         return activity.getActivityTab();
     }
 
+    public class ConnectAccountInProgressData {
+        ConnectAccountInProgressData(String accountAddress, int permissionLifetimeOption) {
+            this.accountAddress = accountAddress;
+            this.permissionLifetimeOption = permissionLifetimeOption;
+        }
+
+        public String accountAddress;
+        public int permissionLifetimeOption;
+    }
+    public static ConnectAccountInProgressData connectAccountInProgressData;
+
     @Override
     public void connectAccount(AccountInfo account) {
         Tab tab = currentActiveChromeTabbedActivityTab();
         if (tab != null) {
             if (tab.getWebContents() != null) {
+                // Static data for BraveDappPermissionPromptDialog.show
+                connectAccountInProgressData = new ConnectAccountInProgressData(
+                        account.address, PermissionLifetimeOption.FOREVER);
+
                 ConnectAccountFragmentJni.get().connectAccount(
-                        account.address, tab.getWebContents());
+                        account.address, account.accountId.coin, tab.getWebContents(), success -> {
+                            if (!success) {
+                                return;
+                            }
+                            if (CoinType.SOL != account.accountId.coin) {
+                                getKeyringService().setSelectedAccount(
+                                        account.accountId, setSuccess -> {});
+                            }
+                            updateAccounts();
+                        });
             }
         }
     }
@@ -245,8 +273,14 @@ public class ConnectAccountFragment extends BaseDAppsFragment
         return GURL.emptyGURL();
     }
 
+    @CalledByNative
+    private static void onConnectAccountDone(Callback<Boolean> callback, Boolean result) {
+        callback.onResult(result);
+    }
+
     @NativeMethods
     interface Natives {
-        void connectAccount(String accountAddress, WebContents webContents);
+        void connectAccount(String accountAddress, int account_id_coin, WebContents webContents,
+                Callback<Boolean> callback);
     }
 }
