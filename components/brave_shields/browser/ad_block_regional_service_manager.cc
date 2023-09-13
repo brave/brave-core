@@ -288,6 +288,7 @@ base::Value::List AdBlockRegionalServiceManager::GetRegionalLists() {
     dict.Set("uuid", region_list.uuid);
     dict.Set("url", region_list.url);
     dict.Set("title", region_list.title);
+    dict.Set("desc", region_list.desc);
     dict.Set("support_url", region_list.support_url);
     dict.Set("component_id", region_list.component_id);
     dict.Set("base64_public_key", region_list.base64_public_key);

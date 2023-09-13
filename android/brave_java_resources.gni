@@ -910,6 +910,7 @@ brave_java_resources = [
   "java/res/layout/icon_row_menu_footer.xml",
   "java/res/layout/item_create_account.xml",
   "java/res/layout/item_custom_filter.xml",
+  "java/res/layout/item_filter_list.xml",
   "java/res/layout/item_filter_title.xml",
   "java/res/layout/item_fragment_two_line_divider_item.xml",
   "java/res/layout/item_fragment_two_line_item.xml",

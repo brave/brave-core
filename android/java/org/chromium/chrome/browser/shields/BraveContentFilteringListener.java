@@ -9,4 +9,5 @@ public interface BraveContentFilteringListener {
     public void onAddCustomFiltering();
     public void onCustomFilterToggle(int position, boolean isEnable);
     public void onCustomFilterDelete(int position);
+    public void onDefaultFilterToggle(String uuid, boolean isEnable);
 }

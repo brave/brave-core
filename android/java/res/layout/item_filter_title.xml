@@ -18,7 +18,7 @@
           android:id="@+id/title_text"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginTop="10dp"
+          android:layout_marginTop="20dp"
           android:textStyle="bold"
           android:textSize="16sp"
           android:textColor="@color/filter_title_color"/>

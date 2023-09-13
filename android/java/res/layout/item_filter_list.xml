@@ -11,21 +11,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
+     <TextView
           android:id="@+id/title_text"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintEnd_toStartOf="@id/toggle_switch"
-          android:maxLines="1"
           android:layout_marginTop="10dp"
           android:layout_marginHorizontal="16dp"
           android:textSize="16sp"
           android:textColor="@color/filter_title_color"/>
 
      <TextView
-          android:id="@+id/last_update_text"
+          android:id="@+id/description_text"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           app:layout_constraintTop_toBottomOf="@id/title_text"
@@ -33,18 +32,6 @@
           app:layout_constraintEnd_toStartOf="@id/toggle_switch"
           android:layout_marginTop="2dp"
           android:layout_marginHorizontal="16dp"
-          android:visibility="gone"
-          android:textSize="14sp"
-          android:textColor="@color/filter_summary_color"/>
-
-     <TextView
-          android:id="@+id/url_text"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          app:layout_constraintTop_toBottomOf="@id/last_update_text"
-          android:layout_marginTop="2dp"
-          android:layout_marginHorizontal="16dp"
-          android:visibility="gone"
           android:textSize="14sp"
           android:textColor="@color/filter_summary_color"/>
 
@@ -53,40 +40,15 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
-          android:layout_marginEnd="16dp"
-          android:visibility="gone"/>
-
-     <ImageView
-          android:id="@+id/iv_delete"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          app:layout_constraintTop_toTopOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          android:layout_marginEnd="16dp"
-          android:layout_marginTop="4dp"
-          android:contentDescription="@null"
-          app:srcCompat="@drawable/ic_bookmark_menu_delete"
-          app:tint="@color/add_custom_filter_tint_color"
-          android:visibility="gone"/>
-
-     <ImageView
-          android:id="@+id/iv_arrow"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          app:layout_constraintTop_toTopOf="@id/title_text"
-          app:layout_constraintEnd_toEndOf="parent"
-          android:layout_marginEnd="16dp"
-          android:contentDescription="@null"
-          app:srcCompat="@drawable/ic_chevron_right"
-          app:tint="@color/add_custom_filter_tint_color"
-          android:visibility="gone"/>
+          android:layout_marginEnd="16dp"/>
 
      <View
           android:id="@+id/divider"
           android:layout_width="match_parent"
           android:layout_height="1dp"
-          app:layout_constraintTop_toBottomOf="@id/url_text"
+          app:layout_constraintTop_toBottomOf="@id/description_text"
           android:layout_marginTop="12dp"
           android:background="@color/filter_divider_color"/>
 
