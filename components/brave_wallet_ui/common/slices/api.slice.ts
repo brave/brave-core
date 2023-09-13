@@ -2963,37 +2963,6 @@ export function createWalletApi () {
         providesTags: (res, er, arg) => [
           { type: 'SolanaEstimatedFees', id: arg.txId }
         ]
-      }),
-      updateNftsPinningStatus: mutation<
-        boolean,
-        {
-          token: BraveWallet.BlockchainToken
-          status: BraveWallet.TokenPinStatus
-        }
-      >({
-        queryFn: () => ({ data: true }),
-        async onQueryStarted({ token, status }, { dispatch, queryFulfilled }) {
-          const patchResult = dispatch(
-            walletApi.util.updateQueryData(
-              'getNftsPinningStatus',
-              undefined,
-              (nftsPinningStatus: {}) => {
-                Object.assign(nftsPinningStatus, {
-                  ...nftsPinningStatus,
-                  [getAssetIdKey(token)]: {
-                    code: status?.code,
-                    error: status?.error
-                  }
-                })
-              }
-            )
-          )
-          try {
-            await queryFulfilled
-          } catch {
-            patchResult.undo()
-          }
-        }
       })
     }}
   })

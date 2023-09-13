@@ -12,7 +12,7 @@ import {
   ERC721Metadata,
   NFTMetadataReturnType
 } from '../../../constants/types'
-import { WalletApiEndpointBuilderParams } from '../api-base.slice'
+import { WalletApiEndpointBuilderParams, walletApiBase } from '../api-base.slice'
 
 // utils
 import {
@@ -264,7 +264,7 @@ export const nftsEndpoints = ({
         try {
           const { braveWalletAutoPinService } = baseQuery(undefined).data
           await braveWalletAutoPinService.setAutoPinEnabled(arg)
-          
+
           return {
             data: true
           }
@@ -457,6 +457,37 @@ export const nftsEndpoints = ({
       },
       providesTags: ['NFTSPinningStatus']
     }),
+    updateNftsPinningStatus: mutation<
+      boolean,
+      {
+        token: BraveWallet.BlockchainToken
+        status: BraveWallet.TokenPinStatus
+      }
+    >({
+      queryFn: () => ({ data: true }),
+      async onQueryStarted({ token, status }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          walletApiBaseUtils.updateQueryData(
+            'getNftsPinningStatus',
+            undefined,
+            (nftsPinningStatus: {}) => {
+              Object.assign(nftsPinningStatus, {
+                ...nftsPinningStatus,
+                [getAssetIdKey(token)]: {
+                  code: status?.code,
+                  error: status?.error
+                }
+              })
+            }
+          )
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      }
+    }),
     getLocalIpfsNodeStatus: query<boolean, void>({
       queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
@@ -480,3 +511,8 @@ export const nftsEndpoints = ({
     })
   }
 }
+
+const walletApiBaseUtils = walletApiBase.injectEndpoints({
+  endpoints: nftsEndpoints,
+  overrideExisting: false
+}).util
