@@ -5,8 +5,8 @@
 
 #include "components/embedder_support/user_agent_utils.h"
 #include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/test/scoped_command_line.h"
-#include "base/test/scoped_feature_list.h"
 #include "components/embedder_support/switches.h"
 #include "components/version_info/version_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -45,8 +45,8 @@ TEST(UserAgentUtilsTest, UserAgentFromCommandLine) {
   base::test::ScopedCommandLine command_line;
   command_line.GetProcessCommandLine()->AppendSwitchASCII(kUserAgent,
                                                           kCmdUserAgentValue);
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(blink::features::kAllowCertainClientHints);
+  ASSERT_TRUE(
+      base::FeatureList::IsEnabled(blink::features::kAllowCertainClientHints));
   ASSERT_TRUE(
       base::FeatureList::IsEnabled(blink::features::kUACHOverrideBlank));
   const auto brave_metadata = GetUserAgentMetadata(nullptr);
