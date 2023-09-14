@@ -44,33 +44,6 @@
       </div>
     </div>
   </div>
-  <settings-toggle-button
-      class="cr-row"
-      pref="{{prefs.brave.shields.stats_badge_visible}}"
-      label="$i18n{showStatsBlockedBadgeLabel}">
-  </settings-toggle-button>
-  <settings-toggle-button
-    class="cr-row"
-    pref="{{prefs.brave.de_amp.enabled}}"
-    label="$i18n{deAmpSettingLabel}"
-    sub-label="$i18n{deAmpSettingSubLabel}"
-    learn-more-url="$i18n{deAmpLearnMoreURL}">
-  </settings-toggle-button>
-  <template is="dom-if" if="[[isDebounceFeatureEnabled_]]">
-    <settings-toggle-button
-      class="cr-row"
-      pref="{{prefs.brave.debounce.enabled}}"
-      label="$i18n{debounceSettingLabel}"
-      sub-label="$i18n{debounceSettingSubLabel}"
-      learn-more-url="$i18n{debounceLearnMoreURL}">
-    </settings-toggle-button>
-  </template>
-  <settings-toggle-button
-      class="cr-row"
-      pref="{{prefs.brave.reduce_language}}"
-      label="$i18n{reduceLanguageControlLabel}"
-      sub-label="$i18n{reduceLanguageDesc}">
-  </settings-toggle-button>
   <div class="settings-box">
     <div class="start">$i18n{adControlLabel}</div>
     <select id="adControlType" class="md-select"
@@ -150,3 +123,32 @@
     </settings-subpage>
   </template>
 </settings-animated-pages>
+<div hidden="[[isAdBlockRoute_]]">
+  <settings-toggle-button
+      class="cr-row"
+      pref="{{prefs.brave.shields.stats_badge_visible}}"
+      label="$i18n{showStatsBlockedBadgeLabel}">
+  </settings-toggle-button>
+  <settings-toggle-button
+    class="cr-row"
+    pref="{{prefs.brave.de_amp.enabled}}"
+    label="$i18n{deAmpSettingLabel}"
+    sub-label="$i18n{deAmpSettingSubLabel}"
+    learn-more-url="$i18n{deAmpLearnMoreURL}">
+  </settings-toggle-button>
+  <template is="dom-if" if="[[isDebounceFeatureEnabled_]]">
+    <settings-toggle-button
+      class="cr-row"
+      pref="{{prefs.brave.debounce.enabled}}"
+      label="$i18n{debounceSettingLabel}"
+      sub-label="$i18n{debounceSettingSubLabel}"
+      learn-more-url="$i18n{debounceLearnMoreURL}">
+    </settings-toggle-button>
+  </template>
+  <settings-toggle-button
+      class="cr-row"
+      pref="{{prefs.brave.reduce_language}}"
+      label="$i18n{reduceLanguageControlLabel}"
+      sub-label="$i18n{reduceLanguageDesc}">
+  </settings-toggle-button>
+</div>
