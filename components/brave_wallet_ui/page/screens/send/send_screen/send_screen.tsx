@@ -112,8 +112,9 @@ export const SendScreen = (props: Props) => {
       contractAddressOrSymbol?: string
       tokenId?: string
     }>()
-  const { hash } = useLocation()
   const history = useHistory()
+  const { hash } = useLocation()
+  const selectedSendOption = (hash as SendPageTabHashes) || '#token'
 
   // Send hook
   const {
@@ -210,17 +211,12 @@ export const SendScreen = (props: Props) => {
   // Refs
   const selectTokenModalRef = React.useRef<HTMLDivElement>(null)
 
-  // Hooks
+  // Modal hooks
   useOnClickOutside(
     selectTokenModalRef,
     () => setShowSelectTokenModal(false),
     showSelectTokenModal
   )
-
-  // Constants
-  const selectedSendOption = hash
-    ? (hash as SendPageTabHashes)
-    : ('#token' as SendPageTabHashes)
 
   useOnClickOutside(
     checksumInfoModalRef,
@@ -310,6 +306,7 @@ export const SendScreen = (props: Props) => {
     [setSendAmount, selectedSendAsset, selectedAccount, tokenBalancesRegistry]
   )
 
+  // memos & computed
   const sendAssetBalance = React.useMemo(() => {
     if (!selectedAccount || !selectedSendAsset || !tokenBalancesRegistry) {
       return ''
