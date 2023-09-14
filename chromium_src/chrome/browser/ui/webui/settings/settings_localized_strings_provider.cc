@@ -10,7 +10,7 @@
 #include "brave/grit/brave_generated_resources.h"
 
 // Override some chromium strings
-#include "chrome/grit/chromium_strings.h"
+#include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
 
 #undef IDS_SETTINGS_SEARCH_EXPLANATION

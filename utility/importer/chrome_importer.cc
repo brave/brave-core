@@ -38,7 +38,7 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(IS_LINUX)
-#include "chrome/grit/chromium_strings.h"
+#include "chrome/grit/branded_strings.h"
 #include "components/os_crypt/sync/key_storage_config_linux.h"
 #endif  // BUILDFLAG(IS_LINUX)
 
