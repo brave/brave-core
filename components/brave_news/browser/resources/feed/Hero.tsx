@@ -4,12 +4,34 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react';
 import { HeroArticle as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
-import Article from './Article';
+import { openArticle } from './Article';
+import styled from 'styled-components';
+import Card, { MetaInfo, Title } from './Card';
+import { useLazyUnpaddedImageUrl } from '../../../../brave_new_tab_ui/components/default/braveNews/useUnpaddedImageUrl'
 
 interface Props {
   info: Info
 }
 
+const HeroImage = styled.img`
+  width: 100%;
+  height: 269px;
+
+  object-fit: cover;
+  object-position: top;
+`
+
 export default function HeroArticle({ info }: Props) {
-  return <Article info={info} isHero />
+  const { url, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url, {
+    useCache: true,
+    rootElement: document.body,
+    rootMargin: '0px 0px 200px 0px'
+  })
+  return <Card onClick={() => openArticle(info.data)} ref={setElementRef}>
+    <HeroImage src={url} />
+    <MetaInfo>
+      {new URL(info.data.url.url).host} • {info.data.relativeTimeDescription}
+    </MetaInfo>
+    <Title>{info.data.title}</Title>
+  </Card>
 }

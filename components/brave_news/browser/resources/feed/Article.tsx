@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react';
 import Card from './Card';
-import { HeroArticle, Article as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
+import { FeedItemMetadata, HeroArticle, Article as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import styled from 'styled-components';
 import { color, font } from '@brave/leo/tokens/css';
 
@@ -31,8 +31,10 @@ const Description = styled.div`
   overflow: hidden;
 `
 
+export const openArticle = (article: FeedItemMetadata) => window.open(article.url.url, '_blank', 'noopener noreferrer')
+
 export default function Article({ info, isHero }: Props) {
-  return <Container onClick={() => window.open(info.data.url.url, '_blank', 'noopener noreferrer')}>
+  return <Container onClick={() => openArticle(info.data)}>
     <Header isHero={isHero}>{isHero && 'Hero: '}{info.data.title}{('isDiscover' in info && info.isDiscover) && " (discovering)"}</Header>
     <Publisher>{info.data.publisherName} - {info.data.relativeTimeDescription}</Publisher>
     <Description>{info.data.description}</Description>
