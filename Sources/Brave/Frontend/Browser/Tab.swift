@@ -281,7 +281,7 @@ class Tab: NSObject {
   var onPageReadyStateChanged: ((ReadyState.State) -> Void)?
 
   // If this tab has been opened from another, its parent will point to the tab from which it was opened
-  var parent: Tab?
+  weak var parent: Tab?
 
   fileprivate var contentScriptManager = TabContentScriptManager()
   private var userScripts = Set<UserScriptManager.ScriptType>()
@@ -420,6 +420,7 @@ class Tab: NSObject {
     }
     
     // Remove the tab history from saved tabs
+    // To remove history from WebKit, we simply update the session data AFTER calling "clear" above
     SessionTab.update(tabId: id, interactionState: webView.sessionData ?? Data(), title: title, url: webView.url ?? TabManager.ntpInteralURL)
   }
 

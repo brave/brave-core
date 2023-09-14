@@ -384,7 +384,7 @@ extension BrowserViewController: TabManagerDelegate {
           let alert = UIAlertController(title: nil, message: Strings.closeAllTabsPrompt, preferredStyle: .actionSheet)
           let cancelAction = UIAlertAction(title: Strings.CancelString, style: .cancel)
           let closedTabsTitle = String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count)
-          let closeAllAction = UIAlertAction(title: closedTabsTitle, style: .destructive) { _ in
+          let closeAllAction = UIAlertAction(title: closedTabsTitle, style: .destructive) { [unowned self] _ in
             if !privateBrowsingManager.isPrivateBrowsing {
               // Add the tab information to recently closed before removing
               tabManager.addAllTabsToRecentlyClosed()
