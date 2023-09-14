@@ -4,19 +4,21 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 // Types
 import {
   BraveWallet,
   SupportedTestNetworks,
-  WalletState
 } from '../../../constants/types'
 import { LOCAL_STORAGE_KEYS } from '../../../common/constants/local-storage-keys'
 
 // Components
 import NetworkFilterItem from './network-filter-item'
 import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
+
+// Hooks
+import { useGetVisibleNetworksQuery } from '../../../common/slices/api.slice'
 
 // Utils
 import { WalletActions } from '../../../common/actions'
@@ -27,7 +29,9 @@ import {
   AllNetworksOption,
   SupportedTopLevelChainIds
 } from '../../../options/network-filter-options'
-import { applySelectedAccountFilter } from '../../../options/account-filter-options'
+import {
+  AllAccountsOptionUniqueKey
+} from '../../../options/account-filter-options'
 
 // Styled Components
 import {
@@ -39,11 +43,6 @@ import {
   SecondaryNetworkText,
   ClickAwayArea
 } from './style'
-import {
-  useGetNetworkQuery,
-  useGetVisibleNetworksQuery
-} from '../../../common/slices/api.slice'
-import { skipToken } from '@reduxjs/toolkit/dist/query'
 
 interface Props {
   networkListSubset?: BraveWallet.NetworkInfo[]
@@ -60,81 +59,72 @@ interface Props {
 export const NetworkFilterSelector = ({
   networkListSubset,
   onSelectNetwork,
-  selectedNetwork: networkProp,
-  selectedAccount: accountProp,
-  isV2
+  selectedNetwork = AllNetworksOption,
+  isV2,
+  selectedAccount
 }: Props) => {
   // state
   const [showNetworkFilter, setShowNetworkFilter] = React.useState<boolean>(false)
 
   // redux
   const dispatch = useDispatch()
-  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
-  const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
-  const selectedAccountFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccountFilter)
 
   // queries
   const { data: reduxNetworkList } = useGetVisibleNetworksQuery(undefined, {
-    skip: !!networkListSubset
+    skip: !!networkListSubset?.length
   })
-  const { data: selectedNetworkFromFilter } = useGetNetworkQuery(
-    !!networkProp ||
-      !selectedNetworkFilter ||
-      selectedNetworkFilter.chainId === AllNetworksOption.chainId
-      ? skipToken
-      : selectedNetworkFilter
-  )
 
-  const selectedNetwork =
-    networkProp ||
-    (selectedNetworkFilter.chainId === AllNetworksOption.chainId
-      ? AllNetworksOption
-      : selectedNetworkFromFilter || AllNetworksOption)
-
-  const oneFilteredAccount = React.useMemo(() => {
-    return (
-      accountProp ||
-      applySelectedAccountFilter(accounts, selectedAccountFilter).oneAccount
-    )
-  }, [accountProp, accounts, selectedAccountFilter])
+  const networks = networkListSubset?.length
+    ? networkListSubset
+    : reduxNetworkList
 
   // memos
   const filteredNetworks: BraveWallet.NetworkInfo[] = React.useMemo(() => {
     // Filters networks by coinType if a selectedAccountFilter is selected
-    const networks = !oneFilteredAccount
-      ? networkListSubset
-      : networkListSubset?.filter(
-          (network) => network.coin === oneFilteredAccount.accountId.coin
+    return selectedAccount &&
+      selectedAccount.accountId.uniqueKey !== AllAccountsOptionUniqueKey
+      ? networks?.filter(
+          (network) => network.coin === selectedAccount.accountId.coin
         )
-    return networks || reduxNetworkList
-  }, [networkListSubset, reduxNetworkList, oneFilteredAccount])
+      : networks
+  }, [networks, selectedAccount])
 
-  const sortedNetworks = React.useMemo(() => {
-    const onlyMainnets = filteredNetworks.filter((network) =>
-      SupportedTopLevelChainIds.includes(network.chainId)
-    )
-    const removedMainnets = filteredNetworks.filter(
-      (network) => !SupportedTopLevelChainIds.includes(network.chainId)
-    )
-    return [AllNetworksOption, ...onlyMainnets, ...removedMainnets]
-  }, [filteredNetworks])
+  const {
+    primaryNetworks,
+    secondaryNetworks,
+    testNetworks
+  } = React.useMemo(() => {
+    const primaryNetworks: BraveWallet.NetworkInfo[] = [AllNetworksOption]
+    const secondaryNetworks: BraveWallet.NetworkInfo[] = []
+    const testNetworks: BraveWallet.NetworkInfo[] = []
 
-  const primaryNetworks = React.useMemo(() => {
-    const onlyMainnets = filteredNetworks.filter((network) =>
-      SupportedTopLevelChainIds.includes(network.chainId)
-    )
-    return [AllNetworksOption, ...onlyMainnets]
-  }, [sortedNetworks])
+    for (const network of filteredNetworks) {
+      switch (true) {
+        case SupportedTopLevelChainIds.includes(network.chainId): {
+          primaryNetworks.push(network)
+          break
+        }
 
-  const secondaryNetworks = React.useMemo(() => {
-    const primaryList = [AllNetworksOption.chainId, ...SupportedTopLevelChainIds, ...SupportedTestNetworks]
-    return sortedNetworks.filter((network) => !primaryList.includes(network.chainId))
-  }, [sortedNetworks])
+        case SupportedTestNetworks.includes(network.chainId): {
+          testNetworks.push(network)
+          break
+        }
 
-  const testNetworks = React.useMemo(() => {
-    return filteredNetworks.filter((network) =>
-      SupportedTestNetworks.includes(network.chainId)
-    )
+        case network.chainId === AllNetworksOption.chainId:
+          break // pre-sorted
+
+        default: {
+          secondaryNetworks.push(network)
+          break
+        }
+      }
+    }
+
+    return {
+      primaryNetworks,
+      secondaryNetworks,
+      testNetworks
+    }
   }, [filteredNetworks])
 
   const toggleShowNetworkFilter = React.useCallback(() => {
@@ -163,64 +153,78 @@ export const NetworkFilterSelector = ({
   // render
   return (
     <StyledWrapper>
-      <DropDownButton
-        isV2={isV2}
-        onClick={toggleShowNetworkFilter}
-      >
+      <DropDownButton isV2={isV2} onClick={toggleShowNetworkFilter}>
         <SelectorLeftSide>
-          {selectedNetwork.chainId !== AllNetworksOption.chainId &&
-            <CreateNetworkIcon network={selectedNetwork} marginRight={14} size='small' />
-          }
+          {selectedNetwork.chainId !== AllNetworksOption.chainId && (
+            <CreateNetworkIcon
+              network={selectedNetwork}
+              marginRight={14}
+              size='small'
+            />
+          )}
           {selectedNetwork.chainName}
         </SelectorLeftSide>
         <DropDownIcon isV2={isV2} />
       </DropDownButton>
 
-      {showNetworkFilter &&
+      {showNetworkFilter && (
         <DropDown>
-          {primaryNetworks.map((network: BraveWallet.NetworkInfo) =>
+          {primaryNetworks.map((network: BraveWallet.NetworkInfo) => (
             <NetworkFilterItem
               key={`${network.chainId + network.chainName}`}
               network={network}
               onSelectNetwork={onSelectAndClose}
-              selectedNetwork={selectedNetwork}
-            >
-            </NetworkFilterItem>
+              isSelected={
+                network.chainId === selectedNetwork.chainId &&
+                network.symbol.toLowerCase() ===
+                  selectedNetwork.symbol.toLowerCase()
+              }
+            ></NetworkFilterItem>
+          ))}
+
+          {secondaryNetworks.length > 0 && (
+            <>
+              <SecondaryNetworkText>
+                {getLocale('braveWalletNetworkFilterSecondary')}
+              </SecondaryNetworkText>
+              {secondaryNetworks.map((network) => (
+                <NetworkFilterItem
+                  key={`${network.chainId + network.chainName}`}
+                  network={network}
+                  onSelectNetwork={onSelectAndClose}
+                  isSelected={
+                    network.chainId === selectedNetwork.chainId &&
+                    network.symbol.toLowerCase() ===
+                      selectedNetwork.symbol.toLowerCase()
+                  }
+                />
+              ))}
+            </>
           )}
 
-          {secondaryNetworks.length > 0 &&
+          {testNetworks.length > 0 && (
             <>
-              <SecondaryNetworkText>{getLocale('braveWalletNetworkFilterSecondary')}</SecondaryNetworkText>
-              {secondaryNetworks.map((network) =>
+              <SecondaryNetworkText>
+                {getLocale('braveWalletNetworkFilterTestNetworks')}
+              </SecondaryNetworkText>
+              {testNetworks.map((network) => (
                 <NetworkFilterItem
                   key={`${network.chainId + network.chainName}`}
                   network={network}
                   onSelectNetwork={onSelectAndClose}
-                  selectedNetwork={selectedNetwork}
+                  isSelected={
+                    network.chainId === selectedNetwork.chainId &&
+                    network.symbol.toLowerCase() ===
+                      selectedNetwork.symbol.toLowerCase()
+                  }
                 />
-              )}
+              ))}
             </>
-          }
-
-          {testNetworks.length > 0 &&
-            <>
-              <SecondaryNetworkText>{getLocale('braveWalletNetworkFilterTestNetworks')}</SecondaryNetworkText>
-              {testNetworks.map((network) =>
-                <NetworkFilterItem
-                  key={`${network.chainId + network.chainName}`}
-                  network={network}
-                  onSelectNetwork={onSelectAndClose}
-                  selectedNetwork={selectedNetwork}
-                />
-              )}
-            </>
-          }
+          )}
         </DropDown>
-      }
-      {showNetworkFilter &&
-        <ClickAwayArea onClick={hideNetworkFilter} />
-      }
-    </StyledWrapper >
+      )}
+      {showNetworkFilter && <ClickAwayArea onClick={hideNetworkFilter} />}
+    </StyledWrapper>
   )
 }
 
