@@ -27,6 +27,7 @@ const char kMiscMetricsSearchSwitchedAwayFromBrave[] =
     "brave.misc_metrics.search_switched_from_brave";
 const char kMiscMetricsSearchBraveQueryCount[] =
     "brave.misc_metrics.search_brave_query_count";
+
 const char kMiscMetricsTotalDnsRequestStorage[] =
     "brave.misc_metrics.total_dns_requests";
 const char kMiscMetricsUpgradedDnsRequestStorage[] =
@@ -37,4 +38,12 @@ const char kDailyUptimeSumPrefName[] = "brave.misc_metrics.uptime_sum";
 const char kDailyUptimeFrameStartTimePrefName[] =
     "brave.misc_metrics.uptime_frame_start_time";
 
+const char kMiscMetricsTabSwitcherNewTabsStorage[] =
+    "brave.misc_metrics.tab_switcher_new_tabs_storage";
+const char kMiscMetricsTotalNewTabsStorage[] =
+    "brave.misc_metrics.total_new_tabs_storage";
+const char kMiscMetricsNewTabLocationBarEntriesStorage[] =
+    "brave.misc_metrics.new_tab_location_bar_entries_storage";
+const char kMiscMetricsTotalLocationBarEntriesStorage[] =
+    "brave.misc_metrics.total_location_bar_entries_storage";
 }  // namespace misc_metrics

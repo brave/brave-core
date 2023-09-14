@@ -36,6 +36,8 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Core.DomainsLoaded",
     "Brave.Core.IsDefault",
     "Brave.Core.LastTimeIncognitoUsed",
+    "Brave.Core.LocationNewEntries",
+    "Brave.Core.NewTabMethods",
     "Brave.Core.NumberOfExtensions",
     "Brave.Core.PagesLoaded",
     "Brave.Core.TabCount",

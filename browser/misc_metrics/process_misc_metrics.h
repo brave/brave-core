@@ -27,6 +27,7 @@ class MenuMetrics;
 class VerticalTabMetrics;
 #else
 class PrivacyHubMetrics;
+class TabMetrics;
 #endif
 class DohMetrics;
 class UptimeMonitor;
@@ -46,8 +47,9 @@ class ProcessMiscMetrics {
   VerticalTabMetrics* vertical_tab_metrics();
 #else
   PrivacyHubMetrics* privacy_hub_metrics();
-#endif
+  TabMetrics* tab_metrics();
   UptimeMonitor* uptime_monitor();
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::AIChatMetrics* ai_chat_metrics();
 #endif
@@ -58,6 +60,7 @@ class ProcessMiscMetrics {
   std::unique_ptr<VerticalTabMetrics> vertical_tab_metrics_;
 #else
   std::unique_ptr<PrivacyHubMetrics> privacy_hub_metrics_;
+  std::unique_ptr<TabMetrics> tab_metrics_;
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_;

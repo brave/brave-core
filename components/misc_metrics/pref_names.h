@@ -22,6 +22,7 @@ extern const char kMiscMetricsPinnedTabsStorage[];
 
 extern const char kMiscMetricsSearchSwitchedAwayFromBrave[];
 extern const char kMiscMetricsSearchBraveQueryCount[];
+
 extern const char kMiscMetricsTotalDnsRequestStorage[];
 extern const char kMiscMetricsUpgradedDnsRequestStorage[];
 
@@ -29,6 +30,10 @@ extern const char kDailyUptimesListPrefName[];  // DEPRECATED
 extern const char kDailyUptimeSumPrefName[];
 extern const char kDailyUptimeFrameStartTimePrefName[];
 
+extern const char kMiscMetricsTabSwitcherNewTabsStorage[];
+extern const char kMiscMetricsTotalNewTabsStorage[];
+extern const char kMiscMetricsNewTabLocationBarEntriesStorage[];
+extern const char kMiscMetricsTotalLocationBarEntriesStorage[];
 }  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_
