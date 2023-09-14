@@ -97,8 +97,6 @@ class TestWebPageEntitiesConstructor final {
     AddProperty<std::string>(&entity->properties, "data-rewards-value", "0.5");
     AddProperty<int64_t>(&entity->properties,
                          "data-conversion-observation-window-value", 1);
-    AddProperty<bool>(&entity->properties,
-                      "data-conversion-extract-external-id-value", true);
 
     // Generate values for simple string properties.
     int index = 0;
