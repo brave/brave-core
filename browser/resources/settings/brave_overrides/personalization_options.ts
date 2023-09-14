@@ -20,6 +20,8 @@ RegisterPolymerTemplateModifications({
           <settings-brave-personalization-options prefs="{{prefs}}">
           </settings-brave-personalization-options>
         `)
+      // Removed because we need to locate metrics reportng option between ours at our settings-brave-personalization-options
+      metricsReportingControl.remove()
     }
 
     // searchSugestToggle is moved to search engines section.

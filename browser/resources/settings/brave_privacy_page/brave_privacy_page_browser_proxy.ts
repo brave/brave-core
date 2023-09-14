@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import {MetricsReporting} from '/shared/settings/privacy_page/privacy_page_browser_proxy.js';
 import {sendWithPromise} from 'chrome://resources/js/cr.js';
 import {loadTimeData} from '../i18n_setup.js';
 
@@ -12,6 +13,8 @@ export interface BravePrivacyBrowserProxy {
   getStatsUsagePingEnabled(): Promise<boolean>
   setStatsUsagePingEnabled(value: boolean): void
   wasPushMessagingEnabledAtStartup(): boolean
+  setMetricsReportingEnabled(enabled: boolean): void
+  getMetricsReporting(): Promise<MetricsReporting>;
 }
 
 export class BravePrivacyBrowserProxyImpl implements BravePrivacyBrowserProxy {
@@ -33,6 +36,14 @@ export class BravePrivacyBrowserProxyImpl implements BravePrivacyBrowserProxy {
 
   wasPushMessagingEnabledAtStartup(): boolean {
     return loadTimeData.getBoolean('pushMessagingEnabledAtStartup');
+  }
+
+  setMetricsReportingEnabled(enabled: boolean) {
+    chrome.send('setMetricsReportingEnabled', [enabled]);
+  }
+
+  getMetricsReporting() {
+    return sendWithPromise('getMetricsReporting');
   }
 
   static getInstance(): BravePrivacyBrowserProxyImpl {
