@@ -71,6 +71,8 @@ where
                             active,
                         }));
                     }
+
+                    error!("No matches found for credential summary.");
                 }
                 CredentialType::SingleUse => {
                     let wrapped_creds = self.client.get_single_use_item_creds(&item.id).await?;

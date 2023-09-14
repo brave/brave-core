@@ -29,194 +29,172 @@ const char kTestVpnOrders[] = R"(
               {
                   "items":
                   {
+                      "93e2e06b-bb69-47e9-8dff-270b53938157":
+                      {
+                          "creds":
+                          [
+                              "pvGUZncSMLz5v4eW5oJVe9NEYpE09HDryFTBDjDE3XrLpwZh2Xwi/l3tU6UBdeGHNZw0KEFluZQPRZt0PRiTPIH0A8NnXy52Al1gQF9D5fmZ4Do1awJM2NWrdCh6GlUP",
+                              "FXg607b9IPPe6k65y1A76g7qV6+wMNZAlwvMarZ+fAbIGv4wJb/sneWcHmN9rvDJ7wyeupGPj08po6ymIln9ESX8ODU/9Ng0zhBiG0o4mGYj5uwT6QVDSocBekwmOdIG",
+                              "PvtiOx8Nt300OFozXLZqcJAxTzuq+wxOiAKi44r0x33aoCZcOmJ7qZrWUGfECB4Ueq4XP9F8tarNaZqd8MbxUWQxVIiwR1FoffZqVV03uoXfCIgD+DOAtNg52oW1pusF"
+                          ],
+                          "item_id": "93e2e06b-bb69-47e9-8dff-270b53938157",
+                          "state": "ActiveCredentials",
+                          "type": "time-limited-v2",
+                          "unblinded_creds":
+                          [
+                              {
+                                  "issuer_id": "8dc09cb0-a69b-4695-8288-7bf716615385",
+                                  "unblinded_creds":
+                                  [
+                                      {
+                                          "spent": false,
+                                          "unblinded_cred": "nfjj7YWTOJ3Ct7kAB2eyBzdhxOg1RKItWOgJdMCkj33ksrTE2FMvGjI12gu2UdgGJP1d2QTzHKh7k/aIIaUV+F4vjG/FpaWS0VShkPk2I8ODI2aNgcEUDHC0zeRIpjkg"
+                                      },
+                                      {
+                                          "spent": false,
+                                          "unblinded_cred": "c6UZLQYdkgUK0pqvyvawr1sDqGrJ/d67hWl3J69+f0qlTTreNNjrYZyw+IzXSHimTgYrzF7gRc5sG2nv+d8Nrqxaf7P4f/yPL5f7XnaM6C2BVxS+P7Maz1+Ibkk2mbwA"
+                                      }
+                                  ],
+                                  "valid_from": "2022-06-19T19:31:40",
+                                  "valid_to": "{year}-06-20T19:31:40"
+                              },
+                              {
+                                  "issuer_id": "8dc09cb0-a69b-4695-8288-7bf716615385",
+                                  "unblinded_creds":
+                                  [
+                                      {
+                                          "spent": false,
+                                          "unblinded_cred": "Lw06d7LyqIAhjKr7HynJ2+8vGJNBknzYkhsAHBV592q650mzswoUa1ob6s6ALH3mFCgAhELFPrDM2BAue003okp0aMSgDtZOVSYm1i1HYyEBeCms8dqsEJ0PZom+Kd8W"
+                                      },
+                                      {
+                                          "spent": false,
+                                          "unblinded_cred": "UuDemArRSL/WW1tLIePymNWGVPDYrj0dDzKqBrHkIvWuGImfJW/7mpQa9VwU4Ac1J/bnIPsuS8lnXogfLfcfxIwtYK6KSj42zCu7s4E4xQuwKi1wlprliKRVv6SnwZlX"
+                                      }
+                                  ],
+                                  "valid_from": "2022-06-20T19:31:40",
+                                  "valid_to": "{year}-06-21T19:31:40"
+                              },
+                              {
+                                  "issuer_id": "8dc09cb0-a69b-4695-8288-7bf716615385",
+                                  "unblinded_creds":
+                                  [
+                                      {
+                                          "spent": false,
+                                          "unblinded_cred": "48XvG94GrosHjnU38gsfF7maMwFOkPmUjxRBo/VU3tzUkUdue0LEZQIgeKlO2MKujKToDAn5GWP9RAl5sKiLpX62pTXLpS7fQ41CdyREBU9Jdc2hf0eRTdJsbdm6mL9Z"
+                                      },
+                                      {
+                                          "spent": false,
+                                          "unblinded_cred": "hSHfygeq++tl3SgkhygbjyvNTWdnMjJlt51To6KOb19SlgJ5kUMZEvsw6H1/e0MV+KyFBeJTd24ED6kzbac2ugDi8aXnBoucVyeJa3XBtSvqcAJhRu8VABv6IfxW81AT"
+                                      }
+                                  ],
+                                  "valid_from": "2022-06-21T19:31:40",
+                                  "valid_to": "{year}-06-22T19:31:40"
+                              }
+                          ]
+                      },
                       "424bc657-633f-4fcc-bd8e-92a51c8e4971":
                       {
                           "creds":
                           [
-                              {
-                                  "expires_at": "2022-05-13T00:00:00",
-                                  "issued_at": "2022-05-11T00:00:00",
-                                  "item_id": "424bc657-633f-4fcc-bd8e-92a51c8e4971",
-                                  "token": "q7gunpfaAVvnoP6uvnLaZHLivyky1VmF4NqryK3Hx+dq67LNtA3KLx8251Pc5tLH"
-                              },
-                              {
-                                  "expires_at": "2022-05-13T00:00:00",
-                                  "issued_at": "2022-05-11T00:00:00",
-                                  "item_id": "424bc657-633f-4fcc-bd8e-92a51c8e4971",
-                                  "token": "8N35H12HrUElmWl9owqKOxg8/rHrtCPSuOHpjU4gv4xNcZUMrjnStqWo2NgwIhpZ"
-                              }
+                              "pvGUZncSMLz5v4eW5oJVe9NEYpE09HDryFTBDjDE3XrLpwZh2Xwi/l3tU6UBdeGHNZw0KEFluZQPRZt0PRiTPIH0A8NnXy52Al1gQF9D5fmZ4Do1awJM2NWrdCh6GlUP",
+                              "FXg607b9IPPe6k65y1A76g7qV6+wMNZAlwvMarZ+fAbIGv4wJb/sneWcHmN9rvDJ7wyeupGPj08po6ymIln9ESX8ODU/9Ng0zhBiG0o4mGYj5uwT6QVDSocBekwmOdIG",
+                              "u3aByl/KnY/yuVPhWWDodB0w7uhmS0RW0V3n8WHkn0JlBTcCgBp0HIzLxqgdzKWOEFrIL7nLYul/qjLbf2HBKj08n1JkDpzLLy2NmizBrP13pzMeZ8PBED3ArU9jfvoB"
                           ],
                           "item_id": "424bc657-633f-4fcc-bd8e-92a51c8e4971",
-                          "type": "time-limited"
-                      },
-                      "463b9cca-8609-4255-a29e-0f2ac475af3b":
-                      {
-                          "creds":
+                          "state": "ActiveCredentials",
+                          "type": "time-limited-v2",
+                          "unblinded_creds":
                           [
                               {
-                                  "expires_at": "2021-07-19T00:00:00",
-                                  "issued_at": "2021-07-18T00:00:00",
-                                  "item_id": "463b9cca-8609-4255-a29e-0f2ac475af3b",
-                                  "token": "8N35H12HrUElmWl9owqKOxg8/rHrtCPSuOHpjU4gv4xNcZUMrjnStqWo2NgwIhpZ"
+                                  "issuer_id": "8dc09cb0-a69b-4695-8288-7bf716615385",
+                                  "unblinded_creds":
+                                  [
+                                      {
+                                          "spent": false,
+                                          "unblinded_cred": "nfjj7YWTOJ3Ct7kAB2eyBzdhxOg1RKItWOgJdMCkj33ksrTE2FMvGjI12gu2UdgGJP1d2QTzHKh7k/aIIaUV+F4vjG/FpaWS0VShkPk2I8ODI2aNgcEUDHC0zeRIpjkg"
+                                      },
+                                      {
+                                          "spent": false,
+                                          "unblinded_cred": "c6UZLQYdkgUK0pqvyvawr1sDqGrJ/d67hWl3J69+f0qlTTreNNjrYZyw+IzXSHimTgYrzF7gRc5sG2nv+d8Nrqxaf7P4f/yPL5f7XnaM6C2BVxS+P7Maz1+Ibkk2mbwA"
+                                      }
+                                  ],
+                                  "valid_from": "2022-06-19T19:31:40",
+                                  "valid_to": "2022-06-20T19:31:40"
                               },
                               {
-                                  "expires_at": "2022-06-14T00:00:00",
-                                  "issued_at": "2022-06-13T00:00:00",
-                                  "item_id": "463b9cca-8609-4255-a29e-0f2ac475af3b",
-                                  "token": "q7gunpfaAVvnoP6uvnLaZHLivyky1VmF4NqryK3Hx+dq67LNtA3KLx8251Pc5tLH"
+                                  "issuer_id": "8dc09cb0-a69b-4695-8288-7bf716615385",
+                                  "unblinded_creds":
+                                  [
+                                      {
+                                          "spent": false,
+                                          "unblinded_cred": "Lw06d7LyqIAhjKr7HynJ2+8vGJNBknzYkhsAHBV592q650mzswoUa1ob6s6ALH3mFCgAhELFPrDM2BAue003okp0aMSgDtZOVSYm1i1HYyEBeCms8dqsEJ0PZom+Kd8W"
+                                      },
+                                      {
+                                          "spent": false,
+                                          "unblinded_cred": "UuDemArRSL/WW1tLIePymNWGVPDYrj0dDzKqBrHkIvWuGImfJW/7mpQa9VwU4Ac1J/bnIPsuS8lnXogfLfcfxIwtYK6KSj42zCu7s4E4xQuwKi1wlprliKRVv6SnwZlX"
+                                      }
+                                  ],
+                                  "valid_from": "2022-06-20T19:31:40",
+                                  "valid_to": "2022-06-21T19:31:40"
                               },
                               {
-                                  "expires_at": "2021-07-19T00:00:00",
-                                  "issued_at": "2021-07-18T00:00:00",
-                                  "item_id": "463b9cca-8609-4255-a29e-0f2ac475af3b",
-                                  "token": "8N35H12HrUElmWl9owqKOxg8/rHrtCPSuOHpjU4gv4xNcZUMrjnStqWo2NgwIhpZ"
+                                  "issuer_id": "8dc09cb0-a69b-4695-8288-7bf716615385",
+                                  "unblinded_creds":
+                                  [
+                                      {
+                                          "spent": false,
+                                          "unblinded_cred": "48XvG94GrosHjnU38gsfF7maMwFOkPmUjxRBo/VU3tzUkUdue0LEZQIgeKlO2MKujKToDAn5GWP9RAl5sKiLpX62pTXLpS7fQ41CdyREBU9Jdc2hf0eRTdJsbdm6mL9Z"
+                                      },
+                                      {
+                                          "spent": false,
+                                          "unblinded_cred": "hSHfygeq++tl3SgkhygbjyvNTWdnMjJlt51To6KOb19SlgJ5kUMZEvsw6H1/e0MV+KyFBeJTd24ED6kzbac2ugDi8aXnBoucVyeJa3XBtSvqcAJhRu8VABv6IfxW81AT"
+                                      }
+                                  ],
+                                  "valid_from": "2022-06-21T19:31:40",
+                                  "valid_to": "2022-06-22T19:31:40"
                               }
-                          ],
-                          "item_id": "463b9cca-8609-4255-a29e-0f2ac475af3b",
-                          "type": "time-limited"
+                          ]
                       }
                   }
               },
               "orders":
               {
-                  "33a8231a-7c69-47bd-a061-2045b9b1b890":
+                  "ed5a53c1-9555-4b9c-81df-485521ab8161":
                   {
-                      "created_at": "2022-06-13T13:05:17.144570",
+                      "created_at": "2023-02-16T22:48:02.804478",
                       "currency": "USD",
-                      "expires_at": "2022-06-14T14:36:02.579641",
-                      "id": "33a8231a-7c69-47bd-a061-2045b9b1b890",
+                      "expires_at": "{year}-09-16T23:56:52.839338",
+                      "id": "ed5a53c1-9555-4b9c-81df-485521ab8161",
                       "items":
                       [
                           {
-                              "created_at": "2022-06-13T14:35:28.313786",
-                              "credential_type": "time-limited",
+                              "created_at": "2023-02-16T22:48:02.804478",
+                              "credential_type": "time-limited-v2",
                               "currency": "USD",
-                              "description": "Brave VPN",
-                              "id": "424bc657-633f-4fcc-bd8e-92a51c8e4971",
+                              "description": "brave-vpn-premium",
+                              "id": "93e2e06b-bb69-47e9-8dff-270b53938157",
                               "location": "{domain}",
-                              "order_id": "33a8231a-7c69-47bd-a061-2045b9b1b890",
+                              "order_id": "ed5a53c1-9555-4b9c-81df-485521ab8161",
                               "price": 9.99,
                               "quantity": 1,
                               "sku": "brave-vpn-premium",
                               "subtotal": 9.99,
-                              "updated_at": "2022-06-13T14:35:28.313786"
-                          },
-                          {
-                              "created_at": "2022-06-13T13:05:17.144570",
-                              "credential_type": "time-limited",
-                              "currency": "USD",
-                              "description": "Brave VPN",
-                              "id": "55555555-633f-4fcc-bd8e-92a51c8e4971",
-                              "location": "{domain}",
-                              "order_id": "33a8231a-7c69-47bd-a061-2045b9b1b890",
-                              "price": 9.99,
-                              "quantity": 1,
-                              "sku": "brave-vpn-premium",
-                              "subtotal": 9.99,
-                              "updated_at": "2022-06-13T13:05:17.144570"
+                              "updated_at": "2023-02-16T22:48:02.804478"
                           }
                       ],
-                      "last_paid_at": "2022-06-13T13:06:49.466083",
+                      "last_paid_at": "2023-08-16T23:56:52.839338",
                       "location": "{domain}",
                       "merchant_id": "brave.com",
                       "metadata":
                       {
-                          "num_intervals": null,
-                          "num_per_interval": null,
-                          "payment_processor": null,
-                          "stripe_checkout_session_id": null
+                          "num_intervals": 33,
+                          "num_per_interval": 2,
+                          "payment_processor": "stripe",
+                          "stripe_checkout_session_id": "cs_live_b1l4e7azojxIWro3UYp3Bx8dO1CMb9IRbAC1x6qaKAtsMH9KPO77quKGoM"
                       },
                       "status": "paid",
                       "total_price": 9.99,
-                      "updated_at": "2022-06-13T13:06:49.465232"
-                  },
-                  "7df66bcb-921e-424b-ad53-37885948fb34":
-                  {
-                      "created_at": "2022-06-13T14:35:28.313786",
-                      "currency": "USD",
-                      "expires_at": "{year}-06-14T14:36:02.579641",
-                      "id": "7df66bcb-921e-424b-ad53-37885948fb34",
-                      "items":
-                      [
-                          {
-                              "created_at": "2022-06-13T14:35:28.313786",
-                              "credential_type": "time-limited",
-                              "currency": "USD",
-                              "description": "Brave VPN",
-                              "id": "463b9cca-8609-4255-a29e-0f2ac475af3",
-                              "location": "{domain}",
-                              "order_id": "7df66bcb-921e-424b-ad53-37885948fb34",
-                              "price": 9.99,
-                              "quantity": 1,
-                              "sku": "brave-vpn-premium",
-                              "subtotal": 9.99,
-                              "updated_at": "2022-06-13T14:35:28.313786"
-                          },
-                          {
-                              "created_at": "2022-06-13T14:35:28.313786",
-                              "credential_type": "time-limited",
-                              "currency": "USD",
-                              "description": "Brave VPN",
-                              "id": "00000000-633f-4fcc-bd8e-92a51c8e4971",
-                              "location": "{domain}",
-                              "order_id": "7df66bcb-921e-424b-ad53-37885948fb34",
-                              "price": 9.99,
-                              "quantity": 1,
-                              "sku": "brave-vpn-premium",
-                              "subtotal": 9.99,
-                              "updated_at": "2022-06-13T14:35:28.313786"
-                          }
-                      ],
-                      "last_paid_at": "2022-06-13T14:36:02.579656",
-                      "location": "{domain}",
-                      "merchant_id": "brave.com",
-                      "metadata":
-                      {
-                          "num_intervals": null,
-                          "num_per_interval": null,
-                          "payment_processor": null,
-                          "stripe_checkout_session_id": null
-                      },
-                      "status": "paid",
-                      "total_price": 9.99,
-                      "updated_at": "2022-06-13T14:36:02.577786"
-                  },
-                  "2ba8231a-7c69-47bd-a061-2045b9b1b890":
-                  {
-                      "created_at": "2022-06-13T13:05:17.144570",
-                      "currency": "USD",
-                      "expires_at": "{year}-06-13T13:06:49.466071",
-                      "id": "2ba8231a-7c69-47bd-a061-2045b9b1b890",
-                      "items":
-                      [
-                          {
-                              "created_at": "2022-06-13T13:05:17.144570",
-                              "credential_type": "time-limited",
-                              "currency": "USD",
-                              "description": "Brave VPN",
-                              "id": "424bc657-633f-4fcc-bd8e-92a51c8e4971",
-                              "location": "{domain}",
-                              "order_id": "2ba8231a-7c69-47bd-a061-2045b9b1b890",
-                              "price": 9.99,
-                              "quantity": 1,
-                              "sku": "brave-vpn-premium",
-                              "subtotal": 9.99,
-                              "updated_at": "2022-06-13T13:05:17.144570"
-                          }
-                      ],
-                      "last_paid_at": "2022-06-13T13:06:49.466083",
-                      "location": "{domain}",
-                      "merchant_id": "brave.com",
-                      "metadata":
-                      {
-                          "num_intervals": null,
-                          "num_per_interval": null,
-                          "payment_processor": null,
-                          "stripe_checkout_session_id": null
-                      },
-                      "status": "paid",
-                      "total_price": 9.99,
-                      "updated_at": "2022-06-13T13:06:49.465232"
+                      "updated_at": "2023-08-16T23:56:52.837510"
                   }
               },
               "promotions": null,
@@ -309,7 +287,7 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummarySuccess) {
   auto* order = credentials_json->GetDict().Find("order");
   EXPECT_TRUE(order);
   EXPECT_EQ(*order, GetExpectedCreds(testing_payload,
-                                     "7df66bcb-921e-424b-ad53-37885948fb34"));
+                                     "ed5a53c1-9555-4b9c-81df-485521ab8161"));
 }
 
 TEST_F(SkusServiceTestUnitTest, CredentialSummaryFailed) {
@@ -321,7 +299,7 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummaryFailed) {
   auto* orders = payload_value->GetDict().FindDict("orders");
   EXPECT_TRUE(orders);
   // Remove unexpired creds
-  orders->Remove("7df66bcb-921e-424b-ad53-37885948fb34");
+  orders->Remove("ed5a53c1-9555-4b9c-81df-485521ab8161");
   std::string json;
   base::JSONWriter::WriteWithOptions(
       payload_value.value(), base::JSONWriter::OPTIONS_PRETTY_PRINT, &json);
