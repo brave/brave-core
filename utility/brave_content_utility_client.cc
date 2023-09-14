@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/json/json_converter.mojom.h"
+#include "brave/components/json/json_converter_impl.h"
 #include "brave/components/services/bat_ads/bat_ads_service_impl.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
@@ -63,6 +65,11 @@ auto RunBatAdsService(
   return std::make_unique<bat_ads::BatAdsServiceImpl>(std::move(receiver));
 }
 
+auto RunJsonConverter(
+    mojo::PendingReceiver<brave::json::mojom::JsonConverter> receiver) {
+  return std::make_unique<brave::json::JsonConverterImpl>(std::move(receiver));
+}
+
 }  // namespace
 
 BraveContentUtilityClient::BraveContentUtilityClient() = default;
@@ -85,6 +92,10 @@ void BraveContentUtilityClient::RegisterMainThreadServices(
   services.Add(RunRewardsEngineFactory);
 
   services.Add(RunBatAdsService);
+
+  // TODO(darkdh): Group related rust codes into a single service like
+  // data_decoder
+  services.Add(RunJsonConverter);
 
   return ChromeContentUtilityClient::RegisterMainThreadServices(services);
 }
