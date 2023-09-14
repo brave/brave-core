@@ -65,6 +65,13 @@ SkColor PickColorContrastingToToolbar(const ui::ColorProviderKey& key,
   return color_utils::PickContrastingColor(color1, color2, toolbar_color);
 }
 
+bool HasCustomToolbarColor(const ui::ColorProviderKey& key) {
+  SkColor custom_toolbar_color;
+  return key.custom_theme &&
+         key.custom_theme->GetColor(ThemeProperties::COLOR_TOOLBAR,
+                                    &custom_toolbar_color);
+}
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_SPEEDREADER)
 SkColor PickSimilarColorToToolbar(const ui::ColorProviderKey& key,
                                   const ui::ColorMixer& mixer,
@@ -350,12 +357,27 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarItemBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
   mixer[kColorSidebarSeparator] = {SkColorSetRGB(0xE6, 0xE8, 0xF5)};
 
-  mixer[kColorSidebarButtonBase] = {
-      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
-                                    SkColorSetRGB(0xC2, 0xC4, 0xCF))};
+  if (HasCustomToolbarColor(key)) {
+    // When custom color for toolbar is set, we can't depend on the color mode.
+    mixer[kColorSidebarButtonBase] = {PickColorContrastingToToolbar(
+        key, mixer,
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight),
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark))};
+    mixer[kColorSidebarButtonPressed] = {PickColorContrastingToToolbar(
+        key, mixer,
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight),
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark))};
+  } else {
+    mixer[kColorSidebarButtonBase] = {
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight)};
+    mixer[kColorSidebarButtonPressed] = {
+        leo::GetColor(leo::Color::kColorIconInteractive, leo::Theme::kLight)};
+  }
+
   mixer[kColorSidebarAddButtonDisabled] = {PickColorContrastingToToolbar(
       key, mixer, SkColorSetARGB(0x66, 0x49, 0x50, 0x57),
       SkColorSetARGB(0x66, 0xC2, 0xC4, 0xCF))};
+
   mixer[kColorSidebarArrowDisabled] = {PickColorContrastingToToolbar(
       key, mixer, SkColorSetARGB(0x8A, 0x49, 0x50, 0x57),
       SkColorSetARGB(0x8A, 0xAE, 0xB1, 0xC2))};
@@ -440,9 +462,22 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarArrowBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
   mixer[kColorSidebarItemBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
   mixer[kColorSidebarSeparator] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
-  mixer[kColorSidebarButtonBase] = {
-      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
-                                    SkColorSetRGB(0xC2, 0xC4, 0xCF))};
+  if (HasCustomToolbarColor(key)) {
+    // When custom color for toolbar is set, we can't depend on the color mode.
+    mixer[kColorSidebarButtonBase] = {PickColorContrastingToToolbar(
+        key, mixer,
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight),
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark))};
+    mixer[kColorSidebarButtonPressed] = {PickColorContrastingToToolbar(
+        key, mixer,
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight),
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark))};
+  } else {
+    mixer[kColorSidebarButtonBase] = {
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark)};
+    mixer[kColorSidebarButtonPressed] = {
+        leo::GetColor(leo::Color::kColorIconInteractive, leo::Theme::kDark)};
+  }
   mixer[kColorSidebarAddButtonDisabled] = {PickColorContrastingToToolbar(
       key, mixer, SkColorSetARGB(0x66, 0x49, 0x50, 0x57),
       SkColorSetARGB(0x66, 0xC2, 0xC4, 0xCF))};

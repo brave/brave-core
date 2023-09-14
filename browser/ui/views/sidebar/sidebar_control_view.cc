@@ -6,7 +6,6 @@
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -16,8 +15,8 @@
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -33,6 +32,8 @@
 #include "ui/views/controls/menu/menu_runner.h"
 
 namespace {
+
+constexpr int kSpacingBetweenChildren = 4;
 
 using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
 
@@ -90,7 +91,7 @@ void SidebarControlView::Layout() {
     int y = bounds.y();
     sidebar_items_view_->SetBounds(x, y, items_view_size.width(),
                                    items_view_size.height());
-    y += items_view_size.height();
+    y += items_view_size.height() + kSpacingBetweenChildren;
     sidebar_item_add_view_->SetBounds(x, y, add_view_size.width(),
                                       add_view_size.height());
   } else {
@@ -102,6 +103,7 @@ void SidebarControlView::Layout() {
         x, bounds.height() - settings_size.height() - add_view_size.height(),
         add_view_size.width(), add_view_size.height());
   }
+
   // Locate settings button at bottom line.
   sidebar_settings_view_->SetBounds(x, bounds.height() - settings_size.height(),
                                     settings_size.width(),
@@ -114,6 +116,7 @@ gfx::Size SidebarControlView::CalculatePreferredSize() const {
   preferred.Enlarge(0, sidebar_item_add_view_->GetPreferredSize().height());
   preferred.Enlarge(0, sidebar_settings_view_->GetPreferredSize().height());
   preferred += GetInsets().size();
+  preferred += gfx::Size(0, kSpacingBetweenChildren * children().size() - 1);
   return preferred;
 }
 
@@ -122,7 +125,6 @@ void SidebarControlView::OnThemeChanged() {
 
   UpdateBackgroundAndBorder();
   UpdateItemAddButtonState();
-  UpdateSettingsButtonState();
 }
 
 void SidebarControlView::UpdateBackgroundAndBorder() {
@@ -143,8 +145,9 @@ void SidebarControlView::ShowContextMenuForViewImpl(
     views::View* source,
     const gfx::Point& point,
     ui::MenuSourceType source_type) {
-  if (context_menu_runner_ && context_menu_runner_->IsRunning())
+  if (context_menu_runner_ && context_menu_runner_->IsRunning()) {
     return;
+  }
 
   context_menu_model_ = std::make_unique<ControlViewMenuModel>(this);
   context_menu_model_->AddTitle(brave_l10n::GetLocalizedResourceUTF16String(
@@ -254,20 +257,20 @@ void SidebarControlView::UpdateItemAddButtonState() {
 
 void SidebarControlView::UpdateSettingsButtonState() {
   DCHECK(sidebar_settings_view_);
-  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
-    sidebar_settings_view_->SetImage(
-        views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(
-            kSidebarSettingsIcon,
-            color_provider->GetColor(kColorSidebarButtonBase)));
-    auto& bundle = ui::ResourceBundle::GetSharedInstance();
-    sidebar_settings_view_->SetImage(
-        views::Button::STATE_HOVERED,
-        bundle.GetImageSkiaNamed(IDR_SIDEBAR_SETTINGS_FOCUSED));
-    sidebar_settings_view_->SetImage(
-        views::Button::STATE_PRESSED,
-        bundle.GetImageSkiaNamed(IDR_SIDEBAR_SETTINGS_FOCUSED));
-  }
+  sidebar_settings_view_->SetImageModel(
+      views::Button::STATE_NORMAL,
+      ui::ImageModel::FromVectorIcon(kLeoSettingsIcon, kColorSidebarButtonBase,
+                                     SidebarButtonView::kIconSize));
+  sidebar_settings_view_->SetImageModel(
+      views::Button::STATE_PRESSED,
+      ui::ImageModel::FromVectorIcon(kLeoSettingsIcon,
+                                     kColorSidebarButtonPressed,
+                                     SidebarButtonView::kIconSize));
+  sidebar_settings_view_->SetImageModel(
+      views::Button::STATE_DISABLED,
+      ui::ImageModel::FromVectorIcon(kLeoSettingsIcon,
+                                     kColorSidebarAddButtonDisabled,
+                                     SidebarButtonView::kIconSize));
 }
 
 bool SidebarControlView::IsItemReorderingInProgress() const {
@@ -275,14 +278,17 @@ bool SidebarControlView::IsItemReorderingInProgress() const {
 }
 
 bool SidebarControlView::IsBubbleWidgetVisible() const {
-  if (context_menu_runner_ && context_menu_runner_->IsRunning())
+  if (context_menu_runner_ && context_menu_runner_->IsRunning()) {
     return true;
+  }
 
-  if (sidebar_item_add_view_->IsBubbleVisible())
+  if (sidebar_item_add_view_->IsBubbleVisible()) {
     return true;
+  }
 
-  if (sidebar_items_view_->IsBubbleVisible())
+  if (sidebar_items_view_->IsBubbleVisible()) {
     return true;
+  }
 
   return false;
 }

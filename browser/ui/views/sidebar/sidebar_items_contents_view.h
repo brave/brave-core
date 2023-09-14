@@ -16,6 +16,7 @@
 #include "brave/components/sidebar/sidebar_item.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/views/context_menu_controller.h"
+#include "ui/views/controls/button/button.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_observer.h"
@@ -46,7 +47,6 @@ class SidebarItemsContentsView : public views::View,
 
   // views::View overrides:
   gfx::Size CalculatePreferredSize() const override;
-  void OnThemeChanged() override;
 
   // views::ContextMenuController overrides:
   void ShowContextMenuForViewImpl(views::View* source,
@@ -105,10 +105,9 @@ class SidebarItemsContentsView : public views::View,
   void OnItemPressed(const views::View* item, const ui::Event& event);
   void OnContextMenuClosed();
 
-  gfx::ImageSkia GetImageForBuiltInItems(
+  ui::ImageModel GetImageForBuiltInItems(
       sidebar::SidebarItem::BuiltInItemType type,
-      bool focus,
-      bool disabled) const;
+      views::Button::ButtonState state) const;
   void UpdateAllBuiltInItemsViewState();
   void ShowItemAddedFeedbackBubble(views::View* anchor_view);
 

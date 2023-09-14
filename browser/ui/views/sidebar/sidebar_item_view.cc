@@ -27,8 +27,9 @@ void SidebarItemView::DrawHorizontalBorder(bool top) {
 }
 
 void SidebarItemView::ClearHorizontalBorder() {
-  if (!draw_horizontal_border_)
+  if (!draw_horizontal_border_) {
     return;
+  }
 
   draw_horizontal_border_ = false;
   SchedulePaint();
@@ -53,8 +54,9 @@ void SidebarItemView::OnPaintBorder(gfx::Canvas* canvas) {
     constexpr float kHorizontalBorderWidth = 2;
     gfx::Rect border_rect(GetLocalBounds());
 
-    if (!draw_horizontal_border_top_)
+    if (!draw_horizontal_border_top_) {
       border_rect.set_y(border_rect.bottom() - kHorizontalBorderWidth);
+    }
 
     border_rect.set_height(kHorizontalBorderWidth);
 
@@ -67,18 +69,6 @@ bool SidebarItemView::IsTriggerableEvent(const ui::Event& e) {
   return e.type() == ui::ET_GESTURE_TAP ||
          e.type() == ui::ET_GESTURE_TAP_DOWN ||
          event_utils::IsPossibleDispositionEvent(e);
-}
-
-void SidebarItemView::OnPaintBackground(gfx::Canvas* canvas) {
-  SidebarButtonView::OnPaintBackground(canvas);
-
-  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
-    if (paint_background_on_hovered_ && GetState() == STATE_HOVERED) {
-      canvas->FillRect(
-          GetLocalBounds(),
-          color_provider->GetColor(kColorSidebarItemBackgroundHovered));
-    }
-  }
 }
 
 BEGIN_METADATA(SidebarItemView, SidebarButtonView)

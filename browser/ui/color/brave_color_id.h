@@ -51,6 +51,7 @@
     E_CPONLY(kColorSidebarArrowDisabled)                      \
     E_CPONLY(kColorSidebarArrowNormal)                        \
     E_CPONLY(kColorSidebarButtonBase)                         \
+    E_CPONLY(kColorSidebarButtonPressed)                      \
     E_CPONLY(kColorSidebarItemBackgroundHovered)              \
     E_CPONLY(kColorSidebarItemDragIndicator)                  \
     E_CPONLY(kColorSidebarSeparator)

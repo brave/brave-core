@@ -51,6 +51,7 @@ class SidebarItemsArrowView : public views::ImageButton {
     DCHECK(GetInstallFocusRingOnFocus());
     views::FocusRing::Get(this)->SetColorId(gfx::kBraveBlurple300);
     SetAccessibleName(accessible_name);
+    SetPaintToLayer();
   }
 
   ~SidebarItemsArrowView() override = default;
@@ -59,7 +60,7 @@ class SidebarItemsArrowView : public views::ImageButton {
   SidebarItemsArrowView& operator=(const SidebarItemsArrowView&) = delete;
 
   gfx::Size CalculatePreferredSize() const override {
-    return {42, kArrowHeight};
+    return {SidebarButtonView::kSidebarButtonSize, kArrowHeight};
   }
 
   void OnPaintBackground(gfx::Canvas* canvas) override {
@@ -160,15 +161,18 @@ void SidebarItemsScrollView::Layout() {
 }
 
 void SidebarItemsScrollView::OnMouseEvent(ui::MouseEvent* event) {
-  if (!event->IsMouseWheelEvent())
+  if (!event->IsMouseWheelEvent()) {
     return;
+  }
 
-  if (!IsScrollable())
+  if (!IsScrollable()) {
     return;
+  }
 
   const int y_offset = event->AsMouseWheelEvent()->y_offset();
-  if (y_offset == 0)
+  if (y_offset == 0) {
     return;
+  }
 
   ScrollContentsViewBy(y_offset, false);
   UpdateArrowViewsEnabledState();
@@ -283,34 +287,39 @@ void SidebarItemsScrollView::UpdateArrowViewsEnabledState() {
 }
 
 bool SidebarItemsScrollView::IsScrollable() const {
-  if (bounds().IsEmpty() || GetPreferredSize().IsEmpty())
+  if (bounds().IsEmpty() || GetPreferredSize().IsEmpty()) {
     return false;
+  }
 
   return bounds().height() < GetPreferredSize().height();
 }
 
 void SidebarItemsScrollView::OnButtonPressed(views::View* view) {
   const int scroll_offset = SidebarButtonView::kSidebarButtonSize;
-  if (view == up_arrow_)
+  if (view == up_arrow_) {
     ScrollContentsViewBy(scroll_offset, true);
+  }
 
-  if (view == down_arrow_)
+  if (view == down_arrow_) {
     ScrollContentsViewBy(-scroll_offset, true);
+  }
 
   UpdateArrowViewsEnabledState();
 }
 
 void SidebarItemsScrollView::ScrollContentsViewBy(int offset, bool animate) {
-  if (offset == 0)
+  if (offset == 0) {
     return;
+  }
 
   // If scroll goes up, it should not go further if the origin of contents view
   // is same with bottom_right of up arrow.
   if (offset > 0) {
     const gfx::Rect up_arrow_bounds = up_arrow_->bounds();
     // If contents view already stick to up_arrow bottom, just return.
-    if (contents_view_->origin() == up_arrow_bounds.bottom_left())
+    if (contents_view_->origin() == up_arrow_bounds.bottom_left()) {
       return;
+    }
 
     // If contents view top meets or exceeds the up arrow bottom, attach it to
     // up arrow bottom.
@@ -330,8 +339,9 @@ void SidebarItemsScrollView::ScrollContentsViewBy(int offset, bool animate) {
   if (offset < 0) {
     const gfx::Rect down_arrow_bounds = down_arrow_->bounds();
     // If contents view already stick to down_arrow top, just return.
-    if (contents_view_->bounds().bottom_left() == down_arrow_bounds.origin())
+    if (contents_view_->bounds().bottom_left() == down_arrow_bounds.origin()) {
       return;
+    }
 
     // If contents view bottom meets or exceeds the down arrow top, attach it to
     // down arrow top.
@@ -422,12 +432,14 @@ gfx::Rect SidebarItemsScrollView::GetTargetScrollContentsViewRectTo(bool top) {
 
 bool SidebarItemsScrollView::IsInVisibleContentsViewBounds(
     const gfx::Point& position) const {
-  if (!HitTestPoint(position))
+  if (!HitTestPoint(position)) {
     return false;
+  }
 
   // If this is not scrollable, this scroll view shows all contents view.
-  if (!IsScrollable())
+  if (!IsScrollable()) {
     return true;
+  }
 
   if (up_arrow_->bounds().Contains(position) ||
       down_arrow_->bounds().Contains(position)) {
@@ -447,8 +459,9 @@ bool SidebarItemsScrollView::GetDropFormats(
 bool SidebarItemsScrollView::CanDrop(const OSExchangeData& data) {
   // Null means sidebar item drag and drop is not initiated by this view.
   // Don't allow item move from different window.
-  if (!drag_context_->source())
+  if (!drag_context_->source()) {
     return false;
+  }
 
   return data.HasCustomFormat(
       ui::ClipboardFormatType::GetType(kSidebarItemDragType));
