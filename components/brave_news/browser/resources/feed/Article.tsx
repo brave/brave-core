@@ -35,10 +35,10 @@ export const openArticle = (article: FeedItemMetadata) => window.open(article.ur
 export default function Article({ info }: Props) {
   const { url, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url, { useCache: true })
   return <Container onClick={() => openArticle(info.data)} ref={setElementRef}>
-    <ArticleImage src={url} />
     <div>
-      <Title>{info.data.title}{('isDiscover' in info && info.isDiscover) && " (discovering)"}</Title>
       <MetaInfo>{new URL(info.data.url.url).host} • {info.data.relativeTimeDescription}</MetaInfo>
+      <Title>{info.data.title}{('isDiscover' in info && info.isDiscover) && " (discovering)"}</Title>
     </div>
+    <ArticleImage src={url} />
   </Container>
 }

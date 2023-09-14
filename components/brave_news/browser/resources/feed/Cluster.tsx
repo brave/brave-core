@@ -4,21 +4,28 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react';
 import { Cluster as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
-import Card from './Card';
+import Card, { MetaInfo } from './Card';
 import Article from './Article';
-import HeroArticle from './Hero';
+import IconReact from '@brave/leo/react/icon';
+import styled from 'styled-components';
+import { spacing } from '@brave/leo/tokens/css';
 
 interface Props {
   info: Info
 }
 
+const Container = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing.m};
+`
+
 export default function Cluster({ info }: Props) {
-  return <>
-    <Card>
-      Cluster: {info.type} {info.id}
-    </Card>
-    {info.articles.map(a => a.article
-      ? <Article key={a.article.data.url.url} info={a.article} />
-      : <HeroArticle key={a.hero!.data.url.url} info={a.hero!} />)}
-  </>
+  return <Container>
+    <MetaInfo>
+      <IconReact name="fire" />
+      {info.type}: {info.id}
+    </MetaInfo>
+    {info.articles.map((a, i) => <Article key={i} info={a.article || a.hero as any}/>)}
+  </Container>
 }
