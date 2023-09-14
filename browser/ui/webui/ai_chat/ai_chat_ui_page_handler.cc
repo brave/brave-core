@@ -81,22 +81,10 @@ void AIChatUIPageHandler::SetClientPage(
 
 void AIChatUIPageHandler::SubmitHumanConversationEntry(
     const std::string& input) {
-  // TODO(nullhook): Avoid copy
-  std::string input_copy = input;
-
-  // Prevent indirect prompt injections being sent to the AI model.
-  // TODO(nullhook): Abstract prompt injection cleanups to a central place
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, ai_chat::kHumanPrompt, "");
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, ai_chat::kAIPrompt, "");
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "<article>", "");
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "</article>", "");
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "<history>", "");
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "</history>", "");
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "<question>", "");
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "</question>", "");
-
+  mojom::ConversationTurn turn = {CharacterType::HUMAN,
+                                  ConversationTurnVisibility::VISIBLE, input};
   active_chat_tab_helper_->MakeAPIRequestWithConversationHistoryUpdate(
-      {CharacterType::HUMAN, ConversationTurnVisibility::VISIBLE, input_copy});
+      std::move(turn));
 }
 
 void AIChatUIPageHandler::GetConversationHistory(

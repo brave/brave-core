@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/browser/ai_chat_api.h"
+#include "brave/components/ai_chat/browser/engine/remote_completion_client.h"
 
 #include <memory>
 #include <utility>
@@ -17,25 +17,26 @@
 
 namespace ai_chat {
 
-class AIChatAPIUnitTest : public testing::Test {
+class RemoteCompletionClientUnitTest : public testing::Test {
  public:
-  AIChatAPIUnitTest()
+  RemoteCompletionClientUnitTest()
       : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
-    ai_chat_api_ = std::make_unique<AIChatAPI>(shared_url_loader_factory_);
+    ai_chat_api_ =
+        std::make_unique<RemoteCompletionClient>(shared_url_loader_factory_);
   }
 
-  ~AIChatAPIUnitTest() override = default;
+  ~RemoteCompletionClientUnitTest() override = default;
 
-  void SendMesage(AIChatAPI::ResponseCallback callback,
+  void SendMesage(RemoteCompletionClient::ResponseCallback callback,
                   const std::string& text) {
     ai_chat_api_->set_response_callback_for_testing(callback);
     ai_chat_api_->SendDataForTesting(text);
   }
 
  protected:
-  std::unique_ptr<AIChatAPI> ai_chat_api_ = nullptr;
+  std::unique_ptr<RemoteCompletionClient> ai_chat_api_ = nullptr;
 
  private:
   base::test::TaskEnvironment task_environment_;
@@ -44,7 +45,7 @@ class AIChatAPIUnitTest : public testing::Test {
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
-TEST_F(AIChatAPIUnitTest, ParseJson) {
+TEST_F(RemoteCompletionClientUnitTest, ParseJson) {
   base::RunLoop run_loop;
   SendMesage(base::BindRepeating(
                  [](base::RunLoop* run_loop, const std::string& response) {
