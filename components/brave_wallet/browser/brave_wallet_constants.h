@@ -9,10 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "base/no_destructor.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "brave/components/brave_wallet/common/switches.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/webui/web_ui_util.h"
 
