@@ -9,7 +9,7 @@ import * as React from 'react'
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 
 // Components
-import { Send } from '../send/send'
+import { Send } from './send'
 
 interface Props {
   isAndroid?: boolean

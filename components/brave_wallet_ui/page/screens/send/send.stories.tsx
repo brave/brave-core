@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import WalletPageStory from '../../../stories/wrappers/wallet-page-story-wrapper'
-import { SendScreen } from './send-page/send-screen'
+import { SendScreen } from './send_screen/send_screen'
 
 export const _SendScreen = () => {
   return (
