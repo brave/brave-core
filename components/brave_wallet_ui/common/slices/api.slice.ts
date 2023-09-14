@@ -402,7 +402,7 @@ export function createWalletApi () {
         invalidatesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }]
       }),
       getSelectedChain: query<BraveWallet.NetworkInfo | undefined, void>({
-        queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
           try {
             return {
               data: await getSelectedNetwork(baseQuery(undefined).data)
@@ -3060,6 +3060,7 @@ export const {
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
+  useGetLocalIpfsNodeStatusQuery,
   useInvalidateTransactionsCacheMutation,
   useIsEip1559ChangedMutation,
   useLazyGetAccountInfosRegistryQuery,
@@ -3092,6 +3093,7 @@ export const {
   useLazyGetTransactionsQuery,
   useLazyGetUserTokensRegistryQuery,
   useGetSimpleHashSpamNftsQuery,
+  useGetNftsPinningStatusQuery,
   useNewUnapprovedTxAddedMutation,
   useOpenPanelUIMutation,
   usePrefetch,
@@ -3121,7 +3123,9 @@ export const {
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
   useUpdateUserTokenMutation,
-  useUpdateNftSpamStatusMutation
+  useUpdateNftSpamStatusMutation,
+  useSetAutopinEnabledMutation,
+  useUpdateNftsPinningStatusMutation
 } = walletApi
 
 // Derived Data Queries

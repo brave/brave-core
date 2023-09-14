@@ -15,7 +15,7 @@ export const IpfsNodeStatusWrapper = styled.div`
   justify-content: center;
 `
 
-export const StatusIcon = styled.div<{ running: boolean }>`
+export const StatusIcon = styled.div<{ running?: boolean }>`
   width: 8px;
   height: 8px;
   mask-image: url(${NodeStatus});

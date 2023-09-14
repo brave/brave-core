@@ -10,7 +10,6 @@ import {
   PageState,
   NFTMetadataReturnType
 } from '../../constants/types'
-import { getAssetIdKey } from '../../utils/asset-utils'
 import {
   WalletCreatedPayloadType,
   RecoveryWordsAvailablePayloadType,
@@ -21,7 +20,6 @@ import {
   ImportFromExternalWalletPayloadType,
   RestoreWalletPayloadType,
   UpdateSelectedAssetType,
-  UpdateNftPinningStatusType
 } from '../constants/action_types'
 
 const defaultState: PageState = {
@@ -44,33 +42,19 @@ const defaultState: PageState = {
   isImportWalletsCheckComplete: false,
   importWalletAttempts: 0,
   walletTermsAcknowledged: false,
-  selectedCoinMarket: undefined,
-  nftsPinningStatus: {},
-  isLocalIpfsNodeRunning: false
+  selectedCoinMarket: undefined
 }
 
 export const WalletPageAsyncActions = {
   addHardwareAccounts: createAction<BraveWallet.HardwareWalletAccount[]>('addHardwareAccounts'),
   checkWalletsToImport: createAction('checkWalletsToImport'),
   createWallet: createAction<CreateWalletPayloadType>('createWallet'),
-  getNFTMetadata: createAction<BraveWallet.BlockchainToken>('getNFTMetadata'),
   importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>('importAccountFromJson'),
   importFromCryptoWallets: createAction<ImportFromExternalWalletPayloadType>('importFromCryptoWallets'),
   importFromMetaMask: createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask'),
   openWalletSettings: createAction('openWalletSettings'),
   restoreWallet: createAction<RestoreWalletPayloadType>('restoreWallet'),
   selectAsset: createAction<UpdateSelectedAssetType>('selectAsset'),
-  updateNFTPinStatus: createAction<BraveWallet.TokenPinOverview | undefined>('updateNFTPinStatus'),
-  getPinStatus: createAction<BraveWallet.BlockchainToken>('getPinStatus'),
-  getIsAutoPinEnabled: createAction('getAutoPinEnabled'),
-  setAutoPinEnabled: createAction<boolean>('setAutoPinEnabled'),
-  updateEnablingAutoPin: createAction<boolean>('updateEnablingAutoPin'),
-  updateAutoPinEnabled: createAction<boolean>('updateAutoPinEnabled'),
-  getNftsPinningStatus: createAction<BraveWallet.BlockchainToken[]>('getNftsPinningStatus'),
-  setNftsPinningStatus: createAction<UpdateNftPinningStatusType[]>('setNftsPinningStatus'),
-  updateNftPinningStatus: createAction<UpdateNftPinningStatusType>('updateNftPinningStatus'),
-  getLocalIpfsNodeStatus: createAction('getLocalIpfsNodeStatus'),
-  updateLocalIpfsNodeStatus: createAction('updateLocalIpfsNodeStatus')
 }
 
 export const createPageSlice = (initialState: PageState = defaultState) => {
@@ -205,38 +189,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
       updateAutoPinEnabled(state, { payload }: PayloadAction<boolean>) {
         state.isAutoPinEnabled = payload
-      },
-
-      setNftsPinningStatus(
-        state,
-        { payload }: PayloadAction<UpdateNftPinningStatusType[]>
-      ) {
-        const pinningStatus = {}
-        payload.forEach(({ token, status }) => {
-          const { code, error } = status || {}
-          pinningStatus[getAssetIdKey(token)] = { code, error }
-        })
-
-        state.nftsPinningStatus = {
-          ...state.nftsPinningStatus,
-          ...pinningStatus
-        }
-      },
-
-      updateNftPinningStatus(
-        state,
-        { payload }: PayloadAction<UpdateNftPinningStatusType>
-      ) {
-        const { token, status } = payload
-        const { code, error } = status || {}
-        state.nftsPinningStatus = {
-          ...state.nftsPinningStatus,
-          [getAssetIdKey(token)]: { code, error }
-        }
-      },
-
-      updateLocalIpfsNodeStatus(state, { payload }: PayloadAction<boolean>) {
-        state.isLocalIpfsNodeRunning = payload
       }
     }
   })

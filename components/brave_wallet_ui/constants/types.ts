@@ -6,7 +6,6 @@
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
-import { NftsPinningStatusType } from '../page/constants/action_types'
 import { BlowfishWarningKind } from '../common/constants/blowfish'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
@@ -311,8 +310,6 @@ export interface PageState {
   importWalletAttempts: number
   walletTermsAcknowledged: boolean
   selectedCoinMarket: BraveWallet.CoinMarket | undefined
-  nftsPinningStatus: NftsPinningStatusType
-  isLocalIpfsNodeRunning: boolean
 }
 
 export interface WalletPageState {

@@ -13,7 +13,6 @@ import {
   SerializableTransactionInfo,
   SpotPriceRegistry,
 } from '../../constants/types'
-import { NftsPinningStatusType } from '../../page/constants/action_types'
 
 // images
 import {
@@ -216,7 +215,7 @@ export const mockSplNft: BraveWallet.BlockchainToken = {
 
 }
 
-export const mockNftPinningStatus: NftsPinningStatusType = {
+export const mockNftPinningStatus = {
   [getAssetIdKey(mockErc721Token)]: {
     code: BraveWallet.TokenPinStatusCode.STATUS_PINNED,
     error: undefined
