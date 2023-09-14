@@ -353,7 +353,7 @@ void Account::OnNotifyRewardsWalletDidUpdate(const std::string& payment_id,
                                              const std::string& recovery_seed) {
   SetWallet(payment_id, recovery_seed);
 
-  MaybeTopUpUnblindedTokens();
+  Initialize();
 }
 
 void Account::OnNotifyDidSolveAdaptiveCaptcha() {
