@@ -28,8 +28,11 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [userAutoGeneratePref, setUserAutoGeneratePref] = React.useState<AutoGenerateQuestionsPref>()
   const [siteInfo, setSiteInfo] = React.useState<SiteInfo | null>(null)
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
-  const [currentError, setCurrentError] = React.useState<APIError>()
+  const [currentError, setCurrentError] = React.useState<APIError>(APIError.None)
   const [hasSeenAgreement, setHasSeenAgreement] = React.useState(loadTimeData.getBoolean("hasSeenAgreement"))
+
+  const apiHasError = (currentError !== APIError.None)
+  const shouldDisableUserInput = apiHasError || isGenerating
 
   const getConversationHistory = () => {
     getPageHandlerInstance().pageHandler.getConversationHistory().then(res => setConversationHistory(res.conversationHistory))
@@ -120,6 +123,8 @@ function DataContextProvider (props: DataContextProviderProps) {
     favIconUrl,
     currentError,
     hasSeenAgreement,
+    apiHasError,
+    shouldDisableUserInput,
     generateSuggestedQuestions,
     setUserAllowsAutoGenerating,
     handleAgreeClick,

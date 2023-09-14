@@ -66,6 +66,9 @@ export default {
       const setUserAllowsAutoGenerating = () => {}
       const handleAgreeClick = () => {}
 
+      const apiHasError = (currentError !== APIError.None)
+      const shouldDisableUserInput = apiHasError || isGenerating
+
       const store = {
         conversationHistory,
         isGenerating,
@@ -76,6 +79,8 @@ export default {
         favIconUrl,
         currentError,
         hasSeenAgreement,
+        apiHasError,
+        shouldDisableUserInput,
         generateSuggestedQuestions,
         setUserAllowsAutoGenerating,
         handleAgreeClick

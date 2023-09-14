@@ -15,7 +15,7 @@ import DataContext from '../../state/context'
 function ConversationList () {
   // Scroll the last conversation item in to view when entries are added.
   const lastConversationEntryElementRef = React.useRef<HTMLDivElement>(null)
-  const { isGenerating, conversationHistory, suggestedQuestions } = React.useContext(DataContext)
+  const { isGenerating, conversationHistory, suggestedQuestions, shouldDisableUserInput } = React.useContext(DataContext)
 
   React.useEffect(() => {
     if (!conversationHistory.length && !isGenerating) {
@@ -77,7 +77,12 @@ function ConversationList () {
           </div>
           <div className={styles.questionsList}>
             {suggestedQuestions.map((question, id) => (
-              <Button key={id} kind='outline' onClick={() => handleQuestionSubmit(question)}>
+              <Button
+                key={id}
+                kind='outline'
+                onClick={() => handleQuestionSubmit(question)}
+                isDisabled={shouldDisableUserInput}
+              >
                 <span className={styles.buttonText}>
                   {question}
                 </span>

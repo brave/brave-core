@@ -19,9 +19,8 @@ import getPageHandlerInstance, { AutoGenerateQuestionsPref, APIError } from '../
 import DataContext from '../../state/context'
 
 function Main () {
-  const { siteInfo, userAutoGeneratePref, hasSeenAgreement, currentError } = React.useContext(DataContext)
-
-  const apiHasError = !!currentError && (currentError !== APIError.None)
+  const { siteInfo, userAutoGeneratePref, hasSeenAgreement,
+    currentError, apiHasError } = React.useContext(DataContext)
 
   const handleSettingsClick = () => {
     getPageHandlerInstance().pageHandler.openBraveLeoSettings()
@@ -78,10 +77,12 @@ function Main () {
           <div className={styles.logoTitle}>Brave <span>Leo</span></div>
         </div>
         <div className={styles.actions}>
-          <Button kind="plain-faint" aria-label="Erase conversation history"
-          title="Erase conversation history" onClick={handleEraseClick}>
-              <Icon name="erase" />
-          </Button>
+          {hasSeenAgreement && (
+            <Button kind="plain-faint" aria-label="Erase conversation history"
+            title="Erase conversation history" onClick={handleEraseClick}>
+                <Icon name="erase" />
+            </Button>
+          )}
           <Button kind="plain-faint" aria-label="Settings"
           title="Settings" onClick={handleSettingsClick}>
               <Icon name="settings" />
