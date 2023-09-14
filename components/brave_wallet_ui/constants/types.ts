@@ -648,11 +648,12 @@ export enum WalletRoutes {
 
   // fund wallet page
   FundWalletPageStart = '/crypto/fund-wallet',
-  FundWalletPage = '/crypto/fund-wallet/token/:currencyCode?/:buyAmount?',
+  FundWalletPage = '/crypto/fund-wallet/:currencyCode?/:buyAmount?',
   FundWalletPurchaseOptionsPage = '/crypto/fund-wallet/purchase/' +
     ':currencyCode/:buyAmount',
   DepositFundsPageStart = '/crypto/deposit-funds',
-  DepositFundsPage = '/crypto/deposit-funds/:tokenId?',
+  DepositFundsPage = '/crypto/deposit-funds',
+  DepositFundsAccountPage = '/crypto/deposit-funds/account',
 
   // market
   Market = '/crypto/market',

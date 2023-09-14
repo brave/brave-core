@@ -35,6 +35,7 @@ import {
   UpdateDepositableAssetsMessage,
   UpdateIframeHeightMessage
 } from '../../../../market/market-ui-messages'
+import { makeDepositFundsRoute } from '../../../../utils/routes-utils'
 
 const defaultCurrency = 'usd'
 const assetsRequestLimit = 250
@@ -75,7 +76,7 @@ export const MarketView = () => {
   }, [])
 
   const onSelectDeposit = React.useCallback((coinMarket: BraveWallet.CoinMarket) => {
-    history.push(WalletRoutes.DepositFundsPage.replace(':tokenId?', coinMarket.symbol))
+    history.push(makeDepositFundsRoute(coinMarket.symbol))
   }, [])
 
   const onMessageEventListener = React.useCallback((event: MessageEvent<MarketCommandMessage>) => {

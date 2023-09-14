@@ -5,8 +5,8 @@
 
 import { useEffect, useRef, useCallback } from 'react'
 
-export function useDebouncedCallback<A extends any[]> (
-  callback: (...args: A) => Promise<void>,
+export function useDebouncedCallback<A extends any[]>(
+  callback: ((...args: A) => Promise<void>) | ((...args: A) => void),
   wait: number
 ) {
   // Track args & timeout handle between calls

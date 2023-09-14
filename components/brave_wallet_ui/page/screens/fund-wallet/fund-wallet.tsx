@@ -101,11 +101,22 @@ function getItemSize(index: number): number {
   return itemSize
 }
 
+const getItemKey = (i: number, data: BraveWallet.BlockchainToken[]) =>
+  getAssetIdKey(data[i])
+
 interface Props {
   isAndroid?: boolean
 }
 
 export const FundWalletScreen = ({ isAndroid }: Props) => {
+  // redux
+  const dispatch = useDispatch()
+
+  // clear selected asset on page mount
+  React.useEffect(() => {
+    dispatch(WalletActions.selectOnRampAssetId(undefined))
+  }, [])
+
   // render
   return (
     <Switch>
@@ -113,10 +124,9 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
         <PurchaseOptionSelection isAndroid={isAndroid} />
       </Route>
 
-      <Route path={WalletRoutes.FundWalletPageStart}>
+      <Route>
         <AssetSelection isAndroid={isAndroid} />
       </Route>
-
     </Switch>
   )
 }
@@ -186,9 +196,21 @@ function AssetSelection({ isAndroid }: Props) {
   const allBuyAssetOptions = options?.allAssetOptions || []
   
   // refs
-  const listItemRefs = React.useRef<
-    Record<string, React.RefObject<HTMLButtonElement> | undefined>
-  >({})
+  const listItemRefs = React.useRef<Map<
+    string,
+    HTMLButtonElement
+  > | null>(null)
+
+  const getRefsMap = React.useCallback(
+    function () {
+      if (!listItemRefs.current) {
+        // Initialize the Map on first usage.
+        listItemRefs.current = new Map()
+      }
+      return listItemRefs.current
+    },
+    [listItemRefs]
+  )
 
   // custom hooks
   const scrollIntoView = useScrollIntoView()
@@ -202,22 +224,29 @@ function AssetSelection({ isAndroid }: Props) {
     []
   )
 
-  const renderToken: RenderTokenFunc = React.useCallback(
-    ({ item: { asset } }) => {
-      const assetId = getAssetIdKey(asset)
-      const ref = React.createRef<HTMLButtonElement>()
-      listItemRefs.current[assetId] = ref
-      return (
-        <BuyAssetOptionItem
-          ref={ref}
-          selectedCurrency={selectedCurrency}
-          key={assetId}
-          token={asset}
-          onClick={() => dispatch(WalletActions.selectOnRampAssetId(assetId))}
-        />
-      )},
-    [selectedCurrency, listItemRefs]
-  )
+  const renderToken: RenderTokenFunc<BraveWallet.BlockchainToken> =
+    React.useCallback(
+      ({ item: asset }) => {
+        const assetId = getAssetIdKey(asset)
+        return (
+          <BuyAssetOptionItem
+            ref={(node) => {
+              const refs = getRefsMap()
+              if (node) {
+                refs.set(assetId, node)
+              } else {
+                refs.delete(assetId)
+              }
+            }}
+            selectedCurrency={selectedCurrency}
+            key={assetId}
+            token={asset}
+            onClick={() => dispatch(WalletActions.selectOnRampAssetId(assetId))}
+          />
+        )
+      },
+      [selectedCurrency, getRefsMap, dispatch]
+    )
 
   // memos & computed
   const assetsForFilteredNetwork = React.useMemo(() => {
@@ -232,18 +261,18 @@ function AssetSelection({ isAndroid }: Props) {
             ({ chainId }) => selectedNetworkFilter.chainId === chainId
           )
 
-    return assets.map((asset) => ({ asset, assetBalance: '1' }))
+    return assets
   }, [selectedNetworkFilter.chainId, allBuyAssetOptions])
 
   const assetListSearchResults = React.useMemo(() => {
     if (searchValue === '') {
       return assetsForFilteredNetwork
     }
-    return assetsForFilteredNetwork.filter((item) => {
+    return assetsForFilteredNetwork.filter((asset) => {
       const searchValueLower = searchValue.toLowerCase()
       return (
-        item.asset.name.toLowerCase().startsWith(searchValueLower) ||
-        item.asset.symbol.toLowerCase().startsWith(searchValueLower)
+        asset.name.toLowerCase().startsWith(searchValueLower) ||
+        asset.symbol.toLowerCase().startsWith(searchValueLower)
       )
     })
   }, [searchValue, assetsForFilteredNetwork])
@@ -252,6 +281,7 @@ function AssetSelection({ isAndroid }: Props) {
     () =>
       allBuyAssetOptions?.length ? (
         <VirtualizedTokensList
+          getItemKey={getItemKey}
           getItemSize={getItemSize}
           userAssetList={assetListSearchResults}
           estimatedItemSize={itemSize}
@@ -280,12 +310,12 @@ function AssetSelection({ isAndroid }: Props) {
   React.useEffect(() => {
     // scroll selected item into view
     if (selectedOnRampAssetId) {
-      const ref = listItemRefs.current[selectedOnRampAssetId]
-      if (ref?.current) {
-        scrollIntoView(ref.current, true)
+      const ref = getRefsMap().get(selectedOnRampAssetId)
+      if (ref) {
+        scrollIntoView(ref, true)
       }
     }
-  }, [selectedOnRampAssetId, listItemRefs, scrollIntoView])
+  }, [selectedOnRampAssetId, getRefsMap, scrollIntoView])
 
   // render
   if (showFiatSelection) {
