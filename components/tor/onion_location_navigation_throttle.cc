@@ -91,6 +91,7 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
     if (pref_service_->GetBoolean(prefs::kAutoOnionRedirect)) {
       delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(), url,
                                  false);
+      return content::NavigationThrottle::BLOCK_RESPONSE;
     } else {
       OnionLocationTabHelper::SetOnionLocation(
           navigation_handle()->GetWebContents(), url);

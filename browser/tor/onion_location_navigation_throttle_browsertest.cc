@@ -281,10 +281,14 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
       nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
 
   GURL url = test_server()->GetURL("/onion");
+  content::TestNavigationObserver nav_observer(
+      browser()->tab_strip_model()->GetActiveWebContents());
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   browser_creation_observer.Wait();
-  // We don't close the original tab
+  // We don't close the original tab but stop loading
   EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
+  EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_BLOCKED_BY_RESPONSE);
+
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   tor::OnionLocationTabHelper* helper =
