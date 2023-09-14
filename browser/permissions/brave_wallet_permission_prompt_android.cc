@@ -27,7 +27,8 @@ BraveWalletPermissionPrompt::BraveWalletPermissionPrompt(
 BraveWalletPermissionPrompt::~BraveWalletPermissionPrompt() {}
 
 void BraveWalletPermissionPrompt::ConnectToSite(
-    const std::vector<std::string>& accounts) {
+    const std::vector<std::string>& accounts,
+    int permission_lifetime_option) {
   has_interacted_with_dialog_ = true;
   dialog_controller_.reset();
   // TODO(SergeyZhukovsky): Use the real option that the user chooses, using
