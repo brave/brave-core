@@ -1174,8 +1174,6 @@ extension Strings {
   public static let favoritesRootLevelCellTitle = NSLocalizedString("FavoritesRootLevelCellTitle", tableName: "BraveShared", bundle: .module, value: "Favorites", comment: "Title for favorites cell")
   public static let addFolderActionCellTitle = NSLocalizedString("AddFolderActionCellTitle", tableName: "BraveShared", bundle: .module, value: "New folder", comment: "Cell title for add folder action")
   public static let editBookmarkTableLocationHeader = NSLocalizedString("EditBookmarkTableLocationHeader", tableName: "BraveShared", bundle: .module, value: "Location", comment: "Header title for bookmark save location")
-  public static let bookmarkSingleCount = NSLocalizedString("BookmarkSingleCount", tableName: "BraveShared", bundle: .module, value: "%d bookmark", comment: "Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark)")
-  public static let bookmarkMultipleCount = NSLocalizedString("BookmarkMultipleCount", tableName: "BraveShared", bundle: .module, value: "%d bookmarks", comment: "Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks")
   public static let newBookmarkTitle = NSLocalizedString("NewBookmarkTitle", tableName: "BraveShared", bundle: .module, value: "New bookmark", comment: "Title for adding new bookmark")
   public static let newFolderTitle = NSLocalizedString("NewFolderTitle", tableName: "BraveShared", bundle: .module, value: "New folder", comment: "Title for adding new folder")
   public static let editBookmarkTitle = NSLocalizedString("EditBookmarkTitle", tableName: "BraveShared", bundle: .module, value: "Edit bookmark", comment: "Title for editing a bookmark")
