@@ -17,14 +17,13 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 import { NetworkItemButton, NetworkName, LeftSide, NetworkItemWrapper, BigCheckMark } from './style'
 
 export interface Props {
-  children?: React.ReactNode
-  selectedNetwork: BraveWallet.NetworkInfo
+  isSelected: boolean
   network: BraveWallet.NetworkInfo
   onSelectNetwork: (network?: BraveWallet.NetworkInfo) => void
 }
 
 function NetworkFilterItem (props: Props) {
-  const { network, onSelectNetwork, selectedNetwork } = props
+  const { network, onSelectNetwork, isSelected } = props
 
   const onClickSelectNetwork = () => {
     onSelectNetwork(network)
@@ -39,8 +38,7 @@ function NetworkFilterItem (props: Props) {
           )}
           <NetworkName>{network.chainName}</NetworkName>
         </LeftSide>
-        {network.chainId === selectedNetwork.chainId &&
-          network.symbol.toLowerCase() === selectedNetwork.symbol.toLowerCase() && <BigCheckMark />}
+        {isSelected ? <BigCheckMark /> : null}
       </NetworkItemButton>
     </NetworkItemWrapper>
   )
