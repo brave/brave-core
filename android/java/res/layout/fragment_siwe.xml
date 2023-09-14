@@ -158,8 +158,6 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/frag_siwe_msg_btn_cancel"
                 style="@style/BraveWalletButtonHollow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
@@ -172,8 +170,6 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/frag_siwe_msg_btn_sign"
                 style="@style/BraveWalletButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"

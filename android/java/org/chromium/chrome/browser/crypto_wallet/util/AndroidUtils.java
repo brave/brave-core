@@ -100,7 +100,6 @@ public class AndroidUtils {
 
     /**
      * Gets device screen height in pixels, excluding the navigation bar (if visible) and insets.
-     *
      * @return device screen height in pixels.
      */
     public static int getScreenHeight() {
@@ -109,7 +108,6 @@ public class AndroidUtils {
 
     /**
      * Check if the fragment is safe to update its UI
-     *
      * @param frag instance
      * @return true if Fragment UI can be updated otherwise false
      */
@@ -120,8 +118,6 @@ public class AndroidUtils {
 
     /**
      * Calculated an ideal row count for shimmer effect based on screen size
-     *
-     * @param context           of app
      * @param skeletonRowHeight of a skeleton row view in pixels
      * @return count of rows for the skeleton list
      */

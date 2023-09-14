@@ -84,7 +84,6 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
                 viewHolder.mTvSubtitle.setTextAlignment(mSubTextAlignment);
             }
             viewHolder.mTvSubtitle.setVisibility(View.VISIBLE);
-            viewHolder.mItem = twoLineItem;
             TwoLineItemText itemDataSourceText = (TwoLineItemText) twoLineItem;
             if (itemDataSourceText.title == null) {
                 viewHolder.mTvTitle.setVisibility(View.GONE);
@@ -139,11 +138,10 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView mIvIcon;
-        public View mIvIconContainer;
+        public final ImageView mIvIcon;
+        public final View mIvIconContainer;
         public final TextView mTvTitle;
         public final TextView mTvSubtitle;
-        public TwoLineItem mItem;
 
         public ViewHolder(View itemView) {
             super(itemView);
