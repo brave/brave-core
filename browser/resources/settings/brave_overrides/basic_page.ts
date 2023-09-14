@@ -231,8 +231,9 @@ RegisterPolymerTemplateModifications({
       sectionSocialBlocking.setAttribute('is', 'dom-if')
       sectionSocialBlocking.setAttribute('restamp', true)
       sectionSocialBlocking.setAttribute('if', '[[showPage_(pageVisibility.socialBlocking)]]')
-      sectionSocialBlocking.content.appendChild(createSectionElement(
+      sectionSocialBlocking.content.appendChild(createNestedSectionElement(
         'socialBlocking',
+        'shields',
         'socialBlocking',
         'settings-social-blocking-page',
         {
@@ -268,8 +269,9 @@ RegisterPolymerTemplateModifications({
       sectionNewTab.setAttribute('is', 'dom-if')
       sectionNewTab.setAttribute('restamp', true)
       sectionNewTab.setAttribute('if', '[[showPage_(pageVisibility.newTab)]]')
-      sectionNewTab.content.appendChild(createSectionElement(
+      sectionNewTab.content.appendChild(createNestedSectionElement(
         'newTab',
+        'getStarted',
         'braveNewTab',
         'settings-brave-new-tab-page',
         {
@@ -294,21 +296,21 @@ RegisterPolymerTemplateModifications({
       // Get Started at top
       let last = basicPageEl.insertAdjacentElement('afterbegin',
         sectionGetStarted)
+      // Insert New Tab
+      last = last.insertAdjacentElement('afterend', sectionNewTab)
       // Move Appearance item
       const sectionAppearance = getSectionElement(actualTemplate.content,
         'appearance')
       last = last.insertAdjacentElement('afterend', sectionAppearance)
-      // Insert New Tab
-      last = last.insertAdjacentElement('afterend', sectionNewTab)
       // Insert shields
       last = last.insertAdjacentElement('afterend', sectionShields)
+      // Insert nested Social Blocking under shields
+      last = last.insertAdjacentElement('afterend', sectionSocialBlocking)
       // Insert Rewards
       if (sectionRewards) {
         last = last.insertAdjacentElement('afterend', sectionRewards)
       }
-      // Insert Social Blocking
-      last = last.insertAdjacentElement('afterend', sectionSocialBlocking)
-      // Move privacy section to after social blocking
+      // Move privacy section to after rewards
       const sectionPrivacy = getSectionElement(actualTemplate.content, 'privacy')
       last = last.insertAdjacentElement('afterend', sectionPrivacy)
       // Insert sync
