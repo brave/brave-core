@@ -52,7 +52,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:layout_marginEnd="36dp"
             android:alpha="0.65"
             android:drawablePadding="4dp"
             android:letterSpacing="0.02"
@@ -61,7 +60,7 @@
             android:textColor="@android:color/white"
             android:textSize="11sp"
             app:drawableEndCompat="@drawable/ic_reward_info_outline"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/ads_monthly_statement_text"
             app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -72,7 +71,7 @@
             android:scaleType="fitXY"
             app:srcCompat="@drawable/tooltip_arrow"
             android:contentDescription="@null"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="46dp"
             app:layout_constraintBottom_toTopOf="@id/estimated_earnings_tooltip"
             app:layout_constraintEnd_toEndOf="@id/estimated_earnings_tooltip"/>
 
@@ -138,6 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
             android:background="@drawable/brave_rewards_ads_month_background"
             android:paddingHorizontal="4dp"
             android:letterSpacing="0.02"
@@ -146,19 +146,19 @@
             android:fontFamily="sans-serif"
             android:textColor="@android:color/white"
             android:textSize="11sp"
-            app:layout_constraintStart_toStartOf="@id/estimated_earnings"
+            app:layout_constraintEnd_toStartOf="@+id/estimated_range"
             app:layout_constraintTop_toBottomOf="@id/estimated_earnings" />
 
         <TextView
             android:id="@+id/estimated_range"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:textColor="@android:color/white"
             android:textSize="12sp"
             android:fontFamily="sans-serif"
             app:layout_constraintBottom_toBottomOf="@id/ads_monthly_statement_text"
-            app:layout_constraintStart_toEndOf="@id/ads_monthly_statement_text"
+            app:layout_constraintEnd_toStartOf="@+id/bat_text1"
             app:layout_constraintTop_toTopOf="@id/ads_monthly_statement_text" />
 
         <TextView
@@ -166,14 +166,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:fontFamily="sans-serif-medium"
             android:text="@string/empty_unverified_state_text"
             android:textColor="@android:color/white"
             android:alpha="0.65"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/ads_monthly_statement_text"
-            app:layout_constraintStart_toEndOf="@id/ads_monthly_statement_text"
+            app:layout_constraintEnd_toStartOf="@id/bat_ads_balance_learn_more_text"
             app:layout_constraintTop_toTopOf="@id/ads_monthly_statement_text" />
 
         <TextView
@@ -181,27 +181,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="4dp"
+            android:layout_marginEnd="34dp"
             android:fontFamily="sans-serif-medium"
             android:text="@string/menu_learn_more"
             android:textColor="@android:color/white"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/ads_monthly_statement_text"
-            app:layout_constraintStart_toEndOf="@+id/empty_unverified_state_text"
-            app:layout_constraintTop_toTopOf="@+id/ads_monthly_statement_text" />
+            app:layout_constraintBottom_toBottomOf="@id/estimated_range"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/estimated_range" />
 
         <TextView
             android:id="@+id/bat_text1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginEnd="24dp"
             android:alpha="0.65"
             android:fontFamily="sans-serif-medium"
             android:text="@string/bat_text"
             android:textColor="@android:color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/estimated_range"
-            app:layout_constraintStart_toEndOf="@id/estimated_range"
+            app:layout_constraintEnd_toStartOf="@id/empty_unverified_state_text"
             app:layout_constraintTop_toTopOf="@id/estimated_range" />
 
 
