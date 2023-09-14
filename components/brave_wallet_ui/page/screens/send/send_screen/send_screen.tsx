@@ -5,9 +5,6 @@
 
 import * as React from 'react'
 
-// Hooks
-import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
-
 // Components
 import { Send } from './send'
 
@@ -16,31 +13,8 @@ interface Props {
 }
 
 export const SendScreen = ({ isAndroid }: Props) => {
-  // State
-  const [showSelectTokenModal, setShowSelectTokenModal] = React.useState<boolean>(false)
-
-  // Refs
-  const selectTokenModalRef = React.useRef<HTMLDivElement>(null)
-
-  // Hooks
-  useOnClickOutside(
-    selectTokenModalRef,
-    () => setShowSelectTokenModal(false),
-    showSelectTokenModal
-  )
-
   // render
-  return (
-    <>
-      <Send
-        onShowSelectTokenModal={() => setShowSelectTokenModal(true)}
-        onHideSelectTokenModal={() => setShowSelectTokenModal(false)}
-        showSelectTokenModal={showSelectTokenModal}
-        selectTokenModalRef={selectTokenModalRef}
-        isAndroid={isAndroid}
-      />
-    </>
-  )
+  return <Send isAndroid={isAndroid} />
 }
 
 export default SendScreen

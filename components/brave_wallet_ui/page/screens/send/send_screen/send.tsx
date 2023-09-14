@@ -84,21 +84,11 @@ import WalletPageWrapper from '../../../../components/desktop/wallet-page-wrappe
 import { PageTitleHeader } from '../../../../components/desktop/card-headers/page-title-header'
 
 interface Props {
-  onShowSelectTokenModal: () => void
-  onHideSelectTokenModal: () => void
-  selectTokenModalRef: React.RefObject<HTMLDivElement>
-  showSelectTokenModal: boolean
   isAndroid?: boolean
 }
 
 export const Send = (props: Props) => {
-  const {
-    onShowSelectTokenModal,
-    onHideSelectTokenModal,
-    selectTokenModalRef,
-    showSelectTokenModal,
-    isAndroid
-  } = props
+  const { isAndroid } = props
 
   // Wallet Selectors
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
@@ -151,6 +141,18 @@ export const Send = (props: Props) => {
   // State
   const [domainPosition, setDomainPosition] = React.useState<number>(0)
   const [showChecksumInfoModal, setShowChecksumInfoModal] = React.useState<boolean>(false)
+  const [showSelectTokenModal, setShowSelectTokenModal] =
+    React.useState<boolean>(false)
+
+  // Refs
+  const selectTokenModalRef = React.useRef<HTMLDivElement>(null)
+
+  // Hooks
+  useOnClickOutside(
+    selectTokenModalRef,
+    () => setShowSelectTokenModal(false),
+    showSelectTokenModal
+  )
 
   // Constants
   const selectedSendOption = hash
@@ -529,7 +531,7 @@ export const Send = (props: Props) => {
                 >
                   <Row>
                     <SelectTokenButton
-                      onClick={onShowSelectTokenModal}
+                      onClick={() => setShowSelectTokenModal(true)}
                       token={selectedSendAsset}
                       selectedSendOption={selectedSendOption} />
                     {
@@ -575,7 +577,7 @@ export const Send = (props: Props) => {
                   verticalAlign='center'
                 >
                   <SelectTokenButton
-                    onClick={onShowSelectTokenModal}
+                    onClick={() => setShowSelectTokenModal(true)}
                     token={selectedSendAsset}
                     selectedSendOption={selectedSendOption} />
                 </Column>
@@ -645,7 +647,7 @@ export const Send = (props: Props) => {
       </WalletPageWrapper>
       {showSelectTokenModal &&
         <SelectTokenModal
-          onClose={onHideSelectTokenModal}
+          onClose={() => setShowSelectTokenModal(false)}
           selectedSendOption={selectedSendOption}
           ref={selectTokenModalRef}
           selectSendAsset={selectSendAsset}
