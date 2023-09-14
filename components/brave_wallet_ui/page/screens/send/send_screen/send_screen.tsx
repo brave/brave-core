@@ -263,22 +263,11 @@ export const SendScreen = (props: Props) => {
     [selectSendAsset]
   )
 
-  const onClickReviewOrENSConsent = React.useCallback(() => {
-    if (showEnsOffchainWarning) {
-      enableEnsOffchainLookup()
-      setShowEnsOffchainWarning(false)
-      processAddressOrUrl(toAddressOrUrl)
-      return
-    }
-    submitSend()
-  }, [
-    showEnsOffchainWarning,
-    setShowEnsOffchainWarning,
-    submitSend,
-    enableEnsOffchainLookup,
-    processAddressOrUrl,
-    toAddressOrUrl
-  ])
+  const onENSConsent = React.useCallback(() => {
+    enableEnsOffchainLookup()
+    setShowEnsOffchainWarning(false)
+    processAddressOrUrl(toAddressOrUrl)
+  }, [enableEnsOffchainLookup, setShowEnsOffchainWarning, processAddressOrUrl])
 
   const updateLoadingIconPosition = React.useCallback(
     (ref: HTMLDivElement | null) => {
@@ -374,28 +363,6 @@ export const SendScreen = (props: Props) => {
     sendAssetBalance,
     selectedSendOption
   ])
-
-  const reviewButtonText = getReviewButtonText(
-    showEnsOffchainWarning,
-    searchingForDomain,
-    sendAmountValidationError,
-    insufficientFundsError,
-    addressError,
-    addressWarning
-  )
-
-  // We only need to check if showEnsOffchainWarning is true here to return
-  // false early before any other checks are made. This is to allow the button
-  // to be pressed to enable offchain lookup.
-  const isReviewButtonDisabled =
-    !showEnsOffchainWarning &&
-    (searchingForDomain ||
-      toAddressOrUrl === '' ||
-      parseFloat(sendAmount) === 0 ||
-      sendAmount === '' ||
-      insufficientFundsError ||
-      (addressError !== undefined && addressError !== '') ||
-      sendAmountValidationError !== undefined)
 
   const reviewButtonHasError =
     !searchingForDomain &&
@@ -618,15 +585,41 @@ export const SendScreen = (props: Props) => {
               />
             )}
           </SectionBox>
-          <StandardButton
-            buttonText={reviewButtonText}
-            onClick={onClickReviewOrENSConsent}
-            buttonType='primary'
-            buttonWidth='full'
-            isLoading={searchingForDomain}
-            disabled={isReviewButtonDisabled}
-            hasError={reviewButtonHasError}
-          />
+          {showEnsOffchainWarning ? (
+            <StandardButton
+              // This is always enabled to allow off-chain ENS lookups
+              buttonText={getLocale('braveWalletEnsOffChainButton')}
+              onClick={onENSConsent}
+              buttonType='primary'
+              buttonWidth='full'
+              isLoading={searchingForDomain}
+              hasError={reviewButtonHasError}
+            />
+          ) : (
+            <StandardButton
+              buttonText={getReviewButtonText(
+                searchingForDomain,
+                sendAmountValidationError,
+                insufficientFundsError,
+                addressError,
+                addressWarning
+              )}
+              onClick={submitSend}
+              buttonType='primary'
+              buttonWidth='full'
+              isLoading={searchingForDomain}
+              disabled={
+                searchingForDomain ||
+                !toAddressOrUrl ||
+                insufficientFundsError ||
+                Boolean(addressError) ||
+                sendAmount === '' ||
+                parseFloat(sendAmount) === 0 ||
+                Boolean(sendAmountValidationError)
+              }
+              hasError={reviewButtonHasError}
+            />
+          )}
         </SendContainer>
       </WalletPageWrapper>
       {showSelectTokenModal ? (
@@ -692,16 +685,12 @@ function getAddressMessageInfo(
 }
 
 function getReviewButtonText(
-  showEnsOffchainWarning: boolean,
   searchingForDomain: boolean,
   sendAmountValidationError: string | undefined,
   insufficientFundsError: boolean,
   addressError: string | undefined,
   addressWarning: string | undefined
 ) {
-  if (showEnsOffchainWarning) {
-    return getLocale('braveWalletEnsOffChainButton')
-  }
   if (searchingForDomain) {
     return getLocale('braveWalletSearchingForDomain')
   }
