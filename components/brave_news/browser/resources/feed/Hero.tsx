@@ -19,6 +19,8 @@ const HeroImage = styled.img`
 
   object-fit: cover;
   object-position: top;
+
+  border-radius: 6px;
 `
 
 export default function HeroArticle({ info }: Props) {
