@@ -26,11 +26,16 @@ import { isValidAddress, isValidFilAddress } from '../../utils/address-utils'
 import { endsWithAny } from '../../utils/string-utils'
 import Amount from '../../utils/amount'
 import { WalletSelectors } from '../selectors'
+import { networkEntityAdapter } from '../slices/entities/network.entity'
 
 // hooks
 import { useLib } from './useLib'
-import { useAssets } from './assets'
-import { useGetFVMAddressQuery, useGetSelectedChainQuery, walletApi } from '../slices/api.slice'
+import {
+  useGetFVMAddressQuery,
+  useGetSelectedChainQuery,
+  useGetUserTokensRegistryQuery,
+  walletApi
+} from '../slices/api.slice'
 import { useUnsafeWalletSelector } from './use-safe-selector'
 import { useSelectedAccountQuery } from '../slices/api.slice.extra'
 
@@ -50,6 +55,25 @@ export function useSend () {
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
+  const {
+    data: userAssets
+  } = useGetUserTokensRegistryQuery(undefined)
+
+  const networkId = selectedNetwork
+    ? networkEntityAdapter.selectId(selectedNetwork)
+    : undefined
+
+  const sendAssetOptionIds = networkId
+    ? userAssets?.visibleTokenIdsByChainId[networkId]
+    : userAssets?.visibleTokenIds
+
+  const sendAssetOptions = React.useMemo(
+    () =>
+      userAssets
+        ? sendAssetOptionIds?.map((id) => userAssets.entities[id])
+        : [],
+    [sendAssetOptionIds, userAssets]
+  )
 
   // custom hooks
   const {
@@ -59,7 +83,6 @@ export function useSend () {
     findUnstoppableDomainAddress,
     isBase58EncodedSolanaPubkey
   } = useLib()
-  const sendAssetOptions = useAssets()
 
   // State
   const [searchingForDomain, setSearchingForDomain] = React.useState<boolean>(false)
@@ -81,21 +104,24 @@ export function useSend () {
       : skipToken
   )
 
-  const selectSendAsset = (asset: BraveWallet.BlockchainToken | undefined) => {
-    if (asset?.isErc721 || asset?.isNft) {
-      setSendAmount('1')
-    } else {
-      setSendAmount('')
-    }
-    setToAddress('')
-    setToAddressOrUrl('')
-    setAddressError(undefined)
-    setAddressWarning(undefined)
-    setShowEnsOffchainWarning(false)
-    setSearchingForDomain(false)
-    setSelectedSendAsset(asset)
-    setShowFilecoinFEVMWarning(false)
-  }
+  const selectSendAsset = React.useCallback(
+    (asset: BraveWallet.BlockchainToken | undefined) => {
+      if (asset?.isErc721 || asset?.isNft) {
+        setSendAmount('1')
+      } else {
+        setSendAmount('')
+      }
+      setToAddress('')
+      setToAddressOrUrl('')
+      setAddressError(undefined)
+      setAddressWarning(undefined)
+      setShowEnsOffchainWarning(false)
+      setSearchingForDomain(false)
+      setSelectedSendAsset(asset)
+      setShowFilecoinFEVMWarning(false)
+    },
+    []
+  )
 
   const validateETHAddress = React.useCallback(async (address: string) => {
     if (!isValidAddress(address, 20)) {
@@ -574,4 +600,5 @@ export function useSend () {
     sendAssetOptions
   }
 }
+
 export default useSend

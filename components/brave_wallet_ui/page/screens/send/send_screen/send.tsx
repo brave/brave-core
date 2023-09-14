@@ -87,8 +87,28 @@ interface Props {
   isAndroid?: boolean
 }
 
+const EMPTY_PRICE_IDS: string[] = []
+
+const ErrorFailedChecksumMessage: AddressMessageInfo = {
+  ...FailedChecksumMessage,
+  type: 'error'
+}
+
+const WarningFailedChecksumMessage: AddressMessageInfo = {
+  ...FailedChecksumMessage,
+  type: 'warning'
+}
+
 export const Send = (props: Props) => {
   const { isAndroid } = props
+
+  // reused locales
+  const braveWalletAddressMissingChecksumInfoWarning = getLocale(
+    'braveWalletAddressMissingChecksumInfoWarning'
+  )
+  const braveWalletNotValidChecksumAddressError = getLocale(
+    'braveWalletNotValidChecksumAddressError'
+  )
 
   // Wallet Selectors
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
@@ -286,12 +306,9 @@ export const Send = (props: Props) => {
     return amountWei.gt(sendAssetBalance)
   }, [sendAssetBalance, sendAmount, selectedSendAsset])
 
-  const tokenPriceIds = React.useMemo(() =>
-    selectedSendAsset
-      ? [getPriceIdForToken(selectedSendAsset)]
-      : [],
-    [selectedSendAsset]
-  )
+  const tokenPriceIds = selectedSendAsset
+    ? [getPriceIdForToken(selectedSendAsset)]
+    : EMPTY_PRICE_IDS
 
   const {
     data: spotPriceRegistry
@@ -327,101 +344,76 @@ export const Send = (props: Props) => {
     selectedSendOption
   ])
 
-  const reviewButtonText = React.useMemo(() => {
-    return showEnsOffchainWarning
-      ? getLocale('braveWalletEnsOffChainButton')
-      : searchingForDomain
-        ? getLocale('braveWalletSearchingForDomain')
-        : sendAmountValidationError
-          ? getLocale('braveWalletDecimalPlacesError')
-          : insufficientFundsError
-            ? getLocale('braveWalletNotEnoughFunds')
-            : (
-              addressError !== undefined &&
-              addressError !== '' &&
-              addressError !== getLocale('braveWalletNotValidChecksumAddressError')
-            )
-              ? addressError
-              : (
-                addressWarning !== undefined &&
-                addressWarning !== '' &&
-                addressWarning !== getLocale('braveWalletAddressMissingChecksumInfoWarning')
-              )
-                ? addressWarning
-                : getLocale('braveWalletReviewSend')
-  }, [insufficientFundsError, addressError, addressWarning, sendAmountValidationError, searchingForDomain, showEnsOffchainWarning])
-
-  const isReviewButtonDisabled = React.useMemo(() => {
-    // We only need to check if showEnsOffchainWarning is true here to return
-    // false early before any other checks are made. This is to allow the button
-    // to be pressed to enable offchain lookup.
-    return !showEnsOffchainWarning &&
-      (searchingForDomain ||
-        toAddressOrUrl === '' ||
-        parseFloat(sendAmount) === 0 ||
-        sendAmount === '' ||
-        insufficientFundsError ||
-        (addressError !== undefined && addressError !== '') ||
-        sendAmountValidationError !== undefined)
-  },
-    [
-      toAddressOrUrl,
-      sendAmount,
-      insufficientFundsError,
-      addressError,
-      sendAmountValidationError,
-      searchingForDomain,
-      showEnsOffchainWarning
-    ]
+  const reviewButtonText = getReviewButtonText(
+    showEnsOffchainWarning,
+    searchingForDomain,
+    sendAmountValidationError,
+    insufficientFundsError,
+    addressError,
+    addressWarning
   )
 
-  const reviewButtonHasError = React.useMemo(() => {
-    return searchingForDomain
-      ? false
-      : insufficientFundsError ||
+  // We only need to check if showEnsOffchainWarning is true here to return
+  // false early before any other checks are made. This is to allow the button
+  // to be pressed to enable offchain lookup.
+  const isReviewButtonDisabled =
+    !showEnsOffchainWarning &&
+    (searchingForDomain ||
+      toAddressOrUrl === '' ||
+      parseFloat(sendAmount) === 0 ||
+      sendAmount === '' ||
+      insufficientFundsError ||
+      (addressError !== undefined && addressError !== '') ||
+      sendAmountValidationError !== undefined)
+
+  const reviewButtonHasError =
+    !searchingForDomain &&
+    (insufficientFundsError ||
       (addressError !== undefined &&
         addressError !== '' &&
-        addressError !== getLocale('braveWalletNotValidChecksumAddressError'))
-  }, [searchingForDomain, insufficientFundsError, addressError])
+        addressError !== braveWalletNotValidChecksumAddressError))
 
-  const hasAddressError = React.useMemo(() => {
-    return searchingForDomain
-      ? false
-      : !!addressError
-  }, [searchingForDomain, addressError])
+  const hasAddressError = !searchingForDomain && !!addressError
 
-  const addressMessageInformation: AddressMessageInfo | undefined = React.useMemo(() => {
-    if (showFilecoinFEVMWarning) {
-      return {
-        ...FEVMAddressConvertionMessage,
-        placeholder: fevmTranslatedAddresses?.[toAddressOrUrl]
-      }
-    }
-    if (showEnsOffchainWarning) {
-      return ENSOffchainLookupMessage
-    }
-    if (addressError === getLocale('braveWalletNotValidChecksumAddressError')) {
-      return { ...FailedChecksumMessage, type: 'error' }
-    }
-    if (addressWarning === getLocale('braveWalletAddressMissingChecksumInfoWarning')) {
-      return { ...FailedChecksumMessage, type: 'warning' }
-    }
-    return undefined
-  }, [toAddressOrUrl, showFilecoinFEVMWarning, fevmTranslatedAddresses,
-      showEnsOffchainWarning, addressError, addressWarning])
+  const addressMessageInformation: AddressMessageInfo | undefined =
+    React.useMemo(
+      getAddressMessageInfo(
+        showFilecoinFEVMWarning,
+        fevmTranslatedAddresses,
+        toAddressOrUrl,
+        showEnsOffchainWarning,
+        addressError,
+        braveWalletNotValidChecksumAddressError,
+        addressWarning,
+        braveWalletAddressMissingChecksumInfoWarning
+      ),
+      [
+        toAddressOrUrl,
+        showFilecoinFEVMWarning,
+        fevmTranslatedAddresses,
+        showEnsOffchainWarning,
+        addressError,
+        addressWarning
+      ]
+    )
 
-  const showResolvedDomain = React.useMemo(() => {
-    return (addressError === undefined ||
-      addressError === '' ||
-      addressError === getLocale('braveWalletSameAddressError')) &&
-      toAddress &&
-      endsWithAny(allSupportedExtensions, toAddressOrUrl.toLowerCase())
-  }, [addressError, toAddress, toAddressOrUrl])
+  const toAddressHasValidExtension = endsWithAny(
+    allSupportedExtensions,
+    toAddressOrUrl.toLowerCase()
+  )
 
-  const showSearchingForDomainIcon = React.useMemo(() => {
-    return (endsWithAny(allSupportedExtensions, toAddressOrUrl.toLowerCase()) && searchingForDomain) ||
-      showEnsOffchainWarning
-  }, [toAddressOrUrl, searchingForDomain, showEnsOffchainWarning])
+  const showResolvedDomain =
+    toAddress &&
+    toAddressHasValidExtension &&
+    (!addressError ||
+      addressError ===
+        getLocale(
+          'braveWalletSameAddressError' //
+        ))
+
+  const showSearchingForDomainIcon =
+    (searchingForDomain && toAddressHasValidExtension) || //
+    showEnsOffchainWarning
 
   const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
     selectFromResult: result => ({
@@ -497,9 +489,7 @@ export const Send = (props: Props) => {
         noMinCardHeight={true}
         hideNav={isAndroid}
         hideHeader={isAndroid}
-        cardHeader={
-          <PageTitleHeader title={getLocale('braveWalletSend')}/>
-        }
+        cardHeader={<SendPageHeader />}
       >
         <SendContainer>
           <Row rowWidth='full' marginBottom={16}>
@@ -508,90 +498,98 @@ export const Send = (props: Props) => {
               onClick={onSelectSendOption}
             />
           </Row>
-          <SectionBox
-            minHeight={150}
-            hasError={insufficientFundsError}
-          >
-            {selectedSendOption === SendPageTabHashes.token &&
+          <SectionBox minHeight={150} hasError={insufficientFundsError}>
+            {selectedSendOption === SendPageTabHashes.token && (
               <Column
                 columnHeight='full'
                 columnWidth='full'
                 verticalAlign='space-between'
                 horizontalAlign='space-between'
               >
-                <Row
-                  rowWidth='full'
-                  horizontalAlign='flex-end'>
-                  <Text textSize='14px' textColor='text03' maintainHeight={true} isBold={true}>
+                <Row rowWidth='full' horizontalAlign='flex-end'>
+                  <Text
+                    textSize='14px'
+                    textColor='text03'
+                    maintainHeight={true}
+                    isBold={true}
+                  >
                     {accountNameAndBalance}
                   </Text>
                 </Row>
-                <Row
-                  rowWidth='full'
-                >
+                <Row rowWidth='full'>
                   <Row>
                     <SelectTokenButton
                       onClick={() => setShowSelectTokenModal(true)}
                       token={selectedSendAsset}
-                      selectedSendOption={selectedSendOption} />
-                    {
-                      selectedSendOption === SendPageTabHashes.token &&
-                      selectedSendAsset &&
-                      <>
-                        <HorizontalDivider
-                          height={28}
-                          marginLeft={8}
-                          marginRight={8}
-                          dividerTheme='lighter'
-                        />
-                        <PresetButton buttonText={getLocale('braveWalletSendHalf')} onClick={() => setPresetAmountValue(0.5)} />
-                        <PresetButton buttonText={getLocale('braveWalletSendMax')} onClick={() => setPresetAmountValue(1)} />
-                      </>
-                    }
+                      selectedSendOption={selectedSendOption}
+                    />
+                    {selectedSendOption === SendPageTabHashes.token &&
+                      selectedSendAsset && (
+                        <>
+                          <HorizontalDivider
+                            height={28}
+                            marginLeft={8}
+                            marginRight={8}
+                            dividerTheme='lighter'
+                          />
+                          <PresetButton
+                            buttonText={getLocale('braveWalletSendHalf')}
+                            onClick={() => setPresetAmountValue(0.5)}
+                          />
+                          <PresetButton
+                            buttonText={getLocale('braveWalletSendMax')}
+                            onClick={() => setPresetAmountValue(1)}
+                          />
+                        </>
+                      )}
                   </Row>
-                  {selectedSendOption === SendPageTabHashes.token &&
+                  {selectedSendOption === SendPageTabHashes.token && (
                     <AmountInput
                       placeholder='0.0'
                       hasError={insufficientFundsError}
                       value={sendAmount}
                       onChange={handleInputAmountChange}
                     />
-                  }
+                  )}
                 </Row>
-                <Row
-                  rowWidth='full'
-                  horizontalAlign='flex-end'>
-                  <Text textSize='14px' textColor='text03' maintainHeight={true} isBold={false}>
+                <Row rowWidth='full' horizontalAlign='flex-end'>
+                  <Text
+                    textSize='14px'
+                    textColor='text03'
+                    maintainHeight={true}
+                    isBold={false}
+                  >
                     {sendAmountFiatValue}
                   </Text>
                 </Row>
               </Column>
-            }
-            {selectedSendOption === SendPageTabHashes.nft &&
-              <Row
-                rowWidth='full'
-                rowHeight='full'
-              >
-                <Column
-                  columnHeight='full'
-                  verticalAlign='center'
-                >
+            )}
+            {selectedSendOption === SendPageTabHashes.nft && (
+              <Row rowWidth='full' rowHeight='full'>
+                <Column columnHeight='full' verticalAlign='center'>
                   <SelectTokenButton
                     onClick={() => setShowSelectTokenModal(true)}
                     token={selectedSendAsset}
-                    selectedSendOption={selectedSendOption} />
+                    selectedSendOption={selectedSendOption}
+                  />
                 </Column>
                 <Column
                   columnHeight='full'
                   verticalAlign='flex-start'
                   horizontalAlign='flex-end'
                 >
-                  <Text textSize='14px' textColor='text03' maintainHeight={true} isBold={true} textAlign='right'>
+                  <Text
+                    textSize='14px'
+                    textColor='text03'
+                    maintainHeight={true}
+                    isBold={true}
+                    textAlign='right'
+                  >
                     {accountNameAndBalance}
                   </Text>
                 </Column>
               </Row>
-            }
+            )}
           </SectionBox>
           <SectionBox
             hasError={hasAddressError}
@@ -605,10 +603,12 @@ export const Send = (props: Props) => {
               paddingBottom={showResolvedDomain ? 4 : 16}
               horizontalPadding={16}
             >
-              {showSearchingForDomainIcon &&
+              {showSearchingForDomainIcon && (
                 <DomainLoadIcon position={domainPosition} />
-              }
-              <DIVForWidth ref={(ref) => updateLoadingIconPosition(ref)}>{toAddressOrUrl}</DIVForWidth>
+              )}
+              <DIVForWidth ref={(ref) => updateLoadingIconPosition(ref)}>
+                {toAddressOrUrl}
+              </DIVForWidth>
               <AddressInput
                 placeholder={getLocale('braveWalletEnterRecipientAddress')}
                 hasError={hasAddressError}
@@ -617,22 +617,26 @@ export const Send = (props: Props) => {
                 spellCheck={false}
                 disabled={!selectedSendAsset}
               />
-              <AccountSelector asset={selectedSendAsset} disabled={!selectedSendAsset} onSelectAddress={updateToAddressOrUrl} />
+              <AccountSelector
+                asset={selectedSendAsset}
+                disabled={!selectedSendAsset}
+                onSelectAddress={updateToAddressOrUrl}
+              />
             </InputRow>
-            {showResolvedDomain &&
-              <CopyAddress address={toAddress} />
-            }
-            {addressMessageInformation &&
+            {showResolvedDomain && <CopyAddress address={toAddress} />}
+            {addressMessageInformation && (
               <AddressMessage
                 addressMessageInfo={addressMessageInformation}
                 onClickHowToSolve={
-                  (addressError === getLocale('braveWalletNotValidChecksumAddressError') ||
-                    addressWarning === getLocale('braveWalletAddressMissingChecksumInfoWarning'))
+                  addressError ===
+                    braveWalletNotValidChecksumAddressError ||
+                  addressWarning ===
+                    braveWalletAddressMissingChecksumInfoWarning
                     ? () => setShowChecksumInfoModal(true)
                     : undefined
                 }
               />
-            }
+            )}
           </SectionBox>
           <StandardButton
             buttonText={reviewButtonText}
@@ -645,22 +649,107 @@ export const Send = (props: Props) => {
           />
         </SendContainer>
       </WalletPageWrapper>
-      {showSelectTokenModal &&
+      {showSelectTokenModal ? (
         <SelectTokenModal
           onClose={() => setShowSelectTokenModal(false)}
           selectedSendOption={selectedSendOption}
           ref={selectTokenModalRef}
           selectSendAsset={selectSendAsset}
         />
-      }
-      {showChecksumInfoModal &&
+      ) : null}
+      {showChecksumInfoModal ? (
         <ChecksumInfoModal
           onClose={() => setShowChecksumInfoModal(false)}
           ref={checksumInfoModalRef}
         />
-      }
+      ) : null}
     </>
   )
 }
 
 export default Send
+
+function getAddressMessageInfo(
+  showFilecoinFEVMWarning: boolean,
+  fevmTranslatedAddresses:
+    | Map<string, { address: string; fvmAddress: string }>
+    | undefined,
+  toAddressOrUrl: string,
+  showEnsOffchainWarning: boolean,
+  addressError: string | undefined,
+  braveWalletNotValidChecksumAddressError: string,
+  addressWarning: string | undefined,
+  braveWalletAddressMissingChecksumInfoWarning: string
+): () =>
+  | AddressMessageInfo
+  | {
+      placeholder: any
+      title: string
+      description?: string | undefined
+      url?: string | undefined
+      type?: 'error' | 'warning' | undefined
+    }
+  | undefined {
+  return () => {
+    if (showFilecoinFEVMWarning) {
+      return {
+        ...FEVMAddressConvertionMessage,
+        placeholder: fevmTranslatedAddresses?.[toAddressOrUrl]
+      }
+    }
+    if (showEnsOffchainWarning) {
+      return ENSOffchainLookupMessage
+    }
+    if (addressError === braveWalletNotValidChecksumAddressError) {
+      return ErrorFailedChecksumMessage
+    }
+
+    if (addressWarning === braveWalletAddressMissingChecksumInfoWarning) {
+      return WarningFailedChecksumMessage
+    }
+    return undefined
+  }
+}
+
+function getReviewButtonText(
+  showEnsOffchainWarning: boolean,
+  searchingForDomain: boolean,
+  sendAmountValidationError: string | undefined,
+  insufficientFundsError: boolean,
+  addressError: string | undefined,
+  addressWarning: string | undefined
+) {
+  if (showEnsOffchainWarning) {
+    return getLocale('braveWalletEnsOffChainButton')
+  }
+  if (searchingForDomain) {
+    return getLocale('braveWalletSearchingForDomain')
+  }
+  if (sendAmountValidationError) {
+    return getLocale('braveWalletDecimalPlacesError')
+  }
+  if (insufficientFundsError) {
+    return getLocale('braveWalletNotEnoughFunds')
+  }
+  if (
+    addressError &&
+    addressError !== getLocale(
+      'braveWalletNotValidChecksumAddressError'
+    )
+  ) {
+    return addressError
+  }
+  if (
+    addressWarning &&
+    addressWarning !== getLocale('braveWalletAddressMissingChecksumInfoWarning')
+  ) {
+    return addressWarning
+  }
+
+  return getLocale('braveWalletReviewSend')
+}
+
+function SendPageHeader() {
+  return <PageTitleHeader title={getLocale('braveWalletSend')} />
+}
+
