@@ -31,6 +31,7 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"termsOfService", IDS_BRAVE_REWARDS_ONBOARDING_TERMS},
     {"sendFormTitle", IDS_REWARDS_TIP_SEND_FORM_TITLE},
     {"sendButtonLabel", IDS_REWARDS_TIP_SEND_BUTTON_LABEL},
+    {"sendWithButtonLabel", IDS_REWARDS_TIP_SEND_WITH_BUTTON_LABEL},
     {"web3ButtonLabel", IDS_REWARDS_TIP_WEB3_BUTTON_LABEL},
     {"verifiedTooltipTitle", IDS_REWARDS_TIP_VERIFIED_TOOLTIP_TITLE},
     {"verifiedTooltipText", IDS_REWARDS_TIP_VERIFIED_TOOLTIP_TEXT},

@@ -445,6 +445,9 @@
   <message name="IDS_REWARDS_TIP_SEND_BUTTON_LABEL" desc="">
     Send
   </message>
+  <message name="IDS_REWARDS_TIP_SEND_WITH_BUTTON_LABEL" desc="">
+    Send with <ph name="PROVIDER">$1</ph>
+  </message>
   <message name="IDS_REWARDS_TIP_WEB3_BUTTON_LABEL" desc="">
     Use Web3 Wallet
   </message>
