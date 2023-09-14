@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-adblock = { version = "0.8.0", default-features = false, features = ["full-regex-handling", "regex-debug-info", "css-validation"] }
+adblock = { version = "0.8.1", default-features = false, features = ["full-regex-handling", "regex-debug-info", "css-validation"] }
 cxx = "1.0"
 serde_json = "1.0"
 thiserror = "1.0"

@@ -51,15 +51,18 @@ pub struct BlockerResult {
     /// modified at all, the new version will be here. This should be used
     /// as long as the request is not blocked.
     pub rewritten_url: Option<String>,
-    /// Exception is `Some` when the blocker matched on an exception rule.
+    /// Contains a string representation of any matched exception rule.
     /// Effectively this means that there was a match, but the request should
-    /// not be blocked. It is a non-empty string if the blocker was initialized
-    /// from a list of rules with debugging enabled, otherwise the original
-    /// string representation is discarded to reduce memory use.
+    /// not be blocked.
+    ///
+    /// If debugging was _not_ enabled (see [`crate::FilterSet::new`]), this
+    /// will only contain a constant `"NetworkFilter"` placeholder string.
     pub exception: Option<String>,
-    /// Filter--similarly to exception--includes the string representation of
-    /// the rule when there is a match and debugging is enabled. Otherwise, on
-    /// a match, it is `Some`.
+    /// When `matched` is true, this contains a string representation of the
+    /// matched blocking rule.
+    ///
+    /// If debugging was _not_ enabled (see [`crate::FilterSet::new`]), this
+    /// will only contain a constant `"NetworkFilter"` placeholder string.
     pub filter: Option<String>,
 }
 
@@ -2116,6 +2119,19 @@ fn test_removeparam_same_tokens() {
         blocker.add_filter(NetworkFilter::parse("@@||example.com$generichide", true, Default::default()).unwrap()).unwrap();
 
         assert!(blocker.check_generic_hide(&Request::new("https://example.com", "https://example.com", "other").unwrap()));
+    }
+}
+
+#[cfg(test)]
+mod placeholder_string_tests {
+    /// If this changes, be sure to update the documentation for [`BlockerResult`] as well.
+    #[test]
+    fn test_constant_placeholder_string() {
+        let mut filter_set = crate::lists::FilterSet::new(false);
+        filter_set.add_filter("||example.com^", Default::default()).unwrap();
+        let engine = crate::Engine::from_filter_set(filter_set, true);
+        let block = engine.check_network_request(&crate::request::Request::new("https://example.com", "https://example.com", "document").unwrap());
+        assert_eq!(block.filter, Some("NetworkFilter".to_string()));
     }
 }
 
