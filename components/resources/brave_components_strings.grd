@@ -814,6 +814,10 @@
       <message name="IDS_BRAVE_WALLET_DOWNLOADING" desc="">Downloading Component...</message>
       <message name="IDS_BRAVE_WALLET_DISCLOSURE_CONFIRM" desc="">I understand</message>
 
+      <message name="IDS_PAGE_INFO_BRAVE_WEBTORRENT" desc="The message showed to the user in the HTTP info bubble view when viewing a webtorrent: page">
+        You're viewing a WebTorrent page
+      </message>
+
       <if expr="not is_ios">
         <part file="decentralized_dns_strings.grdp" />
       </if>

@@ -11,6 +11,13 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/base/page_transition_types.h"
 
+// Define this variable in the url namespace to make patching easier.
+namespace url {
+
+constexpr char kWebTorrentScheme[] = "webtorrent";
+
+}  // namespace url
+
 namespace webtorrent {
 
 GURL TranslateMagnetURL(const GURL& url);
