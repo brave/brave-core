@@ -820,6 +820,7 @@ extension BrowserViewController: ToolbarDelegate {
 
   func tabToolbarDidPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
     tabManager.selectedTab?.goBack()
+    recordNavigationActionP3A(isNavigationActionForward: false)
   }
 
   func tabToolbarDidLongPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
@@ -829,6 +830,7 @@ extension BrowserViewController: ToolbarDelegate {
 
   func tabToolbarDidPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton) {
     tabManager.selectedTab?.goForward()
+    recordNavigationActionP3A(isNavigationActionForward: true)
   }
 
   func tabToolbarDidPressShare() {

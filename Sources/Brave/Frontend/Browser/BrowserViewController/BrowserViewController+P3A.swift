@@ -110,7 +110,7 @@ extension BrowserViewController {
       
       if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
         do {
-          if let documentsDirectorySize = try fileManager.directorySize(at: documentsDirectory){
+          if let documentsDirectorySize = try fileManager.directorySize(at: documentsDirectory) {
             directorySize += Int(documentsDirectorySize / 1024 / 1024)
           }
         } catch {
@@ -122,7 +122,7 @@ extension BrowserViewController {
       let temporaryDirectory = FileManager.default.temporaryDirectory
       
       do {
-        if let temporaryDirectorySize = try fileManager.directorySize(at: temporaryDirectory){
+        if let temporaryDirectorySize = try fileManager.directorySize(at: temporaryDirectory) {
           directorySize += Int(temporaryDirectorySize / 1024 / 1024)
         }
       } catch {
@@ -199,6 +199,34 @@ extension BrowserViewController {
     }
     UmaHistogramEnumeration("Brave.Rewards.AdTypesEnabled", sample: answer)
   }
+  
+  func recordNavigationActionP3A(isNavigationActionForward: Bool) {
+    var navigationActionStorage = P3ATimedStorage<Int>.navigationActionPerformedStorage
+    var forwardNavigationActionStorage = P3ATimedStorage<Int>.forwardNavigationActionPerformed
+    
+    navigationActionStorage.add(value: 1, to: Date())
+    let newNavigationActionStorage = navigationActionStorage.maximumDaysCombinedValue
+    
+    if isNavigationActionForward {
+      forwardNavigationActionStorage.add(value: 1, to: Date())
+    }
+    
+    if newNavigationActionStorage > 0 {
+      let navigationForwardPercent = Int((Double(forwardNavigationActionStorage.maximumDaysCombinedValue) / Double(newNavigationActionStorage)) * 100.0)
+      UmaHistogramRecordValueToBucket(
+        "Brave.Toolbar.ForwardNavigationAction",
+        buckets: [
+          .r(0..<1),
+          .r(1..<3),
+          .r(3..<5),
+          .r(5..<10),
+          .r(10..<20),
+          .r(20...)
+        ],
+        value: navigationForwardPercent
+      )
+    }
+  }
 }
 
 extension P3AFeatureUsage {
@@ -214,4 +242,6 @@ extension P3ATimedStorage where Value == Int {
   fileprivate static var dataSavedStorage: Self { .init(name: "data-saved", lifetimeInDays: 7) }
   fileprivate static var braveVPNDaysInMonthUsedStorage: Self { .init(name: "vpn-days-in-month-used", lifetimeInDays: 30) }
   fileprivate static var readerModeActivated: Self { .init(name: "reader-mode-activated", lifetimeInDays: 7) }
+  fileprivate static var navigationActionPerformedStorage: Self { .init(name: "navigation-action-performed", lifetimeInDays: 7) }
+  fileprivate static var forwardNavigationActionPerformed: Self { .init(name: "forward-navigation-action-performed", lifetimeInDays: 7) }
 }
