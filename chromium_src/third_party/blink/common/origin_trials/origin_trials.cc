@@ -57,7 +57,6 @@ bool IsTrialDisabledInBrave(OriginTrialFeature feature) {
   static const OriginTrialFeature kBraveDisabledTrialFeatures[] =
       {   // NOLINT
           OriginTrialFeature::kAdInterestGroupAPI,
-          OriginTrialFeature::kDeviceAttributes,
           OriginTrialFeature::kDigitalGoods,
           OriginTrialFeature::kFencedFrames,
           OriginTrialFeature::kFledge,
