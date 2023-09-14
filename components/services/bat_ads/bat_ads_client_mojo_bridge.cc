@@ -113,33 +113,34 @@ void BatAdsClientMojoBridge::CloseNotificationAd(
   }
 }
 
-void BatAdsClientMojoBridge::RecordAdEventForId(
+void BatAdsClientMojoBridge::CacheAdEventForInstanceId(
     const std::string& id,
     const std::string& ad_type,
     const std::string& confirmation_type,
     const base::Time time) const {
   if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->RecordAdEventForId(id, ad_type, confirmation_type, time);
+    bat_ads_client_->CacheAdEventForInstanceId(id, ad_type, confirmation_type,
+                                               time);
   }
 }
 
-std::vector<base::Time> BatAdsClientMojoBridge::GetAdEventHistory(
+std::vector<base::Time> BatAdsClientMojoBridge::GetCachedAdEvents(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
   if (!bat_ads_client_.is_bound()) {
     return {};
   }
 
-  std::vector<base::Time> ad_event_history;
-  bat_ads_client_->GetAdEventHistory(ad_type, confirmation_type,
-                                     &ad_event_history);
-  return ad_event_history;
+  std::vector<base::Time> ad_event_cache;
+  bat_ads_client_->GetCachedAdEvents(ad_type, confirmation_type,
+                                     &ad_event_cache);
+  return ad_event_cache;
 }
 
-void BatAdsClientMojoBridge::ResetAdEventHistoryForId(
+void BatAdsClientMojoBridge::ResetAdEventCacheForInstanceId(
     const std::string& id) const {
   if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->ResetAdEventHistoryForId(id);
+    bat_ads_client_->ResetAdEventCacheForInstanceId(id);
   }
 }
 

@@ -6,14 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SEARCH_ENGINE_SEARCH_ENGINE_DOMAIN_EXTENSION_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SEARCH_ENGINE_SEARCH_ENGINE_DOMAIN_EXTENSION_CONSTANTS_H_
 
+#include <string_view>
+
 #include "base/containers/span.h"
-#include "base/strings/string_piece.h"
 
 namespace brave_ads {
 
-base::span<const base::StringPiece> GetAmazonSearchEngineDomainExtensions();
-base::span<const base::StringPiece> GetGoogleSearchEngineDomainExtensions();
-base::span<const base::StringPiece> GetMojeekSearchEngineDomainExtensions();
+base::span<const std::string_view> GetAmazonSearchEngineDomainExtensions();
+base::span<const std::string_view> GetGoogleSearchEngineDomainExtensions();
+base::span<const std::string_view> GetMojeekSearchEngineDomainExtensions();
 
 }  // namespace brave_ads
 

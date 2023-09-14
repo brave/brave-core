@@ -42,7 +42,7 @@ using AdEventHistoryMap =
     base::flat_map</*type_id*/ std::string, std::vector<base::Time>>;
 using AdEventMap = base::flat_map</*uuid*/ std::string, AdEventHistoryMap>;
 
-AdEventMap& AdEventHistory() {
+AdEventMap& AdEventCache() {
   static base::NoDestructor<AdEventMap> ad_events;
   return *ad_events;
 }
@@ -81,8 +81,8 @@ void MockCloseNotificationAd(AdsClientMock& mock) {
       }));
 }
 
-void MockRecordAdEventForId(const AdsClientMock& mock) {
-  ON_CALL(mock, RecordAdEventForId)
+void MockCacheAdEventForInstanceId(const AdsClientMock& mock) {
+  ON_CALL(mock, CacheAdEventForInstanceId)
       .WillByDefault(::testing::Invoke(
           [](const std::string& id, const std::string& ad_type,
              const std::string& confirmation_type, const base::Time time) {
@@ -93,12 +93,12 @@ void MockRecordAdEventForId(const AdsClientMock& mock) {
             const std::string uuid = GetUuidForCurrentTestAndValue(id);
             const std::string type_id =
                 base::StrCat({ad_type, confirmation_type});
-            AdEventHistory()[uuid][type_id].push_back(time);
+            AdEventCache()[uuid][type_id].push_back(time);
           }));
 }
 
-void MockGetAdEventHistory(const AdsClientMock& mock) {
-  ON_CALL(mock, GetAdEventHistory)
+void MockGetCachedAdEvents(const AdsClientMock& mock) {
+  ON_CALL(mock, GetCachedAdEvents)
       .WillByDefault(::testing::Invoke(
           [](const std::string& ad_type,
              const std::string& confirmation_type) -> std::vector<base::Time> {
@@ -110,9 +110,9 @@ void MockGetAdEventHistory(const AdsClientMock& mock) {
             const std::string type_id =
                 base::StrCat({ad_type, confirmation_type});
 
-            std::vector<base::Time> ad_event_history;
+            std::vector<base::Time> cached_ad_events;
 
-            for (const auto& [uuid, history] : AdEventHistory()) {
+            for (const auto& [uuid, history] : AdEventCache()) {
               if (!base::EndsWith(uuid,
                                   base::StrCat({":", uuid_for_current_test}),
                                   base::CompareCase::SENSITIVE)) {
@@ -122,22 +122,22 @@ void MockGetAdEventHistory(const AdsClientMock& mock) {
 
               for (const auto& [ad_event_type_id, timestamps] : history) {
                 if (ad_event_type_id == type_id) {
-                  base::Extend(ad_event_history, timestamps);
+                  base::Extend(cached_ad_events, timestamps);
                 }
               }
             }
 
-            return ad_event_history;
+            return cached_ad_events;
           }));
 }
 
-void MockResetAdEventHistoryForId(const AdsClientMock& mock) {
-  ON_CALL(mock, ResetAdEventHistoryForId)
+void MockResetAdEventCacheForInstanceId(const AdsClientMock& mock) {
+  ON_CALL(mock, ResetAdEventCacheForInstanceId)
       .WillByDefault(::testing::Invoke([](const std::string& id) {
         CHECK(!id.empty());
 
         const std::string uuid = GetUuidForCurrentTestAndValue(id);
-        AdEventHistory()[uuid].erase(uuid);
+        AdEventCache()[uuid] = {};
       }));
 }
 

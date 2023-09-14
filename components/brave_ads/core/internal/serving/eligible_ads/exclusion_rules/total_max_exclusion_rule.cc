@@ -17,6 +17,11 @@ namespace {
 
 bool DoesRespectCap(const AdEventList& ad_events,
                     const CreativeAdInfo& creative_ad) {
+  if (creative_ad.total_max == 0) {
+    // Always respect cap if set to 0.
+    return true;
+  }
+
   const size_t count = base::ranges::count_if(
       ad_events, [&creative_ad](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type == ConfirmationType::kServed &&

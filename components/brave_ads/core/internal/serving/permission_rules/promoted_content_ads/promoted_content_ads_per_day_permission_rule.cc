@@ -10,7 +10,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 #include "brave/components/brave_ads/core/internal/units/promoted_content_ad/promoted_content_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
+#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_cache_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/units/ad_type.h"
 
@@ -31,7 +31,7 @@ bool DoesRespectCap(const std::vector<base::Time>& history) {
 base::expected<void, std::string>
 PromotedContentAdsPerDayPermissionRule::ShouldAllow() const {
   const std::vector<base::Time> history =
-      GetAdEventHistory(AdType::kPromotedContentAd, ConfirmationType::kServed);
+      GetCachedAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed);
   if (!DoesRespectCap(history)) {
     return base::unexpected(
         "You have exceeded the allowed promoted content ads per day");

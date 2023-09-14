@@ -33,7 +33,7 @@ TEST(BraveAdsAdEventHandlerUtilTest, HasFiredAdEvent) {
   EXPECT_TRUE(HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed));
 }
 
-TEST(BraveAdsAdEventHandlerUtilTest, HasNotFiredAdEvent) {
+TEST(BraveAdsAdEventHandlerUtilTest, HasNeverFiredAdEvent) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
                                       /*should_use_random_uuids*/ true);
@@ -47,6 +47,122 @@ TEST(BraveAdsAdEventHandlerUtilTest, HasNotFiredAdEvent) {
 
   // Assert
   EXPECT_FALSE(HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed));
+}
+
+TEST(BraveAdsAdEventHandlerUtilTest, WasAdServed) {
+  // Arrange
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
+
+  const AdEventList ad_events;
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(
+      WasAdServed(ad, ad_events, mojom::InlineContentAdEventType::kServed));
+}
+
+TEST(BraveAdsAdEventHandlerUtilTest, WasAdPreviouslyServed) {
+  // Arrange
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
+
+  AdEventList ad_events;
+  AdEventInfo ad_event = BuildAdEvent(ad, ConfirmationType::kServed, Now());
+  ad_events.push_back(ad_event);
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(
+      WasAdServed(ad, ad_events, mojom::InlineContentAdEventType::kViewed));
+}
+
+TEST(BraveAdsAdEventHandlerUtilTest, WasAdNeverServed) {
+  // Arrange
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
+
+  const AdEventList ad_events;
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(
+      WasAdServed(ad, ad_events, mojom::InlineContentAdEventType::kViewed));
+}
+
+TEST(BraveAdsAdEventHandlerUtilTest, ShouldDebouncePreviouslyViewedAdEvent) {
+  // Arrange
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
+
+  AdEventList ad_events;
+  AdEventInfo ad_event_1 = BuildAdEvent(ad, ConfirmationType::kServed, Now());
+  ad_events.push_back(ad_event_1);
+  AdEventInfo ad_event_2 = BuildAdEvent(ad, ConfirmationType::kViewed, Now());
+  ad_events.push_back(ad_event_2);
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(ShouldDebounceAdEvent(ad, ad_events,
+                                    mojom::InlineContentAdEventType::kViewed));
+}
+
+TEST(BraveAdsAdEventHandlerUtilTest, ShouldNotDebounceViewedAdEvent) {
+  // Arrange
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
+
+  AdEventList ad_events;
+  AdEventInfo ad_event = BuildAdEvent(ad, ConfirmationType::kServed, Now());
+  ad_events.push_back(ad_event);
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(ShouldDebounceAdEvent(ad, ad_events,
+                                     mojom::InlineContentAdEventType::kViewed));
+}
+
+TEST(BraveAdsAdEventHandlerUtilTest, ShouldDebouncePreviouslyClickedAdEvent) {
+  // Arrange
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
+
+  AdEventList ad_events;
+  AdEventInfo ad_event_1 = BuildAdEvent(ad, ConfirmationType::kServed, Now());
+  ad_events.push_back(ad_event_1);
+  AdEventInfo ad_event_2 = BuildAdEvent(ad, ConfirmationType::kViewed, Now());
+  ad_events.push_back(ad_event_2);
+  AdEventInfo ad_event_3 = BuildAdEvent(ad, ConfirmationType::kClicked, Now());
+  ad_events.push_back(ad_event_3);
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(ShouldDebounceAdEvent(ad, ad_events,
+                                    mojom::InlineContentAdEventType::kClicked));
+}
+
+TEST(BraveAdsAdEventHandlerUtilTest, ShouldNotDebounceClickedAdEvent) {
+  // Arrange
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
+
+  AdEventList ad_events;
+  AdEventInfo ad_event_1 = BuildAdEvent(ad, ConfirmationType::kServed, Now());
+  ad_events.push_back(ad_event_1);
+  AdEventInfo ad_event_2 = BuildAdEvent(ad, ConfirmationType::kViewed, Now());
+  ad_events.push_back(ad_event_2);
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(ShouldDebounceAdEvent(
+      ad, ad_events, mojom::InlineContentAdEventType::kClicked));
 }
 
 }  // namespace brave_ads

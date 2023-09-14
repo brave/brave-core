@@ -6,12 +6,12 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/check_op.h"
 #include "base/containers/contains.h"
 #include "base/notreached.h"
-#include "base/strings/string_piece.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
@@ -37,7 +37,7 @@ bool DoesRequireResource() {
 }
 
 void MaybeAddOrResetArms(EpsilonGreedyBanditArmMap& arms) {
-  for (const base::StringPiece value : GetSegments()) {
+  for (const std::string_view value : GetSegments()) {
     std::string segment = static_cast<std::string>(value);
     if (base::Contains(arms, segment)) {
       BLOG(3, "Epsilon greedy bandit arm already exists for " << segment

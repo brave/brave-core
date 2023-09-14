@@ -62,20 +62,20 @@ class ADS_EXPORT AdsClient {
   // Show reminder for the specified |type|.
   virtual void ShowReminder(mojom::ReminderType type) = 0;
 
-  // Record an ad event for the specified |id|, |ad_type|, |confirmation_type|
-  // and |time|.
-  virtual void RecordAdEventForId(const std::string& id,
-                                  const std::string& ad_type,
-                                  const std::string& confirmation_type,
-                                  base::Time time) const = 0;
+  // Cache an ad event for the specified instance |id|, |ad_type|,
+  // |confirmation_type| and |time|.
+  virtual void CacheAdEventForInstanceId(const std::string& id,
+                                         const std::string& ad_type,
+                                         const std::string& confirmation_type,
+                                         base::Time time) const = 0;
 
-  // Get ad event history for the specified |ad_type| and |confirmation_type|.
-  virtual std::vector<base::Time> GetAdEventHistory(
+  // Get cached ad events for the specified |ad_type| and |confirmation_type|.
+  virtual std::vector<base::Time> GetCachedAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const = 0;
 
-  // Reset ad event history for the specified |id|.
-  virtual void ResetAdEventHistoryForId(const std::string& id) const = 0;
+  // Reset ad event cache for the specified instance |id|.
+  virtual void ResetAdEventCacheForInstanceId(const std::string& id) const = 0;
 
   // Get browsing history from |recent_day_range| limited to |max_count| items.
   // The callback takes one argument - |std::vector<GURL>| containing a list of

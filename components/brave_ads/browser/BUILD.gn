@@ -24,8 +24,8 @@ static_library("browser") {
     "units/notification_ad/custom_notification_ad_constants.h",
     "units/notification_ad/custom_notification_ad_feature.cc",
     "units/notification_ad/custom_notification_ad_feature.h",
-    "user/user_interaction/ad_events/frequency_capping_helper.cc",
-    "user/user_interaction/ad_events/frequency_capping_helper.h",
+    "user/user_interaction/ad_events/ad_event_cache_helper.cc",
+    "user/user_interaction/ad_events/ad_event_cache_helper.h",
   ]
 
   configs += [ "//build/config/compiler:wexit_time_destructors" ]

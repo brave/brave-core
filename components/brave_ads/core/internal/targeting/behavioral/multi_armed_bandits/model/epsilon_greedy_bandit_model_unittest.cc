@@ -7,8 +7,8 @@
 
 #include <iterator>
 #include <string>
+#include <string_view>
 
-#include "base/strings/string_piece.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
@@ -26,7 +26,7 @@ namespace {
 SegmentList GetSegmentList() {
   SegmentList segments;
   base::ranges::transform(GetSegments(), std::back_inserter(segments),
-                          [](const base::StringPiece& segment) {
+                          [](const std::string_view& segment) {
                             return static_cast<std::string>(segment);
                           });
   return segments;
@@ -126,7 +126,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
   const EpsilonGreedyBanditProcessor processor;
   NotifyDidInitializeAds();
 
-  for (const base::StringPiece segment : GetSegments()) {
+  for (const std::string_view segment : GetSegments()) {
     processor.Process({static_cast<std::string>(segment),
                        mojom::NotificationAdEventType::kDismissed});
   }
@@ -171,7 +171,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
   // Set all values to zero by choosing a zero-reward action due to
   // optimistic initial values for arms
   const EpsilonGreedyBanditProcessor processor;
-  for (const base::StringPiece segment : GetSegments()) {
+  for (const std::string_view segment : GetSegments()) {
     processor.Process({static_cast<std::string>(segment),
                        mojom::NotificationAdEventType::kDismissed});
   }

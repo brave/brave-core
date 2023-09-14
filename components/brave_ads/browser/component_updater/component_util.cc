@@ -5,15 +5,16 @@
 
 #include "brave/components/brave_ads/browser/component_updater/component_util.h"
 
+#include <string_view>
+
 #include "base/containers/fixed_flat_map.h"
-#include "base/strings/string_piece.h"
 
 namespace brave_ads {
 
 namespace {
 
 constexpr auto kComponents =
-    base::MakeFixedFlatMap<base::StringPiece, ComponentInfo>(
+    base::MakeFixedFlatMap<std::string_view, ComponentInfo>(
         {{"AF",
           {"jememeholcpjpoahinnlafoiaknnmfgl",
            "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuiFTQLW"

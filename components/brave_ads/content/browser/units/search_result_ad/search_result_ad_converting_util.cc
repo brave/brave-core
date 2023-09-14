@@ -48,21 +48,21 @@ constexpr char kDataConversionObservationWindowValue[] =
 
 // The list of search result ad attributes. All of them are required.
 constexpr auto kSearchResultAdRequiredAttributes =
-    base::MakeFixedFlatSet<base::StringPiece>(
+    base::MakeFixedFlatSet<std::string_view>(
         {kDataPlacementId, kDataCreativeInstanceId, kDataCreativeSetId,
          kDataCampaignId, kDataAdvertiserId, kDataLandingPage,
          kDataHeadlineText, kDataDescription, kDataRewardsValue});
 
 // The list of all conversion attributes, including optional.
 constexpr auto kAllConversionAttributes =
-    base::MakeFixedFlatSet<base::StringPiece>(
+    base::MakeFixedFlatSet<std::string_view>(
         {kDataConversionUrlPatternValue,
          kDataConversionAdvertiserPublicKeyValue,
          kDataConversionObservationWindowValue});
 
 // The list of required (non-optional) conversion attributes.
 constexpr auto kRequiredConversionAttributes =
-    base::MakeFixedFlatSet<base::StringPiece>(
+    base::MakeFixedFlatSet<std::string_view>(
         {kDataConversionUrlPatternValue,
          kDataConversionObservationWindowValue});
 
@@ -248,14 +248,14 @@ void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
       mojom::SearchResultAdInfo::New();
   mojom::ConversionInfoPtr conversion = mojom::ConversionInfo::New();
 
-  base::flat_set<base::StringPiece> found_attributes;
-  base::flat_set<base::StringPiece> found_conversion_attributes;
+  base::flat_set<std::string_view> found_attributes;
+  base::flat_set<std::string_view> found_conversion_attributes;
   for (const auto& ad_property : entity->properties) {
     if (!ad_property) {
       return;
     }
 
-    const base::StringPiece property_name = ad_property->name;
+    const std::string_view property_name = ad_property->name;
     if (base::Contains(kSearchResultAdRequiredAttributes, property_name)) {
       if (!SetSearchAdProperty(ad_property, search_result_ad.get())) {
         return VLOG(6) << "Cannot read search result ad attribute value: "
@@ -271,7 +271,7 @@ void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
     }
   }
 
-  std::vector<base::StringPiece> absent_attributes;
+  std::vector<std::string_view> absent_attributes;
   base::ranges::set_difference(
       kSearchResultAdRequiredAttributes.cbegin(),
       kSearchResultAdRequiredAttributes.cend(), found_attributes.cbegin(),
@@ -284,7 +284,7 @@ void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
   }
 
   if (!found_conversion_attributes.empty()) {
-    std::vector<base::StringPiece> absent_conversion_attributes;
+    std::vector<std::string_view> absent_conversion_attributes;
     base::ranges::set_difference(
         kRequiredConversionAttributes.cbegin(),
         kRequiredConversionAttributes.cend(),

@@ -55,8 +55,7 @@ void RedeemPaymentTokens::MaybeRedeemAfterDelay(const WalletInfo& wallet) {
 void RedeemPaymentTokens::Redeem() {
   CHECK(!is_processing_);
 
-  BLOG(1, "RedeemPaymentTokens");
-  BLOG(2, "PUT /v3/confirmation/payment/{paymentId}");
+  BLOG(1, "Redeem payment tokens");
 
   if (PaymentTokensIsEmpty()) {
     BLOG(1, "No payment tokens to redeem");
@@ -91,8 +90,6 @@ void RedeemPaymentTokens::BuildRedeemPaymentTokensUserDataCallback(
 void RedeemPaymentTokens::RedeemCallback(
     const PaymentTokenList& payment_tokens,
     const mojom::UrlResponseInfo& url_response) {
-  BLOG(1, "OnRedeemPaymentTokens");
-
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 

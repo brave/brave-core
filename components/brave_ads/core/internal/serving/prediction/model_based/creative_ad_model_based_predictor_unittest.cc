@@ -38,7 +38,8 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, PredictCreativeAd) {
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now(),
+      /*should_use_random_uuids*/ true);
   ad_events.push_back(ad_event);
 
   // Act
@@ -84,7 +85,8 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, DoNotPredictCreativeAd) {
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now(),
+      /*should_use_random_uuids*/ true);
   ad_events.push_back(ad_event);
 
   // Act

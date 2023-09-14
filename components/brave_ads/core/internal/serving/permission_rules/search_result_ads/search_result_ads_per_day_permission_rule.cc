@@ -9,7 +9,7 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
+#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_cache_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "brave/components/brave_ads/core/public/units/search_result_ad/search_result_ad_feature.h"
@@ -31,7 +31,7 @@ bool DoesRespectCap(const std::vector<base::Time>& history) {
 base::expected<void, std::string>
 SearchResultAdsPerDayPermissionRule::ShouldAllow() const {
   const std::vector<base::Time> history =
-      GetAdEventHistory(AdType::kSearchResultAd, ConfirmationType::kServed);
+      GetCachedAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed);
   if (!DoesRespectCap(history)) {
     return base::unexpected(
         "You have exceeded the allowed search result ads per day");

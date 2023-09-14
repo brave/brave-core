@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_ads/content/browser/units/search_result_ad/search_result_ad_util.h"
 
-#include "base/strings/string_piece.h"
+#include <string_view>
+
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "url/gurl.h"
 #include "url/third_party/mozilla/url_parse.h"
@@ -32,10 +33,10 @@ absl::optional<std::string> GetPlacementIdFromSearchResultAdClickedUrl(
   url::Component query_value;
   while (url::ExtractQueryKeyValue(url.query_piece().data(), &query, &query_key,
                                    &query_value)) {
-    base::StringPiece key =
+    std::string_view key =
         url.query_piece().substr(query_key.begin, query_key.len);
     if (key == kPlacementIdQueryKey) {
-      base::StringPiece value =
+      std::string_view value =
           url.query_piece().substr(query_value.begin, query_value.len);
       return static_cast<std::string>(value);
     }

@@ -22,7 +22,8 @@ struct CreativeAdInfo;
 AdEventInfo BuildAdEventForTesting(const CreativeAdInfo& creative_ad,
                                    const AdType& ad_type,
                                    const ConfirmationType& confirmation_type,
-                                   base::Time created_at);
+                                   base::Time created_at,
+                                   bool should_use_random_uuids);
 
 void RecordAdEventForTesting(const AdType& type,
                              const ConfirmationType& confirmation_type);

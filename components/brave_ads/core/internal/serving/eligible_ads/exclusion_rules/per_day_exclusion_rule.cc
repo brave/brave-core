@@ -18,7 +18,7 @@ namespace {
 bool DoesRespectCap(const AdEventList& ad_events,
                     const CreativeAdInfo& creative_ad) {
   if (creative_ad.per_day == 0) {
-    // Always respect cap if set to 0
+    // Always respect cap if set to 0.
     return true;
   }
 

@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_UNITS_SEARCH_RESULT_AD_TEST_WEB_PAGE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_UNITS_SEARCH_RESULT_AD_TEST_WEB_PAGE_UTIL_H_
 
+#include <string_view>
 #include <vector>
 
-#include "base/strings/string_piece_forward.h"
 #include "components/schema_org/common/metadata.mojom-forward.h"
 
 namespace brave_ads {
@@ -16,7 +16,7 @@ namespace brave_ads {
 constexpr char kTestWebPagePlacementId[] = "placement-id";
 
 std::vector<::schema_org::mojom::EntityPtr> CreateTestWebPageEntities(
-    std::vector<base::StringPiece> attributes_to_skip);
+    std::vector<std::string_view> attributes_to_skip);
 
 }  // namespace brave_ads
 

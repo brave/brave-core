@@ -63,8 +63,7 @@ void RedeemNonRewardConfirmation::Redeem(
 void RedeemNonRewardConfirmation::CreateConfirmation(
     RedeemNonRewardConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation) {
-  BLOG(1, "Create Confirmation");
-  BLOG(2, "POST /v3/confirmation/{transactionId}");
+  BLOG(1, "Create non-reward confirmation");
 
   CreateNonRewardConfirmationUrlRequestBuilder url_request_builder(
       confirmation);
@@ -83,8 +82,6 @@ void RedeemNonRewardConfirmation::CreateConfirmationCallback(
     RedeemNonRewardConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation,
     const mojom::UrlResponseInfo& url_response) {
-  BLOG(1, "OnCreateConfirmation");
-
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 

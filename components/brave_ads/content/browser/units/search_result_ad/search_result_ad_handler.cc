@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/content/browser/units/search_result_ad/search_result_ad_converting_util.h"
 #include "brave/components/brave_ads/content/browser/units/search_result_ad/search_result_ad_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "content/public/browser/render_frame_host.h"
 #include "services/service_manager/public/cpp/interface_provider.h"

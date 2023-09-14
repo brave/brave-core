@@ -32,14 +32,14 @@ class AdsClientIOS : public brave_ads::AdsClient {
   bool CanShowNotificationAds() override;
   void CloseNotificationAd(const std::string& placement_id) override;
   void ShowReminder(const brave_ads::mojom::ReminderType type) override;
-  void RecordAdEventForId(const std::string& id,
-                          const std::string& ad_type,
-                          const std::string& confirmation_type,
-                          const base::Time time) const override;
-  std::vector<base::Time> GetAdEventHistory(
+  void CacheAdEventForInstanceId(const std::string& id,
+                                 const std::string& ad_type,
+                                 const std::string& confirmation_type,
+                                 const base::Time time) const override;
+  std::vector<base::Time> GetCachedAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
-  void ResetAdEventHistoryForId(const std::string& id) const override;
+  void ResetAdEventCacheForInstanceId(const std::string& id) const override;
   void UrlRequest(brave_ads::mojom::UrlRequestInfoPtr url_request,
                   brave_ads::UrlRequestCallback callback) override;
   void Save(const std::string& name,

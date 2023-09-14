@@ -21,61 +21,6 @@
 
 namespace brave_ads {
 
-namespace {
-
-bool ShouldDebounceViewedAdEvent(
-    const AdInfo& ad,
-    const AdEventList& ad_events,
-    const mojom::PromotedContentAdEventType& event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
-  return event_type == mojom::PromotedContentAdEventType::kViewed &&
-         HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed);
-}
-
-bool ShouldDebounceClickedAdEvent(
-    const AdInfo& ad,
-    const AdEventList& ad_events,
-    const mojom::PromotedContentAdEventType& event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
-  return event_type == mojom::PromotedContentAdEventType::kClicked &&
-         HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked);
-}
-
-bool WasAdServed(const AdInfo& ad,
-                 const AdEventList& ad_events,
-                 const mojom::PromotedContentAdEventType& event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
-  return event_type == mojom::PromotedContentAdEventType::kServed ||
-         HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed);
-}
-
-bool IsAdPlaced(const AdInfo& ad,
-                const AdEventList& ad_events,
-                const mojom::PromotedContentAdEventType& event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
-  return event_type == mojom::PromotedContentAdEventType::kServed ||
-         event_type == mojom::PromotedContentAdEventType::kViewed ||
-         (HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed) &&
-          HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed));
-}
-
-bool ShouldDebounceAdEvent(
-    const AdInfo& ad,
-    const AdEventList& ad_events,
-    const mojom::PromotedContentAdEventType& event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
-  return ShouldDebounceViewedAdEvent(ad, ad_events, event_type) ||
-         ShouldDebounceClickedAdEvent(ad, ad_events, event_type) ||
-         !IsAdPlaced(ad, ad_events, event_type);
-}
-
-}  // namespace
-
 PromotedContentAdEventHandler::PromotedContentAdEventHandler() = default;
 
 PromotedContentAdEventHandler::~PromotedContentAdEventHandler() {

@@ -299,14 +299,14 @@ class AdsServiceImpl : public AdsService,
 
   void UpdateAdRewards() override;
 
-  void RecordAdEventForId(const std::string& id,
-                          const std::string& type,
-                          const std::string& confirmation_type,
-                          base::Time time) override;
-  void GetAdEventHistory(const std::string& ad_type,
+  void CacheAdEventForInstanceId(const std::string& id,
+                                 const std::string& type,
+                                 const std::string& confirmation_type,
+                                 base::Time time) override;
+  void GetCachedAdEvents(const std::string& ad_type,
                          const std::string& confirmation_type,
-                         GetAdEventHistoryCallback callback) override;
-  void ResetAdEventHistoryForId(const std::string& id) override;
+                         GetCachedAdEventsCallback callback) override;
+  void ResetAdEventCacheForInstanceId(const std::string& id) override;
 
   void GetBrowsingHistory(int max_count,
                           int recent_day_range,

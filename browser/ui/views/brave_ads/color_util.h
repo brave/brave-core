@@ -6,12 +6,13 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_COLOR_UTIL_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_COLOR_UTIL_H_
 
-#include "base/strings/string_piece_forward.h"
+#include <string_view>
+
 #include "third_party/skia/include/core/SkColor.h"
 
 namespace brave_ads {
 
-bool RgbStringToSkColor(base::StringPiece rgb, SkColor* color);
+bool RgbStringToSkColor(std::string_view rgb, SkColor* color);
 
 }  // namespace brave_ads
 

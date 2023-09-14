@@ -40,7 +40,7 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/user/user_interaction/ad_events/ad_event_history.h"
+#include "brave/components/brave_ads/core/public/user/user_interaction/ad_events/ad_event_cache.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
 #import "brave/ios/browser/api/common/common_operations.h"
@@ -138,7 +138,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   brave_ads::AdsClientNotifier* adsClientNotifier;
   brave_ads::Ads* ads;
   brave_ads::Database* adsDatabase;
-  brave_ads::AdEventHistory* adEventHistory;
+  brave_ads::AdEventCache* adEventCache;
   scoped_refptr<base::SequencedTaskRunner> databaseQueue;
 
   nw_path_monitor_t networkMonitor;
@@ -163,7 +163,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     self.storagePath = path;
     self.commonOps = [[BraveCommonOperations alloc] initWithStoragePath:path];
     adsDatabase = nullptr;
-    adEventHistory = nullptr;
+    adEventCache = nullptr;
 
     self.prefsWriteThread =
         dispatch_queue_create("com.rewards.ads.prefs", DISPATCH_QUEUE_SERIAL);
@@ -212,7 +212,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
     adsDatabase = new brave_ads::Database(base::FilePath(dbPath));
 
-    adEventHistory = new brave_ads::AdEventHistory();
+    adEventCache = new brave_ads::AdEventCache();
 
     adsClient = new AdsClientIOS(self);
   }
@@ -241,13 +241,13 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (adsClient != nil) {
     delete adsClient;
   }
-  if (adEventHistory != nil) {
-    delete adEventHistory;
+  if (adEventCache != nil) {
+    delete adEventCache;
   }
   ads = nil;
   adsClientNotifier = nil;
   adsClient = nil;
-  adEventHistory = nil;
+  adEventCache = nil;
 }
 
 - (NSString*)prefsPath {
@@ -349,14 +349,14 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                   [](brave_ads::Database* database) { delete database; },
                   self->adsDatabase));
         }
-        if (self->adEventHistory != nil) {
-          delete self->adEventHistory;
+        if (self->adEventCache != nil) {
+          delete self->adEventCache;
         }
         self->ads = nil;
         self->adsClientNotifier = nil;
         self->adsClient = nil;
         self->adsDatabase = nil;
-        self->adEventHistory = nil;
+        self->adEventCache = nil;
         if (completion) {
           completion();
         }
@@ -1344,33 +1344,33 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   // Not needed on iOS
 }
 
-- (void)recordAdEventForId:(const std::string&)id
-                    adType:(const std::string&)ad_type
-          confirmationType:(const std::string&)confirmation_type
-                      time:(const base::Time)time {
-  if (!adEventHistory) {
+- (void)cacheAdEventForInstanceId:(const std::string&)id
+                           adType:(const std::string&)ad_type
+                 confirmationType:(const std::string&)confirmation_type
+                             time:(const base::Time)time {
+  if (!adEventCache) {
     return;
   }
 
-  adEventHistory->RecordForId(id, ad_type, confirmation_type, time);
+  adEventCache->AddEntryForInstanceId(id, ad_type, confirmation_type, time);
 }
 
-- (std::vector<base::Time>)getAdEventHistory:(const std::string&)ad_type
+- (std::vector<base::Time>)getCachedAdEvents:(const std::string&)ad_type
                             confirmationType:
                                 (const std::string&)confirmation_type {
-  if (!adEventHistory) {
+  if (!adEventCache) {
     return {};
   }
 
-  return adEventHistory->Get(ad_type, confirmation_type);
+  return adEventCache->Get(ad_type, confirmation_type);
 }
 
-- (void)resetAdEventHistoryForId:(const std::string&)id {
-  if (!adEventHistory) {
+- (void)resetAdEventCacheForInstanceId:(const std::string&)id {
+  if (!adEventCache) {
     return;
   }
 
-  return adEventHistory->ResetForId(id);
+  return adEventCache->ResetForInstanceId(id);
 }
 
 - (bool)shouldAllowAdsSubdivisionTargeting {
