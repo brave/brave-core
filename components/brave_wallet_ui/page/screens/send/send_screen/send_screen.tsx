@@ -21,10 +21,6 @@ import {
   WalletRoutes
 } from '../../../../constants/types'
 
-// Selectors
-import { WalletSelectors } from '../../../../common/selectors'
-import { useUnsafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
-
 // Constants
 import { allSupportedExtensions } from '../../../../common/constants/domain-extensions'
 
@@ -51,7 +47,7 @@ import {
   useGetTokenSpotPricesQuery,
   useGetUserTokensRegistryQuery
 } from '../../../../common/slices/api.slice'
-import { useSelectedAccountQuery } from '../../../../common/slices/api.slice.extra'
+import { useAccountFromAddressQuery, useSelectedAccountQuery } from '../../../../common/slices/api.slice.extra'
 import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
 import { selectAllVisibleUserAssetsFromQueryResult } from '../../../../common/slices/entities/blockchain-token.entity'
 
@@ -108,9 +104,6 @@ export const SendScreen = (props: Props) => {
     'braveWalletNotValidChecksumAddressError'
   )
 
-  // Wallet Selectors
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-
   // routing
   const { chainId, accountAddress, contractAddressOrSymbol, tokenId } =
     useParams<{
@@ -122,6 +115,7 @@ export const SendScreen = (props: Props) => {
   const { hash } = useLocation()
   const history = useHistory()
 
+  // Send hook
   const {
     toAddressOrUrl,
     toAddress,
@@ -143,11 +137,65 @@ export const SendScreen = (props: Props) => {
     processAddressOrUrl
   } = useSend()
 
-  // Queries & Mutations
-  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
-  const [setSelectedAccount] = useSetSelectedAccountMutation()
+  // Mutations
   const [setNetwork] = useSetNetworkMutation()
+  const [setSelectedAccount] = useSetSelectedAccountMutation()
+  
+  // Queries
+  const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
+    selectFromResult: (result) => ({
+      userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
+    })
+  })
+  const selectedAssetFromParams = React.useMemo(() => {
+    if (!contractAddressOrSymbol || !chainId) return
+
+    return userVisibleTokensInfo.find((token) =>
+      tokenId
+        ? token.chainId === chainId &&
+          token.contractAddress.toLowerCase() ===
+            contractAddressOrSymbol.toLowerCase() &&
+          token.tokenId === tokenId
+        : (token.contractAddress.toLowerCase() ===
+            contractAddressOrSymbol.toLowerCase() &&
+            token.chainId === chainId) ||
+          (token.symbol.toLowerCase() ===
+            contractAddressOrSymbol.toLowerCase() &&
+            token.chainId === chainId &&
+            token.contractAddress === '')
+    )
+  }, [userVisibleTokensInfo, chainId, contractAddressOrSymbol, tokenId])
+
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+  
   const { data: selectedAccount } = useSelectedAccountQuery()
+  const { account: accountFromParams } =
+    useAccountFromAddressQuery(accountAddress)
+
+  const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
+    useScopedBalanceUpdater(
+      selectedAccount && selectedSendAsset
+        ? {
+            network: {
+              chainId: selectedSendAsset.chainId,
+              coin: selectedAccount.accountId.coin
+            },
+            accounts: [selectedAccount],
+            tokens: [selectedSendAsset]
+          }
+        : skipToken
+    )
+
+  const tokenPriceIds = selectedSendAsset
+    ? [getPriceIdForToken(selectedSendAsset)]
+    : EMPTY_PRICE_IDS
+
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    !isLoadingBalances && tokenPriceIds.length && defaultFiatCurrency
+      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
+    querySubscriptionOptions60s
+  )
 
   // Refs
   const checksumInfoModalRef = React.useRef<HTMLDivElement>(null)
@@ -181,6 +229,22 @@ export const SendScreen = (props: Props) => {
   )
 
   // Methods
+  const setSelectedAccountAndNetwork = React.useCallback(async () => {
+    if (!chainId || !selectedAssetFromParams || !accountFromParams) {
+      return
+    }
+
+    try {
+      await setSelectedAccount(accountFromParams.accountId)
+      await setNetwork({
+        chainId: chainId,
+        coin: selectedAssetFromParams.coin
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }, [accountFromParams, chainId, selectedAssetFromParams])
+
   const handleInputAmountChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setSendAmount(event.target.value)
@@ -227,20 +291,6 @@ export const SendScreen = (props: Props) => {
     },
     []
   )
-
-  const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
-    useScopedBalanceUpdater(
-      selectedAccount && selectedSendAsset
-        ? {
-            network: {
-              chainId: selectedSendAsset.chainId,
-              coin: selectedAccount.accountId.coin
-            },
-            accounts: [selectedAccount],
-            tokens: [selectedSendAsset]
-          }
-        : skipToken
-    )
 
   const setPresetAmountValue = React.useCallback(
     (percent: number) => {
@@ -302,17 +352,6 @@ export const SendScreen = (props: Props) => {
 
     return amountWei.gt(sendAssetBalance)
   }, [sendAssetBalance, sendAmount, selectedSendAsset])
-
-  const tokenPriceIds = selectedSendAsset
-    ? [getPriceIdForToken(selectedSendAsset)]
-    : EMPTY_PRICE_IDS
-
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    !isLoadingBalances && tokenPriceIds.length && defaultFiatCurrency
-      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
-      : skipToken,
-    querySubscriptionOptions60s
-  )
 
   const sendAmountFiatValue = React.useMemo(() => {
     if (
@@ -410,64 +449,19 @@ export const SendScreen = (props: Props) => {
     (searchingForDomain && toAddressHasValidExtension) || //
     showEnsOffchainWarning
 
-  const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
-    selectFromResult: (result) => ({
-      userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
-    })
-  })
-
-  const selectedAssetFromParams = React.useMemo(() => {
-    if (!contractAddressOrSymbol || !chainId) return
-
-    return userVisibleTokensInfo.find((token) =>
-      tokenId
-        ? token.chainId === chainId &&
-          token.contractAddress.toLowerCase() ===
-            contractAddressOrSymbol.toLowerCase() &&
-          token.tokenId === tokenId
-        : (token.contractAddress.toLowerCase() ===
-            contractAddressOrSymbol.toLowerCase() &&
-            token.chainId === chainId) ||
-          (token.symbol.toLowerCase() ===
-            contractAddressOrSymbol.toLowerCase() &&
-            token.chainId === chainId &&
-            token.contractAddress === '')
-    )
-  }, [userVisibleTokensInfo, chainId, contractAddressOrSymbol, tokenId])
-
-  const accountFromParams = React.useMemo(() => {
-    return accounts.find((account) => account.address === accountAddress)
-  }, [accountAddress, accounts])
-
   // Effects
   React.useEffect(() => {
     // check if the user has selected an asset
-    if (
-      !chainId ||
-      !selectedAssetFromParams ||
-      !accountFromParams ||
-      selectedSendAsset
-    )
+    if (!selectedAssetFromParams || selectedSendAsset) {
       return
-    ;(async () => {
-      try {
-        await setSelectedAccount(accountFromParams.accountId)
-        await setNetwork({
-          chainId: chainId,
-          coin: selectedAssetFromParams.coin
-        })
-      } catch (e) {
-        console.error(e)
-      }
-    })()
-
+    }
+    setSelectedAccountAndNetwork()
     selectSendAsset(selectedAssetFromParams)
   }, [
     selectSendAsset,
     selectedSendAsset,
-    chainId,
     selectedAssetFromParams,
-    accountFromParams
+    setSelectedAccountAndNetwork
   ])
 
   // render
