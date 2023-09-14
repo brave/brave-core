@@ -1,5 +1,3 @@
--keep class com.google.android.datatransport.runtime.scheduling.** { *; }
-
 -keep class com.google.android.material.bottomsheet.BottomSheetBehavior { *; }
 
 -keep class org.chromium.chrome.browser.BraveSyncWorker { *; }
