@@ -39,15 +39,15 @@ class ScreenshotHelper {
       // This is for a bug in certain iOS 13 versions, snapshots cannot be taken correctly without this boolean being set
       configuration.afterScreenUpdates = false
 
-      webView.takeSnapshot(with: configuration) { image, error in
+      webView.takeSnapshot(with: configuration) { [weak tab] image, error in
         if let image = image {
-          tab.setScreenshot(image)
+          tab?.setScreenshot(image)
         } else if let error = error {
           Logger.module.error("\(error.localizedDescription)")
-          tab.setScreenshot(nil)
+          tab?.setScreenshot(nil)
         } else {
           Logger.module.error("Cannot snapshot Tab Screenshot - No error description")
-          tab.setScreenshot(nil)
+          tab?.setScreenshot(nil)
         }
       }
     }

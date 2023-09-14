@@ -319,7 +319,9 @@ class TabManager: NSObject {
       _selectedIndex = -1
     }
 
-    preserveScreenshots()
+    if let previousTab = previous {
+      preserveScreenshot(for: previousTab)
+    }
 
     if let t = selectedTab, t.webView == nil {
       selectedTab?.createWebview()
@@ -564,14 +566,14 @@ class TabManager: NSObject {
       tab.webStateDebounceTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self, weak tab] _ in
         guard let self = self, let tab = tab else { return }
         tab.webStateDebounceTimer?.invalidate()
-        
+
         if state == .complete || state == .loaded || state == .pushstate || state == .popstate || state == .replacestate {
-          
+
           if Preferences.Privacy.privateBrowsingOnly.value || (tab.isPrivate && !Preferences.Privacy.persistentPrivateBrowsing.value) {
             return
           }
-          
-          self.preserveScreenshots()
+
+          self.preserveScreenshot(for: tab)
           self.saveTab(tab)
         }
       }
@@ -907,16 +909,12 @@ class TabManager: NSObject {
     }
   }
 
-  private func preserveScreenshots() {
+  private func preserveScreenshot(for tab: Tab) {
     assert(Thread.isMainThread)
     if isRestoring { return }
-
-    Task { @MainActor in
-      for tab in allTabs {
-        guard let screenshot = tab.screenshot else { continue }
-        SessionTab.updateScreenshot(tabId: tab.id, screenshot: screenshot)
-      }
-    }
+    
+    guard let screenshot = tab.screenshot else { return }
+    SessionTab.updateScreenshot(tabId: tab.id, screenshot: screenshot)
   }
 
   @MainActor fileprivate var restoreTabsInternal: Tab? {
@@ -1186,7 +1184,7 @@ extension TabManager: WKNavigationDelegate {
           return
         }
         
-        preserveScreenshots()
+        preserveScreenshot(for: tab)
         saveTab(tab)
       }
     }
