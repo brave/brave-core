@@ -58,12 +58,6 @@ void BraveVPNWireguardConnectionAPI::CheckConnection() {
   UpdateAndNotifyConnectionStateChange(state);
 }
 
-void BraveVPNWireguardConnectionAPI::RequestNewProfileCredentials() {
-  brave_vpn::wireguard::WireguardGenerateKeypair(base::BindOnce(
-      &BraveVPNWireguardConnectionAPI::OnWireguardKeypairGenerated,
-      weak_factory_.GetWeakPtr()));
-}
-
 void BraveVPNWireguardConnectionAPI::PlatformConnectImpl(
     const wireguard::WireguardProfileCredentials& credentials) {
   auto vpn_server_hostname = GetHostname();

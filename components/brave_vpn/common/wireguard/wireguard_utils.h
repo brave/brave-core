@@ -27,6 +27,8 @@ absl::optional<std::string> CreateWireguardConfig(
     const std::string& vpn_server_hostname,
     const std::string& mapped_ipv4_address);
 
+WireguardKeyPair GenerateNewX25519Keypair();
+
 }  // namespace wireguard
 
 }  // namespace brave_vpn

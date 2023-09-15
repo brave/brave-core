@@ -35,7 +35,6 @@ class BraveVPNWireguardConnectionAPISim
 
   void Disconnect() override {}
   void CheckConnection() override {}
-  void RequestNewProfileCredentials() override {}
   void PlatformConnectImpl(
       const wireguard::WireguardProfileCredentials& credentials) override {}
 };

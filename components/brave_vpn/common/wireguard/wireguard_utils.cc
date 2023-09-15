@@ -5,13 +5,34 @@
 
 #include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
 
+#include <stdint.h>
+#include <vector>
+
+#include "base/base64.h"
 #include "base/strings/string_util.h"
+#include "crypto/openssl_util.h"
+#include "third_party/boringssl/src/include/openssl/base64.h"
+#include "third_party/boringssl/src/include/openssl/curve25519.h"
 
 namespace brave_vpn {
 
 namespace wireguard {
 
 namespace {
+std::string EncodeBase64(const std::vector<uint8_t>& in) {
+  std::string res;
+  size_t size = 0;
+  if (!EVP_EncodedLength(&size, in.size())) {
+    DCHECK(false);
+    return "";
+  }
+  std::vector<uint8_t> out(size);
+  size_t numEncBytes = EVP_EncodeBlock(&out.front(), &in.front(), in.size());
+  DCHECK_NE(numEncBytes, 0u);
+  res = reinterpret_cast<char*>(&out.front());
+  return res;
+}
+
 constexpr char kCloudflareIPv4[] = "1.1.1.1";
 // Template for wireguard config generation.
 constexpr char kWireguardConfigTemplate[] = R"(
@@ -48,6 +69,15 @@ absl::optional<std::string> CreateWireguardConfig(
   base::ReplaceSubstringsAfterOffset(&config, 0, "{dns_servers}",
                                      kCloudflareIPv4);
   return config;
+}
+
+WireguardKeyPair GenerateNewX25519Keypair() {
+  crypto::EnsureOpenSSLInit();
+  uint8_t pubkey[32] = {}, privkey[32] = {};
+  X25519_keypair(pubkey, privkey);
+  return std::make_tuple(
+      EncodeBase64(std::vector<uint8_t>(pubkey, pubkey + 32)),
+      EncodeBase64(std::vector<uint8_t>(privkey, privkey + 32)));
 }
 
 }  // namespace wireguard

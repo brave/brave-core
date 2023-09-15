@@ -30,7 +30,6 @@ class WireguardOSConnectionAPIMac : public BraveVPNWireguardConnectionAPIBase {
   void CheckConnection() override;
 
   // BraveVPNWireguardConnectionAPIBase overrides:
-  void RequestNewProfileCredentials() override;
   void PlatformConnectImpl(
       const wireguard::WireguardProfileCredentials& credentials) override;
 };
