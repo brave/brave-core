@@ -16,7 +16,7 @@ export const Wrapper = styled(StyledDiv)`
   left: 0;
   right: 0;
   bottom: 0;
-  overflow-y: scroll;
+  overflow-y: auto;
   position: absolute;
   background-color: ${p => p.theme.color.background01};
   @media (prefers-color-scheme: dark) {
