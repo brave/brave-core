@@ -403,4 +403,8 @@ void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {
   active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
 }
 
+void AIChatUIPageHandler::GetPremiumStatus(GetPremiumStatusCallback callback) {
+  active_chat_tab_helper_->GetPremiumStatus(std::move(callback));
+}
+
 }  // namespace ai_chat

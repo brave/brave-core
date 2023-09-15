@@ -20,10 +20,14 @@ constexpr char kBraveChatP3AChatCountWeeklyStorage[] =
     "brave.ai_chat.p3a_chat_count";
 constexpr char kBraveChatP3APromptCountWeeklyStorage[] =
     "brave.ai_chat.p3a_prompt_count";
+constexpr char kBraveChatPremiumCredentialCache[] =
+    "brave.ai_chat.premium_credential_cache";
 constexpr char kUserDismissedPremiumPrompt[] =
     "brave.ai_chat.user_dismissed_premium_prompt";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
+
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
 }  // namespace ai_chat::prefs
 

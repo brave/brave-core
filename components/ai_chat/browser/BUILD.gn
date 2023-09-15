@@ -9,10 +9,13 @@ assert(enable_ai_chat)
 
 if (is_official_build) {
   assert(brave_ai_chat_endpoint != "")
+  assert(brave_ai_chat_premium_endpoint != "")
 }
 
 static_library("browser") {
   sources = [
+    "ai_chat_credential_manager.cc",
+    "ai_chat_credential_manager.h",
     "ai_chat_feedback_api.cc",
     "ai_chat_feedback_api.h",
     "ai_chat_tab_helper.cc",
