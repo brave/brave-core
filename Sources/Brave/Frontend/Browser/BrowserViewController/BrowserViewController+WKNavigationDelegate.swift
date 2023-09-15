@@ -503,7 +503,8 @@ extension BrowserViewController: WKNavigationDelegate {
 
     // If this is a certificate challenge, see if the certificate has previously been
     // accepted by the user.
-    let origin = "\(challenge.protectionSpace.host):\(challenge.protectionSpace.port)"
+    let host = challenge.protectionSpace.host
+    let origin = "\(host):\(challenge.protectionSpace.port)"
     if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
        let trust = challenge.protectionSpace.serverTrust,
        let cert = (SecTrustCopyCertificateChain(trust) as? [SecCertificate])?.first, profile.certStore.containsCertificate(cert, forOrigin: origin) {
@@ -578,6 +579,11 @@ extension BrowserViewController: WKNavigationDelegate {
           protectionSpace: protectionSpace,
           previousFailureCount: previousFailureCount
         )
+        
+        if BasicAuthCredentialsManager.validDomains.contains(host) {
+          BasicAuthCredentialsManager.setCredential(origin: origin, credential: credentials.credentials)
+        }
+        
         return (.useCredential, credentials.credentials)
       } catch {
         return (.rejectProtectionSpace, nil)

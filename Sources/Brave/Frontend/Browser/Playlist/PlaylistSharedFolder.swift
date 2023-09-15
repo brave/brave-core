@@ -87,7 +87,7 @@ struct PlaylistSharedFolderNetwork {
       throw Status.invalidURL
     }
     
-    let authenticator = BasicAuthCredentialsManager(for: Array(DomainUserScript.bravePlaylistFolderSharingHelper.associatedDomains))
+    let authenticator = BasicAuthCredentialsManager()
     let session = URLSession(configuration: .ephemeral, delegate: authenticator, delegateQueue: .main)
     defer { session.finishTasksAndInvalidate() }
     
