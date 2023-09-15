@@ -2,16 +2,16 @@ diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/setting
 index a6013d2f2e272dd03a52338d228820ea80ae41bf..1be145a65be30c266f5d11bfe132f753fa9011c4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-@@ -60,7 +60,7 @@ import org.chromium.ui.text.SpanApplier;
- /**
+@@ -58,7 +58,7 @@ import org.chromium.ui.text.SpanApplier;
   * Fragment to keep track of the all the privacy related preferences.
   */
--public class PrivacySettings extends PreferenceFragmentCompat
-+public class PrivacySettings extends org.chromium.chrome.browser.settings.BravePreferenceFragment
-         implements Preference.OnPreferenceChangeListener, FragmentHelpAndFeedbackLauncher,
-                    ProfileDependentSetting {
+ public class PrivacySettings
+-        extends ChromeBaseSettingsFragment implements Preference.OnPreferenceChangeListener {
++        extends org.chromium.chrome.browser.settings.BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
      private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
-@@ -333,6 +333,7 @@ public class PrivacySettings extends PreferenceFragmentCompat
+     private static final String PREF_PRELOAD_PAGES = "preload_pages";
+     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
+@@ -342,6 +342,7 @@ public class PrivacySettings
      @Override
      public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
          menu.clear();
@@ -19,12 +19,11 @@ index a6013d2f2e272dd03a52338d228820ea80ae41bf..1be145a65be30c266f5d11bfe132f753
          MenuItem help =
                  menu.add(Menu.NONE, R.id.menu_id_targeted_help, Menu.NONE, R.string.menu_help);
          help.setIcon(TraceEventVectorDrawableCompat.create(
-@@ -346,7 +347,7 @@ public class PrivacySettings extends PreferenceFragmentCompat
+@@ -355,6 +356,6 @@ public class PrivacySettings
                      getActivity(), getString(R.string.help_context_privacy), null);
              return true;
          }
 -        return false;
 +        return super.onOptionsItemSelected(item);
      }
- 
-     @Override
+ }

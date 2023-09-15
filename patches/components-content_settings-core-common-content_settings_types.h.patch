@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 30ad7c86826ce2d3b762f7a590f3f876edf32916..b99c53e3de98070365a249f11617848793d54098 100644
+index e465ffdd518f4de20983ea2a561150230b33cd1c..4051520fec56f40956da351370d39f77bcc1d9cc 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -356,6 +356,22 @@ enum class ContentSettingsType : int32_t {
-   // `net::features::kTpcdMetadataGrants` is enabled.
-   TPCD_METADATA_GRANTS,
+@@ -365,6 +365,22 @@ enum class ContentSettingsType : int32_t {
+   // request.
+   FILE_SYSTEM_ACCESS_EXTENDED_PERMISSION,
  
 +  BRAVE_START,
 +  BRAVE_ADS = BRAVE_START,

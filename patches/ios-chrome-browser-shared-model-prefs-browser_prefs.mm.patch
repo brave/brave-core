@@ -1,27 +1,27 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 6ee67529756cf1c2856253cc5ff7a3c4997ab3a4..1852a7e73224fb37495329a172eeb767436a8e1b 100644
+index 90086b2fd3575155daa16c896c2be453313c33d7..afb83c5e51834c04c0b973a096f205d640904c1b 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -322,6 +322,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-   // refactored to use the new Safety Check Manager.
-   registry->RegisterTimePref(prefs::kIosSettingsSafetyCheckLastRunTime,
-                              base::Time());
+@@ -350,6 +350,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+   registry->RegisterIntegerPref(kAppStoreRatingTotalDaysOnChromeKey, 0);
+   registry->RegisterListPref(kAppStoreRatingActiveDaysInPastWeekKey);
+   registry->RegisterTimePref(kAppStoreRatingLastShownPromoDayKey, base::Time());
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -512,6 +513,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
- 
-   // Register prefs used to skip too frequent History Sync Opt-In prompt.
-   history_sync::RegisterBrowserStatePrefs(registry);
+@@ -553,6 +554,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   // Preference related to feed.
+   registry->RegisterTimePref(kActivityBucketLastReportedDateKey, base::Time());
+   registry->RegisterBooleanPref(kSyncRequested, false);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -600,6 +602,7 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
-   invalidation::InvalidatorRegistrarWithMemory::ClearDeprecatedPrefs(prefs);
-   invalidation::PerUserTopicSubscriptionManager::ClearDeprecatedPrefs(prefs);
-   invalidation::FCMInvalidationService::ClearDeprecatedPrefs(prefs);
+@@ -708,6 +710,7 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+ 
+   // Added 10/2023.
+   prefs->ClearPref(kSyncRequested);
 +  BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS
  }
  

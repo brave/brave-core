@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index bc54ace77cade8c2e2439af6d0c18984cfdaf5c6..a63dd1fc5e762fb29f571d0123d51028987b3699 100644
+index 78e717afce47c78d502b43d0189fa0c13d118b9b..58c1d080713d9f64e62d1eb8e61c7b94e5b470f0 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -198,6 +198,7 @@ if (!is_android && !is_mac) {
@@ -32,16 +32,7 @@ index bc54ace77cade8c2e2439af6d0c18984cfdaf5c6..a63dd1fc5e762fb29f571d0123d51028
  
      if (enable_updater) {
        deps += [ ":chromium_updater_privileged_helper" ]
-@@ -603,7 +606,7 @@ if (is_win) {
-       if (is_chrome_branded) {
-         _strings_file = "google_chrome_strings"
-       } else {
--        _strings_file = "chromium_strings"
-+        _strings_file = "${branding_path_product}_strings"
-       }
- 
-       inputs += [ "$root_gen_dir/chrome/${_strings_file}_${locale}.pak" ]
-@@ -688,6 +691,7 @@ if (is_win) {
+@@ -684,6 +687,7 @@ if (is_win) {
        # this dependency directly copies the file into the framework's
        # resources directory.
        public_deps += [ ":chrome_framework_widevine_signature" ]
@@ -49,7 +40,7 @@ index bc54ace77cade8c2e2439af6d0c18984cfdaf5c6..a63dd1fc5e762fb29f571d0123d51028
      }
    }
  
-@@ -731,9 +735,11 @@ if (is_win) {
+@@ -727,9 +731,11 @@ if (is_win) {
        "--scm=0",
      ]
    }
@@ -61,7 +52,7 @@ index bc54ace77cade8c2e2439af6d0c18984cfdaf5c6..a63dd1fc5e762fb29f571d0123d51028
      if (is_chrome_branded && include_branded_entitlements) {
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
-@@ -758,6 +764,7 @@ if (is_win) {
+@@ -754,6 +760,7 @@ if (is_win) {
          info_plist_target = invoker.info_plist_target
        } else {
          info_plist_target = ":chrome_helper_plist"
@@ -69,7 +60,7 @@ index bc54ace77cade8c2e2439af6d0c18984cfdaf5c6..a63dd1fc5e762fb29f571d0123d51028
        }
  
        extra_substitutions = [
-@@ -936,6 +943,7 @@ if (is_win) {
+@@ -932,6 +939,7 @@ if (is_win) {
          sources += [ "//third_party/updater/chrome_mac_universal_prod/${updater_product_full_name}.app" ]
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
@@ -77,7 +68,7 @@ index bc54ace77cade8c2e2439af6d0c18984cfdaf5c6..a63dd1fc5e762fb29f571d0123d51028
  
          public_deps += [
            "//chrome/updater/mac:browser_install_script",
-@@ -1272,6 +1280,7 @@ if (is_win) {
+@@ -1268,6 +1276,7 @@ if (is_win) {
        "-current_version",
        chrome_dylib_version,
      ]
@@ -85,7 +76,7 @@ index bc54ace77cade8c2e2439af6d0c18984cfdaf5c6..a63dd1fc5e762fb29f571d0123d51028
  
      if (!is_component_build) {
        # Specify a sensible install_name for static builds. The library is
-@@ -1452,6 +1461,7 @@ if (is_win) {
+@@ -1448,6 +1457,7 @@ if (is_win) {
  
  group("dependencies") {
    public_deps = [
@@ -93,7 +84,7 @@ index bc54ace77cade8c2e2439af6d0c18984cfdaf5c6..a63dd1fc5e762fb29f571d0123d51028
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/browser",
-@@ -1518,7 +1528,7 @@ group("dependencies") {
+@@ -1514,7 +1524,7 @@ group("dependencies") {
  
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
@@ -102,7 +93,7 @@ index bc54ace77cade8c2e2439af6d0c18984cfdaf5c6..a63dd1fc5e762fb29f571d0123d51028
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1572,6 +1582,7 @@ group("resources") {
+@@ -1568,6 +1578,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
@@ -110,7 +101,7 @@ index bc54ace77cade8c2e2439af6d0c18984cfdaf5c6..a63dd1fc5e762fb29f571d0123d51028
    ]
  }
  
-@@ -1625,6 +1636,7 @@ if (!is_android) {
+@@ -1621,6 +1632,7 @@ if (!is_android) {
      if (enable_resource_allowlist_generation) {
        repack_allowlist = _chrome_resource_allowlist
        deps = [ ":resource_allowlist" ]

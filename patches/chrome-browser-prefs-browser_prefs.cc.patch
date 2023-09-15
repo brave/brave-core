@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 3e966e183a67f2f0db4760bf7c78fa1d361d62bc..3bea6d7af6125dc3ea7f2c3e7b6006d92dd802ef 100644
+index 965aec4dd16619659d77142b01aa5a457023e622..6aee99e3b51be28a4e06ae09bdd7bb870ee9184f 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1522,6 +1522,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1574,6 +1574,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
  #endif
  
@@ -11,10 +11,10 @@ index 3e966e183a67f2f0db4760bf7c78fa1d361d62bc..3bea6d7af6125dc3ea7f2c3e7b6006d9
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -1937,6 +1939,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
- #endif
- 
-   registry->RegisterBooleanPref(prefs::kBlockTruncatedCookies, true);
+@@ -1997,6 +1999,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+ #if BUILDFLAG(ENTERPRISE_DATA_CONTROLS)
+   data_controls::RegisterProfilePrefs(registry);
+ #endif  // BUILDFLAG(ENTERPRISE_DATA_CONTROLS)
 +  brave::RegisterProfilePrefs(registry);
  }
  
