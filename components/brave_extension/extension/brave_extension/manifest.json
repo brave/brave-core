@@ -44,7 +44,8 @@
     },
     {
       "matches": [
-        "https://chrome.google.com/webstore/*"
+        "https://chrome.google.com/webstore/*",
+        "https://chromewebstore.google.com/*"
       ],
       "js": [
         "out/webstore.bundle.js"
