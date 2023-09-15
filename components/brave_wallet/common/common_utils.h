@@ -28,6 +28,7 @@ bool IsPanelV2Enabled();
 bool ShouldCreateDefaultSolanaAccount();
 bool IsDappsSupportEnabled();
 bool IsBitcoinEnabled();
+bool IsZCashEnabled();
 
 bool IsAllowed(PrefService* prefs);
 
