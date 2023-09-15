@@ -56,6 +56,18 @@ export const Box = styled.div`
     align-self: center;
     justify-self: center;
     color: #5F5CF1;
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      left: 4px;
+      top: 4px;
+      border-radius: 100px;
+      background-color: white;
+    }
   }
 
   .is-light { background-color: #FFFFFF; }
