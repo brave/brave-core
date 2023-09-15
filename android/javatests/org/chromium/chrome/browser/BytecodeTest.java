@@ -693,11 +693,11 @@ public class BytecodeTest {
                 ThemeColorProvider.class, MenuButtonCoordinator.class, MenuButtonCoordinator.class,
                 ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
                 ButtonDataProvider.class, Callback.class, Supplier.class, Supplier.class,
-                BooleanSupplier.class, boolean.class, boolean.class, boolean.class, boolean.class,
-                HistoryDelegate.class, BooleanSupplier.class, OfflineDownloader.class,
-                boolean.class, Callback.class, boolean.class, ObservableSupplier.class,
-                ObservableSupplier.class, BrowserStateBrowserControlsVisibilityDelegate.class,
-                boolean.class, FullscreenManager.class));
+                BooleanSupplier.class, boolean.class, boolean.class, HistoryDelegate.class,
+                BooleanSupplier.class, OfflineDownloader.class, boolean.class, Callback.class,
+                boolean.class, ObservableSupplier.class, ObservableSupplier.class,
+                BrowserStateBrowserControlsVisibilityDelegate.class, boolean.class,
+                FullscreenManager.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
@@ -770,7 +770,7 @@ public class BytecodeTest {
                 BooleanSupplier.class, Supplier.class, OmniboxActionDelegate.class,
                 BrowserStateBrowserControlsVisibilityDelegate.class, Callback.class,
                 BackPressManager.class, OmniboxSuggestionsDropdownScrollListener.class,
-                OpenHistoryClustersDelegate.class));
+                OpenHistoryClustersDelegate.class, ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "org/chromium/chrome/browser/omnibox/BraveLocationBarMediator", Context.class,
@@ -782,7 +782,8 @@ public class BytecodeTest {
                 BraveLocationBarMediator.getLensControllerClass(),
                 BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
                 BraveLocationBarMediator.getOmniboxUmaClass(), BooleanSupplier.class,
-                BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass()));
+                BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass(),
+                ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/IntentHandler",
                 "org/chromium/chrome/browser/BraveIntentHandler", Activity.class,
                 IntentHandler.IntentHandlerDelegate.class));
