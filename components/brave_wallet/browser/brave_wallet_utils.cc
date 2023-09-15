@@ -514,8 +514,14 @@ GURL BitcoinMainnetRpcUrl() {
 }
 
 GURL BitcoinTestnetRpcUrl() {
-  return GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-      switches::kBitcoinTestnetRpcUrl));
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kBitcoinTestnetRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+
+  return GURL("https://blockstream.info/testnet/api/");
 }
 
 const mojom::NetworkInfo* GetBitcoinMainnet() {
