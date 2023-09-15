@@ -67,7 +67,7 @@ public class TwoLineItemBottomSheetFragment extends WalletBottomSheetDialogFragm
         View view = inflater.inflate(R.layout.fragment_two_line_item_sheet, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.frag_two_line_sheet_list);
         mAdapter = new TwoLineItemRecyclerViewAdapter(
-                items, TwoLineItemRecyclerViewAdapter.ORIENTATION.HORIZONTAL);
+                items, TwoLineItemRecyclerViewAdapter.ADAPTER_VIEW_ORIENTATION.HORIZONTAL);
         mAdapter.mSubTextAlignment = View.TEXT_ALIGNMENT_TEXT_START;
         recyclerView.setAdapter(mAdapter);
         mIbClose = view.findViewById(R.id.frag_two_line_sheet_ib_close);

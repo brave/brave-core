@@ -214,6 +214,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
                 items.add(resource);
             }
         }
+        mTwoLineAdapter.mDividerMargin = 12;
         mTwoLineAdapter.setValues(items);
         mTwoLineAdapter.notifyItemRangeChanged(0, items.size());
     }
