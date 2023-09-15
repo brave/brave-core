@@ -13,7 +13,7 @@ constexpr char kSidebarItemTypeKey[] = "type";
 constexpr char kSidebarItemBuiltInItemTypeKey[] = "built_in_item_type";
 constexpr char kSidebarItemTitleKey[] = "title";
 constexpr char kSidebarItemOpenInPanelKey[] = "open_in_panel";
-constexpr int kDefaultSidePanelWidth = 480;
+constexpr int kDefaultSidePanelWidth = 320;
 
 // list is provided from chrome layer.
 constexpr char kBraveTalkURL[] = "https://talk.brave.com/widget";
