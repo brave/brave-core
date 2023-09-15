@@ -201,7 +201,6 @@ public class ConnectAccountFragment extends BaseDAppsFragment
 
     private static void setConnectAccountPendingData(
             String accountAddress, int permissionLifetimeOption) {
-        assert sConnectAccountPendingData == null;
         sConnectAccountPendingData =
                 new ConnectAccountPendingData(accountAddress, permissionLifetimeOption);
     }
@@ -277,10 +276,12 @@ public class ConnectAccountFragment extends BaseDAppsFragment
         }
         return GURL.emptyGURL();
     }
+
     @CalledByNative
     private static void onConnectAccountDone(Callback<Boolean> callback, Boolean result) {
         callback.onResult(result);
     }
+
     @NativeMethods
     interface Natives {
         void connectAccount(String accountAddress, int accountIdCoin, WebContents webContents,
