@@ -115,7 +115,9 @@ void BraveOmniboxClientImpl::OnAutocompleteAccept(
     WeeklyStorage storage(profile_->GetPrefs(), kSearchCountPrefName);
     storage.AddDelta(1);
     RecordSearchEventP3A(storage.GetWeeklySum());
-    search_engine_tracker_->RecordLocationBarQuery();
+    if (search_engine_tracker_ != nullptr) {
+      search_engine_tracker_->RecordLocationBarQuery();
+    }
   }
   ChromeOmniboxClient::OnAutocompleteAccept(
       destination_url, post_content, disposition, transition, match_type,
