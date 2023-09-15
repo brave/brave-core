@@ -915,70 +915,12 @@ extension BrowserViewController: ToolbarDelegate {
 
 extension BrowserViewController: UIContextMenuInteractionDelegate {
   public func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
-    
-    let configuration = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [unowned self] _ in
-      var actionMenus: [UIMenu?] = []
-      var pasteMenuChildren: [UIAction] = []
+    let configuration =  UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [unowned self] _ in
+      let actionMenus: [UIMenu?] = [
+        makePasteMenu(), makeCopyMenu(), makeReloadMenu()
+      ]
       
-      let tab = tabManager.selectedTab
-      var reloadMenu: UIMenu?
-      
-      if let url = tab?.url, url.isWebPage() {
-        let reloadTitle = tab?.isDesktopSite == true ? Strings.appMenuViewMobileSiteTitleString : Strings.appMenuViewDesktopSiteTitleString
-        let reloadIcon = tab?.isDesktopSite == true ? "leo.smartphone" : "leo.monitor"
-        let reloadAction = UIAction(
-          title: reloadTitle,
-          image: UIImage(braveSystemNamed: reloadIcon),
-          handler: UIAction.deferredActionHandler { [weak tab] _ in
-            tab?.switchUserAgent()
-          })
-        
-        reloadMenu = UIMenu(options: .displayInline, children: [reloadAction])
-      }
-      
-      let pasteGoAction = UIAction(
-        identifier: .pasteAndGo,
-        handler: UIAction.deferredActionHandler { _ in
-          if let pasteboardContents = UIPasteboard.general.string {
-            self.topToolbar(self.topToolbar, didSubmitText: pasteboardContents)
-          }
-        })
-
-      let pasteAction = UIAction(
-        identifier: .paste,
-        handler: UIAction.deferredActionHandler { _ in
-          if let pasteboardContents = UIPasteboard.general.string {
-            self.topToolbar.enterOverlayMode(pasteboardContents, pasted: true, search: true)
-          }
-        })
-
-      pasteMenuChildren = [pasteGoAction, pasteAction]
-      
-      if #unavailable(iOS 16.0), isUsingBottomBar {
-        pasteMenuChildren.reverse()
-      }
-      
-      let copyAction = UIAction(
-        title: Strings.copyAddressTitle,
-        image: UIImage(systemName: "doc.on.doc"),
-        handler: UIAction.deferredActionHandler { _ in
-          if let url = self.topToolbar.currentURL {
-            UIPasteboard.general.url = url as URL
-          }
-        })
-
-      let copyMenu = UIMenu(options: .displayInline, children: [copyAction])
-      
-      if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs {
-        let pasteMenu = UIMenu(options: .displayInline, children: pasteMenuChildren)
-        actionMenus.append(contentsOf: [pasteMenu, copyMenu])
-      } else {
-        actionMenus.append(copyMenu)
-      }
-      
-      actionMenus.append(reloadMenu)
-      
-      return UIMenu(children: actionMenus.compactMap { $0 })
+      return UIMenu(children: actionMenus.compactMap({ $0 }))
     }
     
     if #available(iOS 16.0, *) {
@@ -986,5 +928,83 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
     }
     
     return configuration
+  }
+  
+  /// Create the "Request Destop Site" / "Request Mobile Site" menu if the tab has a webpage loaded
+  private func makeReloadMenu() -> UIMenu? {
+    guard let tab = tabManager.selectedTab, let url = tab.url, url.isWebPage() else { return nil }
+    let reloadTitle = tab.isDesktopSite == true ? Strings.appMenuViewMobileSiteTitleString : Strings.appMenuViewDesktopSiteTitleString
+    let reloadIcon = tab.isDesktopSite == true ? "leo.smartphone" : "leo.monitor"
+    let reloadAction = UIAction(
+      title: reloadTitle,
+      image: UIImage(braveSystemNamed: reloadIcon),
+      handler: UIAction.deferredActionHandler { [weak tab] _ in
+        tab?.switchUserAgent()
+      })
+    
+    return UIMenu(options: .displayInline, children: [reloadAction])
+  }
+  
+  /// Create the "Paste"  and "Paste and Go" menu if there is anything on the `UIPasteboard`
+  private func makePasteMenu() -> UIMenu? {
+    guard UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs else { return nil }
+    
+    var children: [UIAction] = [
+      UIAction(
+        identifier: .pasteAndGo,
+        handler: UIAction.deferredActionHandler { _ in
+          if let pasteboardContents = UIPasteboard.general.string {
+            self.topToolbar(self.topToolbar, didSubmitText: pasteboardContents)
+          }
+        }
+      ),
+      UIAction(
+        identifier: .paste,
+        handler: UIAction.deferredActionHandler { _ in
+          if let pasteboardContents = UIPasteboard.general.string {
+            self.topToolbar.enterOverlayMode(pasteboardContents, pasted: true, search: true)
+          }
+        }
+      )
+    ]
+    
+    if #unavailable(iOS 16.0), isUsingBottomBar {
+      children.reverse()
+    }
+    
+    return UIMenu(options: .displayInline, children: children)
+  }
+  
+  /// Create the "Copy Link" and "Copy Clean Link" menu if there is any URL loaded on the tab.
+  ///
+  /// - Note: "Copy Clean Link" will be included even if no cleaning is done to the url.
+  private func makeCopyMenu() -> UIMenu? {
+    let tab = tabManager.selectedTab
+    guard let url = self.topToolbar.currentURL else { return nil }
+    
+    var children: [UIAction] = [
+      UIAction(
+        title: Strings.copyLinkActionTitle,
+        image: UIImage(systemName: "doc.on.doc"),
+        handler: UIAction.deferredActionHandler { _ in
+          UIPasteboard.general.url = url as URL
+        }
+      ),
+      UIAction(
+        title: Strings.copyCleanLink,
+        image: UIImage(braveSystemNamed: "leo.broom"),
+        handler: UIAction.deferredActionHandler { _ in
+          let service = URLSanitizerServiceFactory.get(privateMode: tab?.isPrivate ?? true)
+          let cleanedURL = service?.sanitizeURL(url) ?? url
+          UIPasteboard.general.url = cleanedURL
+        }
+      )
+    ]
+    
+    if #unavailable(iOS 16.0), isUsingBottomBar {
+      children.reverse()
+    }
+    
+    return UIMenu(options: .displayInline, children: children)
   }
 }
