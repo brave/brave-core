@@ -36,6 +36,7 @@ const mainButtonsOptions = [
     id: 'tts',
     type: MainButtonType.TextToSpeech,
     iconName: 'headphones',
+    hidden: !loadTimeData.getBoolean('ttsEnabled'),
     title: getLocale('braveReaderModeTextToSpeech')
   },
   {

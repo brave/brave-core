@@ -9,6 +9,14 @@ const readTimeDivId = 'da24e4ef-db57-4b9f-9fa5-548924fc9c32'
 const metaDataDivId = '3bafd2b4-a87d-4471-8134-7a9cca092000'
 const contentDivId = '7c08a417-bf02-4241-a55e-ad5b8dc88f69'
 
+const defaultSpeedreaderData = {
+    showOriginalLinkText: 'View original',
+    playButtonTitle: 'Play/Pause',
+    averageWordsPerMinute: 265,
+    minutesText: 'min. read',
+    ttsEnabled: false,
+}
+
 const $ = (id) => {
     return document.getElementById(id)
 }
@@ -41,13 +49,6 @@ const calculateReadtime = () => {
     readTimeDiv.innerText = minutes + ' ' + speedreaderData.minutesText
 }
 
-const defaultSpeedreaderData = {
-    showOriginalLinkText: 'View original',
-    playButtonTitle: 'Play/Pause',
-    averageWordsPerMinute: 265,
-    minutesText: 'min. read',
-}
-
 const getTextContent = (element) => {
     if (!element) {
         return null
@@ -60,7 +61,7 @@ const getTextContent = (element) => {
 }
 
 const initTextToSpeak = () => {
-    if (navigator.userAgentData.mobile) {
+    if (navigator.userAgentData.mobile || !speedreaderData.ttsEnabled) {
         return
     }
 

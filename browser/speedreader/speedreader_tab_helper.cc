@@ -52,6 +52,11 @@ namespace speedreader {
 std::u16string GetSpeedreaderData(
     std::initializer_list<std::pair<base::StringPiece, int>> resources) {
   std::u16string result = u"speedreaderData = {";
+
+  if (kSpeedreaderTTS.Get()) {
+    result += u"ttsEnabled: true,";
+  }
+
   for (const auto& r : resources) {
     auto text = brave_l10n::GetLocalizedResourceUTF16String(r.second);
     // Make sure that the text doesn't contain js injection
