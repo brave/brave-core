@@ -13,10 +13,8 @@
 #define kButtonSize GetButtonSize()
 
 #define NewTabButton BraveNewTabButton
-#define TabSearchButton BraveTabSearchButton
 
 #include "src/chrome/browser/ui/views/frame/tab_strip_region_view.cc"
 
-#undef TabSearchButton
 #undef NewTabButton
 #undef kButtonSize

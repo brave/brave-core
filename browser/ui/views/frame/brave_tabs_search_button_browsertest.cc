@@ -43,7 +43,14 @@ IN_PROC_BROWSER_TEST_F(BraveTabsSearchButtonTest, HideShowSettingTest) {
     button = tab_search_bubble_host->button();
   } else {
     auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-    button = browser_view->tab_strip_region_view()->tab_search_button();
+    auto* tab_search_container =
+        browser_view->tab_strip_region_view()->tab_search_container();
+    if (!tab_search_container) {
+      return;
+    }
+    button = browser_view->tab_strip_region_view()
+                 ->tab_search_container()
+                 ->tab_search_button();
   }
   ASSERT_NE(nullptr, button);
   EXPECT_TRUE(button->GetVisible());
