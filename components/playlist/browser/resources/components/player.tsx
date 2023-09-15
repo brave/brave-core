@@ -5,9 +5,12 @@
 
 import * as React from 'react'
 import { useSelector } from 'react-redux'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-import { PlaylistItem } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
+import {
+  Playlist,
+  PlaylistItem
+} from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
 import { color, font, radius, spacing } from '@brave/leo/tokens/css'
 
@@ -88,21 +91,31 @@ const FaviconAndTitle = styled.div`
   gap: ${spacing.m};
 `
 
-const StyledFavicon = styled.img`
+const StyledFavicon = styled.img<{ clickable: boolean }>`
   padding: 3px;
   width: 14px;
   height: 14px;
   border-radius: ${radius.s};
   border: 1px solid rgba(0, 0, 0, 0.05);
   background: ${color.white};
+  ${p =>
+    p.clickable &&
+    css`
+      cursor: pointer;
+    `}
 `
 
-const StyledTitle = styled.div`
+const StyledTitle = styled.div<{ clickable: boolean }>`
   color: ${color.text.primary};
   font: ${font.primary.large.semibold};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  ${p =>
+    p.clickable &&
+    css`
+      cursor: pointer;
+    `}
 `
 
 const StyledPlayerControls = styled(PlayerControls)`
@@ -129,6 +142,9 @@ export default function Player () {
 
   const currentItem = useSelector<ApplicationState, PlaylistItem | undefined>(
     applicationState => applicationState.playerState?.currentItem
+  )
+  const currentList = useSelector<ApplicationState, Playlist | undefined>(
+    applicationState => applicationState.playerState?.currentList
   )
 
   const autoPlayEnabled = useAutoPlayEnabled()
@@ -168,8 +184,29 @@ export default function Player () {
               currentItem?.id &&
               `chrome-untrusted://playlist-data/${currentItem.id}/favicon`
             }
+            clickable={!!currentItem}
+            onClick={() => {
+              if (currentItem) {
+                notifyEventsToTopFrame({
+                  type: PlaylistTypes.PLAYLIST_OPEN_SOURCE_PAGE,
+                  data: currentItem
+                })
+              }
+            }}
           />
-          <StyledTitle>{currentItem?.name}</StyledTitle>
+          <StyledTitle
+            clickable={!!(currentList && currentItem)}
+            onClick={() => {
+              if (currentList && currentItem) {
+                notifyEventsToTopFrame({
+                  type: PlaylistTypes.PLAYLIST_GO_BACK_TO_CURRENTLY_PLAYING_FOLDER,
+                  data: { currentList, currentItem }
+                })
+              }
+            }}
+          >
+            {currentItem?.name}
+          </StyledTitle>
         </FaviconAndTitle>
         <PlayerSeeker videoElement={videoElement} />
         <StyledPlayerControls videoElement={videoElement} />

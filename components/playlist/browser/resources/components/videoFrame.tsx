@@ -6,20 +6,24 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 
-import { color, effect } from '@brave/leo/tokens/css'
+import { color, effect, spacing } from '@brave/leo/tokens/css'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 
 import { playlistControlsAreaHeight } from '../constants/style'
+import postMessageToPlayer from '../api/playerApi'
+import { types } from '../constants/player_types'
 
 interface Props {
   visible: boolean
   isMiniPlayer: boolean
 }
 
-const StyledVideoFrame = styled.iframe<Props>`
-  ${playlistControlsAreaHeight}
-
+const VideoFrameContainer = styled.div<Props>`
+  position: relative;
   width: 100vw;
-  border: none;
+
+  ${playlistControlsAreaHeight}
   ${p =>
     p.isMiniPlayer
       ? css`
@@ -27,7 +31,6 @@ const StyledVideoFrame = styled.iframe<Props>`
           bottom: 0;
           height: var(--player-controls-area-height);
           z-index: 1;
-          border-top: 1px solid ${color.divider.subtle};
         `
       : css`
           // 16:9 aspect ratio for video and fixed height for the controls area
@@ -43,19 +46,54 @@ const StyledVideoFrame = styled.iframe<Props>`
     `}
 `
 
+const StyledCloseButton = styled(Button)`
+  position: absolute;
+  margin: ${spacing.s};
+  right: 0;
+`
+
+function CloseButton () {
+  return (
+    <StyledCloseButton
+      kind='plain-faint'
+      size='tiny'
+      onClick={() => {
+        postMessageToPlayer({ actionType: types.UNLOAD_PLAYLIST })
+      }}
+    >
+      <Icon name='close'></Icon>
+    </StyledCloseButton>
+  )
+}
+
+const StyledVideoFrame = styled.iframe<Pick<Props, 'isMiniPlayer'>>`
+  position: absolute;
+  width: 100vw;
+  height: 100%;
+  border: none;
+  ${p =>
+    p.isMiniPlayer &&
+    css`
+      border-top: 1px solid ${color.divider.subtle};
+    `}
+`
+
 export default function VideoFrame (props: Props) {
   return (
-    <StyledVideoFrame
-      id='player'
-      src={
-        location.protocol === 'chrome-untrusted:'
-          ? 'chrome-untrusted://playlist-player'
-          : 'iframe.html?id=playlist-components--video-player'
-      }
-      allow='autoplay; fullscreen;'
-      scrolling='no'
-      sandbox='allow-scripts allow-same-origin'
-      {...props}
-    />
+    <VideoFrameContainer {...props}>
+      <StyledVideoFrame
+        id='player'
+        src={
+          location.protocol === 'chrome-untrusted:'
+            ? 'chrome-untrusted://playlist-player'
+            : 'iframe.html?id=playlist-components--video-player'
+        }
+        allow='autoplay; fullscreen;'
+        scrolling='no'
+        sandbox='allow-scripts allow-same-origin'
+        isMiniPlayer={props.isMiniPlayer}
+      />
+      {props.isMiniPlayer && <CloseButton />}
+    </VideoFrameContainer>
   )
 }

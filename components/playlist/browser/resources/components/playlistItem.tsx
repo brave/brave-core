@@ -331,6 +331,14 @@ export function PlaylistItem ({
             iconName: 'trash',
             onClick: () =>
               getPlaylistAPI().removeItemFromPlaylist(playlist.id!, id)
+          },
+          {
+            name: getLocalizedString(
+              'bravePlaylistContextMenuViewOriginalPage'
+            ),
+            iconName: 'link-normal',
+            onClick: () =>
+              window.open(item.pageSource.url, '_blank', 'noopener,noreferrer')
           }
         ]}
         onShowMenu={() => setShowingMenu(true)}
