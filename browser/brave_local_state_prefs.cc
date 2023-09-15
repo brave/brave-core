@@ -58,6 +58,10 @@
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/pref_names.h"
+#endif
+
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
 #endif
@@ -134,6 +138,10 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::RegisterLocalStatePrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  ai_chat::prefs::RegisterLocalStatePrefs(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_AI_CHAT)

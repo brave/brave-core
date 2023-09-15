@@ -11,5 +11,6 @@ buildflag_header("buildflags") {
   flags = [
     "ENABLE_AI_CHAT=$enable_ai_chat",
     "BRAVE_AI_CHAT_ENDPOINT=\"$brave_ai_chat_endpoint\"",
+    "BRAVE_AI_CHAT_PREMIUM_ENDPOINT=\"$brave_ai_chat_premium_endpoint\"",
   ]
 }
