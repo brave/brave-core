@@ -685,7 +685,7 @@ extension PlaylistListViewController {
         self.loadingState = .partial
         
         if let folderImageUrl = model.folderImage {
-          let authManager = BasicAuthCredentialsManager(for: [folderImageUrl.absoluteString])
+          let authManager = BasicAuthCredentialsManager()
           let session = URLSession(configuration: .ephemeral, delegate: authManager, delegateQueue: .main)
           
           try await withTaskCancellationHandler {

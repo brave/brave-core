@@ -47,6 +47,8 @@ class BraveSearchManager: NSObject {
   }
 
   private var cancellables: Set<AnyCancellable> = []
+  
+  private let authManager = BasicAuthCredentialsManager()
     
   static let validDomains = ["search.brave.com", "search.brave.software",
                              "search.bravesoftware.com", "safesearch.brave.com",
@@ -118,7 +120,7 @@ class BraveSearchManager: NSObject {
 
     request.setValue(UserAgent.userAgentForDesktopMode, forHTTPHeaderField: "User-Agent")
 
-    let session = URLSession(configuration: .ephemeral, delegate: self, delegateQueue: .main)
+    let session = URLSession(configuration: .ephemeral, delegate: authManager, delegateQueue: .main)
 
     var timer: PerformanceTimer?
     if callbackLog != nil {
@@ -246,49 +248,5 @@ class BraveSearchManager: NSObject {
       .store(in: &cancellables)
 
     session.finishTasksAndInvalidate()
-  }
-}
-
-// MARK: - URLSessionDataDelegate
-// The BraveSearch feature can be hidden behind an authentication system.
-// This code helps passing all auth info to the requests we make.
-extension BraveSearchManager: URLSessionDataDelegate {
-  func urlSession(
-    _ session: URLSession,
-    didReceive challenge: URLAuthenticationChallenge
-  ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
-    guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic ||
-            challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest ||
-            challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM else {
-      return (.performDefaultHandling, nil)
-    }
-
-    if !BraveSearchManager.validDomains.contains(challenge.protectionSpace.host) {
-      return (.performDefaultHandling, nil)
-    }
-
-    // -- Handle Authentication --
-
-    // Too many failed attempts
-    if challenge.previousFailureCount >= 3 {
-      return (.rejectProtectionSpace, nil)
-    }
-
-    if let proposedCredential = challenge.proposedCredential,
-      !(proposedCredential.user?.isEmpty ?? true),
-      challenge.previousFailureCount == 0 {
-      return (.useCredential, proposedCredential)
-    }
-
-    // No proposed credential - reject challenge
-    return (.rejectProtectionSpace, nil)
-  }
-
-  func urlSession(
-    _ session: URLSession,
-    task: URLSessionTask,
-    didReceive challenge: URLAuthenticationChallenge
-  ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
-    return await urlSession(session, didReceive: challenge)
   }
 }
