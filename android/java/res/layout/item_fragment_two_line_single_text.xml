@@ -10,6 +10,7 @@
     android:id="@+id/item_fragment_two_line_text"
     style="@style/BraveWalletTextView"
     android:layout_marginVertical="4dp"
+    android:lineSpacingExtra="3sp"
     android:textAppearance="?attr/textAppearanceListItem"
     app:layout_constraintStart_toEndOf="@id/item_fragment_two_line_icon"
     app:layout_constraintTop_toTopOf="parent"
