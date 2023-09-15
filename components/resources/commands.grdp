@@ -500,7 +500,7 @@
     Add all tabs to new group
   </message>
   <message name="IDS_IDC_BRAVE_SEND_TAB_TO_SELF">
-    Add all tabs to new group
+    Send tab to self
   </message>
 
   <!-- Commander composite commands -->
