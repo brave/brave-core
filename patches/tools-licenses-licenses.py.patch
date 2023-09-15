@@ -1,5 +1,5 @@
 diff --git a/tools/licenses/licenses.py b/tools/licenses/licenses.py
-index 9a34155c5066b5e8c08c205170d48afb0f4caa92..1c5e2677689ff823b2618236a769238fd98d4dc8 100755
+index d31c258acd4a07e92166f5b868b8c4d41f8fbf35..f74addaac7e674770d11961788aadec7cf3dce9f 100755
 --- a/tools/licenses/licenses.py
 +++ b/tools/licenses/licenses.py
 @@ -41,6 +41,7 @@ _REPOSITORY_ROOT = os.path.abspath(
@@ -10,7 +10,7 @@ index 9a34155c5066b5e8c08c205170d48afb0f4caa92..1c5e2677689ff823b2618236a769238f
  
  # Paths from the root of the tree to directories to skip.
  PRUNE_PATHS = set([
-@@ -426,6 +427,7 @@ SPECIAL_CASES = {
+@@ -414,6 +415,7 @@ SPECIAL_CASES = {
          "License File": ["//third_party/selenium-atoms/LICENSE.closure"],
      },
  }
@@ -18,7 +18,7 @@ index 9a34155c5066b5e8c08c205170d48afb0f4caa92..1c5e2677689ff823b2618236a769238f
  
  # These buildtools/third_party directories only contain
  # chromium build files. The actual third_party source files and their
-@@ -710,7 +712,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
+@@ -816,7 +818,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
        if skip in dirs:
          dirs.remove(skip)
  
@@ -28,13 +28,13 @@ index 9a34155c5066b5e8c08c205170d48afb0f4caa92..1c5e2677689ff823b2618236a769238f
        # Add all subdirectories that are not marked for skipping.
        for dir in dirs:
          dirpath = os.path.join(path, dir)
-@@ -959,7 +962,8 @@ def GenerateCredits(file_template_file,
-                           enable_warnings=enable_warnings)
-       if not metadata:
+@@ -1087,7 +1090,8 @@ def GenerateCredits(file_template_file,
+                                     enable_warnings=enable_warnings)
+       if not directory_metadata:
          continue
 -    except LicenseError:
 +    except LicenseError as e:
 +      CheckBraveMissingLicense(target_os, path, e)
-       # TODO(phajdan.jr): Convert to fatal error (http://crbug.com/39240).
+       # TODO(phajdan.jr): Convert to fatal error (https://crbug.com/39240).
        continue
-     if metadata['Shipped'] == NO:
+ 

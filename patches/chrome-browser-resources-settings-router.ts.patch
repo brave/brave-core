@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/settings/router.ts b/chrome/browser/resources/settings/router.ts
-index 490064371b6b57236724ec0919a4d549a5ab2c9e..965028df2b0ea8cd675214371ae88ddb1a713f90 100644
+index 24bf153309625e5d05a1d961529431a92dba32c1..87438d008ab2357f8ee66287024d4a97a9b872e0 100644
 --- a/chrome/browser/resources/settings/router.ts
 +++ b/chrome/browser/resources/settings/router.ts
-@@ -102,6 +102,7 @@ export interface SettingsRoutes {
-   SYNC_ADVANCED: Route;
+@@ -104,6 +104,7 @@ export interface SettingsRoutes {
    SYSTEM: Route;
+   TRACKING_PROTECTION: Route;
    TRIGGERED_RESET_DIALOG: Route;
 +  GET_STARTED: Route; SHIELDS: Route; SOCIAL_BLOCKING: Route; REWARDS: Route; EXTENSIONS: Route; EXTENSIONS_V2: Route; BRAVE_SYNC: Route; BRAVE_SYNC_SETUP: Route; BRAVE_IPFS: Route; BRAVE_WALLET: Route; BRAVE_WEB3: Route; BRAVE_HELP_TIPS: Route; BRAVE_NEW_TAB: Route; THEMES: Route; BRAVE_SITE_SETTINGS_COOKIES_DETAILS: Route;
  }

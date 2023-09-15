@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 3ffd30c3b7c2d2142fc5dcd9941a7b6e33be90ef..d566e0eda8ee997458661f9240a0e9d8e5a6c0e7 100644
+index eca03a3f80dc14464f7047cba46b78e960efa3c4..a956a11f425fe8e79f79ee9f1d1676fd7d8974b5 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -52,7 +52,7 @@ import org.chromium.chrome.browser.sync.ui.PassphraseDialogFragment;
+@@ -50,7 +50,7 @@ import org.chromium.chrome.browser.sync.ui.PassphraseDialogFragment;
  import org.chromium.chrome.browser.sync.ui.PassphraseTypeDialogFragment;
  import org.chromium.chrome.browser.ui.signin.SignOutDialogCoordinator;
  import org.chromium.chrome.browser.ui.signin.SignOutDialogCoordinator.Listener;
@@ -11,9 +11,9 @@ index 3ffd30c3b7c2d2142fc5dcd9941a7b6e33be90ef..d566e0eda8ee997458661f9240a0e9d8
  import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
  import org.chromium.components.browser_ui.settings.SettingsUtils;
  import org.chromium.components.signin.AccountManagerFacadeProvider;
-@@ -353,7 +353,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
-                         .getIdentityManager(Profile.getLastUsedRegularProfile())
-                         .getPrimaryAccountInfo(ConsentLevel.SYNC));
+@@ -354,7 +354,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+                                                      .getIdentityManager(getProfile())
+                                                      .getPrimaryAccountInfo(ConsentLevel.SYNC));
          // May happen if account is removed from the device while this screen is shown.
 -        if (signedInAccountName == null) {
 +        if (false) {
