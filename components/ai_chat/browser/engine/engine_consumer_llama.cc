@@ -241,7 +241,8 @@ namespace ai_chat {
 
 EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
     const mojom::Model& model,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    AIChatCredentialManager* credential_manager) {
   // Allow specific model name to be overriden by feature flag
   // TODO(petemill): verify premium status, or ensure server will verify even
   // when given a model name override via cli flag param.
@@ -253,7 +254,7 @@ EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
   base::flat_set<std::string_view> stop_sequences(kStopSequences.begin(),
                                                   kStopSequences.end());
   api_ = std::make_unique<RemoteCompletionClient>(model_name, stop_sequences,
-                                                  url_loader_factory);
+                                                  url_loader_factory, credential_manager);
 }
 
 EngineConsumerLlamaRemote::~EngineConsumerLlamaRemote() = default;

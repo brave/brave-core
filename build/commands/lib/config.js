@@ -224,6 +224,7 @@ const Config = function () {
   this.goma_offline = false
   this.use_libfuzzer = false
   this.brave_ai_chat_endpoint = getNPMConfig(['brave_ai_chat_endpoint']) || ''
+  this.brave_ai_chat_premium_endpoint = getNPMConfig(['brave_ai_chat_premium_endpoint']) || ''
   this.androidAabToApk = false
   this.enable_dangling_raw_ptr_checks = false
 

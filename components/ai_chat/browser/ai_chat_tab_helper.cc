@@ -17,6 +17,7 @@
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
+#include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/ai_chat/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/browser/engine/engine_consumer_claude.h"
@@ -122,6 +123,17 @@ void AIChatTabHelper::InitEngine() {
     }
   }
   auto model = model_match->second;
+
+  // Init the credential manager
+  content::BrowserContext* context = web_contents()->GetBrowserContext();
+  auto skus_service_getter = base::BindRepeating(
+      [](content::BrowserContext* context) {
+        return skus::SkusServiceFactory::GetForContext(context);
+      },
+      context);
+  credential_manager_ =
+      std::make_unique<ai_chat::AIChatCredentialManager>(skus_service_getter);
+
   // TODO(petemill): Engine enum on model to decide which one
   if (model.engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
     VLOG(1) << "Started tab helper for AI engine: llama";
@@ -129,14 +141,16 @@ void AIChatTabHelper::InitEngine() {
         model, web_contents()
                    ->GetBrowserContext()
                    ->GetDefaultStoragePartition()
-                   ->GetURLLoaderFactoryForBrowserProcess());
+                   ->GetURLLoaderFactoryForBrowserProcess(),
+               credential_manager_.get());
   } else {
     VLOG(1) << "Started tab helper for AI engine: claude";
     engine_ = std::make_unique<EngineConsumerClaudeRemote>(
         model, web_contents()
                    ->GetBrowserContext()
                    ->GetDefaultStoragePartition()
-                   ->GetURLLoaderFactoryForBrowserProcess());
+                   ->GetURLLoaderFactoryForBrowserProcess(),
+                credential_manager_.get());
   }
 }
 
@@ -638,6 +652,11 @@ void AIChatTabHelper::WebContentsDestroyed() {
   CleanUp();
   favicon::ContentFaviconDriver::FromWebContents(web_contents())
       ->RemoveObserver(this);
+}
+
+void AIChatTabHelper::UserHasValidPremiumCredential(
+    base::OnceCallback<void(bool success)> callback) {
+  credential_manager_->UserHasValidPremiumCredential(std::move(callback));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);

@@ -15,6 +15,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -32,7 +33,8 @@ class RemoteCompletionClient {
   RemoteCompletionClient(
       const std::string& model_name,
       const base::flat_set<std::string_view>& stop_sequences,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      AIChatCredentialManager* credential_manager);
 
   RemoteCompletionClient(const RemoteCompletionClient&) = delete;
   RemoteCompletionClient& operator=(const RemoteCompletionClient&) = delete;
@@ -55,9 +57,17 @@ class RemoteCompletionClient {
   void OnQueryCompleted(EngineConsumer::GenerationCompletedCallback callback,
                         APIRequestResult result);
 
+  void OnFetchPremiumCredential(
+      const std::string& prompt,
+      const std::vector<std::string> extra_stop_sequences,
+      EngineConsumer::GenerationCompletedCallback data_completed_callback,
+      EngineConsumer::GenerationDataCallback data_received_callback,
+      absl::optional<std::string> cookie_as_string);
+
   const std::string model_name_;
   const base::flat_set<std::string_view> stop_sequences_;
   api_request_helper::APIRequestHelper api_request_helper_;
+  raw_ptr<AIChatCredentialManager> credential_manager_;
 
   base::WeakPtrFactory<RemoteCompletionClient> weak_ptr_factory_{this};
 };

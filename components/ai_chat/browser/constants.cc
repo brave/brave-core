@@ -70,4 +70,6 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
   return kLocalizedStrings;
 }
 
+const char kLeoSkuDomain[] = "leo.bravesoftware.com";
+
 }  // namespace ai_chat

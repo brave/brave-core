@@ -102,6 +102,7 @@ interface PageHandler {
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
+  UserHasValidPremiumCredential() => (bool result);
   GetHasUserDismissedPremiumPrompt() => (bool has_dismissed);
   SetHasUserDismissedPremiumPrompt(bool has_dismissed);
   RateMessage(bool is_liked, string turn_text) => (string? id);

@@ -12,6 +12,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
+#include "brave/components/ai_chat/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "components/favicon/core/favicon_driver_observer.h"
@@ -87,6 +88,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void DisconnectPageContents();
   void ClearConversationHistory();
   mojom::APIError GetCurrentAPIError();
+  void UserHasValidPremiumCredential(
+      base::OnceCallback<void(bool success)> callback);
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
@@ -156,6 +159,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   mojom::APIError current_error_ = mojom::APIError::None;
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
+  std::unique_ptr<AIChatCredentialManager> credential_manager_;
 
   std::unique_ptr<mojom::ConversationTurn> pending_request_;
 

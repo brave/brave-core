@@ -13,6 +13,8 @@ namespace ai_chat {
 
 base::span<const webui::LocalizedString> GetLocalizedStrings();
 
+extern const char kLeoSkuDomain[];
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_BROWSER_CONSTANTS_H_

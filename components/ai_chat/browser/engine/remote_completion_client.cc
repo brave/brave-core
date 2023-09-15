@@ -94,8 +94,10 @@ std::string CreateJSONRequestBody(base::ValueView node) {
   return json;
 }
 
-const GURL GetEndpointBaseUrl() {
-  auto* endpoint = BUILDFLAG(BRAVE_AI_CHAT_ENDPOINT);
+const GURL GetEndpointBaseUrl(bool premium) {
+  auto* endpoint = premium ? BUILDFLAG(BRAVE_AI_CHAT_PREMIUM_ENDPOINT)
+                           : BUILDFLAG(BRAVE_AI_CHAT_ENDPOINT);
+
   // Simply log if we have empty endpoint, it's probably just a local
   // non-configured build.
   if (strlen(endpoint) != 0) {
@@ -116,17 +118,26 @@ const GURL GetEndpointBaseUrl() {
 RemoteCompletionClient::RemoteCompletionClient(
     const std::string& model_name,
     const base::flat_set<std::string_view>& stop_sequences,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    AIChatCredentialManager* credential_manager)
     : model_name_(model_name),
       stop_sequences_(stop_sequences),
-      api_request_helper_(GetNetworkTrafficAnnotationTag(),
-                          url_loader_factory) {
+      api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
+      credential_manager_(credential_manager) {
   // Validate configuration
-  const GURL api_base_url = GetEndpointBaseUrl();
+  GURL api_base_url = GetEndpointBaseUrl(false);
   if (!api_base_url.is_empty()) {
     // Crash quickly if we have an invalid non-empty Url configured
     // as a build flag
-    CHECK(api_base_url.is_valid()) << "API Url generated was invalid."
+    CHECK(api_base_url.is_valid()) << "Default API Url generated was invalid."
+                                      "Please check configuration parameter.";
+  }
+
+  api_base_url = GetEndpointBaseUrl(true);
+  if (!api_base_url.is_empty()) {
+    // Crash quickly if we have an invalid non-empty Url configured
+    // as a build flag
+    CHECK(api_base_url.is_valid()) << "Premium API Url generated was invalid."
                                       "Please check configuration parameter.";
   }
 }
@@ -139,7 +150,31 @@ void RemoteCompletionClient::QueryPrompt(
     EngineConsumer::GenerationCompletedCallback data_completed_callback,
     EngineConsumer::GenerationDataCallback
         data_received_callback /* = base::NullCallback() */) {
-  const GURL api_base_url = GetEndpointBaseUrl();
+  auto callback = base::BindOnce(
+      &RemoteCompletionClient::OnFetchPremiumCredential,
+      weak_ptr_factory_.GetWeakPtr(), prompt, extra_stop_sequences,
+      std::move(data_completed_callback), std::move(data_received_callback));
+  credential_manager_->FetchPremiumCredential(std::move(callback));
+}
+
+void RemoteCompletionClient::OnFetchPremiumCredential(
+    const std::string& prompt,
+    const std::vector<std::string> extra_stop_sequences,
+    EngineConsumer::GenerationCompletedCallback data_completed_callback,
+    EngineConsumer::GenerationDataCallback data_received_callback,
+    absl::optional<std::string> cookie_as_string) {
+  bool premium_enabled = cookie_as_string.has_value();
+  // const GURL api_base_url = GetEndpointBaseUrl(premium_enabled);
+  GURL api_base_url = GURL("http://0.0.0.0:8000");  // TODO(nvonpentz) remove me
+  base::flat_map<std::string, std::string> headers;
+  if (premium_enabled) {
+    // Add Leo premium SKU credential as a Cookie header.
+    std::string cookie_header_value =
+        "__Secure-sku#brave-leo-premium=" + *cookie_as_string;
+    headers.emplace("Cookie", cookie_header_value);
+  }
+  headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
+  headers.emplace("Accept", "text/event-stream");
 
   // Validate that the path is valid
   GURL api_url = api_base_url.Resolve(kAIChatCompletionPath);
@@ -152,10 +187,6 @@ void RemoteCompletionClient::QueryPrompt(
   const base::Value::Dict& dict =
       CreateApiParametersDict(prompt, model_name_, stop_sequences_,
                               std::move(extra_stop_sequences), is_sse_enabled);
-  base::flat_map<std::string, std::string> headers;
-  headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
-  headers.emplace("Accept", "text/event-stream");
-
   if (is_sse_enabled) {
     VLOG(2) << "Making streaming AI Chat API Request";
     auto on_received = base::BindRepeating(

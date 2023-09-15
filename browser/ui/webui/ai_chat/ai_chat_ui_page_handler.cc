@@ -12,6 +12,7 @@
 
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/skus/skus_service_factory.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/browser/constants.h"
@@ -375,6 +376,11 @@ void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {
   }
   bool is_visible = (visibility == content::Visibility::VISIBLE) ? true : false;
   active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
+}
+
+void AIChatUIPageHandler::UserHasValidPremiumCredential(
+    UserHasValidPremiumCredentialCallback callback) {
+  active_chat_tab_helper_->UserHasValidPremiumCredential(std::move(callback));
 }
 
 }  // namespace ai_chat
