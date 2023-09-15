@@ -33,7 +33,6 @@ extension Strings {
   public static let download = NSLocalizedString("CommonDownload", tableName: "BraveShared", bundle: .module, value: "Download", comment: "Text to choose for downloading a file (example: saving an image to phone)")
   public static let showLinkPreviewsActionTitle = NSLocalizedString("ShowLinkPreviewsActionTitle", tableName: "BraveShared", bundle: .module, value: "Show Link Previews", comment: "Context menu item for showing link previews")
   public static let hideLinkPreviewsActionTitle = NSLocalizedString("HideLinkPreviewsActionTitle", tableName: "BraveShared", bundle: .module, value: "Hide Link Previews", comment: "Context menu item for hiding link previews")
-  public static let copyAddressTitle = NSLocalizedString("CopyAddressTitle", bundle: .module, value: "Copy Address", comment: "The title for the button that lets you copy the url from the location bar.")
   public static let learnMore = NSLocalizedString(
     "learnMore", tableName: "BraveShared",
     bundle: .module, value: "Learn More", comment: "")
@@ -974,6 +973,14 @@ extension Strings {
   public static let codeWordInputHelp = NSLocalizedString("CodeWordInputHelp", tableName: "BraveShared", bundle: .module, value: "Type your supplied sync chain code words into the form below.", comment: "Code words input help")
   public static let copyToClipboard = NSLocalizedString("CopyToClipboard", tableName: "BraveShared", bundle: .module, value: "Copy to Clipboard", comment: "Copy codewords title")
   public static let copiedToClipboard = NSLocalizedString("CopiedToClipboard", tableName: "BraveShared", bundle: .module, value: "Copied to Clipboard!", comment: "Copied codewords title")
+  
+  /// A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters.
+  public static let copyCleanLink = NSLocalizedString(
+    "CopyCleanLink", tableName: "BraveShared", bundle: .module,
+    value: "Copy Clean Link",
+    comment: "A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters."
+  )
+  
   public static let syncUnsuccessful = NSLocalizedString("SyncUnsuccessful", tableName: "BraveShared", bundle: .module, value: "Unsuccessful", comment: "")
   public static let syncUnableCreateGroup = NSLocalizedString("SyncUnableCreateGroup", tableName: "BraveShared", bundle: .module, value: "Can't sync this device", comment: "Description on popup when setting up a sync group fails")
   public static let copied = NSLocalizedString("Copied", tableName: "BraveShared", bundle: .module, value: "Copied!", comment: "Copied action complete title")
