@@ -250,7 +250,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &lens::features::kLensStandalone,
     &media::kLiveCaption,
     &net::features::kEnableWebTransportDraft07,
-    &net::features::kNoncedPartitionedCookies,
     &net::features::kPartitionedCookies,
     &net::features::kThirdPartyPartitionedStorageAllowedByDefault,
     &network::features::kFledgePst,
