@@ -62,12 +62,6 @@ testing::AssertionResult VerifyTemplateURLServiceLoad(
   return testing::AssertionFailure() << "TemplateURLService isn't loaded";
 }
 
-// An observer that returns back to test code after a new profile is
-// initialized.
-void OnProfileCreation(base::RunLoop* run_loop, Browser* browser) {
-  run_loop->Quit();
-}
-
 TemplateURLData CreateTestSearchEngine() {
   TemplateURLData result;
   result.SetShortName(u"test1");
@@ -239,12 +233,13 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
             incognito_service->GetDefaultSearchProvider()->prepopulate_id());
 
 #if BUILDFLAG(ENABLE_TOR)
-  base::RunLoop run_loop;
-  TorProfileManager::SwitchToTorProfile(
-      browser()->profile(), base::BindOnce(&OnProfileCreation, &run_loop));
-  run_loop.Run();
-  Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
+  Browser* tor_browser =
+      TorProfileManager::SwitchToTorProfile(browser()->profile());
+  Profile* tor_profile = tor_browser->profile();
   EXPECT_TRUE(tor_profile->IsTor());
+
+  // Wait for the search provider to initialize.
+  base::RunLoop().RunUntilIdle();
 
   const int default_provider_id =
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR;

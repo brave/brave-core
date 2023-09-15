@@ -532,14 +532,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
   net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
   tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
-  base::RunLoop loop;
-  Browser* tor_browser = nullptr;
-  TorProfileManager::SwitchToTorProfile(
-      browser()->profile(), base::BindLambdaForTesting([&](Browser* browser) {
-        tor_browser = browser;
-        loop.Quit();
-      }));
-  loop.Run();
+  Browser* tor_browser =
+      TorProfileManager::SwitchToTorProfile(browser()->profile());
 
   const GURL onion_url =
       embedded_test_server()->GetURL("test.onion", "/onion.html");

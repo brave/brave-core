@@ -91,7 +91,7 @@ void NewOffTheRecordWindowTor(Browser* browser) {
     return;
   }
 
-  TorProfileManager::SwitchToTorProfile(browser->profile(), base::DoNothing());
+  TorProfileManager::SwitchToTorProfile(browser->profile());
 }
 
 void NewTorConnectionForSite(Browser* browser) {
