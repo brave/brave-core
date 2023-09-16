@@ -110,6 +110,7 @@ import { coingeckoEndpoints } from './endpoints/coingecko-endpoints'
 import {
   tokenSuggestionsEndpoints //
 } from './endpoints/token_suggestions.endpoints'
+import { addressEndpoints } from './endpoints/address.endpoints'
 
 type GetAccountTokenCurrentBalanceArg = {
   accountId: BraveWallet.AccountId
@@ -3094,6 +3095,8 @@ export function createWalletApi () {
     .injectEndpoints({ endpoints: tokenSuggestionsEndpoints })
     // QR Code generator endpoints
     .injectEndpoints({ endpoints: qrCodeEndpoints })
+    // ENS, SNS, UD Address endpoints
+    .injectEndpoints({ endpoints: addressEndpoints })
 }
 
 export type WalletApi = ReturnType<typeof createWalletApi>
@@ -3111,6 +3114,8 @@ export const {
   useApproveTransactionMutation,
   useCancelTransactionMutation,
   useClosePanelUIMutation,
+  useEnableEnsOffchainLookupMutation,
+  useGenerateReceiveAddressMutation,
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetAddressByteCodeQuery,
@@ -3119,9 +3124,11 @@ export const {
   useGetCoingeckoIdQuery,
   useGetCombinedTokenBalanceForAllAccountsQuery,
   useGetDefaultFiatCurrencyQuery,
+  useGetEnsAddressQuery,
+  useGetERC721MetadataQuery,
+  useGetEthAddressChecksumQuery,
   useGetEthTokenDecimalsQuery,
   useGetEthTokenSymbolQuery,
-  useGetERC721MetadataQuery,
   useGetEVMTransactionSimulationQuery,
   useGetExternalRewardsWalletQuery,
   useGetFVMAddressQuery,
@@ -3129,6 +3136,7 @@ export const {
   useGetHardwareAccountDiscoveryBalanceQuery,
   useGetIpfsGatewayTranslatedNftUrlQuery,
   useGetIPFSUrlFromGatewayLikeUrlQuery,
+  useGetIsBase58EncodedSolPubkeyQuery,
   useGetIsTxSimulationOptInStatusQuery,
   useGetLocalIpfsNodeStatusQuery,
   useGetNetworksRegistryQuery,
@@ -3148,6 +3156,7 @@ export const {
   useGetSelectedAccountIdQuery,
   useGetSelectedChainQuery,
   useGetSimpleHashSpamNftsQuery,
+  useGetSnsAddressQuery,
   useGetSolanaEstimatedFeeQuery,
   useGetSolanaTransactionSimulationQuery,
   useGetSwapSupportedNetworkIdsQuery,
@@ -3156,6 +3165,7 @@ export const {
   useGetTokenSpotPricesQuery,
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
+  useGetUDAddressQuery,
   useGetUserTokensRegistryQuery,
   useInvalidateTransactionsCacheMutation,
   useIsEip1559ChangedMutation,
@@ -3165,6 +3175,7 @@ export const {
   useLazyGetBuyUrlQuery,
   useLazyGetCombinedTokenBalanceForAllAccountsQuery,
   useLazyGetDefaultFiatCurrencyQuery,
+  useLazyGetEnsAddressQuery,
   useLazyGetERC721MetadataQuery,
   useLazyGetEVMTransactionSimulationQuery,
   useLazyGetExternalRewardsWalletQuery,
@@ -3220,7 +3231,6 @@ export const {
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
   useUpdateUserTokenMutation,
-  useGenerateReceiveAddressMutation,
 } = walletApi
 
 // Derived Data Queries
