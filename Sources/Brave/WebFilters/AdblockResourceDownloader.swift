@@ -111,7 +111,7 @@ public actor AdblockResourceDownloader: Sendable {
             allowedModes: Set(ContentBlockerManager.BlockingMode.allCases)
           )
         case .failure(let error):
-          Logger.module.error("\(error.localizedDescription)")
+          ContentBlockerManager.log.error("Failed to fetch resource `\(resource.cacheFileName)`: \(error.localizedDescription)")
         }
       }
     }

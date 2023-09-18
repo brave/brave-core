@@ -413,7 +413,10 @@ public class BrowserViewController: UIViewController {
   override public func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     ScriptFactory.shared.clearCaches()
-    AdBlockStats.shared.clearCaches()
+    
+    Task {
+      await AdBlockStats.shared.clearCaches()
+    }
 
     for tab in tabManager.tabsForCurrentMode where tab.id != tabManager.selectedTab?.id {
       tab.newTabPageViewController = nil

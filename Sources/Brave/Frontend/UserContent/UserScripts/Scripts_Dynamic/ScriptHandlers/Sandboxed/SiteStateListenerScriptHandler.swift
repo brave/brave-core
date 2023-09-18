@@ -85,7 +85,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
     }
   }
   
-  @MainActor private func makeSetup(from modelTuples: [CachedAdBlockEngine.CosmeticFilterModelTuple], isAggressive: Bool) throws -> UserScriptType.SelectorsPollerSetup {
+  @MainActor private func makeSetup(from modelTuples: [AdBlockStats.CosmeticFilterModelTuple], isAggressive: Bool) throws -> UserScriptType.SelectorsPollerSetup {
     var standardSelectors: Set<String> = []
     var aggressiveSelectors: Set<String> = []
     var styleSelectors: [String: Set<String>] = [:]
@@ -95,7 +95,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
         styleSelectors[key] = styleSelectors[key]?.union(Set(values)) ?? Set(values)
       }
       
-      if modelTuple.source.isAlwaysAggressive {
+      if modelTuple.isAlwaysAggressive {
         aggressiveSelectors = aggressiveSelectors.union(modelTuple.model.hideSelectors)
       } else {
         standardSelectors = standardSelectors.union(modelTuple.model.hideSelectors)

@@ -41,7 +41,7 @@ extension NetworkManager {
         return data
       case .adBlockRules:
         let bundle = Bundle.module
-        let resourceURL = bundle.url(forResource: "latest", withExtension: "txt")
+        let resourceURL = bundle.url(forResource: "cdbbhgbmjhfnhnmgeddbliobbofkgdhe", withExtension: "txt")
         let data = try Data(contentsOf: resourceURL!)
         return data
       case .deprecatedGeneralCosmeticFilters:
