@@ -21,8 +21,8 @@
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/layout/layout_provider.h"
 
-BraveTabSearchButton::BraveTabSearchButton(TabStrip* tab_strip)
-    : TabSearchButton(tab_strip) {
+BraveTabSearchButton::BraveTabSearchButton(TabStrip* tab_strip, Edge flat_edge)
+    : TabSearchButton(tab_strip, flat_edge) {
   tab_search_bubble_host_ = std::make_unique<BraveTabSearchBubbleHost>(
       this, tab_strip->controller()->GetProfile());
 }
