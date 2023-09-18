@@ -17,7 +17,6 @@
 #include "brave/components/ai_chat/common/pref_names.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/visibility.h"
@@ -36,28 +35,22 @@ using mojom::ConversationTurnVisibility;
 
 AIChatUIPageHandler::AIChatUIPageHandler(
     content::WebContents* owner_web_contents,
-    TabStripModel* tab_strip_model,
+    content::WebContents* chat_context_web_contents,
     Profile* profile,
     mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver)
     : content::WebContentsObserver(owner_web_contents),
       profile_(profile),
       receiver_(this, std::move(receiver)) {
-  DCHECK(tab_strip_model);
-  // Detect if we are in target-tab mode, or standalone mode. Standalone mode
-  // means Chat is opened as its own tab in the tab strip and not a side panel.
-  bool is_standalone = (tab_strip_model->GetIndexOfWebContents(
-                            owner_web_contents) != TabStripModel::kNoTab);
-  if (!is_standalone) {
-    auto* web_contents = tab_strip_model->GetActiveWebContents();
-    if (!web_contents) {
-      return;
-    }
+  // Standalone mode means Chat is opened as its own tab in the tab strip and
+  // not a side panel. chat_context_web_contents is nullptr in that case
+  if (chat_context_web_contents != nullptr) {
     active_chat_tab_helper_ =
-        ai_chat::AIChatTabHelper::FromWebContents(web_contents);
+        ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
     chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
-    bool is_visible =
-        (web_contents->GetVisibility() == content::Visibility::VISIBLE) ? true
-                                                                        : false;
+    bool is_visible = (chat_context_web_contents->GetVisibility() ==
+                       content::Visibility::VISIBLE)
+                          ? true
+                          : false;
     active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
   } else {
     // TODO(petemill): Enable conversation without the TabHelper. Conversation
