@@ -9,7 +9,7 @@ import { useNftPin } from '../../../../../common/hooks/nft-pin'
 import { getLocale } from '../../../../../../common/locale'
 
 // components
-import { NftIconWithNetworkIcon } from '../../../../shared/nft-icon/decorated-nft-icon'
+import { DecoratedNftIcon } from '../../../../shared/nft-icon/decorated-nft-icon'
 import { NftCountHeading } from '../../inspects-nfts.styles'
 
 // styles
@@ -40,7 +40,7 @@ export const NftList = () => {
                 <PiningMessage>{getLocale('braveWalletNftPinningUnableToPin')}</PiningMessage>
               </NftItemOverlay>
             )}
-            <NftIconWithNetworkIcon
+            <DecoratedNftIcon
               chainId={token.chainId}
               coinType={token.coin}
               icon={token.logo}
