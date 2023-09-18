@@ -134,9 +134,9 @@ void MaybeShowLeoMatch(AutocompleteResult* result) {
 // the AutocompleteController::SortCullAndAnnotateResult() to make our sorting
 // run last but before notifying.
 #define BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT \
-  MaybeShowLeoMatch(&result_);                      \
-  SortBraveSearchPromotionMatch(&result_);          \
-  MaybeShowCommands(&result_, input_);
+  MaybeShowLeoMatch(&internal_result_);             \
+  SortBraveSearchPromotionMatch(&internal_result_); \
+  MaybeShowCommands(&internal_result_, input_);
 
 #include "src/components/omnibox/browser/autocomplete_controller.cc"
 
