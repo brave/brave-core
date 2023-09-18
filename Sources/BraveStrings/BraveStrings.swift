@@ -4576,6 +4576,11 @@ extension Strings {
       "p3a.settingSubtitle", tableName: "BraveShared", bundle: .module,
       value: "Anonymised P3A info helps Brave estimate overall usage and ensure we're improving popular features.",
       comment: "A subtitle shown on the setting that toggles analytics on Brave.")
+    
+    public static let continueButton = NSLocalizedString(
+      "p3a.continue", tableName: "BraveShared", bundle: .module,
+      value: "Continue",
+      comment: "A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding")
   }
 }
 
