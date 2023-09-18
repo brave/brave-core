@@ -21,6 +21,8 @@ import Combine
   /// Wether or not these settings are stored in memory or persisted
   let persistChanges: Bool
   
+  /// The filter list subscription
+  private var filterListSubscription: AnyCancellable?
   /// A list of defaults that should be set once we load the filter lists.
   /// This is here in case the filter lists are not loaded but the user is already changing settings
   private var pendingDefaults: [String: Bool] = [:]
@@ -78,11 +80,9 @@ import Combine
       setting.delete(inMemory: !persistChanges)
     }
     
-    // Save pending toggles
-    for (componentId, isEnabled) in pendingDefaults {
-      if let index = allFilterListSettings.firstIndex(where: { $0.componentId == componentId }) {
-        allFilterListSettings[index].isEnabled = isEnabled
-      }
+    // Create missing filter lists
+    for filterList in filterLists {
+      upsert(filterList: filterList)
     }
     
     pendingDefaults.removeAll()

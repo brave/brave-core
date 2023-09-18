@@ -44,6 +44,8 @@ actor FilterListCustomURLDownloader: ObservableObject {
   private let resourceDownloader: ResourceDownloader<DownloadResource>
   /// Fetch content blocking tasks per filter list
   private var fetchTasks: [DownloadResource: Task<Void, Error>]
+  /// Tells us if we started this service
+  private var startedService = false
   
   init(networkManager: NetworkManager = NetworkManager()) {
     self.resourceDownloader = ResourceDownloader(networkManager: networkManager)
@@ -51,11 +53,24 @@ actor FilterListCustomURLDownloader: ObservableObject {
   }
   
   /// Load any custom filter lists from cache so they are ready to use and start fetching updates.
-  func loadCachedFilterLists() async {
+  func start() async {
+    guard !startedService else { return }
+    self.startedService = true
     await CustomFilterListStorage.shared.loadCachedFilterLists()
     
     await CustomFilterListStorage.shared.filterListsURLs.asyncConcurrentForEach { customURL in
-      await self.handleUpdate(to: customURL, isEnabled: customURL.setting.isEnabled)
+      let resource = await customURL.setting.resource
+      
+      do {
+        if let cachedResult = try resource.cachedResult() {
+          await self.handle(downloadResult: cachedResult, for: customURL)
+        }
+      } catch {
+        let uuid = await customURL.setting.uuid
+        ContentBlockerManager.log.error(
+          "Failed to cached data for custom filter list `\(uuid)`: \(error)"
+        )
+      }
       
       // Always fetch this resource so it's ready if the user enables it.
       await self.startFetching(filterListCustomURL: customURL)
@@ -91,45 +106,37 @@ actor FilterListCustomURLDownloader: ObservableObject {
       
     // Add/remove the resource depending on if it is enabled/disabled
     if await filterListCustomURL.setting.isEnabled {
-      let version = fileVersionDateFormatter.string(from: downloadResult.date)
+      guard let resourcesInfo = await FilterListResourceDownloader.shared.resourcesInfo else {
+        assertionFailure("This should not have been called if the resources are not ready")
+        return
+      }
       
-      await AdBlockEngineManager.shared.add(
-        resource: AdBlockEngineManager.Resource(type: .ruleList, source: .filterListURL(uuid: uuid)),
-        fileURL: downloadResult.fileURL, version: version
+      let version = fileVersionDateFormatter.string(from: downloadResult.date)
+      let filterListInfo = CachedAdBlockEngine.FilterListInfo(
+        source: .filterListURL(uuid: uuid),
+        localFileURL: downloadResult.fileURL,
+        version: version, fileType: .text
       )
-    } else {
-      await AdBlockEngineManager.shared.removeResources(
-        for: .filterListURL(uuid: uuid)
-      )
-    }
-  }
-  
-  /// Handle the update to a filter list enabled status which will will add or remove it from the engine.
-  /// This will not compile anything to iOS rule lists as we always do this on the download regardless of its enabled status.
-  @MainActor func handleUpdate(to filterListCustomURL: FilterListCustomURL, isEnabled: Bool) async {
-    if isEnabled {
-      let resource = filterListCustomURL.setting.resource
       
       do {
-        if let cachedResult = try resource.cachedResult() {
-          await self.handle(downloadResult: cachedResult, for: filterListCustomURL)
-        }
-      } catch {
-        ContentBlockerManager.log.error(
-          "Failed to cached data for resource \(filterListCustomURL.setting.externalURL): \(error)"
+        let engine = try await CachedAdBlockEngine.compile(
+          filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
+          isAlwaysAggressive: true
         )
+        
+        await AdBlockStats.shared.add(engine: engine)
+        ContentBlockerManager.log.debug("Compiled engine for custom filter list `\(uuid)` v\(version)")
+      } catch {
+        ContentBlockerManager.log.error("Failed to compile engine for custom filter list `\(uuid)` v\(version): \(String(describing: error))")
       }
     } else {
-      // We need to remove this resource if we disable this filter list
-      // But we will keep the compiled rule lists since we can remove them from the web-view.
-      await AdBlockEngineManager.shared.removeResources(
-        for: .filterListURL(uuid: filterListCustomURL.setting.uuid)
-      )
+      await AdBlockStats.shared.removeEngine(for: .filterListURL(uuid: uuid))
     }
   }
   
   /// Start fetching the resource for the given filter list. Once a new version is downloaded, the file will be processed using the `handle` method
   func startFetching(filterListCustomURL: FilterListCustomURL) async {
+    guard startedService else { return }
     let resource = await filterListCustomURL.setting.resource
     
     guard fetchTasks[resource] == nil else {

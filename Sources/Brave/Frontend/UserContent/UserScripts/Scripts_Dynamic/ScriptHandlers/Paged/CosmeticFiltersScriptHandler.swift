@@ -54,15 +54,19 @@ class CosmeticFiltersScriptHandler: TabContentScript {
       
       Task { @MainActor in
         let domain = Domain.getOrCreate(forUrl: frameURL, persistent: self.tab?.isPrivate == true ? false : true)
-        let cachedEngines = AdBlockStats.shared.cachedEngines(for: domain)
+        let cachedEngines = await AdBlockStats.shared.cachedEngines(for: domain)
         
-        let selectorArrays = await cachedEngines.asyncConcurrentCompactMap { cachedEngine -> CachedAdBlockEngine.SelectorsTuple? in
+        let selectorArrays = await cachedEngines.asyncConcurrentCompactMap { cachedEngine -> (selectors: Set<String>, isAlwaysAggressive: Bool)? in
           do {
-            return try await cachedEngine.selectorsForCosmeticRules(
+            guard let selectors = try await cachedEngine.selectorsForCosmeticRules(
               frameURL: frameURL,
               ids: dto.data.ids,
               classes: dto.data.classes
-            )
+            ) else {
+              return nil
+            }
+            
+            return (selectors, cachedEngine.isAlwaysAggressive)
           } catch {
             Logger.module.error("\(error.localizedDescription)")
             return nil
@@ -72,7 +76,7 @@ class CosmeticFiltersScriptHandler: TabContentScript {
         var standardSelectors: Set<String> = []
         var aggressiveSelectors: Set<String> = []
         for tuple in selectorArrays {
-          if tuple.source.isAlwaysAggressive {
+          if tuple.isAlwaysAggressive {
             aggressiveSelectors = aggressiveSelectors.union(tuple.selectors)
           } else {
             standardSelectors = standardSelectors.union(tuple.selectors)

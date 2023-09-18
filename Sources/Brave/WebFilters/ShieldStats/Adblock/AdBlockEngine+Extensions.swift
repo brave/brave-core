@@ -13,37 +13,40 @@ extension AdblockEngine {
     case couldNotDeserializeDATFile
   }
   
-  /// Create an engine from the given resources.
-  ///
-  /// - Warning: You should only have at max dat file in this list. Each dat file can only represent a single engine
-  public static func createEngine(
-    from resources: [AdBlockEngineManager.ResourceWithVersion],
-    scripletResourcesURL: URL?
-  ) throws -> AdblockEngine {
-    let combinedRuleLists = Self.combineAllRuleLists(from: resources)
-    // Create an engine with the combined rule lists
-    let engine = try AdblockEngine(rules: combinedRuleLists)
-    // Compile remaining resources
-    try engine.compile(resources: resources)
-
-    // Add scriplets if available
-    if let scripletResourcesURL = scripletResourcesURL,
-       let data = FileManager.default.contents(atPath: scripletResourcesURL.path),
-       let json = try validateJSON(data) {
-      engine.useResources(json)
+  convenience init(textFileURL fileURL: URL, resourcesFileURL: URL) throws {
+    guard let data = FileManager.default.contents(atPath: fileURL.path) else {
+      throw CompileError.fileNotFound
     }
-
-    // Return the compiled data
-    return engine
+    
+    guard let rules = String(data: data, encoding: .utf8) else {
+      throw CompileError.fileNotFound
+    }
+    
+    try self.init(rules: rules)
+    try useResources(fromFileURL: resourcesFileURL)
   }
-
+  
+  convenience init(datFileURL fileURL: URL, resourcesFileURL: URL) throws {
+    guard let data = FileManager.default.contents(atPath: fileURL.path) else {
+      throw CompileError.fileNotFound
+    }
+    
+    self.init()
+    
+    if !deserialize(data: data) {
+      throw CompileError.couldNotDeserializeDATFile
+    }
+    
+    try useResources(fromFileURL: resourcesFileURL)
+  }
+  
   /// Combine all resources of type rule lists to one single string
-  private static func combineAllRuleLists(from resourcesWithVersion: [AdBlockEngineManager.ResourceWithVersion]) -> String {
+  private static func combineAllRuleLists(from infos: [CachedAdBlockEngine.FilterListInfo]) -> String {
     // Combine all rule lists that need to be injected during initialization
-    let allResults = resourcesWithVersion.compactMap { resourceWithVersion -> String? in
-      switch resourceWithVersion.resource.type {
-      case .ruleList:
-        guard let data = FileManager.default.contents(atPath: resourceWithVersion.fileURL.path) else {
+    let allResults = infos.compactMap { info -> String? in
+      switch info.fileType {
+      case .text:
+        guard let data = FileManager.default.contents(atPath: info.localFileURL.path) else {
           return nil
         }
         
@@ -57,33 +60,16 @@ extension AdblockEngine {
     return combinedRules
   }
   
-  /// Compile all the resources on a detached task
-  private func compile(resources: [AdBlockEngineManager.ResourceWithVersion]) throws {
-    for resourceWithVersion in resources {
-      try self.compile(resource: resourceWithVersion)
-    }
-  }
-  
-  /// Compile the given resource into the given engine
-  private func compile(resource: AdBlockEngineManager.ResourceWithVersion) throws {
-    switch resource.resource.type {
-    case .dat:
-      guard let data = FileManager.default.contents(atPath: resource.fileURL.path) else {
-        throw CompileError.fileNotFound
-      }
-      
-      if !deserialize(data: data) {
-        throw CompileError.couldNotDeserializeDATFile
-      }
-      
-    case .ruleList:
-      // This is added during engine initialization
-      break
+  private func useResources(fromFileURL fileURL: URL) throws {
+    // Add scriplets if available
+    if let data = FileManager.default.contents(atPath: fileURL.path),
+       let json = try Self.validateJSON(data) {
+      useResources(json)
     }
   }
   
   /// Return a `JSON` string if this data is valid
-  private static func validateJSON(_ data: Data) throws -> String? {
+  static func validateJSON(_ data: Data) throws -> String? {
     let value = try JSONSerialization.jsonObject(with: data, options: [])
     
     if let value = value as? NSArray {

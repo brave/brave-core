@@ -48,13 +48,8 @@ public actor LaunchHelper {
       // This is done first because compileResources need their results
       async let filterListCache: Void = FilterListResourceDownloader.shared.loadFilterListSettingsAndCachedData()
       async let adblockResourceCache: Void = AdblockResourceDownloader.shared.loadCachedAndBundledDataIfNeeded(allowedModes: launchBlockModes)
-      async let filterListURLCache: Void = FilterListCustomURLDownloader.shared.loadCachedFilterLists()
-      _ = await (filterListCache, adblockResourceCache, filterListURLCache)
+      _ = await (filterListCache, adblockResourceCache)
       Self.signpost.emitEvent("loadedCachedData", id: signpostID, "Loaded cached data")
-      
-      // Compile some engines
-      await AdBlockEngineManager.shared.compileResources()
-      Self.signpost.emitEvent("compileResources", id: signpostID, "Compiled engine resources")
       
       // This one is non-blocking
       performPostLoadTasks(adBlockService: adBlockService, loadedBlockModes: launchBlockModes)
@@ -100,8 +95,6 @@ public actor LaunchHelper {
       Self.signpost.emitEvent("loadCachedAndBundledDataIfNeeded", id: signpostID, "Reloaded data for remaining modes")
       await AdblockResourceDownloader.shared.startFetching()
       Self.signpost.emitEvent("startFetching", id: signpostID, "Started fetching ad-block data")
-      await AdBlockEngineManager.shared.startTimer()
-      Self.signpost.emitEvent("startTimer", id: signpostID, "Started engine timer")
       
       /// Cleanup rule lists so we don't have dead rule lists
       let validBlocklistTypes = await self.getAllValidBlocklistTypes()

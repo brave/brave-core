@@ -53,7 +53,6 @@ struct FilterListsView: View {
             .onChange(of: filterListURL.setting.isEnabled) { value in
               Task {
                 CustomFilterListSetting.save(inMemory: !customFilterListStorage.persistChanges)
-                await FilterListCustomURLDownloader.shared.handleUpdate(to: filterListURL, isEnabled: value)
               }
             }
             
@@ -124,14 +123,11 @@ struct FilterListsView: View {
     
     Task {
       await removedURLs.asyncConcurrentForEach { removedURL in
-        // 1. Disable the filter list.
-        // It would be better to delete it but for some reason if we remove the rule list,
-        // it will not allow us to remove it from the tab
-        // So we don't remove it, only flag it as disabled and it will be removed on the next launch
+        // 1. Remove content blocker
+        // We cannot do this for some reason as
+        // it will not allow us to remove it from the tab if we do.
+        // But on next launch it will be removed
         // during the `cleaupInvalidRuleLists` step on `LaunchHelper`
-        await FilterListCustomURLDownloader.shared.handleUpdate(
-          to: removedURL, isEnabled: false
-        )
         
         // 2. Stop downloading the file
         await FilterListCustomURLDownloader.shared.stopFetching(
