@@ -14,7 +14,6 @@ include = [
     "/README.md",
     "/src/*",
     "/examples/*.rs",
-    "/benches/*"
 ]
 
 [dependencies]
@@ -45,10 +44,6 @@ criterion = "0.3"
 futures = "0.3"
 tokio = { version = "1.2", features = ["full"] }
 
-[[bench]]
-name = "html5ever"
-harness = false
-
 [patch.crates-io.kuchiki_v0_8]
-path = "../../../third_party/rust/kuchiki/v0_8/crate"
+path = "../../../../third_party/rust/kuchiki/v0_8/crate"
 package = "kuchiki"
