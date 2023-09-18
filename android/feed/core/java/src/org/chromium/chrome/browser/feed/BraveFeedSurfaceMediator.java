@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.Nullable;
 
 import org.chromium.chrome.browser.feed.sort_ui.FeedOptionsCoordinator;
+import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.ui.modelutil.PropertyModel;
 
 public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
@@ -18,12 +19,24 @@ public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
     private FeedSurfaceCoordinator mCoordinator;
     private SnapScrollHelper mSnapScrollHelper;
 
-    BraveFeedSurfaceMediator(FeedSurfaceCoordinator coordinator, Context context,
-            @Nullable SnapScrollHelper snapScrollHelper, PropertyModel headerModel,
-            @FeedSurfaceCoordinator.StreamTabId int openingTabId, FeedActionDelegate actionDelegate,
-            FeedOptionsCoordinator optionsCoordinator) {
-        super(coordinator, context, snapScrollHelper, headerModel, openingTabId, actionDelegate,
-                optionsCoordinator);
+    BraveFeedSurfaceMediator(
+            FeedSurfaceCoordinator coordinator,
+            Context context,
+            @Nullable SnapScrollHelper snapScrollHelper,
+            PropertyModel headerModel,
+            @FeedSurfaceCoordinator.StreamTabId int openingTabId,
+            FeedActionDelegate actionDelegate,
+            FeedOptionsCoordinator optionsCoordinator,
+            @Nullable UiConfig uiConfig) {
+        super(
+                coordinator,
+                context,
+                snapScrollHelper,
+                headerModel,
+                openingTabId,
+                actionDelegate,
+                optionsCoordinator,
+                uiConfig);
     }
 
     @Override

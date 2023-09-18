@@ -708,26 +708,47 @@ public class BytecodeTest {
                 constructorsMatch("org/chromium/chrome/browser/autofill/AutofillPopupBridge",
                         "org/chromium/chrome/browser/autofill/BraveAutofillPopupBridge", View.class,
                         long.class, WindowAndroid.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
-                "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator",
-                Context.class, AutocompleteControllerProvider.class, AutocompleteDelegate.class,
-                UrlBarEditingTextStateProvider.class, PropertyModel.class, Handler.class,
-                Supplier.class, Supplier.class, Supplier.class, LocationBarDataProvider.class,
-                Callback.class, Supplier.class, BookmarkState.class, OmniboxActionDelegate.class,
-                OpenHistoryClustersDelegate.class));
-        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/feed/FeedSurfaceMediator",
-                "org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator",
-                FeedSurfaceCoordinator.class, Context.class, SnapScrollHelper.class,
-                PropertyModel.class, int.class, FeedActionDelegate.class,
-                FeedOptionsCoordinator.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateImpl",
-                "org/chromium/chrome/browser/partnercustomizations/BraveCustomizationProviderDelegateImpl"));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView",
-                "org/chromium/chrome/browser/share/send_tab_to_self/BraveManageAccountDevicesLinkView",
-                Context.class, AttributeSet.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
+                        "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator",
+                        Context.class,
+                        AutocompleteControllerProvider.class,
+                        AutocompleteDelegate.class,
+                        UrlBarEditingTextStateProvider.class,
+                        PropertyModel.class,
+                        Handler.class,
+                        Supplier.class,
+                        Supplier.class,
+                        Supplier.class,
+                        LocationBarDataProvider.class,
+                        Callback.class,
+                        Supplier.class,
+                        BookmarkState.class,
+                        OmniboxActionDelegate.class,
+                        OpenHistoryClustersDelegate.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/feed/FeedSurfaceMediator",
+                        "org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator",
+                        FeedSurfaceCoordinator.class,
+                        Context.class,
+                        SnapScrollHelper.class,
+                        PropertyModel.class,
+                        int.class,
+                        FeedActionDelegate.class,
+                        FeedOptionsCoordinator.class,
+                        UiConfig.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateImpl",
+                        "org/chromium/chrome/browser/partnercustomizations/BraveCustomizationProviderDelegateImpl"));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView",
+                        "org/chromium/chrome/browser/share/send_tab_to_self/BraveManageAccountDevicesLinkView",
+                        Context.class,
+                        AttributeSet.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                 "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
