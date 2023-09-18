@@ -184,14 +184,14 @@ extension Strings {
       NSLocalizedString(
         "defaultBrowserCallout.notificationTitle",
         tableName: "BraveShared", bundle: .module,
-        value: "Brave Web Browser",
+        value: "Get Brave protection, on every link",
         comment: "Notification title to promote setting Brave app as default browser")
 
     public static let notificationBody =
       NSLocalizedString(
         "defaultBrowserCallout.notificationBody",
         tableName: "BraveShared", bundle: .module,
-        value: "Optimized for iOS %@. Make Brave your default browser today.",
+        value: "Set Brave as your default browser",
         comment: "Notification body to promote setting Brave app as default browser")
   }
 }
