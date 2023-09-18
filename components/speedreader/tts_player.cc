@@ -8,9 +8,14 @@
 #include <algorithm>
 #include <utility>
 
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/tts_controller.h"
 #include "content/public/browser/tts_utterance.h"
 #include "content/public/browser/web_contents.h"
+
+namespace {
+constexpr const char kParagraphsKey[] = "paragraphs";
+}
 
 namespace speedreader {
 
@@ -76,21 +81,30 @@ bool TtsPlayer::Controller::IsPlaying() const {
   return tts->IsSpeaking();
 }
 
-bool TtsPlayer::Controller::IsPlayingRequestedWebContents() const {
+bool TtsPlayer::Controller::IsPlayingRequestedWebContents(
+    absl::optional<int> paragraph_index) const {
+  if (paragraph_index.has_value() && paragraph_index != paragraph_index_) {
+    return false;
+  }
   return playing_web_contents_ == request_web_contents_;
 }
 
-void TtsPlayer::Controller::Play() {
+void TtsPlayer::Controller::Play(absl::optional<int> paragraph_index) {
   DCHECK(request_web_contents_);
   if (IsPlayingRequestedWebContents()) {
     Observe(playing_web_contents_);
+    if (paragraph_index.has_value() && paragraph_index != paragraph_index_) {
+      paragraph_index_ = paragraph_index.value();
+      reading_start_position_ = 0;
+      reading_position_ = 0;
+    }
     Resume(true);
   } else {
     Stop();
     TtsPlayer::GetInstance()->delegate_->RequestReadingContent(
         request_web_contents_,
         base::BindOnce(&Controller::OnContentReady, base::Unretained(this),
-                       request_web_contents_));
+                       request_web_contents_, std::move(paragraph_index)));
   }
 }
 
@@ -98,7 +112,7 @@ void TtsPlayer::Controller::Pause() {
   if (IsPlayingRequestedWebContents()) {
     auto* tts = content::TtsController::GetInstance();
     reading_start_position_ =
-        std::min(static_cast<int>(reading_content_.size()),
+        std::min(static_cast<int>(GetParagraphToRead().size()),
                  reading_start_position_ + reading_position_);
     reading_position_ = 0;
     tts->Stop();
@@ -115,29 +129,46 @@ void TtsPlayer::Controller::Resume() {
 void TtsPlayer::Controller::Stop() {
   auto* tts = content::TtsController::GetInstance();
   tts->Stop();
+
+  paragraph_index_ = -1;
   reading_position_ = 0;
   reading_start_position_ = 0;
+  for (auto& o : owner_->observers_) {
+    o.OnReadingProgress(playing_web_contents_, paragraph_index_, 0, 0);
+  }
   playing_web_contents_ = nullptr;
 
   Observe(nullptr);
 }
 
 void TtsPlayer::Controller::Forward() {
-  reading_start_position_ =
-      std::min(static_cast<int>(reading_content_.size()),
-               reading_start_position_ + reading_position_ + 32);
+  if (!HasNextParagraph()) {
+    return;
+  }
+  ++paragraph_index_;
+  reading_start_position_ = 0;
   reading_position_ = 0;
   if (IsPlaying()) {
     Resume(true);
+  } else {
+    for (auto& o : owner_->observers_) {
+      o.OnReadingProgress(request_web_contents_, paragraph_index_, 0, 0);
+    }
   }
 }
 
 void TtsPlayer::Controller::Rewind() {
-  reading_start_position_ =
-      std::max(0, reading_start_position_ + reading_position_ - 32);
+  if (paragraph_index_ > 0) {
+    --paragraph_index_;
+  }
+  reading_start_position_ = 0;
   reading_position_ = 0;
   if (IsPlaying()) {
     Resume(true);
+  } else {
+    for (auto& o : owner_->observers_) {
+      o.OnReadingProgress(request_web_contents_, paragraph_index_, 0, 0);
+    }
   }
 }
 
@@ -151,7 +182,7 @@ void TtsPlayer::Controller::Resume(bool recreate_utterance) {
     reading_start_position_ += reading_position_;
     reading_position_ = 0;
 
-    utterance->SetText(reading_content_.substr(reading_start_position_));
+    utterance->SetText(GetParagraphToRead().substr(reading_start_position_));
     utterance->SetShouldClearQueue(true);
     utterance->SetEventDelegate(this);
     utterance->SetVoiceName(current_voice_);
@@ -162,8 +193,38 @@ void TtsPlayer::Controller::Resume(bool recreate_utterance) {
   }
 }
 
+bool TtsPlayer::Controller::HasNextParagraph() {
+  if (!reading_content_.is_dict()) {
+    return false;
+  }
+  const auto* content = reading_content_.GetDict().FindList(kParagraphsKey);
+  if (!content) {
+    return false;
+  }
+  return paragraph_index_ + 1 < static_cast<int>(content->size());
+}
+
+const std::string& TtsPlayer::Controller::GetParagraphToRead() {
+  if (!reading_content_.is_dict()) {
+    return base::EmptyString();
+  }
+  const auto* content = reading_content_.GetDict().FindList(kParagraphsKey);
+  if (!content) {
+    return base::EmptyString();
+  }
+  if (0 <= paragraph_index_ &&
+      paragraph_index_ < static_cast<int>(content->size())) {
+    return (*content)[paragraph_index_].GetString();
+  }
+  return base::EmptyString();
+}
+
 void TtsPlayer::Controller::DidStartNavigation(
     content::NavigationHandle* handle) {
+  if (!handle->IsInPrimaryMainFrame() ||
+      handle->GetReloadType() == content::ReloadType::NONE) {
+    return;
+  }
   Stop();
 }
 
@@ -180,21 +241,32 @@ void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
     case content::TtsEventType::TTS_EVENT_WORD:
       reading_position_ = char_index;
       for (auto& o : owner_->observers_) {
-        o.OnReadingProgress(playing_web_contents_, "content", char_index,
+        o.OnReadingProgress(playing_web_contents_, paragraph_index_, char_index,
                             length);
       }
       break;
-    case content::TtsEventType::TTS_EVENT_PAUSE:
     case content::TtsEventType::TTS_EVENT_ERROR:
     case content::TtsEventType::TTS_EVENT_INTERRUPTED:
     case content::TtsEventType::TTS_EVENT_CANCELLED:
-    case content::TtsEventType::TTS_EVENT_END:
+    case content::TtsEventType::TTS_EVENT_PAUSE:
       for (auto& o : owner_->observers_) {
         o.OnReadingStop(playing_web_contents_);
       }
-      if (event_type == content::TtsEventType::TTS_EVENT_END) {
-        reading_position_ = 0;
-        reading_start_position_ = 0;
+      break;
+    case content::TtsEventType::TTS_EVENT_END:
+      reading_position_ = 0;
+      reading_start_position_ = 0;
+
+      if (HasNextParagraph()) {
+        ++paragraph_index_;
+        Resume(true);
+      } else {
+        paragraph_index_ = -1;
+        for (auto& o : owner_->observers_) {
+          o.OnReadingProgress(playing_web_contents_, paragraph_index_,
+                              char_index, length);
+          o.OnReadingStop(playing_web_contents_);
+        }
       }
       break;
     case content::TtsEventType::TTS_EVENT_RESUME:
@@ -210,15 +282,16 @@ void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
 }
 
 void TtsPlayer::Controller::OnContentReady(content::WebContents* web_contents,
-                                           bool success,
-                                           std::string content) {
-  if (!success || web_contents != request_web_contents_) {
+                                           absl::optional<int> paragraph_index,
+                                           base::Value content) {
+  if (!content.is_dict() || web_contents != request_web_contents_) {
     return;
   }
   playing_web_contents_ = web_contents;
 
   Observe(playing_web_contents_);
 
+  paragraph_index_ = paragraph_index.value_or(0);
   reading_content_ = std::move(content);
   reading_position_ = 0;
   reading_start_position_ = 0;

@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SPEEDREADER_SPEEDREADER_TOOLBAR_DATA_HANDLER_IMPL_H_
 #define BRAVE_BROWSER_UI_WEBUI_SPEEDREADER_SPEEDREADER_TOOLBAR_DATA_HANDLER_IMPL_H_
 
-#include <string>
-
 #include "base/scoped_observation.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
@@ -87,7 +85,7 @@ class SpeedreaderToolbarDataHandlerImpl
   void OnReadingStart(content::WebContents* web_contents) override;
   void OnReadingStop(content::WebContents* web_contents) override;
   void OnReadingProgress(content::WebContents* web_contents,
-                         const std::string& element_id,
+                         int paragraph_index,
                          int char_index,
                          int length) override;
 

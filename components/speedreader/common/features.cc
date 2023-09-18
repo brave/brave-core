@@ -18,4 +18,7 @@ BASE_FEATURE(kSpeedreaderFeature,
 const base::FeatureParam<int> kSpeedreaderMinOutLengthParam{
     &kSpeedreaderFeature, "min_out_length", 1000};
 
+const base::FeatureParam<bool> kSpeedreaderTTS{&kSpeedreaderFeature, "tts",
+                                               false};
+
 }  // namespace speedreader

@@ -12,6 +12,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/constants.h"
+#include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/resources/panel/grit/brave_speedreader_toolbar_generated_map.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -52,6 +53,9 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
 #else
   source->AddBoolean("aiChatFeatureEnabled", false);
 #endif
+  source->AddBoolean("ttsEnabled",
+                     speedreader::features::IsSpeedreaderEnabled() &&
+                         speedreader::kSpeedreaderTTS.Get());
 }
 
 SpeedreaderToolbarUI::~SpeedreaderToolbarUI() = default;

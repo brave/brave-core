@@ -12,6 +12,7 @@
 namespace speedreader {
 BASE_DECLARE_FEATURE(kSpeedreaderFeature);
 extern const base::FeatureParam<int> kSpeedreaderMinOutLengthParam;
+extern const base ::FeatureParam<bool> kSpeedreaderTTS;
 }  // namespace speedreader
 
 #endif  // BRAVE_COMPONENTS_SPEEDREADER_COMMON_FEATURES_H_

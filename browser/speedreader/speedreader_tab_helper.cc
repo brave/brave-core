@@ -26,6 +26,7 @@
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
+#include "brave/components/speedreader/tts_player.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/dom_distiller/content/browser/distillable_page_utils.h"
 #include "components/grit/brave_components_resources.h"
@@ -51,6 +52,11 @@ namespace speedreader {
 std::u16string GetSpeedreaderData(
     std::initializer_list<std::pair<base::StringPiece, int>> resources) {
   std::u16string result = u"speedreaderData = {";
+
+  if (kSpeedreaderTTS.Get()) {
+    result += u"ttsEnabled: true,";
+  }
+
   for (const auto& r : resources) {
     auto text = brave_l10n::GetLocalizedResourceUTF16String(r.second);
     // Make sure that the text doesn't contain js injection
@@ -204,6 +210,17 @@ void SpeedreaderTabHelper::OnShowOriginalPage() {
   TransitStateTo(DistillStates::ViewOriginal());
 }
 
+void SpeedreaderTabHelper::OnTtsPlayPause(int paragraph_index) {
+  auto& tts_controller =
+      speedreader::TtsPlayer::GetInstance()->GetControllerFor(web_contents());
+  if (tts_controller.IsPlaying() &&
+      tts_controller.IsPlayingRequestedWebContents(paragraph_index)) {
+    tts_controller.Pause();
+  } else {
+    tts_controller.Play(paragraph_index);
+  }
+}
+
 void SpeedreaderTabHelper::ClearPersistedData() {
   if (auto* entry = web_contents()->GetController().GetLastCommittedEntry()) {
     SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
@@ -234,8 +251,10 @@ void SpeedreaderTabHelper::ProcessNavigation(
 
   auto* rewriter_service =
       g_brave_browser_process->speedreader_rewriter_service();
+  auto* nav_entry = navigation_handle->GetNavigationEntry();
+
   const bool url_looks_readable =
-      rewriter_service &&
+      nav_entry && !nav_entry->IsViewSourceMode() && rewriter_service &&
       rewriter_service->URLLooksReadable(navigation_handle->GetURL());
 
   const bool enabled_for_site =
@@ -302,19 +321,22 @@ void SpeedreaderTabHelper::DidStopLoading() {
 
 void SpeedreaderTabHelper::DOMContentLoaded(
     content::RenderFrameHost* render_frame_host) {
-  if (!render_frame_host->IsInPrimaryMainFrame()) {
+  if (!render_frame_host->IsInPrimaryMainFrame() ||
+      !DistillStates::IsDistilled(distill_state_)) {
     return;
   }
+  UpdateUI();
 
-  if (!IsPageDistillationAllowed()) {
-    return;
-  } else {
-    UpdateUI();
-  }
-
-  static base::NoDestructor<std::u16string> kSpeedreaderData(GetSpeedreaderData(
-      {{"showOriginalLinkText", IDS_READER_MODE_SHOW_ORIGINAL_PAGE_LINK},
-       {"minutesText", IDS_READER_MODE_MINUTES_TEXT}}));
+  static base::NoDestructor<std::u16string> kSpeedreaderData(
+      GetSpeedreaderData({
+        {"showOriginalLinkText", IDS_READER_MODE_SHOW_ORIGINAL_PAGE_LINK},
+            {"minutesText", IDS_READER_MODE_MINUTES_TEXT},
+#if defined(IDS_READER_MODE_TEXT_TO_SPEECH_PLAY_PAUSE)
+        {
+          "playButtonTitle", IDS_READER_MODE_TEXT_TO_SPEECH_PLAY_PAUSE
+        }
+#endif
+      }));
 
   static base::NoDestructor<std::u16string> kJsScript(base::UTF8ToUTF16(
       ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
@@ -448,7 +470,7 @@ void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
 }
 
 void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
-  if (!success) {
+  if (!success || html.empty()) {
     // TODO(boocmp): Show error dialog [Distillation failed on this page].
     TransitStateTo(DistillStates::DistillReverting(
         DistillStates::DistillReverting::Reason::kError, false));
@@ -456,7 +478,7 @@ void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
     return;
   }
 
-  single_show_content_.swap(html);
+  single_show_content_ = std::move(html);
   TransitStateTo(
       DistillStates::Distilling(DistillStates::Distilling::Reason::kManual));
 }
