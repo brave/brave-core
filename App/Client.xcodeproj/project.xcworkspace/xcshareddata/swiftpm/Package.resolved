@@ -41,7 +41,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/brave/PanModal",
       "state" : {
-        "revision" : "e4c07f8e6c5df937051fabc47e1e92901e1d068b"
+        "revision" : "e67e9eff53c05f19b41bbb2ca7d27ff5859a586c"
       }
     },
     {

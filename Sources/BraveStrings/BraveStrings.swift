@@ -1119,6 +1119,8 @@ extension Strings {
   public static let HTTPSEverywhereDescription = NSLocalizedString("HTTPSEverywhereDescription", tableName: "BraveShared", bundle: .module, value: "Opens sites using secure HTTPS instead of HTTP when possible.", comment: "")
   public static let googleSafeBrowsing = NSLocalizedString("GoogleSafeBrowsing", tableName: "BraveShared", bundle: .module, value: "Block Dangerous Websites", comment: "")
   public static let googleSafeBrowsingUsingWebKitDescription = NSLocalizedString("GoogleSafeBrowsingUsingWebKitDescription", tableName: "BraveShared", bundle: .module, value: "Safe Browsing protects against websites which are known to be dangerous. [Learn More](%@)", comment: "")
+  public static let screenTimeSetting = NSLocalizedString("settings.privacy.screenTimeSetting", tableName: "BraveShared", bundle: .module, value: "Enable Screen Time", comment: "")
+  public static let screenTimeSettingDescription = NSLocalizedString("settings.privacy.screenTimeSettingDescription", tableName: "BraveShared", bundle: .module, value: "See which websites you spend the most time on, and set browsing limits. [Learn More](%@)", comment: "")
   public static let blockScripts = NSLocalizedString("BlockScripts", tableName: "BraveShared", bundle: .module, value: "Block Scripts", comment: "")
   public static let blockScriptsDescription = NSLocalizedString("BlockScriptsDescription", tableName: "BraveShared", bundle: .module, value: "Blocks JavaScript (may break sites).", comment: "")
   public static let blockCookiesDescription = NSLocalizedString("BlockCookiesDescription", tableName: "BraveShared", bundle: .module, value: "Prevents websites from storing information about your previous visits.", comment: "")
