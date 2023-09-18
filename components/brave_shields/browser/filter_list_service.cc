@@ -110,4 +110,17 @@ void FilterListService::DeleteSubscription(const GURL& sub_url) {
       sub_url);
 }
 
+void FilterListService::GetCustomFilters(GetCustomFiltersCallback callback) {
+  std::move(callback).Run(
+      ad_block_service_->custom_filters_provider()->GetCustomFilters());
+}
+
+void FilterListService::UpdateCustomFilters(
+    const std::string& custom_filters,
+    UpdateCustomFiltersCallback callback) {
+  std::move(callback).Run(
+      ad_block_service_->custom_filters_provider()->UpdateCustomFilters(
+          custom_filters));
+}
+
 }  // namespace brave_shields
