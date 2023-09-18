@@ -316,7 +316,7 @@ dependencies = [
  "http",
  "iana-time-zone",
  "keccak",
- "kuchiki",
+ "kuchikiki",
  "lazy_static",
  "libc",
  "libsecp256k1",
@@ -1141,7 +1141,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "kuchiki"
+name = "kuchikiki"
 version = "0.8.1"
 dependencies = [
  "cssparser 0.27.2",

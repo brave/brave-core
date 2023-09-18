@@ -28,8 +28,8 @@ lazy_static! {
     ]).unwrap();
 }
 
-/// Determines if a slice is an abbreviation by checking a list of common abbreviations and some
-/// simple heuristics.
+/// Determines if a slice is an abbreviation by checking a list of common
+/// abbreviations and some simple heuristics.
 #[inline]
 pub fn is_abbreviation(s: &str) -> bool {
     let len = s.chars().count();

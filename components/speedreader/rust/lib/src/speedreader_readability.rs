@@ -1,6 +1,6 @@
 use html5ever::driver::{ParseOpts, Parser};
 use html5ever::tendril::{StrTendril, TendrilSink};
-use kuchiki::Sink;
+use kuchikiki::Sink;
 use lol_html::OutputSink;
 use url::Url;
 

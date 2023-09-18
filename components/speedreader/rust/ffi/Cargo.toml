@@ -16,5 +16,5 @@ name = "speedreader_ffi"
 path = "lib.rs"
 crate-type = ["rlib"]
 
-[patch.crates-io.kuchiki]
-path = "../../../../third_party/rust/kuchiki/v0_8/crate"
+[patch.crates-io.kuchikiki]
+path = "../../../../third_party/rust/kuchikiki/v0_8/crate"

@@ -1,6 +1,6 @@
 #[macro_use]
 extern crate html5ever;
-extern crate kuchiki;
+extern crate kuchikiki;
 extern crate regex;
 extern crate url;
 #[macro_use]

@@ -31,7 +31,7 @@ fvm_shared = "3"
 hex = "0.4"
 hex-literal = "0.4"
 hmac = "0.10"
-kuchiki = "0.8"
+kuchikiki = "0.8"
 lazy_static = "1"
 libc = "0.2"
 lifeguard = "0.6"
@@ -692,9 +692,9 @@ package = "itoa"
 path = "keccak/v0_1/crate"
 package = "keccak"
 
-[patch.crates-io.kuchiki_v0_8]
-path = "kuchiki/v0_8/crate"
-package = "kuchiki"
+[patch.crates-io.kuchikiki_v0_8]
+path = "kuchikiki/v0_8/crate"
+package = "kuchikiki"
 
 [patch.crates-io.lazy_static_v1]
 path = "../../../third_party/rust/lazy_static/v1/crate"
