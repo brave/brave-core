@@ -44,7 +44,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       BraveLeoAssistantBrowserProxyImpl.getInstance()
 
     onResetAssistantData_() {
-      var message =
+      const message =
         this.i18n('braveLeoAssistantResetAndClearDataConfirmationText')
       if(window.confirm(message)) {
         this.browserProxy_.resetLeoData()
