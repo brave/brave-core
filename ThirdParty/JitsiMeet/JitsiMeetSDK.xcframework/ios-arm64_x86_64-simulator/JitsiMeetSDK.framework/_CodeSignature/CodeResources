@@ -6,7 +6,7 @@
 	<dict>
 		<key>AccessibilityResources.bundle/Info.plist</key>
 		<data>
-		1jk8ecGzblIht93FGVrxAI8fF1o=
+		hRbwH6pzVhgxKj5Br4WrVcn+RN8=
 		</data>
 		<key>AccessibilityResources.bundle/en.lproj/Localizable.strings</key>
 		<dict>
@@ -75,7 +75,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		27HttStD2q/bxK0PVDvWkLpyO88=
+		5nZj2k7ZrWTsu+JY+U27hWISHFA=
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -95,7 +95,7 @@
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		B7/kv7tMU1S3q67PLE63Sx6OcCw=
+		GcKcqFOgEtpWcQ9E/Rl6LsC6k8Q=
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -115,7 +115,7 @@
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		PkqhUQ1+kvxlvX+ZkUr1IDXaPGs=
+		V+wJgJ/M23AVoXNYSBP1zBHAO3Y=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -271,7 +271,7 @@
 		</data>
 		<key>main.jsbundle</key>
 		<data>
-		iwG5TEEykJTdlVgOO+us1Zs1Hzs=
+		PBKdpfahSYjwAjf1wsxxOazvlNE=
 		</data>
 		<key>noAudioSignal.mp3</key>
 		<data>
@@ -424,7 +424,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			uT/9Q9kH28M4R7f7XGa5x5ln9aO+o0ZbgK7+jZYvnEk=
+			2wLuDNzjTkmUDyiugXQvPpZBl77xS4TZvDpfkobItEc=
 			</data>
 		</dict>
 		<key>AccessibilityResources.bundle/en.lproj/Localizable.strings</key>
@@ -566,7 +566,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			tRKFIYf4lByYt+h9EPEvV9UsDc/bvPo3R+NJgoUEHb8=
+			zQpWFODesh5n1xap65X2yyk2gU4xr3HlFQpKuze3LaY=
 			</data>
 		</dict>
 		<key>Modules/JitsiMeetSDK.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
@@ -601,7 +601,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			UuhKFyWMjrVkS3+qA18GvhxpJmzFLZFLaQql7j45MVU=
+			v+v0IKhOLrW01rXDxMbeYUoPIz8tFhg7okCdwjWF8/8=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -874,7 +874,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			WcxCbZl22cAde+gBIlii7PUhzpyCEEgl8vVxb6FSQWA=
+			7L7bxrEfPcfxG+m6utUu2cmXchddW/952uoP/nOBXCw=
 			</data>
 		</dict>
 		<key>noAudioSignal.mp3</key>
