@@ -311,6 +311,14 @@ bool BraveContentSettingsAgentImpl::IsFirstPartyCosmeticFilteringEnabled(
   return setting == CONTENT_SETTING_BLOCK;
 }
 
+void BraveContentSettingsAgentImpl::DidCommitProvisionalLoad(
+    ui::PageTransition transition) {
+  ContentSettingsAgentImpl::DidCommitProvisionalLoad(transition);
+  // Invalidate Ephemeral Storage opaque origins. Page reload might change the
+  // Ephemeral Storage mode, in this case we should re-request it.
+  cached_ephemeral_storage_origins_.clear();
+}
+
 BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
 
