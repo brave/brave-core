@@ -11,13 +11,7 @@ public struct UIConstants {
   static let defaultPadding: CGFloat = 10
   static let snackbarButtonHeight: CGFloat = 48
   static var toolbarHeight: CGFloat = 44
-  static var bottomToolbarHeight: CGFloat {
-    get {
-      let bottomInset: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0.0
-      return toolbarHeight + bottomInset
-    }
-  }
-
+  
   // Static fonts
   static let defaultChromeSize: CGFloat = 16
   static let defaultChromeSmallSize: CGFloat = 11
