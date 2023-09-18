@@ -26,6 +26,7 @@ import { PlaylistItem as PlaylistItemMojo } from 'gen/brave/components/playlist/
 import { SortablePlaylistItem, PlaylistItem } from './playlistItem'
 import {
   PlaylistEditMode,
+  useInitialized,
   useLastPlayerState,
   usePlaylist,
   usePlaylistEditMode
@@ -119,6 +120,7 @@ export default function PlaylistFolder ({
 }: RouteComponentProps<MatchParams>) {
   const playlist = usePlaylist(match.params.playlistId)
   const lastPlayerState = useLastPlayerState()
+  const initialized = useInitialized()
 
   React.useEffect(() => {
     // When playlist updated and player is working, notify that the current
@@ -170,6 +172,13 @@ export default function PlaylistFolder ({
   const sensors = useSensorsWithThreshold()
 
   if (!playlist) {
+    if (!initialized) {
+      // When Playlist web ui is loaded with a certain folder in the path, e.g.
+      // chrome://playlist/playlist/{playlist_id}, the App state could be uninitialized yet.
+      // We should wait for it to be loaded rather than redirect to the index page.
+      return null
+    }
+
     // After deleting a playlist from header, this could happen. In this case,
     // redirect to the index page.
     return <Redirect to='/' />
