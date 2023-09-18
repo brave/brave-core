@@ -11,6 +11,8 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/ui/views/side_panel/read_later_side_panel_web_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_content_proxy.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/font_list.h"
@@ -78,11 +80,36 @@ BraveReadLaterSidePanelView::BraveReadLaterSidePanelView(
   AddChildView(std::make_unique<ReadLaterSidePanelHeaderView>());
   AddChildView(std::make_unique<views::Separator>())
       ->SetColorId(kColorSidebarPanelHeaderSeparator);
-  AddChildView(std::make_unique<ReadLaterSidePanelWebView>(browser, close_cb))
-      ->SetProperty(
-          views::kFlexBehaviorKey,
-          views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
-                                   views::MaximumFlexSizeRule::kUnbounded));
+  auto* web_view = AddChildView(
+      std::make_unique<ReadLaterSidePanelWebView>(browser, close_cb));
+  web_view->SetProperty(
+      views::kFlexBehaviorKey,
+      views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
+                               views::MaximumFlexSizeRule::kUnbounded));
+
+  // Originally SidePanelEntry's Content was ReadLaterSidePanelWebView
+  // and it's availability is set to true when SidePanelWebUIView::ShowUI()
+  // and then proxy's availability callback is executed.
+  // However, we use parent view(BraveReadLaterSidePanelView) to have
+  // panel specific header view and this class becomes SidePanelEntry's Content.
+  // To make this content available when SidePanelWebUIVew::ShowUI() is called,
+  // this observes WebView's visibility because it's set as visible when
+  // ShowUI() is called.
+  // NOTE: If we use our own reading list page and it has loading spinner, maybe
+  // we can set `true` here.
+  SidePanelUtil::GetSidePanelContentProxy(this)->SetAvailable(false);
+  observation_.Observe(web_view);
+}
+
+void BraveReadLaterSidePanelView::OnViewVisibilityChanged(
+    views::View* observed_view,
+    views::View* starting_view) {
+  // Once it becomes available, stop observing becuase its availablity is
+  // not changed from now on.
+  if (observed_view->GetVisible()) {
+    SidePanelUtil::GetSidePanelContentProxy(this)->SetAvailable(true);
+    observation_.Reset();
+  }
 }
 
 BraveReadLaterSidePanelView::~BraveReadLaterSidePanelView() = default;
