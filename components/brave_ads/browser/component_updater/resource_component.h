@@ -56,6 +56,8 @@ class ResourceComponent : public brave_component_updater::BraveComponent {
                         const base::FilePath& install_dir,
                         const std::string& manifest) override;
 
+  absl::optional<std::string> country_code_component_id_;
+  absl::optional<std::string> language_code_component_id_;
   std::map<std::string, ResourceInfo> resources_;
   base::ObserverList<ResourceComponentObserver> observers_;
   base::WeakPtrFactory<ResourceComponent> weak_factory_{this};

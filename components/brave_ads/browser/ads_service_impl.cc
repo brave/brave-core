@@ -203,15 +203,10 @@ mojom::DBCommandResponseInfoPtr RunDBTransactionOnFileTaskRunner(
   return command_response;
 }
 
-void RegisterResourceComponentsForCountryCode(const std::string& country_code) {
+void RegisterResourceComponentsForCountryCode(
+    const std::string& geo_region_code) {
   g_brave_browser_process->resource_component()
-      ->RegisterComponentForCountryCode(country_code);
-}
-
-void RegisterResourceComponentsForDefaultCountryCode() {
-  const std::string& locale = brave_l10n::GetDefaultLocaleString();
-  const std::string country_code = brave_l10n::GetISOCountryCode(locale);
-  RegisterResourceComponentsForCountryCode(country_code);
+      ->RegisterComponentForCountryCode(geo_region_code);
 }
 
 void RegisterResourceComponentsForDefaultLanguageCode() {
@@ -293,8 +288,8 @@ bool AdsServiceImpl::IsBatAdsServiceBound() const {
   return bat_ads_service_.is_bound();
 }
 
-void AdsServiceImpl::RegisterResourceComponentsForDefaultLocale() const {
-  RegisterResourceComponentsForDefaultCountryCode();
+void AdsServiceImpl::RegisterResourceComponents() const {
+  RegisterResourceComponentsForCurrentCountryCode();
   if (UserHasOptedInToNotificationAds()) {
     RegisterResourceComponentsForDefaultLanguageCode();
   }
@@ -307,6 +302,13 @@ void AdsServiceImpl::Migrate() {
     profile_->GetPrefs()->ClearPref(prefs::kMaximumNotificationAdsPerHour);
     profile_->GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, false);
   }
+}
+
+void AdsServiceImpl::RegisterResourceComponentsForCurrentCountryCode() const {
+  const std::string geo_region_code =
+      local_state_->GetString(brave_l10n::prefs::kGeoRegionCode);
+
+  RegisterResourceComponentsForCountryCode(geo_region_code);
 }
 
 bool AdsServiceImpl::UserHasOptedInToBraveRewards() const {
@@ -519,7 +521,7 @@ void AdsServiceImpl::InitializeBatAdsCallback(const bool success) {
 
   is_bat_ads_initialized_ = true;
 
-  RegisterResourceComponentsForDefaultLocale();
+  RegisterResourceComponents();
 
   BackgroundHelper::GetInstance()->AddObserver(this);
 
@@ -618,7 +620,7 @@ void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
 
   local_state_pref_change_registrar_.Add(
       brave_l10n::prefs::kGeoRegionCode,
-      base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
+      base::BindRepeating(&AdsServiceImpl::OnGeoSubdivisionPrefChanged,
                           base::Unretained(this),
                           brave_l10n::prefs::kGeoRegionCode));
 }
@@ -711,6 +713,12 @@ void AdsServiceImpl::OnOptedInToAdsPrefChanged(const std::string& path) {
   }
 
   MaybeStartBatAdsService();
+
+  NotifyPrefChanged(path);
+}
+
+void AdsServiceImpl::OnGeoSubdivisionPrefChanged(const std::string& path) {
+  RegisterResourceComponentsForCurrentCountryCode();
 
   NotifyPrefChanged(path);
 }

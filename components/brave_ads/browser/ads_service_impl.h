@@ -99,7 +99,8 @@ class AdsServiceImpl : public AdsService,
 
   bool IsBatAdsServiceBound() const;
 
-  void RegisterResourceComponentsForDefaultLocale() const;
+  void RegisterResourceComponents() const;
+  void RegisterResourceComponentsForCurrentCountryCode() const;
 
   void Migrate();
 
@@ -151,6 +152,7 @@ class AdsServiceImpl : public AdsService,
   void InitializeNewTabPageAdsPrefChangeRegistrar();
   void InitializeNotificationAdsPrefChangeRegistrar();
   void OnOptedInToAdsPrefChanged(const std::string& path);
+  void OnGeoSubdivisionPrefChanged(const std::string& path);
   void NotifyPrefChanged(const std::string& path) const;
 
   void GetRewardsWallet();

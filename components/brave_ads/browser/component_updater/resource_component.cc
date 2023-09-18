@@ -72,6 +72,12 @@ void ResourceComponent::RegisterComponentForCountryCode(
     return VLOG(1) << "Ads resource not supported for " << country_code;
   }
 
+  if (country_code_component_id_ &&
+      country_code_component_id_ != component->id.data()) {
+    Unregister();
+  }
+  country_code_component_id_ = component->id.data();
+
   const std::string component_name =
       base::StringPrintf(kComponentName, country_code.c_str());
 
@@ -89,6 +95,12 @@ void ResourceComponent::RegisterComponentForLanguageCode(
   if (!component) {
     return VLOG(1) << "Ads resource not supported for " << language_code;
   }
+
+  if (language_code_component_id_ &&
+      language_code_component_id_ != component->id.data()) {
+    Unregister();
+  }
+  language_code_component_id_ = component->id.data();
 
   const std::string component_name =
       base::StringPrintf(kComponentName, language_code.c_str());
