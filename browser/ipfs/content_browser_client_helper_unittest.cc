@@ -257,6 +257,12 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteLocal) {
   ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
   ASSERT_EQ(ipns_uri.spec(), "ipns://test.com/#ref");
 
+  source = "http://en-wikipedia--on--ipfs-org.ipns.localhost/wiki/Architecture";
+  ipns_uri = GURL(source).ReplaceComponents(replacements);
+  ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(),
+            "ipns://en-wikipedia--on--ipfs-org/wiki/Architecture");
+
   source = "http://test.com.ipns.localhost:8000/";
   ipns_uri = GURL(source);
   ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
@@ -314,6 +320,11 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteGateway) {
   ASSERT_EQ(ipns_uri.spec(), "ipns://test.com/#some-ref");
 
   source = "https://wrongcidandbaddomain.ipns.localhost:8080/";
+  ipns_uri = GURL(source);
+  ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), source);
+
+  source = "http://en-wikipedia--on--ipfs-org.ipns.localhost:48080/wiki/";
   ipns_uri = GURL(source);
   ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
   ASSERT_EQ(ipns_uri.spec(), source);
