@@ -115,6 +115,32 @@ function EditActionsContainer ({
   )
 }
 
+function useItemIdFromHash () {
+  const getId = () => window.location.hash.replace('#', '')
+  let [idFromHash, setIdFromHash] = React.useState<string>('')
+  const updateId = () => setIdFromHash(getId())
+
+  React.useEffect(() => {
+    updateId()
+    window.addEventListener('hashchange', updateId)
+    return () => window.removeEventListener('hashchange', updateId)
+  }, [])
+  return idFromHash
+}
+
+function useScrollToItem (itemId: string | undefined) {
+  const ref = React.useRef<HTMLAnchorElement>(null)
+  const scrollToElement = () => {
+    if (ref.current) {
+      window.scrollTo({ top: ref.current.offsetTop })
+    }
+  }
+
+  React.useEffect(() => scrollToElement(), [itemId, ref.current])
+
+  return ref
+}
+
 export default function PlaylistFolder ({
   match
 }: RouteComponentProps<MatchParams>) {
@@ -168,8 +194,10 @@ export default function PlaylistFolder ({
 
   const [draggedId, setDraggedId] = useDraggedId()
   const [draggedOrder, setDraggedOrder] = useDraggedOrder<PlaylistItemMojo>()
-
   const sensors = useSensorsWithThreshold()
+
+  const itemIdFromHash = useItemIdFromHash()
+  const anchorElemRef = useScrollToItem(itemIdFromHash)
 
   if (!playlist) {
     if (!initialized) {
@@ -197,14 +225,19 @@ export default function PlaylistFolder ({
   ) => {
     if (!item) return null
 
+    const ref =
+      !forDragOverlay && item.id === itemIdFromHash ? anchorElemRef : null
+
     const Item = forDragOverlay ? PlaylistItem : SortablePlaylistItem
     return (
       <Item
         key={item.id}
         playlist={playlist}
         item={item}
+        ref={ref}
         isEditing={editMode === PlaylistEditMode.BULK_EDIT}
         isSelected={selectedSet.has(item.id)}
+        isHighlighted={!!ref}
         canReorder={
           editMode !== PlaylistEditMode.BULK_EDIT &&
           !lastPlayerState?.shuffleEnabled

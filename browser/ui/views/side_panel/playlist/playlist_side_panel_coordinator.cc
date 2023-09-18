@@ -71,10 +71,10 @@ void PlaylistSidePanelCoordinator::LoadPlaylist(const std::string& playlist_id,
   CHECK(web_contents);
 
   CHECK(!playlist_id.empty());
-  web_contents->GetController().LoadURL(
+  CHECK(web_contents->GetController().LoadURL(
       GURL("chrome-untrusted://playlist/playlist/" + playlist_id + "#" +
            item_id),
-      {}, ui::PageTransition::PAGE_TRANSITION_AUTO_BOOKMARK, {});
+      {}, ui::PageTransition::PAGE_TRANSITION_AUTO_BOOKMARK, {}));
 }
 
 std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView() {
