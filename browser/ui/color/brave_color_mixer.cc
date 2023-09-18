@@ -470,8 +470,12 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarSeparator] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
   mixer[kColorSidebarPanelHeaderSeparator] = {
       leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)};
-  mixer[kColorSidebarPanelHeaderBackground] = {
-      leo::GetColor(leo::Color::kColorContainerBackground, leo::Theme::kDark)};
+
+  // To align with upstream's panel backround color, use |kGogleGreay900|.
+  // When we apply our style to panel webui, use below color for header.
+  // leo::GetColor(leo::Color::kColorContainerBackground, leo::Theme::kDark).
+  // Or delete when panel webui renders header view also.
+  mixer[kColorSidebarPanelHeaderBackground] = {gfx::kGoogleGrey900};
   mixer[kColorSidebarPanelHeaderTitle] = {
       leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kDark)};
 
