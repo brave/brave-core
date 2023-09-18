@@ -179,6 +179,10 @@ const char kPasswordManagerLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018185951-How-do-I-use-the-built-in-password-manager-";
 
+const char kPasswordSharingLearnMoreURL[] = "https://support.brave.com/";
+
+const char kPasswordSharingTroubleshootURL[] = "https://support.brave.com/";
+
 const char kPaymentMethodsURL[] = "https://support.brave.com";
 
 const char kPrivacyLearnMoreURL[] =
