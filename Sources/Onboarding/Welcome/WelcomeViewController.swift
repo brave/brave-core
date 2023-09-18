@@ -364,7 +364,7 @@ public class WelcomeViewController: UIViewController {
         toggleTitle: Strings.Callout.p3aCalloutToggleTitle,
         details: Strings.Callout.p3aCalloutDescription,
         linkDescription: Strings.Callout.p3aCalloutLinkTitle,
-        primaryButtonTitle: Strings.done,
+        primaryButtonTitle: Strings.P3A.continueButton,
         toggleAction: { [weak self] isOn in
           self?.p3aUtilities.isP3AEnabled = isOn
         },
