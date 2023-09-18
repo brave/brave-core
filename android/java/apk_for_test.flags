@@ -688,6 +688,7 @@
     *** getUrlForWebapp(...);
     *** isJavascriptSchemeOrInvalidUrl(...);
     *** extractUrlFromIntent(...);
+    *** onNewIntent(...);
 }
 
 -keep class org.chromium.chrome.browser.BraveIntentHandler {

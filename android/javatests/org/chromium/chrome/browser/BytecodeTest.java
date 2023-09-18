@@ -501,6 +501,8 @@ public class BytecodeTest {
                 "shouldShowTabSwitcher", true, boolean.class, long.class, boolean.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
                 "getUrlForCustomTab", true, String.class, Intent.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler", "onNewIntent",
+                true, boolean.class, Intent.class, IntentHandlerDelegate.class, long.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
                 "getUrlForWebapp", true, String.class, Intent.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",

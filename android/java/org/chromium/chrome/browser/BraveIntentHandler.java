@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,15 +13,15 @@ import android.text.TextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
+import org.chromium.chrome.browser.IntentHandler.IntentHandlerDelegate;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
-import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.content_public.browser.BrowserStartupController;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
-public class BraveIntentHandler extends IntentHandler {
+public class BraveIntentHandler {
     private static final String TAG = "BraveIntentHandler";
 
     private static final String CONNECTION_INFO_HELP_URL =
@@ -30,14 +29,13 @@ public class BraveIntentHandler extends IntentHandler {
     private static final String BRAVE_CONNECTION_INFO_HELP_URL =
             "https://support.brave.com/hc/en-us/articles/360018185871-How-do-I-check-if-a-site-s-connection-is-secure-";
 
-    public BraveIntentHandler(Activity activity, IntentHandlerDelegate delegate) {
-        super(activity, delegate);
-    }
-
-    @Override
-    public boolean onNewIntent(Intent intent) {
+    /**
+     * Calls to IntentHandler.onNewIntent will be redirected here via bytecode changes.
+     */
+    public static boolean onNewIntent(
+            Intent intent, IntentHandlerDelegate delegate, long intentHandlingUptimeMillis) {
         // Redirect requests if necessary
-        String url = getUrlFromIntent(intent);
+        String url = IntentHandler.getUrlFromIntent(intent);
         if (url != null && url.equals(CONNECTION_INFO_HELP_URL)) {
             intent.setData(Uri.parse(BRAVE_CONNECTION_INFO_HELP_URL));
         }
@@ -53,7 +51,7 @@ public class BraveIntentHandler extends IntentHandler {
                 return false;
             }
         }
-        return super.onNewIntent(intent);
+        return IntentHandler.onNewIntent(intent, delegate, intentHandlingUptimeMillis);
     }
 
     /**
@@ -64,7 +62,7 @@ public class BraveIntentHandler extends IntentHandler {
      */
     protected static String extractUrlFromIntent(Intent intent) {
         if (intent == null) return null;
-        String url = getUrlFromVoiceSearchResult(intent);
+        String url = IntentHandler.getUrlFromVoiceSearchResult(intent);
         if (url == null) url = getUrlForCustomTab(intent);
         if (url == null) url = getUrlForWebapp(intent);
         if (url == null) url = intent.getDataString();
