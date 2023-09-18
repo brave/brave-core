@@ -789,7 +789,19 @@ window.__firefox__.execute(function($) {
     }
 
     return Array.from(CC.hiddenSelectors).filter((selector) => {
-      return element.matches(selector)
+      try {
+        return element.matches(selector)
+      } catch (error) {
+        // Remove the culprit from everywhere so it doesn't cause errors
+        CC.hiddenSelectors.delete(selector)
+        CC.unhiddenSelectors.add(selector)
+        
+        for (let queueIndex = 0; queueIndex < CC.runQueues.length; queueIndex += 1) {
+          CC.runQueues[queueIndex]
+          CC.runQueues[queueIndex].delete(selector)
+        }
+        return false
+      }
     })
   }
 

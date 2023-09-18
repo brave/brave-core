@@ -205,6 +205,9 @@ final class ScriptExecutionTests: XCTestCase {
   @MainActor func testCosmeticFilteringScript() async throws {
     // Given
     let viewController = MockScriptsViewController()
+    let invalidSelectors = Set([
+      "div.invalid-selector:has(span.update-components-actor__description:-abp-contains(/Anzeige|Sponsored|Promoted|Dipromosikan|Propagováno|Promoveret|Gesponsert|Promocionado|促銷內容|Post sponsorisé|프로모션|Post sponsorizzato|广告|プロモーション|Treść promowana|Patrocinado|Promovat|Продвигается|Marknadsfört|Nai-promote|ได้รับการโปรโมท|Öne çıkarılan içerik|Gepromoot|الترويج/))"
+    ])
     let initialStandardSelectors = Set([".test-ads-primary-standard div"])
     let initialAggressiveSelectors = Set([".test-ads-primary-aggressive div"])
     let polledAggressiveIds = ["test-ad-aggressive"]
@@ -220,7 +223,7 @@ final class ScriptExecutionTests: XCTestCase {
       switchToSelectorsPollingThreshold: 1000,
       fetchNewClassIdRulesThrottlingMs: 100,
       aggressiveSelectors: initialAggressiveSelectors,
-      standardSelectors: initialStandardSelectors,
+      standardSelectors: initialStandardSelectors.union(invalidSelectors),
       styleSelectors: []
     )
     
