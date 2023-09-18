@@ -16,9 +16,6 @@
   PaintButtonContents_UnUsed() {}                           \
                                                             \
  protected:                                                 \
-  DownloadDisplayController::IconInfo GetIconInfo() const { \
-    return controller_->GetIconInfo();                      \
-  }                                                         \
   void PaintButtonContents
 
 #define GetIconColor virtual GetIconColor
@@ -34,9 +31,9 @@ class DownloadToolbarButtonView : public DownloadToolbarButtonViewChromium {
   using DownloadToolbarButtonViewChromium::DownloadToolbarButtonViewChromium;
 
   // DownloadToolbarButtonViewChromium overrides:
-  SkColor GetIconColor() const override;
   void PaintButtonContents(gfx::Canvas* canvas) override;
   void UpdateIcon() override;
+  SkColor GetIconColor() const override;
 
  private:
   bool HasInsecureDownloads();

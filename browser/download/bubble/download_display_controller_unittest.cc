@@ -12,14 +12,11 @@
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
-#include "base/memory/raw_ptr_exclusion.h"
 #include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "chrome/browser/download/bubble/download_bubble_display_info.h"
 #include "chrome/browser/download/bubble/download_bubble_ui_controller.h"
 #include "chrome/browser/download/bubble/download_bubble_utils.h"
-#include "chrome/browser/download/bubble/download_display.h"
-#include "chrome/browser/download/bubble/download_icon_state.h"
 #include "chrome/browser/download/chrome_download_manager_delegate.h"
 #include "chrome/browser/download/download_core_service.h"
 #include "chrome/browser/download/download_core_service_factory.h"
@@ -28,6 +25,7 @@
 #include "chrome/browser/download/offline_item_model_manager_factory.h"
 #include "chrome/browser/offline_items_collection/offline_content_aggregator_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/download/download_display.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -68,7 +66,8 @@ using ::testing::ReturnRef;
 using ::testing::ReturnRefOfCopy;
 using ::testing::StrictMock;
 using StrictMockDownloadItem = StrictMock<download::MockDownloadItem>;
-using DownloadIconState = download::DownloadIconState;
+using DownloadIconActive = DownloadDisplay::IconActive;
+using DownloadIconState = DownloadDisplay::IconState;
 using DownloadState = download::DownloadItem::DownloadState;
 using DownloadUIModelPtr = DownloadUIModel::DownloadUIModelPtr;
 using OfflineItemList =
@@ -81,15 +80,11 @@ class FakeDownloadDisplay : public DownloadDisplay {
   FakeDownloadDisplay(const FakeDownloadDisplay&) = delete;
   FakeDownloadDisplay& operator=(const FakeDownloadDisplay&) = delete;
 
-  void SetController(DownloadDisplayController* controller) {
-    controller_ = controller;
-  }
-
   void ResetState() {
     shown_ = false;
     detail_shown_ = false;
-    icon_state_ = DownloadIconState::kComplete;
-    is_active_ = false;
+    state_ = DownloadIconState::kComplete;
+    active_ = DownloadIconActive::kInactive;
   }
 
   void Show() override { shown_ = true; }
@@ -99,40 +94,60 @@ class FakeDownloadDisplay : public DownloadDisplay {
     detail_shown_ = false;
   }
 
-  bool IsShowing() override { return shown_; }
+  bool IsShowing() const override { return shown_; }
 
   void Enable() override { enabled_ = true; }
 
   void Disable() override { enabled_ = false; }
 
-  bool ShouldShowExclusiveAccessBubble() override { return true; }
+  void UpdateDownloadIcon(const IconUpdateInfo& updates) override {
+    if (updates.new_state) {
+      state_ = *updates.new_state;
+    }
+    if (updates.new_active) {
+      active_ = *updates.new_active;
+    }
+  }
 
-  void UpdateDownloadIcon(bool show_animation) override {
-    icon_state_ = controller_->GetIconInfo().icon_state;
-    is_active_ = controller_->GetIconInfo().is_active;
+  void UpdateIconProgress(const ProgressInfo& info) override {
+    progress_info_ = info;
   }
 
   void ShowDetails() override { detail_shown_ = true; }
   void HideDetails() override { detail_shown_ = false; }
-  bool IsShowingDetails() override { return detail_shown_; }
-  bool IsFullscreenWithParentViewHidden() override { return is_fullscreen_; }
+  bool IsShowingDetails() const override { return detail_shown_; }
+  bool OpenMostSpecificDialog(
+      const offline_items_collection::ContentId& content_id) override {
+    detail_shown_ = true;
+    return true;
+  }
+  bool IsFullscreenWithParentViewHidden() const override {
+    return is_fullscreen_;
+  }
+  bool ShouldShowExclusiveAccessBubble() const override {
+    return IsFullscreenWithParentViewHidden() &&
+           should_show_exclusive_access_bubble_;
+  }
 
-  DownloadIconState GetDownloadIconState() { return icon_state_; }
-  bool IsActive() { return is_active_; }
+  DownloadIconState GetIconState() const override { return state_; }
+  DownloadIconActive GetIconActive() const { return active_; }
+  ProgressInfo GetIconProgress() const { return progress_info_; }
   void SetIsFullscreen(bool is_fullscreen) { is_fullscreen_ = is_fullscreen; }
+  void SetShouldShowExclusiveAccessBubble(bool show) {
+    should_show_exclusive_access_bubble_ = show;
+  }
   void OpenSecuritySubpage(
       const offline_items_collection::ContentId&) override {}
 
  private:
   bool shown_ = false;
   bool enabled_ = false;
-  DownloadIconState icon_state_ = DownloadIconState::kComplete;
-  bool is_active_ = false;
+  DownloadIconState state_ = DownloadIconState::kComplete;
+  DownloadIconActive active_ = DownloadIconActive::kInactive;
+  ProgressInfo progress_info_;
   bool detail_shown_ = false;
   bool is_fullscreen_ = false;
-  // This field is not a raw_ptr<> because it was filtered by the rewriter for:
-  // #constexpr-ctor-field-initializer
-  RAW_PTR_EXCLUSION DownloadDisplayController* controller_ = nullptr;
+  bool should_show_exclusive_access_bubble_ = true;
 };
 
 // TODO(chlily): Pull this and the very similar class in
@@ -181,7 +196,7 @@ class MockDownloadBubbleUpdateService : public DownloadBubbleUpdateService {
     }
   }
 
-  const DownloadBubbleDisplayInfo& GetAllModelsInfo(
+  const DownloadBubbleDisplayInfo& GetDisplayInfo(
       const web_app::AppId* web_app_id) override {
     info_ = DownloadBubbleDisplayInfo{};
     int download_item_index = 0, offline_item_index = 0;
@@ -247,7 +262,7 @@ class MockDownloadBubbleUpdateService : public DownloadBubbleUpdateService {
 
   bool IsInitialized() const override { return true; }
 
-  MOCK_METHOD(DownloadDisplayController::ProgressInfo,
+  MOCK_METHOD(DownloadDisplay::ProgressInfo,
               GetProgressInfo,
               (const web_app::AppId*),
               (const override));
@@ -256,9 +271,10 @@ class MockDownloadBubbleUpdateService : public DownloadBubbleUpdateService {
   raw_ptr<Profile> profile_;
   DownloadBubbleDisplayInfo info_;
   std::vector<ModelType> model_types_;
-  const raw_ref<const std::vector<std::unique_ptr<StrictMockDownloadItem>>>
+  const raw_ref<const std::vector<std::unique_ptr<StrictMockDownloadItem>>,
+                ExperimentalAsh>
       download_items_;
-  const raw_ref<const OfflineItemList> offline_items_;
+  const raw_ref<const OfflineItemList, ExperimentalAsh> offline_items_;
 };
 
 class MockDownloadCoreService : public DownloadCoreService {
@@ -312,6 +328,9 @@ class DownloadDisplayControllerTest : public testing::Test {
     mock_update_service_ =
         std::make_unique<StrictMock<MockDownloadBubbleUpdateService>>(
             profile_, items_, offline_items_);
+    // Will be called when the DownloadDisplayController is constructed.
+    EXPECT_CALL(*mock_update_service_, GetProgressInfo(_))
+        .WillRepeatedly(Return(DownloadDisplay::ProgressInfo()));
     display_ = std::make_unique<FakeDownloadDisplay>();
     window_ = std::make_unique<TestBrowserWindow>();
     Browser::CreateParams params(profile_, true);
@@ -322,7 +341,6 @@ class DownloadDisplayControllerTest : public testing::Test {
         browser_.get(), mock_update_service_.get());
     controller_ = std::make_unique<DownloadDisplayController>(
         display_.get(), browser_.get(), bubble_controller_.get());
-    display_->SetController(controller_.get());
   }
 
   void TearDown() override {
@@ -397,7 +415,7 @@ class DownloadDisplayControllerTest : public testing::Test {
                                                      nullptr);
     mock_update_service_->AddModel(
         MockDownloadBubbleUpdateService::ModelType::kDownloadItem);
-    DownloadDisplayController::ProgressInfo progress_info;
+    DownloadDisplay::ProgressInfo progress_info;
     progress_info.download_count = in_progress_count_;
     progress_info.progress_percentage = in_progress_count_ > 0 ? 50 : 0;
     EXPECT_CALL(*mock_update_service_, GetProgressInfo(_))
@@ -412,7 +430,7 @@ class DownloadDisplayControllerTest : public testing::Test {
     if (state == OfflineItemState::IN_PROGRESS) {
       ++in_progress_count_;
     }
-    DownloadDisplayController::ProgressInfo progress_info;
+    DownloadDisplay::ProgressInfo progress_info;
     progress_info.download_count = in_progress_count_;
     progress_info.progress_percentage = in_progress_count_ > 0 ? 50 : 0;
     progress_info.progress_certain = false;
@@ -480,16 +498,19 @@ class DownloadDisplayControllerTest : public testing::Test {
                     << detail_shown << ", but found "
                     << display().IsShowingDetails();
     }
-    if (icon_state != display().GetDownloadIconState()) {
+    if (icon_state != display().GetIconState()) {
       success = false;
       ADD_FAILURE() << "Display should have detailed icon state "
                     << static_cast<int>(icon_state) << ", but found "
-                    << static_cast<int>(display().GetDownloadIconState());
+                    << static_cast<int>(display().GetIconState());
     }
-    if (is_active != display().IsActive()) {
+    if (is_active !=
+        (display().GetIconActive() == DownloadIconActive::kActive)) {
       success = false;
       ADD_FAILURE() << "Display should have is_active set to " << is_active
-                    << ", but found " << display().IsActive();
+                    << ", but found "
+                    << (display().GetIconActive() ==
+                        DownloadIconActive::kActive);
     }
     return success;
   }
