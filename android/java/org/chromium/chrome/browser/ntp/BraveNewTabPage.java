@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.ntp;
 import android.app.Activity;
 import android.view.LayoutInflater;
 
+import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
@@ -38,6 +39,8 @@ import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.WindowAndroid;
 
 public class BraveNewTabPage extends NewTabPage {
+    private JankTracker mJankTracker;
+
     // To delete in bytecode, members from parent class will be used instead.
     private BrowserControlsStateProvider mBrowserControlsStateProvider;
     private NewTabPageLayout mNewTabPageLayout;
@@ -54,13 +57,15 @@ public class BraveNewTabPage extends NewTabPage {
             NativePageHost nativePageHost, Tab tab, String url,
             BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier, WindowAndroid windowAndroid,
-            Supplier<Toolbar> toolbarSupplier, SettingsLauncher settingsLauncher,
-            HomeSurfaceTracker homeSurfaceTracker,
+            JankTracker jankTracker, Supplier<Toolbar> toolbarSupplier,
+            SettingsLauncher settingsLauncher, HomeSurfaceTracker homeSurfaceTracker,
             ObservableSupplier<TabContentManager> tabContentManagerSupplier) {
         super(activity, browserControlsStateProvider, activityTabProvider, snackbarManager,
                 lifecycleDispatcher, tabModelSelector, isTablet, uma, isInNightMode, nativePageHost,
-                tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid,
+                tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid, jankTracker,
                 toolbarSupplier, settingsLauncher, homeSurfaceTracker, tabContentManagerSupplier);
+
+        mJankTracker = jankTracker;
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
@@ -97,7 +102,7 @@ public class BraveNewTabPage extends NewTabPage {
 
         assert !FeedFeatures.isFeedEnabled();
         FeedSurfaceCoordinator feedSurfaceCoordinator = new BraveFeedSurfaceCoordinator(activity,
-                snackbarManager, windowAndroid,
+                snackbarManager, windowAndroid, mJankTracker,
                 new SnapScrollHelperImpl(mNewTabPageManager, mNewTabPageLayout), mNewTabPageLayout,
                 mBrowserControlsStateProvider.getTopControlsHeight(), isInNightMode, this, profile,
                 /* isPlaceholderShownInitially= */ false, mBottomSheetController,

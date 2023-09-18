@@ -1063,25 +1063,48 @@ public class BraveNewTabPageLayout
     }
 
     @Override
-    public void initialize(NewTabPageManager manager, Activity activity, Delegate tileGroupDelegate,
-            boolean searchProviderHasLogo, boolean searchProviderIsGoogle,
-            FeedSurfaceScrollDelegate scrollDelegate, TouchEnabledDelegate touchEnabledDelegate,
-            UiConfig uiConfig, ActivityLifecycleDispatcher lifecycleDispatcher, NewTabPageUma uma,
-            boolean isIncognito, WindowAndroid windowAndroid, boolean isNtpAsHomeSurfaceEnabled,
-            boolean isSurfacePolishEnabled, boolean isSurfacePolishOmniboxColorEnabled) {
-        super.initialize(manager, activity, tileGroupDelegate, searchProviderHasLogo,
-                searchProviderIsGoogle, scrollDelegate, touchEnabledDelegate, uiConfig,
-                lifecycleDispatcher, uma, isIncognito, windowAndroid, isNtpAsHomeSurfaceEnabled,
-                isSurfacePolishEnabled, isSurfacePolishOmniboxColorEnabled);
+    public void initialize(
+            NewTabPageManager manager,
+            Activity activity,
+            Delegate tileGroupDelegate,
+            boolean searchProviderHasLogo,
+            boolean searchProviderIsGoogle,
+            FeedSurfaceScrollDelegate scrollDelegate,
+            TouchEnabledDelegate touchEnabledDelegate,
+            UiConfig uiConfig,
+            ActivityLifecycleDispatcher lifecycleDispatcher,
+            NewTabPageUma uma,
+            boolean isIncognito,
+            WindowAndroid windowAndroid,
+            boolean isNtpAsHomeSurfaceEnabled,
+            boolean isSurfacePolishEnabled,
+            boolean isSurfacePolishOmniboxColorEnabled,
+            boolean isTablet) {
+        super.initialize(
+                manager,
+                activity,
+                tileGroupDelegate,
+                searchProviderHasLogo,
+                searchProviderIsGoogle,
+                scrollDelegate,
+                touchEnabledDelegate,
+                uiConfig,
+                lifecycleDispatcher,
+                uma,
+                isIncognito,
+                windowAndroid,
+                isNtpAsHomeSurfaceEnabled,
+                isSurfacePolishEnabled,
+                isSurfacePolishOmniboxColorEnabled,
+                isTablet);
 
         assert mMvTilesContainerLayout != null : "Something has changed in the upstream!";
 
         if (mMvTilesContainerLayout != null && !isScrollableMvtEnabled()) {
             ViewGroup tilesLayout = mMvTilesContainerLayout.findViewById(R.id.mv_tiles_layout);
 
-            assert tilesLayout
-                    instanceof MostVisitedTilesGridLayout
-                : "Something has changed in the upstream!";
+            assert tilesLayout instanceof MostVisitedTilesGridLayout
+                    : "Something has changed in the upstream!";
 
             if (tilesLayout instanceof MostVisitedTilesGridLayout) {
                 ((MostVisitedTilesGridLayout) tilesLayout)

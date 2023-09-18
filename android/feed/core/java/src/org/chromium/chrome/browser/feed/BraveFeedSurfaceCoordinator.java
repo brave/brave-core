@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncher;
@@ -39,9 +40,10 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     private @Nullable FrameLayout mFrameLayoutForPolicy;
 
     public BraveFeedSurfaceCoordinator(Activity activity, SnackbarManager snackbarManager,
-            WindowAndroid windowAndroid, @Nullable SnapScrollHelper snapScrollHelper,
-            @Nullable View ntpHeader, @Px int toolbarHeight, boolean showDarkBackground,
-            FeedSurfaceDelegate delegate, Profile profile, boolean isPlaceholderShownInitially,
+            WindowAndroid windowAndroid, @Nullable JankTracker jankTracker,
+            @Nullable SnapScrollHelper snapScrollHelper, @Nullable View ntpHeader,
+            @Px int toolbarHeight, boolean showDarkBackground, FeedSurfaceDelegate delegate,
+            Profile profile, boolean isPlaceholderShownInitially,
             BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier,
             @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate,
@@ -52,8 +54,8 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             boolean overScrollDisabled, @Nullable ViewGroup viewportView,
             FeedActionDelegate actionDelegate, HelpAndFeedbackLauncher helpAndFeedbackLauncher,
             TabModelSelector tabModelSelector) {
-        super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader, toolbarHeight,
-                showDarkBackground, delegate, profile, isPlaceholderShownInitially,
+        super(activity, snackbarManager, windowAndroid, jankTracker, snapScrollHelper, ntpHeader,
+                toolbarHeight, showDarkBackground, delegate, profile, isPlaceholderShownInitially,
                 bottomSheetController, shareDelegateSupplier, externalScrollableContainerDelegate,
                 launchOrigin, privacyPreferencesManager, toolbarSupplier, surfaceType,
                 embeddingSurfaceCreatedTimeNs, swipeRefreshLayout, overScrollDisabled, viewportView,
