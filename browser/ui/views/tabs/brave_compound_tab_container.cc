@@ -302,8 +302,7 @@ int BraveCompoundTabContainer::GetUnpinnedContainerIdealLeadingX() const {
 
 BrowserRootView::DropIndex BraveCompoundTabContainer::GetDropIndex(
     const ui::DropTargetEvent& event) {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
-      !ShouldShowVerticalTabs()) {
+  if (!ShouldShowVerticalTabs()) {
     return CompoundTabContainer::GetDropIndex(event);
   }
 

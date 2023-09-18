@@ -310,8 +310,7 @@ void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {
 
 BrowserRootView::DropIndex BraveTabContainer::GetDropIndex(
     const ui::DropTargetEvent& event) {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
-      !tabs::utils::ShouldShowVerticalTabs(
+  if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
     return TabContainerImpl::GetDropIndex(event);
   }
@@ -440,8 +439,7 @@ void BraveTabContainer::DropArrow::OnWidgetDestroying(views::Widget* widget) {
 
 void BraveTabContainer::HandleDragUpdate(
     const absl::optional<BrowserRootView::DropIndex>& index) {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
-      !tabs::utils::ShouldShowVerticalTabs(
+  if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
     TabContainerImpl::HandleDragUpdate(index);
     return;
@@ -450,8 +448,7 @@ void BraveTabContainer::HandleDragUpdate(
 }
 
 void BraveTabContainer::HandleDragExited() {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
-      !tabs::utils::ShouldShowVerticalTabs(
+  if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
     TabContainerImpl::HandleDragExited();
     return;

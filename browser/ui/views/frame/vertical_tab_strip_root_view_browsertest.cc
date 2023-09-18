@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_root_view.h"
@@ -23,14 +22,12 @@
 
 class VerticalTabStripRootViewBrowserTest : public InProcessBrowserTest {
  public:
-  VerticalTabStripRootViewBrowserTest() {
-    feature_list_.InitAndEnableFeature(tabs::features::kBraveVerticalTabs);
-  }
-
+  VerticalTabStripRootViewBrowserTest() = default;
   VerticalTabStripRootViewBrowserTest(
       const VerticalTabStripRootViewBrowserTest&) = delete;
   VerticalTabStripRootViewBrowserTest& operator=(
       const VerticalTabStripRootViewBrowserTest&) = delete;
+  ~VerticalTabStripRootViewBrowserTest() override = default;
 
   Tab* GetTabAt(int index) { return tab_strip()->tab_at(index); }
 
@@ -65,8 +62,6 @@ class VerticalTabStripRootViewBrowserTest : public InProcessBrowserTest {
     }
     return nullptr;
   }
-
-  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
