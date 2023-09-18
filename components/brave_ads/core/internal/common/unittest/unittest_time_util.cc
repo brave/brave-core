@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
 #include "base/check.h"
+#include "base/i18n/time_formatting.h"
 #include "base/time/time.h"
-#include "base/time/time_to_iso8601.h"
 
 namespace brave_ads {
 
@@ -29,7 +29,7 @@ base::Time DistantPast() {
 }
 
 std::string DistantPastAsISO8601() {
-  return base::TimeToISO8601(DistantPast());
+  return base::TimeFormatAsIso8601(DistantPast());
 }
 
 base::Time Now() {
@@ -38,7 +38,7 @@ base::Time Now() {
 }
 
 std::string NowAsISO8601() {
-  return base::TimeToISO8601(Now());
+  return base::TimeFormatAsIso8601(Now());
 }
 
 base::Time DistantFuture() {
@@ -50,7 +50,7 @@ base::Time DistantFuture() {
 }
 
 std::string DistantFutureAsISO8601() {
-  return base::TimeToISO8601(DistantFuture());
+  return base::TimeFormatAsIso8601(DistantFuture());
 }
 
 }  // namespace brave_ads
