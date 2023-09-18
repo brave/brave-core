@@ -25,21 +25,21 @@ export interface NftDropdownOption {
 }
 
 interface Props {
-  selectedOption: NftDropdownOption
+  selectedOptionId: NftDropdownOptionId
   options: NftDropdownOption[]
   onSelect: (optionId: NftDropdownOption) => void
 }
 
-export const NftDropdown = ({selectedOption, options, onSelect }: Props) => {
+export const NftDropdown = ({selectedOptionId, options, onSelect }: Props) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false)
+  const selectedOption =
+    options.find((option) => option.id === selectedOptionId) ?? options[0]
 
   const onSelectOption = (option: NftDropdownOption) => {
     setIsOpen(false)
     if(selectedOption.id === option.id) return
     onSelect(option)
   }
-
-  console.log(selectedOption)
 
   return (
     <DropdownContainer>

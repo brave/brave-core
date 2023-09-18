@@ -39,7 +39,7 @@ export const NFTWrapper = styled.div`
   background: none;
   border: none;
   margin: 0px;
-  padding: 2px;
+  padding-right: 2px;
   overflow: hidden;
   &:last-child {
     margin-right: 0px;
@@ -134,4 +134,31 @@ export const MoreButton = styled(WalletButton)`
 export const MoreIcon = styled(Icon)`
   --leo-icon-size: 22px;
   color: ${leo.color.text.secondary};
+`
+
+export const JunkMarker = styled.div`
+  display: inline-flex;
+  height: 20px;
+  padding: 0px ${leo.spacing.s};
+  align-items: center;
+  gap: ${leo.spacing.s};
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  flex-shrink: 0;
+  border-radius: ${leo.radius.s};
+  background-color: ${leo.color.red[20]};
+  color: ${leo.color.red[50]};
+  font-family: Poppins;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-transform: uppercase;
+  z-index: 2;
+`
+
+export const JunkIcon = styled(Icon)`
+  --leo-icon-size: 14px;
+  color: ${leo.color.systemfeedback.errorIcon};
 `

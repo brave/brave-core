@@ -41,7 +41,6 @@ export const NftContent = (props: Props) => {
         <ImageWrapper>
           <Image
             src={url}
-            loading='lazy'
           />
         </ImageWrapper>
       }

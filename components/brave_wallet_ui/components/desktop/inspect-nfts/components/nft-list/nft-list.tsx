@@ -9,7 +9,7 @@ import { useNftPin } from '../../../../../common/hooks/nft-pin'
 import { getLocale } from '../../../../../../common/locale'
 
 // components
-import { NftIconWithNetworkIcon } from '../../../../shared/nft-icon/nft-icon-with-network-icon'
+import { NftIconWithNetworkIcon } from '../../../../shared/nft-icon/decorated-nft-icon'
 import { NftCountHeading } from '../../inspects-nfts.styles'
 
 // styles

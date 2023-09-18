@@ -374,21 +374,18 @@ export const nftsEndpoints = ({
     updateNftSpamStatus: mutation<
       boolean,
       {
-        tokenId: EntityId
+        // Not using tokenId since spam NFTs are not
+        // included in token registry by default
+        token: BraveWallet.BlockchainToken
         status: boolean
       }
     >({
       queryFn: async (arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
-          const { cache, data: api } = baseQuery(undefined)
-          const reg = await cache.getUserTokensRegistry()
-          const token = reg.entities[arg.tokenId]
-
-          if (!token) throw new Error('Token not found')
-
+          const { data: api } = baseQuery(undefined)
           const { braveWalletService } = api
           const { success } = await braveWalletService.setAssetSpamStatus(
-            token,
+            arg.token,
             arg.status
           )
           return {
@@ -406,8 +403,8 @@ export const nftsEndpoints = ({
         err
           ? ['SimpleHashSpamNFTs', 'UserBlockchainTokens']
           : [
-              { type: 'SimpleHashSpamNFTs', id: arg.tokenId },
-              { type: 'UserBlockchainTokens', id: arg.tokenId }
+              { type: 'SimpleHashSpamNFTs', id: getAssetIdKey(arg.token) },
+              { type: 'UserBlockchainTokens', id: getAssetIdKey(arg.token) }
             ]
     }),
     getNftsPinningStatus: query<

@@ -21,8 +21,9 @@ interface Props {
   onEditNft: () => void
   onHideNft: () => void
   onUnHideNft: () => void
-  onMoveToSpam: () => void
   onUnSpam: () => void
+  onRemoveNft: () => void
+  onClose: () => void
 }
 
 export const NftMorePopup = (props: Props) => {
@@ -34,38 +35,69 @@ export const NftMorePopup = (props: Props) => {
     onHideNft,
     onUnHideNft,
     onUnSpam,
-    onMoveToSpam
+    onRemoveNft,
+    onClose
   } = props
 
+  const popupRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+
+    const handleClickOutside = (e: Event) => {
+      if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
+        onClose()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyPress)
+    document.addEventListener('mousedown', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress)
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [popupRef, onClose])
+
   return (
-    <Popup isOpen={isOpen}>
-      <PopupButton onClick={onEditNft}>
-        <ButtonIcon name='edit-pencil' />
-        <PopupButtonText>{getLocale('braveNftsTabEdit')}</PopupButtonText>
-      </PopupButton>
-      {isTokenHidden ? (
-        <PopupButton onClick={onUnHideNft}>
-          <ButtonIcon name='eye-on' />
-          <PopupButtonText>{getLocale('braveNftsTabUnhide')}</PopupButtonText>
-        </PopupButton>
-      ) : (
+    <Popup isOpen={isOpen} ref={popupRef}>
+      {/* show hide and edit option if a token is not hidden or not spam */}
+      {!isTokenHidden && !isTokenSpam && (
         <>
+          <PopupButton onClick={onEditNft}>
+            <ButtonIcon name='edit-pencil' />
+            <PopupButtonText>{getLocale('braveNftsTabEdit')}</PopupButtonText>
+          </PopupButton>
           <PopupButton onClick={onHideNft}>
             <ButtonIcon name='eye-off' />
             <PopupButtonText>{getLocale('braveNftsTabHide')}</PopupButtonText>
           </PopupButton>
-          <PopupButton onClick={isTokenSpam ? onUnSpam : onMoveToSpam}>
-            <ButtonIcon name='disable-outline' />
-            <PopupButtonText>
-              {getLocale(
-                isTokenSpam
-                  ? 'braveWalletNftUnspam'
-                  : 'braveWalletNftMoveToSpam'
-              )}
-            </PopupButtonText>
-          </PopupButton>
         </>
       )}
+
+      {/* show mark as not junk if a token is junk/spam */}
+      {isTokenSpam && (
+        <PopupButton onClick={onUnSpam}>
+          <ButtonIcon name='disable-outline' />
+          <PopupButtonText>{getLocale('braveWalletNftUnspam')}</PopupButtonText>
+        </PopupButton>
+      )}
+
+      {/* show unhide option if a token is hidden but not junk */}
+      {isTokenHidden && !isTokenSpam && (
+        <PopupButton onClick={onUnHideNft}>
+          <ButtonIcon name='eye-on' />
+          <PopupButtonText>{getLocale('braveNftsTabUnhide')}</PopupButtonText>
+        </PopupButton>
+      )}
+
+      {/* remove option */}
+      <PopupButton onClick={onRemoveNft}>
+        <ButtonIcon name='trash' />
+        <PopupButtonText>{getLocale('braveNdftsTabRemove')}</PopupButtonText>
+      </PopupButton>
     </Popup>
   )
 }

@@ -15,8 +15,9 @@ import { NftIcon, NftIconProps } from './nft-icon'
 
 // styles
 import { NetworkIconWrapper } from '../../../page/screens/send/components/token-list-item/token-list-item.style'
-import { IconWrapper } from './nft-icon-styles'
+import { AccountBoxWrapper, IconWrapper } from './nft-icon-styles'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
+import { CreateAccountIcon } from '../create-account-icon/create-account-icon'
 
 interface Props extends NftIconProps {
   size?: string | number
@@ -24,10 +25,12 @@ interface Props extends NftIconProps {
   coinType?: BraveWallet.CoinType
   disabled?: boolean
   hideNetworkIcon?: boolean
+  account?: BraveWallet.AccountInfo
+  onLoad?: () => void
 }
 
-export const NftIconWithNetworkIcon = (props: Props) => {
-  const { chainId, coinType, disabled, hideNetworkIcon } = props
+export const DecoratedNftIcon = (props: Props) => {
+  const { chainId, coinType, disabled, hideNetworkIcon, account, onLoad } = props
 
   const { data: network } = useGetNetworkQuery(
     coinType !== undefined && chainId !== undefined
@@ -37,11 +40,14 @@ export const NftIconWithNetworkIcon = (props: Props) => {
 
   return (
     <>
-      <NftIcon {...props} />
+      <NftIcon {...props} onLoad={onLoad} />
       {!hideNetworkIcon &&
         <IconWrapper disabled={disabled}>
+          <AccountBoxWrapper>
+            {account && <CreateAccountIcon account={account} size='small' round={true} /> }
+          </AccountBoxWrapper>
           <NetworkIconWrapper>
-            <CreateNetworkIcon network={network} marginRight={0} />
+            <CreateNetworkIcon network={network} marginRight={0} size='big' />
           </NetworkIconWrapper>
         </IconWrapper>
       }

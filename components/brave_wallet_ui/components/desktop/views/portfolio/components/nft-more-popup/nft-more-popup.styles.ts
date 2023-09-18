@@ -14,6 +14,7 @@ export const Popup = styled.div<{ isOpen: boolean }>`
   bottom: 50px;
   right: 0;
   width: 100%;
+  max-width: 226px;
   padding: ${leo.spacing.s};
   flex-direction: column;
   align-items: flex-start;
