@@ -53,4 +53,8 @@ void SetTimePref(const std::string& path, const base::Time value) {
                          value.ToDeltaSinceWindowsEpoch().InMicroseconds()));
 }
 
+void SetLocalStatePref(const std::string& path, const std::string& value) {
+  SetPrefValue(path, value);
+}
+
 }  // namespace brave_ads

@@ -321,4 +321,12 @@ void MockHasPrefPath(const AdsClientMock& mock) {
       }));
 }
 
+void MockGetLocalStatePref(const AdsClientMock& mock) {
+  ON_CALL(mock, GetLocalStatePref)
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& path) -> absl::optional<base::Value> {
+            return base::Value(GetPrefValue(path));
+          }));
+}
+
 }  // namespace brave_ads

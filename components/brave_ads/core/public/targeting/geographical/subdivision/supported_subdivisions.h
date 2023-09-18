@@ -25,8 +25,7 @@ using SupportedSubdivisionMap =
 ADS_EXPORT const SupportedSubdivisionMap& GetSupportedSubdivisions();
 
 base::Value::List GetSupportedSubdivisionsAsValueList(
-    const std::string& user_selected_subdivision,
-    const std::string& auto_detected_subdivision);
+    const std::string& country_code);
 
 }  // namespace brave_ads
 

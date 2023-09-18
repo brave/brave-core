@@ -111,9 +111,6 @@ void Subdivision::OnDidFetchSubdivision(const std::string& subdivision) {
   for (auto& observer : observers_) {
     observer.OnDidUpdateSubdivision(*subdivision_);
   }
-
-  //  AdsClientHelper::GetInstance()->UpdateSubdivision(*region,
-  //  *subdivision_code);
 }
 
 }  // namespace brave_ads

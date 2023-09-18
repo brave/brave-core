@@ -75,6 +75,7 @@ class AdsServiceImpl : public AdsService,
  public:
   explicit AdsServiceImpl(
       Profile* profile,
+      PrefService* local_state,
       brave_adaptive_captcha::BraveAdaptiveCaptchaService*
           adaptive_captcha_service,
       std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
@@ -142,6 +143,7 @@ class AdsServiceImpl : public AdsService,
 
   void CloseAdaptiveCaptcha();
 
+  void InitializeLocalStatePrefChangeRegistrar();
   void InitializePrefChangeRegistrar();
   void InitializeBraveRewardsPrefChangeRegistrar();
   void InitializeSubdivisionTargetingPrefChangeRegistrar();
@@ -381,6 +383,10 @@ class AdsServiceImpl : public AdsService,
 
   void ClearPref(const std::string& path) override;
 
+  void GetLocalStatePref(const std::string& path,
+                         GetLocalStatePrefCallback callback) override;
+  void SetLocalStatePref(const std::string& path, base::Value value) override;
+
   void Log(const std::string& file,
            int32_t line,
            int32_t verbose_level,
@@ -410,6 +416,8 @@ class AdsServiceImpl : public AdsService,
 
   PrefChangeRegistrar pref_change_registrar_;
 
+  PrefChangeRegistrar local_state_pref_change_registrar_;
+
   base::OneShotTimer restart_bat_ads_service_timer_;
 
   mojom::SysInfo sys_info_;
@@ -433,6 +441,8 @@ class AdsServiceImpl : public AdsService,
   SimpleURLLoaderList url_loaders_;
 
   const raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
+
+  const raw_ptr<PrefService> local_state_ = nullptr;  // NOT OWNED
 
   const raw_ptr<history::HistoryService> history_service_ =
       nullptr;  // NOT OWNED

@@ -9,7 +9,6 @@
 
 #include "base/no_destructor.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"
-#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_constants.h"
 
 namespace brave_ads {
 
@@ -27,18 +26,6 @@ base::Value::List ToValueList(
   }
 
   return list;
-}
-
-absl::optional<std::string> GetCurrentSubdivisionCountryCode(
-    const std::string& user_selected_subdivision,
-    const std::string& auto_detected_subdivision) {
-  const bool should_use_user_selected =
-      (user_selected_subdivision != kSubdivisionTargetingAuto &&
-       user_selected_subdivision != kSubdivisionTargetingDisabled);
-  const std::string subdivision = should_use_user_selected
-                                      ? user_selected_subdivision
-                                      : auto_detected_subdivision;
-  return GetSubdivisionCountryCode(subdivision);
 }
 
 }  // namespace
@@ -90,18 +77,10 @@ const SupportedSubdivisionMap& GetSupportedSubdivisions() {
 }
 
 base::Value::List GetSupportedSubdivisionsAsValueList(
-    const std::string& user_selected_subdivision,
-    const std::string& auto_detected_subdivision) {
+    const std::string& country_code) {
   const auto& supported_subdivisions = GetSupportedSubdivisions();
 
-  const absl::optional<std::string> country_code =
-      GetCurrentSubdivisionCountryCode(user_selected_subdivision,
-                                       auto_detected_subdivision);
-  if (!country_code) {
-    return {};
-  }
-
-  const auto iter = supported_subdivisions.find(*country_code);
+  const auto iter = supported_subdivisions.find(country_code);
   if (iter == supported_subdivisions.cend()) {
     return {};
   }

@@ -1,3 +1,8 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 static_library("common") {
   friend = [
     ":test_support",
@@ -8,6 +13,7 @@ static_library("common") {
     "locale_util.h",
     "localization_util.h",
     "ofac_sanction_util.h",
+    "prefs.h",
     "un_m49_code_util.h",
   ]
 
@@ -26,6 +32,7 @@ static_library("common") {
     "ofac_sanction_util.h",
     "ofac_sanctioned_iso_3166_1_country_code_constants.h",
     "ofac_sanctioned_un_m49_code_constants.h",
+    "prefs.cc",
     "un_m49_code_constants.h",
     "un_m49_code_util.cc",
     "un_m49_code_util.h",
@@ -34,6 +41,7 @@ static_library("common") {
   deps = [
     "//base",
     "//brave/components/l10n/browser",
+    "//components/prefs",
     "//ui/base",
   ]
 }

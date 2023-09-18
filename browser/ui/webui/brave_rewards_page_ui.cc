@@ -37,8 +37,10 @@
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_strings.h"
@@ -68,6 +70,10 @@ using brave_rewards::GetExternalWalletResult;
 using content::WebUIMessageHandler;
 
 namespace {
+
+PrefService* GetLocalState() {
+  return g_browser_process->local_state();
+}
 
 #if !BUILDFLAG(IS_ANDROID)
 
@@ -1224,18 +1230,18 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
 
   auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
 
-  const std::string user_selected_subdivision =
-      prefs->GetString(brave_ads::prefs::kSubdivisionTargetingSubdivision);
-  const std::string auto_detected_subdivision = prefs->GetString(
-      brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision);
-
   base::Value::Dict ads_data;
   ads_data.Set("adsIsSupported", brave_ads::IsSupportedRegion());
   ads_data.Set(
       "adsPerHour",
       static_cast<double>(ads_service_->GetMaximumNotificationAdsPerHour()));
-  ads_data.Set(kAdsSubdivisionTargeting, user_selected_subdivision);
-  ads_data.Set(kAutoDetectedSubdivisionTargeting, auto_detected_subdivision);
+  ads_data.Set(
+      kAdsSubdivisionTargeting,
+      prefs->GetString(brave_ads::prefs::kSubdivisionTargetingSubdivision));
+  ads_data.Set(
+      kAutoDetectedSubdivisionTargeting,
+      prefs->GetString(
+          brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision));
   ads_data.Set(
       "shouldAllowAdsSubdivisionTargeting",
       prefs->GetBoolean(brave_ads::prefs::kShouldAllowSubdivisionTargeting));
@@ -1243,9 +1249,10 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
   ads_data.Set("needsBrowserUpgradeToServeAds",
                ads_service_->NeedsBrowserUpgradeToServeAds());
 
+  const std::string geo_region_code =
+      GetLocalState()->GetString(brave_l10n::prefs::kGeoRegionCode);
   ads_data.Set("subdivisions",
-               brave_ads::GetSupportedSubdivisionsAsValueList(
-                   user_selected_subdivision, auto_detected_subdivision));
+               brave_ads::GetSupportedSubdivisionsAsValueList(geo_region_code));
 
   ads_data.Set("notificationAdsEnabled",
                prefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds));
@@ -1485,9 +1492,6 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
                       value == "true");
   } else if (key == kAdsSubdivisionTargeting) {
     prefs->SetString(brave_ads::prefs::kSubdivisionTargetingSubdivision, value);
-  } else if (key == kAutoDetectedSubdivisionTargeting) {
-    prefs->SetString(
-        brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision, value);
   }
 
   GetAdsData(base::Value::List());

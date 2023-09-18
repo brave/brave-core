@@ -144,6 +144,10 @@ interface BatAdsClient {
   [Sync]
   HasPrefPath(string path) => (bool value);
 
+  [Sync]
+  GetLocalStatePref(string path) => (mojo_base.mojom.Value? value);
+  SetLocalStatePref(string path, mojo_base.mojom.Value value);
+
   Log(string file, int32 line, int32 verbose_level, string message);
 };
 

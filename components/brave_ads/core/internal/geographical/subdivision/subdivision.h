@@ -57,7 +57,7 @@ class Subdivision final : public AdsClientNotifierObserver,
 
   std::unique_ptr<SubdivisionUrlRequest> subdivision_url_request_;
 
-  mutable absl::optional<std::string> subdivision_;
+  absl::optional<std::string> subdivision_;
 };
 
 }  // namespace brave_ads

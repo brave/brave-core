@@ -176,6 +176,15 @@ class ADS_EXPORT AdsClient {
   // Returns |true| if a value has been set for the specified preference |path|.
   virtual bool HasPrefPath(const std::string& path) const = 0;
 
+  // Get the value from the specified local state preference |path|. Returns the
+  // default value if the path does not exist.
+  virtual absl::optional<base::Value> GetLocalStatePref(
+      const std::string& path) const = 0;
+
+  // Update the value for the specified local state preference |path|.
+  virtual void SetLocalStatePref(const std::string& path,
+                                 base::Value value) = 0;
+
   // Log a |message| to |file| and the console log with |line| and
   // |verbose_level|.
   virtual void Log(const char* file,
