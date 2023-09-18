@@ -1287,8 +1287,6 @@ public class BrowserViewController: UIViewController {
     footer.snp.remakeConstraints { make in
       make.bottom.equalTo(toolbarLayoutGuide)
       make.leading.trailing.equalTo(self.view)
-      let height = self.toolbar == nil ? 0 : UIConstants.bottomToolbarHeight
-      make.height.equalTo(height)
     }
 
     bottomBarKeyboardBackground.snp.remakeConstraints {
