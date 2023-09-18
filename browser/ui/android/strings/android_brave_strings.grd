@@ -548,6 +548,21 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_UPDATE_FAILED_CUSTOM_FILTER" desc="Custom filter Update failed.">
         <ph name="TIME">%1$s<ex>1 hours ago</ex></ph> Update failed
       </message>
+      <message name="IDS_CREATE_CUSTOM_FILTERS_TITLE" desc="Title for Create Custom filters.">
+        Create custom filters
+      </message>
+      <message name="IDS_SAVE_CHANGES" desc="Button text for create custom filter lists.">
+        Save changes
+      </message>
+      <message name="IDS_SAVED_CHANGES_SUCCESS" desc="Create custom filter lists success text.">
+        Saved changes successfully
+      </message>
+      <message name="IDS_CREATE_CUSTOM_FILTER_SUMMARY" desc="Create custom filter summary.">
+        Add custom filters you've created, one per line, in the field above. Be sure to use the <ph name="ADBLOCK_FILTER_SYNTAX">%1$s</ph>.
+      </message>
+      <message name="IDS_ADBLOCK_FILTER_SYNTAX" desc="Text for Adblock filter syntax.">
+        Adblock filter syntax
+      </message>
       <message name="IDS_ASSET_PRICE" desc="Text for asset price.">
         <ph name="ASSET_NAME">%1$s<ex>Ethereum</ex></ph> Price (<ph name="ASSET_SYMBOL">%2$s<ex>ETH</ex></ph>)
       </message>
