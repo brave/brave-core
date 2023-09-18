@@ -6,6 +6,7 @@
 #include "chrome/browser/privacy_sandbox/privacy_sandbox_settings_factory.h"
 
 #include "brave/components/privacy_sandbox/brave_privacy_sandbox_settings.h"
+#include "chrome/browser/privacy_sandbox/tracking_protection_settings_factory.h"
 
 #define BuildServiceInstanceForBrowserContext \
   BuildServiceInstanceForBrowserContext_ChromiumImpl
@@ -20,5 +21,7 @@ PrivacySandboxSettingsFactory::BuildServiceInstanceForBrowserContext(
   return std::make_unique<BravePrivacySandboxSettings>(
       std::make_unique<PrivacySandboxSettingsDelegate>(profile),
       HostContentSettingsMapFactory::GetForProfile(profile),
-      CookieSettingsFactory::GetForProfile(profile).get(), profile->GetPrefs());
+      CookieSettingsFactory::GetForProfile(profile).get(),
+      TrackingProtectionSettingsFactory::GetForProfile(profile),
+      profile->GetPrefs());
 }

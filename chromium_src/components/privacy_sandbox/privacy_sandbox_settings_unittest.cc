@@ -16,6 +16,7 @@
 #include "components/content_settings/core/test/content_settings_test_utils.h"
 #include "components/privacy_sandbox/privacy_sandbox_prefs.h"
 #include "components/privacy_sandbox/privacy_sandbox_test_util.h"
+#include "components/privacy_sandbox/tracking_protection_settings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/test/browser_task_environment.h"
@@ -55,6 +56,9 @@ class PrivacySandboxSettingsTest : public testing::Test {
         false /* restore_session */, false /* should_record_metrics */);
     cookie_settings_ = new content_settings::CookieSettings(
         host_content_settings_map_.get(), &prefs_, false, "chrome-extension");
+    tracking_protection_settings_ =
+        std::make_unique<privacy_sandbox::TrackingProtectionSettings>(&prefs_,
+                                                                      nullptr);
   }
   ~PrivacySandboxSettingsTest() override {
     host_content_settings_map()->ShutdownOnUIThread();
@@ -68,7 +72,7 @@ class PrivacySandboxSettingsTest : public testing::Test {
 
     privacy_sandbox_settings_ = std::make_unique<BravePrivacySandboxSettings>(
         std::move(mock_delegate), host_content_settings_map(),
-        cookie_settings(), prefs());
+        cookie_settings(), tracking_protection_settings_.get(), prefs());
   }
 
   virtual void InitializePrefsBeforeStart() {}
@@ -93,6 +97,8 @@ class PrivacySandboxSettingsTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   scoped_refptr<HostContentSettingsMap> host_content_settings_map_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
+  std::unique_ptr<privacy_sandbox::TrackingProtectionSettings>
+      tracking_protection_settings_;
 
   std::unique_ptr<PrivacySandboxSettings> privacy_sandbox_settings_;
   raw_ptr<MockPrivacySandboxDelegate> mock_delegate_;
