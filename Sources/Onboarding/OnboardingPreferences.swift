@@ -84,9 +84,14 @@ extension Preferences {
       key: "defaultBrowserIntro.intro-completed",
       default: false)
     
-    /// Whether system notification showed or not
+    /// Whether system notification scheduled or not
     public static let defaultBrowserNotificationScheduled = Option<Bool>(
       key: "general.default-browser-notification-scheduled",
       default: false)
+    
+    /// Whether a default browser local notification should be shown
+    public static let defaultBrowserNotificationShouldBeShown = Option<Bool>(
+      key: "general.default-browser-notification-shown",
+      default: true)
   }
 }
