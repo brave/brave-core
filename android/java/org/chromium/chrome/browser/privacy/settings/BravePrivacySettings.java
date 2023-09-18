@@ -825,12 +825,15 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     }
 
     private ChromeManagedPreferenceDelegate createManagedPreferenceDelegate() {
-        return preference -> {
-            String key = preference.getKey();
-            if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
-                return mPrefServiceBridge.isManagedPreference(Pref.SEARCH_SUGGEST_ENABLED);
+        return new ChromeManagedPreferenceDelegate(getProfile()) {
+            @Override
+            public boolean isPreferenceControlledByPolicy(Preference preference) {
+                String key = preference.getKey();
+                if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
+                    return mPrefServiceBridge.isManagedPreference(Pref.SEARCH_SUGGEST_ENABLED);
+                }
+                return false;
             }
-            return false;
         };
     }
 
