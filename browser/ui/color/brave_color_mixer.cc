@@ -356,6 +356,12 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarArrowBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
   mixer[kColorSidebarItemBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
   mixer[kColorSidebarSeparator] = {SkColorSetRGB(0xE6, 0xE8, 0xF5)};
+  mixer[kColorSidebarPanelHeaderSeparator] = {
+      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)};
+  mixer[kColorSidebarPanelHeaderBackground] = {
+      leo::GetColor(leo::Color::kColorContainerBackground, leo::Theme::kLight)};
+  mixer[kColorSidebarPanelHeaderTitle] = {
+      leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kLight)};
 
   if (HasCustomToolbarColor(key)) {
     // When custom color for toolbar is set, we can't depend on the color mode.
@@ -462,6 +468,13 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarArrowBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
   mixer[kColorSidebarItemBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
   mixer[kColorSidebarSeparator] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
+  mixer[kColorSidebarPanelHeaderSeparator] = {
+      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)};
+  mixer[kColorSidebarPanelHeaderBackground] = {
+      leo::GetColor(leo::Color::kColorContainerBackground, leo::Theme::kDark)};
+  mixer[kColorSidebarPanelHeaderTitle] = {
+      leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kDark)};
+
   if (HasCustomToolbarColor(key)) {
     // When custom color for toolbar is set, we can't depend on the color mode.
     mixer[kColorSidebarButtonBase] = {PickColorContrastingToToolbar(
