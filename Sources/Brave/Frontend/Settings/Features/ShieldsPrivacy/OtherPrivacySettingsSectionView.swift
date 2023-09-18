@@ -69,6 +69,11 @@ struct OtherPrivacySettingsSectionView: View {
         subtitle: String.localizedStringWithFormat(Strings.googleSafeBrowsingUsingWebKitDescription, URL.brave.safeBrowsingHelp.absoluteString),
         option: Preferences.Shields.googleSafeBrowsing
       )
+      OptionToggleView(
+        title: Strings.screenTimeSetting,
+        subtitle: String.localizedStringWithFormat(Strings.screenTimeSettingDescription, URL.brave.screenTimeHelp.absoluteString),
+        option: Preferences.Privacy.screenTimeEnabled
+      )
       ShieldToggleView(
         title: Strings.P3A.settingTitle,
         subtitle: Strings.P3A.settingSubtitle,

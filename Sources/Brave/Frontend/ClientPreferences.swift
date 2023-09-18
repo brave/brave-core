@@ -132,6 +132,9 @@ extension Preferences {
     static let blockAllCookies = Option<Bool>(key: "privacy.block-all-cookies", default: false)
     /// The toggles states for clear private data screen
     static let clearPrivateDataToggles = Option<[Bool]>(key: "privacy.clear-data-toggles", default: [])
+    /// Enables the Apple's Screen Time feature.
+    public static let screenTimeEnabled = Option<Bool>(key: "privacy.screentime", default: true)
+    
   }
   final public class NewTabPage {
     /// Whether bookmark image are enabled / shown
