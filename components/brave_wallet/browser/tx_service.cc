@@ -10,16 +10,17 @@
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_manager.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
-#include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/value_store/value_store_factory_impl.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
@@ -163,8 +164,15 @@ void TxService::BindFilTxManagerProxy(
 void TxService::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     mojom::AccountIdPtr from,
+    AddUnapprovedTransactionCallback callback) {
+  AddUnapprovedTransactionWithOrigin(std::move(tx_data_union), std::move(from),
+                                     absl::nullopt, std::move(callback));
+}
+
+void TxService::AddUnapprovedTransactionWithOrigin(
+    mojom::TxDataUnionPtr tx_data_union,
+    mojom::AccountIdPtr from,
     const absl::optional<url::Origin>& origin,
-    const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
   if (!account_resolver_delegate_->ValidateAccountId(from)) {
     std::move(callback).Run(
@@ -176,7 +184,7 @@ void TxService::AddUnapprovedTransaction(
   auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
   GetTxManager(coin_type)->AddUnapprovedTransaction(
       json_rpc_service_->GetChainIdSync(coin_type, origin),
-      std::move(tx_data_union), from, origin, group_id, std::move(callback));
+      std::move(tx_data_union), from, origin, std::move(callback));
 }
 
 void TxService::ApproveTransaction(mojom::CoinType coin_type,

@@ -11,6 +11,7 @@
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"

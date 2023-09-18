@@ -46,7 +46,6 @@ TEST(BitcoinTxMeta, ToTransactionInfo) {
   EXPECT_EQ(ti->from_account_id, btc_account_id);
   EXPECT_EQ(ti->tx_status, meta.status());
   EXPECT_TRUE(ti->tx_data_union->is_btc_tx_data());
-  EXPECT_EQ(ti->group_id, meta.group_id());
   EXPECT_EQ(meta.created_time().ToJavaTime(),
             ti->created_time.InMilliseconds());
   EXPECT_EQ(meta.submitted_time().ToJavaTime(),

@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_state_manager.h"
+#include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
@@ -53,7 +54,6 @@ void BitcoinTxManager::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
-    const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
   const auto& btc_tx_data = tx_data_union->get_btc_tx_data();
 

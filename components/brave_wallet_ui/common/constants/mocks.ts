@@ -80,7 +80,6 @@ export const getMockedTransactionInfo =
         originSpec: 'https://brave.com',
         eTldPlusOne: 'brave.com'
       },
-      groupId: undefined,
       effectiveRecipient: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f'
     }
   }
@@ -526,7 +525,6 @@ export const mockSolDappSignAndSendTransactionRequest: SerializableTransactionIn
     originSpec: 'https://f40y4d.csb.app',
     eTldPlusOne: 'csb.app'
   },
-  groupId: undefined,
   effectiveRecipient: undefined
 }
 

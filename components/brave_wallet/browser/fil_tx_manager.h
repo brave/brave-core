@@ -45,7 +45,6 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                                 mojom::TxDataUnionPtr tx_data_union,
                                 const mojom::AccountIdPtr& from,
                                 const absl::optional<url::Origin>& origin,
-                                const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& chain_id,
                           const std::string& tx_meta_id,
@@ -75,7 +74,6 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
   void GetEstimatedGas(const std::string& chain_id,
                        const mojom::AccountIdPtr& from_account_id,
                        const absl::optional<url::Origin>& origin,
-                       const absl::optional<std::string>& group_id,
                        std::unique_ptr<FilTransaction> tx,
                        AddUnapprovedTransactionCallback callback);
   std::unique_ptr<FilTxMeta> GetTxForTesting(const std::string& chain_id,
@@ -104,7 +102,6 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
       const std::string& chain_id,
       const mojom::AccountIdPtr& from_account_id,
       const absl::optional<url::Origin>& origin,
-      const absl::optional<std::string>& group_id,
       std::unique_ptr<FilTransaction> tx,
       AddUnapprovedTransactionCallback callback,
       const std::string& gas_premium,

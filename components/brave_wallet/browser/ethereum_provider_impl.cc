@@ -17,6 +17,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -244,29 +245,17 @@ void EthereumProviderImpl::SwitchEthereumChain(const std::string& chain_id,
   }
 }
 
-void EthereumProviderImpl::ContinueGetDefaultKeyringInfo(
+void EthereumProviderImpl::SendOrSignTransactionInternal(
     RequestCallback callback,
     base::Value id,
     const std::string& normalized_json_request,
-    const url::Origin& origin,
-    bool sign_only,
-    mojom::NetworkInfoPtr chain) {
-  keyring_service_->GetKeyringInfo(
-      mojom::kDefaultKeyringId,
-      base::BindOnce(&EthereumProviderImpl::OnGetNetworkAndDefaultKeyringInfo,
-                     weak_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(id), normalized_json_request, origin,
-                     std::move(chain), sign_only));
-}
+    bool sign_only) {
+  url::Origin origin = delegate_->GetOrigin();
+  mojom::NetworkInfoPtr chain =
+      json_rpc_service_->GetNetworkSync(mojom::CoinType::ETH, origin);
+  mojom::KeyringInfoPtr keyring_info =
+      keyring_service_->GetKeyringInfoSync(mojom::kDefaultKeyringId);
 
-void EthereumProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
-    RequestCallback callback,
-    base::Value id,
-    const std::string& normalized_json_request,
-    const url::Origin& origin,
-    mojom::NetworkInfoPtr chain,
-    bool sign_only,
-    mojom::KeyringInfoPtr keyring_info) {
   bool reject = false;
   if (!chain || !keyring_info) {
     mojom::ProviderError code = mojom::ProviderError::kInternalError;
@@ -301,16 +290,16 @@ void EthereumProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
                          keyring_info->account_infos, from)) {
     // Set chain_id to current chain_id.
     tx_data_1559->chain_id = chain->chain_id;
-    tx_service_->AddUnapprovedTransaction(
+    tx_service_->AddUnapprovedTransactionWithOrigin(
         mojom::TxDataUnion::NewEthTxData1559(std::move(tx_data_1559)),
-        account_id.Clone(), origin, absl::nullopt,
+        account_id.Clone(), origin,
         base::BindOnce(&EthereumProviderImpl::OnAddUnapprovedTransactionAdapter,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id)));
   } else {
-    tx_service_->AddUnapprovedTransaction(
+    tx_service_->AddUnapprovedTransactionWithOrigin(
         mojom::TxDataUnion::NewEthTxData(std::move(tx_data_1559->base_data)),
-        account_id.Clone(), origin, absl::nullopt,
+        account_id.Clone(), origin,
         base::BindOnce(&EthereumProviderImpl::OnAddUnapprovedTransactionAdapter,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id)));
@@ -930,19 +919,11 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
     }
     SwitchEthereumChain(chain_id, std::move(callback), std::move(id));
   } else if (method == kEthSendTransaction) {
-    json_rpc_service_->GetNetwork(
-        mojom::CoinType::ETH, delegate_->GetOrigin(),
-        base::BindOnce(&EthereumProviderImpl::ContinueGetDefaultKeyringInfo,
-                       weak_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(id), normalized_json_request,
-                       delegate_->GetOrigin(), false));
+    SendOrSignTransactionInternal(std::move(callback), std::move(id),
+                                  std::move(normalized_json_request), false);
   } else if (method == kEthSignTransaction) {
-    json_rpc_service_->GetNetwork(
-        mojom::CoinType::ETH, delegate_->GetOrigin(),
-        base::BindOnce(&EthereumProviderImpl::ContinueGetDefaultKeyringInfo,
-                       weak_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(id), normalized_json_request,
-                       delegate_->GetOrigin(), true));
+    SendOrSignTransactionInternal(std::move(callback), std::move(id),
+                                  std::move(normalized_json_request), true);
   } else if (method == kEthSendRawTransaction) {
     std::string signed_transaction;
     if (!ParseEthSendRawTransactionParams(normalized_json_request,

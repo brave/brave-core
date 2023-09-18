@@ -25,7 +25,6 @@ import {
   getTransactionGasFee,
   isSolanaTransaction,
   parseTransactionWithPrices,
-  sortTransactionByDate,
   findTransactionToken,
   isEthereumTransaction
 } from '../../utils/tx-utils'
@@ -467,38 +466,6 @@ export const usePendingTransactions = () => {
     }
   }, [transactionInfo])
 
-  // List of all transactions that belong to the same group as the selected
-  // pending transaction.
-  const groupTransactions = React.useMemo(
-    () =>
-      transactionInfo?.groupId
-        ? sortTransactionByDate(
-            pendingTransactions.filter(
-              (txn) => txn.groupId === transactionInfo.groupId
-            )
-          )
-        : [],
-    [transactionInfo, pendingTransactions]
-  )
-
-  const unconfirmedGroupTransactionIds = React.useMemo(() =>
-    groupTransactions
-      .filter(txn => txn.txStatus !== BraveWallet.TransactionStatus.Confirmed)
-      .map(txn => txn.id),
-    [groupTransactions])
-
-  // Position of the selected pending transaction in the group, if exists.
-  const selectedPendingTransactionGroupIndex = React.useMemo(() =>
-    groupTransactions.findIndex(txn => transactionInfo?.id === txn.id),
-    [groupTransactions, transactionInfo])
-
-  // The selected pending transaction can only be approved if:
-  //   - it does not belong to a transaction group
-  //   - it is the first unconfirmed transaction in the group
-  const canSelectedPendingTransactionBeApproved = React.useMemo(() =>
-    unconfirmedGroupTransactionIds.findIndex(idx => transactionInfo?.id === idx) <= 0,
-    [transactionInfo, unconfirmedGroupTransactionIds])
-
   // memos
   const fromOrb = useAccountOrb(txAccount)
   const toOrb = useAddressOrb(transactionDetails?.recipient, { scale: 10 })
@@ -554,14 +521,12 @@ export const usePendingTransactions = () => {
       insufficientFundsError === undefined ||
       !!insufficientFundsForGasError ||
       !!insufficientFundsError ||
-      !!transactionDetails?.missingGasLimitError ||
-      !canSelectedPendingTransactionBeApproved
+      !!transactionDetails?.missingGasLimitError
     )
   }, [
     transactionDetails,
     hasFeeEstimatesError,
     isLoadingGasFee,
-    canSelectedPendingTransactionBeApproved,
     insufficientFundsError,
     insufficientFundsForGasError
   ])
@@ -666,8 +631,6 @@ export const usePendingTransactions = () => {
     solanaSendOptions: transactionInfo?.txDataUnion.solanaTxData?.sendOptions,
     updateUnapprovedTransactionGasFields,
     updateUnapprovedTransactionNonce,
-    groupTransactions,
-    selectedPendingTransactionGroupIndex,
     hasFeeEstimatesError,
     selectedPendingTransaction: transactionInfo,
     isLoadingGasFee,

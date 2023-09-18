@@ -49,7 +49,6 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                                 mojom::TxDataUnionPtr tx_data_union,
                                 const mojom::AccountIdPtr& from,
                                 const absl::optional<url::Origin>& origin,
-                                const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& chain_id,
                           const std::string& tx_meta_id,
@@ -176,13 +175,11 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                                 mojom::TxDataPtr tx_data,
                                 const mojom::AccountIdPtr& from,
                                 const url::Origin& origin,
-                                const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback);
   void AddUnapproved1559Transaction(const std::string& chain_id,
                                     mojom::TxData1559Ptr tx_data,
                                     const mojom::AccountIdPtr& from,
                                     const url::Origin& origin,
-                                    const absl::optional<std::string>& group_id,
                                     AddUnapprovedTransactionCallback);
 
   void NotifyUnapprovedTxUpdated(TxMeta* meta);
@@ -213,7 +210,6 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                      const std::string& value,
                      const std::string& data,
                      const std::string& gas_limit,
-                     const absl::optional<std::string>& group_id,
                      std::unique_ptr<EthTransaction> tx,
                      AddUnapprovedTransactionCallback callback,
                      bool sign_only,
@@ -224,7 +220,6 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const std::string& chain_id,
       const mojom::AccountIdPtr& from,
       const absl::optional<url::Origin>& origin,
-      const absl::optional<std::string>& group_id,
       std::unique_ptr<EthTransaction> tx,
       AddUnapprovedTransactionCallback callback,
       bool sign_only,
@@ -248,7 +243,6 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const std::string& value,
       const std::string& data,
       const std::string& gas_limit,
-      const absl::optional<std::string>& group_id,
       std::unique_ptr<Eip1559Transaction> tx,
       AddUnapprovedTransactionCallback callback,
       bool sign_only,
@@ -260,7 +254,6 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const std::string& chain_id,
       const mojom::AccountIdPtr& from,
       const absl::optional<url::Origin>& origin,
-      const absl::optional<std::string>& group_id,
       const std::string& gas_limit,
       std::unique_ptr<EthTransaction> tx,
       SpeedupOrCancelTransactionCallback callback,
@@ -271,7 +264,6 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const std::string& chain_id,
       const mojom::AccountIdPtr& from,
       const absl::optional<url::Origin>& origin,
-      const absl::optional<std::string>& group_id,
       const std::string& gas_limit,
       std::unique_ptr<Eip1559Transaction> tx,
       SpeedupOrCancelTransactionCallback callback,

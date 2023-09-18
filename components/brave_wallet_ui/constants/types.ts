@@ -395,7 +395,6 @@ export interface SolanaSerializedTransactionParams {
   accountId: BraveWallet.AccountId
   txType: BraveWallet.TransactionType
   sendOptions?: BraveWallet.SolanaSendTransactionOptions
-  groupId?: string
 }
 
 export interface SendEthTransactionParams extends BaseEthTransactionParams {

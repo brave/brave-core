@@ -12,6 +12,7 @@
 #include "base/base64.h"
 #include "base/environment.h"
 #include "base/json/json_writer.h"
+#include "base/no_destructor.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"

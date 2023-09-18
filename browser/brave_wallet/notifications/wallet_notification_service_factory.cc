@@ -35,7 +35,8 @@ WalletNotificationServiceFactory::~WalletNotificationServiceFactory() = default;
 
 KeyedService* WalletNotificationServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new WalletNotificationService(context);
+  return new WalletNotificationService(
+      TxServiceFactory::GetServiceForContext(context), context);
 }
 
 // static
