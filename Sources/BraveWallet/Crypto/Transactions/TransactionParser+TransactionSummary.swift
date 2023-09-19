@@ -10,7 +10,7 @@ struct TransactionSummary: Equatable, Identifiable {
   /// The transaction
   let txInfo: BraveWallet.TransactionInfo
   /// From address of the transaction
-  var fromAddress: String { txInfo.fromAddress }
+  var fromAddress: String { txInfo.fromAccountId.address }
   /// Account name for the from address of the transaction
   let namedFromAddress: String
   /// To address of the transaction
@@ -69,7 +69,7 @@ extension TransactionParser {
       }
       return .init(
         txInfo: transaction,
-        namedFromAddress: NamedAddresses.name(for: transaction.fromAddress, accounts: accountInfos),
+        namedFromAddress: NamedAddresses.name(for: transaction.fromAccountId.address, accounts: accountInfos),
         toAddress: toAddress,
         namedToAddress: NamedAddresses.name(for: transaction.ethTxToAddress, accounts: accountInfos),
         title: "",

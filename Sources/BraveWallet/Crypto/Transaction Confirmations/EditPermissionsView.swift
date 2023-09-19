@@ -41,7 +41,7 @@ struct EditPermissionsView: View {
   }
   
   private var accountName: String {
-    NamedAddresses.name(for: activeTransaction.fromAddress, accounts: keyringStore.allAccounts)
+    NamedAddresses.name(for: activeTransaction.fromAccountId.address, accounts: keyringStore.allAccounts)
   }
   
   init(

@@ -33,7 +33,7 @@ extension BraveWalletTxService {
           for info in keyring.accountInfos {
             for network in networksForKeyringCoin where network.supportedKeyrings.contains(keyring.id.rawValue as NSNumber) {
               group.addTask { @MainActor in
-                await self.allTransactionInfo(info.coin, chainId: network.chainId, from: info.address)
+                await self.allTransactionInfo(info.coin, chainId: network.chainId, from: info.accountId)
               }
             }
           }
@@ -57,7 +57,7 @@ extension BraveWalletTxService {
       body: { @MainActor group in
         for network in networks where network.supportedKeyrings.contains(accountInfo.accountId.keyringId.rawValue as NSNumber) {
           group.addTask { @MainActor in
-            await self.allTransactionInfo(accountInfo.coin, chainId: network.chainId, from: accountInfo.address)
+            await self.allTransactionInfo(accountInfo.coin, chainId: network.chainId, from: accountInfo.accountId)
           }
         }
         var allTx: [BraveWallet.TransactionInfo] = []

@@ -16,9 +16,9 @@ struct EncryptionView: View {
     var address: String {
       switch self {
       case let .getEncryptionPublicKey(request):
-        return request.address
+        return request.accountId.address
       case let .decrypt(request):
-        return request.address
+        return request.accountId.address
       }
     }
     
@@ -233,7 +233,7 @@ struct EncryptionView: View {
 #if DEBUG
 struct EncryptionView_Previews: PreviewProvider {
   static var previews: some View {
-    let address = BraveWallet.AccountInfo.previewAccount.address
+    let account = BraveWallet.AccountInfo.previewAccount
     let originInfo = BraveWallet.OriginInfo(
       originSpec: WalletConstants.braveWalletOriginSpec,
       eTldPlusOne: ""
@@ -243,14 +243,14 @@ struct EncryptionView_Previews: PreviewProvider {
         .init(
           requestId: UUID().uuidString,
           originInfo: originInfo,
-          address: address
+          accountId: account.accountId
         )
       ),
       .decrypt(
         .init(
           requestId: UUID().uuidString,
           originInfo: originInfo,
-          address: address,
+          accountId: account.accountId,
           unsafeMessage: "Secret message"
         )
       )

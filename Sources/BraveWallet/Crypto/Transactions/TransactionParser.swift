@@ -136,8 +136,8 @@ enum TransactionParser {
          */
         return .init(
           transaction: transaction,
-          namedFromAddress: NamedAddresses.name(for: transaction.fromAddress, accounts: accountInfos),
-          fromAddress: transaction.fromAddress,
+          namedFromAddress: NamedAddresses.name(for: transaction.fromAccountId.address, accounts: accountInfos),
+          fromAddress: transaction.fromAccountId.address,
           namedToAddress: NamedAddresses.name(for: filTxData.to, accounts: accountInfos),
           toAddress: filTxData.to,
           networkSymbol: network.symbol,
@@ -174,8 +174,8 @@ enum TransactionParser {
          */
         return .init(
           transaction: transaction,
-          namedFromAddress: NamedAddresses.name(for: transaction.fromAddress, accounts: accountInfos),
-          fromAddress: transaction.fromAddress,
+          namedFromAddress: NamedAddresses.name(for: transaction.fromAccountId.address, accounts: accountInfos),
+          fromAddress: transaction.fromAccountId.address,
           namedToAddress: NamedAddresses.name(for: transaction.ethTxToAddress, accounts: accountInfos),
           toAddress: transaction.ethTxToAddress,
           networkSymbol: network.symbol,
@@ -219,8 +219,8 @@ enum TransactionParser {
        */
       return .init(
         transaction: transaction,
-        namedFromAddress: NamedAddresses.name(for: transaction.fromAddress, accounts: accountInfos),
-        fromAddress: transaction.fromAddress,
+        namedFromAddress: NamedAddresses.name(for: transaction.fromAccountId.address, accounts: accountInfos),
+        fromAddress: transaction.fromAccountId.address,
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
         networkSymbol: network.symbol,
@@ -274,8 +274,8 @@ enum TransactionParser {
        */
       return .init(
         transaction: transaction,
-        namedFromAddress: NamedAddresses.name(for: transaction.fromAddress, accounts: accountInfos),
-        fromAddress: transaction.fromAddress,
+        namedFromAddress: NamedAddresses.name(for: transaction.fromAccountId.address, accounts: accountInfos),
+        fromAddress: transaction.fromAccountId.address,
         namedToAddress: NamedAddresses.name(for: transaction.ethTxToAddress, accounts: accountInfos),
         toAddress: transaction.ethTxToAddress,
         networkSymbol: network.symbol,
@@ -325,8 +325,8 @@ enum TransactionParser {
        */
       return .init(
         transaction: transaction,
-        namedFromAddress: NamedAddresses.name(for: transaction.fromAddress, accounts: accountInfos),
-        fromAddress: transaction.fromAddress,
+        namedFromAddress: NamedAddresses.name(for: transaction.fromAccountId.address, accounts: accountInfos),
+        fromAddress: transaction.fromAccountId.address,
         namedToAddress: NamedAddresses.name(for: transaction.ethTxToAddress, accounts: accountInfos),
         toAddress: transaction.ethTxToAddress,
         networkSymbol: network.symbol,
@@ -358,8 +358,8 @@ enum TransactionParser {
       
       return .init(
         transaction: transaction,
-        namedFromAddress: NamedAddresses.name(for: transaction.fromAddress, accounts: accountInfos),
-        fromAddress: transaction.fromAddress, // The caller, which may not be the owner
+        namedFromAddress: NamedAddresses.name(for: transaction.fromAccountId.address, accounts: accountInfos),
+        fromAddress: transaction.fromAccountId.address, // The caller, which may not be the owner
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
         networkSymbol: network.symbol,
@@ -398,8 +398,8 @@ enum TransactionParser {
        */
       return .init(
         transaction: transaction,
-        namedFromAddress: NamedAddresses.name(for: transaction.fromAddress, accounts: accountInfos),
-        fromAddress: transaction.fromAddress,
+        namedFromAddress: NamedAddresses.name(for: transaction.fromAccountId.address, accounts: accountInfos),
+        fromAddress: transaction.fromAccountId.address,
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
         networkSymbol: network.symbol,
@@ -449,8 +449,8 @@ enum TransactionParser {
        */
       return .init(
         transaction: transaction,
-        namedFromAddress: NamedAddresses.name(for: transaction.fromAddress, accounts: accountInfos),
-        fromAddress: transaction.fromAddress,
+        namedFromAddress: NamedAddresses.name(for: transaction.fromAccountId.address, accounts: accountInfos),
+        fromAddress: transaction.fromAccountId.address,
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
         networkSymbol: network.symbol,
@@ -560,8 +560,8 @@ enum TransactionParser {
       }
       return .init(
         transaction: transaction,
-        namedFromAddress: NamedAddresses.name(for: transaction.fromAddress, accounts: accountInfos),
-        fromAddress: transaction.fromAddress,
+        namedFromAddress: NamedAddresses.name(for: transaction.fromAccountId.address, accounts: accountInfos),
+        fromAddress: transaction.fromAccountId.address,
         namedToAddress: NamedAddresses.name(for: toAddress ?? "", accounts: accountInfos),
         toAddress: toAddress ?? "",
         networkSymbol: network.symbol,
