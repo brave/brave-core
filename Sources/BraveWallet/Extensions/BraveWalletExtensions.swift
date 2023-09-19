@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveCore
+import OrderedCollections
 
 extension BraveWallet.TransactionInfo {
   var isSwap: Bool {
@@ -309,6 +310,9 @@ extension BraveWallet.OnRampProvider {
       return Strings.Wallet.sardineProviderName
     case .transak:
       return Strings.Wallet.transakProviderName
+    case .stripe:
+      // Product names not localized
+      return String.localizedStringWithFormat(Strings.Wallet.stripeNetworkProviderName, "Link", "Stripe")
     default:
       return ""
     }
@@ -322,6 +326,9 @@ extension BraveWallet.OnRampProvider {
       return Strings.Wallet.sardineProviderShortName
     case .transak:
       return Strings.Wallet.transakProviderShortName
+    case .stripe:
+      // Product name is not localized
+      return "Link"
     default:
       return ""
     }
@@ -335,6 +342,8 @@ extension BraveWallet.OnRampProvider {
       return Strings.Wallet.sardineProviderDescription
     case .transak:
       return Strings.Wallet.transakProviderDescription
+    case .stripe:
+      return Strings.Wallet.stripeNetworkProviderDescription
     default:
       return ""
     }
@@ -348,8 +357,45 @@ extension BraveWallet.OnRampProvider {
       return "sardine-icon"
     case .transak:
       return "transak-icon"
+    case .stripe:
+      return "link-by-stripe-icon"
     default:
       return ""
+    }
+  }
+  
+  /// Supported local region identifiers / codes for the `OnRampProvider`. Will return nil if all locale region identifiers / codes are supported.
+  private var supportedLocaleRegionIdentifiers: [String]? {
+    switch self {
+    case .stripe:
+      return ["us"]
+    default:
+      return nil
+    }
+  }
+  
+  /// All supported `OnRampProvider`s for users Locale.
+  static var allSupportedOnRampProviders: OrderedSet<BraveWallet.OnRampProvider> {
+    .init(WalletConstants.supportedOnRampProviders.filter { onRampProvider in
+      if let supportedLocaleRegionIdentifiers = onRampProvider.supportedLocaleRegionIdentifiers {
+        // Check if `Locale` contains any of the `supportedLocaleRegionIdentifiers`
+        return supportedLocaleRegionIdentifiers.contains(where: { code in
+          Locale.current.safeRegionCode?.caseInsensitiveCompare(code) == .orderedSame
+        })
+      }
+      // all locale codes/identifiers are supported for this `OnRampProvider`
+      return true
+    })
+  }
+}
+
+extension Locale {
+  /// The region identifier (iOS 16+) or region code for the `Locale`.
+  var safeRegionCode: String? {
+    if #available(iOS 16, *) {
+      return Locale.current.region?.identifier ?? Locale.current.regionCode
+    } else {
+      return Locale.current.regionCode
     }
   }
 }

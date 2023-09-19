@@ -91,6 +91,12 @@ public struct WalletConstants {
     }
   }
   
+  /// All of currently supported `OnRampProvider`s.
+  /// Use `OnRampProvider.allSupportedOnRampProviders` to get providers available for current device locale.
+  static let supportedOnRampProviders: OrderedSet<BraveWallet.OnRampProvider> = [
+    .ramp, .sardine, .transak, .stripe
+  ]
+  
   /// The supported Ethereum Name Service (ENS) extensions
   static let supportedENSExtensions = [".eth"]
   /// The supported Solana Name Service (SNS) extensions

@@ -22,9 +22,31 @@ public class BuyTokenStore: ObservableObject {
   @Published var selectedCurrency: BraveWallet.OnRampCurrency = .init()
   
   /// A map of list of available tokens to a certain on ramp provider
-  var buyTokens: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]] = [.ramp: [], .sardine: [], .transak: []]
+  var buyTokens: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]]
   /// A list of all available tokens for all providers
   var allTokens: [BraveWallet.BlockchainToken] = []
+  
+  /// The supported `OnRampProvider`s for the currently selected currency and device locale.
+  var supportedProviders: OrderedSet<BraveWallet.OnRampProvider> {
+    return OrderedSet(orderedSupportedBuyOptions
+      .filter { provider in
+        guard let tokens = buyTokens[provider],
+              let selectedBuyToken = selectedBuyToken
+        else { return false }
+        // verify selected currency code is supported for this provider
+        guard supportedCurrencies.contains(where: { supportedOnRampCurrency in
+          guard supportedOnRampCurrency.providers.contains(.init(integerLiteral: provider.rawValue)) else {
+            return false
+          }
+          let selectedCurrencyCode = selectedCurrency.currencyCode
+          return supportedOnRampCurrency.currencyCode.caseInsensitiveCompare(selectedCurrencyCode) == .orderedSame
+        }) else {
+          return false
+        }
+        // verify selected token is supported for this provider
+        return tokens.includes(selectedBuyToken)
+      })
+  }
 
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let keyringService: BraveWalletKeyringService
@@ -63,8 +85,14 @@ public class BuyTokenStore: ObservableObject {
     self.walletService = walletService
     self.assetRatioService = assetRatioService
     self.prefilledToken = prefilledToken
+    self.buyTokens = WalletConstants.supportedOnRampProviders.reduce(
+      into: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]]()
+    ) {
+      $0[$1] = []
+    }
     
     self.rpcService.add(self)
+    self.keyringService.add(self)
     
     Task {
       await updateInfo()
@@ -98,29 +126,35 @@ public class BuyTokenStore: ObservableObject {
   func fetchBuyUrl(
     provider: BraveWallet.OnRampProvider,
     account: BraveWallet.AccountInfo
-  ) async -> String? {
+  ) async -> URL? {
     guard let token = selectedBuyToken else { return nil }
     
     let symbol: String
+    let currencyCode: String
     switch provider {
     case .ramp:
       symbol = token.rampNetworkSymbol
-    case .sardine:
-      symbol = token.symbol
+      currencyCode = selectedCurrency.currencyCode
+    case .stripe:
+      symbol = token.symbol.lowercased()
+      currencyCode = selectedCurrency.currencyCode.lowercased()
     default:
       symbol = token.symbol
+      currencyCode = selectedCurrency.currencyCode
     }
     
-    let (url, error) = await assetRatioService.buyUrlV1(
+    let (urlString, error) = await assetRatioService.buyUrlV1(
       provider,
       chainId: selectedNetwork.chainId,
       address: account.address,
       symbol: symbol,
       amount: buyAmount,
-      currencyCode: selectedCurrency.currencyCode
+      currencyCode: currencyCode
     )
 
-    guard error == nil else { return nil }
+    guard error == nil, let url = URL(string: urlString) else {
+      return nil
+    }
     
     return url
   }
@@ -161,7 +195,7 @@ public class BuyTokenStore: ObservableObject {
   
   @MainActor
   func updateInfo() async {
-    orderedSupportedBuyOptions = [.ramp, .sardine, .transak]
+    orderedSupportedBuyOptions = BraveWallet.OnRampProvider.allSupportedOnRampProviders
     
     guard let selectedAccount = await keyringService.allAccounts().selectedAccount else {
       assertionFailure("selectedAccount should never be nil.")
@@ -182,7 +216,11 @@ public class BuyTokenStore: ObservableObject {
     
     // fetch all available currencies for on ramp providers
     supportedCurrencies = await blockchainRegistry.onRampCurrencies()
-    if let firstCurrency = supportedCurrencies.first {
+    if let usdCurrency = supportedCurrencies.first(where: {
+      $0.currencyCode.caseInsensitiveCompare(CurrencyCode.usd.code) == .orderedSame
+    }) {
+      selectedCurrency = usdCurrency
+    } else if let firstCurrency = supportedCurrencies.first {
       selectedCurrency = firstCurrency
     }
   }
@@ -199,6 +237,44 @@ extension BuyTokenStore: BraveWalletJsonRpcServiceObserver {
   }
   
   public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
+  }
+}
+
+extension BuyTokenStore: BraveWalletKeyringServiceObserver {
+  public func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
+  }
+  
+  public func keyringRestored(_ keyringId: BraveWallet.KeyringId) {
+  }
+  
+  public func keyringReset() {
+  }
+  
+  public func locked() {
+  }
+  
+  public func unlocked() {
+  }
+  
+  public func backedUp() {
+  }
+  
+  public func accountsChanged() {
+  }
+  
+  public func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
+  }
+  
+  public func autoLockMinutesChanged() {
+  }
+  
+  public func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
+    Task { @MainActor in
+      await updateInfo()
+    }
+  }
+  
+  public func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
   }
 }
 

@@ -23,14 +23,17 @@ class BuyTokenStoreTests: XCTestCase {
       .init(contractAddress: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0", name: "MATIC", logo: "", isErc20: true, isErc721: false, isErc1155: false, isNft: false, isSpam: false, symbol: "MATIC", decimals: 18, visible: true, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
     ]
     let mockOnRampCurrencies: [BraveWallet.OnRampCurrency] = [
-      .init(currencyCode: "usd", currencyName: "United States Dollar", providers: [.init(value: 0)]),
-      .init(currencyCode: "eur", currencyName: "Euro", providers: [.init(value: 1)])
+      .mockUSD,
+      .mockEuro,
+      .mockCAD,
+      .mockGBP
     ]
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
     blockchainRegistry._buyTokens = { $2(mockTokenList)}
     blockchainRegistry._onRampCurrencies = { $0(mockOnRampCurrencies) }
     
     let keyringService = BraveWallet.TestKeyringService()
+    keyringService._addObserver = { _ in }
     keyringService._allAccounts = { completion in
       completion(.init(
         accounts: [.previewAccount],
@@ -180,13 +183,17 @@ class BuyTokenStoreTests: XCTestCase {
     
     await store.updateInfo()
     
-    XCTAssertEqual(store.orderedSupportedBuyOptions.count, 3)
+    XCTAssertEqual(store.orderedSupportedBuyOptions.count, isTestRunningInUSRegion ? 4 : 3)
     XCTAssertNotNil(store.orderedSupportedBuyOptions.first)
     XCTAssertEqual(store.orderedSupportedBuyOptions.first, .ramp)
     XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 1])
     XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 1], .sardine)
-    XCTAssertNotNil(store.orderedSupportedBuyOptions.last)
-    XCTAssertEqual(store.orderedSupportedBuyOptions.last, .transak)
+    XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 2])
+    XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 2], .transak)
+    if isTestRunningInUSRegion {
+      XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 3])
+      XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 3], .stripe)
+    }
   }
   
   @MainActor
@@ -218,5 +225,120 @@ class BuyTokenStoreTests: XCTestCase {
     for token in store.allTokens {
       XCTAssertEqual(token.chainId, selectedNetwork.chainId)
     }
+  }
+  
+  /// Test `supportedProviders` will only return supported `OnRampProvider`s for the `selectedCurrency`.
+  @MainActor func testSupportedProvidersSelectedCurrency() async {
+    let (blockchainRegistry, keyringService, rpcService, walletService, assetRatioService) = setupServices()
+    blockchainRegistry._onRampCurrencies = {
+      $0([.mockUSD, .mockCAD, .mockGBP, .mockEuro])
+    }
+
+    let store = BuyTokenStore(
+      blockchainRegistry: blockchainRegistry,
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      assetRatioService: assetRatioService,
+      prefilledToken: nil
+    )
+    await store.updateInfo()
+
+    // Test USD. Ramp, Sardine, Transak and Stripe (US locale only) are all supported.
+    store.selectedCurrency = .mockUSD
+    // some providers are only available in the US. Check ourselves instead of swizzling `regionCode` / `region`.
+    if isTestRunningInUSRegion {
+      XCTAssertEqual(store.supportedProviders.count, 4)
+      XCTAssertEqual(store.supportedProviders, [
+        BraveWallet.OnRampProvider.ramp,
+        BraveWallet.OnRampProvider.sardine,
+        BraveWallet.OnRampProvider.transak,
+        BraveWallet.OnRampProvider.stripe
+      ])
+    } else {
+      // stripe only supported in en-us locale
+      XCTAssertEqual(store.supportedProviders.count, 3)
+      XCTAssertEqual(store.supportedProviders, [
+        BraveWallet.OnRampProvider.ramp,
+        BraveWallet.OnRampProvider.sardine,
+        BraveWallet.OnRampProvider.transak,
+      ])
+    }
+    
+    // Test CAD. Ramp, Sardine, Transak are supported. Stripe unsupported.
+    store.selectedCurrency = .mockCAD
+    XCTAssertEqual(store.supportedProviders.count, 3)
+    XCTAssertEqual(store.supportedProviders, [
+      BraveWallet.OnRampProvider.ramp,
+      BraveWallet.OnRampProvider.sardine,
+      BraveWallet.OnRampProvider.transak,
+    ])
+    XCTAssertFalse(store.supportedProviders.contains(.stripe))
+    
+    // Test GBP. Ramp, Sardine supported. Transak, Stripe unsupported.
+    store.selectedCurrency = .mockGBP
+    XCTAssertEqual(store.supportedProviders.count, 2)
+    XCTAssertEqual(store.supportedProviders, [
+      BraveWallet.OnRampProvider.ramp,
+      BraveWallet.OnRampProvider.sardine
+    ])
+    XCTAssertFalse(store.supportedProviders.contains(.transak))
+    XCTAssertFalse(store.supportedProviders.contains(.stripe))
+  }
+  
+  private var isTestRunningInUSRegion: Bool {
+    Locale.current.safeRegionCode?.caseInsensitiveCompare("us") == .orderedSame
+  }
+}
+
+private extension BraveWallet.OnRampCurrency {
+  static var mockUSD: BraveWallet.OnRampCurrency {
+    .init(
+      currencyCode: "usd",
+      currencyName: "United States Dollar",
+      providers: WalletConstants.supportedOnRampProviders.map {
+        .init(integerLiteral: $0.rawValue)
+      }
+    )
+  }
+  
+  static var mockCAD: BraveWallet.OnRampCurrency {
+    .init(
+      currencyCode: "cad",
+      currencyName: "Canadian Dollar",
+      providers: [
+        BraveWallet.OnRampProvider.ramp,
+        BraveWallet.OnRampProvider.sardine,
+        BraveWallet.OnRampProvider.transak
+        // simulate stripe not supported for CAD
+      ].map {
+        .init(integerLiteral: $0.rawValue)
+      }
+    )
+  }
+  
+  static var mockGBP: BraveWallet.OnRampCurrency {
+    .init(
+      currencyCode: "gbp",
+      currencyName: "British Pound Sterling",
+      providers: [
+        BraveWallet.OnRampProvider.ramp,
+        BraveWallet.OnRampProvider.sardine
+        // simulate transak not supported for GBP
+        // simulate stripe not supported for GBP
+      ].map {
+        .init(integerLiteral: $0.rawValue)
+      }
+    )
+  }
+  
+  static var mockEuro: BraveWallet.OnRampCurrency {
+    .init(
+      currencyCode: "eur",
+      currencyName: "Euro",
+      providers: WalletConstants.supportedOnRampProviders.map {
+        .init(integerLiteral: $0.rawValue)
+      }
+    )
   }
 }
