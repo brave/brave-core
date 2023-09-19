@@ -294,11 +294,8 @@ public abstract class BraveActivity extends ChromeActivity
     public void onResumeWithNative() {
         super.onResumeWithNative();
         BraveActivityJni.get().restartStatsUpdater();
-        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
-                    BraveActivity.this, null);
+        if (BraveVpnUtils.isVpnFeatureSupported(BraveActivity.this)) {
             BraveVpnNativeWorker.getInstance().addObserver(this);
-
             BraveVpnUtils.reportBackgroundUsageP3A();
         }
         Profile profile = getCurrentTabModel().getProfile();
@@ -331,7 +328,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void onPauseWithNative() {
-        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
+        if (BraveVpnUtils.isVpnFeatureSupported(BraveActivity.this)) {
             BraveVpnNativeWorker.getInstance().removeObserver(this);
         }
         Profile profile = getCurrentTabModel().getProfile();
@@ -1141,7 +1138,7 @@ public abstract class BraveActivity extends ChromeActivity
         String countryCode = Locale.getDefault().getCountry();
 
         if (!countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
-                && BraveVpnUtils.isBraveVpnFeatureEnable()) {
+                && BraveVpnUtils.isVpnFeatureSupported(BraveActivity.this)) {
             if (BraveVpnPrefUtils.shouldShowCallout() && !BraveVpnPrefUtils.isSubscriptionPurchase()
                             && (SharedPreferencesManager.getInstance().readInt(
                                         BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)

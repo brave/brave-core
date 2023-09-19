@@ -94,8 +94,6 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         getActivity().setTitle(R.string.brave_firewall_vpn);
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_vpn_preferences);
 
-        InAppPurchaseWrapper.getInstance().startBillingServiceConnection(getActivity(), null);
-
         mVpnSwitch = (ChromeSwitchPreference) findPreference(PREF_VPN_SWITCH);
         mVpnSwitch.setChecked(
                 BraveVpnProfileUtils.getInstance().isBraveVPNConnected(getActivity()));
@@ -589,5 +587,11 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 new Handler().post(() -> updateSummaries());
             }
         }, INVALIDATE_CREDENTIAL_TIMER_COUNT);
+    }
+
+    @Override
+    public void onDestroy() {
+        InAppPurchaseWrapper.getInstance().endConnection();
+        super.onDestroy();
     }
 }

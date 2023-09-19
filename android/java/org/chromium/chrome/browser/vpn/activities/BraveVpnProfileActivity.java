@@ -145,4 +145,10 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         mInstallVpnButton.setText(getResources().getString(R.string.accept_connection_request));
         mContactSupportButton.setVisibility(View.GONE);
     }
+
+    @Override
+    public void onDestroy() {
+        InAppPurchaseWrapper.getInstance().endConnection();
+        super.onDestroy();
+    }
 }

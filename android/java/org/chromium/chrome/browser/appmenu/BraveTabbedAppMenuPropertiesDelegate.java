@@ -90,8 +90,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         mMenu = menu;
 
-        if (BraveVpnUtils.isBraveVpnFeatureEnable()
-                && InAppPurchaseWrapper.getInstance().isSubscriptionSupported()) {
+        if (BraveVpnUtils.isVpnFeatureSupported(mContext)) {
             SubMenu vpnSubMenu = menu.findItem(R.id.request_brave_vpn_row_menu_id).getSubMenu();
             MenuItem braveVpnSubMenuItem = vpnSubMenu.findItem(R.id.request_brave_vpn_id);
             if (shouldShowIconBeforeItem()) {
@@ -257,7 +256,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         mMenu.removeItem(R.id.brave_playlist_id);
         mMenu.removeItem(R.id.brave_speedreader_id);
         mMenu.removeItem(R.id.exit_id);
-        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
+        if (BraveVpnUtils.isVpnFeatureSupported(mContext)) {
             mMenu.removeItem(R.id.request_brave_vpn_row_menu_id);
         }
     }

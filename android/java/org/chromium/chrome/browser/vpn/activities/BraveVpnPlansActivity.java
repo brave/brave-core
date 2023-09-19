@@ -96,6 +96,12 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     }
 
     @Override
+    public void onDestroy() {
+        InAppPurchaseWrapper.getInstance().endConnection();
+        super.onDestroy();
+    }
+
+    @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         InAppPurchaseWrapper.getInstance().startBillingServiceConnection(

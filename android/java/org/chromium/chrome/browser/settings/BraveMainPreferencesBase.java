@@ -235,8 +235,7 @@ public class BraveMainPreferencesBase
         int firstSectionOrder = 0;
 
         if (BraveVpnPrefUtils.shouldShowCallout() && !BraveVpnPrefUtils.isSubscriptionPurchase()
-                && BraveVpnUtils.isBraveVpnFeatureEnable()
-                && InAppPurchaseWrapper.getInstance().isSubscriptionSupported()) {
+                && BraveVpnUtils.isVpnFeatureSupported(getActivity())) {
             if (getActivity() != null && mVpnCalloutPreference == null) {
                 mVpnCalloutPreference = new VpnCalloutPreference(getActivity());
             }
@@ -264,8 +263,7 @@ public class BraveMainPreferencesBase
             removePreferenceIfPresent(PREF_BRAVE_PLAYLIST);
         }
 
-        if (BraveVpnUtils.isBraveVpnFeatureEnable()
-                && InAppPurchaseWrapper.getInstance().isSubscriptionSupported()) {
+        if (BraveVpnUtils.isVpnFeatureSupported(getActivity())) {
             findPreference(PREF_BRAVE_VPN).setOrder(++firstSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_VPN);

@@ -57,10 +57,13 @@ public abstract class BraveVpnParentActivity
             new ActivityResultContracts.StartActivityForResult(), getActivityResultRegistry(),
             result -> {
                 BraveVpnUtils.dismissProgressDialog();
+                Log.e("InAppPurchaseWrapper", "StartActivityForResult");
                 if (result.getResultCode() == RESULT_OK) {
+                    Log.e("InAppPurchaseWrapper", "RESULT_OK");
                     BraveVpnProfileUtils.getInstance().startVpn(BraveVpnParentActivity.this);
                     BraveVpnUtils.showVpnConfirmDialog(this);
                 } else if (result.getResultCode() == RESULT_CANCELED) {
+                    Log.e("InAppPurchaseWrapper", "RESULT_CANCELED");
                     if (BraveVpnProfileUtils.getInstance().isVPNRunning(this)) {
                         BraveVpnUtils.showVpnAlwaysOnErrorDialog(this);
                     } else {

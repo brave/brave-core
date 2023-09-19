@@ -26,7 +26,6 @@ import com.android.billingclient.api.QueryPurchasesParams;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
@@ -87,15 +86,13 @@ public class InAppPurchaseWrapper {
                 || productId.equals(RELEASE_MONTHLY_SUBSCRIPTION);
     }
 
-    public boolean isBillingClientReady() {
-        return mBillingClient != null && mBillingClient.isReady();
-    }
-
     public void startBillingServiceConnection(
             Context context, MutableLiveData<Boolean> billingClientConnectionState) {
-        if (!BraveVpnUtils.isBraveVpnFeatureEnable()) {
+        Log.e(TAG, " after startBillingServiceConnection");
+        if (!BraveVpnUtils.isVpnFeatureSupported(context)) {
             return;
         }
+        Log.e(TAG, " after startBillingServiceConnection");
         mBillingClient = BillingClient.newBuilder(context)
                                  .enablePendingPurchases()
                                  .setListener(getPurchasesUpdatedListener(context))
@@ -113,12 +110,16 @@ public class InAppPurchaseWrapper {
                     }
                     @Override
                     public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                        if (billingResult.getResponseCode()
-                                == BillingClient.BillingResponseCode.OK) {
+                        boolean isConnectionEstablished = billingResult.getResponseCode()
+                                == BillingClient.BillingResponseCode.OK;
+                        Log.e(TAG, "onBillingSetupFinished");
+                        if (billingClientConnectionState != null) {
+                            billingClientConnectionState.postValue(isConnectionEstablished);
+                        }
+                        if (isConnectionEstablished) {
                             mRetryCount = 0;
-                            if (billingClientConnectionState != null) {
-                                billingClientConnectionState.postValue(true);
-                            }
+                        } else {
+                            BraveVpnUtils.showToast(billingResult.getDebugMessage());
                         }
                     }
                 });
@@ -137,16 +138,11 @@ public class InAppPurchaseWrapper {
         }
     }
 
-    public boolean isSubscriptionSupported() {
+    public void endConnection() {
         if (mBillingClient != null) {
-            BillingResult result =
-                    mBillingClient.isFeatureSupported(BillingClient.FeatureType.SUBSCRIPTIONS);
-            BraveRewardsNativeWorker braveRewardsNativeWorker =
-                    BraveRewardsNativeWorker.getInstance();
-            return (result.getResponseCode() == BillingClient.BillingResponseCode.OK
-                    && braveRewardsNativeWorker != null && braveRewardsNativeWorker.IsSupported());
+            Log.e(TAG, "endConnection");
+            mBillingClient.endConnection();
         }
-        return false;
     }
 
     public String getProductId(SubscriptionType subscriptionType) {
@@ -189,6 +185,7 @@ public class InAppPurchaseWrapper {
                         Log.e(TAG,
                                 "queryProductDetailsAsync failed"
                                         + billingResult.getDebugMessage());
+                        BraveVpnUtils.showToast(billingResult.getDebugMessage());
                     }
                 });
     }
@@ -209,6 +206,7 @@ public class InAppPurchaseWrapper {
                         }
                     } else {
                         Log.e(TAG, "queryPurchases failed" + billingResult.getDebugMessage());
+                        BraveVpnUtils.showToast(billingResult.getDebugMessage());
                     }
                     mutableActivePurchases.postValue(activePurchaseModel);
                 });
@@ -231,6 +229,7 @@ public class InAppPurchaseWrapper {
     }
 
     public void processPurchases(Context context, Purchase activePurchase) {
+        Log.e(TAG, "processPurchases");
         acknowledgePurchase(context, activePurchase);
     }
 
@@ -239,9 +238,12 @@ public class InAppPurchaseWrapper {
                 AcknowledgePurchaseParams.newBuilder()
                         .setPurchaseToken(purchase.getPurchaseToken())
                         .build();
+        Log.e(TAG, " before acknowledgePurchase");
         if (!purchase.isAcknowledged()) {
             mBillingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
+                Log.e(TAG, "acknowledgePurchase");
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    Log.e(TAG, "acknowledgePurchase : BillingClient.BillingResponseCode.OK");
                     BraveVpnPrefUtils.setSubscriptionPurchase(true);
                     BraveVpnUtils.openBraveVpnProfileActivity(context);
                     BraveVpnUtils.showToast(
@@ -252,14 +254,21 @@ public class InAppPurchaseWrapper {
                 }
             });
         } else {
+            Log.e(TAG, " after acknowledgePurchase");
             BraveVpnPrefUtils.setSubscriptionPurchase(true);
         }
     }
 
     private PurchasesUpdatedListener getPurchasesUpdatedListener(Context context) {
         return (billingResult, purchases) -> {
+            Log.e(TAG, "getPurchasesUpdatedListener");
+            Log.e(TAG,
+                    "getPurchasesUpdatedListener : billingResult.getResponseCode() : "
+                            + billingResult.getResponseCode());
             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                Log.e(TAG, "getPurchasesUpdatedListener 1");
                 if (purchases != null) {
+                    Log.e(TAG, "getPurchasesUpdatedListener 2");
                     mRetryCount = 0;
                     for (Purchase purchase : purchases) {
                         if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
