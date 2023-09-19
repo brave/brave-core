@@ -64,8 +64,15 @@ class VerticalTabStripRootViewBrowserTest : public InProcessBrowserTest {
   }
 };
 
+#if BUILDFLAG(IS_WIN)
+// This test is flaky on Windows.
+#define MAYBE_DragAfterCurrentTab DISABLED_DragAfterCurrentTab
+#else
+#define MAYBE_DragAfterCurrentTab DragAfterCurrentTab
+#endif
+
 IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
-                       DragAfterCurrentTab) {
+                       MAYBE_DragAfterCurrentTab) {
   ToggleVerticalTabStrip();
 
   ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
@@ -104,7 +111,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                   .EqualsIgnoringRef(url));
 }
 
-IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest, DragOnCurrentTab) {
+#if BUILDFLAG(IS_WIN)
+// This test is flaky on Windows.
+#define MAYBE_DragOnCurrentTab DISABLED_DragOnCurrentTab
+#else
+#define MAYBE_DragOnCurrentTab DragOnCurrentTab
+#endif
+IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
+                       MAYBE_DragOnCurrentTab) {
   ToggleVerticalTabStrip();
 
   ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
