@@ -183,7 +183,7 @@ class BuyTokenStoreTests: XCTestCase {
     
     await store.updateInfo()
     
-    XCTAssertEqual(store.orderedSupportedBuyOptions.count, isTestRunningInUSRegion ? 4 : 3)
+    XCTAssertEqual(store.orderedSupportedBuyOptions.count, isTestRunningInUSRegion ? 5 : 4)
     XCTAssertNotNil(store.orderedSupportedBuyOptions.first)
     XCTAssertEqual(store.orderedSupportedBuyOptions.first, .ramp)
     XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 1])
@@ -193,6 +193,11 @@ class BuyTokenStoreTests: XCTestCase {
     if isTestRunningInUSRegion {
       XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 3])
       XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 3], .stripe)
+      XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 4])
+      XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 4], .coinbase)
+    } else {
+      XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 3])
+      XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 3], .coinbase)
     }
   }
   
@@ -244,43 +249,47 @@ class BuyTokenStoreTests: XCTestCase {
     )
     await store.updateInfo()
 
-    // Test USD. Ramp, Sardine, Transak and Stripe (US locale only) are all supported.
+    // Test USD. Ramp, Sardine, Transak, Stripe (US locale only), Coinbase are all supported.
     store.selectedCurrency = .mockUSD
     // some providers are only available in the US. Check ourselves instead of swizzling `regionCode` / `region`.
     if isTestRunningInUSRegion {
+      XCTAssertEqual(store.supportedProviders.count, 5)
+      XCTAssertEqual(store.supportedProviders, [
+        BraveWallet.OnRampProvider.ramp,
+        BraveWallet.OnRampProvider.sardine,
+        BraveWallet.OnRampProvider.transak,
+        BraveWallet.OnRampProvider.stripe,
+        BraveWallet.OnRampProvider.coinbase
+      ])
+    } else {
+      // stripe only supported in en-us locale
       XCTAssertEqual(store.supportedProviders.count, 4)
       XCTAssertEqual(store.supportedProviders, [
         BraveWallet.OnRampProvider.ramp,
         BraveWallet.OnRampProvider.sardine,
         BraveWallet.OnRampProvider.transak,
-        BraveWallet.OnRampProvider.stripe
-      ])
-    } else {
-      // stripe only supported in en-us locale
-      XCTAssertEqual(store.supportedProviders.count, 3)
-      XCTAssertEqual(store.supportedProviders, [
-        BraveWallet.OnRampProvider.ramp,
-        BraveWallet.OnRampProvider.sardine,
-        BraveWallet.OnRampProvider.transak,
+        BraveWallet.OnRampProvider.coinbase
       ])
     }
     
-    // Test CAD. Ramp, Sardine, Transak are supported. Stripe unsupported.
+    // Test CAD. Ramp, Sardine, Transak, Coinbase are supported. Stripe unsupported.
     store.selectedCurrency = .mockCAD
-    XCTAssertEqual(store.supportedProviders.count, 3)
+    XCTAssertEqual(store.supportedProviders.count, 4)
     XCTAssertEqual(store.supportedProviders, [
       BraveWallet.OnRampProvider.ramp,
       BraveWallet.OnRampProvider.sardine,
       BraveWallet.OnRampProvider.transak,
+      BraveWallet.OnRampProvider.coinbase
     ])
     XCTAssertFalse(store.supportedProviders.contains(.stripe))
     
-    // Test GBP. Ramp, Sardine supported. Transak, Stripe unsupported.
+    // Test GBP. Ramp, Sardine, Coinbase supported. Transak, Stripe unsupported.
     store.selectedCurrency = .mockGBP
-    XCTAssertEqual(store.supportedProviders.count, 2)
+    XCTAssertEqual(store.supportedProviders.count, 3)
     XCTAssertEqual(store.supportedProviders, [
       BraveWallet.OnRampProvider.ramp,
-      BraveWallet.OnRampProvider.sardine
+      BraveWallet.OnRampProvider.sardine,
+      BraveWallet.OnRampProvider.coinbase
     ])
     XCTAssertFalse(store.supportedProviders.contains(.transak))
     XCTAssertFalse(store.supportedProviders.contains(.stripe))
@@ -309,7 +318,8 @@ private extension BraveWallet.OnRampCurrency {
       providers: [
         BraveWallet.OnRampProvider.ramp,
         BraveWallet.OnRampProvider.sardine,
-        BraveWallet.OnRampProvider.transak
+        BraveWallet.OnRampProvider.transak,
+        BraveWallet.OnRampProvider.coinbase
         // simulate stripe not supported for CAD
       ].map {
         .init(integerLiteral: $0.rawValue)
@@ -323,7 +333,8 @@ private extension BraveWallet.OnRampCurrency {
       currencyName: "British Pound Sterling",
       providers: [
         BraveWallet.OnRampProvider.ramp,
-        BraveWallet.OnRampProvider.sardine
+        BraveWallet.OnRampProvider.sardine,
+        BraveWallet.OnRampProvider.coinbase
         // simulate transak not supported for GBP
         // simulate stripe not supported for GBP
       ].map {
