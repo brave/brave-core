@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.chromium.base.Callback;
+import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
@@ -75,6 +76,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdow
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.suggestions.history_clusters.HistoryClustersProcessor.OpenHistoryClustersDelegate;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.new_tab_url.DseNewTabUrlManager;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
 import org.chromium.chrome.browser.tab.Tab;
@@ -328,8 +330,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/settings/BravePreferenceFragment"));
         Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/preferences/ChromePreferenceKeyChecker"));
-        Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/tabbed_mode/BraveTabbedRootUiCoordinator"));
@@ -502,7 +502,8 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
                 "getUrlForCustomTab", true, String.class, Intent.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler", "onNewIntent",
-                true, boolean.class, Intent.class, IntentHandlerDelegate.class, long.class));
+                true, boolean.class, Intent.class, IntentHandler.IntentHandlerDelegate.class,
+                long.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
                 "getUrlForWebapp", true, String.class, Intent.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
@@ -614,7 +615,7 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
                 "org/chromium/chrome/browser/tabmodel/BraveTabCreator", Activity.class,
                 WindowAndroid.class, Supplier.class, boolean.class, OverviewNTPCreator.class,
-                AsyncTabParamsManager.class, Supplier.class, Supplier.class));
+                AsyncTabParamsManager.class, Supplier.class, Supplier.class, DseNewTabUrlManager.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "org/chromium/chrome/browser/toolbar/BraveToolbarManager", AppCompatActivity.class,
                 BrowserControlsSizer.class, FullscreenManager.class, ToolbarControlContainer.class,
@@ -676,8 +677,9 @@ public class BytecodeTest {
                 BrowserControlsStateProvider.class, Supplier.class, SnackbarManager.class,
                 ActivityLifecycleDispatcher.class, TabModelSelector.class, boolean.class,
                 NewTabPageUma.class, boolean.class, NativePageHost.class, Tab.class, String.class,
-                BottomSheetController.class, Supplier.class, WindowAndroid.class, Supplier.class,
-                SettingsLauncher.class, HomeSurfaceTracker.class, ObservableSupplier.class));
+                BottomSheetController.class, Supplier.class, WindowAndroid.class, JankTracker.class,
+                Supplier.class, SettingsLauncher.class, HomeSurfaceTracker.class,
+                ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                 "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
@@ -799,9 +801,6 @@ public class BytecodeTest {
                 BraveLocationBarMediator.getOmniboxUmaClass(), BooleanSupplier.class,
                 BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass(),
                 ObservableSupplier.class));
-        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/IntentHandler",
-                "org/chromium/chrome/browser/BraveIntentHandler", Activity.class,
-                IntentHandler.IntentHandlerDelegate.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/AppHooksImpl",
                 "org/chromium/chrome/browser/BraveAppHooks"));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/flags/CachedFlag",
