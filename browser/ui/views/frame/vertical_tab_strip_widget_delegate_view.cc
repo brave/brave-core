@@ -10,10 +10,12 @@
 #include "base/check.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tab_strip_root_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
+#include "chrome/browser/ui/views/frame/browser_root_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/theme_copying_widget.h"
 #include "chrome/common/pref_names.h"
@@ -27,66 +29,19 @@
 
 namespace {
 
-class VerticalTabStripRootView : public views::internal::RootView {
- public:
-  METADATA_HEADER(VerticalTabStripRootView);
-
-  using RootView::RootView;
-  ~VerticalTabStripRootView() override = default;
-
-  // views::internal::RootView:
-  bool OnMousePressed(const ui::MouseEvent& event) override {
-#if defined(USE_AURA)
-    const bool result = RootView::OnMousePressed(event);
-    auto* focus_manager = GetFocusManager();
-    DCHECK(focus_manager);
-
-    // When vertical tab strip area is clicked, shortcut handling process
-    // could get broken on Windows. There are 2 paths where shortcut is handled.
-    // One is BrowserView::AcceleratorPressed(), and the other is
-    // BrowserView::PreHandleKeyboardEvent(). When web view has focus, the
-    // first doesn't deal with it and the latter is responsible for the
-    // shortcuts. when users click the vertical tab strip area with web view
-    // focused, both path don't handle it. This is because focused view state of
-    // views/ framework and focused native window state of Aura is out of sync.
-    // So as a workaround, resets the focused view state so that shortcuts can
-    // be handled properly. This shouldn't change the actually focused view, and
-    // is just reset the status.
-    // https://github.com/brave/brave-browser/issues/28090
-    // https://github.com/brave/brave-browser/issues/27812
-    if (auto* focused_view = focus_manager->GetFocusedView();
-        focused_view && views::IsViewClass<views::WebView>(focused_view)) {
-      focus_manager->ClearFocus();
-      focus_manager->RestoreFocusedView();
-    }
-
-    return result;
-#else
-    // On Mac, the parent widget doesn't get activated in this case. Then
-    // shortcut handling could malfunction. So activate it.
-    // https://github.com/brave/brave-browser/issues/29993
-    auto* widget = GetWidget();
-    DCHECK(widget);
-    widget = widget->GetTopLevelWidget();
-    widget->Activate();
-
-    return RootView::OnMousePressed(event);
-#endif
-  }
-};
-
-BEGIN_METADATA(VerticalTabStripRootView, views::internal::RootView)
-END_METADATA
-
 class VerticalTabStripWidget : public ThemeCopyingWidget {
  public:
-  using ThemeCopyingWidget::ThemeCopyingWidget;
+  VerticalTabStripWidget(BrowserView* browser_view, views::Widget* widget)
+      : ThemeCopyingWidget(widget), browser_view_(browser_view) {}
   ~VerticalTabStripWidget() override = default;
 
   // ThemeCopyingWidget:
   views::internal::RootView* CreateRootView() override {
-    return new VerticalTabStripRootView(this);
+    return new VerticalTabStripRootView(browser_view_, this);
   }
+
+ private:
+  raw_ptr<BrowserView> browser_view_;
 };
 
 }  // namespace
@@ -108,8 +63,8 @@ VerticalTabStripWidgetDelegateView* VerticalTabStripWidgetDelegateView::Create(
   // not get focus.
   params.activatable = views::Widget::InitParams::Activatable::kNo;
 
-  auto widget =
-      std::make_unique<VerticalTabStripWidget>(browser_view->GetWidget());
+  auto widget = std::make_unique<VerticalTabStripWidget>(
+      browser_view, browser_view->GetWidget());
   widget->Init(std::move(params));
 #if defined(USE_AURA)
   widget->GetNativeView()->SetProperty(views::kHostViewKey, host_view);
@@ -160,8 +115,9 @@ void VerticalTabStripWidgetDelegateView::AddedToWidget() {
 
 void VerticalTabStripWidgetDelegateView::ChildPreferredSizeChanged(
     views::View* child) {
-  if (!host_)
+  if (!host_) {
     return;
+  }
 
   // Setting minimum size for |host_| so that we can overlay vertical tabs over
   // the web view.
@@ -179,13 +135,15 @@ void VerticalTabStripWidgetDelegateView::OnViewVisibilityChanged(
     views::View* observed_view,
     views::View* starting_view) {
   auto* widget = GetWidget();
-  if (!widget || widget->IsVisible() == observed_view->GetVisible())
+  if (!widget || widget->IsVisible() == observed_view->GetVisible()) {
     return;
+  }
 
-  if (observed_view->GetVisible())
+  if (observed_view->GetVisible()) {
     widget->Show();
-  else
+  } else {
     widget->Hide();
+  }
 }
 
 void VerticalTabStripWidgetDelegateView::OnViewBoundsChanged(
@@ -243,12 +201,14 @@ void VerticalTabStripWidgetDelegateView::OnWidgetBoundsChanged(
 }
 
 void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
-  if (!host_)
+  if (!host_) {
     return;
+  }
 
   auto* widget = GetWidget();
-  if (!widget)
+  if (!widget) {
     return;
+  }
 
   // Convert coordinate system based on Browser's widget.
   gfx::Rect widget_bounds = host_->ConvertRectToWidget(host_->GetLocalBounds());
@@ -274,8 +234,9 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
     widget->Show();
   }
 
-  if (need_to_call_layout)
+  if (need_to_call_layout) {
     Layout();
+  }
 
 #if BUILDFLAG(IS_MAC)
   UpdateClip();

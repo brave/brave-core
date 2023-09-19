@@ -6,10 +6,15 @@
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 
 #include <algorithm>
+#include <utility>
 #include <vector>
 
 #include "base/check_is_test.h"
+#include "base/containers/flat_map.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -19,8 +24,12 @@
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
+#include "chrome/grit/theme_resources.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/display/screen.h"
 #include "ui/gfx/canvas.h"
+#include "ui/gfx/image/image_skia_operations.h"
+#include "ui/gfx/skbitmap_operations.h"
 #include "ui/views/view_utils.h"
 
 BraveTabContainer::BraveTabContainer(
@@ -35,7 +44,8 @@ BraveTabContainer::BraveTabContainer(
                        tab_slot_controller,
                        scroll_contents_view),
       drag_context_(static_cast<TabDragContext*>(drag_context)),
-      tab_style_(TabStyle::Get()) {
+      tab_style_(TabStyle::Get()),
+      controller_(controller) {
   auto* browser = tab_slot_controller_->GetBrowser();
   if (!browser) {
     CHECK_IS_TEST();
@@ -84,8 +94,9 @@ base::OnceClosure BraveTabContainer::LockLayout() {
 gfx::Size BraveTabContainer::CalculatePreferredSize() const {
   // Note that we check this before checking currently we're in vertical tab
   // strip mode. We might be in the middle of changing orientation.
-  if (layout_locked_)
+  if (layout_locked_) {
     return {};
+  }
 
   if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
@@ -105,8 +116,9 @@ gfx::Size BraveTabContainer::CalculatePreferredSize() const {
     // When closing trailing tabs, the last tab's current bottom could be
     // greater than ideal bounds bottom. Note that closing tabs are not in
     // tabs_view_model_ so we have to check again here.
-    for (auto* tab : closing_tabs_)
+    for (auto* tab : closing_tabs_) {
       height = std::max(height, tab->bounds().bottom());
+    }
   }
 
   const auto slots_bounds = layout_helper_->CalculateIdealBounds(
@@ -185,8 +197,9 @@ bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
 void BraveTabContainer::StartInsertTabAnimation(int model_index) {
   // Note that we check this before checking currently we're in vertical tab
   // strip mode. We might be in the middle of changing orientation.
-  if (layout_locked_)
+  if (layout_locked_) {
     return;
+  }
 
   if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
@@ -229,8 +242,9 @@ void BraveTabContainer::OnTabCloseAnimationCompleted(Tab* tab) {
   TabContainerImpl::OnTabCloseAnimationCompleted(tab);
 
   // we might have to hide this container entirely
-  if (!tabs_view_model_.view_size())
+  if (!tabs_view_model_.view_size()) {
     PreferredSizeChanged();
+  }
 }
 
 void BraveTabContainer::UpdateLayoutOrientation() {
@@ -252,8 +266,9 @@ void BraveTabContainer::OnUnlockLayout() {
 void BraveTabContainer::CompleteAnimationAndLayout() {
   // Note that we check this before checking currently we're in vertical tab
   // strip mode. We might be in the middle of changing orientation.
-  if (layout_locked_)
+  if (layout_locked_) {
     return;
+  }
 
   TabContainerImpl::CompleteAnimationAndLayout();
 
@@ -291,6 +306,295 @@ void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {
   for (const ZOrderableTabContainerElement& child : orderable_children) {
     child.view()->Paint(paint_info);
   }
+}
+
+BrowserRootView::DropIndex BraveTabContainer::GetDropIndex(
+    const ui::DropTargetEvent& event) {
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
+    return TabContainerImpl::GetDropIndex(event);
+  }
+
+  // Force animations to stop, otherwise it makes the index calculation tricky.
+  CompleteAnimationAndLayout();
+
+  const int x = GetMirroredXInView(event.x());
+  const int y = event.y();
+
+  std::vector<TabSlotView*> views = layout_helper_->GetTabSlotViews();
+
+  // Loop until we find a tab or group header that intersects |event|'s
+  // location.
+  for (TabSlotView* view : views) {
+    const int max_y = view->y() + view->height();
+    const int max_x = view->x() + view->width();
+    if (y >= max_y) {
+      continue;
+    }
+
+    if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTab) {
+      Tab* const tab = static_cast<Tab*>(view);
+
+      // Closing tabs should be skipped.
+      if (tab->closing()) {
+        continue;
+      }
+
+      const int model_index = GetModelIndexOf(tab).value();
+
+      const bool is_tab_pinned = tab->data().pinned;
+
+      // When dropping text or links onto pinned tabs, we need to take the
+      // x-axis position into consideration.
+      if (is_tab_pinned && x >= max_x) {
+        continue;
+      }
+
+      const bool first_in_group =
+          tab->group().has_value() &&
+          model_index == controller_->GetFirstTabInGroup(tab->group().value());
+
+      const int hot_height = tab->height() / 4;
+      const int hot_width = tab->width() / 4;
+
+      if (is_tab_pinned ? x >= (max_x - hot_width)
+                        : y >= (max_y - hot_height)) {
+        return {model_index + 1, true /* drop_before */,
+                false /* drop_in_group */};
+      }
+
+      if (is_tab_pinned ? x < tab->x() + hot_width
+                        : y < tab->y() + hot_height) {
+        return {model_index, true /* drop_before */, first_in_group};
+      }
+
+      return {model_index, false /* drop_before */, false /* drop_in_group */};
+    } else {
+      TabGroupHeader* const group_header = static_cast<TabGroupHeader*>(view);
+      const int first_tab_index =
+          controller_->GetFirstTabInGroup(group_header->group().value())
+              .value();
+      return {first_tab_index, true /* drop_before */,
+              y >= max_y - group_header->height() / 2 /* drop_in_group */};
+    }
+  }
+
+  // The drop isn't over a tab, add it to the end.
+  return {GetTabCount(), true, false};
+}
+
+// BraveTabContainer::DropArrow:
+// ----------------------------------------------------------
+BraveTabContainer::DropArrow::DropArrow(const BrowserRootView::DropIndex& index,
+                                        Position position,
+                                        bool beneath,
+                                        views::Widget* context)
+    : index_(index), position_(position), beneath_(beneath) {
+  arrow_window_ = new views::Widget;
+  views::Widget::InitParams params(views::Widget::InitParams::TYPE_POPUP);
+  params.z_order = ui::ZOrderLevel::kFloatingUIElement;
+  params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;
+  params.accept_events = false;
+
+  // All drop images has the same size.
+  const gfx::ImageSkia* drop_image =
+      GetDropArrowImage(Position::Horizontal, false);
+  params.bounds = gfx::Rect(drop_image->width(), drop_image->height());
+
+  params.context = context->GetNativeWindow();
+  arrow_window_->Init(std::move(params));
+  arrow_view_ =
+      arrow_window_->SetContentsView(std::make_unique<views::ImageView>());
+  arrow_view_->SetImage(GetDropArrowImage(position_, beneath_));
+  scoped_observation_.Observe(arrow_window_.get());
+
+  arrow_window_->Show();
+}
+
+BraveTabContainer::DropArrow::~DropArrow() {
+  // Close eventually deletes the window, which deletes arrow_view too.
+  if (arrow_window_) {
+    arrow_window_->Close();
+  }
+}
+
+void BraveTabContainer::DropArrow::SetBeneath(bool beneath) {
+  if (beneath_ == beneath) {
+    return;
+  }
+
+  beneath_ = beneath;
+  arrow_view_->SetImage(GetDropArrowImage(position_, beneath));
+}
+
+void BraveTabContainer::DropArrow::SetWindowBounds(const gfx::Rect& bounds) {
+  arrow_window_->SetBounds(bounds);
+}
+
+void BraveTabContainer::DropArrow::OnWidgetDestroying(views::Widget* widget) {
+  DCHECK(scoped_observation_.IsObservingSource(arrow_window_.get()));
+  scoped_observation_.Reset();
+  arrow_window_ = nullptr;
+}
+
+void BraveTabContainer::HandleDragUpdate(
+    const absl::optional<BrowserRootView::DropIndex>& index) {
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
+    TabContainerImpl::HandleDragUpdate(index);
+    return;
+  }
+  SetDropArrow(index);
+}
+
+void BraveTabContainer::HandleDragExited() {
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
+    TabContainerImpl::HandleDragExited();
+    return;
+  }
+  SetDropArrow({});
+}
+
+gfx::Rect BraveTabContainer::GetDropBounds(int drop_index,
+                                           bool drop_before,
+                                           bool drop_in_group,
+                                           bool* is_beneath) {
+  DCHECK_NE(drop_index, -1);
+
+  // The center is determined along the x-axis if it's pinned, or along the
+  // y-axis if not.
+  int center = -1;
+
+  if (GetTabCount() == 0) {
+    // If the tabstrip is empty, it doesn't matter where the drop arrow goes.
+    // The tabstrip can only be transiently empty, e.g. during shutdown.
+    return gfx::Rect();
+  }
+
+  Tab* tab = GetTabAtModelIndex(std::min(drop_index, GetTabCount() - 1));
+
+  const bool is_tab_pinned = tab->data().pinned;
+
+  const bool first_in_group =
+      drop_index < GetTabCount() && tab->group().has_value() &&
+      GetModelIndexOf(tab) ==
+          controller_->GetFirstTabInGroup(tab->group().value());
+
+  if (!drop_before || !first_in_group || drop_in_group) {
+    // Dropping between tabs, or between a group header and the group's first
+    // tab.
+    center = is_tab_pinned ? tab->x() : tab->y();
+    const int length = is_tab_pinned ? tab->width() : tab->height();
+    if (drop_index < GetTabCount()) {
+      center += drop_before ? -(tabs::kVerticalTabsSpacing / 2) : (length / 2);
+    } else {
+      center += length + (tabs::kVerticalTabsSpacing / 2);
+    }
+  } else {
+    // Dropping before a group header.
+    TabGroupHeader* const header = group_views_[tab->group().value()]->header();
+    // Since there is no tab group in pinned tabs, there is no need to consider
+    // the x-axis.
+    center = header->y() + tabs::kVerticalTabsSpacing / 2;
+  }
+
+  // Since all drop indicator images are the same size, we will use the right
+  // arrow image to determine the height and width.
+  const gfx::ImageSkia* drop_image = GetDropArrowImage(
+      BraveTabContainer::DropArrow::Position::Horizontal, false);
+
+  // Determine the screen bounds.
+  gfx::Point drop_loc(is_tab_pinned ? center - drop_image->width() / 2 : 0,
+                      is_tab_pinned ? tab->y() - drop_image->height()
+                                    : center - drop_image->height() / 2);
+  ConvertPointToScreen(this, &drop_loc);
+  gfx::Rect drop_bounds(drop_loc.x(), drop_loc.y(), drop_image->width(),
+                        drop_image->height());
+
+  // If the rect doesn't fit on the monitor, push the arrow to the bottom.
+  display::Screen* screen = display::Screen::GetScreen();
+  display::Display display = screen->GetDisplayMatching(drop_bounds);
+  *is_beneath = !display.bounds().Contains(drop_bounds);
+
+  if (*is_beneath) {
+    drop_bounds.Offset(
+        is_tab_pinned ? 0 : drop_bounds.width() + tab->width(),
+        is_tab_pinned ? drop_bounds.height() + tab->height() : 0);
+  }
+
+  return drop_bounds;
+}
+
+gfx::ImageSkia* BraveTabContainer::GetDropArrowImage(
+    BraveTabContainer::DropArrow::Position pos,
+    bool beneath) {
+  using Position = BraveTabContainer::DropArrow::Position;
+  using RotationAmount = SkBitmapOperations::RotationAmount;
+  static base::NoDestructor<
+      base::flat_map<std::pair<Position, bool>, gfx::ImageSkia>>
+      drop_images([] {
+        gfx::ImageSkia* top_arrow_image =
+            ui::ResourceBundle::GetSharedInstance().GetImageSkiaNamed(
+                IDR_TAB_DROP_UP);
+
+        base::flat_map<std::pair<Position, bool>, gfx::ImageSkia>
+            position_to_images;
+
+        position_to_images.emplace(std::make_pair(Position::Vertical, true),
+                                   *top_arrow_image);
+        position_to_images.emplace(
+            std::make_pair(Position::Horizontal, false),
+            gfx::ImageSkiaOperations::CreateRotatedImage(
+                *top_arrow_image, RotationAmount::ROTATION_90_CW));
+        position_to_images.emplace(
+            std::make_pair(Position::Vertical, false),
+            gfx::ImageSkiaOperations::CreateRotatedImage(
+                *top_arrow_image, RotationAmount::ROTATION_180_CW));
+        position_to_images.emplace(
+            std::make_pair(Position::Horizontal, true),
+            gfx::ImageSkiaOperations::CreateRotatedImage(
+                *top_arrow_image, RotationAmount::ROTATION_270_CW));
+        return position_to_images;
+      }());
+  return &drop_images->find(std::make_pair(pos, beneath))->second;
+}
+
+void BraveTabContainer::SetDropArrow(
+    const absl::optional<BrowserRootView::DropIndex>& index) {
+  if (!index) {
+    controller_->OnDropIndexUpdate(absl::nullopt, false);
+    drop_arrow_.reset();
+    return;
+  }
+
+  // Let the controller know of the index update.
+  controller_->OnDropIndexUpdate(index->value, index->drop_before);
+
+  if (drop_arrow_ && (index == drop_arrow_->index())) {
+    return;
+  }
+
+  bool is_beneath = false;
+  gfx::Rect drop_bounds = GetDropBounds(index->value, index->drop_before,
+                                        index->drop_in_group, &is_beneath);
+
+  if (!drop_arrow_) {
+    DropArrow::Position position = DropArrow::Position::Vertical;
+    if (GetTabCount() > 0) {
+      Tab* tab = GetTabAtModelIndex(0);
+      position = tab->data().pinned ? DropArrow::Position::Vertical
+                                    : DropArrow::Position::Horizontal;
+    }
+    drop_arrow_ =
+        std::make_unique<DropArrow>(*index, position, is_beneath, GetWidget());
+  } else {
+    drop_arrow_->set_index(*index);
+    drop_arrow_->SetBeneath(is_beneath);
+  }
+
+  // Reposition the window.
+  drop_arrow_->SetWindowBounds(drop_bounds);
 }
 
 BEGIN_METADATA(BraveTabContainer, TabContainerImpl)
