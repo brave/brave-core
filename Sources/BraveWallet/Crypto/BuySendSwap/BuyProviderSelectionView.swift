@@ -17,16 +17,6 @@ struct BuyProviderSelectionView: View {
   @ScaledMetric private var iconSize = 40.0
   private let maxIconSize: CGFloat = 80.0
   
-  private var supportedProviders: OrderedSet<BraveWallet.OnRampProvider> {
-    return OrderedSet(buyTokenStore.orderedSupportedBuyOptions
-      .filter { provider in
-        guard let tokens = buyTokenStore.buyTokens[provider],
-              let selectedBuyToken = buyTokenStore.selectedBuyToken
-        else { return false }
-        return tokens.includes(selectedBuyToken)
-      })
-  }
-  
   var body: some View {
     List {
       Section(
@@ -34,7 +24,7 @@ struct BuyProviderSelectionView: View {
           title: Text(Strings.Wallet.providerSelectionSectionHeader)
         )
       ) {
-        ForEach(supportedProviders) { provider in
+        ForEach(buyTokenStore.supportedProviders) { provider in
           VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 12) {
               Image(provider.iconName, bundle: .module)
@@ -57,13 +47,10 @@ struct BuyProviderSelectionView: View {
                 .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
               Button {
                 Task { @MainActor in
-                  let urlString = await buyTokenStore.fetchBuyUrl(
+                  guard let url = await buyTokenStore.fetchBuyUrl(
                     provider: provider,
                     account: keyringStore.selectedAccount
-                  )
-                  guard let urlString = urlString, let url = URL(string: urlString) else {
-                    return
-                  }
+                  ) else { return }
                   openWalletURL(url)
                 }
               } label: {

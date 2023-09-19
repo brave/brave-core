@@ -3243,6 +3243,20 @@ extension Strings {
       value: "Instant buy with your bank account. Lower fees.",
       comment: "The description of one of the 'Transak' provider."
     )
+    public static let stripeNetworkProviderName = NSLocalizedString(
+      "wallet.stripeNetworkProviderName",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "%@ by %@",
+      comment: "The name of one of the on ramp providers where the first '%@' is `Link` and second '%@' is `Stripe` product names."
+    )
+    public static let stripeNetworkProviderDescription = NSLocalizedString(
+      "wallet.stripeNetworkProviderDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Pay with credit, debit, bank account.",
+      comment: "The description of one of the 'Stripe' provider."
+    )
     public static let solanaDappTransactionTitle = NSLocalizedString(
       "wallet.solanaDappTransactionTitle",
       tableName: "BraveWallet",
