@@ -9,7 +9,7 @@
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
 #include "ios/chrome/browser/consent_auditor/consent_auditor_factory.h"
-#include "ios/chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/favicon/favicon_service_factory.h"
 #include "ios/chrome/browser/favicon/ios_chrome_favicon_loader_factory.h"
 #include "ios/chrome/browser/favicon/ios_chrome_large_icon_cache_factory.h"
