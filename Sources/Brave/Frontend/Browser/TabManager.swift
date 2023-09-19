@@ -573,6 +573,7 @@ class TabManager: NSObject {
             return
           }
 
+          tab.resetExternalAlertProperties()
           self.preserveScreenshot(for: tab)
           self.saveTab(tab)
         }

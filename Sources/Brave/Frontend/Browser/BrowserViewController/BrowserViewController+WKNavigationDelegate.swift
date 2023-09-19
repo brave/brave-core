@@ -784,44 +784,101 @@ extension BrowserViewController {
     }
     
     var alertTitle = Strings.openExternalAppURLGenericTitle
+    
+    // Check if the current url of the caller has changed
+    if let domain = tab?.url?.baseDomain,
+       domain != tab?.externalAppURLDomain {
+      tab?.externalAppAlertCounter = 0
+      tab?.isExternalAppAlertSuppressed = false
+    }
+    tab?.externalAppURLDomain = tab?.url?.baseDomain
+    
+    // Do not try to present over existing warning
+    if tab?.isExternalAppAlertPresented == true || tab?.isExternalAppAlertSuppressed == true {
+      return
+    }
 
-    // We do not want certain schemes to be opened externally when called from subframes.
-    // And tel / sms dialog should not be shown for non-active tabs #6687
-    if ["tel", "sms"].contains(url.scheme) {
-      if !isMainFrame || tab?.url?.host != topToolbar.currentURL?.host {
-        return
-      }
-        
-      if let displayHost = tab?.url?.withoutWWW.host {
-        alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
-      }
+    // We do not schemes to be opened externally when called from subframes.
+    // And external dialog should not be shown for non-active tabs #6687 - #7835
+    if !isMainFrame || tab?.url?.host != topToolbar.currentURL?.host {
+      return
+    }
+      
+    if let displayHost = tab?.url?.withoutWWW.host {
+      alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
     }
     
-    // If the tab is empty when handling an external URL we should remove the tab once the user decides
-    func removeTabIfEmpty() {
+    // Handling condition when Tab is empty when handling an external URL we should remove the tab once the user decides
+    let removeTabIfEmpty = { [weak self] in
       if let tab = tab, tab.url == nil {
-        tabManager.removeTab(tab)
+        self?.tabManager.removeTab(tab)
       }
     }
     
-    view.endEditing(true)
-    let popup = AlertPopupView(
-      imageView: nil,
-      title: alertTitle,
-      message: String(format: Strings.openExternalAppURLMessage, url.relativeString),
-      titleWeight: .semibold,
-      titleSize: 21
-    )
-    popup.addButton(title: Strings.openExternalAppURLDontAllow) { () -> PopupViewDismissType in
-      removeTabIfEmpty()
-      return .flyDown
+    // Show the external sceheme invoke alert
+    func showExternalSchemeAlert(isSuppressActive: Bool) {
+      // Check if active controller is bvc otherwise do not show show external sceheme alerts
+      guard shouldShowExternalSchemeAlert() else { return }
+      
+      view.endEditing(true)
+      tab?.isExternalAppAlertPresented = true
+
+      let popup = AlertPopupView(
+        imageView: nil,
+        title: alertTitle,
+        message: String(format: Strings.openExternalAppURLMessage, url.relativeString),
+        titleWeight: .semibold,
+        titleSize: 21
+      )
+      if isSuppressActive {
+        popup.addButton(title: Strings.suppressAlertsActionTitle, type: .destructive) { [weak tab] () -> PopupViewDismissType in
+          tab?.isExternalAppAlertSuppressed = true
+          return .flyDown
+        }
+      } else {
+        popup.addButton(title: Strings.openExternalAppURLDontAllow) { [weak tab] () -> PopupViewDismissType in
+          removeTabIfEmpty()
+          tab?.isExternalAppAlertPresented = false
+          return .flyDown
+        }
+      }
+      popup.addButton(title: Strings.openExternalAppURLAllow, type: .primary) { [weak tab] () -> PopupViewDismissType in
+        UIApplication.shared.open(url, options: [:], completionHandler: openedURLCompletionHandler)
+        removeTabIfEmpty()
+        tab?.isExternalAppAlertPresented = false
+        return .flyDown
+      }
+      popup.showWithType(showType: .flyUp)
     }
-    popup.addButton(title: Strings.openExternalAppURLAllow, type: .primary) { () -> PopupViewDismissType in
-      UIApplication.shared.open(url, options: [:], completionHandler: openedURLCompletionHandler)
-      removeTabIfEmpty()
-      return .flyDown
+    
+    func shouldShowExternalSchemeAlert() -> Bool {
+      guard let rootVC = currentScene?.browserViewController else {
+        return false
+      }
+      
+      func topViewController(startingFrom viewController: UIViewController) -> UIViewController {
+        var top = viewController
+        if let navigationController = top as? UINavigationController,
+          let vc = navigationController.visibleViewController {
+          return topViewController(startingFrom: vc)
+        }
+        if let tabController = top as? UITabBarController,
+          let vc = tabController.selectedViewController {
+          return topViewController(startingFrom: vc)
+        }
+        while let next = top.presentedViewController {
+          top = next
+        }
+        return top
+      }
+      
+      let isTopController = self == topViewController(startingFrom: rootVC)
+      let isTopWindow = view.window?.isKeyWindow == true
+      return isTopController && isTopWindow
     }
-    popup.showWithType(showType: .flyUp)
+
+    tab?.externalAppAlertCounter += 1
+    showExternalSchemeAlert(isSuppressActive: tab?.externalAppAlertCounter ?? 0 > 2)
   }
 }
 

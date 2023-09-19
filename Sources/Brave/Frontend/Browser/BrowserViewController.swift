@@ -1634,6 +1634,7 @@ public class BrowserViewController: UIViewController {
       return true
     } else if let selectedTab = tabManager.selectedTab, selectedTab.canGoBack {
       selectedTab.goBack()
+      resetExternalAlertProperties(selectedTab)
       return true
     }
     return false
@@ -2807,6 +2808,11 @@ extension BrowserViewController: TabDelegate {
     handleIPFSSchemeURL(url, visitType: .unknown)
   }
 
+  func didReloadTab(_ tab: Tab) {
+    // Resetting External Alert Properties
+    resetExternalAlertProperties(tab)
+  }
+  
   @MainActor
   private func isPendingRequestAvailable() async -> Bool {
     let privateMode = privateBrowsingManager.isPrivateBrowsing
@@ -2824,6 +2830,12 @@ extension BrowserViewController: TabDelegate {
       return WalletProviderPermissionRequestsManager.shared.hasPendingRequest(for: selectedTabOrigin, coinType: .eth)
     }
     return false
+  }
+  
+  func resetExternalAlertProperties(_ tab: Tab?) {
+    if let tab = tab {
+      tab.resetExternalAlertProperties()
+    }
   }
 }
 
