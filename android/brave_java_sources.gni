@@ -517,3 +517,5 @@ brave_java_base_module_deps = [
   "//third_party/androidx:androidx_core_core_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_viewmodel_java",
 ]
+
+brave_java_base_module_deps += brave_java_base_module_billing_deps
