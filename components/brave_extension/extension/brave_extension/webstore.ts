@@ -7,9 +7,12 @@ import { getLocale } from './background/api/localeAPI'
 
 const config = { attributes: true, childList: true, subtree: true }
 
-const callback = (mutationsList: MutationRecord[], observer: MutationObserver) => {
-  const buttons = document.querySelectorAll('div.webstore-test-button-label')
-  buttons.forEach((button: Element) => {
+const callback = () => {
+  const buttonQueries = [
+    'div.webstore-test-button-label', // https://chrome.google.com/webstore
+    'button span[jsname]:not(:empty)' // https://chromewebstore.google.com/
+  ]
+  for (const button of document.querySelectorAll(buttonQueries.join(','))) {
     const text = button.textContent || ''
     if (text === getLocale('addToChrome')) {
       button.textContent =
@@ -18,11 +21,14 @@ const callback = (mutationsList: MutationRecord[], observer: MutationObserver) =
       button.textContent =
         getLocale('removeFromBrave') || text.replace('Chrome', 'Brave')
     }
-  })
+  }
 }
 
 const observer: MutationObserver = new MutationObserver(callback)
 
-window.onload = () => {
-  observer.observe(document, config)
-}
+// At https://chromewebstore.google.com, "*Chrome" buttons are displayed
+// shortly after the first paint, and long before either `DOMContentLoaded` or
+// `window.load` fire, so we must start watching for document mutations as soon
+// as possible. The performance impact of observing mutations prior to `onload`
+// is non-trivial but small (measured at 60ms on a development build).
+observer.observe(document, config)
