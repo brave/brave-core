@@ -204,6 +204,7 @@ constexpr inline auto kCollectedSlowHistograms =
     "Brave.Sync.EnabledTypes",
     "Brave.Sync.SyncedObjectsCount",
     "Brave.Today.UsageMonthly",
+    "Brave.Toolbar.ForwardNavigationAction",
     "Brave.Wallet.UsageMonthly"
 });
 
