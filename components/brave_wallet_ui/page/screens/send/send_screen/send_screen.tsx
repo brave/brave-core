@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+/* eslint-disable @typescript-eslint/key-spacing */
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useParams, useHistory, useLocation } from 'react-router'
@@ -18,11 +19,12 @@ import {
 import {
   SendPageTabHashes,
   AddressMessageInfo,
-  WalletRoutes
+  WalletRoutes,
+  CoinTypesMap,
+  BraveWallet,
+  BaseTransactionParams,
+  AmountValidationErrorType
 } from '../../../../constants/types'
-
-// Constants
-import { allSupportedExtensions } from '../../../../common/constants/domain-extensions'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
@@ -33,23 +35,56 @@ import {
   getPercentAmount
 } from '../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
+import {
+  findTokenByContractAddress,
+  getAssetIdKey
+} from '../../../../utils/asset-utils'
 import { endsWithAny } from '../../../../utils/string-utils'
+import {
+  supportedENSExtensions,
+  supportedSNSExtensions,
+  supportedUDExtensions
+} from '../../../../common/constants/domain-extensions'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
+import {
+  isValidEVMAddress,
+  isValidFilAddress
+} from '../../../../utils/address-utils'
+import {
+  getEntitiesListFromEntityState //
+} from '../../../../utils/entities.utils'
 
 // Hooks
-import { useSend } from '../../../../common/hooks/send'
-import { useScopedBalanceUpdater } from '../../../../common/hooks/use-scoped-balance-updater'
-import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
+import {
+  useScopedBalanceUpdater
+} from '../../../../common/hooks/use-scoped-balance-updater'
+import { useModal } from '../../../../common/hooks/useOnClickOutside'
 import {
   useGetDefaultFiatCurrencyQuery,
   useSetSelectedAccountMutation,
   useSetNetworkMutation,
   useGetTokenSpotPricesQuery,
-  useGetUserTokensRegistryQuery
+  useGetUserTokensRegistryQuery,
+  useGetSelectedChainQuery,
+  useEnableEnsOffchainLookupMutation,
+  useGetFVMAddressQuery,
+  useGetEthAddressChecksumQuery,
+  useGetIsBase58EncodedSolPubkeyQuery,
+  useSendSPLTransferMutation,
+  useSendTransactionMutation,
+  useSendERC20TransferMutation,
+  useSendERC721TransferFromMutation,
+  useSendETHFilForwarderTransferMutation,
+  useGetAddressFromNameServiceUrlQuery,
 } from '../../../../common/slices/api.slice'
-import { useAccountFromAddressQuery, useSelectedAccountQuery } from '../../../../common/slices/api.slice.extra'
-import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
-import { selectAllVisibleUserAssetsFromQueryResult } from '../../../../common/slices/entities/blockchain-token.entity'
+import {
+  useAccountFromAddressQuery,
+  useGetCombinedTokensListQuery,
+  useSelectedAccountQuery
+} from '../../../../common/slices/api.slice.extra'
+import {
+  querySubscriptionOptions60s //
+} from '../../../../common/slices/constants'
 
 // Styled Components
 import {
@@ -59,8 +94,9 @@ import {
   AmountInput,
   DIVForWidth,
   InputRow,
-  DomainLoadIcon,
-  sendContainerWidth
+  sendContainerWidth,
+  SmallLoadingRing,
+  DomainLoadIcon
 } from './send.style'
 import { Column, Text, Row, HorizontalDivider } from '../shared.styles'
 
@@ -82,6 +118,7 @@ interface Props {
 }
 
 const EMPTY_PRICE_IDS: string[] = []
+const EMPTY_VISIBLE_TOKENS: BraveWallet.BlockchainToken[] = []
 
 const ErrorFailedChecksumMessage: AddressMessageInfo = {
   ...FailedChecksumMessage,
@@ -93,16 +130,8 @@ const WarningFailedChecksumMessage: AddressMessageInfo = {
   type: 'warning'
 }
 
-export const SendScreen = (props: Props) => {
-  const { isAndroid } = props
-
-  // reused locales
-  const braveWalletAddressMissingChecksumInfoWarning = getLocale(
-    'braveWalletAddressMissingChecksumInfoWarning'
-  )
-  const braveWalletNotValidChecksumAddressError = getLocale(
-    'braveWalletNotValidChecksumAddressError'
-  )
+export const SendScreen = React.memo((props: Props) => {
+  const { isAndroid = false } = props
 
   // routing
   const { chainId, accountAddress, contractAddressOrSymbol, tokenId } =
@@ -116,38 +145,53 @@ export const SendScreen = (props: Props) => {
   const { hash } = useLocation()
   const selectedSendOption = (hash as SendPageTabHashes) || '#token'
 
-  // Send hook
-  const {
-    toAddressOrUrl,
-    toAddress,
-    enableEnsOffchainLookup,
-    showEnsOffchainWarning,
-    setShowEnsOffchainWarning,
-    showFilecoinFEVMWarning,
-    fevmTranslatedAddresses,
-    addressError,
-    addressWarning,
-    sendAmount,
-    selectedSendAsset,
-    sendAmountValidationError,
-    setSendAmount,
-    updateToAddressOrUrl,
-    submitSend,
-    selectSendAsset,
-    searchingForDomain,
-    processAddressOrUrl
-  } = useSend()
+  const { account: accountFromParams } =
+    useAccountFromAddressQuery(accountAddress)
+
+  // Refs
+  const addressWidthRef = React.useRef<HTMLDivElement>(null)
+
+  // State
+  const [sendAmount, setSendAmount] = React.useState<string>('')
+  const [selectedSendAsset, setSelectedSendAsset] = React.useState<
+    BraveWallet.BlockchainToken | undefined
+  >(undefined)
+  const [toAddressOrUrl, setToAddressOrUrl] = React.useState<string>('')
+  const trimmedToAddressOrUrl = toAddressOrUrl.trim()
+
+  const [isOffChainEnsWarningDismissed, dismissOffchainEnsWarning] =
+    React.useState<boolean>(false)
+
+  const [domainPosition, setDomainPosition] = React.useState<number>(0)
 
   // Mutations
+  const [enableEnsOffchainLookup] = useEnableEnsOffchainLookupMutation()
   const [setNetwork] = useSetNetworkMutation()
   const [setSelectedAccount] = useSetSelectedAccountMutation()
-  
+  const [sendSPLTransfer] = useSendSPLTransferMutation()
+  const [sendTransaction] = useSendTransactionMutation()
+  const [sendERC20Transfer] = useSendERC20TransferMutation()
+  const [sendERC721TransferFrom] = useSendERC721TransferFromMutation()
+  const [sendETHFilForwarderTransfer] = useSendETHFilForwarderTransferMutation()
+
   // Queries
-  const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
-    selectFromResult: (result) => ({
-      userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
-    })
-  })
+  // todo: try to use selected asset's network
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const { data: selectedAccount, isLoading: isLoadingSelectedAccount } =
+    useSelectedAccountQuery()
+
+  const { data: fullTokenList } = useGetCombinedTokensListQuery()
+
+  const { data: userAssets } = useGetUserTokensRegistryQuery(
+    contractAddressOrSymbol && chainId ? undefined : skipToken
+  )
+
+  const userVisibleTokensInfo = React.useMemo(() => {
+    return userAssets
+      ? getEntitiesListFromEntityState(userAssets, userAssets?.visibleTokenIds)
+      : EMPTY_VISIBLE_TOKENS
+  }, [userAssets])
+
   const selectedAssetFromParams = React.useMemo(() => {
     if (!contractAddressOrSymbol || !chainId) return
 
@@ -168,12 +212,8 @@ export const SendScreen = (props: Props) => {
   }, [userVisibleTokensInfo, chainId, contractAddressOrSymbol, tokenId])
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
-  
-  const { data: selectedAccount } = useSelectedAccountQuery()
-  const { account: accountFromParams } =
-    useAccountFromAddressQuery(accountAddress)
 
-  const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
+  const { data: tokenBalancesRegistry, isFetching: isLoadingBalances } =
     useScopedBalanceUpdater(
       selectedAccount && selectedSendAsset
         ? {
@@ -187,141 +227,112 @@ export const SendScreen = (props: Props) => {
         : skipToken
     )
 
-  const tokenPriceIds = selectedSendAsset
-    ? [getPriceIdForToken(selectedSendAsset)]
-    : EMPTY_PRICE_IDS
-
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    !isLoadingBalances && tokenPriceIds.length && defaultFiatCurrency
-      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
-      : skipToken,
-    querySubscriptionOptions60s
+  const tokenPriceIds = React.useMemo(
+    () =>
+      selectedSendAsset
+        ? [getPriceIdForToken(selectedSendAsset)]
+        : EMPTY_PRICE_IDS,
+    [selectedSendAsset]
   )
 
-  // Refs
-  const checksumInfoModalRef = React.useRef<HTMLDivElement>(null)
+  const { data: spotPriceRegistry, isFetching: isLoadingSpotPrices } =
+    useGetTokenSpotPricesQuery(
+      !isLoadingBalances && tokenPriceIds.length && defaultFiatCurrency
+        ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+        : skipToken,
+      querySubscriptionOptions60s
+    )
 
-  // State
-  const [domainPosition, setDomainPosition] = React.useState<number>(0)
-  const [showChecksumInfoModal, setShowChecksumInfoModal] =
-    React.useState<boolean>(false)
-  const [showSelectTokenModal, setShowSelectTokenModal] =
-    React.useState<boolean>(false)
+  // Domain name lookup Queries
+  const selectedSendAssetId = selectedSendAsset
+    ? getAssetIdKey(selectedSendAsset)
+    : null
 
-  // Refs
-  const selectTokenModalRef = React.useRef<HTMLDivElement>(null)
+  const toAddressHasValidExtension = toAddressOrUrl
+    ? endsWithAny(supportedUDExtensions, toAddressOrUrl.toLowerCase()) ||
+      (selectedSendAsset?.coin === BraveWallet.CoinType.SOL &&
+        endsWithAny(supportedSNSExtensions, toAddressOrUrl.toLowerCase())) ||
+      (selectedSendAsset?.coin === BraveWallet.CoinType.ETH &&
+        endsWithAny(supportedENSExtensions, toAddressOrUrl.toLowerCase()))
+    : false
 
-  // Modal hooks
-  useOnClickOutside(
-    selectTokenModalRef,
-    () => setShowSelectTokenModal(false),
-    showSelectTokenModal
+  const {
+    data: nameServiceInfo,
+    isFetching: isSearchingForDomain,
+    isError: hasNameServiceError = false
+  } = useGetAddressFromNameServiceUrlQuery(
+    toAddressHasValidExtension
+      ? {
+          tokenId: selectedSendAssetId,
+          url: toAddressOrUrl
+        }
+      : skipToken
   )
 
-  useOnClickOutside(
-    checksumInfoModalRef,
-    () => setShowChecksumInfoModal(false),
-    showChecksumInfoModal
+  const resolvedDomainAddress = nameServiceInfo?.address || ''
+  const showEnsOffchainWarning =
+    nameServiceInfo?.requireOffchainConsent || false
+
+  const { data: fevmTranslatedAddresses } = useGetFVMAddressQuery(
+    selectedSendAsset?.coin === BraveWallet.CoinType.FIL &&
+      trimmedToAddressOrUrl
+      ? {
+          coin: selectedSendAsset.coin,
+          addresses: [trimmedToAddressOrUrl],
+          isMainNet: selectedSendAsset.chainId === BraveWallet.FILECOIN_MAINNET
+        }
+      : skipToken
   )
 
-  // Methods
-  const setSelectedAccountAndNetwork = React.useCallback(async () => {
-    if (!chainId || !selectedAssetFromParams || !accountFromParams) {
-      return
-    }
-
-    try {
-      await setSelectedAccount(accountFromParams.accountId)
-      await setNetwork({
-        chainId: chainId,
-        coin: selectedAssetFromParams.coin
-      })
-    } catch (e) {
-      console.error(e)
-    }
-  }, [accountFromParams, chainId, selectedAssetFromParams])
-
-  const handleInputAmountChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSendAmount(event.target.value)
-    },
-    []
+  const { data: isBase58 = false } = useGetIsBase58EncodedSolPubkeyQuery(
+    !toAddressHasValidExtension &&
+      selectedAccount?.accountId.coin === BraveWallet.CoinType.SOL &&
+      trimmedToAddressOrUrl
+      ? trimmedToAddressOrUrl
+      : skipToken
   )
 
-  const handleInputAddressChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      updateToAddressOrUrl(event.target.value)
-    },
-    [updateToAddressOrUrl]
-  )
+  const isValidEvmAddress = isValidEVMAddress(trimmedToAddressOrUrl)
 
-  const onSelectSendOption = React.useCallback(
-    (option: SendPageTabHashes) => {
-      selectSendAsset(undefined)
-      history.push(`${WalletRoutes.SendPageStart}${option}`)
-    },
-    [selectSendAsset]
-  )
-
-  const onENSConsent = React.useCallback(() => {
-    enableEnsOffchainLookup()
-    setShowEnsOffchainWarning(false)
-    processAddressOrUrl(toAddressOrUrl)
-  }, [enableEnsOffchainLookup, setShowEnsOffchainWarning, processAddressOrUrl])
-
-  const updateLoadingIconPosition = React.useCallback(
-    (ref: HTMLDivElement | null) => {
-      const position = ref?.clientWidth
-      setDomainPosition(position ? position + 22 : 0)
-    },
-    []
-  )
-
-  const setPresetAmountValue = React.useCallback(
-    (percent: number) => {
-      if (!selectedSendAsset || !selectedAccount) {
-        return
-      }
-
-      setSendAmount(
-        getPercentAmount(
-          selectedSendAsset,
-          selectedAccount.accountId,
-          percent,
-          tokenBalancesRegistry
-        )
-      )
-    },
-    [setSendAmount, selectedSendAsset, selectedAccount, tokenBalancesRegistry]
+  const { data: ethAddressChecksum = '' } = useGetEthAddressChecksumQuery(
+    isValidEvmAddress ? trimmedToAddressOrUrl : skipToken
   )
 
   // memos & computed
-  const sendAssetBalance = React.useMemo(() => {
-    if (!selectedAccount || !selectedSendAsset || !tokenBalancesRegistry) {
-      return ''
-    }
+  const sendAmountValidationError: AmountValidationErrorType | undefined =
+    React.useMemo(() => {
+      if (!sendAmount || !selectedSendAsset) {
+        return
+      }
 
-    return getBalance(
-      selectedAccount.accountId,
-      selectedSendAsset,
-      tokenBalancesRegistry
-    )
-  }, [selectedAccount, selectedSendAsset, tokenBalancesRegistry])
+      const amountBN = new Amount(sendAmount).multiplyByDecimals(
+        selectedSendAsset.decimals
+      ).value // ETH → Wei conversion // extract BigNumber object wrapped by Amount
 
-  const accountNameAndBalance = React.useMemo(() => {
-    if (!selectedSendAsset || sendAssetBalance === '') {
-      return ''
-    }
-    if (selectedSendOption === SendPageTabHashes.nft) {
-      return selectedAccount?.name
-    }
-    return `${selectedAccount?.name}: ${formatTokenBalanceWithSymbol(
-      sendAssetBalance,
-      selectedSendAsset.decimals,
-      selectedSendAsset.symbol,
-      4
-    )}`
-  }, [selectedAccount?.name, selectedSendAsset, sendAssetBalance])
+      const amountDP = amountBN && amountBN.decimalPlaces()
+      return amountDP && amountDP > 0 ? 'fromAmountDecimalsOverflow' : undefined
+    }, [sendAmount, selectedSendAsset])
+
+  const sendAssetBalance =
+    !selectedAccount || !selectedSendAsset || !tokenBalancesRegistry
+      ? ''
+      : getBalance(
+          selectedAccount.accountId,
+          selectedSendAsset,
+          tokenBalancesRegistry
+        )
+
+  const accountNameAndBalance =
+    !selectedSendAsset || sendAssetBalance === ''
+      ? ''
+      : selectedSendOption === SendPageTabHashes.nft
+      ? selectedAccount?.name
+      : `${selectedAccount?.name}: ${formatTokenBalanceWithSymbol(
+          sendAssetBalance,
+          selectedSendAsset.decimals,
+          selectedSendAsset.symbol,
+          4
+        )}`
 
   const insufficientFundsError = React.useMemo((): boolean => {
     if (!selectedSendAsset) {
@@ -364,56 +375,362 @@ export const SendScreen = (props: Props) => {
     selectedSendOption
   ])
 
+  const domainErrorLocaleKey =
+    toAddressOrUrl && !isSearchingForDomain
+      ? processDomainLookupResponseWarning(
+          toAddressHasValidExtension,
+          resolvedDomainAddress,
+          hasNameServiceError,
+          showEnsOffchainWarning,
+          selectedAccount?.address
+        )
+      : undefined
+
+  const toAddressIsTokenContract =
+    resolvedDomainAddress || trimmedToAddressOrUrl.toLowerCase()
+      ? findTokenByContractAddress(
+          toAddressHasValidExtension &&
+            !isSearchingForDomain &&
+            resolvedDomainAddress
+            ? resolvedDomainAddress
+            : trimmedToAddressOrUrl.toLowerCase(),
+          fullTokenList
+        ) !== undefined
+      : undefined
+
+  const toAddressIsSelectedAccount =
+    selectedAccount &&
+    (toAddressHasValidExtension &&
+    !isSearchingForDomain &&
+    resolvedDomainAddress
+      ? resolvedDomainAddress
+      : trimmedToAddressOrUrl
+    ).toLowerCase() === selectedAccount?.address.toLowerCase()
+
+  const addressWarningLocaleKey = toAddressIsTokenContract
+    ? 'braveWalletContractAddressError'
+    : isValidEvmAddress &&
+      ethAddressChecksum !== toAddressOrUrl &&
+      [toAddressOrUrl.toLowerCase(), toAddressOrUrl.toUpperCase()].includes(
+        toAddressOrUrl
+      )
+    ? 'braveWalletAddressMissingChecksumInfoWarning'
+    : undefined
+
+  const hasAddressWarning = Boolean(addressWarningLocaleKey)
+
+  const addressErrorLocaleKey = toAddressIsSelectedAccount
+    ? 'braveWalletSameAddressError'
+    : trimmedToAddressOrUrl.includes('.')
+    ? domainErrorLocaleKey
+    : selectedAccount
+    ? addressWarningLocaleKey !==
+        'braveWalletAddressMissingChecksumInfoWarning' ?
+      processAddressOrUrl({
+        addressOrUrl: trimmedToAddressOrUrl,
+        ethAddressChecksum,
+        isBase58,
+        coinType: selectedAccount.accountId.coin ?? BraveWallet.CoinType.ETH,
+        selectedSendAsset
+      }) : undefined
+    : undefined
+
+  const addressError = addressErrorLocaleKey
+    ? getLocale(addressErrorLocaleKey).replace(
+        '$1',
+        CoinTypesMap[selectedNetwork?.coin ?? 0]
+      )
+    : undefined
+
+  const hasAddressError = !isSearchingForDomain && Boolean(addressError)
+
+  const showResolvedDomain =
+    toAddressHasValidExtension &&
+    !isSearchingForDomain &&
+    !hasAddressError &&
+    Boolean(resolvedDomainAddress)
+
+  // reused locales
+  const braveWalletAddressMissingChecksumInfoWarning = getLocale(
+    'braveWalletAddressMissingChecksumInfoWarning'
+  )
+  const braveWalletNotValidChecksumAddressError = getLocale(
+    'braveWalletNotValidChecksumAddressError'
+  )
+
   const reviewButtonHasError =
-    !searchingForDomain &&
+    !isSearchingForDomain &&
     (insufficientFundsError ||
       (addressError !== undefined &&
         addressError !== '' &&
         addressError !== braveWalletNotValidChecksumAddressError))
 
-  const hasAddressError = !searchingForDomain && !!addressError
+  const showFilecoinFEVMWarning =
+    selectedAccount?.accountId.coin === BraveWallet.CoinType.FIL
+      ? trimmedToAddressOrUrl.startsWith('0x') &&
+        !validateETHAddress(trimmedToAddressOrUrl, ethAddressChecksum)
+      : false
 
   const addressMessageInformation: AddressMessageInfo | undefined =
     React.useMemo(
-      getAddressMessageInfo(
+      getAddressMessageInfo({
         showFilecoinFEVMWarning,
         fevmTranslatedAddresses,
         toAddressOrUrl,
         showEnsOffchainWarning,
-        addressError,
-        braveWalletNotValidChecksumAddressError,
-        addressWarning,
-        braveWalletAddressMissingChecksumInfoWarning
-      ),
+        addressErrorKey: addressErrorLocaleKey,
+        addressWarningKey: addressWarningLocaleKey,
+      }),
       [
-        toAddressOrUrl,
         showFilecoinFEVMWarning,
         fevmTranslatedAddresses,
+        toAddressOrUrl,
         showEnsOffchainWarning,
-        addressError,
-        addressWarning
+        addressErrorLocaleKey,
+        addressWarningLocaleKey
       ]
     )
 
-  const toAddressHasValidExtension = endsWithAny(
-    allSupportedExtensions,
-    toAddressOrUrl.toLowerCase()
+  // Methods
+  const selectSendAsset = React.useCallback(
+    (asset: BraveWallet.BlockchainToken | undefined) => {
+      if (asset?.isErc721 || asset?.isNft) {
+        setSendAmount('1')
+      } else {
+        setSendAmount('')
+      }
+      setToAddressOrUrl('')
+      setSelectedSendAsset(asset)
+    },
+    []
   )
 
-  const showResolvedDomain =
-    toAddress &&
-    toAddressHasValidExtension &&
-    (!addressError ||
-      addressError ===
-        getLocale(
-          'braveWalletSameAddressError' //
-        ))
+  const resetSendFields = React.useCallback(() => {
+    selectSendAsset(undefined)
+    setToAddressOrUrl('')
+    setSendAmount('')
+  }, [selectSendAsset])
 
-  const showSearchingForDomainIcon =
-    (searchingForDomain && toAddressHasValidExtension) || //
-    showEnsOffchainWarning
+  const submitSend = React.useCallback(async () => {
+    if (!selectedSendAsset) {
+      console.log('Failed to submit Send transaction: no send asset selected')
+      return
+    }
+
+    if (!selectedAccount) {
+      console.log('Failed to submit Send transaction: no account selected')
+      return
+    }
+
+    if (!selectedNetwork) {
+      console.log('Failed to submit Send transaction: no network selected')
+      return
+    }
+
+    const fromAccount: BaseTransactionParams['fromAccount'] = {
+      accountId: selectedAccount.accountId,
+      address: selectedAccount.address,
+      hardware: selectedAccount.hardware
+    }
+
+    selectedSendAsset.isErc20 &&
+      (await sendERC20Transfer({
+        network: selectedNetwork,
+        fromAccount,
+        to: toAddressOrUrl, // change back?
+        value: new Amount(sendAmount)
+          // ETH → Wei conversion
+          .multiplyByDecimals(selectedSendAsset.decimals)
+          .toHex(),
+        contractAddress: selectedSendAsset.contractAddress
+      }))
+
+    selectedSendAsset.isErc721 &&
+      (await sendERC721TransferFrom({
+        network: selectedNetwork,
+        fromAccount,
+        to: toAddressOrUrl, // change back?
+        value: '',
+        contractAddress: selectedSendAsset.contractAddress,
+        tokenId: selectedSendAsset.tokenId ?? ''
+      }))
+
+    if (
+      selectedAccount.accountId.coin === BraveWallet.CoinType.SOL &&
+      selectedSendAsset.contractAddress !== '' &&
+      !selectedSendAsset.isErc20 &&
+      !selectedSendAsset.isErc721
+    ) {
+      await sendSPLTransfer({
+        network: selectedNetwork,
+        fromAccount,
+        to: toAddressOrUrl, // change back?
+        value: !selectedSendAsset.isNft
+          ? new Amount(sendAmount)
+              .multiplyByDecimals(selectedSendAsset.decimals)
+              .toHex()
+          : new Amount(sendAmount).toHex(),
+        splTokenMintAddress: selectedSendAsset.contractAddress
+      })
+      resetSendFields()
+      return
+    }
+
+    if (selectedAccount.accountId.coin === BraveWallet.CoinType.FIL) {
+      await sendTransaction({
+        network: selectedNetwork,
+        fromAccount,
+        to: toAddressOrUrl, // change back?
+        value: new Amount(sendAmount)
+          .multiplyByDecimals(selectedSendAsset.decimals)
+          .toNumber()
+          .toString()
+      })
+      resetSendFields()
+      return
+    }
+
+    if (selectedSendAsset.isErc721 || selectedSendAsset.isErc20) {
+      resetSendFields()
+      return
+    }
+
+    if (
+      selectedAccount.accountId.coin === BraveWallet.CoinType.ETH &&
+      (selectedSendAsset.chainId ===
+        BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
+        selectedSendAsset.chainId ===
+          BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
+      isValidFilAddress(
+        toAddressOrUrl
+        // toAddress
+      )
+    ) {
+      await sendETHFilForwarderTransfer({
+        network: selectedNetwork,
+        fromAccount,
+        // to: toAddress,
+        to: toAddressOrUrl,
+        value: new Amount(sendAmount)
+          // ETH → Wei conversion
+          .multiplyByDecimals(selectedSendAsset.decimals)
+          .toHex(),
+        contractAddress: '0x2b3ef6906429b580b7b2080de5ca893bc282c225'
+      })
+      resetSendFields()
+      return
+    }
+
+    await sendTransaction({
+      network: selectedNetwork,
+      fromAccount,
+      // to: toAddress,
+      to: toAddressOrUrl,
+      value:
+        selectedAccount.accountId.coin === BraveWallet.CoinType.FIL
+          ? new Amount(sendAmount)
+              .multiplyByDecimals(selectedSendAsset.decimals)
+              .toString()
+          : new Amount(sendAmount)
+              .multiplyByDecimals(selectedSendAsset.decimals)
+              .toHex()
+    })
+
+    resetSendFields()
+  }, [
+    selectedSendAsset,
+    selectedAccount,
+    selectedNetwork,
+    sendAmount,
+    toAddressOrUrl,
+    // toAddress,
+    resetSendFields
+  ])
+
+  const setSelectedAccountAndNetwork = React.useCallback(async () => {
+    if (!chainId || !selectedAssetFromParams || !accountFromParams) {
+      return
+    }
+
+    try {
+      await setSelectedAccount(accountFromParams.accountId)
+      await setNetwork({
+        chainId: chainId,
+        coin: selectedAssetFromParams.coin
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }, [accountFromParams, chainId, selectedAssetFromParams])
+
+  const handleInputAmountChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSendAmount(event.target.value)
+    },
+    []
+  )
+
+  const handleInputAddressChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setToAddressOrUrl(event.target.value)
+    },
+    [setToAddressOrUrl, addressWidthRef]
+  )
+
+  const onSelectSendOption = React.useCallback(
+    (option: SendPageTabHashes) => {
+      selectSendAsset(undefined)
+      history.push(`${WalletRoutes.SendPageStart}${option}`)
+    },
+    [selectSendAsset]
+  )
+
+  const onENSConsent = React.useCallback(() => {
+    enableEnsOffchainLookup()
+    dismissOffchainEnsWarning(true)
+  }, [enableEnsOffchainLookup])
+
+  const setPresetAmountValue = React.useCallback(
+    (percent: number) => {
+      if (!selectedSendAsset || !selectedAccount) {
+        return
+      }
+
+      setSendAmount(
+        getPercentAmount(
+          selectedSendAsset,
+          selectedAccount.accountId,
+          percent,
+          tokenBalancesRegistry
+        )
+      )
+    },
+    [selectedSendAsset, selectedAccount, tokenBalancesRegistry]
+  )
+
+  // Modals
+  const {
+    closeModal: closeChecksumModal,
+    openModal: openChecksumModal,
+    ref: checksumInfoModalRef,
+    isModalShown: showChecksumInfoModal
+  } = useModal()
+  const {
+    closeModal: closeSelectTokenModal,
+    openModal: openSelectTokenModal,
+    ref: selectTokenModalRef,
+    isModalShown: showSelectTokenModal
+  } = useModal()
 
   // Effects
+  React.useLayoutEffect(() => {
+    // Update loading icon position when to-address changes.
+    // Using an effect instead of within an on-change
+    // because we want to have the latest text width from the dom
+    const position = addressWidthRef.current?.clientWidth
+    setDomainPosition(position ? position + 28 : 0)
+  }, [toAddressOrUrl])
+
   React.useEffect(() => {
     // check if the user has selected an asset
     if (!selectedAssetFromParams || selectedSendAsset) {
@@ -455,19 +772,23 @@ export const SendScreen = (props: Props) => {
                 horizontalAlign='space-between'
               >
                 <Row rowWidth='full' horizontalAlign='flex-end'>
-                  <Text
-                    textSize='14px'
-                    textColor='text03'
-                    maintainHeight={true}
-                    isBold={true}
-                  >
-                    {accountNameAndBalance}
-                  </Text>
+                  {isLoadingSelectedAccount || isLoadingBalances ? (
+                    <SmallLoadingRing />
+                  ) : (
+                    <Text
+                      textSize='14px'
+                      textColor='text03'
+                      maintainHeight={true}
+                      isBold={true}
+                    >
+                      {accountNameAndBalance}
+                    </Text>
+                  )}
                 </Row>
                 <Row rowWidth='full'>
                   <Row>
                     <SelectTokenButton
-                      onClick={() => setShowSelectTokenModal(true)}
+                      onClick={openSelectTokenModal}
                       token={selectedSendAsset}
                       selectedSendOption={selectedSendOption}
                     />
@@ -501,14 +822,18 @@ export const SendScreen = (props: Props) => {
                   )}
                 </Row>
                 <Row rowWidth='full' horizontalAlign='flex-end'>
-                  <Text
-                    textSize='14px'
-                    textColor='text03'
-                    maintainHeight={true}
-                    isBold={false}
-                  >
-                    {sendAmountFiatValue}
-                  </Text>
+                  {isLoadingSpotPrices || isLoadingBalances ? (
+                    <SmallLoadingRing />
+                  ) : (
+                    <Text
+                      textSize='14px'
+                      textColor='text03'
+                      maintainHeight={true}
+                      isBold={false}
+                    >
+                      {sendAmountFiatValue}
+                    </Text>
+                  )}
                 </Row>
               </Column>
             )}
@@ -516,7 +841,7 @@ export const SendScreen = (props: Props) => {
               <Row rowWidth='full' rowHeight='full'>
                 <Column columnHeight='full' verticalAlign='center'>
                   <SelectTokenButton
-                    onClick={() => setShowSelectTokenModal(true)}
+                    onClick={openSelectTokenModal}
                     token={selectedSendAsset}
                     selectedSendOption={selectedSendOption}
                   />
@@ -541,7 +866,7 @@ export const SendScreen = (props: Props) => {
           </SectionBox>
           <SectionBox
             hasError={hasAddressError}
-            hasWarning={addressWarning !== undefined && addressWarning !== ''}
+            hasWarning={hasAddressWarning}
             noPadding={true}
           >
             <InputRow
@@ -551,12 +876,10 @@ export const SendScreen = (props: Props) => {
               paddingBottom={showResolvedDomain ? 4 : 16}
               horizontalPadding={16}
             >
-              {showSearchingForDomainIcon && (
+              {isSearchingForDomain && (
                 <DomainLoadIcon position={domainPosition} />
               )}
-              <DIVForWidth ref={(ref) => updateLoadingIconPosition(ref)}>
-                {toAddressOrUrl}
-              </DIVForWidth>
+              <DIVForWidth ref={addressWidthRef}>{toAddressOrUrl}</DIVForWidth>
               <AddressInput
                 placeholder={getLocale('braveWalletEnterRecipientAddress')}
                 hasError={hasAddressError}
@@ -568,48 +891,52 @@ export const SendScreen = (props: Props) => {
               <AccountSelector
                 asset={selectedSendAsset}
                 disabled={!selectedSendAsset}
-                onSelectAddress={updateToAddressOrUrl}
+                onSelectAddress={setToAddressOrUrl}
               />
             </InputRow>
-            {showResolvedDomain && <CopyAddress address={toAddress} />}
+            {showResolvedDomain && (
+              <CopyAddress address={resolvedDomainAddress} />
+            )}
             {addressMessageInformation && (
               <AddressMessage
                 addressMessageInfo={addressMessageInformation}
                 onClickHowToSolve={
-                  addressError === braveWalletNotValidChecksumAddressError ||
-                  addressWarning ===
+                  addressErrorLocaleKey === braveWalletNotValidChecksumAddressError ||
+                  addressWarningLocaleKey ===
                     braveWalletAddressMissingChecksumInfoWarning
-                    ? () => setShowChecksumInfoModal(true)
+                    ? openChecksumModal
                     : undefined
                 }
               />
             )}
           </SectionBox>
-          {showEnsOffchainWarning ? (
+          {showEnsOffchainWarning && !isOffChainEnsWarningDismissed ? (
             <StandardButton
               // This is always enabled to allow off-chain ENS lookups
               buttonText={getLocale('braveWalletEnsOffChainButton')}
               onClick={onENSConsent}
               buttonType='primary'
               buttonWidth='full'
-              isLoading={searchingForDomain}
+              isLoading={isSearchingForDomain}
               hasError={reviewButtonHasError}
             />
           ) : (
             <StandardButton
-              buttonText={getReviewButtonText(
-                searchingForDomain,
-                sendAmountValidationError,
-                insufficientFundsError,
-                addressError,
-                addressWarning
-              )}
+              buttonText={getLocale(
+                getReviewButtonText(
+                  isSearchingForDomain,
+                  sendAmountValidationError,
+                  insufficientFundsError,
+                  addressErrorLocaleKey,
+                  addressWarningLocaleKey
+                )
+              ).replace('$1', CoinTypesMap[selectedNetwork?.coin ?? 0])}
               onClick={submitSend}
               buttonType='primary'
               buttonWidth='full'
-              isLoading={searchingForDomain}
+              isLoading={isSearchingForDomain}
               disabled={
-                searchingForDomain ||
+                isSearchingForDomain ||
                 !toAddressOrUrl ||
                 insufficientFundsError ||
                 Boolean(addressError) ||
@@ -624,7 +951,7 @@ export const SendScreen = (props: Props) => {
       </WalletPageWrapper>
       {showSelectTokenModal ? (
         <SelectTokenModal
-          onClose={() => setShowSelectTokenModal(false)}
+          onClose={closeSelectTokenModal}
           selectedSendOption={selectedSendOption}
           ref={selectTokenModalRef}
           selectSendAsset={selectSendAsset}
@@ -632,28 +959,37 @@ export const SendScreen = (props: Props) => {
       ) : null}
       {showChecksumInfoModal ? (
         <ChecksumInfoModal
-          onClose={() => setShowChecksumInfoModal(false)}
+          onClose={closeChecksumModal}
           ref={checksumInfoModalRef}
         />
       ) : null}
     </>
   )
-}
+})
 
 export default SendScreen
 
-function getAddressMessageInfo(
-  showFilecoinFEVMWarning: boolean,
+const SendPageHeader = React.memo(() => {
+  return <PageTitleHeader title={getLocale('braveWalletSend')} />
+})
+
+export function getAddressMessageInfo({
+  addressErrorKey,
+  addressWarningKey,
+  fevmTranslatedAddresses,
+  showEnsOffchainWarning,
+  showFilecoinFEVMWarning,
+  toAddressOrUrl
+}: {
+  showFilecoinFEVMWarning: boolean
   fevmTranslatedAddresses:
     | Map<string, { address: string; fvmAddress: string }>
-    | undefined,
-  toAddressOrUrl: string,
-  showEnsOffchainWarning: boolean,
-  addressError: string | undefined,
-  braveWalletNotValidChecksumAddressError: string,
-  addressWarning: string | undefined,
-  braveWalletAddressMissingChecksumInfoWarning: string
-): () =>
+    | undefined
+  toAddressOrUrl: string
+  showEnsOffchainWarning: boolean
+  addressErrorKey: string | undefined
+  addressWarningKey: string | undefined
+}): () =>
   | AddressMessageInfo
   | {
       placeholder: any
@@ -673,11 +1009,11 @@ function getAddressMessageInfo(
     if (showEnsOffchainWarning) {
       return ENSOffchainLookupMessage
     }
-    if (addressError === braveWalletNotValidChecksumAddressError) {
+    if (addressErrorKey === 'braveWalletNotValidChecksumAddressError') {
       return ErrorFailedChecksumMessage
     }
 
-    if (addressWarning === braveWalletAddressMissingChecksumInfoWarning) {
+    if (addressWarningKey === 'braveWalletAddressMissingChecksumInfoWarning') {
       return WarningFailedChecksumMessage
     }
     return undefined
@@ -689,33 +1025,187 @@ function getReviewButtonText(
   sendAmountValidationError: string | undefined,
   insufficientFundsError: boolean,
   addressError: string | undefined,
-  addressWarning: string | undefined
+  addressWarningKey: string | undefined
 ) {
   if (searchingForDomain) {
-    return getLocale('braveWalletSearchingForDomain')
+    return 'braveWalletSearchingForDomain'
   }
   if (sendAmountValidationError) {
-    return getLocale('braveWalletDecimalPlacesError')
+    return 'braveWalletDecimalPlacesError'
   }
   if (insufficientFundsError) {
-    return getLocale('braveWalletNotEnoughFunds')
+    return 'braveWalletNotEnoughFunds'
   }
   if (
     addressError &&
-    addressError !== getLocale('braveWalletNotValidChecksumAddressError')
+    addressError !== 'braveWalletNotValidChecksumAddressError'
   ) {
     return addressError
   }
+
   if (
-    addressWarning &&
-    addressWarning !== getLocale('braveWalletAddressMissingChecksumInfoWarning')
+    addressWarningKey &&
+    addressWarningKey !== 'braveWalletAddressMissingChecksumInfoWarning'
   ) {
-    return addressWarning
+    return addressWarningKey
   }
 
-  return getLocale('braveWalletReviewSend')
+  return 'braveWalletReviewSend'
 }
 
-function SendPageHeader() {
-  return <PageTitleHeader title={getLocale('braveWalletSend')} />
+const processDomainLookupResponseWarning = (
+  urlHasValidExtension: boolean,
+  resolvedAddress: string | undefined,
+  hasDomainLookupError: boolean,
+  requireOffchainConsent: boolean,
+  selectedAccountAddress?: string,
+) => {
+  if (requireOffchainConsent) {
+    // handled separately
+    return undefined
+  }
+  
+  if (!urlHasValidExtension) {
+    return 'braveWalletInvalidRecipientAddress'
+  }
+
+  if (
+    hasDomainLookupError ||
+    !resolvedAddress
+  ) {
+    return 'braveWalletNotDomain'
+  }
+
+  // If found address is the same as the selectedAccounts Wallet Address
+  if (
+    selectedAccountAddress &&
+    resolvedAddress.toLowerCase() === selectedAccountAddress.toLowerCase()
+  ) {
+    return 'braveWalletSameAddressError'
+  }
+
+  // todo: check for token addresses
+  
+  return undefined
+}
+
+const validateETHAddress = (address: string, checksumAddress: string) => {
+  if (!isValidEVMAddress(address)) {
+    return 'braveWalletInvalidRecipientAddress'
+  }
+
+  return checksumAddress &&
+    checksumAddress !== address &&
+    [address.toLowerCase(), address.toUpperCase()].includes(address)
+    ? 'braveWalletNotValidChecksumAddressError'
+    : undefined
+}
+
+const processEthereumAddress = (
+  addressOrUrl: string,
+  selectedSendAsset: BraveWallet.BlockchainToken | undefined,
+  checksumAddress: string
+) => {
+  const valueToLowerCase = addressOrUrl.toLowerCase()
+
+  if (
+    selectedSendAsset &&
+    (selectedSendAsset.chainId ===
+      BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
+      selectedSendAsset.chainId ===
+        BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
+    isValidFilAddress(addressOrUrl)
+  ) {
+    return undefined
+  }
+
+  // If value starts with 0x, will check if it's a valid address
+  if (valueToLowerCase.startsWith('0x')) {
+    return validateETHAddress(addressOrUrl, checksumAddress)
+  }
+
+  // Fallback error state
+  return valueToLowerCase === '' ? undefined : 'braveWalletInvalidRecipientAddress'
+}
+
+const processFilecoinAddress = (
+  addressOrUrl: string,
+  checksum: string
+) => {
+  const valueToLowerCase = addressOrUrl.toLowerCase()
+
+  // If value starts with 0x, will check if it's a valid address
+  if (valueToLowerCase.startsWith('0x')) {
+    return validateETHAddress(addressOrUrl, checksum)
+  }
+
+  if (!isValidFilAddress(valueToLowerCase)) {
+    return 'braveWalletInvalidRecipientAddress'
+  }
+
+  // Default
+  return undefined
+}
+
+const processSolanaAddress = (
+  addressOrUrl: string,
+  isBase58Encoded: boolean | undefined
+) => {
+  // Check if value is a Base58 Encoded Solana Pubkey
+  if (!isBase58Encoded) {
+    return 'braveWalletInvalidRecipientAddress'
+  }
+
+  return undefined
+}
+
+const processBitcoinAddress = (addressOrUrl: string) => {
+  // Check if value is the same as the sending address
+  // TODO(apaymyshev): should prohibit self transfers?
+
+  // TODO(apaymyshev): validate address format.
+  return undefined
+}
+
+function processAddressOrUrl({
+  addressOrUrl,
+  ethAddressChecksum,
+  isBase58,
+  coinType,
+  selectedSendAsset,
+}: {
+  addressOrUrl: string
+  coinType: BraveWallet.CoinType | undefined
+  selectedSendAsset: BraveWallet.BlockchainToken | undefined
+  ethAddressChecksum: string
+  isBase58: boolean
+}) {
+  // Do nothing if value is an empty string
+  if (addressOrUrl === '') {
+    return undefined
+  }
+
+  switch (coinType) {
+    case undefined: return undefined
+    case BraveWallet.CoinType.ETH: {
+      return processEthereumAddress(
+        addressOrUrl,
+        selectedSendAsset,
+        ethAddressChecksum
+      )
+    }
+    case BraveWallet.CoinType.FIL: {
+      return processFilecoinAddress(addressOrUrl, ethAddressChecksum)
+    }
+    case BraveWallet.CoinType.SOL: {
+      return processSolanaAddress(addressOrUrl, isBase58)
+    }
+    case BraveWallet.CoinType.BTC: {
+      return processBitcoinAddress(addressOrUrl)
+    }
+    default: {
+      console.log(`Unknown coin ${coinType}`)
+      return undefined
+    }
+  }
 }

@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import ProgressRing from '@brave/leo/react/progressRing'
 
 // Assets
 import { LoaderIcon } from 'brave-ui/components/icons'
@@ -98,4 +99,8 @@ export const DomainLoadIcon = styled(LoaderIcon) <{ position: number }>`
   position: absolute;
   z-index: 8;
   left: ${(p) => p.position}px;
+`
+
+export const SmallLoadingRing = styled(ProgressRing)`
+  --leo-progressring-size: 14px;
 `
