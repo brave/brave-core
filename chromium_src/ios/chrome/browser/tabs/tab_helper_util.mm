@@ -5,7 +5,7 @@
 
 #import "ios/chrome/browser/tabs/tab_helper_util.h"
 
-#include "ios/chrome/browser/complex_tasks/ios_task_tab_helper.h"
+#include "ios/chrome/browser/complex_tasks/model/ios_task_tab_helper.h"
 #include "ios/chrome/browser/sessions/ios_chrome_session_tab_helper.h"
 #include "ios/chrome/browser/sync/ios_chrome_synced_tab_delegate.h"
 #include "ios/chrome/browser/tabs/tab_helper_util.h"
