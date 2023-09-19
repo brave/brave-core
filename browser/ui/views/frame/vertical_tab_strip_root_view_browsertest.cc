@@ -68,8 +68,6 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                        DragAfterCurrentTab) {
   ToggleVerticalTabStrip();
 
-  browser()->window()->Maximize();
-
   ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
 
   auto* tab_strip_model = browser()->tab_strip_model();
@@ -108,8 +106,6 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest, DragOnCurrentTab) {
   ToggleVerticalTabStrip();
-
-  browser()->window()->Maximize();
 
   ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
 
