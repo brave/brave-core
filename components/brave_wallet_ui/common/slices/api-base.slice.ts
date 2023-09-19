@@ -57,8 +57,7 @@ export function createWalletApiBase () {
       'EthTokenDecimals',
       'EthTokenSymbol',
       'EnsOffchainLookupEnabled',
-      'EnsAddress',
-      'SnsAddress',
+      'NameServiceAddress',
     ],
     endpoints: ({ mutation, query }) => ({})
   })

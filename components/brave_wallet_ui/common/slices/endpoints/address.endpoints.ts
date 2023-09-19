@@ -35,7 +35,7 @@ export const addressEndpoints = ({
           )
         }
       },
-      invalidatesTags: ['EnsOffchainLookupEnabled']
+      invalidatesTags: ['NameServiceAddress', 'EnsOffchainLookupEnabled']
     }),
 
     getIsBase58EncodedSolPubkey: query<boolean, string>({
@@ -57,12 +57,13 @@ export const addressEndpoints = ({
         }
       }
     }),
-    
+
     getEthAddressChecksum: query<string, string>({
       queryFn: async (addressArg, { endpoint }, _extra, baseQuery) => {
         try {
           const { data: api } = baseQuery(undefined)
-          const { checksumAddress } = await api.keyringService.getChecksumEthAddress(addressArg)
+          const { checksumAddress } =
+            await api.keyringService.getChecksumEthAddress(addressArg)
 
           return {
             data: checksumAddress
@@ -78,9 +79,9 @@ export const addressEndpoints = ({
     }),
 
     getAddressFromNameServiceUrl: query<
-    { address: string; requireOffchainConsent: boolean },
-    { url: string; tokenId: string | null }
-  >({
+      { address: string; requireOffchainConsent: boolean },
+      { url: string; tokenId: string | null }
+    >({
       queryFn: async (arg, { endpoint }, _extra, baseQuery) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
@@ -93,7 +94,7 @@ export const addressEndpoints = ({
             if (errorMessage) {
               throw new Error(errorMessage)
             }
-  
+
             return {
               data: {
                 address,
@@ -101,7 +102,7 @@ export const addressEndpoints = ({
               }
             }
           }
-          
+
           // Sns
           if (endsWithAny(supportedSNSExtensions, arg.url)) {
             const { address, errorMessage } =
@@ -118,7 +119,7 @@ export const addressEndpoints = ({
               }
             }
           }
-          
+
           // Unstoppable-Domains
           if (endsWithAny(supportedUDExtensions, arg.url)) {
             const token = arg.tokenId
@@ -161,7 +162,15 @@ export const addressEndpoints = ({
             error
           )
         }
-      }
-    }),
+      },
+      providesTags: (res, err, arg) => [
+        err
+          ? 'UNKNOWN_ERROR'
+          : {
+              type: 'NameServiceAddress',
+              id: [arg.url, arg.tokenId].filter((arg) => arg !== null).join('-')
+            }
+      ]
+    })
   }
 }
