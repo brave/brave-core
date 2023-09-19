@@ -73,7 +73,7 @@ void AdBlockService::SourceProviderObserver::OnChanged() {
 
 void AdBlockService::SourceProviderObserver::OnFilterSetLoaded(
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
-  filter_set_ = absl::make_optional(std::move(*filter_set));
+  filter_set_ = std::move(filter_set);
   // multiple AddObserver calls are ignored
   resource_provider_->AddObserver(this);
   resource_provider_->LoadResources(base::BindOnce(
@@ -90,14 +90,13 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
   } else {
     auto engine_load_callback = base::BindOnce(
         [](base::WeakPtr<AdBlockEngine> engine,
-           rust::Box<adblock::FilterSet> filter_set,
+           std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
            const std::string& resources_json) {
           if (engine) {
-            engine->Load(std::move(filter_set), resources_json);
+            engine->Load(std::move(*filter_set.get()), resources_json);
           }
         },
-        adblock_engine_->AsWeakPtr(), std::move(*filter_set_), resources_json);
-    filter_set_.reset();
+        adblock_engine_->AsWeakPtr(), std::move(filter_set_), resources_json);
     task_runner_->PostTask(FROM_HERE, std::move(engine_load_callback));
   }
 }
