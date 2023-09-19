@@ -362,6 +362,10 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
       leo::GetColor(leo::Color::kColorContainerBackground, leo::Theme::kLight)};
   mixer[kColorSidebarPanelHeaderTitle] = {
       leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kLight)};
+  mixer[kColorSidebarPanelHeaderButton] = {
+      leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight)};
+  mixer[kColorSidebarPanelHeaderButtonHovered] = {
+      leo::GetColor(leo::Color::kColorGray60, leo::Theme::kLight)};
 
   if (HasCustomToolbarColor(key)) {
     // When custom color for toolbar is set, we can't depend on the color mode.
@@ -478,6 +482,10 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarPanelHeaderBackground] = {gfx::kGoogleGrey900};
   mixer[kColorSidebarPanelHeaderTitle] = {
       leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kDark)};
+  mixer[kColorSidebarPanelHeaderButton] = {
+      leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark)};
+  mixer[kColorSidebarPanelHeaderButtonHovered] = {
+      leo::GetColor(leo::Color::kColorGray60, leo::Theme::kDark)};
 
   if (HasCustomToolbarColor(key)) {
     // When custom color for toolbar is set, we can't depend on the color mode.

@@ -4,13 +4,17 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
+#include "brave/browser/ui/views/side_panel/bookmarks/brave_bookmarks_side_panel_coordinator.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/playlist/common/features.h"
+#include "chrome/browser/ui/views/side_panel/bookmarks/bookmarks_side_panel_coordinator.h"
 
 #define PopulateGlobalEntries PopulateGlobalEntries_ChromiumImpl
+#define BookmarksSidePanelCoordinator BraveBookmarksSidePanelCoordinator
 
 #include "src/chrome/browser/ui/views/side_panel/side_panel_util.cc"
 
+#undef BookmarksSidePanelCoordinator
 #undef PopulateGlobalEntries
 
 // static
