@@ -207,6 +207,13 @@ public class RewardsTippingPanelFragment
         if (!TextUtils.isEmpty(externalWallet)) {
             try {
                 mExternalWallet = new BraveRewardsExternalWallet(externalWallet);
+                String custodianType = mExternalWallet.getType();
+                if (!TextUtils.isEmpty(custodianType)) {
+                    String sendWithCustodian =
+                            String.format(getString(R.string.send_with_custodian),
+                                    getWalletStringFromType(custodianType));
+                    mSendButton.setText(sendWithCustodian);
+                }
                 walletStatus = mExternalWallet.getStatus();
                 if (walletStatus != WalletStatus.NOT_CONNECTED) {
                     if (walletStatus == WalletStatus.LOGGED_OUT) {
