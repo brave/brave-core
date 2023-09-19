@@ -11,6 +11,7 @@
 		0A5E04F923FEADA800E5A3E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A5E04F823FEADA800E5A3E9 /* LaunchScreen.storyboard */; };
 		0A5E04FB23FEB53700E5A3E9 /* LaunchScreen.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A5E04FA23FEB53700E5A3E9 /* LaunchScreen.xcassets */; };
 		270ECFC82838210F0089B8B7 /* Brave in Frameworks */ = {isa = PBXBuildFile; productRef = 270ECFC72838210F0089B8B7 /* Brave */; };
+		2713FCD82A96429600398A57 /* WidgetBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2713FCD72A96429100398A57 /* WidgetBackground.swift */; };
 		272947DE29C8DB2000BF2FDC /* topics_news.en_US.json in Resources */ = {isa = PBXBuildFile; fileRef = 27444B6A29831BBE002E1EBE /* topics_news.en_US.json */; };
 		272947E329C8F86A00BF2FDC /* NewsTopicsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272947E029C8F6F200BF2FDC /* NewsTopicsModel.swift */; };
 		272FC5AF2979EA700027C53D /* TopNewsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272FC5AE2979E9D60027C53D /* TopNewsWidget.swift */; };
@@ -165,6 +166,7 @@
 		0A6AC4E824484FBC003D1ED7 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		2703FC14284FDB6300970FD2 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Shortcuts/ru.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		270ECFC628381E270089B8B7 /* brave-ios */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "brave-ios"; path = ..; sourceTree = "<group>"; };
+		2713FCD72A96429100398A57 /* WidgetBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetBackground.swift; sourceTree = "<group>"; };
 		271D0F3A284FDB12002BCF91 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = Shortcuts/it.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		27262B4C28BEB3D800A2E526 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		272947E029C8F6F200BF2FDC /* NewsTopicsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTopicsModel.swift; sourceTree = "<group>"; };
@@ -567,6 +569,7 @@
 				272947DF29C8DE4300BF2FDC /* News Topics */,
 				27444B6929831B9E002E1EBE /* Development Assets */,
 				CA0391DA271E12D9000EB13C /* Entitlements */,
+				2713FCD72A96429100398A57 /* WidgetBackground.swift */,
 				27A28ED428C00C19001466A4 /* LockScreenShortcutWidget.swift */,
 				27DB270728BE9CAE005CB7AC /* LockScreenFavoriteWidget.swift */,
 				CA0391F4271E143F000EB13C /* FavoritesWidget.swift */,
@@ -1016,6 +1019,7 @@
 				CA0391FC271E143F000EB13C /* SingleStatWidget.swift in Sources */,
 				27A28ED528C00C1D001466A4 /* LockScreenShortcutWidget.swift in Sources */,
 				CA0391FB271E143F000EB13C /* StatsWidget.swift in Sources */,
+				2713FCD82A96429600398A57 /* WidgetBackground.swift in Sources */,
 				CA0391F8271E143F000EB13C /* ShortcutsWidget.swift in Sources */,
 				27DB270828BE9CB4005CB7AC /* LockScreenFavoriteWidget.swift in Sources */,
 				441A6360272445F9001492C3 /* StatDataModel.swift in Sources */,

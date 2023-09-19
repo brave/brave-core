@@ -71,44 +71,45 @@ private struct LockScreenFavoriteView: View {
   var entry: LockScreenFavoriteEntry
   
   var body: some View {
-    if let fav = entry.favorite {
-      Group {
-        if let attributes = fav.favicon, let image = attributes.image {
-          FaviconImage(image: image, contentMode: .scaleAspectFit, includePadding: false) // includePadding forced to false here since we are providing our own padding below
-            .background(attributes.backgroundColor.cgColor.alpha == 0 ? .white :  Color(attributes.backgroundColor))
-            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-            .padding(12)
-            .background(Color.black)
-        } else {
-          Text(verbatim: fav.url.baseDomain?.first?.uppercased() ?? "")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .font(.system(size: 28))
-            .clipped()
-            .padding(4)
-            .background(
-              Color.white.aspectRatio(1, contentMode: .fit)
-                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-            )
-            .padding(12)
-            .foregroundColor(Color.black)
-            .background(Color.black)
+    ZStack {
+      AccessoryWidgetBackground()
+        .widgetBackground { EmptyView() }
+      if let fav = entry.favorite {
+        Group {
+          if let attributes = fav.favicon, let image = attributes.image {
+            FaviconImage(image: image, contentMode: .scaleAspectFit, includePadding: false) // includePadding forced to false here since we are providing our own padding below
+              .background(attributes.backgroundColor.cgColor.alpha == 0 ? .white :  Color(attributes.backgroundColor))
+              .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+              .padding(12)
+          } else {
+            Text(verbatim: fav.url.baseDomain?.first?.uppercased() ?? "")
+              .frame(maxWidth: .infinity, maxHeight: .infinity)
+              .font(.system(size: 28))
+              .clipped()
+              .padding(4)
+              .background(
+                Color.white.aspectRatio(1, contentMode: .fit)
+                  .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+              )
+              .padding(12)
+              .foregroundColor(Color.black)
+          }
         }
+        .accessibilityLabel(fav.title ?? fav.url.absoluteString)
+        .widgetLabel(fav.title ?? "")
+        .widgetURL(fav.url)
+      } else {
+        Image(braveSystemName: "leo.brave.icon-monochrome")
+          .imageScale(.large)
+          .font(.system(size: 24))
+          .foregroundColor(Color.black)
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
+          .background(
+            Color(white: 0.9)
+              .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+              .padding(12)
+          )
       }
-      .accessibilityLabel(fav.title ?? fav.url.absoluteString)
-      .widgetLabel(fav.title ?? "")
-      .widgetURL(fav.url)
-    } else {
-      Image(braveSystemName: "leo.brave.icon-monochrome")
-        .imageScale(.large)
-        .font(.system(size: 24))
-        .foregroundColor(Color.black)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(
-          Color(white: 0.9)
-            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-            .padding(12)
-        )
-        .background(Color.black)
     }
   }
 }

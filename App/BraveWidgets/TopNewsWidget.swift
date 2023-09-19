@@ -10,7 +10,7 @@ import Shared
 import DesignSystem
 import os
 import AVFoundation
-import Collections
+import OrderedCollections
 
 struct TopNewsWidget: Widget {
   var supportedFamilies: [WidgetFamily] {
@@ -28,6 +28,10 @@ struct TopNewsWidget: Widget {
     .supportedFamilies(supportedFamilies)
     .configurationDisplayName(Strings.Widgets.newsClusteringWidgetTitle)
     .description(Strings.Widgets.newsClusteringWidgetDescription)
+#if swift(>=5.9)
+    .contentMarginsDisabled()
+    .containerBackgroundRemovable(false)
+#endif
   }
 }
 
@@ -144,6 +148,7 @@ private struct LockScreenTopNewsView: View {
       .allowsTightening(true)
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
       .widgetURL(topic.url)
+      .widgetBackground { Color.clear }
     } else {
       VStack(spacing: 4) {
         Image("brave-today-error")
@@ -163,6 +168,7 @@ private struct LockScreenTopNewsView: View {
       }
       .allowsTightening(true)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .widgetBackground { Color.clear }
     }
   }
 }
@@ -199,22 +205,20 @@ private struct WidgetTopNewsView: View {
       }
       .padding()
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-      .background(
-        Group {
-          if let image = entry.image {
-            Image(uiImage: image)
-              .resizable()
-              .aspectRatio(contentMode: .fill)
-              .overlay(
-                LinearGradient(
-                  colors: [.black.opacity(0.0), .black.opacity(0.6)], startPoint: .top, endPoint: .bottom
-                )
+      .widgetBackground {
+        if let image = entry.image {
+          Image(uiImage: image)
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .overlay(
+              LinearGradient(
+                colors: [.black.opacity(0.0), .black.opacity(0.6)], startPoint: .top, endPoint: .bottom
               )
-          } else {
-            LinearGradient(braveGradient: .darkGradient01)
-          }
+            )
+        } else {
+          LinearGradient(braveGradient: .darkGradient01)
         }
-      )
+      }
       .widgetURL(topic.url)
     } else {
       VStack(alignment: .leading) {
@@ -230,7 +234,7 @@ private struct WidgetTopNewsView: View {
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
       .padding()
-      .background {
+      .widgetBackground {
         LinearGradient(braveGradient: .darkGradient01)
           .mask {
             Image("brave-today-error")
@@ -241,7 +245,7 @@ private struct WidgetTopNewsView: View {
               .scaleEffect(x: 1.5, y: 1.5)
           }
       }
-      .background(Color(.braveBackground))
+//      .background(Color(.braveBackground))
     }
   }
 }

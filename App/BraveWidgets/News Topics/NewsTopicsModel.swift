@@ -5,7 +5,7 @@
 
 import Foundation
 import CodableHelpers
-import Collections
+import OrderedCollections
 import UIKit
 
 /// Handles fetching Brave News Topics for widgets

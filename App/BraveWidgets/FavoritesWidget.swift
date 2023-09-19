@@ -17,6 +17,9 @@ struct FavoritesWidget: Widget {
     .configurationDisplayName(Strings.Widgets.favoritesWidgetTitle)
     .description(Strings.Widgets.favoritesWidgetDescription)
     .supportedFamilies([.systemMedium, .systemLarge])
+#if swift(>=5.9)
+    .contentMarginsDisabled()
+#endif
   }
 }
 
@@ -82,7 +85,7 @@ private struct FavoritesView: View {
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Color(UIColor.secondaryBraveBackground))
+    .widgetBackground { Color(UIColor.secondaryBraveBackground) }
   }
 }
 
