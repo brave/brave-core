@@ -12,6 +12,8 @@ import android.widget.ImageButton;
 
 import androidx.core.widget.ImageViewCompat;
 
+import org.chromium.chrome.browser.omnibox.status.StatusView;
+
 public class BraveLocationBarLayout extends LocationBarLayout {
     private ImageButton mQRButton;
 
@@ -23,6 +25,14 @@ public class BraveLocationBarLayout extends LocationBarLayout {
     public BraveLocationBarLayout(Context context, AttributeSet attrs, int layoutId) {
         super(context, attrs, layoutId);
         mQRButton = findViewById(R.id.qr_button);
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+
+        StatusView statusView = findViewById(R.id.location_bar_status);
+        statusView.setBackgroundDrawable(null);
     }
 
     void setQRButtonTint(ColorStateList colorStateList) {
