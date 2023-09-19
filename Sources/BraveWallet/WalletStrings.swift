@@ -3257,6 +3257,13 @@ extension Strings {
       value: "Pay with credit, debit, bank account.",
       comment: "The description of one of the 'Stripe' provider."
     )
+    public static let coinbaseNetworkProviderDescription = NSLocalizedString(
+      "wallet.coinbaseNetworkProviderDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Buy with the most trusted name in crypto.",
+      comment: "The description of one of the 'Coinbase Pay' provider."
+    )
     public static let solanaDappTransactionTitle = NSLocalizedString(
       "wallet.solanaDappTransactionTitle",
       tableName: "BraveWallet",
