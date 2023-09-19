@@ -57,17 +57,6 @@ BASE_FEATURE(kAllowCertainClientHints,
              "AllowCertainClientHints",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-// Clamp platform version client hint's patch field.
-// Platform version client hint is only sent when requested and when the
-// AllowCertainClientHints feature is turned on.
-BASE_FEATURE(kClampPlatformVersionClientHint,
-             "ClampPlatformVersionClientHint",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
-constexpr base::FeatureParam<std::string>
-    kClampPlatformVersionClientHintPatchValue{&kClampPlatformVersionClientHint,
-                                              "patch_value", "0"};
-
 BASE_FEATURE(kFileSystemAccessAPI,
              "FileSystemAccessAPI",
              base::FEATURE_DISABLED_BY_DEFAULT);

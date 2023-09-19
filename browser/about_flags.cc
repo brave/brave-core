@@ -408,14 +408,6 @@
           FEATURE_VALUE_TYPE(blink::features::kAllowCertainClientHints),       \
       },                                                                       \
       {                                                                        \
-          "clamp-platform-version-client-hint",                                \
-          "Clamp platform version client hint",                                \
-          "Clamps the patch field of the platform version client hint",        \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(                                                  \
-              blink::features::kClampPlatformVersionClientHint),               \
-      },                                                                       \
-      {                                                                        \
           "brave-ntp-branded-wallpaper-demo",                                  \
           "New Tab Page Demo Branded Wallpaper",                               \
           "Force dummy data for the Branded Wallpaper New Tab Page "           \

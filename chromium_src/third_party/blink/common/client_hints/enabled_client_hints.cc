@@ -17,7 +17,8 @@
 // Additionally, if we receive CH requests for
 // kUAPlatformVersion and/or kUAModel, we will send these, but:
 // - kUAModel will be always set to an empty string;
-// - kUAPlatformVersion will have a clamped patch field value.
+// - kUAPlatformVersion will be clamped to the same value we report in the
+//   User-Agent string.
 
 namespace blink {
 

@@ -5,13 +5,6 @@
 
 #include "components/embedder_support/user_agent_utils.h"
 
-#include "base/check_op.h"
-#include "base/command_line.h"
-#include "base/strings/stringprintf.h"
-#include "base/version.h"
-#include "components/embedder_support/switches.h"
-#include "third_party/blink/public/common/features.h"
-
 namespace {
 
 constexpr char kBraveBrandNameForCHUA[] = "Brave";
@@ -27,38 +20,5 @@ constexpr char kBraveBrandNameForCHUA[] = "Brave";
 // can't use it here in the //components.
 #define BRAVE_GET_USER_AGENT_BRAND_LIST brand = kBraveBrandNameForCHUA;
 
-#define GetUserAgentMetadata GetUserAgentMetadata_ChromiumImpl
 #include "src/components/embedder_support/user_agent_utils.cc"
-#undef GetUserAgentMetadata
 #undef BRAVE_GET_USER_AGENT_BRAND_LIST
-
-namespace embedder_support {
-
-blink::UserAgentMetadata GetUserAgentMetadata() {
-  return GetUserAgentMetadata(nullptr);
-}
-
-blink::UserAgentMetadata GetUserAgentMetadata(const PrefService* pref_service) {
-  blink::UserAgentMetadata metadata =
-      GetUserAgentMetadata_ChromiumImpl(pref_service);
-  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
-  if (command_line->HasSwitch(kUserAgent)) {
-    return metadata;
-  }
-  if (base::FeatureList::IsEnabled(
-          blink::features::kClampPlatformVersionClientHint)) {
-    // Clamp platform version
-    base::Version platform_version(metadata.platform_version);
-    // Expect Chromium code to return `major.minor.patch` version. If that
-    // changes we need to re-evaluate what we want to send.
-    CHECK_EQ(3u, platform_version.components().size());
-    metadata.platform_version = base::StringPrintf(
-        "%d.%d.%s", platform_version.components()[0],
-        platform_version.components()[1],
-        blink::features::kClampPlatformVersionClientHintPatchValue.Get()
-            .c_str());
-  }
-  return metadata;
-}
-
-}  // namespace embedder_support
