@@ -16,7 +16,7 @@ export const useModal = () => {
   const openModal = React.useCallback(() => {
     setShowModal(true)
   }, [])
-  
+
   const closeModal = React.useCallback(() => {
     setShowModal(false)
   }, [])

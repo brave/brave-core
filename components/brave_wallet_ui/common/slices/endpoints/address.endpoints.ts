@@ -10,7 +10,12 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 // utils
 import { handleEndpointError } from '../../../utils/api-utils'
 import { endsWithAny } from '../../../utils/string-utils'
-import { allSupportedExtensions, supportedENSExtensions, supportedSNSExtensions, supportedUDExtensions } from '../../constants/domain-extensions'
+import {
+  allSupportedExtensions,
+  supportedENSExtensions,
+  supportedSNSExtensions,
+  supportedUDExtensions
+} from '../../constants/domain-extensions'
 
 export const addressEndpoints = ({
   mutation,

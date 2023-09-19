@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
 import ProgressRing from '@brave/leo/react/progressRing'
@@ -21,7 +21,7 @@ export const SendContainer = styled(StyledDiv)`
   position: relative;
 `
 
-export const SectionBox = styled(StyledDiv) <{
+export const SectionBox = styled(StyledDiv)<{
   hasError?: boolean
   hasWarning?: boolean
   minHeight?: number
@@ -29,12 +29,17 @@ export const SectionBox = styled(StyledDiv) <{
   boxDirection?: 'row' | 'column'
 }>`
   background-color: ${(p) => p.theme.color.background02};
-  flex-direction: ${(p) => p.boxDirection ? p.boxDirection : 'column'};
+  flex-direction: ${(p) => (p.boxDirection ? p.boxDirection : 'column')};
   box-sizing: border-box;
   border-radius: 16px;
   border: 1px solid
-    ${(p) => (p.hasError ? p.theme.color.errorBorder : p.hasWarning ? p.theme.color.warningBorder : p.theme.color.divider01)};
-  padding: ${(p) => p.noPadding ? '0px' : '16px 16px 16px 8px'};
+    ${(p) =>
+      p.hasError
+        ? p.theme.color.errorBorder
+        : p.hasWarning
+        ? p.theme.color.warningBorder
+        : p.theme.color.divider01};
+  padding: ${(p) => (p.noPadding ? '0px' : '16px 16px 16px 8px')};
   width: 100%;
   position: relative;
   margin-bottom: 16px;

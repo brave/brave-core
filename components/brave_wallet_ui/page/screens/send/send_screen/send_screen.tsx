@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 /* eslint-disable @typescript-eslint/key-spacing */
 import * as React from 'react'
@@ -101,17 +101,31 @@ import {
 import { Column, Text, Row, HorizontalDivider } from '../shared.styles'
 
 // Components
-import { SelectSendOptionButton } from '../components/select-send-option-button/select-send-option-button'
+import {
+  SelectSendOptionButton //
+} from '../components/select-send-option-button/select-send-option-button'
 import { StandardButton } from '../components/standard-button/standard-button'
-import { SelectTokenButton } from '../components/select-token-button/select-token-button'
+import {
+  SelectTokenButton //
+} from '../components/select-token-button/select-token-button'
 import { PresetButton } from '../components/preset-button/preset-button'
-import { AccountSelector } from '../components/account-selector/account-selector'
+import {
+  AccountSelector //
+} from '../components/account-selector/account-selector'
 import { AddressMessage } from '../components/address-message/address-message'
-import { SelectTokenModal } from '../components/select-token-modal/select-token-modal'
+import {
+  SelectTokenModal //
+} from '../components/select-token-modal/select-token-modal'
 import { CopyAddress } from '../components/copy-address/copy-address'
-import { ChecksumInfoModal } from '../components/checksum-info-modal/checksum-info-modal'
-import WalletPageWrapper from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
-import { PageTitleHeader } from '../../../../components/desktop/card-headers/page-title-header'
+import {
+  ChecksumInfoModal //
+} from '../components/checksum-info-modal/checksum-info-modal'
+import {
+  WalletPageWrapper //
+} from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import {
+  PageTitleHeader //
+} from '../../../../components/desktop/card-headers/page-title-header'
 
 interface Props {
   isAndroid?: boolean
@@ -305,9 +319,8 @@ export const SendScreen = React.memo((props: Props) => {
         return
       }
 
-      const amountBN = new Amount(sendAmount).multiplyByDecimals(
-        selectedSendAsset.decimals
-      ).value // ETH → Wei conversion // extract BigNumber object wrapped by Amount
+      // extract BigNumber object wrapped by Amount
+      const amountBN = ethToWeiAmount(sendAmount, selectedSendAsset).value
 
       const amountDP = amountBN && amountBN.decimalPlaces()
       return amountDP && amountDP > 0 ? 'fromAmountDecimalsOverflow' : undefined
@@ -361,9 +374,10 @@ export const SendScreen = React.memo((props: Props) => {
 
     return computeFiatAmount({
       spotPriceRegistry,
-      value: new Amount(sendAmount !== '' ? sendAmount : '0')
-        .multiplyByDecimals(selectedSendAsset.decimals) // ETH → Wei conversion
-        .toHex(),
+      value: ethToWeiAmount(
+        sendAmount !== '' ? sendAmount : '0',
+        selectedSendAsset
+      ).toHex(),
       token: selectedSendAsset
     }).formatAsFiat(defaultFiatCurrency)
   }, [
@@ -375,8 +389,12 @@ export const SendScreen = React.memo((props: Props) => {
     selectedSendOption
   ])
 
+  const doneSearchingForDomain = !isSearchingForDomain
+  const hasResolvedDomain = doneSearchingForDomain && resolvedDomainAddress
+  const hasValidResolvedDomain = toAddressHasValidExtension && hasResolvedDomain
+
   const domainErrorLocaleKey =
-    toAddressOrUrl && !isSearchingForDomain
+    toAddressOrUrl && doneSearchingForDomain
       ? processDomainLookupResponseWarning(
           toAddressHasValidExtension,
           resolvedDomainAddress,
@@ -386,26 +404,20 @@ export const SendScreen = React.memo((props: Props) => {
         )
       : undefined
 
-  const toAddressIsTokenContract =
-    resolvedDomainAddress || trimmedToAddressOrUrl.toLowerCase()
-      ? findTokenByContractAddress(
-          toAddressHasValidExtension &&
-            !isSearchingForDomain &&
-            resolvedDomainAddress
-            ? resolvedDomainAddress
-            : trimmedToAddressOrUrl.toLowerCase(),
-          fullTokenList
-        ) !== undefined
-      : undefined
+  const resolvedDomainOrToAddressOrUrl = (
+    hasValidResolvedDomain ? resolvedDomainAddress : trimmedToAddressOrUrl
+  ).toLowerCase()
+
+  const toAddressIsTokenContract = resolvedDomainOrToAddressOrUrl
+    ? findTokenByContractAddress(
+        resolvedDomainOrToAddressOrUrl,
+        fullTokenList
+      ) !== undefined
+    : undefined
 
   const toAddressIsSelectedAccount =
     selectedAccount &&
-    (toAddressHasValidExtension &&
-    !isSearchingForDomain &&
-    resolvedDomainAddress
-      ? resolvedDomainAddress
-      : trimmedToAddressOrUrl
-    ).toLowerCase() === selectedAccount?.address.toLowerCase()
+    resolvedDomainOrToAddressOrUrl === selectedAccount?.address.toLowerCase()
 
   const addressWarningLocaleKey = toAddressIsTokenContract
     ? 'braveWalletContractAddressError'
@@ -442,13 +454,9 @@ export const SendScreen = React.memo((props: Props) => {
       )
     : undefined
 
-  const hasAddressError = !isSearchingForDomain && Boolean(addressError)
+  const hasAddressError = doneSearchingForDomain && Boolean(addressError)
 
-  const showResolvedDomain =
-    toAddressHasValidExtension &&
-    !isSearchingForDomain &&
-    !hasAddressError &&
-    Boolean(resolvedDomainAddress)
+  const showResolvedDomain = hasValidResolvedDomain && !hasAddressError
 
   // reused locales
   const braveWalletAddressMissingChecksumInfoWarning = getLocale(
@@ -459,7 +467,7 @@ export const SendScreen = React.memo((props: Props) => {
   )
 
   const reviewButtonHasError =
-    !isSearchingForDomain &&
+    doneSearchingForDomain &&
     (insufficientFundsError ||
       (addressError !== undefined &&
         addressError !== '' &&
@@ -538,10 +546,7 @@ export const SendScreen = React.memo((props: Props) => {
         network: selectedNetwork,
         fromAccount,
         to: toAddressOrUrl, // change back?
-        value: new Amount(sendAmount)
-          // ETH → Wei conversion
-          .multiplyByDecimals(selectedSendAsset.decimals)
-          .toHex(),
+        value: ethToWeiAmount(sendAmount, selectedSendAsset).toHex(),
         contractAddress: selectedSendAsset.contractAddress
       }))
 
@@ -611,10 +616,7 @@ export const SendScreen = React.memo((props: Props) => {
         fromAccount,
         // to: toAddress,
         to: toAddressOrUrl,
-        value: new Amount(sendAmount)
-          // ETH → Wei conversion
-          .multiplyByDecimals(selectedSendAsset.decimals)
-          .toHex(),
+        value: ethToWeiAmount(sendAmount, selectedSendAsset).toHex(),
         contractAddress: '0x2b3ef6906429b580b7b2080de5ca893bc282c225'
       })
       resetSendFields()
@@ -901,7 +903,8 @@ export const SendScreen = React.memo((props: Props) => {
               <AddressMessage
                 addressMessageInfo={addressMessageInformation}
                 onClickHowToSolve={
-                  addressErrorLocaleKey === braveWalletNotValidChecksumAddressError ||
+                  addressErrorLocaleKey ===
+                    braveWalletNotValidChecksumAddressError ||
                   addressWarningLocaleKey ===
                     braveWalletAddressMissingChecksumInfoWarning
                     ? openChecksumModal
@@ -972,6 +975,16 @@ export default SendScreen
 const SendPageHeader = React.memo(() => {
   return <PageTitleHeader title={getLocale('braveWalletSend')} />
 })
+
+/**
+ * ETH → Wei conversion
+ */
+function ethToWeiAmount(
+  sendAmount: string,
+  selectedSendAsset: BraveWallet.BlockchainToken
+): Amount {
+  return new Amount(sendAmount).multiplyByDecimals(selectedSendAsset.decimals)
+}
 
 export function getAddressMessageInfo({
   addressErrorKey,
@@ -1064,7 +1077,7 @@ const processDomainLookupResponseWarning = (
     // handled separately
     return undefined
   }
-  
+
   if (!urlHasValidExtension) {
     return 'braveWalletInvalidRecipientAddress'
   }
@@ -1084,8 +1097,6 @@ const processDomainLookupResponseWarning = (
     return 'braveWalletSameAddressError'
   }
 
-  // todo: check for token addresses
-  
   return undefined
 }
 
@@ -1125,7 +1136,9 @@ const processEthereumAddress = (
   }
 
   // Fallback error state
-  return valueToLowerCase === '' ? undefined : 'braveWalletInvalidRecipientAddress'
+  return valueToLowerCase === ''
+    ? undefined
+    : 'braveWalletInvalidRecipientAddress'
 }
 
 const processFilecoinAddress = (
