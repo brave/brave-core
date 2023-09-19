@@ -26,11 +26,13 @@
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/psst/browser/content/psst_tab_helper.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
@@ -146,9 +148,9 @@ void AttachTabHelpers(content::WebContents* web_contents) {
       web_contents);
 
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
-
   brave_ads::SearchResultAdTabHelper::MaybeCreateForWebContents(web_contents);
-
+  psst::PsstTabHelper::MaybeCreateForWebContents(
+      web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);
 #endif

@@ -1,0 +1,30 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+component("core") {
+  output_name = "psst_browser_core"
+
+  defines = [ "IS_PSST_BROWSER_CORE_IMPL" ]
+
+  sources = [
+    "psst_component_installer.cc",
+    "psst_component_installer.h",
+    "psst_rule.cc",
+    "psst_rule.h",
+    "psst_rule_registry.cc",
+    "psst_rule_registry.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/psst/common",
+    "//brave/extensions:common",
+    "//components/component_updater",
+    "//crypto",
+    "//net",
+    "//url",
+  ]
+}

@@ -32,6 +32,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/psst/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -622,6 +623,13 @@
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kBraveLocalhostAccessPermission),       \
+      },                                                                       \
+      {                                                                        \
+          "brave-psst",                                                        \
+          "Enable PSST (Privacy Site Settings Tool) feature",                  \
+          "Enable PSST feature",                                               \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(psst::features::kBravePsst),                      \
       },                                                                       \
       {                                                                        \
           "brave-extension-network-blocking",                                  \

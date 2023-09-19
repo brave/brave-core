@@ -31,6 +31,7 @@ brave_chrome_renderer_deps = [
   "//brave/components/cosmetic_filters/renderer",
   "//brave/components/playlist/common/buildflags",
   "//brave/components/safe_builtins/renderer",
+  "//brave/components/script_injector/renderer",
   "//brave/components/skus/common",
   "//brave/components/skus/renderer",
   "//brave/components/speedreader/common/buildflags",
