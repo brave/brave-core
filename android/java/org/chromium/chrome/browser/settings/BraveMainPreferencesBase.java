@@ -33,7 +33,6 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
-import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
@@ -278,10 +277,11 @@ public class BraveMainPreferencesBase
             preference.setOrder(++generalOrder);
         }
 
-        if (BraveSearchWidgetUtils.isRequestPinAppWidgetSupported())
+        if (BraveSearchWidgetUtils.isRequestPinAppWidgetSupported()) {
             findPreference(PREF_HOME_SCREEN_WIDGET).setOrder(++generalOrder);
-        else
+        } else {
             removePreferenceIfPresent(PREF_HOME_SCREEN_WIDGET);
+        }
 
         findPreference(PREF_PASSWORDS).setOrder(++generalOrder);
         findPreference(PREF_SYNC).setOrder(++generalOrder);
@@ -431,9 +431,9 @@ public class BraveMainPreferencesBase
 
     // TODO(simonhong): Make this static public with proper class.
     private int dp2px(int dp) {
-        final float DP_PER_INCH_MDPI = 160f;
+        final float dpPerInchMdpi = 160f;
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        float px = dp * (metrics.densityDpi / DP_PER_INCH_MDPI);
+        float px = dp * (metrics.densityDpi / dpPerInchMdpi);
         return Math.round(px);
     }
 

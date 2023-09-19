@@ -7,7 +7,6 @@
 
 package org.chromium.chrome.browser.vpn.activities;
 
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,19 +16,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
-import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
-import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 public class BraveVpnProfileActivity extends BraveVpnParentActivity {
-    private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
     private TextView mProfileTitle;
     private TextView mProfileText;
     private Button mInstallVpnButton;
@@ -72,18 +65,12 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
             public void onClick(View v) {
                 BraveVpnUtils.showProgressDialog(BraveVpnProfileActivity.this,
                         getResources().getString(R.string.vpn_connect_text));
-                MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
-                LiveData<Boolean> billingConnectionState = _billingConnectionState;
-                InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
-                        BraveVpnProfileActivity.this, _billingConnectionState);
-                LiveDataUtil.observeOnce(billingConnectionState, isConnected -> {
-                    if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
-                        mBraveVpnPrefModel = new BraveVpnPrefModel();
-                        BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
-                    } else {
-                        verifySubscription();
-                    }
-                });
+                if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+                    mBraveVpnPrefModel = new BraveVpnPrefModel();
+                    BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
+                } else {
+                    verifySubscription();
+                }
             }
         });
 
@@ -101,12 +88,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         super.finishNativeInitialization();
         if (getIntent() != null
                 && getIntent().getBooleanExtra(BraveVpnUtils.VERIFY_CREDENTIALS_FAILED, false)) {
-            MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
-            LiveData<Boolean> billingConnectionState = _billingConnectionState;
-            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
-                    BraveVpnProfileActivity.this, _billingConnectionState);
-            LiveDataUtil.observeOnce(
-                    billingConnectionState, isConnected -> { verifySubscription(); });
+            verifySubscription();
         }
     }
 
@@ -120,13 +102,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
 
     @Override
     protected void triggerLayoutInflation() {
-        mFirstRunFlowSequencer = new BraveFirstRunFlowSequencer(this, getProfileSupplier()) {
-            @Override
-            public void onFlowIsKnown(Bundle freProperties) {
-                initializeViews();
-            }
-        };
-        mFirstRunFlowSequencer.start();
+        initializeViews();
         onInitialLayoutInflationComplete();
     }
 
@@ -144,11 +120,5 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         mProfileText.setText(getResources().getString(R.string.some_context_text));
         mInstallVpnButton.setText(getResources().getString(R.string.accept_connection_request));
         mContactSupportButton.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onDestroy() {
-        InAppPurchaseWrapper.getInstance().endConnection();
-        super.onDestroy();
     }
 }

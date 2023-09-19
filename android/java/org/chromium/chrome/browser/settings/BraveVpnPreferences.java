@@ -120,13 +120,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         BraveVpnUtils.showProgressDialog(
                                 getActivity(), getResources().getString(R.string.vpn_connect_text));
                         if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
-                            MutableLiveData<Boolean> _billingConnectionState =
-                                    new MutableLiveData();
-                            LiveData<Boolean> billingConnectionState = _billingConnectionState;
-                            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
-                                    getActivity(), _billingConnectionState);
-                            LiveDataUtil.observeOnce(billingConnectionState,
-                                    isConnected -> { verifyPurchase(true); });
+                            verifyPurchase(true);
                         } else {
                             BraveVpnUtils.openBraveVpnPlansActivity(getActivity());
                             BraveVpnUtils.dismissProgressDialog();
@@ -257,12 +251,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 mBraveVpnPrefModel = new BraveVpnPrefModel();
                 BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
             } else {
-                MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
-                LiveData<Boolean> billingConnectionState = _billingConnectionState;
-                InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
-                        getActivity(), _billingConnectionState);
-                LiveDataUtil.observeOnce(
-                        billingConnectionState, isConnected -> { verifyPurchase(false); });
+                verifyPurchase(false);
             }
         } else if (BraveVpnUtils.mUpdateProfileAfterSplitTunnel) {
             BraveVpnUtils.mUpdateProfileAfterSplitTunnel = false;
@@ -587,11 +576,5 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 new Handler().post(() -> updateSummaries());
             }
         }, INVALIDATE_CREDENTIAL_TIMER_COUNT);
-    }
-
-    @Override
-    public void onDestroy() {
-        InAppPurchaseWrapper.getInstance().endConnection();
-        super.onDestroy();
     }
 }

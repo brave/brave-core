@@ -392,13 +392,7 @@ public abstract class BraveActivity extends ChromeActivity
                         BraveVpnUtils.showProgressDialog(BraveActivity.this,
                                 getResources().getString(R.string.vpn_connect_text));
                         if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
-                            MutableLiveData<Boolean> _billingConnectionState =
-                                    new MutableLiveData();
-                            LiveData<Boolean> billingConnectionState = _billingConnectionState;
-                            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
-                                    BraveActivity.this, _billingConnectionState);
-                            LiveDataUtil.observeOnce(billingConnectionState,
-                                    isConnected -> { verifySubscription(); });
+                            verifySubscription();
                         } else {
                             BraveVpnUtils.dismissProgressDialog();
                             BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);

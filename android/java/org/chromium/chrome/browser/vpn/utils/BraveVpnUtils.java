@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -31,7 +30,6 @@ import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
-import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnAlwaysOnErrorDialogFragment;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnConfirmDialogFragment;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
@@ -74,24 +72,24 @@ public class BraveVpnUtils {
         activity.startActivity(braveVpnPlanIntent);
     }
 
-    public static void openBraveVpnProfileActivity(Context context) {
-        Intent braveVpnProfileIntent = new Intent(context, BraveVpnProfileActivity.class);
+    public static void openBraveVpnProfileActivity(Activity activity) {
+        Intent braveVpnProfileIntent = new Intent(activity, BraveVpnProfileActivity.class);
         braveVpnProfileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         braveVpnProfileIntent.setAction(Intent.ACTION_VIEW);
-        context.startActivity(braveVpnProfileIntent);
+        activity.startActivity(braveVpnProfileIntent);
     }
 
-    public static void openBraveVpnSupportActivity(Context context) {
-        Intent braveVpnSupportIntent = new Intent(context, BraveVpnSupportActivity.class);
+    public static void openBraveVpnSupportActivity(Activity activity) {
+        Intent braveVpnSupportIntent = new Intent(activity, BraveVpnSupportActivity.class);
         braveVpnSupportIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         braveVpnSupportIntent.setAction(Intent.ACTION_VIEW);
-        context.startActivity(braveVpnSupportIntent);
+        activity.startActivity(braveVpnSupportIntent);
     }
 
-    public static void openSplitTunnelActivity(Context context) {
-        Intent braveVpnSupportIntent = new Intent(context, SplitTunnelActivity.class);
+    public static void openSplitTunnelActivity(Activity activity) {
+        Intent braveVpnSupportIntent = new Intent(activity, SplitTunnelActivity.class);
         braveVpnSupportIntent.setAction(Intent.ACTION_VIEW);
-        context.startActivity(braveVpnSupportIntent);
+        activity.startActivity(braveVpnSupportIntent);
     }
 
     public static void showProgressDialog(Activity activity, String message) {
