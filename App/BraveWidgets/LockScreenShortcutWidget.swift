@@ -58,29 +58,18 @@ struct LockScreenShortcutView: View {
   var entry: LockScreenShortcutEntry
   
   var body: some View {
-    Color.black
-      .overlay(
-        entry.widgetShortcut.image
-          .imageScale(.large)
-          .font(.system(size: 20))
-          .widgetLabel(entry.widgetShortcut.displayString)
-          .accessibilityLabel(Text(entry.widgetShortcut.displayString))
-          .unredacted()
-      )
-      .widgetURL(URL(string: "\(AppURLScheme.appURLScheme)://shortcut?path=\(entry.widgetShortcut.rawValue)"))
-  }
-}
-
-#if DEBUG
-struct LockScreenShortcutPreviews: PreviewProvider {
-  static var previews: some View {
-    if #available(iOS 16.0, *) {
-      ForEach([WidgetShortcut.playlist, .bookmarks, .newTab, .newPrivateTab, .downloads, .history, .wallet, .search], id: \.self) { shortcut in
-        LockScreenShortcutView(entry: .init(date: Date(), widgetShortcut: shortcut))
-          .previewDisplayName(shortcut.displayString)
-      }
-        .previewContext(WidgetPreviewContext(family: .accessoryCircular))
+    ZStack {
+      AccessoryWidgetBackground()
+        .widgetBackground { EmptyView() }
+      entry.widgetShortcut.image
+        .imageScale(.large)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .font(.system(size: 20))
+        .widgetLabel(entry.widgetShortcut.displayString)
+        .accessibilityLabel(Text(entry.widgetShortcut.displayString))
+        .unredacted()
+        .widgetURL(URL(string: "\(AppURLScheme.appURLScheme)://shortcut?path=\(entry.widgetShortcut.rawValue)"))
     }
   }
 }
-#endif
+

@@ -22,6 +22,9 @@ struct TopNewsListWidget: Widget {
     .supportedFamilies([.systemMedium, .systemLarge])
     .configurationDisplayName(Strings.Widgets.newsClusteringWidgetTitle)
     .description(Strings.Widgets.newsClusteringWidgetDescription)
+#if swift(>=5.9)
+    .contentMarginsDisabled()
+#endif
   }
 }
 
@@ -91,74 +94,76 @@ private struct TopNewsListView: View {
   }
   
   var body: some View {
-    if let topics = entry.topics, !topics.isEmpty {
-      VStack(alignment: .leading, spacing: widgetFamily == .systemLarge ? 12 : 8) {
-        headerView
-          .background(Color(.braveGroupedBackground))
-        VStack(alignment: .leading, spacing: 8) {
-          ForEach(topics.prefix(widgetFamily == .systemLarge ? 5 : 2)) { topic in
-            HStack {
-              Link(destination: topic.url) {
-                VStack(alignment: .leading, spacing: 2) {
-                  Text(topic.title)
-                    .lineLimit(widgetFamily == .systemLarge ? 3 : 2)
-                    .font(.system(size: widgetFamily == .systemLarge ? 14 : 13, weight: .semibold, design: .rounded))
-                    .foregroundColor(.primary)
-                  Text(topic.publisherName)
-                    .lineLimit(1)
-                    .font(.system(size: 10, weight: .medium, design: .rounded))
-                    .foregroundColor(.secondary)
+    Group {
+      if let topics = entry.topics, !topics.isEmpty {
+        VStack(alignment: .leading, spacing: widgetFamily == .systemLarge ? 12 : 8) {
+          headerView
+            .background(Color(.braveGroupedBackground))
+          VStack(alignment: .leading, spacing: 8) {
+            ForEach(topics.prefix(widgetFamily == .systemLarge ? 5 : 2)) { topic in
+              HStack {
+                Link(destination: topic.url) {
+                  VStack(alignment: .leading, spacing: 2) {
+                    Text(topic.title)
+                      .lineLimit(widgetFamily == .systemLarge ? 3 : 2)
+                      .font(.system(size: widgetFamily == .systemLarge ? 14 : 13, weight: .semibold, design: .rounded))
+                      .foregroundColor(.primary)
+                    Text(topic.publisherName)
+                      .lineLimit(1)
+                      .font(.system(size: 10, weight: .medium, design: .rounded))
+                      .foregroundColor(.secondary)
+                  }
                 }
-              }
-              if let image = entry.images[topic.id] {
-                Spacer()
-                Color.clear
-                  .aspectRatio(1, contentMode: .fit)
-                  .frame(maxHeight: 50)
-                  .overlay(
-                    Image(uiImage: image)
-                      .resizable()
-                      .aspectRatio(contentMode: .fill)
-                  )
-                  .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                  .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).strokeBorder(Color.primary.opacity(0.3), lineWidth: pixelLength))
+                if let image = entry.images[topic.id] {
+                  Spacer()
+                  Color.clear
+                    .aspectRatio(1, contentMode: .fit)
+                    .frame(maxHeight: 50)
+                    .overlay(
+                      Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).strokeBorder(Color.primary.opacity(0.3), lineWidth: pixelLength))
+                }
               }
             }
           }
+          .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+          .padding(.horizontal)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding(.horizontal)
-      }
-      .padding(.bottom)
-    } else {
-      ZStack(alignment: .top) {
-        Text(Strings.Widgets.newsClusteringErrorLabel)
-          .font(.system(size: widgetFamily == .systemLarge ? 26 : 18, weight: .semibold, design: .rounded))
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background {
-          LinearGradient(braveGradient: .darkGradient01)
-          .mask {
-            Image("brave-today-error")
-              .renderingMode(.template)
-              .resizable(resizingMode: .tile)
-              .opacity(0.1)
-              .rotationEffect(.degrees(-45))
-              .scaleEffect(x: 2.1, y: 2.1)
-          }
+        .padding(.bottom)
+      } else {
+        ZStack(alignment: .top) {
+          Text(Strings.Widgets.newsClusteringErrorLabel)
+            .font(.system(size: widgetFamily == .systemLarge ? 26 : 18, weight: .semibold, design: .rounded))
+            .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background {
+              LinearGradient(braveGradient: .darkGradient01)
+                .mask {
+                  Image("brave-today-error")
+                    .renderingMode(.template)
+                    .resizable(resizingMode: .tile)
+                    .opacity(0.1)
+                    .rotationEffect(.degrees(-45))
+                    .scaleEffect(x: 2.1, y: 2.1)
+                }
+            }
+          headerView
+            .background {
+              LinearGradient(
+                colors: [Color(.braveBackground), Color(.braveBackground).opacity(0.0)],
+                startPoint: .top,
+                endPoint: .bottom
+              )
+            }
         }
-        headerView
-          .background {
-            LinearGradient(
-              colors: [Color(.braveBackground), Color(.braveBackground).opacity(0.0)],
-              startPoint: .top,
-              endPoint: .bottom
-            )
-          }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
       }
-      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-      .background(Color(.braveBackground))
     }
+    .widgetBackground { Color(.braveBackground) }
   }
 }
 

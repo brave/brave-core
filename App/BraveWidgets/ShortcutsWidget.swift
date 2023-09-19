@@ -22,6 +22,9 @@ struct ShortcutsWidget: Widget {
     .configurationDisplayName(Strings.Widgets.shortcutsWidgetTitle)
     .description(Strings.Widgets.shortcutsWidgetDescription)
     .supportedFamilies([.systemMedium])
+#if swift(>=5.9)
+    .contentMarginsDisabled()
+#endif
   }
 }
 
@@ -214,12 +217,19 @@ private struct ShortcutsView: View {
       .frame(maxHeight: .infinity)
     }
     .padding(8)
-    .background(Color(UIColor.secondaryBraveBackground))
+    .widgetBackground { Color(UIColor.secondaryBraveBackground) }
   }
 }
 
 // MARK: - Previews
 
+#if swift(>=5.9)
+#Preview(as: .systemMedium, widget: {
+  ShortcutsWidget()
+}, timeline: {
+  ShortcutEntry(date: .now, shortcutSlots: [.newTab, .newPrivateTab, .bookmarks])
+})
+#else
 #if DEBUG
 struct ShortcutsWidget_Previews: PreviewProvider {
   static var previews: some View {
@@ -231,4 +241,5 @@ struct ShortcutsWidget_Previews: PreviewProvider {
       .previewContext(WidgetPreviewContext(family: .systemMedium))
   }
 }
+#endif
 #endif

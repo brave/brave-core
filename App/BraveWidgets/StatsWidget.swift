@@ -16,6 +16,9 @@ struct StatsWidget: Widget {
     .supportedFamilies([.systemMedium])
     .configurationDisplayName(Strings.Widgets.shieldStatsTitle)
     .description(Strings.Widgets.shieldStatsDescription)
+#if swift(>=5.9)
+    .contentMarginsDisabled()
+#endif
   }
 }
 
@@ -95,7 +98,7 @@ private struct StatsView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .padding(.vertical, 12)
     .padding(.horizontal, 16)
-    .background(Color(UIColor.secondaryBraveBackground))
+    .widgetBackground { Color(UIColor.secondaryBraveBackground) }
     .foregroundColor(Color(UIColor.braveLabel))
   }
 }
