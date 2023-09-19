@@ -77,10 +77,10 @@ export const useAccountFromAddressQuery = (
 export const useSelectedAccountQuery = () => {
   const {
     data: accountInfosRegistry = accountInfoEntityAdaptorInitialState,
-    isLoading: isLoadingAccounts
+    isFetching: isLoadingAccounts
   } = useGetAccountInfosRegistryQuery(undefined)
 
-  const { data: selectedAccountId, isLoading: isLoadingSelectedAccountId } =
+  const { data: selectedAccountId, isFetching: isLoadingSelectedAccountId } =
   useGetSelectedAccountIdQuery(isLoadingAccounts ? skipToken : undefined)
 
   const selectedAccount = selectedAccountId
