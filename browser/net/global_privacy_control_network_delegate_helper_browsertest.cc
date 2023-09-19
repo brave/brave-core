@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/feature_list.h"
 #include "base/path_service.h"
 #include "base/thread_annotations.h"
 #include "brave/components/constants/brave_paths.h"
@@ -15,6 +16,9 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/blink/public/common/features.h"
+
+using blink::features::kBraveGlobalPrivacyControl;
 
 enum class GPCHeaderResult {
   kOk,
@@ -148,4 +152,38 @@ IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlNetworkDelegateBrowserTest,
 
   EXPECT_EQ(MessageServiceWorker(rfh, "hasGpc"), true);
   EXPECT_EQ(MessageServiceWorker(rfh, "checkGpc"), true);
+}
+
+class GlobalPrivacyControlFlagDisabledTest
+    : public GlobalPrivacyControlNetworkDelegateBrowserTest {
+ public:
+  GlobalPrivacyControlFlagDisabledTest() {
+    feature_list_.InitAndDisableFeature(kBraveGlobalPrivacyControl);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// When kGlobalPrivacyControl is disabled, the Sec-GPC header shouldn't be sent.
+IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlFlagDisabledTest, SecGPCHeaderNot1) {
+  const GURL target = https_server().GetURL("a.test", "/simple.html");
+  StartTracking();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
+  EXPECT_EQ(header_result(), GPCHeaderResult::kNoHeader);
+}
+
+// When kGlobalPrivacyControl is disabled, the `navigator.globalPrivacyControl`
+// should not return true.
+IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlFlagDisabledTest,
+                       NavigatorGlobalPrivacyAPI) {
+  const GURL target = https_server().GetURL("a.test", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
+
+  auto* rfh = browser()
+                  ->tab_strip_model()
+                  ->GetActiveWebContents()
+                  ->GetPrimaryMainFrame();
+
+  EXPECT_EQ(false, content::EvalJs(rfh, "navigator.globalPrivacyControl"));
 }
