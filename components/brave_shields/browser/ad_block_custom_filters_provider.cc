@@ -15,6 +15,14 @@
 
 namespace brave_shields {
 
+namespace {
+
+// Custom filters get all permissions granted, i.e. all bits of the mask set,
+// i.e. the maximum possible uint8_t.
+const uint8_t kCustomFiltersPermissionLevel = UINT8_MAX;
+
+}  // namespace
+
 AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
     PrefService* local_state)
     : AdBlockFiltersProvider(false), local_state_(local_state) {}
@@ -59,18 +67,20 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
   return true;
 }
 
-void AdBlockCustomFiltersProvider::LoadDATBuffer(
-    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
-        cb) {
+void AdBlockCustomFiltersProvider::LoadFilterSet(
+    rust::Box<adblock::FilterSet>* filter_set,
+    base::OnceCallback<void()> cb) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto custom_filters = GetCustomFilters();
 
   auto buffer =
       std::vector<unsigned char>(custom_filters.begin(), custom_filters.end());
+  (*filter_set)
+      ->add_filter_list_with_permissions(buffer, kCustomFiltersPermissionLevel);
 
   // PostTask so this has an async return to match other loaders
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(std::move(cb), false, std::move(buffer)));
+      FROM_HERE, base::BindOnce(std::move(cb)));
 }
 
 // The custom filters provider can provide its filters immediately after being

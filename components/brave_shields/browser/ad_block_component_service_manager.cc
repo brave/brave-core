@@ -1,9 +1,9 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_component_service_manager.h"
 
 #include <memory>
 #include <utility>
@@ -31,19 +31,16 @@ namespace {
 
 typedef struct ListDefaultOverrideConstants {
   const raw_ref<const base::Feature> feature;
-  const char* local_override_pref;
   const char* list_uuid;
 } ListDefaultOverrideConstants;
 
 const ListDefaultOverrideConstants kCookieListConstants{
     .feature = raw_ref<const base::Feature>(kBraveAdblockCookieListDefault),
-    .local_override_pref = prefs::kAdBlockCookieListSettingTouched,
     .list_uuid = kCookieListUuid};
 
 const ListDefaultOverrideConstants kMobileNotificationsListConstants{
     .feature = raw_ref<const base::Feature>(
         kBraveAdblockMobileNotificationsListDefault),
-    .local_override_pref = prefs::kAdBlockMobileNotificationsListSettingTouched,
     .list_uuid = kMobileNotificationsListUuid};
 
 const ListDefaultOverrideConstants kOverrideConstants[2] = {
@@ -51,7 +48,7 @@ const ListDefaultOverrideConstants kOverrideConstants[2] = {
 
 }  // namespace
 
-AdBlockRegionalServiceManager::AdBlockRegionalServiceManager(
+AdBlockComponentServiceManager::AdBlockComponentServiceManager(
     PrefService* local_state,
     std::string locale,
     component_updater::ComponentUpdateService* cus,
@@ -61,12 +58,12 @@ AdBlockRegionalServiceManager::AdBlockRegionalServiceManager(
       component_update_service_(cus),
       catalog_provider_(catalog_provider) {
   catalog_provider_->LoadFilterListCatalog(
-      base::BindOnce(&AdBlockRegionalServiceManager::OnFilterListCatalogLoaded,
+      base::BindOnce(&AdBlockComponentServiceManager::OnFilterListCatalogLoaded,
                      weak_factory_.GetWeakPtr()));
   catalog_provider_->AddObserver(this);
 }
 
-AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {
+AdBlockComponentServiceManager::~AdBlockComponentServiceManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   catalog_provider_->RemoveObserver(this);
 }
@@ -75,7 +72,7 @@ AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {
 // might have been enabled. If so, make sure the user hasn't explicitly
 // modified any of these locale-specific list settings, to determine if all
 // should be enabled.
-bool AdBlockRegionalServiceManager::NeedsLocaleListsMigration(
+bool AdBlockComponentServiceManager::NeedsLocaleListsMigration(
     std::vector<std::reference_wrapper<FilterListCatalogEntry const>>
         locale_lists) {
   // This can only apply to locales with more than one available list
@@ -96,10 +93,11 @@ bool AdBlockRegionalServiceManager::NeedsLocaleListsMigration(
   return true;
 }
 
-void AdBlockRegionalServiceManager::StartRegionalServices() {
+void AdBlockComponentServiceManager::StartRegionalServices() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!local_state_)
+  if (!local_state_) {
     return;
+  }
 
   if (filter_list_catalog_.size() == 0) {
     return;
@@ -125,77 +123,48 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
     local_state_->SetBoolean(prefs::kAdBlockCheckedAllDefaultRegions, true);
   }
 
-  // Start all regional services associated with enabled filter lists
-  const auto& regional_filters_dict =
-      local_state_->GetDict(prefs::kAdBlockRegionalFilters);
-
-  auto regional_filters_dict_with_overrides = regional_filters_dict.Clone();
-  for (const auto& constants : kOverrideConstants) {
-    const bool list_touched =
-        local_state_->GetBoolean(constants.local_override_pref);
-
-    if (base::FeatureList::IsEnabled(*constants.feature) && !list_touched) {
-      base::Value::Dict list_entry;
-      list_entry.Set("enabled", true);
-      regional_filters_dict_with_overrides.Set(constants.list_uuid,
-                                               std::move(list_entry));
-    }
-  }
-
-  for (const auto kv : regional_filters_dict_with_overrides) {
-    const std::string uuid = kv.first;
-    bool enabled = false;
-    const auto* regional_filter_dict =
-        regional_filters_dict_with_overrides.FindDict(uuid);
-    if (regional_filter_dict) {
-      enabled = regional_filter_dict->FindBool("enabled").value_or(false);
-    }
-    if (enabled) {
-      auto catalog_entry = brave_shields::FindAdBlockFilterListByUUID(
-          filter_list_catalog_, uuid);
-      auto existing_provider = regional_filters_providers_.find(uuid);
-      // Iterating through locally enabled lists - don't disable any providers
-      // or update existing providers with a potentially new catalog entry.
+  // Start component services associated with enabled filter lists
+  for (const auto& catalog_entry : filter_list_catalog_) {
+    if (IsFilterListEnabled(catalog_entry.uuid)) {
+      auto existing_provider =
+          regional_filters_providers_.find(catalog_entry.uuid);
+      // Only check for new lists that are part of the catalog - don't touch any
+      // existing providers to account for modified or removed catalog entries.
       // They'll be handled after a browser restart.
-      if (catalog_entry != filter_list_catalog_.end() &&
-          existing_provider == regional_filters_providers_.end()) {
+      if (existing_provider == regional_filters_providers_.end()) {
         auto regional_filters_provider =
             std::make_unique<AdBlockComponentFiltersProvider>(
-                component_update_service_, *catalog_entry, false);
+                component_update_service_, catalog_entry,
+                catalog_entry.first_party_protections);
         regional_filters_providers_.insert(
-            {uuid, std::move(regional_filters_provider)});
+            {catalog_entry.uuid, std::move(regional_filters_provider)});
       }
     }
   }
 }
 
-void AdBlockRegionalServiceManager::UpdateFilterListPrefs(
+void AdBlockComponentServiceManager::UpdateFilterListPrefs(
     const std::string& uuid,
     bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!local_state_)
+  if (!local_state_) {
     return;
+  }
   ScopedDictPrefUpdate update(local_state_, prefs::kAdBlockRegionalFilters);
   base::Value::Dict regional_filter_dict;
   regional_filter_dict.Set("enabled", enabled);
   update->Set(uuid, std::move(regional_filter_dict));
 
-  for (const auto& constants : kOverrideConstants) {
-    if (uuid == constants.list_uuid) {
-      local_state_->SetBoolean(constants.local_override_pref, true);
-    }
-  }
-
   RecordP3ACookieListEnabled();
 }
 
-void AdBlockRegionalServiceManager::RecordP3ACookieListEnabled() {
+void AdBlockComponentServiceManager::RecordP3ACookieListEnabled() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   UMA_HISTOGRAM_BOOLEAN(kCookieListEnabledHistogram,
                         IsFilterListEnabled(kCookieListUuid));
 }
 
-bool AdBlockRegionalServiceManager::IsFilterListAvailable(
+bool AdBlockComponentServiceManager::IsFilterListAvailable(
     const std::string& uuid) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(!uuid.empty());
@@ -204,32 +173,49 @@ bool AdBlockRegionalServiceManager::IsFilterListAvailable(
   return catalog_entry != filter_list_catalog_.end();
 }
 
-bool AdBlockRegionalServiceManager::IsFilterListEnabled(
+bool AdBlockComponentServiceManager::IsFilterListEnabled(
     const std::string& uuid) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(!uuid.empty());
   DCHECK(local_state_);
 
+  // Retrieve user's setting for the list from preferences
+  const auto& regional_filters_dict =
+      local_state_->GetDict(prefs::kAdBlockRegionalFilters);
+  const auto* user_pref_dict = regional_filters_dict.FindDict(uuid);
+  const bool list_touched = user_pref_dict;
+
+  // Apply feature overrides from Griffin without overriding user preference
   for (const auto& constants : kOverrideConstants) {
     if (uuid == constants.list_uuid &&
-        base::FeatureList::IsEnabled(*constants.feature) &&
-        !local_state_->GetBoolean(constants.local_override_pref)) {
+        base::FeatureList::IsEnabled(*constants.feature) && !list_touched) {
       return true;
     }
   }
 
-  const auto& regional_filters_dict =
-      local_state_->GetDict(prefs::kAdBlockRegionalFilters);
-
-  if (const auto* regional_filter_dict = regional_filters_dict.FindDict(uuid)) {
-    return regional_filter_dict->FindBool("enabled").value_or(false);
+  // Apply overrides for lists with a `default_enabled` designation in the
+  // catalog
+  auto catalog_entry =
+      brave_shields::FindAdBlockFilterListByUUID(filter_list_catalog_, uuid);
+  if (catalog_entry != filter_list_catalog_.end() &&
+      catalog_entry->default_enabled) {
+    // prefer any user setting for the list, unless it's hidden
+    if (!list_touched || catalog_entry->hidden) {
+      return true;
+    }
   }
 
+  // Use the user's preference if there was no valid override
+  if (user_pref_dict) {
+    return user_pref_dict->FindBool("enabled").value_or(false);
+  }
+
+  // Otherwise the list is disabled
   return false;
 }
 
-void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
-                                                     bool enabled) {
+void AdBlockComponentServiceManager::EnableFilterList(const std::string& uuid,
+                                                      bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(!uuid.empty());
   auto catalog_entry =
@@ -246,7 +232,8 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
     }
     auto regional_filters_provider =
         std::make_unique<AdBlockComponentFiltersProvider>(
-            component_update_service_, *catalog_entry, false);
+            component_update_service_, *catalog_entry,
+            catalog_entry->first_party_protections);
     regional_filters_providers_.insert(
         {uuid, std::move(regional_filters_provider)});
   } else {
@@ -262,7 +249,7 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
   UpdateFilterListPrefs(uuid, enabled);
 }
 
-void AdBlockRegionalServiceManager::SetFilterListCatalog(
+void AdBlockComponentServiceManager::SetFilterListCatalog(
     std::vector<FilterListCatalogEntry> catalog) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   filter_list_catalog_ = std::move(catalog);
@@ -271,17 +258,20 @@ void AdBlockRegionalServiceManager::SetFilterListCatalog(
 }
 
 const std::vector<FilterListCatalogEntry>&
-AdBlockRegionalServiceManager::GetFilterListCatalog() {
+AdBlockComponentServiceManager::GetFilterListCatalog() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return filter_list_catalog_;
 }
 
-base::Value::List AdBlockRegionalServiceManager::GetRegionalLists() {
+base::Value::List AdBlockComponentServiceManager::GetRegionalLists() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(local_state_);
 
   base::Value::List list;
   for (const auto& region_list : filter_list_catalog_) {
+    if (region_list.hidden) {
+      continue;
+    }
     // Most settings come directly from the regional catalog from
     // https://github.com/brave/adblock-resources
     base::Value::Dict dict;
@@ -301,7 +291,7 @@ base::Value::List AdBlockRegionalServiceManager::GetRegionalLists() {
   return list;
 }
 
-void AdBlockRegionalServiceManager::OnFilterListCatalogLoaded(
+void AdBlockComponentServiceManager::OnFilterListCatalogLoaded(
     const std::string& catalog_json) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   SetFilterListCatalog(FilterListCatalogFromJSON(catalog_json));

@@ -13,6 +13,7 @@
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 
 using brave_component_updater::DATFileDataBuffer;
 
@@ -37,8 +38,8 @@ class AdBlockFiltersProvider {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  void LoadDAT(base::OnceCallback<void(bool deserialize,
-                                       const DATFileDataBuffer& dat_buf)>);
+  virtual void LoadFilterSet(rust::Box<adblock::FilterSet>* filter_set,
+                             base::OnceCallback<void()>) = 0;
 
   base::WeakPtr<AdBlockFiltersProvider> AsWeakPtr();
 
@@ -47,9 +48,6 @@ class AdBlockFiltersProvider {
  protected:
   bool engine_is_default_;
 
-  virtual void LoadDATBuffer(
-      base::OnceCallback<void(bool deserialize,
-                              const DATFileDataBuffer& dat_buf)>) = 0;
   void NotifyObservers();
 
  private:

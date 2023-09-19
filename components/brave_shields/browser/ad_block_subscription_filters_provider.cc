@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
@@ -27,14 +28,14 @@ AdBlockSubscriptionFiltersProvider::AdBlockSubscriptionFiltersProvider(
 AdBlockSubscriptionFiltersProvider::~AdBlockSubscriptionFiltersProvider() =
     default;
 
-void AdBlockSubscriptionFiltersProvider::LoadDATBuffer(
-    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
-        cb) {
+void AdBlockSubscriptionFiltersProvider::LoadFilterSet(
+    rust::Box<adblock::FilterSet>* filter_set,
+    base::OnceCallback<void()> cb) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_),
       base::BindOnce(&AdBlockSubscriptionFiltersProvider::OnDATFileDataReady,
-                     weak_factory_.GetWeakPtr(), std::move(cb)));
+                     weak_factory_.GetWeakPtr(), std::move(cb), filter_set));
 }
 
 std::string AdBlockSubscriptionFiltersProvider::GetNameForDebugging() {
@@ -42,12 +43,17 @@ std::string AdBlockSubscriptionFiltersProvider::GetNameForDebugging() {
 }
 
 void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
-    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
-        cb,
+    base::OnceCallback<void()> cb,
+    rust::Box<adblock::FilterSet>* filter_set,
     const DATFileDataBuffer& dat_buf) {
-  auto metadata = adblock::read_list_metadata(dat_buf);
-  on_metadata_retrieved_.Run(metadata);
-  std::move(cb).Run(false, dat_buf);
+  auto result = (*filter_set)->add_filter_list(dat_buf);
+  if (result.result_kind == adblock::ResultKind::Success) {
+    on_metadata_retrieved_.Run(result.value);
+  } else {
+    VLOG(0) << "Subscription list parsing failed: "
+            << result.error_message.c_str();
+  }
+  std::move(cb).Run();
 }
 
 void AdBlockSubscriptionFiltersProvider::OnListAvailable() {
