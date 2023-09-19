@@ -575,7 +575,7 @@ void BraveTabContainer::SetDropArrow(
     return;
   }
 
-  bool is_beneath;
+  bool is_beneath = false;
   gfx::Rect drop_bounds = GetDropBounds(index->value, index->drop_before,
                                         index->drop_in_group, &is_beneath);
 

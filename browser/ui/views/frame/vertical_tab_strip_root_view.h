@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_ROOT_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_ROOT_VIEW_H_
 
-#include "brave/browser/ui/views/frame/vertical_tab_strip_root_view.h"
-
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
 
 // `VerticalTabStripRootView` extends `BrowserRootView` to support link
