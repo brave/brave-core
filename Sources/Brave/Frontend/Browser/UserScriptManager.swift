@@ -143,12 +143,12 @@ class UserScriptManager {
   func fetchWalletScripts(from braveWalletAPI: BraveWalletAPI) {
     if let ethJS = braveWalletAPI.providerScripts(for: .eth)[.ethereum] {
       let providerJS = """
-      window.__firefox__.execute(function($, $Object) {
-        if (window.isSecureContext) {
-          \(ethJS)
-        }
-      });
-      """
+          window.__firefox__.execute(function($, $Object) {
+            if (window.isSecureContext) {
+              \(ethJS)
+            }
+          });
+          """
       walletEthProviderScript = WKUserScript(
         source: providerJS,
         injectionTime: .atDocumentStart,
@@ -302,7 +302,7 @@ class UserScriptManager {
         
         // Inject ethereum provider
         scriptController.addUserScript(script)
-        
+
         if let walletEthProviderScript = walletEthProviderScript {
           scriptController.addUserScript(walletEthProviderScript)
         }
