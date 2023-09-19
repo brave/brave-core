@@ -284,6 +284,20 @@ Config.prototype.getBrandingPathProduct = function () {
   return this.isOfficialBuild() ? "brave" : "brave-development"
 }
 
+Config.prototype.getBraveLogoIconName = function () {
+  let iconName = "brave-icon-debug-color.svg"
+  if (this.isBraveReleaseBuild()) {
+    if (this.channel === "beta") {
+      iconName = "brave-icon-beta-color.svg"
+    } else if (this.channel === "nightly") {
+      iconName = "brave-icon-nightly-color.svg"
+    } else {
+      iconName = "brave-icon-release-color.svg"
+    }
+  }
+  return iconName
+}
+
 Config.prototype.buildArgs = function () {
   const version = this.braveVersion
   let version_parts = version.split('+')[0]
