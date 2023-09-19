@@ -207,6 +207,20 @@ export const DefaultPanelMenu = (props: Props) => {
       history.push(route)
     }
 
+    const onClickBackup = () => {
+      chrome.tabs.create(
+        {
+          url: `chrome://wallet${WalletRoutes.Backup}`
+        }, () => {
+          if (chrome.runtime.lastError) {
+            console.error(
+              'tabs.create failed: '
+              + chrome.runtime.lastError.message
+            )
+          }
+        })
+    }
+
   const showPortfolioSettings =
     walletLocation === WalletRoutes.PortfolioNFTs ||
     walletLocation === WalletRoutes.PortfolioAssets
@@ -222,6 +236,13 @@ export const DefaultPanelMenu = (props: Props) => {
           {getLocale('braveWalletWalletPopupLock')}
         </PopupButtonText>
       </PopupButton>
+
+      <PopupButton onClick={onClickBackup}>
+          <ButtonIcon name='safe' />
+          <PopupButtonText>
+            {getLocale('braveWalletBackupButton')}
+          </PopupButtonText>
+        </PopupButton>
 
       {
         selectedNetwork &&
