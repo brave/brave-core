@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "ios/chrome/browser/browser_state/browser_state_keyed_service_factories.h"
+#include "ios/chrome/browser/browser_state/model/browser_state_keyed_service_factories.h"
 
 #include "ios/chrome/browser/autofill/personal_data_manager_factory.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
