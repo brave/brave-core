@@ -45,7 +45,6 @@ public class InAppPurchaseWrapper {
     public static final String RELEASE_MONTHLY_SUBSCRIPTION = "brave.vpn.monthly";
     public static final String RELEASE_YEARLY_SUBSCRIPTION = "brave.vpn.yearly";
     private BillingClient mBillingClient;
-    private int mRetryCount;
 
     private static volatile InAppPurchaseWrapper sInAppPurchaseWrapper;
     private static Object sMutex = new Object();
@@ -105,26 +104,20 @@ public class InAppPurchaseWrapper {
         if (!mBillingClient.isReady()) {
             try {
                 mBillingClient.startConnection(new BillingClientStateListener() {
-                    private int mRetryCount;
                     @Override
                     public void onBillingServiceDisconnected() {
-                        mRetryCount++;
-                        if (mRetryCount <= 3) {
-                            endConnection();
-                            startBillingServiceConnection(billingClientConnectionState);
-                        }
+                        retryBillingServiceConnection(billingClientConnectionState);
                     }
                     @Override
                     public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                        boolean isConnectionEstablished = billingResult.getResponseCode()
-                                == BillingClient.BillingResponseCode.OK;
-                        if (billingClientConnectionState != null) {
-                            billingClientConnectionState.postValue(isConnectionEstablished);
-                        }
-                        if (isConnectionEstablished) {
-                            mRetryCount = 0;
+                        if (billingResult.getResponseCode()
+                                == BillingClient.BillingResponseCode.OK) {
+                            if (billingClientConnectionState != null) {
+                                billingClientConnectionState.postValue(true);
+                            }
                         } else {
                             BraveVpnUtils.showToast(billingResult.getDebugMessage());
+                            retryBillingServiceConnection(billingClientConnectionState);
                         }
                     }
                 });
@@ -269,7 +262,6 @@ public class InAppPurchaseWrapper {
     }
 
     public void processPurchases(Context context, Purchase activePurchase) {
-        // Log.e(TAG, "processPurchases");
         acknowledgePurchase(context, activePurchase);
     }
 
@@ -291,7 +283,7 @@ public class InAppPurchaseWrapper {
                         try {
                             activity = BraveActivity.getBraveActivity();
                         } catch (BraveActivity.BraveActivityNotFoundException e) {
-                            Log.e(TAG, "acknowledgePurchase " + e);
+                            Log.e(TAG, "acknowledgePurchase " + e.getMessage());
                         }
                         if (billingResult.getResponseCode()
                                 == BillingClient.BillingResponseCode.OK) {
@@ -318,7 +310,6 @@ public class InAppPurchaseWrapper {
             endConnection();
             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                 if (purchases != null) {
-                    mRetryCount = 0;
                     for (Purchase purchase : purchases) {
                         if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
                             processPurchases(context, purchase);
@@ -330,11 +321,6 @@ public class InAppPurchaseWrapper {
                 BraveVpnUtils.showToast(
                         context.getResources().getString(R.string.already_subscribed));
             } else if (billingResult.getResponseCode()
-                            == BillingClient.BillingResponseCode.SERVICE_DISCONNECTED
-                    && mRetryCount < 5) {
-                startBillingServiceConnection(null);
-                mRetryCount++;
-            } else if (billingResult.getResponseCode()
                     == BillingClient.BillingResponseCode.USER_CANCELED) {
                 BraveVpnUtils.showToast(
                         context.getResources().getString(R.string.error_caused_by_user));
@@ -343,5 +329,53 @@ public class InAppPurchaseWrapper {
                         context.getResources().getString(R.string.purchased_failed));
             }
         };
+    }
+
+    private int maxTries;
+    private int tries;
+    private boolean isConnectionEstablished;
+    private void retryBillingServiceConnection(
+            MutableLiveData<Boolean> billingClientConnectionState) {
+        maxTries = 3;
+        tries = 1;
+        isConnectionEstablished = false;
+        do {
+            try {
+                // End existing connection if any before we start another connection
+                endConnection();
+
+                Context context = ContextUtils.getApplicationContext();
+
+                mBillingClient = BillingClient.newBuilder(context)
+                                         .enablePendingPurchases()
+                                         .setListener(getPurchasesUpdatedListener(context))
+                                         .build();
+
+                mBillingClient.startConnection(new BillingClientStateListener() {
+                    @Override
+                    public void onBillingServiceDisconnected() {
+                        if (tries == maxTries && billingClientConnectionState != null) {
+                            billingClientConnectionState.postValue(false);
+                        }
+                    }
+                    @Override
+                    public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
+                        if (billingResult.getResponseCode()
+                                == BillingClient.BillingResponseCode.OK) {
+                            isConnectionEstablished = true;
+                            if (billingClientConnectionState != null) {
+                                billingClientConnectionState.postValue(true);
+                            }
+                        } else {
+                            BraveVpnUtils.showToast(billingResult.getDebugMessage());
+                        }
+                    }
+                });
+            } catch (Exception ex) {
+                Log.e(TAG, "retryBillingServiceConnection " + ex.getMessage());
+            } finally {
+                tries++;
+            }
+        } while (tries <= maxTries && !isConnectionEstablished);
     }
 }
