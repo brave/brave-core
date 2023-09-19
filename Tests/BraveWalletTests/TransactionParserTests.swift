@@ -1104,14 +1104,6 @@ class TransactionParserTests: XCTestCase {
   
   func testFilecoinSendTransfer() {
     let network: BraveWallet.NetworkInfo = .mockFilecoinTestnet
-    let fromAccount: BraveWallet.AccountInfo = (BraveWallet.AccountInfo.mockFilTestnetAccount.copy() as! BraveWallet.AccountInfo).then {
-      $0.address = "fil_testnet_address_1"
-      $0.name = "Filecoin Testnet 1"
-    }
-    let toAccount = (BraveWallet.AccountInfo.mockFilTestnetAccount.copy() as! BraveWallet.AccountInfo).then {
-      $0.address = "fil_testnet_address_2"
-      $0.name = "Filecoin Testnet 2"
-    }
     
     let transactionData: BraveWallet.FilTxData = .init(
       nonce: "",
@@ -1119,13 +1111,13 @@ class TransactionParserTests: XCTestCase {
       gasFeeCap: "101965",
       gasLimit: "1527953",
       maxFee: "0",
-      to: toAccount.address,
+      to: accountInfos[5].address,
       value: "1000000000000000000"
     )
     let transaction = BraveWallet.TransactionInfo(
       id: "8",
-      fromAddress: fromAccount.address,
-      from: fromAccount.accountId,
+      fromAddress: accountInfos[4].address,
+      from: accountInfos[4].accountId,
       txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffggggg1234",
       txDataUnion: .init(filTxData: transactionData),
       txStatus: .unapproved,
@@ -1141,12 +1133,13 @@ class TransactionParserTests: XCTestCase {
       chainId: BraveWallet.FilecoinTestnet,
       effectiveRecipient: nil
     )
+  
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
-      namedFromAddress: fromAccount.name,
-      fromAddress: fromAccount.address,
-      namedToAddress: toAccount.name,
-      toAddress: toAccount.address,
+      namedFromAddress: accountInfos[4].name,
+      fromAddress: accountInfos[4].address,
+      namedToAddress: accountInfos[5].name,
+      toAddress: accountInfos[5].address,
       networkSymbol: "FIL",
       details: .filSend(
         .init(
@@ -1185,7 +1178,7 @@ class TransactionParserTests: XCTestCase {
     XCTAssertEqual(expectedParsedTransaction.networkSymbol, parsedTransaction.networkSymbol)
     guard case let .filSend(expectedDetails) = expectedParsedTransaction.details,
           case let .filSend(parsedDetails) = parsedTransaction.details else {
-      XCTFail("Incorrectly parsed solanaSystemTransfer transaction")
+      XCTFail("Incorrectly parsed filecoinSendTransfer transaction")
       return
     }
   

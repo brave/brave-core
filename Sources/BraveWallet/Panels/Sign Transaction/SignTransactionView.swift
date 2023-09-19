@@ -326,6 +326,7 @@ struct SignTransaction_Previews: PreviewProvider {
       request: .signTransaction([BraveWallet.SignTransactionRequest(
         originInfo: .init(),
         id: 0,
+        from: BraveWallet.AccountInfo.previewAccount.accountId,
         fromAddress: BraveWallet.AccountInfo.previewAccount.address,
         txData: .init(),
         rawMessage: .init(),

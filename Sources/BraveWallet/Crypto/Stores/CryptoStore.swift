@@ -24,15 +24,24 @@ enum PendingRequest: Equatable {
 extension PendingRequest: Identifiable {
   var id: String {
     switch self {
-    case let .transactions(transactions): return "transactions-\(transactions.map(\.id))"
-    case let .addChain(request): return "addChain-\(request.networkInfo.chainId)"
-    case let .switchChain(chainRequest): return "switchChain-\(chainRequest.chainId)"
-    case let .addSuggestedToken(tokenRequest): return "addSuggestedToken-\(tokenRequest.token.id)"
-    case let .signMessage(signRequests): return "signMessage-\(signRequests.map(\.id))"
-    case let .getEncryptionPublicKey(request): return "getEncryptionPublicKey-\(request.address)-\(request.requestId)"
-    case let .decrypt(request): return "decrypt-\(request.address)-\(request.requestId)"
-    case let .signTransaction(requests): return "signTransaction-\(requests.map(\.id))"
-    case let .signAllTransactions(requests): return "signAllTransactions-\(requests.map(\.id))"
+    case let .transactions(transactions):
+      return "transactions-\(transactions.map(\.id))"
+    case let .addChain(request):
+      return "addChain-\(request.networkInfo.chainId)"
+    case let .switchChain(chainRequest):
+      return "switchChain-\(chainRequest.chainId)"
+    case let .addSuggestedToken(tokenRequest):
+      return "addSuggestedToken-\(tokenRequest.token.id)"
+    case let .signMessage(signRequests):
+      return "signMessage-\(signRequests.map(\.id))"
+    case let .getEncryptionPublicKey(request):
+      return "getEncryptionPublicKey-\(request.accountId.uniqueKey)-\(request.requestId)"
+    case let .decrypt(request):
+      return "decrypt-\(request.accountId.uniqueKey)-\(request.requestId)"
+    case let .signTransaction(requests):
+      return "signTransaction-\(requests.map(\.id))"
+    case let .signAllTransactions(requests):
+      return "signAllTransactions-\(requests.map(\.id))"
     }
   }
 }

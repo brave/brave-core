@@ -34,7 +34,7 @@ struct SignatureRequestView: View {
   }
   
   private var account: BraveWallet.AccountInfo {
-    keyringStore.allAccounts.first(where: { $0.address == currentRequest.address }) ?? keyringStore.selectedAccount
+    keyringStore.allAccounts.first(where: { $0.address == currentRequest.accountId.address }) ?? keyringStore.selectedAccount
   }
   
   private var network: BraveWallet.NetworkInfo? {

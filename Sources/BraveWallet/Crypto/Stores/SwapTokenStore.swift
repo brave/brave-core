@@ -299,7 +299,7 @@ public class SwapTokenStore: ObservableObject {
         signedTransaction: nil
       )
       let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-      let (success, _, _) = await txService.addUnapprovedTransaction(txDataUnion, from: accountInfo.address, origin: nil, groupId: nil)
+      let (success, _, _) = await txService.addUnapprovedTransaction(txDataUnion, from: accountInfo.accountId, origin: nil, groupId: nil)
       if !success {
         self.state = .error(Strings.Wallet.unknownError)
         self.clearAllAmount()
@@ -401,7 +401,7 @@ public class SwapTokenStore: ObservableObject {
       return success
     } else {
       let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-      let (success, _, _) = await txService.addUnapprovedTransaction(txDataUnion, from: accountInfo.address, origin: nil, groupId: nil)
+      let (success, _, _) = await txService.addUnapprovedTransaction(txDataUnion, from: accountInfo.accountId, origin: nil, groupId: nil)
       if !success {
         self.state = .error(Strings.Wallet.unknownError)
         self.clearAllAmount()
@@ -431,7 +431,7 @@ public class SwapTokenStore: ObservableObject {
     }
     let eip1559Data = BraveWallet.TxData1559(baseData: baseData, chainId: chainId, maxPriorityFeePerGas: maxPriorityFeePerGas, maxFeePerGas: maxFeePerGas, gasEstimation: gasEstimation)
     let txDataUnion = BraveWallet.TxDataUnion(ethTxData1559: eip1559Data)
-    let (success, _, _) = await txService.addUnapprovedTransaction(txDataUnion, from: account.address, origin: nil, groupId: nil)
+    let (success, _, _) = await txService.addUnapprovedTransaction(txDataUnion, from: account.accountId, origin: nil, groupId: nil)
     if !success {
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
@@ -601,13 +601,15 @@ public class SwapTokenStore: ObservableObject {
     guard let jupiterQuote,
           let route = jupiterQuote.routes.first,
           let accountInfo = self.accountInfo,
-          let selectedToToken else {
+          let selectedToToken,
+          let selectedFromToken else {
       return false
     }
     let network = await rpcService.network(.sol, origin: nil)
     let jupiterSwapParams: BraveWallet.JupiterSwapParams = .init(
       route: route,
       userPublicKey: accountInfo.address,
+      inputMint: selectedFromToken.contractAddress(in: network),
       outputMint: selectedToToken.contractAddress(in: network)
     )
     let (swapTransactions, errorResponse, _) = await swapService.jupiterSwapTransactions(jupiterSwapParams)
@@ -651,7 +653,7 @@ public class SwapTokenStore: ObservableObject {
     }
     let (success, _, _) = await txService.addUnapprovedTransaction(
       .init(solanaTxData: solTxData),
-      from: accountInfo.address,
+      from: accountInfo.accountId,
       origin: nil,
       groupId: nil
     )
