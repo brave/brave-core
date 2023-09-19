@@ -1,47 +1,33 @@
 [package]
 name = "indexmap"
-edition = "2018"
-version = "1.8.1"
-authors = [
-"bluss",
-"Josh Stone <cuviper@gmail.com>"
-]
+edition = "2021"
+version = "1.9.3"
 documentation = "https://docs.rs/indexmap/"
 repository = "https://github.com/bluss/indexmap"
-license = "Apache-2.0/MIT"
-description = """
-A hash table with consistent order and fast iteration.
-
-The indexmap is a hash table where the iteration order of the key-value
-pairs is independent of the hash values of the keys. It has the usual
-hash table functionality, it preserves insertion order except after
-removals, and it allows lookup of its elements by either hash table key
-or numerical index. A corresponding hash set type is also provided.
-
-This crate was initially published under the name ordermap, but it was renamed to
-indexmap.
-"""
-
+license = "Apache-2.0 OR MIT"
+description = "A hash table with consistent order and fast iteration."
 keywords = ["hashmap", "no_std"]
 categories = ["data-structures", "no-std"]
-
-build = "build.rs"
+rust-version = "1.56"
 
 [lib]
 bench = false
 
 [build-dependencies]
 autocfg = "1"
+
 [dependencies]
+arbitrary = { version = "1.0", optional = true, default-features = false }
+quickcheck = { version = "1.0", optional = true, default-features = false }
 serde = { version = "1.0", optional = true, default-features = false }
 rayon = { version = "1.4.1", optional = true }
 
 # Internal feature, only used when building as part of rustc,
 # not part of the stable interface of this crate.
-rustc-rayon = { version = "0.3", optional = true }
+rustc-rayon = { package = "rustc-rayon", version = "0.5", optional = true }
 
 [dependencies.hashbrown]
-version = "0.11"
+version = "0.12"
 default-features = false
 features = ["raw"]
 
@@ -73,7 +59,7 @@ no-dev-version = true
 tag-name = "{{version}}"
 
 [package.metadata.docs.rs]
-features = ["serde-1", "rayon"]
+features = ["arbitrary", "quickcheck", "serde-1", "rayon"]
 
 [workspace]
 members = ["test-nostd", "test-serde"]

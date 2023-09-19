@@ -10,31 +10,55 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2018"
+edition = "2021"
+rust-version = "1.56"
 name = "indexmap"
-version = "1.8.1"
-authors = ["bluss", "Josh Stone <cuviper@gmail.com>"]
-build = "build.rs"
-description = "A hash table with consistent order and fast iteration.\n\nThe indexmap is a hash table where the iteration order of the key-value\npairs is independent of the hash values of the keys. It has the usual\nhash table functionality, it preserves insertion order except after\nremovals, and it allows lookup of its elements by either hash table key\nor numerical index. A corresponding hash set type is also provided.\n\nThis crate was initially published under the name ordermap, but it was renamed to\nindexmap.\n"
+version = "1.9.3"
+description = "A hash table with consistent order and fast iteration."
 documentation = "https://docs.rs/indexmap/"
-keywords = ["hashmap", "no_std"]
-categories = ["data-structures", "no-std"]
-license = "Apache-2.0/MIT"
+readme = "README.md"
+keywords = [
+    "hashmap",
+    "no_std",
+]
+categories = [
+    "data-structures",
+    "no-std",
+]
+license = "Apache-2.0 OR MIT"
 repository = "https://github.com/bluss/indexmap"
-[package.metadata.docs.rs]
-features = ["serde-1", "rayon"]
 
 [package.metadata.release]
 no-dev-version = true
 tag-name = "{{version}}"
+
+[package.metadata.docs.rs]
+features = [
+    "arbitrary",
+    "quickcheck",
+    "serde-1",
+    "rayon",
+]
+
 [profile.bench]
 debug = true
 
 [lib]
 bench = false
+
+[dependencies.arbitrary]
+version = "1.0"
+optional = true
+default-features = false
+
 [dependencies.hashbrown]
-version = "0.11"
+version = "0.12"
 features = ["raw"]
+default-features = false
+
+[dependencies.quickcheck]
+version = "1.0"
+optional = true
 default-features = false
 
 [dependencies.rayon]
@@ -42,13 +66,15 @@ version = "1.4.1"
 optional = true
 
 [dependencies.rustc-rayon]
-version = "0.3"
+version = "0.5"
 optional = true
+package = "rustc-rayon"
 
 [dependencies.serde]
 version = "1.0"
 optional = true
 default-features = false
+
 [dev-dependencies.fnv]
 version = "1.0"
 
@@ -71,6 +97,7 @@ features = ["small_rng"]
 
 [dev-dependencies.serde_derive]
 version = "1.0"
+
 [build-dependencies.autocfg]
 version = "1"
 
