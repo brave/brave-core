@@ -48,6 +48,7 @@ protocol TabDelegate {
   func updateURLBarWalletButton()
   func isTabVisible(_ tab: Tab) -> Bool
   func reloadIPFSSchemeUrl(_ url: URL)
+  func didReloadTab(_ tab: Tab)
 }
 
 @objc
@@ -307,6 +308,19 @@ class Tab: NSObject {
       
       self.setScript(script: .nightMode, enabled: isNightModeEnabled)
     }
+  }
+  
+  /// Boolean tracking custom url-scheme alert presented
+  var isExternalAppAlertPresented = false
+  var externalAppAlertCounter = 0
+  var isExternalAppAlertSuppressed = false
+  var externalAppURLDomain: String?
+  
+  func resetExternalAlertProperties() {
+    externalAppAlertCounter = 0
+    isExternalAppAlertPresented = false
+    isExternalAppAlertSuppressed = false
+    externalAppURLDomain = nil
   }
 
   init(configuration: WKWebViewConfiguration, id: UUID = UUID(), type: TabType = .regular, tabGeneratorAPI: BraveTabGeneratorAPI? = nil) {
@@ -662,6 +676,8 @@ class Tab: NSObject {
         refreshControl.endRefreshing()
       }
     }
+    
+    tabDelegate?.didReloadTab(self)
 
     // If the current page is an error page, and the reload button is tapped, load the original URL
     if let url = webView?.url, let internalUrl = InternalURL(url), let page = internalUrl.originalURLFromErrorPage {
