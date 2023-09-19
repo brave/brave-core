@@ -108,6 +108,13 @@ const char kRequestJsonRPC[] = "2.0";
 namespace brave_wallet {
 
 namespace {
+// EIP-712 type hash for Order struct used in CoW swap
+//
+// keccak256("Order(address sellToken,address buyToken,address receiver,
+//                  uint256 sellAmount,uint256 buyAmount,uint32 validTo,
+//                  bytes32 appData,uint256 feeAmount,string kind,
+//                  bool partiallyFillable,string sellTokenBalance,
+//                  string buyTokenBalance)")
 constexpr char kCowSwapTypeHash[] =
     "D5A25BA2E97094AD7D83DC28A6572DA797D6B3E7FC6663BD93EFB789FC17E489";
 
