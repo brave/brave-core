@@ -9,7 +9,12 @@ import { Reducer } from 'redux'
 import { types } from '../constants/webcompatreporter_types'
 
 const defaultState: WebcompatReporter.State = {
-  siteUrl: '',
+  dialogArgs: {
+    url: '',
+    adBlockSetting: '',
+    fpBlockSetting: '',
+    shieldsEnabled: ''
+  },
   submitted: false
 }
 
@@ -17,9 +22,11 @@ const webcompatReporterReducer: Reducer<WebcompatReporter.State | undefined> = (
   switch (action.type) {
     case types.WEBCOMPATREPORTER_ON_SUBMIT_REPORT:
       chrome.send('webcompat_reporter.submitReport', [
-        state.siteUrl,
-        action.payload.details || null,
-        action.payload.contact || null
+        {
+          ...state.dialogArgs,
+          additionalDetails: action.payload.details || null,
+          contactInfo: action.payload.contact || null
+        }
       ])
       state = {
         ...state,
@@ -27,10 +34,10 @@ const webcompatReporterReducer: Reducer<WebcompatReporter.State | undefined> = (
       }
       setTimeout(() => chrome.send('dialogClose'), 5000)
       break
-    case types.WEBCOMPATREPORTER_SET_SITE_URL:
+    case types.WEBCOMPATREPORTER_SET_DIALOG_ARGS:
       state = {
         ...state,
-        siteUrl: action.payload.siteUrl
+        dialogArgs: action.payload.dialogArgs
       }
       break
     case types.WEBCOMPATREPORTER_ON_CLOSE:

@@ -10,6 +10,10 @@ namespace content {
 class WebContents;
 }
 
-void OpenWebcompatReporterDialog(content::WebContents* initiator);
+namespace webcompat_reporter {
+
+void OpenReporterDialog(content::WebContents* initiator);
+
+}  // namespace webcompat_reporter
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_WEBCOMPAT_REPORTER_WEBCOMPAT_REPORTER_DIALOG_H_

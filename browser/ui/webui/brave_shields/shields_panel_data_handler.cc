@@ -163,7 +163,8 @@ void ShieldsPanelDataHandler::OpenWebCompatWindow() {
   if (!active_shields_data_controller_)
     return;
 
-  OpenWebcompatReporterDialog(active_shields_data_controller_->web_contents());
+  webcompat_reporter::OpenReporterDialog(
+      active_shields_data_controller_->web_contents());
 }
 
 void ShieldsPanelDataHandler::UpdateFavicon() {
