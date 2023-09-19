@@ -899,6 +899,7 @@ test("brave_browser_tests") {
     "//brave/components/l10n/common:test_support",
     "//brave/components/ntp_background_images/buildflags",
     "//brave/components/ntp_background_images/common",
+    "//brave/components/psst/browser/content:browser_tests",
     "//brave/components/resources:strings_grit",
     "//brave/components/skus/common",
     "//brave/components/speedreader/common/buildflags",
