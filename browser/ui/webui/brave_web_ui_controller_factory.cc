@@ -50,7 +50,7 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
-#include "brave/browser/ui/webui/webcompat_reporter_ui.h"
+#include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_ui.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -108,7 +108,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new SkusInternalsUI(web_ui, url.host());
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWebcompatReporterHost) {
-    return new WebcompatReporterUI(web_ui, url.host());
+    return new webcompat_reporter::WebcompatReporterUI(web_ui, url.host());
 #endif
 #if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
   } else if (host == kIPFSWebUIHost &&

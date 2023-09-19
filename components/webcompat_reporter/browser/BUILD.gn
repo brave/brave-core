@@ -9,6 +9,8 @@ assert(!is_android)
 
 static_library("browser") {
   sources = [
+    "fields.cc",
+    "fields.h",
     "webcompat_report_uploader.cc",
     "webcompat_report_uploader.h",
   ]
@@ -16,6 +18,7 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/brave_referrals/browser",
+    "//brave/components/brave_shields/common:mojom",
     "//brave/components/brave_stats/browser",
     "//brave/components/constants",
     "//brave/components/webcompat_reporter/buildflags",

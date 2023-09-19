@@ -53,7 +53,7 @@ void ShowWebcompatReporter(Browser* browser) {
     return;
   }
 
-  OpenWebcompatReporterDialog(web_contents);
+  webcompat_reporter::OpenReporterDialog(web_contents);
 }
 
 void ShowBraveWallet(Browser* browser) {
