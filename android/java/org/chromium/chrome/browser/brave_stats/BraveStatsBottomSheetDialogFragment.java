@@ -38,6 +38,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
+import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.permissions.PermissionConstants;
 
@@ -68,8 +69,11 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     private LinearLayout websitesLayout;
     private LinearLayout trackersLayout;
 
-    private RadioButton monthRadioButton;
-    private RadioButton monthsRadioButton;
+    private RadioButton mWeekRadioButton;
+    private RadioButton mMonthRadioButton;
+    private RadioButton mMonthsRadioButton;
+    private RadioButton mTrackersRadioButton;
+    private RadioButton mWebsitesRadioButton;
     private View statsNotificationView;
 
     private int selectedType = WEBSITES;
@@ -128,8 +132,11 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
             }
         });
 
-        monthRadioButton = view.findViewById(R.id.month_radio);
-        monthsRadioButton = view.findViewById(R.id.months_radio);
+        mWeekRadioButton = view.findViewById(R.id.week_radio);
+        mMonthRadioButton = view.findViewById(R.id.month_radio);
+        mMonthsRadioButton = view.findViewById(R.id.months_radio);
+        mTrackersRadioButton = view.findViewById(R.id.trackers_radio);
+        mWebsitesRadioButton = view.findViewById(R.id.websites_radio);
 
         LinearLayout layout = view.findViewById(R.id.brave_stats_layout);
         adsTrackersCountText = layout.findViewById(R.id.ads_trackers_count_text);
@@ -142,6 +149,12 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         trackersLayout = layout.findViewById(R.id.trackers_layout);
         braveStatsSubSectionText = layout.findViewById(R.id.brave_stats_sub_section_text);
         statsNotificationView = view.findViewById(R.id.brave_stats_notification_permission);
+
+        BraveTouchUtils.ensureMinTouchTarget(mWeekRadioButton);
+        BraveTouchUtils.ensureMinTouchTarget(mMonthRadioButton);
+        BraveTouchUtils.ensureMinTouchTarget(mMonthsRadioButton);
+        BraveTouchUtils.ensureMinTouchTarget(mTrackersRadioButton);
+        BraveTouchUtils.ensureMinTouchTarget(mWebsitesRadioButton);
 
         RadioGroup statTypeRadioGroup = layout.findViewById(R.id.stat_type_radio_group);
         statTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -297,20 +310,20 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
 
                 // Check for month option
                 if (adsTrackersCountToCheckForMonth > 0) {
-                    monthRadioButton.setEnabled(true);
-                    monthRadioButton.setAlpha(1.0f);
+                    mMonthRadioButton.setEnabled(true);
+                    mMonthRadioButton.setAlpha(1.0f);
                 } else {
-                    monthRadioButton.setEnabled(false);
-                    monthRadioButton.setAlpha(0.2f);
+                    mMonthRadioButton.setEnabled(false);
+                    mMonthRadioButton.setAlpha(0.2f);
                 }
 
                 // Check for 3 month option
                 if (adsTrackersCountToCheckFor3Month > 0) {
-                    monthsRadioButton.setEnabled(true);
-                    monthsRadioButton.setAlpha(1.0f);
+                    mMonthsRadioButton.setEnabled(true);
+                    mMonthsRadioButton.setAlpha(1.0f);
                 } else {
-                    monthsRadioButton.setEnabled(false);
-                    monthsRadioButton.setAlpha(0.2f);
+                    mMonthsRadioButton.setEnabled(false);
+                    mMonthsRadioButton.setAlpha(0.2f);
                 }
                 showWebsitesTrackers();
             }

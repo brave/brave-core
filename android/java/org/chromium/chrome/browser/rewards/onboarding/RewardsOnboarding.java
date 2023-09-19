@@ -33,6 +33,7 @@ import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
+import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.permissions.PermissionConstants;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
@@ -54,6 +55,7 @@ public class RewardsOnboarding implements BraveRewardsObserver {
     private ViewGroup mAllSetLayout;
     private ViewGroup mErrorLayout;
 
+    private Spinner mCountrySpinner;
     private TextView mContinueButton;
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
@@ -95,6 +97,9 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         });
         View howDoseItWorkMainButton = mMainLayout.findViewById(R.id.how_does_it_work_main);
         howDoseItWorkMainButton.setOnClickListener(v -> { showRewardsTour(); });
+
+        mCountrySpinner = mPopupView.findViewById(R.id.country_spinner);
+        BraveTouchUtils.ensureMinTouchTarget(mCountrySpinner);
 
         String termsOfServiceText = String.format(
                 mPopupView.getContext().getString(R.string.brave_rewards_onboarding_tos_text),
@@ -186,13 +191,11 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         }
 
         String[] countryArray = countryList.toArray(new String[countryList.size()]);
-        Spinner countrySpinner;
-        countrySpinner = mPopupView.findViewById(R.id.country_spinner);
 
         CountrySelectionSpinnerAdapter countrySelectionSpinnerAdapter =
                 new CountrySelectionSpinnerAdapter(mActivity, countryList);
-        countrySpinner.setAdapter(countrySelectionSpinnerAdapter);
-        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mCountrySpinner.setAdapter(countrySelectionSpinnerAdapter);
+        mCountrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 mContinueButton.setEnabled(pos != 0);
@@ -210,9 +213,9 @@ public class RewardsOnboarding implements BraveRewardsObserver {
                                 mAnchorView.getContext())) {
                     requestNotificationPermission();
                 }
-                if (countrySpinner != null) {
+                if (mCountrySpinner != null) {
                     mBraveRewardsNativeWorker.CreateRewardsWallet(
-                            sortedCountryMap.get(countrySpinner.getSelectedItem().toString()));
+                            sortedCountryMap.get(mCountrySpinner.getSelectedItem().toString()));
                     shouldShowContinueProgress(true);
                     mContinueButton.setText("");
                 }

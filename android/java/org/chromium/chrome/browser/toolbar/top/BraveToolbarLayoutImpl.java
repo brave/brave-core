@@ -126,6 +126,7 @@ import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.util.BraveConstants;
+import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.promo.SearchWidgetPromoPanel;
@@ -288,18 +289,21 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mBraveShieldsButton.setClickable(true);
             mBraveShieldsButton.setOnClickListener(this);
             mBraveShieldsButton.setOnLongClickListener(this);
+            BraveTouchUtils.ensureMinTouchTarget(mBraveShieldsButton);
         }
 
         if (mBraveRewardsButton != null) {
             mBraveRewardsButton.setClickable(true);
             mBraveRewardsButton.setOnClickListener(this);
             mBraveRewardsButton.setOnLongClickListener(this);
+            BraveTouchUtils.ensureMinTouchTarget(mBraveRewardsButton);
         }
 
         if (mBraveWalletButton != null) {
             mBraveWalletButton.setClickable(true);
             mBraveWalletButton.setOnClickListener(this);
             mBraveWalletButton.setOnLongClickListener(this);
+            BraveTouchUtils.ensureMinTouchTarget(mBraveWalletButton);
         }
 
         mBraveShieldsHandler = new BraveShieldsHandler(getContext());
@@ -1102,6 +1106,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 R.id.brave_rewards_onboarding_modal_tos_pp_text);
         tosAndPpText.setMovementMethod(LinkMovementMethod.getInstance());
         tosAndPpText.setText(tosTextSS);
+        BraveTouchUtils.ensureMinTouchTarget(tosAndPpText);
 
         TextView takeQuickTourButton =
                 braveRewardsOnboardingModalView.findViewById(R.id.take_quick_tour_button);
@@ -1113,6 +1118,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 dialog.dismiss();
             }
         }));
+        BraveTouchUtils.ensureMinTouchTarget(takeQuickTourButton);
         TextView btnBraveRewards =
                 braveRewardsOnboardingModalView.findViewById(R.id.start_using_brave_rewards_text);
         btnBraveRewards.setOnClickListener((new View.OnClickListener() {

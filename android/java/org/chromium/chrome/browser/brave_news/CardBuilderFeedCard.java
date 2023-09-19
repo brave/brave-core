@@ -73,6 +73,7 @@ import org.chromium.chrome.browser.local_database.DisplayAdsTable;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.url.mojom.Url;
@@ -374,6 +375,7 @@ public class CardBuilderFeedCard {
         int displayHeight = mActivity.getResources().getDisplayMetrics().heightPixels;
         TableRow rowTop = new TableRow(mActivity);
         TextView topText = new TextView(mActivity);
+        BraveTouchUtils.ensureMinTouchTarget(topText);
 
         TableRow row1 = new TableRow(mActivity);
         TableRow row2 = new TableRow(mActivity);
