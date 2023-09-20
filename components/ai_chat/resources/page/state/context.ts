@@ -4,18 +4,18 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { ConversationTurn, AutoGenerateQuestionsPref, SiteInfo, APIError } from '../api/page_handler'
+import * as mojom from '../api/page_handler'
 
 interface Store {
-  conversationHistory: ConversationTurn[]
+  conversationHistory: mojom.ConversationTurn[]
   suggestedQuestions: string[]
   isGenerating: boolean
   canGenerateQuestions: boolean
   hasSeenAgreement: boolean
-  userAutoGeneratePref: AutoGenerateQuestionsPref | undefined
-  siteInfo: SiteInfo | null
+  userAutoGeneratePref: mojom.AutoGenerateQuestionsPref | undefined
+  siteInfo: mojom.SiteInfo | null
   favIconUrl: string | undefined
-  currentError: APIError | undefined
+  currentError: mojom.APIError | undefined
   apiHasError: boolean
   shouldDisableUserInput: boolean
   generateSuggestedQuestions: () => void
@@ -34,7 +34,7 @@ const defaultStore = {
   userAutoGeneratePref: undefined,
   siteInfo: null,
   favIconUrl: undefined,
-  currentError: APIError.None,
+  currentError: mojom.APIError.None,
   generateSuggestedQuestions: () => {},
   setUserAllowsAutoGenerating: () => {},
   handleAgreeClick: () => {}

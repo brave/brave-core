@@ -15,7 +15,7 @@ import PromptAutoSuggestion from '../prompt_auto_suggestion'
 import ErrorConnection from '../error_connection'
 import ErrorRateLimit from '../error_rate_limit'
 import InputBox from '../input_box'
-import getPageHandlerInstance, { AutoGenerateQuestionsPref, APIError } from '../../api/page_handler'
+import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 
 function Main () {
@@ -46,13 +46,13 @@ function Main () {
       )
     }
 
-    if (userAutoGeneratePref === AutoGenerateQuestionsPref.Unset && userAutoGeneratePref) {
+    if (userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset && userAutoGeneratePref) {
       promptAutoSuggestionElement = (
         <PromptAutoSuggestion />
       )
     }
 
-    if (apiHasError && currentError === APIError.ConnectionIssue) {
+    if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
       currentErrorElement = (
         <ErrorConnection
           onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
@@ -60,7 +60,7 @@ function Main () {
       )
     }
 
-    if (apiHasError && currentError === APIError.RateLimitReached) {
+    if (apiHasError && currentError === mojom.APIError.RateLimitReached) {
       currentErrorElement = (
         <ErrorRateLimit
           onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}

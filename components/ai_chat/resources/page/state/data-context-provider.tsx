@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { loadTimeData } from '$web-common/loadTimeData'
 
-import getPageHandlerInstance, { ConversationTurn, AutoGenerateQuestionsPref, SiteInfo, APIError } from '../api/page_handler'
+import getPageHandlerInstance, * as mojom from '../api/page_handler'
 import DataContext from './context'
 
 function toBlobURL (data: number[] | null) {
@@ -21,17 +21,17 @@ interface DataContextProviderProps {
 }
 
 function DataContextProvider (props: DataContextProviderProps) {
-  const [conversationHistory, setConversationHistory] = React.useState<ConversationTurn[]>([])
+  const [conversationHistory, setConversationHistory] = React.useState<mojom.ConversationTurn[]>([])
   const [suggestedQuestions, setSuggestedQuestions] = React.useState<string[]>([])
   const [isGenerating, setIsGenerating] = React.useState(false)
   const [canGenerateQuestions, setCanGenerateQuestions] = React.useState(false)
-  const [userAutoGeneratePref, setUserAutoGeneratePref] = React.useState<AutoGenerateQuestionsPref>()
-  const [siteInfo, setSiteInfo] = React.useState<SiteInfo | null>(null)
+  const [userAutoGeneratePref, setUserAutoGeneratePref] = React.useState<mojom.AutoGenerateQuestionsPref>()
+  const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo | null>(null)
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
-  const [currentError, setCurrentError] = React.useState<APIError>(APIError.None)
+  const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
   const [hasSeenAgreement, setHasSeenAgreement] = React.useState(loadTimeData.getBoolean("hasSeenAgreement"))
 
-  const apiHasError = (currentError !== APIError.None)
+  const apiHasError = (currentError !== mojom.APIError.None)
   const shouldDisableUserInput = apiHasError || isGenerating
 
   const getConversationHistory = () => {
@@ -40,7 +40,7 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   const setUserAllowsAutoGenerating = (value: boolean) => {
     getPageHandlerInstance().pageHandler.setAutoGenerateQuestions(value)
-    setUserAutoGeneratePref(value ? AutoGenerateQuestionsPref.Enabled : AutoGenerateQuestionsPref.Disabled)
+    setUserAutoGeneratePref(value ? mojom.AutoGenerateQuestionsPref.Enabled : mojom.AutoGenerateQuestionsPref.Disabled)
   }
 
   const getSuggestedQuestions = () => {
@@ -99,15 +99,15 @@ function DataContextProvider (props: DataContextProviderProps) {
     })
     getPageHandlerInstance().callbackRouter.onAPIRequestInProgress.addListener(setIsGenerating)
     getPageHandlerInstance().callbackRouter.onSuggestedQuestionsChanged
-      .addListener((questions: string[], hasGenerated: boolean, autoGenerate: AutoGenerateQuestionsPref) => {
+      .addListener((questions: string[], hasGenerated: boolean, autoGenerate: mojom.AutoGenerateQuestionsPref) => {
         setSuggestedQuestions(questions)
         setCanGenerateQuestions(!hasGenerated)
         setUserAutoGeneratePref(autoGenerate)
       })
 
     getPageHandlerInstance().callbackRouter.onFaviconImageDataChanged.addListener((faviconImageData: number[]) => setFavIconUrl(toBlobURL(faviconImageData)))
-    getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener((siteInfo: SiteInfo) => setSiteInfo(siteInfo))
-    getPageHandlerInstance().callbackRouter.onAPIResponseError.addListener((error: APIError) => setCurrentError(error))
+    getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener((siteInfo: mojom.SiteInfo) => setSiteInfo(siteInfo))
+    getPageHandlerInstance().callbackRouter.onAPIResponseError.addListener((error: mojom.APIError) => setCurrentError(error))
   }, [])
 
   const store = {
