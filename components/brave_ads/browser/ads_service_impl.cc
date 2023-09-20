@@ -542,6 +542,7 @@ void AdsServiceImpl::ShutdownAndResetState() {
   VLOG(6) << "Resetting ads state";
 
   profile_->GetPrefs()->ClearPrefsWithPrefixSilently("brave.brave_ads");
+  local_state_->ClearPref(brave_l10n::prefs::kGeoRegionCode);
 
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, base_path_),

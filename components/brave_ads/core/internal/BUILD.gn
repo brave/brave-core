@@ -670,6 +670,8 @@ static_library("internal") {
     "flags/environment/environment_flag_util.h",
     "flags/flag_constants.h",
     "flags/flags_util.cc",
+    "geographical/region/region.cc",
+    "geographical/region/region.h",
     "geographical/subdivision/subdivision.cc",
     "geographical/subdivision/subdivision.h",
     "geographical/subdivision/subdivision_observer.h",
