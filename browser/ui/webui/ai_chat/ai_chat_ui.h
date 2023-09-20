@@ -16,7 +16,6 @@
 #include "ui/webui/mojo_web_ui_controller.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
 
-class Browser;
 class Profile;
 
 class AIChatUI : public ui::UntrustedWebUIController {
@@ -41,7 +40,6 @@ class AIChatUI : public ui::UntrustedWebUIController {
 
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
   raw_ptr<Profile> profile_ = nullptr;
-  raw_ptr<Browser> browser_ = nullptr;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

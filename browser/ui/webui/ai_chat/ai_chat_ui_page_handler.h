@@ -23,8 +23,6 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
-class TabStripModel;
-
 namespace content {
 class WebContents;
 }
@@ -40,7 +38,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
  public:
   AIChatUIPageHandler(
       content::WebContents* owner_web_contents,
-      TabStripModel* tab_strip_model,
+      content::WebContents* chat_context_web_contents,
       Profile* profile,
       mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver);
 

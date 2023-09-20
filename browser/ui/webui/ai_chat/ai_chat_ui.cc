@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/common/pref_names.h"
@@ -23,8 +24,30 @@
 #include "content/public/common/url_constants.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "chrome/browser/ui/browser.h"
+#else
+#include "chrome/browser/ui/android/tab_model/tab_model.h"
+#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
+#endif
+
+#if BUILDFLAG(IS_ANDROID)
+namespace {
+content::WebContents* GetActiveWebContents(content::BrowserContext* context) {
+  auto tab_models = TabModelList::models();
+  auto iter = base::ranges::find_if(
+      tab_models, [](const auto& model) { return model->IsActiveModel(); });
+  if (iter == tab_models.end()) {
+    return nullptr;
+  }
+
+  auto* active_contents = (*iter)->GetActiveWebContents();
+  if (!active_contents) {
+    return nullptr;
+  }
+  DCHECK_EQ(active_contents->GetBrowserContext(), context);
+  return active_contents;
+}
+}  // namespace
 #endif
 
 AIChatUI::AIChatUI(content::WebUI* web_ui)
@@ -79,13 +102,22 @@ void AIChatUI::BindInterface(
     embedder_->ShowUI();
   }
 
+  content::WebContents* web_contents = nullptr;
 #if !BUILDFLAG(IS_ANDROID)
-  browser_ = ai_chat::GetBrowserForWebContents(web_ui()->GetWebContents());
-  DCHECK(browser_);
-  page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
-      web_ui()->GetWebContents(), browser_->tab_strip_model(), profile_,
-      std::move(receiver));
+  raw_ptr<Browser> browser =
+      ai_chat::GetBrowserForWebContents(web_ui()->GetWebContents());
+  DCHECK(browser);
+  TabStripModel* tab_strip_model = browser->tab_strip_model();
+  DCHECK(tab_strip_model);
+  web_contents = tab_strip_model->GetActiveWebContents();
+#else
+  web_contents = GetActiveWebContents(profile_);
 #endif
+  if (web_contents == web_ui()->GetWebContents()) {
+    web_contents = nullptr;
+  }
+  page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
+      web_ui()->GetWebContents(), web_contents, profile_, std::move(receiver));
 }
 
 std::unique_ptr<content::WebUIController>
