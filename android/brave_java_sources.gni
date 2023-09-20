@@ -392,7 +392,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/ContentFilteringAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/ContentFilteringFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/shields/CookieListOptInServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/FilterListServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/UrlSanitizerServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",

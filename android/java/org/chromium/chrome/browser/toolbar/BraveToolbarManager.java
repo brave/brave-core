@@ -195,26 +195,6 @@ public class BraveToolbarManager extends ToolbarManager {
             }
         };
         HomepageManager.getInstance().addListener(mBraveHomepageStateListener);
-        mLayoutStateProviderSupplier.onAvailable(
-                mCallbackController.makeCancelable(this::setLayoutStateProvider));
-    }
-
-    private void setLayoutStateProvider(LayoutStateProvider layoutStateProvider) {
-        mLayoutStateObserver = new LayoutStateProvider.LayoutStateObserver() {
-            @Override
-            public void onStartedShowing(@LayoutType int layoutType) {
-                if (layoutType == LayoutType.TAB_SWITCHER) {
-                    try {
-                        BraveActivity braveActivity = BraveActivity.getBraveActivity();
-                        braveActivity.dismissCookieConsent();
-                    } catch (BraveActivity.BraveActivityNotFoundException e) {
-                        Log.e(TAG, "setLayoutStateProvider onStartedShowing click " + e);
-                    }
-                }
-            }
-        };
-        mLayoutStateProvider = layoutStateProvider;
-        mLayoutStateProvider.addObserver(mLayoutStateObserver);
     }
 
     @Override
