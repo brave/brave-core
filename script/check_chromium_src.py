@@ -55,7 +55,6 @@ PATH_EXCLUDES = [
     'chrome/browser/safe_browsing/download_protection/check_client_download_request_base_browsertest.cc',
     'chrome/browser/shell_integration_unittest_mac.cc',
     'chrome/browser/signin/account_consistency_disabled_unittest.cc',
-    'chrome/browser/ui/autofill/payments/brave_save_card_bubble_controller_impl_browsertest.cc',
     'chrome/browser/ui/views/tabs/tab_hover_card_bubble_view_browsertest.cc',
     'chrome/common/chrome_constants_unittest_mac.cc',
     'chrome/installer/mini_installer/brave_mini_installer_unittest.cc',
