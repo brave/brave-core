@@ -53,7 +53,7 @@ SegmentProbabilityList ToSortedSegmentProbabilityList(
 SegmentList ToSegmentList(const SegmentProbabilityList& segment_probabilities) {
   SegmentList segments;
 
-  for (const auto& [segment, probability] : segment_probabilities) {
+  for (const auto& [segment, _] : segment_probabilities) {
     CHECK(!segment.empty());
 
     segments.push_back(segment);
@@ -64,7 +64,7 @@ SegmentList ToSegmentList(const SegmentProbabilityList& segment_probabilities) {
 
 }  // namespace
 
-SegmentList TextClassificationModel::GetSegments() const {
+SegmentList GetTextClassificationSegments() {
   const TextClassificationProbabilityList& probabilities =
       ClientStateManager::GetInstance()
           .GetTextClassificationProbabilitiesHistory();

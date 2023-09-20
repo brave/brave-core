@@ -41,11 +41,10 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest,
   // Arrange
   SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
 
-  const EpsilonGreedyBanditModel model;
   NotifyDidInitializeAds();
 
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetEpsilonGreedyBanditSegments();
 
   // Assert
   EXPECT_TRUE(segments.empty());
@@ -58,11 +57,11 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, EligableSegmentsAreEmpty) {
       kEpsilonGreedyBanditFeatures, {{"epsilon_value", "0.5"}});
 
   const EpsilonGreedyBanditProcessor processor;
-  const EpsilonGreedyBanditModel model;
+
   NotifyDidInitializeAds();
 
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetEpsilonGreedyBanditSegments();
 
   // Assert
   EXPECT_TRUE(segments.empty());
@@ -77,11 +76,11 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsIfNeverProcessed) {
       kEpsilonGreedyBanditFeatures, {{"epsilon_value", "0.25"}});
 
   const EpsilonGreedyBanditProcessor processor;
-  const EpsilonGreedyBanditModel model;
+
   NotifyDidInitializeAds();
 
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetEpsilonGreedyBanditSegments();
 
   // Assert
   EXPECT_EQ(3U, segments.size());
@@ -102,11 +101,10 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
   processor.Process({/*segment*/ "personal finance",
                      mojom::NotificationAdEventType::kClicked});
 
-  const EpsilonGreedyBanditModel model;
   NotifyDidInitializeAds();
 
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetEpsilonGreedyBanditSegments();
 
   // Exploration is non-deterministic, so can only verify the number of
   // segments returned
@@ -146,11 +144,10 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
   processor.Process({segment_3, mojom::NotificationAdEventType::kDismissed});
   processor.Process({segment_3, mojom::NotificationAdEventType::kClicked});
 
-  const EpsilonGreedyBanditModel model;
   NotifyDidInitializeAds();
 
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetEpsilonGreedyBanditSegments();
 
   // Assert
   const SegmentList expected_segments = {"science", "travel",
@@ -191,11 +188,10 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
   processor.Process({segment_3, mojom::NotificationAdEventType::kDismissed});
   processor.Process({segment_3, mojom::NotificationAdEventType::kClicked});
 
-  const EpsilonGreedyBanditModel model;
   NotifyDidInitializeAds();
 
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetEpsilonGreedyBanditSegments();
 
   // Assert
   const SegmentList expected_segments = {"science", "technology & computing"};

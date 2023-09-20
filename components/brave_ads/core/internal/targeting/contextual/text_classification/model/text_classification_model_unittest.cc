@@ -41,10 +41,8 @@ TEST_F(BraveAdsTextClassificationModelTest,
   TextClassificationProcessor processor(*resource_);
   processor.Process(/*text*/ "The quick brown fox jumps over the lazy dog");
 
-  const TextClassificationModel model;
-
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetTextClassificationSegments();
 
   // Assert
   EXPECT_TRUE(segments.empty());
@@ -58,10 +56,8 @@ TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
   TextClassificationProcessor processor(*resource_);
   processor.Process(text);
 
-  const TextClassificationModel model;
-
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetTextClassificationSegments();
 
   // Assert
   EXPECT_TRUE(segments.empty());
@@ -75,10 +71,8 @@ TEST_F(BraveAdsTextClassificationModelTest,
   TextClassificationProcessor processor(*resource_);
   processor.Process(/*text*/ "Some content about technology & computing");
 
-  const TextClassificationModel model;
-
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetTextClassificationSegments();
 
   // Assert
   const SegmentList expected_segments = {
@@ -156,10 +150,8 @@ TEST_F(BraveAdsTextClassificationModelTest,
     processor.Process(text);
   }
 
-  const TextClassificationModel model;
-
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetTextClassificationSegments();
 
   // Assert
   const SegmentList expected_segments = {
@@ -268,10 +260,8 @@ TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
   ASSERT_TRUE(LoadResource());
 
-  const TextClassificationModel model;
-
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetTextClassificationSegments();
 
   // Assert
   EXPECT_TRUE(segments.empty());

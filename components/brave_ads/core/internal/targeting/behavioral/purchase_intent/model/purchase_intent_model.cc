@@ -44,7 +44,7 @@ uint16_t CalculateScoreForHistory(
 
 }  // namespace
 
-SegmentList PurchaseIntentModel::GetSegments() const {
+SegmentList GetPurchaseIntentSegments() {
   SegmentList segments;
 
   const PurchaseIntentSignalHistoryMap& purchase_intent_signal_history =

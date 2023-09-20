@@ -45,19 +45,15 @@ void BuildUserModel(BuildUserModelCallback callback) {
   UserModelInfo user_model;
 
   if (IsPurchaseIntentFeatureEnabled()) {
-    const PurchaseIntentModel purchase_intent_model;
-    user_model.intent_segments = purchase_intent_model.GetSegments();
+    user_model.intent_segments = GetPurchaseIntentSegments();
   }
 
   if (IsEpsilonGreedyBanditFeatureEnabled()) {
-    const EpsilonGreedyBanditModel epsilon_greedy_bandit_model;
-    user_model.latent_interest_segments =
-        epsilon_greedy_bandit_model.GetSegments();
+    user_model.latent_interest_segments = GetEpsilonGreedyBanditSegments();
   }
 
   if (IsTextClassificationFeatureEnabled()) {
-    const TextClassificationModel text_classification_model;
-    user_model.interest_segments = text_classification_model.GetSegments();
+    user_model.interest_segments = GetTextClassificationSegments();
   }
 
   if (!IsTextEmbeddingFeatureEnabled()) {

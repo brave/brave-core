@@ -72,8 +72,7 @@ TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
   // Arrange
   ASSERT_TRUE(LoadResource());
 
-  const TextClassificationModel model;
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetTextClassificationSegments();
 
   // Act
   const TextClassificationProbabilityList& list =
