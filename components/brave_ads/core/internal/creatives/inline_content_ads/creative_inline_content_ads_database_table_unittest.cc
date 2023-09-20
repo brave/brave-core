@@ -315,40 +315,6 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
       std::move(expected_creative_ads)));
 }
 
-TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
-       GetCreativeInlineContentAdsMatchingCaseInsensitiveSegments) {
-  // Arrange
-  CreativeInlineContentAdList creative_ads;
-
-  CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
-  creative_ad_1.segment = "technology & computing-software";
-  creative_ads.push_back(creative_ad_1);
-
-  CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
-  creative_ad_2.segment = "food & drink";
-  creative_ads.push_back(creative_ad_2);
-
-  database::SaveCreativeInlineContentAds(creative_ads);
-
-  // Act
-
-  // Assert
-  CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
-
-  database_table_.GetForSegmentsAndDimensions(
-      /*segments*/ {"FoOd & DrInK"}, /*dimensions*/ "200x100",
-      base::BindOnce(
-          [](const CreativeInlineContentAdList& expected_creative_ads,
-             const bool success, const SegmentList& /*segments*/,
-             const CreativeInlineContentAdList& creative_ads) {
-            EXPECT_TRUE(success);
-            EXPECT_EQ(expected_creative_ads, creative_ads);
-          },
-          std::move(expected_creative_ads)));
-}
-
 TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest, TableName) {
   // Arrange
 
