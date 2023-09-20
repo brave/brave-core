@@ -17,7 +17,6 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
-#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -36,7 +35,6 @@ class FaviconService;
 
 namespace ai_chat {
 class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
-                            public TabStripModelObserver,
                             public AIChatTabHelper::Observer,
                             public content::WebContentsObserver {
  public:
@@ -82,12 +80,6 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       mojom::AutoGenerateQuestionsPref auto_generate) override;
   void OnFaviconImageDataChanged() override;
   void OnPageHasContent() override;
-
-  // TabStripModelObserver
-  void OnTabStripModelChanged(
-      TabStripModel* tab_strip_model,
-      const TabStripModelChange& change,
-      const TabStripSelectionChange& selection) override;
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
   absl::optional<mojom::SiteInfo> BuildSiteInfo();

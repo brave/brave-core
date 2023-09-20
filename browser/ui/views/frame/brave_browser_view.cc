@@ -680,3 +680,11 @@ void BraveBrowserView::StopTabCycling() {
   static_cast<BraveTabStripModel*>(browser()->tab_strip_model())
       ->StopMRUCycling();
 }
+
+void BraveBrowserView::SetSidePanelOperationByActiveTabChange(bool tab_change) {
+  if (!sidebar_container_view_) {
+    return;
+  }
+
+  sidebar_container_view_->set_operation_from_active_tab_change(tab_change);
+}

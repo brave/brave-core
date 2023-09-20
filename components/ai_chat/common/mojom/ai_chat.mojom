@@ -73,9 +73,6 @@ interface ChatUIPage {
   // Browser window.
   OnSuggestedQuestionsChanged(
       array<string> questions, bool has_generated, AutoGenerateQuestionsPref auto_generate);
-  // Event for when active tab changes, if it is the target of this chat
-  // conversation.
-  OnTargetTabChanged();
   OnSiteInfoChanged(SiteInfo? info);
   OnFaviconImageDataChanged(array<uint8> favicon_image_data);
 };

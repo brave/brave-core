@@ -19,10 +19,6 @@ class Sidebar {
   // Update sidebar item's UI state.
   virtual void UpdateSidebarItemsState() = 0;
 
-  // Return true if active tab(web contents) has associated
-  // side panel.
-  virtual bool HasActiveContextualEntry() = 0;
-
  protected:
   virtual ~Sidebar() {}
 };
