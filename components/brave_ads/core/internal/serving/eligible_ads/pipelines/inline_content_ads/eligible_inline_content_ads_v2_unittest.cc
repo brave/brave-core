@@ -60,10 +60,8 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAds) {
           /*interest_segments*/ {"foo-bar3"},
           /*text_embedding_html_events*/ {}),
       /*dimensions*/ "200x100",
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
         // Assert
-        EXPECT_TRUE(had_opportunity);
         EXPECT_FALSE(creative_ads.empty());
       }));
 }
@@ -92,10 +90,8 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
           /*interest_segments*/ {},
           /*text_embedding_html_events*/ {}),
       /*dimensions*/ "200x100",
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
         // Assert
-        EXPECT_TRUE(had_opportunity);
         EXPECT_FALSE(creative_ads.empty());
       }));
 }
@@ -112,10 +108,8 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test,
           /*interest_segments*/ {"interest-foo", "interest-bar"},
           /*text_embedding_html_events*/ {}),
       /*dimensions*/ "?x?",
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
       }));
 }
@@ -131,10 +125,8 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
           /*interest_segments*/ {"interest-foo", "interest-bar"},
           /*text_embedding_html_events*/ {}),
       /*dimensions*/ "200x100",
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
       }));
 }

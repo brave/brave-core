@@ -12,11 +12,8 @@ namespace brave_ads {
 
 class AdType;
 
-namespace p2a {
+void RecordP2AAdOpportunity(const AdType& ad_type, const SegmentList& segments);
 
-void RecordAdOpportunity(const AdType& ad_type, const SegmentList& segments);
-
-}  // namespace p2a
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ANALYTICS_P2A_OPPORTUNITIES_P2A_OPPORTUNITY_H_

@@ -88,7 +88,7 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD2(RunDBTransaction,
                void(mojom::DBTransactionInfoPtr, RunDBTransactionCallback));
 
-  MOCK_METHOD1(RecordP2AEvents, void(base::Value::List events));
+  MOCK_METHOD1(RecordP2AEvents, void(const std::vector<std::string>& events));
 
   MOCK_METHOD1(AddTrainingSample,
                void(const std::vector<brave_federated::mojom::CovariateInfoPtr>

@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_unittest_util.h"
@@ -41,8 +40,7 @@ class InlineContentAdServingDelegateForTesting
 
  private:
   // InlineContentAdServingDelegate:
-  void OnOpportunityAroseToServeInlineContentAd(
-      const SegmentList& /*segments*/) override {
+  void OnOpportunityAroseToServeInlineContentAd() override {
     opportunity_arose_to_serve_ad_ = true;
   }
 
@@ -144,7 +142,7 @@ TEST_F(BraveAdsInlineContentAdServingTest,
                     const absl::optional<InlineContentAdInfo>& ad) {
         // Assert
         EXPECT_FALSE(ad);
-        EXPECT_FALSE(ad_serving_delegate_.opportunity_arose_to_serve_ad());
+        EXPECT_TRUE(ad_serving_delegate_.opportunity_arose_to_serve_ad());
         EXPECT_FALSE(ad_serving_delegate_.did_serve_ad());
         EXPECT_TRUE(ad_serving_delegate_.failed_to_serve_ad());
       });

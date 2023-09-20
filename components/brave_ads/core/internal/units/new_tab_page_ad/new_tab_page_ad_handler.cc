@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
+#include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
@@ -142,9 +143,10 @@ void NewTabPageAdHandler::TriggerServedEventCallback(
       base::BindOnce(&FireEventCallback, std::move(callback)));
 }
 
-void NewTabPageAdHandler::OnOpportunityAroseToServeNewTabPageAd(
-    const SegmentList& /*segments*/) {
+void NewTabPageAdHandler::OnOpportunityAroseToServeNewTabPageAd() {
   BLOG(1, "Opportunity arose to serve a new tab page ad");
+
+  RecordP2AAdOpportunity(AdType::kNewTabPageAd, /*segments*/ {});
 }
 
 void NewTabPageAdHandler::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {

@@ -6,6 +6,7 @@
 #include "base/test/mock_callback.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -47,6 +48,9 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, Serve) {
   // Arrange
   ForcePermissionRulesForTesting();
 
+  EXPECT_CALL(ads_client_mock_, RecordP2AEvents(BuildP2AAdOpportunityEvents(
+                                    AdType::kNotificationAd, /*segments*/ {})));
+
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([](const NotificationAdInfo& ad) {
         // Assert
@@ -54,16 +58,12 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, Serve) {
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
       }));
 
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvents);
-
   // Act
   ServeAd();
 }
 
 TEST_F(BraveAdsNotificationAdIntegrationTest, DoNotServe) {
   // Arrange
-
-  // Assert
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd).Times(0);
 
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
@@ -72,6 +72,8 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, DoNotServe) {
 
   // Act
   ServeAd();
+
+  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdIntegrationTest,
@@ -87,6 +89,8 @@ TEST_F(BraveAdsNotificationAdIntegrationTest,
 TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
   ForcePermissionRulesForTesting();
+
+  EXPECT_CALL(ads_client_mock_, AddTrainingSample).Times(0);
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
@@ -106,8 +110,6 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
           EXPECT_EQ(1U, GetHistoryItemCountForTesting());
           EXPECT_EQ(1U, GetTransactionCountForTesting());
         });
-
-        EXPECT_CALL(ads_client_mock_, AddTrainingSample).Times(0);
 
         // Act
         GetAds().TriggerNotificationAdEvent(

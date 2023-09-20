@@ -237,8 +237,8 @@ bool AdsClientIOS::HasPrefPath(const std::string& path) const {
   return [bridge_ hasPrefPath:path];
 }
 
-void AdsClientIOS::RecordP2AEvents(base::Value::List events) {
-  [bridge_ recordP2AEvents:std::move(events)];
+void AdsClientIOS::RecordP2AEvents(const std::vector<std::string>& events) {
+  [bridge_ recordP2AEvents:events];
 }
 
 void AdsClientIOS::AddTrainingSample(

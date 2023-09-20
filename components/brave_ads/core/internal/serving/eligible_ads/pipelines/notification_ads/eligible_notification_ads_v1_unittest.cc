@@ -69,10 +69,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForChildSegment) {
           /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -96,10 +94,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForParentSegment) {
           /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -123,10 +119,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForUntargetedSegment) {
           /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -165,10 +159,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForMultipleSegments) {
           /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_TRUE(ContainersEq(expected_creative_ads, creative_ads));
           },
           std::move(expected_creative_ads)));
@@ -188,10 +180,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForNoSegments) {
       /*user_model*/ {},
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -211,10 +201,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
           /*latent_interest_segments*/ {},
           /*interest_segments*/ {"UNMATCHED"},
           /*text_embedding_html_events*/ {}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNotificationAdList& creative_ads) {
+      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
       }));
 }
@@ -229,10 +217,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
           /*latent_interest_segments*/ {},
           /*interest_segments*/ {"technology & computing", "food & drink"},
           /*text_embedding_html_events*/ {}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNotificationAdList& creative_ads) {
+      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
       }));
 }
@@ -267,10 +253,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfAlreadySeen) {
           /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -307,10 +291,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetPacedAds) {
           /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -351,10 +333,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetPrioritizedAds) {
           /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));

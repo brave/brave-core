@@ -59,10 +59,8 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAds) {
           /*latent_interest_segments*/ {},
           /*interest_segments*/ {"foo-bar3"},
           /*text_embedding_html_events*/ {}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNewTabPageAdList& creative_ads) {
+      base::BindOnce([](const CreativeNewTabPageAdList& creative_ads) {
         // Assert
-        EXPECT_TRUE(had_opportunity);
         EXPECT_FALSE(creative_ads.empty());
       }));
 }
@@ -90,10 +88,8 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAdsForNoSegments) {
           /*latent_interest_segments*/ {},
           /*interest_segments*/ {},
           /*text_embedding_html_events*/ {}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNewTabPageAdList& creative_ads) {
+      base::BindOnce([](const CreativeNewTabPageAdList& creative_ads) {
         // Assert
-        EXPECT_TRUE(had_opportunity);
         EXPECT_FALSE(creative_ads.empty());
       }));
 }
@@ -108,10 +104,8 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
           /*latent_interest_segments*/ {},
           /*interest_segments*/ {"interest-foo", "interest-bar"},
           /*text_embedding_html_events*/ {}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNewTabPageAdList& creative_ads) {
+      base::BindOnce([](const CreativeNewTabPageAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
       }));
 }

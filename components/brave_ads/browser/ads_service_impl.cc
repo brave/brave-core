@@ -30,7 +30,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
-#include "brave/components/brave_ads/browser/analytics/p2a/ads_p2a.h"
+#include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/device_id/device_id.h"
@@ -1697,12 +1697,10 @@ void AdsServiceImpl::RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
       std::move(callback));
 }
 
-void AdsServiceImpl::RecordP2AEvents(base::Value::List events) {
+void AdsServiceImpl::RecordP2AEvents(const std::vector<std::string>& events) {
   for (const auto& event : events) {
-    CHECK(event.is_string());
-
-    RecordInWeeklyStorageAndEmitP2AHistogramName(profile_->GetPrefs(),
-                                                 /*name*/ event.GetString());
+    RecordAndEmitP2AHistogramName(profile_->GetPrefs(),
+                                  /*name*/ event);
   }
 }
 

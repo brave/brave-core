@@ -70,10 +70,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAds) {
           /*text_embedding_html_events*/ {text_embedding_html_event}),
       base::BindOnce(
           [](const CreativeNotificationAdInfo& creative_ad_1,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_FALSE(had_opportunity);
             EXPECT_FALSE(creative_ads.empty());
 
             EXPECT_EQ(creative_ads.at(0).embedding, creative_ad_1.embedding);
@@ -104,10 +102,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredTextEmbeddings) {
           /*latent_interest_segments*/ {},
           /*latent_interest_segments*/ {},
           /*text_embedding_html_events*/ {}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNotificationAdList& creative_ads) {
+      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_FALSE(creative_ads.empty());
       }));
 }
@@ -140,10 +136,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test,
           /*latent_interest_segments*/ {},
           /*interest_segments*/ {},
           /*text_embedding_html_events*/ {text_embedding_html_event}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNotificationAdList& creative_ads) {
+      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
       }));
 }
@@ -160,10 +154,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
           /*latent_interest_segments*/ {},
           /*interest_segments*/ {},
           /*text_embedding_html_events*/ {text_embedding_html_event}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNotificationAdList& creative_ads) {
+      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
       }));
 }
