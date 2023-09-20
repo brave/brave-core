@@ -13,7 +13,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/common/pref_names.h"
@@ -76,12 +76,12 @@ void WebcompatReporterDOMHandler::InitAdditionalParameters(Profile* profile) {
   brave_shields::AdBlockService* ad_block_service =
       g_brave_browser_process->ad_block_service();
   if (ad_block_service != nullptr) {
-    brave_shields::AdBlockRegionalServiceManager* regional_service_manager =
-        ad_block_service->regional_service_manager();
-    CHECK(regional_service_manager);
+    brave_shields::AdBlockComponentServiceManager* service_manager =
+        ad_block_service->component_service_manager();
+    CHECK(service_manager);
     for (const brave_shields::FilterListCatalogEntry& entry :
-         regional_service_manager->GetFilterListCatalog()) {
-      if (regional_service_manager->IsFilterListEnabled(entry.uuid)) {
+         service_manager->GetFilterListCatalog()) {
+      if (service_manager->IsFilterListEnabled(entry.uuid)) {
         ad_block_list_names.push_back(entry.title);
       }
     }
