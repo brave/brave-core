@@ -127,7 +127,7 @@ class VerticalTabStripRegionView : public views::View,
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            OriginalTabSearchButton);
 
-  bool IsFullscreen() const;
+  bool IsTabFullscreen() const;
 
   void SetState(State state);
 

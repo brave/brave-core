@@ -720,9 +720,19 @@ void VerticalTabStripRegionView::OnWidgetDestroying(views::Widget* widget) {
   widget_observation_.Reset();
 }
 
-bool VerticalTabStripRegionView::IsFullscreen() const {
-  auto* widget = GetWidget();
-  return widget && widget->GetTopLevelWidget()->IsFullscreen();
+bool VerticalTabStripRegionView::IsTabFullscreen() const {
+  auto* exclusive_access_manager = browser_->exclusive_access_manager();
+  if (!exclusive_access_manager) {
+    return false;
+  }
+
+  auto* fullscreen_controller =
+      exclusive_access_manager->fullscreen_controller();
+  if (!fullscreen_controller) {
+    return false;
+  }
+
+  return fullscreen_controller->IsWindowFullscreenForTabOrPending();
 }
 
 void VerticalTabStripRegionView::SetState(State state) {
@@ -1184,7 +1194,7 @@ gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
     return {};
   }
 
-  if (IsFullscreen()) {
+  if (IsTabFullscreen()) {
     return {};
   }
 
