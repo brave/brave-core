@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.vpn.activities;
 
 import android.graphics.Paint;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,14 +15,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.adapters.BraveVpnPlanPagerAdapter;
@@ -31,7 +27,6 @@ import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 public class BraveVpnPlansActivity extends BraveVpnParentActivity {
-    private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
     private ProgressBar mMonthlyPlanProgress;
     private ProgressBar mYearlyPlanProgress;
     private LinearLayout mPlanLayout;
@@ -42,9 +37,6 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
 
     private LinearLayout mYearlySelectorLayout;
     private TextView mYearlySubscriptionAmountText;
-
-    private MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
-    private LiveData<Boolean> billingConnectionState = _billingConnectionState;
 
     @Override
     public void onResumeWithNative() {
@@ -71,6 +63,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         actionBar.setTitle(getResources().getString(R.string.brave_vpn));
 
         mMonthlyPlanProgress = findViewById(R.id.monthly_plan_progress);
+
         mYearlyPlanProgress = findViewById(R.id.yearly_plan_progress);
         mPlanLayout = findViewById(R.id.plan_layout);
 
@@ -98,10 +91,6 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
-                BraveVpnPlansActivity.this, _billingConnectionState);
-        LiveDataUtil.observeOnce(billingConnectionState, isConnected -> {
-            if (isConnected) {
                 // Check for an active subscription to show restore
                 BraveVpnUtils.showProgressDialog(BraveVpnPlansActivity.this,
                         getResources().getString(R.string.vpn_connect_text));
@@ -110,7 +99,6 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
 
                 // Set up monthly subscription
                 mMonthlyPlanProgress.setVisibility(View.VISIBLE);
-                InAppPurchaseWrapper.getInstance().queryProductDetailsAsync();
                 LiveDataUtil.observeOnce(
                         InAppPurchaseWrapper.getInstance().getMonthlyProductDetails(),
                         monthlyProductDetails -> {
@@ -220,8 +208,6 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                                 });
                             }
                         });
-            }
-        });
     }
 
     @Override
@@ -256,13 +242,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
 
     @Override
     protected void triggerLayoutInflation() {
-        mFirstRunFlowSequencer = new BraveFirstRunFlowSequencer(this, getProfileSupplier()) {
-            @Override
-            public void onFlowIsKnown(Bundle freProperties) {
-                initializeViews();
-            }
-        };
-        mFirstRunFlowSequencer.start();
+        initializeViews();
         onInitialLayoutInflationComplete();
     }
 
@@ -274,6 +254,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     @Override
     public void showRestoreMenu(boolean shouldShowRestore) {
         this.mShouldShowRestoreMenu = shouldShowRestore;
+        InAppPurchaseWrapper.getInstance().queryProductDetailsAsync();
         invalidateOptionsMenu();
     }
 
