@@ -402,6 +402,24 @@ extension BraveWallet.TransactionInfo {
   }
 }
 
+extension BraveWallet.SignMessageRequest {
+  static var previewRequest: BraveWallet.SignMessageRequest {
+    .init(
+      originInfo: .init(originSpec: "https://app.uniswap.org", eTldPlusOne: "uniswap.org"),
+      id: 1,
+      accountId: BraveWallet.AccountInfo.previewAccount.accountId,
+      domain: "example.com",
+      message: "To avoid digital cat burglars, sign below to authenticate with CryptoKitties.",
+      isEip712: false,
+      domainHash: "",
+      primaryHash: "",
+      messageBytes: [],
+      coin: .eth,
+      chainId: BraveWallet.MainnetChainId
+    )
+  }
+}
+
 extension TransactionSummary {
   
   static var previewConfirmedSend = previewSummary(from: .previewConfirmedSend)
