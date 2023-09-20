@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
+import AlertCenter from '@brave/leo/react/alertCenter'
 import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import ConversationList from '../conversation_list'
@@ -19,10 +20,15 @@ import FeatureButtonMenu from '../feature_button_menu'
 import styles from './style.module.scss'
 import ModelIntro from '../model_intro'
 
-function Main () {
+function Main() {
   const context = React.useContext(DataContext)
-  const { siteInfo, userAutoGeneratePref, hasSeenAgreement,
-    currentError, apiHasError } = context
+  const {
+    siteInfo,
+    userAutoGeneratePref,
+    hasSeenAgreement,
+    currentError,
+    apiHasError
+  } = context
 
   const handleEraseClick = () => {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
@@ -34,20 +40,14 @@ function Main () {
   let currentErrorElement = null
 
   if (hasSeenAgreement) {
-    conversationListElement = (
-      <ConversationList />
-    )
+    conversationListElement = <ConversationList />
 
     if (siteInfo) {
-      siteTitleElement = (
-        <SiteTitle />
-      )
+      siteTitleElement = <SiteTitle />
     }
 
     if (userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset) {
-      promptAutoSuggestionElement = (
-        <PromptAutoSuggestion />
-      )
+      promptAutoSuggestionElement = <PromptAutoSuggestion />
     }
 
     if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
@@ -71,33 +71,37 @@ function Main () {
     <main className={styles.main}>
       <div className={styles.header}>
         <div className={styles.logo}>
-          <Icon name="product-brave-leo" />
-          <div className={styles.logoTitle}>Brave <span>Leo</span></div>
+          <Icon name='product-brave-leo' />
+          <div className={styles.logoTitle}>
+            Brave <span>Leo</span>
+          </div>
         </div>
         <div className={styles.actions}>
-          {hasSeenAgreement && <>
-            <Button kind="plain-faint" aria-label="Erase conversation history"
-            title="Erase conversation history" onClick={handleEraseClick}>
-                <Icon name="erase" />
-            </Button>
-            <FeatureButtonMenu />
-          </>}
+          {hasSeenAgreement && (
+            <>
+              <Button
+                kind='plain-faint'
+                aria-label='Erase conversation history'
+                title='Erase conversation history'
+                onClick={handleEraseClick}
+              >
+                <Icon name='erase' />
+              </Button>
+              <FeatureButtonMenu />
+            </>
+          )}
         </div>
       </div>
       <div className={styles.scroller}>
-        {
-          context.hasChangedModel && <ModelIntro />
-        }
+        {context.hasChangedModel && <ModelIntro />}
+        <AlertCenter position='top-left' className={styles.alertCenter} />
         {siteTitleElement && (
-          <div className={styles.siteTitleBox}>
-            {siteTitleElement}
-          </div>
+          <div className={styles.siteTitleBox}>{siteTitleElement}</div>
         )}
+        {context.hasChangedModel && <ModelIntro />}
         {conversationListElement}
         {currentErrorElement && (
-          <div className={styles.errorContainer}>
-            {currentErrorElement}
-          </div>
+          <div className={styles.errorContainer}>{currentErrorElement}</div>
         )}
       </div>
       <div className={styles.inputBox}>

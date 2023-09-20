@@ -12,6 +12,15 @@
   padding: 16px;
   background-color: var(--leo-color-page-background);
   margin-top: 16px;
+  position: relative;
+}
+
+.turn > leo-buttonmenu {
+  display: none;
+}
+
+.turn:hover > leo-buttonmenu {
+  display: flex;
 }
 
 .turnAI {
@@ -78,4 +87,8 @@
   margin: 0;
   white-space: pre-wrap;
   padding-top: 5px;
+}
+
+.feedbackFormPortal {
+  padding: 0 16px;
 }

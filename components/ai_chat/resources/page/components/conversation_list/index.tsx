@@ -11,11 +11,18 @@ import Icon from '@brave/leo/react/icon'
 import styles from './style.module.scss'
 import getPageHandlerInstance, { CharacterType } from '../../api/page_handler'
 import DataContext from '../../state/context'
+import ContextMenuAssistant from '../context_menu_assistant'
 
-function ConversationList () {
+function ConversationList() {
   // Scroll the last conversation item in to view when entries are added.
   const lastConversationEntryElementRef = React.useRef<HTMLDivElement>(null)
-  const { isGenerating, conversationHistory, suggestedQuestions, shouldDisableUserInput } = React.useContext(DataContext)
+  const {
+    isGenerating,
+    conversationHistory,
+    suggestedQuestions,
+    shouldDisableUserInput
+  } = React.useContext(DataContext)
+  const portalRefs = React.useRef<Map<number, Element>>(new Map())
 
   React.useEffect(() => {
     if (!conversationHistory.length && !isGenerating) {
@@ -27,7 +34,11 @@ function ConversationList () {
     } else {
       lastConversationEntryElementRef.current.scrollIntoView(false)
     }
-  }, [conversationHistory.length, isGenerating, lastConversationEntryElementRef.current?.clientHeight])
+  }, [
+    conversationHistory.length,
+    isGenerating,
+    lastConversationEntryElementRef.current?.clientHeight
+  ])
 
   const handleQuestionSubmit = (question: string) => {
     getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question)
@@ -36,43 +47,57 @@ function ConversationList () {
   return (
     <>
       <div>
-      {conversationHistory.map((turn, id) => {
-        const isLastEntry = (id === (conversationHistory.length - 1))
-        const isLoading = isLastEntry && isGenerating
-        const elementRef = isLastEntry
-          ? lastConversationEntryElementRef
-          : null
+        {conversationHistory.map((turn, id) => {
+          const isLastEntry = id === conversationHistory.length - 1
+          const isLoading = isLastEntry && isGenerating
+          const isHuman = turn.characterType === CharacterType.HUMAN
+          const isAIAssistant = turn.characterType === CharacterType.ASSISTANT
 
-        const isHuman = turn.characterType === CharacterType.HUMAN
-        const isAIAssistant = turn.characterType === CharacterType.ASSISTANT
+          const turnClass = classnames({
+            [styles.turn]: true,
+            [styles.turnAI]: isAIAssistant
+          })
 
-        const turnClass = classnames({
-          [styles.turn]: true,
-          [styles.turnAI]: isAIAssistant,
-        })
+          const avatarStyles = classnames({
+            [styles.avatar]: true,
+            [styles.avatarAI]: isAIAssistant
+          })
 
-        const avatarStyles = classnames({
-          [styles.avatar]: true,
-          [styles.avatarAI]: isAIAssistant,
-        })
-
-        return (
-          <div key={id} ref={elementRef} className={turnClass}>
-            <div className={avatarStyles}>
-              <Icon name={isHuman ? 'user-circle' : 'product-brave-leo'} />
+          return (
+            <div
+              key={id}
+              ref={isLastEntry ? lastConversationEntryElementRef : null}
+            >
+              <div className={turnClass}>
+                {isAIAssistant && (
+                  <ContextMenuAssistant
+                    ref={portalRefs}
+                    chatId={id}
+                    turnText={turn.text}
+                  />
+                )}
+                <div className={avatarStyles}>
+                  <Icon name={isHuman ? 'user-circle' : 'product-brave-leo'} />
+                </div>
+                <div className={styles.message}>
+                  {turn.text}
+                  {isLoading && <span className={styles.caret} />}
+                </div>
+              </div>
+              {isAIAssistant ? (
+                <div
+                  ref={(el) => el && portalRefs.current.set(id, el)}
+                  className={styles.feedbackFormPortal}
+                />
+              ) : null}
             </div>
-            <div className={styles.message}>
-              {turn.text}
-              {isLoading && <span className={styles.caret}/>}
-            </div>
-          </div>
-        )
-      })}
+          )
+        })}
       </div>
       {suggestedQuestions.length > 0 && (
         <div className={styles.suggestedQuestionsBox}>
           <div className={styles.suggestedQuestionLabel}>
-            <Icon name="product-brave-leo" />
+            <Icon name='product-brave-leo' />
             <div>Suggested follow-ups</div>
           </div>
           <div className={styles.questionsList}>
@@ -83,9 +108,7 @@ function ConversationList () {
                 onClick={() => handleQuestionSubmit(question)}
                 isDisabled={shouldDisableUserInput}
               >
-                <span className={styles.buttonText}>
-                  {question}
-                </span>
+                <span className={styles.buttonText}>{question}</span>
               </Button>
             ))}
           </div>

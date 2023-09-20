@@ -6,4 +6,5 @@
 declare_args() {
   enable_ai_chat = is_win || is_mac || is_linux || is_android
   brave_ai_chat_endpoint = ""
+  brave_ai_chat_feedback_hostname = ""
 }

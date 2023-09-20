@@ -6,11 +6,13 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 #include <vector>
 
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/common/brave_channel_info.h"
 #include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/browser/models.h"
@@ -21,6 +23,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -67,6 +71,12 @@ AIChatUIPageHandler::AIChatUIPageHandler(
 
   favicon_service_ = FaviconServiceFactory::GetForProfile(
       profile_, ServiceAccessType::EXPLICIT_ACCESS);
+
+  feedback_api_ = std::make_unique<AIChatFeedbackAPI>(
+      owner_web_contents->GetBrowserContext()
+          ->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess(),
+      brave::GetChannelName());
 }
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
@@ -166,14 +176,13 @@ void AIChatUIPageHandler::OpenBraveLeoSettings() {
                                  ui::PAGE_TRANSITION_LINK, false});
 }
 
-void AIChatUIPageHandler::OpenBraveLeoWiki() {
+void AIChatUIPageHandler::OpenURL(const GURL& url) {
   auto* contents_to_navigate = (active_chat_tab_helper_)
                                    ? active_chat_tab_helper_->web_contents()
                                    : web_contents();
-  contents_to_navigate->OpenURL(
-      {GURL("https://github.com/brave/brave-browser/wiki/Brave-Leo"),
-       content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
-       ui::PAGE_TRANSITION_LINK, false});
+  contents_to_navigate->OpenURL({url, content::Referrer(),
+                                 WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                                 ui::PAGE_TRANSITION_LINK, false});
 }
 
 void AIChatUIPageHandler::DisconnectPageContents() {
@@ -201,6 +210,50 @@ void AIChatUIPageHandler::GetAPIResponseError(
     return;
   }
   std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
+}
+
+void AIChatUIPageHandler::LikeMessage(bool is_liked,
+                                      const std::string& turn_text,
+                                      LikeMessageCallback callback) {
+  auto on_complete = base::BindOnce(
+      [](LikeMessageCallback callback, APIRequestResult result) {
+        if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
+          std::string id = *result.value_body().GetDict().FindString("id");
+          std::move(callback).Run(id);
+          return;
+        }
+        std::move(callback).Run(absl::nullopt);
+      },
+      std::move(callback));
+
+  if (active_chat_tab_helper_) {
+    ai_chat::RatingPayload rating_payload;
+    rating_payload.id = 0;
+    rating_payload.message = turn_text;
+
+    feedback_api_->SendRating(is_liked, rating_payload,
+                              active_chat_tab_helper_->GetCurrentModel().name,
+                              std::move(on_complete));
+  }
+}
+
+void AIChatUIPageHandler::SendFeedback(const std::string& category,
+                                       const std::string& feedback,
+                                       const std::string& rating_id,
+                                       SendFeedbackCallback callback) {
+  auto on_complete = base::BindOnce(
+      [](SendFeedbackCallback callback, APIRequestResult result) {
+        if (result.Is2XXResponseCode()) {
+          std::move(callback).Run(true);
+          return;
+        }
+
+        std::move(callback).Run(false);
+      },
+      std::move(callback));
+
+  feedback_api_->SendFeedback(category, feedback, rating_id,
+                              std::move(on_complete));
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {

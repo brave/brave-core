@@ -14,7 +14,10 @@ import '@brave/leo/tokens/css/variables.css'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import Main from '../components/main'
 import * as mojom from '../api/page_handler'
-import AIChatDataContext, { AIChatContext, defaultContext } from '../state/context'
+import AIChatDataContext, {
+  AIChatContext,
+  defaultContext
+} from '../state/context'
 
 const HISTORY = [
   {
@@ -61,14 +64,14 @@ const MODELS: mojom.Model[] = [
 ]
 
 const SAMPLE_QUESTIONS = [
-  "Summarize this article",
-  "What was the score?",
-  "Any injuries?",
-  "Why did google executives disregard this character in the company?"
+  'Summarize this article',
+  'What was the score?',
+  'Any injuries?',
+  'Why did google executives disregard this character in the company?'
 ]
 
 const SITE_INFO = {
-  title: "Microsoft is hiking the price of Xbox Series X and Xbox Game Pass"
+  title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass'
 }
 
 interface StoryArgs {
@@ -86,22 +89,29 @@ export default {
     hasQuestions: true,
     hasChangedModel: false,
     hasSeenAgreement: true,
-    currentErrorState: select('Current Status', mojom.APIError, mojom.APIError.RateLimitReached)
+    currentErrorState: select(
+      'Current Status',
+      mojom.APIError,
+      mojom.APIError.RateLimitReached
+    )
   },
   decorators: [
     (Story: any, options: any) => {
-      const [conversationHistory] = React.useState<mojom.ConversationTurn[]>(HISTORY)
+      const [conversationHistory] =
+        React.useState<mojom.ConversationTurn[]>(HISTORY)
       const [suggestedQuestions] = React.useState<string[]>(SAMPLE_QUESTIONS)
       const [isGenerating] = React.useState(false)
       const [canGenerateQuestions] = React.useState(false)
-      const [userAutoGeneratePref] = React.useState<mojom.AutoGenerateQuestionsPref>()
+      const [userAutoGeneratePref] =
+        React.useState<mojom.AutoGenerateQuestionsPref>()
       const [siteInfo] = React.useState<mojom.SiteInfo | null>(SITE_INFO)
       const [favIconUrl] = React.useState<string>()
-      const [currentError] = React.useState<mojom.APIError>(options.args.currentErrorState)
+      const [currentError] = React.useState<mojom.APIError>(
+        options.args.currentErrorState
+      )
       const [hasSeenAgreement] = React.useState(options.args.hasSeenAgreement)
 
-
-      const apiHasError = (currentError !== mojom.APIError.None)
+      const apiHasError = currentError !== mojom.APIError.None
       const shouldDisableUserInput = apiHasError || isGenerating
 
       const store: AIChatContext = {
@@ -120,7 +130,7 @@ export default {
         currentError,
         hasSeenAgreement,
         apiHasError,
-        shouldDisableUserInput,
+        shouldDisableUserInput
       }
 
       return (

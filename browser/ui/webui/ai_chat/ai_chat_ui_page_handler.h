@@ -15,6 +15,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
+#include "brave/components/ai_chat/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -60,11 +61,18 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void SetAutoGenerateQuestions(bool can_auto_generate_questions) override;
   void GetSiteInfo(GetSiteInfoCallback callback) override;
   void OpenBraveLeoSettings() override;
-  void OpenBraveLeoWiki() override;
+  void OpenURL(const GURL& url) override;
   void DisconnectPageContents() override;
   void ClearConversationHistory() override;
   void RetryAPIRequest() override;
   void GetAPIResponseError(GetAPIResponseErrorCallback callback) override;
+  void LikeMessage(bool is_liked,
+                   const std::string& turn_text,
+                   LikeMessageCallback callback) override;
+  void SendFeedback(const std::string& category,
+                    const std::string& feedback,
+                    const std::string& rating_id,
+                    SendFeedbackCallback callback) override;
 
   // content::WebContentsObserver:
   void OnVisibilityChanged(content::Visibility visibility) override;
@@ -89,6 +97,8 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
   raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
+
+  std::unique_ptr<AIChatFeedbackAPI> feedback_api_ = nullptr;
 
   base::CancelableTaskTracker favicon_task_tracker_;
 

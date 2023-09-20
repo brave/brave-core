@@ -13,6 +13,8 @@ if (is_official_build) {
 
 static_library("browser") {
   sources = [
+    "ai_chat_feedback_api.cc",
+    "ai_chat_feedback_api.h",
     "ai_chat_metrics.cc",
     "ai_chat_metrics.h",
     "ai_chat_tab_helper.cc",
@@ -39,6 +41,7 @@ static_library("browser") {
     "//brave/components/ai_chat/common/mojom",
     "//brave/components/api_request_helper",
     "//brave/components/constants",
+    "//brave/components/l10n/common",
     "//brave/components/p3a_utils",
     "//brave/components/resources:strings_grit",
     "//brave/components/time_period_storage",

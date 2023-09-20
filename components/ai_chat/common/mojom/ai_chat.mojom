@@ -5,6 +5,8 @@
 
 module ai_chat.mojom;
 
+import "url/mojom/url.mojom";
+
 enum CharacterType {
   HUMAN,
   ASSISTANT
@@ -95,11 +97,13 @@ interface PageHandler {
   GetSiteInfo() => (SiteInfo? site_info);
   GetFaviconImageData() => (array<uint8>? favicon_image_data);
   OpenBraveLeoSettings();
-  OpenBraveLeoWiki();
+  OpenURL(url.mojom.Url url);
   DisconnectPageContents();
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
+  LikeMessage(bool is_liked, string turn_text) => (string? id);
+  SendFeedback(string category, string feedback, string rating_id) => (bool is_success);
 };
 
 interface ChatUIPage {
