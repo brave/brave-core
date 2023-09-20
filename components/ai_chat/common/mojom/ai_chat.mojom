@@ -27,6 +27,16 @@ enum APIError {
   RateLimitReached
 };
 
+enum ModelEngineType {
+  LLAMA_REMOTE,
+  CLAUDE_REMOTE,
+};
+
+enum ModelCategory {
+  CHAT,
+  // CODING,
+};
+
 struct SiteInfo {
   string title;
 };
@@ -41,9 +51,30 @@ struct ConversationTurn {
   string text;
 };
 
+// Represents an AI engine model choice, usually for the user to choose for a
+// Conversation. Display Name and Description should be provided by
+// localization.
+// We use a key in case there are minor changes to model name for a purpose and
+// we want to respect the user's intent (e.g. claude increases version or llama2
+// default model changes parameter size).
+struct Model {
+  // unique key across all models
+  string key;
+  // exact name to provide to API
+  string name;
+  ModelEngineType engine_type;
+  // user-facing category
+  ModelCategory category;
+  bool is_premium;
+};
+
 // Browser-side handler for requests from WebUI page.
 interface PageHandler {
   SetClientPage(pending_remote<ChatUIPage> page);
+  // Get all the possible models for the conversation
+  GetModels() => (array<Model> models, Model current_model);
+  // Command to change the model for the Conversation to |model_name|.
+  ChangeModel(string model_key);
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
   // List of all suggested questions for the active tab in the page's Browser
   // window.

@@ -26,6 +26,8 @@ static_library("browser") {
     "engine/engine_consumer_llama.h",
     "engine/remote_completion_client.cc",
     "engine/remote_completion_client.h",
+    "models.cc",
+    "models.h",
     "page_content_fetcher.cc",
     "page_content_fetcher.h",
   ]

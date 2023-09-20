@@ -14,13 +14,14 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
+#include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "brave/components/ai_chat/browser/ai_chat_metrics.h"
-#include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/browser/engine/engine_consumer_claude.h"
 #include "brave/components/ai_chat/browser/engine/engine_consumer_llama.h"
+#include "brave/components/ai_chat/browser/models.h"
 #include "brave/components/ai_chat/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/common/features.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom-shared.h"
@@ -64,26 +65,33 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
       base::BindRepeating(
           &AIChatTabHelper::OnPermissionChangedAutoGenerateQuestions,
           weak_ptr_factory_.GetWeakPtr()));
-  // TODO(petemill): Engines and model names should be selectable
+  // Engines and model names are be selectable
   // per conversation, not static.
-  if (UsesLlama2PromptTemplate(features::kAIModelName.Get())) {
-    VLOG(1) << "Started tab helper for AI engine: llama";
-    engine_ = std::make_unique<EngineConsumerLlamaRemote>(
-        web_contents->GetBrowserContext()
-            ->GetDefaultStoragePartition()
-            ->GetURLLoaderFactoryForBrowserProcess());
-  } else {
-    VLOG(1) << "Started tab helper for AI engine: claude";
-    engine_ = std::make_unique<EngineConsumerClaudeRemote>(
-        web_contents->GetBrowserContext()
-            ->GetDefaultStoragePartition()
-            ->GetURLLoaderFactoryForBrowserProcess());
-  }
+  // Start with default.
+  // TODO(petemill): Default should come from pref value.
+  model_key_ = features::kAIModelKey.Get();
+  InitEngine();
+  DCHECK(engine_);
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
 }
 
 AIChatTabHelper::~AIChatTabHelper() = default;
+
+void AIChatTabHelper::ChangelModel(const std::string& model_key) {
+  DCHECK(!model_key.empty());
+  // Check that the key exists
+  if (kAllModels.find(model_key) == kAllModels.end()) {
+    NOTREACHED() << "No matching model found for key: " << model_key;
+    return;
+  }
+  model_key_ = model_key;
+  InitEngine();
+}
+
+const mojom::Model& AIChatTabHelper::GetCurrentModel() {
+  return kAllModels.find(model_key_)->second;
+}
 
 const std::vector<ConversationTurn>& AIChatTabHelper::GetConversationHistory() {
   return chat_history_;
@@ -94,6 +102,39 @@ void AIChatTabHelper::OnConversationActiveChanged(bool is_conversation_active) {
   DVLOG(3) << "Conversation active changed: " << is_conversation_active;
   MaybeGeneratePageText();
   MaybeGenerateQuestions();
+}
+
+void AIChatTabHelper::InitEngine() {
+  DCHECK(!model_key_.empty());
+  auto model_match = kAllModels.find(model_key_);
+  // Make sure we get a valid model, defaulting to static default or first.
+  if (model_match == kAllModels.end()) {
+    NOTREACHED() << "Model was not part of static model list";
+    // Use default
+    model_match = kAllModels.find(kModelsDefaultKey);
+    const auto is_found = model_match != kAllModels.end();
+    DCHECK(is_found);
+    if (!is_found) {
+      model_match = kAllModels.begin();
+    }
+  }
+  auto model = model_match->second;
+  // TODO(petemill): Engine enum on model to decide which one
+  if (model.engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
+    VLOG(1) << "Started tab helper for AI engine: llama";
+    engine_ = std::make_unique<EngineConsumerLlamaRemote>(
+        model, web_contents()
+                   ->GetBrowserContext()
+                   ->GetDefaultStoragePartition()
+                   ->GetURLLoaderFactoryForBrowserProcess());
+  } else {
+    VLOG(1) << "Started tab helper for AI engine: claude";
+    engine_ = std::make_unique<EngineConsumerClaudeRemote>(
+        model, web_contents()
+                   ->GetBrowserContext()
+                   ->GetDefaultStoragePartition()
+                   ->GetURLLoaderFactoryForBrowserProcess());
+  }
 }
 
 bool AIChatTabHelper::HasUserOptedIn() {

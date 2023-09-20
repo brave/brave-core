@@ -15,8 +15,6 @@ namespace ai_chat {
 
 base::span<const webui::LocalizedString> GetLocalizedStrings();
 
-bool UsesLlama2PromptTemplate(const std::string& model);
-
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_BROWSER_CONSTANTS_H_

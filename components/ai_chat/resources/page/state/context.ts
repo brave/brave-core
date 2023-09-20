@@ -6,7 +6,10 @@
 import * as React from 'react'
 import * as mojom from '../api/page_handler'
 
-interface Store {
+export interface AIChatContext {
+  allModels: mojom.Model[]
+  currentModel?: mojom.Model
+  hasChangedModel: boolean
   conversationHistory: mojom.ConversationTurn[]
   suggestedQuestions: string[]
   isGenerating: boolean
@@ -18,12 +21,15 @@ interface Store {
   currentError: mojom.APIError | undefined
   apiHasError: boolean
   shouldDisableUserInput: boolean
+  setCurrentModel: (model: mojom.Model) => void,
   generateSuggestedQuestions: () => void
   setUserAllowsAutoGenerating: (value: boolean) => void
   handleAgreeClick: () => void
 }
 
-const defaultStore = {
+export const defaultContext = {
+  allModels: [],
+  hasChangedModel: false,
   conversationHistory: [],
   suggestedQuestions: [],
   isGenerating: false,
@@ -35,11 +41,10 @@ const defaultStore = {
   siteInfo: null,
   favIconUrl: undefined,
   currentError: mojom.APIError.None,
+  setCurrentModel: () => {},
   generateSuggestedQuestions: () => {},
   setUserAllowsAutoGenerating: () => {},
   handleAgreeClick: () => {}
 }
 
-const DataContext = React.createContext<Store>(defaultStore)
-
-export default DataContext
+export default React.createContext<AIChatContext>(defaultContext)

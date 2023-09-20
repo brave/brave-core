@@ -13,14 +13,47 @@ import '@brave/leo/tokens/css/variables.css'
 
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import Main from '../components/main'
-import { CharacterType, ConversationTurnVisibility, APIError, SiteInfo,AutoGenerateQuestionsPref, ConversationTurn } from '../api/page_handler'
-import Context from '../state/context'
+import * as mojom from '../api/page_handler'
+import AIChatDataContext, { AIChatContext, defaultContext } from '../state/context'
 
 const HISTORY = [
-  {text: 'What is pointer compression?', characterType: CharacterType.HUMAN, visibility: ConversationTurnVisibility.VISIBLE },
-  {text: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.', characterType: CharacterType.ASSISTANT, visibility: ConversationTurnVisibility.VISIBLE },
-  {text: 'What is taylor series?', characterType: CharacterType.HUMAN, visibility: ConversationTurnVisibility.VISIBLE },
-  {text: 'The partial sum formed by the first n + 1 terms of a Taylor series is a polynomial of degree n that is called the nth Taylor polynomial of the function. Taylor polynomials are approximations of a function, which become generally better as n increases.', characterType: CharacterType.ASSISTANT, visibility: ConversationTurnVisibility.VISIBLE },
+  {
+    text: 'What is pointer compression?',
+    characterType: mojom.CharacterType.HUMAN,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE
+  },
+  {
+    text: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.',
+    characterType: mojom.CharacterType.ASSISTANT,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE
+  },
+  {
+    text: 'What is taylor series?',
+    characterType: mojom.CharacterType.HUMAN,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE
+  },
+  {
+    text: 'The partial sum formed by the first n + 1 terms of a Taylor series is a polynomial of degree n that is called the nth Taylor polynomial of the function. Taylor polynomials are approximations of a function, which become generally better as n increases.',
+    characterType: mojom.CharacterType.ASSISTANT,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE
+  }
+]
+
+const MODELS: mojom.Model[] = [
+  {
+    key: '1',
+    name: 'model-one',
+    engineType: mojom.ModelEngineType.LLAMA_REMOTE,
+    category: mojom.ModelCategory.CHAT,
+    isPremium: false
+  },
+  {
+    key: '2',
+    name: 'model-two',
+    engineType: mojom.ModelEngineType.LLAMA_REMOTE,
+    category: mojom.ModelCategory.CHAT,
+    isPremium: true
+  }
 ]
 
 const SAMPLE_QUESTIONS = [
@@ -37,7 +70,7 @@ const SITE_INFO = {
 interface StoryArgs {
   hasQuestions: boolean
   hasSeenAgreement: boolean
-  currentErrorState: APIError
+  currentErrorState: mojom.APIError
 }
 
 export default {
@@ -48,28 +81,29 @@ export default {
   args: {
     hasQuestions: true,
     hasSeenAgreement: true,
-    currentErrorState: select('Current Status', APIError, APIError.RateLimitReached)
+    currentErrorState: select('Current Status', mojom.APIError, mojom.APIError.RateLimitReached)
   },
   decorators: [
     (Story: any, options: any) => {
-      const [conversationHistory] = React.useState<ConversationTurn[]>(HISTORY)
+      const [conversationHistory] = React.useState<mojom.ConversationTurn[]>(HISTORY)
       const [suggestedQuestions] = React.useState<string[]>(SAMPLE_QUESTIONS)
       const [isGenerating] = React.useState(false)
       const [canGenerateQuestions] = React.useState(false)
-      const [userAutoGeneratePref] = React.useState<AutoGenerateQuestionsPref>()
-      const [siteInfo] = React.useState<SiteInfo | null>(SITE_INFO)
+      const [userAutoGeneratePref] = React.useState<mojom.AutoGenerateQuestionsPref>()
+      const [siteInfo] = React.useState<mojom.SiteInfo | null>(SITE_INFO)
       const [favIconUrl] = React.useState<string>()
-      const [currentError] = React.useState<APIError>(options.args.currentErrorState)
+      const [currentError] = React.useState<mojom.APIError>(options.args.currentErrorState)
       const [hasSeenAgreement] = React.useState(options.args.hasSeenAgreement)
 
-      const generateSuggestedQuestions = () => {}
-      const setUserAllowsAutoGenerating = () => {}
-      const handleAgreeClick = () => {}
 
-      const apiHasError = (currentError !== APIError.None)
+      const apiHasError = (currentError !== mojom.APIError.None)
       const shouldDisableUserInput = apiHasError || isGenerating
 
-      const store = {
+      const store: AIChatContext = {
+        // Don't error when new properties are added
+        ...defaultContext,
+        allModels: MODELS,
+        currentModel: MODELS[0],
         conversationHistory,
         isGenerating,
         suggestedQuestions,
@@ -81,17 +115,14 @@ export default {
         hasSeenAgreement,
         apiHasError,
         shouldDisableUserInput,
-        generateSuggestedQuestions,
-        setUserAllowsAutoGenerating,
-        handleAgreeClick
       }
 
       return (
-        <Context.Provider value={store}>
+        <AIChatDataContext.Provider value={store}>
           <ThemeProvider>
             <Story />
           </ThemeProvider>
-        </Context.Provider>
+        </AIChatDataContext.Provider>
       )
     },
     withKnobs

@@ -61,6 +61,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
   AIChatTabHelper& operator=(const AIChatTabHelper&) = delete;
   ~AIChatTabHelper() override;
 
+  void ChangelModel(const std::string& model_key);
+  const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurn>& GetConversationHistory();
   // Whether the UI for this conversation is open or not. Determines
   // whether content is retrieved and queries are sent for the conversation
@@ -92,6 +94,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   AIChatTabHelper(content::WebContents* web_contents,
                   AIChatMetrics* ai_chat_metrics);
 
+  void InitEngine();
   bool HasUserOptedIn();
   void OnUserOptedIn();
   void OnPermissionChangedAutoGenerateQuestions();
@@ -135,6 +138,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   base::ObserverList<Observer> observers_;
 
   // TODO(nullhook): Abstract the data model
+  std::string model_key_;
   std::vector<mojom::ConversationTurn> chat_history_;
   std::string article_text_;
   bool is_conversation_active_ = false;

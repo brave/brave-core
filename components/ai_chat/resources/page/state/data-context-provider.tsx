@@ -21,6 +21,9 @@ interface DataContextProviderProps {
 }
 
 function DataContextProvider (props: DataContextProviderProps) {
+  const [currentModel, setCurrentModelRaw] = React.useState<mojom.Model>();
+  const [allModels, setAllModels] = React.useState<mojom.Model[]>([])
+  const [hasChangedModel, setHasChangedModel] = React.useState(false)
   const [conversationHistory, setConversationHistory] = React.useState<mojom.ConversationTurn[]>([])
   const [suggestedQuestions, setSuggestedQuestions] = React.useState<string[]>([])
   const [isGenerating, setIsGenerating] = React.useState(false)
@@ -30,6 +33,15 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
   const [hasSeenAgreement, setHasSeenAgreement] = React.useState(loadTimeData.getBoolean("hasSeenAgreement"))
+
+  // Provide a custom handler for setCurrentModel instead of a useEffect
+  // so that we can track when the user has changed a model in
+  // order to provide more information about the model.
+  const setCurrentModel = (model: mojom.Model) => {
+    setHasChangedModel(true)
+    setCurrentModelRaw(model)
+    getPageHandlerInstance().pageHandler.changeModel(model.key)
+  }
 
   const apiHasError = (currentError !== mojom.APIError.None)
   const shouldDisableUserInput = apiHasError || isGenerating
@@ -93,6 +105,12 @@ function DataContextProvider (props: DataContextProviderProps) {
   React.useEffect(() => {
     initialiseForTargetTab()
 
+    // This never changes
+    getPageHandlerInstance().pageHandler.getModels().then(data => {
+      setAllModels(data.models)
+      setCurrentModelRaw(data.currentModel);
+    })
+
     getPageHandlerInstance().callbackRouter.onConversationHistoryUpdate.addListener(() => {
       getConversationHistory()
       setCanGenerateQuestions(false)
@@ -111,6 +129,9 @@ function DataContextProvider (props: DataContextProviderProps) {
   }, [])
 
   const store = {
+    allModels,
+    currentModel,
+    hasChangedModel,
     conversationHistory,
     isGenerating,
     suggestedQuestions,
@@ -122,6 +143,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     hasSeenAgreement,
     apiHasError,
     shouldDisableUserInput,
+    setCurrentModel,
     generateSuggestedQuestions,
     setUserAllowsAutoGenerating,
     handleAgreeClick,

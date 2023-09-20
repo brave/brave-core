@@ -11,6 +11,7 @@
 
 #include "brave/components/ai_chat/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/browser/engine/remote_completion_client.h"
+#include "brave/components/ai_chat/common/mojom/ai_chat.mojom-forward.h"
 
 namespace api_request_helper {
 class APIRequestResult;
@@ -29,6 +30,7 @@ using api_request_helper::APIRequestResult;
 class EngineConsumerClaudeRemote : public EngineConsumer {
  public:
   explicit EngineConsumerClaudeRemote(
+      const mojom::Model& model,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   EngineConsumerClaudeRemote(const EngineConsumerClaudeRemote&) = delete;
   EngineConsumerClaudeRemote& operator=(const EngineConsumerClaudeRemote&) =

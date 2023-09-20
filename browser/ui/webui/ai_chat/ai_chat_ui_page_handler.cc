@@ -11,7 +11,9 @@
 
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/browser/constants.h"
+#include "brave/components/ai_chat/browser/models.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/common/pref_names.h"
@@ -69,6 +71,24 @@ AIChatUIPageHandler::~AIChatUIPageHandler() = default;
 void AIChatUIPageHandler::SetClientPage(
     mojo::PendingRemote<ai_chat::mojom::ChatUIPage> page) {
   page_.Bind(std::move(page));
+}
+
+void AIChatUIPageHandler::GetModels(GetModelsCallback callback) {
+  std::vector<mojom::ModelPtr> models(kAllModelKeysDisplayOrder.size());
+  // Ensure we return only in intended display order
+  std::transform(kAllModelKeysDisplayOrder.cbegin(),
+                 kAllModelKeysDisplayOrder.cend(), models.begin(),
+                 [](auto& model_key) {
+                   auto model_match = kAllModels.find(model_key);
+                   DCHECK(model_match != kAllModels.end());
+                   return model_match->second.Clone();
+                 });
+  std::move(callback).Run(std::move(models),
+                          active_chat_tab_helper_->GetCurrentModel().Clone());
+}
+
+void AIChatUIPageHandler::ChangeModel(const std::string& model_key) {
+  active_chat_tab_helper_->ChangelModel(model_key);
 }
 
 void AIChatUIPageHandler::SubmitHumanConversationEntry(

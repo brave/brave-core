@@ -30,13 +30,4 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
   return kLocalizedStrings;
 }
 
-bool UsesLlama2PromptTemplate(const std::string& model) {
-  if (model.find("llama-2") != std::string::npos &&
-      model.find("chat") != std::string::npos) {
-    return true;
-  }
-
-  return false;
-}
-
 }  // namespace ai_chat
