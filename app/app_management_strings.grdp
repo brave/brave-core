@@ -59,10 +59,10 @@
     Opening <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>supported links<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_APP_MANAGEMENT_INTENT_SHARING_APP_OPEN" desc="Label for the intent sharing option to open in a specified app.">
-    Open in <ph name="APP_NAME">$1<ex>Brave browser</ex></ph>
+    Open in <ph name="APP_NAME">$1<ex>Ping browser</ex></ph>
   </message>
   <message name="IDS_APP_MANAGEMENT_INTENT_SHARING_BROWSER_OPEN" desc="Label for the intent sharing option to open in the browser.">
-    Open in Brave browser
+    Open in Ping browser
   </message>
   <message name="IDS_APP_MANAGEMENT_INTENT_SHARING_TAB_EXPLANATION" desc="Label for the intent sharing description for when the app is set to open in tab mode.">
     <ph name="APP_NAME">$1<ex>Gmail</ex></ph> is set to open in a new browser tab, supported links will also open in the browser. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="https://support.google.com/chromebook?p=app_intent" target="_blank"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
@@ -115,8 +115,8 @@
   <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_ANDROID" desc="Text for Android app type">
     Android App
   </message>
-  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_CHROME" desc="Text for Brave app type">
-    Brave App
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_CHROME" desc="Text for Ping app type">
+    Ping App
   </message>
   <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_WEB" desc="Text for Web app type">
     Web App
@@ -133,8 +133,8 @@
   <message name="IDS_APP_MANAGEMENT_APP_DETAILS_INSTALL_SOURCE_PLAY_STORE" desc="Text for Google Play Store installation source">
     Google Play Store
   </message>
-  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_INSTALL_SOURCE_BROWSER" desc="Text for Brave browser installation source for Web App">
-    Web App installed from Brave browser
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_INSTALL_SOURCE_BROWSER" desc="Text for Ping browser installation source for Web App">
+    Web App installed from Ping browser
   </message>
   <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_AND_SOURCE_COMBINED" desc="Full text for installation source and app type line">
     <ph name="APP_TYPE">$1<ex>Web App</ex></ph> installed from <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph><ph name="INSTALL_SOURCE">$2<ex>Google Play Store</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>

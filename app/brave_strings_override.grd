@@ -151,9 +151,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="chromeos_ash">
         <message name="IDS_ACCOUNT_MANAGER_DIALOG_WELCOME_BODY_V2_WITH_GUEST_MODE" desc="Text body for the Welcome screen in ChromeOS 'Add account' dialog.">
-If you want to use this account one-time only, you can use <ph name="GUEST_LINK_BEGIN">&lt;a id="guestModeLink" href="#"&gt;</ph>Guest mode<ph name="GUEST_LINK_END">&lt;/a&gt;</ph> in Brave browser. If you want to add an account for someone else, <ph name="LINK_BEGIN">&lt;a target="_blank" id="newPersonLink" href="$1<ex>https://google.com/</ex>"&gt;</ph>add a new profile<ph name="LINK_END">&lt;/a&gt;</ph> to your <ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph>.
+If you want to use this account one-time only, you can use <ph name="GUEST_LINK_BEGIN">&lt;a id="guestModeLink" href="#"&gt;</ph>Guest mode<ph name="GUEST_LINK_END">&lt;/a&gt;</ph> in Ping browser. If you want to add an account for someone else, <ph name="LINK_BEGIN">&lt;a target="_blank" id="newPersonLink" href="$1<ex>https://google.com/</ex>"&gt;</ph>add a new profile<ph name="LINK_END">&lt;/a&gt;</ph> to your <ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph>.
 
-Permissions you've already given to websites and apps may apply to this account. You can manage your Brave sync chains in <ph name="SETTINGS_LINK_BEGIN">&lt;a id="osSettingsLink" href="$3<ex>https://google.com/</ex>"&gt;</ph>Settings<ph name="SETTINGS_LINK_END">&lt;/a&gt;</ph>.
+Permissions you've already given to websites and apps may apply to this account. You can manage your Ping sync chains in <ph name="SETTINGS_LINK_BEGIN">&lt;a id="osSettingsLink" href="$3<ex>https://google.com/</ex>"&gt;</ph>Settings<ph name="SETTINGS_LINK_END">&lt;/a&gt;</ph>.
         </message>
       </if>
       <if expr="is_win">
@@ -168,7 +168,7 @@ Permissions you've already given to websites and apps may apply to this account.
         </if>
 
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_UNKNOWN_SOURCE" desc="Summary of dangerous warning for a file (like an extension) from an unknown source.">
-        Extensions, apps, and themes from unknown sources can harm your device. Brave recommends only installing them from the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph>
+        Extensions, apps, and themes from unknown sources can harm your device. Ping recommends only installing them from the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph>
       </message>
       <if expr="not is_macosx">
         </if>
@@ -182,17 +182,17 @@ Permissions you've already given to websites and apps may apply to this account.
         </if>
 
       <message name="IDS_SAFETY_CHECK_EXTENSIONS_POLICY_VIOLATION" desc="The text explaining the reason for disabling extension. The extension in question violates Web Store policy.">
-          This extension violates the Web Store policy, and might be unsafe. Remove it from Brave so it can no longer see and change your data on sites you visit, including your personal info.
+          This extension violates the Web Store policy, and might be unsafe. Remove it from Ping so it can no longer see and change your data on sites you visit, including your personal info.
       </message>
-      <message name="IDS_EXTENSIONS_INCOGNITO_WARNING" desc="Warns the user that Brave cannot prevent extensions from recording history in Private mode. Displayed in extensions management UI after an extension is selected to be run in Private mode.">
-        Warning: Brave cannot prevent extensions from recording your browsing history. To disable this extension in Private mode, unselect this option.
+      <message name="IDS_EXTENSIONS_INCOGNITO_WARNING" desc="Warns the user that Ping cannot prevent extensions from recording history in Private mode. Displayed in extensions management UI after an extension is selected to be run in Private mode.">
+        Warning: Ping cannot prevent extensions from recording your browsing history. To disable this extension in Private mode, unselect this option.
       </message>
       <if expr="enable_extensions">
         <message name="IDS_EXTENSIONS_MULTIPLE_UNSUPPORTED_DISABLED_BODY" desc="Body of the dialog shown when multiple unsupported extensions have been disabled.">
-          To make Brave safer, we disabled some extensions that aren't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
+          To make Ping safer, we disabled some extensions that aren't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
         </message>
         <message name="IDS_EXTENSIONS_SINGLE_UNSUPPORTED_DISABLED_BODY" desc="Body of the dialog shown when a single unsupported extension has been disabled.">
-          To make Brave safer, we disabled the following extension that isn't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
+          To make Ping safer, we disabled the following extension that isn't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
         </message>
       </if>
 
@@ -265,7 +265,7 @@ Permissions you've already given to websites and apps may apply to this account.
 
       <if expr="not is_android and not chromeos_ash">
         <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_SYNC" desc="Main text shown as a warning when attempting to remove an user.">
-          This profile's browsing data will be deleted from this device. To recover the data, sign in to Brave as <ph name="USER_EMAIL">$2<ex>foo@example.com</ex></ph>.
+          This profile's browsing data will be deleted from this device. To recover the data, sign in to Ping as <ph name="USER_EMAIL">$2<ex>foo@example.com</ex></ph>.
         </message>
 
         </if>
@@ -279,12 +279,12 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="not is_android">
         <if expr="not use_titlecase">
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="The name of the command to open a link in a Private browser window when the user is in an app window">
-            Open link in Brave &amp;private window
+            Open link in Ping &amp;private window
           </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="In Title Case: The name of the command to open a link in a Private browser window when the user is in an app window">
-            Open Link in Brave &amp;Private Window
+            Open Link in Ping &amp;Private Window
           </message>
         </if>
       </if>
@@ -292,9 +292,9 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="not chromeos_ash">
         <message name="IDS_UPDATE_RECOMMENDED" desc="The main text of the Update Recommended dialog with a count of open Private windows.">
           {COUNT, plural,
-          =0 {A new update for Brave is available and will be applied as soon as you relaunch.}
-          =1 {A new update for Brave is available and will be applied as soon as you relaunch. Your Private window won't reopen.}
-          other {A new update for Brave is available and will be applied as soon as you relaunch. Your # Private windows won't reopen.}}
+          =0 {A new update for Ping is available and will be applied as soon as you relaunch.}
+          =1 {A new update for Ping is available and will be applied as soon as you relaunch. Your Private window won't reopen.}
+          other {A new update for Ping is available and will be applied as soon as you relaunch. Your # Private windows won't reopen.}}
         </message>
         </if>
       <if expr="chromeos_ash">
@@ -332,15 +332,15 @@ Permissions you've already given to websites and apps may apply to this account.
         <if expr="not chromeos_ash">
           <message name="IDS_RELAUNCH_RECOMMENDED_BODY" desc="The body text of a dialog that tells users that a browser relaunch is recommended for an update with Private counter.">
              {COUNT, plural,
-              =0 {Your administrator asks that you relaunch Brave to apply this update}
-              =1 {Your administrator asks that you relaunch Brave to apply this update. Your Private window won't reopen.}
-              other {Your administrator asks that you relaunch Brave to apply this update. Your # Private windows won't reopen.}}
+              =0 {Your administrator asks that you relaunch Ping to apply this update}
+              =1 {Your administrator asks that you relaunch Ping to apply this update. Your Private window won't reopen.}
+              other {Your administrator asks that you relaunch Ping to apply this update. Your # Private windows won't reopen.}}
           </message>
           <message name="IDS_RELAUNCH_REQUIRED_BODY" desc="The body text of a dialog that tells users the browser must be relaunched with Private counter.">
              {COUNT, plural,
-              =0 {Your administrator requires that you relaunch Brave to apply an update}
-              =1 {Your administrator requires that you relaunch Brave to apply an update. Your Private window won't reopen.}
-              other {Your administrator requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}
+              =0 {Your administrator requires that you relaunch Ping to apply an update}
+              =1 {Your administrator requires that you relaunch Ping to apply an update. Your Private window won't reopen.}
+              other {Your administrator requires that you relaunch Ping to apply an update. Your # Private windows won't reopen.}}
           </message>
         </if>
       </if>

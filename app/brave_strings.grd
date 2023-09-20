@@ -276,44 +276,44 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       </if>
 
       <!--
-        Even though Brave for Testing is a separate brand, there is
-        no separate file for it. Instead, we use the same file as Brave, with
+        Even though Ping for Testing is a separate brand, there is
+        no separate file for it. Instead, we use the same file as Ping, with
         a few select overrides for the most prominent end-user strings.
 
         Rationale: https://goo.gle/chrome-for-testing#bookmark=id.n1rat320av91
       -->
       <if expr="_is_chrome_for_testing_branded">
         <then>
-          <message name="IDS_PRODUCT_NAME" desc="The Brave for Testing application name" translateable="false">
-            Brave for Testing
+          <message name="IDS_PRODUCT_NAME" desc="The Ping for Testing application name" translateable="false">
+            Ping for Testing
           </message>
-          <message name="IDS_SHORT_PRODUCT_NAME" desc="The Brave for Testing application short name." translateable="false">
-            Brave for Testing
+          <message name="IDS_SHORT_PRODUCT_NAME" desc="The Ping for Testing application short name." translateable="false">
+            Ping for Testing
           </message>
         </then>
         <else>
-          <message name="IDS_PRODUCT_NAME" desc="The Brave application name" translateable="false">
-            Brave
+          <message name="IDS_PRODUCT_NAME" desc="The Ping application name" translateable="false">
+            Ping
           </message>
-          <message name="IDS_SHORT_PRODUCT_NAME" desc="The Brave application short name." translateable="false">
-            Brave
+          <message name="IDS_SHORT_PRODUCT_NAME" desc="The Ping application short name." translateable="false">
+            Ping
           </message>
         </else>
       </if>
       <if expr="is_win">
-        <message name="IDS_SXS_SHORTCUT_NAME">Brave Nightly</message>
-        <message name="IDS_SHORTCUT_NAME_BETA">Brave Beta</message>
-        <message name="IDS_SHORTCUT_NAME_DEV">Brave Dev</message>
+        <message name="IDS_SXS_SHORTCUT_NAME">Ping Nightly</message>
+        <message name="IDS_SHORTCUT_NAME_BETA">Ping Beta</message>
+        <message name="IDS_SHORTCUT_NAME_DEV">Ping Dev</message>
         <message name="IDS_PRODUCT_DESCRIPTION" desc="Browser description">
-          Brave is a web browser that runs webpages and applications with lightning speed. It's fast, stable, and easy to use. Browse the web more safely with malware and phishing protection built into Brave.
+          Ping is a web browser that runs webpages and applications with lightning speed. It's fast, stable, and easy to use. Browse the web more safely with malware and phishing protection built into Ping.
         </message>
-        <message name="IDS_WELCOME_TO_CHROME" desc="Welcoming text announced via screen readers the first time Brave is launched at the conclusion of installation.">
-          Welcome to Brave; new browser window opened
+        <message name="IDS_WELCOME_TO_CHROME" desc="Welcoming text announced via screen readers the first time Ping is launched at the conclusion of installation.">
+          Welcome to Ping; new browser window opened
         </message>
       </if>
       <if expr="is_macosx or is_linux">
         <message name="IDS_FIRST_RUN_DIALOG_WINDOW_TITLE" desc="Window title of First Run dialog on Mac and Linux, displayed in title bar">
-          Welcome to Brave
+          Welcome to Ping
         </message>
       </if>
       <if expr="chromeos_ash">
@@ -327,8 +327,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           ChromeOS
         </message>
       </if>
-      <message name="IDS_PRODUCT_LOGO_ENTERPRISE_ALT_TEXT" desc="Alt text for the Brave Enterprise logo image." formatter_data="android_java">
-        Brave Enterprise logo
+      <message name="IDS_PRODUCT_LOGO_ENTERPRISE_ALT_TEXT" desc="Alt text for the Ping Enterprise logo image." formatter_data="android_java">
+        Ping Enterprise logo
       </message>
       <if expr="is_win">
         <message name="IDS_SHORTCUT_NEW_WINDOW" desc="The text label of the New window shortcut context menu entry as of Windows 8">
@@ -342,179 +342,179 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       </if>
       <if expr="not is_macosx and not chromeos_ash">
         <message name="IDS_TASK_MANAGER_TITLE" desc="The title of the Task Manager window">
-          Task Manager - Brave
+          Task Manager - Ping
         </message>
       </if>
       <message name="IDS_SESSION_CRASHED_VIEW_UMA_OPTIN" desc="Text besides the checkbox to let users optin to UMA in the restore from previous crash bubble.">
-        Help make Brave better by sending crash reports and <ph name="UMA_LINK">$1<ex>usage statistics</ex></ph> to Brave
+        Help make Ping better by sending crash reports and <ph name="UMA_LINK">$1<ex>usage statistics</ex></ph> to Ping
       </message>
       <if expr="not chromeos_ash">
         <!-- Browser Window Title Format -->
         <message name="IDS_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in tabs and popup windows">
-          <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave
+          <ph name="PAGE_TITLE">$1<ex>Ping</ex></ph> - Ping
         </message>
       </if>
       <if expr="chromeos_ash">
         <!-- Browser Window Title Format -->
         <message name="IDS_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in tabbed browser windows">
-          Brave - <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph>
+          Ping - <ph name="PAGE_TITLE">$1<ex>Ping</ex></ph>
         </message>
       </if>
       <if expr="not chromeos_ash and not is_macosx">
         <!-- Captive Portal Browser Window Title Format -->
         <message name="IDS_CAPTIVE_PORTAL_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in captive portal popup windows">
-          <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Network Sign-in - Brave
+          <ph name="PAGE_TITLE">$1<ex>Ping</ex></ph> - Network Sign-in - Ping
         </message>
       </if>
       <if expr="chromeos_ash">
         <!-- Captive Portal Browser Window Title Format -->
         <message name="IDS_CAPTIVE_PORTAL_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in captive portal popup windows">
-          Brave - Network Sign-in - <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph>
+          Ping - Network Sign-in - <ph name="PAGE_TITLE">$1<ex>Ping</ex></ph>
         </message>
       </if>
       <if expr="is_macosx">
         <!-- Captive Portal Browser Window Title Format -->
         <message name="IDS_CAPTIVE_PORTAL_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in captive portal popup windows">
-          <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Network Sign-in
+          <ph name="PAGE_TITLE">$1<ex>Ping</ex></ph> - Network Sign-in
         </message>
       </if>
       <!-- Accessible window title format - includes the channel, and the same
            on all browser platforms rather than different on ChromeOS. -->
       <message name="IDS_ACCESSIBLE_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window">
-        <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave
+        <ph name="PAGE_TITLE">$1<ex>Ping</ex></ph> - Ping
       </message>
       <message name="IDS_ACCESSIBLE_BETA_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window for the beta channel version of the browser">
-        <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave Beta
+        <ph name="PAGE_TITLE">$1<ex>Ping</ex></ph> - Ping Beta
       </message>
       <message name="IDS_ACCESSIBLE_DEV_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window for the developer (dev) channel version of the browser">
-        <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave Dev
+        <ph name="PAGE_TITLE">$1<ex>Ping</ex></ph> - Ping Dev
       </message>
       <message name="IDS_ACCESSIBLE_CANARY_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window for the canary (nightly build) channel version of the browser">
-        <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave Canary
+        <ph name="PAGE_TITLE">$1<ex>Ping</ex></ph> - Ping Canary
       </message>
       <if expr="_is_chrome_for_testing_branded">
         <then>
           <message name="IDS_ABOUT_VERSION_COMPANY_NAME" desc="Company name on the about pages">
-            Brave LLC
+            Ping LLC
           </message>
           <message name="IDS_ABOUT_VERSION_COPYRIGHT" desc="Copyright information on the about pages">
-            Copyright © <ph name="YEAR">{0,date,y}<ex>2016</ex></ph> The Brave Authors. All rights reserved.
+            Copyright © <ph name="YEAR">{0,date,y}<ex>2016</ex></ph> The Ping Authors. All rights reserved.
           </message>
         </then>
         <else>
           <message name="IDS_ABOUT_VERSION_COMPANY_NAME" desc="Company name on the about pages">
-            Brave Software Inc
+            Ping Software Inc
           </message>
           <message name="IDS_ABOUT_VERSION_COPYRIGHT" desc="Copyright information on the about pages">
-            Copyright © <ph name="YEAR">{0,date,y}<ex>2016</ex></ph> The Brave Authors. All rights reserved.
+            Copyright © <ph name="YEAR">{0,date,y}<ex>2016</ex></ph> The Ping Authors. All rights reserved.
           </message>
         </else>
       </if>
       <if expr="chromeos_ash">
-        <message name="IDS_ABOUT_CROS_VERSION_LICENSE" desc="Additional text displayed beneath the Brave open source URLs for ChromeOS.">
+        <message name="IDS_ABOUT_CROS_VERSION_LICENSE" desc="Additional text displayed beneath the Ping open source URLs for ChromeOS.">
           ChromeOS is made possible by additional <ph name="BEGIN_LINK_CROS_OSS">&lt;a target="_blank" href="$1"&gt;</ph>open source software<ph name="END_LINK_CROS_OSS">&lt;/a&gt;</ph>.
         </message>
-        <message name="IDS_ABOUT_CROS_WITH_LINUX_VERSION_LICENSE" desc="Additional text displayed beneath the Brave open source URLs for ChromeOS when Crostini is installed.">
+        <message name="IDS_ABOUT_CROS_WITH_LINUX_VERSION_LICENSE" desc="Additional text displayed beneath the Ping open source URLs for ChromeOS when Crostini is installed.">
           ChromeOS is made possible by additional <ph name="BEGIN_LINK_CROS_OSS">&lt;a target="_blank" href="$1"&gt;</ph>open source software<ph name="END_LINK_CROS_OSS">&lt;/a&gt;</ph>, as is <ph name="BEGIN_LINK_LINUX_OSS">&lt;a target="_blank" href="$2"&gt;</ph>Linux development environment<ph name="END_LINK_LINUX_OSS">&lt;/a&gt;</ph>.
         </message>
         <message name="IDS_ABOUT_SAFETY_INFORMATION" desc="The safety label in the About box." translateable="false">
-          Not used in Brave. Placeholder to keep resource maps in sync.
+          Not used in Ping. Placeholder to keep resource maps in sync.
         </message>
       </if>
       <message name="IDS_ABOUT_TERMS_OF_SERVICE" desc="The terms of service label in the About box." translateable="false">
-        Not used in Brave. Placeholder to keep resource maps in sync.
+        Not used in Ping. Placeholder to keep resource maps in sync.
       </message>
       <if expr="is_macosx">
         <message name="IDS_MAC_10_13_OBSOLETE" desc="A message displayed on an at-launch infobar and About (Help) page warning the user that the OS version they are using will soon be or is already unsupported.">
-          To get future Brave updates, you'll need macOS 10.15 or later. This computer is using macOS 10.13.
+          To get future Ping updates, you'll need macOS 10.15 or later. This computer is using macOS 10.13.
         </message>
         <message name="IDS_MAC_10_14_OBSOLETE" desc="A message displayed on an at-launch infobar and About (Help) page warning the user that the OS version they are using will soon be or is already unsupported.">
-          To get future Brave updates, you'll need macOS 10.15 or later. This computer is using macOS 10.14.
+          To get future Ping updates, you'll need macOS 10.15 or later. This computer is using macOS 10.14.
         </message>
       </if>
       <if expr="is_win">
         <message name="IDS_WIN_XP_VISTA_OBSOLETE" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using is no longer supported.">
-          Brave may not function correctly because it is no longer supported on Windows XP or Windows Vista
+          Ping may not function correctly because it is no longer supported on Windows XP or Windows Vista
         </message>
       </if>
       <if expr="is_win">
         <message name="IDS_WIN_7_OBSOLETE" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using will soon be or is already unsupported.">
-                    To get future Brave updates, you'll need Windows 10 or later. This computer is using Windows 7.
+                    To get future Ping updates, you'll need Windows 10 or later. This computer is using Windows 7.
         </message>
       </if>
       <if expr="is_win">
         <message name="IDS_WIN_8_OBSOLETE" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using will soon be or is already unsupported.">
-                    To get future Brave updates, you'll need Windows 10 or later. This computer is using Windows 8.
+                    To get future Ping updates, you'll need Windows 10 or later. This computer is using Windows 8.
         </message>
       </if>
       <if expr="is_win">
         <message name="IDS_WIN_8_1_OBSOLETE" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using will soon be or is already unsupported.">
-                    To get future Brave updates, you'll need Windows 10 or later. This computer is using Windows 8.1.
+                    To get future Ping updates, you'll need Windows 10 or later. This computer is using Windows 8.1.
         </message>
       </if>
       <if expr="is_linux">
         <message name="IDS_LINUX_OBSOLETE" desc="A message displayed on an at-launch infobar and about:help warning the user that the OS version they are using is no longer supported.">
-          Brave may not function correctly because it is no longer supported on this Linux distribution
+          Ping may not function correctly because it is no longer supported on this Linux distribution
         </message>
       </if>
       <message name="IDS_ACCNAME_APP" desc="The accessible name for the app menu." translateable="false">
-        Brave
+        Ping
       </message>
       <!-- Hung Browser Detector -->
       <if expr="is_win">
         <message name="IDS_BROWSER_HUNGBROWSER_MESSAGE" desc="Content of the dialog box shown when the browser is hung">
-          Brave is unresponsive. Relaunch now?
+          Ping is unresponsive. Relaunch now?
         </message>
       </if>
       <!-- Sharing messages -->
       <message name="IDS_BROWSER_SHARING_CLICK_TO_CALL_DIALOG_HELP_TEXT_NO_DEVICES" desc="The label to be shown as a help text of the dialog when user click on a phone number, if there are no phones to choose from.">
-        To send a number from here to your Android phone, sign in to Brave on both devices.
+        To send a number from here to your Android phone, sign in to Ping on both devices.
       </message>
       <message name="IDS_BROWSER_SHARING_CLICK_TO_CALL_DIALOG_HELP_TEXT_NO_DEVICES_ORIGIN" desc="The label to be shown as a help text of the dialog when user click on a phone number, if there are no phones to choose from.">
-        To send a number from <ph name="ORIGIN">$1<ex>www.google.com</ex></ph> to your Android phone, sign in to Brave on both devices.
+        To send a number from <ph name="ORIGIN">$1<ex>www.google.com</ex></ph> to your Android phone, sign in to Ping on both devices.
       </message>
       <message name="IDS_BROWSER_SHARING_ERROR_DIALOG_TEXT_DEVICE_NOT_FOUND" desc="The text to be shown on the dialog when an error occurred because the device is not synced.">
-        Make sure you are signed in to Brave on your <ph name="TARGET_DEVICE_NAME">$1<ex>Pixel XL</ex></ph> and then try sending again.
+        Make sure you are signed in to Ping on your <ph name="TARGET_DEVICE_NAME">$1<ex>Pixel XL</ex></ph> and then try sending again.
       </message>
       <!-- Uninstall messages -->
       <if expr="is_win">
         <message name="IDS_UNINSTALL_CLOSE_APP" desc="Message to user when uninstall detects other app instance running">
-          Please close all Brave windows and try again.
+          Please close all Ping windows and try again.
         </message>
         <message name="IDS_UNINSTALL_VERIFY" desc="Message to confirm user wants to uninstall">
-          Are you sure you want to uninstall Brave?
+          Are you sure you want to uninstall Ping?
         </message>
-        <message name="IDS_UNINSTALL_CHROME" desc="The title of the Brave uninstall dialog.">
-          Uninstall Brave
+        <message name="IDS_UNINSTALL_CHROME" desc="The title of the Ping uninstall dialog.">
+          Uninstall Ping
         </message>
       </if>
       <message name="IDS_FR_CUSTOMIZE_DEFAULT_BROWSER" desc="Default browser checkbox label">
-        Make Brave the default browser
+        Make Ping the default browser
       </message>
       <if expr="use_titlecase">
         <message name="IDS_STATUS_TRAY_KEEP_CHROME_RUNNING_IN_BACKGROUND" desc="In Title Case: The checkbox in the status tray context menu that controls whether chrome keeps running in the background after the last window is closed">
-          Let Brave Run in the Background
+          Let Ping Run in the Background
         </message>
       </if>
       <if expr="not use_titlecase">
         <message name="IDS_STATUS_TRAY_KEEP_CHROME_RUNNING_IN_BACKGROUND" desc="The checkbox in the status tray context menu that controls whether chrome keeps running in the background after the last window is closed">
-          Let Brave run in the background
+          Let Ping run in the background
         </message>
       </if>
       <message name="IDS_CANT_WRITE_USER_DIRECTORY_SUMMARY" desc="Summary of problem displayed in dialog when we can't create a directory for this user.">
-Brave cannot read and write to its data directory:
+Ping cannot read and write to its data directory:
 
-<ph name="USER_DATA_DIRECTORY">$1<ex>C:\Documents and Settings\devint\Local Settings\Application Data\Brave\Brave</ex></ph>
+<ph name="USER_DATA_DIRECTORY">$1<ex>C:\Documents and Settings\devint\Local Settings\Application Data\Ping\Ping</ex></ph>
       </message>
       <if expr="chromeos_ash">
         <message name="IDS_EULA_CHECKBOX_ENABLE_LOGGING" desc="The label of the checkbox to enable/disable crash and user metrics logging">
-          Optional: Help improve ChromeOS features and performance by automatically sending diagnostic and usage data to Brave.
+          Optional: Help improve ChromeOS features and performance by automatically sending diagnostic and usage data to Ping.
         </message>
       </if>
       <message name="IDS_PROFILE_TOO_NEW_ERROR" desc="Error displayed on startup when the profile is from a newer version of the product and can not be read">
-Your profile can not be used because it is from a newer version of Brave.
+Your profile can not be used because it is from a newer version of Ping.
 
-Some features may be unavailable. Please specify a different profile directory or use a newer version of Brave.
+Some features may be unavailable. Please specify a different profile directory or use a newer version of Ping.
       </message>
       <message name="IDS_PREFERENCES_UNREADABLE_ERROR" desc="Error displayed on startup when user preferences file can not be read">
 Your preferences can not be read.
@@ -524,37 +524,37 @@ Some features may be unavailable and changes to preferences won't be saved.
       <message name="IDS_PREFERENCES_CORRUPT_ERROR" desc="Error displayed on startup when user preferences file can not be read">
 Your preferences file is corrupt or invalid.
 
-Brave is unable to recover your settings.
+Ping is unable to recover your settings.
       </message>
       <!-- Add account dialog -->
       <if expr="chromeos_ash">
         <message name="IDS_ACCOUNT_MANAGER_DIALOG_WELCOME_BODY_V2_WITH_GUEST_MODE" desc="Text body for the Welcome screen in ChromeOS 'Add account' dialog.">
-If you want to use this account one-time only, you can use <ph name="GUEST_LINK_BEGIN">&lt;a id="guestModeLink" href="#"&gt;</ph>Guest mode<ph name="GUEST_LINK_END">&lt;/a&gt;</ph> in Brave browser. If you want to add an account for someone else, <ph name="LINK_BEGIN">&lt;a target="_blank" id="newPersonLink" href="$1<ex>https://google.com/</ex>"&gt;</ph>add a new profile<ph name="LINK_END">&lt;/a&gt;</ph> to your <ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph>.
+If you want to use this account one-time only, you can use <ph name="GUEST_LINK_BEGIN">&lt;a id="guestModeLink" href="#"&gt;</ph>Guest mode<ph name="GUEST_LINK_END">&lt;/a&gt;</ph> in Ping browser. If you want to add an account for someone else, <ph name="LINK_BEGIN">&lt;a target="_blank" id="newPersonLink" href="$1<ex>https://google.com/</ex>"&gt;</ph>add a new profile<ph name="LINK_END">&lt;/a&gt;</ph> to your <ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph>.
 
-Permissions you've already given to websites and apps may apply to this account. You can manage your Brave sync chains in <ph name="SETTINGS_LINK_BEGIN">&lt;a id="osSettingsLink" href="$3<ex>https://google.com/</ex>"&gt;</ph>Settings<ph name="SETTINGS_LINK_END">&lt;/a&gt;</ph>.
+Permissions you've already given to websites and apps may apply to this account. You can manage your Ping sync chains in <ph name="SETTINGS_LINK_BEGIN">&lt;a id="osSettingsLink" href="$3<ex>https://google.com/</ex>"&gt;</ph>Settings<ph name="SETTINGS_LINK_END">&lt;/a&gt;</ph>.
         </message>
       </if>
       <!-- Crash Recovery Dialog -->
       <message name="IDS_CRASH_RECOVERY_TITLE" desc="Title of dialog shown when the browser crashes." translateable="false">
-        Brave
+        Ping
       </message>
       <if expr="is_win">
         <message name="IDS_CRASH_RECOVERY_CONTENT" desc="Text content telling the user the browser has crashed.">
-          Whoa! Brave has crashed. Relaunch now?
+          Whoa! Ping has crashed. Relaunch now?
         </message>
       </if>
       <!-- Password generation strings -->
       <message name="IDS_PASSWORD_GENERATION_PROMPT" desc="Autofill dropdown text describing password generation.">
-        Brave will save this password in your Brave sync chain. You won’t have to remember it.
+        Ping will save this password in your Ping sync chain. You won’t have to remember it.
       </message>
       <!-- Password manager onboarding strings -->
       <message name="IDS_PASSWORD_MANAGER_ONBOARDING_DETAILS_C" desc="The explanation text that is shown below the title in the password manager onboarding dialog.">
-        Brave lets you know if your passwords are ever compromised
+        Ping lets you know if your passwords are ever compromised
       </message>
       <message name="IDS_PASSWORD_MANAGER_TITLE_BRAND" desc="The product name used in the title of the password bubble." translateable="false">
-        Brave
+        Ping
       </message>
-      <message name="IDS_PASSWORD_BUBBLES_PASSWORD_MANAGER_LINK_TEXT_SAVING_ON_DEVICE" desc="The text of the Brave Password Manager links displayed on Password Manager bubbles footer when the credentials are stored only locally.">
+      <message name="IDS_PASSWORD_BUBBLES_PASSWORD_MANAGER_LINK_TEXT_SAVING_ON_DEVICE" desc="The text of the Ping Password Manager links displayed on Password Manager bubbles footer when the credentials are stored only locally.">
         Password Manager
       </message>
       <message name="IDS_PASSWORD_MANAGER_SAVE_PASSWORD_SIGNED_OUT_MESSAGE_DESCRIPTION" desc="The description of the Password Manager's save password message when the user is signed out.">
@@ -565,278 +565,278 @@ Permissions you've already given to websites and apps may apply to this account.
       </message>
       <if expr="is_macosx">
       <message name="IDS_PASSWORDS_AUTHENTICATION_PROMPT_PREFIX" desc="Text shown in the beginning of the OS-level user authentication prompt before performing a seneitive operation such as show passwords in plain text.">
-          Brave is trying to <ph name="AUTHENTICATION_PURPOSE">$1<ex>show passwords</ex></ph>
+          Ping is trying to <ph name="AUTHENTICATION_PURPOSE">$1<ex>show passwords</ex></ph>
         </message>
       </if>
       <if expr="is_win">
         <message name="IDS_PASSWORDS_PAGE_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before revealing plaintext passwords on the password page.">
-          Brave is trying to show passwords. Type your Windows password to allow this.
+          Ping is trying to show passwords. Type your Windows password to allow this.
         </message>
         <message name="IDS_PASSWORDS_PAGE_COPY_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before copying plaintext passwords into the clipboard.">
-          Brave is trying to copy passwords. Type your Windows password to allow this.
+          Ping is trying to copy passwords. Type your Windows password to allow this.
         </message>
         <message name="IDS_PASSWORDS_PAGE_EDIT_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before editing plaintext passwords on the password page.">
-          Brave is trying to edit passwords. Type your Windows password to allow this.
+          Ping is trying to edit passwords. Type your Windows password to allow this.
         </message>
         <message name="IDS_PASSWORDS_PAGE_EXPORT_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before exporting passwords to a file.">
-          Brave wants to export your passwords. Type your Windows password to allow this.
+          Ping wants to export your passwords. Type your Windows password to allow this.
         </message>
         <message name="IDS_PASSWORDS_PAGE_IMPORT_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before overriding passwords during Import.">
-          Brave is trying to replace existing passwords. Type your Windows password to allow this.
+          Ping is trying to replace existing passwords. Type your Windows password to allow this.
         </message>
         <message name="IDS_INSTALL_HIGHER_VERSION" desc="Error displayed when higher version already exists.">
-          This computer already has a more recent version of Brave. If the software is not working, please uninstall Brave and try again.
+          This computer already has a more recent version of Ping. If the software is not working, please uninstall Ping and try again.
         </message>
         <message name="IDS_INSTALL_FAILED" desc="Error displayed if installation fails due to some unknown error.">
-          Installation failed due to unspecified error. If Brave is currently running, please close it and try again.
+          Installation failed due to unspecified error. If Ping is currently running, please close it and try again.
         </message>
-        <message name="IDS_SAME_VERSION_REPAIR_FAILED" desc="Error displayed if installation fails due to Brave running.">
-          Can not install the same Brave version that is currently running. Please close Brave and try again.
+        <message name="IDS_SAME_VERSION_REPAIR_FAILED" desc="Error displayed if installation fails due to Ping running.">
+          Can not install the same Ping version that is currently running. Please close Ping and try again.
         </message>
         <message name="IDS_SETUP_PATCH_FAILED" desc="Error message when setup.exe fails to patch itself.">
-          Installation failed due to unspecified error. Please download Brave again.
+          Installation failed due to unspecified error. Please download Ping again.
         </message>
         <message name="IDS_INSTALL_OS_NOT_SUPPORTED" desc="Error displayed if OS is not supported">
-          Brave requires Windows 10 or higher.
+          Ping requires Windows 10 or higher.
         </message>
         <message name="IDS_INSTALL_OS_ERROR" desc="Error displayed when any Windows API call fails and we do not have more specific information.">
-          An operating system error occurred during installation. Please download Brave again.
+          An operating system error occurred during installation. Please download Ping again.
         </message>
         <message name="IDS_INSTALL_SINGLETON_ACQUISITION_FAILED" desc="Error displayed when the installer cannot run because another installer is already running.">
-          Another operation on Brave is in progress. Please try again later.
+          Another operation on Ping is in progress. Please try again later.
         </message>
         <message name="IDS_INSTALL_TEMP_DIR_FAILED" desc="Error displayed when we fail to create temporary directory during installation.">
           The installer couldn't create a temporary directory. Please check for free disk space and permission to install software.
         </message>
         <message name="IDS_INSTALL_UNCOMPRESSION_FAILED" desc="Error when when we can not uncompress installation archive.">
-          The installer failed to uncompress archive. Please download Brave again.
+          The installer failed to uncompress archive. Please download Ping again.
         </message>
         <message name="IDS_INSTALL_INVALID_ARCHIVE" desc="Error displayed when we can not open the installation archive.">
-          The installer archive is corrupted or invalid. Please download Brave again.
+          The installer archive is corrupted or invalid. Please download Ping again.
         </message>
         <message name="IDS_INSTALL_INSUFFICIENT_RIGHTS" desc="Error displayed when a non admin user tries to attempt system level install/uninstall.">
           You do not have appropriate rights for system-level install. Try running the installer again as Administrator.
         </message>
-        <message name="IDS_INSTALL_EXISTING_VERSION_LAUNCHED" desc="A message shown to users who try to install Brave in their user profile directory when their computer already has Brave installed for all users. In this case, the installer silently launches the existing version of Brave for all users rather than installing a second version of Brave.">
-          Brave is already installed for all users on your computer.
+        <message name="IDS_INSTALL_EXISTING_VERSION_LAUNCHED" desc="A message shown to users who try to install Ping in their user profile directory when their computer already has Ping installed for all users. In this case, the installer silently launches the existing version of Ping for all users rather than installing a second version of Ping.">
+          Ping is already installed for all users on your computer.
         </message>
       </if>
       <!-- Options Dialog -->
       <if expr="is_win">
-        <message name="IDS_SHORTCUT_TOOLTIP" desc="Text for the hover-on tooltip for the Brave shortcuts.">
+        <message name="IDS_SHORTCUT_TOOLTIP" desc="Text for the hover-on tooltip for the Ping shortcuts.">
           Access the Internet
         </message>
         <message name="IDS_UNINSTALL_DELETE_PROFILE" desc="Text to show user to ask whether to delete all the profile data also during uninstallation.">
           Also delete your browsing data?
         </message>
-        <message name="IDS_UNINSTALL_SET_DEFAULT_BROWSER" desc="Text to ask whether to set another browser as default when Brave is uninstalled.">
+        <message name="IDS_UNINSTALL_SET_DEFAULT_BROWSER" desc="Text to ask whether to set another browser as default when Ping is uninstalled.">
           Change default browser to:
         </message>
         <message name="IDS_UNINSTALL_BUTTON_TEXT" desc="Label for uninstall button on Uninstall confirmation dialog.">
           Uninstall
         </message>
       </if>
-      <message name="IDS_DEFAULT_BROWSER_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not the current default browser.">
-        Brave isn't your default browser
+      <message name="IDS_DEFAULT_BROWSER_INFOBAR_TEXT" desc="Text to show in an infobar when Ping is not the current default browser.">
+        Ping isn't your default browser
       </message>
       <if expr="is_win">
-        <!-- Try Brave Toast Dialog -->
+        <!-- Try Ping Toast Dialog -->
         <message name="IDS_TRY_TOAST_HEADING" desc="Top line of the try-chrome-again dialog">
-          There is a new version of Brave available.
+          There is a new version of Ping available.
         </message>
         <message name="IDS_TRY_TOAST_HEADING2" desc="Top line of the try-chrome-again dialog">
-          There's a new version of Brave available, and it's faster than ever.
+          There's a new version of Ping available, and it's faster than ever.
         </message>
         <message name="IDS_TRY_TOAST_HEADING3" desc="Top line of the try-chrome-again dialog">
-          There's a new, safer version of Brave available.
+          There's a new, safer version of Ping available.
         </message>
         <message name="IDS_TRY_TOAST_HEADING4" desc="Top line of the try-chrome-again dialog">
-          Brave has been updated, but you haven't used it for at least 30 days.
+          Ping has been updated, but you haven't used it for at least 30 days.
         </message>
         <message name="IDS_TRY_TOAST_HEADING_SKYPE" desc="Top line of the try-chrome-again dialog">
-          Brave lets you click a phone number on the web and call it with Skype!
+          Ping lets you click a phone number on the web and call it with Skype!
         </message>
       </if>
 
       <!-- Download Bubble Items -->
       <message name="IDS_DOWNLOAD_BUBBLE_DANGEROUS_FILE" desc="Message shown to the user to validate the download of a dangerous file.">
-        Brave blocked this file because this type of file is dangerous
+        Ping blocked this file because this type of file is dangerous
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_MALICIOUS_URL_BLOCKED" desc="Message shown to the user to validate the download when the download url is classified to lead to malware by the safebrowsing database.">
-        Brave blocked this file because it is dangerous
+        Ping blocked this file because it is dangerous
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_UNKNOWN_SOURCE" desc="Summary of dangerous warning for a file (like an extension) from an unknown source.">
-        Extensions, apps, and themes from unknown sources can harm your device. Brave recommends only installing them from the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph>
+        Extensions, apps, and themes from unknown sources can harm your device. Ping recommends only installing them from the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph>
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_MALWARE" desc="Subpage summary for malware warning for the user.">
-        Brave blocked this file because it has malware
+        Ping blocked this file because it has malware
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_DEEP_SCANNING_PROMPT" desc="Subpage summary of warning for Deep Scanning.">
-        Brave recommends scanning this file because it may be dangerous
+        Ping recommends scanning this file because it may be dangerous
       </message>
 
       <!-- Tailored Warning in Download Bubble Items -->
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_SUSPICIOUS_ARCHIVE" desc="Subpage summary for suspicious archive warning.">
-        Brave blocked this archive file because it may hide malware
+        Ping blocked this archive file because it may hide malware
       </message>
 
       <!-- Download Shelf Items -->
       <message name="IDS_DOWNLOAD_STATUS_CRX_INSTALL_RUNNING" desc="Message shown when a CRX has been downloaded and is being unpacked.">
-        Adding to Brave...
+        Adding to Ping...
       </message>
 
       <message name="IDS_PROMPT_DOWNLOAD_CHANGES_SETTINGS" desc="Message shown on the download shelf when the download is known to change settings in the browser in a malicious way.">
-        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> may be dangerous, so Brave has blocked it.
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> may be dangerous, so Ping has blocked it.
       </message>
 
       <message name="IDS_PROMPT_MALICIOUS_DOWNLOAD_URL" desc="Message shown to the user to validate the download when the download url is classified to lead to malware by the safebrowsing database.">
-        This file is dangerous, so Brave has blocked it.
+        This file is dangerous, so Ping has blocked it.
       </message>
       <message name="IDS_PROMPT_MALICIOUS_DOWNLOAD_CONTENT" desc="Message shown to the user to validate the download when the download content is classified to lead to malware by safebrowsing.">
-        <ph name="FILE_NAME">$1<ex>malware.exe</ex></ph> is dangerous, so Brave has blocked it.
+        <ph name="FILE_NAME">$1<ex>malware.exe</ex></ph> is dangerous, so Ping has blocked it.
       </message>
       <message name="IDS_BLOCK_REASON_DANGEROUS_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is malware.">
-        This file is dangerous, so Brave has blocked it.
+        This file is dangerous, so Ping has blocked it.
       </message>
       <message name="IDS_BLOCK_REASON_UNWANTED_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is unwanted sofware.">
-        This file may be dangerous, so Brave has blocked it.
+        This file may be dangerous, so Ping has blocked it.
       </message>
       <message name="IDS_BLOCK_REASON_PROMPT_FOR_SCANNING" desc="Message shown to the user on chrome://downloads page to explain that this download is recommended to be scanned.">
-        Brave recommends scanning this file because it may be dangerous.
+        Ping recommends scanning this file because it may be dangerous.
       </message>
 
       <!-- Abandon in-progress downloads confirmation dialog -->
       <if expr="not is_macosx">
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_BROWSER_MESSAGE" desc="Message on a dialog shown when the user closes the browser while one or more downloads are in progress. This string is shown on Windows, ChromeOS, and Linux, which all use 'Exit' to refer to closing a browser.">
-          Exit Brave anyway?
+          Exit Ping anyway?
         </message>
       </if>
       <if expr="is_macosx">
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_BROWSER_MESSAGE" desc="Mac OSX Only: Message on a dialog shown when the user closes the browser while one or more downloads are in progress. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
-          Quit Brave anyway?
+          Quit Ping anyway?
         </message>
       </if>
 
       <!-- Quit all apps confirmation dialog -->
       <if expr="is_macosx">
-        <message name="IDS_QUIT_WITH_APPS_TITLE" desc="Title for a notification explaining that Brave is running in the background.">
-          Brave is in background mode.
+        <message name="IDS_QUIT_WITH_APPS_TITLE" desc="Title for a notification explaining that Ping is running in the background.">
+          Ping is in background mode.
         </message>
       </if>
 
-      <!-- Brave API keys info bar -->
-      <message name="IDS_MISSING_GOOGLE_API_KEYS" desc="Message shown when Brave API keys are missing. This message is followed by a 'Learn more' link.">
-        Brave API keys are missing. Some functionality of Brave will be disabled.
+      <!-- Ping API keys info bar -->
+      <message name="IDS_MISSING_GOOGLE_API_KEYS" desc="Message shown when Ping API keys are missing. This message is followed by a 'Learn more' link.">
+        Ping API keys are missing. Some functionality of Ping will be disabled.
       </message>
 
       <if expr="enable_extensions">
         <!-- Extension installed bubble -->
         <message name="IDS_EXTENSION_INSTALLED_HEADING" desc="Title of the extension-installed bubble. Instructs that the extension was installed.">
-          <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph> has been added to Brave
+          <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph> has been added to Ping
         </message>
 
         <!-- Extension uninstall prompt -->
         <message name="IDS_EXTENSION_UNINSTALL_PROMPT_REMOVE_DATA_CHECKBOX" desc="Checkbox text to ask the user whether they want to remove associated data at uninstall time. Only used when uninstalling an app associated with a particular website.">
-          Also clear data from Brave (<ph name="URL">$1<ex>www.google.com</ex></ph>)
+          Also clear data from Ping (<ph name="URL">$1<ex>www.google.com</ex></ph>)
         </message>
 
         <!-- Extension alerts. -->
         <message name="IDS_EXTENSION_ALERT_ITEM_BLOCKLISTED_MALWARE" desc="A statement that an extension has been newly blocklisted for malware.">
-          Brave found that "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" contains malware
+          Ping found that "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" contains malware
         </message>
         <message name="IDS_EXTENSIONS_ALERT_ITEM_BLOCKLISTED_MALWARE_TITLE" desc="A statement that multiple extension/apps have been newly blocklisted for malware.">
-          Brave found that these items contain malware:
+          Ping found that these items contain malware:
         </message>
       </if>
 
       <!-- Extension Safety Check Detail Page strings -->
       <message name="IDS_SAFETY_CHECK_EXTENSIONS_MALWARE" desc="The text explaining the reason for disabling extension. The extension in question contains malware.">
-        This extension contains malware and is unsafe. Remove it from Brave so it can no longer see and change your data on sites you visit, including your personal info.
+        This extension contains malware and is unsafe. Remove it from Ping so it can no longer see and change your data on sites you visit, including your personal info.
       </message>
        <message name="IDS_SAFETY_CHECK_EXTENSIONS_POLICY_VIOLATION" desc="The text explaining the reason for disabling extension. The extension in question violates Web Store policy.">
-          This extension violates the Web Store policy, and might be unsafe. Remove it from Brave so it can no longer see and change your data on sites you visit, including your personal info.
+          This extension violates the Web Store policy, and might be unsafe. Remove it from Ping so it can no longer see and change your data on sites you visit, including your personal info.
       </message>
       <message name="IDS_SAFETY_CHECK_EXTENSIONS_UNPUBLISHED" desc="The text explaining the reason for disabling extension. The extension in question was unpublished by the developer.">
-          This extension was unpublished by its developer, and might be unsafe. Remove it from Brave so it can no longer see and change your data on sites you visit, including your personal info.
+          This extension was unpublished by its developer, and might be unsafe. Remove it from Ping so it can no longer see and change your data on sites you visit, including your personal info.
       </message>
 
       <!-- chrome://settings/extensions page -->
       <message name="IDS_EXTENSIONS_ITEM_SHOW_ACCESS_REQUESTS_IN_TOOLBAR" desc="The label on the toggle to allow the extension to show site access requests in the toolbar.">
-        Allow extension to show access requests in the Brave toolbar
+        Allow extension to show access requests in the Ping toolbar
       </message>
-      <message name="IDS_EXTENSIONS_INCOGNITO_WARNING" desc="Warns the user that Brave cannot prevent extensions from recording history in Private mode. Displayed in extensions management UI after an extension is selected to be run in Private mode.">
-        Warning: Brave cannot prevent extensions from recording your browsing history. To disable this extension in Private mode, unselect this option.
+      <message name="IDS_EXTENSIONS_INCOGNITO_WARNING" desc="Warns the user that Ping cannot prevent extensions from recording history in Private mode. Displayed in extensions management UI after an extension is selected to be run in Private mode.">
+        Warning: Ping cannot prevent extensions from recording your browsing history. To disable this extension in Private mode, unselect this option.
       </message>
       <message name="IDS_EXTENSIONS_UNINSTALL" desc="The link for uninstalling extensions.">
-        Remove from Brave
+        Remove from Ping
       </message>
-      <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE_IN_CHROME" desc="The label to indicate that a shortcut will be triggerable only from within the Brave application.">
-        In Brave
+      <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE_IN_CHROME" desc="The label to indicate that a shortcut will be triggerable only from within the Ping application.">
+        In Ping
       </message>
 
       <if expr="enable_extensions">
         <message name="IDS_EXTENSIONS_MULTIPLE_UNSUPPORTED_DISABLED_BODY" desc="Body of the dialog shown when multiple unsupported extensions have been disabled.">
-          To make Brave safer, we disabled some extensions that aren't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
+          To make Ping safer, we disabled some extensions that aren't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
         </message>
         <message name="IDS_EXTENSIONS_SINGLE_UNSUPPORTED_DISABLED_BODY" desc="Body of the dialog shown when a single unsupported extension has been disabled.">
-          To make Brave safer, we disabled the following extension that isn't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
+          To make Ping safer, we disabled the following extension that isn't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
         </message>
       </if>
 
-      <!-- Main Brave menu -->
+      <!-- Main Ping menu -->
       <message name="IDS_APPMENU_TOOLTIP" desc="The tooltip to show for the browser menu">
-        Customize and control Brave
+        Customize and control Ping
       </message>
 
       <message name="IDS_APPMENU_TOOLTIP_UPDATE_AVAILABLE" desc="The tooltip to show for the browser menu when an update is available">
-        Customize and control Brave. Update is available.
+        Customize and control Ping. Update is available.
       </message>
 
       <message name="IDS_APPMENU_TOOLTIP_ALERT" desc="The tooltip to show for the browser menu when a non-update alert is displayed">
-        Customize and control Brave. Something needs your attention - click for details.
+        Customize and control Ping. Something needs your attention - click for details.
       </message>
 
-      <message name="IDS_OPEN_IN_CHROME" desc="The text label of the Open in Brave menu item for the Hosted App app menu">
-        &amp;Open in Brave
+      <message name="IDS_OPEN_IN_CHROME" desc="The text label of the Open in Ping menu item for the Hosted App app menu">
+        &amp;Open in Ping
       </message>
 
       <if expr="use_titlecase and not chromeos_ash">
         <if expr="_is_chrome_for_testing_branded">
           <then>
-            <message name="IDS_ABOUT" desc="In Title Case: The text label of the About Brave for Testing menu item">
-              About &amp;Brave for Testing
+            <message name="IDS_ABOUT" desc="In Title Case: The text label of the About Ping for Testing menu item">
+              About &amp;Ping for Testing
             </message>
           </then>
           <else>
-            <message name="IDS_ABOUT" desc="In Title Case: The text label of the About Brave menu item">
-              About &amp;Brave
+            <message name="IDS_ABOUT" desc="In Title Case: The text label of the About Ping menu item">
+              About &amp;Ping
             </message>
           </else>
         </if>
-        <message name="IDS_RELAUNCH_TO_UPDATE" desc="In Title Case: The text label of the relaunch to update Brave menu item">
-          Relaunch to Update &amp;Brave
+        <message name="IDS_RELAUNCH_TO_UPDATE" desc="In Title Case: The text label of the relaunch to update Ping menu item">
+          Relaunch to Update &amp;Ping
         </message>
       </if>
       <if expr="not use_titlecase and not chromeos_ash">
         <if expr="_is_chrome_for_testing_branded">
           <then>
-            <message name="IDS_ABOUT" desc="The text label of the About Brave for Testing menu item">
-              About &amp;Brave for Testing
+            <message name="IDS_ABOUT" desc="The text label of the About Ping for Testing menu item">
+              About &amp;Ping for Testing
             </message>
           </then>
           <else>
-            <message name="IDS_ABOUT" desc="The text label of the About Brave menu item">
-              About &amp;Brave
+            <message name="IDS_ABOUT" desc="The text label of the About Ping menu item">
+              About &amp;Ping
             </message>
           </else>
         </if>
-        <message name="IDS_RELAUNCH_TO_UPDATE" desc="The text label of the relaunch to update Brave menu item">
-          Relaunch to update &amp;Brave
+        <message name="IDS_RELAUNCH_TO_UPDATE" desc="The text label of the relaunch to update Ping menu item">
+          Relaunch to update &amp;Ping
         </message>
       </if>
       <if expr="chromeos_ash">
-        <message name="IDS_ABOUT" desc="The text label of the About Brave menu item">
-          About &amp;Brave
+        <message name="IDS_ABOUT" desc="The text label of the About Ping menu item">
+          About &amp;Ping
         </message>
         <message name="IDS_RELAUNCH_TO_UPDATE" desc="The text label of the relaunch to update ChromeOS menu item">
           Relaunch to update &amp;ChromeOS
@@ -844,20 +844,20 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
 
       <if expr="is_win or is_macosx or is_linux">
-        <message name="IDS_RELAUNCH_TO_UPDATE_ALT" desc="Alternate text label of the relaunch to update Brave menu item" translateable="false">
-        Not used in Brave. Placeholder to keep resource maps in sync.
+        <message name="IDS_RELAUNCH_TO_UPDATE_ALT" desc="Alternate text label of the relaunch to update Ping menu item" translateable="false">
+        Not used in Ping. Placeholder to keep resource maps in sync.
         </message>
       </if>
 
       <if expr="is_macosx">
-        <message name="IDS_APP_MENU_PRODUCT_NAME" desc="The application's short name, used for the Mac's application menu, activity monitor, etc. This should be less than 16 characters. Example: Brave, not Brave." translateable="false">
-          Brave
+        <message name="IDS_APP_MENU_PRODUCT_NAME" desc="The application's short name, used for the Mac's application menu, activity monitor, etc. This should be less than 16 characters. Example: Ping, not Ping." translateable="false">
+          Ping
         </message>
-        <message name="IDS_HELPER_NAME" desc="The helper application's name.  Should contain the Brave application name (IDS_PRODUCT_NAME). Example: Brave Helper.">
-          Brave Helper
+        <message name="IDS_HELPER_NAME" desc="The helper application's name.  Should contain the Ping application name (IDS_PRODUCT_NAME). Example: Ping Helper.">
+          Ping Helper
         </message>
-        <message name="IDS_SHORT_HELPER_NAME" desc="The helper application's short name, used for the Mac's application menu, activity monitor, etc. Example: Brave Helper, not Brave Helper.">
-          Brave Helper
+        <message name="IDS_SHORT_HELPER_NAME" desc="The helper application's short name, used for the Mac's application menu, activity monitor, etc. Example: Ping Helper, not Ping Helper.">
+          Ping Helper
         </message>
       </if>
 
@@ -865,52 +865,52 @@ Permissions you've already given to websites and apps may apply to this account.
         P&amp;assword Manager
       </message>
 
-      <!-- Brave sign-in page -->
+      <!-- Ping sign-in page -->
       <message name="IDS_CHROME_SIGNIN_TITLE" desc="Title on the about:chrome-signin page" translateable="false">
-        Brave
+        Ping
       </message>
 
       <!-- DICE sign-in promo strings -->
       <message name="IDS_PROFILES_DICE_SYNC_PROMO" desc="Text describing the benefits of turning on Sync.">
-        Sync and personalize Brave across your devices
+        Sync and personalize Ping across your devices
       </message>
 
       <!-- One click sign-in infobar -->
       <if expr="not chromeos_ash">
         <message name="IDS_SYNC_WRONG_EMAIL" desc="Message shown when sync setup failed due to the user entering the wrong email address for sign-in.">
-          You were signed in to Brave as <ph name="USER_EMAIL_ADDRESS">$1<ex>foo@gmail.com</ex></ph>. Please use the same account to sign in again.
+          You were signed in to Ping as <ph name="USER_EMAIL_ADDRESS">$1<ex>foo@gmail.com</ex></ph>. Please use the same account to sign in again.
         </message>
         <message name="IDS_SYNC_USED_PROFILE_ERROR" desc="An error message shown when user tries to sign in to a profile that is used by other user name before.">
-          Someone previously signed in to Brave on this computer as <ph name="ACCOUNT_EMAIL_LAST">$1<ex>user@example.com</ex></ph>. Please create a new Brave user to keep your information separate.
+          Someone previously signed in to Ping on this computer as <ph name="ACCOUNT_EMAIL_LAST">$1<ex>user@example.com</ex></ph>. Please create a new Ping user to keep your information separate.
         </message>
       </if>
 
       <!-- Enterprise sign-in dialog -->
       <if expr="toolkit_views">
         <message name="IDS_ENTERPRISE_SIGNIN_TITLE" desc="The title of the dialog to confirm linking the browser profile with the signed-in enterprise account">
-          Link your Brave data to this account?
+          Link your Ping data to this account?
         </message>
-        <message name="IDS_ENTERPRISE_SIGNIN_EXPLANATION_WITHOUT_PROFILE_CREATION" desc="The warning message displayed to an enterprise user about to link their profile to their Brave account. This message is followed by a 'Learn more' link.">
-          You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords, and other settings will become permanently tied to <ph name="USER_NAME">$1<ex>pat@example.com</ex></ph>. You will be able to delete this data via the Brave sync chains Dashboard, but you will not be able to associate this data with another account. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>
+        <message name="IDS_ENTERPRISE_SIGNIN_EXPLANATION_WITHOUT_PROFILE_CREATION" desc="The warning message displayed to an enterprise user about to link their profile to their Ping account. This message is followed by a 'Learn more' link.">
+          You are signing in with a managed account and giving its administrator control over your Ping profile. Your Ping data, such as your apps, bookmarks, history, passwords, and other settings will become permanently tied to <ph name="USER_NAME">$1<ex>pat@example.com</ex></ph>. You will be able to delete this data via the Ping sync chains Dashboard, but you will not be able to associate this data with another account. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>
         </message>
-        <message name="IDS_ENTERPRISE_SIGNIN_EXPLANATION_WITH_PROFILE_CREATION" desc="The warning message displayed to an enterprise user about to link their profile to their Brave account. Additionally notifies the user that they can create a new profile instead. This message is followed by a 'Learn more' link.">
-          You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords, and other settings will become permanently tied to <ph name="USER_NAME">$1<ex>pat@example.com</ex></ph>. You will be able to delete this data via the Brave sync chains Dashboard, but you will not be able to associate this data with another account. You can optionally create a new profile to keep your existing Brave data separate. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>
+        <message name="IDS_ENTERPRISE_SIGNIN_EXPLANATION_WITH_PROFILE_CREATION" desc="The warning message displayed to an enterprise user about to link their profile to their Ping account. Additionally notifies the user that they can create a new profile instead. This message is followed by a 'Learn more' link.">
+          You are signing in with a managed account and giving its administrator control over your Ping profile. Your Ping data, such as your apps, bookmarks, history, passwords, and other settings will become permanently tied to <ph name="USER_NAME">$1<ex>pat@example.com</ex></ph>. You will be able to delete this data via the Ping sync chains Dashboard, but you will not be able to associate this data with another account. You can optionally create a new profile to keep your existing Ping data separate. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>
         </message>
         <message name="IDS_ENTERPRISE_SIGNIN_WORK_PROFILE_TITLE" desc="The title of the dialog to confirm adding a new work profile with the signed-in enterprise account">
           Add Work Profile to this browser
         </message>
-        <message name="IDS_ENTERPRISE_SIGNIN_WORK_PROFILE_CREATION" desc="The warning message displayed to an enterprise user about to link their profile to their Brave account. This message is followed by a 'Learn more' link.">
+        <message name="IDS_ENTERPRISE_SIGNIN_WORK_PROFILE_CREATION" desc="The warning message displayed to an enterprise user about to link their profile to their Ping account. This message is followed by a 'Learn more' link.">
           You are adding a work profile to this browser and giving your administrator control over just the work profile.
         </message>
         <message name="IDS_ENTERPRISE_SIGNIN_WORK_PROFILE_ISOLATION_NOTICE" desc="Notice that work profiles are separated from any personal profile">
           This work profile is completely separate from your personal profile.
         </message>
-        <message name="IDS_ENTERPRISE_SIGNIN_WORK_PROFILE_EXPLANATION" desc="The warning message displayed to an enterprise user about to link their profile to their Brave account. This message is followed by a 'Learn more' link.">
-          Any Brave data that is generated during the use of this profile (such as the creation of bookmarks, history, passwords, and other settings) can be removed by the work profile administrator. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
+        <message name="IDS_ENTERPRISE_SIGNIN_WORK_PROFILE_EXPLANATION" desc="The warning message displayed to an enterprise user about to link their profile to their Ping account. This message is followed by a 'Learn more' link.">
+          Any Ping data that is generated during the use of this profile (such as the creation of bookmarks, history, passwords, and other settings) can be removed by the work profile administrator. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
         </message>
         <!-- New one-click sign-in dialog contents for SAML support -->
         <message name="IDS_ONE_CLICK_SIGNIN_DIALOG_TITLE_NEW" desc="The title of the modal dialog window that opens when the user chooses to use one click sign-in.">
-          You're signed in to Brave!
+          You're signed in to Ping!
         </message>
         <message name="IDS_ONE_CLICK_SIGNIN_DIALOG_MESSAGE_NEW" desc="The message of the one click sign-in dialog.">
           You're signed in as <ph name="USER_EMAIL_ADDRESS">$1<ex>foo@gmail.com</ex></ph>. Now you can access your bookmarks, history, and other settings on all your signed in devices.
@@ -920,66 +920,66 @@ Permissions you've already given to websites and apps may apply to this account.
       <!-- about:browser-switch strings -->
       <if expr="toolkit_views and not chromeos_lacros and not chromeos_ash">
         <message name="IDS_ABOUT_BROWSER_SWITCH_DESCRIPTION_UNKNOWN_BROWSER" desc="Description shown while waiting for an alternative browser to open, when the browser name is not auto-detected">
-          Your system administrator has configured Brave to open an alternative browser to access <ph name="TARGET_URL_HOSTNAME">$1<ex>example.com</ex></ph>.
+          Your system administrator has configured Ping to open an alternative browser to access <ph name="TARGET_URL_HOSTNAME">$1<ex>example.com</ex></ph>.
         </message>
         <message name="IDS_ABOUT_BROWSER_SWITCH_DESCRIPTION_KNOWN_BROWSER" desc="Description shown while waiting for an alternative browser to open, when the browser name is auto-detected">
-          Your system administrator has configured Brave to open <ph name="ALTERNATIVE_BROWSER_NAME">$2<ex>Internet Explorer</ex></ph> to access <ph name="TARGET_URL_HOSTNAME">$1<ex>example.com</ex></ph>.
+          Your system administrator has configured Ping to open <ph name="ALTERNATIVE_BROWSER_NAME">$2<ex>Internet Explorer</ex></ph> to access <ph name="TARGET_URL_HOSTNAME">$1<ex>example.com</ex></ph>.
         </message>
       </if>
 
       <!-- NTP strings -->
-      <message name="IDS_NTP_CUSTOMIZE_BUTTON_LABEL" desc="Label for button on the New Tab Page that opens dialog to customize Brave browser.">
-        Customize Brave
+      <message name="IDS_NTP_CUSTOMIZE_BUTTON_LABEL" desc="Label for button on the New Tab Page that opens dialog to customize Ping browser.">
+        Customize Ping
       </message>
 
       <!-- Signin Email Confirmation tab modal dialog -->
       <if expr="not chromeos_ash">
         <message name="IDS_SIGNIN_EMAIL_CONFIRMATION_TITLE" desc="Title of the signin email confirmation tab modal dialog.">
-          <ph name="USER_EMAIL_ADDRESS">$1<ex>foo@gmail.com</ex></ph> was previously using Brave
+          <ph name="USER_EMAIL_ADDRESS">$1<ex>foo@gmail.com</ex></ph> was previously using Ping
         </message>
       </if>
 
       <if expr="not chromeos_ash and not is_android and not chromeos_lacros">
         <!-- Dice Web Signin Interception Bubble-->
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CREATE_BUBBLE_TITLE" desc="Title of the web signin interception bubble">
-          Continue in a new Brave profile?
+          Continue in a new Ping profile?
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_TITLE" desc="Title for the profile switch interception bubble">
-          Switch to existing Brave profile?
+          Switch to existing Ping profile?
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_DESC" desc="Description for the profile switch interception bubble">
-          A Brave profile with this account already exists
+          A Ping profile with this account already exists
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_BUBBLE_DESC" desc="Body of the web signin interception bubble">
-          <ph name="EXISTING_USER">$1<ex>Elisa</ex></ph> is already signed in to this Brave profile. To keep your browsing separate, Brave can create your own profile for you.
+          <ph name="EXISTING_USER">$1<ex>Elisa</ex></ph> is already signed in to this Ping profile. To keep your browsing separate, Ping can create your own profile for you.
         </message>
           <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_BUBBLE_DESC_MANAGED_DEVICE" desc="Body of the web signin interception bubble on a managed device">
-          <ph name="EXISTING_USER">$1<ex>Elisa</ex></ph> is already signed in to this Brave profile. This will create a new Brave profile for <ph name="USER_EMAIL_ADDRESS">$2<ex>foo@gmail.com</ex></ph>
+          <ph name="EXISTING_USER">$1<ex>Elisa</ex></ph> is already signed in to this Ping profile. This will create a new Ping profile for <ph name="USER_EMAIL_ADDRESS">$2<ex>foo@gmail.com</ex></ph>
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_DESC_MANAGED_DEVICE" desc="Body of the web signin interception bubble when the new account is personal and the existing account is managed on a managed device">
-          This will create a new Brave profile for <ph name="USER_EMAIL_ADDRESS">$1<ex>foo@gmail.com</ex></ph>
+          This will create a new Ping profile for <ph name="USER_EMAIL_ADDRESS">$1<ex>foo@gmail.com</ex></ph>
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_BUBBLE_DESC_V2" desc="Body of the web signin interception bubble. It is shown when the user signs in on the web while they already have another account present in the current profile.">
-          Another account is already signed in. To keep your browsing separate, Brave can create your own profile for you.
+          Another account is already signed in. To keep your browsing separate, Ping can create your own profile for you.
         </message>
       </if>
 
       <if expr="not chromeos_ash and not is_android">
         <!-- Profile Customization Web UI -->
         <message name="IDS_PROFILE_CUSTOMIZATION_TEXT" desc="Text of the profile customization bubble">
-          Customize your new Brave profile
+          Customize your new Ping profile
         </message>
         <message name="IDS_PROFILE_CUSTOMIZATION_TITLE_V2" desc="Title of the profile customization dialog">
-          Customize your Brave profile
+          Customize your Ping profile
         </message>
       </if>
 
-      <!-- Brave Cleanup prompt.
-           Note: these strings should only be used by Brave, but
+      <!-- Ping Cleanup prompt.
+           Note: these strings should only be used by Ping, but
                  omitting them brings up a hash collision error. -->
       <if expr="is_win">
-        <message name="IDS_CHROME_CLEANUP_PROMPT_EXPLANATION" desc="Description in the Brave Cleanup dialog that Brave browser shows when unwanted software, like ad injectors or software that changes the user's settings without their knowledge, is found on the user's computer. Appears under the title asking 'Remove harmful software?' Actor is Brave; we are asking, Do you want Brave to remove harmful software? 'it' is harmful software. User has the option of clicking 'Remove' to proceed with a cleanup, or 'Details' to see more details. The description is also shown on the Brave Cleanup section of the Settings page, under 'Remove harmful software' title. Preferrably, the translation for this string should parallel IDS_SETTINGS_RESET_CLEANUP_EXPLANATION_CURRENTLY_REMOVING.">
-          There's harmful software on your computer. Brave can remove it, restore your settings, and disable extensions to make your browser work normally again.
+        <message name="IDS_CHROME_CLEANUP_PROMPT_EXPLANATION" desc="Description in the Ping Cleanup dialog that Ping browser shows when unwanted software, like ad injectors or software that changes the user's settings without their knowledge, is found on the user's computer. Appears under the title asking 'Remove harmful software?' Actor is Ping; we are asking, Do you want Ping to remove harmful software? 'it' is harmful software. User has the option of clicking 'Remove' to proceed with a cleanup, or 'Details' to see more details. The description is also shown on the Ping Cleanup section of the Settings page, under 'Remove harmful software' title. Preferrably, the translation for this string should parallel IDS_SETTINGS_RESET_CLEANUP_EXPLANATION_CURRENTLY_REMOVING.">
+          There's harmful software on your computer. Ping can remove it, restore your settings, and disable extensions to make your browser work normally again.
         </message>
       </if>
 
@@ -1002,20 +1002,20 @@ Permissions you've already given to websites and apps may apply to this account.
       <!-- App list -->
       <if expr="chromeos_ash">
         <message name="IDS_APP_LIST_EXTENSIONS_UNINSTALL" desc="Title text for the context menu item of a non-platform-app app list item that removes the app.">
-          Remove from Brave...
+          Remove from Ping...
         </message>
       </if>
 
       <!-- App shortcuts -->
-      <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME" desc="Name for the Brave Apps Start Menu folder name.">
-        Brave Apps
+      <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME" desc="Name for the Ping Apps Start Menu folder name.">
+        Ping Apps
       </message>
-      <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY" desc="Name for the Brave Apps Start Menu folder name.">
-        Brave Apps
+      <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY" desc="Name for the Ping Apps Start Menu folder name.">
+        Ping Apps
       </message>
       <if expr="is_win">
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA">Brave Apps</message>
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV">Brave Apps</message>
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA">Ping Apps</message>
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV">Ping Apps</message>
       </if>
 
       <!-- ChromeOS OOBE Terms of Service screen-->
@@ -1027,42 +1027,42 @@ Permissions you've already given to websites and apps may apply to this account.
 
       <!-- MediaStream capture status tray icon -->
       <message name="IDS_MEDIA_STREAM_STATUS_TRAY_TEXT_AUDIO_AND_VIDEO" desc="Tool tip for the capture status tray icon when microphone and camera are being used">
-        Brave is using your camera and microphone.
+        Ping is using your camera and microphone.
       </message>
       <message name="IDS_MEDIA_STREAM_STATUS_TRAY_TEXT_AUDIO_ONLY" desc="Tool tip for the capture status tray icon when microphone is being used">
-        Brave is using your microphone.
+        Ping is using your microphone.
       </message>
       <message name="IDS_MEDIA_STREAM_STATUS_TRAY_TEXT_VIDEO_ONLY" desc="Tool tip for the capture status tray icon when camera is being used">
-        Brave is using your camera.
+        Ping is using your camera.
       </message>
 
       <if expr="not is_android">
         <!-- WebHID system tray icon -->
         <message name="IDS_WEBHID_SYSTEM_TRAY_ICON_TITLE_SINGLE_EXTENSION" desc="Title for the WebHID system tray icon when one or more HID devices are being accessed by an extension.">
             {NUM_DEVICES, plural,
-            =0 {A Brave extension was accessing HID devices}
-            =1 {A Brave extension is accessing 1 HID device}
-            other {A Brave extension is accessing # HID devices}}
+            =0 {A Ping extension was accessing HID devices}
+            =1 {A Ping extension is accessing 1 HID device}
+            other {A Ping extension is accessing # HID devices}}
         </message>
         <message name="IDS_WEBHID_SYSTEM_TRAY_ICON_TITLE_MULTIPLE_EXTENSIONS" desc="Title for the WebHID system tray icon when HID devices are being accessed by multiple extensions.">
             {NUM_DEVICES, plural,
-            =0 {Brave extensions were accessing HID devices}
-            =1 {Brave extensions are accessing HID devices}
-            other {Brave extensions are accessing # HID devices}}
+            =0 {Ping extensions were accessing HID devices}
+            =1 {Ping extensions are accessing HID devices}
+            other {Ping extensions are accessing # HID devices}}
         </message>
       </if>
 
       <!-- ProcessSingleton -->
       <if expr="is_posix">
         <message name="IDS_PROFILE_IN_USE_POSIX" desc="Message shown when the browser cannot start because the profile is in use on a different host.">
-          The profile appears to be in use by another Brave process (<ph name="PROCESS_ID">$1<ex>12345</ex></ph>) on another computer (<ph name="HOST_NAME">$2<ex>example.com</ex></ph>). Brave has locked the profile so that it doesn't get corrupted. If you are sure no other processes are using this profile, you can unlock the profile and relaunch Brave.
+          The profile appears to be in use by another Ping process (<ph name="PROCESS_ID">$1<ex>12345</ex></ph>) on another computer (<ph name="HOST_NAME">$2<ex>example.com</ex></ph>). Ping has locked the profile so that it doesn't get corrupted. If you are sure no other processes are using this profile, you can unlock the profile and relaunch Ping.
         </message>
       </if>
 
       <!-- Mac First-run dialog messages -->
       <if expr="is_macosx">
         <message name="IDS_FIRSTRUN_DLG_MAC_SET_DEFAULT_BROWSER_LABEL" desc="Label for checkbox that sets the default browser">
-          Set Brave as your default browser
+          Set Ping as your default browser
         </message>
       </if>
 
@@ -1070,40 +1070,40 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="not is_android and not chromeos_ash">
         <!-- User pod remove sync warning text -->
         <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_SYNC" desc="Main text shown as a warning when attempting to remove an user.">
-          This profile's browsing data will be deleted from this device. To recover the data, sign in to Brave as <ph name="USER_EMAIL">$2<ex>foo@example.com</ex></ph>.
+          This profile's browsing data will be deleted from this device. To recover the data, sign in to Ping as <ph name="USER_EMAIL">$2<ex>foo@example.com</ex></ph>.
         </message>
 
         <!-- Tutorial -->
         <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_INTRO_TITLE" desc="Title of the tutorial introduction slide">
-          Brave just got better
+          Ping just got better
         </message>
         <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_INTRO_TEXT" desc="Main text of the tutorial introduction slide">
-          Now it's easier to use Brave with your Brave sync chain and on shared computers.
+          Now it's easier to use Ping with your Ping sync chain and on shared computers.
         </message>
         <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_YOUR_CHROME_TITLE" desc="Title of the slide about personalizing the browser">
-          This is your Brave
+          This is your Ping
         </message>
         <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_YOUR_CHROME_TEXT" desc="Main text of the slide about personalizing the browser">
-          Your web, bookmarks, and other Brave stuff live here.
+          Your web, bookmarks, and other Ping stuff live here.
         </message>
         <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_GUEST_TEXT" desc="Main text of the guest user slide">
-          Guests can use Brave without leaving anything behind.
+          Guests can use Ping without leaving anything behind.
         </message>
         <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_FRIENDS_TEXT" desc="Main text of the friends and family slide">
-          If you share a computer, friends and family can browse separately and set up Brave just the way they want.
+          If you share a computer, friends and family can browse separately and set up Ping just the way they want.
         </message>
         <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_OUTRO_TEXT" desc="Main text of the tutorial completion slide">
-          Click your name to open Brave and start browsing.
+          Click your name to open Ping and start browsing.
         </message>
         <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_OUTRO_ADD_USER" desc="Text of the add a new user button">
-          Add yourself to Brave
+          Add yourself to Ping
         </message>
       </if>
 
       <if expr="not is_android">
         <!-- Password Manager Tutorial Strings -->
         <message name="IDS_TUTORIAL_PASSWORD_MANAGER_OPEN_APP_MENU" desc="The description of the 'open add menu' step in password manager tutorial">
-          Click the Brave menu
+          Click the Ping menu
         </message>
         <message name="IDS_TUTORIAL_PASSWORD_MANAGER_CLICK_PASSWORD_MANAGER" desc="The description of the 'click password manager' step in password manager tutorial">
           Click “Password Manager”
@@ -1118,66 +1118,66 @@ Permissions you've already given to websites and apps may apply to this account.
 
       <!-- Settings API bubble -->
       <message name="IDS_EXTENSIONS_SETTINGS_API_FIRST_LINE_START_PAGES_SPECIFIC" desc="Text displayed in the Settings API bubble as first line when an extension has changed the start pages, and we are pointing to its icon.">
-        This extension has changed what page is shown when you start Brave.
+        This extension has changed what page is shown when you start Ping.
       </message>
       <message name="IDS_EXTENSIONS_SETTINGS_API_FIRST_LINE_START_PAGES" desc="Text displayed in the Settings API bubble as first line when an extension has changed the start pages, and we are not pointing to its icon.">
-        The extension "<ph name="EXTENSION_NAME">$1<ex>AdBlock</ex></ph>" has changed what page is shown when you start Brave.
+        The extension "<ph name="EXTENSION_NAME">$1<ex>AdBlock</ex></ph>" has changed what page is shown when you start Ping.
       </message>
-      <message name="IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_START_PAGES" desc="Second line in the Settings API bubble. Only shown if the secondary change by the extension was just the start pages. The triple single quotes are needed to preserve the space before and after the sentence which is needed when the language (Brave is being translated to) uses space as word separator. Please preserve them, unless the language being translated to does not use space as word separator.">
-        ''' It also controls what page is shown when you start Brave. '''
+      <message name="IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_START_PAGES" desc="Second line in the Settings API bubble. Only shown if the secondary change by the extension was just the start pages. The triple single quotes are needed to preserve the space before and after the sentence which is needed when the language (Ping is being translated to) uses space as word separator. Please preserve them, unless the language being translated to does not use space as word separator.">
+        ''' It also controls what page is shown when you start Ping. '''
       </message>
       <message name="IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_START_AND_HOME" desc="Second line in the Settings API bubble. Only shown if the secondary change by the extension was both the start page and the home page. See IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_START_PAGES for reason for triple quotes.">
-        ''' It also controls what page is shown when you start Brave or click the Home button. '''
+        ''' It also controls what page is shown when you start Ping or click the Home button. '''
       </message>
       <message name="IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_START_AND_SEARCH" desc="Second line in the Settings API bubble. Only shown if the secondary change by the extension was both the start page and the search engine. See IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_START_PAGES for reason for triple quotes.">
-        ''' It also controls what page is shown when you start Brave or search from the Omnibox. '''
+        ''' It also controls what page is shown when you start Ping or search from the Omnibox. '''
       </message>
 
       <!-- Webstore strings -->
       <message name="IDS_WEBSTORE_APP_DESCRIPTION" desc="Description for the WebStore app.">
-        Discover great apps, games, extensions and themes for Brave.
+        Discover great apps, games, extensions and themes for Ping.
       </message>
 
       <!-- Windows firewall rule strings. -->
       <if expr="is_win">
         <message name="IDS_INBOUND_MDNS_RULE_NAME" desc="The name of the firewall rule allowing inbound mDNS traffic.">
-          Brave (mDNS-In)
+          Ping (mDNS-In)
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_NAME_BETA">Brave Beta (mDNS-In)</message>
-        <message name="IDS_INBOUND_MDNS_RULE_NAME_CANARY">Brave Nightly (mDNS-In)</message>
-        <message name="IDS_INBOUND_MDNS_RULE_NAME_DEV">Brave Dev (mDNS-In)</message>
+        <message name="IDS_INBOUND_MDNS_RULE_NAME_BETA">Ping Beta (mDNS-In)</message>
+        <message name="IDS_INBOUND_MDNS_RULE_NAME_CANARY">Ping Nightly (mDNS-In)</message>
+        <message name="IDS_INBOUND_MDNS_RULE_NAME_DEV">Ping Dev (mDNS-In)</message>
         <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION">
-          Inbound rule for Brave to allow mDNS traffic.
+          Inbound rule for Ping to allow mDNS traffic.
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA">Inbound rule for Brave Beta to allow mDNS traffic.</message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY">Inbound rule for Brave Nightly to allow mDNS traffic.</message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV">Inbound rule for Brave Dev to allow mDNS traffic.</message>
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA">Inbound rule for Ping Beta to allow mDNS traffic.</message>
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY">Inbound rule for Ping Nightly to allow mDNS traffic.</message>
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV">Inbound rule for Ping Dev to allow mDNS traffic.</message>
       </if>
 
       <if expr="not is_android">
-        <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_BUBBLE_TEXT" desc="The text of a bubble that confirms users allows integrating the accessibility labels service of Brave to Brave.">
-          If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave. You can turn this off in settings at any time.
+        <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_BUBBLE_TEXT" desc="The text of a bubble that confirms users allows integrating the accessibility labels service of Ping to Ping.">
+          If an image doesn’t have a useful description, Ping will try to provide one for you. To create descriptions, images are sent to Ping. You can turn this off in settings at any time.
         </message>
-        <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_BUBBLE_TEXT_ONCE" desc="The text of a bubble that confirms users allows integrating the accessibility labels service of Brave to Brave just once.">
-          If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave.
+        <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_BUBBLE_TEXT_ONCE" desc="The text of a bubble that confirms users allows integrating the accessibility labels service of Ping to Ping just once.">
+          If an image doesn’t have a useful description, Ping will try to provide one for you. To create descriptions, images are sent to Ping.
         </message>
-        <message name="IDS_CONTENT_CONTEXT_SPELLING_BUBBLE_TEXT" desc="The text of a bubble that confirms users allows integrating the spelling service of Brave to Brave.">
-          This uses the same spell checker that's used in Brave search. Text you type in the browser is sent to Brave. You can always change this behavior in settings.
+        <message name="IDS_CONTENT_CONTEXT_SPELLING_BUBBLE_TEXT" desc="The text of a bubble that confirms users allows integrating the spelling service of Ping to Ping.">
+          This uses the same spell checker that's used in Ping search. Text you type in the browser is sent to Ping. You can always change this behavior in settings.
         </message>
         <if expr="not use_titlecase">
           <message name="IDS_CONTENT_CONTEXT_OPENLINKNEWTAB_INAPP" desc="The name of the command to open a link in a newly created browser tab when the user is in an app window">
-            Open link in new Brave &amp;tab
+            Open link in new Ping &amp;tab
           </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="The name of the command to open a link in a Private browser window when the user is in an app window">
-            Open link in Brave &amp;private window
+            Open link in Ping &amp;private window
           </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_CONTENT_CONTEXT_OPENLINKNEWTAB_INAPP" desc="In Title Case: The name of the command to open a link in a newly created browser tab when the user is in an app window">
-            Open Link in New Brave &amp;tab
+            Open Link in New Ping &amp;tab
           </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="In Title Case: The name of the command to open a link in a Private browser window when the user is in an app window">
-            Open Link in Brave &amp;Private Window
+            Open Link in Ping &amp;Private Window
           </message>
         </if>
       </if>
@@ -1185,15 +1185,15 @@ Permissions you've already given to websites and apps may apply to this account.
       <!-- Update Recommended dialog -->
       <if expr="not chromeos_ash">
         <message name="IDS_UPDATE_RECOMMENDED_DIALOG_TITLE" desc="The window title for the Update Recommended dialog.">
-          Relaunch Brave
+          Relaunch Ping
         </message>
         <message name="IDS_UPDATE_RECOMMENDED" desc="The main text of the Update Recommended dialog with a count of open Private windows.">
           {COUNT, plural,
-          =0 {A new update for Brave is available and will be applied as soon as you relaunch.}
-          =1 {A new update for Brave is available and will be applied as soon as you relaunch. Your Private window won't reopen.}
-          other {A new update for Brave is available and will be applied as soon as you relaunch. Your # Private windows won't reopen.}}
+          =0 {A new update for Ping is available and will be applied as soon as you relaunch.}
+          =1 {A new update for Ping is available and will be applied as soon as you relaunch. Your Private window won't reopen.}
+          other {A new update for Ping is available and will be applied as soon as you relaunch. Your # Private windows won't reopen.}}
         </message>
-        <message name="IDS_RELAUNCH_AND_UPDATE" desc="The button in the Update Recommended dialog which updates and relaunches Brave.">
+        <message name="IDS_RELAUNCH_AND_UPDATE" desc="The button in the Update Recommended dialog which updates and relaunches Ping.">
           Relaunch
         </message>
       </if>
@@ -1211,61 +1211,61 @@ Permissions you've already given to websites and apps may apply to this account.
 
       <if expr="is_win or is_macosx or is_linux">
         <message name="IDS_UPDATE_RECOMMENDED_DIALOG_TITLE_ALT" desc="Alternate window title for the Update Recommended dialog." translateable="false">
-          Not used in Brave. Placeholder to keep resource maps in sync.
+          Not used in Ping. Placeholder to keep resource maps in sync.
         </message>
         <message name="IDS_UPDATE_RECOMMENDED_ALT" desc="Alternate main text of the Update Recommended dialog with a count of open Private windows." translateable="false">
-          Not used in Brave. Placeholder to keep resource maps in sync.
+          Not used in Ping. Placeholder to keep resource maps in sync.
         </message>
       </if>
 
       <!-- Update bubble -->
       <message name="IDS_REINSTALL_APP" desc="Text for the button the user clicks to reinstall the app.">
-        Reinstall Brave
+        Reinstall Ping
       </message>
       <if expr="use_titlecase">
-        <message name="IDS_UPGRADE_BUBBLE_MENU_ITEM" desc="In Title Case: Text for the Brave menu option replacing Update required.">
-          Brave is Out of Date
+        <message name="IDS_UPGRADE_BUBBLE_MENU_ITEM" desc="In Title Case: Text for the Ping menu option replacing Update required.">
+          Ping is Out of Date
         </message>
       </if>
       <if expr="not use_titlecase">
-        <message name="IDS_UPGRADE_BUBBLE_MENU_ITEM" desc="Text for the Brave menu option replacing Update required.">
-          Brave is out of date
+        <message name="IDS_UPGRADE_BUBBLE_MENU_ITEM" desc="Text for the Ping menu option replacing Update required.">
+          Ping is out of date
         </message>
       </if>
       <message name="IDS_UPGRADE_BUBBLE_TITLE" desc="Text for the title of the upgrade bubble view.">
-        Can't update Brave
+        Can't update Ping
       </message>
       <message name="IDS_UPGRADE_BUBBLE_TEXT" desc="Text for the upgrade bubble view full description.">
-        Brave couldn't update to the latest version, so you're missing out on new features and security fixes.
+        Ping couldn't update to the latest version, so you're missing out on new features and security fixes.
       </message>
 
       <!-- User menu errors -->
-      <message name="IDS_SYNC_ERROR_USER_MENU_UPGRADE_BUTTON" desc="Button in the header of desktop user menu that prompts the user to update Brave to fix the out-of-date Brave client error.">
-        Update Brave
+      <message name="IDS_SYNC_ERROR_USER_MENU_UPGRADE_BUTTON" desc="Button in the header of desktop user menu that prompts the user to update Ping to fix the out-of-date Ping client error.">
+        Update Ping
       </message>
 
       <!-- Sync errors. Android uses native UI to handle Sync settings -->
       <if expr="not is_android">
         <message name="IDS_SYNC_UPGRADE_CLIENT" desc="Message indicating client needs to be upgraded to the latest version.">
-          Update Brave to start sync
+          Update Ping to start sync
         </message>
         <message name="IDS_SYNC_UPGRADE_CLIENT_BUTTON" desc="Button indicating client needs to be upgraded to the latest version.">
-          Update Brave
+          Update Ping
         </message>
       </if>
 
       <!-- Upgrade recovery bubble -->
       <message name="IDS_RECOVERY_BUBBLE_TITLE" desc="Text for the title of the chrome recovery bubble view.">
-        Brave is out of date
+        Ping is out of date
       </message>
       <if expr="use_titlecase">
         <message name="IDS_RUN_RECOVERY" desc="In Title Case: Text for the button the user clicks to recover chromium and its updater.">
-          Update Brave
+          Update Ping
         </message>
       </if>
       <if expr="not use_titlecase">
         <message name="IDS_RUN_RECOVERY" desc="Text for the button the user clicks to recover chromium and its updater.">
-          Update Brave
+          Update Ping
         </message>
       </if>
       <message name="IDS_RECOVERY_BUBBLE_TEXT" desc="Text for the chrome recovery bubble view full description.">
@@ -1273,72 +1273,72 @@ Permissions you've already given to websites and apps may apply to this account.
       </message>
 
       <!-- Critical Notification bubble -->
-      <message name="IDS_CRITICAL_NOTIFICATION_TITLE" desc="The title for a bubble that appears when there is a critical update and Brave must restart to install it. It counts down a timer and then Brave automatically restarts.">
-        Brave will restart in <ph name="REMAINING_TIME">$1<ex>1 minute, 7 seconds</ex></ph>
+      <message name="IDS_CRITICAL_NOTIFICATION_TITLE" desc="The title for a bubble that appears when there is a critical update and Ping must restart to install it. It counts down a timer and then Ping automatically restarts.">
+        Ping will restart in <ph name="REMAINING_TIME">$1<ex>1 minute, 7 seconds</ex></ph>
       </message>
-      <message name="IDS_CRITICAL_NOTIFICATION_TITLE_ALTERNATE" desc="The title for a bubble that appears when there is a critical update and Brave must restart to install it. The title was previously countng down to an automatic restart and now it has finished. Will only be seen if a web page stops the shutdown process.">
-        Please restart Brave now
+      <message name="IDS_CRITICAL_NOTIFICATION_TITLE_ALTERNATE" desc="The title for a bubble that appears when there is a critical update and Ping must restart to install it. The title was previously countng down to an automatic restart and now it has finished. Will only be seen if a web page stops the shutdown process.">
+        Please restart Ping now
       </message>
-      <message name="IDS_CRITICAL_NOTIFICATION_TEXT" desc="Explanation text for the bubble that appears when there is a critical update and Brave must restart to install it.">
-        A special security update for Brave was just applied. Restart now and we'll restore your tabs.
+      <message name="IDS_CRITICAL_NOTIFICATION_TEXT" desc="Explanation text for the bubble that appears when there is a critical update and Ping must restart to install it.">
+        A special security update for Ping was just applied. Restart now and we'll restore your tabs.
       </message>
 
       <!-- Desktop Capture -->
       <message name="IDS_DESKTOP_MEDIA_PICKER_SOURCE_TYPE_TAB" desc="Text for the button on the window picker dialog, clicking which takes one to tab sharing">
-        Brave Tab
+        Ping Tab
       </message>
 
       <!-- Runtime permission strings -->
       <if expr="is_android">
-        <message name="IDS_INFOBAR_MISSING_AR_CAMERA_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to augmented reality capabilities, but Brave is missing the Android camera permission.">
-          Brave needs permission to access your camera to create a 3D map of your surroundings
+        <message name="IDS_INFOBAR_MISSING_AR_CAMERA_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to augmented reality capabilities, but Ping is missing the Android camera permission.">
+          Ping needs permission to access your camera to create a 3D map of your surroundings
         </message>
-        <message name="IDS_INFOBAR_MISSING_CAMERA_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the camera capabilities, but Brave is missing the Android camera permission.">
-          Brave needs permission to access your camera for this site
+        <message name="IDS_INFOBAR_MISSING_CAMERA_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the camera capabilities, but Ping is missing the Android camera permission.">
+          Ping needs permission to access your camera for this site
         </message>
-        <message name="IDS_INFOBAR_MISSING_MICROPHONE_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the microphone capabilities, but Brave is missing the Android microphone permission.">
-          Brave needs permission to access your microphone for this site
+        <message name="IDS_INFOBAR_MISSING_MICROPHONE_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the microphone capabilities, but Ping is missing the Android microphone permission.">
+          Ping needs permission to access your microphone for this site
         </message>
-        <message name="IDS_INFOBAR_MISSING_MICROPHONE_CAMERA_PERMISSIONS_TEXT" desc="Text shown in an infobar when a website has requested access to the microphone and camera capabilities, but Brave is missing the Android microphone and camera permissions.">
-          Brave needs permission to access your camera and microphone for this site
+        <message name="IDS_INFOBAR_MISSING_MICROPHONE_CAMERA_PERMISSIONS_TEXT" desc="Text shown in an infobar when a website has requested access to the microphone and camera capabilities, but Ping is missing the Android microphone and camera permissions.">
+          Ping needs permission to access your camera and microphone for this site
         </message>
-        <message name="IDS_INFOBAR_MISSING_LOCATION_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the location capabilities, but Brave is missing the Android location permission.">
-          Brave needs access to your location to share your location with this site
+        <message name="IDS_INFOBAR_MISSING_LOCATION_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the location capabilities, but Ping is missing the Android location permission.">
+          Ping needs access to your location to share your location with this site
         </message>
-        <message name="IDS_MISSING_STORAGE_PERMISSION_DOWNLOAD_EDUCATION_TEXT" desc="Text shown educating the user that Brave is missing the Android storage permission, which is required to download files.">
-          Brave needs storage access to download files
+        <message name="IDS_MISSING_STORAGE_PERMISSION_DOWNLOAD_EDUCATION_TEXT" desc="Text shown educating the user that Ping is missing the Android storage permission, which is required to download files.">
+          Ping needs storage access to download files
         </message>
 
-        <message name="IDS_MESSAGE_MISSING_AR_CAMERA_PERMISSION_TEXT" desc="Text shown in a prompt ui when a website has requested access to augmented reality capabilities, but Brave is missing the Android camera permission.">
-          Brave needs camera permission to create a 3D map of your surroundings
+        <message name="IDS_MESSAGE_MISSING_AR_CAMERA_PERMISSION_TEXT" desc="Text shown in a prompt ui when a website has requested access to augmented reality capabilities, but Ping is missing the Android camera permission.">
+          Ping needs camera permission to create a 3D map of your surroundings
         </message>
-        <message name="IDS_MESSAGE_MISSING_CAMERA_PERMISSION_TEXT" desc="Text shown in a prompt ui when a website has requested access to the camera capabilities, but Brave is missing the Android camera permission.">
-          Brave needs camera permission for this site
+        <message name="IDS_MESSAGE_MISSING_CAMERA_PERMISSION_TEXT" desc="Text shown in a prompt ui when a website has requested access to the camera capabilities, but Ping is missing the Android camera permission.">
+          Ping needs camera permission for this site
         </message>
-        <message name="IDS_MESSAGE_MISSING_MICROPHONE_PERMISSION_TEXT" desc="Text shown in a prompt ui when a website has requested access to the microphone capabilities, but Brave is missing the Android microphone permission.">
-          Brave needs microphone permission for this site
+        <message name="IDS_MESSAGE_MISSING_MICROPHONE_PERMISSION_TEXT" desc="Text shown in a prompt ui when a website has requested access to the microphone capabilities, but Ping is missing the Android microphone permission.">
+          Ping needs microphone permission for this site
         </message>
-        <message name="IDS_MESSAGE_MISSING_MICROPHONE_CAMERA_PERMISSIONS_TEXT" desc="Text shown in a prompt ui when a website has requested access to the microphone and camera capabilities, but Brave is missing the Android microphone and camera permissions.">
-          Brave needs camera and microphone permissions for this site
+        <message name="IDS_MESSAGE_MISSING_MICROPHONE_CAMERA_PERMISSIONS_TEXT" desc="Text shown in a prompt ui when a website has requested access to the microphone and camera capabilities, but Ping is missing the Android microphone and camera permissions.">
+          Ping needs camera and microphone permissions for this site
         </message>
-        <message name="IDS_MESSAGE_MISSING_LOCATION_PERMISSION_TEXT" desc="Text shown in a prompt ui when a website has requested access to the location capabilities, but Brave is missing the Android location permission.">
-          Brave needs location permission for this site
+        <message name="IDS_MESSAGE_MISSING_LOCATION_PERMISSION_TEXT" desc="Text shown in a prompt ui when a website has requested access to the location capabilities, but Ping is missing the Android location permission.">
+          Ping needs location permission for this site
         </message>
-        <message name="IDS_MESSAGE_STORAGE_ACCESS_PERMISSION_TEXT" desc="Text shown educating the user that Brave is missing the Android storage permission, which is required to download files.">
-          Brave needs storage access permission to download files
+        <message name="IDS_MESSAGE_STORAGE_ACCESS_PERMISSION_TEXT" desc="Text shown educating the user that Ping is missing the Android storage permission, which is required to download files.">
+          Ping needs storage access permission to download files
         </message>
       </if>
 
       <if expr="is_macosx">
-        <message name="IDS_RUNTIME_PERMISSION_OS_REASON_TEXT" desc="Text provided to the macOS permission dialog, explaining why Brave needs to access a protected resource (e.g., camera, microphone).">
-          Once Brave has access, websites will be able to ask you for access.
+        <message name="IDS_RUNTIME_PERMISSION_OS_REASON_TEXT" desc="Text provided to the macOS permission dialog, explaining why Ping needs to access a protected resource (e.g., camera, microphone).">
+          Once Ping has access, websites will be able to ask you for access.
         </message>
       </if>
 
       <!-- OOBE -->
       <if expr="chromeos_ash">
         <message name="IDS_INSTALLING_UPDATE" desc="Label shown on the updates installation screen during OOBE">
-          Please wait while Brave installs the latest system updates.
+          Please wait while Ping installs the latest system updates.
         </message>
         <message name="IDS_EULA_SCREEN_ACCESSIBLE_TITLE" desc="Title to be spoken on opening the OOBE EULA screen">
           ChromeOS terms
@@ -1347,15 +1347,15 @@ Permissions you've already given to websites and apps may apply to this account.
 
       <!-- Welcome page (chrome://welcome) strings -->
       <if expr="not chromeos_ash and not is_android">
-        <message name="IDS_WELCOME_HEADER" desc="A message which will appear as the header on the Welcome UI if the user has never run Brave before.">
-          Welcome to Brave
+        <message name="IDS_WELCOME_HEADER" desc="A message which will appear as the header on the Welcome UI if the user has never run Ping before.">
+          Welcome to Ping
         </message>
       </if>
 
       <!-- Native notifications for Windows 10 -->
       <if expr="is_win">
-        <message name="IDS_WIN_NOTIFICATION_SETTINGS_CONTEXT_MENU_ITEM_NAME" desc="The name of the button in Windows Notification Center which leads to Brave notification settings.">
-          Go to Brave notification settings
+        <message name="IDS_WIN_NOTIFICATION_SETTINGS_CONTEXT_MENU_ITEM_NAME" desc="The name of the button in Windows Notification Center which leads to Ping notification settings.">
+          Go to Ping notification settings
         </message>
       </if>
       <!-- Relaunch notification bubble and dialog. -->
@@ -1363,116 +1363,116 @@ Permissions you've already given to websites and apps may apply to this account.
         <if expr="not chromeos_ash">
           <message name="IDS_RELAUNCH_RECOMMENDED_TITLE" desc="The title of a dialog that tells users that a browser relaunch is recommended for an update available for some number of days.">
             {0, plural,
-              =0 {A Brave update is available}
-              =1 {A Brave update is available}
-              other {A Brave update has been available for # days}}
+              =0 {A Ping update is available}
+              =1 {A Ping update is available}
+              other {A Ping update has been available for # days}}
           </message>
           <message name="IDS_RELAUNCH_RECOMMENDED_BODY" desc="The body text of a dialog that tells users that a browser relaunch is recommended for an update with Private counter.">
              {COUNT, plural,
-              =0 {Your administrator asks that you relaunch Brave to apply this update}
-              =1 {Your administrator asks that you relaunch Brave to apply this update. Your Private window won't reopen.}
-              other {Your administrator asks that you relaunch Brave to apply this update. Your # Private windows won't reopen.}}
+              =0 {Your administrator asks that you relaunch Ping to apply this update}
+              =1 {Your administrator asks that you relaunch Ping to apply this update. Your Private window won't reopen.}
+              other {Your administrator asks that you relaunch Ping to apply this update. Your # Private windows won't reopen.}}
           </message>
           <message name="IDS_RELAUNCH_REQUIRED_TITLE_DAYS" desc="The title of a dialog that tells users the browser must be relaunched within two or more days.">
             {0, plural,
-              =1 {Relaunch Brave within a day}
-              other {Relaunch Brave within # days}}
+              =1 {Relaunch Ping within a day}
+              other {Relaunch Ping within # days}}
           </message>
           <message name="IDS_RELAUNCH_REQUIRED_TITLE_HOURS" desc="The title of a dialog that tells users the browser must be relaunched within one or more hours.">
             {0, plural,
-              =1 {Brave will relaunch in an hour}
-              other {Brave will relaunch in # hours}}
+              =1 {Ping will relaunch in an hour}
+              other {Ping will relaunch in # hours}}
           </message>
           <message name="IDS_RELAUNCH_REQUIRED_TITLE_MINUTES" desc="The title of a dialog that tells users the browser must be relaunched within one or more minutes.">
             {0, plural,
-              =1 {Brave will relaunch in 1 minute}
-              other {Brave will relaunch in # minutes}}
+              =1 {Ping will relaunch in 1 minute}
+              other {Ping will relaunch in # minutes}}
           </message>
           <message name="IDS_RELAUNCH_REQUIRED_TITLE_SECONDS" desc="The title of a dialog that tells users the browser must be relaunched within some number of seconds.">
             {0, plural,
-              =0 {Brave will relaunch now}
-              =1 {Brave will relaunch in 1 second}
-              other {Brave will relaunch in # seconds}}
+              =0 {Ping will relaunch now}
+              =1 {Ping will relaunch in 1 second}
+              other {Ping will relaunch in # seconds}}
           </message>
           <message name="IDS_RELAUNCH_REQUIRED_BODY" desc="The body text of a dialog that tells users the browser must be relaunched with Private counter.">
              {COUNT, plural,
-              =0 {Your administrator requires that you relaunch Brave to apply an update}
-              =1 {Your administrator requires that you relaunch Brave to apply an update. Your Private window won't reopen.}
-              other {Your administrator requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}
+              =0 {Your administrator requires that you relaunch Ping to apply an update}
+              =1 {Your administrator requires that you relaunch Ping to apply an update. Your Private window won't reopen.}
+              other {Your administrator requires that you relaunch Ping to apply an update. Your # Private windows won't reopen.}}
           </message>
         </if>
       </if>
-      <!-- Brave launch blocking dialog. -->
+      <!-- Ping launch blocking dialog. -->
       <if expr="not is_android and not chromeos_ash">
-         <message name="IDS_ENTERPRISE_STARTUP_CLOUD_POLICY_ENROLLMENT_TOOLTIP" desc="The information message of Brave launch blocking dialog for machine level user cloud policy enrollment.">
-          Launching Brave...
+         <message name="IDS_ENTERPRISE_STARTUP_CLOUD_POLICY_ENROLLMENT_TOOLTIP" desc="The information message of Ping launch blocking dialog for machine level user cloud policy enrollment.">
+          Launching Ping...
         </message>
-        <message name="IDS_ENTERPRISE_STARTUP_CLOUD_POLICY_ENROLLMENT_ERROR" desc="The error message of Brave launch blocking dialog when machine level user cloud policy enrollment failed.">
-          Couldn't launch Brave. Try again.
+        <message name="IDS_ENTERPRISE_STARTUP_CLOUD_POLICY_ENROLLMENT_ERROR" desc="The error message of Ping launch blocking dialog when machine level user cloud policy enrollment failed.">
+          Couldn't launch Ping. Try again.
         </message>
-        <message name="IDS_ENTERPRISE_STARTUP_RELAUNCH_BUTTON" desc="The text of relaunch button of Brave launch blocking dialog.">
-          Relaunch Brave
+        <message name="IDS_ENTERPRISE_STARTUP_RELAUNCH_BUTTON" desc="The text of relaunch button of Ping launch blocking dialog.">
+          Relaunch Ping
         </message>
       </if>
       <message name="IDS_DESKTOP_MEDIA_PICKER_TITLE_WEB_CONTENTS_ONLY" desc="Title for the window picker dialog shown when desktop capture of a tab is requested by an app.">
-        Share a Brave tab
+        Share a Ping tab
       </message>
       <!-- Idle timeout bubble. -->
-      <message name="IDS_IDLE_BUBBLE_TITLE_CLOSE" desc="Title of a bubble that informs the user that Brave closed automatically, because they were away from the computer for X minutes.">
-        Brave was automatically closed
+      <message name="IDS_IDLE_BUBBLE_TITLE_CLOSE" desc="Title of a bubble that informs the user that Ping closed automatically, because they were away from the computer for X minutes.">
+        Ping was automatically closed
       </message>
-      <message name="IDS_IDLE_BUBBLE_BODY_CLOSE_AND_CLEAR" desc="Body of a bubble that informs the user that Brave closed + cleared data automatically, because they were away from the computer for X minutes.">
-        Your organization closes Brave when it isn't used for <ph name="TIMEOUT_DURATION">$1<ex>30 minutes</ex></ph>. Browsing data was deleted. This could include history, autofill, and downloads.
+      <message name="IDS_IDLE_BUBBLE_BODY_CLOSE_AND_CLEAR" desc="Body of a bubble that informs the user that Ping closed + cleared data automatically, because they were away from the computer for X minutes.">
+        Your organization closes Ping when it isn't used for <ph name="TIMEOUT_DURATION">$1<ex>30 minutes</ex></ph>. Browsing data was deleted. This could include history, autofill, and downloads.
       </message>
-      <message name="IDS_IDLE_BUBBLE_BODY_CLEAR" desc="Body of a bubble that informs the user that Brave cleared data automatically, because they were away from the computer for X minutes.">
-        Your organization deletes Brave data when it isn't used for <ph name="TIMEOUT_DURATION">$1<ex>30 minutes</ex></ph>. This could include history, autofill, and downloads.
+      <message name="IDS_IDLE_BUBBLE_BODY_CLEAR" desc="Body of a bubble that informs the user that Ping cleared data automatically, because they were away from the computer for X minutes.">
+        Your organization deletes Ping data when it isn't used for <ph name="TIMEOUT_DURATION">$1<ex>30 minutes</ex></ph>. This could include history, autofill, and downloads.
       </message>
-      <message name="IDS_IDLE_BUBBLE_BODY_CLOSE" desc="Body of a bubble that informs the user that Brave closed automatically, because they were away from the computer for X minutes.">
-        Your organization closes Brave when it isn't used for <ph name="TIMEOUT_DURATION">$1<ex>30 minutes</ex></ph>.
+      <message name="IDS_IDLE_BUBBLE_BODY_CLOSE" desc="Body of a bubble that informs the user that Ping closed automatically, because they were away from the computer for X minutes.">
+        Your organization closes Ping when it isn't used for <ph name="TIMEOUT_DURATION">$1<ex>30 minutes</ex></ph>.
       </message>
       <!-- Idle timeout dialog. -->
       <if expr="not is_android and not is_chromeos">
         <message name="IDS_IDLE_TIMEOUT_CLOSE_TITLE" desc="Title of the Idle Timeout dialog, warning the user that their windows are about to close.">
-          Brave will soon close
+          Ping will soon close
         </message>
         <message name="IDS_IDLE_TIMEOUT_CLEAR_TITLE" desc="Title of the Idle Timeout dialog, warning the user that their browsing data will be lost soon.">
-          Brave will soon delete browsing data
+          Ping will soon delete browsing data
         </message>
         <message name="IDS_IDLE_TIMEOUT_CLOSE_AND_CLEAR_TITLE" desc="Title of the Idle Timeout dialog, warning the user that their windows are about to close and their browsing data will be lost.">
-          Brave will soon close and delete data
+          Ping will soon close and delete data
         </message>
-        <message name="IDS_IDLE_TIMEOUT_CLOSE_BODY" desc="First sentence in the Idle Timeout dialog, warning the user that Brave is going to close automatically.">
+        <message name="IDS_IDLE_TIMEOUT_CLOSE_BODY" desc="First sentence in the Idle Timeout dialog, warning the user that Ping is going to close automatically.">
           {COUNT, plural,
-          =1 {Your organization automatically closes Brave when it isn't used for 1 minute.}
-          other {Your organization automatically closes Brave when it isn't used for # minutes.}}
+          =1 {Your organization automatically closes Ping when it isn't used for 1 minute.}
+          other {Your organization automatically closes Ping when it isn't used for # minutes.}}
         </message>
-        <message name="IDS_IDLE_TIMEOUT_CLEAR_BODY" desc="First sentence in the Idle Timeout dialog, warning the user that Brave is going to clear data automatically.">
+        <message name="IDS_IDLE_TIMEOUT_CLEAR_BODY" desc="First sentence in the Idle Timeout dialog, warning the user that Ping is going to clear data automatically.">
           {COUNT, plural,
-          =1 {Your organization automatically deletes browsing data when Brave isn't used for 1 minute. This could include history, autofill, and downloads. Your existing tabs will remain open.}
-          other {Your organization automatically deletes browsing data when Brave isn't used for # minutes. This could include history, autofill, and downloads. Your existing tabs will remain open.}}
+          =1 {Your organization automatically deletes browsing data when Ping isn't used for 1 minute. This could include history, autofill, and downloads. Your existing tabs will remain open.}
+          other {Your organization automatically deletes browsing data when Ping isn't used for # minutes. This could include history, autofill, and downloads. Your existing tabs will remain open.}}
         </message>
-        <message name="IDS_IDLE_TIMEOUT_CLOSE_AND_CLEAR_BODY" desc="First sentence in the Idle Timeout dialog, warning the user that Brave is going to close and clear data automatically.">
+        <message name="IDS_IDLE_TIMEOUT_CLOSE_AND_CLEAR_BODY" desc="First sentence in the Idle Timeout dialog, warning the user that Ping is going to close and clear data automatically.">
           {COUNT, plural,
-          =1 {Your organization automatically closes Brave when it isn't used for 1 minute. Browsing data is deleted. This could include history, autofill, and downloads.}
-          other {Your organization automatically closes Brave when it isn't used for # minutes. Browsing data is deleted. This could include history, autofill, and downloads.}}
+          =1 {Your organization automatically closes Ping when it isn't used for 1 minute. Browsing data is deleted. This could include history, autofill, and downloads.}
+          other {Your organization automatically closes Ping when it isn't used for # minutes. Browsing data is deleted. This could include history, autofill, and downloads.}}
         </message>
         <message name="IDS_IDLE_DISMISS_BUTTON" desc="Button label in the Idle Timeout dialog, this button dismisses the dialog and prevents browsers from closing automatically.">
-          Continue using Brave
+          Continue using Ping
         </message>
       </if>
       <!-- User happiness tracking survey UI -->
       <if expr="not is_android">
         <message name="IDS_HATS_BUBBLE_TITLE" translateable="false" desc="The title of Happiness Tracking Survey's invitation banner, it invites users to take a survey">
-          Help us improve Brave
+          Help us improve Ping
         </message>
       </if>
-      <!-- Brave parent extension/app install blocking dialog. -->
+      <!-- Ping parent extension/app install blocking dialog. -->
       <if expr="enable_extensions and enable_supervised_users">
         <message name="IDS_EXTENSION_INSTALL_BLOCKED_BY_PARENT_PROMPT_MESSAGE" desc="Text for the dialog indicating that a parent has blocked extensions and apps.">
-         Your parent has turned off "Permissions for sites, apps and extensions" for Brave. Adding this <ph name="EXTENSION_TYPE_PARAMETER">$1<ex>extension</ex></ph> is not allowed.
+         Your parent has turned off "Permissions for sites, apps and extensions" for Ping. Adding this <ph name="EXTENSION_TYPE_PARAMETER">$1<ex>extension</ex></ph> is not allowed.
         </message>
         <message name="IDS_EXTENSION_ENABLE_BLOCKED_BY_PARENT_PROMPT_MESSAGE" desc="Text for the dialog indicating that a parent has blocked extensions and apps.">
-         Your parent has turned off "Permissions for sites, apps and extensions" for Brave. Enabling this <ph name="EXTENSION_TYPE_PARAMETER">$1<ex>extension</ex></ph> is not allowed.
+         Your parent has turned off "Permissions for sites, apps and extensions" for Ping. Enabling this <ph name="EXTENSION_TYPE_PARAMETER">$1<ex>extension</ex></ph> is not allowed.
         </message>
       </if>
 
@@ -1480,87 +1480,87 @@ Permissions you've already given to websites and apps may apply to this account.
         <!-- Profile Picker -->
         <if expr="chromeos_lacros">
           <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE_LACROS" desc="Profile picker main view subtitle">
-            With Brave profiles you can separate all of your Brave stuff. This makes it easier to split between work and fun.
+            With Ping profiles you can separate all of your Ping stuff. This makes it easier to split between work and fun.
           </message>
           <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_SUBTITLE_LACROS" desc="Profile picker profile type choice subtitle">
-            To access your Brave browser stuff across all your devices, sign in, then turn on sync
+            To access your Ping browser stuff across all your devices, sign in, then turn on sync
           </message>
           <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_ACCOUNT_SELECTION_LACROS_SUBTITLE" desc="Profile picker, account selection screen subtitle">
-            Sign in to Brave
+            Sign in to Ping
           </message>
           <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_ACCOUNT_SELECTION_LACROS_SUBTITLE_WITH_GUEST" desc="Profile picker, account selection screen subtitle">
-            Sign in to Brave. If you want to sign in an account one-time only, you can <ph name="GUEST_LINK_BEGIN">&lt;a id="guestModeLink" href="#"&gt;</ph>use the device as guest<ph name="GUEST_LINK_END">&lt;/a&gt;</ph>.
+            Sign in to Ping. If you want to sign in an account one-time only, you can <ph name="GUEST_LINK_BEGIN">&lt;a id="guestModeLink" href="#"&gt;</ph>use the device as guest<ph name="GUEST_LINK_END">&lt;/a&gt;</ph>.
           </message>
         </if>
         <if expr="not chromeos_lacros">
           <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE" desc="Profile picker main view title">
-            Welcome to Brave profiles
+            Welcome to Ping profiles
           </message>
-          <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_V2" desc="Title of a screen that lets the user choose which profile to use when browsing the web. *If the EN source doesn't translate well in your language, an alternative string 'Which Brave profile would you like to use?' may be used instead">
-            Who's using Brave?
+          <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_V2" desc="Title of a screen that lets the user choose which profile to use when browsing the web. *If the EN source doesn't translate well in your language, an alternative string 'Which Ping profile would you like to use?' may be used instead">
+            Who's using Ping?
           </message>
           <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE" desc="Profile picker main view subtitle">
-            With Brave profiles you can separate all your Brave stuff. Create profiles for friends and family, or split between work and fun.
+            With Ping profiles you can separate all your Ping stuff. Create profiles for friends and family, or split between work and fun.
           </message>
           <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_SUBTITLE" desc="Profile picker profile type choice subtitle">
-            To access your Brave stuff across all your devices, sign in, then turn on sync.
+            To access your Ping stuff across all your devices, sign in, then turn on sync.
           </message>
         </if>
         <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_TITLE" desc="Profile picker profile type choice title">
-          Set up your new Brave profile
+          Set up your new Ping profile
         </message>
         <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_LOCAL_PROFILE_CREATION_TITLE" desc="Title for the local profile customiztion screen on the picker.">
-          Customize your Brave profile
+          Customize your Ping profile
         </message>
         <message name="IDS_PROFILE_PICKER_IPH_FOR_PROFILES_TEXT" desc="Text of the IPH bubble for introducing profiles.">
-          Each profile holds its own Brave info like bookmarks, history, passwords, and more
+          Each profile holds its own Ping info like bookmarks, history, passwords, and more
         </message>
         <message name="IDS_PROFILE_PICKER_IPH_FOR_ADD_PROFILE_TEXT" desc="Text of the IPH bubble for adding new profiles.">
-          If you share a device, friends and family can browse separately and set up Brave just the way they want
+          If you share a device, friends and family can browse separately and set up Ping just the way they want
         </message>
         <message name="IDS_PROFILE_PICKER_PROFILE_SWITCH_TITLE" desc="Profile picker profile switch title">
-          Switch to existing Brave profile?
+          Switch to existing Ping profile?
         </message>
         <message name="IDS_PROFILE_PICKER_PROFILE_SWITCH_SUBTITLE" desc="Profile picker profile switch subtitle">
-          A Brave profile with this account already exists on this device
+          A Ping profile with this account already exists on this device
         </message>
 
         <!-- First Run Experience -->
         <if expr="chromeos_lacros">
-          <message name="IDS_PRIMARY_PROFILE_FIRST_RUN_TITLE" desc="Title of the landing screen in first run experience for the primary profile. The screen promotes Brave sync.">
-            Welcome to Brave, <ph name="ACCOUNT_FIRST_NAME">$1<ex>Jane</ex></ph>
+          <message name="IDS_PRIMARY_PROFILE_FIRST_RUN_TITLE" desc="Title of the landing screen in first run experience for the primary profile. The screen promotes Ping sync.">
+            Welcome to Ping, <ph name="ACCOUNT_FIRST_NAME">$1<ex>Jane</ex></ph>
           </message>
-          <message name="IDS_PRIMARY_PROFILE_FIRST_RUN_NO_NAME_TITLE" desc="Title of the screen shown when the user runs Brave for the first time. A simple, generic welcome message.">
-            Welcome to Brave
+          <message name="IDS_PRIMARY_PROFILE_FIRST_RUN_NO_NAME_TITLE" desc="Title of the screen shown when the user runs Ping for the first time. A simple, generic welcome message.">
+            Welcome to Ping
           </message>
-          <message name="IDS_PRIMARY_PROFILE_FIRST_RUN_SUBTITLE" desc="Subtitle of the landing screen in first run experience for the primary profile. The screen promotes Brave sync.">
-            Get your Brave browser stuff from <ph name="ACCOUNT_EMAIL">$1<ex>Jane.Doe@gmail.com</ex></ph>
+          <message name="IDS_PRIMARY_PROFILE_FIRST_RUN_SUBTITLE" desc="Subtitle of the landing screen in first run experience for the primary profile. The screen promotes Ping sync.">
+            Get your Ping browser stuff from <ph name="ACCOUNT_EMAIL">$1<ex>Jane.Doe@gmail.com</ex></ph>
           </message>
           <message name="IDS_PRIMARY_PROFILE_FIRST_RUN_SESSION_MANAGED_BY_DESCRIPTION" desc="Disclaimer on the landing screen in first run experience for the primary profile, informing that the session is managed by an administrator.">
-            Your account is managed by <ph name="MANAGER_NAME">$1<ex>example.com</ex></ph>. Your administrator can see and edit this Brave browser profile and its data like bookmarks, history, and passwords.
+            Your account is managed by <ph name="MANAGER_NAME">$1<ex>example.com</ex></ph>. Your administrator can see and edit this Ping browser profile and its data like bookmarks, history, and passwords.
           </message>
         </if>
         <if expr="not chromeos_lacros">
-          <message name="IDS_FRE_SIGN_IN_TITLE_0" desc="This string appears as a heading on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. The tone should be inviting and alluring.">
-            Sign in to Brave
+          <message name="IDS_FRE_SIGN_IN_TITLE_0" desc="This string appears as a heading on a full-page screen that asks the user to sign in to Ping with their Ping sync chain. It appears when the user launches Ping for the first time. When they sign in, they can personalize and customize Ping and remember their settings in their Ping sync chain. The tone should be inviting and alluring.">
+            Sign in to Ping
           </message>
-          <message name="IDS_FRE_SIGN_IN_TITLE_1" desc="This string appears as a heading on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. The tone should be inviting and alluring.">
-            Make Brave your own
+          <message name="IDS_FRE_SIGN_IN_TITLE_1" desc="This string appears as a heading on a full-page screen that asks the user to sign in to Ping with their Ping sync chain. It appears when the user launches Ping for the first time. When they sign in, they can personalize and customize Ping and remember their settings in their Ping sync chain. The tone should be inviting and alluring.">
+            Make Ping your own
           </message>
-          <message name="IDS_FRE_SIGN_IN_TITLE_2" desc="This string appears as a heading on a full-page screen that tells users the benefits of signing in to Brave. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. The tone should be inviting and alluring.">
-            Do more with Brave
+          <message name="IDS_FRE_SIGN_IN_TITLE_2" desc="This string appears as a heading on a full-page screen that tells users the benefits of signing in to Ping. It appears when the user launches Ping for the first time. When they sign in, they can personalize and customize Ping and remember their settings in their Ping sync chain. The tone should be inviting and alluring.">
+            Do more with Ping
           </message>
         </if>
 
         <!-- Profile switch IPH -->
         <message name="IDS_PROFILE_SWITCH_PROMO" desc="Text of the In-Product-Help bubble for profile switching.">
-          You can switch between Brave profiles here
+          You can switch between Ping profiles here
         </message>
         <message name="IDS_PROFILE_SWITCH_PROMO_SCREENREADER" desc="Text announced by screenreaders to explain how to switch between profiles.">
-          <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+M</ex></ph> can switch between Brave profiles
+          <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+M</ex></ph> can switch between Ping profiles
         </message>
         <message name="IDS_PASSWORD_MANAGER_IPH_BODY_WEB_APP_PROFILE_SWITCH" desc="Body of the in Product Help for profile switching shown in the password manager web app.">
-          You can switch to see passwords from another Brave profile
+          You can switch to see passwords from another Ping profile
         </message>
       </if>
 
@@ -1572,22 +1572,22 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
 
       <!-- BraveLabs bubble -->
-      <message name="IDS_CHROMELABS_RELAUNCH_FOOTER_MESSAGE" desc="Text that shows in the footer of the Brave Labs bubble when relaunch is needed for changes to take effect.">
-        Your changes will take effect the next time you relaunch Brave.
+      <message name="IDS_CHROMELABS_RELAUNCH_FOOTER_MESSAGE" desc="Text that shows in the footer of the Ping Labs bubble when relaunch is needed for changes to take effect.">
+        Your changes will take effect the next time you relaunch Ping.
       </message>
 
       <!-- Device Chooser Prompt -->
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH" desc="Text shown in the Chooser when browser does not have Bluetooth permission. The '&#10;' is a newline character to force the desired line wrapping.">
-        Brave needs Bluetooth access to continue 
+        Ping needs Bluetooth access to continue 
  pairing. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK">$1<ex>Open Preferences</ex></ph>
       </message>
 
       <!-- Tailored Security -->
       <message name="IDS_TAILORED_SECURITY_UNCONSENTED_PROMOTION_NOTIFICATION_TITLE" desc="Title of notification prompting the user to enable Enhanced Safe Browsing after they have enabled account-level protections.">
-        Get Brave's strongest security
+        Get Ping's strongest security
       </message>
       <message name="IDS_TAILORED_SECURITY_UNCONSENTED_PROMOTION_MESSAGE_TITLE" desc="Title shown in the message shown when a user changes their account-level tailored security setting encouraging them to enable Enhanced Safe Browsing">
-        Get Brave's strongest security
+        Get Ping's strongest security
       </message>
       <message name="IDS_TAILORED_SECURITY_UNCONSENTED_PROMOTION_MESSAGE_DESCRIPTION" desc="Description shown in the message shown when a user changes their account-level tailored security setting encouraging them to enable Enhanced Safe Browsing">
         Enhanced protection does more to block phishing and malware
@@ -1600,50 +1600,50 @@ Permissions you've already given to websites and apps may apply to this account.
       </message>
 
       <!-- Privacy Sandbox Dialog strings -->
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_SUBTITLE" desc="A subtitle on the consent page. Consider this a tagline for the Privacy Sandbox project.* “exploring” conveys that this is a work in progress. * “new features” include settings that the user can turn on/off and also backend features that change the way Brave works for everyone * “allow sites to deliver”: Privacy Sandbox is proposed by Brave as a collaborative effort with the browser industry. We’re building and testing functionality that will live in the Brave browser. In order to land the full promise of Privacy Sandbox, websites and advertisers need to adopt the new APIs / functionality that we’re developing. So “allow sites…” makes it clear to the user that we’re building something for the ecosystem. Typically a Brave product builds something for the user, and that’s true in this case, but it’s bigger than that. * “same browsing experience using less of your info”: Another definition of the promise of Privacy Sandbox. Third-party cookies are going away. In this new world, the user will have essentially the same browsing experience but it’s more private because it doesn’t expose so much of the user’s info.">
-        Brave is exploring new features that allow sites to deliver the same browsing experience using less of your info
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_SUBTITLE" desc="A subtitle on the consent page. Consider this a tagline for the Privacy Sandbox project.* “exploring” conveys that this is a work in progress. * “new features” include settings that the user can turn on/off and also backend features that change the way Ping works for everyone * “allow sites to deliver”: Privacy Sandbox is proposed by Ping as a collaborative effort with the browser industry. We’re building and testing functionality that will live in the Ping browser. In order to land the full promise of Privacy Sandbox, websites and advertisers need to adopt the new APIs / functionality that we’re developing. So “allow sites…” makes it clear to the user that we’re building something for the ecosystem. Typically a Ping product builds something for the user, and that’s true in this case, but it’s bigger than that. * “same browsing experience using less of your info”: Another definition of the promise of Privacy Sandbox. Third-party cookies are going away. In this new world, the user will have essentially the same browsing experience but it’s more private because it doesn’t expose so much of the user’s info.">
+        Ping is exploring new features that allow sites to deliver the same browsing experience using less of your info
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BODY_DESCRIPTION_2" desc="A paragraph beneath the “More control over the ads you see” subtitle. * “see and remove topics of interests”: we want to stress the element of control * “estimate topics”: Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). * “recent browsing history”: Later in the UI, we define this as “a record of sites you’ve visited using Brave on this device.” By “recent”, we mean the last 3 weeks (also defined later in the UI).">
-        You can see and remove topics of interest sites use to show you ads. Brave estimates your interests based on your recent browsing history.
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BODY_DESCRIPTION_2" desc="A paragraph beneath the “More control over the ads you see” subtitle. * “see and remove topics of interests”: we want to stress the element of control * “estimate topics”: Topics of interest include things like “Live comedy” and “Rock music”. Ping estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). * “recent browsing history”: Later in the UI, we define this as “a record of sites you’ve visited using Ping on this device.” By “recent”, we mean the last 3 weeks (also defined later in the UI).">
+        You can see and remove topics of interest sites use to show you ads. Ping estimates your interests based on your recent browsing history.
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_LABEL" desc="Learn more link * Unfolds content within the page * The text that appears describes 2 ways in which a site can target ads: the “Topics API” and the “FLEDGE API”. You can see what those are at www.privacysanbox.com or they’re described for the user’s benefit in other text. * “ad personalization” can mean different things in different contexts. Here, we’re using it as a simple noun. In other words, it’s not the name of a control but a descriptive term used to describe the personalization of ads in the Brave browser. This “ad personalization” shouldn’t be confused with the setting in the Brave sync chain called “Ad personalization”.">
-        Learn more about ad personalization in Brave
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_LABEL" desc="Learn more link * Unfolds content within the page * The text that appears describes 2 ways in which a site can target ads: the “Topics API” and the “FLEDGE API”. You can see what those are at www.privacysanbox.com or they’re described for the user’s benefit in other text. * “ad personalization” can mean different things in different contexts. Here, we’re using it as a simple noun. In other words, it’s not the name of a control but a descriptive term used to describe the personalization of ads in the Ping browser. This “ad personalization” shouldn’t be confused with the setting in the Ping sync chain called “Ad personalization”.">
+        Learn more about ad personalization in Ping
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_HEADER" desc="TOPICS API A sub title that describes the first of 2 ways a site can get info from Brave in order to target ads to the user. Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. * “Your”: we need to convey a sense of ownership, even if the user didn’t explicitly choose the interests we’re talking about. Without the “your”, it could sound like Brave is simply building a generic library of interests. * “estimated”: It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). * “by Brave”: This is new behavior for a browser (Brave) to take an active role in processing user data for the purposes of showing ads. It’s important to convey “Brave”, the actor in this case.">
-        Your interests as estimated by Brave
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_HEADER" desc="TOPICS API A sub title that describes the first of 2 ways a site can get info from Ping in order to target ads to the user. Topics of interest include things like “Live comedy” and “Rock music”. Ping estimates these interests based on the sites users visit. * “Your”: we need to convey a sense of ownership, even if the user didn’t explicitly choose the interests we’re talking about. Without the “your”, it could sound like Ping is simply building a generic library of interests. * “estimated”: It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). * “by Ping”: This is new behavior for a browser (Ping) to take an active role in processing user data for the purposes of showing ads. It’s important to convey “Ping”, the actor in this case.">
+        Your interests as estimated by Ping
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_BULLET_POINT_1" desc="TOPICS API Bullet 1 of 3 that appear beneath the “Your interests as estimated by Brave” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “What data is used:” is bold and serves as a label to help profiles skimming the page. * “Your browsing history”: The user’s browsing history is available beneath the “History” menu at Brave’s top level. The Topics API estimates topics of interest based on sites in the user’s browsing history that are participating in the trials.">
-        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>What data is used:<ph name="END_BOLD">&lt;/b&gt;</ph> Your browsing history, a record of sites you’ve visited using Brave on this device.
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_BULLET_POINT_1" desc="TOPICS API Bullet 1 of 3 that appear beneath the “Your interests as estimated by Ping” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “What data is used:” is bold and serves as a label to help profiles skimming the page. * “Your browsing history”: The user’s browsing history is available beneath the “History” menu at Ping’s top level. The Topics API estimates topics of interest based on sites in the user’s browsing history that are participating in the trials.">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>What data is used:<ph name="END_BOLD">&lt;/b&gt;</ph> Your browsing history, a record of sites you’ve visited using Ping on this device.
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_BULLET_POINT_2" desc="TOPICS API Bullet 2 of 3 that appear beneath the “Your interests as estimated by Brave” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “How we use this data:” is bold and serves as a label to help profiles skimming the page. * “estimate your interests”: Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”).">
-        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How we use this data:<ph name="END_BOLD">&lt;/b&gt;</ph> Brave can estimate your interests. Later, a site you visit can ask Brave to see your interests in order to personalize the ads you see.
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_BULLET_POINT_2" desc="TOPICS API Bullet 2 of 3 that appear beneath the “Your interests as estimated by Ping” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “How we use this data:” is bold and serves as a label to help profiles skimming the page. * “estimate your interests”: Topics of interest include things like “Live comedy” and “Rock music”. Ping estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”).">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How we use this data:<ph name="END_BOLD">&lt;/b&gt;</ph> Ping can estimate your interests. Later, a site you visit can ask Ping to see your interests in order to personalize the ads you see.
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_BULLET_POINT_3" desc="TOPICS API Bullet 3 of 3 that appear beneath the “Your interests as estimated by Brave” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “How you can manage your data:” is bold and serves as a label to help profiles skimming the page. * “To protect your privacy”: Today, most data is kept for long periods of time. This new Topics API doesn’t retain estimated topics for more than 3 weeks. The only reason for this feature is to protect the user’s privacy. * “auto”: isn’t strictly necessary, but it conveys that this feature is an ongoing part of the service. This isn’t describing, for example, a one-time deletion. * “older than 3 weeks”: We’re trying to convey a rolling delete. Imagine a user opens a browser for the very first time. As the user browses, Brave will estimate up to 5 topics of interest in the first week. In the second week, Brave will estimate up to 5 additional topics of interest. The same for the third week, for a total of 15 potential interests. In week 4, Brave will automatically delete the 5 interests from week 1 so that there aren’t ever more than 15 topics associated with a user at any given time. * “interests can refresh”: If a user loves horror films and reads about them for months on end, the interest “Horror movies” might get deleted and refreshed in the same week, so that “Horror movies” doesn’t ever disappear from the user’s list of interests. * “Or you can…”: A user might love horror movies but can’t stand the idea of seeing ads about horror movies (because even the visuals will ruin the surprise of opening night). In this case, the user can remove “Horror movies” from the list of interests Brave will consider. This removal remains in place indefinitely. Note that the user might still see ads about Horror movies from different ad networks or by other means than Brave’s “Browser-based ad personalization” setting.">
-        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How you can manage your data:<ph name="END_BOLD">&lt;/b&gt;</ph> To protect your privacy, we auto-delete your interests that are older than 4 weeks. As you keep browsing, an interest might appear on the list again. Or you can remove interests you don’t want Brave to consider.
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_BULLET_POINT_3" desc="TOPICS API Bullet 3 of 3 that appear beneath the “Your interests as estimated by Ping” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “How you can manage your data:” is bold and serves as a label to help profiles skimming the page. * “To protect your privacy”: Today, most data is kept for long periods of time. This new Topics API doesn’t retain estimated topics for more than 3 weeks. The only reason for this feature is to protect the user’s privacy. * “auto”: isn’t strictly necessary, but it conveys that this feature is an ongoing part of the service. This isn’t describing, for example, a one-time deletion. * “older than 3 weeks”: We’re trying to convey a rolling delete. Imagine a user opens a browser for the very first time. As the user browses, Ping will estimate up to 5 topics of interest in the first week. In the second week, Ping will estimate up to 5 additional topics of interest. The same for the third week, for a total of 15 potential interests. In week 4, Ping will automatically delete the 5 interests from week 1 so that there aren’t ever more than 15 topics associated with a user at any given time. * “interests can refresh”: If a user loves horror films and reads about them for months on end, the interest “Horror movies” might get deleted and refreshed in the same week, so that “Horror movies” doesn’t ever disappear from the user’s list of interests. * “Or you can…”: A user might love horror movies but can’t stand the idea of seeing ads about horror movies (because even the visuals will ruin the surprise of opening night). In this case, the user can remove “Horror movies” from the list of interests Ping will consider. This removal remains in place indefinitely. Note that the user might still see ads about Horror movies from different ad networks or by other means than Ping’s “Browser-based ad personalization” setting.">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How you can manage your data:<ph name="END_BOLD">&lt;/b&gt;</ph> To protect your privacy, we auto-delete your interests that are older than 4 weeks. As you keep browsing, an interest might appear on the list again. Or you can remove interests you don’t want Ping to consider.
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_2_BULLET_POINT_1" desc="FLEDGE APIBullet 1 of 3 that appear beneath the “Sites you visit that define your interests” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “What data is used:” is bold and serves as a label to help profiles skimming the page. * “Your browsing history”: The user’s browsing history is available beneath the “History” menu at Brave’s top level. This content taken in isolation is somewhat misleading. With FLEDGE, a site can store information in Brave about the user’s visit to their site. For example, the site might store “running_shoes_red_size_35” to indicate that the user showed interest in a particular shoe. We’re OK with the simplification in this bullet because 1) we explain it in the next bullet and 2) we want the user to understand that at the top level, both Topics &amp; Fledge are based on the same thing and that is the user’s browsing history.">
-        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>What data is used:<ph name="END_BOLD">&lt;/b&gt;</ph> Your browsing history, a record of sites you’ve visited using Brave on this device.
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_2_BULLET_POINT_1" desc="FLEDGE APIBullet 1 of 3 that appear beneath the “Sites you visit that define your interests” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “What data is used:” is bold and serves as a label to help profiles skimming the page. * “Your browsing history”: The user’s browsing history is available beneath the “History” menu at Ping’s top level. This content taken in isolation is somewhat misleading. With FLEDGE, a site can store information in Ping about the user’s visit to their site. For example, the site might store “running_shoes_red_size_35” to indicate that the user showed interest in a particular shoe. We’re OK with the simplification in this bullet because 1) we explain it in the next bullet and 2) we want the user to understand that at the top level, both Topics &amp; Fledge are based on the same thing and that is the user’s browsing history.">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>What data is used:<ph name="END_BOLD">&lt;/b&gt;</ph> Your browsing history, a record of sites you’ve visited using Ping on this device.
       </message>
       <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_2_BULLET_POINT_2" desc="FLEDGE API Bullet 2 of 3 that appear beneath the “Sites you visit that define your interests” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “How we use this data:” is bold and serves as a label to help profiles skimming the page.">
-        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How we use this data:<ph name="END_BOLD">&lt;/b&gt;</ph> Sites can store information with Brave about your interests. For example, if you visit a site to buy shoes for a marathon, the site might define your interest as running marathons. Later, if you visit a different site to register for a race, that site can show you an ad for running shoes based on your interests.
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How we use this data:<ph name="END_BOLD">&lt;/b&gt;</ph> Sites can store information with Ping about your interests. For example, if you visit a site to buy shoes for a marathon, the site might define your interest as running marathons. Later, if you visit a different site to register for a race, that site can show you an ad for running shoes based on your interests.
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BOTTOM_SUMMARY" desc="A conclusion paragraph for the entire page. It sits beneath the “More control over the ads you see” subtitle but it’s no more associated with that topic than “Limit sharing between sites”. * “You can change your mind”: When writing a consent moment, we have a legal obligation to inform the user how they can “revoke their consent” or “opt out”. A friendlier way to say this is “change your mind”. * “in Brave settings”: The URL is chrome://settings/privacySandbox. We don’t make it a live link because we need the users to stay in this moment until they make a choice. * “The trials run alongside…”: The trials happen in addition to today’s current system based on third-party cookies. In other words, even by accepting in this consent moment, the user’s core experience doesn’t change much. This is an experiment, and we need the user to understand as much. ">
-        You can change your mind at any time in Brave settings. The trials run alongside the current way ads get served, so you won’t see changes right away.
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BOTTOM_SUMMARY" desc="A conclusion paragraph for the entire page. It sits beneath the “More control over the ads you see” subtitle but it’s no more associated with that topic than “Limit sharing between sites”. * “You can change your mind”: When writing a consent moment, we have a legal obligation to inform the user how they can “revoke their consent” or “opt out”. A friendlier way to say this is “change your mind”. * “in Ping settings”: The URL is chrome://settings/privacySandbox. We don’t make it a live link because we need the users to stay in this moment until they make a choice. * “The trials run alongside…”: The trials happen in addition to today’s current system based on third-party cookies. In other words, even by accepting in this consent moment, the user’s core experience doesn’t change much. This is an experiment, and we need the user to understand as much. ">
+        You can change your mind at any time in Ping settings. The trials run alongside the current way ads get served, so you won’t see changes right away.
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_SUBTITLE" desc="A subtitle on the consent page. Consider this a tagline for the Privacy Sandbox project.* “exploring” conveys that this is a work in progress. * “new features” include settings that the user can turn on/off and also backend features that change the way Brave works for everyone * “allow sites to deliver”: Privacy Sandbox is proposed by Brave as a collaborative effort with the browser industry. We’re building and testing functionality that will live in the Brave browser. In order to land the full promise of Privacy Sandbox, websites and advertisers need to adopt the new APIs / functionality that we’re developing. So “allow sites…” makes it clear to the user that we’re building something for the ecosystem. Typically a Brave product builds something for the user, and that’s true in this case, but it’s bigger than that. * “same browsing experience using less of your info”: Another definition of the promise of Privacy Sandbox. Third-party cookies are going away. In this new world, the user will have essentially the same browsing experience but it’s more private because it doesn’t expose so much of the user’s info.">
-        Brave is exploring new features that allow sites to deliver the same browsing experience using less of your info
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_SUBTITLE" desc="A subtitle on the consent page. Consider this a tagline for the Privacy Sandbox project.* “exploring” conveys that this is a work in progress. * “new features” include settings that the user can turn on/off and also backend features that change the way Ping works for everyone * “allow sites to deliver”: Privacy Sandbox is proposed by Ping as a collaborative effort with the browser industry. We’re building and testing functionality that will live in the Ping browser. In order to land the full promise of Privacy Sandbox, websites and advertisers need to adopt the new APIs / functionality that we’re developing. So “allow sites…” makes it clear to the user that we’re building something for the ecosystem. Typically a Ping product builds something for the user, and that’s true in this case, but it’s bigger than that. * “same browsing experience using less of your info”: Another definition of the promise of Privacy Sandbox. Third-party cookies are going away. In this new world, the user will have essentially the same browsing experience but it’s more private because it doesn’t expose so much of the user’s info.">
+        Ping is exploring new features that allow sites to deliver the same browsing experience using less of your info
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_BODY_DESCRIPTION_2" desc="A paragraph beneath the “More control over the ads you see” subtitle.* “During the trials”: The trials happens in addition to today’s current system based on third-party cookies. In other words, even by agreeing to or remaining in a trial,, the user’s core experience doesn’t change much. This is an experiment, and we need the user to understand as much. * “see and remove topics of interests”: we want to stress the element of control * “estimate topics”: Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). * “recent browsing history”: Later in the UI, we define this as “a record of sites you’ve visited using Brave on this device.” By “recent”, we mean the last 3 weeks (also defined later in the UI).">
-        During the trials, you can see and remove topics of interest sites use to show you ads. Brave estimates your interests based on your recent browsing history.
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_BODY_DESCRIPTION_2" desc="A paragraph beneath the “More control over the ads you see” subtitle.* “During the trials”: The trials happens in addition to today’s current system based on third-party cookies. In other words, even by agreeing to or remaining in a trial,, the user’s core experience doesn’t change much. This is an experiment, and we need the user to understand as much. * “see and remove topics of interests”: we want to stress the element of control * “estimate topics”: Topics of interest include things like “Live comedy” and “Rock music”. Ping estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). * “recent browsing history”: Later in the UI, we define this as “a record of sites you’ve visited using Ping on this device.” By “recent”, we mean the last 3 weeks (also defined later in the UI).">
+        During the trials, you can see and remove topics of interest sites use to show you ads. Ping estimates your interests based on your recent browsing history.
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_BOTTOM_SUMMARY" desc="A conclusion paragraph for the entire page. It sits beneath the “More control over the ads you see” subtitle but it’s no more associated with that topic than “Limit sharing between sites”. * “in Brave settings”: The URL is chrome://settings/privacySandbox. We don’t make it a live link because we need the users to stay in this moment until they make a choice.">
-        You can learn more about these features in Brave settings.
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_BOTTOM_SUMMARY" desc="A conclusion paragraph for the entire page. It sits beneath the “More control over the ads you see” subtitle but it’s no more associated with that topic than “Limit sharing between sites”. * “in Ping settings”: The URL is chrome://settings/privacySandbox. We don’t make it a live link because we need the users to stay in this moment until they make a choice.">
+        You can learn more about these features in Ping settings.
       </message>
 
       <!-- BraveUpdater Strings -->
       <if expr="is_win">
         <message name="IDS_FRIENDLY_COMPANY_NAME" desc="Company name" translateable="false">
-          Brave
+          Ping
         </message>
         <message name="IDS_NO_UPDATE_RESPONSE" desc="Updater response for no updates when handling install result.">
           No update is available.
@@ -1652,7 +1652,7 @@ Permissions you've already given to websites and apps may apply to this account.
           Installation failed. Please try again.
         </message>
         <message name="IDS_INSTALLER_DISPLAY_NAME" desc="Name for the updater metainstaller.">
-          <ph name="COMPANY_NAME">$1<ex>Brave</ex></ph> Installer
+          <ph name="COMPANY_NAME">$1<ex>Ping</ex></ph> Installer
         </message>
         <message name="IDS_CLOSE_BUTTON" desc="Close button tooltip">
           Close
@@ -1691,13 +1691,13 @@ Permissions you've already given to websites and apps may apply to this account.
           Canceling...
         </message>
         <message name="IDS_TEXT_RESTART_BROWSER" desc="For when a browser must be restarted to complete the installation.">
-          Thanks for installing. You must restart your browser before using <ph name="BUNDLE_NAME">$1<ex>Brave</ex></ph>.
+          Thanks for installing. You must restart your browser before using <ph name="BUNDLE_NAME">$1<ex>Ping</ex></ph>.
         </message>
         <message name="IDS_TEXT_RESTART_ALL_BROWSERS" desc="For when all browsers must be restarted to complete the installation.">
-          Thanks for installing. You must restart all your browsers before using <ph name="BUNDLE_NAME">$1<ex>Brave</ex></ph>.
+          Thanks for installing. You must restart all your browsers before using <ph name="BUNDLE_NAME">$1<ex>Ping</ex></ph>.
         </message>
         <message name="IDS_TEXT_RESTART_COMPUTER" desc="For when the computer must be restarted to complete the installation.">
-          Thanks for installing. You must restart your computer before using <ph name="BUNDLE_NAME">$1<ex>Brave</ex></ph>.
+          Thanks for installing. You must restart your computer before using <ph name="BUNDLE_NAME">$1<ex>Ping</ex></ph>.
         </message>
         <message name="IDS_UPDATER_CLOSE" desc="For close button on the UI post install completion.">
           Close
@@ -1734,16 +1734,16 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="not is_android">
         <if expr="use_titlecase">
           <message name="IDS_HIGH_EFFICIENCY_DIALOG_TITLE" desc="In Title Case: Title text for a dialog describing that the Memory Saver setting is enabled">
-            Memory Saver Made Brave Faster
+            Memory Saver Made Ping Faster
           </message>
         </if>
         <if expr="not use_titlecase">
           <message name="IDS_HIGH_EFFICIENCY_DIALOG_TITLE" desc="Title text for a dialog describing that the Memory Saver setting is enabled">
-            Memory Saver made Brave faster
+            Memory Saver made Ping faster
           </message>
         </if>
         <message name="IDS_HIGH_EFFICIENCY_DIALOG_BODY_V2" desc="Body text for a dialog describing that Memory Saver mode will use less memory.">
-          While this tab was inactive, memory was freed up to keep Brave fast. You can choose to always exclude this site from being inactive.
+          While this tab was inactive, memory was freed up to keep Ping fast. You can choose to always exclude this site from being inactive.
         </message>
       </if>
 
@@ -1751,12 +1751,12 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="not is_android">
         <if expr="use_titlecase">
           <message name="IDS_HIGH_EFFICIENCY_MODE_PROMO_TITLE" desc="In Title Case: The title for the high efficiency mode in-product promo bubble">
-            Make Brave Faster
+            Make Ping Faster
           </message>
         </if>
         <if expr="not use_titlecase">
           <message name="IDS_HIGH_EFFICIENCY_MODE_PROMO_TITLE" desc="The title for the high efficiency mode in-product promo bubble">
-            Make Brave faster
+            Make Ping faster
           </message>
         </if>
       </if>

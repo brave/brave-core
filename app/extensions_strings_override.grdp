@@ -10,7 +10,7 @@
   <message name="IDS_EXTENSIONS_ITEM_ALLOW_INCOGNITO" desc="The text next to the checkbox to enable an extension in Private mode.">
     Allow in Private
   </message>
-  <message name="IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE" desc="Label for button to visit the Brave web store.">
+  <message name="IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE" desc="Label for button to visit the Ping web store.">
     View in Web Store
   </message>
   <message name="IDS_EXTENSIONS_ITEM_SOURCE_WEBSTORE" desc="The text to indicate that an extension is from the Web Store.">

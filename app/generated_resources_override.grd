@@ -397,7 +397,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_win or is_linux">
         </if>
 
-      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_CROWD_DENY_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's notifications permission request is automatically blocked by Brave, as this permission prompt is often denied by other users for this site.">
+      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_CROWD_DENY_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's notifications permission request is automatically blocked by Ping, as this permission prompt is often denied by other users for this site.">
         Most profiles block notifications from this site
       </message>
       <if expr="toolkit_views">
@@ -418,7 +418,7 @@ are declared in tools/grit/grit_rule.gni.
           Private App: <ph name="APP_NAME">$1<ex>Sample App</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_TAB_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private Tab row (may not be visible if Private is not open)">
-          Private Tab: <ph name="TAB_NAME">$1<ex>Brave</ex></ph>
+          Private Tab: <ph name="TAB_NAME">$1<ex>Ping</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_INCOGNITO_PREFIX" desc="The prefix for a Private page stored in the Back/Forward Cache">
           Private Back/Forward Cached Page: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
@@ -505,7 +505,7 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_EXTENSION_WEB_STORE_TITLE" desc="Text for the Web Store">
         Web Store
       </message>
-      <message name="IDS_EXTENSIONS_ADDED_WITHOUT_KNOWLEDGE" desc="Text shown in the extensions settings for items that might have been forcefully added to Brave without the user's knowledge">
+      <message name="IDS_EXTENSIONS_ADDED_WITHOUT_KNOWLEDGE" desc="Text shown in the extensions settings for items that might have been forcefully added to Ping without the user's knowledge">
         This extension is not listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
       </message>
       <if expr="is_macosx">

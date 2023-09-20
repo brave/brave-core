@@ -23,17 +23,17 @@
   <message name="IDS_WELCOME_BOOKMARKS_REMOVED" desc="String read for accessibility to inform the user that several bookmarks were removed.">
     Bookmarks removed
   </message>
-  <message name="IDS_DEFAULT_BROWSER_CHANGED" desc="text notifying users that their default browser is successfully changed to Brave">
-    Brave is your default browser
+  <message name="IDS_DEFAULT_BROWSER_CHANGED" desc="text notifying users that their default browser is successfully changed to Ping">
+    Ping is your default browser
   </message>
 
-  <!-- Brave apps selection module -->
-  <message name="IDS_WELCOME_GOOGLE_APPS_DESCRIPTION" desc="Description of what this section does in the welcome workflow. This section lets a user bookmark popular Brave apps.">
-    Add bookmarks to your favorite Brave Apps
+  <!-- Ping apps selection module -->
+  <message name="IDS_WELCOME_GOOGLE_APPS_DESCRIPTION" desc="Description of what this section does in the welcome workflow. This section lets a user bookmark popular Ping apps.">
+    Add bookmarks to your favorite Ping Apps
   </message>
   <if expr="_google_chrome">
     <message name="IDS_WELCOME_GOOGLE_SEARCH" desc="Label for a button that creates a bookmark to google.com, this should be the name of the brand.">
-      Brave
+      Ping
     </message>
   </if>
   <message name="IDS_WELCOME_GOOGLE_GMAIL" desc="Label for a button that creates a bookmark to gmail.com, this should be the name of the brand.">
@@ -85,28 +85,28 @@
   </message>
 
   <!-- set default module -->
-  <message name="IDS_WELCOME_SET_AS_DEFAULT_HEADER" desc="Header for the page that prompts user to set Brave as their default browser.">
-    Set Brave as your default browser
+  <message name="IDS_WELCOME_SET_AS_DEFAULT_HEADER" desc="Header for the page that prompts user to set Ping as their default browser.">
+    Set Ping as your default browser
   </message>
-  <message name="IDS_WELCOME_SET_AS_DEFAULT_SUB_HEADER" desc="Sub-header for the page that prompts user to set Brave as their default browser.">
-    Get Brave Search and Brave smarts everytime you browse
+  <message name="IDS_WELCOME_SET_AS_DEFAULT_SUB_HEADER" desc="Sub-header for the page that prompts user to set Ping as their default browser.">
+    Get Ping Search and Ping smarts everytime you browse
   </message>
-  <message name="IDS_WELCOME_SET_AS_DEFAULT_SET_AS_DEFAULT" desc="The label for a button to confirm setting Brave as their default browser.">
+  <message name="IDS_WELCOME_SET_AS_DEFAULT_SET_AS_DEFAULT" desc="The label for a button to confirm setting Ping as their default browser.">
     Set as default
   </message>
 
   <!-- Landing view -->
-  <message name="IDS_WELCOME_LANDING_TITLE" desc="Title for the page that prompts user to start setting up their new Brave.">
-    Make Brave your own
+  <message name="IDS_WELCOME_LANDING_TITLE" desc="Title for the page that prompts user to start setting up their new Ping.">
+    Make Ping your own
   </message>
-  <message name="IDS_WELCOME_LANDING_DESCRIPTION" desc="Description for the page that prompts user to start setting up their new Brave.">
+  <message name="IDS_WELCOME_LANDING_DESCRIPTION" desc="Description for the page that prompts user to start setting up their new Ping.">
     Set up your browser in a few simple steps
   </message>
-  <message name="IDS_WELCOME_LANDING_NEW_USER" desc="Label for a button that prompts new users to start setting up their new Brave.">
+  <message name="IDS_WELCOME_LANDING_NEW_USER" desc="Label for a button that prompts new users to start setting up their new Ping.">
     Get Started
   </message>
   <message name="IDS_WELCOME_LANDING_EXISTING_USER" desc="Label for a button that prompts existing users to sign in.">
-    Already a Brave user? Sign in
+    Already a Ping user? Sign in
   </message>
   <message name="IDS_WELCOME_LANDING_PAUSE_ANIMATIONS" desc="Label for a button that pauses all animations on the page.">
     Pause animations
@@ -117,7 +117,7 @@
 
   <!-- Sign-in view -->
   <message name="IDS_WELCOME_SIGNIN_VIEW_HEADER" desc="Header for the page that prompts user to sign in to chrome.">
-    Your Brave, Everywhere
+    Your Ping, Everywhere
   </message>
   <message name="IDS_WELCOME_SIGNIN_VIEW_SUB_HEADER" desc="Sub-header for the page that prompts user to sign in to chrome.">
     Sign in and turn on sync to get your bookmarks, passwords and more on all devices

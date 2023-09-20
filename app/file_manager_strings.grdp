@@ -3,10 +3,10 @@
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
 <!-- File Manager -->
-  <message name="IDS_FILE_BROWSER_ANDROID_FILES_ROOT_LABEL" desc="A label for the 'Play files' root which shows Android files. 'Play' in this label is an abbreviation of 'Brave Play', so it should not be translated. Use sentence case.">
+  <message name="IDS_FILE_BROWSER_ANDROID_FILES_ROOT_LABEL" desc="A label for the 'Play files' root which shows Android files. 'Play' in this label is an abbreviation of 'Ping Play', so it should not be translated. Use sentence case.">
     Play files
   </message>
-  <message name="IDS_FILE_BROWSER_SHOW_ALL_ANDROID_FOLDERS_OPTION" desc="A label for an option menu item to show all Android folders. By default, only several folders are visible to users, and users will click this option menu item to show all folders. 'Play' in this label is an abbreviation of 'Brave Play', so it should not be translated.">
+  <message name="IDS_FILE_BROWSER_SHOW_ALL_ANDROID_FOLDERS_OPTION" desc="A label for an option menu item to show all Android folders. By default, only several folders are visible to users, and users will click this option menu item to show all folders. 'Play' in this label is an abbreviation of 'Ping Play', so it should not be translated.">
     Show all Play folders
   </message>
   <message name="IDS_FILE_SYSTEM_PROVIDER_UNRESPONSIVE_WARNING" desc="A warning shown in a notification that an operation is taking longer than expected.">
@@ -40,24 +40,24 @@
     Abort
   </message>
   <message name="IDS_FILE_BROWSER_DRIVE_DIRECTORY_LABEL" desc="/drive directory label.">
-    Brave Drive
+    Ping Drive
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_MY_DRIVE_LABEL" desc="A label for the 'My Drive' collection of Brave Drive.">
+  <message name="IDS_FILE_BROWSER_DRIVE_MY_DRIVE_LABEL" desc="A label for the 'My Drive' collection of Ping Drive.">
     My Drive
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_TEAM_DRIVES_LABEL" desc="A label for the 'Team Drives' collection of Brave Drive.">
+  <message name="IDS_FILE_BROWSER_DRIVE_TEAM_DRIVES_LABEL" desc="A label for the 'Team Drives' collection of Ping Drive.">
     Team Drives
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_COMPUTERS_LABEL" desc="A label for the 'Computers' collection of Brave Drive.">
+  <message name="IDS_FILE_BROWSER_DRIVE_COMPUTERS_LABEL" desc="A label for the 'Computers' collection of Ping Drive.">
     Computers
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_SHARED_WITH_ME_COLLECTION_LABEL" desc="A label for the 'shared with me' collection of Brave Drive.">
+  <message name="IDS_FILE_BROWSER_DRIVE_SHARED_WITH_ME_COLLECTION_LABEL" desc="A label for the 'shared with me' collection of Ping Drive.">
     Shared with me
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_RECENT_COLLECTION_LABEL" desc="A label for the 'Recent' collection of Brave Drive.">
+  <message name="IDS_FILE_BROWSER_DRIVE_RECENT_COLLECTION_LABEL" desc="A label for the 'Recent' collection of Ping Drive.">
     Recent
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_OFFLINE_COLLECTION_LABEL" desc="A label for the 'Offline' collection of Brave Drive.">
+  <message name="IDS_FILE_BROWSER_DRIVE_OFFLINE_COLLECTION_LABEL" desc="A label for the 'Offline' collection of Ping Drive.">
     Offline
   </message>
   <message name="IDS_FILE_BROWSER_DOWNLOADS_DIRECTORY_LABEL" desc="Downloads local directory label.">
@@ -129,7 +129,7 @@
     Backspace
   </message>
 
-  <message name="IDS_FILE_BROWSER_STATUS_COLUMN_LABEL" desc="Status column label.  This column reflects the cloud import status of files.  The status is an icon depicting whether a file has been imported, and if so, where to - for example, a Drive icon if a file has been imported to Brave Drive.  For unimported files, this column is blank. ">
+  <message name="IDS_FILE_BROWSER_STATUS_COLUMN_LABEL" desc="Status column label.  This column reflects the cloud import status of files.  The status is an icon depicting whether a file has been imported, and if so, where to - for example, a Drive icon if a file has been imported to Ping Drive.  For unimported files, this column is blank. ">
     Status
   </message>
   <message name="IDS_FILE_BROWSER_TOTAL_FILE_COUNT_LABEL" desc="Total count of files that user selects in the Files app">
@@ -220,7 +220,7 @@
    <ph name="LINE_BREAKS">&lt;br/&gt;&lt;br/&gt;</ph>
    Removing your device while it is in use may cause data loss.  Please wait until the operation is over, then eject the device using the Files app.
   </message>
-  <message name="IDS_FILE_BROWSER_UNMOUNT_PROVIDED_FAILED" desc="Title of the error dialog when unmount operation for a volume provided by an extension failed. One of the most typical use case is an archive (i.e. ZIP) file mounted as a virtual disk. However, arbitrary Brave apps can mount volumes. So we should not assume this is an archive file.">
+  <message name="IDS_FILE_BROWSER_UNMOUNT_PROVIDED_FAILED" desc="Title of the error dialog when unmount operation for a volume provided by an extension failed. One of the most typical use case is an archive (i.e. ZIP) file mounted as a virtual disk. However, arbitrary Ping apps can mount volumes. So we should not assume this is an archive file.">
    <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Can't disconnect from an archive or virtual disk<ph name="END_BOLD">&lt;/b&gt;</ph>
    <ph name="LINE_BREAKS">&lt;br/&gt;&lt;br/&gt;</ph>
    Close all files on the archive or virtual disk, then try again.
@@ -255,13 +255,13 @@
   <message name="IDS_FILE_BROWSER_TASK_OPEN" desc="Title of the action to open (and possibly edit) a file.">
     Open
   </message>
-  <message name="IDS_FILE_BROWSER_TASK_OPEN_GDOC" desc="Title of the action to open a Brave Docs document.">
+  <message name="IDS_FILE_BROWSER_TASK_OPEN_GDOC" desc="Title of the action to open a Ping Docs document.">
     Docs
   </message>
-  <message name="IDS_FILE_BROWSER_TASK_OPEN_GSHEET" desc="Title of the action to open a Brave Spreadsheets document.">
+  <message name="IDS_FILE_BROWSER_TASK_OPEN_GSHEET" desc="Title of the action to open a Ping Spreadsheets document.">
     Sheets
   </message>
-  <message name="IDS_FILE_BROWSER_TASK_OPEN_GSLIDES" desc="Title of the action to open a Brave Slides document.">
+  <message name="IDS_FILE_BROWSER_TASK_OPEN_GSLIDES" desc="Title of the action to open a Ping Slides document.">
     Slides
   </message>
   <message name="IDS_FILE_BROWSER_TASK_LISTEN" desc="Title of the action to play an audio file.">
@@ -443,8 +443,8 @@
     This file is not available offline.
   </message>
 
-  <message name="IDS_FILE_BROWSER_RECOVERED_FILES_FROM_GOOGLE_DRIVE_DIRECTORY_NAME" desc="The name of the direcotry which stores files recovered from Brave Drive directory when the locally stored Brave Drive data is found to be broken.">
-    Recovered files from Brave Drive
+  <message name="IDS_FILE_BROWSER_RECOVERED_FILES_FROM_GOOGLE_DRIVE_DIRECTORY_NAME" desc="The name of the direcotry which stores files recovered from Ping Drive directory when the locally stored Ping Drive data is found to be broken.">
+    Recovered files from Ping Drive
   </message>
 
   <message name="IDS_FILE_BROWSER_CONFLICT_DIALOG_MESSAGE" desc="Message of the conflict dialog shown when a file transfer operation is conflicted.">
@@ -529,10 +529,10 @@
   <message name="IDS_FILE_BROWSER_SELECT_ALL_COMMAND_LABEL" desc="Menu item label, select all files and folders in the right view">
     Select all
   </message>
-  <message name="IDS_FILE_BROWSER_SHARE_BUTTON_LABEL" desc="Menu item's label, showing dialog to share the selected Brave Drive files. This message is also used as a tooltip label and a spoken feedback label of a button which also shows the dialog to share the files. The translation should be consistent with the sharing dialog's title in Brave Drive Web UI.">
+  <message name="IDS_FILE_BROWSER_SHARE_BUTTON_LABEL" desc="Menu item's label, showing dialog to share the selected Ping Drive files. This message is also used as a tooltip label and a spoken feedback label of a button which also shows the dialog to share the files. The translation should be consistent with the sharing dialog's title in Ping Drive Web UI.">
     Share with others
   </message>
-  <message name="IDS_FILE_BROWSER_MANAGE_IN_DRIVE_BUTTON_LABEL" desc="Menu item's label, showing dialog to open the selected Brave Drive files in the Drive webpage for managing sharing permissions, etc.">
+  <message name="IDS_FILE_BROWSER_MANAGE_IN_DRIVE_BUTTON_LABEL" desc="Menu item's label, showing dialog to open the selected Ping Drive files in the Drive webpage for managing sharing permissions, etc.">
     Manage in Drive
   </message>
   <message name="IDS_FILE_BROWSER_SHARE_WITH_LINUX_BUTTON_LABEL" desc="Label for menu that will share a folder with the crostini Linux container.">
@@ -560,10 +560,10 @@
     Cloud backup
   </message>
   <message name="IDS_FILE_BROWSER_CLOUD_DESTINATION_FOLDER" desc="Title of the cloud import destination folder.">
-    Brave OS Cloud backup
+    Ping OS Cloud backup
   </message>
   <message name="IDS_FILE_BROWSER_CLOUD_IMPORT_DESCRIPTION" desc="Short description of the cloud import feature.">
-    Back up your media device’s photos and videos to Brave Drive.
+    Back up your media device’s photos and videos to Ping Drive.
   </message>
   <message name="IDS_FILE_BROWSER_CLOUD_IMPORT_START" desc="Tooltip of the toolbar button that starts backup.">
     Backup your photos and videos
@@ -592,7 +592,7 @@
     Scanning your media device...
   </message>
   <message name="IDS_FILE_BROWSER_CLOUD_IMPORT_STATUS_NO_MEDIA" desc="Cloud import no-new-media-found status message. Shown after backup is completed and when a search for new files to backup produces no result.">
-    All backed up to <ph name="BEGIN_LINK">&lt;a is='action-link' class='destination-link'&gt;</ph>Brave Drive!<ph name="END_LINK">&lt;/a&gt;</ph>
+    All backed up to <ph name="BEGIN_LINK">&lt;a is='action-link' class='destination-link'&gt;</ph>Ping Drive!<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_FILE_BROWSER_CLOUD_IMPORT_TOOLTIP_NO_MEDIA" desc="Cloud import no-new-media-found tooltip. Shown after backup is completed and when a search for new files to backup produces no result.">
     All backed up!
@@ -600,12 +600,12 @@
   <message name="IDS_FILE_BROWSER_CLOUD_IMPORT_STATUS_INSUFFICIENT_CLOUD_SPACE" desc="Cloud import insufficient cloud space status message.">
     <ph name="FILE_COUNT">$1<ex>5 new photos</ex></ph> found.
     <ph name="LINE_BREAK1">&lt;br&gt;</ph>
-    Your Brave Drive quota isn't large enough. Additional <ph name="FILE_SIZE">$2<ex>5 MB</ex></ph> needed.
+    Your Ping Drive quota isn't large enough. Additional <ph name="FILE_SIZE">$2<ex>5 MB</ex></ph> needed.
     <ph name="LINE_BREAK2">&lt;br&gt;</ph>
     Try selecting fewer photos.
   </message>
   <message name="IDS_FILE_BROWSER_CLOUD_IMPORT_TOOLTIP_INSUFFICIENT_CLOUD_SPACE" desc="Cloud import insufficient cloud space tooltip.">
-    Your Brave Drive quota isn't large enough.
+    Your Ping Drive quota isn't large enough.
   </message>
   <message name="IDS_FILE_BROWSER_CLOUD_IMPORT_STATUS_INSUFFICIENT_LOCAL_SPACE" desc="Cloud import insufficient local space status message.">
     <ph name="FILE_COUNT">$1<ex>5 new photos</ex></ph> found.
@@ -620,19 +620,19 @@
   <message name="IDS_FILE_BROWSER_CLOUD_IMPORT_STATUS_READY" desc="Cloud import ready status message.">
     <ph name="FILE_COUNT">$1<ex>5 new photos</ex></ph> found
     <ph name="LINE_BREAK1">&lt;br&gt;</ph>
-    Ready to back up to <ph name="BEGIN_LINK">&lt;a is='action-link' class='destination-link'&gt;</ph>Brave Drive<ph name="END_LINK">&lt;/a&gt;</ph>
+    Ready to back up to <ph name="BEGIN_LINK">&lt;a is='action-link' class='destination-link'&gt;</ph>Ping Drive<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_FILE_BROWSER_CLOUD_IMPORT_TOOLTIP_READY" desc="Cloud import ready tooltip.">
     Ready to backup <ph name="FILE_COUNT">$1<ex>5 new photos</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_CLOUD_IMPORT_STATUS_IMPORTING" desc="Cloud import active-backup status. Message shown when importing is in progress">
-    Backing up <ph name="FILE_COUNT">$1<ex>5 new photos</ex></ph> to <ph name="BEGIN_LINK">&lt;a is='action-link' class='destination-link'&gt;</ph>Brave Drive<ph name="END_LINK">&lt;/a&gt;</ph>
+    Backing up <ph name="FILE_COUNT">$1<ex>5 new photos</ex></ph> to <ph name="BEGIN_LINK">&lt;a is='action-link' class='destination-link'&gt;</ph>Ping Drive<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_FILE_BROWSER_CLOUD_IMPORT_TOOLTIP_IMPORTING" desc="Cloud import active-backup tooltip.">
     Backing up <ph name="FILE_COUNT">$1<ex>5 new photos</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_CLOUD_IMPORT_STATUS_DONE" desc="Cloud import backup is complete status.">
-    <ph name="FILE_COUNT">$1<ex>5</ex></ph> photos backed up to <ph name="BEGIN_LINK">&lt;a is='action-link' class='destination-link'&gt;</ph>Brave Drive<ph name="END_LINK">&lt;/a&gt;</ph>
+    <ph name="FILE_COUNT">$1<ex>5</ex></ph> photos backed up to <ph name="BEGIN_LINK">&lt;a is='action-link' class='destination-link'&gt;</ph>Ping Drive<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_FILE_BROWSER_CLOUD_IMPORT_ERROR_ITEM" desc="Cloud import error message for a file it couldn't back up.">
     Couldn't back up <ph name="FILE_NAME">$1<ex>photo.jpg</ex></ph>
@@ -703,14 +703,14 @@
   <message name="IDS_FILE_BROWSER_SYNC_DELETE_WITHOUT_PERMISSION_ERROR" desc="File Manager status message shown when the drive sync is failed because a user try to remove shared files that the user does not own.">
     "<ph name="FILENAME">$1<ex>photo.jpg</ex></ph>" has been shared with you. You cannot delete it because you do not own it.
   </message>
-  <message name="IDS_FILE_BROWSER_SYNC_SERVICE_UNAVAILABLE_ERROR" desc="File Manager status message shown when the drive sync is failed because Brave Drive is temporary unavailable.">
-    Brave Drive is not available right now. Uploading will automatically restart once Brave Drive is back.
+  <message name="IDS_FILE_BROWSER_SYNC_SERVICE_UNAVAILABLE_ERROR" desc="File Manager status message shown when the drive sync is failed because Ping Drive is temporary unavailable.">
+    Ping Drive is not available right now. Uploading will automatically restart once Ping Drive is back.
   </message>
   <message name="IDS_FILE_BROWSER_SYNC_MISC_ERROR" desc="File Manager status message shown when the drive sync is failed because of miscellaneous errors.">
-    Brave Drive was unable to sync "<ph name="FILENAME">$1<ex>photo.jpg</ex></ph>" right now. Brave Drive will try again later.
+    Ping Drive was unable to sync "<ph name="FILENAME">$1<ex>photo.jpg</ex></ph>" right now. Ping Drive will try again later.
   </message>
-  <message name="IDS_FILE_BROWSER_SYNC_NO_SERVER_SPACE" desc="File Manager status message shown when the drive sync is failed because it runs out the space in Brave Drive server.">
-    "<ph name="FILENAME">$1<ex>photo.jpg</ex></ph>" was not uploaded. There is not enough free space in your Brave Drive.
+  <message name="IDS_FILE_BROWSER_SYNC_NO_SERVER_SPACE" desc="File Manager status message shown when the drive sync is failed because it runs out the space in Ping Drive server.">
+    "<ph name="FILENAME">$1<ex>photo.jpg</ex></ph>" was not uploaded. There is not enough free space in your Ping Drive.
   </message>
   <message name="IDS_FILE_BROWSER_SHARE_ERROR" desc="File Manager error message when sharing a file or a directory on Drive fails because of internet connection problems.">
     Sharing failed. Check your connection and try again later.
@@ -799,7 +799,7 @@
   <message name="IDS_FILE_BROWSER_SUGGEST_DIALOG_FOR_PROVIDERS_TITLE" desc="Title of the suggest app dialog, which shows the list of the apps that can be added to the left nav of the Files app.">
     Available services
   </message>
-  <message name="IDS_FILE_BROWSER_SUGGEST_DIALOG_LINK_TO_WEBSTORE" desc="Text of the link to the app list on Brave Webstore, which shows the more apps than in the suggest app dialog.">
+  <message name="IDS_FILE_BROWSER_SUGGEST_DIALOG_LINK_TO_WEBSTORE" desc="Text of the link to the app list on Ping Webstore, which shows the more apps than in the suggest app dialog.">
     See more...
   </message>
   <message name="IDS_FILE_BROWSER_SUGGEST_DIALOG_INSTALLATION_FAILED" desc="Error message when the installation of the app from WebStore is failed.">
@@ -951,14 +951,14 @@
   <message name="IDS_FILE_BROWSER_HOSTED_OFFLINE_MESSAGE_PLURAL" desc="Message informing the user that the selected files are only available online.">
     You must be online to access these files.
   </message>
-  <message name="IDS_FILE_BROWSER_CONFIRM_MOBILE_DATA_USE" desc="Message informing the user that opening the file from Brave Drive will use mobile data.">
+  <message name="IDS_FILE_BROWSER_CONFIRM_MOBILE_DATA_USE" desc="Message informing the user that opening the file from Ping Drive will use mobile data.">
     Fetching this file will use approximately <ph name="FILE_SIZE">$1<ex>44 MB</ex></ph> of mobile data.
   </message>
-  <message name="IDS_FILE_BROWSER_CONFIRM_MOBILE_DATA_USE_PLURAL" desc="Message informing the user that opening several files from Brave Drive will use mobile data.">
+  <message name="IDS_FILE_BROWSER_CONFIRM_MOBILE_DATA_USE_PLURAL" desc="Message informing the user that opening several files from Ping Drive will use mobile data.">
     Fetching these files will use approximately <ph name="FILE_SIZE">$1<ex>44 MB</ex></ph> of mobile data.
   </message>
   <message name="IDS_FILE_BROWSER_DISABLED_MOBILE_SYNC_NOTIFICATION_MESSAGE" desc="Notification message shown when the drive sync is needed on mobile network, but it is disabled.">
-    Brave Drive sync is disabled by default, when using mobile data.
+    Ping Drive sync is disabled by default, when using mobile data.
   </message>
   <message name="IDS_FILE_BROWSER_DISABLED_MOBILE_SYNC_NOTIFICATION_ENABLE_BUTTON" desc="Button label to enable drive sync over, on the notifcation of |IDS_FILE_BROWSER_DISABLED_MOBILE_SYNC_NOTIFICATION_MESSAGE|.">
     Enable syncing over mobile data
@@ -981,38 +981,38 @@
   <message name="IDS_FILE_BROWSER_MULTI_PROFILE_SHARE_DIALOG_MESSAGE_PLURAL" desc="Message of a dialog to request drive share for files that come from other profiles during file transfering. Below the message, there are the e-mail address of the account to be shared with the file, and a drop down list to select a share type.">
     Change how these files are shared
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_SHARE_TYPE_CAN_EDIT" desc="Label text of 'Can edit' share type. Please use the same string with Brave Drive.">
+  <message name="IDS_FILE_BROWSER_DRIVE_SHARE_TYPE_CAN_EDIT" desc="Label text of 'Can edit' share type. Please use the same string with Ping Drive.">
     Can edit
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_SHARE_TYPE_CAN_COMMENT" desc="Label text of 'Can comment' share type. Please use the same string with Brave Drive.">
+  <message name="IDS_FILE_BROWSER_DRIVE_SHARE_TYPE_CAN_COMMENT" desc="Label text of 'Can comment' share type. Please use the same string with Ping Drive.">
     Can comment
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_SHARE_TYPE_CAN_VIEW" desc="Label text of 'Can view' share type. Please use the same string with Brave Drive.">
+  <message name="IDS_FILE_BROWSER_DRIVE_SHARE_TYPE_CAN_VIEW" desc="Label text of 'Can view' share type. Please use the same string with Ping Drive.">
     Can view
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_MOBILE_CONNECTION_OPTION" desc="Option that determines if we will allow Brave Drive content sync over mobile connections.">
+  <message name="IDS_FILE_BROWSER_DRIVE_MOBILE_CONNECTION_OPTION" desc="Option that determines if we will allow Ping Drive content sync over mobile connections.">
     Do not use mobile data for sync
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_MENU_HELP" desc="In the Brave Drive settings menu, name of the Help item.">
+  <message name="IDS_FILE_BROWSER_DRIVE_MENU_HELP" desc="In the Ping Drive settings menu, name of the Help item.">
     Help
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_BUY_MORE_SPACE" desc="Menu item, offering user to buy more space on Brave Drive">
+  <message name="IDS_FILE_BROWSER_DRIVE_BUY_MORE_SPACE" desc="Menu item, offering user to buy more space on Ping Drive">
     Buy more storage...
   </message>
   <message name="IDS_FILE_BROWSER_DRIVE_VISIT_DRIVE_GOOGLE_COM" desc="Menu item, redirecting user to drive.google.com">
     Go to drive.google.com...
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_SPACE_AVAILABLE_LONG" desc="Text showing space left on Brave Drive">
-    Brave Drive space left: <ph name="SPACE_AVAILABLE">$1<ex>400 MB</ex></ph>.
+  <message name="IDS_FILE_BROWSER_DRIVE_SPACE_AVAILABLE_LONG" desc="Text showing space left on Ping Drive">
+    Ping Drive space left: <ph name="SPACE_AVAILABLE">$1<ex>400 MB</ex></ph>.
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_BUY_MORE_SPACE_LINK" desc="Text on the link, offering user to buy more space on Brave Drive">
+  <message name="IDS_FILE_BROWSER_DRIVE_BUY_MORE_SPACE_LINK" desc="Text on the link, offering user to buy more space on Ping Drive">
     Buy more storage
   </message>
   <message name="IDS_FILE_BROWSER_DRIVE_OUT_OF_SPACE_HEADER" desc="Message informing the user that there is not enough space to make the selected file(s) available offline.">
     You have run out of space
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_CANNOT_REACH" desc="Message informing the user that Brave Drive can not be reached at this moment.">
-    Brave Drive cannot be reached at this time.
+  <message name="IDS_FILE_BROWSER_DRIVE_CANNOT_REACH" desc="Message informing the user that Ping Drive can not be reached at this moment.">
+    Ping Drive cannot be reached at this time.
   </message>
   <message name="IDS_FILE_BROWSER_DRIVE_OUT_OF_SPACE_MESSAGE" desc="Message informing the user how to make more space available to save the selected file offline.">
     To save "<ph name="FILE_NAME">$1<ex>document.pdf</ex></ph>" offline you must free up an additional <ph name="TOTAL_FILE_SIZE">$2<ex>3.3 MB</ex></ph> of space:<ph name="MARKUP_1">&lt;br&gt;<ex>&lt;br&gt;</ex></ph>
@@ -1020,23 +1020,23 @@
     <ph name="MARKUP_4">&lt;li&gt;<ex>&lt;li&gt;</ex></ph>delete files from your Downloads folder<ph name="MARKUP_5">&lt;/li&gt;&lt;/ul&gt;<ex>&lt;/li&gt;&lt;/ul&gt;</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_DRIVE_NOT_REACHED" desc="Message informing that Drive is unreachable and encuraging user to log out from the device and log back in.">
-    Brave Drive could not be reached. Please <ph name="BEGIN_LINK">&lt;a href="javascript://"&gt;<ex>&lt;a href="javascript://"&gt;</ex></ph>log out<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> and log back in.
+    Ping Drive could not be reached. Please <ph name="BEGIN_LINK">&lt;a href="javascript://"&gt;<ex>&lt;a href="javascript://"&gt;</ex></ph>log out<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> and log back in.
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_TITLE" desc="In the Welcome to Brave Drive banner, title of banner.">
-    Welcome to Brave Drive!
+  <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_TITLE" desc="In the Welcome to Ping Drive banner, title of banner.">
+    Welcome to Ping Drive!
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_TEXT_SHORT" desc="In the Welcome to Brave Drive banner, text of the welcome message, short version.">
+  <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_TEXT_SHORT" desc="In the Welcome to Ping Drive banner, text of the welcome message, short version.">
     All files saved in this folder are backed up online automatically
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_TEXT_LONG" desc="In the Welcome to Brave Drive banner, text of the welcome message, long version.">
+  <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_TEXT_LONG" desc="In the Welcome to Ping Drive banner, text of the welcome message, long version.">
     <ph name="MARKUP_1">&lt;p&gt;&lt;strong&gt;<ex>&lt;strong&gt;</ex></ph>Access files from everywhere, even offline.<ph name="MARKUP_2">&lt;/strong&gt;<ex>&lt;/strong&gt;</ex></ph>
-    Files in Brave Drive are up to date and available from any device.<ph name="MARKUP_3">&lt;/p&gt;<ex>&lt;/p&gt;</ex></ph>
+    Files in Ping Drive are up to date and available from any device.<ph name="MARKUP_3">&lt;/p&gt;<ex>&lt;/p&gt;</ex></ph>
     <ph name="MARKUP_4">&lt;p&gt;&lt;strong&gt;<ex>&lt;strong&gt;</ex></ph>Keep your files safe.<ph name="MARKUP_5">&lt;/strong&gt;<ex>&lt;/strong&gt;</ex></ph>
-    No matter what happens to your device, your files are safely stored in Brave Drive.<ph name="MARKUP_6">&lt;/p&gt;<ex>&lt;/p&gt;</ex></ph>
+    No matter what happens to your device, your files are safely stored in Ping Drive.<ph name="MARKUP_6">&lt;/p&gt;<ex>&lt;/p&gt;</ex></ph>
     <ph name="MARKUP_7">&lt;p&gt;&lt;strong&gt;<ex>&lt;strong&gt;</ex></ph>Share, create and collaborate<ph name="MARKUP_8">&lt;/strong&gt;<ex>&lt;/strong&gt;</ex></ph>
     on files with others all in one place.<ph name="MARKUP_9">&lt;/p&gt;<ex>&lt;/p&gt;</ex></ph>
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_DISMISS" desc="In the Welcome to Brave Drive banner, a text on the button to dismiss the banner.">
+  <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_DISMISS" desc="In the Welcome to Ping Drive banner, a text on the button to dismiss the banner.">
     Dismiss
   </message>
   <message name="IDS_FILE_BROWSER_NO_TASK_FOR_FILE" desc="Message shown when user tries to open file, which we can't handle.">
@@ -1044,16 +1044,16 @@
     <ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$2'&gt;<ex>&lt;a target='_blank' href='$2'&gt;</ex></ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_NO_TASK_FOR_EXECUTABLE" desc="Message shown when user tries to open a windows executable file, which we can't handle.">
-    This file is designed for a PC using Windows software. This is not compatible with your device which runs Brave OS. <ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$2'&gt;<ex>&lt;a target='_blank' href='$2'&gt;</ex></ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+    This file is designed for a PC using Windows software. This is not compatible with your device which runs Ping OS. <ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$2'&gt;<ex>&lt;a target='_blank' href='$2'&gt;</ex></ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_NO_TASK_FOR_DMG" desc="Message shown when user tries to open a windows executable file, which we can't handle.">
-    This file is designed for a computer using Macintosh software. This is not compatible with your device which runs Brave OS. Please search the <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;<ex>&lt;a target='_blank' href='$1'&gt;</ex></ph>Web Store<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> for a suitable replacement app.<ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$2'&gt;<ex>&lt;a target='_blank' href='$2'&gt;</ex></ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+    This file is designed for a computer using Macintosh software. This is not compatible with your device which runs Ping OS. Please search the <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;<ex>&lt;a target='_blank' href='$1'&gt;</ex></ph>Web Store<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> for a suitable replacement app.<ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$2'&gt;<ex>&lt;a target='_blank' href='$2'&gt;</ex></ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_NO_TASK_FOR_CRX_TITLE" desc="Message shown when a user tries to open a *.crx file, which we don't handle in the Files app.">
     Wait just a sec
   </message>
   <message name="IDS_FILE_BROWSER_NO_TASK_FOR_CRX" desc="Message shown when a user tries to open a *.crx file, which we don't handle in the Files app.">
-    We're constantly looking for ways to make your browsing safer. Previously, any website could prompt you to add an extension into your browser. In the latest versions of Brave, you must explicitly tell Brave that you want to install these extensions by adding them through the Extensions page. <ph name="BEGIN_LINK">&lt;a target='_blank' href='https://support.google.com/chrome_webstore/answer/2664769?p=crx_warning&amp;rd=1'&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    We're constantly looking for ways to make your browsing safer. Previously, any website could prompt you to add an extension into your browser. In the latest versions of Ping, you must explicitly tell Ping that you want to install these extensions by adding them through the Extensions page. <ph name="BEGIN_LINK">&lt;a target='_blank' href='https://support.google.com/chrome_webstore/answer/2664769?p=crx_warning&amp;rd=1'&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_FILE_BROWSER_UNABLE_TO_OPEN_CROSTINI_TITLE" desc="Message title shown when a user tries to use a crostini app to open a file which cannot be shared with the crostini container (e.g. in Play or USB).  This message will be removed once we support this action.">
     Unable to open with <ph name="APP_NAME">$1<ex>Visual Studio Code</ex></ph>
@@ -1068,7 +1068,7 @@
     Give Linux apps permission to modify files in the <ph name="FOLDER_NAME">$1<ex>Downloads</ex></ph> folder
   </message>
   <message name="IDS_FILE_BROWSER_SHARE_ROOT_FOLDER_WITH_CROSTINI_DRIVE" desc="Confirmation message shown when a user shares the root of a Drive volume (My Drive, Team Drives, Computers) with the crostini container.">
-    Give Linux apps permission to modify files in your Brave Drive. Changes will sync to your other devices.
+    Give Linux apps permission to modify files in your Ping Drive. Changes will sync to your other devices.
   </message>
   <message name="IDS_FILE_BROWSER_FOLDER_SHARED_WITH_CROSTINI" desc="Confirmation message shown when a user shares a folder with the crostini container.">
     1 folder shared with Linux
@@ -1129,32 +1129,32 @@
     Excel spreadsheet
   </message>
 
-  <message name="IDS_FILE_BROWSER_GDOC_DOCUMENT_FILE_TYPE" desc="Brave document file type">
-    Brave document
+  <message name="IDS_FILE_BROWSER_GDOC_DOCUMENT_FILE_TYPE" desc="Ping document file type">
+    Ping document
   </message>
-  <message name="IDS_FILE_BROWSER_GSHEET_DOCUMENT_FILE_TYPE" desc="Brave spreadsheet file type">
-    Brave spreadsheet
+  <message name="IDS_FILE_BROWSER_GSHEET_DOCUMENT_FILE_TYPE" desc="Ping spreadsheet file type">
+    Ping spreadsheet
   </message>
-  <message name="IDS_FILE_BROWSER_GSLIDES_DOCUMENT_FILE_TYPE" desc="Brave presentation file type">
-    Brave presentation
+  <message name="IDS_FILE_BROWSER_GSLIDES_DOCUMENT_FILE_TYPE" desc="Ping presentation file type">
+    Ping presentation
   </message>
-  <message name="IDS_FILE_BROWSER_GDRAW_DOCUMENT_FILE_TYPE" desc="Brave drawing file type">
-    Brave drawing
+  <message name="IDS_FILE_BROWSER_GDRAW_DOCUMENT_FILE_TYPE" desc="Ping drawing file type">
+    Ping drawing
   </message>
-  <message name="IDS_FILE_BROWSER_GTABLE_DOCUMENT_FILE_TYPE" desc="Brave table file type">
-    Brave table
+  <message name="IDS_FILE_BROWSER_GTABLE_DOCUMENT_FILE_TYPE" desc="Ping table file type">
+    Ping table
   </message>
-  <message name="IDS_FILE_BROWSER_GFORM_DOCUMENT_FILE_TYPE" desc="Brave form file type">
-    Brave form
+  <message name="IDS_FILE_BROWSER_GFORM_DOCUMENT_FILE_TYPE" desc="Ping form file type">
+    Ping form
   </message>
-  <message name="IDS_FILE_BROWSER_GMAP_DOCUMENT_FILE_TYPE" desc="Brave map file type">
-    Brave map
+  <message name="IDS_FILE_BROWSER_GMAP_DOCUMENT_FILE_TYPE" desc="Ping map file type">
+    Ping map
   </message>
-  <message name="IDS_FILE_BROWSER_GSITE_DOCUMENT_FILE_TYPE" desc="Brave site file type">
-    Brave site
+  <message name="IDS_FILE_BROWSER_GSITE_DOCUMENT_FILE_TYPE" desc="Ping site file type">
+    Ping site
   </message>
-  <message name="IDS_FILE_BROWSER_GLINK_DOCUMENT_FILE_TYPE" desc="Brave Drive link file type">
-    Brave Drive link
+  <message name="IDS_FILE_BROWSER_GLINK_DOCUMENT_FILE_TYPE" desc="Ping Drive link file type">
+    Ping Drive link
   </message>
 
   <message name="IDS_FILE_BROWSER_ERROR_VIEWING_FILE_TITLE" desc="Title of error message propmt when user attempts to open a non-supported file in file browser.">
@@ -1164,10 +1164,10 @@
     This file type is not supported. Please visit the Web Store to find an app that can open this type of file.
   </message>
   <message name="IDS_FILE_BROWSER_ERROR_VIEWING_FILE_FOR_DMG" desc="Error message when user attempts to open a dmg file in the Files app via Downloads panel.">
-    This file is designed for a computer using Macintosh software. This is not compatible with your device which runs Brave OS. Please search the Web Store for a suitable replacement app.
+    This file is designed for a computer using Macintosh software. This is not compatible with your device which runs Ping OS. Please search the Web Store for a suitable replacement app.
   </message>
   <message name="IDS_FILE_BROWSER_ERROR_VIEWING_FILE_FOR_EXECUTABLE" desc="Error message when user attempts to open a exe file in the Files app via Downloads panel.">
-    This file is designed for a PC using Windows software. This is not compatible with your device which runs Brave OS. Please search the Web Store for a suitable replacement app.
+    This file is designed for a PC using Windows software. This is not compatible with your device which runs Ping OS. Please search the Web Store for a suitable replacement app.
   </message>
   <message name="IDS_FILE_BROWSER_ERROR_UNRESOLVABLE_FILE" desc="Error message when the file attempted to open from Downloads panel was not found under paths managed by file manager.">
     This file has wandered off somewhere. Please check your download location setting and try again.
