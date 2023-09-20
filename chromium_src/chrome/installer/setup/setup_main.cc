@@ -3,17 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#define wWinMain wWinMain_ChromiumImpl
-#include "src/chrome/installer/setup/setup_main.cc"
-#undef wWinMain
+#include <string>
+
+#include "base/command_line.h"
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
+#include "base/logging.h"
+#include "base/path_service.h"
+#include "chrome/common/chrome_paths.h"
+#include "chrome/installer/setup/setup_util.h"
+#include "chrome/installer/util/install_util.h"
+#include "chrome/installer/util/util_constants.h"
+
+namespace {
 
 const char kBraveReferralCode[] = "brave-referral-code";
 
-int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prev_instance,
-                    wchar_t* command_line, int show_command) {
-  int return_code = wWinMain_ChromiumImpl(instance, prev_instance, command_line,
-                                          show_command);
-  if (!return_code) {
+void SavePromoCode(installer::InstallStatus install_status) {
+  if (!InstallUtil::GetInstallReturnCode(install_status)) {
     const base::CommandLine& cmd_line = *base::CommandLine::ForCurrentProcess();
     if (cmd_line.HasSwitch(kBraveReferralCode)) {
       const std::string referral_code =
@@ -30,6 +37,12 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prev_instance,
       }
     }
   }
-
-  return return_code;
 }
+
+}  // namespace
+
+#define DoLegacyCleanups         \
+  SavePromoCode(install_status); \
+  DoLegacyCleanups
+#include "src/chrome/installer/setup/setup_main.cc"
+#undef DoLegacyCleanups
