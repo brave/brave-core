@@ -64,7 +64,6 @@ import org.chromium.base.Log;
 import org.chromium.base.MathUtils;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.AsyncTask;
-import org.chromium.brave_shields.mojom.CookieListOptInPageAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListConstants;
 import org.chromium.chrome.R;
@@ -107,8 +106,6 @@ import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.shields.BraveShieldsHandler;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
-import org.chromium.chrome.browser.shields.CookieListOptInServiceFactory;
-import org.chromium.chrome.browser.shields.FilterListServiceFactory;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabHidingType;
 import org.chromium.chrome.browser.tab.TabImpl;
@@ -201,7 +198,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private boolean mIsInitialNotificationPosted; // initial red circle notification
 
     private PopupWindowTooltip mShieldsPopupWindowTooltip;
-    private PopupWindowTooltip mCookieConsentTooltip;
 
     private boolean mIsBottomToolbarVisible;
 
@@ -213,8 +209,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private final Set<Integer> mTabsWithWalletIcon =
             Collections.synchronizedSet(new HashSet<Integer>());
 
-    private CookieListOptInPageAndroidHandler mCookieListOptInPageAndroidHandler;
-    private FilterListAndroidHandler mFilterListAndroidHandler;
     private PlaylistService mPlaylistService;
 
     private enum BigtechCompany { Google, Facebook, Amazon }
@@ -227,12 +221,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public void destroy() {
         if (mBraveShieldsContentSettings != null) {
             mBraveShieldsContentSettings.removeObserver(mBraveShieldsContentSettingsObserver);
-        }
-        if (mCookieListOptInPageAndroidHandler != null) {
-            mCookieListOptInPageAndroidHandler.close();
-        }
-        if (mFilterListAndroidHandler != null) {
-            mFilterListAndroidHandler.close();
         }
         if (mPlaylistService != null) {
             mPlaylistService.close();
@@ -381,33 +369,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     public void onConnectionError(MojoException e) {
-        mCookieListOptInPageAndroidHandler = null;
-        mFilterListAndroidHandler = null;
-        initCookieListOptInPageAndroidHandler();
-        initFilterListAndroidHandler();
         if (isPlaylistEnabledByPrefsAndFlags()) {
             mPlaylistService = null;
             initPlaylistService();
         }
-    }
-
-    private void initFilterListAndroidHandler() {
-        if (mFilterListAndroidHandler != null) {
-            return;
-        }
-
-        mFilterListAndroidHandler =
-                FilterListServiceFactory.getInstance().getFilterListAndroidHandler(this);
-    }
-
-    private void initCookieListOptInPageAndroidHandler() {
-        if (mCookieListOptInPageAndroidHandler != null) {
-            return;
-        }
-
-        mCookieListOptInPageAndroidHandler =
-                CookieListOptInServiceFactory.getInstance().getCookieListOptInPageAndroidHandler(
-                        this);
     }
 
     private void initPlaylistService() {
@@ -421,8 +386,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     protected void onNativeLibraryReady() {
         super.onNativeLibraryReady();
-        initCookieListOptInPageAndroidHandler();
-        initFilterListAndroidHandler();
         if (isPlaylistEnabledByPrefsAndFlags()) {
             initPlaylistService();
             mPlaylistServiceObserver = new PlaylistServiceObserverImpl(this);
@@ -481,7 +444,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
             @Override
             public void onHidden(Tab tab, @TabHidingType int reason) {
-                dismissCookieConsent();
                 hidePlaylistButton();
             }
 
@@ -505,12 +467,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
                             && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
                         checkForTooltip(tab);
-                    }
-                    if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
-                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()
-                            && !url.getSpec().startsWith(UrlConstants.CHROME_SCHEME)
-                            && !UrlUtilities.isNTPUrl(url.getSpec())) {
-                        maybeShowCookieConsentTooltip();
                     }
                 }
 
@@ -929,89 +885,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
-    private void maybeShowCookieConsentTooltip() {
-        if (mFilterListAndroidHandler != null) {
-            mFilterListAndroidHandler.isFilterListEnabled(
-                    FilterListConstants.COOKIE_LIST_UUID, isEnabled -> {
-                        if (isEnabled) {
-                            SharedPreferencesManager.getInstance().writeInt(
-                                    BravePreferenceKeys.LOADED_SITE_COUNT,
-                                    SharedPreferencesManager.getInstance().readInt(
-                                            BravePreferenceKeys.LOADED_SITE_COUNT, 0)
-                                            + 1);
-                            if (SharedPreferencesManager.getInstance().readBoolean(
-                                        BravePreferenceKeys.SHOULD_SHOW_COOKIE_CONSENT_NOTICE, true)
-                                    && SharedPreferencesManager.getInstance().readInt(
-                                               BravePreferenceKeys.LOADED_SITE_COUNT, 0)
-                                            > 5) {
-                                showCookieConsentTooltip();
-                            }
-                        }
-                    });
-        }
-    }
-
-    private void showCookieConsentTooltip() {
-        try {
-            ViewGroup viewGroup =
-                    BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
-                            android.R.id.content);
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "showCookieConsentTooltip " + e);
-            return;
-        }
-
-        float padding = (float) dpToPx(getContext(), 20);
-        mCookieConsentTooltip = new PopupWindowTooltip.Builder(getContext())
-                                        .anchorView(mBraveShieldsButton)
-                                        .arrowColor(ContextCompat.getColor(
-                                                getContext(), R.color.cookie_consent_tooltip_color))
-                                        .gravity(Gravity.BOTTOM)
-                                        .dismissOnOutsideTouch(false)
-                                        .dismissOnInsideTouch(false)
-                                        .backgroundDimDisabled(false)
-                                        .padding(padding)
-                                        .parentPaddingHorizontal(dpToPx(getContext(), 10))
-                                        .modal(true)
-                                        .onDismissListener(tooltip
-                                                -> {
-
-                                                })
-                                        .contentView(R.layout.block_cookie_consent_notices_tooltip)
-                                        .build();
-
-        Button btnAction = mCookieConsentTooltip.findViewById(R.id.btn_action);
-        btnAction.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mCookieListOptInPageAndroidHandler != null) {
-                    mCookieListOptInPageAndroidHandler.onTooltipYesClicked();
-                }
-                mCookieConsentTooltip.dismiss();
-            }
-        }));
-
-        if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()) {
-            mCookieConsentTooltip.show();
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    BravePreferenceKeys.SHOULD_SHOW_COOKIE_CONSENT_NOTICE, false);
-            if (mCookieListOptInPageAndroidHandler != null) {
-                mCookieListOptInPageAndroidHandler.onTooltipShown();
-            }
-        }
-    }
-
     public void dismissShieldsTooltip() {
         if (mShieldsPopupWindowTooltip != null && mShieldsPopupWindowTooltip.isShowing()) {
             mShieldsPopupWindowTooltip.dismiss();
             mShieldsPopupWindowTooltip = null;
-        }
-    }
-
-    public void dismissCookieConsent() {
-        if (mCookieConsentTooltip != null && mCookieConsentTooltip.isShowing()) {
-            mCookieConsentTooltip.dismiss();
-            mCookieConsentTooltip = null;
         }
     }
 
