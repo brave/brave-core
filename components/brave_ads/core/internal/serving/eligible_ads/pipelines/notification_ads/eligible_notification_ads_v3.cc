@@ -115,12 +115,9 @@ void EligibleNotificationAdsV3::GetEligibleAdsCallback(
           ? MaybePredictCreativeAd(eligible_creative_ads, user_model, ad_events)
           : MaybePredictCreativeAd(eligible_creative_ads, user_model);
   if (!creative_ad) {
-    BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
+    BLOG(1, "No eligible ads");
     return std::move(callback).Run(/*eligible_ads*/ {});
   }
-
-  BLOG(1, eligible_creative_ads.size()
-              << " eligible ads out of " << creative_ads.size() << " ads");
 
   std::move(callback).Run({*creative_ad});
 }
