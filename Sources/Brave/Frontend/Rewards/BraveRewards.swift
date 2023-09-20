@@ -66,12 +66,7 @@ public class BraveRewards: NSObject {
     }
   }
 
-  private(set) var isAdsInitialized: Bool = false
   private func fetchWalletAndInitializeAds(toggleAds: Bool? = nil) {
-    if isAdsInitialized {
-      return
-    }
-    isAdsInitialized = true
     guard let rewardsAPI = rewardsAPI else { return }
     rewardsAPI.currentWalletInfo { wallet in
       var walletInfo: BraveAds.WalletInfo?
@@ -82,13 +77,19 @@ public class BraveRewards: NSObject {
           recoverySeed: Data(seed).base64EncodedString()
         )
       }
+      // If ads is already initialized just toggle rewards ads and update the wallet info
+      if self.ads.isAdsServiceRunning() {
+        if let walletInfo {
+          self.ads.updateWalletInfo(walletInfo.paymentId, base64Seed: walletInfo.recoverySeed)
+        }
+        if let toggleAds {
+          self.ads.isEnabled = toggleAds
+        }
+        return
+      }
       self.ads.initialize(walletInfo: walletInfo) { success in
-        if !success {
-          self.isAdsInitialized = false
-        } else {
-          if let toggleAds {
-            self.ads.isEnabled = toggleAds
-          }
+        if success, let toggleAds {
+          self.ads.isEnabled = toggleAds
         }
       }
     }
@@ -97,7 +98,7 @@ public class BraveRewards: NSObject {
   private var braveNewsObservation: AnyCancellable?
 
   private var shouldShutdownAds: Bool {
-    ads.isAdsServiceRunning() && isAdsInitialized && !ads.isEnabled && !Preferences.BraveNews.isEnabled.value
+    ads.isAdsServiceRunning() && !ads.isEnabled && !Preferences.BraveNews.isEnabled.value
   }
 
   /// Propose that the ads service should be shutdown based on whether or not that all features
@@ -106,7 +107,6 @@ public class BraveRewards: NSObject {
     if !shouldShutdownAds { return }
     ads.shutdown {
       self.ads = BraveAds(stateStoragePath: self.configuration.storageURL.appendingPathComponent("ads").path)
-      self.isAdsInitialized = false
     }
   }
 
@@ -160,7 +160,7 @@ public class BraveRewards: NSObject {
     try? FileManager.default.removeItem(
       at: configuration.storageURL.appendingPathComponent("ledger")
     )
-    if ads.isAdsServiceRunning(), isAdsInitialized, !Preferences.BraveNews.isEnabled.value {
+    if ads.isAdsServiceRunning(), !Preferences.BraveNews.isEnabled.value {
       ads.shutdown { [self] in
         try? FileManager.default.removeItem(
           at: configuration.storageURL.appendingPathComponent("ads")
@@ -186,7 +186,7 @@ public class BraveRewards: NSObject {
       rewardsAPI?.selectedTabId = UInt32(tabId)
       tabRetrieved(tabId, url: url, html: nil)
     }
-    if isAdsInitialized && !isPrivate {
+    if ads.isAdsServiceRunning() && !isPrivate {
       ads.reportTabUpdated(tabId, url: url, redirectedFrom: tab.redirectURLs, isSelected: isSelected)
     }
   }
@@ -203,7 +203,7 @@ public class BraveRewards: NSObject {
     adsInnerText: String?
   ) {
     tabRetrieved(tabId, url: url, html: html)
-    if let innerText = adsInnerText, isAdsInitialized {
+    if let innerText = adsInnerText, ads.isAdsServiceRunning() {
       ads.reportLoadedPage(
         with: url,
         redirectedFrom: redirectionURLs ?? [],
@@ -227,13 +227,13 @@ public class BraveRewards: NSObject {
 
   /// Report that media has started on a tab with a given id
   func reportMediaStarted(tabId: Int) {
-    if !isAdsInitialized { return }
+    if !ads.isAdsServiceRunning() { return }
     ads.reportMediaStarted(tabId: tabId)
   }
 
   /// Report that media has stopped on a tab with a given id
   func reportMediaStopped(tabId: Int) {
-    if !isAdsInitialized { return }
+    if !ads.isAdsServiceRunning() { return }
     ads.reportMediaStopped(tabId: tabId)
   }
 
@@ -244,7 +244,7 @@ public class BraveRewards: NSObject {
 
   /// Report that a tab with a given id was closed by the user
   func reportTabClosed(tabId: Int) {
-    if isAdsInitialized {
+    if ads.isAdsServiceRunning() {
       ads.reportTabClosed(tabId: tabId)
     }
     rewardsAPI?.reportTabNavigationOrClosed(tabId: UInt32(tabId))
