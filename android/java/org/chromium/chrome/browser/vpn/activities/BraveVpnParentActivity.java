@@ -73,25 +73,22 @@ public abstract class BraveVpnParentActivity
         MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
         LiveData<PurchaseModel> activePurchases = _activePurchases;
         InAppPurchaseWrapper.getInstance().queryPurchases(_activePurchases);
-        LiveDataUtil.observeOnce(
-                activePurchases, activePurchaseModel -> {
-                    if (activePurchaseModel != null) {
-                        mBraveVpnPrefModel.setPurchaseToken(activePurchaseModel.getPurchaseToken());
-                        mBraveVpnPrefModel.setProductId(activePurchaseModel.getProductId());
-                        BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
-                                mBraveVpnPrefModel.getPurchaseToken(),
-                                mBraveVpnPrefModel.getProductId(),
-                                BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
-                    } else {
-                        if (!mIsVerification) {
-                            BraveVpnApiResponseUtils.queryPurchaseFailed(
-                                    BraveVpnParentActivity.this);
-                        } else {
-                            showRestoreMenu(false);
-                        }
-                        BraveVpnUtils.dismissProgressDialog();
-                    }
-                });
+        LiveDataUtil.observeOnce(activePurchases, activePurchaseModel -> {
+            if (activePurchaseModel != null) {
+                mBraveVpnPrefModel.setPurchaseToken(activePurchaseModel.getPurchaseToken());
+                mBraveVpnPrefModel.setProductId(activePurchaseModel.getProductId());
+                BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
+                        mBraveVpnPrefModel.getPurchaseToken(), mBraveVpnPrefModel.getProductId(),
+                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
+            } else {
+                if (!mIsVerification) {
+                    BraveVpnApiResponseUtils.queryPurchaseFailed(BraveVpnParentActivity.this);
+                } else {
+                    showRestoreMenu(false);
+                }
+                BraveVpnUtils.dismissProgressDialog();
+            }
+        });
     }
 
     @Override
