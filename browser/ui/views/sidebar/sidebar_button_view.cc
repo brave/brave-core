@@ -11,6 +11,7 @@
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/focus_ring.h"
 #include "ui/views/controls/highlight_path_generator.h"
+#include "ui/views/view_class_properties.h"
 
 SidebarButtonView::SidebarButtonView(const std::u16string& accessible_name) {
   // Locate image at center of the button.
@@ -19,7 +20,13 @@ SidebarButtonView::SidebarButtonView(const std::u16string& accessible_name) {
   DCHECK(GetInstallFocusRingOnFocus());
   views::FocusRing::Get(this)->SetColorId(gfx::kBraveBlurple300);
 
-  views::InstallRoundRectHighlightPathGenerator(this, gfx::Insets(4),
+  // In order to make use of margin collapsing sets the margin keys.
+  // But at the same time, we want the sidebar buttons fill the entire width
+  // of sidebar control so that users can easily click buttons by throwing
+  // the mouse cursor to the edge.
+  SetProperty(views::kMarginsKey, gfx::Insets::VH(kMargin, 0));
+  views::InstallRoundRectHighlightPathGenerator(this,
+                                                gfx::Insets::VH(0, kMargin),
                                                 /*highlight_radius*/ 8);
   views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::ON);
   views::InkDrop::Get(this)->SetHighlightOpacity(1.0f);
@@ -35,7 +42,7 @@ SidebarButtonView::SidebarButtonView(const std::u16string& accessible_name) {
 SidebarButtonView::~SidebarButtonView() = default;
 
 gfx::Size SidebarButtonView::CalculatePreferredSize() const {
-  return {kSidebarButtonSize, kSidebarButtonSize};
+  return {kSidebarButtonSize + kMargin * 2, kSidebarButtonSize};
 }
 
 std::u16string SidebarButtonView::GetTooltipText(const gfx::Point& p) const {
