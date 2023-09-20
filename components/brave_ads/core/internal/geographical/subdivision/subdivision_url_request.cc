@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
+#include "brave/components/brave_ads/core/internal/geographical/subdivision/subdivision_feature.h"
 #include "brave/components/brave_ads/core/internal/geographical/subdivision/subdivision_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/geographical/subdivision/subdivision_url_request_json_reader_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -24,10 +25,13 @@ namespace brave_ads {
 
 namespace {
 
-constexpr base::TimeDelta kFetchAfter = base::Days(1);
 constexpr base::TimeDelta kDebugFetchAfter = base::Minutes(5);
 
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
+
+base::TimeDelta GetFetchInterval() {
+  return kSubdivisionFetchIntervalMinutes.Get();
+}
 
 }  // namespace
 
@@ -93,7 +97,7 @@ void SubdivisionUrlRequest::FetchCallback(
 
 void SubdivisionUrlRequest::FetchAfterDelay() {
   const base::Time fetch_at = timer_.StartWithPrivacy(
-      FROM_HERE, ShouldDebug() ? kDebugFetchAfter : kFetchAfter,
+      FROM_HERE, ShouldDebug() ? kDebugFetchAfter : GetFetchInterval(),
       base::BindOnce(&SubdivisionUrlRequest::Fetch,
                      weak_factory_.GetWeakPtr()));
 

@@ -674,6 +674,8 @@ static_library("internal") {
     "geographical/region/region.h",
     "geographical/subdivision/subdivision.cc",
     "geographical/subdivision/subdivision.h",
+    "geographical/subdivision/subdivision_feature.cc",
+    "geographical/subdivision/subdivision_feature.h",
     "geographical/subdivision/subdivision_observer.h",
     "geographical/subdivision/subdivision_url_request.cc",
     "geographical/subdivision/subdivision_url_request.h",

@@ -19,6 +19,7 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/l10n/common/prefs.h"
+#include "brave/components/l10n/common/region_code_util.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_component_installer.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -178,7 +179,7 @@ void NTPBackgroundImagesService::RegisterBackgroundImagesComponent() {
 
 void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   const std::string geo_region_code =
-      local_pref_->GetString(brave_l10n::prefs::kGeoRegionCode);
+      brave_l10n::GetCurrentGeoRegionCode(local_pref_);
 
   const auto data = GetSponsoredImagesComponentData(geo_region_code);
   if (!data) {

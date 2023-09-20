@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/geographical/subdivision/subdivision_observer.h"
 #include "brave/components/brave_ads/core/internal/geographical/subdivision/subdivision_url_request_delegate.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 

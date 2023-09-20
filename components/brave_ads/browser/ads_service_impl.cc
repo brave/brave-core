@@ -55,6 +55,7 @@
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
+#include "brave/components/l10n/common/region_code_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -306,7 +307,7 @@ void AdsServiceImpl::Migrate() {
 
 void AdsServiceImpl::RegisterResourceComponentsForCurrentCountryCode() const {
   const std::string geo_region_code =
-      local_state_->GetString(brave_l10n::prefs::kGeoRegionCode);
+      brave_l10n::GetCurrentGeoRegionCode(local_state_);
 
   RegisterResourceComponentsForCountryCode(geo_region_code);
 }
@@ -621,7 +622,7 @@ void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
 
   local_state_pref_change_registrar_.Add(
       brave_l10n::prefs::kGeoRegionCode,
-      base::BindRepeating(&AdsServiceImpl::OnGeoSubdivisionPrefChanged,
+      base::BindRepeating(&AdsServiceImpl::OnGeoRegionCodePrefChanged,
                           base::Unretained(this),
                           brave_l10n::prefs::kGeoRegionCode));
 }
@@ -718,7 +719,7 @@ void AdsServiceImpl::OnOptedInToAdsPrefChanged(const std::string& path) {
   NotifyPrefChanged(path);
 }
 
-void AdsServiceImpl::OnGeoSubdivisionPrefChanged(const std::string& path) {
+void AdsServiceImpl::OnGeoRegionCodePrefChanged(const std::string& path) {
   RegisterResourceComponentsForCurrentCountryCode();
 
   NotifyPrefChanged(path);
