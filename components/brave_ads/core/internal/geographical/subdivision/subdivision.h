@@ -35,7 +35,9 @@ class Subdivision final : public AdsClientNotifierObserver,
   void AddObserver(SubdivisionObserver* observer);
   void RemoveObserver(SubdivisionObserver* observer);
 
-  absl::optional<std::string> GetSubdivision() const;
+  bool get_is_periodically_fetching_for_testing() const {
+    return !!subdivision_url_request_;
+  }
 
  private:
   void Initialize();
@@ -44,7 +46,7 @@ class Subdivision final : public AdsClientNotifierObserver,
   void InitializeSubdivisionUrlRequest();
   void ShutdownSubdivisionUrlRequest();
 
-  void MaybeFetchSubdivision();
+  void MaybePeriodicallyFetchSubdivision();
 
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;
@@ -56,8 +58,6 @@ class Subdivision final : public AdsClientNotifierObserver,
   base::ObserverList<SubdivisionObserver> observers_;
 
   std::unique_ptr<SubdivisionUrlRequest> subdivision_url_request_;
-
-  absl::optional<std::string> subdivision_;
 };
 
 }  // namespace brave_ads

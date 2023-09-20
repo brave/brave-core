@@ -1,5 +1,5 @@
 # Subdivision
 
-Anonymous inquiry of the area within a country based on an anonymous network request.
+An area within a country based on a privacy-preserving network request.
 
 Please add to it!
