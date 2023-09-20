@@ -80,8 +80,6 @@ extension BrowserViewController {
     }
     // Hide the current tab
     rewards.rewardsAPI?.selectedTabId = 0
-    // Fetch new promotions
-    rewards.rewardsAPI?.fetchPromotions(nil)
   }
 
   func claimPendingPromotions() {
