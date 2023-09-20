@@ -266,6 +266,8 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         addDetail(items, R.string.brave_wallet_nonce, mSiweMessageData.nonce);
         addDetail(items, R.string.brave_wallet_issued_at, mSiweMessageData.issuedAt);
         addDetail(items, R.string.brave_wallet_expiration_time, mSiweMessageData.expirationTime);
+        addDetail(items, R.string.brave_wallet_not_before, mSiweMessageData.notBefore);
+        addDetail(items, R.string.brave_wallet_request_id, mSiweMessageData.requestId);
         TwoLineItemBottomSheetFragment fragment = TwoLineItemBottomSheetFragment.newInstance(items);
         fragment.mTitle = getString(R.string.brave_wallet_see_details);
         fragment.show(getParentFragmentManager(), TAG);

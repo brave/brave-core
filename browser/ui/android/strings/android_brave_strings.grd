@@ -4056,6 +4056,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_RESOURCES" desc="Label for resources action button to view url etc.">
       Resources
     </message>
+    <message name="IDS_BRAVE_WALLET_NOT_BEFORE" desc="Sign in with Brave Wallet Not before Label">
+      Not before
+    </message>
+    <message name="IDS_BRAVE_WALLET_REQUEST_ID" desc="Sign in with Brave Wallet Request ID label">
+      Request ID
+    </message>
   </messages>
   </release>
 </grit>
