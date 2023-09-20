@@ -5,6 +5,8 @@
 
 module ai_chat.mojom;
 
+import "url/mojom/url.mojom";
+
 enum CharacterType {
   HUMAN,
   ASSISTANT
@@ -95,13 +97,19 @@ interface PageHandler {
   GetSiteInfo() => (SiteInfo? site_info);
   GetFaviconImageData() => (array<uint8>? favicon_image_data);
   OpenBraveLeoSettings();
-  OpenBraveLeoWiki();
+  OpenURL(url.mojom.Url url);
   DisconnectPageContents();
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
   GetHasUserDismissedPremiumPrompt() => (bool has_dismissed);
   SetHasUserDismissedPremiumPrompt(bool has_dismissed);
+
+  // Send a user-rating for a chat 
+  // message. |turn_id| is the index of the message in the
+  // current conversation.
+  RateMessage(bool is_liked, uint32 turn_id) => (string? rating_id);
+  SendFeedback(string category, string feedback, string rating_id) => (bool is_success);
 };
 
 interface ChatUIPage {

@@ -14,7 +14,10 @@ import '@brave/leo/tokens/css/variables.css'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import Main from '../components/main'
 import * as mojom from '../api/page_handler'
-import AIChatDataContext, { AIChatContext, defaultContext } from '../state/context'
+import AIChatDataContext, {
+  AIChatContext,
+  defaultContext
+} from '../state/context'
 
 const HISTORY = [
   {
@@ -86,24 +89,30 @@ export default {
     hasQuestions: true,
     hasChangedModel: false,
     hasSeenAgreement: true,
-    isPremiumUser: false,
-    currentErrorState: select('Current Status', mojom.APIError, mojom.APIError.RateLimitReached)
+    currentErrorState: select(
+      'Current Status',
+      mojom.APIError,
+      mojom.APIError.RateLimitReached
+    )
   },
   decorators: [
     (Story: any, options: any) => {
-      const [conversationHistory] = React.useState<mojom.ConversationTurn[]>(HISTORY)
+      const [conversationHistory] =
+        React.useState<mojom.ConversationTurn[]>(HISTORY)
       const [suggestedQuestions] = React.useState<string[]>(SAMPLE_QUESTIONS)
       const [isGenerating] = React.useState(false)
       const [canGenerateQuestions] = React.useState(false)
-      const [userAutoGeneratePref] = React.useState<mojom.AutoGenerateQuestionsPref>()
+      const [userAutoGeneratePref] =
+        React.useState<mojom.AutoGenerateQuestionsPref>()
       const [siteInfo] = React.useState<mojom.SiteInfo | null>(SITE_INFO)
       const [favIconUrl] = React.useState<string>()
-      const [currentError] = React.useState<mojom.APIError>(options.args.currentErrorState)
+      const [currentError] = React.useState<mojom.APIError>(
+        options.args.currentErrorState
+      )
       const [hasSeenAgreement] = React.useState(options.args.hasSeenAgreement)
       const [isPremiumUser] = React.useState(options.args.isPremiumUser)
 
-
-      const apiHasError = (currentError !== mojom.APIError.None)
+      const apiHasError = currentError !== mojom.APIError.None
       const shouldDisableUserInput = apiHasError || isGenerating
 
       const store: AIChatContext = {

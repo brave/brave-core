@@ -109,4 +109,64 @@
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC" desc="A premium feature that allows priority access">
     Priority access and increased response limits
   </message>
+  <message name="IDS_CHAT_UI_FEEDBACK_SENT" desc="Notification message for successful feedback submission">
+    Feedback sent successfully
+  </message>
+  <message name="IDS_CHAT_UI_ANSWER_DISLIKED" desc="Notification for a disliked answer">
+    Answer disliked
+  </message>
+  <message name="IDS_CHAT_UI_ANSWER_LIKED" desc="Notification for a liked answer">
+    Answer liked
+  </message>
+  <message name="IDS_CHAT_UI_ADD_FEEDBACK_BUTTON_LABEL" desc="Button label to add feedback">
+    Add feedback
+  </message>
+  <message name="IDS_CHAT_UI_COPY_BUTTON_LABEL" desc="Button label to copy text">
+    Copy
+  </message>
+  <message name="IDS_CHAT_UI_LIKE_ANSWER_BUTTON_LABEL" desc="Button label to like an answer">
+    Like
+  </message>
+  <message name="IDS_CHAT_UI_DISLIKE_ANSWER_BUTTON_LABEL" desc="Button label to dislike an answer">
+    Dislike answer
+  </message>
+  <message name="IDS_CHAT_UI_PROVIDE_FEEDBACK_TITLE" desc="Title for feedback provision section">
+    Provide Brave AI Feedback
+  </message>
+  <message name="IDS_CHAT_UI_SELECT_FEEDBACK_TOPIC" desc="Prompt to select feedback topic">
+    Select the topic of your feedback
+  </message>
+  <message name="IDS_CHAT_UI_FEEDBACK_CATEGORY_LABEL" desc="Label asking for the category of feedback">
+    What's your feedback about?
+  </message>
+  <message name="IDS_CHAT_UI_FEEDBACK_DESCRIPTION_LABEL" desc="Label prompting user to provide feedback">
+    Provide feedback here
+  </message>
+  <message name="IDS_CHAT_UI_FEEDBACK_PREMIUM_NOTE" desc="Note about the benefits of a premium subscription">
+    Brave Leo Premium provides access to an expanded set of language models for even greater answer nuance. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+  </message>
+  <message name="IDS_CHAT_UI_SUBMIT_BUTTON_LABEL" desc="Button label to submit data/form">
+    Submit
+  </message>
+  <message name="IDS_CHAT_UI_CANCEL_BUTTON_LABEL" desc="Button label to cancel action">
+    Cancel
+  </message>
+  <message name="IDS_CHAT_UI_OPTION_NOT_HELPFUL" desc="Select option for feedback form if the answer is not helpful">
+    Not helpful
+  </message>
+  <message name="IDS_CHAT_UI_OPTION_INCORRECT" desc="Select option for feedback form if the answer is not correct">
+    Incorrect
+  </message>
+  <message name="IDS_CHAT_UI_OPTION_UNSAFE_HARMFUL" desc="Select option for feedback form if the answer is unsafe or harmful">
+    Unsafe/harmful
+  </message>
+  <message name="IDS_CHAT_UI_OPTION_OTHER" desc="Select option for feedback form if the answer is other kind">
+    Other
+  </message>
+  <message name="IDS_CHAT_UI_RATING_ERROR" desc="An error message when the user's rating could not be submitted">
+    Your rating could not be submitted, please check network connection and try again
+  </message>
+  <message name="IDS_CHAT_UI_FEEDBACK_SUBMIT_ERROR" desc="An error message when the user's feedback could not be submitted">
+    Your feedback could not be submitted, please check network connection and try again
+  </message>
 </grit-part>
