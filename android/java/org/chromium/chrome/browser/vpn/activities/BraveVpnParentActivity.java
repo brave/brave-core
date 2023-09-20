@@ -19,11 +19,8 @@ import com.wireguard.android.backend.GoBackend;
 import com.wireguard.crypto.KeyPair;
 
 import org.chromium.base.Log;
-import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
-import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
@@ -42,14 +39,9 @@ public abstract class BraveVpnParentActivity
     private static final String TAG = "BraveVPN";
     public boolean mIsVerification;
     protected BraveVpnPrefModel mBraveVpnPrefModel;
-    private final OneshotSupplierImpl<Profile> mProfileSupplier;
 
     abstract void showRestoreMenu(boolean shouldShowRestore);
     abstract void updateProfileView();
-
-    public BraveVpnParentActivity() {
-        mProfileSupplier = new OneshotSupplierImpl<>();
-    }
 
     // Pass @{code ActivityResultRegistry} reference explicitly to avoid crash
     // https://github.com/brave/brave-browser/issues/31882
@@ -74,7 +66,6 @@ public abstract class BraveVpnParentActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        mProfileSupplier.set(Profile.getLastUsedRegularProfile());
     }
 
     protected void verifySubscription() {
@@ -95,6 +86,8 @@ public abstract class BraveVpnParentActivity
                         if (!mIsVerification) {
                             BraveVpnApiResponseUtils.queryPurchaseFailed(
                                     BraveVpnParentActivity.this);
+                        } else {
+                            showRestoreMenu(false);
                         }
                         BraveVpnUtils.dismissProgressDialog();
                     }
@@ -212,9 +205,5 @@ public abstract class BraveVpnParentActivity
                 }
             }
         }.start();
-    }
-
-    public OneshotSupplier<Profile> getProfileSupplier() {
-        return mProfileSupplier;
     }
 }
