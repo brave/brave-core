@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -25,6 +24,7 @@ import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.models.BraveVpnWireguardProfileCredentials;
 import org.chromium.chrome.browser.vpn.split_tunnel.SplitTunnelActivity;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
+import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
@@ -59,16 +60,6 @@ public class BraveVpnUtils {
     public static String selectedServerRegion;
     private static ProgressDialog sProgressDialog;
 
-    public static boolean isBraveVpnFeatureEnable() {
-        if ((ContextUtils.getApplicationContext().getPackageName().equals(
-                     BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
-                    || BraveVpnPrefUtils.isBraveVpnFeatureEnabled())
-                && Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
-            return true;
-        }
-        return false;
-    }
-
     public static String getBraveAccountUrl() {
         return BraveVpnPrefUtils.isLinkSubscriptionOnStaging() ? BRAVE_ACCOUNT_STAGING_PAGE_URL
                                                                : BRAVE_ACCOUNT_PROD_PAGE_URL;
@@ -81,24 +72,24 @@ public class BraveVpnUtils {
         activity.startActivity(braveVpnPlanIntent);
     }
 
-    public static void openBraveVpnProfileActivity(Context context) {
-        Intent braveVpnProfileIntent = new Intent(context, BraveVpnProfileActivity.class);
+    public static void openBraveVpnProfileActivity(Activity activity) {
+        Intent braveVpnProfileIntent = new Intent(activity, BraveVpnProfileActivity.class);
         braveVpnProfileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         braveVpnProfileIntent.setAction(Intent.ACTION_VIEW);
-        context.startActivity(braveVpnProfileIntent);
+        activity.startActivity(braveVpnProfileIntent);
     }
 
-    public static void openBraveVpnSupportActivity(Context context) {
-        Intent braveVpnSupportIntent = new Intent(context, BraveVpnSupportActivity.class);
+    public static void openBraveVpnSupportActivity(Activity activity) {
+        Intent braveVpnSupportIntent = new Intent(activity, BraveVpnSupportActivity.class);
         braveVpnSupportIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         braveVpnSupportIntent.setAction(Intent.ACTION_VIEW);
-        context.startActivity(braveVpnSupportIntent);
+        activity.startActivity(braveVpnSupportIntent);
     }
 
-    public static void openSplitTunnelActivity(Context context) {
-        Intent braveVpnSupportIntent = new Intent(context, SplitTunnelActivity.class);
+    public static void openSplitTunnelActivity(Activity activity) {
+        Intent braveVpnSupportIntent = new Intent(activity, SplitTunnelActivity.class);
         braveVpnSupportIntent.setAction(Intent.ACTION_VIEW);
-        context.startActivity(braveVpnSupportIntent);
+        activity.startActivity(braveVpnSupportIntent);
     }
 
     public static void showProgressDialog(Activity activity, String message) {
@@ -280,5 +271,24 @@ public class BraveVpnUtils {
     public static void showToast(String message) {
         Context context = ContextUtils.getApplicationContext();
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private static boolean isRegionSupported() {
+        BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+        return (braveRewardsNativeWorker != null && braveRewardsNativeWorker.IsSupported());
+    }
+
+    private static boolean isBraveVpnFeatureEnable() {
+        if ((ContextUtils.getApplicationContext().getPackageName().equals(
+                     BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
+                    || BraveVpnPrefUtils.isBraveVpnFeatureEnabled())) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isVpnFeatureSupported(Context context) {
+        return isBraveVpnFeatureEnable() && isRegionSupported()
+                && ChromiumPlayServicesAvailability.isGooglePlayServicesAvailable(context);
     }
 }
