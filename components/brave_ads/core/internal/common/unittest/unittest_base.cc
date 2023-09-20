@@ -224,6 +224,7 @@ void UnitTestBase::MockAdsClient() {
   MockClearPref(ads_client_mock_);
   MockHasPrefPath(ads_client_mock_);
   MockGetLocalStatePref(ads_client_mock_);
+
   MockSetLocalStatePref(ads_client_mock_);
 
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);

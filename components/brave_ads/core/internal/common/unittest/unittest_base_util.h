@@ -40,6 +40,7 @@ void MockGetDictPref(const AdsClientMock& mock);
 void MockGetListPref(const AdsClientMock& mock);
 void MockClearPref(AdsClientMock& mock);
 void MockHasPrefPath(const AdsClientMock& mock);
+
 void MockGetLocalStatePref(const AdsClientMock& mock);
 
 }  // namespace brave_ads
