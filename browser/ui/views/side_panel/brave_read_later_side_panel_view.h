@@ -7,15 +7,12 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_READ_LATER_SIDE_PANEL_VIEW_H_
 
 #include "base/functional/callback_forward.h"
-#include "base/scoped_observation.h"
-#include "ui/views/view.h"
-#include "ui/views/view_observer.h"
+#include "brave/browser/ui/views/side_panel/brave_side_panel_view_base.h"
 
 class Browser;
 
 // Gives reading list specific header view with web view.
-class BraveReadLaterSidePanelView : public views::View,
-                                    public views::ViewObserver {
+class BraveReadLaterSidePanelView : public BraveSidePanelViewBase {
  public:
   BraveReadLaterSidePanelView(Browser* browser,
                               base::RepeatingClosure close_cb);
@@ -23,12 +20,6 @@ class BraveReadLaterSidePanelView : public views::View,
   BraveReadLaterSidePanelView(const BraveReadLaterSidePanelView&) = delete;
   BraveReadLaterSidePanelView& operator=(const BraveReadLaterSidePanelView&) =
       delete;
-
- private:
-  void OnViewVisibilityChanged(views::View* observed_view,
-                               views::View* starting_view) override;
-
-  base::ScopedObservation<views::View, views::ViewObserver> observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_READ_LATER_SIDE_PANEL_VIEW_H_

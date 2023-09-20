@@ -15,8 +15,6 @@
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/views/side_panel/bookmarks/bookmarks_side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/read_later_side_panel_web_view.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_content_proxy.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -124,20 +122,7 @@ BraveBookmarksSidePanelView::BraveBookmarksSidePanelView(Browser* browser) {
       views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
                                views::MaximumFlexSizeRule::kUnbounded));
 
-  // See the comment in
-  // BraveReadLaterSidePanelView::BraveReadLaterSidePanelView() about why we do
-  // this.
-  SidePanelUtil::GetSidePanelContentProxy(this)->SetAvailable(false);
-  observation_.Observe(web_view);
+  StartObservingWebWebViewVisibilityChange(web_view);
 }
 
 BraveBookmarksSidePanelView::~BraveBookmarksSidePanelView() = default;
-
-void BraveBookmarksSidePanelView::OnViewVisibilityChanged(
-    views::View* observed_view,
-    views::View* starting_view) {
-  if (observed_view->GetVisible()) {
-    SidePanelUtil::GetSidePanelContentProxy(this)->SetAvailable(true);
-    observation_.Reset();
-  }
-}

@@ -343,6 +343,8 @@ source_set("ui") {
       "views/side_panel/brave_side_panel_resize_widget.cc",
       "views/side_panel/brave_side_panel_resize_widget.h",
       "views/side_panel/brave_side_panel_utils.cc",
+      "views/side_panel/brave_side_panel_view_base.cc",
+      "views/side_panel/brave_side_panel_view_base.h",
       "views/tabs/brave_browser_tab_strip_controller.cc",
       "views/tabs/brave_browser_tab_strip_controller.h",
       "views/tabs/brave_compound_tab_container.cc",
