@@ -408,12 +408,14 @@ extension BraveWallet.SignMessageRequest {
       originInfo: .init(originSpec: "https://app.uniswap.org", eTldPlusOne: "uniswap.org"),
       id: 1,
       accountId: BraveWallet.AccountInfo.previewAccount.accountId,
-      domain: "example.com",
-      message: "To avoid digital cat burglars, sign below to authenticate with CryptoKitties.",
-      isEip712: false,
-      domainHash: "",
-      primaryHash: "",
-      messageBytes: [],
+      signData: .init(
+        ethSignTypedData: .init(
+          message: "To avoid digital cat burglars, sign below to authenticate with CryptoKitties.",
+          domain: "",
+          domainHash: nil,
+          primaryHash: nil
+        )
+      ),
       coin: .eth,
       chainId: BraveWallet.MainnetChainId
     )

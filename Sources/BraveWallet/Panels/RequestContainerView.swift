@@ -62,6 +62,11 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               networkStore: cryptoStore.networkStore,
               onDismiss: onDismiss
             )
+          case let .signMessageError(signMessageErrors):
+            SignMessageErrorView(
+              signMessageErrors: signMessageErrors,
+              cryptoStore: cryptoStore
+            )
           case let .getEncryptionPublicKey(request):
             EncryptionView(
               request: .getEncryptionPublicKey(request),

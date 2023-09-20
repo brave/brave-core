@@ -15,6 +15,7 @@ enum PendingRequest: Equatable {
   case switchChain(BraveWallet.SwitchChainRequest)
   case addSuggestedToken(BraveWallet.AddSuggestTokenRequest)
   case signMessage([BraveWallet.SignMessageRequest])
+  case signMessageError([BraveWallet.SignMessageError])
   case getEncryptionPublicKey(BraveWallet.GetEncryptionPublicKeyRequest)
   case decrypt(BraveWallet.DecryptRequest)
   case signTransaction([BraveWallet.SignTransactionRequest])
@@ -34,6 +35,8 @@ extension PendingRequest: Identifiable {
       return "addSuggestedToken-\(tokenRequest.token.id)"
     case let .signMessage(signRequests):
       return "signMessage-\(signRequests.map(\.id))"
+    case let .signMessageError(signMessageErrorRequests):
+      return "signMessageError-\(signMessageErrorRequests.map(\.id))"
     case let .getEncryptionPublicKey(request):
       return "getEncryptionPublicKey-\(request.accountId.uniqueKey)-\(request.requestId)"
     case let .decrypt(request):
@@ -51,6 +54,7 @@ enum WebpageRequestResponse: Equatable {
   case addNetwork(approved: Bool, chainId: String)
   case addSuggestedToken(approved: Bool, token: BraveWallet.BlockchainToken)
   case signMessage(approved: Bool, id: Int32)
+  case signMessageError(errorId: String)
   case getEncryptionPublicKey(approved: Bool, requestId: String)
   case decrypt(approved: Bool, requestId: String)
   case signTransaction(approved: Bool, id: Int32)
@@ -597,6 +601,8 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       return .signTransaction(signTransactionRequests)
     } else if case let signAllTransactionsRequests = await walletService.pendingSignAllTransactionsRequests(), !signAllTransactionsRequests.isEmpty {
       return .signAllTransactions(signAllTransactionsRequests)
+    } else if case let signMessageErrors = await walletService.pendingSignMessageErrors(), !signMessageErrors.isEmpty {
+      return .signMessageError(signMessageErrors)
     } else if case let signMessageRequests = await walletService.pendingSignMessageRequests(), !signMessageRequests.isEmpty {
       return .signMessage(signMessageRequests)
     } else if let switchRequest = await rpcService.pendingSwitchChainRequests().first {
@@ -665,6 +671,8 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       walletService.notifyAddSuggestTokenRequestsProcessed(approved, contractAddresses: [token.contractAddress])
     case let .signMessage(approved, id):
       walletService.notifySignMessageRequestProcessed(approved, id: id, signature: nil, error: nil)
+    case let .signMessageError(errorId):
+      walletService.notifySignMessageErrorProcessed(errorId)
     case let .getEncryptionPublicKey(approved, requestId):
       walletService.notifyGetPublicKeyRequestProcessed(requestId, approved: approved)
     case let .decrypt(approved, requestId):
