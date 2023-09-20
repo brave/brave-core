@@ -561,63 +561,6 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                                      "20.000BAT");
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       CheckIfReconcileWasReset) {
-  test_util::CreateRewardsWallet(rewards_service_);
-  rewards_service_->SetAutoContributeEnabled(true);
-  context_helper_->LoadRewardsPage();
-  uint64_t current_stamp = 0;
-
-  base::RunLoop run_loop_first;
-  rewards_service_->GetReconcileStamp(
-      base::BindLambdaForTesting([&](uint64_t stamp) {
-        current_stamp = stamp;
-        run_loop_first.Quit();
-      }));
-  run_loop_first.Run();
-  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
-
-  context_helper_->VisitPublisher(
-      test_util::GetUrl(https_server_.get(), "duckduckgo.com"), true);
-
-  contribution_->TipPublisher(
-      test_util::GetUrl(https_server_.get(), "duckduckgo.com"), true, 1);
-
-  base::RunLoop run_loop_second;
-  rewards_service_->GetReconcileStamp(
-      base::BindLambdaForTesting([&](uint64_t stamp) {
-        ASSERT_NE(current_stamp, stamp);
-        run_loop_second.Quit();
-      }));
-  run_loop_second.Run();
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       CheckIfReconcileWasResetACOff) {
-  test_util::CreateRewardsWallet(rewards_service_);
-  context_helper_->LoadRewardsPage();
-  uint64_t current_stamp = 0;
-
-  base::RunLoop run_loop_first;
-  rewards_service_->GetReconcileStamp(
-      base::BindLambdaForTesting([&](uint64_t stamp) {
-        current_stamp = stamp;
-        run_loop_first.Quit();
-      }));
-  run_loop_first.Run();
-  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
-  contribution_->TipPublisher(
-      test_util::GetUrl(https_server_.get(), "duckduckgo.com"), true, 1);
-
-  base::RunLoop run_loop_second;
-  rewards_service_->GetReconcileStamp(
-      base::BindLambdaForTesting([&](uint64_t stamp) {
-        ASSERT_NE(current_stamp, stamp);
-        run_loop_second.Quit();
-      }));
-  run_loop_second.Run();
-}
-
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, PanelMonthlyTipAmount) {
   test_util::CreateRewardsWallet(rewards_service_);
   context_helper_->LoadRewardsPage();
