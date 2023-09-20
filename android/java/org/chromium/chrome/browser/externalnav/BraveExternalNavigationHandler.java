@@ -8,9 +8,7 @@ package org.chromium.chrome.browser.externalnav;
 import android.content.Intent;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
 import org.chromium.chrome.browser.BraveWalletProvider;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.external_intents.ExternalNavigationHandler;
@@ -22,7 +20,7 @@ import org.chromium.url.GURL;
  * Extends Chromium's ExternalNavigationHandler
  */
 public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
-    private static final String TAG = "BraveUrlHandler";
+    // private static final String TAG = "BraveUrlHandler";
     private BraveWalletProvider mBraveWalletProvider;
 
     public BraveExternalNavigationHandler(ExternalNavigationDelegate delegate) {
@@ -31,22 +29,25 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
 
     @Override
     public OverrideUrlLoadingResult shouldOverrideUrlLoading(ExternalNavigationParams params) {
-        String originalUrl = params.getUrl().getSpec();
         if (isWalletProviderOverride(params)) {
+            String originalUrl = params.getUrl().getSpec();
             String url = originalUrl.replaceFirst("^rewards://", "brave://rewards/");
             GURL browserFallbackGURL = new GURL(url);
             if (params.getRedirectHandler() != null) {
                 params.getRedirectHandler().setShouldNotOverrideUrlLoadingOnCurrentRedirectChain();
             }
             return OverrideUrlLoadingResult.forNavigateTab(browserFallbackGURL, params);
-        } else if (originalUrl.equalsIgnoreCase("chrome://adblock/")) {
+        }
+        // TODO: Once we have a ready for https://github.com/brave/brave-browser/issues/33015, We'll
+        // use this code
+        /*else if (originalUrl.equalsIgnoreCase("chrome://adblock/")) {
             try {
                 BraveActivity.getBraveActivity().openBraveContentFilteringSettings();
             } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "adblock url " + e);
             }
             return OverrideUrlLoadingResult.forExternalIntent();
-        }
+        }*/
         return super.shouldOverrideUrlLoading(params);
     }
 
