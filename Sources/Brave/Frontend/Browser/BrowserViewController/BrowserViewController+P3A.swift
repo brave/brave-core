@@ -205,14 +205,14 @@ extension BrowserViewController {
     var forwardNavigationActionStorage = P3ATimedStorage<Int>.forwardNavigationActionPerformed
     
     navigationActionStorage.add(value: 1, to: Date())
-    let newNavigationActionStorage = navigationActionStorage.maximumDaysCombinedValue
+    let newNavigationActionStorage = navigationActionStorage.combinedValue
     
     if isNavigationActionForward {
       forwardNavigationActionStorage.add(value: 1, to: Date())
     }
     
     if newNavigationActionStorage > 0 {
-      let navigationForwardPercent = Int((Double(forwardNavigationActionStorage.maximumDaysCombinedValue) / Double(newNavigationActionStorage)) * 100.0)
+      let navigationForwardPercent = Int((Double(forwardNavigationActionStorage.combinedValue) / Double(newNavigationActionStorage)) * 100.0)
       UmaHistogramRecordValueToBucket(
         "Brave.Toolbar.ForwardNavigationAction",
         buckets: [
