@@ -481,6 +481,28 @@ window.__firefox__.includeOnce("BraveTranslate", function($) {
         if (!didAddScrollListener) {
           didAddScrollListener = true;
           addScrollListener();
+          
+          (function() {
+            let nodes = nestedVisibleChildNodes(document.body);
+            for (const node of nodes) {
+              if (node.translationStatus && node.translationStatus == 1) {
+                continue;
+              }
+              
+              node.translationStatus = 1;
+              if (String(node.data || '').trim().length === 0) {
+                continue;
+              }
+              
+              webkit.messageHandlers.$<message_handler>.postMessage({"text": node.data, "encoded": encodeURIComponent(node.data)}).then((text) => {
+                if (text) {
+                  node.replaceData(0, node.length, decodeURIComponent(text));
+                } else {
+                  node.translationStatus = 0;
+                }
+              });
+            }
+          })();
         }
       })
     })
