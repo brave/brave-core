@@ -5,25 +5,18 @@
 
 #include "brave/components/l10n/common/region_code_util.h"
 
-#include "base/feature_list.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
+#include "brave/components/l10n/common/region_code_feature.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_l10n {
-
-namespace {
-
-BASE_FEATURE(kFetchResourcesByRegionCodeFeature,
-             "FetchResourcesByRegionCode",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-}
 
 std::string GetCurrentGeoRegionCode(const PrefService* local_state) {
   if (base::FeatureList::IsEnabled(kFetchResourcesByRegionCodeFeature)) {
     return local_state->GetString(brave_l10n::prefs::kGeoRegionCode);
   }
-  return GetDefaultISOLanguageCodeString();
+  return GetDefaultISOCountryCodeString();
 }
 
 }  // namespace brave_l10n

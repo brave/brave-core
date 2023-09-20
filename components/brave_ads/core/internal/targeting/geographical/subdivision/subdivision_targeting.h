@@ -37,7 +37,7 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver,
   const std::string& GetSubdivision() const;
 
  private:
-  void Initialize();
+  void MaybeInitialize();
 
   void MaybeRequireSubdivision();
 

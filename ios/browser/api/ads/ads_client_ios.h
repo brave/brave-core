@@ -89,6 +89,9 @@ class AdsClientIOS : public brave_ads::AdsClient {
       const std::string& path) const override;
   void ClearPref(const std::string& path) override;
   bool HasPrefPath(const std::string& path) const override;
+  void SetLocalStatePref(const std::string& path, base::Value value) override;
+  absl::optional<base::Value> GetLocalStatePref(
+      const std::string& path) const override;
   void RecordP2AEvents(const std::vector<std::string>& events) override;
   void AddTrainingSample(
       const std::vector<brave_federated::mojom::CovariateInfoPtr>

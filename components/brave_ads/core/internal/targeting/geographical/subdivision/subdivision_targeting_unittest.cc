@@ -55,6 +55,8 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 
   MockHttpOkUrlResponse(/*country_code*/ "US", /*subdivision_code*/ "CA");
 
+  NotifyDidInitializeAds();
+
   // Act
   ads_client_mock_.SetBooleanPref(prefs::kOptedInToNotificationAds, true);
 
@@ -73,6 +75,8 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
   DisableNotificationAdsForTesting();
 
   MockHttpOkUrlResponse(/*country_code*/ "US", /*subdivision_code*/ "CA");
+
+  NotifyDidInitializeAds();
 
   // Act
   ads_client_mock_.SetBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);

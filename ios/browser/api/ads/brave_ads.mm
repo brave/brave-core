@@ -5,13 +5,7 @@
 
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
-#include "brave/components/brave_news/common/pref_names.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 
-#import "ads_client_bridge.h"
-#import "ads_client_ios.h"
 #include "base/base64.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
@@ -25,6 +19,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
@@ -41,14 +36,20 @@
 #include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/user/user_interaction/ad_events/ad_event_cache.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/prefs.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
+#import "brave/ios/browser/api/ads/ads_client_bridge.h"
+#import "brave/ios/browser/api/ads/ads_client_ios.h"
+#import "brave/ios/browser/api/ads/brave_ads.h"
 #import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
+#import "brave/ios/browser/api/ads/inline_content_ad_ios.h"
+#import "brave/ios/browser/api/ads/notification_ad_ios.h"
 #import "brave/ios/browser/api/common/common_operations.h"
-#import "brave_ads.h"
 #include "build/build_config.h"
-#import "inline_content_ad_ios.h"
 #include "net/base/mac/url_conversions.h"
-#import "notification_ad_ios.h"
 #include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -93,6 +94,8 @@ static NSString* const kSubdivisionTargetingSubdivisionPrefKey =
 static NSString* const kSubdivisionTargetingAutoDetectedSubdivisionPrefKey =
     base::SysUTF8ToNSString(
         brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision);
+static NSString* const kGeoRegionCodePrefKey =
+    base::SysUTF8ToNSString(brave_l10n::prefs::kGeoRegionCode);
 static NSString* const kAdsResourceMetadataPrefKey = @"BATAdsResourceMetadata";
 static NSString* const kBraveNewsOptedInPrefKey =
     base::SysUTF8ToNSString(brave_news::prefs::kBraveNewsOptedIn);
@@ -150,6 +153,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 @property(nonatomic) dispatch_group_t prefsWriteGroup;
 @property(nonatomic) dispatch_queue_t prefsWriteThread;
 @property(nonatomic) NSMutableDictionary* prefs;
+@property(nonatomic) NSMutableDictionary* localState;
 @property(nonatomic, copy) NSDictionary* adsResourceMetadata;
 @property(nonatomic) NSTimer* updateAdsResourceTimer;
 @property(nonatomic) int64_t adsResourceRetryCount;
@@ -184,6 +188,18 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     self.prefs[kNewTabPageShowTodayPrefKey] = @(true);
     self.prefs[kNewTabPageShowBackgroundImagePrefKey] = @(true);
     self.prefs[kNewTabPageShowSponsoredImagesBackgroundImagePrefKey] = @(true);
+
+    // TODO(https://github.com/brave/brave-browser/issues/32112): Remove the
+    // code that permanently sets geo region code preference when the issue is
+    // resolved.
+    self.localState = [[NSMutableDictionary alloc] init];
+    std::string geo_region_code_json;
+    if (base::JSONWriter::Write(
+            base::Value(brave_l10n::GetDefaultISOLanguageCodeString()),
+            &geo_region_code_json)) {
+      self.localState[kGeoRegionCodePrefKey] =
+          base::SysUTF8ToNSString(geo_region_code_json);
+    }
 
     [self setupNetworkMonitoring];
 
@@ -1566,6 +1582,34 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (bool)hasPrefPath:(const std::string&)path {
   const auto key = base::SysUTF8ToNSString(path);
   return [self.prefs objectForKey:key] != nil;
+}
+
+- (void)setLocalStatePref:(const std::string&)path value:(base::Value)value {
+  std::string json;
+  if (base::JSONWriter::Write(value, &json)) {
+    const auto key = base::SysUTF8ToNSString(path);
+    self.localState[key] = base::SysUTF8ToNSString(json);
+
+    if ([self isAdsServiceRunning]) {
+      adsClientNotifier->NotifyPrefDidChange(path);
+    }
+  }
+}
+
+- (absl::optional<base::Value>)getLocalStatePref:(const std::string&)path {
+  const auto key = base::SysUTF8ToNSString(path);
+  const auto json = (NSString*)self.localState[key];
+  if (!json) {
+    return absl::nullopt;
+  }
+
+  absl::optional<base::Value> value =
+      base::JSONReader::Read(base::SysNSStringToUTF8(json));
+  if (!value) {
+    return absl::nullopt;
+  }
+
+  return value->Clone();
 }
 
 #pragma mark - Ads Resources Paths

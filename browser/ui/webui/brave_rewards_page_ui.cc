@@ -36,8 +36,7 @@
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_page_generated_map.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/locale_util.h"
-#include "brave/components/l10n/common/prefs.h"
+#include "brave/components/l10n/common/region_code_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -1250,7 +1249,7 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
                ads_service_->NeedsBrowserUpgradeToServeAds());
 
   const std::string geo_region_code =
-      GetLocalState()->GetString(brave_l10n::prefs::kGeoRegionCode);
+      brave_l10n::GetCurrentGeoRegionCode(GetLocalState());
   ads_data.Set("subdivisions",
                brave_ads::GetSupportedSubdivisionsAsValueList(geo_region_code));
 

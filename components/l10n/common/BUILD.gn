@@ -34,6 +34,8 @@ static_library("common") {
     "ofac_sanctioned_iso_3166_1_country_code_constants.h",
     "ofac_sanctioned_un_m49_code_constants.h",
     "prefs.cc",
+    "region_code_feature.cc",
+    "region_code_feature.h",
     "region_code_util.cc",
     "un_m49_code_constants.h",
     "un_m49_code_util.cc",
@@ -70,14 +72,17 @@ source_set("unit_tests") {
     "locale_util_unittest.cc",
     "localization_util_unittest.cc",
     "ofac_sanction_util_unittest.cc",
+    "region_code_util_unittest.cc",
     "un_m49_code_util_unittest.cc",
   ]
 
   deps = [
     "//base",
+    "//base/test:test_support",
     "//brave/components/l10n/common",
     "//brave/components/l10n/common:test_support",
     "//brave/components/resources:strings_grit",
+    "//components/prefs:test_support",
     "//testing/gmock",
     "//testing/gtest",
   ]

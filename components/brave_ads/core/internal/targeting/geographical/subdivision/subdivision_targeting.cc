@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_constants.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace brave_ads {
@@ -54,7 +55,7 @@ const std::string& SubdivisionTargeting::GetSubdivision() const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void SubdivisionTargeting::Initialize() {
+void SubdivisionTargeting::MaybeInitialize() {
   const std::string& auto_detected_subdivision =
       GetLazyAutoDetectedSubdivision();
   absl::optional<std::string> country_code =
@@ -89,7 +90,6 @@ void SubdivisionTargeting::MaybeAllowForCountry(
   if (!ShouldTargetSubdivisionCountryCode(country_code)) {
     BLOG(1, "Subdivision targeting is unsupported for " << country_code
                                                         << " country code");
-
     return AdsClientHelper::GetInstance()->SetBooleanPref(
         prefs::kShouldAllowSubdivisionTargeting, false);
   }
@@ -212,7 +212,7 @@ const std::string& SubdivisionTargeting::GetLazyUserSelectedSubdivision()
 }
 
 void SubdivisionTargeting::OnNotifyDidInitializeAds() {
-  Initialize();
+  MaybeInitialize();
 }
 
 void SubdivisionTargeting::OnNotifyPrefDidChange(const std::string& path) {
@@ -220,6 +220,10 @@ void SubdivisionTargeting::OnNotifyPrefDidChange(const std::string& path) {
     UpdateAutoDetectedSubdivision();
   } else if (path == prefs::kSubdivisionTargetingSubdivision) {
     UpdateUserSelectedSubdivision();
+  } else if (path == brave_news::prefs::kBraveNewsOptedIn ||
+             path == brave_news::prefs::kNewTabPageShowToday ||
+             path == prefs::kOptedInToNotificationAds) {
+    MaybeInitialize();
   }
 }
 
