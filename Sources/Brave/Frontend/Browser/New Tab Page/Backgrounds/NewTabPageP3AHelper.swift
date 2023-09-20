@@ -149,8 +149,8 @@ final class NewTabPageP3AHelper {
     updateEventsCountStorage(countsStorage)
     
     let creativeTotalHistogramName = DynamicHistogramName(
-      creativeInstanceId: "count",
-      eventType: .init(rawValue: "total")
+      creativeInstanceId: "total",
+      eventType: .init(rawValue: "count")
     ).histogramName
     // Always send the creative total if ads are disabled (as per spec),
     // or send the total if there were outstanding events sent
