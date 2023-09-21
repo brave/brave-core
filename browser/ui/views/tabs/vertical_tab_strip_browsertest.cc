@@ -391,12 +391,12 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
     observer.Wait();
   }
 
-  // Vertical tab strip should be visible on browser fullscreen.
+  // Vertical tab strip should be invisible on browser fullscreen.
   ASSERT_TRUE(fullscreen_controller->IsFullscreenForBrowser());
   ASSERT_TRUE(browser_view()->IsFullscreen());
-  EXPECT_TRUE(browser_view()
-                  ->vertical_tab_strip_host_view_->GetPreferredSize()
-                  .width());
+  EXPECT_FALSE(browser_view()
+                   ->vertical_tab_strip_host_view_->GetPreferredSize()
+                   .width());
 
   {
     auto observer = FullscreenNotificationObserver(browser());

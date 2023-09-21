@@ -22,6 +22,7 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
@@ -29,6 +30,7 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -655,13 +657,31 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
           base::Unretained(this)));
   OnFloatingModePrefChanged();
 
+#if BUILDFLAG(IS_MAC)
+  show_toolbar_on_fullscreen_pref_.Init(
+      prefs::kShowFullscreenToolbar, prefs,
+      base::BindRepeating(&VerticalTabStripRegionView::OnFullscreenStateChanged,
+                          base::Unretained(this)));
+#endif
+
   widget_observation_.Observe(browser_view->GetWidget());
+
+  // At this point, Browser hasn't finished its initialization. In order to
+  // access some of its member, we should observe BrowserList.
+  DCHECK(base::ranges::find(*BrowserList::GetInstance(),
+                            browser_view->browser()) ==
+         BrowserList::GetInstance()->end())
+      << "Browser shouldn't be added at this point.";
+  BrowserList::AddObserver(this);
 }
 
 VerticalTabStripRegionView::~VerticalTabStripRegionView() {
   // We need to move tab strip region to its original parent to avoid crash
   // during drag and drop session.
   UpdateLayout(true);
+  DCHECK(fullscreen_observation_.IsObserving())
+      << "We didn't start to observe FullscreenController from BrowserList's "
+         "callback";
 }
 
 void VerticalTabStripRegionView::OnWidgetActivationChanged(
@@ -685,19 +705,60 @@ void VerticalTabStripRegionView::OnWidgetDestroying(views::Widget* widget) {
   widget_observation_.Reset();
 }
 
-bool VerticalTabStripRegionView::IsTabFullscreen() const {
+void VerticalTabStripRegionView::OnFullscreenStateChanged() {
+  if (IsFloatingEnabledForBrowserFullscreen()) {
+    width_animation_.Stop();
+    SetVisible(false);
+    SetState(State::kCollapsed);
+  } else {
+    SetVisible(true);
+  }
+
+  PreferredSizeChanged();
+}
+
+void VerticalTabStripRegionView::OnBrowserAdded(Browser* browser) {
+  if (browser != browser_) {
+    return;
+  }
+
+  auto* fullscreen_controller = GetFullscreenController();
+  DCHECK(fullscreen_controller);
+  fullscreen_observation_.Observe(fullscreen_controller);
+
+  BrowserList::RemoveObserver(this);
+}
+
+FullscreenController* VerticalTabStripRegionView::GetFullscreenController()
+    const {
   auto* exclusive_access_manager = browser_->exclusive_access_manager();
   if (!exclusive_access_manager) {
-    return false;
+    return nullptr;
   }
 
-  auto* fullscreen_controller =
-      exclusive_access_manager->fullscreen_controller();
-  if (!fullscreen_controller) {
-    return false;
-  }
+  return exclusive_access_manager->fullscreen_controller();
+}
 
-  return fullscreen_controller->IsWindowFullscreenForTabOrPending();
+bool VerticalTabStripRegionView::IsTabFullscreen() const {
+  const auto* fullscreen_controller = GetFullscreenController();
+  return fullscreen_controller &&
+         fullscreen_controller->IsWindowFullscreenForTabOrPending();
+}
+
+bool VerticalTabStripRegionView::IsBrowserFullscren() const {
+  const auto* fullscreen_controller = GetFullscreenController();
+  return fullscreen_controller &&
+         fullscreen_controller->IsFullscreenForBrowser();
+}
+
+bool VerticalTabStripRegionView::ShouldShowVerticalTabsInBrowserFullscreen()
+    const {
+#if BUILDFLAG(IS_MAC)
+  // Refer to "Always show toolbar in Fullscreen" pref in the app menu
+  return show_toolbar_on_fullscreen_pref_.GetValue();
+#else
+  return false;
+#endif
 }
 
 void VerticalTabStripRegionView::SetState(State state) {
@@ -722,6 +783,12 @@ void VerticalTabStripRegionView::SetState(State state) {
   if (gfx::Animation::ShouldRenderRichAnimation()) {
     state_ == State::kCollapsed ? width_animation_.Hide()
                                 : width_animation_.Show();
+  }
+
+  if (!GetVisible() && state_ != State::kCollapsed) {
+    // This means vertical tab strip is expanded temporarily in browser
+    // fullscreen mode.
+    SetVisible(true);
   }
 
   PreferredSizeChanged();
@@ -774,6 +841,11 @@ gfx::Size VerticalTabStripRegionView::CalculatePreferredSize() const {
 }
 
 gfx::Size VerticalTabStripRegionView::GetMinimumSize() const {
+  if (IsFloatingEnabledForBrowserFullscreen()) {
+    // Vertical tab strip always overlaps the contents area.
+    return {};
+  }
+
   if (state_ == State::kFloating) {
     return GetPreferredSizeForState(State::kCollapsed,
                                     /*include_border=*/true,
@@ -910,6 +982,9 @@ void VerticalTabStripRegionView::OnMouseExited() {
   mouse_enter_timer_.Stop();
   if (state_ == State::kFloating) {
     SetState(State::kCollapsed);
+    if (IsFloatingEnabledForBrowserFullscreen()) {
+      SetVisible(false);
+    }
   }
 }
 
@@ -918,7 +993,7 @@ void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
 }
 
 void VerticalTabStripRegionView::OnMouseEntered() {
-  if (!tabs::utils::IsFloatingVerticalTabsEnabled(browser_)) {
+  if (!IsFloatingVerticalTabsEnabled()) {
     return;
   }
 
@@ -931,7 +1006,7 @@ void VerticalTabStripRegionView::OnMouseEntered() {
 }
 
 void VerticalTabStripRegionView::OnMousePressedInTree() {
-  if (!tabs::utils::IsFloatingVerticalTabsEnabled(browser_)) {
+  if (IsFloatingVerticalTabsEnabled()) {
     return;
   }
 
@@ -965,7 +1040,8 @@ void VerticalTabStripRegionView::OnBoundsChanged(
   }
 
 #if DCHECK_IS_ON()
-  if (auto width = GetContentsBounds().width(); width) {
+  if (auto width = GetContentsBounds().width();
+      width && !IsBrowserFullscren()) {
     CHECK_GE(width, tabs::kVerticalTabMinWidth +
                         tabs::kMarginForVerticalTabContainers * 2);
   }
@@ -1094,6 +1170,12 @@ gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
     return {};
   }
 
+  if (IsFloatingEnabledForBrowserFullscreen() && state_ == State::kCollapsed) {
+    // In this case, vertical tab strip should be invisible but show up when
+    // mouse hovers.
+    return {2, View::CalculatePreferredSize().height()};
+  }
+
   return {GetPreferredWidthForState(state, include_border, ignore_animation),
           View::CalculatePreferredSize().height()};
 }
@@ -1135,6 +1217,15 @@ VerticalTabStripRegionView::GetTabStripScrollContainer() {
   CHECK(scroll_container)
       << "TabStripScrollContainer is used by upstream at this moment.";
   return scroll_container;
+}
+
+bool VerticalTabStripRegionView::IsFloatingVerticalTabsEnabled() const {
+  return IsFloatingEnabledForBrowserFullscreen() ||
+         tabs::utils::IsFloatingVerticalTabsEnabled(browser_);
+}
+
+bool VerticalTabStripRegionView::IsFloatingEnabledForBrowserFullscreen() const {
+  return IsBrowserFullscren() && !ShouldShowVerticalTabsInBrowserFullscreen();
 }
 
 void VerticalTabStripRegionView::ScheduleFloatingModeTimer() {

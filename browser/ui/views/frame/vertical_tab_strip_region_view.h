@@ -13,6 +13,8 @@
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "base/types/pass_key.h"
+#include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
 #include "ui/views/controls/resize_area_delegate.h"
@@ -23,6 +25,7 @@ class ResizeArea;
 
 class BraveNewTabButton;
 class BrowserView;
+class FullscreenController;
 class TabStripScrollContainer;
 class VerticalTabStripScrollContentsView;
 
@@ -30,7 +33,9 @@ class VerticalTabStripScrollContentsView;
 class VerticalTabStripRegionView : public views::View,
                                    public views::ResizeAreaDelegate,
                                    public views::AnimationDelegateViews,
-                                   public views::WidgetObserver {
+                                   public views::WidgetObserver,
+                                   public FullscreenObserver,
+                                   public BrowserListObserver {
  public:
   METADATA_HEADER(VerticalTabStripRegionView);
 
@@ -108,6 +113,12 @@ class VerticalTabStripRegionView : public views::View,
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
   void OnWidgetDestroying(views::Widget* widget) override;
 
+  // BrowserListObserver:
+  void OnBrowserAdded(Browser* browser) override;
+
+  // FullscreenObserver:
+  void OnFullscreenStateChanged() override;
+
  private:
   class MouseWatcher;
   class HeaderView;
@@ -116,7 +127,10 @@ class VerticalTabStripRegionView : public views::View,
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            OriginalTabSearchButton);
 
+  FullscreenController* GetFullscreenController() const;
   bool IsTabFullscreen() const;
+  bool IsBrowserFullscren() const;
+  bool ShouldShowVerticalTabsInBrowserFullscreen() const;
 
   void SetState(State state);
 
@@ -131,6 +145,8 @@ class VerticalTabStripRegionView : public views::View,
   void OnCollapsedPrefChanged();
   void OnFloatingModePrefChanged();
 
+  bool IsFloatingVerticalTabsEnabled() const;
+  bool IsFloatingEnabledForBrowserFullscreen() const;
   void ScheduleFloatingModeTimer();
   void OnMouseExited();
   void OnMouseEntered();
@@ -187,6 +203,13 @@ class VerticalTabStripRegionView : public views::View,
       widget_observation_{this};
 
   std::unique_ptr<MouseWatcher> mouse_watcher_;
+
+#if BUILDFLAG(IS_MAC)
+  BooleanPrefMember show_toolbar_on_fullscreen_pref_;
+#endif
+
+  base::ScopedObservation<FullscreenController, FullscreenObserver>
+      fullscreen_observation_{this};
 
   base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };
