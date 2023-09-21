@@ -182,18 +182,33 @@ export function SwapBase(props: Props) {
       : skipToken
   )
 
-  const buyTokenResult = makeToken(
-    buyToken,
-    buyAssetNetwork,
-    buyTokenSymbol,
-    buyTokenDecimals
-  )
-  const sellTokenResult = makeToken(
-    sellToken,
-    sellAssetNetwork,
-    sellTokenSymbol,
-    sellTokenDecimals
-  )
+  const buyTokenResult = React.useMemo(() =>
+    makeToken(
+      buyToken,
+      buyAssetNetwork,
+      buyTokenSymbol,
+      buyTokenDecimals
+    ),
+    [
+      buyToken,
+      buyAssetNetwork,
+      buyTokenSymbol,
+      buyTokenDecimals
+    ])
+  const sellTokenResult = React.useMemo(() =>
+    makeToken(
+      sellToken,
+      sellAssetNetwork,
+      sellTokenSymbol,
+      sellTokenDecimals
+    ),
+    [
+      sellToken,
+      sellAssetNetwork,
+      sellTokenSymbol,
+      sellTokenDecimals
+    ])
+
   return (
     <>
       {buyTokenResult &&

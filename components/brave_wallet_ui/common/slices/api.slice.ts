@@ -2968,7 +2968,7 @@ export function createWalletApi () {
                 arg.chainId
               )
 
-            if (!decimals) {
+            if (errorMessage) {
               throw new Error(errorMessage)
             }
 
@@ -3006,7 +3006,7 @@ export function createWalletApi () {
                 arg.chainId
               )
 
-            if (!symbol) {
+            if (errorMessage) {
               throw new Error(errorMessage)
             }
 
