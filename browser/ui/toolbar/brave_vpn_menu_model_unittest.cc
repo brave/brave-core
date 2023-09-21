@@ -58,12 +58,9 @@ TEST_F(BraveVPNMenuModelUnitTest, TrayIconEnabled) {
   menu_model.Build();
   EXPECT_NE(menu_model.GetItemCount(), 0u);
   {
-    auto tray_index =
-        menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON);
-    EXPECT_TRUE(tray_index);
-    EXPECT_EQ(
-        menu_model.GetLabelAt(tray_index.value()),
-        l10n_util::GetStringUTF16(IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM));
+    // Don't show toggle menu when tray icon is visible.
+    EXPECT_FALSE(
+        menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON));
   }
 
   // Wireguard protocol disbled in the setting.
@@ -73,7 +70,9 @@ TEST_F(BraveVPNMenuModelUnitTest, TrayIconEnabled) {
   menu_model.Build();
   EXPECT_NE(menu_model.GetItemCount(), 0u);
   {
-    EXPECT_TRUE(menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON));
+    // Still toggle menu is hidden.
+    EXPECT_FALSE(
+        menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON));
   }
 
   // Cases with Disabled value.
@@ -107,12 +106,9 @@ TEST_F(BraveVPNMenuModelUnitTest, ToolbarVPNButton) {
   menu_model.Build();
   EXPECT_NE(menu_model.GetItemCount(), 0u);
   {
-    auto toolbar_index =
-        menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON);
-    EXPECT_TRUE(toolbar_index);
-    EXPECT_EQ(
-        menu_model.GetLabelAt(toolbar_index.value()),
-        l10n_util::GetStringUTF16(IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM));
+    // Don't show toggle menu when button is visible.
+    EXPECT_FALSE(
+        menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON));
   }
 
   // Cases with Disabled value.
