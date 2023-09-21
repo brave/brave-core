@@ -131,14 +131,9 @@ public class NetworkStore: ObservableObject {
       }
       
       let success = await rpcService.setNetwork(network.chainId, coin: network.coin, origin: isForOrigin ? origin : nil)
-      if success {
-        let account = await walletService.ensureSelectedAccount(forChain: network.coin, chainId: network.chainId)
-        if account == nil {
-          assertionFailure("Should not have a nil selectedAccount for any network.")
-        }
-        if !isForOrigin { // `isSwapSupported` is for the `defaultSelectedChain`
-          self.isSwapSupported = await swapService.isSwapSupported(network.chainId)
-        }
+      if success,
+         !isForOrigin { // `isSwapSupported` is for the `defaultSelectedChain`
+        self.isSwapSupported = await swapService.isSwapSupported(network.chainId)
       }
       return success ? nil : .unknown
     }
@@ -284,6 +279,13 @@ extension NetworkStore: BraveWalletJsonRpcServiceObserver {
   }
   public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?) {
     Task { @MainActor in
+      // Verify correct account is selected for the new network.
+      // This could occur from Eth Switch Chain request when Solana account selected.
+      let accountId = await walletService.ensureSelectedAccount(forChain: coin, chainId: chainId)
+      if accountId == nil {
+        assertionFailure("Should not have a nil selectedAccount for any network.")
+      }
+      // Sync our local properties with updated values
       if let origin, origin == self.origin {
         selectedChainIdForOrigin = chainId
       } else if origin == nil {
