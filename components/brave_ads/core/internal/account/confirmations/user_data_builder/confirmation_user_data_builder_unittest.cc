@@ -56,7 +56,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
     std::string json;
     ASSERT_TRUE(base::JSONWriter::Write(user_data.fixed, &json));
     const std::string pattern =
-        R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":".{44}","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})";
+        R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":".{44}","segment":"untargeted","studies":\[],"topSegment":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})";
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 
@@ -86,7 +86,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
     std::string json;
     ASSERT_TRUE(base::JSONWriter::Write(user_data.fixed, &json));
     const std::string pattern =
-        R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversion":\[{"action":"view"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":".{44}","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})";
+        R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversion":\[{"action":"view"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":".{44}","segment":"untargeted","studies":\[],"topSegment":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})";
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 
@@ -116,7 +116,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
     std::string json;
     ASSERT_TRUE(base::JSONWriter::Write(user_data.fixed, &json));
     const std::string pattern =
-        R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversion":\[{"action":"click"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":".{44}","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})";
+        R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversion":\[{"action":"click"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":".{44}","segment":"untargeted","studies":\[],"topSegment":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})";
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 
