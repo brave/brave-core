@@ -268,27 +268,6 @@ export const Nfts = (props: Props) => {
     ]
   }, [sortedHiddenNfts, sortedSpamNfts, sortedNfts])
 
-  const nftsAccountLookup = React.useMemo(() => {
-    const lookup: { [assetId: string]: BraveWallet.AccountInfo | undefined } = {}
-    sortedHiddenNfts
-      .concat(sortedSpamNfts)
-      .concat(sortedNfts)
-      .forEach((nft) => {
-        const account = accounts.find(
-          (account) =>
-            nft.coin === account.accountId.coin &&
-            new Amount(
-              getBalance(account.accountId, nft, tokenBalancesRegistry)
-            ).gte('1')
-        )
-
-        if (account) {
-          lookup[getAssetIdKey(nft)] = account
-        }
-      })
-    return lookup
-  }, [accounts, sortedHiddenNfts, sortedSpamNfts, sortedNfts, tokenBalancesRegistry ])
-
   const renderedList = React.useMemo(() => {
     switch (selectedOptionId) {
       case 'collected':
@@ -339,14 +318,15 @@ export const Nfts = (props: Props) => {
         <NFTGridViewItem
           key={assetId}
           token={nft}
-          account={nftsAccountLookup[assetId]}
+          accounts={accounts}
+          networks={networks}
           onSelectAsset={() => onSelectAsset(nft)}
           isTokenHidden={hiddenNftsIds.includes(assetId) || allSpamNftsIds.includes(assetId)}
           isTokenSpam={allSpamNftsIds.includes(assetId)}
         />
       )
     },
-    [hiddenNftsIds, allSpamNftsIds, nftsAccountLookup, onSelectAsset]
+    [hiddenNftsIds, allSpamNftsIds, onSelectAsset]
   )
 
   const listUiByAccounts = React.useMemo(() => {
