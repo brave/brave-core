@@ -94,7 +94,7 @@ void P3AService::RegisterPrefs(PrefRegistrySimple* registry, bool first_run) {
   registry->RegisterDictionaryPref(kDynamicMetricsDictPref);
 }
 
-void P3AService::InitCallback(const std::string_view& histogram_name) {
+void P3AService::InitCallback(const std::string_view histogram_name) {
   histogram_sample_callbacks_.push_back(
       std::make_unique<base::StatisticsRecorder::ScopedHistogramSampleObserver>(
           std::string(histogram_name),
@@ -103,15 +103,15 @@ void P3AService::InitCallback(const std::string_view& histogram_name) {
 }
 
 void P3AService::InitCallbacks() {
-  for (const std::string_view& histogram_name :
+  for (const std::string_view histogram_name :
        p3a::kCollectedTypicalHistograms) {
     InitCallback(histogram_name);
   }
-  for (const std::string_view& histogram_name :
+  for (const std::string_view histogram_name :
        p3a::kCollectedExpressHistograms) {
     InitCallback(histogram_name);
   }
-  for (const std::string_view& histogram_name : p3a::kCollectedSlowHistograms) {
+  for (const std::string_view histogram_name : p3a::kCollectedSlowHistograms) {
     InitCallback(histogram_name);
   }
   LoadDynamicMetrics();

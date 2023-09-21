@@ -162,7 +162,7 @@ constexpr char sidebar_builtin_ai_chat_not_listed_json[] = R"({
          "sidebar_show_option": 0
       })";
 
-base::Value::Dict ParseTestJson(const std::string_view& json) {
+base::Value::Dict ParseTestJson(const std::string_view json) {
   absl::optional<base::Value> potential_response_dict_val =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);

@@ -41,7 +41,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   }
 }
 
-bool IsUnstoppableDomainsTLD(const std::string_view& host) {
+bool IsUnstoppableDomainsTLD(const std::string_view host) {
   for (auto* domain : kUnstoppableDomains) {
     if (base::EndsWith(host, domain))
       return true;
@@ -79,7 +79,7 @@ bool IsUnstoppableDomainsResolveMethodEnabled(PrefService* local_state) {
          ResolveMethodTypes::ENABLED;
 }
 
-bool IsENSTLD(const std::string_view& host) {
+bool IsENSTLD(const std::string_view host) {
   return base::EndsWith(host, kEthDomain);
 }
 
@@ -118,7 +118,7 @@ EnsOffchainResolveMethod GetEnsOffchainResolveMethod(PrefService* local_state) {
       local_state->GetInteger(kEnsOffchainResolveMethod));
 }
 
-bool IsSnsTLD(const std::string_view& host) {
+bool IsSnsTLD(const std::string_view host) {
   return base::EndsWith(host, kSolDomain);
 }
 

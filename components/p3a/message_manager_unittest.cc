@@ -165,7 +165,7 @@ class P3AMessageManagerTest : public testing::Test,
     std::vector<std::string> result;
     size_t p3a_i = 0;
     size_t p2a_i = 0;
-    for (const std::string_view& histogram_name :
+    for (const std::string_view histogram_name :
          p3a::kCollectedTypicalHistograms) {
       if (histogram_name.rfind(kP2APrefix, 0) == 0) {
         if (p2a_i < p2a_count) {

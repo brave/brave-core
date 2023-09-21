@@ -82,7 +82,7 @@ static constexpr auto kScopedQueryStringTrackers =
 
 // Remove tracking query parameters from a GURL, leaving all
 // other parts untouched.
-absl::optional<std::string> StripQueryParameter(const std::string_view& query,
+absl::optional<std::string> StripQueryParameter(const std::string_view query,
                                                 const std::string& spec) {
   // We are using custom query string parsing code here. See
   // https://github.com/brave/brave-core/pull/13726#discussion_r897712350
@@ -98,7 +98,7 @@ absl::optional<std::string> StripQueryParameter(const std::string_view& query,
   for (const auto& kv_string : input_kv_strings) {
     const std::vector<std::string_view> pieces = SplitStringPiece(
         kv_string, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-    const std::string_view& key = pieces.empty() ? "" : pieces[0];
+    const std::string_view key = pieces.empty() ? "" : pieces[0];
     if (pieces.size() >= 2 &&
         (kSimpleQueryStringTrackers.count(key) == 1 ||
          (kScopedQueryStringTrackers.count(key) == 1 &&
