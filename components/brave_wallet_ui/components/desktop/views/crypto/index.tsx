@@ -101,9 +101,23 @@ export const CryptoView = (props: Props) => {
   const location = useLocation()
 
   // methods
-  const onShowBackup = React.useCallback(() => {
+  const onShowBackup = () => {
+    if (isPanel) {
+      chrome.tabs.create(
+        {
+          url: `chrome://wallet${WalletRoutes.Backup}`
+        }, () => {
+          if (chrome.runtime.lastError) {
+            console.error(
+              'tabs.create failed: '
+              + chrome.runtime.lastError.message
+            )
+          }
+        })
+      return
+    }
     history.push(WalletRoutes.Backup)
-  }, [])
+  }
 
   const onShowVisibleAssetsModal = React.useCallback((showModal: boolean) => {
     if (showModal) {
