@@ -168,37 +168,9 @@ extension UIColor {
   }
 }
 
-extension UIColor {
-  public static var urlBarBackground: UIColor {
-    .init { traitCollection in
-      if traitCollection.userInterfaceStyle == .dark {
-        return .tertiaryBraveBackground
-      }
-      return .secondaryBraveBackground
-    }
-  }
-  public static var urlBarSeparator: UIColor {
-    .init { traitCollection in
-      if traitCollection.userInterfaceStyle == .dark {
-        return UIColor(white: 1.0, alpha: 0.1)
-      }
-      return .braveSeparator
-    }
-  }
-  public static var nightModeBackground: UIColor {
-    return .secondaryBraveBackground
-  }
-}
-
 // MARK: - Static Colors
 
 extension UIColor {
-  public static var privateModeBackground: UIColor {
-    .init(hex: 0x2C2153)
-  }
-  public static var secondaryPrivateModeBackground: UIColor {
-    .init(hex: 0x0D0920)
-  }
   public static var statsAdsBlockedTint: UIColor {
     .braveOrange
   }

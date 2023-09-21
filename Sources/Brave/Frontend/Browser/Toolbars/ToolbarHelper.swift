@@ -85,7 +85,7 @@ class ToolbarHelper: NSObject {
     toolbar.tabToolbarDelegate?.tabToolbarDidPressSearch(toolbar, button: toolbar.searchButton)
   }
   
-  func updateForTraitCollection(_ traitCollection: UITraitCollection, additionalButtons: [UIButton] = []) {
+  func updateForTraitCollection(_ traitCollection: UITraitCollection, browserColors: some BrowserColors, additionalButtons: [UIButton] = []) {
     let toolbarTraitCollection = UITraitCollection(preferredContentSizeCategory: traitCollection.toolbarButtonContentSizeCategory)
     let config = UIImage.SymbolConfiguration(pointSize: UIFont.preferredFont(forTextStyle: .body, compatibleWith: toolbarTraitCollection).pointSize, weight: .regular, scale: .large)
     let buttons: [UIButton] = [
@@ -97,6 +97,13 @@ class ToolbarHelper: NSObject {
     ] + additionalButtons
     for button in buttons {
       button.setPreferredSymbolConfiguration(config, forImageIn: .normal)
+      button.tintColor = browserColors.iconDefault
+      if let button = button as? ToolbarButton {
+        button.primaryTintColor = browserColors.iconDefault
+        button.selectedTintColor = browserColors.iconActive
+        button.disabledTintColor = browserColors.iconDisabled
+      }
     }
+    toolbar.tabsButton.browserColors = browserColors
   }
 }

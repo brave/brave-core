@@ -28,7 +28,7 @@ extension TabTrayController {
     override init(frame: CGRect) {
       super.init(frame: frame)
       
-      backgroundColor = .braveBackground
+      backgroundColor = .clear
       
       addSubview(tableView)
       tableView.snp.makeConstraints { make in
@@ -38,7 +38,7 @@ extension TabTrayController {
       tableView.do {
         $0.register(TabSyncTableViewCell.self)
         $0.registerHeaderFooter(TabSyncHeaderView.self)
-        $0.backgroundColor = .secondaryBraveBackground
+        $0.backgroundColor = .clear
         $0.estimatedRowHeight = SiteTableViewControllerUX.rowHeight
         $0.estimatedSectionHeaderHeight = SiteTableViewControllerUX.rowHeight
         $0.separatorColor = .braveSeparator

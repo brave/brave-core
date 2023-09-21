@@ -19,4 +19,8 @@ public final class PrivateBrowsingManager: ObservableObject {
       }
     }
   }
+  
+  var browserColors: any BrowserColors {
+    isPrivateBrowsing ? .privateMode : .standard
+  }
 }

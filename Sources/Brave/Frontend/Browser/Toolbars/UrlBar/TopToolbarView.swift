@@ -246,8 +246,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
     self.privateBrowsingManager = privateBrowsingManager
     
     super.init(frame: .zero)
-    
-    backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
 
     locationContainer.addSubview(locationView)
 
@@ -289,23 +287,19 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
     // Make sure we hide any views that shouldn't be showing in non-overlay mode.
     updateViewsForOverlayModeAndToolbarChanges()
-
+    
     privateModeCancellable = privateBrowsingManager
       .$isPrivateBrowsing
       .removeDuplicates()
-      .sink(receiveValue: { [weak self] isPrivateBrowsing in
-        self?.updateColors(isPrivateBrowsing)
+      .receive(on: RunLoop.main)
+      .sink(receiveValue: { [weak self] _ in
+        guard let self = self else { return }
+        self.updateColors()
+        self.helper?.updateForTraitCollection(self.traitCollection, browserColors: privateBrowsingManager.browserColors)
       })
     
-    Preferences.General.nightModeEnabled.objectWillChange
-      .receive(on: RunLoop.main)
-      .sink { [weak self] _ in
-        self?.updateColors(privateBrowsingManager.isPrivateBrowsing)
-      }
-      .store(in: &cancellables)
-    
     updateURLBarButtonsVisibility()
-    helper?.updateForTraitCollection(traitCollection, additionalButtons: [bookmarkButton])
+    helper?.updateForTraitCollection(traitCollection, browserColors: privateBrowsingManager.browserColors, additionalButtons: [bookmarkButton])
     updateForTraitCollection()
     
     let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedLocationView))
@@ -317,6 +311,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
     
     qrCodeButton.addTarget(self, action: #selector(topToolbarDidPressQrCodeButton), for: .touchUpInside)
     voiceSearchButton.addTarget(self, action: #selector(topToolbarDidPressVoiceSearchButton), for: .touchUpInside)
+    
+    updateColors()
   }
 
   @available(*, unavailable)
@@ -326,7 +322,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
-    helper?.updateForTraitCollection(traitCollection, additionalButtons: [bookmarkButton])
+    helper?.updateForTraitCollection(traitCollection, browserColors: privateBrowsingManager.browserColors, additionalButtons: [bookmarkButton])
     updateForTraitCollection()
   }
   
@@ -381,12 +377,12 @@ class TopToolbarView: UIView, ToolbarProtocol {
     return self.locationTextField?.becomeFirstResponder() ?? false
   }
   
-  private func updateColors(_ isPrivateBrowsing: Bool) {
-    if isPrivateBrowsing {
-      backgroundColor = .privateModeBackground
-    } else {
-      backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
-    }
+  private func updateColors() {
+    let browserColors = privateBrowsingManager.browserColors
+    backgroundColor = browserColors.chromeBackground
+    locationTextField?.backgroundColor = browserColors.containerBackground
+    locationTextField?.textColor = browserColors.textPrimary
+    locationTextField?.attributedPlaceholder = locationView.makePlaceholder(colors: browserColors)
   }
     
   /// Created whenever the location bar on top is selected
@@ -399,7 +395,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
     guard let locationTextField = locationTextField else { return }
 
     locationTextField.do {
-      $0.backgroundColor = .braveBackground
+      $0.backgroundColor = privateBrowsingManager.browserColors.containerBackground
+      $0.textColor = privateBrowsingManager.browserColors.textPrimary
       $0.translatesAutoresizingMaskIntoConstraints = false
       $0.autocompleteDelegate = self
       $0.keyboardType = .webSearch
@@ -412,7 +409,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
       $0.font = .preferredFont(forTextStyle: .body)
       $0.accessibilityIdentifier = "address"
       $0.accessibilityLabel = Strings.URLBarViewLocationTextViewAccessibilityLabel
-      $0.attributedPlaceholder = self.locationView.placeholder
+      $0.attributedPlaceholder = self.locationView.makePlaceholder(colors: .standard)
       $0.clearButtonMode = .whileEditing
       $0.rightViewMode = .never
     }

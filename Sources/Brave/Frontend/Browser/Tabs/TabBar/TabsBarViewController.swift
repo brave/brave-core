@@ -68,7 +68,6 @@ class TabsBarViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
     collectionView.backgroundColor = view.backgroundColor
     collectionView.dragDelegate = UIApplication.shared.supportsMultipleScenes ? self : nil
     collectionView.dropDelegate = UIApplication.shared.supportsMultipleScenes ? self : nil
@@ -132,20 +131,16 @@ class TabsBarViewController: UIViewController {
       self.delegate?.tabsBarDidSelectAddNewWindow(true)
     }))
 
+    updateColors()
+    
     plusButton.menu = UIMenu(title: "", identifier: nil, children: newTabMenu)
     privateModeCancellable = tabManager?.privateBrowsingManager
       .$isPrivateBrowsing
       .removeDuplicates()
-      .sink(receiveValue: { [weak self] isPrivateBrowsing in
-        self?.updateColors(isPrivateBrowsing)
-      })
-    
-    Preferences.General.nightModeEnabled.objectWillChange
       .receive(on: RunLoop.main)
-      .sink { [weak self] _ in
-        self?.updateColors(self?.tabManager?.privateBrowsingManager.isPrivateBrowsing == true)
-      }
-      .store(in: &cancellables)
+      .sink(receiveValue: { [weak self] isPrivateBrowsing in
+        self?.updateColors()
+      })
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -155,14 +150,9 @@ class TabsBarViewController: UIViewController {
   }
 
   private var privateModeCancellable: AnyCancellable?
-  private func updateColors(_ isPrivateBrowsing: Bool) {
-    let backgroundColor: UIColor
-    if isPrivateBrowsing {
-      backgroundColor = .privateModeBackground
-    } else {
-      backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
-    }
-    view.backgroundColor = backgroundColor
+  private func updateColors() {
+    let browserColors: any BrowserColors = tabManager?.privateBrowsingManager.browserColors ?? .standard
+    view.backgroundColor = browserColors.chromeBackground
     collectionView.backgroundColor = view.backgroundColor
   }
 

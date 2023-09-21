@@ -618,6 +618,7 @@ extension BrowserViewController: TopToolbarDelegate {
       searchController.removeFromParent()
       self.searchController = nil
       searchLoader = nil
+      favoritesController?.view.isHidden = false
     }
   }
 
@@ -631,7 +632,7 @@ extension BrowserViewController: TopToolbarDelegate {
       searchEngines: profile.searchEngines)
     
     // Setting up controller for SearchSuggestions
-    searchController = SearchViewController(with: searchDataSource)
+    searchController = SearchViewController(with: searchDataSource, browserColors: privateBrowsingManager.browserColors)
     searchController?.isUsingBottomBar = isUsingBottomBar
     guard let searchController = searchController else { return }
     searchController.setupSearchEngineList()
@@ -654,11 +655,13 @@ extension BrowserViewController: TopToolbarDelegate {
       view.insertSubview(searchController.view, belowSubview: header)
     }
     searchController.view.snp.makeConstraints {
-      $0.edges.equalTo(view.safeAreaLayoutGuide)
+      $0.edges.equalTo(view)
     }
     searchController.didMove(toParent: self)
     searchController.view.setNeedsLayout()
     searchController.view.layoutIfNeeded()
+    
+    favoritesController?.view.isHidden = true
   }
 
   private func displayFavoritesController() {
@@ -666,6 +669,7 @@ extension BrowserViewController: TopToolbarDelegate {
       let tabType = TabType.of(tabManager.selectedTab)
       let favoritesController = FavoritesViewController(
         tabType: tabType,
+        privateBrowsingManager: privateBrowsingManager,
         action: { [weak self] bookmark, action in
           self?.handleFavoriteAction(favorite: bookmark, action: action)
         },

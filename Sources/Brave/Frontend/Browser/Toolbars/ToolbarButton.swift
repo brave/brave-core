@@ -18,38 +18,42 @@ extension UITraitCollection {
 }
 
 class ToolbarButton: UIButton {
-  fileprivate var selectedTintColor: UIColor?
-  fileprivate var primaryTintColor: UIColor?
-  fileprivate var disabledTintColor: UIColor?
+  var selectedTintColor: UIColor? {
+    didSet {
+      updateTintColor()
+    }
+  }
+  var primaryTintColor: UIColor? {
+    didSet {
+      updateTintColor()
+    }
+  }
+  var disabledTintColor: UIColor? {
+    didSet {
+      updateTintColor()
+    }
+  }
 
-  required init() {
+  init() {
     super.init(frame: .zero)
     adjustsImageWhenHighlighted = false
     imageView?.contentMode = .scaleAspectFit
-
-    selectedTintColor = .braveBlurpleTint
-    primaryTintColor = .braveLabel
-    tintColor = primaryTintColor
-    imageView?.tintColor = tintColor
   }
-
-  override init(frame: CGRect) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+  
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
   }
 
   override open var isHighlighted: Bool {
     didSet {
-      self.tintColor = isHighlighted ? selectedTintColor : primaryTintColor
+      updateTintColor()
     }
   }
 
   override open var isEnabled: Bool {
     didSet {
-      self.tintColor = primaryTintColor?.withAlphaComponent(isEnabled ? 1.0 : 0.4)
+      updateTintColor()
     }
   }
 
@@ -57,6 +61,23 @@ class ToolbarButton: UIButton {
     didSet {
       self.imageView?.tintColor = self.tintColor
     }
+  }
+  
+  private func updateTintColor() {
+    let tintColor: UIColor? = {
+      if !isEnabled {
+        if let disabledTintColor {
+          return disabledTintColor
+        } else {
+          return primaryTintColor?.withAlphaComponent(0.4)
+        }
+      }
+      if isHighlighted {
+        return selectedTintColor
+      }
+      return primaryTintColor
+    }()
+    self.tintColor = tintColor
   }
 
   override func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willDisplayMenuFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {

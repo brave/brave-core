@@ -47,7 +47,7 @@ public class SelectedInsetButton: InsetButton {
     }
   }
 
-  var selectedBackgroundColor: UIColor? {
+  public var selectedBackgroundColor: UIColor? {
     didSet {
       if isSelected {
         backgroundColor = selectedBackgroundColor

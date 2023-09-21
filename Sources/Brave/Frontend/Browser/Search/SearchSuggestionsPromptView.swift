@@ -76,7 +76,7 @@ class SearchSuggestionPromptCell: UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-    backgroundColor = .secondaryBraveBackground
+    backgroundColor = .clear
 
     contentView.addSubview(vStackView)
     vStackView.snp.makeConstraints {
