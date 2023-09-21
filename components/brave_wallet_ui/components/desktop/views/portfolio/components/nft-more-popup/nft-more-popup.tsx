@@ -81,7 +81,7 @@ export const NftMorePopup = (props: Props) => {
       {/* remove option */}
       <PopupButton onClick={onRemoveNft}>
         <ButtonIcon name='trash' />
-        <PopupButtonText>{getLocale('braveNdftsTabRemove')}</PopupButtonText>
+        <PopupButtonText>{getLocale('braveNftsTabRemove')}</PopupButtonText>
       </PopupButton>
     </Popup>
   )

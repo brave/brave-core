@@ -947,7 +947,7 @@ provideStrings({
   braveNftsTabHide: 'Hide',
   braveNftsTabUnhide: 'Unhide',
   braveNftsTabEdit: 'Edit',
-  braveNdftsTabRemove: 'Don\'t show in wallet',
+  braveNftsTabRemove: 'Don\'t show in wallet',
 
   // Add asset tabs
   braveWalletAddAssetTokenTabTitle: 'Token',
