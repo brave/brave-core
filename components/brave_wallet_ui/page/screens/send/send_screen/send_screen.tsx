@@ -51,8 +51,12 @@ import {
   isValidFilAddress
 } from '../../../../utils/address-utils'
 import {
-  getEntitiesListFromEntityState //
-} from '../../../../utils/entities.utils'
+  selectAllVisibleUserAssetsFromQueryResult //
+} from '../../../../common/slices/entities/blockchain-token.entity'
+import {
+  selectAllAccountInfosFromQuery //
+} from '../../../../common/slices/entities/account-info.entity'
+import { networkSupportsAccount } from '../../../../utils/network-utils'
 
 // Hooks
 import {
@@ -76,6 +80,9 @@ import {
   useSendERC721TransferFromMutation,
   useSendETHFilForwarderTransferMutation,
   useGetAddressFromNameServiceUrlQuery,
+  useGetAccountInfosRegistryQuery,
+  useGetVisibleNetworksQuery,
+  usePrefetch
 } from '../../../../common/slices/api.slice'
 import {
   useAccountFromAddressQuery,
@@ -132,7 +139,6 @@ interface Props {
 }
 
 const EMPTY_PRICE_IDS: string[] = []
-const EMPTY_VISIBLE_TOKENS: BraveWallet.BlockchainToken[] = []
 
 const ErrorFailedChecksumMessage: AddressMessageInfo = {
   ...FailedChecksumMessage,
@@ -189,21 +195,24 @@ export const SendScreen = React.memo((props: Props) => {
   const [sendETHFilForwarderTransfer] = useSendETHFilForwarderTransferMutation()
 
   // Queries
+  const { data: networks } = useGetVisibleNetworksQuery()
+  const { accounts } = useGetAccountInfosRegistryQuery(undefined, {
+    selectFromResult: (res) => ({
+      accounts: selectAllAccountInfosFromQuery(res)
+    })
+  })
+
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAccount, isLoading: isLoadingSelectedAccount } =
     useSelectedAccountQuery()
 
   const { data: fullTokenList } = useGetCombinedTokensListQuery()
 
-  const { data: userAssets } = useGetUserTokensRegistryQuery(
-    contractAddressOrSymbol && chainId ? undefined : skipToken
-  )
-
-  const userVisibleTokensInfo = React.useMemo(() => {
-    return userAssets
-      ? getEntitiesListFromEntityState(userAssets, userAssets?.visibleTokenIds)
-      : EMPTY_VISIBLE_TOKENS
-  }, [userAssets])
+  const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
+    selectFromResult: result => ({
+      userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
+    })
+  })
 
   const selectedAssetFromParams = React.useMemo(() => {
     if (!contractAddressOrSymbol || !chainId) return
@@ -310,6 +319,28 @@ export const SendScreen = React.memo((props: Props) => {
   const { data: ethAddressChecksum = '' } = useGetEthAddressChecksumQuery(
     isValidEvmAddress ? trimmedToAddressOrUrl : skipToken
   )
+
+  // Prefetch Queries
+  const balancesPrefetchArg = React.useMemo(() => {
+    return accounts && networks
+    ? accounts.flatMap((account) =>
+        networks
+          .filter((network) =>
+            networkSupportsAccount(network, account.accountId)
+          )
+          .map((network) => ({
+            accountId: account.accountId,
+            chainId: network.chainId,
+            coin: network.coin as 0 | 60 | 461 | 501
+          }))
+          .filter(({ coin }) => coin !== undefined)
+      )
+    : skipToken
+  }, [accounts, networks])
+
+  const preFetchAllBalances = usePrefetch('getTokenBalancesRegistry', {
+    force: false
+  })
 
   // memos & computed
   const sendAmountValidationError: AmountValidationErrorType | undefined =
@@ -746,6 +777,13 @@ export const SendScreen = React.memo((props: Props) => {
     setSelectedAccountAndNetwork
   ])
 
+  // preload balances for asset selector
+  React.useEffect(() => {
+    if (balancesPrefetchArg !== skipToken) {
+      preFetchAllBalances(balancesPrefetchArg)
+    }
+  }, [preFetchAllBalances, balancesPrefetchArg])
+
   // render
   return (
     <>
@@ -985,7 +1023,7 @@ function ethToWeiAmount(
   return new Amount(sendAmount).multiplyByDecimals(selectedSendAsset.decimals)
 }
 
-export function getAddressMessageInfo({
+function getAddressMessageInfo({
   addressErrorKey,
   addressWarningKey,
   fevmTranslatedAddresses,
