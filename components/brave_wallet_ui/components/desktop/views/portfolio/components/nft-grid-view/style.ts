@@ -6,8 +6,8 @@
 import styled from 'styled-components'
 import { WalletButton } from '../../../../../shared/style'
 import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
 import Ipfs from '../../../../../../assets/svg-icons/nft-ipfs/ipfs-color.svg'
-import MoreVertical from '../../../../../../assets/svg-icons/more-vertical.svg'
 
 export const StyledWrapper = styled.div`
   display: grid;
@@ -39,7 +39,7 @@ export const NFTWrapper = styled.div`
   background: none;
   border: none;
   margin: 0px;
-  padding: 2px;
+  padding-right: 2px;
   overflow: hidden;
   &:last-child {
     margin-right: 0px;
@@ -71,9 +71,10 @@ export const DIVForClickableArea = styled.div`
 export const NFTText = styled.span`
   font-family: Poppins;
   font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  color: ${leo.color.text.primary};
   margin-top: 6px;
   max-width: 99%;
   white-space: nowrap;
@@ -82,13 +83,12 @@ export const NFTText = styled.span`
 `
 
 export const NFTSymbol = styled.span`
-  font-family: 'Poppins';
+  font-family: Poppins;
+  font-size: 12px;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  color: ${p => p.theme.color.text03};
-  margin-top: 4px;
+  line-height: 18px;
+  color: ${leo.color.text.secondary};
 `
 
 export const PinnedIcon = styled.div`
@@ -123,11 +123,46 @@ export const VerticalMenu = styled(WalletButton)`
   border-radius: 1000px;
 `
 
-export const VerticalMenuIcon = styled.div`
-  width: 4px;
-  height: 14px;
-  box-shadow: 0px 3px 10px ${leo.effect.elevation['02']};
-  mask-image: url(${MoreVertical});
-  -webkit-mask-image: url(${MoreVertical});
-  background-color: #fff;
+export const MoreButton = styled(WalletButton)`
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  z-index: 3;
+`
+
+export const MoreIcon = styled(Icon).attrs({
+  name: 'more-horizontal'
+})`
+  --leo-icon-size: 22px;
+  color: ${leo.color.text.secondary};
+`
+
+export const JunkMarker = styled.div`
+  display: inline-flex;
+  height: 20px;
+  padding: 0px ${leo.spacing.s};
+  align-items: center;
+  gap: ${leo.spacing.s};
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  flex-shrink: 0;
+  border-radius: ${leo.radius.s};
+  background-color: ${leo.color.red[20]};
+  color: ${leo.color.red[50]};
+  font-family: Poppins;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-transform: uppercase;
+  z-index: 2;
+`
+
+export const JunkIcon = styled(Icon).attrs({
+  name: 'warning-triangle-outline'
+})`
+  --leo-icon-size: 14px;
+  color: ${leo.color.systemfeedback.errorIcon};
 `

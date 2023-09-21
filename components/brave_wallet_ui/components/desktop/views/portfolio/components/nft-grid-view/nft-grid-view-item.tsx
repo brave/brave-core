@@ -15,8 +15,11 @@ import {
   useAssetManagement //
 } from '../../../../../../common/hooks/assets-management'
 import {
-  useGetIpfsGatewayTranslatedNftUrlQuery //
+  useGetIpfsGatewayTranslatedNftUrlQuery,
+  useRemoveUserTokenMutation, //
+  useUpdateNftSpamStatusMutation
 } from '../../../../../../common/slices/api.slice'
+import useBalancesFetcher from '../../../../../../common/hooks/use-balances-fetcher'
 
 // actions
 import { WalletActions } from '../../../../../../common/actions'
@@ -27,33 +30,43 @@ import { WalletSelectors } from '../../../../../../common/selectors'
 
 // Utils
 import { stripERC20TokenImageURL } from '../../../../../../utils/string-utils'
+import { getLocale } from '../../../../../../../common/locale'
 import Amount from '../../../../../../utils/amount'
+import { getBalance } from '../../../../../../utils/balance-utils'
 
 // components
-import { NftIconWithNetworkIcon } from '../../../../../shared/nft-icon/nft-icon-with-network-icon'
+import { DecoratedNftIcon } from '../../../../../shared/nft-icon/decorated-nft-icon'
 import { NftMorePopup } from '../nft-more-popup/nft-more-popup'
 import { AddOrEditNftModal } from '../../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
+import { RemoveNftModal } from '../../../../popup-modals/remove-nft-modal/remove-nft-modal'
 
 // Styled Components
 import {
   NFTWrapper,
   NFTText,
   IconWrapper,
-  VerticalMenuIcon,
-  VerticalMenu,
+  MoreIcon,
   DIVForClickableArea,
-  NFTSymbol
+  NFTSymbol,
+  MoreButton,
+  JunkMarker,
+  JunkIcon
 } from './style'
+import { Row } from '../../../../../shared/style'
 
 interface Props {
   token: BraveWallet.BlockchainToken
-  isHidden: boolean
+  accounts: BraveWallet.AccountInfo[]
+  networks: BraveWallet.NetworkInfo[]
+  isTokenHidden: boolean
+  isTokenSpam: boolean
   onSelectAsset: () => void
 }
 
 export const NFTGridViewItem = (props: Props) => {
-  const { token, isHidden, onSelectAsset } = props
+  const { token, accounts, networks, isTokenHidden, isTokenSpam, onSelectAsset } = props
   const tokenImageURL = stripERC20TokenImageURL(token.logo)
+  const [showRemoveNftModal, setShowRemoveNftModal] = React.useState<boolean>(false)
 
   // redux
   const showNetworkLogoOnNfts = useSafeWalletSelector(WalletSelectors.showNetworkLogoOnNfts)
@@ -66,10 +79,31 @@ export const NFTGridViewItem = (props: Props) => {
   const { data: remoteImage } = useGetIpfsGatewayTranslatedNftUrlQuery(
     tokenImageURL || skipToken
   )
+  const {
+    data: tokenBalancesRegistry
+  } = useBalancesFetcher({
+    accounts,
+    networks
+  })
 
   // hooks
   const dispatch = useDispatch()
   const { addOrRemoveTokenInLocalStorage } = useAssetManagement()
+
+  // mutations
+  const [updateNftSpamStatus] = useUpdateNftSpamStatusMutation()
+  const [removeUserToken] = useRemoveUserTokenMutation()
+
+  // memos
+  const account = React.useMemo(() => {
+    return accounts.find(
+      (account) =>
+        token.coin === account.accountId.coin &&
+        new Amount(
+          getBalance(account.accountId, token, tokenBalancesRegistry)
+        ).gte('1')
+    )
+  }, [accounts, token, tokenBalancesRegistry])
 
   // methods
   const onToggleShowMore = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -89,45 +123,71 @@ export const NFTGridViewItem = (props: Props) => {
   const onHideNft = React.useCallback(() => {
     setShowMore(false)
     addOrRemoveTokenInLocalStorage(token, 'remove')
-    dispatch(WalletActions.refreshNetworksAndTokens({}))
+    dispatch(WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true }))
   }, [token, addOrRemoveTokenInLocalStorage])
 
-  const onUnHideNft = React.useCallback(() => {
+  const onUnHideNft = React.useCallback(async () => {
     setShowMore(false)
     addOrRemoveTokenInLocalStorage(token, 'add')
-    dispatch(WalletActions.refreshNetworksAndTokens({}))
-  }, [token, addOrRemoveTokenInLocalStorage])
+    if (isTokenSpam) {
+      // remove from spam
+      await updateNftSpamStatus({ token, status: false })
+    }
+    dispatch(WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true }))
+  }, [token, addOrRemoveTokenInLocalStorage, isTokenSpam])
+
+  const onUnSpam = async () => {
+    setShowMore(false)
+    await updateNftSpamStatus({ token, status: false })
+    dispatch(WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true }))
+  }
+
+  const onConfirmDelete = async () => {
+    setShowRemoveNftModal(false)
+    await removeUserToken(token)
+  }
 
   return (
     <>
       <NFTWrapper>
-        <VerticalMenu
-          onClick={onToggleShowMore}
-        >
-          <VerticalMenuIcon />
-        </VerticalMenu>
-        {showMore && (
-          <NftMorePopup
-            isHidden={isHidden}
-            onEditNft={onEditNft}
-            onHideNft={onHideNft}
-            onUnHideNft={onUnHideNft}
-          />
-        )}
+        <NftMorePopup
+          isOpen={showMore}
+          isTokenHidden={isTokenHidden}
+          isTokenSpam={isTokenSpam}
+          onEditNft={onEditNft}
+          onHideNft={onHideNft}
+          onUnHideNft={onUnHideNft}
+          onUnSpam={onUnSpam}
+          onRemoveNft={() => {
+            setShowMore(false)
+            setShowRemoveNftModal(true)
+          }}
+          onClose={() => setShowMore(false)}
+        />
         <DIVForClickableArea onClick={onSelectAsset} />
+        {isTokenSpam && (
+          <JunkMarker>
+            {getLocale('braveWalletNftJunk')}
+            <JunkIcon />
+          </JunkMarker>
+        )}
         <IconWrapper>
-          <NftIconWithNetworkIcon
+          <DecoratedNftIcon
             icon={remoteImage}
             responsive={true}
             chainId={token?.chainId}
             coinType={token?.coin}
             hideNetworkIcon={!showNetworkLogoOnNfts}
+            account={account}
           />
         </IconWrapper>
-        <NFTText>
-          {token.name}{' '}
-          {token.tokenId ? '#' + new Amount(token.tokenId).toNumber() : ''}
-        </NFTText>
+
+        <Row justifyContent='space-between' margin='8px 0 0 0'>
+          <NFTText>{token.name}</NFTText>
+          <MoreButton onClick={onToggleShowMore}>
+            <MoreIcon />
+          </MoreButton>
+        </Row>
         {token.symbol !== '' && <NFTSymbol>{token.symbol}</NFTSymbol>}
       </NFTWrapper>
       {showEditModal && (
@@ -135,6 +195,13 @@ export const NFTGridViewItem = (props: Props) => {
           nftToken={token}
           onHideForm={onHideModal}
           onClose={onHideModal}
+        />
+      )}
+
+      {showRemoveNftModal && (
+        <RemoveNftModal
+          onConfirm={onConfirmDelete}
+          onCancel={() => setShowRemoveNftModal(false)}
         />
       )}
     </>

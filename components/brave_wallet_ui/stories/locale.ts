@@ -924,9 +924,11 @@ provideStrings({
   braveNftsTabEmptyStateDisclaimer: 'Compatible with NFTs on Solana (SPL) and Ethereum (ERC-721).',
   braveNftsTab: 'NFTs',
   braveNftsTabHidden: 'Hidden',
+  braveNftsTabCollected: 'Collected',
   braveNftsTabHide: 'Hide',
   braveNftsTabUnhide: 'Unhide',
   braveNftsTabEdit: 'Edit',
+  braveNftsTabRemove: 'Don\'t show in wallet',
 
   // Add asset tabs
   braveWalletAddAssetTokenTabTitle: 'Token',
@@ -976,6 +978,15 @@ provideStrings({
   braveWalletNftPinningErrorTooltipReasonThree: 'Not enough space on local node',
   braveWalletImportNftModalTitle: 'Import NFT',
   braveWalletEditNftModalTitle: 'Edit NFT',
+  braveWalletNftMoveToSpam: 'Mark as junk',
+  braveWalletNftUnspam: 'Mark as not junk',
+  braveWalletNftJunk: 'Junk',
+
+  // Remove NFT modal
+  braveWalletRemoveNftModalHeader: 'Remove from Brave Wallet?',
+  braveWalletRemoveNftModalDescription: 'NFT will be removed from Brave Wallet but will remain on the blockchain. If you remove it, then change your mind, you\'ll need to import it again manually.',
+  braveWalletRemoveNftModalCancel: 'Cancel',
+  braveWalletRemoveNftModalConfirm: 'Remove',
 
   // NFT auto discovery modal
   braveWalletEnableNftAutoDiscoveryModalHeader: 'Want your NFTs displayed automatically?',
