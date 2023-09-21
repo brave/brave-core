@@ -113,9 +113,9 @@ class TabLocationView: UIView {
     }
   }
 
-  lazy var placeholder: NSAttributedString = {
-    return NSAttributedString(string: Strings.tabToolbarSearchAddressPlaceholderText, attributes: [NSAttributedString.Key.foregroundColor: UIColor.secondaryBraveLabel])
-  }()
+  func makePlaceholder(colors: some BrowserColors) -> NSAttributedString {
+    NSAttributedString(string: Strings.tabToolbarSearchAddressPlaceholderText, attributes: [NSAttributedString.Key.foregroundColor: colors.textSecondary])
+  }
 
   lazy var urlTextField: UITextField = {
     let urlTextField = DisplayTextField()
@@ -123,12 +123,11 @@ class TabLocationView: UIView {
     // Prevent the field from compressing the toolbar buttons on the 4S in landscape.
     urlTextField.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 250), for: .horizontal)
     urlTextField.setContentCompressionResistancePriority(.required, for: .vertical)
-    urlTextField.attributedPlaceholder = self.placeholder
+    urlTextField.attributedPlaceholder = makePlaceholder(colors: .standard)
     urlTextField.accessibilityIdentifier = "url"
     urlTextField.font = .preferredFont(forTextStyle: .body)
     urlTextField.backgroundColor = .clear
     urlTextField.clipsToBounds = true
-    urlTextField.textColor = .braveLabel
     urlTextField.isEnabled = false
     urlTextField.defaultTextAttributes = {
       var attributes = urlTextField.defaultTextAttributes
@@ -147,9 +146,8 @@ class TabLocationView: UIView {
   }()
 
   private(set) lazy var lockImageView = ToolbarButton().then {
-    $0.setImage(UIImage(braveSystemNamed: "brave.lock.alt", compatibleWith: nil), for: .normal)
+    $0.setImage(UIImage(braveSystemNamed: "brave.lock.alt", compatibleWith: nil)?.withRenderingMode(.alwaysTemplate), for: .normal)
     $0.isHidden = true
-    $0.tintColor = .braveLabel
     $0.isAccessibilityElement = true
     $0.imageView?.contentMode = .center
     $0.contentHorizontalAlignment = .center
@@ -166,8 +164,6 @@ class TabLocationView: UIView {
     readerModeButton.imageView?.contentMode = .scaleAspectFit
     readerModeButton.accessibilityLabel = Strings.tabToolbarReaderViewButtonAccessibilityLabel
     readerModeButton.accessibilityIdentifier = "TabLocationView.readerModeButton"
-    readerModeButton.unselectedTintColor = .braveLabel
-    readerModeButton.selectedTintColor = .braveBlurpleTint
     return readerModeButton
   }()
 
@@ -224,7 +220,6 @@ class TabLocationView: UIView {
 
   lazy var separatorLine: UIView = CustomSeparatorView(lineSize: .init(width: 1, height: 26), cornerRadius: 2).then {
     $0.isUserInteractionEnabled = false
-    $0.backgroundColor = .braveSeparator
     $0.layoutMargins = UIEdgeInsets(top: 0, left: 2, bottom: 0, right: 2)
   }
 
@@ -236,13 +231,13 @@ class TabLocationView: UIView {
   }
 
   private var isVoiceSearchAvailable: Bool
+  private let privateBrowsingManager: PrivateBrowsingManager
 
   init(voiceSearchSupported: Bool, privateBrowsingManager: PrivateBrowsingManager) {
+    self.privateBrowsingManager = privateBrowsingManager
     isVoiceSearchAvailable = voiceSearchSupported
     
     super.init(frame: .zero)
-
-    backgroundColor = .braveBackground
 
     tabObservers = registerFor(.didChangeContentBlocking, .didGainFocus, queue: .main)
 
@@ -287,8 +282,9 @@ class TabLocationView: UIView {
     
     privateModeCancellable = privateBrowsingManager.$isPrivateBrowsing
       .removeDuplicates()
-      .sink(receiveValue: { [weak self] isPrivateBrowsing in
-        self?.updateColors(isPrivateBrowsing)
+      .receive(on: RunLoop.main)
+      .sink(receiveValue: { [weak self] _ in
+        self?.updateColors()
       })
     
     playlistButton.menuActionHandler = { [unowned self] action in
@@ -296,6 +292,8 @@ class TabLocationView: UIView {
     }
     
     updateForTraitCollection()
+    
+    updateColors()
   }
 
   required init(coder: NSCoder) {
@@ -339,14 +337,18 @@ class TabLocationView: UIView {
     }
   }
   
-  private func updateColors(_ isPrivateBrowsing: Bool) {
-    if isPrivateBrowsing {
-      overrideUserInterfaceStyle = .dark
-      backgroundColor = .braveBackground.resolvedColor(with: .init(userInterfaceStyle: .dark))
-    } else {
-      overrideUserInterfaceStyle = DefaultTheme(
-        rawValue: Preferences.General.themeNormalMode.value)?.userInterfaceStyleOverride ?? .unspecified
-      backgroundColor = .braveBackground
+  private func updateColors() {
+    let browserColors = privateBrowsingManager.browserColors
+    backgroundColor = browserColors.containerBackground
+    urlTextField.textColor = browserColors.textPrimary
+    urlTextField.attributedPlaceholder = makePlaceholder(colors: browserColors)
+    separatorLine.backgroundColor = browserColors.dividerSubtle
+    readerModeButton.unselectedTintColor = browserColors.iconDefault
+    readerModeButton.selectedTintColor = browserColors.iconActive
+    for button in [reloadButton, lockImageView, voiceSearchButton] {
+      button.primaryTintColor = browserColors.iconDefault
+      button.disabledTintColor = browserColors.iconDisabled
+      button.selectedTintColor = browserColors.iconActive
     }
   }
   

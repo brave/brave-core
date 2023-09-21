@@ -17,7 +17,6 @@ class TabsButton: UIButton {
   private let countLabel = UILabel().then {
     $0.textAlignment = .center
     $0.isUserInteractionEnabled = false
-    $0.textColor = .braveLabel
   }
 
   private let borderView = UIView().then {
@@ -25,6 +24,12 @@ class TabsButton: UIButton {
     $0.layer.cornerRadius = TabsButtonUX.cornerRadius
     $0.layer.cornerCurve = .continuous
     $0.isUserInteractionEnabled = false
+  }
+  
+  var browserColors: any BrowserColors = .standard {
+    didSet {
+      updateForTraitCollectionAndBrowserColors()
+    }
   }
 
   override init(frame: CGRect) {
@@ -40,7 +45,7 @@ class TabsButton: UIButton {
     countLabel.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    updateForTraitCollection()
+    updateForTraitCollectionAndBrowserColors()
   }
 
   @available(*, unavailable)
@@ -50,7 +55,7 @@ class TabsButton: UIButton {
 
   override var isHighlighted: Bool {
     didSet {
-      let color: UIColor = isHighlighted ? .braveBlurpleTint : .braveLabel
+      let color: UIColor = isHighlighted ? browserColors.iconActive : browserColors.iconDefault
       countLabel.textColor = color
       borderView.layer.borderColor = color.resolvedColor(with: traitCollection).cgColor
     }
@@ -58,12 +63,13 @@ class TabsButton: UIButton {
 
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
-    updateForTraitCollection()
+    updateForTraitCollectionAndBrowserColors()
   }
   
-  private func updateForTraitCollection() {
+  private func updateForTraitCollectionAndBrowserColors() {
     // CGColor's do not get automatic updates
-    borderView.layer.borderColor = isHighlighted ? UIColor.braveBlurpleTint.cgColor : UIColor.braveLabel.resolvedColor(with: traitCollection).cgColor
+    countLabel.textColor = isHighlighted ? browserColors.iconActive : browserColors.iconDefault
+    borderView.layer.borderColor = isHighlighted ? browserColors.iconActive.cgColor : browserColors.iconDefault.resolvedColor(with: traitCollection).cgColor
     
     let toolbarTraitCollection = UITraitCollection(preferredContentSizeCategory: traitCollection.toolbarButtonContentSizeCategory)
     let metrics = UIFontMetrics(forTextStyle: .body)

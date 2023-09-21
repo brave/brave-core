@@ -6,8 +6,16 @@ import UIKit
 import DesignSystem
 
 class ReaderModeButton: UIButton {
-  var selectedTintColor: UIColor?
-  var unselectedTintColor: UIColor?
+  var selectedTintColor: UIColor? {
+    didSet {
+      updateAppearance()
+    }
+  }
+  var unselectedTintColor: UIColor? {
+    didSet {
+      updateAppearance()
+    }
+  }
 
   override init(frame: CGRect) {
     super.init(frame: frame)

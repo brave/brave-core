@@ -109,19 +109,14 @@ class TabTrayController: AuthenticationController {
     static let segmentedControlTopInset = 16.0
   }
   
-  private let containerView = UIView().then {
-    $0.backgroundColor = .secondaryBraveBackground
-  }
+  private let containerView = UIView()
   
-  private let tabContentView = UIView().then {
-    $0.backgroundColor = .braveBackground
-  }
+  private let tabContentView = UIView()
   
   private var tabTypeSelectorItems = [UIImage]()
   private lazy var tabTypeSelector: UISegmentedControl = {
     let segmentedControl = UISegmentedControl(items: tabTypeSelectorItems).then {
       $0.selectedSegmentIndex = 0
-      $0.backgroundColor = .secondaryBraveBackground
       $0.addTarget(self, action: #selector(typeSelectionDidChange(_:)), for: .valueChanged)
     }
     return segmentedControl
@@ -139,7 +134,6 @@ class TabTrayController: AuthenticationController {
     $0.setImage(UIImage(named: "add_tab", in: .module, compatibleWith: nil)!.template, for: .normal)
     $0.accessibilityLabel = Strings.tabTrayAddTabAccessibilityLabel
     $0.accessibilityIdentifier = "TabTrayController.addTabButton"
-    $0.tintColor = .braveLabel
     $0.contentEdgeInsets = .init(top: 0, left: UX.buttonEdgeInset, bottom: 0, right: UX.buttonEdgeInset)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
@@ -152,7 +146,6 @@ class TabTrayController: AuthenticationController {
     $0.titleLabel?.adjustsFontSizeToFitWidth = true
     $0.accessibilityLabel = Strings.done
     $0.accessibilityIdentifier = "TabTrayController.doneButton"
-    $0.tintColor = .braveLabel
   }
 
   let privateModeButton = SelectedInsetButton().then {
@@ -164,6 +157,7 @@ class TabTrayController: AuthenticationController {
     $0.accessibilityLabel = Strings.done
     $0.accessibilityIdentifier = "TabTrayController.privateButton"
     $0.tintColor = .braveLabel
+    $0.selectedBackgroundColor = UIColor(braveSystemName: .primitivePrivateWindow70)
 
     if Preferences.Privacy.privateBrowsingOnly.value {
       $0.alpha = 0
@@ -301,8 +295,9 @@ class TabTrayController: AuthenticationController {
     privateModeCancellable = tabManager.privateBrowsingManager
       .$isPrivateBrowsing
       .removeDuplicates()
-      .sink(receiveValue: { [weak self] isPrivateBrowsing in
-        self?.updateColors(isPrivateBrowsing)
+      .receive(on: RunLoop.main)
+      .sink(receiveValue: { [weak self] _ in
+        self?.updateColors()
       })
     
     windowProtection?.cancelPressed
@@ -319,6 +314,7 @@ class TabTrayController: AuthenticationController {
     }.store(in: &localAuthObservers)
   
     reloadOpenTabsSession()
+    updateColors()
     
     becomeFirstResponder()
   }
@@ -393,13 +389,40 @@ class TabTrayController: AuthenticationController {
     }
   }
   
-  private func updateColors(_ isPrivateBrowsing: Bool) {
-    if isPrivateBrowsing {
-      overrideUserInterfaceStyle = .dark
-    } else {
-      overrideUserInterfaceStyle = DefaultTheme(
-        rawValue: Preferences.General.themeNormalMode.value)?.userInterfaceStyleOverride ?? .unspecified
+  private func updateColors() {
+    let privateBrowsingManager = tabManager.privateBrowsingManager
+    let browserColors = privateBrowsingManager.browserColors
+    containerView.backgroundColor = browserColors.chromeBackground
+    tabTypeSelector.backgroundColor = browserColors.chromeBackground
+    newTabButton.tintColor = browserColors.iconDefault
+    privateModeButton.setTitleColor(browserColors.textSecondary, for: .normal)
+    privateModeButton.setTitleColor(browserColors.textPrimary, for: .selected)
+    
+    let toolbarAppearance = UIToolbarAppearance()
+    toolbarAppearance.configureWithOpaqueBackground()
+    toolbarAppearance.backgroundColor = browserColors.chromeBackground
+    toolbarAppearance.backgroundEffect = nil
+    navigationController?.toolbar.do {
+      $0.tintColor = browserColors.textSecondary
+      $0.standardAppearance = toolbarAppearance
+      $0.compactAppearance = toolbarAppearance
+      $0.scrollEdgeAppearance = toolbarAppearance
     }
+    
+    let navBarAppearance = UINavigationBarAppearance()
+    navBarAppearance.configureWithOpaqueBackground()
+    navBarAppearance.backgroundColor = browserColors.chromeBackground
+    navBarAppearance.backgroundEffect = nil
+    navigationController?.navigationBar.do {
+      $0.tintColor = browserColors.textSecondary
+      $0.standardAppearance = navBarAppearance
+      $0.compactAppearance = navBarAppearance
+      $0.scrollEdgeAppearance = navBarAppearance
+    }
+    
+    // Need to force a relayout for the nav controller for the appearance to take affect
+    navigationController?.view.setNeedsLayout()
+    navigationController?.view.layoutIfNeeded()
     
     setNeedsStatusBarAppearanceUpdate()
   }

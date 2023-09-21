@@ -190,12 +190,6 @@ extension TabTrayController: BasicAnimationControllerDelegate {
 
     // Allow the UI to render to make the snapshotting code more performant
     DispatchQueue.main.async { [self] in
-      // BVC snapshot animates from the cell to its final resting spot
-      let toVCSnapshot: UIView = toView.snapshotView(afterScreenUpdates: true) ?? UIImageView(image: toView.snapshot)
-      toVCSnapshot.layer.cornerCurve = .continuous
-      toVCSnapshot.layer.cornerRadius = TabCell.UX.cornerRadius
-      toVCSnapshot.clipsToBounds = true
-
       // Just a small background view for animation sake between the tab tray and the bvc
       let backgroundView = UIView()
       backgroundView.backgroundColor = .init(white: 0.0, alpha: 0.3)
@@ -204,11 +198,19 @@ extension TabTrayController: BasicAnimationControllerDelegate {
 
       context.containerView.addSubview(toView)
       context.containerView.addSubview(backgroundView)
-      context.containerView.addSubview(toVCSnapshot)
-      context.containerView.addSubview(tabSnapshot)
-
+      
       toView.setNeedsLayout()
       toView.layoutIfNeeded()
+      
+      // BVC snapshot animates from the cell to its final resting spot
+      let toVCSnapshot: UIView = toView.snapshotView(afterScreenUpdates: true) ?? UIImageView(image: toView.snapshot)
+      toVCSnapshot.layer.cornerCurve = .continuous
+      toVCSnapshot.layer.cornerRadius = TabCell.UX.cornerRadius
+      toVCSnapshot.clipsToBounds = true
+
+      context.containerView.addSubview(toVCSnapshot)
+      context.containerView.addSubview(tabSnapshot)
+      
       // Hide the destination as we're animating a snapshot into place
       toView.isHidden = true
 

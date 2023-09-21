@@ -70,7 +70,7 @@ class BraveSearchPromotionCell: UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
-    backgroundColor = .secondaryBraveBackground
+    backgroundColor = .clear
     selectionStyle = .none
     
     contentView.addSubview(promotionContentView)

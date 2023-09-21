@@ -26,6 +26,14 @@ extension UIWindowScene {
   public var browserViewController: BrowserViewController? {
     return browserViewControllers.first
   }
+  
+  /// Returns the browser colors of the current window scene
+  var browserColors: any BrowserColors {
+    if let bvc = browserViewController, bvc.privateBrowsingManager.isPrivateBrowsing {
+      return .privateMode
+    }
+    return .standard
+  }
 }
 
 extension UIViewController {

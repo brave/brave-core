@@ -29,11 +29,8 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
   // MARK: SearchViewControllerUX
 
   private struct SearchViewControllerUX {
-    static let searchEngineScrollViewBorderColor = UIColor.black.withAlphaComponent(0.2).cgColor
-
     static let engineButtonHeight: Float = 44
     static let engineButtonWidth = engineButtonHeight * 1.4
-    static let engineButtonBackgroundColor = UIColor.clear.cgColor
 
     static let searchImageWidth: Float = 24
     static let searchButtonMargin: CGFloat = 8
@@ -52,7 +49,6 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     scrollView.showsVerticalScrollIndicator = false
     scrollView.showsHorizontalScrollIndicator = false
     scrollView.clipsToBounds = false
-    scrollView.backgroundColor = .braveBackground
     let border = UIView.separatorLine
     scrollView.addSubview(border)
     border.snp.makeConstraints {
@@ -60,9 +56,8 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       $0.leading.trailing.equalTo(scrollView.frameLayoutGuide)
     }
   }
-  private let searchEngineScrollViewContent = UIView().then {
-    $0.backgroundColor = .braveBackground
-  }
+  private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
+  private let searchEngineScrollViewContent = UIView()
   
   private lazy var suggestionLongPressGesture = UILongPressGestureRecognizer(
     target: self,
@@ -77,11 +72,14 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
 
   let dataSource: SearchSuggestionDataSource
   public static var userAgent: String?
+  private var browserColors: any BrowserColors
 
   // MARK: Lifecycle
 
-  init(with dataSource: SearchSuggestionDataSource) {
+  init(with dataSource: SearchSuggestionDataSource, browserColors: some BrowserColors) {
     self.dataSource = dataSource
+    self.browserColors = browserColors
+    
     super.init(nibName: nil, bundle: nil)
     
     dataSource.delegate = self
@@ -101,22 +99,27 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
   }
 
   override public func viewDidLoad() {
-    let blur = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-    view.addSubview(blur)
-
     super.viewDidLoad()
+    
+    view.insertSubview(backgroundView, belowSubview: tableView)
+    
+    backgroundView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    
+    // Have to apply a custom alpha here because UIVisualEffectView blurs come with their own tint
+    backgroundView.contentView.backgroundColor = browserColors.containerFrostedGlass.withAlphaComponent(0.8)
+    searchEngineScrollView.backgroundColor = browserColors.containerBackground
+    
     setupSearchEngineScrollViewIfNeeded()
 
     KeyboardHelper.defaultHelper.addDelegate(self)
-
-    blur.snp.makeConstraints { make in
-      make.edges.equalTo(view)
-    }
 
     tableView.do {
       $0.keyboardDismissMode = .interactive
       $0.separatorStyle = .none
       $0.sectionHeaderTopPadding = 5
+      $0.backgroundColor = .clear
       $0.addGestureRecognizer(suggestionLongPressGesture)
       $0.register(SearchSuggestionPromptCell.self, forCellReuseIdentifier: SearchSuggestionPromptCell.identifier)
       $0.register(SuggestionCell.self, forCellReuseIdentifier: SuggestionCell.identifier)
@@ -249,7 +252,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     let searchButton = UIButton()
     searchButton.setImage(UIImage(named: "quickSearch", in: .module, compatibleWith: nil)!.template, for: [])
     searchButton.imageView?.contentMode = .center
-    searchButton.layer.backgroundColor = SearchViewControllerUX.engineButtonBackgroundColor
+    searchButton.backgroundColor = .clear
     searchButton.addTarget(self, action: #selector(didClickSearchButton), for: .touchUpInside)
     searchButton.accessibilityLabel = Strings.searchSettingsButtonTitle
     searchButton.tintColor = .braveBlurpleTint
@@ -274,7 +277,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       let engineButton = UIButton()
       engineButton.setImage(engine.image, for: [])
       engineButton.imageView?.contentMode = .scaleAspectFit
-      engineButton.layer.backgroundColor = SearchViewControllerUX.engineButtonBackgroundColor
+      engineButton.backgroundColor = .clear
       engineButton.addTarget(self, action: #selector(didSelectEngine), for: .touchUpInside)
       engineButton.accessibilityLabel = String(format: Strings.searchEngineFormatText, engine.shortName)
 
@@ -531,9 +534,10 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       let cell = TwoLineTableViewCell()
       cell.textLabel?.text = dataSource.searchQuery
       cell.textLabel?.textColor = .bravePrimary
-      cell.imageView?.image = UIImage(named: "search_bar_find_in_page_icon", in: .module, compatibleWith: nil)!
+      cell.imageView?.image = UIImage(named: "search_bar_find_in_page_icon", in: .module, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+      cell.imageView?.tintColor = browserColors.iconDefault
       cell.imageView?.contentMode = .center
-      cell.backgroundColor = .secondaryBraveBackground
+      cell.backgroundColor = .clear
 
       return cell
     case .searchSuggestionsOptIn:
@@ -598,7 +602,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
           string: Strings.searchSuggestionOpenTabActionTitle,
           attributes: [
             .font: DynamicFontHelper.defaultHelper.SmallSizeBoldWeightAS,
-            .foregroundColor: UIColor.braveLabel
+            .foregroundColor: browserColors.textSecondary
           ]))
 
       detailTextForTabSuggestions.append(
@@ -606,36 +610,36 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
           string: " · \(site.url)",
           attributes: [
             .font: DynamicFontHelper.defaultHelper.SmallSizeRegularWeightAS,
-            .foregroundColor: UIColor.secondaryBraveLabel
+            .foregroundColor: browserColors.textSecondary
           ]))
       
       if let cell = cell as? TwoLineTableViewCell {
-        cell.textLabel?.textColor = .bravePrimary
+        cell.textLabel?.textColor = browserColors.textPrimary
         if site.siteType == .tab {
           cell.setLines(site.title, detailText: nil, detailAttributedText: detailTextForTabSuggestions)
         } else {
           cell.setLines(site.title, detailText: site.url)
         }
         cell.setRightBadge(site.siteType.icon?.template ?? nil)
-        cell.accessoryView?.tintColor = .secondaryButtonTint
+        cell.accessoryView?.tintColor = browserColors.iconDefault
         
         cell.imageView?.contentMode = .scaleAspectFit
         cell.imageView?.layer.borderColor = SearchViewControllerUX.iconBorderColor.cgColor
         cell.imageView?.layer.borderWidth = SearchViewControllerUX.iconBorderWidth
         cell.imageView?.loadFavicon(for: site.tileURL, isPrivateBrowsing: dataSource.tabType.isPrivate)
-        cell.backgroundColor = .secondaryBraveBackground
+        cell.backgroundColor = .clear
       }
         
       return cell
     case .findInPage:
       let cell = tableView.dequeueReusableCell(withIdentifier: "default", for: indexPath)
       cell.textLabel?.text = String(format: Strings.findInPageFormat, dataSource.searchQuery)
-      cell.textLabel?.textColor = .bravePrimary
+      cell.textLabel?.textColor = browserColors.textPrimary
       cell.textLabel?.numberOfLines = 2
       cell.textLabel?.font = .systemFont(ofSize: 15.0)
       cell.textLabel?.lineBreakMode = .byWordWrapping
       cell.textLabel?.textAlignment = .left
-      cell.backgroundColor = .secondaryBraveBackground
+      cell.backgroundColor = .clear
         
       return cell
     }

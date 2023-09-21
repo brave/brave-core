@@ -79,7 +79,8 @@ extension TabTrayController: UITableViewDataSource, UITableViewDelegate {
     }
         
     let headerView = tableView.dequeueReusableHeaderFooter() as TabSyncHeaderView
-
+    let browserColors: some BrowserColors = .standard // Sync devices dont appear in private mode
+    
     headerView.do {
       $0.imageIconView.image = deviceTypeImage?.template
       $0.titleLabel.text = sectionDetails.name
@@ -89,8 +90,8 @@ extension TabTrayController: UITableViewDataSource, UITableViewDelegate {
       $0.isCollapsed = hiddenSections.contains(section)
       $0.section = section
       $0.delegate = self
-      $0.backgroundColor = .secondaryBraveBackground
-      $0.tintColor = .secondaryBraveBackground
+      $0.backgroundColor = browserColors.chromeBackground
+      $0.tintColor = browserColors.chromeBackground
     }
          
     return headerView

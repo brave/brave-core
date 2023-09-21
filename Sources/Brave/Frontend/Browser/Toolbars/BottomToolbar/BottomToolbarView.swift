@@ -35,7 +35,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     super.init(frame: .zero)
     setupAccessibility()
 
-    backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
+    backgroundColor = privateBrowsingManager.browserColors.chromeBackground
 
     addSubview(contentView)
     addSubview(line)
@@ -54,30 +54,21 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     privateModeCancellable = privateBrowsingManager
       .$isPrivateBrowsing
       .removeDuplicates()
+      .receive(on: RunLoop.main)
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
-        self?.updateColors(isPrivateBrowsing)
+        guard let self = self else { return }
+        self.updateColors()
+        self.helper?.updateForTraitCollection(self.traitCollection, browserColors: privateBrowsingManager.browserColors)
       })
     
-    Preferences.General.nightModeEnabled.objectWillChange
-      .receive(on: RunLoop.main)
-      .sink { [weak self] _ in
-        self?.updateColors(privateBrowsingManager.isPrivateBrowsing)
-      }
-      .store(in: &cancellables)
+    helper?.updateForTraitCollection(traitCollection, browserColors: privateBrowsingManager.browserColors)
     
-    helper?.updateForTraitCollection(traitCollection)
+    updateColors()
   }
 
   private var privateModeCancellable: AnyCancellable?
-  private func updateColors(_ isPrivateBrowsing: Bool) {
-    if isPrivateBrowsing {
-      overrideUserInterfaceStyle = .dark
-      backgroundColor = .privateModeBackground
-    } else {
-      overrideUserInterfaceStyle = DefaultTheme(
-        rawValue: Preferences.General.themeNormalMode.value)?.userInterfaceStyleOverride ?? .unspecified
-      backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
-    }
+  private func updateColors() {
+    backgroundColor = privateBrowsingManager.browserColors.chromeBackground
   }
 
   private var isSearchButtonEnabled: Bool = false {
@@ -106,7 +97,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
   
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
-    helper?.updateForTraitCollection(traitCollection)
+    helper?.updateForTraitCollection(traitCollection, browserColors: privateBrowsingManager.browserColors)
   }
 
   private func setupAccessibility() {

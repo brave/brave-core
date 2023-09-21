@@ -17,29 +17,23 @@ class ReaderModeBarView: UIView {
 
   private let readerModeButton = UIButton(type: .system).then {
     $0.setTitle(Strings.readerModeButtonTitle, for: .normal)
-    $0.setTitleColor(.braveLabel, for: .normal)
     $0.titleLabel?.font = .preferredFont(forTextStyle: .subheadline)
     $0.accessibilityIdentifier = "ReaderModeBarView.readerModeSettingsButton"
   }
 
   private let settingsButton = UIButton(type: .system).then {
     $0.setImage(UIImage(braveSystemNamed: "leo.tune"), for: .normal)
-    $0.tintColor = .braveLabel
     $0.accessibilityIdentifier = "ReaderModeBarView.settingsButton"
   }
   
   private var privateBrowsingManager: PrivateBrowsingManager
 
   private var cancellables: Set<AnyCancellable> = []
-  private func updateColors(_ isPrivateBrowsing: Bool) {
-    if isPrivateBrowsing {
-      overrideUserInterfaceStyle = .dark
-      backgroundColor = .privateModeBackground
-    } else {
-      overrideUserInterfaceStyle = DefaultTheme(
-        rawValue: Preferences.General.themeNormalMode.value)?.userInterfaceStyleOverride ?? .unspecified
-      backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
-    }
+  private func updateColors() {
+    let browserColors = privateBrowsingManager.browserColors
+    backgroundColor = browserColors.chromeBackground
+    settingsButton.tintColor = browserColors.iconDefault
+    readerModeButton.setTitleColor(browserColors.textPrimary, for: .normal)
   }
   
   init(privateBrowsingManager: PrivateBrowsingManager) {
@@ -70,20 +64,13 @@ class ReaderModeBarView: UIView {
     privateBrowsingManager
       .$isPrivateBrowsing
       .removeDuplicates()
-      .sink(receiveValue: { [weak self] isPrivateBrowsing in
-        self?.updateColors(isPrivateBrowsing)
+      .receive(on: RunLoop.main)
+      .sink(receiveValue: { [weak self] _ in
+        self?.updateColors()
       })
       .store(in: &cancellables)
     
-    Preferences.General.nightModeEnabled.objectWillChange
-      .receive(on: RunLoop.main)
-      .sink { [weak self] _ in
-        guard let self = self else { return }
-        self.updateColors(self.privateBrowsingManager.isPrivateBrowsing)
-      }
-      .store(in: &cancellables)
-    
-    updateColors(privateBrowsingManager.isPrivateBrowsing)
+    updateColors()
   }
 
   required init?(coder aDecoder: NSCoder) {

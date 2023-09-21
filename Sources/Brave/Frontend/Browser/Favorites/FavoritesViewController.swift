@@ -10,6 +10,7 @@ import Preferences
 import BraveUI
 import CoreData
 import os.log
+import Combine
 
 private class FavoritesHeaderView: UICollectionReusableView {
   let label = UILabel().then {
@@ -90,17 +91,16 @@ class FavoritesViewController: UIViewController {
   private var tabType: TabType
   private var favoriteGridSize: CGSize = .zero
   private let collectionView: UICollectionView
-  private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterial)).then {
-    $0.contentView.backgroundColor = UIColor.braveBackground.withAlphaComponent(0.5)
-  }
+  private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
   private var hasPasteboardURL = false
-  private var isPrivateBrowsing: Bool
+  private var privateBrowsingManager: PrivateBrowsingManager
+  private var privateModeCancellable: AnyCancellable?
 
-  init(tabType: TabType, action: @escaping (Favorite, BookmarksAction) -> Void, recentSearchAction: @escaping (RecentSearch?, Bool) -> Void) {
+  init(tabType: TabType, privateBrowsingManager: PrivateBrowsingManager, action: @escaping (Favorite, BookmarksAction) -> Void, recentSearchAction: @escaping (RecentSearch?, Bool) -> Void) {
     self.tabType = tabType
     self.action = action
     self.recentSearchAction = recentSearchAction
-    self.isPrivateBrowsing = tabType.isPrivate
+    self.privateBrowsingManager = privateBrowsingManager
     collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 
     super.init(nibName: nil, bundle: nil)
@@ -119,6 +119,15 @@ class FavoritesViewController: UIViewController {
 
     Preferences.Search.shouldShowRecentSearches.observe(from: self)
     Preferences.Search.shouldShowRecentSearchesOptIn.observe(from: self)
+    
+    privateModeCancellable = privateBrowsingManager
+      .$isPrivateBrowsing
+      .removeDuplicates()
+      .receive(on: RunLoop.main)
+      .sink(receiveValue: { [weak self] _ in
+        guard let self = self else { return }
+        self.updateColors()
+      })
   }
 
   @available(*, unavailable)
@@ -156,6 +165,7 @@ class FavoritesViewController: UIViewController {
     }
 
     updateUIWithSnapshot()
+    updateColors()
   }
 
   override func viewDidLayoutSubviews() {
@@ -180,6 +190,12 @@ class FavoritesViewController: UIViewController {
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
     calculateAppropriateGrid()
+  }
+  
+  private func updateColors() {
+    let browserColors = privateBrowsingManager.browserColors
+    // Have to apply a custom alpha here because UIVisualEffectView blurs come with their own tint
+    backgroundView.contentView.backgroundColor = browserColors.containerFrostedGlass.withAlphaComponent(0.8)
   }
 
   private func calculateAppropriateGrid() {
@@ -354,7 +370,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
           })
 
         var urlChildren: [UIAction] = [openInNewTab]
-        if !self.isPrivateBrowsing {
+        if !self.privateBrowsingManager.isPrivateBrowsing {
           let openInNewPrivateTab = UIAction(
             title: Strings.openNewPrivateTabButtonTitle,
             handler: UIAction.deferredActionHandler { _ in
@@ -670,7 +686,7 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
 
       cell.textLabel.text = favorite.displayTitle ?? favorite.url
       if let url = favorite.url?.asURL {
-        cell.imageView.loadFavicon(siteURL: url, isPrivateBrowsing: self.isPrivateBrowsing)
+        cell.imageView.loadFavicon(siteURL: url, isPrivateBrowsing: self.privateBrowsingManager.isPrivateBrowsing)
       }
       cell.accessibilityLabel = cell.textLabel.text
 

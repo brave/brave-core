@@ -73,8 +73,6 @@ extension TabTrayController {
     override init(frame: CGRect) {
       super.init(frame: frame)
 
-      backgroundColor = .secondaryBraveBackground
-
       addSubview(scrollView)
       scrollView.addSubview(stackView)
       stackView.addArrangedSubview(iconImageView)

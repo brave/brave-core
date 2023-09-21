@@ -45,7 +45,7 @@ extension TabTrayController {
 
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout(numberOfColumns: numberOfColumns)).then {
       $0.setContentHuggingPriority(.defaultLow, for: .vertical)
-      $0.backgroundColor = .secondaryBraveBackground
+      $0.backgroundColor = .clear
       $0.register(TabCell.self, forCellWithReuseIdentifier: TabCell.identifier)
     }
 
@@ -60,7 +60,6 @@ extension TabTrayController {
     override init(frame: CGRect) {
       super.init(frame: frame)
 
-      backgroundColor = .braveBackground
       accessibilityLabel = Strings.tabTrayAccessibilityLabel
 
       let stackView = UIStackView().then {

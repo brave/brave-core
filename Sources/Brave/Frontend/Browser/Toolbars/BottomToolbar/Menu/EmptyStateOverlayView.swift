@@ -109,8 +109,6 @@ class EmptyStateOverlayView: UIView {
   }
   
   private func doLayout(details: EmptyOverlayStateDetails) {
-    backgroundColor = .secondaryBraveBackground
-    
     let heightOffset = traitCollection.verticalSizeClass == .compact ? 0 : -50
 
     addSubview(containerView)
