@@ -250,7 +250,6 @@ export const SignInWithEthereum = (props: Props) => {
               />
               <Column
                 alignItems='flex-start'
-                margin='0px 0px 12px 0px'
               >
                 <Title
                   isBold={true}
