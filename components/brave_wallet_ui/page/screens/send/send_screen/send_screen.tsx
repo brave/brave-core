@@ -269,12 +269,14 @@ export const SendScreen = React.memo((props: Props) => {
     ? getAssetIdKey(selectedSendAsset)
     : null
 
+  const lowerCaseToAddress = toAddressOrUrl.toLowerCase()
+
   const toAddressHasValidExtension = toAddressOrUrl
-    ? endsWithAny(supportedUDExtensions, toAddressOrUrl.toLowerCase()) ||
+    ? endsWithAny(supportedUDExtensions, lowerCaseToAddress) ||
       (selectedSendAsset?.coin === BraveWallet.CoinType.SOL &&
-        endsWithAny(supportedSNSExtensions, toAddressOrUrl.toLowerCase())) ||
+        endsWithAny(supportedSNSExtensions, lowerCaseToAddress)) ||
       (selectedSendAsset?.coin === BraveWallet.CoinType.ETH &&
-        endsWithAny(supportedENSExtensions, toAddressOrUrl.toLowerCase()))
+        endsWithAny(supportedENSExtensions, lowerCaseToAddress))
     : false
 
   const {
@@ -452,7 +454,7 @@ export const SendScreen = React.memo((props: Props) => {
     ? 'braveWalletContractAddressError'
     : isValidEvmAddress &&
       ethAddressChecksum !== toAddressOrUrl &&
-      [toAddressOrUrl.toLowerCase(), toAddressOrUrl.toUpperCase()].includes(
+      [lowerCaseToAddress, toAddressOrUrl.toUpperCase()].includes(
         toAddressOrUrl
       )
     ? 'braveWalletAddressMissingChecksumInfoWarning'
