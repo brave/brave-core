@@ -35,6 +35,7 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class InAppPurchaseWrapper {
@@ -377,5 +378,45 @@ public class InAppPurchaseWrapper {
                 tries++;
             }
         } while (tries <= maxTries && !isConnectionEstablished);
+    }
+
+    private ProductDetails.PricingPhase getPricingPhase(ProductDetails productDetails) {
+        if (productDetails.getSubscriptionOfferDetails() != null) {
+            ProductDetails.SubscriptionOfferDetails subscriptionOfferDetails =
+                    productDetails.getSubscriptionOfferDetails().get(
+                            productDetails.getSubscriptionOfferDetails().size() > 1 ? 1 : 0);
+            if (subscriptionOfferDetails.getPricingPhases()
+                            .getPricingPhaseList()
+                            .stream()
+                            .findFirst()
+                            .isPresent()) {
+                return subscriptionOfferDetails.getPricingPhases()
+                        .getPricingPhaseList()
+                        .stream()
+                        .findFirst()
+                        .get();
+            }
+        }
+        return null;
+    }
+
+    public String getFormattedProductPrice(ProductDetails productDetails) {
+        ProductDetails.PricingPhase pricingPhase = getPricingPhase(productDetails);
+        if (pricingPhase != null) {
+            double price = ((double) pricingPhase.getPriceAmountMicros() / 1000000);
+            String priceString = String.format(Locale.getDefault(), "%.2f", price);
+            return pricingPhase.getPriceCurrencyCode() + " " + priceString;
+        }
+        return null;
+    }
+
+    public String getFormattedFullProductPrice(ProductDetails productDetails) {
+        ProductDetails.PricingPhase pricingPhase = getPricingPhase(productDetails);
+        if (pricingPhase != null) {
+            double yearlyPrice = ((double) pricingPhase.getPriceAmountMicros() / 1000000) * 12;
+            String priceString = String.format(Locale.getDefault(), "%.2f", yearlyPrice);
+            return pricingPhase.getPriceCurrencyCode() + " " + priceString;
+        }
+        return null;
     }
 }
