@@ -436,18 +436,17 @@ export const Nfts = (props: Props) => {
       justifyContent='flex-start'
       isPanel={isPanel}
     >
-      {isNftPinningFeatureEnabled &&
-        isIpfsBannerVisible &&
-        nonFungibleTokens.length > 0 && (
-          <Row
-            justifyContent='center'
-            alignItems='center'
-            padding='0px 32px'
-            marginBottom={16}
-          >
-            <NftIpfsBanner onDismiss={onToggleShowIpfsBanner} />
-          </Row>
-        )}
+      {isNftPinningFeatureEnabled && isIpfsBannerVisible && nonFungibleTokens.length > 0 ? (
+        <Row
+          justifyContent='center'
+          alignItems='center'
+          padding='0px 32px'
+          marginBottom={16}
+        >
+          <NftIpfsBanner onDismiss={onToggleShowIpfsBanner} />
+        </Row>
+      ) : null}
+
       <ControlBarWrapper
         justifyContent='space-between'
         alignItems='center'
@@ -462,7 +461,7 @@ export const Nfts = (props: Props) => {
           />
         )}
         <Row width={showSearchBar ? '100%' : 'unset'}>
-          {showSearchBar && (
+          {showSearchBar ? (
             <Row width='unset'>
               <SearchBarWrapper
                 margin='0px 12px 0px 0px'
@@ -480,8 +479,7 @@ export const Nfts = (props: Props) => {
                 <ButtonIcon name='close' />
               </CircleButton>
             </Row>
-          )}
-          {!showSearchBar && (
+          ) : (
             <Row width='unset'>
               <CircleButton
                 marginRight={12}
@@ -489,11 +487,11 @@ export const Nfts = (props: Props) => {
               >
                 <ButtonIcon name='search' />
               </CircleButton>
-              {isNftPinningFeatureEnabled && nonFungibleTokens.length > 0 && (
+              {isNftPinningFeatureEnabled && nonFungibleTokens.length > 0 ? (
                 <CircleButton onClick={onClickIpfsButton} marginRight={12}>
                   <ButtonIcon name='product-ipfs-outline' />
                 </CircleButton>
-              )}
+              ) : null}
               <CircleButton onClick={toggleShowAddNftModal} marginRight={12}>
                 <ButtonIcon name='plus-add' />
               </CircleButton>
@@ -504,7 +502,6 @@ export const Nfts = (props: Props) => {
           )}
         </Row>
       </ControlBarWrapper>
-
       <ScrollableColumn padding='0px 20px 20px 20px'>
         {nftList.length === 0 && hiddenNfts.length === 0 ? (
           isNftAutoDiscoveryEnabled ? (
@@ -526,12 +523,14 @@ export const Nfts = (props: Props) => {
           onHideForm={toggleShowAddNftModal}
         />
       )}
-      {isNftAutoDiscoveryEnabled !== undefined && !isNftAutoDiscoveryEnabled && showNftDiscoveryModal && (
-        <EnableNftDiscoveryModal
-          onConfirm={onConfirmNftAutoDiscovery}
-          onCancel={hideNftDiscoveryModal}
-        />
-      )}
+      {isNftAutoDiscoveryEnabled !== undefined &&
+        !isNftAutoDiscoveryEnabled &&
+        showNftDiscoveryModal && (
+          <EnableNftDiscoveryModal
+            onConfirm={onConfirmNftAutoDiscovery}
+            onCancel={hideNftDiscoveryModal}
+          />
+        )}
     </ContentWrapper>
   )
 }

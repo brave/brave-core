@@ -975,7 +975,7 @@
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_SUBHEADING" desc="NFT tab empty state subheading">Ready to add some? Just click the button below to import.</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_DISCLAIMER" desc="NFT tab empty state disclaimer">Compatible with NFTs on Solana (SPL) and Ethereum (ERC-721).</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB" desc="NFTs tab label">NFTs</message>
-   <message name="IDS_BRAVE_WALLET_NFTS_TAB_COLLECTED" desc="Collected label">Collected</message>
+  <message name="IDS_BRAVE_WALLET_NFTS_TAB_COLLECTED" desc="Collected label">Collected</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_HIDDEN" desc="Hidden label">Hidden</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_HIDE" desc="Hide menu item label">Hide</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_UNHIDE" desc="Unhide menu item label">Unhide</message>

@@ -131,7 +131,9 @@ export const MoreButton = styled(WalletButton)`
   z-index: 3;
 `
 
-export const MoreIcon = styled(Icon)`
+export const MoreIcon = styled(Icon).attrs({
+  name: 'more-horizontal'
+})`
   --leo-icon-size: 22px;
   color: ${leo.color.text.secondary};
 `
@@ -158,7 +160,9 @@ export const JunkMarker = styled.div`
   z-index: 2;
 `
 
-export const JunkIcon = styled(Icon)`
+export const JunkIcon = styled(Icon).attrs({
+  name: 'warning-triangle-outline'
+})`
   --leo-icon-size: 14px;
   color: ${leo.color.systemfeedback.errorIcon};
 `

@@ -5,14 +5,16 @@
 
 import * as React from 'react'
 
+import { getLocale } from '../../../../../../../common/locale'
+import { useOnClickOutside } from '../../../../../../common/hooks/useOnClickOutside'
+
 // Styled Components
 import {
   ButtonIcon,
   Popup,
   PopupButton,
-  PopupButtonText,
+  PopupButtonText
 } from './nft-more-popup.styles'
-import { getLocale } from '../../../../../../../common/locale'
 
 interface Props {
   isOpen: boolean
@@ -41,25 +43,8 @@ export const NftMorePopup = (props: Props) => {
 
   const popupRef = React.useRef<HTMLDivElement>(null)
 
-  React.useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-
-    const handleClickOutside = (e: Event) => {
-      if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
-        onClose()
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyPress)
-    document.addEventListener('mousedown', handleClickOutside)
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyPress)
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [popupRef, onClose])
+  // hooks
+  useOnClickOutside(popupRef, onClose, isOpen)
 
   return (
     <Popup isOpen={isOpen} ref={popupRef}>
@@ -86,12 +71,12 @@ export const NftMorePopup = (props: Props) => {
       )}
 
       {/* show unhide option if a token is hidden but not junk */}
-      {isTokenHidden && !isTokenSpam && (
+      {isTokenHidden && !isTokenSpam ? (
         <PopupButton onClick={onUnHideNft}>
           <ButtonIcon name='eye-on' />
           <PopupButtonText>{getLocale('braveNftsTabUnhide')}</PopupButtonText>
         </PopupButton>
-      )}
+      ): null}
 
       {/* remove option */}
       <PopupButton onClick={onRemoveNft}>

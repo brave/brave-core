@@ -147,7 +147,7 @@ export const NFTGridViewItem = (props: Props) => {
         {isTokenSpam && (
           <JunkMarker>
             {getLocale('braveWalletNftJunk')}
-            <JunkIcon name='warning-triangle-outline' />
+            <JunkIcon />
           </JunkMarker>
         )}
         <IconWrapper>
@@ -164,7 +164,7 @@ export const NFTGridViewItem = (props: Props) => {
         <Row justifyContent='space-between' margin='8px 0 0 0'>
           <NFTText>{token.name}</NFTText>
           <MoreButton onClick={onToggleShowMore}>
-            <MoreIcon name='more-horizontal' />
+            <MoreIcon />
           </MoreButton>
         </Row>
         {token.symbol !== '' && <NFTSymbol>{token.symbol}</NFTSymbol>}

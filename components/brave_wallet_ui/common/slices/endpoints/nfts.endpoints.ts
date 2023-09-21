@@ -12,7 +12,10 @@ import {
   ERC721Metadata,
   NFTMetadataReturnType
 } from '../../../constants/types'
-import { WalletApiEndpointBuilderParams, walletApiBase } from '../api-base.slice'
+import {
+  WalletApiEndpointBuilderParams,
+  walletApiBase
+} from '../api-base.slice'
 
 // utils
 import {
@@ -20,7 +23,11 @@ import {
   getAssetIdKey
 } from '../../../utils/asset-utils'
 import { cacher } from '../../../utils/query-cache-utils'
-import { getAllNetworksList, getNetwork, handleEndpointError } from '../../../utils/api-utils'
+import {
+  getAllNetworksList,
+  getNetwork,
+  handleEndpointError
+} from '../../../utils/api-utils'
 
 // entities
 import { blockchainTokenEntityAdaptor } from '../entities/blockchain-token.entity'
@@ -399,13 +406,15 @@ export const nftsEndpoints = ({
           )
         }
       },
-      invalidatesTags: (_res, err, arg) =>
-        err
+      invalidatesTags: (_res, err, arg) => {
+        const tokenId = getAssetIdKey(arg.token)
+        return err
           ? ['SimpleHashSpamNFTs', 'UserBlockchainTokens']
           : [
-              { type: 'SimpleHashSpamNFTs', id: getAssetIdKey(arg.token) },
-              { type: 'UserBlockchainTokens', id: getAssetIdKey(arg.token) }
+              { type: 'SimpleHashSpamNFTs', id: tokenId },
+              { type: 'UserBlockchainTokens', id: tokenId }
             ]
+      }
     }),
     getNftsPinningStatus: query<
       /** `getAssetIdKey(asset)` */
