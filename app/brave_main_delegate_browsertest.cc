@@ -164,7 +164,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &companion::features::internal::kSidePanelCompanion,
     &companion::features::internal::kSidePanelCompanion2,
     &companion::visual_search::features::kVisualSearchSuggestions,
-    &content_settings::features::kThirdPartyCookieDeprecationCookieSettings,
+    &content_settings::features::kTrackingProtection3pcd,
     &content_settings::features::kUserBypassUI,
     &enterprise_connectors::kLocalContentAnalysisEnabled,
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
