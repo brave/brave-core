@@ -47,6 +47,9 @@ public class InAppPurchaseWrapper {
     public static final String RELEASE_YEARLY_SUBSCRIPTION = "brave.vpn.yearly";
     private BillingClient mBillingClient;
 
+    private static final long MICRO_UNITS =
+            1000000; // 1,000,000 micro-units equal one unit of the currency
+
     private static volatile InAppPurchaseWrapper sInAppPurchaseWrapper;
     private static Object sMutex = new Object();
 
@@ -382,19 +385,16 @@ public class InAppPurchaseWrapper {
 
     private ProductDetails.PricingPhase getPricingPhase(ProductDetails productDetails) {
         if (productDetails.getSubscriptionOfferDetails() != null) {
-            ProductDetails.SubscriptionOfferDetails subscriptionOfferDetails =
-                    productDetails.getSubscriptionOfferDetails().get(
-                            productDetails.getSubscriptionOfferDetails().size() > 1 ? 1 : 0);
-            if (subscriptionOfferDetails.getPricingPhases()
-                            .getPricingPhaseList()
-                            .stream()
-                            .findFirst()
-                            .isPresent()) {
-                return subscriptionOfferDetails.getPricingPhases()
-                        .getPricingPhaseList()
-                        .stream()
-                        .findFirst()
-                        .get();
+            for (ProductDetails.SubscriptionOfferDetails subscriptionOfferDetails :
+                    productDetails.getSubscriptionOfferDetails()) {
+                if (subscriptionOfferDetails.getOfferId() == null) {
+                    for (ProductDetails.PricingPhase pricingPhase :
+                            subscriptionOfferDetails.getPricingPhases().getPricingPhaseList()) {
+                        if (pricingPhase.getPriceAmountMicros() > 0) {
+                            return pricingPhase;
+                        }
+                    }
+                }
             }
         }
         return null;
@@ -403,7 +403,7 @@ public class InAppPurchaseWrapper {
     public String getFormattedProductPrice(ProductDetails productDetails) {
         ProductDetails.PricingPhase pricingPhase = getPricingPhase(productDetails);
         if (pricingPhase != null) {
-            double price = ((double) pricingPhase.getPriceAmountMicros() / 1000000);
+            double price = ((double) pricingPhase.getPriceAmountMicros() / MICRO_UNITS);
             String priceString = String.format(Locale.getDefault(), "%.2f", price);
             return pricingPhase.getPriceCurrencyCode() + " " + priceString;
         }
@@ -413,9 +413,9 @@ public class InAppPurchaseWrapper {
     public String getFormattedFullProductPrice(ProductDetails productDetails) {
         ProductDetails.PricingPhase pricingPhase = getPricingPhase(productDetails);
         if (pricingPhase != null) {
-            double yearlyPrice = ((double) pricingPhase.getPriceAmountMicros() / 1000000) * 12;
+            double yearlyPrice = ((double) pricingPhase.getPriceAmountMicros() / MICRO_UNITS) * 12;
             String priceString = String.format(Locale.getDefault(), "%.2f", yearlyPrice);
-            return pricingPhase.getPriceCurrencyCode() + " " + priceString;
+            return pricingPhase.getPriceCurrencyCode() + priceString;
         }
         return null;
     }
