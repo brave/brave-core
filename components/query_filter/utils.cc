@@ -61,6 +61,8 @@ static constexpr auto kSimpleQueryStringTrackers =
          "mtm_cid", "pk_cid",
          // https://github.com/brave/brave-browser/issues/32488
          "at_recipient_id", "at_recipient_list",
+         // https://github.com/brave/brave-browser/issues/33172
+         "unicorn_click_id",
          // https://github.com/brave/brave-browser/issues/26295
          "vgo_ee"});
 
