@@ -189,7 +189,6 @@ export const SendScreen = React.memo((props: Props) => {
   const [sendETHFilForwarderTransfer] = useSendETHFilForwarderTransferMutation()
 
   // Queries
-  // todo: try to use selected asset's network
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAccount, isLoading: isLoadingSelectedAccount } =
     useSelectedAccountQuery()

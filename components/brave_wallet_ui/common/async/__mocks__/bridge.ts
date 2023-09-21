@@ -471,8 +471,10 @@ export class MockedWalletApiProxy {
       }
     },
     setSelectedAccount: async (accountId) => {
-      const validId = !!this.accountInfos.find(a => a.accountId.uniqueKey === accountId.uniqueKey)
-      
+      const validId = !!this.accountInfos.find(
+        (a) => a.accountId.uniqueKey === accountId.uniqueKey
+      )
+
       if (validId) {
         this.selectedAccountId = accountId
       } else {

@@ -7,8 +7,12 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Selectors
-import { selectAllVisibleUserAssetsFromQueryResult } from '../../../../../common/slices/entities/blockchain-token.entity'
-import { selectAllAccountInfosFromQuery } from '../../../../../common/slices/entities/account-info.entity'
+import {
+  selectAllVisibleUserAssetsFromQueryResult //
+} from '../../../../../common/slices/entities/blockchain-token.entity'
+import {
+  selectAllAccountInfosFromQuery //
+} from '../../../../../common/slices/entities/account-info.entity'
 
 // Types
 import {
@@ -29,6 +33,7 @@ import Amount from '../../../../../utils/amount'
 import {
   getBalance
 } from '../../../../../utils/balance-utils'
+import { getAssetIdKey } from '../../../../../utils/asset-utils'
 
 // Queries
 import {
@@ -78,10 +83,6 @@ interface Props {
 export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
   (props: Props, forwardedRef) => {
     const { onClose, selectedSendOption, selectSendAsset } = props
-
-    // Wallet Selectors
-    // const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-    // const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
 
     // State
     const [searchValue, setSearchValue] = React.useState<string>('')
@@ -341,7 +342,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
                 <TokenListItem
                   token={token}
                   onClick={() => onSelectSendAsset(token, account)}
-                  key={`${token.contractAddress}-${token.chainId}-${token.tokenId}`}
+                  key={getAssetIdKey(token)}
                   balance={getBalance(
                     account.accountId,
                     token,

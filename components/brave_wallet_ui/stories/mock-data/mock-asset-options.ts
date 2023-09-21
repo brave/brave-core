@@ -396,7 +396,9 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
   { ...mockMoonCatNFT, tokenId: '0x62a5' }
 ]
 
-export const mockBinanceCoinErc20TokenId = getAssetIdKey(mockBinanceCoinErc20Token)
+export const mockBinanceCoinErc20TokenId = getAssetIdKey(
+  mockBinanceCoinErc20Token
+)
 export const mockBitcoinErc20TokenId = getAssetIdKey(mockBitcoinErc20Token)
 export const mockAlgorandErc20TokenId = getAssetIdKey(mockAlgorandErc20Token)
 export const mockZrxErc20TokenId = getAssetIdKey(mockZrxErc20Token)
