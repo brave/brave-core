@@ -37,6 +37,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
 
     private LinearLayout mYearlySelectorLayout;
     private TextView mYearlySubscriptionAmountText;
+    private TextView mRemovedValueText;
 
     @Override
     public void onResumeWithNative() {
@@ -74,9 +75,9 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         TabLayout braveRewardsTabLayout = findViewById(R.id.brave_rewards_tab_layout);
         braveRewardsTabLayout.setupWithViewPager(braveRewardsViewPager, true);
 
-        TextView removedValueText = findViewById(R.id.removed_value_tv);
-        removedValueText.setPaintFlags(
-                removedValueText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        mRemovedValueText = findViewById(R.id.removed_value_tv);
+        mRemovedValueText.setPaintFlags(
+                mRemovedValueText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         TextView monthlySubscriptionText = findViewById(R.id.monthly_subscription_text);
         monthlySubscriptionText.setText(
@@ -91,123 +92,69 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-                // Check for an active subscription to show restore
-                BraveVpnUtils.showProgressDialog(BraveVpnPlansActivity.this,
-                        getResources().getString(R.string.vpn_connect_text));
-                mIsVerification = true;
-                verifySubscription();
+        // Check for an active subscription to show restore
+        BraveVpnUtils.showProgressDialog(
+                BraveVpnPlansActivity.this, getResources().getString(R.string.vpn_connect_text));
+        mIsVerification = true;
+        verifySubscription();
 
-                // Set up monthly subscription
-                mMonthlyPlanProgress.setVisibility(View.VISIBLE);
-                LiveDataUtil.observeOnce(
-                        InAppPurchaseWrapper.getInstance().getMonthlyProductDetails(),
-                        monthlyProductDetails -> {
-                            if (monthlyProductDetails != null) {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mMonthlySelectorLayout.setOnClickListener(v
-                                                -> InAppPurchaseWrapper.getInstance()
-                                                           .initiatePurchase(
-                                                                   BraveVpnPlansActivity.this,
-                                                                   monthlyProductDetails));
-                                        if (monthlyProductDetails.getSubscriptionOfferDetails()
-                                                        != null
-                                                && monthlyProductDetails
-                                                           .getSubscriptionOfferDetails()
-                                                           .stream()
-                                                           .findFirst()
-                                                           .isPresent()
-                                                && monthlyProductDetails
-                                                           .getSubscriptionOfferDetails()
-                                                           .stream()
-                                                           .findFirst()
-                                                           .get()
-                                                           .getPricingPhases()
-                                                           .getPricingPhaseList()
-                                                           .stream()
-                                                           .findFirst()
-                                                           .isPresent()) {
-                                            String monthlyProductPrice =
-                                                    monthlyProductDetails
-                                                            .getSubscriptionOfferDetails()
-                                                            .stream()
-                                                            .findFirst()
-                                                            .get()
-                                                            .getPricingPhases()
-                                                            .getPricingPhaseList()
-                                                            .stream()
-                                                            .findFirst()
-                                                            .get()
-                                                            .getFormattedPrice();
-                                            String monthlyProductPriceText = String.format(
-                                                    getResources().getString(
-                                                            R.string.monthly_subscription_amount),
-                                                    monthlyProductPrice);
-                                            mMonthlySubscriptionAmountText.setText(
-                                                    monthlyProductPriceText);
-                                            mMonthlyPlanProgress.setVisibility(View.GONE);
-                                        }
-                                    }
-                                });
+        // Set up monthly subscription
+        mMonthlyPlanProgress.setVisibility(View.VISIBLE);
+        LiveDataUtil.observeOnce(InAppPurchaseWrapper.getInstance().getMonthlyProductDetails(),
+                monthlyProductDetails -> {
+                    if (monthlyProductDetails != null) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mMonthlySelectorLayout.setOnClickListener(v
+                                        -> InAppPurchaseWrapper.getInstance().initiatePurchase(
+                                                BraveVpnPlansActivity.this, monthlyProductDetails));
+                                String monthlyFormattedPrice =
+                                        InAppPurchaseWrapper.getInstance().getFormattedProductPrice(
+                                                monthlyProductDetails);
+                                if (monthlyFormattedPrice != null) {
+                                    mMonthlySubscriptionAmountText.setText(String.format(
+                                            getResources().getString(
+                                                    R.string.monthly_subscription_amount),
+                                            monthlyFormattedPrice));
+                                    mMonthlyPlanProgress.setVisibility(View.GONE);
+                                }
+                                String fullPrice = InAppPurchaseWrapper.getInstance()
+                                                           .getFormattedFullProductPrice(
+                                                                   monthlyProductDetails);
+                                if (fullPrice != null) {
+                                    mRemovedValueText.setText(fullPrice);
+                                }
                             }
                         });
+                    }
+                });
 
-                // Set up yearly subscription
-                mYearlyPlanProgress.setVisibility(View.VISIBLE);
-                LiveDataUtil.observeOnce(
-                        InAppPurchaseWrapper.getInstance().getYearlyProductDetails(),
-                        yearlyProductDetails -> {
-                            if (yearlyProductDetails != null) {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mYearlySelectorLayout.setOnClickListener(v
-                                                -> InAppPurchaseWrapper.getInstance()
-                                                           .initiatePurchase(
-                                                                   BraveVpnPlansActivity.this,
-                                                                   yearlyProductDetails));
-                                        if (yearlyProductDetails.getSubscriptionOfferDetails()
-                                                        != null
-                                                && yearlyProductDetails
-                                                           .getSubscriptionOfferDetails()
-                                                           .stream()
-                                                           .findFirst()
-                                                           .isPresent()
-                                                && yearlyProductDetails
-                                                           .getSubscriptionOfferDetails()
-                                                           .stream()
-                                                           .findFirst()
-                                                           .get()
-                                                           .getPricingPhases()
-                                                           .getPricingPhaseList()
-                                                           .stream()
-                                                           .findFirst()
-                                                           .isPresent()) {
-                                            String yearlyProductPrice =
-                                                    yearlyProductDetails
-                                                            .getSubscriptionOfferDetails()
-                                                            .stream()
-                                                            .findFirst()
-                                                            .get()
-                                                            .getPricingPhases()
-                                                            .getPricingPhaseList()
-                                                            .stream()
-                                                            .findFirst()
-                                                            .get()
-                                                            .getFormattedPrice();
-                                            String yearlyProductPriceText = String.format(
-                                                    getResources().getString(
-                                                            R.string.yearly_subscription_amount),
-                                                    yearlyProductPrice);
-                                            mYearlySubscriptionAmountText.setText(
-                                                    yearlyProductPriceText);
-                                            mYearlyPlanProgress.setVisibility(View.GONE);
-                                        }
-                                    }
-                                });
+        // Set up yearly subscription
+        mYearlyPlanProgress.setVisibility(View.VISIBLE);
+        LiveDataUtil.observeOnce(InAppPurchaseWrapper.getInstance().getYearlyProductDetails(),
+                yearlyProductDetails -> {
+                    if (yearlyProductDetails != null) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mYearlySelectorLayout.setOnClickListener(v
+                                        -> InAppPurchaseWrapper.getInstance().initiatePurchase(
+                                                BraveVpnPlansActivity.this, yearlyProductDetails));
+                                String yearlyFormattedPrice =
+                                        InAppPurchaseWrapper.getInstance().getFormattedProductPrice(
+                                                yearlyProductDetails);
+                                if (yearlyFormattedPrice != null) {
+                                    mYearlySubscriptionAmountText.setText(String.format(
+                                            getResources().getString(
+                                                    R.string.yearly_subscription_amount),
+                                            yearlyFormattedPrice));
+                                    mYearlyPlanProgress.setVisibility(View.GONE);
+                                }
                             }
                         });
+                    }
+                });
     }
 
     @Override
