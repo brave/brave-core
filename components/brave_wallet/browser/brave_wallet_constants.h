@@ -1325,7 +1325,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveNftsTab", IDS_BRAVE_WALLET_NFTS_TAB},
     {"braveNftsTabHidden", IDS_BRAVE_WALLET_NFTS_TAB_HIDDEN},
     {"braveNftsTabCollected", IDS_BRAVE_WALLET_NFTS_TAB_COLLECTED},
-    {"braveNdftsTabRemove", IDS_BRAVE_WALLET_NFTS_TAB_REMOVE},
+    {"braveNftsTabRemove", IDS_BRAVE_WALLET_NFTS_TAB_REMOVE},
     {"braveWalletImportNftModalTitle", IDS_BRAVE_WALLET_IMPORT_NFT_MODAL_TITLE},
     {"braveWalletEditNftModalTitle", IDS_BRAVE_WALLET_EDIT_NFT_MODAL_TITLE},
     {"braveWalletEnableNftAutoDiscoveryModalHeader",
