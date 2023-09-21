@@ -60,7 +60,9 @@ class SidebarItemsArrowView : public views::ImageButton {
   SidebarItemsArrowView& operator=(const SidebarItemsArrowView&) = delete;
 
   gfx::Size CalculatePreferredSize() const override {
-    return {SidebarButtonView::kSidebarButtonSize, kArrowHeight};
+    return {
+        SidebarButtonView::kSidebarButtonSize + SidebarButtonView::kMargin * 2,
+        kArrowHeight};
   }
 
   void OnPaintBackground(gfx::Canvas* canvas) override {
@@ -295,7 +297,8 @@ bool SidebarItemsScrollView::IsScrollable() const {
 }
 
 void SidebarItemsScrollView::OnButtonPressed(views::View* view) {
-  const int scroll_offset = SidebarButtonView::kSidebarButtonSize;
+  const int scroll_offset =
+      SidebarButtonView::kSidebarButtonSize + SidebarButtonView::kMargin;
   if (view == up_arrow_) {
     ScrollContentsViewBy(scroll_offset, true);
   }

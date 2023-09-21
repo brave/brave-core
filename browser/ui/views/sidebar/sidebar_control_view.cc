@@ -30,10 +30,9 @@
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/menu/menu_runner.h"
+#include "ui/views/layout/flex_layout.h"
 
 namespace {
-
-constexpr int kSpacingBetweenChildren = 4;
 
 using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
 
@@ -72,52 +71,8 @@ SidebarControlView::SidebarControlView(Delegate* delegate,
   UpdateSettingsButtonState();
 
   sidebar_model_observed_.Observe(browser_->sidebar_controller()->model());
-}
-
-void SidebarControlView::Layout() {
-  // Add item/settings buttons have more high priority than items container.
-  // If this view doesn't have enough space to show all child views, items
-  // container will get insufficient bounds.
-  gfx::Rect bounds = GetContentsBounds();
-  gfx::Size preferred_size = GetPreferredSize();
-  const bool has_sufficient_size = bounds.height() >= preferred_size.height();
-
-  const gfx::Size settings_size = sidebar_settings_view_->GetPreferredSize();
-  const gfx::Size items_view_size = sidebar_items_view_->GetPreferredSize();
-  const gfx::Size add_view_size = sidebar_item_add_view_->GetPreferredSize();
-
-  const int x = bounds.x();
-  if (has_sufficient_size) {
-    int y = bounds.y();
-    sidebar_items_view_->SetBounds(x, y, items_view_size.width(),
-                                   items_view_size.height());
-    y += items_view_size.height() + kSpacingBetweenChildren;
-    sidebar_item_add_view_->SetBounds(x, y, add_view_size.width(),
-                                      add_view_size.height());
-  } else {
-    // Give remained area to items view.
-    sidebar_items_view_->SetBounds(
-        x, bounds.y(), items_view_size.width(),
-        bounds.height() - add_view_size.width() - settings_size.width());
-    sidebar_item_add_view_->SetBounds(
-        x, bounds.height() - settings_size.height() - add_view_size.height(),
-        add_view_size.width(), add_view_size.height());
-  }
-
-  // Locate settings button at bottom line.
-  sidebar_settings_view_->SetBounds(x, bounds.height() - settings_size.height(),
-                                    settings_size.width(),
-                                    settings_size.height());
-}
-
-gfx::Size SidebarControlView::CalculatePreferredSize() const {
-  gfx::Size preferred(sidebar_item_add_view_->GetPreferredSize().width(), 0);
-  preferred.Enlarge(0, sidebar_items_view_->GetPreferredSize().height());
-  preferred.Enlarge(0, sidebar_item_add_view_->GetPreferredSize().height());
-  preferred.Enlarge(0, sidebar_settings_view_->GetPreferredSize().height());
-  preferred += GetInsets().size();
-  preferred += gfx::Size(0, kSpacingBetweenChildren * children().size() - 1);
-  return preferred;
+  SetLayoutManager(std::make_unique<views::FlexLayout>())
+      ->SetOrientation(views::LayoutOrientation::kVertical);
 }
 
 void SidebarControlView::OnThemeChanged() {
@@ -214,11 +169,26 @@ void SidebarControlView::OnItemRemoved(size_t index) {
 void SidebarControlView::AddChildViews() {
   sidebar_items_view_ =
       AddChildView(std::make_unique<SidebarItemsScrollView>(browser_));
-
+  sidebar_items_view_->SetProperty(
+      views::kFlexBehaviorKey,
+      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                               views::MaximumFlexSizeRule::kUnbounded)
+          .WithOrder(2));
   sidebar_item_add_view_ = AddChildView(std::make_unique<SidebarItemAddButton>(
       browser_, brave_l10n::GetLocalizedResourceUTF16String(
                     IDS_SIDEBAR_ADD_ITEM_BUTTON_TOOLTIP)));
   sidebar_item_add_view_->set_context_menu_controller(this);
+  // Remove top margin as the last item view has bottom margin.
+  sidebar_item_add_view_->GetProperty(views::kMarginsKey)->set_top(0);
+
+  // This helps the settings button to be on the bottom
+  auto* spacer = AddChildView(std::make_unique<views::View>());
+  spacer->SetEnabled(false);
+  spacer->SetProperty(
+      views::kFlexBehaviorKey,
+      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                               views::MaximumFlexSizeRule::kUnbounded)
+          .WithOrder(1));
 
   sidebar_settings_view_ = AddChildView(std::make_unique<SidebarButtonView>(
       brave_l10n::GetLocalizedResourceUTF16String(

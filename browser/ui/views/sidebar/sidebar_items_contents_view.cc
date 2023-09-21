@@ -92,8 +92,8 @@ SidebarItemsContentsView::SidebarItemsContentsView(
   DCHECK(browser_);
   set_context_menu_controller(this);
   SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kVertical, gfx::Insets(),
-      /*between_child_spacing=*/4));
+                       views::BoxLayout::Orientation::kVertical))
+      ->SetCollapseMarginsSpacing(true);
 }
 
 SidebarItemsContentsView::~SidebarItemsContentsView() = default;
