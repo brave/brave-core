@@ -1515,13 +1515,6 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-    public void dismissCookieConsent() {
-        BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        if (layout != null) {
-            layout.dismissCookieConsent();
-        }
-    }
-
     public void openRewardsPanel() {
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
         if (layout != null) {

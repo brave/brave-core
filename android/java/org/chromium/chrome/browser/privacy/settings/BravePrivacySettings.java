@@ -376,15 +376,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             }
         }
 
-        if (mFilterListAndroidHandler != null) {
-            mFilterListAndroidHandler.isFilterListEnabled(
-                    FilterListConstants.COOKIE_LIST_UUID, isEnabled -> {
-                        if (!isEnabled) {
-                            removePreferenceIfPresent(PREF_BLOCK_COOKIE_CONSENT_NOTICES);
-                        }
-                    });
-        }
-
         updateBravePreferences();
     }
 
