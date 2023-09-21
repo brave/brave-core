@@ -32,6 +32,10 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
+#endif
+
 BraveBrowsingDataRemoverDelegate::BraveBrowsingDataRemoverDelegate(
     content::BrowserContext* browser_context)
     : ChromeBrowsingDataRemoverDelegate(browser_context),
@@ -70,6 +74,13 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
     brave_news::BraveNewsControllerFactory::GetForContext(profile_)
         ->ClearHistory();
   }
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY &&
+      ai_chat::features::IsAIChatEnabled() &&
+      ai_chat::features::IsAIChatHistoryEnabled()) {
+    ClearAiChatHistory(delete_begin, delete_end);
+  }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }
 
 void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
@@ -100,6 +111,14 @@ void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
     }
   }
 }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void BraveBrowsingDataRemoverDelegate::ClearAiChatHistory(base::Time begin_time,
+                                                          base::Time end_time) {
+  // Handler for the Brave Leo History clearing.
+  // It is prepared for future implementation.
+}
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_IPFS)
 void BraveBrowsingDataRemoverDelegate::WaitForIPFSRepoGC(

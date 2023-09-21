@@ -1415,7 +1415,20 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_LABEL" desc="The text for settings option">
     Clear Leo data
   </message>
-  <!-- Avatars. Generated via zsh and node:
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_CONFIRMATION_LABEL" desc="The confirmation window message for reset option">
+    Resetting the Leo assistant will require you to opt-in to use Brave
+Leo in the future and will also clear your chat history. Clearing your
+chat history will delete all your previous conversations with Brave
+Leo. This action cannot be undone.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_LABEL" desc="The text for settings option">
+    Brave Leo
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_SUBLABEL" desc="The text for settings option">
+    Data and chat history
+  </message>
+
+<!-- Avatars. Generated via zsh and node:
         declare -i a=56
         for file in $(cat < avatarlist); do node -e "console.log(\`<message name=\"IDS_BRAVE_AVATAR_LABEL_$a\" desc=\"The label for the $file avatar.\">
     \${\`$file\`.split('_').map(w => w[0].toUpperCase() + w.substr(1)).join(' ').replace('.png', '')}

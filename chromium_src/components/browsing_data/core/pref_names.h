@@ -20,7 +20,9 @@ extern const char kDeletePasswordsOnExit[];
 extern const char kDeleteFormDataOnExit[];
 extern const char kDeleteHostedAppsDataOnExit[];
 extern const char kDeleteSiteSettingsOnExit[];
-
+constexpr char kDeleteBraveLeoHistory[] = "browser.clear_data.brave_leo";
+constexpr char kDeleteBraveLeoHistoryOnExit[] =
+    "browser.clear_data.brave_leo_on_exit";
 }  // namespace prefs
 
 }  // namespace browsing_data

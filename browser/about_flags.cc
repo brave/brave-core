@@ -382,8 +382,17 @@
       kOsWin | kOsMac | kOsLinux | kOsAndroid,                 \
       FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),          \
   })
+#define BRAVE_AI_CHAT_HISTORY                                \
+  EXPAND_FEATURE_ENTRIES({                                   \
+      "brave-ai-chat-history",                               \
+      "Brave AI Chat History",                               \
+      "Enables AI Chat History persistence and management",  \
+      kOsWin | kOsMac | kOsLinux,                            \
+      FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory), \
+  })
 #else
 #define BRAVE_AI_CHAT
+#define BRAVE_AI_CHAT_HISTORY
 #endif
 
 // Keep the last item empty.
@@ -880,6 +889,7 @@
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_SHARED_PINNED_TABS                                                     \
   BRAVE_AI_CHAT                                                                \
+  BRAVE_AI_CHAT_HISTORY                                                        \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {
