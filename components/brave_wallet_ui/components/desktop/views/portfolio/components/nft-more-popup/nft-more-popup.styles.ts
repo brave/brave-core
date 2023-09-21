@@ -8,51 +8,50 @@ import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import { WalletButton } from '../../../../../shared/style'
 
-export const StyledWrapper = styled.div`
+export const Popup = styled.div<{ isOpen: boolean }>`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
   position: absolute;
-  top: 42px;
-  right: 12px;
-  z-index: 3;
-  border-radius: 8px;
-  overflow: hidden;
-  gap: 4px;
-  padding: 4px;
-  border: 1px solid ${leo.color.divider.subtle};
+  bottom: 50px;
+  right: 0;
+  width: 100%;
+  max-width: 226px;
+  padding: ${leo.spacing.s};
+  flex-direction: column;
+  align-items: flex-start;
+  gap: ${leo.spacing.s};
+  border-radius: ${leo.spacing.m};
+  border-radius: --leo-radius-m;
+  border: 1px solid  ${leo.color.divider.subtle};
   background-color: ${leo.color.container.background};
   box-shadow: 0px 4px 16px -2px rgba(0, 0, 0, 0.08);
+  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+  transition: opacity 0.3s, transform 0.3s;
+  opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
+  transform: translateY(${({ isOpen }) => (isOpen ? '0' : '-10px')});
+  z-index: 3;
 `
 
 export const PopupButton = styled(WalletButton)`
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
-  text-align: left;
-  cursor: pointer;
-  width: 100%;
-  outline: none;
-  border: none;
-  background: none;
-  padding: 9px 8px;
-  margin: 0px;
+  align-self: stretch;
   background-color: transparent;
+  padding: 0px ${leo.spacing.m};
+  height: 44px;
+  gap: 16px;
+  border: none;
+  outline: transparent;
+  cursor: pointer;
 `
 
 export const PopupButtonText = styled.span`
-  flex: 1;
+  color: ${leo.color.text.primary};
+  font-family: Poppins;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: 24px; 
-  color: ${leo.color.text.primary};
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  width: 90%;
+  line-height: 24px;
 `
 
 export const ButtonIcon = styled(Icon)`

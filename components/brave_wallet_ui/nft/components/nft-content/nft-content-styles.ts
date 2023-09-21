@@ -28,7 +28,7 @@ export const Image = styled.img<{
 }>`
   display: block;
   border: transparent;
-  border-radius: 4px;
+  border-radius: 8px;
   max-width: 100%;
   max-height: 100%;
   position: relative;

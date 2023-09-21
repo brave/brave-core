@@ -12,7 +12,10 @@ import {
   ERC721Metadata,
   NFTMetadataReturnType
 } from '../../../constants/types'
-import { WalletApiEndpointBuilderParams, walletApiBase } from '../api-base.slice'
+import {
+  WalletApiEndpointBuilderParams,
+  walletApiBase
+} from '../api-base.slice'
 
 // utils
 import {
@@ -20,7 +23,11 @@ import {
   getAssetIdKey
 } from '../../../utils/asset-utils'
 import { cacher } from '../../../utils/query-cache-utils'
-import { getAllNetworksList, getNetwork, handleEndpointError } from '../../../utils/api-utils'
+import {
+  getAllNetworksList,
+  getNetwork,
+  handleEndpointError
+} from '../../../utils/api-utils'
 
 // entities
 import { blockchainTokenEntityAdaptor } from '../entities/blockchain-token.entity'
@@ -374,21 +381,18 @@ export const nftsEndpoints = ({
     updateNftSpamStatus: mutation<
       boolean,
       {
-        tokenId: EntityId
+        // Not using tokenId since spam NFTs are not
+        // included in token registry by default
+        token: BraveWallet.BlockchainToken
         status: boolean
       }
     >({
       queryFn: async (arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
-          const { cache, data: api } = baseQuery(undefined)
-          const reg = await cache.getUserTokensRegistry()
-          const token = reg.entities[arg.tokenId]
-
-          if (!token) throw new Error('Token not found')
-
+          const { data: api } = baseQuery(undefined)
           const { braveWalletService } = api
           const { success } = await braveWalletService.setAssetSpamStatus(
-            token,
+            arg.token,
             arg.status
           )
           return {
@@ -402,13 +406,15 @@ export const nftsEndpoints = ({
           )
         }
       },
-      invalidatesTags: (_res, err, arg) =>
-        err
+      invalidatesTags: (_res, err, arg) => {
+        const tokenId = getAssetIdKey(arg.token)
+        return err
           ? ['SimpleHashSpamNFTs', 'UserBlockchainTokens']
           : [
-              { type: 'SimpleHashSpamNFTs', id: arg.tokenId },
-              { type: 'UserBlockchainTokens', id: arg.tokenId }
+              { type: 'SimpleHashSpamNFTs', id: tokenId },
+              { type: 'UserBlockchainTokens', id: tokenId }
             ]
+      }
     }),
     getNftsPinningStatus: query<
       /** `getAssetIdKey(asset)` */

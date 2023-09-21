@@ -10,7 +10,7 @@ export const Image = styled.img`
   height: auto;
   object-fit: contain;
   border: transparent;
-  border-radius: 4px;
+  border-radius: 8px;
   width: auto;
   height: 360px;
 `
