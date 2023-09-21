@@ -23,6 +23,7 @@ export const NameAndSymbolWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: flex-start;
   height: 100%;
   padding: 1px 0;
 `
@@ -34,6 +35,11 @@ export const AssetName = styled.span`
   font-style: normal;
   font-weight: 600;
   line-height: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 160px;
+  text-align: left;
 `
 
 export const AssetSymbol = styled.span`
@@ -44,4 +50,5 @@ export const AssetSymbol = styled.span`
   font-weight: 500;
   line-height: 18px;
   text-transform: uppercase;
+  text-align: left;
 `
