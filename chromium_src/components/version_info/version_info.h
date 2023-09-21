@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_VERSION_INFO_VERSION_INFO_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_VERSION_INFO_VERSION_INFO_H_
 
+#include <string_view>
+
 #include "brave/components/version_info/version_info_values.h"
 
 #define GetChannelString GetChannelString_ChromiumImpl
@@ -23,7 +25,7 @@ constexpr std::string GetProductNameAndVersionForUserAgent() {
 }
 
 // We use |nightly| instead of |canary|.
-constexpr base::StringPiece GetChannelString(Channel channel) {
+constexpr std::string_view GetChannelString(Channel channel) {
   if (channel == Channel::CANARY) {
     return "nightly";
   }

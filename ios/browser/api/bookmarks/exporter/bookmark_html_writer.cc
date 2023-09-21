@@ -12,6 +12,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/base64.h"
@@ -333,7 +334,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
         scoped_refptr<base::RefCountedMemory> data(itr->second.get());
         std::string favicon_base64_encoded;
         base::Base64Encode(
-            base::StringPiece(data->front_as<char>(), data->size()),
+            std::string_view(data->front_as<char>(), data->size()),
             &favicon_base64_encoded);
         GURL favicon_url("data:image/png;base64," + favicon_base64_encoded);
         favicon_string = favicon_url.spec();

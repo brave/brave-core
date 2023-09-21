@@ -7,6 +7,7 @@
 
 #include <base/containers/flat_map.h>
 
+#include <string_view>
 #include <utility>
 
 #include "base/containers/flat_set.h"
@@ -15,7 +16,6 @@
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_piece.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
@@ -56,7 +56,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 base::Value::Dict CreateApiParametersDict(
     const std::string& prompt,
     const std::string& model_name,
-    const base::flat_set<base::StringPiece>& stop_sequences,
+    const base::flat_set<std::string_view>& stop_sequences,
     const std::vector<std::string> additional_stop_sequences,
     const bool is_sse_enabled) {
   base::Value::Dict dict;
@@ -115,7 +115,7 @@ const GURL GetEndpointBaseUrl() {
 
 RemoteCompletionClient::RemoteCompletionClient(
     std::string model_name,
-    const base::flat_set<base::StringPiece>& stop_sequences,
+    const base::flat_set<std::string_view>& stop_sequences,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : model_name_(model_name),
       stop_sequences_(stop_sequences),

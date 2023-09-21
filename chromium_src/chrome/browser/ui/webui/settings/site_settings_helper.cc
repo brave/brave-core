@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/webui/settings/site_settings_helper.h"
 
+#include <string_view>
+
 #include "base/containers/cxx20_erase_vector.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "third_party/blink/public/common/features.h"
@@ -75,7 +77,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
   return HasRegisteredGroupName_ChromiumImpl(type);
 }
 
-base::StringPiece ContentSettingsTypeToGroupName(ContentSettingsType type) {
+std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::AUTOPLAY)
     return "autoplay";
   if (type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN)

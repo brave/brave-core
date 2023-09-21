@@ -6,6 +6,7 @@
 #include "brave/components/playlist/browser/playlist_media_file_downloader.h"
 
 #include <algorithm>
+#include <string_view>
 #include <utility>
 
 #include "base/containers/fixed_flat_map.h"
@@ -42,8 +43,8 @@ namespace playlist {
 // * Mimetype to extension
 //   * https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 constexpr auto kMimeTypeToExtension =
-    base::MakeFixedFlatMap<base::StringPiece /*mime_type*/,
-                           base::StringPiece /*extension*/>({
+    base::MakeFixedFlatMap<std::string_view /*mime_type*/,
+                           std::string_view /*extension*/>({
         {"audio/wav", "wav"},
         {"audio/x-wav", "wav"},
         {"audio/webm", "weba"},

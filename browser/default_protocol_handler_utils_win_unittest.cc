@@ -5,7 +5,6 @@
 
 #include "brave/browser/default_protocol_handler_utils_win.h"
 
-#include "base/strings/string_piece.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // Below test cases are copied from

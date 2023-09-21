@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include "base/stl_util.h"
@@ -27,9 +28,9 @@ namespace permissions {
 namespace {
 
 // Pref data keys.
-constexpr base::StringPiece kRequestingOriginKey = "ro";
-constexpr base::StringPiece kEmbeddingOriginKey = "eo";
-constexpr base::StringPiece kContentSettingKey = "cs";
+constexpr std::string_view kRequestingOriginKey = "ro";
+constexpr std::string_view kEmbeddingOriginKey = "eo";
+constexpr std::string_view kContentSettingKey = "cs";
 
 template <typename Container, typename ConstIterator>
 typename Container::iterator ConstCastIterator(Container& c, ConstIterator it) {

@@ -7,14 +7,14 @@
 #define BRAVE_COMPONENTS_COMMANDER_COMMON_CONSTANTS_H_
 
 #include <iterator>
+#include <string_view>
 
 #include "base/component_export.h"
-#include "base/strings/string_piece.h"
 
 namespace commander {
 
 COMPONENT_EXPORT(COMMANDER_COMMON)
-extern const base::StringPiece16 kCommandPrefix;
+extern const std::u16string_view kCommandPrefix;
 
 }  // namespace commander
 

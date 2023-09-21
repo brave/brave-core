@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/pattern.h"
 #include "base/test/bind.h"
@@ -311,10 +313,10 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
             return;
           }
 
-          base::StringPiece request_string(request.request_body->elements()
-                                               ->at(0)
-                                               .As<network::DataElementBytes>()
-                                               .AsStringPiece());
+          std::string_view request_string(request.request_body->elements()
+                                              ->at(0)
+                                              .As<network::DataElementBytes>()
+                                              .AsStringPiece());
           url_loader_factory_.ClearResponses();
           if (request_string.find("eth_getBalance") != std::string::npos) {
             url_loader_factory_.AddResponse(request.url.spec(),

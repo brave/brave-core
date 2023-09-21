@@ -6,6 +6,7 @@
 #include "brave/test/views/snapshot/widget_snapshot_checker.h"
 
 #include <string>
+#include <string_view>
 
 #include "base/files/file_util.h"
 #include "base/path_service.h"
@@ -28,7 +29,7 @@ namespace {
 
 constexpr char kSnapshotFileName[] = "snapshot.png";
 
-base::StringPiece GetPlatformName() {
+std::string_view GetPlatformName() {
 #if BUILDFLAG(IS_WIN)
   return "win";
 #elif BUILDFLAG(IS_MAC)

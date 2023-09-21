@@ -5,6 +5,8 @@
 
 #include "net/base/lookup_string_in_fixed_set.h"
 
+#include <string_view>
+
 #define LookupSuffixInReversedSet LookupSuffixInReversedSet_ChromiumImpl
 #include "src/net/base/lookup_string_in_fixed_set.cc"
 #undef LookupSuffixInReversedSet
@@ -24,7 +26,7 @@ namespace net {
 int LookupSuffixInReversedSet(const unsigned char* graph,
                               size_t length,
                               bool include_private,
-                              base::StringPiece host,
+                              std::string_view host,
                               size_t* suffix_length) {
   constexpr char kIpfsLocalhost[] = ".ipfs.localhost";
   constexpr char kIpnsLocalhost[] = ".ipns.localhost";

@@ -9,6 +9,7 @@
 #include <list>
 #include <memory>
 #include <string>
+#include <string_view>
 
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
@@ -109,7 +110,7 @@ class APIRequestHelper {
     void SetResultCallback(ResultCallback result_callback);
     base::WeakPtr<URLLoaderHandler> GetWeakPtr();
 
-    void send_sse_data_for_testing(base::StringPiece string_piece,
+    void send_sse_data_for_testing(std::string_view string_piece,
                                    bool is_sse,
                                    DataReceivedCallback callback);
 
@@ -122,10 +123,10 @@ class APIRequestHelper {
     // If Cancel is needed even if url or data operations are in progress,
     // then call |APIRequestHelper::Cancel|.
     void MaybeSendResult();
-    void ParseSSE(base::StringPiece string_piece);
+    void ParseSSE(std::string_view string_piece);
 
     // network::SimpleURLLoaderStreamConsumer implementation:
-    void OnDataReceived(base::StringPiece string_piece,
+    void OnDataReceived(std::string_view string_piece,
                         base::OnceClosure resume) override;
     void OnComplete(bool success) override;
     void OnRetry(base::OnceClosure start_retry) override;

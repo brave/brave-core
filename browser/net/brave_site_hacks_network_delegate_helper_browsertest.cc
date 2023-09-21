@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 #include "base/base64url.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
@@ -129,7 +131,7 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     return navigation_url.ReplaceComponents(replacement);
   }
 
-  GURL landing_url(const base::StringPiece& query, const GURL& landing_url) {
+  GURL landing_url(const std::string_view& query, const GURL& landing_url) {
     GURL::Replacements replacement;
     if (!query.empty()) {
       replacement.SetQueryStr(query);

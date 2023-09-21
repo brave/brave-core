@@ -7,8 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_STATS_BROWSER_BRAVE_STATS_UPDATER_UTIL_H_
 
 #include <string>
+#include <string_view>
 
-#include "base/strings/string_piece.h"
 #include "base/system/sys_info.h"
 #include "base/time/time.h"
 
@@ -28,7 +28,7 @@ int GetIsoWeekNumber(const base::Time& time);
 
 base::Time GetLastMondayTime(const base::Time& time);
 
-base::Time GetYMDAsDate(const base::StringPiece& ymd);
+base::Time GetYMDAsDate(const std::string_view& ymd);
 
 std::string GetAPIKey();
 

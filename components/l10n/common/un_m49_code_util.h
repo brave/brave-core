@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_L10N_COMMON_UN_M49_CODE_UTIL_H_
 #define BRAVE_COMPONENTS_L10N_COMMON_UN_M49_CODE_UTIL_H_
 
-#include "base/strings/string_piece_forward.h"
+#include <string_view>
 
 namespace brave_l10n {
 
 // Returns |true| if the given code is a UN M.49 code otherwise returns |false|.
 // See https://en.wikipedia.org/wiki/UN_M49.
-bool IsUNM49Code(base::StringPiece code);
+bool IsUNM49Code(std::string_view code);
 
 }  // namespace brave_l10n
 

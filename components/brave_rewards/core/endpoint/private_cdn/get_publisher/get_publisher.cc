@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/get_publisher/get_publisher.h"
 
+#include <string_view>
 #include <utility>
 
 #include "base/strings/string_util.h"
@@ -139,7 +140,7 @@ mojom::Result ServerPublisherInfoFromMessage(
   return mojom::Result::FAILED;
 }
 
-bool DecompressMessage(base::StringPiece payload, std::string* output) {
+bool DecompressMessage(std::string_view payload, std::string* output) {
   constexpr size_t buffer_size = 32 * 1024;
   return util::DecodeBrotliStringWithBuffer(payload, buffer_size, output);
 }
@@ -183,7 +184,7 @@ mojom::Result GetPublisher::ParseBody(const std::string& body,
     return mojom::Result::FAILED;
   }
 
-  base::StringPiece body_payload(body.data(), body.size());
+  std::string_view body_payload(body.data(), body.size());
   if (!brave::PrivateCdnHelper::GetInstance()->RemovePadding(&body_payload)) {
     BLOG(0, "Publisher data response has invalid padding");
     return mojom::Result::FAILED;

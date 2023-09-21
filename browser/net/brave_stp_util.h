@@ -6,15 +6,16 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_STP_UTIL_H_
 #define BRAVE_BROWSER_NET_BRAVE_STP_UTIL_H_
 
+#include <string_view>
+
 #include "base/containers/flat_set.h"
-#include "base/strings/string_piece.h"
 #include "net/http/http_response_headers.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
 namespace brave {
 
-base::flat_set<base::StringPiece>* TrackableSecurityHeaders();
+base::flat_set<std::string_view>* TrackableSecurityHeaders();
 
 void RemoveTrackableSecurityHeadersForThirdParty(
     const GURL& request_url, const url::Origin& top_frame_origin,

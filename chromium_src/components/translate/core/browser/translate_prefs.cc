@@ -7,6 +7,8 @@
 // chromium_src/chrome/browser/prefs/browser_prefs.cc
 #include "components/translate/core/browser/translate_prefs.h"
 
+#include <string_view>
+
 #include "brave/components/translate/core/common/brave_translate_features.h"
 
 #define TranslatePrefs TranslatePrefs_ChromiumImpl
@@ -15,7 +17,7 @@
 
 namespace translate {
 
-bool TranslatePrefs::ShouldAutoTranslate(base::StringPiece source_language,
+bool TranslatePrefs::ShouldAutoTranslate(std::string_view source_language,
                                          std::string* target_language) {
   if (!IsBraveAutoTranslateEnabled()) {
     return false;

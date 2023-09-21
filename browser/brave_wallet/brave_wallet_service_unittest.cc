@@ -4,8 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+
 #include <memory>
 #include <string>
+#include <string_view>
 
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
@@ -444,10 +446,10 @@ class BraveWalletServiceUnitTest : public testing::Test {
         [&, expected_url,
          interface_id_to_response](const network::ResourceRequest& request) {
           EXPECT_EQ(request.url, expected_url);
-          base::StringPiece request_string(request.request_body->elements()
-                                               ->at(0)
-                                               .As<network::DataElementBytes>()
-                                               .AsStringPiece());
+          std::string_view request_string(request.request_body->elements()
+                                              ->at(0)
+                                              .As<network::DataElementBytes>()
+                                              .AsStringPiece());
           // Check if any of the interface ids are in the request
           // if so, return the response for that interface id
           // if not, do nothing

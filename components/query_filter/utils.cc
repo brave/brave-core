@@ -6,11 +6,11 @@
 #include "brave/components/query_filter/utils.h"
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
-#include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -19,7 +19,7 @@
 namespace query_filter {
 
 static constexpr auto kSimpleQueryStringTrackers =
-    base::MakeFixedFlatSet<base::StringPiece>(
+    base::MakeFixedFlatSet<std::string_view>(
         {// https://github.com/brave/brave-browser/issues/4239
          "fbclid", "gclid", "msclkid", "mc_eid",
          // https://github.com/brave/brave-browser/issues/9879
@@ -63,7 +63,7 @@ static constexpr auto kSimpleQueryStringTrackers =
          "vgo_ee"});
 
 static constexpr auto kConditionalQueryStringTrackers =
-    base::MakeFixedFlatMap<base::StringPiece, base::StringPiece>({
+    base::MakeFixedFlatMap<std::string_view, std::string_view>({
         // https://github.com/brave/brave-browser/issues/9018
         {"mkt_tok", "([uU]nsubscribe|emailWebview)"},
         // https://github.com/brave/brave-browser/issues/30731
@@ -72,7 +72,7 @@ static constexpr auto kConditionalQueryStringTrackers =
     });
 
 static constexpr auto kScopedQueryStringTrackers =
-    base::MakeFixedFlatMap<base::StringPiece, base::StringPiece>({
+    base::MakeFixedFlatMap<std::string_view, std::string_view>({
         // https://github.com/brave/brave-browser/issues/11580
         {"igshid", "instagram.com"},
         // https://github.com/brave/brave-browser/issues/26966
@@ -82,7 +82,7 @@ static constexpr auto kScopedQueryStringTrackers =
 
 // Remove tracking query parameters from a GURL, leaving all
 // other parts untouched.
-absl::optional<std::string> StripQueryParameter(const base::StringPiece& query,
+absl::optional<std::string> StripQueryParameter(const std::string_view& query,
                                                 const std::string& spec) {
   // We are using custom query string parsing code here. See
   // https://github.com/brave/brave-core/pull/13726#discussion_r897712350
@@ -91,14 +91,14 @@ absl::optional<std::string> StripQueryParameter(const base::StringPiece& query,
   // Split query string by ampersands, remove tracking parameters,
   // then join the remaining query parameters, untouched, back into
   // a single query string.
-  const std::vector<base::StringPiece> input_kv_strings =
+  const std::vector<std::string_view> input_kv_strings =
       SplitStringPiece(query, "&", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-  std::vector<base::StringPiece> output_kv_strings;
+  std::vector<std::string_view> output_kv_strings;
   int disallowed_count = 0;
   for (const auto& kv_string : input_kv_strings) {
-    const std::vector<base::StringPiece> pieces = SplitStringPiece(
+    const std::vector<std::string_view> pieces = SplitStringPiece(
         kv_string, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-    const base::StringPiece& key = pieces.empty() ? "" : pieces[0];
+    const std::string_view& key = pieces.empty() ? "" : pieces[0];
     if (pieces.size() >= 2 &&
         (kSimpleQueryStringTrackers.count(key) == 1 ||
          (kScopedQueryStringTrackers.count(key) == 1 &&

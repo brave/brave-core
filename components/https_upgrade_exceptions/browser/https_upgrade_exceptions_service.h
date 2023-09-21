@@ -11,7 +11,6 @@
 #include <string>
 
 #include "base/files/file_path.h"
-#include "base/strings/string_piece.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 

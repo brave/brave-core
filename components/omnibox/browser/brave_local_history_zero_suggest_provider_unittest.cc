@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/memory/ref_counted.h"
@@ -46,7 +47,7 @@ class BraveLocalHistoryZeroSuggestProviderTest
   BraveLocalHistoryZeroSuggestProviderTest& operator=(
       const BraveLocalHistoryZeroSuggestProviderTest&) = delete;
 
-  AutocompleteInput CreateAutocompleteInput(base::StringPiece text) {
+  AutocompleteInput CreateAutocompleteInput(std::string_view text) {
     AutocompleteInput input(u"", metrics::OmniboxEventProto::NTP_REALBOX,
                             TestSchemeClassifier());
     input.set_focus_type(metrics::OmniboxFocusType::INTERACTION_FOCUS);

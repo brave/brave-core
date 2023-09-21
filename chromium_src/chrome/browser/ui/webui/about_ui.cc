@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 #include "base/containers/contains.h"
 #include "base/strings/string_split.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -32,7 +34,7 @@ std::string AboutUIHTMLSource::ChromeURLs() const {
   // Remove some URLs.
   auto html_lines = base::SplitStringPiece(
       chrome_urls, "\n", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-  const base::flat_set<base::StringPiece> kURLsToRemove{
+  const base::flat_set<std::string_view> kURLsToRemove{
       "brave://memories",
   };
   // URLs in html should be sorted so it's okay to iterate over sorted

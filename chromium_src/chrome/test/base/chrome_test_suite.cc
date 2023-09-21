@@ -5,6 +5,8 @@
 
 #include "chrome/test/base/chrome_test_suite.h"
 
+#include <string_view>
+
 #define ChromeTestSuite ChromeTestSuite_ChromiumImpl
 #include "src/chrome/test/base/chrome_test_suite.cc"
 #undef ChromeTestSuite
@@ -20,7 +22,7 @@ namespace {
 class BraveChromeTestSetupHelper : public testing::EmptyTestEventListener {
  public:
   struct TestAdjustments {
-    std::vector<base::StringPiece> test_patterns;
+    std::vector<std::string_view> test_patterns;
 
     std::vector<std::string> enable_features;
     std::vector<std::string> disable_features;

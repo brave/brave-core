@@ -6,6 +6,7 @@
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
 
 #include <string>
+#include <string_view>
 
 #include "base/base64.h"
 #include "base/containers/adapters.h"
@@ -35,9 +36,8 @@ std::string GetCodeChallenge(
   crypto::SHA256HashString(code_verifier,
                            raw,
                            crypto::kSHA256Length);
-  base::Base64Encode(base::StringPiece(raw,
-                                       crypto::kSHA256Length),
-                                       &code_challenge);
+  base::Base64Encode(std::string_view(raw, crypto::kSHA256Length),
+                     &code_challenge);
 
   if (strip_chars) {
     std::replace(code_challenge.begin(), code_challenge.end(), '+', '-');

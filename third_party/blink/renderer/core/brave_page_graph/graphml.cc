@@ -9,6 +9,7 @@
 #include <libxml/tree.h>
 
 #include <string>
+#include <string_view>
 
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
@@ -43,7 +44,7 @@ void GraphMLAttr::AddDefinitionNode(xmlNodePtr parent_node) const {
 
 void GraphMLAttr::AddValueNode(xmlDocPtr doc,
                                xmlNodePtr parent_node,
-                               base::StringPiece value) const {
+                               std::string_view value) const {
   AddValueNodeXmlChar(doc, parent_node, XmlUtf8String(value).get());
 }
 

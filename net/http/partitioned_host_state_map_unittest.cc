@@ -7,6 +7,7 @@
 
 #include <map>
 #include <string>
+#include <string_view>
 
 #include "base/containers/span.h"
 #include "crypto/sha2.h"
@@ -19,7 +20,7 @@ namespace {
 using HostHash = std::array<uint8_t, crypto::kSHA256Length>;
 using PartitionedMap = PartitionedHostStateMap<std::map<HostHash, std::string>>;
 
-HostHash HashHost(base::StringPiece canonicalized_host) {
+HostHash HashHost(std::string_view canonicalized_host) {
   if (canonicalized_host.empty()) {
     return {};
   }

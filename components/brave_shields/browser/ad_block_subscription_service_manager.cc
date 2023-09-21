@@ -6,6 +6,7 @@
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 
 #include <memory>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -39,7 +40,7 @@ namespace {
 
 const uint16_t kSubscriptionMaxExpiresHours = 14 * 24;
 
-bool SkipGURLField(base::StringPiece value, GURL* field) {
+bool SkipGURLField(std::string_view value, GURL* field) {
   return true;
 }
 

@@ -7,8 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PREFIX_ITERATOR_H_
 
 #include <iterator>
-
-#include "base/strings/string_piece.h"
+#include <string_view>
 
 namespace brave_rewards::internal {
 namespace publisher {
@@ -18,7 +17,7 @@ namespace publisher {
 class PrefixIterator {
  public:
   using iterator_category = std::random_access_iterator_tag;
-  using value_type = base::StringPiece;
+  using value_type = std::string_view;
   using difference_type = std::ptrdiff_t;
   using reference = value_type&;
   using const_reference = const value_type&;
@@ -31,14 +30,14 @@ class PrefixIterator {
   PrefixIterator(const PrefixIterator& rhs)
       : data_(rhs.data_), index_(rhs.index_), size_(rhs.size_) {}
 
-  base::StringPiece operator*() const {
+  std::string_view operator*() const {
     size_t offset = index_ * size_;
-    return base::StringPiece(data_ + offset, size_);
+    return std::string_view(data_ + offset, size_);
   }
 
-  base::StringPiece operator[](const int& rhs) const {
+  std::string_view operator[](const int& rhs) const {
     size_t offset = (index_ + rhs) * size_;
-    return base::StringPiece(data_ + offset, size_);
+    return std::string_view(data_ + offset, size_);
   }
 
   PrefixIterator& operator=(const PrefixIterator& rhs) {

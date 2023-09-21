@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <array>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/flat_set.h"
@@ -29,7 +30,7 @@ constexpr std::size_t kP3AConstellationAttributeCount = 8;
 MessageMetainfo::MessageMetainfo() = default;
 MessageMetainfo::~MessageMetainfo() = default;
 
-base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
+base::Value::Dict GenerateP3AMessageDict(std::string_view metric_name,
                                          uint64_t metric_value,
                                          MetricLogType log_type,
                                          const MessageMetainfo& meta,
@@ -99,7 +100,7 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
   return result;
 }
 
-std::string GenerateP3AConstellationMessage(base::StringPiece metric_name,
+std::string GenerateP3AConstellationMessage(std::string_view metric_name,
                                             uint64_t metric_value,
                                             const MessageMetainfo& meta) {
   base::Time::Exploded exploded;

@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <string>
+#include <string_view>
 
 #include "base/path_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -127,7 +128,7 @@ class EventSourcePoolLimitBrowserTest : public InProcessBrowserTest {
   }
 
   void OpenEventSources(content::RenderFrameHost* rfh,
-                        base::StringPiece script_template,
+                        std::string_view script_template,
                         int count) {
     const std::string& es_open_script =
         content::JsReplace(script_template, es_url_);
@@ -137,7 +138,7 @@ class EventSourcePoolLimitBrowserTest : public InProcessBrowserTest {
   }
 
   void ExpectEventSourcesAreLimited(content::RenderFrameHost* rfh,
-                                    base::StringPiece script_template) {
+                                    std::string_view script_template) {
     const std::string& es_open_script =
         content::JsReplace(script_template, es_url_);
     for (int i = 0; i < 5; ++i) {
@@ -146,7 +147,7 @@ class EventSourcePoolLimitBrowserTest : public InProcessBrowserTest {
   }
 
   void CloseEventSources(content::RenderFrameHost* rfh,
-                         base::StringPiece script_template,
+                         std::string_view script_template,
                          int count) {
     for (int i = 0; i < count; ++i) {
       EXPECT_TRUE(content::ExecJs(rfh, content::JsReplace(script_template, i)));
@@ -154,7 +155,7 @@ class EventSourcePoolLimitBrowserTest : public InProcessBrowserTest {
   }
 
   void OpenEventSourcesAndExpectLimited(content::RenderFrameHost* rfh,
-                                        base::StringPiece script_template,
+                                        std::string_view script_template,
                                         int count) {
     OpenEventSources(rfh, script_template, count);
     ExpectEventSourcesAreLimited(rfh, script_template);
@@ -182,7 +183,7 @@ class EventSourcePoolLimitBrowserTest : public InProcessBrowserTest {
   // Makes use of Cross Site Redirector
   content::RenderFrameHost* GetNthChildFrameWithHost(
       content::RenderFrameHost* main,
-      base::StringPiece host,
+      std::string_view host,
       size_t n = 0) {
     size_t child_idx = 0;
     while (true) {

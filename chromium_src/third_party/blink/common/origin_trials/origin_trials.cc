@@ -5,11 +5,13 @@
 
 #include "third_party/blink/public/common/origin_trials/origin_trials.h"
 
+#include <string_view>
+
 #include "base/containers/contains.h"
 
 namespace blink {
 namespace origin_trials {
-bool IsTrialValid_ChromiumImpl(base::StringPiece trial_name);
+bool IsTrialValid_ChromiumImpl(std::string_view trial_name);
 }  // namespace origin_trials
 }  // namespace blink
 
@@ -20,7 +22,7 @@ bool IsTrialValid_ChromiumImpl(base::StringPiece trial_name);
 namespace blink {
 namespace origin_trials {
 
-bool IsTrialDisabledInBrave(base::StringPiece trial_name) {
+bool IsTrialDisabledInBrave(std::string_view trial_name) {
   // When updating also update the array in the overload below.
   // clang-format off
   static const char* const kBraveDisabledTrialNames[] = {
@@ -69,7 +71,7 @@ bool IsTrialDisabledInBrave(OriginTrialFeature feature) {
   return base::Contains(kBraveDisabledTrialFeatures, feature);
 }
 
-bool IsTrialValid(base::StringPiece trial_name) {
+bool IsTrialValid(std::string_view trial_name) {
   if (IsTrialDisabledInBrave(trial_name))
     return false;
 

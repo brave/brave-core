@@ -5,7 +5,8 @@
 
 #include "brave/browser/extensions/api/brave_extensions_api_client.h"
 
-#include "base/strings/string_piece.h"
+#include <string_view>
+
 #include "brave/components/constants/url_constants.h"
 #include "extensions/common/permissions/permissions_data.h"
 #include "extensions/common/url_pattern.h"
@@ -17,7 +18,7 @@ bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
     content::BrowserContext* context,
     const WebRequestInfo& request) const {
   const url::Origin origin = url::Origin::Create(request.url);
-  const base::StringPiece path = request.url.path_piece();
+  const std::string_view path = request.url.path_piece();
   if (((origin.DomainIs("wallet-sandbox.uphold.com") ||
         origin.DomainIs("uphold.com")) &&
        base::StartsWith(path, "/authorize/",

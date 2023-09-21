@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -45,9 +46,9 @@ class DebounceRule {
   // class.
   static void RegisterJSONConverter(
       base::JSONValueConverter<DebounceRule>* converter);
-  static bool ParseDebounceAction(base::StringPiece value,
+  static bool ParseDebounceAction(std::string_view value,
                                   DebounceAction* field);
-  static bool ParsePrependScheme(base::StringPiece value,
+  static bool ParsePrependScheme(std::string_view value,
                                  DebouncePrependScheme* field);
   static base::expected<std::pair<std::vector<std::unique_ptr<DebounceRule>>,
                                   base::flat_set<std::string>>,

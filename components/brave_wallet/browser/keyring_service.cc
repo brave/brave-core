@@ -8,6 +8,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/base64.h"
@@ -205,7 +206,7 @@ absl::optional<uint32_t> ExtractAccountIndex(mojom::KeyringId keyring_id,
 
   // For all types remove root path and slash. For Solana also remove '/0'.
 
-  auto account_index = base::StringPiece(path);
+  auto account_index = std::string_view(path);
   auto root_path = GetRootPath(keyring_id);
   if (!base::StartsWith(account_index, root_path)) {
     return absl::nullopt;
@@ -232,8 +233,8 @@ absl::optional<uint32_t> ExtractAccountIndex(mojom::KeyringId keyring_id,
   return result;
 }
 
-static base::span<const uint8_t> ToSpan(base::StringPiece sp) {
-  return base::as_bytes(base::make_span(sp));
+static base::span<const uint8_t> ToSpan(std::string_view sv) {
+  return base::as_bytes(base::make_span(sv));
 }
 
 std::string GetAccountName(size_t number) {

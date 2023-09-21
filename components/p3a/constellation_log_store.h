@@ -8,12 +8,12 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/memory/raw_ref.h"
-#include "base/strings/string_piece.h"
 #include "base/time/time.h"
 #include "components/metrics/log_store.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -52,7 +52,7 @@ class ConstellationLogStore : public metrics::LogStore {
   const std::string& staged_log_signature() const override;
   absl::optional<uint64_t> staged_log_user_id() const override;
   void StageNextLog() override;
-  void DiscardStagedLog(base::StringPiece reason = "") override;
+  void DiscardStagedLog(std::string_view reason = "") override;
   void MarkStagedLogAsSent() override;
 
   // |TrimAndPersistUnsentLogs| should not be used, since we persist everything

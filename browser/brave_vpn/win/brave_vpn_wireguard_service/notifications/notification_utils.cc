@@ -10,6 +10,8 @@
 #include <wrl/client.h>
 #include <wrl/event.h>
 
+#include <string_view>
+
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
@@ -36,8 +38,8 @@ template <unsigned int size>
 HRESULT CreateActivationFactory(wchar_t const (&class_name)[size],
                                 const IID& iid,
                                 void** factory) {
-  base::win::ScopedHString ref_class_name = base::win::ScopedHString::Create(
-      base::WStringPiece(class_name, size - 1));
+  base::win::ScopedHString ref_class_name =
+      base::win::ScopedHString::Create(std::wstring_view(class_name, size - 1));
   return base::win::RoGetActivationFactory(ref_class_name.get(), iid, factory);
 }
 

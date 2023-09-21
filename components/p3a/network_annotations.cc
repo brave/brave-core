@@ -5,6 +5,8 @@
 
 #include "brave/components/p3a/network_annotations.h"
 
+#include <string_view>
+
 #include "brave/components/p3a/uploader.h"
 
 namespace p3a {
@@ -59,7 +61,7 @@ net::NetworkTrafficAnnotationTag GetRandomnessServerInfoAnnotation() {
 }
 
 net::NetworkTrafficAnnotationTag GetP3AUploadAnnotation(
-    base::StringPiece upload_type,
+    std::string_view upload_type,
     bool is_constellation) {
   if (is_constellation) {
     if (upload_type == kP3ACreativeUploadType ||

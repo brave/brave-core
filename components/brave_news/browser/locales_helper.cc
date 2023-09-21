@@ -6,6 +6,7 @@
 #include "brave/components/brave_news/browser/locales_helper.h"
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/contains.h"
@@ -32,10 +33,10 @@ namespace {
 // list of matches for enabling Brave News on the NTP and prompting the user
 // to opt-in.
 constexpr auto kEnabledLanguages =
-    base::MakeFixedFlatSet<base::StringPiece>({"en", "ja"});
+    base::MakeFixedFlatSet<std::string_view>({"en", "ja"});
 // We can add to this list as new locales become available to have Brave News
 // show when it's ready for those users.
-constexpr auto kEnabledLocales = base::MakeFixedFlatSet<base::StringPiece>(
+constexpr auto kEnabledLocales = base::MakeFixedFlatSet<std::string_view>(
     {"es_ES", "es_MX", "pt_BR", "fr_FR", "de_DE"});
 
 bool HasAnyLocale(const base::flat_set<std::string>& locales,

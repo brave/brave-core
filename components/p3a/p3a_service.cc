@@ -6,6 +6,7 @@
 #include "brave/components/p3a/p3a_service.h"
 
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/logging.h"
@@ -16,7 +17,6 @@
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/rand_util.h"
-#include "base/strings/string_piece_forward.h"
 #include "base/timer/wall_clock_timer.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
@@ -51,8 +51,7 @@ const uint64_t kSuspendedMetricBucket = INT_MAX - 1;
 
 constexpr char kDynamicMetricsDictPref[] = "p3a.dynamic_metrics";
 
-bool IsSuspendedMetric(base::StringPiece metric_name,
-                       uint64_t value_or_bucket) {
+bool IsSuspendedMetric(std::string_view metric_name, uint64_t value_or_bucket) {
   return value_or_bucket == kSuspendedMetricBucket;
 }
 
@@ -95,7 +94,7 @@ void P3AService::RegisterPrefs(PrefRegistrySimple* registry, bool first_run) {
   registry->RegisterDictionaryPref(kDynamicMetricsDictPref);
 }
 
-void P3AService::InitCallback(const base::StringPiece& histogram_name) {
+void P3AService::InitCallback(const std::string_view& histogram_name) {
   histogram_sample_callbacks_.push_back(
       std::make_unique<base::StatisticsRecorder::ScopedHistogramSampleObserver>(
           std::string(histogram_name),
@@ -104,16 +103,15 @@ void P3AService::InitCallback(const base::StringPiece& histogram_name) {
 }
 
 void P3AService::InitCallbacks() {
-  for (const base::StringPiece& histogram_name :
+  for (const std::string_view& histogram_name :
        p3a::kCollectedTypicalHistograms) {
     InitCallback(histogram_name);
   }
-  for (const base::StringPiece& histogram_name :
+  for (const std::string_view& histogram_name :
        p3a::kCollectedExpressHistograms) {
     InitCallback(histogram_name);
   }
-  for (const base::StringPiece& histogram_name :
-       p3a::kCollectedSlowHistograms) {
+  for (const std::string_view& histogram_name : p3a::kCollectedSlowHistograms) {
     InitCallback(histogram_name);
   }
   LoadDynamicMetrics();
@@ -279,7 +277,7 @@ void P3AService::OnHistogramChangedOnUI(const char* histogram_name,
   }
 }
 
-void P3AService::HandleHistogramChange(base::StringPiece histogram_name,
+void P3AService::HandleHistogramChange(std::string_view histogram_name,
                                        size_t bucket) {
   if (IsSuspendedMetric(histogram_name, bucket)) {
     message_manager_->RemoveMetricValue(std::string(histogram_name));

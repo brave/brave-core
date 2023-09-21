@@ -5,6 +5,8 @@
 
 #include "components/flags_ui/flags_state.h"
 
+#include <string_view>
+
 #include "base/strings/strcat.h"
 
 #include "src/components/flags_ui/flags_state.cc"
@@ -32,14 +34,14 @@ void AppendCurrentFeatureStateIfDefault(
   DCHECK(entry.feature.feature);
   const auto& feature = *entry.feature.feature;
   const bool is_feature_enabled_now = base::FeatureList::IsEnabled(feature);
-  const base::StringPiece current_state =
-      is_feature_enabled_now ? kGenericExperimentChoiceEnabled
-                             : kGenericExperimentChoiceDisabled;
+  const std::string_view current_state = is_feature_enabled_now
+                                             ? kGenericExperimentChoiceEnabled
+                                             : kGenericExperimentChoiceDisabled;
 
   const bool is_feature_enabled_by_default =
       base::FeatureList::GetCompileTimeFeatureState(feature) ==
       base::FeatureState::FEATURE_ENABLED_BY_DEFAULT;
-  const base::StringPiece current_state_flag =
+  const std::string_view current_state_flag =
       is_feature_enabled_now != is_feature_enabled_by_default ? "*" : "";
 
   // Add current state to "Default" selector and append "*" if the state differs

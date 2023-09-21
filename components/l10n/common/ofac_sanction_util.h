@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_L10N_COMMON_OFAC_SANCTION_UTIL_H_
 #define BRAVE_COMPONENTS_L10N_COMMON_OFAC_SANCTION_UTIL_H_
 
-#include "base/strings/string_piece_forward.h"
+#include <string_view>
 
 namespace brave_l10n {
 
@@ -16,7 +16,7 @@ namespace brave_l10n {
 // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2,
 // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3, and
 // https://en.wikipedia.org/wiki/ISO_3166-1_numeric.
-bool IsISOCountryCodeOFACSanctioned(base::StringPiece country_code);
+bool IsISOCountryCodeOFACSanctioned(std::string_view country_code);
 
 // Returns |true| if the given |code| is on the OFAC sanctioned list, otherwise
 // |false|. |code| supports UN M.49 codes. See
@@ -24,7 +24,7 @@ bool IsISOCountryCodeOFACSanctioned(base::StringPiece country_code);
 //
 // NOTE: Sanctioning UN M.49 codes will also block all other countries that are
 // part of the same code.
-bool IsUNM49CodeOFACSanctioned(base::StringPiece code);
+bool IsUNM49CodeOFACSanctioned(std::string_view code);
 
 }  // namespace brave_l10n
 

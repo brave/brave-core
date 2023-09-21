@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry.h"
 
+#include <string_view>
 #include <tuple>
 
 #include "base/containers/flat_set.h"
@@ -12,7 +13,6 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
@@ -29,7 +29,7 @@ namespace {
 
 std::tuple<base::flat_map<std::string, std::string>,
            base::flat_map<std::string, std::string>>
-ParseMappings(const base::StringPiece entities, bool discard_irrelevant) {
+ParseMappings(const std::string_view entities, bool discard_irrelevant) {
   base::flat_map<std::string, std::string> entity_by_domain;
   base::flat_map<std::string, std::string> entity_by_root_domain;
 
@@ -59,7 +59,7 @@ ParseMappings(const base::StringPiece entities, bool discard_irrelevant) {
       if (!entity_domain_it.is_string()) {
         continue;
       }
-      const base::StringPiece entity_domain(entity_domain_it.GetString());
+      const std::string_view entity_domain(entity_domain_it.GetString());
 
       const auto inserted =
           entity_by_domain.emplace(entity_domain, *entity_name);
@@ -101,7 +101,7 @@ ParseFromResource(int resource_id) {
 
 }  // namespace
 
-bool NamedThirdPartyRegistry::LoadMappings(const base::StringPiece entities,
+bool NamedThirdPartyRegistry::LoadMappings(const std::string_view entities,
                                            bool discard_irrelevant) {
   // Reset previous mappings
   entity_by_domain_.clear();
@@ -127,7 +127,7 @@ void NamedThirdPartyRegistry::UpdateMappings(
 }
 
 absl::optional<std::string> NamedThirdPartyRegistry::GetThirdParty(
-    const base::StringPiece request_url) const {
+    const std::string_view request_url) const {
   if (!IsInitialized()) {
     VLOG(2) << "Named Third Party Registry not initialized";
     return absl::nullopt;

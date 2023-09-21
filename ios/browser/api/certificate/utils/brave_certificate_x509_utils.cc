@@ -4,8 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_x509_utils.h"
+
+#include <string_view>
+
 #include "base/memory/ref_counted.h"
-#include "base/strings/string_piece.h"
 #include "base/time/time.h"
 #include "net/base/net_export.h"
 #include "net/cert/ct_objects_extractor.h"
@@ -57,7 +59,7 @@ bool ExtractEmbeddedSCT(
     return false;
   }
 
-  std::vector<base::StringPiece> parsed_scts;
+  std::vector<std::string_view> parsed_scts;
   if (!net::ct::DecodeSCTList(sct_list, &parsed_scts)) {
     return false;
   }

@@ -6,6 +6,7 @@
 #include "brave/components/brave_sync/qr_code_validator.h"
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/logging.h"
@@ -103,7 +104,7 @@ bool QrCodeDataValidator::IsValidSeedHex(const std::string& seed_hex) {
     return false;
   }
 
-  const std::vector<base::StringPiece> words = base::SplitStringPiece(
+  const std::vector<std::string_view> words = base::SplitStringPiece(
       sync_code_words, " ", base::WhitespaceHandling::TRIM_WHITESPACE,
       base::SplitResult::SPLIT_WANT_NONEMPTY);
 

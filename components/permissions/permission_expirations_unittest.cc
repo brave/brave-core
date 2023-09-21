@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <string_view>
 
 #include "base/stl_util.h"
 #include "base/strings/strcat.h"
@@ -27,7 +28,7 @@ namespace permissions {
 
 namespace {
 
-constexpr base::StringPiece kOneTypeOneExpirationPrefValue = R"({
+constexpr std::string_view kOneTypeOneExpirationPrefValue = R"({
   "$1": {
     "$2": [
       {"ro": "$3", "cs": 1}
@@ -35,7 +36,7 @@ constexpr base::StringPiece kOneTypeOneExpirationPrefValue = R"({
   }
 })";
 
-constexpr base::StringPiece kOneTypeOneExpirationWithAllDataPrefValue = R"({
+constexpr std::string_view kOneTypeOneExpirationWithAllDataPrefValue = R"({
   "$1": {
     "$2": [
       {"ro": "$3", "eo": "$4", "cs": $5}
@@ -43,7 +44,7 @@ constexpr base::StringPiece kOneTypeOneExpirationWithAllDataPrefValue = R"({
   }
 })";
 
-constexpr base::StringPiece kOneTypeTwoExpirationsPrefValue = R"({
+constexpr std::string_view kOneTypeTwoExpirationsPrefValue = R"({
   "$1": {
     "$2": [
       {"ro": "$3", "cs": 1}
@@ -54,7 +55,7 @@ constexpr base::StringPiece kOneTypeTwoExpirationsPrefValue = R"({
   }
 })";
 
-constexpr base::StringPiece kOneTypeThreeExpirationsPrefValue = R"({
+constexpr std::string_view kOneTypeThreeExpirationsPrefValue = R"({
   "$1": {
     "$2": [
       {"ro": "$3", "cs": 1}
@@ -68,7 +69,7 @@ constexpr base::StringPiece kOneTypeThreeExpirationsPrefValue = R"({
   }
 })";
 
-constexpr base::StringPiece kTwoTypesOneExpirationPrefValue = R"({
+constexpr std::string_view kTwoTypesOneExpirationPrefValue = R"({
   "$1": {
     "$2": [
       {"ro": "$3", "cs": 1}
@@ -129,7 +130,7 @@ class PermissionExpirationsTest : public testing::Test {
   }
 
   void CheckExpirationsPref(const base::Location& location,
-                            base::StringPiece pref_value_template,
+                            std::string_view pref_value_template,
                             const std::vector<std::string>& subst = {}) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     const auto& expirations =

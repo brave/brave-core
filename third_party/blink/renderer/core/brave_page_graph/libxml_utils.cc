@@ -8,6 +8,7 @@
 #include <libxml/tree.h>
 
 #include <string>
+#include <string_view>
 
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/string_util.h"
@@ -16,7 +17,7 @@
 
 namespace brave_page_graph {
 
-XmlUtf8String::XmlUtf8String(base::StringPiece str) {
+XmlUtf8String::XmlUtf8String(std::string_view str) {
   // XML doesn't allow invalid UTF-8 characters. Process it manually and replace
   // all invalid characters with a replacement code point.
   std::string xml_supported_utf8;

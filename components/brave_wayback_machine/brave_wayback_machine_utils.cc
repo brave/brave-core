@@ -6,6 +6,7 @@
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/strings/string_util.h"
@@ -49,7 +50,7 @@ GURL FixupWaybackQueryURL(const GURL& url) {
                                   url::DecodeURLMode::kUTF8OrIsomorphic,
                                   &canonOutput);
     const std::string decoded_key = base::UTF16ToUTF8(
-        base::StringPiece16(canonOutput.data(), canonOutput.length()));
+        std::u16string_view(canonOutput.data(), canonOutput.length()));
     // Skip target keys.
     if (decoded_key == kTimeStampKey || decoded_key == kCallbackKey)
       continue;

@@ -5,6 +5,8 @@
 
 #include "net/base/proxy_server.h"
 
+#include <string_view>
+
 #include "net/base/url_util.h"
 
 namespace {
@@ -12,9 +14,9 @@ namespace {
 // We need to call this before url::CanonicalizeHost() to extract the username
 // and password needed to create the HostPortPair later on, as well as to be
 // able to pass the hostname only to url::CanonicalizeHost(), or it will fail.
-void ParseAuthInfoAndHostname(base::StringPiece* hostname,
-                              base::StringPiece* username,
-                              base::StringPiece* password) {
+void ParseAuthInfoAndHostname(std::string_view* hostname,
+                              std::string_view* username,
+                              std::string_view* password) {
   url::Component user_component, password_component;
   url::Component host_component, port_component;
   url::ParseAuthority(hostname->data(), url::Component(0, hostname->size()),
@@ -41,7 +43,7 @@ void ParseAuthInfoAndHostname(base::StringPiece* hostname,
 }  // namespace
 
 #define BRAVE_PROXY_SERVER_FROM_SCHEME_HOST_AND_PORT_EXTRACT_AUTH_INFO \
-  base::StringPiece username, password;                                \
+  std::string_view username, password;                                 \
   ParseAuthInfoAndHostname(&host, &username, &password);
 
 #define BRAVE_PROXY_SERVER_FROM_SCHEME_HOST_AND_PORT_RETURN_HOST_PORT_PAIR     \

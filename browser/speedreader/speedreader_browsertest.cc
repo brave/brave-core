@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 #include "base/command_line.h"
 #include "base/functional/bind.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/escape.h"
-#include "base/strings/string_piece_forward.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
@@ -204,7 +205,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   }
 
   void NavigateToPageSynchronously(
-      base::StringPiece path,
+      std::string_view path,
       WindowOpenDisposition disposition =
           WindowOpenDisposition::NEW_FOREGROUND_TAB) {
     const GURL url = https_server_.GetURL(kTestHost, path);

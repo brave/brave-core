@@ -6,13 +6,13 @@
 #include "brave/components/brave_news/browser/html_parsing.h"
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/i18n/icu_string_conversions.h"
 #include "base/logging.h"
-#include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "third_party/re2/src/re2/stringpiece.h"
@@ -22,12 +22,12 @@ namespace brave_news {
 
 namespace {
 
-constexpr auto kSupportedFeedTypes = base::MakeFixedFlatSet<base::StringPiece>(
+constexpr auto kSupportedFeedTypes = base::MakeFixedFlatSet<std::string_view>(
     {"application/rss+xml", "application/atom+xml", "application/xml",
      "application/rss+atom", "application/json"});
 
 constexpr auto kSupportedRels =
-    base::MakeFixedFlatSet<base::StringPiece>({"alternate", "service.feed"});
+    base::MakeFixedFlatSet<std::string_view>({"alternate", "service.feed"});
 
 }  // namespace
 
