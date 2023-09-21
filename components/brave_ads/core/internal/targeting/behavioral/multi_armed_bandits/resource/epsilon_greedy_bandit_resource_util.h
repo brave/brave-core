@@ -10,9 +10,9 @@
 
 namespace brave_ads {
 
-void ResetEpsilonGreedyBanditEligibleSegments();
 void SetEpsilonGreedyBanditEligibleSegments(const SegmentList& segments);
 SegmentList GetEpsilonGreedyBanditEligibleSegments();
+void ResetEpsilonGreedyBanditEligibleSegments();
 
 }  // namespace brave_ads
 

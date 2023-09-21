@@ -72,7 +72,7 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
 }
 
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
-     HasNotVisitedWhenNoBrowsingHistory) {
+     HasNotVisitedIfNoBrowsingHistory) {
   // Arrange
   const BrowsingHistoryList browsing_history;
 
@@ -86,7 +86,7 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
 }
 
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
-     HasNotVisitedWhenNoAntiTargetedSites) {
+     HasNotVisitedIfNoAntiTargetedSites) {
   // Arrange
   const BrowsingHistoryList browsing_history = BuildBrowsingHistoryForTesting();
 
@@ -100,7 +100,7 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
 }
 
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
-     HasNotVisitedWhenNoBrowsingHistoryAndAntiTargetedSites) {
+     HasNotVisitedIfNoBrowsingHistoryAndAntiTargetedSites) {
   // Arrange
   const BrowsingHistoryList browsing_history;
 

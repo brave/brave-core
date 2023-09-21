@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pacing/pacing.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/embedding_based/creative_ad_embedding_based_predictor.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events_database_table.h"
@@ -111,7 +111,7 @@ void EligibleNotificationAdsV3::GetEligibleAdsCallback(
   }
 
   const absl::optional<CreativeNotificationAdInfo> creative_ad =
-      user_model.text_embedding_html_events.empty()
+      user_model.interest.text_embedding_html_events.empty()
           ? MaybePredictCreativeAd(eligible_creative_ads, user_model, ad_events)
           : MaybePredictCreativeAd(eligible_creative_ads, user_model);
   if (!creative_ad) {

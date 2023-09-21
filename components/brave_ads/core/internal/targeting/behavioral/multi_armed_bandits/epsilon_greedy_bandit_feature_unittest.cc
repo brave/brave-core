@@ -18,7 +18,7 @@ TEST(BraveAdsEpsilonGreedyBanditFeatureTest, IsEnabled) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  enabled_features.emplace_back(kEpsilonGreedyBanditFeatures, params);
+  enabled_features.emplace_back(kEpsilonGreedyBanditFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -47,7 +47,7 @@ TEST(BraveAdsEpsilonGreedyBanditFeatureTest,
   base::FieldTrialParams params;
   params["epsilon_value"] = "0.33";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kEpsilonGreedyBanditFeatures, params);
+  enabled_features.emplace_back(kEpsilonGreedyBanditFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -77,7 +77,7 @@ TEST(BraveAdsEpsilonGreedyBanditFeatureTest,
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kEpsilonGreedyBanditFeatures);
+  disabled_features.emplace_back(kEpsilonGreedyBanditFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,

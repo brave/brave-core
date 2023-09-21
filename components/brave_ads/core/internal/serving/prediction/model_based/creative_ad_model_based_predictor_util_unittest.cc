@@ -11,8 +11,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/creative_ad_model_based_predictor_input_variable_info.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_builder_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -44,11 +43,11 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
   creative_ad_3.segment = "parent";
   creative_ads.push_back(creative_ad_3);
 
-  const UserModelInfo user_model = BuildUserModelForTesting(
-      /*intent_segments*/ {"parent-child"},
-      /*latent_interest_segments*/ {"foo-bar"},
-      /*interest_segments*/ {"parent"},
-      /*text_embedding_html_events*/ {});
+  const UserModelInfo user_model{
+      IntentUserModelInfo{SegmentList{"parent-child"}},
+      LatentInterestUserModelInfo{SegmentList{"foo-bar"}},
+      InterestUserModelInfo{SegmentList{"parent"},
+                            TextEmbeddingHtmlEventList{}}};
 
   AdEventList ad_events;
   const AdEventInfo ad_event =

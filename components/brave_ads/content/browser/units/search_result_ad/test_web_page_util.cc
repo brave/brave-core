@@ -80,7 +80,7 @@ class TestWebPageEntitiesConstructor final {
 
     schema_org::mojom::PropertyPtr property =
         schema_org::mojom::Property::New();
-    property->name = static_cast<std::string>(name);
+    property->name = std::string(name);
     property->values = CreateVectorValuesPtr(value);
 
     properties->push_back(std::move(property));

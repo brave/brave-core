@@ -15,7 +15,7 @@ namespace brave_ads {
 
 class BraveAdsTimeConstraintUtilTest : public UnitTestBase {};
 
-TEST_F(BraveAdsTimeConstraintUtilTest, DoesRespectWhenNoHistoory) {
+TEST_F(BraveAdsTimeConstraintUtilTest, DoesRespectIfNoHistory) {
   // Arrange
   const std::vector<base::Time> history;
 

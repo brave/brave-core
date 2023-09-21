@@ -18,8 +18,8 @@
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/notification_ads/notification_ad_permission_rules.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_builder.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_builder.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
@@ -112,7 +112,7 @@ void NotificationAdServing::GetEligibleAds() {
 
 void NotificationAdServing::BuildUserModelCallback(
     const UserModelInfo& user_model) {
-  NotifyOpportunityAroseToServeNotificationAd(user_model.interest_segments);
+  NotifyOpportunityAroseToServeNotificationAd(user_model.interest.segments);
 
   CHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(

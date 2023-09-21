@@ -83,10 +83,14 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
   // Act
   NotifyDidInitializeAds();
 
-  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
-  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
-  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
-  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
+  processor.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment, mojom::NotificationAdEventType::kDismissed});
+  processor.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment, mojom::NotificationAdEventType::kDismissed});
+  processor.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment, mojom::NotificationAdEventType::kTimedOut});
+  processor.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment, mojom::NotificationAdEventType::kDismissed});
 
   // Assert
   const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
@@ -112,10 +116,14 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
   // Act
   NotifyDidInitializeAds();
 
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
+  processor.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment, mojom::NotificationAdEventType::kDismissed});
+  processor.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
   const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
@@ -141,10 +149,14 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
   // Act
   NotifyDidInitializeAds();
 
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
-  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment, mojom::NotificationAdEventType::kClicked});
 
   // Assert
   const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
@@ -169,7 +181,8 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, ProcessSegmentNotInResource) {
   // Act
   NotifyDidInitializeAds();
 
-  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
+  processor.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
   EXPECT_FALSE(base::Contains(GetEpsilonGreedyBanditArms(), segment));
@@ -185,7 +198,8 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
   // Act
   NotifyDidInitializeAds();
 
-  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
+  processor.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
   const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();

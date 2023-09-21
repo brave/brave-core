@@ -11,8 +11,8 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_builder_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/intent/intent_user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 
@@ -54,11 +54,12 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {"foo-bar1", "foo-bar2"},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"foo-bar3"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{
+          IntentUserModelInfo{SegmentList{"foo-bar1", "foo-bar2"}},
+          LatentInterestUserModelInfo{},
+          InterestUserModelInfo{SegmentList{"foo-bar3"},
+                                TextEmbeddingHtmlEventList{}},
+      },
       /*dimensions*/ "200x100",
       base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
         // Assert
@@ -84,11 +85,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {},
-          /*text_embedding_html_events*/ {}),
+      /*user_model*/ {},
       /*dimensions*/ "200x100",
       base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
         // Assert
@@ -102,11 +99,11 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test,
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {"intent-foo", "intent-bar"},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"interest-foo", "interest-bar"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{
+          IntentUserModelInfo{SegmentList{"intent-foo", "intent-bar"}},
+          LatentInterestUserModelInfo{},
+          InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"},
+                                TextEmbeddingHtmlEventList{}}},
       /*dimensions*/ "?x?",
       base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
         // Assert
@@ -119,11 +116,11 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {"intent-foo", "intent-bar"},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"interest-foo", "interest-bar"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{
+          IntentUserModelInfo{SegmentList{"intent-foo", "intent-bar"}},
+          LatentInterestUserModelInfo{},
+          InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"},
+                                TextEmbeddingHtmlEventList{}}},
       /*dimensions*/ "200x100",
       base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
         // Assert
