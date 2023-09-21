@@ -755,8 +755,7 @@ bool VerticalTabStripRegionView::ShouldShowVerticalTabsInBrowserFullscreen()
     const {
 #if BUILDFLAG(IS_MAC)
   // Refer to "Always show toolbar in Fullscreen" pref in the app menu
-  PrefService* prefs = browser_->profile()->GetPrefs();
-  return prefs->GetBoolean(prefs::kShowFullscreenToolbar);
+  return show_toolbar_on_fullscreen_pref_.GetValue();
 #else
   return false;
 #endif
