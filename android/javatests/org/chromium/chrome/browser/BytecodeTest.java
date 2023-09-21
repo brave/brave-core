@@ -1018,6 +1018,15 @@ public class BytecodeTest {
                 "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings", "mSite",
                 true, Website.class));
         Assert.assertTrue(
+                fieldExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher",
+                        "sLock", true, Object.class));
+        Assert.assertTrue(
+                fieldExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher",
+                        "DEFAULT_VARIATIONS_SERVER_URL", true, String.class));
+        Assert.assertTrue(
+                fieldExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher",
+                        "DEFAULT_FAST_VARIATIONS_SERVER_URL", true, String.class));
+        Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
                         "mNativeInitialized", true, boolean.class));
         Assert.assertTrue(
@@ -1220,8 +1229,9 @@ public class BytecodeTest {
             if (f.getName().equals(fieldName)) {
                 if (checkTypes) {
                     if (fieldType != null && f.getType().equals(fieldType)) return true;
-                } else
+                } else {
                     return true;
+                }
             }
         }
         return false;

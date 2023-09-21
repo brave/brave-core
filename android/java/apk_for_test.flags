@@ -634,6 +634,9 @@
 }
 
 -keep class org.chromium.components.variations.firstrun.VariationsSeedFetcher {
+    *** sLock;
+    *** DEFAULT_VARIATIONS_SERVER_URL;
+    *** DEFAULT_FAST_VARIATIONS_SERVER_URL;
     *** get(...);
 }
 
