@@ -435,9 +435,9 @@ export const SendScreen = React.memo((props: Props) => {
         )
       : undefined
 
-  const resolvedDomainOrToAddressOrUrl = (
-    hasValidResolvedDomain ? resolvedDomainAddress : trimmedToAddressOrUrl
-  ).toLowerCase()
+  const resolvedDomainOrToAddressOrUrl = hasValidResolvedDomain
+    ? resolvedDomainAddress
+    : trimmedToAddressOrUrl
 
   const toAddressIsTokenContract = resolvedDomainOrToAddressOrUrl
     ? findTokenByContractAddress(
@@ -448,7 +448,8 @@ export const SendScreen = React.memo((props: Props) => {
 
   const toAddressIsSelectedAccount =
     selectedAccount &&
-    resolvedDomainOrToAddressOrUrl === selectedAccount?.address.toLowerCase()
+    resolvedDomainOrToAddressOrUrl.toLowerCase() ===
+      selectedAccount.address.toLowerCase()
 
   const addressWarningLocaleKey = toAddressIsTokenContract
     ? 'braveWalletContractAddressError'
