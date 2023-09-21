@@ -541,11 +541,15 @@ export const SendScreen = React.memo((props: Props) => {
       hardware: selectedAccount.hardware
     }
 
+    const toAddress = showResolvedDomain
+      ? resolvedDomainAddress
+      : toAddressOrUrl
+
     selectedSendAsset.isErc20 &&
       (await sendERC20Transfer({
         network: selectedNetwork,
         fromAccount,
-        to: toAddressOrUrl, // change back?
+        to: toAddress,
         value: ethToWeiAmount(sendAmount, selectedSendAsset).toHex(),
         contractAddress: selectedSendAsset.contractAddress
       }))
@@ -554,7 +558,7 @@ export const SendScreen = React.memo((props: Props) => {
       (await sendERC721TransferFrom({
         network: selectedNetwork,
         fromAccount,
-        to: toAddressOrUrl, // change back?
+        to: toAddress,
         value: '',
         contractAddress: selectedSendAsset.contractAddress,
         tokenId: selectedSendAsset.tokenId ?? ''
@@ -569,7 +573,7 @@ export const SendScreen = React.memo((props: Props) => {
       await sendSPLTransfer({
         network: selectedNetwork,
         fromAccount,
-        to: toAddressOrUrl, // change back?
+        to: toAddress,
         value: !selectedSendAsset.isNft
           ? new Amount(sendAmount)
               .multiplyByDecimals(selectedSendAsset.decimals)
@@ -585,7 +589,7 @@ export const SendScreen = React.memo((props: Props) => {
       await sendTransaction({
         network: selectedNetwork,
         fromAccount,
-        to: toAddressOrUrl, // change back?
+        to: toAddress,
         value: new Amount(sendAmount)
           .multiplyByDecimals(selectedSendAsset.decimals)
           .toNumber()
@@ -606,16 +610,12 @@ export const SendScreen = React.memo((props: Props) => {
         BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
         selectedSendAsset.chainId ===
           BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
-      isValidFilAddress(
-        toAddressOrUrl
-        // toAddress
-      )
+      isValidFilAddress(toAddress)
     ) {
       await sendETHFilForwarderTransfer({
         network: selectedNetwork,
         fromAccount,
-        // to: toAddress,
-        to: toAddressOrUrl,
+        to: toAddress,
         value: ethToWeiAmount(sendAmount, selectedSendAsset).toHex(),
         contractAddress: '0x2b3ef6906429b580b7b2080de5ca893bc282c225'
       })
@@ -626,8 +626,7 @@ export const SendScreen = React.memo((props: Props) => {
     await sendTransaction({
       network: selectedNetwork,
       fromAccount,
-      // to: toAddress,
-      to: toAddressOrUrl,
+      to: toAddress,
       value:
         selectedAccount.accountId.coin === BraveWallet.CoinType.FIL
           ? new Amount(sendAmount)
@@ -645,7 +644,8 @@ export const SendScreen = React.memo((props: Props) => {
     selectedNetwork,
     sendAmount,
     toAddressOrUrl,
-    // toAddress,
+    showResolvedDomain,
+    resolvedDomainAddress,
     resetSendFields
   ])
 
