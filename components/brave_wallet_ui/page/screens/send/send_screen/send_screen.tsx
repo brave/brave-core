@@ -217,17 +217,16 @@ export const SendScreen = React.memo((props: Props) => {
   const selectedAssetFromParams = React.useMemo(() => {
     if (!contractAddressOrSymbol || !chainId) return
 
+    const contractOrSymbolLower = contractAddressOrSymbol.toLowerCase()
+
     return userVisibleTokensInfo.find((token) =>
       tokenId
         ? token.chainId === chainId &&
-          token.contractAddress.toLowerCase() ===
-            contractAddressOrSymbol.toLowerCase() &&
+          token.contractAddress.toLowerCase() === contractOrSymbolLower &&
           token.tokenId === tokenId
-        : (token.contractAddress.toLowerCase() ===
-            contractAddressOrSymbol.toLowerCase() &&
+        : (token.contractAddress.toLowerCase() === contractOrSymbolLower &&
             token.chainId === chainId) ||
-          (token.symbol.toLowerCase() ===
-            contractAddressOrSymbol.toLowerCase() &&
+          (token.symbol.toLowerCase() === contractOrSymbolLower &&
             token.chainId === chainId &&
             token.contractAddress === '')
     )
