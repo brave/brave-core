@@ -172,7 +172,7 @@ export const Container = () => {
       walletLocation.includes(WalletRoutes.PortfolioAssets) ||
       walletLocation.includes(WalletRoutes.PortfolioNFTs) ||
       walletLocation.includes(WalletRoutes.PortfolioNFTAsset) ||
-      walletLocation.includes(WalletRoutes.Market) ||
+      walletLocation.includes(WalletRoutes.ExploreMarket) ||
       walletLocation.includes(WalletRoutes.Swap) ||
       walletLocation.includes(WalletRoutes.SendPageStart) ||
       walletLocation.includes(WalletRoutes.LocalIpfsNode ||
@@ -196,7 +196,7 @@ export const Container = () => {
         walletLocation.includes(WalletRoutes.PortfolioAssets) ||
         walletLocation.includes(WalletRoutes.PortfolioNFTs) ||
         walletLocation.includes(WalletRoutes.PortfolioNFTAsset) ||
-        walletLocation.includes(WalletRoutes.Market) ||
+        walletLocation.includes(WalletRoutes.ExploreMarket) ||
         walletLocation.includes(WalletRoutes.Activity) ||
         walletLocation.includes(WalletRoutes.Accounts) ||
         walletLocation === WalletRoutes.Unlock

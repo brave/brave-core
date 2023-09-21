@@ -114,6 +114,7 @@ export type PanelTypes =
   | 'transactionDetails'
   | 'activity' // Transactions
   | 'transactionStatus'
+  | 'siweError'
 
 export type NavTypes =
   | 'crypto'
@@ -654,9 +655,11 @@ export enum WalletRoutes {
   DepositFundsPage = '/crypto/deposit-funds',
   DepositFundsAccountPage = '/crypto/deposit-funds/account',
 
-  // market
-  Market = '/crypto/market',
-  MarketSub = '/crypto/market/:chainIdOrMarketSymbol?',
+  // explore
+  Explore = '/crypto/explore',
+  ExploreMarket = '/crypto/explore/market',
+  ExploreMarketSub = '/crypto/explore/market/:chainIdOrMarketSymbol?',
+  ExploreWeb3 = '/crypto/explore/web3',
 
   // accounts
   Accounts = '/crypto/accounts',
@@ -988,6 +991,7 @@ export type NavIDTypes =
   | 'transactions'
   | 'my_assets'
   | 'available_assets'
+  | 'web3'
 
 export type AccountPageTabs =
   typeof AccountPageTabs[keyof typeof AccountPageTabs]

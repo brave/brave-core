@@ -36,7 +36,6 @@ import {
 import { PortfolioOverview } from '../portfolio/portfolio-overview'
 import { PortfolioAsset } from '../portfolio/portfolio-asset'
 import { PortfolioNftAsset } from '../portfolio/portfolio-nft-asset'
-import { MarketView } from '../market'
 import { Accounts } from '../accounts/accounts'
 import { Account } from '../accounts/account'
 import { AddAccountModal } from '../../popup-modals/add-account-modal/add-account-modal'
@@ -63,6 +62,7 @@ import {
   PortfolioOverviewHeader
 } from '../../card-headers/portfolio-overview-header'
 import { PageTitleHeader } from '../../card-headers/page-title-header'
+import { ExploreOverview } from '../explore/explore-overview'
 
 export interface Props {
   onOpenWalletSettings: () => void
@@ -161,39 +161,39 @@ export const CryptoView = (props: Props) => {
         (defaultEthereumWallet === BraveWallet.DefaultWallet.BraveWalletPreferExtension &&
           isMetaMaskInstalled))) &&
       showDefaultWalletBanner
-  }, [defaultEthereumWallet, defaultSolanaWallet, isMetaMaskInstalled, showDefaultWalletBanner])
+    }, [defaultEthereumWallet, defaultSolanaWallet, isMetaMaskInstalled, showDefaultWalletBanner])
 
   // memos
   const banners = React.useMemo(() => (
-    <>
-      {showBanner &&
-        <WalletBanner
-          onDismiss={onDismissDefaultWalletBanner}
-          onClick={onOpenWalletSettings}
-          bannerType='warning'
-          buttonText={getLocale('braveWalletWalletPopupSettings')}
-          description={getLocale('braveWalletDefaultWalletBanner')}
-        />
-      }
-      {needsBackup && showBackupWarning &&
-        <WalletBanner
-          onDismiss={onDismissBackupWarning}
-          onClick={onShowBackup}
-          bannerType='danger'
-          buttonText={getLocale('braveWalletBackupButton')}
-          description={getLocale('braveWalletBackupWarningText')}
-        />
-      }
-    </>
-  ), [
-    showBanner,
-    needsBackup,
-    onDismissBackupWarning,
-    onDismissDefaultWalletBanner,
-    onOpenWalletSettings,
-    onShowBackup,
-    showBackupWarning
-  ])
+      <>
+        {showBanner &&
+          <WalletBanner
+            onDismiss={onDismissDefaultWalletBanner}
+            onClick={onOpenWalletSettings}
+            bannerType='warning'
+            buttonText={getLocale('braveWalletWalletPopupSettings')}
+            description={getLocale('braveWalletDefaultWalletBanner')}
+          />
+        }
+        {needsBackup && showBackupWarning &&
+          <WalletBanner
+            onDismiss={onDismissBackupWarning}
+            onClick={onShowBackup}
+            bannerType='danger'
+            buttonText={getLocale('braveWalletBackupButton')}
+            description={getLocale('braveWalletBackupWarningText')}
+          />
+        }
+      </>
+    ), [
+      showBanner,
+      needsBackup,
+      onDismissBackupWarning,
+      onDismissDefaultWalletBanner,
+      onOpenWalletSettings,
+      onShowBackup,
+      showBackupWarning
+    ])
 
   // render
   return (
@@ -260,28 +260,9 @@ export const CryptoView = (props: Props) => {
           <Accounts />
         </Route>
 
-        {/* Market */}
-        <Route path={WalletRoutes.Market} exact={true}>
-          <WalletPageWrapper
-            wrapContentInBox
-            cardHeader={
-              <PageTitleHeader title={getLocale('braveWalletTopNavMarket')} />
-            }
-          >
-            <StyledWrapper>
-              {banners}
-              <MarketView />
-            </StyledWrapper>
-          </WalletPageWrapper>
-        </Route>
-
-        <Route path={WalletRoutes.MarketSub} exact={true}>
-          <WalletPageWrapper wrapContentInBox={true}>
-            <StyledWrapper>
-              {banners}
-              <PortfolioAsset isShowingMarketData={true} />
-            </StyledWrapper>
-          </WalletPageWrapper>
+        {/* Explore */}
+        <Route path={WalletRoutes.Explore}>
+          <ExploreOverview />  
         </Route>
 
         {/* Transactions */}

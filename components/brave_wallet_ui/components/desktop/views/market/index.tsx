@@ -68,7 +68,7 @@ export const MarketView = () => {
   // Methods
   const onSelectCoinMarket = React.useCallback((coinMarket: BraveWallet.CoinMarket) => {
     dispatch(WalletPageActions.selectCoinMarket(coinMarket))
-    history.push(`${WalletRoutes.Market}/${coinMarket.symbol}`)
+    history.push(`${WalletRoutes.ExploreMarket}/${coinMarket.symbol}`)
   }, [])
 
   const onSelectBuy = React.useCallback((coinMarket: BraveWallet.CoinMarket) => {
@@ -115,9 +115,9 @@ export const MarketView = () => {
   React.useEffect(() => {
     if (allCoins.length === 0) {
       dispatch(WalletActions.getCoinMarkets({
-        vsAsset: defaultCurrencies.fiat || defaultCurrency,
-        limit: assetsRequestLimit
-      }))
+          vsAsset: defaultCurrencies.fiat || defaultCurrency,
+          limit: assetsRequestLimit
+        }))
     }
   }, [allCoins, defaultCurrencies])
 
@@ -170,7 +170,7 @@ export const MarketView = () => {
         ? <LoadIconWrapper>
           <LoadIcon />
         </LoadIconWrapper>
-        : <MarketDataIframe
+      : <MarketDataIframe
           iframeHeight={iframeHeight}
           ref={marketDataIframeRef}
           onLoad={onMarketDataFrameLoad}

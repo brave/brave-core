@@ -68,7 +68,7 @@ export const PanelNavOptions: NavOption[] = [
     id: 'market',
     name: 'braveWalletTopNavMarket',
     icon: 'discover',
-    route: WalletRoutes.Market
+    route: WalletRoutes.ExploreMarket
   }
 ]
 
@@ -90,7 +90,7 @@ export const NavOptions: NavOption[] = [
     id: 'market',
     name: 'braveWalletTopNavMarket',
     icon: 'discover',
-    route: WalletRoutes.Market
+    route: WalletRoutes.ExploreMarket
   }
 ]
 
@@ -185,4 +185,19 @@ export const AccountDetailsOptions: NavOption[] = [
     icon: '',
     route: AccountPageTabs.AccountTransactionsSub
   },
+]
+
+export const ExploreNavOptions: NavOption[] = [
+  {
+    id: 'market',
+    name: 'braveWalletTopNavMarket',
+    route: WalletRoutes.ExploreMarket,
+    icon: ''
+  },
+  {
+    id: 'web3',
+    name: 'Web3',
+    route: WalletRoutes.ExploreMarket,
+    icon: ''
+  }
 ]
