@@ -261,17 +261,25 @@ export function createWalletApi () {
         BraveWallet.AccountId,
         BraveWallet.AccountId
       >({
-        queryFn: async (accountId, api, extraOptions, baseQuery) => {
-          const {
-            cache,
-            data: { keyringService }
-          } = baseQuery(undefined)
+        queryFn: async (accountId, { endpoint }, extraOptions, baseQuery) => {
+          try {
+            const {
+              cache,
+              data: { keyringService }
+            } = baseQuery(undefined)
 
-          await keyringService.setSelectedAccount(accountId)
-          cache.clearSelectedAccount()
+            await keyringService.setSelectedAccount(accountId)
+            cache.clearSelectedAccount()
 
-          return {
-            data: accountId
+            return {
+              data: accountId
+            }
+          } catch (error) {
+            return handleEndpointError(
+              endpoint,
+              'Failed to set Selected Network',
+              error
+            )
           }
         },
         invalidatesTags: [

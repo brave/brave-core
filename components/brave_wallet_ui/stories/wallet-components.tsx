@@ -18,7 +18,7 @@ import { NftIpfsBanner } from '../components/desktop/nft-ipfs-banner/nft-ipfs-ba
 import { LocalIpfsNodeScreen } from '../components/desktop/local-ipfs-node/local-ipfs-node'
 import { InspectNftsScreen } from '../components/desktop/inspect-nfts/inspect-nfts'
 import WalletPageStory from './wrappers/wallet-page-story-wrapper'
-import { mockErc721Token, mockNetwork } from '../common/constants/mocks'
+import { mockNetwork } from '../common/constants/mocks'
 import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
 import { NftPinningStatus } from '../components/desktop/nft-pinning-status/nft-pinning-status'
 import { NftsEmptyState } from '../components/desktop/views/nfts/components/nfts-empty-state/nfts-empty-state'
@@ -31,6 +31,7 @@ import { AutoDiscoveryEmptyState } from '../components/desktop/views/nfts/compon
 import { MarketGrid } from '../components/shared/market-grid/market-grid'
 import { marketGridHeaders } from '../options/market-data-headers'
 import { coinMarketMockData } from './mock-data/mock-coin-market-data'
+import { mockErc721Token } from './mock-data/mock-asset-options'
 
 export default {
   title: 'Wallet/Desktop/Components',

@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import { renderHook, act } from '@testing-library/react-hooks'
-import {
-  mockERC20Token,
-  mockNetwork
-} from '../constants/mocks'
 import { GetBlockchainTokenInfoReturnInfo } from '../../constants/types'
 import useTokenInfo from './token'
+
+// mocks
+import { mockNetwork } from '../constants/mocks'
+import { mockERC20Token } from '../../stories/mock-data/mock-asset-options'
 
 const findBlockchainTokenInfo = async (address: string) => {
   return { token: null } as GetBlockchainTokenInfoReturnInfo
@@ -23,7 +23,7 @@ describe('useTokenInfo hook', () => {
     expect(result.current.foundTokenInfoByContractAddress?.name).toEqual('Dog Coin')
   })
 
-  it('Should not find info and return undifined', () => {
+  it('Should not find info and return undefined', () => {
     const { result } = renderHook(() => useTokenInfo(
       findBlockchainTokenInfo, [mockERC20Token], mockNetwork
     ))
