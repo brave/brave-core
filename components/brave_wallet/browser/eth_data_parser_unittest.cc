@@ -930,6 +930,68 @@ TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrder) {
   EXPECT_EQ(tx_args[2], "0x1c6bad5");
 }
 
+TEST(EthDataParser, GetTransactionInfoFromDataCowOrderSellEth) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  std::vector<uint8_t> data;
+
+  // TXN: XDAI → USDC
+  // Function:
+  // createOrder((address buyToken,
+  //              address receiver,
+  //              uint256 sellAmount,
+  //              uint256 buyAmount,
+  //              bytes32 appData,
+  //              uint256 feeAmount,
+  //              uint32 validTo,
+  //              bool partiallyFillable,
+  //              int64 quoteId))
+
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x322bba21"  // function selector
+
+      /***************************** HEAD ****************************/
+      /************************ TUPLE INDEX 0 ************************/
+      // buyToken
+      "000000000000000000000000ddafbb505ad214d7b80b1f830fccc89b60fb7a83"
+      // receiver
+      "000000000000000000000000a92d461a9a988a7f11ec285d39783a637fdd6ba4"
+      // sellAmount
+      "000000000000000000000000000000000000000000000000004967cb9ebd8176"
+      // buyAmount
+      "0000000000000000000000000000000000000000000000000000000000004f1e"
+      // appData
+      "c21ba2efa76e703f0a9a496e09ea7d0e66d907a47ba8f109a3a760720504ab32"
+      // feeAmount
+      "000000000000000000000000000000000000000000000000000107c0fe0dc060"
+      // validTo
+      "00000000000000000000000000000000000000000000000000000000650b4580"
+      // partiallyFillable
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // quoteId
+      "000000000000000000000000000000000000000000000000000000000332b123",
+      &data));
+
+  auto tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, absl::nullopt);
+  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+
+  EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+
+  ASSERT_EQ(tx_params.size(), 3UL);
+  EXPECT_EQ(tx_params[0], "bytes");
+  EXPECT_EQ(tx_params[1], "uint256");
+  EXPECT_EQ(tx_params[2], "uint256");
+
+  ASSERT_EQ(tx_args.size(), 3UL);
+  EXPECT_EQ(tx_args[0],
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"  // XDAI
+            "ddafbb505ad214d7b80b1f830fccc89b60fb7a83");  // USDC
+  EXPECT_EQ(tx_args[1], "0x4967cb9ebd8176");  // 0.02066179753911948 XDAI
+  EXPECT_EQ(tx_args[2], "0x4f1e");            // 0.020254 USDC
+}
+
 TEST(EthDataParser, GetTransactionInfoFromFilForward) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
