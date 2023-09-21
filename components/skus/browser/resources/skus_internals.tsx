@@ -71,6 +71,8 @@ function App() {
       </StateContainer>
       <StateContainer>
         <b>SKUs State:</b>
+        <button onClick={() => API.copySkusStateToClipboard()}>Copy</button>
+        <button onClick={() => API.downloadSkusState()}>Download</button>
         <JsonView data={skusState} shouldInitiallyExpand={(level) => true} />
       </StateContainer>
     </Container>
