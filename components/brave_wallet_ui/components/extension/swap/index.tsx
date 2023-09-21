@@ -45,7 +45,10 @@ import { NftIcon } from '../../shared/nft-icon/nft-icon'
 
 // Types / constants
 import { BraveWallet } from '../../../constants/types'
-import { UNKNOWN_TOKEN_COINGECKO_ID } from '../../../common/constants/magics'
+import {
+  NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
+  UNKNOWN_TOKEN_COINGECKO_ID
+} from '../../../common/constants/magics'
 
 // Hooks
 import {
@@ -68,6 +71,10 @@ type SwapToken = Pick<
   | 'decimals'
 >
 
+const isNativeToken = (token: SwapToken) =>
+  token.contractAddress === '' ||
+  token.contractAddress.toLowerCase() === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+
 const makeToken = (
   token?: SwapToken,
   network?: BraveWallet.NetworkInfo,
@@ -82,7 +89,7 @@ const makeToken = (
     return token
   }
 
-  if (token.contractAddress === '') {
+  if (isNativeToken(token)) {
     return {
       ...token,
       decimals: network.decimals,
@@ -139,8 +146,9 @@ export function SwapBase(props: Props) {
   const {
     data: sellTokenDecimals
   } = useGetEthTokenDecimalsQuery(
-    sellToken?.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
-    sellToken?.contractAddress !== ''
+    sellToken &&
+    sellToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
+    !isNativeToken(sellToken)
       ? {
           chainId: sellToken.chainId,
           contractAddress: sellToken.contractAddress
@@ -150,8 +158,9 @@ export function SwapBase(props: Props) {
   const {
     data: sellTokenSymbol
   } = useGetEthTokenSymbolQuery(
-    sellToken?.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
-    sellToken?.contractAddress !== ''
+    sellToken &&
+    sellToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
+    !isNativeToken(sellToken)
       ? {
           chainId: sellToken.chainId,
           contractAddress: sellToken.contractAddress
@@ -162,8 +171,9 @@ export function SwapBase(props: Props) {
   const {
     data: buyTokenDecimals
   } = useGetEthTokenDecimalsQuery(
-    buyToken?.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
-    buyToken?.contractAddress !== ''
+    buyToken &&
+    buyToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
+    !isNativeToken(buyToken)
       ? {
           chainId: buyToken.chainId,
           contractAddress: buyToken.contractAddress
@@ -173,8 +183,9 @@ export function SwapBase(props: Props) {
   const {
     data: buyTokenSymbol
   } = useGetEthTokenSymbolQuery(
-    buyToken?.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
-    buyToken?.contractAddress !== ''
+    buyToken &&
+    buyToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
+    !isNativeToken(buyToken)
       ? {
           chainId: buyToken.chainId,
           contractAddress: buyToken.contractAddress

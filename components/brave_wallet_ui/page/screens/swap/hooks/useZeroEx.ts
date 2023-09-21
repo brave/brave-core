@@ -9,7 +9,8 @@ import { useCallback, useMemo, useState } from 'react'
 import { QuoteOption, SwapParams } from '../constants/types'
 import { BraveWallet } from '../../../../constants/types'
 
-import { MAX_UINT256, NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../constants/magics'
+import { MAX_UINT256 } from '../constants/magics'
+import { NATIVE_EVM_ASSET_CONTRACT_ADDRESS } from '../../../../common/constants/magics'
 
 // Utils
 import Amount from '../../../../utils/amount'
@@ -118,14 +119,20 @@ export function useZeroEx (params: SwapParams) {
             new Amount(overriddenParams.fromAmount)
               .multiplyByDecimals(overriddenParams.fromToken.decimals)
               .format(),
-          sellToken: overriddenParams.fromToken.contractAddress || NATIVE_ASSET_CONTRACT_ADDRESS_0X,
+          sellToken:
+            overriddenParams.fromToken.contractAddress ||
+            NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
           buyAmount:
             overriddenParams.toAmount &&
             new Amount(overriddenParams.toAmount)
               .multiplyByDecimals(overriddenParams.toToken.decimals)
               .format(),
-          buyToken: overriddenParams.toToken.contractAddress || NATIVE_ASSET_CONTRACT_ADDRESS_0X,
-          slippagePercentage: new Amount(overriddenParams.slippageTolerance).div(100).toNumber(),
+          buyToken:
+            overriddenParams.toToken.contractAddress ||
+            NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
+          slippagePercentage: new Amount(overriddenParams.slippageTolerance)
+            .div(100)
+            .toNumber(),
           gasPrice: ''
         })
       } catch (e) {
@@ -137,10 +144,10 @@ export function useZeroEx (params: SwapParams) {
           chainId: selectedNetwork.chainId,
           inputToken:
             overriddenParams.fromToken.contractAddress ||
-            NATIVE_ASSET_CONTRACT_ADDRESS_0X,
+            NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
           outputToken:
             overriddenParams.toToken.contractAddress ||
-            NATIVE_ASSET_CONTRACT_ADDRESS_0X,
+            NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
           taker: overriddenParams.fromAddress
         })
 
@@ -269,12 +276,18 @@ export function useZeroEx (params: SwapParams) {
           sellAmount: new Amount(overriddenParams.fromAmount)
             .multiplyByDecimals(overriddenParams.fromToken.decimals)
             .format(),
-          sellToken: overriddenParams.fromToken.contractAddress || NATIVE_ASSET_CONTRACT_ADDRESS_0X,
+          sellToken:
+            overriddenParams.fromToken.contractAddress ||
+            NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
           buyAmount: new Amount(overriddenParams.toAmount)
             .multiplyByDecimals(overriddenParams.toToken.decimals)
             .format(),
-          buyToken: overriddenParams.toToken.contractAddress || NATIVE_ASSET_CONTRACT_ADDRESS_0X,
-          slippagePercentage: new Amount(overriddenParams.slippageTolerance).div(100).toNumber(),
+          buyToken:
+            overriddenParams.toToken.contractAddress ||
+            NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
+          slippagePercentage: new Amount(overriddenParams.slippageTolerance)
+            .div(100)
+            .toNumber(),
           gasPrice: ''
         })
       } catch (e) {
