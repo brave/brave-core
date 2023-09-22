@@ -365,7 +365,6 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
   ASSERT_EQ(GetHistoryCount(), 0);
 }
 
-#if 0
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
                        WindowOpenAfterStandardNavigationCrossOrigin) {
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
@@ -383,7 +382,7 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
-                       WindowOpenAfterOTRNavigationCrossOrigin) {
+                       DISABLED_WindowOpenAfterOTRNavigationCrossOrigin) {
   ASSERT_TRUE(InstallMockExtension());
 
   // Always use request-otr for sensitive sites (skipping interstitial).
@@ -392,11 +391,16 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
   ASSERT_TRUE(content::ExecJs(
       web_contents(), "window.open('notsensitive.b.com/simple.html');"));
-  ASSERT_EQ(content::EvalJs(web_contents(), "window.opener"), nullptr);
+  EXPECT_NE(
+      content::EvalJs(
+          web_contents(),
+          "try { typeof(window.opener.postMessage) } catch (e) { e.message; }")
+          .ExtractString(),
+      "function");
 }
 
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
-                       WindowOpenAfterOTRNavigationSameOrigin) {
+                       DISABLED_WindowOpenAfterOTRNavigationSameOrigin) {
   ASSERT_TRUE(InstallMockExtension());
 
   // Always use request-otr for sensitive sites (skipping interstitial).
@@ -407,7 +411,6 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
       content::ExecJs(web_contents(), "window.open('a.com/simple.html');"));
   ASSERT_EQ(content::EvalJs(web_contents(), "window.opener"), nullptr);
 }
-#endif
 
 // Define a subclass that disables the feature so we can ensure that nothing
 // happens when the feature is disabled through runtime flags.

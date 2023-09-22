@@ -19,7 +19,7 @@ bool BraveShouldRecordEngagement(content::NavigationHandle* navigation_handle) {
     if (request_otr::RequestOTRService* request_otr_service =
             request_otr::RequestOTRServiceFactory::GetForBrowserContext(
                 web_contents->GetBrowserContext())) {
-      if (request_otr_service->RequestedOTR(navigation_handle->GetURL())) {
+      if (request_otr_service->IsOTR(navigation_handle->GetURL())) {
         return false;
       }
     }

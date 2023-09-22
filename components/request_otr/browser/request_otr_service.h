@@ -45,13 +45,12 @@ class RequestOTRService : public KeyedService,
   ~RequestOTRService() override;
   void OnRulesReady(const std::string&) override;
 
+  bool IsOTR(const GURL& url);
+  void SetOTR(const GURL& url, bool enabled);
+
   bool ShouldOfferOTR(const GURL& url);
   bool OfferedOTR(const GURL& url);
-  bool RequestedOTR(const GURL& url);
-
   void SetOfferedOTR(const GURL& url);
-  void SetRequestedOTR(const GURL& url);
-  void WithdrawOTR(const GURL& url);
 
  private:
   std::vector<std::unique_ptr<RequestOTRRule>> rules_;
@@ -60,6 +59,8 @@ class RequestOTRService : public KeyedService,
   OTRCacheOrigins offered_otr_cache_;
   OTRCacheOrigins requested_otr_cache_;
 
+  void RequestOTR(const GURL& url);
+  void WithdrawOTR(const GURL& url);
   base::WeakPtrFactory<RequestOTRService> weak_factory_{this};
 };
 

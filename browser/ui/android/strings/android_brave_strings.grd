@@ -1582,7 +1582,7 @@ Are you sure you want to do this?
         Request Off-The-Record
       </message>
       <message name="IDS_REQUEST_OTR_TEXT" desc="Text for shields option.">
-        Go Off-The-Record when visiting sensitive sites
+        View sensitive sites off-the-record
       </message>
       <message name="IDS_REQUEST_OTR_SUMMARY" desc="Summary for Request Off-The-Record option.">
         Disables browser history and local storage when sites request it

@@ -14,7 +14,5 @@ brave_browser_request_otr_deps = [
   "//base",
   "//brave/components/request_otr/browser",
   "//brave/components/request_otr/common",
-  "//brave/extensions:common",
-  "//chrome/common",
   "//components/keyed_service/content",
 ]

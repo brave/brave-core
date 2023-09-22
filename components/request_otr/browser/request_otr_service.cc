@@ -61,14 +61,6 @@ bool RequestOTRService::OfferedOTR(const GURL& url) {
                         net::URLToEphemeralStorageDomain(url));
 }
 
-bool RequestOTRService::RequestedOTR(const GURL& url) {
-  if (!url.SchemeIsHTTPOrHTTPS()) {
-    return false;
-  }
-  return base::Contains(requested_otr_cache_,
-                        net::URLToEphemeralStorageDomain(url));
-}
-
 void RequestOTRService::SetOfferedOTR(const GURL& url) {
   if (!url.SchemeIsHTTPOrHTTPS()) {
     return;
@@ -78,7 +70,23 @@ void RequestOTRService::SetOfferedOTR(const GURL& url) {
       url::Origin::Create(url);
 }
 
-void RequestOTRService::SetRequestedOTR(const GURL& url) {
+bool RequestOTRService::IsOTR(const GURL& url) {
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    return false;
+  }
+  return base::Contains(requested_otr_cache_,
+                        net::URLToEphemeralStorageDomain(url));
+}
+
+void RequestOTRService::SetOTR(const GURL& url, bool enabled) {
+  if (enabled) {
+    RequestOTR(url);
+  } else {
+    WithdrawOTR(url);
+  }
+}
+
+void RequestOTRService::RequestOTR(const GURL& url) {
   if (!url.SchemeIsHTTPOrHTTPS()) {
     return;
   }
@@ -92,7 +100,7 @@ void RequestOTRService::WithdrawOTR(const GURL& url) {
     return;
   }
   std::string domain = net::URLToEphemeralStorageDomain(url);
-  // offered_otr_cache_.erase(domain);
+  offered_otr_cache_.erase(domain);
   requested_otr_cache_.erase(domain);
 }
 

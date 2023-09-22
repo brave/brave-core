@@ -637,22 +637,6 @@ bool BraveContentBrowserClient::CanCreateWindow(
       container_type, target_url, referrer, frame_name, disposition, features,
       user_gesture, opener_suppressed, no_javascript_access);
 
-  // If the user has requested going off-the-record on this site, don't allow
-  // opening new windows via script
-  if (content::WebContents* web_contents =
-          content::WebContents::FromRenderFrameHost(opener)) {
-    if (request_otr::RequestOTRService* request_otr_service =
-            request_otr::RequestOTRServiceFactory::GetForBrowserContext(
-                web_contents->GetBrowserContext())) {
-      // TODO(pilgrim) this doesn't work, url is about:blank. Are we already
-      // protected from this?
-      if (request_otr_service->RequestedOTR(
-              web_contents->GetLastCommittedURL())) {
-        *no_javascript_access = true;
-      }
-    }
-  }
-
   return can_create_window && google_sign_in_permission::CanCreateWindow(
                                   opener, opener_url, target_url);
 }
@@ -1251,11 +1235,11 @@ BraveContentBrowserClient::GetStoragePartitionConfigForSite(
   if (auto* request_otr_service =
           request_otr::RequestOTRServiceFactory::GetForBrowserContext(
               browser_context)) {
-    if (request_otr_service->RequestedOTR(site)) {
+    if (request_otr_service->IsOTR(site)) {
       CHECK(site.has_host());  // upstream also does this before accessing
                                // site.host()
       return content::StoragePartitionConfig::Create(
-          browser_context, site.host(), /*partition_name=*/std::string(),
+          browser_context, site.host(), /*partition_name=*/"request_otr",
           /*in_memory=*/true);
     }
   }

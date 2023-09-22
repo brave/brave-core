@@ -65,7 +65,7 @@ void RequestOTRControllerClient::ProceedOTR() {
 void RequestOTRControllerClient::ProceedInternal(bool requested_otr) {
   request_otr_service_->SetOfferedOTR(request_url_);
   if (requested_otr) {
-    request_otr_service_->SetRequestedOTR(request_url_);
+    request_otr_service_->SetOTR(request_url_, /*enabled*/ true);
   }
   if (dont_warn_again_) {
     if (PrefService* prefs = GetPrefService()) {

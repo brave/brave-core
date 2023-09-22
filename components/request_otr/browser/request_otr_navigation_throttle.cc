@@ -108,7 +108,7 @@ RequestOTRNavigationThrottle::WillStartRequest() {
 
   // If user has already indicated they want to go off-the-record,
   // don't show another interstitial. (Everything is already set up.)
-  if (request_otr_service_->RequestedOTR(request_url)) {
+  if (request_otr_service_->IsOTR(request_url)) {
     return content::NavigationThrottle::PROCEED;
   }
 

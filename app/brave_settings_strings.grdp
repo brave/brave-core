@@ -475,7 +475,7 @@
   </message>
   <!-- Request OTR -->
   <message name="IDS_SETTINGS_REQUEST_OTR_LABEL" desc="Request OTR setting label">
-    Go Off-The-Record when visiting sensitive sites
+    View sensitive sites off-the-record
   </message>
   <message name="IDS_SETTINGS_REQUEST_OTR_SUB_LABEL" desc="Request OTR setting sub-label">
     Learn more

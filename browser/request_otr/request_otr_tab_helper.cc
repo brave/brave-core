@@ -57,7 +57,7 @@ void RequestOTRTabHelper::DidFinishNavigation(
     return;
   }
   const GURL& url = navigation_handle->GetURL();
-  if (!request_otr_service->RequestedOTR(url)) {
+  if (!request_otr_service->IsOTR(url)) {
     return;
   }
 
@@ -75,7 +75,7 @@ void RequestOTRTabHelper::DidFinishNavigation(
 
 #if defined(TOOLKIT_VIEWS)
   RequestOTRInfoBarDelegate::Create(
-      infobars::ContentInfoBarManager::FromWebContents(web_contents()));
+      infobars::ContentInfoBarManager::FromWebContents(web_contents()), url);
 #endif
 }
 

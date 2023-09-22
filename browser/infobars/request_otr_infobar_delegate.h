@@ -16,7 +16,7 @@ class ContentInfoBarManager;
 // Off-The-Record mode.
 class RequestOTRInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
-  RequestOTRInfoBarDelegate();
+  RequestOTRInfoBarDelegate(const GURL& url);
   RequestOTRInfoBarDelegate(const RequestOTRInfoBarDelegate&) = delete;
   RequestOTRInfoBarDelegate& operator=(const RequestOTRInfoBarDelegate&) =
       delete;
@@ -24,9 +24,12 @@ class RequestOTRInfoBarDelegate : public ConfirmInfoBarDelegate {
 
   // Creates a request-otr infobar and delegate and adds the infobar to
   // |infobar_manager|.
-  static void Create(infobars::ContentInfoBarManager* infobar_manager);
+  static void Create(infobars::ContentInfoBarManager* infobar_manager,
+                     const GURL& url);
 
  private:
+  GURL url_;
+
   // ConfirmInfoBarDelegate:
   infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override;
   const gfx::VectorIcon& GetVectorIcon() const override;

@@ -25,14 +25,15 @@
 
 // static
 void RequestOTRInfoBarDelegate::Create(
-    infobars::ContentInfoBarManager* infobar_manager) {
+    infobars::ContentInfoBarManager* infobar_manager,
+    const GURL& url) {
   infobar_manager->AddInfoBar(
       CreateConfirmInfoBar(std::unique_ptr<ConfirmInfoBarDelegate>(
-          new RequestOTRInfoBarDelegate())));
+          new RequestOTRInfoBarDelegate(url))));
 }
 
-RequestOTRInfoBarDelegate::RequestOTRInfoBarDelegate()
-    : ConfirmInfoBarDelegate() {}
+RequestOTRInfoBarDelegate::RequestOTRInfoBarDelegate(const GURL& url)
+    : ConfirmInfoBarDelegate(), url_(url) {}
 
 RequestOTRInfoBarDelegate::~RequestOTRInfoBarDelegate() {}
 
@@ -66,7 +67,7 @@ bool RequestOTRInfoBarDelegate::Accept() {
       request_otr::RequestOTRServiceFactory::GetForBrowserContext(
           web_contents->GetBrowserContext());
   DCHECK(request_otr_service);
-  request_otr_service->WithdrawOTR(web_contents->GetLastCommittedURL());
+  request_otr_service->SetOTR(url_, /*enabled*/ false);
   web_contents->GetController().Reload(content::ReloadType::NORMAL, true);
 
   return true;
