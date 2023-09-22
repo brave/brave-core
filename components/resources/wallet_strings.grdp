@@ -68,6 +68,8 @@
   <message name="IDS_BRAVE_WALLET_TOP_NAV_N_F_T_S" desc="NFTs top nav button">NFTs</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_ACCOUNTS" desc="Accounts top nav button">Accounts</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_MARKET" desc="Accounts top nav button">Market</message>
+  <message name="IDS_BRAVE_WALLET_TOP_NAV_EXPLORE" desc="Explore top nav button">Explore</message>
+  <message name="IDS_BRAVE_WALLET_TOP_NAV_DAPPS" desc="Explore Web3 top nav button">Web3</message>
   <message name="IDS_BRAVE_WALLET_CHART_ONE_HOUR" desc="Chart control 1 Hour">1 Hour</message>
   <message name="IDS_BRAVE_WALLET_CHART_ONE_DAY" desc="Chart control 1 Day">1 Day</message>
   <message name="IDS_BRAVE_WALLET_CHART_ONE_WEEK" desc="Chart control 1 Week">1 Week</message>

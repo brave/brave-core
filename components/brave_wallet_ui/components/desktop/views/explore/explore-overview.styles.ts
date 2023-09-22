@@ -11,7 +11,7 @@ import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.
 export const ControlsRow = styled(Row)`
   box-shadow: 0px -1px 1px rgba(0, 0, 0, 0.02);
   border-radius: 16px 16px 0px 0px;
-  padding: 24px 16px;
+  padding-bottom: 16px;
   background-color: ${leo.color.container.background};
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: 16px;

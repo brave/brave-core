@@ -659,7 +659,7 @@ export enum WalletRoutes {
   Explore = '/crypto/explore',
   ExploreMarket = '/crypto/explore/market',
   ExploreMarketSub = '/crypto/explore/market/:chainIdOrMarketSymbol?',
-  ExploreWeb3 = '/crypto/explore/web3',
+  ExploreDapps = '/crypto/explore/web3',
 
   // accounts
   Accounts = '/crypto/accounts',
@@ -992,6 +992,7 @@ export type NavIDTypes =
   | 'my_assets'
   | 'available_assets'
   | 'web3'
+  | 'explore'
 
 export type AccountPageTabs =
   typeof AccountPageTabs[keyof typeof AccountPageTabs]

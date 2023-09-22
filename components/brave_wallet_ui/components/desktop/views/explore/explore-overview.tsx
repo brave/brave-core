@@ -4,22 +4,21 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Route, Switch } from 'react-router'
+import { Redirect, Route, Switch } from 'react-router'
 
 // utils
 import { ExploreNavOptions } from '../../../../options/nav-options'
+import { WalletRoutes } from '../../../../constants/types'
 
 // components
 import SegmentedControl from '../../../shared/segmented-control/segmented-control'
-import { WalletRoutes } from '../../../../constants/types'
-import WalletPageWrapper from '../../wallet-page-wrapper/wallet-page-wrapper'
-import PortfolioAsset from '../portfolio/portfolio-asset'
 import { MarketView } from '../market'
-import { ExploreWeb3 } from './components/explore-web3'
+import { ExploreDapps } from './components/explore-dapps'
 
 // styles
 import { Column } from '../../../shared/style'
 import { ControlsRow } from './explore-overview.styles'
+import PortfolioAsset from '../portfolio/portfolio-asset'
 
 export const ExploreOverview = () => {
   return (
@@ -31,21 +30,24 @@ export const ExploreOverview = () => {
       <ControlsRow>
         <SegmentedControl navOptions={ExploreNavOptions} width={384} />
       </ControlsRow>
-
       <Switch>
         <Route path={WalletRoutes.ExploreMarket} exact={true}>
           <MarketView />
         </Route>
 
         <Route path={WalletRoutes.ExploreMarketSub} exact={true}>
-          <WalletPageWrapper wrapContentInBox={true}>
-            <PortfolioAsset isShowingMarketData={true} />
-          </WalletPageWrapper>
+          <PortfolioAsset isShowingMarketData={true} />
         </Route>
 
-        <Route path={WalletRoutes.ExploreWeb3} exact={true}>
-          <ExploreWeb3 />
+        <Route path={WalletRoutes.ExploreDapps} exact={true}>
+          <ExploreDapps />
         </Route>
+
+        <Route
+          path={WalletRoutes.Explore}
+          exact={true}
+          render={() => <Redirect to={WalletRoutes.ExploreMarket} />}
+        />
       </Switch>
     </Column>
   )

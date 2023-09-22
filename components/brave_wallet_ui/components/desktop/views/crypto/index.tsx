@@ -261,8 +261,13 @@ export const CryptoView = (props: Props) => {
         </Route>
 
         {/* Explore */}
-        <Route path={WalletRoutes.Explore}>
-          <ExploreOverview />  
+        <Route path={WalletRoutes.Explore} exact>
+          <WalletPageWrapper
+            wrapContentInBox
+            hideDivider
+          >
+            <ExploreOverview />
+          </WalletPageWrapper>  
         </Route>
 
         {/* Transactions */}

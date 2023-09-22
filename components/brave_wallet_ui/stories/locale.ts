@@ -49,6 +49,8 @@ provideStrings({
   braveWalletTopNavNFTS: 'NFTs',
   braveWalletTopNavAccounts: 'Accounts',
   braveWalletTopNavMarket: 'Market',
+  braveWalletTopNavExplore: 'Explore',
+  braveWalletTopNavExploreDapps: 'Web3',
 
   // Chart Timeline Buttons
   braveWalletChartOneHour: '1 Hour',
