@@ -235,11 +235,11 @@ class EthAllowanceManagerUnitTest : public testing::Test {
         JsonRpcServiceFactory::GetServiceForContext(profile_.get());
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
-    tx_service = TxServiceFactory::GetServiceForContext(profile_.get());
+    tx_service_ = TxServiceFactory::GetServiceForContext(profile_.get());
     wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service, GetPrefs(), GetLocalState());
+        json_rpc_service_, tx_service_, nullptr, GetPrefs(), GetLocalState());
     eth_allowance_manager_ = std::make_unique<EthAllowanceManager>(
         json_rpc_service_, keyring_service_, GetPrefs());
   }
@@ -534,7 +534,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
   std::unique_ptr<EthAllowanceManager> eth_allowance_manager_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
-  raw_ptr<TxService> tx_service;
+  raw_ptr<TxService> tx_service_;
   base::test::ScopedFeatureList scoped_feature_list_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };

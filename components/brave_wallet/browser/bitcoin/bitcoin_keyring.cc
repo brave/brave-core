@@ -15,8 +15,9 @@ namespace brave_wallet {
 BitcoinKeyring::BitcoinKeyring(bool testnet) : testnet_(testnet) {}
 
 absl::optional<std::string> BitcoinKeyring::GetAddress(
+    uint32_t account,
     const mojom::BitcoinKeyId& key_id) {
-  auto key = DeriveKey(key_id);
+  auto key = DeriveKey(account, key_id);
   if (!key) {
     return absl::nullopt;
   }
@@ -27,8 +28,9 @@ absl::optional<std::string> BitcoinKeyring::GetAddress(
 }
 
 absl::optional<std::vector<uint8_t>> BitcoinKeyring::GetPubkey(
+    uint32_t account,
     const mojom::BitcoinKeyId& key_id) {
-  auto hd_key_base = DeriveKey(key_id);
+  auto hd_key_base = DeriveKey(account, key_id);
   if (!hd_key_base) {
     return absl::nullopt;
   }
@@ -37,9 +39,10 @@ absl::optional<std::vector<uint8_t>> BitcoinKeyring::GetPubkey(
 }
 
 absl::optional<std::vector<uint8_t>> BitcoinKeyring::SignMessage(
+    uint32_t account,
     const mojom::BitcoinKeyId& key_id,
     base::span<const uint8_t, 32> message) {
-  auto hd_key_base = DeriveKey(key_id);
+  auto hd_key_base = DeriveKey(account, key_id);
   if (!hd_key_base) {
     return absl::nullopt;
   }
@@ -64,9 +67,10 @@ std::unique_ptr<HDKeyBase> BitcoinKeyring::DeriveAccount(uint32_t index) const {
 }
 
 std::unique_ptr<HDKeyBase> BitcoinKeyring::DeriveKey(
+    uint32_t account,
     const mojom::BitcoinKeyId& key_id) {
   // TODO(apaymyshev): keep local cache of keys: key_id->key
-  auto account_key = DeriveAccount(key_id.account);
+  auto account_key = DeriveAccount(account);
   if (!account_key) {
     return nullptr;
   }
@@ -79,8 +83,8 @@ std::unique_ptr<HDKeyBase> BitcoinKeyring::DeriveKey(
     return nullptr;
   }
 
-  // Mainnet - m/84'/0'/{address.account}'/{address.change}/{address.index}
-  // Testnet - m/84'/1'/{address.account}'/{address.change}/{address.index}
+  // Mainnet - m/84'/0'/{account}'/{key_id.change}/{key_id.index}
+  // Testnet - m/84'/1'/{account}'/{key_id.change}/{key_id.index}
   return key->DeriveNormalChild(key_id.index);
 }
 

@@ -98,6 +98,13 @@ struct ImportData {
 
 }  // namespace
 
+namespace mojom {
+void PrintTo(const BitcoinAddressPtr& address, ::std::ostream* os) {
+  *os << base::StringPrintf("[%s %d/%d]", address->address_string.c_str(),
+                            address->key_id->change, address->key_id->index);
+}
+}  // namespace mojom
+
 class TestKeyringServiceObserver : public mojom::KeyringServiceObserver {
  public:
   explicit TestKeyringServiceObserver(KeyringService& service) {
@@ -2086,7 +2093,7 @@ TEST_F(KeyringServiceUnitTest, RestoreLegacyBraveWallet) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
                                           &service, json_rpc_service(), nullptr,
-                                          GetPrefs(), GetLocalState());
+                                          nullptr, GetPrefs(), GetLocalState());
   auto verify_restore_wallet = base::BindLambdaForTesting(
       [&service](const char* mnemonic, const char* address, bool is_legacy,
                  bool expect_result) {
@@ -3814,7 +3821,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, AccountDiscovery) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
                                           &service, json_rpc_service(), nullptr,
-                                          GetPrefs(), GetLocalState());
+                                          nullptr, GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -3852,7 +3859,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, SolAccountDiscovery) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
                                           &service, json_rpc_service(), nullptr,
-                                          GetPrefs(), GetLocalState());
+                                          nullptr, GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -3892,7 +3899,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, FilAccountDiscovery) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
                                           &service, json_rpc_service(), nullptr,
-                                          GetPrefs(), GetLocalState());
+                                          nullptr, GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -3931,7 +3938,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, StopsOnError) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
                                           &service, json_rpc_service(), nullptr,
-                                          GetPrefs(), GetLocalState());
+                                          nullptr, GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -3971,7 +3978,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, ManuallyAddAccount) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
                                           &service, json_rpc_service(), nullptr,
-                                          GetPrefs(), GetLocalState());
+                                          nullptr, GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -4032,7 +4039,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
                                           &service, json_rpc_service(), nullptr,
-                                          GetPrefs(), GetLocalState());
+                                          nullptr, GetPrefs(), GetLocalState());
 
   std::vector<std::string> requested_addresses;
   bool first_restore = true;
@@ -4498,7 +4505,7 @@ TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
 }
 #endif  // !defined(OFFICIAL_BUILD)
 
-TEST_F(KeyringServiceUnitTest, BitcoinReceiveChangeAddresses) {
+TEST_F(KeyringServiceUnitTest, GetBitcoinAddresses) {
   // TODO(apaymyshev): update existing tests above to also cover Bitcoin
   // keyring.
 
@@ -4508,11 +4515,7 @@ TEST_F(KeyringServiceUnitTest, BitcoinReceiveChangeAddresses) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   // https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#test-vectors
-  ASSERT_TRUE(RestoreWallet(
-      &service,
-      "abandon abandon abandon abandon abandon abandon abandon abandon abandon "
-      "abandon abandon about",
-      "brave", false));
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
 
   EXPECT_THAT(GetAccountUtils(&service).AllBtcAccounts(), testing::IsEmpty());
 
@@ -4528,15 +4531,161 @@ TEST_F(KeyringServiceUnitTest, BitcoinReceiveChangeAddresses) {
   EXPECT_EQ(btc_acc->account_id->coin, mojom::CoinType::BTC);
   EXPECT_EQ(btc_acc->account_id->keyring_id, mojom::kBitcoinKeyring84Id);
 
-  EXPECT_EQ(service.GetBitcoinAddresses(*btc_acc->account_id)->at(0).first,
-            "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu");
-  EXPECT_EQ(service.GetBitcoinAddresses(*btc_acc->account_id)->at(0).second,
-            mojom::BitcoinKeyId::New(0, 0, 0));
+  auto addresses = service.GetBitcoinAddresses(btc_acc->account_id);
+  ASSERT_TRUE(addresses);
+  ASSERT_EQ(addresses->size(), 0u);  // No addresses for fresh account.
 
-  EXPECT_EQ(service.GetBitcoinAddresses(*btc_acc->account_id)->at(5).first,
-            "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el");
-  EXPECT_EQ(service.GetBitcoinAddresses(*btc_acc->account_id)->at(5).second,
-            mojom::BitcoinKeyId::New(0, 1, 0));
+  service.UpdateNextUnusedAddressForBitcoinAccount(
+      btc_acc->account_id, mojom::BitcoinKeyId::New(0, 1));
+  addresses = service.GetBitcoinAddresses(btc_acc->account_id);
+  ASSERT_EQ(addresses->size(), 1u);  // 1 receive .
+  EXPECT_EQ(addresses->at(0), mojom::BitcoinAddress::New(
+                                  "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu",
+                                  mojom::BitcoinKeyId::New(0, 0)));
+
+  service.UpdateNextUnusedAddressForBitcoinAccount(
+      btc_acc->account_id, mojom::BitcoinKeyId::New(1, 1));
+  addresses = service.GetBitcoinAddresses(btc_acc->account_id);
+  ASSERT_EQ(addresses->size(), 2u);  // 1 receive + 1 change.
+  EXPECT_EQ(addresses->at(0), mojom::BitcoinAddress::New(
+                                  "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu",
+                                  mojom::BitcoinKeyId::New(0, 0)));
+  EXPECT_EQ(addresses->at(1), mojom::BitcoinAddress::New(
+                                  "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el",
+                                  mojom::BitcoinKeyId::New(1, 0)));
+  service.UpdateNextUnusedAddressForBitcoinAccount(
+      btc_acc->account_id, mojom::BitcoinKeyId::New(0, 5));
+  service.UpdateNextUnusedAddressForBitcoinAccount(
+      btc_acc->account_id, mojom::BitcoinKeyId::New(1, 5));
+  addresses = service.GetBitcoinAddresses(btc_acc->account_id);
+  ASSERT_EQ(addresses->size(), 10u);  // 5 receive + 5 change.
+  EXPECT_EQ(addresses->at(5), mojom::BitcoinAddress::New(
+                                  "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el",
+                                  mojom::BitcoinKeyId::New(1, 0)));
+}
+
+TEST_F(KeyringServiceUnitTest, UpdateNextUnusedAddressForBitcoinAccount) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletBitcoinFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+  auto btc_acc = GetAccountUtils(&service).EnsureBtcAccount(0);
+  EXPECT_EQ(mojom::BitcoinKeyId::New(0, 0),
+            service.GetBitcoinAccountInfo(btc_acc->account_id)
+                ->next_receive_address->key_id);
+  EXPECT_EQ(mojom::BitcoinKeyId::New(1, 0),
+            service.GetBitcoinAccountInfo(btc_acc->account_id)
+                ->next_change_address->key_id);
+
+  NiceMock<TestKeyringServiceObserver> observer(service);
+  EXPECT_CALL(observer, AccountsChanged());
+  service.UpdateNextUnusedAddressForBitcoinAccount(
+      btc_acc->account_id, mojom::BitcoinKeyId::New(0, 7));
+  observer.WaitAndVerify();
+  EXPECT_EQ(mojom::BitcoinKeyId::New(0, 7),
+            service.GetBitcoinAccountInfo(btc_acc->account_id)
+                ->next_receive_address->key_id);
+  EXPECT_EQ(mojom::BitcoinKeyId::New(1, 0),
+            service.GetBitcoinAccountInfo(btc_acc->account_id)
+                ->next_change_address->key_id);
+  EXPECT_CALL(observer, AccountsChanged());
+  service.UpdateNextUnusedAddressForBitcoinAccount(
+      btc_acc->account_id, mojom::BitcoinKeyId::New(1, 9));
+  observer.WaitAndVerify();
+  EXPECT_EQ(mojom::BitcoinKeyId::New(0, 7),
+            service.GetBitcoinAccountInfo(btc_acc->account_id)
+                ->next_receive_address->key_id);
+  EXPECT_EQ(mojom::BitcoinKeyId::New(1, 9),
+            service.GetBitcoinAccountInfo(btc_acc->account_id)
+                ->next_change_address->key_id);
+}
+
+TEST_F(KeyringServiceUnitTest, GetBitcoinAccountInfo) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletBitcoinFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+  auto btc_acc = GetAccountUtils(&service).EnsureBtcAccount(0);
+
+  service.UpdateNextUnusedAddressForBitcoinAccount(
+      btc_acc->account_id, mojom::BitcoinKeyId::New(0, 7));
+  service.UpdateNextUnusedAddressForBitcoinAccount(
+      btc_acc->account_id, mojom::BitcoinKeyId::New(1, 9));
+  EXPECT_EQ(
+      mojom::BitcoinAddress::New("bc1qhxgzmkmwvrlwvlfn4qe57lx2qdfg8phycnsarn",
+                                 mojom::BitcoinKeyId::New(0, 7)),
+      service.GetBitcoinAccountInfo(btc_acc->account_id)->next_receive_address);
+  EXPECT_EQ(
+      mojom::BitcoinAddress::New("bc1qwmrhe0ry500ptrhfwcvntglk8y0affaauvcp46",
+                                 mojom::BitcoinKeyId::New(1, 9)),
+      service.GetBitcoinAccountInfo(btc_acc->account_id)->next_change_address);
+}
+
+TEST_F(KeyringServiceUnitTest, GetBitcoinAddress) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletBitcoinFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+  auto btc_acc = GetAccountUtils(&service).EnsureBtcAccount(0);
+
+  EXPECT_EQ(
+      mojom::BitcoinAddress::New("bc1qhxgzmkmwvrlwvlfn4qe57lx2qdfg8phycnsarn",
+                                 mojom::BitcoinKeyId::New(0, 7)),
+      service.GetBitcoinAddress(btc_acc->account_id,
+                                mojom::BitcoinKeyId::New(0, 7)));
+  EXPECT_EQ(
+      mojom::BitcoinAddress::New("bc1qwmrhe0ry500ptrhfwcvntglk8y0affaauvcp46",
+                                 mojom::BitcoinKeyId::New(1, 9)),
+      service.GetBitcoinAddress(btc_acc->account_id,
+                                mojom::BitcoinKeyId::New(1, 9)));
+}
+
+TEST_F(KeyringServiceUnitTest, GetBitcoinPubkey) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletBitcoinFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+  auto btc_acc = GetAccountUtils(&service).EnsureBtcAccount(0);
+
+  EXPECT_EQ(
+      "0275CEEC11410AC8D730ACD0F99E50A530E1C28B1CF89133EC5F798FB675BDDC8E",
+      base::HexEncode(*service.GetBitcoinPubkey(
+          btc_acc->account_id, mojom::BitcoinKeyId::New(0, 7))));
+  EXPECT_EQ(
+      "033712907E0A8F4793203935787397FDC81407B116D42626ABF142099783B964B1",
+      base::HexEncode(*service.GetBitcoinPubkey(
+          btc_acc->account_id, mojom::BitcoinKeyId::New(1, 9))));
+}
+
+TEST_F(KeyringServiceUnitTest, SignMessageByBitcoinKeyring) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletBitcoinFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+  auto btc_acc = GetAccountUtils(&service).EnsureBtcAccount(0);
+  std::array<uint8_t, 32> message;
+  message.fill('1');
+
+  EXPECT_EQ(
+      "304402207901E3C494F6251CAB3EAEC330B1FCF8DA8B791B3BE8DAFB3B4432636BC0AFD6"
+      "02206A3506A8AF666D9E6FE00FF2DBC80176A405390D84B501B8E740CB20BC191A85",
+      base::HexEncode(*service.SignMessageByBitcoinKeyring(
+          btc_acc->account_id, mojom::BitcoinKeyId::New(0, 3), message)));
+  EXPECT_EQ(
+      "304402203794D7DAA283D56FFD09644649063D3BD1A6CED6F19BD6AC69D035B9F94629EF"
+      "02202E78E2CBA60B164FF25F5FE71A2649B5788CABE6364417AC1AE7733EB7FFA566",
+      base::HexEncode(*service.SignMessageByBitcoinKeyring(
+          btc_acc->account_id, mojom::BitcoinKeyId::New(1, 7), message)));
 }
 
 TEST_F(KeyringServiceUnitTest, MigrateSelectedAccount) {

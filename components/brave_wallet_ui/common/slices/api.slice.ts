@@ -911,7 +911,6 @@ export function createWalletApi () {
               case BraveWallet.CoinType.BTC: {
                 const { balance, errorMessage } =
                   await bitcoinWalletService.getBalance(
-                    token.chainId,
                     accountId
                   )
 
@@ -3030,7 +3029,30 @@ export function createWalletApi () {
                   id: [arg.chainId, arg.contractAddress].join('-')
                 }
               ]
-      })
+      }),
+      generateReceiveAddress: mutation<string, BraveWallet.AccountId>({
+        queryFn: async (accountId, { endpoint }, extraOptions, baseQuery) => {
+          try {
+            const { braveWalletService } = baseQuery(undefined).data
+            const { address, errorMessage } =
+              await braveWalletService.generateReceiveAddress(accountId)
+
+            if (!address || errorMessage) {
+              throw new Error(errorMessage ?? 'Unknown error')
+            }
+
+            return {
+              data: address
+            }
+          } catch (error) {
+            return handleEndpointError(
+              endpoint,
+              `Unable generate receive address for account: ${accountId.uniqueKey}`,
+              error
+            )
+          }
+        },
+      }),
     }}
   })
     // panel endpoints
@@ -3197,7 +3219,8 @@ export const {
   useUpdateUnapprovedTransactionNonceMutation,
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
-  useUpdateUserTokenMutation
+  useUpdateUserTokenMutation,
+  useGenerateReceiveAddressMutation,
 } = walletApi
 
 // Derived Data Queries

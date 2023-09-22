@@ -218,17 +218,22 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       HasPendingUnlockRequestCallback callback) override;
   absl::optional<size_t> GetAccountsNumber(mojom::KeyringId keyring_id);
 
-  absl::optional<std::vector<std::pair<std::string, mojom::BitcoinKeyIdPtr>>>
-  GetBitcoinAddresses(const mojom::AccountId& account_id);
-  absl::optional<std::string> GetBitcoinAddress(
-      const mojom::AccountId& account_id,
-      const mojom::BitcoinKeyId& key_id);
+  void UpdateNextUnusedAddressForBitcoinAccount(
+      const mojom::AccountIdPtr& account_id,
+      const mojom::BitcoinKeyIdPtr& key_id);
+  mojom::BitcoinAccountInfoPtr GetBitcoinAccountInfo(
+      const mojom::AccountIdPtr& account_id);
+  absl::optional<std::vector<mojom::BitcoinAddressPtr>> GetBitcoinAddresses(
+      const mojom::AccountIdPtr& account_id);
+  mojom::BitcoinAddressPtr GetBitcoinAddress(
+      const mojom::AccountIdPtr& account_id,
+      const mojom::BitcoinKeyIdPtr& key_id);
   absl::optional<std::vector<uint8_t>> GetBitcoinPubkey(
-      const mojom::AccountId& account_id,
-      const mojom::BitcoinKeyId& key_id);
+      const mojom::AccountIdPtr& account_id,
+      const mojom::BitcoinKeyIdPtr& key_id);
   absl::optional<std::vector<uint8_t>> SignMessageByBitcoinKeyring(
-      const mojom::AccountId& account_id,
-      const mojom::BitcoinKeyId& key_id,
+      const mojom::AccountIdPtr& account_id,
+      const mojom::BitcoinKeyIdPtr& key_id,
       base::span<const uint8_t, 32> message);
 
   const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();

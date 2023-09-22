@@ -199,12 +199,14 @@ BraveWalletService::BraveWalletService(
     KeyringService* keyring_service,
     JsonRpcService* json_rpc_service,
     TxService* tx_service,
+    BitcoinWalletService* bitcoin_wallet_service,
     PrefService* profile_prefs,
     PrefService* local_state)
     : delegate_(std::move(delegate)),
       keyring_service_(keyring_service),
       json_rpc_service_(json_rpc_service),
       tx_service_(tx_service),
+      bitcoin_wallet_service_(bitcoin_wallet_service),
       profile_prefs_(profile_prefs),
       brave_wallet_p3a_(this, keyring_service, profile_prefs, local_state),
       eth_allowance_manager_(
@@ -1858,8 +1860,7 @@ void BraveWalletService::NotifyAddSuggestTokenRequestsProcessed(
         add_suggest_token_ids_.erase(addr);
 
         base::Value formed_response = GetProviderErrorDictionary(
-            mojom::ProviderError::kInternalError,
-            l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+            mojom::ProviderError::kInternalError, WalletInternalErrorMessage());
         reject = true;
         std::move(callback).Run(std::move(id), std::move(formed_response),
                                 reject, "", false);
@@ -1899,8 +1900,7 @@ void BraveWalletService::NotifyGetPublicKeyRequestProcessed(
              ->GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
                  account_id, &key)) {
       base::Value formed_response = GetProviderErrorDictionary(
-          mojom::ProviderError::kInternalError,
-          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+          mojom::ProviderError::kInternalError, WalletInternalErrorMessage());
       std::move(callback).Run(std::move(id), std::move(formed_response), reject,
                               "", false);
       return;
@@ -2025,6 +2025,52 @@ void BraveWalletService::ConvertFEVMToFVMAddress(
     }
   }
   std::move(callback).Run(std::move(result));
+}
+
+void BraveWalletService::GenerateReceiveAddress(
+    mojom::AccountIdPtr account_id,
+    GenerateReceiveAddressCallback callback) {
+  if (account_id->coin == mojom::CoinType::BTC) {
+    if (!bitcoin_wallet_service_) {
+      std::move(callback).Run("", WalletInternalErrorMessage());
+      return;
+    }
+    bitcoin_wallet_service_->RunDiscovery(
+        std::move(account_id), false,
+        base::BindOnce(&BraveWalletService::OnGenerateBtcReceiveAddress,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    return;
+  }
+
+  if (account_id->coin == mojom::CoinType::ETH ||
+      account_id->coin == mojom::CoinType::SOL ||
+      account_id->coin == mojom::CoinType::FIL) {
+    const auto& accounts = keyring_service_->GetAllAccountInfos();
+    for (auto& account : accounts) {
+      if (account->account_id == account_id) {
+        std::move(callback).Run(account->address, absl::nullopt);
+        return;
+      }
+    }
+    std::move(callback).Run("", WalletInternalErrorMessage());
+    return;
+  }
+
+  NOTREACHED() << account_id->coin;
+  std::move(callback).Run("", WalletInternalErrorMessage());
+}
+
+void BraveWalletService::OnGenerateBtcReceiveAddress(
+    GenerateReceiveAddressCallback callback,
+    mojom::BitcoinAddressPtr address,
+    const absl::optional<std::string>& error_message) {
+  if (address) {
+    std::move(callback).Run(address->address_string, absl::nullopt);
+    return;
+  }
+
+  std::move(callback).Run(absl::nullopt,
+                          error_message.value_or(WalletInternalErrorMessage()));
 }
 
 void BraveWalletService::GetSimpleHashSpamNFTs(

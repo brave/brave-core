@@ -142,6 +142,8 @@ source_set("brave_wallet_unit_tests") {
 source_set("test_support") {
   testonly = true
   sources = [
+    "//brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.cc",
+    "//brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h",
     "//brave/components/brave_wallet/browser/json_rpc_service_test_utils.cc",
     "//brave/components/brave_wallet/browser/json_rpc_service_test_utils.h",
   ]
@@ -149,7 +151,11 @@ source_set("test_support") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:generated_bitcoin_rpc_responses",
     "//brave/components/brave_wallet/browser:utils",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
     "//testing/gtest",
   ]
 }  # source_set("test_support")

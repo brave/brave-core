@@ -14,12 +14,16 @@
 #include "base/scoped_observation.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
+#include "brave/browser/brave_wallet/bitcoin_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -292,7 +296,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
  protected:
   void SetUp() override {
     scoped_feature_list_.InitAndEnableFeature(
-        features::kNativeBraveWalletFeature);
+        features::kBraveWalletBitcoinFeature);
 
 #if BUILDFLAG(IS_ANDROID)
     task_environment_.AdvanceClock(base::Days(2));
@@ -319,10 +323,17 @@ class BraveWalletServiceUnitTest : public testing::Test {
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
     tx_service_ = TxServiceFactory::GetServiceForContext(profile_.get());
+    bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>(
+        keyring_service_.get(), GetPrefs());
+    bitcoin_wallet_service_ =
+        BitcoinWalletServiceFactory::GetServiceForContext(profile_.get());
+    bitcoin_wallet_service_->SetUrlLoaderFactoryForTesting(
+        bitcoin_test_rpc_server_->GetURLLoaderFactory());
     service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service_, GetPrefs(), local_state_->Get());
+        json_rpc_service_, tx_service_, bitcoin_wallet_service_.get(),
+        GetPrefs(), local_state_->Get());
     observer_ = std::make_unique<TestBraveWalletServiceObserver>();
     service_->AddObserver(observer_->GetReceiver());
 
@@ -806,6 +817,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<TxService> tx_service_;
+  std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
+  raw_ptr<BitcoinWalletService> bitcoin_wallet_service_;
   std::unique_ptr<TestBraveWalletServiceObserver> observer_;
   base::test::ScopedFeatureList scoped_feature_list_;
 
@@ -3094,6 +3107,69 @@ TEST_F(BraveWalletServiceUnitTest, ConvertFEVMToFVMAddress) {
             }));
     ASSERT_TRUE(callback_is_called);
   }
+}
+
+TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_EthFilSol) {
+  SetupWallet();
+
+  std::vector<mojom::AccountInfoPtr> accounts;
+  accounts.push_back(GetAccountUtils().EnsureEthAccount(0));
+  accounts.push_back(GetAccountUtils().EnsureSolAccount(0));
+  accounts.push_back(GetAccountUtils().EnsureFilAccount(0));
+  accounts.push_back(GetAccountUtils().EnsureFilTestAccount(0));
+
+  for (auto& acc : accounts) {
+    base::MockCallback<BraveWalletService::GenerateReceiveAddressCallback>
+        callback;
+
+    auto expected_address = absl::optional<std::string>(acc->address);
+    EXPECT_CALL(callback, Run(expected_address, absl::optional<std::string>()))
+        .Times(2);
+    service_->GenerateReceiveAddress(acc->account_id.Clone(), callback.Get());
+    service_->GenerateReceiveAddress(acc->account_id.Clone(), callback.Get());
+    testing::Mock::VerifyAndClearExpectations(&callback);
+  }
+}
+
+TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_Btc) {
+  SetupWallet();
+
+  auto btc_account = GetAccountUtils().EnsureBtcAccount(0);
+  bitcoin_test_rpc_server_->SetUpBitcoinRpc(btc_account->account_id);
+
+  base::MockCallback<BraveWalletService::GenerateReceiveAddressCallback>
+      callback;
+
+  absl::optional<std::string> expected_address =
+      keyring_service_
+          ->GetBitcoinAddress(btc_account->account_id,
+                              mojom::BitcoinKeyId::New(0, 1))
+          ->address_string;
+
+  EXPECT_CALL(callback, Run(expected_address, absl::optional<std::string>()));
+  service_->GenerateReceiveAddress(btc_account->account_id.Clone(),
+                                   callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  EXPECT_CALL(callback, Run(expected_address, absl::optional<std::string>()));
+  service_->GenerateReceiveAddress(btc_account->account_id.Clone(),
+                                   callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  bitcoin_test_rpc_server_->address_stats_map()[*expected_address] =
+      BitcoinTestRpcServer::TransactedAddressStats(*expected_address);
+
+  expected_address = keyring_service_
+                         ->GetBitcoinAddress(btc_account->account_id,
+                                             mojom::BitcoinKeyId::New(0, 2))
+                         ->address_string;
+  EXPECT_CALL(callback, Run(expected_address, absl::optional<std::string>()));
+  service_->GenerateReceiveAddress(btc_account->account_id.Clone(),
+                                   callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 }  // namespace brave_wallet

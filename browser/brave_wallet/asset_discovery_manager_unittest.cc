@@ -125,7 +125,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
     wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service_, GetPrefs(), GetLocalState());
+        json_rpc_service_, tx_service_, nullptr, GetPrefs(), GetLocalState());
     simple_hash_client_ =
         std::make_unique<SimpleHashClient>(shared_url_loader_factory_);
     asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(

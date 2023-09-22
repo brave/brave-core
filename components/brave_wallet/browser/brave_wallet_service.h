@@ -16,6 +16,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
@@ -77,6 +78,7 @@ class BraveWalletService : public KeyedService,
       KeyringService* keyring_service,
       JsonRpcService* json_rpc_service,
       TxService* tx_service,
+      BitcoinWalletService* bitcoin_wallet_service,
       PrefService* profile_prefs,
       PrefService* local_state);
 
@@ -254,6 +256,9 @@ class BraveWalletService : public KeyedService,
       const std::vector<std::string>& fevm_addresses,
       ConvertFEVMToFVMAddressCallback callback) override;
 
+  void GenerateReceiveAddress(mojom::AccountIdPtr account_id,
+                              GenerateReceiveAddressCallback callback) override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 
@@ -332,6 +337,11 @@ class BraveWalletService : public KeyedService,
   void OnNetworkListChanged();
   void OnBraveWalletNftDiscoveryEnabled();
 
+  void OnGenerateBtcReceiveAddress(
+      GenerateReceiveAddressCallback callback,
+      mojom::BitcoinAddressPtr,
+      const absl::optional<std::string>& error_message);
+
   static absl::optional<std::string> GetChecksumAddress(
       const std::string& contract_address,
       const std::string& chain_id);
@@ -398,6 +408,7 @@ class BraveWalletService : public KeyedService,
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   raw_ptr<TxService> tx_service_ = nullptr;
+  raw_ptr<BitcoinWalletService> bitcoin_wallet_service_ = nullptr;
   raw_ptr<PrefService> profile_prefs_ = nullptr;
   BraveWalletP3A brave_wallet_p3a_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;

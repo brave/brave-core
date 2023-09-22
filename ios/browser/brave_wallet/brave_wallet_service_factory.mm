@@ -59,16 +59,14 @@ std::unique_ptr<KeyedService>
 BraveWalletServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
-  auto* keyring_service =
-      KeyringServiceFactory::GetServiceForState(browser_state);
-  auto* json_rpc_service =
-      JsonRpcServiceFactory::GetServiceForState(browser_state);
-  auto* tx_service = TxServiceFactory::GetServiceForState(browser_state);
-  auto shared_url_loader_factory = browser_state->GetSharedURLLoaderFactory();
   std::unique_ptr<BraveWalletService> service(new BraveWalletService(
-      shared_url_loader_factory, std::make_unique<BraveWalletServiceDelegate>(),
-      keyring_service, json_rpc_service, tx_service, browser_state->GetPrefs(),
-      GetApplicationContext()->GetLocalState()));
+      browser_state->GetSharedURLLoaderFactory(),
+      std::make_unique<BraveWalletServiceDelegate>(),
+      KeyringServiceFactory::GetServiceForState(browser_state),
+      JsonRpcServiceFactory::GetServiceForState(browser_state),
+      TxServiceFactory::GetServiceForState(browser_state),
+      nullptr,  // TODO(apaymyshev): support bitcoin for ios.
+      browser_state->GetPrefs(), GetApplicationContext()->GetLocalState()));
   return service;
 }
 

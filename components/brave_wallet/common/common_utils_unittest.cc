@@ -65,22 +65,6 @@ TEST(CommonUtils, IsBitcoinNetwork) {
   EXPECT_FALSE(IsBitcoinNetwork("abc"));
 }
 
-TEST(CommonUtils, IsValidBitcoinNetworkKeyringPair) {
-  EXPECT_TRUE(IsValidBitcoinNetworkKeyringPair(mojom::kBitcoinMainnet,
-                                               mojom::KeyringId::kBitcoin84));
-  EXPECT_TRUE(IsValidBitcoinNetworkKeyringPair(
-      mojom::kBitcoinTestnet, mojom::KeyringId::kBitcoin84Testnet));
-
-  EXPECT_FALSE(IsValidBitcoinNetworkKeyringPair(mojom::kBitcoinTestnet,
-                                                mojom::KeyringId::kBitcoin84));
-  EXPECT_FALSE(IsValidBitcoinNetworkKeyringPair(
-      mojom::kBitcoinMainnet, mojom::KeyringId::kBitcoin84Testnet));
-  EXPECT_FALSE(IsValidBitcoinNetworkKeyringPair(
-      "", mojom::KeyringId::kBitcoin84Testnet));
-  EXPECT_FALSE(IsValidBitcoinNetworkKeyringPair(
-      "abc", mojom::KeyringId::kBitcoin84Testnet));
-}
-
 TEST(CommonUtils, IsBitcoinAccount) {
   EXPECT_TRUE(IsBitcoinAccount(
       *MakeBitcoinAccountId(mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84,
@@ -316,6 +300,17 @@ TEST(CommonUtils, CoinSupportsDapps) {
       EXPECT_FALSE(CoinSupportsDapps(coin));
     }
   }
+}
+
+TEST(CommonUtils, GetNetworkForBitcoinAccount) {
+  EXPECT_EQ(mojom::kBitcoinMainnet,
+            GetNetworkForBitcoinAccount(MakeBitcoinAccountId(
+                mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84,
+                mojom::AccountKind::kDerived, 123)));
+  EXPECT_EQ(mojom::kBitcoinTestnet,
+            GetNetworkForBitcoinAccount(MakeBitcoinAccountId(
+                mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84Testnet,
+                mojom::AccountKind::kDerived, 123)));
 }
 
 }  // namespace brave_wallet

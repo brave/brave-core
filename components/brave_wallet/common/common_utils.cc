@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/feature_list.h"
+#include "base/notreached.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
 #include "build/build_config.h"
@@ -95,21 +96,6 @@ bool IsBitcoinTestnetKeyring(mojom::KeyringId keyring_id) {
 bool IsBitcoinNetwork(const std::string& network_id) {
   return network_id == mojom::kBitcoinMainnet ||
          network_id == mojom::kBitcoinTestnet;
-}
-
-bool IsValidBitcoinNetworkKeyringPair(const std::string& network_id,
-                                      mojom::KeyringId keyring_id) {
-  if (!IsBitcoinKeyring(keyring_id) || !IsBitcoinNetwork(network_id)) {
-    return false;
-  }
-
-  if (network_id == mojom::kBitcoinMainnet) {
-    return IsBitcoinMainnetKeyring(keyring_id);
-  } else if (network_id == mojom::kBitcoinTestnet) {
-    return IsBitcoinTestnetKeyring(keyring_id);
-  }
-  NOTREACHED();
-  return false;
 }
 
 bool IsBitcoinAccount(const mojom::AccountId& account_id) {
@@ -240,6 +226,18 @@ mojom::AccountIdPtr MakeBitcoinAccountId(mojom::CoinType coin,
                        "_");
   return mojom::AccountId::New(coin, keyring_id, kind, "", account_index,
                                std::move(unique_key));
+}
+
+std::string GetNetworkForBitcoinAccount(const mojom::AccountIdPtr& account_id) {
+  CHECK(account_id);
+  CHECK(IsBitcoinAccount(*account_id));
+  if (IsBitcoinMainnetKeyring(account_id->keyring_id)) {
+    return mojom::kBitcoinMainnet;
+  }
+  if (IsBitcoinTestnetKeyring(account_id->keyring_id)) {
+    return mojom::kBitcoinTestnet;
+  }
+  NOTREACHED_NORETURN();
 }
 
 }  // namespace brave_wallet

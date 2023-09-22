@@ -33,6 +33,12 @@ constexpr char kMnemonicDripCaution[] =
 constexpr char kMnemonicScarePiece[] =
     "scare piece awesome elite long drift control cabbage glass dash coral "
     "angry";
+// Mnemonic referenced in various bips.
+// https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#test-vectors
+// https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki#test-vectors
+constexpr char kMnemonicAbandonAbandon[] =
+    "abandon abandon abandon abandon abandon abandon abandon abandon abandon "
+    "abandon abandon about";
 constexpr char kTestWalletPassword[] = "brave";
 
 class KeyringService;

@@ -17,6 +17,8 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_state_manager.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -55,10 +57,15 @@ void BitcoinTxManager::AddUnapprovedTransaction(
     const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
+  if (chain_id != GetNetworkForBitcoinAccount(from)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
   const auto& btc_tx_data = tx_data_union->get_btc_tx_data();
 
   bitcoin_wallet_service_->CreateTransaction(
-      chain_id, from->Clone(), btc_tx_data->to, btc_tx_data->amount,
+      from->Clone(), btc_tx_data->to, btc_tx_data->amount,
       base::BindOnce(&BitcoinTxManager::ContinueAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), chain_id, from.Clone(), origin,
                      std::move(callback)));
@@ -85,8 +92,7 @@ void BitcoinTxManager::ContinueAddUnapprovedTransaction(
   meta.set_chain_id(chain_id);
 
   if (!tx_state_manager_->AddOrUpdateTx(meta)) {
-    std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
   std::move(callback).Run(true, meta.id(), "");
@@ -108,7 +114,7 @@ void BitcoinTxManager::ApproveTransaction(const std::string& chain_id,
   }
 
   bitcoin_wallet_service_->SignAndPostTransaction(
-      meta->chain_id(), meta->from(), std::move(*meta->tx()),
+      meta->from(), std::move(*meta->tx()),
       base::BindOnce(&BitcoinTxManager::ContinueApproveTransaction,
                      weak_factory_.GetWeakPtr(), chain_id, tx_meta_id,
                      std::move(callback)));
@@ -144,11 +150,10 @@ void BitcoinTxManager::ContinueApproveTransaction(
   }
 
   if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
-    std::move(callback).Run(
-        false,
-        mojom::ProviderErrorUnion::NewBitcoinProviderError(
-            mojom::BitcoinProviderError::kInternalError),
-        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    std::move(callback).Run(false,
+                            mojom::ProviderErrorUnion::NewBitcoinProviderError(
+                                mojom::BitcoinProviderError::kInternalError),
+                            WalletInternalErrorMessage());
     return;
   }
 

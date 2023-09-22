@@ -40,8 +40,6 @@ bool IsBitcoinKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinMainnetKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinTestnetKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinNetwork(const std::string& network_id);
-bool IsValidBitcoinNetworkKeyringPair(const std::string& network_id,
-                                      mojom::KeyringId keyring_id);
 bool IsBitcoinAccount(const mojom::AccountId& account_id);
 
 mojom::KeyringId GetFilecoinKeyringId(const std::string& network);
@@ -66,6 +64,7 @@ mojom::AccountIdPtr MakeBitcoinAccountId(mojom::CoinType coin,
                                          mojom::KeyringId keyring_id,
                                          mojom::AccountKind kind,
                                          uint32_t account_index);
+std::string GetNetworkForBitcoinAccount(const mojom::AccountIdPtr& account_id);
 
 }  // namespace brave_wallet
 

@@ -16,6 +16,8 @@
 namespace brave_wallet {
 
 constexpr uint8_t kBitcoinSigHashAll = 1;
+constexpr uint32_t kBitcoinReceiveIndex = 0;
+constexpr uint32_t kBitcoinChangeIndex = 1;
 
 // TODO(apaymyshev): support more
 enum BitcoinAddressType {

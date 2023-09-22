@@ -21,6 +21,8 @@
 
 namespace brave_wallet::bitcoin_rpc {
 
+using UnspentOutputs = std::vector<UnspentOutput>;
+
 struct QueuedRequestData;
 
 // TODO(apaymyshev): test this class
@@ -46,7 +48,7 @@ class BitcoinRpc {
   using GetChainHeightCallback = RpcResponseCallback<uint32_t>;
   using GetTransactionCallback = RpcResponseCallback<Transaction>;
   using GetAddressStatsCallback = RpcResponseCallback<AddressStats>;
-  using GetUtxoListCallback = RpcResponseCallback<std::vector<UnspentOutput>>;
+  using GetUtxoListCallback = RpcResponseCallback<UnspentOutputs>;
   using PostTransactionCallback = RpcResponseCallback<std::string>;
 
   void GetChainHeight(const std::string& chain_id,
@@ -64,6 +66,9 @@ class BitcoinRpc {
   void PostTransaction(const std::string& chain_id,
                        const std::vector<uint8_t>& transaction,
                        PostTransactionCallback callback);
+
+  void SetUrlLoaderFactoryForTesting(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
  private:
   void RequestInternal(const GURL& request_url,
