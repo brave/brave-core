@@ -7,13 +7,11 @@ package org.chromium.chrome.browser;
 
 import android.app.SearchManager;
 import android.content.Intent;
-import android.net.Uri;
 import android.text.TextUtils;
 
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
-import org.chromium.chrome.browser.IntentHandler.IntentHandlerDelegate;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.content_public.browser.BrowserStartupController;
@@ -24,35 +22,10 @@ import java.util.concurrent.ExecutionException;
 public class BraveIntentHandler {
     private static final String TAG = "BraveIntentHandler";
 
-    private static final String CONNECTION_INFO_HELP_URL =
+    public static final String CONNECTION_INFO_HELP_URL =
             "https://support.google.com/chrome?p=android_connection_info";
-    private static final String BRAVE_CONNECTION_INFO_HELP_URL =
+    public static final String BRAVE_CONNECTION_INFO_HELP_URL =
             "https://support.brave.com/hc/en-us/articles/360018185871-How-do-I-check-if-a-site-s-connection-is-secure-";
-
-    /**
-     * Calls to IntentHandler.onNewIntent will be redirected here via bytecode changes.
-     */
-    public static boolean onNewIntent(
-            Intent intent, IntentHandlerDelegate delegate, long intentHandlingUptimeMillis) {
-        // Redirect requests if necessary
-        String url = IntentHandler.getUrlFromIntent(intent);
-        if (url != null && url.equals(CONNECTION_INFO_HELP_URL)) {
-            intent.setData(Uri.parse(BRAVE_CONNECTION_INFO_HELP_URL));
-        }
-        String appLinkAction = intent.getAction();
-        Uri appLinkData = intent.getData();
-
-        if (Intent.ACTION_VIEW.equals(appLinkAction) && appLinkData != null) {
-            String lastPathSegment = appLinkData.getLastPathSegment();
-            if (lastPathSegment != null
-                    && (lastPathSegment.equalsIgnoreCase(BraveConstants.DEEPLINK_ANDROID_PLAYLIST)
-                            || lastPathSegment.equalsIgnoreCase(
-                                    BraveConstants.DEEPLINK_ANDROID_VPN))) {
-                return false;
-            }
-        }
-        return IntentHandler.onNewIntent(intent, delegate, intentHandlingUptimeMillis);
-    }
 
     /**
      * Helper method to extract the raw URL from the intent, without further processing.

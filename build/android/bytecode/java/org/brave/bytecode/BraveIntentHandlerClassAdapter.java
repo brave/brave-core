@@ -27,7 +27,5 @@ public class BraveIntentHandlerClassAdapter extends BraveClassVisitor {
 
         changeMethodOwner(
                 sIntentHandlerClassName, "extractUrlFromIntent", sBraveIntentHandlerClassName);
-
-        changeMethodOwner(sIntentHandlerClassName, "onNewIntent", sBraveIntentHandlerClassName);
     }
 }

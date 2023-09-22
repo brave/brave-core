@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -74,6 +75,7 @@ import org.chromium.chrome.browser.ApplicationLifetime;
 import org.chromium.chrome.browser.BraveAdFreeCalloutDialogFragment;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveHelper;
+import org.chromium.chrome.browser.BraveIntentHandler;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveSyncInformers;
@@ -81,6 +83,7 @@ import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.DormantUsersEngagementDialogFragment;
+import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.app.domain.WalletModel;
@@ -2092,5 +2095,32 @@ public abstract class BraveActivity extends ChromeActivity
                 sheetContainer.setLayoutParams(params);
             }
         }
+    }
+
+    /**
+     * Calls to {@link ChromeTabbedActivity#maybeHandleUrlIntent} will be redirected here via
+     * bytecode changes.
+     */
+    public boolean maybeHandleUrlIntent(Intent intent) {
+        // Redirect requests if necessary
+        String url = IntentHandler.getUrlFromIntent(intent);
+        if (url != null && url.equals(BraveIntentHandler.CONNECTION_INFO_HELP_URL)) {
+            intent.setData(Uri.parse(BraveIntentHandler.BRAVE_CONNECTION_INFO_HELP_URL));
+        }
+        String appLinkAction = intent.getAction();
+        Uri appLinkData = intent.getData();
+
+        if (Intent.ACTION_VIEW.equals(appLinkAction) && appLinkData != null) {
+            String lastPathSegment = appLinkData.getLastPathSegment();
+            if (lastPathSegment != null
+                    && (lastPathSegment.equalsIgnoreCase(BraveConstants.DEEPLINK_ANDROID_PLAYLIST)
+                            || lastPathSegment.equalsIgnoreCase(
+                                    BraveConstants.DEEPLINK_ANDROID_VPN))) {
+                return false;
+            }
+        }
+        // Call ChromeTabbedActivity's version.
+        return (boolean) BraveReflectionUtil.InvokeMethod(
+                ChromeTabbedActivity.class, this, "maybeHandleUrlIntent", Intent.class, intent);
     }
 }
