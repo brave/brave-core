@@ -229,7 +229,7 @@ public class KeyringStore: ObservableObject {
         self.isDefaultKeyringCreated = defaultKeyring.isKeyringCreated
       }
       self.allKeyrings = allKeyrings
-      if let selectedAccountKeyring = allKeyrings.first(where: { $0.coin == selectedAccount?.coin }) {
+      if let selectedAccountKeyring = allKeyrings.first(where: { $0.id == selectedAccount?.keyringId }) {
         if self.selectedAccount.address != selectedAccountAddress {
           if let selectedAccount = selectedAccountKeyring.accountInfos.first(where: { $0.address == selectedAccountAddress }) {
             self.selectedAccount = selectedAccount
