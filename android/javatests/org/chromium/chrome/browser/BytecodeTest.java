@@ -1055,6 +1055,9 @@ public class BytecodeTest {
                         "mDropdownViewInfoListManager"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
+                        "mDropdownViewInfoListBuilder"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
                         "mContext"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/ntp/NewTabPageLayout", "mMvTilesContainerLayout"));

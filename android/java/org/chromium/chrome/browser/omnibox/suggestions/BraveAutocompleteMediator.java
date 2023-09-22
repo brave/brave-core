@@ -31,8 +31,20 @@ class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSug
     private static final String AUTOCOMPLETE_ENABLED = "brave.autocomplete_enabled";
 
     private Context mContext;
+    private AutocompleteDelegate mDelegate;
+
+    /**
+     * Will be deleted in bytecode, value from the parent class will be used instead.
+     */
     private boolean mNativeInitialized;
+    /**
+     * Will be deleted in bytecode, value from the parent class will be used instead.
+     */
     private DropdownItemViewInfoListManager mDropdownViewInfoListManager;
+    /**
+     * Will be deleted in bytecode, value from the parent class will be used instead.
+     */
+    private DropdownItemViewInfoListBuilder mDropdownViewInfoListBuilder;
 
     public BraveAutocompleteMediator(@NonNull Context context,
             @NonNull AutocompleteControllerProvider controllerProvider,
@@ -53,6 +65,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSug
                 locationBarDataProvider, bringTabToFrontCallback, tabWindowManagerSupplier,
                 bookmarkState, omniboxActionDelegate, openHistoryClustersDelegate);
         mContext = context;
+        mDelegate = delegate;
     }
 
     @Override
@@ -79,5 +92,17 @@ class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSug
             ((BraveDropdownItemViewInfoListManager) mDropdownViewInfoListManager)
                     .removeBraveSearchSuggestion();
         }
+    }
+
+    /**
+     * We override parent to move back ability to set AutocompleteDelegate.
+     */
+    @Override
+    void initDefaultProcessors() {
+        if (mDropdownViewInfoListBuilder instanceof BraveDropdownItemViewInfoListBuilder) {
+            ((BraveDropdownItemViewInfoListBuilder) mDropdownViewInfoListBuilder)
+                    .setAutocompleteDelegate(mDelegate);
+        }
+        super.initDefaultProcessors();
     }
 }
