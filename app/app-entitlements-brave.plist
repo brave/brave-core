@@ -6,5 +6,17 @@
   <array>
     <string>allow-vpn</string>
   </array>
+	<key>com.apple.developer.networking.networkextension</key>
+	<array>
+		<string>packet-tunnel-provider-systemextension</string>
+	</array>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>$(CHROMIUM_TEAM_ID).group.$(CHROMIUM_BUNDLE_ID)</string>
+	</array>
+  <key>com.apple.application-identifier</key>
+  <string>$(CHROMIUM_TEAM_ID).$(CHROMIUM_BUNDLE_ID)</string>
+  <key>com.apple.developer.team-identifier</key>
+  <string>$(CHROMIUM_TEAM_ID)</string>
 </dict>
 </plist>

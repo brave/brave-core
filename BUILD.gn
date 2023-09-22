@@ -15,6 +15,7 @@ import("//third_party/icu/config.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 import("//tools/grit/repack.gni")
 import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//ui/base/ui_features.gni")
 
 if (enable_library_cdms) {
@@ -577,8 +578,17 @@ action("create_dist_zips") {
 }
 
 if (is_mac) {
+
+  if (enable_brave_vpn_wireguard) {
+    bundle_data("wireguard_network_extension") {
+      sources =
+          [ "//brave/third_party/wireguard-apple/WireGuardNetworkExtension.appex" ]
+      outputs = [ "{{bundle_contents_dir}}/PlugIns/{{source_file_part}}" ]
+    }
+  }
+
   group("brave_app") {
-    deps = [ ":brave_app_plist" ]
+    deps = [ ":brave_app_plist", ":wireguard_network_extension" ]
   }
 
   brave_tweak_info_plist("brave_app_plist") {
@@ -589,6 +599,7 @@ if (is_mac) {
       "--brave_product_dir_name=" + brave_product_dir_name,
       "--brave_version=" + brave_version,
       "--brave_eddsa_key=" + sparkle_eddsa_public_key,
+      "--brave_team_id=$chrome_mac_team_id",
     ]
 
     if (skip_signing) {

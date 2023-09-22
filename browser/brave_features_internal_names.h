@@ -11,12 +11,17 @@
 
 constexpr char kPlaylistFeatureInternalName[] = "playlist";
 constexpr char kPlaylistFakeUAFeatureInternalName[] = "playlist-fake-ua";
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 constexpr char kBraveVPNFeatureInternalName[] = "brave-vpn";
 #if BUILDFLAG(IS_WIN)
 constexpr char kBraveVPNDnsFeatureInternalName[] = "brave-vpn-dns";
+#endif
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
 constexpr char kBraveVPNWireguardFeatureInternalName[] = "brave-vpn-wireguard";
 #endif
-#endif
+
 
 #endif  // BRAVE_BROWSER_BRAVE_FEATURES_INTERNAL_NAMES_H_

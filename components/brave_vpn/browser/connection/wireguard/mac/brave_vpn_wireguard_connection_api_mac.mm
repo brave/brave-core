@@ -9,6 +9,7 @@
 
 #include "base/base64.h"
 #include "base/notreached.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/mac/brave_vpn_wireguard_bridge/brave_vpn_runner_mac.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
@@ -47,7 +48,7 @@ void WireguardOSConnectionAPIMac::PlatformConnectImpl(
         mojom::ConnectionState::CONNECT_FAILED);
     return;
   }
-  NOTIMPLEMENTED();
+  BraveVpnRunnerMac::GetInstance()->EnableVPN(config.value());
 }
 
 void WireguardOSConnectionAPIMac::Disconnect() {

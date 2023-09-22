@@ -25,6 +25,7 @@ import argparse
 import plistlib
 import subprocess
 import sys
+import os
 import tempfile
 
 def _ConvertPlist(source_plist, output_plist, fmt):
@@ -78,6 +79,12 @@ def Main():
         default='xml1', help='Format to use when writing property list '
             '(default: %(default)s)')
     parser.add_argument('--skip_signing', dest='skip_signing', action='store_true')
+    parser.add_argument('--brave_team_id',
+                        dest='brave_team_id',
+                        action='store',
+                        default=None,
+                        help='brave team id')
+
     args = parser.parse_args()
 
     # Read the plist into its parsed format. Convert the file to 'xml1' as
@@ -112,6 +119,13 @@ def Main():
 
     # Explicitly disable profiling
     plist['SUEnableSystemProfiling'] = False
+
+    if args.brave_team_id:
+        plist[
+            'com.wireguard.macos.app_group_id'] = args.brave_team_id + '.group.${CHROMIUM_BUNDLE_ID}'
+        plist['com.apple.security.application-groups'] = [
+            args.brave_team_id + 'group.${CHROMIUM_BUNDLE_ID}'
+        ]
 
     # Now that all keys have been mutated, rewrite the file.
     # Convert Info.plist to the format requested by the --format flag. Any

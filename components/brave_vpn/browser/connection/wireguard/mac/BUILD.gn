@@ -17,6 +17,7 @@ source_set("mac") {
   ]
 
   deps = [
+    "brave_vpn_wireguard_bridge",
     "//base",
     "//brave/components/brave_vpn/browser/connection/wireguard",
     "//brave/components/brave_vpn/browser/connection/wireguard/credentials",

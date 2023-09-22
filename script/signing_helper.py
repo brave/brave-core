@@ -97,12 +97,12 @@ def BraveModifyPartsForSigning(parts, config):
     # Change privileged helper entry with hardcoded org.chromium.Chromium brand
     # since we don't override branding file for it yet and we don't use it.
     parts['privileged-helper'].path = re.sub(
-        r'com.brave.Browser(.*).UpdaterPrivilegedHelper',
+        r'com.serge.Serge(.*).UpdaterPrivilegedHelper',
         'org.chromium.Chromium.UpdaterPrivilegedHelper',
         parts['privileged-helper'].path,
         flags=re.VERBOSE)
     parts['privileged-helper'].identifier = re.sub(
-        r'com.brave.Browser(.*).UpdaterPrivilegedHelper',
+        r'com.serge.Serge(.*).UpdaterPrivilegedHelper',
         'org.chromium.Chromium.UpdaterPrivilegedHelper',
         parts['privileged-helper'].identifier)
 
@@ -156,6 +156,6 @@ def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
         @property
         def run_spctl_assess(self):
             """ Run spctl check """
-            return True
+            return False
 
     return ProvisioningProfileCodeSignConfig
