@@ -799,6 +799,16 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SIDEBAR_READING_LIST_PANEL_HEADER_TITLE" desc="Text of readling list panel header">
           Reading List
         </message>
+        <if expr="not use_titlecase">
+          <message name="IDS_SIDEBAR_READING_LIST_PANEL_HEADER_BOOKMARKS_BUTTON_TOOLTIP" desc="Text of bookmarks panel header button tooltip">
+            Bookmarks manager
+          </message>
+        </if>
+        <if expr="use_titlecase">
+          <message name="IDS_SIDEBAR_READING_LIST_PANEL_HEADER_BOOKMARKS_BUTTON_TOOLTIP" desc="Text of bookmark panel header button tooltip">
+            Bookmarks Manager
+          </message>
+        </if>
       </if>
 
       <!-- Stats -->
