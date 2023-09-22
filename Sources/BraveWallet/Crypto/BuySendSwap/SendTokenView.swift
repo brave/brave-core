@@ -8,6 +8,7 @@ import Strings
 import DesignSystem
 import BigNumber
 import BraveUI
+import BraveCore
 
 struct SendTokenView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -23,6 +24,7 @@ struct SendTokenView: View {
   
   @Environment(\.appRatingRequestAction) private var appRatingRequest
   @Environment(\.openURL) private var openURL
+  @Environment(\.presentationMode) @Binding private var presentationMode
   
   var completion: ((_ success: Bool) -> Void)?
   var onDismiss: () -> Void

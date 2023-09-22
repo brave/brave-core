@@ -326,6 +326,8 @@ class AssetDetailStore: ObservableObject {
           return tokenContractAddress.caseInsensitiveCompare(token.contractAddress) == .orderedSame
         case .erc1155SafeTransferFrom, .solanaDappSignTransaction, .solanaDappSignAndSendTransaction, .solanaSwap:
           return false
+        case .ethFilForwarderTransfer:
+          return false
         @unknown default:
           return false
         }
@@ -356,6 +358,16 @@ class AssetDetailStore: ObservableObject {
       solanaTxManagerProxy: solTxManagerProxy,
       userAssetManager: assetManager
     )
+  }
+  
+  /// Should be called after dismissing create account. Returns true if an account was created
+  @MainActor func handleDismissAddAccount() async -> Bool {
+    if await keyringService.isAccountAvailable(for: assetDetailToken.coin, chainId: assetDetailToken.chainId) {
+      self.update()
+      return true
+    } else {
+      return false
+    }
   }
 }
 

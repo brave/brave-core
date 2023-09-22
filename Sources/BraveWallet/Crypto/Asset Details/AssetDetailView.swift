@@ -23,6 +23,9 @@ struct AssetDetailView: View {
   @State private var isShowingAddAccount: Bool = false
   @State private var transactionDetails: TransactionDetailsStore?
   @State private var isShowingAuroraBridgeAlert: Bool = false
+  @State private var isPresentingAddAccount: Bool = false
+  @State private var isPresentingAddAccountConfirmation: Bool = false
+  @State private var savedBSSDestination: BuySendSwapDestination?
   
   @Environment(\.sizeCategory) private var sizeCategory
   /// Reference to the collection view used to back the `List` on iOS 16+
@@ -160,7 +163,11 @@ struct AssetDetailView: View {
           keyringStore: keyringStore,
           networkStore: networkStore,
           buySendSwapDestination: buySendSwapDestination,
-          isShowingBridgeAlert: $isShowingAuroraBridgeAlert
+          isShowingBridgeAlert: $isShowingAuroraBridgeAlert,
+          onAccountCreationNeeded: { savedDestination in
+            isPresentingAddAccountConfirmation = true
+            savedBSSDestination = savedDestination
+          }
         )
         .resetListHeaderStyle()
         .padding(.horizontal, tableInset)  // inset grouped layout margins workaround
@@ -300,6 +307,25 @@ struct AssetDetailView: View {
         isShowingAuroraBridgeAlert = false
       }
     }
+    .addAccount(
+      keyringStore: keyringStore,
+      networkStore: networkStore,
+      accountNetwork: networkStore.network(for: assetDetailStore.assetDetailToken),
+      isShowingConfirmation: $isPresentingAddAccountConfirmation,
+      isShowingAddAccount: $isPresentingAddAccount,
+      onConfirmAddAccount: { isPresentingAddAccount = true },
+      onCancelAddAccount: nil,
+      onAddAccountDismissed: {
+        Task { @MainActor in
+          if await assetDetailStore.handleDismissAddAccount() {
+            if let savedBSSDestination {
+              buySendSwapDestination.wrappedValue = savedBSSDestination
+              self.savedBSSDestination = nil
+            }
+          }
+        }
+      }
+    )
   }
 }
 

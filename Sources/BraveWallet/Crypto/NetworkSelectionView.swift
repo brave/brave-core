@@ -53,44 +53,25 @@ struct NetworkSelectionView: View {
         selectNetwork(network)
       }
     )
-    .background(
-      Color.clear
-        .alert(
-          isPresented: $store.isPresentingNextNetworkAlert
-        ) {
-          Alert(
-            title: Text(String.localizedStringWithFormat(Strings.Wallet.createAccountAlertTitle, store.nextNetwork?.shortChainName ?? "")),
-            message: Text(Strings.Wallet.createAccountAlertMessage),
-            primaryButton: .default(Text(Strings.yes), action: {
-              store.handleCreateAccountAlertResponse(shouldCreateAccount: true)
-            }),
-            secondaryButton: .cancel(Text(Strings.no), action: {
-              store.handleCreateAccountAlertResponse(shouldCreateAccount: false)
-            })
-          )
-        }
-    )
-    .background(
-      Color.clear
-        .sheet(
-          isPresented: $store.isPresentingAddAccount
-        ) {
-          NavigationView {
-            AddAccountView(
-              keyringStore: keyringStore,
-              networkStore: networkStore,
-              preSelectedCoin: store.nextNetwork?.coin
-            )
-          }
-          .navigationViewStyle(.stack)
-          .onDisappear {
-            Task { @MainActor in
-              if await store.handleDismissAddAccount() {
-                presentationMode.dismiss()
-              }
-            }
+    .addAccount(
+      keyringStore: keyringStore,
+      networkStore: networkStore,
+      accountNetwork: store.nextNetwork,
+      isShowingConfirmation: $store.isPresentingNextNetworkAlert,
+      isShowingAddAccount: $store.isPresentingAddAccount,
+      onConfirmAddAccount: {
+        store.handleCreateAccountAlertResponse(shouldCreateAccount: true)
+      },
+      onCancelAddAccount: {
+        store.handleCreateAccountAlertResponse(shouldCreateAccount: false)
+      },
+      onAddAccountDismissed: {
+        Task { @MainActor in
+          if await store.handleDismissAddAccount() {
+            presentationMode.dismiss()
           }
         }
+      }
     )
   }
   

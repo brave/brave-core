@@ -22,6 +22,7 @@ struct AssetDetailHeaderView: View {
   @ObservedObject var networkStore: NetworkStore
   @Binding var buySendSwapDestination: BuySendSwapDestination?
   @Binding var isShowingBridgeAlert: Bool
+  var onAccountCreationNeeded: (_ savedDestination: BuySendSwapDestination) -> Void
 
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -73,10 +74,15 @@ struct AssetDetailHeaderView: View {
       if assetDetailStore.isBuySupported {
         Button(
           action: {
-            buySendSwapDestination = BuySendSwapDestination(
+            let destination = BuySendSwapDestination(
               kind: .buy,
               initialToken: assetDetailStore.assetDetailToken
             )
+            if assetDetailStore.accounts.isEmpty {
+              onAccountCreationNeeded(destination)
+            } else {
+              buySendSwapDestination = destination
+            }
           }
         ) {
           Text(Strings.Wallet.buy)
@@ -85,10 +91,15 @@ struct AssetDetailHeaderView: View {
       if assetDetailStore.isSendSupported {
         Button(
           action: {
-            buySendSwapDestination = BuySendSwapDestination(
+            let destination = BuySendSwapDestination(
               kind: .send,
               initialToken: assetDetailStore.assetDetailToken
             )
+            if assetDetailStore.accounts.isEmpty {
+              onAccountCreationNeeded(destination)
+            } else {
+              buySendSwapDestination = destination
+            }
           }
         ) {
           Text(Strings.Wallet.send)
@@ -97,10 +108,15 @@ struct AssetDetailHeaderView: View {
       if assetDetailStore.isSwapSupported && assetDetailStore.assetDetailToken.isFungibleToken {
         Button(
           action: {
-            buySendSwapDestination = BuySendSwapDestination(
+            let destination = BuySendSwapDestination(
               kind: .swap,
               initialToken: assetDetailStore.assetDetailToken
             )
+            if assetDetailStore.accounts.isEmpty {
+              onAccountCreationNeeded(destination)
+            } else {
+              buySendSwapDestination = destination
+            }
           }
         ) {
           Text(Strings.Wallet.swap)
@@ -251,7 +267,8 @@ struct CurrencyDetailHeaderView_Previews: PreviewProvider {
       keyringStore: .previewStore,
       networkStore: .previewStore,
       buySendSwapDestination: .constant(nil),
-      isShowingBridgeAlert: .constant(false)
+      isShowingBridgeAlert: .constant(false),
+      onAccountCreationNeeded: { _ in }
     )
     .padding(.vertical)
     .previewLayout(.sizeThatFits)
