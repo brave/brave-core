@@ -650,6 +650,15 @@ provideStrings({
   braveWalletTransactionApproveUnlimited: 'Unlimited',
   braveWalletApprovalTransactionIntent: 'approve',
 
+  // Transaction Simulation Events
+  braveWalletReceive: 'Receive',
+  braveWalletFrom: 'From',
+  braveWalletUnlimitedAssetAmount: 'Unlimited $1',
+  braveWalletTokenIsUnverified: 'This token is unverified',
+  braveWalletTokenIsVerified: 'This token is verified',
+  braveWalletTokenIsVerifiedByLists: 'This token is verified on $1 lists',
+  braveWalletSpenderAddress: 'Spender: $1',
+
   // Asset Detail Accounts (Empty)
   braveWalletNoAccountsWithABalance: 'No available accounts',
   braveWalletNoAccountsWithABalanceDescription:
