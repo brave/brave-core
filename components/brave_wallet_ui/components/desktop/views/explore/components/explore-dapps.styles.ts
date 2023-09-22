@@ -5,11 +5,22 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
-import { Column } from '../../../../shared/style'
 
-export const ContentWrapper = styled(Column)<{
-  isPanel: boolean
-}>`
-  background-color: ${(p) =>
-    p.isPanel ? leo.color.container.background : 'transparent'};
+export const Title = styled.div`
+  color: ${leo.color.text.primary};
+  text-align: left;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+`
+
+export const SectionTitle = styled.div`
+  color: ${leo.color.text.primary};
+  text-align: left;
+  font-family: Poppins;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px; /* 175% */
 `
