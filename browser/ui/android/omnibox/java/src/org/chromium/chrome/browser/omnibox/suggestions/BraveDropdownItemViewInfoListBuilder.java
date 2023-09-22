@@ -42,6 +42,7 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     private static final int DROPDOWN_HEIGHT_UNKNOWN = -1;
     private static final int DEFAULT_SIZE_OF_VISIBLE_GROUP = 5;
     private Context mContext;
+    private AutocompleteDelegate mAutocompleteDelegate;
 
     BraveDropdownItemViewInfoListBuilder(@NonNull Supplier<Tab> tabSupplier,
             BookmarkState bookmarkState, OpenHistoryClustersDelegate openHistoryClustersDelegate) {
@@ -50,15 +51,19 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         mActivityTabSupplier = tabSupplier;
     }
 
+    public void setAutocompleteDelegate(AutocompleteDelegate autocompleteDelegate) {
+        mAutocompleteDelegate = autocompleteDelegate;
+    }
+
     @Override
-    void initDefaultProcessors(Context context, SuggestionHost host, AutocompleteDelegate delegate,
-            UrlBarEditingTextStateProvider textProvider) {
+    void initDefaultProcessors(
+            Context context, SuggestionHost host, UrlBarEditingTextStateProvider textProvider) {
         mContext = context;
         mUrlBarEditingTextProvider = textProvider;
-        super.initDefaultProcessors(context, host, delegate, textProvider);
+        super.initDefaultProcessors(context, host, textProvider);
         if (host instanceof BraveSuggestionHost) {
             mBraveSearchBannerProcessor = new BraveSearchBannerProcessor(
-                    context, (BraveSuggestionHost) host, textProvider, delegate);
+                    context, (BraveSuggestionHost) host, textProvider, mAutocompleteDelegate);
         }
     }
 
