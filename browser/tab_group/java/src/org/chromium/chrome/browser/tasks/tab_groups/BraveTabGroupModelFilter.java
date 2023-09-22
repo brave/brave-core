@@ -12,7 +12,6 @@ import org.chromium.base.BraveReflectionUtil;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
-import org.chromium.chrome.browser.tab.state.CriticalPersistedTabData;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelFilter;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
@@ -39,8 +38,7 @@ public abstract class BraveTabGroupModelFilter extends TabModelFilter {
                 && SharedPreferencesManager.getInstance().readBoolean(
                         BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, true)
                 && isTabModelRestored() && !mIsResetting) {
-            Tab parentTab = TabModelUtils.getTabById(
-                    getTabModel(), CriticalPersistedTabData.from(tab).getParentId());
+            Tab parentTab = TabModelUtils.getTabById(getTabModel(), tab.getParentId());
             if (parentTab != null) {
                 return (int) BraveReflectionUtil.InvokeMethod(
                         TabGroupModelFilter.class, this, "getRootId", Tab.class, parentTab);
