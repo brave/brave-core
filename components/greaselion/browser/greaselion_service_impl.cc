@@ -8,6 +8,7 @@
 #include <stddef.h>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -107,7 +108,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
     crypto::SHA256HashString(BUILDFLAG(UPDATER_PROD_ENDPOINT) + script_name,
                              raw, crypto::kSHA256Length);
   }
-  base::Base64Encode(base::StringPiece(raw, crypto::kSHA256Length), &key);
+  base::Base64Encode(std::string_view(raw, crypto::kSHA256Length), &key);
 
   root.SetByDottedPath(extensions::manifest_keys::kName, script_name);
   root.SetByDottedPath(extensions::manifest_keys::kVersion, "1.0");

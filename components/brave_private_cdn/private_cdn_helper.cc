@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 
+#include <string_view>
+
 #include "base/big_endian.h"
 #include "base/no_destructor.h"
 
@@ -16,7 +18,7 @@ PrivateCdnHelper* PrivateCdnHelper::GetInstance() {
   return instance.get();
 }
 
-bool PrivateCdnHelper::RemovePadding(base::StringPiece* padded_string) const {
+bool PrivateCdnHelper::RemovePadding(std::string_view* padded_string) const {
   if (!padded_string) {
     return false;
   }

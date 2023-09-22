@@ -9,6 +9,7 @@
 #include <cmath>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <unordered_set>
 #include <utility>
 #include <vector>
@@ -383,7 +384,7 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
             // Handle the response
             VLOG(3) << "getimagedata response code: " << response_code;
             // Attempt to remove byte padding if applicable
-            base::StringPiece body_payload(body.data(), body.size());
+            std::string_view body_payload(body.data(), body.size());
             if (response_code < 200 || response_code >= 300 ||
                 (is_padded &&
                  !brave::PrivateCdnHelper::GetInstance()->RemovePadding(

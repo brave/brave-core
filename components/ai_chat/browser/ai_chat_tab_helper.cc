@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -39,7 +40,7 @@ using ai_chat::mojom::ConversationTurn;
 using ai_chat::mojom::ConversationTurnVisibility;
 
 namespace {
-static const auto kAllowedSchemes = base::MakeFixedFlatSet<base::StringPiece>(
+static const auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
     {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
 }  // namespace
 

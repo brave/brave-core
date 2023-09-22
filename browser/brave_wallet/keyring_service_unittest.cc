@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 
+#include <string_view>
 #include <utility>
 
 #include "base/base64.h"
@@ -3993,10 +3994,10 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
 
   void Interceptor(const network::ResourceRequest& request) {
     url_loader_factory().ClearResponses();
-    base::StringPiece request_string(request.request_body->elements()
-                                         ->at(0)
-                                         .As<network::DataElementBytes>()
-                                         .AsStringPiece());
+    std::string_view request_string(request.request_body->elements()
+                                        ->at(0)
+                                        .As<network::DataElementBytes>()
+                                        .AsStringPiece());
     base::Value::Dict dict = base::test::ParseJsonDict(request_string);
     std::string* method = dict.FindString("method");
     ASSERT_TRUE(method);

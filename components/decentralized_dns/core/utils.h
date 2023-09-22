@@ -6,7 +6,8 @@
 #ifndef BRAVE_COMPONENTS_DECENTRALIZED_DNS_CORE_UTILS_H_
 #define BRAVE_COMPONENTS_DECENTRALIZED_DNS_CORE_UTILS_H_
 
-#include "base/strings/string_piece.h"
+#include <string_view>
+
 #include "brave/components/decentralized_dns/core/constants.h"
 
 class GURL;
@@ -18,14 +19,14 @@ namespace decentralized_dns {
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 
-bool IsUnstoppableDomainsTLD(const base::StringPiece& host);
+bool IsUnstoppableDomainsTLD(const std::string_view host);
 void SetUnstoppableDomainsResolveMethod(PrefService* local_state,
                                         ResolveMethodTypes method);
 ResolveMethodTypes GetUnstoppableDomainsResolveMethod(PrefService* local_state);
 bool IsUnstoppableDomainsResolveMethodAsk(PrefService* local_state);
 bool IsUnstoppableDomainsResolveMethodEnabled(PrefService* local_state);
 
-bool IsENSTLD(const base::StringPiece& host);
+bool IsENSTLD(const std::string_view host);
 void SetENSResolveMethod(PrefService* local_state, ResolveMethodTypes method);
 ResolveMethodTypes GetENSResolveMethod(PrefService* local_state);
 bool IsENSResolveMethodAsk(PrefService* local_state);
@@ -35,7 +36,7 @@ void SetEnsOffchainResolveMethod(PrefService* local_state,
                                  EnsOffchainResolveMethod method);
 EnsOffchainResolveMethod GetEnsOffchainResolveMethod(PrefService* local_state);
 
-bool IsSnsTLD(const base::StringPiece& host);
+bool IsSnsTLD(const std::string_view host);
 void SetSnsResolveMethod(PrefService* local_state, ResolveMethodTypes method);
 ResolveMethodTypes GetSnsResolveMethod(PrefService* local_state);
 bool IsSnsResolveMethodAsk(PrefService* local_state);

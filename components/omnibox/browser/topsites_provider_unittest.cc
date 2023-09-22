@@ -5,6 +5,8 @@
 
 #include "brave/components/omnibox/browser/topsites_provider.h"
 
+#include <string_view>
+
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
@@ -18,7 +20,7 @@ class TopSitesProviderTest : public testing::Test {
   TopSitesProviderTest() : provider_(new TopSitesProvider(&client_)) {
   }
 
-  AutocompleteInput CreateAutocompleteInput(base::StringPiece text) {
+  AutocompleteInput CreateAutocompleteInput(std::string_view text) {
     AutocompleteInput input(base::UTF8ToUTF16(text),
                             metrics::OmniboxEventProto::OTHER,
                             classifier_);

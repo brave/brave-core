@@ -11,6 +11,8 @@
 //   Use of this source code is governed by a BSD-style license that can be
 //   found in the LICENSE file.
 
+#include <string_view>
+
 #include "base/run_loop.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/profiles/profile.h"
@@ -38,7 +40,7 @@ namespace {
 
 // Returns the Sha256 hash of the SPKI of |cert|.
 net::HashValue GetSPKIHash(const CRYPTO_BUFFER* cert) {
-  base::StringPiece spki_bytes;
+  std::string_view spki_bytes;
   EXPECT_TRUE(net::asn1::ExtractSPKIFromDERCert(
       net::x509_util::CryptoBufferAsStringPiece(cert), &spki_bytes));
   net::HashValue sha256(net::HASH_VALUE_SHA256);

@@ -8,13 +8,13 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/ref_counted.h"
-#include "base/strings/string_piece_forward.h"
 #include "base/timer/timer.h"
 #include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/metric_log_type.h"
@@ -76,15 +76,15 @@ class MessageManager : public MetricLogStore::Delegate {
 
   void Init(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
-  void UpdateMetricValue(base::StringPiece histogram_name, size_t bucket);
+  void UpdateMetricValue(std::string_view histogram_name, size_t bucket);
 
-  void RemoveMetricValue(base::StringPiece histogram_name);
+  void RemoveMetricValue(std::string_view histogram_name);
 
  private:
   void StartScheduledUpload(bool is_constellation, MetricLogType log_type);
   void StartScheduledConstellationPrep();
 
-  MetricLogType GetLogTypeForHistogram(base::StringPiece histogram_name);
+  MetricLogType GetLogTypeForHistogram(std::string_view histogram_name);
 
   void OnLogUploadComplete(bool is_ok,
                            int response_code,
@@ -104,7 +104,7 @@ class MessageManager : public MetricLogStore::Delegate {
   void DoConstellationRotation();
 
   // MetricLogStore::Delegate
-  std::string SerializeLog(base::StringPiece histogram_name,
+  std::string SerializeLog(std::string_view histogram_name,
                            const uint64_t value,
                            MetricLogType log_type,
                            bool is_constellation,

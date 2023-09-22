@@ -6,16 +6,16 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
 #include <limits>
+#include <string_view>
 #include <vector>
 
 #include "base/logging.h"
-#include "base/strings/string_piece.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
 TEST(HexUtilsUnitTest, ToHex) {
-  const base::StringPiece str = "hello world";
+  const std::string_view str = "hello world";
   ASSERT_EQ(ToHex(""), "0x0");
   ASSERT_EQ(ToHex(std::string(str)), "0x68656c6c6f20776f726c64");
   ASSERT_EQ(ToHex(base::as_bytes(base::make_span(str))),

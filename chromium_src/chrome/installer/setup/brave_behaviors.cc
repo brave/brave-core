@@ -5,6 +5,8 @@
 
 #include "chrome/installer/setup/brand_behaviors.h"
 
+#include <string_view>
+
 #define DoPostUninstallOperations DoPostUninstallOperations_UNUSED
 #include "src/chrome/installer/setup/google_chrome_behaviors.cc"
 #undef DoPostUninstallOperations
@@ -20,7 +22,7 @@ namespace {
 // - `distribution_data` not appended as Brave does not record histograms.
 // - `kBraveUninstallSurveyUrl` used instead of `kUninstallSurveyUrl`
 
-constexpr base::WStringPiece kBraveUninstallSurveyUrl(
+constexpr std::wstring_view kBraveUninstallSurveyUrl(
     L"https://brave.com/uninstall-survey/?p=brave_uninstall_survey");
 
 }  // namespace

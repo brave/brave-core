@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/functional/bind.h"
-#include "base/strings/string_piece.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_rewards/tip_panel_coordinator.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"

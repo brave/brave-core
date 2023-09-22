@@ -6,6 +6,7 @@
 #include "brave/components/debounce/browser/debounce_rule.h"
 
 #include <memory>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -43,7 +44,7 @@ const int64_t kMaxLengthRegexPattern = 200;
 
 // Removes trailing dot from |host_piece| if any.
 // Copied from extensions/common/url_pattern.cc
-base::StringPiece CanonicalizeHostForMatching(base::StringPiece host_piece) {
+std::string_view CanonicalizeHostForMatching(std::string_view host_piece) {
   if (base::EndsWith(host_piece, ".")) {
     host_piece.remove_suffix(1);
   }
@@ -60,7 +61,7 @@ DebounceRule::DebounceRule()
 DebounceRule::~DebounceRule() = default;
 
 // static
-bool DebounceRule::ParseDebounceAction(base::StringPiece value,
+bool DebounceRule::ParseDebounceAction(std::string_view value,
                                        DebounceAction* field) {
   if (value == "redirect") {
     *field = kDebounceRedirectToParam;
@@ -76,7 +77,7 @@ bool DebounceRule::ParseDebounceAction(base::StringPiece value,
 }
 
 // static
-bool DebounceRule::ParsePrependScheme(base::StringPiece value,
+bool DebounceRule::ParsePrependScheme(std::string_view value,
                                       DebouncePrependScheme* field) {
   if (value == "http") {
     *field = kDebounceSchemePrependHttp;
@@ -128,7 +129,7 @@ void DebounceRule::RegisterJSONConverter(
 // All eTLD+1 calculations for debouncing should flow through here so they
 // are consistent in their private registries configuration.
 const std::string DebounceRule::GetETLDForDebounce(const std::string& host) {
-  base::StringPiece host_piece = CanonicalizeHostForMatching(host);
+  std::string_view host_piece = CanonicalizeHostForMatching(host);
   return net::registry_controlled_domains::GetDomainAndRegistry(
       host_piece, net::registry_controlled_domains::PrivateRegistryFilter::
                       EXCLUDE_PRIVATE_REGISTRIES);

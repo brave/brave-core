@@ -4,6 +4,8 @@
 
 #include "chrome/common/channel_info.h"
 
+#include <string_view>
+
 #include "base/environment.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -43,7 +45,7 @@ std::string GetChannelSuffixForExtraFlagsEnvVarName() {
   const char* const channel_name = getenv("CHROME_VERSION_EXTRA");
   return channel_name
              ? base::StrCat(
-                   {"_", base::ToUpperASCII(base::StringPiece(channel_name))})
+                   {"_", base::ToUpperASCII(std::string_view(channel_name))})
              : std::string();
 #endif  // defined(OFFICIAL_BUILD)
 }

@@ -6,7 +6,8 @@
 #ifndef BRAVE_COMPONENTS_P3A_NETWORK_ANNOTATIONS_H_
 #define BRAVE_COMPONENTS_P3A_NETWORK_ANNOTATIONS_H_
 
-#include "base/strings/string_piece.h"
+#include <string_view>
+
 #include "net/traffic_annotation/network_traffic_annotation.h"
 
 namespace p3a {
@@ -15,7 +16,7 @@ net::NetworkTrafficAnnotationTag GetRandomnessRequestAnnotation();
 net::NetworkTrafficAnnotationTag GetRandomnessServerInfoAnnotation();
 
 net::NetworkTrafficAnnotationTag GetP3AUploadAnnotation(
-    base::StringPiece upload_type,
+    std::string_view upload_type,
     bool is_constellation);
 
 }  // namespace p3a

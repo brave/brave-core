@@ -5,7 +5,8 @@
 
 #include "src/third_party/blink/renderer/platform/bindings/idl_member_installer.cc"
 
-#include "base/strings/string_piece.h"
+#include <string_view>
+
 #include "third_party/blink/public/common/features.h"
 
 namespace blink {
@@ -15,7 +16,7 @@ namespace bindings {
 namespace {
 
 bool IsConnectionConfig(const IDLMemberInstaller::AttributeConfig& config) {
-  constexpr base::StringPiece kConnection = "connection";
+  constexpr std::string_view kConnection = "connection";
   return kConnection == config.name;
 }
 

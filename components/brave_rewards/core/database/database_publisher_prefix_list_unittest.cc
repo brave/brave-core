@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "base/big_endian.h"
-#include "base/strings/string_piece.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_publisher_prefix_list.h"
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"

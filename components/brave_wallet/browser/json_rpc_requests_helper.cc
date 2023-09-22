@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include "base/environment.h"
@@ -20,7 +21,7 @@ namespace brave_wallet {
 
 namespace internal {
 
-base::Value::Dict ComposeRpcDict(base::StringPiece method) {
+base::Value::Dict ComposeRpcDict(std::string_view method) {
   base::Value::Dict dict;
   dict.Set("jsonrpc", "2.0");
   dict.Set("method", method);
@@ -39,8 +40,8 @@ std::string GetJSON(base::ValueView dict) {
 }
 
 void AddKeyIfNotEmpty(base::Value::Dict* dict,
-                      base::StringPiece name,
-                      base::StringPiece val) {
+                      std::string_view name,
+                      std::string_view val) {
   if (!val.empty()) {
     dict->Set(name, val);
   }

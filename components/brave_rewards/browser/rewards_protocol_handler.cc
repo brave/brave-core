@@ -7,13 +7,13 @@
 
 #include <map>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
 #include "base/ranges/algorithm.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_rewards/core/buildflags.h"
@@ -55,7 +55,7 @@ bool IsValidWalletProviderRedirect(
           allowed_referrer_urls.contains(wallet_provider)
               ? allowed_referrer_urls.at(wallet_provider)
               : std::vector<GURL>{},
-          [&](base::StringPiece host_piece) {
+          [&](std::string_view host_piece) {
             return referrer_url.DomainIs(host_piece);
           },
           &GURL::host_piece)) {

@@ -5,8 +5,9 @@
 
 #include "components/sync_preferences/common_syncable_prefs_database.h"
 
+#include <string_view>
+
 #include "base/containers/fixed_flat_map.h"
-#include "base/strings/string_piece.h"
 #include "components/search_engines/search_engines_pref_names.h"
 // "//components/sync_preferences:common_syncable_prefs_database" already
 // depends on "//components/search_engines"
@@ -22,7 +23,7 @@ enum {
 
 const auto& BraveSyncablePreferences() {
   static const auto kBraveCommonSyncablePrefsAllowlist =
-      base::MakeFixedFlatMap<base::StringPiece, SyncablePrefMetadata>(
+      base::MakeFixedFlatMap<std::string_view, SyncablePrefMetadata>(
           {{prefs::kSyncedDefaultPrivateSearchProviderGUID,
             {brave_syncable_prefs_ids::kSyncedDefaultPrivateSearchProviderGUID,
              syncer::PREFERENCES, /*is_history_opt_in_required*/ false}},

@@ -5,6 +5,8 @@
 
 #include "brave/chromium_src/components/browsing_data/core/browsing_data_utils.h"
 
+#include <string_view>
+
 #include "base/containers/fixed_flat_map.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -45,7 +47,7 @@ bool GetDeletionPreferenceFromDataType(
 absl::optional<BrowsingDataType> GetDataTypeFromDeletionPreference(
     const std::string& pref_name) {
   static constexpr auto kPreferenceToDataType =
-      base::MakeFixedFlatMap<base::StringPiece, BrowsingDataType>({
+      base::MakeFixedFlatMap<std::string_view, BrowsingDataType>({
           {prefs::kDeleteBraveLeoHistory, BrowsingDataType::BRAVE_AI_CHAT},
           {prefs::kDeleteBraveLeoHistoryOnExit,
            BrowsingDataType::BRAVE_AI_CHAT},

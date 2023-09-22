@@ -7,16 +7,16 @@
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_IMAGES_COMPONENT_DATA_H_
 
 #include <string>
+#include <string_view>
 
-#include "base/strings/string_piece.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ntp_background_images {
 
 struct SponsoredImagesComponentData {
-  base::StringPiece region;
-  base::StringPiece component_base64_public_key;
-  base::StringPiece component_id;
+  std::string_view region;
+  std::string_view component_base64_public_key;
+  std::string_view component_id;
 };
 
 absl::optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(

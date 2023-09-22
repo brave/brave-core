@@ -6,6 +6,7 @@
 #include "net/base/host_port_pair.h"
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/strings/string_split.h"
@@ -19,19 +20,19 @@ bool HasAuthentication(const GURL& url) {
   return url.has_username() || url.has_password();
 }
 
-bool HasAuthentication(base::StringPiece str) {
-  std::vector<base::StringPiece> auth_host = base::SplitStringPiece(
+bool HasAuthentication(std::string_view str) {
+  std::vector<std::string_view> auth_host = base::SplitStringPiece(
       str, "@", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
   return auth_host.size() == 2;
 }
 
-HostPortPair FromStringWithAuthentication(base::StringPiece str) {
-  std::vector<base::StringPiece> auth_host = base::SplitStringPiece(
+HostPortPair FromStringWithAuthentication(std::string_view str) {
+  std::vector<std::string_view> auth_host = base::SplitStringPiece(
       str, "@", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
   HostPortPair host_port_pair =
       HostPortPair::FromString(std::string(auth_host[1]));
 
-  std::vector<base::StringPiece> user_pass = base::SplitStringPiece(
+  std::vector<std::string_view> user_pass = base::SplitStringPiece(
       str, ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
 
   host_port_pair.set_username(std::string(user_pass[0]));
@@ -81,9 +82,9 @@ namespace net {
 HostPortPair::~HostPortPair() = default;
 HostPortPair::HostPortPair(const HostPortPair& host_port) = default;
 
-HostPortPair::HostPortPair(base::StringPiece username,
-                           base::StringPiece password,
-                           base::StringPiece in_host,
+HostPortPair::HostPortPair(std::string_view username,
+                           std::string_view password,
+                           std::string_view in_host,
                            uint16_t in_port)
     : username_(username),
       password_(password),

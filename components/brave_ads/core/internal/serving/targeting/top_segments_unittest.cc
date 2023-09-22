@@ -78,7 +78,7 @@ struct ParamInfo final {
 SegmentList GetSegmentList() {
   SegmentList segments;
   base::ranges::transform(GetSegments(), std::back_inserter(segments),
-                          [](const std::string_view& segment) {
+                          [](const std::string_view segment) {
                             return static_cast<std::string>(segment);
                           });
   return segments;

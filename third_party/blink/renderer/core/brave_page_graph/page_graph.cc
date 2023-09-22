@@ -15,6 +15,7 @@
 #include <set>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -744,7 +745,7 @@ void PageGraph::RegisterPageGraphWebAPICallWithResult(
     blink::PageGraphBlinkArgs args,
     const blink::ExceptionState* exception_state,
     const absl::optional<String>& result) {
-  const base::StringPiece name_piece(name);
+  const std::string_view name_piece(name);
   if (base::StartsWith(name_piece, "Document.")) {
     if (name_piece == "Document.cookie.get") {
       RegisterStorageRead(execution_context, receiver_data.at("cookie_url"),

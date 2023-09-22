@@ -9,19 +9,18 @@
 #include <windows.h>
 
 #include <string>
-
-#include "base/strings/string_piece_forward.h"
+#include <string_view>
 
 namespace protocol_handler_utils {
 
 // Exported for testing.
-std::wstring GenerateUserChoiceHash(base::WStringPiece ext,
-                                    base::WStringPiece sid,
-                                    base::WStringPiece prog_id,
+std::wstring GenerateUserChoiceHash(std::wstring_view ext,
+                                    std::wstring_view sid,
+                                    std::wstring_view prog_id,
                                     SYSTEMTIME timestamp);
 
-bool SetDefaultProtocolHandlerFor(base::WStringPiece protocol);
-bool IsDefaultProtocolHandlerFor(base::WStringPiece protocol);
+bool SetDefaultProtocolHandlerFor(std::wstring_view protocol);
+bool IsDefaultProtocolHandlerFor(std::wstring_view protocol);
 
 }  // namespace protocol_handler_utils
 

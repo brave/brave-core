@@ -6,6 +6,7 @@
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service.h"
 
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/base64.h"
@@ -60,8 +61,8 @@ const size_t EthereumRemoteClientService::kSeedByteLength = 32;
 std::string
 EthereumRemoteClientService::GetEthereumRemoteClientSeedFromRootSeed(
     const std::string& seed) {
-  base::StringPiece salt("brave-ethwallet-salt");
-  base::StringPiece info("ethwallet");
+  std::string_view salt("brave-ethwallet-salt");
+  std::string_view info("ethwallet");
   return crypto::HkdfSha256(base::MakeStringPiece(seed.begin(), seed.end()),
                             salt, info, kSeedByteLength);
 }
@@ -90,7 +91,7 @@ bool EthereumRemoteClientService::OpenSeed(const std::string& cipher_seed,
                                            std::string* seed) {
   crypto::Aead aes_256_gcm_siv(crypto::Aead::AES_256_GCM_SIV);
   aes_256_gcm_siv.Init(&key);
-  return aes_256_gcm_siv.Open(cipher_seed, nonce, base::StringPiece(""), seed);
+  return aes_256_gcm_siv.Open(cipher_seed, nonce, std::string_view(""), seed);
 }
 
 // Generate a new random nonce
@@ -119,7 +120,7 @@ bool EthereumRemoteClientService::SealSeed(const std::string& seed,
   crypto::Aead aes_256_gcm_siv(crypto::Aead::AES_256_GCM_SIV);
   aes_256_gcm_siv.Init(&key);
   return aes_256_gcm_siv.Seal(base::MakeStringPiece(seed.begin(), seed.end()),
-                              nonce, base::StringPiece(""), cipher_seed);
+                              nonce, std::string_view(""), cipher_seed);
 }
 
 // Store the seed in preferences, binary pref strings need to be

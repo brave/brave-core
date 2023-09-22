@@ -5,8 +5,9 @@
 
 #include "chrome/browser/sync/prefs/chrome_syncable_prefs_database.h"
 
+#include <string_view>
+
 #include "base/containers/fixed_flat_map.h"
-#include "base/strings/string_piece.h"
 
 namespace browser_sync {
 namespace {
@@ -40,7 +41,7 @@ enum {
 
 const auto& BraveSyncablePreferences() {
   static const auto kBraveSyncablePrefsAllowList = base::MakeFixedFlatMap<
-      base::StringPiece, sync_preferences::SyncablePrefMetadata>({
+      std::string_view, sync_preferences::SyncablePrefMetadata>({
       {"profile.content_settings.exceptions.shieldsAds",
        {brave_syncable_prefs_ids::kProfileContentSettingsExceptionsShieldsAds,
         syncer::PREFERENCES, /*is_history_opt_in_required*/ false}},

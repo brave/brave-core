@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <set>
+#include <string_view>
 
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
@@ -133,7 +134,7 @@ void ConstellationLogStore::StageNextLog() {
           << ", histogram_name = " << staged_entry_key_->histogram_name;
 }
 
-void ConstellationLogStore::DiscardStagedLog(base::StringPiece reason) {
+void ConstellationLogStore::DiscardStagedLog(std::string_view reason) {
   if (!has_staged_log()) {
     return;
   }

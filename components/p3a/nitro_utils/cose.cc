@@ -6,6 +6,7 @@
 #include "brave/components/p3a/nitro_utils/cose.h"
 
 #include <set>
+#include <string_view>
 
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
@@ -218,7 +219,7 @@ bool CoseSign1::Verify(const net::ParsedCertificateList& cert_chain) {
       cbor::Writer::Write(sig_data);
   CHECK(encoded_sig_data.has_value());
 
-  base::StringPiece low_cert_spki;
+  std::string_view low_cert_spki;
   if (!net::asn1::ExtractSPKIFromDERCert(
           cert_chain.front()->der_cert().AsStringView(), &low_cert_spki)) {
     LOG(ERROR) << "COSE verification: could not extract SPKI from cert";

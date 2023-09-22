@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/check.h"
@@ -37,7 +38,7 @@ constexpr char kRMenu[] = "AltGr";
 
 struct ModifierName {
   const ui::KeyEventFlags modifier;
-  const base::StringPiece name;
+  const std::string_view name;
 };
 
 const std::vector<ModifierName>& GetAllModifierNames() {

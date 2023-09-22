@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include "base/base64.h"
@@ -124,10 +125,10 @@ class SolanaTxManagerUnitTest : public testing::Test {
          last_valid_block_height, block_height,
          get_null_signature_statuses](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
-          base::StringPiece request_string(request.request_body->elements()
-                                               ->at(0)
-                                               .As<network::DataElementBytes>()
-                                               .AsStringPiece());
+          std::string_view request_string(request.request_body->elements()
+                                              ->at(0)
+                                              .As<network::DataElementBytes>()
+                                              .AsStringPiece());
           base::Value::Dict request_root =
               base::test::ParseJsonDict(request_string);
 

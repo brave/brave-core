@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/asset_discovery_task.h"
 
+#include <string_view>
+
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
@@ -233,11 +235,10 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, intended_url, requests](const network::ResourceRequest& request) {
           if (request.url.spec() == intended_url) {
-            base::StringPiece request_string(
-                request.request_body->elements()
-                    ->at(0)
-                    .As<network::DataElementBytes>()
-                    .AsStringPiece());
+            std::string_view request_string(request.request_body->elements()
+                                                ->at(0)
+                                                .As<network::DataElementBytes>()
+                                                .AsStringPiece());
             std::string response;
             for (auto const& [key, val] : requests) {
               if (request_string.find(key) != std::string::npos) {
@@ -262,7 +263,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
         [&, requests](const network::ResourceRequest& request) {
           for (auto const& [url, address_response_map] : requests) {
             if (request.url.spec() == url.spec()) {
-              base::StringPiece request_string;
+              std::string_view request_string;
               if (request.request_body) {
                 request_string = request.request_body->elements()
                                      ->at(0)

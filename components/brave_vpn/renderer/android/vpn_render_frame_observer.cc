@@ -6,6 +6,7 @@
 #include "brave/components/brave_vpn/renderer/android/vpn_render_frame_observer.h"
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/feature_list.h"
@@ -95,7 +96,7 @@ std::string VpnRenderFrameObserver::ExtractParam(
       value;
   while (url::ExtractQueryKeyValue(url.query_piece().data(), &query, &key,
                                    &value)) {
-    base::StringPiece key_str = url.query_piece().substr(key.begin, key.len);
+    std::string_view key_str = url.query_piece().substr(key.begin, key.len);
     if (key_str != name) {
       continue;
     }

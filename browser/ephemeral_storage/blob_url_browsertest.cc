@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 #include "base/memory/raw_ptr.h"
 #include "base/strings/pattern.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
@@ -75,7 +77,7 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
   }
 
   static GURL RegisterBlob(content::RenderFrameHost* render_frame_host,
-                           base::StringPiece content) {
+                           std::string_view content) {
     return GURL(EvalJs(render_frame_host,
                        content::JsReplace(kCreateBlobScript, content))
                     .ExtractString());

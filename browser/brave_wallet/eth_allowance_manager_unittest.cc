@@ -7,6 +7,7 @@
 
 #include <map>
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -47,7 +48,7 @@ namespace brave_wallet {
 
 namespace {
 
-constexpr base::StringPiece eth_allowance_detected_response = R"({
+constexpr std::string_view eth_allowance_detected_response = R"({
     "jsonrpc": "2.0",
     "id": 1,
     "result": [
@@ -69,7 +70,7 @@ constexpr base::StringPiece eth_allowance_detected_response = R"({
     ]
 })";
 
-constexpr base::StringPiece eth_allowance_error_response = R"({
+constexpr std::string_view eth_allowance_error_response = R"({
                   "error": {
                     "code": -32000,
 "message": "requested too many blocks from 0
@@ -162,7 +163,7 @@ using AllowancesMapCallback = base::OnceCallback<void(const AllowancesMap&)>;
 using OnDiscoverEthAllowancesCompletedValidation =
     base::RepeatingCallback<void(const std::vector<mojom::AllowanceInfoPtr>&)>;
 
-base::Value::Dict ParseTestJson(const base::StringPiece& json) {
+base::Value::Dict ParseTestJson(const std::string_view json) {
   absl::optional<base::Value> potential_response_dict_val =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
@@ -482,7 +483,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
   }
 
   std::map<GURL, std::map<std::string, std::string>> PrepareResponses(
-      const base::StringPiece& response_json,
+      const std::string_view response_json,
       const std::vector<std::string>& eth_account_address,
       const TokenListMap& token_list_map,
       base::RepeatingCallback<void(base::Value::Dict,

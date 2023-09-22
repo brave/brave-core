@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -161,7 +162,7 @@ constexpr char sidebar_builtin_ai_chat_not_listed_json[] = R"({
          "sidebar_show_option": 0
       })";
 
-base::Value::Dict ParseTestJson(const base::StringPiece& json) {
+base::Value::Dict ParseTestJson(const std::string_view json) {
   absl::optional<base::Value> potential_response_dict_val =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);

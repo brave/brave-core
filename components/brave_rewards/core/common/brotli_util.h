@@ -7,17 +7,16 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_COMMON_BROTLI_UTIL_H_
 
 #include <string>
-
-#include "base/strings/string_piece.h"
+#include <string_view>
 
 namespace brave_rewards::internal {
 namespace util {
 
-bool DecodeBrotliString(base::StringPiece input,
+bool DecodeBrotliString(std::string_view input,
                         size_t uncompressed_size,
                         std::string* output);
 
-bool DecodeBrotliStringWithBuffer(base::StringPiece input,
+bool DecodeBrotliStringWithBuffer(std::string_view input,
                                   size_t buffer_size,
                                   std::string* output);
 

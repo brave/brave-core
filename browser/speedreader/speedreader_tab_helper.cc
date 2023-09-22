@@ -7,13 +7,13 @@
 
 #include <initializer_list>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process.h"
@@ -50,7 +50,7 @@
 namespace speedreader {
 
 std::u16string GetSpeedreaderData(
-    std::initializer_list<std::pair<base::StringPiece, int>> resources) {
+    std::initializer_list<std::pair<std::string_view, int>> resources) {
   std::u16string result = u"speedreaderData = {";
 
   if (kSpeedreaderTTS.Get()) {

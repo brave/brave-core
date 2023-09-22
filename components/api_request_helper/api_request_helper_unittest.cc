@@ -6,6 +6,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include "base/functional/callback.h"
@@ -115,13 +116,13 @@ class ApiRequestHelperUnitTest : public testing::Test {
     base::RunLoop().RunUntilIdle();
   }
 
-  void SendMessageSSEJSON(base::StringPiece string_piece,
+  void SendMessageSSEJSON(std::string_view string_piece,
                           APIRequestHelper::DataReceivedCallback callback) {
     loader_wrapper_handler_->send_sse_data_for_testing(string_piece, true,
                                                        std::move(callback));
   }
 
-  void SendMessageSSE(base::StringPiece string_piece,
+  void SendMessageSSE(std::string_view string_piece,
                       APIRequestHelper::DataReceivedCallback callback) {
     loader_wrapper_handler_->send_sse_data_for_testing(string_piece, false,
                                                        std::move(callback));

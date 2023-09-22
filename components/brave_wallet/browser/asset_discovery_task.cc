@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/asset_discovery_task.h"
 
 #include <map>
+#include <string_view>
 #include <utility>
 
 #include "base/base64.h"
@@ -122,7 +123,7 @@ void AssetDiscoveryTask::DiscoverERC20sFromRegistry(
 
   // Create set of all user assets per chain to use to ensure we don't
   // include assets the user has already added in the call to the BalanceScanner
-  base::flat_map<std::string, base::flat_set<base::StringPiece>>
+  base::flat_map<std::string, base::flat_set<std::string_view>>
       user_assets_per_chain;
   for (const auto& user_asset : user_assets) {
     user_assets_per_chain[user_asset->chain_id].insert(
@@ -227,7 +228,7 @@ void AssetDiscoveryTask::MergeDiscoveredERC20s(
   std::vector<mojom::BlockchainTokenPtr> discovered_tokens;
 
   // Keep track of which contract addresses have been seen per chain
-  base::flat_map<std::string, base::flat_set<base::StringPiece>>
+  base::flat_map<std::string, base::flat_set<std::string_view>>
       seen_contract_addresses;
   for (const auto& discovered_assets_result : discovered_assets_results) {
     for (const auto& [chain_id, contract_addresses] :

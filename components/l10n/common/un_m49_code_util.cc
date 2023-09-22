@@ -5,13 +5,14 @@
 
 #include "brave/components/l10n/common/un_m49_code_util.h"
 
+#include <string_view>
+
 #include "base/containers/contains.h"
-#include "base/strings/string_piece.h"
 #include "brave/components/l10n/common/un_m49_code_constants.h"
 
 namespace brave_l10n {
 
-bool IsUNM49Code(const base::StringPiece code) {
+bool IsUNM49Code(const std::string_view code) {
   return base::Contains(kUnM49Codes, code);
 }
 

@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -18,7 +19,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -43,7 +43,7 @@ constexpr char kLlama2BSys[] = "<<SYS>>\n";
 constexpr char kLlama2ESys[] = "\n<</SYS>>\n\n";
 
 static constexpr auto kStopSequences =
-    base::MakeFixedFlatSet<base::StringPiece>({kLlama2Eos});
+    base::MakeFixedFlatSet<std::string_view>({kLlama2Eos});
 
 std::string BuildLlama2InstructionPrompt(const std::string& instruction) {
   return base::ReplaceStringPlaceholders(
@@ -246,8 +246,8 @@ EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
   // likely it will be chosen by the server and the general string "leo"
   // provided here.
   const auto model_name = ai_chat::features::kAIModelName.Get();
-  base::flat_set<base::StringPiece> stop_sequences(kStopSequences.begin(),
-                                                   kStopSequences.end());
+  base::flat_set<std::string_view> stop_sequences(kStopSequences.begin(),
+                                                  kStopSequences.end());
   api_ = std::make_unique<RemoteCompletionClient>(model_name, stop_sequences,
                                                   url_loader_factory);
 }

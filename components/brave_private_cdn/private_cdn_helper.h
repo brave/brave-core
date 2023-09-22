@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PRIVATE_CDN_PRIVATE_CDN_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_PRIVATE_CDN_PRIVATE_CDN_HELPER_H_
 
-#include "base/strings/string_piece.h"
+#include <string_view>
 
 namespace base {
 template <typename T>
@@ -22,7 +22,7 @@ class PrivateCdnHelper final {
 
   static PrivateCdnHelper* GetInstance();
 
-  bool RemovePadding(base::StringPiece* padded_string) const;
+  bool RemovePadding(std::string_view* padded_string) const;
 
  private:
   friend base::NoDestructor<PrivateCdnHelper>;

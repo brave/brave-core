@@ -5,6 +5,8 @@
 
 #include "brave/components/p3a/message_manager.h"
 
+#include <string_view>
+
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
@@ -111,7 +113,7 @@ void MessageManager::Init(
   }
 }
 
-void MessageManager::UpdateMetricValue(base::StringPiece histogram_name,
+void MessageManager::UpdateMetricValue(std::string_view histogram_name,
                                        size_t bucket) {
   MetricLogType log_type = GetLogTypeForHistogram(histogram_name);
   if (features::IsConstellationEnabled()) {
@@ -126,7 +128,7 @@ void MessageManager::UpdateMetricValue(base::StringPiece histogram_name,
                                                 bucket);
 }
 
-void MessageManager::RemoveMetricValue(base::StringPiece histogram_name) {
+void MessageManager::RemoveMetricValue(std::string_view histogram_name) {
   for (MetricLogType log_type : kAllMetricLogTypes) {
     json_log_stores_[log_type]->RemoveValueIfExists(
         std::string(histogram_name));
@@ -308,7 +310,7 @@ void MessageManager::StartScheduledConstellationPrep() {
 }
 
 MetricLogType MessageManager::GetLogTypeForHistogram(
-    base::StringPiece histogram_name) {
+    std::string_view histogram_name) {
   std::string histogram_name_str = std::string(histogram_name);
   MetricLogType result = MetricLogType::kTypical;
   if (p3a::kCollectedExpressHistograms.contains(histogram_name) ||
@@ -323,7 +325,7 @@ MetricLogType MessageManager::GetLogTypeForHistogram(
   return result;
 }
 
-std::string MessageManager::SerializeLog(base::StringPiece histogram_name,
+std::string MessageManager::SerializeLog(std::string_view histogram_name,
                                          const uint64_t value,
                                          MetricLogType log_type,
                                          bool is_constellation,

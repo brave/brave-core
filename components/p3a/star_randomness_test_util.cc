@@ -6,6 +6,7 @@
 #include "brave/components/p3a/star_randomness_test_util.h"
 
 #include <algorithm>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -23,10 +24,10 @@ namespace p3a {
 std::string HandleRandomnessRequest(const network::ResourceRequest& request,
                                     uint8_t expected_epoch) {
   EXPECT_EQ(request.method, net::HttpRequestHeaders::kPostMethod);
-  base::StringPiece request_string(request.request_body->elements()
-                                       ->at(0)
-                                       .As<network::DataElementBytes>()
-                                       .AsStringPiece());
+  std::string_view request_string(request.request_body->elements()
+                                      ->at(0)
+                                      .As<network::DataElementBytes>()
+                                      .AsStringPiece());
 
   base::Value::Dict req_parsed_val = base::test::ParseJsonDict(request_string);
 

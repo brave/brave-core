@@ -8,20 +8,20 @@
 #include <string.h>
 #include <algorithm>
 #include <string>
+#include <string_view>
 
-#include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/win/windows_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
 
-void ReplaceAt(char* dest, size_t dest_size, base::StringPiece src) {
+void ReplaceAt(char* dest, size_t dest_size, std::string_view src) {
   ::strncpy_s(dest, dest_size, src.data(),
               std::min(dest_size - 1, src.length()));
 }
 
-void ReplaceAt(wchar_t* dest, size_t dest_size, base::WStringPiece src) {
+void ReplaceAt(wchar_t* dest, size_t dest_size, std::wstring_view src) {
   ::wcsncpy_s(dest, dest_size, src.data(),
               std::min(dest_size - 1, src.length()));
 }
@@ -31,14 +31,14 @@ struct BraveToChrome;
 
 template <>
 struct BraveToChrome<char> {
-  static constexpr const base::StringPiece kBrave = "brave.exe";
-  static constexpr const base::StringPiece kChrome = "chrome.exe";
+  static constexpr const std::string_view kBrave = "brave.exe";
+  static constexpr const std::string_view kChrome = "chrome.exe";
 };
 
 template <>
 struct BraveToChrome<wchar_t> {
-  static constexpr const base::WStringPiece kBrave = L"brave.exe";
-  static constexpr const base::WStringPiece kChrome = L"chrome.exe";
+  static constexpr const std::wstring_view kBrave = L"brave.exe";
+  static constexpr const std::wstring_view kChrome = L"chrome.exe";
 };
 
 template <typename CharT>
@@ -46,14 +46,14 @@ struct TestBraveToChrome;
 
 template <>
 struct TestBraveToChrome<char> {
-  static constexpr const base::StringPiece kBrave = "brave_browser_tests.exe";
-  static constexpr const base::StringPiece kChrome = "chrome_browser_tests.exe";
+  static constexpr const std::string_view kBrave = "brave_browser_tests.exe";
+  static constexpr const std::string_view kChrome = "chrome_browser_tests.exe";
 };
 
 template <>
 struct TestBraveToChrome<wchar_t> {
-  static constexpr const base::WStringPiece kBrave = L"brave_browser_tests.exe";
-  static constexpr const base::WStringPiece kChrome =
+  static constexpr const std::wstring_view kBrave = L"brave_browser_tests.exe";
+  static constexpr const std::wstring_view kChrome =
       L"chrome_browser_tests.exe";
 };
 

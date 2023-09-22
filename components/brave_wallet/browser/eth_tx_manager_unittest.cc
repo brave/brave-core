@@ -8,6 +8,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -202,10 +203,10 @@ class EthTxManagerUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
-          base::StringPiece request_string(request.request_body->elements()
-                                               ->at(0)
-                                               .As<network::DataElementBytes>()
-                                               .AsStringPiece());
+          std::string_view request_string(request.request_body->elements()
+                                              ->at(0)
+                                              .As<network::DataElementBytes>()
+                                              .AsStringPiece());
           base::Value::Dict request_value = ParseJsonDict(request_string);
           std::string* method = request_value.FindString("method");
           ASSERT_TRUE(method);
@@ -2265,10 +2266,10 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
 
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
-        base::StringPiece request_string(request.request_body->elements()
-                                             ->at(0)
-                                             .As<network::DataElementBytes>()
-                                             .AsStringPiece());
+        std::string_view request_string(request.request_body->elements()
+                                            ->at(0)
+                                            .As<network::DataElementBytes>()
+                                            .AsStringPiece());
         if (request_string.find(contract_safe_transfer_from) !=
             std::string::npos) {
           url_loader_factory_.AddResponse(

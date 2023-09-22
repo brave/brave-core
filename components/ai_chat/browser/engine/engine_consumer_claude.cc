@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -17,7 +18,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/pattern.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/types/expected.h"
@@ -54,7 +54,7 @@ constexpr char kHumanPromptPlaceholder[] = "\nH: ";
 constexpr char kAIPromptPlaceholder[] = "\n\nA: ";
 
 static constexpr auto kStopSequences =
-    base::MakeFixedFlatSet<base::StringPiece>({kHumanPromptSequence});
+    base::MakeFixedFlatSet<std::string_view>({kHumanPromptSequence});
 
 std::string GetConversationHistoryString(
     const std::vector<ConversationTurn>& conversation_history) {
@@ -123,8 +123,8 @@ EngineConsumerClaudeRemote::EngineConsumerClaudeRemote(
   // likley it will be chosen by the server and the general string "claude"
   // provided here.
   const auto model_name = ai_chat::features::kAIModelName.Get();
-  base::flat_set<base::StringPiece> stop_sequences(kStopSequences.begin(),
-                                                   kStopSequences.end());
+  base::flat_set<std::string_view> stop_sequences(kStopSequences.begin(),
+                                                  kStopSequences.end());
   api_ = std::make_unique<RemoteCompletionClient>(model_name, stop_sequences,
                                                   url_loader_factory);
 }

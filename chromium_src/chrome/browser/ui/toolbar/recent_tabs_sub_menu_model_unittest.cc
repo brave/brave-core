@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 // Disabling these tests because they refer g_brave_browser_process which is not
 // initialized in unit tests, is null and so they are crashing.
 // Not related to change in RecentTabsSubMenuModel for additional `More...`
@@ -38,7 +40,7 @@ void RecentTabsSubMenuModelTest::VerifyModel(
     base::span<const ModelData> data) {
   std::vector<ModelData> v_data{data.begin(), data.end()};
   v_data.insert(v_data.begin() + 1, {ui::MenuModel::TYPE_COMMAND, true});
-  const base::StringPiece test_name =
+  const std::string_view test_name =
       testing::UnitTest::GetInstance()->current_test_info()->name();
   if (test_name == "MaxTabsPerSessionAndRecency") {
     v_data.push_back({ui::MenuModel::TYPE_COMMAND, true});

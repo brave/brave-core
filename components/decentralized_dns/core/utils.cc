@@ -5,6 +5,8 @@
 
 #include "brave/components/decentralized_dns/core/utils.h"
 
+#include <string_view>
+
 #include "base/strings/string_util.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
@@ -39,7 +41,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   }
 }
 
-bool IsUnstoppableDomainsTLD(const base::StringPiece& host) {
+bool IsUnstoppableDomainsTLD(const std::string_view host) {
   for (auto* domain : kUnstoppableDomains) {
     if (base::EndsWith(host, domain))
       return true;
@@ -77,7 +79,7 @@ bool IsUnstoppableDomainsResolveMethodEnabled(PrefService* local_state) {
          ResolveMethodTypes::ENABLED;
 }
 
-bool IsENSTLD(const base::StringPiece& host) {
+bool IsENSTLD(const std::string_view host) {
   return base::EndsWith(host, kEthDomain);
 }
 
@@ -116,7 +118,7 @@ EnsOffchainResolveMethod GetEnsOffchainResolveMethod(PrefService* local_state) {
       local_state->GetInteger(kEnsOffchainResolveMethod));
 }
 
-bool IsSnsTLD(const base::StringPiece& host) {
+bool IsSnsTLD(const std::string_view host) {
   return base::EndsWith(host, kSolDomain);
 }
 

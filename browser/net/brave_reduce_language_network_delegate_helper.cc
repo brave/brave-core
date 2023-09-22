@@ -7,6 +7,7 @@
 
 #include <array>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/fixed_flat_set.h"
@@ -32,7 +33,7 @@ constexpr char kAcceptLanguageMax[] = "en-US,en;q=0.9";
 const std::array<std::string, 5> kFakeQValues = {";q=0.5", ";q=0.6", ";q=0.7",
                                                  ";q=0.8", ";q=0.9"};
 static constexpr auto kFarbleAcceptLanguageExceptions =
-    base::MakeFixedFlatSet<base::StringPiece>(
+    base::MakeFixedFlatSet<std::string_view>(
         {// https://github.com/brave/brave-browser/issues/25309
          "ulta.com", "www.ulta.com",
          // https://github.com/brave/brave-browser/issues/26325
@@ -86,7 +87,7 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
                                              profile->GetPrefs())) {
     return net::OK;
   }
-  base::StringPiece origin_host(origin_url.host_piece());
+  std::string_view origin_host(origin_url.host_piece());
   if (kFarbleAcceptLanguageExceptions.contains(origin_host)) {
     return net::OK;
   }

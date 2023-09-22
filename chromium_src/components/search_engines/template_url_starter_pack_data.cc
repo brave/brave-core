@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 #include "components/search_engines/template_url_starter_pack_data.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -25,7 +27,7 @@ std::vector<std::unique_ptr<TemplateURLData>> GetStarterPackEngines() {
 
   // It is necessary to correct urls for the brave schema
   for (auto& t_url : t_urls) {
-    base::StringPiece url(t_url->url());
+    std::string_view url(t_url->url());
     if (base::StartsWith(url, kChromeSchema,
                          base::CompareCase::INSENSITIVE_ASCII)) {
       t_url->SetURL(base::StrCat(

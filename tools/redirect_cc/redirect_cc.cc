@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 
 #include "base/containers/contains.h"
 #include "base/files/file_path.h"
@@ -187,7 +188,7 @@ class RedirectCC {
 
  private:
   static base::FilePath::StringType UTF8ToFilePathString(
-      base::StringPiece utf8) {
+      std::string_view utf8) {
 #if BUILDFLAG(IS_WIN)
     return base::UTF8ToWide(utf8);
 #else   // BUILDFLAG(IS_WIN)

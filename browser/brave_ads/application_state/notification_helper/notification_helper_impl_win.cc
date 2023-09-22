@@ -7,6 +7,8 @@
 
 #include <Windows.h>
 
+#include <string_view>
+
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/win/core_winrt_util.h"
@@ -241,8 +243,8 @@ HRESULT NotificationHelperImplWin::CreateActivationFactory(
     wchar_t const (&class_name)[size],
     const IID& iid,
     void** factory) const {
-  auto ref_class_name = base::win::ScopedHString::Create(
-      base::WStringPiece(class_name, size - 1));
+  auto ref_class_name =
+      base::win::ScopedHString::Create(std::wstring_view(class_name, size - 1));
 
   return base::win::RoGetActivationFactory(ref_class_name.get(), iid, factory);
 }
