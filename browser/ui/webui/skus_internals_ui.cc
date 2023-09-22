@@ -5,11 +5,17 @@
 
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 
+#include <memory>
+#include <string_view>
 #include <utility>
 
+#include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
+#include "base/strings/utf_string_conversions.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -17,8 +23,12 @@
 #include "brave/components/skus/browser/resources/grit/skus_internals_generated_map.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui.h"
+#include "ui/base/clipboard/scoped_clipboard_writer.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
@@ -26,6 +36,15 @@
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif
+
+namespace {
+
+void SaveSkusStateToFile(const base::FilePath& path,
+                         std::string_view skus_state) {
+  base::WriteFile(path, skus_state);
+}
+
+}  // namespace
 
 SkusInternalsUI::SkusInternalsUI(content::WebUI* web_ui,
                                  const std::string& name)
@@ -53,31 +72,7 @@ void SkusInternalsUI::GetEventLog(GetEventLogCallback callback) {
 }
 
 void SkusInternalsUI::GetSkusState(GetSkusStateCallback callback) {
-  const auto& skus_state = local_state_->GetDict(skus::prefs::kSkusState);
-  base::Value::Dict dict;
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  auto* profile = Profile::FromWebUI(web_ui());
-  if (brave_vpn::IsBraveVPNEnabled(profile->GetPrefs())) {
-    dict.Set("env",
-             local_state_->GetString(brave_vpn::prefs::kBraveVPNEnvironment));
-  }
-#endif
-
-  for (const auto kv : skus_state) {
-    // Only shows "skus:xx" kv in webui.
-    if (!base::StartsWith(kv.first, "skus:")) {
-      continue;
-    }
-
-    if (auto value = base::JSONReader::Read(kv.second.GetString()); value) {
-      dict.Set(kv.first, std::move(*value));
-    }
-  }
-
-  std::string result;
-  base::JSONWriter::Write(dict, &result);
-  std::move(callback).Run(result);
+  std::move(callback).Run(GetSkusStateAsString());
 }
 
 void SkusInternalsUI::GetVpnState(GetVpnStateCallback callback) {
@@ -167,6 +162,52 @@ void SkusInternalsUI::ResetSkusState() {
   local_state_->ClearPref(skus::prefs::kSkusState);
 }
 
+void SkusInternalsUI::CopySkusStateToClipboard() {
+  ui::ScopedClipboardWriter(ui::ClipboardBuffer::kCopyPaste)
+      .WriteText(base::UTF8ToUTF16(GetSkusStateAsString()));
+}
+
+void SkusInternalsUI::DownloadSkusState() {
+  if (select_file_dialog_) {
+    return;
+  }
+
+  auto* web_contents = web_ui()->GetWebContents();
+  select_file_dialog_ = ui::SelectFileDialog::Create(
+      this, std::make_unique<ChromeSelectFilePolicy>(web_contents));
+  if (!select_file_dialog_) {
+    return;
+  }
+
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  ui::SelectFileDialog::FileTypeInfo file_types;
+  file_types.allowed_paths = ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
+  select_file_dialog_->SelectFile(
+      ui::SelectFileDialog::SELECT_SAVEAS_FILE, std::u16string(),
+      profile->last_selected_directory().AppendASCII("skus_state.json"),
+      &file_types, 0, base::FilePath::StringType(),
+      web_contents->GetTopLevelNativeWindow(), nullptr);
+}
+
+void SkusInternalsUI::FileSelected(const base::FilePath& path,
+                                   int index,
+                                   void* params) {
+  auto* web_contents = web_ui()->GetWebContents();
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  profile->set_last_selected_directory(path.DirName());
+  select_file_dialog_ = nullptr;
+
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&SaveSkusStateToFile, path, GetSkusStateAsString()));
+}
+
+void SkusInternalsUI::FileSelectionCanceled(void* params) {
+  select_file_dialog_ = nullptr;
+}
+
 std::string SkusInternalsUI::GetLastVPNConnectionError() const {
   std::string error;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -176,4 +217,33 @@ std::string SkusInternalsUI::GetLastVPNConnectionError() const {
 #endif
   return error;
 }
+
+std::string SkusInternalsUI::GetSkusStateAsString() const {
+  const auto& skus_state = local_state_->GetDict(skus::prefs::kSkusState);
+  base::Value::Dict dict;
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  auto* profile = Profile::FromWebUI(web_ui());
+  if (brave_vpn::IsBraveVPNEnabled(profile->GetPrefs())) {
+    dict.Set("env",
+             local_state_->GetString(brave_vpn::prefs::kBraveVPNEnvironment));
+  }
+#endif
+
+  for (const auto kv : skus_state) {
+    // Only shows "skus:xx" kv in webui.
+    if (!base::StartsWith(kv.first, "skus:")) {
+      continue;
+    }
+
+    if (auto value = base::JSONReader::Read(kv.second.GetString()); value) {
+      dict.Set(kv.first, std::move(*value));
+    }
+  }
+
+  std::string result;
+  base::JSONWriter::Write(dict, &result);
+  return result;
+}
+
 WEB_UI_CONTROLLER_TYPE_IMPL(SkusInternalsUI)
