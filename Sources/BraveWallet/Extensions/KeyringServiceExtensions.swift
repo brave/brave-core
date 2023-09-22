@@ -63,4 +63,15 @@ extension BraveWalletKeyringService {
     )
     return allKeyrings
   }
+  
+  /// Check if any wallet account has been created given a coin type and a chain id
+  @MainActor func isAccountAvailable(for coin: BraveWallet.CoinType, chainId: String) async -> Bool {
+    let keyringId = BraveWallet.KeyringId.keyringId(for: coin, on: chainId)
+    let keyringInfo = await keyringInfo(keyringId)
+    // If user restore a wallet, `BraveWallet.KeyringInfo.isKeyringCreated` can be true,
+    // but `BraveWallet.KeyringInfo.accountInfos` will be empty.
+    // Hence, we will have to check if `BraveWallet.KeyringInfo.accountInfos` is empty instead of
+    // checking the boolean of `BraveWallet.KeyringInfo.isKeyringCreated`
+    return !keyringInfo.accountInfos.isEmpty
+  }
 }

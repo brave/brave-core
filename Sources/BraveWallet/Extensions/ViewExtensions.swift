@@ -5,6 +5,7 @@
 
 import SwiftUI
 import UIKit
+import BraveCore
 
 extension View {
   /// Helper for `hidden()` modifier that accepts a boolean determining if we should hide the view or not.
@@ -29,5 +30,49 @@ extension View {
       vc.navigationItem.backButtonTitle = backButtonTitle
       vc.navigationItem.backButtonDisplayMode = backButtonDisplayMode
     }
+  }
+  
+  func addAccount(
+    keyringStore: KeyringStore,
+    networkStore: NetworkStore,
+    accountNetwork: BraveWallet.NetworkInfo?,
+    isShowingConfirmation: Binding<Bool>,
+    isShowingAddAccount: Binding<Bool>,
+    onConfirmAddAccount: @escaping () -> Void,
+    onCancelAddAccount: (() -> Void)?,
+    onAddAccountDismissed: @escaping () -> Void
+  ) -> some View {
+    self.background(
+      Color.clear
+        .alert(isPresented: isShowingConfirmation) {
+          Alert(
+            title: Text(String.localizedStringWithFormat(Strings.Wallet.createAccountAlertTitle, accountNetwork?.shortChainName ?? "")),
+            message: Text(Strings.Wallet.createAccountAlertMessage),
+            primaryButton: .default(Text(Strings.yes), action: {
+              onConfirmAddAccount()
+            }),
+            secondaryButton: .cancel(Text(Strings.no), action: {
+              onCancelAddAccount?()
+            })
+          )
+        }
+    )
+    .background(
+      Color.clear
+        .sheet(
+          isPresented: isShowingAddAccount
+        ) {
+          NavigationView {
+            AddAccountView(
+              keyringStore: keyringStore,
+              networkStore: networkStore,
+              preSelectedCoin: accountNetwork?.coin,
+              preSelectedFilecoinNetwork: accountNetwork
+            )
+          }
+          .navigationViewStyle(.stack)
+          .onDisappear { onAddAccountDismissed() }
+        }
+    )
   }
 }
