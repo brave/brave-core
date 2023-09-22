@@ -706,6 +706,10 @@ void VerticalTabStripRegionView::OnWidgetDestroying(views::Widget* widget) {
 }
 
 void VerticalTabStripRegionView::OnFullscreenStateChanged() {
+  if (!tabs::utils::ShouldShowVerticalTabs(browser_)) {
+    return;
+  }
+
   if (IsFloatingEnabledForBrowserFullscreen()) {
     width_animation_.Stop();
     SetVisible(false);
