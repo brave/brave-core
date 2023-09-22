@@ -51,6 +51,7 @@ import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.util.BraveConstants;
+import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
@@ -184,6 +185,16 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                     (ViewGroup.MarginLayoutParams) mVLeafAlignBottom.getLayoutParams();
             bottomLeafParams.topMargin = margin;
             mVLeafAlignBottom.setLayoutParams(bottomLeafParams);
+        }
+
+        if (mBtnPositive != null) {
+            BraveTouchUtils.ensureMinTouchTarget(mBtnPositive);
+        }
+        if (mCheckboxCrash != null) {
+            BraveTouchUtils.ensureMinTouchTarget(mCheckboxCrash);
+        }
+        if (mCheckboxP3a != null) {
+            BraveTouchUtils.ensureMinTouchTarget(mCheckboxP3a);
         }
     }
 
