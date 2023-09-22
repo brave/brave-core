@@ -35,6 +35,7 @@
 #include "components/version_info/channel.h"
 #include "content/public/browser/navigation_entry.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/skia_conversions.h"
@@ -348,3 +349,6 @@ BraveLocationBarView::GetContentSettingsImageViewForTesting(size_t idx) {
   DCHECK(idx < content_setting_views_.size());
   return content_setting_views_[idx];
 }
+
+BEGIN_METADATA(BraveLocationBarView, LocationBarView)
+END_METADATA
