@@ -261,7 +261,7 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteLocal) {
   ipns_uri = GURL(source).ReplaceComponents(replacements);
   ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
   ASSERT_EQ(ipns_uri.spec(),
-            "ipns://en-wikipedia--on--ipfs-org/wiki/Architecture");
+            "ipns://en.wikipedia-on-ipfs.org/wiki/Architecture");
 
   source = "http://test.com.ipns.localhost:8000/";
   ipns_uri = GURL(source);

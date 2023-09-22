@@ -132,13 +132,15 @@ bool HandleIPFSURLReverseRewrite(GURL* url,
     return false;
   GURL::Replacements scheme_replacements;
   GURL::Replacements host_replacements;
+  auto decoded_host = ipfs::DecodeSingleLabelForm(
+      std::string(url->host_piece().substr(0, ipns_pos)));
   if (ipfs_pos != std::string::npos) {
     scheme_replacements.SetSchemeStr(kIPFSScheme);
     host_replacements.SetHostStr(url->host_piece().substr(0, ipfs_pos));
     host_replacements.ClearPort();
   } else {  // ipns
     scheme_replacements.SetSchemeStr(kIPNSScheme);
-    host_replacements.SetHostStr(url->host_piece().substr(0, ipns_pos));
+    host_replacements.SetHostStr(decoded_host);
     host_replacements.ClearPort();
   }
 
