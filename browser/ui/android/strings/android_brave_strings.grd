@@ -2338,9 +2338,6 @@ Are you sure you want to do this?
     <message name="IDS_YEARLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
       <ph name="YEARLY_AMOUNT">%1$s</ph> / yr.
     </message>
-    <message name="IDS_YEAR_SUBSCRIPTION_OLD_AMOUNT" desc="Brave VPN plan text">
-      &#36;119.88
-    </message>
     <message name="IDS_BRAVE_VPN_RENEWAL_TEXT" desc="Brave VPN plan text">
       Try free for 7 days. After 7 days, you will be charged the plan price. All subscriptions are auto-renewed but can be cancelled before renewal.
     </message>
