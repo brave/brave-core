@@ -85,6 +85,7 @@ struct VerifyRecoveryPhraseView: View {
                 Preferences.Wallet.isOnboardingCompleted.value = true
               } else { // coming from BackUpWalletView
                 keyringStore.notifyWalletBackupComplete()
+                modalPresentationMode = false
               }
             } else {
               // next check
