@@ -12,11 +12,13 @@
 #include "base/values.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
+#include "ui/shell_dialogs/select_file_dialog.h"
 
 class PrefService;
 
 class SkusInternalsUI : public content::WebUIController,
-                        public skus::mojom::SkusInternals {
+                        public skus::mojom::SkusInternals,
+                        public ui::SelectFileDialog::Listener {
  public:
   SkusInternalsUI(content::WebUI* web_ui, const std::string& host);
   ~SkusInternalsUI() override;
@@ -32,11 +34,21 @@ class SkusInternalsUI : public content::WebUIController,
   void GetSkusState(GetSkusStateCallback callback) override;
   void GetVpnState(GetVpnStateCallback callback) override;
   void ResetSkusState() override;
+  void CopySkusStateToClipboard() override;
+  void DownloadSkusState() override;
+
+  // SelectFileDialog::Listener overrides:
+  void FileSelected(const base::FilePath& path,
+                    int index,
+                    void* params) override;
+  void FileSelectionCanceled(void* params) override;
 
   std::string GetLastVPNConnectionError() const;
   base::Value::Dict GetVPNOrderInfo() const;
+  std::string GetSkusStateAsString() const;
 
   raw_ptr<PrefService> local_state_ = nullptr;
+  scoped_refptr<ui::SelectFileDialog> select_file_dialog_ = nullptr;
   mojo::Receiver<skus::mojom::SkusInternals> skus_internals_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();

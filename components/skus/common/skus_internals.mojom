@@ -9,5 +9,7 @@ interface SkusInternals {
   GetEventLog() => (string response);
   GetSkusState() => (string response);
   GetVpnState() => (string response);
+  CopySkusStateToClipboard();
+  DownloadSkusState();
   ResetSkusState();
 };
