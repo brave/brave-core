@@ -60,6 +60,7 @@ import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.logo.CachedTintedBitmap;
 import org.chromium.chrome.browser.logo.LogoCoordinator;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
+import org.chromium.chrome.browser.new_tab_url.DseNewTabUrlManager;
 import org.chromium.chrome.browser.ntp.NewTabPageUma;
 import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarMediator;
@@ -76,7 +77,6 @@ import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdow
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.suggestions.history_clusters.HistoryClustersProcessor.OpenHistoryClustersDelegate;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.new_tab_url.DseNewTabUrlManager;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
 import org.chromium.chrome.browser.tab.Tab;
@@ -501,9 +501,6 @@ public class BytecodeTest {
                 "shouldShowTabSwitcher", true, boolean.class, long.class, boolean.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
                 "getUrlForCustomTab", true, String.class, Intent.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler", "onNewIntent",
-                true, boolean.class, Intent.class, IntentHandler.IntentHandlerDelegate.class,
-                long.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
                 "getUrlForWebapp", true, String.class, Intent.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
@@ -534,7 +531,8 @@ public class BytecodeTest {
     public void testMethodsForInvocationExist() throws Exception {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ChromeTabbedActivity",
                 "hideOverview", true, void.class));
-
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ChromeTabbedActivity",
+                "maybeHandleUrlIntent", true, boolean.class, Intent.class));
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
                 "createViewProvider", true, ViewProvider.class, Context.class,
@@ -615,7 +613,8 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
                 "org/chromium/chrome/browser/tabmodel/BraveTabCreator", Activity.class,
                 WindowAndroid.class, Supplier.class, boolean.class, OverviewNTPCreator.class,
-                AsyncTabParamsManager.class, Supplier.class, Supplier.class, DseNewTabUrlManager.class));
+                AsyncTabParamsManager.class, Supplier.class, Supplier.class,
+                DseNewTabUrlManager.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "org/chromium/chrome/browser/toolbar/BraveToolbarManager", AppCompatActivity.class,
                 BrowserControlsSizer.class, FullscreenManager.class, ToolbarControlContainer.class,
