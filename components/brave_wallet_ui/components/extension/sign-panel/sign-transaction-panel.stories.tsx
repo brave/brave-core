@@ -78,11 +78,7 @@ _SignSolanaTxPanel.story = {
 
 export const _SignInWithEthereumError = () => {
   return (
-    <WalletPanelStory
-      panelStateOverride={{
-        selectedPanel: 'siweError'
-      }}
-    >
+    <WalletPanelStory>
       <SignInWithEthereumError />
     </WalletPanelStory>
   )
