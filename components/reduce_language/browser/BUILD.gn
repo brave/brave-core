@@ -1,0 +1,31 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+
+source_set("browser") {
+  sources = []
+  deps = []
+
+  sources += [
+    "reduce_language_component_installer.cc",
+    "reduce_language_component_installer.h",
+    "reduce_language_rule.cc",
+    "reduce_language_rule.h",
+    "reduce_language_service.cc",
+    "reduce_language_service.h",
+  ]
+
+  deps += [
+    "//base",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/extensions:common",
+    "//components/prefs:prefs",
+    "//components/user_prefs:user_prefs",
+    "//content/public/browser",
+    "//ui/base",
+    "//url",
+  ]
+}

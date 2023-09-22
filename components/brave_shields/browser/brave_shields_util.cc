@@ -17,6 +17,7 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
+#include "brave/components/reduce_language/browser/reduce_language_service.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -50,16 +51,18 @@ void RecordShieldsSettingChanged(PrefService* local_state) {
 }
 
 ContentSetting GetDefaultAllowFromControlType(ControlType type) {
-  if (type == ControlType::DEFAULT)
+  if (type == ControlType::DEFAULT) {
     return CONTENT_SETTING_DEFAULT;
+  }
 
   return type == ControlType::BLOCK ? CONTENT_SETTING_BLOCK
                                     : CONTENT_SETTING_ALLOW;
 }
 
 ContentSetting GetDefaultBlockFromControlType(ControlType type) {
-  if (type == ControlType::DEFAULT)
+  if (type == ControlType::DEFAULT) {
     return CONTENT_SETTING_DEFAULT;
+  }
 
   return type == ControlType::ALLOW ? CONTENT_SETTING_ALLOW
                                     : CONTENT_SETTING_BLOCK;
@@ -123,10 +126,12 @@ class BraveCookieRules {
   }
 
   void Merge(const BraveCookieRules& other) {
-    if (general_setting_ == CONTENT_SETTING_DEFAULT)
+    if (general_setting_ == CONTENT_SETTING_DEFAULT) {
       general_setting_ = other.general_setting_;
-    if (first_party_setting_ == CONTENT_SETTING_DEFAULT)
+    }
+    if (first_party_setting_ == CONTENT_SETTING_DEFAULT) {
       first_party_setting_ = other.first_party_setting_;
+    }
   }
 
  private:
@@ -175,8 +180,9 @@ void SetBraveShieldsEnabled(HostContentSettingsMap* map,
                             bool enable,
                             const GURL& url,
                             PrefService* local_state) {
-  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
+  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS()) {
     return;
+  }
 
   if (url.is_empty()) {
     LOG(ERROR) << "url for shields setting cannot be blank";
@@ -213,13 +219,15 @@ void SetBraveShieldsEnabled(HostContentSettingsMap* map,
 }
 
 void ResetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
-  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
+  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS()) {
     return;
+  }
 
   auto primary_pattern = GetPatternFromURL(url);
 
-  if (!primary_pattern.IsValid())
+  if (!primary_pattern.IsValid()) {
     return;
+  }
 
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
@@ -232,8 +240,9 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
       url.SchemeIs(kChromeExtensionScheme)) {
     return true;
   }
-  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
+  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS()) {
     return false;
+  }
 
   ContentSetting setting =
       map->GetContentSetting(url, GURL(), ContentSettingsType::BRAVE_SHIELDS);
@@ -356,31 +365,44 @@ bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
 
 bool IsReduceLanguageEnabledForProfile(PrefService* pref_service) {
   // Don't reduce language if feature is disabled
-  if (!base::FeatureList::IsEnabled(features::kBraveReduceLanguage))
+  if (!base::FeatureList::IsEnabled(features::kBraveReduceLanguage)) {
     return false;
+  }
 
   // Don't reduce language if user preference is unchecked
-  if (!pref_service->GetBoolean(brave_shields::prefs::kReduceLanguageEnabled))
+  if (!pref_service->GetBoolean(brave_shields::prefs::kReduceLanguageEnabled)) {
     return false;
+  }
 
   return true;
 }
 
-bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
-                            const GURL& url,
-                            PrefService* pref_service) {
-  if (!IsReduceLanguageEnabledForProfile(pref_service))
+bool ShouldDoReduceLanguage(
+    HostContentSettingsMap* map,
+    const GURL& url,
+    PrefService* pref_service,
+    reduce_language::ReduceLanguageService* reduce_language_service) {
+  if (!IsReduceLanguageEnabledForProfile(pref_service)) {
     return false;
+  }
 
   // Don't reduce language if Brave Shields is down (this also handles cases
   // where the URL is not HTTP(S))
-  if (!brave_shields::GetBraveShieldsEnabled(map, url))
+  if (!brave_shields::GetBraveShieldsEnabled(map, url)) {
     return false;
+  }
 
   // Don't reduce language if fingerprinting is off
   if (brave_shields::GetFingerprintingControlType(map, url) ==
-      ControlType::ALLOW)
+      ControlType::ALLOW) {
     return false;
+  }
+
+  // Don't reduce language if this URL is in the exceptions list managed by the
+  // reduce_language service
+  if (!reduce_language_service->ShouldReduceLanguage(url)) {
+    return false;
+  }
 
   return true;
 }
@@ -388,17 +410,21 @@ bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
 DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
                                          const GURL& url) {
   // Don't block if feature is disabled
-  if (!base::FeatureList::IsEnabled(brave_shields::features::kBraveDomainBlock))
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveDomainBlock)) {
     return DomainBlockingType::kNone;
+  }
 
   // Don't block if Brave Shields is down (this also handles cases where
   // the URL is not HTTP(S))
-  if (!brave_shields::GetBraveShieldsEnabled(map, url))
+  if (!brave_shields::GetBraveShieldsEnabled(map, url)) {
     return DomainBlockingType::kNone;
+  }
 
   // Don't block if ad blocking is off.
-  if (brave_shields::GetAdControlType(map, url) != ControlType::BLOCK)
+  if (brave_shields::GetAdControlType(map, url) != ControlType::BLOCK) {
     return DomainBlockingType::kNone;
+  }
 
   const ControlType cosmetic_control_type =
       brave_shields::GetCosmeticFilteringControlType(map, url);
@@ -425,8 +451,9 @@ void SetCookieControlType(HostContentSettingsMap* map,
                           const GURL& url,
                           PrefService* local_state) {
   auto patterns = content_settings::CreateShieldsCookiesPatterns(url);
-  if (!patterns.host_pattern.IsValid())
+  if (!patterns.host_pattern.IsValid()) {
     return;
+  }
 
   RecordShieldsSettingChanged(local_state);
 
@@ -505,8 +532,9 @@ ControlType GetCookieControlType(
     result.Merge(default_rules);
   }
 
-  if (result.general_setting() == CONTENT_SETTING_ALLOW)
+  if (result.general_setting() == CONTENT_SETTING_ALLOW) {
     return ControlType::ALLOW;
+  }
   if (result.first_party_setting() != CONTENT_SETTING_BLOCK) {
     return ControlType::BLOCK_THIRD_PARTY;
   }
@@ -527,8 +555,9 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
                                   PrefService* profile_state) {
   auto primary_pattern = GetPatternFromURL(url);
 
-  if (!primary_pattern.IsValid())
+  if (!primary_pattern.IsValid()) {
     return;
+  }
 
   ControlType prev_setting = GetFingerprintingControlType(map, url);
   content_settings::SettingInfo setting_info;
@@ -599,8 +628,9 @@ void SetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
                                PrefService* local_state) {
   auto primary_pattern = GetPatternFromURL(url);
 
-  if (!primary_pattern.IsValid())
+  if (!primary_pattern.IsValid()) {
     return;
+  }
 
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
@@ -617,8 +647,9 @@ void ResetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
                                  const GURL& url) {
   auto primary_pattern = GetPatternFromURL(url);
 
-  if (!primary_pattern.IsValid())
+  if (!primary_pattern.IsValid()) {
     return;
+  }
 
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
@@ -748,8 +779,9 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
   DCHECK(type != ControlType::BLOCK_THIRD_PARTY);
   auto primary_pattern = GetPatternFromURL(url);
 
-  if (!primary_pattern.IsValid())
+  if (!primary_pattern.IsValid()) {
     return;
+  }
 
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),

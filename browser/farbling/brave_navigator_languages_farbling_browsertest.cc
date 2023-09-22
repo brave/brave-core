@@ -256,19 +256,10 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
                        FarbleHTTPAcceptLanguage) {
   std::string domain_b = "b.test";
   std::string domain_d = "d.test";
-  std::string domain_x = "www.ulta.com";
-  std::string domain_y = "aeroplan.rewardops.com";
-  std::string domain_z = "login.live.com";
   GURL url_b = https_server_.GetURL(
       domain_b, "/reduce-language/page-with-subresources.html");
   GURL url_d = https_server_.GetURL(
       domain_d, "/reduce-language/page-with-subresources.html");
-  GURL url_x = https_server_.GetURL(
-      domain_x, "/reduce-language/page-with-subresources.html");
-  GURL url_y = https_server_.GetURL(
-      domain_y, "/reduce-language/page-with-subresources.html");
-  GURL url_z = https_server_.GetURL(
-      domain_z, "/reduce-language/page-with-subresources.html");
   SetAcceptLanguages("la,es,en");
 
   // Farbling level: off
@@ -323,16 +314,6 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   BlockFingerprinting(domain_d);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_d));
-
-  // Farbling level: maximum but domain is on exceptions list
-  // HTTP Accept-Language header should not be farbled.
-  BlockFingerprinting(domain_x);
-  SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.9,la;q=0.8");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_x));
-  BlockFingerprinting(domain_y);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_y));
-  BlockFingerprinting(domain_z);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
 }
 
 // Tests results of farbling HTTP Accept-Language header

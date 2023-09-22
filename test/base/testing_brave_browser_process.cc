@@ -80,6 +80,12 @@ TestingBraveBrowserProcess::request_otr_component_installer() {
 }
 #endif
 
+reduce_language::ReduceLanguageComponentInstallerPolicy*
+TestingBraveBrowserProcess::reduce_language_component_installer() {
+  NOTREACHED();
+  return nullptr;
+}
+
 brave::URLSanitizerComponentInstaller*
 TestingBraveBrowserProcess::URLSanitizerComponentInstaller() {
   NOTREACHED();

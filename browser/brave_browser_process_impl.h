@@ -68,6 +68,10 @@ class RequestOTRComponentInstallerPolicy;
 #endif
 }  // namespace request_otr
 
+namespace reduce_language {
+class ReduceLanguageComponentInstallerPolicy;
+}  // namespace reduce_language
+
 namespace ntp_background_images {
 class NTPBackgroundImagesService;
 }  // namespace ntp_background_images
@@ -124,6 +128,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   request_otr::RequestOTRComponentInstallerPolicy*
   request_otr_component_installer() override;
 #endif
+  reduce_language::ReduceLanguageComponentInstallerPolicy*
+  reduce_language_component_installer() override;
   brave::URLSanitizerComponentInstaller* URLSanitizerComponentInstaller()
       override;
   brave_shields::HTTPSEverywhereService* https_everywhere_service() override;
@@ -197,6 +203,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<request_otr::RequestOTRComponentInstallerPolicy>
       request_otr_component_installer_;
 #endif
+  std::unique_ptr<reduce_language::ReduceLanguageComponentInstallerPolicy>
+      reduce_language_component_installer_;
   std::unique_ptr<brave::URLSanitizerComponentInstaller>
       url_sanitizer_component_installer_;
   bool created_https_everywhere_service_ = false;

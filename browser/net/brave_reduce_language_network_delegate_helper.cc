@@ -12,6 +12,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_split.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/reduce_language/reduce_language_service_factory.h"
 #include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -31,14 +32,14 @@ namespace {
 constexpr char kAcceptLanguageMax[] = "en-US,en;q=0.9";
 const std::array<std::string, 5> kFakeQValues = {";q=0.5", ";q=0.6", ";q=0.7",
                                                  ";q=0.8", ";q=0.9"};
-static constexpr auto kFarbleAcceptLanguageExceptions =
-    base::MakeFixedFlatSet<base::StringPiece>(
-        {// https://github.com/brave/brave-browser/issues/25309
-         "ulta.com", "www.ulta.com",
-         // https://github.com/brave/brave-browser/issues/26325
-         "aeroplan.rewardops.com",
-         // https://github.com/brave/brave-browser/issues/31196
-         "login.live.com"});
+// static constexpr auto kFarbleAcceptLanguageExceptions =
+//     base::MakeFixedFlatSet<base::StringPiece>(
+//         {// https://github.com/brave/brave-browser/issues/25309
+//          "ulta.com", "www.ulta.com",
+//          // https://github.com/brave/brave-browser/issues/26325
+//          "aeroplan.rewardops.com",
+//          // https://github.com/brave/brave-browser/issues/31196
+//          "login.live.com"});
 }  // namespace
 
 std::string FarbleAcceptLanguageHeader(
@@ -82,12 +83,10 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
   if (origin_url.is_empty()) {
     return net::OK;
   }
-  if (!brave_shields::ShouldDoReduceLanguage(content_settings, origin_url,
-                                             profile->GetPrefs())) {
-    return net::OK;
-  }
-  base::StringPiece origin_host(origin_url.host_piece());
-  if (kFarbleAcceptLanguageExceptions.contains(origin_host)) {
+  if (!brave_shields::ShouldDoReduceLanguage(
+          content_settings, origin_url, profile->GetPrefs(),
+          reduce_language::ReduceLanguageServiceFactory::GetForBrowserContext(
+              ctx->browser_context))) {
     return net::OK;
   }
 

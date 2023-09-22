@@ -73,6 +73,10 @@ class RequestOTRComponentInstallerPolicy;
 #endif
 }  // namespace request_otr
 
+namespace reduce_language {
+class ReduceLanguageComponentInstallerPolicy;
+}  // namespace reduce_language
+
 namespace ntp_background_images {
 class NTPBackgroundImagesService;
 }  // namespace ntp_background_images
@@ -119,6 +123,8 @@ class BraveBrowserProcess {
   virtual request_otr::RequestOTRComponentInstallerPolicy*
   request_otr_component_installer() = 0;
 #endif
+  virtual reduce_language::ReduceLanguageComponentInstallerPolicy*
+  reduce_language_component_installer() = 0;
   virtual brave::URLSanitizerComponentInstaller*
   URLSanitizerComponentInstaller() = 0;
   virtual brave_shields::HTTPSEverywhereService* https_everywhere_service() = 0;
