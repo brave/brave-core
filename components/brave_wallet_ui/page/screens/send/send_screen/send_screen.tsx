@@ -53,10 +53,6 @@ import {
 import {
   selectAllVisibleUserAssetsFromQueryResult //
 } from '../../../../common/slices/entities/blockchain-token.entity'
-import {
-  selectAllAccountInfosFromQuery //
-} from '../../../../common/slices/entities/account-info.entity'
-import { networkSupportsAccount } from '../../../../utils/network-utils'
 
 // Hooks
 import {
@@ -80,9 +76,6 @@ import {
   useSendERC721TransferFromMutation,
   useSendETHFilForwarderTransferMutation,
   useGetAddressFromNameServiceUrlQuery,
-  useGetAccountInfosRegistryQuery,
-  useGetVisibleNetworksQuery,
-  usePrefetch
 } from '../../../../common/slices/api.slice'
 import {
   useAccountFromAddressQuery,
@@ -195,13 +188,6 @@ export const SendScreen = React.memo((props: Props) => {
   const [sendETHFilForwarderTransfer] = useSendETHFilForwarderTransferMutation()
 
   // Queries
-  const { data: networks } = useGetVisibleNetworksQuery()
-  const { accounts } = useGetAccountInfosRegistryQuery(undefined, {
-    selectFromResult: (res) => ({
-      accounts: selectAllAccountInfosFromQuery(res)
-    })
-  })
-
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAccount, isLoading: isLoadingSelectedAccount } =
     useSelectedAccountQuery()
@@ -320,28 +306,6 @@ export const SendScreen = React.memo((props: Props) => {
   const { data: ethAddressChecksum = '' } = useGetEthAddressChecksumQuery(
     isValidEvmAddress ? trimmedToAddressOrUrl : skipToken
   )
-
-  // Prefetch Queries
-  const balancesPrefetchArg = React.useMemo(() => {
-    return accounts && networks
-    ? accounts.flatMap((account) =>
-        networks
-          .filter((network) =>
-            networkSupportsAccount(network, account.accountId)
-          )
-          .map((network) => ({
-            accountId: account.accountId,
-            chainId: network.chainId,
-            coin: network.coin as 0 | 60 | 461 | 501
-          }))
-          .filter(({ coin }) => coin !== undefined)
-      )
-    : skipToken
-  }, [accounts, networks])
-
-  const preFetchAllBalances = usePrefetch('getTokenBalancesRegistry', {
-    force: false
-  })
 
   // memos & computed
   const sendAmountValidationError: AmountValidationErrorType | undefined =
@@ -778,13 +742,6 @@ export const SendScreen = React.memo((props: Props) => {
     selectedAssetFromParams,
     setSelectedAccountAndNetwork
   ])
-
-  // preload balances for asset selector
-  React.useEffect(() => {
-    if (balancesPrefetchArg !== skipToken) {
-      preFetchAllBalances(balancesPrefetchArg)
-    }
-  }, [preFetchAllBalances, balancesPrefetchArg])
 
   // render
   return (
