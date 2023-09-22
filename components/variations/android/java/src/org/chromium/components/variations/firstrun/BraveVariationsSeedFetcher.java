@@ -8,16 +8,25 @@ package org.chromium.components.variations.firstrun;
 import androidx.annotation.VisibleForTesting;
 
 import org.chromium.base.CommandLine;
+import org.chromium.base.Log;
 import org.chromium.components.variations.VariationsSwitches;
 
 public class BraveVariationsSeedFetcher extends VariationsSeedFetcher {
+    // To delete in bytecode. Variables from the parent class will be used instead.
+    private static Object sLock;
+    private static String DEFAULT_VARIATIONS_SERVER_URL;
+    private static String DEFAULT_FAST_VARIATIONS_SERVER_URL;
+
     private static VariationsSeedFetcher sInstance;
+    private static final String TAG = "BraveVariations";
 
     public static VariationsSeedFetcher get() {
-        if (sInstance == null) {
-            sInstance = new BraveVariationsSeedFetcher();
+        synchronized (sLock) {
+            if (sInstance == null) {
+                sInstance = new BraveVariationsSeedFetcher();
+            }
+            return sInstance;
         }
-        return sInstance;
     }
 
     @VisibleForTesting
@@ -28,18 +37,29 @@ public class BraveVariationsSeedFetcher extends VariationsSeedFetcher {
     @VisibleForTesting
     @Override
     protected String getConnectionString(SeedFetchParameters params) {
-        if (!CommandLine.getInstance().hasSwitch(VariationsSwitches.VARIATIONS_SERVER_URL)) {
-            // If there is no alternative variations server specified, we still don't want to
-            // connect to Google's server.
-            return "";
+        String urlString = super.getConnectionString(params);
+
+        // Fix channel name.
+        urlString = urlString.replaceAll("=canary", "=nightly");
+
+        // Return as is if URL was passed manually.
+        if (CommandLine.getInstance().hasSwitch(VariationsSwitches.VARIATIONS_SERVER_URL)) {
+            return urlString;
         }
 
-        String urlString = super.getConnectionString(params);
-        // Relacing Google's variations server with ours, but keep parameters.
-        int paramsPosition = urlString.indexOf("?", 0);
-        urlString =
-                CommandLine.getInstance().getSwitchValue(VariationsSwitches.VARIATIONS_SERVER_URL)
-                + (paramsPosition > 0 ? urlString.substring(paramsPosition) : "");
+        // Replace Chromium URL with Brave URL.
+        if (urlString.indexOf(DEFAULT_VARIATIONS_SERVER_URL) != -1) {
+            urlString = urlString.replaceFirst(
+                    DEFAULT_VARIATIONS_SERVER_URL, BraveVariationsConfig.VARIATIONS_SERVER_URL);
+        } else if (urlString.indexOf(DEFAULT_FAST_VARIATIONS_SERVER_URL) != -1) {
+            urlString = urlString.replaceFirst(DEFAULT_FAST_VARIATIONS_SERVER_URL,
+                    BraveVariationsConfig.VARIATIONS_SERVER_URL);
+        } else {
+            Log.e(TAG, "Cannot replace seed URL to fetch variations: %s", urlString);
+            urlString = "";
+        }
+
+        Log.i(TAG, "Fetching variations from: %s", urlString);
         return urlString;
     }
 }

@@ -1279,6 +1279,7 @@ if (is_android) {
       "//components/permissions/android:java",
       "//components/search_engines/android:java",
       "//components/sync/android:sync_java",
+      "//components/variations/android:variations_java",
       "//content/public/android:content_full_java",
       "//third_party/androidx:androidx_appcompat_appcompat_java",
       "//third_party/androidx:androidx_preference_preference_java",

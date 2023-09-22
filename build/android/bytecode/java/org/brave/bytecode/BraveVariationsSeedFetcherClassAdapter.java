@@ -18,5 +18,12 @@ public class BraveVariationsSeedFetcherClassAdapter extends BraveClassVisitor {
 
         changeMethodOwner(
                 sVariationsSeedFetcherClassName, "get", sBraveVariationsSeedFetcherClassName);
+
+        deleteField(sBraveVariationsSeedFetcherClassName, "sLock");
+        makeProtectedField(sVariationsSeedFetcherClassName, "sLock");
+        deleteField(sBraveVariationsSeedFetcherClassName, "DEFAULT_VARIATIONS_SERVER_URL");
+        makeProtectedField(sVariationsSeedFetcherClassName, "DEFAULT_VARIATIONS_SERVER_URL");
+        deleteField(sBraveVariationsSeedFetcherClassName, "DEFAULT_FAST_VARIATIONS_SERVER_URL");
+        makeProtectedField(sVariationsSeedFetcherClassName, "DEFAULT_FAST_VARIATIONS_SERVER_URL");
     }
 }
