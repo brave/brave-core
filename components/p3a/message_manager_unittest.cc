@@ -37,7 +37,9 @@ namespace {
 constexpr uint8_t kInitialEpoch = 2;
 constexpr size_t kUploadIntervalSeconds = 120;
 constexpr size_t kEpochLenDays = 4;
-constexpr char kTestHost[] = "https://localhost:8443";
+constexpr char kTestJsonHost[] = "https://localhost:8443";
+constexpr char kTestStarRandomnessHost[] = "https://localhost:9443";
+constexpr char kTestStarUploadHost[] = "https://localhost:10443";
 constexpr char kP2APrefix[] = "Brave.P2A";
 
 }  // namespace
@@ -68,6 +70,10 @@ class P3AMessageManagerTest : public testing::Test,
           {features::kConstellation,
            features::kConstellationEnclaveAttestation},
           {});
+    } else {
+      scoped_feature_list_.InitWithFeatures(
+          {}, {features::kConstellation,
+               features::kConstellationEnclaveAttestation});
     }
 
     base::Time future_mock_time;
@@ -76,13 +82,14 @@ class P3AMessageManagerTest : public testing::Test,
     }
 
     p3a_config.disable_star_attestation = true;
-    p3a_config.star_randomness_host = kTestHost;
+    p3a_config.star_randomness_host = kTestStarRandomnessHost;
     p3a_config.randomize_upload_interval = false;
     p3a_config.average_upload_interval = base::Seconds(kUploadIntervalSeconds);
-    p3a_config.p3a_json_upload_url = GURL(std::string(kTestHost) + "/p3a_json");
-    p3a_config.p2a_json_upload_url = GURL(std::string(kTestHost) + "/p2a_json");
-    p3a_config.p3a_constellation_upload_url =
-        GURL(std::string(kTestHost) + "/p3a_constellation");
+    p3a_config.p3a_json_upload_url =
+        GURL(std::string(kTestJsonHost) + "/p3a_json");
+    p3a_config.p2a_json_upload_url =
+        GURL(std::string(kTestJsonHost) + "/p2a_json");
+    p3a_config.p3a_constellation_upload_host = std::string(kTestStarUploadHost);
 
     P3AService::RegisterPrefs(local_state.registry(), true);
 
@@ -92,8 +99,10 @@ class P3AMessageManagerTest : public testing::Test,
         [&](const network::ResourceRequest& request) {
           url_loader_factory.ClearResponses();
 
-          if (request.url == GURL(std::string(kTestHost) + "/info") ||
-              request.url == GURL(std::string(kTestHost) + "/randomness")) {
+          if (request.url == GURL(std::string(kTestStarRandomnessHost) +
+                                  "/instances/typical/info") ||
+              request.url == GURL(std::string(kTestStarRandomnessHost) +
+                                  "/instances/typical/randomness")) {
             if (interceptor_invalid_response_from_randomness) {
               // next epoch time is missing!
               url_loader_factory.AddResponse(
@@ -108,7 +117,8 @@ class P3AMessageManagerTest : public testing::Test,
             }
           }
 
-          if (request.url == GURL(std::string(kTestHost) + "/info")) {
+          if (request.url == GURL(std::string(kTestStarRandomnessHost) +
+                                  "/instances/typical/info")) {
             EXPECT_EQ(request.method, net::HttpRequestHeaders::kGetMethod);
             url_loader_factory.AddResponse(
                 request.url.spec(),
@@ -117,8 +127,8 @@ class P3AMessageManagerTest : public testing::Test,
                     TimeFormatAsIso8601(next_epoch_time) + "\"}",
                 interceptor_status_code_from_randomness);
             info_request_made = true;
-          } else if (request.url ==
-                     GURL(std::string(kTestHost) + "/randomness")) {
+          } else if (request.url == GURL(std::string(kTestStarRandomnessHost) +
+                                         "/instances/typical/randomness")) {
             std::string resp_json =
                 HandleRandomnessRequest(request, current_epoch);
             url_loader_factory.AddResponse(
@@ -134,13 +144,17 @@ class P3AMessageManagerTest : public testing::Test,
             EXPECT_EQ(request.method, net::HttpRequestHeaders::kPostMethod);
             StoreJsonMetricInMap(request, true);
             url_loader_factory.AddResponse(request.url.spec(), "{}");
-          } else if (request.url == p3a_config.p3a_constellation_upload_url) {
+          } else if (request.url ==
+                     GURL(std::string(kTestStarUploadHost) + "/typical")) {
             EXPECT_EQ(request.method, net::HttpRequestHeaders::kPostMethod);
             std::string message = std::string(ExtractBodyFromRequest(request));
             EXPECT_EQ(p3a_constellation_sent_messages.find(message),
                       p3a_constellation_sent_messages.end());
             p3a_constellation_sent_messages.insert(message);
             url_loader_factory.AddResponse(request.url.spec(), "{}");
+          } else {
+            url_loader_factory.AddResponse(request.url.spec(), "",
+                                           net::HTTP_NOT_FOUND);
           }
         }));
 

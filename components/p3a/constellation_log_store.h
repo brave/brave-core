@@ -15,6 +15,7 @@
 #include "base/containers/flat_set.h"
 #include "base/memory/raw_ref.h"
 #include "base/time/time.h"
+#include "brave/components/p3a/metric_log_type.h"
 #include "components/metrics/log_store.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -29,7 +30,7 @@ namespace p3a {
 // the "keep epoch count".
 class ConstellationLogStore : public metrics::LogStore {
  public:
-  ConstellationLogStore(PrefService& local_state, size_t keep_epoch_count);
+  ConstellationLogStore(PrefService& local_state, MetricLogType log_type);
   ~ConstellationLogStore() override;
 
   ConstellationLogStore(const ConstellationLogStore&) = delete;
@@ -73,9 +74,14 @@ class ConstellationLogStore : public metrics::LogStore {
     bool operator()(const LogKey& lhs, const LogKey& rhs) const;
   };
 
+  const char* GetPrefName() const;
+
   void RemoveMessageIfExists(const LogKey& key);
 
+  size_t GetMaxEpochsToRetain() const;
+
   const raw_ref<PrefService> local_state_;
+  MetricLogType log_type_;
 
   base::flat_map<LogKey, std::string, LogKeyCompare> log_;
   base::flat_set<LogKey, LogKeyCompare> unsent_entries_;
@@ -88,7 +94,6 @@ class ConstellationLogStore : public metrics::LogStore {
   std::string staged_log_signature_;
 
   uint8_t current_epoch_;
-  size_t keep_epoch_count_;
 };
 
 }  // namespace p3a

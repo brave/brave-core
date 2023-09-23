@@ -27,8 +27,8 @@ class P3AConstellationLogStoreTest : public testing::Test {
  protected:
   void SetUp() override {
     ConstellationLogStore::RegisterPrefs(local_state.registry());
-    log_store = std::make_unique<ConstellationLogStore>(local_state,
-                                                        kTestKeepEpochCount);
+    log_store = std::make_unique<ConstellationLogStore>(
+        local_state, MetricLogType::kTypical);
   }
 
   std::string GenerateMockConstellationMessage() {

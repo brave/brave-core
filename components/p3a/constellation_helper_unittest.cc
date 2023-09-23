@@ -52,14 +52,15 @@ class P3AConstellationHelperTest : public testing::Test {
           url_loader_factory_.ClearResponses();
 
           std::string response;
-          if (request.url == GURL(std::string(kTestHost) + "/info")) {
+          if (request.url ==
+              GURL(std::string(kTestHost) + "/instances/typical/info")) {
             EXPECT_EQ(request.method, net::HttpRequestHeaders::kGetMethod);
 
             response = "{\"currentEpoch\":" + base::NumberToString(kTestEpoch) +
                        ", \"nextEpochTime\": \"" + kTestNextEpochTime + "\"}";
             info_request_made_ = true;
-          } else if (request.url ==
-                     GURL(std::string(kTestHost) + "/randomness")) {
+          } else if (request.url == GURL(std::string(kTestHost) +
+                                         "/instances/typical/randomness")) {
             response = HandleRandomnessRequest(request, kTestEpoch);
             points_request_made_ = true;
           }
@@ -78,15 +79,17 @@ class P3AConstellationHelperTest : public testing::Test {
     helper_ = std::make_unique<ConstellationHelper>(
         &local_state_, shared_url_loader_factory_,
         base::BindLambdaForTesting(
-            [this](std::string histogram_name, uint8_t epoch,
+            [this](std::string histogram_name, MetricLogType log_type,
+                   uint8_t epoch,
                    std::unique_ptr<std::string> serialized_message) {
               histogram_name_from_callback_ = histogram_name;
               epoch_from_callback_ = epoch;
               serialized_message_from_callback_ = std::move(serialized_message);
             }),
-        base::BindLambdaForTesting([this](RandomnessServerInfo* server_info) {
-          server_info_from_callback_ = server_info;
-        }),
+        base::BindLambdaForTesting(
+            [this](MetricLogType log_type, RandomnessServerInfo* server_info) {
+              server_info_from_callback_ = server_info;
+            }),
         &p3a_config_);
     task_environment_.RunUntilIdle();
   }
@@ -114,7 +117,7 @@ TEST_F(P3AConstellationHelperTest, CanRetrieveServerInfo) {
   ASSERT_TRUE(base::Time::FromString(kTestNextEpochTime, &exp_next_epoch_time));
 
   SetUpHelper();
-  helper_->UpdateRandomnessServerInfo();
+  helper_->UpdateRandomnessServerInfo(MetricLogType::kTypical);
   task_environment_.RunUntilIdle();
 
   ASSERT_TRUE(info_request_made_);
@@ -127,7 +130,7 @@ TEST_F(P3AConstellationHelperTest, CanRetrieveServerInfo) {
   // See if cached server info is used on next execution
   info_request_made_ = false;
   SetUpHelper();
-  helper_->UpdateRandomnessServerInfo();
+  helper_->UpdateRandomnessServerInfo(MetricLogType::kTypical);
   task_environment_.RunUntilIdle();
 
   ASSERT_FALSE(info_request_made_);
@@ -143,7 +146,7 @@ TEST_F(P3AConstellationHelperTest, CannotRetrieveServerInfo) {
   interceptor_send_bad_response_ = true;
 
   SetUpHelper();
-  helper_->UpdateRandomnessServerInfo();
+  helper_->UpdateRandomnessServerInfo(MetricLogType::kTypical);
   task_environment_.RunUntilIdle();
 
   ASSERT_TRUE(info_request_made_);
@@ -161,15 +164,16 @@ TEST_F(P3AConstellationHelperTest, CannotRetrieveServerInfo) {
 
 TEST_F(P3AConstellationHelperTest, GenerateBasicMessage) {
   SetUpHelper();
-  helper_->UpdateRandomnessServerInfo();
+  helper_->UpdateRandomnessServerInfo(MetricLogType::kTypical);
   task_environment_.RunUntilIdle();
 
   MessageMetainfo meta_info;
   meta_info.Init(&local_state_, "release", "2022-01-01");
 
   helper_->StartMessagePreparation(
-      kTestHistogramName, GenerateP3AConstellationMessage(
-                              kTestHistogramName, kTestEpoch, meta_info));
+      kTestHistogramName, MetricLogType::kTypical,
+      GenerateP3AConstellationMessage(kTestHistogramName, kTestEpoch,
+                                      meta_info));
   task_environment_.RunUntilIdle();
 
   ASSERT_TRUE(points_request_made_);

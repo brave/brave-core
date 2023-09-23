@@ -25,7 +25,12 @@ namespace {
 constexpr char kTypicalJsonLogPrefName[] = "p3a.logs";
 constexpr char kSlowJsonLogPrefName[] = "p3a.logs_slow";
 constexpr char kExpressJsonLogPrefName[] = "p3a.logs_express";
-constexpr char kConstellationPrepPrefName[] = "p3a.logs_constellation_prep";
+constexpr char kTypicalConstellationPrepPrefName[] =
+    "p3a.logs_constellation_prep";
+constexpr char kSlowConstellationPrepPrefName[] =
+    "p3a.logs_constellation_prep_slow";
+constexpr char kExpressConstellationPrepPrefName[] =
+    "p3a.logs_constellation_prep_express";
 constexpr char kLogValueKey[] = "value";
 constexpr char kLogSentKey[] = "sent";
 constexpr char kLogTimestampKey[] = "timestamp";
@@ -78,12 +83,21 @@ void MetricLogStore::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kTypicalJsonLogPrefName);
   registry->RegisterDictionaryPref(kExpressJsonLogPrefName);
   registry->RegisterDictionaryPref(kSlowJsonLogPrefName);
-  registry->RegisterDictionaryPref(kConstellationPrepPrefName);
+  registry->RegisterDictionaryPref(kTypicalConstellationPrepPrefName);
+  registry->RegisterDictionaryPref(kExpressConstellationPrepPrefName);
+  registry->RegisterDictionaryPref(kSlowConstellationPrepPrefName);
 }
 
 const char* MetricLogStore::GetPrefName() const {
   if (is_constellation_) {
-    return kConstellationPrepPrefName;
+    switch (type_) {
+      case MetricLogType::kTypical:
+        return kTypicalConstellationPrepPrefName;
+      case MetricLogType::kExpress:
+        return kExpressConstellationPrepPrefName;
+      case MetricLogType::kSlow:
+        return kSlowConstellationPrepPrefName;
+    }
   } else {
     switch (type_) {
       case MetricLogType::kTypical:

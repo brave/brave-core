@@ -8,13 +8,13 @@ declare_args() {
   p3a_json_upload_url = ""
   p3a_creative_upload_url = ""
   p2a_json_upload_url = ""
-  p3a_constellation_upload_url = ""
+  p3a_constellation_upload_host = ""
   star_randomness_host = ""
 }
 
 if (is_official_build) {
   assert(brave_p3a_enabled && p3a_json_upload_url != "" &&
              p3a_creative_upload_url != "" && p2a_json_upload_url != "" &&
-             p3a_constellation_upload_url != "" && star_randomness_host != "",
+             p3a_constellation_upload_host != "" && star_randomness_host != "",
          "P3A config must be defined")
 }

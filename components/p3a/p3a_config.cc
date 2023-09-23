@@ -12,6 +12,7 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/p3a/buildflags.h"
+#include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/switches.h"
 
 namespace p3a {
@@ -33,6 +34,17 @@ base::TimeDelta MaybeOverrideTimeDeltaFromCommandLine(
     }
   }
   return result;
+}
+
+absl::optional<uint8_t> MaybeSetUint8FromCommandLine(base::CommandLine* cmdline,
+                                                     const char* switch_name) {
+  if (cmdline->HasSwitch(switch_name)) {
+    unsigned value;
+    if (base::StringToUint(cmdline->GetSwitchValueASCII(switch_name), &value)) {
+      return value;
+    }
+  }
+  return absl::nullopt;
 }
 
 std::string MaybeOverrideStringFromCommandLine(
@@ -83,13 +95,15 @@ P3AConfig::P3AConfig()
       p3a_json_upload_url(BUILDFLAG(P3A_JSON_UPLOAD_URL)),
       p3a_creative_upload_url(BUILDFLAG(P3A_CREATIVE_UPLOAD_URL)),
       p2a_json_upload_url(BUILDFLAG(P2A_JSON_UPLOAD_URL)),
-      p3a_constellation_upload_url(BUILDFLAG(P3A_CONSTELLATION_UPLOAD_URL)),
+      p3a_constellation_upload_host(BUILDFLAG(P3A_CONSTELLATION_UPLOAD_HOST)),
       star_randomness_host(BUILDFLAG(STAR_RANDOMNESS_HOST)) {
   CheckURL(p3a_json_upload_url);
   CheckURL(p3a_creative_upload_url);
   CheckURL(p2a_json_upload_url);
-  CheckURL(p3a_constellation_upload_url);
   CheckURL(GURL(star_randomness_host));
+  for (MetricLogType log_type : kAllMetricLogTypes) {
+    fake_star_epochs[log_type] = absl::nullopt;
+  }
 }
 
 P3AConfig::~P3AConfig() = default;
@@ -120,14 +134,12 @@ P3AConfig P3AConfig::LoadFromCommandLine() {
           cmdline, switches::kP3AExpressRotationIntervalSeconds,
           std::move(config.json_rotation_intervals[MetricLogType::kExpress]));
 
-  if (cmdline->HasSwitch(switches::kP3AFakeStarEpoch)) {
-    unsigned fake_star_epoch;
-    if (base::StringToUint(
-            cmdline->GetSwitchValueASCII(switches::kP3AFakeStarEpoch),
-            &fake_star_epoch)) {
-      config.fake_star_epoch = fake_star_epoch;
-    }
-  }
+  config.fake_star_epochs[MetricLogType::kSlow] =
+      MaybeSetUint8FromCommandLine(cmdline, switches::kP3AFakeSlowStarEpoch);
+  config.fake_star_epochs[MetricLogType::kTypical] =
+      MaybeSetUint8FromCommandLine(cmdline, switches::kP3AFakeTypicalStarEpoch);
+  config.fake_star_epochs[MetricLogType::kExpress] =
+      MaybeSetUint8FromCommandLine(cmdline, switches::kP3AFakeExpressStarEpoch);
 
   config.p3a_json_upload_url =
       MaybeOverrideURLFromCommandLine(cmdline, switches::kP3AJsonUploadUrl,
@@ -138,9 +150,9 @@ P3AConfig P3AConfig::LoadFromCommandLine() {
   config.p2a_json_upload_url =
       MaybeOverrideURLFromCommandLine(cmdline, switches::kP2AJsonUploadUrl,
                                       std::move(config.p2a_json_upload_url));
-  config.p3a_constellation_upload_url = MaybeOverrideURLFromCommandLine(
-      cmdline, switches::kP3AConstellationUploadUrl,
-      std::move(config.p3a_constellation_upload_url));
+  config.p3a_constellation_upload_host = MaybeOverrideStringFromCommandLine(
+      cmdline, switches::kP3AConstellationUploadHost,
+      std::move(config.p3a_constellation_upload_host));
   config.star_randomness_host = MaybeOverrideStringFromCommandLine(
       cmdline, switches::kP3AStarRandomnessHost,
       std::move(config.star_randomness_host));
@@ -160,8 +172,8 @@ P3AConfig P3AConfig::LoadFromCommandLine() {
           << ", p2a_json_upload_url_ = " << config.p2a_json_upload_url.spec()
           << ", p3a_creative_upload_url_ = "
           << config.p3a_creative_upload_url.spec()
-          << ", p3a_constellation_upload_url_ = "
-          << config.p3a_constellation_upload_url.spec()
+          << ", p3a_constellation_upload_host_ = "
+          << config.p3a_constellation_upload_host
           << ", star_randomness_host_ = " << config.star_randomness_host
           << ", ignore_server_errors_ = " << config.ignore_server_errors
           << ", disable_star_attestation = " << config.disable_star_attestation;

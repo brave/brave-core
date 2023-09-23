@@ -36,7 +36,8 @@ class P3ARotationSchedulerTest : public testing::Test {
         local_state_, &config_,
         base::BindLambdaForTesting(
             [&](MetricLogType log_type) { json_rotation_counts_[log_type]++; }),
-        base::BindLambdaForTesting([&]() { constellation_rotation_count_++; }));
+        base::BindLambdaForTesting(
+            [&](MetricLogType log_type) { constellation_rotation_count_++; }));
   }
 
   base::test::TaskEnvironment task_environment_;
@@ -63,7 +64,8 @@ TEST_F(P3ARotationSchedulerTest, ConstellationRotation) {
   // Should be 0 since the timer has not started
   EXPECT_EQ(constellation_rotation_count_, 0u);
 
-  scheduler_->InitConstellationTimer(base::Time::Now() + base::Days(7));
+  scheduler_->InitConstellationTimer(MetricLogType::kTypical,
+                                     base::Time::Now() + base::Days(7));
 
   task_environment_.FastForwardBy(base::Days(7));
   EXPECT_EQ(constellation_rotation_count_, 0u);
@@ -75,7 +77,8 @@ TEST_F(P3ARotationSchedulerTest, ConstellationRotation) {
   // Should not rotate again until InitConstellationTimer sets the timer
   EXPECT_EQ(constellation_rotation_count_, 1u);
 
-  scheduler_->InitConstellationTimer(base::Time::Now() + base::Days(7));
+  scheduler_->InitConstellationTimer(MetricLogType::kTypical,
+                                     base::Time::Now() + base::Days(7));
   task_environment_.FastForwardBy(base::Days(7));
   EXPECT_EQ(constellation_rotation_count_, 1u);
 
