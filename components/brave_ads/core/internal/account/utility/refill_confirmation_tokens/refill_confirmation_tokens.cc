@@ -211,10 +211,9 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
   if (url_response.status_code == net::kHttpUpgradeRequired) {
     AdsNotifierManager::GetInstance().NotifyBrowserUpgradeRequiredToServeAds();
 
-    return base::unexpected(
-        std::make_tuple("Failed to get signed tokens as a browser upgrade is "
-                        "required", /*should_retry=*/
-                        false));
+    return base::unexpected(std::make_tuple(
+        "Failed to get signed tokens as a browser upgrade is required",
+        /*should_retry=*/false));
   }
 
   if (url_response.status_code != net::HTTP_OK &&

@@ -41,8 +41,7 @@ class BraveAdsRedeemPaymentTokensTest : public UnitTestBase {
 TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokens) {
   // Arrange
   const URLResponseMap url_responses = {
-      {BuildRedeemPaymentTokensUrlPath(
-           /*payment_id=*/kWalletPaymentId),
+      {BuildRedeemPaymentTokensUrlPath(/*payment_id=*/kWalletPaymentId),
        {{net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -71,8 +70,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokens) {
 TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokensMultipleTimes) {
   // Arrange
   const URLResponseMap url_responses = {
-      {BuildRedeemPaymentTokensUrlPath(
-           /*payment_id=*/kWalletPaymentId),
+      {BuildRedeemPaymentTokensUrlPath(/*payment_id=*/kWalletPaymentId),
        {{net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()},
         {net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
@@ -103,8 +101,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokensMultipleTimes) {
 TEST_F(BraveAdsRedeemPaymentTokensTest, ScheduleNextTokenRedemption) {
   // Arrange
   const URLResponseMap url_responses = {
-      {BuildRedeemPaymentTokensUrlPath(
-           /*payment_id=*/kWalletPaymentId),
+      {BuildRedeemPaymentTokensUrlPath(/*payment_id=*/kWalletPaymentId),
        {{net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -146,8 +143,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, NoPaymentTokens) {
 TEST_F(BraveAdsRedeemPaymentTokensTest, Retry) {
   // Arrange
   const URLResponseMap url_responses = {
-      {BuildRedeemPaymentTokensUrlPath(
-           /*payment_id=*/kWalletPaymentId),
+      {BuildRedeemPaymentTokensUrlPath(/*payment_id=*/kWalletPaymentId),
        {{net::HTTP_NOT_FOUND,
          /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_NOT_FOUND)},
         {net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
